@@ -1,0 +1,39 @@
+appId: com.netlss.flat.native
+productName: flat-native
+artifactName: flat-native-${version}.${ext}
+asar: true
+
+mac:
+  category: public.app-category.productivity
+  hardenedRuntime: true
+  entitlements: entitlements.mac.plist
+  entitlementsInherit: entitlements.mac.plist
+  gatekeeperAssess: false
+  extendInfo:
+    NSMicrophoneUsageDescription: To ensure normal use, flat-native needs access to your microphone.
+    NSCameraUsageDescription: To ensure normal use, flat-native needs access to your camera.
+  target:
+    - dmg
+    - zip
+
+dmg:
+  contents:
+    - { x: 130, y: 220 }
+    - { x: 410, y: 220, type: link, path: /Applications}
+
+win:
+  target:
+    - target: zip
+    - target: nsis
+      arch:
+        - ia32
+
+nsis:
+  oneClick: false
+  perMachine: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  allowToChangeInstallationDirectory: true
+
+directories:
+  buildResources: build/resources/

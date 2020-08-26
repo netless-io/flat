@@ -1,0 +1,47 @@
+@import "./theme";
+
+.page404-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.page404-image-box {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.page404-image-inner {
+  width: 420px;
+}
+
+.page404-image-inner-disconnected {
+  width: 320px;
+}
+
+.page404-inner {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 16px;
+  color: @gray;
+}
+
+.page404-btn {
+  margin-top: 40px;
+  width: 148px;
+}
+
+
+@media screen and (max-width: 660px) {
+  .page404-image-inner {
+    width: 280px;
+  }
+  .page404-image-inner-disconnected {
+    width: 100%;
+  }
+}

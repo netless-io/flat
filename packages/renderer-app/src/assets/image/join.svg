@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
+    <title>join</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Whiteboard-Guidelines" transform="translate(-416.000000, -424.000000)">
+            <g id="join" transform="translate(416.000000, 424.000000)">
+                <path d="M40,80 C70.4477612,80 80,62.09139 80,40 C80,17.90861 70.4477612,0 40,0 C9.55223881,0 0,17.90861 0,40 C0,62.09139 9.55223881,80 40,80 Z" id="Mask" fill="#106BC5"></path>
+                <path d="M47,26 L57,26 C58.1045695,26 59,26.8954305 59,28 L59,52 C59,53.1045695 58.1045695,54 57,54 L47,54 L47,54" id="路径-43" fill="#FFFFFF" opacity="0.400000006"></path>
+                <path d="M22.7248633,23.093769 L42.7248633,20.3159912 C43.8189308,20.1640374 44.8290307,20.9277715 44.9809845,22.021839 C44.9936464,22.1130045 45,22.2049352 45,22.2969758 L45,57.7030242 C45,58.8075937 44.1045695,59.7030242 43,59.7030242 C42.9079595,59.7030242 42.8160287,59.6966707 42.7248633,59.6840088 L22.7248633,56.906231 C21.7360972,56.7689024 21,55.9235037 21,54.9252465 L21,25.0747535 C21,24.0764963 21.7360972,23.2310976 22.7248633,23.093769 Z" id="矩形备份" fill="#FFFFFF"></path>
+                <line x1="37" y1="36" x2="37" y2="44" id="路径-45备份" stroke="#106BC5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
+    <title>exit</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Whiteboard-Guidelines" transform="translate(-728.000000, -374.000000)">
+            <g id="exit" transform="translate(728.000000, 374.000000)">
+                <rect id="矩形备份-21" fill="#FFFFFF" opacity="0.01" x="0" y="0" width="32" height="32"></rect>
+                <path d="M16,22 C19.3137085,22 22,19.3137085 22,16 C22,12.6862915 19.3137085,10 16,10 C12.6862915,10 10,12.6862915 10,16" id="椭圆形" stroke="#212324" stroke-linecap="round" stroke-linejoin="round" transform="translate(16.000000, 16.000000) rotate(-225.000000) translate(-16.000000, -16.000000) "></path>
+                <line x1="16" y1="14" x2="16" y2="10" id="路径-13" stroke="#212324" stroke-linecap="round" stroke-linejoin="round"></line>
+            </g>
+        </g>
+    </g>
+</svg>
