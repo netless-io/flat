@@ -1,6 +1,5 @@
 const paths = require("./paths");
 const threadLoader = require("thread-loader");
-const nodeExternals = require("webpack-node-externals");
 const { NoEmitOnErrorsPlugin, NamedModulesPlugin } = require("webpack");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
@@ -18,7 +17,7 @@ const tsWorkerOptions = {
     name: "ts-pool",
 };
 
-threadLoader.warmup(tsWorkerOptions, ["babel-loader", "eslint-loader"]);
+threadLoader.warmup(tsWorkerOptions, ["eslint-loader", "babel-loader"]);
 
 module.exports = {
     entry: [paths.entryFile],
@@ -52,10 +51,6 @@ module.exports = {
                 test: /\.ts?$/,
                 use: [
                     {
-                        loader: "thread-loader",
-                        options: tsWorkerOptions,
-                    },
-                    {
                         loader: "babel-loader",
                     },
                     {
@@ -63,6 +58,10 @@ module.exports = {
                         options: {
                             fix: true,
                         },
+                    },
+                    {
+                        loader: "thread-loader",
+                        options: tsWorkerOptions,
                     },
                 ],
                 exclude: /node_modules/,
@@ -85,7 +84,9 @@ module.exports = {
         }),
     ],
 
-    externals: [nodeExternals()],
+    externals: {
+        "agora-electron-sdk": "commonjs2 agora-electron-sdk",
+    },
 
     resolve: {
         extensions: [".ts", ".js"],
@@ -93,5 +94,6 @@ module.exports = {
     output: {
         filename: "main.js",
         path: paths.dist,
+        libraryTarget: "commonjs2",
     },
 };

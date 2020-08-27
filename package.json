@@ -1,6 +1,9 @@
 {
     "name": "root",
     "private": true,
+    "scripts": {
+        "preinstall": "npm install minimist@1.2.5 edit-json-file@1.4.1 --save-dev && ./scripts/build-agora-sdk.js"
+    },
     "workspaces": {
         "packages": [
             "packages/*"
@@ -17,7 +20,18 @@
     },
     "devDependencies": {
         "@types/node": "^12.0.0",
-        "cross-env": "^7.0.2"
+        "cross-env": "^7.0.2",
+        "edit-json-file": "^1.4.1",
+        "minimist": "^1.2.5"
+    },
+    "agora_electron": {
+        "platform": "darwin",
+        "arch": "x64",
+        "electron_version": "7.1.2",
+        "msvs_version": "2017",
+        "silent": false,
+        "debug": false,
+        "prebuilt": true
     },
     "license": "MIT"
 }

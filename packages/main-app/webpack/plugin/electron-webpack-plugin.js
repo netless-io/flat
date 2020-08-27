@@ -17,13 +17,13 @@ ElectronWebpackPlugin.prototype.apply = function (compiler) {
             this.manualRestart = true;
             this.electronProcess.kill();
             this.electronProcess = null;
-            this.startElectron();
+            setImmediate(() => this.startElectron());
 
             setTimeout(() => {
                 this.manualRestart = false;
             }, 2000);
         } else {
-            this.startElectron();
+            setImmediate(() => this.startElectron());
         }
     });
 };
