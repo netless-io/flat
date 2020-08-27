@@ -135,7 +135,7 @@ module.exports = {
             system_vars: true,
             default_node_env: "development",
         }),
-        isDevelopment && new ReactRefreshWebpackPlugin(),
+        new ReactRefreshWebpackPlugin(),
         new ProgressBarPlugin(),
         new HtmlWebpackPlugin({
             inject: true,
@@ -159,17 +159,19 @@ module.exports = {
         }),
     ].filter(Boolean),
 
-    externals: [
-        nodeExternals({
-            importType: module => {
-                if (module === "agora-electron-sdk") {
-                    return "commonjs2 agora-electron-sdk";
-                }
+    externals: {
+        "agora-electron-sdk": "commonjs2 agora-electron-sdk"
+        // nodeExternals({
+        //     importType: module => {
+        //         if (module === "agora-electron-sdk") {
+        //             return "commonjs2 agora-electron-sdk";
+        //         }
 
-                return `commonjs ${module}`;
-            },
-        }),
-    ],
+        //         return `${module}`
+        //         // return `commonjs ${module}`;
+        //     },
+        // }),
+    },
 
     resolve: {
         extensions: ["node", ".ts", ".tsx", ".js"],

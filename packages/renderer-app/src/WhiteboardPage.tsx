@@ -22,6 +22,7 @@ import { netlessToken, ossConfigObj } from "./appToken";
 import "./WhiteboardPage.less";
 import InviteButton from "./components/InviteButton";
 import ExitButton from "./components/ExitButton";
+//@ts-ignore
 import { ipcRenderer } from "electron";
 
 export type WhiteboardPageStates = {

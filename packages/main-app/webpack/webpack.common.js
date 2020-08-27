@@ -85,7 +85,11 @@ module.exports = {
         }),
     ],
 
-    externals: [nodeExternals()],
+    externals: {
+        "agora-electron-sdk": "commonjs2 agora-electron-sdk"
+    },
+
+    // externals: [nodeExternals()],
 
     resolve: {
         extensions: [".ts", ".js"],

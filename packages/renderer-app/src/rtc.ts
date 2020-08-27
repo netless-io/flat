@@ -3,6 +3,9 @@ import os from "os";
 const APP_ID = "6e972d37a0ec49dea395b0e242ce7220";
 const AgoraRtcEngine = require("agora-electron-sdk").default;
 
+//@ts-ignore
+window.AgoraRtcEngine = AgoraRtcEngine
+
 export class Rtc {
     rtcEngine: any;
 

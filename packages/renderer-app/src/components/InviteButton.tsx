@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Button, Input, message, Popover } from "antd";
+//@ts-ignore
 import { clipboard } from "electron";
 import "./InviteButton.less";
 import inviteActive from "../assets/image/invite-active.svg";

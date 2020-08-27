@@ -32,7 +32,7 @@
         "@typescript-eslint/eslint-plugin": "^3.10.0",
         "@typescript-eslint/parser": "^3.10.0",
         "babel-loader": "^8.1.0",
-        "electron": "7.1.2",
+        "electron": "7.1.14",
         "electron-builder": "^22.7.0",
         "electron-webpack": "^2.8.2",
         "eslint": "^7.7.0",
@@ -49,8 +49,18 @@
         "webpack": "^4.44.1",
         "webpack-cli": "^3.3.12",
         "webpack-merge": "^5.1.2",
-        "webpack-node-externals": "^2.5.2"
+        "webpack-node-externals": "^2.5.2",
+        "agora-electron-sdk": "education290"
     },
     "license": "MIT",
-    "dependencies": {}
+    "dependencies": {},
+    "agora_electron": {
+        "platform": "darwin",
+        "arch": "x64",
+        "electron_version": "7.1.2",
+        "msvs_version": "2017",
+        "silent": false,
+        "debug": false,
+        "prebuilt": true
+    }
 }

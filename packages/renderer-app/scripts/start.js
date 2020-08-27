@@ -29,6 +29,7 @@ const devServerOptions = Object.assign({}, webpackConfig.devServer, {
     noInfo: true,
     overlay: false,
     historyApiFallback: true,
+    // injectClient: false
 });
 
 const server = new WebpackDevServer(compiler, devServerOptions);

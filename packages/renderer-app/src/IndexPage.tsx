@@ -4,6 +4,7 @@ import logo from "./assets/image/logo.svg";
 import join from "./assets/image/join.svg";
 import create from "./assets/image/create.svg";
 import "./IndexPage.less";
+//@ts-ignore
 import { ipcRenderer } from "electron";
 
 export enum IdentityType {
