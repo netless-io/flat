@@ -2,8 +2,10 @@ import React, { useRef } from "react";
 import { Button } from "antd";
 import { Rtc } from "./rtc";
 
-export default function () {
+export default function a() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const ref = useRef(null);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const remoteRef = useRef(null);
     const rtc = new Rtc();
 

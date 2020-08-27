@@ -11,6 +11,12 @@ export class Runtime {
     }
 
     public get startURL() {
+        console.log(
+            this.isProduction,
+            this.isProduction
+                ? `file://${__dirname}/../static/render/index.html`
+                : "http://localhost:3000",
+        );
         return this.isProduction
             ? `file://${__dirname}/../static/render/index.html`
             : "http://localhost:3000";

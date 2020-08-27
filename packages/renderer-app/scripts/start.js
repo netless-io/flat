@@ -23,7 +23,7 @@ const devServerOptions = Object.assign({}, webpackConfig.devServer, {
         reasons: false,
     },
     hot: true,
-    contentBase: paths.appBuild,
+    // contentBase: paths.appBuild,
     compress: true,
     clientLogLevel: "silent",
     noInfo: true,

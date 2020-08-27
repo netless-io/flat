@@ -1,3 +1,4 @@
+const path = require("path");
 const paths = require("./paths");
 const threadLoader = require("thread-loader");
 const DotenvFlow = require("dotenv-flow-webpack");
@@ -5,6 +6,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
+const WebpackDevServerOutput = require("webpack-dev-server-output");
 const { NoEmitOnErrorsPlugin, NamedModulesPlugin } = require("webpack");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
@@ -33,9 +35,11 @@ const cssWorkerOptions = {
     name: "css-pool",
 };
 
-threadLoader.warmup(tsWorkerOptions, ["babel-loader", "eslint-loader"]);
+threadLoader.warmup(tsWorkerOptions, ["eslint-loader", "babel-loader"]);
 
-threadLoader.warmup(cssWorkerOptions, ["style-loader", "css-loader"]);
+threadLoader.warmup(cssWorkerOptions, ["css-loader", "style-loader"]);
+
+threadLoader.warmup(lessWorkerOptions, ["less-loader", "css-loader", "style-loader"]);
 
 module.exports = {
     entry: [paths.entryFile],
@@ -47,10 +51,6 @@ module.exports = {
                 test: /\.ts(x)?$/,
                 use: [
                     {
-                        loader: "thread-loader",
-                        options: tsWorkerOptions,
-                    },
-                    {
                         loader: "babel-loader",
                     },
                     {
@@ -59,16 +59,16 @@ module.exports = {
                             fix: true,
                         },
                     },
+                    {
+                        loader: "thread-loader",
+                        options: tsWorkerOptions,
+                    },
                 ],
                 exclude: /node_modules/,
             },
             {
                 test: /\.less$/,
                 use: [
-                    {
-                        loader: "thread-loader",
-                        options: lessWorkerOptions,
-                    },
                     {
                         loader: "style-loader",
                     },
@@ -83,31 +83,48 @@ module.exports = {
                             },
                         },
                     },
+                    {
+                        loader: "thread-loader",
+                        options: lessWorkerOptions,
+                    },
                 ],
             },
             {
                 test: /\.css$/,
                 use: [
                     {
-                        loader: "thread-loader",
-                        options: cssWorkerOptions,
-                    },
-                    {
                         loader: "style-loader",
                     },
                     {
                         loader: "css-loader",
                     },
+                    {
+                        loader: "thread-loader",
+                        options: cssWorkerOptions,
+                    },
                 ],
             },
             {
-                test: /\.(png|jpe?g|gif|svg|mp4|webm|ogg|mp3|wav|flac|aac)$/,
+                test: /\.(png|jpe?g|gif|svg|mp4|webm|ogg|mp3|wav|flac|aac|node)$/,
                 loader: "url-loader",
                 options: {
                     limit: 1,
                     name: "static/media/[name].[hash:7].[ext]",
                     path: paths.appBuild,
                 },
+            },
+            {
+                test: /\.node$/,
+                use: [
+                    {
+                        loader: "native-addon-loader",
+                        options: {
+                            path: "static/addon/[name].[hash:7].[ext]",
+                        },
+                    },
+                ],
+
+                include: path.join(__dirname, "..", "node_modules"),
             },
         ],
     },
@@ -127,7 +144,9 @@ module.exports = {
         !isDevelopment && new NamedModulesPlugin(),
         !isDevelopment && new CleanWebpackPlugin(),
         !isDevelopment && new NoEmitOnErrorsPlugin(),
-
+        new WebpackDevServerOutput({
+            path: "output-path",
+        }),
         new ForkTsCheckerWebpackPlugin({
             typescript: {
                 configFile: paths.tsConfig,
@@ -140,9 +159,19 @@ module.exports = {
         }),
     ].filter(Boolean),
 
-    externals: [nodeExternals()],
+    externals: [
+        nodeExternals({
+            importType: module => {
+                if (module === "agora-electron-sdk") {
+                    return "commonjs2 agora-electron-sdk";
+                }
+
+                return `commonjs ${module}`;
+            },
+        }),
+    ],
 
     resolve: {
-        extensions: [".ts", ".tsx", ".js"],
+        extensions: ["node", ".ts", ".tsx", ".js"],
     },
 };
