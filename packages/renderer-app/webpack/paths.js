@@ -1,6 +1,8 @@
 const path = require("path");
+const fs = require("fs");
 
-const resolvePath = (...relativePath) => path.resolve(__dirname, "..", ...relativePath);
+const appDirectory = fs.realpathSync(process.cwd());
+const resolvePath = (...relativePath) => path.resolve(appDirectory, ...relativePath);
 
 module.exports = {
     appSrc: resolvePath("src"),
