@@ -1,6 +1,6 @@
 import path from "path";
 import os from "os";
-const APP_ID = process.env.REACT_APP_AGORA_APP_ID;
+const APP_ID = process.env.AGORA_APP_ID;
 const AgoraRtcEngine = require("agora-electron-sdk").default;
 
 export class Rtc {
@@ -14,7 +14,7 @@ export class Rtc {
     }
 
     initEvnet() {
-        this.rtcEngine.on("joinedChannel", (channel: string, uid: string, elapsed: any) => {
+        this.rtcEngine.on("joinedChannel", (channel: string, uid: string, _elapsed: any) => {
             console.log(`${uid} join channel ${channel}`);
         });
         this.rtcEngine.on("userJoined", (uid: string) => {

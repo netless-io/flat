@@ -7,7 +7,6 @@ module.exports = merge(common, {
 
     devtool: "eval-cheap-module-source-map",
 
-    plugins: [new NamedModulesPlugin()],
     output: {
         filename: "static/js/bundle.js",
         path: undefined,
