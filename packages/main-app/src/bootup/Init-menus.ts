@@ -1,6 +1,21 @@
-import { Menu, MenuItemConstructorOptions } from "electron";
+import { app, Menu, MenuItemConstructorOptions } from "electron";
 
 export default (context: Context) => {
+    const appByMacMenu: IMenu = {
+        label: app.name,
+        submenu: [
+            { role: "about" },
+            { type: "separator" },
+            { role: "services" },
+            { type: "separator" },
+            { role: "hide" },
+            { role: "hideOthers" },
+            { role: "unhide" },
+            { type: "separator" },
+            { role: "quit" },
+        ],
+    };
+
     const fileMenu: IMenu = {
         label: "File",
         submenu: [{ role: "close" }],
@@ -69,6 +84,10 @@ export default (context: Context) => {
         },
         windowMenu,
     ];
+
+    if (context.runtime.isMac) {
+        template.unshift(appByMacMenu);
+    }
 
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);

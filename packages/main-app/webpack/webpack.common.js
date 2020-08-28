@@ -24,20 +24,7 @@ module.exports = {
     target: "electron-main",
 
     stats: {
-        assets: false,
-        cached: false,
-        cachedAssets: false,
         colors: true,
-        children: true,
-        chunks: false,
-        chunkModules: false,
-        chunkOrigins: false,
-        modules: false,
-        publicPath: false,
-        reasons: false,
-        source: false,
-        timings: true,
-        usedExports: false,
     },
 
     node: {
