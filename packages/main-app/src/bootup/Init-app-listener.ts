@@ -8,6 +8,12 @@ export default (context: Context) => {
         });
     };
 
+    const appQuit = () => {
+        app.on("quit", () => {
+            closeAPP();
+        });
+    };
+
     const mainWindowReadyToShow = () => {
         context.wins.main.once("ready-to-show", () => {
             context.wins.main.show();
@@ -16,7 +22,7 @@ export default (context: Context) => {
 
     // Does not require sequential execution
     // Just to avoid local variables polluting Context variables
-    [windowAllClosed, mainWindowReadyToShow].forEach(f => {
+    [windowAllClosed, mainWindowReadyToShow, appQuit].forEach(f => {
         f();
     });
 };

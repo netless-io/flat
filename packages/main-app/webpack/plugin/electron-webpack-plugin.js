@@ -12,7 +12,7 @@ function ElectronWebpackPlugin(options) {
 }
 
 ElectronWebpackPlugin.prototype.apply = function (compiler) {
-    compiler.hooks.compile.tap("electron-webpack-dev-runner", compilation => {
+    compiler.hooks.done.tap("electron-webpack-dev-runner", compilation => {
         if (this.electronProcess !== null) {
             this.manualRestart = true;
             this.electronProcess.kill();
@@ -35,11 +35,17 @@ ElectronWebpackPlugin.prototype.startElectron = function () {
         stdio: "inherit",
     })
         .on("close", code => {
+            if (code === 100) {
+                process.exit(0);
+            }
             if (!this.manualRestart) {
                 this.electronProcess.kill();
             }
         })
-        .on("error", spawnError => console.error(spawnError));
+        .on("error", spawnError => {
+            console.error(spawnError);
+            process.exit(1);
+        });
 };
 
 module.exports = ElectronWebpackPlugin;
