@@ -12,6 +12,13 @@ module.exports = api => {
             ["@babel/preset-typescript"],
         ],
         plugins: [
+            [
+                "import",
+                {
+                    libraryName: "antd",
+                    style: true,
+                },
+            ],
             "@babel/plugin-transform-runtime",
             [
                 "@babel/plugin-proposal-class-properties",
