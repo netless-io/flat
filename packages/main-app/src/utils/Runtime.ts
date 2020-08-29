@@ -2,7 +2,7 @@ import { app } from "electron";
 import { platform } from "os";
 
 export class Runtime {
-    public get isDevelop() {
+    public get isDevelopment() {
         return process.env.NODE_ENV === "development";
     }
 

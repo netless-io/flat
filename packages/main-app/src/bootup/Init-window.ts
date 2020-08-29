@@ -19,6 +19,10 @@ export default async (context: Context) => {
 
     mainWin.center();
 
+    if (context.runtime.isDevelopment) {
+        mainWin.webContents.openDevTools();
+    }
+
     void mainWin.loadURL(context.runtime.startURL);
 
     context.wins.main = mainWin;
