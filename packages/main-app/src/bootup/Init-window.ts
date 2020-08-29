@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from "electron";
+import path from "path";
 
 export default async (context: Context) => {
     await new Promise(resolve => {
@@ -14,6 +15,7 @@ export default async (context: Context) => {
         webPreferences: {
             autoplayPolicy: "no-user-gesture-required",
             nodeIntegration: true,
+            preload: path.join(context.runtime.staticPath, "preload.js"),
         },
     });
 

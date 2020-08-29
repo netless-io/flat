@@ -1,3 +1,4 @@
+import path from "path";
 import { app } from "electron";
 import { platform } from "os";
 
@@ -22,6 +23,12 @@ export class Runtime {
 
     public get isWin() {
         return platform() === "win32";
+    }
+
+    public get staticPath() {
+        return this.isProduction
+            ? path.join(__dirname, "..", "static")
+            : path.resolve(__dirname, "..", "..", "static");
     }
 
     public get appVersion(): string {
