@@ -3,11 +3,11 @@ import { HashRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import { message } from "antd";
 import WhiteboardCreatorPage from "./WhiteboardCreatorPage";
-import IndexPage from "./IndexPage";
+// import IndexPage from "./IndexPage";
 import WhiteboardPage from "./WhiteboardPage";
 import ReplayPage from "./ReplayPage";
 import JoinPage from "./JoinPage";
-// import App from "./App";
+import App from "./App";
 export class AppRoutes extends React.Component<{}, {}> {
     public constructor(props: {}) {
         super(props);
@@ -25,8 +25,8 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route path="/whiteboard/:uuid?/" component={WhiteboardCreatorPage} />
                     <Route path="/join/" component={JoinPage} />
                     {/*<Route path="/test2/" component={ReplayPage}/>*/}
-                    <Route path="/" component={IndexPage} />
-                    {/*<Route path="/" component={App} />*/}
+                    {/*<Route path="/" component={IndexPage} />*/}
+                    <Route path="/" component={App} />
                 </Switch>
             </HashRouter>
         );
