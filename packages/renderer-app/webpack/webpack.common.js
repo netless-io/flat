@@ -4,7 +4,6 @@ const DotenvFlow = require("dotenv-flow-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const { NoEmitOnErrorsPlugin, NamedModulesPlugin } = require("webpack");
-const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -134,19 +133,16 @@ module.exports = {
     },
 
     plugins: [
+        new ProgressBarPlugin(),
         new DotenvFlow({
             path: paths.envConfig,
             system_vars: true,
             default_node_env: "development",
         }),
-        isDevelopment && new ReactRefreshWebpackPlugin(),
-        new ProgressBarPlugin(),
         new HtmlWebpackPlugin({
             inject: true,
             template: paths.appHtml,
         }),
-        new NamedModulesPlugin(),
-        !isDevelopment && new NoEmitOnErrorsPlugin(),
         new ForkTsCheckerWebpackPlugin({
             typescript: {
                 configFile: paths.tsConfig,

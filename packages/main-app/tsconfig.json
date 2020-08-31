@@ -19,7 +19,10 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "resolveJsonModule": true,
-        "strictBindCallApply": true
+        "strictBindCallApply": true,
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "strict": true
     },
     "exclude": ["node_modules"],
     "include": ["src/**/*.ts", "typings/*.ts"]

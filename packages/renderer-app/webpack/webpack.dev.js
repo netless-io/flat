@@ -1,10 +1,18 @@
 const { merge } = require("webpack-merge");
 const common = require("./webpack.common.js");
+const { NamedModulesPlugin, NoEmitOnErrorsPlugin } = require("webpack");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 module.exports = merge(common, {
     mode: "development",
 
     devtool: "eval-cheap-module-source-map",
+
+    plugins: [
+        new NamedModulesPlugin(),
+        new NoEmitOnErrorsPlugin(),
+        new ReactRefreshWebpackPlugin(),
+    ],
 
     output: {
         filename: "static/js/bundle.js",

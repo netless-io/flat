@@ -1,6 +1,5 @@
 const paths = require("./paths");
 const threadLoader = require("thread-loader");
-const { NoEmitOnErrorsPlugin, NamedModulesPlugin } = require("webpack");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -57,8 +56,6 @@ module.exports = {
     },
 
     plugins: [
-        new NamedModulesPlugin(),
-        new NoEmitOnErrorsPlugin(),
         new ForkTsCheckerWebpackPlugin({
             typescript: {
                 configFile: paths.tsConfig,
