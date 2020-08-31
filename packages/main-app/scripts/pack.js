@@ -13,6 +13,8 @@ const config = yaml.safeLoad(fs.readFileSync(path.join(__dirname, "..", "electro
 
 config.directories.output = `release/${buildType}`;
 
+config.files = ["preload.js"];
+
 config.extraResources = [
     {
         from: "static",
