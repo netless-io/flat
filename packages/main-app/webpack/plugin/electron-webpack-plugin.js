@@ -9,6 +9,12 @@ function ElectronWebpackPlugin(options) {
     this.manualRestart = false;
 
     this.options = Object.assign(defaultOptions, options);
+
+    process.on("exit", () => {
+        if (this.electronProcess !== null) {
+            this.electronProcess.kill();
+        }
+    });
 }
 
 ElectronWebpackPlugin.prototype.apply = function (compiler) {
