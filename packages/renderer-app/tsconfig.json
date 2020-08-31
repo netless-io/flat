@@ -28,7 +28,8 @@
         "noFallthroughCasesInSwitch": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "strictBindCallApply": true
+        "strictBindCallApply": true,
+        "skipDefaultLibCheck": true,
     },
     "exclude": ["node_modules"],
     "include": [
