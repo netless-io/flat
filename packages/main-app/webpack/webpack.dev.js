@@ -1,6 +1,6 @@
 const { merge } = require("webpack-merge");
 const common = require("./webpack.common.js");
-const { NamedModulesPlugin } = require("webpack");
+const { NamedModulesPlugin, NoEmitOnErrorsPlugin } = require("webpack");
 const ElectronWebpackPlugin = require("./plugin/electron-webpack-plugin");
 
 module.exports = merge(common, {
@@ -14,5 +14,5 @@ module.exports = merge(common, {
         ignored: ["node_modules/**"],
     },
 
-    plugins: [new NamedModulesPlugin(), new ElectronWebpackPlugin()],
+    plugins: [new NamedModulesPlugin(), new NoEmitOnErrorsPlugin(), new ElectronWebpackPlugin()],
 });
