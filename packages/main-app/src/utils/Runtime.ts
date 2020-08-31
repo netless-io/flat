@@ -31,6 +31,12 @@ export class Runtime {
             : path.resolve(__dirname, "..", "..", "static");
     }
 
+    public get preloadPath() {
+        return this.isProduction
+            ? path.join(__dirname, "preload.js")
+            : path.resolve(__dirname, "..", "..", "preload.js");
+    }
+
     public get appVersion(): string {
         if (this.isProduction) {
             return app.getVersion();
