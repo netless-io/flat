@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "./AddNamePage.less";
 import logo from "./assets/image/logo.svg";
 import { Button, Input } from "antd";
+import { ipcRenderer } from "electron";
 
 export type JoinPageStates = {
     name: string;
@@ -15,6 +16,13 @@ export default class AddNamePage extends React.Component<RouteComponentProps<{}>
         this.state = {
             name: "",
         };
+        ipcRenderer.send("mainSource", {
+            actions: "set-win-size",
+            args: {
+                width: 480,
+                height: 480,
+            },
+        });
     }
 
     private handleJoin = (): void => {

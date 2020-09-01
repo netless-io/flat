@@ -3,7 +3,7 @@ import loading from "./assets/image/loading.svg";
 import "./LoadingPage.less";
 import { RoomPhase } from "white-web-sdk";
 export type LoadingPageProps = {
-    phase: RoomPhase;
+    phase?: RoomPhase;
 };
 
 export default class LoadingPage extends React.Component<LoadingPageProps, {}> {

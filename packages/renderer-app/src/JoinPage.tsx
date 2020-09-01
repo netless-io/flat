@@ -4,6 +4,7 @@ import "./JoinPage.less";
 import logo from "./assets/image/logo.svg";
 import { Button, Input } from "antd";
 import { Link } from "react-router-dom";
+import { ipcRenderer } from "electron";
 
 export type JoinPageStates = {
     roomId: string;
@@ -18,6 +19,13 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
             roomId: "",
             name: name ? name : "",
         };
+        ipcRenderer.send("mainSource", {
+            actions: "set-win-size",
+            args: {
+                width: 480,
+                height: 480,
+            },
+        });
     }
 
     private handleJoin = (): void => {

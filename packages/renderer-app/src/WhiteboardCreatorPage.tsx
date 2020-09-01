@@ -4,6 +4,7 @@ import { message } from "antd";
 import { RouteComponentProps } from "react-router";
 import PageError from "./PageError";
 import { netlessWhiteboardApi, RoomType } from "./apiMiddleware";
+import LoadingPage from "./LoadingPage";
 
 export type WhiteboardCreatorPageState = {
     uuid?: string;
@@ -67,6 +68,6 @@ export default class WhiteboardCreatorPage extends React.Component<
         } else if (this.state.uuid && this.state.userId) {
             return <Redirect to={`/whiteboard/${this.state.uuid}/${this.state.userId}/`} />;
         }
-        return null;
+        return <LoadingPage />;
     }
 }

@@ -6,6 +6,7 @@ import join from "./assets/image/join.svg";
 import create from "./assets/image/create.svg";
 import "./IndexPage.less";
 import { Button, Input, Popover } from "antd";
+import { ipcRenderer } from "electron";
 
 export type IndexPageStates = {
     name: string;
@@ -20,6 +21,13 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
             name: name ? name : "",
             visible: false,
         };
+        ipcRenderer.send("mainSource", {
+            actions: "set-win-size",
+            args: {
+                width: 480,
+                height: 480,
+            },
+        });
     }
 
     private handleCreate = (): void => {
