@@ -1,4 +1,5 @@
 import * as React from "react";
+import loading from "./assets/image/loading.svg";
 import "./LoadingPage.less";
 import { RoomPhase } from "white-web-sdk";
 export type LoadingPageProps = {
@@ -6,10 +7,6 @@ export type LoadingPageProps = {
 };
 
 export default class LoadingPage extends React.Component<LoadingPageProps, {}> {
-    public constructor(props: LoadingPageProps) {
-        super(props);
-    }
-
     private renderScript = (): React.ReactNode => {
         const { phase } = this.props;
         switch (phase) {
@@ -37,11 +34,7 @@ export default class LoadingPage extends React.Component<LoadingPageProps, {}> {
         return (
             <div className="white-board-loading">
                 <div className="white-board-loading-mid">
-                    <img
-                        src={
-                            "https://white-sdk.oss-cn-beijing.aliyuncs.com/fast-sdk/icons/loading.svg"
-                        }
-                    />
+                    <img src={loading} />
                     {this.renderScript()}
                 </div>
             </div>

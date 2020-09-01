@@ -1,5 +1,5 @@
 import Fetcher from "@netless/fetch-middleware";
-import { netlessToken } from "../appToken";
+import {netlessToken} from "../appToken";
 export enum RoomType {
     transitory = "transitory",
     persistent = "persistent",
@@ -9,6 +9,7 @@ export enum RoomType {
 const fetcher = new Fetcher(5000, "https://cloudcapiv4.herewhite.com");
 
 export class RoomOperator {
+
     public async createRoomApi(name: string, limit: number, mode: RoomType): Promise<any> {
         const json = await fetcher.post<any>({
             path: `room`,

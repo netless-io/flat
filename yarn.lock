@@ -1807,6 +1807,11 @@
   resolved "https://registry.npmjs.org/@netless/canvas-polyfill/-/canvas-polyfill-0.0.3.tgz#caf77b6b1b666db54cde5edda3751ee292bc088a"
   integrity sha512-X3KodHfvMAIrmVBsj7kbWdcWA+eCr/uhqpix10GKXE+UovIyJd05KyFNMKIAXOMQI79NJrYiHcPBLszRRogygA==
 
+"@netless/cursor-tool@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@netless/cursor-tool/-/cursor-tool-0.0.1.tgz#5278d442f2359a75ef6a95ed8734447e04af7222"
+  integrity sha512-TI6t/SdDx8xoPH/Vi2r0SRRP9S59ozxH1ZekI025rjEiv6ljziloC/ZZBsUgcwfwhHfUuWZwgomUp/tkrub59Q==
+
 "@netless/docs-center@^0.0.1":
   version "0.0.1"
   resolved "https://registry.npmjs.org/@netless/docs-center/-/docs-center-0.0.1.tgz#ede1bd66c78949e449d5f1bf284695a244677cda"
@@ -1814,13 +1819,19 @@
   dependencies:
     "@netless/menu-box" "^0.0.1"
 
-"@netless/fetch-middleware@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/@netless/fetch-middleware/-/fetch-middleware-1.0.5.tgz#259cd90cdb24ecf2881535ec0c259cf27d3ad137"
-  integrity sha512-yAqey7Eg2VteQNYnWrB1o/Bc/9BoK0x5AjN+bwZ3+uGr5TzPG6i+OUHxYBKRKrNwcnAFWCXapMczfo1OEuT/+A==
+"@netless/fetch-middleware@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@netless/fetch-middleware/-/fetch-middleware-1.0.6.tgz#0f3683d76cf1e12879d01e3376c5436b47b47bbe"
+  integrity sha512-fsMD7TLKvW5piZY6PO2HrtCgU47wofF/Ka3GyrCp291TYxWPWFqSZU8PEoUGz3QheZmwOL4zlnorywxBzeL79g==
   dependencies:
-    "@types/query-string" "^6.3.0"
-    query-string "^6.5.0"
+    query-string "^6.13.1"
+
+"@netless/loading-bar@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@netless/loading-bar/-/loading-bar-0.0.1.tgz#cca1407a278955d4d4b2bc2b5ea51b22eace222f"
+  integrity sha512-fViNIFDIGQWTAFqn3WoeGU4UE1065sXygMVzN/DozRL/fUgo85p9eS7ux/DMdPNIoR+00f1D4MgN054cN2LoRQ==
+  dependencies:
+    rc-tween-one "^2.7.3"
 
 "@netless/menu-box@^0.0.1":
   version "0.0.1"
@@ -1829,46 +1840,37 @@
   dependencies:
     react-burger-menu "^2.7.1"
 
-"@netless/oss-upload-button@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@netless/oss-upload-button/-/oss-upload-button-0.0.1.tgz#1e22f251048f905ce0a58351bfe4c416eb7e04ba"
-  integrity sha512-m2mnVTsZDSu0Ua3xgEpscKSuOeaQytwcfQEqsACfbfjYKeo4pvIWImnJinGWRumHLXo6AL4bKpA2i96INB3NwA==
+"@netless/oss-upload-button@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@netless/oss-upload-button/-/oss-upload-button-0.0.3.tgz#ffcc875db18166d01f81fdb710f7213fe3a984bb"
+  integrity sha512-sVkvg2r6ZPWWK2QcSl5XisXnvjNxJFBBoOq7z4XP6qc73gHvRWq8LM9Ppr7RWhjpmX+Z9GpD6Ug8S0F50Losdg==
   dependencies:
-    "@netless/oss-upload-manager" "^1.0.7"
-    "@netless/react-loading-bar" "^1.0.0"
+    "@netless/loading-bar" "^0.0.1"
+    "@netless/oss-upload-manager" "^1.0.8"
     ali-oss "^6.10.0"
     antd "^4.4.3"
 
-"@netless/oss-upload-manager@1.0.7", "@netless/oss-upload-manager@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.npmjs.org/@netless/oss-upload-manager/-/oss-upload-manager-1.0.7.tgz#c0c7f9a5ebe1e0c7044e015047bf25426bf1a709"
-  integrity sha512-R4yzJ4JTeGQmor0j2VGgklqK9x+cJnvz3KX98INwicYVy7W5iGWsBiaYEWK++I1Zq8u5vFFmCToYJAxThWwTJw==
+"@netless/oss-upload-manager@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@netless/oss-upload-manager/-/oss-upload-manager-1.0.8.tgz#ed297344f716ee250f893861eee56f1b820d3880"
+  integrity sha512-UjEdBqe+cn5O7hx4M+PGJRBOU9LQsSjRRVWUGndxLgZklO9RI17rjQQXFxoWPIRcSh6ATM9PqRO2IZlLedXmyA==
   dependencies:
+    "@netless/fetch-middleware" "^1.0.6"
     ali-oss "^6.10.0"
     uuid "^8.3.0"
 
-"@netless/page-controller@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@netless/page-controller/-/page-controller-0.0.1.tgz#06470bb87b9c8bf4cdce55d81de24e6e5e59a0e5"
-  integrity sha512-y+RaZs+Tldrcr+GvyMMpLz6on5/UWjNcO2ZxNU1KwftolfU9obZhvtdnnot8Y9T2zOSMckbYjJqK+z+hsFj4lQ==
+"@netless/page-controller@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@netless/page-controller/-/page-controller-0.0.2.tgz#d44cd138c35557cd49b486b7aad65b1b056bdde7"
+  integrity sha512-y1CrS48tX8S2PbeqlkqKV/nuoENr0w+cPQsKe0lB5mDAldYeJa5DDE6KT3pMOhwgeSj7MINLGm8Jy4H2umyOwg==
 
-"@netless/player-controller@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@netless/player-controller/-/player-controller-0.0.1.tgz#df7555b553a5aca26570e25fb496c58d14d4e201"
-  integrity sha512-nGnxPjlazXwm9zbtREvmiPErcj3U8+2iOv4psSElS8XOuDHxip3scV9X/ES0n+aqmFKi4aLXFMZywODswbI9Bg==
+"@netless/player-controller@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@netless/player-controller/-/player-controller-0.0.3.tgz#7b728ce9e36188545c5d9817f5152965c78804bb"
+  integrity sha512-QiMnvFeh42Cy4aFjvIx0d6sTPezcE/3pmpa3MCYn0PPAaKWkf+cNRdJNPxfbUr31pSMuZqr8+CUe/hhoCFpq9g==
   dependencies:
     "@ant-design/icons" "^4.2.2"
-
-"@netless/plugin-center@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@netless/plugin-center/-/plugin-center-0.0.1.tgz#c9e15aadab608071e78e2bd2e3d71d136253bc63"
-  integrity sha512-bOqjn0jUPfaXDWT71irrFdhjicrzIgJDLghSgCL8UMjsg4UnNNLVipcYpH2Kelw5AWA4VhcBj967tlYGM3KEUA==
-  dependencies:
-    "@netless/oss-upload-manager" "1.0.7"
-    "@netless/react-loading-bar" "^1.0.0"
-    ali-oss "^6.10.0"
     antd "^4.4.3"
-    uuid "^8.3.0"
 
 "@netless/preview-controller@^0.0.1":
   version "0.0.1"
@@ -1877,22 +1879,15 @@
   dependencies:
     "@netless/menu-box" "^0.0.1"
 
-"@netless/react-loading-bar@^1.0.0":
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/@netless/react-loading-bar/-/react-loading-bar-1.0.1.tgz#41396223e40db3cd9dfbd925d0d4412db1e0cdcf"
-  integrity sha512-Wc9D63H1Rsnfz+KTIWxmFm47iHUeadTzcHNE0pWAWImiXEU8fXbVDpeKgUXLYiEdwjim6Ojp5uYfUeJHw9FDsg==
-  dependencies:
-    rc-tween-one "^2.4.1"
-
 "@netless/redo-undo@^0.0.1":
   version "0.0.1"
   resolved "https://registry.npmjs.org/@netless/redo-undo/-/redo-undo-0.0.1.tgz#8524b90884dfab901aeddfd3d5a362fcc076fcb4"
   integrity sha512-YVnT5CV7R7WN2jmsMMWHhdJWEyJ49uv0CyQ5UpzIixdLZFEAdpJ9CQcUsAa+/nHDLPJP7tYYRmh2xp9nTy29yQ==
 
-"@netless/tool-box@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@netless/tool-box/-/tool-box-0.0.1.tgz#75dc4bd195e9b9f6b2dba6bf5b4ffc3a8e140a3b"
-  integrity sha512-6p59EqCxEwPTyuNBsXxFkFR1okwA/RE+OfVBIARj/NzbeJ+OAWaFItqbqMhqQyu6xfTa12NkXNuvVasDf+cwbg==
+"@netless/tool-box@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@netless/tool-box/-/tool-box-0.0.2.tgz#c7aeca540bea57509a7ff12ce47a11a386e2c481"
+  integrity sha512-NZZJYLT55xBGaRaEIiw3lQBKJv7+3eSNBT8MlVQzsemgLii7eifh2JnorZL4jBrhBOWSG516PojQ3ZB5Id0tNA==
   dependencies:
     antd "^4.4.3"
 
@@ -2034,13 +2029,6 @@
   version "15.7.3"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
-
-"@types/query-string@^6.3.0":
-  version "6.3.0"
-  resolved "https://registry.npmjs.org/@types/query-string/-/query-string-6.3.0.tgz#b6fa172a01405abcaedac681118e78429d62ea39"
-  integrity sha512-yuIv/WRffRzL7cBW+sla4HwBZrEXRNf1MKQ5SklPEadth+BKbDxiVG8A3iISN5B3yC4EeSCzMZP8llHTcUhOzQ==
-  dependencies:
-    query-string "*"
 
 "@types/react-dom@^16.9.8":
   version "16.9.8"
@@ -9265,15 +9253,6 @@ qs@~6.5.2:
   resolved "https://registry.npmjs.org/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-query-string@*, query-string@^6.5.0:
-  version "6.13.1"
-  resolved "https://registry.npmjs.org/query-string/-/query-string-6.13.1.tgz#d913ccfce3b4b3a713989fe6d39466d92e71ccad"
-  integrity sha512-RfoButmcK+yCta1+FuU8REvisx1oEzhMKwhLUNcepQTPGcNMp1sIqjnfCtfnvGSQZQEhaBHvccujtWoUV3TTbA==
-  dependencies:
-    decode-uri-component "^0.2.0"
-    split-on-first "^1.0.0"
-    strict-uri-encode "^2.0.0"
-
 query-string@5, query-string@^5.0.1:
   version "5.1.1"
   resolved "https://registry.npmjs.org/query-string/-/query-string-5.1.1.tgz#a78c012b71c17e05f2e3fa2319dd330682efb3cb"
@@ -9290,6 +9269,15 @@ query-string@^4.1.0:
   dependencies:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
+
+query-string@^6.13.1:
+  version "6.13.1"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.13.1.tgz#d913ccfce3b4b3a713989fe6d39466d92e71ccad"
+  integrity sha512-RfoButmcK+yCta1+FuU8REvisx1oEzhMKwhLUNcepQTPGcNMp1sIqjnfCtfnvGSQZQEhaBHvccujtWoUV3TTbA==
+  dependencies:
+    decode-uri-component "^0.2.0"
+    split-on-first "^1.0.0"
+    strict-uri-encode "^2.0.0"
 
 querystring-es3@^0.2.0:
   version "0.2.1"
@@ -9677,9 +9665,9 @@ rc-trigger@^4.0.0, rc-trigger@^4.2.1, rc-trigger@^4.3.0, rc-trigger@^4.4.0, rc-t
     rc-motion "^1.0.0"
     rc-util "^5.0.1"
 
-rc-tween-one@^2.4.1:
+rc-tween-one@^2.7.3:
   version "2.7.3"
-  resolved "https://registry.npmjs.org/rc-tween-one/-/rc-tween-one-2.7.3.tgz#c9d3c44743e25c654d65c22ec3934afd79923fae"
+  resolved "https://registry.yarnpkg.com/rc-tween-one/-/rc-tween-one-2.7.3.tgz#c9d3c44743e25c654d65c22ec3934afd79923fae"
   integrity sha512-n4OPRLO6VMZHj61unq5KKxHMMfBz52bxob94fN3U5M9GqFg3H+T3TXnpHPnAK+cq/xBGo70ik2vB4Fpjo/txcA==
   dependencies:
     babel-runtime "6.x"

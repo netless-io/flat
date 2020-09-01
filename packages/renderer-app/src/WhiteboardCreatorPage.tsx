@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Redirect, RouteComponentProps } from "react-router";
+import { Redirect } from "react-router";
 import { message } from "antd";
+import { RouteComponentProps } from "react-router";
 import PageError from "./PageError";
 import { netlessWhiteboardApi, RoomType } from "./apiMiddleware";
 
@@ -37,7 +38,7 @@ export default class WhiteboardCreatorPage extends React.Component<
             return null;
         }
     };
-    public async UNSAFE_componentWillMount(): Promise<void> {
+    public async componentDidMount(): Promise<void> {
         try {
             let uuid: string | null;
             if (this.props.match.params.uuid) {
@@ -61,6 +62,8 @@ export default class WhiteboardCreatorPage extends React.Component<
     public render(): React.ReactNode {
         if (this.state.foundError) {
             return <PageError />;
+        } else if (localStorage.getItem("userName") === null) {
+            return <Redirect to={`/name/`} />;
         } else if (this.state.uuid && this.state.userId) {
             return <Redirect to={`/whiteboard/${this.state.uuid}/${this.state.userId}/`} />;
         }
