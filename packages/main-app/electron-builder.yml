@@ -1,6 +1,6 @@
 appId: com.netlss.flat.native
-productName: flat-native
-artifactName: flat-native-${version}.${ext}
+productName: Flat
+artifactName: Flat-${version}.${ext}
 asar: true
 
 mac:
