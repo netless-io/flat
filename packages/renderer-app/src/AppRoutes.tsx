@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import { message } from "antd";
 import WhiteboardCreatorPage from "./WhiteboardCreatorPage";
@@ -14,7 +14,7 @@ export class AppRoutes extends React.Component<{}, {}> {
     }
     public render(): React.ReactNode {
         return (
-            <BrowserRouter>
+            <HashRouter>
                 <Switch>
                     <Route path="/replay/:uuid/:userId/" component={ReplayPage} />
                     <Route path="/whiteboard/:uuid/:userId/" component={WhiteboardPage} />
@@ -23,7 +23,7 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route path="/name/" component={AddNamePage} />
                     <Route path="/" component={IndexPage} />
                 </Switch>
-            </BrowserRouter>
+            </HashRouter>
         );
     }
 }
