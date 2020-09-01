@@ -1,10 +1,9 @@
 import path from "path";
 import os from "os";
 const APP_ID = process.env.AGORA_APP_ID;
-const AgoraRtcEngine = require("agora-electron-sdk").default;
 
 // @ts-ignore
-window.AgoraRtcEngine = AgoraRtcEngine;
+const AgoraRtcEngine = window.AgoraRtcEngine;
 
 export class Rtc {
     rtcEngine: any;
