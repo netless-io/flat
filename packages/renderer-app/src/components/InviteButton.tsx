@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button, Input, message, Popover } from "antd";
-import copy from "copy-to-clipboard";
+import { clipboard } from "electron";
 import "./InviteButton.less";
 import inviteActive from "../assets/image/invite-active.svg";
 import invite from "../assets/image/invite.svg";
@@ -36,7 +36,9 @@ export default class InviteButton extends React.Component<InviteButtonProps, Inv
     private handleCopy = (): void => {
         const { uuid } = this.props;
         this.handleInvite();
-        copy(`房间号：${uuid}\n加入链接：https://demo.netless.link/whiteboard/${uuid}/`);
+        clipboard.writeText(
+            `房间号：${uuid}\n加入链接：https://demo.netless.link/whiteboard/${uuid}/`,
+        );
         message.success("已经将链接复制到剪贴板");
     };
 
