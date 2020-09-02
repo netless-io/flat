@@ -1,18 +1,19 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import { CursorTool } from "@netless/cursor-tool";
+import polly from "polly-js";
 import { message } from "antd";
-import { WhiteWebSdk, PlayerPhase, Player, RenderEngine } from "white-web-sdk";
-import player_stop from "./assets/image/player_stop.svg";
-import player_begin from "./assets/image/player_begin.svg";
-import loading from "./assets/image/loading.svg";
+import { WhiteWebSdk, PlayerPhase, Player } from "white-web-sdk";
+import video_play from "./assets/image/video-play.svg";
 import "video.js/dist/video-js.css";
 import "./ReplayPage.less";
-import { LoadingOutlined } from "@ant-design/icons";
 import PageError from "./PageError";
 import PlayerController from "@netless/player-controller";
 import { netlessWhiteboardApi } from "./apiMiddleware";
 import { netlessToken } from "./appToken";
+import LoadingPage from "./LoadingPage";
+import logo from "./assets/image/logo.svg";
+import ExitButtonPlayer from "./components/ExitButtonPlayer";
 export type PlayerPageProps = RouteComponentProps<{
     uuid: string;
     userId: string;
@@ -25,6 +26,7 @@ export type PlayerPageStates = {
     isPlayerSeeking: boolean;
     isVisible: boolean;
     replayFail: boolean;
+    replayState: boolean;
 };
 
 export default class NetlessPlayer extends React.Component<PlayerPageProps, PlayerPageStates> {
@@ -36,6 +38,7 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
             isPlayerSeeking: false,
             isVisible: false,
             replayFail: false,
+            replayState: false,
         };
     }
 
@@ -53,46 +56,70 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
         window.addEventListener("keydown", this.handleSpaceKey);
         const { uuid } = this.props.match.params;
         const roomToken = await this.getRoomToken(uuid);
-
         if (uuid && roomToken) {
-            const whiteWebSdk = new WhiteWebSdk({
-                appIdentifier: netlessToken.appIdentifier,
-                renderEngine: RenderEngine.Canvas,
-            });
-            const replayState = await whiteWebSdk.isPlayable({ room: uuid });
-            if (replayState) {
-                const cursorAdapter = new CursorTool();
-                const player = await whiteWebSdk.replayRoom(
-                    {
-                        room: uuid,
-                        roomToken: roomToken,
-                        cursorAdapter: cursorAdapter,
-                    },
-                    {
-                        onPhaseChanged: phase => {
-                            this.setState({ phase: phase });
-                        },
-                        onStoppedWithError: (error: Error) => {
-                            message.error(`Playback error: ${error}`);
-                            this.setState({ replayFail: true });
-                        },
-                        onProgressTimeChanged: (scheduleTime: number) => {
-                            this.setState({ currentTime: scheduleTime });
-                        },
-                    },
-                );
-                cursorAdapter.setPlayer(player);
-                (window as any).player = player;
-                this.setState({
-                    player: player,
-                });
-            }
+            const whiteWebSdk = new WhiteWebSdk({ appIdentifier: netlessToken.appIdentifier });
+            await this.loadPlayer(whiteWebSdk, uuid, roomToken);
         }
     }
+
+    private loadPlayer = async (
+        whiteWebSdk: WhiteWebSdk,
+        uuid: string,
+        roomToken: string,
+    ): Promise<void> => {
+        await polly()
+            .waitAndRetry(10)
+            .executeForPromise(async () => {
+                const replayState = await whiteWebSdk.isPlayable({ room: uuid });
+                if (replayState) {
+                    this.setState({ replayState: true });
+                    await this.startPlayer(whiteWebSdk, uuid, roomToken);
+                    return Promise.resolve();
+                } else {
+                    this.setState({ replayState: false });
+                    return Promise.reject();
+                }
+            });
+    };
+
     private onWindowResize = (): void => {
         if (this.state.player) {
             this.state.player.refreshViewSize();
         }
+    };
+
+    private startPlayer = async (
+        whiteWebSdk: WhiteWebSdk,
+        uuid: string,
+        roomToken: string,
+    ): Promise<void> => {
+        const cursorAdapter = new CursorTool();
+        const player = await whiteWebSdk.replayRoom(
+            {
+                room: uuid,
+                roomToken: roomToken,
+                cursorAdapter: cursorAdapter,
+            },
+            {
+                onPhaseChanged: phase => {
+                    this.setState({ phase: phase });
+                },
+                onLoadFirstFrame: () => {
+                    cursorAdapter.setPlayer(player);
+                },
+                onStoppedWithError: (error: Error) => {
+                    message.error(`Playback error: ${error}`);
+                    this.setState({ replayFail: true });
+                },
+                onProgressTimeChanged: (scheduleTime: number) => {
+                    this.setState({ currentTime: scheduleTime });
+                },
+            },
+        );
+        (window as any).player = player;
+        this.setState({
+            player: player,
+        });
     };
 
     private handleBindRoom = (ref: HTMLDivElement): void => {
@@ -106,23 +133,6 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
         if (evt.code === "Space") {
             if (this.state.player) {
                 this.onClickOperationButton(this.state.player);
-            }
-        }
-    };
-
-    private operationButtonBig = (phase: PlayerPhase): React.ReactNode => {
-        switch (phase) {
-            case PlayerPhase.Playing: {
-                return <img style={{ width: 28 }} src={player_begin} />;
-            }
-            case PlayerPhase.Buffering: {
-                return <LoadingOutlined style={{ fontSize: 18, color: "white" }} />;
-            }
-            case PlayerPhase.Ended: {
-                return <img style={{ marginLeft: 6, width: 28 }} src={player_stop} />;
-            }
-            default: {
-                return <img style={{ marginLeft: 6, width: 28 }} src={player_stop} />;
             }
         }
     };
@@ -157,58 +167,63 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
         }
     }
 
-    private renderLoading = (): React.ReactNode => {
-        const { player } = this.state;
-        if (player) {
-            return null;
-        } else {
-            return (
-                <div className="white-board-loading">
-                    <img src={loading} />
-                </div>
-            );
-        }
-    };
-
     public render(): React.ReactNode {
-        const { player } = this.state;
+        const { player, phase, replayState } = this.state;
+        const { uuid, userId } = this.props.match.params;
         if (this.state.replayFail) {
             return <PageError />;
         }
-        return (
-            <div className="player-out-box">
-                {this.renderLoading()}
-                <div className="player-board">
-                    {this.renderScheduleView()}
-                    <div
-                        className="player-board-inner"
-                        onMouseOver={() => this.setState({ isVisible: true })}
-                        onMouseLeave={() => this.setState({ isVisible: false })}
-                    >
-                        <div
-                            onClick={() => {
-                                if (this.state.player) {
-                                    this.onClickOperationButton(this.state.player);
-                                }
-                            }}
-                            className="player-mask"
-                        >
-                            {this.state.phase === PlayerPhase.Pause && (
-                                <div className="player-big-icon">
-                                    {this.operationButtonBig(this.state.phase)}
-                                </div>
-                            )}
+        if (!replayState) {
+            return <LoadingPage text={"正在生成回放请耐心等待"} />;
+        }
+        if (player === undefined) {
+            return <LoadingPage />;
+        }
+        switch (phase) {
+            case PlayerPhase.WaitingFirstFrame: {
+                return <LoadingPage />;
+            }
+            default: {
+                return (
+                    <div className="player-out-box">
+                        <div className="logo-box">
+                            <img src={logo} />
                         </div>
-                        {player && (
+                        <div className="room-controller-box">
+                            <div className="page-controller-mid-box">
+                                <ExitButtonPlayer uuid={uuid} userId={userId} player={player} />
+                            </div>
+                        </div>
+                        <div className="player-board">
+                            {this.renderScheduleView()}
                             <div
-                                style={{ backgroundColor: "#F2F2F2" }}
-                                className="player-box"
-                                ref={this.handleBindRoom}
-                            />
-                        )}
+                                className="player-board-inner"
+                                onMouseOver={() => this.setState({ isVisible: true })}
+                                onMouseLeave={() => this.setState({ isVisible: false })}
+                            >
+                                <div
+                                    onClick={() => this.onClickOperationButton(player)}
+                                    className="player-mask"
+                                >
+                                    {phase === PlayerPhase.Pause && (
+                                        <div className="player-big-icon">
+                                            <img
+                                                style={{ width: 50, marginLeft: 6 }}
+                                                src={video_play}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                                <div
+                                    style={{ backgroundColor: "#F2F2F2" }}
+                                    className="player-box"
+                                    ref={this.handleBindRoom}
+                                />
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        );
+                );
+            }
+        }
     }
 }

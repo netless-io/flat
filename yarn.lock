@@ -1840,10 +1840,10 @@
   dependencies:
     react-burger-menu "^2.7.1"
 
-"@netless/oss-upload-button@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@netless/oss-upload-button/-/oss-upload-button-0.0.3.tgz#ffcc875db18166d01f81fdb710f7213fe3a984bb"
-  integrity sha512-sVkvg2r6ZPWWK2QcSl5XisXnvjNxJFBBoOq7z4XP6qc73gHvRWq8LM9Ppr7RWhjpmX+Z9GpD6Ug8S0F50Losdg==
+"@netless/oss-upload-button@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@netless/oss-upload-button/-/oss-upload-button-0.0.4.tgz#42d8e0696b5d9ce96af1553acd241940ab2a5006"
+  integrity sha512-uHIcDz7cwuOOc30VfN9vvqNG0EqnjTISUfExpXz79RwUk/UJ3BsQJ5MSRQpOBYxSH7TAsF0XbKtWLJudzP/t0g==
   dependencies:
     "@netless/loading-bar" "^0.0.1"
     "@netless/oss-upload-manager" "^1.0.8"
@@ -8964,6 +8964,11 @@ platform@^1.3.1:
   version "1.3.6"
   resolved "https://registry.npmjs.org/platform/-/platform-1.3.6.tgz#48b4ce983164b209c2d45a107adb31f473a6e7a7"
   integrity sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==
+
+polly-js@^1.6.7:
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/polly-js/-/polly-js-1.6.7.tgz#d7bbc37ec11ee0068570437423bfb1d8e83311eb"
+  integrity sha512-z4EiuiCprrHbO78J7Tg52riNxKeGrPrdL4yPhQkPHtu+xnyzLs4PDTUnH1MJ2vlsML/Xc0gGWCCKoC1Z/XJYkw==
 
 portfinder@^1.0.26:
   version "1.0.26"

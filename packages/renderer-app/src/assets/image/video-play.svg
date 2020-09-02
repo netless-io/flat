@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>videoPlay</title>
+    <g id="白板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Whiteboard-Replay" transform="translate(-40.000000, -626.000000)">
+            <g id="videoPlay" transform="translate(40.000000, 626.000000)">
+                <rect id="矩形备份-25" fill-opacity="0.01" fill="#FFFFFF" x="0" y="0" width="22" height="22"></rect>
+                <path d="M7.51449576,5.90869745 L14.5708451,10.1425071 C15.0444254,10.4266552 15.1979905,11.0409155 14.9138423,11.5144958 C14.8293925,11.6552454 14.7115947,11.7730432 14.5708451,11.8574929 L7.51449576,16.0913025 C7.04091549,16.3754507 6.42665523,16.2218856 6.14250707,15.7483054 C6.04925783,15.59289 6,15.4150536 6,15.2338096 L6,6.76619038 C6,6.21390563 6.44771525,5.76619038 7,5.76619038 C7.18124395,5.76619038 7.35908035,5.81544821 7.51449576,5.90869745 Z" id="矩形" fill="#7A7B7C"></path>
+            </g>
+        </g>
+    </g>
+</svg>

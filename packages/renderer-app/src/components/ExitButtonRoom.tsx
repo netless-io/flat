@@ -7,17 +7,17 @@ import "./ExitButton.less";
 import exit from "../assets/image/exit.svg";
 import replayScreen from "../assets/image/replay-screen.png";
 
-export type ExitButtonStates = {
+export type ExitButtonRoomStates = {
     exitViewDisable: boolean;
 };
 
-export type ExitButtonProps = {
+export type ExitButtonRoomProps = {
     room: Room;
     userId: string;
 } & RouteComponentProps<{}>;
 
-class ExitButton extends React.Component<ExitButtonProps, ExitButtonStates> {
-    public constructor(props: ExitButtonProps) {
+class ExitButtonRoom extends React.Component<ExitButtonRoomProps, ExitButtonRoomStates> {
+    public constructor(props: ExitButtonRoomProps) {
         super(props);
         this.state = {
             exitViewDisable: false,
@@ -70,5 +70,5 @@ class ExitButton extends React.Component<ExitButtonProps, ExitButtonStates> {
     }
 }
 
-export default withRouter(ExitButton)
+export default withRouter(ExitButtonRoom)
 
