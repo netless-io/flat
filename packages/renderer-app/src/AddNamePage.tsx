@@ -4,35 +4,33 @@ import { Link } from "react-router-dom";
 import "./AddNamePage.less";
 import logo from "./assets/image/logo.svg";
 import { Button, Input } from "antd";
-import { ipcRenderer } from "electron";
 
 export type JoinPageStates = {
     name: string;
+    uuid: string;
 };
 
-export default class AddNamePage extends React.Component<RouteComponentProps<{}>, JoinPageStates> {
-    public constructor(props: RouteComponentProps<{}>) {
+export type AddNamePageProps = RouteComponentProps<{ uuid?: string }>;
+
+export default class AddNamePage extends React.Component<AddNamePageProps, JoinPageStates> {
+    public constructor(props: AddNamePageProps) {
         super(props);
+        const { uuid } = this.props.match.params;
         this.state = {
             name: "",
+            uuid: uuid ? uuid : "",
         };
-        ipcRenderer.send("mainSource", {
-            actions: "set-win-size",
-            args: {
-                width: 480,
-                height: 480,
-            },
-        });
     }
 
     private handleJoin = (): void => {
         const { name } = this.state;
+        const { uuid } = this.props.match.params;
         localStorage.setItem("userName", name);
-        this.props.history.push(`/whiteboard/`);
+        this.props.history.push(`/whiteboard/${uuid}/`);
     };
 
     public render(): React.ReactNode {
-        const { name } = this.state;
+        const { name, uuid } = this.state;
         return (
             <div className="page-index-box">
                 <div className="page-index-mid-box">
@@ -46,9 +44,17 @@ export default class AddNamePage extends React.Component<RouteComponentProps<{}>
                             maxLength={8}
                             value={name}
                             onChange={evt => this.setState({ name: evt.target.value })}
-                            style={{ width: 384, marginBottom: 28 }}
+                            className="page-index-input-box"
                             size={"large"}
                         />
+                        {uuid && (
+                            <Input
+                                value={uuid}
+                                disabled={true}
+                                className="page-index-input-box"
+                                size={"large"}
+                            />
+                        )}
                         <div className="page-index-btn-box">
                             <Link to={"/"}>
                                 <Button className="page-index-btn" size={"large"}>
@@ -62,7 +68,7 @@ export default class AddNamePage extends React.Component<RouteComponentProps<{}>
                                 onClick={this.handleJoin}
                                 type={"primary"}
                             >
-                                创建房间
+                                {uuid ? "加入房间" : "创建房间"}
                             </Button>
                         </div>
                     </div>
