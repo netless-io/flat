@@ -26,7 +26,11 @@ export default class AddNamePage extends React.Component<AddNamePageProps, JoinP
         const { name } = this.state;
         const { uuid } = this.props.match.params;
         localStorage.setItem("userName", name);
-        this.props.history.push(`/whiteboard/${uuid}/`);
+        if (uuid) {
+            this.props.history.push(`/whiteboard/${uuid}/`);
+        } else {
+            this.props.history.push(`/whiteboard/`);
+        }
     };
 
     public render(): React.ReactNode {

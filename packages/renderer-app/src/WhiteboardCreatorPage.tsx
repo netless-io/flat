@@ -39,7 +39,7 @@ export default class WhiteboardCreatorPage extends React.Component<
             return null;
         }
     };
-    public async componentWillMount(): Promise<void> {
+    public async componentDidMount(): Promise<void> {
         try {
             let uuid: string | null;
             if (this.props.match.params.uuid) {
