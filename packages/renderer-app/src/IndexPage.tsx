@@ -46,7 +46,7 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
     private updateName = (isEmpty?: boolean): void => {
         if (isEmpty) {
             localStorage.removeItem("userName");
-            this.setState({ visible: false });
+            this.setState({ visible: false, name: "" });
         } else {
             localStorage.setItem("userName", this.state.name);
             this.setState({ visible: false });

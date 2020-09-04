@@ -36,19 +36,7 @@
   resolved "https://registry.npmjs.org/@ant-design/icons-svg/-/icons-svg-4.1.0.tgz#480b025f4b20ef7fe8f47d4a4846e4fee84ea06c"
   integrity sha512-Fi03PfuUqRs76aI3UWYpP864lkrfPo0hluwGqh7NJdLhvH4iRDc3jbJqZIvRDLHKbXrvAfPPV3+zjUccfFvWOQ==
 
-"@ant-design/icons@^4.2.1":
-  version "4.2.2"
-  resolved "https://registry.npmjs.org/@ant-design/icons/-/icons-4.2.2.tgz#6533c5a02aec49238ec4748074845ad7d85a4f5e"
-  integrity sha512-DrVV+wcupnHS7PehJ6KiTcJtAR5c25UMgjGECCc6pUT9rsvw0AuYG+a4HDjfxEQuDqKTHwW+oX/nIvCymyLE8Q==
-  dependencies:
-    "@ant-design/colors" "^3.1.0"
-    "@ant-design/icons-svg" "^4.0.0"
-    "@babel/runtime" "^7.10.4"
-    classnames "^2.2.6"
-    insert-css "^2.0.0"
-    rc-util "^5.0.1"
-
-"@ant-design/icons@^4.2.2":
+"@ant-design/icons@^4.2.1", "@ant-design/icons@^4.2.2":
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@ant-design/icons/-/icons-4.2.2.tgz#6533c5a02aec49238ec4748074845ad7d85a4f5e"
   integrity sha512-DrVV+wcupnHS7PehJ6KiTcJtAR5c25UMgjGECCc6pUT9rsvw0AuYG+a4HDjfxEQuDqKTHwW+oX/nIvCymyLE8Q==
@@ -1852,20 +1840,20 @@
   dependencies:
     react-burger-menu "^2.7.1"
 
-"@netless/oss-upload-button@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@netless/oss-upload-button/-/oss-upload-button-0.0.4.tgz#42d8e0696b5d9ce96af1553acd241940ab2a5006"
-  integrity sha512-uHIcDz7cwuOOc30VfN9vvqNG0EqnjTISUfExpXz79RwUk/UJ3BsQJ5MSRQpOBYxSH7TAsF0XbKtWLJudzP/t0g==
+"@netless/oss-upload-button@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@netless/oss-upload-button/-/oss-upload-button-0.0.5.tgz#8c8d927fff44f524bfda22a5b8c4bb441b302607"
+  integrity sha512-p5yNN3BoZOw0UFual80rggebaDnHHpGH175ERu/Cj88TUF0651gGerknEPVolZzzRBxru6CuVn4P5uQ/AhTOWA==
   dependencies:
     "@netless/loading-bar" "^0.0.1"
-    "@netless/oss-upload-manager" "^1.0.8"
+    "@netless/oss-upload-manager" "^1.0.9"
     ali-oss "^6.10.0"
     antd "^4.4.3"
 
-"@netless/oss-upload-manager@^1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@netless/oss-upload-manager/-/oss-upload-manager-1.0.8.tgz#ed297344f716ee250f893861eee56f1b820d3880"
-  integrity sha512-UjEdBqe+cn5O7hx4M+PGJRBOU9LQsSjRRVWUGndxLgZklO9RI17rjQQXFxoWPIRcSh6ATM9PqRO2IZlLedXmyA==
+"@netless/oss-upload-manager@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@netless/oss-upload-manager/-/oss-upload-manager-1.0.9.tgz#5f16e801781c89276f643450d7bb4287657fca11"
+  integrity sha512-jDLVAUqIFqTqIygm12+mhEtt1wyPyu/U0Ag+e0WkdVnXu16tI/zHdcy90erXcizf470HDHXfmiDYeTzmUCke2g==
   dependencies:
     "@netless/fetch-middleware" "^1.0.6"
     ali-oss "^6.10.0"
@@ -1913,10 +1901,10 @@
   resolved "https://registry.npmjs.org/@netless/white-video-plugin/-/white-video-plugin-1.2.15.tgz#99bbfeb058e898faec636f477a0c609f789746cb"
   integrity sha512-nuuuRfqP+u2zhQYzxUXBtZTf0ywyQ3GrUtkf2Eas27A/A8wcXoodnwnRE+KddeMGsMQt6T3uYDhqT/K9Wb2XDA==
 
-"@netless/zoom-controller@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@netless/zoom-controller/-/zoom-controller-0.0.1.tgz#cb4531efaa9eeab9eb9e8da8b3b5e8b811368b4e"
-  integrity sha512-Ay2xW86PXWtqWejAJBL5w9I3xMyzkfSNvX526ih8Bf5/LMe1yRhX+TRl1ti+jMO4ScwidfXtP2N1N1HNk8bjqw==
+"@netless/zoom-controller@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@netless/zoom-controller/-/zoom-controller-0.0.3.tgz#5d243e7ec35abac4cd36e2e03d7a085e4da2a4a2"
+  integrity sha512-V1mX6TmAECZyNlPisfvcaxafjaS2GcvNjlYTmFFIFSmWWs6dJ5A2nvpcW9ZsTQ13mcnsuY1YTUxT2SuYZMSPNQ==
 
 "@pmmmwh/react-refresh-webpack-plugin@^0.4.1":
   version "0.4.1"
