@@ -82,14 +82,18 @@ export default class WhiteboardPage extends React.Component<
     };
 
     private startJoinRoom = async (): Promise<void> => {
-        const { uuid, userId } = this.props.match.params;
+        const { uuid, userId, identity } = this.props.match.params;
         const cursorAdapter = new CursorTool();
         try {
             const roomToken = await this.getRoomToken(uuid);
             if (uuid && roomToken) {
                 const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
-                plugins.setPluginContext("video", { identity: "host" });
-                plugins.setPluginContext("audio", { identity: "host" });
+                plugins.setPluginContext("video", {
+                    identity: identity === Identity.teacher ? "host" : "",
+                });
+                plugins.setPluginContext("audio", {
+                    identity: identity === Identity.teacher ? "host" : "",
+                });
                 const whiteWebSdk = new WhiteWebSdk({
                     appIdentifier: netlessToken.appIdentifier,
                     plugins: plugins,

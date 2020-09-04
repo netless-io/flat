@@ -15,6 +15,7 @@ export type WhiteboardCreatorPageState = {
 };
 
 export type WhiteboardCreatorPageProps = RouteComponentProps<{
+    identity: Identity;
     uuid?: string;
 }>;
 
@@ -71,6 +72,7 @@ export default class WhiteboardCreatorPage extends React.Component<
 
     public render(): React.ReactNode {
         const { uuid, userId, foundError } = this.state;
+        const { identity } = this.props.match.params;
         if (foundError) {
             return <PageError />;
         } else if (localStorage.getItem("userName") === null) {
@@ -80,7 +82,7 @@ export default class WhiteboardCreatorPage extends React.Component<
                 return <Redirect to={`/name/`} />;
             }
         } else if (uuid && userId) {
-            return <Redirect to={`/whiteboard/${Identity.teacher}/${uuid}/${userId}/`} />;
+            return <Redirect to={`/whiteboard/${identity}/${uuid}/${userId}/`} />;
         }
         return <LoadingPage />;
     }
