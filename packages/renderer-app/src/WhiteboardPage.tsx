@@ -25,6 +25,7 @@ import "./WhiteboardPage.less";
 import InviteButton from "./components/InviteButton";
 import ExitButtonRoom from "./components/ExitButtonRoom";
 import { ipcRenderer } from "electron";
+import { Identity } from "./IndexPage";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -36,6 +37,7 @@ export type WhiteboardPageStates = {
     roomController?: ViewMode;
 };
 export type WhiteboardPageProps = RouteComponentProps<{
+    identity: Identity;
     uuid: string;
     userId: string;
 }>;
@@ -163,7 +165,7 @@ export default class WhiteboardPage extends React.Component<
 
     public render(): React.ReactNode {
         const { room, isMenuVisible, isFileOpen, phase, whiteboardLayerDownRef } = this.state;
-        const { uuid, userId } = this.props.match.params;
+        const { identity, uuid, userId } = this.props.match.params;
         if (room === undefined) {
             return <LoadingPage />;
         }
@@ -230,7 +232,7 @@ export default class WhiteboardPage extends React.Component<
                                     </div>
                                 </Tooltip>
                                 <InviteButton uuid={uuid} />
-                                <ExitButtonRoom room={room} userId={userId} />
+                                <ExitButtonRoom identity={identity} room={room} userId={userId} />
                             </div>
                         </div>
                         <div className="page-controller-box">

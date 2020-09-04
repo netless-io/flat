@@ -6,6 +6,7 @@ import { Player } from "white-web-sdk";
 import "./ExitButton.less";
 import exit from "../assets/image/exit.svg";
 import replayScreen from "../assets/image/replay-screen.png";
+import { Identity } from "../IndexPage";
 
 export type ExitButtonPlayerStates = {
     exitViewDisable: boolean;
@@ -13,6 +14,7 @@ export type ExitButtonPlayerStates = {
 
 export type ExitButtonPlayerProps = {
     player: Player;
+    identity: Identity;
     uuid: string;
     userId: string;
 } & RouteComponentProps<{}>;
@@ -26,8 +28,8 @@ class ExitButtonPlayer extends React.Component<ExitButtonPlayerProps, ExitButton
     }
 
     private handleReplay = async (): Promise<void> => {
-        const { uuid, userId } = this.props;
-        this.props.history.push(`/whiteboard/${uuid}/${userId}/`);
+        const { identity, uuid, userId } = this.props;
+        this.props.history.push(`/whiteboard/${identity}/${uuid}/${userId}/`);
     };
 
     private handleGoBack = async (): Promise<void> => {

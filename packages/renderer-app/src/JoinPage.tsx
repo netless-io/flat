@@ -5,6 +5,7 @@ import logo from "./assets/image/logo.svg";
 import { Button, Input } from "antd";
 import { Link } from "react-router-dom";
 import { ipcRenderer } from "electron";
+import { Identity } from "./IndexPage";
 
 export type JoinPageStates = {
     roomId: string;
@@ -33,7 +34,7 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
         if (this.state.name !== localStorage.getItem("userName")) {
             localStorage.setItem("userName", this.state.name);
         }
-        this.props.history.push(`/whiteboard/${this.state.roomId}/${userId}/`);
+        this.props.history.push(`/whiteboard/${Identity.student}/${this.state.roomId}/${userId}/`);
     };
 
     public render(): React.ReactNode {

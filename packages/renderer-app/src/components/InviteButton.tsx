@@ -4,6 +4,8 @@ import { clipboard } from "electron";
 import "./InviteButton.less";
 import inviteActive from "../assets/image/invite-active.svg";
 import invite from "../assets/image/invite.svg";
+import { Identity } from "../IndexPage";
+import { CopyOutlined } from "@ant-design/icons";
 
 export type InviteButtonStates = {
     inviteDisable: boolean;
@@ -37,9 +39,9 @@ export default class InviteButton extends React.Component<InviteButtonProps, Inv
         const { uuid } = this.props;
         this.handleInvite();
         clipboard.writeText(
-            `房间号：${uuid}\n加入链接：https://demo.netless.link/whiteboard/${uuid}/`,
+            `房间号：${uuid}\n加入链接：https://demo.netless.link/whiteboard/${Identity.student}/${uuid}/`,
         );
-        message.success("已经将链接复制到剪贴板");
+        message.success("已经将信息复制到剪贴板");
     };
 
     private renderInviteContent = (): React.ReactNode => {
@@ -49,15 +51,36 @@ export default class InviteButton extends React.Component<InviteButtonProps, Inv
                 <div className="invite-box-title">邀请加入</div>
                 <div style={{ width: 400, height: 0.5, backgroundColor: "#E7E7E7" }} />
                 <div className="invite-text-box">
-                    <div style={{ marginBottom: 12 }}>
+                    <div className="invite-url-box" style={{ marginBottom: 12 }}>
                         <span style={{ width: 96 }}>房间号：</span>
-                        <span className="invite-room-box">{uuid}</span>
+                        <Input
+                            size={"middle"}
+                            value={uuid}
+                            addonAfter={
+                                <CopyOutlined
+                                    onClick={() => {
+                                        clipboard.writeText(uuid);
+                                        message.success("已经将 uuid 黏贴到剪贴板");
+                                    }}
+                                />
+                            }
+                        />
                     </div>
                     <div className="invite-url-box">
                         <span style={{ width: 96 }}>加入链接：</span>
                         <Input
                             size={"middle"}
-                            value={`https://demo.netless.link/whiteboard/${uuid}/`}
+                            value={`https://demo.netless.link/whiteboard/${Identity.student}/${uuid}/`}
+                            addonAfter={
+                                <CopyOutlined
+                                    onClick={() => {
+                                        clipboard.writeText(
+                                            `https://demo.netless.link/whiteboard/${Identity.student}/${uuid}/`,
+                                        );
+                                        message.success("已经将链接复制到剪贴板");
+                                    }}
+                                />
+                            }
                         />
                     </div>
                 </div>

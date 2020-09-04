@@ -4,6 +4,7 @@
     "private": true,
     "homepage": ".",
     "dependencies": {
+        "@ant-design/icons": "^4.2.2",
         "@netless/cursor-tool": "^0.0.1",
         "@netless/docs-center": "^0.0.1",
         "@netless/fetch-middleware": "^1.0.6",
@@ -16,9 +17,9 @@
         "@netless/white-audio-plugin": "^1.2.15",
         "@netless/white-video-plugin": "^1.2.15",
         "@netless/zoom-controller": "^0.0.1",
-        "polly-js": "^1.6.7",
         "agora-electron-sdk": "education290",
         "antd": "^4.6.1",
+        "polly-js": "^1.6.7",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-router": "^5.2.0",

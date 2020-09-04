@@ -14,7 +14,9 @@ import { netlessToken } from "./appToken";
 import LoadingPage from "./LoadingPage";
 import logo from "./assets/image/logo.svg";
 import ExitButtonPlayer from "./components/ExitButtonPlayer";
+import { Identity } from "./IndexPage";
 export type PlayerPageProps = RouteComponentProps<{
+    identity: Identity;
     uuid: string;
     userId: string;
 }>;
@@ -169,7 +171,7 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
 
     public render(): React.ReactNode {
         const { player, phase, replayState } = this.state;
-        const { uuid, userId } = this.props.match.params;
+        const { identity, uuid, userId } = this.props.match.params;
         if (this.state.replayFail) {
             return <PageError />;
         }
@@ -191,7 +193,12 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
                         </div>
                         <div className="room-controller-box">
                             <div className="page-controller-mid-box">
-                                <ExitButtonPlayer uuid={uuid} userId={userId} player={player} />
+                                <ExitButtonPlayer
+                                    identity={identity}
+                                    uuid={uuid}
+                                    userId={userId}
+                                    player={player}
+                                />
                             </div>
                         </div>
                         <div className="player-board">

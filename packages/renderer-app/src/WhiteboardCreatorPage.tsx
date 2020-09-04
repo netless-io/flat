@@ -5,6 +5,8 @@ import { RouteComponentProps } from "react-router";
 import PageError from "./PageError";
 import { netlessWhiteboardApi, RoomType } from "./apiMiddleware";
 import LoadingPage from "./LoadingPage";
+import { ipcRenderer } from "electron";
+import { Identity } from "./IndexPage";
 
 export type WhiteboardCreatorPageState = {
     uuid?: string;
@@ -25,6 +27,13 @@ export default class WhiteboardCreatorPage extends React.Component<
         this.state = {
             foundError: false,
         };
+        ipcRenderer.send("mainSource", {
+            actions: "set-win-size",
+            args: {
+                width: 1200,
+                height: 800,
+            },
+        });
     }
 
     private createRoomAndGetUuid = async (
@@ -71,7 +80,7 @@ export default class WhiteboardCreatorPage extends React.Component<
                 return <Redirect to={`/name/`} />;
             }
         } else if (uuid && userId) {
-            return <Redirect to={`/whiteboard/${uuid}/${userId}/`} />;
+            return <Redirect to={`/whiteboard/${Identity.teacher}/${uuid}/${userId}/`} />;
         }
         return <LoadingPage />;
     }

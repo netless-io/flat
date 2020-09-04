@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import "./AddNamePage.less";
 import logo from "./assets/image/logo.svg";
 import { Button, Input } from "antd";
+import { ipcRenderer } from "electron";
+import { Identity } from "./IndexPage";
 
 export type JoinPageStates = {
     name: string;
@@ -20,6 +22,13 @@ export default class AddNamePage extends React.Component<AddNamePageProps, JoinP
             name: "",
             uuid: uuid ? uuid : "",
         };
+        ipcRenderer.send("mainSource", {
+            actions: "set-win-size",
+            args: {
+                width: 480,
+                height: 480,
+            },
+        });
     }
 
     private handleJoin = (): void => {
@@ -27,9 +36,9 @@ export default class AddNamePage extends React.Component<AddNamePageProps, JoinP
         const { uuid } = this.props.match.params;
         localStorage.setItem("userName", name);
         if (uuid) {
-            this.props.history.push(`/whiteboard/${uuid}/`);
+            this.props.history.push(`/whiteboard/${Identity.teacher}/${uuid}/`);
         } else {
-            this.props.history.push(`/whiteboard/`);
+            this.props.history.push(`/whiteboard/${Identity.teacher}/`);
         }
     };
 
@@ -47,15 +56,15 @@ export default class AddNamePage extends React.Component<AddNamePageProps, JoinP
                             placeholder={"输入昵称"}
                             maxLength={8}
                             value={name}
+                            style={{ width: 384, marginBottom: 28 }}
                             onChange={evt => this.setState({ name: evt.target.value })}
-                            className="page-index-input-box"
                             size={"large"}
                         />
                         {uuid && (
                             <Input
                                 value={uuid}
                                 disabled={true}
-                                className="page-index-input-box"
+                                style={{ width: 384, marginBottom: 28 }}
                                 size={"large"}
                             />
                         )}

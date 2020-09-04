@@ -13,6 +13,11 @@ export type IndexPageStates = {
     visible: boolean;
 };
 
+export enum Identity {
+    teacher = "teacher",
+    student = "student",
+}
+
 class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates> {
     public constructor(props: RouteComponentProps<{}>) {
         super(props);
@@ -32,15 +37,20 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
 
     private handleCreate = (): void => {
         if (this.state.name) {
-            this.props.history.push("/whiteboard/");
+            this.props.history.push(`/whiteboard/${Identity.teacher}`);
         } else {
             this.props.history.push("/name/");
         }
     };
 
-    private updateName = (): void => {
-        localStorage.setItem("userName", this.state.name);
-        this.setState({ visible: false });
+    private updateName = (isEmpty?: boolean): void => {
+        if (isEmpty) {
+            localStorage.removeItem("userName");
+            this.setState({ visible: false });
+        } else {
+            localStorage.setItem("userName", this.state.name);
+            this.setState({ visible: false });
+        }
     };
     public render(): React.ReactNode {
         return (
@@ -62,12 +72,19 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                                         size={"small"}
                                     />
                                     <Button
-                                        onClick={this.updateName}
+                                        onClick={() => this.updateName()}
                                         style={{ width: 120, marginTop: 12 }}
                                         type={"primary"}
                                         size={"small"}
                                     >
                                         更新
+                                    </Button>
+                                    <Button
+                                        onClick={() => this.updateName(true)}
+                                        style={{ width: 120, marginTop: 12 }}
+                                        size={"small"}
+                                    >
+                                        清空
                                     </Button>
                                 </div>
                             }

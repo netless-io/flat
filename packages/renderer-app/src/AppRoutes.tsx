@@ -16,9 +16,9 @@ export class AppRoutes extends React.Component<{}, {}> {
         return (
             <HashRouter>
                 <Switch>
-                    <Route path="/replay/:uuid/:userId/" component={ReplayPage} />
-                    <Route path="/whiteboard/:uuid/:userId/" component={WhiteboardPage} />
-                    <Route path="/whiteboard/:uuid?/" component={WhiteboardCreatorPage} />
+                    <Route path="/replay/:identity/:uuid/:userId/" component={ReplayPage} />
+                    <Route path="/whiteboard/:identity/:uuid/:userId/" component={WhiteboardPage} />
+                    <Route path="/whiteboard/:identity/:uuid?/" component={WhiteboardCreatorPage} />
                     <Route path="/join/" component={JoinPage} />
                     <Route path="/name/:uuid?/" component={AddNamePage} />
                     <Route path="/" component={IndexPage} />
