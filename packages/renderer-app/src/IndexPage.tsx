@@ -137,6 +137,9 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                             <span onClick={this.openGithub}>Github</span>
                         </div>
                     </div>
+                    <Link to={"/test"}>
+                        <div>测试页面</div>
+                    </Link>
                     <div className="page-index-start-term">
                         本开源项目遵循
                         <span onClick={this.openMIT}>《 MIT 开源协议》</span>
