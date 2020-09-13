@@ -10,7 +10,7 @@ module.exports = {
     appBuild: resolvePath("dist"),
     appHtml: resolvePath("public", "index.html"),
     appNodeModules: resolvePath("node_modules"),
-    entryFile: resolvePath("src", "index.tsx"),
+    entryFile: resolvePath("src", "index.ts"),
     tsConfig: resolvePath("tsconfig.json"),
     envConfig: resolvePath("..", "..", "config"),
 };

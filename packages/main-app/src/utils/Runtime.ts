@@ -44,6 +44,10 @@ export class Runtime {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         return require("../../package.json").version;
     }
+
+    public get downloadsDirectory(): string {
+        return path.join(app.getPath("userData"), "downloads");
+    }
 }
 
 export default new Runtime();
