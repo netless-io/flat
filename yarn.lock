@@ -2000,6 +2000,13 @@
   resolved "https://registry.npmjs.org/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
+"@types/node-downloader-helper@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/@types/node-downloader-helper/-/node-downloader-helper-1.0.2.tgz#bc40f77935737aba6c21815ff33a9d2ba804187b"
+  integrity sha512-cjlqlWp7Vk2DJnypqqZUCB9qMuADf40nqikS7Tps6H8GZq7SXheBBHbERTvjnMMWZ5pFRbxSWdWUdqiKL8EQIg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/node@*":
   version "14.0.11"
   resolved "https://registry.npmjs.org/@types/node/-/node-14.0.11.tgz#61d4886e2424da73b7b25547f59fdcb534c165a3"
@@ -2116,6 +2123,13 @@
   integrity sha512-Dk/IDOPtOgubt/IaevIUbTgV7doaKkoorvOyYM2CMwuDyP89bekI7H4xLIwunNYiK9jhCkmc6pUrJk3cj2AB9w==
   dependencies:
     "@types/yargs-parser" "*"
+
+"@types/yauzl@^2.9.1":
+  version "2.9.1"
+  resolved "https://registry.npmjs.org/@types/yauzl/-/yauzl-2.9.1.tgz#d10f69f9f522eef3cf98e30afb684a1e1ec923af"
+  integrity sha512-A1b8SU4D10uoPjwb0lnHmmu8wZhR9d+9o2PKBQT2jU5YPTKsxac6M2qGAdY7VcL+dHHhARVUDmeg0rOrcd9EjA==
+  dependencies:
+    "@types/node" "*"
 
 "@typescript-eslint/eslint-plugin@2.x":
   version "2.34.0"
@@ -5628,6 +5642,17 @@ extract-zip@^1.0.3, extract-zip@^1.6.7:
     mkdirp "^0.5.4"
     yauzl "^2.10.0"
 
+extract-zip@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/extract-zip/-/extract-zip-2.0.1.tgz#663dca56fe46df890d5f131ef4a06d22bb8ba13a"
+  integrity sha512-GDhU9ntwuKyGXdZBUgTIe+vXnWj0fppUEtMDL0+idd5Sta8TGpHssn/eusA9mrPr9qNDym6SxAYZjNvCn/9RBg==
+  dependencies:
+    debug "^4.1.1"
+    get-stream "^5.1.0"
+    yauzl "^2.10.0"
+  optionalDependencies:
+    "@types/yauzl" "^2.9.1"
+
 extsprintf@1.3.0:
   version "1.3.0"
   resolved "https://registry.npmjs.org/extsprintf/-/extsprintf-1.3.0.tgz#96918440e3041a7a414f8c52e3c574eb3c3e1e05"
@@ -8169,6 +8194,11 @@ no-case@^3.0.3:
   dependencies:
     lower-case "^2.0.1"
     tslib "^1.10.0"
+
+node-downloader-helper@^1.0.13:
+  version "1.0.13"
+  resolved "https://registry.npmjs.org/node-downloader-helper/-/node-downloader-helper-1.0.13.tgz#bbed82ba9c5b0722d56cbb8770c0300f7785a400"
+  integrity sha512-HdwSd8tnC06dIWLFBSTGHlcPKXo308815J4m/1e/NkSd6gmdDaO6KSf9JON5fXt3R5Vdw5bgQvSrgSq4GXjYvg==
 
 node-forge@0.9.0:
   version "0.9.0"
