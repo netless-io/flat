@@ -1,4 +1,3 @@
-import { remote } from "electron";
 import path from "path";
 import { existsSync, ensureDirSync } from "fs-extra";
 import {
@@ -7,10 +6,11 @@ import {
     FinalDownloadInfo,
     Stats,
 } from "node-downloader-helper";
+import { runtime } from "./runtime";
 
 export class DownloadFile {
     private readonly url: string;
-    private readonly downloadDIR: string = path.join(remote.app.getPath("userData"), "downloads");
+    private readonly downloadDIR: string = runtime.downloadsDirectory;
     private readonly dl: DownloaderHelper | undefined = undefined;
 
     constructor(url: string, dir?: string) {

@@ -39,7 +39,7 @@ export default class Test extends React.Component<
                     removeSync(path.join(d.filePath));
 
                     // 清空文件夹下的所有内容
-                    // emptyDirSync(path.dirname(d.filePath));
+                    // emptyDirSync(runtime.downloadsDirectory);
                 })
                 .catch(e => {
                     console.log("解压失败");
