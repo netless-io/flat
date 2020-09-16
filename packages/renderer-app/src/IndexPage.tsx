@@ -69,7 +69,12 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
             <div className="page-index-box">
                 <div className="page-index-mid-box">
                     <div className="page-index-logo-box">
-                        <img src={logo} />
+                        <img src={logo} alt={"logo"} />
+                        {localStorage.getItem("rooms") && (
+                            <Link to={"/history"}>
+                                <div className="page-index-history">历史记录</div>
+                            </Link>
+                        )}
                         <Popover
                             visible={this.state.visible}
                             placement={"bottom"}
@@ -103,7 +108,7 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                             title={"编辑昵称"}
                         >
                             <span onClick={() => this.setState({ visible: true })}>
-                                <span style={{ color: "#106BC5" }}>{this.state.name}</span>
+                                <span style={{ color: "#3381FF" }}>{this.state.name}</span>
                                 <span>
                                     欢迎使用{" "}
                                     <span role="img" aria-label="waving-hand">
@@ -137,9 +142,6 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                             <span onClick={this.openGithub}>Github</span>
                         </div>
                     </div>
-                    <Link to={"/test"}>
-                        <div>测试页面</div>
-                    </Link>
                     <div className="page-index-start-term">
                         本开源项目遵循
                         <span onClick={this.openMIT}>《 MIT 开源协议》</span>

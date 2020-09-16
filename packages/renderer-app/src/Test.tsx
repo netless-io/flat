@@ -3,7 +3,7 @@ import { Button } from "antd";
 import { DownloadFile } from "./utils/download";
 import { extractZIP } from "./utils/unzip";
 import { removeSync } from "fs-extra";
-import path from "path";
+import { Link } from "react-router-dom";
 
 export default class Test extends React.Component<
     {},
@@ -36,8 +36,9 @@ export default class Test extends React.Component<
                     console.log("解压完成");
 
                     // 解压成功后删除压缩文件
-                    removeSync(path.join(d.filePath));
-
+                    removeSync(d.filePath);
+                    // console.log(download.fileIsExists(d.filePath));
+                    // console.log(runtime.downloadsDirectory);
                     // 清空文件夹下的所有内容
                     // emptyDirSync(runtime.downloadsDirectory);
                 })
@@ -69,6 +70,9 @@ export default class Test extends React.Component<
                 >
                     点击下载
                 </Button>
+                <Link to={"/"}>
+                    <Button>返回</Button>
+                </Link>
                 <div>下载百分比: {this.state.downloadProgress}%</div>
                 https://white-sdk.oss-cn-beijing.aliyuncs.com/images/test.zip
             </div>

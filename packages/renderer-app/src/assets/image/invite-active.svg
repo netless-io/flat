@@ -7,10 +7,10 @@
         <g id="Whiteboard-Guidelines" transform="translate(-230.000000, -724.000000)">
             <g id="invite-pressed" transform="translate(230.000000, 724.000000)">
                 <rect id="矩形备份-25" fill="#FFFFFF" opacity="0.01" x="0" y="0" width="32" height="32"></rect>
-                <path d="M15,16 C11.6862915,16 9,18.6862915 9,22" id="椭圆形" stroke="#106BC5" stroke-linecap="round" stroke-linejoin="round"></path>
-                <circle id="椭圆形" stroke="#106BC5" stroke-linecap="round" stroke-linejoin="round" cx="15" cy="13" r="3"></circle>
-                <line x1="17" y1="19" x2="23" y2="19" id="路径-12" stroke="#106BC5" stroke-linecap="round" stroke-linejoin="round"></line>
-                <line x1="20" y1="16" x2="20" y2="22" id="路径-12" stroke="#106BC5" stroke-linecap="round" stroke-linejoin="round"></line>
+                <path d="M15,16 C11.6862915,16 9,18.6862915 9,22" id="椭圆形" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle id="椭圆形" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round" cx="15" cy="13" r="3"></circle>
+                <line x1="17" y1="19" x2="23" y2="19" id="路径-12" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round"></line>
+                <line x1="20" y1="16" x2="20" y2="22" id="路径-12" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round"></line>
             </g>
         </g>
     </g>

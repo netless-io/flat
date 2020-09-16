@@ -6,6 +6,8 @@ import { Button, Input } from "antd";
 import { Link } from "react-router-dom";
 import { ipcRenderer } from "electron";
 import { Identity } from "./IndexPage";
+import moment from "moment";
+import { LocalStorageRoomDataType } from "./HistoryPage";
 
 export type JoinPageStates = {
     roomId: string;
@@ -34,9 +36,58 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
         if (this.state.name !== localStorage.getItem("userName")) {
             localStorage.setItem("userName", this.state.name);
         }
+        this.setRoomList(this.state.roomId, userId);
         this.props.history.push(`/whiteboard/${Identity.student}/${this.state.roomId}/${userId}/`);
     };
 
+    public setRoomList = (uuid: string, userId: string): void => {
+        const rooms = localStorage.getItem("rooms");
+        const timestamp = moment(new Date()).format("lll");
+        if (rooms) {
+            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
+            const room = roomArray.find(data => data.uuid === uuid);
+            if (!room) {
+                localStorage.setItem(
+                    "rooms",
+                    JSON.stringify([
+                        {
+                            uuid: uuid,
+                            time: timestamp,
+                            identity: Identity.teacher,
+                            userId: userId,
+                        },
+                        ...roomArray,
+                    ]),
+                );
+            } else {
+                const newRoomArray = roomArray.filter(data => data.uuid !== uuid);
+                localStorage.setItem(
+                    "rooms",
+                    JSON.stringify([
+                        {
+                            uuid: uuid,
+                            time: timestamp,
+                            identity: Identity.teacher,
+                            userId: userId,
+                        },
+                        ...newRoomArray,
+                    ]),
+                );
+            }
+        } else {
+            localStorage.setItem(
+                "rooms",
+                JSON.stringify([
+                    {
+                        uuid: uuid,
+                        time: timestamp,
+                        identity: Identity.teacher,
+                        userId: userId,
+                    },
+                ]),
+            );
+        }
+    };
     public render(): React.ReactNode {
         const { roomId, name } = this.state;
         return (

@@ -26,6 +26,7 @@ import InviteButton from "./components/InviteButton";
 import ExitButtonRoom from "./components/ExitButtonRoom";
 import { ipcRenderer } from "electron";
 import { Identity } from "./IndexPage";
+import OssDropUpload from "@netless/oss-drop-upload";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -222,6 +223,7 @@ export default class WhiteboardPage extends React.Component<
                                                     ? followActive
                                                     : follow
                                             }
+                                            alt={"img"}
                                         />
                                     </div>
                                 </Tooltip>
@@ -246,7 +248,7 @@ export default class WhiteboardPage extends React.Component<
                                         className="page-controller-cell"
                                         onClick={() => this.handlePreviewState(true)}
                                     >
-                                        <img src={pages} />
+                                        <img src={pages} alt={"pages"} />
                                     </div>
                                 </Tooltip>
                                 <PageController room={room} />
@@ -262,7 +264,9 @@ export default class WhiteboardPage extends React.Component<
                             isFileOpen={isFileOpen}
                             room={room}
                         />
-                        <div ref={this.handleBindRoom} className="whiteboard-box" />
+                        <OssDropUpload room={room} oss={ossConfigObj}>
+                            <div ref={this.handleBindRoom} className="whiteboard-box" />
+                        </OssDropUpload>
                     </div>
                 );
             }

@@ -108,7 +108,7 @@ export default class InviteButton extends React.Component<InviteButtonProps, Inv
                 placement={"bottomRight"}
             >
                 <div className="page-controller-cell" onClick={this.handleInvite}>
-                    <img src={this.state.inviteDisable ? inviteActive : invite} />
+                    <img src={this.state.inviteDisable ? inviteActive : invite} alt={"invite"} />
                 </div>
             </Popover>
         );

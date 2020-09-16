@@ -1,0 +1,91 @@
+.page-history-head {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    height: 24px;
+    align-items: center;
+}
+
+.page-history-back {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+    height: 24px;
+    align-items: center;
+}
+
+.page-history-body {
+    margin: 20px;
+}
+
+.page-history-body-empty {
+    width: 100%;
+    height: 422px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.room-cell-box {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    position: relative;
+}
+.room-cell-left {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.room-cell-image {
+    width: 96px;
+    height: 72px;
+    background-color: #EEF0F6;
+    margin-right: 16px;
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.room-cell-right {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: flex-end;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    right: 0;
+    opacity: 0;
+    cursor: pointer;
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.room-cell-cut-line {
+    background-color: #DBE1EA;
+    width: 100%;
+    height: 1px;
+}
+
+.room-cell-text {
+    font-size: 16px;
+    font-family: Manrope-Regular, Manrope;
+    font-weight: 400;
+    color: #444E60;
+    line-height: 24px;
+    margin-bottom: 4px;
+}
+
+.room-cell-time {
+    font-size: 14px;
+    font-family: Manrope-Regular, Manrope;
+    font-weight: 400;
+    color: #7A7B7C;
+
+}

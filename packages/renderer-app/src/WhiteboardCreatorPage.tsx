@@ -7,6 +7,8 @@ import { netlessWhiteboardApi, RoomType } from "./apiMiddleware";
 import LoadingPage from "./LoadingPage";
 import { ipcRenderer } from "electron";
 import { Identity } from "./IndexPage";
+import { LocalStorageRoomDataType } from "./HistoryPage";
+import moment from "moment";
 
 export type WhiteboardCreatorPageState = {
     uuid?: string;
@@ -49,15 +51,67 @@ export default class WhiteboardCreatorPage extends React.Component<
             return null;
         }
     };
+
+    public setRoomList = (uuid: string, userId: string): void => {
+        const rooms = localStorage.getItem("rooms");
+        const timestamp = moment(new Date()).format("lll");
+        if (rooms) {
+            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
+            const room = roomArray.find(data => data.uuid === uuid);
+            if (!room) {
+                localStorage.setItem(
+                    "rooms",
+                    JSON.stringify([
+                        {
+                            uuid: uuid,
+                            time: timestamp,
+                            identity: Identity.teacher,
+                            userId: userId,
+                        },
+                        ...roomArray,
+                    ]),
+                );
+            } else {
+                const newRoomArray = roomArray.filter(data => data.uuid !== uuid);
+                localStorage.setItem(
+                    "rooms",
+                    JSON.stringify([
+                        {
+                            uuid: uuid,
+                            time: timestamp,
+                            identity: Identity.teacher,
+                            userId: userId,
+                        },
+                        ...newRoomArray,
+                    ]),
+                );
+            }
+        } else {
+            localStorage.setItem(
+                "rooms",
+                JSON.stringify([
+                    {
+                        uuid: uuid,
+                        time: timestamp,
+                        identity: Identity.teacher,
+                        userId: userId,
+                    },
+                ]),
+            );
+        }
+    };
     public async componentDidMount(): Promise<void> {
         try {
+            const userId = `${Math.floor(Math.random() * 100000)}`;
             let uuid: string | null;
             if (this.props.match.params.uuid) {
                 uuid = this.props.match.params.uuid;
             } else {
-                uuid = await this.createRoomAndGetUuid("test1", 0, RoomType.historied);
+                uuid = await this.createRoomAndGetUuid("netless", 0, RoomType.historied);
+                if (uuid) {
+                    this.setRoomList(uuid, userId);
+                }
             }
-            const userId = `${Math.floor(Math.random() * 100000)}`;
             this.setState({ userId: userId });
             if (uuid) {
                 this.setState({ uuid: uuid });

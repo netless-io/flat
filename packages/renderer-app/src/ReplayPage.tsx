@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router";
 import { CursorTool } from "@netless/cursor-tool";
 import polly from "polly-js";
 import { message } from "antd";
-import { WhiteWebSdk, PlayerPhase, Player } from "white-web-sdk";
+import { WhiteWebSdk, PlayerPhase, Player, createPlugins } from "white-web-sdk";
 import video_play from "./assets/image/video-play.svg";
 import "video.js/dist/video-js.css";
 import "./ReplayPage.less";
@@ -15,6 +15,9 @@ import LoadingPage from "./LoadingPage";
 import logo from "./assets/image/logo.svg";
 import ExitButtonPlayer from "./components/ExitButtonPlayer";
 import { Identity } from "./IndexPage";
+import { ipcRenderer } from "electron";
+import { videoPlugin } from "@netless/white-video-plugin";
+import { audioPlugin } from "@netless/white-audio-plugin";
 export type PlayerPageProps = RouteComponentProps<{
     identity: Identity;
     uuid: string;
@@ -42,6 +45,13 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
             replayFail: false,
             replayState: false,
         };
+        ipcRenderer.send("mainSource", {
+            actions: "set-win-size",
+            args: {
+                width: 1200,
+                height: 800,
+            },
+        });
     }
 
     private getRoomToken = async (uuid: string): Promise<string | null> => {
@@ -54,12 +64,21 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
     };
 
     public async componentDidMount(): Promise<void> {
-        window.addEventListener("resize", this.onWindowResize);
         window.addEventListener("keydown", this.handleSpaceKey);
-        const { uuid } = this.props.match.params;
+        const { uuid, identity } = this.props.match.params;
         const roomToken = await this.getRoomToken(uuid);
         if (uuid && roomToken) {
-            const whiteWebSdk = new WhiteWebSdk({ appIdentifier: netlessToken.appIdentifier });
+            const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
+            plugins.setPluginContext("video", {
+                identity: identity === Identity.teacher ? "host" : "",
+            });
+            plugins.setPluginContext("audio", {
+                identity: identity === Identity.teacher ? "host" : "",
+            });
+            const whiteWebSdk = new WhiteWebSdk({
+                appIdentifier: netlessToken.appIdentifier,
+                plugins: plugins,
+            });
             await this.loadPlayer(whiteWebSdk, uuid, roomToken);
         }
     }
@@ -82,12 +101,6 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
                     return Promise.reject();
                 }
             });
-    };
-
-    private onWindowResize = (): void => {
-        if (this.state.player) {
-            this.state.player.refreshViewSize();
-        }
     };
 
     private startPlayer = async (
@@ -151,7 +164,7 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
                 player.pause();
                 break;
             }
-            case PlayerPhase.Ended: {
+            default: {
                 player.seekToScheduleTime(0);
                 break;
             }
@@ -190,7 +203,7 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
                 return (
                     <div className="player-out-box">
                         <div className="logo-box">
-                            <img src={logo} />
+                            <img src={logo} alt={"logo"} />
                         </div>
                         <div className="room-controller-box">
                             <div className="page-controller-mid-box">
@@ -218,6 +231,7 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
                                             <img
                                                 style={{ width: 50, marginLeft: 6 }}
                                                 src={video_play}
+                                                alt={"video_play"}
                                             />
                                         </div>
                                     )}
