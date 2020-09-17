@@ -1,57 +1,52 @@
-const { spawn } = require("child_process");
+const os = require("os");
+const { spawn, exec } = require("child_process");
 
-function ElectronWebpackPlugin(options) {
-    const defaultOptions = {
-        path: "dist/main/main.js",
-    };
+// 代码参看: https://github.com/cdeutsch/webpack-shell-plugin/blob/master/src/webpack-shell-plugin.js
+class ElectronWebpackPlugin {
+    constructor(script) {
+        this.script = script;
+    }
 
-    this.electronProcess = null;
-    this.manualRestart = false;
-
-    this.options = Object.assign(defaultOptions, options);
-
-    process.on("exit", () => {
-        if (this.electronProcess !== null) {
-            this.electronProcess.kill();
+    puts(error) {
+        if (error) {
+            throw error;
         }
-    });
-}
+    }
 
-ElectronWebpackPlugin.prototype.apply = function (compiler) {
-    compiler.hooks.done.tap("electron-webpack-dev-runner", compilation => {
-        if (this.electronProcess !== null) {
-            this.manualRestart = true;
-            this.electronProcess.kill();
-            this.electronProcess = null;
-            setImmediate(() => this.startElectron());
+    spreadStdoutAndStdErr(proc) {
+        proc.stdout.pipe(process.stdout);
+        proc.stderr.pipe(process.stdout);
+    }
 
-            setTimeout(() => {
-                this.manualRestart = false;
-            }, 2000);
+    serializeScript(script) {
+        if (typeof script === "string") {
+            const [command, ...args] = script.split(" ");
+            return { command, args };
+        }
+        const { command, args } = script;
+        return { command, args };
+    }
+
+    handleScript(script) {
+        if (os.platform() === "win32") {
+            this.spreadStdoutAndStdErr(exec(script, this.puts));
         } else {
-            setImmediate(() => this.startElectron());
+            const { command, args } = this.serializeScript(script);
+            console.log(command, args);
+            const proc = spawn(command, args);
+            proc.on("close", this.puts);
         }
-    });
-};
+    }
 
-ElectronWebpackPlugin.prototype.startElectron = function () {
-    this.electronProcess = spawn("electron", [this.options.path], {
-        shell: true,
-        env: process.env,
-        stdio: "inherit",
-    })
-        .on("close", code => {
-            if (code === 100) {
-                process.exit(0);
+    apply(compiler) {
+        compiler.hooks.afterEmit.tapAsync("ElectronWebpackPlugin", (compilation, callback) => {
+            if (this.script !== "") {
+                this.handleScript(this.script);
+                this.script = "";
             }
-            if (!this.manualRestart) {
-                this.electronProcess.kill();
-            }
-        })
-        .on("error", spawnError => {
-            console.error(spawnError);
-            process.exit(1);
+            callback();
         });
-};
+    }
+}
 
 module.exports = ElectronWebpackPlugin;
