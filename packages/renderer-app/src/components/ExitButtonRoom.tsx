@@ -52,8 +52,8 @@ class ExitButtonRoom extends React.Component<ExitButtonRoomProps, ExitButtonRoom
             const res = await netlessWhiteboardApi.room.getCover(
                 room.uuid,
                 room.state.sceneState.scenePath,
-                96,
-                72,
+                192,
+                144,
                 room.roomToken,
             );
             const rooms = localStorage.getItem("rooms");
