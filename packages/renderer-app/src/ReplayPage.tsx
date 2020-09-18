@@ -55,9 +55,9 @@ export default class NetlessPlayer extends React.Component<PlayerPageProps, Play
     }
 
     private getRoomToken = async (uuid: string): Promise<string | null> => {
-        const res = await netlessWhiteboardApi.room.joinRoomApi(uuid);
-        if (res.code === 200) {
-            return res.msg.roomToken;
+        const roomToken = await netlessWhiteboardApi.room.joinRoomApi(uuid);
+        if (roomToken) {
+            return roomToken;
         } else {
             return null;
         }

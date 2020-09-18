@@ -6,20 +6,17 @@ export enum RoomType {
     historied = "historied",
 }
 
-const fetcher = new Fetcher(5000, "https://cloudcapiv4.herewhite.com");
-const fetcherNew = new Fetcher(5000, "https://shunt-api.netless.link/v5");
-
+const fetcher = new Fetcher(5000, "https://shunt-api.netless.link/v5");
 export class RoomOperator {
-    public async createRoomApi(name: string, limit: number, mode: RoomType): Promise<any> {
+    public async createRoomApi(name: string, limit: number): Promise<any> {
         const json = await fetcher.post<any>({
-            path: `room`,
-            query: {
+            path: `rooms`,
+            headers: {
                 token: netlessToken.sdkToken,
             },
             body: {
                 name: name,
                 limit: limit,
-                mode: mode,
             },
         });
         return json as any;
@@ -27,10 +24,13 @@ export class RoomOperator {
 
     public async joinRoomApi(uuid: string): Promise<any> {
         const json = await fetcher.post<any>({
-            path: `room/join`,
-            query: {
-                uuid: uuid,
+            path: `tokens/rooms/${uuid}`,
+            headers: {
                 token: netlessToken.sdkToken,
+            },
+            body: {
+                lifespan: 0,
+                role: "admin",
             },
         });
         return json as any;
@@ -43,7 +43,7 @@ export class RoomOperator {
         height: number,
         token: string,
     ): Promise<any> {
-        const json = await fetcherNew.post<any>({
+        const json = await fetcher.post<any>({
             path: `rooms/${uuid}/screenshots`,
             headers: {
                 token: token,
