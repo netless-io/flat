@@ -10,6 +10,7 @@ import JoinPage from "./JoinPage";
 import AddNamePage from "./AddNamePage";
 import Test from "./Test";
 import HistoryPage from "./HistoryPage";
+import CreatePage from "./CreatePage";
 export class AppRoutes extends React.Component<{}, {}> {
     public componentDidCatch(error: any): void {
         message.error(`网页加载发生错误：${error}`);
@@ -24,6 +25,7 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route path="/join/" component={JoinPage} />
                     <Route path="/name/:uuid?/" component={AddNamePage} />
                     <Route path="/test/" component={Test} />
+                    <Route path="/create/" component={CreatePage} />
                     <Route path="/history/" component={HistoryPage} />
                     <Route path="/" component={IndexPage} />
                 </Switch>

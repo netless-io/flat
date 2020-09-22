@@ -61,7 +61,7 @@ export default class WhiteboardCreatorPage extends React.Component<
                         {
                             uuid: uuid,
                             time: timestamp,
-                            identity: Identity.teacher,
+                            identity: Identity.creator,
                             userId: userId,
                         },
                         ...roomArray,
@@ -75,7 +75,7 @@ export default class WhiteboardCreatorPage extends React.Component<
                         {
                             uuid: uuid,
                             time: timestamp,
-                            identity: Identity.teacher,
+                            identity: Identity.creator,
                             userId: userId,
                         },
                         ...newRoomArray,
@@ -89,7 +89,7 @@ export default class WhiteboardCreatorPage extends React.Component<
                     {
                         uuid: uuid,
                         time: timestamp,
-                        identity: Identity.teacher,
+                        identity: Identity.creator,
                         userId: userId,
                     },
                 ]),

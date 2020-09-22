@@ -39,7 +39,7 @@ export default class InviteButton extends React.Component<InviteButtonProps, Inv
         const { uuid } = this.props;
         this.handleInvite();
         clipboard.writeText(
-            `房间号：${uuid}\n加入链接：https://demo.netless.link/whiteboard/${Identity.student}/${uuid}/`,
+            `房间号：${uuid}\n加入链接：https://demo.netless.link/whiteboard/${Identity.joiner}/${uuid}/`,
         );
         message.success("已经将信息复制到剪贴板");
     };
@@ -70,12 +70,12 @@ export default class InviteButton extends React.Component<InviteButtonProps, Inv
                         <span style={{ width: 96 }}>加入链接：</span>
                         <Input
                             size={"middle"}
-                            value={`https://demo.netless.link/whiteboard/${Identity.student}/${uuid}/`}
+                            value={`https://demo.netless.link/whiteboard/${Identity.joiner}/${uuid}/`}
                             addonAfter={
                                 <CopyOutlined
                                     onClick={() => {
                                         clipboard.writeText(
-                                            `https://demo.netless.link/whiteboard/${Identity.student}/${uuid}/`,
+                                            `https://demo.netless.link/whiteboard/${Identity.joiner}/${uuid}/`,
                                         );
                                         message.success("已经将链接复制到剪贴板");
                                     }}

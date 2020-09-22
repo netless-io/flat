@@ -89,10 +89,10 @@ export default class WhiteboardPage extends React.Component<
             if (uuid && roomToken) {
                 const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
                 plugins.setPluginContext("video", {
-                    identity: identity === Identity.teacher ? "host" : "",
+                    identity: identity === Identity.creator ? "host" : "",
                 });
                 plugins.setPluginContext("audio", {
-                    identity: identity === Identity.teacher ? "host" : "",
+                    identity: identity === Identity.creator ? "host" : "",
                 });
                 const whiteWebSdk = new WhiteWebSdk({
                     appIdentifier: netlessToken.appIdentifier,

@@ -37,7 +37,7 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
             localStorage.setItem("userName", this.state.name);
         }
         this.setRoomList(this.state.roomId, userId);
-        this.props.history.push(`/whiteboard/${Identity.student}/${this.state.roomId}/${userId}/`);
+        this.props.history.push(`/whiteboard/${Identity.joiner}/${this.state.roomId}/${userId}/`);
     };
 
     public setRoomList = (uuid: string, userId: string): void => {
@@ -53,7 +53,7 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
                         {
                             uuid: uuid,
                             time: timestamp,
-                            identity: Identity.teacher,
+                            identity: Identity.joiner,
                             userId: userId,
                         },
                         ...roomArray,
@@ -67,7 +67,7 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
                         {
                             uuid: uuid,
                             time: timestamp,
-                            identity: Identity.teacher,
+                            identity: Identity.creator,
                             userId: userId,
                         },
                         ...newRoomArray,
@@ -81,7 +81,7 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
                     {
                         uuid: uuid,
                         time: timestamp,
-                        identity: Identity.teacher,
+                        identity: Identity.creator,
                         userId: userId,
                     },
                 ]),
@@ -94,7 +94,7 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
             <div className="page-index-box">
                 <div className="page-index-mid-box">
                     <div className="page-index-logo-box">
-                        <img src={logo} />
+                        <img src={logo} alt={"logo"} />
                         <span>0.0.1</span>
                     </div>
                     <div className="page-index-form-box">
