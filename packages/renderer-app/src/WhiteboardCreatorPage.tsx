@@ -3,7 +3,7 @@ import { Redirect } from "react-router";
 import { message } from "antd";
 import { RouteComponentProps } from "react-router";
 import PageError from "./PageError";
-import { netlessWhiteboardApi, RoomType } from "./apiMiddleware";
+import { netlessWhiteboardApi } from "./apiMiddleware";
 import LoadingPage from "./LoadingPage";
 import { ipcRenderer } from "electron";
 import { Identity } from "./IndexPage";
@@ -104,12 +104,10 @@ export default class WhiteboardCreatorPage extends React.Component<
                 uuid = this.props.match.params.uuid;
             } else {
                 uuid = await this.createRoomAndGetUuid("test1", 0);
-                if (uuid) {
-                    this.setRoomList(uuid, userId);
-                }
             }
             this.setState({ userId: userId });
             if (uuid) {
+                this.setRoomList(uuid, userId);
                 this.setState({ uuid: uuid });
             } else {
                 message.error("create room fail");

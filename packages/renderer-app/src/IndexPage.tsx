@@ -37,7 +37,7 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
 
     private handleCreate = (): void => {
         if (this.state.name) {
-            this.props.history.push(`/whiteboard/${Identity.creator}`);
+            this.props.history.push(`/create/`);
         } else {
             this.props.history.push("/name/");
         }

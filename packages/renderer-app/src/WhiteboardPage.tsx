@@ -27,6 +27,8 @@ import ExitButtonRoom from "./components/ExitButtonRoom";
 import { ipcRenderer } from "electron";
 import { Identity } from "./IndexPage";
 import OssDropUpload from "@netless/oss-drop-upload";
+import moment from "moment";
+import { LocalStorageRoomDataType } from "./HistoryPage";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -81,9 +83,57 @@ export default class WhiteboardPage extends React.Component<
             room.bindHtmlElement(ref);
         }
     };
-
+    public setRoomList = (uuid: string, userId: string): void => {
+        const rooms = localStorage.getItem("rooms");
+        const timestamp = moment(new Date()).format("lll");
+        if (rooms) {
+            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
+            const room = roomArray.find(data => data.uuid === uuid);
+            if (!room) {
+                localStorage.setItem(
+                    "rooms",
+                    JSON.stringify([
+                        {
+                            uuid: uuid,
+                            time: timestamp,
+                            identity: Identity.creator,
+                            userId: userId,
+                        },
+                        ...roomArray,
+                    ]),
+                );
+            } else {
+                const newRoomArray = roomArray.filter(data => data.uuid !== uuid);
+                localStorage.setItem(
+                    "rooms",
+                    JSON.stringify([
+                        {
+                            uuid: uuid,
+                            time: timestamp,
+                            identity: Identity.creator,
+                            userId: userId,
+                        },
+                        ...newRoomArray,
+                    ]),
+                );
+            }
+        } else {
+            localStorage.setItem(
+                "rooms",
+                JSON.stringify([
+                    {
+                        uuid: uuid,
+                        time: timestamp,
+                        identity: Identity.creator,
+                        userId: userId,
+                    },
+                ]),
+            );
+        }
+    };
     private startJoinRoom = async (): Promise<void> => {
         const { uuid, userId, identity } = this.props.match.params;
+        this.setRoomList(uuid, userId);
         try {
             const roomToken = await this.getRoomToken(uuid);
             if (uuid && roomToken) {

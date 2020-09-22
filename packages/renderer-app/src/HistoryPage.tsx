@@ -18,6 +18,7 @@ export type LocalStorageRoomDataType = {
     time: string;
     identity: Identity;
     userId: string;
+    roomName?: string;
     cover?: string;
 };
 
@@ -57,7 +58,9 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
                                     <img src={room.cover ? room.cover : board} alt={"cover"} />
                                 </div>
                                 <div>
-                                    <div className="room-cell-text">{room.uuid}</div>
+                                    <div className="room-cell-text">
+                                        {room.roomName ? room.roomName : room.uuid}
+                                    </div>
                                     <div className="room-cell-time">{room.time}</div>
                                 </div>
                             </div>
