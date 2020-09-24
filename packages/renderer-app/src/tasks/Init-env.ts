@@ -1,5 +1,5 @@
 import { ipcRenderer } from "electron";
-import { runtime, Runtime } from "../utils/runtime";
+import { runtime, Runtime } from "../utils/Runtime";
 
 const initEnv = async () => {
     const runtimeKeys = Object.keys(runtime);

@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Button } from "antd";
-import { DownloadFile } from "./utils/download";
-import { extractZIP } from "./utils/unzip";
+import { DownloadFile } from "./utils/Download";
+import { extractZIP } from "./utils/Unzip";
 import { removeSync } from "fs-extra";
 import { Link } from "react-router-dom";
-import { listDir, listDirByDirectory, listDirByFile } from "./utils/fs";
-import { runtime } from "./utils/runtime";
+import { listDir, listDirByDirectory, listDirByFile } from "./utils/Fs";
+import { runtime } from "./utils/Runtime";
 
 export default class Test extends React.Component<
     {},
