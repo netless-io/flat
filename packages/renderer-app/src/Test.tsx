@@ -1,9 +1,11 @@
 import * as React from "react";
 import { Button } from "antd";
-import { DownloadFile } from "./utils/download";
-import { extractZIP } from "./utils/unzip";
+import { DownloadFile } from "./utils/Download";
+import { extractZIP } from "./utils/Unzip";
 import { removeSync } from "fs-extra";
 import { Link } from "react-router-dom";
+import { listDir, listDirByDirectory, listDirByFile } from "./utils/Fs";
+import { runtime } from "./utils/Runtime";
 
 export default class Test extends React.Component<
     {},
@@ -37,10 +39,21 @@ export default class Test extends React.Component<
 
                     // 解压成功后删除压缩文件
                     removeSync(d.filePath);
-                    // console.log(download.fileIsExists(d.filePath));
-                    // console.log(runtime.downloadsDirectory);
-                    // 清空文件夹下的所有内容
+
+                    // 获取下载目录下所有的文件夹
+                    // console.log(listDirByDirectory(runtime.downloadsDirectory));
+
+                    // 获取下载目录下所有的文件
+                    // console.log(listDirByFile(runtime.downloadsDirectory));
+
+                    // 获取下载目录下所有的文件及文件夹
+                    // console.log(listDir(runtime.downloadsDirectory));
+
+                    // 清空文件夹下的所有内容(目录本身不会被删除)
                     // emptyDirSync(runtime.downloadsDirectory);
+
+                    // 删除下载目录(包括目录本身)
+                    // removeSync(runtime.downloadsDirectory);
                 })
                 .catch(e => {
                     console.log("解压失败");
