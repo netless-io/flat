@@ -8,9 +8,10 @@ import { LeftOutlined } from "@ant-design/icons";
 import empty_box from "./assets/image/empty-box.svg";
 import { DownloadFile } from "./utils/Download";
 import { extractZIP } from "./utils/Unzip";
-import { removeSync } from "fs-extra";
+import { copySync, removeSync } from "fs-extra";
 import { listDirByDirectory } from "./utils/Fs";
 import { runtime } from "./utils/Runtime";
+import path from "path";
 const resourcesHost = "convertcdn.netless.link";
 export type ServiceWorkTestStates = {
     pptDatas: TaskUuidType[];
@@ -53,7 +54,11 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
 
     private noticeDownloadZip = (taskUuid: string): void => {
         const zipUrl = this.getZipUrlByTaskUuid(taskUuid);
-        const download = new DownloadFile(zipUrl, taskUuid);
+
+        // zip 的下载路径
+        const downloadDir = path.join(runtime.downloadsDirectory, taskUuid);
+
+        const download = new DownloadFile(zipUrl);
         download.onProgress(p => {
             const pptDatasStates = this.state.pptDatasStates.map(pptData => {
                 if (pptData.taskUuid === taskUuid) {
@@ -67,16 +72,21 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
         });
 
         download.onEnd(d => {
-            extractZIP(d.filePath, taskUuid)
+            extractZIP(d.filePath, downloadDir)
                 .then(() => {
                     removeSync(d.filePath);
+                    // 因为 zip 压缩包的格式为: uuid/uuid/file，所以这里把 file 放在第一层目录，也就是: uuid/file
+                    copySync(path.join(downloadDir, taskUuid), downloadDir);
+
+                    // 因为内容已经复制成功，则可以把之前的嵌套目录删除了
+                    removeSync(path.join(downloadDir, taskUuid));
+
                     const pptDatasStates = this.state.pptDatasStates.map(pptData => {
                         if (pptData.taskUuid === taskUuid) {
                             pptData.isDownload = true;
-                            return pptData;
-                        } else {
-                            return pptData;
                         }
+
+                        return pptData;
                     });
                     this.setState({ pptDatasStates: pptDatasStates });
                 })
@@ -146,15 +156,14 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
     };
 
     private deleteCell = async (taskUuid: string): Promise<void> => {
-        removeSync(taskUuid);
+        removeSync(path.join(runtime.downloadsDirectory, taskUuid));
         const pptDatasStates = this.state.pptDatasStates.map(pptData => {
             if (pptData.taskUuid === taskUuid) {
                 pptData.progress = 0;
                 pptData.isDownload = false;
-                return pptData;
-            } else {
-                return pptData;
             }
+
+            return pptData;
         });
         this.setState({ pptDatasStates: pptDatasStates });
     };
