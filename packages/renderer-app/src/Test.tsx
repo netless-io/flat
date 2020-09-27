@@ -22,7 +22,6 @@ export default class Test extends React.Component<
 
     private noticeDownloadZip = (url: string) => {
         const download = new DownloadFile(url);
-
         download.onProgress(p => {
             this.setState({
                 downloadProgress: p.progress,
@@ -38,7 +37,7 @@ export default class Test extends React.Component<
                     console.log("解压完成");
 
                     // 解压成功后删除压缩文件
-                    removeSync(d.filePath);
+                    // removeSync(d.filePath);
 
                     // 获取下载目录下所有的文件夹
                     // console.log(listDirByDirectory(runtime.downloadsDirectory));

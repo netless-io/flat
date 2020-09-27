@@ -6,9 +6,11 @@ import { Button, Progress } from "antd";
 import { Link } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
 import empty_box from "./assets/image/empty-box.svg";
-import { DownloadFile } from "./utils/download";
-import { extractZIP } from "./utils/unzip";
+import { DownloadFile } from "./utils/Download";
+import { extractZIP } from "./utils/Unzip";
 import { removeSync } from "fs-extra";
+import { listDirByDirectory } from "./utils/Fs";
+import { runtime } from "./utils/Runtime";
 const resourcesHost = "convertcdn.netless.link";
 export type ServiceWorkTestStates = {
     pptDatas: TaskUuidType[];
@@ -51,11 +53,11 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
 
     private noticeDownloadZip = (taskUuid: string): void => {
         const zipUrl = this.getZipUrlByTaskUuid(taskUuid);
-        const download = new DownloadFile(zipUrl);
+        const download = new DownloadFile(zipUrl, taskUuid);
         download.onProgress(p => {
             const pptDatasStates = this.state.pptDatasStates.map(pptData => {
                 if (pptData.taskUuid === taskUuid) {
-                    pptData.progress = p.progress;
+                    pptData.progress = Math.round(p.progress);
                     return pptData;
                 } else {
                     return pptData;
