@@ -75,6 +75,9 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                                 <div className="page-index-history">历史记录</div>
                             </Link>
                         )}
+                        <Link to={"/storage/"}>
+                            <div className="page-index-storage">预加载</div>
+                        </Link>
                         <Popover
                             visible={this.state.visible}
                             placement={"bottom"}

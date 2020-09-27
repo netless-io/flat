@@ -4,6 +4,17 @@
     justify-content: space-between;
     height: 24px;
     align-items: center;
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    background-color: white;
+}
+
+.page-history-head-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
 }
 
 .page-history-back {
@@ -12,10 +23,13 @@
     flex-direction: row;
     height: 24px;
     align-items: center;
+    color: #3381FF;
 }
 
 .page-history-body {
-    margin: 20px;
+    margin: 40px 20px 20px;
+    height: 420px;
+    overflow-y: auto;
 }
 
 .page-history-body-empty {
@@ -24,14 +38,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 56px;
 }
 .room-cell-box {
     height: 72px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 16px;
+    margin-bottom: 16px;
     position: relative;
 }
 .room-cell-left {
@@ -43,12 +58,25 @@
 .room-cell-image {
     width: 96px;
     height: 72px;
-    background-color: #EEF0F6;
     margin-right: 16px;
+    position: relative;
     img {
         width: 100%;
         height: 100%;
+        position: absolute;
+        z-index: 1;
     }
+}
+
+.room-cell-image-cover {
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .room-cell-right {
@@ -67,6 +95,17 @@
     }
 }
 
+.room-download-cell-right {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: flex-end;
+    justify-content: space-between;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+}
+
 .room-cell-cut-line {
     background-color: #DBE1EA;
     width: 100%;
@@ -75,7 +114,7 @@
 
 .room-cell-text {
     font-size: 16px;
-    font-family: Manrope-Regular, Manrope;
+    font-family: Manrope-Regular, Manrope, serif;
     font-weight: 400;
     color: #444E60;
     line-height: 24px;
@@ -84,7 +123,7 @@
 
 .room-cell-time {
     font-size: 14px;
-    font-family: Manrope-Regular, Manrope;
+    font-family: Manrope-Regular, Manrope, serif;
     font-weight: 400;
     color: #7A7B7C;
 

@@ -1812,10 +1812,10 @@
   resolved "https://registry.yarnpkg.com/@netless/cursor-tool/-/cursor-tool-0.0.4.tgz#206be29f30359b9bdeb0bd44f1763d63632605f9"
   integrity sha512-hIxREuLXTda5dUBA2VLw3eSva/v7IUP7845g1/nrWF/CchN4HK4yEQkexc9dgw0kYPJDnFzSaWtmpFE7LWrBCw==
 
-"@netless/docs-center@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@netless/docs-center/-/docs-center-0.0.1.tgz#ede1bd66c78949e449d5f1bf284695a244677cda"
-  integrity sha512-FhJvBDAk7vBPw9e4liveNUJVd5o8syBlulNd4Ov00c6t0UxchWsaP2dKItoGMxLhdXz6S0NrKwWn2TsAzbpjlw==
+"@netless/docs-center@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@netless/docs-center/-/docs-center-0.0.2.tgz#3b1e9f2ae41e2e003e3de51a9adab98bb17fa7af"
+  integrity sha512-XZG4+unr0o2Lb09bewhuP4KwxFNLyfcbu2YUngFQh1x1BXFQ4VWLjVUrvfxnXS5sj5npOEsKrYt0QlWGBBOkgg==
   dependencies:
     "@netless/menu-box" "^0.0.1"
 
@@ -1840,41 +1840,33 @@
   dependencies:
     react-burger-menu "^2.7.1"
 
-"@netless/oss-drop-upload@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@netless/oss-drop-upload/-/oss-drop-upload-0.0.1.tgz#4bf7af24bc3d8ef1202824cd778258c2c7093cc6"
-  integrity sha512-mXjBfdyodSXoLg6pJcYuMKPeaoAvSV7fZfbdhV20YBpq/z68LZy9KaThFXM9pnIvWw3brIPglopKx+BOUdxrHw==
+"@netless/oss-drop-upload@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@netless/oss-drop-upload/-/oss-drop-upload-0.0.2.tgz#83544c2af2d3f2dd94c05cb9bc220e07db521ede"
+  integrity sha512-M6JM3wLEdFl5tZOORIf/q5B76/w1K74uuWZmZh0rNkJrxJOyFGItqErkAljVDoAmy6B7rzv0eFWWugcdPlQ3qQ==
   dependencies:
     "@netless/loading-bar" "^0.0.1"
-    "@netless/oss-upload-manager" "^1.0.9"
+    "@netless/oss-upload-manager" "^1.1.1"
     ali-oss "^6.10.0"
     react-dropzone "4.2.10"
 
-"@netless/oss-upload-button@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@netless/oss-upload-button/-/oss-upload-button-0.0.6.tgz#30031e6293c324ffa1552ea936b68102ecece1c9"
-  integrity sha512-fyQ+8Wv5dkKmLMnxxhOPVg5G7I8p/o7ZJxbiWkvu3IdOzsyIcrtvM4N/X7QUQHGCfma8r6Z5dRyi8y86hxlmWg==
+"@netless/oss-upload-button@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@netless/oss-upload-button/-/oss-upload-button-0.0.7.tgz#9f4ad4c4df73917b6fc53d05c9c724b24f409f8b"
+  integrity sha512-INP+BU4vQwNT6US/C1k65dA1nYmWf81f4H5zCSeyFVL7YCgijHXHevhq1hChdgw/VzD+nnJt8578wT/opZiWpA==
   dependencies:
     "@netless/loading-bar" "^0.0.1"
-    "@netless/oss-upload-manager" "^1.1.0"
+    "@netless/oss-upload-manager" "^1.1.1"
     ali-oss "^6.10.0"
     antd "^4.4.3"
 
-"@netless/oss-upload-manager@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@netless/oss-upload-manager/-/oss-upload-manager-1.0.9.tgz#5f16e801781c89276f643450d7bb4287657fca11"
-  integrity sha512-jDLVAUqIFqTqIygm12+mhEtt1wyPyu/U0Ag+e0WkdVnXu16tI/zHdcy90erXcizf470HDHXfmiDYeTzmUCke2g==
+"@netless/oss-upload-manager@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@netless/oss-upload-manager/-/oss-upload-manager-1.1.1.tgz#769abe91d3290b516b612a0ee634440e463658f2"
+  integrity sha512-7o49OIoh6M9mGruJa0swbAVzcyXb+k55p+t0mUmbliyk8offMMpddmYdS6hlJ4gkyh6xzY/UFcDuLJEVNUTNHg==
   dependencies:
     "@netless/fetch-middleware" "^1.0.6"
-    ali-oss "^6.10.0"
-    uuid "^8.3.0"
-
-"@netless/oss-upload-manager@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@netless/oss-upload-manager/-/oss-upload-manager-1.1.0.tgz#baa150b39b857052650dffcba5cabce706df4fbf"
-  integrity sha512-drJqh6ngsV9mXyTm3w1j2FF3mhn4CbrLi3nyJj2iqg2W2AGs8lOr9cY2fqYR6AP2J6V3drxwKOWwtLJ1nr68jQ==
-  dependencies:
-    "@netless/fetch-middleware" "^1.0.6"
+    "@types/uuid" "^8.0.1"
     ali-oss "^6.10.0"
     uuid "^8.3.0"
 
@@ -1891,10 +1883,10 @@
     "@ant-design/icons" "^4.2.2"
     antd "^4.4.3"
 
-"@netless/preview-controller@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@netless/preview-controller/-/preview-controller-0.0.1.tgz#cd54797e21e8ded2411c77cc09e7b4ccc9da4ebc"
-  integrity sha512-XgA7MwLj4aQGooQSL8MA9NWnOn0BcopNz7Q2LrVKtHVnqUjQ2NFgBNKloxSAf5PwdWVbtED7clpWIldanshiZA==
+"@netless/preview-controller@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@netless/preview-controller/-/preview-controller-0.0.2.tgz#b7d7c1c2bda86cea1d52b11c452dab1a181a47d7"
+  integrity sha512-m2s4zr4DZAdZHa5+2soG5uA2jKTtJgVao1HBe0K63x9BCVCN/ej6L3OhAw09/oKs6/g/C2UcrHGXEuDl78PNxA==
   dependencies:
     "@netless/menu-box" "^0.0.1"
 
@@ -2104,6 +2096,11 @@
   integrity sha512-d6dIfpPbF+8B7WiCi2ELY7m0w1joD8cRW4ms88Emdb2w062NeEpbNCeWwVCgzLRpVG+5e74VFSg4rgJ2xXjEiQ==
   dependencies:
     source-map "^0.6.1"
+
+"@types/uuid@^8.0.1":
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.0.tgz#215c231dff736d5ba92410e6d602050cce7e273f"
+  integrity sha512-eQ9qFW/fhfGJF8WKHGEHZEyVWfZxrT+6CLIJGBcZPfxUh/+BnEj+UCGYMlr9qZuX/2AltsvwrGqp0LhEW8D0zQ==
 
 "@types/webpack-env@^1.15.1", "@types/webpack-env@^1.15.2":
   version "1.15.2"
@@ -12161,10 +12158,10 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@^2.9.15:
-  version "2.9.15"
-  resolved "https://registry.yarnpkg.com/white-web-sdk/-/white-web-sdk-2.9.15.tgz#7c534622d170eae27380f39fc32839a86d06ed33"
-  integrity sha512-f6eWr8b3pfUvuNSbdZkQ6A8HdcgV6aDAi49Y4esBkHz2ObkFH0oMUgUYeM+25sB20ugeil9t9VJ6h+iDc0MQmA==
+white-web-sdk@^2.9.17:
+  version "2.9.17"
+  resolved "https://registry.yarnpkg.com/white-web-sdk/-/white-web-sdk-2.9.17.tgz#d42312765322186d3a24e6fe68f59d01e8233195"
+  integrity sha512-KsHjV0uym6mBUSeeNbnt/EjHsWN4Uh/8ElnDeK+MirPqHbHWc7/NLzuVkKxntF/YhQ3CfuiCfOM3E80W8M0JyQ==
   dependencies:
     "@netless/canvas-polyfill" "^0.0.3"
     atob "^2.1.0"

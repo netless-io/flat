@@ -1,18 +1,17 @@
 import * as React from "react";
 import "./Storage.less";
-import * as zip_icon from "./assets/image/zip.svg";
-import "@netless/zip";
-import { pptDatas } from "./pptDatas";
-import { WhiteScene } from "white-web-sdk";
-import { Button, Progress, Tag } from "antd";
+import zip_icon from "./assets/image/zip.svg";
+import { taskUuids, TaskUuidType } from "./taskUuids";
+import { Button, Progress } from "antd";
 import { Link } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
 import empty_box from "./assets/image/empty-box.svg";
-
+import { DownloadFile } from "./utils/download";
+import { extractZIP } from "./utils/unzip";
+import { removeSync } from "fs-extra";
+const resourcesHost = "convertcdn.netless.link";
 export type ServiceWorkTestStates = {
-    space: number;
-    availableSpace: number;
-    pptDatas: string[];
+    pptDatas: TaskUuidType[];
     pptDatasStates: PptDatasType[];
 };
 
@@ -20,6 +19,7 @@ export type PptDatasType = {
     taskUuid: string | null;
     progress: number;
     cover: string;
+    name: string;
     isDownload: boolean;
 };
 
@@ -27,58 +27,70 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
     public constructor(props: {}) {
         super(props);
         this.state = {
-            space: 0,
-            availableSpace: 0,
-            pptDatas: pptDatas,
+            pptDatas: taskUuids,
             pptDatasStates: [],
         };
     }
 
     public async componentDidMount(): Promise<void> {
-        await this.refreshSpaceData();
         const pptDatasStates: PptDatasType[] = await Promise.all(
-            pptDatas.map(async ppt => {
-                const scenes: WhiteScene[] = JSON.parse(ppt);
-                let cover = zip_icon;
-                if (scenes[0] && scenes[0].ppt) {
-                    if (scenes[0].ppt.previewURL) {
-                        cover = scenes[0].ppt.previewURL;
-                    }
-                    const regex = /dynamicConvert\/([^\/]+)/gm;
-                    const inner = scenes[0].ppt.src.match(regex);
-                    if (inner) {
-                        const taskUuid = inner[0].replace("dynamicConvert/", "");
-                        return {
-                            taskUuid: taskUuid,
-                            progress: 0,
-                            cover: cover,
-                            isDownload: false, // TODO
-                        };
-                    } else {
-                        return {
-                            taskUuid: null,
-                            progress: 0,
-                            cover: cover,
-                            isDownload: false,
-                        };
-                    }
-                } else {
-                    return {
-                        taskUuid: null,
-                        progress: 0,
-                        cover: cover,
-                        isDownload: false,
-                    };
-                }
+            taskUuids.map(async ppt => {
+                const zipUrl = this.getZipUrlByTaskUuid(ppt.taskUuid);
+                const download = new DownloadFile(zipUrl);
+                return {
+                    taskUuid: ppt.taskUuid,
+                    progress: 0,
+                    name: ppt.name ? ppt.name : "",
+                    cover: zip_icon,
+                    isDownload: download.fileIsExists(ppt.taskUuid),
+                };
             }),
         );
         this.setState({ pptDatasStates: pptDatasStates });
     }
 
-    private refreshSpaceData = async (): Promise<void> => {
-        const space = 0; // TODO;
-        const availableSpace = 0; // TODO;
-        this.setState({ space: Math.round(space), availableSpace: Math.round(availableSpace) });
+    private noticeDownloadZip = (taskUuid: string): void => {
+        const zipUrl = this.getZipUrlByTaskUuid(taskUuid);
+        const download = new DownloadFile(zipUrl);
+        download.onProgress(p => {
+            const pptDatasStates = this.state.pptDatasStates.map(pptData => {
+                if (pptData.taskUuid === taskUuid) {
+                    pptData.progress = p.progress;
+                    return pptData;
+                } else {
+                    return pptData;
+                }
+            });
+            this.setState({ pptDatasStates: pptDatasStates });
+        });
+
+        download.onEnd(d => {
+            extractZIP(d.filePath, taskUuid)
+                .then(() => {
+                    removeSync(d.filePath);
+                    const pptDatasStates = this.state.pptDatasStates.map(pptData => {
+                        if (pptData.taskUuid === taskUuid) {
+                            pptData.isDownload = true;
+                            return pptData;
+                        } else {
+                            return pptData;
+                        }
+                    });
+                    this.setState({ pptDatasStates: pptDatasStates });
+                })
+                .catch(e => {
+                    console.log("解压失败");
+                    console.log(e);
+                });
+        });
+
+        download.onError(e => {
+            console.error("下载失败");
+            console.error(e);
+        });
+
+        console.log(`文件是否已经存在: ${download.fileIsExists("test.zip")}`);
+        download.start();
     };
 
     private renderZipCells = (): React.ReactNode => {
@@ -107,7 +119,7 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
                             </div>
                             <div className="room-download-cell-right">
                                 <Button
-                                    onClick={() => this.downloadCell(pptData.taskUuid!)}
+                                    onClick={() => this.noticeDownloadZip(pptData.taskUuid!)}
                                     type={"primary"}
                                     disabled={pptData.isDownload}
                                     style={{ width: 96 }}
@@ -132,9 +144,7 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
     };
 
     private deleteCell = async (taskUuid: string): Promise<void> => {
-        // TODO
-        // await netlessCaches.deleteTaskUUID(taskUuid);
-        await this.refreshSpaceData();
+        removeSync(taskUuid);
         const pptDatasStates = this.state.pptDatasStates.map(pptData => {
             if (pptData.taskUuid === taskUuid) {
                 pptData.progress = 0;
@@ -147,27 +157,8 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
         this.setState({ pptDatasStates: pptDatasStates });
     };
 
-    private downloadCell = async (taskUuid: string): Promise<void> => {
-        console.log(taskUuid);
-        // TODO
-        // await netlessCaches.startDownload(taskUuid, (progress: number) => {
-        //     const pptDatasStates = this.state.pptDatasStates.map(pptData => {
-        //         if (pptData.taskUuid === taskUuid) {
-        //             pptData.progress = progress;
-        //             if (pptData.progress === 100) {
-        //                 pptData.progress = 0;
-        //                 pptData.isDownload = true;
-        //                 return pptData;
-        //             } else {
-        //                 return pptData;
-        //             }
-        //         } else {
-        //             return pptData;
-        //         }
-        //     });
-        //     this.setState({ pptDatasStates: pptDatasStates });
-        // });
-        await this.refreshSpaceData();
+    private getZipUrlByTaskUuid = (taskUuid: string): string => {
+        return `https://${resourcesHost}/dynamicConvert/${taskUuid}.zip`;
     };
 
     private downloadAllCell = async (): Promise<void> => {
@@ -192,7 +183,6 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
                 //     });
                 //     this.setState({ pptDatasStates: pptDatasStates });
                 // });
-                await this.refreshSpaceData();
             }
         }
     };
@@ -206,7 +196,6 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
             return pptData;
         });
         this.setState({ pptDatasStates: pptDatasStates });
-        await this.refreshSpaceData();
     };
 
     public render(): React.ReactNode {
@@ -220,9 +209,6 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
                                     <LeftOutlined /> <div>返回</div>
                                 </div>
                             </Link>
-                            <Tag color={"blue"} style={{ marginLeft: 8 }}>
-                                {this.state.space}(mb) / {this.state.availableSpace}(mb)
-                            </Tag>
                         </div>
                         <div>
                             <Button

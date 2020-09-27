@@ -27,8 +27,11 @@ import ExitButtonRoom from "./components/ExitButtonRoom";
 import { ipcRenderer } from "electron";
 import { Identity } from "./IndexPage";
 import OssDropUpload from "@netless/oss-drop-upload";
+import { PPTDataType, PPTType } from "@netless/oss-upload-manager";
 import moment from "moment";
+import { v4 as uuidv4 } from "uuid";
 import { LocalStorageRoomDataType } from "./HistoryPage";
+import { pptDatas } from "./taskUuids";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -76,6 +79,7 @@ export default class WhiteboardPage extends React.Component<
             return null;
         }
     };
+
     private handleBindRoom = (ref: HTMLDivElement): void => {
         const { room } = this.state;
         this.setState({ whiteboardLayerDownRef: ref });
@@ -131,6 +135,32 @@ export default class WhiteboardPage extends React.Component<
             );
         }
     };
+    private setDefaultPptData = (pptDatas: string[], room: Room): void => {
+        const docs: PPTDataType[] = (room.state.globalState as any).docs;
+        if (docs && docs.length > 1) {
+            return;
+        }
+        if (pptDatas.length > 0) {
+            for (let pptData of pptDatas) {
+                const sceneId = uuidv4();
+                const scenes = JSON.parse(pptData);
+                const documentFile: PPTDataType = {
+                    active: false,
+                    id: sceneId,
+                    pptType: PPTType.dynamic,
+                    data: scenes,
+                };
+                const docs = (room.state.globalState as any).docs;
+                if (docs && docs.length > 0) {
+                    const newDocs = [documentFile, ...docs];
+                    room.setGlobalState({ docs: newDocs });
+                } else {
+                    room.setGlobalState({ docs: [documentFile] });
+                }
+                room.putScenes(`/${room.uuid}/${sceneId}`, scenes);
+            }
+        }
+    };
     private startJoinRoom = async (): Promise<void> => {
         const { uuid, userId, identity } = this.props.match.params;
         this.setRoomList(uuid, userId);
@@ -164,7 +194,6 @@ export default class WhiteboardPage extends React.Component<
                     {
                         onPhaseChanged: phase => {
                             this.setState({ phase: phase });
-                            console.log(`room ${"uuid"} changed: ${phase}`);
                         },
                         onRoomStateChanged: (modifyState: Partial<RoomState>): void => {
                             if (modifyState.broadcastState) {
@@ -180,6 +209,7 @@ export default class WhiteboardPage extends React.Component<
                     },
                 );
                 cursorAdapter.setRoom(room);
+                this.setDefaultPptData(pptDatas, room);
                 room.setMemberState({
                     pencilOptions: {
                         disableBezier: false,
@@ -238,7 +268,7 @@ export default class WhiteboardPage extends React.Component<
                 return (
                     <div className="realtime-box">
                         <div className="logo-box">
-                            <img src={logo} />
+                            <img src={logo} alt={"logo"} />
                         </div>
                         <div className="tool-box-out">
                             <ToolBox
@@ -284,7 +314,7 @@ export default class WhiteboardPage extends React.Component<
                                             this.setState({ isFileOpen: !this.state.isFileOpen })
                                         }
                                     >
-                                        <img src={folder} />
+                                        <img src={folder} alt={"folder"} />
                                     </div>
                                 </Tooltip>
                                 <InviteButton uuid={uuid} />
