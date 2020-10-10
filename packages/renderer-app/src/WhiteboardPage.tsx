@@ -34,6 +34,7 @@ import { LocalStorageRoomDataType } from "./HistoryPage";
 import { pptDatas } from "./taskUuids";
 import { listDir } from "./utils/Fs";
 import { runtime } from "./utils/Runtime";
+import path from "path";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -313,7 +314,14 @@ export default class WhiteboardPage extends React.Component<
                                     <div
                                         className="page-controller-cell"
                                         onClick={() => {
-                                            console.log(listDir(runtime.downloadsDirectory));
+                                            console.log(
+                                                listDir(
+                                                    path.join(
+                                                        runtime.downloadsDirectory,
+                                                        "dynamicConvert",
+                                                    ),
+                                                ),
+                                            );
                                             this.setState({ isFileOpen: !this.state.isFileOpen });
                                         }}
                                     >

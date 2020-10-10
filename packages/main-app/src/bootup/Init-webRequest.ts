@@ -11,6 +11,7 @@ export default (context: Context) => {
         const localPath = `${context.runtime.downloadsDirectory}/${path}`;
 
         if (fs.existsSync(localPath)) {
+            console.log(`${context.runtime.downloadsDirectory}/${path}`);
             callback({
                 redirectURL: `${context.runtime.downloadsDirectory}/${path}`,
             });

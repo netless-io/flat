@@ -55,7 +55,7 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
         const pptDatasStates: PptDatasType[] = taskUuids.map(ppt => {
             const url = this.getZipUrlByTaskUuid(ppt.taskUuid);
             const download = new DownloadFile(url);
-            if (download.fileIsExists(ppt.taskUuid)) {
+            if (download.fileIsExists(path.join("dynamicConvert", ppt.taskUuid))) {
                 return {
                     taskUuid: ppt.taskUuid,
                     progress: 0,
@@ -88,7 +88,7 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
     private noticeDownloadZip = (taskUuid: string): void => {
         const zipUrl = this.getZipUrlByTaskUuid(taskUuid);
         const downloadDir = path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid);
-        const download = new DownloadFile(zipUrl);
+        const download = new DownloadFile(zipUrl, downloadDir);
         download.onProgress(p => {
             const progress = Math.round(p.progress);
             const pptDatasStates = this.state.pptDatasStates.map(pptData => {
@@ -106,10 +106,12 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
                 .then(() => {
                     removeSync(d.filePath);
                     copySync(
-                        path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid),
+                        path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid, taskUuid),
                         downloadDir,
                     );
-                    removeSync(path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid));
+                    removeSync(
+                        path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid, taskUuid),
+                    );
                     const pptDatasStates = this.state.pptDatasStates.map(pptData => {
                         if (pptData.taskUuid === taskUuid) {
                             pptData.downloadState = DownloadState.downloaded;
@@ -306,7 +308,7 @@ class Downloader {
     private download = async (taskUuid: string): Promise<void> => {
         const zipUrl = this.getZipUrlByTaskUuid(taskUuid);
         const downloadDir = path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid);
-        const download = new DownloadFile(zipUrl);
+        const download = new DownloadFile(zipUrl, downloadDir);
         download.onProgress(progressObj => {
             const progress = Math.round(progressObj.progress);
             const pptDatasStates = this.pptDatasStates.map(pptData => {
@@ -325,10 +327,12 @@ class Downloader {
                 .then(() => {
                     removeSync(d.filePath);
                     copySync(
-                        path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid),
+                        path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid, taskUuid),
                         downloadDir,
                     );
-                    removeSync(path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid));
+                    removeSync(
+                        path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid, taskUuid),
+                    );
                     const pptDatasStates = this.pptDatasStates.map(pptData => {
                         if (pptData.taskUuid === taskUuid) {
                             pptData.progress = 0;
