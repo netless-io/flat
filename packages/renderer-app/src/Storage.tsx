@@ -9,13 +9,14 @@ import empty_box from "./assets/image/empty-box.svg";
 import { DownloadFile } from "./utils/Download";
 import { extractZIP } from "./utils/Unzip";
 import { copySync, removeSync } from "fs-extra";
-import { listDirByDirectory } from "./utils/Fs";
 import { runtime } from "./utils/Runtime";
 import path from "path";
 const resourcesHost = "convertcdn.netless.link";
 export type ServiceWorkTestStates = {
     pptDatas: TaskUuidType[];
     pptDatasStates: PptDatasType[];
+    downloader: Downloader | null;
+    downloadAllState: DownloadState;
 };
 
 export type PptDatasType = {
@@ -23,8 +24,21 @@ export type PptDatasType = {
     progress: number;
     cover: string;
     name: string;
-    isDownload: boolean;
+    downloadState: DownloadState;
 };
+
+enum DownloadState {
+    preDownload = "preDownload",
+    downloading = "downloading",
+    stopDownload = "stopDownload",
+    downloaded = "downloaded",
+}
+
+enum PptListState {
+    listDownAll = "listDownAll",
+    listDownPart = "listDownPart",
+    listDownNone = "listDownNone",
+}
 
 export default class Storage extends React.Component<{}, ServiceWorkTestStates> {
     public constructor(props: {}) {
@@ -32,37 +46,54 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
         this.state = {
             pptDatas: taskUuids,
             pptDatasStates: [],
+            downloader: null,
+            downloadAllState: DownloadState.preDownload,
         };
     }
 
     public async componentDidMount(): Promise<void> {
-        const pptDatasStates: PptDatasType[] = await Promise.all(
-            taskUuids.map(async ppt => {
-                const zipUrl = this.getZipUrlByTaskUuid(ppt.taskUuid);
-                const download = new DownloadFile(zipUrl);
+        const pptDatasStates: PptDatasType[] = taskUuids.map(ppt => {
+            const url = this.getZipUrlByTaskUuid(ppt.taskUuid);
+            const download = new DownloadFile(url);
+            if (download.fileIsExists(ppt.taskUuid)) {
                 return {
                     taskUuid: ppt.taskUuid,
                     progress: 0,
                     name: ppt.name ? ppt.name : "",
                     cover: zip_icon,
-                    isDownload: download.fileIsExists(ppt.taskUuid),
+                    downloadState: DownloadState.downloaded,
                 };
-            }),
-        );
-        this.setState({ pptDatasStates: pptDatasStates });
+            } else {
+                return {
+                    taskUuid: ppt.taskUuid,
+                    progress: 0,
+                    name: ppt.name ? ppt.name : "",
+                    cover: zip_icon,
+                    downloadState: DownloadState.preDownload,
+                };
+            }
+        });
+        const downloader = new Downloader(pptDatasStates, this.onProgressUpdate, this.onPptSuccess);
+        this.setState({ downloader: downloader, pptDatasStates: pptDatasStates });
     }
+
+    private onProgressUpdate = (pptDatasStates: PptDatasType[]): void => {
+        this.setState({ pptDatasStates: pptDatasStates });
+    };
+
+    private onPptSuccess = async (): Promise<void> => {
+        // await this.refreshSpaceData();
+    };
 
     private noticeDownloadZip = (taskUuid: string): void => {
         const zipUrl = this.getZipUrlByTaskUuid(taskUuid);
-
-        // zip 的下载路径
-        const downloadDir = path.join(runtime.downloadsDirectory, taskUuid);
-
+        const downloadDir = path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid);
         const download = new DownloadFile(zipUrl);
         download.onProgress(p => {
+            const progress = Math.round(p.progress);
             const pptDatasStates = this.state.pptDatasStates.map(pptData => {
                 if (pptData.taskUuid === taskUuid) {
-                    pptData.progress = Math.round(p.progress);
+                    pptData.progress = progress;
                     return pptData;
                 } else {
                     return pptData;
@@ -70,41 +101,36 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
             });
             this.setState({ pptDatasStates: pptDatasStates });
         });
-
         download.onEnd(d => {
             extractZIP(d.filePath, downloadDir)
                 .then(() => {
                     removeSync(d.filePath);
-                    // 因为 zip 压缩包的格式为: uuid/uuid/file，所以这里把 file 放在第一层目录，也就是: uuid/file
-                    copySync(path.join(downloadDir, taskUuid), downloadDir);
-
-                    // 因为内容已经复制成功，则可以把之前的嵌套目录删除了
-                    removeSync(path.join(downloadDir, taskUuid));
-
+                    copySync(
+                        path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid),
+                        downloadDir,
+                    );
+                    removeSync(path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid));
                     const pptDatasStates = this.state.pptDatasStates.map(pptData => {
                         if (pptData.taskUuid === taskUuid) {
-                            pptData.isDownload = true;
+                            pptData.downloadState = DownloadState.downloaded;
                         }
-
                         return pptData;
                     });
                     this.setState({ pptDatasStates: pptDatasStates });
                 })
                 .catch(e => {
-                    console.log("解压失败");
-                    console.log(e);
+                    console.log("解压失败", e);
                 });
         });
-
         download.onError(e => {
-            console.error("下载失败");
-            console.error(e);
+            console.error("下载失败", e);
         });
-
-        console.log(`文件是否已经存在: ${download.fileIsExists("test.zip")}`);
         download.start();
     };
 
+    private detectIsDownload = (ppt: PptDatasType): boolean => {
+        return ppt.downloadState === DownloadState.downloaded;
+    };
     private renderZipCells = (): React.ReactNode => {
         const { pptDatasStates } = this.state;
         return pptDatasStates.map((pptData, index: number) => {
@@ -115,7 +141,7 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
                             <div className="room-cell-left">
                                 <div className="room-cell-image">
                                     <img src={pptData.cover} alt={"cover"} />
-                                    {!pptData.isDownload && (
+                                    {!this.detectIsDownload(pptData) && (
                                         <div className="room-cell-image-cover">
                                             <Progress
                                                 width={42}
@@ -133,14 +159,14 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
                                 <Button
                                     onClick={() => this.noticeDownloadZip(pptData.taskUuid!)}
                                     type={"primary"}
-                                    disabled={pptData.isDownload}
+                                    disabled={this.detectIsDownload(pptData)}
                                     style={{ width: 96 }}
                                 >
                                     下载
                                 </Button>
                                 <Button
                                     onClick={() => this.deleteCell(pptData.taskUuid!)}
-                                    disabled={!pptData.isDownload}
+                                    disabled={!this.detectIsDownload(pptData)}
                                     style={{ width: 96 }}
                                 >
                                     删除
@@ -156,14 +182,15 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
     };
 
     private deleteCell = async (taskUuid: string): Promise<void> => {
-        removeSync(path.join(runtime.downloadsDirectory, taskUuid));
+        removeSync(path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid));
         const pptDatasStates = this.state.pptDatasStates.map(pptData => {
             if (pptData.taskUuid === taskUuid) {
                 pptData.progress = 0;
-                pptData.isDownload = false;
+                pptData.downloadState = DownloadState.preDownload;
+                return pptData;
+            } else {
+                return pptData;
             }
-
-            return pptData;
         });
         this.setState({ pptDatasStates: pptDatasStates });
     };
@@ -173,40 +200,36 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
     };
 
     private downloadAllCell = async (): Promise<void> => {
-        const { pptDatasStates } = this.state;
-        for (let ppt of pptDatasStates) {
-            if (ppt.taskUuid && !ppt.isDownload) {
-                // TODO
-                // await netlessCaches.startDownload(ppt.taskUuid, (progress: number) => {
-                //     const pptDatasStates = this.state.pptDatasStates.map(pptData => {
-                //         if (pptData.taskUuid === ppt.taskUuid) {
-                //             pptData.progress = progress;
-                //             if (pptData.progress === 100) {
-                //                 pptData.progress = 0;
-                //                 pptData.isDownload = true;
-                //                 return pptData;
-                //             } else {
-                //                 return pptData;
-                //             }
-                //         } else {
-                //             return pptData;
-                //         }
-                //     });
-                //     this.setState({ pptDatasStates: pptDatasStates });
-                // });
+        const { downloader } = this.state;
+        if (downloader) {
+            this.setState({ downloadAllState: DownloadState.downloading });
+            await downloader.downloadAll();
+            this.refreshPptListState();
+        }
+    };
+    private refreshPptListState = (): void => {
+        const { downloader } = this.state;
+        if (downloader) {
+            if (downloader.pptListState === PptListState.listDownAll) {
+                this.setState({ downloadAllState: DownloadState.downloaded });
+            } else if (downloader.pptListState === PptListState.listDownPart) {
+                this.setState({ downloadAllState: DownloadState.stopDownload });
+            } else {
+                this.setState({ downloadAllState: DownloadState.preDownload });
             }
         }
     };
-
     private clearSpace = async (): Promise<void> => {
-        // TODO
-        // await netlessCaches.deleteCache();
+        removeSync(runtime.downloadsDirectory);
         const pptDatasStates = this.state.pptDatasStates.map(pptData => {
-            pptData.isDownload = false;
+            pptData.downloadState = DownloadState.preDownload;
             pptData.progress = 0;
             return pptData;
         });
-        this.setState({ pptDatasStates: pptDatasStates });
+        this.setState({
+            pptDatasStates: pptDatasStates,
+            downloadAllState: DownloadState.preDownload,
+        });
     };
 
     public render(): React.ReactNode {
@@ -251,4 +274,114 @@ export default class Storage extends React.Component<{}, ServiceWorkTestStates> 
             </div>
         );
     }
+}
+class Downloader {
+    private didStop: boolean = false;
+    private readonly pptDatasStates: PptDatasType[];
+    private readonly onProgressUpdate: (pptDatasStates: PptDatasType[]) => void;
+    private readonly onPptSuccess: () => Promise<void>;
+    public pptListState: PptListState;
+    public constructor(
+        pptDatasStates: PptDatasType[],
+        onProgressUpdate: (pptDatasStates: PptDatasType[]) => void,
+        onPptSuccess: () => Promise<void>,
+    ) {
+        this.pptDatasStates = pptDatasStates;
+        this.onProgressUpdate = onProgressUpdate;
+        this.onPptSuccess = onPptSuccess;
+        this.pptListState = this.getPptListState();
+    }
+    public stop = (): void => {
+        this.didStop = true;
+    };
+
+    public start = (): void => {
+        this.didStop = false;
+    };
+
+    private getZipUrlByTaskUuid = (taskUuid: string): string => {
+        return `https://${resourcesHost}/dynamicConvert/${taskUuid}.zip`;
+    };
+
+    private download = async (taskUuid: string): Promise<void> => {
+        const zipUrl = this.getZipUrlByTaskUuid(taskUuid);
+        const downloadDir = path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid);
+        const download = new DownloadFile(zipUrl);
+        download.onProgress(progressObj => {
+            const progress = Math.round(progressObj.progress);
+            const pptDatasStates = this.pptDatasStates.map(pptData => {
+                if (pptData.taskUuid === taskUuid) {
+                    pptData.progress = progress;
+                    pptData.downloadState = DownloadState.downloading;
+                    return pptData;
+                } else {
+                    return pptData;
+                }
+            });
+            this.onProgressUpdate(pptDatasStates);
+        });
+        download.onEnd(d => {
+            extractZIP(d.filePath, downloadDir)
+                .then(() => {
+                    removeSync(d.filePath);
+                    copySync(
+                        path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid),
+                        downloadDir,
+                    );
+                    removeSync(path.join(runtime.downloadsDirectory, "dynamicConvert", taskUuid));
+                    const pptDatasStates = this.pptDatasStates.map(pptData => {
+                        if (pptData.taskUuid === taskUuid) {
+                            pptData.progress = 0;
+                            pptData.downloadState = DownloadState.downloaded;
+                            return pptData;
+                        } else {
+                            return pptData;
+                        }
+                    });
+                    this.onProgressUpdate(pptDatasStates);
+                })
+                .catch(error => {
+                    console.log("解压失败", error);
+                });
+        });
+        download.onError(error => {
+            console.error("下载失败", error);
+        });
+        download.start();
+    };
+
+    private getPptListState = (): PptListState => {
+        const downloadData: PptDatasType[] = [];
+        for (let pptData of this.pptDatasStates) {
+            if (pptData.downloadState === DownloadState.downloaded) {
+                downloadData.push(pptData);
+            }
+        }
+        const dataLength = this.pptDatasStates.length;
+        const downloadDataLength = downloadData.length;
+        if (downloadDataLength === 0) {
+            return PptListState.listDownNone;
+        } else if (downloadDataLength === dataLength) {
+            return PptListState.listDownAll;
+        } else {
+            return PptListState.listDownPart;
+        }
+    };
+
+    private detectIsDownload = (ppt: PptDatasType): boolean => {
+        return ppt.downloadState === DownloadState.downloaded;
+    };
+
+    public downloadAll = async (): Promise<void> => {
+        for (let ppt of this.pptDatasStates) {
+            if (this.didStop) {
+                break;
+            }
+            if (ppt.taskUuid && !this.detectIsDownload(ppt)) {
+                await this.download(ppt.taskUuid);
+                this.pptListState = this.getPptListState();
+                await this.onPptSuccess();
+            }
+        }
+    };
 }

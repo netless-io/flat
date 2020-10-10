@@ -32,6 +32,8 @@ import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { LocalStorageRoomDataType } from "./HistoryPage";
 import { pptDatas } from "./taskUuids";
+import { listDir } from "./utils/Fs";
+import { runtime } from "./utils/Runtime";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -310,9 +312,10 @@ export default class WhiteboardPage extends React.Component<
                                 <Tooltip placement="bottom" title={"Docs center"}>
                                     <div
                                         className="page-controller-cell"
-                                        onClick={() =>
-                                            this.setState({ isFileOpen: !this.state.isFileOpen })
-                                        }
+                                        onClick={() => {
+                                            console.log(listDir(runtime.downloadsDirectory));
+                                            this.setState({ isFileOpen: !this.state.isFileOpen });
+                                        }}
                                     >
                                         <img src={folder} alt={"folder"} />
                                     </div>
