@@ -32,9 +32,9 @@ class ElectronWebpackPlugin {
             this.spreadStdoutAndStdErr(exec(script, this.puts));
         } else {
             const { command, args } = this.serializeScript(script);
-            console.log(command, args);
             const proc = spawn(command, args);
             proc.on("close", this.puts);
+            proc.stdout.pipe(process.stdout);
         }
     }
 

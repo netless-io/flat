@@ -15,6 +15,7 @@ export default async (context: Context) => {
             autoplayPolicy: "no-user-gesture-required",
             nodeIntegration: true,
             preload: context.runtime.preloadPath,
+            webSecurity: false,
         },
     });
 
