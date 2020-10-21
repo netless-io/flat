@@ -36,4 +36,4 @@ nsis:
   allowToChangeInstallationDirectory: true
 
 directories:
-  buildResources: build/resources/
+  buildResources: resources/
