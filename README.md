@@ -18,6 +18,6 @@ yarn start
 cd packages/renderer-app
 yarn build
 cd ../packages/main-app
-# or yarn copyRenderBuildCode && yarn build:main && yarn pack:mac
+# or yarn copy:renderBuildCode && yarn build:main && yarn pack:mac
 yarn pack:mac:auto
 ```
