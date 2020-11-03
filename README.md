@@ -3,9 +3,6 @@
 ### 开发
 
 ```shell
-# 运行 yarn 之前，需要确保全局存在 lerna，否则会报错
-yarn
-
 # 构建依赖包
 lerna run build --scope="*-pkg"
 
