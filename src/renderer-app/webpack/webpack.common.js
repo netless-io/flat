@@ -3,7 +3,6 @@ const threadLoader = require("thread-loader");
 const DotenvFlow = require("dotenv-flow-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
-const { NoEmitOnErrorsPlugin, NamedModulesPlugin } = require("webpack");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -158,10 +157,6 @@ module.exports = {
             },
         }),
     ].filter(Boolean),
-
-    externals: {
-        "agora-electron-sdk": "commonjs2 agora-electron-sdk",
-    },
 
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
