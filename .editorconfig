@@ -15,5 +15,8 @@ trim_trailing_whitespace = false
 [*.{yaml, yml}]
 indent_size = 2
 
+[*.json]
+indent_size = 2
+
 [*.ts]
 quote_type = double
