@@ -1,23 +1,36 @@
 
 
-### Development
+### 开发
 
 ```shell
-# renderer-app (The first shell window, Don't close)
+# 运行 yarn 之前，需要确保全局存在 lerna，否则会报错
+yarn
+
+# 构建依赖包
+lerna run build --scope="*-pkg"
+
+# renderer-app (第一个窗口，不要关闭)
 cd packages/renderer-app
 yarn start
 
-# main-app (Second shell window, Don't close)
+# main-app (第二个窗口，不要关闭)
 cd packages/main-app
 yarn start
+
+# 装第三方库时
+lerna add package-name --scope="main-app" --dev
+lerna add package-name --scope="*-app"
+
+# 卸载第三方库时
+# 在 package.json 中移除要卸载的第三方库
+lerna bootstrap
 ```
 
-### Build
+### 构建
 
 ```shell
 cd packages/renderer-app
 yarn build
 cd ../packages/main-app
-# or yarn copy:renderBuildCode && yarn build:main && yarn pack:mac
 yarn pack:mac:auto
 ```
