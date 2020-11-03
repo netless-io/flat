@@ -1,7 +1,5 @@
-#!/usr/bin/env node
-
 const minimist = require("minimist");
-const { log, arch, platform, setAgoraBuildInfo } = require("./utils");
+const { log, arch, platform, setAgoraBuildInfo } = require("./Utils");
 
 const commandsArgs = minimist(process.argv.slice(2));
 // delete useless keys
