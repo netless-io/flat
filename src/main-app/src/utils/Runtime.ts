@@ -1,0 +1,43 @@
+import path from "path";
+import { app } from "electron";
+import { platform } from "os";
+import { runtime as runtimeInfo } from "types-pkg";
+
+const isDevelopment = process.env.NODE_ENV === "development";
+
+const isProduction = process.env.NODE_ENV === "production";
+
+const startURL = isProduction
+    ? `file://${__dirname}/../static/render/index.html`
+    : "http://localhost:3000";
+
+const isMac = platform() === "darwin";
+
+const isWin = platform() === "win32";
+
+const staticPath = isProduction
+    ? path.join(__dirname, "..", "static")
+    : path.resolve(__dirname, "..", "..", "static");
+
+const preloadPath = isProduction
+    ? path.join(__dirname, "preload.js")
+    : path.resolve(__dirname, "..", "..", "preload.js");
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const appVersion = isProduction ? app.getVersion() : require("../../package.json").version;
+
+const downloadsDirectory = path.join(app.getPath("userData"), "downloads");
+
+const runtime: runtimeInfo.Type = {
+    isDevelopment,
+    isProduction,
+    startURL,
+    isMac,
+    isWin,
+    staticPath,
+    preloadPath,
+    appVersion,
+    downloadsDirectory,
+};
+
+export default runtime;

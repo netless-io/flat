@@ -1,0 +1,69 @@
+{
+  "name": "main-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "",
+  "homepage": "https://github.com/netless-io/Flat-native",
+  "author": {
+    "email": "158blackhole@gmail.com",
+    "name": "Black-Hole",
+    "url": "https://bugs.cc/"
+  },
+  "repository": {
+    "url": "https://github.com/netless-io/Flat-native"
+  },
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack --info-verbosity=none --config webpack/webpack.dev.js",
+    "launch:electron": "./scripts/Launch-electron.js",
+    "copy:renderBuildCode": "./scripts/Copy-render-build-code.js",
+    "build:main": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
+    "build": "npm run copy:renderBuildCode && npm run build:main",
+    "pack:win": "./scripts/Pack.js win",
+    "pack:mac": "./scripts/Pack.js mac",
+    "pack:win:auto": "npm run build && ./scripts/Pack.js win",
+    "pack:mac:auto": "npm run build && ./scripts/Pack.js mac",
+    "download:agoraAddon:mac": "npm run rm:agoraAddon && ./scripts/Download_agora_addon.js --arch=x64 --platform=darwin && npm run move:agoraAddon",
+    "download:agoraAddon:win": "npm run rm:agoraAddon && ./scripts/Download_agora_addon.js --arch=x86 --platform=win32 && npm run move:agoraAddon",
+    "move:agoraAddon": "move-cli ./build/ ../../node_modules/agora-electron-sdk/build/",
+    "rm:agoraAddon": "rimraf ../../node_modules/agora-electron-sdk/build"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/plugin-proposal-export-default-from": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/fs-extra": "^9.0.1",
+    "@types/node": "^14.14.6",
+    "@types/webpack-env": "^1.15.2",
+    "@typescript-eslint/eslint-plugin": "^3.10.0",
+    "@typescript-eslint/parser": "^3.10.0",
+    "babel-loader": "^8.1.0",
+    "cross-env": "^7.0.2",
+    "electron": "7.1.14",
+    "electron-builder": "^22.7.0",
+    "electron-webpack": "^2.8.2",
+    "eslint": "^7.7.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-prettier": "^3.1.4",
+    "file-loader": "^6.2.0",
+    "fork-ts-checker-webpack-plugin": "^5.1.0",
+    "fs-extra": "^9.0.1",
+    "js-yaml": "^3.14.0",
+    "move-cli": "^1.2.1",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.0",
+    "rimraf": "^3.0.2",
+    "thread-loader": "^2.1.3",
+    "types-pkg": "^0.1.0",
+    "typescript": "^4.0.5",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-merge": "^5.1.2"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "agora-electron-sdk": "education290"
+  }
+}

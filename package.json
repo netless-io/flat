@@ -2,25 +2,10 @@
     "name": "root",
     "private": true,
     "scripts": {
-        "preinstall": "npm install minimist@1.2.5 edit-json-file@1.4.1 --save-dev && ./scripts/build-agora-sdk.js"
-    },
-    "workspaces": {
-        "packages": [
-            "packages/*"
-        ],
-        "nohoist": [
-            "renderer-app/@babel/plugin-transform-runtime",
-            "main-app/electron-builder",
-            "main-app/electron-builder/app-builder-lib",
-            "main-app/electron-builder/builder-util",
-            "main-app/electron-builder/builder-util-runtime",
-            "main-app/electron-builder/dmg-builder",
-            "main-app/js-yaml"
-        ]
+        "preinstall": "npm install minimist@1.2.5 edit-json-file@1.4.1 --save-dev && ./scripts/build-agora-sdk.js",
+        "install": "lerna bootstrap"
     },
     "devDependencies": {
-        "@types/node": "^12.0.0",
-        "cross-env": "^7.0.2",
         "edit-json-file": "^1.4.1",
         "minimist": "^1.2.5"
     },
