@@ -17,6 +17,6 @@ module.exports = merge(common, {
     plugins: [
         new NamedModulesPlugin(),
         new NoEmitOnErrorsPlugin(),
-        new ElectronWebpackPlugin("lerna run --stream --scope main-app launch:electron"),
+        new ElectronWebpackPlugin("npx lerna run --stream --scope main-app launch:electron"),
     ],
 });
