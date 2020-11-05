@@ -16,10 +16,14 @@ import { netlessWhiteboardApi } from "./apiMiddleware";
 import PageError from "./PageError";
 import LoadingPage from "./LoadingPage";
 import pages from "./assets/image/pages.svg";
+import record from "./assets/image/record.svg";
 import folder from "./assets/image/folder.svg";
 import follow from "./assets/image/follow.svg";
 import followActive from "./assets/image/follow-active.svg";
-import logo from "./assets/image/logo.svg";
+import options from "./assets/image/options.svg";
+import signal1 from "./assets/image/signal-1.svg";
+import signal2 from "./assets/image/signal-2.svg";
+import signal3 from "./assets/image/signal-3.svg";
 import { netlessToken, ossConfigObj } from "./appToken";
 import "./WhiteboardPage.less";
 import InviteButton from "./components/InviteButton";
@@ -267,8 +271,66 @@ export default class WhiteboardPage extends React.Component<
             default: {
                 return (
                     <div className="realtime-box">
-                        <div className="logo-box">
-                            <img src={logo} alt={"logo"} />
+                        <div className={`topbar-box${runtime.isMac ? '' : '-win'}`}>
+                            <div className="topbar-content-left">
+                                <h1 className="topbar-title">房间主题</h1>
+                                <div className="topbar-network-status">
+                                    <span className="topbar-network-delay">延迟：0ms</span>
+                                    <span className="topbar-network-signal">网络：
+                                        <img src={signal3} alt="signal" />
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="topbar-content-center">
+                                文件名称.pptx 上传中…
+                            </div>
+                            <div className="topbar-content-right">
+                                <Tooltip placement="bottom" title="record">
+                                    <div className="topbar-content-right-cell">
+                                        <img src={record} alt="record" />
+                                    </div>
+                                </Tooltip>
+                                <Tooltip placement="bottom" title="Vision control">
+                                    <div
+                                        className="topbar-content-right-cell"
+                                        onClick={() => this.handleRoomController(room)}
+                                    >
+                                        <img
+                                            src={
+                                                this.state.mode === ViewMode.Broadcaster
+                                                    ? followActive
+                                                    : follow
+                                            }
+                                            alt="Vision control"
+                                        />
+                                    </div>
+                                </Tooltip>
+                                <Tooltip placement="bottom" title={"Docs center"}>
+                                    <div
+                                        className="topbar-content-right-cell"
+                                        onClick={() => {
+                                            console.log(
+                                                listDir(
+                                                    path.join(
+                                                        runtime.downloadsDirectory,
+                                                        "dynamicConvert",
+                                                    ),
+                                                ),
+                                            );
+                                            this.setState({ isFileOpen: !this.state.isFileOpen });
+                                        }}
+                                    >
+                                        <img src={folder} alt={"folder"} />
+                                    </div>
+                                </Tooltip>
+                                <InviteButton uuid={uuid} />
+                                <Tooltip placement="bottom" title="options">
+                                    <div className="topbar-content-right-cell">
+                                        <img src={options} alt="options" />
+                                    </div>
+                                </Tooltip>
+                                <ExitButtonRoom identity={identity} room={room} userId={userId} />
+                            </div>
                         </div>
                         <div className="tool-box-out">
                             <ToolBox
@@ -289,45 +351,6 @@ export default class WhiteboardPage extends React.Component<
                         </div>
                         <div className="zoom-controller-box">
                             <ZoomController room={room} />
-                        </div>
-                        <div className="room-controller-box">
-                            <div className="page-controller-mid-box">
-                                <Tooltip placement="bottom" title={"Vision control"}>
-                                    <div
-                                        className="page-controller-cell"
-                                        onClick={() => this.handleRoomController(room)}
-                                    >
-                                        <img
-                                            src={
-                                                this.state.mode === ViewMode.Broadcaster
-                                                    ? followActive
-                                                    : follow
-                                            }
-                                            alt={"img"}
-                                        />
-                                    </div>
-                                </Tooltip>
-                                <Tooltip placement="bottom" title={"Docs center"}>
-                                    <div
-                                        className="page-controller-cell"
-                                        onClick={() => {
-                                            console.log(
-                                                listDir(
-                                                    path.join(
-                                                        runtime.downloadsDirectory,
-                                                        "dynamicConvert",
-                                                    ),
-                                                ),
-                                            );
-                                            this.setState({ isFileOpen: !this.state.isFileOpen });
-                                        }}
-                                    >
-                                        <img src={folder} alt={"folder"} />
-                                    </div>
-                                </Tooltip>
-                                <InviteButton uuid={uuid} />
-                                <ExitButtonRoom identity={identity} room={room} userId={userId} />
-                            </div>
                         </div>
                         <div className="page-controller-box">
                             <div className="page-controller-mid-box">

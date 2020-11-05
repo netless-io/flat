@@ -5,6 +5,84 @@
   overflow: hidden;
 }
 
+@topbar-icon-width: 22px;
+@topbar-content-right-cell-width: 32px;
+@topbar-content-right-cell-gap: 16px;
+
+.topbar-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  height: 50px;
+  font-size: 16px;
+}
+
+.topbar-box-win:extend(.topbar-box) {
+  // Windows 下菜单栏在窗口以内，需要分割
+  border-top: 0.5px #DBE1EA solid;
+}
+
+.topbar-content-left {
+  display: flex;
+  align-items: center;
+}
+
+.topbar-title {
+  margin: 0 16px;
+  padding: 0;
+  font-size: 16px;
+  font-weight: normal;
+  color: #444E60;
+}
+
+.topbar-network-status {
+  margin: 1px 16px 0;
+  font-size: 12px;
+  color: #7A7B7C;
+}
+
+.topbar-network-delay {
+  margin-right: 16px;
+}
+
+.topbar-network-signal {
+  img {
+    margin-left: 3px;
+  }
+}
+
+.topbar-content-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  color: #7A7B7C;
+}
+
+.topbar-content-right {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0 (@topbar-content-right-cell-gap / 2) 0 auto;
+}
+
+.topbar-content-right-cell {
+  width: @topbar-content-right-cell-width;
+  height: @topbar-content-right-cell-width;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 ((@topbar-content-right-cell-gap - (@topbar-content-right-cell-width - @topbar-icon-width)) / 2);
+  cursor: pointer;
+  background-color: white;
+  border-radius: 2px;
+
+  &:hover {
+    background: rgba(33, 35, 36, 0.1);
+  }
+}
+
 .whiteboard-box {
   background-color: #F4F4F4;
   width: 100%;

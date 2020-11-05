@@ -75,10 +75,10 @@ class ExitButtonRoom extends React.Component<ExitButtonRoomProps, ExitButtonRoom
 
     public render(): React.ReactNode {
         return (
-            <div>
+            <>
                 <Tooltip placement="bottom" title={"Exit"}>
                     <div
-                        className="page-controller-cell"
+                        className="topbar-content-right-cell"
                         onClick={() => this.setState({ exitViewDisable: true })}
                     >
                         <img src={exit} />
@@ -109,7 +109,7 @@ class ExitButtonRoom extends React.Component<ExitButtonRoomProps, ExitButtonRoom
                         </Button>
                     </div>
                 </Modal>
-            </div>
+            </>
         );
     }
 }

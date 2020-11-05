@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
-    <title>invite-pressed</title>
-    <desc>Created with Sketch.</desc>
-    <g id="页面-4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Whiteboard-Guidelines" transform="translate(-230.000000, -724.000000)">
-            <g id="invite-pressed" transform="translate(230.000000, 724.000000)">
-                <rect id="矩形备份-25" fill="#FFFFFF" opacity="0.01" x="0" y="0" width="32" height="32"></rect>
-                <path d="M15,16 C11.6862915,16 9,18.6862915 9,22" id="椭圆形" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round"></path>
-                <circle id="椭圆形" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round" cx="15" cy="13" r="3"></circle>
-                <line x1="17" y1="19" x2="23" y2="19" id="路径-12" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round"></line>
-                <line x1="20" y1="16" x2="20" y2="22" id="路径-12" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round"></line>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>矩形备份 25</title>
+    <g id="白板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Flat-规范" transform="translate(-386.000000, -1404.000000)">
+            <g id="编组-5备份-2" transform="translate(24.000000, 1334.000000)">
+                <g id="audioMute" transform="translate(362.000000, 70.000000)">
+                    <rect id="矩形备份-25" fill-opacity="0.01" fill="#FFFFFF" x="0" y="0" width="22" height="22"></rect>
+                    <path d="M15.3904344,5.68765248 C17.8356783,8.7442073 17.874438,13.0669857 15.5067136,16.1636825 L14.7923086,15.4497208 C16.800225,12.7252701 16.7393107,8.97452886 14.6095656,6.31234752 C14.4370608,6.09671656 14.4720215,5.78207037 14.6876525,5.6095656 C14.9032834,5.43706082 15.2179296,5.47202151 15.3904344,5.68765248 Z M6.929,8.99998159 L10.999,13.0699816 L11,14 C11,14.5522847 10.5522847,15 10,15 C9.78362979,15 9.57309617,14.9298221 9.4,14.8 L7,13 L6,13 C5.44771525,13 5,12.5522847 5,12 L5,10 C5,9.44771525 5.44771525,9 6,9 L6.929,8.99998159 Z M13.4160251,7.7226499 C14.7116264,9.66605173 14.7385239,12.1856524 13.4967178,14.1529788 L12.7681621,13.4238542 C13.6792348,11.8206022 13.617839,9.82814636 12.5839749,8.2773501 C12.4307986,8.04758575 12.4928856,7.73715108 12.7226499,7.58397485 C12.9524142,7.43079862 13.2628489,7.49288556 13.4160251,7.7226499 Z M10.8,7.4 C10.9298221,7.57309617 11,7.78362979 11,8 L10.999,11.6559816 L7.767,8.42398159 L9.4,7.2 C9.8418278,6.86862915 10.4686292,6.9581722 10.8,7.4 Z" id="形状结合" fill="#444E60"></path>
+                    <path d="M18.3535534,11.3033009 C18.3535534,11.5794432 18.1296958,11.8033009 17.8535534,11.8033009 L4.85355339,11.8033009 C4.57741102,11.8033009 4.35355339,11.5794432 4.35355339,11.3033009 C4.35355339,11.0271585 4.57741102,10.8033009 4.85355339,10.8033009 L17.8535534,10.8033009 C18.1296958,10.8033009 18.3535534,11.0271585 18.3535534,11.3033009 Z" id="路径-39" fill="#444E60" fill-rule="nonzero" transform="translate(11.353553, 11.303301) rotate(-315.000000) translate(-11.353553, -11.303301) "></path>
+                </g>
             </g>
         </g>
     </g>
