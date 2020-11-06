@@ -16,6 +16,8 @@ import { netlessWhiteboardApi } from "./apiMiddleware";
 import PageError from "./PageError";
 import LoadingPage from "./LoadingPage";
 import pages from "./assets/image/pages.svg";
+import topbarRecording from './assets/image/topbar-recording.svg'
+import topbarPlay from './assets/image/topbar-play.svg'
 import record from "./assets/image/record.svg";
 import folder from "./assets/image/folder.svg";
 import follow from "./assets/image/follow.svg";
@@ -282,7 +284,14 @@ export default class WhiteboardPage extends React.Component<
                                 </div>
                             </div>
                             <div className="topbar-content-center">
-                                文件名称.pptx 上传中…
+                                <div className="topbar-record-status">
+                                    <span className="topbar-record-status">正在录制中…</span>
+                                    <span className="topbar-record-time-recording">00:38</span>
+                                    <button className="topbar-record-btn">
+                                        <img src={topbarRecording} alt="recording" />
+                                        <span>结束录制</span>
+                                    </button>
+                                </div>
                             </div>
                             <div className="topbar-content-right">
                                 <Tooltip placement="bottom" title="record">
@@ -324,9 +333,10 @@ export default class WhiteboardPage extends React.Component<
                                     </div>
                                 </Tooltip>
                                 <InviteButton uuid={uuid} />
-                                <Tooltip placement="bottom" title="options">
+                                {/* @TODO 实现设置功能 */}
+                                <Tooltip placement="bottom" title="Options">
                                     <div className="topbar-content-right-cell">
-                                        <img src={options} alt="options" />
+                                        <img src={options} alt="Options" />
                                     </div>
                                 </Tooltip>
                                 <ExitButtonRoom identity={identity} room={room} userId={userId} />
