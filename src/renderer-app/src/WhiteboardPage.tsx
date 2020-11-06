@@ -47,6 +47,8 @@ export type WhiteboardPageStates = {
     room?: Room;
     isMenuVisible: boolean;
     isFileOpen: boolean;
+    isRecording: boolean;
+    recordData: any; // @TODO 添加录制数据类型
     mode?: ViewMode;
     whiteboardLayerDownRef?: HTMLDivElement;
     roomController?: ViewMode;
@@ -66,6 +68,8 @@ export default class WhiteboardPage extends React.Component<
             phase: RoomPhase.Connecting,
             isMenuVisible: false,
             isFileOpen: false,
+            isRecording: false,
+            recordData: null,
         };
         ipcAsyncByMain("set-win-size", {
             width: 1200,
@@ -255,7 +259,7 @@ export default class WhiteboardPage extends React.Component<
     };
 
     public render(): React.ReactNode {
-        const { room, isMenuVisible, isFileOpen, phase, whiteboardLayerDownRef } = this.state;
+        const { room, isMenuVisible, isFileOpen, isRecording, recordData, phase, whiteboardLayerDownRef } = this.state;
         const { identity, uuid, userId } = this.props.match.params;
         if (room === undefined) {
             return <LoadingPage />;
@@ -275,7 +279,9 @@ export default class WhiteboardPage extends React.Component<
                     <div className="realtime-box">
                         <div className={`topbar-box${runtime.isMac ? '' : '-win'}`}>
                             <div className="topbar-content-left">
+                                {/* @TODO 房间主题 */}
                                 <h1 className="topbar-title">房间主题</h1>
+                                {/* @TODO 网络状态 */}
                                 <div className="topbar-network-status">
                                     <span className="topbar-network-delay">延迟：0ms</span>
                                     <span className="topbar-network-signal">网络：
@@ -285,18 +291,41 @@ export default class WhiteboardPage extends React.Component<
                             </div>
                             <div className="topbar-content-center">
                                 <div className="topbar-record-status">
-                                    <span className="topbar-record-status">正在录制中…</span>
-                                    <span className="topbar-record-time-recording">00:38</span>
-                                    <button className="topbar-record-btn">
-                                        <img src={topbarRecording} alt="recording" />
-                                        <span>结束录制</span>
-                                    </button>
+                                {isRecording ? (
+                                    <>
+                                        <span className="topbar-record-status">正在录制中…</span>
+                                        <span className="topbar-record-time-recording">00:38</span>
+                                        <button className="topbar-record-btn" onClick={() => this.setState({ isRecording: false })}>
+                                            <img src={topbarRecording} alt="recording" />
+                                            <span>结束录制</span>
+                                        </button>
+                                    </>
+                                ) : recordData ? (
+                                    <>
+                                        <span className="topbar-record-status">录制完成</span>
+                                        <span className="topbar-record-time-recording">00:38</span>
+                                        <button className="topbar-record-btn">
+                                            <img src={topbarPlay} alt="play" />
+                                            <span>查看回放</span>
+                                        </button>
+                                    </>
+                                ) : null
+                                }    
                                 </div>
                             </div>
                             <div className="topbar-content-right">
-                                <Tooltip placement="bottom" title="record">
-                                    <div className="topbar-content-right-cell">
-                                        <img src={record} alt="record" />
+                                <Tooltip placement="bottom" title="Record">
+                                    <div
+                                        className="topbar-content-right-cell"
+                                        onClick={() => {
+                                            this.setState(state => ({ isRecording: !state.isRecording }))
+                                        }}
+                                    >
+                                        <img
+                                            src={record}
+                                            alt="Record"
+                                            className={`topbar-content-right-record${isRecording ? '-active' : ''}`}
+                                        />
                                     </div>
                                 </Tooltip>
                                 <Tooltip placement="bottom" title="Vision control">
