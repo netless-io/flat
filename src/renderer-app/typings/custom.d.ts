@@ -14,5 +14,8 @@ declare namespace NodeJS {
         OSS_BUCKET: string;
         OSS_FOLDER: string;
         OSS_PREFIX: string;
+        AGORA_APP_ID: string;
+        AGORA_RESTFUL_ID: string;
+        AGORA_RESTFUL_SECRET: string;
     }
 }
