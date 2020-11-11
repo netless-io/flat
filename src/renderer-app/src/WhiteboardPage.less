@@ -1,8 +1,86 @@
-
 .realtime-box {
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.realtime-content {
+    flex: 1;
+    display: flex;
+}
+
+.realtime-content-main {
+    flex: 1;
+    position: relative;
+}
+
+.realtime-content-side {
+    width: 0;
+    transition: width 0.4s;
+
+    &.isActive {
+        width: 280px;
+    }
+}
+
+.realtime-content-side-container {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    height: 100%;
+    position: relative;
+}
+
+.realtime-video {
+    height: 158px;
+}
+
+.realtime-messaging {
+    flex: 1;
+
+    .ant-tabs {
+        height: 100%;
+        & > .ant-tabs-nav .ant-tabs-nav-list {
+            width: 100%;
+            justify-content: space-around;
+        }
+    }
+
+    .ant-tabs-tab {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+.realtime-side-opener {
+    position: absolute;
+    left: -16px;
+    top: 40%;
+    width: 16px;
+    height: 32px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 4px 0 0 4px;
+    cursor: pointer;
+    user-select: none;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 5.5px;
+        width: 1px;
+        height: 16px;
+        background: #7a7b7c;
+    }
+
+    &::after {
+        left: 9.5px;
+    }
 }
 
 @topbar-icon-width: 22px;
@@ -10,227 +88,233 @@
 @topbar-content-right-cell-gap: 16px;
 
 .topbar-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  height: 50px;
-  font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    height: 50px;
+    font-size: 16px;
 }
 
 .topbar-box-win:extend(.topbar-box) {
-  // Windows 下菜单栏在窗口以内，需要分割
-  border-top: 0.5px #DBE1EA solid;
+    // Windows 下菜单栏在窗口以内，需要分割
+    border-top: 0.5px #dbe1ea solid;
 }
 
 .topbar-content-left {
-  height: 100%;
-  display: flex;
-  align-items: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .topbar-content-center:extend(.topbar-content-left) {
-  flex: 1;
-  justify-content: center;
-  font-size: 14px;
-  color: #7A7B7C;
+    flex: 1;
+    justify-content: center;
+    font-size: 14px;
+    color: #7a7b7c;
 }
 
 .topbar-content-right:extend(.topbar-content-left) {
-  margin: 0 (@topbar-content-right-cell-gap / 2) 0 auto;
+    margin: 0 (@topbar-content-right-cell-gap / 2) 0 auto;
 }
 
 .topbar-title {
-  margin: 0 16px;
-  padding: 0;
-  font-size: 16px;
-  font-weight: normal;
-  color: #444E60;
+    margin: 0 16px;
+    padding: 0;
+    font-size: 16px;
+    font-weight: normal;
+    color: #444e60;
 }
 
 .topbar-network-status {
-  margin: 1px 16px 0;
-  font-size: 12px;
-  color: #7A7B7C;
+    margin: 1px 16px 0;
+    font-size: 12px;
+    color: #7a7b7c;
 }
 
 .topbar-network-delay {
-  margin-right: 16px;
+    margin-right: 16px;
 }
 
 .topbar-network-signal {
-  img {
-    margin-left: 3px;
-  }
+    img {
+        margin-left: 3px;
+    }
 }
 
 .topbar-record-time {
-  margin-left: 5px;
+    margin-left: 5px;
 }
 
 .topbar-record-time-recording:extend(.topbar-record-time) {
-  color: #3381FF;
+    color: #3381ff;
 }
 
 .topbar-record-btn {
-  margin-left: 16px;
-  padding: 3px 13px 4px 9px;
-  border: 1px solid #DBE1EA; 
-  border-radius: 24px;
-  outline: none;
-  color: #444E60;
-  background: transparent;
-  cursor: pointer;
+    margin-left: 16px;
+    padding: 3px 13px 4px 9px;
+    border: 1px solid #dbe1ea;
+    border-radius: 24px;
+    outline: none;
+    color: #444e60;
+    background: transparent;
+    cursor: pointer;
 
-  &:hover {
-    background: rgba(33, 35, 36, 0.1);
-  }
+    &:hover {
+        background: rgba(33, 35, 36, 0.1);
+    }
 
-  img {
-    margin-right: 5px;
-    vertical-align: baseline;
-  }
+    img {
+        margin-right: 5px;
+        vertical-align: baseline;
+    }
 }
 
 .topbar-content-right-cell {
-  width: @topbar-content-right-cell-width;
-  height: @topbar-content-right-cell-width;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 ((@topbar-content-right-cell-gap - (@topbar-content-right-cell-width - @topbar-icon-width)) / 2);
-  cursor: pointer;
-  background-color: white;
-  border-radius: 2px;
+    width: @topbar-content-right-cell-width;
+    height: @topbar-content-right-cell-width;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0
+        (
+            (
+                    @topbar-content-right-cell-gap -
+                        (@topbar-content-right-cell-width - @topbar-icon-width)
+                ) / 2
+        );
+    cursor: pointer;
+    background-color: white;
+    border-radius: 2px;
 
-  &:hover {
-    background: rgba(33, 35, 36, 0.1);
-  }
+    &:hover {
+        background: rgba(33, 35, 36, 0.1);
+    }
 }
 
 .topbar-content-right-record-active {
-  opacity: 0.42;
+    opacity: 0.42;
 }
 
 .whiteboard-box {
-  background-color: #F4F4F4;
-  width: 100%;
-  height: 100%;
+    background-color: #f4f4f4;
+    width: 100%;
+    height: 100%;
 }
 
 .redo-undo-box {
-  position: absolute;
-  z-index: 3;
-  bottom: 24px;
-  left: 24px;
+    position: absolute;
+    z-index: 3;
+    bottom: 24px;
+    left: 24px;
 }
 
 .zoom-controller-box {
-  position: absolute;
-  left: 120px;
-  z-index: 3;
-  bottom: 24px;
+    position: absolute;
+    left: 120px;
+    z-index: 3;
+    bottom: 24px;
 }
 
 .room-controller-box {
-  position: absolute;
-  right: 24px;
-  top: 24px;
-  z-index: 100;
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    z-index: 100;
 }
 
 .title-controller-box {
-  position: absolute;
-  left: 24px;
-  top: 24px;
-  z-index: 3;
+    position: absolute;
+    left: 24px;
+    top: 24px;
+    z-index: 3;
 }
 
 .title-controller-mid-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 22px;
-  flex-direction: row;
-  font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 22px;
+    flex-direction: row;
+    font-size: 16px;
 }
 
 .title-text {
-  height: 22px;
-  font-size: 16px;
-  font-family: PingFangSC-Light, PingFang SC;
-  font-weight: 300;
-  color: rgba(33, 35, 36, 1);
-  line-height: 22px;
+    height: 22px;
+    font-size: 16px;
+    font-family: PingFangSC-Light, PingFang SC;
+    font-weight: 300;
+    color: rgba(33, 35, 36, 1);
+    line-height: 22px;
 }
 
 .title-cut-line {
-  width: 1px;
-  height: 20px;
-  background-color: #999999;
-  margin-left: 16px;
-  margin-right: 16px;
+    width: 1px;
+    height: 20px;
+    background-color: #999999;
+    margin-left: 16px;
+    margin-right: 16px;
 }
 
 .title-time {
-  opacity: 0.6;
-  height: 22px;
-  font-size: 16px;
-  font-family: PingFangSC-Light, PingFang SC;
-  font-weight: 300;
-  color: rgba(33, 35, 36, 1);
-  line-height: 22px;
+    opacity: 0.6;
+    height: 22px;
+    font-size: 16px;
+    font-family: PingFangSC-Light, PingFang SC;
+    font-weight: 300;
+    color: rgba(33, 35, 36, 1);
+    line-height: 22px;
 }
 
 .page-controller-box {
-  position: absolute;
-  z-index: 3;
-  bottom: 24px;
-  right: 24px;
+    position: absolute;
+    z-index: 3;
+    bottom: 24px;
+    right: 24px;
 }
 
 .tool-box-out {
-  height: 100%;
-  width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: absolute;
-  z-index: 3;
-  left: 24px;
+    height: 100%;
+    width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    z-index: 3;
+    left: 24px;
 }
 
 .page-controller-mid-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  height: 40px;
-  padding-left: 4px;
-  padding-right: 4px;
-  border-radius: 4px;
-  user-select: none;
-  font-size: 12px;
-  box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    height: 40px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 4px;
+    user-select: none;
+    font-size: 12px;
+    box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.08);
 }
 
 .page-controller-cell {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  background-color: white;
-  border-radius: 2px;
-  &:hover {
-    background: rgba(33, 35, 36, 0.1);
-  }
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 2px;
+    &:hover {
+        background: rgba(33, 35, 36, 0.1);
+    }
 }
 
 .logo-box {
-  position: absolute;
-  z-index: 100;
-  left: 24px;
-  top: 24px;
+    position: absolute;
+    z-index: 100;
+    left: 24px;
+    top: 24px;
 }

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
+import classNames from "classnames";
 import { createPlugins, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk } from "white-web-sdk";
 import ToolBox from "@netless/tool-box";
 import RedoUndo from "@netless/redo-undo";
@@ -11,13 +12,13 @@ import { audioPlugin } from "@netless/white-audio-plugin";
 import PreviewController from "@netless/preview-controller";
 import DocsCenter from "@netless/docs-center";
 import { CursorTool } from "@netless/cursor-tool";
-import { message, Tooltip } from "antd";
+import { message, Tooltip, Tabs } from "antd";
 import { netlessWhiteboardApi } from "./apiMiddleware";
 import PageError from "./PageError";
 import LoadingPage from "./LoadingPage";
 import pages from "./assets/image/pages.svg";
-import topbarRecording from './assets/image/topbar-recording.svg'
-import topbarPlay from './assets/image/topbar-play.svg'
+import topbarRecording from "./assets/image/topbar-recording.svg";
+import topbarPlay from "./assets/image/topbar-play.svg";
 import record from "./assets/image/record.svg";
 import folder from "./assets/image/folder.svg";
 import follow from "./assets/image/follow.svg";
@@ -40,7 +41,7 @@ import { pptDatas } from "./taskUuids";
 import { listDir } from "./utils/Fs";
 import { runtime } from "./utils/Runtime";
 import path from "path";
-import { ipcAsyncByMain } from './utils/Ipc';
+import { ipcAsyncByMain } from "./utils/Ipc";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -48,6 +49,7 @@ export type WhiteboardPageStates = {
     isMenuVisible: boolean;
     isFileOpen: boolean;
     isRecording: boolean;
+    isRealtimeSideOpen: boolean;
     recordData: any; // @TODO 添加录制数据类型
     mode?: ViewMode;
     whiteboardLayerDownRef?: HTMLDivElement;
@@ -62,6 +64,8 @@ export default class WhiteboardPage extends React.Component<
     WhiteboardPageProps,
     WhiteboardPageStates
 > {
+    private signal = [signal1, signal2, signal3];
+
     public constructor(props: WhiteboardPageProps) {
         super(props);
         this.state = {
@@ -69,6 +73,7 @@ export default class WhiteboardPage extends React.Component<
             isMenuVisible: false,
             isFileOpen: false,
             isRecording: false,
+            isRealtimeSideOpen: false,
             recordData: null,
         };
         ipcAsyncByMain("set-win-size", {
@@ -258,8 +263,20 @@ export default class WhiteboardPage extends React.Component<
         }
     };
 
+    private handleSideOpenerClick = (): void => {
+        this.setState(state => ({ isRealtimeSideOpen: !state.isRealtimeSideOpen }));
+    };
+
     public render(): React.ReactNode {
-        const { room, isMenuVisible, isFileOpen, isRecording, recordData, phase, whiteboardLayerDownRef } = this.state;
+        const {
+            room,
+            isMenuVisible,
+            isFileOpen,
+            isRecording,
+            recordData,
+            phase,
+            whiteboardLayerDownRef,
+        } = this.state;
         const { identity, uuid, userId } = this.props.match.params;
         if (room === undefined) {
             return <LoadingPage />;
@@ -277,40 +294,51 @@ export default class WhiteboardPage extends React.Component<
             default: {
                 return (
                     <div className="realtime-box">
-                        <div className={`topbar-box${runtime.isMac ? '' : '-win'}`}>
+                        <div className={`topbar-box${runtime.isMac ? "" : "-win"}`}>
                             <div className="topbar-content-left">
                                 {/* @TODO 房间主题 */}
                                 <h1 className="topbar-title">房间主题</h1>
                                 {/* @TODO 网络状态 */}
                                 <div className="topbar-network-status">
                                     <span className="topbar-network-delay">延迟：0ms</span>
-                                    <span className="topbar-network-signal">网络：
-                                        <img src={signal3} alt="signal" />
+                                    <span className="topbar-network-signal">
+                                        网络：
+                                        <img src={this.signal[2]} alt="signal" />
                                     </span>
                                 </div>
                             </div>
                             <div className="topbar-content-center">
                                 <div className="topbar-record-status">
-                                {isRecording ? (
-                                    <>
-                                        <span className="topbar-record-status">正在录制中…</span>
-                                        <span className="topbar-record-time-recording">00:38</span>
-                                        <button className="topbar-record-btn" onClick={() => this.setState({ isRecording: false })}>
-                                            <img src={topbarRecording} alt="recording" />
-                                            <span>结束录制</span>
-                                        </button>
-                                    </>
-                                ) : recordData ? (
-                                    <>
-                                        <span className="topbar-record-status">录制完成</span>
-                                        <span className="topbar-record-time-recording">00:38</span>
-                                        <button className="topbar-record-btn">
-                                            <img src={topbarPlay} alt="play" />
-                                            <span>查看回放</span>
-                                        </button>
-                                    </>
-                                ) : null
-                                }    
+                                    {isRecording ? (
+                                        <>
+                                            <span className="topbar-record-status">
+                                                正在录制中…
+                                            </span>
+                                            <span className="topbar-record-time-recording">
+                                                00:38
+                                            </span>
+                                            <button
+                                                className="topbar-record-btn"
+                                                onClick={() =>
+                                                    this.setState({ isRecording: false })
+                                                }
+                                            >
+                                                <img src={topbarRecording} alt="recording" />
+                                                <span>结束录制</span>
+                                            </button>
+                                        </>
+                                    ) : recordData ? (
+                                        <>
+                                            <span className="topbar-record-status">录制完成</span>
+                                            <span className="topbar-record-time-recording">
+                                                00:38
+                                            </span>
+                                            <button className="topbar-record-btn">
+                                                <img src={topbarPlay} alt="play" />
+                                                <span>查看回放</span>
+                                            </button>
+                                        </>
+                                    ) : null}
                                 </div>
                             </div>
                             <div className="topbar-content-right">
@@ -318,13 +346,17 @@ export default class WhiteboardPage extends React.Component<
                                     <div
                                         className="topbar-content-right-cell"
                                         onClick={() => {
-                                            this.setState(state => ({ isRecording: !state.isRecording }))
+                                            this.setState(state => ({
+                                                isRecording: !state.isRecording,
+                                            }));
                                         }}
                                     >
                                         <img
                                             src={record}
                                             alt="Record"
-                                            className={`topbar-content-right-record${isRecording ? '-active' : ''}`}
+                                            className={`topbar-content-right-record${
+                                                isRecording ? "-active" : ""
+                                            }`}
                                         />
                                     </div>
                                 </Tooltip>
@@ -371,52 +403,79 @@ export default class WhiteboardPage extends React.Component<
                                 <ExitButtonRoom identity={identity} room={room} userId={userId} />
                             </div>
                         </div>
-                        <div className="tool-box-out">
-                            <ToolBox
-                                room={room}
-                                customerComponent={[
-                                    <OssUploadButton
-                                        oss={ossConfigObj}
-                                        appIdentifier={netlessToken.appIdentifier}
-                                        sdkToken={netlessToken.sdkToken}
+                        <div className="realtime-content">
+                            <div className="realtime-content-main">
+                                <div className="tool-box-out">
+                                    <ToolBox
                                         room={room}
-                                        whiteboardRef={whiteboardLayerDownRef}
-                                    />,
-                                ]}
-                            />
-                        </div>
-                        <div className="redo-undo-box">
-                            <RedoUndo room={room} />
-                        </div>
-                        <div className="zoom-controller-box">
-                            <ZoomController room={room} />
-                        </div>
-                        <div className="page-controller-box">
-                            <div className="page-controller-mid-box">
-                                <Tooltip placement="top" title={"Page preview"}>
-                                    <div
-                                        className="page-controller-cell"
-                                        onClick={() => this.handlePreviewState(true)}
-                                    >
-                                        <img src={pages} alt={"pages"} />
+                                        customerComponent={[
+                                            <OssUploadButton
+                                                oss={ossConfigObj}
+                                                appIdentifier={netlessToken.appIdentifier}
+                                                sdkToken={netlessToken.sdkToken}
+                                                room={room}
+                                                whiteboardRef={whiteboardLayerDownRef}
+                                            />,
+                                        ]}
+                                    />
+                                </div>
+                                <div className="redo-undo-box">
+                                    <RedoUndo room={room} />
+                                </div>
+                                <div className="zoom-controller-box">
+                                    <ZoomController room={room} />
+                                </div>
+                                <div className="page-controller-box">
+                                    <div className="page-controller-mid-box">
+                                        <Tooltip placement="top" title={"Page preview"}>
+                                            <div
+                                                className="page-controller-cell"
+                                                onClick={() => this.handlePreviewState(true)}
+                                            >
+                                                <img src={pages} alt={"pages"} />
+                                            </div>
+                                        </Tooltip>
+                                        <PageController room={room} />
                                     </div>
-                                </Tooltip>
-                                <PageController room={room} />
+                                </div>
+                                <PreviewController
+                                    handlePreviewState={this.handlePreviewState}
+                                    isVisible={isMenuVisible}
+                                    room={room}
+                                />
+                                <DocsCenter
+                                    handleDocCenterState={this.handleDocCenterState}
+                                    isFileOpen={isFileOpen}
+                                    room={room}
+                                />
+                                <OssDropUpload room={room} oss={ossConfigObj}>
+                                    <div ref={this.handleBindRoom} className="whiteboard-box" />
+                                </OssDropUpload>
+                            </div>
+                            <div
+                                className={classNames("realtime-content-side", {
+                                    isActive: this.state.isRealtimeSideOpen,
+                                })}
+                            >
+                                <div className="realtime-content-side-container">
+                                    <div className="realtime-video"></div>
+                                    <div className="realtime-messaging">
+                                        <Tabs defaultActiveKey="messages" tabBarGutter={0}>
+                                            <Tabs.TabPane tab="消息列表" key="messages">
+                                                Content of Tab Pane 1
+                                            </Tabs.TabPane>
+                                            <Tabs.TabPane tab="用户列表" key="users">
+                                                Content of Tab Pane 2
+                                            </Tabs.TabPane>
+                                        </Tabs>
+                                    </div>
+                                    <button
+                                        className="realtime-side-opener"
+                                        onClick={this.handleSideOpenerClick}
+                                    ></button>
+                                </div>
                             </div>
                         </div>
-                        <PreviewController
-                            handlePreviewState={this.handlePreviewState}
-                            isVisible={isMenuVisible}
-                            room={room}
-                        />
-                        <DocsCenter
-                            handleDocCenterState={this.handleDocCenterState}
-                            isFileOpen={isFileOpen}
-                            room={room}
-                        />
-                        <OssDropUpload room={room} oss={ossConfigObj}>
-                            <div ref={this.handleBindRoom} className="whiteboard-box" />
-                        </OssDropUpload>
                     </div>
                 );
             }
