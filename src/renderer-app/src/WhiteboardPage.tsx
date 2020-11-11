@@ -23,6 +23,8 @@ import record from "./assets/image/record.svg";
 import folder from "./assets/image/folder.svg";
 import follow from "./assets/image/follow.svg";
 import followActive from "./assets/image/follow-active.svg";
+import phone from "./assets/image/phone.svg";
+import phoneActive from "./assets/image/phone-active.svg";
 import options from "./assets/image/options.svg";
 import signal1 from "./assets/image/signal-1.svg";
 import signal2 from "./assets/image/signal-2.svg";
@@ -49,6 +51,7 @@ export type WhiteboardPageStates = {
     isMenuVisible: boolean;
     isFileOpen: boolean;
     isRecording: boolean;
+    isCalling: boolean;
     isRealtimeSideOpen: boolean;
     recordData: any; // @TODO 添加录制数据类型
     mode?: ViewMode;
@@ -73,6 +76,7 @@ export default class WhiteboardPage extends React.Component<
             isMenuVisible: false,
             isFileOpen: false,
             isRecording: false,
+            isCalling: false,
             isRealtimeSideOpen: false,
             recordData: null,
         };
@@ -360,6 +364,21 @@ export default class WhiteboardPage extends React.Component<
                                         />
                                     </div>
                                 </Tooltip>
+                                <Tooltip placement="bottom" title="Call">
+                                    <div
+                                        className="topbar-content-right-cell"
+                                        onClick={() =>
+                                            this.setState(state => ({
+                                                isCalling: !state.isCalling,
+                                            }))
+                                        }
+                                    >
+                                        <img
+                                            src={this.state.isCalling ? phoneActive : phone}
+                                            alt="Call"
+                                        />
+                                    </div>
+                                </Tooltip>
                                 <Tooltip placement="bottom" title="Vision control">
                                     <div
                                         className="topbar-content-right-cell"
@@ -458,7 +477,7 @@ export default class WhiteboardPage extends React.Component<
                                 })}
                             >
                                 <div className="realtime-content-side-container">
-                                    <div className="realtime-video"></div>
+                                    {this.state.isCalling && <div className="realtime-video"></div>}
                                     <div className="realtime-messaging">
                                         <Tabs defaultActiveKey="messages" tabBarGutter={0}>
                                             <Tabs.TabPane tab="消息列表" key="messages">
