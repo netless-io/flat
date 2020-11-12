@@ -24,6 +24,8 @@ import OssDropUpload from "@netless/oss-drop-upload";
 import { netlessWhiteboardApi } from "./apiMiddleware";
 import { netlessToken, ossConfigObj } from "./appToken";
 import { pptDatas } from "./taskUuids";
+import { Rtc } from "./rtc";
+import { CloudRecording } from "./apiMiddleware/CloudRecording";
 import { Identity } from "./IndexPage";
 import { LocalStorageRoomDataType } from "./HistoryPage";
 import PageError from "./PageError";
@@ -67,6 +69,10 @@ export type WhiteboardPageProps = RouteComponentProps<{
 export class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPageStates> {
     private videoRef = React.createRef<HTMLDivElement>();
 
+    private rtc = new Rtc();
+    private cloudRecording: CloudRecording | null = null;
+    private cloudRecordingInterval: NodeJS.Timeout | undefined;
+
     public constructor(props: WhiteboardPageProps) {
         super(props);
         this.state = {
@@ -88,6 +94,24 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         await this.startJoinRoom();
     }
 
+    public async componentWillUnmount(): Promise<void> {
+        if (this.state.isCalling) {
+            this.rtc.leave();
+        }
+        if (this.cloudRecordingInterval) {
+            clearInterval(this.cloudRecordingInterval);
+            this.cloudRecordingInterval = void 0;
+        }
+        if (this.cloudRecording?.isRecording) {
+            try {
+                await this.cloudRecording.stop();
+            } catch (e) {
+                console.error(e);
+            }
+            this.cloudRecording = null;
+        }
+    }
+
     private getRoomToken = async (uuid: string): Promise<string | null> => {
         const roomToken = await netlessWhiteboardApi.room.joinRoomApi(uuid);
         if (roomToken) {
@@ -104,6 +128,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             room.bindHtmlElement(ref);
         }
     };
+
     public setRoomList = (uuid: string, userId: string): void => {
         const rooms = localStorage.getItem("rooms");
         const timestamp = moment(new Date()).format("lll");
@@ -152,6 +177,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             );
         }
     };
+
     private setDefaultPptData = (pptDatas: string[], room: Room): void => {
         const docs: PPTDataType[] = (room.state.globalState as any).docs;
         if (docs && docs.length > 1) {
@@ -178,6 +204,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             }
         }
     };
+
     private startJoinRoom = async (): Promise<void> => {
         const { uuid, userId, identity } = this.props.match.params;
         this.setRoomList(uuid, userId);
@@ -269,6 +296,47 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         this.setState(state => ({ isRealtimeSideOpen: !state.isRealtimeSideOpen }));
     };
 
+    private toggleRecording = async (): Promise<void> => {
+        if (this.state.isRecording) {
+            this.setState({ isRecording: false });
+            if (this.cloudRecording?.isRecording) {
+                try {
+                    await this.cloudRecording.stop();
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+            this.cloudRecording = null;
+        } else {
+            this.setState({ isRecording: true });
+            if (this.state.isCalling && !this.cloudRecording?.isRecording) {
+                this.cloudRecording = new CloudRecording({
+                    cname: this.props.match.params.uuid,
+                    uid: "1", // 不能与频道内其他用户冲突
+                });
+                await this.cloudRecording.start();
+                this.cloudRecordingInterval = setInterval(() => {
+                    if (this.cloudRecording?.isRecording) {
+                        this.cloudRecording.query();
+                    }
+                }, 10000);
+            }
+        }
+    };
+
+    private toggleCalling = async (): Promise<void> => {
+        if (this.state.isCalling) {
+            this.setState({ isCalling: false });
+            if (this.cloudRecording?.isRecording) {
+                await this.toggleRecording();
+            }
+            this.rtc.leave();
+        } else {
+            this.setState({ isCalling: true, isRealtimeSideOpen: true });
+            this.rtc.join(this.props.match.params.uuid, this.videoRef.current);
+        }
+    };
+
     public render(): React.ReactNode {
         const { room, phase } = this.state;
 
@@ -296,90 +364,14 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         const {
             isMenuVisible,
             isFileOpen,
-            isCalling,
-            isRecording,
-            recordData,
             whiteboardLayerDownRef,
+            isRealtimeSideOpen,
+            isCalling,
         } = this.state;
-
-        const { identity, uuid, userId } = this.props.match.params;
-
-        const TopBarRightBtns = (
-            <>
-                <TopBarRightBtn
-                    title="Record"
-                    icon="record"
-                    active={isRecording}
-                    onClick={() => {
-                        this.setState(state => ({
-                            isRecording: !state.isRecording,
-                        }));
-                    }}
-                />
-                <TopBarRightBtn
-                    title="Call"
-                    icon="phone"
-                    active={isCalling}
-                    onClick={() => {
-                        this.setState(state => ({
-                            isCalling: !state.isCalling,
-                        }));
-                    }}
-                />
-                <TopBarRightBtn
-                    title="Vision control"
-                    icon="follow"
-                    active={this.state.mode === ViewMode.Broadcaster}
-                    onClick={() => {
-                        this.handleRoomController(room);
-                    }}
-                />
-                <TopBarRightBtn
-                    title="Docs center"
-                    icon="folder"
-                    onClick={() => {
-                        console.log(
-                            listDir(path.join(runtime.downloadsDirectory, "dynamicConvert")),
-                        );
-                        this.setState({ isFileOpen: !this.state.isFileOpen });
-                    }}
-                />
-                <InviteButton uuid={uuid} />
-                <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
-                <ExitButtonRoom identity={identity} room={room} userId={userId} />
-            </>
-        );
-
-        const topBarCenter = (
-            <div className="topbar-record-status">
-                {isRecording ? (
-                    <>
-                        <span className="topbar-record-status">正在录制中…</span>
-                        <span className="topbar-record-time-recording">00:38</span>
-                        <button
-                            className="topbar-record-btn"
-                            onClick={() => this.setState({ isRecording: false })}
-                        >
-                            <img src={topbarRecording} alt="recording" />
-                            <span>结束录制</span>
-                        </button>
-                    </>
-                ) : recordData ? (
-                    <>
-                        <span className="topbar-record-status">录制完成</span>
-                        <span className="topbar-record-time-recording">00:38</span>
-                        <button className="topbar-record-btn">
-                            <img src={topbarPlay} alt="play" />
-                            <span>查看回放</span>
-                        </button>
-                    </>
-                ) : null}
-            </div>
-        );
 
         return (
             <div className="realtime-box">
-                <TopBar title="房间主题" center={topBarCenter} rightBtns={TopBarRightBtns} />
+                {this.renderTopBar(room)}
                 <div className="realtime-content">
                     <div className="realtime-content-main">
                         <div className="tool-box-out">
@@ -431,13 +423,17 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     </div>
                     <div
                         className={classNames("realtime-content-side", {
-                            isActive: this.state.isRealtimeSideOpen,
+                            isActive: isRealtimeSideOpen,
                         })}
                     >
                         <div className="realtime-content-side-container">
-                            {this.state.isCalling && (
+                            <div
+                                className={classNames("realtime-video-container", {
+                                    isActive: isCalling,
+                                })}
+                            >
                                 <div className="realtime-video" ref={this.videoRef}></div>
-                            )}
+                            </div>
                             <div className="realtime-messaging">
                                 <Tabs defaultActiveKey="messages" tabBarGutter={0}>
                                     {/* @TODO 实现列表 */}
@@ -458,6 +454,78 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 </div>
             </div>
         );
+    }
+
+    private renderTopBar(room: Room): React.ReactNode {
+        const { isCalling, isRecording, recordData } = this.state;
+        const { identity, uuid, userId } = this.props.match.params;
+
+        const topBarCenter = (
+            <div className="topbar-record-status">
+                {isRecording ? (
+                    <>
+                        <span className="topbar-record-status">正在录制中…</span>
+                        <span className="topbar-record-time-recording">00:38</span>
+                        <button
+                            className="topbar-record-btn"
+                            onClick={() => this.setState({ isRecording: false })}
+                        >
+                            <img src={topbarRecording} alt="recording" />
+                            <span>结束录制</span>
+                        </button>
+                    </>
+                ) : recordData ? (
+                    <>
+                        <span className="topbar-record-status">录制完成</span>
+                        <span className="topbar-record-time-recording">00:38</span>
+                        <button className="topbar-record-btn">
+                            <img src={topbarPlay} alt="play" />
+                            <span>查看回放</span>
+                        </button>
+                    </>
+                ) : null}
+            </div>
+        );
+
+        const TopBarRightBtns = (
+            <>
+                <TopBarRightBtn
+                    title="Record"
+                    icon="record"
+                    active={isRecording}
+                    onClick={this.toggleRecording}
+                />
+                <TopBarRightBtn
+                    title="Call"
+                    icon="phone"
+                    active={isCalling}
+                    onClick={this.toggleCalling}
+                />
+                <TopBarRightBtn
+                    title="Vision control"
+                    icon="follow"
+                    active={this.state.mode === ViewMode.Broadcaster}
+                    onClick={() => {
+                        this.handleRoomController(room);
+                    }}
+                />
+                <TopBarRightBtn
+                    title="Docs center"
+                    icon="folder"
+                    onClick={() => {
+                        console.log(
+                            listDir(path.join(runtime.downloadsDirectory, "dynamicConvert")),
+                        );
+                        this.setState({ isFileOpen: !this.state.isFileOpen });
+                    }}
+                />
+                <InviteButton uuid={uuid} />
+                <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
+                <ExitButtonRoom identity={identity} room={room} userId={userId} />
+            </>
+        );
+
+        return <TopBar title="房间主题" center={topBarCenter} rightBtns={TopBarRightBtns} />;
     }
 }
 

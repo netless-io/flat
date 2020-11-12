@@ -76,7 +76,7 @@ export class CloudRecording {
         }
     }
 
-    public getStorageConfig() {
+    public defaultStorageConfig() {
         return {
             vendor: 2, // 阿里云
             region: 0, // 杭州
@@ -89,8 +89,13 @@ export class CloudRecording {
 
     /** 开始录制 */
     public async start(
-        startPayload: CR.StartPayload["clientRequest"],
-        acquirePayload?: CR.AcquirePayload["clientRequest"],
+        startPayload: CR.StartPayload["clientRequest"] = {
+            recordingConfig: { subscribeUidGroup: 0 },
+            storageConfig: this.defaultStorageConfig(),
+        },
+        acquirePayload: CR.AcquirePayload["clientRequest"] = {
+            resourceExpiredHour: 1,
+        },
     ): Promise<void> {
         if (this._isRecording) {
             return;

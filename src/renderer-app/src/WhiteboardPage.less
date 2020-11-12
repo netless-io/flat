@@ -33,12 +33,22 @@
     position: relative;
 }
 
+.realtime-video-container {
+    overflow: hidden;
+    height: 0;
+
+    &.isActive {
+        height: 158px;
+    }
+}
+
 .realtime-video {
     height: 158px;
 }
 
 .realtime-messaging {
     flex: 1;
+    border-top: 0.5px solid #f0f0f0;
 
     .ant-tabs {
         height: 100%;
@@ -81,119 +91,6 @@
     &::after {
         left: 9.5px;
     }
-}
-
-@topbar-icon-width: 22px;
-@topbar-content-right-cell-width: 32px;
-@topbar-content-right-cell-gap: 16px;
-
-.topbar-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    height: 50px;
-    font-size: 16px;
-}
-
-.topbar-box-win:extend(.topbar-box) {
-    // Windows 下菜单栏在窗口以内，需要分割
-    border-top: 0.5px #dbe1ea solid;
-}
-
-.topbar-content-left {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.topbar-content-center:extend(.topbar-content-left) {
-    flex: 1;
-    justify-content: center;
-    font-size: 14px;
-    color: #7a7b7c;
-}
-
-.topbar-content-right:extend(.topbar-content-left) {
-    margin: 0 (@topbar-content-right-cell-gap / 2) 0 auto;
-}
-
-.topbar-title {
-    margin: 0 16px;
-    padding: 0;
-    font-size: 16px;
-    font-weight: normal;
-    color: #444e60;
-}
-
-.topbar-network-status {
-    margin: 1px 16px 0;
-    font-size: 12px;
-    color: #7a7b7c;
-}
-
-.topbar-network-delay {
-    margin-right: 16px;
-}
-
-.topbar-network-signal {
-    img {
-        margin-left: 3px;
-    }
-}
-
-.topbar-record-time {
-    margin-left: 5px;
-}
-
-.topbar-record-time-recording:extend(.topbar-record-time) {
-    color: #3381ff;
-}
-
-.topbar-record-btn {
-    margin-left: 16px;
-    padding: 3px 13px 4px 9px;
-    border: 1px solid #dbe1ea;
-    border-radius: 24px;
-    outline: none;
-    color: #444e60;
-    background: transparent;
-    cursor: pointer;
-
-    &:hover {
-        background: rgba(33, 35, 36, 0.1);
-    }
-
-    img {
-        margin-right: 5px;
-        vertical-align: baseline;
-    }
-}
-
-.topbar-content-right-cell {
-    width: @topbar-content-right-cell-width;
-    height: @topbar-content-right-cell-width;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0
-        (
-            (
-                    @topbar-content-right-cell-gap -
-                        (@topbar-content-right-cell-width - @topbar-icon-width)
-                ) / 2
-        );
-    cursor: pointer;
-    background-color: white;
-    border-radius: 2px;
-
-    &:hover {
-        background: rgba(33, 35, 36, 0.1);
-    }
-}
-
-.topbar-content-right-record-active {
-    opacity: 0.42;
 }
 
 .whiteboard-box {
