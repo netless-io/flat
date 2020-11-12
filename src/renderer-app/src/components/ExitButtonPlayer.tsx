@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Button, Modal, Tooltip } from "antd";
+import { Button, Modal } from "antd";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 import { Player } from "white-web-sdk";
 import "./ExitButton.less";
-import exit from "../assets/image/exit.svg";
 import replayScreen from "../assets/image/replay-screen.png";
 import { Identity } from "../IndexPage";
+import { TopBarRightBtn } from "./TopBarRightBtn";
 
 export type ExitButtonPlayerStates = {
     exitViewDisable: boolean;
@@ -39,14 +39,11 @@ class ExitButtonPlayer extends React.Component<ExitButtonPlayerProps, ExitButton
     public render(): React.ReactNode {
         return (
             <div>
-                <Tooltip placement="bottom" title={"Exit"}>
-                    <div
-                        className="page-controller-cell"
-                        onClick={() => this.setState({ exitViewDisable: true })}
-                    >
-                        <img src={exit} />
-                    </div>
-                </Tooltip>
+                <TopBarRightBtn
+                    title="Exit"
+                    icon="exit"
+                    onClick={() => this.setState({ exitViewDisable: true })}
+                />
                 <Modal
                     visible={this.state.exitViewDisable}
                     footer={null}

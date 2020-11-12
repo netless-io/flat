@@ -1,6 +1,12 @@
+import moment from "moment";
+import path from "path";
+import { v4 as uuidv4 } from "uuid";
+
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import classNames from "classnames";
+import { message, Tooltip, Tabs } from "antd";
+
 import { createPlugins, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk } from "white-web-sdk";
 import ToolBox from "@netless/tool-box";
 import RedoUndo from "@netless/redo-undo";
@@ -12,38 +18,31 @@ import { audioPlugin } from "@netless/white-audio-plugin";
 import PreviewController from "@netless/preview-controller";
 import DocsCenter from "@netless/docs-center";
 import { CursorTool } from "@netless/cursor-tool";
-import { message, Tooltip, Tabs } from "antd";
+import { PPTDataType, PPTType } from "@netless/oss-upload-manager";
+import OssDropUpload from "@netless/oss-drop-upload";
+
 import { netlessWhiteboardApi } from "./apiMiddleware";
+import { netlessToken, ossConfigObj } from "./appToken";
+import { pptDatas } from "./taskUuids";
+import { Identity } from "./IndexPage";
+import { LocalStorageRoomDataType } from "./HistoryPage";
 import PageError from "./PageError";
 import LoadingPage from "./LoadingPage";
+
+import InviteButton from "./components/InviteButton";
+import ExitButtonRoom from "./components/ExitButtonRoom";
+import { TopBar } from "./components/TopBar";
+import { TopBarRightBtn } from "./components/TopBarRightBtn";
+
+import { listDir } from "./utils/Fs";
+import { runtime } from "./utils/Runtime";
+import { ipcAsyncByMain } from "./utils/Ipc";
+
 import pages from "./assets/image/pages.svg";
 import topbarRecording from "./assets/image/topbar-recording.svg";
 import topbarPlay from "./assets/image/topbar-play.svg";
-import record from "./assets/image/record.svg";
-import folder from "./assets/image/folder.svg";
-import follow from "./assets/image/follow.svg";
-import followActive from "./assets/image/follow-active.svg";
-import phone from "./assets/image/phone.svg";
-import phoneActive from "./assets/image/phone-active.svg";
-import options from "./assets/image/options.svg";
-import signal1 from "./assets/image/signal-1.svg";
-import signal2 from "./assets/image/signal-2.svg";
-import signal3 from "./assets/image/signal-3.svg";
-import { netlessToken, ossConfigObj } from "./appToken";
+
 import "./WhiteboardPage.less";
-import InviteButton from "./components/InviteButton";
-import ExitButtonRoom from "./components/ExitButtonRoom";
-import { Identity } from "./IndexPage";
-import OssDropUpload from "@netless/oss-drop-upload";
-import { PPTDataType, PPTType } from "@netless/oss-upload-manager";
-import moment from "moment";
-import { v4 as uuidv4 } from "uuid";
-import { LocalStorageRoomDataType } from "./HistoryPage";
-import { pptDatas } from "./taskUuids";
-import { listDir } from "./utils/Fs";
-import { runtime } from "./utils/Runtime";
-import path from "path";
-import { ipcAsyncByMain } from "./utils/Ipc";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -58,16 +57,15 @@ export type WhiteboardPageStates = {
     whiteboardLayerDownRef?: HTMLDivElement;
     roomController?: ViewMode;
 };
+
 export type WhiteboardPageProps = RouteComponentProps<{
     identity: Identity;
     uuid: string;
     userId: string;
 }>;
-export default class WhiteboardPage extends React.Component<
-    WhiteboardPageProps,
-    WhiteboardPageStates
-> {
-    private signal = [signal1, signal2, signal3];
+
+export class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPageStates> {
+    private videoRef = React.createRef<HTMLDivElement>();
 
     public constructor(props: WhiteboardPageProps) {
         super(props);
@@ -272,19 +270,12 @@ export default class WhiteboardPage extends React.Component<
     };
 
     public render(): React.ReactNode {
-        const {
-            room,
-            isMenuVisible,
-            isFileOpen,
-            isRecording,
-            recordData,
-            phase,
-            whiteboardLayerDownRef,
-        } = this.state;
-        const { identity, uuid, userId } = this.props.match.params;
-        if (room === undefined) {
+        const { room, phase } = this.state;
+
+        if (room == null) {
             return <LoadingPage />;
         }
+
         switch (phase) {
             case RoomPhase.Connecting ||
                 RoomPhase.Disconnecting ||
@@ -296,208 +287,178 @@ export default class WhiteboardPage extends React.Component<
                 return <PageError />;
             }
             default: {
-                return (
-                    <div className="realtime-box">
-                        <div className={`topbar-box${runtime.isMac ? "" : "-win"}`}>
-                            <div className="topbar-content-left">
-                                {/* @TODO 房间主题 */}
-                                <h1 className="topbar-title">房间主题</h1>
-                                {/* @TODO 网络状态 */}
-                                <div className="topbar-network-status">
-                                    <span className="topbar-network-delay">延迟：0ms</span>
-                                    <span className="topbar-network-signal">
-                                        网络：
-                                        <img src={this.signal[2]} alt="signal" />
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="topbar-content-center">
-                                <div className="topbar-record-status">
-                                    {isRecording ? (
-                                        <>
-                                            <span className="topbar-record-status">
-                                                正在录制中…
-                                            </span>
-                                            <span className="topbar-record-time-recording">
-                                                00:38
-                                            </span>
-                                            <button
-                                                className="topbar-record-btn"
-                                                onClick={() =>
-                                                    this.setState({ isRecording: false })
-                                                }
-                                            >
-                                                <img src={topbarRecording} alt="recording" />
-                                                <span>结束录制</span>
-                                            </button>
-                                        </>
-                                    ) : recordData ? (
-                                        <>
-                                            <span className="topbar-record-status">录制完成</span>
-                                            <span className="topbar-record-time-recording">
-                                                00:38
-                                            </span>
-                                            <button className="topbar-record-btn">
-                                                <img src={topbarPlay} alt="play" />
-                                                <span>查看回放</span>
-                                            </button>
-                                        </>
-                                    ) : null}
-                                </div>
-                            </div>
-                            <div className="topbar-content-right">
-                                <Tooltip placement="bottom" title="Record">
-                                    <div
-                                        className="topbar-content-right-cell"
-                                        onClick={() => {
-                                            this.setState(state => ({
-                                                isRecording: !state.isRecording,
-                                            }));
-                                        }}
-                                    >
-                                        <img
-                                            src={record}
-                                            alt="Record"
-                                            className={`topbar-content-right-record${
-                                                isRecording ? "-active" : ""
-                                            }`}
-                                        />
-                                    </div>
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Call">
-                                    <div
-                                        className="topbar-content-right-cell"
-                                        onClick={() =>
-                                            this.setState(state => ({
-                                                isCalling: !state.isCalling,
-                                            }))
-                                        }
-                                    >
-                                        <img
-                                            src={this.state.isCalling ? phoneActive : phone}
-                                            alt="Call"
-                                        />
-                                    </div>
-                                </Tooltip>
-                                <Tooltip placement="bottom" title="Vision control">
-                                    <div
-                                        className="topbar-content-right-cell"
-                                        onClick={() => this.handleRoomController(room)}
-                                    >
-                                        <img
-                                            src={
-                                                this.state.mode === ViewMode.Broadcaster
-                                                    ? followActive
-                                                    : follow
-                                            }
-                                            alt="Vision control"
-                                        />
-                                    </div>
-                                </Tooltip>
-                                <Tooltip placement="bottom" title={"Docs center"}>
-                                    <div
-                                        className="topbar-content-right-cell"
-                                        onClick={() => {
-                                            console.log(
-                                                listDir(
-                                                    path.join(
-                                                        runtime.downloadsDirectory,
-                                                        "dynamicConvert",
-                                                    ),
-                                                ),
-                                            );
-                                            this.setState({ isFileOpen: !this.state.isFileOpen });
-                                        }}
-                                    >
-                                        <img src={folder} alt={"folder"} />
-                                    </div>
-                                </Tooltip>
-                                <InviteButton uuid={uuid} />
-                                {/* @TODO 实现设置功能 */}
-                                <Tooltip placement="bottom" title="Options">
-                                    <div className="topbar-content-right-cell">
-                                        <img src={options} alt="Options" />
-                                    </div>
-                                </Tooltip>
-                                <ExitButtonRoom identity={identity} room={room} userId={userId} />
-                            </div>
-                        </div>
-                        <div className="realtime-content">
-                            <div className="realtime-content-main">
-                                <div className="tool-box-out">
-                                    <ToolBox
-                                        room={room}
-                                        customerComponent={[
-                                            <OssUploadButton
-                                                oss={ossConfigObj}
-                                                appIdentifier={netlessToken.appIdentifier}
-                                                sdkToken={netlessToken.sdkToken}
-                                                room={room}
-                                                whiteboardRef={whiteboardLayerDownRef}
-                                            />,
-                                        ]}
-                                    />
-                                </div>
-                                <div className="redo-undo-box">
-                                    <RedoUndo room={room} />
-                                </div>
-                                <div className="zoom-controller-box">
-                                    <ZoomController room={room} />
-                                </div>
-                                <div className="page-controller-box">
-                                    <div className="page-controller-mid-box">
-                                        <Tooltip placement="top" title={"Page preview"}>
-                                            <div
-                                                className="page-controller-cell"
-                                                onClick={() => this.handlePreviewState(true)}
-                                            >
-                                                <img src={pages} alt={"pages"} />
-                                            </div>
-                                        </Tooltip>
-                                        <PageController room={room} />
-                                    </div>
-                                </div>
-                                <PreviewController
-                                    handlePreviewState={this.handlePreviewState}
-                                    isVisible={isMenuVisible}
-                                    room={room}
-                                />
-                                <DocsCenter
-                                    handleDocCenterState={this.handleDocCenterState}
-                                    isFileOpen={isFileOpen}
-                                    room={room}
-                                />
-                                <OssDropUpload room={room} oss={ossConfigObj}>
-                                    <div ref={this.handleBindRoom} className="whiteboard-box" />
-                                </OssDropUpload>
-                            </div>
-                            <div
-                                className={classNames("realtime-content-side", {
-                                    isActive: this.state.isRealtimeSideOpen,
-                                })}
-                            >
-                                <div className="realtime-content-side-container">
-                                    {this.state.isCalling && <div className="realtime-video"></div>}
-                                    <div className="realtime-messaging">
-                                        <Tabs defaultActiveKey="messages" tabBarGutter={0}>
-                                            <Tabs.TabPane tab="消息列表" key="messages">
-                                                Content of Tab Pane 1
-                                            </Tabs.TabPane>
-                                            <Tabs.TabPane tab="用户列表" key="users">
-                                                Content of Tab Pane 2
-                                            </Tabs.TabPane>
-                                        </Tabs>
-                                    </div>
-                                    <button
-                                        className="realtime-side-opener"
-                                        onClick={this.handleSideOpenerClick}
-                                    ></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
+                return this.renderWhiteBoard(room);
             }
         }
     }
+
+    private renderWhiteBoard(room: Room): React.ReactNode {
+        const {
+            isMenuVisible,
+            isFileOpen,
+            isCalling,
+            isRecording,
+            recordData,
+            whiteboardLayerDownRef,
+        } = this.state;
+
+        const { identity, uuid, userId } = this.props.match.params;
+
+        const TopBarRightBtns = (
+            <>
+                <TopBarRightBtn
+                    title="Record"
+                    icon="record"
+                    active={isRecording}
+                    onClick={() => {
+                        this.setState(state => ({
+                            isRecording: !state.isRecording,
+                        }));
+                    }}
+                />
+                <TopBarRightBtn
+                    title="Call"
+                    icon="phone"
+                    active={isCalling}
+                    onClick={() => {
+                        this.setState(state => ({
+                            isCalling: !state.isCalling,
+                        }));
+                    }}
+                />
+                <TopBarRightBtn
+                    title="Vision control"
+                    icon="follow"
+                    active={this.state.mode === ViewMode.Broadcaster}
+                    onClick={() => {
+                        this.handleRoomController(room);
+                    }}
+                />
+                <TopBarRightBtn
+                    title="Docs center"
+                    icon="folder"
+                    onClick={() => {
+                        console.log(
+                            listDir(path.join(runtime.downloadsDirectory, "dynamicConvert")),
+                        );
+                        this.setState({ isFileOpen: !this.state.isFileOpen });
+                    }}
+                />
+                <InviteButton uuid={uuid} />
+                <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
+                <ExitButtonRoom identity={identity} room={room} userId={userId} />
+            </>
+        );
+
+        const topBarCenter = (
+            <div className="topbar-record-status">
+                {isRecording ? (
+                    <>
+                        <span className="topbar-record-status">正在录制中…</span>
+                        <span className="topbar-record-time-recording">00:38</span>
+                        <button
+                            className="topbar-record-btn"
+                            onClick={() => this.setState({ isRecording: false })}
+                        >
+                            <img src={topbarRecording} alt="recording" />
+                            <span>结束录制</span>
+                        </button>
+                    </>
+                ) : recordData ? (
+                    <>
+                        <span className="topbar-record-status">录制完成</span>
+                        <span className="topbar-record-time-recording">00:38</span>
+                        <button className="topbar-record-btn">
+                            <img src={topbarPlay} alt="play" />
+                            <span>查看回放</span>
+                        </button>
+                    </>
+                ) : null}
+            </div>
+        );
+
+        return (
+            <div className="realtime-box">
+                <TopBar title="房间主题" center={topBarCenter} rightBtns={TopBarRightBtns} />
+                <div className="realtime-content">
+                    <div className="realtime-content-main">
+                        <div className="tool-box-out">
+                            <ToolBox
+                                room={room}
+                                customerComponent={[
+                                    <OssUploadButton
+                                        oss={ossConfigObj}
+                                        appIdentifier={netlessToken.appIdentifier}
+                                        sdkToken={netlessToken.sdkToken}
+                                        room={room}
+                                        whiteboardRef={whiteboardLayerDownRef}
+                                    />,
+                                ]}
+                            />
+                        </div>
+                        <div className="redo-undo-box">
+                            <RedoUndo room={room} />
+                        </div>
+                        <div className="zoom-controller-box">
+                            <ZoomController room={room} />
+                        </div>
+                        <div className="page-controller-box">
+                            <div className="page-controller-mid-box">
+                                <Tooltip placement="top" title={"Page preview"}>
+                                    <div
+                                        className="page-controller-cell"
+                                        onClick={() => this.handlePreviewState(true)}
+                                    >
+                                        <img src={pages} alt={"pages"} />
+                                    </div>
+                                </Tooltip>
+                                <PageController room={room} />
+                            </div>
+                        </div>
+                        <PreviewController
+                            handlePreviewState={this.handlePreviewState}
+                            isVisible={isMenuVisible}
+                            room={room}
+                        />
+                        <DocsCenter
+                            handleDocCenterState={this.handleDocCenterState}
+                            isFileOpen={isFileOpen}
+                            room={room}
+                        />
+                        <OssDropUpload room={room} oss={ossConfigObj}>
+                            <div ref={this.handleBindRoom} className="whiteboard-box" />
+                        </OssDropUpload>
+                    </div>
+                    <div
+                        className={classNames("realtime-content-side", {
+                            isActive: this.state.isRealtimeSideOpen,
+                        })}
+                    >
+                        <div className="realtime-content-side-container">
+                            {this.state.isCalling && (
+                                <div className="realtime-video" ref={this.videoRef}></div>
+                            )}
+                            <div className="realtime-messaging">
+                                <Tabs defaultActiveKey="messages" tabBarGutter={0}>
+                                    {/* @TODO 实现列表 */}
+                                    <Tabs.TabPane tab="消息列表" key="messages">
+                                        Content of Tab Pane 1
+                                    </Tabs.TabPane>
+                                    <Tabs.TabPane tab="用户列表" key="users">
+                                        Content of Tab Pane 2
+                                    </Tabs.TabPane>
+                                </Tabs>
+                            </div>
+                            <button
+                                className="realtime-side-opener"
+                                onClick={this.handleSideOpenerClick}
+                            ></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
+
+export default WhiteboardPage;
