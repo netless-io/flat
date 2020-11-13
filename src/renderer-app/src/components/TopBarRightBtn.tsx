@@ -8,7 +8,7 @@ export interface TopBarRightBtnProps extends React.ButtonHTMLAttributes<HTMLButt
 }
 
 export class TopBarRightBtn extends React.PureComponent<TopBarRightBtnProps> {
-    render() {
+    render(): React.ReactNode {
         const { title, icon, active, ...restProps } = this.props;
 
         return (

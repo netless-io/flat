@@ -12,10 +12,10 @@ export interface TopBarProps {
     rightBtns: React.ReactNode;
 }
 
-export class TopBar extends React.PureComponent<TopBarProps> {
+export class TopBar extends React.Component<TopBarProps> {
     private signal = [signal1, signal2, signal3];
 
-    render() {
+    render(): React.ReactNode {
         return (
             <div className={classNames("topbar-box", { isMac: runtime.isMac })}>
                 <div className="topbar-content-left">
