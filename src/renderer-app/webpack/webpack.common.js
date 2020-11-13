@@ -103,7 +103,7 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(png|jpe?g|gif|svg|mp4|webm|ogg|mp3|wav|flac|aac)$/,
+                test: /\.(png|jpe?g|gif|svg|mp4|webm|ogg|mp3|wav|flac|aac|woff|woff2|eot|ttf)$/,
                 loader: "url-loader",
                 options: {
                     limit: 1,
