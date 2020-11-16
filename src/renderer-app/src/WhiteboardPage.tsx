@@ -319,6 +319,9 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 } catch (e) {
                     console.error(e);
                 }
+                if (this.cloudRecordingInterval) {
+                    clearInterval(this.cloudRecordingInterval);
+                }
             }
             this.cloudRecording = null;
         } else {
@@ -331,7 +334,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 await this.cloudRecording.start();
                 this.cloudRecordingInterval = setInterval(() => {
                     if (this.cloudRecording?.isRecording) {
-                        this.cloudRecording.query();
+                        this.cloudRecording.query().catch(console.warn);
                     }
                 }, 10000);
             }
@@ -343,6 +346,9 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             this.setState({ isCalling: false });
             if (this.cloudRecording?.isRecording) {
                 await this.toggleRecording();
+                if (this.cloudRecordingInterval) {
+                    clearInterval(this.cloudRecordingInterval);
+                }
             }
             this.rtc.leave();
         } else {

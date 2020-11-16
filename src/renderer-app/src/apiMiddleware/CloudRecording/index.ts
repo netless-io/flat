@@ -90,8 +90,16 @@ export class CloudRecording {
     /** 开始录制 */
     public async start(
         startPayload: CR.StartPayload["clientRequest"] = {
-            recordingConfig: { subscribeUidGroup: 0 },
             storageConfig: this.defaultStorageConfig(),
+            recordingConfig: {
+                subscribeUidGroup: 0,
+                transcodingConfig: {
+                    width: 640,
+                    height: 360,
+                    fps: 15,
+                    bitrate: 500,
+                },
+            },
         },
         acquirePayload: CR.AcquirePayload["clientRequest"] = {
             resourceExpiredHour: 1,
