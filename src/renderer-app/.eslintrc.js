@@ -196,6 +196,7 @@ module.exports = {
         "jsx-a11y/role-has-required-aria-props": "warn",
         "jsx-a11y/role-supports-aria-props": "warn",
         "jsx-a11y/scope": "warn",
+        "jsx-a11y/media-has-caption": "off",
 
         // https://github.com/facebook/react/tree/master/packages/eslint-plugin-react-hooks
         "react-hooks/rules-of-hooks": "error",
