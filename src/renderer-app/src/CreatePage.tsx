@@ -7,10 +7,11 @@ import { Identity } from "./IndexPage";
 import { LocalStorageRoomDataType } from "./HistoryPage";
 import moment from "moment";
 import { netlessWhiteboardApi } from "./apiMiddleware";
-import { ipcAsyncByMain } from './utils/Ipc';
+import { ipcAsyncByMain } from "./utils/Ipc";
 
 export type JoinPageStates = {
     roomName: string;
+    userName: string;
     value: boolean;
 };
 
@@ -19,6 +20,7 @@ export default class CreatePage extends React.Component<RouteComponentProps, Joi
         super(props);
         this.state = {
             roomName: "",
+            userName: "",
             value: false,
         };
         ipcAsyncByMain("set-win-size", {
@@ -97,20 +99,28 @@ export default class CreatePage extends React.Component<RouteComponentProps, Joi
     };
 
     public render(): React.ReactNode {
-        const { roomName } = this.state;
+        const { roomName, userName } = this.state;
         return (
             <div className="page-index-box">
                 <div className="page-index-mid-box">
                     <div className="page-index-logo-box">
                         <img src={logo} alt={"logo"} />
-                        <span>0.0.1</span>
                     </div>
                     <div className="page-index-form-box">
+                        <span>房间主题</span>
                         <Input
-                            placeholder={"输入房间名"}
+                            placeholder={"输入房间主题"}
                             value={roomName}
                             style={{ marginBottom: 28, width: 384 }}
                             onChange={evt => this.setState({ roomName: evt.target.value })}
+                            size={"large"}
+                        />
+                        <span>昵称</span>
+                        <Input
+                            placeholder={"请输入昵称"}
+                            value={userName}
+                            style={{ marginBottom: 28, width: 384 }}
+                            onChange={evt => this.setState({ userName: evt.target.value })}
                             size={"large"}
                         />
                         <div className="page-index-btn-box">
