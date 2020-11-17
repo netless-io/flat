@@ -7,7 +7,7 @@ import create from "./assets/image/create.svg";
 import "./IndexPage.less";
 import { Button, Input, Popover } from "antd";
 import { shell } from "electron";
-import { ipcAsyncByMain } from './utils/Ipc';
+import { ipcAsyncByMain } from "./utils/Ipc";
 
 export type IndexPageStates = {
     name: string;
@@ -67,16 +67,14 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
         return (
             <div className="page-index-box">
                 <div className="page-index-mid-box">
+                    <a className="page-index-span-box" onClick={this.openLanding}>
+                        官网
+                    </a>
+                    <a className="page-index-span-box" onClick={this.openGithub}>
+                        GitHub
+                    </a>
                     <div className="page-index-logo-box">
                         <img src={logo} alt={"logo"} />
-                        {localStorage.getItem("rooms") && (
-                            <Link to={"/history"}>
-                                <div className="page-index-history">历史记录</div>
-                            </Link>
-                        )}
-                        <Link to={"/storage/"}>
-                            <div className="page-index-storage">预加载</div>
-                        </Link>
                         <Popover
                             visible={this.state.visible}
                             placement={"bottom"}
@@ -136,13 +134,14 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                         </div>
                     </div>
                     <div className="page-index-link-box">
-                        <div className="page-index-cell-left">
-                            <span onClick={this.openLanding}>官网</span>
-                        </div>
-                        <div className="page-cutline-link-box" />
-                        <div className="page-index-cell-right">
-                            <span onClick={this.openGithub}>Github</span>
-                        </div>
+                        {localStorage.getItem("rooms") && (
+                            <Link to={"/history"}>
+                                <div className="page-index-history">历史会议</div>
+                            </Link>
+                        )}
+                        <Link to={"/storage/"}>
+                            <div className="page-index-storage">预加载</div>
+                        </Link>
                     </div>
                     <div className="page-index-start-term">
                         本开源项目遵循
