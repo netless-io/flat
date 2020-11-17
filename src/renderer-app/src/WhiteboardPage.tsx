@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import classNames from "classnames";
-import { message, Tooltip, Tabs } from "antd";
+import { message, Tooltip } from "antd";
 
 import { createPlugins, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk } from "white-web-sdk";
 import ToolBox from "@netless/tool-box";
@@ -36,6 +36,7 @@ import ExitButtonRoom from "./components/ExitButtonRoom";
 import { TopBar } from "./components/TopBar";
 import { TopBarRecordStatus } from "./components/TopBarRecordStatus";
 import { TopBarRightBtn } from "./components/TopBarRightBtn";
+import { RealtimePanel } from "./components/RealtimePanel";
 
 import { listDir } from "./utils/Fs";
 import { runtime } from "./utils/Runtime";
@@ -52,10 +53,13 @@ export type WhiteboardPageStates = {
     isMenuVisible: boolean;
     isFileOpen: boolean;
     isRecording: boolean;
-    m3u8url?: string;
     isCalling: boolean;
     isRealtimeSideOpen: boolean;
-    recordData: any; // @TODO 添加录制数据类型
+    recordData: {
+        m3u8?: string;
+        startTime?: number;
+        endTime?: number;
+    };
     mode?: ViewMode;
     whiteboardLayerDownRef?: HTMLDivElement;
     roomController?: ViewMode;
@@ -83,7 +87,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             isRecording: false,
             isCalling: false,
             isRealtimeSideOpen: false,
-            recordData: null,
+            recordData: {},
         };
         ipcAsyncByMain("set-win-size", {
             width: 1200,
@@ -104,9 +108,16 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             this.cloudRecordingInterval = void 0;
         }
         if (this.cloudRecording?.isRecording) {
+            const { startTime } = this.state.recordData;
+            if (startTime) {
+                this.saveRecording({
+                    startTime,
+                    m3u8: this.getm3u8url(),
+                    endTime: Date.now(),
+                });
+            }
             try {
                 await this.cloudRecording.stop();
-                this.setState({ m3u8url: this.getm3u8url() });
             } catch (e) {
                 console.error(e);
             }
@@ -152,6 +163,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 );
             } else {
                 if (room.roomName) {
+                    // @TODO 统一各页面的 localstorage 操作，存储更丰富的房间信息。
                     this.setState({ roomName: room.roomName });
                 }
                 const newRoomArray = roomArray.filter(data => data.uuid !== uuid);
@@ -181,6 +193,26 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     },
                 ]),
             );
+        }
+    };
+
+    private saveRecording = (recording: {
+        m3u8: string;
+        startTime: number;
+        endTime: number;
+    }): void => {
+        const rooms = localStorage.getItem("rooms");
+        if (rooms) {
+            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
+            const room = roomArray.find(data => data.uuid === this.state.room?.uuid);
+            if (room) {
+                if (room.recordings) {
+                    room.recordings.push(recording);
+                } else {
+                    room.recordings = [recording];
+                }
+                localStorage.setItem("rooms", JSON.stringify(roomArray));
+            }
         }
     };
 
@@ -305,7 +337,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         }
     };
 
-    private handleSideOpenerClick = (): void => {
+    private handleSideOpenerSwitch = (): void => {
         this.setState(state => ({ isRealtimeSideOpen: !state.isRealtimeSideOpen }));
     };
 
@@ -313,9 +345,16 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         if (this.state.isRecording) {
             this.setState({ isRecording: false });
             if (this.cloudRecording?.isRecording) {
+                const { startTime } = this.state.recordData;
+                if (startTime) {
+                    this.saveRecording({
+                        startTime,
+                        m3u8: this.getm3u8url(),
+                        endTime: Date.now(),
+                    });
+                }
                 try {
                     await this.cloudRecording.stop();
-                    this.setState({ m3u8url: this.getm3u8url() });
                 } catch (e) {
                     console.error(e);
                 }
@@ -441,49 +480,25 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                             <div ref={this.handleBindRoom} className="whiteboard-box" />
                         </OssDropUpload>
                     </div>
-                    <div
-                        className={classNames("realtime-content-side", {
-                            isActive: isRealtimeSideOpen,
-                        })}
-                    >
-                        <div className="realtime-content-side-container">
-                            <div
-                                className={classNames("realtime-video-container", {
-                                    isActive: isCalling,
-                                })}
-                            >
-                                <div className="realtime-video" ref={this.videoRef}></div>
-                            </div>
-                            <div className="realtime-messaging">
-                                <Tabs defaultActiveKey="messages" tabBarGutter={0}>
-                                    {/* @TODO 实现列表 */}
-                                    <Tabs.TabPane tab="消息列表" key="messages">
-                                        Content of Tab Pane 1
-                                    </Tabs.TabPane>
-                                    <Tabs.TabPane tab="用户列表" key="users">
-                                        Content of Tab Pane 2
-                                    </Tabs.TabPane>
-                                </Tabs>
-                            </div>
-                            <button
-                                className="realtime-side-opener"
-                                onClick={this.handleSideOpenerClick}
-                            ></button>
-                        </div>
-                    </div>
+                    <RealtimePanel
+                        isShow={isRealtimeSideOpen}
+                        videoRef={this.videoRef}
+                        isVideoOn={isCalling}
+                        onSwitch={this.handleSideOpenerSwitch}
+                    />
                 </div>
             </div>
         );
     }
 
     private renderTopBar(room: Room): React.ReactNode {
-        const { isCalling, isRecording, m3u8url, roomName } = this.state;
+        const { isCalling, isRecording, recordData, roomName } = this.state;
         const { identity, uuid, userId } = this.props.match.params;
 
         const topBarCenter = (
             <TopBarRecordStatus
                 isRecording={isRecording}
-                m3u8url={m3u8url}
+                m3u8url={recordData.m3u8}
                 onStop={this.toggleRecording}
                 onReplay={() => {
                     // @TODO
