@@ -346,12 +346,11 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             this.setState({ isRecording: false });
             if (this.cloudRecording?.isRecording) {
                 const { startTime } = this.state.recordData;
+                const m3u8 = this.getm3u8url();
+                const endTime = Date.now();
+                this.setState({ recordData: { startTime, m3u8, endTime } });
                 if (startTime) {
-                    this.saveRecording({
-                        startTime,
-                        m3u8: this.getm3u8url(),
-                        endTime: Date.now(),
-                    });
+                    this.saveRecording({ startTime, m3u8, endTime });
                 }
                 try {
                     await this.cloudRecording.stop();
@@ -370,6 +369,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     cname: this.props.match.params.uuid,
                     uid: "1", // 不能与频道内其他用户冲突
                 });
+                this.setState({ recordData: { startTime: Date.now() } });
                 await this.cloudRecording.start();
                 this.cloudRecordingInterval = setInterval(() => {
                     if (this.cloudRecording?.isRecording) {
