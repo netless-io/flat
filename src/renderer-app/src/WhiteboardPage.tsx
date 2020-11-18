@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
-import classNames from "classnames";
 import { message, Tooltip } from "antd";
 
 import { createPlugins, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk } from "white-web-sdk";
@@ -55,11 +54,7 @@ export type WhiteboardPageStates = {
     isRecording: boolean;
     isCalling: boolean;
     isRealtimeSideOpen: boolean;
-    recordData: {
-        m3u8?: string;
-        startTime?: number;
-        endTime?: number;
-    };
+    recordingUuid?: string;
     mode?: ViewMode;
     whiteboardLayerDownRef?: HTMLDivElement;
     roomController?: ViewMode;
@@ -78,6 +73,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     private cloudRecording: CloudRecording | null = null;
     private cloudRecordingInterval: NodeJS.Timeout | undefined;
 
+    private recordStartTime: number | null = null;
+
     public constructor(props: WhiteboardPageProps) {
         super(props);
         this.state = {
@@ -87,7 +84,6 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             isRecording: false,
             isCalling: false,
             isRealtimeSideOpen: false,
-            recordData: {},
         };
         ipcAsyncByMain("set-win-size", {
             width: 1200,
@@ -107,22 +103,22 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             clearInterval(this.cloudRecordingInterval);
             this.cloudRecordingInterval = void 0;
         }
+        if (this.recordStartTime !== null) {
+            this.saveRecording({
+                uuid: uuidv4(),
+                startTime: this.recordStartTime,
+                endTime: Date.now(),
+                videoUrl: this.cloudRecording?.isRecording ? this.getm3u8url() : undefined,
+            });
+        }
         if (this.cloudRecording?.isRecording) {
-            const { startTime } = this.state.recordData;
-            if (startTime) {
-                this.saveRecording({
-                    startTime,
-                    m3u8: this.getm3u8url(),
-                    endTime: Date.now(),
-                });
-            }
             try {
                 await this.cloudRecording.stop();
             } catch (e) {
                 console.error(e);
             }
-            this.cloudRecording = null;
         }
+        this.cloudRecording = null;
     }
 
     private getRoomToken = async (uuid: string): Promise<string | null> => {
@@ -197,9 +193,10 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     };
 
     private saveRecording = (recording: {
-        m3u8: string;
+        uuid: string;
         startTime: number;
         endTime: number;
+        videoUrl?: string;
     }): void => {
         const rooms = localStorage.getItem("rooms");
         if (rooms) {
@@ -214,6 +211,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 localStorage.setItem("rooms", JSON.stringify(roomArray));
             }
         }
+        this.setState({ recordingUuid: recording.uuid });
+        this.recordStartTime = null;
     };
 
     private setDefaultPptData = (pptDatas: string[], room: Room): void => {
@@ -344,32 +343,33 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     private toggleRecording = async (): Promise<void> => {
         if (this.state.isRecording) {
             this.setState({ isRecording: false });
+            if (this.recordStartTime !== null) {
+                this.saveRecording({
+                    uuid: uuidv4(),
+                    startTime: this.recordStartTime,
+                    endTime: Date.now(),
+                    videoUrl: this.cloudRecording?.isRecording ? this.getm3u8url() : undefined,
+                });
+            }
+            if (this.cloudRecordingInterval) {
+                clearInterval(this.cloudRecordingInterval);
+            }
             if (this.cloudRecording?.isRecording) {
-                const { startTime } = this.state.recordData;
-                const m3u8 = this.getm3u8url();
-                const endTime = Date.now();
-                this.setState({ recordData: { startTime, m3u8, endTime } });
-                if (startTime) {
-                    this.saveRecording({ startTime, m3u8, endTime });
-                }
                 try {
                     await this.cloudRecording.stop();
                 } catch (e) {
                     console.error(e);
                 }
-                if (this.cloudRecordingInterval) {
-                    clearInterval(this.cloudRecordingInterval);
-                }
             }
             this.cloudRecording = null;
         } else {
             this.setState({ isRecording: true });
+            this.recordStartTime = Date.now();
             if (this.state.isCalling && !this.cloudRecording?.isRecording) {
                 this.cloudRecording = new CloudRecording({
                     cname: this.props.match.params.uuid,
                     uid: "1", // 不能与频道内其他用户冲突
                 });
-                this.setState({ recordData: { startTime: Date.now() } });
                 await this.cloudRecording.start();
                 this.cloudRecordingInterval = setInterval(() => {
                     if (this.cloudRecording?.isRecording) {
@@ -492,13 +492,13 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     }
 
     private renderTopBar(room: Room): React.ReactNode {
-        const { isCalling, isRecording, recordData, roomName } = this.state;
+        const { isCalling, isRecording, recordingUuid, roomName } = this.state;
         const { identity, uuid, userId } = this.props.match.params;
 
         const topBarCenter = (
             <TopBarRecordStatus
                 isRecording={isRecording}
-                m3u8url={recordData.m3u8}
+                recordingUuid={recordingUuid}
                 onStop={this.toggleRecording}
                 onReplay={() => {
                     // @TODO

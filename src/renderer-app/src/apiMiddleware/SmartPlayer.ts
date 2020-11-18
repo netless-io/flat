@@ -160,9 +160,9 @@ export class SmartPlayer {
 
         this.whiteboardPlayer = player;
 
-        if (recording) {
+        if (recording?.videoUrl) {
             const combinePlayerFactory = new CombinePlayerFactory(player, {
-                url: recording.m3u8,
+                url: recording.videoUrl,
                 videoDOM: videoEl,
             });
 
