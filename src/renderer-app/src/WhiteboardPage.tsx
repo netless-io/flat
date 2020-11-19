@@ -86,8 +86,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             isRealtimeSideOpen: false,
         };
         ipcAsyncByMain("set-win-size", {
-            width: 1200,
-            height: 800,
+            width: 1440,
+            height: 688,
         });
     }
 
@@ -119,6 +119,14 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             }
         }
         this.cloudRecording = null;
+
+        if (this.state.room) {
+            this.state.room.callbacks.off();
+        }
+
+        if (process.env.NODE_ENV === "development") {
+            (window as any).room = null;
+        }
     }
 
     private getRoomToken = async (uuid: string): Promise<string | null> => {
@@ -303,7 +311,9 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     this.setState({ mode: room.state.broadcastState.mode });
                 }
                 this.setState({ room: room });
-                (window as any).room = room;
+                if (process.env.NODE_ENV === "development") {
+                    (window as any).room = room;
+                }
             }
         } catch (error) {
             message.error(error);
@@ -394,6 +404,12 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             this.setState({ isCalling: true, isRealtimeSideOpen: true });
             this.rtc.join(this.props.match.params.uuid, this.videoRef.current);
         }
+    };
+
+    private openReplayPage = () => {
+        // @TODO 打开到当前的录制记录中
+        const { uuid, identity, userId } = this.props.match.params;
+        this.props.history.push(`/replay/${identity}/${uuid}/${userId}/`);
     };
 
     public render(): React.ReactNode {
@@ -500,9 +516,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 isRecording={isRecording}
                 recordingUuid={recordingUuid}
                 onStop={this.toggleRecording}
-                onReplay={() => {
-                    // @TODO
-                }}
+                onReplay={this.openReplayPage}
             />
         );
 

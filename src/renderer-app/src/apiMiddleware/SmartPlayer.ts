@@ -24,28 +24,16 @@ export class SmartPlayer {
     public combinePlayer: CombinePlayer | undefined;
     public whiteWebSdk: WhiteWebSdk | undefined;
 
-    public isPlaying = false;
+    public get isPlaying(): boolean {
+        return this._isPlaying;
+    }
 
-    public constructor(config?: {
-        onPlay?: () => void;
-        onPause?: () => void;
-        onEnded?: () => void;
-        onError?: (error: Error) => void;
-    }) {
-        if (config) {
-            if (config.onPlay) {
-                this.onPlay = config.onPlay;
-            }
-            if (config.onPause) {
-                this.onPause = config.onPause;
-            }
-            if (config.onEnded) {
-                this.onEnded = config.onEnded;
-            }
-            if (config.onError) {
-                this.onError = config.onError;
-            }
-        }
+    public get isReady(): boolean {
+        return this._isReady;
+    }
+
+    public get isEnded(): boolean {
+        return this._isEnded;
     }
 
     public async load({
@@ -58,7 +46,12 @@ export class SmartPlayer {
         identity: Identity;
         whiteboardEl: HTMLDivElement;
         videoEl: HTMLVideoElement;
-    }) {
+    }): Promise<void> {
+        this._isPlaying = false;
+        this._isReady = false;
+        this._isEnded = false;
+        this.destroy();
+
         const roomToken = await netlessWhiteboardApi.room.joinRoomApi(uuid);
 
         if (!roomToken) {
@@ -67,7 +60,7 @@ export class SmartPlayer {
 
         const storageRoom = this.getStorageRoom(uuid);
         // @TODO 支持多段视频
-        const recording = storageRoom?.recordings?.[0];
+        const recording = storageRoom?.recordings?.[storageRoom.recordings.length - 1];
 
         const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
         plugins.setPluginContext("video", {
@@ -129,19 +122,30 @@ export class SmartPlayer {
                 }
                 switch (phase) {
                     case PlayerPhase.Playing: {
-                        this.isPlaying = true;
+                        this._isPlaying = true;
+                        this._isEnded = false;
                         this.onPlay();
+                        if (process.env.NODE_ENV === "development") {
+                            console.log("SmartPlayer: start playing");
+                        }
                         break;
                     }
                     case PlayerPhase.Pause: {
-                        this.isPlaying = false;
+                        this._isPlaying = false;
                         this.onPause();
+                        if (process.env.NODE_ENV === "development") {
+                            console.log("SmartPlayer: paused");
+                        }
                         break;
                     }
                     case PlayerPhase.Ended:
                     case PlayerPhase.Stopped: {
-                        this.isPlaying = false;
+                        this._isPlaying = false;
+                        this._isEnded = true;
                         this.onEnded();
+                        if (process.env.NODE_ENV === "development") {
+                            console.log("SmartPlayer: ended");
+                        }
                         break;
                     }
                     default: {
@@ -171,18 +175,29 @@ export class SmartPlayer {
             combinePlayer.setOnStatusChange(status => {
                 switch (status) {
                     case PublicCombinedStatus.Playing: {
-                        this.isPlaying = true;
+                        this._isPlaying = true;
+                        this._isEnded = false;
                         this.onPlay();
+                        if (process.env.NODE_ENV === "development") {
+                            console.log("SmartPlayer: start playing");
+                        }
                         break;
                     }
                     case PublicCombinedStatus.Pause: {
-                        this.isPlaying = false;
+                        this._isPlaying = false;
                         this.onPause();
+                        if (process.env.NODE_ENV === "development") {
+                            console.log("SmartPlayer: paused");
+                        }
                         break;
                     }
                     case PublicCombinedStatus.Ended: {
-                        this.isPlaying = false;
+                        this._isPlaying = false;
+                        this._isEnded = true;
                         this.onEnded();
+                        if (process.env.NODE_ENV === "development") {
+                            console.log("SmartPlayer: ended");
+                        }
                         break;
                     }
                     default: {
@@ -194,6 +209,12 @@ export class SmartPlayer {
             this.combinePlayer = combinePlayer;
         }
 
+        this._isReady = true;
+        this.onReady();
+        if (process.env.NODE_ENV === "development") {
+            console.log("SmartPlayer: ready");
+        }
+
         if (process.env.NODE_ENV === "development") {
             // 供便捷调试
             (window as any).player = player;
@@ -202,7 +223,7 @@ export class SmartPlayer {
     }
 
     public play(): void {
-        if (this.isPlaying) {
+        if (this._isPlaying) {
             return;
         }
         const whiteboardPlayer = this.checkWhiteboardLoaded();
@@ -223,7 +244,7 @@ export class SmartPlayer {
     }
 
     public pause(): void {
-        if (!this.isPlaying) {
+        if (!this._isPlaying) {
             return;
         }
         const whiteboardPlayer = this.checkWhiteboardLoaded();
@@ -234,11 +255,24 @@ export class SmartPlayer {
         }
     }
 
+    public seek(ms: number): void {
+        this._isEnded = false;
+        const whiteboardPlayer = this.checkWhiteboardLoaded();
+        if (this.combinePlayer) {
+            this.combinePlayer.seek(ms);
+        } else {
+            whiteboardPlayer.seekToScheduleTime(ms);
+        }
+    }
+
     public destroy(): void {
         this.whiteWebSdk = undefined;
-        if (this.isPlaying) {
+        if (this._isPlaying) {
             this.whiteboardPlayer?.stop();
             this.combinePlayer?.pause();
+        }
+        if (this.whiteboardPlayer) {
+            this.whiteboardPlayer.callbacks.off();
         }
         // @ts-ignore TODO 等待 https://github.com/netless-io/netless-combine-player/pull/20
         this.combinePlayer?.removeAllStatusChange();
@@ -251,6 +285,8 @@ export class SmartPlayer {
         }
     }
 
+    public onReady(): void {}
+
     public onPlay(): void {}
 
     public onPause(): void {}
@@ -258,8 +294,14 @@ export class SmartPlayer {
     public onEnded(): void {}
 
     public onError(error: Error): void {
-        console.error(error);
+        console.error("SmartPlayer: error", error);
     }
+
+    private _isPlaying: boolean = false;
+
+    private _isReady: boolean = false;
+
+    private _isEnded: boolean = false;
 
     private checkWhiteboardLoaded(): Player {
         if (!this.whiteboardPlayer) {

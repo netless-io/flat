@@ -6,8 +6,8 @@ import "./TopBarRecordStatus.less";
 
 export interface TopBarRecordStatusProps {
     isRecording: boolean;
-    /** 录制完成后得到 m3u8 地址 */
-    m3u8url: string | undefined;
+    /** 每一次录制完成后生成的 uuid */
+    recordingUuid?: string;
     onStop: () => void;
     onReplay: () => void;
 }
@@ -54,7 +54,7 @@ export class TopBarRecordStatus extends React.PureComponent<
     }
 
     public render(): React.ReactNode {
-        const { isRecording, m3u8url, onStop, onReplay } = this.props;
+        const { isRecording, recordingUuid, onStop, onReplay } = this.props;
 
         return (
             <div className="topbar-record-status">
@@ -67,7 +67,7 @@ export class TopBarRecordStatus extends React.PureComponent<
                             <span>结束录制</span>
                         </button>
                     </>
-                ) : m3u8url ? (
+                ) : recordingUuid ? (
                     <>
                         <span className="topbar-record-status">录制完成</span>
                         <span className="topbar-record-time">{this.state.count}</span>

@@ -21,9 +21,10 @@ export type LocalStorageRoomDataType = {
     roomName?: string;
     cover?: string;
     recordings?: Array<{
-        m3u8: string;
+        uuid: string;
         startTime: number;
         endTime: number;
+        videoUrl?: string;
     }>;
 };
 
