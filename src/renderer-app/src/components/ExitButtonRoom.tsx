@@ -3,12 +3,13 @@ import { Button, message, Modal, Tooltip } from "antd";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 import { Room } from "white-web-sdk";
-import "./ExitButton.less";
-import exit from "../assets/image/exit.svg";
-import replayScreen from "../assets/image/replay-screen.png";
 import { Identity } from "../IndexPage";
 import { netlessWhiteboardApi } from "../apiMiddleware";
 import { LocalStorageRoomDataType } from "../HistoryPage";
+
+import replayScreen from "../assets/image/replay-screen.png";
+import exit from "../assets/image/exit.svg";
+import "./ExitButton.less";
 
 export type ExitButtonRoomStates = {
     exitViewDisable: boolean;
@@ -21,7 +22,7 @@ export type ExitButtonRoomProps = {
     identity: Identity;
 } & RouteComponentProps<{}>;
 
-class ExitButtonRoom extends React.Component<ExitButtonRoomProps, ExitButtonRoomStates> {
+class ExitButtonRoom extends React.PureComponent<ExitButtonRoomProps, ExitButtonRoomStates> {
     public constructor(props: ExitButtonRoomProps) {
         super(props);
         this.state = {
@@ -49,22 +50,26 @@ class ExitButtonRoom extends React.Component<ExitButtonRoomProps, ExitButtonRoom
     private setCover = async (room: Room): Promise<void> => {
         try {
             this.setState({ isLoading: true });
-            const res = await netlessWhiteboardApi.room.getCover(
-                room.uuid,
-                room.state.sceneState.scenePath,
-                192,
-                144,
-                room.roomToken,
-            );
-            const rooms = localStorage.getItem("rooms");
-            if (rooms) {
-                const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
-                const roomData = roomArray.find(data => data.uuid === room.uuid);
-                const newRoomData = roomArray.filter(data => data.uuid !== room.uuid);
-                if (roomData) {
-                    roomData.cover = res.url;
+            try {
+                const res = await netlessWhiteboardApi.room.getCover(
+                    room.uuid,
+                    room.state.sceneState.scenePath,
+                    192,
+                    144,
+                    room.roomToken,
+                );
+                const rooms = localStorage.getItem("rooms");
+                if (rooms) {
+                    const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
+                    const roomData = roomArray.find(data => data.uuid === room.uuid);
+                    const newRoomData = roomArray.filter(data => data.uuid !== room.uuid);
+                    if (roomData) {
+                        roomData.cover = res.url;
+                    }
+                    localStorage.setItem("rooms", JSON.stringify([roomData, ...newRoomData]));
                 }
-                localStorage.setItem("rooms", JSON.stringify([roomData, ...newRoomData]));
+            } catch (error) {
+                console.error(error);
             }
             this.setState({ isLoading: false });
         } catch (error) {
@@ -73,22 +78,23 @@ class ExitButtonRoom extends React.Component<ExitButtonRoomProps, ExitButtonRoom
         }
     };
 
+    private disableExitView = () => this.setState({ exitViewDisable: true });
+
+    private enableExitView = () => this.setState({ exitViewDisable: false });
+
     public render(): React.ReactNode {
         return (
             <>
                 <Tooltip placement="bottom" title={"Exit"}>
-                    <div
-                        className="topbar-content-right-cell"
-                        onClick={() => this.setState({ exitViewDisable: true })}
-                    >
+                    <button className="topbar-content-right-cell" onClick={this.disableExitView}>
                         <img src={exit} />
-                    </div>
+                    </button>
                 </Tooltip>
                 <Modal
                     visible={this.state.exitViewDisable}
                     footer={null}
                     title={"退出教室"}
-                    onCancel={() => this.setState({ exitViewDisable: false })}
+                    onCancel={this.enableExitView}
                 >
                     <div className="modal-box">
                         <div onClick={this.handleReplay}>

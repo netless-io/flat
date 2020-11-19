@@ -31,7 +31,6 @@ import PageError from "./PageError";
 import LoadingPage from "./LoadingPage";
 
 import InviteButton from "./components/InviteButton";
-import ExitButtonRoom from "./components/ExitButtonRoom";
 import { TopBar } from "./components/TopBar";
 import { TopBarRecordStatus } from "./components/TopBarRecordStatus";
 import { TopBarRightBtn } from "./components/TopBarRightBtn";
@@ -509,7 +508,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
 
     private renderTopBar(room: Room): React.ReactNode {
         const { isCalling, isRecording, recordingUuid, roomName } = this.state;
-        const { identity, uuid, userId } = this.props.match.params;
+        const { uuid } = this.props.match.params;
 
         const topBarCenter = (
             <TopBarRecordStatus
@@ -554,7 +553,6 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 />
                 <InviteButton uuid={uuid} />
                 <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
-                <ExitButtonRoom identity={identity} room={room} userId={userId} />
             </>
         );
 
