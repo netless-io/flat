@@ -380,6 +380,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     uid: "1", // 不能与频道内其他用户冲突
                 });
                 await this.cloudRecording.start();
+                // @TODO 临时避免频道被关闭（默认30秒无活动），后面会根据我们的需求修改并用 polly-js 管理重发。
                 this.cloudRecordingInterval = window.setInterval(() => {
                     if (this.cloudRecording?.isRecording) {
                         this.cloudRecording.query().catch(console.warn);
