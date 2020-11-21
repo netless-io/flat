@@ -37,7 +37,7 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
     private videoRef = React.createRef<HTMLVideoElement>();
     private smartPlayer = new SmartPlayer();
 
-    private hideControllerTimeout: NodeJS.Timeout | undefined;
+    private hideControllerTimeout: number | undefined;
     private lastMouseX: number = -100;
     private lastMouseY: number = -100;
 
@@ -103,8 +103,8 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
 
     public componentWillUnmount() {
         window.removeEventListener("keydown", this.handleSpaceKey);
-        if (this.hideControllerTimeout) {
-            clearTimeout(this.hideControllerTimeout);
+        if (this.hideControllerTimeout !== undefined) {
+            window.clearTimeout(this.hideControllerTimeout);
         }
         this.smartPlayer.destroy();
     }
@@ -126,9 +126,9 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
             this.setState({ isShowController: true });
         }
         if (this.hideControllerTimeout) {
-            clearTimeout(this.hideControllerTimeout);
+            window.clearTimeout(this.hideControllerTimeout);
         }
-        this.hideControllerTimeout = setTimeout(() => {
+        this.hideControllerTimeout = window.setTimeout(() => {
             this.setState({ isShowController: false });
         }, 2000);
     };

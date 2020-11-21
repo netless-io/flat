@@ -20,7 +20,7 @@ export class TopBarRecordStatus extends React.PureComponent<
     TopBarRecordStatusProps,
     TopBarRecordStatusState
 > {
-    private countTimeout: NodeJS.Timeout | undefined;
+    private countTimeout: number | undefined;
     private startTime: number = 0;
 
     public constructor(props: TopBarRecordStatusProps) {
@@ -83,12 +83,12 @@ export class TopBarRecordStatus extends React.PureComponent<
 
     private countUp = (): void => {
         this.setState({ count: this.renderTime(Math.floor((Date.now() - this.startTime) / 1000)) });
-        this.countTimeout = setTimeout(this.countUp, 100);
+        this.countTimeout = window.setTimeout(this.countUp, 100);
     };
 
     private stopCount = (): void => {
         if (this.countTimeout) {
-            clearTimeout(this.countTimeout);
+            window.clearTimeout(this.countTimeout);
             this.countTimeout = void 0;
         }
     };

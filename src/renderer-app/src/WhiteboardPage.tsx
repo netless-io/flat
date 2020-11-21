@@ -70,7 +70,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
 
     private rtc = new Rtc();
     private cloudRecording: CloudRecording | null = null;
-    private cloudRecordingInterval: NodeJS.Timeout | undefined;
+    private cloudRecordingInterval: number | undefined;
 
     private recordStartTime: number | null = null;
 
@@ -99,7 +99,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             this.rtc.leave();
         }
         if (this.cloudRecordingInterval) {
-            clearInterval(this.cloudRecordingInterval);
+            window.clearInterval(this.cloudRecordingInterval);
             this.cloudRecordingInterval = void 0;
         }
         if (this.recordStartTime !== null) {
@@ -361,7 +361,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 });
             }
             if (this.cloudRecordingInterval) {
-                clearInterval(this.cloudRecordingInterval);
+                window.clearInterval(this.cloudRecordingInterval);
             }
             if (this.cloudRecording?.isRecording) {
                 try {
@@ -380,7 +380,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     uid: "1", // 不能与频道内其他用户冲突
                 });
                 await this.cloudRecording.start();
-                this.cloudRecordingInterval = setInterval(() => {
+                this.cloudRecordingInterval = window.setInterval(() => {
                     if (this.cloudRecording?.isRecording) {
                         this.cloudRecording.query().catch(console.warn);
                     }
