@@ -21,7 +21,7 @@ export class CloudRecording {
 
     /** 待录制的频道名 */
     public get cname(): string {
-        if (this._cname == null) {
+        if (this._cname === null || this._cname === undefined) {
             throw new Error("Channal name is not set.");
         }
         return this._cname;
@@ -29,7 +29,7 @@ export class CloudRecording {
 
     /** 云端录制服务在频道内使用的 UID，用于标识该录制服务。取值范围 1 到 (232-1)，不可设置为 0。 */
     public get uid(): string {
-        if (this._uid == null) {
+        if (this._uid === null || this._uid === undefined) {
             throw new Error("UID is not set.");
         }
         return this._uid;
@@ -37,7 +37,7 @@ export class CloudRecording {
 
     /** 通过 acquire 请求获取的 resource ID。 */
     public get resourceid(): string {
-        if (this._resourceid == null) {
+        if (this._resourceid === null || this._resourceid === undefined) {
             throw new Error("No resourceid. Use `couldRecording.acquire` to acquire one.");
         }
         return this._resourceid;
@@ -45,7 +45,7 @@ export class CloudRecording {
 
     /** 通过 start 请求获取的录制 ID。 */
     public get sid(): string {
-        if (this._sid == null) {
+        if (this._sid === null || this._sid === undefined) {
             throw new Error("No sid. Use `couldRecording.start` to acquire one.");
         }
         return this._sid;
@@ -68,10 +68,10 @@ export class CloudRecording {
         /** 云端录制服务在频道内使用的 UID，用于标识该录制服务。取值范围 1 到 (232-1)，不可设置为 0。 */
         uid?: string;
     }) {
-        if (init.cname != null) {
+        if (init.cname !== undefined) {
             this._cname = init.cname;
         }
-        if (init.uid != null) {
+        if (init.uid !== undefined) {
             this._uid = init.uid;
         }
     }

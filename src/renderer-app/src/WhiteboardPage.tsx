@@ -414,7 +414,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     public render(): React.ReactNode {
         const { room, phase } = this.state;
 
-        if (room == null) {
+        if (room === null || room === undefined) {
             return <LoadingPage />;
         }
 
