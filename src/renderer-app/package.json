@@ -5,6 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@netless/combine-player": "^1.1.0",
     "@netless/cursor-tool": "^0.0.4",
     "@netless/docs-center": "^0.0.2",
     "@netless/fetch-middleware": "^1.0.6",

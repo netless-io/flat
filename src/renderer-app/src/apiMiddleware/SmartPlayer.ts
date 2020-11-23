@@ -274,7 +274,6 @@ export class SmartPlayer {
         if (this.whiteboardPlayer) {
             this.whiteboardPlayer.callbacks.off();
         }
-        // @ts-ignore TODO 等待 https://github.com/netless-io/netless-combine-player/pull/20
         this.combinePlayer?.removeAllStatusChange();
         this.whiteboardPlayer = undefined;
         this.combinePlayer = undefined;
