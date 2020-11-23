@@ -75,48 +75,6 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                     </a>
                     <div className="page-index-logo-box">
                         <img src={logo} alt={"logo"} />
-                        <Popover
-                            visible={this.state.visible}
-                            placement={"bottom"}
-                            trigger="click"
-                            content={
-                                <div className="page-index-name-box">
-                                    <Input
-                                        maxLength={8}
-                                        onChange={e => this.setState({ name: e.target.value })}
-                                        value={this.state.name}
-                                        style={{ width: 120 }}
-                                        size={"small"}
-                                    />
-                                    <Button
-                                        onClick={() => this.updateName()}
-                                        style={{ width: 120, marginTop: 12 }}
-                                        type={"primary"}
-                                        size={"small"}
-                                    >
-                                        更新
-                                    </Button>
-                                    <Button
-                                        onClick={() => this.updateName(true)}
-                                        style={{ width: 120, marginTop: 12 }}
-                                        size={"small"}
-                                    >
-                                        清空
-                                    </Button>
-                                </div>
-                            }
-                            title={"编辑昵称"}
-                        >
-                            <span onClick={() => this.setState({ visible: true })}>
-                                <span style={{ color: "#3381FF" }}>{this.state.name}</span>
-                                <span>
-                                    欢迎使用{" "}
-                                    <span role="img" aria-label="waving-hand">
-                                        👋
-                                    </span>
-                                </span>
-                            </span>
-                        </Popover>
                     </div>
                     <div className="page-index-start-box">
                         <div className="page-index-start-cell">
