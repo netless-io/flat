@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>folder</title>
-    <desc>Created with Sketch.</desc>
-    <g id="页面-4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Whiteboard-Guidelines" transform="translate(-664.000000, -374.000000)">
-            <g id="folder" transform="translate(664.000000, 374.000000)">
-                <rect id="矩形备份-25" fill="#FFFFFF" opacity="0.01" x="0" y="0" width="32" height="32"></rect>
-                <path d="M10,11 C10,10.4477153 10.4477153,10 11,10 L14.4384472,10 C15.3561825,10 16.1561487,10.6245947 16.3787322,11.5149287 L16.5,12 L20,12 C21.1045695,12 22,12.8954305 22,14 L22,20 C22,21.1045695 21.1045695,22 20,22 L12,22 C10.8954305,22 10,21.1045695 10,20 L10,11 Z" id="形状结合" stroke="#212324" stroke-linecap="round" stroke-linejoin="round"></path>
-                <line x1="10" y1="14" x2="22" y2="14" id="路径-6" stroke="#212324" stroke-linecap="round" stroke-linejoin="round"></line>
+    <g id="白板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Flat-规范" transform="translate(-1288.000000, -16.000000)" stroke="#7A7B7C">
+            <g id="folder" transform="translate(1288.000000, 16.000000)">
+                <path d="M5,6 C5,5.44771525 5.44771525,5 6,5 L9.43844719,5 C10.3561825,5 11.1561487,5.62459475 11.3787322,6.51492875 L11.5,7 L15,7 C16.1045695,7 17,7.8954305 17,9 L17,15 C17,16.1045695 16.1045695,17 15,17 L7,17 C5.8954305,17 5,16.1045695 5,15 L5,6 Z" id="形状结合"></path>
+                <line x1="5" y1="9" x2="17" y2="9" id="路径-6"></line>
             </g>
         </g>
     </g>

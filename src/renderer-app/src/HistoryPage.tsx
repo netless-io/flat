@@ -20,6 +20,12 @@ export type LocalStorageRoomDataType = {
     userId: string;
     roomName?: string;
     cover?: string;
+    recordings?: Array<{
+        uuid: string;
+        startTime: number;
+        endTime: number;
+        videoUrl?: string;
+    }>;
 };
 
 export default class JoinPage extends React.Component<RouteComponentProps<{}>, JoinPageStates> {

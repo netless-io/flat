@@ -1,251 +1,200 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
-import { CursorTool } from "@netless/cursor-tool";
-import polly from "polly-js";
 import { message } from "antd";
-import { WhiteWebSdk, PlayerPhase, Player, createPlugins } from "white-web-sdk";
-import video_play from "./assets/image/video-play.svg";
-import "video.js/dist/video-js.css";
-import "./ReplayPage.less";
-import PageError from "./PageError";
 import PlayerController from "@netless/player-controller";
-import { netlessWhiteboardApi } from "./apiMiddleware";
-import { netlessToken } from "./appToken";
 import LoadingPage from "./LoadingPage";
-import logo from "./assets/image/logo.svg";
-import ExitButtonPlayer from "./components/ExitButtonPlayer";
+import { ipcAsyncByMain } from "./utils/Ipc";
 import { Identity } from "./IndexPage";
-import { videoPlugin } from "@netless/white-video-plugin";
-import { audioPlugin } from "@netless/white-audio-plugin";
-import { ipcAsyncByMain } from './utils/Ipc';
-export type PlayerPageProps = RouteComponentProps<{
+import PageError from "./PageError";
+import { SmartPlayer } from "./apiMiddleware/SmartPlayer";
+import { RealtimePanel } from "./components/RealtimePanel";
+import ExitButtonPlayer from "./components/ExitButtonPlayer";
+
+import video_play from "./assets/image/video-play.svg";
+import "./ReplayPage.less";
+
+export type ReplayPageProps = RouteComponentProps<{
     identity: Identity;
     uuid: string;
     userId: string;
 }>;
 
-export type PlayerPageStates = {
-    player?: Player;
-    phase: PlayerPhase;
-    currentTime: number;
-    isPlayerSeeking: boolean;
+export type ReplayPageStates = {
+    isVideoOn: boolean;
+    isRealtimePanelShow: boolean;
+    isReady: boolean;
+    isPlaying: boolean;
+    isShowController: boolean;
+    hasError: boolean;
+
     isVisible: boolean;
     replayFail: boolean;
     replayState: boolean;
 };
 
-export default class NetlessPlayer extends React.Component<PlayerPageProps, PlayerPageStates> {
-    public constructor(props: PlayerPageProps) {
+export default class ReplayPage extends React.Component<ReplayPageProps, ReplayPageStates> {
+    private whiteboardRef = React.createRef<HTMLDivElement>();
+    private videoRef = React.createRef<HTMLVideoElement>();
+    private smartPlayer = new SmartPlayer();
+
+    private hideControllerTimeout: number | undefined;
+    private lastMouseX: number = -100;
+    private lastMouseY: number = -100;
+
+    public constructor(props: ReplayPageProps) {
         super(props);
         this.state = {
-            currentTime: 0,
-            phase: PlayerPhase.Pause,
-            isPlayerSeeking: false,
+            isVideoOn: false,
+            isRealtimePanelShow: false,
+            isReady: false,
+            isPlaying: false,
+            isShowController: false,
+            hasError: false,
+
             isVisible: false,
             replayFail: false,
             replayState: false,
         };
         ipcAsyncByMain("set-win-size", {
-            width: 1200,
-            height: 800,
+            width: 1440,
+            height: 688,
         });
     }
-
-    private getRoomToken = async (uuid: string): Promise<string | null> => {
-        const roomToken = await netlessWhiteboardApi.room.joinRoomApi(uuid);
-        if (roomToken) {
-            return roomToken;
-        } else {
-            return null;
-        }
-    };
 
     public async componentDidMount(): Promise<void> {
         window.addEventListener("keydown", this.handleSpaceKey);
+
+        const updatePlayingState = () => {
+            this.setState({ isPlaying: this.smartPlayer.isPlaying });
+        };
+
+        this.smartPlayer.onReady = () => {
+            this.setState({ isReady: true });
+            updatePlayingState();
+        };
+
+        this.smartPlayer.onPlay = updatePlayingState;
+        this.smartPlayer.onPause = updatePlayingState;
+        this.smartPlayer.onEnded = updatePlayingState;
+
+        this.smartPlayer.onError = () => {
+            this.setState({ hasError: true });
+            updatePlayingState();
+        };
+
         const { uuid, identity } = this.props.match.params;
-        const roomToken = await this.getRoomToken(uuid);
-        if (uuid && roomToken) {
-            const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
-            plugins.setPluginContext("video", {
-                identity: identity === Identity.creator ? "host" : "",
+        try {
+            await this.smartPlayer.load({
+                uuid,
+                identity,
+                whiteboardEl: this.whiteboardRef.current!,
+                videoEl: this.videoRef.current!,
             });
-            plugins.setPluginContext("audio", {
-                identity: identity === Identity.creator ? "host" : "",
-            });
-            const whiteWebSdk = new WhiteWebSdk({
-                appIdentifier: netlessToken.appIdentifier,
-                plugins: plugins,
-            });
-            await this.loadPlayer(whiteWebSdk, uuid, roomToken);
+        } catch (error) {
+            console.error(error);
+            message.error(error);
+            this.setState({ hasError: true });
+        }
+
+        if (this.smartPlayer.combinePlayer) {
+            this.setState({ isRealtimePanelShow: true, isVideoOn: true });
         }
     }
 
-    private loadPlayer = async (
-        whiteWebSdk: WhiteWebSdk,
-        uuid: string,
-        roomToken: string,
-    ): Promise<void> => {
-        await polly()
-            .waitAndRetry(10)
-            .executeForPromise(async () => {
-                const replayState = await whiteWebSdk.isPlayable({
-                    room: uuid,
-                    region: "cn-hz",
-                });
-                if (replayState) {
-                    this.setState({ replayState: true });
-                    await this.startPlayer(whiteWebSdk, uuid, roomToken);
-                    return Promise.resolve();
-                } else {
-                    this.setState({ replayState: false });
-                    return Promise.reject();
-                }
-            });
-    };
+    public componentWillUnmount() {
+        window.removeEventListener("keydown", this.handleSpaceKey);
+        if (this.hideControllerTimeout !== undefined) {
+            window.clearTimeout(this.hideControllerTimeout);
+        }
+        this.smartPlayer.destroy();
+    }
 
-    private startPlayer = async (
-        whiteWebSdk: WhiteWebSdk,
-        uuid: string,
-        roomToken: string,
-    ): Promise<void> => {
-        const cursorAdapter = new CursorTool();
-        const player = await whiteWebSdk.replayRoom(
-            {
-                room: uuid,
-                roomToken: roomToken,
-                cursorAdapter: cursorAdapter,
-            },
-            {
-                onPhaseChanged: phase => {
-                    this.setState({ phase: phase });
-                },
-                onLoadFirstFrame: () => {
-                    cursorAdapter.setPlayer(player);
-                },
-                onStoppedWithError: (error: Error) => {
-                    message.error(`Playback error: ${error}`);
-                    this.setState({ replayFail: true });
-                },
-                onProgressTimeChanged: (scheduleTime: number) => {
-                    this.setState({ currentTime: scheduleTime });
-                },
-            },
-        );
-        cursorAdapter.setPlayer(player);
-        (window as any).player = player;
-        this.setState({
-            player: player,
-        });
-    };
-
-    private handleBindRoom = (ref: HTMLDivElement): void => {
-        const { player } = this.state;
-        if (player) {
-            player.bindHtmlElement(ref);
+    private handleSpaceKey = (evt: KeyboardEvent): void => {
+        if (evt.key === "Space") {
+            this.togglePlayPause();
         }
     };
 
-    private handleSpaceKey = (evt: any): void => {
-        if (evt.code === "Space") {
-            if (this.state.player) {
-                this.onClickOperationButton(this.state.player);
-            }
+    private handleMouseMove = (evt: React.MouseEvent<HTMLDivElement>): void => {
+        const { lastMouseX, lastMouseY } = this;
+        this.lastMouseX = evt.clientX;
+        this.lastMouseY = evt.clientY;
+        if (Math.abs(evt.clientX - lastMouseX) < 2 || Math.abs(evt.clientY - lastMouseY) < 2) {
+            return;
         }
+        if (!this.state.isShowController) {
+            this.setState({ isShowController: true });
+        }
+        if (this.hideControllerTimeout) {
+            window.clearTimeout(this.hideControllerTimeout);
+        }
+        this.hideControllerTimeout = window.setTimeout(() => {
+            this.setState({ isShowController: false });
+        }, 2000);
     };
 
-    private onClickOperationButton = (player: Player): void => {
-        switch (player.phase) {
-            case PlayerPhase.WaitingFirstFrame:
-            case PlayerPhase.Pause: {
-                player.play();
-                break;
-            }
-            case PlayerPhase.Playing: {
-                player.pause();
-                break;
-            }
-            default: {
-                player.seekToScheduleTime(0);
-                break;
-            }
+    private togglePlayPause = (): void => {
+        if (!this.smartPlayer.isReady) {
+            return;
         }
-    };
-    private renderScheduleView(): React.ReactNode {
-        const { player, isVisible } = this.state;
-        if (player && isVisible) {
-            return (
-                <div onMouseEnter={() => this.setState({ isVisible: true })}>
-                    <PlayerController player={player} />
-                </div>
-            );
+        if (this.smartPlayer.isPlaying) {
+            this.smartPlayer.pause();
         } else {
-            return null;
+            if (this.smartPlayer.isEnded) {
+                this.smartPlayer.seek(0);
+            }
+            this.smartPlayer.play();
         }
-    }
+    };
 
-    public render(): React.ReactNode {
-        const { player, phase, replayState } = this.state;
+    private handleRealtimePanelSwitch = () => {
+        this.setState(state => ({ isRealtimePanelShow: !state.isRealtimePanelShow }));
+    };
+
+    public render() {
         const { identity, uuid, userId } = this.props.match.params;
-        if (this.state.replayFail) {
-            return <PageError />;
-        }
-        if (!replayState) {
-            return <LoadingPage text={"正在生成回放请耐心等待"} />;
-        }
-        if (player === undefined) {
-            return <LoadingPage />;
-        }
-        switch (phase) {
-            case PlayerPhase.WaitingFirstFrame: {
-                return <LoadingPage />;
-            }
-            default: {
-                return (
-                    <div className="player-out-box">
-                        <div className="logo-box">
-                            <img src={logo} alt={"logo"} />
+        const { isReady, isPlaying, isShowController, hasError } = this.state;
+
+        return (
+            <div className="replay-container">
+                <div className="replay-whiteboard-wrap">
+                    <div
+                        className="replay-whiteboard"
+                        ref={this.whiteboardRef}
+                        onMouseMove={this.handleMouseMove}
+                    ></div>
+                    {!isPlaying && (
+                        <div className="replay-play-overlay" onClick={this.togglePlayPause}>
+                            <button className="replay-play-icon">
+                                <img src={video_play} alt="play" />
+                            </button>
                         </div>
-                        <div className="room-controller-box">
-                            <div className="page-controller-mid-box">
-                                <ExitButtonPlayer
-                                    identity={identity}
-                                    uuid={uuid}
-                                    userId={userId}
-                                    player={player}
-                                />
-                            </div>
-                        </div>
-                        <div className="player-board">
-                            {this.renderScheduleView()}
-                            <div
-                                className="player-board-inner"
-                                onMouseOver={() => this.setState({ isVisible: true })}
-                                onMouseLeave={() => this.setState({ isVisible: false })}
-                            >
-                                <div
-                                    onClick={() => this.onClickOperationButton(player)}
-                                    className="player-mask"
-                                >
-                                    {phase === PlayerPhase.Pause && (
-                                        <div className="player-big-icon">
-                                            <img
-                                                style={{ width: 50, marginLeft: 6 }}
-                                                src={video_play}
-                                                alt={"video_play"}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
-                                <div
-                                    style={{ backgroundColor: "#F2F2F2" }}
-                                    className="player-box"
-                                    ref={this.handleBindRoom}
-                                />
-                            </div>
-                        </div>
+                    )}
+                    {isShowController && isReady && this.smartPlayer.whiteboardPlayer && (
+                        // @TODO 等待 player-controller 更新
+                        <PlayerController player={this.smartPlayer.whiteboardPlayer} />
+                    )}
+                </div>
+                <RealtimePanel
+                    isReplayPage={true}
+                    videoRef={this.videoRef}
+                    isVideoOn={this.state.isVideoOn}
+                    isShow={this.state.isRealtimePanelShow}
+                    onSwitch={this.handleRealtimePanelSwitch}
+                />
+                {hasError ? (
+                    <div className="replay-overlay">
+                        <PageError />
                     </div>
-                );
-            }
-        }
+                ) : isReady ? null : (
+                    <div className="replay-overlay">
+                        <LoadingPage text={"正在生成回放请耐心等待"} />
+                    </div>
+                )}
+                <div className="replay-exit">
+                    <ExitButtonPlayer identity={identity} uuid={uuid} userId={userId} />
+                </div>
+            </div>
+        );
     }
 }

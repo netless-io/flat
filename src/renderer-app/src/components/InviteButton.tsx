@@ -2,10 +2,9 @@ import * as React from "react";
 import { Button, Input, message, Popover } from "antd";
 import { clipboard } from "electron";
 import "./InviteButton.less";
-import inviteActive from "../assets/image/invite-active.svg";
-import invite from "../assets/image/invite.svg";
 import { Identity } from "../IndexPage";
 import { CopyOutlined } from "@ant-design/icons";
+import { TopBarRightBtn } from "./TopBarRightBtn";
 
 export type InviteButtonStates = {
     inviteDisable: boolean;
@@ -107,8 +106,13 @@ export default class InviteButton extends React.Component<InviteButtonProps, Inv
                 content={() => this.renderInviteContent()}
                 placement={"bottomRight"}
             >
-                <div className="page-controller-cell" onClick={this.handleInvite}>
-                    <img src={this.state.inviteDisable ? inviteActive : invite} alt={"invite"} />
+                <div>
+                    <TopBarRightBtn
+                        title="Invite"
+                        icon="invite"
+                        active={this.state.inviteDisable}
+                        onClick={this.handleInvite}
+                    />
                 </div>
             </Popover>
         );

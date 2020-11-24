@@ -1,5 +1,11 @@
+import moment from "moment";
+import path from "path";
+import { v4 as uuidv4 } from "uuid";
+
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
+import { message, Tooltip } from "antd";
+
 import { createPlugins, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk } from "white-web-sdk";
 import ToolBox from "@netless/tool-box";
 import RedoUndo from "@netless/redo-undo";
@@ -11,64 +17,115 @@ import { audioPlugin } from "@netless/white-audio-plugin";
 import PreviewController from "@netless/preview-controller";
 import DocsCenter from "@netless/docs-center";
 import { CursorTool } from "@netless/cursor-tool";
-import { message, Tooltip } from "antd";
+import { PPTDataType, PPTType } from "@netless/oss-upload-manager";
+import OssDropUpload from "@netless/oss-drop-upload";
+
 import { netlessWhiteboardApi } from "./apiMiddleware";
+import { netlessToken, ossConfigObj } from "./appToken";
+import { pptDatas } from "./taskUuids";
+import { Rtc } from "./apiMiddleware/Rtc";
+import { CloudRecording } from "./apiMiddleware/CloudRecording";
+import { Identity } from "./IndexPage";
+import { LocalStorageRoomDataType } from "./HistoryPage";
 import PageError from "./PageError";
 import LoadingPage from "./LoadingPage";
-import pages from "./assets/image/pages.svg";
-import folder from "./assets/image/folder.svg";
-import follow from "./assets/image/follow.svg";
-import followActive from "./assets/image/follow-active.svg";
-import logo from "./assets/image/logo.svg";
-import { netlessToken, ossConfigObj } from "./appToken";
-import "./WhiteboardPage.less";
+
 import InviteButton from "./components/InviteButton";
-import ExitButtonRoom from "./components/ExitButtonRoom";
-import { Identity } from "./IndexPage";
-import OssDropUpload from "@netless/oss-drop-upload";
-import { PPTDataType, PPTType } from "@netless/oss-upload-manager";
-import moment from "moment";
-import { v4 as uuidv4 } from "uuid";
-import { LocalStorageRoomDataType } from "./HistoryPage";
-import { pptDatas } from "./taskUuids";
+import { TopBar } from "./components/TopBar";
+import { TopBarRecordStatus } from "./components/TopBarRecordStatus";
+import { TopBarRightBtn } from "./components/TopBarRightBtn";
+import { RealtimePanel } from "./components/RealtimePanel";
+
 import { listDir } from "./utils/Fs";
 import { runtime } from "./utils/Runtime";
-import path from "path";
-import { ipcAsyncByMain } from './utils/Ipc';
+import { ipcAsyncByMain } from "./utils/Ipc";
+
+import pages from "./assets/image/pages.svg";
+
+import "./WhiteboardPage.less";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
     room?: Room;
+    roomName?: string;
     isMenuVisible: boolean;
     isFileOpen: boolean;
+    isRecording: boolean;
+    isCalling: boolean;
+    isRealtimeSideOpen: boolean;
+    recordingUuid?: string;
     mode?: ViewMode;
     whiteboardLayerDownRef?: HTMLDivElement;
     roomController?: ViewMode;
 };
+
 export type WhiteboardPageProps = RouteComponentProps<{
     identity: Identity;
     uuid: string;
     userId: string;
 }>;
-export default class WhiteboardPage extends React.Component<
-    WhiteboardPageProps,
-    WhiteboardPageStates
-> {
+
+export class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPageStates> {
+    private videoRef = React.createRef<HTMLDivElement>();
+
+    private rtc = new Rtc();
+    private cloudRecording: CloudRecording | null = null;
+    private cloudRecordingInterval: number | undefined;
+
+    private recordStartTime: number | null = null;
+
     public constructor(props: WhiteboardPageProps) {
         super(props);
         this.state = {
             phase: RoomPhase.Connecting,
             isMenuVisible: false,
             isFileOpen: false,
+            isRecording: false,
+            isCalling: false,
+            isRealtimeSideOpen: false,
         };
         ipcAsyncByMain("set-win-size", {
-            width: 1200,
-            height: 800,
+            width: 1440,
+            height: 688,
         });
     }
 
     public async componentDidMount(): Promise<void> {
         await this.startJoinRoom();
+    }
+
+    public async componentWillUnmount(): Promise<void> {
+        if (this.state.isCalling) {
+            this.rtc.leave();
+        }
+        if (this.cloudRecordingInterval) {
+            window.clearInterval(this.cloudRecordingInterval);
+            this.cloudRecordingInterval = void 0;
+        }
+        if (this.recordStartTime !== null) {
+            this.saveRecording({
+                uuid: uuidv4(),
+                startTime: this.recordStartTime,
+                endTime: Date.now(),
+                videoUrl: this.cloudRecording?.isRecording ? this.getm3u8url() : undefined,
+            });
+        }
+        if (this.cloudRecording?.isRecording) {
+            try {
+                await this.cloudRecording.stop();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        this.cloudRecording = null;
+
+        if (this.state.room) {
+            this.state.room.callbacks.off();
+        }
+
+        if (process.env.NODE_ENV === "development") {
+            (window as any).room = null;
+        }
     }
 
     private getRoomToken = async (uuid: string): Promise<string | null> => {
@@ -87,6 +144,7 @@ export default class WhiteboardPage extends React.Component<
             room.bindHtmlElement(ref);
         }
     };
+
     public setRoomList = (uuid: string, userId: string): void => {
         const rooms = localStorage.getItem("rooms");
         const timestamp = moment(new Date()).format("lll");
@@ -107,11 +165,16 @@ export default class WhiteboardPage extends React.Component<
                     ]),
                 );
             } else {
+                if (room.roomName) {
+                    // @TODO 统一各页面的 localstorage 操作，存储更丰富的房间信息。
+                    this.setState({ roomName: room.roomName });
+                }
                 const newRoomArray = roomArray.filter(data => data.uuid !== uuid);
                 localStorage.setItem(
                     "rooms",
                     JSON.stringify([
                         {
+                            ...room,
                             uuid: uuid,
                             time: timestamp,
                             identity: Identity.creator,
@@ -135,6 +198,30 @@ export default class WhiteboardPage extends React.Component<
             );
         }
     };
+
+    private saveRecording = (recording: {
+        uuid: string;
+        startTime: number;
+        endTime: number;
+        videoUrl?: string;
+    }): void => {
+        const rooms = localStorage.getItem("rooms");
+        if (rooms) {
+            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
+            const room = roomArray.find(data => data.uuid === this.state.room?.uuid);
+            if (room) {
+                if (room.recordings) {
+                    room.recordings.push(recording);
+                } else {
+                    room.recordings = [recording];
+                }
+                localStorage.setItem("rooms", JSON.stringify(roomArray));
+            }
+        }
+        this.setState({ recordingUuid: recording.uuid });
+        this.recordStartTime = null;
+    };
+
     private setDefaultPptData = (pptDatas: string[], room: Room): void => {
         const docs: PPTDataType[] = (room.state.globalState as any).docs;
         if (docs && docs.length > 1) {
@@ -161,6 +248,7 @@ export default class WhiteboardPage extends React.Component<
             }
         }
     };
+
     private startJoinRoom = async (): Promise<void> => {
         const { uuid, userId, identity } = this.props.match.params;
         this.setRoomList(uuid, userId);
@@ -222,13 +310,22 @@ export default class WhiteboardPage extends React.Component<
                     this.setState({ mode: room.state.broadcastState.mode });
                 }
                 this.setState({ room: room });
-                (window as any).room = room;
+                if (process.env.NODE_ENV === "development") {
+                    (window as any).room = room;
+                }
             }
         } catch (error) {
             message.error(error);
             console.log(error);
         }
     };
+
+    private getm3u8url(): string {
+        if (!this.cloudRecording) {
+            return "";
+        }
+        return `https://netless-cn-agora-whiteboard-dev.oss-cn-hangzhou.aliyuncs.com/AgoraCloudRecording/${this.cloudRecording.sid}_${this.cloudRecording.cname}.m3u8`;
+    }
 
     private handlePreviewState = (state: boolean): void => {
         this.setState({ isMenuVisible: state });
@@ -248,12 +345,80 @@ export default class WhiteboardPage extends React.Component<
         }
     };
 
+    private handleSideOpenerSwitch = (): void => {
+        this.setState(state => ({ isRealtimeSideOpen: !state.isRealtimeSideOpen }));
+    };
+
+    private toggleRecording = async (): Promise<void> => {
+        if (this.state.isRecording) {
+            this.setState({ isRecording: false });
+            if (this.recordStartTime !== null) {
+                this.saveRecording({
+                    uuid: uuidv4(),
+                    startTime: this.recordStartTime,
+                    endTime: Date.now(),
+                    videoUrl: this.cloudRecording?.isRecording ? this.getm3u8url() : undefined,
+                });
+            }
+            if (this.cloudRecordingInterval) {
+                window.clearInterval(this.cloudRecordingInterval);
+            }
+            if (this.cloudRecording?.isRecording) {
+                try {
+                    await this.cloudRecording.stop();
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+            this.cloudRecording = null;
+        } else {
+            this.setState({ isRecording: true });
+            this.recordStartTime = Date.now();
+            if (this.state.isCalling && !this.cloudRecording?.isRecording) {
+                this.cloudRecording = new CloudRecording({
+                    cname: this.props.match.params.uuid,
+                    uid: "1", // 不能与频道内其他用户冲突
+                });
+                await this.cloudRecording.start();
+                // @TODO 临时避免频道被关闭（默认30秒无活动），后面会根据我们的需求修改并用 polly-js 管理重发。
+                this.cloudRecordingInterval = window.setInterval(() => {
+                    if (this.cloudRecording?.isRecording) {
+                        this.cloudRecording.query().catch(console.warn);
+                    }
+                }, 10000);
+            }
+        }
+    };
+
+    private toggleCalling = async (): Promise<void> => {
+        if (this.state.isCalling) {
+            this.setState({ isCalling: false });
+            if (this.cloudRecording?.isRecording) {
+                await this.toggleRecording();
+                if (this.cloudRecordingInterval) {
+                    clearInterval(this.cloudRecordingInterval);
+                }
+            }
+            this.rtc.leave();
+        } else {
+            this.setState({ isCalling: true, isRealtimeSideOpen: true });
+            this.rtc.join(this.props.match.params.uuid, this.videoRef.current);
+        }
+    };
+
+    private openReplayPage = () => {
+        // @TODO 打开到当前的录制记录中
+        const { uuid, identity, userId } = this.props.match.params;
+        this.props.history.push(`/replay/${identity}/${uuid}/${userId}/`);
+    };
+
     public render(): React.ReactNode {
-        const { room, isMenuVisible, isFileOpen, phase, whiteboardLayerDownRef } = this.state;
-        const { identity, uuid, userId } = this.props.match.params;
-        if (room === undefined) {
+        const { room, phase } = this.state;
+
+        if (room === null || room === undefined) {
             return <LoadingPage />;
         }
+
         switch (phase) {
             case RoomPhase.Connecting ||
                 RoomPhase.Disconnecting ||
@@ -265,11 +430,25 @@ export default class WhiteboardPage extends React.Component<
                 return <PageError />;
             }
             default: {
-                return (
-                    <div className="realtime-box">
-                        <div className="logo-box">
-                            <img src={logo} alt={"logo"} />
-                        </div>
+                return this.renderWhiteBoard(room);
+            }
+        }
+    }
+
+    private renderWhiteBoard(room: Room): React.ReactNode {
+        const {
+            isMenuVisible,
+            isFileOpen,
+            whiteboardLayerDownRef,
+            isRealtimeSideOpen,
+            isCalling,
+        } = this.state;
+
+        return (
+            <div className="realtime-box">
+                {this.renderTopBar(room)}
+                <div className="realtime-content">
+                    <div className="realtime-content-main">
                         <div className="tool-box-out">
                             <ToolBox
                                 room={room}
@@ -289,45 +468,6 @@ export default class WhiteboardPage extends React.Component<
                         </div>
                         <div className="zoom-controller-box">
                             <ZoomController room={room} />
-                        </div>
-                        <div className="room-controller-box">
-                            <div className="page-controller-mid-box">
-                                <Tooltip placement="bottom" title={"Vision control"}>
-                                    <div
-                                        className="page-controller-cell"
-                                        onClick={() => this.handleRoomController(room)}
-                                    >
-                                        <img
-                                            src={
-                                                this.state.mode === ViewMode.Broadcaster
-                                                    ? followActive
-                                                    : follow
-                                            }
-                                            alt={"img"}
-                                        />
-                                    </div>
-                                </Tooltip>
-                                <Tooltip placement="bottom" title={"Docs center"}>
-                                    <div
-                                        className="page-controller-cell"
-                                        onClick={() => {
-                                            console.log(
-                                                listDir(
-                                                    path.join(
-                                                        runtime.downloadsDirectory,
-                                                        "dynamicConvert",
-                                                    ),
-                                                ),
-                                            );
-                                            this.setState({ isFileOpen: !this.state.isFileOpen });
-                                        }}
-                                    >
-                                        <img src={folder} alt={"folder"} />
-                                    </div>
-                                </Tooltip>
-                                <InviteButton uuid={uuid} />
-                                <ExitButtonRoom identity={identity} room={room} userId={userId} />
-                            </div>
                         </div>
                         <div className="page-controller-box">
                             <div className="page-controller-mid-box">
@@ -356,8 +496,71 @@ export default class WhiteboardPage extends React.Component<
                             <div ref={this.handleBindRoom} className="whiteboard-box" />
                         </OssDropUpload>
                     </div>
-                );
-            }
-        }
+                    <RealtimePanel
+                        isShow={isRealtimeSideOpen}
+                        videoRef={this.videoRef}
+                        isVideoOn={isCalling}
+                        onSwitch={this.handleSideOpenerSwitch}
+                    />
+                </div>
+            </div>
+        );
+    }
+
+    private renderTopBar(room: Room): React.ReactNode {
+        const { isCalling, isRecording, recordingUuid, roomName } = this.state;
+        const { uuid } = this.props.match.params;
+
+        const topBarCenter = (
+            <TopBarRecordStatus
+                isRecording={isRecording}
+                recordingUuid={recordingUuid}
+                onStop={this.toggleRecording}
+                onReplay={this.openReplayPage}
+            />
+        );
+
+        const topBarRightBtns = (
+            <>
+                <TopBarRightBtn
+                    title="Record"
+                    icon="record"
+                    active={isRecording}
+                    onClick={this.toggleRecording}
+                />
+                <TopBarRightBtn
+                    title="Call"
+                    icon="phone"
+                    active={isCalling}
+                    onClick={this.toggleCalling}
+                />
+                <TopBarRightBtn
+                    title="Vision control"
+                    icon="follow"
+                    active={this.state.mode === ViewMode.Broadcaster}
+                    onClick={() => {
+                        this.handleRoomController(room);
+                    }}
+                />
+                <TopBarRightBtn
+                    title="Docs center"
+                    icon="folder"
+                    onClick={() => {
+                        console.log(
+                            listDir(path.join(runtime.downloadsDirectory, "dynamicConvert")),
+                        );
+                        this.setState({ isFileOpen: !this.state.isFileOpen });
+                    }}
+                />
+                <InviteButton uuid={uuid} />
+                <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
+            </>
+        );
+
+        return (
+            <TopBar title={roomName || "房间"} center={topBarCenter} rightBtns={topBarRightBtns} />
+        );
     }
 }
+
+export default WhiteboardPage;
