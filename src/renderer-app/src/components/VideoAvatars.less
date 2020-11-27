@@ -1,0 +1,44 @@
+@vavatar-width: 280px;
+@vavatar-hegiht-1tox: 158px;
+@vavatar-hegiht-1to1: 158px;
+@vavatar-hegiht-1ton: 140px;
+@vavatar-width-1ton: 140px;
+
+.video-avatar-container {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+
+    // default one-to-many
+    width: @vavatar-width;
+    height: @vavatar-hegiht-1ton * 2;
+
+    .video-avatar {
+        width: @vavatar-width-1ton;
+        height: @vavatar-hegiht-1ton;
+    }
+
+    &.with-0 {
+        // broadcast
+        height: @vavatar-hegiht-1tox;
+
+        .video-avatar {
+            width: @vavatar-width;
+            height: @vavatar-hegiht-1tox;
+        }
+    }
+
+    &.with-1 {
+        // one-to-one
+        height: @vavatar-hegiht-1to1 * 2;
+
+        .video-avatar {
+            width: @vavatar-width;
+            height: @vavatar-hegiht-1to1;
+        }
+    }
+}
+
+.video-avatar {
+    overflow: hidden;
+}

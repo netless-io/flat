@@ -35,6 +35,7 @@ import { TopBar } from "./components/TopBar";
 import { TopBarRecordStatus } from "./components/TopBarRecordStatus";
 import { TopBarRightBtn } from "./components/TopBarRightBtn";
 import { RealtimePanel } from "./components/RealtimePanel";
+import { VideoAvatars } from "./components/VideoAvatars";
 
 import { listDir } from "./utils/Fs";
 import { runtime } from "./utils/Runtime";
@@ -57,6 +58,8 @@ export type WhiteboardPageStates = {
     mode?: ViewMode;
     whiteboardLayerDownRef?: HTMLDivElement;
     roomController?: ViewMode;
+    rtcUid: number | null;
+    rtcUsers: number[];
 };
 
 export type WhiteboardPageProps = RouteComponentProps<{
@@ -66,8 +69,6 @@ export type WhiteboardPageProps = RouteComponentProps<{
 }>;
 
 export class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPageStates> {
-    private videoRef = React.createRef<HTMLDivElement>();
-
     private rtc = new Rtc();
     private cloudRecording: CloudRecording | null = null;
     private cloudRecordingInterval: number | undefined;
@@ -83,6 +84,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             isRecording: false,
             isCalling: false,
             isRealtimeSideOpen: false,
+            rtcUid: null,
+            rtcUsers: [],
         };
         ipcAsyncByMain("set-win-size", {
             width: 1440,
@@ -91,6 +94,9 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     }
 
     public async componentDidMount(): Promise<void> {
+        this.rtc.rtcEngine.on("joinedChannel", async (_channel, uid) => {
+            this.setState({ rtcUid: uid });
+        });
         await this.startJoinRoom();
     }
 
@@ -118,6 +124,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             }
         }
         this.cloudRecording = null;
+
+        this.rtc.destroy();
 
         if (this.state.room) {
             this.state.room.callbacks.off();
@@ -390,19 +398,35 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         }
     };
 
+    private onUserJoined = (uid: number) => {
+        this.setState(state => ({
+            rtcUsers: [...new Set([...state.rtcUsers, uid])],
+        }));
+    };
+
+    private onUserOffline = (uid: number) => {
+        this.setState(state => ({
+            rtcUsers: state.rtcUsers.filter(id => id !== uid),
+        }));
+    };
+
     private toggleCalling = async (): Promise<void> => {
         if (this.state.isCalling) {
-            this.setState({ isCalling: false });
+            this.setState({ isCalling: false, rtcUsers: [] });
             if (this.cloudRecording?.isRecording) {
                 await this.toggleRecording();
                 if (this.cloudRecordingInterval) {
                     clearInterval(this.cloudRecordingInterval);
                 }
             }
+            this.rtc.rtcEngine.off("userjoined", this.onUserJoined);
+            this.rtc.rtcEngine.off("userOffline", this.onUserOffline);
             this.rtc.leave();
         } else {
             this.setState({ isCalling: true, isRealtimeSideOpen: true });
-            this.rtc.join(this.props.match.params.uuid, this.videoRef.current);
+            this.rtc.rtcEngine.on("userJoined", this.onUserJoined);
+            this.rtc.rtcEngine.on("userOffline", this.onUserOffline);
+            this.rtc.join(this.props.match.params.uuid);
         }
     };
 
@@ -442,6 +466,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             whiteboardLayerDownRef,
             isRealtimeSideOpen,
             isCalling,
+            rtcUid,
+            rtcUsers,
         } = this.state;
 
         return (
@@ -498,9 +524,15 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     </div>
                     <RealtimePanel
                         isShow={isRealtimeSideOpen}
-                        videoRef={this.videoRef}
                         isVideoOn={isCalling}
                         onSwitch={this.handleSideOpenerSwitch}
+                        video={
+                            <VideoAvatars
+                                localUid={rtcUid}
+                                remoteUids={rtcUsers}
+                                rtcEngine={this.rtc.rtcEngine}
+                            />
+                        }
                     />
                 </div>
             </div>
