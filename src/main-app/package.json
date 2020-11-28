@@ -14,7 +14,6 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack --info-verbosity=none --config webpack/webpack.dev.js",
-    "launch:electron": "node ./scripts/Launch-electron.js",
     "copy:renderBuildCode": "node ./scripts/Copy-render-build-code.js",
     "build:main": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "build": "npm run copy:renderBuildCode && npm run build:main",
