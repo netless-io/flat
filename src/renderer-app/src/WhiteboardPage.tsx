@@ -100,6 +100,22 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         await this.startJoinRoom();
     }
 
+    public componentDidUpdate(
+        _prevProps: WhiteboardPageProps,
+        prevState: WhiteboardPageStates,
+    ): void {
+        if (this.state.rtcUid !== null && prevState.rtcUid !== null) {
+            const prevLen = prevState.rtcUsers.length;
+            const currLen = this.state.rtcUsers.length;
+            if (prevLen !== currLen && (prevLen < 4 || currLen < 4)) {
+                this.cloudRecording?.updateLayout({
+                    mixedVideoLayout: 3,
+                    layoutConfig: this.getLayoutConfig(),
+                });
+            }
+        }
+    }
+
     public async componentWillUnmount(): Promise<void> {
         if (this.state.isCalling) {
             this.rtc.leave();
@@ -387,7 +403,22 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     cname: this.props.match.params.uuid,
                     uid: "1", // 不能与频道内其他用户冲突
                 });
-                await this.cloudRecording.start();
+                await this.cloudRecording.start({
+                    storageConfig: this.cloudRecording.defaultStorageConfig(),
+                    recordingConfig: {
+                        channelType: 0,
+                        subscribeUidGroup: 1, // 3~7 uids
+                        transcodingConfig: {
+                            backgroundColor: "#ffffff",
+                            width: 280,
+                            height: 280,
+                            fps: 15,
+                            bitrate: 140,
+                            mixedVideoLayout: 3,
+                            layoutConfig: this.getLayoutConfig(),
+                        },
+                    },
+                });
                 // @TODO 临时避免频道被关闭（默认30秒无活动），后面会根据我们的需求修改并用 polly-js 管理重发。
                 this.cloudRecordingInterval = window.setInterval(() => {
                     if (this.cloudRecording?.isRecording) {
@@ -396,6 +427,55 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 }, 10000);
             }
         }
+    };
+
+    private getLayoutConfig = () => {
+        const { rtcUid, rtcUsers } = this.state;
+        if (rtcUid === null || rtcUsers.length <= 0) {
+            return [
+                {
+                    x_axis: 0,
+                    y_axis: 0,
+                    width: 1,
+                    height: 1,
+                    alpha: 1,
+                    render_mode: 0,
+                },
+            ];
+        }
+        if (rtcUsers.length === 1) {
+            return [
+                {
+                    x_axis: 0,
+                    y_axis: 0,
+                    width: 1,
+                    height: 0.5,
+                    alpha: 1,
+                    render_mode: 0,
+                },
+                {
+                    x_axis: 0,
+                    y_axis: 0.5,
+                    width: 1,
+                    height: 0.5,
+                    alpha: 1,
+                    render_mode: 0,
+                },
+            ];
+        }
+
+        const result = [];
+        for (let i = 0, len = Math.min(4, rtcUsers.length + 1); i < len; i++) {
+            result.push({
+                x_axis: i % 2 === 0 ? 0 : 0.5,
+                y_axis: i < 2 ? 0 : 0.5,
+                width: 0.5,
+                height: 0.5,
+                alpha: 1,
+                render_mode: 0,
+            });
+        }
+        return result;
     };
 
     private onUserJoined = (uid: number) => {

@@ -47,8 +47,18 @@ export class Rtc {
     }
 
     join(channel: string) {
-        this.rtcEngine.setChannelProfile(1);
-        this.rtcEngine.setClientRole(1);
+        this.rtcEngine.videoSourceSetChannelProfile(0);
+        this.rtcEngine.setVideoEncoderConfiguration({
+            bitrate: 0,
+            degradationPreference: 1,
+            frameRate: 15,
+            height: 280,
+            minBitrate: -1,
+            minFrameRate: -1,
+            mirrorMode: 0,
+            orientationMode: 0,
+            width: 280,
+        });
         this.rtcEngine.enableVideo();
 
         // @ts-ignore @TODO 鉴权机制待实现

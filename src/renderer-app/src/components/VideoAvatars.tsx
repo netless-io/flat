@@ -24,7 +24,12 @@ export class VideoAvatars extends React.PureComponent<VideoAvatarsProps> {
             <div className={classNames("video-avatar-container", `with-${remoteUids.length}`)}>
                 <VideoAvatar type={VideoType.local} uid={localUid} rtcEngine={rtcEngine} />
                 {remoteUids.map(uid => (
-                    <VideoAvatar type={VideoType.remote} uid={uid} rtcEngine={rtcEngine} />
+                    <VideoAvatar
+                        key={uid}
+                        type={VideoType.remote}
+                        uid={uid}
+                        rtcEngine={rtcEngine}
+                    />
                 ))}
             </div>
         );
