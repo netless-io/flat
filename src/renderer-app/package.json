@@ -32,7 +32,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "uuid": "^8.3.0",
-    "white-web-sdk": "^2.9.17"
+    "white-web-sdk": "2.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",
