@@ -5,9 +5,6 @@ import {Button} from "antd";
 import {Link} from "react-router-dom";
 
 export default class PageError extends React.Component<{}, {}> {
-    public constructor(props: {}) {
-        super(props);
-    }
     public render(): React.ReactNode {
         return (
             <div className="page404-box">

@@ -94,14 +94,6 @@ module.exports = {
         ],
         "no-unused-labels": "warn",
         "no-unused-vars": "off",
-        "no-use-before-define": [
-            "warn",
-            {
-                functions: false,
-                classes: false,
-                variables: false,
-            },
-        ],
         "no-useless-computed-key": "warn",
         "no-useless-concat": "warn",
         "no-useless-constructor": "warn",
@@ -176,12 +168,6 @@ module.exports = {
         // https://github.com/evcohen/eslint-plugin-jsx-a11y/tree/master/docs/rules
         "jsx-a11y/alt-text": "off",
         "jsx-a11y/anchor-has-content": "warn",
-        "jsx-a11y/anchor-is-valid": [
-            "warn",
-            {
-                aspects: ["noHref", "invalidHref"],
-            },
-        ],
         "jsx-a11y/aria-activedescendant-has-tabindex": "warn",
         "jsx-a11y/aria-props": "warn",
         "jsx-a11y/aria-proptypes": "warn",
@@ -197,6 +183,7 @@ module.exports = {
         "jsx-a11y/role-supports-aria-props": "warn",
         "jsx-a11y/scope": "warn",
         "jsx-a11y/media-has-caption": "off",
+        "jsx-a11y/anchor-is-valid":"off",
 
         // https://github.com/facebook/react/tree/master/packages/eslint-plugin-react-hooks
         "react-hooks/rules-of-hooks": "error",
@@ -212,5 +199,6 @@ module.exports = {
         "jsx-a11y/no-static-element-interactions": "off",
         "jsx-a11y/mouse-events-have-key-events": "off",
         "@typescript-eslint/no-redeclare": "off",
+        "no-use-before-define": "off"
     },
 };

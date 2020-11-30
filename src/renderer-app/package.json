@@ -33,7 +33,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "uuid": "^8.3.0",
-    "white-web-sdk": "^2.9.17"
+    "white-web-sdk": "2.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",
@@ -53,8 +53,8 @@
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/webpack-env": "^1.15.2",
-    "@typescript-eslint/eslint-plugin": "^3.10.0",
-    "@typescript-eslint/parser": "^3.10.0",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
     "babel-loader": "^8.1.0",
     "babel-plugin-import": "^1.13.0",
     "cross-env": "^7.0.2",
@@ -72,7 +72,7 @@
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-app": "^6.2.2",
     "file-loader": "^6.2.0",
-    "fork-ts-checker-webpack-plugin": "^5.1.0",
+    "fork-ts-checker-webpack-plugin": "^6.0.4",
     "html-webpack-plugin": "^4.3.0",
     "less": "^3.12.2",
     "less-loader": "^6.2.0",
@@ -83,7 +83,7 @@
     "style-loader": "^1.2.1",
     "thread-loader": "^2.1.3",
     "types-pkg": "^0.1.0",
-    "typescript": "^4.0.2",
+    "typescript": "^4.1.2",
     "url-loader": "^4.1.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",

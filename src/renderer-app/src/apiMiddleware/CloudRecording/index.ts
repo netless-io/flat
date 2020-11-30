@@ -228,7 +228,7 @@ export class CloudRecording {
     private async request<R = any>(
         action: string,
         payload: CR.RequestPayload | null,
-        config: RequestInit = {},
+        config: any = {},
     ): Promise<R> {
         const response = await fetch(
             `https://${this.apiServer}/v1/apps/${this.appId}/cloud_recording/${action}`,
