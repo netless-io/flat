@@ -17,6 +17,6 @@ module.exports = merge(common, {
     plugins: [
         new NamedModulesPlugin(),
         new NoEmitOnErrorsPlugin(),
-        new ElectronWebpackPlugin("node --trace-uncaught ../scripts/Launch-electron.js"),
+        new ElectronWebpackPlugin("node --trace-uncaught ./scripts/Launch-electron.js"),
     ],
 });
