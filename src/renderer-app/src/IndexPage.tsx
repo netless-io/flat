@@ -5,7 +5,6 @@ import logo from "./assets/image/logo.svg";
 import join from "./assets/image/join.svg";
 import create from "./assets/image/create.svg";
 import "./IndexPage.less";
-import { Button, Input, Popover } from "antd";
 import { shell } from "electron";
 import { ipcAsyncByMain } from "./utils/Ipc";
 
