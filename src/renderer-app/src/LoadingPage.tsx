@@ -6,9 +6,6 @@ export type LoadingPageProps = {
 };
 
 export default class LoadingPage extends React.Component<LoadingPageProps, {}> {
-    public constructor(props: LoadingPageProps) {
-        super(props);
-    }
     public render(): React.ReactNode {
         return (
             <div className="white-board-loading">
