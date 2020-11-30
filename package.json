@@ -2,12 +2,19 @@
     "name": "root",
     "private": true,
     "scripts": {
-        "preinstall": "npm install minimist@1.2.5 edit-json-file@1.4.1 lerna@3.22.1 --save-dev && node ./scripts/Build-agora-sdk.js",
-        "install": "lerna bootstrap"
+        "preinstall": "npm install minimist@1.2.5 edit-json-file@1.4.1 --save-dev && node ./scripts/Build-agora-sdk.js"
+    },
+    "workspaces": {
+        "packages": [
+            "packages/*",
+            "src/*"
+        ],
+        "nohoist": [
+            "**"
+        ]
     },
     "devDependencies": {
         "edit-json-file": "^1.4.1",
-        "lerna": "^3.22.1",
         "minimist": "^1.2.5"
     },
     "agora_electron": {
@@ -19,5 +26,6 @@
         "debug": false,
         "prebuilt": true
     },
-    "license": "MIT"
+    "license": "MIT",
+    "dependencies": {}
 }
