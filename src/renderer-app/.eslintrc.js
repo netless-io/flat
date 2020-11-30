@@ -94,14 +94,6 @@ module.exports = {
         ],
         "no-unused-labels": "warn",
         "no-unused-vars": "off",
-        "no-use-before-define": [
-            "warn",
-            {
-                functions: false,
-                classes: false,
-                variables: false,
-            },
-        ],
         "no-useless-computed-key": "warn",
         "no-useless-concat": "warn",
         "no-useless-constructor": "warn",
@@ -207,5 +199,6 @@ module.exports = {
         "jsx-a11y/no-static-element-interactions": "off",
         "jsx-a11y/mouse-events-have-key-events": "off",
         "@typescript-eslint/no-redeclare": "off",
+        "no-use-before-define": "off"
     },
 };

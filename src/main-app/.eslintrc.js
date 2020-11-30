@@ -86,5 +86,6 @@ module.exports = {
         "prettier/prettier": "error",
         "@typescript-eslint/restrict-template-expressions": "off",
         "@typescript-eslint/no-misused-promises": "off",
+        "no-use-before-define": "off",
     },
 };
