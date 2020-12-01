@@ -20,16 +20,16 @@ export class AppRoutes extends React.Component<{}, {}> {
         return (
             <HashRouter>
                 <Switch>
-                    <Route path="/replay/:identity/:uuid/:userId/" component={ReplayPage} />
-                    <Route path="/whiteboard/:identity/:uuid/:userId/" component={WhiteboardPage} />
-                    <Route path="/whiteboard/:identity/:uuid?/" component={WhiteboardCreatorPage} />
-                    <Route path="/join/" component={JoinPage} />
-                    <Route path="/name/:uuid?/" component={AddNamePage} />
-                    <Route path="/test/" component={Test} />
-                    <Route path="/create/" component={CreatePage} />
-                    <Route path="/storage/" component={Storage} />
-                    <Route path="/history/" component={HistoryPage} />
-                    <Route path="/" component={IndexPage} />
+                    <Route exact path="/replay/:identity/:uuid/:userId/" component={ReplayPage} />
+                    <Route exact path="/whiteboard/:identity/:uuid/:userId/" component={WhiteboardPage} />
+                    <Route exact path="/whiteboard/:identity/:uuid?/" component={WhiteboardCreatorPage} />
+                    <Route exact path="/join/" component={JoinPage} />
+                    <Route exact path="/name/:uuid?/" component={AddNamePage} />
+                    <Route exact path="/test/" component={Test} />
+                    <Route exact path="/create/" component={CreatePage} />
+                    <Route exact path="/storage/" component={Storage} />
+                    <Route exact path="/history/" component={HistoryPage} />
+                    <Route exact path="/" component={IndexPage} />
                 </Switch>
             </HashRouter>
         );
