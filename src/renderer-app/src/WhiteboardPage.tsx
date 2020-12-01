@@ -105,6 +105,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         prevState: WhiteboardPageStates,
     ): void {
         if (this.state.rtcUid !== null && prevState.rtcUid !== null) {
+            // 这里分为单人广播，一对一，一对多，现在 2.0 的设计是混到一起，
+            // 所以这三种情况切换的时候需要更新云录制布局。
             const prevLen = prevState.rtcUsers.length;
             const currLen = this.state.rtcUsers.length;
             if (prevLen !== currLen && (prevLen < 4 || currLen < 4)) {
