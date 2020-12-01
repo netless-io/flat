@@ -1,5 +1,6 @@
 import type AgoraSdk from "agora-electron-sdk";
 
+/** @see {@link https://docs.agora.io/cn/Video/API%20Reference/electron/index.html} */
 const AgoraRtcEngine = window.AgoraRtcEngine;
 
 export class Rtc {
