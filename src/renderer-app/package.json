@@ -54,6 +54,7 @@
     "@types/webpack-env": "^1.15.2",
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",
+    "agora-electron-sdk": "^3.1.2-rc231-build.981",
     "babel-loader": "^8.1.0",
     "babel-plugin-import": "^1.13.0",
     "cross-env": "^7.0.2",

@@ -11,16 +11,8 @@ export type RealtimePanelProps = {
     isShow: boolean;
     // visibility changed
     onSwitch: () => void;
-} & (
-    | {
-          isReplayPage?: false;
-          videoRef: React.RefObject<HTMLDivElement>;
-      }
-    | {
-          isReplayPage: true;
-          videoRef: React.RefObject<HTMLVideoElement>;
-      }
-);
+    video: React.ReactNode;
+};
 
 export class RealtimePanel extends React.PureComponent<RealtimePanelProps> {
     render() {
@@ -36,14 +28,7 @@ export class RealtimePanel extends React.PureComponent<RealtimePanelProps> {
                             isActive: this.props.isVideoOn,
                         })}
                     >
-                        {this.props.isReplayPage ? (
-                            <video
-                                className="realtime-panel-video"
-                                ref={this.props.videoRef}
-                            ></video>
-                        ) : (
-                            <div className="realtime-panel-video" ref={this.props.videoRef}></div>
-                        )}
+                        {this.props.video}
                     </div>
                     <div className="realtime-panel-messaging">
                         <Tabs defaultActiveKey="messages" tabBarGutter={0}>
