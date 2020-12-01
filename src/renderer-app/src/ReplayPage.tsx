@@ -179,7 +179,7 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
                     isVideoOn={this.state.isVideoOn}
                     isShow={this.state.isRealtimePanelShow}
                     onSwitch={this.handleRealtimePanelSwitch}
-                    video={<video ref={this.videoRef} style={{ height: 280, width: 280 }} />}
+                    video={<video className="replay-video" ref={this.videoRef} />}
                 />
                 {hasError ? (
                     <div className="replay-overlay">
