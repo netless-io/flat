@@ -94,8 +94,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     }
 
     public async componentDidMount(): Promise<void> {
-        this.rtc.rtcEngine.on("joinedChannel", async (_channel, uid) => {
-            this.setState({ rtcUid: uid });
+        this.rtc.rtcEngine.on("joinedChannel", async (_channel, rtcUid) => {
+            this.setState({ rtcUid });
         });
         await this.startJoinRoom();
     }
