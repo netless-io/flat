@@ -20,6 +20,7 @@
     "@netless/white-video-plugin": "^1.2.15",
     "@netless/zoom-controller": "^0.0.3",
     "@videojs/vhs-utils": "2.2.1",
+    "agora-rtm-sdk": "^1.4.1",
     "antd": "^4.6.1",
     "classnames": "^2.2.6",
     "extract-zip": "^2.0.1",

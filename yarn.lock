@@ -1845,6 +1845,25 @@ aggregate-error@^3.0.0:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
 
+agora-electron-sdk@^3.1.2-rc231-build.981:
+  version "3.1.2-rc231-build.981"
+  resolved "https://registry.npm.taobao.org/agora-electron-sdk/download/agora-electron-sdk-3.1.2-rc231-build.981.tgz#ae4a585ea92ff35f0cd98b75098c53bab131089c"
+  integrity sha1-rkpYXqkv818M2Yt1CYxTurExCJw=
+  dependencies:
+    bluebird "^3.7.1"
+    download "^7.1.0"
+    extract-zip "^1.6.7"
+    fs-extra "^8.1.0"
+    glob "^7.1.6"
+    just-task "^0.14.0"
+    lodash.isequal "^4.5.0"
+    nan "^2.14.0"
+    node-gyp "^5.1.0"
+    rimraf "^3.0.0"
+    shelljs "^0.8.3"
+    yuv-buffer "^1.0.0"
+    yuv-canvas "^1.2.1"
+
 agora-electron-sdk@education290:
   version "2.9.0-rc.107-build.998"
   resolved "https://registry.npmjs.org/agora-electron-sdk/-/agora-electron-sdk-2.9.0-rc.107-build.998.tgz#4c32ae58ff8a69ed4ae01d13061fa2c16966a09f"
@@ -1863,6 +1882,11 @@ agora-electron-sdk@education290:
     shelljs "^0.8.3"
     yuv-buffer "^1.0.0"
     yuv-canvas "^1.2.1"
+
+agora-rtm-sdk@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/agora-rtm-sdk/-/agora-rtm-sdk-1.4.1.tgz#be10d1cdfd52cf527ea714146287bdc7ff6efaa1"
+  integrity sha512-D27CSWIOCS1RDYxH7dtnCJNsM7VIuBYX8W4mqt3yIkPnTpoRFGB1n43ao3eSHaFIRpsdCefjw3KcV5xIAAYvdA==
 
 ajv-errors@^1.0.0:
   version "1.0.1"
@@ -11526,10 +11550,8 @@ watchpack@^1.7.4:
   resolved "https://registry.npmjs.org/watchpack/-/watchpack-1.7.5.tgz#1267e6c55e0b9b5be44c2023aed5437a2c26c453"
   integrity sha512-9P3MWk6SrKjHsGkLT2KHXdQ/9SNkyoJbabxnKOoJepsvJjJG8uYTR3yTPxPQvNDI3w4Nz1xnE0TLHK4RIVe/MQ==
   dependencies:
-    chokidar "^3.4.1"
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
-    watchpack-chokidar2 "^2.0.1"
   optionalDependencies:
     chokidar "^3.4.1"
     watchpack-chokidar2 "^2.0.1"
