@@ -62,6 +62,7 @@ export default class CreatePage extends React.Component<RouteComponentProps, Joi
                             identity: Identity.creator,
                             roomName: roomName,
                             userId: userId,
+                            isRoomOwner: true,
                         },
                         ...roomArray,
                     ]),
@@ -72,11 +73,13 @@ export default class CreatePage extends React.Component<RouteComponentProps, Joi
                     "rooms",
                     JSON.stringify([
                         {
+                            ...room,
                             uuid: uuid,
                             time: timestamp,
                             identity: Identity.creator,
                             roomName: roomName,
                             userId: userId,
+                            isRoomOwner: true,
                         },
                         ...newRoomArray,
                     ]),
@@ -92,6 +95,7 @@ export default class CreatePage extends React.Component<RouteComponentProps, Joi
                         identity: Identity.creator,
                         roomName: roomName,
                         userId: userId,
+                        isRoomOwner: true,
                     },
                 ]),
             );

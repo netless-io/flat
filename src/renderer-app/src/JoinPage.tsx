@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { Identity } from "./IndexPage";
 import moment from "moment";
 import { LocalStorageRoomDataType } from "./HistoryPage";
-import { ipcAsyncByMain } from './utils/Ipc';
+import { ipcAsyncByMain } from "./utils/Ipc";
 
 export type JoinPageStates = {
     roomId: string;
@@ -62,6 +62,7 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
                     "rooms",
                     JSON.stringify([
                         {
+                            ...room,
                             uuid: uuid,
                             time: timestamp,
                             identity: Identity.creator,
