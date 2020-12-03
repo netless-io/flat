@@ -11,6 +11,7 @@ export class Rtm {
         if (!appId) {
             throw new Error("Agora App Id not set.");
         }
+        // @TODO 实现鉴权 token
         this.client = AgoraRTM.createInstance(appId);
     }
 

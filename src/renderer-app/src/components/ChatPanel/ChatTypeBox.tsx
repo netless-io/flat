@@ -8,25 +8,28 @@ export interface ChatTypeBoxProps {
     isRoomOwner: boolean;
     isBan: boolean;
     onBanChange: (isBan: boolean) => void;
-    onSend: (text: string) => void;
+    onSend: (text: string) => Promise<void>;
 }
 
 export interface ChatTypeBoxState {
     text: string;
+    isSending: boolean;
 }
 
 export class ChatTypeBox extends React.PureComponent<ChatTypeBoxProps, ChatTypeBoxState> {
     state: ChatTypeBoxState = {
         text: "",
+        isSending: false,
     };
 
     updateText = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({ text: e.currentTarget.value });
     };
 
-    send = (): void => {
-        this.props.onSend(this.state.text);
-        this.setState({ text: "" });
+    send = async (): Promise<void> => {
+        this.setState({ isSending: true });
+        await this.props.onSend(this.state.text);
+        this.setState({ text: "", isSending: false });
     };
 
     toggleBan = (): void => {
@@ -41,7 +44,7 @@ export class ChatTypeBox extends React.PureComponent<ChatTypeBoxProps, ChatTypeB
 
     render(): React.ReactNode {
         const { isRoomOwner, isBan } = this.props;
-        const { text } = this.state;
+        const { text, isSending } = this.state;
 
         return (
             <div className="chat-typebox">
@@ -59,6 +62,7 @@ export class ChatTypeBox extends React.PureComponent<ChatTypeBoxProps, ChatTypeB
                         className="chat-typebox-input"
                         type="text"
                         placeholder="说点什么…"
+                        value={text}
                         onChange={this.updateText}
                         onKeyPress={this.onInputKeyPress}
                     />
@@ -67,7 +71,7 @@ export class ChatTypeBox extends React.PureComponent<ChatTypeBoxProps, ChatTypeB
                     className="chat-typebox-send"
                     title="发送"
                     onClick={this.send}
-                    disabled={isBan || text.length <= 0}
+                    disabled={isBan || isSending || text.length <= 0}
                 >
                     <img src={send} />
                 </button>

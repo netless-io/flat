@@ -1,27 +1,34 @@
 import React from "react";
 import ChatTypeBox from "./ChatTypeBox";
 import ChatMessage, { RTMessage } from "./ChatMessage";
+import "./ChatMessages.less";
 
 export interface ChatMessagesProps {
     userId: string;
     isRoomOwner: boolean;
     messages: RTMessage[];
+    onMessageSend: (text: string) => Promise<void>;
 }
 
-export class ChatMessages extends React.PureComponent<ChatMessagesProps> {
+export interface ChatMessageState {
+    isBan: boolean;
+}
+
+export class ChatMessages extends React.PureComponent<ChatMessagesProps, ChatMessageState> {
+    state = {
+        isBan: false,
+    };
+    // @TODO 实现禁言功能，需要后端配合
+    toogleBan = () => {
+        this.setState(state => ({ isBan: !state.isBan }));
+    };
+
     renderDefault(): React.ReactNode {
         return <div className="chat-messages-default">说点什么吧...</div>;
     }
 
     render(): React.ReactNode {
-        const { isRoomOwner, userId } = this.props;
-        const messages: RTMessage[] = [...Array(100)].map((_x, i) => ({
-            uuid: "" + i,
-            timestamp: Date.now(),
-            userId: Math.random() > 0.5 ? userId : "fffff",
-            text: String(Date.now()),
-        }));
-
+        const { isRoomOwner, userId, messages, onMessageSend } = this.props;
         return (
             <div className="chat-messages-wrap">
                 <div className="chat-messages">
@@ -35,12 +42,11 @@ export class ChatMessages extends React.PureComponent<ChatMessagesProps> {
                         this.renderDefault()
                     )}
                 </div>
-
                 <ChatTypeBox
                     isRoomOwner={isRoomOwner}
-                    isBan
-                    onBanChange={() => {}}
-                    onSend={() => {}}
+                    isBan={this.state.isBan}
+                    onBanChange={this.toogleBan}
+                    onSend={onMessageSend}
                 />
             </div>
         );
