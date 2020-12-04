@@ -13,9 +13,14 @@ export interface RTMessage {
 export interface ChatMessageProps {
     userId: string;
     message: RTMessage;
+    onLoaded: () => void;
 }
 
-export class ChatMessage extends React.PureComponent<ChatMessageProps> {
+export class ChatMessage extends React.Component<ChatMessageProps> {
+    componentDidMount() {
+        this.props.onLoaded();
+    }
+
     render(): React.ReactNode {
         const { userId, message } = this.props;
 

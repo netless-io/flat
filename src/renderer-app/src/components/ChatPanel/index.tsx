@@ -1,14 +1,16 @@
 import * as React from "react";
-import { message, Tabs } from "antd";
+import { Tabs } from "antd";
 import classNames from "classnames";
+import { IndexRange } from "react-virtualized";
 import { v4 as uuidv4 } from "uuid";
 import { Rtm } from "../../apiMiddleware/Rtm";
+import { generateAvatar } from "../../utils/generateAvatar";
 import { ChatMessages } from "./ChatMessages";
 import { RTMessage } from "./ChatMessage";
 import { ChatUsers } from "./ChatUsers";
 import { RTMUser } from "./ChatUser";
+
 import "./ChatPanel.less";
-import { generateAvatar } from "../../utils/generateAvatar";
 
 export interface ChatPanelProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -38,6 +40,8 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                 this.addMessage(msg.text, senderId);
             }
         });
+
+        this.updateHistory();
 
         const members = await channel.getMembers();
         this.setState({
@@ -84,6 +88,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                             isRoomOwner={isRoomOwner}
                             messages={messages}
                             onMessageSend={this.onMessageSend}
+                            onLoadMore={this.updateHistory}
                         />
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="用户列表" key="users">
@@ -93,6 +98,16 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
             </div>
         );
     }
+
+    private updateHistory = async (): Promise<void> => {
+        try {
+            const oldestTimestap = this.state.messages[0]?.timestamp || Date.now();
+            const messages = await this.rtm.fetchHistory(oldestTimestap);
+            this.setState(state => ({ messages: [...messages, ...state.messages] }));
+        } catch (e) {
+            console.warn(e);
+        }
+    };
 
     private onMessageSend = async (text: string): Promise<void> => {
         await this.rtm.channel?.sendMessage({ text }, { enableHistoricalMessaging: true });
@@ -113,7 +128,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                 text: text,
                 userId: senderId,
             });
-            this.setState({ messages });
+            return { messages };
         });
     };
 }
