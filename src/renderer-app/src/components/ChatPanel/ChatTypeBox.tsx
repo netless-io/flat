@@ -23,12 +23,16 @@ export class ChatTypeBox extends React.PureComponent<ChatTypeBoxProps, ChatTypeB
     };
 
     updateText = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        this.setState({ text: e.currentTarget.value });
+        this.setState({ text: e.currentTarget.value.slice(0, 200) });
     };
 
     send = async (): Promise<void> => {
+        const text = this.state.text.trim();
+        if (!text) {
+            return;
+        }
         this.setState({ isSending: true });
-        await this.props.onSend(this.state.text);
+        await this.props.onSend(text);
         this.setState({ text: "", isSending: false });
     };
 
