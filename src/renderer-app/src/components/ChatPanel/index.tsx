@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Tabs } from "antd";
 import classNames from "classnames";
-import { IndexRange } from "react-virtualized";
 import { v4 as uuidv4 } from "uuid";
 import { Rtm } from "../../apiMiddleware/Rtm";
 import { generateAvatar } from "../../utils/generateAvatar";
