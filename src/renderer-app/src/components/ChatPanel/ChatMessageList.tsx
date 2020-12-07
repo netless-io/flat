@@ -23,7 +23,7 @@ export interface ChatMessageListState {
     lastMessagesCount: number;
     lastLatestMessage?: RTMessage | null;
     scrollToIndex?: number;
-    resetScrollToIndex: boolean;
+    clearScrollToIndex: boolean;
 }
 
 export class ChatMessageList extends React.PureComponent<
@@ -33,7 +33,7 @@ export class ChatMessageList extends React.PureComponent<
     state: ChatMessageListState = {
         lastMessagesCount: 0,
         scrollToIndex: -1,
-        resetScrollToIndex: false,
+        clearScrollToIndex: false,
     };
 
     static getDerivedStateFromProps(
@@ -42,20 +42,26 @@ export class ChatMessageList extends React.PureComponent<
     ): Partial<ChatMessageListState> {
         let scrollToIndex = state.scrollToIndex;
 
-        if (state.resetScrollToIndex) {
+        if (state.clearScrollToIndex) {
             scrollToIndex = undefined;
-        }
-
-        if (scrollToIndex !== undefined && scrollToIndex < 0) {
+        } else if (scrollToIndex !== undefined && scrollToIndex < 0) {
+            // on first rendering,
+            // scroll to the latest message
+            // which is at the bottom
             scrollToIndex = props.messages.length - 1;
         } else if (props.messages.length > state.lastMessagesCount) {
+            // more messages are loaded
             if (
                 !state.lastLatestMessage ||
                 props.messages[props.messages.length - 1]?.timestamp >
                     state.lastLatestMessage.timestamp
             ) {
+                // user sent a new message
+                // scroll to the bottom
                 scrollToIndex = props.messages.length - 1;
             } else {
+                // history messages loaded
+                // stay at the last position
                 scrollToIndex = props.messages.length - state.lastMessagesCount;
             }
         }
@@ -64,16 +70,16 @@ export class ChatMessageList extends React.PureComponent<
             lastMessagesCount: props.messages.length,
             lastLatestMessage: props.messages[props.messages.length - 1],
             scrollToIndex,
-            resetScrollToIndex: false,
+            clearScrollToIndex: false,
         };
     }
 
     componentDidMount() {
-        this.resetScrollToIndex();
+        this.clearScrollToIndex();
     }
 
     componentDidUpdate() {
-        this.resetScrollToIndex();
+        this.clearScrollToIndex();
     }
 
     render(): React.ReactNode {
@@ -109,14 +115,14 @@ export class ChatMessageList extends React.PureComponent<
     }
 
     /**
-     * The scrollToIndex is causing scroll jumping.
-     * Reset it after it is applied.
+     * The scrollToIndex is causing scroll jumping in random situation.
+     * Clear it after it is applied.
      */
-    private resetScrollToIndex() {
+    private clearScrollToIndex() {
         if (this.state.scrollToIndex !== undefined) {
             // wait one loop after rendering complete
             setTimeout(() => {
-                this.setState({ resetScrollToIndex: true });
+                this.setState({ clearScrollToIndex: true });
             }, 0);
         }
     }
