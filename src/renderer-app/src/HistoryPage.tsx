@@ -26,6 +26,7 @@ export type LocalStorageRoomDataType = {
         endTime: number;
         videoUrl?: string;
     }>;
+    isRoomOwner?: boolean;
 };
 
 export default class JoinPage extends React.Component<RouteComponentProps<{}>, JoinPageStates> {

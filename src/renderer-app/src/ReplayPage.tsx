@@ -176,6 +176,8 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
                     )}
                 </div>
                 <RealtimePanel
+                    userId={userId}
+                    channelId={uuid}
                     isVideoOn={this.state.isVideoOn}
                     isShow={this.state.isRealtimePanelShow}
                     onSwitch={this.handleRealtimePanelSwitch}

@@ -542,6 +542,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     }
 
     private renderWhiteBoard(room: Room): React.ReactNode {
+        const { uuid, userId } = this.props.match.params;
+
         const {
             isMenuVisible,
             isFileOpen,
@@ -605,6 +607,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                         </OssDropUpload>
                     </div>
                     <RealtimePanel
+                        userId={userId}
+                        channelId={uuid}
                         isShow={isRealtimeSideOpen}
                         isVideoOn={isCalling}
                         onSwitch={this.handleSideOpenerSwitch}

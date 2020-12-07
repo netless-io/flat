@@ -1,10 +1,14 @@
 import * as React from "react";
 import classNames from "classnames";
-import { Tabs } from "antd";
+import memoizeOne from "memoize-one";
+import { LocalStorageRoomDataType } from "../HistoryPage";
+import ChatPanel from "./ChatPanel";
 
 import "./RealtimePanel.less";
 
 export type RealtimePanelProps = {
+    userId: string;
+    channelId: string;
     // is playing user video
     isVideoOn: boolean;
     // is visible
@@ -16,39 +20,43 @@ export type RealtimePanelProps = {
 
 export class RealtimePanel extends React.PureComponent<RealtimePanelProps> {
     render() {
+        const { userId, channelId, isVideoOn, isShow, onSwitch, video } = this.props;
+
         return (
             <div
                 className={classNames("realtime-panel-wrap", {
-                    isActive: this.props.isShow,
+                    isActive: isShow,
                 })}
             >
                 <div className="realtime-panel">
                     <div
                         className={classNames("realtime-panel-video-wrap", {
-                            isActive: this.props.isVideoOn,
+                            isActive: isVideoOn,
                         })}
                     >
-                        {this.props.video}
+                        {video}
                     </div>
-                    <div className="realtime-panel-messaging">
-                        <Tabs defaultActiveKey="messages" tabBarGutter={0}>
-                            {/* @TODO 实现列表 */}
-                            <Tabs.TabPane tab="消息列表" key="messages">
-                                Content of Tab Pane 1
-                            </Tabs.TabPane>
-                            <Tabs.TabPane tab="用户列表" key="users">
-                                Content of Tab Pane 2
-                            </Tabs.TabPane>
-                        </Tabs>
-                    </div>
+                    <ChatPanel
+                        userId={userId}
+                        channelId={channelId}
+                        isRoomOwner={this.isRoomOwner(channelId)}
+                        className="realtime-panel-messaging"
+                    ></ChatPanel>
                 </div>
-                <button
-                    className="realtime-panel-side-handle"
-                    onClick={this.props.onSwitch}
-                ></button>
+                <button className="realtime-panel-side-handle" onClick={onSwitch}></button>
             </div>
         );
     }
+
+    private isRoomOwner = memoizeOne((channelId: string): boolean => {
+        const rooms = localStorage.getItem("rooms");
+        if (rooms) {
+            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
+            const room = roomArray.find(data => data.uuid === channelId);
+            return Boolean(room?.isRoomOwner);
+        }
+        return false;
+    });
 }
 
 export default RealtimePanel;
