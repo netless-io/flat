@@ -51,15 +51,15 @@ export interface StartPayload extends RequestPayloadBase {
                 maxResolutionUid?: string;
                 mixedVideoLayout?: 0 | 1 | 2 | 3;
                 backgroundColor?: string;
-                layoutConfig?: {
+                layoutConfig?: Array<{
                     uid?: string;
                     x_axis?: number;
                     y_axis?: number;
                     width?: number;
                     height?: number;
                     alpha?: number;
-                    render_mode?: string;
-                };
+                    render_mode?: number;
+                }>;
             };
             subscribeVideoUids?: string[];
             unSubscribeVideoUids?: string[];
@@ -164,13 +164,13 @@ export interface UpdateLayoutPayload extends RequestPayloadBase {
         mixedVideoLayout?: 0 | 1 | 2 | 3;
         backgroundColor?: string;
         layoutConfig?: Array<{
-            uid: number;
+            uid?: string;
             x_axis: number;
             y_axis: number;
             width: number;
             height: number;
             alpha?: number;
-            render_mode?: 0 | 1;
+            render_mode?: number;
         }>;
     };
 }

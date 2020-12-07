@@ -1,6 +1,6 @@
 .page-index-box {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8,11 +8,11 @@
 }
 
 .page-index-mid-box {
-    width: 480px;
-    height: 457.5px;
-    background: white;
-    box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.08);
-    border-radius: 4px;
+    width: 375px;
+    height: 667px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
     position: relative;
 }
 
@@ -21,14 +21,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 17px;
+    margin-top: 100px;
     img {
         margin-bottom: 12px;
     }
     span {
-        color: #7a7b7c;
+        color: #444E60;
         font-size: 14px;
         cursor: pointer;
+        margin-top: 4px;
     }
 }
 
@@ -95,8 +96,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: row;
-    margin-top: 30px;
+    flex-direction: column;
+    margin-top: 88px;
 }
 
 .page-index-cell-left {
@@ -129,9 +130,7 @@
     }
 }
 
-.page-cutline-box {
-    width: 0.5px;
-    height: 120px;
+.page-interval-box {
     margin-left: 80px;
     margin-right: 80px;
     background-color: #e7e7e7;
@@ -158,49 +157,10 @@
 
     span {
         font-size: 16px;
-        color: #212324;
+        color: #444E60;
         font-family: PingFangSC-Regular, PingFang SC;
+        white-space: nowrap;
     }
-}
-
-.page-index-start-term {
-    margin-top: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    margin-left: 16px;
-    color: #7a7b7c;
-
-    span {
-        color: #3381ff;
-        cursor: pointer;
-    }
-}
-
-.ant-input {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-variant: tabular-nums;
-    list-style: none;
-    font-feature-settings: "tnum";
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    min-width: 0;
-    padding: 4px 11px;
-    color: rgba(0, 0, 0, 0.85);
-    font-size: 14px;
-    line-height: 1.5715;
-    background-color: #fff;
-    background-image: none;
-    border-top: 0 !important;
-    border-left: 0 !important;
-    border-right: 0 !important;
-    border: 1px solid #d9d9d9;
-    border-radius: 2px;
-    transition: all 0.3s;
 }
 
 .page-index-span-box {
@@ -214,4 +174,36 @@
     font-weight: 400;
     color: #444e60;
     line-height: 20px;
+}
+
+.page-index-img-box {
+    width: 72px;
+    height: 72px;
+    border: 1px solid #DBE1EA;
+    border-radius: 50px;
+    margin: 0 35px;
+    img {
+        z-index: 21;
+        padding-top: 14px;
+    }
+}
+
+.page-index-img-info {
+    padding-top: 16px;
+}
+
+.page-index-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 47px;
+    width: 280px;
+    margin-top: 100px;
+}
+
+.ant-divider-inner-text {
+    display: inline-block;
+    padding: 0 1em;
+    color: #7A7B7C;
 }
