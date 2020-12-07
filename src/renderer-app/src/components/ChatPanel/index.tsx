@@ -35,7 +35,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
         const { userId, channelId } = this.props;
         const channel = await this.rtm.init(userId, channelId);
         channel.on("ChannelMessage", (msg, senderId) => {
-            if (msg.messageType === "TEXT") {
+            if (msg.messageType === Rtm.MessageType.TEXT) {
                 this.addMessage(msg.text, senderId);
             }
         });

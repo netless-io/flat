@@ -46,6 +46,8 @@ export interface RTMessage {
 }
 
 export class Rtm {
+    static MessageType = AgoraRTM.MessageType;
+
     client: RtmClient;
     channel?: RtmChannel;
 
