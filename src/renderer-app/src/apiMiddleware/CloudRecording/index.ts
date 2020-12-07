@@ -80,10 +80,10 @@ export class CloudRecording {
         return {
             vendor: 2, // 阿里云
             region: 0, // 杭州
-            bucket: process.env.AGORA_OSS_BUCKET,
-            accessKey: process.env.AGORA_OSS_ACCESS_KEY_ID,
-            secretKey: process.env.AGORA_OSS_ACCESS_KEY_SECRET,
-            fileNamePrefix: [process.env.AGORA_OSS_FOLDER],
+            bucket: process.env.AGORA_OSS_BUCKET || "",
+            accessKey: process.env.AGORA_OSS_ACCESS_KEY_ID || "",
+            secretKey: process.env.AGORA_OSS_ACCESS_KEY_SECRET || "",
+            fileNamePrefix: [process.env.AGORA_OSS_FOLDER || ""],
         };
     }
 

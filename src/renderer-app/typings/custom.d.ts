@@ -1,3 +1,5 @@
+import AgoraSdk from 'agora-electron-sdk'
+
 declare module "*.svg" {
     const content: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
     export default content;
@@ -25,5 +27,11 @@ declare namespace NodeJS {
         AGORA_OSS_BUCKET: string;
         AGORA_OSS_FOLDER: string;
         AGORA_OSS_PREFIX: string;
+    }
+}
+
+declare global {
+    interface Window {
+        AgoraRtcEngine: new (...args: any[]) => AgoraSdk;
     }
 }
