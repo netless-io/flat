@@ -35,6 +35,7 @@ import { TopBar } from "./components/TopBar";
 import { TopBarRecordStatus } from "./components/TopBarRecordStatus";
 import { TopBarRightBtn } from "./components/TopBarRightBtn";
 import { RealtimePanel } from "./components/RealtimePanel";
+import { ChatPanel } from "./components/ChatPanel";
 import { VideoAvatars } from "./components/VideoAvatars";
 
 import { listDir } from "./utils/Fs";
@@ -49,6 +50,7 @@ export type WhiteboardPageStates = {
     phase: RoomPhase;
     room?: Room;
     roomName?: string;
+    isRoomOwner: boolean;
     isMenuVisible: boolean;
     isFileOpen: boolean;
     isRecording: boolean;
@@ -79,6 +81,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         super(props);
         this.state = {
             phase: RoomPhase.Connecting,
+            isRoomOwner: false,
             isMenuVisible: false,
             isFileOpen: false,
             isRecording: false,
@@ -193,7 +196,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             } else {
                 if (room.roomName) {
                     // @TODO 统一各页面的 localstorage 操作，存储更丰富的房间信息。
-                    this.setState({ roomName: room.roomName });
+                    this.setState({ roomName: room.roomName, isRoomOwner: !!room.isRoomOwner });
                 }
                 const newRoomArray = roomArray.filter(data => data.uuid !== uuid);
                 localStorage.setItem(
@@ -547,6 +550,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         const {
             isMenuVisible,
             isFileOpen,
+            isRoomOwner,
             whiteboardLayerDownRef,
             isRealtimeSideOpen,
             isCalling,
@@ -607,17 +611,22 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                         </OssDropUpload>
                     </div>
                     <RealtimePanel
-                        userId={userId}
-                        channelId={uuid}
                         isShow={isRealtimeSideOpen}
                         isVideoOn={isCalling}
                         onSwitch={this.handleSideOpenerSwitch}
-                        video={
+                        videoSlot={
                             <VideoAvatars
                                 localUid={rtcUid}
                                 remoteUids={rtcUsers}
                                 rtcEngine={this.rtc.rtcEngine}
                             />
+                        }
+                        chatSlot={
+                            <ChatPanel
+                                userId={userId}
+                                channelId={uuid}
+                                isRoomOwner={isRoomOwner}
+                            ></ChatPanel>
                         }
                     />
                 </div>
