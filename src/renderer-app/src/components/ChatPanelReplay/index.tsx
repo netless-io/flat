@@ -21,8 +21,12 @@ export interface ChatPanelReplayState {
 export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatPanelReplayState> {
     private rtm = new Rtm();
     private isLoadingHistory = false;
-    private remoteOldestTimestamp = Infinity;
+    /** The timestamp of the newest message on remote */
+    private remoteNewestTimestamp = Infinity;
+    /** Player unix time */
     private currentPlayTime = -1;
+    /** The timestamp when seeking the first chunk of the current messages */
+    private oldestSeekTime = -1;
 
     state: ChatPanelReplayState = {
         messages: [],
@@ -71,14 +75,17 @@ export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatP
         }
 
         if (messages.length <= 0) {
-            const newMessages = await this.getHistory(this.currentPlayTime - 1);
-            if (newMessages) {
+            // cache the timestamp from this
+            const newestTimestamp = this.currentPlayTime;
+            const newMessages = await this.getHistory(newestTimestamp - 1);
+            if (newMessages.length > 0) {
+                this.oldestSeekTime = newestTimestamp;
                 return this.syncMessages(newMessages, renderedMessages);
             }
             return;
         }
 
-        if (this.currentPlayTime < messages[0].timestamp) {
+        if (this.currentPlayTime < this.oldestSeekTime) {
             // user seeked backward
             // start over
             return this.syncMessages([], []);
@@ -96,39 +103,40 @@ export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatP
         }
         if (start === renderedMessages.length) {
             // no new messages
+            this.setState({ messages, renderedMessages });
             return;
         }
         if (start >= messages.length) {
             // more messages need to be loaded
-            const newMessages = await this.getHistory(messages[0].timestamp);
-            if (newMessages) {
+            const newMessages = await this.getHistory(messages[messages.length - 1].timestamp);
+            if (newMessages.length > 0) {
                 return this.syncMessages([...messages, ...newMessages], renderedMessages);
             }
         }
         this.setState({ messages, renderedMessages: messages.slice(0, start) });
     };
 
-    private getHistory = async (oldestTimestap: number): Promise<RTMessage[] | null> => {
-        if (oldestTimestap >= this.remoteOldestTimestamp) {
-            return null;
+    private getHistory = async (newestTimestamp: number): Promise<RTMessage[]> => {
+        if (newestTimestamp >= this.remoteNewestTimestamp) {
+            return [];
         }
 
         this.isLoadingHistory = true;
         try {
             const ONE_YEAR = 365 * 24 * 60 * 60 * 1000;
             const messages = await this.rtm.fetchHistory(
-                oldestTimestap + 1,
-                oldestTimestap + ONE_YEAR,
+                newestTimestamp + 1,
+                newestTimestamp + ONE_YEAR,
             );
             this.isLoadingHistory = false;
             if (messages.length <= 0) {
-                this.remoteOldestTimestamp = oldestTimestap;
+                this.remoteNewestTimestamp = newestTimestamp;
             }
             return messages;
         } catch (e) {
             this.isLoadingHistory = false;
             console.warn(e);
-            return null;
+            return [];
         }
     };
 }
