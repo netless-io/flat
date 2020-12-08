@@ -8,6 +8,7 @@ import { Identity } from "./IndexPage";
 import PageError from "./PageError";
 import { SmartPlayer } from "./apiMiddleware/SmartPlayer";
 import { RealtimePanel } from "./components/RealtimePanel";
+import { ChatPanelReplay } from "./components/ChatPanelReplay";
 import ExitButtonPlayer from "./components/ExitButtonPlayer";
 
 import video_play from "./assets/image/video-play.svg";
@@ -180,7 +181,15 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
                     isShow={this.state.isRealtimePanelShow}
                     onSwitch={this.handleRealtimePanelSwitch}
                     videoSlot={<video className="replay-video" ref={this.videoRef} />}
-                    chatSlot={null}
+                    chatSlot={
+                        this.smartPlayer.whiteboardPlayer && (
+                            <ChatPanelReplay
+                                userId={userId}
+                                channelId={uuid}
+                                player={this.smartPlayer.whiteboardPlayer}
+                            />
+                        )
+                    }
                 />
                 {hasError ? (
                     <div className="replay-overlay">
