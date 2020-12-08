@@ -101,7 +101,11 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     private updateHistory = async (): Promise<void> => {
         try {
             const oldestTimestap = this.state.messages[0]?.timestamp || Date.now();
-            const messages = await this.rtm.fetchHistory(oldestTimestap);
+            const ONE_YEAR = 365 * 24 * 60 * 60 * 1000;
+            const messages = await this.rtm.fetchHistory(
+                oldestTimestap - ONE_YEAR,
+                oldestTimestap - 1,
+            );
             this.setState(state => ({ messages: [...messages, ...state.messages] }));
         } catch (e) {
             console.warn(e);
