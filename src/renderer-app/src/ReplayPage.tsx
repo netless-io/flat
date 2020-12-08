@@ -172,8 +172,10 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
                         </div>
                     )}
                     {isShowController && isReady && this.smartPlayer.whiteboardPlayer && (
-                        // @TODO 等待 player-controller 更新
-                        <PlayerController player={this.smartPlayer.whiteboardPlayer} />
+                        <PlayerController
+                            player={this.smartPlayer.whiteboardPlayer}
+                            combinePlayer={this.smartPlayer.combinePlayer}
+                        />
                     )}
                 </div>
                 <RealtimePanel
