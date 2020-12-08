@@ -12,6 +12,7 @@ import { ChatPanelReplay } from "./components/ChatPanelReplay";
 import ExitButtonPlayer from "./components/ExitButtonPlayer";
 
 import video_play from "./assets/image/video-play.svg";
+import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 
 export type ReplayPageProps = RouteComponentProps<{
