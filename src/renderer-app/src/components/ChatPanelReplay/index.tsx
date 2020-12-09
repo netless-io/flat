@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Tabs } from "antd";
 import { Player } from "white-web-sdk";
+import dateAdd from "date-fns/add";
 import { Rtm } from "../../apiMiddleware/Rtm";
 import { RTMessage } from "../ChatPanel/ChatMessage";
 import { ChatMessagesReplay } from "./ChatMessagesReplay";
@@ -123,10 +124,9 @@ export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatP
 
         this.isLoadingHistory = true;
         try {
-            const ONE_YEAR = 365 * 24 * 60 * 60 * 1000;
             const messages = await this.rtm.fetchHistory(
                 newestTimestamp + 1,
-                newestTimestamp + ONE_YEAR,
+                dateAdd(newestTimestamp, { years: 1 }).valueOf(),
             );
             this.isLoadingHistory = false;
             if (messages.length <= 0) {

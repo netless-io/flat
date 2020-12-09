@@ -2,6 +2,7 @@ import * as React from "react";
 import { Tabs } from "antd";
 import classNames from "classnames";
 import { v4 as uuidv4 } from "uuid";
+import dateSub from "date-fns/sub";
 import { Rtm } from "../../apiMiddleware/Rtm";
 import { generateAvatar } from "../../utils/generateAvatar";
 import { ChatMessages } from "./ChatMessages";
@@ -105,9 +106,8 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
         }
         try {
             const oldestTimestap = this.state.messages[0]?.timestamp || Date.now();
-            const ONE_YEAR = 365 * 24 * 60 * 60 * 1000;
             const messages = await this.rtm.fetchHistory(
-                oldestTimestap - ONE_YEAR,
+                dateSub(oldestTimestap, { years: 1 }).valueOf(),
                 oldestTimestap - 1,
             );
             if (messages.length <= 0) {
