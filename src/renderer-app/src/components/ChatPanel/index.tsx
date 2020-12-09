@@ -25,6 +25,7 @@ export interface ChatPanelState {
 
 export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     private rtm = new Rtm();
+    private noMoreRemoteMessages = false;
 
     state: ChatPanelState = {
         messages: [],
@@ -99,10 +100,21 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     }
 
     private updateHistory = async (): Promise<void> => {
+        if (this.noMoreRemoteMessages) {
+            return;
+        }
         try {
             const oldestTimestap = this.state.messages[0]?.timestamp || Date.now();
-            const messages = await this.rtm.fetchHistory(oldestTimestap);
-            this.setState(state => ({ messages: [...messages, ...state.messages] }));
+            const ONE_YEAR = 365 * 24 * 60 * 60 * 1000;
+            const messages = await this.rtm.fetchHistory(
+                oldestTimestap - ONE_YEAR,
+                oldestTimestap - 1,
+            );
+            if (messages.length <= 0) {
+                this.noMoreRemoteMessages = true;
+            } else {
+                this.setState(state => ({ messages: [...messages, ...state.messages] }));
+            }
         } catch (e) {
             console.warn(e);
         }
