@@ -1,11 +1,11 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
+import dateFormat from "date-fns/format";
 import logo from "./assets/image/logo.svg";
 import { Button, Input } from "antd";
 import { Link } from "react-router-dom";
 import { Identity } from "./IndexPage";
 import { LocalStorageRoomDataType } from "./HistoryPage";
-import moment from "moment";
 import { netlessWhiteboardApi } from "./apiMiddleware";
 import { ipcAsyncByMain } from "./utils/Ipc";
 
@@ -48,7 +48,7 @@ export default class CreatePage extends React.Component<RouteComponentProps, Joi
     };
     public setRoomList = (uuid: string, roomName: string, userId: string): void => {
         const rooms = localStorage.getItem("rooms");
-        const timestamp = moment(new Date()).format("lll");
+        const timestamp = dateFormat(new Date(), "LLL d, y h:m a");
         if (rooms) {
             const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
             const room = roomArray.find(data => data.uuid === uuid);

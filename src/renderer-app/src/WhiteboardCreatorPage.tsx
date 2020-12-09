@@ -2,13 +2,13 @@ import * as React from "react";
 import { Redirect } from "react-router";
 import { message } from "antd";
 import { RouteComponentProps } from "react-router";
+import dateFormat from "date-fns/format";
 import PageError from "./PageError";
 import { netlessWhiteboardApi } from "./apiMiddleware";
 import LoadingPage from "./LoadingPage";
 import { Identity } from "./IndexPage";
 import { LocalStorageRoomDataType } from "./HistoryPage";
-import moment from "moment";
-import { ipcAsyncByMain } from './utils/Ipc';
+import { ipcAsyncByMain } from "./utils/Ipc";
 
 export type WhiteboardCreatorPageState = {
     uuid?: string;
@@ -47,7 +47,7 @@ export default class WhiteboardCreatorPage extends React.Component<
 
     public setRoomList = (uuid: string, userId: string): void => {
         const rooms = localStorage.getItem("rooms");
-        const timestamp = moment(new Date()).format("lll");
+        const timestamp = dateFormat(new Date(), "LLL d, y h:m a");
         if (rooms) {
             const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
             const room = roomArray.find(data => data.uuid === uuid);

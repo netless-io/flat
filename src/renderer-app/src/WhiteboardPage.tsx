@@ -1,4 +1,4 @@
-import moment from "moment";
+import dateFormat from "date-fns/format";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 
@@ -176,7 +176,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
 
     public setRoomList = (uuid: string, userId: string): void => {
         const rooms = localStorage.getItem("rooms");
-        const timestamp = moment(new Date()).format("lll");
+        const timestamp = dateFormat(new Date(), "LLL d, y h:m a");
         if (rooms) {
             const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
             const room = roomArray.find(data => data.uuid === uuid);
