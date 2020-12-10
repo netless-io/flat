@@ -12,9 +12,9 @@ import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netl
 import { videoPlugin } from "@netless/white-video-plugin";
 import { audioPlugin } from "@netless/white-audio-plugin";
 import { Identity } from "../IndexPage";
-import { netlessToken } from "../appToken";
 import { netlessWhiteboardApi } from "./index";
 import { LocalStorageRoomDataType } from "../HistoryPage";
+import { NETLESS, NODE_ENV } from "../constants/Process";
 
 /**
  * 智能播放画板与音视频，同时适应有无视频的情况
@@ -71,7 +71,7 @@ export class SmartPlayer {
         });
 
         const whiteWebSdk = new WhiteWebSdk({
-            appIdentifier: netlessToken.appIdentifier,
+            appIdentifier: NETLESS.APP_IDENTIFIER,
             plugins: plugins,
         });
 
@@ -125,7 +125,7 @@ export class SmartPlayer {
                         this._isPlaying = true;
                         this._isEnded = false;
                         this.onPlay();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: start playing");
                         }
                         break;
@@ -133,7 +133,7 @@ export class SmartPlayer {
                     case PlayerPhase.Pause: {
                         this._isPlaying = false;
                         this.onPause();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: paused");
                         }
                         break;
@@ -143,7 +143,7 @@ export class SmartPlayer {
                         this._isPlaying = false;
                         this._isEnded = true;
                         this.onEnded();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: ended");
                         }
                         break;
@@ -178,7 +178,7 @@ export class SmartPlayer {
                         this._isPlaying = true;
                         this._isEnded = false;
                         this.onPlay();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: start playing");
                         }
                         break;
@@ -186,7 +186,7 @@ export class SmartPlayer {
                     case PublicCombinedStatus.Pause: {
                         this._isPlaying = false;
                         this.onPause();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: paused");
                         }
                         break;
@@ -195,7 +195,7 @@ export class SmartPlayer {
                         this._isPlaying = false;
                         this._isEnded = true;
                         this.onEnded();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: ended");
                         }
                         break;
@@ -211,11 +211,11 @@ export class SmartPlayer {
 
         this._isReady = true;
         this.onReady();
-        if (process.env.NODE_ENV === "development") {
+        if (NODE_ENV === "development") {
             console.log("SmartPlayer: ready");
         }
 
-        if (process.env.NODE_ENV === "development") {
+        if (NODE_ENV === "development") {
             // 供便捷调试
             (window as any).player = player;
             (window as any).combinePlayer = this.combinePlayer;
@@ -278,7 +278,7 @@ export class SmartPlayer {
         this.whiteboardPlayer = undefined;
         this.combinePlayer = undefined;
 
-        if (process.env.NODE_ENV === "development") {
+        if (NODE_ENV === "development") {
             (window as any).player = null;
             (window as any).combinePlayer = null;
         }

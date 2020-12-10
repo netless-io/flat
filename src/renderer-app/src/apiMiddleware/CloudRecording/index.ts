@@ -1,4 +1,5 @@
 import * as CR from "./typings";
+import { AGORA } from "../../constants/Process";
 export * from "./typings";
 
 /**
@@ -7,10 +8,6 @@ export * from "./typings";
  */
 export class CloudRecording {
     public apiServer = "api.agora.io";
-
-    public appId = process.env.AGORA_APP_ID;
-    public restfulId = process.env.AGORA_RESTFUL_ID;
-    public restfulSecret = process.env.AGORA_RESTFUL_SECRET;
 
     /**
      * 录制模式，支持单流模式 individual 和合流模式 mix （默认模式）。
@@ -80,10 +77,10 @@ export class CloudRecording {
         return {
             vendor: 2, // 阿里云
             region: 0, // 杭州
-            bucket: process.env.AGORA_OSS_BUCKET || "",
-            accessKey: process.env.AGORA_OSS_ACCESS_KEY_ID || "",
-            secretKey: process.env.AGORA_OSS_ACCESS_KEY_SECRET || "",
-            fileNamePrefix: [process.env.AGORA_OSS_FOLDER || ""],
+            bucket: AGORA.OSS_BUCKET,
+            accessKey: AGORA.OSS_ACCESS_KEY_ID,
+            secretKey: AGORA.OSS_ACCESS_KEY_SECRET,
+            fileNamePrefix: [AGORA.OSS_FOLDER],
         };
     }
 
@@ -173,9 +170,11 @@ export class CloudRecording {
     }
 
     /** 在录制过程中，可以随时调用该方法更新订阅的 UID 名单。 */
-    public _update({ resourceid, sid, ...payload }: CR.UpdatePayload = {}): Promise<
-        CR.UpdateResponse
-    > {
+    public _update({
+        resourceid,
+        sid,
+        ...payload
+    }: CR.UpdatePayload = {}): Promise<CR.UpdateResponse> {
         return this.request(
             `resourceid/${resourceid || this.resourceid}/sid/${sid || this.sid}/mode/${
                 this.mode
@@ -185,9 +184,11 @@ export class CloudRecording {
     }
 
     /** 在录制过程中，可以随时调用该方法更新合流布局的设置。 */
-    public _updateLayout({ resourceid, sid, ...payload }: CR.UpdateLayoutPayload = {}): Promise<
-        CR.UpdateLayoutResponse
-    > {
+    public _updateLayout({
+        resourceid,
+        sid,
+        ...payload
+    }: CR.UpdateLayoutPayload = {}): Promise<CR.UpdateLayoutResponse> {
         return this.request(
             `resourceid/${resourceid || this.resourceid}/sid/${sid || this.sid}/mode/${
                 this.mode
@@ -231,11 +232,11 @@ export class CloudRecording {
         config: any = {},
     ): Promise<R> {
         const response = await fetch(
-            `https://${this.apiServer}/v1/apps/${this.appId}/cloud_recording/${action}`,
+            `https://${this.apiServer}/v1/apps/${AGORA.APP_ID}/cloud_recording/${action}`,
             {
                 method: "POST",
                 headers: {
-                    Authorization: "Basic " + btoa(`${this.restfulId}:${this.restfulSecret}`),
+                    Authorization: "Basic " + btoa(`${AGORA.RESTFUL_ID}:${AGORA.RESTFUL_SECRET}`),
                     "Content-Type": "application/json",
                     ...(config.headers || {}),
                 },

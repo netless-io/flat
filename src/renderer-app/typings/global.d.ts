@@ -1,6 +1,5 @@
-import AgoraSdk from 'agora-electron-sdk'
-
 declare module "*.svg" {
+    // eslint-disable-next-line no-undef
     const content: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
     export default content;
 }
@@ -27,11 +26,12 @@ declare namespace NodeJS {
         AGORA_OSS_BUCKET: string;
         AGORA_OSS_FOLDER: string;
         AGORA_OSS_PREFIX: string;
+
+        WECHAT_APP_ID: string;
+        FLAT_SERVER_DOMAIN: string;
     }
 }
 
-declare global {
-    interface Window {
-        AgoraRtcEngine: new (...args: any[]) => AgoraSdk;
-    }
+interface Window {
+    AgoraRtcEngine: import("agora-electron-sdk");
 }

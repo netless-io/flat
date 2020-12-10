@@ -1,5 +1,5 @@
 import Fetcher from "@netless/fetch-middleware";
-import { netlessToken } from "../appToken";
+import { NETLESS } from "../constants/Process";
 export enum RoomType {
     transitory = "transitory",
     persistent = "persistent",
@@ -12,7 +12,7 @@ export class RoomOperator {
         const json = await fetcher.post<any>({
             path: `rooms`,
             headers: {
-                token: netlessToken.sdkToken,
+                token: NETLESS.SDK_TOKEN,
             },
             body: {
                 name: name,
@@ -26,7 +26,7 @@ export class RoomOperator {
         const json = await fetcher.post<any>({
             path: `tokens/rooms/${uuid}`,
             headers: {
-                token: netlessToken.sdkToken,
+                token: NETLESS.SDK_TOKEN,
             },
             body: {
                 lifespan: 0,
