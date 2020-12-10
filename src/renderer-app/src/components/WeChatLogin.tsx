@@ -10,14 +10,12 @@ export enum Status {
     AuthFailed,
 }
 
-export interface resp {
+export interface WeChatLoginResponse {
     status: Status;
     message: string;
-    data: data;
-}
-
-export type data = {
-    userid: string
+    data: {
+        userid: string
+    }
 }
 
 export type WeChatLoginStates = {
@@ -88,7 +86,7 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
             }
         });
 
-        socket.on("WeChat/LoginStatus", (resp: resp) => {
+        socket.on("WeChat/LoginStatus", (resp: WeChatLoginResponse) => {
             const { status, message, data } = resp;
 
             switch (status) {
