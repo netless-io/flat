@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import loading from "./assets/image/loading.svg";
 import "./LoadingPage.less";
 export type LoadingPageProps = {

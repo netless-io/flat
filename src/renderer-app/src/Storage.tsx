@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import "./Storage.less";
 import zip_icon from "./assets/image/zip.svg";
 import { taskUuids, TaskUuidType } from "./taskUuids";

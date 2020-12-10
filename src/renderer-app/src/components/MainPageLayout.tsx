@@ -13,11 +13,11 @@ export default class MainPageLayout extends React.PureComponent<MainPageLayoutPr
     return (
       <div className="layout-container">
         <div className="layout-container-menu">
-          <MainMenu></MainMenu>
+          <MainMenu/>
         </div>
         <div className="layout-container-content">
           <div className="layout-container-header">
-            <MainHeader></MainHeader>
+            <MainHeader/>
           </div>
           {this.props.children}
         </div>

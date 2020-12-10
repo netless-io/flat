@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Redirect } from "react-router";
 import { message } from "antd";
 import { RouteComponentProps } from "react-router";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import "./IndexPage.less";
 import { Link, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
@@ -70,7 +70,7 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
     public showModal = (): void => {
         this.setState({ toggleLoginModel: true })
     }
-    
+
     public handleCancel = (): void => {
         this.setState({ toggleLoginModel: false })
     }

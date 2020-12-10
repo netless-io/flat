@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Button, Input, message, Popover } from "antd";
 import { clipboard } from "electron";
 import "./InviteButton.less";

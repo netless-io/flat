@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import classNames from "classnames";
 import type AgoraSDK from "agora-electron-sdk";
 import { VideoAvatar, VideoType } from "./VideoAvatar";

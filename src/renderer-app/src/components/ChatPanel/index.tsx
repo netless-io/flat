@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Tabs } from "antd";
 import classNames from "classnames";
 import { v4 as uuidv4 } from "uuid";
