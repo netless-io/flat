@@ -10,15 +10,15 @@ export class MainRoomMenu extends React.PureComponent<{}> {
         return (
             <div className="content-header-container">
                 <Button className="header-container-btn">
-                    <img src={join} alt="join"/>
+                    <img src={join} alt="join room"/>
                     加入房间
                 </Button>
                 <Button className="header-container-btn">
-                    <img src={create} alt="join" />
+                    <img src={create} alt="create room" />
                     创建房间
                 </Button>
                 <Button className="header-container-btn">
-                    <img src={book} alt="join" />
+                    <img src={book} alt="book room" />
                     预定房间
                 </Button>
             </div>

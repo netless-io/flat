@@ -42,7 +42,6 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
             transports: ["websocket"],
         });
         const uuid = Math.random().toString(36).substring(2);
-        console.log(process.env);
         const appId = process.env.APPID ?? ''
         this.state = {
             step: 0,
