@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
-    <title>join</title>
-    <desc>Created with Sketch.</desc>
-    <g id="页面-4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Whiteboard-Guidelines" transform="translate(-416.000000, -424.000000)">
-            <g id="join" transform="translate(416.000000, 424.000000)">
-                <path d="M40,80 C70.4477612,80 80,62.09139 80,40 C80,17.90861 70.4477612,0 40,0 C9.55223881,0 0,17.90861 0,40 C0,62.09139 9.55223881,80 40,80 Z" id="Mask" fill="#3381FF"></path>
-                <path d="M47,26 L57,26 C58.1045695,26 59,26.8954305 59,28 L59,52 C59,53.1045695 58.1045695,54 57,54 L47,54 L47,54" id="路径-43" fill="#FFFFFF" opacity="0.400000006"></path>
-                <path d="M22.7248633,23.093769 L42.7248633,20.3159912 C43.8189308,20.1640374 44.8290307,20.9277715 44.9809845,22.021839 C44.9936464,22.1130045 45,22.2049352 45,22.2969758 L45,57.7030242 C45,58.8075937 44.1045695,59.7030242 43,59.7030242 C42.9079595,59.7030242 42.8160287,59.6966707 42.7248633,59.6840088 L22.7248633,56.906231 C21.7360972,56.7689024 21,55.9235037 21,54.9252465 L21,25.0747535 C21,24.0764963 21.7360972,23.2310976 22.7248633,23.093769 Z" id="矩形备份" fill="#FFFFFF"></path>
-                <line x1="37" y1="36" x2="37" y2="44" id="路径-45备份" stroke="#3381FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 5</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="48" height="48" rx="24"></rect>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#A9CAFF" offset="0%"></stop>
+            <stop stop-color="#A9CAFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-584.000000, -160.000000)">
+            <g id="编组-5" transform="translate(584.000000, 160.000000)">
+                <g id="编组-3备份-3">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="矩形" fill="#3381FF" xlink:href="#path-1"></use>
+                    <rect id="矩形" fill="url(#linearGradient-3)" style="mix-blend-mode: overlay;" mask="url(#mask-2)" transform="translate(24.000000, 48.000000) scale(-1, -1) translate(-24.000000, -48.000000) " x="0" y="24" width="48" height="48" rx="24"></rect>
+                </g>
+                <path d="M14.3675445,15.5441518 L22.3675445,12.8774852 C23.4154311,12.5281896 24.5480711,13.0945096 24.8973666,14.1423962 C24.9653442,14.3463292 25,14.5598876 25,14.7748518 L25,33.2251482 C25,34.3297177 24.1045695,35.2251482 23,35.2251482 C22.7850358,35.2251482 22.5714774,35.1904925 22.3675445,35.1225148 L14.3675445,32.4558482 C13.5508602,32.1836201 13,31.4193424 13,30.5584816 L13,17.4415184 C13,16.5806576 13.5508602,15.8163799 14.3675445,15.5441518 Z" id="矩形" fill="#FFFFFF"></path>
+                <rect id="矩形备份" fill-opacity="0.64" fill="#FFFFFF" x="27" y="16" width="8" height="16" rx="2"></rect>
             </g>
         </g>
     </g>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 4</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="48" height="48" rx="24"></rect>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#A9CAFF" offset="0%"></stop>
+            <stop stop-color="#A9CAFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-696.000000, -160.000000)">
+            <g id="编组-6" transform="translate(584.000000, 160.000000)">
+                <g id="编组-4" transform="translate(112.000000, 0.000000)">
+                    <g id="编组-3备份">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <use id="矩形" fill="#3381FF" xlink:href="#path-1"></use>
+                        <rect id="矩形" fill="url(#linearGradient-3)" style="mix-blend-mode: overlay;" mask="url(#mask-2)" transform="translate(24.000000, 48.000000) scale(-1, -1) translate(-24.000000, -48.000000) " x="0" y="24" width="48" height="48" rx="24"></rect>
+                    </g>
+                    <rect id="矩形备份-5" fill="#FFFFFF" x="12" y="23" width="24" height="2" rx="1"></rect>
+                    <rect id="矩形备份-6" fill="#FFFFFF" transform="translate(24.000000, 24.000000) rotate(-270.000000) translate(-24.000000, -24.000000) " x="12" y="23" width="24" height="2" rx="1"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

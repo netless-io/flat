@@ -1,0 +1,34 @@
+import React from "react";
+import { Menu } from "antd";
+import home from "../assets/image/home.svg"
+import user from "../assets/image/user.svg"
+import setting from "../assets/image/setting.svg"
+import { Link } from "react-router-dom";
+
+export enum MainMenuKey {
+    infoPath = "/user/",
+    myPath = "/user/info/",
+    settingPath = "/user/setting/"
+}
+
+export class MainMenu extends React.PureComponent<{}> {
+    render() {
+        return (
+            <Menu className="Menu-container" defaultSelectedKeys={[MainMenuKey.infoPath]} style={{ backgroundColor: "#131415" }}>
+                <Menu.Item icon={<img src={home} />} key={MainMenuKey.infoPath}>
+                        <span>首页</span>
+                </Menu.Item>
+                <Menu.Item icon={<img src={user} />} key={MainMenuKey.myPath}>
+                    <Link to="/user/info/">
+                        <span>我的</span>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item icon={<img src={setting} />} key={MainMenuKey.settingPath}>
+                    <Link to="/user/setting/">
+                        <span>设置</span>
+                    </Link>
+                </Menu.Item>
+            </Menu>
+        )
+    }
+}

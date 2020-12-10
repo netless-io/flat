@@ -7,7 +7,7 @@ export default async (context: Context) => {
 
     const mainWin = new BrowserWindow({
         width: 375,
-        height: 667,
+        height: 668,
         center: true,
         resizable: false,
         show: false,

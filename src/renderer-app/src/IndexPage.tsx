@@ -104,7 +104,7 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                     </div>
                     <div className="page-index-link-box">
                         <Button size="large" style={{width: 280}}>
-                            <Link to={"/join/"}>加入房间</Link>
+                            <Link to={"/user/"}>加入房间</Link>
                         </Button>
                     </div>
                 </div>
