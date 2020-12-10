@@ -1,6 +1,8 @@
-import React, { ReactNode } from "react"
-import {io, Socket} from "socket.io-client"
-import "./WeChatLogin.less"
+import React from "react";
+import { io, Socket } from "socket.io-client";
+import "./WeChatLogin.less";
+import { FLAT_SERVER_LOGIN } from "../constants/FaltServer";
+import { QRURL } from "../utils/WeChatURL";
 
 export enum Status {
     NoLogin = -1,
@@ -14,71 +16,46 @@ export interface WeChatLoginResponse {
     status: Status;
     message: string;
     data: {
-        userid: string
-    }
+        userid: string;
+    };
 }
 
 export type WeChatLoginStates = {
-    step: number; // 0 (emit) 1 (wait for connect) 2 (get status) 3 (finish)
-    self_redirect: boolean;
-    appid: string;
-    scope: string;
-    state?: string;
-    theme?: string;
-    href?: string;
+    uuid: string;
     ws: Socket;
-    wxSrc: string;
+    QRURL: string;
 };
 
-export type WeChatLoginProps = {
-}
-
+export type WeChatLoginProps = {};
 
 export default class WeChatLogin extends React.Component<WeChatLoginProps, WeChatLoginStates> {
     public constructor(props: WeChatLoginProps & WeChatLoginStates) {
         super(props);
-        const wechatUrl = process.env.WECHAT_URL
-        const ws = io(`wss://${wechatUrl}`, {
+        const ws = io(FLAT_SERVER_LOGIN.WSS_LOGIN, {
             transports: ["websocket"],
         });
         const uuid = Math.random().toString(36).substring(2);
-        const appId = process.env.APPID ?? ''
         this.state = {
-            step: 0,
-            self_redirect: true,
-            appid: appId,
-            scope: "snsapi_login",
-            state: uuid,
-            theme: "",
-            href: "",
-            ws: ws,
-            wxSrc: "",
+            uuid,
+            ws,
+            QRURL: "",
         };
     }
 
-    public getRedirectUrl() {
-        const wechatUrl = process.env.WECHAT_URL
-        return `https://${wechatUrl}/weChat/callback/${this.state.ws.id}`
-    }
-
     public WeChatLoginFlow() {
-        const socket = this.state.ws;
+        const { ws: socket, uuid } = this.state;
+
         socket.on("connect", () => {
             socket.emit("WeChat/AuthID", {
-                uuid: this.state.state,
+                uuid,
             });
         });
 
         socket.on("WeChat/AuthID", (data: { status: Status; message: string }) => {
             if (data.status === 0) {
-                const wxSrc = `https://open.weixin.qq.com/connect/qrconnect?appid=${
-                    this.state.appid
-                }&scope=${this.state.scope}&redirect_uri=${encodeURIComponent(
-                    this.getRedirectUrl(),
-                )}&state=${this.state.state || ""}&login_type=jssdk&self_redirect=default&style=${
-                    this.state.theme || "black"
-                }&href=${this.state.href || ""}`;
-                this.setState({wxSrc: wxSrc})
+                this.setState({
+                    QRURL: QRURL(this.state.ws.id, uuid),
+                });
                 console.log("serve 已经收到，开始展示二维码");
             } else {
                 console.log("server 出现问题，请重试", data.message);
@@ -89,16 +66,16 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
             const { status, message, data } = resp;
 
             switch (status) {
-                case 0: {
+                case Status.Success: {
                     localStorage.setItem("userid", data.userid);
                     console.log("登陆成功", data);
                     break;
                 }
-                case 1: {
+                case Status.AuthFailed: {
                     console.log("认证失败，请重试", message);
                     break;
                 }
-                case 2: {
+                case Status.Process: {
                     console.log("正在处理");
                     break;
                 }
@@ -110,6 +87,10 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
         this.WeChatLoginFlow();
     }
 
+    public componentWillUnmount() {
+        this.state.ws.disconnect();
+    }
+
     public render(): React.ReactNode {
         return (
             <div className="iframe-container">
@@ -119,7 +100,7 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
                         transform: "scale(0.7) translateY(-80px)",
                         marginBottom: -100,
                     }}
-                    src={this.state.wxSrc}
+                    src={this.state.QRURL}
                     scrolling="no"
                     frameBorder="0"
                 ></iframe>
