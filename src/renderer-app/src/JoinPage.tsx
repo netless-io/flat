@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router";
 import dateFormat from "date-fns/format";
 import "./JoinPage.less";

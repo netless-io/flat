@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Button, message, Modal, Tooltip } from "antd";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";

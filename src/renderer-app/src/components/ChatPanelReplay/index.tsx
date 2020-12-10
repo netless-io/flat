@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Tabs } from "antd";
 import { Player } from "white-web-sdk";
 import dateAdd from "date-fns/add";

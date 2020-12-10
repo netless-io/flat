@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import classNames from "classnames";
 import { runtime } from "../utils/Runtime";
 import signal1 from "../assets/image/signal-1.svg";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Tooltip } from "antd";
 
 export interface TopBarRightBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

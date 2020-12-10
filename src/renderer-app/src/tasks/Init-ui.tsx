@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { AppRoutes } from "../AppRoutes";
 import "antd/dist/antd.less";
 import "../theme.less";

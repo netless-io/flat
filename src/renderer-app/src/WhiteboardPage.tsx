@@ -2,7 +2,7 @@ import dateFormat from "date-fns/format";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 
-import * as React from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router";
 import { message, Tooltip } from "antd";
 
