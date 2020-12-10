@@ -10,10 +10,12 @@ export enum Status {
     AuthFailed,
 }
 
-export interface resp {
+export interface WeChatLoginResponse {
     status: Status;
     message: string;
-    data: string;
+    data: {
+        userid: string
+    }
 }
 
 export type WeChatLoginStates = {
@@ -35,14 +37,16 @@ export type WeChatLoginProps = {
 export default class WeChatLogin extends React.Component<WeChatLoginProps, WeChatLoginStates> {
     public constructor(props: WeChatLoginProps & WeChatLoginStates) {
         super(props);
-        const ws = io("wss://api-flat.netless.group/v1/Login", {
+        const wechatUrl = process.env.WECHAT_URL
+        const ws = io(`wss://${wechatUrl}`, {
             transports: ["websocket"],
         });
         const uuid = Math.random().toString(36).substring(2);
+        const appId = process.env.APPID ?? ''
         this.state = {
             step: 0,
             self_redirect: true,
-            appid: "wx3b1cf9a60ace3a45",
+            appid: appId,
             scope: "snsapi_login",
             state: uuid,
             theme: "",
@@ -53,7 +57,8 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
     }
 
     public getRedirectUrl() {
-        return `https://api-flat.netless.group/v1/login/weChat/callback/${this.state.ws.id}`
+        const wechatUrl = process.env.WECHAT_URL
+        return `https://${wechatUrl}/weChat/callback/${this.state.ws.id}`
     }
 
     public WeChatLoginFlow() {
@@ -80,11 +85,12 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
             }
         });
 
-        socket.on("WeChat/LoginStatus", (resp: resp) => {
+        socket.on("WeChat/LoginStatus", (resp: WeChatLoginResponse) => {
             const { status, message, data } = resp;
 
             switch (status) {
                 case 0: {
+                    localStorage.setItem("userid", data.userid);
                     console.log("登陆成功", data);
                     break;
                 }

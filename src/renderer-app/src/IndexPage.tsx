@@ -13,7 +13,7 @@ import WeChatLogin from "./components/WeChatLogin";
 export type IndexPageStates = {
     name: string;
     visible: boolean;
-    isModalVisible: boolean;
+    toggleLoginModel: boolean;
 };
 
 export enum Identity {
@@ -28,7 +28,7 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
         this.state = {
             name: name ? name : "",
             visible: false,
-            isModalVisible: false
+            toggleLoginModel: false
         };
 
         ipcAsyncByMain("set-win-size", {
@@ -68,11 +68,11 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
     };
 
     public showModal = (): void => {
-        this.setState({ isModalVisible: true })
+        this.setState({ toggleLoginModel: true })
     }
     
     public handleCancel = (): void => {
-        this.setState({ isModalVisible: false })
+        this.setState({ toggleLoginModel: false })
     }
 
     public render(): React.ReactNode {
@@ -93,7 +93,7 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                         <div className="page-index-img-box">
                             <div className="page-index-start-cell">
                                 <div onClick={this.handleCreate}>
-                                    <img src={google} alt={"create"} />
+                                    <img src={google} alt={"google login logo"} />
                                 </div>
                                 <span className="page-index-img-info">Google 登录</span>
                             </div>
@@ -104,7 +104,7 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                     </div>
                     <div className="page-index-link-box">
                         <Button size="large" style={{width: 280}}>
-                            <Link to={"/join/"}>加入房间</Link>
+                            <Link to={"/user/"}>加入房间</Link>
                         </Button>
                     </div>
                 </div>
@@ -113,7 +113,7 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                     footer={null}
                     mask={false}
                     centered={true}
-                    visible={this.state.isModalVisible}
+                    visible={this.state.toggleLoginModel}
                     onCancel={this.handleCancel}
                 >
                     <WeChatLogin />

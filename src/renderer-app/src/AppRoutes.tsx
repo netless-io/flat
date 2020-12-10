@@ -12,6 +12,8 @@ import Test from "./Test";
 import Storage from "./Storage";
 import HistoryPage from "./HistoryPage";
 import CreatePage from "./CreatePage";
+import UserIndexPage from "./UserIndexPage";
+import UserInfoPage from "./UserInfoPage";
 export class AppRoutes extends React.Component<{}, {}> {
     public componentDidCatch(error: any): void {
         message.error(`网页加载发生错误：${error}`);
@@ -30,6 +32,8 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route exact path="/storage/" component={Storage} />
                     <Route exact path="/history/" component={HistoryPage} />
                     <Route exact path="/" component={IndexPage} />
+                    <Route exact path="/user/" component={UserIndexPage} />
+                    <Route exact path="/user/info/" component={UserInfoPage} />
                 </Switch>
             </HashRouter>
         );
