@@ -92,18 +92,17 @@ export class Rtm {
         this.channelId = null;
     }
 
-    async fetchHistory(oldestTimestap: number = Date.now()): Promise<RTMessage[]> {
+    async fetchHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
         if (!this.channelId) {
             throw new Error("RTM is not initiated. Call `rtm.init` first.");
         }
-        const oneYear = 365 * 24 * 60 * 60 * 1000;
         const { location } = await this.request<RtmRESTfulQueryPayload, RtmRESTfulQueryResponse>(
             "query",
             {
                 filter: {
                     destination: this.channelId,
-                    start_time: new Date(oldestTimestap - oneYear).toISOString(),
-                    end_time: new Date(oldestTimestap - 1).toISOString(),
+                    start_time: new Date(startTime).toISOString(),
+                    end_time: new Date(endTime).toISOString(),
                 },
                 offset: 0,
                 limit: 50,

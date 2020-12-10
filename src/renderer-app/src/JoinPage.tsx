@@ -1,11 +1,11 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
+import dateFormat from "date-fns/format";
 import "./JoinPage.less";
 import logo from "./assets/image/logo.svg";
 import { Button, Input, Select, Radio } from "antd";
 import { Link } from "react-router-dom";
 import { Identity } from "./IndexPage";
-import moment from "moment";
 import { LocalStorageRoomDataType } from "./HistoryPage";
 import { ipcAsyncByMain } from "./utils/Ipc";
 
@@ -41,7 +41,7 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
 
     public setRoomList = (uuid: string, userId: string): void => {
         const rooms = localStorage.getItem("rooms");
-        const timestamp = moment(new Date()).format("lll");
+        const timestamp = dateFormat(new Date(), "LLL d, y h:m a");
         if (rooms) {
             const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
             const room = roomArray.find(data => data.uuid === uuid);
