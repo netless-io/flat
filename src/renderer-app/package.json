@@ -33,6 +33,7 @@
     "react-dom": "^16.13.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "socket.io-client": "^3.0.3",
     "react-virtualized": "^9.22.2",
     "uuid": "^8.3.0",
     "white-web-sdk": "2.11.0"

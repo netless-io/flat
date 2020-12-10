@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router";
 import dateFormat from "date-fns/format";
 import "./JoinPage.less";
 import logo from "./assets/image/logo.svg";
-import { Button, Input } from "antd";
+import { Button, Input, Select, Radio } from "antd";
 import { Link } from "react-router-dom";
 import { Identity } from "./IndexPage";
 import { LocalStorageRoomDataType } from "./HistoryPage";
@@ -12,6 +12,7 @@ import { ipcAsyncByMain } from "./utils/Ipc";
 export type JoinPageStates = {
     roomId: string;
     name: string;
+    radioValue: number;
 };
 
 export default class JoinPage extends React.Component<RouteComponentProps<{}>, JoinPageStates> {
@@ -21,6 +22,7 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
         this.state = {
             roomId: "",
             name: name ? name : "",
+            radioValue: 1
         };
         ipcAsyncByMain("set-win-size", {
             width: 480,
@@ -87,43 +89,44 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
         }
     };
     public render(): React.ReactNode {
-        const { roomId, name } = this.state;
+        const { roomId, name, radioValue } = this.state;
         return (
             <div className="page-index-box">
-                <div className="page-index-mid-box">
-                    <div className="page-index-logo-box">
-                        <img src={logo} alt={"logo"} />
-                        <span>0.0.1</span>
-                    </div>
+                <div className="page-join-mid-box">
                     <div className="page-index-form-box">
-                        <Input
-                            placeholder={"输入名字"}
-                            value={name}
-                            onChange={evt => this.setState({ name: evt.target.value })}
-                            style={{ width: 384, marginBottom: 28 }}
+                        <span>房间号</span>
+                        <Select
+                            placeholder={"请输入房间号"}
+                            // value={roomId}
+                            // onChange={evt => this.setState({ name: evt.target.value })}
+                            style={{ width: 312, marginBottom: 28, marginTop: 6 }}
                             size={"large"}
                         />
+                        <span>昵称</span>
                         <Input
-                            placeholder={"输入房间号"}
-                            value={roomId}
+                            placeholder={"请输入昵称"}
+                            // value={name}
                             onChange={evt => this.setState({ roomId: evt.target.value })}
-                            style={{ width: 384, marginBottom: 28 }}
+                            style={{ width: 312, marginBottom: 28, marginTop: 6 }}
                             size={"large"}
                         />
-                        <div className="page-index-btn-box">
-                            <Link to={"/"}>
-                                <Button className="page-index-btn" size={"large"}>
-                                    返回首页
-                                </Button>
-                            </Link>
+                        <div className="page-join-radio-box">
+                            <span>加入选项</span>
+                            <Radio.Group value={radioValue}                            >
+                                <Radio style={{ display: "block", marginTop: 16, color: "#444E60"}} value={1}>开启麦克风</Radio>
+                                <Radio style={{ marginTop: 16, color: "#444E60" }} value={2}>开启摄像头</Radio>
+                            </Radio.Group>
+                        </div>
+                        <div className="page-join-btn-box">
                             <Button
-                                className="page-index-btn"
-                                disabled={roomId === "" || name === ""}
-                                size={"large"}
                                 onClick={this.handleJoin}
-                                type={"primary"}
+                                style={{ marginTop: 48, height: 40 }}
+                                disabled={roomId === "" || name === ""}
                             >
                                 加入房间
+                            </Button>
+                            <Button style={{ marginTop: 16, height: 40 }}>
+                                <Link to={"/"}>取消</Link>
                             </Button>
                         </div>
                     </div>

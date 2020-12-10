@@ -1,16 +1,19 @@
 import * as React from "react";
+import "./IndexPage.less";
 import { Link, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
+import { Button, Divider, Modal } from "antd"
 import logo from "./assets/image/logo.svg";
-import join from "./assets/image/join.svg";
-import create from "./assets/image/create.svg";
-import "./IndexPage.less";
+import wechat from "./assets/image/wechat.svg"
+import google from "./assets/image/google.svg"
 import { shell } from "electron";
 import { ipcAsyncByMain } from "./utils/Ipc";
+import WeChatLogin from "./components/WeChatLogin";
 
 export type IndexPageStates = {
     name: string;
     visible: boolean;
+    toggleLoginModel: boolean;
 };
 
 export enum Identity {
@@ -25,11 +28,12 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
         this.state = {
             name: name ? name : "",
             visible: false,
+            toggleLoginModel: false
         };
 
         ipcAsyncByMain("set-win-size", {
-            width: 480,
-            height: 480,
+            width: 375,
+            height: 667,
         });
     }
 
@@ -62,49 +66,58 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
     private openMIT = async (): Promise<void> => {
         await shell.openExternal("https://opensource.org/licenses/MIT");
     };
+
+    public showModal = (): void => {
+        this.setState({ toggleLoginModel: true })
+    }
+    
+    public handleCancel = (): void => {
+        this.setState({ toggleLoginModel: false })
+    }
+
     public render(): React.ReactNode {
         return (
             <div className="page-index-box">
                 <div className="page-index-mid-box">
-                    <a className="page-index-span-box" onClick={this.openLanding}>
-                        官网
-                    </a>
-                    <a className="page-index-span-box" onClick={this.openGithub}>
-                        GitHub
-                    </a>
                     <div className="page-index-logo-box">
                         <img src={logo} alt={"logo"} />
+                        <span>在线互动 让想法同步</span>
                     </div>
                     <div className="page-index-start-box">
-                        <div className="page-index-start-cell">
-                            <Link to={"/join/"}>
-                                <img src={join} alt={"join"} />
-                            </Link>
-                            <span>加入房间</span>
-                        </div>
-                        <div className="page-cutline-box" />
-                        <div className="page-index-start-cell">
-                            <div onClick={this.handleCreate}>
-                                <img src={create} alt={"create"} />
+                        <div className="page-index-img-box">
+                            <div className="page-index-start-cell" onClick={this.showModal}>
+                                <img src={wechat} alt={"wxLogin"} />
+                                <span className="page-index-img-info">微信登录</span>
                             </div>
-                            <span>创建房间</span>
                         </div>
+                        <div className="page-index-img-box">
+                            <div className="page-index-start-cell">
+                                <div onClick={this.handleCreate}>
+                                    <img src={google} alt={"google login logo"} />
+                                </div>
+                                <span className="page-index-img-info">Google 登录</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="page-index-line">
+                        <Divider plain>2.1.0</Divider>
                     </div>
                     <div className="page-index-link-box">
-                        {localStorage.getItem("rooms") && (
-                            <Link to={"/history"}>
-                                <div className="page-index-history">历史会议</div>
-                            </Link>
-                        )}
-                        <Link to={"/storage/"}>
-                            <div className="page-index-storage">预加载</div>
-                        </Link>
-                    </div>
-                    <div className="page-index-start-term">
-                        本开源项目遵循
-                        <span onClick={this.openMIT}>《 MIT 开源协议》</span>
+                        <Button size="large" style={{width: 280}}>
+                            <Link to={"/user/"}>加入房间</Link>
+                        </Button>
                     </div>
                 </div>
+                <Modal
+                    width={240}
+                    footer={null}
+                    mask={false}
+                    centered={true}
+                    visible={this.state.toggleLoginModel}
+                    onCancel={this.handleCancel}
+                >
+                    <WeChatLogin />
+                </Modal>
             </div>
         );
     }
