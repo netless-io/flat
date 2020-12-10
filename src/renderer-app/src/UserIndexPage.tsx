@@ -9,17 +9,16 @@ import { MainRoomList } from "./components/MainRoomList";
 class UserIndexPage extends React.Component<React.PropsWithChildren<RouteComponentProps>> {
     public constructor(props: RouteComponentProps<{}>) {
         super(props);
-        this.state = {};
-        ipcAsyncByMain("set-win-size", {
-            width: 1200,
-            height: 668,
-        });
+    }
+  
+    public componentDidMount() {
+      ipcAsyncByMain("set-win-size", {
+        width: 1200,
+        height: 668,
+      });
     }
 
     public render(): React.ReactNode {
-        const location = this.props.location;
-        const key = location.hash.replace(/^#/, "");
-        console.log(key);
         return (
             <MainPageLayout>
               <MainRoomMenu></MainRoomMenu>
