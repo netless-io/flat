@@ -124,7 +124,7 @@ module.exports = {
                     maxInitialRequests: 5,
                     minSize: 0,
                 },
-                vendor: {
+                defaultVendors: {
                     test: /node_modules/,
                     chunks: "initial",
                     name: "vendor",
