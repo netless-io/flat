@@ -93,7 +93,7 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                         <div className="page-index-img-box">
                             <div className="page-index-start-cell">
                                 <div onClick={this.handleCreate}>
-                                    <img src={google} alt={"create"} />
+                                    <img src={google} alt={"google login logo"} />
                                 </div>
                                 <span className="page-index-img-info">Google 登录</span>
                             </div>

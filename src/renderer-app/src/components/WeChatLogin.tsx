@@ -13,7 +13,11 @@ export enum Status {
 export interface resp {
     status: Status;
     message: string;
-    data: string;
+    data: data;
+}
+
+export type data = {
+    userid: string
 }
 
 export type WeChatLoginStates = {
@@ -39,10 +43,12 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
             transports: ["websocket"],
         });
         const uuid = Math.random().toString(36).substring(2);
+        console.log(process.env);
+        const appId = process.env.APPID ?? ''
         this.state = {
             step: 0,
             self_redirect: true,
-            appid: "wx3b1cf9a60ace3a45",
+            appid: appId,
             scope: "snsapi_login",
             state: uuid,
             theme: "",
@@ -85,6 +91,7 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
 
             switch (status) {
                 case 0: {
+                    localStorage.setItem("userid", data.userid);
                     console.log("登陆成功", data);
                     break;
                 }

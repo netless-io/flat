@@ -13,7 +13,7 @@ import Storage from "./Storage";
 import HistoryPage from "./HistoryPage";
 import CreatePage from "./CreatePage";
 import UserIndexPage from "./UserIndexPage";
-import { UserInfoPage } from "./UserInfoPage";
+import UserInfoPage from "./UserInfoPage";
 export class AppRoutes extends React.Component<{}, {}> {
     public componentDidCatch(error: any): void {
         message.error(`网页加载发生错误：${error}`);
