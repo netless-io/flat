@@ -21,7 +21,6 @@ import { PPTDataType, PPTType } from "@netless/oss-upload-manager";
 import OssDropUpload from "@netless/oss-drop-upload";
 
 import { netlessWhiteboardApi } from "./apiMiddleware";
-import { netlessToken, ossConfigObj } from "./appToken";
 import { pptDatas } from "./taskUuids";
 import { Rtc } from "./apiMiddleware/Rtc";
 import { CloudRecording } from "./apiMiddleware/CloudRecording";
@@ -45,6 +44,7 @@ import { ipcAsyncByMain } from "./utils/Ipc";
 import pages from "./assets/image/pages.svg";
 
 import "./WhiteboardPage.less";
+import { NETLESS, NODE_ENV, OSS } from "./constants/Process";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -151,7 +151,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             this.state.room.callbacks.off();
         }
 
-        if (process.env.NODE_ENV === "development") {
+        if (NODE_ENV === "development") {
             (window as any).room = null;
         }
     }
@@ -293,7 +293,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     identity: identity === Identity.creator ? "host" : "",
                 });
                 const whiteWebSdk = new WhiteWebSdk({
-                    appIdentifier: netlessToken.appIdentifier,
+                    appIdentifier: NETLESS.APP_IDENTIFIER,
                     plugins: plugins,
                 });
                 const cursorName = localStorage.getItem("userName");
@@ -340,7 +340,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     this.setState({ mode: room.state.broadcastState.mode });
                 }
                 this.setState({ room: room });
-                if (process.env.NODE_ENV === "development") {
+                if (NODE_ENV === "development") {
                     (window as any).room = room;
                 }
             }
@@ -569,9 +569,9 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                                 room={room}
                                 customerComponent={[
                                     <OssUploadButton
-                                        oss={ossConfigObj}
-                                        appIdentifier={netlessToken.appIdentifier}
-                                        sdkToken={netlessToken.sdkToken}
+                                        oss={WhiteboardPage.ossConfig}
+                                        appIdentifier={NETLESS.APP_IDENTIFIER}
+                                        sdkToken={NETLESS.SDK_TOKEN}
                                         room={room}
                                         whiteboardRef={whiteboardLayerDownRef}
                                     />,
@@ -607,7 +607,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                             isFileOpen={isFileOpen}
                             room={room}
                         />
-                        <OssDropUpload room={room} oss={ossConfigObj}>
+                        <OssDropUpload room={room} oss={WhiteboardPage.ossConfig}>
                             <div ref={this.handleBindRoom} className="whiteboard-box" />
                         </OssDropUpload>
                     </div>
@@ -686,6 +686,17 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         );
 
         return <TopBar center={topBarCenter} rightBtns={topBarRightBtns} />;
+    }
+
+    static get ossConfig() {
+        return {
+            accessKeyId: OSS.ACCESS_KEY_ID,
+            accessKeySecret: OSS.ACCESS_KEY_SECRET!,
+            region: OSS.REGION!,
+            bucket: OSS.BUCKET!,
+            folder: OSS.FOLDER!,
+            prefix: OSS.PREFIX!,
+        };
     }
 }
 

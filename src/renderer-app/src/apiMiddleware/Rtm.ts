@@ -1,6 +1,7 @@
 import AgoraRTM, { RtmChannel, RtmClient } from "agora-rtm-sdk";
 import polly from "polly-js";
 import { v4 as uuidv4 } from "uuid";
+import { AGORA, NODE_ENV } from "../constants/Process";
 
 /**
  * @see {@link https://docs.agora.io/cn/Real-time-Messaging/rtm_get_event?platform=RESTful#a-namecreate_history_resa创建历史消息查询资源-api（post）}
@@ -51,18 +52,14 @@ export class Rtm {
     client: RtmClient;
     channel?: RtmChannel;
 
-    private appId: string = process.env.AGORA_APP_ID || "";
-    private restfulId: string = process.env.AGORA_RESTFUL_ID || "";
-    private restfulSecret: string = process.env.AGORA_RESTFUL_SECRET || "";
-
     private channelId: string | null = null;
 
     constructor() {
-        if (!this.appId) {
+        if (!AGORA.APP_ID) {
             throw new Error("Agora App Id not set.");
         }
         // @TODO 实现鉴权 token
-        this.client = AgoraRTM.createInstance(this.appId);
+        this.client = AgoraRTM.createInstance(AGORA.APP_ID);
         this.client.on("ConnectionStateChanged", (newState, reason) => {
             console.log("RTM client state: ", newState, reason);
         });
@@ -84,8 +81,8 @@ export class Rtm {
         try {
             await this.client.logout();
         } catch (e) {
-            // ingore errors on logout
-            if (process.env.NODE_ENV === "development") {
+            // ignore errors on logout
+            if (NODE_ENV === "development") {
                 console.warn(e);
             }
         }
@@ -135,11 +132,11 @@ export class Rtm {
         config: any = {},
     ): Promise<R> {
         const response = await fetch(
-            `https://api.agora.io/dev/v2/project/${this.appId}/rtm/message/history/${action}`,
+            `https://api.agora.io/dev/v2/project/${AGORA.APP_ID}/rtm/message/history/${action}`,
             {
                 method: "POST",
                 headers: {
-                    Authorization: "Basic " + btoa(`${this.restfulId}:${this.restfulSecret}`),
+                    Authorization: "Basic " + btoa(`${AGORA.RESTFUL_ID}:${AGORA.RESTFUL_SECRET}`),
                     "Content-Type": "application/json",
                     ...(config.headers || {}),
                 },
