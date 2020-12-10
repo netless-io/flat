@@ -13,10 +13,12 @@ export enum MainMenuKey {
 
 export class MainMenu extends React.PureComponent<{}> {
     render() {
+        const hash = window.location.hash
+        
         return (
-            <Menu className="Menu-container" defaultSelectedKeys={[MainMenuKey.infoPath]} style={{ backgroundColor: "#131415" }}>
+            <Menu className="Menu-container" defaultSelectedKeys={[hash.substring(1)]} style={{ backgroundColor: "#131415" }}>
                 <Menu.Item icon={<img src={home} />} key={MainMenuKey.infoPath}>
-                    <Link to="/user">
+                    <Link to="/user/">
                         <span>首页</span>
                     </Link>    
                 </Menu.Item>
