@@ -49,7 +49,6 @@ import "./WhiteboardPage.less";
 export type WhiteboardPageStates = {
     phase: RoomPhase;
     room?: Room;
-    roomName?: string;
     isRoomOwner: boolean;
     isMenuVisible: boolean;
     isFileOpen: boolean;
@@ -194,10 +193,12 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     ]),
                 );
             } else {
+                // @TODO 统一各页面的 localstorage 操作，存储更丰富的房间信息。
                 if (room.roomName) {
-                    // @TODO 统一各页面的 localstorage 操作，存储更丰富的房间信息。
-                    this.setState({ roomName: room.roomName, isRoomOwner: !!room.isRoomOwner });
+                    document.title = room.roomName;
                 }
+                this.setState({ isRoomOwner: !!room.isRoomOwner });
+
                 const newRoomArray = roomArray.filter(data => data.uuid !== uuid);
                 localStorage.setItem(
                     "rooms",
@@ -635,7 +636,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     }
 
     private renderTopBar(room: Room): React.ReactNode {
-        const { isCalling, isRecording, recordingUuid, roomName } = this.state;
+        const { isCalling, isRecording, recordingUuid } = this.state;
         const { uuid } = this.props.match.params;
 
         const topBarCenter = (
@@ -684,9 +685,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             </>
         );
 
-        return (
-            <TopBar title={roomName || "房间"} center={topBarCenter} rightBtns={topBarRightBtns} />
-        );
+        return <TopBar center={topBarCenter} rightBtns={topBarRightBtns} />;
     }
 }
 
