@@ -55,13 +55,14 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
             replayFail: false,
             replayState: false,
         };
+    }
+
+    public async componentDidMount(): Promise<void> {
         ipcAsyncByMain("set-win-size", {
             width: 1440,
             height: 688,
         });
-    }
 
-    public async componentDidMount(): Promise<void> {
         window.addEventListener("keydown", this.handleSpaceKey);
 
         const updatePlayingState = () => {

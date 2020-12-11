@@ -30,10 +30,13 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
             visible: false,
             toggleLoginModel: false
         };
+    }
 
+    public componentDidMount = () => {
         ipcAsyncByMain("set-win-size", {
             width: 375,
             height: 667,
+            autoCenter: true
         });
     }
 
@@ -75,6 +78,16 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
         this.setState({ toggleLoginModel: false })
     }
 
+    public joinRoom = () => {
+      ipcAsyncByMain("set-win-size", {
+        width: 1200,
+        height: 668,
+        autoCenter: true
+      });
+        
+      this.props.history.push("/user/")
+    }
+
     public render(): React.ReactNode {
         return (
             <div className="page-index-box">
@@ -103,8 +116,8 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                         <Divider plain>2.1.0</Divider>
                     </div>
                     <div className="page-index-link-box">
-                        <Button size="large" style={{width: 280}}>
-                            <Link to={"/user/"}>加入房间</Link>
+                        <Button size="large" style={{width: 280}} onClick={this.joinRoom}>
+                            <span>加入房间</span>
                         </Button>
                     </div>
                 </div>

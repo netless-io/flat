@@ -7,17 +7,6 @@ import { MainRoomMenu } from "./components/MainRoomMenu";
 import { MainRoomList } from "./components/MainRoomList";
 
 class UserIndexPage extends React.Component<React.PropsWithChildren<RouteComponentProps>> {
-    public constructor(props: RouteComponentProps<{}>) {
-        super(props);
-    }
-  
-    public componentDidMount() {
-      ipcAsyncByMain("set-win-size", {
-        width: 1200,
-        height: 668,
-      });
-    }
-
     public render(): React.ReactNode {
         return (
             <MainPageLayout>
