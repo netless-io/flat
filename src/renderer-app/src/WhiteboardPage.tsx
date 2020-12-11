@@ -47,7 +47,6 @@ import "./WhiteboardPage.less";
 export type WhiteboardPageStates = {
     phase: RoomPhase;
     room?: Room;
-    isRoomOwner: boolean;
     isMenuVisible: boolean;
     isFileOpen: boolean;
     isRecording: boolean;
@@ -78,7 +77,6 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         super(props);
         this.state = {
             phase: RoomPhase.Connecting,
-            isRoomOwner: false,
             isMenuVisible: false,
             isFileOpen: false,
             isRecording: false,
@@ -485,12 +483,11 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     }
 
     private renderWhiteBoard(room: Room): React.ReactNode {
-        const { uuid, userId } = this.props.match.params;
+        const { uuid, userId, identity } = this.props.match.params;
 
         const {
             isMenuVisible,
             isFileOpen,
-            isRoomOwner,
             whiteboardLayerDownRef,
             isRealtimeSideOpen,
             isCalling,
@@ -565,7 +562,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                             <ChatPanel
                                 userId={userId}
                                 channelId={uuid}
-                                isRoomOwner={isRoomOwner}
+                                identity={identity}
                             ></ChatPanel>
                         }
                     />
