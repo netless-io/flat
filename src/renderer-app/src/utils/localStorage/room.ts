@@ -5,7 +5,7 @@ export enum Identity {
     joiner = "joiner",
 }
 
-export interface Room {
+export interface LSRoom {
     uuid: string;
     time: string;
     identity: Identity;
@@ -20,24 +20,24 @@ export interface Room {
     }>;
 }
 
-export function getRooms(): Room[] {
+export function getRooms(): LSRoom[] {
     const rooms = localStorage.getItem("rooms");
     return rooms ? JSON.parse(rooms) : [];
 }
 
-export function getRoom(uuid: string): Room | null {
+export function getRoom(uuid: string): LSRoom | null {
     const rooms = getRooms();
     return rooms.find(data => data.uuid === uuid) || null;
 }
 
-interface RoomSave extends Omit<Room, "time"> {
+interface LSRoomSaveConfig extends Omit<LSRoom, "time"> {
     time?: string;
 }
 
 /**
  * Save new room or update current room to localStorage and move it to the top
  */
-export function saveRoom(config: RoomSave): Room {
+export function saveRoom(config: LSRoomSaveConfig): LSRoom {
     const rooms = getRooms();
     const existIndex = rooms.findIndex(data => data.uuid === config.uuid);
     if (existIndex >= 0) {
@@ -57,7 +57,7 @@ export function saveRoom(config: RoomSave): Room {
  */
 export function updateRoomProps(
     uuid: string,
-    config: Partial<Omit<Room, "uuid" | "time" | "identity" | "userId">>,
+    config: Partial<Omit<LSRoom, "uuid" | "time" | "identity" | "userId">>,
 ): boolean {
     const rooms = getRooms();
     const roomIndex = rooms.findIndex(data => data.uuid === uuid);

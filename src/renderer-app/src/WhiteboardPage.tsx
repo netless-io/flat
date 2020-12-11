@@ -35,7 +35,7 @@ import { ChatPanel } from "./components/ChatPanel";
 import { VideoAvatars } from "./components/VideoAvatars";
 
 import { NETLESS, NODE_ENV, OSS } from "./constants/Process";
-import { getRoom, Identity, saveRoom, updateRoomProps } from "./utils/localStorage/room";
+import { getRoom, Identity, updateRoomProps } from "./utils/localStorage/room";
 import { listDir } from "./utils/Fs";
 import { runtime } from "./utils/Runtime";
 import { ipcAsyncByMain } from "./utils/Ipc";

@@ -7,10 +7,10 @@ import { LeftOutlined } from "@ant-design/icons";
 import empty_box from "./assets/image/empty-box.svg";
 import board from "./assets/image/board.svg";
 import { ipcAsyncByMain } from "./utils/Ipc";
-import { getRooms, Room } from "./utils/localStorage/room";
+import { getRooms, LSRoom } from "./utils/localStorage/room";
 
 export type JoinPageStates = {
-    rooms: Room[];
+    rooms: LSRoom[];
 };
 
 export default class JoinPage extends React.Component<RouteComponentProps<{}>, JoinPageStates> {
@@ -26,11 +26,11 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
         });
     }
 
-    private handleJoin = (room: Room): void => {
+    private handleJoin = (room: LSRoom): void => {
         this.props.history.push(`/whiteboard/${room.identity}/${room.uuid}/${room.userId}/`);
     };
 
-    private handleReplay = (room: Room): void => {
+    private handleReplay = (room: LSRoom): void => {
         this.props.history.push(`/replay/${room.identity}/${room.uuid}/${room.userId}/`);
     };
 
