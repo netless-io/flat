@@ -96,6 +96,10 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             this.setState({ rtcUid });
         });
         await this.startJoinRoom();
+        const room = getRoom(this.props.match.params.uuid);
+        if (room?.roomName) {
+            document.title = room.roomName;
+        }
     }
 
     public componentDidUpdate(
@@ -218,7 +222,6 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
 
     private startJoinRoom = async (): Promise<void> => {
         const { uuid, userId, identity } = this.props.match.params;
-        saveRoom({ uuid, userId, identity });
         try {
             const roomToken = await this.getRoomToken(uuid);
             if (uuid && roomToken) {
