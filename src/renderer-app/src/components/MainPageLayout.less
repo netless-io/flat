@@ -1,36 +1,38 @@
 .layout-container {
-  width: 100vw;
-  height: 100vh;
-  background-color: #f4f6f9;
-  display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: #f4f6f9;
+    display: flex;
 }
 
 .layout-container-menu {
-  padding-top: 73px;
-  height: 100vh;
-  background-color: rgb(19, 20, 21);
-  li.ant-menu-item {
-    .ant-menu-item-icon {
-      margin-right: 0;
+    padding-top: 73px;
+    height: 100vh;
+    background-color: rgb(19, 20, 21);
+    li.ant-menu-item {
+        .ant-menu-item-icon {
+            margin-right: 0;
+        }
+
+        height: 80px;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        color: white;
+
+        &.ant-menu-item-selected {
+            color: black;
+        }
     }
-    height: 80px;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    color: white;
-    &.ant-menu-item-selected {
-      color: black;
-    }
-  }
 }
 
 .layout-container-header {
-  line-height: 50px;
-  background-color: #fff;
-  box-shadow: 0px 8px 24px 0px rgba(68, 78, 96, 0.08);
+    line-height: 50px;
+    background-color: #fff;
+    box-shadow: 0px 8px 24px 0px rgba(68, 78, 96, 0.08);
 }
 
 .layout-container-content {
-  flex: 1;
-  background-color: #f4f6f9;
+    flex: 1;
+    background-color: #f4f6f9;
 }
