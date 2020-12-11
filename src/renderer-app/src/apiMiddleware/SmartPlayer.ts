@@ -11,10 +11,9 @@ import {
 import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netless/combine-player";
 import { videoPlugin } from "@netless/white-video-plugin";
 import { audioPlugin } from "@netless/white-audio-plugin";
-import { Identity } from "../IndexPage";
 import { netlessWhiteboardApi } from "./index";
-import { LocalStorageRoomDataType } from "../HistoryPage";
 import { NETLESS, NODE_ENV } from "../constants/Process";
+import { getRoom, Identity } from "../utils/localStorage/room";
 
 /**
  * 智能播放画板与音视频，同时适应有无视频的情况
@@ -58,7 +57,7 @@ export class SmartPlayer {
             throw new Error("Cannot fetch token for room: " + uuid);
         }
 
-        const storageRoom = this.getStorageRoom(uuid);
+        const storageRoom = getRoom(uuid);
         // @TODO 支持多段视频
         const recording = storageRoom?.recordings?.[storageRoom.recordings.length - 1];
 
@@ -307,15 +306,6 @@ export class SmartPlayer {
             throw new Error("Whiteboard Player not loaded. Call `smartPlayer.load()` first.");
         }
         return this.whiteboardPlayer;
-    }
-
-    private getStorageRoom(uuid: string): LocalStorageRoomDataType | undefined {
-        const rooms = localStorage.getItem("rooms");
-        if (rooms) {
-            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
-            return roomArray.find(data => data.uuid === uuid);
-        }
-        return;
     }
 }
 

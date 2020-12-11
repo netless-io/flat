@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import { Rtm } from "../../apiMiddleware/Rtm";
 import { generateAvatar } from "../../utils/generateAvatar";
-import { ChatMessages } from "./ChatMessages";
+import { ChatMessages, ChatMessagesProps } from "./ChatMessages";
 import { RTMessage } from "./ChatMessage";
 import { ChatUsers } from "./ChatUsers";
 import { RTMUser } from "./ChatUser";
@@ -16,7 +16,7 @@ export interface ChatPanelProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     userId: string;
     channelId: string;
-    isRoomOwner: boolean;
+    identity: ChatMessagesProps["identity"];
 }
 
 export interface ChatPanelState {
@@ -78,7 +78,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     }
 
     render() {
-        const { isRoomOwner, userId, channelId, className, ...restProps } = this.props;
+        const { identity, userId, channelId, className, ...restProps } = this.props;
         const { messages, users } = this.state;
         return (
             <div {...restProps} className={classNames("chat-panel", className)}>
@@ -86,7 +86,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                     <Tabs.TabPane tab="消息列表" key="messages">
                         <ChatMessages
                             userId={userId}
-                            isRoomOwner={isRoomOwner}
+                            identity={identity}
                             messages={messages}
                             onMessageSend={this.onMessageSend}
                             onLoadMore={this.updateHistory}
