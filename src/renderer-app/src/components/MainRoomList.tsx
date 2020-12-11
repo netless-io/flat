@@ -1,6 +1,7 @@
 import React, {Component, PureComponent, ReactNode} from "react"
 import "./MainRoomList.less"
 import {Button} from "antd";
+import {Property} from "csstype";
 export type MainRoomListStates = {
     activeRoomList: RoomListSort,
 }
@@ -46,8 +47,11 @@ export class MainRoomList extends PureComponent<{}, MainRoomListStates> {
         this.setState({activeRoomList: activeRoomList});
     }
 
-    public render() {
+    private getColor = (roomList: RoomListSort): Property.Color => {
         const {activeRoomList} = this.state;
+        return activeRoomList === roomList ? "#3381FF" : "#7A7B7C"
+    }
+    public render() {
         return (
             <div className="room-list-container">
                 <div className="room-list-header">
@@ -55,17 +59,17 @@ export class MainRoomList extends PureComponent<{}, MainRoomListStates> {
                         <span className="room-list-title">房间列表</span>
                     </div>
                     <div>
-                        <span style={{color: activeRoomList === RoomListSort.all ? "#3381FF" : "#7A7B7C"}}
+                        <span style={{color: this.getColor(RoomListSort.all)}}
                               onClick={() => this.handleRoomListSort(RoomListSort.all)}
                               className="room-list-tab">
                             全部
                         </span>
-                        <span style={{color: activeRoomList === RoomListSort.today ? "#3381FF" : "#7A7B7C"}}
+                        <span style={{color: this.getColor(RoomListSort.today)}}
                               onClick={() => this.handleRoomListSort(RoomListSort.today)}
                               className="room-list-tab">
                             今天
                         </span>
-                        <span style={{color: activeRoomList === RoomListSort.cycle ? "#3381FF" : "#7A7B7C"}}
+                        <span style={{color: this.getColor(RoomListSort.cycle)}}
                               onClick={() => this.handleRoomListSort(RoomListSort.cycle)}
                               className="room-list-tab">
                             周期
@@ -160,7 +164,7 @@ export class MainRoomList extends PureComponent<{}, MainRoomListStates> {
                             <Button className="room-list-cell-enter" type="primary">进入房间</Button>
                         </div>
                     </div>
-                    <div style={{height: 16}}/>
+                    <div className="room-list-under"/>
                 </div>
             </div>
         )
