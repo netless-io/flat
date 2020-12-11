@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import "./AddNamePage.less";
 import logo from "./assets/image/logo.svg";
 import { Button, Input } from "antd";
-import { Identity } from "./IndexPage";
-import { ipcAsyncByMain } from './utils/Ipc';
+import { ipcAsyncByMain } from "./utils/Ipc";
+import { Identity } from "./utils/localStorage/room";
 
 export type JoinPageStates = {
     name: string;

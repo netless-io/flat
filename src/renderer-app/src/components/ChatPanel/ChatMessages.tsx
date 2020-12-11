@@ -1,12 +1,12 @@
 import React from "react";
-import ChatTypeBox from "./ChatTypeBox";
+import { ChatTypeBox, ChatTypeBoxProps } from "./ChatTypeBox";
 import { RTMessage } from "./ChatMessage";
 import { ChatMessageList, OnLoadMore } from "./ChatMessageList";
 import "./ChatMessages.less";
 
 export interface ChatMessagesProps {
     userId: string;
-    isRoomOwner: boolean;
+    identity: ChatTypeBoxProps["identity"];
     messages: RTMessage[];
     onMessageSend: (text: string) => Promise<void>;
     onLoadMore: OnLoadMore;
@@ -30,7 +30,7 @@ export class ChatMessages extends React.PureComponent<ChatMessagesProps, ChatMes
     }
 
     render(): React.ReactNode {
-        const { isRoomOwner, userId, messages, onMessageSend, onLoadMore } = this.props;
+        const { identity, userId, messages, onMessageSend, onLoadMore } = this.props;
         return (
             <div className="chat-messages-wrap">
                 <div className="chat-messages">
@@ -47,7 +47,7 @@ export class ChatMessages extends React.PureComponent<ChatMessagesProps, ChatMes
                     )}
                 </div>
                 <ChatTypeBox
-                    isRoomOwner={isRoomOwner}
+                    identity={identity}
                     isBan={this.state.isBan}
                     onBanChange={this.toogleBan}
                     onSend={onMessageSend}
