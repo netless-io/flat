@@ -1,13 +1,11 @@
 import React from "react";
 import { RouteComponentProps } from "react-router";
-import dateFormat from "date-fns/format";
-import "./JoinPage.less";
-import logo from "./assets/image/logo.svg";
 import { Button, Input, Select, Radio } from "antd";
 import { Link } from "react-router-dom";
-import { Identity } from "./IndexPage";
-import { LocalStorageRoomDataType } from "./HistoryPage";
 import { ipcAsyncByMain } from "./utils/Ipc";
+import { saveRoom, Identity } from "./utils/localStorage/room";
+
+import "./JoinPage.less";
 
 export type JoinPageStates = {
     roomId: string;
@@ -22,7 +20,7 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
         this.state = {
             roomId: "",
             name: name ? name : "",
-            radioValue: 1
+            radioValue: 1,
         };
         ipcAsyncByMain("set-win-size", {
             width: 480,
@@ -35,59 +33,14 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
         if (this.state.name !== localStorage.getItem("userName")) {
             localStorage.setItem("userName", this.state.name);
         }
-        this.setRoomList(this.state.roomId, userId);
+        saveRoom({
+            uuid: this.state.roomId,
+            userId,
+            identity: Identity.joiner,
+        });
         this.props.history.push(`/whiteboard/${Identity.joiner}/${this.state.roomId}/${userId}/`);
     };
 
-    public setRoomList = (uuid: string, userId: string): void => {
-        const rooms = localStorage.getItem("rooms");
-        const timestamp = dateFormat(new Date(), "LLL d, y h:m a");
-        if (rooms) {
-            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
-            const room = roomArray.find(data => data.uuid === uuid);
-            if (!room) {
-                localStorage.setItem(
-                    "rooms",
-                    JSON.stringify([
-                        {
-                            uuid: uuid,
-                            time: timestamp,
-                            identity: Identity.joiner,
-                            userId: userId,
-                        },
-                        ...roomArray,
-                    ]),
-                );
-            } else {
-                const newRoomArray = roomArray.filter(data => data.uuid !== uuid);
-                localStorage.setItem(
-                    "rooms",
-                    JSON.stringify([
-                        {
-                            ...room,
-                            uuid: uuid,
-                            time: timestamp,
-                            identity: Identity.creator,
-                            userId: userId,
-                        },
-                        ...newRoomArray,
-                    ]),
-                );
-            }
-        } else {
-            localStorage.setItem(
-                "rooms",
-                JSON.stringify([
-                    {
-                        uuid: uuid,
-                        time: timestamp,
-                        identity: Identity.creator,
-                        userId: userId,
-                    },
-                ]),
-            );
-        }
-    };
     public render(): React.ReactNode {
         const { roomId, name, radioValue } = this.state;
         return (
@@ -112,9 +65,16 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
                         />
                         <div className="page-join-radio-box">
                             <span>加入选项</span>
-                            <Radio.Group value={radioValue}                            >
-                                <Radio style={{ display: "block", marginTop: 16, color: "#444E60"}} value={1}>开启麦克风</Radio>
-                                <Radio style={{ marginTop: 16, color: "#444E60" }} value={2}>开启摄像头</Radio>
+                            <Radio.Group value={radioValue}>
+                                <Radio
+                                    style={{ display: "block", marginTop: 16, color: "#444E60" }}
+                                    value={1}
+                                >
+                                    开启麦克风
+                                </Radio>
+                                <Radio style={{ marginTop: 16, color: "#444E60" }} value={2}>
+                                    开启摄像头
+                                </Radio>
                             </Radio.Group>
                         </div>
                         <div className="page-join-btn-box">

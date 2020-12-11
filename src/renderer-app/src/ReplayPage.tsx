@@ -4,12 +4,12 @@ import { message } from "antd";
 import PlayerController from "@netless/player-controller";
 import LoadingPage from "./LoadingPage";
 import { ipcAsyncByMain } from "./utils/Ipc";
-import { Identity } from "./IndexPage";
 import PageError from "./PageError";
 import { SmartPlayer } from "./apiMiddleware/SmartPlayer";
 import { RealtimePanel } from "./components/RealtimePanel";
 import { ChatPanelReplay } from "./components/ChatPanelReplay";
 import ExitButtonPlayer from "./components/ExitButtonPlayer";
+import { Identity } from "./utils/localStorage/room";
 
 import video_play from "./assets/image/video-play.svg";
 import "video.js/dist/video-js.min.css";

@@ -3,38 +3,21 @@ import { RouteComponentProps } from "react-router";
 import "./HistoryPage.less";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
-import { Identity } from "./IndexPage";
 import { LeftOutlined } from "@ant-design/icons";
 import empty_box from "./assets/image/empty-box.svg";
 import board from "./assets/image/board.svg";
 import { ipcAsyncByMain } from "./utils/Ipc";
+import { getRooms, Room } from "./utils/localStorage/room";
 
 export type JoinPageStates = {
-    rooms: LocalStorageRoomDataType[];
-};
-
-export type LocalStorageRoomDataType = {
-    uuid: string;
-    time: string;
-    identity: Identity;
-    userId: string;
-    roomName?: string;
-    cover?: string;
-    recordings?: Array<{
-        uuid: string;
-        startTime: number;
-        endTime: number;
-        videoUrl?: string;
-    }>;
-    isRoomOwner?: boolean;
+    rooms: Room[];
 };
 
 export default class JoinPage extends React.Component<RouteComponentProps<{}>, JoinPageStates> {
     public constructor(props: RouteComponentProps<{}>) {
         super(props);
-        const rooms = localStorage.getItem("rooms");
         this.state = {
-            rooms: JSON.parse(rooms!),
+            rooms: getRooms(),
         };
 
         ipcAsyncByMain("set-win-size", {
@@ -43,11 +26,11 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
         });
     }
 
-    private handleJoin = (room: LocalStorageRoomDataType): void => {
+    private handleJoin = (room: Room): void => {
         this.props.history.push(`/whiteboard/${room.identity}/${room.uuid}/${room.userId}/`);
     };
 
-    private handleReplay = (room: LocalStorageRoomDataType): void => {
+    private handleReplay = (room: Room): void => {
         this.props.history.push(`/replay/${room.identity}/${room.uuid}/${room.userId}/`);
     };
 

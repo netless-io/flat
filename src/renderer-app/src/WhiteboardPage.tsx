@@ -1,4 +1,3 @@
-import dateFormat from "date-fns/format";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 
@@ -24,8 +23,6 @@ import { netlessWhiteboardApi } from "./apiMiddleware";
 import { pptDatas } from "./taskUuids";
 import { Rtc } from "./apiMiddleware/Rtc";
 import { CloudRecording } from "./apiMiddleware/CloudRecording";
-import { Identity } from "./IndexPage";
-import { LocalStorageRoomDataType } from "./HistoryPage";
 import PageError from "./PageError";
 import LoadingPage from "./LoadingPage";
 
@@ -37,6 +34,8 @@ import { RealtimePanel } from "./components/RealtimePanel";
 import { ChatPanel } from "./components/ChatPanel";
 import { VideoAvatars } from "./components/VideoAvatars";
 
+import { NETLESS, NODE_ENV, OSS } from "./constants/Process";
+import { getRoom, Identity, saveRoom, updateRoomProps } from "./utils/localStorage/room";
 import { listDir } from "./utils/Fs";
 import { runtime } from "./utils/Runtime";
 import { ipcAsyncByMain } from "./utils/Ipc";
@@ -44,7 +43,6 @@ import { ipcAsyncByMain } from "./utils/Ipc";
 import pages from "./assets/image/pages.svg";
 
 import "./WhiteboardPage.less";
-import { NETLESS, NODE_ENV, OSS } from "./constants/Process";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -173,80 +171,21 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         }
     };
 
-    public setRoomList = (uuid: string, userId: string): void => {
-        const rooms = localStorage.getItem("rooms");
-        const timestamp = dateFormat(new Date(), "LLL d, y h:m a");
-        if (rooms) {
-            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
-            const room = roomArray.find(data => data.uuid === uuid);
-            if (!room) {
-                localStorage.setItem(
-                    "rooms",
-                    JSON.stringify([
-                        {
-                            uuid: uuid,
-                            time: timestamp,
-                            identity: Identity.creator,
-                            userId: userId,
-                        },
-                        ...roomArray,
-                    ]),
-                );
-            } else {
-                // @TODO 统一各页面的 localstorage 操作，存储更丰富的房间信息。
-                if (room.roomName) {
-                    document.title = room.roomName;
-                }
-                this.setState({ isRoomOwner: !!room.isRoomOwner });
-
-                const newRoomArray = roomArray.filter(data => data.uuid !== uuid);
-                localStorage.setItem(
-                    "rooms",
-                    JSON.stringify([
-                        {
-                            ...room,
-                            uuid: uuid,
-                            time: timestamp,
-                            identity: Identity.creator,
-                            userId: userId,
-                        },
-                        ...newRoomArray,
-                    ]),
-                );
-            }
-        } else {
-            localStorage.setItem(
-                "rooms",
-                JSON.stringify([
-                    {
-                        uuid: uuid,
-                        time: timestamp,
-                        identity: Identity.creator,
-                        userId: userId,
-                    },
-                ]),
-            );
-        }
-    };
-
     private saveRecording = (recording: {
         uuid: string;
         startTime: number;
         endTime: number;
         videoUrl?: string;
     }): void => {
-        const rooms = localStorage.getItem("rooms");
-        if (rooms) {
-            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
-            const room = roomArray.find(data => data.uuid === this.state.room?.uuid);
-            if (room) {
-                if (room.recordings) {
-                    room.recordings.push(recording);
-                } else {
-                    room.recordings = [recording];
-                }
-                localStorage.setItem("rooms", JSON.stringify(roomArray));
+        const roomId = this.props.match.params.uuid;
+        const room = getRoom(roomId);
+        if (room) {
+            if (room.recordings) {
+                room.recordings.push(recording);
+            } else {
+                room.recordings = [recording];
             }
+            updateRoomProps(roomId, room);
         }
         this.setState({ recordingUuid: recording.uuid });
         this.recordStartTime = null;
@@ -281,7 +220,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
 
     private startJoinRoom = async (): Promise<void> => {
         const { uuid, userId, identity } = this.props.match.params;
-        this.setRoomList(uuid, userId);
+        saveRoom({ uuid, userId, identity });
         try {
             const roomToken = await this.getRoomToken(uuid);
             if (uuid && roomToken) {
