@@ -28,11 +28,13 @@ import LoadingPage from "./LoadingPage";
 
 import InviteButton from "./components/InviteButton";
 import { TopBar } from "./components/TopBar";
-import { TopBarRecordStatus } from "./components/TopBarRecordStatus";
+import { TopBarClassOperations } from "./components/TopBarClassOperations";
 import { TopBarRightBtn } from "./components/TopBarRightBtn";
 import { RealtimePanel } from "./components/RealtimePanel";
 import { ChatPanel } from "./components/ChatPanel";
 import { VideoAvatar, VideoType } from "./components/VideoAvatar";
+import { NetworkStatus } from "./components/NetworkStatus";
+import { ClassStatus } from "./components/ClassStatus";
 
 import { NETLESS, NODE_ENV, OSS } from "./constants/Process";
 import { getRoom, Identity, updateRoomProps } from "./utils/localStorage/room";
@@ -57,6 +59,7 @@ export type WhiteboardPageStates = {
     whiteboardLayerDownRef?: HTMLDivElement;
     roomController?: ViewMode;
     rtcUid: number | null;
+    isClassBegin: boolean;
 };
 
 export type WhiteboardPageProps = RouteComponentProps<{
@@ -82,6 +85,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             isCalling: false,
             isRealtimeSideOpen: false,
             rtcUid: null,
+            isClassBegin: false,
         };
         ipcAsyncByMain("set-win-size", {
             width: 1200,
@@ -413,7 +417,11 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
 
         return (
             <div className="realtime-box">
-                {this.renderTopBar(room)}
+                <TopBar
+                    left={this.renderTopBarLeft()}
+                    center={this.renderTopBarCenter()}
+                    right={this.renderTopBarRight(room)}
+                />
                 <div className="realtime-content">
                     <div className="realtime-content-main">
                         <div className="tool-box-out">
@@ -493,20 +501,37 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         );
     }
 
-    private renderTopBar(room: Room): React.ReactNode {
-        const { isCalling, isRecording, recordingUuid } = this.state;
+    private renderTopBarLeft(): React.ReactNode {
+        const { identity } = this.props.match.params;
+        const { isClassBegin } = this.state;
+        return (
+            <>
+                <NetworkStatus />
+                {identity === Identity.joiner && <ClassStatus isClassBegin={isClassBegin} />}
+            </>
+        );
+    }
+
+    private renderTopBarCenter(): React.ReactNode {
+        const { identity } = this.props.match.params;
+        const { isClassBegin } = this.state;
+
+        return identity === Identity.creator ? (
+            <TopBarClassOperations
+                isBegin={isClassBegin}
+                // @TODO 实现上课逻辑
+                onBegin={() => this.setState({ isClassBegin: true })}
+                onPause={() => this.setState({ isClassBegin: false })}
+                onStop={() => this.setState({ isClassBegin: false })}
+            />
+        ) : null;
+    }
+
+    private renderTopBarRight(room: Room): React.ReactNode {
+        const { isCalling, isRecording } = this.state;
         const { uuid } = this.props.match.params;
 
-        const topBarCenter = (
-            <TopBarRecordStatus
-                isRecording={isRecording}
-                recordingUuid={recordingUuid}
-                onStop={this.toggleRecording}
-                onReplay={this.openReplayPage}
-            />
-        );
-
-        const topBarRightBtns = (
+        return (
             <>
                 <TopBarRightBtn
                     title="Record"
@@ -539,11 +564,10 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     }}
                 />
                 <InviteButton uuid={uuid} />
+                {/* @TODO */}
                 <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
             </>
         );
-
-        return <TopBar center={topBarCenter} rightBtns={topBarRightBtns} />;
     }
 
     static get ossConfig() {
