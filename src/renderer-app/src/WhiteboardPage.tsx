@@ -45,6 +45,7 @@ import { ipcAsyncByMain } from "./utils/Ipc";
 import pages from "./assets/image/pages.svg";
 
 import "./WhiteboardPage.less";
+import RecordButton from "./components/RecordButton";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -533,10 +534,10 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
 
         return (
             <>
-                <TopBarRightBtn
-                    title="Record"
-                    icon="record"
-                    active={isRecording}
+                <RecordButton
+                    // @TODO 待填充逻辑
+                    disabled={false}
+                    isRecording={isRecording}
                     onClick={this.toggleRecording}
                 />
                 <TopBarRightBtn

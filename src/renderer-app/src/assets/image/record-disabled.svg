@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>follow</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="小班课-讲课模式-macOS" transform="translate(-934.000000, -46.000000)">
+    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.400000006">
+        <g id="大班课-macOS" transform="translate(-896.000000, -46.000000)">
             <g id="编组-4" transform="translate(0.000000, 32.000000)">
-                <g id="folder备份" transform="translate(934.000000, 14.000000)">
+                <g id="folder备份" transform="translate(896.000000, 14.000000)">
                     <rect id="矩形备份-25" fill="#FFFFFF" opacity="0.01" x="0" y="0" width="22" height="22"></rect>
                     <circle id="椭圆形" fill="#7A7B7C" cx="8" cy="8" r="1"></circle>
                     <rect id="矩形" stroke="#7A7B7C" stroke-linejoin="round" x="5" y="5" width="8" height="12" rx="2"></rect>

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 25</title>
-    <g id="白板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.42">
-        <g id="Flat-规范" transform="translate(-1212.000000, -16.000000)">
-            <g id="shot" transform="translate(1212.000000, 16.000000)">
-                <circle id="椭圆形" fill="#FF6C6C" cx="11" cy="11" r="3"></circle>
-                <circle id="椭圆形" stroke="#FF6C6C" cx="11" cy="11" r="6"></circle>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>follow</title>
+    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="一对一-收起-macOS" transform="translate(-934.000000, -46.000000)">
+            <g id="编组-9备份" transform="translate(0.000000, 32.000000)">
+                <g id="folder备份" transform="translate(934.000000, 14.000000)">
+                    <rect id="矩形备份-25" fill="#FFFFFF" opacity="0.01" x="0" y="0" width="22" height="22"></rect>
+                    <circle id="椭圆形" fill="#3381FF" cx="8" cy="8" r="1"></circle>
+                    <rect id="矩形" stroke="#3381FF" stroke-linejoin="round" x="5" y="5" width="8" height="12" rx="2"></rect>
+                    <polyline id="路径-44" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round" points="15 9 17 8 17 14 15 13"></polyline>
+                </g>
             </g>
         </g>
     </g>
