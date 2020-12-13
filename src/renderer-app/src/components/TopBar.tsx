@@ -24,3 +24,7 @@ export class TopBar extends React.Component<TopBarProps> {
 }
 
 export default TopBar;
+
+export const TopBarDivider: React.FC = () => {
+    return <div className="topbar-divider"></div>;
+};

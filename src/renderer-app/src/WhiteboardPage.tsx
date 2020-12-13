@@ -27,7 +27,7 @@ import PageError from "./PageError";
 import LoadingPage from "./LoadingPage";
 
 import InviteButton from "./components/InviteButton";
-import { TopBar } from "./components/TopBar";
+import { TopBar, TopBarDivider } from "./components/TopBar";
 import { TopBarClassOperations } from "./components/TopBarClassOperations";
 import { TopBarRightBtn } from "./components/TopBarRightBtn";
 import { RealtimePanel } from "./components/RealtimePanel";
@@ -566,6 +566,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 <InviteButton uuid={uuid} />
                 {/* @TODO */}
                 <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
+                <TopBarDivider />
                 <TopBarRightBtn
                     title="Open side panel"
                     icon="hide-side"
