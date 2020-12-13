@@ -475,7 +475,6 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     <RealtimePanel
                         isShow={isRealtimeSideOpen}
                         isVideoOn={isCalling}
-                        onSwitch={this.handleSideOpenerSwitch}
                         videoSlot={
                             rtcUid && (
                                 <VideoAvatar
@@ -529,7 +528,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     }
 
     private renderTopBarRight(room: Room): React.ReactNode {
-        const { isCalling, isRecording } = this.state;
+        const { isCalling, isRecording, isRealtimeSideOpen } = this.state;
         const { uuid } = this.props.match.params;
 
         return (
@@ -567,6 +566,12 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 <InviteButton uuid={uuid} />
                 {/* @TODO */}
                 <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
+                <TopBarRightBtn
+                    title="Open side panel"
+                    icon="hide-side"
+                    active={isRealtimeSideOpen}
+                    onClick={this.handleSideOpenerSwitch}
+                />
             </>
         );
     }

@@ -8,15 +8,13 @@ export type RealtimePanelProps = {
     isVideoOn: boolean;
     // is visible
     isShow: boolean;
-    // visibility changed
-    onSwitch: () => void;
     videoSlot?: React.ReactNode;
     chatSlot: React.ReactNode;
 };
 
 export class RealtimePanel extends React.PureComponent<RealtimePanelProps> {
     render() {
-        const { isVideoOn, isShow, onSwitch, videoSlot, chatSlot } = this.props;
+        const { isVideoOn, isShow, videoSlot, chatSlot } = this.props;
 
         return (
             <div
@@ -34,7 +32,6 @@ export class RealtimePanel extends React.PureComponent<RealtimePanelProps> {
                     </div>
                     <div className="realtime-panel-chat-slot">{chatSlot}</div>
                 </div>
-                <button className="realtime-panel-side-handle" onClick={onSwitch}></button>
             </div>
         );
     }

@@ -181,8 +181,10 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
                 </div>
                 <RealtimePanel
                     isVideoOn={this.state.isVideoOn}
-                    isShow={this.state.isRealtimePanelShow}
-                    onSwitch={this.handleRealtimePanelSwitch}
+                    // @TODO 待设计更新
+                    isShow={true}
+                    // isShow={this.state.isRealtimePanelShow}
+                    // onSwitch={this.handleRealtimePanelSwitch}
                     videoSlot={<video className="replay-video" ref={this.videoRef} />}
                     chatSlot={
                         this.smartPlayer.whiteboardPlayer && (
