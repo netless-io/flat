@@ -1,15 +1,19 @@
 import React from "react";
+import { Identity } from "../../utils/localStorage/room";
 import send from "../../assets/image/send.svg";
 import banChat from "../../assets/image/ban-chat.svg";
 import banChatActive from "../../assets/image/ban-chat-active.svg";
-import { Identity } from "../../utils/localStorage/room";
+import hand from "../../assets/image/hand.svg";
+import handActive from "../../assets/image/hand-active.svg";
 
 export interface ChatTypeBoxProps {
     /** Only room owner can ban chatting. */
     identity: Identity;
     isBan: boolean;
-    onBanChange: (isBan: boolean) => void;
+    isRaiseHand?: boolean;
+    onBanChange: () => void;
     onSend: (text: string) => Promise<void>;
+    onRaiseHandChange?: () => void;
 }
 
 export interface ChatTypeBoxState {
@@ -37,10 +41,6 @@ export class ChatTypeBox extends React.PureComponent<ChatTypeBoxProps, ChatTypeB
         this.setState({ text: "", isSending: false });
     };
 
-    toggleBan = (): void => {
-        this.props.onBanChange(!this.props.isBan);
-    };
-
     onInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
         if (e.key === "Enter") {
             this.send();
@@ -48,14 +48,18 @@ export class ChatTypeBox extends React.PureComponent<ChatTypeBoxProps, ChatTypeB
     };
 
     render(): React.ReactNode {
-        const { identity, isBan } = this.props;
+        const { identity, isBan, isRaiseHand, onBanChange, onRaiseHandChange } = this.props;
         const { text, isSending } = this.state;
 
         return (
             <div className="chat-typebox">
-                {identity === Identity.creator && (
-                    <button className="chat-typebox-ban" title="禁言" onClick={this.toggleBan}>
+                {identity === Identity.creator ? (
+                    <button className="chat-typebox-icon" title="禁言" onClick={onBanChange}>
                         <img src={isBan ? banChatActive : banChat} />
+                    </button>
+                ) : (
+                    <button className="chat-typebox-icon" title="举手" onClick={onRaiseHandChange}>
+                        <img src={isRaiseHand ? handActive : hand} />
                     </button>
                 )}
                 {isBan ? (
