@@ -93,7 +93,13 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                         />
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="用户列表" key="users">
-                        <ChatUsers userId={userId} users={users} />
+                        <ChatUsers
+                            identity={identity}
+                            userId={userId}
+                            users={users}
+                            onAllowSpeaking={this.onAllowSpeaking}
+                            onEndSpeaking={this.onEndSpeaking}
+                        />
                     </Tabs.TabPane>
                 </Tabs>
             </div>
@@ -142,6 +148,16 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
             return { messages };
         });
     };
+
+    private onAllowSpeaking(uid: string): void {
+        // @TODO 允许学生发音
+        console.log(`Allow user ${uid} to speak.`);
+    }
+
+    private onEndSpeaking(uid: string): void {
+        // @TODO 结束学生发音
+        console.log(`End user ${uid} speaking.`);
+    }
 }
 
 export default ChatPanel;

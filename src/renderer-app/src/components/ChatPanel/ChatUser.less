@@ -16,3 +16,37 @@
     margin-right: 8px;
     border-radius: 50%;
 }
+
+.chat-user-status {
+    margin-left: 5px;
+
+    &.is-teacher {
+        color: #7a7b7c;
+    }
+
+    &.is-speaking {
+        color: #7ec452;
+    }
+
+    &.is-hand-raising {
+        color: #3381ff;
+    }
+}
+
+.chat-user-ctl-btn {
+    float: right;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+
+    &.is-speaking {
+        color: #f45454;
+    }
+
+    &.is-hand-raising {
+        color: #3381ff;
+    }
+}
