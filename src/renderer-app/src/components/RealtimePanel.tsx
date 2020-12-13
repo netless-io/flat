@@ -10,7 +10,7 @@ export type RealtimePanelProps = {
     isShow: boolean;
     // visibility changed
     onSwitch: () => void;
-    videoSlot: React.ReactNode;
+    videoSlot?: React.ReactNode;
     chatSlot: React.ReactNode;
 };
 

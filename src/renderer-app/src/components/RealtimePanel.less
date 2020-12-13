@@ -1,7 +1,9 @@
+@panel-width: 304px;
+
 .realtime-panel {
     display: flex;
     flex-direction: column;
-    width: 280px;
+    width: @panel-width;
     height: 100%;
     position: relative;
 }
@@ -9,6 +11,8 @@
 .realtime-panel-video-slot {
     overflow: hidden;
     height: 0;
+    display: flex;
+    justify-content: center;
 
     &.isActive {
         height: auto;
@@ -17,7 +21,6 @@
 
 .realtime-panel-chat-slot {
     flex: 1;
-    border-top: 0.5px solid #f0f0f0;
 }
 
 .realtime-panel-wrap {
@@ -26,7 +29,7 @@
     transition: width 0.4s;
 
     &.isActive {
-        width: 280px;
+        width: @panel-width;
     }
 }
 

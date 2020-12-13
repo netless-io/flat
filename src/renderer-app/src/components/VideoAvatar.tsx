@@ -1,5 +1,6 @@
 import React from "react";
 import type AgoraSDK from "agora-electron-sdk";
+import "./VideoAvatar.less";
 
 export enum VideoType {
     remote,
@@ -14,6 +15,7 @@ export interface VideoAvatarProps {
 
 /** Video Calling Avatar */
 export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
+    // @TODO move the rtc deps back to parent
     setupVideo = (el: HTMLDivElement | null): void => {
         if (el) {
             const { type, uid, rtcEngine } = this.props;

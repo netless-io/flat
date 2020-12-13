@@ -32,7 +32,7 @@ import { TopBarRecordStatus } from "./components/TopBarRecordStatus";
 import { TopBarRightBtn } from "./components/TopBarRightBtn";
 import { RealtimePanel } from "./components/RealtimePanel";
 import { ChatPanel } from "./components/ChatPanel";
-import { VideoAvatars } from "./components/VideoAvatars";
+import { VideoAvatar, VideoType } from "./components/VideoAvatar";
 
 import { NETLESS, NODE_ENV, OSS } from "./constants/Process";
 import { getRoom, Identity, updateRoomProps } from "./utils/localStorage/room";
@@ -57,7 +57,6 @@ export type WhiteboardPageStates = {
     whiteboardLayerDownRef?: HTMLDivElement;
     roomController?: ViewMode;
     rtcUid: number | null;
-    rtcUsers: number[];
 };
 
 export type WhiteboardPageProps = RouteComponentProps<{
@@ -83,40 +82,30 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             isCalling: false,
             isRealtimeSideOpen: false,
             rtcUid: null,
-            rtcUsers: [],
         };
         ipcAsyncByMain("set-win-size", {
-            width: 1440,
-            height: 688,
+            width: 1200,
+            height: 700,
         });
     }
 
     public async componentDidMount(): Promise<void> {
-        this.rtc.rtcEngine.on("joinedChannel", async (_channel, rtcUid) => {
-            this.setState({ rtcUid });
-        });
+        const { uuid, identity } = this.props.match.params;
+
+        if (identity === Identity.creator) {
+            this.rtc.rtcEngine.on("joinedChannel", async (_channel, rtcUid) => {
+                this.setState({ rtcUid });
+            });
+        } else {
+            this.rtc.rtcEngine.on("userJoined", rtcUid => {
+                this.setState({ rtcUid });
+            });
+        }
+
         await this.startJoinRoom();
-        const room = getRoom(this.props.match.params.uuid);
+        const room = getRoom(uuid);
         if (room?.roomName) {
             document.title = room.roomName;
-        }
-    }
-
-    public componentDidUpdate(
-        _prevProps: WhiteboardPageProps,
-        prevState: WhiteboardPageStates,
-    ): void {
-        if (this.state.rtcUid !== null && prevState.rtcUid !== null) {
-            // 这里分为单人广播，一对一，一对多，现在 2.0 的设计是混到一起，
-            // 所以这三种情况切换的时候需要更新云录制布局。
-            const prevLen = prevState.rtcUsers.length;
-            const currLen = this.state.rtcUsers.length;
-            if (prevLen !== currLen && (prevLen < 4 || currLen < 4)) {
-                this.cloudRecording?.updateLayout({
-                    mixedVideoLayout: 3,
-                    layoutConfig: this.getLayoutConfig(),
-                });
-            }
         }
     }
 
@@ -352,17 +341,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 await this.cloudRecording.start({
                     storageConfig: this.cloudRecording.defaultStorageConfig(),
                     recordingConfig: {
-                        channelType: 0,
-                        subscribeUidGroup: 1, // 3~7 uids
-                        transcodingConfig: {
-                            backgroundColor: "#ffffff",
-                            width: 280,
-                            height: 280,
-                            fps: 15,
-                            bitrate: 140,
-                            mixedVideoLayout: 3,
-                            layoutConfig: this.getLayoutConfig(),
-                        },
+                        channelType: 1, // 直播
                     },
                 });
                 // @TODO 临时避免频道被关闭（默认30秒无活动），后面会根据我们的需求修改并用 polly-js 管理重发。
@@ -375,84 +354,19 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         }
     };
 
-    private getLayoutConfig = () => {
-        const { rtcUid, rtcUsers } = this.state;
-        if (rtcUid === null || rtcUsers.length <= 0) {
-            return [
-                {
-                    x_axis: 0,
-                    y_axis: 0,
-                    width: 1,
-                    height: 1,
-                    alpha: 1,
-                    render_mode: 0,
-                },
-            ];
-        }
-        if (rtcUsers.length === 1) {
-            return [
-                {
-                    x_axis: 0,
-                    y_axis: 0,
-                    width: 1,
-                    height: 0.5,
-                    alpha: 1,
-                    render_mode: 0,
-                },
-                {
-                    x_axis: 0,
-                    y_axis: 0.5,
-                    width: 1,
-                    height: 0.5,
-                    alpha: 1,
-                    render_mode: 0,
-                },
-            ];
-        }
-
-        const result = [];
-        for (let i = 0, len = Math.min(4, rtcUsers.length + 1); i < len; i++) {
-            result.push({
-                x_axis: i % 2 === 0 ? 0 : 0.5,
-                y_axis: i < 2 ? 0 : 0.5,
-                width: 0.5,
-                height: 0.5,
-                alpha: 1,
-                render_mode: 0,
-            });
-        }
-        return result;
-    };
-
-    private onUserJoined = (uid: number) => {
-        this.setState(state => ({
-            rtcUsers: [...new Set([...state.rtcUsers, uid])],
-        }));
-    };
-
-    private onUserOffline = (uid: number) => {
-        this.setState(state => ({
-            rtcUsers: state.rtcUsers.filter(id => id !== uid),
-        }));
-    };
-
     private toggleCalling = async (): Promise<void> => {
         if (this.state.isCalling) {
-            this.setState({ isCalling: false, rtcUsers: [] });
+            this.setState({ isCalling: false });
             if (this.cloudRecording?.isRecording) {
                 await this.toggleRecording();
                 if (this.cloudRecordingInterval) {
                     clearInterval(this.cloudRecordingInterval);
                 }
             }
-            this.rtc.rtcEngine.off("userjoined", this.onUserJoined);
-            this.rtc.rtcEngine.off("userOffline", this.onUserOffline);
             this.rtc.leave();
         } else {
             this.setState({ isCalling: true, isRealtimeSideOpen: true });
-            this.rtc.rtcEngine.on("userJoined", this.onUserJoined);
-            this.rtc.rtcEngine.on("userOffline", this.onUserOffline);
-            this.rtc.join(this.props.match.params.uuid);
+            this.rtc.join(this.props.match.params.uuid, this.props.match.params.identity);
         }
     };
 
@@ -495,7 +409,6 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             isRealtimeSideOpen,
             isCalling,
             rtcUid,
-            rtcUsers,
         } = this.state;
 
         return (
@@ -555,11 +468,17 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                         isVideoOn={isCalling}
                         onSwitch={this.handleSideOpenerSwitch}
                         videoSlot={
-                            <VideoAvatars
-                                localUid={rtcUid}
-                                remoteUids={rtcUsers}
-                                rtcEngine={this.rtc.rtcEngine}
-                            />
+                            rtcUid && (
+                                <VideoAvatar
+                                    uid={rtcUid}
+                                    type={
+                                        identity === Identity.creator
+                                            ? VideoType.local
+                                            : VideoType.remote
+                                    }
+                                    rtcEngine={this.rtc.rtcEngine}
+                                />
+                            )
                         }
                         chatSlot={
                             <ChatPanel
