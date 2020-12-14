@@ -25,7 +25,6 @@ export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
     }
 
     public render() {
-        const { isScheduledVisible } = this.state;
         return (
             <div className="content-header-container">
                 <Button
@@ -80,7 +79,7 @@ export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
                 </div>
                 <div className="modal-inner-name">类型</div>
                 <div className="modal-inner-input">
-                    <Select style={{ width: 320 }} defaultValue="large">
+                    <Select className="modal-inner-select" defaultValue="large">
                         <Option value="large">大班课</Option>
                         <Option value="medium">小班课</Option>
                         <Option value="small">一对一</Option>
@@ -102,7 +101,7 @@ export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
                 <Menu.Item>2nd menu item</Menu.Item>
                 <Menu.Item>3rd menu item</Menu.Item>
                 <Menu.Divider />
-                <Button style={{ width: 320 }} type="link">
+                <Button className="modal-inner-select" type="link">
                     清空记录
                 </Button>
             </Menu>
