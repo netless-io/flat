@@ -65,7 +65,6 @@ export class Rtc {
         });
 
         if (identity === Identity.creator) {
-            this.rtcEngine.enableVideo();
             this.rtcEngine.setClientRole(1);
         } else {
             this.rtcEngine.setClientRole(2);
@@ -82,5 +81,6 @@ export class Rtc {
 
     destroy() {
         this.rtcEngine.removeAllListeners();
+        this.rtcEngine.release();
     }
 }

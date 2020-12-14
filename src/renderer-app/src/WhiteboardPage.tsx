@@ -34,6 +34,7 @@ import { RealtimePanel } from "./components/RealtimePanel";
 import { ChatPanel } from "./components/ChatPanel";
 import { VideoAvatar, VideoType } from "./components/VideoAvatar";
 import { NetworkStatus } from "./components/NetworkStatus";
+import { RecordButton } from "./components/RecordButton";
 import { ClassStatus } from "./components/ClassStatus";
 
 import { NETLESS, NODE_ENV, OSS } from "./constants/Process";
@@ -45,7 +46,6 @@ import { ipcAsyncByMain } from "./utils/Ipc";
 import pages from "./assets/image/pages.svg";
 
 import "./WhiteboardPage.less";
-import RecordButton from "./components/RecordButton";
 
 export type WhiteboardPageStates = {
     phase: RoomPhase;
@@ -347,6 +347,14 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     storageConfig: this.cloudRecording.defaultStorageConfig(),
                     recordingConfig: {
                         channelType: 1, // 直播
+                        transcodingConfig: {
+                            width: 288,
+                            height: 216,
+                            // https://docs.agora.io/cn/cloud-recording/recording_video_profile
+                            fps: 15,
+                            bitrate: 280,
+                        },
+                        subscribeUidGroup: 0,
                     },
                 });
                 // @TODO 临时避免频道被关闭（默认30秒无活动），后面会根据我们的需求修改并用 polly-js 管理重发。
@@ -476,6 +484,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                         isShow={isRealtimeSideOpen}
                         isVideoOn={isCalling}
                         videoSlot={
+                            isCalling &&
                             rtcUid && (
                                 <VideoAvatar
                                     uid={rtcUid}
