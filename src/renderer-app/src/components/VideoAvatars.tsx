@@ -1,9 +1,10 @@
-import * as React from "react";
+import React from "react";
 import classNames from "classnames";
 import type AgoraSDK from "agora-electron-sdk";
 import { VideoAvatar, VideoType } from "./VideoAvatar";
 
 import "./VideoAvatars.less";
+import { NODE_ENV } from "../constants/Process";
 
 export interface VideoAvatarsProps {
     localUid: number | null;
@@ -16,7 +17,7 @@ export class VideoAvatars extends React.PureComponent<VideoAvatarsProps> {
     render() {
         const { localUid, remoteUids, rtcEngine } = this.props;
 
-        if (process.env.NODE_ENV === "development") {
+        if (NODE_ENV === "development") {
             console.log("agora users", localUid, remoteUids);
         }
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import type AgoraSDK from "agora-electron-sdk";
 
 export enum VideoType {

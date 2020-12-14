@@ -1095,7 +1095,7 @@
   resolved "https://registry.npmjs.org/@netless/canvas-polyfill/-/canvas-polyfill-0.0.4.tgz#b5f28eefeb9c1e8ff8253fa1b044ccb1dc1b7c9c"
   integrity sha512-7NzsJrba0R/mq/l10SkIZQwbrNVJyPxZYrjK6xL3Ts732iWAVuS2UB0u3s6iGeUVcqV39A679yva8APWRl4M0A==
 
-"@netless/combine-player@^1.1.0":
+"@netless/combine-player@^1.1.0", "@netless/combine-player@^1.1.1":
   version "1.1.1"
   resolved "https://registry.npmjs.org/@netless/combine-player/-/combine-player-1.1.1.tgz#9b7cdb1a85e5d591181e0e110583a9175c4cf189"
   integrity sha512-p8ovcKsp1i1MLrZ76rEHh9I2HjZehiyDtPxmKTgzXg4Unp/vrd4Gv2KAGTMv07Hazz7oP7GVzZpz1Bdp2TM7BQ==
@@ -1170,12 +1170,13 @@
   resolved "https://registry.npmjs.org/@netless/page-controller/-/page-controller-0.0.2.tgz#d44cd138c35557cd49b486b7aad65b1b056bdde7"
   integrity sha512-y1CrS48tX8S2PbeqlkqKV/nuoENr0w+cPQsKe0lB5mDAldYeJa5DDE6KT3pMOhwgeSj7MINLGm8Jy4H2umyOwg==
 
-"@netless/player-controller@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/@netless/player-controller/-/player-controller-0.0.3.tgz#7b728ce9e36188545c5d9817f5152965c78804bb"
-  integrity sha512-QiMnvFeh42Cy4aFjvIx0d6sTPezcE/3pmpa3MCYn0PPAaKWkf+cNRdJNPxfbUr31pSMuZqr8+CUe/hhoCFpq9g==
+"@netless/player-controller@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@netless/player-controller/-/player-controller-0.0.5.tgz#22e2fcff777693127ffc7f50d46d4e139d1e85cb"
+  integrity sha512-NpmpF53VSC/whbGysnbW2TRejHYMZPZUpIAbYcHDZQgJzHZq39LokW7kswE0DrY13WP8Hc8CNHVfyvWhKofNoA==
   dependencies:
     "@ant-design/icons" "^4.2.2"
+    "@netless/combine-player" "^1.1.1"
     antd "^4.4.3"
 
 "@netless/preview-controller@^0.0.2":
@@ -3732,6 +3733,11 @@ data-uri-to-buffer@1:
 date-fns@^2.15.0:
   version "2.16.1"
   resolved "https://registry.npmjs.org/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
+  integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
+
+date-fns@^2.16.1:
+  version "2.16.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
   integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
 
 dateformat@^2.0.0:

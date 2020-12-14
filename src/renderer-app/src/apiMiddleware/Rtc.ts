@@ -1,11 +1,12 @@
 import type AgoraSdk from "agora-electron-sdk";
+import { AGORA, NODE_ENV } from "../constants/Process";
 
 /** @see {@link https://docs.agora.io/cn/Video/API%20Reference/electron/index.html} */
 const AgoraRtcEngine = window.AgoraRtcEngine;
 
 export class Rtc {
     rtcEngine: AgoraSdk;
-    appId: string = process.env.AGORA_APP_ID || "";
+    appId: string = AGORA.APP_ID || "";
     uid: number | null = null;
 
     constructor(appId?: string) {
@@ -19,7 +20,7 @@ export class Rtc {
 
         this.rtcEngine = new AgoraRtcEngine();
 
-        if (process.env.NODE_ENV === "development") {
+        if (NODE_ENV === "development") {
             const path = require("path");
             const logpath = path.join(__dirname, "..", "..", "agorasdk.log");
             // set where log file should be put for problem diagnostic

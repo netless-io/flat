@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import classNames from "classnames";
 import { runtime } from "../utils/Runtime";
 import signal1 from "../assets/image/signal-1.svg";
@@ -7,7 +7,7 @@ import signal3 from "../assets/image/signal-3.svg";
 import "./TopBar.less";
 
 export interface TopBarProps {
-    title: string;
+    title?: string;
     center: React.ReactNode;
     rightBtns: React.ReactNode;
 }
@@ -19,7 +19,7 @@ export class TopBar extends React.Component<TopBarProps> {
         return (
             <div className={classNames("topbar-box", { isMac: runtime.isMac })}>
                 <div className="topbar-content-left">
-                    <h1 className="topbar-title">{this.props.title}</h1>
+                    {this.props.title && <h1 className="topbar-title">{this.props.title}</h1>}
                     {/* @TODO 网络状态 */}
                     <div className="topbar-network-status">
                         <span className="topbar-network-delay">延迟：0ms</span>

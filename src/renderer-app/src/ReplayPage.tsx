@@ -1,16 +1,18 @@
-import * as React from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router";
 import { message } from "antd";
 import PlayerController from "@netless/player-controller";
 import LoadingPage from "./LoadingPage";
 import { ipcAsyncByMain } from "./utils/Ipc";
-import { Identity } from "./IndexPage";
 import PageError from "./PageError";
 import { SmartPlayer } from "./apiMiddleware/SmartPlayer";
 import { RealtimePanel } from "./components/RealtimePanel";
+import { ChatPanelReplay } from "./components/ChatPanelReplay";
 import ExitButtonPlayer from "./components/ExitButtonPlayer";
+import { Identity } from "./utils/localStorage/room";
 
 import video_play from "./assets/image/video-play.svg";
+import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 
 export type ReplayPageProps = RouteComponentProps<{
@@ -172,17 +174,26 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
                         </div>
                     )}
                     {isShowController && isReady && this.smartPlayer.whiteboardPlayer && (
-                        // @TODO 等待 player-controller 更新
-                        <PlayerController player={this.smartPlayer.whiteboardPlayer} />
+                        <PlayerController
+                            player={this.smartPlayer.whiteboardPlayer}
+                            combinePlayer={this.smartPlayer.combinePlayer}
+                        />
                     )}
                 </div>
                 <RealtimePanel
-                    userId={userId}
-                    channelId={uuid}
                     isVideoOn={this.state.isVideoOn}
                     isShow={this.state.isRealtimePanelShow}
                     onSwitch={this.handleRealtimePanelSwitch}
-                    video={<video className="replay-video" ref={this.videoRef} />}
+                    videoSlot={<video className="replay-video" ref={this.videoRef} />}
+                    chatSlot={
+                        this.smartPlayer.whiteboardPlayer && (
+                            <ChatPanelReplay
+                                userId={userId}
+                                channelId={uuid}
+                                player={this.smartPlayer.whiteboardPlayer}
+                            />
+                        )
+                    }
                 />
                 {hasError ? (
                     <div className="replay-overlay">

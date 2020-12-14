@@ -11,10 +11,9 @@ import {
 import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netless/combine-player";
 import { videoPlugin } from "@netless/white-video-plugin";
 import { audioPlugin } from "@netless/white-audio-plugin";
-import { Identity } from "../IndexPage";
-import { netlessToken } from "../appToken";
 import { netlessWhiteboardApi } from "./index";
-import { LocalStorageRoomDataType } from "../HistoryPage";
+import { NETLESS, NODE_ENV } from "../constants/Process";
+import { getRoom, Identity } from "../utils/localStorage/room";
 
 /**
  * 智能播放画板与音视频，同时适应有无视频的情况
@@ -58,7 +57,7 @@ export class SmartPlayer {
             throw new Error("Cannot fetch token for room: " + uuid);
         }
 
-        const storageRoom = this.getStorageRoom(uuid);
+        const storageRoom = getRoom(uuid);
         // @TODO 支持多段视频
         const recording = storageRoom?.recordings?.[storageRoom.recordings.length - 1];
 
@@ -71,7 +70,7 @@ export class SmartPlayer {
         });
 
         const whiteWebSdk = new WhiteWebSdk({
-            appIdentifier: netlessToken.appIdentifier,
+            appIdentifier: NETLESS.APP_IDENTIFIER,
             plugins: plugins,
         });
 
@@ -125,7 +124,7 @@ export class SmartPlayer {
                         this._isPlaying = true;
                         this._isEnded = false;
                         this.onPlay();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: start playing");
                         }
                         break;
@@ -133,7 +132,7 @@ export class SmartPlayer {
                     case PlayerPhase.Pause: {
                         this._isPlaying = false;
                         this.onPause();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: paused");
                         }
                         break;
@@ -143,7 +142,7 @@ export class SmartPlayer {
                         this._isPlaying = false;
                         this._isEnded = true;
                         this.onEnded();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: ended");
                         }
                         break;
@@ -178,7 +177,7 @@ export class SmartPlayer {
                         this._isPlaying = true;
                         this._isEnded = false;
                         this.onPlay();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: start playing");
                         }
                         break;
@@ -186,7 +185,7 @@ export class SmartPlayer {
                     case PublicCombinedStatus.Pause: {
                         this._isPlaying = false;
                         this.onPause();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: paused");
                         }
                         break;
@@ -195,7 +194,7 @@ export class SmartPlayer {
                         this._isPlaying = false;
                         this._isEnded = true;
                         this.onEnded();
-                        if (process.env.NODE_ENV === "development") {
+                        if (NODE_ENV === "development") {
                             console.log("SmartPlayer: ended");
                         }
                         break;
@@ -211,11 +210,11 @@ export class SmartPlayer {
 
         this._isReady = true;
         this.onReady();
-        if (process.env.NODE_ENV === "development") {
+        if (NODE_ENV === "development") {
             console.log("SmartPlayer: ready");
         }
 
-        if (process.env.NODE_ENV === "development") {
+        if (NODE_ENV === "development") {
             // 供便捷调试
             (window as any).player = player;
             (window as any).combinePlayer = this.combinePlayer;
@@ -278,7 +277,7 @@ export class SmartPlayer {
         this.whiteboardPlayer = undefined;
         this.combinePlayer = undefined;
 
-        if (process.env.NODE_ENV === "development") {
+        if (NODE_ENV === "development") {
             (window as any).player = null;
             (window as any).combinePlayer = null;
         }
@@ -307,15 +306,6 @@ export class SmartPlayer {
             throw new Error("Whiteboard Player not loaded. Call `smartPlayer.load()` first.");
         }
         return this.whiteboardPlayer;
-    }
-
-    private getStorageRoom(uuid: string): LocalStorageRoomDataType | undefined {
-        const rooms = localStorage.getItem("rooms");
-        if (rooms) {
-            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
-            return roomArray.find(data => data.uuid === uuid);
-        }
-        return;
     }
 }
 

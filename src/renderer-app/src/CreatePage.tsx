@@ -1,13 +1,11 @@
-import * as React from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router";
 import logo from "./assets/image/logo.svg";
 import { Button, Input } from "antd";
 import { Link } from "react-router-dom";
-import { Identity } from "./IndexPage";
-import { LocalStorageRoomDataType } from "./HistoryPage";
-import moment from "moment";
 import { netlessWhiteboardApi } from "./apiMiddleware";
 import { ipcAsyncByMain } from "./utils/Ipc";
+import { saveRoom, Identity } from "./utils/localStorage/room";
 
 export type JoinPageStates = {
     roomName: string;
@@ -42,63 +40,13 @@ export default class CreatePage extends React.Component<RouteComponentProps, Joi
         const userId = `${Math.floor(Math.random() * 100000)}`;
         const uuid = await this.createRoomAndGetUuid(this.state.roomName, 0);
         if (uuid) {
-            this.setRoomList(uuid, this.state.roomName, userId);
+            saveRoom({
+                uuid,
+                userId,
+                identity: Identity.creator,
+                roomName: this.state.roomName,
+            });
             this.props.history.push(`/whiteboard/${Identity.creator}/${uuid}/${userId}/`);
-        }
-    };
-    public setRoomList = (uuid: string, roomName: string, userId: string): void => {
-        const rooms = localStorage.getItem("rooms");
-        const timestamp = moment(new Date()).format("lll");
-        if (rooms) {
-            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
-            const room = roomArray.find(data => data.uuid === uuid);
-            if (!room) {
-                localStorage.setItem(
-                    "rooms",
-                    JSON.stringify([
-                        {
-                            uuid: uuid,
-                            time: timestamp,
-                            identity: Identity.creator,
-                            roomName: roomName,
-                            userId: userId,
-                            isRoomOwner: true,
-                        },
-                        ...roomArray,
-                    ]),
-                );
-            } else {
-                const newRoomArray = roomArray.filter(data => data.uuid !== uuid);
-                localStorage.setItem(
-                    "rooms",
-                    JSON.stringify([
-                        {
-                            ...room,
-                            uuid: uuid,
-                            time: timestamp,
-                            identity: Identity.creator,
-                            roomName: roomName,
-                            userId: userId,
-                            isRoomOwner: true,
-                        },
-                        ...newRoomArray,
-                    ]),
-                );
-            }
-        } else {
-            localStorage.setItem(
-                "rooms",
-                JSON.stringify([
-                    {
-                        uuid: uuid,
-                        time: timestamp,
-                        identity: Identity.creator,
-                        roomName: roomName,
-                        userId: userId,
-                        isRoomOwner: true,
-                    },
-                ]),
-            );
         }
     };
 

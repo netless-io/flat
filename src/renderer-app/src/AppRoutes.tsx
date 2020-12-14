@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { HashRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import { message } from "antd";
@@ -14,6 +14,7 @@ import HistoryPage from "./HistoryPage";
 import CreatePage from "./CreatePage";
 import UserIndexPage from "./UserIndexPage";
 import UserInfoPage from "./UserInfoPage";
+import UserSetPage from "./UserSetPage";
 export class AppRoutes extends React.Component<{}, {}> {
     public componentDidCatch(error: any): void {
         message.error(`网页加载发生错误：${error}`);
@@ -34,6 +35,7 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route exact path="/" component={IndexPage} />
                     <Route exact path="/user/" component={UserIndexPage} />
                     <Route exact path="/user/info/" component={UserInfoPage} />
+                    <Route exact path="/user/setting/" component={UserSetPage} />
                 </Switch>
             </HashRouter>
         );

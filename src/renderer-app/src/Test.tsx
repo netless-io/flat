@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Button } from "antd";
 import { DownloadFile } from "./utils/Download";
 import { extractZIP } from "./utils/Unzip";

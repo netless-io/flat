@@ -1,10 +1,11 @@
-import * as React from "react";
+import React from "react";
 import { Tabs } from "antd";
 import classNames from "classnames";
 import { v4 as uuidv4 } from "uuid";
+import dateSub from "date-fns/sub";
 import { Rtm } from "../../apiMiddleware/Rtm";
 import { generateAvatar } from "../../utils/generateAvatar";
-import { ChatMessages } from "./ChatMessages";
+import { ChatMessages, ChatMessagesProps } from "./ChatMessages";
 import { RTMessage } from "./ChatMessage";
 import { ChatUsers } from "./ChatUsers";
 import { RTMUser } from "./ChatUser";
@@ -15,7 +16,7 @@ export interface ChatPanelProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     userId: string;
     channelId: string;
-    isRoomOwner: boolean;
+    identity: ChatMessagesProps["identity"];
 }
 
 export interface ChatPanelState {
@@ -25,6 +26,7 @@ export interface ChatPanelState {
 
 export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     private rtm = new Rtm();
+    private noMoreRemoteMessages = false;
 
     state: ChatPanelState = {
         messages: [],
@@ -76,7 +78,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     }
 
     render() {
-        const { isRoomOwner, userId, channelId, className, ...restProps } = this.props;
+        const { identity, userId, channelId, className, ...restProps } = this.props;
         const { messages, users } = this.state;
         return (
             <div {...restProps} className={classNames("chat-panel", className)}>
@@ -84,7 +86,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                     <Tabs.TabPane tab="消息列表" key="messages">
                         <ChatMessages
                             userId={userId}
-                            isRoomOwner={isRoomOwner}
+                            identity={identity}
                             messages={messages}
                             onMessageSend={this.onMessageSend}
                             onLoadMore={this.updateHistory}
@@ -99,10 +101,20 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     }
 
     private updateHistory = async (): Promise<void> => {
+        if (this.noMoreRemoteMessages) {
+            return;
+        }
         try {
             const oldestTimestap = this.state.messages[0]?.timestamp || Date.now();
-            const messages = await this.rtm.fetchHistory(oldestTimestap);
-            this.setState(state => ({ messages: [...messages, ...state.messages] }));
+            const messages = await this.rtm.fetchHistory(
+                dateSub(oldestTimestap, { years: 1 }).valueOf(),
+                oldestTimestap - 1,
+            );
+            if (messages.length <= 0) {
+                this.noMoreRemoteMessages = true;
+            } else {
+                this.setState(state => ({ messages: [...messages, ...state.messages] }));
+            }
         } catch (e) {
             console.warn(e);
         }

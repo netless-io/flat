@@ -1,10 +1,10 @@
-import * as React from "react";
+import React from "react";
 import { Button, Input, message, Popover } from "antd";
 import { clipboard } from "electron";
 import "./InviteButton.less";
-import { Identity } from "../IndexPage";
 import { CopyOutlined } from "@ant-design/icons";
 import { TopBarRightBtn } from "./TopBarRightBtn";
+import { Identity } from "../utils/localStorage/room";
 
 export type InviteButtonStates = {
     inviteDisable: boolean;

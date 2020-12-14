@@ -1,9 +1,9 @@
-import * as React from "react";
+import React from "react";
 import { Button, Modal } from "antd";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
-import { Identity } from "../IndexPage";
 import { TopBarRightBtn } from "./TopBarRightBtn";
+import { Identity } from "../utils/localStorage/room";
 
 import replayScreen from "../assets/image/replay-screen.png";
 import "./ExitButton.less";

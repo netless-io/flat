@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import memoizeOne from "memoize-one";
 import topbarRecording from "../assets/image/topbar-recording.svg";
 import topbarPlay from "../assets/image/topbar-play.svg";

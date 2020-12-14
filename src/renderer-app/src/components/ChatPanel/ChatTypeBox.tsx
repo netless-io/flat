@@ -2,10 +2,11 @@ import React from "react";
 import send from "../../assets/image/send.svg";
 import banChat from "../../assets/image/ban-chat.svg";
 import banChatActive from "../../assets/image/ban-chat-active.svg";
+import { Identity } from "../../utils/localStorage/room";
 
 export interface ChatTypeBoxProps {
     /** Only room owner can ban chatting. */
-    isRoomOwner: boolean;
+    identity: Identity;
     isBan: boolean;
     onBanChange: (isBan: boolean) => void;
     onSend: (text: string) => Promise<void>;
@@ -47,12 +48,12 @@ export class ChatTypeBox extends React.PureComponent<ChatTypeBoxProps, ChatTypeB
     };
 
     render(): React.ReactNode {
-        const { isRoomOwner, isBan } = this.props;
+        const { identity, isBan } = this.props;
         const { text, isSending } = this.state;
 
         return (
             <div className="chat-typebox">
-                {isRoomOwner && (
+                {identity === Identity.creator && (
                     <button className="chat-typebox-ban" title="禁言" onClick={this.toggleBan}>
                         <img src={isBan ? banChatActive : banChat} />
                     </button>

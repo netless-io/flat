@@ -1,8 +1,7 @@
-import moment from "moment";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 
-import * as React from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router";
 import { message, Tooltip } from "antd";
 
@@ -21,12 +20,9 @@ import { PPTDataType, PPTType } from "@netless/oss-upload-manager";
 import OssDropUpload from "@netless/oss-drop-upload";
 
 import { netlessWhiteboardApi } from "./apiMiddleware";
-import { netlessToken, ossConfigObj } from "./appToken";
 import { pptDatas } from "./taskUuids";
 import { Rtc } from "./apiMiddleware/Rtc";
 import { CloudRecording } from "./apiMiddleware/CloudRecording";
-import { Identity } from "./IndexPage";
-import { LocalStorageRoomDataType } from "./HistoryPage";
 import PageError from "./PageError";
 import LoadingPage from "./LoadingPage";
 
@@ -35,8 +31,11 @@ import { TopBar } from "./components/TopBar";
 import { TopBarRecordStatus } from "./components/TopBarRecordStatus";
 import { TopBarRightBtn } from "./components/TopBarRightBtn";
 import { RealtimePanel } from "./components/RealtimePanel";
+import { ChatPanel } from "./components/ChatPanel";
 import { VideoAvatars } from "./components/VideoAvatars";
 
+import { NETLESS, NODE_ENV, OSS } from "./constants/Process";
+import { getRoom, Identity, updateRoomProps } from "./utils/localStorage/room";
 import { listDir } from "./utils/Fs";
 import { runtime } from "./utils/Runtime";
 import { ipcAsyncByMain } from "./utils/Ipc";
@@ -48,7 +47,6 @@ import "./WhiteboardPage.less";
 export type WhiteboardPageStates = {
     phase: RoomPhase;
     room?: Room;
-    roomName?: string;
     isMenuVisible: boolean;
     isFileOpen: boolean;
     isRecording: boolean;
@@ -98,6 +96,10 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             this.setState({ rtcUid });
         });
         await this.startJoinRoom();
+        const room = getRoom(this.props.match.params.uuid);
+        if (room?.roomName) {
+            document.title = room.roomName;
+        }
     }
 
     public componentDidUpdate(
@@ -149,7 +151,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             this.state.room.callbacks.off();
         }
 
-        if (process.env.NODE_ENV === "development") {
+        if (NODE_ENV === "development") {
             (window as any).room = null;
         }
     }
@@ -171,78 +173,21 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         }
     };
 
-    public setRoomList = (uuid: string, userId: string): void => {
-        const rooms = localStorage.getItem("rooms");
-        const timestamp = moment(new Date()).format("lll");
-        if (rooms) {
-            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
-            const room = roomArray.find(data => data.uuid === uuid);
-            if (!room) {
-                localStorage.setItem(
-                    "rooms",
-                    JSON.stringify([
-                        {
-                            uuid: uuid,
-                            time: timestamp,
-                            identity: Identity.creator,
-                            userId: userId,
-                        },
-                        ...roomArray,
-                    ]),
-                );
-            } else {
-                if (room.roomName) {
-                    // @TODO 统一各页面的 localstorage 操作，存储更丰富的房间信息。
-                    this.setState({ roomName: room.roomName });
-                }
-                const newRoomArray = roomArray.filter(data => data.uuid !== uuid);
-                localStorage.setItem(
-                    "rooms",
-                    JSON.stringify([
-                        {
-                            ...room,
-                            uuid: uuid,
-                            time: timestamp,
-                            identity: Identity.creator,
-                            userId: userId,
-                        },
-                        ...newRoomArray,
-                    ]),
-                );
-            }
-        } else {
-            localStorage.setItem(
-                "rooms",
-                JSON.stringify([
-                    {
-                        uuid: uuid,
-                        time: timestamp,
-                        identity: Identity.creator,
-                        userId: userId,
-                    },
-                ]),
-            );
-        }
-    };
-
     private saveRecording = (recording: {
         uuid: string;
         startTime: number;
         endTime: number;
         videoUrl?: string;
     }): void => {
-        const rooms = localStorage.getItem("rooms");
-        if (rooms) {
-            const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
-            const room = roomArray.find(data => data.uuid === this.state.room?.uuid);
-            if (room) {
-                if (room.recordings) {
-                    room.recordings.push(recording);
-                } else {
-                    room.recordings = [recording];
-                }
-                localStorage.setItem("rooms", JSON.stringify(roomArray));
+        const roomId = this.props.match.params.uuid;
+        const room = getRoom(roomId);
+        if (room) {
+            if (room.recordings) {
+                room.recordings.push(recording);
+            } else {
+                room.recordings = [recording];
             }
+            updateRoomProps(roomId, room);
         }
         this.setState({ recordingUuid: recording.uuid });
         this.recordStartTime = null;
@@ -277,7 +222,6 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
 
     private startJoinRoom = async (): Promise<void> => {
         const { uuid, userId, identity } = this.props.match.params;
-        this.setRoomList(uuid, userId);
         try {
             const roomToken = await this.getRoomToken(uuid);
             if (uuid && roomToken) {
@@ -289,7 +233,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     identity: identity === Identity.creator ? "host" : "",
                 });
                 const whiteWebSdk = new WhiteWebSdk({
-                    appIdentifier: netlessToken.appIdentifier,
+                    appIdentifier: NETLESS.APP_IDENTIFIER,
                     plugins: plugins,
                 });
                 const cursorName = localStorage.getItem("userName");
@@ -336,7 +280,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     this.setState({ mode: room.state.broadcastState.mode });
                 }
                 this.setState({ room: room });
-                if (process.env.NODE_ENV === "development") {
+                if (NODE_ENV === "development") {
                     (window as any).room = room;
                 }
             }
@@ -542,7 +486,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     }
 
     private renderWhiteBoard(room: Room): React.ReactNode {
-        const { uuid, userId } = this.props.match.params;
+        const { uuid, userId, identity } = this.props.match.params;
 
         const {
             isMenuVisible,
@@ -564,9 +508,9 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                                 room={room}
                                 customerComponent={[
                                     <OssUploadButton
-                                        oss={ossConfigObj}
-                                        appIdentifier={netlessToken.appIdentifier}
-                                        sdkToken={netlessToken.sdkToken}
+                                        oss={WhiteboardPage.ossConfig}
+                                        appIdentifier={NETLESS.APP_IDENTIFIER}
+                                        sdkToken={NETLESS.SDK_TOKEN}
                                         room={room}
                                         whiteboardRef={whiteboardLayerDownRef}
                                     />,
@@ -602,22 +546,27 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                             isFileOpen={isFileOpen}
                             room={room}
                         />
-                        <OssDropUpload room={room} oss={ossConfigObj}>
+                        <OssDropUpload room={room} oss={WhiteboardPage.ossConfig}>
                             <div ref={this.handleBindRoom} className="whiteboard-box" />
                         </OssDropUpload>
                     </div>
                     <RealtimePanel
-                        userId={userId}
-                        channelId={uuid}
                         isShow={isRealtimeSideOpen}
                         isVideoOn={isCalling}
                         onSwitch={this.handleSideOpenerSwitch}
-                        video={
+                        videoSlot={
                             <VideoAvatars
                                 localUid={rtcUid}
                                 remoteUids={rtcUsers}
                                 rtcEngine={this.rtc.rtcEngine}
                             />
+                        }
+                        chatSlot={
+                            <ChatPanel
+                                userId={userId}
+                                channelId={uuid}
+                                identity={identity}
+                            ></ChatPanel>
                         }
                     />
                 </div>
@@ -626,7 +575,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     }
 
     private renderTopBar(room: Room): React.ReactNode {
-        const { isCalling, isRecording, recordingUuid, roomName } = this.state;
+        const { isCalling, isRecording, recordingUuid } = this.state;
         const { uuid } = this.props.match.params;
 
         const topBarCenter = (
@@ -675,9 +624,18 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             </>
         );
 
-        return (
-            <TopBar title={roomName || "房间"} center={topBarCenter} rightBtns={topBarRightBtns} />
-        );
+        return <TopBar center={topBarCenter} rightBtns={topBarRightBtns} />;
+    }
+
+    static get ossConfig() {
+        return {
+            accessKeyId: OSS.ACCESS_KEY_ID,
+            accessKeySecret: OSS.ACCESS_KEY_SECRET!,
+            region: OSS.REGION!,
+            bucket: OSS.BUCKET!,
+            folder: OSS.FOLDER!,
+            prefix: OSS.PREFIX!,
+        };
     }
 }
 

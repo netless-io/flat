@@ -1,11 +1,11 @@
-import * as React from "react";
+import React from "react";
 import "./IndexPage.less";
 import { Link, withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
-import { Button, Divider, Modal } from "antd"
+import { Button, Divider, Modal } from "antd";
 import logo from "./assets/image/logo.svg";
-import wechat from "./assets/image/wechat.svg"
-import google from "./assets/image/google.svg"
+import wechat from "./assets/image/wechat.svg";
+import google from "./assets/image/google.svg";
 import { shell } from "electron";
 import { ipcAsyncByMain } from "./utils/Ipc";
 import WeChatLogin from "./components/WeChatLogin";
@@ -16,11 +16,6 @@ export type IndexPageStates = {
     toggleLoginModel: boolean;
 };
 
-export enum Identity {
-    creator = "creator",
-    joiner = "joiner",
-}
-
 class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates> {
     public constructor(props: RouteComponentProps<{}>) {
         super(props);
@@ -28,7 +23,7 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
         this.state = {
             name: name ? name : "",
             visible: false,
-            toggleLoginModel: false
+            toggleLoginModel: false,
         };
     }
 
@@ -71,12 +66,12 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
     };
 
     public showModal = (): void => {
-        this.setState({ toggleLoginModel: true })
-    }
-    
+        this.setState({ toggleLoginModel: true });
+    };
+
     public handleCancel = (): void => {
-        this.setState({ toggleLoginModel: false })
-    }
+        this.setState({ toggleLoginModel: false });
+    };
 
     public joinRoom = () => {
       ipcAsyncByMain("set-win-size", {
@@ -116,8 +111,8 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                         <Divider plain>2.1.0</Divider>
                     </div>
                     <div className="page-index-link-box">
-                        <Button size="large" style={{width: 280}} onClick={this.joinRoom}>
-                            <span>加入房间</span>
+                        <Button size="large" style={{ width: 280 }}>
+                            <Link to={"/user/"}>加入房间</Link>
                         </Button>
                     </div>
                 </div>

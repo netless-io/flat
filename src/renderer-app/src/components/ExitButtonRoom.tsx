@@ -1,11 +1,10 @@
-import * as React from "react";
+import React from "react";
 import { Button, message, Modal, Tooltip } from "antd";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 import { Room } from "white-web-sdk";
-import { Identity } from "../IndexPage";
 import { netlessWhiteboardApi } from "../apiMiddleware";
-import { LocalStorageRoomDataType } from "../HistoryPage";
+import { Identity, updateRoomProps } from "../utils/localStorage/room";
 
 import replayScreen from "../assets/image/replay-screen.png";
 import exit from "../assets/image/exit.svg";
@@ -58,16 +57,7 @@ class ExitButtonRoom extends React.PureComponent<ExitButtonRoomProps, ExitButton
                     144,
                     room.roomToken,
                 );
-                const rooms = localStorage.getItem("rooms");
-                if (rooms) {
-                    const roomArray: LocalStorageRoomDataType[] = JSON.parse(rooms);
-                    const roomData = roomArray.find(data => data.uuid === room.uuid);
-                    const newRoomData = roomArray.filter(data => data.uuid !== room.uuid);
-                    if (roomData) {
-                        roomData.cover = res.url;
-                    }
-                    localStorage.setItem("rooms", JSON.stringify([roomData, ...newRoomData]));
-                }
+                updateRoomProps(room.uuid, { cover: res.url });
             } catch (error) {
                 console.error(error);
             }

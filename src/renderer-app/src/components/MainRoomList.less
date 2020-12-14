@@ -1,10 +1,126 @@
 .room-list-container {
     width: 523px;
-    border-radius: 16px 16px 0px 0px;
-    background-color: #fff;
+    height: 460px;
+    border-radius: 16px 16px 0 0;
+    background-color: white;
     margin-left: 24px;
+    position: relative;
 }
 
 .room-list-header {
-    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding-left: 24px;
+    padding-right: 24px;
+    position: absolute;
+    border-radius: 16px 16px 0 0;
+    background-color: white;
+}
+
+.room-list-tab {
+    margin-left: 24px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #7A7B7C;
+    line-height: 22px;
+    cursor: pointer;
+}
+
+.room-list-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #444E60;
+    line-height: 24px;
+}
+
+.room-list-line {
+    width: 475px;
+    height: 1px;
+    background-color: #DBE1EA;
+    margin-left: 24px;
+    position: absolute;
+    margin-top: 64px;
+}
+
+.room-list-body {
+    height: 398px;
+    overflow-y: auto;
+    margin-top: 64px;
+}
+
+.room-list-cell-day {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 16px;
+    margin-top: 16px;
+}
+
+.room-list-cell-modify {
+    width: 2px;
+    height: 16px;
+    background-color: #3381ff;
+}
+
+.room-list-cell-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #444E60;
+    margin-left: 22px;
+}
+
+.room-list-cell {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 24px;
+    padding-right: 24px;
+    margin-top: 16px;
+}
+
+.room-list-cell-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.room-list-cell-name {
+    font-size: 14px;
+    font-weight: 400;
+    color: #444E60;
+    margin-bottom: 8px;
+}
+
+.room-list-cell-state {
+    font-size: 12px;
+    font-weight: 400;
+    color: #7A7B7C;
+    margin-bottom: 8px;
+}
+
+.room-list-cell-time {
+    font-size: 12px;
+    font-weight: 400;
+    color: #7A7B7C;
+}
+
+.room-list-cell-right {
+    display: flex;
+    flex-direction: row;
+}
+
+.room-list-cell-more {
+    margin-right: 8px;
+    width: 86px;
+}
+
+.room-list-cell-enter {
+    width: 86px;
+}
+
+.room-list-under {
+    height: 16px;
 }

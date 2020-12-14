@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import "./PageError.less";
 import room_not_find from "./assets/image/room_not_find.svg";
 import {Button} from "antd";
