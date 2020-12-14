@@ -88,6 +88,7 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps, VideoAvat
                     switch (type) {
                         case VideoType.local: {
                             rtcEngine.enableLocalVideo(isVideoOn);
+                            rtcEngine.muteLocalVideoStream(!isVideoOn);
                             break;
                         }
                         default: {
@@ -110,6 +111,7 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps, VideoAvat
                     switch (type) {
                         case VideoType.local: {
                             rtcEngine.enableLocalAudio(isAudioOn);
+                            rtcEngine.muteLocalAudioStream(!isAudioOn);
                             break;
                         }
                         default: {
