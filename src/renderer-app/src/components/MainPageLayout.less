@@ -9,20 +9,37 @@
     padding-top: 73px;
     height: 100vh;
     background-color: rgb(19, 20, 21);
+    
+    .ant-menu {
+      background-color: #131415;
+    }
+
     li.ant-menu-item {
-        .ant-menu-item-icon {
-            margin-right: 0;
-        }
+      height: 80px;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      color: white;
 
-        height: 80px;
-        display: flex;
-        flex-flow: column nowrap;
-        align-items: center;
-        color: white;
+      a {
+        color: #7A7B7C;
+      }
 
-        &.ant-menu-item-selected {
-            color: black;
-        }
+      .ant-menu-item-icon {
+          margin-right: 0;
+      }
+
+      &.ant-menu-item-selected {
+          color: black;
+      }
+    }
+
+    li.ant-menu-item-selected {
+      background-color: #444E60 !important;
+
+      a {
+        color: #fff;
+      }
     }
 }
 

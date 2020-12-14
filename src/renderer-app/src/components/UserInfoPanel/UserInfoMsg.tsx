@@ -10,8 +10,8 @@ export default class UserInfoMsg extends React.PureComponent<{}> {
             <div className="user-info-msg-container">
                 <div className="user-nickname-box">
                     <div>昵称</div>
-                    <Input className="nickname-input" placeholder="请输入昵称"></Input>
-                    <Button className="nickname-button" type="primary">提交</Button>
+                    <Input placeholder="请输入昵称"></Input>
+                    <Button type="primary">提交</Button>
                 </div>
                 <div className="user-wechat-info-box">
                     <div>微信</div>

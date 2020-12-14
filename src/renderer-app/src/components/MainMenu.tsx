@@ -16,7 +16,7 @@ export class MainMenu extends React.PureComponent<{}> {
         const hash = window.location.hash
         
         return (
-            <Menu className="Menu-container" defaultSelectedKeys={[hash.substring(1)]} style={{ backgroundColor: "#131415" }}>
+            <Menu className="menu-container" defaultSelectedKeys={[hash.substring(1)]}>
                 <Menu.Item icon={<img src={home} />} key={MainMenuKey.infoPath}>
                     <Link to="/user/">
                         <span>首页</span>

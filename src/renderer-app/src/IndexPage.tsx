@@ -111,8 +111,8 @@ class IndexPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                         <Divider plain>2.1.0</Divider>
                     </div>
                     <div className="page-index-link-box">
-                        <Button size="large" style={{ width: 280 }}>
-                            <Link to={"/user/"}>加入房间</Link>
+                        <Button size="large" style={{ width: 280 }} onClick={this.joinRoom}>
+                            加入房间
                         </Button>
                     </div>
                 </div>
