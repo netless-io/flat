@@ -14,26 +14,9 @@ export enum MainMenuKey {
     settingPath = "/user/setting/"
 }
 
-type MainMenuState = {
-    isActive: boolean
-}
-
-export class MainMenu extends React.PureComponent<{}, MainMenuState> {
-    public constructor(props: {}) {
-        super(props);
-        this.state = {
-            isActive: true,
-        }
-    }
-
-    public toggleActive() {
-        this.setState({ isActive: false })
-        console.log('1');
-    }
-
+export class MainMenu extends React.PureComponent<{}> {
     render() {
         const key = window.location.hash.substring(1)
-        
         return (
             <Menu className="menu-container" defaultSelectedKeys={[key]}>
                 <Menu.Item icon={<img src={key === "/user/" ? homeActive : home} />} key={MainMenuKey.infoPath}>
