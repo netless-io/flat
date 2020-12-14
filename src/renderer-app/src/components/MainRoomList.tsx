@@ -1,7 +1,7 @@
 import React, {Component, PureComponent, ReactNode} from "react"
 import "./MainRoomList.less"
 import {Button} from "antd";
-import {Property} from "csstype";
+import type { Property } from "csstype";
 export type MainRoomListStates = {
     activeRoomList: RoomListSort,
 }
