@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>copy备份@2x</title>
-    <g id="2.X" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="首页" transform="translate(-19.000000, -82.000000)" fill="#FFFFFF">
-            <g id="编组-4备份" transform="translate(0.000000, 74.000000)">
-                <g id="copy备份" transform="translate(19.000000, 8.000000)">
-                    <path d="M24.2188008,11.4792005 L34,18 L32,20 L32,30 C32,32.209139 30.209139,34 28,34 L26,34 L26,26 L18,26 L18,34 L16,34 C13.790861,34 12,32.209139 12,30 L12,20 L10,18 L19.7811992,11.4792005 C21.1247969,10.5834688 22.8752031,10.5834688 24.2188008,11.4792005 Z" id="形状结合"></path>
+    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="组件规范" transform="translate(-133.000000, -1866.000000)" stroke="#7A7B7C">
+            <g id="编组-22" transform="translate(32.000000, 1858.000000)">
+                <g id="编组-4备份-2" transform="translate(82.000000, 8.000000)">
+                    <g id="copy备份" transform="translate(19.000000, 0.000000)">
+                        <path d="M10,18 L19.7811992,11.4792005 C21.1247969,10.5834688 22.8752031,10.5834688 24.2188008,11.4792005 L34,18 L34,18" id="路径-39"></path>
+                        <path d="M12,20 L12,30 C12,32.209139 13.790861,34 16,34 L28,34 C30.209139,34 32,32.209139 32,30 L32,20 L32,20" id="路径-3"></path>
+                        <polyline id="路径-7" points="18 34 18 26 26 26 26 34"></polyline>
+                    </g>
                 </g>
             </g>
         </g>
