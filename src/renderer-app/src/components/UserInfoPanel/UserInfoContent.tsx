@@ -10,9 +10,7 @@ export type UserInfoContentProps = {
 }
 
 export default class UserInfoContent extends React.PureComponent<{ tab: TabMap }, UserInfoContentProps> {
-
     public render() {
-
         return (
             <div className="info-content-container">
                 <div className="info-content-header">

@@ -22,10 +22,10 @@ export default class UserInfoTab extends React.PureComponent<UserInfoTabProps> {
                         onChange={key => this.props.setTab(key as TabMap)}
                         tabPosition="left"
                     >
-                        <TabPane tab="个人信息" key={TabMap.userInfo}></TabPane>
-                        <TabPane tab="检查更新" key={TabMap.checkUpdate}></TabPane>
-                        <TabPane tab="吐个槽" key={TabMap.suggest}></TabPane>
-                        <TabPane tab="关于我们" key={TabMap.about}></TabPane>
+                        <TabPane tab="个人信息" key={TabMap.UserInfo}></TabPane>
+                        <TabPane tab="检查更新" key={TabMap.CheckUpdate}></TabPane>
+                        <TabPane tab="吐个槽" key={TabMap.Suggest}></TabPane>
+                        <TabPane tab="关于我们" key={TabMap.About}></TabPane>
                     </Tabs>
                 </div>
             </div>

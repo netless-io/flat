@@ -8,16 +8,16 @@ import UserAbout from "./components/UserInfoPanel/UserAbout"
 import UserInfoMsg from "./components/UserInfoPanel/UserInfoMsg"
 
 export enum TabMap {
-    userInfo = "个人信息",
-    checkUpdate = "检查更新",
-    suggest = "吐个槽",
-    about = "关于我们",
+    UserInfo = "个人信息",
+    CheckUpdate = "检查更新",
+    Suggest = "吐个槽",
+    About = "关于我们",
 }
 
 export default class UserInfoPage extends React.PureComponent<{}, { tab: TabMap }> {
     constructor(props: {}) {
         super(props)
-        this.state = { tab: TabMap.userInfo }
+        this.state = { tab: TabMap.UserInfo }
     }
 
     public setTab = (tab: TabMap) => {
@@ -26,16 +26,16 @@ export default class UserInfoPage extends React.PureComponent<{}, { tab: TabMap 
 
     public renderContent = (): React.ReactNode =>  {
         switch (this.state.tab) {
-            case TabMap.userInfo: {
+            case TabMap.UserInfo: {
                 return <UserInfoMsg />;
             }
-            case TabMap.checkUpdate: {
+            case TabMap.CheckUpdate: {
                 return <UserCheckUpdate/>
             }
-            case TabMap.suggest: {
+            case TabMap.Suggest: {
                 return <UserSeggest />
             }
-            case TabMap.about: {
+            case TabMap.About: {
                 return <UserAbout />
             }
             default: 
