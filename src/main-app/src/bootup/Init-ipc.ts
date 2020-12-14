@@ -7,7 +7,7 @@ export default (context: Context) => {
         const actionsAsync: ipc.ActionAsync = {
             "set-win-size": (args: { width: number; height: number; autoCenter?: boolean }) => {
                 args = {
-                    autoCenter: true,
+                    autoCenter: false,
                     ...args,
                 };
 

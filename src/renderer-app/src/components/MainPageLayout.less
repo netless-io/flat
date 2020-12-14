@@ -9,19 +9,36 @@
     padding-top: 73px;
     height: 100vh;
     background-color: rgb(19, 20, 21);
-    li.ant-menu-item {
-        .ant-menu-item-icon {
-            margin-right: 0;
-        }
 
+    .ant-menu {
+        background-color: #131415;
+    }
+
+    li.ant-menu-item {
         height: 80px;
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
         color: white;
 
+        a {
+            color: #7a7b7c;
+        }
+
+        .ant-menu-item-icon {
+            margin-right: 0;
+        }
+
         &.ant-menu-item-selected {
             color: black;
+        }
+    }
+
+    li.ant-menu-item-selected {
+        background-color: #444e60 !important;
+
+        a {
+            color: #fff;
         }
     }
 }
@@ -33,6 +50,8 @@
 }
 
 .layout-container-content {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     background-color: #f4f6f9;
 }
