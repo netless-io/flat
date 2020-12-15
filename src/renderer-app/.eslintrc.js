@@ -27,7 +27,9 @@ module.exports = {
         "no-control-regex": "warn",
         "no-delete-var": "warn",
         "no-dupe-args": "warn",
-        "no-dupe-class-members": "warn",
+        // support typescript overload
+        // typescript does its own check
+        "no-dupe-class-members": "off",
         "no-dupe-keys": "warn",
         "no-duplicate-case": "warn",
         "no-empty-character-class": "warn",
@@ -183,7 +185,7 @@ module.exports = {
         "jsx-a11y/role-supports-aria-props": "warn",
         "jsx-a11y/scope": "warn",
         "jsx-a11y/media-has-caption": "off",
-        "jsx-a11y/anchor-is-valid":"off",
+        "jsx-a11y/anchor-is-valid": "off",
 
         // https://github.com/facebook/react/tree/master/packages/eslint-plugin-react-hooks
         "react-hooks/rules-of-hooks": "error",
@@ -199,6 +201,6 @@ module.exports = {
         "jsx-a11y/no-static-element-interactions": "off",
         "jsx-a11y/mouse-events-have-key-events": "off",
         "@typescript-eslint/no-redeclare": "off",
-        "no-use-before-define": "off"
+        "no-use-before-define": "off",
     },
 };
