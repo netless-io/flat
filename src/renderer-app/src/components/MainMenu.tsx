@@ -10,13 +10,22 @@ import { Link } from "react-router-dom";
 
 export enum MainMenuKey {
     infoPath = "/user/",
-    myPath = "/user/info/",
-    settingPath = "/user/setting/"
+    myPath = "/info/",
+    settingPath = "/setting/"
 }
 
 export class MainMenu extends React.PureComponent<{}> {
     render() {
-        const key = window.location.hash.substring(1)
+        let key = "";
+        const hash = window.location.hash.substring(1);
+        if (/^\/user/.test(hash)) {
+            key = "/user/";
+        } else if (/^\/info/.test(hash)) {
+            key = "/info/";
+        } else if (/^\/setting/.test(hash)) {
+            key = "/setting/";
+        }
+        
         return (
             <Menu className="menu-container" defaultSelectedKeys={[key]}>
                 <Menu.Item icon={<img src={key === "/user/" ? homeActive : home} />} key={MainMenuKey.infoPath}>
@@ -24,13 +33,13 @@ export class MainMenu extends React.PureComponent<{}> {
                         <span>首页</span>
                     </Link>    
                 </Menu.Item>
-                <Menu.Item icon={<img src={key === "/user/info/" ? userActive : user} />} key={MainMenuKey.myPath}>
-                    <Link to="/user/info/">
+                <Menu.Item icon={<img src={key === "/info/" ? userActive : user} />} key={MainMenuKey.myPath}>
+                    <Link to="/info/">
                         <span>我的</span>
                     </Link>
                 </Menu.Item>
-                <Menu.Item icon={<img src={key === "/user/setting/" ? settingActive : setting} />} key={MainMenuKey.settingPath}>
-                    <Link to="/user/setting/">
+                <Menu.Item icon={<img src={key === "/setting/" ? settingActive : setting} />} key={MainMenuKey.settingPath}>
+                    <Link to="/setting/">
                         <span>设置</span>
                     </Link>
                 </Menu.Item>
