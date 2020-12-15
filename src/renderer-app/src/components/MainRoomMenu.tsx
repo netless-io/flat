@@ -6,8 +6,10 @@ import create from "../assets/image/creat.svg";
 import dropdown from "../assets/image/dropdown.svg";
 import book from "../assets/image/book.svg";
 import { RouteComponentProps } from "react-router";
+import { Link } from "react-router-dom";
+
 const { Option } = Select;
-const modalWidth: number = 368;
+
 export type MainRoomMenuState = {
     isJoinModalVisible: boolean;
     isCreateModalVisible: boolean;
@@ -15,6 +17,7 @@ export type MainRoomMenuState = {
 };
 
 export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
+    private readonly modalWidth: number = 368;
     public constructor(props: RouteComponentProps<{}>) {
         super(props);
         this.state = {
@@ -43,14 +46,12 @@ export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
                     <img src={create} alt="create room" />
                     创建房间
                 </Button>
-                <Button
-                    onClick={() => {
-                        this.setState({ isScheduledVisible: true });
-                    }}
-                >
-                    <img src={book} alt="book room" />
-                    预定房间
-                </Button>
+                <Link to={"/user/scheduled/"}>
+                    <Button>
+                        <img src={book} alt="book room" />
+                        预定房间
+                    </Button>
+                </Link>
                 {this.renderJoinModal()}
                 {this.renderCreateModal()}
             </div>
@@ -62,7 +63,7 @@ export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
         return (
             <Modal
                 title="创建房间"
-                width={modalWidth}
+                width={this.modalWidth}
                 visible={isCreateModalVisible}
                 okText={"创建"}
                 cancelText={"取消"}
@@ -87,8 +88,9 @@ export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
                 </div>
                 <div className="modal-inner-name">加入选项</div>
                 <div className="modal-inner-check">
-                    <Checkbox />
-                    <span className="modal-inner-text">开启摄像头</span>
+                    <Checkbox>
+                        <span className="modal-inner-text">开启摄像头</span>
+                    </Checkbox>
                 </div>
             </Modal>
         );
@@ -109,7 +111,7 @@ export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
         return (
             <Modal
                 title="加入房间"
-                width={modalWidth}
+                width={this.modalWidth}
                 visible={isJoinModalVisible}
                 okText={"确认"}
                 cancelText={"取消"}
@@ -140,12 +142,14 @@ export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
                 </div>
                 <div className="modal-inner-name">加入选项</div>
                 <div className="modal-inner-check">
-                    <Checkbox />
-                    <span className="modal-inner-text">开启麦克风</span>
+                    <Checkbox>
+                        <span className="modal-inner-text">开启麦克风</span>
+                    </Checkbox>
                 </div>
                 <div className="modal-inner-check">
-                    <Checkbox />
-                    <span className="modal-inner-text">开启摄像头</span>
+                    <Checkbox>
+                        <span className="modal-inner-text">开启摄像头</span>
+                    </Checkbox>
                 </div>
             </Modal>
         );
