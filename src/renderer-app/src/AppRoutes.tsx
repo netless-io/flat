@@ -15,6 +15,8 @@ import CreatePage from "./CreatePage";
 import UserIndexPage from "./UserIndexPage";
 import UserInfoPage from "./UserInfoPage";
 import UserSetPage from "./UserSetPage";
+import UserScheduledPage from "./UserScheduledPage";
+
 export class AppRoutes extends React.Component<{}, {}> {
     public componentDidCatch(error: any): void {
         message.error(`网页加载发生错误：${error}`);
@@ -24,8 +26,16 @@ export class AppRoutes extends React.Component<{}, {}> {
             <HashRouter>
                 <Switch>
                     <Route exact path="/replay/:identity/:uuid/:userId/" component={ReplayPage} />
-                    <Route exact path="/whiteboard/:identity/:uuid/:userId/" component={WhiteboardPage} />
-                    <Route exact path="/whiteboard/:identity/:uuid?/" component={WhiteboardCreatorPage} />
+                    <Route
+                        exact
+                        path="/whiteboard/:identity/:uuid/:userId/"
+                        component={WhiteboardPage}
+                    />
+                    <Route
+                        exact
+                        path="/whiteboard/:identity/:uuid?/"
+                        component={WhiteboardCreatorPage}
+                    />
                     <Route exact path="/join/" component={JoinPage} />
                     <Route exact path="/name/:uuid?/" component={AddNamePage} />
                     <Route exact path="/test/" component={Test} />
@@ -34,6 +44,7 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route exact path="/history/" component={HistoryPage} />
                     <Route exact path="/" component={IndexPage} />
                     <Route exact path="/user/" component={UserIndexPage} />
+                    <Route exact path="/user/scheduled/" component={UserScheduledPage} />
                     <Route exact path="/user/info/" component={UserInfoPage} />
                     <Route exact path="/user/setting/" component={UserSetPage} />
                 </Switch>
