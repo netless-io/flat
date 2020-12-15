@@ -1,5 +1,6 @@
 import type AgoraSdk from "agora-electron-sdk";
 import { AGORA, NODE_ENV } from "../constants/Process";
+import { Identity } from "../utils/localStorage/room";
 
 /** @see {@link https://docs.agora.io/cn/Video/API%20Reference/electron/index.html} */
 const AgoraRtcEngine = window.AgoraRtcEngine;
@@ -48,20 +49,26 @@ export class Rtc {
         }
     }
 
-    join(channel: string) {
-        this.rtcEngine.videoSourceSetChannelProfile(0);
+    join(channel: string, identity: Identity) {
+        this.rtcEngine.setChannelProfile(1);
+        this.rtcEngine.videoSourceSetChannelProfile(1);
         this.rtcEngine.setVideoEncoderConfiguration({
             bitrate: 0,
             degradationPreference: 1,
             frameRate: 15,
-            height: 280,
+            height: 216,
             minBitrate: -1,
             minFrameRate: -1,
             mirrorMode: 0,
             orientationMode: 0,
-            width: 280,
+            width: 288,
         });
-        this.rtcEngine.enableVideo();
+
+        if (identity === Identity.creator) {
+            this.rtcEngine.setClientRole(1);
+        } else {
+            this.rtcEngine.setClientRole(2);
+        }
 
         // @ts-ignore @TODO 鉴权机制待实现
         this.rtcEngine.joinChannel(null, channel, null, Math.floor(new Date().getTime() / 1000));
@@ -74,5 +81,6 @@ export class Rtc {
 
     destroy() {
         this.rtcEngine.removeAllListeners();
+        this.rtcEngine.release();
     }
 }

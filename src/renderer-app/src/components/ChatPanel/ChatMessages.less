@@ -19,6 +19,28 @@
     flex-direction: column;
 }
 
+.chat-messages-cancel-hands-wrap {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-messages-cancel-hands {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #444e60;
+    border: 0.5px solid #dbe1ea;
+    border-radius: 24px;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(33, 35, 36, 0.1);
+    }
+}
+
 .chat-messages {
     flex: 1;
     position: relative;
@@ -44,7 +66,7 @@
     border-top: 0.5px solid #dbe1ea;
 }
 
-.chat-typebox-ban {
+.chat-typebox-icon {
     width: 22px;
     height: 22px;
     padding: 0;

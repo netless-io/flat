@@ -1,10 +1,10 @@
 import React from "react";
 import { AutoSizer, List, ListRowRenderer, Size } from "react-virtualized";
-import { ChatUser, RTMUser } from "./ChatUser";
+import { ChatUser, ChatUserProps, RTMUser } from "./ChatUser";
 import "./ChatUsers.less";
 
-export interface ChatUsersProps {
-    userId: string;
+export interface ChatUsersProps
+    extends Pick<ChatUserProps, "identity" | "userId" | "onAllowSpeaking" | "onEndSpeaking"> {
     users: RTMUser[];
 }
 
@@ -32,11 +32,11 @@ export class ChatUsers extends React.PureComponent<ChatUsersProps> {
     };
 
     private rowRenderer: ListRowRenderer = ({ index, style }): React.ReactNode => {
-        const { users, userId } = this.props;
+        const { users, ...restProps } = this.props;
         const user = users[index];
         return (
             <div key={user.id} style={style}>
-                <ChatUser user={user} userId={userId} />
+                <ChatUser {...restProps} user={user} />
             </div>
         );
     };

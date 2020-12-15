@@ -66,7 +66,7 @@ export interface StartPayload extends RequestPayloadBase {
             subscribeAudioUids?: string[];
             unSubscribeAudioUids?: string[];
             /** 预估的订阅人数峰值。 */
-            subscribeUidGroup: 0 | 1 | 2 | 3;
+            subscribeUidGroup?: 0 | 1 | 2 | 3;
         };
         recordingFileConfig?: {
             avFileType?: string[];

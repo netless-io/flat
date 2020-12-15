@@ -1,5 +1,5 @@
 import React from "react";
-import { Tooltip } from "antd";
+import classNames from "classnames";
 
 export interface TopBarRightBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     title: string;
@@ -9,19 +9,24 @@ export interface TopBarRightBtnProps extends React.ButtonHTMLAttributes<HTMLButt
 
 export class TopBarRightBtn extends React.PureComponent<TopBarRightBtnProps> {
     render(): React.ReactNode {
-        const { title, icon, active, ...restProps } = this.props;
+        const { title, icon, active, disabled, className, ...restProps } = this.props;
 
         return (
-            <Tooltip placement="bottom" title={title}>
-                <button className="topbar-content-right-cell" {...restProps}>
-                    <img
-                        src={
-                            require(`../assets/image/${icon}${active ? "-active" : ""}.svg`).default
-                        }
-                        alt={title}
-                    />
-                </button>
-            </Tooltip>
+            <button
+                {...restProps}
+                title={title}
+                disabled={disabled}
+                className={classNames("topbar-content-right-cell", className)}
+            >
+                <img
+                    src={
+                        require(`../assets/image/${icon}${
+                            disabled ? "-disabled" : active ? "-active" : ""
+                        }.svg`).default
+                    }
+                    alt={title}
+                />
+            </button>
         );
     }
 }

@@ -8,6 +8,7 @@
     justify-content: center;
     flex-direction: row;
     height: 50px;
+    padding: 0 8px;
     font-size: 16px;
     // Windows 下菜单栏在窗口以内，需要分割
     border-top: 0.5px #dbe1ea solid;
@@ -34,30 +35,6 @@
     margin: 0 (@topbar-content-right-cell-gap / 2) 0 auto;
 }
 
-.topbar-title {
-    margin: 0 16px;
-    padding: 0;
-    font-size: 16px;
-    font-weight: normal;
-    color: #444e60;
-}
-
-.topbar-network-status {
-    margin: 1px 16px 0;
-    font-size: 12px;
-    color: #7a7b7c;
-}
-
-.topbar-network-delay {
-    margin-right: 16px;
-}
-
-.topbar-network-signal {
-    img {
-        margin-left: 3px;
-    }
-}
-
 .topbar-content-right-cell {
     display: block;
     width: @topbar-content-right-cell-width;
@@ -82,4 +59,10 @@
     &:hover {
         background: rgba(33, 35, 36, 0.1);
     }
+}
+
+.topbar-divider {
+    width: 0.5px;
+    height: 20px;
+    background: #dbe1ea;
 }
