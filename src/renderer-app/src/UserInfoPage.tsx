@@ -14,7 +14,11 @@ export enum TabMap {
     About = "关于我们",
 }
 
-export default class UserInfoPage extends React.PureComponent<{}, { tab: TabMap }> {
+export type UserInfoPageProps = {
+    tab: TabMap
+}
+
+export default class UserInfoPage extends React.PureComponent<{}, UserInfoPageProps> {
     constructor(props: {}) {
         super(props)
         this.state = { tab: TabMap.UserInfo }

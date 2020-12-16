@@ -9,9 +9,9 @@ import settingActive from "../assets/image/setting-active.svg"
 import { Link } from "react-router-dom";
 
 export enum MainMenuKey {
-    infoPath = "/user/",
-    myPath = "/info/",
-    settingPath = "/setting/"
+    InfoPath = "/user/",
+    MyPath = "/info/",
+    SettingPath = "/setting/"
 }
 
 export class MainMenu extends React.PureComponent<{}> {
@@ -28,18 +28,18 @@ export class MainMenu extends React.PureComponent<{}> {
         
         return (
             <Menu className="menu-container" defaultSelectedKeys={[key]}>
-                <Menu.Item icon={<img src={key === "/user/" ? homeActive : home} />} key={MainMenuKey.infoPath}>
+                <Menu.Item icon={<img src={key === "/user/" ? homeActive : home} />} key={MainMenuKey.InfoPath}>
                     <Link to="/user/">
                         <span>首页</span>
                     </Link>    
                 </Menu.Item>
-                <Menu.Item icon={<img src={key === "/info/" ? userActive : user} />} key={MainMenuKey.myPath}>
+                <Menu.Item icon={<img src={key === "/info/" ? userActive : user} />} key={MainMenuKey.MyPath}>
                     <Link to="/info/">
                         <span>我的</span>
                     </Link>
                 </Menu.Item>
-                <Menu.Item icon={<img src={key === "/setting/" ? settingActive : setting} />} key={MainMenuKey.settingPath}>
-                    <Link to="/setting/">
+                <Menu.Item icon={<img src={key === "/setting/" ? settingActive : setting} />} key={MainMenuKey.SettingPath}>
+                    <Link to="/setting/normal/">
                         <span>设置</span>
                     </Link>
                 </Menu.Item>
