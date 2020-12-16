@@ -8,11 +8,7 @@ import room_type from "./assets/image/room-type.svg";
 import docs_icon from "./assets/image/docs-icon.svg";
 import { Button } from "antd";
 
-export default class RoomDetailPage extends React.PureComponent<{}, {}> {
-    public constructor(props: {}) {
-        super(props);
-    }
-
+export default class RoomDetailPage extends React.PureComponent {
     public render(): React.ReactNode {
         return (
             <MainPageLayout>
