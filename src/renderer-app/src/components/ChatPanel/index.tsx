@@ -23,8 +23,9 @@ export interface ChatPanelProps
 
 export interface ChatPanelState {
     messages: ChatMessageItem[];
-    users: RTMUser[];
     creatorId: string | null;
+    users: RTMUser[];
+    currentUser: RTMUser | null;
 }
 
 export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
@@ -33,8 +34,9 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
 
     state: ChatPanelState = {
         messages: [],
-        users: [],
         creatorId: this.props.identity === Identity.creator ? this.props.userId : null,
+        users: [],
+        currentUser: null,
     };
 
     async componentDidMount() {
@@ -144,7 +146,8 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
 
     render() {
         const { identity, userId, channelId, className, ...restProps } = this.props;
-        const { creatorId, messages, users } = this.state;
+        const { creatorId, messages, users, currentUser } = this.state;
+        console.log(currentUser);
         return (
             <div {...restProps} className={classNames("chat-panel", className)}>
                 <Tabs defaultActiveKey="messages" tabBarGutter={0}>
@@ -153,6 +156,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                             userId={userId}
                             identity={identity}
                             messages={messages}
+                            isRaiseHand={!!currentUser?.isRaiseHand}
                             onMessageSend={this.onMessageSend}
                             onLoadMore={this.updateHistory}
                             onSwitchHandRaising={this.onSwitchHandRaising}
@@ -280,9 +284,12 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                 isRaiseHand: !user.isRaiseHand,
             }),
             () => {
-                const user = this.state.users.find(user => user.id === userId);
-                if (user) {
-                    this.rtm.sendMessage({ t: RTMessageType.RaiseHand, v: !!user.isRaiseHand });
+                const { currentUser } = this.state;
+                if (currentUser) {
+                    this.rtm.sendMessage({
+                        t: RTMessageType.RaiseHand,
+                        v: !!currentUser.isRaiseHand,
+                    });
                 }
             },
         );
@@ -302,11 +309,11 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
         this.setState(state => {
             const { users, creatorId } = state;
             const { userId } = this.props;
-            const newUsers: RTMUser[] = [];
             const speakingUsers: RTMUser[] = [];
             const raiseHandUsers: RTMUser[] = [];
-            let creator: RTMUser | undefined;
-            let me: RTMUser | undefined;
+            const middle: RTMUser[] = [];
+            const newUsers: RTMUser[] = [];
+            let currentUser: RTMUser | null = null;
 
             let hasUpdate = false;
 
@@ -319,28 +326,33 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                     }
                 }
 
+                const isCurrentUser = user.id === userId;
+                if (isCurrentUser) {
+                    currentUser = user;
+                }
+
                 if (user.isSpeaking) {
                     speakingUsers.push(user);
                 } else if (user.isRaiseHand) {
                     raiseHandUsers.push(user);
                 } else if (user.id === creatorId) {
-                    creator = user;
-                } else if (user.id === userId) {
-                    me = user;
+                    if (middle.length < 0 || user !== middle[0]) {
+                        middle.unshift(user);
+                    }
+                } else if (isCurrentUser) {
+                    if (middle.length < 0 || user !== middle[0]) {
+                        middle.push(user);
+                    }
                 } else {
                     newUsers.push(user);
                 }
             }
 
             if (!shouldChange || hasUpdate) {
-                const middle = [];
-                if (creator) {
-                    middle.push(creator);
-                }
-                if (me && me !== middle[0]) {
-                    middle.push(me);
-                }
-                return { users: [...speakingUsers, ...raiseHandUsers, ...middle, ...newUsers] };
+                return {
+                    users: [...speakingUsers, ...raiseHandUsers, ...middle, ...newUsers],
+                    currentUser,
+                };
             }
 
             return null;
