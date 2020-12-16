@@ -20,46 +20,6 @@ export default class UserScheduledPage extends Component<{}, UserScheduledPageSt
             isChecked: false,
         };
     }
-    private renderCycle = (): React.ReactNode => {
-        const { isChecked } = this.state;
-
-        if (!isChecked) {
-            return null;
-        }
-
-        return (
-            <>
-                <div className="user-schedule-tips">
-                    <div className="user-schedule-tips-title">每周一</div>
-                    <div className="user-schedule-tips-type">房间类型：一对一</div>
-                    <div className="user-schedule-tips-inner">
-                        结束于 2020/11/30 周一，共 7 场会议
-                    </div>
-                </div>
-                <div className="user-schedule-name">重复频率</div>
-                <div className="user-schedule-inner">
-                    <Input />
-                </div>
-                <div className="user-schedule-name">结束重复</div>
-                <div className="user-schedule-inner">
-                    <Select
-                        mode="multiple"
-                        allowClear
-                        className="user-schedule-inner-select"
-                        placeholder="Please select"
-                    >
-                        <Option value="china" label="China">
-                            <div className="demo-option-label-item">China (中国)</div>
-                        </Option>
-                    </Select>
-                </div>
-            </>
-        );
-    };
-
-    private handleCheckbox = (e: any): void => {
-        this.setState({ isChecked: e.target.checked });
-    };
 
     public render(): React.ReactNode {
         return (
@@ -180,4 +140,45 @@ export default class UserScheduledPage extends Component<{}, UserScheduledPageSt
             </MainPageLayout>
         );
     }
+
+    private renderCycle = (): React.ReactNode => {
+        const { isChecked } = this.state;
+
+        if (!isChecked) {
+            return null;
+        }
+
+        return (
+            <>
+                <div className="user-schedule-tips">
+                    <div className="user-schedule-tips-title">每周一</div>
+                    <div className="user-schedule-tips-type">房间类型：一对一</div>
+                    <div className="user-schedule-tips-inner">
+                        结束于 2020/11/30 周一，共 7 场会议
+                    </div>
+                </div>
+                <div className="user-schedule-name">重复频率</div>
+                <div className="user-schedule-inner">
+                    <Input />
+                </div>
+                <div className="user-schedule-name">结束重复</div>
+                <div className="user-schedule-inner">
+                    <Select
+                        mode="multiple"
+                        allowClear
+                        className="user-schedule-inner-select"
+                        placeholder="Please select"
+                    >
+                        <Option value="china" label="China">
+                            <div className="demo-option-label-item">China (中国)</div>
+                        </Option>
+                    </Select>
+                </div>
+            </>
+        );
+    };
+
+    private handleCheckbox = (e: any): void => {
+        this.setState({ isChecked: e.target.checked });
+    };
 }

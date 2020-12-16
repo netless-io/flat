@@ -16,6 +16,7 @@ import UserIndexPage from "./UserIndexPage";
 import UserInfoPage from "./UserInfoPage";
 import UserSetPage from "./UserSetPage";
 import UserScheduledPage from "./UserScheduledPage";
+import RoomDetailPage from "./RoomDetailPage";
 
 export class AppRoutes extends React.Component<{}, {}> {
     public componentDidCatch(error: any): void {
@@ -45,6 +46,7 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route exact path="/" component={IndexPage} />
                     <Route exact path="/user/" component={UserIndexPage} />
                     <Route exact path="/user/scheduled/" component={UserScheduledPage} />
+                    <Route exact path="/user/room/" component={RoomDetailPage} />
                     <Route exact path="/info/" component={UserInfoPage} />
                     <Route exact path="/setting/" component={UserSetPage} />
                 </Switch>
