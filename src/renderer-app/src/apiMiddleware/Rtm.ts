@@ -39,12 +39,74 @@ export interface RtmRESTfulQueryResourceResponse {
     result: string;
 }
 
-export interface RTMessage {
+export enum RTMessageType {
+    // Order MUST be fixed.
+    // New items MUST be added at the end of the list.
+    Text,
+    RaiseHand,
+    CancelHandRaising,
+    Ban,
+}
+
+export interface RTMessageBase {
     uuid: string;
     timestamp: number;
-    text: string;
     userId: string;
 }
+
+export interface RTMessageText extends RTMessageBase {
+    type: RTMessageType.Text;
+    value: string;
+}
+
+/** Student raises hand */
+export interface RTMessageRaiseHand extends RTMessageBase {
+    type: RTMessageType.RaiseHand;
+    value: boolean;
+}
+
+/** Teacher allows hand raising  */
+export interface RTMessageCancelHandRaising extends RTMessageBase {
+    type: RTMessageType.CancelHandRaising;
+    value?: true;
+}
+
+/** Ban students for sending messages */
+export interface RTMessageBan extends RTMessageBase {
+    type: RTMessageType.Ban;
+    value: boolean;
+}
+
+export type RTMessage =
+    | RTMessageText
+    | RTMessageRaiseHand
+    | RTMessageCancelHandRaising
+    | RTMessageBan;
+
+export interface RTMRawMessageText {
+    t: RTMessageType.Text;
+    v: string;
+}
+
+export interface RTMRawMessageRaiseHand {
+    t: RTMessageType.RaiseHand;
+    v: boolean;
+}
+
+export interface RTMRawMessageCancelHandRaising {
+    t: RTMessageType.CancelHandRaising;
+}
+
+export interface RTMRawMessageBan {
+    t: RTMessageType.Ban;
+    v: boolean;
+}
+
+export type RTMRawMessage =
+    | RTMRawMessageText
+    | RTMRawMessageRaiseHand
+    | RTMRawMessageCancelHandRaising
+    | RTMRawMessageBan;
 
 export class Rtm {
     static MessageType = AgoraRTM.MessageType;
@@ -89,6 +151,36 @@ export class Rtm {
         this.channelId = null;
     }
 
+    async sendMessage(message: RTMRawMessage): Promise<void>;
+    async sendMessage(
+        message: RTMRawMessage,
+        peerId: string,
+    ): Promise<{ hasPeerReceived: boolean }>;
+    async sendMessage(
+        message: RTMRawMessage,
+        peerId?: string,
+    ): Promise<{ hasPeerReceived: boolean } | void> {
+        const text = JSON.stringify(message);
+        if (peerId !== undefined) {
+            return this.client.sendMessageToPeer(
+                {
+                    messageType: AgoraRTM.MessageType.TEXT,
+                    text,
+                },
+                peerId,
+                { enableHistoricalMessaging: true },
+            );
+        } else if (this.channel) {
+            return this.channel.sendMessage(
+                {
+                    messageType: AgoraRTM.MessageType.TEXT,
+                    text,
+                },
+                { enableHistoricalMessaging: true },
+            );
+        }
+    }
+
     async fetchHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
         if (!this.channelId) {
             throw new Error("RTM is not initiated. Call `rtm.init` first.");
@@ -102,7 +194,7 @@ export class Rtm {
                     end_time: new Date(endTime).toISOString(),
                 },
                 offset: 0,
-                limit: 50,
+                limit: 100,
                 order: "desc",
             },
         );
@@ -117,12 +209,28 @@ export class Rtm {
                 ).then(response => (response.code === "ok" ? response : Promise.reject(response)));
             });
         return result.messages
-            .map(message => ({
-                uuid: uuidv4(),
-                timestamp: message.ms,
-                text: message.payload,
-                userId: message.src,
-            }))
+            .map(message => {
+                let type = RTMessageType.Text;
+                let value: any = message.payload;
+
+                try {
+                    const m = JSON.parse(message.payload);
+                    if (m.t !== undefined) {
+                        type = m.t;
+                        value = m.v;
+                    }
+                } catch (e) {
+                    // ignore legacy type
+                }
+
+                return {
+                    type,
+                    value,
+                    uuid: uuidv4(),
+                    timestamp: message.ms,
+                    userId: message.src,
+                };
+            })
             .reverse();
     }
 

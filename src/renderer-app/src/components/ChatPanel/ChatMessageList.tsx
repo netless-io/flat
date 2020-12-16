@@ -9,19 +9,19 @@ import {
     Index,
     IndexRange,
 } from "react-virtualized";
-import ChatMessage, { RTMessage } from "./ChatMessage";
+import ChatMessage, { ChatMessageItem } from "./ChatMessage";
 
 export type OnLoadMore = (range: IndexRange) => Promise<void>;
 
 export interface ChatMessageListProps {
     userId: string;
-    messages: RTMessage[];
+    messages: ChatMessageItem[];
     onLoadMore: OnLoadMore;
 }
 
 export interface ChatMessageListState {
     lastMessagesCount: number;
-    lastLatestMessage?: RTMessage | null;
+    lastLatestMessage?: ChatMessageItem | null;
     scrollToIndex?: number;
     clearScrollToIndex: boolean;
 }

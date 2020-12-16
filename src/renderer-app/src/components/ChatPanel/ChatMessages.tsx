@@ -1,43 +1,36 @@
 import React from "react";
 import { ChatTypeBox, ChatTypeBoxProps } from "./ChatTypeBox";
-import { RTMessage } from "./ChatMessage";
+import { ChatMessageItem } from "./ChatMessage";
 import { ChatMessageList, OnLoadMore } from "./ChatMessageList";
 import noHand from "../../assets/image/no-hand.svg";
 import "./ChatMessages.less";
+import { Identity } from "../../utils/localStorage/room";
 
 export interface ChatMessagesProps {
     userId: string;
     identity: ChatTypeBoxProps["identity"];
-    messages: RTMessage[];
+    messages: ChatMessageItem[];
+    isShowCancelHandRaising: boolean;
     onMessageSend: (text: string) => Promise<void>;
     onLoadMore: OnLoadMore;
+    onCancelHandRaising: () => void;
+    onSwitchHandRaising: () => void;
 }
 
 export interface ChatMessageState {
     isBan: boolean;
     isRaiseHand: boolean;
-    isAllowRaiseHand: boolean;
 }
 
 export class ChatMessages extends React.PureComponent<ChatMessagesProps, ChatMessageState> {
     state = {
         isBan: false,
         isRaiseHand: false,
-        isAllowRaiseHand: true,
     };
+
     // @TODO 实现禁言功能，需要后端配合
     toogleBan = () => {
         this.setState(state => ({ isBan: !state.isBan }));
-    };
-
-    // @TODO 实现老师端举手功能
-    toggleAllowRaiseHand = () => {
-        this.setState(state => ({ isAllowRaiseHand: !state.isAllowRaiseHand }));
-    };
-
-    // @TODO 实现学生端举手功能
-    toggleRaiseHand = () => {
-        this.setState(state => ({ isRaiseHand: !state.isRaiseHand }));
     };
 
     renderDefault(): React.ReactNode {
@@ -45,15 +38,24 @@ export class ChatMessages extends React.PureComponent<ChatMessagesProps, ChatMes
     }
 
     render(): React.ReactNode {
-        const { identity, userId, messages, onMessageSend, onLoadMore } = this.props;
-        const { isAllowRaiseHand } = this.state;
+        const {
+            isShowCancelHandRaising,
+            identity,
+            userId,
+            messages,
+            onMessageSend,
+            onLoadMore,
+            onCancelHandRaising,
+            onSwitchHandRaising,
+        } = this.props;
+
         return (
             <div className="chat-messages-wrap">
-                {isAllowRaiseHand && (
+                {isShowCancelHandRaising && identity === Identity.creator && (
                     <div className="chat-messages-cancel-hands-wrap">
                         <button
                             className="chat-messages-cancel-hands"
-                            onClick={this.toggleAllowRaiseHand}
+                            onClick={onCancelHandRaising}
                         >
                             <img src={noHand} alt="cancel hand raising" />
                             取消举手
@@ -79,7 +81,7 @@ export class ChatMessages extends React.PureComponent<ChatMessagesProps, ChatMes
                     isRaiseHand={this.state.isRaiseHand}
                     onBanChange={this.toogleBan}
                     onSend={onMessageSend}
-                    onRaiseHandChange={this.toggleRaiseHand}
+                    onRaiseHandChange={onSwitchHandRaising}
                 />
             </div>
         );

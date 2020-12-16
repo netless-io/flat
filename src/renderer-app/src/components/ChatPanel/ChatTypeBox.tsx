@@ -13,7 +13,7 @@ export interface ChatTypeBoxProps {
     isRaiseHand?: boolean;
     onBanChange: () => void;
     onSend: (text: string) => Promise<void>;
-    onRaiseHandChange?: () => void;
+    onRaiseHandChange: () => void;
 }
 
 export interface ChatTypeBoxState {

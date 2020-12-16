@@ -4,7 +4,10 @@ import { ChatUser, ChatUserProps, RTMUser } from "./ChatUser";
 import "./ChatUsers.less";
 
 export interface ChatUsersProps
-    extends Pick<ChatUserProps, "identity" | "userId" | "onAllowSpeaking" | "onEndSpeaking"> {
+    extends Pick<
+        ChatUserProps,
+        "creatorId" | "identity" | "userId" | "onAllowSpeaking" | "onEndSpeaking"
+    > {
     users: RTMUser[];
 }
 

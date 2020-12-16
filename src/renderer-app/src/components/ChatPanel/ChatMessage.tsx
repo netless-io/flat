@@ -3,16 +3,16 @@ import classNames from "classnames";
 
 import "./ChatMessage.less";
 
-export interface RTMessage {
+export interface ChatMessageItem {
     uuid: string;
     timestamp: number;
-    text: string;
+    value: string;
     userId: string;
 }
 
 export interface ChatMessageProps {
     userId: string;
-    message: RTMessage;
+    message: ChatMessageItem;
     onLoaded: () => void;
 }
 
@@ -31,7 +31,7 @@ export class ChatMessage extends React.Component<ChatMessageProps> {
                 })}
             >
                 <div className="chat-message-user">{message.userId}</div>
-                <div className="chat-message-bubble">{message.text}</div>
+                <div className="chat-message-bubble">{message.value}</div>
             </div>
         );
     }

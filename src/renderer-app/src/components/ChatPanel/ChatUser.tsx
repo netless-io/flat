@@ -12,6 +12,7 @@ export interface RTMUser {
 
 export interface ChatUserProps {
     identity: Identity;
+    creatorId?: string | null;
     userId: string;
     user: RTMUser;
     onAllowSpeaking?: (uid: string) => void;
@@ -20,7 +21,7 @@ export interface ChatUserProps {
 
 export class ChatUser extends React.PureComponent<ChatUserProps> {
     render(): React.ReactNode {
-        const { identity, userId, user } = this.props;
+        const { creatorId, identity, userId, user } = this.props;
         return (
             <div className="chat-user">
                 <img
@@ -29,9 +30,7 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
                     alt={`User ${user.name || user.id}`}
                 />
                 {user.name || user.id}
-                {userId === user.id ? (
-                    <span className="chat-user-status is-teacher">(老师)</span>
-                ) : user.isSpeaking ? (
+                {user.isSpeaking ? (
                     <>
                         <span className="chat-user-status is-speaking">(发言中)</span>
                         {identity === Identity.creator && (
@@ -55,6 +54,10 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
                             </button>
                         )}
                     </>
+                ) : userId === user.id ? (
+                    <span className="chat-user-status is-teacher">(我)</span>
+                ) : creatorId === user.id ? ( // @TODO 等待账号系统
+                    <span className="chat-user-status is-teacher">(老师)</span>
                 ) : null}
             </div>
         );
