@@ -21,7 +21,7 @@ class UserIndexPage extends React.Component<React.PropsWithChildren<RouteCompone
 
     public render(): React.ReactNode {
         return (
-            <MainPageLayout>
+            <MainPageLayout columnLayout>
                 <MainRoomMenu/>
                 <div className="main-room-layout">
                     <MainRoomList/>

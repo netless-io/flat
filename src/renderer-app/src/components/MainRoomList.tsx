@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import "./MainRoomList.less";
-import { Button } from "antd";
+import { Button, Dropdown, Menu } from "antd";
+import { Link } from "react-router-dom";
 
 export type MainRoomListStates = {
     activeRoomList: RoomListSort;
@@ -30,6 +31,16 @@ export class MainRoomList extends PureComponent<{}, MainRoomListStates> {
     };
 
     public render() {
+        const menu = (
+            <Menu>
+                <Menu.Item>
+                    <Link to={"/user/room/"}>房间详情</Link>
+                </Menu.Item>
+                <Menu.Item>修改房间</Menu.Item>
+                <Menu.Item>取消房间</Menu.Item>
+                <Menu.Item>复制邀请</Menu.Item>
+            </Menu>
+        );
         return (
             <div className="room-list-container">
                 <div className="room-list-header">
@@ -73,7 +84,9 @@ export class MainRoomList extends PureComponent<{}, MainRoomListStates> {
                             <div className="room-list-cell-time">12:30 ~ 13: 30</div>
                         </div>
                         <div className="room-list-cell-right">
-                            <Button className="room-list-cell-more">更多</Button>
+                            <Dropdown overlay={menu}>
+                                <Button className="room-list-cell-more">更多</Button>
+                            </Dropdown>
                             <Button className="room-list-cell-enter" type="primary">
                                 进入房间
                             </Button>
