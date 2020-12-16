@@ -145,30 +145,29 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     render() {
         const { identity, userId, channelId, className, ...restProps } = this.props;
         const { creatorId, messages, users } = this.state;
-
         return (
             <div {...restProps} className={classNames("chat-panel", className)}>
                 <Tabs defaultActiveKey="messages" tabBarGutter={0}>
                     <Tabs.TabPane tab="消息列表" key="messages">
                         <ChatMessages
-                            isShowCancelHandRaising={this.showCancelHandRaising(users)}
                             userId={userId}
                             identity={identity}
                             messages={messages}
                             onMessageSend={this.onMessageSend}
                             onLoadMore={this.updateHistory}
-                            onCancelHandRaising={this.onCancelHandRaising}
                             onSwitchHandRaising={this.onSwitchHandRaising}
                         />
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="用户列表" key="users">
                         <ChatUsers
+                            isShowCancelHandRaising={this.showCancelHandRaising(users)}
                             creatorId={creatorId}
                             identity={identity}
                             userId={userId}
                             users={users}
                             onAllowSpeaking={this.onAllowSpeaking}
                             onEndSpeaking={this.onEndSpeaking}
+                            onCancelHandRaising={this.onCancelHandRaising}
                         />
                     </Tabs.TabPane>
                 </Tabs>
