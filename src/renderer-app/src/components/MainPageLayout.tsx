@@ -1,8 +1,11 @@
 import React from "react";
 import "./MainPageLayout.less";
 import { MainMenu } from "./MainMenu";
+import classNames from "classnames";
 
-export type MainPageLayoutProps = {};
+export type MainPageLayoutProps = {
+    columnLayout?: boolean
+};
 
 export default class MainPageLayout extends React.PureComponent<MainPageLayoutProps> {
     public render() {
@@ -11,7 +14,7 @@ export default class MainPageLayout extends React.PureComponent<MainPageLayoutPr
                 <div className="layout-container-menu">
                     <MainMenu />
                 </div>
-                <div className="layout-container-content">{this.props.children}</div>
+                <div className={classNames("layout-container-content", { 'flex-column': this.props.columnLayout })}>{this.props.children}</div>
             </div>
         );
     }
