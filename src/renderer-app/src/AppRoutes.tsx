@@ -47,7 +47,6 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route exact path="/user/scheduled/" component={UserScheduledPage} />
                     <Route exact path="/info/" component={UserInfoPage} />
                     <Route path="/setting/" component={UserSetPage} />
-
                 </Switch>
             </HashRouter>
         );

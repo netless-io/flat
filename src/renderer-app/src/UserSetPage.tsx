@@ -24,11 +24,6 @@ export enum SettingMenuKey {
 }
 
 export default class UserSetPage extends React.PureComponent<RouteComponentProps<{}>> {
-    constructor(props: RouteComponentProps<{}>) {
-        super(props);
-        this.state = {};
-        console.log("construct UserSetPage");
-    }
 
     public renderSettingMenu() {
         const { SubMenu } = Menu;
