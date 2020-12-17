@@ -2,6 +2,27 @@
     display: flex;
     flex: 1;
     width: 240px;
+
+    .ant-menu-item {
+        &:first-child {
+            margin-top: 24px;
+        }
+        a:hover {
+            color: #444E60;
+        }
+    }
+
+    .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+        background: #F3F6F9;
+        a {
+            color: #444E60;
+        }
+    }
+
+    .ant-menu-submenu-title:hover {
+        color: #444E60;
+    }
+    
 }
 
 .setting-content-container {

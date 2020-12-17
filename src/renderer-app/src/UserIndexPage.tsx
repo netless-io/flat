@@ -8,9 +8,6 @@ import {MainRoomList} from "./components/MainRoomList";
 import {MainRoomHistory} from "./components/MainRoomHistory";
 
 class UserIndexPage extends React.Component<React.PropsWithChildren<RouteComponentProps>> {
-    public constructor(props: RouteComponentProps<{}>) {
-        super(props);
-    }
 
     public componentDidMount() {
         ipcAsyncByMain("set-win-size", {
