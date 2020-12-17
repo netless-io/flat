@@ -4,7 +4,13 @@ import classNames from "classnames";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import memoizeOne from "memoize-one";
-import { Rtm, RTMessage, RTMessageText, RTMessageType } from "../../apiMiddleware/Rtm";
+import {
+    Rtm,
+    RTMessage,
+    RTMessageText,
+    RTMessageType,
+    RTMRawMessage,
+} from "../../apiMiddleware/Rtm";
 import { generateAvatar } from "../../utils/generateAvatar";
 import { Identity } from "../../utils/localStorage/room";
 import { ChatMessages, ChatMessagesProps } from "./ChatMessages";
@@ -44,22 +50,24 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
         const channel = await this.rtm.init(userId, channelId);
         channel.on("ChannelMessage", (msg, senderId) => {
             if (msg.messageType === Rtm.MessageType.TEXT) {
-                let type = RTMessageType.Text;
-                let value: any = msg.text;
+                const parsedMessage: RTMRawMessage = {
+                    t: RTMessageType.Text as RTMessageType,
+                    v: msg.text as any,
+                };
 
                 try {
                     const m = JSON.parse(msg.text);
                     if (m.t !== undefined) {
-                        type = m.t;
-                        value = m.v;
+                        parsedMessage.t = m.t;
+                        parsedMessage.v = m.v;
                     }
                 } catch (e) {
                     // ignore legacy type
                 }
 
-                switch (type) {
+                switch (parsedMessage.t) {
                     case RTMessageType.Text: {
-                        this.addMessage(value, senderId);
+                        this.addMessage(parsedMessage.v, senderId);
                         break;
                     }
                     case RTMessageType.CancelHandRaising: {
@@ -73,9 +81,23 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                             user => user.id === senderId,
                             user => ({
                                 ...user,
-                                isRaiseHand: value,
+                                isRaiseHand: parsedMessage.v,
                             }),
                         );
+                        break;
+                    }
+                    case RTMessageType.Speak: {
+                        if (senderId === this.state.creatorId) {
+                            const { uid, speak } = parsedMessage.v;
+                            this.updateUsers(
+                                user => user.id === uid,
+                                user => ({
+                                    ...user,
+                                    isSpeaking: speak,
+                                    isRaiseHand: false,
+                                }),
+                            );
+                        }
                         break;
                     }
                     default:
@@ -147,7 +169,6 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     render() {
         const { identity, userId, channelId, className, ...restProps } = this.props;
         const { creatorId, messages, users, currentUser } = this.state;
-        console.log(currentUser);
         return (
             <div {...restProps} className={classNames("chat-panel", className)}>
                 <Tabs defaultActiveKey="messages" tabBarGutter={0}>
@@ -261,15 +282,47 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
         );
     };
 
-    private onAllowSpeaking(uid: string): void {
+    private onAllowSpeaking = (uid: string): void => {
         // @TODO 允许学生发音
-        console.log(`Allow user ${uid} to speak.`);
-    }
+        alert(`允许用户 ${uid} 发言`);
+        this.updateUsers(
+            user => user.id === uid,
+            user => ({
+                ...user,
+                isSpeaking: true,
+            }),
+            () => {
+                this.rtm.sendMessage({
+                    t: RTMessageType.Speak,
+                    v: {
+                        uid,
+                        speak: true,
+                    },
+                });
+            },
+        );
+    };
 
-    private onEndSpeaking(uid: string): void {
+    private onEndSpeaking = (uid: string): void => {
         // @TODO 结束学生发音
-        console.log(`End user ${uid} speaking.`);
-    }
+        this.updateUsers(
+            user => user.id === uid,
+            user => ({
+                ...user,
+                isRaiseHand: false,
+                isSpeaking: false,
+            }),
+            () => {
+                this.rtm.sendMessage({
+                    t: RTMessageType.Speak,
+                    v: {
+                        uid,
+                        speak: false,
+                    },
+                });
+            },
+        );
+    };
 
     // Current user who is a student raises hand
     private onSwitchHandRaising = (): void => {

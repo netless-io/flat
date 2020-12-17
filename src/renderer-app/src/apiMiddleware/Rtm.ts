@@ -46,6 +46,7 @@ export enum RTMessageType {
     RaiseHand,
     CancelHandRaising,
     Ban,
+    Speak,
 }
 
 export interface RTMessageBase {
@@ -77,11 +78,21 @@ export interface RTMessageBan extends RTMessageBase {
     value: boolean;
 }
 
+/** Teacher allows a student to speak */
+export interface RTMessageSpeak extends RTMessageBase {
+    type: RTMessageType.Speak;
+    value: {
+        uid: string;
+        speak: boolean;
+    };
+}
+
 export type RTMessage =
     | RTMessageText
     | RTMessageRaiseHand
     | RTMessageCancelHandRaising
-    | RTMessageBan;
+    | RTMessageBan
+    | RTMessageSpeak;
 
 export interface RTMRawMessageText {
     t: RTMessageType.Text;
@@ -95,6 +106,7 @@ export interface RTMRawMessageRaiseHand {
 
 export interface RTMRawMessageCancelHandRaising {
     t: RTMessageType.CancelHandRaising;
+    v?: true;
 }
 
 export interface RTMRawMessageBan {
@@ -102,11 +114,20 @@ export interface RTMRawMessageBan {
     v: boolean;
 }
 
+export interface RTMRawMessageSpeak {
+    t: RTMessageType.Speak;
+    v: {
+        uid: string;
+        speak: boolean;
+    };
+}
+
 export type RTMRawMessage =
     | RTMRawMessageText
     | RTMRawMessageRaiseHand
     | RTMRawMessageCancelHandRaising
-    | RTMRawMessageBan;
+    | RTMRawMessageBan
+    | RTMRawMessageSpeak;
 
 export class Rtm {
     static MessageType = AgoraRTM.MessageType;

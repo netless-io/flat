@@ -15,8 +15,8 @@ export interface ChatUserProps {
     creatorId?: string | null;
     userId: string;
     user: RTMUser;
-    onAllowSpeaking?: (uid: string) => void;
-    onEndSpeaking?: (uid: string) => void;
+    onAllowSpeaking: (uid: string) => void;
+    onEndSpeaking: (uid: string) => void;
 }
 
 export class ChatUser extends React.PureComponent<ChatUserProps> {
@@ -64,16 +64,16 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
     }
 
     private endSpeaking = () => {
-        const { userId, onEndSpeaking } = this.props;
+        const { user, onEndSpeaking } = this.props;
         if (onEndSpeaking) {
-            onEndSpeaking(userId);
+            onEndSpeaking(user.id);
         }
     };
 
     private allowSpeaking = () => {
-        const { userId, onAllowSpeaking } = this.props;
+        const { user, onAllowSpeaking } = this.props;
         if (onAllowSpeaking) {
-            onAllowSpeaking(userId);
+            onAllowSpeaking(user.id);
         }
     };
 }
