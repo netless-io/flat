@@ -364,7 +364,8 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     // Current user who is a student raises hand
     private onSwitchHandRaising = (): void => {
         const { userId, identity } = this.props;
-        if (identity !== Identity.joiner) {
+        const { currentUser } = this.state;
+        if (identity !== Identity.joiner || currentUser?.isSpeaking) {
             return;
         }
         this.updateUsers(
