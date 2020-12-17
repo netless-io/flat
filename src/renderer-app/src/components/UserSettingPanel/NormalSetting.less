@@ -8,11 +8,54 @@
 
 .header-container {
     margin: 24px;
-    &span {
+    span {
         font-size: 16px;
         color: #444E60;
         display: inline-block;
         margin-bottom: 16px;
     }
     border-bottom: #DBE1EA solid 1px;
+}
+
+.inner-container {
+    width: 537px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+
+    .ant-btn-dangerous {
+        width: 128px;
+        margin-left: 400px;
+        margin-top: 100px;
+    }
+
+    >span {
+        color: #7A7B7C;
+    }
+
+    label {
+        margin-top: 24px;
+        color: #444E60;
+    }
+}
+
+.book-notice {
+    .ant-radio-group {
+        margin-left: 72px;
+    }
+}
+
+.select-language {
+    >span {
+        display: block;
+        margin-top: 24px;
+        color: #7A7B7C;
+    }
+    .ant-radio-group {
+        margin-left: 0;
+
+        label {
+            margin-right: 72px;
+        }
+    }
 }
