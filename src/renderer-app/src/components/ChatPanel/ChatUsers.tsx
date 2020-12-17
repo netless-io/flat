@@ -2,7 +2,6 @@ import React from "react";
 import { AutoSizer, List, ListRowRenderer, Size } from "react-virtualized";
 import classNames from "classnames";
 import { ChatUser, ChatUserProps, RTMUser } from "./ChatUser";
-import { Identity } from "../../utils/localStorage/room";
 import noHand from "../../assets/image/no-hand.svg";
 import "./ChatUsers.less";
 
@@ -18,13 +17,13 @@ export interface ChatUsersProps
 
 export class ChatUsers extends React.PureComponent<ChatUsersProps> {
     render(): React.ReactNode {
-        const { users, isShowCancelHandRaising, identity, onCancelHandRaising } = this.props;
+        const { users, isShowCancelHandRaising, onCancelHandRaising } = this.props;
 
         return (
             <div
                 className={classNames("chat-users-wrap", { "has-speaking": users[0]?.isSpeaking })}
             >
-                {isShowCancelHandRaising && identity === Identity.creator && (
+                {isShowCancelHandRaising && (
                     <div className="chat-users-cancel-hands-wrap">
                         <button className="chat-users-cancel-hands" onClick={onCancelHandRaising}>
                             <img src={noHand} alt="cancel hand raising" />

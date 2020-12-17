@@ -150,7 +150,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="用户列表" key="users">
                         <ChatUsers
-                            isShowCancelHandRaising={this.showCancelHandRaising(users)}
+                            isShowCancelHandRaising={this.showCancelHandRaising(users, identity)}
                             creatorId={creatorId}
                             identity={identity}
                             userId={userId}
@@ -300,8 +300,9 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     };
 
     /** show the calcel hand raising button */
-    private showCancelHandRaising = memoizeOne((users: RTMUser[]) =>
-        users.some(user => user.isRaiseHand),
+    private showCancelHandRaising = memoizeOne(
+        (users: RTMUser[], identity: Identity) =>
+            identity === Identity.creator && users.some(user => user.isRaiseHand),
     );
 
     private cancelHandRaising = (): void => {
