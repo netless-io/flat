@@ -67,63 +67,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
         const channel = await this.rtm.init(userId, channelId);
         channel.on("ChannelMessage", (msg, senderId) => {
             if (msg.messageType === Rtm.MessageType.TEXT) {
-                const parsedMessage: RTMRawMessage = {
-                    t: RTMessageType.Text as RTMessageType,
-                    v: msg.text as any,
-                };
-
-                try {
-                    const m = JSON.parse(msg.text);
-                    if (m.t !== undefined) {
-                        parsedMessage.t = m.t;
-                        parsedMessage.v = m.v;
-                    }
-                } catch (e) {
-                    // ignore legacy type
-                }
-
-                switch (parsedMessage.t) {
-                    case RTMessageType.Text: {
-                        this.addMessage(RTMessageType.Text, parsedMessage.v, senderId);
-                        break;
-                    }
-                    case RTMessageType.CancelHandRaising: {
-                        if (senderId === this.state.creatorId && identity === Identity.joiner) {
-                            this.cancelHandRaising();
-                        }
-                        break;
-                    }
-                    case RTMessageType.RaiseHand: {
-                        this.updateUsers(
-                            user => user.id === senderId,
-                            user => ({
-                                ...user,
-                                isRaiseHand: parsedMessage.v,
-                            }),
-                        );
-                        break;
-                    }
-                    case RTMessageType.Speak: {
-                        if (senderId === this.state.creatorId) {
-                            const { uid, speak } = parsedMessage.v;
-                            this.updateUsers(
-                                user => user.id === uid,
-                                user => ({
-                                    ...user,
-                                    isSpeaking: speak,
-                                    isRaiseHand: false,
-                                }),
-                            );
-                        }
-                        break;
-                    }
-                    case RTMessageType.Notice: {
-                        this.addMessage(RTMessageType.Notice, parsedMessage.v, senderId);
-                        break;
-                    }
-                    default:
-                        break;
-                }
+                this.handleChannelMessage(msg.text, senderId);
             }
         });
 
@@ -220,6 +164,67 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
             </div>
         );
     }
+
+    private handleChannelMessage = (rawText: string, senderId: string): void => {
+        const { identity } = this.props;
+        const parsedMessage: RTMRawMessage = {
+            t: RTMessageType.Text as RTMessageType,
+            v: rawText as any,
+        };
+
+        try {
+            const m = JSON.parse(rawText);
+            if (m.t !== undefined) {
+                parsedMessage.t = m.t;
+                parsedMessage.v = m.v;
+            }
+        } catch (e) {
+            // ignore legacy type
+        }
+
+        switch (parsedMessage.t) {
+            case RTMessageType.Text: {
+                this.addMessage(RTMessageType.Text, parsedMessage.v, senderId);
+                break;
+            }
+            case RTMessageType.CancelHandRaising: {
+                if (senderId === this.state.creatorId && identity === Identity.joiner) {
+                    this.cancelHandRaising();
+                }
+                break;
+            }
+            case RTMessageType.RaiseHand: {
+                this.updateUsers(
+                    user => user.id === senderId,
+                    user => ({
+                        ...user,
+                        isRaiseHand: parsedMessage.v,
+                    }),
+                );
+                break;
+            }
+            case RTMessageType.Speak: {
+                if (senderId === this.state.creatorId) {
+                    const { uid, speak } = parsedMessage.v;
+                    this.updateUsers(
+                        user => user.id === uid,
+                        user => ({
+                            ...user,
+                            isSpeaking: speak,
+                            isRaiseHand: false,
+                        }),
+                    );
+                }
+                break;
+            }
+            case RTMessageType.Notice: {
+                this.addMessage(RTMessageType.Notice, parsedMessage.v, senderId);
+                break;
+            }
+            default:
+                break;
+        }
+    };
 
     private updateChannelAttrs = (attrs: { [index: string]: { value: string } }): void => {
         if (attrs.creatorId?.value !== undefined) {
