@@ -1,14 +1,9 @@
 import React from "react";
-import classNames from "classnames";
+import { RTMessage, RTMessageType } from "../../apiMiddleware/Rtm";
 
 import "./ChatMessage.less";
 
-export interface ChatMessageItem {
-    uuid: string;
-    timestamp: number;
-    value: string;
-    userId: string;
-}
+export type ChatMessageItem = RTMessage;
 
 export interface ChatMessageProps {
     userId: string;
@@ -24,12 +19,24 @@ export class ChatMessage extends React.Component<ChatMessageProps> {
     render(): React.ReactNode {
         const { userId, message } = this.props;
 
+        if (message.type === RTMessageType.Notice) {
+            return (
+                <div className="chat-message-line">
+                    <div className="chat-message-notice">{message.value}</div>
+                </div>
+            );
+        }
+
+        if (userId === message.userId) {
+            return (
+                <div className="chat-message-line is-reverse">
+                    <div className="chat-message-bubble">{message.value}</div>
+                </div>
+            );
+        }
+
         return (
-            <div
-                className={classNames("chat-message-line", {
-                    "is-reverse": userId === message.userId,
-                })}
-            >
+            <div className="chat-message-line">
                 <div className="chat-message-user">{message.userId}</div>
                 <div className="chat-message-bubble">{message.value}</div>
             </div>

@@ -38,12 +38,29 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     private rtm = new Rtm();
     private noMoreRemoteMessages = false;
 
-    state: ChatPanelState = {
-        messages: [],
-        creatorId: this.props.identity === Identity.creator ? this.props.userId : null,
-        users: [],
-        currentUser: null,
-    };
+    constructor(props: ChatPanelProps) {
+        super(props);
+
+        const { identity, userId } = this.props;
+        const isCreator = identity === Identity.creator;
+
+        this.state = {
+            messages: isCreator
+                ? [
+                      {
+                          type: RTMessageType.Notice,
+                          uuid: uuidv4(),
+                          timestamp: 0,
+                          value: "点击「开始上课」才能录制并生成回放哦~",
+                          userId,
+                      },
+                  ]
+                : [],
+            creatorId: isCreator ? this.props.userId : null,
+            users: [],
+            currentUser: null,
+        };
+    }
 
     async componentDidMount() {
         const { userId, channelId, identity } = this.props;
@@ -67,7 +84,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
 
                 switch (parsedMessage.t) {
                     case RTMessageType.Text: {
-                        this.addMessage(parsedMessage.v, senderId);
+                        this.addMessage(RTMessageType.Text, parsedMessage.v, senderId);
                         break;
                     }
                     case RTMessageType.CancelHandRaising: {
@@ -98,6 +115,10 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                                 }),
                             );
                         }
+                        break;
+                    }
+                    case RTMessageType.Notice: {
+                        this.addMessage(RTMessageType.Notice, parsedMessage.v, senderId);
                         break;
                     }
                     default:
@@ -232,7 +253,8 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
         }
 
         const textMessages = messages.filter(
-            (message): message is RTMessageText => message.type === RTMessageType.Text,
+            (message): message is RTMessageText =>
+                message.type === RTMessageType.Text || message.type === RTMessageType.Notice,
         );
 
         this.setState(state => ({ messages: [...textMessages, ...state.messages] }));
@@ -240,11 +262,15 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
 
     private onMessageSend = async (text: string): Promise<void> => {
         await this.rtm.sendMessage({ t: RTMessageType.Text, v: text });
-        this.addMessage(text, this.props.userId);
+        this.addMessage(RTMessageType.Text, text, this.props.userId);
     };
 
     /** Add the new message to message list */
-    private addMessage = (text: string, senderId: string): void => {
+    private addMessage = (
+        type: RTMessageType.Text | RTMessageType.Notice,
+        value: string,
+        senderId: string,
+    ): void => {
         this.setState(state => {
             const timestamp = Date.now();
             const messages = [...state.messages];
@@ -253,9 +279,10 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                 insertPoint++;
             }
             messages.splice(insertPoint, 0, {
+                type,
                 uuid: uuidv4(),
                 timestamp,
-                value: text,
+                value,
                 userId: senderId,
             });
             return { messages };

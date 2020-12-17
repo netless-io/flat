@@ -47,6 +47,7 @@ export enum RTMessageType {
     CancelHandRaising,
     Ban,
     Speak,
+    Notice,
 }
 
 export interface RTMessageBase {
@@ -87,12 +88,18 @@ export interface RTMessageSpeak extends RTMessageBase {
     };
 }
 
+export interface RTMessageNotice extends RTMessageBase {
+    type: RTMessageType.Notice;
+    value: string;
+}
+
 export type RTMessage =
     | RTMessageText
     | RTMessageRaiseHand
     | RTMessageCancelHandRaising
     | RTMessageBan
-    | RTMessageSpeak;
+    | RTMessageSpeak
+    | RTMessageNotice;
 
 export interface RTMRawMessageText {
     t: RTMessageType.Text;
@@ -122,12 +129,18 @@ export interface RTMRawMessageSpeak {
     };
 }
 
+export interface RTMRawMessageNotice {
+    t: RTMessageType.Notice;
+    v: string;
+}
+
 export type RTMRawMessage =
     | RTMRawMessageText
     | RTMRawMessageRaiseHand
     | RTMRawMessageCancelHandRaising
     | RTMRawMessageBan
-    | RTMRawMessageSpeak;
+    | RTMRawMessageSpeak
+    | RTMRawMessageNotice;
 
 export class Rtm {
     static MessageType = AgoraRTM.MessageType;
