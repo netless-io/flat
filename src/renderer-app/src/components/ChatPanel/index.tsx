@@ -32,6 +32,7 @@ export interface ChatPanelState {
     creatorId: string | null;
     users: RTMUser[];
     currentUser: RTMUser | null;
+    isBan: boolean;
 }
 
 export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
@@ -50,7 +51,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                       {
                           type: RTMessageType.Notice,
                           uuid: uuidv4(),
-                          timestamp: 0,
+                          timestamp: Date.now(),
                           value: "点击「开始上课」才能录制并生成回放哦~",
                           userId,
                       },
@@ -59,6 +60,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
             creatorId: isCreator ? this.props.userId : null,
             users: [],
             currentUser: null,
+            isBan: false,
         };
     }
 
@@ -133,7 +135,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
 
     render() {
         const { identity, userId, channelId, className, ...restProps } = this.props;
-        const { creatorId, messages, users, currentUser } = this.state;
+        const { creatorId, messages, users, currentUser, isBan } = this.state;
         return (
             <div {...restProps} className={classNames("chat-panel", className)}>
                 <Tabs defaultActiveKey="messages" tabBarGutter={0}>
@@ -143,9 +145,11 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                             identity={identity}
                             messages={messages}
                             isRaiseHand={!!currentUser?.isRaiseHand}
+                            isBan={isBan}
                             onMessageSend={this.onMessageSend}
                             onLoadMore={this.updateHistory}
                             onSwitchHandRaising={this.onSwitchHandRaising}
+                            onBanChange={this.onBanChange}
                         />
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="用户列表" key="users">
@@ -166,7 +170,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     }
 
     private handleChannelMessage = (rawText: string, senderId: string): void => {
-        const { identity } = this.props;
+        const { identity, userId } = this.props;
         const parsedMessage: RTMRawMessage = {
             t: RTMessageType.Text as RTMessageType,
             v: rawText as any,
@@ -201,6 +205,24 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                         isRaiseHand: parsedMessage.v,
                     }),
                 );
+                break;
+            }
+            case RTMessageType.Ban: {
+                if (identity === Identity.joiner) {
+                    this.setState(state => ({
+                        isBan: parsedMessage.v,
+                        messages: [
+                            ...state.messages,
+                            {
+                                type: RTMessageType.Ban,
+                                uuid: uuidv4(),
+                                timestamp: Date.now(),
+                                value: parsedMessage.v,
+                                userId,
+                            },
+                        ],
+                    }));
+                }
                 break;
             }
             case RTMessageType.Speak: {
@@ -266,6 +288,9 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     };
 
     private onMessageSend = async (text: string): Promise<void> => {
+        if (this.state.isBan) {
+            return;
+        }
         await this.rtm.sendMessage({ t: RTMessageType.Text, v: text });
         this.addMessage(RTMessageType.Text, text, this.props.userId);
     };
@@ -358,6 +383,31 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                         speak: false,
                     },
                 });
+            },
+        );
+    };
+
+    private onBanChange = (): void => {
+        const { identity, userId } = this.props;
+        if (identity !== Identity.creator) {
+            return;
+        }
+        this.setState(
+            state => ({
+                isBan: !state.isBan,
+                messages: [
+                    ...state.messages,
+                    {
+                        type: RTMessageType.Ban,
+                        uuid: uuidv4(),
+                        timestamp: Date.now(),
+                        value: !state.isBan,
+                        userId,
+                    },
+                ],
+            }),
+            () => {
+                this.rtm.sendMessage({ t: RTMessageType.Ban, v: this.state.isBan });
             },
         );
     };

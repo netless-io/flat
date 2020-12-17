@@ -9,25 +9,14 @@ export interface ChatMessagesProps {
     identity: ChatTypeBoxProps["identity"];
     messages: ChatMessageItem[];
     isRaiseHand: boolean;
+    isBan: boolean;
     onMessageSend: (text: string) => Promise<void>;
     onLoadMore: OnLoadMore;
     onSwitchHandRaising: () => void;
+    onBanChange: () => void;
 }
 
-export interface ChatMessageState {
-    isBan: boolean;
-}
-
-export class ChatMessages extends React.PureComponent<ChatMessagesProps, ChatMessageState> {
-    state = {
-        isBan: false,
-    };
-
-    // @TODO 实现禁言功能，需要后端配合
-    toogleBan = () => {
-        this.setState(state => ({ isBan: !state.isBan }));
-    };
-
+export class ChatMessages extends React.PureComponent<ChatMessagesProps> {
     renderDefault(): React.ReactNode {
         return <div className="chat-messages-default">说点什么吧...</div>;
     }
@@ -38,9 +27,11 @@ export class ChatMessages extends React.PureComponent<ChatMessagesProps, ChatMes
             userId,
             messages,
             isRaiseHand,
+            isBan,
             onMessageSend,
             onLoadMore,
             onSwitchHandRaising,
+            onBanChange,
         } = this.props;
 
         return (
@@ -60,9 +51,9 @@ export class ChatMessages extends React.PureComponent<ChatMessagesProps, ChatMes
                 </div>
                 <ChatTypeBox
                     identity={identity}
-                    isBan={this.state.isBan}
+                    isBan={isBan}
                     isRaiseHand={isRaiseHand}
-                    onBanChange={this.toogleBan}
+                    onBanChange={onBanChange}
                     onSend={onMessageSend}
                     onRaiseHandChange={onSwitchHandRaising}
                 />

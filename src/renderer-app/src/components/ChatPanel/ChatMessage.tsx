@@ -19,12 +19,25 @@ export class ChatMessage extends React.Component<ChatMessageProps> {
     render(): React.ReactNode {
         const { userId, message } = this.props;
 
-        if (message.type === RTMessageType.Notice) {
-            return (
-                <div className="chat-message-line">
-                    <div className="chat-message-notice">{message.value}</div>
-                </div>
-            );
+        switch (message.type) {
+            case RTMessageType.Notice: {
+                return (
+                    <div className="chat-message-line">
+                        <div className="chat-message-notice">{message.value}</div>
+                    </div>
+                );
+            }
+            case RTMessageType.Ban: {
+                return (
+                    <div className="chat-message-line">
+                        <div className="chat-message-ban">
+                            <span>{message.value ? "已禁言" : "已解除禁言"}</span>
+                        </div>
+                    </div>
+                );
+            }
+            default:
+                break;
         }
 
         if (userId === message.userId) {
