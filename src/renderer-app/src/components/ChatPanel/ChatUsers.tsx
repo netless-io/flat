@@ -18,10 +18,12 @@ export interface ChatUsersProps
 
 export class ChatUsers extends React.PureComponent<ChatUsersProps> {
     render(): React.ReactNode {
-        const { isShowCancelHandRaising, identity, onCancelHandRaising } = this.props;
+        const { users, isShowCancelHandRaising, identity, onCancelHandRaising } = this.props;
 
         return (
-            <div className="chat-users-wrap">
+            <div
+                className={classNames("chat-users-wrap", { "has-speaking": users[0]?.isSpeaking })}
+            >
                 {isShowCancelHandRaising && identity === Identity.creator && (
                     <div className="chat-users-cancel-hands-wrap">
                         <button className="chat-users-cancel-hands" onClick={onCancelHandRaising}>

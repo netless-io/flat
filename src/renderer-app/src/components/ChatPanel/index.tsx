@@ -312,11 +312,16 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     private onAllowSpeaking = (uid: string): void => {
         // @TODO 允许学生发音
         alert(`允许用户 ${uid} 发言`);
+        if (this.state.users[0]?.isSpeaking) {
+            // only one user is allowed
+            return;
+        }
         this.updateUsers(
             user => user.id === uid,
             user => ({
                 ...user,
                 isSpeaking: true,
+                isRaiseHand: false,
             }),
             () => {
                 this.rtm.sendMessage({

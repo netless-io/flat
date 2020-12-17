@@ -1,6 +1,12 @@
 .chat-users-wrap {
     position: relative;
     height: 100%;
+
+    &.has-speaking {
+        .chat-user-ctl-btn.is-hand-raising {
+            display: none !important;
+        }
+    }
 }
 
 .chat-users-cancel-hands-wrap {
