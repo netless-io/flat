@@ -15,7 +15,7 @@ import MicrophoneTesting from "./components/UserSettingPanel/MicrophoneTesting";
 export enum SettingMenuKey {
     NormalSetting = "/setting/normal/",
     RoomSetting = "/setting/room/",
-    HotkeySetting = "/setting/hotkey/",
+    HotKeySetting = "/setting/hotkey/",
     FileSetting = "/setting/file/",
     SystemTesting = "/setting/system/",
     CameraTesting = "/setting/camera/",
@@ -36,7 +36,7 @@ export default class UserSetPage extends React.PureComponent<RouteComponentProps
                 <Menu.Item key={SettingMenuKey.RoomSetting}>
                     <Link to="/setting/room/">房间设置</Link>
                 </Menu.Item>
-                <Menu.Item key={SettingMenuKey.HotkeySetting}>
+                <Menu.Item key={SettingMenuKey.HotKeySetting}>
                     <Link to="/setting/hotkey/">热键设置</Link>
                 </Menu.Item>
                 <Menu.Item key={SettingMenuKey.FileSetting}>
