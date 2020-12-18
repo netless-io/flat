@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import "./RoomDetailPage.less";
 import MainPageLayout from "./components/MainPageLayout";
 import { Link } from "react-router-dom";
@@ -8,7 +8,48 @@ import room_type from "./assets/image/room-type.svg";
 import docs_icon from "./assets/image/docs-icon.svg";
 import { Button } from "antd";
 
-export default class RoomDetailPage extends React.PureComponent {
+export type RoomDetailPageState = {
+    isTeacher: boolean;
+};
+
+export default class RoomDetailPage extends PureComponent<{}, RoomDetailPageState> {
+    public constructor(props: {}) {
+        super(props);
+        this.state = {
+            isTeacher: true,
+        };
+    }
+
+    private renderButton = (): React.ReactNode => {
+        const { isTeacher } = this.state;
+        if (isTeacher) {
+            return (
+                <div className="user-room-btn-box">
+                    <Button className="user-room-btn" danger>
+                        取消房间
+                    </Button>
+                    <Button className="user-room-btn">修改房间</Button>
+                    <Button className="user-room-btn">邀请加入</Button>
+                    <Button type="primary" className="user-room-btn">
+                        进入房间
+                    </Button>
+                </div>
+            );
+        } else {
+            return (
+                <div className="user-room-btn-box">
+                    <Button className="user-room-btn" danger>
+                        删除房间
+                    </Button>
+                    <Button className="user-room-btn">邀请加入</Button>
+                    <Button type="primary" className="user-room-btn">
+                        进入房间
+                    </Button>
+                </div>
+            );
+        }
+    };
+
     public render(): React.ReactNode {
         return (
             <MainPageLayout>
@@ -75,16 +116,7 @@ export default class RoomDetailPage extends React.PureComponent {
                                     <div className="user-room-docs-set">缓存</div>
                                 </div>
                             </div>
-                            <div className="user-room-btn-box">
-                                <Button className="user-room-btn" danger>
-                                    取消房间
-                                </Button>
-                                <Button className="user-room-btn">修改房间</Button>
-                                <Button className="user-room-btn">邀请加入</Button>
-                                <Button type="primary" className="user-room-btn">
-                                    进入房间
-                                </Button>
-                            </div>
+                            {this.renderButton()}
                         </div>
                     </div>
                 </div>
