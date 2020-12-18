@@ -25,6 +25,7 @@ export interface ChatPanelProps
     userId: string;
     channelId: string;
     identity: ChatMessagesProps["identity"];
+    onSpeak: (uid: string, speaking: boolean) => void;
 }
 
 export interface ChatPanelState {
@@ -43,21 +44,10 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
         super(props);
 
         const { identity, userId } = this.props;
-        const isCreator = identity === Identity.creator;
 
         this.state = {
-            messages: isCreator
-                ? [
-                      {
-                          type: RTMessageType.Notice,
-                          uuid: uuidv4(),
-                          timestamp: Date.now(),
-                          value: "点击「开始上课」才能录制并生成回放哦~",
-                          userId,
-                      },
-                  ]
-                : [],
-            creatorId: isCreator ? this.props.userId : null,
+            messages: [],
+            creatorId: identity === Identity.creator ? userId : null,
             users: [],
             currentUser: null,
             isBan: false,
@@ -134,7 +124,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     }
 
     render() {
-        const { identity, userId, channelId, className, ...restProps } = this.props;
+        const { identity, userId, channelId, className, onSpeak, ...restProps } = this.props;
         const { creatorId, messages, users, currentUser, isBan } = this.state;
         return (
             <div {...restProps} className={classNames("chat-panel", className)}>
@@ -235,6 +225,9 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                             isSpeaking: speak,
                             isRaiseHand: false,
                         }),
+                        () => {
+                            this.props.onSpeak(uid, speak);
+                        },
                     );
                 }
                 break;
@@ -341,8 +334,6 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
     };
 
     private onAllowSpeaking = (uid: string): void => {
-        // @TODO 允许学生发音
-        alert(`允许用户 ${uid} 发言`);
         if (this.state.users[0]?.isSpeaking) {
             // only one user is allowed
             return;
@@ -355,6 +346,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                 isRaiseHand: false,
             }),
             () => {
+                this.props.onSpeak(uid, true);
                 this.rtm.sendMessage({
                     t: RTMessageType.Speak,
                     v: {
@@ -376,6 +368,7 @@ export class ChatPanel extends React.Component<ChatPanelProps, ChatPanelState> {
                 isSpeaking: false,
             }),
             () => {
+                this.props.onSpeak(uid, false);
                 this.rtm.sendMessage({
                     t: RTMessageType.Speak,
                     v: {

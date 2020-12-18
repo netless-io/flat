@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import React from "react";
 import { RouteComponentProps } from "react-router";
 import { message, Tooltip } from "antd";
+import classNames from "classnames";
 
 import { createPlugins, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk } from "white-web-sdk";
 import ToolBox from "@netless/tool-box";
@@ -59,8 +60,10 @@ export type WhiteboardPageStates = {
     mode?: ViewMode;
     whiteboardLayerDownRef?: HTMLDivElement;
     roomController?: ViewMode;
-    rtcUid: number | null;
+    rtcUid: string | null;
     isClassBegin: boolean;
+    speakingJoiner: string | null;
+    mainSpeaker: string | null;
 };
 
 export type WhiteboardPageProps = RouteComponentProps<{
@@ -87,6 +90,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             isRealtimeSideOpen: false,
             rtcUid: null,
             isClassBegin: false,
+            speakingJoiner: null,
+            mainSpeaker: null,
         };
         ipcAsyncByMain("set-win-size", {
             width: 1200,
@@ -98,12 +103,12 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         const { uuid, identity } = this.props.match.params;
 
         if (identity === Identity.creator) {
-            this.rtc.rtcEngine.on("joinedChannel", async (_channel, rtcUid) => {
-                this.setState({ rtcUid });
+            this.rtc.rtcEngine.on("joinedChannel", async (_channel, uid) => {
+                this.setState({ rtcUid: String(uid) });
             });
         } else {
-            this.rtc.rtcEngine.on("userJoined", rtcUid => {
-                this.setState({ rtcUid });
+            this.rtc.rtcEngine.once("userJoined", uid => {
+                this.setState({ rtcUid: String(uid) });
             });
         }
 
@@ -379,8 +384,31 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             this.rtc.leave();
         } else {
             this.setState({ isCalling: true, isRealtimeSideOpen: true });
-            this.rtc.join(this.props.match.params.uuid, this.props.match.params.identity);
+            const { uuid, identity, userId } = this.props.match.params;
+            this.rtc.join(uuid, identity, userId);
         }
+    };
+
+    private onJoinerSpeak = (uid: string, speak: boolean): void => {
+        this.setState(
+            speak
+                ? { speakingJoiner: uid, mainSpeaker: uid }
+                : { speakingJoiner: null, mainSpeaker: null },
+            () => {
+                const { userId } = this.props.match.params;
+                if (userId === uid) {
+                    if (speak) {
+                        this.rtc.rtcEngine.setClientRole(speak ? 1 : 2);
+                    }
+                }
+            },
+        );
+    };
+
+    private onVideoAvatarExpand = (): void => {
+        this.setState(state => ({
+            mainSpeaker: state.mainSpeaker === state.rtcUid ? state.speakingJoiner : state.rtcUid,
+        }));
     };
 
     private openReplayPage = () => {
@@ -413,16 +441,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     }
 
     private renderWhiteBoard(room: Room): React.ReactNode {
-        const { uuid, userId, identity } = this.props.match.params;
-
-        const {
-            isMenuVisible,
-            isFileOpen,
-            whiteboardLayerDownRef,
-            isRealtimeSideOpen,
-            isCalling,
-            rtcUid,
-        } = this.state;
+        const { isMenuVisible, isFileOpen, whiteboardLayerDownRef } = this.state;
 
         return (
             <div className="realtime-box">
@@ -480,31 +499,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                             <div ref={this.handleBindRoom} className="whiteboard-box" />
                         </OssDropUpload>
                     </div>
-                    <RealtimePanel
-                        isShow={isRealtimeSideOpen}
-                        isVideoOn={isCalling}
-                        videoSlot={
-                            isCalling &&
-                            rtcUid && (
-                                <VideoAvatar
-                                    uid={rtcUid}
-                                    type={
-                                        identity === Identity.creator
-                                            ? VideoType.local
-                                            : VideoType.remote
-                                    }
-                                    rtcEngine={this.rtc.rtcEngine}
-                                />
-                            )
-                        }
-                        chatSlot={
-                            <ChatPanel
-                                userId={userId}
-                                channelId={uuid}
-                                identity={identity}
-                            ></ChatPanel>
-                        }
-                    />
+                    {this.renderRealtimePanel()}
                 </div>
             </div>
         );
@@ -583,6 +578,66 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                     onClick={this.handleSideOpenerSwitch}
                 />
             </>
+        );
+    }
+
+    private renderRealtimePanel(): React.ReactNode {
+        const { uuid, userId, identity } = this.props.match.params;
+
+        const { isRealtimeSideOpen, isCalling, rtcUid, speakingJoiner, mainSpeaker } = this.state;
+
+        return (
+            <RealtimePanel
+                isShow={isRealtimeSideOpen}
+                isVideoOn={isCalling}
+                videoSlot={
+                    isCalling &&
+                    rtcUid && (
+                        <div className="whiteboard-rtc-box">
+                            <div
+                                className={classNames("whiteboard-rtc-avatar", {
+                                    "is-small": mainSpeaker !== null && mainSpeaker !== rtcUid,
+                                })}
+                            >
+                                <VideoAvatar
+                                    uid={rtcUid}
+                                    type={rtcUid === userId ? VideoType.local : VideoType.remote}
+                                    rtcEngine={this.rtc.rtcEngine}
+                                    small={mainSpeaker !== null && mainSpeaker !== rtcUid}
+                                    onExpand={this.onVideoAvatarExpand}
+                                />
+                            </div>
+                            {speakingJoiner !== null && (
+                                <div
+                                    className={classNames("whiteboard-rtc-avatar", {
+                                        "is-small": mainSpeaker !== speakingJoiner,
+                                    })}
+                                >
+                                    <VideoAvatar
+                                        uid={speakingJoiner}
+                                        type={
+                                            speakingJoiner === userId
+                                                ? VideoType.local
+                                                : VideoType.remote
+                                        }
+                                        rtcEngine={this.rtc.rtcEngine}
+                                        small={mainSpeaker !== speakingJoiner}
+                                        onExpand={this.onVideoAvatarExpand}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    )
+                }
+                chatSlot={
+                    <ChatPanel
+                        userId={userId}
+                        channelId={uuid}
+                        identity={identity}
+                        onSpeak={this.onJoinerSpeak}
+                    ></ChatPanel>
+                }
+            />
         );
     }
 
