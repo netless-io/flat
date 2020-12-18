@@ -1,5 +1,5 @@
+import { FLAT_SERVER_LOGIN } from "../constants/FlatServer";
 import { WECHAT } from "../constants/Process";
-import { FLAT_SERVER_LOGIN } from "../constants/FaltServer";
 
 export const QRURL = (wsID: string, state: string): string => {
     const redirectURL = encodeURIComponent(`${FLAT_SERVER_LOGIN.WECHAT_CALLBACK}/${wsID}`);
