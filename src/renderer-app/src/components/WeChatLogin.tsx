@@ -3,6 +3,7 @@ import { io, Socket } from "socket.io-client";
 import { FLAT_SERVER_LOGIN } from "../constants/FlatServer";
 import { QRURL } from "../utils/WeChatURL";
 import "./WeChatLogin.less";
+import { fetcher } from "../utils/Fetcher";
 
 export enum Status {
     NoLogin = -1,
@@ -17,6 +18,7 @@ export interface WeChatLoginResponse {
     message: string;
     data: {
         userid: string;
+        token: string;
     };
 }
 
@@ -28,6 +30,12 @@ export type WeChatLoginStates = {
 
 export type WeChatLoginProps = {};
 
+interface LoginResponse {
+    name: string;
+    sex: 0 | 1 | 2; // 0: 未知，1: 男性，2: 女性
+    avatar: string; // 头像地址
+    userUUID: string; // 用户信息，需要进行保存
+}
 export default class WeChatLogin extends React.Component<WeChatLoginProps, WeChatLoginStates> {
     public constructor(props: WeChatLoginProps & WeChatLoginStates) {
         super(props);
@@ -45,7 +53,7 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
     public WeChatLoginFlow() {
         const { ws: socket, uuid } = this.state;
 
-        socket.on("connect", () => {
+        socket.on("connect", () => {                                                                                                                                                                                                                
             socket.emit("WeChat/AuthID", {
                 uuid,
             });
@@ -62,12 +70,15 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
             }
         });
 
-        socket.on("WeChat/LoginStatus", (resp: WeChatLoginResponse) => {
+        socket.on("WeChat/LoginStatus", async (resp: WeChatLoginResponse) => {
             const { status, message, data } = resp;
 
             switch (status) {
                 case Status.Success: {
+                    localStorage.setItem("token", data.token);
                     localStorage.setItem("userid", data.userid);
+                    const res = await fetcher.post<LoginResponse>(FLAT_SERVER_LOGIN.HTTPS_LOGIN)
+                    console.log("res.data", res.data);
                     console.log("登陆成功", data);
                     break;
                 }
