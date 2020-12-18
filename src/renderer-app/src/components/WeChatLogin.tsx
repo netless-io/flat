@@ -1,8 +1,8 @@
 import React from "react";
 import { io, Socket } from "socket.io-client";
-import "./WeChatLogin.less";
-import { FLAT_SERVER_LOGIN } from "../constants/FaltServer";
+import { FLAT_SERVER_LOGIN } from "../constants/FlatServer";
 import { QRURL } from "../utils/WeChatURL";
+import "./WeChatLogin.less";
 
 export enum Status {
     NoLogin = -1,
@@ -79,6 +79,8 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
                     console.log("正在处理");
                     break;
                 }
+                default:
+                    break;
             }
         });
     }
@@ -95,6 +97,7 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
         return (
             <div className="iframe-container">
                 <iframe
+                    title="wechat"
                     style={{
                         height: 333,
                         transform: "scale(0.7) translateY(-80px)",
