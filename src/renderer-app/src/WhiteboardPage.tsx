@@ -87,7 +87,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
             isFileOpen: false,
             isRecording: false,
             isCalling: false,
-            isRealtimeSideOpen: false,
+            isRealtimeSideOpen: true,
             rtcUid: null,
             isClassBegin: false,
             speakingJoiner: null,
