@@ -41,7 +41,7 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps, VideoAvat
     }
 
     render() {
-        const { uid, small, onExpand } = this.props;
+        const { uid, small, onExpand, type } = this.props;
         const { isVideoOn, isAudioOn } = this.state;
         return (
             <section className={classNames("video-avatar-wrap", { "is-small": small })}>
@@ -63,17 +63,22 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps, VideoAvat
                     ) : (
                         <>
                             <h1 className="video-avatar-title">{uid}</h1>
-                            <div className="video-avatar-btns">
-                                <button onClick={this.toggleVideo}>
-                                    <img src={isVideoOn ? camera : cameraDisabled} alt="camera" />
-                                </button>
-                                <button onClick={this.toggleAudio}>
-                                    <img
-                                        src={isAudioOn ? microphone : microphoneDisabled}
-                                        alt="microphone"
-                                    />
-                                </button>
-                            </div>
+                            {type === VideoType.local && (
+                                <div className="video-avatar-btns">
+                                    <button onClick={this.toggleVideo}>
+                                        <img
+                                            src={isVideoOn ? camera : cameraDisabled}
+                                            alt="camera"
+                                        />
+                                    </button>
+                                    <button onClick={this.toggleAudio}>
+                                        <img
+                                            src={isAudioOn ? microphone : microphoneDisabled}
+                                            alt="microphone"
+                                        />
+                                    </button>
+                                </div>
+                            )}
                         </>
                     )}
                 </div>
