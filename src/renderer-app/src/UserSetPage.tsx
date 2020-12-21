@@ -29,7 +29,7 @@ export default class UserSetPage extends React.PureComponent<RouteComponentProps
         const { SubMenu } = Menu;
         const key = this.props.location.pathname;
         return (
-            <Menu selectedKeys={[key]} mode="inline">
+            <Menu selectedKeys={[key]} mode="inline" className="menu-item-container">
                 <Menu.Item key={SettingMenuKey.NormalSetting}>
                     <Link to="/setting/normal/">常规设置</Link>
                 </Menu.Item>
