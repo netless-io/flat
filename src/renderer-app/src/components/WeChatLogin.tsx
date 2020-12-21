@@ -53,7 +53,7 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
     public WeChatLoginFlow() {
         const { ws: socket, uuid } = this.state;
 
-        socket.on("connect", () => {                                                                                                                                                                                                                
+        socket.on("connect", () => {
             socket.emit("WeChat/AuthID", {
                 uuid,
             });

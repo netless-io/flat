@@ -21,7 +21,7 @@ class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
         super(props);
         const name = localStorage.getItem("userName");
         this.state = {
-            name: name ? name : "",
+            name: name || "",
             visible: false,
             toggleLoginModel: false,
         };
