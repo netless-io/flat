@@ -51,7 +51,7 @@ export class Rtc {
 
     join(channel: string, identity: Identity, uid: string) {
         const numUid = Number(uid);
-        if (isNaN(numUid)) {
+        if (Number.isNaN(numUid)) {
             throw new Error("RTC uid has to be number");
         }
 

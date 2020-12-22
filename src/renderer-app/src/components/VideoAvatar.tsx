@@ -93,7 +93,7 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps, VideoAvat
             const { isVideoOn, isAudioOn } = this.state;
 
             const numUid = Number(uid);
-            if (isNaN(numUid)) {
+            if (Number.isNaN(numUid)) {
                 throw new Error("RTC uid has to be number");
             }
 
