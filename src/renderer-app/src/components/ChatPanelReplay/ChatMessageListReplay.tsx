@@ -6,11 +6,11 @@ import {
     List,
     ListRowRenderer,
 } from "react-virtualized";
-import ChatMessage, { RTMessage } from "../ChatPanel/ChatMessage";
+import ChatMessage, { ChatMessageItem } from "../ChatPanel/ChatMessage";
 
 export interface ChatMessageListReplayProps {
     userId: string;
-    messages: RTMessage[];
+    messages: ChatMessageItem[];
 }
 
 export class ChatMessageListReplay extends React.PureComponent<ChatMessageListReplayProps> {

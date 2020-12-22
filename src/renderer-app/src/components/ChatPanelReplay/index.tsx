@@ -2,8 +2,8 @@ import React from "react";
 import { Tabs } from "antd";
 import { Player } from "white-web-sdk";
 import dateAdd from "date-fns/add";
-import { Rtm } from "../../apiMiddleware/Rtm";
-import { RTMessage } from "../ChatPanel/ChatMessage";
+import { Rtm, RTMessageText, RTMessageType } from "../../apiMiddleware/Rtm";
+import { ChatMessageItem } from "../ChatPanel/ChatMessage";
 import { ChatMessagesReplay } from "./ChatMessagesReplay";
 
 import "../ChatPanel/ChatPanel.less";
@@ -15,8 +15,8 @@ export interface ChatPanelReplayProps {
 }
 
 export interface ChatPanelReplayState {
-    messages: RTMessage[];
-    renderedMessages: RTMessage[];
+    messages: ChatMessageItem[];
+    renderedMessages: ChatMessageItem[];
 }
 
 export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatPanelReplayState> {
@@ -68,8 +68,8 @@ export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatP
     };
 
     private syncMessages = async (
-        messages: RTMessage[],
-        renderedMessages: RTMessage[],
+        messages: ChatMessageItem[],
+        renderedMessages: ChatMessageItem[],
     ): Promise<void> => {
         if (this.isLoadingHistory) {
             return;
@@ -117,7 +117,7 @@ export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatP
         this.setState({ messages, renderedMessages: messages.slice(0, start) });
     };
 
-    private getHistory = async (newestTimestamp: number): Promise<RTMessage[]> => {
+    private getHistory = async (newestTimestamp: number): Promise<ChatMessageItem[]> => {
         if (newestTimestamp >= this.remoteNewestTimestamp) {
             return [];
         }
@@ -132,7 +132,9 @@ export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatP
             if (messages.length <= 0) {
                 this.remoteNewestTimestamp = newestTimestamp;
             }
-            return messages;
+            return messages.filter(
+                (message): message is RTMessageText => message.type === RTMessageType.Text,
+            );
         } catch (e) {
             this.isLoadingHistory = false;
             console.warn(e);

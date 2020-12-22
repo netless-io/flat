@@ -7,8 +7,8 @@ import "./VideoAvatars.less";
 import { NODE_ENV } from "../constants/Process";
 
 export interface VideoAvatarsProps {
-    localUid: number | null;
-    remoteUids: number[];
+    localUid: string | null;
+    remoteUids: string[];
     rtcEngine: AgoraSDK;
 }
 

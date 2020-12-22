@@ -1,10 +1,12 @@
 import React from "react";
 import type AgoraSDK from "agora-electron-sdk";
+import classNames from "classnames";
 import noCamera from "../assets/image/no-camera.svg";
 import camera from "../assets/image/camera.svg";
 import cameraDisabled from "../assets/image/camera-disabled.svg";
 import microphone from "../assets/image/microphone.svg";
 import microphoneDisabled from "../assets/image/microphone-disabled.svg";
+import videoExpand from "../assets/image/video-expand.svg";
 import "./VideoAvatar.less";
 
 export enum VideoType {
@@ -14,8 +16,10 @@ export enum VideoType {
 
 export interface VideoAvatarProps {
     type: VideoType;
-    uid: number;
+    uid: string;
     rtcEngine: AgoraSDK;
+    small?: boolean;
+    onExpand?: () => void;
 }
 
 export interface VideoAvatarState {
@@ -27,30 +31,56 @@ export interface VideoAvatarState {
 export class VideoAvatar extends React.PureComponent<VideoAvatarProps, VideoAvatarState> {
     private el: HTMLDivElement | null = null;
 
-    state: VideoAvatarState = {
-        isVideoOn: false,
-        isAudioOn: true,
-    };
+    constructor(props: VideoAvatarProps) {
+        super(props);
+
+        this.state = {
+            isVideoOn: this.props.type === VideoType.remote,
+            isAudioOn: true,
+        };
+    }
 
     render() {
-        const { uid } = this.props;
+        const { uid, small, onExpand, type } = this.props;
         const { isVideoOn, isAudioOn } = this.state;
         return (
-            <section className="video-avatar-wrap">
+            <section className={classNames("video-avatar-wrap", { "is-small": small })}>
                 <div className="video-avatar" ref={this.setupVideo}></div>
                 {(uid === null || !isVideoOn) && (
                     <div className="video-avatar-background">
                         <img src={noCamera} alt="no camera" />
                     </div>
                 )}
-                <h1 className="video-avatar-title">{uid}</h1>
-                <div className="video-avatar-btns">
-                    <button onClick={this.toggleVideo}>
-                        <img src={isVideoOn ? camera : cameraDisabled} alt="camera" />
-                    </button>
-                    <button onClick={this.toggleAudio}>
-                        <img src={isAudioOn ? microphone : microphoneDisabled} alt="microphone" />
-                    </button>
+                <div
+                    className={classNames("video-avatar-ctrl-layer", {
+                        "with-video": isVideoOn,
+                    })}
+                >
+                    {small ? (
+                        <button className="video-avatar-expand" onClick={onExpand}>
+                            <img src={videoExpand} alt="expand" />
+                        </button>
+                    ) : (
+                        <>
+                            <h1 className="video-avatar-title">{uid}</h1>
+                            {type === VideoType.local && (
+                                <div className="video-avatar-btns">
+                                    <button onClick={this.toggleVideo}>
+                                        <img
+                                            src={isVideoOn ? camera : cameraDisabled}
+                                            alt="camera"
+                                        />
+                                    </button>
+                                    <button onClick={this.toggleAudio}>
+                                        <img
+                                            src={isAudioOn ? microphone : microphoneDisabled}
+                                            alt="microphone"
+                                        />
+                                    </button>
+                                </div>
+                            )}
+                        </>
+                    )}
                 </div>
             </section>
         );
@@ -61,6 +91,12 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps, VideoAvat
         if (this.el) {
             const { type, uid, rtcEngine } = this.props;
             const { isVideoOn, isAudioOn } = this.state;
+
+            const numUid = Number(uid);
+            if (Number.isNaN(numUid)) {
+                throw new Error("RTC uid has to be number");
+            }
+
             switch (type) {
                 case VideoType.local: {
                     rtcEngine.setupLocalVideo(this.el);
@@ -69,7 +105,7 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps, VideoAvat
                     break;
                 }
                 default: {
-                    rtcEngine.setupRemoteVideo(uid, this.el);
+                    rtcEngine.setupRemoteVideo(numUid, this.el);
                     rtcEngine.muteAllRemoteVideoStreams(!isVideoOn);
                     rtcEngine.muteAllRemoteAudioStreams(!isAudioOn);
                     break;

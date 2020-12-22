@@ -13,7 +13,7 @@ export interface ChatTypeBoxProps {
     isRaiseHand?: boolean;
     onBanChange: () => void;
     onSend: (text: string) => Promise<void>;
-    onRaiseHandChange?: () => void;
+    onRaiseHandChange: () => void;
 }
 
 export interface ChatTypeBoxState {
@@ -50,10 +50,11 @@ export class ChatTypeBox extends React.PureComponent<ChatTypeBoxProps, ChatTypeB
     render(): React.ReactNode {
         const { identity, isBan, isRaiseHand, onBanChange, onRaiseHandChange } = this.props;
         const { text, isSending } = this.state;
+        const isCreator = identity === Identity.creator;
 
         return (
             <div className="chat-typebox">
-                {identity === Identity.creator ? (
+                {isCreator ? (
                     <button className="chat-typebox-icon" title="禁言" onClick={onBanChange}>
                         <img src={isBan ? banChatActive : banChat} />
                     </button>
@@ -62,7 +63,7 @@ export class ChatTypeBox extends React.PureComponent<ChatTypeBoxProps, ChatTypeB
                         <img src={isRaiseHand ? handActive : hand} />
                     </button>
                 )}
-                {isBan ? (
+                {!isCreator && isBan ? (
                     <span className="chat-typebox-ban-input" title="全员禁言中">
                         全员禁言中
                     </span>

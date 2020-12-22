@@ -1,11 +1,11 @@
 import React from "react";
-import { RTMessage } from "../ChatPanel/ChatMessage";
+import { ChatMessageItem } from "../ChatPanel/ChatMessage";
 import { ChatMessageListReplay } from "./ChatMessageListReplay";
 import "../ChatPanel/ChatMessages.less";
 
 export interface ChatMessagesReplayProps {
     userId: string;
-    messages: RTMessage[];
+    messages: ChatMessageItem[];
 }
 
 export class ChatMessagesReplay extends React.PureComponent<ChatMessagesReplayProps> {

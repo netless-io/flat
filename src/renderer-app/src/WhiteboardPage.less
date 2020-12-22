@@ -16,6 +16,25 @@
     position: relative;
 }
 
+.whiteboard-rtc-box {
+    position: relative;
+    width: 288px;
+    height: 216px;
+}
+
+.whiteboard-rtc-avatar {
+    position: relative;
+    overflow: hidden;
+    border: 1px rgba(225, 225, 225, 0.32) solid;
+
+    &.is-small {
+        position: absolute;
+        z-index: 40;
+        top: 0;
+        right: 0;
+    }
+}
+
 .whiteboard-box {
     background-color: #f4f4f4;
     width: 100%;
