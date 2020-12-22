@@ -1,25 +1,104 @@
-import "./UserScheduledPage.less";
-import React, { Component } from "react";
 import { Button, Checkbox, DatePicker, Input, Select, TimePicker } from "antd";
 import moment from "moment";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import add_icon from "./assets/image/add-icon.svg";
+import back from "./assets/image/back.svg";
 import docs from "./assets/image/docs.svg";
 import trash from "./assets/image/trash.svg";
-import back from "./assets/image/back.svg";
-import add_icon from "./assets/image/add-icon.svg";
 import MainPageLayout from "./components/MainPageLayout";
-import { Link } from "react-router-dom";
+import "./UserScheduledPage.less";
+
+enum RoomType {
+    OneToOne,
+    SmallClass,
+    BigClass,
+}
+
+enum Week {
+    Sunday,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+}
+
+enum DocsType {
+    Dynamic = "Dynamic",
+    Static = "Static",
+}
+
+// 预订房间请求类型
+type BookRoomRequest = {
+    title: string;
+    type: RoomType;
+    beginTime: number;
+    endTime: number;
+    cyclical?:
+        | {
+              weeks: Week[];
+              rate: number;
+          }
+        | {
+              weeks: Week[];
+              endTime: number;
+          };
+    docs?: {
+        type: DocsType;
+        uuid: string;
+    }[];
+};
 
 export type UserScheduledPageState = {
-    isChecked: boolean;
+    /** 是否周期性房间 */
+    isCycle: boolean;
+    /** 主题 */
+    title: string;
+    /** 类型 */
+    type: RoomType;
+    /** 开始时间 */
+    beginTime: number;
+    /** 结束时间 */
+    endTime: number;
+    /** 重复频率 (后端接口只能选择每周的某一天) */
+    cyclicalWeek?: Week;
+    /** 结束重复 */
+    cyclicalEndTime?: number;
+    /** TODO: 文档 */
+    docs: { type: DocsType; uuid: string }[];
 };
+
 const { Option } = Select;
+
 export default class UserScheduledPage extends Component<{}, UserScheduledPageState> {
     public constructor(props: {}) {
         super(props);
         this.state = {
-            isChecked: false,
+            isCycle: false,
+            title: "",
+            type: RoomType.BigClass,
+            beginTime: +new Date(),
+            endTime: +new Date(),
+            docs: [],
         };
     }
+
+    public onChangeTitle = (title: string) => {
+        this.setState({ title });
+    };
+
+    public onChangeType = (type: RoomType) => {
+        this.setState({ type });
+    };
+
+    public onBeginTimeChange = (date: moment.Moment) => {
+        this.setState({ beginTime: date.valueOf() });
+    };
+    public onEndTimeChange = (date: moment.Moment) => {
+        this.setState({ endTime: date.valueOf() });
+    };
 
     public render(): React.ReactNode {
         return (
@@ -42,26 +121,47 @@ export default class UserScheduledPage extends Component<{}, UserScheduledPageSt
                         <div className="user-schedule-mid">
                             <div className="user-schedule-name">主题</div>
                             <div className="user-schedule-inner">
-                                <Input />
+                                <Input
+                                    value={this.state.title}
+                                    onChange={e => this.onChangeTitle(e.target.value)}
+                                />
                             </div>
                             <div className="user-schedule-name">类型</div>
                             <div className="user-schedule-inner">
-                                <Input />
+                                <Select
+                                    className="user-schedule-inner-select"
+                                    value={this.state.type}
+                                    onChange={e => this.onChangeType(e)}
+                                >
+                                    <Option value={RoomType.BigClass}>大班课</Option>
+                                    <Option value={RoomType.SmallClass}>小班课</Option>
+                                    <Option value={RoomType.OneToOne}>一对一</Option>
+                                </Select>
                             </div>
                             <div className="user-schedule-name">开始时间</div>
                             <div className="user-schedule-inner">
-                                <DatePicker className="user-schedule-picker" />
+                                <DatePicker
+                                    className="user-schedule-picker"
+                                    value={moment(this.state.beginTime)}
+                                    onChange={e => this.onBeginTimeChange(e!)}
+                                />
                                 <TimePicker
                                     className="user-schedule-picker"
-                                    defaultOpenValue={moment("00:00:00", "HH:mm:ss")}
+                                    value={moment(this.state.beginTime)}
+                                    onChange={e => this.onBeginTimeChange(e!)}
                                 />
                             </div>
                             <div className="user-schedule-name">结束时间</div>
                             <div className="user-schedule-inner">
-                                <DatePicker className="user-schedule-picker" />
+                                <DatePicker
+                                    className="user-schedule-picker"
+                                    value={moment(this.state.endTime)}
+                                    onChange={e => this.onEndTimeChange(e!)}
+                                />
                                 <TimePicker
                                     className="user-schedule-picker"
-                                    defaultOpenValue={moment("00:00:00", "HH:mm:ss")}
+                                    value={moment(this.state.endTime)}
+                                    onChange={e => this.onEndTimeChange(e!)}
                                 />
                             </div>
                             <div className="user-schedule-inner">
@@ -142,7 +242,7 @@ export default class UserScheduledPage extends Component<{}, UserScheduledPageSt
     }
 
     private renderCycle = (): React.ReactNode => {
-        const { isChecked } = this.state;
+        const { isCycle: isChecked } = this.state;
 
         if (!isChecked) {
             return null;
@@ -179,6 +279,6 @@ export default class UserScheduledPage extends Component<{}, UserScheduledPageSt
     };
 
     private handleCheckbox = (e: any): void => {
-        this.setState({ isChecked: e.target.checked });
+        this.setState({ isCycle: e.target.checked });
     };
 }

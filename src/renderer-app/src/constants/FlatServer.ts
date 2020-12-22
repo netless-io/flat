@@ -15,3 +15,9 @@ export const FLAT_SERVER_LOGIN = {
     WECHAT_CALLBACK: `${FLAT_SERVER_VERSIONS.V1HTTPS}/login/weChat/callback`,
     HTTPS_LOGIN: `${FLAT_SERVER_VERSIONS.V1HTTPS}/login`,
 }
+
+export const FLAT_SERVER_ROOM = {
+    CREATE: `${FLAT_SERVER_VERSIONS.V1HTTPS}/room/create`,
+    SCHEDULE: `${FLAT_SERVER_VERSIONS.V1HTTPS}/room/schedule`,
+    LIST: `${FLAT_SERVER_VERSIONS.V1HTTPS}/room/list`,
+};
