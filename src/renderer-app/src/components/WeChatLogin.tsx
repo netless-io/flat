@@ -3,7 +3,7 @@ import { io, Socket } from "socket.io-client";
 import { FLAT_SERVER_LOGIN } from "../constants/FlatServer";
 import { QRURL } from "../utils/WeChatURL";
 import "./WeChatLogin.less";
-import { fetcher } from "../utils/Fetcher";
+import { RouteComponentProps, withRouter } from "react-router";
 
 export enum Status {
     NoLogin = -1,
@@ -17,8 +17,10 @@ export interface WeChatLoginResponse {
     status: Status;
     message: string;
     data: {
-        userid: string;
+        userUUID: string;
         token: string;
+        name: string;
+        avatar: string;
     };
 }
 
@@ -28,16 +30,8 @@ export type WeChatLoginStates = {
     QRURL: string;
 };
 
-export type WeChatLoginProps = {};
-
-interface LoginResponse {
-    name: string;
-    sex: 0 | 1 | 2; // 0: 未知，1: 男性，2: 女性
-    avatar: string; // 头像地址
-    userUUID: string; // 用户信息，需要进行保存
-}
-export default class WeChatLogin extends React.Component<WeChatLoginProps, WeChatLoginStates> {
-    public constructor(props: WeChatLoginProps & WeChatLoginStates) {
+class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates> {
+    public constructor(props: RouteComponentProps) {
         super(props);
         const ws = io(FLAT_SERVER_LOGIN.WSS_LOGIN, {
             transports: ["websocket"],
@@ -70,16 +64,17 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
             }
         });
 
-        socket.on("WeChat/LoginStatus", async (resp: WeChatLoginResponse) => {
+        socket.on("WeChat/LoginStatus", (resp: WeChatLoginResponse) => {
             const { status, message, data } = resp;
 
             switch (status) {
                 case Status.Success: {
                     localStorage.setItem("token", data.token);
-                    localStorage.setItem("userid", data.userid);
-                    const res = await fetcher.post<LoginResponse>(FLAT_SERVER_LOGIN.HTTPS_LOGIN)
-                    console.log("res.data", res.data);
+                    localStorage.setItem("userUUID", data.userUUID);
+                    localStorage.setItem("avatar", data.avatar);
+                    localStorage.setItem("name", data.name);
                     console.log("登陆成功", data);
+                    this.props.history.push("/user/");
                     break;
                 }
                 case Status.AuthFailed: {
@@ -122,3 +117,5 @@ export default class WeChatLogin extends React.Component<WeChatLoginProps, WeCha
         );
     }
 }
+
+export default withRouter(WeChatLogin);

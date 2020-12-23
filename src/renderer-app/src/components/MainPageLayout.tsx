@@ -2,19 +2,23 @@ import React from "react";
 import "./MainPageLayout.less";
 import { MainMenu } from "./MainMenu";
 import classNames from "classnames";
-import avatar from "../assets/image/wushuang.jpg";
 
 export type MainPageLayoutProps = {
     columnLayout?: boolean;
 };
 
 export default class MainPageLayout extends React.PureComponent<MainPageLayoutProps> {
+    userAvatar: string;
+    public constructor(props: MainPageLayoutProps) {
+        super(props);
+        this.userAvatar = localStorage.getItem("avatar") ?? '';
+    }
     public render() {
         return (
             <div className="layout-container">
                 <div className="layout-container-menu">
                     <div className="layout-container-header">
-                        <img src={avatar} alt={"avatar"} />
+                        <img src={this.userAvatar} alt={"avatar"} />
                     </div>
                     <MainMenu />
                 </div>
