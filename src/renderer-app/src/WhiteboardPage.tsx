@@ -1,20 +1,8 @@
-import path from "path";
-import { v4 as uuidv4 } from "uuid";
-
 import React from "react";
-import { RouteComponentProps } from "react-router";
-import { message, Tooltip } from "antd";
+import { message } from "antd";
 import classNames from "classnames";
-
-import { Room, RoomPhase, ViewMode } from "white-web-sdk";
-import ToolBox from "@netless/tool-box";
-import RedoUndo from "@netless/redo-undo";
-import PageController from "@netless/page-controller";
-import ZoomController from "@netless/zoom-controller";
-import OssUploadButton from "@netless/oss-upload-button";
-import PreviewController from "@netless/preview-controller";
-import DocsCenter from "@netless/docs-center";
-import OssDropUpload from "@netless/oss-drop-upload";
+import { v4 as uuidv4 } from "uuid";
+import { RoomPhase, ViewMode } from "white-web-sdk";
 
 import { Rtc } from "./apiMiddleware/Rtc";
 import { CloudRecording } from "./apiMiddleware/CloudRecording";
@@ -31,21 +19,14 @@ import { VideoAvatar, VideoType } from "./components/VideoAvatar";
 import { NetworkStatus } from "./components/NetworkStatus";
 import { RecordButton } from "./components/RecordButton";
 import { ClassStatus } from "./components/ClassStatus";
-import { withWhiteboard, WithWhiteboardProps } from "./components/Whiteboard";
+import { withWhiteboardRoute, WithWhiteboardRouteProps } from "./components/Whiteboard";
 
-import { NETLESS, OSS } from "./constants/Process";
 import { getRoom, Identity, updateRoomProps } from "./utils/localStorage/room";
-import { listDir } from "./utils/Fs";
-import { runtime } from "./utils/Runtime";
 import { ipcAsyncByMain } from "./utils/Ipc";
-
-import pages from "./assets/image/pages.svg";
 
 import "./WhiteboardPage.less";
 
-export type WhiteboardPageStates = {
-    isMenuVisible: boolean;
-    isFileOpen: boolean;
+export type WhiteboardPageState = {
     isRecording: boolean;
     isCalling: boolean;
     isRealtimeSideOpen: boolean;
@@ -56,14 +37,9 @@ export type WhiteboardPageStates = {
     mainSpeaker: string | null;
 };
 
-export type WhiteboardPageProps = WithWhiteboardProps &
-    RouteComponentProps<{
-        identity: Identity;
-        uuid: string;
-        userId: string;
-    }>;
+export type WhiteboardPageProps = WithWhiteboardRouteProps;
 
-class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPageStates> {
+class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPageState> {
     private rtc = new Rtc();
     private cloudRecording: CloudRecording | null = null;
     private cloudRecordingInterval: number | undefined;
@@ -73,8 +49,6 @@ class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPage
     public constructor(props: WhiteboardPageProps) {
         super(props);
         this.state = {
-            isMenuVisible: false,
-            isFileOpen: false,
             isRecording: false,
             isCalling: false,
             isRealtimeSideOpen: true,
@@ -163,15 +137,11 @@ class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPage
         return `https://netless-cn-agora-whiteboard-dev.oss-cn-hangzhou.aliyuncs.com/AgoraCloudRecording/${this.cloudRecording.sid}_${this.cloudRecording.cname}.m3u8`;
     }
 
-    private handlePreviewState = (state: boolean): void => {
-        this.setState({ isMenuVisible: state });
-    };
-
-    private handleDocCenterState = (state: boolean): void => {
-        this.setState({ isFileOpen: state });
-    };
-
-    private handleRoomController = (room: Room): void => {
+    private handleRoomController = (): void => {
+        const { room } = this.props.whiteboard;
+        if (!room) {
+            return;
+        }
         if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
             room.setViewMode(ViewMode.Broadcaster);
             message.success("其他用户将跟随您的视角");
@@ -302,71 +272,21 @@ class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPage
                 return <PageError />;
             }
             default: {
-                return this.renderWhiteBoard(room);
+                return this.renderWhiteBoard();
             }
         }
     }
 
-    private renderWhiteBoard(room: Room): React.ReactNode {
-        const { whiteboardRef, handleBindRoom } = this.props.whiteboard;
-        const { isMenuVisible, isFileOpen } = this.state;
-
+    private renderWhiteBoard(): React.ReactNode {
         return (
             <div className="realtime-box">
                 <TopBar
                     left={this.renderTopBarLeft()}
                     center={this.renderTopBarCenter()}
-                    right={this.renderTopBarRight(room)}
+                    right={this.renderTopBarRight()}
                 />
                 <div className="realtime-content">
-                    <div className="realtime-content-main">
-                        <div className="tool-box-out">
-                            <ToolBox
-                                room={room}
-                                customerComponent={[
-                                    <OssUploadButton
-                                        oss={WhiteboardPage.ossConfig}
-                                        appIdentifier={NETLESS.APP_IDENTIFIER}
-                                        sdkToken={NETLESS.SDK_TOKEN}
-                                        room={room}
-                                        whiteboardRef={whiteboardRef}
-                                    />,
-                                ]}
-                            />
-                        </div>
-                        <div className="redo-undo-box">
-                            <RedoUndo room={room} />
-                        </div>
-                        <div className="zoom-controller-box">
-                            <ZoomController room={room} />
-                        </div>
-                        <div className="page-controller-box">
-                            <div className="page-controller-mid-box">
-                                <Tooltip placement="top" title={"Page preview"}>
-                                    <div
-                                        className="page-controller-cell"
-                                        onClick={() => this.handlePreviewState(true)}
-                                    >
-                                        <img src={pages} alt={"pages"} />
-                                    </div>
-                                </Tooltip>
-                                <PageController room={room} />
-                            </div>
-                        </div>
-                        <PreviewController
-                            handlePreviewState={this.handlePreviewState}
-                            isVisible={isMenuVisible}
-                            room={room}
-                        />
-                        <DocsCenter
-                            handleDocCenterState={this.handleDocCenterState}
-                            isFileOpen={isFileOpen}
-                            room={room}
-                        />
-                        <OssDropUpload room={room} oss={WhiteboardPage.ossConfig}>
-                            <div ref={handleBindRoom} className="whiteboard-box" />
-                        </OssDropUpload>
-                    </div>
+                    {this.props.whiteboard.whiteboardElement}
                     {this.renderRealtimePanel()}
                 </div>
             </div>
@@ -399,8 +319,8 @@ class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPage
         ) : null;
     }
 
-    private renderTopBarRight(room: Room): React.ReactNode {
-        const { viewMode } = this.props.whiteboard;
+    private renderTopBarRight(): React.ReactNode {
+        const { viewMode, toggleDocCenter } = this.props.whiteboard;
         const { isCalling, isRecording, isRealtimeSideOpen } = this.state;
         const { uuid } = this.props.match.params;
 
@@ -422,20 +342,9 @@ class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPage
                     title="Vision control"
                     icon="follow"
                     active={viewMode === ViewMode.Broadcaster}
-                    onClick={() => {
-                        this.handleRoomController(room);
-                    }}
+                    onClick={this.handleRoomController}
                 />
-                <TopBarRightBtn
-                    title="Docs center"
-                    icon="folder"
-                    onClick={() => {
-                        console.log(
-                            listDir(path.join(runtime.downloadsDirectory, "dynamicConvert")),
-                        );
-                        this.setState({ isFileOpen: !this.state.isFileOpen });
-                    }}
-                />
+                <TopBarRightBtn title="Docs center" icon="folder" onClick={toggleDocCenter} />
                 <InviteButton uuid={uuid} />
                 {/* @TODO */}
                 <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
@@ -509,17 +418,6 @@ class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPage
             />
         );
     }
-
-    static get ossConfig() {
-        return {
-            accessKeyId: OSS.ACCESS_KEY_ID,
-            accessKeySecret: OSS.ACCESS_KEY_SECRET!,
-            region: OSS.REGION!,
-            bucket: OSS.BUCKET!,
-            folder: OSS.FOLDER!,
-            prefix: OSS.PREFIX!,
-        };
-    }
 }
 
-export default withWhiteboard(WhiteboardPage);
+export default withWhiteboardRoute(WhiteboardPage);
