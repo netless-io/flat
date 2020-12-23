@@ -11,21 +11,24 @@ export interface ChatUsersProps
         "creatorId" | "identity" | "userId" | "onAllowSpeaking" | "onEndSpeaking"
     > {
     users: RTMUser[];
-    isShowCancelHandRaising: boolean;
-    onCancelHandRaising: () => void;
+    isShowCancelAllHandRaising: boolean;
+    onCancelAllHandRaising: () => void;
 }
 
 export class ChatUsers extends React.PureComponent<ChatUsersProps> {
     render(): React.ReactNode {
-        const { users, isShowCancelHandRaising, onCancelHandRaising } = this.props;
+        const { users, isShowCancelAllHandRaising, onCancelAllHandRaising } = this.props;
 
         return (
             <div
                 className={classNames("chat-users-wrap", { "has-speaking": users[0]?.isSpeaking })}
             >
-                {isShowCancelHandRaising && (
+                {isShowCancelAllHandRaising && (
                     <div className="chat-users-cancel-hands-wrap">
-                        <button className="chat-users-cancel-hands" onClick={onCancelHandRaising}>
+                        <button
+                            className="chat-users-cancel-hands"
+                            onClick={onCancelAllHandRaising}
+                        >
                             <img src={noHand} alt="cancel hand raising" />
                             取消举手
                         </button>
@@ -33,7 +36,7 @@ export class ChatUsers extends React.PureComponent<ChatUsersProps> {
                 )}
                 <div
                     className={classNames("chat-users", {
-                        "with-cancel-hands": isShowCancelHandRaising,
+                        "with-cancel-hands": isShowCancelAllHandRaising,
                     })}
                 >
                     <AutoSizer>{this.renderList}</AutoSizer>

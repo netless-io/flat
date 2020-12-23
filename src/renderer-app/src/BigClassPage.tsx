@@ -18,6 +18,7 @@ import { RecordButton } from "./components/RecordButton";
 import { ClassStatus } from "./components/ClassStatus";
 import { withWhiteboardRoute, WithWhiteboardRouteProps } from "./components/Whiteboard";
 import { withRtcRoute, WithRtcRouteProps } from "./components/Rtc";
+import { withRtmRoute, WithRtmRouteProps } from "./components/Rtm";
 
 import { getRoom, Identity } from "./utils/localStorage/room";
 import { ipcAsyncByMain } from "./utils/Ipc";
@@ -31,7 +32,7 @@ export type BigClassPageState = {
     mainSpeaker: string | null;
 };
 
-export type BigClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps;
+export type BigClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps & WithRtmRouteProps;
 
 class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState> {
     public constructor(props: BigClassPageProps) {
@@ -43,6 +44,8 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
             speakingJoiner: null,
             mainSpeaker: null,
         };
+
+        this.props.rtm.bindOnSpeak(this.onJoinerSpeak);
 
         ipcAsyncByMain("set-win-size", {
             width: 1200,
@@ -272,7 +275,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                         userId={userId}
                         channelId={uuid}
                         identity={identity}
-                        onSpeak={this.onJoinerSpeak}
+                        rtm={this.props.rtm}
                     ></ChatPanel>
                 }
             />
@@ -280,4 +283,4 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     }
 }
 
-export default withWhiteboardRoute(withRtcRoute(BigClassPage));
+export default withWhiteboardRoute(withRtcRoute(withRtmRoute(BigClassPage)));
