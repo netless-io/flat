@@ -31,6 +31,7 @@ import { VideoAvatar, VideoType } from "./components/VideoAvatar";
 import { NetworkStatus } from "./components/NetworkStatus";
 import { RecordButton } from "./components/RecordButton";
 import { ClassStatus } from "./components/ClassStatus";
+import { withWhiteboard, WithWhiteboardProps } from "./components/Whiteboard";
 
 import { NETLESS, OSS } from "./constants/Process";
 import { getRoom, Identity, updateRoomProps } from "./utils/localStorage/room";
@@ -39,7 +40,6 @@ import { runtime } from "./utils/Runtime";
 import { ipcAsyncByMain } from "./utils/Ipc";
 
 import pages from "./assets/image/pages.svg";
-import { Whiteboard, WhiteboardRenderProps } from "./components/Whiteboard";
 
 import "./WhiteboardPage.less";
 
@@ -56,13 +56,14 @@ export type WhiteboardPageStates = {
     mainSpeaker: string | null;
 };
 
-export type WhiteboardPageProps = RouteComponentProps<{
-    identity: Identity;
-    uuid: string;
-    userId: string;
-}>;
+export type WhiteboardPageProps = WithWhiteboardProps &
+    RouteComponentProps<{
+        identity: Identity;
+        uuid: string;
+        userId: string;
+    }>;
 
-export class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPageStates> {
+class WhiteboardPage extends React.Component<WhiteboardPageProps, WhiteboardPageStates> {
     private rtc = new Rtc();
     private cloudRecording: CloudRecording | null = null;
     private cloudRecordingInterval: number | undefined;
@@ -284,35 +285,30 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     };
 
     public render(): React.ReactNode {
-        const { uuid, identity, userId } = this.props.match.params;
-        return (
-            <Whiteboard roomId={uuid} userId={userId} identity={identity}>
-                {(props: WhiteboardRenderProps) => {
-                    const { room, phase } = props;
-                    if (room === null || room === undefined) {
-                        return <LoadingPage />;
-                    }
+        const { room, phase } = this.props.whiteboard;
 
-                    switch (phase) {
-                        case RoomPhase.Connecting ||
-                            RoomPhase.Disconnecting ||
-                            RoomPhase.Reconnecting ||
-                            RoomPhase.Reconnecting: {
-                            return <LoadingPage />;
-                        }
-                        case RoomPhase.Disconnected: {
-                            return <PageError />;
-                        }
-                        default: {
-                            return this.renderWhiteBoard(props, room);
-                        }
-                    }
-                }}
-            </Whiteboard>
-        );
+        if (room === null || room === undefined) {
+            return <LoadingPage />;
+        }
+
+        switch (phase) {
+            case RoomPhase.Connecting ||
+                RoomPhase.Disconnecting ||
+                RoomPhase.Reconnecting ||
+                RoomPhase.Reconnecting: {
+                return <LoadingPage />;
+            }
+            case RoomPhase.Disconnected: {
+                return <PageError />;
+            }
+            default: {
+                return this.renderWhiteBoard(room);
+            }
+        }
     }
 
-    private renderWhiteBoard(props: WhiteboardRenderProps, room: Room): React.ReactNode {
+    private renderWhiteBoard(room: Room): React.ReactNode {
+        const { whiteboardRef, handleBindRoom } = this.props.whiteboard;
         const { isMenuVisible, isFileOpen } = this.state;
 
         return (
@@ -320,7 +316,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 <TopBar
                     left={this.renderTopBarLeft()}
                     center={this.renderTopBarCenter()}
-                    right={this.renderTopBarRight(props, room)}
+                    right={this.renderTopBarRight(room)}
                 />
                 <div className="realtime-content">
                     <div className="realtime-content-main">
@@ -333,7 +329,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                                         appIdentifier={NETLESS.APP_IDENTIFIER}
                                         sdkToken={NETLESS.SDK_TOKEN}
                                         room={room}
-                                        whiteboardRef={props.whiteboardRef}
+                                        whiteboardRef={whiteboardRef}
                                     />,
                                 ]}
                             />
@@ -368,7 +364,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                             room={room}
                         />
                         <OssDropUpload room={room} oss={WhiteboardPage.ossConfig}>
-                            <div ref={props.handleBindRoom} className="whiteboard-box" />
+                            <div ref={handleBindRoom} className="whiteboard-box" />
                         </OssDropUpload>
                     </div>
                     {this.renderRealtimePanel()}
@@ -403,7 +399,8 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
         ) : null;
     }
 
-    private renderTopBarRight(props: WhiteboardRenderProps, room: Room): React.ReactNode {
+    private renderTopBarRight(room: Room): React.ReactNode {
+        const { viewMode } = this.props.whiteboard;
         const { isCalling, isRecording, isRealtimeSideOpen } = this.state;
         const { uuid } = this.props.match.params;
 
@@ -424,7 +421,7 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
                 <TopBarRightBtn
                     title="Vision control"
                     icon="follow"
-                    active={props.viewMode === ViewMode.Broadcaster}
+                    active={viewMode === ViewMode.Broadcaster}
                     onClick={() => {
                         this.handleRoomController(room);
                     }}
@@ -525,4 +522,4 @@ export class WhiteboardPage extends React.Component<WhiteboardPageProps, Whitebo
     }
 }
 
-export default WhiteboardPage;
+export default withWhiteboard(WhiteboardPage);

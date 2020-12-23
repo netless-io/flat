@@ -22,7 +22,7 @@ export interface WhiteboardRenderProps {
 }
 
 export interface WhiteboardProps {
-    children: (props: WhiteboardState) => React.ReactNode;
+    children: (props: WhiteboardRenderProps) => React.ReactNode;
     roomId: string;
     userId: string;
     identity: Identity;
@@ -167,4 +167,24 @@ export class Whiteboard extends React.Component<WhiteboardProps, WhiteboardState
     };
 }
 
-export default Whiteboard;
+export type WithWhiteboardProps = { whiteboard: WhiteboardRenderProps } & Omit<
+    WhiteboardProps,
+    "children"
+>;
+
+export function withWhiteboard<Props>(Comp: React.ComponentType<Props>) {
+    return class WithWhiteboard extends React.Component<Props & Omit<WhiteboardProps, "children">> {
+        render() {
+            const { roomId, userId, identity } = this.props;
+            return (
+                <Whiteboard roomId={roomId} userId={userId} identity={identity}>
+                    {this.renderWhiteboard}
+                </Whiteboard>
+            );
+        }
+
+        private renderWhiteboard = (props: WhiteboardRenderProps) => (
+            <Comp {...this.props} whiteboard={props} />
+        );
+    };
+}
