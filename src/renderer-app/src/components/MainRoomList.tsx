@@ -11,16 +11,20 @@ export type MainRoomListProps = {
 
 export class MainRoomList extends PureComponent<MainRoomListProps> {
     private getRoomUUID = (e: Room) => {
-        if ("roomUUID" in e) {
-            return e.roomUUID;
-        } else {
+        if (e.cyclicalUUID) {
             return e.cyclicalUUID;
+        } else {
+            return e.roomUUID;
         }
     };
 
     private renderStatus = (status: "Pending" | "Running" | "Stopped") => {
         return status;
     };
+
+    private timeToNumber(time: string): number | undefined {
+        return time ? Number(new Date(time)) : undefined;
+    }
 
     private renderRooms = () => {
         return this.props.rooms.map(e => {
@@ -29,8 +33,8 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
                     key={this.getRoomUUID(e)}
                     title={e.title}
                     status={this.renderStatus(e.roomStatus)}
-                    beginTime={+new Date(e.beginTime)}
-                    endTime={+new Date(e.endTime!)}
+                    beginTime={this.timeToNumber(e.beginTime)!}
+                    endTime={this.timeToNumber(e.endTime)}
                     uuid={this.getRoomUUID(e)}
                     userUUID={e.creatorUserUUID}
                 />

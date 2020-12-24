@@ -7,7 +7,7 @@ import { MainRoomMenu } from "./components/MainRoomMenu";
 import { MainRoomList } from "./components/MainRoomList";
 import { MainRoomHistory } from "./components/MainRoomHistory";
 import { Status } from "./components/WeChatLogin";
-import { fetcher } from "./utils/Fetcher";
+import { fetcher } from "./utils/fetcher";
 import { FLAT_SERVER_ROOM } from "./constants/FlatServer";
 
 export enum RoomType {
@@ -28,12 +28,14 @@ export enum RoomListType {
     history = "history",
 }
 
-export type Room = ({ roomUUID: string } | { cyclicalUUID: string }) & {
+export type Room = {
+    roomUUID: string;
+    cyclicalUUID: string;
     creatorUserUUID: string;
     creatorUserName: string;
     title: string;
     beginTime: string;
-    endTime?: string;
+    endTime: string;
     roomStatus: "Pending" | "Running" | "Stopped";
 };
 
@@ -46,15 +48,7 @@ type CreateRoomSuccessResponse = {
 
 type ListRoomsSuccessResponse = {
     status: Status.Success;
-    data: ({ roomUUID: string } | { cyclicalUUID: string }) &
-        {
-            creatorUserUUIDL: string;
-            title: string;
-            beginTime: string;
-            endTime?: string;
-            roomStatus: "Pending" | "Running" | "Stopped";
-            creatorUserName: string;
-        }[];
+    data: Room[];
 };
 
 class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageState> {
@@ -84,13 +78,17 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
         if (this.isMount) this.setState(state);
     }
 
+    private getCurrentTime() {
+        return Number(new Date());
+    }
+
     public createRoom = async (title: string, type: RoomType) => {
         const { data: res } = await fetcher.post<CreateRoomSuccessResponse>(
             FLAT_SERVER_ROOM.CREATE,
             {
                 title,
                 type,
-                beginTime: +new Date(),
+                beginTime: this.getCurrentTime(),
                 // TODO docs: []
             },
         );
