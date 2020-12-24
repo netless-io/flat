@@ -173,12 +173,9 @@ export class Whiteboard extends React.Component<WhiteboardProps, WhiteboardState
             const roomToken = await this.getRoomToken(roomId);
             if (roomId && roomToken) {
                 const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
-                plugins.setPluginContext("video", {
-                    identity: identity === Identity.creator ? "host" : "",
-                });
-                plugins.setPluginContext("audio", {
-                    identity: identity === Identity.creator ? "host" : "",
-                });
+                const contextIdentity = identity === Identity.creator ? "host" : "";
+                plugins.setPluginContext("video", { identity: contextIdentity });
+                plugins.setPluginContext("audio", { identity: contextIdentity });
                 const whiteWebSdk = new WhiteWebSdk({
                     appIdentifier: NETLESS.APP_IDENTIFIER,
                     plugins: plugins,
@@ -190,10 +187,7 @@ export class Whiteboard extends React.Component<WhiteboardProps, WhiteboardState
                         uuid: roomId,
                         roomToken: roomToken,
                         cursorAdapter: cursorAdapter,
-                        userPayload: {
-                            userId: userId,
-                            cursorName: cursorName,
-                        },
+                        userPayload: { userId, cursorName },
                         floatBar: true,
                     },
                     {
@@ -262,7 +256,7 @@ export class Whiteboard extends React.Component<WhiteboardProps, WhiteboardState
                     data: scenes,
                 };
                 const docs = (room.state.globalState as any).docs;
-                if (docs && docs.length > 0) {
+                if (docs?.length > 0) {
                     const newDocs = [documentFile, ...docs];
                     room.setGlobalState({ docs: newDocs });
                 } else {

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Rtc as RtcApi } from "../apiMiddleware/Rtc";
 import { CloudRecording } from "../apiMiddleware/CloudRecording";
 import { getRoom, Identity, updateRoomProps } from "../utils/localStorage/room";
+import { AGORA } from "../constants/Process";
 
 export interface RtcRenderProps extends RtcState {
     rtc: RtcApi;
@@ -194,7 +195,8 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
         if (!this.cloudRecording) {
             return "";
         }
-        return `https://netless-cn-agora-whiteboard-dev.oss-cn-hangzhou.aliyuncs.com/AgoraCloudRecording/${this.cloudRecording.sid}_${this.cloudRecording.cname}.m3u8`;
+
+        return `${AGORA.OSS_PREFIX}${AGORA.OSS_FOLDER}/${this.cloudRecording.sid}_${this.cloudRecording.cname}.m3u8`;
     }
 }
 
