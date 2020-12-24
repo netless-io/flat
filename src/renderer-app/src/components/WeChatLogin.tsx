@@ -1,7 +1,7 @@
 import React from "react";
 import { io, Socket } from "socket.io-client";
 import { FLAT_SERVER_LOGIN } from "../constants/FlatServer";
-import { QRURL } from "../utils/WeChatURL";
+import { QRURL } from "../utils/wechatUrl";
 import "./WeChatLogin.less";
 import { RouteComponentProps, withRouter } from "react-router";
 import { setWechatInfo, setUserUuid } from "../utils/localStorage/accounts";

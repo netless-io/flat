@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
 import empty_box from "./assets/image/empty-box.svg";
 import board from "./assets/image/board.svg";
-import { ipcAsyncByMain } from "./utils/Ipc";
+import { ipcAsyncByMain } from "./utils/ipc";
 import { getRooms, LSRoom } from "./utils/localStorage/room";
 
 export type JoinPageStates = {

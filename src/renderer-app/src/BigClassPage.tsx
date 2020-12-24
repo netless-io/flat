@@ -21,7 +21,7 @@ import { withRtcRoute, WithRtcRouteProps } from "./components/Rtc";
 import { withRtmRoute, WithRtmRouteProps } from "./components/Rtm";
 
 import { getRoom, Identity } from "./utils/localStorage/room";
-import { ipcAsyncByMain } from "./utils/Ipc";
+import { ipcAsyncByMain } from "./utils/ipc";
 
 import "./BigClassPage.less";
 

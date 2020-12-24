@@ -1,5 +1,5 @@
 import React from "react";
-import { fetcher } from "./utils/Fetcher";
+import { fetcher } from "./utils/fetcher";
 import { FLAT_SERVER_LOGIN } from "./constants/FlatServer";
 import { RouteComponentProps } from "react-router";
 import { getWechatInfo } from "./utils/localStorage/accounts";

@@ -2,7 +2,7 @@ import "./UserIndexPage.less";
 import React from "react";
 import MainPageLayout from "./components/MainPageLayout";
 import {RouteComponentProps} from "react-router";
-import {ipcAsyncByMain} from "./utils/Ipc";
+import {ipcAsyncByMain} from "./utils/ipc";
 import {MainRoomMenu} from "./components/MainRoomMenu";
 import {MainRoomList} from "./components/MainRoomList";
 import {MainRoomHistory} from "./components/MainRoomHistory";

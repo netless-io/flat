@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router";
 import { message } from "antd";
 import PlayerController from "@netless/player-controller";
 import LoadingPage from "./LoadingPage";
-import { ipcAsyncByMain } from "./utils/Ipc";
+import { ipcAsyncByMain } from "./utils/ipc";
 import PageError from "./PageError";
 import { SmartPlayer } from "./apiMiddleware/SmartPlayer";
 import { RealtimePanel } from "./components/RealtimePanel";
