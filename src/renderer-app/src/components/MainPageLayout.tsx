@@ -2,16 +2,17 @@ import React from "react";
 import "./MainPageLayout.less";
 import { MainMenu } from "./MainMenu";
 import classNames from "classnames";
+import { getWechatInfo } from "../utils/localStorage/room";
 
 export type MainPageLayoutProps = {
     columnLayout?: boolean;
 };
 
 export default class MainPageLayout extends React.PureComponent<MainPageLayoutProps> {
-    userAvatar: string;
+    private userAvatar: string | undefined;
     public constructor(props: MainPageLayoutProps) {
         super(props);
-        this.userAvatar = localStorage.getItem("avatar") ?? '';
+        this.userAvatar = getWechatInfo()?.avatar
     }
     public render() {
         return (
