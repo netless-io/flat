@@ -277,30 +277,29 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 
     private renderTopBarRight(): React.ReactNode {
         const { viewMode, toggleDocCenter } = this.props.whiteboard;
-        const { isCalling, isRecording, toggleRecording } = this.props.rtc;
+        const { isRecording, toggleRecording } = this.props.rtc;
         const { isRealtimeSideOpen } = this.state;
-        const { uuid } = this.props.match.params;
+        const { uuid, identity } = this.props.match.params;
+        const isCreator = identity === Identity.creator;
 
         return (
             <>
-                <RecordButton
-                    // @TODO 待填充逻辑
-                    disabled={false}
-                    isRecording={isRecording}
-                    onClick={toggleRecording}
-                />
-                <TopBarRightBtn
-                    title="Call"
-                    icon="phone"
-                    active={isCalling}
-                    onClick={this.toggleCalling}
-                />
-                <TopBarRightBtn
-                    title="Vision control"
-                    icon="follow"
-                    active={viewMode === ViewMode.Broadcaster}
-                    onClick={this.handleRoomController}
-                />
+                {isCreator && (
+                    <RecordButton
+                        // @TODO 待填充逻辑
+                        disabled={false}
+                        isRecording={isRecording}
+                        onClick={toggleRecording}
+                    />
+                )}
+                {isCreator && (
+                    <TopBarRightBtn
+                        title="Vision control"
+                        icon="follow"
+                        active={viewMode === ViewMode.Broadcaster}
+                        onClick={this.handleRoomController}
+                    />
+                )}
                 <TopBarRightBtn title="Docs center" icon="folder" onClick={toggleDocCenter} />
                 <InviteButton uuid={uuid} />
                 {/* @TODO */}
