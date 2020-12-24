@@ -102,9 +102,9 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     private onVideoAvatarExpand = (): void => {
         this.setState(state => ({
             mainSpeaker:
-                state.mainSpeaker === this.props.rtc.rtcUid
+                state.mainSpeaker === this.props.rtc.creatorUid
                     ? state.speakingJoiner
-                    : this.props.rtc.rtcUid,
+                    : this.props.rtc.creatorUid,
         }));
     };
 
@@ -223,7 +223,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
 
     private renderRealtimePanel(): React.ReactNode {
         const { uuid, userId, identity } = this.props.match.params;
-        const { isCalling, rtcUid, rtc } = this.props.rtc;
+        const { isCalling, creatorUid, rtc } = this.props.rtc;
 
         const { isRealtimeSideOpen, speakingJoiner, mainSpeaker } = this.state;
 
@@ -233,18 +233,20 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                 isVideoOn={isCalling}
                 videoSlot={
                     isCalling &&
-                    rtcUid && (
+                    creatorUid && (
                         <div className="whiteboard-rtc-box">
                             <div
                                 className={classNames("whiteboard-rtc-avatar", {
-                                    "is-small": mainSpeaker !== null && mainSpeaker !== rtcUid,
+                                    "is-small": mainSpeaker !== null && mainSpeaker !== creatorUid,
                                 })}
                             >
                                 <VideoAvatar
-                                    uid={rtcUid}
-                                    type={rtcUid === userId ? VideoType.local : VideoType.remote}
+                                    uid={creatorUid}
+                                    type={
+                                        creatorUid === userId ? VideoType.local : VideoType.remote
+                                    }
                                     rtcEngine={rtc.rtcEngine}
-                                    small={mainSpeaker !== null && mainSpeaker !== rtcUid}
+                                    small={mainSpeaker !== null && mainSpeaker !== creatorUid}
                                     onExpand={this.onVideoAvatarExpand}
                                 />
                             </div>
