@@ -29,7 +29,6 @@ export default class IndexPage extends React.PureComponent<RouteComponentProps, 
 
     public checkLoginStatus = async () => {
         const token = getWechatInfo()?.token
-        console.log("token", token);
         if (token === null) {
             this.pushHistory("/login/");
         } else {

@@ -4,7 +4,7 @@ import { FLAT_SERVER_LOGIN } from "../constants/FlatServer";
 import { QRURL } from "../utils/WeChatURL";
 import "./WeChatLogin.less";
 import { RouteComponentProps, withRouter } from "react-router";
-import { setWechatInfo } from "../utils/localStorage/accounts";
+import { setWechatInfo, setUserUuid } from "../utils/localStorage/accounts";
 
 export enum Status {
     NoLogin = -1,
@@ -72,6 +72,7 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
             switch (status) {
                 case Status.Success: {
                     setWechatInfo(data);
+                    setUserUuid(data.userUUID);
                     console.log("登陆成功", data);
                     this.props.history.push("/user/");
                     break;
