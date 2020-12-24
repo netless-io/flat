@@ -3,7 +3,7 @@ import { HashRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import { message } from "antd";
 import WhiteboardCreatorPage from "./WhiteboardCreatorPage";
-import WhiteboardPage from "./WhiteboardPage";
+import BigClassPage from "./BigClassPage";
 import ReplayPage from "./ReplayPage";
 import JoinPage from "./JoinPage";
 import AddNamePage from "./AddNamePage";
@@ -31,7 +31,7 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route
                         exact
                         path="/whiteboard/:identity/:uuid/:userId/"
-                        component={WhiteboardPage}
+                        component={BigClassPage}
                     />
                     <Route
                         exact
