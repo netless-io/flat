@@ -1,6 +1,7 @@
 import React from "react"
 import "./NormalSetting.less"
 import { Radio, Checkbox, Button } from "antd"
+import { RouteComponentProps } from "react-router";
 
 enum RadioValue {
     FiveMinutes="提前 5 分钟",
@@ -18,8 +19,8 @@ type NoramlSettingState = {
     radioValue: RadioValue;
 }
 
-export default class NormalSetting extends React.PureComponent<{}, NoramlSettingState> {
-    public constructor(props: NoramlSettingState) {
+export default class NormalSetting extends React.PureComponent<RouteComponentProps, NoramlSettingState> {
+    public constructor(props: RouteComponentProps) {
         super(props);
         this.state = {
             toggleRadio: true,
@@ -32,6 +33,11 @@ export default class NormalSetting extends React.PureComponent<{}, NoramlSetting
             toggleRadio: !this.state.toggleRadio,
         });
     };
+
+    public quitAccount = () => {
+        localStorage.clear();
+        this.props.history.push("/login/");
+    }
 
     public render() {
         return (
@@ -75,7 +81,7 @@ export default class NormalSetting extends React.PureComponent<{}, NoramlSetting
                             <Radio value={Selectlanguage.Chinese}>中文</Radio>
                             <Radio value={Selectlanguage.English}>English</Radio>
                         </Radio.Group>
-                        <Button danger>退出登录</Button>
+                        <Button danger onClick={this.quitAccount}>退出登录</Button>
                     </div>
                 </div>
             </div>
