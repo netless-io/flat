@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { FLAT_SERVER_LOGIN } from "../constants/FlatServer";
-import { getWechatInfo } from "./localStorage/room";
+import { getWechatInfo } from "./localStorage/accounts";
 
 export const fetcher = Axios.create({
     baseURL: FLAT_SERVER_LOGIN.HTTPS_LOGIN,

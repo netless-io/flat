@@ -4,7 +4,7 @@ import { FLAT_SERVER_LOGIN } from "../constants/FlatServer";
 import { QRURL } from "../utils/WeChatURL";
 import "./WeChatLogin.less";
 import { RouteComponentProps, withRouter } from "react-router";
-import { setWechatInfo } from "../utils/localStorage/room";
+import { setWechatInfo } from "../utils/localStorage/accounts";
 
 export enum Status {
     NoLogin = -1,

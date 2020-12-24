@@ -2,7 +2,7 @@ import React from "react";
 import { fetcher } from "./utils/Fetcher";
 import { FLAT_SERVER_LOGIN } from "./constants/FlatServer";
 import { RouteComponentProps } from "react-router";
-import { getWechatInfo } from "./utils/localStorage/room";
+import { getWechatInfo } from "./utils/localStorage/accounts";
 
 interface LoginResponse {
     token: string;

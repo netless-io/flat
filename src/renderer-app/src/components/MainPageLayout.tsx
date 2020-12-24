@@ -2,7 +2,7 @@ import React from "react";
 import "./MainPageLayout.less";
 import { MainMenu } from "./MainMenu";
 import classNames from "classnames";
-import { getWechatInfo } from "../utils/localStorage/room";
+import { getWechatInfo } from "../utils/localStorage/accounts";
 
 export type MainPageLayoutProps = {
     columnLayout?: boolean;
