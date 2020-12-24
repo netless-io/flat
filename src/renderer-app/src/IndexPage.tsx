@@ -2,6 +2,7 @@ import React from "react";
 import { fetcher } from "./utils/Fetcher";
 import { FLAT_SERVER_LOGIN } from "./constants/FlatServer";
 import { RouteComponentProps } from "react-router";
+import { getWechatInfo } from "./utils/localStorage/room";
 
 interface LoginResponse {
     token: string;
@@ -12,15 +13,12 @@ interface LoginResponse {
 }
 
 export default class IndexPage extends React.PureComponent<RouteComponentProps, {}> {
-    isUnmounted: boolean;
-
-    constructor(props: RouteComponentProps) {
-        super(props);
-        this.isUnmounted = false;
-    }
+    private isUnmounted = false;
+    private checkLoginSetTimeoutID = 0;
 
     public componentWillUnmount = () => {
         this.isUnmounted = true;
+        this.checkLoginSetTimeoutID = window.setTimeout(this.checkLoginStatus, 2000);
     };
 
     public pushHistory = (path: string) => {
@@ -30,7 +28,8 @@ export default class IndexPage extends React.PureComponent<RouteComponentProps, 
     };
 
     public checkLoginStatus = async () => {
-        const token = localStorage.getItem("token");
+        const token = getWechatInfo()?.token
+        console.log("token", token);
         if (token === null) {
             this.pushHistory("/login/");
         } else {
@@ -44,7 +43,7 @@ export default class IndexPage extends React.PureComponent<RouteComponentProps, 
     };
 
     public componentDidMount() {
-        setTimeout(this.checkLoginStatus, 2000);
+        this.checkLoginSetTimeoutID = window.setTimeout(this.checkLoginStatus, 2000);
     }
 
     public render() {

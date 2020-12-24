@@ -9,17 +9,17 @@ export type MainPageLayoutProps = {
 };
 
 export default class MainPageLayout extends React.PureComponent<MainPageLayoutProps> {
-    private userAvatar: string | undefined;
+    private userAvatar: string;
     public constructor(props: MainPageLayoutProps) {
         super(props);
-        this.userAvatar = getWechatInfo()?.avatar
+        this.userAvatar = getWechatInfo()?.avatar ?? '';
     }
     public render() {
         return (
             <div className="layout-container">
                 <div className="layout-container-menu">
                     <div className="layout-container-header">
-                        <img src={this.userAvatar} alt={"avatar"} />
+                        <img src={this.userAvatar} alt="avatar" />
                     </div>
                     <MainMenu />
                 </div>
