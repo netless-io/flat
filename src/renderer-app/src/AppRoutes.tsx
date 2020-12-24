@@ -3,7 +3,6 @@ import { HashRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import { message } from "antd";
 import WhiteboardCreatorPage from "./WhiteboardCreatorPage";
-// import IndexPage from "./IndexPage";
 import BigClassPage from "./BigClassPage";
 import ReplayPage from "./ReplayPage";
 import JoinPage from "./JoinPage";
@@ -18,6 +17,7 @@ import UserSetPage from "./UserSetPage";
 import UserScheduledPage from "./UserScheduledPage";
 import RoomDetailPage from "./RoomDetailPage";
 import LoginPage from "./LoginPage";
+import IndexPage from "./IndexPage";
 
 export class AppRoutes extends React.Component<{}, {}> {
     public componentDidCatch(error: any): void {
@@ -44,7 +44,8 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route exact path="/create/" component={CreatePage} />
                     <Route exact path="/storage/" component={Storage} />
                     <Route exact path="/history/" component={HistoryPage} />
-                    <Route exact path="/" component={LoginPage} />
+                    <Route exact path="/" component={IndexPage} />
+                    <Route exact path="/login/" component={LoginPage} />
                     <Route exact path="/user/" component={UserIndexPage} />
                     <Route exact path="/user/scheduled/" component={UserScheduledPage} />
                     <Route exact path="/user/room/" component={RoomDetailPage} />
