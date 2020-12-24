@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import { runtime } from "../utils/Runtime";
+import { runtime } from "../utils/runtime";
 
 import "./TopBar.less";
 

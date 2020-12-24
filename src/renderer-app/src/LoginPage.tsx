@@ -7,7 +7,7 @@ import logo from "./assets/image/logo.svg";
 import wechat from "./assets/image/wechat.svg";
 import google from "./assets/image/google.svg";
 import { shell } from "electron";
-import { ipcAsyncByMain } from "./utils/Ipc";
+import { ipcAsyncByMain } from "./utils/ipc";
 import WeChatLogin from "./components/WeChatLogin";
 
 export type IndexPageStates = {

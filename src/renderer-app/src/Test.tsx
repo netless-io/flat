@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
-import { DownloadFile } from "./utils/Download";
-import { extractZIP } from "./utils/Unzip";
+import { DownloadFile } from "./utils/download";
+import { extractZIP } from "./utils/unzip";
 import { Link } from "react-router-dom";
 
 export default class Test extends React.Component<

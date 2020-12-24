@@ -6,10 +6,10 @@ import { Button, Progress } from "antd";
 import { Link } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
 import empty_box from "./assets/image/empty-box.svg";
-import { DownloadFile } from "./utils/Download";
-import { extractZIP } from "./utils/Unzip";
+import { DownloadFile } from "./utils/download";
+import { extractZIP } from "./utils/unzip";
 import { copySync, removeSync } from "fs-extra";
-import { runtime } from "./utils/Runtime";
+import { runtime } from "./utils/runtime";
 import path from "path";
 const resourcesHost = "convertcdn.netless.link";
 export type ServiceWorkTestStates = {

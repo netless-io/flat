@@ -62,12 +62,9 @@ export class SmartPlayer {
         const recording = storageRoom?.recordings?.[storageRoom.recordings.length - 1];
 
         const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
-        plugins.setPluginContext("video", {
-            identity: identity === Identity.creator ? "host" : "",
-        });
-        plugins.setPluginContext("audio", {
-            identity: identity === Identity.creator ? "host" : "",
-        });
+        const contextIdentity = identity === Identity.creator ? "host" : "";
+        plugins.setPluginContext("video", { identity: contextIdentity });
+        plugins.setPluginContext("audio", { identity: contextIdentity });
 
         const whiteWebSdk = new WhiteWebSdk({
             appIdentifier: NETLESS.APP_IDENTIFIER,
