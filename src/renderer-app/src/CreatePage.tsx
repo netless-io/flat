@@ -4,7 +4,7 @@ import logo from "./assets/image/logo.svg";
 import { Button, Input } from "antd";
 import { Link } from "react-router-dom";
 import { netlessWhiteboardApi } from "./apiMiddleware";
-import { ipcAsyncByMain } from "./utils/Ipc";
+import { ipcAsyncByMain } from "./utils/ipc";
 import { saveRoom, Identity } from "./utils/localStorage/room";
 
 export type JoinPageStates = {

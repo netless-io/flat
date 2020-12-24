@@ -2,7 +2,7 @@ import React from "react";
 import { RouteComponentProps } from "react-router";
 import { Button, Input, Select, Radio } from "antd";
 import { Link } from "react-router-dom";
-import { ipcAsyncByMain } from "./utils/Ipc";
+import { ipcAsyncByMain } from "./utils/ipc";
 import { saveRoom, Identity } from "./utils/localStorage/room";
 
 import "./JoinPage.less";

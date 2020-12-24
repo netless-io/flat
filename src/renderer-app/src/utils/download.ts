@@ -6,7 +6,7 @@ import {
     FinalDownloadInfo,
     Stats,
 } from "node-downloader-helper";
-import { runtime } from "./Runtime";
+import { runtime } from "./runtime";
 
 export class DownloadFile {
     private readonly url: string;

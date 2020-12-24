@@ -5,7 +5,7 @@ import { RouteComponentProps } from "react-router";
 import PageError from "./PageError";
 import { netlessWhiteboardApi } from "./apiMiddleware";
 import LoadingPage from "./LoadingPage";
-import { ipcAsyncByMain } from "./utils/Ipc";
+import { ipcAsyncByMain } from "./utils/ipc";
 import { Identity, saveRoom } from "./utils/localStorage/room";
 
 export type WhiteboardCreatorPageState = {

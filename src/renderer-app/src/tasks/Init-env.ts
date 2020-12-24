@@ -1,5 +1,5 @@
-import { runtime } from "../utils/Runtime";
-import { ipcSyncByMain } from "../utils/Ipc";
+import { runtime } from "../utils/runtime";
+import { ipcSyncByMain } from "../utils/ipc";
 
 const initEnv = async () => {
     const runtimeKeys = Object.keys(runtime);
