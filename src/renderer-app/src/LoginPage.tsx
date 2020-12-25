@@ -91,7 +91,7 @@ class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                         <img src={logo} alt={"logo"} />
                         <span>在线互动 让想法同步</span>
                     </div>
-                    <div className="page-index-start-box">
+                    <div className="page-index-start-box page-index-fade-in">
                         <div className="page-index-img-box">
                             <div className="page-index-start-cell" onClick={this.showModal}>
                                 <img src={wechat} alt={"wxLogin"} />
@@ -107,10 +107,10 @@ class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                             </div>
                         </div>
                     </div>
-                    <div className="page-index-line">
+                    <div className="page-index-line page-index-fade-in">
                         <Divider plain>2.1.0</Divider>
                     </div>
-                    <div className="page-index-link-box">
+                    <div className="page-index-link-box page-index-fade-in">
                         <Button size="large" style={{ width: 280 }} onClick={this.joinRoom}>
                             加入房间
                         </Button>

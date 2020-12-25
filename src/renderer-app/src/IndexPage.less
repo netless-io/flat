@@ -1,0 +1,39 @@
+.index-container {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.fade-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 310px;
+
+    span {
+        display: block;
+    }
+
+    img {
+        margin-bottom: 16px;
+        margin-left: 15px;
+    }
+}
+
+.success {
+    animation: flat-fly 0.6s forwards;
+}
+
+@keyframes flat-fly {
+    0% {
+        opacity: 0.3;
+        transition-timing-function: ease-in;
+        transition-timing-function: cubic-bezier(0.42, 0, 1, 1);
+        transform: translateY(0);
+    }
+    100% {
+        transition-timing-function: ease-out;
+        transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+        transform: translateY(-210px);
+    }
+}
+
