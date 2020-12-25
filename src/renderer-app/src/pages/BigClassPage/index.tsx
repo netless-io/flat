@@ -3,25 +3,25 @@ import { message } from "antd";
 import classNames from "classnames";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 
-import PageError from "./PageError";
-import LoadingPage from "./LoadingPage";
+import PageError from "../../PageError";
+import LoadingPage from "../../LoadingPage";
 
-import InviteButton from "./components/InviteButton";
-import { TopBar, TopBarDivider } from "./components/TopBar";
-import { TopBarClassOperations } from "./components/TopBarClassOperations";
-import { TopBarRightBtn } from "./components/TopBarRightBtn";
-import { RealtimePanel } from "./components/RealtimePanel";
-import { ChatPanel } from "./components/ChatPanel";
-import { VideoAvatar, VideoType } from "./components/VideoAvatar";
-import { NetworkStatus } from "./components/NetworkStatus";
-import { RecordButton } from "./components/RecordButton";
-import { ClassStatus } from "./components/ClassStatus";
-import { withWhiteboardRoute, WithWhiteboardRouteProps } from "./components/Whiteboard";
-import { withRtcRoute, WithRtcRouteProps } from "./components/Rtc";
-import { withRtmRoute, WithRtmRouteProps } from "./components/Rtm";
+import InviteButton from "../../components/InviteButton";
+import { TopBar, TopBarDivider } from "../../components/TopBar";
+import { TopBarClassOperations } from "../../components/TopBarClassOperations";
+import { TopBarRightBtn } from "../../components/TopBarRightBtn";
+import { RealtimePanel } from "../../components/RealtimePanel";
+import { ChatPanel } from "../../components/ChatPanel";
+import { BigClassAvatar, VideoType } from "./BigClassAvatar";
+import { NetworkStatus } from "../../components/NetworkStatus";
+import { RecordButton } from "../../components/RecordButton";
+import { ClassStatus } from "../../components/ClassStatus";
+import { withWhiteboardRoute, WithWhiteboardRouteProps } from "../../components/Whiteboard";
+import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
+import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
 
-import { getRoom, Identity } from "./utils/localStorage/room";
-import { ipcAsyncByMain } from "./utils/ipc";
+import { getRoom, Identity } from "../../utils/localStorage/room";
+import { ipcAsyncByMain } from "../../utils/Ipc";
 
 import "./BigClassPage.less";
 
@@ -240,7 +240,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                                     "is-small": mainSpeaker !== null && mainSpeaker !== creatorUid,
                                 })}
                             >
-                                <VideoAvatar
+                                <BigClassAvatar
                                     uid={creatorUid}
                                     type={
                                         creatorUid === userId ? VideoType.local : VideoType.remote
@@ -256,7 +256,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                                         "is-small": mainSpeaker !== speakingJoiner,
                                     })}
                                 >
-                                    <VideoAvatar
+                                    <BigClassAvatar
                                         uid={speakingJoiner}
                                         type={
                                             speakingJoiner === userId
