@@ -21,6 +21,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 100px;
+    // animation: fadein 0.3s forwards;
     img {
         margin-bottom: 12px;
     }
@@ -205,4 +206,17 @@
     display: inline-block;
     padding: 0 1em;
     color: #7A7B7C;
+}
+
+.page-index-fade-in {
+    animation: fadein 0.2s forwards;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0.2;
+    }
+    to {
+        opacity: 1;
+    }
 }
