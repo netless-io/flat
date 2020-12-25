@@ -35,27 +35,27 @@ export class BigClassAvatar extends VideoAvatar<BigClassAvatarProps, BigClassAva
         const { uid, small, onExpand, type } = this.props;
         const { isVideoOn, isAudioOn } = this.state;
         return (
-            <section className={classNames("video-avatar-wrap", { "is-small": small })}>
-                <div className="video-avatar" ref={this.setupVideo}></div>
+            <section className={classNames("big-class-avatar-wrap", { "is-small": small })}>
+                <div className="big-class-avatar" ref={this.setupVideo}></div>
                 {!isVideoOn && (
-                    <div className="video-avatar-background">
+                    <div className="big-class-avatar-background">
                         <img src={noCamera} alt="no camera" />
                     </div>
                 )}
                 <div
-                    className={classNames("video-avatar-ctrl-layer", {
+                    className={classNames("big-class-avatar-ctrl-layer", {
                         "with-video": isVideoOn,
                     })}
                 >
                     {small ? (
-                        <button className="video-avatar-expand" onClick={onExpand}>
+                        <button className="big-class-avatar-expand" onClick={onExpand}>
                             <img src={videoExpand} alt="expand" />
                         </button>
                     ) : (
                         <>
-                            <h1 className="video-avatar-title">{uid}</h1>
+                            <h1 className="big-class-avatar-title">{uid}</h1>
                             {type === VideoType.local && (
-                                <div className="video-avatar-btns">
+                                <div className="big-class-avatar-btns">
                                     <button onClick={this.toggleVideo}>
                                         <img
                                             src={isVideoOn ? camera : cameraDisabled}

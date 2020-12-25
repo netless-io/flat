@@ -24,6 +24,11 @@ export class VideoAvatar<
 > extends React.PureComponent<P, S> {
     private el: HTMLDivElement | null = null;
 
+    // eslint-disable-next-line react/require-render-return
+    render(): React.ReactNode {
+        throw new Error("render function not implemented.");
+    }
+
     setupVideo = (el: HTMLDivElement | null): void => {
         this.el = el;
         if (this.el) {
