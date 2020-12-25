@@ -102,16 +102,24 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
         return `${FLAT_SERVER_ROOM.LIST}/${type ?? this.state.roomListType}`;
     }
 
+    private refreshRoomId: number | null = null;
+
     public refreshRooms = async (type?: RoomListType) => {
+        if (this.refreshRoomId !== null) {
+            window.clearTimeout(this.refreshRoomId);
+        }
         // TODO page
         const { data: res } = await fetcher.get<ListRoomsSuccessResponse>(
             this.getListRoomsUrl(type),
-            {
-                params: { page: 1 },
-            },
+            { params: { page: 1 } },
         );
         if (res.status === Status.Success) {
             this.setAsyncState({ rooms: res.data });
+        }
+        if (this.isMount) {
+            this.refreshRoomId = window.setTimeout(this.refreshRooms, 30 * 1000);
+        } else {
+            this.refreshRoomId = null;
         }
     };
 
