@@ -3,7 +3,12 @@ import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
+import { FLAT_SERVER_ROOM } from "../constants/FlatServer";
+import { JoinRoomResult, SuccessResponse } from "../UserIndexPage";
+import { fetcher } from "../utils/fetcher";
+import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
+import { Status } from "./WeChatLogin";
 
 export type MainRoomListItemProps = {
     /** 标题 */
@@ -16,8 +21,12 @@ export type MainRoomListItemProps = {
     status: "Pending" | "Running" | "Stopped";
     /** 房间/周期 uuid */
     uuid: string;
+    /** 是否周期房间 */
+    isCyclical: boolean;
     /** 发起者 userUUID */
     userUUID: string;
+
+    historyPush: (path: string) => void;
 };
 
 /** 房间列表 - 单个房间 */
@@ -71,16 +80,25 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         return this.getUserId() === this.props.userUUID ? Identity.creator : Identity.joiner;
     };
 
-    public joinRoom = () => {
+    public joinRoom = async () => {
+        const { isCyclical } = this.props;
         const identity = this.getIdentity();
-        let url: string;
-        if (identity === Identity.creator) {
-            url = `/whiteboard/${identity}/${this.props.uuid}/`;
-        } else {
-            url = `/whiteboard/${identity}/${this.props.uuid}/${this.getUserId()}/`;
+        const { data: res } = await fetcher.post<SuccessResponse<JoinRoomResult>>(
+            isCyclical ? FLAT_SERVER_ROOM.JOIN_CYCLICAL : FLAT_SERVER_ROOM.JOIN_ORDINARY,
+            isCyclical ? { cyclicalUUID: this.props.uuid } : { roomUUID: this.props.uuid },
+        );
+        if (res.status === Status.Success) {
+            const uuid = res.data.whiteboardRoomUUID;
+            globals.whiteboard.uuid = res.data.whiteboardRoomUUID;
+            globals.whiteboard.token = res.data.whiteboardRoomToken;
+            let url: string;
+            if (identity === Identity.creator) {
+                url = `/whiteboard/${Identity.creator}/${uuid}/`;
+            } else {
+                url = `/whiteboard/${Identity.joiner}/${uuid}/${this.getUserId()}/`;
+            }
+            this.props.historyPush(url);
         }
-        void url;
-        // TODO: location.push(url)
     };
 
     render() {

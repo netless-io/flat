@@ -7,6 +7,7 @@ export type MainRoomListProps = {
     rooms: Room[];
     type: RoomListType;
     onTypeChange: (type: RoomListType) => void;
+    historyPush: (path: string) => void;
 };
 
 export class MainRoomList extends PureComponent<MainRoomListProps> {
@@ -35,8 +36,10 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
                     status={this.renderStatus(e.roomStatus)}
                     beginTime={this.timeToNumber(e.beginTime)!}
                     endTime={this.timeToNumber(e.endTime)}
+                    isCyclical={Boolean(e.cyclicalUUID)}
                     uuid={this.getRoomUUID(e)}
                     userUUID={e.creatorUserUUID}
+                    historyPush={this.props.historyPush}
                 />
             );
         });

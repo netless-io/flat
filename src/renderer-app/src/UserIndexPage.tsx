@@ -9,6 +9,8 @@ import { MainRoomHistory } from "./components/MainRoomHistory";
 import { Status } from "./components/WeChatLogin";
 import { fetcher } from "./utils/fetcher";
 import { FLAT_SERVER_ROOM } from "./constants/FlatServer";
+import { globals } from "./utils/globals";
+import { Identity } from "./utils/localStorage/room";
 
 export enum RoomType {
     OneToOne,
@@ -49,6 +51,22 @@ type CreateRoomSuccessResponse = {
 type ListRoomsSuccessResponse = {
     status: Status.Success;
     data: Room[];
+};
+
+export type JoinRoomResult = {
+    whiteboardRoomToken: string;
+    whiteboardRoomUUID: string;
+};
+
+export type JoinCyclicalRoomResult = {
+    whiteboardRoomToken: string;
+    whiteboardRoomUUID: string;
+    roomUUID: string;
+};
+
+export type SuccessResponse<T> = {
+    status: Status;
+    data: T;
 };
 
 class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageState> {
@@ -93,8 +111,24 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
             },
         );
         if (res.status === Status.Success) {
-            console.log(res.data); // TODO join { roomUUID }
-            this.refreshRooms();
+            await this.joinRoom(res.data.roomUUID);
+        }
+    };
+
+    public historyPush = (path: string) => {
+        if (this.isMount) this.props.history.push(path);
+    };
+
+    public joinRoom = async (roomUUID: string) => {
+        const { data: res } = await fetcher.post<SuccessResponse<JoinRoomResult>>(
+            FLAT_SERVER_ROOM.JOIN_ORDINARY,
+            { roomUUID },
+        );
+        if (res.status === Status.Success) {
+            globals.whiteboard.uuid = res.data.whiteboardRoomUUID;
+            globals.whiteboard.token = res.data.whiteboardRoomToken;
+            const url = `/whiteboard/${Identity.creator}/${res.data.whiteboardRoomUUID}/`;
+            this.historyPush(url);
         }
     };
 
@@ -139,6 +173,7 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
                         rooms={this.state.rooms}
                         type={this.state.roomListType}
                         onTypeChange={this.setRoomListType}
+                        historyPush={this.historyPush}
                     />
                     <MainRoomHistory />
                 </div>
