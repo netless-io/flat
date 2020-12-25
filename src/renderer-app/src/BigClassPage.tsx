@@ -192,7 +192,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                     // @TODO 待填充逻辑
                     disabled={false}
                     isRecording={isRecording}
-                    onClick={toggleRecording}
+                    onClick={() => toggleRecording()}
                 />
                 <TopBarRightBtn
                     title="Call"
