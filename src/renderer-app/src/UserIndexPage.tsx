@@ -114,7 +114,9 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
             { params: { page: 1 } },
         );
         if (res.status === Status.Success) {
-            this.setAsyncState({ rooms: res.data });
+            const running = res.data.filter(e => e.roomStatus === "Running");
+            const notRunning = res.data.filter(e => e.roomStatus !== "Running");
+            this.setAsyncState({ rooms: [...running, ...notRunning] });
         }
         if (this.isMount) {
             this.refreshRoomId = window.setTimeout(this.refreshRooms, 30 * 1000);

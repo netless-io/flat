@@ -1,5 +1,5 @@
 import { Button, Checkbox, DatePicker, Input, InputNumber, Select, TimePicker } from "antd";
-import { isBefore, roundToNearestMinutes } from "date-fns";
+import { addDays, addWeeks, format, isBefore, roundToNearestMinutes } from "date-fns";
 import { addMinutes } from "date-fns/esm";
 import moment from "moment";
 import React, { Component } from "react";
@@ -13,6 +13,7 @@ import { Status } from "./components/WeChatLogin";
 import { FLAT_SERVER_ROOM } from "./constants/FlatServer";
 import "./UserScheduledPage.less";
 import { fetcher } from "./utils/fetcher";
+import { zhCN } from "date-fns/locale";
 
 enum RoomType {
     OneToOne,
@@ -113,11 +114,11 @@ export default class UserScheduledPage extends Component<
     };
 
     public onBeginTimeChange = (date: moment.Moment) => {
-        this.setState({ beginTime: date.valueOf() });
+        date && this.setState({ beginTime: date.valueOf() });
     };
 
     public onEndTimeChange = (date: moment.Moment) => {
-        this.setState({ endTime: date.valueOf() });
+        date && this.setState({ endTime: date.valueOf() });
     };
 
     private typeName = (type: RoomType) => {
@@ -178,6 +179,7 @@ export default class UserScheduledPage extends Component<
                             <div className="user-schedule-name">开始时间</div>
                             <div className="user-schedule-inner">
                                 <DatePicker
+                                    disabled={this.state.isCycle}
                                     className="user-schedule-picker"
                                     value={moment(this.state.beginTime)}
                                     onChange={e => this.onBeginTimeChange(e!)}
@@ -191,6 +193,7 @@ export default class UserScheduledPage extends Component<
                             <div className="user-schedule-name">结束时间</div>
                             <div className="user-schedule-inner">
                                 <DatePicker
+                                    disabled={this.state.isCycle}
                                     className="user-schedule-picker"
                                     value={moment(this.state.endTime)}
                                     onChange={e => this.onEndTimeChange(e!)}
@@ -330,6 +333,40 @@ export default class UserScheduledPage extends Component<
         return endTypeNameMap[type];
     }
 
+    private calcCyclicalEndDate() {
+        const { endTime, cyclicalEndType, cyclicalEndRate, cyclicalEndTime } = this.state;
+        if (cyclicalEndType === "rate") {
+            return addWeeks(new Date(endTime), cyclicalEndRate);
+        } else {
+            return new Date(cyclicalEndTime);
+        }
+    }
+
+    private renderCyclicalEndDate() {
+        return format(this.calcCyclicalEndDate(), "yyyy/MM/dd iii", { locale: zhCN });
+    }
+
+    private calcLessonTimes() {
+        const {
+            beginTime,
+            cyclicalWeeks,
+            cyclicalEndType,
+            cyclicalEndRate,
+            cyclicalEndTime,
+        } = this.state;
+        if (cyclicalEndType === "rate") {
+            return cyclicalEndRate * cyclicalWeeks.length;
+        } else {
+            let sum = 0;
+            for (let t = beginTime; isBefore(t, cyclicalEndTime); t = Number(addDays(t, 1))) {
+                if (cyclicalWeeks.includes(new Date(t).getDay())) {
+                    sum++;
+                }
+            }
+            return sum;
+        }
+    }
+
     private renderCycle = (): React.ReactNode => {
         const {
             isCycle: isChecked,
@@ -354,7 +391,7 @@ export default class UserScheduledPage extends Component<
                     )}
                     <div className="user-schedule-tips-type">房间类型：{this.typeName(type)}</div>
                     <div className="user-schedule-tips-inner">
-                        结束于 2020/11/30 周一，共 7 场会议
+                        结束于 {this.renderCyclicalEndDate()}，共 {this.calcLessonTimes()} 场会议
                     </div>
                 </div>
                 <div className="user-schedule-name">重复频率</div>
@@ -407,15 +444,16 @@ export default class UserScheduledPage extends Component<
                             className="user-schedule-picker demo-option-label-item"
                             min={1}
                             value={endRate}
-                            onChange={e => this.setState({ cyclicalEndRate: Number(e) })}
+                            onChange={e => e && this.setState({ cyclicalEndRate: Number(e) })}
                         />
                     ) : (
                         <DatePicker
                             className="user-schedule-picker"
                             format="YYYY-MM-DD HH:mm:ss"
                             showTime
+                            allowClear={false}
                             value={moment(endTime)}
-                            onChange={e => this.setState({ cyclicalEndTime: e!.valueOf() })}
+                            onChange={e => e && this.setState({ cyclicalEndTime: e.valueOf() })}
                         />
                     )}
                 </div>
