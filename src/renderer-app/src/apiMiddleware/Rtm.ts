@@ -67,7 +67,7 @@ export interface RtmEvents {
     /** creator ban all rtm */
     [RTMessageType.Ban]: boolean;
     /** creator allow joiners to speak */
-    [RTMessageType.Speak]: [{ uid: string; speak: boolean }];
+    [RTMessageType.Speak]: Array<{ uid: string; camera: boolean; mic: boolean }>;
     /** a notice message */
     [RTMessageType.Notice]: string;
 }

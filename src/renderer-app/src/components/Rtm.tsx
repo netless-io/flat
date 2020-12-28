@@ -17,7 +17,7 @@ export interface RtmRenderProps extends RtmState {
     onCancelAllHandRaising: () => void;
     onToggleHandRaising: () => void;
     onToggleBan: () => void;
-    onJoinerSpeak: (uid: string, speak: boolean) => void;
+    onJoinerSpeak: (uid: string, camera: boolean, mic?: boolean) => void;
     bindOnSpeak: (onSpeak: (uid: string, speak: boolean) => void) => void;
 }
 
@@ -75,8 +75,8 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                     // @TODO 等待登陆系统接入
                     avatar: generateAvatar(uid),
                     name: "",
-                    camera: false,
-                    mic: false,
+                    camera: uid !== userId,
+                    mic: true,
                 })),
             }),
             () => {
@@ -96,7 +96,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                                       // @TODO 等待登陆系统接入
                                       avatar: generateAvatar(uid),
                                       name: "",
-                                      camera: false,
+                                      camera: uid !== userId,
                                       mic: false,
                                   },
                               ],
@@ -132,9 +132,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         });
     }
 
-    onSpeak = (_uid: string, _speak: boolean): void => {
-        throw new Error("onSpeak is not set!");
-    };
+    onSpeak = (_uid: string, _speak: boolean): void => {};
 
     private bindOnSpeak = (onSpeak: (uid: string, speak: boolean) => void): void => {
         this.onSpeak = onSpeak;
@@ -153,17 +151,23 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         this.rtm.sendCommand(RTMessageType.CancelAllHandRaising, true, true);
     };
 
-    private onJoinerSpeak = (uid: string, speak: boolean): void => {
+    private onJoinerSpeak = (uid: string, camera: boolean, mic?: boolean): void => {
         this.updateUsers(
             user => user.id === uid,
             user => ({
                 ...user,
-                isSpeaking: speak,
+                isSpeaking: camera || mic,
                 isRaiseHand: false,
+                camera,
+                mic: mic ?? camera,
             }),
             () => {
-                this.onSpeak(uid, speak);
-                this.rtm.sendCommand(RTMessageType.Speak, [{ uid, speak }], true);
+                this.onSpeak(uid, Boolean(camera || mic));
+                this.rtm.sendCommand(
+                    RTMessageType.Speak,
+                    [{ uid, camera, mic: mic ?? camera }],
+                    true,
+                );
             },
         );
     };
@@ -301,23 +305,45 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             }
         });
 
-        this.rtm.on(RTMessageType.Speak, (users, senderId) => {
-            if (senderId === this.state.creatorId) {
-                const userMap = new Map(users.map(user => [user.uid, user]));
-                this.updateUsers(
-                    user => userMap.has(user.id),
-                    user => ({
-                        ...user,
-                        isSpeaking: userMap.get(user.id)!.speak,
-                        isRaiseHand: false,
-                    }),
-                    () => {
-                        users.forEach(({ uid, speak }) => {
-                            this.onSpeak(uid, speak);
-                        });
-                    },
-                );
+        this.rtm.on(RTMessageType.Speak, (configs, senderId) => {
+            if (senderId !== this.state.creatorId) {
+                configs = configs.filter(config => config.uid === senderId);
             }
+            const userMap = new Map(configs.map(config => [config.uid, config]));
+            this.updateUsers(
+                user => userMap.has(user.id),
+                user => {
+                    let { camera, mic } = userMap.get(user.id)!;
+
+                    if (senderId !== userId) {
+                        // ignore device open request from other users
+                        if (camera && !user.camera) {
+                            camera = user.camera;
+                        }
+
+                        if (mic && !user.mic) {
+                            mic = user.mic;
+                        }
+                    }
+
+                    if (camera === user.camera && mic === user.mic) {
+                        return user;
+                    }
+
+                    return {
+                        ...user,
+                        isSpeaking: camera || mic,
+                        isRaiseHand: false,
+                        camera,
+                        mic,
+                    };
+                },
+                () => {
+                    configs.forEach(({ uid, camera, mic }) => {
+                        this.onSpeak(uid, camera || mic);
+                    });
+                },
+            );
         });
 
         this.rtm.on(RTMessageType.Notice, (text, senderId) => {

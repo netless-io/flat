@@ -1,14 +1,15 @@
 import React from "react";
 import { RouteComponentProps } from "react-router";
 import { v4 as uuidv4 } from "uuid";
-import { Rtc as RtcApi } from "../apiMiddleware/Rtc";
-import { CloudRecording } from "../apiMiddleware/CloudRecording";
+import { Rtc as RtcApi, RtcChannelType } from "../apiMiddleware/Rtc";
+import { CloudRecording, StartPayload } from "../apiMiddleware/CloudRecording";
 import { getRoom, Identity, updateRoomProps } from "../utils/localStorage/room";
 import { AGORA } from "../constants/Process";
 
 export interface RtcRenderProps extends RtcState {
     rtc: RtcApi;
     cloudRecording: CloudRecording | null;
+    channelType: RtcChannelType;
     toggleRecording: (callback?: () => void) => void;
     toggleCalling: (callback?: () => void) => void;
 }
@@ -18,6 +19,7 @@ export interface RtcProps {
     roomId: string;
     userId: string;
     identity: Identity;
+    recordingConfig: StartPayload["clientRequest"]["recordingConfig"];
 }
 
 export type RtcState = {
@@ -28,7 +30,9 @@ export type RtcState = {
 };
 
 export class Rtc extends React.Component<RtcProps, RtcState> {
-    private rtc = new RtcApi();
+    private rtc = new RtcApi({
+        channelType: this.props.recordingConfig.channelType ?? RtcChannelType.broadcast,
+    });
     private cloudRecording: CloudRecording | null = null;
     private cloudRecordingInterval: number | undefined;
     private recordStartTime: number | null = null;
@@ -78,31 +82,23 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
             ...this.state,
             rtc: this.rtc,
             cloudRecording: this.cloudRecording,
+            channelType: this.props.recordingConfig.channelType ?? RtcChannelType.communication,
             toggleCalling: this.toggleCalling,
             toggleRecording: this.toggleRecording,
         });
     }
 
     private startRecording = async (): Promise<void> => {
+        const { roomId, recordingConfig } = this.props;
         this.recordStartTime = Date.now();
         if (this.state.isCalling && !this.cloudRecording?.isRecording) {
             this.cloudRecording = new CloudRecording({
-                cname: this.props.roomId,
+                cname: roomId,
                 uid: "1", // 不能与频道内其他用户冲突
             });
             await this.cloudRecording.start({
                 storageConfig: this.cloudRecording.defaultStorageConfig(),
-                recordingConfig: {
-                    channelType: 1, // 直播
-                    transcodingConfig: {
-                        width: 288,
-                        height: 216,
-                        // https://docs.agora.io/cn/cloud-recording/recording_video_profile
-                        fps: 15,
-                        bitrate: 280,
-                    },
-                    subscribeUidGroup: 0,
-                },
+                recordingConfig,
             });
             // @TODO 临时避免频道被关闭（默认30秒无活动），后面会根据我们的需求修改并用 polly-js 管理重发。
             this.cloudRecordingInterval = window.setInterval(() => {
@@ -206,19 +202,26 @@ export type WithRtcRouteProps = { rtc: RtcRenderProps } & RouteComponentProps<{
     userId: string;
 }>;
 
-export function withRtcRoute<Props>(Comp: React.ComponentType<Props & WithRtcRouteProps>) {
-    return class WithRtcRoute extends React.Component<
-        Props & Omit<WithRtcRouteProps, "whiteboard">
-    > {
-        render() {
-            const { uuid, userId, identity } = this.props.match.params;
-            return (
-                <Rtc roomId={uuid} userId={userId} identity={identity}>
-                    {this.renderChildren}
-                </Rtc>
-            );
-        }
+export function withRtcRoute(config: { recordingConfig: RtcProps["recordingConfig"] }) {
+    return function <Props>(Comp: React.ComponentType<Props & WithRtcRouteProps>) {
+        return class WithRtcRoute extends React.Component<
+            Props & Omit<WithRtcRouteProps, "whiteboard">
+        > {
+            render() {
+                const { uuid, userId, identity } = this.props.match.params;
+                return (
+                    <Rtc
+                        roomId={uuid}
+                        userId={userId}
+                        identity={identity}
+                        recordingConfig={config.recordingConfig}
+                    >
+                        {this.renderChildren}
+                    </Rtc>
+                );
+            }
 
-        renderChildren = (props: RtcRenderProps) => <Comp {...this.props} rtc={props} />;
+            renderChildren = (props: RtcRenderProps) => <Comp {...this.props} rtc={props} />;
+        };
     };
 }

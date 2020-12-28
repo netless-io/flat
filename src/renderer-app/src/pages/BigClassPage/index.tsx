@@ -24,6 +24,7 @@ import { getRoom, Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
 
 import "./BigClassPage.less";
+import { RtcChannelType } from "../../apiMiddleware/Rtc";
 
 export type BigClassPageState = {
     isRealtimeSideOpen: boolean;
@@ -117,7 +118,10 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                 const { userId } = this.props.match.params;
                 if (userId === uid) {
                     if (speak) {
-                        this.props.rtc.rtc.rtcEngine.setClientRole(speak ? 1 : 2);
+                        const { rtcEngine, channelType } = this.props.rtc.rtc;
+                        if (channelType === RtcChannelType.broadcast) {
+                            rtcEngine.setClientRole(speak ? 1 : 2);
+                        }
                     }
                 }
             },
@@ -285,4 +289,18 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     }
 }
 
-export default withWhiteboardRoute(withRtcRoute(withRtmRoute(BigClassPage)));
+export default withWhiteboardRoute(
+    withRtcRoute({
+        recordingConfig: {
+            channelType: RtcChannelType.broadcast,
+            transcodingConfig: {
+                width: 288,
+                height: 216,
+                // https://docs.agora.io/cn/cloud-recording/recording_video_profile
+                fps: 15,
+                bitrate: 280,
+            },
+            subscribeUidGroup: 0,
+        },
+    })(withRtmRoute(BigClassPage)),
+);
