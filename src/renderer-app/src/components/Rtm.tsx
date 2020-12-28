@@ -3,13 +3,7 @@ import { RouteComponentProps } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import memoizeOne from "memoize-one";
-import {
-    Rtm as RtmApi,
-    RTMessage,
-    RTMessageText,
-    RTMessageType,
-    RTMRawMessage,
-} from "../apiMiddleware/Rtm";
+import { Rtm as RtmApi, RTMessage, RTMessageType } from "../apiMiddleware/Rtm";
 import { generateAvatar } from "../utils/generateAvatar";
 import { Identity } from "../utils/localStorage/room";
 import { ChatMessageItem } from "./ChatPanel/ChatMessage";
@@ -57,11 +51,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     async componentDidMount() {
         const { userId, roomId, identity } = this.props;
         const channel = await this.rtm.init(userId, roomId);
-        channel.on("ChannelMessage", (msg, senderId) => {
-            if (msg.messageType === RtmApi.MessageType.TEXT) {
-                this.handleChannelMessage(msg.text, senderId);
-            }
-        });
+        this.startListenChannel();
 
         // @TODO 使用我们自己的服务器记录类型
         if (identity === Identity.creator) {
@@ -85,6 +75,8 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                     // @TODO 等待登陆系统接入
                     avatar: generateAvatar(uid),
                     name: "",
+                    camera: false,
+                    mic: false,
                 })),
             }),
             () => {
@@ -104,6 +96,8 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                                       // @TODO 等待登陆系统接入
                                       avatar: generateAvatar(uid),
                                       name: "",
+                                      camera: false,
+                                      mic: false,
                                   },
                               ],
                           },
@@ -150,13 +144,13 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         if (this.state.isBan && this.props.identity !== Identity.creator) {
             return;
         }
-        await this.rtm.sendMessage({ t: RTMessageType.Text, v: text });
-        this.addMessage(RTMessageType.Text, text, this.props.userId);
+        await this.rtm.sendMessage(text);
+        this.addMessage(RTMessageType.ChannelMessage, text, this.props.userId);
     };
 
     private onCancelAllHandRaising = (): void => {
         this.cancelAllHandRaising();
-        this.rtm.sendMessage({ t: RTMessageType.CancelHandRaising });
+        this.rtm.sendCommand(RTMessageType.CancelAllHandRaising, true, true);
     };
 
     private onJoinerSpeak = (uid: string, speak: boolean): void => {
@@ -169,10 +163,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             }),
             () => {
                 this.onSpeak(uid, speak);
-                this.rtm.sendMessage({
-                    t: RTMessageType.Speak,
-                    v: { uid, speak },
-                });
+                this.rtm.sendCommand(RTMessageType.Speak, [{ uid, speak }], true);
             },
         );
     };
@@ -197,7 +188,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                 ],
             }),
             () => {
-                this.rtm.sendMessage({ t: RTMessageType.Ban, v: this.state.isBan });
+                this.rtm.sendCommand(RTMessageType.Ban, this.state.isBan, true);
             },
         );
     };
@@ -218,10 +209,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             () => {
                 const { currentUser } = this.state;
                 if (currentUser) {
-                    this.rtm.sendMessage({
-                        t: RTMessageType.RaiseHand,
-                        v: !!currentUser.isRaiseHand,
-                    });
+                    this.rtm.sendCommand(RTMessageType.RaiseHand, !!currentUser.isRaiseHand, true);
                 }
             },
         );
@@ -229,7 +217,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
 
     /** Add the new message to message list */
     private addMessage = (
-        type: RTMessageType.Text | RTMessageType.Notice,
+        type: RTMessageType.ChannelMessage | RTMessageType.Notice,
         value: string,
         senderId: string,
     ): void => {
@@ -272,86 +260,69 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         return count;
     });
 
-    private handleChannelMessage = (rawText: string, senderId: string): void => {
+    private startListenChannel = (): void => {
         const { identity, userId } = this.props;
-        const parsedMessage: RTMRawMessage = {
-            t: RTMessageType.Text as RTMessageType,
-            v: rawText as any,
-        };
 
-        try {
-            const m = JSON.parse(rawText);
-            if (m.t !== undefined) {
-                parsedMessage.t = m.t;
-                parsedMessage.v = m.v;
-            }
-        } catch (e) {
-            // ignore legacy type
-        }
+        this.rtm.on(RTMessageType.ChannelMessage, (text, senderId) => {
+            this.addMessage(RTMessageType.ChannelMessage, text, senderId);
+        });
 
-        switch (parsedMessage.t) {
-            case RTMessageType.Text: {
-                this.addMessage(RTMessageType.Text, parsedMessage.v, senderId);
-                break;
+        this.rtm.on(RTMessageType.CancelAllHandRaising, (_value, senderId) => {
+            if (senderId === this.state.creatorId && identity === Identity.joiner) {
+                this.cancelAllHandRaising();
             }
-            case RTMessageType.CancelHandRaising: {
-                if (senderId === this.state.creatorId && identity === Identity.joiner) {
-                    this.cancelAllHandRaising();
-                }
-                break;
+        });
+
+        this.rtm.on(RTMessageType.RaiseHand, (isRaiseHand, senderId) => {
+            this.updateUsers(
+                user => user.id === senderId,
+                user => ({
+                    ...user,
+                    isRaiseHand,
+                }),
+            );
+        });
+
+        this.rtm.on(RTMessageType.Ban, isBan => {
+            if (identity === Identity.joiner) {
+                this.setState(state => ({
+                    isBan,
+                    messages: [
+                        ...state.messages,
+                        {
+                            type: RTMessageType.Ban,
+                            uuid: uuidv4(),
+                            timestamp: Date.now(),
+                            value: isBan,
+                            userId,
+                        },
+                    ],
+                }));
             }
-            case RTMessageType.RaiseHand: {
+        });
+
+        this.rtm.on(RTMessageType.Speak, (users, senderId) => {
+            if (senderId === this.state.creatorId) {
+                const userMap = new Map(users.map(user => [user.uid, user]));
                 this.updateUsers(
-                    user => user.id === senderId,
+                    user => userMap.has(user.id),
                     user => ({
                         ...user,
-                        isRaiseHand: parsedMessage.v,
+                        isSpeaking: userMap.get(user.id)!.speak,
+                        isRaiseHand: false,
                     }),
-                );
-                break;
-            }
-            case RTMessageType.Ban: {
-                if (identity === Identity.joiner) {
-                    this.setState(state => ({
-                        isBan: parsedMessage.v,
-                        messages: [
-                            ...state.messages,
-                            {
-                                type: RTMessageType.Ban,
-                                uuid: uuidv4(),
-                                timestamp: Date.now(),
-                                value: parsedMessage.v,
-                                userId,
-                            },
-                        ],
-                    }));
-                }
-                break;
-            }
-            case RTMessageType.Speak: {
-                if (senderId === this.state.creatorId) {
-                    const { uid, speak } = parsedMessage.v;
-                    this.updateUsers(
-                        user => user.id === uid,
-                        user => ({
-                            ...user,
-                            isSpeaking: speak,
-                            isRaiseHand: false,
-                        }),
-                        () => {
+                    () => {
+                        users.forEach(({ uid, speak }) => {
                             this.onSpeak(uid, speak);
-                        },
-                    );
-                }
-                break;
+                        });
+                    },
+                );
             }
-            case RTMessageType.Notice: {
-                this.addMessage(RTMessageType.Notice, parsedMessage.v, senderId);
-                break;
-            }
-            default:
-                break;
-        }
+        });
+
+        this.rtm.on(RTMessageType.Notice, (text, senderId) => {
+            this.addMessage(RTMessageType.Notice, text, senderId);
+        });
     };
 
     private updateHistory = async (): Promise<void> => {
@@ -363,7 +334,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
 
         try {
             const oldestTimestap = this.state.messages[0]?.timestamp || Date.now();
-            messages = await this.rtm.fetchHistory(
+            messages = await this.rtm.fetchTextHistory(
                 dateSub(oldestTimestap, { years: 1 }).valueOf(),
                 oldestTimestap - 1,
             );
@@ -377,8 +348,9 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         }
 
         const textMessages = messages.filter(
-            (message): message is RTMessageText =>
-                message.type === RTMessageType.Text || message.type === RTMessageType.Notice,
+            (message): message is RTMessage =>
+                message.type === RTMessageType.ChannelMessage ||
+                message.type === RTMessageType.Notice,
         );
 
         this.setState(state => ({ messages: [...textMessages, ...state.messages] }));

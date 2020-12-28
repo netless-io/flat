@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs } from "antd";
 import { Player } from "white-web-sdk";
 import dateAdd from "date-fns/add";
-import { Rtm, RTMessageText, RTMessageType } from "../../apiMiddleware/Rtm";
+import { Rtm, RTMessage, RTMessageType } from "../../apiMiddleware/Rtm";
 import { ChatMessageItem } from "../ChatPanel/ChatMessage";
 import { ChatMessagesReplay } from "./ChatMessagesReplay";
 
@@ -124,7 +124,7 @@ export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatP
 
         this.isLoadingHistory = true;
         try {
-            const messages = await this.rtm.fetchHistory(
+            const messages = await this.rtm.fetchTextHistory(
                 newestTimestamp + 1,
                 dateAdd(newestTimestamp, { years: 1 }).valueOf(),
             );
@@ -133,7 +133,7 @@ export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatP
                 this.remoteNewestTimestamp = newestTimestamp;
             }
             return messages.filter(
-                (message): message is RTMessageText => message.type === RTMessageType.Text,
+                (message): message is RTMessage => message.type === RTMessageType.ChannelMessage,
             );
         } catch (e) {
             this.isLoadingHistory = false;
