@@ -5,8 +5,8 @@ import join from "../assets/image/join.svg";
 import create from "../assets/image/creat.svg";
 import dropdown from "../assets/image/dropdown.svg";
 import book from "../assets/image/book.svg";
-import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
+import { RoomType } from "../UserIndexPage";
 
 const { Option } = Select;
 
@@ -14,16 +14,24 @@ export type MainRoomMenuState = {
     isJoinModalVisible: boolean;
     isCreateModalVisible: boolean;
     isScheduledVisible: boolean;
+    createTitle: string;
+    createType: RoomType;
 };
 
-export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
+export type MainRoomMenuProps = {
+    onCreateRoom(title: string, type: RoomType): unknown;
+};
+
+export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoomMenuState> {
     private readonly modalWidth: number = 368;
-    public constructor(props: RouteComponentProps<{}>) {
+    public constructor(props: MainRoomMenuProps) {
         super(props);
         this.state = {
             isJoinModalVisible: false,
             isCreateModalVisible: false,
             isScheduledVisible: false,
+            createTitle: "",
+            createType: RoomType.BigClass,
         };
     }
 
@@ -68,6 +76,7 @@ export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
                 okText={"创建"}
                 cancelText={"取消"}
                 onOk={() => {
+                    this.props.onCreateRoom(this.state.createTitle, this.state.createType);
                     this.setState({ isCreateModalVisible: false });
                 }}
                 onCancel={() => {
@@ -76,14 +85,21 @@ export class MainRoomMenu extends React.PureComponent<{}, MainRoomMenuState> {
             >
                 <div className="modal-inner-name">主题</div>
                 <div className="modal-inner-input">
-                    <Input placeholder={""} />
+                    <Input
+                        value={this.state.createTitle}
+                        onChange={e => this.setState({ createTitle: e.target.value })}
+                    />
                 </div>
                 <div className="modal-inner-name">类型</div>
                 <div className="modal-inner-input">
-                    <Select className="modal-inner-select" defaultValue="large">
-                        <Option value="large">大班课</Option>
-                        <Option value="medium">小班课</Option>
-                        <Option value="small">一对一</Option>
+                    <Select
+                        className="modal-inner-select"
+                        value={this.state.createType}
+                        onChange={ e => this.setState({ createType: e }) }
+                    >
+                        <Option value={RoomType.BigClass}>大班课</Option>
+                        <Option value={RoomType.SmallClass}>小班课</Option>
+                        <Option value={RoomType.OneToOne}>一对一</Option>
                     </Select>
                 </div>
                 <div className="modal-inner-name">加入选项</div>
