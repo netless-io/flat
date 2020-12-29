@@ -12,64 +12,6 @@ import { FLAT_SERVER_ROOM } from "./constants/FlatServer";
 import { globals } from "./utils/globals";
 import { Identity } from "./utils/localStorage/room";
 
-type UserIndexPageState = {
-    roomListType: RoomListType;
-    rooms: Room[];
-}
-
-export type Room = {
-    roomUUID: string;
-    periodicUUID: string;
-    ownerUUID: string;
-    ownerName: string;
-    title: string;
-    beginTime: string;
-    endTime: string;
-    roomStatus: RoomStatus;
-}
-
-export enum RoomType {
-    OneToOne,
-    SmallClass,
-    BigClass,
-}
-
-export enum RoomListType {
-    All = "all",
-    Today = "today",
-    Periodic = "periodic",
-    History = "history",
-}
-
-type CreateRoomSuccessResponse = {
-    status: Status.Success;
-    data: {
-        roomUUID: string;
-    }
-}
-
-type ListRoomsSuccessResponse = {
-    status: Status.Success;
-    data: Room[];
-}
-
-export type JoinRoomResult = {
-    whitboardRoomToken: string;
-    whiteboardRoomUUID: string;
-    roomUUID: string;
-}
-
-export type JoinCyclicalRoomResult = {
-    whiteboardRoomToken: string;
-    whiteboardRoomUUID: string;
-}
-
-export type SuccessResponse<T> = {
-    status: Status;
-    data: T;
-}
-
-
 class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageState> {
     private isMount = false;
     private refreshRoomsId: number | null = null;
@@ -187,6 +129,63 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
             </MainPageLayout>
         );
     }
+}
+
+export enum RoomType {
+    OneToOne,
+    SmallClass,
+    BigClass,
+}
+
+export enum RoomListType {
+    All = "all",
+    Today = "today",
+    Periodic = "periodic",
+    History = "history",
+}
+
+type UserIndexPageState = {
+    roomListType: RoomListType;
+    rooms: Room[];
+}
+
+export type Room = {
+    roomUUID: string;
+    periodicUUID: string;
+    ownerUUID: string;
+    ownerName: string;
+    title: string;
+    beginTime: string;
+    endTime: string;
+    roomStatus: RoomStatus;
+}
+
+type CreateRoomSuccessResponse = {
+    status: Status.Success;
+    data: {
+        roomUUID: string;
+    }
+}
+
+type ListRoomsSuccessResponse = {
+    status: Status.Success;
+    data: Room[];
+}
+
+export type JoinRoomResult = {
+    whitboardRoomToken: string;
+    whiteboardRoomUUID: string;
+    roomUUID: string;
+}
+
+export type JoinCyclicalRoomResult = {
+    whiteboardRoomToken: string;
+    whiteboardRoomUUID: string;
+}
+
+export type SuccessResponse<T> = {
+    status: Status;
+    data: T;
 }
 
 export default UserIndexPage;

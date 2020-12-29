@@ -5,11 +5,7 @@ import { MainRoomListItem } from "./MainRoomListItem";
 
 export class MainRoomList extends PureComponent<MainRoomListProps> {
     private getRoomUUID = (e: Room) => {
-        if (e.periodicUUID) {
-            return e.periodicUUID;
-        } else {
-            return e.roomUUID;
-        }
+        return e.periodicUUID || e.roomUUID;
     };
 
     private renderStatus = (status: RoomStatus) => {
