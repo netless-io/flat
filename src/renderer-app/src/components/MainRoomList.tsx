@@ -39,8 +39,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
     }
 
     public getColor = (theType: RoomListType): string => {
-        const type = this.props.type;
-        return type === theType ? "#3381FF" : "#7A7B7C";
+        return this.props.type === theType ? "#3381FF" : "#7A7B7C";
     };
 
     public getTypeText = (sort: RoomListType) => {
