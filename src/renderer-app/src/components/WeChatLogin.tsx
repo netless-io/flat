@@ -5,6 +5,7 @@ import { QRURL } from "../utils/wechatUrl";
 import "./WeChatLogin.less";
 import { RouteComponentProps, withRouter } from "react-router";
 import { setWechatInfo, setUserUuid } from "../utils/localStorage/accounts";
+import { ipcAsyncByMain } from "../utils/ipc";
 
 export enum Status {
     NoLogin = -1,
@@ -46,6 +47,15 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
         };
     }
 
+    public joinRoom = () => {
+        ipcAsyncByMain("set-win-size", {
+            width: 1200,
+            height: 668,
+            autoCenter: true,
+        });
+        this.props.history.push("/user/");
+    }
+
     public WeChatLoginFlow() {
         const { ws: socket, uuid } = this.state;
 
@@ -74,7 +84,7 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
                     setWechatInfo(data);
                     setUserUuid(data.userUUID);
                     console.log("登陆成功", data);
-                    this.props.history.push("/user/");
+                    this.joinRoom();
                     break;
                 }
                 case Status.AuthFailed: {

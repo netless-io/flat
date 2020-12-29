@@ -7,6 +7,7 @@ import { netlessWhiteboardApi } from "./apiMiddleware";
 import LoadingPage from "./LoadingPage";
 import { ipcAsyncByMain } from "./utils/ipc";
 import { Identity, saveRoom } from "./utils/localStorage/room";
+import { getWechatInfo } from "./utils/localStorage/accounts";
 
 export type WhiteboardCreatorPageState = {
     uuid?: string;
@@ -27,6 +28,8 @@ export default class WhiteboardCreatorPage extends React.Component<
         super(props);
         this.state = {
             foundError: false,
+            uuid: this.props.match.params.uuid,
+            userId: `${Math.floor(Math.random() * 100000)}`
         };
         ipcAsyncByMain("set-win-size", {
             width: 1200,
@@ -72,9 +75,10 @@ export default class WhiteboardCreatorPage extends React.Component<
     public render(): React.ReactNode {
         const { uuid, userId, foundError } = this.state;
         const { identity } = this.props.match.params;
+        const userName = getWechatInfo()?.name
         if (foundError) {
             return <PageError />;
-        } else if (localStorage.getItem("userName") === null) {
+        } else if (userName === null) {
             if (uuid) {
                 return <Redirect to={`/name/${uuid}`} />;
             } else {
