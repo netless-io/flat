@@ -282,6 +282,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                         channelId={uuid}
                         identity={identity}
                         rtm={this.props.rtm}
+                        allowMultipleSpeakers={false}
                     ></ChatPanel>
                 }
             />

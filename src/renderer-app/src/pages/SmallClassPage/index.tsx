@@ -152,8 +152,6 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         // @TODO
     };
 
-    private onCameraClick = (_user: RTMUser) => {};
-
     private renderWhiteBoard(): React.ReactNode {
         return (
             <div className="realtime-box">
@@ -172,9 +170,8 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     }
 
     private renderAvatars(): React.ReactNode {
-        const { userId, identity } = this.props.match.params;
-        const { creatorUid, rtc } = this.props.rtc;
-        const { users, speak, allowSpeak } = this.props.rtm;
+        const { creatorUid } = this.props.rtc;
+        const { creator, speakingJoiners, handRaisingJoiners, joiners } = this.props.rtm;
 
         if (!creatorUid) {
             return null;
@@ -183,29 +180,10 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         return (
             <div className="realtime-avatars-wrap">
                 <div className="realtime-avatars">
-                    {users.map(user => (
-                        <SmallClassAvatar
-                            key={user.id}
-                            identity={identity}
-                            userId={userId}
-                            user={user}
-                            rtcEngine={rtc.rtcEngine}
-                            onCameraClick={user => {
-                                if (user.id === userId) {
-                                    speak(!user.camera, user.mic);
-                                } else if (identity === Identity.creator) {
-                                    allowSpeak(user.id, !user.camera, user.mic);
-                                }
-                            }}
-                            onMicClick={user => {
-                                if (user.id === userId) {
-                                    speak(user.camera, !user.mic);
-                                } else if (identity === Identity.creator) {
-                                    allowSpeak(user.id, user.camera, !user.mic);
-                                }
-                            }}
-                        />
-                    ))}
+                    {creator && this.renderAvatar(creator)}
+                    {speakingJoiners.map(this.renderAvatar)}
+                    {handRaisingJoiners.map(this.renderAvatar)}
+                    {joiners.map(this.renderAvatar)}
                 </div>
             </div>
         );
@@ -344,11 +322,42 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                         channelId={uuid}
                         identity={identity}
                         rtm={this.props.rtm}
+                        allowMultipleSpeakers={true}
                     ></ChatPanel>
                 }
             />
         );
     }
+
+    private renderAvatar = (user: RTMUser): React.ReactNode => {
+        const { userId, identity } = this.props.match.params;
+        const { rtc } = this.props.rtc;
+        const { speak, allowSpeak } = this.props.rtm;
+
+        return (
+            <SmallClassAvatar
+                key={user.id}
+                identity={identity}
+                userId={userId}
+                user={user}
+                rtcEngine={rtc.rtcEngine}
+                onCameraClick={user => {
+                    if (user.id === userId) {
+                        speak(!user.camera, user.mic);
+                    } else if (identity === Identity.creator) {
+                        allowSpeak(user.id, !user.camera, user.mic);
+                    }
+                }}
+                onMicClick={user => {
+                    if (user.id === userId) {
+                        speak(user.camera, !user.mic);
+                    } else if (identity === Identity.creator) {
+                        allowSpeak(user.id, user.camera, !user.mic);
+                    }
+                }}
+            />
+        );
+    };
 }
 
 export default withWhiteboardRoute(

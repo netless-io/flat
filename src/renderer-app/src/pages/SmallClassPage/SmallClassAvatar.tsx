@@ -42,7 +42,6 @@ export class SmallClassAvatar extends React.PureComponent<SmallClassAvatarProps>
         if (prevProps.user.mic !== user.mic) {
             if (userId === user.id) {
                 rtcEngine.enableLocalAudio(user.mic);
-                rtcEngine.muteLocalAudioStream(!user.mic);
             } else {
                 rtcEngine.setupRemoteVideo(numUid, this.el);
                 rtcEngine.muteRemoteAudioStream(numUid, !user.mic);
@@ -52,7 +51,6 @@ export class SmallClassAvatar extends React.PureComponent<SmallClassAvatarProps>
         if (prevProps.user.camera !== user.camera) {
             if (userId === user.id) {
                 rtcEngine.enableLocalVideo(user.camera);
-                rtcEngine.muteLocalVideoStream(!user.camera);
             } else {
                 rtcEngine.setupRemoteVideo(numUid, this.el);
                 rtcEngine.muteRemoteVideoStream(numUid, !user.camera);
@@ -125,8 +123,6 @@ export class SmallClassAvatar extends React.PureComponent<SmallClassAvatarProps>
                 rtcEngine.setupLocalVideo(this.el);
                 rtcEngine.enableLocalVideo(user.camera);
                 rtcEngine.enableLocalAudio(user.mic);
-                rtcEngine.muteLocalVideoStream(!user.camera);
-                rtcEngine.muteLocalAudioStream(!user.mic);
             } else {
                 if (user.camera || user.mic) {
                     rtcEngine.setupRemoteVideo(numUid, this.el);
