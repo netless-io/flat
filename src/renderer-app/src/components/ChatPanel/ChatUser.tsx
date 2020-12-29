@@ -16,7 +16,7 @@ export interface ChatUserProps {
     creatorId?: string | null;
     userId: string;
     user: RTMUser;
-    onAllowSpeaking: (uid: string) => void;
+    onAcceptRaiseHand: (uid: string) => void;
     onEndSpeaking: (uid: string) => void;
 }
 
@@ -51,7 +51,7 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
                         {identity === Identity.creator && (
                             <button
                                 className="chat-user-ctl-btn is-hand-raising"
-                                onClick={this.allowSpeaking}
+                                onClick={this.acceptRaiseHand}
                             >
                                 通过
                             </button>
@@ -71,10 +71,10 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
         }
     };
 
-    private allowSpeaking = () => {
-        const { user, onAllowSpeaking } = this.props;
-        if (onAllowSpeaking) {
-            onAllowSpeaking(user.id);
+    private acceptRaiseHand = () => {
+        const { user, onAcceptRaiseHand } = this.props;
+        if (onAcceptRaiseHand) {
+            onAcceptRaiseHand(user.id);
         }
     };
 }

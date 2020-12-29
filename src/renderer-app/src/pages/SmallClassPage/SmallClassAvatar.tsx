@@ -62,7 +62,10 @@ export class SmallClassAvatar extends React.PureComponent<SmallClassAvatarProps>
 
     render(): React.ReactNode {
         const { user, userId, identity } = this.props;
-        const isCtrlBtnsDisable = identity !== Identity.creator && user.id !== userId;
+        // creator can turn off joiners camera or mic but cannot turn on.
+        const isCameraCtrlDisable =
+            user.id !== userId && (identity !== Identity.creator || !user.camera);
+        const isMicCtrlDisable = user.id !== userId && (identity !== Identity.creator || !user.mic);
 
         return (
             <section
@@ -77,10 +80,10 @@ export class SmallClassAvatar extends React.PureComponent<SmallClassAvatarProps>
                     />
                     <h1 className="small-class-avatar-title">{user.name || user.id}</h1>
                     <div className="small-class-avatar-btns">
-                        <button onClick={this.onCameraClick} disabled={isCtrlBtnsDisable}>
+                        <button onClick={this.onCameraClick} disabled={isCameraCtrlDisable}>
                             <img src={user.camera ? cameraIcon : cameraDisabled} alt="camera" />
                         </button>
-                        <button onClick={this.onMicClick} disabled={isCtrlBtnsDisable}>
+                        <button onClick={this.onMicClick} disabled={isMicCtrlDisable}>
                             <img
                                 src={user.mic ? microphone : microphoneDisabled}
                                 alt="microphone"
@@ -125,7 +128,6 @@ export class SmallClassAvatar extends React.PureComponent<SmallClassAvatarProps>
                 rtcEngine.muteLocalVideoStream(!user.camera);
                 rtcEngine.muteLocalAudioStream(!user.mic);
             } else {
-                console.log(userId, user);
                 if (user.camera || user.mic) {
                     rtcEngine.setupRemoteVideo(numUid, this.el);
                     rtcEngine.muteRemoteVideoStream(numUid, !user.camera);

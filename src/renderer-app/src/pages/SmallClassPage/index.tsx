@@ -174,7 +174,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     private renderAvatars(): React.ReactNode {
         const { userId, identity } = this.props.match.params;
         const { creatorUid, rtc } = this.props.rtc;
-        const { users, onJoinerSpeak } = this.props.rtm;
+        const { users, speak, allowSpeak } = this.props.rtm;
 
         if (!creatorUid) {
             return null;
@@ -190,11 +190,19 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                             userId={userId}
                             user={user}
                             rtcEngine={rtc.rtcEngine}
-                            onCameraClick={() => {
-                                onJoinerSpeak(user.id, !user.camera, user.mic);
+                            onCameraClick={user => {
+                                if (user.id === userId) {
+                                    speak(!user.camera, user.mic);
+                                } else if (identity === Identity.creator) {
+                                    allowSpeak(user.id, !user.camera, user.mic);
+                                }
                             }}
                             onMicClick={user => {
-                                onJoinerSpeak(user.id, user.camera, !user.mic);
+                                if (user.id === userId) {
+                                    speak(user.camera, !user.mic);
+                                } else if (identity === Identity.creator) {
+                                    allowSpeak(user.id, user.camera, !user.mic);
+                                }
                             }}
                         />
                     ))}

@@ -8,7 +8,7 @@ import "./ChatUsers.less";
 export interface ChatUsersProps
     extends Pick<
         ChatUserProps,
-        "creatorId" | "identity" | "userId" | "onAllowSpeaking" | "onEndSpeaking"
+        "creatorId" | "identity" | "userId" | "onAcceptRaiseHand" | "onEndSpeaking"
     > {
     users: RTMUser[];
     isShowCancelAllHandRaising: boolean;
