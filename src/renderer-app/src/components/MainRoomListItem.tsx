@@ -58,7 +58,7 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         } else if (this.props.status === "Stopped") {
             return <span className="stopped">已结束</span>;
         } else {
-            return <></>;
+            return null;
         }
     };
 
@@ -73,7 +73,7 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     };
 
     public getUserUUID = () => {
-        return localStorage.getItem("userUUID") ?? "";
+        return localStorage.getItem("userUUID") || "";
     };
 
     public getIdentity = () => {

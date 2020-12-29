@@ -3,13 +3,6 @@ import "./MainRoomList.less";
 import { RoomListType, Room } from "../UserIndexPage";
 import { MainRoomListItem } from "./MainRoomListItem";
 
-export type MainRoomListProps = {
-    rooms: Room[];
-    type: RoomListType;
-    onTypeChange: (type: RoomListType) => void;
-    historyPush: (path: string) => void;
-}
-
 export class MainRoomList extends PureComponent<MainRoomListProps> {
     private getRoomUUID = (e: Room) => {
         if (e.periodicUUID) {
@@ -19,7 +12,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
         }
     };
 
-    private renderStatus = (status: "Pending" | "Running" | "Stopped") => {
+    private renderStatus = (status: RoomStatus) => {
         return status;
     };
 
@@ -52,16 +45,16 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
 
     public getTypeText = (sort: RoomListType) => {
         const roomListTypeTextMap: Record<RoomListType, string> = {
-            [RoomListType.all]: "全部",
-            [RoomListType.today]: "今天",
-            [RoomListType.periodic]: "周期",
-            [RoomListType.history]: "历史",
+            [RoomListType.All]: "全部",
+            [RoomListType.Today]: "今天",
+            [RoomListType.Periodic]: "周期",
+            [RoomListType.History]: "历史",
         };
         return roomListTypeTextMap[sort];
     };
 
     public renderSorts() {
-        return [RoomListType.all, RoomListType.today, RoomListType.periodic].map(e => {
+        return [RoomListType.All, RoomListType.Today, RoomListType.Periodic].map(e => {
             return (
                 <span
                     key={e}
@@ -92,4 +85,17 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
             </div>
         );
     }
+}
+
+export type MainRoomListProps = {
+    rooms: Room[];
+    type: RoomListType;
+    onTypeChange: (type: RoomListType) => void;
+    historyPush: (path: string) => void;
+}
+
+export enum RoomStatus {
+    Pending = "Pending",
+    Running = "Running",
+    Stopped = "Stopped",
 }

@@ -4,7 +4,7 @@ import MainPageLayout from "./components/MainPageLayout";
 import {RouteComponentProps} from "react-router";
 import {ipcAsyncByMain} from "./utils/ipc";
 import {MainRoomMenu} from "./components/MainRoomMenu";
-import {MainRoomList} from "./components/MainRoomList";
+import {MainRoomList, RoomStatus} from "./components/MainRoomList";
 import { MainRoomHistory } from "./components/MainRoomHistory";
 import { Status } from "./components/WeChatLogin";
 import { fetcher } from "./utils/fetcher";
@@ -25,7 +25,7 @@ export type Room = {
     title: string;
     beginTime: string;
     endTime: string;
-    roomStatus: "Pending" | "Running" | "Stopped";
+    roomStatus: RoomStatus;
 }
 
 export enum RoomType {
@@ -34,12 +34,11 @@ export enum RoomType {
     BigClass,
 }
 
-
 export enum RoomListType {
-    all = "all",
-    today = "today",
-    periodic = "periodic",
-    history = "history",
+    All = "all",
+    Today = "today",
+    Periodic = "periodic",
+    History = "history",
 }
 
 type CreateRoomSuccessResponse = {
@@ -78,9 +77,9 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
     public constructor(props: RouteComponentProps) {
         super(props);
         this.state = {
-            roomListType: RoomListType.all,
+            roomListType: RoomListType.All,
             rooms: [],
-        }
+        };
     }
 
     public componentDidMount() {
@@ -98,14 +97,14 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
 
     public historyPush = (path: string) => {
         if (this.isMount) this.props.history.push(path);
-    }
+    };
 
     private setAsyncState(state: Parameters<React.Component["setState"]>[0]) {
         if (this.isMount) this.setState(state);
     }
 
     private getCurrentTime() {
-        return Number(new Date());
+        return Date.now();
     }
 
     public createRoom = async (title: string, type: RoomType) => {
@@ -122,7 +121,7 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
         if (res.status === Status.Success) {
             await this.joinRoom(res.data.roomUUID);
         }
-    }
+    };
 
     public joinRoom = async (roomUUID: string) => {
         const { data: res } = await fetcher.post<SuccessResponse<JoinRoomResult>>(
@@ -135,42 +134,47 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
             const url = `/whiteboard/${Identity.creator}/${res.data.whiteboardRoomUUID}/`;
             this.historyPush(url);
         }
-    }
+    };
 
     public getListRoomsUrl(type?: RoomListType) {
         return `${FLAT_SERVER_ROOM.LIST}/${type ?? this.state.roomListType}`;
     }
 
-    public refreshRooms = async(type?: RoomListType) => {
+    public refreshRooms = async (type?: RoomListType) => {
         if (this.refreshRoomsId !== null) {
             window.clearTimeout(this.refreshRoomsId);
         }
         // TODO page?
-        const { data: res } = await fetcher.get<ListRoomsSuccessResponse>(
-            this.getListRoomsUrl(type),
-            { params: { page: 1 } },
-        );
-        if (res.status === Status.Success) {
-            const running = res.data.filter(e => e.roomStatus === "Running");
-            const notRunning = res.data.filter(e => e.roomStatus !== "Running");
-            this.setAsyncState({ rooms: [...running, ...notRunning] });
+        try {
+            const { data: res } = await fetcher.get<ListRoomsSuccessResponse>(
+                this.getListRoomsUrl(type),
+                { params: { page: 1 } },
+            );
+            if (res.status === Status.Success) {
+                const running = res.data.filter(e => e.roomStatus === "Running");
+                const notRunning = res.data.filter(e => e.roomStatus !== "Running");
+                this.setAsyncState({ rooms: [...running, ...notRunning] });
+            }
+        } catch (error) {
+            console.log(error);
         }
+
         if (this.isMount) {
             this.refreshRoomsId = window.setTimeout(this.refreshRooms, 30 * 1000);
         } else {
             this.refreshRoomsId = null;
         }
-    }
+    };
 
     public setRoomListType = (roomListType: RoomListType) => {
         this.setAsyncState({ roomListType });
         this.refreshRooms(roomListType);
-    }
+    };
 
     public render(): React.ReactNode {
         return (
             <MainPageLayout columnLayout>
-                <MainRoomMenu onCreateRoom={this.createRoom}/>
+                <MainRoomMenu onCreateRoom={this.createRoom} />
                 <div className="main-room-layout">
                     <MainRoomList
                         rooms={this.state.rooms}
@@ -178,7 +182,7 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
                         onTypeChange={this.setRoomListType}
                         historyPush={this.historyPush}
                     />
-                    <MainRoomHistory/>
+                    <MainRoomHistory />
                 </div>
             </MainPageLayout>
         );
