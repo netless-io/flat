@@ -52,11 +52,11 @@ export enum RTMessageType {
     /** creator cancel all hand raising */
     CancelAllHandRaising = "CancelHandRaising",
     /** creator ban all rtm */
-    Ban = "Ban",
-    /** creator allow joiners to speak */
-    AllowSpeak = "AllowSpeak",
-    /** joiner updates own camera and mic state */
+    BanText = "BanText",
+    /** creator allows a joiner or joiners allows themselves to speak */
     Speak = "Speak",
+    /** joiner updates own camera and mic state */
+    DeviceState = "DeviceState",
 }
 
 export interface RTMessage<U extends keyof RtmEvents = keyof RtmEvents> {
@@ -73,9 +73,9 @@ export interface RtmEvents {
     [RTMessageType.RaiseHand]: boolean;
     [RTMessageType.AcceptRaiseHand]: { uid: string; accept: boolean };
     [RTMessageType.CancelAllHandRaising]: boolean;
-    [RTMessageType.Ban]: boolean;
-    [RTMessageType.AllowSpeak]: { uid: string; camera: boolean; mic: boolean };
-    [RTMessageType.Speak]: { camera: boolean; mic: boolean };
+    [RTMessageType.BanText]: boolean;
+    [RTMessageType.Speak]: Array<{ uid: string; speak: boolean }>;
+    [RTMessageType.DeviceState]: { camera: boolean; mic: boolean };
 }
 
 export declare interface Rtm {

@@ -16,9 +16,8 @@ export interface RtmRenderProps extends RtmState {
     onCancelAllHandRaising: () => void;
     onToggleHandRaising: () => void;
     onToggleBan: () => void;
-    allowSpeak: (uid: string, camera: boolean, mic: boolean) => void;
-    speak: (camera: boolean, mic: boolean) => void;
-    bindOnSpeak: (onSpeak: (uid: string, speak: boolean) => void) => void;
+    onSpeak: (configs: Array<{ uid: string; speak: boolean }>) => void;
+    updateDeviceState: (uid: string, camera: boolean, mic: boolean) => void;
 }
 
 export interface RtmProps {
@@ -104,20 +103,35 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             onCancelAllHandRaising: this.onCancelAllHandRaising,
             onToggleHandRaising: this.onToggleHandRaising,
             onToggleBan: this.onToggleBan,
-            allowSpeak: this.allowSpeak,
-            speak: this.speak,
-            bindOnSpeak: this.bindOnSpeak,
+            onSpeak: this.onSpeak,
+            updateDeviceState: this.updateDeviceState,
         });
     }
 
-    onSpeak = (_uid: string, _speak: boolean): void => {};
-
-    private bindOnSpeak = (onSpeak: (uid: string, speak: boolean) => void): void => {
-        this.onSpeak = onSpeak;
+    private acceptRaisehand = (uid: string): void => {
+        if (this.props.identity === Identity.creator) {
+            this.sortUsers(user =>
+                uid === user.id
+                    ? {
+                          ...user,
+                          isRaiseHand: false,
+                          isSpeak: true,
+                          camera: false,
+                          mic: true,
+                      }
+                    : user,
+            );
+            this.rtm.sendCommand(RTMessageType.AcceptRaiseHand, { uid, accept: true });
+        }
     };
 
-    private acceptRaisehand = (uid: string): void => {
-        this.rtm.sendCommand(RTMessageType.AcceptRaiseHand, { uid, accept: true });
+    private onSpeak = (configs: { uid: string; speak: boolean }[]): void => {
+        const { identity, userId } = this.props;
+        if (identity !== Identity.creator) {
+            configs = configs.filter(config => config.uid === userId);
+        }
+        this.speak(configs);
+        this.rtm.sendCommand(RTMessageType.Speak, configs);
     };
 
     private onMessageSend = async (text: string): Promise<void> => {
@@ -129,68 +143,42 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     };
 
     private onCancelAllHandRaising = (): void => {
-        this.cancelAllHandRaising();
-        this.rtm.sendCommand(RTMessageType.CancelAllHandRaising, true, true);
-    };
-
-    /** Creator requests joiner to change camera and mic state */
-    private allowSpeak = (uid: string, camera: boolean, mic: boolean): void => {
-        const { userId, identity } = this.props;
-        if (identity !== Identity.creator) {
-            return;
+        if (this.props.identity === Identity.creator) {
+            this.cancelAllHandRaising();
+            this.rtm.sendCommand(RTMessageType.CancelAllHandRaising, true, true);
         }
-
-        this.sortUsers(
-            user => {
-                if (user.id === uid) {
-                    // creator can turn off joiner's camera and mic
-                    // creator can request joiner to turn on camera and mic
-                    if (uid !== userId) {
-                        if (camera && !user.camera) {
-                            camera = user.camera;
-                        }
-
-                        if (mic && !user.mic) {
-                            mic = user.mic;
-                        }
-                    }
-
-                    if (camera !== user.camera || mic !== user.mic) {
-                        return {
-                            ...user,
-                            isRaiseHand: false,
-                            camera,
-                            mic,
-                        };
-                    }
-                }
-                return user;
-            },
-            () => {
-                this.onSpeak(uid, Boolean(camera || mic));
-                this.rtm.sendCommand(RTMessageType.AllowSpeak, { uid, camera, mic }, true);
-            },
-        );
     };
 
     /** joiner updates own camera and mic state */
-    private speak = (camera: boolean, mic: boolean): void => {
-        const { userId } = this.props;
+    private updateDeviceState = (uid: string, camera: boolean, mic: boolean): void => {
+        const { identity, userId } = this.props;
+        if (userId === uid || identity === Identity.creator) {
+            this.sortUsers(
+                user => {
+                    if (user.id === uid) {
+                        // creator can turn off joiner's camera and mic
+                        // creator can request joiner to turn on camera and mic
+                        if (uid !== userId) {
+                            if (camera && !user.camera) {
+                                camera = user.camera;
+                            }
 
-        this.sortUsers(
-            user =>
-                user.id === userId
-                    ? {
-                          ...user,
-                          camera,
-                          mic,
-                      }
-                    : user,
-            () => {
-                this.onSpeak(userId, Boolean(camera || mic));
-                this.rtm.sendCommand(RTMessageType.Speak, { camera, mic }, true);
-            },
-        );
+                            if (mic && !user.mic) {
+                                mic = user.mic;
+                            }
+                        }
+
+                        if (camera !== user.camera || mic !== user.mic) {
+                            return { ...user, isRaiseHand: false, camera, mic };
+                        }
+                    }
+                    return user;
+                },
+                () => {
+                    this.rtm.sendCommand(RTMessageType.DeviceState, { camera, mic }, true);
+                },
+            );
+        }
     };
 
     private onToggleBan = (): void => {
@@ -204,7 +192,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                 messages: [
                     ...state.messages,
                     {
-                        type: RTMessageType.Ban,
+                        type: RTMessageType.BanText,
                         uuid: uuidv4(),
                         timestamp: Date.now(),
                         value: !state.isBan,
@@ -213,7 +201,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                 ],
             }),
             () => {
-                this.rtm.sendCommand(RTMessageType.Ban, this.state.isBan, true);
+                this.rtm.sendCommand(RTMessageType.BanText, this.state.isBan, true);
             },
         );
     };
@@ -222,21 +210,15 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     private onToggleHandRaising = (): void => {
         const { userId, identity } = this.props;
         const { currentUser } = this.state;
-        if (identity !== Identity.joiner || currentUser?.camera || currentUser?.mic) {
+        if (identity !== Identity.joiner || currentUser?.isSpeak) {
             return;
         }
         this.sortUsers(
-            user =>
-                user.id === userId
-                    ? {
-                          ...user,
-                          isRaiseHand: !user.isRaiseHand,
-                      }
-                    : user,
+            user => (user.id === userId ? { ...user, isRaiseHand: !user.isRaiseHand } : user),
             () => {
                 const { currentUser } = this.state;
                 if (currentUser) {
-                    this.rtm.sendCommand(RTMessageType.RaiseHand, !!currentUser.isRaiseHand, true);
+                    this.rtm.sendCommand(RTMessageType.RaiseHand, currentUser.isRaiseHand, true);
                 }
             },
         );
@@ -267,14 +249,19 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     };
 
     private cancelAllHandRaising = (): void => {
-        this.sortUsers(user =>
-            user.isRaiseHand
-                ? {
-                      ...user,
-                      isRaiseHand: false,
-                  }
-                : user,
-        );
+        this.sortUsers(user => (user.isRaiseHand ? { ...user, isRaiseHand: false } : user));
+    };
+
+    private speak = (configs: Array<{ uid: string; speak: boolean }>): void => {
+        const configMap = new Map(configs.map(config => [config.uid, config]));
+        this.sortUsers(user => {
+            const config = configMap.get(user.id);
+            return config
+                ? config.speak
+                    ? { ...user, isSpeak: true, isRaiseHand: false }
+                    : { ...user, isSpeak: false, isRaiseHand: false, camera: false, mic: false }
+                : user;
+        });
     };
 
     private startListenChannel = (): void => {
@@ -290,22 +277,20 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
 
         this.rtm.on(RTMessageType.RaiseHand, (isRaiseHand, senderId) => {
             this.sortUsers(user =>
-                user.id === senderId
-                    ? {
-                          ...user,
-                          isRaiseHand,
-                      }
+                user.id === senderId && (!isRaiseHand || !user.isSpeak)
+                    ? { ...user, isRaiseHand }
                     : user,
             );
         });
 
         this.rtm.on(RTMessageType.AcceptRaiseHand, ({ uid, accept }, senderId) => {
-            if (senderId === this.state.creator?.id && uid === this.props.userId) {
+            if (senderId === this.state.creator?.id) {
                 this.sortUsers(user =>
                     uid === user.id
                         ? {
                               ...user,
                               isRaiseHand: false,
+                              isSpeak: accept,
                               camera: false,
                               mic: accept,
                           }
@@ -314,14 +299,14 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             }
         });
 
-        this.rtm.on(RTMessageType.Ban, isBan => {
-            if (this.props.identity === Identity.joiner) {
+        this.rtm.on(RTMessageType.BanText, (isBan, senderId) => {
+            if (senderId === this.state.creator?.id && this.props.identity === Identity.joiner) {
                 this.setState(state => ({
                     isBan,
                     messages: [
                         ...state.messages,
                         {
-                            type: RTMessageType.Ban,
+                            type: RTMessageType.BanText,
                             uuid: uuidv4(),
                             timestamp: Date.now(),
                             value: isBan,
@@ -332,42 +317,25 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             }
         });
 
-        this.rtm.on(RTMessageType.Speak, ({ camera, mic }, senderId) => {
-            this.sortUsers(
-                user =>
-                    user.id === senderId
-                        ? {
-                              ...user,
-                              camera,
-                              mic,
-                          }
-                        : user,
-                () => {
-                    this.onSpeak(senderId, camera || mic);
-                },
+        this.rtm.on(RTMessageType.DeviceState, ({ camera, mic }, senderId) => {
+            this.sortUsers(user =>
+                user.id === senderId
+                    ? { ...user, isSpeak: user.isSpeak && (camera || mic), camera, mic }
+                    : user,
             );
         });
 
-        this.rtm.on(RTMessageType.AllowSpeak, ({ uid, camera, mic }, senderId) => {
-            if (senderId === this.state.creator?.id) {
-                this.sortUsers(
-                    user =>
-                        user.id === uid
-                            ? {
-                                  ...user,
-                                  camera,
-                                  mic,
-                              }
-                            : user,
-                    () => {
-                        this.onSpeak(uid, camera || mic);
-                    },
-                );
+        this.rtm.on(RTMessageType.Speak, (configs, senderId) => {
+            if (senderId !== this.state.creator?.id) {
+                configs = configs.filter(config => config.uid === senderId);
             }
+            this.speak(configs);
         });
 
         this.rtm.on(RTMessageType.Notice, (text, senderId) => {
-            this.addMessage(RTMessageType.Notice, text, senderId);
+            if (senderId === this.state.creator?.id) {
+                this.addMessage(RTMessageType.Notice, text, senderId);
+            }
         });
     };
 
@@ -476,7 +444,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
 
                 if (user.id === state.creator?.id) {
                     newState.creator = user;
-                } else if (user.camera || user.mic) {
+                } else if (user.isSpeak) {
                     if (!newState.speakingJoiners) {
                         newState.speakingJoiners = [...state.speakingJoiners];
                     }
@@ -511,6 +479,8 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             name: "",
             camera: uid !== this.props.userId,
             mic: true,
+            isSpeak: false,
+            isRaiseHand: false,
         };
     };
 }

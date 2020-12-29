@@ -80,7 +80,7 @@ export class ChatPanel extends React.Component<ChatPanelProps> {
     };
 
     private onEndSpeaking = (uid: string): void => {
-        this.props.rtm.allowSpeak(uid, false, false);
+        this.props.rtm.onSpeak([{ uid, speak: false }]);
     };
 }
 

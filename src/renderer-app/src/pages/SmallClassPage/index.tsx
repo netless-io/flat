@@ -61,8 +61,6 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
             height: 700,
         });
 
-        this.props.rtm.bindOnSpeak(this.onJoinerSpeak);
-
         const room = getRoom(props.match.params.uuid);
         if (room?.roomName) {
             document.title = room.roomName;
@@ -146,10 +144,6 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         // @TODO 打开到当前的录制记录中
         const { uuid, identity, userId } = this.props.match.params;
         this.props.history.push(`/replay/${identity}/${uuid}/${userId}/`);
-    };
-
-    private onJoinerSpeak = () => {
-        // @TODO
     };
 
     private renderWhiteBoard(): React.ReactNode {
@@ -332,7 +326,6 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     private renderAvatar = (user: RTMUser): React.ReactNode => {
         const { userId, identity } = this.props.match.params;
         const { rtc } = this.props.rtc;
-        const { speak, allowSpeak } = this.props.rtm;
 
         return (
             <SmallClassAvatar
@@ -341,22 +334,18 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 userId={userId}
                 user={user}
                 rtcEngine={rtc.rtcEngine}
-                onCameraClick={user => {
-                    if (user.id === userId) {
-                        speak(!user.camera, user.mic);
-                    } else if (identity === Identity.creator) {
-                        allowSpeak(user.id, !user.camera, user.mic);
-                    }
-                }}
-                onMicClick={user => {
-                    if (user.id === userId) {
-                        speak(user.camera, !user.mic);
-                    } else if (identity === Identity.creator) {
-                        allowSpeak(user.id, user.camera, !user.mic);
-                    }
-                }}
+                onCameraClick={this.onCameraClick}
+                onMicClick={this.onMicClick}
             />
         );
+    };
+
+    private onCameraClick = (user: RTMUser) => {
+        this.props.rtm.updateDeviceState(user.id, !user.camera, user.mic);
+    };
+
+    private onMicClick = (user: RTMUser) => {
+        this.props.rtm.updateDeviceState(user.id, user.camera, !user.mic);
     };
 }
 
