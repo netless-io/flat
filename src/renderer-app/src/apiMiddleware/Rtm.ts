@@ -41,13 +41,21 @@ export interface RtmRESTfulQueryResourceResponse {
 }
 
 export enum RTMessageType {
+    /** group message */
     ChannelMessage = "ChannelMessage",
+    /** a notice message */
     Notice = "Notice",
+    /** A joiner raises hand */
     RaiseHand = "RaiseHand",
+    /** creator accept hand raising from a joiner */
     AcceptRaiseHand = "AcceptRaiseHand",
+    /** creator cancel all hand raising */
     CancelAllHandRaising = "CancelHandRaising",
+    /** creator ban all rtm */
     Ban = "Ban",
+    /** creator allow joiners to speak */
     AllowSpeak = "AllowSpeak",
+    /** joiner updates own camera and mic state */
     Speak = "Speak",
 }
 
@@ -60,21 +68,13 @@ export interface RTMessage<U extends keyof RtmEvents = keyof RtmEvents> {
 }
 
 export interface RtmEvents {
-    /** group message */
     [RTMessageType.ChannelMessage]: string;
-    /** a notice message */
     [RTMessageType.Notice]: string;
-    /** A joiner raises hand */
     [RTMessageType.RaiseHand]: boolean;
-    /** creator accept hand raising from a joiner */
     [RTMessageType.AcceptRaiseHand]: { uid: string; accept: boolean };
-    /** creator cancel all hand raising */
     [RTMessageType.CancelAllHandRaising]: boolean;
-    /** creator ban all rtm */
     [RTMessageType.Ban]: boolean;
-    /** creator allow joiners to speak */
     [RTMessageType.AllowSpeak]: { uid: string; camera: boolean; mic: boolean };
-    /** joiner updates own camera and mic state */
     [RTMessageType.Speak]: { camera: boolean; mic: boolean };
 }
 
