@@ -15,6 +15,12 @@
     position: relative;
     width: 288px;
     height: 216px;
+
+    &.with-small {
+        .big-class-avatar-title {
+            top: 10px;
+        }
+    }
 }
 
 .whiteboard-rtc-avatar {
@@ -25,8 +31,8 @@
     &.is-small {
         position: absolute;
         z-index: 40;
-        top: 0;
-        right: 0;
+        bottom: 0;
+        left: 0;
     }
 }
 

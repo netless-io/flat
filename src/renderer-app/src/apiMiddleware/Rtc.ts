@@ -88,7 +88,7 @@ export class Rtc {
             }
         }
 
-        this.rtcEngine.enableLocalVideo(false);
+        // this.rtcEngine.enableLocalVideo(false);
 
         // @ts-ignore @TODO 鉴权机制待实现
         this.rtcEngine.joinChannel(null, channel, null, numUid);

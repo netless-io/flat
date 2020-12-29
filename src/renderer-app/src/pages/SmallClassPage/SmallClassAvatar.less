@@ -26,25 +26,43 @@
             visibility: hidden;
         }
 
-        .small-class-avatar::after {
+        .video-avatar-canvas::after {
             display: none;
         }
     }
-}
 
-.small-class-avatar {
-    position: relative;
-    width: 100%;
-    height: 100%;
-
-    &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
+    .video-avatar-canvas {
+        position: relative;
         width: 100%;
         height: 100%;
-        background: #1a1e21;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a1e21;
+        }
+    }
+
+    .video-avatar-ctrl-btns {
+        display: flex;
+        user-select: none;
+
+        & > button {
+            margin: 0 0 0 4px;
+            padding: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            cursor: pointer;
+
+            &:disabled {
+                cursor: no-drop;
+            }
+        }
     }
 }
 
@@ -78,22 +96,4 @@
     font-size: 16px;
     font-weight: normal;
     color: #fff;
-}
-
-.small-class-avatar-btns {
-    display: flex;
-    user-select: none;
-
-    & > button {
-        margin: 0 0 0 4px;
-        padding: 0;
-        border: none;
-        outline: none;
-        background: transparent;
-        cursor: pointer;
-
-        &:disabled {
-            cursor: no-drop;
-        }
-    }
 }

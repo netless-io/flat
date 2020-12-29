@@ -12,13 +12,14 @@ import { TopBarClassOperations } from "../../components/TopBarClassOperations";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
-import { BigClassAvatar, VideoType } from "./BigClassAvatar";
+import { BigClassAvatar } from "./BigClassAvatar";
 import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
 import { ClassStatus } from "../../components/ClassStatus";
 import { withWhiteboardRoute, WithWhiteboardRouteProps } from "../../components/Whiteboard";
 import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
 import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
+import { RTMUser } from "../../components/ChatPanel/ChatUser";
 
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { getRoom, Identity } from "../../utils/localStorage/room";
@@ -29,8 +30,8 @@ import "./BigClassPage.less";
 export type BigClassPageState = {
     isRealtimeSideOpen: boolean;
     isClassBegin: boolean;
-    speakingJoiner: string | null;
-    mainSpeaker: string | null;
+    speakingJoiner: RTMUser | null;
+    mainSpeaker: RTMUser | null;
 };
 
 export type BigClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps & WithRtmRouteProps;
@@ -39,8 +40,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     public constructor(props: BigClassPageProps) {
         super(props);
 
-        const { speakingJoiners } = this.props.rtm;
-        const speakingJoiner = speakingJoiners.length > 0 ? speakingJoiners[0].id : null;
+        const speakingJoiner = this.props.rtm.speakingJoiners[0] || null;
 
         this.state = {
             isRealtimeSideOpen: true,
@@ -60,6 +60,16 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
         }
     }
 
+    public componentDidMount() {
+        if (this.props.match.params.identity !== Identity.creator) {
+            // join rtc room to listen to creator events
+            const { isCalling, toggleCalling } = this.props.rtc;
+            if (!isCalling) {
+                toggleCalling();
+            }
+        }
+    }
+
     public componentDidUpdate(prevProps: BigClassPageProps): void {
         const { speakingJoiners } = this.props.rtm;
         if (prevProps.rtm.speakingJoiners !== speakingJoiners) {
@@ -67,7 +77,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
             const speak = user && (user.camera || user.mic);
             this.setState(
                 speak
-                    ? { speakingJoiner: user.id, mainSpeaker: user.id }
+                    ? { speakingJoiner: user, mainSpeaker: user }
                     : { speakingJoiner: null, mainSpeaker: null },
                 () => {
                     if (this.props.match.params.userId === user?.id) {
@@ -125,9 +135,9 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     private onVideoAvatarExpand = (): void => {
         this.setState(state => ({
             mainSpeaker:
-                state.mainSpeaker === this.props.rtc.creatorUid
+                state.mainSpeaker?.id === this.props.rtm.creator?.id
                     ? state.speakingJoiner
-                    : this.props.rtc.creatorUid,
+                    : this.props.rtm.creator,
         }));
     };
 
@@ -146,6 +156,14 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
             }
             onSpeak(speakConfigs);
         });
+    };
+
+    private onCameraClick = (user: RTMUser) => {
+        this.props.rtm.updateDeviceState(user.id, !user.camera, user.mic);
+    };
+
+    private onMicClick = (user: RTMUser) => {
+        this.props.rtm.updateDeviceState(user.id, user.camera, !user.mic);
     };
 
     private openReplayPage = () => {
@@ -245,7 +263,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     private renderRealtimePanel(): React.ReactNode {
         const { uuid, userId, identity } = this.props.match.params;
         const { isCalling, rtc } = this.props.rtc;
-        const { creator } = this.props.rtm;
+        const { creator, updateDeviceState } = this.props.rtm;
         const { isRealtimeSideOpen, speakingJoiner, mainSpeaker } = this.state;
         const isVideoOn = identity === Identity.creator ? isCalling : creator?.isSpeak;
 
@@ -256,19 +274,24 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                 videoSlot={
                     creator &&
                     isVideoOn && (
-                        <div className="whiteboard-rtc-box">
+                        <div
+                            className={classNames("whiteboard-rtc-box", {
+                                "with-small": speakingJoiner !== null,
+                            })}
+                        >
                             <div
                                 className={classNames("whiteboard-rtc-avatar", {
-                                    "is-small": mainSpeaker !== null && mainSpeaker !== creator.id,
+                                    "is-small":
+                                        mainSpeaker !== null && mainSpeaker.id !== creator.id,
                                 })}
                             >
                                 <BigClassAvatar
-                                    uid={creator.id}
-                                    type={
-                                        creator.id === userId ? VideoType.local : VideoType.remote
-                                    }
+                                    identity={identity}
+                                    userId={userId}
+                                    user={creator}
                                     rtcEngine={rtc.rtcEngine}
-                                    small={mainSpeaker !== null && mainSpeaker !== creator.id}
+                                    updateDeviceState={updateDeviceState}
+                                    small={mainSpeaker !== null && mainSpeaker.id !== creator.id}
                                     onExpand={this.onVideoAvatarExpand}
                                 />
                             </div>
@@ -279,13 +302,11 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                                     })}
                                 >
                                     <BigClassAvatar
-                                        uid={speakingJoiner}
-                                        type={
-                                            speakingJoiner === userId
-                                                ? VideoType.local
-                                                : VideoType.remote
-                                        }
+                                        user={speakingJoiner}
+                                        identity={identity}
+                                        userId={userId}
                                         rtcEngine={rtc.rtcEngine}
+                                        updateDeviceState={updateDeviceState}
                                         small={mainSpeaker !== speakingJoiner}
                                         onExpand={this.onVideoAvatarExpand}
                                     />

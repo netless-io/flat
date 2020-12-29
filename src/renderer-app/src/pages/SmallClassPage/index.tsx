@@ -325,7 +325,8 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 
     private renderAvatar = (user: RTMUser): React.ReactNode => {
         const { userId, identity } = this.props.match.params;
-        const { rtc } = this.props.rtc;
+        const { rtcEngine } = this.props.rtc.rtc;
+        const { updateDeviceState } = this.props.rtm;
 
         return (
             <SmallClassAvatar
@@ -333,19 +334,10 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 identity={identity}
                 userId={userId}
                 user={user}
-                rtcEngine={rtc.rtcEngine}
-                onCameraClick={this.onCameraClick}
-                onMicClick={this.onMicClick}
+                rtcEngine={rtcEngine}
+                updateDeviceState={updateDeviceState}
             />
         );
-    };
-
-    private onCameraClick = (user: RTMUser) => {
-        this.props.rtm.updateDeviceState(user.id, !user.camera, user.mic);
-    };
-
-    private onMicClick = (user: RTMUser) => {
-        this.props.rtm.updateDeviceState(user.id, user.camera, !user.mic);
     };
 }
 

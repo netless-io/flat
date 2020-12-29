@@ -1,50 +1,40 @@
 import React from "react";
 import classNames from "classnames";
-import {
-    VideoAvatar,
-    VideoAvatarProps,
-    VideoAvatarState,
-    VideoType,
-} from "../../components/VideoAvatar";
+import { VideoAvatar, VideoAvatarProps } from "../../components/VideoAvatar";
 
 import noCamera from "../../assets/image/no-camera.svg";
-import camera from "../../assets/image/camera.svg";
-import cameraDisabled from "../../assets/image/camera-disabled.svg";
-import microphone from "../../assets/image/microphone.svg";
-import microphoneDisabled from "../../assets/image/microphone-disabled.svg";
+import noCameraSmall from "../../assets/image/no-camera-small.svg";
 import videoExpand from "../../assets/image/video-expand.svg";
 
 import "./BigClassAvatar.less";
 
-export { VideoType } from "../../components/VideoAvatar";
-
-export interface BigClassAvatarProps extends VideoAvatarProps {
+export interface BigClassAvatarProps extends Omit<VideoAvatarProps, "children"> {
     small?: boolean;
     onExpand?: () => void;
 }
 
-export type BigClassAvatarState = VideoAvatarState;
-
-export class BigClassAvatar extends VideoAvatar<BigClassAvatarProps, BigClassAvatarState> {
-    state: BigClassAvatarState = {
-        isVideoOn: this.props.type === VideoType.remote,
-        isAudioOn: true,
-    };
-
+export class BigClassAvatar extends React.PureComponent<BigClassAvatarProps> {
     render(): React.ReactNode {
-        const { uid, small, onExpand, type } = this.props;
-        const { isVideoOn, isAudioOn } = this.state;
+        const { small, onExpand, ...restProps } = this.props;
+        return <VideoAvatar {...restProps}>{this.renderMainContent}</VideoAvatar>;
+    }
+
+    private renderMainContent = (
+        canvas: React.ReactNode,
+        ctrlBtns: React.ReactNode,
+    ): React.ReactNode => {
+        const { user, small, onExpand } = this.props;
         return (
             <section className={classNames("big-class-avatar-wrap", { "is-small": small })}>
-                <div className="big-class-avatar" ref={this.setupVideo}></div>
-                {!isVideoOn && (
+                {canvas}
+                {!user.camera && (
                     <div className="big-class-avatar-background">
-                        <img src={noCamera} alt="no camera" />
+                        <img src={small ? noCameraSmall : noCamera} alt="no camera" />
                     </div>
                 )}
                 <div
                     className={classNames("big-class-avatar-ctrl-layer", {
-                        "with-video": isVideoOn,
+                        "with-video": user.camera,
                     })}
                 >
                     {small ? (
@@ -53,29 +43,14 @@ export class BigClassAvatar extends VideoAvatar<BigClassAvatarProps, BigClassAva
                         </button>
                     ) : (
                         <>
-                            <h1 className="big-class-avatar-title">{uid}</h1>
-                            {type === VideoType.local && (
-                                <div className="big-class-avatar-btns">
-                                    <button onClick={this.toggleVideo}>
-                                        <img
-                                            src={isVideoOn ? camera : cameraDisabled}
-                                            alt="camera"
-                                        />
-                                    </button>
-                                    <button onClick={this.toggleAudio}>
-                                        <img
-                                            src={isAudioOn ? microphone : microphoneDisabled}
-                                            alt="microphone"
-                                        />
-                                    </button>
-                                </div>
-                            )}
+                            <h1 className="big-class-avatar-title">{user.name || user.id}</h1>
+                            {ctrlBtns}
                         </>
                     )}
                 </div>
             </section>
         );
-    }
+    };
 }
 
 export default BigClassAvatar;
