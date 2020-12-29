@@ -128,7 +128,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     private onSpeak = (configs: { uid: string; speak: boolean }[]): void => {
         const { identity, userId } = this.props;
         if (identity !== Identity.creator) {
-            configs = configs.filter(config => config.uid === userId);
+            // joiner can only turn off speaking
+            configs = configs.filter(config => !config.speak && config.uid === userId);
+            if (configs.length <= 0) {
+                return;
+            }
         }
         this.speak(configs);
         this.rtm.sendCommand(RTMessageType.Speak, configs);
@@ -327,7 +331,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
 
         this.rtm.on(RTMessageType.Speak, (configs, senderId) => {
             if (senderId !== this.state.creator?.id) {
-                configs = configs.filter(config => config.uid === senderId);
+                // joiner can only turn off speaking
+                configs = configs.filter(config => !config.speak && config.uid === senderId);
+                if (configs.length <= 0) {
+                    return;
+                }
             }
             this.speak(configs);
         });
