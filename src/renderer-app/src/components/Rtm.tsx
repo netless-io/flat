@@ -510,7 +510,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             avatar: generateAvatar(uid),
             name: "",
             camera: uid !== this.props.userId,
-            mic: false,
+            mic: true,
         };
     };
 }
