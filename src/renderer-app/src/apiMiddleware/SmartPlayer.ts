@@ -6,7 +6,7 @@ import {
     Player,
     createPlugins,
     ReplayRoomParams,
-    RangeQuery,
+    PlayableCheckingParams,
 } from "white-web-sdk";
 import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netless/combine-player";
 import { videoPlugin } from "@netless/white-video-plugin";
@@ -73,7 +73,7 @@ export class SmartPlayer {
 
         this.whiteWebSdk = whiteWebSdk;
 
-        const rangeQuery: RangeQuery = {
+        const rangeQuery: PlayableCheckingParams = {
             room: uuid,
             region: "cn-hz",
         };
