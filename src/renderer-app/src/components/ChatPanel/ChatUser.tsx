@@ -9,7 +9,6 @@ export interface RTMUser {
     camera: boolean;
     mic: boolean;
     isRaiseHand?: boolean;
-    isSpeaking?: boolean;
 }
 
 export interface ChatUserProps {
@@ -34,7 +33,7 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
                 {user.name || user.id}
                 {creatorId === user.id ? ( // @TODO 等待账号系统
                     <span className="chat-user-status is-teacher">(老师)</span>
-                ) : user.isSpeaking ? (
+                ) : user.camera || user.mic ? (
                     <>
                         <span className="chat-user-status is-speaking">(发言中)</span>
                         {(identity === Identity.creator || userId === user.id) && (

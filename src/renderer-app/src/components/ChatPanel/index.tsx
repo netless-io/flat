@@ -67,15 +67,15 @@ export class ChatPanel extends React.Component<ChatPanelProps> {
 
     private onAllowSpeaking = (uid: string): void => {
         const { users, onJoinerSpeak } = this.props.rtm;
-        if (users[0]?.isSpeaking) {
+        if (users[0]?.camera || users[0]?.mic) {
             // only one user is allowed
             return;
         }
-        onJoinerSpeak(uid, true);
+        onJoinerSpeak(uid, false, true);
     };
 
     private onEndSpeaking = (uid: string): void => {
-        this.props.rtm.onJoinerSpeak(uid, false);
+        this.props.rtm.onJoinerSpeak(uid, false, false);
     };
 }
 

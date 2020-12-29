@@ -21,7 +21,9 @@ export class ChatUsers extends React.PureComponent<ChatUsersProps> {
 
         return (
             <div
-                className={classNames("chat-users-wrap", { "has-speaking": users[0]?.isSpeaking })}
+                className={classNames("chat-users-wrap", {
+                    "has-speaking": users[0]?.camera || users[0]?.mic,
+                })}
             >
                 {isShowCancelAllHandRaising && (
                     <div className="chat-users-cancel-hands-wrap">

@@ -173,7 +173,6 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
 
                 return {
                     ...user,
-                    isSpeaking: camera || mic,
                     isRaiseHand: false,
                     camera,
                     mic: mic ?? camera,
@@ -219,7 +218,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     private onToggleHandRaising = (): void => {
         const { userId, identity } = this.props;
         const { currentUser } = this.state;
-        if (identity !== Identity.joiner || currentUser?.isSpeaking) {
+        if (identity !== Identity.joiner || currentUser?.camera || currentUser?.mic) {
             return;
         }
         this.updateUsers(
@@ -352,7 +351,6 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
 
                     return {
                         ...user,
-                        isSpeaking: camera || mic,
                         isRaiseHand: false,
                         camera,
                         mic,
@@ -447,7 +445,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                     currentUser = user;
                 }
 
-                if (user.isSpeaking) {
+                if (user.camera || user.mic) {
                     speakingUsers.push(user);
                 } else if (user.isRaiseHand) {
                     raiseHandUsers.push(user);
