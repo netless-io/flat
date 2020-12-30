@@ -247,7 +247,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                 />
                 <TopBarRightBtn title="Docs center" icon="folder" onClick={toggleDocCenter} />
                 <InviteButton uuid={uuid} />
-                {/* @TODO */}
+                {/* @TODO implement Options menu */}
                 <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
                 <TopBarDivider />
                 <TopBarRightBtn
