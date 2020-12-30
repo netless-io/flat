@@ -265,12 +265,12 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
         const { isCalling, rtc } = this.props.rtc;
         const { creator, updateDeviceState } = this.props.rtm;
         const { isRealtimeSideOpen, speakingJoiner, mainSpeaker } = this.state;
-        const isVideoOn = identity === Identity.creator ? isCalling : creator?.isSpeak;
+        const isVideoOn = identity === Identity.creator ? isCalling : !!creator?.isSpeak;
 
         return (
             <RealtimePanel
                 isShow={isRealtimeSideOpen}
-                isVideoOn={!!isVideoOn}
+                isVideoOn={isVideoOn}
                 videoSlot={
                     creator &&
                     isVideoOn && (
