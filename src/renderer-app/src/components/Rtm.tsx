@@ -427,22 +427,32 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                     newState.creator = mapUser(state.creator, state);
                 }
 
+                // Pick updated users out of these three groups to an unsorted group
                 (["speakingJoiners", "handRaisingJoiners", "joiners"] as const).forEach(key => {
                     for (let i = 0; i < state[key].length; i++) {
                         const user = state[key][i];
                         const mappedUser = mapUser(user, state);
+                        // If mapUser returns a new object
+                        // that means this is a updated user
                         if (user !== mappedUser) {
                             if (!newState[key]) {
+                                // lazy-create new state field
+                                // concat items before current updated user
                                 newState[key] = state.joiners.slice(0, i);
                             }
                             unSortedUsers.push(mappedUser);
                             continue;
                         }
+                        // if new state filed is created
+                        // it is going to be committed to next React state
+                        // so keep adding the rest of the items
                         newState[key]?.push(user);
                     }
                 });
             }
 
+            // sort each unsorted users into different group
+            // all groups in new state are lazy-created
             for (const user of unSortedUsers) {
                 const isCurrentUser = user.id === userId;
 
