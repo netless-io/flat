@@ -313,7 +313,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 chatSlot={
                     <ChatPanel
                         userId={userId}
-                        channelId={uuid}
+                        channelID={uuid}
                         identity={identity}
                         rtm={this.props.rtm}
                         allowMultipleSpeakers={true}

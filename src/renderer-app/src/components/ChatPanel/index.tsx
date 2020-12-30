@@ -9,7 +9,7 @@ import "./ChatPanel.less";
 
 export interface ChatPanelProps {
     userId: string;
-    channelId: string;
+    channelID: string;
     identity: ChatMessagesProps["identity"];
     rtm: RtmRenderProps;
     allowMultipleSpeakers: boolean;

@@ -94,8 +94,8 @@ export class Rtm extends EventEmitter {
     /** Channel for commands */
     commands?: RtmChannel;
 
-    private channelId: string | null = null;
-    private commandsId: string | null = null;
+    private channelID: string | null = null;
+    private commandsID: string | null = null;
 
     constructor() {
         super();
@@ -110,21 +110,21 @@ export class Rtm extends EventEmitter {
         });
     }
 
-    async init(userId: string, channelId: string): Promise<RtmChannel> {
+    async init(userId: string, channelID: string): Promise<RtmChannel> {
         if (this.channel) {
-            if (this.channelId === channelId) {
+            if (this.channelID === channelID) {
                 return this.channel;
             } else {
                 await this.destroy();
             }
         }
 
-        this.channelId = channelId;
-        this.commandsId = this.channelId + "commands";
+        this.channelID = channelID;
+        this.commandsID = this.channelID + "commands";
 
         await this.client.login({ uid: userId });
 
-        this.channel = this.client.createChannel(channelId);
+        this.channel = this.client.createChannel(channelID);
         await this.channel.join();
         this.channel.on("ChannelMessage", (msg, senderId) => {
             if (msg.messageType === AgoraRTM.MessageType.TEXT) {
@@ -132,8 +132,8 @@ export class Rtm extends EventEmitter {
             }
         });
 
-        if (this.commandsId) {
-            this.commands = this.client.createChannel(this.commandsId);
+        if (this.commandsID) {
+            this.commands = this.client.createChannel(this.commandsID);
             await this.commands.join();
             this.commands.on("ChannelMessage", (msg, senderId) => {
                 if (msg.messageType === AgoraRTM.MessageType.TEXT) {
@@ -170,8 +170,8 @@ export class Rtm extends EventEmitter {
                 console.warn(e);
             }
         }
-        this.channelId = null;
-        this.commandsId = null;
+        this.channelID = null;
+        this.commandsID = null;
     }
 
     async sendMessage(text: string): Promise<void>;
@@ -215,7 +215,7 @@ export class Rtm extends EventEmitter {
     }
 
     async fetchTextHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
-        return (await this.fetchHistory(this.channelId, startTime, endTime)).map(message => ({
+        return (await this.fetchHistory(this.channelID, startTime, endTime)).map(message => ({
             type: RTMessageType.ChannelMessage,
             value: message.payload,
             uuid: uuidv4(),
@@ -225,7 +225,7 @@ export class Rtm extends EventEmitter {
     }
 
     async fetchCommandHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
-        return (await this.fetchHistory(this.channelId, startTime, endTime))
+        return (await this.fetchHistory(this.channelID, startTime, endTime))
             .map((message): RTMessage | null => {
                 try {
                     const { t, v } = JSON.parse(message.payload);

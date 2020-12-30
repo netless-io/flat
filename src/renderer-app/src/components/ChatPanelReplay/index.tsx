@@ -10,7 +10,7 @@ import "../ChatPanel/ChatPanel.less";
 
 export interface ChatPanelReplayProps {
     userId: string;
-    channelId: string;
+    channelID: string;
     player: Player;
 }
 
@@ -35,8 +35,8 @@ export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatP
     };
 
     async componentDidMount() {
-        const { userId, channelId, player } = this.props;
-        await this.rtm.init(userId, channelId);
+        const { userId, channelID, player } = this.props;
+        await this.rtm.init(userId, channelID);
         player.callbacks.on("onProgressTimeChanged", this.playerOnProgressTimeChanged);
     }
 

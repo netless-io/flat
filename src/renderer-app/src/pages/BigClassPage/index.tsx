@@ -318,7 +318,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                 chatSlot={
                     <ChatPanel
                         userId={userId}
-                        channelId={uuid}
+                        channelID={uuid}
                         identity={identity}
                         rtm={this.props.rtm}
                         allowMultipleSpeakers={false}
