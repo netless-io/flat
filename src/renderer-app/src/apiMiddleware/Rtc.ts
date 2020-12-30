@@ -6,9 +6,9 @@ import { Identity } from "../utils/localStorage/room";
 const AgoraRtcEngine = window.AgoraRtcEngine;
 
 export enum RtcChannelType {
-    communication = 0,
-    broadcast = 1,
-    gaming = 2,
+    Communication = 0,
+    Broadcast = 1,
+    Gaming = 2,
 }
 
 export interface RtcConfig {
@@ -19,7 +19,7 @@ export class Rtc {
     rtcEngine: AgoraSdk;
     appId: string = AGORA.APP_ID || "";
     uid: number | null = null;
-    channelType = RtcChannelType.communication;
+    channelType = RtcChannelType.Communication;
 
     constructor(config?: RtcConfig) {
         if (config) {
@@ -80,7 +80,7 @@ export class Rtc {
             width: 288,
         });
 
-        if (this.channelType === RtcChannelType.broadcast) {
+        if (this.channelType === RtcChannelType.Broadcast) {
             if (identity === Identity.creator) {
                 this.rtcEngine.setClientRole(1);
             } else {

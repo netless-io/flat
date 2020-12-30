@@ -31,7 +31,7 @@ export type RtcState = {
 
 export class Rtc extends React.Component<RtcProps, RtcState> {
     private rtc = new RtcApi({
-        channelType: this.props.recordingConfig.channelType ?? RtcChannelType.broadcast,
+        channelType: this.props.recordingConfig.channelType ?? RtcChannelType.Broadcast,
     });
     private cloudRecording: CloudRecording | null = null;
     private cloudRecordingInterval: number | undefined;
@@ -82,7 +82,7 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
             ...this.state,
             rtc: this.rtc,
             cloudRecording: this.cloudRecording,
-            channelType: this.props.recordingConfig.channelType ?? RtcChannelType.communication,
+            channelType: this.props.recordingConfig.channelType ?? RtcChannelType.Communication,
             toggleCalling: this.toggleCalling,
             toggleRecording: this.toggleRecording,
         });

@@ -27,8 +27,8 @@ import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import "./SmallClassPage.less";
 
 export enum ClassModeType {
-    lecture = "lecture",
-    interaction = "interaction",
+    Lecture = "Lecture",
+    Interaction = "Interaction",
 }
 
 export enum ClassStatusType {
@@ -53,7 +53,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         this.state = {
             isRealtimeSideOpen: true,
             classStatus: ClassStatusType.idle,
-            classMode: ClassModeType.lecture,
+            classMode: ClassModeType.Lecture,
         };
 
         ipcAsyncByMain("set-win-size", {
@@ -118,9 +118,9 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     private toggleClassMode = (): void => {
         this.setState(state => ({
             classMode:
-                state.classMode === ClassModeType.lecture
-                    ? ClassModeType.interaction
-                    : ClassModeType.lecture,
+                state.classMode === ClassModeType.Lecture
+                    ? ClassModeType.Interaction
+                    : ClassModeType.Lecture,
         }));
     };
 
@@ -197,7 +197,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     }
 
     private renderClassMode(): React.ReactNode {
-        return this.state.classMode === ClassModeType.lecture ? (
+        return this.state.classMode === ClassModeType.Lecture ? (
             <TopBarRoundBtn
                 title="当前为讲课模式"
                 dark
@@ -344,7 +344,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 export default withWhiteboardRoute(
     withRtcRoute({
         recordingConfig: {
-            channelType: RtcChannelType.communication,
+            channelType: RtcChannelType.Communication,
             transcodingConfig: {
                 width: 288,
                 height: 216,

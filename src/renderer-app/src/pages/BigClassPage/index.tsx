@@ -82,7 +82,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                 () => {
                     if (this.props.match.params.userId === user?.id) {
                         const { rtcEngine, channelType } = this.props.rtc.rtc;
-                        if (channelType === RtcChannelType.broadcast) {
+                        if (channelType === RtcChannelType.Broadcast) {
                             rtcEngine.setClientRole(speak ? 1 : 2);
                         }
                     }
@@ -332,7 +332,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
 export default withWhiteboardRoute(
     withRtcRoute({
         recordingConfig: {
-            channelType: RtcChannelType.broadcast,
+            channelType: RtcChannelType.Broadcast,
             transcodingConfig: {
                 width: 288,
                 height: 216,
