@@ -2,7 +2,6 @@ import React from "react";
 import classBegin from "../assets/image/class-begin.svg";
 import classPause from "../assets/image/class-pause.svg";
 import classStop from "../assets/image/class-stop.svg";
-import "./TopBarClassOperations.less";
 
 export interface TopBarClassOperationsProps {
     isBegin: boolean;

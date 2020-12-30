@@ -191,7 +191,7 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
                         this.smartPlayer.whiteboardPlayer && (
                             <ChatPanelReplay
                                 userId={userId}
-                                channelId={uuid}
+                                channelID={uuid}
                                 player={this.smartPlayer.whiteboardPlayer}
                             />
                         )

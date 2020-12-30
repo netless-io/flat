@@ -27,7 +27,7 @@ export class ChatMessage extends React.Component<ChatMessageProps> {
                     </div>
                 );
             }
-            case RTMessageType.Ban: {
+            case RTMessageType.BanText: {
                 return (
                     <div className="chat-message-line">
                         <div className="chat-message-ban">

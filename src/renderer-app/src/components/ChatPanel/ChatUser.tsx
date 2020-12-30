@@ -6,8 +6,10 @@ export interface RTMUser {
     id: string;
     avatar: string;
     name: string;
-    isRaiseHand?: boolean;
-    isSpeaking?: boolean;
+    camera: boolean;
+    mic: boolean;
+    isSpeak: boolean;
+    isRaiseHand: boolean;
 }
 
 export interface ChatUserProps {
@@ -15,7 +17,7 @@ export interface ChatUserProps {
     creatorId?: string | null;
     userId: string;
     user: RTMUser;
-    onAllowSpeaking: (uid: string) => void;
+    onAcceptRaiseHand: (uid: string) => void;
     onEndSpeaking: (uid: string) => void;
 }
 
@@ -30,10 +32,12 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
                     alt={`User ${user.name || user.id}`}
                 />
                 {user.name || user.id}
-                {user.isSpeaking ? (
+                {creatorId === user.id ? ( // @TODO 等待账号系统
+                    <span className="chat-user-status is-teacher">(老师)</span>
+                ) : user.isSpeak ? (
                     <>
                         <span className="chat-user-status is-speaking">(发言中)</span>
-                        {identity === Identity.creator && (
+                        {(identity === Identity.creator || userId === user.id) && (
                             <button
                                 className="chat-user-ctl-btn is-speaking"
                                 onClick={this.endSpeaking}
@@ -48,7 +52,7 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
                         {identity === Identity.creator && (
                             <button
                                 className="chat-user-ctl-btn is-hand-raising"
-                                onClick={this.allowSpeaking}
+                                onClick={this.acceptRaiseHand}
                             >
                                 通过
                             </button>
@@ -56,8 +60,6 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
                     </>
                 ) : userId === user.id ? (
                     <span className="chat-user-status is-teacher">(我)</span>
-                ) : creatorId === user.id ? ( // @TODO 等待账号系统
-                    <span className="chat-user-status is-teacher">(老师)</span>
                 ) : null}
             </div>
         );
@@ -70,10 +72,10 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
         }
     };
 
-    private allowSpeaking = () => {
-        const { user, onAllowSpeaking } = this.props;
-        if (onAllowSpeaking) {
-            onAllowSpeaking(user.id);
+    private acceptRaiseHand = () => {
+        const { user, onAcceptRaiseHand } = this.props;
+        if (onAcceptRaiseHand) {
+            onAcceptRaiseHand(user.id);
         }
     };
 }

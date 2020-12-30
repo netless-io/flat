@@ -1,4 +1,4 @@
-.video-avatar-wrap {
+.big-class-avatar-wrap {
     position: relative;
     width: 288px;
     height: 216px;
@@ -7,7 +7,7 @@
         width: 96px;
         height: 72px;
 
-        .video-avatar-background {
+        .big-class-avatar-background {
             img {
                 width: 22px;
                 height: 22px;
@@ -16,19 +16,39 @@
     }
 
     &:hover {
-        .video-avatar-ctrl-layer {
+        .big-class-avatar-ctrl-layer {
             opacity: 1 !important;
+        }
+    }
+
+    .video-avatar-canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    .video-avatar-ctrl-btns {
+        position: absolute;
+        z-index: 20;
+        bottom: 10px;
+        right: 10px;
+        display: flex;
+
+        & > button {
+            margin: 0 0 0 4px;
+            padding: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            cursor: pointer;
+
+            &:disabled {
+                cursor: no-drop;
+            }
         }
     }
 }
 
-.video-avatar {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.video-avatar-background {
+.big-class-avatar-background {
     position: absolute;
     top: 0;
     left: 0;
@@ -40,7 +60,7 @@
     background: #1a1e21;
 }
 
-.video-avatar-ctrl-layer {
+.big-class-avatar-ctrl-layer {
     position: absolute;
     z-index: 20;
     top: 0;
@@ -56,7 +76,7 @@
     }
 }
 
-.video-avatar-title {
+.big-class-avatar-title {
     position: absolute;
     z-index: 20;
     bottom: 10px;
@@ -68,27 +88,10 @@
     color: #fff;
 }
 
-.video-avatar-btns {
+.big-class-avatar-expand {
     position: absolute;
-    z-index: 20;
-    bottom: 10px;
-    right: 10px;
-    display: flex;
-
-    & > button {
-        margin: 0 0 0 4px;
-        padding: 0;
-        border: none;
-        outline: none;
-        background: transparent;
-        cursor: pointer;
-    }
-}
-
-.video-avatar-expand {
-    position: absolute;
-    bottom: 4px;
-    left: 4px;
+    top: 4px;
+    right: 4px;
     padding: 0;
     border: none;
     outline: none;

@@ -1,27 +1,61 @@
 import React from "react";
 import { AutoSizer, List, ListRowRenderer, Size } from "react-virtualized";
 import classNames from "classnames";
+import memoizeOne from "memoize-one";
 import { ChatUser, ChatUserProps, RTMUser } from "./ChatUser";
 import noHand from "../../assets/image/no-hand.svg";
 import "./ChatUsers.less";
 
 export interface ChatUsersProps
-    extends Pick<
-        ChatUserProps,
-        "creatorId" | "identity" | "userId" | "onAllowSpeaking" | "onEndSpeaking"
-    > {
-    users: RTMUser[];
+    extends Pick<ChatUserProps, "identity" | "userId" | "onAcceptRaiseHand" | "onEndSpeaking"> {
+    speakingJoiners: RTMUser[];
+    handRaisingJoiners: RTMUser[];
+    creator: RTMUser | null;
+    joiners: RTMUser[];
     isShowCancelAllHandRaising: boolean;
     onCancelAllHandRaising: () => void;
 }
 
-export class ChatUsers extends React.PureComponent<ChatUsersProps> {
+export interface ChatUsersState {
+    users: RTMUser[];
+}
+
+export class ChatUsers extends React.PureComponent<ChatUsersProps, ChatUsersState> {
+    static getDerivedStateFromProps(props: ChatUsersProps) {
+        return {
+            users: ChatUsers.generateUsers(
+                props.speakingJoiners,
+                props.handRaisingJoiners,
+                props.creator,
+                props.joiners,
+            ),
+        };
+    }
+
+    private static generateUsers = memoizeOne(
+        (
+            speakingJoiners: RTMUser[],
+            handRaisingJoiners: RTMUser[],
+            creator: RTMUser | null,
+            joiners: RTMUser[],
+        ): RTMUser[] =>
+            creator
+                ? [...speakingJoiners, ...handRaisingJoiners, creator, ...joiners]
+                : [...speakingJoiners, ...handRaisingJoiners, ...joiners],
+    );
+
+    state: ChatUsersState = {
+        users: [],
+    };
+
     render(): React.ReactNode {
-        const { users, isShowCancelAllHandRaising, onCancelAllHandRaising } = this.props;
+        const { speakingJoiners, isShowCancelAllHandRaising, onCancelAllHandRaising } = this.props;
 
         return (
             <div
-                className={classNames("chat-users-wrap", { "has-speaking": users[0]?.isSpeaking })}
+                className={classNames("chat-users-wrap", {
+                    "has-speaking": speakingJoiners.length > 0,
+                })}
             >
                 {isShowCancelAllHandRaising && (
                     <div className="chat-users-cancel-hands-wrap">
@@ -46,7 +80,7 @@ export class ChatUsers extends React.PureComponent<ChatUsersProps> {
     }
 
     private renderList = ({ height, width }: Size): React.ReactNode => {
-        const { users } = this.props;
+        const { users } = this.state;
         return (
             <List
                 height={height}
@@ -60,11 +94,18 @@ export class ChatUsers extends React.PureComponent<ChatUsersProps> {
     };
 
     private rowRenderer: ListRowRenderer = ({ index, style }): React.ReactNode => {
-        const { users, ...restProps } = this.props;
-        const user = users[index];
+        const { identity, creator, userId, onAcceptRaiseHand, onEndSpeaking } = this.props;
+        const user = this.state.users[index];
         return (
             <div key={user.id} style={style}>
-                <ChatUser {...restProps} user={user} />
+                <ChatUser
+                    identity={identity}
+                    creatorId={creator?.id}
+                    userId={userId}
+                    user={user}
+                    onAcceptRaiseHand={onAcceptRaiseHand}
+                    onEndSpeaking={onEndSpeaking}
+                />
             </div>
         );
     };

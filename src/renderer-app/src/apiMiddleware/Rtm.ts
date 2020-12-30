@@ -2,6 +2,7 @@ import AgoraRTM, { RtmChannel, RtmClient } from "agora-rtm-sdk";
 import polly from "polly-js";
 import { v4 as uuidv4 } from "uuid";
 import { AGORA, NODE_ENV } from "../constants/Process";
+import { EventEmitter } from "events";
 
 /**
  * @see {@link https://docs.agora.io/cn/Real-time-Messaging/rtm_get_event?platform=RESTful#a-namecreate_history_resa创建历史消息查询资源-api（post）}
@@ -40,117 +41,65 @@ export interface RtmRESTfulQueryResourceResponse {
 }
 
 export enum RTMessageType {
-    // Order MUST be fixed.
-    // New items MUST be added at the end of the list.
-    Text,
-    RaiseHand,
-    CancelHandRaising,
-    Ban,
-    Speak,
-    Notice,
+    /** group message */
+    ChannelMessage = "ChannelMessage",
+    /** a notice message */
+    Notice = "Notice",
+    /** A joiner raises hand */
+    RaiseHand = "RaiseHand",
+    /** creator accept hand raising from a joiner */
+    AcceptRaiseHand = "AcceptRaiseHand",
+    /** creator cancel all hand raising */
+    CancelAllHandRaising = "CancelHandRaising",
+    /** creator ban all rtm */
+    BanText = "BanText",
+    /** creator allows a joiner or joiners allows themselves to speak */
+    Speak = "Speak",
+    /** joiner updates own camera and mic state */
+    DeviceState = "DeviceState",
 }
 
-export interface RTMessageBase {
+export interface RTMessage<U extends keyof RtmEvents = keyof RtmEvents> {
+    type: U;
+    value: RtmEvents[U];
     uuid: string;
     timestamp: number;
     userId: string;
 }
 
-export interface RTMessageText extends RTMessageBase {
-    type: RTMessageType.Text;
-    value: string;
+export interface RtmEvents {
+    [RTMessageType.ChannelMessage]: string;
+    [RTMessageType.Notice]: string;
+    [RTMessageType.RaiseHand]: boolean;
+    [RTMessageType.AcceptRaiseHand]: { uid: string; accept: boolean };
+    [RTMessageType.CancelAllHandRaising]: boolean;
+    [RTMessageType.BanText]: boolean;
+    [RTMessageType.Speak]: Array<{ uid: string; speak: boolean }>;
+    [RTMessageType.DeviceState]: { camera: boolean; mic: boolean };
 }
 
-/** Student raises hand */
-export interface RTMessageRaiseHand extends RTMessageBase {
-    type: RTMessageType.RaiseHand;
-    value: boolean;
+export declare interface Rtm {
+    on<U extends keyof RtmEvents>(
+        event: U,
+        listener: (value: RtmEvents[U], senderId: string) => void,
+    ): this;
 }
 
-/** Teacher allows hand raising  */
-export interface RTMessageCancelHandRaising extends RTMessageBase {
-    type: RTMessageType.CancelHandRaising;
-    value?: true;
-}
-
-/** Ban students for sending messages */
-export interface RTMessageBan extends RTMessageBase {
-    type: RTMessageType.Ban;
-    value: boolean;
-}
-
-/** Teacher allows a student to speak */
-export interface RTMessageSpeak extends RTMessageBase {
-    type: RTMessageType.Speak;
-    value: {
-        uid: string;
-        speak: boolean;
-    };
-}
-
-export interface RTMessageNotice extends RTMessageBase {
-    type: RTMessageType.Notice;
-    value: string;
-}
-
-export type RTMessage =
-    | RTMessageText
-    | RTMessageRaiseHand
-    | RTMessageCancelHandRaising
-    | RTMessageBan
-    | RTMessageSpeak
-    | RTMessageNotice;
-
-export interface RTMRawMessageText {
-    t: RTMessageType.Text;
-    v: string;
-}
-
-export interface RTMRawMessageRaiseHand {
-    t: RTMessageType.RaiseHand;
-    v: boolean;
-}
-
-export interface RTMRawMessageCancelHandRaising {
-    t: RTMessageType.CancelHandRaising;
-    v?: true;
-}
-
-export interface RTMRawMessageBan {
-    t: RTMessageType.Ban;
-    v: boolean;
-}
-
-export interface RTMRawMessageSpeak {
-    t: RTMessageType.Speak;
-    v: {
-        uid: string;
-        speak: boolean;
-    };
-}
-
-export interface RTMRawMessageNotice {
-    t: RTMessageType.Notice;
-    v: string;
-}
-
-export type RTMRawMessage =
-    | RTMRawMessageText
-    | RTMRawMessageRaiseHand
-    | RTMRawMessageCancelHandRaising
-    | RTMRawMessageBan
-    | RTMRawMessageSpeak
-    | RTMRawMessageNotice;
-
-export class Rtm {
+// eslint-disable-next-line no-redeclare
+export class Rtm extends EventEmitter {
     static MessageType = AgoraRTM.MessageType;
 
     client: RtmClient;
     channel?: RtmChannel;
+    /** Channel for commands */
+    commands?: RtmChannel;
 
-    private channelId: string | null = null;
+    private channelID: string | null = null;
+    private commandsID: string | null = null;
 
     constructor() {
+        super();
+
         if (!AGORA.APP_ID) {
             throw new Error("Agora App Id not set.");
         }
@@ -161,17 +110,56 @@ export class Rtm {
         });
     }
 
-    async init(userId: string, channelId: string): Promise<RtmChannel> {
-        this.channelId = channelId;
+    async init(userId: string, channelID: string): Promise<RtmChannel> {
+        if (this.channel) {
+            if (this.channelID === channelID) {
+                return this.channel;
+            } else {
+                await this.destroy();
+            }
+        }
+
+        this.channelID = channelID;
+        this.commandsID = this.channelID + "commands";
+
         await this.client.login({ uid: userId });
-        this.channel = this.client.createChannel(channelId);
+
+        this.channel = this.client.createChannel(channelID);
         await this.channel.join();
+        this.channel.on("ChannelMessage", (msg, senderId) => {
+            if (msg.messageType === AgoraRTM.MessageType.TEXT) {
+                this.emit(RTMessageType.ChannelMessage, msg.text, senderId);
+            }
+        });
+
+        if (this.commandsID) {
+            this.commands = this.client.createChannel(this.commandsID);
+            await this.commands.join();
+            this.commands.on("ChannelMessage", (msg, senderId) => {
+                if (msg.messageType === AgoraRTM.MessageType.TEXT) {
+                    try {
+                        const { t, v } = JSON.parse(msg.text);
+                        if (t) {
+                            this.emit(t, v, senderId);
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
+            });
+        }
+
         return this.channel;
     }
 
     async destroy() {
         if (this.channel) {
-            this.channel.leave();
+            await this.channel.leave();
+            this.channel.removeAllListeners();
+        }
+        if (this.commands) {
+            await this.commands.leave();
+            this.commands.removeAllListeners();
         }
         this.client.removeAllListeners();
         try {
@@ -182,19 +170,13 @@ export class Rtm {
                 console.warn(e);
             }
         }
-        this.channelId = null;
+        this.channelID = null;
+        this.commandsID = null;
     }
 
-    async sendMessage(message: RTMRawMessage): Promise<void>;
-    async sendMessage(
-        message: RTMRawMessage,
-        peerId: string,
-    ): Promise<{ hasPeerReceived: boolean }>;
-    async sendMessage(
-        message: RTMRawMessage,
-        peerId?: string,
-    ): Promise<{ hasPeerReceived: boolean } | void> {
-        const text = JSON.stringify(message);
+    async sendMessage(text: string): Promise<void>;
+    async sendMessage(text: string, peerId: string): Promise<{ hasPeerReceived: boolean }>;
+    async sendMessage(text: string, peerId?: string): Promise<{ hasPeerReceived: boolean } | void> {
         if (peerId !== undefined) {
             return this.client.sendMessageToPeer(
                 {
@@ -215,15 +197,68 @@ export class Rtm {
         }
     }
 
-    async fetchHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
-        if (!this.channelId) {
+    async sendCommand<U extends keyof RtmEvents>(
+        type: U,
+        value: RtmEvents[U],
+        enableHistoricalMessaging?: boolean,
+    ): Promise<void> {
+        if (!this.commands) {
+            return;
+        }
+        return this.commands.sendMessage(
+            {
+                messageType: AgoraRTM.MessageType.TEXT,
+                text: JSON.stringify({ t: type, v: value }),
+            },
+            { enableHistoricalMessaging },
+        );
+    }
+
+    async fetchTextHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
+        return (await this.fetchHistory(this.channelID, startTime, endTime)).map(message => ({
+            type: RTMessageType.ChannelMessage,
+            value: message.payload,
+            uuid: uuidv4(),
+            timestamp: message.ms,
+            userId: message.src,
+        }));
+    }
+
+    async fetchCommandHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
+        return (await this.fetchHistory(this.channelID, startTime, endTime))
+            .map((message): RTMessage | null => {
+                try {
+                    const { t, v } = JSON.parse(message.payload);
+                    if (t) {
+                        return {
+                            type: t,
+                            value: v,
+                            uuid: uuidv4(),
+                            timestamp: message.ms,
+                            userId: message.src,
+                        };
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+                return null;
+            })
+            .filter((v): v is RTMessage => v !== null);
+    }
+
+    async fetchHistory(
+        channel: string | null,
+        startTime: number,
+        endTime: number,
+    ): Promise<RtmRESTfulQueryResourceResponse["messages"]> {
+        if (!channel) {
             throw new Error("RTM is not initiated. Call `rtm.init` first.");
         }
         const { location } = await this.request<RtmRESTfulQueryPayload, RtmRESTfulQueryResponse>(
             "query",
             {
                 filter: {
-                    destination: this.channelId,
+                    destination: channel,
                     start_time: new Date(startTime).toISOString(),
                     end_time: new Date(endTime).toISOString(),
                 },
@@ -242,30 +277,7 @@ export class Rtm {
                     { method: "GET" },
                 ).then(response => (response.code === "ok" ? response : Promise.reject(response)));
             });
-        return result.messages
-            .map(message => {
-                let type = RTMessageType.Text;
-                let value: any = message.payload;
-
-                try {
-                    const m = JSON.parse(message.payload);
-                    if (m.t !== undefined) {
-                        type = m.t;
-                        value = m.v;
-                    }
-                } catch (e) {
-                    // ignore legacy type
-                }
-
-                return {
-                    type,
-                    value,
-                    uuid: uuidv4(),
-                    timestamp: message.ms,
-                    userId: message.src,
-                };
-            })
-            .reverse();
+        return result.messages.reverse();
     }
 
     private async request<P = any, R = any>(

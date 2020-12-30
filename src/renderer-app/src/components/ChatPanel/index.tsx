@@ -9,21 +9,23 @@ import "./ChatPanel.less";
 
 export interface ChatPanelProps {
     userId: string;
-    channelId: string;
+    channelID: string;
     identity: ChatMessagesProps["identity"];
     rtm: RtmRenderProps;
+    allowMultipleSpeakers: boolean;
 }
 
 export class ChatPanel extends React.Component<ChatPanelProps> {
     render() {
         const { identity, userId } = this.props;
         const {
-            creatorId,
             messages,
-            users,
+            speakingJoiners,
+            handRaisingJoiners,
+            creator,
+            joiners,
             currentUser,
             isBan,
-            handRaisingCount,
             onMessageSend,
             onCancelAllHandRaising,
             updateHistory,
@@ -49,13 +51,15 @@ export class ChatPanel extends React.Component<ChatPanelProps> {
                     <Tabs.TabPane tab="用户列表" key="users">
                         <ChatUsers
                             isShowCancelAllHandRaising={
-                                handRaisingCount > 0 && identity === Identity.creator
+                                handRaisingJoiners.length > 0 && identity === Identity.creator
                             }
-                            creatorId={creatorId}
                             identity={identity}
                             userId={userId}
-                            users={users}
-                            onAllowSpeaking={this.onAllowSpeaking}
+                            speakingJoiners={speakingJoiners}
+                            handRaisingJoiners={handRaisingJoiners}
+                            creator={creator}
+                            joiners={joiners}
+                            onAcceptRaiseHand={this.onAcceptRaiseHand}
                             onEndSpeaking={this.onEndSpeaking}
                             onCancelAllHandRaising={onCancelAllHandRaising}
                         />
@@ -65,17 +69,18 @@ export class ChatPanel extends React.Component<ChatPanelProps> {
         );
     }
 
-    private onAllowSpeaking = (uid: string): void => {
-        const { users, onJoinerSpeak } = this.props.rtm;
-        if (users[0]?.isSpeaking) {
-            // only one user is allowed
+    private onAcceptRaiseHand = (uid: string): void => {
+        const { allowMultipleSpeakers } = this.props;
+        const { speakingJoiners, acceptRaisehand } = this.props.rtm;
+        if (speakingJoiners.length > 0 && !allowMultipleSpeakers) {
+            // only one speaker is allowed
             return;
         }
-        onJoinerSpeak(uid, true);
+        acceptRaisehand(uid);
     };
 
     private onEndSpeaking = (uid: string): void => {
-        this.props.rtm.onJoinerSpeak(uid, false);
+        this.props.rtm.onSpeak([{ uid, speak: false }]);
     };
 }
 

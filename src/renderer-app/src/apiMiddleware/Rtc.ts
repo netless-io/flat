@@ -5,14 +5,25 @@ import { Identity } from "../utils/localStorage/room";
 /** @see {@link https://docs.agora.io/cn/Video/API%20Reference/electron/index.html} */
 const AgoraRtcEngine = window.AgoraRtcEngine;
 
+export enum RtcChannelType {
+    Communication = 0,
+    Broadcast = 1,
+    Gaming = 2,
+}
+
+export interface RtcConfig {
+    channelType: RtcChannelType;
+}
+
 export class Rtc {
     rtcEngine: AgoraSdk;
     appId: string = AGORA.APP_ID || "";
     uid: number | null = null;
+    channelType = RtcChannelType.Communication;
 
-    constructor(appId?: string) {
-        if (appId !== void 0) {
-            this.appId = appId;
+    constructor(config?: RtcConfig) {
+        if (config) {
+            this.channelType = config.channelType;
         }
 
         if (!this.appId) {
@@ -55,25 +66,29 @@ export class Rtc {
             throw new Error("RTC uid has to be number");
         }
 
-        this.rtcEngine.setChannelProfile(1);
-        this.rtcEngine.videoSourceSetChannelProfile(1);
+        this.rtcEngine.setChannelProfile(this.channelType);
+        this.rtcEngine.videoSourceSetChannelProfile(this.channelType);
         this.rtcEngine.setVideoEncoderConfiguration({
             bitrate: 0,
             degradationPreference: 1,
             frameRate: 15,
-            height: 216,
             minBitrate: -1,
             minFrameRate: -1,
             mirrorMode: 0,
             orientationMode: 0,
+            height: 216,
             width: 288,
         });
 
-        if (identity === Identity.creator) {
-            this.rtcEngine.setClientRole(1);
-        } else {
-            this.rtcEngine.setClientRole(2);
+        if (this.channelType === RtcChannelType.Broadcast) {
+            if (identity === Identity.creator) {
+                this.rtcEngine.setClientRole(1);
+            } else {
+                this.rtcEngine.setClientRole(2);
+            }
         }
+
+        this.rtcEngine.enableLocalVideo(false);
 
         // @ts-ignore @TODO 鉴权机制待实现
         this.rtcEngine.joinChannel(null, channel, null, numUid);
