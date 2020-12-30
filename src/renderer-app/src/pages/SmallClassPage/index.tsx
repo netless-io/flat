@@ -201,7 +201,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
             <TopBarRoundBtn
                 title="当前为讲课模式"
                 dark
-                icon="class-interaction"
+                iconName="class-interaction"
                 onClick={this.toggleClassMode}
             >
                 切换至互动模式
@@ -210,7 +210,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
             <TopBarRoundBtn
                 title="当前为互动模式"
                 dark
-                icon="class-lecture"
+                iconName="class-lecture"
                 onClick={this.toggleClassMode}
             >
                 切换至讲课模式
@@ -231,10 +231,10 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 return (
                     <>
                         {this.renderClassMode()}
-                        <TopBarRoundBtn icon="class-pause" onClick={this.pauseClass}>
+                        <TopBarRoundBtn iconName="class-pause" onClick={this.pauseClass}>
                             暂停上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn icon="class-stop" onClick={this.stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
@@ -243,17 +243,17 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 return (
                     <>
                         {this.renderClassMode()}
-                        <TopBarRoundBtn icon="class-pause" onClick={this.resumeClass}>
+                        <TopBarRoundBtn iconName="class-pause" onClick={this.resumeClass}>
                             恢复上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn icon="class-stop" onClick={this.stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
                 );
             default:
                 return (
-                    <TopBarRoundBtn icon="class-begin" onClick={this.startClass}>
+                    <TopBarRoundBtn iconName="class-begin" onClick={this.startClass}>
                         开始上课
                     </TopBarRoundBtn>
                 );

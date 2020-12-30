@@ -5,14 +5,15 @@ import "./TopBarRoundBtn.less";
 
 export interface TopBarRoundBtnProps extends React.HTMLAttributes<HTMLButtonElement> {
     dark?: boolean;
-    icon?: string;
+    /** file name (without .ext) in src/assets/image/ */
+    iconName?: string;
 }
 
 export class TopBarRoundBtn extends React.PureComponent<TopBarRoundBtnProps> {
     private imgReq = require.context("../assets/image/", false, /\.svg$/);
 
     render(): React.ReactNode {
-        const { dark, icon, children, className, ...restProps } = this.props;
+        const { dark, iconName, children, className, ...restProps } = this.props;
         return (
             <button
                 {...restProps}
@@ -20,7 +21,7 @@ export class TopBarRoundBtn extends React.PureComponent<TopBarRoundBtnProps> {
                     "is-dark": dark,
                 })}
             >
-                {<img src={this.imgReq(`./${icon}.svg`).default} />}
+                {<img src={this.imgReq(`./${iconName}.svg`).default} />}
                 <span>{children}</span>
             </button>
         );
