@@ -1,6 +1,7 @@
 import "./UserScheduledPage.less";
 import React, { Component } from "react";
 import { Button, Checkbox, DatePicker, Input, Select, TimePicker, InputNumber } from "antd";
+// @TODO remove moment.js
 import moment from "moment";
 import docs from "./assets/image/docs.svg";
 import trash from "./assets/image/trash.svg";
@@ -55,7 +56,9 @@ export default class UserScheduledPage extends Component<RouteComponentProps<{}>
 
     public getInitialBeginTime() {
         let time = roundToNearestMinutes(Date.now(), { nearestTo: 30 });
-        if (isBefore(time, Date.now())) time = addMinutes(time, 30);
+        if (isBefore(time, Date.now())) { 
+            time = addMinutes(time, 30);
+        } 
         return Number(time);
     }
 
@@ -317,7 +320,9 @@ export default class UserScheduledPage extends Component<RouteComponentProps<{}>
     public onChangeWeeks = (e: Week[]) => {
         const { beginTime } = this.state;
         const week = moment(beginTime).weekday();
-        if (!e.includes(week)) e.push(week);
+        if (!e.includes(week)) { 
+            e.push(week);
+        }
         return this.setState({ periodicWeeks: e.sort() });
     }
 
