@@ -2,6 +2,7 @@ import React from "react";
 import { Tabs } from "antd";
 import { ChatMessages, ChatMessagesProps } from "./ChatMessages";
 import { ChatUsers } from "./ChatUsers";
+import { ChatTabTitle } from "./ChatTabTitle";
 import { RtmRenderProps } from "../Rtm";
 import { Identity } from "../../utils/localStorage/room";
 
@@ -35,7 +36,7 @@ export class ChatPanel extends React.Component<ChatPanelProps> {
         return (
             <div className="chat-panel">
                 <Tabs defaultActiveKey="messages" tabBarGutter={0}>
-                    <Tabs.TabPane tab="消息列表" key="messages">
+                    <Tabs.TabPane tab={<ChatTabTitle>消息列表</ChatTabTitle>} key="messages">
                         <ChatMessages
                             userId={userId}
                             identity={identity}
@@ -48,7 +49,14 @@ export class ChatPanel extends React.Component<ChatPanelProps> {
                             onBanChange={onToggleBan}
                         />
                     </Tabs.TabPane>
-                    <Tabs.TabPane tab="用户列表" key="users">
+                    <Tabs.TabPane
+                        tab={
+                            <ChatTabTitle unreadCount={handRaisingJoiners.length || null}>
+                                用户列表
+                            </ChatTabTitle>
+                        }
+                        key="users"
+                    >
                         <ChatUsers
                             isShowCancelAllHandRaising={
                                 handRaisingJoiners.length > 0 && identity === Identity.creator
