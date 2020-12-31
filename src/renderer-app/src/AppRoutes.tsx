@@ -3,7 +3,6 @@ import { HashRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import { message } from "antd";
 import WhiteboardCreatorPage from "./WhiteboardCreatorPage";
-import BigClassPage from "./BigClassPage";
 import ReplayPage from "./ReplayPage";
 import JoinPage from "./JoinPage";
 import AddNamePage from "./AddNamePage";
@@ -18,6 +17,7 @@ import UserScheduledPage from "./UserScheduledPage";
 import RoomDetailPage from "./RoomDetailPage";
 import LoginPage from "./LoginPage";
 import IndexPage from "./IndexPage";
+import BigClassPage from "./pages/BigClassPage";
 
 export class AppRoutes extends React.Component<{}, {}> {
     public componentDidCatch(error: any): void {
