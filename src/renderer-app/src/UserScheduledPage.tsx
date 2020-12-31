@@ -36,9 +36,14 @@ enum DocsType {
     Static = "Static",
 }
 
+enum PeriodicEndType {
+    Rate = "Rate",
+    Time = "Time"
+}
+
 const { Option } = Select;
-export default class UserScheduledPage extends Component<RouteComponentProps<{}>, UserScheduledPageState> {
-    public constructor(props: RouteComponentProps<{}>) {
+export default class UserScheduledPage extends Component<UserScheduledPageProps, UserScheduledPageState> {
+    public constructor(props: UserScheduledPageProps) {
         super(props);
         this.state = {
             isPeriodic: false,
@@ -47,7 +52,7 @@ export default class UserScheduledPage extends Component<RouteComponentProps<{}>
             beginTime: this.getInitialBeginTime(),
             endTime: this.getInitialEndTime(),
             periodicWeeks: [this.getInitialBeginWeek()],
-            periodicEndType: "rate",
+            periodicEndType: PeriodicEndType.Rate,
             periodicRate: 1,
             periodicEndTime: this.getInitialEndTime(),
             docs: [],
@@ -270,15 +275,16 @@ export default class UserScheduledPage extends Component<RouteComponentProps<{}>
             type,
             beginTime,
             endTime,
-            periodic: periodicEndType === "rate" ? { weeks, rate } : { weeks, endTime: time },
+            periodic: periodicEndType === "Rate" ? { weeks, rate } : { weeks, endTime: time },
         };
-        // TODO periodic can be null
+        // @TODO periodic can be null
         const { data: res } = await fetcher.post(FLAT_SERVER_ROOM.SCHEDULE, requestBody);
         if (res.status === Status.Success) {
             this.props.history.push("/user/");
         }
     };
 
+    // @TODO use date-fns locale
     public weekName(week: Week) {
         const weeknameMap: Record<Week, string> = {
             [Week.Sunday]: "周日",
@@ -298,15 +304,15 @@ export default class UserScheduledPage extends Component<RouteComponentProps<{}>
 
     public periodicEndTypeName(type: PeriodicEndType) {
         const endTypeNameMap: Record<PeriodicEndType, string> = {
-            rate: "按次数",
-            time: "按时间",
+            Rate: "按次数",
+            Time: "按时间",
         }
         return endTypeNameMap[type];
     }
 
     public periodicEndDate() {
         const { endTime, periodicEndType, periodicRate, periodicEndTime } = this.state;
-        if (periodicEndType === "rate") {
+        if (periodicEndType === "Rate") {
             return addWeeks(new Date(endTime), periodicRate);
         } else {
             return new Date(periodicEndTime);
@@ -335,7 +341,7 @@ export default class UserScheduledPage extends Component<RouteComponentProps<{}>
             periodicEndTime,
         } = this.state;
 
-        if (periodicEndType === "rate") {
+        if (periodicEndType === "Rate") {
             return periodicRate * periodicWeeks.length;
         } else {
             let sum = 0;
@@ -410,7 +416,7 @@ export default class UserScheduledPage extends Component<RouteComponentProps<{}>
                             this.setState({ periodicEndType: e });
                         }}
                     >
-                        {(["rate", "time"] as PeriodicEndType[]).map(e => {
+                        {(["Rate", "Time"] as PeriodicEndType[]).map(e => {
                             return (
                                 <Option key={e} value={e} label={this.periodicEndTypeName(e)}>
                                     <div className="option-label-item">
@@ -420,7 +426,7 @@ export default class UserScheduledPage extends Component<RouteComponentProps<{}>
                             );
                         })}
                     </Select>
-                    {endType === "rate" ? (
+                    {endType === "Rate" ? (
                         <InputNumber
                             className="user-schedule-picker option-label-item"
                             min={1}
@@ -442,6 +448,8 @@ export default class UserScheduledPage extends Component<RouteComponentProps<{}>
     };
 }
 
+export type UserScheduledPageProps = RouteComponentProps<{}>;
+
 type ScheduleRoomRequest = {
     title: string;
     type: RoomType;
@@ -450,8 +458,6 @@ type ScheduleRoomRequest = {
     periodic: { weeks: Week[] } & ({ rate: number } | { endTime: number });
     docs?: { type: DocsType; uuid: string }[];
 };
-
-type PeriodicEndType = "rate" | "time";
 
 export type UserScheduledPageState = {
     isPeriodic: boolean;
