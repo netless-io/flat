@@ -85,14 +85,20 @@ export default class UserScheduledPage extends Component<UserScheduledPageProps,
         this.setState({ title });
     }
 
-    public onChangeBeginTime = (date: moment.Moment) => {
+    public onChangeBeginTime = (date: moment.Moment | null) => {
+        if (date === null) {
+            return null;
+        } 
         const week = date.weekday();
         this.setState({ periodicWeeks: [week] });
-        date && this.setState({ beginTime: date.valueOf(), endTime: date.valueOf() });
+        return date && this.setState({ beginTime: date.valueOf(), endTime: date.valueOf() });
     }
 
-    public onChangeEndTime = (date: moment.Moment) => {
-        date && this.setState({ endTime: date.valueOf() });
+    public onChangeEndTime = (date: moment.Moment | null) => {
+        if (date === null) {
+            return null;
+        } 
+        return date && this.setState({ endTime: date.valueOf() });
     }
 
     public typeName = (type: RoomType) => {
@@ -159,12 +165,12 @@ export default class UserScheduledPage extends Component<UserScheduledPageProps,
                                 <DatePicker
                                     className="user-schedule-picker"
                                     value={moment(this.state.beginTime)}
-                                    onChange={e => this.onChangeBeginTime(e!)}
+                                    onChange={e => this.onChangeBeginTime(e)}
                                 />
                                 <TimePicker
                                     className="user-schedule-picker"
                                     value={moment(this.state.beginTime)}
-                                    onChange={e => this.onChangeBeginTime(e!)}
+                                    onChange={e => this.onChangeBeginTime(e)}
                                 />
                             </div>
                             <div className="user-schedule-name">结束时间</div>
@@ -172,12 +178,12 @@ export default class UserScheduledPage extends Component<UserScheduledPageProps,
                                 <DatePicker
                                     className="user-schedule-picker"
                                     value={moment(this.state.endTime)}
-                                    onChange={e => this.onChangeEndTime(e!)}
+                                    onChange={e => this.onChangeEndTime(e)}
                                 />
                                 <TimePicker
                                     className="user-schedule-picker"
                                     value={moment(this.state.endTime)}
-                                    onChange={e => this.onChangeEndTime(e!)}
+                                    onChange={e => this.onChangeEndTime(e)}
                                 />
                             </div>
                             <div className="user-schedule-inner">
