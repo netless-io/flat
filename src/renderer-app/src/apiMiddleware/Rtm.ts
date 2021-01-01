@@ -40,6 +40,11 @@ export interface RtmRESTfulQueryResourceResponse {
     result: string;
 }
 
+export enum ClassModeType {
+    Lecture = "Lecture",
+    Interaction = "Interaction",
+}
+
 export enum RTMessageType {
     /** group message */
     ChannelMessage = "ChannelMessage",
@@ -57,6 +62,8 @@ export enum RTMessageType {
     Speak = "Speak",
     /** joiner updates own camera and mic state */
     DeviceState = "DeviceState",
+    /** creator updates class mode */
+    ClassMode = "ClassMode",
 }
 
 export interface RTMessage<U extends keyof RtmEvents = keyof RtmEvents> {
@@ -76,6 +83,7 @@ export interface RtmEvents {
     [RTMessageType.BanText]: boolean;
     [RTMessageType.Speak]: Array<{ uid: string; speak: boolean }>;
     [RTMessageType.DeviceState]: { camera: boolean; mic: boolean };
+    [RTMessageType.ClassMode]: ClassModeType;
 }
 
 export declare interface Rtm {

@@ -2,7 +2,7 @@ import React from "react";
 import { RouteComponentProps } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
-import { Rtm as RtmApi, RTMessage, RTMessageType } from "../apiMiddleware/Rtm";
+import { ClassModeType, Rtm as RtmApi, RTMessage, RTMessageType } from "../apiMiddleware/Rtm";
 import { generateAvatar } from "../utils/generateAvatar";
 import { Identity } from "../utils/localStorage/room";
 import { ChatMessageItem } from "./ChatPanel/ChatMessage";
@@ -18,6 +18,7 @@ export interface RtmRenderProps extends RtmState {
     onToggleBan: () => void;
     onSpeak: (configs: Array<{ uid: string; speak: boolean }>) => void;
     updateDeviceState: (uid: string, camera: boolean, mic: boolean) => void;
+    toggleClassMode: () => void;
 }
 
 export interface RtmProps {
@@ -35,6 +36,7 @@ export type RtmState = {
     joiners: RTMUser[];
     currentUser: RTMUser | null;
     isBan: boolean;
+    classMode: ClassModeType;
 };
 
 export class Rtm extends React.Component<RtmProps, RtmState> {
@@ -54,6 +56,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             joiners: [],
             currentUser: null,
             isBan: false,
+            classMode: ClassModeType.Lecture,
         };
     }
 
@@ -105,6 +108,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             onToggleBan: this.onToggleBan,
             onSpeak: this.onSpeak,
             updateDeviceState: this.updateDeviceState,
+            toggleClassMode: this.toggleClassMode,
         });
     }
 
@@ -345,6 +349,12 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                 this.addMessage(RTMessageType.Notice, text, senderId);
             }
         });
+
+        this.rtm.on(RTMessageType.ClassMode, (classMode, senderId) => {
+            if (senderId === this.state.creator?.id) {
+                this.setState({ classMode });
+            }
+        });
     };
 
     private updateHistory = async (): Promise<void> => {
@@ -390,6 +400,20 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                     : this.createUser(creatorId),
             }));
         }
+    };
+
+    private toggleClassMode = (): void => {
+        this.setState(
+            state => ({
+                classMode:
+                    state.classMode === ClassModeType.Lecture
+                        ? ClassModeType.Interaction
+                        : ClassModeType.Lecture,
+            }),
+            () => {
+                this.rtm.sendCommand(RTMessageType.ClassMode, this.state.classMode);
+            },
+        );
     };
 
     /**
