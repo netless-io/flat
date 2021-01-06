@@ -1,10 +1,18 @@
 import React, { PureComponent } from "react";
 import "./MainRoomList.less";
-import { RoomListType, Room } from "../UserIndexPage";
 import { MainRoomListItem } from "./MainRoomListItem";
+import { RoomStatus } from "../apiMiddleware/flatServer/constants";
+import { FlatServerRoom, ListRoomsType } from "../apiMiddleware/flatServer";
+
+export type MainRoomListProps = {
+    rooms: FlatServerRoom[];
+    type: ListRoomsType;
+    onTypeChange: (type: ListRoomsType) => void;
+    historyPush: (path: string) => void;
+};
 
 export class MainRoomList extends PureComponent<MainRoomListProps> {
-    private getRoomUUID = (e: Room) => {
+    private getRoomUUID = (e: FlatServerRoom) => {
         return e.periodicUUID || e.roomUUID;
     };
 
@@ -34,22 +42,22 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
         });
     }
 
-    public getColor = (theType: RoomListType): string => {
+    public getColor = (theType: ListRoomsType): string => {
         return this.props.type === theType ? "#3381FF" : "#7A7B7C";
     };
 
-    public getTypeText = (sort: RoomListType) => {
-        const roomListTypeTextMap: Record<RoomListType, string> = {
-            [RoomListType.All]: "全部",
-            [RoomListType.Today]: "今天",
-            [RoomListType.Periodic]: "周期",
-            [RoomListType.History]: "历史",
+    public getTypeText = (sort: ListRoomsType) => {
+        const roomListTypeTextMap: Record<ListRoomsType, string> = {
+            [ListRoomsType.All]: "全部",
+            [ListRoomsType.Today]: "今天",
+            [ListRoomsType.Periodic]: "周期",
+            [ListRoomsType.History]: "历史",
         };
         return roomListTypeTextMap[sort];
     };
 
     public renderSorts() {
-        return [RoomListType.All, RoomListType.Today, RoomListType.Periodic].map(e => {
+        return [ListRoomsType.All, ListRoomsType.Today, ListRoomsType.Periodic].map(e => {
             return (
                 <span
                     key={e}
@@ -80,17 +88,4 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
             </div>
         );
     }
-}
-
-export type MainRoomListProps = {
-    rooms: Room[];
-    type: RoomListType;
-    onTypeChange: (type: RoomListType) => void;
-    historyPush: (path: string) => void;
-}
-
-export enum RoomStatus {
-    Pending = "Pending",
-    Running = "Running",
-    Stopped = "Stopped",
 }

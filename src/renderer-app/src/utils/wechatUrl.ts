@@ -1,4 +1,4 @@
-import { FLAT_SERVER_LOGIN } from "../constants/FlatServer";
+import { FLAT_SERVER_LOGIN } from "../apiMiddleware/flatServer/constants";
 import { WECHAT } from "../constants/Process";
 
 export const QRURL = (wsID: string, state: string): string => {

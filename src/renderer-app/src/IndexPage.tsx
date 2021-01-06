@@ -1,44 +1,35 @@
 import React from "react";
-import { fetcher } from "./utils/fetcher";
-import { FLAT_SERVER_LOGIN } from "./constants/FlatServer";
 import { RouteComponentProps } from "react-router";
 import { getWechatInfo } from "./utils/localStorage/accounts";
 import logo from "./assets/image/logo.svg";
 import classNames from "classnames";
-import "./IndexPage.less"
-
-interface LoginResponse {
-    token: string;
-    name: string;
-    sex: 0 | 1 | 2; // 0: 未知，1: 男性，2: 女性
-    avatar: string; // 头像地址
-    userUUID: string; // 用户信息，需要进行保存
-}
+import "./IndexPage.less";
+import { loginCheck } from "./apiMiddleware/flatServer";
 
 type IndexPageState = {
     status: string;
-}
+};
 
-type SetStateParamType = Parameters<React.PureComponent['setState']>[0];
+type SetStateParamType = Parameters<React.PureComponent["setState"]>[0];
 
 export default class IndexPage extends React.PureComponent<RouteComponentProps, IndexPageState> {
     public constructor(props: RouteComponentProps) {
         super(props);
         this.state = {
-            status: "idle"
-        }
+            status: "idle",
+        };
     }
 
     private isUnmounted = false;
     private checkLoginSetTimeoutID = 0;
 
     public setAsyncState = (state: SetStateParamType) => {
-        if(!this.isUnmounted) this.setState(state)
-    }
+        if (!this.isUnmounted) this.setState(state);
+    };
 
     public showLoading = () => {
-        this.setState({status: "loading"})
-    }
+        this.setState({ status: "loading" });
+    };
 
     public componentWillUnmount = () => {
         this.isUnmounted = true;
@@ -49,17 +40,17 @@ export default class IndexPage extends React.PureComponent<RouteComponentProps, 
         if (!this.isUnmounted) {
             window.setTimeout(() => {
                 this.props.history.push(path);
-            }, 1000)
+            }, 1000);
         }
     };
 
     public checkLoginStatus = async () => {
-        const token = getWechatInfo()?.token
+        const token = getWechatInfo()?.token;
         if (token === null) {
             this.pushHistory("/login/");
         } else {
             try {
-                await fetcher.post<LoginResponse>(FLAT_SERVER_LOGIN.HTTPS_LOGIN);
+                await loginCheck();
                 this.pushHistory("/user/");
             } catch {
                 this.pushHistory("/login/");
@@ -71,7 +62,7 @@ export default class IndexPage extends React.PureComponent<RouteComponentProps, 
         const loading = window.setTimeout(this.showLoading, 300);
         await this.checkLoginStatus();
         window.clearTimeout(loading);
-        this.setAsyncState({ status: "success" })
+        this.setAsyncState({ status: "success" });
     }
 
     public render() {

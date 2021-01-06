@@ -1,14 +1,20 @@
 import React, { ReactNode } from "react";
-import "./MainRoomMenu.less";
+import { Link } from "react-router-dom";
 import { Button, Input, Modal, Checkbox, Dropdown, Menu, Select } from "antd";
 import join from "../assets/image/join.svg";
 import create from "../assets/image/creat.svg";
 import dropdown from "../assets/image/dropdown.svg";
 import book from "../assets/image/book.svg";
-import { Link } from "react-router-dom";
-import { RoomType } from "../UserIndexPage";
+import { getJoinRoomHistories, LSJoinRoomHistoryItem } from "../utils/localStorage/history";
+import { RoomType } from "../apiMiddleware/flatServer/constants";
+import "./MainRoomMenu.less";
 
 const { Option } = Select;
+
+export type MainRoomMenuProps = {
+    onCreateRoom(title: string, type: RoomType): unknown;
+    onJoinRoom(roomID: string): void;
+};
 
 export type MainRoomMenuState = {
     isJoinModalVisible: boolean;
@@ -16,10 +22,8 @@ export type MainRoomMenuState = {
     isScheduledVisible: boolean;
     createTitle: string;
     createType: RoomType;
-};
-
-export type MainRoomMenuProps = {
-    onCreateRoom(title: string, type: RoomType): unknown;
+    joinRoomHistories: LSJoinRoomHistoryItem[];
+    roomID: string;
 };
 
 export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoomMenuState> {
@@ -32,6 +36,8 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
             isScheduledVisible: false,
             createTitle: "",
             createType: RoomType.BigClass,
+            joinRoomHistories: [],
+            roomID: "",
         };
     }
 
@@ -40,7 +46,10 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
             <div className="content-header-container">
                 <Button
                     onClick={() => {
-                        this.setState({ isJoinModalVisible: true });
+                        this.setState({
+                            isJoinModalVisible: true,
+                            joinRoomHistories: getJoinRoomHistories(),
+                        });
                     }}
                 >
                     <img src={join} alt="join room" />
@@ -95,7 +104,7 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
                     <Select
                         className="modal-inner-select"
                         value={this.state.createType}
-                        onChange={ e => this.setState({ createType: e }) }
+                        onChange={e => this.setState({ createType: e })}
                     >
                         <Option value={RoomType.BigClass}>大班课</Option>
                         <Option value={RoomType.SmallClass}>小班课</Option>
@@ -112,12 +121,12 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
         );
     };
     private renderJoinModal = (): ReactNode => {
-        const { isJoinModalVisible } = this.state;
+        const { isJoinModalVisible, joinRoomHistories } = this.state;
         const menu = (
             <Menu className="modal-menu-item">
-                <Menu.Item>1st menu item</Menu.Item>
-                <Menu.Item>2nd menu item</Menu.Item>
-                <Menu.Item>3rd menu item</Menu.Item>
+                {joinRoomHistories.map(room => (
+                    <Menu.Item key={room.uuid}>{room.name || room.uuid}</Menu.Item>
+                ))}
                 <Menu.Divider />
                 <Button className="modal-inner-select" type="link">
                     清空记录
@@ -132,6 +141,7 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
                 okText={"确认"}
                 cancelText={"取消"}
                 onOk={() => {
+                    this.props.onJoinRoom(this.state.roomID);
                     this.setState({ isJoinModalVisible: false });
                 }}
                 onCancel={() => {
@@ -141,6 +151,10 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
                 <div className="modal-inner-name">房间号</div>
                 <div className="modal-inner-input">
                     <Input
+                        value={this.state.roomID}
+                        onChange={e => {
+                            this.setState({ roomID: e.currentTarget.value });
+                        }}
                         suffix={
                             <Dropdown trigger={["click"]} placement="bottomRight" overlay={menu}>
                                 <img

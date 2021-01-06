@@ -17,6 +17,7 @@ import UserScheduledPage from "./UserScheduledPage";
 import RoomDetailPage from "./RoomDetailPage";
 import LoginPage from "./LoginPage";
 import IndexPage from "./IndexPage";
+import SmallClassPage from "./pages/SmallClassPage";
 import BigClassPage from "./pages/BigClassPage";
 
 export class AppRoutes extends React.Component<{}, {}> {
@@ -30,7 +31,12 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route exact path="/replay/:identity/:uuid/:userId/" component={ReplayPage} />
                     <Route
                         exact
-                        path="/whiteboard/:identity/:uuid/:userId/"
+                        path="/SmallClass/:identity/:uuid/:userId/"
+                        component={SmallClassPage}
+                    />
+                    <Route
+                        exact
+                        path="/BigClass/:identity/:uuid/:userId/"
                         component={BigClassPage}
                     />
                     <Route

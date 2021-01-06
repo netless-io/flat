@@ -3,12 +3,9 @@ import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
-import { FLAT_SERVER_ROOM } from "../constants/FlatServer";
-import { JoinRoomResult, SuccessResponse } from "../UserIndexPage";
-import { fetcher } from "../utils/fetcher";
+import { joinRoom } from "../apiMiddleware/flatServer";
 import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
-import { Status } from "./WeChatLogin";
 
 export type MainRoomListItemProps = {
     /** 标题 */
@@ -81,24 +78,18 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     };
 
     public joinRoom = async () => {
-        const { isCyclical } = this.props;
         const identity = this.getIdentity();
-        const { data: res } = await fetcher.post<SuccessResponse<JoinRoomResult>>(
-            isCyclical ? FLAT_SERVER_ROOM.JOIN_CYCLICAL : FLAT_SERVER_ROOM.JOIN_ORDINARY,
-            isCyclical ? { periodicUUID: this.props.uuid } : { roomUUID: this.props.uuid },
-        );
-        if (res.status === Status.Success) {
-            const uuid = res.data.whiteboardRoomUUID;
-            globals.whiteboard.uuid = res.data.whiteboardRoomUUID;
-            globals.whiteboard.token = res.data.whitboardRoomToken;
-            let url: string;
-            if (identity === Identity.creator) {
-                url = `/whiteboard/${Identity.creator}/${uuid}/`;
-            } else {
-                url = `/whiteboard/${Identity.joiner}/${uuid}/${this.getUserUUID()}/`;
-            }
-            this.props.historyPush(url);
+        const data = await joinRoom(this.props.uuid);
+        const uuid = data.whiteboardRoomUUID;
+        globals.whiteboard.uuid = data.whiteboardRoomUUID;
+        globals.whiteboard.token = data.whiteboardRoomToken;
+        let url: string;
+        if (identity === Identity.creator) {
+            url = `/${data.roomType}/${Identity.creator}/${uuid}/`;
+        } else {
+            url = `/${data.roomType}/${Identity.joiner}/${uuid}/${this.getUserUUID()}/`;
         }
+        this.props.historyPush(url);
     };
 
     render() {

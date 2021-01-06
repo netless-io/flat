@@ -10,39 +10,20 @@ import add_icon from "./assets/image/add-icon.svg";
 import MainPageLayout from "./components/MainPageLayout";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { isBefore, addMinutes, addWeeks, format, roundToNearestMinutes, addDays } from "date-fns";
-import { fetcher } from "./utils/fetcher";
-import { FLAT_SERVER_ROOM } from "./constants/FlatServer";
-import { Status } from "./components/WeChatLogin";
 import { zhCN } from "date-fns/locale";
-
-enum RoomType {
-    OneToOne,
-    SmallClass,
-    BigClass,
-}
-
-enum Week {
-    Sunday,
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-}
-
-enum DocsType {
-    Dynamic = "Dyncamic",
-    Static = "Static",
-}
+import { DocsType, RoomType, Week } from "./apiMiddleware/flatServer/constants";
+import { scheduleRoom } from "./apiMiddleware/flatServer";
 
 enum PeriodicEndType {
     Rate = "Rate",
-    Time = "Time"
+    Time = "Time",
 }
 
 const { Option } = Select;
-export default class UserScheduledPage extends Component<UserScheduledPageProps, UserScheduledPageState> {
+export default class UserScheduledPage extends Component<
+    UserScheduledPageProps,
+    UserScheduledPageState
+> {
     public constructor(props: UserScheduledPageProps) {
         super(props);
         this.state = {
@@ -61,9 +42,9 @@ export default class UserScheduledPage extends Component<UserScheduledPageProps,
 
     public getInitialBeginTime() {
         let time = roundToNearestMinutes(Date.now(), { nearestTo: 30 });
-        if (isBefore(time, Date.now())) { 
+        if (isBefore(time, Date.now())) {
             time = addMinutes(time, 30);
-        } 
+        }
         return Number(time);
     }
 
@@ -79,27 +60,27 @@ export default class UserScheduledPage extends Component<UserScheduledPageProps,
 
     public onChangeType = (type: RoomType) => {
         this.setState({ type });
-    }
+    };
 
     public onChangeTitle = (title: string) => {
         this.setState({ title });
-    }
+    };
 
     public onChangeBeginTime = (date: moment.Moment | null) => {
         if (date === null) {
             return null;
-        } 
+        }
         const week = date.weekday();
         this.setState({ periodicWeeks: [week] });
         return date && this.setState({ beginTime: date.valueOf(), endTime: date.valueOf() });
-    }
+    };
 
     public onChangeEndTime = (date: moment.Moment | null) => {
         if (date === null) {
             return null;
-        } 
+        }
         return date && this.setState({ endTime: date.valueOf() });
-    }
+    };
 
     public typeName = (type: RoomType) => {
         const typeNameMap: Record<RoomType, string> = {
@@ -112,7 +93,7 @@ export default class UserScheduledPage extends Component<UserScheduledPageProps,
 
     public handleCheckbox = (e: any) => {
         this.setState({ isPeriodic: e.target.checked });
-    }
+    };
 
     public render(): React.ReactNode {
         return (
@@ -284,9 +265,12 @@ export default class UserScheduledPage extends Component<UserScheduledPageProps,
             periodic: periodicEndType === "Rate" ? { weeks, rate } : { weeks, endTime: time },
         };
         // @TODO periodic can be null
-        const { data: res } = await fetcher.post(FLAT_SERVER_ROOM.SCHEDULE, requestBody);
-        if (res.status === Status.Success) {
+        try {
+            await scheduleRoom(requestBody);
             this.props.history.push("/user/");
+        } catch (e) {
+            // @TODO handle error
+            console.error();
         }
     };
 
@@ -300,7 +284,7 @@ export default class UserScheduledPage extends Component<UserScheduledPageProps,
             [Week.Thursday]: "周四",
             [Week.Friday]: "周五",
             [Week.Saturday]: "周六",
-        }
+        };
         return weeknameMap[week];
     }
 
@@ -312,7 +296,7 @@ export default class UserScheduledPage extends Component<UserScheduledPageProps,
         const endTypeNameMap: Record<PeriodicEndType, string> = {
             Rate: "按次数",
             Time: "按时间",
-        }
+        };
         return endTypeNameMap[type];
     }
 
@@ -332,11 +316,11 @@ export default class UserScheduledPage extends Component<UserScheduledPageProps,
     public onChangeWeeks = (e: Week[]) => {
         const { beginTime } = this.state;
         const week = moment(beginTime).weekday();
-        if (!e.includes(week)) { 
+        if (!e.includes(week)) {
             e.push(week);
         }
         return this.setState({ periodicWeeks: e.sort() });
-    }
+    };
 
     public calcRoomsTimes() {
         const {
@@ -467,7 +451,7 @@ type ScheduleRoomRequest = {
 
 export type UserScheduledPageState = {
     isPeriodic: boolean;
-     /** 房间主题, 最多 50 字 */
+    /** 房间主题, 最多 50 字 */
     title: string;
     /** 上课类型 */
     type: RoomType;
@@ -477,12 +461,12 @@ export type UserScheduledPageState = {
     endTime: number;
     /**重复周期, 每周的周几 */
     periodicWeeks: Week[];
-      /** 结束重复类型 */
+    /** 结束重复类型 */
     periodicEndType: PeriodicEndType;
     /** 重复几次就结束, -1..50 */
     periodicRate: number;
     /** UTC时间戳, 到这个点就结束 */
     periodicEndTime: number;
-     /**课件 */
-    docs: { type: DocsType; uuid: string }[],
+    /**课件 */
+    docs: { type: DocsType; uuid: string }[];
 };
