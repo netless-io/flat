@@ -229,10 +229,14 @@ export async function loginCheck(): Promise<LoginCheck> {
     if (!Authorization) {
         throw new Error("not login");
     }
-    const { data } = await Axios.post<LoginCheck>(`${FLAT_SERVER_VERSIONS.V1HTTPS}/login`, null, {
-        headers: {
-            Authorization: "Bearer " + Authorization,
+    const { data } = await Axios.post<LoginCheck>(
+        `${FLAT_SERVER_VERSIONS.V1HTTPS}/login`,
+        undefined,
+        {
+            headers: {
+                Authorization: "Bearer " + Authorization,
+            },
         },
-    });
+    );
     return data;
 }
