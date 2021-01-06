@@ -320,10 +320,10 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 
         return (
             <SmallClassAvatar
-                key={user.id}
+                key={user.uuid}
                 identity={identity}
                 userId={userId}
-                user={user}
+                avatarUser={user}
                 rtcEngine={rtcEngine}
                 updateDeviceState={updateDeviceState}
             />

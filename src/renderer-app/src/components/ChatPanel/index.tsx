@@ -77,18 +77,18 @@ export class ChatPanel extends React.Component<ChatPanelProps> {
         );
     }
 
-    private onAcceptRaiseHand = (uid: string): void => {
+    private onAcceptRaiseHand = (userUUID: string): void => {
         const { allowMultipleSpeakers } = this.props;
         const { speakingJoiners, acceptRaisehand } = this.props.rtm;
         if (speakingJoiners.length > 0 && !allowMultipleSpeakers) {
             // only one speaker is allowed
             return;
         }
-        acceptRaisehand(uid);
+        acceptRaisehand(userUUID);
     };
 
-    private onEndSpeaking = (uid: string): void => {
-        this.props.rtm.onSpeak([{ uid, speak: false }]);
+    private onEndSpeaking = (userUUID: string): void => {
+        this.props.rtm.onSpeak([{ userUUID, speak: false }]);
     };
 }
 

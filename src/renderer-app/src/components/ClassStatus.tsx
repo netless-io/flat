@@ -23,7 +23,7 @@ export class ClassStatus extends React.PureComponent<ClassStatusProps> {
                     </span>
                 </span>
                 <span>
-                    当前模式：<span className="class-status-mode">大班课</span>
+                    当前模式：<span className="class-status-mode">小班课</span>
                 </span>
             </div>
         );

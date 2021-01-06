@@ -170,20 +170,22 @@ export function usersInfo(payload: UsersInfoPayload): Promise<UsersInfoResult> {
     return post<UsersInfoPayload, UsersInfoResult>("room/info/users", payload);
 }
 
+export interface OrdinaryRoomInfo {
+    title: string;
+    beginTime: string;
+    endTime: string;
+    roomType: RoomType;
+    roomStatus: RoomStatus;
+    ownerUUID: string;
+}
+
 export interface OrdinaryRoomInfoPayload {
     roomUUID: string;
 }
 
-export type OrdinaryRoomInfoResult = {
-    roomInfo: {
-        title: string;
-        beginTime: string;
-        endTime: string;
-        roomType: RoomType;
-        roomStatus: RoomStatus;
-        ownerUUID: string;
-    };
-};
+export interface OrdinaryRoomInfoResult {
+    roomInfo: OrdinaryRoomInfo;
+}
 
 export function ordinaryRoomInfo(roomUUID: string): Promise<OrdinaryRoomInfoResult> {
     return post<OrdinaryRoomInfoPayload, OrdinaryRoomInfoResult>("room/info/ordinary", {

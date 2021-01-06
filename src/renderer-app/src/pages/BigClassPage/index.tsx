@@ -30,8 +30,8 @@ import "./BigClassPage.less";
 export type BigClassPageState = {
     isRealtimeSideOpen: boolean;
     isClassBegin: boolean;
-    speakingJoiner: RTMUser | null;
-    mainSpeaker: RTMUser | null;
+    speakingJoiner?: RTMUser;
+    mainSpeaker?: RTMUser;
 };
 
 export type BigClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps & WithRtmRouteProps;
@@ -40,7 +40,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     public constructor(props: BigClassPageProps) {
         super(props);
 
-        const speakingJoiner = this.props.rtm.speakingJoiners[0] || null;
+        const speakingJoiner = this.props.rtm.speakingJoiners[0];
 
         this.state = {
             isRealtimeSideOpen: true,
@@ -78,9 +78,9 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
             this.setState(
                 speak
                     ? { speakingJoiner: user, mainSpeaker: user }
-                    : { speakingJoiner: null, mainSpeaker: null },
+                    : { speakingJoiner: undefined, mainSpeaker: undefined },
                 () => {
-                    if (this.props.match.params.userId === user?.id) {
+                    if (this.props.match.params.userId === user?.uuid) {
                         const { rtcEngine, channelType } = this.props.rtc.rtc;
                         if (channelType === RtcChannelType.Broadcast) {
                             rtcEngine.setClientRole(speak ? 1 : 2);
@@ -94,7 +94,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     public render(): React.ReactNode {
         const { room, phase } = this.props.whiteboard;
 
-        if (room === null || room === undefined) {
+        if (!room) {
             return <LoadingPage />;
         }
 
@@ -135,7 +135,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     private onVideoAvatarExpand = (): void => {
         this.setState(state => ({
             mainSpeaker:
-                state.mainSpeaker?.id === this.props.rtm.creator?.id
+                state.mainSpeaker?.uuid === this.props.rtm.creator?.uuid
                     ? state.speakingJoiner
                     : this.props.rtm.creator,
         }));
@@ -146,24 +146,26 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
             const { userId } = this.props.match.params;
             const { isCalling } = this.props.rtc;
             const { speakingJoiners, onSpeak } = this.props.rtm;
-            const speakConfigs: Array<{ uid: string; speak: boolean }> = [
-                { uid: userId, speak: isCalling },
+            const speakConfigs: Array<{ userUUID: string; speak: boolean }> = [
+                { userUUID: userId, speak: isCalling },
             ];
             if (isCalling) {
                 this.setState({ isRealtimeSideOpen: true });
             } else {
-                speakConfigs.push(...speakingJoiners.map(user => ({ uid: user.id, speak: false })));
+                speakConfigs.push(
+                    ...speakingJoiners.map(user => ({ userUUID: user.uuid, speak: false })),
+                );
             }
             onSpeak(speakConfigs);
         });
     };
 
     private onCameraClick = (user: RTMUser) => {
-        this.props.rtm.updateDeviceState(user.id, !user.camera, user.mic);
+        this.props.rtm.updateDeviceState(user.uuid, !user.camera, user.mic);
     };
 
     private onMicClick = (user: RTMUser) => {
-        this.props.rtm.updateDeviceState(user.id, user.camera, !user.mic);
+        this.props.rtm.updateDeviceState(user.uuid, user.camera, !user.mic);
     };
 
     private openReplayPage = () => {
@@ -276,33 +278,32 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                     isVideoOn && (
                         <div
                             className={classNames("whiteboard-rtc-box", {
-                                "with-small": speakingJoiner !== null,
+                                "with-small": speakingJoiner,
                             })}
                         >
                             <div
                                 className={classNames("whiteboard-rtc-avatar", {
-                                    "is-small":
-                                        mainSpeaker !== null && mainSpeaker.id !== creator.id,
+                                    "is-small": mainSpeaker && mainSpeaker.uuid !== creator.uuid,
                                 })}
                             >
                                 <BigClassAvatar
                                     identity={identity}
                                     userId={userId}
-                                    user={creator}
+                                    avatarUser={creator}
                                     rtcEngine={rtc.rtcEngine}
                                     updateDeviceState={updateDeviceState}
-                                    small={mainSpeaker !== null && mainSpeaker.id !== creator.id}
+                                    small={mainSpeaker && mainSpeaker.uuid !== creator.uuid}
                                     onExpand={this.onVideoAvatarExpand}
                                 />
                             </div>
-                            {speakingJoiner !== null && (
+                            {speakingJoiner && (
                                 <div
                                     className={classNames("whiteboard-rtc-avatar", {
                                         "is-small": mainSpeaker !== speakingJoiner,
                                     })}
                                 >
                                     <BigClassAvatar
-                                        user={speakingJoiner}
+                                        avatarUser={speakingJoiner}
                                         identity={identity}
                                         userId={userId}
                                         rtcEngine={rtc.rtcEngine}

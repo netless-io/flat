@@ -78,10 +78,10 @@ export interface RtmEvents {
     [RTMessageType.ChannelMessage]: string;
     [RTMessageType.Notice]: string;
     [RTMessageType.RaiseHand]: boolean;
-    [RTMessageType.AcceptRaiseHand]: { uid: string; accept: boolean };
+    [RTMessageType.AcceptRaiseHand]: { userUUID: string; accept: boolean };
     [RTMessageType.CancelAllHandRaising]: boolean;
     [RTMessageType.BanText]: boolean;
-    [RTMessageType.Speak]: Array<{ uid: string; speak: boolean }>;
+    [RTMessageType.Speak]: Array<{ userUUID: string; speak: boolean }>;
     [RTMessageType.DeviceState]: { camera: boolean; mic: boolean };
     [RTMessageType.ClassMode]: ClassModeType;
 }

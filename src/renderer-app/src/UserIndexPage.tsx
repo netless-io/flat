@@ -7,17 +7,16 @@ import { MainRoomMenu } from "./components/MainRoomMenu";
 import { MainRoomList } from "./components/MainRoomList";
 import { MainRoomHistory } from "./components/MainRoomHistory";
 import { globals } from "./utils/globals";
-import { Identity, saveRoom } from "./utils/localStorage/room";
-import { getUserUuid } from "./utils/localStorage/accounts";
+import { Identity } from "./utils/localStorage/room";
 import {
     createRoom,
     joinRoom,
-    ordinaryRoomInfo,
     ListRoomsType,
     listRooms,
     FlatServerRoom,
 } from "./apiMiddleware/flatServer";
 import { RoomType } from "./apiMiddleware/flatServer/constants";
+import { getUserUuid } from "./utils/localStorage/accounts";
 
 export type UserIndexPageProps = RouteComponentProps;
 
@@ -81,7 +80,7 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         globals.rtc.token = data.rtcToken;
         globals.rtm.token = data.rtmToken;
 
-        const url = `/${data.roomType}/${identity}/${data.whiteboardRoomUUID}/`;
+        const url = `/${data.roomType}/${identity}/${data.roomUUID}/${getUserUuid()}/`;
         this.historyPush(url);
     };
 
@@ -118,16 +117,7 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
                 <MainRoomMenu
                     onCreateRoom={this.createRoom}
                     onJoinRoom={roomID => {
-                        // @TODO
-                        const userId = `${Math.floor(Math.random() * 100000)}`;
-                        saveRoom({
-                            uuid: roomID,
-                            userId,
-                            identity: Identity.joiner,
-                        });
-                        this.props.history.push(
-                            `/whiteboard/${Identity.joiner}/${roomID}/${userId}/`,
-                        );
+                        this.joinRoom(roomID, Identity.joiner);
                     }}
                 />
                 <div className="main-room-layout">

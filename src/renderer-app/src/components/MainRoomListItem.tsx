@@ -78,17 +78,12 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     };
 
     public joinRoom = async () => {
+        const roomUUID = this.props.uuid;
         const identity = this.getIdentity();
-        const data = await joinRoom(this.props.uuid);
-        const uuid = data.whiteboardRoomUUID;
+        const data = await joinRoom(roomUUID);
         globals.whiteboard.uuid = data.whiteboardRoomUUID;
         globals.whiteboard.token = data.whiteboardRoomToken;
-        let url: string;
-        if (identity === Identity.creator) {
-            url = `/${data.roomType}/${Identity.creator}/${uuid}/`;
-        } else {
-            url = `/${data.roomType}/${Identity.joiner}/${uuid}/${this.getUserUUID()}/`;
-        }
+        const url = `/${data.roomType}/${identity}/${roomUUID}/${this.getUserUUID()}/`;
         this.props.historyPush(url);
     };
 
