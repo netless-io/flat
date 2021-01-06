@@ -147,15 +147,15 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     };
 
     /** joiner updates own camera and mic state */
-    private updateDeviceState = (uid: string, camera: boolean, mic: boolean): void => {
+    private updateDeviceState = (userUUID: string, camera: boolean, mic: boolean): void => {
         const { identity, userId } = this.props;
-        if (userId === uid || identity === Identity.creator) {
+        if (userId === userUUID || identity === Identity.creator) {
             this.sortUsers(
                 user => {
-                    if (user.uuid === uid) {
+                    if (user.uuid === userUUID) {
                         // creator can turn off joiner's camera and mic
                         // creator can request joiner to turn on camera and mic
-                        if (uid !== userId) {
+                        if (userUUID !== userId) {
                             if (camera && !user.camera) {
                                 camera = user.camera;
                             }
@@ -172,7 +172,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                     return user;
                 },
                 () => {
-                    this.rtm.sendCommand(RTMessageType.DeviceState, { camera, mic }, true);
+                    this.rtm.sendCommand(
+                        RTMessageType.DeviceState,
+                        { userUUID, camera, mic },
+                        true,
+                    );
                 },
             );
         }
@@ -314,12 +318,17 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             }
         });
 
-        this.rtm.on(RTMessageType.DeviceState, ({ camera, mic }, senderId) => {
-            this.sortUsers(user =>
-                user.uuid === senderId
-                    ? { ...user, isSpeak: user.isSpeak && (camera || mic), camera, mic }
-                    : user,
-            );
+        this.rtm.on(RTMessageType.DeviceState, ({ userUUID, camera, mic }, senderId) => {
+            if (userUUID === senderId) {
+                this.sortUsers(user => (user.uuid === userUUID ? { ...user, camera, mic } : user));
+            } else if (senderId === this.state.creator?.uuid && (!camera || !mic)) {
+                // creator can only turn off other's camera and mic
+                this.sortUsers(user =>
+                    user.uuid === userUUID
+                        ? { ...user, camera: camera && user.camera, mic: mic && user.mic }
+                        : user,
+                );
+            }
         });
 
         this.rtm.on(RTMessageType.Speak, (configs, senderId) => {

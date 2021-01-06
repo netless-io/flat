@@ -60,7 +60,10 @@ export enum RTMessageType {
     BanText = "BanText",
     /** creator allows a joiner or joiners allows themselves to speak */
     Speak = "Speak",
-    /** joiner updates own camera and mic state */
+    /**
+     * joiner updates own camera and mic state
+     * creator may turn off joiner's camera and mic but not turn on
+     */
     DeviceState = "DeviceState",
     /** creator updates class mode */
     ClassMode = "ClassMode",
@@ -82,7 +85,7 @@ export interface RtmEvents {
     [RTMessageType.CancelAllHandRaising]: boolean;
     [RTMessageType.BanText]: boolean;
     [RTMessageType.Speak]: Array<{ userUUID: string; speak: boolean }>;
-    [RTMessageType.DeviceState]: { camera: boolean; mic: boolean };
+    [RTMessageType.DeviceState]: { userUUID: string; camera: boolean; mic: boolean };
     [RTMessageType.ClassMode]: ClassModeType;
 }
 
