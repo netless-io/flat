@@ -153,6 +153,24 @@ export function joinRoom(roomUUID: string): Promise<JoinRoomResult> {
     return post<JoinRoomPayload, JoinRoomResult>("room/join", { roomUUID });
 }
 
+export interface JoinPeriodicRoomPayload {
+    periodicUUID?: string;
+}
+
+export interface JoinPeriodicRoomResult {
+    periodicUUID: string; // 当前房间的 UUID
+    whiteboardRoomToken: string;  // 白板的 room token
+    whiteboardRoomUUID: string; // 白板的 room uuid
+    rtcUID: number; // rtc 的 uid
+    rtcToken: string; // rtc token
+    rtmToken: string; // rtm token
+    roomType: RoomType;
+}
+
+export function joinPeriodicRoom(periodicUUID: string): Promise<JoinPeriodicRoomResult> {
+    return post<JoinPeriodicRoomPayload, JoinPeriodicRoomResult>("room/join", { periodicUUID });
+}
+
 export interface UsersInfoPayload {
     roomUUID: string;
     usersUUID: string[]; // 要参看的用户 uuid 列表

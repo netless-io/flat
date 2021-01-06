@@ -13,8 +13,12 @@ export type MainRoomListProps = {
 
 export class MainRoomList extends PureComponent<MainRoomListProps> {
     private getRoomUUID = (e: FlatServerRoom) => {
-        return e.periodicUUID || e.roomUUID;
+        return e.roomUUID;
     };
+
+    private getPeriodicUUID = (e: FlatServerRoom) => {
+        return e.periodicUUID;
+    }
 
     private renderStatus = (status: RoomStatus) => {
         return status;
@@ -33,9 +37,9 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
                     status={this.renderStatus(e.roomStatus)}
                     beginTime={this.timeToNumber(e.beginTime)!}
                     endTime={this.timeToNumber(e.endTime)}
-                    isCyclical={Boolean(e.periodicUUID)}
+                    periodicUUID={this.getPeriodicUUID(e)}
+                    roomUUID={this.getRoomUUID(e)}
                     historyPush={this.props.historyPush}
-                    uuid={this.getRoomUUID(e)}
                     userUUID={e.ownerUUID}
                 />
             );

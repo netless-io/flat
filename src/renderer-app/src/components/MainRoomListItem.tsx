@@ -2,8 +2,7 @@ import { Button, Dropdown, Menu } from "antd";
 import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React, { PureComponent } from "react";
-import { Link } from "react-router-dom";
-import { joinRoom } from "../apiMiddleware/flatServer";
+import { joinRoom, joinPeriodicRoom } from "../apiMiddleware/flatServer";
 import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
 
@@ -16,10 +15,12 @@ export type MainRoomListItemProps = {
     endTime?: number;
     /** 状态 */
     status: "Pending" | "Running" | "Stopped";
-    /** 房间/周期 uuid */
-    uuid: string;
-    /** 是否周期房间 */
-    isCyclical: boolean;
+    /** 周期 uuid */
+    periodicUUID?: string;
+    /** 房间 uuid */
+    roomUUID: string;
+    // /** 是否周期房间 */
+    // isPeriodic: boolean;
     /** 发起者 userUUID */
     userUUID: string;
 
@@ -30,14 +31,23 @@ export type MainRoomListItemProps = {
 export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     public renderMenu = () => (
         <Menu>
-            <Menu.Item>
-                <Link to={"/user/room/"}>房间详情</Link>
-            </Menu.Item>
+            <Menu.Item onClick={this.handleHitoryPush}>房间详情</Menu.Item>
             <Menu.Item>修改房间</Menu.Item>
             <Menu.Item>取消房间</Menu.Item>
             <Menu.Item>复制邀请</Menu.Item>
         </Menu>
     );
+
+    public handleHitoryPush = () => {
+        const { periodicUUID, roomUUID } = this.props;
+        let url: string;
+        if (periodicUUID) {
+            url = `/user/room/${periodicUUID}`;
+        } else {
+            url = `/user/room/${roomUUID}`
+        }
+        this.props.historyPush(url);
+    };
 
     public renderDate = () => (
         <time dateTime={new Date(this.props.beginTime).toUTCString()}>
@@ -78,16 +88,22 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     };
 
     public joinRoom = async () => {
+        const { periodicUUID, roomUUID } = this.props;
         const identity = this.getIdentity();
-        const data = await joinRoom(this.props.uuid);
-        const uuid = data.whiteboardRoomUUID;
-        globals.whiteboard.uuid = data.whiteboardRoomUUID;
-        globals.whiteboard.token = data.whiteboardRoomToken;
+        let res;
+        if (periodicUUID) {
+            res = await joinPeriodicRoom(periodicUUID);
+        } else {
+            res = await joinRoom(roomUUID);
+        }
+        const uuid = res.whiteboardRoomUUID;
+        globals.whiteboard.uuid = res.whiteboardRoomUUID;
+        globals.whiteboard.token = res.whiteboardRoomToken;
         let url: string;
         if (identity === Identity.creator) {
-            url = `/${data.roomType}/${Identity.creator}/${uuid}/`;
+            url = `/${res.roomType}/${Identity.creator}/${uuid}/`;
         } else {
-            url = `/${data.roomType}/${Identity.joiner}/${uuid}/${this.getUserUUID()}/`;
+            url = `/${res.roomType}/${Identity.joiner}/${uuid}/${this.getUserUUID()}/`;
         }
         this.props.historyPush(url);
     };

@@ -1,24 +1,69 @@
 import React, { PureComponent } from "react";
 import "./RoomDetailPage.less";
 import MainPageLayout from "./components/MainPageLayout";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 import back from "./assets/image/back.svg";
 import home_icon_gray from "./assets/image/home-icon-gray.svg";
 import room_type from "./assets/image/room-type.svg";
 import docs_icon from "./assets/image/docs-icon.svg";
 import { Button } from "antd";
+import { RoomStatus, Status, RoomType } from "./apiMiddleware/flatServer/constants";
+
 
 export type RoomDetailPageState = {
     isTeacher: boolean;
+    rate: number;
+    data: {
+        roomInfo: {
+            title: string;
+            beginTime: string;
+            endTime?: string;
+            roomType: RoomType;
+            roomStatus: RoomStatus;
+            ownerUUID: string;
+        }
+    }
+
 };
 
-export default class RoomDetailPage extends PureComponent<{}, RoomDetailPageState> {
-    public constructor(props: {}) {
+export type RoomDetailPageProps = RouteComponentProps<{ uuid: string }> & {
+    isPeriodic: boolean;
+    uuid: string;
+};
+
+export default class RoomDetailPage extends PureComponent<RoomDetailPageProps, RoomDetailPageState> {
+    public constructor(props: RoomDetailPageProps) {
         super(props);
         this.state = {
             isTeacher: true,
+            rate: 0,
+            data: {
+                roomInfo: {
+                    title: "",
+                    beginTime: "",
+                    endTime: "",
+                    roomStatus: RoomStatus.Pending,
+                    roomType: RoomType.BigClass,
+                    ownerUUID: "",
+                }
+            }
         };
     }
+
+    // public async componentDidMount() {
+    //     const isPeriodic = this.props.match.params.uuid !== '';
+    //     const { data: res } = await fetcher.post<SuccessResponse<RoomDetailPageState>>(
+    //         isPeriodic ? FLAT_SERVER_ROOM.INFO_PERIODIC : FLAT_SERVER_ROOM.INFO_ORDINARY,
+    //         isPeriodic ? { periodicUUID: this.props.match.params.uuid } : { roomUUID: this.props.match.params.uuid },
+    //     );
+    //     console.log("this is res", res);
+    //     console.log("this is status", res.status);
+    //     if (res.status === Status.Success) {
+    //         console.log("this is res", res);
+    //         // console.log("this is status", res.data.roomInfo);
+    //         // this.setState({ beginTime: res.data.beginTime});
+    //     }
+    // }
 
     private renderButton = (): React.ReactNode => {
         const { isTeacher } = this.state;
