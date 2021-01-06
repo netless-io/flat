@@ -149,17 +149,16 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     }
 
     private renderAvatars(): React.ReactNode {
-        const { creatorUid } = this.props.rtc;
         const { creator, speakingJoiners, handRaisingJoiners, joiners, classMode } = this.props.rtm;
 
-        if (!creatorUid) {
+        if (!creator) {
             return null;
         }
 
         return (
             <div className="realtime-avatars-wrap">
                 <div className="realtime-avatars">
-                    {creator && this.renderAvatar(creator)}
+                    {this.renderAvatar(creator)}
                     {speakingJoiners.map(this.renderAvatar)}
                     {classMode === ClassModeType.Interaction && (
                         <>

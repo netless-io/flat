@@ -25,7 +25,6 @@ export interface RtcProps {
 export type RtcState = {
     isRecording: boolean;
     isCalling: boolean;
-    creatorUid: string | null;
     recordingUuid?: string;
 };
 
@@ -40,22 +39,7 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
     state: RtcState = {
         isRecording: false,
         isCalling: false,
-        creatorUid: null,
     };
-
-    public async componentDidMount(): Promise<void> {
-        const { identity } = this.props;
-
-        if (identity === Identity.creator) {
-            this.rtc.rtcEngine.on("joinedChannel", async (_channel, uid) => {
-                this.setState({ creatorUid: String(uid) });
-            });
-        } else {
-            this.rtc.rtcEngine.once("userJoined", uid => {
-                this.setState({ creatorUid: String(uid) });
-            });
-        }
-    }
 
     public async componentWillUnmount(): Promise<void> {
         if (this.state.isCalling) {
