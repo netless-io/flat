@@ -6,7 +6,7 @@ import { ClassModeType, Rtm as RtmApi, RTMessage, RTMessageType } from "../apiMi
 import { Identity } from "../utils/localStorage/room";
 import { ChatMessageItem } from "./ChatPanel/ChatMessage";
 import { RTMUser } from "./ChatPanel/ChatUser";
-import { usersInfo } from "../apiMiddleware/flatServer";
+import { ordinaryRoomInfo, OrdinaryRoomInfo, usersInfo } from "../apiMiddleware/flatServer";
 
 export interface RtmRenderProps extends RtmState {
     rtm: RtmApi;
@@ -33,10 +33,11 @@ export type RtmState = {
     speakingJoiners: RTMUser[];
     handRaisingJoiners: RTMUser[];
     joiners: RTMUser[];
-    currentUser: RTMUser | null;
     isBan: boolean;
     classMode: ClassModeType;
+    roomInfo?: OrdinaryRoomInfo;
     creator?: RTMUser;
+    currentUser?: RTMUser;
 };
 
 export class Rtm extends React.Component<RtmProps, RtmState> {
@@ -51,29 +52,19 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             speakingJoiners: [],
             handRaisingJoiners: [],
             joiners: [],
-            currentUser: null,
             isBan: false,
             classMode: ClassModeType.Lecture,
         };
     }
 
     async componentDidMount() {
-        const { userId, roomId, identity } = this.props;
+        const { userId, roomId } = this.props;
         const channel = await this.rtm.init(userId, roomId);
         this.startListenChannel();
 
-        // @TODO 使用我们自己的服务器记录类型
-        if (identity === Identity.creator) {
-            this.rtm.client.addOrUpdateChannelAttributes(
-                roomId,
-                { creatorId: userId },
-                { enableNotificationToChannelMembers: true },
-            );
-            this.setState({ creator: (await this.createUsers([userId]))[0] });
-        } else {
-            channel.on("AttributesUpdated", this.updateChannelAttrs);
-            this.updateChannelAttrs(await this.rtm.client.getChannelAttributes(roomId));
-        }
+        const { roomInfo } = await ordinaryRoomInfo(roomId);
+        document.title = roomInfo.title;
+        this.setState({ roomInfo });
 
         this.updateHistory();
 
@@ -386,17 +377,6 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         this.setState(state => ({ messages: [...textMessages, ...state.messages] }));
     };
 
-    private updateChannelAttrs = async (attrs: {
-        [index: string]: { value: string };
-    }): Promise<void> => {
-        if (attrs.creatorId?.value !== undefined) {
-            const creatorId = attrs.creatorId.value;
-            if (!this.state.creator) {
-                this.setState({ creator: (await this.createUsers([creatorId]))[0] });
-            }
-        }
-    };
-
     private toggleClassMode = (): void => {
         this.setState(
             state => ({
@@ -479,7 +459,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                     newState.currentUser = user;
                 }
 
-                if (user.uuid === state.creator?.uuid) {
+                if (user.uuid === state.roomInfo?.ownerUUID) {
                     newState.creator = user;
                 } else if (user.isSpeak) {
                     if (!newState.speakingJoiners) {

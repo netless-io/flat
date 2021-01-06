@@ -14,25 +14,18 @@ import { ChatPanel } from "../../components/ChatPanel";
 import { BigClassAvatar } from "./BigClassAvatar";
 import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
-import { ClassStatus } from "../../components/ClassStatus";
+import { ClassStatus, ClassStatusType } from "../../components/ClassStatus";
 import { withWhiteboardRoute, WithWhiteboardRouteProps } from "../../components/Whiteboard";
 import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
 import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
 import { RTMUser } from "../../components/ChatPanel/ChatUser";
 
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
-import { getRoom, Identity } from "../../utils/localStorage/room";
+import { Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
 
 import "./BigClassPage.less";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
-
-export enum ClassStatusType {
-    idle,
-    started,
-    paused,
-    stopped,
-}
 
 export type BigClassPageState = {
     isRealtimeSideOpen: boolean;
@@ -51,7 +44,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
 
         this.state = {
             isRealtimeSideOpen: true,
-            classStatus: ClassStatusType.idle,
+            classStatus: ClassStatusType.Idle,
             speakingJoiner,
             mainSpeaker: speakingJoiner,
         };
@@ -60,24 +53,18 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
             width: 1200,
             height: 700,
         });
-
-        const room = getRoom(props.match.params.uuid);
-        if (room?.roomName) {
-            document.title = room.roomName;
-        }
-    }
-
-    public componentDidMount() {
-        if (this.props.match.params.identity !== Identity.creator) {
-            // join rtc room to listen to creator events
-            const { isCalling, toggleCalling } = this.props.rtc;
-            if (!isCalling) {
-                toggleCalling();
-            }
-        }
     }
 
     public componentDidUpdate(prevProps: BigClassPageProps): void {
+        if (this.props.match.params.identity !== Identity.creator) {
+            // join rtc room to listen to creator events
+            const { isCalling, toggleCalling } = this.props.rtc;
+            const { currentUser } = this.props.rtm;
+            if (!isCalling && !prevProps.rtm.currentUser && currentUser) {
+                toggleCalling(currentUser.rtcUID);
+            }
+        }
+
         const { speakingJoiners } = this.props.rtm;
         if (prevProps.rtm.speakingJoiners !== speakingJoiners) {
             const user = speakingJoiners[0];
@@ -149,7 +136,12 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     };
 
     private toggleCalling = (): void => {
-        this.props.rtc.toggleCalling(() => {
+        const { currentUser } = this.props.rtm;
+        if (!currentUser) {
+            return;
+        }
+
+        this.props.rtc.toggleCalling(currentUser.rtcUID, () => {
             const { userId } = this.props.match.params;
             const { isCalling } = this.props.rtc;
             const { speakingJoiners, onSpeak } = this.props.rtm;
@@ -168,19 +160,19 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     };
 
     private startClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.started });
+        this.setState({ classStatus: ClassStatusType.Started });
     };
 
     private pauseClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.paused });
+        this.setState({ classStatus: ClassStatusType.Paused });
     };
 
     private resumeClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.started });
+        this.setState({ classStatus: ClassStatusType.Started });
     };
 
     private stopClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.stopped });
+        this.setState({ classStatus: ClassStatusType.Stopped });
     };
 
     private onCameraClick = (user: RTMUser) => {
@@ -221,7 +213,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
             <>
                 <NetworkStatus />
                 {identity === Identity.joiner && (
-                    <ClassStatus isClassBegin={classStatus === ClassStatusType.started} />
+                    <ClassStatus classStatus={classStatus} roomInfo={this.props.rtm.roomInfo} />
                 )}
             </>
         );
@@ -236,7 +228,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
         }
 
         switch (classStatus) {
-            case ClassStatusType.started:
+            case ClassStatusType.Started:
                 return (
                     <>
                         <TopBarRoundBtn iconName="class-pause" onClick={this.pauseClass}>
@@ -247,7 +239,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                         </TopBarRoundBtn>
                     </>
                 );
-            case ClassStatusType.paused:
+            case ClassStatusType.Paused:
                 return (
                     <>
                         <TopBarRoundBtn iconName="class-pause" onClick={this.resumeClass}>

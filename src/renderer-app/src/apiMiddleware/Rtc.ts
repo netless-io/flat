@@ -60,12 +60,7 @@ export class Rtc {
         }
     }
 
-    join(channel: string, identity: Identity, uid: string) {
-        const numUid = Number(uid);
-        if (Number.isNaN(numUid)) {
-            throw new Error("RTC uid has to be number");
-        }
-
+    join(channel: string, identity: Identity, rtcUID: number) {
         this.rtcEngine.setChannelProfile(this.channelType);
         this.rtcEngine.videoSourceSetChannelProfile(this.channelType);
         this.rtcEngine.setVideoEncoderConfiguration({
@@ -91,7 +86,7 @@ export class Rtc {
         this.rtcEngine.enableLocalVideo(false);
 
         // @ts-ignore @TODO 鉴权机制待实现
-        this.rtcEngine.joinChannel(null, channel, null, numUid);
+        this.rtcEngine.joinChannel(null, channel, null, rtcUID);
     }
 
     leave() {

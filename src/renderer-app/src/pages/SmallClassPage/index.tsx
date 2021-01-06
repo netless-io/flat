@@ -14,25 +14,18 @@ import { ChatPanel } from "../../components/ChatPanel";
 import { SmallClassAvatar } from "./SmallClassAvatar";
 import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
-import { ClassStatus } from "../../components/ClassStatus";
+import { ClassStatus, ClassStatusType } from "../../components/ClassStatus";
 import { withWhiteboardRoute, WithWhiteboardRouteProps } from "../../components/Whiteboard";
 import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
 import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
 import { RTMUser } from "../../components/ChatPanel/ChatUser";
 
-import { getRoom, Identity } from "../../utils/localStorage/room";
+import { Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ClassModeType } from "../../apiMiddleware/Rtm";
 
 import "./SmallClassPage.less";
-
-export enum ClassStatusType {
-    idle,
-    started,
-    paused,
-    stopped,
-}
 
 export type SmallClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps & WithRtmRouteProps;
 
@@ -47,24 +40,20 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 
         this.state = {
             isRealtimeSideOpen: true,
-            classStatus: ClassStatusType.idle,
+            classStatus: ClassStatusType.Idle,
         };
 
         ipcAsyncByMain("set-win-size", {
             width: 1200,
             height: 700,
         });
-
-        const room = getRoom(props.match.params.uuid);
-        if (room?.roomName) {
-            document.title = room.roomName;
-        }
     }
 
-    componentDidMount() {
+    componentDidUpdate(prevProps: SmallClassPageProps) {
         const { isCalling, toggleCalling } = this.props.rtc;
-        if (!isCalling) {
-            toggleCalling();
+        const { currentUser } = this.props.rtm;
+        if (!isCalling && !prevProps.rtm.currentUser && currentUser) {
+            toggleCalling(currentUser.rtcUID);
         }
     }
 
@@ -110,19 +99,19 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     };
 
     private startClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.started });
+        this.setState({ classStatus: ClassStatusType.Started });
     };
 
     private pauseClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.paused });
+        this.setState({ classStatus: ClassStatusType.Paused });
     };
 
     private resumeClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.started });
+        this.setState({ classStatus: ClassStatusType.Started });
     };
 
     private stopClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.stopped });
+        this.setState({ classStatus: ClassStatusType.Stopped });
     };
 
     private openReplayPage = () => {
@@ -178,7 +167,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
             <>
                 <NetworkStatus />
                 {identity === Identity.joiner && (
-                    <ClassStatus isClassBegin={classStatus === ClassStatusType.started} />
+                    <ClassStatus classStatus={classStatus} roomInfo={this.props.rtm.roomInfo} />
                 )}
             </>
         );
@@ -217,7 +206,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         }
 
         switch (classStatus) {
-            case ClassStatusType.started:
+            case ClassStatusType.Started:
                 return (
                     <>
                         {this.renderClassMode()}
@@ -229,7 +218,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                         </TopBarRoundBtn>
                     </>
                 );
-            case ClassStatusType.paused:
+            case ClassStatusType.Paused:
                 return (
                     <>
                         {this.renderClassMode()}

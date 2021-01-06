@@ -11,7 +11,7 @@ export interface RtcRenderProps extends RtcState {
     cloudRecording: CloudRecording | null;
     channelType: RtcChannelType;
     toggleRecording: (callback?: () => void) => void;
-    toggleCalling: (callback?: () => void) => void;
+    toggleCalling: (rtcUID: number, callback?: () => void) => void;
 }
 
 export interface RtcProps {
@@ -131,13 +131,13 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
         );
     };
 
-    private toggleCalling = (callback?: () => void): void => {
+    private toggleCalling = (rtcUID: number, callback?: () => void): void => {
         this.setState(
             state => ({ isCalling: !state.isCalling }),
             async () => {
                 if (this.state.isCalling) {
-                    const { roomId, identity, userId } = this.props;
-                    this.rtc.join(roomId, identity, userId);
+                    const { roomId, identity } = this.props;
+                    this.rtc.join(roomId, identity, rtcUID);
                 } else {
                     if (this.cloudRecording?.isRecording) {
                         await this.stopRecording();
