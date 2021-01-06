@@ -23,13 +23,9 @@ import { RTMUser } from "../../components/ChatPanel/ChatUser";
 import { getRoom, Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
+import { ClassModeType } from "../../apiMiddleware/Rtm";
 
 import "./SmallClassPage.less";
-
-export enum ClassModeType {
-    Lecture = "Lecture",
-    Interaction = "Interaction",
-}
 
 export enum ClassStatusType {
     idle,
@@ -38,13 +34,12 @@ export enum ClassStatusType {
     stopped,
 }
 
+export type SmallClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps & WithRtmRouteProps;
+
 export type SmallClassPageState = {
     isRealtimeSideOpen: boolean;
     classStatus: ClassStatusType;
-    classMode: ClassModeType;
 };
-
-export type SmallClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps & WithRtmRouteProps;
 
 class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPageState> {
     public constructor(props: SmallClassPageProps) {
@@ -53,7 +48,6 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         this.state = {
             isRealtimeSideOpen: true,
             classStatus: ClassStatusType.idle,
-            classMode: ClassModeType.Lecture,
         };
 
         ipcAsyncByMain("set-win-size", {
@@ -115,15 +109,6 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         this.setState(state => ({ isRealtimeSideOpen: !state.isRealtimeSideOpen }));
     };
 
-    private toggleClassMode = (): void => {
-        this.setState(state => ({
-            classMode:
-                state.classMode === ClassModeType.Lecture
-                    ? ClassModeType.Interaction
-                    : ClassModeType.Lecture,
-        }));
-    };
-
     private startClass = (): void => {
         this.setState({ classStatus: ClassStatusType.started });
     };
@@ -165,7 +150,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 
     private renderAvatars(): React.ReactNode {
         const { creatorUid } = this.props.rtc;
-        const { creator, speakingJoiners, handRaisingJoiners, joiners } = this.props.rtm;
+        const { creator, speakingJoiners, handRaisingJoiners, joiners, classMode } = this.props.rtm;
 
         if (!creatorUid) {
             return null;
@@ -176,8 +161,12 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 <div className="realtime-avatars">
                     {creator && this.renderAvatar(creator)}
                     {speakingJoiners.map(this.renderAvatar)}
-                    {handRaisingJoiners.map(this.renderAvatar)}
-                    {joiners.map(this.renderAvatar)}
+                    {classMode === ClassModeType.Interaction && (
+                        <>
+                            {handRaisingJoiners.map(this.renderAvatar)}
+                            {joiners.map(this.renderAvatar)}
+                        </>
+                    )}
                 </div>
             </div>
         );
@@ -197,12 +186,14 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     }
 
     private renderClassMode(): React.ReactNode {
-        return this.state.classMode === ClassModeType.Lecture ? (
+        const { classMode, toggleClassMode } = this.props.rtm;
+
+        return classMode === ClassModeType.Lecture ? (
             <TopBarRoundBtn
                 title="当前为讲课模式"
                 dark
                 iconName="class-interaction"
-                onClick={this.toggleClassMode}
+                onClick={toggleClassMode}
             >
                 切换至互动模式
             </TopBarRoundBtn>
@@ -211,7 +202,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 title="当前为互动模式"
                 dark
                 iconName="class-lecture"
-                onClick={this.toggleClassMode}
+                onClick={toggleClassMode}
             >
                 切换至讲课模式
             </TopBarRoundBtn>

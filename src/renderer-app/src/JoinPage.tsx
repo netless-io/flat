@@ -7,42 +7,30 @@ import { saveRoom, Identity } from "./utils/localStorage/room";
 
 import "./JoinPage.less";
 
-export type JoinPageStates = {
-    roomId: string;
-    name: string;
-    radioValue: number;
-};
+export type JoinPageProps = RouteComponentProps;
 
-export default class JoinPage extends React.Component<RouteComponentProps<{}>, JoinPageStates> {
-    public constructor(props: RouteComponentProps<{}>) {
+export interface JoinPageState {
+    roomID: string;
+    userName: string;
+}
+
+export default class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
+    public constructor(props: JoinPageProps) {
         super(props);
-        const name = localStorage.getItem("userName");
+
         this.state = {
-            roomId: "",
-            name: name ? name : "",
-            radioValue: 1,
+            roomID: "",
+            userName: localStorage.getItem("userName") || "",
         };
+
         ipcAsyncByMain("set-win-size", {
             width: 480,
             height: 480,
         });
     }
 
-    private handleJoin = (): void => {
-        const userId = `${Math.floor(Math.random() * 100000)}`;
-        if (this.state.name !== localStorage.getItem("userName")) {
-            localStorage.setItem("userName", this.state.name);
-        }
-        saveRoom({
-            uuid: this.state.roomId,
-            userId,
-            identity: Identity.joiner,
-        });
-        this.props.history.push(`/whiteboard/${Identity.joiner}/${this.state.roomId}/${userId}/`);
-    };
-
     public render(): React.ReactNode {
-        const { roomId, name, radioValue } = this.state;
+        const { roomID, userName } = this.state;
         return (
             <div className="page-index-box">
                 <div className="page-join-mid-box">
@@ -57,13 +45,14 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
                         />
                         <span>昵称</span>
                         <Input
-                            placeholder={"请输入昵称"}
-                            // value={name}
-                            onChange={evt => this.setState({ roomId: evt.target.value })}
+                            disabled={true}
                             style={{ width: 312, marginBottom: 28, marginTop: 6 }}
-                            size={"large"}
+                            value={userName}
+                            size="large"
+                            placeholder="请输入昵称"
                         />
-                        <div className="page-join-radio-box">
+                        {/* @TODO 待更改设计 */}
+                        {/* <div className="page-join-radio-box">
                             <span>加入选项</span>
                             <Radio.Group value={radioValue}>
                                 <Radio
@@ -76,12 +65,12 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
                                     开启摄像头
                                 </Radio>
                             </Radio.Group>
-                        </div>
+                        </div> */}
                         <div className="page-join-btn-box">
                             <Button
                                 onClick={this.handleJoin}
                                 style={{ marginTop: 48, height: 40 }}
-                                disabled={roomId === "" || name === ""}
+                                disabled={!roomID || !userName}
                             >
                                 加入房间
                             </Button>
@@ -94,4 +83,14 @@ export default class JoinPage extends React.Component<RouteComponentProps<{}>, J
             </div>
         );
     }
+
+    private handleJoin = (): void => {
+        const userId = `${Math.floor(Math.random() * 100000)}`;
+        saveRoom({
+            uuid: this.state.roomID,
+            userId,
+            identity: Identity.joiner,
+        });
+        this.props.history.push(`/whiteboard/${Identity.joiner}/${this.state.roomID}/${userId}/`);
+    };
 }

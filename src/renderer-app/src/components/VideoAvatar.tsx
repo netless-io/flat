@@ -40,7 +40,7 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
                 rtcEngine.enableLocalAudio(user.mic);
             } else {
                 rtcEngine.setupRemoteVideo(numUid, this.el);
-                // rtcEngine.muteRemoteAudioStream(numUid, !user.mic);
+                rtcEngine.muteRemoteAudioStream(numUid, !user.mic);
             }
         }
 
@@ -49,7 +49,7 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
                 rtcEngine.enableLocalVideo(user.camera);
             } else {
                 rtcEngine.setupRemoteVideo(numUid, this.el);
-                // rtcEngine.muteRemoteVideoStream(numUid, !user.camera);
+                rtcEngine.muteRemoteVideoStream(numUid, !user.camera);
             }
         }
     }
@@ -93,8 +93,8 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
                 rtcEngine.enableLocalAudio(user.mic);
             } else {
                 rtcEngine.setupRemoteVideo(numUid, this.el);
-                // rtcEngine.muteRemoteVideoStream(numUid, !user.camera);
-                // rtcEngine.muteRemoteAudioStream(numUid, !user.mic);
+                rtcEngine.muteRemoteVideoStream(numUid, !user.camera);
+                rtcEngine.muteRemoteAudioStream(numUid, !user.mic);
             }
         }
     };

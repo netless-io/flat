@@ -1,25 +1,39 @@
 import "./UserIndexPage.less";
 import React from "react";
 import MainPageLayout from "./components/MainPageLayout";
-import {RouteComponentProps} from "react-router";
-import {ipcAsyncByMain} from "./utils/ipc";
-import {MainRoomMenu} from "./components/MainRoomMenu";
-import {MainRoomList, RoomStatus} from "./components/MainRoomList";
+import { RouteComponentProps } from "react-router";
+import { ipcAsyncByMain } from "./utils/ipc";
+import { MainRoomMenu } from "./components/MainRoomMenu";
+import { MainRoomList } from "./components/MainRoomList";
 import { MainRoomHistory } from "./components/MainRoomHistory";
-import { Status } from "./components/WeChatLogin";
-import { fetcher } from "./utils/fetcher";
-import { FLAT_SERVER_ROOM } from "./constants/FlatServer";
 import { globals } from "./utils/globals";
-import { Identity } from "./utils/localStorage/room";
+import { Identity, saveRoom } from "./utils/localStorage/room";
+import { getUserUuid } from "./utils/localStorage/accounts";
+import {
+    createRoom,
+    joinRoom,
+    ordinaryRoomInfo,
+    ListRoomsType,
+    listRooms,
+    FlatServerRoom,
+} from "./apiMiddleware/flatServer";
+import { RoomType } from "./apiMiddleware/flatServer/constants";
 
-class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageState> {
+export type UserIndexPageProps = RouteComponentProps;
+
+export interface UserIndexPageState {
+    roomListType: ListRoomsType;
+    rooms: FlatServerRoom[];
+}
+
+class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageState> {
     private isMount = false;
     private refreshRoomsId: number | null = null;
 
     public constructor(props: RouteComponentProps) {
         super(props);
         this.state = {
-            roomListType: RoomListType.All,
+            roomListType: ListRoomsType.All,
             rooms: [],
         };
     }
@@ -50,54 +64,39 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
     }
 
     public createRoom = async (title: string, type: RoomType) => {
-        const { data: res } = await fetcher.post<CreateRoomSuccessResponse>(
-            FLAT_SERVER_ROOM.CREATE,
-            {
-                title,
-                type,
-                beginTime: this.getCurrentTime(),
-                // TODO docs:[]
-            },
-        );
-        // this.refreshRooms();
-        if (res.status === Status.Success) {
-            await this.joinRoom(res.data.roomUUID);
-        }
+        const roomUUID = await createRoom({
+            title,
+            type,
+            beginTime: this.getCurrentTime(),
+            // TODO docs:[]
+        });
+        await this.joinRoom(roomUUID, Identity.creator);
     };
 
-    public joinRoom = async (roomUUID: string) => {
-        const { data: res } = await fetcher.post<SuccessResponse<JoinRoomResult>>(
-            FLAT_SERVER_ROOM.JOIN_ORDINARY,
-            { roomUUID },
-        );
-        if (res.status === Status.Success) {
-            globals.whiteboard.uuid = res.data.whiteboardRoomUUID;
-            globals.whiteboard.token = res.data.whitboardRoomToken;
-            const url = `/whiteboard/${Identity.creator}/${res.data.whiteboardRoomUUID}/`;
-            this.historyPush(url);
-        }
+    public joinRoom = async (roomUUID: string, identity: Identity) => {
+        const data = await joinRoom(roomUUID);
+        globals.whiteboard.uuid = data.whiteboardRoomUUID;
+        globals.whiteboard.token = data.whiteboardRoomToken;
+        globals.rtc.uid = data.rtcUID;
+        globals.rtc.token = data.rtcToken;
+        globals.rtm.token = data.rtmToken;
+
+        const url = `/${data.roomType}/${identity}/${data.whiteboardRoomUUID}/`;
+        this.historyPush(url);
     };
 
-    public getListRoomsUrl(type?: RoomListType) {
-        return `${FLAT_SERVER_ROOM.LIST}/${type ?? this.state.roomListType}`;
-    }
-
-    public refreshRooms = async (type?: RoomListType) => {
+    public refreshRooms = async (type?: ListRoomsType) => {
         if (this.refreshRoomsId !== null) {
             window.clearTimeout(this.refreshRoomsId);
         }
         // TODO page?
         try {
-            const { data: res } = await fetcher.get<ListRoomsSuccessResponse>(
-                this.getListRoomsUrl(type),
-                { params: { page: 1 } },
-            );
-            if (res.status === Status.Success) {
-                const running = res.data.filter(e => e.roomStatus === "Running");
-                const notRunning = res.data.filter(e => e.roomStatus !== "Running");
-                this.setAsyncState({ rooms: [...running, ...notRunning] });
-            }
+            const data = await listRooms(type ?? this.state.roomListType, { page: 1 });
+            const running = data.filter(e => e.roomStatus === "Running");
+            const notRunning = data.filter(e => e.roomStatus !== "Running");
+            this.setAsyncState({ rooms: [...running, ...notRunning] });
         } catch (error) {
+            // @TODO handle error
             console.log(error);
         }
 
@@ -108,7 +107,7 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
         }
     };
 
-    public setRoomListType = (roomListType: RoomListType) => {
+    public setListRoomsType = (roomListType: ListRoomsType) => {
         this.setAsyncState({ roomListType });
         this.refreshRooms(roomListType);
     };
@@ -116,12 +115,26 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
     public render(): React.ReactNode {
         return (
             <MainPageLayout columnLayout>
-                <MainRoomMenu onCreateRoom={this.createRoom} />
+                <MainRoomMenu
+                    onCreateRoom={this.createRoom}
+                    onJoinRoom={roomID => {
+                        // @TODO
+                        const userId = `${Math.floor(Math.random() * 100000)}`;
+                        saveRoom({
+                            uuid: roomID,
+                            userId,
+                            identity: Identity.joiner,
+                        });
+                        this.props.history.push(
+                            `/whiteboard/${Identity.joiner}/${roomID}/${userId}/`,
+                        );
+                    }}
+                />
                 <div className="main-room-layout">
                     <MainRoomList
                         rooms={this.state.rooms}
                         type={this.state.roomListType}
-                        onTypeChange={this.setRoomListType}
+                        onTypeChange={this.setListRoomsType}
                         historyPush={this.historyPush}
                     />
                     <MainRoomHistory />
@@ -129,63 +142,6 @@ class UserIndexPage extends React.Component<RouteComponentProps, UserIndexPageSt
             </MainPageLayout>
         );
     }
-}
-
-export enum RoomType {
-    OneToOne,
-    SmallClass,
-    BigClass,
-}
-
-export enum RoomListType {
-    All = "all",
-    Today = "today",
-    Periodic = "periodic",
-    History = "history",
-}
-
-type UserIndexPageState = {
-    roomListType: RoomListType;
-    rooms: Room[];
-}
-
-export type Room = {
-    roomUUID: string;
-    periodicUUID: string;
-    ownerUUID: string;
-    ownerName: string;
-    title: string;
-    beginTime: string;
-    endTime: string;
-    roomStatus: RoomStatus;
-}
-
-type CreateRoomSuccessResponse = {
-    status: Status.Success;
-    data: {
-        roomUUID: string;
-    }
-}
-
-type ListRoomsSuccessResponse = {
-    status: Status.Success;
-    data: Room[];
-}
-
-export type JoinRoomResult = {
-    whitboardRoomToken: string;
-    whiteboardRoomUUID: string;
-    roomUUID: string;
-}
-
-export type JoinCyclicalRoomResult = {
-    whiteboardRoomToken: string;
-    whiteboardRoomUUID: string;
-}
-
-export type SuccessResponse<T> = {
-    status: Status;
-    data: T;
 }
 
 export default UserIndexPage;

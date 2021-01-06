@@ -1,19 +1,11 @@
 import React from "react";
 import { io, Socket } from "socket.io-client";
-import { FLAT_SERVER_LOGIN } from "../constants/FlatServer";
 import { QRURL } from "../utils/wechatUrl";
 import "./WeChatLogin.less";
 import { RouteComponentProps, withRouter } from "react-router";
 import { setWechatInfo, setUserUuid } from "../utils/localStorage/accounts";
 import { ipcAsyncByMain } from "../utils/ipc";
-
-export enum Status {
-    NoLogin = -1,
-    Success,
-    Failed,
-    Process,
-    AuthFailed,
-}
+import { FLAT_SERVER_LOGIN, Status } from "../apiMiddleware/flatServer/constants";
 
 export interface WeChatLoginResponse {
     status: Status;
@@ -43,7 +35,6 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
             uuid,
             ws,
             QRURL: "",
-
         };
     }
 
@@ -54,7 +45,7 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
             autoCenter: true,
         });
         this.props.history.push("/user/");
-    }
+    };
 
     public WeChatLoginFlow() {
         const { ws: socket, uuid } = this.state;
