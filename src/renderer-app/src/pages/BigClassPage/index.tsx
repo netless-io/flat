@@ -8,7 +8,6 @@ import LoadingPage from "../../LoadingPage";
 
 import InviteButton from "../../components/InviteButton";
 import { TopBar, TopBarDivider } from "../../components/TopBar";
-import { TopBarClassOperations } from "../../components/TopBarClassOperations";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
@@ -26,10 +25,18 @@ import { getRoom, Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
 
 import "./BigClassPage.less";
+import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
+
+export enum ClassStatusType {
+    idle,
+    started,
+    paused,
+    stopped,
+}
 
 export type BigClassPageState = {
     isRealtimeSideOpen: boolean;
-    isClassBegin: boolean;
+    classStatus: ClassStatusType;
     speakingJoiner?: RTMUser;
     mainSpeaker?: RTMUser;
 };
@@ -44,7 +51,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
 
         this.state = {
             isRealtimeSideOpen: true,
-            isClassBegin: false,
+            classStatus: ClassStatusType.idle,
             speakingJoiner,
             mainSpeaker: speakingJoiner,
         };
@@ -160,6 +167,22 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
         });
     };
 
+    private startClass = (): void => {
+        this.setState({ classStatus: ClassStatusType.started });
+    };
+
+    private pauseClass = (): void => {
+        this.setState({ classStatus: ClassStatusType.paused });
+    };
+
+    private resumeClass = (): void => {
+        this.setState({ classStatus: ClassStatusType.started });
+    };
+
+    private stopClass = (): void => {
+        this.setState({ classStatus: ClassStatusType.stopped });
+    };
+
     private onCameraClick = (user: RTMUser) => {
         this.props.rtm.updateDeviceState(user.uuid, !user.camera, user.mic);
     };
@@ -192,28 +215,56 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
 
     private renderTopBarLeft(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { isClassBegin } = this.state;
+        const { classStatus } = this.state;
+
         return (
             <>
                 <NetworkStatus />
-                {identity === Identity.joiner && <ClassStatus isClassBegin={isClassBegin} />}
+                {identity === Identity.joiner && (
+                    <ClassStatus isClassBegin={classStatus === ClassStatusType.started} />
+                )}
             </>
         );
     }
 
     private renderTopBarCenter(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { isClassBegin } = this.state;
+        const { classStatus } = this.state;
 
-        return identity === Identity.creator ? (
-            <TopBarClassOperations
-                isBegin={isClassBegin}
-                // @TODO 实现上课逻辑
-                onBegin={() => this.setState({ isClassBegin: true })}
-                onPause={() => this.setState({ isClassBegin: false })}
-                onStop={() => this.setState({ isClassBegin: false })}
-            />
-        ) : null;
+        if (identity !== Identity.creator) {
+            return null;
+        }
+
+        switch (classStatus) {
+            case ClassStatusType.started:
+                return (
+                    <>
+                        <TopBarRoundBtn iconName="class-pause" onClick={this.pauseClass}>
+                            暂停上课
+                        </TopBarRoundBtn>
+                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
+                            结束上课
+                        </TopBarRoundBtn>
+                    </>
+                );
+            case ClassStatusType.paused:
+                return (
+                    <>
+                        <TopBarRoundBtn iconName="class-pause" onClick={this.resumeClass}>
+                            恢复上课
+                        </TopBarRoundBtn>
+                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
+                            结束上课
+                        </TopBarRoundBtn>
+                    </>
+                );
+            default:
+                return (
+                    <TopBarRoundBtn iconName="class-begin" onClick={this.startClass}>
+                        开始上课
+                    </TopBarRoundBtn>
+                );
+        }
     }
 
     private renderTopBarRight(): React.ReactNode {
