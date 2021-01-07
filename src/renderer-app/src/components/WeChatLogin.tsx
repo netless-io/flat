@@ -9,7 +9,7 @@ import { FLAT_SERVER_LOGIN, Status } from "../apiMiddleware/flatServer/constants
 
 export interface WeChatLoginResponse {
     status: Status;
-    message: string;
+    code: number;
     data: {
         userUUID: string;
         token: string;
@@ -56,19 +56,19 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
             });
         });
 
-        socket.on("WeChat/AuthID", (data: { status: Status; message: string }) => {
+        socket.on("WeChat/AuthID", (data: { status: Status; code: number }) => {
             if (data.status === 0) {
                 this.setState({
                     QRURL: QRURL(this.state.ws.id, uuid),
                 });
-                console.log("serve 已经收到，开始展示二维码");
+                console.log("server 已经收到，开始展示二维码");
             } else {
-                console.log("server 出现问题，请重试", data.message);
+                console.log(`server 出现问题，请重试。错误代码：${data.code}`);
             }
         });
 
         socket.on("WeChat/LoginStatus", (resp: WeChatLoginResponse) => {
-            const { status, message, data } = resp;
+            const { status, code, data } = resp;
 
             switch (status) {
                 case Status.Success: {
@@ -79,7 +79,7 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
                     break;
                 }
                 case Status.AuthFailed: {
-                    console.log("认证失败，请重试", message);
+                    console.log(`认证失败，请重试。错误代码：${code}`);
                     break;
                 }
                 case Status.Process: {
