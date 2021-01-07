@@ -1,4 +1,4 @@
-import AgoraRTM, { RtmChannel, RtmClient, RtmMessage as AgoraRTMessage } from "agora-rtm-sdk";
+import AgoraRTM, { RtmChannel, RtmClient } from "agora-rtm-sdk";
 import polly from "polly-js";
 import { v4 as uuidv4 } from "uuid";
 import { AGORA, NODE_ENV } from "../constants/Process";
@@ -45,6 +45,20 @@ export enum ClassModeType {
     Interaction = "Interaction",
 }
 
+export enum ClassStatusType {
+    Idle = "Idle",
+    Started = "Started",
+    Paused = "Paused",
+    Stopped = "Stopped",
+}
+
+export enum NonDefaultUserProp {
+    isSpeak = "s",
+    isRaiseHand = "r",
+    camera = "c",
+    mic = "m",
+}
+
 export enum RTMessageType {
     /** group message */
     ChannelMessage = "ChannelMessage",
@@ -67,7 +81,11 @@ export enum RTMessageType {
     DeviceState = "DeviceState",
     /** creator updates class mode */
     ClassMode = "ClassMode",
-    /** joiner request channel's status */
+    /** creator updates class status */
+    ClassStatus = "ClassStatus",
+    /** joiner request room's status */
+    RequestChannelStatus = "RequestChannelStatus",
+    /** send room's status */
     ChannelStatus = "ChannelStatus",
 }
 
@@ -81,7 +99,18 @@ export type RTMEvents = {
     [RTMessageType.Speak]: Array<{ userUUID: string; speak: boolean }>;
     [RTMessageType.DeviceState]: { userUUID: string; camera: boolean; mic: boolean };
     [RTMessageType.ClassMode]: ClassModeType;
-    [RTMessageType.ChannelStatus]: string;
+    [RTMessageType.ClassStatus]: ClassStatusType;
+    [RTMessageType.RequestChannelStatus]: string; // room id
+    [RTMessageType.ChannelStatus]: {
+        /** class status */
+        cStatus: ClassStatusType;
+        /** users with non-default states */
+        uStates: {
+            [uuid: string]: `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${
+                | NonDefaultUserProp
+                | ""}${NonDefaultUserProp | ""}`;
+        };
+    };
 };
 
 export interface RTMessage<U extends keyof RTMEvents = keyof RTMEvents> {
@@ -94,6 +123,10 @@ export interface RTMessage<U extends keyof RTMEvents = keyof RTMEvents> {
 
 export declare interface Rtm {
     on<U extends keyof RTMEvents>(
+        event: U,
+        listener: (value: RTMEvents[U], senderId: string) => void,
+    ): this;
+    once<U extends keyof RTMEvents>(
         event: U,
         listener: (value: RTMEvents[U], senderId: string) => void,
     ): this;
@@ -122,7 +155,18 @@ export class Rtm extends EventEmitter {
         this.client.on("ConnectionStateChanged", (newState, reason) => {
             console.log("RTM client state: ", newState, reason);
         });
-        this.client.on("MessageFromPeer", this.handleMessage);
+        this.client.on("MessageFromPeer", (msg, senderId) => {
+            if (msg.messageType === AgoraRTM.MessageType.TEXT) {
+                try {
+                    const { r, t, v } = JSON.parse(msg.text);
+                    if (r === this.commandsID && t) {
+                        this.emit(t, v, senderId);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        });
     }
 
     async init(userId: string, channelID: string): Promise<RtmChannel> {
@@ -150,7 +194,18 @@ export class Rtm extends EventEmitter {
         if (this.commandsID) {
             this.commands = this.client.createChannel(this.commandsID);
             await this.commands.join();
-            this.commands.on("ChannelMessage", this.handleMessage);
+            this.commands.on("ChannelMessage", (msg, senderId) => {
+                if (msg.messageType === AgoraRTM.MessageType.TEXT) {
+                    try {
+                        const { t, v } = JSON.parse(msg.text);
+                        if (t) {
+                            this.emit(t, v, senderId);
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
+            });
         }
 
         return this.channel;
@@ -226,6 +281,10 @@ export class Rtm extends EventEmitter {
         peerId?: string;
         retry?: number;
     }): Promise<void> {
+        if (!this.commands || !this.commandsID) {
+            throw new Error("RTM commands channel not initialized");
+        }
+
         if (peerId !== undefined) {
             await polly()
                 .waitAndRetry(retry)
@@ -234,7 +293,7 @@ export class Rtm extends EventEmitter {
                         const { hasPeerReceived } = await this.client.sendMessageToPeer(
                             {
                                 messageType: AgoraRTM.MessageType.TEXT,
-                                text: JSON.stringify({ t: type, v: value }),
+                                text: JSON.stringify({ r: this.commandsID, t: type, v: value }),
                             },
                             peerId,
                             { enableHistoricalMessaging: keepHistory },
@@ -244,7 +303,7 @@ export class Rtm extends EventEmitter {
                         }
                     },
                 );
-        } else if (this.commands) {
+        } else {
             this.commands.sendMessage(
                 {
                     messageType: AgoraRTM.MessageType.TEXT,
@@ -344,19 +403,6 @@ export class Rtm extends EventEmitter {
         }
         return response.json();
     }
-
-    private handleMessage = (msg: AgoraRTMessage, senderId: string) => {
-        if (msg.messageType === AgoraRTM.MessageType.TEXT) {
-            try {
-                const { t, v } = JSON.parse(msg.text);
-                if (t) {
-                    this.emit(t, v, senderId);
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        }
-    };
 }
 
 export default Rtm;
