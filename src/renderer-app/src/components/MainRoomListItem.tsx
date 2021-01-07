@@ -2,11 +2,13 @@ import { Button, Dropdown, Menu } from "antd";
 import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React, { PureComponent } from "react";
-import { joinRoom, joinPeriodicRoom } from "../apiMiddleware/flatServer";
+import { joinRoom } from "../apiMiddleware/flatServer";
 import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
+import { Link } from "react-router-dom";
 
 export type MainRoomListItemProps = {
+    showDate: boolean;
     /** 标题 */
     title: string;
     /** 开始时间 (UTC 时间戳) */
@@ -19,8 +21,6 @@ export type MainRoomListItemProps = {
     periodicUUID?: string;
     /** 房间 uuid */
     roomUUID: string;
-    // /** 是否周期房间 */
-    // isPeriodic: boolean;
     /** 发起者 userUUID */
     userUUID: string;
 
@@ -31,7 +31,19 @@ export type MainRoomListItemProps = {
 export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     public renderMenu = () => (
         <Menu>
-            <Menu.Item onClick={this.handleHitoryPush}>房间详情</Menu.Item>
+            <Menu.Item>
+                <Link
+                    to={{
+                        pathname: "/user/room/",
+                        state: {
+                            roomUUID: this.props.roomUUID,
+                            periodicUUID: this.props.periodicUUID,
+                        },
+                    }}
+                >
+                    房间详情
+                </Link>
+            </Menu.Item>
             <Menu.Item>修改房间</Menu.Item>
             <Menu.Item>取消房间</Menu.Item>
             <Menu.Item>复制邀请</Menu.Item>
@@ -42,9 +54,11 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         const { periodicUUID, roomUUID } = this.props;
         let url: string;
         if (periodicUUID) {
+            globals.validation.isPeriodic = true;
             url = `/user/room/${periodicUUID}`;
         } else {
-            url = `/user/room/${roomUUID}`
+            globals.validation.isPeriodic = false;
+            url = `/user/room/${roomUUID}`;
         }
         this.props.historyPush(url);
     };
@@ -88,14 +102,9 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     };
 
     public joinRoom = async () => {
-        const { periodicUUID, roomUUID } = this.props;
+        const { roomUUID } = this.props;
         const identity = this.getIdentity();
-        let res;
-        if (periodicUUID) {
-            res = await joinPeriodicRoom(periodicUUID);
-        } else {
-            res = await joinRoom(roomUUID);
-        }
+        let res = await joinRoom(roomUUID);
         const uuid = res.whiteboardRoomUUID;
         globals.whiteboard.uuid = res.whiteboardRoomUUID;
         globals.whiteboard.token = res.whiteboardRoomToken;
@@ -111,10 +120,12 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     render() {
         return (
             <div className="room-list-cell-item">
-                <div className="room-list-cell-day">
-                    <div className="room-list-cell-modify" />
-                    <div className="room-list-cell-title">{this.renderDate()}</div>
-                </div>
+                {this.props.showDate && (
+                    <div className="room-list-cell-day">
+                        <div className="room-list-cell-modify" />
+                        <div className="room-list-cell-title">{this.renderDate()}</div>
+                    </div>
+                )}
                 <div className="room-list-cell">
                     <div className="room-list-cell-left">
                         <div className="room-list-cell-name">{this.props.title}</div>

@@ -7,63 +7,69 @@ import home_icon_gray from "./assets/image/home-icon-gray.svg";
 import room_type from "./assets/image/room-type.svg";
 import docs_icon from "./assets/image/docs-icon.svg";
 import { Button } from "antd";
-import { RoomStatus, Status, RoomType } from "./apiMiddleware/flatServer/constants";
-
+import { RoomStatus, RoomType } from "./apiMiddleware/flatServer/constants";
+import { ordinaryRoomInfo, periodicSubRoomInfo } from "./apiMiddleware/flatServer";
+import { globals } from "./utils/globals";
 
 export type RoomDetailPageState = {
     isTeacher: boolean;
     rate: number;
-    data: {
-        roomInfo: {
-            title: string;
-            beginTime: string;
-            endTime?: string;
-            roomType: RoomType;
-            roomStatus: RoomStatus;
-            ownerUUID: string;
-        }
-    }
-
+    title: string;
+    beginTime: string;
+    endTime?: string;
+    roomType: RoomType;
+    roomStatus: RoomStatus;
+    ownerUUID: string;
+    roomUUID: string;
+    periodicUUID: string
 };
 
 export type RoomDetailPageProps = RouteComponentProps<{ uuid: string }> & {
-    isPeriodic: boolean;
     uuid: string;
 };
 
-export default class RoomDetailPage extends PureComponent<RoomDetailPageProps, RoomDetailPageState> {
+
+export default class RoomDetailPage extends PureComponent<
+    RoomDetailPageProps,
+    RoomDetailPageState
+> {
     public constructor(props: RoomDetailPageProps) {
         super(props);
         this.state = {
             isTeacher: true,
             rate: 0,
-            data: {
-                roomInfo: {
-                    title: "",
-                    beginTime: "",
-                    endTime: "",
-                    roomStatus: RoomStatus.Pending,
-                    roomType: RoomType.BigClass,
-                    ownerUUID: "",
-                }
-            }
+            title: "",
+            beginTime: "",
+            endTime: "",
+            roomStatus: RoomStatus.Pending,
+            roomType: RoomType.BigClass,
+            ownerUUID: "",
+            roomUUID: "",
+            periodicUUID: "",
         };
     }
 
-    // public async componentDidMount() {
-    //     const isPeriodic = this.props.match.params.uuid !== '';
-    //     const { data: res } = await fetcher.post<SuccessResponse<RoomDetailPageState>>(
-    //         isPeriodic ? FLAT_SERVER_ROOM.INFO_PERIODIC : FLAT_SERVER_ROOM.INFO_ORDINARY,
-    //         isPeriodic ? { periodicUUID: this.props.match.params.uuid } : { roomUUID: this.props.match.params.uuid },
-    //     );
-    //     console.log("this is res", res);
-    //     console.log("this is status", res.status);
-    //     if (res.status === Status.Success) {
-    //         console.log("this is res", res);
-    //         // console.log("this is status", res.data.roomInfo);
-    //         // this.setState({ beginTime: res.data.beginTime});
-    //     }
-    // }
+    public async componentDidMount() {
+        const { roomUUID, periodicUUID } = this.props.location.state as RoomDetailPageState;
+        const periodic = globals.validation.isPeriodic;
+        let res;
+        if (periodic === true) {
+            res = await periodicSubRoomInfo(roomUUID, periodicUUID);
+        } else {
+            res = await ordinaryRoomInfo(roomUUID);
+        }
+        console.log("this is res", res);
+        this.setState({
+            title: res.roomInfo.title,
+            beginTime: res.roomInfo.beginTime,
+            endTime: res.roomInfo.endTime,
+            ownerUUID: res.roomInfo.ownerUUID,
+            roomStatus: res.roomInfo.roomStatus,
+            roomType: res.roomInfo.roomType,
+            roomUUID,
+            periodicUUID,
+        });
+    }
 
     private renderButton = (): React.ReactNode => {
         const { isTeacher } = this.state;
@@ -108,7 +114,7 @@ export default class RoomDetailPage extends PureComponent<RoomDetailPageProps, R
                                 </div>
                             </Link>
                             <div className="user-segmentation" />
-                            <div className="user-title">房间详情</div>
+                            <div className="user-title">{this.state.title}</div>
                         </div>
                         <div className="user-schedule-cut-line" />
                     </div>
@@ -121,7 +127,7 @@ export default class RoomDetailPage extends PureComponent<RoomDetailPageProps, R
                                 </div>
                                 <div className="user-room-time-mid">
                                     <div className="user-room-time-during">1 小时</div>
-                                    <div className="user-room-time-state">待开始</div>
+                                    <div className="user-room-time-state">{this.state.roomStatus}</div>
                                 </div>
                                 <div className="user-room-time-box">
                                     <div className="user-room-time-number">15:30</div>
@@ -136,7 +142,7 @@ export default class RoomDetailPage extends PureComponent<RoomDetailPageProps, R
                                         <span>房间号</span>
                                     </div>
                                     <div className="user-room-docs-right">
-                                        5f2259d5069bc052d255f2259d50f225
+                                        {this.state.roomUUID}
                                     </div>
                                 </div>
                                 <div className="user-room-inf">
@@ -144,7 +150,7 @@ export default class RoomDetailPage extends PureComponent<RoomDetailPageProps, R
                                         <img src={room_type} alt={"room_type"} />
                                         <span>房间类型</span>
                                     </div>
-                                    <div className="user-room-docs-right">一对一</div>
+                                    <div className="user-room-docs-right">{this.state.roomType}</div>
                                 </div>
                                 <div className="user-room-docs">
                                     <div className="user-room-docs-title">

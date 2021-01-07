@@ -3,6 +3,8 @@ import "./MainRoomList.less";
 import { MainRoomListItem } from "./MainRoomListItem";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { FlatServerRoom, ListRoomsType } from "../apiMiddleware/flatServer";
+import { isSameDay } from "date-fns/esm";
+import { globals } from "../utils/globals";
 
 export type MainRoomListProps = {
     rooms: FlatServerRoom[];
@@ -29,10 +31,14 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
     }
 
     public renderRooms() {
+        let lastOne: FlatServerRoom | null = null;
         return this.props.rooms.map(e => {
+            const showDate = !lastOne || !isSameDay(new Date(e.beginTime), new Date(lastOne.beginTime));
+            lastOne = e;
             return (
                 <MainRoomListItem
                     key={this.getRoomUUID(e)}
+                    showDate={showDate}
                     title={e.title}
                     status={this.renderStatus(e.roomStatus)}
                     beginTime={this.timeToNumber(e.beginTime)!}
