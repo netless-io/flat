@@ -9,7 +9,7 @@ export type FlatServerResponse<T> =
       }
     | {
           status: Status.Failed;
-          message: string;
+          code: number;
       };
 
 async function post<Payload, Result>(
@@ -37,7 +37,7 @@ async function post<Payload, Result>(
 
     if (res.status !== Status.Success) {
         // @TODO handle fetcher error
-        throw new Error(res.message);
+        throw new Error(`Flat server error code ${res.code}`);
     }
 
     return res.data;
