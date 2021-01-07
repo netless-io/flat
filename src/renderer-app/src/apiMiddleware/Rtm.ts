@@ -1,4 +1,4 @@
-import AgoraRTM, { RtmChannel, RtmClient } from "agora-rtm-sdk";
+import AgoraRTM, { RtmChannel, RtmClient, RtmMessage as AgoraRTMessage } from "agora-rtm-sdk";
 import polly from "polly-js";
 import { v4 as uuidv4 } from "uuid";
 import { AGORA, NODE_ENV } from "../constants/Process";
@@ -67,17 +67,11 @@ export enum RTMessageType {
     DeviceState = "DeviceState",
     /** creator updates class mode */
     ClassMode = "ClassMode",
+    /** joiner request channel's status */
+    ChannelStatus = "ChannelStatus",
 }
 
-export interface RTMessage<U extends keyof RtmEvents = keyof RtmEvents> {
-    type: U;
-    value: RtmEvents[U];
-    uuid: string;
-    timestamp: number;
-    userId: string;
-}
-
-export interface RtmEvents {
+export type RTMEvents = {
     [RTMessageType.ChannelMessage]: string;
     [RTMessageType.Notice]: string;
     [RTMessageType.RaiseHand]: boolean;
@@ -87,12 +81,21 @@ export interface RtmEvents {
     [RTMessageType.Speak]: Array<{ userUUID: string; speak: boolean }>;
     [RTMessageType.DeviceState]: { userUUID: string; camera: boolean; mic: boolean };
     [RTMessageType.ClassMode]: ClassModeType;
+    [RTMessageType.ChannelStatus]: string;
+};
+
+export interface RTMessage<U extends keyof RTMEvents = keyof RTMEvents> {
+    type: U;
+    value: RTMEvents[U];
+    uuid: string;
+    timestamp: number;
+    userId: string;
 }
 
 export declare interface Rtm {
-    on<U extends keyof RtmEvents>(
+    on<U extends keyof RTMEvents>(
         event: U,
-        listener: (value: RtmEvents[U], senderId: string) => void,
+        listener: (value: RTMEvents[U], senderId: string) => void,
     ): this;
 }
 
@@ -119,6 +122,7 @@ export class Rtm extends EventEmitter {
         this.client.on("ConnectionStateChanged", (newState, reason) => {
             console.log("RTM client state: ", newState, reason);
         });
+        this.client.on("MessageFromPeer", this.handleMessage);
     }
 
     async init(userId: string, channelID: string): Promise<RtmChannel> {
@@ -146,18 +150,7 @@ export class Rtm extends EventEmitter {
         if (this.commandsID) {
             this.commands = this.client.createChannel(this.commandsID);
             await this.commands.join();
-            this.commands.on("ChannelMessage", (msg, senderId) => {
-                if (msg.messageType === AgoraRTM.MessageType.TEXT) {
-                    try {
-                        const { t, v } = JSON.parse(msg.text);
-                        if (t) {
-                            this.emit(t, v, senderId);
-                        }
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }
-            });
+            this.commands.on("ChannelMessage", this.handleMessage);
         }
 
         return this.channel;
@@ -208,21 +201,58 @@ export class Rtm extends EventEmitter {
         }
     }
 
-    async sendCommand<U extends keyof RtmEvents>(
-        type: U,
-        value: RtmEvents[U],
-        enableHistoricalMessaging?: boolean,
-    ): Promise<void> {
-        if (!this.commands) {
-            return;
+    async sendCommand<U extends keyof RTMEvents>(command: {
+        type: U;
+        value: RTMEvents[U];
+        keepHistory: boolean;
+    }): Promise<void>;
+    async sendCommand<U extends keyof RTMEvents>(command: {
+        type: U;
+        value: RTMEvents[U];
+        keepHistory: boolean;
+        peerId: string;
+        retry?: number;
+    }): Promise<void>;
+    async sendCommand<U extends keyof RTMEvents>({
+        type,
+        value,
+        keepHistory = false,
+        peerId,
+        retry = 0,
+    }: {
+        type: U;
+        value: RTMEvents[U];
+        keepHistory?: boolean;
+        peerId?: string;
+        retry?: number;
+    }): Promise<void> {
+        if (peerId !== undefined) {
+            await polly()
+                .waitAndRetry(retry)
+                .executeForPromise(
+                    async (): Promise<void> => {
+                        const { hasPeerReceived } = await this.client.sendMessageToPeer(
+                            {
+                                messageType: AgoraRTM.MessageType.TEXT,
+                                text: JSON.stringify({ t: type, v: value }),
+                            },
+                            peerId,
+                            { enableHistoricalMessaging: keepHistory },
+                        );
+                        if (!hasPeerReceived) {
+                            return Promise.reject("peer not received");
+                        }
+                    },
+                );
+        } else if (this.commands) {
+            this.commands.sendMessage(
+                {
+                    messageType: AgoraRTM.MessageType.TEXT,
+                    text: JSON.stringify({ t: type, v: value }),
+                },
+                { enableHistoricalMessaging: keepHistory },
+            );
         }
-        return this.commands.sendMessage(
-            {
-                messageType: AgoraRTM.MessageType.TEXT,
-                text: JSON.stringify({ t: type, v: value }),
-            },
-            { enableHistoricalMessaging },
-        );
     }
 
     async fetchTextHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
@@ -314,6 +344,19 @@ export class Rtm extends EventEmitter {
         }
         return response.json();
     }
+
+    private handleMessage = (msg: AgoraRTMessage, senderId: string) => {
+        if (msg.messageType === AgoraRTM.MessageType.TEXT) {
+            try {
+                const { t, v } = JSON.parse(msg.text);
+                if (t) {
+                    this.emit(t, v, senderId);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    };
 }
 
 export default Rtm;

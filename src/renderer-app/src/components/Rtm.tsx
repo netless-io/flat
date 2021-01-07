@@ -114,7 +114,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                       }
                     : user,
             );
-            this.rtm.sendCommand(RTMessageType.AcceptRaiseHand, { userUUID, accept: true });
+            this.rtm.sendCommand({
+                type: RTMessageType.AcceptRaiseHand,
+                value: { userUUID, accept: true },
+                keepHistory: true,
+            });
         }
     };
 
@@ -128,7 +132,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             }
         }
         this.speak(configs);
-        this.rtm.sendCommand(RTMessageType.Speak, configs);
+        this.rtm.sendCommand({
+            type: RTMessageType.Speak,
+            value: configs,
+            keepHistory: true,
+        });
     };
 
     private onMessageSend = async (text: string): Promise<void> => {
@@ -142,7 +150,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     private onCancelAllHandRaising = (): void => {
         if (this.props.identity === Identity.creator) {
             this.cancelAllHandRaising();
-            this.rtm.sendCommand(RTMessageType.CancelAllHandRaising, true, true);
+            this.rtm.sendCommand({
+                type: RTMessageType.CancelAllHandRaising,
+                value: true,
+                keepHistory: true,
+            });
         }
     };
 
@@ -172,11 +184,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                     return user;
                 },
                 () => {
-                    this.rtm.sendCommand(
-                        RTMessageType.DeviceState,
-                        { userUUID, camera, mic },
-                        true,
-                    );
+                    this.rtm.sendCommand({
+                        type: RTMessageType.DeviceState,
+                        value: { userUUID, camera, mic },
+                        keepHistory: true,
+                    });
                 },
             );
         }
@@ -202,7 +214,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                 ],
             }),
             () => {
-                this.rtm.sendCommand(RTMessageType.BanText, this.state.isBan, true);
+                this.rtm.sendCommand({
+                    type: RTMessageType.BanText,
+                    value: this.state.isBan,
+                    keepHistory: true,
+                });
             },
         );
     };
@@ -219,7 +235,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             () => {
                 const { currentUser } = this.state;
                 if (currentUser) {
-                    this.rtm.sendCommand(RTMessageType.RaiseHand, currentUser.isRaiseHand, true);
+                    this.rtm.sendCommand({
+                        type: RTMessageType.RaiseHand,
+                        value: currentUser.isRaiseHand,
+                        keepHistory: true,
+                    });
                 }
             },
         );
@@ -395,7 +415,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                         : ClassModeType.Lecture,
             }),
             () => {
-                this.rtm.sendCommand(RTMessageType.ClassMode, this.state.classMode);
+                this.rtm.sendCommand({
+                    type: RTMessageType.ClassMode,
+                    value: this.state.classMode,
+                    keepHistory: true,
+                });
             },
         );
     };
