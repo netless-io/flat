@@ -10,7 +10,7 @@ export interface ChatUsersProps
     extends Pick<ChatUserProps, "identity" | "userId" | "onAcceptRaiseHand" | "onEndSpeaking"> {
     speakingJoiners: RTMUser[];
     handRaisingJoiners: RTMUser[];
-    creator: RTMUser | null;
+    creator?: RTMUser;
     joiners: RTMUser[];
     isShowCancelAllHandRaising: boolean;
     onCancelAllHandRaising: () => void;
@@ -36,7 +36,7 @@ export class ChatUsers extends React.PureComponent<ChatUsersProps, ChatUsersStat
         (
             speakingJoiners: RTMUser[],
             handRaisingJoiners: RTMUser[],
-            creator: RTMUser | null,
+            creator: RTMUser | undefined,
             joiners: RTMUser[],
         ): RTMUser[] =>
             creator
@@ -97,10 +97,10 @@ export class ChatUsers extends React.PureComponent<ChatUsersProps, ChatUsersStat
         const { identity, creator, userId, onAcceptRaiseHand, onEndSpeaking } = this.props;
         const user = this.state.users[index];
         return (
-            <div key={user.id} style={style}>
+            <div key={user.uuid} style={style}>
                 <ChatUser
                     identity={identity}
-                    creatorId={creator?.id}
+                    creatorId={creator?.uuid}
                     userId={userId}
                     user={user}
                     onAcceptRaiseHand={onAcceptRaiseHand}

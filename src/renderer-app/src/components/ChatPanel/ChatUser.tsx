@@ -3,7 +3,8 @@ import { Identity } from "../../utils/localStorage/room";
 import "./ChatUser.less";
 
 export interface RTMUser {
-    id: string;
+    uuid: string;
+    rtcUID: number;
     avatar: string;
     name: string;
     camera: boolean;
@@ -26,18 +27,14 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
         const { creatorId, identity, userId, user } = this.props;
         return (
             <div className="chat-user">
-                <img
-                    className="chat-user-avatar"
-                    src={user.avatar}
-                    alt={`User ${user.name || user.id}`}
-                />
-                {user.name || user.id}
-                {creatorId === user.id ? ( // @TODO 等待账号系统
+                <img className="chat-user-avatar" src={user.avatar} alt={`User ${user.name}`} />
+                {user.name}
+                {creatorId === user.uuid ? ( // @TODO 等待账号系统
                     <span className="chat-user-status is-teacher">(老师)</span>
                 ) : user.isSpeak ? (
                     <>
                         <span className="chat-user-status is-speaking">(发言中)</span>
-                        {(identity === Identity.creator || userId === user.id) && (
+                        {(identity === Identity.creator || userId === user.uuid) && (
                             <button
                                 className="chat-user-ctl-btn is-speaking"
                                 onClick={this.endSpeaking}
@@ -58,7 +55,7 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
                             </button>
                         )}
                     </>
-                ) : userId === user.id ? (
+                ) : userId === user.uuid ? (
                     <span className="chat-user-status is-teacher">(我)</span>
                 ) : null}
             </div>
@@ -68,14 +65,14 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
     private endSpeaking = () => {
         const { user, onEndSpeaking } = this.props;
         if (onEndSpeaking) {
-            onEndSpeaking(user.id);
+            onEndSpeaking(user.uuid);
         }
     };
 
     private acceptRaiseHand = () => {
         const { user, onAcceptRaiseHand } = this.props;
         if (onAcceptRaiseHand) {
-            onAcceptRaiseHand(user.id);
+            onAcceptRaiseHand(user.uuid);
         }
     };
 }
