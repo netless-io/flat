@@ -188,20 +188,22 @@ export function usersInfo(payload: UsersInfoPayload): Promise<UsersInfoResult> {
     return post<UsersInfoPayload, UsersInfoResult>("room/info/users", payload);
 }
 
+export interface OrdinaryRoomInfo {
+    title: string;
+    beginTime: string;
+    endTime: string;
+    roomType: RoomType;
+    roomStatus: RoomStatus;
+    ownerUUID: string;
+}
+
 export interface OrdinaryRoomInfoPayload {
     roomUUID: string;
 }
 
-export type OrdinaryRoomInfoResult = {
-    roomInfo: {
-        title: string;
-        beginTime: string;
-        endTime: string;
-        roomType: RoomType;
-        roomStatus: RoomStatus;
-        ownerUUID: string;
-    };
-};
+export interface OrdinaryRoomInfoResult {
+    roomInfo: OrdinaryRoomInfo;
+}
 
 export function ordinaryRoomInfo(roomUUID: string): Promise<OrdinaryRoomInfoResult> {
     return post<OrdinaryRoomInfoPayload, OrdinaryRoomInfoResult>("room/info/ordinary", {
@@ -245,10 +247,14 @@ export async function loginCheck(): Promise<LoginCheck> {
     if (!Authorization) {
         throw new Error("not login");
     }
-    const { data } = await Axios.post<LoginCheck>(`${FLAT_SERVER_VERSIONS.V1HTTPS}/login`, null, {
-        headers: {
-            Authorization: "Bearer " + Authorization,
+    const { data } = await Axios.post<LoginCheck>(
+        `${FLAT_SERVER_VERSIONS.V1HTTPS}/login`,
+        undefined,
+        {
+            headers: {
+                Authorization: "Bearer " + Authorization,
+            },
         },
-    });
+    );
     return data;
 }

@@ -31,16 +31,17 @@ class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
         ipcAsyncByMain("set-win-size", {
             width: 375,
             height: 667,
-            autoCenter: true
+            autoCenter: true,
         });
-    }
+    };
 
     private handleCreate = (): void => {
-        if (this.state.name) {
-            this.props.history.push(`/create/`);
-        } else {
-            this.props.history.push("/name/");
-        }
+        // if (this.state.name) {
+        //     this.props.history.push(`/create/`);
+        // } else {
+        //     this.props.history.push("/name/");
+        // }
+        // @TODO google 登陆
     };
 
     private updateName = (isEmpty?: boolean): void => {
@@ -74,14 +75,14 @@ class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
     };
 
     public joinRoom = () => {
-      ipcAsyncByMain("set-win-size", {
-        width: 1200,
-        height: 668,
-        autoCenter: true
-      });
-        
-      this.props.history.push("/user/")
-    }
+        ipcAsyncByMain("set-win-size", {
+            width: 1200,
+            height: 668,
+            autoCenter: true,
+        });
+
+        this.props.history.push("/user/");
+    };
 
     public render(): React.ReactNode {
         return (
@@ -110,11 +111,12 @@ class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                     <div className="page-index-line page-index-fade-in">
                         <Divider plain>2.1.0</Divider>
                     </div>
-                    <div className="page-index-link-box page-index-fade-in">
+                    {/* @TODO 去掉游客加入 */}
+                    {/* <div className="page-index-link-box page-index-fade-in">
                         <Button size="large" style={{ width: 280 }} onClick={this.joinRoom}>
                             加入房间
                         </Button>
-                    </div>
+                    </div> */}
                 </div>
                 <Modal
                     width={240}

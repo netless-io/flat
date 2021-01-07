@@ -17,11 +17,11 @@ export class SmallClassAvatar extends React.PureComponent<SmallClassAvatarProps>
         canvas: React.ReactNode,
         ctrlBtns: React.ReactNode,
     ): React.ReactNode => {
-        const { user } = this.props;
+        const { avatarUser } = this.props;
         return (
             <section
                 className={classNames("small-class-avatar-wrap", {
-                    "with-video": user.camera,
+                    "with-video": avatarUser.camera,
                 })}
             >
                 {canvas}
@@ -31,7 +31,7 @@ export class SmallClassAvatar extends React.PureComponent<SmallClassAvatarProps>
                         src={noCameraSmall}
                         alt="no camera"
                     />
-                    <h1 className="small-class-avatar-title">{user.name || user.id}</h1>
+                    <h1 className="small-class-avatar-title">{avatarUser.name}</h1>
                     {ctrlBtns}
                 </div>
             </section>

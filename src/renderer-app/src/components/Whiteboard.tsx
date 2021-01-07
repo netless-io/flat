@@ -21,6 +21,7 @@ import { netlessWhiteboardApi } from "../apiMiddleware";
 import { pptDatas } from "../taskUuids";
 import { NETLESS, NODE_ENV, OSS } from "../constants/Process";
 import { Identity } from "../utils/localStorage/room";
+import { globals } from "../utils/globals";
 
 import pages from "../assets/image/pages.svg";
 import "./Whiteboard.less";
@@ -168,62 +169,59 @@ export class Whiteboard extends React.Component<WhiteboardProps, WhiteboardState
     };
 
     private startJoinRoom = async (): Promise<void> => {
-        const { roomId, userId, identity } = this.props;
+        const { userId, identity } = this.props;
         try {
-            const roomToken = await this.getRoomToken(roomId);
-            if (roomId && roomToken) {
-                const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
-                const contextIdentity = identity === Identity.creator ? "host" : "";
-                plugins.setPluginContext("video", { identity: contextIdentity });
-                plugins.setPluginContext("audio", { identity: contextIdentity });
-                const whiteWebSdk = new WhiteWebSdk({
-                    appIdentifier: NETLESS.APP_IDENTIFIER,
-                    plugins: plugins,
-                });
-                const cursorName = localStorage.getItem("userName");
-                const cursorAdapter = new CursorTool();
-                const room = await whiteWebSdk.joinRoom(
-                    {
-                        uuid: roomId,
-                        roomToken: roomToken,
-                        cursorAdapter: cursorAdapter,
-                        userPayload: { userId, cursorName },
-                        floatBar: true,
+            const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
+            const contextIdentity = identity === Identity.creator ? "host" : "";
+            plugins.setPluginContext("video", { identity: contextIdentity });
+            plugins.setPluginContext("audio", { identity: contextIdentity });
+            const whiteWebSdk = new WhiteWebSdk({
+                appIdentifier: NETLESS.APP_IDENTIFIER,
+                plugins: plugins,
+            });
+            const cursorName = localStorage.getItem("userName");
+            const cursorAdapter = new CursorTool();
+            const room = await whiteWebSdk.joinRoom(
+                {
+                    uuid: globals.whiteboard.uuid,
+                    roomToken: globals.whiteboard.token,
+                    cursorAdapter: cursorAdapter,
+                    userPayload: { userId, cursorName },
+                    floatBar: true,
+                },
+                {
+                    onPhaseChanged: phase => {
+                        this.setState({ phase: phase });
                     },
-                    {
-                        onPhaseChanged: phase => {
-                            this.setState({ phase: phase });
-                        },
-                        onRoomStateChanged: (modifyState: Partial<RoomState>): void => {
-                            if (modifyState.broadcastState) {
-                                this.setState({ viewMode: modifyState.broadcastState.mode });
-                            }
-                        },
-                        onDisconnectWithError: error => {
-                            console.error(error);
-                        },
-                        onKickedWithReason: reason => {
-                            console.error("kicked with reason: " + reason);
-                        },
+                    onRoomStateChanged: (modifyState: Partial<RoomState>): void => {
+                        if (modifyState.broadcastState) {
+                            this.setState({ viewMode: modifyState.broadcastState.mode });
+                        }
                     },
-                );
-                cursorAdapter.setRoom(room);
-                this.setDefaultPptData(pptDatas, room);
-                room.setMemberState({
-                    pencilOptions: {
-                        disableBezier: false,
-                        sparseHump: 1.0,
-                        sparseWidth: 1.0,
-                        enableDrawPoint: false,
+                    onDisconnectWithError: error => {
+                        console.error(error);
                     },
-                });
-                if (room.state.broadcastState) {
-                    this.setState({ viewMode: room.state.broadcastState.mode });
-                }
-                this.setState({ room: room });
-                if (NODE_ENV === "development") {
-                    (window as any).room = room;
-                }
+                    onKickedWithReason: reason => {
+                        console.error("kicked with reason: " + reason);
+                    },
+                },
+            );
+            cursorAdapter.setRoom(room);
+            this.setDefaultPptData(pptDatas, room);
+            room.setMemberState({
+                pencilOptions: {
+                    disableBezier: false,
+                    sparseHump: 1.0,
+                    sparseWidth: 1.0,
+                    enableDrawPoint: false,
+                },
+            });
+            if (room.state.broadcastState) {
+                this.setState({ viewMode: room.state.broadcastState.mode });
+            }
+            this.setState({ room: room });
+            if (NODE_ENV === "development") {
+                (window as any).room = room;
             }
         } catch (error) {
             message.error(error);

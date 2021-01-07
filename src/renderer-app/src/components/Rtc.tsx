@@ -11,7 +11,7 @@ export interface RtcRenderProps extends RtcState {
     cloudRecording: CloudRecording | null;
     channelType: RtcChannelType;
     toggleRecording: (callback?: () => void) => void;
-    toggleCalling: (callback?: () => void) => void;
+    toggleCalling: (rtcUID: number, callback?: () => void) => void;
 }
 
 export interface RtcProps {
@@ -25,7 +25,6 @@ export interface RtcProps {
 export type RtcState = {
     isRecording: boolean;
     isCalling: boolean;
-    creatorUid: string | null;
     recordingUuid?: string;
 };
 
@@ -40,22 +39,7 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
     state: RtcState = {
         isRecording: false,
         isCalling: false,
-        creatorUid: null,
     };
-
-    public async componentDidMount(): Promise<void> {
-        const { identity } = this.props;
-
-        if (identity === Identity.creator) {
-            this.rtc.rtcEngine.on("joinedChannel", async (_channel, uid) => {
-                this.setState({ creatorUid: String(uid) });
-            });
-        } else {
-            this.rtc.rtcEngine.once("userJoined", uid => {
-                this.setState({ creatorUid: String(uid) });
-            });
-        }
-    }
 
     public async componentWillUnmount(): Promise<void> {
         if (this.state.isCalling) {
@@ -147,13 +131,13 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
         );
     };
 
-    private toggleCalling = (callback?: () => void): void => {
+    private toggleCalling = (rtcUID: number, callback?: () => void): void => {
         this.setState(
             state => ({ isCalling: !state.isCalling }),
             async () => {
                 if (this.state.isCalling) {
-                    const { roomId, identity, userId } = this.props;
-                    this.rtc.join(roomId, identity, userId);
+                    const { roomId, identity } = this.props;
+                    this.rtc.join(roomId, identity, rtcUID);
                 } else {
                     if (this.cloudRecording?.isRecording) {
                         await this.stopRecording();

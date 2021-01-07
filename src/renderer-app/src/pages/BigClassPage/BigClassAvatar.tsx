@@ -23,18 +23,18 @@ export class BigClassAvatar extends React.PureComponent<BigClassAvatarProps> {
         canvas: React.ReactNode,
         ctrlBtns: React.ReactNode,
     ): React.ReactNode => {
-        const { user, small, onExpand } = this.props;
+        const { avatarUser, small, onExpand } = this.props;
         return (
             <section className={classNames("big-class-avatar-wrap", { "is-small": small })}>
                 {canvas}
-                {!user.camera && (
+                {!avatarUser.camera && (
                     <div className="big-class-avatar-background">
                         <img src={small ? noCameraSmall : noCamera} alt="no camera" />
                     </div>
                 )}
                 <div
                     className={classNames("big-class-avatar-ctrl-layer", {
-                        "with-video": user.camera,
+                        "with-video": avatarUser.camera,
                     })}
                 >
                     {small ? (
@@ -43,7 +43,7 @@ export class BigClassAvatar extends React.PureComponent<BigClassAvatarProps> {
                         </button>
                     ) : (
                         <>
-                            <h1 className="big-class-avatar-title">{user.name || user.id}</h1>
+                            <h1 className="big-class-avatar-title">{avatarUser.name}</h1>
                             {ctrlBtns}
                         </>
                     )}

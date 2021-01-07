@@ -14,7 +14,7 @@ export interface VideoAvatarProps {
     /** id of current login user */
     userId: string;
     /** the user of this avatar */
-    user: RTMUser;
+    avatarUser: RTMUser;
     rtcEngine: AgoraSDK;
     updateDeviceState: (id: string, camera: boolean, mic: boolean) => void;
     children: (canvas: React.ReactNode, ctrlBtns: React.ReactNode) => React.ReactNode;
@@ -28,48 +28,44 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
             return;
         }
 
-        const { userId, user, rtcEngine } = this.props;
+        const { userId, avatarUser, rtcEngine } = this.props;
 
-        const numUid = Number(user.id);
-        if (Number.isNaN(numUid)) {
-            throw new Error("RTC uid has to be number");
-        }
-
-        if (prevProps.user.mic !== user.mic) {
-            if (userId === user.id) {
-                rtcEngine.enableLocalAudio(user.mic);
+        if (prevProps.avatarUser.mic !== avatarUser.mic) {
+            if (userId === avatarUser.uuid) {
+                rtcEngine.enableLocalAudio(avatarUser.mic);
             } else {
-                rtcEngine.setupRemoteVideo(numUid, this.el);
-                rtcEngine.muteRemoteAudioStream(numUid, !user.mic);
+                rtcEngine.setupRemoteVideo(avatarUser.rtcUID, this.el);
+                rtcEngine.muteRemoteAudioStream(avatarUser.rtcUID, !avatarUser.mic);
             }
         }
 
-        if (prevProps.user.camera !== user.camera) {
-            if (userId === user.id) {
-                rtcEngine.enableLocalVideo(user.camera);
+        if (prevProps.avatarUser.camera !== avatarUser.camera) {
+            if (userId === avatarUser.uuid) {
+                rtcEngine.enableLocalVideo(avatarUser.camera);
             } else {
-                rtcEngine.setupRemoteVideo(numUid, this.el);
-                rtcEngine.muteRemoteVideoStream(numUid, !user.camera);
+                rtcEngine.setupRemoteVideo(avatarUser.rtcUID, this.el);
+                rtcEngine.muteRemoteVideoStream(avatarUser.rtcUID, !avatarUser.camera);
             }
         }
     }
 
     render(): React.ReactNode {
-        const { user, userId, identity, children } = this.props;
+        const { avatarUser, userId, identity, children } = this.props;
         // creator can turn off joiners camera or mic but cannot turn on.
         const isCameraCtrlDisable =
-            user.id !== userId && (identity !== Identity.creator || !user.camera);
-        const isMicCtrlDisable = user.id !== userId && (identity !== Identity.creator || !user.mic);
+            avatarUser.uuid !== userId && (identity !== Identity.creator || !avatarUser.camera);
+        const isMicCtrlDisable =
+            avatarUser.uuid !== userId && (identity !== Identity.creator || !avatarUser.mic);
 
         const canvas = <div className="video-avatar-canvas" ref={this.setupVideo}></div>;
 
         const ctrlBtns = (
             <div className="video-avatar-ctrl-btns">
                 <button onClick={this.onCameraClick} disabled={isCameraCtrlDisable}>
-                    <img src={user.camera ? cameraIcon : cameraDisabled} alt="camera" />
+                    <img src={avatarUser.camera ? cameraIcon : cameraDisabled} alt="camera" />
                 </button>
                 <button onClick={this.onMicClick} disabled={isMicCtrlDisable}>
-                    <img src={user.mic ? microphone : microphoneDisabled} alt="microphone" />
+                    <img src={avatarUser.mic ? microphone : microphoneDisabled} alt="microphone" />
                 </button>
             </div>
         );
@@ -80,38 +76,33 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
     private setupVideo = (el: HTMLDivElement | null): void => {
         this.el = el;
         if (this.el) {
-            const { userId, user, rtcEngine } = this.props;
+            const { userId, avatarUser, rtcEngine } = this.props;
 
-            const numUid = Number(user.id);
-            if (Number.isNaN(numUid)) {
-                throw new Error("RTC uid has to be number");
-            }
-
-            if (userId === user.id) {
+            if (userId === avatarUser.uuid) {
                 rtcEngine.setupLocalVideo(this.el);
-                rtcEngine.enableLocalVideo(user.camera);
-                rtcEngine.enableLocalAudio(user.mic);
+                rtcEngine.enableLocalVideo(avatarUser.camera);
+                rtcEngine.enableLocalAudio(avatarUser.mic);
             } else {
-                rtcEngine.setupRemoteVideo(numUid, this.el);
-                rtcEngine.muteRemoteVideoStream(numUid, !user.camera);
-                rtcEngine.muteRemoteAudioStream(numUid, !user.mic);
+                rtcEngine.setupRemoteVideo(avatarUser.rtcUID, this.el);
+                rtcEngine.muteRemoteVideoStream(avatarUser.rtcUID, !avatarUser.camera);
+                rtcEngine.muteRemoteAudioStream(avatarUser.rtcUID, !avatarUser.mic);
             }
         }
     };
 
     private onCameraClick = (): void => {
-        const { identity, userId, user } = this.props;
+        const { identity, userId, avatarUser } = this.props;
 
-        if (identity === Identity.creator || userId === user.id) {
-            this.props.updateDeviceState(user.id, !user.camera, user.mic);
+        if (identity === Identity.creator || userId === avatarUser.uuid) {
+            this.props.updateDeviceState(avatarUser.uuid, !avatarUser.camera, avatarUser.mic);
         }
     };
 
     private onMicClick = (): void => {
-        const { identity, userId, user } = this.props;
+        const { identity, userId, avatarUser } = this.props;
 
-        if (identity === Identity.creator || userId === user.id) {
-            this.props.updateDeviceState(user.id, user.camera, !user.mic);
+        if (identity === Identity.creator || userId === avatarUser.uuid) {
+            this.props.updateDeviceState(avatarUser.uuid, avatarUser.camera, !avatarUser.mic);
         }
     };
 }
