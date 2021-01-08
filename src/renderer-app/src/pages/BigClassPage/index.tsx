@@ -57,10 +57,17 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     public componentDidUpdate(prevProps: BigClassPageProps): void {
         if (this.props.match.params.identity !== Identity.creator) {
             // join rtc room to listen to creator events
-            const { isCalling, toggleCalling } = this.props.rtc;
             const { currentUser } = this.props.rtm;
-            if (!isCalling && !prevProps.rtm.currentUser && currentUser) {
-                toggleCalling(currentUser.rtcUID);
+            if (currentUser) {
+                const { isCalling, toggleCalling } = this.props.rtc;
+                if (!isCalling && !prevProps.rtm.currentUser) {
+                    toggleCalling(currentUser.rtcUID);
+                }
+
+                const { room } = this.props.whiteboard;
+                if (room) {
+                    room.disableDeviceInputs = !currentUser.isSpeak;
+                }
             }
         }
 

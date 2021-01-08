@@ -48,10 +48,18 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     }
 
     componentDidUpdate(prevProps: SmallClassPageProps) {
-        const { isCalling, toggleCalling } = this.props.rtc;
-        const { currentUser } = this.props.rtm;
-        if (!isCalling && !prevProps.rtm.currentUser && currentUser) {
-            toggleCalling(currentUser.rtcUID);
+        const { currentUser, classMode } = this.props.rtm;
+        if (currentUser) {
+            const { isCalling, toggleCalling } = this.props.rtc;
+            if (!isCalling && !prevProps.rtm.currentUser) {
+                toggleCalling(currentUser.rtcUID);
+            }
+
+            const { room } = this.props.whiteboard;
+            if (room && this.props.match.params.identity !== Identity.creator) {
+                room.disableDeviceInputs =
+                    classMode === ClassModeType.Interaction || !currentUser.isSpeak;
+            }
         }
     }
 

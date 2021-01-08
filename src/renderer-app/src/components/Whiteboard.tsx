@@ -206,6 +206,7 @@ export class Whiteboard extends React.Component<WhiteboardProps, WhiteboardState
                     },
                 },
             );
+            room.disableDeviceInputs = identity !== Identity.creator;
             cursorAdapter.setRoom(room);
             this.setDefaultPptData(pptDatas, room);
             room.setMemberState({
