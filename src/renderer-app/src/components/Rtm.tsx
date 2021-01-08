@@ -2,14 +2,22 @@ import React from "react";
 import { RouteComponentProps } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
-import { ClassModeType, Rtm as RtmApi, RTMessage, RTMessageType } from "../apiMiddleware/Rtm";
+import {
+    ClassModeType,
+    ClassStatusType,
+    NonDefaultUserProp,
+    Rtm as RTMAPI,
+    RTMessage,
+    RTMessageType,
+    RTMEvents,
+} from "../apiMiddleware/Rtm";
 import { Identity } from "../utils/localStorage/room";
 import { ChatMessageItem } from "./ChatPanel/ChatMessage";
 import { RTMUser } from "./ChatPanel/ChatUser";
 import { ordinaryRoomInfo, OrdinaryRoomInfo, usersInfo } from "../apiMiddleware/flatServer";
 
 export interface RtmRenderProps extends RtmState {
-    rtm: RtmApi;
+    rtm: RTMAPI;
     updateHistory: () => Promise<void>;
     acceptRaisehand: (userUUID: string) => void;
     onMessageSend: (text: string) => Promise<void>;
@@ -19,6 +27,10 @@ export interface RtmRenderProps extends RtmState {
     onSpeak: (configs: Array<{ userUUID: string; speak: boolean }>) => void;
     updateDeviceState: (userUUID: string, camera: boolean, mic: boolean) => void;
     toggleClassMode: () => void;
+    startClass: () => void;
+    pauseClass: () => void;
+    resumeClass: () => void;
+    stopClass: () => void;
 }
 
 export interface RtmProps {
@@ -35,14 +47,16 @@ export type RtmState = {
     joiners: RTMUser[];
     isBan: boolean;
     classMode: ClassModeType;
+    classStatus: ClassStatusType;
     roomInfo?: OrdinaryRoomInfo;
     creator?: RTMUser;
     currentUser?: RTMUser;
 };
 
 export class Rtm extends React.Component<RtmProps, RtmState> {
-    private rtm = new RtmApi();
+    private rtm = new RTMAPI();
     private noMoreRemoteMessages = false;
+    private cancelHandleChannelStatusTimeout?: number;
 
     constructor(props: RtmProps) {
         super(props);
@@ -54,6 +68,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             joiners: [],
             isBan: false,
             classMode: ClassModeType.Lecture,
+            classStatus: ClassStatusType.Idle,
         };
     }
 
@@ -69,7 +84,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         this.updateHistory();
 
         const members = await channel.getMembers();
-        this.sortUsers(await this.createUsers(members));
+        this.sortUsers(await this.createUsers(members), this.updateInitialRoomState);
 
         channel.on("MemberJoined", async userUUID => {
             this.sortUsers(await this.createUsers([userUUID]));
@@ -83,6 +98,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
 
     componentWillUnmount() {
         this.rtm.destroy();
+        window.clearTimeout(this.cancelHandleChannelStatusTimeout);
     }
 
     render(): React.ReactNode {
@@ -98,6 +114,10 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             onSpeak: this.onSpeak,
             updateDeviceState: this.updateDeviceState,
             toggleClassMode: this.toggleClassMode,
+            startClass: this.startClass,
+            pauseClass: this.pauseClass,
+            resumeClass: this.resumeClass,
+            stopClass: this.stopClass,
         });
     }
 
@@ -114,7 +134,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                       }
                     : user,
             );
-            this.rtm.sendCommand(RTMessageType.AcceptRaiseHand, { userUUID, accept: true });
+            this.rtm.sendCommand({
+                type: RTMessageType.AcceptRaiseHand,
+                value: { userUUID, accept: true },
+                keepHistory: true,
+            });
         }
     };
 
@@ -128,7 +152,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             }
         }
         this.speak(configs);
-        this.rtm.sendCommand(RTMessageType.Speak, configs);
+        this.rtm.sendCommand({
+            type: RTMessageType.Speak,
+            value: configs,
+            keepHistory: true,
+        });
     };
 
     private onMessageSend = async (text: string): Promise<void> => {
@@ -142,7 +170,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     private onCancelAllHandRaising = (): void => {
         if (this.props.identity === Identity.creator) {
             this.cancelAllHandRaising();
-            this.rtm.sendCommand(RTMessageType.CancelAllHandRaising, true, true);
+            this.rtm.sendCommand({
+                type: RTMessageType.CancelAllHandRaising,
+                value: true,
+                keepHistory: true,
+            });
         }
     };
 
@@ -172,11 +204,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                     return user;
                 },
                 () => {
-                    this.rtm.sendCommand(
-                        RTMessageType.DeviceState,
-                        { userUUID, camera, mic },
-                        true,
-                    );
+                    this.rtm.sendCommand({
+                        type: RTMessageType.DeviceState,
+                        value: { userUUID, camera, mic },
+                        keepHistory: true,
+                    });
                 },
             );
         }
@@ -202,7 +234,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                 ],
             }),
             () => {
-                this.rtm.sendCommand(RTMessageType.BanText, this.state.isBan, true);
+                this.rtm.sendCommand({
+                    type: RTMessageType.BanText,
+                    value: this.state.isBan,
+                    keepHistory: true,
+                });
             },
         );
     };
@@ -219,7 +255,11 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             () => {
                 const { currentUser } = this.state;
                 if (currentUser) {
-                    this.rtm.sendCommand(RTMessageType.RaiseHand, currentUser.isRaiseHand, true);
+                    this.rtm.sendCommand({
+                        type: RTMessageType.RaiseHand,
+                        value: currentUser.isRaiseHand,
+                        keepHistory: true,
+                    });
                 }
             },
         );
@@ -353,6 +393,57 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                 this.setState({ classMode });
             }
         });
+
+        this.rtm.on(RTMessageType.ClassStatus, (classStatus, senderId) => {
+            if (senderId === this.state.creator?.uuid) {
+                this.setState({ classStatus });
+            }
+        });
+
+        this.rtm.on(RTMessageType.RequestChannelStatus, (roomUUID, senderId) => {
+            if (roomUUID === this.props.roomId) {
+                type UStates = RTMEvents[RTMessageType.ChannelStatus]["uStates"];
+                const uStates: UStates = {};
+                const updateUStates = (user?: RTMUser) => {
+                    if (!user) {
+                        return;
+                    }
+                    let result = "";
+                    if (user.isSpeak) {
+                        result += NonDefaultUserProp.IsSpeak;
+                    }
+                    if (user.isRaiseHand) {
+                        result += NonDefaultUserProp.IsRaiseHand;
+                    }
+                    if (user.camera) {
+                        result += NonDefaultUserProp.Camera;
+                    }
+                    if (user.mic) {
+                        result += NonDefaultUserProp.Mic;
+                    }
+                    if (result) {
+                        uStates[user.uuid] = result as UStates[keyof UStates];
+                    }
+                };
+
+                const { creator, speakingJoiners, handRaisingJoiners, joiners } = this.state;
+                updateUStates(creator);
+                speakingJoiners.forEach(updateUStates);
+                handRaisingJoiners.forEach(updateUStates);
+                joiners.forEach(updateUStates);
+
+                this.rtm.sendCommand({
+                    type: RTMessageType.ChannelStatus,
+                    value: {
+                        cStatus: this.state.classStatus,
+                        uStates,
+                    },
+                    keepHistory: false,
+                    peerId: senderId,
+                    retry: 3,
+                });
+            }
+        });
     };
 
     private updateHistory = async (): Promise<void> => {
@@ -395,9 +486,39 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                         : ClassModeType.Lecture,
             }),
             () => {
-                this.rtm.sendCommand(RTMessageType.ClassMode, this.state.classMode);
+                this.rtm.sendCommand({
+                    type: RTMessageType.ClassMode,
+                    value: this.state.classMode,
+                    keepHistory: true,
+                });
             },
         );
+    };
+
+    private switchClassStatus = (classStatus: ClassStatusType): void => {
+        this.setState({ classStatus }, () => {
+            this.rtm.sendCommand({
+                type: RTMessageType.ClassStatus,
+                value: classStatus,
+                keepHistory: true,
+            });
+        });
+    };
+
+    private startClass = (): void => {
+        this.switchClassStatus(ClassStatusType.Started);
+    };
+
+    private pauseClass = (): void => {
+        this.switchClassStatus(ClassStatusType.Paused);
+    };
+
+    private resumeClass = (): void => {
+        this.switchClassStatus(ClassStatusType.Started);
+    };
+
+    private stopClass = (): void => {
+        this.switchClassStatus(ClassStatusType.Stopped);
     };
 
     /**
@@ -512,6 +633,125 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                 isRaiseHand: false,
             }),
         );
+    };
+
+    /**
+     * There are states (e.g. user camera and mic states) that are not stored in server.
+     * New joined user will request these states from other users in the room.
+     */
+    private updateInitialRoomState = async (): Promise<void> => {
+        if (this.props.identity === Identity.creator) {
+            return;
+        }
+
+        const { creator, joiners, handRaisingJoiners, speakingJoiners } = this.state;
+        if (!creator) {
+            console.error("creator is empty when fetching initial group states");
+            return;
+        }
+
+        // request room info from these users
+        const pickedSenders: string[] = [];
+
+        const handleChannelStatus = (
+            { cStatus, uStates }: RTMEvents[RTMessageType.ChannelStatus],
+            senderId: string,
+        ) => {
+            if (!pickedSenders.some(userUUID => userUUID === senderId)) {
+                return;
+            }
+            this.setState({ classStatus: cStatus });
+            this.sortUsers(user => {
+                if (uStates[user.uuid]) {
+                    const newUser = { ...user };
+                    for (const code of uStates[user.uuid]) {
+                        switch (code) {
+                            case NonDefaultUserProp.IsSpeak: {
+                                newUser.isSpeak = true;
+                                break;
+                            }
+                            case NonDefaultUserProp.IsRaiseHand: {
+                                newUser.isRaiseHand = true;
+                                break;
+                            }
+                            case NonDefaultUserProp.Camera: {
+                                newUser.camera = true;
+                                break;
+                            }
+                            case NonDefaultUserProp.Mic: {
+                                newUser.mic = true;
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+                    return newUser;
+                }
+                return user;
+            });
+        };
+
+        const cancelHandleChannelStatus = () => {
+            this.rtm.off(RTMessageType.ChannelStatus, handleChannelStatus);
+        };
+
+        this.rtm.once(RTMessageType.ChannelStatus, handleChannelStatus);
+        window.clearTimeout(this.cancelHandleChannelStatusTimeout);
+        this.cancelHandleChannelStatusTimeout = window.setTimeout(cancelHandleChannelStatus, 5000);
+
+        // creator plus joiners
+        const usersTotal = 1 + this.joinersCountTotal();
+
+        if (usersTotal <= 50) {
+            // in a small room, ask creator directly for info
+            pickedSenders.push(creator.uuid);
+        } else {
+            // too many users. pick a random user instead.
+            // @TODO pick three random users
+            pickedSenders.push((this.pickRandomJoiner() || creator).uuid);
+        }
+
+        for (const senderUUID of pickedSenders) {
+            try {
+                await this.rtm.sendCommand({
+                    type: RTMessageType.RequestChannelStatus,
+                    value: this.props.roomId,
+                    keepHistory: false,
+                    peerId: senderUUID,
+                    retry: 3,
+                });
+            } catch (e) {
+                console.error(e);
+                cancelHandleChannelStatus();
+            }
+        }
+    };
+
+    /** number of all the joiners */
+    joinersCountTotal = (): number => {
+        const { joiners, handRaisingJoiners, speakingJoiners } = this.state;
+        return joiners.length + handRaisingJoiners.length + speakingJoiners.length;
+    };
+
+    pickRandomJoiner = (): RTMUser | void => {
+        const { joiners, handRaisingJoiners, speakingJoiners } = this.state;
+        let index = Math.floor(Math.random() * this.joinersCountTotal());
+
+        if (index < speakingJoiners.length) {
+            return speakingJoiners[index];
+        }
+
+        index = index - speakingJoiners.length;
+        if (index < handRaisingJoiners.length) {
+            return handRaisingJoiners[index];
+        }
+
+        index = index - joiners.length;
+        if (index < joiners.length) {
+            return joiners[index];
+        }
     };
 }
 

@@ -3,13 +3,7 @@ import classNames from "classnames";
 import "./ClassStatus.less";
 import { OrdinaryRoomInfo } from "../apiMiddleware/flatServer";
 import { RoomType } from "../apiMiddleware/flatServer/constants";
-
-export enum ClassStatusType {
-    Idle,
-    Started,
-    Paused,
-    Stopped,
-}
+import { ClassStatusType } from "../apiMiddleware/Rtm";
 
 export interface ClassStatusProps {
     classStatus: ClassStatusType;
