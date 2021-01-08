@@ -56,6 +56,7 @@ export type RtmState = {
 export class Rtm extends React.Component<RtmProps, RtmState> {
     private rtm = new RTMAPI();
     private noMoreRemoteMessages = false;
+    private cancelHandleChannelStatusTimeout?: number;
 
     constructor(props: RtmProps) {
         super(props);
@@ -97,6 +98,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
 
     componentWillUnmount() {
         this.rtm.destroy();
+        window.clearTimeout(this.cancelHandleChannelStatusTimeout);
     }
 
     render(): React.ReactNode {
@@ -696,7 +698,8 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         };
 
         this.rtm.once(RTMessageType.ChannelStatus, handleChannelStatus);
-        setTimeout(cancelHandleChannelStatus, 5000);
+        window.clearTimeout(this.cancelHandleChannelStatusTimeout);
+        this.cancelHandleChannelStatusTimeout = window.setTimeout(cancelHandleChannelStatus, 5000);
 
         // creator plus joiners
         const usersTotal = 1 + this.joinersCountTotal();
