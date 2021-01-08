@@ -2,12 +2,13 @@ import { Button, Dropdown, Menu } from "antd";
 import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React, { PureComponent } from "react";
-import { Link } from "react-router-dom";
 import { joinRoom } from "../apiMiddleware/flatServer";
 import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
+import { Link } from "react-router-dom";
 
 export type MainRoomListItemProps = {
+    showDate: boolean;
     /** 标题 */
     title: string;
     /** 开始时间 (UTC 时间戳) */
@@ -16,10 +17,10 @@ export type MainRoomListItemProps = {
     endTime?: number;
     /** 状态 */
     status: "Pending" | "Running" | "Stopped";
-    /** 房间/周期 uuid */
-    uuid: string;
-    /** 是否周期房间 */
-    isCyclical: boolean;
+    /** 周期 uuid */
+    periodicUUID: string;
+    /** 房间 uuid */
+    roomUUID: string;
     /** 发起者 userUUID */
     userUUID: string;
 
@@ -31,7 +32,18 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     public renderMenu = () => (
         <Menu>
             <Menu.Item>
-                <Link to={"/user/room/"}>房间详情</Link>
+                <Link
+                    to={{
+                        pathname: "/user/room/",
+                        state: {
+                            roomUUID: this.props.roomUUID,
+                            periodicUUID: this.props.periodicUUID,
+                            userUUID: this.props.userUUID,
+                        },
+                    }}
+                >
+                    房间详情
+                </Link>
             </Menu.Item>
             <Menu.Item>修改房间</Menu.Item>
             <Menu.Item>取消房间</Menu.Item>
@@ -78,22 +90,24 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     };
 
     public joinRoom = async () => {
-        const roomUUID = this.props.uuid;
+        const { roomUUID } = this.props;
         const identity = this.getIdentity();
         const data = await joinRoom(roomUUID);
         globals.whiteboard.uuid = data.whiteboardRoomUUID;
         globals.whiteboard.token = data.whiteboardRoomToken;
-        const url = `/${data.roomType}/${identity}/${roomUUID}/${this.getUserUUID()}/`;
+        const url = `/${data.roomType}/${identity}/${roomUUID}/${this.getUserUUID()}/`
         this.props.historyPush(url);
     };
 
     render() {
         return (
             <div className="room-list-cell-item">
-                <div className="room-list-cell-day">
-                    <div className="room-list-cell-modify" />
-                    <div className="room-list-cell-title">{this.renderDate()}</div>
-                </div>
+                {this.props.showDate && (
+                    <div className="room-list-cell-day">
+                        <div className="room-list-cell-modify" />
+                        <div className="room-list-cell-title">{this.renderDate()}</div>
+                    </div>
+                )}
                 <div className="room-list-cell">
                     <div className="room-list-cell-left">
                         <div className="room-list-cell-name">{this.props.title}</div>

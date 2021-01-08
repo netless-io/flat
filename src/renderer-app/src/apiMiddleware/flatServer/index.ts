@@ -193,6 +193,37 @@ export function ordinaryRoomInfo(roomUUID: string): Promise<OrdinaryRoomInfoResu
     });
 }
 
+export interface PeriodicSubRoomInfoPayload {
+    periodicUUID: string;
+    roomUUID: string;
+}
+
+export interface PeriodicSubRoomInfo {
+    title: string;
+    beginTime: string;
+    endTime: string;
+    roomType: RoomType;
+    roomStatus: RoomStatus;
+    ownerUUID: string;
+}
+
+export interface PeriodicSubRoomInfoResult {
+    roomInfo: PeriodicSubRoomInfo;
+}
+
+export function periodicSubRoomInfo(
+    roomUUID: string,
+    periodicUUID: string,
+): Promise<PeriodicSubRoomInfoResult> {
+    return post<PeriodicSubRoomInfoPayload, PeriodicSubRoomInfoResult>(
+        "/room/info/periodic-sub-room",
+        {
+            roomUUID,
+            periodicUUID,
+        },
+    );
+}
+
 export interface PeriodicRoomInfoPayload {
     periodicUUID: string;
 }
@@ -212,7 +243,7 @@ export type PeriodicRoomInfoResult = {
 };
 
 export function periodicRoomInfo(periodicUUID: string): Promise<PeriodicRoomInfoResult> {
-    return post<PeriodicRoomInfoPayload, PeriodicRoomInfoResult>("room/info/ordinary", {
+    return post<PeriodicRoomInfoPayload, PeriodicRoomInfoResult>("room/info/periodic", {
         periodicUUID,
     });
 }
@@ -235,6 +266,30 @@ export type StopClassResult = undefined;
 
 export function stopClass(roomUUID: string): Promise<StopClassResult> {
     return post<StopClassPayload, StopClassResult>("room/update/stopped", { roomUUID });
+}
+
+export type CancelOrdinaryRoomResult = undefined;
+
+export interface CancelOrdinaryRoomPayload {
+    roomUUID: string;
+}
+
+export function cancelOrdinaryRoom(roomUUID: string): Promise<CancelOrdinaryRoomResult> {
+    return post<OrdinaryRoomInfoPayload, CancelOrdinaryRoomResult>("room/cancel/periodic", {
+        roomUUID,
+    });
+}
+
+export type CancelPeriodicRoomResult = undefined;
+
+export interface CancelPeriodicRoomPayload {
+    perdiodicUUID: string;
+}
+
+export function cancelPeriodicRoom(periodicUUID: string): Promise<CancelPeriodicRoomResult> {
+    return post<PeriodicRoomInfoPayload, CancelPeriodicRoomResult>("room/cancel/periodic", {
+        periodicUUID,
+    });
 }
 
 export interface LoginCheck {

@@ -43,6 +43,7 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         ipcAsyncByMain("set-win-size", {
             width: 1200,
             height: 668,
+            autoCenter: true,
         });
     }
 
