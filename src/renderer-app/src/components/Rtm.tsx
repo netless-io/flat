@@ -6,7 +6,7 @@ import {
     ClassModeType,
     ClassStatusType,
     NonDefaultUserProp,
-    Rtm as RtmApi,
+    Rtm as RTMAPI,
     RTMessage,
     RTMessageType,
     RTMEvents,
@@ -17,7 +17,7 @@ import { RTMUser } from "./ChatPanel/ChatUser";
 import { ordinaryRoomInfo, OrdinaryRoomInfo, usersInfo } from "../apiMiddleware/flatServer";
 
 export interface RtmRenderProps extends RtmState {
-    rtm: RtmApi;
+    rtm: RTMAPI;
     updateHistory: () => Promise<void>;
     acceptRaisehand: (userUUID: string) => void;
     onMessageSend: (text: string) => Promise<void>;
@@ -54,7 +54,7 @@ export type RtmState = {
 };
 
 export class Rtm extends React.Component<RtmProps, RtmState> {
-    private rtm = new RtmApi();
+    private rtm = new RTMAPI();
     private noMoreRemoteMessages = false;
 
     constructor(props: RtmProps) {
@@ -408,16 +408,16 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                     }
                     let result = "";
                     if (user.isSpeak) {
-                        result += NonDefaultUserProp.isSpeak;
+                        result += NonDefaultUserProp.IsSpeak;
                     }
                     if (user.isRaiseHand) {
-                        result += NonDefaultUserProp.isRaiseHand;
+                        result += NonDefaultUserProp.IsRaiseHand;
                     }
                     if (user.camera) {
-                        result += NonDefaultUserProp.camera;
+                        result += NonDefaultUserProp.Camera;
                     }
                     if (user.mic) {
-                        result += NonDefaultUserProp.mic;
+                        result += NonDefaultUserProp.Mic;
                     }
                     if (result) {
                         uStates[user.uuid] = result as UStates[keyof UStates];
@@ -633,6 +633,10 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         );
     };
 
+    /**
+     * There are states (e.g. user camera and mic states) that are not stored in server.
+     * New joined user will request these states from other users in the room.
+     */
     private updateInitialRoomState = async (): Promise<void> => {
         if (this.props.identity === Identity.creator) {
             return;
@@ -644,6 +648,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             return;
         }
 
+        // request room info from these users
         const pickedSenders: string[] = [];
 
         const handleChannelStatus = (
@@ -659,20 +664,25 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                     const newUser = { ...user };
                     for (const code of uStates[user.uuid]) {
                         switch (code) {
-                            case NonDefaultUserProp.isSpeak:
+                            case NonDefaultUserProp.IsSpeak: {
                                 newUser.isSpeak = true;
                                 break;
-                            case NonDefaultUserProp.isRaiseHand:
+                            }
+                            case NonDefaultUserProp.IsRaiseHand: {
                                 newUser.isRaiseHand = true;
                                 break;
-                            case NonDefaultUserProp.camera:
+                            }
+                            case NonDefaultUserProp.Camera: {
                                 newUser.camera = true;
                                 break;
-                            case NonDefaultUserProp.mic:
+                            }
+                            case NonDefaultUserProp.Mic: {
                                 newUser.mic = true;
                                 break;
-                            default:
+                            }
+                            default: {
                                 break;
+                            }
                         }
                     }
                     return newUser;
@@ -688,30 +698,16 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         this.rtm.once(RTMessageType.ChannelStatus, handleChannelStatus);
         setTimeout(cancelHandleChannelStatus, 5000);
 
-        const usersTotal = 1 + joiners.length + handRaisingJoiners.length + speakingJoiners.length;
+        // creator plus joiners
+        const usersTotal = 1 + this.joinersCountTotal();
 
         if (usersTotal <= 50) {
-            // ask creator for info
+            // in a small room, ask creator directly for info
             pickedSenders.push(creator.uuid);
         } else {
             // too many users. pick a random user instead.
             // @TODO pick three random users
-            let index = Math.floor(Math.random() * usersTotal);
-            if (index < speakingJoiners.length) {
-                pickedSenders.push(speakingJoiners[index].uuid);
-            } else {
-                index = index - speakingJoiners.length;
-                if (index < handRaisingJoiners.length) {
-                    pickedSenders.push(handRaisingJoiners[index].uuid);
-                } else {
-                    index = index - joiners.length;
-                    if (index < joiners.length) {
-                        pickedSenders.push(joiners[index].uuid);
-                    } else {
-                        pickedSenders.push(creator.uuid);
-                    }
-                }
-            }
+            pickedSenders.push((this.pickRandomJoiner() || creator).uuid);
         }
 
         for (const senderUUID of pickedSenders) {
@@ -727,6 +723,31 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                 console.error(e);
                 cancelHandleChannelStatus();
             }
+        }
+    };
+
+    /** number of all the joiners */
+    joinersCountTotal = (): number => {
+        const { joiners, handRaisingJoiners, speakingJoiners } = this.state;
+        return joiners.length + handRaisingJoiners.length + speakingJoiners.length;
+    };
+
+    pickRandomJoiner = (): RTMUser | void => {
+        const { joiners, handRaisingJoiners, speakingJoiners } = this.state;
+        let index = Math.floor(Math.random() * this.joinersCountTotal());
+
+        if (index < speakingJoiners.length) {
+            return speakingJoiners[index];
+        }
+
+        index = index - speakingJoiners.length;
+        if (index < handRaisingJoiners.length) {
+            return handRaisingJoiners[index];
+        }
+
+        index = index - joiners.length;
+        if (index < joiners.length) {
+            return joiners[index];
         }
     };
 }
