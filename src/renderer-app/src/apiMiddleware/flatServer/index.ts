@@ -217,6 +217,26 @@ export function periodicRoomInfo(periodicUUID: string): Promise<PeriodicRoomInfo
     });
 }
 
+export interface StartClassPayload {
+    roomUUID: string;
+}
+
+export type StartClassResult = undefined;
+
+export function startClass(roomUUID: string): Promise<StartClassResult> {
+    return post<StartClassPayload, StartClassResult>("room/update/running", { roomUUID });
+}
+
+export interface StopClassPayload {
+    roomUUID: string;
+}
+
+export type StopClassResult = undefined;
+
+export function stopClass(roomUUID: string): Promise<StopClassResult> {
+    return post<StopClassPayload, StopClassResult>("room/update/stopped", { roomUUID });
+}
+
 export interface LoginCheck {
     name: string;
     sex: "Man" | "Woman";
