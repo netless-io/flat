@@ -14,7 +14,7 @@ import { ChatPanel } from "../../components/ChatPanel";
 import { SmallClassAvatar } from "./SmallClassAvatar";
 import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
-import { ClassStatus, ClassStatusType } from "../../components/ClassStatus";
+import { ClassStatus } from "../../components/ClassStatus";
 import { withWhiteboardRoute, WithWhiteboardRouteProps } from "../../components/Whiteboard";
 import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
 import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
@@ -23,7 +23,7 @@ import { RTMUser } from "../../components/ChatPanel/ChatUser";
 import { Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
-import { ClassModeType } from "../../apiMiddleware/Rtm";
+import { ClassModeType, ClassStatusType } from "../../apiMiddleware/Rtm";
 
 import "./SmallClassPage.less";
 
@@ -31,7 +31,6 @@ export type SmallClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps &
 
 export type SmallClassPageState = {
     isRealtimeSideOpen: boolean;
-    classStatus: ClassStatusType;
 };
 
 class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPageState> {
@@ -40,7 +39,6 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 
         this.state = {
             isRealtimeSideOpen: true,
-            classStatus: ClassStatusType.Idle,
         };
 
         ipcAsyncByMain("set-win-size", {
@@ -98,22 +96,6 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         this.setState(state => ({ isRealtimeSideOpen: !state.isRealtimeSideOpen }));
     };
 
-    private startClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.Started });
-    };
-
-    private pauseClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.Paused });
-    };
-
-    private resumeClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.Started });
-    };
-
-    private stopClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.Stopped });
-    };
-
     private openReplayPage = () => {
         // @TODO 打开到当前的录制记录中
         const { uuid, identity, userId } = this.props.match.params;
@@ -162,7 +144,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 
     private renderTopBarLeft(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { classStatus } = this.state;
+        const { classStatus } = this.props.rtm;
         return (
             <>
                 <NetworkStatus />
@@ -199,7 +181,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 
     private renderTopBarCenter(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { classStatus } = this.state;
+        const { classStatus, pauseClass, stopClass, resumeClass, startClass } = this.props.rtm;
 
         if (identity !== Identity.creator) {
             return null;
@@ -210,10 +192,10 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 return (
                     <>
                         {this.renderClassMode()}
-                        <TopBarRoundBtn iconName="class-pause" onClick={this.pauseClass}>
+                        <TopBarRoundBtn iconName="class-pause" onClick={pauseClass}>
                             暂停上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
@@ -222,17 +204,17 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 return (
                     <>
                         {this.renderClassMode()}
-                        <TopBarRoundBtn iconName="class-pause" onClick={this.resumeClass}>
+                        <TopBarRoundBtn iconName="class-pause" onClick={resumeClass}>
                             恢复上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
                 );
             default:
                 return (
-                    <TopBarRoundBtn iconName="class-begin" onClick={this.startClass}>
+                    <TopBarRoundBtn iconName="class-begin" onClick={startClass}>
                         开始上课
                     </TopBarRoundBtn>
                 );

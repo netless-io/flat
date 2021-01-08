@@ -14,22 +14,22 @@ import { ChatPanel } from "../../components/ChatPanel";
 import { BigClassAvatar } from "./BigClassAvatar";
 import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
-import { ClassStatus, ClassStatusType } from "../../components/ClassStatus";
+import { ClassStatus } from "../../components/ClassStatus";
 import { withWhiteboardRoute, WithWhiteboardRouteProps } from "../../components/Whiteboard";
 import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
 import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
 import { RTMUser } from "../../components/ChatPanel/ChatUser";
+import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
+import { ClassStatusType } from "../../apiMiddleware/Rtm";
 import { Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
 
 import "./BigClassPage.less";
-import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 
 export type BigClassPageState = {
     isRealtimeSideOpen: boolean;
-    classStatus: ClassStatusType;
     speakingJoiner?: RTMUser;
     mainSpeaker?: RTMUser;
 };
@@ -44,7 +44,6 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
 
         this.state = {
             isRealtimeSideOpen: true,
-            classStatus: ClassStatusType.Idle,
             speakingJoiner,
             mainSpeaker: speakingJoiner,
         };
@@ -159,22 +158,6 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
         });
     };
 
-    private startClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.Started });
-    };
-
-    private pauseClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.Paused });
-    };
-
-    private resumeClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.Started });
-    };
-
-    private stopClass = (): void => {
-        this.setState({ classStatus: ClassStatusType.Stopped });
-    };
-
     private onCameraClick = (user: RTMUser) => {
         this.props.rtm.updateDeviceState(user.uuid, !user.camera, user.mic);
     };
@@ -207,7 +190,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
 
     private renderTopBarLeft(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { classStatus } = this.state;
+        const { classStatus } = this.props.rtm;
 
         return (
             <>
@@ -221,7 +204,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
 
     private renderTopBarCenter(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { classStatus } = this.state;
+        const { classStatus, pauseClass, stopClass, resumeClass, startClass } = this.props.rtm;
 
         if (identity !== Identity.creator) {
             return null;
@@ -231,10 +214,10 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
             case ClassStatusType.Started:
                 return (
                     <>
-                        <TopBarRoundBtn iconName="class-pause" onClick={this.pauseClass}>
+                        <TopBarRoundBtn iconName="class-pause" onClick={pauseClass}>
                             暂停上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
@@ -242,17 +225,17 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
             case ClassStatusType.Paused:
                 return (
                     <>
-                        <TopBarRoundBtn iconName="class-pause" onClick={this.resumeClass}>
+                        <TopBarRoundBtn iconName="class-pause" onClick={resumeClass}>
                             恢复上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
                 );
             default:
                 return (
-                    <TopBarRoundBtn iconName="class-begin" onClick={this.startClass}>
+                    <TopBarRoundBtn iconName="class-begin" onClick={startClass}>
                         开始上课
                     </TopBarRoundBtn>
                 );
