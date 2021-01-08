@@ -3,6 +3,7 @@ import "./MainRoomList.less";
 import { MainRoomListItem } from "./MainRoomListItem";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { FlatServerRoom, ListRoomsType } from "../apiMiddleware/flatServer";
+import { isSameDay } from "date-fns/esm";
 
 export type MainRoomListProps = {
     rooms: FlatServerRoom[];
@@ -13,8 +14,12 @@ export type MainRoomListProps = {
 
 export class MainRoomList extends PureComponent<MainRoomListProps> {
     private getRoomUUID = (e: FlatServerRoom) => {
-        return e.periodicUUID || e.roomUUID;
+        return e.roomUUID;
     };
+
+    private getPeriodicUUID = (e: FlatServerRoom) => {
+        return e.periodicUUID;
+    }
 
     private renderStatus = (status: RoomStatus) => {
         return status;
@@ -25,17 +30,21 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
     }
 
     public renderRooms() {
+        let lastOne: FlatServerRoom | null = null;
         return this.props.rooms.map(e => {
+            const showDate = !lastOne || !isSameDay(new Date(e.beginTime), new Date(lastOne.beginTime));
+            lastOne = e;
             return (
                 <MainRoomListItem
                     key={this.getRoomUUID(e)}
+                    showDate={showDate}
                     title={e.title}
                     status={this.renderStatus(e.roomStatus)}
                     beginTime={this.timeToNumber(e.beginTime)!}
                     endTime={this.timeToNumber(e.endTime)}
-                    isCyclical={Boolean(e.periodicUUID)}
+                    periodicUUID={this.getPeriodicUUID(e)}
+                    roomUUID={this.getRoomUUID(e)}
                     historyPush={this.props.historyPush}
-                    uuid={this.getRoomUUID(e)}
                     userUUID={e.ownerUUID}
                 />
             );
