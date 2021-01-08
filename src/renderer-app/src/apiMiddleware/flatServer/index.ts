@@ -242,6 +242,31 @@ export function periodicRoomInfo(periodicUUID: string): Promise<PeriodicRoomInfo
     });
 }
 
+export type CancelOrdinaryRoomResult = undefined;
+
+export interface CancelOrdinaryRoomPayload {
+    roomUUID: string;
+}
+
+export function cancelOrdinaryRoom(roomUUID: string): Promise<CancelOrdinaryRoomResult>{
+    return post<OrdinaryRoomInfoPayload, CancelOrdinaryRoomResult>("room/cancel/periodic", {
+        roomUUID,
+    })
+}
+
+
+export type CancelPeriodicRoomResult = undefined;
+
+export interface CancelPeriodicRoomPayload {
+    perdiodicUUID: string;
+}
+
+export function cancelPeriodicRoom(periodicUUID: string): Promise<CancelPeriodicRoomResult>{
+    return post<PeriodicRoomInfoPayload, CancelPeriodicRoomResult>("room/cancel/periodic", {
+        periodicUUID,
+    })
+}
+
 export interface LoginCheck {
     name: string;
     sex: "Man" | "Woman";

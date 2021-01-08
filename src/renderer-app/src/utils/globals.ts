@@ -10,7 +10,4 @@ export const globals = {
     rtm: {
         token: "",
     },
-    validation: {
-        isPeriodic: false,
-    }
 };

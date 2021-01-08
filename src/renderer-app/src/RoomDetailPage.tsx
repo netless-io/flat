@@ -6,22 +6,30 @@ import back from "./assets/image/back.svg";
 import home_icon_gray from "./assets/image/home-icon-gray.svg";
 import room_type from "./assets/image/room-type.svg";
 import docs_icon from "./assets/image/docs-icon.svg";
-import { Button } from "antd";
+import { Button, Input } from "antd";
 import { RoomStatus, RoomType } from "./apiMiddleware/flatServer/constants";
-import { ordinaryRoomInfo, periodicSubRoomInfo } from "./apiMiddleware/flatServer";
+import { ordinaryRoomInfo, periodicSubRoomInfo, joinRoom, cancelPeriodicRoom, cancelOrdinaryRoom } from "./apiMiddleware/flatServer";
+import { format } from "date-fns";
+import { zhCN } from "date-fns/locale";
+import { Identity } from "./utils/localStorage/room";
 import { globals } from "./utils/globals";
+import { getUserUuid } from "./utils/localStorage/accounts";
+import Modal from "antd/lib/modal/Modal";
 
 export type RoomDetailPageState = {
     isTeacher: boolean;
     rate: number;
     title: string;
-    beginTime: string;
-    endTime?: string;
+    beginTime: Date;
+    endTime: Date;
     roomType: RoomType;
     roomStatus: RoomStatus;
     ownerUUID: string;
     roomUUID: string;
-    periodicUUID: string
+    periodicUUID: string;
+    userUUID: string;
+    isPeriodic: boolean;
+    toggleCopyModal: boolean;
 };
 
 export type RoomDetailPageProps = RouteComponentProps<{ uuid: string }> & {
@@ -39,36 +47,128 @@ export default class RoomDetailPage extends PureComponent<
             isTeacher: true,
             rate: 0,
             title: "",
-            beginTime: "",
-            endTime: "",
+            beginTime: new Date(),
+            endTime: new Date(),
             roomStatus: RoomStatus.Pending,
             roomType: RoomType.BigClass,
             ownerUUID: "",
             roomUUID: "",
             periodicUUID: "",
+            userUUID: "",
+            isPeriodic: false,
+            toggleCopyModal: false,
         };
     }
 
     public async componentDidMount() {
-        const { roomUUID, periodicUUID } = this.props.location.state as RoomDetailPageState;
-        const periodic = globals.validation.isPeriodic;
+        const { roomUUID, periodicUUID, userUUID } = this.props.location.state as RoomDetailPageState;
         let res;
-        if (periodic === true) {
+        if (periodicUUID !== "") {
             res = await periodicSubRoomInfo(roomUUID, periodicUUID);
+            this.setState({ isPeriodic: true });
         } else {
             res = await ordinaryRoomInfo(roomUUID);
         }
-        console.log("this is res", res);
         this.setState({
             title: res.roomInfo.title,
-            beginTime: res.roomInfo.beginTime,
-            endTime: res.roomInfo.endTime,
+            beginTime: new Date(res.roomInfo.beginTime),
+            endTime: new Date(res.roomInfo.endTime),
             ownerUUID: res.roomInfo.ownerUUID,
             roomStatus: res.roomInfo.roomStatus,
             roomType: res.roomInfo.roomType,
             roomUUID,
             periodicUUID,
+            userUUID,
         });
+    }
+
+    public roomType = (type: RoomType) => {
+        const typeNameMap: Record<RoomType, string> = {
+            [RoomType.OneToOne]: "一对一",
+            [RoomType.SmallClass]: "小班课",
+            [RoomType.BigClass]: "大班课",
+        };
+        return typeNameMap[type];
+    }
+
+    public roomStatus = (type: RoomStatus) => {
+        const roomStatusMap: Record<RoomStatus, string> = {
+            [RoomStatus.Pending]: "待开始",
+            [RoomStatus.Running]: "进行中",
+            [RoomStatus.Stopped]: "已结束",
+        };
+        return roomStatusMap[type];
+    }
+
+    
+    public formatDate = (date: Date) => {
+        return format(date, "yyyy/MM/dd", { locale: zhCN });
+    }
+
+    public formatTime = (time: Date) => {
+        return format(time, "HH:mm");
+    }
+
+    public getIdentity = () => {
+        return getUserUuid() === this.state.userUUID ? Identity.creator : Identity.joiner;
+    };
+
+    public joinRoom = async () => {
+        const { roomUUID } = this.state;
+        const identity = this.getIdentity();
+        const res = await joinRoom(roomUUID);
+        globals.whiteboard.uuid = res.whiteboardRoomUUID;
+        globals.whiteboard.token = res.whiteboardRoomToken;
+        const url = `/${res.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
+        this.props.history.push(url);
+    }
+
+    public cancelRoom = async () => {
+        const { periodicUUID, roomUUID } = this.state;
+        if (periodicUUID !== "") {
+            await cancelPeriodicRoom(periodicUUID);
+        } else {
+            await cancelOrdinaryRoom(roomUUID);
+        }
+        this.props.history.push("/user/")
+    }
+
+    public showCopyModal = () => {
+        this.setState({ toggleCopyModal: true });
+    }
+
+    public handleCancel = () => {
+        this.setState({ toggleCopyModal: false });
+    }
+
+    public renderModal = (): React.ReactNode => {
+        // TODO  Data Rendering Modal
+        return (
+            <Modal
+                visible={this.state.toggleCopyModal}
+                onCancel={this.handleCancel}
+                okText="复制"
+                cancelText="取消"
+            >
+                <div className="modal-header">
+                    <div>陈绮贞邀请您加入 FLAT 房间</div>
+                    <div>点击链接加入，或添加至房间列表</div>
+                </div>
+                <div className="modal-content">
+                    <div className="modal-content-left">
+                        <span>房间主题</span>
+                        <span>房间号</span>
+                        <span>开始时间</span>
+                    </div>
+                    <div className="modal-content-right">
+                        <div>版本需求会议</div>
+                        <div>92789789798789</div>
+                        <div>2020/11/21 11:21~11~22</div>
+                    </div>
+                </div>
+                <Input type="text" placeholder="https://netless.link/url/5f2259d5069bc052d2" />
+            </Modal>
+        );
     }
 
     private renderButton = (): React.ReactNode => {
@@ -76,12 +176,15 @@ export default class RoomDetailPage extends PureComponent<
         if (isTeacher) {
             return (
                 <div className="user-room-btn-box">
-                    <Button className="user-room-btn" danger>
+                    <Button className="user-room-btn" danger onClick={this.cancelRoom}>
                         取消房间
                     </Button>
                     <Button className="user-room-btn">修改房间</Button>
-                    <Button className="user-room-btn">邀请加入</Button>
-                    <Button type="primary" className="user-room-btn">
+                    <Button className="user-room-btn" onClick={this.showCopyModal}>
+                        邀请加入
+                    </Button>
+                    {this.renderModal()}
+                    <Button className="user-room-btn" type="primary" onClick={this.joinRoom}>
                         进入房间
                     </Button>
                 </div>
@@ -92,8 +195,8 @@ export default class RoomDetailPage extends PureComponent<
                     <Button className="user-room-btn" danger>
                         删除房间
                     </Button>
-                    <Button className="user-room-btn">邀请加入</Button>
-                    <Button type="primary" className="user-room-btn">
+                    <Button className="user-room-btn" onClick={this.showCopyModal}>邀请加入</Button>
+                    <Button type="primary" className="user-room-btn" onClick={this.joinRoom}>
                         进入房间
                     </Button>
                 </div>
@@ -115,6 +218,14 @@ export default class RoomDetailPage extends PureComponent<
                             </Link>
                             <div className="user-segmentation" />
                             <div className="user-title">{this.state.title}</div>
+                            {this.state.isPeriodic ? (
+                                <div className="user-periodic">周期</div>
+                            ) : null}
+                            {this.state.isPeriodic ? (
+                                <div className="user-periodic-room">
+                                    <Link to="/user/">查看全部x场房间</Link>
+                                </div>
+                            ) : null}
                         </div>
                         <div className="user-schedule-cut-line" />
                     </div>
@@ -122,16 +233,26 @@ export default class RoomDetailPage extends PureComponent<
                         <div className="user-schedule-mid">
                             <div className="user-room-time">
                                 <div className="user-room-time-box">
-                                    <div className="user-room-time-number">14:30</div>
-                                    <div className="user-room-time-date">2020/11/25</div>
+                                    <div className="user-room-time-number">
+                                        {this.formatTime(this.state.beginTime)}
+                                    </div>
+                                    <div className="user-room-time-date">
+                                        {this.formatDate(this.state.beginTime)}
+                                    </div>
                                 </div>
                                 <div className="user-room-time-mid">
                                     <div className="user-room-time-during">1 小时</div>
-                                    <div className="user-room-time-state">{this.state.roomStatus}</div>
+                                    <div className="user-room-time-state">
+                                        {this.roomStatus(this.state.roomStatus)}
+                                    </div>
                                 </div>
-                                <div className="user-room-time-box">
-                                    <div className="user-room-time-number">15:30</div>
-                                    <div className="user-room-time-date">2020/11/25</div>
+                                <div className="user-room-txime-box">
+                                    <div className="user-room-time-number">
+                                        {this.formatTime(this.state.endTime)}
+                                    </div>
+                                    <div className="user-room-time-date">
+                                        {this.formatDate(this.state.endTime)}
+                                    </div>
                                 </div>
                             </div>
                             <div className="user-room-cut-line" />
@@ -150,7 +271,9 @@ export default class RoomDetailPage extends PureComponent<
                                         <img src={room_type} alt={"room_type"} />
                                         <span>房间类型</span>
                                     </div>
-                                    <div className="user-room-docs-right">{this.state.roomType}</div>
+                                    <div className="user-room-docs-right">
+                                        {this.roomType(this.state.roomType)}
+                                    </div>
                                 </div>
                                 <div className="user-room-docs">
                                     <div className="user-room-docs-title">

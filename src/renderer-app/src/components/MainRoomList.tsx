@@ -4,7 +4,6 @@ import { MainRoomListItem } from "./MainRoomListItem";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { FlatServerRoom, ListRoomsType } from "../apiMiddleware/flatServer";
 import { isSameDay } from "date-fns/esm";
-import { globals } from "../utils/globals";
 
 export type MainRoomListProps = {
     rooms: FlatServerRoom[];

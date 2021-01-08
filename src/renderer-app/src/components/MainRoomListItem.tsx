@@ -18,7 +18,7 @@ export type MainRoomListItemProps = {
     /** 状态 */
     status: "Pending" | "Running" | "Stopped";
     /** 周期 uuid */
-    periodicUUID?: string;
+    periodicUUID: string;
     /** 房间 uuid */
     roomUUID: string;
     /** 发起者 userUUID */
@@ -38,6 +38,7 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
                         state: {
                             roomUUID: this.props.roomUUID,
                             periodicUUID: this.props.periodicUUID,
+                            userUUID: this.props.userUUID,
                         },
                     }}
                 >
@@ -49,19 +50,6 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
             <Menu.Item>复制邀请</Menu.Item>
         </Menu>
     );
-
-    public handleHitoryPush = () => {
-        const { periodicUUID, roomUUID } = this.props;
-        let url: string;
-        if (periodicUUID) {
-            globals.validation.isPeriodic = true;
-            url = `/user/room/${periodicUUID}`;
-        } else {
-            globals.validation.isPeriodic = false;
-            url = `/user/room/${roomUUID}`;
-        }
-        this.props.historyPush(url);
-    };
 
     public renderDate = () => (
         <time dateTime={new Date(this.props.beginTime).toUTCString()}>
@@ -104,16 +92,10 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     public joinRoom = async () => {
         const { roomUUID } = this.props;
         const identity = this.getIdentity();
-        let res = await joinRoom(roomUUID);
-        const uuid = res.whiteboardRoomUUID;
-        globals.whiteboard.uuid = res.whiteboardRoomUUID;
-        globals.whiteboard.token = res.whiteboardRoomToken;
-        let url: string;
-        if (identity === Identity.creator) {
-            url = `/${res.roomType}/${Identity.creator}/${uuid}/`;
-        } else {
-            url = `/${res.roomType}/${Identity.joiner}/${uuid}/${this.getUserUUID()}/`;
-        }
+        const data = await joinRoom(roomUUID);
+        globals.whiteboard.uuid = data.whiteboardRoomUUID;
+        globals.whiteboard.token = data.whiteboardRoomToken;
+        const url = `/${data.roomType}/${identity}/${roomUUID}/${this.getUserUUID()}/`
         this.props.historyPush(url);
     };
 
