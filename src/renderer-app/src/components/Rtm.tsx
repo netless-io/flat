@@ -11,10 +11,17 @@ import {
     RTMessageType,
     RTMEvents,
 } from "../apiMiddleware/Rtm";
+import {
+    ordinaryRoomInfo,
+    OrdinaryRoomInfo,
+    startClass,
+    stopClass,
+    usersInfo,
+} from "../apiMiddleware/flatServer";
 import { Identity } from "../utils/localStorage/room";
 import { ChatMessageItem } from "./ChatPanel/ChatMessage";
 import { RTMUser } from "./ChatPanel/ChatUser";
-import { ordinaryRoomInfo, OrdinaryRoomInfo, usersInfo } from "../apiMiddleware/flatServer";
+import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 
 export interface RtmRenderProps extends RtmState {
     rtm: RTMAPI;
@@ -79,7 +86,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
 
         const { roomInfo } = await ordinaryRoomInfo(roomId);
         document.title = roomInfo.title;
-        this.setState({ roomInfo });
+        this.setState({ roomInfo, classStatus: this.mapRoomStatus(roomInfo.roomStatus) });
 
         this.updateHistory();
 
@@ -120,6 +127,23 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             stopClass: this.stopClass,
         });
     }
+
+    private mapRoomStatus = (roomStatus: RoomStatus): ClassStatusType => {
+        switch (roomStatus) {
+            case RoomStatus.Pending: {
+                return ClassStatusType.Idle;
+            }
+            case RoomStatus.Running: {
+                return ClassStatusType.Started;
+            }
+            case RoomStatus.Stopped: {
+                return ClassStatusType.Stopped;
+            }
+            default: {
+                return ClassStatusType.Idle;
+            }
+        }
+    };
 
     private acceptRaisehand = (userUUID: string): void => {
         if (this.props.identity === Identity.creator) {
@@ -496,12 +520,23 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     };
 
     private switchClassStatus = (classStatus: ClassStatusType): void => {
+        const { identity, roomId } = this.props;
+        if (identity !== Identity.creator) {
+            return;
+        }
+
         this.setState({ classStatus }, () => {
             this.rtm.sendCommand({
                 type: RTMessageType.ClassStatus,
                 value: classStatus,
                 keepHistory: true,
             });
+
+            if (classStatus === ClassStatusType.Started) {
+                startClass(roomId);
+            } else if (classStatus === ClassStatusType.Stopped) {
+                stopClass(roomId);
+            }
         });
     };
 
@@ -644,7 +679,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             return;
         }
 
-        const { creator, joiners, handRaisingJoiners, speakingJoiners } = this.state;
+        const { creator } = this.state;
         if (!creator) {
             console.error("creator is empty when fetching initial group states");
             return;

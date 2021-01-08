@@ -19,6 +19,7 @@ import { withWhiteboardRoute, WithWhiteboardRouteProps } from "../../components/
 import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
 import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
 import { RTMUser } from "../../components/ChatPanel/ChatUser";
+import ExitRoomConfirm, { ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 
 import { Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
@@ -34,6 +35,9 @@ export type SmallClassPageState = {
 };
 
 class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPageState> {
+    // @TODO remove ref
+    private exitRoomConfirmRef = { current: (_confirmType: ExitRoomConfirmType) => {} };
+
     public constructor(props: SmallClassPageProps) {
         super(props);
 
@@ -48,6 +52,10 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     }
 
     componentDidUpdate(prevProps: SmallClassPageProps) {
+        if (this.props.rtm.classStatus === ClassStatusType.Stopped) {
+            this.props.history.push("/user/");
+        }
+
         const { currentUser, classMode } = this.props.rtm;
         if (currentUser) {
             const { isCalling, toggleCalling } = this.props.rtc;
@@ -104,13 +112,22 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         this.setState(state => ({ isRealtimeSideOpen: !state.isRealtimeSideOpen }));
     };
 
+    private stopClass = (): void => {
+        // @TODO remove ref
+        this.exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
+    };
+
     private openReplayPage = () => {
         // @TODO 打开到当前的录制记录中
         const { uuid, identity, userId } = this.props.match.params;
+
         this.props.history.push(`/replay/${identity}/${uuid}/${userId}/`);
     };
 
     private renderWhiteBoard(): React.ReactNode {
+        const { identity } = this.props.match.params;
+        const { history } = this.props;
+        const { classStatus, stopClass } = this.props.rtm;
         return (
             <div className="realtime-box">
                 <TopBar
@@ -123,6 +140,13 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                     {this.props.whiteboard.whiteboardElement}
                     {this.renderRealtimePanel()}
                 </div>
+                <ExitRoomConfirm
+                    identity={identity}
+                    history={history}
+                    classStatus={classStatus}
+                    stopClass={stopClass}
+                    confirmRef={this.exitRoomConfirmRef}
+                />
             </div>
         );
     }
@@ -189,7 +213,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 
     private renderTopBarCenter(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { classStatus, pauseClass, stopClass, resumeClass, startClass } = this.props.rtm;
+        const { classStatus, pauseClass, resumeClass, startClass } = this.props.rtm;
 
         if (identity !== Identity.creator) {
             return null;
@@ -203,7 +227,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                         <TopBarRoundBtn iconName="class-pause" onClick={pauseClass}>
                             暂停上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
@@ -215,7 +239,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                         <TopBarRoundBtn iconName="class-pause" onClick={resumeClass}>
                             恢复上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
@@ -258,6 +282,14 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 <InviteButton uuid={uuid} />
                 {/* @TODO implement Options menu */}
                 <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
+                <TopBarRightBtn
+                    title="Exit"
+                    icon="exit"
+                    onClick={() => {
+                        // @TODO remove ref
+                        this.exitRoomConfirmRef.current(ExitRoomConfirmType.ExitButton);
+                    }}
+                />
                 <TopBarDivider />
                 <TopBarRightBtn
                     title="Open side panel"

@@ -20,6 +20,7 @@ import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
 import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
 import { RTMUser } from "../../components/ChatPanel/ChatUser";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
+import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ClassStatusType } from "../../apiMiddleware/Rtm";
@@ -29,6 +30,7 @@ import { ipcAsyncByMain } from "../../utils/ipc";
 import "./BigClassPage.less";
 
 export type BigClassPageState = {
+    isShowExitConfirm: boolean;
     isRealtimeSideOpen: boolean;
     speakingJoiner?: RTMUser;
     mainSpeaker?: RTMUser;
@@ -37,12 +39,16 @@ export type BigClassPageState = {
 export type BigClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps & WithRtmRouteProps;
 
 class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState> {
+    // @TODO remove ref
+    private exitRoomConfirmRef = { current: (_confirmType: ExitRoomConfirmType) => {} };
+
     public constructor(props: BigClassPageProps) {
         super(props);
 
         const speakingJoiner = this.props.rtm.speakingJoiners[0];
 
         this.state = {
+            isShowExitConfirm: false,
             isRealtimeSideOpen: true,
             speakingJoiner,
             mainSpeaker: speakingJoiner,
@@ -55,6 +61,10 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     }
 
     public componentDidUpdate(prevProps: BigClassPageProps): void {
+        if (this.props.rtm.classStatus === ClassStatusType.Stopped) {
+            this.props.history.push("/user/");
+        }
+
         if (this.props.match.params.identity !== Identity.creator) {
             // join rtc room to listen to creator events
             const { currentUser } = this.props.rtm;
@@ -165,12 +175,9 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
         });
     };
 
-    private onCameraClick = (user: RTMUser) => {
-        this.props.rtm.updateDeviceState(user.uuid, !user.camera, user.mic);
-    };
-
-    private onMicClick = (user: RTMUser) => {
-        this.props.rtm.updateDeviceState(user.uuid, user.camera, !user.mic);
+    private stopClass = (): void => {
+        // @TODO remove ref
+        this.exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
     };
 
     private openReplayPage = () => {
@@ -180,6 +187,9 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     };
 
     private renderWhiteBoard(): React.ReactNode {
+        const { identity } = this.props.match.params;
+        const { history } = this.props;
+        const { classStatus, stopClass } = this.props.rtm;
         return (
             <div className="realtime-box">
                 <TopBar
@@ -191,6 +201,13 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                     {this.props.whiteboard.whiteboardElement}
                     {this.renderRealtimePanel()}
                 </div>
+                <ExitRoomConfirm
+                    identity={identity}
+                    history={history}
+                    classStatus={classStatus}
+                    stopClass={stopClass}
+                    confirmRef={this.exitRoomConfirmRef}
+                />
             </div>
         );
     }
@@ -211,7 +228,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
 
     private renderTopBarCenter(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { classStatus, pauseClass, stopClass, resumeClass, startClass } = this.props.rtm;
+        const { classStatus, pauseClass, resumeClass, startClass } = this.props.rtm;
 
         if (identity !== Identity.creator) {
             return null;
@@ -224,7 +241,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                         <TopBarRoundBtn iconName="class-pause" onClick={pauseClass}>
                             暂停上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
@@ -235,7 +252,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                         <TopBarRoundBtn iconName="class-pause" onClick={resumeClass}>
                             恢复上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
@@ -284,6 +301,14 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                 <InviteButton uuid={uuid} />
                 {/* @TODO implement Options menu */}
                 <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
+                <TopBarRightBtn
+                    title="Exit"
+                    icon="exit"
+                    onClick={() => {
+                        // @TODO remove ref
+                        this.exitRoomConfirmRef.current(ExitRoomConfirmType.ExitButton);
+                    }}
+                />
                 <TopBarDivider />
                 <TopBarRightBtn
                     title="Open side panel"
