@@ -679,7 +679,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             return;
         }
 
-        const { creator, joiners, handRaisingJoiners, speakingJoiners } = this.state;
+        const { creator } = this.state;
         if (!creator) {
             console.error("creator is empty when fetching initial group states");
             return;
