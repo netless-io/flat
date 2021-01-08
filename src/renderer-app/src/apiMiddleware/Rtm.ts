@@ -53,10 +53,10 @@ export enum ClassStatusType {
 }
 
 export enum NonDefaultUserProp {
-    isSpeak = "s",
-    isRaiseHand = "r",
-    camera = "c",
-    mic = "m",
+    IsSpeak = "S",
+    IsRaiseHand = "R",
+    Camera = "C",
+    Mic = "M",
 }
 
 export enum RTMessageType {
