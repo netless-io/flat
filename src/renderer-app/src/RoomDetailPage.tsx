@@ -50,6 +50,13 @@ export default class RoomDetailPage extends PureComponent<
     RoomDetailPageProps,
     RoomDetailPageState
 > {
+    private roomStatusLocale = {
+        [RoomStatus.Idle]: "未开始",
+        [RoomStatus.Started]: "进行中",
+        [RoomStatus.Paused]: "已暂停",
+        [RoomStatus.Stopped]: "已停止",
+    };
+
     public constructor(props: RoomDetailPageProps) {
         super(props);
         this.state = {
@@ -59,7 +66,7 @@ export default class RoomDetailPage extends PureComponent<
                 title: "",
                 beginTime: new Date(),
                 endTime: new Date(),
-                roomStatus: RoomStatus.Pending,
+                roomStatus: RoomStatus.Idle,
                 roomType: RoomType.BigClass,
                 ownerUUID: "",
             },
@@ -103,15 +110,6 @@ export default class RoomDetailPage extends PureComponent<
             [RoomType.BigClass]: "大班课",
         };
         return typeNameMap[type];
-    };
-
-    public roomStatus = (type: RoomStatus): string => {
-        const roomStatusMap: Record<RoomStatus, string> = {
-            [RoomStatus.Pending]: "待开始",
-            [RoomStatus.Running]: "进行中",
-            [RoomStatus.Stopped]: "已结束",
-        };
-        return roomStatusMap[type];
     };
 
     public formatDate = (date: Date): string => {
@@ -260,7 +258,7 @@ export default class RoomDetailPage extends PureComponent<
                                 <div className="user-room-time-mid">
                                     <div className="user-room-time-during">1 小时</div>
                                     <div className="user-room-time-state">
-                                        {this.roomStatus(roomStatus)}
+                                        {this.roomStatusLocale[roomStatus]}
                                     </div>
                                 </div>
                                 <div className="user-room-txime-box">

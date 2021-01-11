@@ -50,7 +50,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
                     key={this.getRoomUUID(room)}
                     showDate={showDate}
                     title={room.title}
-                    status={this.renderStatus(room.roomStatus)}
+                    roomStatus={this.renderStatus(room.roomStatus)}
                     beginTime={this.timeToNumber(room.beginTime)!}
                     endTime={this.timeToNumber(room.endTime)}
                     periodicUUID={this.getPeriodicUUID(room)}

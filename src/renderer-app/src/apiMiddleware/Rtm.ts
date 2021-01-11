@@ -3,6 +3,7 @@ import polly from "polly-js";
 import { v4 as uuidv4 } from "uuid";
 import { AGORA, NODE_ENV } from "../constants/Process";
 import { EventEmitter } from "events";
+import { RoomStatus } from "./flatServer/constants";
 
 /**
  * @see {@link https://docs.agora.io/cn/Real-time-Messaging/rtm_get_event?platform=RESTful#a-namecreate_history_resa创建历史消息查询资源-api（post）}
@@ -45,13 +46,6 @@ export enum ClassModeType {
     Interaction = "Interaction",
 }
 
-export enum ClassStatusType {
-    Idle = "Idle",
-    Started = "Started",
-    Paused = "Paused",
-    Stopped = "Stopped",
-}
-
 export enum NonDefaultUserProp {
     IsSpeak = "S",
     IsRaiseHand = "R",
@@ -82,7 +76,7 @@ export enum RTMessageType {
     /** creator updates class mode */
     ClassMode = "ClassMode",
     /** creator updates class status */
-    ClassStatus = "ClassStatus",
+    RoomStatus = "RoomStatus",
     /** joiner request room's status */
     RequestChannelStatus = "RequestChannelStatus",
     /** send room's status */
@@ -99,11 +93,11 @@ export type RTMEvents = {
     [RTMessageType.Speak]: Array<{ userUUID: string; speak: boolean }>;
     [RTMessageType.DeviceState]: { userUUID: string; camera: boolean; mic: boolean };
     [RTMessageType.ClassMode]: ClassModeType;
-    [RTMessageType.ClassStatus]: ClassStatusType;
+    [RTMessageType.RoomStatus]: RoomStatus;
     [RTMessageType.RequestChannelStatus]: string; // room id
     [RTMessageType.ChannelStatus]: {
-        /** class status */
-        cStatus: ClassStatusType;
+        /** room status */
+        cStatus: RoomStatus;
         /** users with non-default states */
         uStates: {
             [uuid: string]: `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${

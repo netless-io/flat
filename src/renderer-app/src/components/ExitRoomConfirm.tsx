@@ -1,8 +1,8 @@
 import React from "react";
 import { Modal, Button } from "antd";
 import { History } from "history";
-import { ClassStatusType } from "../apiMiddleware/Rtm";
 import { Identity } from "../utils/localStorage/room";
+import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 
 export enum ExitRoomConfirmType {
     StopClassButton,
@@ -12,8 +12,8 @@ export enum ExitRoomConfirmType {
 export interface ExitRoomConfirmProps {
     identity: Identity;
     history: History;
-    classStatus: ClassStatusType;
-    stopClass: () => void;
+    roomStatus: RoomStatus;
+    stopClass: () => Promise<void>;
     // @TODO remove ref
     confirmRef: { current: (confirmType: ExitRoomConfirmType) => void };
 }
@@ -43,8 +43,8 @@ export class ExitRoomConfirm extends React.PureComponent<
         // @TODO 监听 ipc
         // ipcRenderer.on("");
         // if (
-        //     this.props.classStatus === ClassStatusType.Started ||
-        //     this.props.classStatus === ClassStatusType.Paused
+        //     this.props.roomStatus === RoomStatus.Started ||
+        //     this.props.roomStatus === RoomStatus.Paused
         // ) {
         // }
     }
@@ -113,8 +113,8 @@ export class ExitRoomConfirm extends React.PureComponent<
 
     private confirm = (confirmType: ExitRoomConfirmType): void => {
         if (
-            this.props.classStatus === ClassStatusType.Started ||
-            this.props.classStatus === ClassStatusType.Paused
+            this.props.roomStatus === RoomStatus.Started ||
+            this.props.roomStatus === RoomStatus.Paused
         ) {
             this.setState({ visible: true, confirmType });
         } else {

@@ -252,17 +252,27 @@ export interface StartClassPayload {
     roomUUID: string;
 }
 
-export type StartClassResult = undefined;
+export type StartClassResult = {};
 
 export function startClass(roomUUID: string): Promise<StartClassResult> {
-    return post<StartClassPayload, StartClassResult>("room/update/running", { roomUUID });
+    return post<StartClassPayload, StartClassResult>("room/update/started", { roomUUID });
+}
+
+export interface PauseClassPayload {
+    roomUUID: string;
+}
+
+export type PauseClassResult = {};
+
+export function pauseClass(roomUUID: string): Promise<PauseClassResult> {
+    return post<PauseClassPayload, PauseClassResult>("room/update/paused", { roomUUID });
 }
 
 export interface StopClassPayload {
     roomUUID: string;
 }
 
-export type StopClassResult = undefined;
+export type StopClassResult = {};
 
 export function stopClass(roomUUID: string): Promise<StopClassResult> {
     return post<StopClassPayload, StopClassResult>("room/update/stopped", { roomUUID });
