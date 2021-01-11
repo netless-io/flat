@@ -99,7 +99,7 @@ export class ExitRoomConfirm extends React.PureComponent<
 
     private onReturnMain = (): void => {
         this.setState({ visible: false });
-        this.props.history.push("/users/");
+        this.props.history.push("/user/");
     };
 
     private onStopClass = (): void => {
@@ -117,6 +117,8 @@ export class ExitRoomConfirm extends React.PureComponent<
             this.props.classStatus === ClassStatusType.Paused
         ) {
             this.setState({ visible: true, confirmType });
+        } else {
+            this.onReturnMain();
         }
     };
 }
