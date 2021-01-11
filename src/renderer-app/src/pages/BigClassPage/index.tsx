@@ -3,7 +3,6 @@ import { message } from "antd";
 import classNames from "classnames";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 
-import PageError from "../../PageError";
 import LoadingPage from "../../LoadingPage";
 
 import InviteButton from "../../components/InviteButton";
@@ -114,9 +113,6 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                 RoomPhase.Reconnecting ||
                 RoomPhase.Reconnecting: {
                 return <LoadingPage />;
-            }
-            case RoomPhase.Disconnected: {
-                return <PageError />;
             }
             default: {
                 return this.renderWhiteBoard();

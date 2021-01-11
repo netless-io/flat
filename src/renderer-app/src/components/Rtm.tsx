@@ -35,10 +35,10 @@ export interface RtmRenderProps extends RtmState {
     onSpeak: (configs: Array<{ userUUID: string; speak: boolean }>) => void;
     updateDeviceState: (userUUID: string, camera: boolean, mic: boolean) => void;
     toggleClassMode: () => void;
-    startClass: () => void;
-    pauseClass: () => void;
-    resumeClass: () => void;
-    stopClass: () => void;
+    startClass: () => Promise<void>;
+    pauseClass: () => Promise<void>;
+    resumeClass: () => Promise<void>;
+    stopClass: () => Promise<void>;
 }
 
 export interface RtmProps {

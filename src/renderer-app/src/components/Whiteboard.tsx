@@ -201,9 +201,6 @@ export class Whiteboard extends React.Component<WhiteboardProps, WhiteboardState
                     onDisconnectWithError: error => {
                         console.error(error);
                     },
-                    onKickedWithReason: reason => {
-                        console.error("kicked with reason: " + reason);
-                    },
                 },
             );
             room.disableDeviceInputs = identity !== Identity.creator;

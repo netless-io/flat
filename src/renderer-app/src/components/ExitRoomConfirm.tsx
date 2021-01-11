@@ -13,7 +13,7 @@ export interface ExitRoomConfirmProps {
     identity: Identity;
     history: History;
     roomStatus: RoomStatus;
-    stopClass: () => void;
+    stopClass: () => Promise<void>;
     // @TODO remove ref
     confirmRef: { current: (confirmType: ExitRoomConfirmType) => void };
 }

@@ -2,7 +2,6 @@ import React from "react";
 import { message } from "antd";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 
-import PageError from "../../PageError";
 import LoadingPage from "../../LoadingPage";
 
 import InviteButton from "../../components/InviteButton";
@@ -75,7 +74,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     public render(): React.ReactNode {
         const { room, phase } = this.props.whiteboard;
 
-        if (room === null || room === undefined) {
+        if (!room) {
             return <LoadingPage />;
         }
 
@@ -85,9 +84,6 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 RoomPhase.Reconnecting ||
                 RoomPhase.Reconnecting: {
                 return <LoadingPage />;
-            }
-            case RoomPhase.Disconnected: {
-                return <PageError />;
             }
             default: {
                 return this.renderWhiteBoard();
