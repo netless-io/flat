@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import "./MainRoomList.less";
 import { MainRoomListItem } from "./MainRoomListItem";
+import empty_box from "../assets/image/empty-box.svg";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { FlatServerRoom, ListRoomsType } from "../apiMiddleware/flatServer";
 import { isSameDay } from "date-fns/esm";
@@ -19,34 +20,47 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
 
     private getPeriodicUUID = (e: FlatServerRoom) => {
         return e.periodicUUID;
-    }
+    };
 
     private renderStatus = (status: RoomStatus) => {
         return status;
     };
 
-    private timeToNumber(time: string): number | undefined {
+    private timeToNumber = (time: string): number | undefined => {
         return time ? Number(new Date(time)) : undefined;
-    }
+    };
 
     public renderRooms() {
+        const { rooms } = this.props;
+        if (rooms.length === 0) {
+            return (
+                <div className="room-empty-box">
+                    <img src={empty_box} alt={"empty_box"} />
+                    <span>暂无预约课程</span>
+                </div>
+            );
+        }
         let lastOne: FlatServerRoom | null = null;
-        return this.props.rooms.map(e => {
-            const showDate = !lastOne || !isSameDay(new Date(e.beginTime), new Date(lastOne.beginTime));
+        return rooms.map(e => {
+            const showDate =
+                !lastOne || !isSameDay(new Date(e.beginTime), new Date(lastOne.beginTime));
             lastOne = e;
             return (
-                <MainRoomListItem
-                    key={this.getRoomUUID(e)}
-                    showDate={showDate}
-                    title={e.title}
-                    status={this.renderStatus(e.roomStatus)}
-                    beginTime={this.timeToNumber(e.beginTime)!}
-                    endTime={this.timeToNumber(e.endTime)}
-                    periodicUUID={this.getPeriodicUUID(e)}
-                    roomUUID={this.getRoomUUID(e)}
-                    historyPush={this.props.historyPush}
-                    userUUID={e.ownerUUID}
-                />
+                <>
+                    <MainRoomListItem
+                        key={this.getRoomUUID(e)}
+                        showDate={showDate}
+                        title={e.title}
+                        status={this.renderStatus(e.roomStatus)}
+                        beginTime={this.timeToNumber(e.beginTime)!}
+                        endTime={this.timeToNumber(e.endTime)}
+                        periodicUUID={this.getPeriodicUUID(e)}
+                        roomUUID={this.getRoomUUID(e)}
+                        historyPush={this.props.historyPush}
+                        userUUID={e.ownerUUID}
+                    />
+                    <div className="room-list-under" />
+                </>
             );
         });
     }
@@ -90,10 +104,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
                     <div>{this.renderSorts()}</div>
                 </div>
                 <div className="room-list-line" />
-                <div className="room-list-body">
-                    {this.renderRooms()}
-                    <div className="room-list-under" />
-                </div>
+                <div className="room-list-body">{this.renderRooms()}</div>
             </div>
         );
     }
