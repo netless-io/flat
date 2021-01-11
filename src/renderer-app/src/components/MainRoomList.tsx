@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import "./MainRoomList.less";
 import { MainRoomListItem } from "./MainRoomListItem";
+import emptyBoxSVG from "../assets/image/empty-box.svg";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { FlatServerRoom, ListRoomsType } from "../apiMiddleware/flatServer";
 import { isSameDay } from "date-fns/fp";
@@ -19,20 +20,30 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
 
     private getPeriodicUUID = (room: FlatServerRoom) => {
         return room.periodicUUID;
-    }
+    };
 
     private renderStatus = (status: RoomStatus) => {
         return status;
     };
 
-    private timeToNumber(time: string): number | undefined {
+    private timeToNumber = (time: string): number | undefined => {
         return time ? Number(new Date(time)) : undefined;
-    }
+    };
 
     public renderRooms() {
+        const { rooms } = this.props;
+        if (rooms.length === 0) {
+            return (
+                <div className="room-empty-box">
+                    <img src={emptyBoxSVG} alt={"emptyBoxSVG"} />
+                    <span>暂无预约课程</span>
+                </div>
+            );
+        }
         let lastOne: FlatServerRoom | null = null;
-        return this.props.rooms.map(room => {
-            const showDate = !lastOne || !isSameDay(new Date(room.beginTime), new Date(lastOne.beginTime));
+        return rooms.map(room => {
+            const showDate =
+                !lastOne || !isSameDay(new Date(room.beginTime), new Date(lastOne.beginTime));
             lastOne = room;
             return (
                 <MainRoomListItem
@@ -90,10 +101,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
                     <div>{this.renderSorts()}</div>
                 </div>
                 <div className="room-list-line" />
-                <div className="room-list-body">
-                    {this.renderRooms()}
-                    <div className="room-list-under" />
-                </div>
+                <div className="room-list-body">{this.renderRooms()}</div>
             </div>
         );
     }
