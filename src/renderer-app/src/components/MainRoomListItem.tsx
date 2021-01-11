@@ -6,6 +6,7 @@ import { joinRoom } from "../apiMiddleware/flatServer";
 import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
 import { Link } from "react-router-dom";
+import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 
 export type MainRoomListItemProps = {
     showDate: boolean;
@@ -16,7 +17,7 @@ export type MainRoomListItemProps = {
     /** 结束时间 (UTC 时间戳) */
     endTime?: number;
     /** 状态 */
-    status: "Pending" | "Running" | "Stopped";
+    roomStatus: RoomStatus;
     /** 周期 uuid */
     periodicUUID: string;
     /** 房间 uuid */
@@ -60,12 +61,14 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     );
 
     public renderState = () => {
-        if (this.props.status === "Pending") {
-            return <span className="pending">待开始</span>;
-        } else if (this.props.status === "Running") {
-            return <span className="running">进行中</span>;
-        } else if (this.props.status === "Stopped") {
-            return <span className="stopped">已结束</span>;
+        if (this.props.roomStatus === RoomStatus.Idle) {
+            return <span className="room-idle">未开始</span>;
+        } else if (this.props.roomStatus === RoomStatus.Started) {
+            return <span className="room-started">进行中</span>;
+        } else if (this.props.roomStatus === RoomStatus.Paused) {
+            return <span className="room-paused">已暂停</span>;
+        } else if (this.props.roomStatus === RoomStatus.Stopped) {
+            return <span className="room-stopped">已结束</span>;
         } else {
             return null;
         }
