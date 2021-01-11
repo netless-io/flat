@@ -216,7 +216,7 @@ export function periodicSubRoomInfo(
     periodicUUID: string,
 ): Promise<PeriodicSubRoomInfoResult> {
     return post<PeriodicSubRoomInfoPayload, PeriodicSubRoomInfoResult>(
-        "/room/info/periodic-sub-room",
+        "room/info/periodic-sub-room",
         {
             roomUUID,
             periodicUUID,

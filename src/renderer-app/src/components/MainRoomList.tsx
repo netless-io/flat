@@ -3,7 +3,7 @@ import "./MainRoomList.less";
 import { MainRoomListItem } from "./MainRoomListItem";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { FlatServerRoom, ListRoomsType } from "../apiMiddleware/flatServer";
-import { isSameDay } from "date-fns/esm";
+import { isSameDay } from "date-fns";
 
 export type MainRoomListProps = {
     rooms: FlatServerRoom[];
@@ -13,12 +13,12 @@ export type MainRoomListProps = {
 };
 
 export class MainRoomList extends PureComponent<MainRoomListProps> {
-    private getRoomUUID = (e: FlatServerRoom) => {
-        return e.roomUUID;
+    private getRoomUUID = (room: FlatServerRoom) => {
+        return room.roomUUID;
     };
 
-    private getPeriodicUUID = (e: FlatServerRoom) => {
-        return e.periodicUUID;
+    private getPeriodicUUID = (room: FlatServerRoom) => {
+        return room.periodicUUID;
     }
 
     private renderStatus = (status: RoomStatus) => {
@@ -31,21 +31,21 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
 
     public renderRooms() {
         let lastOne: FlatServerRoom | null = null;
-        return this.props.rooms.map(e => {
-            const showDate = !lastOne || !isSameDay(new Date(e.beginTime), new Date(lastOne.beginTime));
-            lastOne = e;
+        return this.props.rooms.map(room => {
+            const showDate = !lastOne || !isSameDay(new Date(room.beginTime), new Date(lastOne.beginTime));
+            lastOne = room;
             return (
                 <MainRoomListItem
-                    key={this.getRoomUUID(e)}
+                    key={this.getRoomUUID(room)}
                     showDate={showDate}
-                    title={e.title}
-                    status={this.renderStatus(e.roomStatus)}
-                    beginTime={this.timeToNumber(e.beginTime)!}
-                    endTime={this.timeToNumber(e.endTime)}
-                    periodicUUID={this.getPeriodicUUID(e)}
-                    roomUUID={this.getRoomUUID(e)}
+                    title={room.title}
+                    status={this.renderStatus(room.roomStatus)}
+                    beginTime={this.timeToNumber(room.beginTime)!}
+                    endTime={this.timeToNumber(room.endTime)}
+                    periodicUUID={this.getPeriodicUUID(room)}
+                    roomUUID={this.getRoomUUID(room)}
                     historyPush={this.props.historyPush}
-                    userUUID={e.ownerUUID}
+                    userUUID={room.ownerUUID}
                 />
             );
         });
@@ -55,7 +55,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
         return this.props.type === theType ? "#3381FF" : "#7A7B7C";
     };
 
-    public getTypeText = (sort: ListRoomsType) => {
+    public getTypeText = (sort: ListRoomsType): string => {
         const roomListTypeTextMap: Record<ListRoomsType, string> = {
             [ListRoomsType.All]: "全部",
             [ListRoomsType.Today]: "今天",
