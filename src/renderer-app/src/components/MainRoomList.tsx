@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import "./MainRoomList.less";
 import { MainRoomListItem } from "./MainRoomListItem";
-import empty_box from "../assets/image/empty-box.svg";
+import emptyBoxSVG from "../assets/image/empty-box.svg";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { FlatServerRoom, ListRoomsType } from "../apiMiddleware/flatServer";
 import { isSameDay } from "date-fns/esm";
@@ -35,7 +35,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
         if (rooms.length === 0) {
             return (
                 <div className="room-empty-box">
-                    <img src={empty_box} alt={"empty_box"} />
+                    <img src={emptyBoxSVG} alt={"emptyBoxSVG"} />
                     <span>暂无预约课程</span>
                 </div>
             );
