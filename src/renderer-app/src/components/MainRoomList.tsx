@@ -3,7 +3,7 @@ import "./MainRoomList.less";
 import { MainRoomListItem } from "./MainRoomListItem";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { FlatServerRoom, ListRoomsType } from "../apiMiddleware/flatServer";
-import { isSameDay } from "date-fns";
+import { isSameDay } from "date-fns/fp";
 
 export type MainRoomListProps = {
     rooms: FlatServerRoom[];
