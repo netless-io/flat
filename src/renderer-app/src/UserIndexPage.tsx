@@ -15,7 +15,7 @@ import {
     listRooms,
     FlatServerRoom,
 } from "./apiMiddleware/flatServer";
-import { RoomType } from "./apiMiddleware/flatServer/constants";
+import { RoomStatus, RoomType } from "./apiMiddleware/flatServer/constants";
 import { getUserUuid } from "./utils/localStorage/accounts";
 
 export type UserIndexPageProps = RouteComponentProps;
@@ -91,10 +91,31 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         }
         // TODO page?
         try {
-            const data = await listRooms(type ?? this.state.roomListType, { page: 1 });
-            const running = data.filter(e => e.roomStatus === "Running");
-            const notRunning = data.filter(e => e.roomStatus !== "Running");
-            this.setAsyncState({ rooms: [...running, ...notRunning] });
+            const rooms = await listRooms(type ?? this.state.roomListType, { page: 1 });
+            const started: FlatServerRoom[] = [];
+            const paused: FlatServerRoom[] = [];
+            const idle: FlatServerRoom[] = [];
+            const stopped: FlatServerRoom[] = [];
+            for (const room of rooms) {
+                switch (room.roomStatus) {
+                    case RoomStatus.Started: {
+                        started.push(room);
+                        break;
+                    }
+                    case RoomStatus.Paused: {
+                        paused.push(room);
+                        break;
+                    }
+                    case RoomStatus.Stopped: {
+                        stopped.push(room);
+                        break;
+                    }
+                    default: {
+                        idle.push(room);
+                    }
+                }
+            }
+            this.setAsyncState({ rooms: [...started, ...paused, ...idle, ...stopped] });
         } catch (error) {
             // @TODO handle error
             console.log(error);

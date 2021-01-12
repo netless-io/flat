@@ -38,8 +38,9 @@ export enum Week {
 }
 
 export enum RoomStatus {
-    Pending = "Pending",
-    Running = "Running",
+    Idle = "Idle",
+    Started = "Started",
+    Paused = "Paused",
     Stopped = "Stopped",
 }
 

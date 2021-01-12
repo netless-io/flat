@@ -3,7 +3,6 @@ import { message } from "antd";
 import classNames from "classnames";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 
-import PageError from "../../PageError";
 import LoadingPage from "../../LoadingPage";
 
 import InviteButton from "../../components/InviteButton";
@@ -14,16 +13,16 @@ import { ChatPanel } from "../../components/ChatPanel";
 import { BigClassAvatar } from "./BigClassAvatar";
 import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
-import { ClassStatus } from "../../components/ClassStatus";
+import { RoomInfo } from "../../components/RoomInfo";
 import { withWhiteboardRoute, WithWhiteboardRouteProps } from "../../components/Whiteboard";
 import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
 import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
 import { RTMUser } from "../../components/ChatPanel/ChatUser";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
+import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
-import { ClassStatusType } from "../../apiMiddleware/Rtm";
 import { Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
 
@@ -61,7 +60,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     }
 
     public componentDidUpdate(prevProps: BigClassPageProps): void {
-        if (this.props.rtm.classStatus === ClassStatusType.Stopped) {
+        if (this.props.rtm.roomStatus === RoomStatus.Stopped) {
             this.props.history.push("/user/");
         }
 
@@ -114,9 +113,6 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                 RoomPhase.Reconnecting ||
                 RoomPhase.Reconnecting: {
                 return <LoadingPage />;
-            }
-            case RoomPhase.Disconnected: {
-                return <PageError />;
             }
             default: {
                 return this.renderWhiteBoard();
@@ -189,7 +185,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     private renderWhiteBoard(): React.ReactNode {
         const { identity } = this.props.match.params;
         const { history } = this.props;
-        const { classStatus, stopClass } = this.props.rtm;
+        const { roomStatus, stopClass } = this.props.rtm;
         return (
             <div className="realtime-box">
                 <TopBar
@@ -204,7 +200,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                 <ExitRoomConfirm
                     identity={identity}
                     history={history}
-                    classStatus={classStatus}
+                    roomStatus={roomStatus}
                     stopClass={stopClass}
                     confirmRef={this.exitRoomConfirmRef}
                 />
@@ -214,13 +210,16 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
 
     private renderTopBarLeft(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { classStatus } = this.props.rtm;
+        const { roomStatus } = this.props.rtm;
 
         return (
             <>
                 <NetworkStatus />
                 {identity === Identity.joiner && (
-                    <ClassStatus classStatus={classStatus} roomInfo={this.props.rtm.roomInfo} />
+                    <RoomInfo
+                        roomStatus={roomStatus}
+                        roomType={this.props.rtm.roomInfo?.roomType}
+                    />
                 )}
             </>
         );
@@ -228,14 +227,14 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
 
     private renderTopBarCenter(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { classStatus, pauseClass, resumeClass, startClass } = this.props.rtm;
+        const { roomStatus, pauseClass, resumeClass, startClass } = this.props.rtm;
 
         if (identity !== Identity.creator) {
             return null;
         }
 
-        switch (classStatus) {
-            case ClassStatusType.Started:
+        switch (roomStatus) {
+            case RoomStatus.Started:
                 return (
                     <>
                         <TopBarRoundBtn iconName="class-pause" onClick={pauseClass}>
@@ -246,7 +245,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                         </TopBarRoundBtn>
                     </>
                 );
-            case ClassStatusType.Paused:
+            case RoomStatus.Paused:
                 return (
                     <>
                         <TopBarRoundBtn iconName="class-pause" onClick={resumeClass}>

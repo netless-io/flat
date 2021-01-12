@@ -1,10 +1,10 @@
 import React from "react";
 import { RouteComponentProps } from "react-router";
+import { Modal } from "antd";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import {
     ClassModeType,
-    ClassStatusType,
     NonDefaultUserProp,
     Rtm as RTMAPI,
     RTMessage,
@@ -14,6 +14,7 @@ import {
 import {
     ordinaryRoomInfo,
     OrdinaryRoomInfo,
+    pauseClass,
     startClass,
     stopClass,
     usersInfo,
@@ -34,10 +35,10 @@ export interface RtmRenderProps extends RtmState {
     onSpeak: (configs: Array<{ userUUID: string; speak: boolean }>) => void;
     updateDeviceState: (userUUID: string, camera: boolean, mic: boolean) => void;
     toggleClassMode: () => void;
-    startClass: () => void;
-    pauseClass: () => void;
-    resumeClass: () => void;
-    stopClass: () => void;
+    startClass: () => Promise<void>;
+    pauseClass: () => Promise<void>;
+    resumeClass: () => Promise<void>;
+    stopClass: () => Promise<void>;
 }
 
 export interface RtmProps {
@@ -54,7 +55,7 @@ export type RtmState = {
     joiners: RTMUser[];
     isBan: boolean;
     classMode: ClassModeType;
-    classStatus: ClassStatusType;
+    roomStatus: RoomStatus;
     roomInfo?: OrdinaryRoomInfo;
     creator?: RTMUser;
     currentUser?: RTMUser;
@@ -75,7 +76,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             joiners: [],
             isBan: false,
             classMode: ClassModeType.Lecture,
-            classStatus: ClassStatusType.Idle,
+            roomStatus: RoomStatus.Idle,
         };
     }
 
@@ -86,7 +87,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
 
         const { roomInfo } = await ordinaryRoomInfo(roomId);
         document.title = roomInfo.title;
-        this.setState({ roomInfo, classStatus: this.mapRoomStatus(roomInfo.roomStatus) });
+        this.setState({ roomInfo, roomStatus: roomInfo.roomStatus });
 
         this.updateHistory();
 
@@ -127,23 +128,6 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             stopClass: this.stopClass,
         });
     }
-
-    private mapRoomStatus = (roomStatus: RoomStatus): ClassStatusType => {
-        switch (roomStatus) {
-            case RoomStatus.Pending: {
-                return ClassStatusType.Idle;
-            }
-            case RoomStatus.Running: {
-                return ClassStatusType.Started;
-            }
-            case RoomStatus.Stopped: {
-                return ClassStatusType.Stopped;
-            }
-            default: {
-                return ClassStatusType.Idle;
-            }
-        }
-    };
 
     private acceptRaisehand = (userUUID: string): void => {
         if (this.props.identity === Identity.creator) {
@@ -418,9 +402,9 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             }
         });
 
-        this.rtm.on(RTMessageType.ClassStatus, (classStatus, senderId) => {
+        this.rtm.on(RTMessageType.RoomStatus, (roomStatus, senderId) => {
             if (senderId === this.state.creator?.uuid) {
-                this.setState({ classStatus });
+                this.setState({ roomStatus });
             }
         });
 
@@ -459,7 +443,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
                 this.rtm.sendCommand({
                     type: RTMessageType.ChannelStatus,
                     value: {
-                        cStatus: this.state.classStatus,
+                        cStatus: this.state.roomStatus,
                         uStates,
                     },
                     keepHistory: false,
@@ -519,42 +503,55 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         );
     };
 
-    private switchClassStatus = (classStatus: ClassStatusType): void => {
+    private switchRoomStatus = async (roomStatus: RoomStatus): Promise<void> => {
         const { identity, roomId } = this.props;
         if (identity !== Identity.creator) {
             return;
         }
 
-        this.setState({ classStatus }, () => {
-            this.rtm.sendCommand({
-                type: RTMessageType.ClassStatus,
-                value: classStatus,
+        try {
+            switch (roomStatus) {
+                case RoomStatus.Started: {
+                    await startClass(roomId);
+                    break;
+                }
+                case RoomStatus.Paused: {
+                    await pauseClass(roomId);
+                    break;
+                }
+                case RoomStatus.Stopped: {
+                    await stopClass(roomId);
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+
+            await this.rtm.sendCommand({
+                type: RTMessageType.RoomStatus,
+                value: roomStatus,
                 keepHistory: true,
             });
 
-            if (classStatus === ClassStatusType.Started) {
-                startClass(roomId);
-            } else if (classStatus === ClassStatusType.Stopped) {
-                stopClass(roomId);
-            }
-        });
+            this.setState({ roomStatus });
+        } catch (e) {
+            // @TODO handle error
+            console.error(e);
+            Modal.error({
+                title: "无法切换课程状态",
+                content: e.message,
+            });
+        }
     };
 
-    private startClass = (): void => {
-        this.switchClassStatus(ClassStatusType.Started);
-    };
+    private startClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
 
-    private pauseClass = (): void => {
-        this.switchClassStatus(ClassStatusType.Paused);
-    };
+    private pauseClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Paused);
 
-    private resumeClass = (): void => {
-        this.switchClassStatus(ClassStatusType.Started);
-    };
+    private resumeClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
 
-    private stopClass = (): void => {
-        this.switchClassStatus(ClassStatusType.Stopped);
-    };
+    private stopClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Stopped);
 
     /**
      * Sort users into different groups.
@@ -695,7 +692,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             if (!pickedSenders.some(userUUID => userUUID === senderId)) {
                 return;
             }
-            this.setState({ classStatus: cStatus });
+            this.setState({ roomStatus: cStatus });
             this.sortUsers(user => {
                 if (uStates[user.uuid]) {
                     const newUser = { ...user };

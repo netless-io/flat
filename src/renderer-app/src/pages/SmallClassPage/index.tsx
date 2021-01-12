@@ -2,7 +2,6 @@ import React from "react";
 import { message } from "antd";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 
-import PageError from "../../PageError";
 import LoadingPage from "../../LoadingPage";
 
 import InviteButton from "../../components/InviteButton";
@@ -14,7 +13,7 @@ import { ChatPanel } from "../../components/ChatPanel";
 import { SmallClassAvatar } from "./SmallClassAvatar";
 import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
-import { ClassStatus } from "../../components/ClassStatus";
+import { RoomInfo } from "../../components/RoomInfo";
 import { withWhiteboardRoute, WithWhiteboardRouteProps } from "../../components/Whiteboard";
 import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
 import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
@@ -24,7 +23,8 @@ import ExitRoomConfirm, { ExitRoomConfirmType } from "../../components/ExitRoomC
 import { Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
-import { ClassModeType, ClassStatusType } from "../../apiMiddleware/Rtm";
+import { ClassModeType } from "../../apiMiddleware/Rtm";
+import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 
 import "./SmallClassPage.less";
 
@@ -52,7 +52,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     }
 
     componentDidUpdate(prevProps: SmallClassPageProps) {
-        if (this.props.rtm.classStatus === ClassStatusType.Stopped) {
+        if (this.props.rtm.roomStatus === RoomStatus.Stopped) {
             this.props.history.push("/user/");
         }
 
@@ -74,7 +74,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     public render(): React.ReactNode {
         const { room, phase } = this.props.whiteboard;
 
-        if (room === null || room === undefined) {
+        if (!room) {
             return <LoadingPage />;
         }
 
@@ -84,9 +84,6 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 RoomPhase.Reconnecting ||
                 RoomPhase.Reconnecting: {
                 return <LoadingPage />;
-            }
-            case RoomPhase.Disconnected: {
-                return <PageError />;
             }
             default: {
                 return this.renderWhiteBoard();
@@ -127,7 +124,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     private renderWhiteBoard(): React.ReactNode {
         const { identity } = this.props.match.params;
         const { history } = this.props;
-        const { classStatus, stopClass } = this.props.rtm;
+        const { roomStatus, stopClass } = this.props.rtm;
         return (
             <div className="realtime-box">
                 <TopBar
@@ -143,7 +140,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 <ExitRoomConfirm
                     identity={identity}
                     history={history}
-                    classStatus={classStatus}
+                    roomStatus={roomStatus}
                     stopClass={stopClass}
                     confirmRef={this.exitRoomConfirmRef}
                 />
@@ -176,12 +173,15 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 
     private renderTopBarLeft(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { classStatus } = this.props.rtm;
+        const { roomStatus } = this.props.rtm;
         return (
             <>
                 <NetworkStatus />
                 {identity === Identity.joiner && (
-                    <ClassStatus classStatus={classStatus} roomInfo={this.props.rtm.roomInfo} />
+                    <RoomInfo
+                        roomStatus={roomStatus}
+                        roomType={this.props.rtm.roomInfo?.roomType}
+                    />
                 )}
             </>
         );
@@ -213,14 +213,14 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
 
     private renderTopBarCenter(): React.ReactNode {
         const { identity } = this.props.match.params;
-        const { classStatus, pauseClass, resumeClass, startClass } = this.props.rtm;
+        const { roomStatus, pauseClass, resumeClass, startClass } = this.props.rtm;
 
         if (identity !== Identity.creator) {
             return null;
         }
 
-        switch (classStatus) {
-            case ClassStatusType.Started:
+        switch (roomStatus) {
+            case RoomStatus.Started:
                 return (
                     <>
                         {this.renderClassMode()}
@@ -232,7 +232,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                         </TopBarRoundBtn>
                     </>
                 );
-            case ClassStatusType.Paused:
+            case RoomStatus.Paused:
                 return (
                     <>
                         {this.renderClassMode()}
