@@ -90,10 +90,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                     : { speakingJoiner: undefined, mainSpeaker: undefined },
                 () => {
                     if (this.props.match.params.userId === user?.uuid) {
-                        const { rtcEngine, channelType } = this.props.rtc.rtc;
-                        if (channelType === RtcChannelType.Broadcast) {
-                            rtcEngine.setClientRole(speak ? 1 : 2);
-                        }
+                        this.props.rtc.rtc.rtcEngine.setClientRole(speak ? 1 : 2);
                     }
                 },
             );
@@ -279,7 +276,13 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                         // @TODO 待填充逻辑
                         disabled={false}
                         isRecording={isRecording}
-                        onClick={() => toggleRecording()}
+                        onClick={() =>
+                            toggleRecording(() => {
+                                if (isRecording) {
+                                    this.openReplayPage();
+                                }
+                            })
+                        }
                     />
                 )}
                 {isCreator && (
@@ -398,6 +401,7 @@ export default withWhiteboardRoute(
                 fps: 15,
                 bitrate: 280,
             },
+            maxIdleTime: 60,
             subscribeUidGroup: 0,
         },
     })(withRtmRoute(BigClassPage)),

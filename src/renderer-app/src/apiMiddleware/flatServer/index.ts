@@ -1,47 +1,7 @@
-import Axios, { AxiosRequestConfig } from "axios";
+import Axios from "axios";
 import { getWechatInfo } from "../../utils/localStorage/accounts";
-import { DocsType, FLAT_SERVER_VERSIONS, RoomStatus, RoomType, Status, Week } from "./constants";
-
-export type FlatServerResponse<T> =
-    | {
-          status: Status.Success;
-          data: T;
-      }
-    | {
-          status: Status.Failed;
-          code: number;
-      };
-
-async function post<Payload, Result>(
-    action: string,
-    payload: Payload,
-    params?: AxiosRequestConfig["params"],
-): Promise<Result> {
-    const config: AxiosRequestConfig = {
-        timeout: 1000,
-        params,
-    };
-
-    const Authorization = getWechatInfo()?.token;
-    if (Authorization) {
-        config.headers = {
-            Authorization: "Bearer " + Authorization,
-        };
-    }
-
-    const { data: res } = await Axios.post<FlatServerResponse<Result>>(
-        `${FLAT_SERVER_VERSIONS.V1HTTPS}/${action}`,
-        payload,
-        config,
-    );
-
-    if (res.status !== Status.Success) {
-        // @TODO handle fetcher error
-        throw new Error(`Flat server error code ${res.code}`);
-    }
-
-    return res.data;
-}
+import { DocsType, FLAT_SERVER_VERSIONS, RoomStatus, RoomType, Week } from "./constants";
+import { post } from "./utils";
 
 export interface CreateRoomPayload {
     /** 房间主题, 最多 50 字 */
@@ -279,7 +239,7 @@ export function stopClass(roomUUID: string): Promise<StopClassResult> {
     return post<StopClassPayload, StopClassResult>("room/update/stopped", { roomUUID });
 }
 
-export type CancelOrdinaryRoomResult = undefined;
+export type CancelOrdinaryRoomResult = {};
 
 export interface CancelOrdinaryRoomPayload {
     roomUUID: string;
@@ -291,7 +251,7 @@ export function cancelOrdinaryRoom(roomUUID: string): Promise<CancelOrdinaryRoom
     });
 }
 
-export type CancelPeriodicRoomResult = undefined;
+export type CancelPeriodicRoomResult = {};
 
 export interface CancelPeriodicRoomPayload {
     perdiodicUUID: string;

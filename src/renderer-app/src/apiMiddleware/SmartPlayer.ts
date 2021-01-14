@@ -11,7 +11,6 @@ import {
 import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netless/combine-player";
 import { videoPlugin } from "@netless/white-video-plugin";
 import { audioPlugin } from "@netless/white-audio-plugin";
-import { netlessWhiteboardApi } from "./index";
 import { NETLESS, NODE_ENV } from "../constants/Process";
 import { getRoom, Identity } from "../utils/localStorage/room";
 
@@ -36,12 +35,16 @@ export class SmartPlayer {
     }
 
     public async load({
-        uuid,
+        roomUUID,
+        whiteboardUUID,
+        whiteboardRoomToken,
         identity,
         whiteboardEl,
         videoEl,
     }: {
-        uuid: string;
+        roomUUID: string;
+        whiteboardUUID: string;
+        whiteboardRoomToken: string;
         identity: Identity;
         whiteboardEl: HTMLDivElement;
         videoEl: HTMLVideoElement;
@@ -51,13 +54,7 @@ export class SmartPlayer {
         this._isEnded = false;
         this.destroy();
 
-        const roomToken = await netlessWhiteboardApi.room.joinRoomApi(uuid);
-
-        if (!roomToken) {
-            throw new Error("Cannot fetch token for room: " + uuid);
-        }
-
-        const storageRoom = getRoom(uuid);
+        const storageRoom = getRoom(roomUUID);
         // @TODO 支持多段视频
         const recording = storageRoom?.recordings?.[storageRoom.recordings.length - 1];
 
@@ -74,7 +71,7 @@ export class SmartPlayer {
         this.whiteWebSdk = whiteWebSdk;
 
         const rangeQuery: PlayableCheckingParams = {
-            room: uuid,
+            room: whiteboardUUID,
             region: "cn-hz",
         };
 
@@ -97,8 +94,8 @@ export class SmartPlayer {
         const cursorAdapter = new CursorTool();
 
         const replayRoomParams: ReplayRoomParams = {
-            room: uuid,
-            roomToken: roomToken,
+            room: whiteboardUUID,
+            roomToken: whiteboardRoomToken,
             cursorAdapter: cursorAdapter,
         };
 

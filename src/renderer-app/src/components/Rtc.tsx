@@ -2,9 +2,10 @@ import React from "react";
 import { RouteComponentProps } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 import { Rtc as RtcApi, RtcChannelType } from "../apiMiddleware/Rtc";
-import { CloudRecording, StartPayload } from "../apiMiddleware/CloudRecording";
-import { getRoom, Identity, updateRoomProps } from "../utils/localStorage/room";
+import { CloudRecording } from "../apiMiddleware/CloudRecording";
+import { getRoom, Identity, saveRoom, updateRoomProps } from "../utils/localStorage/room";
 import { AGORA } from "../constants/Process";
+import { CloudRecordStartPayload } from "../apiMiddleware/flatServer/agora";
 
 export interface RtcRenderProps extends RtcState {
     rtc: RtcApi;
@@ -19,7 +20,9 @@ export interface RtcProps {
     roomId: string;
     userId: string;
     identity: Identity;
-    recordingConfig: StartPayload["clientRequest"]["recordingConfig"];
+    recordingConfig: Required<
+        CloudRecordStartPayload["agoraData"]["clientRequest"]
+    >["recordingConfig"];
 }
 
 export type RtcState = {
@@ -29,9 +32,7 @@ export type RtcState = {
 };
 
 export class Rtc extends React.Component<RtcProps, RtcState> {
-    private rtc = new RtcApi({
-        channelType: this.props.recordingConfig.channelType ?? RtcChannelType.Broadcast,
-    });
+    private rtc = new RtcApi();
     private cloudRecording: CloudRecording | null = null;
     private cloudRecordingInterval: number | undefined;
     private recordStartTime: number | null = null;
@@ -76,20 +77,15 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
         const { roomId, recordingConfig } = this.props;
         this.recordStartTime = Date.now();
         if (this.state.isCalling && !this.cloudRecording?.isRecording) {
-            this.cloudRecording = new CloudRecording({
-                cname: roomId,
-                uid: "1", // 不能与频道内其他用户冲突
-            });
+            this.cloudRecording = new CloudRecording({ roomUUID: roomId });
             await this.cloudRecording.start({
                 storageConfig: this.cloudRecording.defaultStorageConfig(),
                 recordingConfig,
             });
-            // @TODO 临时避免频道被关闭（默认30秒无活动），后面会根据我们的需求修改并用 polly-js 管理重发。
-            this.cloudRecordingInterval = window.setInterval(() => {
-                if (this.cloudRecording?.isRecording) {
-                    this.cloudRecording.query().catch(console.warn);
-                }
-            }, 10000);
+        }
+        if (process.env.NODE_ENV === "development") {
+            // @ts-ignore
+            window.cloudRecording = this.cloudRecording;
         }
     };
 
@@ -137,7 +133,12 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
             async () => {
                 if (this.state.isCalling) {
                     const { roomId, identity } = this.props;
-                    this.rtc.join(roomId, identity, rtcUID);
+                    this.rtc.join(
+                        roomId,
+                        identity,
+                        rtcUID,
+                        this.props.recordingConfig.channelType ?? RtcChannelType.Broadcast,
+                    );
                 } else {
                     if (this.cloudRecording?.isRecording) {
                         await this.stopRecording();
@@ -166,6 +167,13 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
                 room.recordings = [recording];
             }
             updateRoomProps(roomId, room);
+        } else {
+            saveRoom({
+                uuid: roomId,
+                userId: this.props.userId,
+                identity: this.props.identity,
+                recordings: [recording],
+            });
         }
         this.setState({ recordingUuid: recording.uuid });
         this.recordStartTime = null;
@@ -176,7 +184,7 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
             return "";
         }
 
-        return `${AGORA.OSS_PREFIX}${AGORA.OSS_FOLDER}/${this.cloudRecording.sid}_${this.cloudRecording.cname}.m3u8`;
+        return `${AGORA.OSS_PREFIX}${AGORA.OSS_FOLDER}/${this.cloudRecording.sid}_${this.cloudRecording.roomUUID}.m3u8`;
     }
 }
 

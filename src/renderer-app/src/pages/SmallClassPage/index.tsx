@@ -353,6 +353,7 @@ export default withWhiteboardRoute(
                 fps: 15,
                 bitrate: 140,
             },
+            maxIdleTime: 60,
             subscribeUidGroup: 3,
         },
     })(withRtmRoute(SmallClassPage)),

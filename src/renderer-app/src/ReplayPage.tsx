@@ -10,6 +10,7 @@ import { RealtimePanel } from "./components/RealtimePanel";
 import { ChatPanelReplay } from "./components/ChatPanelReplay";
 import ExitButtonPlayer from "./components/ExitButtonPlayer";
 import { Identity } from "./utils/localStorage/room";
+import { globals } from "./utils/globals";
 
 import video_play from "./assets/image/video-play.svg";
 import "video.js/dist/video-js.min.css";
@@ -88,7 +89,9 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
         const { uuid, identity } = this.props.match.params;
         try {
             await this.smartPlayer.load({
-                uuid,
+                roomUUID: uuid,
+                whiteboardUUID: globals.whiteboard.uuid,
+                whiteboardRoomToken: globals.whiteboard.token,
                 identity,
                 whiteboardEl: this.whiteboardRef.current!,
                 videoEl: this.videoRef.current!,
@@ -181,7 +184,7 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
                     )}
                 </div>
                 <RealtimePanel
-                    isVideoOn={this.state.isVideoOn}
+                    isVideoOn={!!this.smartPlayer.combinePlayer}
                     // @TODO 待设计更新
                     isShow={true}
                     // isShow={this.state.isRealtimePanelShow}
