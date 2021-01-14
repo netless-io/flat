@@ -131,10 +131,13 @@ export default class RoomDetailPage extends PureComponent<
     public joinRoom = async () => {
         const { roomUUID } = this.state;
         const identity = this.getIdentity();
-        const res = await joinRoom(roomUUID);
-        globals.whiteboard.uuid = res.whiteboardRoomUUID;
-        globals.whiteboard.token = res.whiteboardRoomToken;
-        const url = `/${res.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
+        const data = await joinRoom(roomUUID);
+        globals.whiteboard.uuid = data.whiteboardRoomUUID;
+        globals.whiteboard.token = data.whiteboardRoomToken;
+        globals.rtc.uid = data.rtcUID;
+        globals.rtc.token = data.rtcToken;
+        globals.rtm.token = data.rtmToken;
+        const url = `/${data.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
         this.props.history.push(url);
     };
 
