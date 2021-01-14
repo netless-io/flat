@@ -15,11 +15,8 @@ import {
 
 /**
  * 声网云录制
- * 因涉及到声网 RESTful 密钥，生产版本应该交由服务器处理
  */
 export class CloudRecording {
-    public apiServer = "api.agora.io";
-
     /**
      * 录制模式，支持单流模式 individual 和合流模式 mix （默认模式）。
      * - 单流模式下，分开录制频道内每个 UID 的音频流和视频流，每个 UID 均有其对应的音频文件和视频文件。
