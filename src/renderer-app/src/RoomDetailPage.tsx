@@ -16,6 +16,8 @@ import {
     cancelOrdinaryRoom,
     OrdinaryRoomInfoResult,
     PeriodicSubRoomInfoResult,
+    periodicRoomInfo,
+    PeriodicRoomInfoResult,
 } from "./apiMiddleware/flatServer";
 import { format } from "date-fns";
 import { zhCN } from "date-fns/locale";
@@ -82,9 +84,11 @@ export default class RoomDetailPage extends PureComponent<
         const { roomUUID, periodicUUID, userUUID } = this.props.location
             .state as RoomDetailPageState;
         let res: PeriodicSubRoomInfoResult | OrdinaryRoomInfoResult;
+        let getRate: PeriodicRoomInfoResult;
         if (periodicUUID !== "") {
             res = await periodicSubRoomInfo(roomUUID, periodicUUID);
-            this.setState({ isPeriodic: true });
+            getRate = await periodicRoomInfo(periodicUUID);
+            this.setState({ isPeriodic: true, rate: getRate.periodic.rate });
         } else {
             res = await ordinaryRoomInfo(roomUUID);
         }
@@ -153,6 +157,8 @@ export default class RoomDetailPage extends PureComponent<
     };
 
     public renderModal = (): React.ReactNode => {
+        const { roomUUID } = this.state;
+        const { title } = this.state.roomInfo;
         // TODO  Data Rendering Modal
         return (
             <Modal
@@ -162,8 +168,8 @@ export default class RoomDetailPage extends PureComponent<
                 cancelText="取消"
             >
                 <div className="modal-header">
-                    <div>陈绮贞邀请您加入 FLAT 房间</div>
-                    <div>点击链接加入，或添加至房间列表</div>
+                    <div>邀请加入 FLAT 房间</div>
+                    <span>点击链接加入，或添加至房间列表</span>
                 </div>
                 <div className="modal-content">
                     <div className="modal-content-left">
@@ -172,8 +178,8 @@ export default class RoomDetailPage extends PureComponent<
                         <span>开始时间</span>
                     </div>
                     <div className="modal-content-right">
-                        <div>版本需求会议</div>
-                        <div>92789789798789</div>
+                        <div>{title}</div>
+                        <div>{roomUUID}</div>
                         <div>2020/11/21 11:21~11~22</div>
                     </div>
                 </div>
@@ -218,7 +224,7 @@ export default class RoomDetailPage extends PureComponent<
     };
 
     public render(): React.ReactNode {
-        const { roomUUID } = this.state;
+        const { roomUUID, rate, periodicUUID, userUUID } = this.state;
         const { title, beginTime, endTime, roomStatus, roomType } = this.state.roomInfo;
         return (
             <MainPageLayout>
@@ -238,7 +244,16 @@ export default class RoomDetailPage extends PureComponent<
                             ) : null}
                             {this.state.isPeriodic ? (
                                 <div className="user-periodic-room">
-                                    <Link to="/user/">查看全部x场房间</Link>
+                                    {rate === 0 ? null : (
+                                        <Link
+                                            to={{
+                                                pathname: "/user/scheduled/info/",
+                                                state: { periodicUUID, roomUUID, userUUID, title },
+                                            }}
+                                        >
+                                            查看全部 {rate} 场房间
+                                        </Link>
+                                    )}
                                 </div>
                             ) : null}
                         </div>

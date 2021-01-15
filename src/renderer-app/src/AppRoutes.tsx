@@ -19,6 +19,7 @@ import LoginPage from "./LoginPage";
 import IndexPage from "./IndexPage";
 import SmallClassPage from "./pages/SmallClassPage";
 import BigClassPage from "./pages/BigClassPage";
+import ScheduleRoomDetailPage from "./pages/ScheduleRoomPage";
 
 export class AppRoutes extends React.Component<{}, {}> {
     public componentDidCatch(error: any): void {
@@ -55,6 +56,7 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route exact path="/user/" component={UserIndexPage} />
                     <Route exact path="/user/scheduled/" component={UserScheduledPage} />
                     <Route exact path="/user/room/" component={RoomDetailPage} />
+                    <Route exact path="/user/scheduled/info/" component={ScheduleRoomDetailPage} />
                     <Route exact path="/info/" component={UserInfoPage} />
                     <Route path="/setting/" component={UserSetPage} />
                 </Switch>

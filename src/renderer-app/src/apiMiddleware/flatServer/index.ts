@@ -233,6 +233,7 @@ export type PeriodicRoomInfoResult = {
         ownerUUID: string; // 创建者的 uuid
         endTime: string; // 有可能为空
         rate: number; // 默认为 0（即 用户选择的是 endTime）
+        roomType: RoomType;
     };
     rooms: Array<{
         roomUUID: string;
@@ -285,7 +286,7 @@ export interface CancelOrdinaryRoomPayload {
 }
 
 export function cancelOrdinaryRoom(roomUUID: string): Promise<CancelOrdinaryRoomResult> {
-    return post<OrdinaryRoomInfoPayload, CancelOrdinaryRoomResult>("room/cancel/periodic", {
+    return post<OrdinaryRoomInfoPayload, CancelOrdinaryRoomResult>("room/cancel/ordinary", {
         roomUUID,
     });
 }
