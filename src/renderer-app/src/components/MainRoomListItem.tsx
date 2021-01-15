@@ -2,7 +2,7 @@ import { Button, Dropdown, Menu } from "antd";
 import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React, { PureComponent } from "react";
-import { joinRoom } from "../apiMiddleware/flatServer";
+import { cancelOrdinaryRoom, cancelPeriodicRoom, joinRoom } from "../apiMiddleware/flatServer";
 import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
 import { Link } from "react-router-dom";
@@ -47,7 +47,7 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
                 </Link>
             </Menu.Item>
             <Menu.Item>修改房间</Menu.Item>
-            <Menu.Item>取消房间</Menu.Item>
+            <Menu.Item onClick={this.cancelRoom}>取消房间</Menu.Item>
             <Menu.Item>复制邀请</Menu.Item>
         </Menu>
     );
@@ -59,6 +59,15 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
             {isTomorrow(this.props.beginTime) && " 明天"}
         </time>
     );
+
+    public cancelRoom = (): void => {
+        const { periodicUUID, roomUUID } = this.props;
+        if (periodicUUID !== "") {
+            cancelPeriodicRoom(periodicUUID);
+        } else {
+            cancelOrdinaryRoom(roomUUID);
+        }
+    };
 
     public renderState = () => {
         if (this.props.roomStatus === RoomStatus.Idle) {

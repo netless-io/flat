@@ -17,42 +17,7 @@ import { Button, Dropdown, Input, Menu, Modal, Table } from "antd";
 import { format, getDay } from "date-fns";
 import { zhCN } from "date-fns/locale";
 
-type Room = {
-    roomUUID: string;
-    beginTime: string;
-    endTime: string;
-    roomStatus: RoomStatus;
-};
 
-type SortedRoom = {
-    yearMonth: string;
-    day: string;
-    week: string;
-    time: string;
-    roomStatus: RoomStatus;
-    room: Room;
-};
-
-type ScheduleRoomProps = {
-    periodicUUID: string;
-    userUUID: string;
-    roomUUID: string;
-    title: string;
-};
-
-type ScheduleRoomDetailPageState = {
-    periodic: {
-        ownerUUID: string; // 创建者的 uuid
-        endTime: string;
-        rate: number; // 默认为 0（即 用户选择的是 endTime）
-        roomType: RoomType;
-    };
-    rooms: Room[];
-    currentRoom: Room;
-
-    sortedRooms: SortedRoom[];
-    toggleCopyModal: boolean;
-};
 
 export default class ScheduleRoomDetailPage extends React.Component<
     RouteComponentProps,
@@ -341,3 +306,40 @@ export default class ScheduleRoomDetailPage extends React.Component<
         );
     }
 }
+
+type Room = {
+    roomUUID: string;
+    beginTime: string;
+    endTime: string;
+    roomStatus: RoomStatus;
+};
+
+type SortedRoom = {
+    yearMonth: string;
+    day: string;
+    week: string;
+    time: string;
+    roomStatus: RoomStatus;
+    room: Room;
+};
+
+type ScheduleRoomProps = {
+    periodicUUID: string;
+    userUUID: string;
+    roomUUID: string;
+    title: string;
+};
+
+type ScheduleRoomDetailPageState = {
+    periodic: {
+        ownerUUID: string; // 创建者的 uuid
+        endTime: string;
+        rate: number; // 默认为 0（即 用户选择的是 endTime）
+        roomType: RoomType;
+    };
+    rooms: Room[];
+    currentRoom: Room;
+
+    sortedRooms: SortedRoom[];
+    toggleCopyModal: boolean;
+};
