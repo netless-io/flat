@@ -15,9 +15,17 @@
     width: 100%;
     height: 130px;
     padding: 0 16px;
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: auto;
     display: flex;
     align-items: center;
+
+    &::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+        background: transparent;
+    }
 }
 
 .replay-small-class-avatars-video {
