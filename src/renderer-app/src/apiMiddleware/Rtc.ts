@@ -1,6 +1,6 @@
 import type AgoraSdk from "agora-electron-sdk";
 import { AGORA, NODE_ENV } from "../constants/Process";
-import { globals } from "../utils/globals";
+// import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
 import { generateRTCToken } from "./flatServer/agora";
 
@@ -80,7 +80,9 @@ export class Rtc {
         }
 
         this.roomUUID = roomUUID;
-        const token = globals.rtc.token || (await generateRTCToken(roomUUID));
+        // const token = globals.rtc.token || (await generateRTCToken(roomUUID));
+        // @TODO wait for flat-server fix
+        const token = await generateRTCToken(roomUUID);
 
         this.rtcEngine.setChannelProfile(channelType);
         this.rtcEngine.videoSourceSetChannelProfile(channelType);

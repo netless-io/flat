@@ -232,20 +232,22 @@ export function cloudRecordQuery(
     return post<CloudRecordQueryPayload, CloudRecordQueryResult>("room/record/query", payload);
 }
 
+export interface AgoraCloudRecordLayoutConfigItem {
+    uid?: string;
+    x_axis: number;
+    y_axis: number;
+    width: number;
+    height: number;
+    alpha?: number;
+    render_mode?: number;
+}
+
 export interface AgoraCloudRecordUpdateLayoutRequestBody {
     clientRequest?: {
         maxResolutionUid?: string;
         mixedVideoLayout?: number;
         backgroundColor?: string;
-        layoutConfig?: Array<{
-            uid?: string;
-            x_axis: number;
-            y_axis: number;
-            width: number;
-            height: number;
-            alpha?: number;
-            render_mode?: number;
-        }>;
+        layoutConfig?: AgoraCloudRecordLayoutConfigItem[];
     };
 }
 

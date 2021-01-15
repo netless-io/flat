@@ -34,7 +34,6 @@ export type RtcState = {
 export class Rtc extends React.Component<RtcProps, RtcState> {
     private rtc = new RtcApi();
     private cloudRecording: CloudRecording | null = null;
-    private cloudRecordingInterval: number | undefined;
     private recordStartTime: number | null = null;
 
     state: RtcState = {
@@ -45,10 +44,6 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
     public async componentWillUnmount(): Promise<void> {
         if (this.state.isCalling) {
             this.rtc.leave();
-        }
-        if (this.cloudRecordingInterval) {
-            window.clearInterval(this.cloudRecordingInterval);
-            this.cloudRecordingInterval = void 0;
         }
         if (this.cloudRecording?.isRecording) {
             try {
@@ -75,7 +70,6 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
 
     private startRecording = async (): Promise<void> => {
         const { roomId, recordingConfig } = this.props;
-        this.recordStartTime = Date.now();
         if (this.state.isCalling && !this.cloudRecording?.isRecording) {
             this.cloudRecording = new CloudRecording({ roomUUID: roomId });
             await this.cloudRecording.start({
@@ -83,6 +77,7 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
                 recordingConfig,
             });
         }
+        this.recordStartTime = Date.now();
         if (process.env.NODE_ENV === "development") {
             // @ts-ignore
             window.cloudRecording = this.cloudRecording;
@@ -90,17 +85,7 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
     };
 
     private stopRecording = async (): Promise<void> => {
-        if (this.recordStartTime !== null) {
-            this.saveRecording({
-                uuid: uuidv4(),
-                startTime: this.recordStartTime,
-                endTime: Date.now(),
-                videoUrl: this.cloudRecording?.isRecording ? this.getm3u8url() : undefined,
-            });
-        }
-        if (this.cloudRecordingInterval) {
-            window.clearInterval(this.cloudRecordingInterval);
-        }
+        const videoUrl = this.cloudRecording?.isRecording ? this.getm3u8url() : undefined;
         if (this.cloudRecording?.isRecording) {
             try {
                 await this.cloudRecording.stop();
@@ -108,23 +93,24 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
                 console.error(e);
             }
         }
+        if (this.recordStartTime !== null) {
+            this.saveRecording({
+                uuid: uuidv4(),
+                startTime: this.recordStartTime,
+                endTime: Date.now(),
+                videoUrl,
+            });
+        }
         this.cloudRecording = null;
     };
 
-    private toggleRecording = (callback?: () => void): void => {
-        this.setState(
-            state => ({ isRecording: !state.isRecording }),
-            async () => {
-                if (this.state.isRecording) {
-                    await this.startRecording();
-                } else {
-                    await this.stopRecording();
-                }
-                if (callback) {
-                    callback();
-                }
-            },
-        );
+    private toggleRecording = async (callback?: () => void): Promise<void> => {
+        if (this.state.isRecording) {
+            await this.stopRecording();
+        } else {
+            await this.startRecording();
+        }
+        this.setState(state => ({ isRecording: !state.isRecording }), callback);
     };
 
     private toggleCalling = (rtcUID: number, callback?: () => void): void => {
