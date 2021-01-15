@@ -2,7 +2,7 @@
     "name": "root",
     "private": true,
     "scripts": {
-        "preinstall": "node ./scripts/Build-agora-sdk.js"
+        "preinstall": "node ./scripts/preinstall"
     },
     "workspaces": {
         "packages": [
@@ -12,15 +12,6 @@
         "nohoist": [
             "**"
         ]
-    },
-    "agora_electron": {
-        "platform": "darwin",
-        "arch": "x64",
-        "electron_version": "7.1.2",
-        "msvs_version": "2017",
-        "silent": false,
-        "debug": false,
-        "prebuilt": true
     },
     "license": "MIT",
     "dependencies": {}

@@ -92,31 +92,36 @@ class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
                         <img src={logo} alt={"logo"} />
                         <span>在线互动 让想法同步</span>
                     </div>
-                    <div className="page-index-start-box page-index-fade-in">
-                        <div className="page-index-img-box">
-                            <div className="page-index-start-cell" onClick={this.showModal}>
-                                <img src={wechat} alt={"wxLogin"} />
-                                <span className="page-index-img-info">微信登录</span>
-                            </div>
-                        </div>
-                        <div className="page-index-img-box">
-                            <div className="page-index-start-cell">
-                                <div onClick={this.handleCreate}>
-                                    <img src={google} alt={"google login logo"} />
-                                </div>
-                                <span className="page-index-img-info">Google 登录</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="page-index-line page-index-fade-in">
-                        <Divider plain>2.1.0</Divider>
-                    </div>
-                    {/* @TODO 去掉游客加入 */}
-                    {/* <div className="page-index-link-box page-index-fade-in">
-                        <Button size="large" style={{ width: 280 }} onClick={this.joinRoom}>
-                            加入房间
+                    {/*<div className="page-index-start-box page-index-fade-in">*/}
+                    {/*    <div className="page-index-img-box">*/}
+                    {/*        <div className="page-index-start-cell" onClick={this.showModal}>*/}
+                    {/*            <img src={wechat} alt={"wxLogin"} />*/}
+                    {/*            <span className="page-index-img-info">微信登录</span>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="page-index-img-box">*/}
+                    {/*        <div className="page-index-start-cell">*/}
+                    {/*            <div onClick={this.handleCreate}>*/}
+                    {/*                <img src={google} alt={"google login logo"} />*/}
+                    {/*            </div>*/}
+                    {/*            <span className="page-index-img-info">Google 登录</span>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*<div className="page-index-line page-index-fade-in">*/}
+                    {/*    <Divider plain>2.1.0</Divider>*/}
+                    {/*</div>*/}
+                    <div className="page-login-under">
+                        <Button
+                            onClick={this.showModal}
+                            className="page-login-under-btn"
+                            type="primary"
+                            size="large"
+                        >
+                            微信登录
                         </Button>
-                    </div> */}
+                        <div className="page-index-line page-index-fade-in">v2.1.0</div>
+                    </div>
                 </div>
                 <Modal
                     width={240}
