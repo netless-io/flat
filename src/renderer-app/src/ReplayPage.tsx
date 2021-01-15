@@ -15,6 +15,8 @@ import { globals } from "./utils/globals";
 import video_play from "./assets/image/video-play.svg";
 import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
+import { OrdinaryRoomInfo, ordinaryRoomInfo } from "./apiMiddleware/flatServer";
+import { RoomType } from "./apiMiddleware/flatServer/constants";
 
 export type ReplayPageProps = RouteComponentProps<{
     identity: Identity;
@@ -22,9 +24,7 @@ export type ReplayPageProps = RouteComponentProps<{
     userId: string;
 }>;
 
-export type ReplayPageStates = {
-    isVideoOn: boolean;
-    isRealtimePanelShow: boolean;
+export type ReplayPageState = {
     isReady: boolean;
     isPlaying: boolean;
     isShowController: boolean;
@@ -33,9 +33,11 @@ export type ReplayPageStates = {
     isVisible: boolean;
     replayFail: boolean;
     replayState: boolean;
+    withVideo: boolean;
+    roomInfo: OrdinaryRoomInfo | null;
 };
 
-export default class ReplayPage extends React.Component<ReplayPageProps, ReplayPageStates> {
+export default class ReplayPage extends React.Component<ReplayPageProps, ReplayPageState> {
     private whiteboardRef = React.createRef<HTMLDivElement>();
     private videoRef = React.createRef<HTMLVideoElement>();
     private smartPlayer = new SmartPlayer();
@@ -47,8 +49,6 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
     public constructor(props: ReplayPageProps) {
         super(props);
         this.state = {
-            isVideoOn: false,
-            isRealtimePanelShow: false,
             isReady: false,
             isPlaying: false,
             isShowController: false,
@@ -57,14 +57,21 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
             isVisible: false,
             replayFail: false,
             replayState: false,
+            withVideo: false,
+            roomInfo: null,
         };
+
+        ipcAsyncByMain("set-win-size", {
+            width: 1200,
+            height: 700,
+        });
     }
 
     public async componentDidMount(): Promise<void> {
-        ipcAsyncByMain("set-win-size", {
-            width: 1440,
-            height: 688,
-        });
+        const { uuid, identity } = this.props.match.params;
+
+        const { roomInfo } = await ordinaryRoomInfo(uuid);
+        this.setState({ roomInfo });
 
         window.addEventListener("keydown", this.handleSpaceKey);
 
@@ -86,7 +93,6 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
             updatePlayingState();
         };
 
-        const { uuid, identity } = this.props.match.params;
         try {
             await this.smartPlayer.load({
                 roomUUID: uuid,
@@ -103,7 +109,7 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
         }
 
         if (this.smartPlayer.combinePlayer) {
-            this.setState({ isRealtimePanelShow: true, isVideoOn: true });
+            this.setState({ withVideo: true });
         }
     }
 
@@ -153,65 +159,104 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
         }
     };
 
-    private handleRealtimePanelSwitch = () => {
-        this.setState(state => ({ isRealtimePanelShow: !state.isRealtimePanelShow }));
-    };
-
     public render() {
         const { identity, uuid, userId } = this.props.match.params;
-        const { isReady, isPlaying, isShowController, hasError } = this.state;
+        const { roomInfo } = this.state;
 
         return (
             <div className="replay-container">
-                <div className="replay-whiteboard-wrap">
-                    <div
-                        className="replay-whiteboard"
-                        ref={this.whiteboardRef}
-                        onMouseMove={this.handleMouseMove}
-                    ></div>
-                    {!isPlaying && (
-                        <div className="replay-play-overlay" onClick={this.togglePlayPause}>
-                            <button className="replay-play-icon">
-                                <img src={video_play} alt="play" />
-                            </button>
-                        </div>
-                    )}
-                    {isShowController && isReady && this.smartPlayer.whiteboardPlayer && (
-                        <PlayerController
-                            player={this.smartPlayer.whiteboardPlayer}
-                            combinePlayer={this.smartPlayer.combinePlayer}
-                        />
-                    )}
+                {roomInfo?.roomType === RoomType.SmallClass && this.renderSmallClassAvatars()}
+                <div className="replay-content">
+                    {this.renderWhiteboard()}
+                    {this.renderRealtimePanel()}
                 </div>
-                <RealtimePanel
-                    isVideoOn={!!this.smartPlayer.combinePlayer}
-                    // @TODO 待设计更新
-                    isShow={true}
-                    // isShow={this.state.isRealtimePanelShow}
-                    // onSwitch={this.handleRealtimePanelSwitch}
-                    videoSlot={<video className="replay-video" ref={this.videoRef} />}
-                    chatSlot={
-                        this.smartPlayer.whiteboardPlayer && (
-                            <ChatPanelReplay
-                                userId={userId}
-                                channelID={uuid}
-                                player={this.smartPlayer.whiteboardPlayer}
-                            />
-                        )
-                    }
-                />
-                {hasError ? (
-                    <div className="replay-overlay">
-                        <PageError />
-                    </div>
-                ) : isReady ? null : (
-                    <div className="replay-overlay">
-                        <LoadingPage text={"正在生成回放请耐心等待"} />
+                {this.renderOverlay()}
+                {roomInfo && (
+                    <div className="replay-exit">
+                        <ExitButtonPlayer
+                            roomType={roomInfo.roomType}
+                            identity={identity}
+                            roomUUID={uuid}
+                            userUUID={userId}
+                            history={this.props.history}
+                        />
                     </div>
                 )}
-                <div className="replay-exit">
-                    <ExitButtonPlayer identity={identity} uuid={uuid} userId={userId} />
-                </div>
+            </div>
+        );
+    }
+
+    renderSmallClassAvatars(): React.ReactNode {
+        return (
+            <div className="replay-small-class-avatars">
+                <video className="replay-small-class-avatars-video" ref={this.videoRef} />
+            </div>
+        );
+    }
+
+    renderWhiteboard(): React.ReactNode {
+        const { isReady, isPlaying, isShowController } = this.state;
+
+        return (
+            <div className="replay-whiteboard-wrap">
+                <div
+                    className="replay-whiteboard"
+                    ref={this.whiteboardRef}
+                    onMouseMove={this.handleMouseMove}
+                ></div>
+                {!isPlaying && (
+                    <div className="replay-play-overlay" onClick={this.togglePlayPause}>
+                        <button className="replay-play-icon">
+                            <img src={video_play} alt="play" />
+                        </button>
+                    </div>
+                )}
+                {isShowController && isReady && this.smartPlayer.whiteboardPlayer && (
+                    <PlayerController
+                        player={this.smartPlayer.whiteboardPlayer}
+                        combinePlayer={this.smartPlayer.combinePlayer}
+                    />
+                )}
+            </div>
+        );
+    }
+
+    renderRealtimePanel(): React.ReactNode {
+        const { uuid, userId } = this.props.match.params;
+        const { withVideo, roomInfo } = this.state;
+
+        return (
+            <RealtimePanel
+                isVideoOn={roomInfo?.roomType === RoomType.BigClass && withVideo}
+                isShow={true}
+                videoSlot={
+                    roomInfo?.roomType === RoomType.BigClass && (
+                        <video className="replay-big-class-video" ref={this.videoRef} />
+                    )
+                }
+                chatSlot={
+                    this.smartPlayer.whiteboardPlayer && (
+                        <ChatPanelReplay
+                            userId={userId}
+                            channelID={uuid}
+                            player={this.smartPlayer.whiteboardPlayer}
+                        />
+                    )
+                }
+            />
+        );
+    }
+
+    renderOverlay(): React.ReactNode {
+        const { isReady, hasError } = this.state;
+
+        return hasError ? (
+            <div className="replay-overlay">
+                <PageError />
+            </div>
+        ) : isReady ? null : (
+            <div className="replay-overlay">
+                <LoadingPage text={"正在生成回放请耐心等待"} />
             </div>
         );
     }
