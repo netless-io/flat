@@ -62,7 +62,7 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
 
     public cancelRoom = (): void => {
         const { periodicUUID, roomUUID } = this.props;
-        if (periodicUUID !== "") {
+        if (periodicUUID) {
             cancelPeriodicRoom(periodicUUID);
         } else {
             cancelOrdinaryRoom(roomUUID);
