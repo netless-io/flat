@@ -82,6 +82,15 @@ export default class UserScheduledPage extends Component<
         return date && this.setState({ endTime: date.valueOf() });
     };
 
+    public disabledDate = (beginTime: moment.Moment) => {
+        return beginTime.isBefore(moment().startOf("day"));
+    }
+
+    // TODO disabledTime
+    // private range(l: number, r: number) {
+    //     return Array(r - l).fill(l).map((e, i) => e + i);
+    // }
+
     public typeName = (type: RoomType) => {
         const typeNameMap: Record<RoomType, string> = {
             [RoomType.OneToOne]: "一对一",
@@ -145,6 +154,7 @@ export default class UserScheduledPage extends Component<
                             <div className="user-schedule-inner">
                                 <DatePicker
                                     className="user-schedule-picker"
+                                    disabledDate={this.disabledDate}
                                     value={moment(this.state.beginTime)}
                                     onChange={e => this.onChangeBeginTime(e)}
                                 />
@@ -158,6 +168,7 @@ export default class UserScheduledPage extends Component<
                             <div className="user-schedule-inner">
                                 <DatePicker
                                     className="user-schedule-picker"
+                                    disabledDate={this.disabledDate}
                                     value={moment(this.state.endTime)}
                                     onChange={e => this.onChangeEndTime(e)}
                                 />
@@ -332,7 +343,7 @@ export default class UserScheduledPage extends Component<
         } = this.state;
 
         if (periodicEndType === "Rate") {
-            return periodicRate * periodicWeeks.length;
+            return periodicRate;
         } else {
             let sum = 0;
             for (let t = beginTime; isBefore(t, periodicEndTime); t = Number(addDays(t, 1))) {
@@ -459,7 +470,7 @@ export type UserScheduledPageState = {
     beginTime: number;
     /** UTC结束时间戳 */
     endTime: number;
-    /**重复周期, 每周的周几 */
+    /** 重复周期, 每周的周几 */
     periodicWeeks: Week[];
     /** 结束重复类型 */
     periodicEndType: PeriodicEndType;
@@ -467,6 +478,6 @@ export type UserScheduledPageState = {
     periodicRate: number;
     /** UTC时间戳, 到这个点就结束 */
     periodicEndTime: number;
-    /**课件 */
+    /** 课件 */
     docs: { type: DocsType; uuid: string }[];
 };
