@@ -1,9 +1,9 @@
-import React from "react"
-import { Select, Slider, Button } from "antd"
-import "./SpeakerTesting.less"
+import React from "react";
+import { Select, Slider, Button } from "antd";
+import "./SpeakerTesting.less";
 import { Link } from "react-router-dom";
-import play from "../../assets/image/play.svg"
-import stop from "../../assets/image/stop.svg"
+import play from "../../assets/image/play.svg";
+// import stop from "../../assets/image/stop.svg"
 
 export default class SpeakerTesting extends React.PureComponent<{}> {
     public render() {
@@ -15,14 +15,14 @@ export default class SpeakerTesting extends React.PureComponent<{}> {
                 </div>
                 <div className="speaker-testing-container">
                     <div className="speaker-container">
-                        <p>扬声器</p>
-                        <Select defaultValue="default(外置耳机)">
+                        <p>扬声器</p>
+                        <Select defaultValue="default(外置耳机)">
                             {/* TODO take value enum */}
                             <Option value="cheerego">Cheerego</Option>
                         </Select>
                         <p>试听声音</p>
                         {/* TODO music testing */}
-                        <Button icon={<img src={play}/>}>
+                        <Button icon={<img src={play} />}>
                             <audio src="/media/cc0-audio/t-rex-roar.mp3"></audio>
                             小步舞曲.mp3
                         </Button>
@@ -41,6 +41,6 @@ export default class SpeakerTesting extends React.PureComponent<{}> {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
