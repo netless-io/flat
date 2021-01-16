@@ -16,6 +16,7 @@ import "./ScheduleRoomPage.less";
 import { Button, Dropdown, Input, Menu, Modal, Table } from "antd";
 import { format, getDay } from "date-fns";
 import { zhCN } from "date-fns/locale";
+import memoizeOne from "memoize-one";
 
 
 
@@ -112,6 +113,12 @@ export default class ScheduleRoomDetailPage extends React.Component<
         return format(time, "dd", { locale: zhCN });
     };
 
+    public  generatGroupRooms = memoizeOne(
+        (sortedArry: SortedRoom[], sortedString: string): _.Dictionary<SortedRoom[]> => {
+            return _.groupBy(sortedArry, sortedString);
+        },
+    );
+
     public renderRoomTable() {
         const { sortedRooms: sortedRoom } = this.state;
         const columns = [
@@ -133,7 +140,8 @@ export default class ScheduleRoomDetailPage extends React.Component<
                 render: this.renderMoreBtn,
             },
         ];
-        const groupedRooms = _.groupBy(sortedRoom, "yearMonth");
+        
+        const groupedRooms = this.generatGroupRooms(sortedRoom, "yearMonth");
         const sortedKeys = _.keys(groupedRooms).sort();
         const groupedSortedRooms = sortedKeys.map(yearMonth => ({
             yearMonth,
