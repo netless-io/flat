@@ -7,6 +7,7 @@ import dropdown from "../assets/image/dropdown.svg";
 import book from "../assets/image/book.svg";
 import { getJoinRoomHistories, LSJoinRoomHistoryItem } from "../utils/localStorage/history";
 import { RoomType } from "../apiMiddleware/flatServer/constants";
+import { getWechatInfo } from "../utils/localStorage/accounts";
 import "./MainRoomMenu.less";
 
 const { Option } = Select;
@@ -168,7 +169,7 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
                 </div>
                 <div className="modal-inner-name">昵称</div>
                 <div className="modal-inner-input">
-                    <Input />
+                    <Input value={getWechatInfo()?.name} disabled={true} />
                 </div>
                 <div className="modal-inner-name">加入选项</div>
                 <div className="modal-inner-check">
