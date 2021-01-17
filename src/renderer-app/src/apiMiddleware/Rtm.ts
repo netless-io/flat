@@ -4,6 +4,9 @@ import { v4 as uuidv4 } from "uuid";
 import { AGORA, NODE_ENV } from "../constants/Process";
 import { EventEmitter } from "events";
 import { RoomStatus } from "./flatServer/constants";
+import { generateRTMToken } from "./flatServer/agora";
+import { globals } from "../utils/globals";
+import { getUserUuid } from "../utils/localStorage/accounts";
 
 /**
  * @see {@link https://docs.agora.io/cn/Real-time-Messaging/rtm_get_event?platform=RESTful#a-namecreate_history_resa创建历史消息查询资源-api（post）}
@@ -134,6 +137,7 @@ export class Rtm extends EventEmitter {
     channel?: RtmChannel;
     /** Channel for commands */
     commands?: RtmChannel;
+    token?: string;
 
     private channelID: string | null = null;
     private commandsID: string | null = null;
@@ -144,8 +148,11 @@ export class Rtm extends EventEmitter {
         if (!AGORA.APP_ID) {
             throw new Error("Agora App Id not set.");
         }
-        // @TODO 实现鉴权 token
         this.client = AgoraRTM.createInstance(AGORA.APP_ID);
+        this.client.on("TokenExpired", async () => {
+            this.token = await generateRTMToken();
+            this.client.renewToken(this.token);
+        });
         this.client.on("ConnectionStateChanged", (newState, reason) => {
             console.log("RTM client state: ", newState, reason);
         });
@@ -175,7 +182,8 @@ export class Rtm extends EventEmitter {
         this.channelID = channelID;
         this.commandsID = this.channelID + "commands";
 
-        await this.client.login({ uid: userId });
+        this.token = globals.rtm.token || (await generateRTMToken());
+        await this.client.login({ uid: userId, token: this.token });
 
         this.channel = this.client.createChannel(channelID);
         await this.channel.join();
@@ -379,12 +387,17 @@ export class Rtm extends EventEmitter {
         payload?: P,
         config: any = {},
     ): Promise<R> {
+        if (!this.token) {
+            this.token = await generateRTMToken();
+        }
+
         const response = await fetch(
             `https://api.agora.io/dev/v2/project/${AGORA.APP_ID}/rtm/message/history/${action}`,
             {
                 method: "POST",
                 headers: {
-                    Authorization: "Basic " + btoa(`${AGORA.RESTFUL_ID}:${AGORA.RESTFUL_SECRET}`),
+                    "x-agora-token": this.token,
+                    "x-agora-uid": getUserUuid(),
                     "Content-Type": "application/json",
                     ...(config.headers || {}),
                 },

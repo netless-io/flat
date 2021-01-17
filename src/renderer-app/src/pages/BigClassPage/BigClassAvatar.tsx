@@ -15,8 +15,7 @@ export interface BigClassAvatarProps extends Omit<VideoAvatarProps, "children"> 
 
 export class BigClassAvatar extends React.PureComponent<BigClassAvatarProps> {
     render(): React.ReactNode {
-        const { small, onExpand, ...restProps } = this.props;
-        return <VideoAvatar {...restProps}>{this.renderMainContent}</VideoAvatar>;
+        return <VideoAvatar {...this.props}>{this.renderMainContent}</VideoAvatar>;
     }
 
     private renderMainContent = (

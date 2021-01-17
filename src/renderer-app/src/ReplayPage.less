@@ -1,12 +1,41 @@
 .replay-container {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.replay-content {
+    flex: 1;
     display: flex;
 }
 
-.replay-video {
-    width: 280px;
-    height: 280px;
+.replay-small-class-avatars {
+    width: 100%;
+    height: 130px;
+    padding: 0 16px;
+    overflow-y: hidden;
+    overflow-x: auto;
+    display: flex;
+    align-items: center;
+
+    &::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+        background: transparent;
+    }
+}
+
+.replay-small-class-avatars-video {
+    width: 2512px;
+    height: 108px;
+}
+
+.replay-big-class-video {
+    width: 288px;
+    height: 216px;
 }
 
 .replay-whiteboard-wrap {

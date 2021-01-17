@@ -107,6 +107,9 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         const data = await joinRoom(roomUUID);
         globals.whiteboard.uuid = data.whiteboardRoomUUID;
         globals.whiteboard.token = data.whiteboardRoomToken;
+        globals.rtc.uid = data.rtcUID;
+        globals.rtc.token = data.rtcToken;
+        globals.rtm.token = data.rtmToken;
         const url = `/${data.roomType}/${identity}/${roomUUID}/${this.getUserUUID()}/`;
         this.props.historyPush(url);
     };

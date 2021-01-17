@@ -16,7 +16,7 @@ import { RecordButton } from "../../components/RecordButton";
 import { RoomInfo } from "../../components/RoomInfo";
 import { withWhiteboardRoute, WithWhiteboardRouteProps } from "../../components/Whiteboard";
 import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
-import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
+import { RtmRenderProps, withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
 import { RTMUser } from "../../components/ChatPanel/ChatUser";
 import ExitRoomConfirm, { ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 
@@ -25,8 +25,15 @@ import { ipcAsyncByMain } from "../../utils/ipc";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ClassModeType } from "../../apiMiddleware/Rtm";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
+import { AgoraCloudRecordLayoutConfigItem } from "../../apiMiddleware/flatServer/agora";
 
 import "./SmallClassPage.less";
+
+const AVATAR_WIDTH = 144;
+const AVATAR_HEIGHT = 108;
+const MAX_AVATAR_COUNT = 17;
+const AVATAR_BAR_GAP = 4;
+const AVATAR_BAR_WIDTH = (AVATAR_WIDTH + AVATAR_BAR_GAP) * MAX_AVATAR_COUNT - AVATAR_BAR_GAP;
 
 export type SmallClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps & WithRtmRouteProps;
 
@@ -67,6 +74,19 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
             if (room && this.props.match.params.identity !== Identity.creator) {
                 room.disableDeviceInputs =
                     classMode === ClassModeType.Interaction || !currentUser.isSpeak;
+            }
+        }
+
+        if (this.props.rtc.isRecording) {
+            const userCount = activeUserCount(this.props.rtm);
+            const prevUserCount = activeUserCount(prevProps.rtm);
+
+            if (!prevProps.rtc.isRecording || userCount !== prevUserCount) {
+                this.props.rtc.cloudRecording?.updateLayout({
+                    mixedVideoLayout: 3,
+                    backgroundColor: "#F3F6F9",
+                    layoutConfig: updateRecordLayout(userCount),
+                });
             }
         }
     }
@@ -256,20 +276,23 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
     private renderTopBarRight(): React.ReactNode {
         const { viewMode, toggleDocCenter } = this.props.whiteboard;
         const { isRecording, toggleRecording } = this.props.rtc;
+        const { roomStatus } = this.props.rtm;
         const { isRealtimeSideOpen } = this.state;
         const { uuid, identity } = this.props.match.params;
         const isCreator = identity === Identity.creator;
 
         return (
             <>
-                {isCreator && (
-                    <RecordButton
-                        // @TODO 待填充逻辑
-                        disabled={false}
-                        isRecording={isRecording}
-                        onClick={toggleRecording}
-                    />
-                )}
+                {isCreator &&
+                    (roomStatus === RoomStatus.Started || roomStatus === RoomStatus.Paused) && (
+                        <RecordButton
+                            disabled={false}
+                            isRecording={isRecording}
+                            onClick={() => {
+                                toggleRecording();
+                            }}
+                        />
+                    )}
                 {isCreator && (
                     <TopBarRightBtn
                         title="Vision control"
@@ -347,13 +370,58 @@ export default withWhiteboardRoute(
         recordingConfig: {
             channelType: RtcChannelType.Communication,
             transcodingConfig: {
-                width: 288,
-                height: 216,
+                width: AVATAR_BAR_WIDTH,
+                height: AVATAR_HEIGHT,
                 // https://docs.agora.io/cn/cloud-recording/recording_video_profile
                 fps: 15,
-                bitrate: 140,
+                bitrate: 500,
+                mixedVideoLayout: 3,
+                backgroundColor: "#F3F6F9",
+                layoutConfig: updateRecordLayout(1),
             },
+            maxIdleTime: 60,
             subscribeUidGroup: 3,
         },
     })(withRtmRoute(SmallClassPage)),
 );
+
+function updateRecordLayout(userCount: number): AgoraCloudRecordLayoutConfigItem[] {
+    const layoutConfig: AgoraCloudRecordLayoutConfigItem[] = [];
+    // the left most x position to start rendering the avatars
+    let startX = 0;
+
+    if (userCount < 7) {
+        // center the avatars
+        const avatarsWidth = userCount * (AVATAR_WIDTH + AVATAR_BAR_GAP) - AVATAR_BAR_GAP;
+        // 1168 is the default visible avatar bar width
+        startX = (1168 - avatarsWidth) / 2;
+    }
+
+    // calculate the max rendered config count
+    // because x_axis cannot overflow
+    const layoutConfigCount = Math.floor(
+        (AVATAR_BAR_WIDTH - startX + AVATAR_BAR_GAP) / (AVATAR_WIDTH + AVATAR_BAR_GAP),
+    );
+
+    for (let i = 0; i < layoutConfigCount; i++) {
+        layoutConfig.push({
+            x_axis: (startX + i * (AVATAR_WIDTH + AVATAR_BAR_GAP)) / AVATAR_BAR_WIDTH,
+            y_axis: 0,
+            width: AVATAR_WIDTH / AVATAR_BAR_WIDTH,
+            height: 1,
+        });
+    }
+
+    return layoutConfig;
+}
+
+/**
+ * users with camera or mic on
+ */
+function activeUserCount(rtm: RtmRenderProps): number {
+    let count = (rtm.creator ? 1 : 0) + rtm.speakingJoiners.length;
+    if (rtm.classMode === ClassModeType.Interaction) {
+        count += rtm.handRaisingJoiners.length + rtm.joiners.length;
+    }
+    return count;
+}

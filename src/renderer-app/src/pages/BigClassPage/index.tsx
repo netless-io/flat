@@ -90,10 +90,7 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
                     : { speakingJoiner: undefined, mainSpeaker: undefined },
                 () => {
                     if (this.props.match.params.userId === user?.uuid) {
-                        const { rtcEngine, channelType } = this.props.rtc.rtc;
-                        if (channelType === RtcChannelType.Broadcast) {
-                            rtcEngine.setClientRole(speak ? 1 : 2);
-                        }
+                        this.props.rtc.rtc.rtcEngine.setClientRole(speak ? 1 : 2);
                     }
                 },
             );
@@ -174,12 +171,6 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     private stopClass = (): void => {
         // @TODO remove ref
         this.exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
-    };
-
-    private openReplayPage = () => {
-        // @TODO 打开到当前的录制记录中
-        const { uuid, identity, userId } = this.props.match.params;
-        this.props.history.push(`/replay/${identity}/${uuid}/${userId}/`);
     };
 
     private renderWhiteBoard(): React.ReactNode {
@@ -268,20 +259,25 @@ class BigClassPage extends React.Component<BigClassPageProps, BigClassPageState>
     private renderTopBarRight(): React.ReactNode {
         const { viewMode, toggleDocCenter } = this.props.whiteboard;
         const { isCalling, isRecording, toggleRecording } = this.props.rtc;
+        const { roomStatus } = this.props.rtm;
         const { isRealtimeSideOpen } = this.state;
         const { uuid, identity } = this.props.match.params;
         const isCreator = identity === Identity.creator;
 
         return (
             <>
-                {isCreator && (
-                    <RecordButton
-                        // @TODO 待填充逻辑
-                        disabled={false}
-                        isRecording={isRecording}
-                        onClick={() => toggleRecording()}
-                    />
-                )}
+                {isCreator &&
+                    (roomStatus === RoomStatus.Started || roomStatus === RoomStatus.Paused) && (
+                        <RecordButton
+                            disabled={false}
+                            isRecording={isRecording}
+                            onClick={() =>
+                                toggleRecording(() => {
+                                    // alert result
+                                })
+                            }
+                        />
+                    )}
                 {isCreator && (
                     <TopBarRightBtn
                         title="Call"
@@ -397,7 +393,28 @@ export default withWhiteboardRoute(
                 // https://docs.agora.io/cn/cloud-recording/recording_video_profile
                 fps: 15,
                 bitrate: 280,
+                mixedVideoLayout: 3,
+                backgroundColor: "#000000",
+                layoutConfig: [
+                    {
+                        x_axis: 0,
+                        y_axis: 0,
+                        width: 1,
+                        height: 1,
+                        alpha: 1.0,
+                        render_mode: 1,
+                    },
+                    {
+                        x_axis: 0.0,
+                        y_axis: 0.67,
+                        width: 0.33,
+                        height: 0.33,
+                        alpha: 1.0,
+                        render_mode: 1,
+                    },
+                ],
             },
+            maxIdleTime: 60,
             subscribeUidGroup: 0,
         },
     })(withRtmRoute(BigClassPage)),

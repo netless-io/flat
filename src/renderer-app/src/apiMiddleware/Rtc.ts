@@ -1,6 +1,8 @@
 import type AgoraSdk from "agora-electron-sdk";
 import { AGORA, NODE_ENV } from "../constants/Process";
+import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
+import { generateRTCToken } from "./flatServer/agora";
 
 /** @see {@link https://docs.agora.io/cn/Video/API%20Reference/electron/index.html} */
 const AgoraRtcEngine = window.AgoraRtcEngine;
@@ -18,19 +20,22 @@ export interface RtcConfig {
 export class Rtc {
     rtcEngine: AgoraSdk;
     appId: string = AGORA.APP_ID || "";
-    uid: number | null = null;
-    channelType = RtcChannelType.Communication;
+    // User can only join one RTC channel at a time.
+    roomUUID: string | null = null;
 
-    constructor(config?: RtcConfig) {
-        if (config) {
-            this.channelType = config.channelType;
-        }
-
+    constructor() {
         if (!this.appId) {
             throw new Error("Agora App Id not set.");
         }
 
         this.rtcEngine = new AgoraRtcEngine();
+
+        this.rtcEngine.on("tokenPrivilegeWillExpire", async () => {
+            if (this.roomUUID) {
+                const token = await generateRTCToken(this.roomUUID);
+                this.rtcEngine.renewToken(token);
+            }
+        });
 
         if (NODE_ENV === "development") {
             const path = require("path");
@@ -60,9 +65,25 @@ export class Rtc {
         }
     }
 
-    join(channel: string, identity: Identity, rtcUID: number) {
-        this.rtcEngine.setChannelProfile(this.channelType);
-        this.rtcEngine.videoSourceSetChannelProfile(this.channelType);
+    async join(
+        roomUUID: string,
+        identity: Identity,
+        rtcUID: number,
+        channelType = RtcChannelType.Communication,
+    ) {
+        if (this.roomUUID) {
+            if (this.roomUUID === roomUUID) {
+                return;
+            } else {
+                throw new Error("User can only join one RTC channel at a time.");
+            }
+        }
+
+        this.roomUUID = roomUUID;
+        const token = globals.rtc.token || (await generateRTCToken(roomUUID));
+
+        this.rtcEngine.setChannelProfile(channelType);
+        this.rtcEngine.videoSourceSetChannelProfile(channelType);
         this.rtcEngine.setVideoEncoderConfiguration({
             bitrate: 0,
             degradationPreference: 1,
@@ -75,7 +96,7 @@ export class Rtc {
             width: 288,
         });
 
-        if (this.channelType === RtcChannelType.Broadcast) {
+        if (channelType === RtcChannelType.Broadcast) {
             if (identity === Identity.creator) {
                 this.rtcEngine.setClientRole(1);
             } else {
@@ -85,17 +106,18 @@ export class Rtc {
 
         this.rtcEngine.enableLocalVideo(false);
 
-        // @ts-ignore @TODO 鉴权机制待实现
-        this.rtcEngine.joinChannel(null, channel, null, rtcUID);
+        this.rtcEngine.joinChannel(token, roomUUID, "", rtcUID);
     }
 
     leave() {
         this.rtcEngine.leaveChannel();
         this.rtcEngine.videoSourceLeave();
+        this.roomUUID = null;
     }
 
     destroy() {
         this.rtcEngine.removeAllListeners();
         this.rtcEngine.release();
+        this.roomUUID = null;
     }
 }
