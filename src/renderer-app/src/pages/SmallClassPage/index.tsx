@@ -29,6 +29,12 @@ import { AgoraCloudRecordLayoutConfigItem } from "../../apiMiddleware/flatServer
 
 import "./SmallClassPage.less";
 
+const AVATAR_WIDTH = 144;
+const AVATAR_HEIGHT = 108;
+const MAX_AVATAR_COUNT = 17;
+const AVATAR_BAR_GAP = 4;
+const AVATAR_BAR_WIDTH = (AVATAR_WIDTH + AVATAR_BAR_GAP) * MAX_AVATAR_COUNT - AVATAR_BAR_GAP;
+
 export type SmallClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps & WithRtmRouteProps;
 
 export type SmallClassPageState = {
@@ -364,8 +370,8 @@ export default withWhiteboardRoute(
         recordingConfig: {
             channelType: RtcChannelType.Communication,
             transcodingConfig: {
-                width: 2512,
-                height: 108,
+                width: AVATAR_BAR_WIDTH,
+                height: AVATAR_HEIGHT,
                 // https://docs.agora.io/cn/cloud-recording/recording_video_profile
                 fps: 15,
                 bitrate: 500,
@@ -381,23 +387,27 @@ export default withWhiteboardRoute(
 
 function updateRecordLayout(userCount: number): AgoraCloudRecordLayoutConfigItem[] {
     const layoutConfig: AgoraCloudRecordLayoutConfigItem[] = [];
+    // the left most x position to start rendering the avatars
     let startX = 0;
 
     if (userCount < 7) {
         // center the avatars
-        const avatarsWidth = userCount * (144 + 4) - 4;
+        const avatarsWidth = userCount * (AVATAR_WIDTH + AVATAR_BAR_GAP) - AVATAR_BAR_GAP;
+        // 1168 is the default visible avatar bar width
         startX = (1168 - avatarsWidth) / 2;
     }
 
-    // rendered config
-    // x_axis cannot overflow
-    const layoutConfigCount = Math.floor((2512 - startX + 4) / (144 + 4));
+    // calculate the max rendered config count
+    // because x_axis cannot overflow
+    const layoutConfigCount = Math.floor(
+        (AVATAR_BAR_WIDTH - startX + AVATAR_BAR_GAP) / (AVATAR_WIDTH + AVATAR_BAR_GAP),
+    );
 
     for (let i = 0; i < layoutConfigCount; i++) {
         layoutConfig.push({
-            x_axis: (startX + i * (144 + 4)) / 2512,
+            x_axis: (startX + i * (AVATAR_WIDTH + AVATAR_BAR_GAP)) / AVATAR_BAR_WIDTH,
             y_axis: 0,
-            width: 144 / 2512,
+            width: AVATAR_WIDTH / AVATAR_BAR_WIDTH,
             height: 1,
         });
     }
