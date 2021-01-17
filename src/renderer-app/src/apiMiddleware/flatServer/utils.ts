@@ -38,7 +38,7 @@ export async function post<Payload, Result>(
 
     if (res.status !== Status.Success) {
         // @TODO handle fetcher error
-        throw new Error(`Flat server error code ${res.code}`);
+        throw new Error(`Flat server error code ${res.code} for location "${action}".`);
     }
 
     return res.data;
