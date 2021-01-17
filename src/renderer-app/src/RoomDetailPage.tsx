@@ -165,6 +165,7 @@ export default class RoomDetailPage extends PureComponent<
         // TODO  Data Rendering Modal
         return (
             <Modal
+                width={460}
                 visible={this.state.toggleCopyModal}
                 onCancel={this.handleCancel}
                 okText="复制"
