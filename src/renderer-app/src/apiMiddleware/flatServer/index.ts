@@ -96,7 +96,7 @@ export function listRooms(
 }
 
 export interface JoinRoomPayload {
-    roomUUID: string;
+    uuid: string;
 }
 
 export interface JoinRoomResult {
@@ -109,8 +109,8 @@ export interface JoinRoomResult {
     roomType: RoomType;
 }
 
-export function joinRoom(roomUUID: string): Promise<JoinRoomResult> {
-    return post<JoinRoomPayload, JoinRoomResult>("room/join", { roomUUID });
+export function joinRoom(uuid: string): Promise<JoinRoomResult> {
+    return post<JoinRoomPayload, JoinRoomResult>("room/join", { uuid });
 }
 
 export interface UsersInfoPayload {
@@ -216,7 +216,7 @@ export interface StartClassPayload {
 export type StartClassResult = {};
 
 export function startClass(roomUUID: string): Promise<StartClassResult> {
-    return post<StartClassPayload, StartClassResult>("room/update/started", { roomUUID });
+    return post<StartClassPayload, StartClassResult>("room/update-status/started", { roomUUID });
 }
 
 export interface PauseClassPayload {
@@ -226,7 +226,7 @@ export interface PauseClassPayload {
 export type PauseClassResult = {};
 
 export function pauseClass(roomUUID: string): Promise<PauseClassResult> {
-    return post<PauseClassPayload, PauseClassResult>("room/update/paused", { roomUUID });
+    return post<PauseClassPayload, PauseClassResult>("room/update-status/paused", { roomUUID });
 }
 
 export interface StopClassPayload {
@@ -236,7 +236,7 @@ export interface StopClassPayload {
 export type StopClassResult = {};
 
 export function stopClass(roomUUID: string): Promise<StopClassResult> {
-    return post<StopClassPayload, StopClassResult>("room/update/stopped", { roomUUID });
+    return post<StopClassPayload, StopClassResult>("room/update-status/stopped", { roomUUID });
 }
 
 export type CancelOrdinaryRoomResult = {};
