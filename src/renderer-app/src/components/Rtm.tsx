@@ -65,6 +65,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     private rtm = new RTMAPI();
     private noMoreRemoteMessages = false;
     private cancelHandleChannelStatusTimeout?: number;
+    previousTitle = document.title;
 
     constructor(props: RtmProps) {
         super(props);
@@ -86,6 +87,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         this.startListenChannel();
 
         const { roomInfo } = await ordinaryRoomInfo(roomId);
+        this.previousTitle = document.title;
         document.title = roomInfo.title;
         this.setState({ roomInfo, roomStatus: roomInfo.roomStatus });
 
@@ -107,6 +109,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
     componentWillUnmount() {
         this.rtm.destroy();
         window.clearTimeout(this.cancelHandleChannelStatusTimeout);
+        document.title = this.previousTitle;
     }
 
     render(): React.ReactNode {
