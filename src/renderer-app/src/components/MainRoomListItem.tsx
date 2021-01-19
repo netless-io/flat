@@ -2,12 +2,14 @@ import { Button, Dropdown, Menu } from "antd";
 import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React, { PureComponent } from "react";
-import { cancelOrdinaryRoom, cancelPeriodicRoom, joinRoom, JoinRoomResult } from "../apiMiddleware/flatServer";
+import { cancelOrdinaryRoom, cancelPeriodicRoom, joinRoom } from "../apiMiddleware/flatServer";
 import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
 import { Link } from "react-router-dom";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { getUserUuid } from "../utils/localStorage/accounts";
+import RoomListDate from "./RoomListPanel/RoomListDate";
+import RoomListDuration from "./RoomListPanel/RoomListDuration";
 
 export type MainRoomListItemProps = {
     showDate: boolean;
@@ -16,7 +18,7 @@ export type MainRoomListItemProps = {
     /** 开始时间 (UTC 时间戳) */
     beginTime: number;
     /** 结束时间 (UTC 时间戳) */
-    endTime?: number;
+    endTime: number;
     /** 状态 */
     roomStatus: RoomStatus;
     /** 周期 uuid */
@@ -90,16 +92,6 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         }
     };
 
-    public renderDuration = () => {
-        return (
-            <>
-                <span>{format(this.props.beginTime, "HH:mm")}</span>
-                <span> ~ </span>
-                {this.props.endTime && <span>{format(this.props.endTime, "HH:mm")}</span>}
-            </>
-        );
-    };
-
     public getIdentity = () => {
         return getUserUuid() === this.props.userUUID ? Identity.creator : Identity.joiner;
     };
@@ -107,38 +99,39 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     public joinRoom = async () => {
         const { roomUUID, periodicUUID } = this.props;
         const identity = this.getIdentity();
-        let data: JoinRoomResult;
-        if (periodicUUID) {
-            data = await joinRoom(periodicUUID);
-        } else {
-            data = await joinRoom(roomUUID);
-        }
-        globals.whiteboard.uuid = data.whiteboardRoomUUID;
-        globals.whiteboard.token = data.whiteboardRoomToken;
-        globals.rtc.uid = data.rtcUID;
-        globals.rtc.token = data.rtcToken;
-        globals.rtm.token = data.rtmToken;
-        const url = `/${data.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
+        const joinRoomData = await joinRoom(periodicUUID || roomUUID);
+
+        globals.whiteboard.uuid = joinRoomData.whiteboardRoomUUID;
+        globals.whiteboard.token = joinRoomData.whiteboardRoomToken;
+        globals.rtc.uid = joinRoomData.rtcUID;
+        globals.rtc.token = joinRoomData.rtcToken;
+        globals.rtm.token = joinRoomData.rtmToken;
+        const url = `/${joinRoomData.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
         this.props.historyPush(url);
     };
 
     render() {
+        const { beginTime, endTime, title } = this.props;
         return (
             <div className="room-list-cell-item">
                 {this.props.showDate && (
                     <div className="room-list-cell-day">
                         <div className="room-list-cell-modify" />
-                        <div className="room-list-cell-title">{this.renderDate()}</div>
+                        <div className="room-list-cell-title">
+                            <RoomListDate beginTime={beginTime} />
+                        </div>
                     </div>
                 )}
                 <div className="room-list-cell">
                     <div className="room-list-cell-left">
-                        <div className="room-list-cell-name">{this.props.title}</div>
+                        <div className="room-list-cell-name">{title}</div>
                         <div className="room-list-cell-state">{this.renderState()}</div>
-                        <div className="room-list-cell-time">{this.renderDuration()}</div>
+                        <div className="room-list-cell-time">
+                            <RoomListDuration beginTime={beginTime} endTime={endTime} />
+                        </div>
                     </div>
                     <div className="room-list-cell-right">
-                        <Dropdown overlay={this.renderMenu}>
+                        <Dropdown overlay={this.renderMenu()}>
                             <Button className="room-list-cell-more">更多</Button>
                         </Dropdown>
                         <Button

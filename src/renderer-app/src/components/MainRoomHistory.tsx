@@ -11,19 +11,10 @@ export type MainRoomHistoryProps = {
 };
 
 export class MainRoomHistory extends React.Component<MainRoomHistoryProps> {
-
-    private getRoomUUID = (room: FlatServerRoom) => {
-        return room.roomUUID;
+    private timeToNumber = (time: string): number => {
+        return Number(new Date(time));
     };
 
-    private getPeriodicUUID = (room: FlatServerRoom) => {
-        return room.periodicUUID;
-    };
-
-    private timeToNumber = (time: string): number | undefined => {
-        return time ? Number(new Date(time)) : undefined;
-    };
-    
     public renderRooms() {
         const { rooms } = this.props;
         if (rooms.length === 0) {
@@ -42,13 +33,13 @@ export class MainRoomHistory extends React.Component<MainRoomHistoryProps> {
             lastOne = room;
             return (
                 <MainRoomHistoryItem
-                    key={this.getRoomUUID(room)}
+                    key={room.roomUUID}
                     showDate={showDate}
                     title={room.title}
                     beginTime={this.timeToNumber(room.beginTime)!}
                     endTime={this.timeToNumber(room.endTime)}
-                    periodicUUID={this.getPeriodicUUID(room)}
-                    roomUUID={this.getRoomUUID(room)}
+                    periodicUUID={room.periodicUUID}
+                    roomUUID={room.roomUUID}
                     historyPush={this.props.historyPush}
                     userUUID={room.ownerUUID}
                 />

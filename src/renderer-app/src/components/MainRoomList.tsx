@@ -2,7 +2,6 @@ import React, { PureComponent } from "react";
 import "./MainRoomList.less";
 import { MainRoomListItem } from "./MainRoomListItem";
 import emptyBoxSVG from "../assets/image/empty-box.svg";
-import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { FlatServerRoom, ListRoomsType } from "../apiMiddleware/flatServer";
 import { isSameDay } from "date-fns/fp";
 
@@ -14,20 +13,8 @@ export type MainRoomListProps = {
 };
 
 export class MainRoomList extends PureComponent<MainRoomListProps> {
-    private getRoomUUID = (room: FlatServerRoom) => {
-        return room.roomUUID;
-    };
-
-    private getPeriodicUUID = (room: FlatServerRoom) => {
-        return room.periodicUUID;
-    };
-
-    private renderStatus = (status: RoomStatus) => {
-        return status;
-    };
-
-    private timeToNumber = (time: string): number | undefined => {
-        return time ? Number(new Date(time)) : undefined;
+    private timeToNumber = (time: string): number => {
+        return Number(new Date(time));
     };
 
     public renderRooms() {
@@ -47,14 +34,14 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
             lastOne = room;
             return (
                 <MainRoomListItem
-                    key={this.getRoomUUID(room)}
+                    key={room.roomUUID}
                     showDate={showDate}
                     title={room.title}
-                    roomStatus={this.renderStatus(room.roomStatus)}
+                    roomStatus={room.roomStatus}
                     beginTime={this.timeToNumber(room.beginTime)!}
                     endTime={this.timeToNumber(room.endTime)}
-                    periodicUUID={this.getPeriodicUUID(room)}
-                    roomUUID={this.getRoomUUID(room)}
+                    periodicUUID={room.periodicUUID}
+                    roomUUID={room.roomUUID}
                     historyPush={this.props.historyPush}
                     userUUID={room.ownerUUID}
                 />
