@@ -27,6 +27,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
                 </div>
             );
         }
+
         let lastOne: FlatServerRoom | null = null;
         return rooms.map(room => {
             const showDate =

@@ -3,6 +3,7 @@ import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React from "react";
 import { Link } from "react-router-dom";
+import { cancelHistoryRoom } from "../apiMiddleware/flatServer";
 import { getUserUuid } from "../utils/localStorage/accounts";
 import { Identity } from "../utils/localStorage/room";
 import RoomListDate from "./RoomListPanel/RoomListDate";
@@ -45,9 +46,14 @@ export default class MainRoomHistoryItem extends React.PureComponent<MainRoomLis
                         房间详情
                     </Link>
                 </Menu.Item>
-                <Menu.Item>删除记录</Menu.Item>
+                <Menu.Item onClick={this.delHistoryRoom}>删除记录</Menu.Item>
             </Menu>
         );
+    };
+
+    public delHistoryRoom = () => {
+        const { roomUUID } = this.props;
+        cancelHistoryRoom(roomUUID);
     };
 
     public getIdentity = () => {
