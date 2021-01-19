@@ -3,6 +3,7 @@ import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React from "react"
 import { Link } from "react-router-dom";
+import { getUserUuid } from "../utils/localStorage/accounts";
 import { Identity } from "../utils/localStorage/room";
 
 export type MainRoomListItemProps = {
@@ -44,13 +45,16 @@ export default class MainRoomHistoryItem extends React.PureComponent<MainRoomLis
         </Menu>
     );
 
-    public renderDate = () => (
-        <time dateTime={new Date(this.props.beginTime).toUTCString()}>
-            {format(this.props.beginTime, "MMMM do", { locale: zhCN })}
-            {isToday(this.props.beginTime) && " 今天"}
-            {isTomorrow(this.props.beginTime) && " 明天"}
-        </time>
-    );
+    public renderDate = () => {
+        const { beginTime } = this.props;
+        return (
+            <time dateTime={new Date(beginTime).toUTCString()}>
+                {format(beginTime, "MMMM do", { locale: zhCN })}
+                {isToday(beginTime) && " 今天"}
+                {isTomorrow(beginTime) && " 明天"}
+            </time>
+        );
+    };
 
     public renderDuration = () => {
         return (
@@ -62,13 +66,16 @@ export default class MainRoomHistoryItem extends React.PureComponent<MainRoomLis
         );
     };
 
-    public getUserUUID = () => {
-        return localStorage.getItem("userUUID") || "";
+    public getIdentity = () => {
+        return getUserUuid() === this.props.userUUID ? Identity.creator : Identity.joiner;
     };
 
-    public getIdentity = () => {
-        return this.getUserUUID() === this.props.userUUID ? Identity.creator : Identity.joiner;
-    };
+    private gotoReplay = async () => {
+        const { roomUUID } = this.props
+        const identity = this.getIdentity();
+        const url = `/replay/${identity}/${roomUUID}/${getUserUuid()}/`;
+        this.props.historyPush(url);
+    }
 
     render() {
         return (
@@ -92,6 +99,7 @@ export default class MainRoomHistoryItem extends React.PureComponent<MainRoomLis
                         <Button
                             className="room-list-cell-enter"
                             type="primary"
+                            onClick={this.gotoReplay}
                         >
                             查看回放
                         </Button>

@@ -23,6 +23,8 @@ export type UserIndexPageProps = RouteComponentProps;
 export interface UserIndexPageState {
     roomListType: ListRoomsType;
     rooms: FlatServerRoom[];
+    historyRooms: FlatServerRoom[];
+    historyRoomListType: ListRoomsType;
 }
 
 class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageState> {
@@ -34,6 +36,8 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         this.state = {
             roomListType: ListRoomsType.All,
             rooms: [],
+            historyRooms: [],
+            historyRoomListType: ListRoomsType.History,
         };
     }
 
@@ -92,6 +96,7 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         // TODO page?
         try {
             const rooms = await listRooms(type ?? this.state.roomListType, { page: 1 });
+            const historyRooms = await listRooms(this.state.historyRoomListType, { page: 1 });
             const started: FlatServerRoom[] = [];
             const paused: FlatServerRoom[] = [];
             const idle: FlatServerRoom[] = [];
@@ -115,7 +120,11 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
                     }
                 }
             }
-            this.setAsyncState({ rooms: [...started, ...paused, ...idle, ...stopped] });
+            
+            this.setAsyncState({
+                rooms: [...started, ...paused, ...idle, ...stopped],
+                historyRooms: historyRooms,
+            });
         } catch (error) {
             // @TODO handle error
             console.log(error);
@@ -149,7 +158,10 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
                         onTypeChange={this.setListRoomsType}
                         historyPush={this.historyPush}
                     />
-                    <MainRoomHistory />
+                    <MainRoomHistory
+                        rooms={this.state.historyRooms}
+                        historyPush={this.historyPush}
+                    />
                 </div>
             </MainPageLayout>
         );
