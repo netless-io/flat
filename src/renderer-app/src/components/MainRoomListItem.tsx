@@ -2,11 +2,12 @@ import { Button, Dropdown, Menu } from "antd";
 import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React, { PureComponent } from "react";
-import { cancelOrdinaryRoom, cancelPeriodicRoom, joinRoom } from "../apiMiddleware/flatServer";
+import { cancelOrdinaryRoom, cancelPeriodicRoom, joinRoom, JoinRoomResult } from "../apiMiddleware/flatServer";
 import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
 import { Link } from "react-router-dom";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
+import { getUserUuid } from "../utils/localStorage/accounts";
 
 export type MainRoomListItemProps = {
     showDate: boolean;
@@ -30,35 +31,41 @@ export type MainRoomListItemProps = {
 
 /** 房间列表 - 单个房间 */
 export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
-    public renderMenu = () => (
-        <Menu>
-            <Menu.Item>
-                <Link
-                    to={{
-                        pathname: "/user/room/",
-                        state: {
-                            roomUUID: this.props.roomUUID,
-                            periodicUUID: this.props.periodicUUID,
-                            userUUID: this.props.userUUID,
-                        },
-                    }}
-                >
-                    房间详情
-                </Link>
-            </Menu.Item>
-            <Menu.Item>修改房间</Menu.Item>
-            <Menu.Item onClick={this.cancelRoom}>取消房间</Menu.Item>
-            <Menu.Item>复制邀请</Menu.Item>
-        </Menu>
-    );
+    public renderMenu = () => {
+        const { roomUUID, periodicUUID, userUUID } = this.props;
+        return (
+            <Menu>
+                <Menu.Item>
+                    <Link
+                        to={{
+                            pathname: "/user/room/",
+                            state: {
+                                roomUUID,
+                                periodicUUID,
+                                userUUID,
+                            },
+                        }}
+                    >
+                        房间详情
+                    </Link>
+                </Menu.Item>
+                <Menu.Item>修改房间</Menu.Item>
+                <Menu.Item onClick={this.cancelRoom}>取消房间</Menu.Item>
+                <Menu.Item>复制邀请</Menu.Item>
+            </Menu>
+        );
+    };
 
-    public renderDate = () => (
-        <time dateTime={new Date(this.props.beginTime).toUTCString()}>
-            {format(this.props.beginTime, "MMMM do", { locale: zhCN })}
-            {isToday(this.props.beginTime) && " 今天"}
-            {isTomorrow(this.props.beginTime) && " 明天"}
-        </time>
-    );
+    public renderDate = () => {
+        const { beginTime } = this.props;
+        return (
+            <time dateTime={new Date(beginTime).toUTCString()}>
+                {format(beginTime, "MMMM do", { locale: zhCN })}
+                {isToday(beginTime) && " 今天"}
+                {isTomorrow(beginTime) && " 明天"}
+            </time>
+        );
+    };
 
     public cancelRoom = (): void => {
         const { periodicUUID, roomUUID } = this.props;
@@ -93,24 +100,25 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         );
     };
 
-    public getUserUUID = () => {
-        return localStorage.getItem("userUUID") || "";
-    };
-
     public getIdentity = () => {
-        return this.getUserUUID() === this.props.userUUID ? Identity.creator : Identity.joiner;
+        return getUserUuid() === this.props.userUUID ? Identity.creator : Identity.joiner;
     };
 
     public joinRoom = async () => {
-        const { roomUUID } = this.props;
+        const { roomUUID, periodicUUID } = this.props;
         const identity = this.getIdentity();
-        const data = await joinRoom(roomUUID);
+        let data: JoinRoomResult;
+        if (periodicUUID) {
+            data = await joinRoom(periodicUUID);
+        } else {
+            data = await joinRoom(roomUUID);
+        }
         globals.whiteboard.uuid = data.whiteboardRoomUUID;
         globals.whiteboard.token = data.whiteboardRoomToken;
         globals.rtc.uid = data.rtcUID;
         globals.rtc.token = data.rtcToken;
         globals.rtm.token = data.rtmToken;
-        const url = `/${data.roomType}/${identity}/${roomUUID}/${this.getUserUUID()}/`;
+        const url = `/${data.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
         this.props.historyPush(url);
     };
 
@@ -130,7 +138,7 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
                         <div className="room-list-cell-time">{this.renderDuration()}</div>
                     </div>
                     <div className="room-list-cell-right">
-                        <Dropdown overlay={this.renderMenu()}>
+                        <Dropdown overlay={this.renderMenu}>
                             <Button className="room-list-cell-more">更多</Button>
                         </Dropdown>
                         <Button
