@@ -246,7 +246,7 @@ export interface CancelOrdinaryRoomPayload {
 }
 
 export function cancelOrdinaryRoom(roomUUID: string): Promise<CancelOrdinaryRoomResult> {
-    return post<OrdinaryRoomInfoPayload, CancelOrdinaryRoomResult>("room/cancel/ordinary", {
+    return post<CancelOrdinaryRoomPayload, CancelOrdinaryRoomResult>("room/cancel/ordinary", {
         roomUUID,
     });
 }
@@ -254,12 +254,24 @@ export function cancelOrdinaryRoom(roomUUID: string): Promise<CancelOrdinaryRoom
 export type CancelPeriodicRoomResult = {};
 
 export interface CancelPeriodicRoomPayload {
-    perdiodicUUID: string;
+    periodicUUID: string;
 }
 
 export function cancelPeriodicRoom(periodicUUID: string): Promise<CancelPeriodicRoomResult> {
-    return post<PeriodicRoomInfoPayload, CancelPeriodicRoomResult>("room/cancel/periodic", {
+    return post<CancelPeriodicRoomPayload, CancelPeriodicRoomResult>("room/cancel/periodic", {
         periodicUUID,
+    });
+}
+
+export type CancelHistoryRoomResult = {};
+
+export interface CancelHistoryRoomPayload {
+    roomUUID: string;
+}
+
+export function cancelHistoryRoom(roomUUID: string): Promise<CancelHistoryRoomResult> {
+    return post<CancelHistoryRoomPayload, CancelHistoryRoomResult>("room/cancel/history", {
+        roomUUID,
     });
 }
 

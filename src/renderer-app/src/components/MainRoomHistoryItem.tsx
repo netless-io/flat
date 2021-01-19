@@ -1,13 +1,11 @@
 import { Button, Dropdown, Menu } from "antd";
 import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
-import React, { PureComponent } from "react";
-import { cancelOrdinaryRoom, cancelPeriodicRoom, joinRoom } from "../apiMiddleware/flatServer";
-import { globals } from "../utils/globals";
-import { Identity } from "../utils/localStorage/room";
+import React from "react";
 import { Link } from "react-router-dom";
-import { RoomStatus } from "../apiMiddleware/flatServer/constants";
+import { cancelHistoryRoom } from "../apiMiddleware/flatServer";
 import { getUserUuid } from "../utils/localStorage/accounts";
+import { Identity } from "../utils/localStorage/room";
 import RoomListDate from "./RoomListPanel/RoomListDate";
 import RoomListDuration from "./RoomListPanel/RoomListDuration";
 
@@ -19,8 +17,6 @@ export type MainRoomListItemProps = {
     beginTime: number;
     /** 结束时间 (UTC 时间戳) */
     endTime: number;
-    /** 状态 */
-    roomStatus: RoomStatus;
     /** 周期 uuid */
     periodicUUID: string;
     /** 房间 uuid */
@@ -31,8 +27,7 @@ export type MainRoomListItemProps = {
     historyPush: (path: string) => void;
 };
 
-/** 房间列表 - 单个房间 */
-export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
+export default class MainRoomHistoryItem extends React.PureComponent<MainRoomListItemProps> {
     public renderMenu = () => {
         const { roomUUID, periodicUUID, userUUID } = this.props;
         return (
@@ -51,62 +46,24 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
                         房间详情
                     </Link>
                 </Menu.Item>
-                <Menu.Item>修改房间</Menu.Item>
-                <Menu.Item onClick={this.cancelRoom}>取消房间</Menu.Item>
-                <Menu.Item>复制邀请</Menu.Item>
+                <Menu.Item onClick={this.delHistoryRoom}>删除记录</Menu.Item>
             </Menu>
         );
     };
 
-    public renderDate = () => {
-        const { beginTime } = this.props;
-        return (
-            <time dateTime={new Date(beginTime).toUTCString()}>
-                {format(beginTime, "MMMM do", { locale: zhCN })}
-                {isToday(beginTime) && " 今天"}
-                {isTomorrow(beginTime) && " 明天"}
-            </time>
-        );
-    };
-
-    public cancelRoom = (): void => {
-        const { periodicUUID, roomUUID } = this.props;
-        if (periodicUUID) {
-            cancelPeriodicRoom(periodicUUID);
-        } else {
-            cancelOrdinaryRoom(roomUUID);
-        }
-    };
-
-    public renderState = () => {
-        if (this.props.roomStatus === RoomStatus.Idle) {
-            return <span className="room-idle">未开始</span>;
-        } else if (this.props.roomStatus === RoomStatus.Started) {
-            return <span className="room-started">进行中</span>;
-        } else if (this.props.roomStatus === RoomStatus.Paused) {
-            return <span className="room-paused">已暂停</span>;
-        } else if (this.props.roomStatus === RoomStatus.Stopped) {
-            return <span className="room-stopped">已结束</span>;
-        } else {
-            return null;
-        }
+    public delHistoryRoom = () => {
+        const { roomUUID } = this.props;
+        cancelHistoryRoom(roomUUID);
     };
 
     public getIdentity = () => {
         return getUserUuid() === this.props.userUUID ? Identity.creator : Identity.joiner;
     };
 
-    public joinRoom = async () => {
-        const { roomUUID, periodicUUID } = this.props;
+    private gotoReplay = async () => {
+        const { roomUUID } = this.props;
         const identity = this.getIdentity();
-        const joinRoomData = await joinRoom(periodicUUID || roomUUID);
-
-        globals.whiteboard.uuid = joinRoomData.whiteboardRoomUUID;
-        globals.whiteboard.token = joinRoomData.whiteboardRoomToken;
-        globals.rtc.uid = joinRoomData.rtcUID;
-        globals.rtc.token = joinRoomData.rtcToken;
-        globals.rtm.token = joinRoomData.rtmToken;
-        const url = `/${joinRoomData.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
+        const url = `/replay/${identity}/${roomUUID}/${getUserUuid()}/`;
         this.props.historyPush(url);
     };
 
@@ -125,7 +82,9 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
                 <div className="room-list-cell">
                     <div className="room-list-cell-left">
                         <div className="room-list-cell-name">{title}</div>
-                        <div className="room-list-cell-state">{this.renderState()}</div>
+                        <div className="room-list-cell-state">
+                            <span className="room-stopped">已结束</span>
+                        </div>
                         <div className="room-list-cell-time">
                             <RoomListDuration beginTime={beginTime} endTime={endTime} />
                         </div>
@@ -137,9 +96,9 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
                         <Button
                             className="room-list-cell-enter"
                             type="primary"
-                            onClick={this.joinRoom}
+                            onClick={this.gotoReplay}
                         >
-                            进入房间
+                            查看回放
                         </Button>
                     </div>
                 </div>
