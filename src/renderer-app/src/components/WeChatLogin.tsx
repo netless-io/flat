@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from "react-router";
 import { setWechatInfo, setUserUuid } from "../utils/localStorage/accounts";
 import { ipcAsyncByMain } from "../utils/ipc";
 import { FLAT_SERVER_LOGIN, Status } from "../apiMiddleware/flatServer/constants";
+import { globalStore } from "../stores/GlobalStore";
 
 export interface WeChatLoginResponse {
     status: Status;
@@ -74,6 +75,8 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
                 case Status.Success: {
                     setWechatInfo(data);
                     setUserUuid(data.userUUID);
+                    globalStore.updateWechat(data);
+                    globalStore.updateUserUUID(data.userUUID);
                     console.log("登陆成功", data);
                     this.joinRoom();
                     break;

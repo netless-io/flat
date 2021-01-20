@@ -17,6 +17,7 @@ import {
 } from "./apiMiddleware/flatServer";
 import { RoomStatus, RoomType } from "./apiMiddleware/flatServer/constants";
 import { getUserUuid } from "./utils/localStorage/accounts";
+import { globalStore } from "./stores/GlobalStore";
 
 export type UserIndexPageProps = RouteComponentProps;
 
@@ -79,11 +80,20 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
 
     public joinRoom = async (roomUUID: string, identity: Identity) => {
         const data = await joinRoom(roomUUID);
+
+        // @TODO remove globals
         globals.whiteboard.uuid = data.whiteboardRoomUUID;
         globals.whiteboard.token = data.whiteboardRoomToken;
         globals.rtc.uid = data.rtcUID;
         globals.rtc.token = data.rtcToken;
         globals.rtm.token = data.rtmToken;
+
+        globalStore.updateToken({
+            whiteboardUUID: data.whiteboardRoomUUID,
+            whiteboardToken: data.whiteboardRoomToken,
+            rtcToken: data.rtcToken,
+            rtmToken: data.rtmToken,
+        });
 
         const url = `/${data.roomType}/${identity}/${data.roomUUID}/${getUserUuid()}/`;
         this.historyPush(url);
@@ -120,7 +130,7 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
                     }
                 }
             }
-            
+
             this.setAsyncState({
                 rooms: [...started, ...paused, ...idle, ...stopped],
                 historyRooms: historyRooms,

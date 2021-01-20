@@ -25,6 +25,7 @@ import { Identity } from "./utils/localStorage/room";
 import { globals } from "./utils/globals";
 import { getUserUuid } from "./utils/localStorage/accounts";
 import Modal from "antd/lib/modal/Modal";
+import { globalStore } from "./stores/GlobalStore";
 
 export type RoomDetailPageState = {
     isTeacher: boolean;
@@ -132,11 +133,21 @@ export default class RoomDetailPage extends PureComponent<
         const { roomUUID } = this.state;
         const identity = this.getIdentity();
         const data = await joinRoom(roomUUID);
+
+        // @TODO remove globals
         globals.whiteboard.uuid = data.whiteboardRoomUUID;
         globals.whiteboard.token = data.whiteboardRoomToken;
         globals.rtc.uid = data.rtcUID;
         globals.rtc.token = data.rtcToken;
         globals.rtm.token = data.rtmToken;
+
+        globalStore.updateToken({
+            whiteboardUUID: data.whiteboardRoomUUID,
+            whiteboardToken: data.whiteboardRoomToken,
+            rtcToken: data.rtcToken,
+            rtmToken: data.rtmToken,
+        });
+
         const url = `/${data.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
         this.props.history.push(url);
     };

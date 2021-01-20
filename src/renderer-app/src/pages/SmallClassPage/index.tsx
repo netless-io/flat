@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { message } from "antd";
-import { RoomPhase, ViewMode } from "white-web-sdk";
-
-import LoadingPage from "../../LoadingPage";
+import { ViewMode } from "white-web-sdk";
+import { observer } from "mobx-react-lite";
+import { useHistory, useParams } from "react-router";
 
 import InviteButton from "../../components/InviteButton";
 import { TopBar, TopBarDivider } from "../../components/TopBar";
@@ -14,7 +14,7 @@ import { SmallClassAvatar } from "./SmallClassAvatar";
 import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
 import { RoomInfo } from "../../components/RoomInfo";
-import { withWhiteboardRoute, WithWhiteboardRouteProps } from "../../components/Whiteboard";
+import { Whiteboard } from "../../components/Whiteboard";
 import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
 import { RtmRenderProps, withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
 import { RTMUser } from "../../components/ChatPanel/ChatUser";
@@ -26,6 +26,7 @@ import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ClassModeType } from "../../apiMiddleware/Rtm";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { AgoraCloudRecordLayoutConfigItem } from "../../apiMiddleware/flatServer/agora";
+import { useWhiteboardStore } from "../../stores/WhiteboardStore";
 
 import "./SmallClassPage.less";
 
@@ -35,141 +36,95 @@ const MAX_AVATAR_COUNT = 17;
 const AVATAR_BAR_GAP = 4;
 const AVATAR_BAR_WIDTH = (AVATAR_WIDTH + AVATAR_BAR_GAP) * MAX_AVATAR_COUNT - AVATAR_BAR_GAP;
 
-export type SmallClassPageProps = WithWhiteboardRouteProps & WithRtcRouteProps & WithRtmRouteProps;
+export interface RouterParams {
+    identity: Identity;
+    uuid: string;
+    userId: string;
+}
 
-export type SmallClassPageState = {
-    isRealtimeSideOpen: boolean;
-};
+export type SmallClassPageProps = WithRtcRouteProps & WithRtmRouteProps;
 
-class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPageState> {
+export const SmallClassPage = observer<SmallClassPageProps>(props => {
     // @TODO remove ref
-    private exitRoomConfirmRef = { current: (_confirmType: ExitRoomConfirmType) => {} };
+    const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
-    public constructor(props: SmallClassPageProps) {
-        super(props);
+    const history = useHistory();
+    const params = useParams<RouterParams>();
 
-        this.state = {
-            isRealtimeSideOpen: true,
-        };
+    const whiteboardStore = useWhiteboardStore(params.identity === Identity.creator);
 
+    const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
+
+    useEffect(() => {
         ipcAsyncByMain("set-win-size", {
             width: 1200,
             height: 700,
         });
-    }
+    }, []);
 
-    componentDidUpdate(prevProps: SmallClassPageProps) {
-        if (this.props.rtm.roomStatus === RoomStatus.Stopped) {
-            this.props.history.push("/user/");
+    useEffect(() => {
+        if (props.rtm.roomStatus === RoomStatus.Stopped) {
+            history.push("/user/");
         }
+    }, [props.rtm.roomStatus, history]);
 
-        const { currentUser, classMode } = this.props.rtm;
-        if (currentUser) {
-            const { isCalling, toggleCalling } = this.props.rtc;
-            if (!isCalling && !prevProps.rtm.currentUser) {
-                toggleCalling(currentUser.rtcUID);
-            }
-
-            const { room } = this.props.whiteboard;
-            if (room && this.props.match.params.identity !== Identity.creator) {
-                room.disableDeviceInputs =
-                    classMode === ClassModeType.Interaction || !currentUser.isSpeak;
+    useEffect(() => {
+        if (props.rtm.currentUser) {
+            const { isCalling, toggleCalling } = props.rtc;
+            if (!isCalling) {
+                toggleCalling(props.rtm.currentUser.rtcUID);
             }
         }
+        // only track when the currentUser is ready
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.rtm.currentUser]);
 
-        if (this.props.rtc.isRecording) {
-            const userCount = activeUserCount(this.props.rtm);
-            const prevUserCount = activeUserCount(prevProps.rtm);
-
-            if (!prevProps.rtc.isRecording || userCount !== prevUserCount) {
-                this.props.rtc.cloudRecording?.updateLayout({
-                    mixedVideoLayout: 3,
-                    backgroundColor: "#F3F6F9",
-                    layoutConfig: updateRecordLayout(userCount),
-                });
-            }
+    useEffect(() => {
+        if (props.rtm.currentUser && whiteboardStore.room && params.identity !== Identity.creator) {
+            whiteboardStore.room.disableDeviceInputs =
+                props.rtm.classMode === ClassModeType.Interaction || !props.rtm.currentUser.isSpeak;
         }
-    }
+    }, [props.rtm.classMode, props.rtm.currentUser, whiteboardStore, params.identity]);
 
-    public render(): React.ReactNode {
-        const { room, phase } = this.props.whiteboard;
+    // @TODO use mobx computed
+    const totalUserCount = activeUserCount(props.rtm);
 
-        if (!room) {
-            return <LoadingPage />;
+    useEffect(() => {
+        if (props.rtc.isRecording) {
+            props.rtc.cloudRecording?.updateLayout({
+                mixedVideoLayout: 3,
+                backgroundColor: "#F3F6F9",
+                layoutConfig: updateRecordLayout(totalUserCount),
+            });
         }
+        // ignore cloudRecording
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.rtc.isRecording, totalUserCount]);
 
-        switch (phase) {
-            case RoomPhase.Connecting ||
-                RoomPhase.Disconnecting ||
-                RoomPhase.Reconnecting ||
-                RoomPhase.Reconnecting: {
-                return <LoadingPage />;
-            }
-            default: {
-                return this.renderWhiteBoard();
-            }
-        }
-    }
-
-    private handleRoomController = (): void => {
-        const { room } = this.props.whiteboard;
-        if (!room) {
-            return;
-        }
-        if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
-            room.setViewMode(ViewMode.Broadcaster);
-            message.success("其他用户将跟随您的视角");
-        } else {
-            room.setViewMode(ViewMode.Freedom);
-            message.success("其他用户将停止跟随您的视角");
-        }
-    };
-
-    private handleSideOpenerSwitch = (): void => {
-        this.setState(state => ({ isRealtimeSideOpen: !state.isRealtimeSideOpen }));
-    };
-
-    private stopClass = (): void => {
-        // @TODO remove ref
-        this.exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
-    };
-
-    private openReplayPage = () => {
-        // @TODO 打开到当前的录制记录中
-        const { uuid, identity, userId } = this.props.match.params;
-
-        this.props.history.push(`/replay/${identity}/${uuid}/${userId}/`);
-    };
-
-    private renderWhiteBoard(): React.ReactNode {
-        const { identity } = this.props.match.params;
-        const { history } = this.props;
-        const { roomStatus, stopClass } = this.props.rtm;
-        return (
-            <div className="realtime-box">
-                <TopBar
-                    left={this.renderTopBarLeft()}
-                    center={this.renderTopBarCenter()}
-                    right={this.renderTopBarRight()}
-                />
-                {this.renderAvatars()}
-                <div className="realtime-content">
-                    {this.props.whiteboard.whiteboardElement}
-                    {this.renderRealtimePanel()}
-                </div>
-                <ExitRoomConfirm
-                    identity={identity}
-                    history={history}
-                    roomStatus={roomStatus}
-                    stopClass={stopClass}
-                    confirmRef={this.exitRoomConfirmRef}
-                />
+    return (
+        <div className="realtime-box">
+            <TopBar
+                left={renderTopBarLeft()}
+                center={renderTopBarCenter()}
+                right={renderTopBarRight()}
+            />
+            {renderAvatars()}
+            <div className="realtime-content">
+                <Whiteboard whiteboardStore={whiteboardStore} />
+                {renderRealtimePanel()}
             </div>
-        );
-    }
+            <ExitRoomConfirm
+                identity={params.identity}
+                history={history}
+                roomStatus={props.rtm.roomStatus}
+                stopClass={props.rtm.stopClass}
+                confirmRef={exitRoomConfirmRef}
+            />
+        </div>
+    );
 
-    private renderAvatars(): React.ReactNode {
-        const { creator, speakingJoiners, handRaisingJoiners, joiners, classMode } = this.props.rtm;
+    function renderAvatars(): React.ReactNode {
+        const { creator, speakingJoiners, handRaisingJoiners, joiners, classMode } = props.rtm;
 
         if (!creator) {
             return null;
@@ -178,12 +133,12 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         return (
             <div className="realtime-avatars-wrap">
                 <div className="realtime-avatars">
-                    {this.renderAvatar(creator)}
-                    {speakingJoiners.map(this.renderAvatar)}
+                    {renderAvatar(creator)}
+                    {speakingJoiners.map(renderAvatar)}
                     {classMode === ClassModeType.Interaction && (
                         <>
-                            {handRaisingJoiners.map(this.renderAvatar)}
-                            {joiners.map(this.renderAvatar)}
+                            {handRaisingJoiners.map(renderAvatar)}
+                            {joiners.map(renderAvatar)}
                         </>
                     )}
                 </div>
@@ -191,24 +146,22 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         );
     }
 
-    private renderTopBarLeft(): React.ReactNode {
-        const { identity } = this.props.match.params;
-        const { roomStatus } = this.props.rtm;
+    function renderTopBarLeft(): React.ReactNode {
         return (
             <>
                 <NetworkStatus />
-                {identity === Identity.joiner && (
+                {params.identity === Identity.joiner && (
                     <RoomInfo
-                        roomStatus={roomStatus}
-                        roomType={this.props.rtm.roomInfo?.roomType}
+                        roomStatus={props.rtm.roomStatus}
+                        roomType={props.rtm.roomInfo?.roomType}
                     />
                 )}
             </>
         );
     }
 
-    private renderClassMode(): React.ReactNode {
-        const { classMode, toggleClassMode } = this.props.rtm;
+    function renderClassMode(): React.ReactNode {
+        const { classMode, toggleClassMode } = props.rtm;
 
         return classMode === ClassModeType.Lecture ? (
             <TopBarRoundBtn
@@ -231,11 +184,10 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         );
     }
 
-    private renderTopBarCenter(): React.ReactNode {
-        const { identity } = this.props.match.params;
-        const { roomStatus, pauseClass, resumeClass, startClass } = this.props.rtm;
+    function renderTopBarCenter(): React.ReactNode {
+        const { roomStatus, pauseClass, resumeClass, startClass } = props.rtm;
 
-        if (identity !== Identity.creator) {
+        if (params.identity !== Identity.creator) {
             return null;
         }
 
@@ -243,11 +195,11 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
             case RoomStatus.Started:
                 return (
                     <>
-                        {this.renderClassMode()}
+                        {renderClassMode()}
                         <TopBarRoundBtn iconName="class-pause" onClick={pauseClass}>
                             暂停上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
@@ -255,11 +207,11 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
             case RoomStatus.Paused:
                 return (
                     <>
-                        {this.renderClassMode()}
+                        {renderClassMode()}
                         <TopBarRoundBtn iconName="class-pause" onClick={resumeClass}>
                             恢复上课
                         </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={this.stopClass}>
+                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
                             结束上课
                         </TopBarRoundBtn>
                     </>
@@ -273,13 +225,11 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         }
     }
 
-    private renderTopBarRight(): React.ReactNode {
-        const { viewMode, toggleDocCenter } = this.props.whiteboard;
-        const { isRecording, toggleRecording } = this.props.rtc;
-        const { roomStatus } = this.props.rtm;
-        const { isRealtimeSideOpen } = this.state;
-        const { uuid, identity } = this.props.match.params;
-        const isCreator = identity === Identity.creator;
+    function renderTopBarRight(): React.ReactNode {
+        const { viewMode } = whiteboardStore;
+        const { isRecording, toggleRecording } = props.rtc;
+        const { roomStatus } = props.rtm;
+        const isCreator = params.identity === Identity.creator;
 
         return (
             <>
@@ -298,11 +248,15 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                         title="Vision control"
                         icon="follow"
                         active={viewMode === ViewMode.Broadcaster}
-                        onClick={this.handleRoomController}
+                        onClick={handleRoomController}
                     />
                 )}
-                <TopBarRightBtn title="Docs center" icon="folder" onClick={toggleDocCenter} />
-                <InviteButton uuid={uuid} />
+                <TopBarRightBtn
+                    title="Docs center"
+                    icon="folder"
+                    onClick={() => whiteboardStore.toggleFileOpen()}
+                />
+                <InviteButton uuid={params.uuid} />
                 {/* @TODO implement Options menu */}
                 <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
                 <TopBarRightBtn
@@ -310,7 +264,7 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                     icon="exit"
                     onClick={() => {
                         // @TODO remove ref
-                        this.exitRoomConfirmRef.current(ExitRoomConfirmType.ExitButton);
+                        exitRoomConfirmRef.current(ExitRoomConfirmType.ExitButton);
                     }}
                 />
                 <TopBarDivider />
@@ -318,17 +272,13 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                     title="Open side panel"
                     icon="hide-side"
                     active={isRealtimeSideOpen}
-                    onClick={this.handleSideOpenerSwitch}
+                    onClick={handleSideOpenerSwitch}
                 />
             </>
         );
     }
 
-    private renderRealtimePanel(): React.ReactNode {
-        const { uuid, userId, identity } = this.props.match.params;
-
-        const { isRealtimeSideOpen } = this.state;
-
+    function renderRealtimePanel(): React.ReactNode {
         return (
             <RealtimePanel
                 isShow={isRealtimeSideOpen}
@@ -336,10 +286,10 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
                 videoSlot={null}
                 chatSlot={
                     <ChatPanel
-                        userId={userId}
-                        channelID={uuid}
-                        identity={identity}
-                        rtm={this.props.rtm}
+                        userId={params.userId}
+                        channelID={params.uuid}
+                        identity={params.identity}
+                        rtm={props.rtm}
                         allowMultipleSpeakers={true}
                     ></ChatPanel>
                 }
@@ -347,43 +297,63 @@ class SmallClassPage extends React.Component<SmallClassPageProps, SmallClassPage
         );
     }
 
-    private renderAvatar = (user: RTMUser): React.ReactNode => {
-        const { userId, identity } = this.props.match.params;
-        const { rtcEngine } = this.props.rtc.rtc;
-        const { updateDeviceState } = this.props.rtm;
+    function renderAvatar(user: RTMUser): React.ReactNode {
+        const { rtcEngine } = props.rtc.rtc;
+        const { updateDeviceState } = props.rtm;
 
         return (
             <SmallClassAvatar
                 key={user.uuid}
-                identity={identity}
-                userId={userId}
+                identity={params.identity}
+                userId={params.userId}
                 avatarUser={user}
                 rtcEngine={rtcEngine}
                 updateDeviceState={updateDeviceState}
             />
         );
-    };
-}
+    }
 
-export default withWhiteboardRoute(
-    withRtcRoute({
-        recordingConfig: {
-            channelType: RtcChannelType.Communication,
-            transcodingConfig: {
-                width: AVATAR_BAR_WIDTH,
-                height: AVATAR_HEIGHT,
-                // https://docs.agora.io/cn/cloud-recording/recording_video_profile
-                fps: 15,
-                bitrate: 500,
-                mixedVideoLayout: 3,
-                backgroundColor: "#F3F6F9",
-                layoutConfig: updateRecordLayout(1),
-            },
-            maxIdleTime: 60,
-            subscribeUidGroup: 3,
+    function handleRoomController(): void {
+        const { room } = whiteboardStore;
+        if (!room) {
+            return;
+        }
+        if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
+            room.setViewMode(ViewMode.Broadcaster);
+            message.success("其他用户将跟随您的视角");
+        } else {
+            room.setViewMode(ViewMode.Freedom);
+            message.success("其他用户将停止跟随您的视角");
+        }
+    }
+
+    function handleSideOpenerSwitch(): void {
+        openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
+    }
+
+    function stopClass(): void {
+        // @TODO remove ref
+        exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
+    }
+});
+
+export default withRtcRoute({
+    recordingConfig: {
+        channelType: RtcChannelType.Communication,
+        transcodingConfig: {
+            width: AVATAR_BAR_WIDTH,
+            height: AVATAR_HEIGHT,
+            // https://docs.agora.io/cn/cloud-recording/recording_video_profile
+            fps: 15,
+            bitrate: 500,
+            mixedVideoLayout: 3,
+            backgroundColor: "#F3F6F9",
+            layoutConfig: updateRecordLayout(1),
         },
-    })(withRtmRoute(SmallClassPage)),
-);
+        maxIdleTime: 60,
+        subscribeUidGroup: 3,
+    },
+})(withRtmRoute(SmallClassPage));
 
 function updateRecordLayout(userCount: number): AgoraCloudRecordLayoutConfigItem[] {
     const layoutConfig: AgoraCloudRecordLayoutConfigItem[] = [];
