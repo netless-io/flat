@@ -13,9 +13,6 @@ import { mergeConfig } from "./utils";
 import { globalStore } from "./GlobalStore";
 
 export class WhiteboardStore {
-    userUUID: string = "";
-    whiteboardUUID: string = "";
-    whiteboardToken: string = "";
     room: Room | null = null;
     phase: RoomPhase = RoomPhase.Connecting;
     viewMode: ViewMode | null = null;
@@ -23,12 +20,7 @@ export class WhiteboardStore {
     isShowPreviewPanel: boolean = false;
     isFileOpen: boolean = false;
 
-    constructor(config: {
-        userUUID: string;
-        whiteboardUUID: string;
-        whiteboardToken: string;
-        isCreator: boolean;
-    }) {
+    constructor(config: { isCreator: boolean }) {
         mergeConfig(this, config);
         makeAutoObservable(this, {
             room: observable.ref,
@@ -56,6 +48,14 @@ export class WhiteboardStore {
     }
 
     async joinWhiteboardRoom() {
+        if (!globalStore.userUUID) {
+            throw new Error("Missing userUUID");
+        }
+
+        if (!globalStore.whiteboardUUID || !globalStore.whiteboardToken) {
+            throw new Error("Missing Whiteboard UUID and Token");
+        }
+
         try {
             const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
             const contextIdentity = this.isCreator ? "host" : "";
@@ -69,10 +69,10 @@ export class WhiteboardStore {
             const cursorAdapter = new CursorTool();
             const room = await whiteWebSdk.joinRoom(
                 {
-                    uuid: this.whiteboardUUID,
-                    roomToken: this.whiteboardToken,
+                    uuid: globalStore.whiteboardUUID,
+                    roomToken: globalStore.whiteboardToken,
                     cursorAdapter: cursorAdapter,
-                    userPayload: { userId: this.userUUID, cursorName },
+                    userPayload: { userId: globalStore.userUUID, cursorName },
                     floatBar: true,
                     isWritable: this.isCreator,
                 },
@@ -120,27 +120,12 @@ export class WhiteboardStore {
         if (NODE_ENV === "development") {
             (window as any).room = null;
         }
-        console.log(`Whiteboard unloaded: ${this.whiteboardUUID}`);
+        console.log(`Whiteboard unloaded: ${globalStore.whiteboardUUID}`);
     }
 }
 
 export function useWhiteboardStore(isCreator: boolean): WhiteboardStore {
-    const [whiteboardStore] = useState(() => {
-        if (!globalStore.userUUID) {
-            throw new Error("Missing userUUID");
-        }
-
-        if (!globalStore.whiteboardUUID || !globalStore.whiteboardToken) {
-            throw new Error("Missing Whiteboard UUID and Token");
-        }
-
-        return new WhiteboardStore({
-            userUUID: globalStore.userUUID,
-            whiteboardUUID: globalStore.whiteboardUUID,
-            whiteboardToken: globalStore.whiteboardToken,
-            isCreator,
-        });
-    });
+    const [whiteboardStore] = useState(() => new WhiteboardStore({ isCreator }));
 
     useEffect(() => {
         whiteboardStore.joinWhiteboardRoom();
