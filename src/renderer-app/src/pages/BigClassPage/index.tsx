@@ -66,24 +66,38 @@ const BigClassPage = observer<BigClassPageProps>(props => {
         }
     }, [props.rtm.roomStatus, history]);
 
+    const loadedInitCallingOnceRef = useRef(false);
     useEffect(() => {
-        if (props.rtm.currentUser && params.identity !== Identity.creator) {
+        if (
+            !loadedInitCallingOnceRef.current &&
+            props.rtm.currentUser &&
+            params.identity !== Identity.creator
+        ) {
             // join rtc room to listen to creator events
             const { currentUser } = props.rtm;
             if (currentUser) {
                 const { isCalling, toggleCalling } = props.rtc;
                 if (!isCalling) {
                     toggleCalling(currentUser.rtcUID);
-                }
-
-                if (whiteboardStore.room) {
-                    whiteboardStore.room.disableDeviceInputs = !currentUser.isSpeak;
+                    loadedInitCallingOnceRef.current = true;
                 }
             }
         }
         // only track when the currentUser is ready
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.rtm.currentUser]);
+
+    useEffect(() => {
+        if (whiteboardStore.room) {
+            const isWritable = !props.rtm.currentUser?.isSpeak;
+            if (whiteboardStore.room.disableDeviceInputs !== isWritable) {
+                whiteboardStore.room.disableDeviceInputs = isWritable;
+                whiteboardStore.room.setWritable(isWritable);
+            }
+        }
+        // eslint limitation
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.rtm.currentUser?.isSpeak, whiteboardStore.room]);
 
     useUpdateEffect(() => {
         const user = props.rtm.speakingJoiners[0];

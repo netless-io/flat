@@ -74,6 +74,7 @@ export class WhiteboardStore {
                     cursorAdapter: cursorAdapter,
                     userPayload: { userId: this.userUUID, cursorName },
                     floatBar: true,
+                    isWritable: this.isCreator,
                 },
                 {
                     onPhaseChanged: phase => {

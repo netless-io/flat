@@ -68,11 +68,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(props => {
         }
     }, [props.rtm.roomStatus, history]);
 
+    const loadedInitCallingOnceRef = useRef(false);
     useEffect(() => {
-        if (props.rtm.currentUser) {
+        if (!loadedInitCallingOnceRef.current && props.rtm.currentUser) {
             const { isCalling, toggleCalling } = props.rtc;
             if (!isCalling) {
                 toggleCalling(props.rtm.currentUser.rtcUID);
+                loadedInitCallingOnceRef.current = true;
             }
         }
         // only track when the currentUser is ready
@@ -81,10 +83,12 @@ export const SmallClassPage = observer<SmallClassPageProps>(props => {
 
     useEffect(() => {
         if (props.rtm.currentUser && whiteboardStore.room && params.identity !== Identity.creator) {
-            whiteboardStore.room.disableDeviceInputs =
+            const isWritable =
                 props.rtm.classMode === ClassModeType.Interaction || !props.rtm.currentUser.isSpeak;
+            whiteboardStore.room.disableDeviceInputs = isWritable;
+            whiteboardStore.room.setWritable(isWritable);
         }
-    }, [props.rtm.classMode, props.rtm.currentUser, whiteboardStore, params.identity]);
+    }, [props.rtm.classMode, props.rtm.currentUser, whiteboardStore.room, params.identity]);
 
     // @TODO use mobx computed
     const totalUserCount = activeUserCount(props.rtm);
