@@ -12,7 +12,7 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import { isBefore, addMinutes, addWeeks, format, roundToNearestMinutes, addDays } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { DocsType, RoomType, Week } from "./apiMiddleware/flatServer/constants";
-import { createPeriodicRoom } from "./apiMiddleware/flatServer";
+import { createOrdinaryRoom, createPeriodicRoom } from "./apiMiddleware/flatServer";
 
 enum PeriodicEndType {
     Rate = "Rate",
@@ -246,10 +246,7 @@ export default class UserScheduledPage extends Component<
                             </div>
                             <div className="user-schedule-under">
                                 <Button className="user-schedule-cancel">取消</Button>
-                                <Button
-                                    className="user-schedule-ok"
-                                    onClick={this.createPeriodicRoom}
-                                >
+                                <Button className="user-schedule-ok" onClick={this.createRoom}>
                                     预定
                                 </Button>
                             </div>
@@ -260,7 +257,7 @@ export default class UserScheduledPage extends Component<
         );
     }
 
-    public createPeriodicRoom = async () => {
+    public createRoom = async () => {
         const {
             title,
             type,
@@ -271,16 +268,25 @@ export default class UserScheduledPage extends Component<
             periodicRate: rate,
             periodicEndTime: time,
         } = this.state;
-        const requestBody: ScheduleRoomRequest = {
-            title,
-            type,
-            beginTime,
-            endTime,
-            periodic: periodicEndType === "Rate" ? { weeks, rate } : { weeks, endTime: time },
-        };
         // @TODO periodic can be null
         try {
-            await createPeriodicRoom(requestBody);
+            if (this.state.isPeriodic) {
+                await createPeriodicRoom({
+                    title,
+                    type,
+                    beginTime,
+                    endTime,
+                    periodic:
+                        periodicEndType === "Rate" ? { weeks, rate } : { weeks, endTime: time },
+                });
+            } else {
+                await createOrdinaryRoom({
+                    title,
+                    type,
+                    beginTime,
+                    endTime,
+                });
+            }
             this.props.history.push("/user/");
         } catch (e) {
             // @TODO handle error
@@ -453,15 +459,6 @@ export default class UserScheduledPage extends Component<
 }
 
 export type UserScheduledPageProps = RouteComponentProps<{}>;
-
-type ScheduleRoomRequest = {
-    title: string;
-    type: RoomType;
-    beginTime: number;
-    endTime: number;
-    periodic: { weeks: Week[] } & ({ rate: number } | { endTime: number });
-    docs?: { type: DocsType; uuid: string }[];
-};
 
 export type UserScheduledPageState = {
     isPeriodic: boolean;
