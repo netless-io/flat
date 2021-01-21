@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import ToolBox from "@netless/tool-box";
 import RedoUndo from "@netless/redo-undo";
@@ -26,6 +26,16 @@ export const Whiteboard = observer<WhiteboardProps>(({ whiteboardStore }) => {
     const [whiteboardEl, setWhiteboardEl] = useState<HTMLDivElement>();
 
     const { room, phase } = whiteboardStore;
+
+    const bindWhiteboard = useCallback(
+        (ref: HTMLDivElement) => {
+            setWhiteboardEl(ref);
+            if (room) {
+                room.bindHtmlElement(ref);
+            }
+        },
+        [room],
+    );
 
     if (
         !room ||
@@ -66,7 +76,7 @@ export const Whiteboard = observer<WhiteboardProps>(({ whiteboardStore }) => {
                 <div className="page-controller-mid-box">
                     <div
                         className="page-controller-cell"
-                        onClick={() => whiteboardStore.togglePreviewPanel(true)}
+                        onClick={whiteboardStore.showPreviewPanel}
                     >
                         <img src={pages} alt={"pages"} />
                     </div>
@@ -74,29 +84,17 @@ export const Whiteboard = observer<WhiteboardProps>(({ whiteboardStore }) => {
                 </div>
             </div>
             <PreviewController
-                handlePreviewState={state => {
-                    whiteboardStore.togglePreviewPanel(state);
-                }}
+                handlePreviewState={whiteboardStore.setPreviewPanel}
                 isVisible={whiteboardStore.isShowPreviewPanel}
                 room={room}
             />
             <DocsCenter
-                handleDocCenterState={state => {
-                    whiteboardStore.toggleFileOpen(state);
-                }}
+                handleDocCenterState={whiteboardStore.setFileOpen}
                 isFileOpen={whiteboardStore.isFileOpen}
                 room={room}
             />
             <OssDropUpload room={room} oss={OSS_CONFIG}>
-                <div
-                    ref={(ref: HTMLDivElement) => {
-                        setWhiteboardEl(ref);
-                        if (room) {
-                            room.bindHtmlElement(ref);
-                        }
-                    }}
-                    className="whiteboard-box"
-                />
+                <div ref={bindWhiteboard} className="whiteboard-box" />
             </OssDropUpload>
         </div>
     );

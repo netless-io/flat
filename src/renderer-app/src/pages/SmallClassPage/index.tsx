@@ -276,7 +276,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(props => {
                 <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
-                    onClick={() => whiteboardStore.toggleFileOpen()}
+                    onClick={whiteboardStore.toggleFileOpen}
                 />
                 <InviteButton uuid={params.uuid} />
                 {/* @TODO implement Options menu */}

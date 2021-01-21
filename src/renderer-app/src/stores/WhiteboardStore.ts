@@ -27,25 +27,33 @@ export class WhiteboardStore {
         });
     }
 
-    updateRoom(room: Room) {
+    updateRoom = (room: Room) => {
         this.room = room;
-    }
+    };
 
-    updatePhase(phase: RoomPhase) {
+    updatePhase = (phase: RoomPhase) => {
         this.phase = phase;
-    }
+    };
 
-    updateViewMode(viewMode: ViewMode) {
+    updateViewMode = (viewMode: ViewMode) => {
         this.viewMode = viewMode;
-    }
+    };
 
-    toggleFileOpen(open?: boolean) {
-        this.isFileOpen = open ?? !this.isFileOpen;
-    }
+    setFileOpen = (open: boolean) => {
+        this.isFileOpen = open;
+    };
 
-    togglePreviewPanel(show?: boolean) {
-        this.isShowPreviewPanel = show ?? !this.isShowPreviewPanel;
-    }
+    toggleFileOpen = () => {
+        this.isFileOpen = !this.isFileOpen;
+    };
+
+    showPreviewPanel = () => {
+        this.isShowPreviewPanel = true;
+    };
+
+    setPreviewPanel = (show: boolean) => {
+        this.isShowPreviewPanel = show;
+    };
 
     async joinWhiteboardRoom() {
         if (!globalStore.userUUID) {

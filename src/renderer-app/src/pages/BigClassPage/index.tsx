@@ -231,7 +231,7 @@ const BigClassPage = observer<BigClassPageProps>(props => {
                 <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
-                    onClick={() => whiteboardStore.toggleFileOpen()}
+                    onClick={whiteboardStore.toggleFileOpen}
                 />
                 <InviteButton uuid={uuid} />
                 {/* @TODO implement Options menu */}
