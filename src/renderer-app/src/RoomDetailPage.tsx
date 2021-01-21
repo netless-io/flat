@@ -24,6 +24,7 @@ import home_icon_gray from "./assets/image/home-icon-gray.svg";
 import room_type from "./assets/image/room-type.svg";
 import docs_icon from "./assets/image/docs-icon.svg";
 import "./RoomDetailPage.less";
+import Modal from "antd/lib/modal/Modal";
 
 export type RoomDetailPageState = {
     isTeacher: boolean;
@@ -87,7 +88,7 @@ export default class RoomDetailPage extends PureComponent<
         if (periodicUUID) {
             res = await periodicSubRoomInfo({ roomUUID, periodicUUID });
             getRate = await periodicRoomInfo(periodicUUID);
-            this.setState({ isPeriodic: true, rate: getRate.periodic.rate });
+            this.setState({ isPeriodic: true, rate: getRate.periodic.rate! });
         } else {
             res = await ordinaryRoomInfo(roomUUID);
         }
@@ -240,7 +241,7 @@ export default class RoomDetailPage extends PureComponent<
                             ) : null}
                             {this.state.isPeriodic ? (
                                 <div className="user-periodic-room">
-                                    {rate ? (
+                                    {rate === 0 ? null : (
                                         <Link
                                             to={{
                                                 pathname: "/user/scheduled/info/",
@@ -249,7 +250,7 @@ export default class RoomDetailPage extends PureComponent<
                                         >
                                             查看全部 {rate} 场房间
                                         </Link>
-                                    ) : null}
+                                    )}
                                 </div>
                             ) : null}
                         </div>
