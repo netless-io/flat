@@ -75,6 +75,7 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
                 case Status.Success: {
                     setWechatInfo(data);
                     setUserUuid(data.userUUID);
+                    // @TODO useContext
                     globalStore.updateWechat(data);
                     globalStore.updateUserUUID(data.userUUID);
                     console.log("登陆成功", data);

@@ -120,7 +120,7 @@ export class WhiteboardStore {
         if (NODE_ENV === "development") {
             (window as any).room = null;
         }
-        console.log(`Whiteboard unloaded: ${globalStore.whiteboardUUID}`);
+        console.log(`Whiteboard unloaded: ${globalStore.whiteboardRoomUUID}`);
     }
 }
 

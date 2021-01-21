@@ -10,7 +10,7 @@ export interface WechatInfo {
 /**
  * Properties in Global Store are persisted and shared globally.
  */
-class GlobalStore {
+export class GlobalStore {
     wechat: WechatInfo | null = null;
     userUUID: string | null = null;
     whiteboardRoomUUID: string | null = null;
