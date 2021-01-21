@@ -166,6 +166,7 @@ module.exports = {
         "react/react-in-jsx-scope": "error",
         "react/require-render-return": "error",
         "react/style-prop-object": "warn",
+        "react/prop-types": [2, { ignore: ["children"] }],
 
         // https://github.com/evcohen/eslint-plugin-jsx-a11y/tree/master/docs/rules
         "jsx-a11y/alt-text": "off",
