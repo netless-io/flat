@@ -10,6 +10,7 @@ import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { getUserUuid } from "../utils/localStorage/accounts";
 import RoomListDate from "./RoomListPanel/RoomListDate";
 import RoomListDuration from "./RoomListPanel/RoomListDuration";
+import { globalStore } from "../stores/GlobalStore";
 
 export type MainRoomListItemProps = {
     showDate: boolean;
@@ -99,14 +100,23 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     public joinRoom = async () => {
         const { roomUUID, periodicUUID } = this.props;
         const identity = this.getIdentity();
-        const joinRoomData = await joinRoom(periodicUUID || roomUUID);
+        const data = await joinRoom(periodicUUID || roomUUID);
 
-        globals.whiteboard.uuid = joinRoomData.whiteboardRoomUUID;
-        globals.whiteboard.token = joinRoomData.whiteboardRoomToken;
-        globals.rtc.uid = joinRoomData.rtcUID;
-        globals.rtc.token = joinRoomData.rtcToken;
-        globals.rtm.token = joinRoomData.rtmToken;
-        const url = `/${joinRoomData.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
+        // @TODO remove globals
+        globals.whiteboard.uuid = data.whiteboardRoomUUID;
+        globals.whiteboard.token = data.whiteboardRoomToken;
+        globals.rtc.uid = data.rtcUID;
+        globals.rtc.token = data.rtcToken;
+        globals.rtm.token = data.rtmToken;
+
+        globalStore.updateToken({
+            whiteboardUUID: data.whiteboardRoomUUID,
+            whiteboardToken: data.whiteboardRoomToken,
+            rtcToken: data.rtcToken,
+            rtmToken: data.rtmToken,
+        });
+
+        const url = `/${data.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
         this.props.historyPush(url);
     };
 

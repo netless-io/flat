@@ -156,6 +156,8 @@ export function ordinaryRoomInfo(roomUUID: string): Promise<OrdinaryRoomInfoResu
 export interface PeriodicSubRoomInfoPayload {
     periodicUUID: string;
     roomUUID: string;
+    /** 是否需要上一节课和下一节课的相关时间(只对owner起作用 */
+    needOtherRoomTimeInfo?: boolean;
 }
 
 export interface PeriodicSubRoomInfo {
@@ -172,15 +174,11 @@ export interface PeriodicSubRoomInfoResult {
 }
 
 export function periodicSubRoomInfo(
-    roomUUID: string,
-    periodicUUID: string,
+    payload: PeriodicSubRoomInfoPayload,
 ): Promise<PeriodicSubRoomInfoResult> {
     return post<PeriodicSubRoomInfoPayload, PeriodicSubRoomInfoResult>(
         "room/info/periodic-sub-room",
-        {
-            roomUUID,
-            periodicUUID,
-        },
+        payload,
     );
 }
 
