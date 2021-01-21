@@ -27,6 +27,12 @@ export enum DocsType {
     Static = "Static",
 }
 
+export interface RoomDoc {
+    docType: DocsType;
+    docUUID: string;
+    isPreload: boolean;
+}
+
 export enum Week {
     Sunday,
     Monday,

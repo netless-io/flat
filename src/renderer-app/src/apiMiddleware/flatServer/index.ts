@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { getWechatInfo } from "../../utils/localStorage/accounts";
-import { DocsType, FLAT_SERVER_VERSIONS, RoomStatus, RoomType, Week } from "./constants";
+import { DocsType, FLAT_SERVER_VERSIONS, RoomDoc, RoomStatus, RoomType, Week } from "./constants";
 import { post } from "./utils";
 
 export interface CreateRoomPayload {
@@ -145,6 +145,7 @@ export interface OrdinaryRoomInfoPayload {
 
 export interface OrdinaryRoomInfoResult {
     roomInfo: OrdinaryRoomInfo;
+    docs: RoomDoc[];
 }
 
 export function ordinaryRoomInfo(roomUUID: string): Promise<OrdinaryRoomInfoResult> {
@@ -171,6 +172,10 @@ export interface PeriodicSubRoomInfo {
 
 export interface PeriodicSubRoomInfoResult {
     roomInfo: PeriodicSubRoomInfo;
+    previousPeriodicRoomBeginTime: string; // 上一节课的开始时间
+    nextPeriodicRoomEndTime: string; // 下一节课的结束时间
+    count: number; // 当前周期性房间下一共有多少节课
+    docs: RoomDoc[];
 }
 
 export function periodicSubRoomInfo(
