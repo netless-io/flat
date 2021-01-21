@@ -23,7 +23,7 @@ export type MainRoomListItemProps = {
     /** 状态 */
     roomStatus: RoomStatus;
     /** 周期 uuid */
-    periodicUUID: string;
+    periodicUUID: string | null;
     /** 房间 uuid */
     roomUUID: string;
     /** 发起者 userUUID */

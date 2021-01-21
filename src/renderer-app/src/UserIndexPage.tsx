@@ -9,7 +9,7 @@ import { MainRoomHistory } from "./components/MainRoomHistory";
 import { globals } from "./utils/globals";
 import { Identity } from "./utils/localStorage/room";
 import {
-    createRoom,
+    createOrdinaryRoom,
     joinRoom,
     ListRoomsType,
     listRooms,
@@ -68,8 +68,8 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         return Date.now();
     }
 
-    public createRoom = async (title: string, type: RoomType) => {
-        const roomUUID = await createRoom({
+    public createOrdinaryRoom = async (title: string, type: RoomType) => {
+        const roomUUID = await createOrdinaryRoom({
             title,
             type,
             beginTime: this.getCurrentTime(),
@@ -156,7 +156,7 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         return (
             <MainPageLayout columnLayout>
                 <MainRoomMenu
-                    onCreateRoom={this.createRoom}
+                    onCreateRoom={this.createOrdinaryRoom}
                     onJoinRoom={roomID => {
                         this.joinRoom(roomID, Identity.joiner);
                     }}

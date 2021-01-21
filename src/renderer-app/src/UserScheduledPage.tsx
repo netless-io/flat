@@ -12,7 +12,7 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import { isBefore, addMinutes, addWeeks, format, roundToNearestMinutes, addDays } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { DocsType, RoomType, Week } from "./apiMiddleware/flatServer/constants";
-import { scheduleRoom } from "./apiMiddleware/flatServer";
+import { createPeriodicRoom } from "./apiMiddleware/flatServer";
 
 enum PeriodicEndType {
     Rate = "Rate",
@@ -84,7 +84,7 @@ export default class UserScheduledPage extends Component<
 
     public disabledDate = (beginTime: moment.Moment) => {
         return beginTime.isBefore(moment().startOf("day"));
-    }
+    };
 
     // TODO disabledTime
     // private range(l: number, r: number) {
@@ -246,7 +246,10 @@ export default class UserScheduledPage extends Component<
                             </div>
                             <div className="user-schedule-under">
                                 <Button className="user-schedule-cancel">取消</Button>
-                                <Button className="user-schedule-ok" onClick={this.scheduleRoom}>
+                                <Button
+                                    className="user-schedule-ok"
+                                    onClick={this.createPeriodicRoom}
+                                >
                                     预定
                                 </Button>
                             </div>
@@ -257,7 +260,7 @@ export default class UserScheduledPage extends Component<
         );
     }
 
-    public scheduleRoom = async () => {
+    public createPeriodicRoom = async () => {
         const {
             title,
             type,
@@ -277,7 +280,7 @@ export default class UserScheduledPage extends Component<
         };
         // @TODO periodic can be null
         try {
-            await scheduleRoom(requestBody);
+            await createPeriodicRoom(requestBody);
             this.props.history.push("/user/");
         } catch (e) {
             // @TODO handle error

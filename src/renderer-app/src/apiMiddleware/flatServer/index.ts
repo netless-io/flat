@@ -3,13 +3,15 @@ import { getWechatInfo } from "../../utils/localStorage/accounts";
 import { DocsType, FLAT_SERVER_VERSIONS, RoomDoc, RoomStatus, RoomType, Week } from "./constants";
 import { post } from "./utils";
 
-export interface CreateRoomPayload {
+export interface CreateOrdinaryRoomPayload {
     /** 房间主题, 最多 50 字 */
     title: string;
     /** 上课类型 */
     type: RoomType;
     /** UTC时间戳 */
     beginTime: number;
+    /** 如果不传，则默认是 beginTime 后的一个小时 */
+    endTime?: number;
     /**课件 */
     docs?: Array<{
         /**文档类型 */
@@ -19,16 +21,19 @@ export interface CreateRoomPayload {
     }>;
 }
 
-export interface CreateRoomResult {
+export interface CreateOrdinaryRoomResult {
     roomUUID: string;
 }
 
-export async function createRoom(payload: CreateRoomPayload): Promise<string> {
-    const res = await post<CreateRoomPayload, CreateRoomResult>("room/create", payload);
+export async function createOrdinaryRoom(payload: CreateOrdinaryRoomPayload): Promise<string> {
+    const res = await post<CreateOrdinaryRoomPayload, CreateOrdinaryRoomResult>(
+        "room/create/ordinary",
+        payload,
+    );
     return res.roomUUID;
 }
 
-export interface ScheduleRoomPayload {
+export interface CreatePeriodicRoomPayload {
     /** 房间主题, 最多 50 字 */
     title: string;
     /** 上课类型 */
@@ -37,7 +42,7 @@ export interface ScheduleRoomPayload {
     beginTime: number;
     endTime: number;
     /** 重复 */
-    periodic?:
+    periodic:
         | {
               /**重复周期, 每周的周几 */
               weeks: Week[];
@@ -58,10 +63,13 @@ export interface ScheduleRoomPayload {
     }>;
 }
 
-export type ScheduleRoomResult = undefined;
+export type CreatePeriodicRoomResult = {};
 
-export async function scheduleRoom(payload: ScheduleRoomPayload): Promise<void> {
-    await post<ScheduleRoomPayload, ScheduleRoomResult>("room/schedule", payload);
+export async function createPeriodicRoom(payload: CreatePeriodicRoomPayload): Promise<void> {
+    await post<CreatePeriodicRoomPayload, CreatePeriodicRoomResult>(
+        "room/create/periodic",
+        payload,
+    );
 }
 
 export enum ListRoomsType {
