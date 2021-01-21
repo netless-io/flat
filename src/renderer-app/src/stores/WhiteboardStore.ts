@@ -52,7 +52,7 @@ export class WhiteboardStore {
             throw new Error("Missing userUUID");
         }
 
-        if (!globalStore.whiteboardUUID || !globalStore.whiteboardToken) {
+        if (!globalStore.whiteboardRoomUUID || !globalStore.whiteboardRoomToken) {
             throw new Error("Missing Whiteboard UUID and Token");
         }
 
@@ -69,8 +69,8 @@ export class WhiteboardStore {
             const cursorAdapter = new CursorTool();
             const room = await whiteWebSdk.joinRoom(
                 {
-                    uuid: globalStore.whiteboardUUID,
-                    roomToken: globalStore.whiteboardToken,
+                    uuid: globalStore.whiteboardRoomUUID,
+                    roomToken: globalStore.whiteboardRoomToken,
                     cursorAdapter: cursorAdapter,
                     userPayload: { userId: globalStore.userUUID, cursorName },
                     floatBar: true,

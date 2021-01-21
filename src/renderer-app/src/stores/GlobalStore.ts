@@ -13,8 +13,8 @@ export interface WechatInfo {
 class GlobalStore {
     wechat: WechatInfo | null = null;
     userUUID: string | null = null;
-    whiteboardUUID: string | null = null;
-    whiteboardToken: string | null = null;
+    whiteboardRoomUUID: string | null = null;
+    whiteboardRoomToken: string | null = null;
     rtcToken: string | null = null;
     rtmToken: string | null = null;
 
@@ -36,7 +36,10 @@ class GlobalStore {
     }
 
     updateToken(
-        config: Pick<GlobalStore, "whiteboardUUID" | "whiteboardToken" | "rtcToken" | "rtmToken">,
+        config: Pick<
+            GlobalStore,
+            "whiteboardRoomUUID" | "whiteboardRoomToken" | "rtcToken" | "rtmToken"
+        >,
     ) {
         mergeConfig(this, config);
     }
