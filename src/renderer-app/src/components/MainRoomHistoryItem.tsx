@@ -1,6 +1,4 @@
 import { Button, Dropdown, Menu } from "antd";
-import { format, isToday, isTomorrow } from "date-fns";
-import { zhCN } from "date-fns/locale";
 import React from "react";
 import { Link } from "react-router-dom";
 import { cancelHistoryRoom } from "../apiMiddleware/flatServer";
@@ -18,7 +16,7 @@ export type MainRoomListItemProps = {
     /** 结束时间 (UTC 时间戳) */
     endTime: number;
     /** 周期 uuid */
-    periodicUUID: string;
+    periodicUUID: string | null;
     /** 房间 uuid */
     roomUUID: string;
     /** 发起者 userUUID */

@@ -29,7 +29,7 @@ import { globalStore } from "./stores/GlobalStore";
 
 export type RoomDetailPageState = {
     isTeacher: boolean;
-    rate: number;
+    rate: number | null;
     roomInfo: {
         title: string;
         beginTime: Date;

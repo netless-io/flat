@@ -18,8 +18,6 @@ import { format, getDay } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import memoizeOne from "memoize-one";
 
-
-
 export default class ScheduleRoomDetailPage extends React.Component<
     RouteComponentProps,
     ScheduleRoomDetailPageState
@@ -113,7 +111,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
         return format(time, "dd", { locale: zhCN });
     };
 
-    public  generatGroupRooms = memoizeOne(
+    public generatGroupRooms = memoizeOne(
         (sortedArry: SortedRoom[], sortedString: string): _.Dictionary<SortedRoom[]> => {
             return _.groupBy(sortedArry, sortedString);
         },
@@ -140,7 +138,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
                 render: this.renderMoreBtn,
             },
         ];
-        
+
         const groupedRooms = this.generatGroupRooms(sortedRoom, "yearMonth");
         const sortedKeys = _.keys(groupedRooms).sort();
         const groupedSortedRooms = sortedKeys.map(yearMonth => ({
@@ -342,7 +340,7 @@ type ScheduleRoomDetailPageState = {
     periodic: {
         ownerUUID: string; // 创建者的 uuid
         endTime: string;
-        rate: number; // 默认为 0（即 用户选择的是 endTime）
+        rate: number | null; // 默认为 0（即 用户选择的是 endTime）
         roomType: RoomType;
     };
     rooms: Room[];
