@@ -109,6 +109,7 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         globals.rtc.token = data.rtcToken;
         globals.rtm.token = data.rtmToken;
 
+        // @TODO useContext
         globalStore.updateToken({
             whiteboardRoomUUID: data.whiteboardRoomUUID,
             whiteboardRoomToken: data.whiteboardRoomToken,
