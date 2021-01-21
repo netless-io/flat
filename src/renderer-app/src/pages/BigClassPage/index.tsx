@@ -102,8 +102,10 @@ const BigClassPage = observer<BigClassPageProps>(props => {
     useUpdateEffect(() => {
         const user = props.rtm.speakingJoiners[0];
         const speak = user && (user.camera || user.mic);
-        setSpeakingJoiner(speak ? user : undefined);
-        setMainSpeaker(speak ? user : undefined);
+
+        setSpeakingJoiner(speak ? user : void 0);
+        setMainSpeaker(speak ? user : void 0);
+
         if (params.userId === user?.uuid) {
             props.rtc.rtc.rtcEngine.setClientRole(speak ? 1 : 2);
         }
