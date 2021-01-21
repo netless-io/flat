@@ -86,7 +86,7 @@ export default class RoomDetailPage extends PureComponent<
             .state as RoomDetailPageState;
         let res: PeriodicSubRoomInfoResult | OrdinaryRoomInfoResult;
         let getRate: PeriodicRoomInfoResult;
-        if (periodicUUID !== "") {
+        if (periodicUUID) {
             res = await periodicSubRoomInfo({ roomUUID, periodicUUID });
             getRate = await periodicRoomInfo(periodicUUID);
             this.setState({ isPeriodic: true, rate: getRate.periodic.rate });
@@ -154,7 +154,7 @@ export default class RoomDetailPage extends PureComponent<
 
     public cancelRoom = async () => {
         const { periodicUUID, roomUUID } = this.state;
-        if (periodicUUID !== "") {
+        if (periodicUUID) {
             await cancelPeriodicRoom(periodicUUID);
         } else {
             await cancelOrdinaryRoom(roomUUID);
@@ -259,7 +259,7 @@ export default class RoomDetailPage extends PureComponent<
                             ) : null}
                             {this.state.isPeriodic ? (
                                 <div className="user-periodic-room">
-                                    {rate === 0 ? null : (
+                                    {rate ? (
                                         <Link
                                             to={{
                                                 pathname: "/user/scheduled/info/",
@@ -268,7 +268,7 @@ export default class RoomDetailPage extends PureComponent<
                                         >
                                             查看全部 {rate} 场房间
                                         </Link>
-                                    )}
+                                    ) : null}
                                 </div>
                             ) : null}
                         </div>
