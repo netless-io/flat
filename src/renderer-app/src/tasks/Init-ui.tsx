@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { configure } from "mobx";
 import { AppRoutes } from "../AppRoutes";
 import { StoreProvider } from "../components/StoreProvider";
 
 import "antd/dist/antd.less";
 import "../theme.less";
 
+/** configure right after import */
+import { configure } from "mobx";
 configure({
     isolateGlobalState: true,
 });
