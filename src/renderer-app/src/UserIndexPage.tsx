@@ -89,8 +89,8 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         globals.rtm.token = data.rtmToken;
 
         globalStore.updateToken({
-            whiteboardUUID: data.whiteboardRoomUUID,
-            whiteboardToken: data.whiteboardRoomToken,
+            whiteboardRoomUUID: data.whiteboardRoomUUID,
+            whiteboardRoomToken: data.whiteboardRoomToken,
             rtcToken: data.rtcToken,
             rtmToken: data.rtmToken,
         });
