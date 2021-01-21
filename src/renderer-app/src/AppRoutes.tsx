@@ -20,6 +20,7 @@ import IndexPage from "./IndexPage";
 import SmallClassPage from "./pages/SmallClassPage";
 import BigClassPage from "./pages/BigClassPage";
 import ScheduleRoomDetailPage from "./pages/ScheduleRoomPage";
+import ModifyOrdinaryRoomPage from "./pages/ModifyOrdinaryRoomPage";
 
 export class AppRoutes extends React.Component<{}, {}> {
     public componentDidCatch(error: any): void {
@@ -45,6 +46,7 @@ export class AppRoutes extends React.Component<{}, {}> {
                         path="/whiteboard/:identity/:uuid?/"
                         component={WhiteboardCreatorPage}
                     />
+
                     <Route exact path="/join/" component={JoinPage} />
                     <Route exact path="/name/:uuid?/" component={AddNamePage} />
                     <Route exact path="/test/" component={Test} />
@@ -59,6 +61,7 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route exact path="/user/scheduled/info/" component={ScheduleRoomDetailPage} />
                     <Route exact path="/info/" component={UserInfoPage} />
                     <Route path="/setting/" component={UserSettingPanel} />
+                    <Route path="/modify/" component={ModifyOrdinaryRoomPage} />
                 </Switch>
             </HashRouter>
         );

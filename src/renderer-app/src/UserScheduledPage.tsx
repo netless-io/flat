@@ -43,7 +43,7 @@ export default class UserScheduledPage extends Component<
             endTime: this.getInitialEndTime(),
             periodicWeeks: [this.getInitialBeginWeek()],
             periodicEndType: PeriodicEndType.Rate,
-            periodicRate: 1,
+            periodicRate: 0,
             periodicEndTime: this.getInitialEndTime(),
             docs: [],
         };
@@ -165,12 +165,14 @@ export default class UserScheduledPage extends Component<
                                     disabledDate={this.disabledDate}
                                     value={new Date(this.state.beginTime)}
                                     onChange={e => this.onChangeBeginTime(e)}
+                                    allowClear={false}
                                 />
                                 <TimePicker
                                     className="user-schedule-picker"
                                     value={new Date(this.state.beginTime)}
                                     format="HH:mm"
                                     onChange={e => this.onChangeBeginTime(e)}
+                                    allowClear={false}
                                 />
                             </div>
                             <div className="user-schedule-name">结束时间</div>
@@ -180,12 +182,14 @@ export default class UserScheduledPage extends Component<
                                     disabledDate={this.disabledDate}
                                     value={new Date(this.state.endTime)}
                                     onChange={e => this.onChangeEndTime(e)}
+                                    allowClear={false}
                                 />
                                 <TimePicker
                                     className="user-schedule-picker"
                                     value={new Date(this.state.endTime)}
                                     format="HH:mm"
                                     onChange={e => this.onChangeEndTime(e)}
+                                    allowClear={false}
                                 />
                             </div>
                             <div className="user-schedule-inner">
@@ -194,7 +198,7 @@ export default class UserScheduledPage extends Component<
                                 </Checkbox>
                             </div>
                             {this.renderPeriodic()}
-                            <div className="user-schedule-name">文档</div>
+                            {/* <div className="user-schedule-name">文档</div>
                             <div className="user-schedule-docs-list">
                                 <div className="user-schedule-docs">
                                     <div className="user-schedule-docs-left">
@@ -253,7 +257,7 @@ export default class UserScheduledPage extends Component<
                                         添加静态文档 <img src={add_icon} alt={"add_icon"} />
                                     </span>
                                 </Button>
-                            </div>
+                            </div> */}
                             <div className="user-schedule-under">
                                 <Button className="user-schedule-cancel">取消</Button>
                                 <Button className="user-schedule-ok" onClick={this.createRoom}>
