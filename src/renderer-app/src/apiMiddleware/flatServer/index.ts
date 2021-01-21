@@ -73,7 +73,7 @@ export enum ListRoomsType {
 
 export interface FlatServerRoom {
     roomUUID: string; // 房间的 uuid
-    periodicUUID: string; // 周期性房间的 uuid
+    periodicUUID: string | null; // 周期性房间的 uuid
     ownerUUID: string; // 房间所有者的 uuid
     ownerUserName: string; // 房间所有者的名称
     title: string; // 房间标题
@@ -190,7 +190,7 @@ export type PeriodicRoomInfoResult = {
     periodic: {
         ownerUUID: string; // 创建者的 uuid
         endTime: string; // 有可能为空
-        rate: number; // 默认为 0（即 用户选择的是 endTime）
+        rate: number | null; // 默认为 0（即 用户选择的是 endTime）
         roomType: RoomType;
     };
     rooms: Array<{
