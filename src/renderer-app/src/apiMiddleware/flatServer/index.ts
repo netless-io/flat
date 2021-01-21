@@ -10,6 +10,8 @@ export interface CreateRoomPayload {
     type: RoomType;
     /** UTC时间戳 */
     beginTime: number;
+    /** 如果不传，则默认是 beginTime 后的一个小时 */
+    endTime?: number;
     /**课件 */
     docs?: Array<{
         /**文档类型 */
@@ -37,7 +39,7 @@ export interface ScheduleRoomPayload {
     beginTime: number;
     endTime: number;
     /** 重复 */
-    periodic?:
+    periodic:
         | {
               /**重复周期, 每周的周几 */
               weeks: Week[];
@@ -58,7 +60,7 @@ export interface ScheduleRoomPayload {
     }>;
 }
 
-export type ScheduleRoomResult = undefined;
+export type ScheduleRoomResult = {};
 
 export async function scheduleRoom(payload: ScheduleRoomPayload): Promise<void> {
     await post<ScheduleRoomPayload, ScheduleRoomResult>("room/schedule", payload);
