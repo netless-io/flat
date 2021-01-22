@@ -22,7 +22,7 @@ export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
 }
 
-export const Whiteboard = observer<WhiteboardProps>(({ whiteboardStore }) => {
+export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteboardStore }) {
     const [whiteboardEl, setWhiteboardEl] = useState<HTMLDivElement>();
 
     const { room, phase } = whiteboardStore;

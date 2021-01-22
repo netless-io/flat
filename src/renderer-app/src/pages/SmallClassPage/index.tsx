@@ -44,7 +44,7 @@ export interface RouterParams {
 
 export type SmallClassPageProps = WithRtcRouteProps & WithRtmRouteProps;
 
-export const SmallClassPage = observer<SmallClassPageProps>(props => {
+export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassPage(props) {
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
