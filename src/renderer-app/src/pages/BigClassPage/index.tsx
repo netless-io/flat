@@ -38,7 +38,7 @@ export interface RouterParams {
 
 export type BigClassPageProps = WithRtcRouteProps & WithRtmRouteProps;
 
-const BigClassPage = observer<BigClassPageProps>(props => {
+const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
