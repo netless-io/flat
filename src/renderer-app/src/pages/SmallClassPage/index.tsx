@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { message } from "antd";
-import { ViewMode } from "white-web-sdk";
+import { RoomPhase, ViewMode } from "white-web-sdk";
 import { observer } from "mobx-react-lite";
 import { useHistory, useParams } from "react-router";
 
@@ -19,6 +19,7 @@ import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
 import { RtmRenderProps, withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
 import { RTMUser } from "../../components/ChatPanel/ChatUser";
 import ExitRoomConfirm, { ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
+import LoadingPage from "../../LoadingPage";
 
 import { Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
@@ -52,6 +53,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     const params = useParams<RouterParams>();
 
     const whiteboardStore = useWhiteboardStore(params.identity === Identity.creator);
+
+    const { room, phase } = whiteboardStore;
 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
@@ -122,6 +125,15 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         // ignore cloudRecording
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.rtc.isRecording, totalUserCount]);
+
+    if (
+        !room ||
+        phase === RoomPhase.Connecting ||
+        phase === RoomPhase.Disconnecting ||
+        phase === RoomPhase.Reconnecting
+    ) {
+        return <LoadingPage />;
+    }
 
     return (
         <div className="realtime-box">
