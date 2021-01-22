@@ -12,7 +12,8 @@ import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netl
 import { videoPlugin } from "@netless/white-video-plugin";
 import { audioPlugin } from "@netless/white-audio-plugin";
 import { NETLESS, NODE_ENV } from "../constants/Process";
-import { getRoom, Identity } from "../utils/localStorage/room";
+import { Identity } from "../utils/localStorage/room";
+import { cloudRecordInfo } from "./flatServer/agora";
 
 /**
  * 智能播放画板与音视频，同时适应有无视频的情况
@@ -54,9 +55,9 @@ export class SmartPlayer {
         this._isEnded = false;
         this.destroy();
 
-        const storageRoom = getRoom(roomUUID);
+        const { recordInfo } = await cloudRecordInfo(roomUUID);
         // @TODO 支持多段视频
-        const recording = storageRoom?.recordings?.[storageRoom.recordings.length - 1];
+        const recording = recordInfo[recordInfo.length - 1];
 
         const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
         const contextIdentity = identity === Identity.creator ? "host" : "";
@@ -76,8 +77,8 @@ export class SmartPlayer {
         };
 
         if (recording) {
-            rangeQuery.beginTimestamp = recording.startTime;
-            rangeQuery.duration = recording.endTime - recording.startTime;
+            rangeQuery.beginTimestamp = Number(new Date(recording.beginTime));
+            rangeQuery.duration = Number(new Date(recording.endTime)) - rangeQuery.beginTimestamp;
         }
 
         await polly()
@@ -100,8 +101,9 @@ export class SmartPlayer {
         };
 
         if (recording) {
-            replayRoomParams.beginTimestamp = recording.startTime;
-            replayRoomParams.duration = recording.endTime - recording.startTime;
+            replayRoomParams.beginTimestamp = Number(new Date(recording.beginTime));
+            replayRoomParams.duration =
+                Number(new Date(recording.endTime)) - replayRoomParams.beginTimestamp;
         }
 
         const player = await whiteWebSdk.replayRoom(replayRoomParams, {
@@ -157,9 +159,9 @@ export class SmartPlayer {
 
         this.whiteboardPlayer = player;
 
-        if (recording?.videoUrl) {
+        if (recording?.videoURL) {
             const combinePlayerFactory = new CombinePlayerFactory(player, {
-                url: recording.videoUrl,
+                url: recording.videoURL,
                 videoDOM: videoEl,
             });
 
