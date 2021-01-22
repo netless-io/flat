@@ -67,7 +67,7 @@ export function cloudRecordAcquire(
     payload: CloudRecordAcquirePayload,
 ): Promise<CloudRecordAcquireResult> {
     return post<CloudRecordAcquirePayload, CloudRecordAcquireResult>(
-        "room/record/acquire",
+        "room/record/agora/acquire",
         payload,
     );
 }
@@ -167,7 +167,10 @@ export interface CloudRecordStartResult {
 export function cloudRecordStart(
     payload: CloudRecordStartPayload,
 ): Promise<CloudRecordStartResult> {
-    return post<CloudRecordStartPayload, CloudRecordStartResult>("room/record/started", payload);
+    return post<CloudRecordStartPayload, CloudRecordStartResult>(
+        "room/record/agora/started",
+        payload,
+    );
 }
 
 export interface AgoraCloudRecordQueryResponse<T extends "string" | "json" | undefined> {
@@ -232,7 +235,10 @@ export type CloudRecordQueryResult = AgoraCloudRecordQueryResponse<"string" | "j
 export function cloudRecordQuery(
     payload: CloudRecordQueryPayload,
 ): Promise<CloudRecordQueryResult> {
-    return post<CloudRecordQueryPayload, CloudRecordQueryResult>("room/record/query", payload);
+    return post<CloudRecordQueryPayload, CloudRecordQueryResult>(
+        "room/record/agora/query",
+        payload,
+    );
 }
 
 export interface AgoraCloudRecordLayoutConfigItem {
@@ -270,7 +276,7 @@ export function cloudRecordUpdateLayout(
     payload: CloudRecordUpdateLayoutPayload,
 ): Promise<CloudRecordUpdateLayoutResult> {
     return post<CloudRecordUpdateLayoutPayload, CloudRecordUpdateLayoutResult>(
-        "room/record/update-layout",
+        "room/record/agora/update-layout",
         payload,
     );
 }
@@ -313,7 +319,10 @@ export interface CloudRecordStopResult {
 
 /** {@link https://docs.agora.io/cn/cloud-recording/restfulapi/#/云端录制/stop} */
 export function cloudRecordStop(payload: CloudRecordStopPayload): Promise<CloudRecordStopResult> {
-    return post<CloudRecordStopPayload, CloudRecordStopResult>("room/record/stopped", payload);
+    return post<CloudRecordStopPayload, CloudRecordStopResult>(
+        "room/record/agora/stopped",
+        payload,
+    );
 }
 
 export interface CloudRecordInfoPayload {

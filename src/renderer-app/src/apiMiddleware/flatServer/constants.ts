@@ -27,9 +27,12 @@ export enum DocsType {
     Static = "Static",
 }
 
+/** 课件 */
 export interface RoomDoc {
-    docType: DocsType;
+    /**文档的 uuid */
     docUUID: string;
+    /**文档类型 */
+    docType: DocsType;
     isPreload: boolean;
 }
 
