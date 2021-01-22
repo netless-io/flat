@@ -12,7 +12,7 @@ configure({
     isolateGlobalState: true,
 });
 
-const initUI = () => {
+const initUI = (): void => {
     ReactDOM.render(
         <StoreProvider>
             <AppRoutes />

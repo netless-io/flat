@@ -203,5 +203,28 @@ module.exports = {
         "jsx-a11y/mouse-events-have-key-events": "off",
         "@typescript-eslint/no-redeclare": "off",
         "no-use-before-define": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
     },
+
+    overrides: [
+        {
+            // enable the rule specifically for TypeScript files
+            files: ["*.ts", "*.tsx"],
+            globals: {
+                JSX: true,
+            },
+            rules: {
+                "@typescript-eslint/explicit-function-return-type": [
+                    "error",
+                    {
+                        allowExpressions: true,
+                        allowTypedFunctionExpressions: true,
+                        allowHigherOrderFunctions: true,
+                        allowDirectConstAssertionInArrowFunctions: true,
+                        allowConciseArrowFunctionExpressionsStartingWithVoid: true,
+                    },
+                ],
+            },
+        },
+    ],
 };

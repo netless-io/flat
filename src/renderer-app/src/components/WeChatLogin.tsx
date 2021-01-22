@@ -39,7 +39,7 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
         };
     }
 
-    public joinRoom = () => {
+    public joinRoom = (): void => {
         ipcAsyncByMain("set-win-size", {
             width: 1200,
             height: 668,
@@ -48,7 +48,7 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
         this.props.history.push("/user/");
     };
 
-    public WeChatLoginFlow() {
+    public WeChatLoginFlow(): void {
         const { ws: socket, uuid } = this.state;
 
         socket.on("connect", () => {
@@ -100,7 +100,7 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
         this.WeChatLoginFlow();
     }
 
-    public componentWillUnmount() {
+    public componentWillUnmount(): void {
         this.state.ws.disconnect();
     }
 

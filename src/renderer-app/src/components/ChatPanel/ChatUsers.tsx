@@ -21,7 +21,7 @@ export interface ChatUsersState {
 }
 
 export class ChatUsers extends React.PureComponent<ChatUsersProps, ChatUsersState> {
-    static getDerivedStateFromProps(props: ChatUsersProps) {
+    static getDerivedStateFromProps(props: ChatUsersProps): { users: RTMUser[] } {
         return {
             users: ChatUsers.generateUsers(
                 props.speakingJoiners,

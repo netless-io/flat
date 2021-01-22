@@ -42,7 +42,7 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
         };
     }
 
-    public render() {
+    public render(): JSX.Element {
         return (
             <div className="content-header-container">
                 <Button

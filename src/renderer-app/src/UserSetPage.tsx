@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route, Link, RouteComponentProps } from "react-router-dom";
-import "./UserSetPage.less"
+import "./UserSetPage.less";
 import { Menu } from "antd";
 import MainPageLayout from "./components/MainPageLayout";
 import FileSetting from "./components/UserSettingPanel/FileSetting";
@@ -20,12 +20,11 @@ export enum SettingMenuKey {
     SystemTesting = "/setting/system/",
     CameraTesting = "/setting/camera/",
     SpeakerTesting = "/setting/speaker/",
-    MicrophoneTesting = "/setting/microphone/"
+    MicrophoneTesting = "/setting/microphone/",
 }
 
 export default class UserSetPage extends React.PureComponent<RouteComponentProps<{}>> {
-
-    public renderSettingMenu() {
+    public renderSettingMenu(): JSX.Element {
         const { SubMenu } = Menu;
         const key = this.props.location.pathname;
         return (
@@ -60,7 +59,7 @@ export default class UserSetPage extends React.PureComponent<RouteComponentProps
         );
     }
 
-    public render() {
+    public render(): JSX.Element {
         return (
             <MainPageLayout>
                 <div className="setting-menu-container">{this.renderSettingMenu()}</div>

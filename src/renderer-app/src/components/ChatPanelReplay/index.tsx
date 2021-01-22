@@ -34,18 +34,18 @@ export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatP
         renderedMessages: [],
     };
 
-    async componentDidMount() {
+    async componentDidMount(): Promise<void> {
         const { userId, channelID, player } = this.props;
         await this.rtm.init(userId, channelID);
         player.callbacks.on("onProgressTimeChanged", this.playerOnProgressTimeChanged);
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         this.rtm.destroy();
         this.props.player.callbacks.off("onProgressTimeChanged", this.playerOnProgressTimeChanged);
     }
 
-    render() {
+    render(): JSX.Element {
         return (
             <div className="chat-panel">
                 <Tabs defaultActiveKey="messages" tabBarGutter={0}>

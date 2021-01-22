@@ -185,7 +185,7 @@ export function withRtcRoute(config: { recordingConfig: RtcProps["recordingConfi
         return class WithRtcRoute extends React.Component<
             Props & Omit<WithRtcRouteProps, "whiteboard">
         > {
-            render() {
+            render(): JSX.Element {
                 const { uuid, userId, identity } = this.props.match.params;
                 return (
                     <Rtc
@@ -199,7 +199,9 @@ export function withRtcRoute(config: { recordingConfig: RtcProps["recordingConfi
                 );
             }
 
-            renderChildren = (props: RtcRenderProps) => <Comp {...this.props} rtc={props} />;
+            renderChildren = (props: RtcRenderProps): JSX.Element => (
+                <Comp {...this.props} rtc={props} />
+            );
         };
     };
 }

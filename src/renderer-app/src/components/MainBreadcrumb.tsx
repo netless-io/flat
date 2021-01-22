@@ -3,7 +3,7 @@ import { Breadcrumb } from "antd";
 import { HomeOutlined, UserOutlined } from "@ant-design/icons";
 
 export default class MainBreadcrumb extends React.PureComponent<{}> {
-    public render() {
+    public render(): JSX.Element {
         return (
             <div className="bread-crumb-container">
                 <Breadcrumb>

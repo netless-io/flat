@@ -27,7 +27,7 @@ class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
         };
     }
 
-    public componentDidMount = () => {
+    public componentDidMount = (): void => {
         ipcAsyncByMain("set-win-size", {
             width: 375,
             height: 667,
@@ -74,7 +74,7 @@ class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPageStates
         this.setState({ toggleLoginModel: false });
     };
 
-    public joinRoom = () => {
+    public joinRoom = (): void => {
         ipcAsyncByMain("set-win-size", {
             width: 1200,
             height: 668,

@@ -17,7 +17,7 @@ export default class Test extends React.Component<
         };
     }
 
-    private noticeDownloadZip = (url: string) => {
+    private noticeDownloadZip = (url: string): void => {
         const download = new DownloadFile(url);
         download.onProgress(p => {
             this.setState({

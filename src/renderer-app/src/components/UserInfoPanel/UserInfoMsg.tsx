@@ -1,11 +1,9 @@
-import React from "react"
-import "./UserInfoMsg.less"
-import { Button, Input } from "antd"
-
+import React from "react";
+import "./UserInfoMsg.less";
+import { Button, Input } from "antd";
 
 export default class UserInfoMsg extends React.PureComponent<{}> {
-
-    public render() {
+    public render(): JSX.Element {
         return (
             <div className="user-info-msg-container">
                 <div className="user-nickname-box">
@@ -22,6 +20,6 @@ export default class UserInfoMsg extends React.PureComponent<{}> {
                     <a>立即绑定</a>
                 </div>
             </div>
-        )
+        );
     }
 }
