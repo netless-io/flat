@@ -9,43 +9,52 @@ import { PPTDataType, PPTType } from "@netless/oss-upload-manager";
 
 import { pptDatas } from "../taskUuids";
 import { NETLESS, NODE_ENV } from "../constants/Process";
-import { mergeConfig } from "./utils";
 import { globalStore } from "./GlobalStore";
 
 export class WhiteboardStore {
     room: Room | null = null;
     phase: RoomPhase = RoomPhase.Connecting;
     viewMode: ViewMode | null = null;
-    isCreator: boolean = false;
     isShowPreviewPanel: boolean = false;
     isFileOpen: boolean = false;
 
+    /** is room Creator */
+    private readonly isCreator: boolean;
+
     constructor(config: { isCreator: boolean }) {
-        mergeConfig(this, config);
+        this.isCreator = config.isCreator;
         makeAutoObservable(this, {
             room: observable.ref,
         });
     }
 
-    updateRoom(room: Room) {
+    updateRoom = (room: Room) => {
         this.room = room;
-    }
+    };
 
-    updatePhase(phase: RoomPhase) {
+    updatePhase = (phase: RoomPhase) => {
         this.phase = phase;
-    }
+    };
 
-    updateViewMode(viewMode: ViewMode) {
+    updateViewMode = (viewMode: ViewMode) => {
         this.viewMode = viewMode;
-    }
+    };
 
-    toggleFileOpen(open?: boolean) {
-        this.isFileOpen = open ?? !this.isFileOpen;
-    }
+    setFileOpen = (open: boolean) => {
+        this.isFileOpen = open;
+    };
 
-    togglePreviewPanel(show?: boolean) {
-        this.isShowPreviewPanel = show ?? !this.isShowPreviewPanel;
-    }
+    toggleFileOpen = () => {
+        this.isFileOpen = !this.isFileOpen;
+    };
+
+    showPreviewPanel = () => {
+        this.isShowPreviewPanel = true;
+    };
+
+    setPreviewPanel = (show: boolean) => {
+        this.isShowPreviewPanel = show;
+    };
 
     async joinWhiteboardRoom() {
         if (!globalStore.userUUID) {

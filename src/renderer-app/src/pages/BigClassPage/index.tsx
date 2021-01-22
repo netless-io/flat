@@ -87,17 +87,24 @@ const BigClassPage = observer<BigClassPageProps>(props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.rtm.currentUser]);
 
-    useEffect(() => {
-        if (whiteboardStore.room) {
-            const isWritable = !props.rtm.currentUser?.isSpeak;
-            if (whiteboardStore.room.disableDeviceInputs !== isWritable) {
-                whiteboardStore.room.disableDeviceInputs = isWritable;
-                whiteboardStore.room.setWritable(isWritable);
+    useEffect(
+        () => {
+            if (
+                props.rtm.currentUser &&
+                whiteboardStore.room &&
+                params.identity !== Identity.creator
+            ) {
+                const isWritable = props.rtm.currentUser.isSpeak;
+                if (whiteboardStore.room.disableDeviceInputs === isWritable) {
+                    whiteboardStore.room.disableDeviceInputs = !isWritable;
+                    whiteboardStore.room.setWritable(isWritable);
+                }
             }
-        }
-        // eslint limitation
+        },
+        // exhaustive-deps is too dumb to work with fancy expression
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.rtm.currentUser?.isSpeak, whiteboardStore.room]);
+        [props.rtm.currentUser?.isSpeak, whiteboardStore.room, params.identity],
+    );
 
     useUpdateEffect(() => {
         const user = props.rtm.speakingJoiners[0];
@@ -224,7 +231,7 @@ const BigClassPage = observer<BigClassPageProps>(props => {
                 <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
-                    onClick={() => whiteboardStore.toggleFileOpen()}
+                    onClick={whiteboardStore.toggleFileOpen}
                 />
                 <InviteButton uuid={uuid} />
                 {/* @TODO implement Options menu */}

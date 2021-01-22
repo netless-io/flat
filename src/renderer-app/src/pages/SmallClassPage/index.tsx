@@ -81,14 +81,32 @@ export const SmallClassPage = observer<SmallClassPageProps>(props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.rtm.currentUser]);
 
-    useEffect(() => {
-        if (props.rtm.currentUser && whiteboardStore.room && params.identity !== Identity.creator) {
-            const isWritable =
-                props.rtm.classMode === ClassModeType.Interaction || !props.rtm.currentUser.isSpeak;
-            whiteboardStore.room.disableDeviceInputs = isWritable;
-            whiteboardStore.room.setWritable(isWritable);
-        }
-    }, [props.rtm.classMode, props.rtm.currentUser, whiteboardStore.room, params.identity]);
+    useEffect(
+        () => {
+            if (
+                props.rtm.currentUser &&
+                whiteboardStore.room &&
+                params.identity !== Identity.creator
+            ) {
+                const isWritable =
+                    props.rtm.classMode === ClassModeType.Interaction ||
+                    props.rtm.currentUser.isSpeak;
+                if (whiteboardStore.room.disableDeviceInputs === isWritable) {
+                    whiteboardStore.room.disableDeviceInputs = !isWritable;
+                    whiteboardStore.room.setWritable(isWritable);
+                }
+            }
+        },
+        // exhaustive-deps is too dumb to work with fancy expression
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            props.rtm.currentUser?.isSpeak,
+            props.rtm.classMode,
+            whiteboardStore.room,
+            params.identity,
+        ],
+    );
 
     // @TODO use mobx computed
     const totalUserCount = activeUserCount(props.rtm);
@@ -258,7 +276,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(props => {
                 <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
-                    onClick={() => whiteboardStore.toggleFileOpen()}
+                    onClick={whiteboardStore.toggleFileOpen}
                 />
                 <InviteButton uuid={params.uuid} />
                 {/* @TODO implement Options menu */}
