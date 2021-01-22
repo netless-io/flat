@@ -23,7 +23,7 @@ export interface VideoAvatarProps {
 export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
     private el: HTMLDivElement | null = null;
 
-    componentDidUpdate(prevProps: VideoAvatarProps) {
+    componentDidUpdate(prevProps: VideoAvatarProps): void {
         if (!this.el) {
             return;
         }

@@ -40,7 +40,7 @@ export default class UserScheduledPage extends Component<
         };
     }
 
-    public getInitialBeginTime() {
+    public getInitialBeginTime(): number {
         let time = roundToNearestMinutes(Date.now(), { nearestTo: 30 });
         if (isBefore(time, Date.now())) {
             time = addMinutes(time, 30);
@@ -48,25 +48,25 @@ export default class UserScheduledPage extends Component<
         return Number(time);
     }
 
-    public getInitialBeginWeek() {
+    public getInitialBeginWeek(): number {
         const begin = this.getInitialBeginTime();
         return moment(begin).weekday();
     }
 
-    public getInitialEndTime() {
+    public getInitialEndTime(): number {
         const begin = this.getInitialBeginTime();
         return Number(addMinutes(begin, 30));
     }
 
-    public onChangeType = (type: RoomType) => {
+    public onChangeType = (type: RoomType): void => {
         this.setState({ type });
     };
 
-    public onChangeTitle = (title: string) => {
+    public onChangeTitle = (title: string): void => {
         this.setState({ title });
     };
 
-    public onChangeBeginTime = (date: moment.Moment | null) => {
+    public onChangeBeginTime = (date: moment.Moment | null): void | null => {
         if (date === null) {
             return null;
         }
@@ -75,14 +75,14 @@ export default class UserScheduledPage extends Component<
         return date && this.setState({ beginTime: date.valueOf(), endTime: date.valueOf() });
     };
 
-    public onChangeEndTime = (date: moment.Moment | null) => {
+    public onChangeEndTime = (date: moment.Moment | null): void | null => {
         if (date === null) {
             return null;
         }
         return date && this.setState({ endTime: date.valueOf() });
     };
 
-    public disabledDate = (beginTime: moment.Moment) => {
+    public disabledDate = (beginTime: moment.Moment): boolean => {
         return beginTime.isBefore(moment().startOf("day"));
     };
 
@@ -91,7 +91,7 @@ export default class UserScheduledPage extends Component<
     //     return Array(r - l).fill(l).map((e, i) => e + i);
     // }
 
-    public typeName = (type: RoomType) => {
+    public typeName = (type: RoomType): string => {
         const typeNameMap: Record<RoomType, string> = {
             [RoomType.OneToOne]: "一对一",
             [RoomType.SmallClass]: "小班课",
@@ -100,7 +100,7 @@ export default class UserScheduledPage extends Component<
         return typeNameMap[type];
     };
 
-    public handleCheckbox = (e: any) => {
+    public handleCheckbox = (e: any): void => {
         this.setState({ isPeriodic: e.target.checked });
     };
 
@@ -257,7 +257,7 @@ export default class UserScheduledPage extends Component<
         );
     }
 
-    public createRoom = async () => {
+    public createRoom = async (): Promise<void> => {
         const {
             title,
             type,
@@ -295,7 +295,7 @@ export default class UserScheduledPage extends Component<
     };
 
     // @TODO use date-fns locale
-    public weekName(week: Week) {
+    public weekName(week: Week): string {
         const weeknameMap: Record<Week, string> = {
             [Week.Sunday]: "周日",
             [Week.Monday]: "周一",
@@ -308,11 +308,11 @@ export default class UserScheduledPage extends Component<
         return weeknameMap[week];
     }
 
-    public renderWeeks(weeks: Week[]) {
+    public renderWeeks(weeks: Week[]): string {
         return weeks.map(this.weekName).join("、");
     }
 
-    public periodicEndTypeName(type: PeriodicEndType) {
+    public periodicEndTypeName(type: PeriodicEndType): string {
         const endTypeNameMap: Record<PeriodicEndType, string> = {
             Rate: "按次数",
             Time: "按时间",
@@ -320,7 +320,7 @@ export default class UserScheduledPage extends Component<
         return endTypeNameMap[type];
     }
 
-    public periodicEndDate() {
+    public periodicEndDate(): Date {
         const { endTime, periodicEndType, periodicRate, periodicEndTime } = this.state;
         if (periodicEndType === "Rate") {
             return addWeeks(new Date(endTime), periodicRate);
@@ -329,11 +329,11 @@ export default class UserScheduledPage extends Component<
         }
     }
 
-    public renderPeriodicEndDate() {
+    public renderPeriodicEndDate(): string {
         return format(this.periodicEndDate(), "yyyy/MM/dd iii", { locale: zhCN });
     }
 
-    public onChangeWeeks = (e: Week[]) => {
+    public onChangeWeeks = (e: Week[]): void => {
         const { beginTime } = this.state;
         const week = moment(beginTime).weekday();
         if (!e.includes(week)) {
@@ -342,7 +342,7 @@ export default class UserScheduledPage extends Component<
         return this.setState({ periodicWeeks: e.sort() });
     };
 
-    public calcRoomsTimes() {
+    public calcRoomsTimes(): number {
         const {
             beginTime,
             periodicWeeks,

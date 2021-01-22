@@ -3,7 +3,7 @@ import { Button } from "antd";
 import "./UserCheckUpdate.less";
 
 export default class UserCheckUpdate extends React.PureComponent<{}> {
-    public render() {
+    public render(): JSX.Element {
         return (
             <div className="check-update-container">
                 <div>当前版本</div>

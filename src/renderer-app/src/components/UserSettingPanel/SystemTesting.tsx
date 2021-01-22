@@ -1,9 +1,9 @@
-import React from "react"
-import "./SystemTesting.less"
+import React from "react";
+import "./SystemTesting.less";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
 export default class SystemTesting extends React.PureComponent<{}> {
-    public render() {
+    public render(): JSX.Element {
         return (
             <div className="content-container">
                 <div className="header-container">

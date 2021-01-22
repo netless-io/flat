@@ -1,11 +1,11 @@
-import React from "react"
-import MainPageLayout from "./components/MainPageLayout"
-import UserInfoTab from "./components/UserInfoPanel/UserInfoTab"
-import UserInfoContent from "./components/UserInfoPanel/UserInfoContent"
-import UserCheckUpdate from "./components/UserInfoPanel/UserCheckUpdate"
-import UserSeggest from "./components/UserInfoPanel/UserSuggest"
-import UserAbout from "./components/UserInfoPanel/UserAbout"
-import UserInfoMsg from "./components/UserInfoPanel/UserInfoMsg"
+import React from "react";
+import MainPageLayout from "./components/MainPageLayout";
+import UserInfoTab from "./components/UserInfoPanel/UserInfoTab";
+import UserInfoContent from "./components/UserInfoPanel/UserInfoContent";
+import UserCheckUpdate from "./components/UserInfoPanel/UserCheckUpdate";
+import UserSeggest from "./components/UserInfoPanel/UserSuggest";
+import UserAbout from "./components/UserInfoPanel/UserAbout";
+import UserInfoMsg from "./components/UserInfoPanel/UserInfoMsg";
 
 export enum TabMap {
     UserInfo = "个人信息",
@@ -15,48 +15,46 @@ export enum TabMap {
 }
 
 export type UserInfoPageProps = {
-    tab: TabMap
-}
+    tab: TabMap;
+};
 
 export default class UserInfoPage extends React.PureComponent<{}, UserInfoPageProps> {
     constructor(props: {}) {
-        super(props)
-        this.state = { tab: TabMap.UserInfo }
+        super(props);
+        this.state = { tab: TabMap.UserInfo };
     }
 
-    public setTab = (tab: TabMap) => {
-        this.setState({ tab })
-    }
+    public setTab = (tab: TabMap): void => {
+        this.setState({ tab });
+    };
 
-    public renderContent = (): React.ReactNode =>  {
+    public renderContent = (): React.ReactNode => {
         switch (this.state.tab) {
             case TabMap.UserInfo: {
                 return <UserInfoMsg />;
             }
             case TabMap.CheckUpdate: {
-                return <UserCheckUpdate/>
+                return <UserCheckUpdate />;
             }
             case TabMap.Suggest: {
-                return <UserSeggest />
+                return <UserSeggest />;
             }
             case TabMap.About: {
-                return <UserAbout />
+                return <UserAbout />;
             }
-            default: 
+            default:
                 return null;
         }
-    }
+    };
 
-    public render() {
+    public render(): JSX.Element {
         return (
             <MainPageLayout>
                 <div className="user-info-wrapper">
                     <UserInfoTab tab={this.state.tab} setTab={this.setTab} />
-                    <UserInfoContent tab={this.state.tab}>
-                        {this.renderContent()}
-                    </UserInfoContent>
+                    <UserInfoContent tab={this.state.tab}>{this.renderContent()}</UserInfoContent>
                 </div>
             </MainPageLayout>
-        )
+        );
     }
 }

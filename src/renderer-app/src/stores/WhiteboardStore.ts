@@ -28,35 +28,35 @@ export class WhiteboardStore {
         });
     }
 
-    updateRoom = (room: Room) => {
+    updateRoom = (room: Room): void => {
         this.room = room;
     };
 
-    updatePhase = (phase: RoomPhase) => {
+    updatePhase = (phase: RoomPhase): void => {
         this.phase = phase;
     };
 
-    updateViewMode = (viewMode: ViewMode) => {
+    updateViewMode = (viewMode: ViewMode): void => {
         this.viewMode = viewMode;
     };
 
-    setFileOpen = (open: boolean) => {
+    setFileOpen = (open: boolean): void => {
         this.isFileOpen = open;
     };
 
-    toggleFileOpen = () => {
+    toggleFileOpen = (): void => {
         this.isFileOpen = !this.isFileOpen;
     };
 
-    showPreviewPanel = () => {
+    showPreviewPanel = (): void => {
         this.isShowPreviewPanel = true;
     };
 
-    setPreviewPanel = (show: boolean) => {
+    setPreviewPanel = (show: boolean): void => {
         this.isShowPreviewPanel = show;
     };
 
-    async joinWhiteboardRoom() {
+    async joinWhiteboardRoom(): Promise<void> {
         if (!globalStore.userUUID) {
             throw new Error("Missing userUUID");
         }
@@ -122,7 +122,7 @@ export class WhiteboardStore {
         }
     }
 
-    destroy() {
+    destroy(): void {
         if (this.room) {
             this.room.callbacks.off();
         }

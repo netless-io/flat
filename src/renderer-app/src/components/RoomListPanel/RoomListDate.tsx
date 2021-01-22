@@ -9,7 +9,7 @@ type RoomListDateProps = {
 };
 
 export default class RoomListDate extends React.PureComponent<RoomListDateProps> {
-    public render() {
+    public render(): JSX.Element {
         const { beginTime } = this.props;
         return (
             <time dateTime={new Date(beginTime).toUTCString()}>

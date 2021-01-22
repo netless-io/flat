@@ -1,9 +1,9 @@
-import React from "react"
-import { Select, Slider, Button } from "antd"
+import React from "react";
+import { Select, Slider, Button } from "antd";
 import { Link } from "react-router-dom";
 
 export default class MicrophoneTesting extends React.PureComponent<{}> {
-    public render() {
+    public render(): JSX.Element {
         const { Option } = Select;
         return (
             <div className="content-container">
@@ -31,6 +31,6 @@ export default class MicrophoneTesting extends React.PureComponent<{}> {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }

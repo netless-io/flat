@@ -42,7 +42,7 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         };
     }
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         this.isMount = true;
         this.refreshRooms();
         ipcAsyncByMain("set-win-size", {
@@ -52,23 +52,23 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         });
     }
 
-    public componentWillUnmount() {
+    public componentWillUnmount(): void {
         this.isMount = false;
     }
 
-    public historyPush = (path: string) => {
+    public historyPush = (path: string): void => {
         if (this.isMount) this.props.history.push(path);
     };
 
-    private setAsyncState(state: Parameters<React.Component["setState"]>[0]) {
+    private setAsyncState(state: Parameters<React.Component["setState"]>[0]): void {
         if (this.isMount) this.setState(state);
     }
 
-    private getCurrentTime() {
+    private getCurrentTime(): number {
         return Date.now();
     }
 
-    public createOrdinaryRoom = async (title: string, type: RoomType) => {
+    public createOrdinaryRoom = async (title: string, type: RoomType): Promise<void> => {
         const roomUUID = await createOrdinaryRoom({
             title,
             type,
@@ -78,7 +78,7 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         await this.joinRoom(roomUUID, Identity.creator);
     };
 
-    public joinRoom = async (roomUUID: string, identity: Identity) => {
+    public joinRoom = async (roomUUID: string, identity: Identity): Promise<void> => {
         const data = await joinRoom(roomUUID);
 
         // @TODO remove globals
@@ -100,7 +100,7 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         this.historyPush(url);
     };
 
-    public refreshRooms = async (type?: ListRoomsType) => {
+    public refreshRooms = async (type?: ListRoomsType): Promise<void> => {
         if (this.refreshRoomsId !== null) {
             window.clearTimeout(this.refreshRoomsId);
         }
@@ -148,7 +148,7 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
         }
     };
 
-    public setListRoomsType = (roomListType: ListRoomsType) => {
+    public setListRoomsType = (roomListType: ListRoomsType): void => {
         this.setAsyncState({ roomListType });
         this.refreshRooms(roomListType);
     };

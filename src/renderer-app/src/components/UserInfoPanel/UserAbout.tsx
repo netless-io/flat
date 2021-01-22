@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../../assets/image/logo-large.svg";
 import "./UserAbout.less";
 export default class UserAbout extends React.PureComponent {
-    public render() {
+    public render(): JSX.Element {
         return (
             <div className="check-update-container">
                 <div className="check-update-logo">

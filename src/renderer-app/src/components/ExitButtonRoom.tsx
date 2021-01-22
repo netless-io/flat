@@ -68,9 +68,9 @@ class ExitButtonRoom extends React.PureComponent<ExitButtonRoomProps, ExitButton
         }
     };
 
-    private disableExitView = () => this.setState({ exitViewDisable: true });
+    private disableExitView = (): void => this.setState({ exitViewDisable: true });
 
-    private enableExitView = () => this.setState({ exitViewDisable: false });
+    private enableExitView = (): void => this.setState({ exitViewDisable: false });
 
     public render(): React.ReactNode {
         return (

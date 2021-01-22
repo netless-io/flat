@@ -43,7 +43,7 @@ export class CloudRecording {
         return this._sid;
     }
 
-    public get isRecording() {
+    public get isRecording(): boolean {
         return this._isRecording;
     }
 
@@ -58,7 +58,14 @@ export class CloudRecording {
         this.roomUUID = init.roomUUID;
     }
 
-    public defaultStorageConfig() {
+    public defaultStorageConfig(): {
+        vendor: number;
+        region: number;
+        bucket: string;
+        accessKey: string;
+        secretKey: string;
+        fileNamePrefix: string[];
+    } {
         return {
             vendor: 2, // 阿里云
             region: 0, // 杭州

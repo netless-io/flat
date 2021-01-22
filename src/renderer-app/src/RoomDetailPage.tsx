@@ -81,7 +81,7 @@ export default class RoomDetailPage extends PureComponent<
         };
     }
 
-    public async componentDidMount() {
+    public async componentDidMount(): Promise<void> {
         const { roomUUID, periodicUUID, userUUID } = this.props.location
             .state as RoomDetailPageState;
         let res: PeriodicSubRoomInfoResult | OrdinaryRoomInfoResult;
@@ -129,7 +129,7 @@ export default class RoomDetailPage extends PureComponent<
         return getUserUuid() === this.state.userUUID ? Identity.creator : Identity.joiner;
     };
 
-    public joinRoom = async () => {
+    public joinRoom = async (): Promise<void> => {
         const { roomUUID } = this.state;
         const identity = this.getIdentity();
         const data = await joinRoom(roomUUID);
@@ -153,7 +153,7 @@ export default class RoomDetailPage extends PureComponent<
         this.props.history.push(url);
     };
 
-    public cancelRoom = async () => {
+    public cancelRoom = async (): Promise<void> => {
         const { periodicUUID, roomUUID } = this.state;
         if (periodicUUID) {
             await cancelPeriodicRoom(periodicUUID);

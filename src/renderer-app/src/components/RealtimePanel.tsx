@@ -13,7 +13,7 @@ export type RealtimePanelProps = {
 };
 
 export class RealtimePanel extends React.PureComponent<RealtimePanelProps> {
-    render() {
+    render(): JSX.Element {
         const { isVideoOn, isShow, videoSlot, chatSlot } = this.props;
 
         return (

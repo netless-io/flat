@@ -27,27 +27,27 @@ export class GlobalStore {
         );
     }
 
-    updateUserUUID(userUUID: string) {
+    updateUserUUID = (userUUID: string): void => {
         this.userUUID = userUUID;
-    }
+    };
 
-    updateWechat(wechatInfo: WechatInfo) {
+    updateWechat = (wechatInfo: WechatInfo): void => {
         this.wechat = wechatInfo;
-    }
+    };
 
-    updateToken(
+    updateToken = (
         config: Pick<
             GlobalStore,
             "whiteboardRoomUUID" | "whiteboardRoomToken" | "rtcToken" | "rtmToken"
         >,
-    ) {
+    ): void => {
         mergeConfig(this, config);
-    }
+    };
 }
 
 export const globalStore = new GlobalStore();
 
-function getLSGlobalStore() {
+function getLSGlobalStore(): null | GlobalStore {
     try {
         const str = localStorage.getItem("GlobalStore");
         return str ? JSON.parse(str) : null;
@@ -56,6 +56,6 @@ function getLSGlobalStore() {
     }
 }
 
-function setLSGlobalStore(globalStore: GlobalStore) {
+function setLSGlobalStore(globalStore: GlobalStore): void {
     localStorage.setItem("GlobalStore", JSON.stringify(globalStore));
 }
