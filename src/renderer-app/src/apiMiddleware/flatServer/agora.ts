@@ -1,3 +1,4 @@
+import { RoomType } from "./constants";
 import { post } from "./utils";
 
 export interface GenerateRTCTokenPayload {
@@ -112,14 +113,16 @@ export interface AgoraCloudRecordStartRequestBody {
             fileType: Array<string>;
             captureInterval?: number;
         };
-        storageConfig?: {
-            vendor: number;
-            region: number;
-            bucket: string;
-            accessKey: string;
-            secretKey: string;
-            fileNamePrefix?: Array<string>;
-        };
+        // This setting is moved to flat-server
+        // @see {@link https://github.com/netless-io/flat-server/blob/7e4c5ef1d86b4ea94b691428fb170a6c756876a1/config/.env.defaults#L10-L17}
+        // storageConfig?: {
+        //     vendor: number;
+        //     region: number;
+        //     bucket: string;
+        //     accessKey: string;
+        //     secretKey: string;
+        //     fileNamePrefix?: Array<string>;
+        // };
         extensionServiceConfig?: {
             extensionServices: Array<{
                 serviceName?: string;
@@ -311,4 +314,22 @@ export interface CloudRecordStopResult {
 /** {@link https://docs.agora.io/cn/cloud-recording/restfulapi/#/云端录制/stop} */
 export function cloudRecordStop(payload: CloudRecordStopPayload): Promise<CloudRecordStopResult> {
     return post<CloudRecordStopPayload, CloudRecordStopResult>("room/record/stopped", payload);
+}
+
+export interface CloudRecordInfoPayload {
+    roomUUID: string;
+}
+
+export interface CloudRecordInfoResult {
+    title: string;
+    roomType: RoomType;
+    recordInfo: Array<{
+        beginTime: string;
+        endTime: string;
+        videoURL?: string;
+    }>;
+}
+
+export function cloudRecordInfo(roomUUID: string): Promise<CloudRecordInfoResult> {
+    return post<CloudRecordInfoPayload, CloudRecordInfoResult>("room/record/info", { roomUUID });
 }

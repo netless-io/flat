@@ -85,7 +85,6 @@ export class CloudRecording {
      */
     public async start(
         startPayload: CloudRecordStartPayload["agoraData"]["clientRequest"] = {
-            storageConfig: this.defaultStorageConfig(),
             recordingConfig: {
                 subscribeUidGroup: 0,
                 transcodingConfig: {

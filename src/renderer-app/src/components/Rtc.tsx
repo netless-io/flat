@@ -73,7 +73,6 @@ export class Rtc extends React.Component<RtcProps, RtcState> {
         if (this.state.isCalling && !this.cloudRecording?.isRecording) {
             this.cloudRecording = new CloudRecording({ roomUUID: roomId });
             await this.cloudRecording.start({
-                storageConfig: this.cloudRecording.defaultStorageConfig(),
                 recordingConfig,
             });
         }
