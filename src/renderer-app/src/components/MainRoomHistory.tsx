@@ -15,7 +15,7 @@ export class MainRoomHistory extends React.Component<MainRoomHistoryProps> {
         return Number(new Date(time));
     };
 
-    public renderRooms() {
+    public renderRooms(): JSX.Element | JSX.Element[] {
         const { rooms } = this.props;
         if (rooms.length === 0) {
             return (
@@ -48,7 +48,7 @@ export class MainRoomHistory extends React.Component<MainRoomHistoryProps> {
         });
     }
 
-    public render() {
+    public render(): JSX.Element {
         return (
             <div className="room-list-container">
                 <div className="room-list-header">

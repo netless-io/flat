@@ -70,7 +70,7 @@ export class Rtc {
         identity: Identity,
         rtcUID: number,
         channelType = RtcChannelType.Communication,
-    ) {
+    ): Promise<void> {
         if (this.roomUUID) {
             if (this.roomUUID === roomUUID) {
                 return;
@@ -109,13 +109,13 @@ export class Rtc {
         this.rtcEngine.joinChannel(token, roomUUID, "", rtcUID);
     }
 
-    leave() {
+    leave(): void {
         this.rtcEngine.leaveChannel();
         this.rtcEngine.videoSourceLeave();
         this.roomUUID = null;
     }
 
-    destroy() {
+    destroy(): void {
         this.rtcEngine.removeAllListeners();
         this.rtcEngine.release();
         this.roomUUID = null;

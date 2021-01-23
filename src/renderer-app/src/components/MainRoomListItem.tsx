@@ -34,7 +34,7 @@ export type MainRoomListItemProps = {
 
 /** 房间列表 - 单个房间 */
 export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
-    public renderMenu = () => {
+    public renderMenu = (): JSX.Element => {
         const { roomUUID, periodicUUID, userUUID } = this.props;
         return (
             <Menu>
@@ -59,7 +59,7 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         );
     };
 
-    public renderDate = () => {
+    public renderDate = (): JSX.Element => {
         const { beginTime } = this.props;
         return (
             <time dateTime={new Date(beginTime).toUTCString()}>
@@ -79,7 +79,7 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         }
     };
 
-    public renderState = () => {
+    public renderState = (): JSX.Element | null => {
         if (this.props.roomStatus === RoomStatus.Idle) {
             return <span className="room-idle">未开始</span>;
         } else if (this.props.roomStatus === RoomStatus.Started) {
@@ -93,11 +93,11 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         }
     };
 
-    public getIdentity = () => {
+    public getIdentity = (): Identity => {
         return getUserUuid() === this.props.userUUID ? Identity.creator : Identity.joiner;
     };
 
-    public joinRoom = async () => {
+    public joinRoom = async (): Promise<void> => {
         const { roomUUID, periodicUUID } = this.props;
         const identity = this.getIdentity();
         const data = await joinRoom(periodicUUID || roomUUID);
@@ -109,9 +109,10 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         globals.rtc.token = data.rtcToken;
         globals.rtm.token = data.rtmToken;
 
+        // @TODO useContext
         globalStore.updateToken({
-            whiteboardUUID: data.whiteboardRoomUUID,
-            whiteboardToken: data.whiteboardRoomToken,
+            whiteboardRoomUUID: data.whiteboardRoomUUID,
+            whiteboardRoomToken: data.whiteboardRoomToken,
             rtcToken: data.rtcToken,
             rtmToken: data.rtmToken,
         });
@@ -120,7 +121,7 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
         this.props.historyPush(url);
     };
 
-    render() {
+    render(): JSX.Element {
         const { beginTime, endTime, title } = this.props;
         return (
             <div className="room-list-cell-item">

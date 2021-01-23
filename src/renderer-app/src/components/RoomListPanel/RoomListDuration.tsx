@@ -7,7 +7,7 @@ type RoomListDurationProps = {
 };
 
 export default class RoomListDuration extends React.PureComponent<RoomListDurationProps> {
-    public render() {
+    public render(): JSX.Element {
         return (
             <>
                 <span>{format(this.props.beginTime, "HH:mm")}</span>

@@ -69,6 +69,7 @@ export default class MainRoomHistoryItem extends React.PureComponent<MainRoomLis
 
     render(): JSX.Element {
         const { beginTime, endTime, title, hasRecord } = this.props;
+      
         return (
             <div className="room-list-cell-item">
                 {this.props.showDate && (

@@ -39,7 +39,7 @@ export class ExitRoomConfirm extends React.PureComponent<
         this.props.confirmRef.current = this.confirm;
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         // @TODO 监听 ipc
         // ipcRenderer.on("");
         // if (

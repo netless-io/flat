@@ -81,7 +81,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         };
     }
 
-    async componentDidMount() {
+    async componentDidMount(): Promise<void> {
         const { userId, roomId } = this.props;
         const channel = await this.rtm.init(userId, roomId);
         this.startListenChannel();
@@ -106,7 +106,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         });
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         this.rtm.destroy();
         window.clearTimeout(this.cancelHandleChannelStatusTimeout);
         document.title = this.previousTitle;
@@ -415,7 +415,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             if (roomUUID === this.props.roomId) {
                 type UStates = RTMEvents[RTMessageType.ChannelStatus]["uStates"];
                 const uStates: UStates = {};
-                const updateUStates = (user?: RTMUser) => {
+                const updateUStates = (user?: RTMUser): void => {
                     if (!user) {
                         return;
                     }
@@ -691,7 +691,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
         const handleChannelStatus = (
             { cStatus, uStates }: RTMEvents[RTMessageType.ChannelStatus],
             senderId: string,
-        ) => {
+        ): void => {
             if (!pickedSenders.some(userUUID => userUUID === senderId)) {
                 return;
             }
@@ -728,7 +728,7 @@ export class Rtm extends React.Component<RtmProps, RtmState> {
             });
         };
 
-        const cancelHandleChannelStatus = () => {
+        const cancelHandleChannelStatus = (): void => {
             this.rtm.off(RTMessageType.ChannelStatus, handleChannelStatus);
         };
 
@@ -796,11 +796,11 @@ export type WithRtmRouteProps = { rtm: RtmRenderProps } & RouteComponentProps<{
     userId: string;
 }>;
 
-export function withRtmRoute<Props>(Comp: React.ComponentType<Props & WithRtmRouteProps>) {
+export function withRtmRoute<Props>(Comp: React.ComponentType<Props & WithRtmRouteProps>): any {
     return class WithRtmRoute extends React.Component<
         Props & Omit<WithRtmRouteProps, "whiteboard">
     > {
-        render() {
+        render(): JSX.Element {
             const { uuid, userId, identity } = this.props.match.params;
             return (
                 <Rtm roomId={uuid} userId={userId} identity={identity}>
@@ -809,6 +809,8 @@ export function withRtmRoute<Props>(Comp: React.ComponentType<Props & WithRtmRou
             );
         }
 
-        renderChildren = (props: RtmRenderProps) => <Comp {...this.props} rtm={props} />;
+        renderChildren = (props: RtmRenderProps): JSX.Element => (
+            <Comp {...this.props} rtm={props} />
+        );
     };
 }

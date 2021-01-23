@@ -9,7 +9,7 @@ export function mergeConfig<S extends {}, K extends keyof S>(
         return;
     }
 
-    const setStoreProp = (key: K) => {
+    const setStoreProp = (key: K): void => {
         if (config[key] !== void 0 && Object.prototype.hasOwnProperty.call(store, key)) {
             store[key] = config[key]!;
         }

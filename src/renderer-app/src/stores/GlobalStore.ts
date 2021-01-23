@@ -10,11 +10,11 @@ export interface WechatInfo {
 /**
  * Properties in Global Store are persisted and shared globally.
  */
-class GlobalStore {
+export class GlobalStore {
     wechat: WechatInfo | null = null;
     userUUID: string | null = null;
-    whiteboardUUID: string | null = null;
-    whiteboardToken: string | null = null;
+    whiteboardRoomUUID: string | null = null;
+    whiteboardRoomToken: string | null = null;
     rtcToken: string | null = null;
     rtmToken: string | null = null;
 
@@ -27,24 +27,27 @@ class GlobalStore {
         );
     }
 
-    updateUserUUID(userUUID: string) {
+    updateUserUUID = (userUUID: string): void => {
         this.userUUID = userUUID;
-    }
+    };
 
-    updateWechat(wechatInfo: WechatInfo) {
+    updateWechat = (wechatInfo: WechatInfo): void => {
         this.wechat = wechatInfo;
-    }
+    };
 
-    updateToken(
-        config: Pick<GlobalStore, "whiteboardUUID" | "whiteboardToken" | "rtcToken" | "rtmToken">,
-    ) {
+    updateToken = (
+        config: Pick<
+            GlobalStore,
+            "whiteboardRoomUUID" | "whiteboardRoomToken" | "rtcToken" | "rtmToken"
+        >,
+    ): void => {
         mergeConfig(this, config);
-    }
+    };
 }
 
 export const globalStore = new GlobalStore();
 
-function getLSGlobalStore() {
+function getLSGlobalStore(): null | GlobalStore {
     try {
         const str = localStorage.getItem("GlobalStore");
         return str ? JSON.parse(str) : null;
@@ -53,6 +56,6 @@ function getLSGlobalStore() {
     }
 }
 
-function setLSGlobalStore(globalStore: GlobalStore) {
+function setLSGlobalStore(globalStore: GlobalStore): void {
     localStorage.setItem("GlobalStore", JSON.stringify(globalStore));
 }

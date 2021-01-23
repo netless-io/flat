@@ -213,7 +213,7 @@ export class Rtm extends EventEmitter {
         return this.channel;
     }
 
-    async destroy() {
+    async destroy(): Promise<void> {
         if (this.channel) {
             await this.channel.leave();
             this.channel.removeAllListeners();

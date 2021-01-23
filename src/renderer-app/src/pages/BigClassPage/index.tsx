@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useUpdateEffect } from "react-use";
+import { useHistory, useParams } from "react-router";
+import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import classNames from "classnames";
-import { ViewMode } from "white-web-sdk";
+import { RoomPhase, ViewMode } from "white-web-sdk";
 
 import InviteButton from "../../components/InviteButton";
 import { TopBar, TopBarDivider } from "../../components/TopBar";
@@ -18,17 +20,16 @@ import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
 import { RTMUser } from "../../components/ChatPanel/ChatUser";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
+import { Whiteboard } from "../../components/Whiteboard";
+import LoadingPage from "../../LoadingPage";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
+import { useWhiteboardStore } from "../../stores/WhiteboardStore";
 
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
 
 import "./BigClassPage.less";
-import { useWhiteboardStore } from "../../stores/WhiteboardStore";
-import { Whiteboard } from "../../components/Whiteboard";
-import { observer } from "mobx-react-lite";
-import { useHistory, useParams } from "react-router";
 
 export interface RouterParams {
     identity: Identity;
@@ -38,7 +39,7 @@ export interface RouterParams {
 
 export type BigClassPageProps = WithRtcRouteProps & WithRtmRouteProps;
 
-const BigClassPage = observer<BigClassPageProps>(props => {
+const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
@@ -46,6 +47,8 @@ const BigClassPage = observer<BigClassPageProps>(props => {
     const params = useParams<RouterParams>();
 
     const whiteboardStore = useWhiteboardStore(params.identity === Identity.creator);
+
+    const { room, phase } = whiteboardStore;
 
     const [speakingJoiner, setSpeakingJoiner] = useState<RTMUser | undefined>(
         props.rtm.speakingJoiners[0],
@@ -87,17 +90,24 @@ const BigClassPage = observer<BigClassPageProps>(props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.rtm.currentUser]);
 
-    useEffect(() => {
-        if (whiteboardStore.room) {
-            const isWritable = !props.rtm.currentUser?.isSpeak;
-            if (whiteboardStore.room.disableDeviceInputs !== isWritable) {
-                whiteboardStore.room.disableDeviceInputs = isWritable;
-                whiteboardStore.room.setWritable(isWritable);
+    useEffect(
+        () => {
+            if (
+                props.rtm.currentUser &&
+                whiteboardStore.room &&
+                params.identity !== Identity.creator
+            ) {
+                const isWritable = props.rtm.currentUser.isSpeak;
+                if (whiteboardStore.room.disableDeviceInputs === isWritable) {
+                    whiteboardStore.room.disableDeviceInputs = !isWritable;
+                    whiteboardStore.room.setWritable(isWritable);
+                }
             }
-        }
-        // eslint limitation
+        },
+        // exhaustive-deps is too dumb to work with fancy expression
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.rtm.currentUser?.isSpeak, whiteboardStore.room]);
+        [props.rtm.currentUser?.isSpeak, whiteboardStore.room, params.identity],
+    );
 
     useUpdateEffect(() => {
         const user = props.rtm.speakingJoiners[0];
@@ -110,6 +120,15 @@ const BigClassPage = observer<BigClassPageProps>(props => {
             props.rtc.rtc.rtcEngine.setClientRole(speak ? 1 : 2);
         }
     }, [props.rtm.speakingJoiners[0]]);
+
+    if (
+        !room ||
+        phase === RoomPhase.Connecting ||
+        phase === RoomPhase.Disconnecting ||
+        phase === RoomPhase.Reconnecting
+    ) {
+        return <LoadingPage />;
+    }
 
     return (
         <div className="realtime-box">
@@ -224,7 +243,7 @@ const BigClassPage = observer<BigClassPageProps>(props => {
                 <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
-                    onClick={() => whiteboardStore.toggleFileOpen()}
+                    onClick={whiteboardStore.toggleFileOpen}
                 />
                 <InviteButton uuid={uuid} />
                 {/* @TODO implement Options menu */}

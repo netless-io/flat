@@ -12,7 +12,7 @@ export interface ChatMessageProps {
 }
 
 export class ChatMessage extends React.Component<ChatMessageProps> {
-    componentDidMount() {
+    componentDidMount(): void {
         this.props.onLoaded();
     }
 

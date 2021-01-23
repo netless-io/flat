@@ -62,14 +62,14 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
         );
     }
 
-    private endSpeaking = () => {
+    private endSpeaking = (): void => {
         const { user, onEndSpeaking } = this.props;
         if (onEndSpeaking) {
             onEndSpeaking(user.uuid);
         }
     };
 
-    private acceptRaiseHand = () => {
+    private acceptRaiseHand = (): void => {
         const { user, onAcceptRaiseHand } = this.props;
         if (onAcceptRaiseHand) {
             onAcceptRaiseHand(user.uuid);
