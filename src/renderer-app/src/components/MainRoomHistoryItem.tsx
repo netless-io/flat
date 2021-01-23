@@ -60,14 +60,14 @@ export default class MainRoomHistoryItem extends React.PureComponent<MainRoomLis
         return getUserUuid() === this.props.userUUID ? Identity.creator : Identity.joiner;
     };
 
-    private gotoReplay = async (): Promise<void> => {
+    private gotoReplay = (): void => {
         const { roomUUID } = this.props;
         const identity = this.getIdentity();
         const url = `/replay/${identity}/${roomUUID}/${getUserUuid()}/`;
         this.props.historyPush(url);
     };
 
-    public render(): JSX.Element {
+    render(): JSX.Element {
         const { beginTime, endTime, title, hasRecord } = this.props;
         return (
             <div className="room-list-cell-item">
