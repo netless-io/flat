@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
@@ -25,6 +25,7 @@ import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { Identity } from "../utils/localStorage/room";
 import { RoomItem, roomStore } from "./RoomStore";
 import { globalStore } from "./GlobalStore";
+import { NODE_ENV } from "../constants/Process";
 
 export interface User {
     userUUID: string;
@@ -68,18 +69,22 @@ export class ClassRoomStore {
     readonly rtm = new RTMAPI();
     readonly cloudRecording: CloudRecording;
 
+    /** This ownerUUID is from url params matching which cannot be trusted */
+    private readonly ownerUUIDFromParams: string;
+
     private recordingConfig: RecordingConfig;
 
     private noMoreRemoteMessages = false;
 
     private cancelHandleChannelStatusTimeout?: number;
 
-    constructor(config: { roomUUID: string; recordingConfig: RecordingConfig }) {
+    constructor(config: { roomUUID: string; ownerUUID: string; recordingConfig: RecordingConfig }) {
         if (!globalStore.userUUID) {
             throw new Error("Missing user uuid");
         }
 
         this.roomUUID = config.roomUUID;
+        this.ownerUUIDFromParams = config.ownerUUID;
         this.userUUID = globalStore.userUUID;
         this.recordingConfig = config.recordingConfig;
         this.rtcChannelType = config.recordingConfig.channelType ?? RtcChannelType.Communication;
@@ -97,12 +102,28 @@ export class ClassRoomStore {
         );
     }
 
+    get ownerUUID(): string {
+        if (this.roomInfo) {
+            if (NODE_ENV === "development") {
+                if (this.roomInfo.ownerUUID !== this.ownerUUIDFromParams) {
+                    throw new Error("ClassRoom Error: ownerUUID mismatch!");
+                }
+            }
+            return this.roomInfo.ownerUUID;
+        }
+        return this.ownerUUIDFromParams;
+    }
+
     get roomInfo(): RoomItem | undefined {
         return roomStore.rooms.get(this.roomUUID);
     }
 
     get isCreator(): boolean {
-        return Boolean(this.roomInfo?.ownerUUID === this.userUUID);
+        return this.ownerUUID === this.userUUID;
+    }
+
+    get roomStatus(): RoomStatus {
+        return this.roomInfo?.roomStatus || RoomStatus.Idle;
     }
 
     get joinerTotalCount(): number {
@@ -193,7 +214,8 @@ export class ClassRoomStore {
         let messages: RTMessage[] = [];
 
         try {
-            const oldestTimestap = this.messages[0]?.timestamp || Date.now();
+            const oldestTimestap =
+                this.messages.length > 0 ? this.messages[0].timestamp : Date.now();
             messages = await this.rtm.fetchTextHistory(
                 dateSub(oldestTimestap, { years: 1 }).valueOf(),
                 oldestTimestap - 1,
@@ -355,11 +377,8 @@ export class ClassRoomStore {
 
     async init(): Promise<void> {
         await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
-        if (!this.roomInfo) {
-            throw new Error("Room not ready!");
-        }
 
-        const channel = await this.rtm.init(this.userUUID, this.roomInfo.roomUUID);
+        const channel = await this.rtm.init(this.userUUID, this.roomUUID);
         this.startListenCommands();
 
         const members = await channel.getMembers();
@@ -397,6 +416,8 @@ export class ClassRoomStore {
             }
         }
         this.rtc.destroy();
+        this.rtm.destroy();
+        window.clearTimeout(this.cancelHandleChannelStatusTimeout);
     }
 
     private async switchRoomStatus(roomStatus: RoomStatus): Promise<void> {
@@ -516,7 +537,7 @@ export class ClassRoomStore {
         });
 
         this.rtm.on(RTMessageType.CancelAllHandRaising, (_value, senderId) => {
-            if (this.roomInfo && senderId === this.roomInfo.ownerUUID && !this.isCreator) {
+            if (senderId === this.ownerUUID && !this.isCreator) {
                 this.cancelAllHandRaising();
             }
         });
@@ -532,7 +553,7 @@ export class ClassRoomStore {
         });
 
         this.rtm.on(RTMessageType.AcceptRaiseHand, ({ userUUID, accept }, senderId) => {
-            if (this.roomInfo && senderId === this.roomInfo.ownerUUID) {
+            if (senderId === this.ownerUUID) {
                 this.sortUsers(user => {
                     if (userUUID === user.userUUID) {
                         user.isRaiseHand = false;
@@ -547,7 +568,7 @@ export class ClassRoomStore {
         });
 
         this.rtm.on(RTMessageType.BanText, (isBan, senderId) => {
-            if (this.roomInfo && senderId === this.roomInfo.ownerUUID && !this.isCreator) {
+            if (senderId === this.ownerUUID && !this.isCreator) {
                 this.addMessage(RTMessageType.BanText, isBan, this.userUUID);
             }
         });
@@ -562,7 +583,7 @@ export class ClassRoomStore {
                     }
                     return true;
                 });
-            } else if (this.roomInfo && senderId === this.roomInfo.ownerUUID && (!camera || !mic)) {
+            } else if (senderId === this.ownerUUID && (!camera || !mic)) {
                 // creator can only turn off other's camera and mic
                 this.sortUsers(user => {
                     if (user.userUUID === userUUID) {
@@ -576,7 +597,7 @@ export class ClassRoomStore {
         });
 
         this.rtm.on(RTMessageType.Speak, (configs, senderId) => {
-            if (this.roomInfo && senderId !== this.roomInfo.ownerUUID) {
+            if (senderId !== this.ownerUUID) {
                 // joiner can only turn off speaking
                 configs = configs.filter(config => !config.speak && config.userUUID === senderId);
                 if (configs.length <= 0) {
@@ -587,19 +608,19 @@ export class ClassRoomStore {
         });
 
         this.rtm.on(RTMessageType.Notice, (text, senderId) => {
-            if (this.roomInfo && senderId === this.roomInfo.ownerUUID) {
+            if (senderId === this.ownerUUID) {
                 this.addMessage(RTMessageType.Notice, text, senderId);
             }
         });
 
         this.rtm.on(RTMessageType.ClassMode, (classMode, senderId) => {
-            if (this.roomInfo && senderId === this.roomInfo.ownerUUID) {
+            if (senderId === this.ownerUUID) {
                 this.updateClassMode(classMode);
             }
         });
 
         this.rtm.on(RTMessageType.RoomStatus, (roomStatus, senderId) => {
-            if (this.roomInfo && senderId === this.roomInfo.ownerUUID) {
+            if (senderId === this.ownerUUID) {
                 this.updateRoomStatus(roomStatus);
             }
         });
@@ -638,7 +659,7 @@ export class ClassRoomStore {
                 this.rtm.sendCommand({
                     type: RTMessageType.ChannelStatus,
                     value: {
-                        cStatus: this.roomInfo?.roomStatus || RoomStatus.Idle,
+                        cStatus: this.roomStatus,
                         uStates,
                     },
                     keepHistory: false,
@@ -730,7 +751,7 @@ export class ClassRoomStore {
                 this.currentUser = user;
             }
 
-            if (user.userUUID === this.roomInfo?.ownerUUID) {
+            if (user.userUUID === this.ownerUUID) {
                 this.creator = user;
             } else if (user.isSpeak) {
                 this.speakingJoiners.push(user);
@@ -875,15 +896,18 @@ export class ClassRoomStore {
 
 export function useClassRoomStore(
     roomUUID: string,
+    ownerUUID: string,
     recordingConfig: RecordingConfig,
 ): ClassRoomStore {
-    const classRoomStore = new ClassRoomStore({ roomUUID, recordingConfig });
+    const [classRoomStore] = useState(
+        () => new ClassRoomStore({ roomUUID, ownerUUID, recordingConfig }),
+    );
 
     const roomTitle = classRoomStore.roomInfo?.title;
     const previousWindowTitleRef = useRef<string | null>(null);
 
     useEffect(() => {
-        if (roomTitle) {
+        if (roomTitle !== void 0) {
             if (previousWindowTitleRef.current === null) {
                 previousWindowTitleRef.current = roomTitle;
             }
@@ -892,12 +916,16 @@ export function useClassRoomStore(
     }, [roomTitle]);
 
     useEffect(() => {
+        classRoomStore.init();
         return () => {
+            classRoomStore.destroy();
             // restore window title
             if (previousWindowTitleRef.current !== null) {
                 document.title = previousWindowTitleRef.current;
             }
         };
+        // run only on component mount
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return classRoomStore;
