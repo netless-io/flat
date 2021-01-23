@@ -42,6 +42,7 @@ export class MainRoomHistory extends React.Component<MainRoomHistoryProps> {
                     roomUUID={room.roomUUID}
                     historyPush={this.props.historyPush}
                     userUUID={room.ownerUUID}
+                    hasRecord={room.hasRecord}
                 />
             );
         });

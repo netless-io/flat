@@ -21,6 +21,8 @@ export type MainRoomListItemProps = {
     roomUUID: string;
     /** 发起者 userUUID */
     userUUID: string;
+    /** 是否存在录制(只有历史记录才会有) */
+    hasRecord?: boolean;
 
     historyPush: (path: string) => void;
 };
@@ -66,7 +68,8 @@ export default class MainRoomHistoryItem extends React.PureComponent<MainRoomLis
     };
 
     render(): JSX.Element {
-        const { beginTime, endTime, title } = this.props;
+        const { beginTime, endTime, title, hasRecord } = this.props;
+      
         return (
             <div className="room-list-cell-item">
                 {this.props.showDate && (
@@ -91,13 +94,19 @@ export default class MainRoomHistoryItem extends React.PureComponent<MainRoomLis
                         <Dropdown overlay={this.renderMenu()}>
                             <Button className="room-list-cell-more">更多</Button>
                         </Dropdown>
-                        <Button
-                            className="room-list-cell-enter"
-                            type="primary"
-                            onClick={this.gotoReplay}
-                        >
-                            查看回放
-                        </Button>
+                        {hasRecord ? (
+                            <Button
+                                className="room-list-cell-enter"
+                                type="primary"
+                                onClick={this.gotoReplay}
+                            >
+                                查看回放
+                            </Button>
+                        ) : (
+                            <Button disabled className="room-list-cell-enter" type="primary">
+                                查看回放
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>
