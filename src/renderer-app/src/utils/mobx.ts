@@ -6,8 +6,10 @@ import {
     IWhenOptions,
     reaction,
     when,
+    computed,
+    IComputedValueOptions,
 } from "mobx";
-import { useEffect, DependencyList } from "react";
+import { useEffect, DependencyList, useState } from "react";
 
 /**
  * @param extraDeps provide extra dependencies to re-setup autorun if non-observable values are used
@@ -48,4 +50,9 @@ export function useWhen(
     // MobX takes care of the deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => when(predicate, effect, otps), extraDeps);
+}
+
+export function useComputed<T>(func: () => T, opts?: IComputedValueOptions<T>): T {
+    const [computedValue] = useState(() => computed(func, opts));
+    return computedValue.get();
 }
