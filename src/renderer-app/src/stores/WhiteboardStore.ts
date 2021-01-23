@@ -99,21 +99,30 @@ export class WhiteboardStore {
                     },
                 },
             );
+
             room.disableDeviceInputs = !this.isCreator;
+
             cursorAdapter.setRoom(room);
+
             setDefaultPptData(pptDatas, room);
-            room.setMemberState({
-                pencilOptions: {
-                    disableBezier: false,
-                    sparseHump: 1.0,
-                    sparseWidth: 1.0,
-                    enableDrawPoint: false,
-                },
-            });
+
+            if (this.isCreator) {
+                room.setMemberState({
+                    pencilOptions: {
+                        disableBezier: false,
+                        sparseHump: 1.0,
+                        sparseWidth: 1.0,
+                        enableDrawPoint: false,
+                    },
+                });
+            }
+
             if (room.state.broadcastState) {
                 this.updateViewMode(room.state.broadcastState.mode);
             }
+
             this.updateRoom(room);
+
             if (NODE_ENV === "development") {
                 (window as any).room = room;
             }
