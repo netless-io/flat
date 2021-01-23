@@ -723,12 +723,8 @@ export class ClassRoomStore {
             }
 
             for (const { group, shouldMoveOut } of this.joinerGroups) {
-                if (!shouldStopEditUser) {
-                    break;
-                }
-
                 for (let i = 0; i < this[group].length; i++) {
-                    if (!shouldStopEditUser) {
+                    if (shouldStopEditUser) {
                         break;
                     }
 
