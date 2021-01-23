@@ -2,46 +2,46 @@ import React from "react";
 import { AutoSizer, List, ListRowRenderer, Size } from "react-virtualized";
 import classNames from "classnames";
 import memoizeOne from "memoize-one";
-import { ChatUser, ChatUserProps, RTMUser } from "./ChatUser";
+import { ChatUser, ChatUserProps, User } from "./ChatUser";
 import noHand from "../../assets/image/no-hand.svg";
 import "./ChatUsers.less";
 
 export interface ChatUsersProps
     extends Pick<ChatUserProps, "identity" | "userId" | "onAcceptRaiseHand" | "onEndSpeaking"> {
-    speakingJoiners: RTMUser[];
-    handRaisingJoiners: RTMUser[];
-    creator?: RTMUser;
-    joiners: RTMUser[];
+    speakingJoiners: User[];
+    handRaisingJoiners: User[];
+    creator?: User | null;
+    otherJoiners: User[];
     isShowCancelAllHandRaising: boolean;
     onCancelAllHandRaising: () => void;
 }
 
 export interface ChatUsersState {
-    users: RTMUser[];
+    users: User[];
 }
 
 export class ChatUsers extends React.PureComponent<ChatUsersProps, ChatUsersState> {
-    static getDerivedStateFromProps(props: ChatUsersProps): { users: RTMUser[] } {
+    static getDerivedStateFromProps(props: ChatUsersProps): { users: User[] } {
         return {
             users: ChatUsers.generateUsers(
                 props.speakingJoiners,
                 props.handRaisingJoiners,
                 props.creator,
-                props.joiners,
+                props.otherJoiners,
             ),
         };
     }
 
     private static generateUsers = memoizeOne(
         (
-            speakingJoiners: RTMUser[],
-            handRaisingJoiners: RTMUser[],
-            creator: RTMUser | undefined,
-            joiners: RTMUser[],
-        ): RTMUser[] =>
+            speakingJoiners: User[],
+            handRaisingJoiners: User[],
+            creator: User | undefined | null,
+            otherJoiners: User[],
+        ): User[] =>
             creator
-                ? [...speakingJoiners, ...handRaisingJoiners, creator, ...joiners]
-                : [...speakingJoiners, ...handRaisingJoiners, ...joiners],
+                ? [...speakingJoiners, ...handRaisingJoiners, creator, ...otherJoiners]
+                : [...speakingJoiners, ...handRaisingJoiners, ...otherJoiners],
     );
 
     state: ChatUsersState = {
@@ -97,10 +97,10 @@ export class ChatUsers extends React.PureComponent<ChatUsersProps, ChatUsersStat
         const { identity, creator, userId, onAcceptRaiseHand, onEndSpeaking } = this.props;
         const user = this.state.users[index];
         return (
-            <div key={user.uuid} style={style}>
+            <div key={user.userUUID} style={style}>
                 <ChatUser
                     identity={identity}
-                    creatorId={creator?.uuid}
+                    creatorId={creator?.userUUID}
                     userId={userId}
                     user={user}
                     onAcceptRaiseHand={onAcceptRaiseHand}

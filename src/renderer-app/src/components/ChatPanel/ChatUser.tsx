@@ -1,23 +1,14 @@
 import React from "react";
+import { User } from "../../stores/ClassRoomStore";
 import { Identity } from "../../utils/localStorage/room";
 import "./ChatUser.less";
 
-export interface RTMUser {
-    uuid: string;
-    rtcUID: number;
-    avatar: string;
-    name: string;
-    camera: boolean;
-    mic: boolean;
-    isSpeak: boolean;
-    isRaiseHand: boolean;
-}
-
+export type { User } from "../../stores/ClassRoomStore";
 export interface ChatUserProps {
     identity: Identity;
     creatorId?: string | null;
     userId: string;
-    user: RTMUser;
+    user: User;
     onAcceptRaiseHand: (uid: string) => void;
     onEndSpeaking: (uid: string) => void;
 }
@@ -29,12 +20,12 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
             <div className="chat-user">
                 <img className="chat-user-avatar" src={user.avatar} alt={`User ${user.name}`} />
                 {user.name}
-                {creatorId === user.uuid ? ( // @TODO 等待账号系统
+                {creatorId === user.userUUID ? (
                     <span className="chat-user-status is-teacher">(老师)</span>
                 ) : user.isSpeak ? (
                     <>
                         <span className="chat-user-status is-speaking">(发言中)</span>
-                        {(identity === Identity.creator || userId === user.uuid) && (
+                        {(identity === Identity.creator || userId === user.userUUID) && (
                             <button
                                 className="chat-user-ctl-btn is-speaking"
                                 onClick={this.endSpeaking}
@@ -55,7 +46,7 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
                             </button>
                         )}
                     </>
-                ) : userId === user.uuid ? (
+                ) : userId === user.userUUID ? (
                     <span className="chat-user-status is-teacher">(我)</span>
                 ) : null}
             </div>
@@ -65,14 +56,14 @@ export class ChatUser extends React.PureComponent<ChatUserProps> {
     private endSpeaking = (): void => {
         const { user, onEndSpeaking } = this.props;
         if (onEndSpeaking) {
-            onEndSpeaking(user.uuid);
+            onEndSpeaking(user.userUUID);
         }
     };
 
     private acceptRaiseHand = (): void => {
         const { user, onAcceptRaiseHand } = this.props;
         if (onAcceptRaiseHand) {
-            onAcceptRaiseHand(user.uuid);
+            onAcceptRaiseHand(user.userUUID);
         }
     };
 }

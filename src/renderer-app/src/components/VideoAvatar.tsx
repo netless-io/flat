@@ -1,8 +1,6 @@
 import React from "react";
 import type AgoraSDK from "agora-electron-sdk";
-import { Identity } from "../utils/localStorage/room";
-// @TODO wait for server implementing user info
-import { RTMUser } from "../components/ChatPanel/ChatUser";
+import { User } from "../stores/ClassRoomStore";
 
 import cameraIcon from "../assets/image/camera.svg";
 import cameraDisabled from "../assets/image/camera-disabled.svg";
@@ -10,11 +8,11 @@ import microphone from "../assets/image/microphone.svg";
 import microphoneDisabled from "../assets/image/microphone-disabled.svg";
 
 export interface VideoAvatarProps {
-    identity: Identity;
+    isCreator: boolean;
     /** id of current login user */
-    userId: string;
+    userUUID: string;
     /** the user of this avatar */
-    avatarUser: RTMUser;
+    avatarUser: User;
     rtcEngine: AgoraSDK;
     updateDeviceState: (id: string, camera: boolean, mic: boolean) => void;
     children: (canvas: React.ReactNode, ctrlBtns: React.ReactNode) => React.ReactNode;
@@ -28,10 +26,10 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
             return;
         }
 
-        const { userId, avatarUser, rtcEngine } = this.props;
+        const { userUUID, avatarUser, rtcEngine } = this.props;
 
         if (prevProps.avatarUser.mic !== avatarUser.mic) {
-            if (userId === avatarUser.uuid) {
+            if (userUUID === avatarUser.userUUID) {
                 rtcEngine.enableLocalAudio(avatarUser.mic);
             } else {
                 rtcEngine.setupRemoteVideo(avatarUser.rtcUID, this.el);
@@ -40,7 +38,7 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
         }
 
         if (prevProps.avatarUser.camera !== avatarUser.camera) {
-            if (userId === avatarUser.uuid) {
+            if (userUUID === avatarUser.userUUID) {
                 rtcEngine.enableLocalVideo(avatarUser.camera);
             } else {
                 rtcEngine.setupRemoteVideo(avatarUser.rtcUID, this.el);
@@ -50,12 +48,12 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
     }
 
     render(): React.ReactNode {
-        const { avatarUser, userId, identity, children } = this.props;
+        const { avatarUser, userUUID, isCreator, children } = this.props;
         // creator can turn off joiners camera or mic but cannot turn on.
         const isCameraCtrlDisable =
-            avatarUser.uuid !== userId && (identity !== Identity.creator || !avatarUser.camera);
+            avatarUser.userUUID !== userUUID && (!isCreator || !avatarUser.camera);
         const isMicCtrlDisable =
-            avatarUser.uuid !== userId && (identity !== Identity.creator || !avatarUser.mic);
+            avatarUser.userUUID !== userUUID && (!isCreator || !avatarUser.mic);
 
         const canvas = <div className="video-avatar-canvas" ref={this.setupVideo}></div>;
 
@@ -76,9 +74,9 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
     private setupVideo = (el: HTMLDivElement | null): void => {
         this.el = el;
         if (this.el) {
-            const { userId, avatarUser, rtcEngine } = this.props;
+            const { userUUID, avatarUser, rtcEngine } = this.props;
 
-            if (userId === avatarUser.uuid) {
+            if (userUUID === avatarUser.userUUID) {
                 rtcEngine.setupLocalVideo(this.el);
                 rtcEngine.enableLocalVideo(avatarUser.camera);
                 rtcEngine.enableLocalAudio(avatarUser.mic);
@@ -91,18 +89,18 @@ export class VideoAvatar extends React.PureComponent<VideoAvatarProps> {
     };
 
     private onCameraClick = (): void => {
-        const { identity, userId, avatarUser } = this.props;
+        const { isCreator, userUUID, avatarUser } = this.props;
 
-        if (identity === Identity.creator || userId === avatarUser.uuid) {
-            this.props.updateDeviceState(avatarUser.uuid, !avatarUser.camera, avatarUser.mic);
+        if (isCreator || userUUID === avatarUser.userUUID) {
+            this.props.updateDeviceState(avatarUser.userUUID, !avatarUser.camera, avatarUser.mic);
         }
     };
 
     private onMicClick = (): void => {
-        const { identity, userId, avatarUser } = this.props;
+        const { isCreator, userUUID, avatarUser } = this.props;
 
-        if (identity === Identity.creator || userId === avatarUser.uuid) {
-            this.props.updateDeviceState(avatarUser.uuid, avatarUser.camera, !avatarUser.mic);
+        if (isCreator || userUUID === avatarUser.userUUID) {
+            this.props.updateDeviceState(avatarUser.userUUID, avatarUser.camera, !avatarUser.mic);
         }
     };
 }
