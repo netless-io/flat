@@ -14,7 +14,7 @@ const { Option } = Select;
 
 export type MainRoomMenuProps = {
     onCreateRoom(title: string, type: RoomType): unknown;
-    onJoinRoom(roomID: string): void;
+    onJoinRoom(roomUUID: string): void;
 };
 
 export type MainRoomMenuState = {
@@ -24,7 +24,7 @@ export type MainRoomMenuState = {
     createTitle: string;
     createType: RoomType;
     joinRoomHistories: LSJoinRoomHistoryItem[];
-    roomID: string;
+    roomUUID: string;
 };
 
 export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoomMenuState> {
@@ -38,7 +38,7 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
             createTitle: "",
             createType: RoomType.BigClass,
             joinRoomHistories: [],
-            roomID: "",
+            roomUUID: "",
         };
     }
 
@@ -142,7 +142,7 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
                 okText={"确认"}
                 cancelText={"取消"}
                 onOk={() => {
-                    this.props.onJoinRoom(this.state.roomID);
+                    this.props.onJoinRoom(this.state.roomUUID);
                     this.setState({ isJoinModalVisible: false });
                 }}
                 onCancel={() => {
@@ -152,9 +152,9 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
                 <div className="modal-inner-name">房间号</div>
                 <div className="modal-inner-input">
                     <Input
-                        value={this.state.roomID}
+                        value={this.state.roomUUID}
                         onChange={e => {
-                            this.setState({ roomID: e.currentTarget.value });
+                            this.setState({ roomUUID: e.currentTarget.value });
                         }}
                         suffix={
                             <Dropdown trigger={["click"]} placement="bottomRight" overlay={menu}>
