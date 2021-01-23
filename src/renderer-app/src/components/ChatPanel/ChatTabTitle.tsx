@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, useMemo } from "react";
 import classNames from "classnames";
 import "./ChatTabTitle.less";
 
@@ -6,25 +6,28 @@ export interface ChatTabTitleProps {
     unreadCount?: number | null;
 }
 
-export class ChatTabTitle extends React.PureComponent<ChatTabTitleProps> {
-    render(): React.ReactNode {
-        const { unreadCount, children } = this.props;
+export const ChatTabTitle: FC<ChatTabTitleProps> = ({ unreadCount, children }) => {
+    const count = useMemo(
+        () =>
+            unreadCount !== null &&
+            unreadCount !== void 0 && (
+                <span
+                    className={classNames("chat-tab-red-dot", {
+                        "is-large": unreadCount > 99,
+                    })}
+                >
+                    {unreadCount < 100 ? unreadCount : "99+"}
+                </span>
+            ),
+        [unreadCount],
+    );
 
-        return (
-            <span className="chat-tab-title">
-                {children}
-                {unreadCount !== null && unreadCount !== undefined && (
-                    <span
-                        className={classNames("chat-tab-red-dot", {
-                            "is-large": unreadCount > 99,
-                        })}
-                    >
-                        {unreadCount < 100 ? unreadCount : "99+"}
-                    </span>
-                )}
-            </span>
-        );
-    }
-}
+    return (
+        <span className="chat-tab-title">
+            {children}
+            {count}
+        </span>
+    );
+};
 
 export default ChatTabTitle;

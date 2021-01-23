@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite";
 import { ChatMessages } from "./ChatMessages";
 import { ChatUsers } from "./ChatUsers";
 import { ChatTabTitle } from "./ChatTabTitle";
-import { Identity } from "../../utils/localStorage/room";
 import { ClassRoomStore } from "../../stores/ClassRoomStore";
 
 import "./ChatPanel.less";
@@ -18,9 +17,6 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     classRoomStore,
     allowMultipleSpeakers,
 }) {
-    // @TODO remove identity
-    const identity = classRoomStore.isCreator ? Identity.creator : Identity.joiner;
-
     const onAcceptRaiseHand = useCallback(
         (userUUID: string): void => {
             if (classRoomStore.speakingJoiners.length > 0 && !allowMultipleSpeakers) {
@@ -52,14 +48,14 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             <Tabs defaultActiveKey="messages" tabBarGutter={0}>
                 <Tabs.TabPane tab={<ChatTabTitle>消息列表</ChatTabTitle>} key="messages">
                     <ChatMessages
-                        userId={classRoomStore.userUUID}
-                        identity={identity}
+                        isCreator={classRoomStore.isCreator}
+                        userUUID={classRoomStore.userUUID}
                         messages={classRoomStore.messages}
-                        isRaiseHand={!!classRoomStore.currentUser?.isRaiseHand}
+                        currentUser={classRoomStore.currentUser}
                         isBan={classRoomStore.isBan}
                         onMessageSend={classRoomStore.onMessageSend}
                         onLoadMore={classRoomStore.updateHistory}
-                        onSwitchHandRaising={classRoomStore.onToggleHandRaising}
+                        onRaiseHandChange={classRoomStore.onToggleHandRaising}
                         onBanChange={classRoomStore.onToggleBan}
                     />
                 </Tabs.TabPane>
@@ -74,11 +70,9 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                     key="users"
                 >
                     <ChatUsers
-                        isShowCancelAllHandRaising={
-                            classRoomStore.handRaisingJoiners.length > 0 && classRoomStore.isCreator
-                        }
-                        identity={identity}
-                        userId={classRoomStore.userUUID}
+                        isCreator={classRoomStore.isCreator}
+                        ownerUUID={classRoomStore.ownerUUID}
+                        userUUID={classRoomStore.userUUID}
                         speakingJoiners={classRoomStore.speakingJoiners}
                         handRaisingJoiners={classRoomStore.handRaisingJoiners}
                         creator={classRoomStore.creator}
