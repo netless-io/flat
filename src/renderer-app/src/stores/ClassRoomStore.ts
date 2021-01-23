@@ -405,19 +405,27 @@ export class ClassRoomStore {
     }
 
     async destroy(): Promise<void> {
+        const promises: Promise<any>[] = [];
+
+        promises.push(this.rtm.destroy());
+
+        if (this.cloudRecording?.isRecording) {
+            promises.push(this.cloudRecording.stop());
+        }
+
         if (this.isCalling) {
             this.rtc.leave();
         }
-        if (this.cloudRecording?.isRecording) {
-            try {
-                await this.cloudRecording.stop();
-            } catch (e) {
-                console.error(e);
-            }
-        }
+
         this.rtc.destroy();
-        this.rtm.destroy();
+
         window.clearTimeout(this.cancelHandleChannelStatusTimeout);
+
+        try {
+            await Promise.all(promises);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     private async switchRoomStatus(roomStatus: RoomStatus): Promise<void> {
@@ -723,6 +731,10 @@ export class ClassRoomStore {
             }
 
             for (const { group, shouldMoveOut } of this.joinerGroups) {
+                if (shouldStopEditUser) {
+                    break;
+                }
+
                 for (let i = 0; i < this[group].length; i++) {
                     if (shouldStopEditUser) {
                         break;
