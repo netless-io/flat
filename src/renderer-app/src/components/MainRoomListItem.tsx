@@ -3,14 +3,13 @@ import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React, { PureComponent } from "react";
 import { cancelOrdinaryRoom, cancelPeriodicRoom, joinRoom } from "../apiMiddleware/flatServer";
-import { globals } from "../utils/globals";
 import { Identity } from "../utils/localStorage/room";
 import { Link } from "react-router-dom";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { getUserUuid } from "../utils/localStorage/accounts";
 import RoomListDate from "./RoomListPanel/RoomListDate";
 import RoomListDuration from "./RoomListPanel/RoomListDuration";
-import { globalStore } from "../stores/GlobalStore";
+import { roomStore } from "../stores/RoomStore";
 
 export type MainRoomListItemProps = {
     showDate: boolean;
@@ -99,25 +98,8 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
 
     public joinRoom = async (): Promise<void> => {
         const { roomUUID, periodicUUID } = this.props;
-        const identity = this.getIdentity();
-        const data = await joinRoom(periodicUUID || roomUUID);
-
-        // @TODO remove globals
-        globals.whiteboard.uuid = data.whiteboardRoomUUID;
-        globals.whiteboard.token = data.whiteboardRoomToken;
-        globals.rtc.uid = data.rtcUID;
-        globals.rtc.token = data.rtcToken;
-        globals.rtm.token = data.rtmToken;
-
-        // @TODO useContext
-        globalStore.updateToken({
-            whiteboardRoomUUID: data.whiteboardRoomUUID,
-            whiteboardRoomToken: data.whiteboardRoomToken,
-            rtcToken: data.rtcToken,
-            rtmToken: data.rtmToken,
-        });
-
-        const url = `/${data.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
+        const data = await roomStore.joinRoom(periodicUUID || roomUUID);
+        const url = `/classroom/${data.roomType}/${roomUUID}/${data.ownerUUID}/`;
         this.props.historyPush(url);
     };
 

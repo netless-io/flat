@@ -118,13 +118,14 @@ export interface JoinRoomPayload {
 }
 
 export interface JoinRoomResult {
+    roomType: RoomType; // 房间类型
     roomUUID: string; // 当前房间的 UUID
+    ownerUUID: string; // 房间创建者的 UUID
     whiteboardRoomToken: string; // 白板的 room token
     whiteboardRoomUUID: string; // 白板的 room uuid
     rtcUID: number; // rtc 的 uid
     rtcToken: string; // rtc token
     rtmToken: string; // rtm token
-    roomType: RoomType;
 }
 
 export function joinRoom(uuid: string): Promise<JoinRoomResult> {

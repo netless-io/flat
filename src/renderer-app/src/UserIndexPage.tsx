@@ -6,18 +6,14 @@ import { ipcAsyncByMain } from "./utils/ipc";
 import { MainRoomMenu } from "./components/MainRoomMenu";
 import { MainRoomList } from "./components/MainRoomList";
 import { MainRoomHistory } from "./components/MainRoomHistory";
-import { globals } from "./utils/globals";
-import { Identity } from "./utils/localStorage/room";
 import {
     createOrdinaryRoom,
-    joinRoom,
     ListRoomsType,
     listRooms,
     FlatServerRoom,
 } from "./apiMiddleware/flatServer";
 import { RoomStatus, RoomType } from "./apiMiddleware/flatServer/constants";
-import { getUserUuid } from "./utils/localStorage/accounts";
-import { globalStore } from "./stores/GlobalStore";
+import { roomStore } from "./stores/RoomStore";
 
 export type UserIndexPageProps = RouteComponentProps;
 
@@ -75,28 +71,12 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
             beginTime: this.getCurrentTime(),
             // TODO docs:[]
         });
-        await this.joinRoom(roomUUID, Identity.creator);
+        await this.joinRoom(roomUUID);
     };
 
-    public joinRoom = async (roomUUID: string, identity: Identity): Promise<void> => {
-        const data = await joinRoom(roomUUID);
-
-        // @TODO remove globals
-        globals.whiteboard.uuid = data.whiteboardRoomUUID;
-        globals.whiteboard.token = data.whiteboardRoomToken;
-        globals.rtc.uid = data.rtcUID;
-        globals.rtc.token = data.rtcToken;
-        globals.rtm.token = data.rtmToken;
-
-        // @TODO useContext
-        globalStore.updateToken({
-            whiteboardRoomUUID: data.whiteboardRoomUUID,
-            whiteboardRoomToken: data.whiteboardRoomToken,
-            rtcToken: data.rtcToken,
-            rtmToken: data.rtmToken,
-        });
-
-        const url = `/${data.roomType}/${identity}/${data.roomUUID}/${getUserUuid()}/`;
+    public joinRoom = async (roomUUID: string): Promise<void> => {
+        const data = await roomStore.joinRoom(roomUUID);
+        const url = `/classroom/${data.roomType}/${data.roomUUID}/${data.ownerUUID}`;
         this.historyPush(url);
     };
 
@@ -158,8 +138,8 @@ class UserIndexPage extends React.Component<UserIndexPageProps, UserIndexPageSta
             <MainPageLayout columnLayout>
                 <MainRoomMenu
                     onCreateRoom={this.createOrdinaryRoom}
-                    onJoinRoom={roomID => {
-                        this.joinRoom(roomID, Identity.joiner);
+                    onJoinRoom={roomUUID => {
+                        this.joinRoom(roomUUID);
                     }}
                 />
                 <div className="main-room-layout">

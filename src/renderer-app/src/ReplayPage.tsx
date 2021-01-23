@@ -17,11 +17,11 @@ import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 import { OrdinaryRoomInfo, ordinaryRoomInfo } from "./apiMiddleware/flatServer";
 import { RoomType } from "./apiMiddleware/flatServer/constants";
+import { globalStore } from "./stores/GlobalStore";
 
 export type ReplayPageProps = RouteComponentProps<{
-    identity: Identity;
-    uuid: string;
-    userId: string;
+    roomUUID: string;
+    ownerUUID: string;
 }>;
 
 export type ReplayPageState = {
@@ -68,9 +68,9 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
     }
 
     public async componentDidMount(): Promise<void> {
-        const { uuid, identity } = this.props.match.params;
+        const { roomUUID, ownerUUID } = this.props.match.params;
 
-        const { roomInfo } = await ordinaryRoomInfo(uuid);
+        const { roomInfo } = await ordinaryRoomInfo(roomUUID);
         this.setState({ roomInfo });
 
         window.addEventListener("keydown", this.handleSpaceKey);
@@ -95,10 +95,10 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
 
         try {
             await this.smartPlayer.load({
-                roomUUID: uuid,
+                roomUUID,
                 whiteboardUUID: globals.whiteboard.uuid,
                 whiteboardRoomToken: globals.whiteboard.token,
-                identity,
+                identity: globalStore.userUUID === ownerUUID ? Identity.creator : Identity.joiner,
                 whiteboardEl: this.whiteboardRef.current!,
                 videoEl: this.videoRef.current!,
             });
@@ -160,7 +160,7 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
     };
 
     public render(): JSX.Element {
-        const { identity, uuid, userId } = this.props.match.params;
+        const { roomUUID, ownerUUID } = this.props.match.params;
         const { roomInfo } = this.state;
 
         return (
@@ -175,9 +175,8 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
                     <div className="replay-exit">
                         <ExitButtonPlayer
                             roomType={roomInfo.roomType}
-                            identity={identity}
-                            roomUUID={uuid}
-                            userUUID={userId}
+                            roomUUID={roomUUID}
+                            ownerUUID={ownerUUID}
                             history={this.props.history}
                         />
                     </div>
@@ -222,7 +221,7 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
     }
 
     renderRealtimePanel(): React.ReactNode {
-        const { uuid, userId } = this.props.match.params;
+        const { roomUUID } = this.props.match.params;
         const { withVideo, roomInfo } = this.state;
 
         return (
@@ -237,8 +236,8 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
                 chatSlot={
                     this.smartPlayer.whiteboardPlayer && (
                         <ChatPanelReplay
-                            userId={userId}
-                            channelID={uuid}
+                            userId={globalStore.userUUID!}
+                            channelID={roomUUID}
                             player={this.smartPlayer.whiteboardPlayer}
                         />
                     )
