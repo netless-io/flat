@@ -80,14 +80,24 @@ export enum ListRoomsType {
 }
 
 export interface FlatServerRoom {
-    roomUUID: string; // 房间的 uuid
-    periodicUUID: string | null; // 周期性房间的 uuid
-    ownerUUID: string; // 房间所有者的 uuid
-    ownerUserName: string; // 房间所有者的名称
-    title: string; // 房间标题
-    beginTime: string; // 房间开始时间(UTC时间戳，如: 2020-12-28T08:29:29.068Z)
-    endTime: string; // 结束时间，有可能为空，因为立刻创建房间是没有结束时间的
-    roomStatus: RoomStatus; // 房间状态
+    /** 房间的 uuid */
+    roomUUID: string;
+    /** 周期性房间的 uuid */
+    periodicUUID: string | null;
+    /** 房间所有者的 uuid */
+    ownerUUID: string;
+    /** 房间所有者的名称 */
+    ownerUserName: string;
+    /** 房间标题 */
+    title: string;
+    /** 房间开始时间(UTC时间戳，如: 2020-12-28T08:29:29.068Z) */
+    beginTime: string;
+    /** 结束时间，有可能为空，因为立刻创建房间是没有结束时间的 */
+    endTime: string;
+    /** 房间状态 */
+    roomStatus: RoomStatus;
+    /** 是否存在录制(只有历史记录才会有) */
+    hasRecord?: boolean;
 }
 
 export type ListRoomsPayload = {
@@ -284,6 +294,45 @@ export function cancelHistoryRoom(roomUUID: string): Promise<CancelHistoryRoomRe
     return post<CancelHistoryRoomPayload, CancelHistoryRoomResult>("room/cancel/history", {
         roomUUID,
     });
+}
+
+export interface StartRecordRoomPayload {
+    roomUUID: string;
+}
+
+export type StartRecordRoomResult = {};
+
+export function startRecordRoom(roomUUID: string): Promise<StartRecordRoomResult> {
+    return post<StartRecordRoomPayload, StartRecordRoomResult>("room/record/started", {
+        roomUUID,
+    });
+}
+
+export interface StopRecordRoomPayload {
+    roomUUID: string;
+}
+
+export type StopRecordRoomResult = {};
+
+export function stopRecordRoom(roomUUID: string): Promise<StopRecordRoomResult> {
+    return post<StopRecordRoomPayload, StopRecordRoomResult>("room/record/stopped", {
+        roomUUID,
+    });
+}
+
+export interface UpdateRecordEndTimePayload {
+    roomUUID: string;
+}
+
+export type UpdateRecordEndTimeResult = {};
+
+export function updateRecordEndTime(roomUUID: string): Promise<UpdateRecordEndTimeResult> {
+    return post<UpdateRecordEndTimePayload, UpdateRecordEndTimeResult>(
+        "room/record/update-end-time",
+        {
+            roomUUID,
+        },
+    );
 }
 
 export interface LoginCheck {

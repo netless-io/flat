@@ -1,7 +1,7 @@
 import { runtime } from "../utils/runtime";
 import { ipcSyncByMain } from "../utils/ipc";
 
-const initEnv = async () => {
+const initEnv = async (): Promise<void> => {
     const runtimeKeys = Object.keys(runtime);
 
     const result = await ipcSyncByMain("get-runtime");

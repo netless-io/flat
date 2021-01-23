@@ -15,7 +15,7 @@ export enum MainMenuKey {
 }
 
 export class MainMenu extends PureComponent<{}> {
-    render() {
+    render(): JSX.Element {
         let key = "";
         const hash = window.location.hash.substring(1);
         if (/^\/user/.test(hash)) {

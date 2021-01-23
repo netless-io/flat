@@ -17,7 +17,7 @@ export interface ChatPanelProps {
 }
 
 export class ChatPanel extends React.Component<ChatPanelProps> {
-    render() {
+    render(): JSX.Element {
         const { identity, userId } = this.props;
         const {
             messages,

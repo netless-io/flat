@@ -43,7 +43,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
         };
     }
 
-    public async componentDidMount() {
+    public async componentDidMount(): Promise<void> {
         const { periodicUUID } = this.props.location.state as ScheduleRoomProps;
         let res: PeriodicRoomInfoPayload | PeriodicRoomInfoResult;
         res = await periodicRoomInfo(periodicUUID);
@@ -63,7 +63,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
         });
     }
 
-    public roomStatusName(status: RoomStatus) {
+    public roomStatusName(status: RoomStatus): string {
         const statusNameMap: Record<RoomStatus, string> = {
             [RoomStatus.Idle]: "未开始",
             [RoomStatus.Started]: "进行中",
@@ -73,7 +73,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
         return statusNameMap[status];
     }
 
-    public weekName(week: Week) {
+    public weekName(week: Week): string {
         const weekNameMap: Record<Week, string> = {
             [Week.Sunday]: "周日",
             [Week.Monday]: "周一",
@@ -117,7 +117,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
         },
     );
 
-    public renderRoomTable() {
+    public renderRoomTable(): React.ReactNode {
         const { sortedRooms: sortedRoom } = this.state;
         const columns = [
             {
@@ -163,7 +163,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
         return <div className="table-container">{groupedList}</div>;
     }
 
-    public renderMoreBtn = (room: Room) => {
+    public renderMoreBtn = (room: Room): React.ReactNode => {
         return (
             <Dropdown overlay={this.renderMenu(room)} trigger={["click"]}>
                 <img src={moreBtn} alt="更多" />
@@ -171,7 +171,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
         );
     };
 
-    public renderRoomStatus = (roomStatus: RoomStatus) => {
+    public renderRoomStatus = (roomStatus: RoomStatus): React.ReactNode => {
         if (roomStatus === RoomStatus.Idle) {
             return <span className="room-idle">未开始</span>;
         } else if (roomStatus === RoomStatus.Started) {
@@ -229,7 +229,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
         );
     };
 
-    public renderMenu = (room: Room) => {
+    public renderMenu = (room: Room): JSX.Element => {
         const { periodicUUID, roomUUID } = this.props.location.state as ScheduleRoomProps;
         return (
             <Menu>
@@ -254,13 +254,13 @@ export default class ScheduleRoomDetailPage extends React.Component<
         );
     };
 
-    public cancelRoom = async () => {
+    public cancelRoom = async (): Promise<void> => {
         const { periodicUUID } = this.props.location.state as ScheduleRoomProps;
         await cancelPeriodicRoom(periodicUUID);
         this.props.history.push("/user/");
     };
 
-    public render() {
+    public render(): JSX.Element {
         const { periodicUUID, roomUUID, userUUID, title } = this.props.location
             .state as ScheduleRoomProps;
         const { roomType, rate } = this.state.periodic;

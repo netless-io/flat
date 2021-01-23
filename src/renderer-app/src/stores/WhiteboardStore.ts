@@ -9,50 +9,59 @@ import { PPTDataType, PPTType } from "@netless/oss-upload-manager";
 
 import { pptDatas } from "../taskUuids";
 import { NETLESS, NODE_ENV } from "../constants/Process";
-import { mergeConfig } from "./utils";
 import { globalStore } from "./GlobalStore";
 
 export class WhiteboardStore {
     room: Room | null = null;
     phase: RoomPhase = RoomPhase.Connecting;
     viewMode: ViewMode | null = null;
-    isCreator: boolean = false;
     isShowPreviewPanel: boolean = false;
     isFileOpen: boolean = false;
 
+    /** is room Creator */
+    private readonly isCreator: boolean;
+
     constructor(config: { isCreator: boolean }) {
-        mergeConfig(this, config);
+        this.isCreator = config.isCreator;
         makeAutoObservable(this, {
             room: observable.ref,
         });
     }
 
-    updateRoom(room: Room) {
+    updateRoom = (room: Room): void => {
         this.room = room;
-    }
+    };
 
-    updatePhase(phase: RoomPhase) {
+    updatePhase = (phase: RoomPhase): void => {
         this.phase = phase;
-    }
+    };
 
-    updateViewMode(viewMode: ViewMode) {
+    updateViewMode = (viewMode: ViewMode): void => {
         this.viewMode = viewMode;
-    }
+    };
 
-    toggleFileOpen(open?: boolean) {
-        this.isFileOpen = open ?? !this.isFileOpen;
-    }
+    setFileOpen = (open: boolean): void => {
+        this.isFileOpen = open;
+    };
 
-    togglePreviewPanel(show?: boolean) {
-        this.isShowPreviewPanel = show ?? !this.isShowPreviewPanel;
-    }
+    toggleFileOpen = (): void => {
+        this.isFileOpen = !this.isFileOpen;
+    };
 
-    async joinWhiteboardRoom() {
+    showPreviewPanel = (): void => {
+        this.isShowPreviewPanel = true;
+    };
+
+    setPreviewPanel = (show: boolean): void => {
+        this.isShowPreviewPanel = show;
+    };
+
+    async joinWhiteboardRoom(): Promise<void> {
         if (!globalStore.userUUID) {
             throw new Error("Missing userUUID");
         }
 
-        if (!globalStore.whiteboardUUID || !globalStore.whiteboardToken) {
+        if (!globalStore.whiteboardRoomUUID || !globalStore.whiteboardRoomToken) {
             throw new Error("Missing Whiteboard UUID and Token");
         }
 
@@ -69,8 +78,8 @@ export class WhiteboardStore {
             const cursorAdapter = new CursorTool();
             const room = await whiteWebSdk.joinRoom(
                 {
-                    uuid: globalStore.whiteboardUUID,
-                    roomToken: globalStore.whiteboardToken,
+                    uuid: globalStore.whiteboardRoomUUID,
+                    roomToken: globalStore.whiteboardRoomToken,
                     cursorAdapter: cursorAdapter,
                     userPayload: { userId: globalStore.userUUID, cursorName },
                     floatBar: true,
@@ -113,14 +122,14 @@ export class WhiteboardStore {
         }
     }
 
-    destroy() {
+    destroy(): void {
         if (this.room) {
             this.room.callbacks.off();
         }
         if (NODE_ENV === "development") {
             (window as any).room = null;
         }
-        console.log(`Whiteboard unloaded: ${globalStore.whiteboardUUID}`);
+        console.log(`Whiteboard unloaded: ${globalStore.whiteboardRoomUUID}`);
     }
 }
 

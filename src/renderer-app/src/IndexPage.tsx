@@ -23,20 +23,20 @@ export default class IndexPage extends React.PureComponent<RouteComponentProps, 
     private isUnmounted = false;
     private checkLoginSetTimeoutID = 0;
 
-    public setAsyncState = (state: SetStateParamType) => {
+    public setAsyncState = (state: SetStateParamType): void => {
         if (!this.isUnmounted) this.setState(state);
     };
 
-    public showLoading = () => {
+    public showLoading = (): void => {
         this.setState({ status: "loading" });
     };
 
-    public componentWillUnmount = () => {
+    public componentWillUnmount = (): void => {
         this.isUnmounted = true;
         this.checkLoginSetTimeoutID = window.setTimeout(this.checkLoginStatus, 2000);
     };
 
-    public pushHistory = (path: string) => {
+    public pushHistory = (path: string): void => {
         if (!this.isUnmounted) {
             window.setTimeout(() => {
                 this.props.history.push(path);
@@ -44,7 +44,7 @@ export default class IndexPage extends React.PureComponent<RouteComponentProps, 
         }
     };
 
-    public checkLoginStatus = async () => {
+    public checkLoginStatus = async (): Promise<void> => {
         const token = getWechatInfo()?.token;
         if (token === null) {
             this.pushHistory("/login/");
@@ -58,14 +58,14 @@ export default class IndexPage extends React.PureComponent<RouteComponentProps, 
         }
     };
 
-    public async componentDidMount() {
+    public async componentDidMount(): Promise<void> {
         const loading = window.setTimeout(this.showLoading, 300);
         await this.checkLoginStatus();
         window.clearTimeout(loading);
         this.setAsyncState({ status: "success" });
     }
 
-    public render() {
+    public render(): JSX.Element {
         return (
             <div className="index-container">
                 <div className="fade-container">

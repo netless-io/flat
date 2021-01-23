@@ -17,7 +17,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
         return Number(new Date(time));
     };
 
-    public renderRooms() {
+    public renderRooms(): JSX.Element | JSX.Element[] {
         const { rooms } = this.props;
         if (rooms.length === 0) {
             return (
@@ -64,7 +64,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
         return roomListTypeTextMap[sort];
     };
 
-    public renderSorts() {
+    public renderSorts(): JSX.Element | JSX.Element[] {
         return [ListRoomsType.All, ListRoomsType.Today, ListRoomsType.Periodic].map(e => {
             return (
                 <span
@@ -79,7 +79,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
         });
     }
 
-    public render() {
+    public render(): JSX.Element {
         return (
             <div className="room-list-container">
                 <div className="room-list-header">

@@ -74,11 +74,11 @@ export class ChatMessageList extends React.PureComponent<
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.clearScrollToIndex();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(): void {
         this.clearScrollToIndex();
     }
 
@@ -118,7 +118,7 @@ export class ChatMessageList extends React.PureComponent<
      * The scrollToIndex is causing scroll jumping in random situation.
      * Clear it after it is applied.
      */
-    private clearScrollToIndex() {
+    private clearScrollToIndex(): void {
         if (this.state.scrollToIndex !== undefined) {
             // wait one loop after rendering complete
             setTimeout(() => {

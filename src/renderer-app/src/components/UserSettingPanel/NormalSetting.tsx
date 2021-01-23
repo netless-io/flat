@@ -1,25 +1,28 @@
-import React from "react"
-import "./NormalSetting.less"
-import { Radio, Checkbox, Button } from "antd"
+import React from "react";
+import "./NormalSetting.less";
+import { Radio, Checkbox, Button } from "antd";
 import { RouteComponentProps } from "react-router";
 
 enum RadioValue {
-    FiveMinutes="提前 5 分钟",
-    Fifteeninutes="提前 15 分钟",
-    ThirtyMinutes="提前 30 分钟"
+    FiveMinutes = "提前 5 分钟",
+    Fifteeninutes = "提前 15 分钟",
+    ThirtyMinutes = "提前 30 分钟",
 }
 
 enum Selectlanguage {
     Chinese = "中文",
-    English = "英语"
+    English = "英语",
 }
 
 type NoramlSettingState = {
     toggleRadio: boolean;
     radioValue: RadioValue;
-}
+};
 
-export default class NormalSetting extends React.PureComponent<RouteComponentProps, NoramlSettingState> {
+export default class NormalSetting extends React.PureComponent<
+    RouteComponentProps,
+    NoramlSettingState
+> {
     public constructor(props: RouteComponentProps) {
         super(props);
         this.state = {
@@ -28,18 +31,18 @@ export default class NormalSetting extends React.PureComponent<RouteComponentPro
         };
     }
 
-    public toggleRadio = () => {
+    public toggleRadio = (): void => {
         this.setState({
             toggleRadio: !this.state.toggleRadio,
         });
     };
 
-    public quitAccount = () => {
+    public quitAccount = (): void => {
         localStorage.clear();
         this.props.history.push("/login/");
-    }
+    };
 
-    public render() {
+    public render(): JSX.Element {
         return (
             <div className="content-container">
                 <div className="header-container">
@@ -81,7 +84,9 @@ export default class NormalSetting extends React.PureComponent<RouteComponentPro
                             <Radio value={Selectlanguage.Chinese}>中文</Radio>
                             <Radio value={Selectlanguage.English}>English</Radio>
                         </Radio.Group>
-                        <Button danger onClick={this.quitAccount}>退出登录</Button>
+                        <Button danger onClick={this.quitAccount}>
+                            退出登录
+                        </Button>
                     </div>
                 </div>
             </div>

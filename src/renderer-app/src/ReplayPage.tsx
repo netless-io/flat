@@ -75,7 +75,7 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
 
         window.addEventListener("keydown", this.handleSpaceKey);
 
-        const updatePlayingState = () => {
+        const updatePlayingState = (): void => {
             this.setState({ isPlaying: this.smartPlayer.isPlaying });
         };
 
@@ -113,7 +113,7 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
         }
     }
 
-    public componentWillUnmount() {
+    public componentWillUnmount(): void {
         window.removeEventListener("keydown", this.handleSpaceKey);
         if (this.hideControllerTimeout !== undefined) {
             window.clearTimeout(this.hideControllerTimeout);
@@ -159,7 +159,7 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
         }
     };
 
-    public render() {
+    public render(): JSX.Element {
         const { identity, uuid, userId } = this.props.match.params;
         const { roomInfo } = this.state;
 

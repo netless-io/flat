@@ -28,7 +28,7 @@ export type MainRoomListItemProps = {
 };
 
 export default class MainRoomHistoryItem extends React.PureComponent<MainRoomListItemProps> {
-    public renderMenu = () => {
+    public renderMenu = (): JSX.Element => {
         const { roomUUID, periodicUUID, userUUID } = this.props;
         return (
             <Menu>
@@ -51,23 +51,23 @@ export default class MainRoomHistoryItem extends React.PureComponent<MainRoomLis
         );
     };
 
-    public delHistoryRoom = () => {
+    public delHistoryRoom = (): void => {
         const { roomUUID } = this.props;
         cancelHistoryRoom(roomUUID);
     };
 
-    public getIdentity = () => {
+    public getIdentity = (): Identity => {
         return getUserUuid() === this.props.userUUID ? Identity.creator : Identity.joiner;
     };
 
-    private gotoReplay = async () => {
+    private gotoReplay = (): void => {
         const { roomUUID } = this.props;
         const identity = this.getIdentity();
         const url = `/replay/${identity}/${roomUUID}/${getUserUuid()}/`;
         this.props.historyPush(url);
     };
 
-    render() {
+    render(): JSX.Element {
         const { beginTime, endTime, title, hasRecord } = this.props;
         return (
             <div className="room-list-cell-item">

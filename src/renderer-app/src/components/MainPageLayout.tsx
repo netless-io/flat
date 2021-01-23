@@ -12,9 +12,9 @@ export default class MainPageLayout extends React.PureComponent<MainPageLayoutPr
     private userAvatar: string;
     public constructor(props: MainPageLayoutProps) {
         super(props);
-        this.userAvatar = getWechatInfo()?.avatar ?? '';
+        this.userAvatar = getWechatInfo()?.avatar ?? "";
     }
-    public render() {
+    public render(): JSX.Element {
         return (
             <div className="layout-container">
                 <div className="layout-container-menu">

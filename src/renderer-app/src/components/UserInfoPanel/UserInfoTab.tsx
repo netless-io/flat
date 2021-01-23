@@ -1,15 +1,14 @@
 import React from "react";
-import "./UserInfoTab.less"
+import "./UserInfoTab.less";
 import { Tabs, Avatar } from "antd";
 import { TabMap } from "../../UserInfoPage";
 
-type UserInfoTabProps = { tab: TabMap, setTab: (tab: TabMap) => void }
+type UserInfoTabProps = { tab: TabMap; setTab: (tab: TabMap) => void };
 
 export default class UserInfoTab extends React.PureComponent<UserInfoTabProps> {
-
-    public render() {
+    public render(): JSX.Element {
         const { TabPane } = Tabs;
-        
+
         return (
             <div className="user-info-container">
                 <div className="user-info-avatar">
