@@ -38,6 +38,10 @@ export interface User {
     isRaiseHand: boolean;
 }
 
+export type RecordingConfig = Required<
+    CloudRecordStartPayload["agoraData"]["clientRequest"]
+>["recordingConfig"];
+
 export class ClassRoomStore {
     readonly roomUUID: string;
     /** User uuid of the current user */
@@ -933,7 +937,3 @@ export function useClassRoomStore(
 
     return classRoomStore;
 }
-
-type RecordingConfig = Required<
-    CloudRecordStartPayload["agoraData"]["clientRequest"]
->["recordingConfig"];
