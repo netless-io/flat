@@ -748,17 +748,14 @@ export class ClassRoomStore {
     }
 
     private resetUsers(users: User[]): void {
-        this.otherJoiners.replace(users);
+        this.otherJoiners.clear();
         this.speakingJoiners.clear();
         this.handRaisingJoiners.clear();
-        // sort all
-        this.sortUsers(() => true);
+        users.forEach(this.sortOneUser);
     }
 
     private sortOneUser(user: User): void {
-        const isCurrentUser = user.userUUID === this.userUUID;
-
-        if (isCurrentUser) {
+        if (user.userUUID === this.userUUID) {
             this.currentUser = user;
         }
 
