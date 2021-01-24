@@ -778,11 +778,6 @@ export class ClassRoomStore {
             return;
         }
 
-        if (!this.creator) {
-            console.error("creator is empty when fetching initial group states");
-            return;
-        }
-
         // request room info from these users
         const pickedSenders: string[] = [];
 
@@ -841,11 +836,11 @@ export class ClassRoomStore {
 
         if (usersTotal <= 50) {
             // in a small room, ask creator directly for info
-            pickedSenders.push(this.creator.userUUID);
+            pickedSenders.push(this.ownerUUID);
         } else {
             // too many users. pick a random user instead.
             // @TODO pick three random users
-            pickedSenders.push((this.pickRandomJoiner() || this.creator).userUUID);
+            pickedSenders.push(this.pickRandomJoiner()?.userUUID || this.ownerUUID);
         }
 
         for (const senderUUID of pickedSenders) {
@@ -881,7 +876,7 @@ export class ClassRoomStore {
         );
     }
 
-    private pickRandomJoiner(): User | void {
+    private pickRandomJoiner(): User | undefined {
         let index = Math.floor(Math.random() * this.joinerTotalCount);
 
         if (index < this.speakingJoiners.length) {
@@ -897,6 +892,8 @@ export class ClassRoomStore {
         if (index < this.otherJoiners.length) {
             return this.otherJoiners[index];
         }
+
+        return;
     }
 }
 
