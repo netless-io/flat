@@ -74,7 +74,7 @@ export class WhiteboardStore {
                 appIdentifier: NETLESS.APP_IDENTIFIER,
                 plugins: plugins,
             });
-            const cursorName = localStorage.getItem("userName");
+            const cursorName = globalStore.wechat?.name;
             const cursorAdapter = new CursorTool();
             const room = await whiteWebSdk.joinRoom(
                 {
