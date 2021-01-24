@@ -392,7 +392,7 @@ export class ClassRoomStore {
         this.updateHistory();
 
         channel.on("MemberJoined", async userUUID => {
-            this.sortOneUser((await this.createUsers([userUUID]))[0]);
+            (await this.createUsers([userUUID])).forEach(this.sortOneUser, this);
         });
         channel.on("MemberLeft", userUUID => {
             for (const { group } of this.joinerGroups) {
@@ -751,7 +751,7 @@ export class ClassRoomStore {
         this.otherJoiners.clear();
         this.speakingJoiners.clear();
         this.handRaisingJoiners.clear();
-        users.forEach(this.sortOneUser);
+        users.forEach(this.sortOneUser, this);
     }
 
     private sortOneUser(user: User): void {
