@@ -43,17 +43,17 @@ export class ClassRoomStore {
     /** User uuid of the current user */
     readonly userUUID: string;
     /** RTM messages */
-    messages: RTMessage[] = [];
+    messages = observable.array<RTMessage>([]);
     /** creator info */
     creator: User | null = null;
     /** current user info */
     currentUser: User | null = null;
     /** joiners who have speaking access */
-    speakingJoiners: User[] = [];
+    speakingJoiners = observable.array<User>([]);
     /** joiners who are raising hands */
-    handRaisingJoiners: User[] = [];
+    handRaisingJoiners = observable.array<User>([]);
     /** the rest of joiners */
-    otherJoiners: User[] = [];
+    otherJoiners = observable.array<User>([]);
     /** room class mode */
     classMode = ClassModeType.Lecture;
     /** is creator temporary banned room for joiner operations */
@@ -382,13 +382,13 @@ export class ClassRoomStore {
         this.startListenCommands();
 
         const members = await channel.getMembers();
-        this.sortUsers(await this.createUsers(members));
+        this.resetUsers(await this.createUsers(members));
         this.updateInitialRoomState();
 
         this.updateHistory();
 
         channel.on("MemberJoined", async userUUID => {
-            this.sortUsers(await this.createUsers([userUUID]));
+            this.sortOneUser((await this.createUsers([userUUID]))[0]);
         });
         channel.on("MemberLeft", userUUID => {
             for (const { group } of this.joinerGroups) {
@@ -709,65 +709,63 @@ export class ClassRoomStore {
      * Sort users into different groups.
      * @param editUser Update a user state. Return `false` to stop traversing.
      */
-    private sortUsers(editUser: (user: User) => boolean | void): void;
-    /**
-     * Sort users into different groups.
-     * @param unSortedUsers A list of unsorted users
-     */
-    private sortUsers(unsortedUsers: User[]): void;
-    private sortUsers(editUserOrUnsortedUsers: ((user: User) => boolean | void) | User[]): void {
-        const editUser: ((user: User) => boolean | void) | null = Array.isArray(
-            editUserOrUnsortedUsers,
-        )
-            ? null
-            : action("edit-user", editUserOrUnsortedUsers);
-        const unSortedUsers: User[] = editUser ? [] : (editUserOrUnsortedUsers as User[]);
+    private sortUsers(editUser: (user: User) => boolean | void): void {
+        const editUserAction = action("editUser", editUser);
+        const unSortedUsers: User[] = [];
 
         let shouldStopEditUser = false;
 
-        if (editUser) {
-            if (this.creator) {
-                shouldStopEditUser = editUser(this.creator) === false;
+        if (this.creator) {
+            shouldStopEditUser = editUserAction(this.creator) === false;
+        }
+
+        for (const { group, shouldMoveOut } of this.joinerGroups) {
+            if (shouldStopEditUser) {
+                break;
             }
 
-            for (const { group, shouldMoveOut } of this.joinerGroups) {
+            for (let i = 0; i < this[group].length; i++) {
                 if (shouldStopEditUser) {
                     break;
                 }
 
-                for (let i = 0; i < this[group].length; i++) {
-                    if (shouldStopEditUser) {
-                        break;
-                    }
-
-                    const user = this[group][i];
-                    shouldStopEditUser = editUser(user) === false;
-                    if (shouldMoveOut(user)) {
-                        this[group].splice(i, 1);
-                        i--;
-                        unSortedUsers.push(user);
-                    }
+                const user = this[group][i];
+                shouldStopEditUser = editUserAction(user) === false;
+                if (shouldMoveOut(user)) {
+                    this[group].splice(i, 1);
+                    i--;
+                    unSortedUsers.push(user);
                 }
             }
         }
 
         // Ssort each unsorted users into different group
-        for (const user of unSortedUsers) {
-            const isCurrentUser = user.userUUID === this.userUUID;
+        unSortedUsers.forEach(this.sortOneUser);
+    }
 
-            if (isCurrentUser) {
-                this.currentUser = user;
-            }
+    private resetUsers(users: User[]): void {
+        this.otherJoiners.replace(users);
+        this.speakingJoiners.clear();
+        this.handRaisingJoiners.clear();
+        // sort all
+        this.sortUsers(() => true);
+    }
 
-            if (user.userUUID === this.ownerUUID) {
-                this.creator = user;
-            } else if (user.isSpeak) {
-                this.speakingJoiners.push(user);
-            } else if (user.isRaiseHand) {
-                this.handRaisingJoiners.push(user);
-            } else {
-                this.otherJoiners.push(user);
-            }
+    private sortOneUser(user: User): void {
+        const isCurrentUser = user.userUUID === this.userUUID;
+
+        if (isCurrentUser) {
+            this.currentUser = user;
+        }
+
+        if (user.userUUID === this.ownerUUID) {
+            this.creator = user;
+        } else if (user.isSpeak) {
+            this.speakingJoiners.push(user);
+        } else if (user.isRaiseHand) {
+            this.handRaisingJoiners.push(user);
+        } else {
+            this.otherJoiners.push(user);
         }
     }
 
