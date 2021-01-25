@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useUpdateEffect } from "react-use";
 import { useHistory, useParams } from "react-router";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
@@ -15,19 +14,16 @@ import { BigClassAvatar } from "./BigClassAvatar";
 import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
 import { RoomInfo } from "../../components/RoomInfo";
-import { withRtcRoute, WithRtcRouteProps } from "../../components/Rtc";
-import { withRtmRoute, WithRtmRouteProps } from "../../components/Rtm";
-import { RTMUser } from "../../components/ChatPanel/ChatUser";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 import { Whiteboard } from "../../components/Whiteboard";
 import LoadingPage from "../../LoadingPage";
-import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
+import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { useWhiteboardStore } from "../../stores/WhiteboardStore";
 import { RecordingConfig, useClassRoomStore, User } from "../../stores/ClassRoomStore";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
-import { Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
+import { useAutoRun } from "../../utils/mobx";
 
 import "./BigClassPage.less";
 
@@ -65,28 +61,26 @@ const recordingConfig: RecordingConfig = Object.freeze({
 });
 
 export interface RouterParams {
-    identity: Identity;
-    uuid: string;
-    userId: string;
+    roomUUID: string;
+    ownerUUID: string;
 }
 
-export type BigClassPageProps = WithRtcRouteProps & WithRtmRouteProps;
+export type BigClassPageProps = {};
 
-const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
+const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
     const history = useHistory();
     const params = useParams<RouterParams>();
 
-    const whiteboardStore = useWhiteboardStore(params.identity === Identity.creator);
+    const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
+    const whiteboardStore = useWhiteboardStore(classRoomStore.isCreator);
 
-    const { room, phase } = whiteboardStore;
-
-    const [speakingJoiner, setSpeakingJoiner] = useState<RTMUser | undefined>(
-        props.rtm.speakingJoiners[0],
+    const [speakingJoiner, setSpeakingJoiner] = useState<User | undefined>(() =>
+        classRoomStore.speakingJoiners.length > 0 ? classRoomStore.speakingJoiners[0] : void 0,
     );
-    const [mainSpeaker, setMainSpeaker] = useState<RTMUser | undefined>(speakingJoiner);
+    const [mainSpeaker, setMainSpeaker] = useState<User | undefined>(speakingJoiner);
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
     useEffect(() => {
@@ -96,69 +90,62 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
         });
     }, []);
 
-    useEffect(() => {
-        if (props.rtm.roomStatus === RoomStatus.Stopped) {
+    useAutoRun(() => {
+        if (classRoomStore.roomStatus === RoomStatus.Stopped) {
             history.push("/user/");
         }
-    }, [props.rtm.roomStatus, history]);
+    });
 
-    const loadedInitCallingOnceRef = useRef(false);
-    useEffect(() => {
-        if (
-            !loadedInitCallingOnceRef.current &&
-            props.rtm.currentUser &&
-            params.identity !== Identity.creator
-        ) {
-            // join rtc room to listen to creator events
-            const { currentUser } = props.rtm;
-            if (currentUser) {
-                const { isCalling, toggleCalling } = props.rtc;
-                if (!isCalling) {
-                    toggleCalling(currentUser.rtcUID);
-                    loadedInitCallingOnceRef.current = true;
-                }
+    useAutoRun(reaction => {
+        if (classRoomStore.currentUser) {
+            if (!classRoomStore.isCreator && !classRoomStore.isCalling) {
+                // join rtc room to listen to creator events
+                classRoomStore.toggleCalling();
+            }
+            // run only once
+            reaction.dispose();
+        }
+    });
+
+    // control whiteboard writable
+    useAutoRun(reaction => {
+        // ignore creator
+        if (classRoomStore.isCreator) {
+            reaction.dispose();
+            return;
+        }
+        if (whiteboardStore.room && classRoomStore.currentUser) {
+            const isWritable = classRoomStore.currentUser.isSpeak;
+            if (whiteboardStore.room.disableDeviceInputs === isWritable) {
+                whiteboardStore.room.disableDeviceInputs = !isWritable;
+                whiteboardStore.room.setWritable(isWritable);
             }
         }
-        // only track when the currentUser is ready
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.rtm.currentUser]);
+    });
 
-    useEffect(
-        () => {
-            if (
-                props.rtm.currentUser &&
-                whiteboardStore.room &&
-                params.identity !== Identity.creator
-            ) {
-                const isWritable = props.rtm.currentUser.isSpeak;
-                if (whiteboardStore.room.disableDeviceInputs === isWritable) {
-                    whiteboardStore.room.disableDeviceInputs = !isWritable;
-                    whiteboardStore.room.setWritable(isWritable);
-                }
-            }
-        },
-        // exhaustive-deps is too dumb to work with fancy expression
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [props.rtm.currentUser?.isSpeak, whiteboardStore.room, params.identity],
-    );
+    useAutoRun(() => {
+        // only one user is allowed to speak in big class
+        if (classRoomStore.speakingJoiners.length <= 0) {
+            return;
+        }
+        const user = classRoomStore.speakingJoiners[0];
 
-    useUpdateEffect(() => {
-        const user = props.rtm.speakingJoiners[0];
-        const speak = user && (user.camera || user.mic);
+        const speak = user.camera || user.mic;
 
         setSpeakingJoiner(speak ? user : void 0);
         setMainSpeaker(speak ? user : void 0);
 
-        if (params.userId === user?.uuid) {
-            props.rtc.rtc.rtcEngine.setClientRole(speak ? 1 : 2);
+        // is current user speaking
+        if (classRoomStore.userUUID === user.userUUID) {
+            classRoomStore.rtc.rtcEngine.setClientRole(speak ? 1 : 2);
         }
-    }, [props.rtm.speakingJoiners[0]]);
+    });
 
     if (
-        !room ||
-        phase === RoomPhase.Connecting ||
-        phase === RoomPhase.Disconnecting ||
-        phase === RoomPhase.Reconnecting
+        !whiteboardStore.room ||
+        whiteboardStore.phase === RoomPhase.Connecting ||
+        whiteboardStore.phase === RoomPhase.Disconnecting ||
+        whiteboardStore.phase === RoomPhase.Reconnecting
     ) {
         return <LoadingPage />;
     }
@@ -175,42 +162,35 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
                 {renderRealtimePanel()}
             </div>
             <ExitRoomConfirm
-                identity={params.identity}
-                history={history}
-                roomStatus={props.rtm.roomStatus}
-                stopClass={props.rtm.stopClass}
+                isCreator={classRoomStore.isCreator}
+                roomStatus={classRoomStore.roomStatus}
+                stopClass={classRoomStore.stopClass}
                 confirmRef={exitRoomConfirmRef}
             />
         </div>
     );
 
     function renderTopBarLeft(): React.ReactNode {
-        const { identity } = params;
-        const { roomStatus } = props.rtm;
-
         return (
             <>
                 <NetworkStatus />
-                {identity === Identity.joiner && (
-                    <RoomInfo roomStatus={roomStatus} roomType={props.rtm.roomInfo?.roomType} />
+                {!classRoomStore.isCreator && (
+                    <RoomInfo roomStatus={classRoomStore.roomStatus} roomType={RoomType.BigClass} />
                 )}
             </>
         );
     }
 
     function renderTopBarCenter(): React.ReactNode {
-        const { identity } = params;
-        const { roomStatus, pauseClass, resumeClass, startClass } = props.rtm;
-
-        if (identity !== Identity.creator) {
+        if (!classRoomStore.isCreator) {
             return null;
         }
 
-        switch (roomStatus) {
+        switch (classRoomStore.roomStatus) {
             case RoomStatus.Started:
                 return (
                     <>
-                        <TopBarRoundBtn iconName="class-pause" onClick={pauseClass}>
+                        <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.pauseClass}>
                             暂停上课
                         </TopBarRoundBtn>
                         <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
@@ -221,7 +201,7 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
             case RoomStatus.Paused:
                 return (
                     <>
-                        <TopBarRoundBtn iconName="class-pause" onClick={resumeClass}>
+                        <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.resumeClass}>
                             恢复上课
                         </TopBarRoundBtn>
                         <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
@@ -231,7 +211,7 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
                 );
             default:
                 return (
-                    <TopBarRoundBtn iconName="class-begin" onClick={startClass}>
+                    <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
                         开始上课
                     </TopBarRoundBtn>
                 );
@@ -239,38 +219,29 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
     }
 
     function renderTopBarRight(): React.ReactNode {
-        const { viewMode } = whiteboardStore;
-        const { isCalling, isRecording, toggleRecording } = props.rtc;
-        const { roomStatus } = props.rtm;
-        const { uuid, identity } = params;
-        const isCreator = identity === Identity.creator;
-
         return (
             <>
-                {isCreator &&
-                    (roomStatus === RoomStatus.Started || roomStatus === RoomStatus.Paused) && (
+                {classRoomStore.isCreator &&
+                    (classRoomStore.roomStatus === RoomStatus.Started ||
+                        classRoomStore.roomStatus === RoomStatus.Paused) && (
                         <RecordButton
                             disabled={false}
-                            isRecording={isRecording}
-                            onClick={() =>
-                                toggleRecording(() => {
-                                    // alert result
-                                })
-                            }
+                            isRecording={classRoomStore.isRecording}
+                            onClick={classRoomStore.toggleRecording}
                         />
                     )}
-                {isCreator && (
+                {classRoomStore.isCreator && (
                     <TopBarRightBtn
                         title="Call"
                         icon="phone"
-                        active={isCalling}
+                        active={classRoomStore.isCalling}
                         onClick={toggleCalling}
                     />
                 )}
                 <TopBarRightBtn
                     title="Vision control"
                     icon="follow"
-                    active={viewMode === ViewMode.Broadcaster}
+                    active={whiteboardStore.viewMode === ViewMode.Broadcaster}
                     onClick={handleRoomController}
                 />
                 <TopBarRightBtn
@@ -278,7 +249,7 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
                     icon="folder"
                     onClick={whiteboardStore.toggleFileOpen}
                 />
-                <InviteButton uuid={uuid} />
+                <InviteButton uuid={classRoomStore.roomUUID} />
                 {/* @TODO implement Options menu */}
                 <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
                 <TopBarRightBtn
@@ -301,10 +272,10 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
     }
 
     function renderRealtimePanel(): React.ReactNode {
-        const { uuid, userId, identity } = params;
-        const { isCalling, rtc } = props.rtc;
-        const { creator, updateDeviceState } = props.rtm;
-        const isVideoOn = identity === Identity.creator ? isCalling : !!creator?.isSpeak;
+        const { creator } = classRoomStore;
+        const isVideoOn = classRoomStore.isCreator
+            ? classRoomStore.isCalling
+            : !!classRoomStore.creator?.isSpeak;
 
         return (
             <RealtimePanel
@@ -320,16 +291,17 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
                         >
                             <div
                                 className={classNames("whiteboard-rtc-avatar", {
-                                    "is-small": mainSpeaker && mainSpeaker.uuid !== creator.uuid,
+                                    "is-small":
+                                        mainSpeaker && mainSpeaker.userUUID !== creator.userUUID,
                                 })}
                             >
                                 <BigClassAvatar
-                                    identity={identity}
-                                    userId={userId}
+                                    isCreator={classRoomStore.isCreator}
+                                    userUUID={classRoomStore.userUUID}
                                     avatarUser={creator}
-                                    rtcEngine={rtc.rtcEngine}
-                                    updateDeviceState={updateDeviceState}
-                                    small={mainSpeaker && mainSpeaker.uuid !== creator.uuid}
+                                    rtcEngine={classRoomStore.rtc.rtcEngine}
+                                    updateDeviceState={classRoomStore.updateDeviceState}
+                                    small={mainSpeaker && mainSpeaker.userUUID !== creator.userUUID}
                                     onExpand={onVideoAvatarExpand}
                                 />
                             </div>
@@ -340,11 +312,11 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
                                     })}
                                 >
                                     <BigClassAvatar
+                                        isCreator={classRoomStore.isCreator}
                                         avatarUser={speakingJoiner}
-                                        identity={identity}
-                                        userId={userId}
-                                        rtcEngine={rtc.rtcEngine}
-                                        updateDeviceState={updateDeviceState}
+                                        userUUID={classRoomStore.userUUID}
+                                        rtcEngine={classRoomStore.rtc.rtcEngine}
+                                        updateDeviceState={classRoomStore.updateDeviceState}
                                         small={mainSpeaker !== speakingJoiner}
                                         onExpand={onVideoAvatarExpand}
                                     />
@@ -355,10 +327,7 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
                 }
                 chatSlot={
                     <ChatPanel
-                        userId={userId}
-                        channelID={uuid}
-                        identity={identity}
-                        rtm={props.rtm}
+                        classRoomStore={classRoomStore}
                         allowMultipleSpeakers={false}
                     ></ChatPanel>
                 }
@@ -386,32 +355,34 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
 
     function onVideoAvatarExpand(): void {
         setMainSpeaker(mainSpeaker =>
-            mainSpeaker?.uuid === props.rtm.creator?.uuid ? speakingJoiner : props.rtm.creator,
+            mainSpeaker?.userUUID === classRoomStore.creator?.userUUID
+                ? speakingJoiner
+                : classRoomStore.creator ?? void 0,
         );
     }
 
-    function toggleCalling(): void {
-        const { currentUser } = props.rtm;
-        if (!currentUser) {
+    async function toggleCalling(): Promise<void> {
+        if (!classRoomStore.currentUser) {
             return;
         }
 
-        props.rtc.toggleCalling(currentUser.rtcUID, () => {
-            const { userId } = params;
-            const { isCalling } = props.rtc;
-            const { speakingJoiners, onSpeak } = props.rtm;
-            const speakConfigs: Array<{ userUUID: string; speak: boolean }> = [
-                { userUUID: userId, speak: isCalling },
-            ];
-            if (isCalling) {
-                openRealtimeSide(true);
-            } else {
-                speakConfigs.push(
-                    ...speakingJoiners.map(user => ({ userUUID: user.uuid, speak: false })),
-                );
-            }
-            onSpeak(speakConfigs);
-        });
+        await classRoomStore.toggleCalling();
+
+        const speakConfigs: Array<{ userUUID: string; speak: boolean }> = [
+            { userUUID: classRoomStore.userUUID, speak: classRoomStore.isCalling },
+        ];
+
+        if (classRoomStore.isCalling) {
+            openRealtimeSide(true);
+        } else {
+            speakConfigs.push(
+                ...classRoomStore.speakingJoiners.map(user => ({
+                    userUUID: user.userUUID,
+                    speak: false,
+                })),
+            );
+        }
+        classRoomStore.onSpeak(speakConfigs);
     }
 
     function stopClass(): void {
@@ -420,37 +391,4 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage(props) {
     }
 });
 
-export default withRtcRoute({
-    recordingConfig: {
-        channelType: RtcChannelType.Broadcast,
-        transcodingConfig: {
-            width: 288,
-            height: 216,
-            // https://docs.agora.io/cn/cloud-recording/recording_video_profile
-            fps: 15,
-            bitrate: 280,
-            mixedVideoLayout: 3,
-            backgroundColor: "#000000",
-            layoutConfig: [
-                {
-                    x_axis: 0,
-                    y_axis: 0,
-                    width: 1,
-                    height: 1,
-                    alpha: 1.0,
-                    render_mode: 1,
-                },
-                {
-                    x_axis: 0.0,
-                    y_axis: 0.67,
-                    width: 0.33,
-                    height: 0.33,
-                    alpha: 1.0,
-                    render_mode: 1,
-                },
-            ],
-        },
-        maxIdleTime: 60,
-        subscribeUidGroup: 0,
-    },
-})(withRtmRoute(BigClassPage));
+export default BigClassPage;
