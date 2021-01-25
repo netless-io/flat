@@ -12,7 +12,7 @@ import HistoryPage from "./HistoryPage";
 import CreatePage from "./CreatePage";
 import UserIndexPage from "./UserIndexPage";
 import UserInfoPage from "./UserInfoPage";
-import UserSetPage from "./UserSetPage";
+import UserSettingPanel from "./pages/UserSettingPanel";
 import UserScheduledPage from "./UserScheduledPage";
 import RoomDetailPage from "./RoomDetailPage";
 import LoginPage from "./LoginPage";
@@ -58,7 +58,7 @@ export class AppRoutes extends React.Component<{}, {}> {
                     <Route exact path="/user/room/" component={RoomDetailPage} />
                     <Route exact path="/user/scheduled/info/" component={ScheduleRoomDetailPage} />
                     <Route exact path="/info/" component={UserInfoPage} />
-                    <Route path="/setting/" component={UserSetPage} />
+                    <Route path="/setting/" component={UserSettingPanel} />
                 </Switch>
             </HashRouter>
         );
