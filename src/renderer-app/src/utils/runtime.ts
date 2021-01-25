@@ -10,4 +10,5 @@ export const runtime: runtimeInfo.Type = {
     preloadPath: "",
     appVersion: "",
     downloadsDirectory: "",
+    isOpenAtLogin: false,
 };

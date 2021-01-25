@@ -8,6 +8,7 @@ export type Type = {
     preloadPath: string;
     appVersion: string;
     downloadsDirectory: string;
+    isOpenAtLogin: boolean;
 };
 
 export type Key = keyof Type;

@@ -28,6 +28,8 @@ const appVersion = isProduction ? app.getVersion() : require("../../package.json
 
 const downloadsDirectory = path.join(app.getPath("userData"), "downloads");
 
+const isOpenAtLogin = app.getLoginItemSettings().openAtLogin;
+
 const runtime: runtimeInfo.Type = {
     isDevelopment,
     isProduction,
@@ -38,6 +40,7 @@ const runtime: runtimeInfo.Type = {
     preloadPath,
     appVersion,
     downloadsDirectory,
+    isOpenAtLogin,
 };
 
 export default runtime;
