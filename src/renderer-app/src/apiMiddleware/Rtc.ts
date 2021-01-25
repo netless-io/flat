@@ -18,7 +18,7 @@ export interface RtcConfig {
 
 export class Rtc {
     rtcEngine: AgoraSdk;
-    private appId: string = AGORA.APP_ID || "";
+    private appID: string = AGORA.APP_ID || "";
     // User can only join one RTC channel at a time.
     private roomUUID: string;
     private isCreator: boolean;
@@ -27,7 +27,7 @@ export class Rtc {
         this.roomUUID = config.roomUUID;
         this.isCreator = config.isCreator;
 
-        if (!this.appId) {
+        if (!this.appID) {
             throw new Error("Agora App Id not set.");
         }
 
@@ -63,7 +63,7 @@ export class Rtc {
             });
         }
 
-        if (this.rtcEngine.initialize(this.appId) < 0) {
+        if (this.rtcEngine.initialize(this.appID) < 0) {
             throw new Error("The app ID is invalid. Check if it is in the correct format.");
         }
     }
