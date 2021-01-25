@@ -7,7 +7,7 @@ import FileSetting from "./components/UserSettingPanel/FileSetting";
 import HotKeySetting from "./components/UserSettingPanel/HotKeySetting";
 import RoomSetting from "./components/UserSettingPanel/RoomSetting";
 import SystemTesting from "./components/UserSettingPanel/SystemTesting";
-import NormalSetting from "./components/UserSettingPanel/NormalSetting";
+import { NormalSetting } from "./components/UserSettingPanel/NormalSetting";
 import CameraTesting from "./components/UserSettingPanel/CameraTesting";
 import SpeakerTesting from "./components/UserSettingPanel/SpeakerTesting";
 import MicrophoneTesting from "./components/UserSettingPanel/MicrophoneTesting";

@@ -1,95 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 import "./NormalSetting.less";
 import { Radio, Checkbox, Button } from "antd";
-import { RouteComponentProps } from "react-router";
+import { useHistory } from "react-router";
+import { observer } from "mobx-react-lite";
+import { RadioChangeEvent } from "antd/lib/radio";
 
-enum RadioValue {
-    FiveMinutes = "提前 5 分钟",
-    FifteenMinutes = "提前 15 分钟",
-    ThirtyMinutes = "提前 30 分钟",
+enum NoticeInterval {
+    FiveMinutes,
+    FifteenMinutes,
+    ThirtyMinutes,
 }
 
 enum SelectLanguage {
-    Chinese = "中文",
-    English = "英语",
+    Chinese,
+    English,
 }
 
-type NormalSettingState = {
-    toggleRadio: boolean;
-    radioValue: RadioValue;
-};
+export const NormalSetting = observer(function NormalSetting() {
+    const [scheduleNotice, setScheduleNotice] = useState(false);
+    const history = useHistory();
 
-export default class NormalSetting extends React.PureComponent<
-    RouteComponentProps,
-    NormalSettingState
-> {
-    public constructor(props: RouteComponentProps) {
-        super(props);
-        this.state = {
-            toggleRadio: true,
-            radioValue: RadioValue.FiveMinutes,
-        };
-    }
-
-    public toggleRadio = (): void => {
-        this.setState({
-            toggleRadio: !this.state.toggleRadio,
-        });
+    const toggleScheduleNotice = (): void => {
+        setScheduleNotice(!scheduleNotice);
     };
 
-    public quitAccount = (): void => {
+    const updateNotice = (e: RadioChangeEvent): void => {
+        // TODO: need handle
+        console.log(e.target.value);
+    };
+
+    const quitAccount = (): void => {
         localStorage.clear();
-        this.props.history.push("/login/");
+        history.push("/login/");
     };
 
-    public render(): JSX.Element {
-        return (
-            <div className="content-container">
-                <div className="header-container">
-                    <span>常规设置</span>
+    return (
+        <div className="content-container">
+            <div className="header-container">
+                <span>常规设置</span>
+            </div>
+            <div className="inner-container">
+                <span>常规设置</span>
+                <Checkbox>开机自动运行</Checkbox>
+                <div className="book-notice">
+                    <Checkbox onClick={toggleScheduleNotice}>开启预订通知</Checkbox>
+                    <Radio.Group
+                        onChange={updateNotice}
+                        disabled={!scheduleNotice}
+                        defaultValue={NoticeInterval.FiveMinutes}
+                    >
+                        <Radio value={NoticeInterval.FiveMinutes} defaultChecked={false}>
+                            提前 5 分钟
+                        </Radio>
+                        <Radio value={NoticeInterval.FifteenMinutes} defaultChecked={false}>
+                            提前 15 分钟
+                        </Radio>
+                        <Radio value={NoticeInterval.ThirtyMinutes} defaultChecked={false}>
+                            提前 30 分钟
+                        </Radio>
+                    </Radio.Group>
                 </div>
-                <div className="inner-container">
-                    <span>常规设置</span>
-                    <Checkbox>开机自动运行</Checkbox>
-                    <div className="book-notice">
-                        <Checkbox onClick={this.toggleRadio}>开启预订通知</Checkbox>
-                        <Radio.Group>
-                            <Radio
-                                value={RadioValue.FiveMinutes}
-                                defaultChecked={false}
-                                disabled={this.state.toggleRadio}
-                            >
-                                提前 5 分钟
-                            </Radio>
-                            <Radio
-                                value={RadioValue.FifteenMinutes}
-                                defaultChecked={false}
-                                disabled={this.state.toggleRadio}
-                            >
-                                提前 15 分钟
-                            </Radio>
-                            <Radio
-                                value={RadioValue.ThirtyMinutes}
-                                defaultChecked={false}
-                                disabled={this.state.toggleRadio}
-                            >
-                                提前 30 分钟
-                            </Radio>
-                        </Radio.Group>
-                    </div>
-                    <Checkbox>开启预订通知提醒声音</Checkbox>
-                    <div className="select-language">
-                        <span>语言设置</span>
-                        <Radio.Group>
-                            <Radio value={SelectLanguage.Chinese}>中文</Radio>
-                            <Radio value={SelectLanguage.English}>English</Radio>
-                        </Radio.Group>
-                        <Button danger onClick={this.quitAccount}>
-                            退出登录
-                        </Button>
-                    </div>
+                <Checkbox>开启预订通知提醒声音</Checkbox>
+                <div className="select-language">
+                    <span>语言设置</span>
+                    <Radio.Group>
+                        <Radio value={SelectLanguage.Chinese}>中文</Radio>
+                        <Radio value={SelectLanguage.English}>English</Radio>
+                    </Radio.Group>
+                    <Button danger onClick={quitAccount}>
+                        退出登录
+                    </Button>
                 </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+});
