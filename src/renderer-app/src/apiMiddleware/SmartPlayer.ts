@@ -12,7 +12,6 @@ import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netl
 import { videoPlugin } from "@netless/white-video-plugin";
 import { audioPlugin } from "@netless/white-audio-plugin";
 import { NETLESS, NODE_ENV } from "../constants/Process";
-import { Identity } from "../utils/localStorage/room";
 import { cloudRecordInfo } from "./flatServer/agora";
 
 /**
@@ -37,16 +36,16 @@ export class SmartPlayer {
 
     public async load({
         roomUUID,
+        isCreator,
         whiteboardUUID,
         whiteboardRoomToken,
-        identity,
         whiteboardEl,
         videoEl,
     }: {
         roomUUID: string;
+        isCreator: boolean;
         whiteboardUUID: string;
         whiteboardRoomToken: string;
-        identity: Identity;
         whiteboardEl: HTMLDivElement;
         videoEl: HTMLVideoElement;
     }): Promise<void> {
@@ -60,7 +59,7 @@ export class SmartPlayer {
         const recording = recordInfo[recordInfo.length - 1];
 
         const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
-        const contextIdentity = identity === Identity.creator ? "host" : "";
+        const contextIdentity = isCreator ? "host" : "";
         plugins.setPluginContext("video", { identity: contextIdentity });
         plugins.setPluginContext("audio", { identity: contextIdentity });
 
