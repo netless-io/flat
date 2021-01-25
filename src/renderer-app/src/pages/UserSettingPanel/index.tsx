@@ -3,14 +3,14 @@ import { Switch, Route, Link, RouteComponentProps } from "react-router-dom";
 import "./index.less";
 import { Menu } from "antd";
 import MainPageLayout from "../../components/MainPageLayout";
-import FileSetting from "./FileSetting";
-import HotKeySetting from "./HotKeySetting";
-import RoomSetting from "./RoomSetting";
-import SystemTesting from "./SystemTesting";
+import { FileSetting } from "./FileSetting";
+import { HotKeySetting } from "./HotKeySetting";
+import { RoomSetting } from "./RoomSetting";
+import { SystemTesting } from "./SystemTesting";
 import { NormalSetting } from "./NormalSetting";
-import CameraTesting from "./CameraTesting";
-import SpeakerTesting from "./SpeakerTesting";
-import MicrophoneTesting from "./MicrophoneTesting";
+import { CameraTesting } from "./CameraTesting";
+import { SpeakerTesting } from "./SpeakerTesting";
+import { MicrophoneTesting } from "./MicrophoneTesting";
 
 export enum SettingMenuKey {
     NormalSetting = "/setting/normal/",
