@@ -5,23 +5,23 @@ import { RouteComponentProps } from "react-router";
 
 enum RadioValue {
     FiveMinutes = "提前 5 分钟",
-    Fifteeninutes = "提前 15 分钟",
+    FifteenMinutes = "提前 15 分钟",
     ThirtyMinutes = "提前 30 分钟",
 }
 
-enum Selectlanguage {
+enum SelectLanguage {
     Chinese = "中文",
     English = "英语",
 }
 
-type NoramlSettingState = {
+type NormalSettingState = {
     toggleRadio: boolean;
     radioValue: RadioValue;
 };
 
 export default class NormalSetting extends React.PureComponent<
     RouteComponentProps,
-    NoramlSettingState
+    NormalSettingState
 > {
     public constructor(props: RouteComponentProps) {
         super(props);
@@ -62,7 +62,7 @@ export default class NormalSetting extends React.PureComponent<
                                 提前 5 分钟
                             </Radio>
                             <Radio
-                                value={RadioValue.Fifteeninutes}
+                                value={RadioValue.FifteenMinutes}
                                 defaultChecked={false}
                                 disabled={this.state.toggleRadio}
                             >
@@ -81,8 +81,8 @@ export default class NormalSetting extends React.PureComponent<
                     <div className="select-language">
                         <span>语言设置</span>
                         <Radio.Group>
-                            <Radio value={Selectlanguage.Chinese}>中文</Radio>
-                            <Radio value={Selectlanguage.English}>English</Radio>
+                            <Radio value={SelectLanguage.Chinese}>中文</Radio>
+                            <Radio value={SelectLanguage.English}>English</Radio>
                         </Radio.Group>
                         <Button danger onClick={this.quitAccount}>
                             退出登录
