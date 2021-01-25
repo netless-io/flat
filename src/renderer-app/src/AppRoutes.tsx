@@ -12,7 +12,7 @@ import HistoryPage from "./HistoryPage";
 import CreatePage from "./CreatePage";
 import UserIndexPage from "./UserIndexPage";
 import UserInfoPage from "./UserInfoPage";
-import UserSetPage from "./UserSetPage";
+import UserSetPage from "./pages/UserSettingPanel";
 import UserScheduledPage from "./UserScheduledPage";
 import RoomDetailPage from "./RoomDetailPage";
 import LoginPage from "./LoginPage";
