@@ -5,8 +5,8 @@ import { AGORA, NODE_ENV } from "../constants/Process";
 import { EventEmitter } from "events";
 import { RoomStatus } from "./flatServer/constants";
 import { generateRTMToken } from "./flatServer/agora";
-import { globals } from "../utils/globals";
 import { getUserUuid } from "../utils/localStorage/accounts";
+import { globalStore } from "../stores/GlobalStore";
 
 /**
  * @see {@link https://docs.agora.io/cn/Real-time-Messaging/rtm_get_event?platform=RESTful#a-namecreate_history_resa创建历史消息查询资源-api（post）}
@@ -182,8 +182,12 @@ export class Rtm extends EventEmitter {
         this.channelID = channelID;
         this.commandsID = this.channelID + "commands";
 
-        this.token = globals.rtm.token || (await generateRTMToken());
-        await this.client.login({ uid: userId, token: this.token });
+        this.token = globalStore.rtmToken || (await generateRTMToken());
+
+        /** login may fail in dev due to live reload */
+        await polly()
+            .waitAndRetry(3)
+            .executeForPromise(() => this.client.login({ uid: userId, token: this.token }));
 
         this.channel = this.client.createChannel(channelID);
         await this.channel.join();
