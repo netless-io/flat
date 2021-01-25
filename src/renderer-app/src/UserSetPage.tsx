@@ -3,14 +3,14 @@ import { Switch, Route, Link, RouteComponentProps } from "react-router-dom";
 import "./UserSetPage.less";
 import { Menu } from "antd";
 import MainPageLayout from "./components/MainPageLayout";
-import FileSetting from "./components/UserSettingPanel/FileSetting";
-import HotKeySetting from "./components/UserSettingPanel/HotKeySetting";
-import RoomSetting from "./components/UserSettingPanel/RoomSetting";
-import SystemTesting from "./components/UserSettingPanel/SystemTesting";
-import { NormalSetting } from "./components/UserSettingPanel/NormalSetting";
-import CameraTesting from "./components/UserSettingPanel/CameraTesting";
-import SpeakerTesting from "./components/UserSettingPanel/SpeakerTesting";
-import MicrophoneTesting from "./components/UserSettingPanel/MicrophoneTesting";
+import FileSetting from "./pages/UserSettingPanel/FileSetting";
+import HotKeySetting from "./pages/UserSettingPanel/HotKeySetting";
+import RoomSetting from "./pages/UserSettingPanel/RoomSetting";
+import SystemTesting from "./pages/UserSettingPanel/SystemTesting";
+import { NormalSetting } from "./pages/UserSettingPanel/NormalSetting";
+import CameraTesting from "./pages/UserSettingPanel/CameraTesting";
+import SpeakerTesting from "./pages/UserSettingPanel/SpeakerTesting";
+import MicrophoneTesting from "./pages/UserSettingPanel/MicrophoneTesting";
 
 export enum SettingMenuKey {
     NormalSetting = "/setting/normal/",
