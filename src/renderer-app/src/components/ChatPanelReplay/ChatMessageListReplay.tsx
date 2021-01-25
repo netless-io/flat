@@ -1,4 +1,5 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, { useState } from "react";
 import {
     AutoSizer,
     CellMeasurer,
@@ -9,13 +10,45 @@ import {
 import ChatMessage, { ChatMessageItem } from "../ChatPanel/ChatMessage";
 
 export interface ChatMessageListReplayProps {
-    userId: string;
+    userUUID: string;
     messages: ChatMessageItem[];
 }
 
-export class ChatMessageListReplay extends React.PureComponent<ChatMessageListReplayProps> {
-    render(): React.ReactNode {
-        const { messages } = this.props;
+export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
+    function ChatMessageListReplay({ userUUID, messages }) {
+        const [cellCache] = useState(
+            () =>
+                new CellMeasurerCache({
+                    defaultHeight: 72,
+                    fixedWidth: true,
+                    keyMapper: index => messages[index].uuid,
+                }),
+        );
+
+        const rowRenderer: ListRowRenderer = ({ index, parent, style }) => {
+            return (
+                <CellMeasurer
+                    cache={cellCache}
+                    parent={parent}
+                    key={messages[index].uuid}
+                    columnIndex={0}
+                    rowIndex={index}
+                >
+                    {({ measure, registerChild }) => {
+                        return (
+                            // @ts-ignore bug of react-vituralized typing
+                            <div ref={registerChild} style={style}>
+                                <ChatMessage
+                                    onLayoutMount={measure}
+                                    userUUID={userUUID}
+                                    message={messages[index]}
+                                />
+                            </div>
+                        );
+                    }}
+                </CellMeasurer>
+            );
+        };
 
         return (
             <AutoSizer>
@@ -24,47 +57,15 @@ export class ChatMessageListReplay extends React.PureComponent<ChatMessageListRe
                         height={height}
                         width={width}
                         rowCount={messages.length}
-                        rowHeight={this.cellCache.rowHeight}
-                        rowRenderer={this.rowRenderer}
+                        rowHeight={cellCache.rowHeight}
+                        rowRenderer={rowRenderer}
                         scrollToIndex={messages.length - 1}
                         scrollToAlignment="start"
                     />
                 )}
             </AutoSizer>
         );
-    }
-
-    private cellCache = new CellMeasurerCache({
-        defaultHeight: 72,
-        fixedWidth: true,
-        keyMapper: index => this.props.messages[index].uuid,
-    });
-
-    private rowRenderer: ListRowRenderer = ({ index, parent, style }) => {
-        const { messages, userId } = this.props;
-        return (
-            <CellMeasurer
-                cache={this.cellCache}
-                parent={parent}
-                key={messages[index].uuid}
-                columnIndex={0}
-                rowIndex={index}
-            >
-                {({ measure, registerChild }) => {
-                    return (
-                        // @ts-ignore bug of react-vituralized typing
-                        <div ref={registerChild} style={style}>
-                            <ChatMessage
-                                onLoaded={measure}
-                                userId={userId}
-                                message={messages[index]}
-                            />
-                        </div>
-                    );
-                }}
-            </CellMeasurer>
-        );
-    };
-}
+    },
+);
 
 export default ChatMessageListReplay;

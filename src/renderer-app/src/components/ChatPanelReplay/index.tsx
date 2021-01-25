@@ -51,7 +51,7 @@ export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatP
                 <Tabs defaultActiveKey="messages" tabBarGutter={0}>
                     <Tabs.TabPane tab="消息列表" key="messages">
                         <ChatMessagesReplay
-                            userId={this.props.userId}
+                            userUUID={this.props.userId}
                             messages={this.state.renderedMessages}
                         />
                     </Tabs.TabPane>
