@@ -22,7 +22,6 @@ import {
     usersInfo,
 } from "../apiMiddleware/flatServer";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
-import { Identity } from "../utils/localStorage/room";
 import { RoomItem, roomStore } from "./RoomStore";
 import { globalStore } from "./GlobalStore";
 import { NODE_ENV } from "../constants/Process";
@@ -69,8 +68,8 @@ export class ClassRoomStore {
 
     readonly rtcChannelType: RtcChannelType;
 
-    readonly rtc = new RTCAPI();
-    readonly rtm = new RTMAPI();
+    readonly rtc: RTCAPI;
+    readonly rtm: RTMAPI;
     readonly cloudRecording: CloudRecording;
 
     /** This ownerUUID is from url params matching which cannot be trusted */
@@ -92,6 +91,9 @@ export class ClassRoomStore {
         this.userUUID = globalStore.userUUID;
         this.recordingConfig = config.recordingConfig;
         this.rtcChannelType = config.recordingConfig.channelType ?? RtcChannelType.Communication;
+
+        this.rtc = new RTCAPI({ roomUUID: config.roomUUID, isCreator: this.isCreator });
+        this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
 
         makeAutoObservable<this, "noMoreRemoteMessages" | "cancelHandleChannelStatusTimeout">(
@@ -151,12 +153,7 @@ export class ClassRoomStore {
         }
         try {
             if (this.isCalling) {
-                await this.rtc.join(
-                    this.roomUUID,
-                    this.isCreator ? Identity.creator : Identity.joiner,
-                    this.currentUser.rtcUID,
-                    this.rtcChannelType,
-                );
+                await this.rtc.join(this.currentUser.rtcUID, this.rtcChannelType);
             } else {
                 if (this.isRecording) {
                     await this.stopRecording();
