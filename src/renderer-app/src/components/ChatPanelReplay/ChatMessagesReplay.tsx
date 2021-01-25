@@ -1,36 +1,31 @@
 import React from "react";
+import { observer } from "mobx-react-lite";
 import { ChatMessageItem } from "../ChatPanel/ChatMessage";
 import { ChatMessageListReplay } from "./ChatMessageListReplay";
 import "../ChatPanel/ChatMessages.less";
 
 export interface ChatMessagesReplayProps {
-    userId: string;
+    userUUID: string;
     messages: ChatMessageItem[];
 }
 
-export class ChatMessagesReplay extends React.PureComponent<ChatMessagesReplayProps> {
-    renderDefault(): React.ReactNode {
-        return <div className="chat-messages-default">无消息...</div>;
-    }
-
-    renderMessageList(): React.ReactNode {
-        const { userId, messages } = this.props;
-        return <ChatMessageListReplay userId={userId} messages={messages} />;
-    }
-
-    render(): React.ReactNode {
-        return (
-            <div className="chat-messages-wrap">
-                <div className="chat-messages">
-                    {this.props.messages.length > 0 ? (
-                        <div className="chat-messages-box">{this.renderMessageList()}</div>
-                    ) : (
-                        this.renderDefault()
-                    )}
-                </div>
+export const ChatMessagesReplay = observer<ChatMessagesReplayProps>(function ChatMessagesReplay({
+    userUUID,
+    messages,
+}) {
+    return (
+        <div className="chat-messages-wrap">
+            <div className="chat-messages">
+                {messages.length > 0 ? (
+                    <div className="chat-messages-box">
+                        {<ChatMessageListReplay userUUID={userUUID} messages={messages} />}
+                    </div>
+                ) : (
+                    <div className="chat-messages-default">无消息...</div>
+                )}
             </div>
-        );
-    }
-}
+        </div>
+    );
+});
 
 export default ChatMessagesReplay;
