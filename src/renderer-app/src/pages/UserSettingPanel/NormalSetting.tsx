@@ -3,15 +3,14 @@ import "./NormalSetting.less";
 import { Radio, Checkbox, Button } from "antd";
 import { useHistory } from "react-router";
 import { observer } from "mobx-react-lite";
-import { RadioChangeEvent } from "antd/lib/radio";
 import { runtime } from "../../utils/runtime";
 import { ipcAsyncByMain } from "../../utils/ipc";
 
-enum NoticeInterval {
-    FiveMinutes,
-    FifteenMinutes,
-    ThirtyMinutes,
-}
+// enum NoticeInterval {
+//     FiveMinutes,
+//     FifteenMinutes,
+//     ThirtyMinutes,
+// }
 
 enum SelectLanguage {
     Chinese,
@@ -19,18 +18,18 @@ enum SelectLanguage {
 }
 
 export const NormalSetting = observer(function NormalSetting() {
-    const [scheduleNotice, setScheduleNotice] = useState(false);
+    // const [scheduleNotice, setScheduleNotice] = useState(false);
     const [openAtLogin, setOpenAtLogin] = useState(runtime.isOpenAtLogin);
     const history = useHistory();
 
-    const toggleScheduleNotice = (): void => {
-        setScheduleNotice(!scheduleNotice);
-    };
+    // const toggleScheduleNotice = (): void => {
+    //     setScheduleNotice(!scheduleNotice);
+    // };
 
-    const updateNotice = (e: RadioChangeEvent): void => {
-        // TODO: need handle
-        console.log(e.target.value);
-    };
+    // const updateNotice = (e: RadioChangeEvent): void => {
+    //     // TODO: need handle
+    //     console.log(e.target.value);
+    // };
 
     const toggleOpenAtLogin = (): void => {
         setOpenAtLogin(openAtLogin);
@@ -54,25 +53,26 @@ export const NormalSetting = observer(function NormalSetting() {
                 <Checkbox onClick={toggleOpenAtLogin} defaultChecked={openAtLogin}>
                     开机自动运行
                 </Checkbox>
-                <div className="book-notice">
-                    <Checkbox onClick={toggleScheduleNotice}>开启预订通知</Checkbox>
-                    <Radio.Group
-                        onChange={updateNotice}
-                        disabled={!scheduleNotice}
-                        defaultValue={NoticeInterval.FiveMinutes}
-                    >
-                        <Radio value={NoticeInterval.FiveMinutes} defaultChecked={false}>
-                            提前 5 分钟
-                        </Radio>
-                        <Radio value={NoticeInterval.FifteenMinutes} defaultChecked={false}>
-                            提前 15 分钟
-                        </Radio>
-                        <Radio value={NoticeInterval.ThirtyMinutes} defaultChecked={false}>
-                            提前 30 分钟
-                        </Radio>
-                    </Radio.Group>
-                </div>
-                <Checkbox>开启预订通知提醒声音</Checkbox>
+                {/*TODO: Do the next version*/}
+                {/*<div className="book-notice">*/}
+                {/*    <Checkbox onClick={toggleScheduleNotice}>开启预订通知</Checkbox>*/}
+                {/*    <Radio.Group*/}
+                {/*        onChange={updateNotice}*/}
+                {/*        disabled={!scheduleNotice}*/}
+                {/*        defaultValue={NoticeInterval.FiveMinutes}*/}
+                {/*    >*/}
+                {/*        <Radio value={NoticeInterval.FiveMinutes} defaultChecked={false}>*/}
+                {/*            提前 5 分钟*/}
+                {/*        </Radio>*/}
+                {/*        <Radio value={NoticeInterval.FifteenMinutes} defaultChecked={false}>*/}
+                {/*            提前 15 分钟*/}
+                {/*        </Radio>*/}
+                {/*        <Radio value={NoticeInterval.ThirtyMinutes} defaultChecked={false}>*/}
+                {/*            提前 30 分钟*/}
+                {/*        </Radio>*/}
+                {/*    </Radio.Group>*/}
+                {/*</div>*/}
+                {/*<Checkbox>开启预订通知提醒声音</Checkbox>*/}
                 <div className="select-language">
                     <span>语言设置</span>
                     <Radio.Group>
