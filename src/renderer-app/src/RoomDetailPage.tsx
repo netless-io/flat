@@ -1,17 +1,13 @@
 import React, { PureComponent } from "react";
-import "./RoomDetailPage.less";
-import MainPageLayout from "./components/MainPageLayout";
+import { Button, Input, Modal } from "antd";
+import { format } from "date-fns";
+import { zhCN } from "date-fns/locale";
 import { Link, RouteComponentProps } from "react-router-dom";
-import back from "./assets/image/back.svg";
-import home_icon_gray from "./assets/image/home-icon-gray.svg";
-import room_type from "./assets/image/room-type.svg";
-import docs_icon from "./assets/image/docs-icon.svg";
-import { Button, Input } from "antd";
+import MainPageLayout from "./components/MainPageLayout";
 import { RoomStatus, RoomType } from "./apiMiddleware/flatServer/constants";
 import {
     ordinaryRoomInfo,
     periodicSubRoomInfo,
-    joinRoom,
     cancelPeriodicRoom,
     cancelOrdinaryRoom,
     OrdinaryRoomInfoResult,
@@ -19,13 +15,15 @@ import {
     periodicRoomInfo,
     PeriodicRoomInfoResult,
 } from "./apiMiddleware/flatServer";
-import { format } from "date-fns";
-import { zhCN } from "date-fns/locale";
 import { Identity } from "./utils/localStorage/room";
-import { globals } from "./utils/globals";
 import { getUserUuid } from "./utils/localStorage/accounts";
-import Modal from "antd/lib/modal/Modal";
-import { globalStore } from "./stores/GlobalStore";
+import { roomStore } from "./stores/RoomStore";
+
+import back from "./assets/image/back.svg";
+import home_icon_gray from "./assets/image/home-icon-gray.svg";
+import room_type from "./assets/image/room-type.svg";
+import docs_icon from "./assets/image/docs-icon.svg";
+import "./RoomDetailPage.less";
 
 export type RoomDetailPageState = {
     isTeacher: boolean;
@@ -130,26 +128,8 @@ export default class RoomDetailPage extends PureComponent<
     };
 
     public joinRoom = async (): Promise<void> => {
-        const { roomUUID } = this.state;
-        const identity = this.getIdentity();
-        const data = await joinRoom(roomUUID);
-
-        // @TODO remove globals
-        globals.whiteboard.uuid = data.whiteboardRoomUUID;
-        globals.whiteboard.token = data.whiteboardRoomToken;
-        globals.rtc.uid = data.rtcUID;
-        globals.rtc.token = data.rtcToken;
-        globals.rtm.token = data.rtmToken;
-
-        // @TODO useContext
-        globalStore.updateToken({
-            whiteboardRoomUUID: data.whiteboardRoomUUID,
-            whiteboardRoomToken: data.whiteboardRoomToken,
-            rtcToken: data.rtcToken,
-            rtmToken: data.rtmToken,
-        });
-
-        const url = `/${data.roomType}/${identity}/${roomUUID}/${getUserUuid()}/`;
+        const data = await roomStore.joinRoom(this.state.roomUUID);
+        const url = `/classroom/${data.roomType}/${data.roomUUID}/${data.ownerUUID}/`;
         this.props.history.push(url);
     };
 

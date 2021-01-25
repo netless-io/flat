@@ -214,25 +214,36 @@ export class Rtm extends EventEmitter {
     }
 
     async destroy(): Promise<void> {
-        if (this.channel) {
-            await this.channel.leave();
-            this.channel.removeAllListeners();
+        const { channel, commands } = this;
+
+        this.channelID = null;
+        this.commandsID = null;
+        this.channel = void 0;
+        this.commands = void 0;
+
+        const promises: Promise<any>[] = [];
+
+        if (channel) {
+            promises.push(channel.leave());
+            channel.removeAllListeners();
         }
-        if (this.commands) {
-            await this.commands.leave();
-            this.commands.removeAllListeners();
+
+        if (commands) {
+            promises.push(commands.leave());
+            commands.removeAllListeners();
         }
+
         this.client.removeAllListeners();
+        promises.push(this.client.logout());
+
         try {
-            await this.client.logout();
+            await Promise.all(promises);
         } catch (e) {
             // ignore errors on logout
             if (NODE_ENV === "development") {
                 console.warn(e);
             }
         }
-        this.channelID = null;
-        this.commandsID = null;
     }
 
     async sendMessage(text: string): Promise<void>;

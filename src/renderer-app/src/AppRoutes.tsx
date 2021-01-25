@@ -29,15 +29,15 @@ export class AppRoutes extends React.Component<{}, {}> {
         return (
             <HashRouter>
                 <Switch>
-                    <Route exact path="/replay/:identity/:uuid/:userId/" component={ReplayPage} />
+                    <Route exact path="/replay/:roomUUID/:ownerUUID/" component={ReplayPage} />
                     <Route
                         exact
-                        path="/SmallClass/:identity/:uuid/:userId/"
+                        path="/classroom/SmallClass/:roomUUID/:ownerUUID/"
                         component={SmallClassPage}
                     />
                     <Route
                         exact
-                        path="/BigClass/:identity/:uuid/:userId/"
+                        path="/classroom/BigClass/:roomUUID/:ownerUUID/"
                         component={BigClassPage}
                     />
                     <Route

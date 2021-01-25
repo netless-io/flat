@@ -24,12 +24,45 @@ import { Whiteboard } from "../../components/Whiteboard";
 import LoadingPage from "../../LoadingPage";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { useWhiteboardStore } from "../../stores/WhiteboardStore";
-
+import { RecordingConfig, useClassRoomStore, User } from "../../stores/ClassRoomStore";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { Identity } from "../../utils/localStorage/room";
 import { ipcAsyncByMain } from "../../utils/ipc";
 
 import "./BigClassPage.less";
+
+const recordingConfig: RecordingConfig = Object.freeze({
+    channelType: RtcChannelType.Broadcast,
+    transcodingConfig: {
+        width: 288,
+        height: 216,
+        // https://docs.agora.io/cn/cloud-recording/recording_video_profile
+        fps: 15,
+        bitrate: 280,
+        mixedVideoLayout: 3,
+        backgroundColor: "#000000",
+        layoutConfig: [
+            {
+                x_axis: 0,
+                y_axis: 0,
+                width: 1,
+                height: 1,
+                alpha: 1.0,
+                render_mode: 1,
+            },
+            {
+                x_axis: 0.0,
+                y_axis: 0.67,
+                width: 0.33,
+                height: 0.33,
+                alpha: 1.0,
+                render_mode: 1,
+            },
+        ],
+    },
+    maxIdleTime: 60,
+    subscribeUidGroup: 0,
+});
 
 export interface RouterParams {
     identity: Identity;

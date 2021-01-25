@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Modal } from "antd";
 import { History } from "history";
 import { TopBarRightBtn } from "./TopBarRightBtn";
-import { Identity } from "../utils/localStorage/room";
 import { RoomType } from "../apiMiddleware/flatServer/constants";
 
 import replayScreen from "../assets/image/replay-screen.png";
@@ -13,9 +12,8 @@ export type ExitButtonPlayerStates = {
 };
 
 export type ExitButtonPlayerProps = {
-    identity: Identity;
     roomUUID: string;
-    userUUID: string;
+    ownerUUID: string;
     roomType: RoomType;
     history: History;
 };
@@ -29,8 +27,8 @@ class ExitButtonPlayer extends React.PureComponent<ExitButtonPlayerProps, ExitBu
     }
 
     private handleReplay = async (): Promise<void> => {
-        const { identity, roomUUID, userUUID, roomType, history } = this.props;
-        history.push(`/${roomType}/${identity}/${roomUUID}/${userUUID}/`);
+        const { roomUUID, ownerUUID, roomType, history } = this.props;
+        history.push(`/classroom/${roomType}/${roomUUID}/${ownerUUID}/`);
     };
 
     private handleGoBack = async (): Promise<void> => {

@@ -6,6 +6,7 @@ import {
     createPeriodicRoom,
     CreatePeriodicRoomPayload,
     joinRoom,
+    JoinRoomResult,
     listRooms,
     ListRoomsPayload,
     ListRoomsType,
@@ -15,16 +16,20 @@ import {
     periodicSubRoomInfo,
     PeriodicSubRoomInfoPayload,
 } from "../apiMiddleware/flatServer";
-import { RoomStatus, RoomType } from "../apiMiddleware/flatServer/constants";
+import { RoomDoc, RoomStatus, RoomType } from "../apiMiddleware/flatServer/constants";
 import { globalStore } from "./GlobalStore";
 
 // Sometime we may only have pieces of the room info
 /** Ordinary room + periodic sub-room */
 export interface RoomItem {
+    /** 普通房间或周期性房间子房间的 uuid */
     roomUUID: string;
-    periodicUUID?: string | null;
     /** 房间所有者的 uuid */
-    ownerUUID?: string;
+    ownerUUID: string;
+    /** 房间类型 */
+    roomType?: RoomType;
+    /** 子房间隶属的周期性房间 uuid */
+    periodicUUID?: string | null;
     /** 房间所有者的名称 */
     ownerUserName?: string;
     /** 房间标题 */
@@ -41,6 +46,16 @@ export interface RoomItem {
     nextPeriodicRoomEndTime?: string;
     /** 当前周期性房间下一共有多少节课 */
     count?: number;
+    /**课件 */
+    docs?: RoomDoc[];
+    /** 是否存在录制(只有历史记录才会有) */
+    hasRecord?: boolean;
+    /** 录制记录 */
+    cloudRecording?: Array<{
+        beginTime: number;
+        endTime: number;
+        videoURL?: string;
+    }>;
 }
 
 // Only keep subroom ids. Subroom info are stored in ordinaryRooms.
@@ -74,8 +89,19 @@ export class RoomStore {
      * @returns roomUUID
      */
     async createOrdinaryRoom(payload: CreateOrdinaryRoomPayload): Promise<string> {
+        if (!globalStore.userUUID) {
+            throw new Error("cannot create room: user not login.");
+        }
+
         const roomUUID = await createOrdinaryRoom(payload);
-        this.updateRoom(roomUUID, { ...payload });
+        const { docs, ...restPayload } = payload;
+        this.updateRoom(roomUUID, globalStore.userUUID, {
+            ...restPayload,
+            docs:
+                docs &&
+                docs.map(doc => ({ docType: doc.type, docUUID: doc.uuid, isPreload: false })),
+            roomUUID,
+        });
         return roomUUID;
     }
 
@@ -84,9 +110,15 @@ export class RoomStore {
         // need roomUUID and periodictUUID from server to cache the payload
     }
 
-    async joinRoom(roomUUID: string): Promise<void> {
+    async joinRoom(roomUUID: string): Promise<JoinRoomResult> {
         const data = await joinRoom(roomUUID);
         globalStore.updateToken(data);
+        this.updateRoom(roomUUID, data.ownerUUID, {
+            roomUUID,
+            ownerUUID: data.ownerUUID,
+            roomType: data.roomType,
+        });
+        return data;
     }
 
     /**
@@ -97,14 +129,14 @@ export class RoomStore {
         const roomUUIDs: string[] = [];
         for (const room of rooms) {
             roomUUIDs.push(room.roomUUID);
-            this.updateRoom(room.roomUUID, convertStartEndTime(room));
+            this.updateRoom(room.roomUUID, room.ownerUUID, convertStartEndTime(room));
         }
         return roomUUIDs;
     }
 
     async syncOrdinaryRoomInfo(roomUUID: string): Promise<void> {
         const { roomInfo, ...restInfo } = await ordinaryRoomInfo(roomUUID);
-        this.updateRoom(roomUUID, {
+        this.updateRoom(roomUUID, roomInfo.ownerUUID, {
             ...restInfo,
             ...convertStartEndTime(roomInfo),
             roomUUID,
@@ -117,7 +149,7 @@ export class RoomStore {
 
     async syncPeriodicSubRoomInfo(payload: PeriodicSubRoomInfoPayload): Promise<void> {
         const { roomInfo, ...restInfo } = await periodicSubRoomInfo(payload);
-        this.updateRoom(payload.roomUUID, {
+        this.updateRoom(payload.roomUUID, roomInfo.ownerUUID, {
             ...restInfo,
             ...convertStartEndTime(roomInfo),
             roomUUID: payload.roomUUID,
@@ -125,7 +157,7 @@ export class RoomStore {
         });
     }
 
-    updateRoom(roomUUID: string, roomInfo: Partial<RoomItem>): void {
+    updateRoom(roomUUID: string, ownerUUID: string, roomInfo: Partial<RoomItem>): void {
         const room = this.rooms.get(roomUUID);
         if (room) {
             const keys = (Object.keys(roomInfo) as unknown) as Array<keyof RoomItem>;
@@ -135,14 +167,15 @@ export class RoomStore {
                 }
             }
         } else {
-            this.rooms.set(roomUUID, { ...roomInfo, roomUUID });
+            this.rooms.set(roomUUID, { ...roomInfo, roomUUID, ownerUUID });
         }
     }
 
     updatePeriodicRoom(periodicUUID: string, roomInfo: PeriodicRoomInfoResult): void {
         roomInfo.rooms.forEach(room => {
-            this.updateRoom(room.roomUUID, {
+            this.updateRoom(room.roomUUID, roomInfo.periodic.ownerUUID, {
                 ...convertStartEndTime(room),
+                roomType: roomInfo.periodic.roomType,
                 periodicUUID: periodicUUID,
             });
         });

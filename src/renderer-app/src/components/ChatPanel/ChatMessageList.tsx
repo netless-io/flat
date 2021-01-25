@@ -1,4 +1,5 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, { useEffect, useRef, useState } from "react";
 import {
     AutoSizer,
     CellMeasurer,
@@ -9,12 +10,13 @@ import {
     Index,
     IndexRange,
 } from "react-virtualized";
+import { useReaction } from "../../utils/mobx";
 import ChatMessage, { ChatMessageItem } from "./ChatMessage";
 
 export type OnLoadMore = (range: IndexRange) => Promise<void>;
 
 export interface ChatMessageListProps {
-    userId: string;
+    userUUID: string;
     messages: ChatMessageItem[];
     onLoadMore: OnLoadMore;
 }
@@ -26,151 +28,126 @@ export interface ChatMessageListState {
     clearScrollToIndex: boolean;
 }
 
-export class ChatMessageList extends React.PureComponent<
-    ChatMessageListProps,
-    ChatMessageListState
-> {
-    state: ChatMessageListState = {
-        lastMessagesCount: 0,
-        scrollToIndex: -1,
-        clearScrollToIndex: false,
-    };
+export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessageList({
+    userUUID,
+    messages,
+    onLoadMore,
+}) {
+    const [scrollToIndex, setScrollToIndex] = useState<number | undefined>(messages.length - 1);
 
-    static getDerivedStateFromProps(
-        props: ChatMessageListProps,
-        state: ChatMessageListState,
-    ): Partial<ChatMessageListState> {
-        let scrollToIndex = state.scrollToIndex;
-
-        if (state.clearScrollToIndex) {
-            scrollToIndex = undefined;
-        } else if (scrollToIndex !== undefined && scrollToIndex < 0) {
-            // on first rendering,
-            // scroll to the latest message
-            // which is at the bottom
-            scrollToIndex = props.messages.length - 1;
-        } else if (props.messages.length > state.lastMessagesCount) {
-            // more messages are loaded
-            if (
-                !state.lastLatestMessage ||
-                props.messages[props.messages.length - 1]?.timestamp >
-                    state.lastLatestMessage.timestamp
-            ) {
-                // user sent a new message
-                // scroll to the bottom
-                scrollToIndex = props.messages.length - 1;
-            } else {
-                // history messages loaded
-                // stay at the last position
-                scrollToIndex = props.messages.length - state.lastMessagesCount;
-            }
-        }
-
-        return {
-            lastMessagesCount: props.messages.length,
-            lastLatestMessage: props.messages[props.messages.length - 1],
-            scrollToIndex,
-            clearScrollToIndex: false,
-        };
-    }
-
-    componentDidMount(): void {
-        this.clearScrollToIndex();
-    }
-
-    componentDidUpdate(): void {
-        this.clearScrollToIndex();
-    }
-
-    render(): React.ReactNode {
-        const { messages, onLoadMore } = this.props;
-        const { scrollToIndex } = this.state;
-
-        return (
-            <InfiniteLoader
-                isRowLoaded={this.isRowLoaded}
-                loadMoreRows={onLoadMore}
-                rowCount={messages.length}
-                threshold={1}
-            >
-                {({ onRowsRendered, registerChild }) => (
-                    <AutoSizer>
-                        {({ height, width }) => (
-                            <List
-                                ref={registerChild}
-                                height={height}
-                                width={width}
-                                rowCount={messages.length}
-                                rowHeight={this.cellCache.rowHeight}
-                                rowRenderer={this.rowRenderer}
-                                scrollToIndex={scrollToIndex}
-                                scrollToAlignment="start"
-                                onRowsRendered={onRowsRendered}
-                            />
-                        )}
-                    </AutoSizer>
-                )}
-            </InfiniteLoader>
-        );
-    }
+    const [cellCache] = useState(
+        () =>
+            new CellMeasurerCache({
+                defaultHeight: 72,
+                fixedWidth: true,
+                keyMapper: index => messages[index].uuid,
+            }),
+    );
 
     /**
      * The scrollToIndex is causing scroll jumping in random situation.
      * Clear it after it is applied.
      */
-    private clearScrollToIndex(): void {
-        if (this.state.scrollToIndex !== undefined) {
+    useEffect(() => {
+        if (scrollToIndex !== void 0) {
             // wait one loop after rendering complete
-            setTimeout(() => {
-                this.setState({ clearScrollToIndex: true });
+            const ticket = window.setTimeout(() => {
+                setScrollToIndex(void 0);
             }, 0);
+            return () => {
+                window.clearTimeout(ticket);
+            };
         }
-    }
+        return;
+    }, [scrollToIndex]);
 
-    private cellCache = new CellMeasurerCache({
-        defaultHeight: 72,
-        fixedWidth: true,
-        keyMapper: index => this.props.messages[index].uuid,
-    });
+    useReaction(
+        () => ({
+            messageCount: messages.length,
+            latestMessage: messages.length > 0 ? messages[messages.length - 1] : null,
+        }),
+        ({ messageCount, latestMessage }, prev) => {
+            if (messageCount > prev.messageCount) {
+                // more messages are loaded
+                if (
+                    !prev.latestMessage ||
+                    latestMessage!.timestamp > prev.latestMessage.timestamp
+                ) {
+                    // user sent a new message
+                    // scroll to the bottom
+                    setScrollToIndex(messageCount - 1);
+                } else {
+                    // history messages loaded
+                    // stay at the last position
+                    setScrollToIndex(messageCount - prev.messageCount);
+                }
+            }
+        },
+        [messages],
+    );
 
-    private rowRenderer: ListRowRenderer = ({ index, parent, style }) => {
-        const { messages, userId } = this.props;
-        return (
-            <CellMeasurer
-                cache={this.cellCache}
-                parent={parent}
-                key={messages[index].uuid}
-                columnIndex={0}
-                rowIndex={index}
-            >
-                {({ measure, registerChild }) => {
-                    return (
-                        // @ts-ignore bug of react-vituralized typing
-                        <div ref={registerChild} style={style}>
-                            <ChatMessage
-                                onLoaded={measure}
-                                userId={userId}
-                                message={messages[index]}
-                            />
-                        </div>
-                    );
-                }}
-            </CellMeasurer>
-        );
-    };
+    const isFirstLoadRef = useRef(true);
 
-    private isFirstLoad = true;
-
-    private isRowLoaded = ({ index }: Index): boolean => {
+    const isRowLoaded = ({ index }: Index): boolean => {
         // load more when scroll to top
         const loaded = index > 0;
-        if (this.isFirstLoad) {
+        if (isFirstLoadRef.current) {
             // skip extra first loading
-            this.isFirstLoad = false;
+            isFirstLoadRef.current = false;
             return true;
         }
         return loaded;
     };
-}
+
+    const rowRenderer: ListRowRenderer = ({ index, parent, style }) => (
+        <CellMeasurer
+            cache={cellCache}
+            parent={parent}
+            key={messages[index].uuid}
+            columnIndex={0}
+            rowIndex={index}
+        >
+            {({ measure, registerChild }) => {
+                return (
+                    // @ts-ignore bug of react-vituralized typing
+                    <div ref={registerChild} style={style}>
+                        <ChatMessage
+                            onLayoutMount={measure}
+                            userUUID={userUUID}
+                            message={messages[index]}
+                        />
+                    </div>
+                );
+            }}
+        </CellMeasurer>
+    );
+
+    return (
+        <InfiniteLoader
+            isRowLoaded={isRowLoaded}
+            loadMoreRows={onLoadMore}
+            rowCount={messages.length}
+            threshold={1}
+        >
+            {({ onRowsRendered, registerChild }) => (
+                <AutoSizer>
+                    {({ height, width }) => (
+                        <List
+                            ref={registerChild}
+                            height={height}
+                            width={width}
+                            rowCount={messages.length}
+                            rowHeight={cellCache.rowHeight}
+                            rowRenderer={rowRenderer}
+                            scrollToIndex={scrollToIndex}
+                            scrollToAlignment="start"
+                            onRowsRendered={onRowsRendered}
+                        />
+                    )}
+                </AutoSizer>
+            )}
+        </InfiniteLoader>
+    );
+});
 
 export default ChatMessageList;

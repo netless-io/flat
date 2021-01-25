@@ -28,6 +28,7 @@ import { ClassModeType } from "../../apiMiddleware/Rtm";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { AgoraCloudRecordLayoutConfigItem } from "../../apiMiddleware/flatServer/agora";
 import { useWhiteboardStore } from "../../stores/WhiteboardStore";
+import { RecordingConfig, useClassRoomStore, User } from "../../stores/ClassRoomStore";
 
 import "./SmallClassPage.less";
 
@@ -36,6 +37,22 @@ const AVATAR_HEIGHT = 108;
 const MAX_AVATAR_COUNT = 17;
 const AVATAR_BAR_GAP = 4;
 const AVATAR_BAR_WIDTH = (AVATAR_WIDTH + AVATAR_BAR_GAP) * MAX_AVATAR_COUNT - AVATAR_BAR_GAP;
+
+const recordingConfig: RecordingConfig = Object.freeze({
+    channelType: RtcChannelType.Communication,
+    transcodingConfig: {
+        width: AVATAR_BAR_WIDTH,
+        height: AVATAR_HEIGHT,
+        // https://docs.agora.io/cn/cloud-recording/recording_video_profile
+        fps: 15,
+        bitrate: 500,
+        mixedVideoLayout: 3,
+        backgroundColor: "#F3F6F9",
+        layoutConfig: updateRecordLayout(1),
+    },
+    maxIdleTime: 60,
+    subscribeUidGroup: 3,
+});
 
 export interface RouterParams {
     identity: Identity;
