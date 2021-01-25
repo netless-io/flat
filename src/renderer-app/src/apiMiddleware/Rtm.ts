@@ -115,7 +115,7 @@ export interface RTMessage<U extends keyof RTMEvents = keyof RTMEvents> {
     value: RTMEvents[U];
     uuid: string;
     timestamp: number;
-    userId: string;
+    userUUID: string;
 }
 
 export declare interface Rtm {
@@ -170,7 +170,7 @@ export class Rtm extends EventEmitter {
         });
     }
 
-    async init(userId: string, channelID: string): Promise<RtmChannel> {
+    async init(userUUID: string, channelID: string): Promise<RtmChannel> {
         if (this.channel) {
             if (this.channelID === channelID) {
                 return this.channel;
@@ -187,7 +187,7 @@ export class Rtm extends EventEmitter {
         /** login may fail in dev due to live reload */
         await polly()
             .waitAndRetry(3)
-            .executeForPromise(() => this.client.login({ uid: userId, token: this.token }));
+            .executeForPromise(() => this.client.login({ uid: userUUID, token: this.token }));
 
         this.channel = this.client.createChannel(channelID);
         await this.channel.join();
@@ -337,7 +337,7 @@ export class Rtm extends EventEmitter {
             value: message.payload,
             uuid: uuidv4(),
             timestamp: message.ms,
-            userId: message.src,
+            userUUID: message.src,
         }));
     }
 
@@ -352,7 +352,7 @@ export class Rtm extends EventEmitter {
                             value: v,
                             uuid: uuidv4(),
                             timestamp: message.ms,
-                            userId: message.src,
+                            userUUID: message.src,
                         };
                     }
                 } catch (e) {
