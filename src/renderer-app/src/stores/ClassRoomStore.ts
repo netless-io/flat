@@ -389,7 +389,7 @@ export class ClassRoomStore {
         this.updateHistory();
 
         channel.on("MemberJoined", async userUUID => {
-            (await this.createUsers([userUUID])).forEach(this.sortOneUser, this);
+            (await this.createUsers([userUUID])).forEach(this.sortOneUser);
         });
         channel.on("MemberLeft", userUUID => {
             for (const { group } of this.joinerGroups) {
@@ -710,7 +710,7 @@ export class ClassRoomStore {
      * Sort users into different groups.
      * @param editUser Update a user state. Return `false` to stop traversing.
      */
-    private sortUsers(editUser: (user: User) => boolean | void): void {
+    private sortUsers = (editUser: (user: User) => boolean | void): void => {
         const editUserAction = action("editUser", editUser);
         const unSortedUsers: User[] = [];
 
@@ -742,16 +742,16 @@ export class ClassRoomStore {
 
         // Ssort each unsorted users into different group
         unSortedUsers.forEach(this.sortOneUser);
-    }
+    };
 
-    private resetUsers(users: User[]): void {
+    private resetUsers = (users: User[]): void => {
         this.otherJoiners.clear();
         this.speakingJoiners.clear();
         this.handRaisingJoiners.clear();
-        users.forEach(this.sortOneUser, this);
-    }
+        users.forEach(this.sortOneUser);
+    };
 
-    private sortOneUser(user: User): void {
+    private sortOneUser = (user: User): void => {
         if (user.userUUID === this.userUUID) {
             this.currentUser = user;
         }
@@ -765,7 +765,7 @@ export class ClassRoomStore {
         } else {
             this.otherJoiners.push(user);
         }
-    }
+    };
 
     /**
      * There are states (e.g. user camera and mic states) that are not stored in server.
