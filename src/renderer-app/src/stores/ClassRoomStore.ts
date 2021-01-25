@@ -480,7 +480,7 @@ export class ClassRoomStore {
     private addMessage = (
         type: RTMessageType.ChannelMessage | RTMessageType.Notice | RTMessageType.BanText,
         value: string | boolean,
-        senderId: string,
+        senderID: string,
     ): void => {
         const timestamp = Date.now();
         let insertPoint = 0;
@@ -495,7 +495,7 @@ export class ClassRoomStore {
             uuid: uuidv4(),
             timestamp,
             value,
-            userId: senderId,
+            userUUID: senderID,
         });
     };
 

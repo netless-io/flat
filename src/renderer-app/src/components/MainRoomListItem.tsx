@@ -2,7 +2,7 @@ import { Button, Dropdown, Menu } from "antd";
 import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import React, { PureComponent } from "react";
-import { cancelOrdinaryRoom, cancelPeriodicRoom, joinRoom } from "../apiMiddleware/flatServer";
+import { cancelOrdinaryRoom, cancelPeriodicRoom } from "../apiMiddleware/flatServer";
 import { Identity } from "../utils/localStorage/room";
 import { Link } from "react-router-dom";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";

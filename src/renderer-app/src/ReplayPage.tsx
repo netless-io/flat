@@ -9,7 +9,6 @@ import { SmartPlayer } from "./apiMiddleware/SmartPlayer";
 import { RealtimePanel } from "./components/RealtimePanel";
 import { ChatPanelReplay } from "./components/ChatPanelReplay";
 import ExitButtonPlayer from "./components/ExitButtonPlayer";
-import { Identity } from "./utils/localStorage/room";
 import { globals } from "./utils/globals";
 
 import video_play from "./assets/image/video-play.svg";
@@ -96,9 +95,9 @@ export default class ReplayPage extends React.Component<ReplayPageProps, ReplayP
         try {
             await this.smartPlayer.load({
                 roomUUID,
+                isCreator: globalStore.userUUID === ownerUUID,
                 whiteboardUUID: globals.whiteboard.uuid,
                 whiteboardRoomToken: globals.whiteboard.token,
-                identity: globalStore.userUUID === ownerUUID ? Identity.creator : Identity.joiner,
                 whiteboardEl: this.whiteboardRef.current!,
                 videoEl: this.videoRef.current!,
             });

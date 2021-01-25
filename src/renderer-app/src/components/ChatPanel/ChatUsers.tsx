@@ -12,7 +12,7 @@ export interface ChatUsersProps
     isCreator: boolean;
     speakingJoiners: User[];
     handRaisingJoiners: User[];
-    creator?: User | null;
+    creator: User | null;
     otherJoiners: User[];
     onCancelAllHandRaising: () => void;
 }
