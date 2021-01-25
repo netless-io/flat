@@ -4,6 +4,8 @@ import { Radio, Checkbox, Button } from "antd";
 import { useHistory } from "react-router";
 import { observer } from "mobx-react-lite";
 import { RadioChangeEvent } from "antd/lib/radio";
+import { runtime } from "../../utils/runtime";
+import { ipcAsyncByMain } from "../../utils/ipc";
 
 enum NoticeInterval {
     FiveMinutes,
@@ -18,6 +20,7 @@ enum SelectLanguage {
 
 export const NormalSetting = observer(function NormalSetting() {
     const [scheduleNotice, setScheduleNotice] = useState(false);
+    const [openAtLogin, setOpenAtLogin] = useState(runtime.isOpenAtLogin);
     const history = useHistory();
 
     const toggleScheduleNotice = (): void => {
@@ -27,6 +30,13 @@ export const NormalSetting = observer(function NormalSetting() {
     const updateNotice = (e: RadioChangeEvent): void => {
         // TODO: need handle
         console.log(e.target.value);
+    };
+
+    const toggleOpenAtLogin = (): void => {
+        setOpenAtLogin(openAtLogin);
+        ipcAsyncByMain("open-at-login", {
+            isOpenAtLogin: openAtLogin,
+        });
     };
 
     const quitAccount = (): void => {
@@ -41,7 +51,9 @@ export const NormalSetting = observer(function NormalSetting() {
             </div>
             <div className="inner-container">
                 <span>常规设置</span>
-                <Checkbox>开机自动运行</Checkbox>
+                <Checkbox onClick={toggleOpenAtLogin} defaultChecked={openAtLogin}>
+                    开机自动运行
+                </Checkbox>
                 <div className="book-notice">
                     <Checkbox onClick={toggleScheduleNotice}>开启预订通知</Checkbox>
                     <Radio.Group

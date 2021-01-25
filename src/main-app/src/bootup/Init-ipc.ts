@@ -1,4 +1,4 @@
-import { ipcMain } from "electron";
+import { ipcMain, app } from "electron";
 import { ipc } from "types-pkg";
 
 export default (context: Context) => {
@@ -16,6 +16,12 @@ export default (context: Context) => {
                 if (args.autoCenter) {
                     mainWin.center();
                 }
+            },
+            "open-at-login": args => {
+                app.setLoginItemSettings({
+                    openAtLogin: args.isOpenAtLogin,
+                    openAsHidden: false,
+                });
             },
         };
 
