@@ -146,7 +146,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             classRoomStore.cloudRecording.updateLayout({
                 mixedVideoLayout: 3,
                 backgroundColor: "#F3F6F9",
-                layoutConfig: updateRecordLayout(activeUserCount),
+                layoutConfig: updateRecordLayout(activeUserCount.get()),
             });
         }
     });

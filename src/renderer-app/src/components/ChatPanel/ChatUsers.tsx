@@ -30,7 +30,7 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
         creator
             ? [...speakingJoiners, ...handRaisingJoiners, creator, ...otherJoiners]
             : [...speakingJoiners, ...handRaisingJoiners, ...otherJoiners],
-    );
+    ).get();
 
     const isShowCancelAllHandRaising = isCreator && handRaisingJoiners.length > 0;
 

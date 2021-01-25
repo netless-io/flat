@@ -83,7 +83,6 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
                 }
             }
         },
-        [messages],
     );
 
     const isFirstLoadRef = useRef(true);
