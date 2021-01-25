@@ -55,12 +55,16 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
 
         let isUmount = false;
 
-        onMessageSend(text).then(() => {
-            if (!isUmount) {
-                updateText("");
-                updateSending(false);
-            }
-        });
+        onMessageSend(text)
+            .catch(error => {
+                console.warn(error);
+            })
+            .then(() => {
+                if (!isUmount) {
+                    updateText("");
+                    updateSending(false);
+                }
+            });
 
         return () => {
             isUmount = true;
