@@ -1,15 +1,24 @@
 import "./UserScheduledPage.less";
 import React, { Component } from "react";
-import { Button, Checkbox, DatePicker, Input, Select, TimePicker, InputNumber } from "antd";
-// @TODO remove moment.js
-import moment from "moment";
+import { Button, Checkbox, Input, Select, InputNumber } from "antd";
+import { DatePicker, TimePicker } from "./components/antd-date-fns";
 import docs from "./assets/image/docs.svg";
 import trash from "./assets/image/trash.svg";
 import back from "./assets/image/back.svg";
 import add_icon from "./assets/image/add-icon.svg";
 import MainPageLayout from "./components/MainPageLayout";
 import { Link, RouteComponentProps } from "react-router-dom";
-import { isBefore, addMinutes, addWeeks, format, roundToNearestMinutes, addDays } from "date-fns";
+import {
+    isBefore,
+    addMinutes,
+    format,
+    roundToNearestMinutes,
+    addDays,
+    getDay,
+    startOfDay,
+    startOfWeek,
+    subDays,
+} from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { DocsType, RoomType, Week } from "./apiMiddleware/flatServer/constants";
 import { createOrdinaryRoom, createPeriodicRoom } from "./apiMiddleware/flatServer";
@@ -49,8 +58,7 @@ export default class UserScheduledPage extends Component<
     }
 
     public getInitialBeginWeek(): number {
-        const begin = this.getInitialBeginTime();
-        return moment(begin).weekday();
+        return getDay(this.getInitialBeginTime());
     }
 
     public getInitialEndTime(): number {
@@ -66,24 +74,24 @@ export default class UserScheduledPage extends Component<
         this.setState({ title });
     };
 
-    public onChangeBeginTime = (date: moment.Moment | null): void | null => {
+    public onChangeBeginTime = (date: Date | null): void | null => {
         if (date === null) {
             return null;
         }
-        const week = date.weekday();
+        const week = getDay(date);
         this.setState({ periodicWeeks: [week] });
         return date && this.setState({ beginTime: date.valueOf(), endTime: date.valueOf() });
     };
 
-    public onChangeEndTime = (date: moment.Moment | null): void | null => {
+    public onChangeEndTime = (date: Date | null): void | null => {
         if (date === null) {
             return null;
         }
-        return date && this.setState({ endTime: date.valueOf() });
+        return date && this.setState({ endTime: +date });
     };
 
-    public disabledDate = (beginTime: moment.Moment): boolean => {
-        return beginTime.isBefore(moment().startOf("day"));
+    public disabledDate = (beginTime: Date): boolean => {
+        return isBefore(beginTime, startOfDay(new Date()));
     };
 
     // TODO disabledTime
@@ -143,9 +151,9 @@ export default class UserScheduledPage extends Component<
                                         RoomType.BigClass,
                                     ].map(e => {
                                         return (
-                                            <option key={e} value={e}>
+                                            <Option key={e} value={e}>
                                                 {this.typeName(e)}
-                                            </option>
+                                            </Option>
                                         );
                                     })}
                                 </Select>
@@ -155,12 +163,13 @@ export default class UserScheduledPage extends Component<
                                 <DatePicker
                                     className="user-schedule-picker"
                                     disabledDate={this.disabledDate}
-                                    value={moment(this.state.beginTime)}
+                                    value={new Date(this.state.beginTime)}
                                     onChange={e => this.onChangeBeginTime(e)}
                                 />
                                 <TimePicker
                                     className="user-schedule-picker"
-                                    value={moment(this.state.beginTime)}
+                                    value={new Date(this.state.beginTime)}
+                                    format="HH:mm"
                                     onChange={e => this.onChangeBeginTime(e)}
                                 />
                             </div>
@@ -169,12 +178,13 @@ export default class UserScheduledPage extends Component<
                                 <DatePicker
                                     className="user-schedule-picker"
                                     disabledDate={this.disabledDate}
-                                    value={moment(this.state.endTime)}
+                                    value={new Date(this.state.endTime)}
                                     onChange={e => this.onChangeEndTime(e)}
                                 />
                                 <TimePicker
                                     className="user-schedule-picker"
-                                    value={moment(this.state.endTime)}
+                                    value={new Date(this.state.endTime)}
+                                    format="HH:mm"
                                     onChange={e => this.onChangeEndTime(e)}
                                 />
                             </div>
@@ -296,16 +306,8 @@ export default class UserScheduledPage extends Component<
 
     // @TODO use date-fns locale
     public weekName(week: Week): string {
-        const weeknameMap: Record<Week, string> = {
-            [Week.Sunday]: "周日",
-            [Week.Monday]: "周一",
-            [Week.Tuesday]: "周二",
-            [Week.Wednesday]: "周三",
-            [Week.Thursday]: "周四",
-            [Week.Friday]: "周五",
-            [Week.Saturday]: "周六",
-        };
-        return weeknameMap[week];
+        const t = addDays(startOfWeek(new Date()), week);
+        return format(t, "iii", { locale: zhCN });
     }
 
     public renderWeeks(weeks: Week[]): string {
@@ -321,9 +323,23 @@ export default class UserScheduledPage extends Component<
     }
 
     public periodicEndDate(): Date {
-        const { endTime, periodicEndType, periodicRate, periodicEndTime } = this.state;
+        const {
+            endTime,
+            periodicEndType,
+            periodicRate,
+            periodicEndTime,
+            periodicWeeks,
+        } = this.state;
         if (periodicEndType === "Rate") {
-            return addWeeks(new Date(endTime), periodicRate);
+            let times = 0;
+            let t = new Date(endTime);
+            while (times < periodicRate) {
+                if (periodicWeeks.includes(getDay(t))) {
+                    times++;
+                }
+                t = addDays(t, 1);
+            }
+            return subDays(t, 1);
         } else {
             return new Date(periodicEndTime);
         }
@@ -335,7 +351,7 @@ export default class UserScheduledPage extends Component<
 
     public onChangeWeeks = (e: Week[]): void => {
         const { beginTime } = this.state;
-        const week = moment(beginTime).weekday();
+        const week = getDay(beginTime);
         if (!e.includes(week)) {
             e.push(week);
         }
@@ -356,7 +372,7 @@ export default class UserScheduledPage extends Component<
         } else {
             let sum = 0;
             for (let t = beginTime; isBefore(t, periodicEndTime); t = Number(addDays(t, 1))) {
-                if (periodicWeeks.includes(new Date(t).getDay())) {
+                if (periodicWeeks.includes(getDay(t))) {
                     sum++;
                 }
             }
@@ -448,8 +464,8 @@ export default class UserScheduledPage extends Component<
                             className="user-schedule-picker"
                             format="YYYY-MM-DD"
                             allowClear={false}
-                            value={moment(endTime)}
-                            onChange={e => e && this.setState({ periodicEndTime: e.valueOf() })}
+                            value={new Date(endTime)}
+                            onChange={e => e && this.setState({ periodicEndTime: +e })}
                         />
                     )}
                 </div>
