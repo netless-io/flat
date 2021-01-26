@@ -1,6 +1,20 @@
 import React from "react";
 import { Select, Slider, Button } from "antd";
 import { Link } from "react-router-dom";
+import "./MicrophoneTesting.less";
+
+interface SpeakerVolumeProps {
+    percent: number;
+}
+
+const SpeakerVolume = ({ percent }: SpeakerVolumeProps): React.ReactElement => {
+    return (
+        <div className="speaker-audio-wrapper">
+            <div className="speaker-audio-volume" style={{ width: `${percent}%` }}></div>
+            <div className="speaker-audio-mask"></div>
+        </div>
+    );
+};
 
 export const MicrophoneTesting = (): React.ReactElement => {
     return (
@@ -15,6 +29,7 @@ export const MicrophoneTesting = (): React.ReactElement => {
                 </Select>
                 {/* TODO  MicrophoneTesting*/}
                 <p>试听声音</p>
+                <SpeakerVolume percent={30} />
                 <div className="speaker-audio-testing">
                     <p>音量</p>
                     <Slider defaultValue={30} />
