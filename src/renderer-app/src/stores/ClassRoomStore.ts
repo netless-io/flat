@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
@@ -25,6 +25,7 @@ import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { RoomItem, roomStore } from "./RoomStore";
 import { globalStore } from "./GlobalStore";
 import { NODE_ENV } from "../constants/Process";
+import { useAutoRun } from "../utils/mobx";
 
 export interface User {
     userUUID: string;
@@ -904,26 +905,17 @@ export function useClassRoomStore(
         () => new ClassRoomStore({ roomUUID, ownerUUID, recordingConfig }),
     );
 
-    const roomTitle = classRoomStore.roomInfo?.title;
-    const previousWindowTitleRef = useRef<string | null>(null);
-
-    useEffect(() => {
-        if (roomTitle !== void 0) {
-            if (previousWindowTitleRef.current === null) {
-                previousWindowTitleRef.current = roomTitle;
-            }
-            document.title = roomTitle;
+    useAutoRun(() => {
+        const title = classRoomStore.roomInfo?.title;
+        if (title) {
+            document.title = title;
         }
-    }, [roomTitle]);
+    });
 
     useEffect(() => {
         classRoomStore.init();
         return () => {
             classRoomStore.destroy();
-            // restore window title
-            if (previousWindowTitleRef.current !== null) {
-                document.title = previousWindowTitleRef.current;
-            }
         };
         // run only on component mount
         // eslint-disable-next-line react-hooks/exhaustive-deps

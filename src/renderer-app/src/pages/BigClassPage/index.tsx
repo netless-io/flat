@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useHistory, useParams } from "react-router";
+import { useParams } from "react-router";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import classNames from "classnames";
@@ -24,6 +24,7 @@ import { RecordingConfig, useClassRoomStore, User } from "../../stores/ClassRoom
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ipcAsyncByMain } from "../../utils/ipc";
 import { useAutoRun } from "../../utils/mobx";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 import "./BigClassPage.less";
 
@@ -67,12 +68,12 @@ export interface RouterParams {
 
 export type BigClassPageProps = {};
 
-const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
+export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
-    const history = useHistory();
     const params = useParams<RouterParams>();
+    const pushHistory = usePushHistory();
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = useWhiteboardStore(classRoomStore.isCreator);
@@ -92,7 +93,7 @@ const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
 
     useAutoRun(() => {
         if (classRoomStore.roomStatus === RoomStatus.Stopped) {
-            history.push("/user/");
+            pushHistory(RouteNameType.UserIndexPage, {});
         }
     });
 
