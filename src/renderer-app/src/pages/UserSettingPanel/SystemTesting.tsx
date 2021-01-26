@@ -43,7 +43,7 @@ export const SystemTesting = (): React.ReactElement => {
             rtcEngine.removeAllListeners();
             rtcEngine.release();
         };
-    }, [networkSituation]);
+    }, []);
 
     return (
         <div className="content-container">
