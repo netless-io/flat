@@ -1,9 +1,16 @@
 import { app, BrowserWindow } from "electron";
+import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
 
 export default async (context: Context) => {
     await new Promise(resolve => {
         app.on("ready", resolve);
     });
+
+    if (context.runtime.isDevelopment) {
+        installExtension([REACT_DEVELOPER_TOOLS]).catch(err =>
+            console.log("added extension  failed", err),
+        );
+    }
 
     const mainWin = new BrowserWindow({
         width: 375,
