@@ -16,7 +16,7 @@ export type IndexPageStates = {
     toggleLoginModel: boolean;
 };
 
-class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPageStates> {
+export class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPageStates> {
     public constructor(props: RouteComponentProps<{}>) {
         super(props);
         const name = localStorage.getItem("userName");

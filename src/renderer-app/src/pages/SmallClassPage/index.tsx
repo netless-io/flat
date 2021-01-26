@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { message } from "antd";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 import { observer } from "mobx-react-lite";
-import { useHistory, useParams } from "react-router";
+import { useParams } from "react-router";
 
 import InviteButton from "../../components/InviteButton";
 import { TopBar, TopBarDivider } from "../../components/TopBar";
@@ -26,6 +26,7 @@ import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { AgoraCloudRecordLayoutConfigItem } from "../../apiMiddleware/flatServer/agora";
 import { useWhiteboardStore } from "../../stores/WhiteboardStore";
 import { RecordingConfig, useClassRoomStore, User } from "../../stores/ClassRoomStore";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 import "./SmallClassPage.less";
 
@@ -62,8 +63,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
-    const history = useHistory();
     const params = useParams<RouterParams>();
+    const pushHistory = usePushHistory();
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = useWhiteboardStore(classRoomStore.isCreator);
@@ -93,7 +94,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     useAutoRun(() => {
         if (classRoomStore.roomStatus === RoomStatus.Stopped) {
-            history.push("/user/");
+            pushHistory(RouteNameType.UserIndexPage, {});
         }
     });
 
