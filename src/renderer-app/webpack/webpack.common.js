@@ -103,11 +103,29 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(png|jpe?g|gif|svg|mp4|webm|ogg|mp3|wav|flac|aac|woff|woff2|eot|ttf)$/,
+                test: /\.(png|jpe?g|gif|svg)$/,
                 loader: "url-loader",
                 options: {
                     limit: 1,
-                    name: "static/media/[name].[hash:7].[ext]",
+                    name: "static/assets/image/[name].[hash:7].[ext]",
+                    path: paths.appBuild,
+                },
+            },
+            {
+                test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
+                loader: "url-loader",
+                options: {
+                    limit: 1,
+                    name: "static/assets/media/[name].[ext]",
+                    path: paths.appBuild,
+                },
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf)$/,
+                loader: "url-loader",
+                options: {
+                    limit: 1,
+                    name: "static/assets/font/[name].[ext]",
                     path: paths.appBuild,
                 },
             },
