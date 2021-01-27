@@ -11,7 +11,10 @@ module.exports = merge(common, {
     plugins: [
         new NamedModulesPlugin(),
         new NoEmitOnErrorsPlugin(),
-        new ReactRefreshWebpackPlugin(),
+        new ReactRefreshWebpackPlugin({
+            // @TODO wait until MobX issues fixed
+            overlay: false,
+        }),
     ],
 
     output: {
