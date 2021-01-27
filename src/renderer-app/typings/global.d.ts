@@ -4,6 +4,8 @@ declare module "*.svg" {
     export default content;
 }
 
+declare module "*.mp3";
+
 declare namespace NodeJS {
     interface ProcessEnv {
         NODE_ENV: "development" | "production";

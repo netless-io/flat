@@ -4,7 +4,8 @@ import LoginPage from "./LoginPage";
 import BigClassPage from "./pages/BigClassPage";
 import ScheduleRoomDetailPage from "./pages/ScheduleRoomPage";
 import SmallClassPage from "./pages/SmallClassPage";
-import ReplayPage from "./ReplayPage";
+import OneToOnePage from "./pages/OneToOnePage";
+import ReplayPage from "./pages/ReplayPage";
 import RoomDetailPage from "./RoomDetailPage";
 import UserIndexPage from "./UserIndexPage";
 import UserInfoPage from "./UserInfoPage";
@@ -17,6 +18,7 @@ export enum RouteNameType {
     UserIndexPage = "UserIndexPage",
     SmallClassPage = "SmallClassPage",
     BigClassPage = "BigClassPage",
+    OneToOnePage = "OneToOnePage",
     RoomDetailPage = "RoomDetailPage",
     UserScheduledPage = "UserScheduledPage",
     ScheduleRoomDetailPage = "ScheduleRoomDetailPage",
@@ -45,6 +47,11 @@ export const routeConfig = {
         title: "Flat Small Class",
         path: "/classroom/SmallClass/:roomUUID/:ownerUUID/",
         component: SmallClassPage,
+    },
+    [RouteNameType.OneToOnePage]: {
+        title: "Flat Small Class",
+        path: "/classroom/OneToOne/:roomUUID/:ownerUUID/",
+        component: OneToOnePage,
     },
     [RouteNameType.BigClassPage]: {
         title: "Flat Big Class",
@@ -78,7 +85,7 @@ export const routeConfig = {
     },
     [RouteNameType.ReplayPage]: {
         title: "Flat Replay",
-        path: "/replay/:roomUUID/:ownerUUID/",
+        path: "/replay/:roomType/:roomUUID/:ownerUUID/",
         component: ReplayPage,
     },
 } as const;

@@ -8,6 +8,7 @@ export const runtime: runtimeInfo.Type = {
     isWin: false,
     staticPath: "",
     preloadPath: "",
+    assetsPath: "",
     appVersion: "",
     downloadsDirectory: "",
     isOpenAtLogin: false,
