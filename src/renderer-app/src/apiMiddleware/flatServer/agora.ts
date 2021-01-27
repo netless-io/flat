@@ -1,4 +1,3 @@
-import { RoomType } from "./constants";
 import { post } from "./utils";
 
 export interface GenerateRTCTokenPayload {
@@ -323,22 +322,4 @@ export function cloudRecordStop(payload: CloudRecordStopPayload): Promise<CloudR
         "room/record/agora/stopped",
         payload,
     );
-}
-
-export interface CloudRecordInfoPayload {
-    roomUUID: string;
-}
-
-export interface CloudRecordInfoResult {
-    title: string;
-    roomType: RoomType;
-    recordInfo: Array<{
-        beginTime: string;
-        endTime: string;
-        videoURL?: string;
-    }>;
-}
-
-export function cloudRecordInfo(roomUUID: string): Promise<CloudRecordInfoResult> {
-    return post<CloudRecordInfoPayload, CloudRecordInfoResult>("room/record/info", { roomUUID });
 }

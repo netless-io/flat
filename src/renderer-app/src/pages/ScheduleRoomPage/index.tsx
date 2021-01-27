@@ -27,15 +27,15 @@ export default class ScheduleRoomDetailPage extends React.Component<
         this.state = {
             periodic: {
                 ownerUUID: "",
-                endTime: new Date().toISOString(),
+                endTime: Date.now(),
                 rate: 0,
                 roomType: RoomType.OneToOne,
             },
             rooms: [],
             currentRoom: {
                 roomUUID: "",
-                beginTime: new Date().toISOString(),
-                endTime: new Date().toISOString(),
+                beginTime: Date.now(),
+                endTime: Date.now(),
                 roomStatus: RoomStatus.Idle,
             },
             sortedRooms: [],
@@ -95,7 +95,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
         return format(new Date(endTime), "yyyy/MM/dd iii", { locale: zhCN });
     };
 
-    public formatTime = (room: { beginTime: string; endTime: string }): string => {
+    public formatTime = (room: { beginTime: number; endTime: number }): string => {
         return (
             format(new Date(room.beginTime), "HH:mm") +
             "~" +
@@ -315,8 +315,8 @@ export default class ScheduleRoomDetailPage extends React.Component<
 
 type Room = {
     roomUUID: string;
-    beginTime: string;
-    endTime: string;
+    beginTime: number;
+    endTime: number;
     roomStatus: RoomStatus;
 };
 
@@ -339,7 +339,7 @@ type ScheduleRoomProps = {
 type ScheduleRoomDetailPageState = {
     periodic: {
         ownerUUID: string; // 创建者的 uuid
-        endTime: string;
+        endTime: number;
         rate: number | null; // 默认为 0（即 用户选择的是 endTime）
         roomType: RoomType;
     };

@@ -11,10 +11,6 @@ export type MainRoomHistoryProps = {
 };
 
 export class MainRoomHistory extends React.Component<MainRoomHistoryProps> {
-    private timeToNumber = (time: string): number => {
-        return Number(new Date(time));
-    };
-
     public renderRooms(): JSX.Element | JSX.Element[] {
         const { rooms } = this.props;
         if (rooms.length === 0) {
@@ -36,8 +32,8 @@ export class MainRoomHistory extends React.Component<MainRoomHistoryProps> {
                     key={room.roomUUID}
                     showDate={showDate}
                     title={room.title}
-                    beginTime={this.timeToNumber(room.beginTime)!}
-                    endTime={this.timeToNumber(room.endTime)}
+                    beginTime={room.beginTime}
+                    endTime={room.endTime}
                     periodicUUID={room.periodicUUID}
                     roomUUID={room.roomUUID}
                     historyPush={this.props.historyPush}
