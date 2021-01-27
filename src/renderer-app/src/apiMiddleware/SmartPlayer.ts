@@ -287,7 +287,6 @@ export class SmartPlayer extends EventEmitter {
     }
 
     public destroy(): void {
-        this.removeAllListeners();
         this.whiteWebSdk = undefined;
         if (this._isPlaying) {
             this.whiteboardPlayer?.stop();

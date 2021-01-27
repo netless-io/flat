@@ -153,6 +153,7 @@ export class ClassRoomReplayStore {
 
     destroy = (): void => {
         this.smartPlayer.destroy();
+        this.smartPlayer.removeAllListeners();
         this.rtm.destroy();
         this.smartPlayer.whiteboardPlayer?.callbacks.off(
             "onProgressTimeChanged",
