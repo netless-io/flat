@@ -80,7 +80,7 @@ export const routeConfig = {
     },
     [RouteNameType.UserSettingPage]: {
         title: "Flat Setting",
-        path: "/setting/",
+        path: "/setting/:settingType/",
         component: UserSettingPage,
     },
     [RouteNameType.ReplayPage]: {
