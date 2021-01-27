@@ -73,7 +73,6 @@ export class ClassRoomReplayStore {
         this.smartPlayer.on(SmartPlayerEventType.Ready, () => {
             this.updateReadyState(true);
             this.updatePlayingState();
-            console.log("########## ready");
         });
         this.smartPlayer.on(SmartPlayerEventType.Play, this.updatePlayingState);
         this.smartPlayer.on(SmartPlayerEventType.Pause, this.updatePlayingState);

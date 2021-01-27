@@ -176,6 +176,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     function handleMouseMove(evt: React.MouseEvent<HTMLDivElement>): void {
         const { lastMouseX, lastMouseY } = lastMouseRef.current;
         lastMouseRef.current = { lastMouseX: evt.clientX, lastMouseY: evt.clientY };
+        // ignore movement within a few pixels
         if (Math.abs(evt.clientX - lastMouseX) < 2 || Math.abs(evt.clientY - lastMouseY) < 2) {
             return;
         }
