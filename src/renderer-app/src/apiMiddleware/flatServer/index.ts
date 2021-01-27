@@ -86,6 +86,8 @@ export interface FlatServerRoom {
     periodicUUID: string | null;
     /** 房间所有者的 uuid */
     ownerUUID: string;
+    /** 房间类型  */
+    roomType: RoomType;
     /** 房间所有者的名称 */
     ownerUserName: string;
     /** 房间标题 */

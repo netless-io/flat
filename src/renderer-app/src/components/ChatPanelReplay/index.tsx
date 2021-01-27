@@ -1,146 +1,29 @@
 import React from "react";
 import { Tabs } from "antd";
-import { Player } from "white-web-sdk";
-import dateAdd from "date-fns/add";
-import { Rtm, RTMessage, RTMessageType } from "../../apiMiddleware/Rtm";
+import { observer } from "mobx-react-lite";
 import { ChatMessageItem } from "../ChatPanel/ChatMessage";
 import { ChatMessagesReplay } from "./ChatMessagesReplay";
 
 import "../ChatPanel/ChatPanel.less";
 
 export interface ChatPanelReplayProps {
-    userId: string;
-    channelID: string;
-    player: Player;
-}
-
-export interface ChatPanelReplayState {
+    userUUID: string;
     messages: ChatMessageItem[];
-    renderedMessages: ChatMessageItem[];
 }
 
-export class ChatPanelReplay extends React.Component<ChatPanelReplayProps, ChatPanelReplayState> {
-    private rtm = new Rtm();
-    private isLoadingHistory = false;
-    /** The timestamp of the newest message on remote */
-    private remoteNewestTimestamp = Infinity;
-    /** Player unix time */
-    private currentPlayTime = -1;
-    /** The timestamp when seeking the first chunk of the current messages */
-    private oldestSeekTime = -1;
-
-    state: ChatPanelReplayState = {
-        messages: [],
-        renderedMessages: [],
-    };
-
-    async componentDidMount(): Promise<void> {
-        const { userId, channelID, player } = this.props;
-        await this.rtm.init(userId, channelID);
-        player.callbacks.on("onProgressTimeChanged", this.playerOnProgressTimeChanged);
-    }
-
-    componentWillUnmount(): void {
-        this.rtm.destroy();
-        this.props.player.callbacks.off("onProgressTimeChanged", this.playerOnProgressTimeChanged);
-    }
-
-    render(): JSX.Element {
-        return (
-            <div className="chat-panel">
-                <Tabs defaultActiveKey="messages" tabBarGutter={0}>
-                    <Tabs.TabPane tab="消息列表" key="messages">
-                        <ChatMessagesReplay
-                            userUUID={this.props.userId}
-                            messages={this.state.renderedMessages}
-                        />
-                    </Tabs.TabPane>
-                </Tabs>
-            </div>
-        );
-    }
-
-    private playerOnProgressTimeChanged = (offset: number): void => {
-        // always keep the latest current time
-        this.currentPlayTime = this.props.player.beginTimestamp + offset;
-        const { messages, renderedMessages } = this.state;
-        this.syncMessages(messages, renderedMessages);
-    };
-
-    private syncMessages = async (
-        messages: ChatMessageItem[],
-        renderedMessages: ChatMessageItem[],
-    ): Promise<void> => {
-        if (this.isLoadingHistory) {
-            return;
-        }
-
-        if (messages.length <= 0) {
-            // cache the timestamp from this
-            const newestTimestamp = this.currentPlayTime;
-            const newMessages = await this.getHistory(newestTimestamp - 1);
-            if (newMessages.length > 0) {
-                this.oldestSeekTime = newestTimestamp;
-                return this.syncMessages(newMessages, renderedMessages);
-            }
-            return;
-        }
-
-        if (this.currentPlayTime < this.oldestSeekTime) {
-            // user seeked backward
-            // start over
-            return this.syncMessages([], []);
-        }
-
-        if (this.currentPlayTime < renderedMessages[renderedMessages.length - 1]?.timestamp) {
-            // user seeked backward but still within total loaded messages range.
-            // reset rendered messages
-            return this.syncMessages(messages, []);
-        }
-
-        let start = renderedMessages.length;
-        while (start < messages.length && this.currentPlayTime >= messages[start].timestamp) {
-            start += 1;
-        }
-        if (start === renderedMessages.length) {
-            // no new messages
-            this.setState({ messages, renderedMessages });
-            return;
-        }
-        if (start >= messages.length) {
-            // more messages need to be loaded
-            const newMessages = await this.getHistory(messages[messages.length - 1].timestamp);
-            if (newMessages.length > 0) {
-                return this.syncMessages([...messages, ...newMessages], renderedMessages);
-            }
-        }
-        this.setState({ messages, renderedMessages: messages.slice(0, start) });
-    };
-
-    private getHistory = async (newestTimestamp: number): Promise<ChatMessageItem[]> => {
-        if (newestTimestamp >= this.remoteNewestTimestamp) {
-            return [];
-        }
-
-        this.isLoadingHistory = true;
-        try {
-            const messages = await this.rtm.fetchTextHistory(
-                newestTimestamp + 1,
-                dateAdd(newestTimestamp, { years: 1 }).valueOf(),
-            );
-            this.isLoadingHistory = false;
-            if (messages.length <= 0) {
-                this.remoteNewestTimestamp = newestTimestamp;
-            }
-            return messages.filter(
-                (message): message is RTMessage => message.type === RTMessageType.ChannelMessage,
-            );
-        } catch (e) {
-            this.isLoadingHistory = false;
-            console.warn(e);
-            return [];
-        }
-    };
-}
+export const ChatPanelReplay = observer<ChatPanelReplayProps>(function ChatPanelReplay({
+    userUUID,
+    messages,
+}) {
+    return (
+        <div className="chat-panel">
+            <Tabs defaultActiveKey="messages" tabBarGutter={0}>
+                <Tabs.TabPane tab="消息列表" key="messages">
+                    <ChatMessagesReplay userUUID={userUUID} messages={messages} />
+                </Tabs.TabPane>
+            </Tabs>
+        </div>
+    );
+});
 
 export default ChatPanelReplay;

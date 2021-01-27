@@ -216,11 +216,11 @@ export class ClassRoomStore {
         let messages: RTMessage[] = [];
 
         try {
-            const oldestTimestap =
+            const oldestTimestamp =
                 this.messages.length > 0 ? this.messages[0].timestamp : Date.now();
             messages = await this.rtm.fetchTextHistory(
-                dateSub(oldestTimestap, { years: 1 }).valueOf(),
-                oldestTimestap - 1,
+                dateSub(oldestTimestamp, { years: 1 }).valueOf(),
+                oldestTimestamp - 1,
             );
         } catch (e) {
             console.warn(e);
@@ -276,7 +276,7 @@ export class ClassRoomStore {
         }
     };
 
-    acceptRaisehand = (userUUID: string): void => {
+    acceptRaiseHand = (userUUID: string): void => {
         if (this.isCreator) {
             this.sortUsers(user => {
                 if (userUUID === user.userUUID) {

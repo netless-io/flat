@@ -1,35 +1,19 @@
 import { Button, Dropdown, Menu } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
-import { cancelHistoryRoom } from "../apiMiddleware/flatServer";
-import { getUserUuid } from "../utils/localStorage/accounts";
-import { Identity } from "../utils/localStorage/room";
+import { cancelHistoryRoom, FlatServerRoom } from "../apiMiddleware/flatServer";
 import RoomListDate from "./RoomListPanel/RoomListDate";
 import RoomListDuration from "./RoomListPanel/RoomListDuration";
 
 export type MainRoomListItemProps = {
+    room: FlatServerRoom;
     showDate: boolean;
-    /** 标题 */
-    title: string;
-    /** 开始时间 (UTC 时间戳) */
-    beginTime: number;
-    /** 结束时间 (UTC 时间戳) */
-    endTime: number;
-    /** 周期 uuid */
-    periodicUUID: string | null;
-    /** 房间 uuid */
-    roomUUID: string;
-    /** 发起者 userUUID */
-    userUUID: string;
-    /** 是否存在录制(只有历史记录才会有) */
-    hasRecord?: boolean;
-
     historyPush: (path: string) => void;
 };
 
 export default class MainRoomHistoryItem extends React.PureComponent<MainRoomListItemProps> {
     public renderMenu = (): JSX.Element => {
-        const { roomUUID, periodicUUID, userUUID } = this.props;
+        const { roomUUID, periodicUUID, ownerUUID } = this.props.room;
         return (
             <Menu>
                 <Menu.Item>
@@ -39,7 +23,7 @@ export default class MainRoomHistoryItem extends React.PureComponent<MainRoomLis
                             state: {
                                 roomUUID,
                                 periodicUUID,
-                                userUUID,
+                                userUUID: ownerUUID,
                             },
                         }}
                     >
@@ -52,24 +36,19 @@ export default class MainRoomHistoryItem extends React.PureComponent<MainRoomLis
     };
 
     public delHistoryRoom = (): void => {
-        const { roomUUID } = this.props;
+        const { roomUUID } = this.props.room;
         cancelHistoryRoom(roomUUID);
     };
 
-    public getIdentity = (): Identity => {
-        return getUserUuid() === this.props.userUUID ? Identity.creator : Identity.joiner;
-    };
-
     private gotoReplay = (): void => {
-        const { roomUUID } = this.props;
-        const identity = this.getIdentity();
-        const url = `/replay/${identity}/${roomUUID}/${getUserUuid()}/`;
+        const { roomUUID, ownerUUID, roomType } = this.props.room;
+        const url = `/replay/${roomType}/${roomUUID}/${ownerUUID}/`;
         this.props.historyPush(url);
     };
 
     render(): JSX.Element {
-        const { beginTime, endTime, title, hasRecord } = this.props;
-      
+        const { beginTime, endTime, title, hasRecord } = this.props.room;
+
         return (
             <div className="room-list-cell-item">
                 {this.props.showDate && (
