@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps, useParams } from "react-router";
 import PlayerController from "@netless/player-controller";
 import LoadingPage from "../../LoadingPage";
