@@ -1,22 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./CameraTesting.less";
-import { Select, Button } from "antd";
+import { Button } from "antd";
 import { Link } from "react-router-dom";
 import type AgoraSdk from "agora-electron-sdk";
 import { AGORA } from "../../constants/Process";
+import { Device } from "../../types/Device";
+import { DeviceSelect } from "../../components/DeviceSelect";
 
 export const CameraTesting = (): React.ReactElement => {
     const [rtcEngine] = useState<AgoraSdk>(() => new window.AgoraRtcEngine());
-    const [cameraDevices, setCameraDevices] = useState<Device[]>([]);
-    const [currentCamera, setCurrentCamera] = useState<string | null>(null);
+    const [devices, setDevices] = useState<Device[]>([]);
+    const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
     const cameraStream = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         rtcEngine.initialize(AGORA.APP_ID);
-        setCameraDevices(rtcEngine.getVideoDevices() as Device[]);
+        setDevices(rtcEngine.getVideoDevices() as Device[]);
 
         rtcEngine.on("videoDeviceStateChanged", () => {
-            setCameraDevices(rtcEngine.getVideoDevices() as Device[]);
+            setDevices(rtcEngine.getVideoDevices() as Device[]);
         });
 
         return () => {
@@ -26,14 +28,14 @@ export const CameraTesting = (): React.ReactElement => {
     }, [rtcEngine]);
 
     useEffect(() => {
-        if (cameraDevices.length !== 0) {
-            setCurrentCamera(cameraDevices[0].deviceid);
+        if (devices.length !== 0) {
+            setCurrentDeviceID(devices[0].deviceid);
         }
-    }, [cameraDevices]);
+    }, [devices]);
 
     useEffect(() => {
-        if (currentCamera && cameraStream.current) {
-            rtcEngine.setVideoDevice(currentCamera);
+        if (currentDeviceID && cameraStream.current) {
+            rtcEngine.setVideoDevice(currentDeviceID);
             // @ts-ignore agora type error
             rtcEngine.setVideoEncoderConfiguration({
                 width: 320,
@@ -48,26 +50,7 @@ export const CameraTesting = (): React.ReactElement => {
             rtcEngine.disableVideo();
             rtcEngine.stopPreview();
         };
-    }, [currentCamera, cameraStream, rtcEngine]);
-
-    const deviceSelect = (): React.ReactElement => {
-        if (currentCamera === null) {
-            return <></>;
-        }
-
-        return (
-            <Select defaultValue={currentCamera} onChange={setCurrentCamera}>
-                {cameraDevices.map(camera => {
-                    return (
-                        <Select.Option value={camera.deviceid} key={camera.deviceid}>
-                            {camera.devicename}
-                        </Select.Option>
-                    );
-                })}
-                ;
-            </Select>
-        );
-    };
+    }, [currentDeviceID, cameraStream, rtcEngine]);
 
     return (
         <div className="content-container">
@@ -76,7 +59,11 @@ export const CameraTesting = (): React.ReactElement => {
             </div>
             <div className="camera-container">
                 <p>摄像头</p>
-                {deviceSelect()}
+                <DeviceSelect
+                    devices={devices}
+                    currentDeviceID={currentDeviceID}
+                    onChange={setCurrentDeviceID}
+                />
                 <div className="camera-info" ref={cameraStream} />
                 <div className="testing-btn">
                     <Button>不可以看到</Button>
@@ -88,8 +75,3 @@ export const CameraTesting = (): React.ReactElement => {
         </div>
     );
 };
-
-interface Device {
-    devicename: string;
-    deviceid: string;
-}

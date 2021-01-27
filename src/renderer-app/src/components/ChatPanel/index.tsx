@@ -23,13 +23,13 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                 // only one speaker is allowed
                 return;
             }
-            classRoomStore.acceptRaisehand(userUUID);
+            classRoomStore.acceptRaiseHand(userUUID);
         },
         // exhaustive-deps is not compatible with mobx
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             classRoomStore.speakingJoiners.length,
-            classRoomStore.acceptRaisehand,
+            classRoomStore.acceptRaiseHand,
             allowMultipleSpeakers,
         ],
     );

@@ -1,3 +1,4 @@
+import { EventEmitter } from "events";
 import { CursorTool } from "@netless/cursor-tool";
 import polly from "polly-js";
 import {
@@ -12,12 +13,38 @@ import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netl
 import { videoPlugin } from "@netless/white-video-plugin";
 import { audioPlugin } from "@netless/white-audio-plugin";
 import { NETLESS, NODE_ENV } from "../constants/Process";
-import { cloudRecordInfo } from "./flatServer/agora";
+
+export enum SmartPlayerEventType {
+    Ready = "Ready",
+    Play = "Play",
+    Pause = "Pause",
+    Ended = "Ended",
+    Error = "Error",
+}
+
+export type SmartPlayerEvents = {
+    [SmartPlayerEventType.Ready]: void;
+    [SmartPlayerEventType.Play]: void;
+    [SmartPlayerEventType.Pause]: void;
+    [SmartPlayerEventType.Ended]: void;
+    [SmartPlayerEventType.Error]: Error;
+};
+
+export declare interface SmartPlayer {
+    on<U extends keyof SmartPlayerEvents>(
+        event: U,
+        listener: (value: SmartPlayerEvents[U]) => void,
+    ): this;
+    once<U extends keyof SmartPlayerEvents>(
+        event: U,
+        listener: (value: SmartPlayerEvents[U]) => void,
+    ): this;
+}
 
 /**
  * 智能播放画板与音视频，同时适应有无视频的情况
  */
-export class SmartPlayer {
+export class SmartPlayer extends EventEmitter {
     public whiteboardPlayer: Player | undefined;
     public combinePlayer: CombinePlayer | undefined;
     public whiteWebSdk: WhiteWebSdk | undefined;
@@ -35,12 +62,12 @@ export class SmartPlayer {
     }
 
     public async load({
-        roomUUID,
         isCreator,
         whiteboardUUID,
         whiteboardRoomToken,
         whiteboardEl,
         videoEl,
+        recording,
     }: {
         roomUUID: string;
         isCreator: boolean;
@@ -48,15 +75,16 @@ export class SmartPlayer {
         whiteboardRoomToken: string;
         whiteboardEl: HTMLDivElement;
         videoEl: HTMLVideoElement;
+        recording?: {
+            beginTime: number;
+            endTime: number;
+            videoURL?: string;
+        };
     }): Promise<void> {
         this._isPlaying = false;
         this._isReady = false;
         this._isEnded = false;
         this.destroy();
-
-        const { recordInfo } = await cloudRecordInfo(roomUUID);
-        // @TODO 支持多段视频
-        const recording = recordInfo[recordInfo.length - 1];
 
         const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
         const contextIdentity = isCreator ? "host" : "";
@@ -76,8 +104,8 @@ export class SmartPlayer {
         };
 
         if (recording) {
-            rangeQuery.beginTimestamp = Number(new Date(recording.beginTime));
-            rangeQuery.duration = Number(new Date(recording.endTime)) - rangeQuery.beginTimestamp;
+            rangeQuery.beginTimestamp = recording.beginTime;
+            rangeQuery.duration = recording.endTime - rangeQuery.beginTimestamp;
         }
 
         await polly()
@@ -100,9 +128,8 @@ export class SmartPlayer {
         };
 
         if (recording) {
-            replayRoomParams.beginTimestamp = Number(new Date(recording.beginTime));
-            replayRoomParams.duration =
-                Number(new Date(recording.endTime)) - replayRoomParams.beginTimestamp;
+            replayRoomParams.beginTimestamp = recording.beginTime;
+            replayRoomParams.duration = recording.endTime - replayRoomParams.beginTimestamp;
         }
 
         const player = await whiteWebSdk.replayRoom(replayRoomParams, {
@@ -118,7 +145,7 @@ export class SmartPlayer {
                     case PlayerPhase.Playing: {
                         this._isPlaying = true;
                         this._isEnded = false;
-                        this.onPlay();
+                        this.emit(SmartPlayerEventType.Play);
                         if (NODE_ENV === "development") {
                             console.log("SmartPlayer: start playing");
                         }
@@ -126,7 +153,7 @@ export class SmartPlayer {
                     }
                     case PlayerPhase.Pause: {
                         this._isPlaying = false;
-                        this.onPause();
+                        this.emit(SmartPlayerEventType.Pause);
                         if (NODE_ENV === "development") {
                             console.log("SmartPlayer: paused");
                         }
@@ -136,7 +163,7 @@ export class SmartPlayer {
                     case PlayerPhase.Stopped: {
                         this._isPlaying = false;
                         this._isEnded = true;
-                        this.onEnded();
+                        this.emit(SmartPlayerEventType.Ended);
                         if (NODE_ENV === "development") {
                             console.log("SmartPlayer: ended");
                         }
@@ -148,7 +175,7 @@ export class SmartPlayer {
                 }
             },
             onStoppedWithError: (error: Error) => {
-                this.onError(error);
+                this.emit(SmartPlayerEventType.Error, error);
             },
         });
 
@@ -171,7 +198,7 @@ export class SmartPlayer {
                     case PublicCombinedStatus.Playing: {
                         this._isPlaying = true;
                         this._isEnded = false;
-                        this.onPlay();
+                        this.emit(SmartPlayerEventType.Play);
                         if (NODE_ENV === "development") {
                             console.log("SmartPlayer: start playing");
                         }
@@ -179,7 +206,7 @@ export class SmartPlayer {
                     }
                     case PublicCombinedStatus.Pause: {
                         this._isPlaying = false;
-                        this.onPause();
+                        this.emit(SmartPlayerEventType.Pause);
                         if (NODE_ENV === "development") {
                             console.log("SmartPlayer: paused");
                         }
@@ -188,7 +215,7 @@ export class SmartPlayer {
                     case PublicCombinedStatus.Ended: {
                         this._isPlaying = false;
                         this._isEnded = true;
-                        this.onEnded();
+                        this.emit(SmartPlayerEventType.Ended);
                         if (NODE_ENV === "development") {
                             console.log("SmartPlayer: ended");
                         }
@@ -204,7 +231,7 @@ export class SmartPlayer {
         }
 
         this._isReady = true;
-        this.onReady();
+        this.emit(SmartPlayerEventType.Ready);
         if (NODE_ENV === "development") {
             console.log("SmartPlayer: ready");
         }
@@ -260,6 +287,7 @@ export class SmartPlayer {
     }
 
     public destroy(): void {
+        this.removeAllListeners();
         this.whiteWebSdk = undefined;
         if (this._isPlaying) {
             this.whiteboardPlayer?.stop();
@@ -276,18 +304,6 @@ export class SmartPlayer {
             (window as any).player = null;
             (window as any).combinePlayer = null;
         }
-    }
-
-    public onReady(): void {}
-
-    public onPlay(): void {}
-
-    public onPause(): void {}
-
-    public onEnded(): void {}
-
-    public onError(error: Error): void {
-        console.error("SmartPlayer: error", error);
     }
 
     private _isPlaying: boolean = false;

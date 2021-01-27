@@ -24,7 +24,7 @@ import { RecordingConfig, useClassRoomStore, User } from "../../stores/ClassRoom
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ipcAsyncByMain } from "../../utils/ipc";
 import { useAutoRun } from "../../utils/mobx";
-import { RouteNameType, usePushHistory } from "../../utils/routes";
+import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 
 import "./BigClassPage.less";
 
@@ -61,18 +61,13 @@ const recordingConfig: RecordingConfig = Object.freeze({
     subscribeUidGroup: 0,
 });
 
-export interface RouterParams {
-    roomUUID: string;
-    ownerUUID: string;
-}
-
 export type BigClassPageProps = {};
 
 export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
-    const params = useParams<RouterParams>();
+    const params = useParams<RouteParams<RouteNameType.BigClassPage>>();
     const pushHistory = usePushHistory();
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
