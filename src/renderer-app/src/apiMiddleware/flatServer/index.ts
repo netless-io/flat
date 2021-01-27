@@ -90,9 +90,9 @@ export interface FlatServerRoom {
     ownerUserName: string;
     /** 房间标题 */
     title: string;
-    /** 房间开始时间(UTC时间戳，如: 2020-12-28T08:29:29.068Z) */
+    /** 房间开始时间 */
     beginTime: number;
-    /** 结束时间，有可能为空，因为立刻创建房间是没有结束时间的 */
+    /** 结束时间 */
     endTime: number;
     /** 房间状态 */
     roomStatus: RoomStatus;
@@ -191,8 +191,8 @@ export interface PeriodicSubRoomInfo {
 
 export interface PeriodicSubRoomInfoResult {
     roomInfo: PeriodicSubRoomInfo;
-    previousPeriodicRoomBeginTime: string; // 上一节课的开始时间
-    nextPeriodicRoomEndTime: string; // 下一节课的结束时间
+    previousPeriodicRoomBeginTime: number; // 上一节课的开始时间
+    nextPeriodicRoomEndTime: number; // 下一节课的结束时间
     count: number; // 当前周期性房间下一共有多少节课
     docs: RoomDoc[];
 }

@@ -42,9 +42,9 @@ export interface RoomItem {
     /** 结束时间 */
     endTime?: number;
     /** 上一节课的开始时间 */
-    previousPeriodicRoomBeginTime?: string;
+    previousPeriodicRoomBeginTime?: number;
     /** 下一节课的结束时间 */
-    nextPeriodicRoomEndTime?: string;
+    nextPeriodicRoomEndTime?: number;
     /** 当前周期性房间下一共有多少节课 */
     count?: number;
     /**课件 */
