@@ -15,6 +15,7 @@ import {
     PeriodicRoomInfoResult,
     periodicSubRoomInfo,
     PeriodicSubRoomInfoPayload,
+    recordInfo,
 } from "../apiMiddleware/flatServer";
 import { RoomDoc, RoomStatus, RoomType } from "../apiMiddleware/flatServer/constants";
 import { globalStore } from "./GlobalStore";
@@ -51,7 +52,7 @@ export interface RoomItem {
     /** 是否存在录制(只有历史记录才会有) */
     hasRecord?: boolean;
     /** 录制记录 */
-    cloudRecording?: Array<{
+    recordings?: Array<{
         beginTime: number;
         endTime: number;
         videoURL?: string;
@@ -107,7 +108,7 @@ export class RoomStore {
 
     async createPeriodicRoom(payload: CreatePeriodicRoomPayload): Promise<void> {
         await createPeriodicRoom(payload);
-        // need roomUUID and periodictUUID from server to cache the payload
+        // need roomUUID and periodicUUID from server to cache the payload
     }
 
     async joinRoom(roomUUID: string): Promise<JoinRoomResult> {
@@ -129,7 +130,7 @@ export class RoomStore {
         const roomUUIDs: string[] = [];
         for (const room of rooms) {
             roomUUIDs.push(room.roomUUID);
-            this.updateRoom(room.roomUUID, room.ownerUUID, convertStartEndTime(room));
+            this.updateRoom(room.roomUUID, room.ownerUUID, room);
         }
         return roomUUIDs;
     }
@@ -138,7 +139,7 @@ export class RoomStore {
         const { roomInfo, ...restInfo } = await ordinaryRoomInfo(roomUUID);
         this.updateRoom(roomUUID, roomInfo.ownerUUID, {
             ...restInfo,
-            ...convertStartEndTime(roomInfo),
+            ...roomInfo,
             roomUUID,
         });
     }
@@ -151,9 +152,33 @@ export class RoomStore {
         const { roomInfo, ...restInfo } = await periodicSubRoomInfo(payload);
         this.updateRoom(payload.roomUUID, roomInfo.ownerUUID, {
             ...restInfo,
-            ...convertStartEndTime(roomInfo),
+            ...roomInfo,
             roomUUID: payload.roomUUID,
             periodicUUID: payload.periodicUUID,
+        });
+    }
+
+    async syncRecordInfo(roomUUID: string): Promise<void> {
+        const roomInfo = await recordInfo(roomUUID);
+        const {
+            ownerUUID,
+            title,
+            roomType,
+            recordInfo: recordings,
+            whiteboardRoomToken,
+            whiteboardRoomUUID,
+            rtmToken,
+        } = roomInfo;
+        this.updateRoom(roomUUID, ownerUUID, {
+            title,
+            roomType,
+            recordings,
+            roomUUID,
+        });
+        globalStore.updateToken({
+            whiteboardRoomToken,
+            whiteboardRoomUUID,
+            rtmToken,
         });
     }
 
@@ -174,14 +199,14 @@ export class RoomStore {
     updatePeriodicRoom(periodicUUID: string, roomInfo: PeriodicRoomInfoResult): void {
         roomInfo.rooms.forEach(room => {
             this.updateRoom(room.roomUUID, roomInfo.periodic.ownerUUID, {
-                ...convertStartEndTime(room),
+                ...room,
                 roomType: roomInfo.periodic.roomType,
                 periodicUUID: periodicUUID,
             });
         });
         this.periodicRooms.set(periodicUUID, {
             periodicUUID,
-            periodic: convertStartEndTime(roomInfo.periodic),
+            periodic: roomInfo.periodic,
             rooms: roomInfo.rooms.map(room => room.roomUUID),
         });
     }
@@ -191,36 +216,4 @@ export const roomStore = new RoomStore();
 
 export function isPeriodicSubRoom(room: RoomItem): boolean {
     return Boolean(room.periodicUUID);
-}
-
-/**
- * convert UTC string time to unix number
- */
-function convertStartEndTime<O extends { beginTime: string; endTime: string }>(
-    rawRoomInfo: O,
-): Omit<O, "beginTime" | "endTime"> & { beginTime: number; endTime: number };
-function convertStartEndTime<O extends { endTime: string }>(
-    rawRoomInfo: O,
-): Omit<O, "endTime"> & { endTime: number };
-function convertStartEndTime<O extends { beginTime?: string; endTime?: string }>(
-    rawRoomInfo: O,
-): Omit<O, "beginTime" | "endTime"> & { beginTime?: number; endTime?: number };
-function convertStartEndTime<O extends { beginTime?: string; endTime?: string }>(
-    rawRoomInfo: O,
-): Omit<O, "beginTime" | "endTime"> & { beginTime?: number; endTime?: number } {
-    const { beginTime, endTime, ...restInfo } = rawRoomInfo;
-    const roomInfo: Omit<O, "beginTime" | "endTime"> & {
-        beginTime?: number;
-        endTime?: number;
-    } = restInfo;
-
-    if (Object.prototype.hasOwnProperty.call(roomInfo, "beginTime")) {
-        roomInfo.beginTime = beginTime ? new Date(beginTime).valueOf() : void 0;
-    }
-
-    if (Object.prototype.hasOwnProperty.call(roomInfo, "endTime")) {
-        roomInfo.endTime = endTime ? new Date(endTime).valueOf() : void 0;
-    }
-
-    return roomInfo;
 }

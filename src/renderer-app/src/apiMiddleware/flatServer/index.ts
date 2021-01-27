@@ -91,9 +91,9 @@ export interface FlatServerRoom {
     /** 房间标题 */
     title: string;
     /** 房间开始时间(UTC时间戳，如: 2020-12-28T08:29:29.068Z) */
-    beginTime: string;
+    beginTime: number;
     /** 结束时间，有可能为空，因为立刻创建房间是没有结束时间的 */
-    endTime: string;
+    endTime: number;
     /** 房间状态 */
     roomStatus: RoomStatus;
     /** 是否存在录制(只有历史记录才会有) */
@@ -151,8 +151,8 @@ export function usersInfo(payload: UsersInfoPayload): Promise<UsersInfoResult> {
 
 export interface OrdinaryRoomInfo {
     title: string;
-    beginTime: string;
-    endTime: string;
+    beginTime: number;
+    endTime: number;
     roomType: RoomType;
     roomStatus: RoomStatus;
     ownerUUID: string;
@@ -182,8 +182,8 @@ export interface PeriodicSubRoomInfoPayload {
 
 export interface PeriodicSubRoomInfo {
     title: string;
-    beginTime: string;
-    endTime: string;
+    beginTime: number;
+    endTime: number;
     roomType: RoomType;
     roomStatus: RoomStatus;
     ownerUUID: string;
@@ -213,14 +213,14 @@ export interface PeriodicRoomInfoPayload {
 export type PeriodicRoomInfoResult = {
     periodic: {
         ownerUUID: string; // 创建者的 uuid
-        endTime: string; // 有可能为空
+        endTime: number; // 有可能为空
         rate: number | null; // 默认为 0（即 用户选择的是 endTime）
         roomType: RoomType;
     };
     rooms: Array<{
         roomUUID: string;
-        beginTime: string;
-        endTime: string;
+        beginTime: number;
+        endTime: number;
         roomStatus: RoomStatus;
     }>;
 };
@@ -334,6 +334,28 @@ export function updateRecordEndTime(roomUUID: string): Promise<UpdateRecordEndTi
             roomUUID,
         },
     );
+}
+
+export interface RecordInfoPayload {
+    roomUUID: string;
+}
+
+export interface RecordInfoResult {
+    title: string;
+    ownerUUID: string;
+    roomType: RoomType;
+    whiteboardRoomToken: string;
+    whiteboardRoomUUID: string;
+    rtmToken: string;
+    recordInfo: Array<{
+        beginTime: number;
+        endTime: number;
+        videoURL?: string;
+    }>;
+}
+
+export function recordInfo(roomUUID: string): Promise<RecordInfoResult> {
+    return post<RecordInfoPayload, RecordInfoResult>("room/record/info", { roomUUID });
 }
 
 export interface LoginCheck {
