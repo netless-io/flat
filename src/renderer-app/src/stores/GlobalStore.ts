@@ -1,5 +1,4 @@
 import { makeAutoObservable, toJS, reaction } from "mobx";
-import { mergeConfig } from "./utils";
 
 export interface WechatInfo {
     avatar: string;
@@ -19,7 +18,17 @@ export class GlobalStore {
     rtmToken: string | null = null;
 
     constructor() {
-        mergeConfig(this, getLSGlobalStore());
+        const config = getLSGlobalStore();
+        if (config) {
+            const keys = (Object.keys(config) as unknown) as Array<keyof GlobalStore>;
+            for (const key of keys) {
+                if (typeof this[key] !== "function") {
+                    // @ts-ignore update config to store
+                    this[key] = config[key];
+                }
+            }
+        }
+
         makeAutoObservable(this);
         reaction(
             () => toJS(this),
@@ -36,12 +45,20 @@ export class GlobalStore {
     };
 
     updateToken = (
-        config: Pick<
-            GlobalStore,
-            "whiteboardRoomUUID" | "whiteboardRoomToken" | "rtcToken" | "rtmToken"
+        config: Partial<
+            Pick<
+                GlobalStore,
+                "whiteboardRoomUUID" | "whiteboardRoomToken" | "rtcToken" | "rtmToken"
+            >
         >,
     ): void => {
-        mergeConfig(this, config);
+        const keys = ["whiteboardRoomUUID", "whiteboardRoomToken", "rtcToken", "rtmToken"] as const;
+        for (const key of keys) {
+            const value = config[key];
+            if (value) {
+                this[key] = value;
+            }
+        }
     };
 }
 
