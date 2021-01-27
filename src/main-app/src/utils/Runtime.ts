@@ -7,6 +7,10 @@ const isDevelopment = process.env.NODE_ENV === "development";
 
 const isProduction = process.env.NODE_ENV === "production";
 
+const assetsPath = isProduction
+    ? `file://${path.resolve(__dirname, "..", "static", "render", "static", "assets")}`
+    : `file://${path.resolve(__dirname, "..", "..", "..", "renderer-app", "src", "assets")}`;
+
 const startURL = isProduction
     ? `file://${path.resolve(__dirname, "..", "static", "render", "index.html")}`
     : "http://localhost:3000";
@@ -41,6 +45,7 @@ const runtime: runtimeInfo.Type = {
     appVersion,
     downloadsDirectory,
     isOpenAtLogin,
+    assetsPath,
 };
 
 export default runtime;

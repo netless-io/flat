@@ -6,6 +6,7 @@ export type Type = {
     isWin: boolean;
     staticPath: string;
     preloadPath: string;
+    assetsPath: string;
     appVersion: string;
     downloadsDirectory: string;
     isOpenAtLogin: boolean;
