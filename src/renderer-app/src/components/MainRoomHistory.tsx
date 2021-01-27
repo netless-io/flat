@@ -30,15 +30,9 @@ export class MainRoomHistory extends React.Component<MainRoomHistoryProps> {
             return (
                 <MainRoomHistoryItem
                     key={room.roomUUID}
+                    room={room}
                     showDate={showDate}
-                    title={room.title}
-                    beginTime={room.beginTime}
-                    endTime={room.endTime}
-                    periodicUUID={room.periodicUUID}
-                    roomUUID={room.roomUUID}
                     historyPush={this.props.historyPush}
-                    userUUID={room.ownerUUID}
-                    hasRecord={room.hasRecord}
                 />
             );
         });
