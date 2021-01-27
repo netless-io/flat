@@ -8,7 +8,7 @@ const isDevelopment = process.env.NODE_ENV === "development";
 const isProduction = process.env.NODE_ENV === "production";
 
 const startURL = isProduction
-    ? `file://${__dirname}/../static/render/index.html`
+    ? `file://${path.resolve(__dirname, "..", "static", "render", "index.html")}`
     : "http://localhost:3000";
 
 const isMac = platform() === "darwin";
