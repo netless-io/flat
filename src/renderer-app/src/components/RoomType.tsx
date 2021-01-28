@@ -2,7 +2,7 @@ import { RoomType } from "../apiMiddleware/flatServer/constants";
 import React from "react";
 import { Select } from "antd";
 import { observer } from "mobx-react-lite";
-import { getTypeName } from "../utils/getTypeName";
+import { getRoomTypeName } from "../utils/getTypeName";
 
 export const RoomTypeSelect = observer<RoomTypeOptionProps>(function RoomTypeOption({
     value,
@@ -14,7 +14,7 @@ export const RoomTypeSelect = observer<RoomTypeOptionProps>(function RoomTypeOpt
             {[RoomType.OneToOne, RoomType.SmallClass, RoomType.BigClass].map(e => {
                 return (
                     <Select.Option key={e} value={e}>
-                        {getTypeName(e)}
+                        {getRoomTypeName(e)}
                     </Select.Option>
                 );
             })}

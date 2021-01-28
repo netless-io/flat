@@ -1,7 +1,7 @@
 import { RoomType } from "../apiMiddleware/flatServer/constants";
 import { PeriodicEndType } from "../constants/Periodic";
 
-export const getTypeName = (type: RoomType): string => {
+export const getRoomTypeName = (type: RoomType): string => {
     const typeNameMap: Record<RoomType, string> = {
         [RoomType.OneToOne]: "一对一",
         [RoomType.SmallClass]: "小班课",
