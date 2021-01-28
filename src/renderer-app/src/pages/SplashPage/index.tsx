@@ -1,10 +1,11 @@
 import React from "react";
 import { RouteComponentProps } from "react-router";
-import { getWechatInfo } from "./utils/localStorage/accounts";
-import logo from "./assets/image/logo.svg";
 import classNames from "classnames";
-import "./IndexPage.less";
-import { loginCheck } from "./apiMiddleware/flatServer";
+import { getWechatInfo } from "../../utils/localStorage/accounts";
+import { loginCheck } from "../../apiMiddleware/flatServer";
+
+import logo from "../../assets/image/logo.svg";
+import "./SplashPage.less";
 
 type IndexPageState = {
     status: string;
@@ -12,7 +13,7 @@ type IndexPageState = {
 
 type SetStateParamType = Parameters<React.PureComponent["setState"]>[0];
 
-export default class IndexPage extends React.PureComponent<RouteComponentProps, IndexPageState> {
+export default class SplashPage extends React.PureComponent<RouteComponentProps, IndexPageState> {
     public constructor(props: RouteComponentProps) {
         super(props);
         this.state = {
