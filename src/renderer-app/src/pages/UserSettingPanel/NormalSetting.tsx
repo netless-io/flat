@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./NormalSetting.less";
 import { Radio, Checkbox, Button } from "antd";
 import { useHistory } from "react-router";
 import { observer } from "mobx-react-lite";
-import { runtime } from "../../utils/runtime";
-import { ipcAsyncByMain } from "../../utils/ipc";
+import { ipcAsyncByMain, ipcSyncByMain } from "../../utils/ipc";
 
 // enum NoticeInterval {
 //     FiveMinutes,
@@ -19,7 +18,7 @@ enum SelectLanguage {
 
 export const NormalSetting = observer(function NormalSetting() {
     // const [scheduleNotice, setScheduleNotice] = useState(false);
-    const [openAtLogin, setOpenAtLogin] = useState(runtime.isOpenAtLogin);
+    const [openAtLogin, setOpenAtLogin] = useState(false);
     const history = useHistory();
 
     // const toggleScheduleNotice = (): void => {
@@ -31,10 +30,20 @@ export const NormalSetting = observer(function NormalSetting() {
     //     console.log(e.target.value);
     // };
 
+    useEffect(() => {
+        ipcSyncByMain("get-open-at-login")
+            .then(data => {
+                setOpenAtLogin(data);
+            })
+            .catch(err => {
+                console.error("ipc failed", err);
+            });
+    }, []);
+
     const toggleOpenAtLogin = (): void => {
-        setOpenAtLogin(openAtLogin);
-        ipcAsyncByMain("open-at-login", {
-            isOpenAtLogin: openAtLogin,
+        setOpenAtLogin(!openAtLogin);
+        ipcAsyncByMain("set-open-at-login", {
+            isOpenAtLogin: !openAtLogin,
         });
     };
 
@@ -50,7 +59,7 @@ export const NormalSetting = observer(function NormalSetting() {
             </div>
             <div className="inner-container">
                 <span>常规设置</span>
-                <Checkbox onClick={toggleOpenAtLogin} defaultChecked={openAtLogin}>
+                <Checkbox onClick={toggleOpenAtLogin} checked={openAtLogin}>
                     开机自动运行
                 </Checkbox>
                 {/*TODO: Do the next version*/}
