@@ -2,6 +2,7 @@ import { Button, Dropdown, Menu } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 import { cancelHistoryRoom, FlatServerRoom } from "../apiMiddleware/flatServer";
+import { generateRoutePath, RouteNameType } from "../utils/routes";
 import RoomListDate from "./RoomListPanel/RoomListDate";
 import RoomListDuration from "./RoomListPanel/RoomListDuration";
 
@@ -13,18 +14,16 @@ export type MainRoomListItemProps = {
 
 export default class MainRoomHistoryItem extends React.PureComponent<MainRoomListItemProps> {
     public renderMenu = (): JSX.Element => {
-        const { roomUUID, periodicUUID, ownerUUID } = this.props.room;
+        const { roomUUID, periodicUUID } = this.props.room;
         return (
             <Menu>
                 <Menu.Item>
                     <Link
                         to={{
-                            pathname: "/user/room/",
-                            state: {
+                            pathname: generateRoutePath(RouteNameType.RoomDetailPage, {
                                 roomUUID,
-                                periodicUUID,
-                                userUUID: ownerUUID,
-                            },
+                                periodicUUID: periodicUUID || void 0,
+                            }),
                         }}
                     >
                         房间详情

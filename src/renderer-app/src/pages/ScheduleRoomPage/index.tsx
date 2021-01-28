@@ -17,6 +17,7 @@ import { Button, Dropdown, Input, Menu, Modal, Table } from "antd";
 import { format, getDay } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import memoizeOne from "memoize-one";
+import { generateRoutePath, RouteNameType } from "../../utils/routes";
 
 export default class ScheduleRoomDetailPage extends React.Component<
     RouteComponentProps,
@@ -236,11 +237,10 @@ export default class ScheduleRoomDetailPage extends React.Component<
                 <Menu.Item>
                     <Link
                         to={{
-                            pathname: "/user/room/",
-                            state: {
-                                roomUUID: roomUUID,
-                                periodicUUID: periodicUUID,
-                            },
+                            pathname: generateRoutePath(RouteNameType.RoomDetailPage, {
+                                roomUUID,
+                                periodicUUID,
+                            }),
                         }}
                     >
                         房间详情
@@ -261,8 +261,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
     };
 
     public render(): JSX.Element {
-        const { periodicUUID, roomUUID, userUUID, title } = this.props.location
-            .state as ScheduleRoomProps;
+        const { periodicUUID, roomUUID, title } = this.props.location.state as ScheduleRoomProps;
         const { roomType, rate } = this.state.periodic;
         return (
             <MainPageLayout>
@@ -271,8 +270,10 @@ export default class ScheduleRoomDetailPage extends React.Component<
                         <div className="user-schedule-title">
                             <Link
                                 to={{
-                                    pathname: "/user/room/",
-                                    state: { periodicUUID, roomUUID, userUUID },
+                                    pathname: generateRoutePath(RouteNameType.RoomDetailPage, {
+                                        roomUUID,
+                                        periodicUUID,
+                                    }),
                                 }}
                             >
                                 <div className="user-back">
