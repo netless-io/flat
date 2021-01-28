@@ -1,86 +1,84 @@
-import React from "react";
-import { RouteComponentProps } from "react-router";
+import React, { useContext, useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
 import classNames from "classnames";
-import { getWechatInfo } from "../../utils/localStorage/accounts";
 import { loginCheck } from "../../apiMiddleware/flatServer";
+import { GlobalStoreContext } from "../../components/StoreProvider";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 import logo from "../../assets/image/logo.svg";
 import "./SplashPage.less";
 
-type IndexPageState = {
-    status: string;
-};
-
-type SetStateParamType = Parameters<React.PureComponent["setState"]>[0];
-
-export default class SplashPage extends React.PureComponent<RouteComponentProps, IndexPageState> {
-    public constructor(props: RouteComponentProps) {
-        super(props);
-        this.state = {
-            status: "idle",
-        };
-    }
-
-    private isUnmounted = false;
-    private checkLoginSetTimeoutID = 0;
-
-    public setAsyncState = (state: SetStateParamType): void => {
-        if (!this.isUnmounted) this.setState(state);
-    };
-
-    public showLoading = (): void => {
-        this.setState({ status: "loading" });
-    };
-
-    public componentWillUnmount = (): void => {
-        this.isUnmounted = true;
-        this.checkLoginSetTimeoutID = window.setTimeout(this.checkLoginStatus, 2000);
-    };
-
-    public pushHistory = (path: string): void => {
-        if (!this.isUnmounted) {
-            window.setTimeout(() => {
-                this.props.history.push(path);
-            }, 1000);
-        }
-    };
-
-    public checkLoginStatus = async (): Promise<void> => {
-        const token = getWechatInfo()?.token;
-        if (token === null) {
-            this.pushHistory("/login/");
-        } else {
-            try {
-                await loginCheck();
-                this.pushHistory("/user/");
-            } catch {
-                this.pushHistory("/login/");
-            }
-        }
-    };
-
-    public async componentDidMount(): Promise<void> {
-        const loading = window.setTimeout(this.showLoading, 300);
-        await this.checkLoginStatus();
-        window.clearTimeout(loading);
-        this.setAsyncState({ status: "success" });
-    }
-
-    public render(): JSX.Element {
-        return (
-            <div className="index-container">
-                <div className="fade-container">
-                    <div
-                        className={classNames({
-                            // TODO: loading: this.state.status === "loading",
-                            success: this.state.status === "success",
-                        })}
-                    >
-                        <img src={logo} alt="flat logo" />
-                        <span>在线互动 让想法同步</span>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+enum LoginStatusType {
+    Idle = "Idle",
+    Loading = "Loading",
+    Success = "Success",
+    Failed = "Failed",
 }
+
+export interface SplashPageProps {}
+
+export const SplashPage = observer<SplashPageProps>(function SplashPage() {
+    const [loginStatus, updateLoginStatus] = useState(LoginStatusType.Idle);
+    const pushHistory = usePushHistory();
+    const globalStore = useContext(GlobalStoreContext);
+
+    useEffect(() => {
+        let isUnMount = false;
+        // wait 300ms before showing loading state
+        const ticket = window.setTimeout(() => updateLoginStatus(LoginStatusType.Loading), 300);
+
+        async function checkLogin(): Promise<
+            RouteNameType.UserIndexPage | RouteNameType.LoginPage
+        > {
+            let nextPage = RouteNameType.LoginPage;
+
+            const token = globalStore.wechat?.token;
+            if (token) {
+                try {
+                    await loginCheck();
+                    nextPage = RouteNameType.UserIndexPage;
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            if (!isUnMount) {
+                updateLoginStatus(LoginStatusType.Success);
+            }
+
+            return nextPage;
+        }
+
+        // wait at least 1s until animation finishes
+        const pWait1s = new Promise(resolve => setTimeout(resolve, 1000));
+
+        Promise.all([checkLogin(), pWait1s]).then(([nextPage]) => {
+            if (!isUnMount) {
+                pushHistory(nextPage, {});
+            }
+        });
+
+        return () => {
+            isUnMount = true;
+            window.clearTimeout(ticket);
+        };
+        // Only check login once on start
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return (
+        <div className="splash-container">
+            <div
+                className={classNames("splash-content", {
+                    // @TODO add loading status
+                    "is-success": loginStatus === LoginStatusType.Success,
+                })}
+            >
+                <img src={logo} alt="flat logo" />
+                <span>在线互动 让想法同步</span>
+            </div>
+        </div>
+    );
+});
+
+export default SplashPage;
