@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import IndexPage from "./IndexPage";
+import SplashPage from "./pages/SplashPage";
 import LoginPage from "./LoginPage";
 import BigClassPage from "./pages/BigClassPage";
 import ScheduleRoomDetailPage from "./pages/ScheduleRoomPage";
@@ -14,7 +14,7 @@ import UserSettingPage from "./pages/UserSettingPanel";
 import ModifyOrdinaryRoomPage from "./pages/ModifyOrdinaryRoomPage";
 
 export enum RouteNameType {
-    IndexPage = "IndexPage",
+    SplashPage = "SplashPage",
     LoginPage = "LoginPage",
     UserIndexPage = "UserIndexPage",
     SmallClassPage = "SmallClassPage",
@@ -30,10 +30,10 @@ export enum RouteNameType {
 }
 
 export const routeConfig = {
-    [RouteNameType.IndexPage]: {
+    [RouteNameType.SplashPage]: {
         title: "Flat",
         path: "/",
-        component: IndexPage,
+        component: SplashPage,
     },
     [RouteNameType.LoginPage]: {
         title: "Flat Login",
