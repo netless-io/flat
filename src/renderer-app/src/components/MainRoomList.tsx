@@ -37,7 +37,7 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
                     roomStatus={room.roomStatus}
                     beginTime={room.beginTime}
                     endTime={room.endTime}
-                    periodicUUID={room.periodicUUID!}
+                    periodicUUID={room.periodicUUID}
                     roomUUID={room.roomUUID}
                     historyPush={this.props.historyPush}
                     userUUID={room.ownerUUID}

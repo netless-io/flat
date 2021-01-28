@@ -9,6 +9,7 @@ import {
     UpdateOrdinaryRoomPayload,
 } from "../../apiMiddleware/flatServer";
 import { RoomType } from "../../apiMiddleware/flatServer/constants";
+import LoadingPage from "../../LoadingPage";
 import { DatePicker, TimePicker } from "../antd-date-fns";
 
 export interface OrdinaryRoomFormProps {
@@ -155,7 +156,7 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
     }
 
     if (loading) {
-        return null;
+        return <LoadingPage />;
     }
     return (
         <>

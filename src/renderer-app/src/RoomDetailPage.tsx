@@ -87,7 +87,7 @@ export default class RoomDetailPage extends PureComponent<
         if (periodicUUID) {
             res = await periodicSubRoomInfo({ roomUUID, periodicUUID });
             getRate = await periodicRoomInfo(periodicUUID);
-            this.setState({ isPeriodic: true, rate: getRate.periodic.rate! });
+            this.setState({ isPeriodic: true, rate: getRate.periodic.rate });
         } else {
             res = await ordinaryRoomInfo(roomUUID);
         }

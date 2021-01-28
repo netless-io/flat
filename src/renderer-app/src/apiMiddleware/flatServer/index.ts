@@ -412,7 +412,7 @@ export interface UpdatePeriodicRoomPayload {
 
 export type UpdatePeriodicRoomResult = {};
 
-export async function UpdatePeriodicRoom(payload: UpdatePeriodicRoomPayload): Promise<void> {
+export async function updatePeriodicRoom(payload: UpdatePeriodicRoomPayload): Promise<void> {
     await post<UpdatePeriodicRoomPayload, UpdatePeriodicRoomResult>(
         "/room/update/periodic",
         payload,
@@ -428,7 +428,7 @@ export interface UpdatePeriodicSubRoomPayload {
 
 export type UpdatePeriodicSubRoomResult = {};
 
-export async function UpdatePeriodicSubRoom(payload: UpdatePeriodicSubRoomPayload): Promise<void> {
+export async function updatePeriodicSubRoom(payload: UpdatePeriodicSubRoomPayload): Promise<void> {
     await post<UpdatePeriodicSubRoomPayload, UpdatePeriodicSubRoomResult>(
         "/room/update/periodic-sub-room",
         payload,
