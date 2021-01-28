@@ -2,10 +2,10 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { PeriodicEndType } from "../../constants/Periodic";
 import { addDays, format, getDay, isBefore, startOfWeek, subDays } from "date-fns";
-import { getPeriodicEndTypeName, getTypeName } from "../../utils/getTypeName";
+import { getPeriodicEndTypeName, getRoomTypeName } from "../../utils/getTypeName";
 import { InputNumber, Select } from "antd";
 import { RoomType, Week } from "../../apiMiddleware/flatServer/constants";
-import { DatePicker } from "../antd-date-fns";
+import { DatePicker } from "../../components/antd-date-fns";
 import { zhCN } from "date-fns/locale";
 
 const weekToName = (week: Week): string => {
@@ -87,7 +87,7 @@ export const CreatePeriodic = observer<CreatePeriodicProps>(function CreatePerio
                 ) : (
                     <div>暂未选择频率</div>
                 )}
-                <div className="user-schedule-tips-type">房间类型：{getTypeName(roomType)}</div>
+                <div className="user-schedule-tips-type">房间类型：{getRoomTypeName(roomType)}</div>
                 <div className="user-schedule-tips-inner">
                     结束于 {formatISODayWeekiii(periodicEndDate())}，共 {calcRoomsTimes()} 个房间
                 </div>

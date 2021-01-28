@@ -12,7 +12,7 @@ import { observer } from "mobx-react-lite";
 import { RoomTypeSelect } from "../../components/RoomType";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { PeriodicEndType } from "../../constants/Periodic";
-import { CreatePeriodic } from "../../components/Periodic/CreatePeriodic";
+import { CreatePeriodic } from "./CreatePeriodic";
 import { addHours } from "date-fns/fp";
 
 const getInitialBeginTime = (): Date => {
