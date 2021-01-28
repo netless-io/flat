@@ -37,7 +37,7 @@ export const ExitButtonPlayer = observer<ExitButtonPlayerProps>(function ExitBut
                     </div>
                     <div className="modal-box-name">回到白板</div>
                     <Button
-                        onClick={() => pushHistory(RouteNameType.IndexPage, {})}
+                        onClick={() => pushHistory(RouteNameType.HomePage, {})}
                         style={{ width: 176 }}
                         size="large"
                     >

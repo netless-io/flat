@@ -100,7 +100,7 @@ export default observer(function X() {
                 await createOrdinaryRoom(basePayload);
             }
 
-            pushHistory(RouteNameType.UserIndexPage, {});
+            pushHistory(RouteNameType.HomePage, {});
         } catch (e) {
             console.error(e);
         }

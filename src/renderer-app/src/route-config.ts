@@ -7,7 +7,7 @@ import SmallClassPage from "./pages/SmallClassPage";
 import OneToOnePage from "./pages/OneToOnePage";
 import ReplayPage from "./pages/ReplayPage";
 import RoomDetailPage from "./pages/RoomDetailPage";
-import UserIndexPage from "./UserIndexPage";
+import HomePage from "./pages/HomePage";
 import UserInfoPage from "./UserInfoPage";
 import UserScheduledPage from "./pages/UserScheduledPage";
 import UserSettingPage from "./pages/UserSettingPanel";
@@ -16,7 +16,7 @@ import ModifyOrdinaryRoomPage from "./pages/ModifyOrdinaryRoomPage";
 export enum RouteNameType {
     SplashPage = "SplashPage",
     LoginPage = "LoginPage",
-    UserIndexPage = "UserIndexPage",
+    HomePage = "HomePage",
     SmallClassPage = "SmallClassPage",
     BigClassPage = "BigClassPage",
     OneToOnePage = "OneToOnePage",
@@ -40,10 +40,10 @@ export const routeConfig = {
         path: "/login/",
         component: LoginPage,
     },
-    [RouteNameType.UserIndexPage]: {
+    [RouteNameType.HomePage]: {
         title: "Flat",
         path: "/user/",
-        component: UserIndexPage,
+        component: HomePage,
     },
     [RouteNameType.SmallClassPage]: {
         title: "Flat Small Class",
