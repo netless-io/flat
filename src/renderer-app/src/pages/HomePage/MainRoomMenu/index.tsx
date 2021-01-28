@@ -1,185 +1,58 @@
-import React, { ReactNode } from "react";
-import { Link } from "react-router-dom";
-import { Button, Input, Modal, Checkbox, Dropdown, Menu, Select } from "antd";
-import join from "../assets/image/join.svg";
-import create from "../assets/image/creat.svg";
-import dropdown from "../assets/image/dropdown.svg";
-import book from "../assets/image/book.svg";
-import { getJoinRoomHistories, LSJoinRoomHistoryItem } from "../utils/localStorage/history";
-import { RoomType } from "../apiMiddleware/flatServer/constants";
-import { getWechatInfo } from "../utils/localStorage/accounts";
 import "./MainRoomMenu.less";
-import { RoomTypeSelect } from "./RoomType";
 
-const { Option } = Select;
+import React, { FC, useContext } from "react";
+import { RoomType } from "../../../apiMiddleware/flatServer/constants";
+import { RoomStoreContext } from "../../../components/StoreProvider";
+import { RouteNameType, usePushHistory } from "../../../utils/routes";
+import { CreateRoomBox } from "./CreateRoomBox";
+import { JoinRoomBox } from "./JoinRoomBox";
+import { ScheduleRoomBox } from "./ScheduleRoomBox";
 
-export type MainRoomMenuProps = {
-    onCreateRoom(title: string, type: RoomType): unknown;
-    onJoinRoom(roomUUID: string): void;
-};
+export interface MainRoomMenuProps {}
 
-export type MainRoomMenuState = {
-    isJoinModalVisible: boolean;
-    isCreateModalVisible: boolean;
-    isScheduledVisible: boolean;
-    createTitle: string;
-    createType: RoomType;
-    joinRoomHistories: LSJoinRoomHistoryItem[];
-    roomUUID: string;
-};
+export const MainRoomMenu: FC = () => {
+    const roomStore = useContext(RoomStoreContext);
+    const pushHistory = usePushHistory();
 
-export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoomMenuState> {
-    private readonly modalWidth: number = 368;
-    public constructor(props: MainRoomMenuProps) {
-        super(props);
-        this.state = {
-            isJoinModalVisible: false,
-            isCreateModalVisible: false,
-            isScheduledVisible: false,
-            createTitle: "",
-            createType: RoomType.BigClass,
-            joinRoomHistories: [],
-            roomUUID: "",
-        };
+    return (
+        <div className="main-room-menu-container">
+            <JoinRoomBox onJoinRoom={joinRoom} />
+            <CreateRoomBox onCreateRoom={createOrdinaryRoom} />
+            <ScheduleRoomBox />
+        </div>
+    );
+
+    async function createOrdinaryRoom(title: string, type: RoomType): Promise<void> {
+        const roomUUID = await roomStore.createOrdinaryRoom({
+            title,
+            type,
+            beginTime: Date.now(),
+            // TODO docs:[]
+        });
+        await joinRoom(roomUUID);
     }
 
-    public render(): JSX.Element {
-        return (
-            <div className="content-header-container">
-                <Button
-                    onClick={() => {
-                        this.setState({
-                            isJoinModalVisible: true,
-                            joinRoomHistories: getJoinRoomHistories(),
-                        });
-                    }}
-                >
-                    <img src={join} alt="join room" />
-                    加入房间
-                </Button>
-                <Button
-                    onClick={() => {
-                        this.setState({ isCreateModalVisible: true });
-                    }}
-                >
-                    <img src={create} alt="create room" />
-                    创建房间
-                </Button>
-                <Link to={"/user/scheduled/"}>
-                    <Button>
-                        <img src={book} alt="book room" />
-                        预定房间
-                    </Button>
-                </Link>
-                {this.renderJoinModal()}
-                {this.renderCreateModal()}
-            </div>
-        );
+    async function joinRoom(roomUUID: string): Promise<void> {
+        const data = await roomStore.joinRoom(roomUUID);
+        // @TODO make roomType a param
+        switch (data.roomType) {
+            case RoomType.BigClass: {
+                pushHistory(RouteNameType.BigClassPage, data);
+                break;
+            }
+            case RoomType.SmallClass: {
+                pushHistory(RouteNameType.SmallClassPage, data);
+                break;
+            }
+            case RoomType.OneToOne: {
+                pushHistory(RouteNameType.OneToOnePage, data);
+                break;
+            }
+            default: {
+                console.error(new Error("failed to join room: incorrect room type"));
+            }
+        }
     }
+};
 
-    private renderCreateModal = (): ReactNode => {
-        const { isCreateModalVisible } = this.state;
-        return (
-            <Modal
-                title="创建房间"
-                width={this.modalWidth}
-                visible={isCreateModalVisible}
-                okText={"创建"}
-                cancelText={"取消"}
-                onOk={() => {
-                    this.props.onCreateRoom(this.state.createTitle, this.state.createType);
-                    this.setState({ isCreateModalVisible: false });
-                }}
-                onCancel={() => {
-                    this.setState({ isCreateModalVisible: false });
-                }}
-            >
-                <div className="modal-inner-name">主题</div>
-                <div className="modal-inner-input">
-                    <Input
-                        value={this.state.createTitle}
-                        onChange={e => this.setState({ createTitle: e.target.value })}
-                    />
-                </div>
-                <div className="modal-inner-name">类型</div>
-                <div className="modal-inner-input">
-                    <RoomTypeSelect
-                        className="modal-inner-select"
-                        value={this.state.createType}
-                        onChange={e => this.setState({ createType: e })}
-                    />
-                </div>
-                <div className="modal-inner-name">加入选项</div>
-                <div className="modal-inner-check">
-                    <Checkbox>
-                        <span className="modal-inner-text">开启摄像头</span>
-                    </Checkbox>
-                </div>
-            </Modal>
-        );
-    };
-    private renderJoinModal = (): ReactNode => {
-        const { isJoinModalVisible, joinRoomHistories } = this.state;
-        const menu = (
-            <Menu className="modal-menu-item">
-                {joinRoomHistories.map(room => (
-                    <Menu.Item key={room.uuid}>{room.name || room.uuid}</Menu.Item>
-                ))}
-                <Menu.Divider />
-                <Button className="modal-inner-select" type="link">
-                    清空记录
-                </Button>
-            </Menu>
-        );
-        return (
-            <Modal
-                title="加入房间"
-                width={this.modalWidth}
-                visible={isJoinModalVisible}
-                okText={"确认"}
-                cancelText={"取消"}
-                onOk={() => {
-                    this.props.onJoinRoom(this.state.roomUUID);
-                    this.setState({ isJoinModalVisible: false });
-                }}
-                onCancel={() => {
-                    this.setState({ isJoinModalVisible: false });
-                }}
-            >
-                <div className="modal-inner-name">房间号</div>
-                <div className="modal-inner-input">
-                    <Input
-                        value={this.state.roomUUID}
-                        onChange={e => {
-                            this.setState({ roomUUID: e.currentTarget.value });
-                        }}
-                        suffix={
-                            <Dropdown trigger={["click"]} placement="bottomRight" overlay={menu}>
-                                <img
-                                    className="modal-dropdown-icon"
-                                    src={dropdown}
-                                    alt={"dropdown"}
-                                />
-                            </Dropdown>
-                        }
-                    />
-                </div>
-                <div className="modal-inner-name">昵称</div>
-                <div className="modal-inner-input">
-                    <Input value={getWechatInfo()?.name} disabled={true} />
-                </div>
-                <div className="modal-inner-name">加入选项</div>
-                <div className="modal-inner-check">
-                    <Checkbox>
-                        <span className="modal-inner-text">开启麦克风</span>
-                    </Checkbox>
-                </div>
-                <div className="modal-inner-check">
-                    <Checkbox>
-                        <span className="modal-inner-text">开启摄像头</span>
-                    </Checkbox>
-                </div>
-            </Modal>
-        );
-    };
-}
+export default MainRoomMenu;
