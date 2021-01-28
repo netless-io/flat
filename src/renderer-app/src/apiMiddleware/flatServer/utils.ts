@@ -1,5 +1,5 @@
 import Axios, { AxiosRequestConfig } from "axios";
-import { getWechatInfo } from "../../utils/localStorage/accounts";
+import { globalStore } from "../../stores/GlobalStore";
 import { FLAT_SERVER_VERSIONS, Status } from "./constants";
 
 export type FlatServerResponse<T> =
@@ -21,7 +21,7 @@ export async function post<Payload, Result>(
         params,
     };
 
-    const Authorization = getWechatInfo()?.token;
+    const Authorization = globalStore.wechat?.token;
     if (Authorization) {
         config.headers = {
             Authorization: "Bearer " + Authorization,
