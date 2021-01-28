@@ -17,7 +17,7 @@ export default (context: Context) => {
                     mainWin.center();
                 }
             },
-            "open-at-login": args => {
+            "set-open-at-login": args => {
                 app.setLoginItemSettings({
                     openAtLogin: args.isOpenAtLogin,
                     openAsHidden: false,
@@ -28,6 +28,9 @@ export default (context: Context) => {
         const actionsSync: ipc.ActionSync = {
             "get-runtime": () => {
                 return context.runtime;
+            },
+            "get-open-at-login": () => {
+                return app.getLoginItemSettings().openAtLogin;
             },
         };
 

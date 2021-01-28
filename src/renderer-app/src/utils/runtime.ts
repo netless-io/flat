@@ -11,5 +11,4 @@ export const runtime: runtimeInfo.Type = {
     assetsPath: "",
     appVersion: "",
     downloadsDirectory: "",
-    isOpenAtLogin: false,
 };

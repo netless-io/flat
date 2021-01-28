@@ -9,7 +9,6 @@ export type Type = {
     assetsPath: string;
     appVersion: string;
     downloadsDirectory: string;
-    isOpenAtLogin: boolean;
 };
 
 export type Key = keyof Type;
