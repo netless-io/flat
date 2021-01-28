@@ -1,4 +1,4 @@
-import { makeAutoObservable, toJS, reaction } from "mobx";
+import { autoPersistStore } from "./utils";
 
 export interface WechatInfo {
     avatar: string;
@@ -18,22 +18,7 @@ export class GlobalStore {
     rtmToken: string | null = null;
 
     constructor() {
-        const config = getLSGlobalStore();
-        if (config) {
-            const keys = (Object.keys(config) as unknown) as Array<keyof GlobalStore>;
-            for (const key of keys) {
-                if (typeof this[key] !== "function") {
-                    // @ts-ignore update config to store
-                    this[key] = config[key];
-                }
-            }
-        }
-
-        makeAutoObservable(this);
-        reaction(
-            () => toJS(this),
-            store => setLSGlobalStore(store),
-        );
+        autoPersistStore("GlobalStore", this);
     }
 
     updateUserUUID = (userUUID: string): void => {
@@ -63,16 +48,3 @@ export class GlobalStore {
 }
 
 export const globalStore = new GlobalStore();
-
-function getLSGlobalStore(): null | GlobalStore {
-    try {
-        const str = localStorage.getItem("GlobalStore");
-        return str ? JSON.parse(str) : null;
-    } catch (e) {
-        return null;
-    }
-}
-
-function setLSGlobalStore(globalStore: GlobalStore): void {
-    localStorage.setItem("GlobalStore", JSON.stringify(globalStore));
-}
