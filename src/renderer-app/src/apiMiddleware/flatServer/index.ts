@@ -286,6 +286,21 @@ export function cancelPeriodicRoom(periodicUUID: string): Promise<CancelPeriodic
         periodicUUID,
     });
 }
+export type CancelPeriodicSubRoomResult = {};
+
+export interface CancelPeriodicSubRoomPayload {
+    roomUUID: string;
+    periodicUUID: string;
+}
+
+export function cancelPeriodicSubRoom(
+    payload: CancelPeriodicSubRoomPayload,
+): Promise<CancelPeriodicSubRoomResult> {
+    return post<CancelPeriodicSubRoomPayload, CancelPeriodicSubRoomResult>(
+        "room/cancel/periodic-sub-room",
+        payload,
+    );
+}
 
 export type CancelHistoryRoomResult = {};
 
