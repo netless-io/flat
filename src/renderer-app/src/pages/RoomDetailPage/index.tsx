@@ -47,8 +47,10 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
 
     const [isShowInviteModal, showInviteModal] = useState(false);
 
-    const formattedBeginTime = useComputed(() => formatTime(roomInfo?.beginTime)).get();
-    const formattedEndTime = useComputed(() => formatTime(roomInfo?.endTime)).get();
+    const formattedBeginTime = useComputed(() => formatTime(roomInfo?.beginTime), [
+        roomStore,
+    ]).get();
+    const formattedEndTime = useComputed(() => formatTime(roomInfo?.endTime), [roomStore]).get();
 
     useEffect(() => {
         if (periodicUUID) {
