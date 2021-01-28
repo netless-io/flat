@@ -5,18 +5,16 @@ import { zhCN } from "date-fns/locale";
 import React from "react";
 
 type RoomListDateProps = {
-    beginTime: number;
+    beginTime?: number;
 };
 
-export default class RoomListDate extends React.PureComponent<RoomListDateProps> {
-    public render(): JSX.Element {
-        const { beginTime } = this.props;
-        return (
-            <time dateTime={new Date(beginTime).toUTCString()}>
-                {format(beginTime, "MMMM do", { locale: zhCN })}
-                {isToday(beginTime) && " 今天"}
-                {isTomorrow(beginTime) && " 明天"}
-            </time>
-        );
-    }
-}
+export const RoomListDate = React.memo<RoomListDateProps>(function RoomListDate({ beginTime }) {
+    return beginTime ? (
+        <time dateTime={new Date(beginTime).toUTCString()}>
+            {format(beginTime, "MMMM do", { locale: zhCN })}
+            {isToday(beginTime) ? " 今天" : isTomorrow(beginTime) ? " 明天" : null}
+        </time>
+    ) : null;
+});
+
+export default RoomListDate;
