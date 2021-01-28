@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { getWechatInfo } from "../../utils/localStorage/accounts";
+import { globalStore } from "../../stores/GlobalStore";
 import { DocsType, FLAT_SERVER_VERSIONS, RoomDoc, RoomStatus, RoomType, Week } from "./constants";
 import { post } from "./utils";
 
@@ -443,7 +443,7 @@ export interface LoginCheck {
 }
 
 export async function loginCheck(): Promise<LoginCheck> {
-    const Authorization = getWechatInfo()?.token;
+    const Authorization = globalStore.wechat?.token;
     if (!Authorization) {
         throw new Error("not login");
     }
