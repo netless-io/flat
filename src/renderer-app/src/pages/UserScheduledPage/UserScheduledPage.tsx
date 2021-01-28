@@ -1,18 +1,18 @@
 import "./UserScheduledPage.less";
 import React, { useState } from "react";
 import { Button, Checkbox, Input } from "antd";
-import { DatePicker, TimePicker } from "./components/antd-date-fns";
-import back from "./assets/image/back.svg";
-import MainPageLayout from "./components/MainPageLayout";
+import { DatePicker, TimePicker } from "../../components/antd-date-fns";
+import back from "../../assets/image/back.svg";
+import MainPageLayout from "../../components/MainPageLayout";
 import { Link } from "react-router-dom";
 import { isBefore, addMinutes, roundToNearestMinutes, getDay, startOfDay } from "date-fns";
-import { RoomType, Week } from "./apiMiddleware/flatServer/constants";
-import { createOrdinaryRoom, createPeriodicRoom } from "./apiMiddleware/flatServer";
+import { RoomType, Week } from "../../apiMiddleware/flatServer/constants";
+import { createOrdinaryRoom, createPeriodicRoom } from "../../apiMiddleware/flatServer";
 import { observer } from "mobx-react-lite";
-import { RoomTypeSelect } from "./components/RoomType";
-import { RouteNameType, usePushHistory } from "./utils/routes";
-import { PeriodicEndType } from "./constants/Periodic";
-import { CreatePeriodic } from "./components/Periodic/CreatePeriodic";
+import { RoomTypeSelect } from "../../components/RoomType";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
+import { PeriodicEndType } from "../../constants/Periodic";
+import { CreatePeriodic } from "../../components/Periodic/CreatePeriodic";
 import { addHours } from "date-fns/fp";
 
 const getInitialBeginTime = (): Date => {
