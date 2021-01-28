@@ -10,6 +10,7 @@ import { getUserUuid } from "../utils/localStorage/accounts";
 import RoomListDate from "./RoomListPanel/RoomListDate";
 import RoomListDuration from "./RoomListPanel/RoomListDuration";
 import { roomStore } from "../stores/RoomStore";
+import { generateRoutePath, RouteNameType } from "../utils/routes";
 
 export type MainRoomListItemProps = {
     showDate: boolean;
@@ -34,18 +35,16 @@ export type MainRoomListItemProps = {
 /** 房间列表 - 单个房间 */
 export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     public renderMenu = (): JSX.Element => {
-        const { roomUUID, periodicUUID, userUUID, title, beginTime, endTime } = this.props;
+        const { roomUUID, periodicUUID, title, beginTime, endTime } = this.props;
         return (
             <Menu>
                 <Menu.Item>
                     <Link
                         to={{
-                            pathname: "/user/room/",
-                            state: {
+                            pathname: generateRoutePath(RouteNameType.RoomDetailPage, {
                                 roomUUID,
-                                periodicUUID,
-                                userUUID,
-                            },
+                                periodicUUID: periodicUUID || void 0,
+                            }),
                         }}
                     >
                         房间详情

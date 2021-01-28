@@ -6,7 +6,7 @@ import ScheduleRoomDetailPage from "./pages/ScheduleRoomPage";
 import SmallClassPage from "./pages/SmallClassPage";
 import OneToOnePage from "./pages/OneToOnePage";
 import ReplayPage from "./pages/ReplayPage";
-import RoomDetailPage from "./RoomDetailPage";
+import RoomDetailPage from "./pages/RoomDetailPage";
 import UserIndexPage from "./UserIndexPage";
 import UserInfoPage from "./UserInfoPage";
 import UserScheduledPage from "./UserScheduledPage";
@@ -62,7 +62,7 @@ export const routeConfig = {
     },
     [RouteNameType.RoomDetailPage]: {
         title: "Flat Room Detail",
-        path: "/user/room/",
+        path: "/user/room/:roomUUID/:periodicUUID?/",
         component: RoomDetailPage,
     },
     [RouteNameType.UserScheduledPage]: {
