@@ -9,6 +9,7 @@ import { getJoinRoomHistories, LSJoinRoomHistoryItem } from "../utils/localStora
 import { RoomType } from "../apiMiddleware/flatServer/constants";
 import { getWechatInfo } from "../utils/localStorage/accounts";
 import "./MainRoomMenu.less";
+import { RoomTypeSelect } from "./RoomType";
 
 const { Option } = Select;
 
@@ -102,15 +103,11 @@ export class MainRoomMenu extends React.PureComponent<MainRoomMenuProps, MainRoo
                 </div>
                 <div className="modal-inner-name">类型</div>
                 <div className="modal-inner-input">
-                    <Select
+                    <RoomTypeSelect
                         className="modal-inner-select"
                         value={this.state.createType}
                         onChange={e => this.setState({ createType: e })}
-                    >
-                        <Option value={RoomType.BigClass}>大班课</Option>
-                        <Option value={RoomType.SmallClass}>小班课</Option>
-                        <Option value={RoomType.OneToOne}>一对一</Option>
-                    </Select>
+                    />
                 </div>
                 <div className="modal-inner-name">加入选项</div>
                 <div className="modal-inner-check">

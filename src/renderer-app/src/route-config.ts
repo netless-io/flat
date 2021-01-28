@@ -9,7 +9,7 @@ import ReplayPage from "./pages/ReplayPage";
 import RoomDetailPage from "./pages/RoomDetailPage";
 import UserIndexPage from "./UserIndexPage";
 import UserInfoPage from "./UserInfoPage";
-import UserScheduledPage from "./UserScheduledPage";
+import UserScheduledPage from "./pages/UserScheduledPage";
 import UserSettingPage from "./pages/UserSettingPanel";
 import ModifyOrdinaryRoomPage from "./pages/ModifyOrdinaryRoomPage";
 
