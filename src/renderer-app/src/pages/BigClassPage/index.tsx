@@ -88,7 +88,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     useAutoRun(() => {
         if (classRoomStore.roomStatus === RoomStatus.Stopped) {
-            pushHistory(RouteNameType.UserIndexPage, {});
+            pushHistory(RouteNameType.HomePage, {});
         }
     });
 
