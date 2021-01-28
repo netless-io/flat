@@ -13,10 +13,6 @@ export type MainRoomListProps = {
 };
 
 export class MainRoomList extends PureComponent<MainRoomListProps> {
-    private timeToNumber = (time: string): number => {
-        return Number(new Date(time));
-    };
-
     public renderRooms(): JSX.Element | JSX.Element[] {
         const { rooms } = this.props;
         if (rooms.length === 0) {
@@ -39,8 +35,8 @@ export class MainRoomList extends PureComponent<MainRoomListProps> {
                     showDate={showDate}
                     title={room.title}
                     roomStatus={room.roomStatus}
-                    beginTime={this.timeToNumber(room.beginTime)!}
-                    endTime={this.timeToNumber(room.endTime)}
+                    beginTime={room.beginTime}
+                    endTime={room.endTime}
                     periodicUUID={room.periodicUUID!}
                     roomUUID={room.roomUUID}
                     historyPush={this.props.historyPush}

@@ -24,7 +24,6 @@ import home_icon_gray from "./assets/image/home-icon-gray.svg";
 import room_type from "./assets/image/room-type.svg";
 import docs_icon from "./assets/image/docs-icon.svg";
 import "./RoomDetailPage.less";
-import Modal from "antd/lib/modal/Modal";
 
 export type RoomDetailPageState = {
     isTeacher: boolean;
