@@ -240,7 +240,7 @@ export default class RoomDetailPage extends PureComponent<
                             ) : null}
                             {this.state.isPeriodic ? (
                                 <div className="user-periodic-room">
-                                    {rate ? (
+                                    {rate === 0 ? null : (
                                         <Link
                                             to={{
                                                 pathname: "/user/scheduled/info/",
@@ -249,7 +249,7 @@ export default class RoomDetailPage extends PureComponent<
                                         >
                                             查看全部 {rate} 场房间
                                         </Link>
-                                    ) : null}
+                                    )}
                                 </div>
                             ) : null}
                         </div>

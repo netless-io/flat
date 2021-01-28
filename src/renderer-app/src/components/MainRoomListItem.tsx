@@ -34,7 +34,7 @@ export type MainRoomListItemProps = {
 /** 房间列表 - 单个房间 */
 export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     public renderMenu = (): JSX.Element => {
-        const { roomUUID, periodicUUID, userUUID } = this.props;
+        const { roomUUID, periodicUUID, userUUID, title, beginTime, endTime } = this.props;
         return (
             <Menu>
                 <Menu.Item>
@@ -51,7 +51,23 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
                         房间详情
                     </Link>
                 </Menu.Item>
-                <Menu.Item>修改房间</Menu.Item>
+                <Menu.Item>
+                    <Link
+                        to={{
+                            pathname: "/modify/",
+                            state: {
+                                roomUUID,
+                                periodicUUID,
+                                headerValue: "修改房间",
+                                title,
+                                beginTime,
+                                endTime,
+                            },
+                        }}
+                    >
+                        修改房间
+                    </Link>
+                </Menu.Item>
                 <Menu.Item onClick={this.cancelRoom}>取消房间</Menu.Item>
                 <Menu.Item>复制邀请</Menu.Item>
             </Menu>
@@ -104,7 +120,7 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
     };
 
     render(): JSX.Element {
-        const { beginTime, endTime, title } = this.props;
+        const { beginTime, endTime, title, periodicUUID } = this.props;
         return (
             <div className="room-list-cell-item">
                 {this.props.showDate && (
@@ -118,13 +134,16 @@ export class MainRoomListItem extends PureComponent<MainRoomListItemProps> {
                 <div className="room-list-cell">
                     <div className="room-list-cell-left">
                         <div className="room-list-cell-name">{title}</div>
-                        <div className="room-list-cell-state">{this.renderState()}</div>
+                        <div className="room-list-cell-state">
+                            {this.renderState()}
+                            {periodicUUID ? <span>周期</span> : null}
+                        </div>
                         <div className="room-list-cell-time">
                             <RoomListDuration beginTime={beginTime} endTime={endTime} />
                         </div>
                     </div>
                     <div className="room-list-cell-right">
-                        <Dropdown overlay={this.renderMenu()}>
+                        <Dropdown overlay={this.renderMenu()} trigger={["click"]}>
                             <Button className="room-list-cell-more">更多</Button>
                         </Dropdown>
                         <Button

@@ -11,6 +11,7 @@ import UserIndexPage from "./UserIndexPage";
 import UserInfoPage from "./UserInfoPage";
 import UserScheduledPage from "./UserScheduledPage";
 import UserSettingPage from "./pages/UserSettingPanel";
+import ModifyOrdinaryRoomPage from "./pages/ModifyOrdinaryRoomPage";
 
 export enum RouteNameType {
     IndexPage = "IndexPage",
@@ -25,6 +26,7 @@ export enum RouteNameType {
     UserInfoPage = "UserInfoPage",
     UserSettingPage = "UserSettingPage",
     ReplayPage = "ReplayPage",
+    ModifyOrdinaryRoomPage = "ModifyOrdinaryRoomPage",
 }
 
 export const routeConfig = {
@@ -87,6 +89,11 @@ export const routeConfig = {
         title: "Flat Replay",
         path: "/replay/:roomType/:roomUUID/:ownerUUID/",
         component: ReplayPage,
+    },
+    [RouteNameType.ModifyOrdinaryRoomPage]: {
+        title: "Flat Modify",
+        path: "/modify/",
+        component: ModifyOrdinaryRoomPage,
     },
 } as const;
 

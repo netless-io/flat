@@ -360,6 +360,81 @@ export function recordInfo(roomUUID: string): Promise<RecordInfoResult> {
     return post<RecordInfoPayload, RecordInfoResult>("room/record/info", { roomUUID });
 }
 
+export interface UpdateOrdinaryRoomPayload {
+    roomUUID: string;
+    beginTime: number;
+    endTime: number;
+    title: string;
+    type: RoomType;
+    docs?: Array<{
+        /**文档类型 */
+        type: DocsType;
+        /**文档的 uuid */
+        uuid: string;
+    }>;
+}
+
+export type UpdateOrdinaryRoomResult = {};
+
+export async function updateOrdinaryRoom(payload: UpdateOrdinaryRoomPayload): Promise<void> {
+    await post<UpdateOrdinaryRoomPayload, UpdateOrdinaryRoomResult>(
+        "/room/update/ordinary",
+        payload,
+    );
+}
+export interface UpdatePeriodicRoomPayload {
+    roomUUID: string;
+    periodicUUID: string;
+    beginTime: number;
+    endTime: number;
+    title: string;
+    type: RoomType;
+    /** 重复 */
+    periodic:
+        | {
+              /**重复周期, 每周的周几 */
+              weeks: Week[];
+              /** 重复几次就结束, -1..50 */
+              rate: number;
+          }
+        | {
+              weeks: Week[];
+              /** UTC时间戳, 到这个点就结束 */
+              endTime: number;
+          };
+    docs?: Array<{
+        /**文档类型 */
+        type: DocsType;
+        /**文档的 uuid */
+        uuid: string;
+    }>;
+}
+
+export type UpdatePeriodicRoomResult = {};
+
+export async function updatePeriodicRoom(payload: UpdatePeriodicRoomPayload): Promise<void> {
+    await post<UpdatePeriodicRoomPayload, UpdatePeriodicRoomResult>(
+        "/room/update/periodic",
+        payload,
+    );
+}
+
+export interface UpdatePeriodicSubRoomPayload {
+    periodicUUID: string;
+    roomUUID: string;
+    beginTime: number;
+    endTime: number;
+}
+
+export type UpdatePeriodicSubRoomResult = {};
+
+export async function updatePeriodicSubRoom(payload: UpdatePeriodicSubRoomPayload): Promise<void> {
+    await post<UpdatePeriodicSubRoomPayload, UpdatePeriodicSubRoomResult>(
+        "/room/update/periodic-sub-room",
+        payload,
+    );
+}
+
 export interface LoginCheck {
     name: string;
     sex: "Man" | "Woman";
