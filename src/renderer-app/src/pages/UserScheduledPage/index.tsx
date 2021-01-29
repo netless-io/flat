@@ -27,7 +27,7 @@ const disabledDate = (beginTime: Date): boolean => {
     return isBefore(beginTime, startOfDay(new Date()));
 };
 
-export default observer(function X() {
+export default observer(function UserScheduledPage() {
     const pushHistory = usePushHistory();
     const [title, setTitle] = useState("");
     const [roomType, setRoomType] = useState(RoomType.BigClass);
@@ -189,10 +189,7 @@ export default observer(function X() {
                                 rate={periodicRate}
                                 onChangeWeeks={onChangeWeeks}
                                 onChangeEndTime={v => setPeriodicEndTime(v)}
-                                onChangeEndType={v => {
-                                    console.log(v);
-                                    setPeriodicEndType(v);
-                                }}
+                                onChangeEndType={setPeriodicEndType}
                                 onChangeRate={v => setPeriodicRate(v)}
                             />
                         )}
