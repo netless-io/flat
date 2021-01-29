@@ -143,7 +143,12 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                                     <img src={homeIconGraySVG} alt={"home_icon_gray"} />
                                     <span>房间号</span>
                                 </div>
-                                <div className="user-room-docs-right">{roomUUID}</div>
+                                <div
+                                    className="user-room-docs-right"
+                                    style={{ userSelect: "text" }}
+                                >
+                                    {roomUUID}
+                                </div>
                             </div>
                             <div className="user-room-inf">
                                 <div className="user-room-docs-title">
