@@ -90,28 +90,26 @@ const HotKeyTableExpandRow : {
         }]
 };
 
+const HotKeyTableKeys = Object.freeze(Object.keys(HotKeyTableExpandRow));
+
+// gen key of expanded table
+HotKeyTableKeys.forEach((data: string) => {
+    HotKeyTableExpandRow[data].forEach((row: HotKey, index) => {
+        row.key = `${row.name + index}`;
+    });
+});
+
+const tableRow = (): HotKeyTable[] => {
+    return HotKeyTableKeys.map((data: string, index) => {
+        return {
+            name: data,
+            key: `${data + index}`,
+            desc: HotKeyTableRow[index]
+        };
+    });
+};
+
 export const HotKeySetting = (): React.ReactElement => {
-
-    const HotKeyTableKeys = Object.freeze(Object.keys(HotKeyTableExpandRow));
-
-    // If you need to add content above the function, please don"t forget to add a semicolon
-    (function setExpandRowKey(): void {
-        HotKeyTableKeys.forEach((data: string) => {
-            HotKeyTableExpandRow[data].forEach((row: HotKey, index) => {
-                row.key = `${row.name + index}`;
-            });
-        });
-    })();
-
-    const tableRow = (): HotKeyTable[] => {
-        return HotKeyTableKeys.map((data: string, index) => {
-            return {
-                name: data,
-                key: `${data + index}`,
-                desc: HotKeyTableRow[index]
-            };
-        });
-    };
 
     const expandedRowRender = (row: HotKeyTable): React.ReactElement => {
         return <Table columns={HotKeyTableExpandTitleList} dataSource={HotKeyTableExpandRow[row.name]} pagination={false} />;
