@@ -2,7 +2,6 @@ import { Button, Form, Input, Select } from "antd";
 import { addMinutes, isBefore, startOfDay } from "date-fns";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router";
 import {
     ordinaryRoomInfo,
     updateOrdinaryRoom,
@@ -10,6 +9,7 @@ import {
 } from "../../apiMiddleware/flatServer";
 import { RoomType } from "../../apiMiddleware/flatServer/constants";
 import LoadingPage from "../../LoadingPage";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { DatePicker, TimePicker } from "../antd-date-fns";
 
 export interface OrdinaryRoomFormProps {
@@ -57,7 +57,7 @@ function useIsMount(): React.MutableRefObject<boolean> {
 export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomForm({ roomUUID }) {
     const [loading, setLoading] = useState(true);
     const [disabled, setDisabled] = useState(true);
-    const history = useHistory();
+    const pushHistory = usePushHistory();
     const isMount = useIsMount();
 
     const [form] = Form.useForm<OrdinaryRoomFormData>();
@@ -108,7 +108,7 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
         try {
             await updateOrdinaryRoom(requestBody);
             if (isMount.current) {
-                history.push("/user/");
+                pushHistory(RouteNameType.HomePage, {});
             }
         } catch (error) {
             console.log(error);
@@ -217,7 +217,12 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
                 </div>
             </Form>
             <div className="user-schedule-under">
-                <Button className="user-schedule-cancel">取消</Button>
+                <Button
+                    className="user-schedule-cancel"
+                    onClick={() => pushHistory(RouteNameType.HomePage, {})}
+                >
+                    取消
+                </Button>
                 <Button className="user-schedule-ok" disabled={disabled} onClick={saveRoomInfo}>
                     确定
                 </Button>

@@ -37,12 +37,13 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
                         <Menu.Item>
                             <Link
                                 to={{
-                                    // @TODO remove location state
-                                    pathname: "/modify/",
-                                    state: {
-                                        roomUUID,
-                                        periodicUUID,
-                                    },
+                                    pathname: generateRoutePath(
+                                        RouteNameType.ModifyOrdinaryRoomPage,
+                                        {
+                                            roomUUID,
+                                            periodicUUID: periodicUUID || void 0,
+                                        },
+                                    ),
                                 }}
                             >
                                 修改房间
