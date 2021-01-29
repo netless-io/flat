@@ -14,8 +14,6 @@ interface HotKey {
     key?: string;
 }
 
-const HotKeyTableKeys = Object.freeze(["tools", "edit"]);
-
 const HotKeyTableTitleList = [
     {
         title: "名称",
@@ -38,8 +36,10 @@ const HotKeyTableExpandTitleList = [
     }
 ];
 
-const HotKeyTableExpandRow = {
-    [HotKeyTableKeys[0]]: [
+const HotKeyTableExpandRow : {
+    [index: string]: HotKey[]
+} = {
+    "tools": [
         {
             name: "选择",
             hotKey: "S"
@@ -68,7 +68,7 @@ const HotKeyTableExpandRow = {
             name: "抓手",
             hotKey: "H"
         }],
-    [HotKeyTableKeys[1]]: [
+    "edit": [
         {
             name: "删除所选对象",
             hotKey: "Backspace / Delete"
@@ -92,7 +92,9 @@ const HotKeyTableExpandRow = {
 
 export const HotKeySetting = (): React.ReactElement => {
 
-    // If you need to add content above the function, please don't forget to add a semicolon
+    const HotKeyTableKeys = Object.freeze(Object.keys(HotKeyTableExpandRow));
+
+    // If you need to add content above the function, please don"t forget to add a semicolon
     (function setExpandRowKey(): void {
         HotKeyTableKeys.forEach((data: string) => {
             HotKeyTableExpandRow[data].forEach((row: HotKey, index) => {
