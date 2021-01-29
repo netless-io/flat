@@ -28,7 +28,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
                 </div>
                 <div className="modal-content-right">
                     <div>{room.title}</div>
-                    <div>{room.roomUUID}</div>
+                    <span style={{ userSelect: "text" }}>{room.roomUUID}</span>
                     {/* @TODO Add time */}
                     <div>2020/11/21 11:21~11~22</div>
                 </div>
