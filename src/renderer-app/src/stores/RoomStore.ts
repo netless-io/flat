@@ -1,6 +1,8 @@
 /* eslint-disable no-redeclare */
 import { makeAutoObservable, observable } from "mobx";
 import {
+    cancelRoom,
+    CancelRoomPayload,
     createOrdinaryRoom,
     CreateOrdinaryRoomPayload,
     createPeriodicRoom,
@@ -145,6 +147,11 @@ export class RoomStore {
             });
         }
         return roomUUIDs;
+    }
+
+    async cancelRoom(payload: CancelRoomPayload): Promise<void> {
+        this.rooms.delete(payload.roomUUID);
+        await cancelRoom(payload);
     }
 
     async syncOrdinaryRoomInfo(roomUUID: string): Promise<void> {

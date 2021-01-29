@@ -4,7 +4,6 @@ import { zhCN } from "date-fns/locale";
 import { Link, useParams } from "react-router-dom";
 import MainPageLayout from "../../components/MainPageLayout";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
-import { cancelOrdinaryRoom, cancelPeriodicSubRoom } from "../../apiMiddleware/flatServer";
 import { observer } from "mobx-react-lite";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { RoomStoreContext } from "../../components/StoreProvider";
@@ -18,6 +17,7 @@ import homeIconGraySVG from "../../assets/image/home-icon-gray.svg";
 import roomTypeSVG from "../../assets/image/room-type.svg";
 import docsIconSVG from "../../assets/image/docs-icon.svg";
 import "./RoomDetailPage.less";
+import { Button, Checkbox, message, Modal } from "antd";
 
 export type RoomDetailPageState = {
     isTeacher: boolean;
@@ -45,6 +45,8 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
     const roomStore = useContext(RoomStoreContext);
     const roomInfo = roomStore.rooms.get(roomUUID);
 
+    const [cancelModalVisible, showCancelModal] = useState(false);
+    const [isCancelAll, setIsCancelAll] = useState(false);
     const [isShowInviteModal, showInviteModal] = useState(false);
 
     const formattedBeginTime = useComputed(() => formatTime(roomInfo?.beginTime), [roomInfo]).get();
@@ -171,7 +173,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                             isCreator={isCreator}
                             isIdleStatus={isIdleStatus}
                             onJoinRoom={joinRoom}
-                            onCancelRoom={cancelRoom}
+                            onCancelRoom={showCancelRoomModal}
                             onInvite={() => showInviteModal(true)}
                         />
                     </div>
@@ -182,21 +184,57 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                 room={roomInfo}
                 onCancel={() => showInviteModal(false)}
             />
+            <Modal
+                visible={cancelModalVisible}
+                title="取消房间"
+                onCancel={() => showCancelModal(false)}
+                onOk={confirmCancelRoom}
+                footer={[
+                    <Button key="Cancel" onClick={() => showCancelModal(false)}>
+                        再想想
+                    </Button>,
+                    <Button key="Ok" type="primary" onClick={confirmCancelRoom}>
+                        确定
+                    </Button>,
+                ]}
+            >
+                {periodicUUID ? (
+                    <Checkbox
+                        checked={isCancelAll}
+                        onChange={e => setIsCancelAll(e.target.checked)}
+                    >
+                        取消该系列全部周期性房间
+                    </Checkbox>
+                ) : (
+                    "确定取消该房间吗？"
+                )}
+            </Modal>
         </MainPageLayout>
     );
 
+    async function confirmCancelRoom(): Promise<void> {
+        showCancelModal(false);
+        await cancelRoom();
+    }
+
+    function showCancelRoomModal(): void {
+        setIsCancelAll(false);
+        showCancelModal(true);
+    }
+
     async function cancelRoom(): Promise<void> {
-        if (roomInfo) {
-            if (roomInfo.periodicUUID) {
-                await cancelPeriodicSubRoom({
-                    roomUUID: roomInfo.roomUUID,
-                    periodicUUID: roomInfo.periodicUUID,
-                });
-            } else {
-                await cancelOrdinaryRoom(roomInfo.roomUUID);
-            }
+        try {
+            await roomStore.cancelRoom({
+                all: isCancelAll,
+                roomUUID,
+                periodicUUID,
+            });
+            message.success("已取消该房间");
+        } catch (e) {
+            console.error(e);
+        } finally {
+            pushHistory(RouteNameType.HomePage, {});
         }
-        pushHistory(RouteNameType.HomePage, {});
     }
 
     async function joinRoom(): Promise<void> {
