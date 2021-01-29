@@ -10,7 +10,7 @@ export class ConfigStore {
     /** Turn on camera when joining room */
     autoCameraOn = false;
     /** Turn on mic when joining room */
-    autoMicOn = false;
+    autoMicOn = true;
 
     constructor() {
         autoPersistStore({ storeLSName: "ConfigStore", store: this, version: LS_VERSION });
