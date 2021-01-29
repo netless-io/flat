@@ -9,6 +9,7 @@ import {
 } from "../../apiMiddleware/flatServer";
 import { RoomType } from "../../apiMiddleware/flatServer/constants";
 import LoadingPage from "../../LoadingPage";
+import { getRoomTypeName } from "../../utils/getTypeName";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { DatePicker, TimePicker } from "../antd-date-fns";
 
@@ -26,15 +27,6 @@ type PeriodicSubRoomFormData = {
     type: RoomType;
     roomUUID: string;
     periodicUUID: string;
-};
-
-const typeName = (type: RoomType): string => {
-    const typeNameMap: Record<RoomType, string> = {
-        [RoomType.OneToOne]: "一对一",
-        [RoomType.SmallClass]: "小班课",
-        [RoomType.BigClass]: "大班课",
-    };
-    return typeNameMap[type];
 };
 
 const { Option } = Select;
@@ -61,6 +53,7 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
     }>({ prevTime: null, nextTime: null });
     const [loading, setLoading] = useState(true);
     const [disabled, setDisabled] = useState(true);
+    const [typeName, setTypeName] = useState(RoomType.BigClass);
     const pushHistory = usePushHistory();
     const isMount = useIsMount();
 
@@ -101,6 +94,7 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
                         }
                         guard.current.prevTime = data.previousPeriodicRoomBeginTime;
                         guard.current.nextTime = data.nextPeriodicRoomEndTime;
+                        setTypeName(data.roomInfo.roomType);
                         form.setFieldsValue({
                             title: data.roomInfo.title,
                             type: data.roomInfo.roomType,
@@ -194,13 +188,9 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
                 <div className="user-schedule-name">类型</div>
                 <Form.Item name="type">
                     <Select disabled>
-                        {[RoomType.OneToOne, RoomType.SmallClass, RoomType.BigClass].map(e => {
-                            return (
-                                <Option key={e} value={e}>
-                                    {typeName(e)}
-                                </Option>
-                            );
-                        })}
+                        <Option key={typeName} value={typeName}>
+                            {getRoomTypeName(typeName)}
+                        </Option>
                     </Select>
                 </Form.Item>
                 <div className="user-schedule-name">开始时间</div>
