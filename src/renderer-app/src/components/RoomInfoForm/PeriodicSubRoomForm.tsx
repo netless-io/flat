@@ -53,7 +53,7 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
     }>({ prevTime: null, nextTime: null });
     const [loading, setLoading] = useState(true);
     const [disabled, setDisabled] = useState(true);
-    const [typeName, setTypeName] = useState(RoomType.BigClass);
+    const [roomType, setRoomType] = useState(RoomType.BigClass);
     const pushHistory = usePushHistory();
     const isMount = useIsMount();
 
@@ -94,7 +94,7 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
                         }
                         guard.current.prevTime = data.previousPeriodicRoomBeginTime;
                         guard.current.nextTime = data.nextPeriodicRoomEndTime;
-                        setTypeName(data.roomInfo.roomType);
+                        setRoomType(data.roomInfo.roomType);
                         form.setFieldsValue({
                             title: data.roomInfo.title,
                             type: data.roomInfo.roomType,
@@ -188,8 +188,8 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
                 <div className="user-schedule-name">类型</div>
                 <Form.Item name="type">
                     <Select disabled>
-                        <Option key={typeName} value={typeName}>
-                            {getRoomTypeName(typeName)}
+                        <Option key={roomType} value={roomType}>
+                            {getRoomTypeName(roomType)}
                         </Option>
                     </Select>
                 </Form.Item>
