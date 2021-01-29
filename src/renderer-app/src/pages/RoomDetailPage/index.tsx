@@ -65,6 +65,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
     }
 
     const isCreator = roomInfo.ownerUUID === roomStore.userUUID;
+    const isIdleStatus = roomInfo.roomStatus === RoomStatus.Idle;
 
     return (
         <MainPageLayout>
@@ -170,6 +171,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                         </div>
                         <RoomDetailFooter
                             isCreator={isCreator}
+                            isIdleStatus={isIdleStatus}
                             onJoinRoom={joinRoom}
                             onCancelRoom={cancelRoom}
                             onInvite={() => showInviteModal(true)}
