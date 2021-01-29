@@ -135,24 +135,41 @@
     }
 }
 
-.modal-header {
-    margin-bottom: 8px;
-    color: #444e60;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 500;
-    font-family: PingFangSC-Medium, PingFang SC;
-    span {
-        font-size: 14px;
-        line-height: 22px;
-        color: #7a7b7c;
+.invite-modal {
+    .ant-modal-content {
+        border-radius: 8px;
     }
+    .ant-modal-footer {
+        button {
+            border-radius: 4px;
+        }
+    }
+}
+
+.modal-header {
+    margin-top: -5px;
     width: 100%;
-    border-bottom: 1px solid #dbe1ea;
+    span {
+        display: block;
+        font-size: 14px;
+        font-family: PingFangSC-Medium, PingFang SC, serif;
+        &:first-of-type {
+            margin-bottom: 8px;
+            color: #444e60;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        &:last-of-type {
+            color: #7a7b7c;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #dbe1ea;
+        }
+    }
 }
 
 .modal-content {
     display: flex;
+    margin-top: 23px;
 }
 
 .modal-content-left {
@@ -160,6 +177,11 @@
     flex: 1;
     flex-direction: column;
     color: #7a7b7c;
+    span {
+        &:not(:last-of-type) {
+            margin-bottom: 8px;
+        }
+    }
 }
 
 .modal-content-right {
@@ -167,4 +189,10 @@
     flex: auto;
     flex-direction: column;
     text-align: right;
+    span {
+        color: #444E60;
+        &:not(:last-of-type) {
+            margin-bottom: 8px;
+        }
+    }
 }

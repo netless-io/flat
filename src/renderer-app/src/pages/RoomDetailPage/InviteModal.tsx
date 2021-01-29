@@ -1,7 +1,11 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { Input, Modal } from "antd";
+import { Modal } from "antd";
+import { differenceInCalendarDays, format } from "date-fns/fp";
 import { RoomItem } from "../../stores/RoomStore";
+
+const completeTimeFormat = format("yyyy-MM-dd HH:mm");
+const onlySuffixTimeFormat = format("HH:mm");
 
 export interface InviteModalProps {
     visible: boolean;
@@ -14,10 +18,25 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
     onCancel,
     room,
 }) {
+    const { beginTime, endTime, ownerUserName, roomUUID, title } = room;
+
+    const formatBeginTime = completeTimeFormat(beginTime!);
+    const formatEndTime =
+        differenceInCalendarDays(beginTime!, endTime!) !== 0
+            ? completeTimeFormat(endTime!)
+            : onlySuffixTimeFormat(endTime!);
+
     return (
-        <Modal width={460} visible={visible} onCancel={onCancel} okText="复制" cancelText="取消">
+        <Modal
+            width={460}
+            visible={visible}
+            onCancel={onCancel}
+            okText="复制"
+            cancelText="取消"
+            className="invite-modal"
+        >
             <div className="modal-header">
-                <div>邀请加入 FLAT 房间</div>
+                <span>{ownerUserName} 邀请加入 FLAT 房间</span>
                 <span>点击链接加入，或添加至房间列表</span>
             </div>
             <div className="modal-content">
@@ -27,14 +46,16 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
                     <span>开始时间</span>
                 </div>
                 <div className="modal-content-right">
-                    <div>{room.title}</div>
-                    <span style={{ userSelect: "text" }}>{room.roomUUID}</span>
+                    <span>{title}</span>
+                    <span style={{ userSelect: "text" }}>{roomUUID}</span>
                     {/* @TODO Add time */}
-                    <div>2020/11/21 11:21~11~22</div>
+                    <span>
+                        {formatBeginTime}~{formatEndTime}
+                    </span>
                 </div>
             </div>
             {/* @TODO Add invite URL */}
-            <Input type="text" placeholder="https://netless.link/url/5f2259d5069bc052d2" />
+            {/*<Input type="text" placeholder="https://netless.link/url/5f2259d5069bc052d2" />*/}
         </Modal>
     );
 });
