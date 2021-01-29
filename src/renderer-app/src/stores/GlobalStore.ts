@@ -1,6 +1,10 @@
 import { autoPersistStore } from "./utils";
 
+// clear storage if not match
+const LS_VERSION = 1;
+
 export interface WechatInfo {
+    userUUID: string;
     avatar: string;
     name: string;
     token: string;
@@ -11,19 +15,18 @@ export interface WechatInfo {
  */
 export class GlobalStore {
     wechat: WechatInfo | null = null;
-    userUUID: string | null = null;
     whiteboardRoomUUID: string | null = null;
     whiteboardRoomToken: string | null = null;
     rtcToken: string | null = null;
     rtmToken: string | null = null;
 
-    constructor() {
-        autoPersistStore("GlobalStore", this);
+    get userUUID(): string | null {
+        return this.wechat && this.wechat.userUUID;
     }
 
-    updateUserUUID = (userUUID: string): void => {
-        this.userUUID = userUUID;
-    };
+    constructor() {
+        autoPersistStore({ storeLSName: "GlobalStore", store: this, version: LS_VERSION });
+    }
 
     updateWechat = (wechatInfo: WechatInfo): void => {
         this.wechat = wechatInfo;
