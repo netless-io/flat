@@ -30,7 +30,7 @@ export const RoomDetailFooter: FC<RoomDetailFooterProps> = ({
                 修改房间
             </Button>
             <Button className="user-room-btn" onClick={onInvite}>
-                邀请加入
+                复制邀请
             </Button>
             <Button className="user-room-btn" type="primary" onClick={onJoinRoom}>
                 进入房间
@@ -47,7 +47,7 @@ export const RoomDetailFooter: FC<RoomDetailFooterProps> = ({
                 删除房间
             </Button>
             <Button className="user-room-btn" onClick={onInvite} disabled={!isIdleStatus}>
-                邀请加入
+                复制邀请
             </Button>
             <Button type="primary" className="user-room-btn" onClick={onJoinRoom}>
                 进入房间
