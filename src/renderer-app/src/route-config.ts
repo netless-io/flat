@@ -11,7 +11,7 @@ import HomePage from "./pages/HomePage";
 import UserInfoPage from "./UserInfoPage";
 import UserScheduledPage from "./pages/UserScheduledPage";
 import UserSettingPage from "./pages/UserSettingPanel";
-import ModifyOrdinaryRoomPage from "./pages/ModifyOrdinaryRoomPage";
+import { ModifyOrdinaryRoomPage } from "./pages/ModifyOrdinaryRoomPage";
 
 export enum RouteNameType {
     SplashPage = "SplashPage",
@@ -92,7 +92,7 @@ export const routeConfig = {
     },
     [RouteNameType.ModifyOrdinaryRoomPage]: {
         title: "Flat Modify",
-        path: "/modify/",
+        path: "/modify/:roomUUID/:periodicUUID?/",
         component: ModifyOrdinaryRoomPage,
     },
 } as const;

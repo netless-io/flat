@@ -193,8 +193,8 @@ export interface PeriodicSubRoomInfo {
 
 export interface PeriodicSubRoomInfoResult {
     roomInfo: PeriodicSubRoomInfo;
-    previousPeriodicRoomBeginTime: number; // 上一节课的开始时间
-    nextPeriodicRoomEndTime: number; // 下一节课的结束时间
+    previousPeriodicRoomBeginTime: number | null; // 上一节课的开始时间
+    nextPeriodicRoomEndTime: number | null; // 下一节课的结束时间
     count: number; // 当前周期性房间下一共有多少节课
     docs: RoomDoc[];
 }

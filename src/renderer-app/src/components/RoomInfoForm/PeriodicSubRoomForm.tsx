@@ -3,20 +3,22 @@ import { addMinutes, isBefore, startOfDay } from "date-fns";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
 import {
-    ordinaryRoomInfo,
-    updateOrdinaryRoom,
-    UpdateOrdinaryRoomPayload,
+    periodicSubRoomInfo,
+    updatePeriodicSubRoom,
+    UpdatePeriodicSubRoomPayload,
 } from "../../apiMiddleware/flatServer";
 import { RoomType } from "../../apiMiddleware/flatServer/constants";
 import LoadingPage from "../../LoadingPage";
+import { getRoomTypeName } from "../../utils/getTypeName";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { DatePicker, TimePicker } from "../antd-date-fns";
 
-export interface OrdinaryRoomFormProps {
+export interface PeriodicSubRoomFormProps {
     roomUUID: string;
+    periodicUUID: string;
 }
 
-type OrdinaryRoomFormData = {
+type PeriodicSubRoomFormData = {
     title: string;
     beginDate: Date;
     beginTime: Date;
@@ -27,20 +29,7 @@ type OrdinaryRoomFormData = {
     periodicUUID: string;
 };
 
-const typeName = (type: RoomType): string => {
-    const typeNameMap: Record<RoomType, string> = {
-        [RoomType.OneToOne]: "一对一",
-        [RoomType.SmallClass]: "小班课",
-        [RoomType.BigClass]: "大班课",
-    };
-    return typeNameMap[type];
-};
-
 const { Option } = Select;
-
-function disabledDate(beginTime: Date): boolean {
-    return isBefore(beginTime, startOfDay(new Date()));
-}
 
 function useIsMount(): React.MutableRefObject<boolean> {
     const isMount = useRef(false);
@@ -54,18 +43,48 @@ function useIsMount(): React.MutableRefObject<boolean> {
     return isMount;
 }
 
-export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomForm({ roomUUID }) {
+export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function RoomForm({
+    roomUUID,
+    periodicUUID,
+}) {
+    const guard = useRef<{
+        prevTime: number | null;
+        nextTime: number | null;
+    }>({ prevTime: null, nextTime: null });
     const [loading, setLoading] = useState(true);
     const [disabled, setDisabled] = useState(true);
+    const [roomType, setRoomType] = useState(RoomType.BigClass);
     const pushHistory = usePushHistory();
     const isMount = useIsMount();
 
-    const [form] = Form.useForm<OrdinaryRoomFormData>();
+    const [form] = Form.useForm<PeriodicSubRoomFormData>();
+
+    function disabledBeginDate(beginTime: Date): boolean {
+        let isBeforePrevTime = false;
+        if (guard.current.prevTime) {
+            isBeforePrevTime = isBefore(beginTime, guard.current.prevTime);
+        }
+        const isBeforeNow = isBefore(beginTime, startOfDay(new Date()));
+        return isBeforePrevTime || isBeforeNow;
+    }
+
+    function disabledEndDate(endTime: Date): boolean {
+        let isAfterNextTime = false;
+        if (guard.current.nextTime) {
+            isAfterNextTime = isBefore(guard.current.nextTime, endTime);
+        }
+        const isBeforeNow = isBefore(endTime, new Date());
+        return isAfterNextTime || isBeforeNow;
+    }
 
     useEffect(() => {
-        async function getRoomInfo(roomUUID: string): Promise<void> {
+        async function getRoomInfo(): Promise<void> {
             try {
-                const data = await ordinaryRoomInfo(roomUUID);
+                const data = await periodicSubRoomInfo({
+                    roomUUID,
+                    periodicUUID,
+                    needOtherRoomTimeInfo: true,
+                });
 
                 if (isMount.current) {
                     if (data) {
@@ -73,6 +92,9 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
                         if (data.roomInfo.title) {
                             setDisabled(false);
                         }
+                        guard.current.prevTime = data.previousPeriodicRoomBeginTime;
+                        guard.current.nextTime = data.nextPeriodicRoomEndTime;
+                        setRoomType(data.roomInfo.roomType);
                         form.setFieldsValue({
                             title: data.roomInfo.title,
                             type: data.roomInfo.roomType,
@@ -88,25 +110,23 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
             }
         }
 
-        if (roomUUID) {
-            getRoomInfo(roomUUID);
+        if (periodicUUID) {
+            getRoomInfo();
         } else {
             form.setFieldsValue({});
         }
-    }, [roomUUID, form, isMount]);
+    }, [roomUUID, periodicUUID, form, isMount]);
 
     async function saveRoomInfo(): Promise<void> {
         const values = form.getFieldsValue();
-        const requestBody: UpdateOrdinaryRoomPayload = {
+        const requestBody: UpdatePeriodicSubRoomPayload = {
             beginTime: Number(values.beginTime),
             endTime: Number(values.endTime),
-            title: values.title,
-            type: values.type,
-            docs: [],
             roomUUID: roomUUID,
+            periodicUUID: periodicUUID,
         };
         try {
-            await updateOrdinaryRoom(requestBody);
+            await updatePeriodicSubRoom(requestBody);
             if (isMount.current) {
                 pushHistory(RouteNameType.HomePage, {});
             }
@@ -116,8 +136,8 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
     }
 
     function onValuesChange(
-        changed: Partial<OrdinaryRoomFormData>,
-        values: OrdinaryRoomFormData,
+        changed: Partial<PeriodicSubRoomFormData>,
+        values: PeriodicSubRoomFormData,
     ): void {
         let beginTime: Date | null = null;
         beginTime = changed.beginDate ?? changed.beginTime ?? null;
@@ -163,18 +183,14 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
             <Form form={form} onValuesChange={onValuesChange}>
                 <div className="user-schedule-name">主题</div>
                 <Form.Item name="title" rules={[{ required: true, message: "主题不能为空" }]}>
-                    <Input />
+                    <Input disabled />
                 </Form.Item>
                 <div className="user-schedule-name">类型</div>
                 <Form.Item name="type">
-                    <Select>
-                        {[RoomType.OneToOne, RoomType.SmallClass, RoomType.BigClass].map(e => {
-                            return (
-                                <Option key={e} value={e}>
-                                    {typeName(e)}
-                                </Option>
-                            );
-                        })}
+                    <Select disabled>
+                        <Option key={roomType} value={roomType}>
+                            {getRoomTypeName(roomType)}
+                        </Option>
                     </Select>
                 </Form.Item>
                 <div className="user-schedule-name">开始时间</div>
@@ -184,7 +200,7 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
                             className="user-schedule-picker"
                             allowClear={false}
                             showToday={false}
-                            disabledDate={disabledDate}
+                            disabledDate={disabledBeginDate}
                         />
                     </Form.Item>
                     <Form.Item name="beginTime">
@@ -203,7 +219,7 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
                             className="user-schedule-picker"
                             allowClear={false}
                             showToday={false}
-                            disabledDate={disabledDate}
+                            disabledDate={disabledEndDate}
                         />
                     </Form.Item>
                     <Form.Item name="endTime">

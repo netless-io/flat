@@ -1,17 +1,21 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import back from "../../assets/image/back.svg";
 import MainPageLayout from "../../components/MainPageLayout";
 import { OrdinaryRoomForm } from "../../components/RoomInfoForm/OrdinaryRoomForm";
+import { PeriodicSubRoomForm } from "../../components/RoomInfoForm/PeriodicSubRoomForm";
+import { RouteNameType, RouteParams } from "../../utils/routes";
 
-type ModifyOrdinaryRoomPageProps = RouteComponentProps & {
+type ModifyOrdinaryRoomPageProps = {
     roomUUID: string;
-    periodicUUID: string;
+    periodicUUID?: string;
 };
 
-export default class ModifyOrdinaryRoomPage extends React.PureComponent<ModifyOrdinaryRoomPageProps> {
-    public render(): React.ReactNode {
-        const { roomUUID, periodicUUID } = this.props.location.state as ModifyOrdinaryRoomPageProps;
+export const ModifyOrdinaryRoomPage = observer<ModifyOrdinaryRoomPageProps>(
+    function ModifyOrdinaryRoomPage() {
+        const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
+
         return (
             <MainPageLayout>
                 <div className="user-schedule-box">
@@ -29,12 +33,21 @@ export default class ModifyOrdinaryRoomPage extends React.PureComponent<ModifyOr
                         <div className="user-schedule-cut-line" />
                     </div>
                     <div className="user-schedule-body">
-                        <div className="user-schedule-mid">
-                            <OrdinaryRoomForm roomUUID={roomUUID} />
-                        </div>
+                        {periodicUUID ? (
+                            <div className="user-schedule-mid">
+                                <PeriodicSubRoomForm
+                                    roomUUID={roomUUID}
+                                    periodicUUID={periodicUUID}
+                                />
+                            </div>
+                        ) : (
+                            <div className="user-schedule-mid">
+                                <OrdinaryRoomForm roomUUID={roomUUID} />
+                            </div>
+                        )}
                     </div>
                 </div>
             </MainPageLayout>
         );
-    }
-}
+    },
+);
