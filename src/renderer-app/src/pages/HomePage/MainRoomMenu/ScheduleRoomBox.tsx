@@ -9,12 +9,12 @@ export interface MainRoomMenuProps {}
 
 export const ScheduleRoomBox = React.memo<MainRoomMenuProps>(function ScheduleRoomBox() {
     return (
-        <Link to={generateRoutePath(RouteNameType.UserScheduledPage, {})}>
-            <Button>
+        <Button>
+            <Link to={generateRoutePath(RouteNameType.UserScheduledPage, {})}>
                 <img src={bookSVG} alt="Schedule Room" />
                 预定房间
-            </Button>
-        </Link>
+            </Link>
+        </Button>
     );
 });
 
