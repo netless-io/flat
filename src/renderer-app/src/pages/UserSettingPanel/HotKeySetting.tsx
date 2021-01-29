@@ -114,7 +114,7 @@ export const HotKeySetting = (): React.ReactElement => {
     };
 
     const expandedRowRender = (row: HotKeyTable): React.ReactElement => {
-        return <Table columns={ HotKeyTableExpandTitleList } dataSource={ HotKeyTableExpandRow[row.name] } pagination={ false } />;
+        return <Table columns={HotKeyTableExpandTitleList} dataSource={HotKeyTableExpandRow[row.name]} pagination={false} />;
     };
 
     return (
@@ -123,7 +123,7 @@ export const HotKeySetting = (): React.ReactElement => {
                 <span>热键设置</span>
             </div>
             <div className="content-inner">
-                <Table columns={ HotKeyTableTitleList } dataSource={ tableRow() } expandable={{ expandedRowRender }} pagination={ false } scroll={{ y: 500 }} />
+                <Table columns={HotKeyTableTitleList} dataSource={tableRow()} expandable={{expandedRowRender}} pagination={false} scroll={{y: 500}} />
             </div>
         </div>
     );
