@@ -73,6 +73,10 @@ export default observer(function X() {
         setPeriodicWeeks(w.sort());
     };
 
+    const cancelCreate = (): void => {
+        pushHistory(RouteNameType.HomePage, {});
+    };
+
     const createRoom = async (): Promise<void> => {
         try {
             const basePayload = {
@@ -193,7 +197,9 @@ export default observer(function X() {
                             />
                         )}
                         <div className="user-schedule-under">
-                            <Button className="user-schedule-cancel">取消</Button>
+                            <Button className="user-schedule-cancel" onClick={cancelCreate}>
+                                取消
+                            </Button>
                             <Button className="user-schedule-ok" onClick={createRoom}>
                                 预定
                             </Button>
