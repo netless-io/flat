@@ -1,76 +1,126 @@
-import React, { FC } from "react";
+import React from "react";
+import { Table } from "antd";
 import "./HotKeySetting.less";
 
-const HotKeyTable: FC = ({ children }) => {
-    return (
-        <table>
-            <thead>
-                <tr>
-                    <th>名称</th>
-                    <th>快捷键</th>
-                </tr>
-            </thead>
-            <tbody>{children}</tbody>
-        </table>
-    );
-};
-
-interface HotKeySettingPair {
+interface HotKeyTable {
     name: string;
     key: string;
+    desc: string;
 }
 
-export const HotKeySetting = (): React.ReactElement => {
-    const tool: HotKeySettingPair[] = [
-        { name: "选择", key: "S" },
-        { name: "画笔", key: "P" },
-        { name: "文字", key: "T" },
-        { name: "橡皮擦", key: "E" },
-        { name: "圆形", key: "C" },
-        { name: "矩形", key: "R" },
-        { name: "箭头", key: "A" },
-        { name: "激光笔", key: "L" },
-        { name: "抓手", key: "H" },
-    ];
+interface HotKey {
+    name: string;
+    hotKey: string;
+    key?: string;
+}
 
-    const edit: HotKeySettingPair[] = [
-        { name: "删除所选对象", key: "Backspace / Delete" },
-        { name: "等比例缩放", key: "Shift / ⇧" },
-        { name: "撤销", key: "Ctrl + Z / ⌘ + Z" },
-        { name: "重做", key: "Ctrl + Y / ⌘ + Y" },
-        { name: "复制", key: "Ctrl + C / ⌘ + C" },
-        { name: "粘贴", key: "Ctrl + V / ⌘ + V" },
-    ];
+const HotKeyTableTitleList = [
+    {
+        title: "名称",
+        dataIndex: "desc"
+    },
+    {
+        title: "快捷键",
+        dataIndex: ""
+    }
+];
 
+const HotKeyTableRow = Object.freeze(["工具栏", "编辑"]);
+
+const HotKeyTableExpandTitleList = [
+    {
+        dataIndex: "name"
+    },
+    {
+        dataIndex: "hotKey"
+    }
+];
+
+const HotKeyTableExpandRow : {
+    [index: string]: HotKey[]
+} = {
+    "tools": [
+        {
+            name: "选择",
+            hotKey: "S"
+        }, {
+            name: "画笔",
+            hotKey: "P"
+        }, {
+            name: "文字",
+            hotKey: "T"
+        }, {
+            name: "橡皮擦",
+            hotKey: "E"
+        }, {
+            name: "圆形",
+            hotKey: "C"
+        }, {
+            name: "矩形",
+            hotKey: "R"
+        }, {
+            name: "箭头",
+            hotKey: "A"
+        }, {
+            name: "激光笔",
+            hotKey: "L"
+        }, {
+            name: "抓手",
+            hotKey: "H"
+        }],
+    "edit": [
+        {
+            name: "删除所选对象",
+            hotKey: "Backspace / Delete"
+        }, {
+            name: "等比例缩放",
+            hotKey: "Shift / ⇧"
+        }, {
+            name: "撤销",
+            hotKey: "Ctrl + Z / ⌘ + Z"
+        }, {
+            name: "重做",
+            hotKey: "Ctrl + Y / ⌘ + Y"
+        }, {
+            name: "复制",
+            hotKey: "Ctrl + C / ⌘ + C"
+        }, {
+            name: "粘贴",
+            hotKey: "Ctrl + V / ⌘ + V"
+        }]
+};
+
+const HotKeyTableKeys = Object.freeze(Object.keys(HotKeyTableExpandRow));
+
+// gen key of expanded table
+HotKeyTableKeys.forEach((data: string) => {
+    HotKeyTableExpandRow[data].forEach((row: HotKey, index) => {
+        row.key = `${row.name + index}`;
+    });
+});
+
+const tableRow: HotKeyTable[] = HotKeyTableKeys.map((data: string, index) => {
+        return {
+            name: data,
+            key: `${data + index}`,
+            desc: HotKeyTableRow[index]
+        };
+    });
+
+const expandedRowRender = (row: HotKeyTable): React.ReactElement => {
+    return <Table columns={HotKeyTableExpandTitleList} dataSource={HotKeyTableExpandRow[row.name]} pagination={false} />;
+};
+
+export const HotKeySetting = React.memo(function HotKeySetting() {
+    // only renders if props(param) have changed
     return (
         <div className="content-container">
             <div className="header-container">
                 <span>热键设置</span>
             </div>
-            <div className="hotkey-two-columns">
-                <div className="column">
-                    <div className="scope">工具栏</div>
-                    <HotKeyTable>
-                        {tool.map(({ name, key }, i) => (
-                            <tr key={i}>
-                                <td>{name}</td>
-                                <td>{key}</td>
-                            </tr>
-                        ))}
-                    </HotKeyTable>
-                </div>
-                <div className="column">
-                    <div className="scope">编辑</div>
-                    <HotKeyTable>
-                        {edit.map(({ name, key }, i) => (
-                            <tr key={i}>
-                                <td>{name}</td>
-                                <td>{key}</td>
-                            </tr>
-                        ))}
-                    </HotKeyTable>
-                </div>
+            <div className="content-inner">
+                <Table columns={HotKeyTableTitleList} dataSource={tableRow} expandable={{expandedRowRender}} pagination={false} scroll={{y: 500}} />
             </div>
         </div>
     );
-};
+});

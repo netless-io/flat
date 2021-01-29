@@ -1,55 +1,26 @@
-.hotkey-two-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    height: calc(100vh - 144px);
-    padding: 0 40px;
+@import "../../theme";
 
-    .column {
-        padding: 0 24px;
+.content-inner {
+    margin: 0 20px;
 
-        .scope {
-            line-height: 32px;
-            font-size: 14px;
-            color: #7a7b7c;
-        }
+    .ant-table-header tr > th {
+        border: none;
+        padding: 10px;
+        background: @white;
     }
 
-    table {
-        width: 100%;
+    .ant-table-body {
+        overflow-y: scroll;
+        height: 450px;
+        border: 1px solid @white_not_nearly;
+        border-radius: 15px;
 
-        thead {
-            background-color: #f3f6f9;
-        }
-
-        tbody {
-            height: calc(100vh - 220px);
-            display: block;
-            overflow: auto;
+        .ant-table-thead {
+            display: none;
         }
 
-        thead,
-        tbody tr {
-            width: 100%;
-            display: table;
-            table-layout: fixed;
-        }
-
-        tr {
-            border-bottom: 1px solid #dbe1ea;
-        }
-
-        th,
-        td {
-            max-width: 160px;
-            padding-left: 16px;
-            line-height: 32px;
-            font-size: 12px;
-        }
-        th {
-            color: #444e60;
-        }
-        td {
-            color: #7a7b7c;
+        .ant-table-tbody .ant-table-tbody tr > td {
+            width: 50%;
         }
     }
 }
