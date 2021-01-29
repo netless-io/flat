@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Menu } from "antd";
+import { MenuProps } from "antd/lib/menu";
 import { generateRoutePath, RouteNameType } from "../../../utils/routes";
 import {
     cancelHistoryRoom,
@@ -8,16 +9,23 @@ import {
     cancelPeriodicSubRoom,
 } from "../../../apiMiddleware/flatServer";
 
-export interface MainRoomListItemMenusProps {
+export interface MainRoomListItemMenusProps extends MenuProps {
     roomUUID: string;
     periodicUUID?: string;
     isHistoryList: boolean;
 }
 
 export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
-    function MainRoomListItemMenus({ roomUUID, periodicUUID, isHistoryList }) {
+    function MainRoomListItemMenus({
+        roomUUID,
+        periodicUUID,
+        isHistoryList,
+        onClick,
+        ...restProps
+    }) {
         return (
-            <Menu onClick={e => e.domEvent.stopPropagation()}>
+            // pass down props so that antd dropdrown menu shadow is rendered properly
+            <Menu {...restProps} onClick={e => e.domEvent.stopPropagation()}>
                 <Menu.Item>
                     <Link
                         to={{
