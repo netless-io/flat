@@ -196,7 +196,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                 await cancelOrdinaryRoom(roomInfo.roomUUID);
             }
         }
-        pushHistory(RouteNameType.UserIndexPage, {});
+        pushHistory(RouteNameType.HomePage, {});
     }
 
     async function joinRoom(): Promise<void> {

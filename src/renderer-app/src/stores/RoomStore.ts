@@ -30,7 +30,7 @@ export interface RoomItem {
     /** 房间类型 */
     roomType?: RoomType;
     /** 子房间隶属的周期性房间 uuid */
-    periodicUUID?: string | null;
+    periodicUUID?: string;
     /** 房间所有者的名称 */
     ownerUserName?: string;
     /** 房间标题 */
@@ -139,7 +139,10 @@ export class RoomStore {
         const roomUUIDs: string[] = [];
         for (const room of rooms) {
             roomUUIDs.push(room.roomUUID);
-            this.updateRoom(room.roomUUID, room.ownerUUID, room);
+            this.updateRoom(room.roomUUID, room.ownerUUID, {
+                ...room,
+                periodicUUID: room.periodicUUID || void 0,
+            });
         }
         return roomUUIDs;
     }
