@@ -161,10 +161,17 @@ export class RoomStore {
     }
 
     async syncPeriodicSubRoomInfo(payload: PeriodicSubRoomInfoPayload): Promise<void> {
-        const { roomInfo, ...restInfo } = await periodicSubRoomInfo(payload);
+        const {
+            roomInfo,
+            previousPeriodicRoomBeginTime,
+            nextPeriodicRoomEndTime,
+            ...restInfo
+        } = await periodicSubRoomInfo(payload);
         this.updateRoom(payload.roomUUID, roomInfo.ownerUUID, {
             ...restInfo,
             ...roomInfo,
+            previousPeriodicRoomBeginTime: previousPeriodicRoomBeginTime ?? void 0,
+            nextPeriodicRoomEndTime: nextPeriodicRoomEndTime ?? void 0,
             roomUUID: payload.roomUUID,
             periodicUUID: payload.periodicUUID,
         });
