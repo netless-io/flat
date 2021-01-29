@@ -107,12 +107,12 @@ const tableRow: HotKeyTable[] = HotKeyTableKeys.map((data: string, index) => {
         };
     });
 
-export const HotKeySetting = (): React.ReactElement => {
+const expandedRowRender = (row: HotKeyTable): React.ReactElement => {
+    return <Table columns={HotKeyTableExpandTitleList} dataSource={HotKeyTableExpandRow[row.name]} pagination={false} />;
+};
 
-    const expandedRowRender = (row: HotKeyTable): React.ReactElement => {
-        return <Table columns={HotKeyTableExpandTitleList} dataSource={HotKeyTableExpandRow[row.name]} pagination={false} />;
-    };
-
+export const HotKeySetting = React.memo(function HotKeySetting() {
+    // only renders if props(param) have changed
     return (
         <div className="content-container">
             <div className="header-container">
@@ -123,4 +123,4 @@ export const HotKeySetting = (): React.ReactElement => {
             </div>
         </div>
     );
-};
+});
