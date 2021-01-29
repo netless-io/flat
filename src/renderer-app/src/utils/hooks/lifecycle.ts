@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useEffect, useRef } from "react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { NODE_ENV } from "../../constants/Process";
 
 export function useIsUnMounted(): RefObject<boolean> {
@@ -28,7 +28,7 @@ export function useIsUnMounted(): RefObject<boolean> {
  * setLoading(false)
  * ```
  */
-export function useSafePromise<T, E>(): (
+export function useSafePromise<T, E = unknown>(): (
     promise: PromiseLike<T>,
     /** When error occurs after the component is umounted */
     onUnmountedError?: (error: E) => void,
@@ -66,4 +66,42 @@ export function useSafePromise<T, E>(): (
     }
 
     return useCallback(safePromise, []);
+}
+
+export function useAPI<P, R>(
+    api: (payload: P) => Promise<R>,
+): {
+    first: boolean;
+    loading: boolean;
+    fetch: (payload: P) => Promise<void>;
+    result: R | null;
+    error: boolean;
+} {
+    const isUnMountRef = useIsUnMounted();
+    const [first, setFirst] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [result, setResult] = useState<R | null>(null);
+    const sp = useSafePromise<R>();
+
+    const fetch = useCallback(
+        async (payload: P) => {
+            if (isUnMountRef.current) return;
+            setFirst(false);
+            try {
+                setLoading(true);
+                const result = await sp(api(payload));
+                if (!isUnMountRef.current) setResult(result);
+            } catch {
+                if (!isUnMountRef.current) setError(true);
+            } finally {
+                if (!isUnMountRef.current) setLoading(false);
+            }
+        },
+        // it's wrong for eslint to add `P` to deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [api],
+    );
+
+    return { first, loading, fetch, result, error };
 }

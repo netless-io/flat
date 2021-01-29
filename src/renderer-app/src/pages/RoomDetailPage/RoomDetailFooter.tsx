@@ -1,5 +1,7 @@
 import React, { FC } from "react";
 import { Button } from "antd";
+import { Link } from "react-router-dom";
+import { generateRoutePath, RouteNameType } from "../../utils/routes";
 
 export interface RoomDetailFooterProps {
     isCreator: boolean;
@@ -7,6 +9,8 @@ export interface RoomDetailFooterProps {
     onJoinRoom: () => void;
     onCancelRoom: () => void;
     onInvite: () => void;
+    periodicUUID?: string;
+    roomUUID: string;
 }
 
 export const RoomDetailFooter: FC<RoomDetailFooterProps> = ({
@@ -15,6 +19,8 @@ export const RoomDetailFooter: FC<RoomDetailFooterProps> = ({
     onJoinRoom,
     onCancelRoom,
     onInvite,
+    periodicUUID,
+    roomUUID,
 }) =>
     isCreator ? (
         <div className="user-room-btn-box">
@@ -27,7 +33,16 @@ export const RoomDetailFooter: FC<RoomDetailFooterProps> = ({
                 取消房间
             </Button>
             <Button className="user-room-btn" disabled={!isIdleStatus}>
-                修改房间
+                <Link
+                    to={{
+                        pathname: generateRoutePath(RouteNameType.ModifyOrdinaryRoomPage, {
+                            roomUUID,
+                            periodicUUID: periodicUUID || void 0,
+                        }),
+                    }}
+                >
+                    修改房间
+                </Link>
             </Button>
             <Button className="user-room-btn" onClick={onInvite}>
                 复制邀请

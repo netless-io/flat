@@ -33,7 +33,7 @@ export type RoomDetailPageState = {
         ownerUUID: string;
     };
     roomUUID: string;
-    periodicUUID: string;
+    periodicUUID?: string;
     userUUID: string;
     isPeriodic: boolean;
     toggleCopyModal: boolean;
@@ -180,6 +180,8 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                             </div>
                         </div>
                         <RoomDetailFooter
+                            periodicUUID={periodicUUID}
+                            roomUUID={roomUUID}
                             isCreator={isCreator}
                             isIdleStatus={isIdleStatus}
                             onJoinRoom={joinRoom}
