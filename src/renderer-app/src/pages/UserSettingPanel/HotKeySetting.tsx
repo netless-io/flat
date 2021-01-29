@@ -99,15 +99,13 @@ HotKeyTableKeys.forEach((data: string) => {
     });
 });
 
-const tableRow = (): HotKeyTable[] => {
-    return HotKeyTableKeys.map((data: string, index) => {
+const tableRow: HotKeyTable[] = HotKeyTableKeys.map((data: string, index) => {
         return {
             name: data,
             key: `${data + index}`,
             desc: HotKeyTableRow[index]
         };
     });
-};
 
 export const HotKeySetting = (): React.ReactElement => {
 
@@ -121,7 +119,7 @@ export const HotKeySetting = (): React.ReactElement => {
                 <span>热键设置</span>
             </div>
             <div className="content-inner">
-                <Table columns={HotKeyTableTitleList} dataSource={tableRow()} expandable={{expandedRowRender}} pagination={false} scroll={{y: 500}} />
+                <Table columns={HotKeyTableTitleList} dataSource={tableRow} expandable={{expandedRowRender}} pagination={false} scroll={{y: 500}} />
             </div>
         </div>
     );
