@@ -186,7 +186,6 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
             </div>
             <InviteModal
                 visible={isShowInviteModal}
-                // @ts-ignore
                 room={roomInfo}
                 onCancel={() => showInviteModal(false)}
             />

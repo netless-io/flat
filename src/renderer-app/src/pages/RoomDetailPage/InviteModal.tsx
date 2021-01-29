@@ -2,19 +2,14 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { Modal } from "antd";
 import { differenceInCalendarDays, format } from "date-fns/fp";
+import { RoomItem } from "../../stores/RoomStore";
 
 const completeTimeFormat = format("yyyy-MM-dd HH:mm");
 const onlySuffixTimeFormat = format("HH:mm");
 
 export interface InviteModalProps {
     visible: boolean;
-    room: {
-        beginTime: Date;
-        endTime: Date;
-        title: string;
-        ownerUserName: string;
-        roomUUID: string;
-    };
+    room: RoomItem;
     onCancel: () => void;
 }
 
