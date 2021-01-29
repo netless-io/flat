@@ -1,7 +1,17 @@
-import { makeAutoObservable, reaction, toJS } from "mobx";
+import { autorun, makeAutoObservable, toJS } from "mobx";
 
-export function autoPersistStore<TStore>(storeLSName: string, store: TStore): void {
-    const config = getLSStore<TStore>(storeLSName);
+type LSPersistStore<TStore> = [number, TStore];
+
+export function autoPersistStore<TStore>({
+    storeLSName,
+    store,
+    version = 1,
+}: {
+    storeLSName: string;
+    store: TStore;
+    version?: number;
+}): void {
+    const config = getLSStore<TStore>(storeLSName, version);
     if (config) {
         const keys = (Object.keys(config) as unknown) as Array<keyof TStore>;
         for (const key of keys) {
@@ -13,21 +23,30 @@ export function autoPersistStore<TStore>(storeLSName: string, store: TStore): vo
 
     makeAutoObservable(store);
 
-    reaction(
-        () => toJS(store),
-        store => setLSStore(storeLSName, store),
-    );
+    autorun(() => setLSStore(storeLSName, toJS(store), version));
 }
 
-function getLSStore<TStore>(storeLSName: string): null | TStore {
+function getLSStore<TStore>(storeLSName: string, lsVersion: number): null | TStore {
     try {
         const str = localStorage.getItem(storeLSName);
-        return str ? JSON.parse(str) : null;
+        if (!str) {
+            return null;
+        }
+
+        const [version, store]: LSPersistStore<TStore> = JSON.parse(str);
+
+        if (version !== lsVersion) {
+            // clear storage if not match
+            setLSStore(storeLSName, null, lsVersion);
+            return null;
+        }
+
+        return store;
     } catch (e) {
         return null;
     }
 }
 
-function setLSStore<TStore>(storeLSName: string, configStore: TStore): void {
-    localStorage.setItem(storeLSName, JSON.stringify(configStore));
+function setLSStore<TStore>(storeLSName: string, configStore: TStore, lsVersion: number): void {
+    localStorage.setItem(storeLSName, JSON.stringify([lsVersion, configStore]));
 }

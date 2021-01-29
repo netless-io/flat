@@ -77,7 +77,6 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
                     setUserUuid(data.userUUID);
                     // @TODO useContext
                     globalStore.updateWechat(data);
-                    globalStore.updateUserUUID(data.userUUID);
                     console.log("登陆成功", data);
                     this.joinRoom();
                     break;

@@ -1,5 +1,8 @@
 import { autoPersistStore } from "./utils";
 
+// clear storage if not match
+const LS_VERSION = 1;
+
 /**
  * Properties in Config Store are persisted and shared globally.
  */
@@ -10,7 +13,7 @@ export class ConfigStore {
     autoMicOn = false;
 
     constructor() {
-        autoPersistStore("ConfigStore", this);
+        autoPersistStore({ storeLSName: "ConfigStore", store: this, version: LS_VERSION });
     }
 
     updateAutoCameraOn = (isOn: boolean): void => {
