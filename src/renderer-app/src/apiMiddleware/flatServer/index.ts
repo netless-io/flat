@@ -158,6 +158,7 @@ export interface OrdinaryRoomInfo {
     roomType: RoomType;
     roomStatus: RoomStatus;
     ownerUUID: string;
+    ownerUserName: string;
 }
 
 export interface OrdinaryRoomInfoPayload {
@@ -189,6 +190,7 @@ export interface PeriodicSubRoomInfo {
     roomType: RoomType;
     roomStatus: RoomStatus;
     ownerUUID: string;
+    ownerUserName: string;
 }
 
 export interface PeriodicSubRoomInfoResult {

@@ -249,6 +249,7 @@ export default class ScheduleRoomDetailPage extends React.Component<
                 <Menu.Item>修改房间</Menu.Item>
                 <Menu.Item>取消房间</Menu.Item>
                 <Menu.Item onClick={() => this.showCopyModal(room)}>复制邀请</Menu.Item>
+                {/* TODO: 使用 InviteModal 组件 */}
                 {this.renderModal()}
             </Menu>
         );
