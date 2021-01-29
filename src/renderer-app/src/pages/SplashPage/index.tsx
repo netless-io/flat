@@ -27,16 +27,14 @@ export const SplashPage = observer<SplashPageProps>(function SplashPage() {
         // wait 300ms before showing loading state
         const ticket = window.setTimeout(() => updateLoginStatus(LoginStatusType.Loading), 300);
 
-        async function checkLogin(): Promise<
-            RouteNameType.UserIndexPage | RouteNameType.LoginPage
-        > {
+        async function checkLogin(): Promise<RouteNameType.HomePage | RouteNameType.LoginPage> {
             let nextPage = RouteNameType.LoginPage;
 
             const token = globalStore.wechat?.token;
             if (token) {
                 try {
                     await loginCheck();
-                    nextPage = RouteNameType.UserIndexPage;
+                    nextPage = RouteNameType.HomePage;
                 } catch (e) {
                     console.error(e);
                 }
