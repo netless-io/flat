@@ -111,28 +111,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     useAutoRun(reaction => {
         if (classRoomStore.currentUser) {
-            if (!classRoomStore.isCalling) {
-                // join rtc room to listen to creator events
-                classRoomStore.toggleCalling();
-            }
+            // join rtc room to listen to creator events
+            classRoomStore.startCalling();
             // run only once
             reaction.dispose();
-        }
-    });
-
-    // controll whiteboard writable
-    useAutoRun(reaction => {
-        // ignore creator
-        if (classRoomStore.isCreator) {
-            reaction.dispose();
-            return;
-        }
-        if (whiteboardStore.room && classRoomStore.currentUser) {
-            const isWritable = classRoomStore.currentUser.isSpeak;
-            if (whiteboardStore.room.disableDeviceInputs === isWritable) {
-                whiteboardStore.room.disableDeviceInputs = !isWritable;
-                whiteboardStore.room.setWritable(isWritable);
-            }
         }
     });
 

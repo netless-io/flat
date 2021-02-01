@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { action, makeAutoObservable, observable, runInAction } from "mobx";
+import { action, makeAutoObservable, observable, runInAction, toJS } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import { Rtc as RTCAPI, RtcChannelType } from "../apiMiddleware/Rtc";
@@ -26,6 +26,7 @@ import { RoomItem, roomStore } from "./RoomStore";
 import { globalStore } from "./GlobalStore";
 import { NODE_ENV } from "../constants/Process";
 import { useAutoRun } from "../utils/mobx";
+import { configStore } from "./ConfigStore";
 
 export interface User {
     userUUID: string;
@@ -78,9 +79,9 @@ export class ClassRoomStore {
 
     private recordingConfig: RecordingConfig;
 
-    private noMoreRemoteMessages = false;
+    private _noMoreRemoteMessages = false;
 
-    private cancelHandleChannelStatusTimeout?: number;
+    private _cancelHandleChannelStatusTimeout?: number;
 
     constructor(config: { roomUUID: string; ownerUUID: string; recordingConfig: RecordingConfig }) {
         if (!globalStore.userUUID) {
@@ -97,14 +98,14 @@ export class ClassRoomStore {
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
 
-        makeAutoObservable<this, "noMoreRemoteMessages" | "cancelHandleChannelStatusTimeout">(
+        makeAutoObservable<this, "_noMoreRemoteMessages" | "_cancelHandleChannelStatusTimeout">(
             this,
             {
                 rtc: observable.ref,
                 rtm: observable.ref,
                 cloudRecording: observable.ref,
-                noMoreRemoteMessages: false,
-                cancelHandleChannelStatusTimeout: false,
+                _noMoreRemoteMessages: false,
+                _cancelHandleChannelStatusTimeout: false,
             },
         );
     }
@@ -147,26 +148,48 @@ export class ClassRoomStore {
 
     stopClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Stopped);
 
-    toggleCalling = async (): Promise<void> => {
-        this.isCalling = !this.isCalling;
-        if (!this.currentUser) {
+    startCalling = async (): Promise<void> => {
+        if (this.isCalling || !this.currentUser) {
             return;
         }
+        this.isCalling = true;
+
         try {
-            if (this.isCalling) {
-                await this.rtc.join(this.currentUser.rtcUID, this.rtcChannelType);
-            } else {
-                if (this.isRecording) {
-                    await this.stopRecording();
-                }
-                this.rtc.leave();
-            }
+            await this.rtc.join(this.currentUser.rtcUID, this.rtcChannelType);
         } catch (e) {
             console.error(e);
             runInAction(() => {
                 // reset state
-                this.isCalling = !this.isCalling;
+                this.isCalling = false;
             });
+        }
+    };
+
+    stopCalling = async (): Promise<void> => {
+        if (!this.isCalling || !this.currentUser) {
+            return;
+        }
+        this.isCalling = false;
+
+        try {
+            if (this.isRecording) {
+                await this.stopRecording();
+            }
+            this.rtc.leave();
+        } catch (e) {
+            console.error(e);
+            runInAction(() => {
+                // reset state
+                this.isCalling = true;
+            });
+        }
+    };
+
+    toggleCalling = async (): Promise<void> => {
+        if (this.isCalling) {
+            return this.stopCalling();
+        } else {
+            return this.startCalling();
         }
     };
 
@@ -209,7 +232,7 @@ export class ClassRoomStore {
     };
 
     updateHistory = async (): Promise<void> => {
-        if (this.noMoreRemoteMessages) {
+        if (this._noMoreRemoteMessages) {
             return;
         }
 
@@ -227,7 +250,7 @@ export class ClassRoomStore {
         }
 
         if (messages.length <= 0) {
-            this.noMoreRemoteMessages = true;
+            this._noMoreRemoteMessages = true;
             return;
         }
 
@@ -315,7 +338,7 @@ export class ClassRoomStore {
         }
     };
 
-    /** When urrent user (who is a joiner) raises hand */
+    /** When current user (who is a joiner) raises hand */
     onToggleHandRaising = (): void => {
         if (this.isCreator || this.currentUser?.isSpeak) {
             return;
@@ -421,7 +444,7 @@ export class ClassRoomStore {
 
         this.rtc.destroy();
 
-        window.clearTimeout(this.cancelHandleChannelStatusTimeout);
+        window.clearTimeout(this._cancelHandleChannelStatusTimeout);
 
         try {
             await Promise.all(promises);
@@ -687,6 +710,7 @@ export class ClassRoomStore {
             if (config) {
                 if (config.speak) {
                     user.isSpeak = true;
+                    user.mic = true;
                     user.isRaiseHand = false;
                 } else {
                     user.isSpeak = false;
@@ -741,7 +765,7 @@ export class ClassRoomStore {
             }
         }
 
-        // Ssort each unsorted users into different group
+        // Sort each unsorted users into different group
         unSortedUsers.forEach(this.sortOneUser);
     };
 
@@ -827,8 +851,8 @@ export class ClassRoomStore {
         };
 
         this.rtm.once(RTMessageType.ChannelStatus, handleChannelStatus);
-        window.clearTimeout(this.cancelHandleChannelStatusTimeout);
-        this.cancelHandleChannelStatusTimeout = window.setTimeout(cancelHandleChannelStatus, 5000);
+        window.clearTimeout(this._cancelHandleChannelStatusTimeout);
+        this._cancelHandleChannelStatusTimeout = window.setTimeout(cancelHandleChannelStatus, 5000);
 
         // creator plus joiners
         const usersTotal = 1 + this.joinerTotalCount;
@@ -867,8 +891,8 @@ export class ClassRoomStore {
                 rtcUID: users[userUUID].rtcUID,
                 avatar: users[userUUID].avatarURL,
                 name: users[userUUID].name,
-                camera: userUUID !== this.userUUID,
-                mic: true,
+                camera: userUUID === this.userUUID ? toJS(configStore.autoCameraOn) : false,
+                mic: userUUID === this.userUUID ? toJS(configStore.autoMicOn) : false,
                 isSpeak: false,
                 isRaiseHand: false,
             }),

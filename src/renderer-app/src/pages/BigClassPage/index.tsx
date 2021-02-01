@@ -93,11 +93,13 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     });
 
     useAutoRun(reaction => {
-        if (classRoomStore.currentUser) {
-            if (!classRoomStore.isCreator && !classRoomStore.isCalling) {
-                // join rtc room to listen to creator events
-                classRoomStore.toggleCalling();
-            }
+        const { currentUser, creator } = classRoomStore;
+        if (
+            (currentUser && currentUser.isSpeak && (currentUser.camera || currentUser.mic)) ||
+            (creator && (creator.camera || creator.mic))
+        ) {
+            // join rtc room to listen to creator events
+            classRoomStore.startCalling();
             // run only once
             reaction.dispose();
         }
@@ -269,9 +271,11 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     function renderRealtimePanel(): React.ReactNode {
         const { creator } = classRoomStore;
-        const isVideoOn = classRoomStore.isCreator
-            ? classRoomStore.isCalling
-            : !!classRoomStore.creator?.isSpeak;
+        const isVideoOn = Boolean(
+            classRoomStore.isCreator
+                ? classRoomStore.isCalling
+                : creator && (creator.camera || creator.mic),
+        );
 
         return (
             <RealtimePanel
