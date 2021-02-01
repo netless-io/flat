@@ -3,15 +3,16 @@ import React from "react";
 import { Select } from "antd";
 import { observer } from "mobx-react-lite";
 import { getRoomTypeName } from "../utils/getTypeName";
+import { SelectProps } from "antd/lib/select";
 
-export const RoomTypeSelect = observer<RoomTypeOptionProps>(function RoomTypeOption({
-    value,
-    onChange,
-    className,
-}) {
+const RoomTypeList = Object.freeze([RoomType.OneToOne, RoomType.SmallClass, RoomType.BigClass]);
+
+interface RoomTypeSelectProps extends SelectProps<RoomType> {}
+
+export const RoomTypeSelect = observer<RoomTypeSelectProps>(function RoomTypeOption(props) {
     return (
-        <Select onChange={onChange} value={value} className={className}>
-            {[RoomType.OneToOne, RoomType.SmallClass, RoomType.BigClass].map(e => {
+        <Select {...props}>
+            {RoomTypeList.map(e => {
                 return (
                     <Select.Option key={e} value={e}>
                         {getRoomTypeName(e)}
@@ -21,9 +22,3 @@ export const RoomTypeSelect = observer<RoomTypeOptionProps>(function RoomTypeOpt
         </Select>
     );
 });
-
-interface RoomTypeOptionProps {
-    value?: RoomType;
-    onChange?: (value: RoomType) => void;
-    className?: string;
-}
