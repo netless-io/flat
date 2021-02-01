@@ -52,7 +52,17 @@ export const SplashPage = observer<SplashPageProps>(function SplashPage() {
 
         Promise.all([checkLogin(), pWait1s]).then(([nextPage]) => {
             if (!isUnMount) {
-                pushHistory(nextPage, {});
+                if (nextPage === RouteNameType.HomePage) {
+                    pushHistory(
+                        nextPage,
+                        {},
+                        {
+                            windowCenter: true,
+                        },
+                    );
+                } else {
+                    pushHistory(nextPage, {});
+                }
             }
         });
 

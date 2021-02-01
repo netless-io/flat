@@ -89,7 +89,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     useAutoRun(() => {
         if (classRoomStore.roomStatus === RoomStatus.Stopped) {
-            pushHistory(RouteNameType.HomePage, {});
+            pushHistory(
+                RouteNameType.HomePage,
+                {},
+                {
+                    windowCenter: true,
+                },
+            );
         }
     });
 
