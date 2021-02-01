@@ -1,23 +1,46 @@
 import createSVG from "../../../assets/image/creat.svg";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox } from "antd";
+import { Button, Input, Modal, Checkbox, Form, message } from "antd";
 import { RoomType } from "../../../apiMiddleware/flatServer/constants";
 import { RoomTypeSelect } from "../../../components/RoomType";
+import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
+
+interface CreateRoomFormValues {
+    roomTitle: string;
+    roomType: RoomType;
+    autoCameraOn: boolean;
+}
 
 export interface CreateRoomBoxProps {
-    onCreateRoom: (title: string, type: RoomType) => void;
+    onCreateRoom: (title: string, type: RoomType) => Promise<void>;
 }
 
 export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox({ onCreateRoom }) {
-    const [roomTitle, setRoomTitle] = useState("");
-    const [roomType, setRoomType] = useState(RoomType.OneToOne);
+    const globalStore = useContext(GlobalStoreContext);
+    const configStore = useContext(ConfigStoreContext);
+    const [form] = Form.useForm<CreateRoomFormValues>();
+
+    const [isLoading, setLoading] = useState(false);
     const [isShowModal, showModal] = useState(false);
+    const [isFormValidated, setIsFormValidated] = useState(false);
+
+    const defaultValues: CreateRoomFormValues = {
+        roomTitle: globalStore.wechat?.name ? `${globalStore.wechat.name}创建的房间` : "",
+        roomType: RoomType.OneToOne,
+        autoCameraOn: configStore.autoCameraOn,
+    };
 
     return (
         <>
-            <Button onClick={() => showModal(true)}>
+            <Button
+                onClick={() => {
+                    form.setFieldsValue(defaultValues);
+                    showModal(true);
+                    formValidateStatus();
+                }}
+            >
                 <img src={createSVG} alt="create room" />
                 创建房间
             </Button>
@@ -25,35 +48,89 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                 title="创建房间"
                 width={368}
                 visible={isShowModal}
-                okText={"创建"}
-                cancelText={"取消"}
-                onOk={() => {
-                    onCreateRoom(roomTitle, roomType);
-                    showModal(false);
-                }}
-                onCancel={() => showModal(false)}
+                destroyOnClose
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={[
+                    <Button key="cancel" onClick={handleCancel}>
+                        取消
+                    </Button>,
+                    <Button
+                        key="submit"
+                        type="primary"
+                        loading={isLoading}
+                        onClick={handleOk}
+                        disabled={isLoading || !isFormValidated}
+                    >
+                        创建
+                    </Button>,
+                ]}
             >
-                <div className="modal-inner-name">主题</div>
-                <div className="modal-inner-input">
-                    <Input value={roomTitle} onChange={e => setRoomTitle(e.target.value)} />
-                </div>
-                <div className="modal-inner-name">类型</div>
-                <div className="modal-inner-input">
-                    <RoomTypeSelect
-                        className="modal-inner-select"
-                        value={roomType}
-                        onChange={setRoomType}
-                    />
-                </div>
-                <div className="modal-inner-name">加入选项</div>
-                <div className="modal-inner-check">
-                    <Checkbox>
-                        <span className="modal-inner-text">开启摄像头</span>
-                    </Checkbox>
-                </div>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    name="createRoom"
+                    className="main-room-menu-form"
+                    initialValues={defaultValues}
+                    onFieldsChange={formValidateStatus}
+                >
+                    <Form.Item
+                        name="roomTitle"
+                        label="主题"
+                        rules={[{ required: true, max: 50, message: "请输入主题！" }]}
+                    >
+                        <Input
+                            placeholder="请输入房间主题"
+                            ref={input => {
+                                if (input) {
+                                    input.focus();
+                                    input.select();
+                                }
+                            }}
+                        />
+                    </Form.Item>
+                    <Form.Item name="roomType" label="类型">
+                        <RoomTypeSelect />
+                    </Form.Item>
+                    <Form.Item label="加入选项">
+                        <Form.Item name="autoCameraOn" noStyle valuePropName="checked">
+                            <Checkbox>开启摄像头</Checkbox>
+                        </Form.Item>
+                    </Form.Item>
+                </Form>
             </Modal>
         </>
     );
+
+    async function handleOk(): Promise<void> {
+        try {
+            await form.validateFields();
+        } catch (e) {
+            // errors are showed on form
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const values = form.getFieldsValue();
+            configStore.updateAutoCameraOn(values.autoCameraOn);
+            await onCreateRoom(values.roomTitle, values.roomType);
+        } catch (e) {
+            message.error(e.message);
+            console.error(e);
+            setLoading(false);
+            showModal(false);
+        }
+    }
+
+    function handleCancel(): void {
+        showModal(false);
+    }
+
+    function formValidateStatus(): void {
+        setIsFormValidated(form.getFieldsError().every(field => field.errors.length <= 0));
+    }
 });
 
 export default CreateRoomBox;
