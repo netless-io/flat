@@ -1,5 +1,6 @@
 import { Button, Checkbox, Menu, message, Modal } from "antd";
 import { MenuProps } from "antd/lib/menu";
+import { clipboard } from "electron";
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { cancelHistoryRoom } from "../../../apiMiddleware/flatServer";
@@ -60,7 +61,7 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
                                 </Link>
                             </Menu.Item>
                             <Menu.Item onClick={showCancelRoomModal}>取消房间</Menu.Item>
-                            <Menu.Item>复制邀请</Menu.Item>
+                            <Menu.Item onClick={copyInvitation}>复制邀请</Menu.Item>
                         </>
                     )}
                 </Menu>
@@ -125,6 +126,11 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
             } catch (e) {
                 console.error(e);
             }
+        }
+
+        function copyInvitation(): void {
+            clipboard.writeText(roomUUID);
+            message.success("复制成功");
         }
     },
 );

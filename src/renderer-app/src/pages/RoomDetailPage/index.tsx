@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { format } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { Link, useParams } from "react-router-dom";
+import { clipboard } from "electron";
 import MainPageLayout from "../../components/MainPageLayout";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { observer } from "mobx-react-lite";
@@ -187,6 +188,10 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
             <InviteModal
                 visible={isShowInviteModal}
                 room={roomInfo}
+                onCopy={text => {
+                    clipboard.writeText(text);
+                    message.success("复制成功");
+                }}
                 onCancel={() => showInviteModal(false)}
             />
             <Modal

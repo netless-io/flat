@@ -10,11 +10,13 @@ const onlySuffixTimeFormat = format("HH:mm");
 export interface InviteModalProps {
     visible: boolean;
     room: RoomItem;
+    onCopy: (text: string) => void;
     onCancel: () => void;
 }
 
 export const InviteModal = observer<InviteModalProps>(function InviteModal({
     visible,
+    onCopy,
     onCancel,
     room,
 }) {
@@ -30,6 +32,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
         <Modal
             width={460}
             visible={visible}
+            onOk={() => onCopy(roomUUID)}
             onCancel={onCancel}
             okText="复制"
             cancelText="取消"
