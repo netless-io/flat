@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import { message } from "antd";
 import { RouteConfig, routeConfig } from "./route-config";
@@ -11,7 +11,7 @@ export class AppRoutes extends React.Component {
 
     public render(): React.ReactElement {
         return (
-            <HashRouter>
+            <BrowserRouter>
                 <Switch>
                     {Object.keys(routeConfig).map(((name: keyof RouteConfig) => {
                         const { path, component, title } = routeConfig[name];
@@ -29,7 +29,7 @@ export class AppRoutes extends React.Component {
                         );
                     }) as (name: string) => React.ReactElement)}
                 </Switch>
-            </HashRouter>
+            </BrowserRouter>
         );
     }
 }

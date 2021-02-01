@@ -24,6 +24,10 @@ type ExtractRouteParams<T extends string> = string extends T
 
 export type RouteParams<T extends RouteNameType> = ExtractRouteParams<RouteConfig[T]["path"]>;
 
+export interface RouteState {
+    windowCenter: boolean;
+}
+
 export function generateRoutePath<T extends RouteNameType>(
     name: T,
     params: RouteParams<T>,
@@ -37,12 +41,13 @@ export function generateRoutePath<T extends RouteNameType>(
 export function usePushHistory(): <T extends RouteNameType>(
     name: T,
     params: RouteParams<T>,
+    state?: RouteState,
 ) => void {
     const history = useHistory();
 
     const pushHistory = useCallback(
-        (name: RouteNameType, params: RouteParams<RouteNameType>) => {
-            history.push(generateRoutePath(name, params));
+        (name: RouteNameType, params: RouteParams<RouteNameType>, state?: RouteState) => {
+            history.push(generateRoutePath(name, params), state);
         },
         [history],
     );

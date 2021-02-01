@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button } from "antd";
+import { Button, Modal } from "antd";
 import { observer } from "mobx-react-lite";
-import { useHistory } from "react-router";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
+import { RouteNameType, usePushHistory } from "../utils/routes";
 
 export enum ExitRoomConfirmType {
     StopClassButton,
@@ -25,7 +25,7 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
 }) {
     const [confirmType, setConfirmType] = useState(ExitRoomConfirmType.ExitButton);
     const [visible, setVisible] = useState(false);
-    const history = useHistory();
+    const pushHistory = usePushHistory();
 
     useEffect(() => {
         // @TODO 监听 ipc
@@ -75,7 +75,13 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
 
     function onReturnMain(): void {
         setVisible(false);
-        history.push("/user/");
+        pushHistory(
+            RouteNameType.HomePage,
+            {},
+            {
+                windowCenter: true,
+            },
+        );
     }
 
     function onStopClass(): void {
