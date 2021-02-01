@@ -1,6 +1,6 @@
 import createSVG from "../../../assets/image/creat.svg";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form, message } from "antd";
 import { RoomType } from "../../../apiMiddleware/flatServer/constants";
@@ -25,6 +25,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const [isLoading, setLoading] = useState(false);
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
+    const hasInputAutoSelectedRef = useRef(false);
 
     const defaultValues: CreateRoomFormValues = {
         roomTitle: globalStore.wechat?.name ? `${globalStore.wechat.name}创建的房间` : "",
@@ -77,14 +78,21 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                     <Form.Item
                         name="roomTitle"
                         label="主题"
-                        rules={[{ required: true, max: 50, message: "请输入主题！" }]}
+                        rules={[
+                            { required: true, message: "请输入主题" },
+                            { max: 50, message: "主题最多为 50 个字符" },
+                        ]}
                     >
                         <Input
                             placeholder="请输入房间主题"
                             ref={input => {
+                                if (hasInputAutoSelectedRef.current) {
+                                    return;
+                                }
                                 if (input) {
                                     input.focus();
                                     input.select();
+                                    hasInputAutoSelectedRef.current = true;
                                 }
                             }}
                         />
