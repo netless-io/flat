@@ -12,7 +12,12 @@ export const RoomListDate = React.memo<RoomListDateProps>(function RoomListDate(
     return beginTime ? (
         <time dateTime={new Date(beginTime).toUTCString()}>
             {format(beginTime, "MMM do", { locale: zhCN })}
-            {isToday(beginTime) ? " 今天" : isTomorrow(beginTime) ? " 明天" : null}
+            {" · "}
+            {isToday(beginTime)
+                ? "今天"
+                : isTomorrow(beginTime)
+                ? "明天"
+                : format(beginTime, "E", { locale: zhCN })}
         </time>
     ) : null;
 });
