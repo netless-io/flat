@@ -5,42 +5,44 @@ import userActiveSVG from "../assets/image/user-active.svg";
 import settingSVG from "../assets/image/setting.svg";
 import settingActiveSVG from "../assets/image/setting-active.svg";
 
-import React from "react";
+import React, { useState } from "react";
 import { Menu } from "antd";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { generateRoutePath, RouteNameType, SettingPageType } from "../utils/routes";
 import { routeConfig } from "../route-config";
 
-const MainMenuItems = Object.freeze([
-    {
-        routeName: RouteNameType.HomePage,
-        title: "首页",
-        icon: homeSVG,
-        iconActive: homeActiveSVG,
-        href: generateRoutePath(RouteNameType.HomePage, {}),
-    },
-    {
-        routeName: RouteNameType.UserInfoPage,
-        title: "我的",
-        icon: userSVG,
-        iconActive: userActiveSVG,
-        href: generateRoutePath(RouteNameType.UserInfoPage, {}),
-    },
-    {
-        routeName: RouteNameType.UserSettingPage,
-        title: "设置",
-        icon: settingSVG,
-        iconActive: settingActiveSVG,
-        href: generateRoutePath(RouteNameType.UserSettingPage, {
-            settingType: SettingPageType.Normal,
-        }),
-    },
-]);
-
 export interface MainMenuProps {}
 
 export const MainMenu = React.memo<MainMenuProps>(function MainMenu() {
     const location = useLocation();
+
+    const [MainMenuItems] = useState(() =>
+        Object.freeze([
+            {
+                routeName: RouteNameType.HomePage,
+                title: "首页",
+                icon: homeSVG,
+                iconActive: homeActiveSVG,
+                href: generateRoutePath(RouteNameType.HomePage, {}),
+            },
+            {
+                routeName: RouteNameType.UserInfoPage,
+                title: "我的",
+                icon: userSVG,
+                iconActive: userActiveSVG,
+                href: generateRoutePath(RouteNameType.UserInfoPage, {}),
+            },
+            {
+                routeName: RouteNameType.UserSettingPage,
+                title: "设置",
+                icon: settingSVG,
+                iconActive: settingActiveSVG,
+                href: generateRoutePath(RouteNameType.UserSettingPage, {
+                    settingType: SettingPageType.Normal,
+                }),
+            },
+        ]),
+    );
 
     const selectedKey =
         MainMenuItems.find(({ routeName }) =>
