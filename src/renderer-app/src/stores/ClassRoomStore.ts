@@ -713,16 +713,8 @@ export class ClassRoomStore {
         this.sortUsers(user => {
             const config = configMap.get(user.userUUID);
             if (config) {
-                if (config.speak) {
-                    user.isSpeak = true;
-                    user.mic = true;
-                    user.isRaiseHand = false;
-                } else {
-                    user.isSpeak = false;
-                    user.isRaiseHand = false;
-                    user.camera = false;
-                    user.mic = false;
-                }
+                user.isSpeak = config.speak;
+                user.isRaiseHand = false;
             }
         });
     }
