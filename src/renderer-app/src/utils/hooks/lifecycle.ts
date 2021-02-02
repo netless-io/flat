@@ -17,7 +17,15 @@ export function useIsUnMounted(): RefObject<boolean> {
  * @example
  * ```ts
  * const sp = useSafePromise()
- * await sp(asyncTask())
+ * setLoading(true)
+ * try {
+ *   const result1 = await sp(fetchData1())
+ *   const result2 = await sp(fetchData2(result1))
+ *   setData(result2)
+ * } catch(e) {
+ *   setHasError(true)
+ * }
+ * setLoading(false)
  * ```
  */
 export function useSafePromise<T, E>(): (
