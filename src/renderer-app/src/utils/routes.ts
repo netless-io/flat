@@ -1,28 +1,37 @@
-import { routeConfig, RouteConfig, RouteNameType } from "../route-config";
+import { routeConfig, RouteConfig, RouteNameType, ExtraRouteConfig } from "../route-config";
 import { generatePath, useHistory } from "react-router";
 import { useCallback } from "react";
 
-export { RouteNameType } from "../route-config";
+export { RouteNameType, SettingPageType } from "../route-config";
+
+type PickExtraRouteConfig<
+    T extends RouteNameType,
+    K extends string
+> = T extends keyof ExtraRouteConfig
+    ? K extends keyof ExtraRouteConfig[T]
+        ? ExtraRouteConfig[T][K]
+        : string
+    : string;
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * Inspired by {@link https://github.com/ghoullier/awesome-template-literal-types#router-params-parsing}
  * Supports optional params
  */
-type ExtractRouteParams<T extends string> = string extends T
+type ExtractRouteParams<T extends RouteNameType, P extends string> = string extends P
     ? Record<string, string>
-    : T extends `${infer _Start}:${infer Param}/${infer Rest}`
+    : P extends `${infer _Start}:${infer Param}/${infer Rest}`
     ? Param extends `${infer Param}?`
-        ? { [k in Param]?: string } & ExtractRouteParams<Rest>
-        : { [k in Param]: string } & ExtractRouteParams<Rest>
-    : T extends `${infer _Start}:${infer Param}`
+        ? { [k in Param]?: PickExtraRouteConfig<T, k> } & ExtractRouteParams<T, Rest>
+        : { [k in Param]: PickExtraRouteConfig<T, k> } & ExtractRouteParams<T, Rest>
+    : P extends `${infer _Start}:${infer Param}`
     ? Param extends `${infer Param}?`
-        ? { [k in Param]?: string }
-        : { [k in Param]: string }
+        ? { [k in Param]?: PickExtraRouteConfig<T, k> }
+        : { [k in Param]: PickExtraRouteConfig<T, k> }
     : {};
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
-export type RouteParams<T extends RouteNameType> = ExtractRouteParams<RouteConfig[T]["path"]>;
+export type RouteParams<T extends RouteNameType> = ExtractRouteParams<T, RouteConfig[T]["path"]>;
 
 export interface RouteState {
     windowCenter: boolean;
