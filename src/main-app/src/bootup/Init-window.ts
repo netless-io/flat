@@ -18,6 +18,8 @@ export default async (context: Context) => {
         center: true,
         resizable: false,
         show: false,
+        fullscreenable: false,
+        maximizable: false,
         webPreferences: {
             autoplayPolicy: "no-user-gesture-required",
             nodeIntegration: true,
