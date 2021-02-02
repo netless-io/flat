@@ -7,7 +7,7 @@ import { RoomStoreContext } from "../../../components/StoreProvider";
 import { ListRoomsType } from "../../../apiMiddleware/flatServer";
 import { MainRoomListItem } from "./MainRoomListItem";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
-import { RoomStatus, RoomType } from "../../../apiMiddleware/flatServer/constants";
+import { RoomType } from "../../../apiMiddleware/flatServer/constants";
 
 export interface MainRoomListProps {
     listRoomsType: ListRoomsType;
@@ -52,39 +52,11 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
         );
     }
 
-    const rooms = roomUUIDs.map(roomUUID => roomStore.rooms.get(roomUUID));
-    const idleRooms = [];
-    const startedRooms = [];
-    const pausedRooms = [];
-    const stoppedRooms = [];
-
-    for (const room of rooms) {
-        if (room) {
-            switch (room.roomStatus) {
-                case RoomStatus.Started: {
-                    startedRooms.push(room);
-                    break;
-                }
-                case RoomStatus.Stopped: {
-                    stoppedRooms.push(room);
-                    break;
-                }
-                case RoomStatus.Paused: {
-                    pausedRooms.push(room);
-                    break;
-                }
-
-                default:
-                    idleRooms.push(room);
-                    break;
-            }
-        }
-    }
-
     return (
         <>
-            {[...startedRooms, ...pausedRooms, ...idleRooms, ...stoppedRooms].map(
-                (room, index, rooms) => {
+            {roomUUIDs
+                .map(roomUUID => roomStore.rooms.get(roomUUID))
+                .map((room, index, rooms) => {
                     if (!room) {
                         return null;
                     }
@@ -108,8 +80,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                             onReplayRoom={replayRoom}
                         />
                     );
-                },
-            )}
+                })}
         </>
     );
 
