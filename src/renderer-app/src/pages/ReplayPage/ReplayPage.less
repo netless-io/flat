@@ -36,6 +36,16 @@
 .replay-big-class-video {
     width: 288px;
     height: 216px;
+    position: relative;
+    overflow: hidden;
+
+    .vjs-modal-dialog-description {
+        display: none;
+    }
+
+    .vjs-error-display::before {
+        display: none;
+    }
 }
 
 .replay-whiteboard-wrap {
