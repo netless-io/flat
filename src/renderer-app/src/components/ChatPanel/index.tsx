@@ -10,16 +10,18 @@ import "./ChatPanel.less";
 
 export interface ChatPanelProps {
     classRoomStore: ClassRoomStore;
-    allowMultipleSpeakers: boolean;
+    disableMultipleSpeakers?: boolean;
+    disableHandRaising?: boolean;
 }
 
 export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     classRoomStore,
-    allowMultipleSpeakers,
+    disableMultipleSpeakers,
+    disableHandRaising,
 }) {
     const onAcceptRaiseHand = useCallback(
         (userUUID: string): void => {
-            if (classRoomStore.speakingJoiners.length > 0 && !allowMultipleSpeakers) {
+            if (classRoomStore.speakingJoiners.length > 0 && disableMultipleSpeakers) {
                 // only one speaker is allowed
                 return;
             }
@@ -30,7 +32,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
         [
             classRoomStore.speakingJoiners.length,
             classRoomStore.acceptRaiseHand,
-            allowMultipleSpeakers,
+            disableMultipleSpeakers,
         ],
     );
 
@@ -53,6 +55,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                         messages={classRoomStore.messages}
                         currentUser={classRoomStore.currentUser}
                         isBan={classRoomStore.isBan}
+                        disableHandRaising={disableHandRaising}
                         onMessageSend={classRoomStore.onMessageSend}
                         onLoadMore={classRoomStore.updateHistory}
                         onRaiseHandChange={classRoomStore.onToggleHandRaising}
