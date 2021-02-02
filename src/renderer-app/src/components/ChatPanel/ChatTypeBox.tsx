@@ -13,6 +13,7 @@ export interface ChatTypeBoxProps {
     isCreator: boolean;
     isBan: boolean;
     currentUser?: User | null;
+    disableHandRaising?: boolean;
     onBanChange: () => void;
     onMessageSend: (text: string) => Promise<void>;
     onRaiseHandChange: () => void;
@@ -27,6 +28,7 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
     isCreator,
     isBan,
     currentUser,
+    disableHandRaising,
     onBanChange,
     onMessageSend,
     onRaiseHandChange,
@@ -78,9 +80,11 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
                     <img src={isBan ? banChatActive : banChat} />
                 </button>
             ) : (
-                <button className="chat-typebox-icon" title="举手" onClick={onRaiseHandChange}>
-                    <img src={currentUser?.isRaiseHand ? handActive : hand} />
-                </button>
+                !disableHandRaising && (
+                    <button className="chat-typebox-icon" title="举手" onClick={onRaiseHandChange}>
+                        <img src={currentUser?.isRaiseHand ? handActive : hand} />
+                    </button>
+                )
             )}
             {!isCreator && isBan ? (
                 <span className="chat-typebox-ban-input" title="全员禁言中">

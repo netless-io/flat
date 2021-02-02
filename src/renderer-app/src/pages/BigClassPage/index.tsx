@@ -334,7 +334,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 chatSlot={
                     <ChatPanel
                         classRoomStore={classRoomStore}
-                        allowMultipleSpeakers={false}
+                        disableMultipleSpeakers={true}
                     ></ChatPanel>
                 }
             />
