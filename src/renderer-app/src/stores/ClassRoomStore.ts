@@ -854,13 +854,15 @@ export class ClassRoomStore {
         // creator plus joiners
         const usersTotal = 1 + this.joinerTotalCount;
 
-        if (usersTotal <= 50) {
-            // in a small room, ask creator directly for info
-            pickedSenders.push(this.ownerUUID);
-        } else {
-            // too many users. pick a random user instead.
-            // @TODO pick three random users
-            pickedSenders.push(this.pickRandomJoiner()?.userUUID || this.ownerUUID);
+        if (usersTotal >= 2) {
+            if (usersTotal <= 50 && this.creator) {
+                // in a small room, ask creator directly for info
+                pickedSenders.push(this.creator.userUUID);
+            } else {
+                // too many users. pick a random user instead.
+                // @TODO pick three random users
+                pickedSenders.push(this.pickRandomJoiner()?.userUUID || this.ownerUUID);
+            }
         }
 
         for (const senderUUID of pickedSenders) {
