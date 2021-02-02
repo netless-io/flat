@@ -84,16 +84,10 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                     <Form.Item
                         name="roomUUID"
                         label="房间号"
-                        rules={[{ required: true, message: "请输入房间号！" }]}
+                        rules={[{ required: true, message: "请输入房间号" }]}
                     >
                         <Input
                             placeholder="请输入房间号"
-                            ref={input => {
-                                if (input) {
-                                    input.focus();
-                                    input.select();
-                                }
-                            }}
                             suffix={
                                 <Dropdown
                                     trigger={["click"]}
