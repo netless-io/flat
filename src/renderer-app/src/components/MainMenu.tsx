@@ -1,60 +1,67 @@
-import React, { PureComponent } from "react";
+import homeSVG from "../assets/image/home.svg";
+import homeActiveSVG from "../assets/image/home-active.svg";
+import userSVG from "../assets/image/user.svg";
+import userActiveSVG from "../assets/image/user-active.svg";
+import settingSVG from "../assets/image/setting.svg";
+import settingActiveSVG from "../assets/image/setting-active.svg";
+
+import React from "react";
 import { Menu } from "antd";
-import home from "../assets/image/home.svg";
-import homeActive from "../assets/image/home-active.svg";
-import user from "../assets/image/user.svg";
-import userActive from "../assets/image/user-active.svg";
-import setting from "../assets/image/setting.svg";
-import settingActive from "../assets/image/setting-active.svg";
-import { Link } from "react-router-dom";
+import { Link, matchPath, useLocation } from "react-router-dom";
+import { generateRoutePath, RouteNameType, SettingPageType } from "../utils/routes";
+import { routeConfig } from "../route-config";
 
-export enum MainMenuKey {
-    InfoPath = "/user/",
-    MyPath = "/info/",
-    SettingPath = "/setting/",
-}
+const MainMenuItems = Object.freeze([
+    {
+        routeName: RouteNameType.HomePage,
+        title: "首页",
+        icon: homeSVG,
+        iconActive: homeActiveSVG,
+        href: generateRoutePath(RouteNameType.HomePage, {}),
+    },
+    {
+        routeName: RouteNameType.UserInfoPage,
+        title: "我的",
+        icon: userSVG,
+        iconActive: userActiveSVG,
+        href: generateRoutePath(RouteNameType.UserInfoPage, {}),
+    },
+    {
+        routeName: RouteNameType.UserSettingPage,
+        title: "设置",
+        icon: settingSVG,
+        iconActive: settingActiveSVG,
+        href: generateRoutePath(RouteNameType.UserSettingPage, {
+            settingType: SettingPageType.Normal,
+        }),
+    },
+]);
 
-export class MainMenu extends PureComponent<{}> {
-    render(): JSX.Element {
-        let key = "";
-        const hash = window.location.hash.substring(1);
-        if (/^\/user/.test(hash)) {
-            key = "/user/";
-        } else if (/^\/info/.test(hash)) {
-            key = "/info/";
-        } else if (/^\/setting/.test(hash)) {
-            key = "/setting/";
-        }
+export interface MainMenuProps {}
 
-        return (
-            <Menu className="menu-container" defaultSelectedKeys={[key]}>
+export const MainMenu = React.memo<MainMenuProps>(function MainMenu() {
+    const location = useLocation();
+
+    const selectedKey =
+        MainMenuItems.find(({ routeName }) =>
+            matchPath(location.pathname, {
+                path: routeConfig[routeName].path,
+                exact: true,
+            }),
+        )?.routeName || RouteNameType.HomePage;
+
+    return (
+        <Menu className="menu-container" defaultSelectedKeys={[selectedKey]}>
+            {MainMenuItems.map(({ routeName, title, icon, iconActive, href }) => (
                 <Menu.Item
-                    icon={<img src={key === "/user/" ? homeActive : home} alt={"home"} />}
-                    key={MainMenuKey.InfoPath}
+                    icon={<img src={selectedKey === routeName ? iconActive : icon} alt={title} />}
+                    key={routeName}
                 >
-                    <Link to="/user/">
-                        <span>首页</span>
+                    <Link to={href}>
+                        <span>{title}</span>
                     </Link>
                 </Menu.Item>
-                <Menu.Item
-                    icon={<img src={key === "/info/" ? userActive : user} alt={"user"} />}
-                    key={MainMenuKey.MyPath}
-                >
-                    <Link to="/info/">
-                        <span>我的</span>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item
-                    icon={
-                        <img src={key === "/setting/" ? settingActive : setting} alt={"setting"} />
-                    }
-                    key={MainMenuKey.SettingPath}
-                >
-                    <Link to="/setting/normal/">
-                        <span>设置</span>
-                    </Link>
-                </Menu.Item>
-            </Menu>
-        );
-    }
-}
+            ))}
+        </Menu>
+    );
+});
