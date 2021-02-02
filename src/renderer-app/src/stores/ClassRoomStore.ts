@@ -410,6 +410,11 @@ export class ClassRoomStore {
         this.resetUsers(await this.createUsers(members));
         this.updateInitialRoomState();
 
+        // inform other users about device state
+        if (configStore.autoCameraOn || configStore.autoMicOn) {
+            this.updateDeviceState(this.userUUID, configStore.autoCameraOn, configStore.autoMicOn);
+        }
+
         this.updateHistory();
 
         channel.on("MemberJoined", async userUUID => {
@@ -708,16 +713,8 @@ export class ClassRoomStore {
         this.sortUsers(user => {
             const config = configMap.get(user.userUUID);
             if (config) {
-                if (config.speak) {
-                    user.isSpeak = true;
-                    user.mic = true;
-                    user.isRaiseHand = false;
-                } else {
-                    user.isSpeak = false;
-                    user.isRaiseHand = false;
-                    user.camera = false;
-                    user.mic = false;
-                }
+                user.isSpeak = config.speak;
+                user.isRaiseHand = false;
             }
         });
     }
@@ -817,7 +814,7 @@ export class ClassRoomStore {
                     this.roomInfo.roomStatus = cStatus;
                 }
                 this.sortUsers(user => {
-                    if (uStates[user.userUUID]) {
+                    if (user.userUUID !== this.userUUID && uStates[user.userUUID]) {
                         for (const code of uStates[user.userUUID]) {
                             switch (code) {
                                 case NonDefaultUserProp.IsSpeak: {
@@ -857,13 +854,15 @@ export class ClassRoomStore {
         // creator plus joiners
         const usersTotal = 1 + this.joinerTotalCount;
 
-        if (usersTotal <= 50) {
-            // in a small room, ask creator directly for info
-            pickedSenders.push(this.ownerUUID);
-        } else {
-            // too many users. pick a random user instead.
-            // @TODO pick three random users
-            pickedSenders.push(this.pickRandomJoiner()?.userUUID || this.ownerUUID);
+        if (usersTotal >= 2) {
+            if (usersTotal <= 50 && this.creator) {
+                // in a small room, ask creator directly for info
+                pickedSenders.push(this.creator.userUUID);
+            } else {
+                // too many users. pick a random user instead.
+                // @TODO pick three random users
+                pickedSenders.push(this.pickRandomJoiner()?.userUUID || this.ownerUUID);
+            }
         }
 
         for (const senderUUID of pickedSenders) {
