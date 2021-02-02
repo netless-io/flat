@@ -140,12 +140,12 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         return (
             <RealtimePanel
                 isVideoOn={
-                    classRoomReplayStore.roomType === RoomType.BigClass &&
+                    classRoomReplayStore.roomType !== RoomType.SmallClass &&
                     classRoomReplayStore.withRTCVideo
                 }
                 isShow={true}
                 videoSlot={
-                    classRoomReplayStore.roomType === RoomType.BigClass && (
+                    classRoomReplayStore.roomType !== RoomType.SmallClass && (
                         <video className="replay-big-class-video" ref={videoElRef} />
                     )
                 }
