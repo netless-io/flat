@@ -56,7 +56,9 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                         ) : (
                             <>
                                 {roomStatusElement}
-                                {room.periodicUUID && <span>周期</span>}
+                                {room.periodicUUID && (
+                                    <span className="room-list-cell-periodic">周期</span>
+                                )}
                             </>
                         )}
                     </div>
