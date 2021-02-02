@@ -12,6 +12,7 @@ import UserInfoPage from "./UserInfoPage";
 import UserScheduledPage from "./pages/UserScheduledPage";
 import UserSettingPage from "./pages/UserSettingPanel";
 import { ModifyOrdinaryRoomPage } from "./pages/ModifyOrdinaryRoomPage";
+import { RoomType } from "./apiMiddleware/flatServer/constants";
 
 export enum RouteNameType {
     SplashPage = "SplashPage",
@@ -96,6 +97,26 @@ export const routeConfig = {
         component: ModifyOrdinaryRoomPage,
     },
 } as const;
+
+export type ExtraRouteConfig = {
+    [RouteNameType.ReplayPage]: {
+        roomType: RoomType;
+    };
+    [RouteNameType.UserSettingPage]: {
+        settingType: SettingPageType;
+    };
+};
+
+export enum SettingPageType {
+    Normal = "normal",
+    Room = "room",
+    Hotkey = "hotkey",
+    File = "file",
+    System = "system",
+    Camera = "camera",
+    Speaker = "speaker",
+    Microphone = "microphone",
+}
 
 type CheckRouteConfig<
     T extends {
