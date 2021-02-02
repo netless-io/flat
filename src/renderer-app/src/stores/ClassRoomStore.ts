@@ -410,6 +410,11 @@ export class ClassRoomStore {
         this.resetUsers(await this.createUsers(members));
         this.updateInitialRoomState();
 
+        // inform other users about device state
+        if (configStore.autoCameraOn || configStore.autoMicOn) {
+            this.updateDeviceState(this.userUUID, configStore.autoCameraOn, configStore.autoMicOn);
+        }
+
         this.updateHistory();
 
         channel.on("MemberJoined", async userUUID => {
@@ -817,7 +822,7 @@ export class ClassRoomStore {
                     this.roomInfo.roomStatus = cStatus;
                 }
                 this.sortUsers(user => {
-                    if (uStates[user.userUUID]) {
+                    if (user.userUUID !== this.userUUID && uStates[user.userUUID]) {
                         for (const code of uStates[user.userUUID]) {
                             switch (code) {
                                 case NonDefaultUserProp.IsSpeak: {
