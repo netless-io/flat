@@ -11,6 +11,7 @@ async function writeAgoraToNpmrc() {
     const options = await readNpmrc(npmrcPath);
     Object.keys(agoraOptions).forEach(key => {
         options[key] = agoraOptions[key];
+        process.env[`npm_config_${key}`] = agoraOptions[key];
     });
     await writeNpmrc(npmrcPath, options);
 }

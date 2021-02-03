@@ -9,8 +9,8 @@ const commandsArgs = minimist(process.argv.slice(2));
 delete commandsArgs._;
 
 const defaultOptions = {
-    platform: "mac",
-    arch: "x64",
+    platform: process.platform === "win32" ? "win32" : "darwin",
+    arch: process.platform === "win32" ? "x86" : "x64",
 };
 
 const argv = {
