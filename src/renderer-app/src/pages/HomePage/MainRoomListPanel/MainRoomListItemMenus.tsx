@@ -6,11 +6,13 @@ import { Link } from "react-router-dom";
 import { cancelHistoryRoom } from "../../../apiMiddleware/flatServer";
 import { RoomStoreContext } from "../../../components/StoreProvider";
 import { generateRoutePath, RouteNameType } from "../../../utils/routes";
+import { globalStore } from "../../../stores/GlobalStore";
 
 export interface MainRoomListItemMenusProps extends MenuProps {
     roomUUID: string;
     periodicUUID?: string;
     isHistoryList: boolean;
+    ownerUUID: string;
 }
 
 export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
@@ -18,12 +20,15 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
         roomUUID,
         periodicUUID,
         isHistoryList,
+        ownerUUID,
         onClick,
         ...restProps
     }) {
         const [cancelModalVisible, setCancelModalVisible] = useState(false);
         const [isCancelAll, setIsCancelAll] = useState(false);
         const roomStore = useContext(RoomStoreContext);
+
+        const isCreator = ownerUUID === globalStore.userUUID;
 
         return (
             // pass down props so that antd dropdrown menu shadow is rendered properly
@@ -45,22 +50,26 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
                         <Menu.Item onClick={deleteRoomHistory}>删除记录</Menu.Item>
                     ) : (
                         <>
-                            <Menu.Item>
-                                <Link
-                                    to={{
-                                        pathname: generateRoutePath(
-                                            RouteNameType.ModifyOrdinaryRoomPage,
-                                            {
-                                                roomUUID,
-                                                periodicUUID: periodicUUID || void 0,
-                                            },
-                                        ),
-                                    }}
-                                >
-                                    修改房间
-                                </Link>
+                            {isCreator && (
+                                <Menu.Item>
+                                    <Link
+                                        to={{
+                                            pathname: generateRoutePath(
+                                                RouteNameType.ModifyOrdinaryRoomPage,
+                                                {
+                                                    roomUUID,
+                                                    periodicUUID: periodicUUID || void 0,
+                                                },
+                                            ),
+                                        }}
+                                    >
+                                        修改房间
+                                    </Link>
+                                </Menu.Item>
+                            )}
+                            <Menu.Item onClick={showCancelRoomModal}>
+                                {isCreator ? "取消房间" : "移除房间"}
                             </Menu.Item>
-                            <Menu.Item onClick={showCancelRoomModal}>取消房间</Menu.Item>
                             <Menu.Item onClick={copyInvitation}>复制邀请</Menu.Item>
                         </>
                     )}

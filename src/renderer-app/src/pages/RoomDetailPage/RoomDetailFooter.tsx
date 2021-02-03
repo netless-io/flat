@@ -44,7 +44,7 @@ export const RoomDetailFooter: FC<RoomDetailFooterProps> = ({
                 onClick={onCancelRoom}
                 disabled={!isIdleStatus}
             >
-                删除房间
+                移除房间
             </Button>
             <Button className="user-room-btn" onClick={onInvite} disabled={!isIdleStatus}>
                 复制邀请
