@@ -73,6 +73,7 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                                 roomUUID={room.roomUUID}
                                 periodicUUID={room.periodicUUID}
                                 isHistoryList={isHistoryList}
+                                ownerUUID={room.ownerUUID}
                             />
                         }
                         trigger={["click"]}
