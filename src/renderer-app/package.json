@@ -39,6 +39,7 @@
     "react-i18next": "^11.8.4",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "react-router-last-location": "^2.0.1",
     "react-use": "^15.3.8",
     "react-virtualized": "^9.22.2",
     "socket.io-client": "^3.0.3",
