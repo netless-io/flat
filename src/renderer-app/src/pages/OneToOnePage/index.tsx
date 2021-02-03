@@ -90,6 +90,10 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     useAutoRun(() => {
         if (classRoomStore.roomStatus === RoomStatus.Stopped) {
+            ipcAsyncByMain("set-close-window", {
+                close: true,
+            });
+
             pushHistory(RouteNameType.HomePage, {});
         }
     });

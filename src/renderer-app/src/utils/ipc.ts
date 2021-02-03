@@ -23,3 +23,16 @@ export const ipcSyncByMain = <
         args,
     });
 };
+
+export const ipcReceiveByMain = <T extends keyof ipc.EmitEvents, U extends ipc.EmitEvents[T]>(
+    action: T,
+    callback: (args: U) => void,
+): void => {
+    ipcRenderer.on(action, (_event, args) => {
+        callback(args);
+    });
+};
+
+export const ipcReceiveRemoveByMain = <T extends keyof ipc.EmitEvents>(action: T): void => {
+    ipcRenderer.removeAllListeners(action);
+};

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { RouteNameType, usePushHistory } from "../utils/routes";
+import { ipcAsyncByMain, ipcReceiveByMain, ipcReceiveRemoveByMain } from "../utils/ipc";
 
 export enum ExitRoomConfirmType {
     StopClassButton,
@@ -27,15 +28,53 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
     const [visible, setVisible] = useState(false);
     const pushHistory = usePushHistory();
 
-    useEffect(() => {
-        // @TODO 监听 ipc
-        // ipcRenderer.on("");
-        // if (
-        //     this.props.roomStatus === RoomStatus.Started ||
-        //     this.props.roomStatus === RoomStatus.Paused
-        // ) {
-        // }
+    const onReturnMain = useCallback(() => {
+        setVisible(false);
+
+        ipcAsyncByMain("set-close-window", {
+            close: true,
+        });
+
+        pushHistory(RouteNameType.HomePage, {});
+    }, [pushHistory]);
+
+    const onStopClass = useCallback(() => {
+        setVisible(false);
+
+        // TODO: 改为错误弹窗
+        stopClass().catch(e => {
+            console.error(e);
+        });
+    }, [stopClass]);
+
+    const onCancel = useCallback(() => {
+        setVisible(false);
     }, []);
+
+    const confirm = useCallback(
+        (confirmType: ExitRoomConfirmType) => {
+            if (roomStatus === RoomStatus.Started || roomStatus === RoomStatus.Paused) {
+                setVisible(true);
+                setConfirmType(confirmType);
+            } else {
+                onReturnMain();
+            }
+        },
+        [onReturnMain, roomStatus],
+    );
+
+    useEffect(() => {
+        ipcAsyncByMain("set-close-window", {
+            close: false,
+        });
+        ipcReceiveByMain("window-will-close", () => {
+            confirm(ExitRoomConfirmType.ExitButton);
+        });
+
+        return () => {
+            ipcReceiveRemoveByMain("window-will-close");
+        };
+    }, [confirm]);
 
     confirmRef.current = confirm;
 
@@ -72,29 +111,6 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
             <p>课堂正在继续，确认退出房间？</p>
         </Modal>
     );
-
-    function onReturnMain(): void {
-        setVisible(false);
-        pushHistory(RouteNameType.HomePage, {});
-    }
-
-    function onStopClass(): void {
-        setVisible(false);
-        stopClass();
-    }
-
-    function onCancel(): void {
-        setVisible(false);
-    }
-
-    function confirm(confirmType: ExitRoomConfirmType): void {
-        if (roomStatus === RoomStatus.Started || roomStatus === RoomStatus.Paused) {
-            setVisible(true);
-            setConfirmType(confirmType);
-        } else {
-            onReturnMain();
-        }
-    }
 });
 
 export default ExitRoomConfirm;
