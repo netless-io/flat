@@ -12,10 +12,9 @@ export const getRoomTypeName = (type: RoomType): string => {
 
 export const getPeriodicEndTypeName = (type: keyof typeof PeriodicEndType): string => {
     const endTypeNameMap: Record<PeriodicEndType, string> = {
-        [PeriodicEndType.Rate]: "按次数",
-        [PeriodicEndType.Time]: "按时间",
+        [PeriodicEndType.Rate]: "限定房间个数",
+        [PeriodicEndType.Time]: "结束于某天",
     };
 
-    // @ts-ignore
     return endTypeNameMap[type];
 };
