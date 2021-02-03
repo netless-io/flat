@@ -86,10 +86,10 @@ export const MicrophoneTesting = (): React.ReactElement => {
                 <SpeakerVolume percent={currentVolume} />
                 <div className="testing-btn">
                     <Button>
-                        <Link to="/setting/microphone/">不可以听到</Link>
+                        <Link to="/setting/microphone/">不可以看到</Link>
                     </Button>
                     <Button type="primary">
-                        <Link to="/setting/microphone/">可以听到</Link>
+                        <Link to="/setting/microphone/">可以看到</Link>
                     </Button>
                 </div>
             </div>
