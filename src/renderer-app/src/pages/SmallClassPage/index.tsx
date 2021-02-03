@@ -89,6 +89,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     useAutoRun(() => {
         if (classRoomStore.roomStatus === RoomStatus.Stopped) {
+            ipcAsyncByMain("set-close-window", {
+                close: true,
+            });
+
             pushHistory(RouteNameType.HomePage, {});
         }
     });

@@ -1,5 +1,6 @@
 import { ipcMain, app } from "electron";
 import { ipc } from "types-pkg";
+import { windows } from "../storage/Windows";
 
 export default (context: Context) => {
     const mainSource = () => {
@@ -22,6 +23,9 @@ export default (context: Context) => {
                     openAtLogin: args.isOpenAtLogin,
                     openAsHidden: false,
                 });
+            },
+            "set-close-window": args => {
+                windows.mainState.realClose = args.close;
             },
         };
 

@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from "electron";
 import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer";
+import { windows } from "../storage/Windows";
 
 export default async (context: Context) => {
     await new Promise(resolve => {
@@ -37,4 +38,5 @@ export default async (context: Context) => {
     void mainWin.loadURL(context.runtime.startURL);
 
     context.wins.main = mainWin;
+    windows.main = mainWin;
 };
