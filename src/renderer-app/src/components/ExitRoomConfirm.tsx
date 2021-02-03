@@ -75,13 +75,7 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
 
     function onReturnMain(): void {
         setVisible(false);
-        pushHistory(
-            RouteNameType.HomePage,
-            {},
-            {
-                windowCenter: true,
-            },
-        );
+        pushHistory(RouteNameType.HomePage, {});
     }
 
     function onStopClass(): void {

@@ -1,7 +1,8 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import { message } from "antd";
+import { LastLocationProvider } from "react-router-last-location";
 import { RouteConfig, routeConfig } from "./route-config";
 
 export class AppRoutes extends React.Component {
@@ -11,25 +12,27 @@ export class AppRoutes extends React.Component {
 
     public render(): React.ReactElement {
         return (
-            <BrowserRouter>
-                <Switch>
-                    {Object.keys(routeConfig).map(((name: keyof RouteConfig) => {
-                        const { path, component, title } = routeConfig[name];
-                        return (
-                            <Route
-                                key={name}
-                                exact={true}
-                                path={path}
-                                render={routeProps => {
-                                    document.title = title;
-                                    const Comp = component as React.ComponentType<any>;
-                                    return <Comp {...routeProps} />;
-                                }}
-                            />
-                        );
-                    }) as (name: string) => React.ReactElement)}
-                </Switch>
-            </BrowserRouter>
+            <HashRouter>
+                <LastLocationProvider watchOnlyPathname>
+                    <Switch>
+                        {Object.keys(routeConfig).map(((name: keyof RouteConfig) => {
+                            const { path, component, title } = routeConfig[name];
+                            return (
+                                <Route
+                                    key={name}
+                                    exact={true}
+                                    path={path}
+                                    render={routeProps => {
+                                        document.title = title;
+                                        const Comp = component as React.ComponentType<any>;
+                                        return <Comp {...routeProps} />;
+                                    }}
+                                />
+                            );
+                        }) as (name: string) => React.ReactElement)}
+                    </Switch>
+                </LastLocationProvider>
+            </HashRouter>
         );
     }
 }

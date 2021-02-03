@@ -7,21 +7,21 @@ import MainPageLayout from "../../components/MainPageLayout";
 import { MainRoomMenu } from "./MainRoomMenu";
 import { MainRoomListPanel } from "./MainRoomListPanel";
 import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
-import { useHistory } from "react-router";
-import { RouteState } from "../../utils/routes";
+import { useLastLocation } from "react-router-last-location";
+import { shouldWindowCenter } from "./utils";
 
 export type HomePageProps = {};
 
 export const HomePage = observer<HomePageProps>(function HomePage() {
-    const history = useHistory<RouteState>();
+    const lastLocation = useLastLocation();
 
     useEffect(() => {
         ipcAsyncByMain("set-win-size", {
             width: 1200,
             height: 668,
-            autoCenter: !!history.location.state?.windowCenter,
+            autoCenter: shouldWindowCenter(lastLocation?.pathname),
         });
-    }, [history]);
+    }, [lastLocation]);
 
     return (
         <MainPageLayout columnLayout>
