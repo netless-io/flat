@@ -66,7 +66,7 @@ export function renderEndTimePicker(
                         addMinutes(getFinalDate(beginTime), MIN_DURATION),
                     )
                 ) {
-                    throw new Error(`结束时间须至少在开始时间 ${MIN_DURATION} 分钟以后`);
+                    throw new Error(`房间时长最少 ${MIN_DURATION} 分钟`);
                 }
             },
         };
