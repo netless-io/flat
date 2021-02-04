@@ -97,15 +97,30 @@ export type RTMEvents = {
     [RTMessageType.DeviceState]: { userUUID: string; camera: boolean; mic: boolean };
     [RTMessageType.ClassMode]: ClassModeType;
     [RTMessageType.RoomStatus]: RoomStatus;
-    [RTMessageType.RequestChannelStatus]: string; // room id
+    [RTMessageType.RequestChannelStatus]: {
+        roomUUID: string;
+        /** these users should response */
+        userUUIDs: string[];
+        /** also inform others about current user states */
+        user: {
+            name: string;
+            camera: boolean;
+            mic: boolean;
+            /** this filed is only accepted from room creator */
+            isSpeak: boolean;
+        };
+    };
     [RTMessageType.ChannelStatus]: {
         /** room status */
-        cStatus: RoomStatus;
-        /** users with non-default states */
+        rStatus: RoomStatus;
+        /** user name + users with non-default states */
         uStates: {
-            [uuid: string]: `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${
-                | NonDefaultUserProp
-                | ""}${NonDefaultUserProp | ""}`;
+            [uuid: string]: [
+                string,
+                `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${
+                    | NonDefaultUserProp
+                    | ""}`,
+            ];
         };
     };
 };

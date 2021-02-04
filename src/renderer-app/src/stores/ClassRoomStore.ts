@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { action, makeAutoObservable, observable, runInAction, toJS } from "mobx";
+import { action, autorun, makeAutoObservable, observable, runInAction, toJS } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import { Rtc as RTCAPI, RtcChannelType } from "../apiMiddleware/Rtc";
@@ -77,11 +77,16 @@ export class ClassRoomStore {
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
 
+    private tempChannelStatus = observable.map<
+        string,
+        null | RTMEvents[RTMessageType.ChannelStatus]
+    >();
+
     private recordingConfig: RecordingConfig;
 
     private _noMoreRemoteMessages = false;
 
-    private _cancelHandleChannelStatusTimeout?: number;
+    private _collectChannelStatusTimeout?: number;
 
     constructor(config: { roomUUID: string; ownerUUID: string; recordingConfig: RecordingConfig }) {
         if (!globalStore.userUUID) {
@@ -98,16 +103,22 @@ export class ClassRoomStore {
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
 
-        makeAutoObservable<this, "_noMoreRemoteMessages" | "_cancelHandleChannelStatusTimeout">(
-            this,
-            {
-                rtc: observable.ref,
-                rtm: observable.ref,
-                cloudRecording: observable.ref,
-                _noMoreRemoteMessages: false,
-                _cancelHandleChannelStatusTimeout: false,
-            },
-        );
+        makeAutoObservable<this, "_noMoreRemoteMessages" | "_collectChannelStatusTimeout">(this, {
+            rtc: observable.ref,
+            rtm: observable.ref,
+            cloudRecording: observable.ref,
+            _noMoreRemoteMessages: false,
+            _collectChannelStatusTimeout: false,
+        });
+
+        autorun(() => {
+            const { creator, currentUser, speakingJoiners } = this;
+            if (creator?.isSpeak || currentUser?.isSpeak || speakingJoiners.length > 0) {
+                this.joinRTC();
+            } else {
+                this.leaveRTC();
+            }
+        });
     }
 
     get ownerUUID(): string {
@@ -148,7 +159,7 @@ export class ClassRoomStore {
 
     stopClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Stopped);
 
-    startCalling = async (): Promise<void> => {
+    joinRTC = async (): Promise<void> => {
         if (this.isCalling || !this.currentUser) {
             return;
         }
@@ -165,7 +176,7 @@ export class ClassRoomStore {
         }
     };
 
-    stopCalling = async (): Promise<void> => {
+    leaveRTC = async (): Promise<void> => {
         if (!this.isCalling || !this.currentUser) {
             return;
         }
@@ -182,14 +193,6 @@ export class ClassRoomStore {
                 // reset state
                 this.isCalling = true;
             });
-        }
-    };
-
-    toggleCalling = async (): Promise<void> => {
-        if (this.isCalling) {
-            return this.stopCalling();
-        } else {
-            return this.startCalling();
         }
     };
 
@@ -387,7 +390,7 @@ export class ClassRoomStore {
                 return;
             }
         }
-        this.speak(configs);
+        this.updateSpeaking(configs, true);
         try {
             await this.rtm.sendCommand({
                 type: RTMessageType.Speak,
@@ -410,24 +413,25 @@ export class ClassRoomStore {
         this.resetUsers(await this.createUsers(members));
         this.updateInitialRoomState();
 
-        // inform other users about device state
-        if (configStore.autoCameraOn || configStore.autoMicOn) {
-            this.updateDeviceState(this.userUUID, configStore.autoCameraOn, configStore.autoMicOn);
-        }
-
         this.updateHistory();
 
         channel.on("MemberJoined", async userUUID => {
             (await this.createUsers([userUUID])).forEach(this.sortOneUser);
         });
         channel.on("MemberLeft", userUUID => {
-            for (const { group } of this.joinerGroups) {
-                for (let i = 0; i < this[group].length; i++) {
-                    if (this[group][i].userUUID === userUUID) {
-                        runInAction(() => {
-                            this[group].splice(i, 1);
-                        });
-                        break;
+            if (this.creator && this.creator.userUUID === userUUID) {
+                runInAction(() => {
+                    this.creator = null;
+                });
+            } else {
+                for (const { group } of this.joinerGroups) {
+                    for (let i = 0; i < this[group].length; i++) {
+                        if (this[group][i].userUUID === userUUID) {
+                            runInAction(() => {
+                                this[group].splice(i, 1);
+                            });
+                            break;
+                        }
                     }
                 }
             }
@@ -449,7 +453,7 @@ export class ClassRoomStore {
 
         this.rtc.destroy();
 
-        window.clearTimeout(this._cancelHandleChannelStatusTimeout);
+        window.clearTimeout(this._collectChannelStatusTimeout);
 
         try {
             await Promise.all(promises);
@@ -642,7 +646,7 @@ export class ClassRoomStore {
                     return;
                 }
             }
-            this.speak(configs);
+            this.updateSpeaking(configs, true);
         });
 
         this.rtm.on(RTMessageType.Notice, (text, senderId) => {
@@ -663,11 +667,28 @@ export class ClassRoomStore {
             }
         });
 
-        this.rtm.on(RTMessageType.RequestChannelStatus, (roomUUID, senderId) => {
-            if (roomUUID === this.roomUUID) {
+        this.rtm.on(RTMessageType.RequestChannelStatus, (status, senderId) => {
+            if (status.roomUUID === this.roomUUID) {
+                this.sortUsers(user => {
+                    if (user.userUUID === senderId) {
+                        if (this.creator && user.userUUID === this.creator.userUUID) {
+                            // only creator can update speaking state
+                            user.isSpeak = status.user.isSpeak;
+                        }
+                        user.camera = status.user.camera;
+                        user.mic = status.user.mic;
+                        return false;
+                    }
+                    return true;
+                });
+
+                if (!status.userUUIDs.includes(this.userUUID)) {
+                    return;
+                }
+
                 type UStates = RTMEvents[RTMessageType.ChannelStatus]["uStates"];
                 const uStates: UStates = {};
-                const updateUStates = (user?: User | null): void => {
+                const generateUStates = (user?: User | null): void => {
                     if (!user) {
                         return;
                     }
@@ -685,19 +706,19 @@ export class ClassRoomStore {
                         result += NonDefaultUserProp.Mic;
                     }
                     if (result) {
-                        uStates[user.userUUID] = result as UStates[keyof UStates];
+                        uStates[user.userUUID] = [user.name, result as UStates[keyof UStates][1]];
                     }
                 };
 
-                updateUStates(this.creator);
-                this.speakingJoiners.forEach(updateUStates);
-                this.handRaisingJoiners.forEach(updateUStates);
-                this.otherJoiners.forEach(updateUStates);
+                generateUStates(this.creator);
+                this.speakingJoiners.forEach(generateUStates);
+                this.handRaisingJoiners.forEach(generateUStates);
+                this.otherJoiners.forEach(generateUStates);
 
                 this.rtm.sendCommand({
                     type: RTMessageType.ChannelStatus,
                     value: {
-                        cStatus: this.roomStatus,
+                        rStatus: this.roomStatus,
                         uStates,
                     },
                     keepHistory: false,
@@ -706,15 +727,33 @@ export class ClassRoomStore {
                 });
             }
         });
+
+        this.rtm.on(RTMessageType.ChannelStatus, (status, senderId) => {
+            if (!this.tempChannelStatus.has(senderId)) {
+                return;
+            }
+
+            runInAction(() => {
+                this.tempChannelStatus.set(senderId, status);
+
+                // @TODO support multiple requests
+                this.updateChannelStatus();
+            });
+        });
     };
 
-    private speak(configs: Array<{ userUUID: string; speak: boolean }>): void {
+    private updateSpeaking(
+        configs: Array<{ userUUID: string; speak: boolean }>,
+        dropHands?: boolean,
+    ): void {
         const configMap = new Map(configs.map(config => [config.userUUID, config]));
         this.sortUsers(user => {
             const config = configMap.get(user.userUUID);
             if (config) {
                 user.isSpeak = config.speak;
-                user.isRaiseHand = false;
+                if (dropHands) {
+                    user.isRaiseHand = false;
+                }
             }
         });
     }
@@ -779,7 +818,7 @@ export class ClassRoomStore {
         }
 
         if (user.userUUID === this.ownerUUID) {
-            this.creator = user;
+            this.creator = user.userUUID === this.userUUID ? this.currentUser : user;
         } else if (user.isSpeak) {
             this.speakingJoiners.push(user);
         } else if (user.isRaiseHand) {
@@ -794,65 +833,21 @@ export class ClassRoomStore {
      * New joined user will request these states from other users in the room.
      */
     private async updateInitialRoomState(): Promise<void> {
-        if (this.isCreator) {
+        if (!this.currentUser) {
+            if (NODE_ENV === "development") {
+                console.warn(`updateInitialRoomState: current user not exits`);
+            }
             return;
         }
 
-        // request room info from these users
-        const pickedSenders: string[] = [];
-
-        const handleChannelStatus = action(
-            "handleChannelStatus",
-            (
-                { cStatus, uStates }: RTMEvents[RTMessageType.ChannelStatus],
-                senderId: string,
-            ): void => {
-                if (!pickedSenders.some(userUUID => userUUID === senderId)) {
-                    return;
-                }
-                if (this.roomInfo) {
-                    this.roomInfo.roomStatus = cStatus;
-                }
-                this.sortUsers(user => {
-                    if (user.userUUID !== this.userUUID && uStates[user.userUUID]) {
-                        for (const code of uStates[user.userUUID]) {
-                            switch (code) {
-                                case NonDefaultUserProp.IsSpeak: {
-                                    user.isSpeak = true;
-                                    break;
-                                }
-                                case NonDefaultUserProp.IsRaiseHand: {
-                                    user.isRaiseHand = true;
-                                    break;
-                                }
-                                case NonDefaultUserProp.Camera: {
-                                    user.camera = true;
-                                    break;
-                                }
-                                case NonDefaultUserProp.Mic: {
-                                    user.mic = true;
-                                    break;
-                                }
-                                default: {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                });
-            },
-        );
-
-        const cancelHandleChannelStatus = (): void => {
-            this.rtm.off(RTMessageType.ChannelStatus, handleChannelStatus);
-        };
-
-        this.rtm.once(RTMessageType.ChannelStatus, handleChannelStatus);
-        window.clearTimeout(this._cancelHandleChannelStatusTimeout);
-        this._cancelHandleChannelStatusTimeout = window.setTimeout(cancelHandleChannelStatus, 5000);
+        this.tempChannelStatus.clear();
+        window.clearTimeout(this._collectChannelStatusTimeout);
 
         // creator plus joiners
         const usersTotal = 1 + this.joinerTotalCount;
+
+        // request room info from these users
+        const pickedSenders: string[] = [];
 
         if (usersTotal >= 2) {
             if (usersTotal <= 50 && this.creator) {
@@ -866,18 +861,32 @@ export class ClassRoomStore {
         }
 
         for (const senderUUID of pickedSenders) {
-            try {
-                await this.rtm.sendCommand({
-                    type: RTMessageType.RequestChannelStatus,
-                    value: this.roomUUID,
-                    keepHistory: false,
-                    peerId: senderUUID,
-                    retry: 3,
-                });
-            } catch (e) {
-                console.error(e);
-                cancelHandleChannelStatus();
-            }
+            this.tempChannelStatus.set(senderUUID, null);
+        }
+
+        try {
+            await this.rtm.sendCommand({
+                type: RTMessageType.RequestChannelStatus,
+                value: {
+                    roomUUID: this.roomUUID,
+                    userUUIDs: pickedSenders,
+                    user: {
+                        name: globalStore.wechat?.name || "",
+                        isSpeak: this.currentUser.isSpeak,
+                        mic: this.currentUser.mic,
+                        camera: this.currentUser.camera,
+                    },
+                },
+                keepHistory: false,
+            });
+
+            // @TODO support multiple senders
+            // this._collectChannelStatusTimeout = window.setTimeout(() => {
+            //     // collect status anyway after 1s
+            //     this.updateChannelStatus();
+            // }, 1000);
+        } catch (e) {
+            console.error(e);
         }
     }
 
@@ -892,7 +901,7 @@ export class ClassRoomStore {
                 name: users[userUUID].name,
                 camera: userUUID === this.userUUID ? toJS(configStore.autoCameraOn) : false,
                 mic: userUUID === this.userUUID ? toJS(configStore.autoMicOn) : false,
-                isSpeak: false,
+                isSpeak: userUUID === this.userUUID && this.isCreator,
                 isRaiseHand: false,
             }),
         );
@@ -916,6 +925,55 @@ export class ClassRoomStore {
         }
 
         return;
+    }
+
+    private updateChannelStatus(): void {
+        const status = [...this.tempChannelStatus.values()].find(Boolean);
+
+        if (!status) {
+            return;
+        }
+
+        if (this.roomInfo) {
+            this.roomInfo.roomStatus = status.rStatus;
+        }
+
+        this.sortUsers(user => {
+            if (user.userUUID !== this.userUUID) {
+                const [name, userStatusCode] = status.uStates[user.userUUID];
+                if (name) {
+                    user.name = name;
+                }
+                if (userStatusCode) {
+                    for (const code of userStatusCode) {
+                        switch (code) {
+                            case NonDefaultUserProp.IsSpeak: {
+                                user.isSpeak = true;
+                                break;
+                            }
+                            case NonDefaultUserProp.IsRaiseHand: {
+                                user.isRaiseHand = true;
+                                break;
+                            }
+                            case NonDefaultUserProp.Camera: {
+                                user.camera = true;
+                                break;
+                            }
+                            case NonDefaultUserProp.Mic: {
+                                user.mic = true;
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        this.tempChannelStatus.clear();
+        window.clearTimeout(this._collectChannelStatusTimeout);
     }
 }
 
