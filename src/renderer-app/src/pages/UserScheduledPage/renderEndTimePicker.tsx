@@ -4,7 +4,7 @@ import { isBefore, isSameDay, addMinutes } from "date-fns";
 import { FormInstance, RuleObject } from "antd/lib/form";
 import { DatePicker, TimePicker } from "../../components/antd-date-fns";
 import { CreatePeriodicFormValues } from "./typings";
-import { getFinalDate, syncPeriodicEndAmount } from "./utils";
+import { getFinalDate, MIN_DURATION, syncPeriodicEndAmount } from "./utils";
 
 export function renderEndTimePicker(
     form: FormInstance<CreatePeriodicFormValues>,
@@ -42,9 +42,9 @@ export function renderEndTimePicker(
                 const beginTime: CreatePeriodicFormValues["beginTime"] = form.getFieldValue(
                     "beginTime",
                 );
-                const compareTime = addMinutes(getFinalDate(beginTime), 30);
+                const compareTime = addMinutes(getFinalDate(beginTime), MIN_DURATION);
                 if (isBefore(value, compareTime)) {
-                    throw new Error("结束日期须至少在开始日期 30 分钟以后");
+                    throw new Error(`结束日期须至少在开始日期 ${MIN_DURATION} 分钟以后`);
                 }
             },
         };
@@ -63,21 +63,24 @@ export function renderEndTimePicker(
                 if (
                     isBefore(
                         getFinalDate({ date: endDate, time: value }),
-                        addMinutes(getFinalDate(beginTime), 30),
+                        addMinutes(getFinalDate(beginTime), MIN_DURATION),
                     )
                 ) {
-                    throw new Error("结束时间须至少在开始时间 30 分钟以后");
+                    throw new Error(`房间时长最少 ${MIN_DURATION} 分钟`);
                 }
             },
         };
     }
 
-    /** disable date before begin time plus 30 minutes  */
+    /** disable date before begin time plus min duration  */
     function disableEndTimeDate(date: Date): boolean {
-        return isBefore(date, addMinutes(getFinalDate(form.getFieldValue("beginTime")), 30));
+        return isBefore(
+            date,
+            addMinutes(getFinalDate(form.getFieldValue("beginTime")), MIN_DURATION),
+        );
     }
 
-    /** disable hours before begin time plus 30 minutes */
+    /** disable hours before begin time plus min duration */
     function disableEndTimeHours(): number[] {
         const {
             beginTime,
@@ -86,7 +89,7 @@ export function renderEndTimePicker(
             "beginTime",
             "endTime",
         ]);
-        const compareDate = addMinutes(getFinalDate(beginTime), 30);
+        const compareDate = addMinutes(getFinalDate(beginTime), MIN_DURATION);
         return isSameDay(compareDate, endTime.date)
             ? Array(compareDate.getHours() + 1)
                   .fill(0)
@@ -94,7 +97,7 @@ export function renderEndTimePicker(
             : [];
     }
 
-    /** disable minutes before begin time plus 30 minutes */
+    /** disable minutes before begin time plus min duration */
     function disableEndTimeMinutes(): number[] {
         const {
             beginTime,
@@ -103,7 +106,7 @@ export function renderEndTimePicker(
             "beginTime",
             "endTime",
         ]);
-        const compareDate = addMinutes(getFinalDate(beginTime), 30);
+        const compareDate = addMinutes(getFinalDate(beginTime), MIN_DURATION);
         return isSameDay(compareDate, endTime.date) &&
             compareDate.getHours() === endTime.time.getHours()
             ? Array(compareDate.getHours() + 1)
