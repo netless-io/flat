@@ -6,7 +6,7 @@ import PageController from "@netless/page-controller";
 import ZoomController from "@netless/zoom-controller";
 import OssUploadButton from "@netless/oss-upload-button";
 import PreviewController from "@netless/preview-controller";
-import DocsCenter from "@netless/docs-center";
+// import DocsCenter from "@netless/docs-center";
 import OssDropUpload from "@netless/oss-drop-upload";
 
 import { NETLESS, OSS_CONFIG } from "../constants/Process";
@@ -74,11 +74,11 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                     isVisible={whiteboardStore.isShowPreviewPanel}
                     room={room}
                 />
-                <DocsCenter
+                {/* <DocsCenter
                     handleDocCenterState={whiteboardStore.setFileOpen}
                     isFileOpen={whiteboardStore.isFileOpen}
                     room={room}
-                />
+                /> */}
                 <OssDropUpload room={room} oss={OSS_CONFIG}>
                     <div ref={bindWhiteboard} className="whiteboard-box" />
                 </OssDropUpload>

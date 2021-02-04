@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
 import { makeAutoObservable, observable } from "mobx";
 import { createPlugins, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk } from "white-web-sdk";
-import { v4 as uuidv4 } from "uuid";
 import { videoPlugin } from "@netless/white-video-plugin";
 import { audioPlugin } from "@netless/white-audio-plugin";
 import { CursorTool } from "@netless/cursor-tool";
-import { PPTDataType, PPTType } from "@netless/oss-upload-manager";
-
-import { pptDatas } from "../taskUuids";
 import { NETLESS, NODE_ENV } from "../constants/Process";
 import { globalStore } from "./GlobalStore";
 
@@ -104,8 +100,6 @@ export class WhiteboardStore {
 
             cursorAdapter.setRoom(room);
 
-            setDefaultPptData(pptDatas, room);
-
             if (this.isCreator) {
                 room.setMemberState({
                     pencilOptions: {
@@ -156,31 +150,4 @@ export function useWhiteboardStore(isCreator: boolean): WhiteboardStore {
     }, []);
 
     return whiteboardStore;
-}
-
-function setDefaultPptData(pptDatas: string[], room: Room): void {
-    const docs: PPTDataType[] = (room.state.globalState as any).docs;
-    if (docs && docs.length > 1) {
-        return;
-    }
-    if (pptDatas.length > 0) {
-        for (let pptData of pptDatas) {
-            const sceneId = uuidv4();
-            const scenes = JSON.parse(pptData);
-            const documentFile: PPTDataType = {
-                active: false,
-                id: sceneId,
-                pptType: PPTType.dynamic,
-                data: scenes,
-            };
-            const docs = (room.state.globalState as any).docs;
-            if (docs?.length > 0) {
-                const newDocs = [documentFile, ...docs];
-                room.setGlobalState({ docs: newDocs });
-            } else {
-                room.setGlobalState({ docs: [documentFile] });
-            }
-            room.putScenes(`/${room.uuid}/${sceneId}`, scenes);
-        }
-    }
 }
