@@ -1,19 +1,38 @@
 import "./UserScheduledPage.less";
-import React, { useState } from "react";
-import { Button, Checkbox, Input } from "antd";
-import { DatePicker, TimePicker } from "../../components/antd-date-fns";
 import back from "../../assets/image/back.svg";
-import MainPageLayout from "../../components/MainPageLayout";
-import { Link } from "react-router-dom";
-import { isBefore, addMinutes, roundToNearestMinutes, getDay, startOfDay } from "date-fns";
-import { RoomType, Week } from "../../apiMiddleware/flatServer/constants";
-import { createOrdinaryRoom, createPeriodicRoom } from "../../apiMiddleware/flatServer";
+
+import React, { useContext, useRef, useState } from "react";
+import {
+    Button,
+    Checkbox,
+    Input,
+    Form,
+    InputNumber,
+    Row,
+    Col,
+    Divider,
+    Modal,
+    message,
+} from "antd";
 import { observer } from "mobx-react-lite";
-import { RoomTypeSelect } from "../../components/RoomType";
-import { RouteNameType, usePushHistory } from "../../utils/routes";
+import { Link } from "react-router-dom";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import { isBefore, addMinutes, roundToNearestMinutes, getDay, addWeeks, endOfDay } from "date-fns";
+import { RoomType, Week } from "../../apiMiddleware/flatServer/constants";
 import { PeriodicEndType } from "../../constants/Periodic";
-import { CreatePeriodic } from "./CreatePeriodic";
-import { addHours } from "date-fns/fp";
+import { generateRoutePath, RouteNameType, usePushHistory } from "../../utils/routes";
+import { getRoomTypeName } from "../../utils/getTypeName";
+import { DatePicker } from "../../components/antd-date-fns";
+import MainPageLayout from "../../components/MainPageLayout";
+import { RoomTypeSelect } from "../../components/RoomType";
+import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
+import { CreatePeriodicFormValues } from "./typings";
+import { formatISODayWeekiii, getFinalDate, syncPeriodicEndAmount } from "./utils";
+import { PeriodicEndTypeSelector } from "./PeriodicEndTypeSelector";
+import { WeekRateSelector, getWeekNames } from "./WeekRateSelector";
+import { renderBeginTimePicker } from "./renderBeginTimePicker";
+import { renderEndTimePicker } from "./renderEndTimePicker";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 const getInitialBeginTime = (): Date => {
     let time = roundToNearestMinutes(Date.now(), { nearestTo: 30 });
@@ -23,181 +42,128 @@ const getInitialBeginTime = (): Date => {
     return time;
 };
 
-const disabledDate = (beginTime: Date): boolean => {
-    return isBefore(beginTime, startOfDay(new Date()));
-};
-
-export default observer(function UserScheduledPage() {
+export const UserScheduledPage = observer(function UserScheduledPage() {
     const pushHistory = usePushHistory();
-    const [title, setTitle] = useState("");
-    const [roomType, setRoomType] = useState(RoomType.BigClass);
-    const [isPeriodic, setIsPeriodic] = useState(false);
+    const sp = useSafePromise();
+    const roomStore = useContext(RoomStoreContext);
+    const globalStore = useContext(GlobalStoreContext);
 
-    const initialBeginTime = getInitialBeginTime();
-    const [beginTime, setBeginTime] = useState(initialBeginTime);
-    const [endTime, setEndTime] = useState(addHours(1, initialBeginTime));
-    const [periodicWeeks, setPeriodicWeeks] = useState<Week[]>([getDay(initialBeginTime)]);
+    const [isFormValidated, setIsFormValidated] = useState(true);
+    const [isLoading, setLoading] = useState(false);
 
-    const [periodicEndType, setPeriodicEndType] = useState(PeriodicEndType.Rate);
-    const [periodicRate, setPeriodicRate] = useState(0);
-    const [periodicEndTime, setPeriodicEndTime] = useState(addMinutes(beginTime, 30));
+    const hasInputAutoSelectedRef = useRef(false);
 
-    const changeTitle = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setTitle(event.target.value);
-    };
+    const [form] = Form.useForm<CreatePeriodicFormValues>();
 
-    const onChangeBeginTime = (date: Date | null): void => {
-        if (date !== null) {
-            setPeriodicWeeks([getDay(date)]);
-            setBeginTime(date);
-            setEndTime(date);
-        }
-    };
-
-    const onChangeEndTime = (date: Date | null): void => {
-        if (date !== null) {
-            setEndTime(date);
-        }
-    };
-
-    const togglePeriodic = (): void => {
-        setIsPeriodic(!isPeriodic);
-    };
-
-    const onChangeWeeks = (w: Week[]): void => {
-        const week = getDay(beginTime);
-        if (!w.includes(week)) {
-            w.push(week);
-        }
-
-        setPeriodicWeeks(w.sort());
-    };
-
-    const cancelCreate = (): void => {
-        pushHistory(RouteNameType.HomePage, {});
-    };
-
-    const createRoom = async (): Promise<void> => {
-        try {
-            const basePayload = {
-                title,
-                type: roomType,
-                beginTime: beginTime.valueOf(),
-                endTime: endTime.valueOf(),
-            };
-
-            if (isPeriodic) {
-                await createPeriodicRoom({
-                    ...basePayload,
-                    periodic:
-                        periodicEndType === PeriodicEndType.Rate
-                            ? {
-                                  weeks: periodicWeeks,
-                                  rate: periodicRate,
-                              }
-                            : {
-                                  weeks: periodicWeeks,
-                                  endTime: periodicEndTime.valueOf(),
-                              },
-                });
-            } else {
-                await createOrdinaryRoom(basePayload);
-            }
-
-            pushHistory(RouteNameType.HomePage, {});
-        } catch (e) {
-            console.error(e);
-        }
-    };
+    const [defaultValues] = useState<CreatePeriodicFormValues>(() => {
+        const scheduleBeginTime = getInitialBeginTime();
+        return {
+            title: globalStore.wechat?.name ? `${globalStore.wechat.name}预定的房间` : "",
+            type: RoomType.OneToOne,
+            isPeriodic: false,
+            beginTime: {
+                date: new Date(scheduleBeginTime),
+                time: new Date(scheduleBeginTime),
+            },
+            endTime: {
+                date: addMinutes(scheduleBeginTime, 30),
+                time: addMinutes(scheduleBeginTime, 30),
+            },
+            periodic: {
+                endType: PeriodicEndType.Rate,
+                weeks: [getDay(scheduleBeginTime)],
+                rate: 7,
+                endTime: addWeeks(addMinutes(scheduleBeginTime, 30), 6),
+            },
+        };
+    });
 
     return (
         <MainPageLayout>
-            <div className="user-schedule-box">
-                <div className="user-schedule-nav">
-                    <div className="user-schedule-title">
-                        <Link to={"/user/"}>
-                            <div className="user-back">
-                                <img src={back} alt="back" />
-                                <span>返回</span>
-                            </div>
+            <div className="create-periodic-room-box">
+                <div className="create-periodic-room-nav">
+                    <div className="create-periodic-room-head">
+                        <Link
+                            to={generateRoutePath(RouteNameType.HomePage, {})}
+                            onClick={e => {
+                                e.preventDefault();
+                                cancelSchedule();
+                            }}
+                            className="create-periodic-room-back"
+                        >
+                            <img src={back} alt="back" />
+                            <span>返回</span>
                         </Link>
-                        <div className="user-segmentation" />
-                        <div className="user-title">预定房间</div>
+                        <Divider type="vertical" />
+                        <h1 className="create-periodic-room-title">预定房间</h1>
                     </div>
-                    <div className="user-schedule-cut-line" />
                 </div>
-                <div className="user-schedule-body">
-                    <div className="user-schedule-mid">
-                        <div className="user-schedule-name">主题</div>
-                        <div className="user-schedule-inner">
-                            <Input value={title} onChange={changeTitle} />
-                        </div>
-                        <div className="user-schedule-name">类型</div>
-                        <div className="user-schedule-inner">
-                            <RoomTypeSelect
-                                className="user-schedule-inner-select"
-                                value={roomType}
-                                onChange={setRoomType}
-                            />
-                        </div>
-                        <div className="user-schedule-name">开始时间</div>
-                        <div className="user-schedule-inner">
-                            <DatePicker
-                                className="user-schedule-picker"
-                                disabledDate={disabledDate}
-                                value={beginTime}
-                                onChange={onChangeBeginTime}
-                                allowClear={false}
-                            />
-                            <TimePicker
-                                className="user-schedule-picker"
-                                value={beginTime}
-                                format="HH:mm"
-                                onChange={onChangeBeginTime}
-                                allowClear={false}
-                            />
-                        </div>
-                        <div className="user-schedule-name">结束时间</div>
-                        <div className="user-schedule-inner">
-                            <DatePicker
-                                className="user-schedule-picker"
-                                disabledDate={disabledDate}
-                                value={endTime}
-                                onChange={onChangeEndTime}
-                                allowClear={false}
-                            />
-                            <TimePicker
-                                className="user-schedule-picker"
-                                value={endTime}
-                                format="HH:mm"
-                                onChange={onChangeEndTime}
-                                allowClear={false}
-                            />
-                        </div>
-                        <div className="user-schedule-inner">
-                            <Checkbox onChange={togglePeriodic}>
-                                <span className="user-schedule-cycle">周期性房间</span>
-                            </Checkbox>
-                        </div>
-                        {isPeriodic && (
-                            <CreatePeriodic
-                                weeks={periodicWeeks}
-                                roomType={roomType}
-                                beginTime={beginTime}
-                                endTime={periodicEndTime}
-                                endType={periodicEndType}
-                                rate={periodicRate}
-                                onChangeWeeks={onChangeWeeks}
-                                onChangeEndTime={v => setPeriodicEndTime(v)}
-                                onChangeEndType={setPeriodicEndType}
-                                onChangeRate={v => setPeriodicRate(v)}
-                            />
-                        )}
-                        <div className="user-schedule-under">
-                            <Button className="user-schedule-cancel" onClick={cancelCreate}>
+                <div className="create-periodic-room-body">
+                    <div className="create-periodic-room-mid">
+                        <Form
+                            form={form}
+                            layout="vertical"
+                            name="createRoom"
+                            initialValues={defaultValues}
+                            className="create-periodic-room-form"
+                            onFieldsChange={formValidateStatus}
+                        >
+                            <Form.Item
+                                label="主题"
+                                name="title"
+                                required={false}
+                                rules={[
+                                    { required: true, message: "请输入主题" },
+                                    { max: 50, message: "主题最多为 50 个字符" },
+                                ]}
+                            >
+                                <Input
+                                    placeholder="请输入房间主题"
+                                    ref={input => {
+                                        if (hasInputAutoSelectedRef.current) {
+                                            return;
+                                        }
+                                        if (input) {
+                                            input.focus();
+                                            input.select();
+                                            hasInputAutoSelectedRef.current = true;
+                                        }
+                                    }}
+                                />
+                            </Form.Item>
+                            <Form.Item label="类型" name="type">
+                                <RoomTypeSelect />
+                            </Form.Item>
+                            {renderBeginTimePicker(form)}
+                            {renderEndTimePicker(form)}
+                            <Form.Item name="isPeriodic" valuePropName="checked">
+                                <Checkbox onChange={onToggleIsPeriodic}>
+                                    <span className="create-periodic-room-cycle">周期性房间</span>
+                                </Checkbox>
+                            </Form.Item>
+                            <Form.Item
+                                noStyle
+                                shouldUpdate={(
+                                    prev: CreatePeriodicFormValues,
+                                    curr: CreatePeriodicFormValues,
+                                ) => prev.isPeriodic !== curr.isPeriodic}
+                            >
+                                {renderPeriodicForm}
+                            </Form.Item>
+                        </Form>
+                        <div className="create-periodic-room-under">
+                            <Button
+                                className="create-periodic-room-cancel"
+                                onClick={cancelSchedule}
+                            >
                                 取消
                             </Button>
-                            <Button className="user-schedule-ok" onClick={createRoom}>
+                            <Button
+                                className="create-periodic-room-ok"
+                                onClick={createRoom}
+                                loading={isLoading}
+                                disabled={!isLoading && !isFormValidated}
+                            >
                                 预定
                             </Button>
                         </div>
@@ -206,4 +172,244 @@ export default observer(function UserScheduledPage() {
             </div>
         </MainPageLayout>
     );
+
+    function renderPeriodicForm(): React.ReactElement | null {
+        const isPeriodic: CreatePeriodicFormValues["isPeriodic"] = form.getFieldValue("isPeriodic");
+        if (!isPeriodic) {
+            return null;
+        }
+
+        return (
+            <>
+                <Form.Item
+                    shouldUpdate={(
+                        prev: CreatePeriodicFormValues,
+                        curr: CreatePeriodicFormValues,
+                    ) => prev.periodic !== curr.periodic || prev.type !== curr.type}
+                >
+                    {renderPeriodicRoomTips}
+                </Form.Item>
+                <Form.Item
+                    label="重复频率"
+                    name={["periodic", "weeks"]}
+                    getValueFromEvent={onWeekSelected}
+                >
+                    <WeekRateSelector onChange={onWeekRateChanged} />
+                </Form.Item>
+                <Form.Item label="结束重复">
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item name={["periodic", "endType"]}>
+                                <PeriodicEndTypeSelector />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                noStyle
+                                shouldUpdate={(
+                                    prev: CreatePeriodicFormValues,
+                                    curr: CreatePeriodicFormValues,
+                                ) => prev.periodic.endType !== curr.periodic.endType}
+                            >
+                                {renderPeriodicEndAmount}
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form.Item>
+            </>
+        );
+    }
+
+    function renderPeriodicRoomTips(): React.ReactElement {
+        const periodic: CreatePeriodicFormValues["periodic"] = form.getFieldValue("periodic");
+        const roomType: CreatePeriodicFormValues["type"] = form.getFieldValue("type");
+        return (
+            <div className="create-periodic-room-tips">
+                {periodic.weeks.length > 0 ? (
+                    <div className="create-periodic-room-tips-title">
+                        每{getWeekNames(periodic.weeks)}
+                    </div>
+                ) : (
+                    <div>暂未选择频率</div>
+                )}
+                <div className="create-periodic-room-tips-type">
+                    房间类型：{getRoomTypeName(roomType)}
+                </div>
+                <div className="create-periodic-room-tips-inner">
+                    结束于 {formatISODayWeekiii(periodic.endTime)}
+                    ，共 {periodic.rate} 个房间
+                </div>
+            </div>
+        );
+    }
+
+    function renderPeriodicEndAmount(): React.ReactElement {
+        return form.getFieldValue(["periodic", "endType"]) === PeriodicEndType.Rate ? (
+            <Form.Item
+                name={["periodic", "rate"]}
+                rules={[
+                    {
+                        type: "number",
+                        min: 1,
+                        message: "不能少于 1 个房间",
+                    },
+                    {
+                        type: "number",
+                        max: 50,
+                        message: "最多允许预定 50 个房间",
+                    },
+                ]}
+            >
+                <InputNumber min={1} max={50} onChange={onPeriodicRateChanged} />
+            </Form.Item>
+        ) : (
+            <Form.Item
+                name={["periodic", "endTime"]}
+                getValueFromEvent={(date: Date | null) => date && endOfDay(date)}
+            >
+                <DatePicker
+                    format="YYYY-MM-DD"
+                    allowClear={false}
+                    disabledDate={disablePeriodicEndTime}
+                    onChange={onPeriodicEndTimeChanged}
+                />
+            </Form.Item>
+        );
+    }
+
+    function onToggleIsPeriodic(e: CheckboxChangeEvent): void {
+        if (e.target.checked) {
+            const today = form.getFieldValue(["beginTime", "date"]);
+            form.setFieldsValue({
+                periodic: {
+                    weeks: [getDay(today)],
+                    rate: 7,
+                    endTime: endOfDay(addWeeks(today, 7)),
+                },
+            });
+        }
+    }
+
+    function onWeekSelected(w: Week[]): Week[] {
+        const week = getDay(form.getFieldValue(["beginTime", "date"]));
+        if (!w.includes(week)) {
+            w.push(week);
+        }
+        return w.sort();
+    }
+
+    function onWeekRateChanged(weeks: Week[]): void {
+        const {
+            beginTime,
+            endTime,
+            periodic,
+        }: Pick<
+            CreatePeriodicFormValues,
+            "beginTime" | "endTime" | "periodic"
+        > = form.getFieldsValue(["beginTime", "endTime", "periodic"]);
+        syncPeriodicEndAmount(form, beginTime, endTime, { ...periodic, weeks });
+    }
+
+    function onPeriodicRateChanged(value: string | number | undefined): void {
+        const rate = Number(value);
+        if (!Number.isNaN(rate)) {
+            const {
+                beginTime,
+                endTime,
+                periodic,
+            }: Pick<
+                CreatePeriodicFormValues,
+                "beginTime" | "endTime" | "periodic"
+            > = form.getFieldsValue(["beginTime", "endTime", "periodic"]);
+            syncPeriodicEndAmount(form, beginTime, endTime, { ...periodic, rate });
+        }
+    }
+
+    function onPeriodicEndTimeChanged(date: Date | null): void {
+        if (date) {
+            const {
+                beginTime,
+                endTime,
+                periodic,
+            }: Pick<
+                CreatePeriodicFormValues,
+                "beginTime" | "endTime" | "periodic"
+            > = form.getFieldsValue(["beginTime", "endTime", "periodic"]);
+            syncPeriodicEndAmount(form, beginTime, endTime, { ...periodic, endTime: date });
+        }
+    }
+
+    function disablePeriodicEndTime(currentTime: Date | null): boolean {
+        if (currentTime) {
+            const endTimeDate: CreatePeriodicFormValues["endTime"]["date"] = form.getFieldValue([
+                "endTime",
+                "date",
+            ]);
+            return isBefore(currentTime, endTimeDate);
+        }
+        return false;
+    }
+
+    async function createRoom(): Promise<void> {
+        if (isLoading || !isFormValidated) {
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const values: CreatePeriodicFormValues = form.getFieldsValue(true);
+            const basePayload = {
+                title: values.title,
+                type: values.type,
+                beginTime: getFinalDate(values.beginTime).valueOf(),
+                endTime: getFinalDate(values.endTime).valueOf(),
+            };
+
+            if (values.isPeriodic) {
+                await sp(
+                    roomStore.createPeriodicRoom({
+                        ...basePayload,
+                        periodic:
+                            values.periodic.endType === PeriodicEndType.Rate
+                                ? {
+                                      weeks: values.periodic.weeks,
+                                      rate: values.periodic.rate,
+                                  }
+                                : {
+                                      weeks: values.periodic.weeks,
+                                      endTime: values.periodic.endTime.valueOf(),
+                                  },
+                    }),
+                );
+            } else {
+                await sp(roomStore.createOrdinaryRoom(basePayload));
+            }
+
+            pushHistory(RouteNameType.HomePage, {});
+        } catch (e) {
+            console.error(e);
+            message.error(e.message);
+            setLoading(false);
+        }
+    }
+
+    function cancelSchedule(): void {
+        if (form.isFieldsTouched()) {
+            Modal.confirm({
+                content: "房间尚未预定，是否返回？",
+                onOk() {
+                    pushHistory(RouteNameType.HomePage, {});
+                },
+            });
+        } else {
+            pushHistory(RouteNameType.HomePage, {});
+        }
+    }
+
+    function formValidateStatus(): void {
+        setIsFormValidated(form.getFieldsError().every(field => field.errors.length <= 0));
+    }
 });
+
+export default UserScheduledPage;
