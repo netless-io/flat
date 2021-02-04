@@ -6,6 +6,7 @@ import { RoomListDate } from "../../../components/RoomListPanel/RoomListDate";
 import { RoomListDuration } from "../../../components/RoomListPanel/RoomListDuration";
 import { RoomItem } from "../../../stores/RoomStore";
 import { MainRoomListItemMenus } from "./MainRoomListItemMenus";
+import { RoomStatusElement } from "../../../components/RoomStatusElement/RoomStatusElement";
 
 export interface MainRoomListItemProps {
     showDate: boolean;
@@ -22,21 +23,6 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
     onJoinRoom,
     onReplayRoom,
 }) {
-    const roomStatusElement = useMemo((): React.ReactElement => {
-        switch (room.roomStatus) {
-            case RoomStatus.Started:
-            case RoomStatus.Paused: {
-                return <span className="room-started">进行中</span>;
-            }
-            case RoomStatus.Stopped: {
-                return <span className="room-stopped">已结束</span>;
-            }
-            default: {
-                return <span className="room-idle">未开始</span>;
-            }
-        }
-    }, [room.roomStatus]);
-
     return (
         <div className="room-list-cell-item">
             {showDate && (
@@ -51,15 +37,9 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                 <div className="room-list-cell-left">
                     <div className="room-list-cell-name">{room.title}</div>
                     <div className="room-list-cell-state">
-                        {isHistoryList ? (
-                            <span className="room-stopped">已结束</span>
-                        ) : (
-                            <>
-                                {roomStatusElement}
-                                {room.periodicUUID && (
-                                    <span className="room-list-cell-periodic">周期</span>
-                                )}
-                            </>
+                        {<RoomStatusElement room={room} />}
+                        {!isHistoryList && room.periodicUUID && (
+                            <span className="room-list-cell-periodic">周期</span>
                         )}
                     </div>
                     <div className="room-list-cell-time">

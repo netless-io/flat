@@ -6,7 +6,7 @@ import { clipboard } from "electron";
 import MainPageLayout from "../../components/MainPageLayout";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { observer } from "mobx-react-lite";
-import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
+import { generateRoutePath, RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { RoomStoreContext } from "../../components/StoreProvider";
 import LoadingPage from "../../LoadingPage";
 import { useComputed } from "../../utils/mobx";
@@ -19,6 +19,7 @@ import roomTypeSVG from "../../assets/image/room-type.svg";
 import docsIconSVG from "../../assets/image/docs-icon.svg";
 import "./RoomDetailPage.less";
 import { Button, Checkbox, Divider, message, Modal } from "antd";
+import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatusElement";
 
 export type RoomDetailPageState = {
     isTeacher: boolean;
@@ -89,24 +90,25 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                         {periodicUUID && (
                             <>
                                 <div className="user-periodic">周期</div>
-                                <div className="user-periodic-room">
-                                    {roomInfo.count && (
-                                        <Link
-                                            to={{
-                                                pathname: "/user/scheduled/info/",
-                                                // @TODO 去掉 location state
-                                                state: {
-                                                    periodicUUID,
-                                                    roomUUID,
-                                                    userUUID: roomInfo.ownerUUID,
-                                                    title: roomInfo.title,
-                                                },
-                                            }}
-                                        >
-                                            查看全部 {roomInfo.count} 场房间
-                                        </Link>
-                                    )}
-                                </div>
+                                {roomInfo.title && roomInfo.ownerUUID && (
+                                    <div className="user-periodic-room">
+                                        {roomInfo.count && (
+                                            <Link
+                                                to={generateRoutePath(
+                                                    RouteNameType.ScheduleRoomDetailPage,
+                                                    {
+                                                        periodicUUID,
+                                                        roomUUID,
+                                                        title: roomInfo.title,
+                                                        ownerUUID: roomInfo.ownerUUID,
+                                                    },
+                                                )}
+                                            >
+                                                查看全部 {roomInfo.count} 场房间
+                                            </Link>
+                                        )}
+                                    </div>
+                                )}
                             </>
                         )}
                     </div>
@@ -128,7 +130,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                             <div className="user-room-time-mid">
                                 <div className="user-room-time-during">1 小时</div>
                                 <div className="user-room-time-state">
-                                    {roomStatusLocale(roomInfo.roomStatus)}
+                                    <RoomStatusElement room={roomInfo} />
                                 </div>
                             </div>
                             {formattedEndTime && (
@@ -282,20 +284,6 @@ function formatTime(time?: number): { date: string; time: string } | null {
               time: format(time, "HH:mm"),
           }
         : null;
-}
-
-function roomStatusLocale(roomStatus?: RoomStatus): string {
-    switch (roomStatus) {
-        case RoomStatus.Started:
-        case RoomStatus.Paused: {
-            return "进行中";
-        }
-        case RoomStatus.Stopped: {
-            return "已停止";
-        }
-        default:
-            return "未开始";
-    }
 }
 
 function roomTypeLocale(roomType?: RoomType): string {
