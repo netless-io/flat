@@ -1,353 +1,230 @@
-import React from "react";
-import { RoomStatus, RoomType, Week } from "../../apiMiddleware/flatServer/constants";
-import { RouteComponentProps } from "react-router";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router";
 import MainPageLayout from "../../components/MainPageLayout";
-import { Link } from "react-router-dom";
-import _ from "lodash";
 import back from "../../assets/image/back.svg";
 import moreBtn from "../../assets/image/moreBtn.svg";
-import {
-    cancelPeriodicRoom,
-    periodicRoomInfo,
-    PeriodicRoomInfoPayload,
-    PeriodicRoomInfoResult,
-} from "../../apiMiddleware/flatServer";
 import "./ScheduleRoomPage.less";
-import { Button, Divider, Dropdown, Input, Menu, Modal, Table } from "antd";
-import { format, getDay } from "date-fns";
+import { Button, Divider, Dropdown, Menu, message, Table } from "antd";
+import { format, formatWithOptions, getDay } from "date-fns/fp";
 import { zhCN } from "date-fns/locale";
-import memoizeOne from "memoize-one";
-import { generateRoutePath, RouteNameType } from "../../utils/routes";
+import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
+import { observer } from "mobx-react-lite";
+import { RoomStoreContext } from "../../components/StoreProvider";
+import LoadingPage from "../../LoadingPage";
+import { RoomItem } from "../../stores/RoomStore";
+import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatusElement";
+import { getWeekName } from "../../utils/getTypeName";
+import { InviteModal } from "../RoomDetailPage/InviteModal";
+import { clipboard } from "electron";
 
-export default class ScheduleRoomDetailPage extends React.Component<
-    RouteComponentProps,
-    ScheduleRoomDetailPageState
-> {
-    public constructor(props: RouteComponentProps) {
-        super(props);
-        this.state = {
-            periodic: {
-                ownerUUID: "",
-                endTime: Date.now(),
-                rate: 0,
-                roomType: RoomType.OneToOne,
-            },
-            rooms: [],
-            currentRoom: {
-                roomUUID: "",
-                beginTime: Date.now(),
-                endTime: Date.now(),
-                roomStatus: RoomStatus.Idle,
-            },
-            sortedRooms: [],
-            toggleCopyModal: false,
-        };
+const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
+const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
+const timeSuffixFormat = format("HH:mm");
+
+export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPage() {
+    const params = useParams<RouteParams<RouteNameType.ScheduleRoomDetailPage>>();
+    const roomStore = useContext(RoomStoreContext);
+    const history = useHistory();
+    const pushHistory = usePushHistory();
+
+    const { periodicUUID, title, ownerUUID } = params;
+
+    const periodicInfo = roomStore.periodicRooms.get(periodicUUID);
+    const rooms = periodicInfo?.rooms.map(roomUUID => roomStore.rooms.get(roomUUID));
+
+    useEffect(() => {
+        void roomStore.syncPeriodicRoomInfo(periodicUUID);
+    }, [periodicUUID, roomStore]);
+
+    if (!periodicInfo || !rooms) {
+        return <LoadingPage />;
     }
 
-    public async componentDidMount(): Promise<void> {
-        const { periodicUUID } = this.props.location.state as ScheduleRoomProps;
-        let res: PeriodicRoomInfoPayload | PeriodicRoomInfoResult;
-        res = await periodicRoomInfo(periodicUUID);
-        this.setState({
-            periodic: res.periodic,
-            rooms: res.rooms,
-            sortedRooms: res.rooms.map(room => {
-                return {
-                    yearMonth: this.formatMonth(new Date(room.beginTime)),
-                    day: this.formatDay(new Date(room.beginTime)) + "日",
-                    week: this.weekName(this.formatWeek(new Date(room.beginTime))),
-                    time: this.formatTime(room),
-                    roomStatus: room.roomStatus,
-                    room,
-                };
-            }),
-        });
-    }
+    const isCreator = ownerUUID === periodicInfo.periodic.ownerUUID;
 
-    public roomStatusName(status: RoomStatus): string {
-        const statusNameMap: Record<RoomStatus, string> = {
-            [RoomStatus.Idle]: "未开始",
-            [RoomStatus.Started]: "进行中",
-            [RoomStatus.Paused]: "已暂停",
-            [RoomStatus.Stopped]: "已停止",
-        };
-        return statusNameMap[status];
-    }
-
-    public weekName(week: Week): string {
-        const weekNameMap: Record<Week, string> = {
-            [Week.Sunday]: "周日",
-            [Week.Monday]: "周一",
-            [Week.Tuesday]: "周二",
-            [Week.Wednesday]: "周三",
-            [Week.Thursday]: "周四",
-            [Week.Friday]: "周五",
-            [Week.Saturday]: "周六",
-        };
-        return weekNameMap[week];
-    }
-
-    public formatWeek = (time: number | Date): number => {
-        return getDay(time);
-    };
-
-    public formatEndTime = (): string => {
-        const { endTime } = this.state.periodic;
-        return format(new Date(endTime), "yyyy/MM/dd iii", { locale: zhCN });
-    };
-
-    public formatTime = (room: { beginTime: number; endTime: number }): string => {
-        return (
-            format(new Date(room.beginTime), "HH:mm") +
-            "~" +
-            format(new Date(room.endTime), "HH:mm")
-        );
-    };
-
-    public formatMonth = (time: Date): string => {
-        return format(time, "yyyy/MM", { locale: zhCN });
-    };
-
-    public formatDay = (time: Date): string => {
-        return format(time, "dd", { locale: zhCN });
-    };
-
-    public generatGroupRooms = memoizeOne(
-        (sortedArry: SortedRoom[], sortedString: string): _.Dictionary<SortedRoom[]> => {
-            return _.groupBy(sortedArry, sortedString);
+    const formatEndTime = formatWithOptions(
+        {
+            locale: zhCN,
         },
-    );
+        "yyyy/MM/dd iii",
+    )(periodicInfo.periodic.endTime);
 
-    public renderRoomTable(): React.ReactNode {
-        const { sortedRooms: sortedRoom } = this.state;
-        const columns = [
-            {
-                dataIndex: "day",
-            },
-            {
-                dataIndex: "week",
-            },
-            {
-                dataIndex: "time",
-            },
-            {
-                dataIndex: "roomStatus",
-                render: this.renderRoomStatus,
-            },
-            {
-                dataIndex: "room",
-                render: this.renderMoreBtn,
-            },
-        ];
+    const cancelRoom = async (): Promise<void> => {
+        await roomStore.cancelRoom({
+            all: true,
+            periodicUUID,
+        });
+        history.block();
+    };
 
-        const groupedRooms = this.generatGroupRooms(sortedRoom, "yearMonth");
-        const sortedKeys = _.keys(groupedRooms).sort();
-        const groupedSortedRooms = sortedKeys.map(yearMonth => ({
-            yearMonth,
-            rooms: groupedRooms[yearMonth],
-        }));
-        const groupedList = groupedSortedRooms.map(room => {
-            return (
-                <div>
-                    <div className="month-value">{room.yearMonth}</div>
-                    <div className="table-line"></div>
+    const renderRoomTable = (): React.ReactNode => {
+        const defaultDate = new Date();
+
+        const polymerizationRooms = (() => {
+            const result: Record<string, RoomItem[]> = {};
+
+            rooms.forEach(room => {
+                if (room?.beginTime) {
+                    const key = result[yearMonthFormat(room.beginTime)];
+
+                    if (key) {
+                        key.push(room);
+                    } else {
+                        result[yearMonthFormat(room.beginTime)] = [room];
+                    }
+                }
+            });
+
+            return result;
+        })();
+
+        const groupedList = Object.keys(polymerizationRooms)
+            .sort()
+            .map(key => (
+                <div key={key}>
+                    <div className="month-value">{key}</div>
+                    <div className="table-line" />
                     <Table
-                        dataSource={room.rooms}
-                        columns={columns}
+                        dataSource={polymerizationRooms[key]}
                         showHeader={false}
                         bordered={false}
                         pagination={false}
-                    />
-                </div>
-            );
-        });
-        return <div className="table-container">{groupedList}</div>;
-    }
-
-    public renderMoreBtn = (room: Room): React.ReactNode => {
-        return (
-            <Dropdown overlay={this.renderMenu(room)} trigger={["click"]}>
-                <img src={moreBtn} alt="更多" />
-            </Dropdown>
-        );
-    };
-
-    public renderRoomStatus = (roomStatus: RoomStatus): React.ReactNode => {
-        if (roomStatus === RoomStatus.Idle) {
-            return <span className="room-idle">未开始</span>;
-        } else if (roomStatus === RoomStatus.Started) {
-            return <span className="room-started">进行中</span>;
-        } else if (roomStatus === RoomStatus.Paused) {
-            return <span className="room-paused">已暂停</span>;
-        } else if (roomStatus === RoomStatus.Stopped) {
-            return <span className="room-stopped">已结束</span>;
-        } else {
-            return null;
-        }
-    };
-
-    public showCopyModal = (room: Room): void => {
-        this.setState({
-            currentRoom: room,
-            toggleCopyModal: true,
-        });
-    };
-
-    public handleCancel = (): void => {
-        this.setState({ toggleCopyModal: false });
-    };
-
-    public renderModal = (): React.ReactNode => {
-        const { periodicUUID, title } = this.props.location.state as ScheduleRoomProps;
-        const { currentRoom } = this.state;
-        return (
-            <Modal
-                visible={this.state.toggleCopyModal}
-                onCancel={this.handleCancel}
-                okText="复制"
-                cancelText="取消"
-            >
-                <div className="modal-header">
-                    <div>邀请加入 FLAT 房间</div>
-                    <span>点击链接加入，或添加至房间列表</span>
-                </div>
-                <div className="modal-content">
-                    <div className="modal-content-left">
-                        <span>房间主题</span>
-                        <span>房间号</span>
-                        <span>开始时间</span>
-                    </div>
-                    <div className="modal-content-right">
-                        <div>{title}</div>
-                        <div>{periodicUUID}</div>
-                        <div>
-                            {this.formatEndTime()} {this.formatTime(currentRoom!)}
-                        </div>
-                    </div>
-                </div>
-                <Input type="text" placeholder="https://netless.link/url/5f2259d5069bc052d2" />
-            </Modal>
-        );
-    };
-
-    public renderMenu = (room: Room): JSX.Element => {
-        const { periodicUUID, roomUUID } = this.props.location.state as ScheduleRoomProps;
-        return (
-            <Menu>
-                <Menu.Item>
-                    <Link
-                        to={{
-                            pathname: generateRoutePath(RouteNameType.RoomDetailPage, {
-                                roomUUID,
-                                periodicUUID,
-                            }),
-                        }}
                     >
-                        房间详情
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>修改房间</Menu.Item>
-                <Menu.Item>取消房间</Menu.Item>
-                <Menu.Item onClick={() => this.showCopyModal(room)}>复制邀请</Menu.Item>
-                {/* TODO: 使用 InviteModal 组件 */}
-                {this.renderModal()}
-            </Menu>
-        );
+                        <Table.Column
+                            key={1}
+                            render={(_, room: RoomItem) =>
+                                dayFormat(room.beginTime || defaultDate) + "日"
+                            }
+                        />
+                        <Table.Column
+                            key={2}
+                            render={(_, room: RoomItem) =>
+                                getWeekName(getDay(room.beginTime || defaultDate))
+                            }
+                        />
+                        <Table.Column
+                            key={3}
+                            render={(_, room: RoomItem) => {
+                                return (
+                                    timeSuffixFormat(room.beginTime || defaultDate) +
+                                    "~" +
+                                    timeSuffixFormat(room.endTime || defaultDate)
+                                );
+                            }}
+                        />
+                        <Table.Column
+                            key={4}
+                            render={(_, room: RoomItem) => {
+                                return <RoomStatusElement room={room} />;
+                            }}
+                        />
+                        <Table.Column
+                            render={(_, room: RoomItem) => {
+                                return (
+                                    <MoreMenu
+                                        room={room}
+                                        roomDetailsLink={() => {
+                                            pushHistory(RouteNameType.RoomDetailPage, {
+                                                roomUUID: room.roomUUID,
+                                                periodicUUID,
+                                            });
+                                        }}
+                                        isCreator={isCreator}
+                                    />
+                                );
+                            }}
+                        />
+                    </Table>
+                </div>
+            ));
+
+        return <div className="table-container">{groupedList}</div>;
     };
 
-    public cancelRoom = async (): Promise<void> => {
-        const { periodicUUID } = this.props.location.state as ScheduleRoomProps;
-        await cancelPeriodicRoom(periodicUUID);
-        this.props.history.push("/user/");
-    };
-
-    public render(): JSX.Element {
-        const { periodicUUID, roomUUID, title } = this.props.location.state as ScheduleRoomProps;
-        const { roomType, rate } = this.state.periodic;
-        return (
-            <MainPageLayout>
-                <div className="schedule-room-box">
-                    <div className="schedule-room-nav">
-                        <div className="schedule-room-head">
-                            <Link
-                                to={{
-                                    pathname: generateRoutePath(RouteNameType.RoomDetailPage, {
-                                        roomUUID,
-                                        periodicUUID,
-                                    }),
-                                }}
-                            >
-                                <div className="schedule-room-back">
-                                    <img src={back} alt="back" />
-                                    <span>返回</span>
-                                </div>
-                            </Link>
-                            <Divider type="vertical" />
-                            <div className="schedule-room-title">{title}</div>
+    return (
+        <MainPageLayout>
+            <div className="schedule-room-box">
+                <div className="schedule-room-nav">
+                    <div className="schedule-room-head">
+                        <div className="schedule-room-back" onClick={() => history.goBack()}>
+                            <img src={back} alt="back" />
+                            <span>返回</span>
                         </div>
-                        <div className="schedule-room-cut-line" />
+                        <Divider type="vertical" />
+                        <div className="schedule-room-title">{title}</div>
                     </div>
-                    <div className="schedule-room-body">
-                        <div className="schedule-room-mid">
-                            <div className="schedule-room-tips">
-                                <div className="schedule-room-tips-title">每周六</div>
-                                <div className="schedule-room-tips-type">房间类型： {roomType}</div>
-                                <div className="schedule-room-tips-inner">
-                                    结束于 {this.formatEndTime()} ，共{rate}个房间
-                                </div>
+                    <div className="schedule-room-cut-line" />
+                </div>
+                <div className="schedule-room-body">
+                    <div className="schedule-room-mid">
+                        <div className="schedule-room-tips">
+                            <div className="schedule-room-tips-title">每周六</div>
+                            <div className="schedule-room-tips-type">
+                                房间类型： {periodicInfo.periodic.roomType}
                             </div>
-                            <div className="schedule-btn-list">
-                                <Button>修改周期性房间</Button>
-                                <Button danger onClick={this.cancelRoom}>
-                                    取消周期性房间
-                                </Button>
+                            <div className="schedule-room-tips-inner">
+                                结束于 {formatEndTime} ，共{rooms.length}个房间
                             </div>
-                            <div className="schedule-room-list">
-                                <div className="schedule-room-list-month">
-                                    {this.renderRoomTable()}
-                                </div>
-                            </div>
+                        </div>
+                        <div className="schedule-btn-list">
+                            <Button disabled={!isCreator}>修改周期性房间</Button>
+                            <Button danger onClick={cancelRoom} disabled={!isCreator}>
+                                取消周期性房间
+                            </Button>
+                        </div>
+                        <div className="schedule-room-list">
+                            <div className="schedule-room-list-month">{renderRoomTable()}</div>
                         </div>
                     </div>
                 </div>
-            </MainPageLayout>
-        );
-    }
+            </div>
+        </MainPageLayout>
+    );
+});
+
+interface MoreMenuProps {
+    room: RoomItem;
+    roomDetailsLink: () => void;
+    isCreator: boolean;
 }
 
-type Room = {
-    roomUUID: string;
-    beginTime: number;
-    endTime: number;
-    roomStatus: RoomStatus;
-};
+const MoreMenu = observer<MoreMenuProps>(function MoreMenu({ room, roomDetailsLink, isCreator }) {
+    const [isShowInviteModal, setIsShowInviteModal] = useState(false);
 
-type SortedRoom = {
-    yearMonth: string;
-    day: string;
-    week: string;
-    time: string;
-    roomStatus: RoomStatus;
-    room: Room;
-};
-
-type ScheduleRoomProps = {
-    periodicUUID: string;
-    userUUID: string;
-    roomUUID: string;
-    title: string;
-};
-
-type ScheduleRoomDetailPageState = {
-    periodic: {
-        ownerUUID: string; // 创建者的 uuid
-        endTime: number;
-        rate: number | null; // 默认为 0（即 用户选择的是 endTime）
-        roomType: RoomType;
-    };
-    rooms: Room[];
-    currentRoom: Room;
-
-    sortedRooms: SortedRoom[];
-    toggleCopyModal: boolean;
-};
+    return (
+        <Dropdown
+            overlay={() => {
+                return (
+                    <Menu>
+                        <Menu.Item onClick={roomDetailsLink}>房间详情</Menu.Item>
+                        {isCreator && (
+                            <>
+                                <Menu.Item>修改房间</Menu.Item>
+                                <Menu.Item>取消房间</Menu.Item>
+                            </>
+                        )}
+                        <Menu.Item
+                            onClick={() => {
+                                setIsShowInviteModal(true);
+                            }}
+                        >
+                            复制邀请
+                        </Menu.Item>
+                        <InviteModal
+                            room={room}
+                            onCopy={() => {
+                                clipboard.writeText(room.roomUUID);
+                                message.success("复制成功");
+                            }}
+                            onCancel={() => setIsShowInviteModal(false)}
+                            visible={isShowInviteModal}
+                        />
+                    </Menu>
+                );
+            }}
+            trigger={["click"]}
+        >
+            <img src={moreBtn} alt="更多" />
+        </Dropdown>
+    );
+});

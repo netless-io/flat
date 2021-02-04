@@ -2,7 +2,7 @@ import { ComponentType } from "react";
 import SplashPage from "./pages/SplashPage";
 import LoginPage from "./LoginPage";
 import BigClassPage from "./pages/BigClassPage";
-import ScheduleRoomDetailPage from "./pages/ScheduleRoomPage";
+import { ScheduleRoomDetailPage } from "./pages/ScheduleRoomPage";
 import SmallClassPage from "./pages/SmallClassPage";
 import OneToOnePage from "./pages/OneToOnePage";
 import ReplayPage from "./pages/ReplayPage";
@@ -71,9 +71,10 @@ export const routeConfig = {
         path: "/user/scheduled/",
         component: UserScheduledPage,
     },
+
     [RouteNameType.ScheduleRoomDetailPage]: {
         title: "Flat Scheduled Room Detail",
-        path: "/user/scheduled/info/",
+        path: "/user/scheduled/info/:periodicUUID/:ownerUUID/:title",
         component: ScheduleRoomDetailPage,
     },
     [RouteNameType.UserInfoPage]: {
