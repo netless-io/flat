@@ -18,7 +18,7 @@ import homeIconGraySVG from "../../assets/image/home-icon-gray.svg";
 import roomTypeSVG from "../../assets/image/room-type.svg";
 import docsIconSVG from "../../assets/image/docs-icon.svg";
 import "./RoomDetailPage.less";
-import { Button, Checkbox, message, Modal } from "antd";
+import { Button, Checkbox, Divider, message, Modal } from "antd";
 
 export type RoomDetailPageState = {
     isTeacher: boolean;
@@ -70,17 +70,22 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
 
     return (
         <MainPageLayout>
-            <div className="user-schedule-box">
-                <div className="user-schedule-nav">
-                    <div className="user-schedule-title">
+            <div className="user-room-detail-box">
+                <div className="user-room-detail-nav">
+                    <div className="user-room-detail-head">
                         <Link to={"/user/"}>
-                            <div className="user-back">
+                            <div className="user-room-detail-back">
                                 <img src={backSVG} alt="back" />
                                 <span>返回</span>
                             </div>
                         </Link>
                         <div className="user-segmentation" />
-                        {roomInfo.title && <div className="user-title">{roomInfo.title}</div>}
+                        {roomInfo.title && (
+                            <>
+                                <Divider type="vertical" />
+                                <h1 className="user-room-detail-title">{roomInfo.title}</h1>
+                            </>
+                        )}
                         {periodicUUID && (
                             <>
                                 <div className="user-periodic">周期</div>
@@ -105,10 +110,10 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                             </>
                         )}
                     </div>
-                    <div className="user-schedule-cut-line" />
+                    <div className="user-room-detail-cut-line" />
                 </div>
-                <div className="user-schedule-body">
-                    <div className="user-schedule-mid">
+                <div className="user-room-detail-body">
+                    <div className="user-room-detail-mid">
                         <div className="user-room-time">
                             {formattedBeginTime && (
                                 <div className="user-room-time-box">
