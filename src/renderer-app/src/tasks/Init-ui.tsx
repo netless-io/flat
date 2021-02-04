@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { ConfigProvider } from "antd";
+import zhCN from "antd/lib/locale/zh_CN";
 import { AppRoutes } from "../AppRoutes";
 import { StoreProvider } from "../components/StoreProvider";
 
@@ -14,9 +16,11 @@ configure({
 
 const initUI = (): void => {
     ReactDOM.render(
-        <StoreProvider>
-            <AppRoutes />
-        </StoreProvider>,
+        <ConfigProvider locale={zhCN}>
+            <StoreProvider>
+                <AppRoutes />
+            </StoreProvider>
+        </ConfigProvider>,
         document.getElementById("root") as HTMLElement,
     );
 };
