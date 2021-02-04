@@ -11,10 +11,10 @@ export interface RoomInfoProps {
 
 export class RoomInfo extends React.PureComponent<RoomInfoProps> {
     roomStatusLocale = {
-        [RoomStatus.Idle]: "未开始",
+        [RoomStatus.Idle]: "待开始",
         [RoomStatus.Started]: "进行中",
         [RoomStatus.Paused]: "已暂停",
-        [RoomStatus.Stopped]: "已停止",
+        [RoomStatus.Stopped]: "已结束",
     };
 
     roomInfoLocale = {
