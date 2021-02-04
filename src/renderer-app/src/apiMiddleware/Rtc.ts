@@ -47,24 +47,24 @@ export class Rtc {
             this.rtcEngine.setLogFile(logpath);
 
             this.rtcEngine.on("joinedChannel", async (channel, uid) => {
-                console.log(`${uid} join channel ${channel}`);
+                console.log(`[RTC] ${uid} join channel ${channel}`);
             });
 
             this.rtcEngine.on("userJoined", uid => {
-                console.log("userJoined", uid);
+                console.log("[RTC] userJoined", uid);
             });
 
             this.rtcEngine.on("leavechannel", () => {
-                console.log(`onleaveChannel`);
+                console.log(`[RTC] onleaveChannel`);
             });
 
             this.rtcEngine.on("error", (err, msg) => {
-                console.error(`onerror----`, err, msg);
+                console.error(`[RTC] onerror----`, err, msg);
             });
         }
 
         if (this.rtcEngine.initialize(this.appID) < 0) {
-            throw new Error("The app ID is invalid. Check if it is in the correct format.");
+            throw new Error("[RTC] The app ID is invalid. Check if it is in the correct format.");
         }
     }
 
