@@ -23,7 +23,7 @@ import { useWhiteboardStore } from "../../stores/WhiteboardStore";
 import { RecordingConfig, useClassRoomStore, User } from "../../stores/ClassRoomStore";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ipcAsyncByMain } from "../../utils/ipc";
-import { useAutoRun } from "../../utils/mobx";
+import { useAutoRun, useComputed, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 
 import "./BigClassPage.less";
@@ -79,6 +79,12 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const [mainSpeaker, setMainSpeaker] = useState<User | undefined>(speakingJoiner);
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
+    const isVideoAvatarOn = useComputed((): boolean => {
+        return Boolean(
+            classRoomStore.creator?.isSpeak || classRoomStore.speakingJoiners.length > 0,
+        );
+    }).get();
+
     useEffect(() => {
         ipcAsyncByMain("set-win-size", {
             width: 1200,
@@ -93,19 +99,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             });
 
             pushHistory(RouteNameType.HomePage, {});
-        }
-    });
-
-    useAutoRun(reaction => {
-        const { currentUser, creator } = classRoomStore;
-        if (
-            (currentUser && currentUser.isSpeak && (currentUser.camera || currentUser.mic)) ||
-            (creator && (creator.camera || creator.mic))
-        ) {
-            // join rtc room to listen to creator events
-            classRoomStore.startCalling();
-            // run only once
-            reaction.dispose();
         }
     });
 
@@ -126,10 +119,13 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     });
 
     useAutoRun(() => {
-        // only one user is allowed to speak in big class
         if (classRoomStore.speakingJoiners.length <= 0) {
+            setSpeakingJoiner(void 0);
+            setMainSpeaker(classRoomStore.creator?.isSpeak ? classRoomStore.creator : void 0);
             return;
         }
+
+        // only one user is allowed to speak in big class
         const user = classRoomStore.speakingJoiners[0];
 
         const speak = user.camera || user.mic;
@@ -142,6 +138,15 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             classRoomStore.rtc.rtcEngine.setClientRole(speak ? 1 : 2);
         }
     });
+
+    useReaction(
+        () => classRoomStore.isCalling,
+        (prevCalling, currCalling) => {
+            if (!prevCalling && currCalling) {
+                openRealtimeSide(true);
+            }
+        },
+    );
 
     if (
         !whiteboardStore.room ||
@@ -275,40 +280,39 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     function renderRealtimePanel(): React.ReactNode {
         const { creator } = classRoomStore;
-        const isVideoOn = Boolean(
-            classRoomStore.isCreator
-                ? classRoomStore.isCalling
-                : creator && (creator.camera || creator.mic),
-        );
 
         return (
             <RealtimePanel
                 isShow={isRealtimeSideOpen}
-                isVideoOn={isVideoOn}
+                isVideoOn={isVideoAvatarOn}
                 videoSlot={
-                    creator &&
-                    isVideoOn && (
+                    isVideoAvatarOn && (
                         <div
                             className={classNames("whiteboard-rtc-box", {
                                 "with-small": speakingJoiner,
                             })}
                         >
-                            <div
-                                className={classNames("whiteboard-rtc-avatar", {
-                                    "is-small":
-                                        mainSpeaker && mainSpeaker.userUUID !== creator.userUUID,
-                                })}
-                            >
-                                <BigClassAvatar
-                                    isCreator={classRoomStore.isCreator}
-                                    userUUID={classRoomStore.userUUID}
-                                    avatarUser={creator}
-                                    rtcEngine={classRoomStore.rtc.rtcEngine}
-                                    updateDeviceState={classRoomStore.updateDeviceState}
-                                    small={mainSpeaker && mainSpeaker.userUUID !== creator.userUUID}
-                                    onExpand={onVideoAvatarExpand}
-                                />
-                            </div>
+                            {creator && (
+                                <div
+                                    className={classNames("whiteboard-rtc-avatar", {
+                                        "is-small":
+                                            mainSpeaker &&
+                                            mainSpeaker.userUUID !== creator.userUUID,
+                                    })}
+                                >
+                                    <BigClassAvatar
+                                        isCreator={classRoomStore.isCreator}
+                                        userUUID={classRoomStore.userUUID}
+                                        avatarUser={creator}
+                                        rtcEngine={classRoomStore.rtc.rtcEngine}
+                                        updateDeviceState={classRoomStore.updateDeviceState}
+                                        small={
+                                            mainSpeaker && mainSpeaker.userUUID !== creator.userUUID
+                                        }
+                                        onExpand={onVideoAvatarExpand}
+                                    />
+                                </div>
+                            )}
                             {speakingJoiner && (
                                 <div
                                     className={classNames("whiteboard-rtc-avatar", {
@@ -370,15 +374,11 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             return;
         }
 
-        await classRoomStore.toggleCalling();
-
         const speakConfigs: Array<{ userUUID: string; speak: boolean }> = [
-            { userUUID: classRoomStore.userUUID, speak: classRoomStore.isCalling },
+            { userUUID: classRoomStore.userUUID, speak: !classRoomStore.currentUser.isSpeak },
         ];
 
-        if (classRoomStore.isCalling) {
-            openRealtimeSide(true);
-        } else {
+        if (classRoomStore.currentUser.isSpeak) {
             speakConfigs.push(
                 ...classRoomStore.speakingJoiners.map(user => ({
                     userUUID: user.userUUID,
@@ -386,6 +386,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 })),
             );
         }
+
         classRoomStore.onSpeak(speakConfigs);
     }
 
