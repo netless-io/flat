@@ -20,7 +20,8 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
     onCancel,
     room,
 }) {
-    const { beginTime, endTime, ownerUserName, roomUUID, title } = room;
+    const { beginTime, endTime, ownerUserName, periodicUUID, roomUUID, title } = room;
+    const uuid = periodicUUID || roomUUID;
 
     const formatBeginTime = completeTimeFormat(beginTime!);
     const formatEndTime =
@@ -32,7 +33,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
         <Modal
             width={460}
             visible={visible}
-            onOk={() => onCopy(roomUUID)}
+            onOk={() => onCopy(uuid)}
             onCancel={onCancel}
             okText="复制"
             cancelText="取消"
@@ -50,7 +51,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
                 </div>
                 <div className="modal-content-right">
                     <span>{title}</span>
-                    <span style={{ userSelect: "text" }}>{roomUUID}</span>
+                    <span style={{ userSelect: "text" }}>{uuid}</span>
                     {/* @TODO Add time */}
                     <span>
                         {formatBeginTime}~{formatEndTime}

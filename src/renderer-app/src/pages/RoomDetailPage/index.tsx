@@ -148,7 +148,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                                     className="user-room-docs-right"
                                     style={{ userSelect: "text" }}
                                 >
-                                    {roomUUID}
+                                    {periodicUUID || roomUUID}
                                 </div>
                             </div>
                             <div className="user-room-inf">
