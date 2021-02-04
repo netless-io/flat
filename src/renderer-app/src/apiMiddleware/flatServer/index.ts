@@ -309,20 +309,9 @@ export type CancelRoomResult = {};
 
 export type CancelRoomPayload = {
     all?: boolean;
-} & (
-    | {
-          roomUUID: string;
-          periodicUUID?: string;
-      }
-    | {
-          roomUUID?: string;
-          periodicUUID: string;
-      }
-    | {
-          roomUUID: string;
-          periodicUUID: string;
-      }
-);
+    roomUUID?: string;
+    periodicUUID?: string;
+};
 
 export function cancelRoom({
     all,
@@ -330,19 +319,20 @@ export function cancelRoom({
     periodicUUID,
 }: CancelRoomPayload): Promise<
     CancelPeriodicRoomResult | CancelPeriodicSubRoomResult | CancelOrdinaryRoomResult
-> {
-    if (all) {
-        // @ts-ignore
+> | void {
+    if (all && periodicUUID) {
         return cancelPeriodicRoom(periodicUUID);
     }
 
-    if (periodicUUID) {
-        // @ts-ignore
+    if (roomUUID && periodicUUID) {
         return cancelPeriodicSubRoom({ roomUUID, periodicUUID });
     }
 
-    // @ts-ignore
-    return cancelOrdinaryRoom(roomUUID);
+    if (roomUUID) {
+        return cancelOrdinaryRoom(roomUUID);
+    }
+
+    return;
 }
 
 export type CancelHistoryRoomResult = {};
