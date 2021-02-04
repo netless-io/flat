@@ -1,15 +1,15 @@
 import React from "react";
 import { Form, InputNumber, Row, Col } from "antd";
-import { isBefore, getDay, endOfDay } from "date-fns";
+import { isBefore, getDay, endOfDay, startOfDay } from "date-fns";
 import { Week } from "../../apiMiddleware/flatServer/constants";
 import { PeriodicEndType } from "../../constants/Periodic";
 import { getRoomTypeName } from "../../utils/getTypeName";
 import { DatePicker } from "../../components/antd-date-fns";
 import { CreatePeriodicFormValues } from "./typings";
-import { formatISODayWeekiii, syncPeriodicEndAmount } from "./utils";
+import { formatISODayWeekiii, getFinalDate, syncPeriodicEndAmount } from "./utils";
 import { PeriodicEndTypeSelector } from "./PeriodicEndTypeSelector";
 import { WeekRateSelector, getWeekNames } from "./WeekRateSelector";
-import { FormInstance } from "antd/lib/form";
+import { FormInstance, RuleObject } from "antd/lib/form";
 
 export function renderPeriodicForm(
     form: FormInstance<CreatePeriodicFormValues>,
@@ -104,6 +104,7 @@ export function renderPeriodicForm(
             <Form.Item
                 name={["periodic", "endTime"]}
                 getValueFromEvent={(date: Date | null) => date && endOfDay(date)}
+                rules={[validatePeriodicEndTime]}
             >
                 <DatePicker
                     format="YYYY-MM-DD"
@@ -166,12 +167,33 @@ export function renderPeriodicForm(
 
     function disablePeriodicEndTime(currentTime: Date | null): boolean {
         if (currentTime) {
-            const endTimeDate: CreatePeriodicFormValues["endTime"]["date"] = form.getFieldValue([
-                "endTime",
-                "date",
-            ]);
-            return isBefore(currentTime, endTimeDate);
+            const beginTimeDate: CreatePeriodicFormValues["beginTime"]["date"] = form.getFieldValue(
+                ["beginTime", "date"],
+            );
+            return isBefore(currentTime, startOfDay(beginTimeDate));
         }
         return false;
+    }
+
+    function validatePeriodicEndTime(): RuleObject {
+        return {
+            validator: async (_, value: Date) => {
+                const {
+                    periodic,
+                    beginTime,
+                }: Pick<CreatePeriodicFormValues, "periodic" | "beginTime"> = form.getFieldsValue([
+                    "periodic",
+                    "beginTime",
+                ]);
+
+                if (periodic.rate > 50) {
+                    throw new Error("最多允许预定 50 个房间");
+                }
+
+                if (isBefore(value, getFinalDate(beginTime))) {
+                    throw new Error(`结束重复日期不能小于开始时间日期`);
+                }
+            },
+        };
     }
 }

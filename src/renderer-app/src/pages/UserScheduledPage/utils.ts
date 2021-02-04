@@ -67,12 +67,12 @@ export function syncPeriodicEndAmount(
             addMilliseconds(t, differenceInMilliseconds(finalEndTime, finalBeginTime)),
         );
     } else {
-        if (isBefore(newPeriodic.endTime, finalEndTime)) {
-            newPeriodic.endTime = new Date(finalEndTime);
+        if (isBefore(newPeriodic.endTime, finalBeginTime)) {
+            newPeriodic.endTime = endOfDay(finalBeginTime);
         }
 
         let times = 0;
-        let t = finalEndTime;
+        let t = finalBeginTime;
 
         while (isBefore(t, newPeriodic.endTime)) {
             if (periodic.weeks.includes(getDay(t))) {
