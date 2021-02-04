@@ -13,6 +13,9 @@ import { zhCN } from "date-fns/locale";
 import { PeriodicEndType } from "../../constants/Periodic";
 import { CreatePeriodicFormValues } from "./typings";
 
+/** Minimum class duration in minutes */
+export const MIN_DURATION = 15;
+
 export function formatISODayWeekiii(date: Date): string {
     // TODO: i18n
     return format(date, "yyyy/MM/dd iii", { locale: zhCN });
@@ -26,7 +29,10 @@ export function getFinalDate({ date, time }: { date: Date; time: Date }): Date {
     return result;
 }
 
-/** make sure periodic end time is not earlier than end time */
+/**
+ * In rate endType mode: make sure periodic end time is enough for all classes.
+ * In time endType mode: recalculate classroom rate.
+ */
 export function syncPeriodicEndAmount(
     form: FormInstance<CreatePeriodicFormValues>,
     beginTime: CreatePeriodicFormValues["beginTime"],

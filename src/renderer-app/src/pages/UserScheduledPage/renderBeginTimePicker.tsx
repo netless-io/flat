@@ -4,7 +4,7 @@ import { isBefore, startOfDay, isSameDay, addMinutes } from "date-fns";
 import { FormInstance, RuleObject } from "antd/lib/form";
 import { DatePicker, TimePicker } from "../../components/antd-date-fns";
 import { CreatePeriodicFormValues } from "./typings";
-import { getFinalDate, syncPeriodicEndAmount } from "./utils";
+import { getFinalDate, MIN_DURATION, syncPeriodicEndAmount } from "./utils";
 
 export function renderBeginTimePicker(
     form: FormInstance<CreatePeriodicFormValues>,
@@ -91,12 +91,12 @@ export function renderBeginTimePicker(
             : [];
     }
 
-    /** make sure end time is at least 30mins after begin time */
+    /** make sure end time is at least min duration after begin time */
     function syncEndTime(beginTime: CreatePeriodicFormValues["beginTime"]): void {
         const endTime: CreatePeriodicFormValues["endTime"] = form.getFieldValue("endTime");
         const periodic: CreatePeriodicFormValues["periodic"] = form.getFieldValue("periodic");
         const finalEndTime = getFinalDate(endTime);
-        const compareTime = addMinutes(getFinalDate(beginTime), 30);
+        const compareTime = addMinutes(getFinalDate(beginTime), MIN_DURATION);
 
         if (isBefore(finalEndTime, compareTime)) {
             const newEndTime = {
