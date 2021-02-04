@@ -150,7 +150,6 @@ export class RoomStore {
     }
 
     async cancelRoom(payload: CancelRoomPayload): Promise<void> {
-        this.rooms.delete(payload.roomUUID);
         await cancelRoom(payload);
     }
 

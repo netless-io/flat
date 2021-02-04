@@ -307,26 +307,42 @@ export function cancelPeriodicSubRoom(
 
 export type CancelRoomResult = {};
 
-export interface CancelRoomPayload {
+export type CancelRoomPayload = {
     all?: boolean;
-    roomUUID: string;
-    periodicUUID?: string;
-}
+} & (
+    | {
+          roomUUID: string;
+          periodicUUID?: string;
+      }
+    | {
+          roomUUID?: string;
+          periodicUUID: string;
+      }
+    | {
+          roomUUID: string;
+          periodicUUID: string;
+      }
+);
 
 export function cancelRoom({
     all,
     roomUUID,
     periodicUUID,
-}: CancelRoomPayload): Promise<CancelRoomResult> {
-    if (periodicUUID) {
-        if (all) {
-            return cancelPeriodicRoom(periodicUUID);
-        } else {
-            return cancelPeriodicSubRoom({ roomUUID, periodicUUID });
-        }
-    } else {
-        return cancelOrdinaryRoom(roomUUID);
+}: CancelRoomPayload): Promise<
+    CancelPeriodicRoomResult | CancelPeriodicSubRoomResult | CancelOrdinaryRoomResult
+> {
+    if (all) {
+        // @ts-ignore
+        return cancelPeriodicRoom(periodicUUID);
     }
+
+    if (periodicUUID) {
+        // @ts-ignore
+        return cancelPeriodicSubRoom({ roomUUID, periodicUUID });
+    }
+
+    // @ts-ignore
+    return cancelOrdinaryRoom(roomUUID);
 }
 
 export type CancelHistoryRoomResult = {};
