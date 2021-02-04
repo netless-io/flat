@@ -13,7 +13,7 @@ import {
     PeriodicRoomInfoResult,
 } from "../../apiMiddleware/flatServer";
 import "./ScheduleRoomPage.less";
-import { Button, Dropdown, Input, Menu, Modal, Table } from "antd";
+import { Button, Divider, Dropdown, Input, Menu, Modal, Table } from "antd";
 import { format, getDay } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import memoizeOne from "memoize-one";
@@ -266,9 +266,9 @@ export default class ScheduleRoomDetailPage extends React.Component<
         const { roomType, rate } = this.state.periodic;
         return (
             <MainPageLayout>
-                <div className="user-schedule-box">
-                    <div className="user-schedule-nav">
-                        <div className="user-schedule-title">
+                <div className="schedule-room-box">
+                    <div className="schedule-room-nav">
+                        <div className="schedule-room-head">
                             <Link
                                 to={{
                                     pathname: generateRoutePath(RouteNameType.RoomDetailPage, {
@@ -277,22 +277,22 @@ export default class ScheduleRoomDetailPage extends React.Component<
                                     }),
                                 }}
                             >
-                                <div className="user-back">
+                                <div className="schedule-room-back">
                                     <img src={back} alt="back" />
                                     <span>返回</span>
                                 </div>
                             </Link>
-                            <div className="user-segmentation" />
-                            <div className="user-title">{title}</div>
+                            <Divider type="vertical" />
+                            <div className="schedule-room-title">{title}</div>
                         </div>
-                        <div className="user-schedule-cut-line" />
+                        <div className="schedule-room-cut-line" />
                     </div>
-                    <div className="user-schedule-body">
-                        <div className="user-schedule-mid">
-                            <div className="user-schedule-tips">
-                                <div className="user-schedule-tips-title">每周六</div>
-                                <div className="user-schedule-tips-type">房间类型： {roomType}</div>
-                                <div className="user-schedule-tips-inner">
+                    <div className="schedule-room-body">
+                        <div className="schedule-room-mid">
+                            <div className="schedule-room-tips">
+                                <div className="schedule-room-tips-title">每周六</div>
+                                <div className="schedule-room-tips-type">房间类型： {roomType}</div>
+                                <div className="schedule-room-tips-inner">
                                     结束于 {this.formatEndTime()} ，共{rate}个房间
                                 </div>
                             </div>

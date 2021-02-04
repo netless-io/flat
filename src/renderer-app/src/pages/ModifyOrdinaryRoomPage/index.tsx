@@ -1,3 +1,4 @@
+import { Divider } from "antd";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
@@ -6,6 +7,7 @@ import MainPageLayout from "../../components/MainPageLayout";
 import { OrdinaryRoomForm } from "../../components/RoomInfoForm/OrdinaryRoomForm";
 import { PeriodicSubRoomForm } from "../../components/RoomInfoForm/PeriodicSubRoomForm";
 import { RouteNameType, RouteParams } from "../../utils/routes";
+import "./ModifyOrdinaryRoomPage.less";
 
 type ModifyOrdinaryRoomPageProps = {
     roomUUID: string;
@@ -18,30 +20,30 @@ export const ModifyOrdinaryRoomPage = observer<ModifyOrdinaryRoomPageProps>(
 
         return (
             <MainPageLayout>
-                <div className="user-schedule-box">
-                    <div className="user-schedule-nav">
-                        <div className="user-schedule-title">
+                <div className="modify-ordinary-room-box">
+                    <div className="modify-ordinary-room-nav">
+                        <div className="modify-ordinary-room-head">
                             <Link to={"/user/"}>
-                                <div className="user-back">
+                                <div className="modify-ordinary-room-back">
                                     <img src={back} alt="back" />
                                     <span>返回</span>
                                 </div>
                             </Link>
-                            <div className="user-segmentation" />
-                            <div className="user-title">修改房间</div>
+                            <Divider type="vertical" />
+                            <div className="modify-ordinary-room-title">修改房间</div>
                         </div>
-                        <div className="user-schedule-cut-line" />
+                        <div className="modify-ordinary-room-cut-line" />
                     </div>
-                    <div className="user-schedule-body">
+                    <div className="modify-ordinary-room-body">
                         {periodicUUID ? (
-                            <div className="user-schedule-mid">
+                            <div className="modify-ordinary-room-mid">
                                 <PeriodicSubRoomForm
                                     roomUUID={roomUUID}
                                     periodicUUID={periodicUUID}
                                 />
                             </div>
                         ) : (
-                            <div className="user-schedule-mid">
+                            <div className="modify-ordinary-room-mid">
                                 <OrdinaryRoomForm roomUUID={roomUUID} />
                             </div>
                         )}
