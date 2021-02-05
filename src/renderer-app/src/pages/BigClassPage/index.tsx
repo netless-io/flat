@@ -128,14 +128,12 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         // only one user is allowed to speak in big class
         const user = classRoomStore.speakingJoiners[0];
 
-        const speak = user.camera || user.mic;
-
-        setSpeakingJoiner(speak ? user : void 0);
-        setMainSpeaker(speak ? user : void 0);
+        setSpeakingJoiner(user);
+        setMainSpeaker(user);
 
         // is current user speaking
         if (classRoomStore.userUUID === user.userUUID) {
-            classRoomStore.rtc.rtcEngine.setClientRole(speak ? 1 : 2);
+            classRoomStore.rtc.rtcEngine.setClientRole(user.isSpeak ? 1 : 2);
         }
     });
 
