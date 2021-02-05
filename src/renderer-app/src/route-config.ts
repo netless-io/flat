@@ -12,6 +12,7 @@ import UserInfoPage from "./UserInfoPage";
 import UserScheduledPage from "./pages/UserScheduledPage";
 import UserSettingPage from "./pages/UserSettingPanel";
 import { ModifyOrdinaryRoomPage } from "./pages/ModifyOrdinaryRoomPage";
+import { ModifyPeriodicRoomPage } from "./pages/ModifyPeriodicRoomPage";
 import { RoomType } from "./apiMiddleware/flatServer/constants";
 
 export enum RouteNameType {
@@ -28,6 +29,7 @@ export enum RouteNameType {
     UserSettingPage = "UserSettingPage",
     ReplayPage = "ReplayPage",
     ModifyOrdinaryRoomPage = "ModifyOrdinaryRoomPage",
+    ModifyPeriodicRoomPage = "ModifyPeriodicRoomPage",
 }
 
 export const routeConfig = {
@@ -96,6 +98,11 @@ export const routeConfig = {
         title: "Flat Modify",
         path: "/modify/:roomUUID/:periodicUUID?/",
         component: ModifyOrdinaryRoomPage,
+    },
+    [RouteNameType.ModifyPeriodicRoomPage]: {
+        title: "Flat Modify",
+        path: "/modify/periodic/room/:periodicUUID/",
+        component: ModifyPeriodicRoomPage,
     },
 } as const;
 

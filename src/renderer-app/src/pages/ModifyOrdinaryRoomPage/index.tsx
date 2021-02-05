@@ -4,10 +4,10 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import back from "../../assets/image/back.svg";
 import MainPageLayout from "../../components/MainPageLayout";
-import { OrdinaryRoomForm } from "../../components/RoomInfoForm/OrdinaryRoomForm";
-import { PeriodicSubRoomForm } from "../../components/RoomInfoForm/PeriodicSubRoomForm";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import "./ModifyOrdinaryRoomPage.less";
+import { OrdinaryRoomForm } from "./OrdinaryRoomForm";
+import { PeriodicSubRoomForm } from "./PeriodicSubRoomForm";
 
 type ModifyOrdinaryRoomPageProps = {
     roomUUID: string;

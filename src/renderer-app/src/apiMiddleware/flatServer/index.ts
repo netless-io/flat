@@ -440,7 +440,6 @@ export async function updateOrdinaryRoom(payload: UpdateOrdinaryRoomPayload): Pr
     );
 }
 export interface UpdatePeriodicRoomPayload {
-    roomUUID: string;
     periodicUUID: string;
     beginTime: number;
     endTime: number;
