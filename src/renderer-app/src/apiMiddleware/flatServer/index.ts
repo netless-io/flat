@@ -223,8 +223,6 @@ export type PeriodicRoomInfoResult = {
         title: string;
         weeks: Week[];
         roomType: RoomType;
-        title: string;
-        weeks: Week[];
     };
     rooms: Array<{
         roomUUID: string;

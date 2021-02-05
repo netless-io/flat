@@ -4,8 +4,8 @@ import MainPageLayout from "../../components/MainPageLayout";
 import back from "../../assets/image/back.svg";
 import moreBtn from "../../assets/image/moreBtn.svg";
 import "./ScheduleRoomPage.less";
+import { format, formatWithOptions } from "date-fns/fp";
 import { Button, Divider, Dropdown, Menu, Table } from "antd";
-import { format, formatWithOptions, getDay } from "date-fns/fp";
 import { zhCN } from "date-fns/locale";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { observer } from "mobx-react-lite";
@@ -19,6 +19,7 @@ import { RoomDetailsItem } from "../../components/MoreMenu/RoomDetailsItem";
 import { ModifyRoomItem } from "../../components/MoreMenu/ModifyRoomItem";
 import { RemoveRoomItem } from "../../components/MoreMenu/RemoveRoomItem";
 import { CopyInvitationItem } from "../../components/MoreMenu/CopyInvitationItem";
+import { getDay } from "date-fns";
 import { useLastLocation } from "react-router-last-location";
 
 const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
@@ -186,7 +187,16 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                             </div>
                         </div>
                         <div className="schedule-btn-list">
-                            <Button disabled={!isCreator}>修改周期性房间</Button>
+                            <Button
+                                disabled={!isCreator}
+                                onClick={() =>
+                                    pushHistory(RouteNameType.ModifyPeriodicRoomPage, {
+                                        periodicUUID,
+                                    })
+                                }
+                            >
+                                修改周期性房间
+                            </Button>
                             <Button danger onClick={cancelRoom} disabled={!isCreator}>
                                 取消周期性房间
                             </Button>
