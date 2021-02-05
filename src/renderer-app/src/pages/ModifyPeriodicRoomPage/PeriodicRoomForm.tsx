@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import {
     periodicRoomInfo,
     updatePeriodicRoom,
-    UpdatePeriodicRoomPayload,
+    UpdatePeriodicRoomPayload
 } from "../../apiMiddleware/flatServer";
 import { RoomType, Week } from "../../apiMiddleware/flatServer/constants";
 import { DatePicker } from "../../components/antd-date-fns";
@@ -171,7 +171,7 @@ export const PeriodicRoomForm = observer<PeriodicRoomFormProps>(function Periodi
             <div className="modify-periodic-room-under">
                 <Button
                     className="modify-periodic-room-cancel"
-                    onClick={() => pushHistory(RouteNameType.HomePage, {})}
+                    onClick={() => pushHistory(RouteNameType.HomePage)}
                 >
                     取消
                 </Button>
@@ -287,7 +287,7 @@ export const PeriodicRoomForm = observer<PeriodicRoomFormProps>(function Periodi
             };
             await sp(updatePeriodicRoom(requestBody));
             message.success("修改成功");
-            pushHistory(RouteNameType.HomePage, {});
+            pushHistory(RouteNameType.HomePage);
         } catch (e) {
             console.error(e);
         }

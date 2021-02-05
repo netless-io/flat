@@ -249,7 +249,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
         } catch (e) {
             console.error(e);
         } finally {
-            pushHistory(RouteNameType.HomePage, {});
+            pushHistory(RouteNameType.HomePage);
         }
     }
 

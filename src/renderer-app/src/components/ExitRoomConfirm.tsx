@@ -35,7 +35,7 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
             close: true,
         });
 
-        pushHistory(RouteNameType.HomePage, {});
+        pushHistory(RouteNameType.HomePage);
     }, [pushHistory]);
 
     const onStopClass = useCallback(() => {

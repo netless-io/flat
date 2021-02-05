@@ -208,7 +208,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
                 await sp(roomStore.createOrdinaryRoom(basePayload));
             }
 
-            pushHistory(RouteNameType.HomePage, {});
+            pushHistory(RouteNameType.HomePage);
         } catch (e) {
             console.error(e);
             message.error(e.message);
@@ -221,11 +221,11 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
             Modal.confirm({
                 content: "房间尚未预定，是否返回？",
                 onOk() {
-                    pushHistory(RouteNameType.HomePage, {});
+                    pushHistory(RouteNameType.HomePage);
                 },
             });
         } else {
-            pushHistory(RouteNameType.HomePage, {});
+            pushHistory(RouteNameType.HomePage);
         }
     }
 

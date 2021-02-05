@@ -93,7 +93,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 close: true,
             });
 
-            pushHistory(RouteNameType.HomePage, {});
+            pushHistory(RouteNameType.HomePage);
         }
     });
 

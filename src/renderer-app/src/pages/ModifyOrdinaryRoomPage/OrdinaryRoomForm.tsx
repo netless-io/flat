@@ -108,7 +108,7 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
         try {
             await updateOrdinaryRoom(requestBody);
             if (isMount.current) {
-                pushHistory(RouteNameType.HomePage, {});
+                pushHistory(RouteNameType.HomePage);
             }
         } catch (error) {
             console.log(error);
@@ -219,7 +219,7 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
             <div className="user-schedule-under">
                 <Button
                     className="user-schedule-cancel"
-                    onClick={() => pushHistory(RouteNameType.HomePage, {})}
+                    onClick={() => pushHistory(RouteNameType.HomePage)}
                 >
                     取消
                 </Button>

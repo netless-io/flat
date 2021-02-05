@@ -98,7 +98,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 close: true,
             });
 
-            pushHistory(RouteNameType.HomePage, {});
+            pushHistory(RouteNameType.HomePage);
         }
     });
 

@@ -53,9 +53,9 @@ export const SplashPage = observer<SplashPageProps>(function SplashPage() {
         Promise.all([checkLogin(), pWait1s]).then(([nextPage]) => {
             if (!isUnMount) {
                 if (nextPage === RouteNameType.HomePage) {
-                    pushHistory(nextPage, {});
+                    pushHistory(nextPage);
                 } else {
-                    pushHistory(nextPage, {});
+                    pushHistory(nextPage);
                 }
             }
         });

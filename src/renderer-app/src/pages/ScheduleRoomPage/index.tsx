@@ -1,26 +1,26 @@
+import { Button, Divider, Dropdown, Menu, Table } from "antd";
+import { getDay } from "date-fns";
+import { format, formatWithOptions } from "date-fns/fp";
+import { zhCN } from "date-fns/locale";
+import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
-import MainPageLayout from "../../components/MainPageLayout";
+import { useLastLocation } from "react-router-last-location";
 import back from "../../assets/image/back.svg";
 import moreBtn from "../../assets/image/moreBtn.svg";
-import "./ScheduleRoomPage.less";
-import { format, formatWithOptions } from "date-fns/fp";
-import { Button, Divider, Dropdown, Menu, Table } from "antd";
-import { zhCN } from "date-fns/locale";
-import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
-import { observer } from "mobx-react-lite";
-import { RoomStoreContext } from "../../components/StoreProvider";
-import LoadingPage from "../../LoadingPage";
-import { RoomItem } from "../../stores/RoomStore";
-import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatusElement";
-import { getWeekName } from "../../utils/getTypeName";
-import { globalStore } from "../../stores/GlobalStore";
-import { RoomDetailsItem } from "../../components/MoreMenu/RoomDetailsItem";
+import MainPageLayout from "../../components/MainPageLayout";
+import { CopyInvitationItem } from "../../components/MoreMenu/CopyInvitationItem";
 import { ModifyRoomItem } from "../../components/MoreMenu/ModifyRoomItem";
 import { RemoveRoomItem } from "../../components/MoreMenu/RemoveRoomItem";
-import { CopyInvitationItem } from "../../components/MoreMenu/CopyInvitationItem";
-import { getDay } from "date-fns";
-import { useLastLocation } from "react-router-last-location";
+import { RoomDetailsItem } from "../../components/MoreMenu/RoomDetailsItem";
+import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatusElement";
+import { RoomStoreContext } from "../../components/StoreProvider";
+import LoadingPage from "../../LoadingPage";
+import { globalStore } from "../../stores/GlobalStore";
+import { RoomItem } from "../../stores/RoomStore";
+import { getWeekName } from "../../utils/getTypeName";
+import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
+import "./ScheduleRoomPage.less";
 
 const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
 const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
@@ -55,13 +55,13 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
             all: true,
             periodicUUID,
         });
-        pushHistory(RouteNameType.HomePage, {});
+        pushHistory(RouteNameType.HomePage);
     };
 
     // if the room has been cancelled and return to the previous page, an error will be reported
     const backPreviousPage = (): void => {
         if (!previousPage?.pathname) {
-            return pushHistory(RouteNameType.HomePage, {});
+            return pushHistory(RouteNameType.HomePage);
         }
 
         const previousRouterContainRemoveRoomUUID = cancelRoomUUIDList.some(roomUUID => {
@@ -69,7 +69,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
         });
 
         if (previousRouterContainRemoveRoomUUID) {
-            return pushHistory(RouteNameType.HomePage, {});
+            return pushHistory(RouteNameType.HomePage);
         }
 
         history.goBack();

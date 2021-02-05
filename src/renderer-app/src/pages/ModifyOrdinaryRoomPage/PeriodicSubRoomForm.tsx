@@ -128,7 +128,7 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
         try {
             await updatePeriodicSubRoom(requestBody);
             if (isMount.current) {
-                pushHistory(RouteNameType.HomePage, {});
+                pushHistory(RouteNameType.HomePage);
             }
         } catch (error) {
             console.log(error);
@@ -235,7 +235,7 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
             <div className="user-schedule-under">
                 <Button
                     className="user-schedule-cancel"
-                    onClick={() => pushHistory(RouteNameType.HomePage, {})}
+                    onClick={() => pushHistory(RouteNameType.HomePage)}
                 >
                     取消
                 </Button>
