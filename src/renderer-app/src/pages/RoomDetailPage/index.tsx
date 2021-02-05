@@ -194,10 +194,6 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
             <InviteModal
                 visible={isShowInviteModal}
                 room={roomInfo}
-                onCopy={text => {
-                    clipboard.writeText(text);
-                    message.success("复制成功");
-                }}
                 onCancel={() => showInviteModal(false)}
             />
             <Modal

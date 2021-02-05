@@ -1,9 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Modal } from "antd";
+import { message, Modal } from "antd";
 import { differenceInCalendarDays, format } from "date-fns/fp";
 import { RoomItem } from "../../stores/RoomStore";
-import { GlobalStoreContext } from "../../components/StoreProvider";
+import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
+import { clipboard } from "electron";
+import { getWeekNames } from "../UserScheduledPage/WeekRateSelector";
 
 const completeTimeFormat = format("yyyy-MM-dd HH:mm");
 const onlySuffixTimeFormat = format("HH:mm");
@@ -11,20 +13,21 @@ const onlySuffixTimeFormat = format("HH:mm");
 export interface InviteModalProps {
     visible: boolean;
     room: RoomItem;
-    onCopy: (text: string) => void;
     onCancel: () => void;
 }
 
-export const InviteModal = observer<InviteModalProps>(function InviteModal({
-    visible,
-    onCopy,
-    onCancel,
-    room,
-}) {
+export const InviteModal = observer<InviteModalProps>(function InviteModal({ visible, room }) {
     const globalStore = useContext(GlobalStoreContext);
+    const roomStore = useContext(RoomStoreContext);
 
     const { beginTime, endTime, periodicUUID, roomUUID, title } = room;
     const uuid = periodicUUID || roomUUID;
+
+    useEffect(() => {
+        if (periodicUUID) {
+            void roomStore.syncPeriodicRoomInfo(periodicUUID);
+        }
+    }, [periodicUUID, roomStore]);
 
     const formatBeginTime = completeTimeFormat(beginTime!);
     const formatEndTime =
@@ -32,11 +35,37 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
             ? completeTimeFormat(endTime!)
             : onlySuffixTimeFormat(endTime!);
 
+    const basePrefixText = `${globalStore.userName} 邀请你加入 Flat 房间
+房间主题：${title}
+开始时间：${formatBeginTime}～${formatEndTime}
+`;
+    const baseSuffixText = `
+房间号：${uuid}
+
+打开（没有安装的话请先下载并安装）并登录 Flat，点击加入房间，输入房间号即可加入和预约`;
+
+    const onCopy = (): void => {
+        if (periodicUUID) {
+            const periodicInfo = roomStore.periodicRooms.get(periodicUUID);
+
+            const content =
+                periodicInfo?.periodic.weeks &&
+                `重复周期：${getWeekNames(periodicInfo?.periodic.weeks || [])}`;
+
+            clipboard.writeText(`${basePrefixText}${content}${baseSuffixText}`);
+        } else {
+            clipboard.writeText(`${basePrefixText}${baseSuffixText}`);
+        }
+        message.success("复制成功");
+    };
+
+    const onCancel = (): void => {};
+
     return (
         <Modal
             width={460}
             visible={visible}
-            onOk={() => onCopy(uuid)}
+            onOk={onCopy}
             onCancel={onCancel}
             okText="复制"
             cancelText="取消"

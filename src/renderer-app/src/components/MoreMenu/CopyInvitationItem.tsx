@@ -37,10 +37,6 @@ export const CopyInvitationItem = observer<CopyInvitationItemProps>(function Del
             <InviteModal
                 visible={isShowInviteModal}
                 room={room}
-                onCopy={() => {
-                    clipboard.writeText(room?.roomUUID);
-                    message.success("复制成功");
-                }}
                 onCancel={() => {
                     setIsShowInviteModal(false);
                 }}
