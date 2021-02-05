@@ -1,4 +1,4 @@
-import { observer } from "mobx-react-lite";
+import { Observer, observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
 import {
     AutoSizer,
@@ -10,6 +10,7 @@ import {
     Index,
     IndexRange,
 } from "react-virtualized";
+import { User } from "../../stores/ClassRoomStore";
 import { useReaction } from "../../utils/mobx";
 import ChatMessage, { ChatMessageItem } from "./ChatMessage";
 
@@ -17,6 +18,7 @@ export type OnLoadMore = (range: IndexRange) => Promise<void>;
 
 export interface ChatMessageListProps {
     userUUID: string;
+    allUsers: Map<string, User>;
     messages: ChatMessageItem[];
     onLoadMore: OnLoadMore;
 }
@@ -30,6 +32,7 @@ export interface ChatMessageListState {
 
 export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessageList({
     userUUID,
+    allUsers,
     messages,
     onLoadMore,
 }) {
@@ -108,14 +111,19 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
         >
             {({ measure, registerChild }) => {
                 return (
-                    // @ts-ignore bug of react-vituralized typing
-                    <div ref={registerChild} style={style}>
-                        <ChatMessage
-                            onLayoutMount={measure}
-                            userUUID={userUUID}
-                            message={messages[index]}
-                        />
-                    </div>
+                    <Observer>
+                        {() => (
+                            // @ts-ignore bug of react-vituralized typing
+                            <div ref={registerChild} style={style}>
+                                <ChatMessage
+                                    onLayoutMount={measure}
+                                    userUUID={userUUID}
+                                    messageUser={allUsers.get(messages[index].userUUID)}
+                                    message={messages[index]}
+                                />
+                            </div>
+                        )}
+                    </Observer>
                 );
             }}
         </CellMeasurer>
@@ -131,17 +139,21 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
             {({ onRowsRendered, registerChild }) => (
                 <AutoSizer>
                     {({ height, width }) => (
-                        <List
-                            ref={registerChild}
-                            height={height}
-                            width={width}
-                            rowCount={messages.length}
-                            rowHeight={cellCache.rowHeight}
-                            rowRenderer={rowRenderer}
-                            scrollToIndex={scrollToIndex}
-                            scrollToAlignment="start"
-                            onRowsRendered={onRowsRendered}
-                        />
+                        <Observer>
+                            {() => (
+                                <List
+                                    ref={registerChild}
+                                    height={height}
+                                    width={width}
+                                    rowCount={messages.length}
+                                    rowHeight={cellCache.rowHeight}
+                                    rowRenderer={rowRenderer}
+                                    scrollToIndex={scrollToIndex}
+                                    scrollToAlignment="start"
+                                    onRowsRendered={onRowsRendered}
+                                />
+                            )}
+                        </Observer>
                     )}
                 </AutoSizer>
             )}

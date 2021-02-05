@@ -49,6 +49,8 @@ export class ClassRoomStore {
     readonly userUUID: string;
     /** RTM messages */
     messages = observable.array<RTMessage>([]);
+    /** allUsers info */
+    allUsers = observable.map<string, User>();
     /** creator info */
     creator: User | null = null;
     /** current user info */
@@ -418,24 +420,24 @@ export class ClassRoomStore {
         channel.on("MemberJoined", async userUUID => {
             (await this.createUsers([userUUID])).forEach(this.sortOneUser);
         });
-        channel.on("MemberLeft", userUUID => {
-            if (this.creator && this.creator.userUUID === userUUID) {
-                runInAction(() => {
+        channel.on(
+            "MemberLeft",
+            action("MemberLeft", userUUID => {
+                this.allUsers.delete(userUUID);
+                if (this.creator && this.creator.userUUID === userUUID) {
                     this.creator = null;
-                });
-            } else {
-                for (const { group } of this.joinerGroups) {
-                    for (let i = 0; i < this[group].length; i++) {
-                        if (this[group][i].userUUID === userUUID) {
-                            runInAction(() => {
+                } else {
+                    for (const { group } of this.joinerGroups) {
+                        for (let i = 0; i < this[group].length; i++) {
+                            if (this[group][i].userUUID === userUUID) {
                                 this[group].splice(i, 1);
-                            });
-                            break;
+                                break;
+                            }
                         }
                     }
                 }
-            }
-        });
+            }),
+        );
     }
 
     async destroy(): Promise<void> {
@@ -806,10 +808,14 @@ export class ClassRoomStore {
     };
 
     private resetUsers = (users: User[]): void => {
+        this.allUsers.clear();
         this.otherJoiners.clear();
         this.speakingJoiners.clear();
         this.handRaisingJoiners.clear();
-        users.forEach(this.sortOneUser);
+        users.forEach(user => {
+            this.sortOneUser(user);
+            this.allUsers.set(user.userUUID, user);
+        });
     };
 
     private sortOneUser = (user: User): void => {
@@ -818,7 +824,7 @@ export class ClassRoomStore {
         }
 
         if (user.userUUID === this.ownerUUID) {
-            this.creator = user.userUUID === this.userUUID ? this.currentUser : user;
+            this.creator = user;
         } else if (user.isSpeak) {
             this.speakingJoiners.push(user);
         } else if (user.isRaiseHand) {
@@ -893,8 +899,9 @@ export class ClassRoomStore {
     private async createUsers(userUUIDs: string[]): Promise<User[]> {
         const users = await usersInfo({ roomUUID: this.roomUUID, usersUUID: userUUIDs });
 
-        return userUUIDs.map(
-            (userUUID): User => ({
+        return userUUIDs.map(userUUID =>
+            // must convert to observable first so that it may be reused by other logic
+            observable.object<User>({
                 userUUID,
                 rtcUID: users[userUUID].rtcUID,
                 avatar: users[userUUID].avatarURL,

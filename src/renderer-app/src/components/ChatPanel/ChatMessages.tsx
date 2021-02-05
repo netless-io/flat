@@ -1,12 +1,15 @@
+import "./ChatMessages.less";
+
 import React from "react";
 import { observer } from "mobx-react-lite";
+import { User } from "../../stores/ClassRoomStore";
 import { ChatTypeBox, ChatTypeBoxProps } from "./ChatTypeBox";
 import { ChatMessageItem } from "./ChatMessage";
 import { ChatMessageList, OnLoadMore } from "./ChatMessageList";
-import "./ChatMessages.less";
 
 export interface ChatMessagesProps extends ChatTypeBoxProps {
     userUUID: string;
+    allUsers: Map<string, User>;
     messages: ChatMessageItem[];
     isBan: boolean;
     onMessageSend: (text: string) => Promise<void>;
@@ -16,6 +19,7 @@ export interface ChatMessagesProps extends ChatTypeBoxProps {
 
 export const ChatMessages = observer<ChatMessagesProps>(function ChatMessages({
     userUUID,
+    allUsers,
     messages,
     onLoadMore,
     ...restProps
@@ -27,6 +31,7 @@ export const ChatMessages = observer<ChatMessagesProps>(function ChatMessages({
                     <div className="chat-messages-box">
                         <ChatMessageList
                             userUUID={userUUID}
+                            allUsers={allUsers}
                             messages={messages}
                             onLoadMore={onLoadMore}
                         />

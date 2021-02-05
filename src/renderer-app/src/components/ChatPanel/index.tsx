@@ -52,10 +52,11 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                     <ChatMessages
                         isCreator={classRoomStore.isCreator}
                         userUUID={classRoomStore.userUUID}
+                        allUsers={classRoomStore.allUsers}
                         messages={classRoomStore.messages}
                         currentUser={classRoomStore.currentUser}
                         isBan={classRoomStore.isBan}
-                        disableHandRaising={disableHandRaising}
+                        disableHandRaising={disableHandRaising || !classRoomStore.creator}
                         onMessageSend={classRoomStore.onMessageSend}
                         onLoadMore={classRoomStore.updateHistory}
                         onRaiseHandChange={classRoomStore.onToggleHandRaising}
