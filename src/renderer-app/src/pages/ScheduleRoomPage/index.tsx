@@ -246,11 +246,13 @@ const MoreMenu = observer<MoreMenuProps>(function MoreMenu({ room, isCreator, re
                     <Menu>
                         <RoomDetailsItem room={room} />
                         <ModifyRoomItem room={room} isCreator={isCreator} />
-                        <RemoveRoomItem
-                            room={room}
-                            isCreator={isCreator}
-                            onRemoveRoom={removeHandle}
-                        />
+                        {isCreator && (
+                            <RemoveRoomItem
+                                room={room}
+                                isCreator={isCreator}
+                                onRemoveRoom={removeHandle}
+                            />
+                        )}
                         <CopyInvitationItem room={room} />
                     </Menu>
                 );
