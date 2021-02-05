@@ -113,14 +113,11 @@ export type RTMEvents = {
     [RTMessageType.ChannelStatus]: {
         /** room status */
         rStatus: RoomStatus;
-        /** user name + users with non-default states */
+        /** users with non-default states */
         uStates: {
-            [uuid: string]: [
-                string,
-                `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${
-                    | NonDefaultUserProp
-                    | ""}`,
-            ];
+            [uuid: string]: `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${
+                | NonDefaultUserProp
+                | ""}${NonDefaultUserProp | ""}`;
         };
     };
 };
