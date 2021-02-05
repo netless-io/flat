@@ -17,6 +17,10 @@ import { getWeekName } from "../../utils/getTypeName";
 import { InviteModal } from "../RoomDetailPage/InviteModal";
 import { clipboard } from "electron";
 import { globalStore } from "../../stores/GlobalStore";
+import { RoomDetailsItem } from "../../components/MoreMenu/RoomDetailsItem";
+import { ModifyRoomItem } from "../../components/MoreMenu/ModifyRoomItem";
+import { RemoveRoomItem } from "../../components/MoreMenu/RemoveRoomItem";
+import { CopyInvitationItem } from "../../components/MoreMenu/CopyInvitationItem";
 
 const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
 const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
@@ -115,18 +119,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                         />
                         <Table.Column
                             render={(_, room: RoomItem) => {
-                                return (
-                                    <MoreMenu
-                                        room={room}
-                                        roomDetailsLink={() => {
-                                            pushHistory(RouteNameType.RoomDetailPage, {
-                                                roomUUID: room.roomUUID,
-                                                periodicUUID,
-                                            });
-                                        }}
-                                        isCreator={isCreator}
-                                    />
-                                );
+                                return <MoreMenu room={room} isCreator={isCreator} />;
                             }}
                         />
                     </Table>
@@ -180,41 +173,19 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
 
 interface MoreMenuProps {
     room: RoomItem;
-    roomDetailsLink: () => void;
     isCreator: boolean;
 }
 
-const MoreMenu = observer<MoreMenuProps>(function MoreMenu({ room, roomDetailsLink, isCreator }) {
-    const [isShowInviteModal, setIsShowInviteModal] = useState(false);
-
+const MoreMenu = observer<MoreMenuProps>(function MoreMenu({ room, isCreator }) {
     return (
         <Dropdown
             overlay={() => {
                 return (
                     <Menu>
-                        <Menu.Item onClick={roomDetailsLink}>房间详情</Menu.Item>
-                        {isCreator && (
-                            <>
-                                <Menu.Item>修改房间</Menu.Item>
-                                <Menu.Item>取消房间</Menu.Item>
-                            </>
-                        )}
-                        <Menu.Item
-                            onClick={() => {
-                                setIsShowInviteModal(true);
-                            }}
-                        >
-                            复制邀请
-                        </Menu.Item>
-                        <InviteModal
-                            room={room}
-                            onCopy={() => {
-                                clipboard.writeText(room.roomUUID);
-                                message.success("复制成功");
-                            }}
-                            onCancel={() => setIsShowInviteModal(false)}
-                            visible={isShowInviteModal}
-                        />
+                        <RoomDetailsItem room={room} />
+                        <ModifyRoomItem room={room} isCreator={isCreator} />
+                        <RemoveRoomItem room={room} isCreator={isCreator} />
+                        <CopyInvitationItem room={room} />
                     </Menu>
                 );
             }}
