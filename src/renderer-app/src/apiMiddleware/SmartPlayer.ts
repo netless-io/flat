@@ -6,11 +6,11 @@ import { EventEmitter } from "events";
 import polly from "polly-js";
 import {
     createPlugins,
-
-    PlayableCheckingParams, Player, PlayerPhase,
-
-
-    ReplayRoomParams, WhiteWebSdk
+    PlayableCheckingParams,
+    Player,
+    PlayerPhase,
+    ReplayRoomParams,
+    WhiteWebSdk,
 } from "white-web-sdk";
 import { NETLESS, NODE_ENV } from "../constants/Process";
 

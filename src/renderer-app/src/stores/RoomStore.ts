@@ -17,7 +17,7 @@ import {
     PeriodicRoomInfoResult,
     periodicSubRoomInfo,
     PeriodicSubRoomInfoPayload,
-    recordInfo
+    recordInfo,
 } from "../apiMiddleware/flatServer";
 import { RoomDoc, RoomStatus, RoomType } from "../apiMiddleware/flatServer/constants";
 import { globalStore } from "./GlobalStore";

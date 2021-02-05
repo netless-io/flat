@@ -43,8 +43,8 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
                         <>
                             <ModifyRoomItem {...restProps} room={roomInfo} isCreator={isCreator} />
                             <RemoveRoomItem
-                                onRemoveRoom={onRemoveRoom}
                                 {...restProps}
+                                onRemoveRoom={onRemoveRoom}
                                 room={roomInfo}
                                 isCreator={isCreator}
                             />
