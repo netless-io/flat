@@ -151,6 +151,10 @@ export class ClassRoomStore {
         return this.roomInfo?.roomStatus || RoomStatus.Idle;
     }
 
+    get joiners(): User[] {
+        return [...this.speakingJoiners, ...this.handRaisingJoiners, ...this.otherJoiners];
+    }
+
     get joinerTotalCount(): number {
         return (
             this.speakingJoiners.length + this.handRaisingJoiners.length + this.otherJoiners.length
@@ -958,26 +962,11 @@ export class ClassRoomStore {
     }
 
     private pickRandomJoiner(): User | undefined {
-        let startIndex = Math.floor(Math.random() * this.joinerTotalCount);
+        let startIndex = Math.floor(Math.random() * this.joiners.length);
 
         // keep picking until a suitable user is found
-        for (let count = 0; count < this.joinerTotalCount; count++) {
-            let index = (startIndex + count) % this.joinerTotalCount;
-            let joiner: User | undefined;
-
-            if (index < this.speakingJoiners.length) {
-                joiner = this.speakingJoiners[index];
-            } else {
-                index = index - this.speakingJoiners.length;
-                if (index < this.handRaisingJoiners.length) {
-                    joiner = this.handRaisingJoiners[index];
-                } else {
-                    index = index - this.otherJoiners.length;
-                    if (index < this.otherJoiners.length) {
-                        joiner = this.otherJoiners[index];
-                    }
-                }
-            }
+        for (let count = 0; count < this.joiners.length; count++) {
+            const joiner = this.joiners[(startIndex + count) % this.joiners.length];
 
             if (joiner && joiner.userUUID !== this.userUUID) {
                 return joiner;
