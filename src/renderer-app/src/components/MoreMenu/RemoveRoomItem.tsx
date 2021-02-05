@@ -9,6 +9,7 @@ interface RemoveRoomItemProps {
     isCreator: boolean;
     onRemoveRoom?: (roomUUID: string | undefined) => void;
     autoPopupModal?: boolean;
+    disableCancelAll?: boolean;
 }
 
 export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButton({
@@ -16,6 +17,7 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
     room,
     onRemoveRoom,
     autoPopupModal = true,
+    disableCancelAll = false,
     ...restProps
 }) {
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
@@ -73,15 +75,18 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
                     </Button>,
                 ]}
             >
-                {room?.periodicUUID ? (
-                    <Checkbox
-                        checked={isCancelAll}
-                        onChange={e => setIsCancelAll(e.target.checked)}
-                    >
-                        取消该系列全部周期性房间
-                    </Checkbox>
+                {room?.periodicUUID && !disableCancelAll ? (
+                    <>
+                        <p>确定取消该单个周期性子房间？</p>
+                        <Checkbox
+                            checked={isCancelAll}
+                            onChange={e => setIsCancelAll(e.target.checked)}
+                        >
+                            取消该系列全部周期性房间
+                        </Checkbox>
+                    </>
                 ) : (
-                    "确定取消该房间吗？"
+                    "确定取消该房间？"
                 )}
             </Modal>
         </>

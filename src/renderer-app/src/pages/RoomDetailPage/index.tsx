@@ -197,7 +197,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                         取消该系列全部周期性房间
                     </Checkbox>
                 ) : (
-                    "确定取消该房间吗？"
+                    "确定取消该房间？"
                 )}
             </Modal>
         </MainPageLayout>

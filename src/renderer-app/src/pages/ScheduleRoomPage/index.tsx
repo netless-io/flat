@@ -223,7 +223,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                     </Button>,
                 ]}
             >
-                确定取消该系列全部周期性房间吗？
+                确定取消该系列全部周期性房间？
             </Modal>
         </MainPageLayout>
     );
@@ -248,6 +248,7 @@ const MoreMenu = observer<MoreMenuProps>(function MoreMenu({ room, isCreator, re
                                 room={room}
                                 isCreator={isCreator}
                                 onRemoveRoom={removeHandle}
+                                disableCancelAll
                             />
                         )}
                         <CopyInvitationItem room={room} />
