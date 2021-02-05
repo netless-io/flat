@@ -137,6 +137,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             <ExitRoomConfirm
                 isCreator={classRoomStore.isCreator}
                 roomStatus={classRoomStore.roomStatus}
+                hangClass={classRoomStore.hangClass}
                 stopClass={classRoomStore.stopClass}
                 confirmRef={exitRoomConfirmRef}
             />

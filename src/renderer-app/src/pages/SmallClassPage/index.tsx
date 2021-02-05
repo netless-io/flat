@@ -148,6 +148,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             <ExitRoomConfirm
                 isCreator={classRoomStore.isCreator}
                 roomStatus={classRoomStore.roomStatus}
+                hangClass={classRoomStore.hangClass}
                 stopClass={classRoomStore.stopClass}
                 confirmRef={exitRoomConfirmRef}
             />

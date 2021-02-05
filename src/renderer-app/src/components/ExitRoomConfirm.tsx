@@ -13,6 +13,7 @@ export enum ExitRoomConfirmType {
 export interface ExitRoomConfirmProps {
     isCreator: boolean;
     roomStatus: RoomStatus;
+    hangClass: () => Promise<void>;
     stopClass: () => Promise<void>;
     // @TODO remove ref
     confirmRef: { current: (confirmType: ExitRoomConfirmType) => void };
@@ -21,6 +22,7 @@ export interface ExitRoomConfirmProps {
 export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomConfirm({
     isCreator,
     roomStatus,
+    hangClass,
     stopClass,
     confirmRef,
 }) {
@@ -35,8 +37,10 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
             close: true,
         });
 
+        hangClass();
+
         pushHistory(RouteNameType.HomePage);
-    }, [pushHistory]);
+    }, [pushHistory, hangClass]);
 
     const onStopClass = useCallback(() => {
         setVisible(false);

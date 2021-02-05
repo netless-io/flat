@@ -169,6 +169,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             <ExitRoomConfirm
                 isCreator={classRoomStore.isCreator}
                 roomStatus={classRoomStore.roomStatus}
+                hangClass={classRoomStore.hangClass}
                 stopClass={classRoomStore.stopClass}
                 confirmRef={exitRoomConfirmRef}
             />
