@@ -76,17 +76,8 @@ export class RoomStore {
     rooms = observable.map<string, RoomItem>();
     periodicRooms = observable.map<string, PeriodicRoomItem>();
 
-    /** Current user UUID */
-    get userUUID(): string | null {
-        return globalStore.userUUID ?? null;
-    }
-
     constructor() {
         makeAutoObservable(this);
-    }
-
-    isPeriodicSubRoom(room: RoomItem): boolean {
-        return Boolean(room.periodicUUID);
     }
 
     /**
