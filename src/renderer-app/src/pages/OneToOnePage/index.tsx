@@ -94,7 +94,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 close: true,
             });
 
-            pushHistory(RouteNameType.HomePage, {});
+            pushHistory(RouteNameType.HomePage);
         }
     });
 

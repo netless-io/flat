@@ -45,12 +45,12 @@ export function generateRoutePath<T extends RouteNameType>(
  */
 export function usePushHistory(): <T extends RouteNameType>(
     name: T,
-    params: RouteParams<T>,
+    params?: RouteParams<T>,
 ) => void {
     const history = useHistory();
 
     const pushHistory = useCallback(
-        (name: RouteNameType, params: RouteParams<RouteNameType>) => {
+        (name: RouteNameType, params: RouteParams<RouteNameType> = {}) => {
             history.push(generateRoutePath(name, params));
         },
         [history],
