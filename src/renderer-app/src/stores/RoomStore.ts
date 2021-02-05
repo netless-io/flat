@@ -1,5 +1,5 @@
 /* eslint-disable no-redeclare */
-import { makeAutoObservable, observable } from "mobx";
+import { makeAutoObservable, observable, runInAction } from "mobx";
 import {
     cancelRoom,
     CancelRoomPayload,
@@ -139,13 +139,15 @@ export class RoomStore {
     async listRooms(type: ListRoomsType, payload: ListRoomsPayload): Promise<string[]> {
         const rooms = await listRooms(type, payload);
         const roomUUIDs: string[] = [];
-        for (const room of rooms) {
-            roomUUIDs.push(room.roomUUID);
-            this.updateRoom(room.roomUUID, room.ownerUUID, {
-                ...room,
-                periodicUUID: room.periodicUUID || void 0,
-            });
-        }
+        runInAction(() => {
+            for (const room of rooms) {
+                roomUUIDs.push(room.roomUUID);
+                this.updateRoom(room.roomUUID, room.ownerUUID, {
+                    ...room,
+                    periodicUUID: room.periodicUUID || void 0,
+                });
+            }
+        });
         return roomUUIDs;
     }
 

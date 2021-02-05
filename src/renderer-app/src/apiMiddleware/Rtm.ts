@@ -97,15 +97,30 @@ export type RTMEvents = {
     [RTMessageType.DeviceState]: { userUUID: string; camera: boolean; mic: boolean };
     [RTMessageType.ClassMode]: ClassModeType;
     [RTMessageType.RoomStatus]: RoomStatus;
-    [RTMessageType.RequestChannelStatus]: string; // room id
+    [RTMessageType.RequestChannelStatus]: {
+        roomUUID: string;
+        /** these users should response */
+        userUUIDs: string[];
+        /** also inform others about current user states */
+        user: {
+            name: string;
+            camera: boolean;
+            mic: boolean;
+            /** this filed is only accepted from room creator */
+            isSpeak: boolean;
+        };
+    };
     [RTMessageType.ChannelStatus]: {
         /** room status */
-        cStatus: RoomStatus;
-        /** users with non-default states */
+        rStatus: RoomStatus;
+        /** user name + users with non-default states */
         uStates: {
-            [uuid: string]: `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${
-                | NonDefaultUserProp
-                | ""}${NonDefaultUserProp | ""}`;
+            [uuid: string]: [
+                string,
+                `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${
+                    | NonDefaultUserProp
+                    | ""}`,
+            ];
         };
     };
 };
@@ -148,7 +163,9 @@ export class Rtm extends EventEmitter {
         if (!AGORA.APP_ID) {
             throw new Error("Agora App Id not set.");
         }
-        this.client = AgoraRTM.createInstance(AGORA.APP_ID);
+        this.client = AgoraRTM.createInstance(AGORA.APP_ID, {
+            logFilter: AgoraRTM.LOG_FILTER_WARNING,
+        });
         this.client.on("TokenExpired", async () => {
             this.token = await generateRTMToken();
             this.client.renewToken(this.token);
@@ -162,6 +179,9 @@ export class Rtm extends EventEmitter {
                     const { r, t, v } = JSON.parse(msg.text);
                     if (r === this.commandsID && t) {
                         this.emit(t, v, senderId);
+                        if (NODE_ENV === "development") {
+                            console.log(`[RTM] Received p2p command from ${senderId}: `, t, v);
+                        }
                     }
                 } catch (e) {
                     console.error(e);
@@ -194,6 +214,9 @@ export class Rtm extends EventEmitter {
         this.channel.on("ChannelMessage", (msg, senderId) => {
             if (msg.messageType === AgoraRTM.MessageType.TEXT) {
                 this.emit(RTMessageType.ChannelMessage, msg.text, senderId);
+                if (NODE_ENV === "development") {
+                    console.log(`[RTM] Received message from ${senderId}: `, msg.text);
+                }
             }
         });
 
@@ -206,6 +229,9 @@ export class Rtm extends EventEmitter {
                         const { t, v } = JSON.parse(msg.text);
                         if (t) {
                             this.emit(t, v, senderId);
+                            if (NODE_ENV === "development") {
+                                console.log(`[RTM] Received command from ${senderId}: `, t, v);
+                            }
                         }
                     } catch (e) {
                         console.error(e);
@@ -254,7 +280,7 @@ export class Rtm extends EventEmitter {
     async sendMessage(text: string, peerId: string): Promise<{ hasPeerReceived: boolean }>;
     async sendMessage(text: string, peerId?: string): Promise<{ hasPeerReceived: boolean } | void> {
         if (peerId !== undefined) {
-            return this.client.sendMessageToPeer(
+            const result = await this.client.sendMessageToPeer(
                 {
                     messageType: AgoraRTM.MessageType.TEXT,
                     text,
@@ -262,14 +288,21 @@ export class Rtm extends EventEmitter {
                 peerId,
                 { enableHistoricalMessaging: true },
             );
+            if (NODE_ENV === "development") {
+                console.log(`[RTM] send p2p message to ${peerId}: `, text);
+            }
+            return result;
         } else if (this.channel) {
-            return this.channel.sendMessage(
+            await this.channel.sendMessage(
                 {
                     messageType: AgoraRTM.MessageType.TEXT,
                     text,
                 },
                 { enableHistoricalMessaging: true },
             );
+            if (NODE_ENV === "development") {
+                console.log(`[RTM] send group message: `, text);
+            }
         }
     }
 
@@ -299,7 +332,10 @@ export class Rtm extends EventEmitter {
         retry?: number;
     }): Promise<void> {
         if (!this.commands || !this.commandsID) {
-            throw new Error("RTM commands channel not initialized");
+            if (NODE_ENV === "development") {
+                console.warn("RTM command channel closed", type, JSON.stringify(value, null, " "));
+            }
+            return;
         }
 
         if (peerId !== undefined) {
@@ -315,19 +351,25 @@ export class Rtm extends EventEmitter {
                             peerId,
                             { enableHistoricalMessaging: keepHistory },
                         );
+                        if (NODE_ENV === "development") {
+                            console.log(`[RTM] send p2p command to ${peerId}: `, type, value);
+                        }
                         if (!hasPeerReceived) {
                             return Promise.reject("peer not received");
                         }
                     },
                 );
         } else {
-            this.commands.sendMessage(
+            await this.commands.sendMessage(
                 {
                     messageType: AgoraRTM.MessageType.TEXT,
                     text: JSON.stringify({ t: type, v: value }),
                 },
                 { enableHistoricalMessaging: keepHistory },
             );
+            if (NODE_ENV === "development") {
+                console.log(`[RTM] send group command: `, type, value);
+            }
         }
     }
 
