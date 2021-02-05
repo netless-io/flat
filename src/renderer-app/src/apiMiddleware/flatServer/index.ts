@@ -217,8 +217,11 @@ export interface PeriodicRoomInfoPayload {
 export type PeriodicRoomInfoResult = {
     periodic: {
         ownerUUID: string; // 创建者的 uuid
-        endTime: number; // 有可能为空
+        ownerUserName: string;
+        endTime: number;
         rate: number | null; // 默认为 0（即 用户选择的是 endTime）
+        title: string;
+        weeks: Week[];
         roomType: RoomType;
     };
     rooms: Array<{

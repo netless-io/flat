@@ -64,15 +64,7 @@ export interface RoomItem {
 // Only keep subroom ids. Subroom info are stored in ordinaryRooms.
 export interface PeriodicRoomItem {
     periodicUUID: string;
-    periodic: {
-        /** 创建者的 uuid */
-        ownerUUID: string;
-        /** 有可能为空 */
-        endTime: number;
-        /** 默认为 0（即 用户选择的是 endTime） */
-        rate: number | null;
-        roomType: RoomType;
-    };
+    periodic: PeriodicRoomInfoResult["periodic"];
     rooms: string[];
 }
 

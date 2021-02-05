@@ -16,10 +16,12 @@ import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatus
 import { getWeekName } from "../../utils/getTypeName";
 import { InviteModal } from "../RoomDetailPage/InviteModal";
 import { clipboard } from "electron";
+import { globalStore } from "../../stores/GlobalStore";
 
 const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
 const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
 const timeSuffixFormat = format("HH:mm");
+const dayWeekFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM/dd iii");
 
 export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPage() {
     const params = useParams<RouteParams<RouteNameType.ScheduleRoomDetailPage>>();
@@ -27,7 +29,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
     const history = useHistory();
     const pushHistory = usePushHistory();
 
-    const { periodicUUID, title, ownerUUID } = params;
+    const { periodicUUID } = params;
 
     const periodicInfo = roomStore.periodicRooms.get(periodicUUID);
     const rooms = periodicInfo?.rooms.map(roomUUID => roomStore.rooms.get(roomUUID));
@@ -40,14 +42,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
         return <LoadingPage />;
     }
 
-    const isCreator = ownerUUID === periodicInfo.periodic.ownerUUID;
-
-    const formatEndTime = formatWithOptions(
-        {
-            locale: zhCN,
-        },
-        "yyyy/MM/dd iii",
-    )(periodicInfo.periodic.endTime);
+    const isCreator = globalStore.userUUID === periodicInfo.periodic.ownerUUID;
 
     const cancelRoom = async (): Promise<void> => {
         await roomStore.cancelRoom({
@@ -151,7 +146,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                             <span>返回</span>
                         </div>
                         <Divider type="vertical" />
-                        <div className="schedule-room-title">{title}</div>
+                        <div className="schedule-room-title">{periodicInfo.periodic.title}</div>
                     </div>
                     <div className="schedule-room-cut-line" />
                 </div>
@@ -163,7 +158,8 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                                 房间类型： {periodicInfo.periodic.roomType}
                             </div>
                             <div className="schedule-room-tips-inner">
-                                结束于 {formatEndTime} ，共{rooms.length}个房间
+                                结束于 {dayWeekFormat(periodicInfo.periodic.endTime)} ，共
+                                {rooms.length}个房间
                             </div>
                         </div>
                         <div className="schedule-btn-list">

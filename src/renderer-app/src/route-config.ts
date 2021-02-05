@@ -74,7 +74,7 @@ export const routeConfig = {
 
     [RouteNameType.ScheduleRoomDetailPage]: {
         title: "Flat Scheduled Room Detail",
-        path: "/user/scheduled/info/:periodicUUID/:ownerUUID/:title",
+        path: "/user/scheduled/info/:periodicUUID",
         component: ScheduleRoomDetailPage,
     },
     [RouteNameType.UserInfoPage]: {

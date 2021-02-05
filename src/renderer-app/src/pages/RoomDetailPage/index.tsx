@@ -98,8 +98,6 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                                                     RouteNameType.ScheduleRoomDetailPage,
                                                     {
                                                         periodicUUID,
-                                                        title: roomInfo.title,
-                                                        ownerUUID: roomInfo.ownerUUID,
                                                     },
                                                 )}
                                             >
