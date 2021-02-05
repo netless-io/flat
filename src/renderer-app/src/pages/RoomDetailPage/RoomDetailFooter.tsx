@@ -1,28 +1,48 @@
 import React, { FC } from "react";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
-import { generateRoutePath, RouteNameType } from "../../utils/routes";
+import { generateRoutePath, RouteNameType, usePushHistory } from "../../utils/routes";
+import { RoomItem } from "../../stores/RoomStore";
+import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 
 export interface RoomDetailFooterProps {
+    room: RoomItem;
     isCreator: boolean;
-    isIdleStatus: boolean;
     onJoinRoom: () => void;
     onCancelRoom: () => void;
     onInvite: () => void;
-    periodicUUID?: string;
-    roomUUID: string;
 }
 
 export const RoomDetailFooter: FC<RoomDetailFooterProps> = ({
+    room,
     isCreator,
-    isIdleStatus,
     onJoinRoom,
     onCancelRoom,
     onInvite,
-    periodicUUID,
-    roomUUID,
-}) =>
-    isCreator ? (
+}) => {
+    const pushHistory = usePushHistory();
+
+    if (room.roomStatus === RoomStatus.Stopped) {
+        const replayRoom = (): void => {
+            pushHistory(RouteNameType.ReplayPage, {
+                roomUUID: room.roomUUID,
+                ownerUUID: room.ownerUUID,
+                roomType: room.roomType!,
+            });
+        };
+
+        return (
+            <div className="user-room-btn-box">
+                <Button className="user-room-btn" onClick={replayRoom} disabled={!room.hasRecord}>
+                    查看回放
+                </Button>
+            </div>
+        );
+    }
+
+    const isIdleStatus = room.roomStatus === RoomStatus.Idle;
+
+    return isCreator ? (
         <div className="user-room-btn-box">
             <Button
                 className="user-room-btn"
@@ -36,8 +56,8 @@ export const RoomDetailFooter: FC<RoomDetailFooterProps> = ({
                 <Link
                     to={{
                         pathname: generateRoutePath(RouteNameType.ModifyOrdinaryRoomPage, {
-                            roomUUID,
-                            periodicUUID: periodicUUID || void 0,
+                            roomUUID: room.roomUUID,
+                            periodicUUID: room.periodicUUID,
                         }),
                     }}
                 >
@@ -69,3 +89,4 @@ export const RoomDetailFooter: FC<RoomDetailFooterProps> = ({
             </Button>
         </div>
     );
+};
