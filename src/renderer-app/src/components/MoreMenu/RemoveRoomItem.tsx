@@ -1,8 +1,9 @@
-import { Button, Checkbox, Menu, message, Modal } from "antd";
+import { Menu } from "antd";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
-import { RoomItem, roomStore } from "../../stores/RoomStore";
+import { RoomItem } from "../../stores/RoomStore";
+import { RemoveRoomModal } from "../Modal/RemoveRoomModal";
 
 interface RemoveRoomItemProps {
     room: RoomItem | undefined;
@@ -15,36 +16,18 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
     isCreator,
     room,
     onRemoveRoom,
-    autoPopupModal = true,
     ...restProps
 }) {
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
-    const [isCancelAll, setIsCancelAll] = useState(false);
 
     if (isCreator && room?.roomStatus !== RoomStatus.Idle) {
         return null;
     }
 
+    const title = isCreator ? "取消房间" : "移除房间";
+
     const hideCancelModal = (): void => {
         setCancelModalVisible(false);
-    };
-
-    const confirmCancelRoom = async (): Promise<void> => {
-        setCancelModalVisible(false);
-
-        try {
-            await roomStore.cancelRoom({
-                all: isCancelAll,
-                roomUUID: room?.roomUUID,
-                periodicUUID: room?.periodicUUID,
-            });
-            if (onRemoveRoom) {
-                onRemoveRoom(room?.roomUUID);
-            }
-            message.success("已取消该房间");
-        } catch (e) {
-            console.error(e);
-        }
     };
 
     return (
@@ -52,38 +35,19 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
             <Menu.Item
                 {...restProps}
                 onClick={() => {
-                    if (autoPopupModal) {
-                        setCancelModalVisible(true);
-                    }
+                    setCancelModalVisible(true);
                 }}
             >
-                {isCreator ? "取消房间" : "移除房间"}
+                {title}
             </Menu.Item>
-            <Modal
-                visible={cancelModalVisible}
-                title="取消房间"
+            <RemoveRoomModal
+                cancelModalVisible={cancelModalVisible}
                 onCancel={hideCancelModal}
-                onOk={confirmCancelRoom}
-                footer={[
-                    <Button key="Cancel" onClick={hideCancelModal}>
-                        再想想
-                    </Button>,
-                    <Button key="Ok" type="primary" onClick={confirmCancelRoom}>
-                        确定
-                    </Button>,
-                ]}
-            >
-                {room?.periodicUUID ? (
-                    <Checkbox
-                        checked={isCancelAll}
-                        onChange={e => setIsCancelAll(e.target.checked)}
-                    >
-                        取消该系列全部周期性房间
-                    </Checkbox>
-                ) : (
-                    "确定取消该房间吗？"
-                )}
-            </Modal>
+                isCreator={isCreator}
+                onRemoveRoom={onRemoveRoom}
+                roomUUID={room?.roomUUID}
+                periodicUUID={room?.periodicUUID}
+            />
         </>
     );
 });

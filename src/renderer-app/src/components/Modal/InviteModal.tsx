@@ -3,9 +3,9 @@ import { observer } from "mobx-react-lite";
 import { message, Modal } from "antd";
 import { differenceInCalendarDays, format } from "date-fns/fp";
 import { RoomItem } from "../../stores/RoomStore";
-import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
+import { GlobalStoreContext, RoomStoreContext } from "../StoreProvider";
 import { clipboard } from "electron";
-import { getWeekNames } from "../UserScheduledPage/WeekRateSelector";
+import { getWeekNames } from "../../pages/UserScheduledPage/WeekRateSelector";
 
 const completeTimeFormat = format("yyyy-MM-dd HH:mm");
 const onlySuffixTimeFormat = format("HH:mm");
