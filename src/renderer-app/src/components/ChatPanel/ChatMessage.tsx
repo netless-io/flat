@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useLayoutEffect } from "react";
 import { RTMessage, RTMessageType } from "../../apiMiddleware/Rtm";
+import { User } from "../../stores/ClassRoomStore";
 
 import "./ChatMessage.less";
 
@@ -9,12 +10,14 @@ export type ChatMessageItem = RTMessage;
 export interface ChatMessageProps {
     /** current user uuid */
     userUUID: string;
+    messageUser?: User;
     message: ChatMessageItem;
     onLayoutMount: () => void;
 }
 
 export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
     userUUID,
+    messageUser,
     message,
     onLayoutMount,
 }) {
@@ -55,7 +58,7 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
 
     return (
         <div className="chat-message-line">
-            <div className="chat-message-user">{message.userUUID}</div>
+            <div className="chat-message-user">{messageUser?.name || message.userUUID}</div>
             <div className="chat-message-bubble">{message.value}</div>
         </div>
     );
