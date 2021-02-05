@@ -55,7 +55,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
             all: true,
             periodicUUID,
         });
-        history.block();
+        pushHistory(RouteNameType.HomePage, {});
     };
 
     // if the room has been cancelled and return to the previous page, an error will be reported
