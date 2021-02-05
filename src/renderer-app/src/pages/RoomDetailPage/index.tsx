@@ -7,7 +7,7 @@ import MainPageLayout from "../../components/MainPageLayout";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { observer } from "mobx-react-lite";
 import { generateRoutePath, RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
-import { RoomStoreContext } from "../../components/StoreProvider";
+import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import LoadingPage from "../../LoadingPage";
 import { useComputed } from "../../utils/mobx";
 import { RoomDetailFooter } from "./RoomDetailFooter";
@@ -44,6 +44,7 @@ export type RoomDetailPageProps = {};
 export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailPage() {
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
     const pushHistory = usePushHistory();
+    const globalStore = useContext(GlobalStoreContext);
     const roomStore = useContext(RoomStoreContext);
     const roomInfo = roomStore.rooms.get(roomUUID);
 
@@ -66,7 +67,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
         return <LoadingPage />;
     }
 
-    const isCreator = roomInfo.ownerUUID === roomStore.userUUID;
+    const isCreator = roomInfo.ownerUUID === globalStore.userUUID;
     const isIdleStatus = roomInfo.roomStatus === RoomStatus.Idle;
 
     return (
