@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { message, Modal } from "antd";
 import { differenceInCalendarDays, format } from "date-fns/fp";
@@ -16,7 +16,11 @@ export interface InviteModalProps {
     onCancel: () => void;
 }
 
-export const InviteModal = observer<InviteModalProps>(function InviteModal({ visible, room }) {
+export const InviteModal = observer<InviteModalProps>(function InviteModal({
+    visible,
+    room,
+    onCancel,
+}) {
     const globalStore = useContext(GlobalStoreContext);
     const roomStore = useContext(RoomStoreContext);
 
@@ -58,8 +62,6 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({ vis
         }
         message.success("复制成功");
     };
-
-    const onCancel = (): void => {};
 
     return (
         <Modal
