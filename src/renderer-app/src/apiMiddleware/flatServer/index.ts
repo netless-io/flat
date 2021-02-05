@@ -314,12 +314,14 @@ export type CancelRoomPayload = {
     all?: boolean;
     roomUUID?: string;
     periodicUUID?: string;
+    isHistory?: boolean;
 };
 
 export function cancelRoom({
     all,
     roomUUID,
     periodicUUID,
+    isHistory,
 }: CancelRoomPayload): Promise<
     CancelPeriodicRoomResult | CancelPeriodicSubRoomResult | CancelOrdinaryRoomResult
 > | void {
@@ -331,7 +333,11 @@ export function cancelRoom({
         return cancelPeriodicSubRoom({ roomUUID, periodicUUID });
     }
 
-    if (roomUUID) {
+    if (isHistory && roomUUID) {
+        return cancelHistoryRoom(roomUUID);
+    }
+
+    if (!isHistory && roomUUID) {
         return cancelOrdinaryRoom(roomUUID);
     }
 
