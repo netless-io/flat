@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Menu, message } from "antd";
 import { observer } from "mobx-react-lite";
-import { RoomItem, roomStore } from "../../stores/RoomStore";
+import { RoomItem } from "../../stores/RoomStore";
 import { InviteModal } from "../../pages/RoomDetailPage/InviteModal";
 import { clipboard } from "electron";
 
