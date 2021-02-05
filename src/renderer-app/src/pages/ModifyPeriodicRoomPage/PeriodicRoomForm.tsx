@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Form, Input, InputNumber, message, Row } from "antd";
+import { Button, Checkbox, Col, Form, Input, InputNumber, message, Modal, Row } from "antd";
 import { RuleObject } from "antd/lib/form";
 import { endOfDay, format, getDay, isBefore } from "date-fns";
 import { zhCN } from "date-fns/locale";
@@ -49,10 +49,12 @@ function formatISODayWeekiii(date: Date): string {
 export const PeriodicRoomForm = observer<PeriodicRoomFormProps>(function PeriodicRoomForm({
     periodicUUID,
 }) {
-    const [form] = Form.useForm<ModifyPeriodicFormValues>();
     const pushHistory = usePushHistory();
+
+    const [form] = Form.useForm<ModifyPeriodicFormValues>();
     const [isFormValidated, setIsFormValidated] = useState(true);
     const [isLoading, setLoading] = useState(false);
+    const [modifyModalVisible, setModifyModalVisible] = useState(false);
 
     const sp = useSafePromise();
 
@@ -175,12 +177,13 @@ export const PeriodicRoomForm = observer<PeriodicRoomFormProps>(function Periodi
                 </Button>
                 <Button
                     className="modify-periodic-room-ok"
-                    onClick={modifyRoom}
+                    onClick={showModifyRoomModal}
                     loading={isLoading}
                     disabled={!isLoading && !isFormValidated}
                 >
                     修改
                 </Button>
+                {renderModifyModal()}
             </div>
         </Form>
     );
@@ -266,8 +269,8 @@ export const PeriodicRoomForm = observer<PeriodicRoomFormProps>(function Periodi
             const values: ModifyPeriodicFormValues = form.getFieldsValue(true);
             const requestBody: UpdatePeriodicRoomPayload = {
                 periodicUUID: periodicUUID,
-                beginTime: Number(values.beginTime.date),
-                endTime: Number(values.endTime.date),
+                beginTime: Number(values.beginTime.time),
+                endTime: Number(values.endTime.time),
                 title: values.title,
                 type: values.roomType,
                 periodic:
@@ -345,6 +348,40 @@ export const PeriodicRoomForm = observer<PeriodicRoomFormProps>(function Periodi
                     onChange={onPeriodicEndTimeChanged}
                 />
             </Form.Item>
+        );
+    }
+
+    function showModifyRoomModal(): void {
+        setModifyModalVisible(true);
+    }
+
+    function hideModifyModal(): void {
+        setModifyModalVisible(false);
+    }
+
+    async function confirmModifyRoom(): Promise<void> {
+        setModifyModalVisible(false);
+        await modifyRoom();
+    }
+
+    function renderModifyModal(): React.ReactElement {
+        return (
+            <Modal
+                visible={modifyModalVisible}
+                title="修改周期性房间"
+                onCancel={hideModifyModal}
+                onOk={confirmModifyRoom}
+                footer={[
+                    <Button key="Cancel" onClick={hideModifyModal}>
+                        取消
+                    </Button>,
+                    <Button key="Ok" type="primary" onClick={confirmModifyRoom}>
+                        确定
+                    </Button>,
+                ]}
+            >
+                确定修改该房间？
+            </Modal>
         );
     }
 
