@@ -732,7 +732,7 @@ export class ClassRoomStore {
                         result += NonDefaultUserProp.Mic;
                     }
                     if (result) {
-                        uStates[user.userUUID] = [user.name, result as UStates[keyof UStates][1]];
+                        uStates[user.userUUID] = result as UStates[keyof UStates];
                     }
                 };
 
@@ -879,7 +879,7 @@ export class ClassRoomStore {
         const pickedSenders: string[] = [];
 
         if (usersTotal >= 2) {
-            if (usersTotal <= 50 && this.creator) {
+            if (usersTotal <= 50 && this.creator && !this.isCreator) {
                 // in a small room, ask creator directly for info
                 pickedSenders.push(this.creator.userUUID);
             } else {
@@ -922,6 +922,10 @@ export class ClassRoomStore {
     private async createUsers(userUUIDs: string[]): Promise<User[]> {
         userUUIDs = [...new Set(userUUIDs)];
 
+        if (userUUIDs.length <= 0) {
+            return [];
+        }
+
         const users = await usersInfo({ roomUUID: this.roomUUID, usersUUID: userUUIDs });
 
         return userUUIDs.map(userUUID =>
@@ -940,20 +944,30 @@ export class ClassRoomStore {
     }
 
     private pickRandomJoiner(): User | undefined {
-        let index = Math.floor(Math.random() * this.joinerTotalCount);
+        let startIndex = Math.floor(Math.random() * this.joinerTotalCount);
 
-        if (index < this.speakingJoiners.length) {
-            return this.speakingJoiners[index];
-        }
+        // keep picking until a suitable user is found
+        for (let count = 0; count < this.joinerTotalCount; count++) {
+            let index = (startIndex + count) % this.joinerTotalCount;
+            let joiner: User | undefined;
 
-        index = index - this.speakingJoiners.length;
-        if (index < this.handRaisingJoiners.length) {
-            return this.handRaisingJoiners[index];
-        }
+            if (index < this.speakingJoiners.length) {
+                joiner = this.speakingJoiners[index];
+            } else {
+                index = index - this.speakingJoiners.length;
+                if (index < this.handRaisingJoiners.length) {
+                    joiner = this.handRaisingJoiners[index];
+                } else {
+                    index = index - this.otherJoiners.length;
+                    if (index < this.otherJoiners.length) {
+                        joiner = this.otherJoiners[index];
+                    }
+                }
+            }
 
-        index = index - this.otherJoiners.length;
-        if (index < this.otherJoiners.length) {
-            return this.otherJoiners[index];
+            if (joiner && joiner.userUUID !== this.userUUID) {
+                return joiner;
+            }
         }
 
         return;
@@ -972,32 +986,26 @@ export class ClassRoomStore {
 
         this.sortUsers(user => {
             if (user.userUUID !== this.userUUID && status.uStates[user.userUUID]) {
-                const [name, userStatusCode] = status.uStates[user.userUUID];
-                if (name) {
-                    user.name = name;
-                }
-                if (userStatusCode) {
-                    for (const code of userStatusCode) {
-                        switch (code) {
-                            case NonDefaultUserProp.IsSpeak: {
-                                user.isSpeak = true;
-                                break;
-                            }
-                            case NonDefaultUserProp.IsRaiseHand: {
-                                user.isRaiseHand = true;
-                                break;
-                            }
-                            case NonDefaultUserProp.Camera: {
-                                user.camera = true;
-                                break;
-                            }
-                            case NonDefaultUserProp.Mic: {
-                                user.mic = true;
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
+                for (const code of status.uStates[user.userUUID]) {
+                    switch (code) {
+                        case NonDefaultUserProp.IsSpeak: {
+                            user.isSpeak = true;
+                            break;
+                        }
+                        case NonDefaultUserProp.IsRaiseHand: {
+                            user.isRaiseHand = true;
+                            break;
+                        }
+                        case NonDefaultUserProp.Camera: {
+                            user.camera = true;
+                            break;
+                        }
+                        case NonDefaultUserProp.Mic: {
+                            user.mic = true;
+                            break;
+                        }
+                        default: {
+                            break;
                         }
                     }
                 }
