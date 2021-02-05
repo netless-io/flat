@@ -1,17 +1,17 @@
-import { EventEmitter } from "events";
+import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netless/combine-player";
 import { CursorTool } from "@netless/cursor-tool";
+import { audioPlugin } from "@netless/white-audio-plugin";
+import { videoPlugin } from "@netless/white-video-plugin";
+import { EventEmitter } from "events";
 import polly from "polly-js";
 import {
-    WhiteWebSdk,
-    PlayerPhase,
-    Player,
     createPlugins,
-    ReplayRoomParams,
     PlayableCheckingParams,
+    Player,
+    PlayerPhase,
+    ReplayRoomParams,
+    WhiteWebSdk,
 } from "white-web-sdk";
-import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netless/combine-player";
-import { videoPlugin } from "@netless/white-video-plugin";
-import { audioPlugin } from "@netless/white-audio-plugin";
 import { NETLESS, NODE_ENV } from "../constants/Process";
 
 export enum SmartPlayerEventType {
@@ -44,6 +44,7 @@ export declare interface SmartPlayer {
 /**
  * 智能播放画板与音视频，同时适应有无视频的情况
  */
+// eslint-disable-next-line no-redeclare
 export class SmartPlayer extends EventEmitter {
     public whiteboardPlayer: Player | undefined;
     public combinePlayer: CombinePlayer | undefined;

@@ -1,8 +1,8 @@
+import { Menu } from "antd";
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
-import { Menu } from "antd";
 import { RouteNameType } from "../../route-config";
-import { observer } from "mobx-react-lite";
 import { RoomItem } from "../../stores/RoomStore";
 import { usePushHistory } from "../../utils/routes";
 
@@ -23,11 +23,11 @@ export const ModifyRoomItem = observer<ModifyRoomItemProps>(function ModifyButto
     const pushHistory = usePushHistory();
 
     if (!room?.roomUUID && !room?.periodicUUID) {
-        return <></>;
+        return null;
     }
 
     if (!isCreator || room?.roomStatus !== RoomStatus.Idle) {
-        return <></>;
+        return null;
     }
 
     return (

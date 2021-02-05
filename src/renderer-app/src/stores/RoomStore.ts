@@ -78,7 +78,7 @@ export class RoomStore {
 
     /** Current user UUID */
     get userUUID(): string | null {
-        return globalStore.userUUID;
+        return globalStore.userUUID ?? null;
     }
 
     constructor() {

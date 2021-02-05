@@ -1,19 +1,19 @@
-import emptyBoxSVG from "../../../assets/image/empty-box.svg";
-
-import React, { useContext, useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
 import { isSameDay } from "date-fns/fp";
-import { RoomStoreContext } from "../../../components/StoreProvider";
+import { observer } from "mobx-react-lite";
+import React, { useContext, useEffect, useState } from "react";
 import { ListRoomsType } from "../../../apiMiddleware/flatServer";
-import { MainRoomListItem } from "./MainRoomListItem";
-import { RouteNameType, usePushHistory } from "../../../utils/routes";
 import { RoomType } from "../../../apiMiddleware/flatServer/constants";
+import emptyBoxSVG from "../../../assets/image/empty-box.svg";
+import { RoomStoreContext } from "../../../components/StoreProvider";
+import { RouteNameType, usePushHistory } from "../../../utils/routes";
+import { MainRoomListItem } from "./MainRoomListItem";
 
 export interface MainRoomListProps {
     listRoomsType: ListRoomsType;
 }
 
 export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ listRoomsType }) {
+    const [refreshRooms, forceRefreshRooms] = useState(0);
     const roomStore = useContext(RoomStoreContext);
     const [roomUUIDs, setRoomUUIDs] = useState<string[]>([]);
     const pushHistory = usePushHistory();
@@ -41,7 +41,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
             isUnMount = true;
             window.clearInterval(ticket);
         };
-    }, [listRoomsType, roomStore]);
+    }, [refreshRooms, listRoomsType, roomStore]);
 
     if (roomUUIDs.length <= 0) {
         return (
@@ -78,6 +78,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                             isHistoryList={isHistoryList}
                             onJoinRoom={joinRoom}
                             onReplayRoom={replayRoom}
+                            onRemoveRoom={() => forceRefreshRooms(e => ~e)}
                         />
                     );
                 })}

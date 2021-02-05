@@ -1,12 +1,12 @@
 import { Button, Dropdown } from "antd";
-import React, { useMemo } from "react";
 import { observer } from "mobx-react-lite";
-import { RoomStatus, RoomType } from "../../../apiMiddleware/flatServer/constants";
+import React from "react";
+import { RoomType } from "../../../apiMiddleware/flatServer/constants";
 import { RoomListDate } from "../../../components/RoomListPanel/RoomListDate";
 import { RoomListDuration } from "../../../components/RoomListPanel/RoomListDuration";
+import { RoomStatusElement } from "../../../components/RoomStatusElement/RoomStatusElement";
 import { RoomItem } from "../../../stores/RoomStore";
 import { MainRoomListItemMenus } from "./MainRoomListItemMenus";
-import { RoomStatusElement } from "../../../components/RoomStatusElement/RoomStatusElement";
 
 export interface MainRoomListItemProps {
     showDate: boolean;
@@ -14,6 +14,7 @@ export interface MainRoomListItemProps {
     isHistoryList: boolean;
     onJoinRoom: (roomUUID: string) => void;
     onReplayRoom: (config: { roomUUID: string; ownerUUID: string; roomType: RoomType }) => void;
+    onRemoveRoom: (roomUUID?: string) => void;
 }
 
 export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoomListItem({
@@ -22,6 +23,7 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
     isHistoryList,
     onJoinRoom,
     onReplayRoom,
+    onRemoveRoom,
 }) {
     return (
         <div className="room-list-cell-item">
@@ -54,6 +56,7 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                                 periodicUUID={room.periodicUUID}
                                 isHistoryList={isHistoryList}
                                 ownerUUID={room.ownerUUID}
+                                onRemoveRoom={onRemoveRoom}
                             />
                         }
                         trigger={["click"]}

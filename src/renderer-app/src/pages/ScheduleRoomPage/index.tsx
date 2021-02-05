@@ -1,4 +1,4 @@
-import { Button, Divider, Dropdown, Menu, Table } from "antd";
+import { Button, Divider, Dropdown, Menu, Modal, Table } from "antd";
 import { getDay } from "date-fns";
 import { format, formatWithOptions } from "date-fns/fp";
 import { zhCN } from "date-fns/locale";
@@ -31,6 +31,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
     const params = useParams<RouteParams<RouteNameType.ScheduleRoomDetailPage>>();
     const roomStore = useContext(RoomStoreContext);
     const [cancelRoomUUIDList, setCancelRoomUUIDList] = useState<Array<string>>([]);
+    const [cancelModalVisible, showCancelModal] = useState(false);
     const history = useHistory();
     const pushHistory = usePushHistory();
     const previousPage = useLastLocation();
@@ -197,7 +198,11 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                             >
                                 修改周期性房间
                             </Button>
-                            <Button danger onClick={cancelRoom} disabled={!isCreator}>
+                            <Button
+                                danger
+                                onClick={() => showCancelModal(true)}
+                                disabled={!isCreator}
+                            >
                                 取消周期性房间
                             </Button>
                         </div>
@@ -207,6 +212,22 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                     </div>
                 </div>
             </div>
+            <Modal
+                visible={cancelModalVisible}
+                title="取消房间"
+                onCancel={() => showCancelModal(false)}
+                onOk={cancelRoom}
+                footer={[
+                    <Button key="Cancel" onClick={() => showCancelModal(false)}>
+                        再想想
+                    </Button>,
+                    <Button key="Ok" type="primary" onClick={cancelRoom}>
+                        确定
+                    </Button>,
+                ]}
+            >
+                确定取消该系列全部周期性房间吗？
+            </Modal>
         </MainPageLayout>
     );
 });
@@ -228,7 +249,7 @@ const MoreMenu = observer<MoreMenuProps>(function MoreMenu({ room, isCreator, re
                         <RemoveRoomItem
                             room={room}
                             isCreator={isCreator}
-                            handleClick={removeHandle}
+                            onRemoveRoom={removeHandle}
                         />
                         <CopyInvitationItem room={room} />
                     </Menu>

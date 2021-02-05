@@ -1,19 +1,20 @@
 import { Menu } from "antd";
 import { MenuProps } from "antd/lib/menu";
 import React, { useContext } from "react";
-import { RoomStoreContext } from "../../../components/StoreProvider";
-import { globalStore } from "../../../stores/GlobalStore";
+import { CopyInvitationItem } from "../../../components/MoreMenu/CopyInvitationItem";
+import { DeleteRoomHistoryItem } from "../../../components/MoreMenu/DeleteRoomHistoryItem";
 import { ModifyRoomItem } from "../../../components/MoreMenu/ModifyRoomItem";
 import { RemoveRoomItem } from "../../../components/MoreMenu/RemoveRoomItem";
-import { DeleteRoomHistoryItem } from "../../../components/MoreMenu/DeleteRoomHistoryItem";
-import { CopyInvitationItem } from "../../../components/MoreMenu/CopyInvitationItem";
 import { RoomDetailsItem } from "../../../components/MoreMenu/RoomDetailsItem";
+import { RoomStoreContext } from "../../../components/StoreProvider";
+import { globalStore } from "../../../stores/GlobalStore";
 
 export interface MainRoomListItemMenusProps extends MenuProps {
     roomUUID: string;
     periodicUUID?: string;
     isHistoryList: boolean;
     ownerUUID: string;
+    onRemoveRoom?: (roomUUID?: string) => void;
 }
 
 export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
@@ -22,7 +23,7 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
         periodicUUID,
         isHistoryList,
         ownerUUID,
-        onClick,
+        onRemoveRoom,
         ...restProps
     }) {
         const roomStore = useContext(RoomStoreContext);
@@ -41,7 +42,12 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
                     ) : (
                         <>
                             <ModifyRoomItem {...restProps} room={roomInfo} isCreator={isCreator} />
-                            <RemoveRoomItem {...restProps} room={roomInfo} isCreator={isCreator} />
+                            <RemoveRoomItem
+                                {...restProps}
+                                onRemoveRoom={onRemoveRoom}
+                                room={roomInfo}
+                                isCreator={isCreator}
+                            />
                             <CopyInvitationItem {...restProps} room={roomInfo} />
                         </>
                     )}

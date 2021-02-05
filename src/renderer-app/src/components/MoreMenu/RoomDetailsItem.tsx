@@ -1,7 +1,7 @@
-import React from "react";
 import { Menu } from "antd";
 import { observer } from "mobx-react-lite";
-import { RoomItem, roomStore } from "../../stores/RoomStore";
+import React from "react";
+import { RoomItem } from "../../stores/RoomStore";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 interface RoomDetailsItemProps {
@@ -17,7 +17,7 @@ export const RoomDetailsItem = observer<RoomDetailsItemProps>(function DeleteRoo
     const pushHistory = usePushHistory();
 
     if (!room?.roomUUID) {
-        return <></>;
+        return null;
     }
 
     return (

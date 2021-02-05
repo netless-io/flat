@@ -4,10 +4,11 @@ import { endOfDay, format, getDay, isBefore } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import {
     periodicRoomInfo,
     updatePeriodicRoom,
-    UpdatePeriodicRoomPayload
+    UpdatePeriodicRoomPayload,
 } from "../../apiMiddleware/flatServer";
 import { RoomType, Week } from "../../apiMiddleware/flatServer/constants";
 import { DatePicker } from "../../components/antd-date-fns";
@@ -49,6 +50,7 @@ function formatISODayWeekiii(date: Date): string {
 export const PeriodicRoomForm = observer<PeriodicRoomFormProps>(function PeriodicRoomForm({
     periodicUUID,
 }) {
+    const history = useHistory();
     const pushHistory = usePushHistory();
 
     const [form] = Form.useForm<ModifyPeriodicFormValues>();
@@ -169,10 +171,7 @@ export const PeriodicRoomForm = observer<PeriodicRoomFormProps>(function Periodi
                 </Row>
             </Form.Item>
             <div className="modify-periodic-room-under">
-                <Button
-                    className="modify-periodic-room-cancel"
-                    onClick={() => pushHistory(RouteNameType.HomePage)}
-                >
+                <Button className="modify-periodic-room-cancel" onClick={() => history.goBack()}>
                     取消
                 </Button>
                 <Button

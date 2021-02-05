@@ -1,6 +1,6 @@
-import React from "react";
 import { Menu } from "antd";
 import { observer } from "mobx-react-lite";
+import React from "react";
 import { RoomItem, roomStore } from "../../stores/RoomStore";
 
 interface DeleteRoomHistoryItemProps {
@@ -11,7 +11,7 @@ interface DeleteRoomHistoryItemProps {
 export const DeleteRoomHistoryItem = observer<DeleteRoomHistoryItemProps>(
     function DeleteRoomHistoryItem({ room, handleClick, ...restProps }) {
         if (!room?.roomUUID) {
-            return <></>;
+            return null;
         }
 
         return (

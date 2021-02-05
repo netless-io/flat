@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { Button, Checkbox, Menu, message, Modal } from "antd";
 import { observer } from "mobx-react-lite";
+import React, { useState } from "react";
+import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { RoomItem, roomStore } from "../../stores/RoomStore";
 
 interface RemoveRoomItemProps {
     room: RoomItem | undefined;
     isCreator: boolean;
-    handleClick?: (roomUUID: string | undefined) => void;
+    onRemoveRoom?: (roomUUID: string | undefined) => void;
     autoPopupModal?: boolean;
 }
 
 export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButton({
     isCreator,
     room,
-    handleClick,
+    onRemoveRoom,
     autoPopupModal = true,
     ...restProps
 }) {
@@ -22,7 +22,7 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
     const [isCancelAll, setIsCancelAll] = useState(false);
 
     if (isCreator && room?.roomStatus !== RoomStatus.Idle) {
-        return <></>;
+        return null;
     }
 
     const hideCancelModal = (): void => {
@@ -38,6 +38,9 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
                 roomUUID: room?.roomUUID,
                 periodicUUID: room?.periodicUUID,
             });
+            if (onRemoveRoom) {
+                onRemoveRoom(room?.roomUUID);
+            }
             message.success("已取消该房间");
         } catch (e) {
             console.error(e);
@@ -49,9 +52,6 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
             <Menu.Item
                 {...restProps}
                 onClick={() => {
-                    if (handleClick) {
-                        handleClick(room?.roomUUID);
-                    }
                     if (autoPopupModal) {
                         setCancelModalVisible(true);
                     }
