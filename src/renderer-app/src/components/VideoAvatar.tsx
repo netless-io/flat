@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import type AgoraSDK from "agora-electron-sdk";
 import { observer } from "mobx-react-lite";
 import { User } from "../stores/ClassRoomStore";
@@ -65,6 +65,19 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
                 }
             }
         },
+    );
+
+    useEffect(
+        () => () => {
+            if (userUUID === avatarUser.userUUID) {
+                rtcEngine.enableLocalVideo(false);
+                rtcEngine.enableLocalAudio(false);
+            } else {
+                rtcEngine.muteRemoteVideoStream(avatarUser.rtcUID, true);
+                rtcEngine.muteRemoteAudioStream(avatarUser.rtcUID, true);
+            }
+        },
+        [rtcEngine, userUUID, avatarUser.userUUID, avatarUser.rtcUID],
     );
 
     const isCameraCtrlDisable =
