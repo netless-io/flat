@@ -116,7 +116,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     useAutoRun(reaction => {
         if (classRoomStore.currentUser) {
             // join rtc room to listen to creator events
-            classRoomStore.startCalling();
+            classRoomStore.joinRTC();
             // run only once
             reaction.dispose();
         }

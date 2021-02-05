@@ -105,7 +105,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             (creator && (creator.camera || creator.mic))
         ) {
             // join rtc room to listen to creator events
-            classRoomStore.startCalling();
+            classRoomStore.joinRTC();
             // run only once
             reaction.dispose();
         }
