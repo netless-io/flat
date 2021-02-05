@@ -1,9 +1,9 @@
-import React, { useState } from "react";
 import { Menu, message } from "antd";
-import { observer } from "mobx-react-lite";
-import { RoomItem } from "../../stores/RoomStore";
-import { InviteModal } from "../../pages/RoomDetailPage/InviteModal";
 import { clipboard } from "electron";
+import { observer } from "mobx-react-lite";
+import React, { useState } from "react";
+import { InviteModal } from "../../pages/RoomDetailPage/InviteModal";
+import { RoomItem } from "../../stores/RoomStore";
 
 interface CopyInvitationItemProps {
     room: RoomItem | undefined;
@@ -17,7 +17,7 @@ export const CopyInvitationItem = observer<CopyInvitationItemProps>(function Del
 }) {
     const [isShowInviteModal, setIsShowInviteModal] = useState(false);
     if (!room?.roomUUID) {
-        return <></>;
+        return null;
     }
 
     return (

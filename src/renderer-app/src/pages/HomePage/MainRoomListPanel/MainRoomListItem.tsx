@@ -14,6 +14,7 @@ export interface MainRoomListItemProps {
     isHistoryList: boolean;
     onJoinRoom: (roomUUID: string) => void;
     onReplayRoom: (config: { roomUUID: string; ownerUUID: string; roomType: RoomType }) => void;
+    onRemoveRoom: (roomUUID?: string) => void;
 }
 
 export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoomListItem({
@@ -22,6 +23,7 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
     isHistoryList,
     onJoinRoom,
     onReplayRoom,
+    onRemoveRoom,
 }) {
     return (
         <div className="room-list-cell-item">
@@ -54,6 +56,7 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                                 periodicUUID={room.periodicUUID}
                                 isHistoryList={isHistoryList}
                                 ownerUUID={room.ownerUUID}
+                                onRemoveRoom={onRemoveRoom}
                             />
                         }
                         trigger={["click"]}
