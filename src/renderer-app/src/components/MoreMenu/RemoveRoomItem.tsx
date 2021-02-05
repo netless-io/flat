@@ -7,7 +7,7 @@ import { RoomItem, roomStore } from "../../stores/RoomStore";
 interface RemoveRoomItemProps {
     room: RoomItem | undefined;
     isCreator: boolean;
-    handleClick?: () => void;
+    handleClick?: (roomUUID: string | undefined) => void;
     autoPopupModal?: boolean;
 }
 
@@ -50,7 +50,7 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
                 {...restProps}
                 onClick={() => {
                     if (handleClick) {
-                        handleClick();
+                        handleClick(room?.roomUUID);
                     }
                     if (autoPopupModal) {
                         setCancelModalVisible(true);
