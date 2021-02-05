@@ -4,7 +4,7 @@ import MainPageLayout from "../../components/MainPageLayout";
 import back from "../../assets/image/back.svg";
 import moreBtn from "../../assets/image/moreBtn.svg";
 import "./ScheduleRoomPage.less";
-import { Button, Divider, Dropdown, Menu, message, Table } from "antd";
+import { Button, Divider, Dropdown, Menu, Table } from "antd";
 import { format, formatWithOptions, getDay } from "date-fns/fp";
 import { zhCN } from "date-fns/locale";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
@@ -14,13 +14,12 @@ import LoadingPage from "../../LoadingPage";
 import { RoomItem } from "../../stores/RoomStore";
 import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatusElement";
 import { getWeekName } from "../../utils/getTypeName";
-import { InviteModal } from "../RoomDetailPage/InviteModal";
-import { clipboard } from "electron";
 import { globalStore } from "../../stores/GlobalStore";
 import { RoomDetailsItem } from "../../components/MoreMenu/RoomDetailsItem";
 import { ModifyRoomItem } from "../../components/MoreMenu/ModifyRoomItem";
 import { RemoveRoomItem } from "../../components/MoreMenu/RemoveRoomItem";
 import { CopyInvitationItem } from "../../components/MoreMenu/CopyInvitationItem";
+import { useLastLocation } from "react-router-last-location";
 
 const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
 const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
@@ -30,8 +29,10 @@ const dayWeekFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM/dd iii");
 export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPage() {
     const params = useParams<RouteParams<RouteNameType.ScheduleRoomDetailPage>>();
     const roomStore = useContext(RoomStoreContext);
+    const [cancelRoomUUIDList, setCancelRoomUUIDList] = useState<Array<string>>([]);
     const history = useHistory();
     const pushHistory = usePushHistory();
+    const previousPage = useLastLocation();
 
     const { periodicUUID } = params;
 
@@ -54,6 +55,29 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
             periodicUUID,
         });
         history.block();
+    };
+
+    // if the room has been cancelled and return to the previous page, an error will be reported
+    const backPreviousPage = (): void => {
+        if (!previousPage?.pathname) {
+            return pushHistory(RouteNameType.HomePage, {});
+        }
+
+        const previousRouterContainRemoveRoomUUID = cancelRoomUUIDList.some(roomUUID => {
+            return previousPage.pathname.includes(roomUUID);
+        });
+
+        if (previousRouterContainRemoveRoomUUID) {
+            return pushHistory(RouteNameType.HomePage, {});
+        }
+
+        history.goBack();
+    };
+
+    const addRemoveRoomUUID = (roomUUID: string | undefined): void => {
+        if (roomUUID) {
+            setCancelRoomUUIDList([...cancelRoomUUIDList, roomUUID]);
+        }
     };
 
     const renderRoomTable = (): React.ReactNode => {
@@ -119,7 +143,13 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                         />
                         <Table.Column
                             render={(_, room: RoomItem) => {
-                                return <MoreMenu room={room} isCreator={isCreator} />;
+                                return (
+                                    <MoreMenu
+                                        room={room}
+                                        isCreator={isCreator}
+                                        removeHandle={addRemoveRoomUUID}
+                                    />
+                                );
                             }}
                         />
                     </Table>
@@ -134,7 +164,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
             <div className="schedule-room-box">
                 <div className="schedule-room-nav">
                     <div className="schedule-room-head">
-                        <div className="schedule-room-back" onClick={() => history.goBack()}>
+                        <div className="schedule-room-back" onClick={() => backPreviousPage()}>
                             <img src={back} alt="back" />
                             <span>返回</span>
                         </div>
@@ -174,9 +204,10 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
 interface MoreMenuProps {
     room: RoomItem;
     isCreator: boolean;
+    removeHandle: (roomUUID: string | undefined) => void;
 }
 
-const MoreMenu = observer<MoreMenuProps>(function MoreMenu({ room, isCreator }) {
+const MoreMenu = observer<MoreMenuProps>(function MoreMenu({ room, isCreator, removeHandle }) {
     return (
         <Dropdown
             overlay={() => {
@@ -184,7 +215,11 @@ const MoreMenu = observer<MoreMenuProps>(function MoreMenu({ room, isCreator }) 
                     <Menu>
                         <RoomDetailsItem room={room} />
                         <ModifyRoomItem room={room} isCreator={isCreator} />
-                        <RemoveRoomItem room={room} isCreator={isCreator} />
+                        <RemoveRoomItem
+                            room={room}
+                            isCreator={isCreator}
+                            handleClick={removeHandle}
+                        />
                         <CopyInvitationItem room={room} />
                     </Menu>
                 );
