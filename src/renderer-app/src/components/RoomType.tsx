@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { getRoomTypeName } from "../utils/getTypeName";
 import { SelectProps } from "antd/lib/select";
 
-const RoomTypeList = Object.freeze([RoomType.OneToOne, RoomType.SmallClass, RoomType.BigClass]);
+const RoomTypeList = Object.freeze([RoomType.BigClass, RoomType.SmallClass, RoomType.OneToOne]);
 
 interface RoomTypeSelectProps extends SelectProps<RoomType> {}
 

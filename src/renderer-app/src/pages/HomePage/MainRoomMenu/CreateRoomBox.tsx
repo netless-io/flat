@@ -29,7 +29,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
 
     const defaultValues: CreateRoomFormValues = {
         roomTitle: globalStore.wechat?.name ? `${globalStore.wechat.name}创建的房间` : "",
-        roomType: RoomType.OneToOne,
+        roomType: RoomType.BigClass,
         autoCameraOn: configStore.autoCameraOn,
     };
 
