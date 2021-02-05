@@ -45,7 +45,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
         const scheduleBeginTime = getInitialBeginTime();
         return {
             title: globalStore.wechat?.name ? `${globalStore.wechat.name}预定的房间` : "",
-            type: RoomType.OneToOne,
+            type: RoomType.BigClass,
             isPeriodic: false,
             beginTime: {
                 date: new Date(scheduleBeginTime),
