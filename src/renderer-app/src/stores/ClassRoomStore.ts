@@ -114,8 +114,12 @@ export class ClassRoomStore {
         });
 
         autorun(() => {
-            const { creator, currentUser, speakingJoiners } = this;
-            if (creator?.isSpeak || currentUser?.isSpeak || speakingJoiners.length > 0) {
+            if (
+                this.creator &&
+                (this.creator?.isSpeak ||
+                    this.currentUser?.isSpeak ||
+                    this.speakingJoiners.length > 0)
+            ) {
                 this.joinRTC();
             } else {
                 this.leaveRTC();
@@ -160,6 +164,16 @@ export class ClassRoomStore {
     resumeClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
 
     stopClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Stopped);
+
+    hangClass = async (): Promise<void> => {
+        const configs = [...this.speakingJoiners, ...this.handRaisingJoiners].map(user => ({
+            userUUID: user.userUUID,
+            speak: false,
+        }));
+        if (configs.length > 0) {
+            await this.onSpeak(configs);
+        }
+    };
 
     joinRTC = async (): Promise<void> => {
         if (this.isCalling || !this.currentUser) {
