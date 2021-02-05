@@ -20,8 +20,12 @@ export class GlobalStore {
     rtcToken: string | null = null;
     rtmToken: string | null = null;
 
-    get userUUID(): string | null {
-        return this.wechat && this.wechat.userUUID;
+    get userUUID(): string | undefined {
+        return this.wechat?.userUUID;
+    }
+
+    get userName(): string | undefined {
+        return this.wechat?.name;
     }
 
     constructor() {

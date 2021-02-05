@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { Modal } from "antd";
 import { differenceInCalendarDays, format } from "date-fns/fp";
 import { RoomItem } from "../../stores/RoomStore";
+import { GlobalStoreContext } from "../../components/StoreProvider";
 
 const completeTimeFormat = format("yyyy-MM-dd HH:mm");
 const onlySuffixTimeFormat = format("HH:mm");
@@ -20,7 +21,9 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
     onCancel,
     room,
 }) {
-    const { beginTime, endTime, ownerUserName, periodicUUID, roomUUID, title } = room;
+    const globalStore = useContext(GlobalStoreContext);
+
+    const { beginTime, endTime, periodicUUID, roomUUID, title } = room;
     const uuid = periodicUUID || roomUUID;
 
     const formatBeginTime = completeTimeFormat(beginTime!);
@@ -40,7 +43,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
             className="invite-modal"
         >
             <div className="modal-header">
-                <span>{ownerUserName} 邀请加入 FLAT 房间</span>
+                <span>{globalStore.userName} 邀请加入 FLAT 房间</span>
                 <span>点击链接加入，或添加至房间列表</span>
             </div>
             <div className="modal-content">
