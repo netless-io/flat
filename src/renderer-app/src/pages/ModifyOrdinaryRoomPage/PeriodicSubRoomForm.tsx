@@ -1,7 +1,8 @@
-import { Button, Form, Input, Select } from "antd";
-import { addMinutes, isBefore, startOfDay } from "date-fns";
+import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
+import { addMinutes, differenceInMinutes, isBefore, startOfDay } from "date-fns";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
+import { useHistory } from "react-router";
 import {
     periodicSubRoomInfo,
     updatePeriodicSubRoom,
@@ -11,8 +12,7 @@ import { RoomType } from "../../apiMiddleware/flatServer/constants";
 import { DatePicker, TimePicker } from "../../components/antd-date-fns";
 import LoadingPage from "../../LoadingPage";
 import { getRoomTypeName } from "../../utils/getTypeName";
-import { RouteNameType, usePushHistory } from "../../utils/routes";
-
+import { useSafePromise } from "../../utils/hooks/lifecycle";
 export interface PeriodicSubRoomFormProps {
     roomUUID: string;
     periodicUUID: string;
@@ -54,8 +54,11 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
     const [loading, setLoading] = useState(true);
     const [disabled, setDisabled] = useState(true);
     const [roomType, setRoomType] = useState(RoomType.BigClass);
-    const pushHistory = usePushHistory();
+    const [modifyModalVisible, setModifyModalVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const history = useHistory();
     const isMount = useIsMount();
+    const sp = useSafePromise();
 
     const [form] = Form.useForm<PeriodicSubRoomFormData>();
 
@@ -117,7 +120,11 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
         }
     }, [roomUUID, periodicUUID, form, isMount]);
 
-    async function saveRoomInfo(): Promise<void> {
+    async function modifySubRoom(): Promise<void> {
+        if (isLoading) {
+            return;
+        }
+        setIsLoading(true);
         const values = form.getFieldsValue();
         const requestBody: UpdatePeriodicSubRoomPayload = {
             beginTime: Number(values.beginTime),
@@ -126,13 +133,27 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
             periodicUUID: periodicUUID,
         };
         try {
-            await updatePeriodicSubRoom(requestBody);
+            await sp(updatePeriodicSubRoom(requestBody));
+            message.success("修改成功");
             if (isMount.current) {
-                pushHistory(RouteNameType.HomePage);
+                history.goBack();
             }
         } catch (error) {
             console.log(error);
         }
+    }
+
+    function showModifySubRoomModal(): void {
+        setModifyModalVisible(true);
+    }
+
+    function hideModifyModal(): void {
+        setModifyModalVisible(false);
+    }
+
+    async function confirmSubModifyRoom(): Promise<void> {
+        setModifyModalVisible(false);
+        await modifySubRoom();
     }
 
     function onValuesChange(
@@ -150,7 +171,7 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
             if (!endTime) {
                 endTime = values.endDate;
             }
-            if (isBefore(endTime, beginTime)) {
+            if (differenceInMinutes(beginTime, endTime) < 15) {
                 endTime = addMinutes(beginTime, 30);
             }
             form.setFieldsValue({
@@ -180,69 +201,105 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
     }
     return (
         <>
-            <Form form={form} onValuesChange={onValuesChange}>
-                <div className="user-schedule-name">主题</div>
-                <Form.Item name="title" rules={[{ required: true, message: "主题不能为空" }]}>
+            <Form
+                form={form}
+                layout="vertical"
+                className="modify-ordinary-room-form"
+                onValuesChange={onValuesChange}
+            >
+                <Form.Item
+                    label="主题"
+                    name="title"
+                    required={false}
+                    rules={[{ required: true, message: "主题不能为空" }]}
+                >
                     <Input disabled />
                 </Form.Item>
-                <div className="user-schedule-name">类型</div>
-                <Form.Item name="type">
+                <Form.Item label="类型" name="type">
                     <Select disabled>
                         <Option key={roomType} value={roomType}>
                             {getRoomTypeName(roomType)}
                         </Option>
                     </Select>
                 </Form.Item>
-                <div className="user-schedule-name">开始时间</div>
-                <div className="user-schedule-inner">
-                    <Form.Item name="beginDate">
-                        <DatePicker
-                            className="user-schedule-picker"
-                            allowClear={false}
-                            showToday={false}
-                            disabledDate={disabledBeginDate}
-                        />
-                    </Form.Item>
-                    <Form.Item name="beginTime">
-                        <TimePicker
-                            className="user-schedule-picker"
-                            allowClear={false}
-                            showNow={false}
-                            format="HH:mm"
-                        />
-                    </Form.Item>
-                </div>
-                <div className="user-schedule-name">结束时间</div>
-                <div className="user-schedule-inner">
-                    <Form.Item name="endDate">
-                        <DatePicker
-                            className="user-schedule-picker"
-                            allowClear={false}
-                            showToday={false}
-                            disabledDate={disabledEndDate}
-                        />
-                    </Form.Item>
-                    <Form.Item name="endTime">
-                        <TimePicker
-                            className="user-schedule-picker"
-                            allowClear={false}
-                            showNow={false}
-                            format="HH:mm"
-                        />
-                    </Form.Item>
-                </div>
+                <Form.Item label="开始时间">
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item name="beginDate">
+                                <DatePicker
+                                    className="user-schedule-picker"
+                                    allowClear={false}
+                                    showToday={false}
+                                    disabledDate={disabledBeginDate}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item name="beginTime">
+                                <TimePicker
+                                    className="user-schedule-picker"
+                                    allowClear={false}
+                                    showNow={false}
+                                    format="HH:mm"
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form.Item>
+                <Form.Item label="结束时间">
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item name="endDate" noStyle>
+                                <DatePicker
+                                    allowClear={false}
+                                    showToday={false}
+                                    disabledDate={disabledEndDate}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item name="endTime" noStyle>
+                                <TimePicker allowClear={false} showNow={false} format="HH:mm" />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form.Item>
             </Form>
-            <div className="user-schedule-under">
-                <Button
-                    className="user-schedule-cancel"
-                    onClick={() => pushHistory(RouteNameType.HomePage)}
-                >
+            <div className="modify-ordinary-room-under">
+                <Button className="modify-ordinary-room-cancel" onClick={() => history.goBack()}>
                     取消
                 </Button>
-                <Button className="user-schedule-ok" disabled={disabled} onClick={saveRoomInfo}>
-                    确定
+                <Button
+                    className="modify-ordinary-room-ok"
+                    disabled={disabled}
+                    loading={isLoading}
+                    onClick={showModifySubRoomModal}
+                >
+                    修改
                 </Button>
+                {renderModifyModal()}
             </div>
         </>
     );
+
+    function renderModifyModal(): React.ReactElement {
+        return (
+            <Modal
+                visible={modifyModalVisible}
+                title="修改周期性子房间"
+                onCancel={hideModifyModal}
+                onOk={confirmSubModifyRoom}
+                footer={[
+                    <Button key="Cancel" onClick={hideModifyModal}>
+                        取消
+                    </Button>,
+                    <Button key="Ok" type="primary" onClick={confirmSubModifyRoom}>
+                        确定
+                    </Button>,
+                ]}
+            >
+                确定修改该房间？
+            </Modal>
+        );
+    }
 });
