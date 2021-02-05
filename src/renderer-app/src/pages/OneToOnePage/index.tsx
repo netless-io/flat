@@ -98,19 +98,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         }
     });
 
-    useAutoRun(reaction => {
-        const { currentUser, creator } = classRoomStore;
-        if (
-            (currentUser && currentUser.isSpeak && (currentUser.camera || currentUser.mic)) ||
-            (creator && (creator.camera || creator.mic))
-        ) {
-            // join rtc room to listen to creator events
-            classRoomStore.joinRTC();
-            // run only once
-            reaction.dispose();
-        }
-    });
-
     // control whiteboard writable
     useAutoRun(reaction => {
         // ignore creator
