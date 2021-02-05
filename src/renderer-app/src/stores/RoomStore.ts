@@ -17,7 +17,7 @@ import {
     PeriodicRoomInfoResult,
     periodicSubRoomInfo,
     PeriodicSubRoomInfoPayload,
-    recordInfo,
+    recordInfo
 } from "../apiMiddleware/flatServer";
 import { RoomDoc, RoomStatus, RoomType } from "../apiMiddleware/flatServer/constants";
 import { globalStore } from "./GlobalStore";
@@ -78,7 +78,7 @@ export class RoomStore {
 
     /** Current user UUID */
     get userUUID(): string | null {
-        return globalStore.userUUID;
+        return globalStore.userUUID ?? null;
     }
 
     constructor() {
