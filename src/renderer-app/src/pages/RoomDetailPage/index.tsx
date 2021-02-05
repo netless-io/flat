@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { format } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { Link, useParams } from "react-router-dom";
-import { clipboard } from "electron";
 import MainPageLayout from "../../components/MainPageLayout";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { observer } from "mobx-react-lite";
@@ -20,24 +19,6 @@ import docsIconSVG from "../../assets/image/docs-icon.svg";
 import "./RoomDetailPage.less";
 import { Button, Checkbox, Divider, message, Modal } from "antd";
 import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatusElement";
-
-export type RoomDetailPageState = {
-    isTeacher: boolean;
-    rate: number | null;
-    roomInfo: {
-        title: string;
-        beginTime: Date;
-        endTime: Date;
-        roomType: RoomType;
-        roomStatus: RoomStatus;
-        ownerUUID: string;
-    };
-    roomUUID: string;
-    periodicUUID?: string;
-    userUUID: string;
-    isPeriodic: boolean;
-    toggleCopyModal: boolean;
-};
 
 export type RoomDetailPageProps = {};
 
@@ -68,7 +49,6 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
     }
 
     const isCreator = roomInfo.ownerUUID === globalStore.userUUID;
-    const isIdleStatus = roomInfo.roomStatus === RoomStatus.Idle;
 
     return (
         <MainPageLayout>
@@ -91,7 +71,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                         {periodicUUID && (
                             <>
                                 <div className="user-periodic">周期</div>
-                                {roomInfo.title && roomInfo.ownerUUID && (
+                                {roomInfo.roomStatus !== RoomStatus.Stopped && (
                                     <div className="user-periodic-room">
                                         {roomInfo.count && (
                                             <Link
@@ -181,10 +161,8 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                             </div>
                         </div>
                         <RoomDetailFooter
-                            periodicUUID={periodicUUID}
-                            roomUUID={roomUUID}
                             isCreator={isCreator}
-                            isIdleStatus={isIdleStatus}
+                            room={roomInfo}
                             onJoinRoom={joinRoom}
                             onCancelRoom={showCancelRoomModal}
                             onInvite={() => showInviteModal(true)}
