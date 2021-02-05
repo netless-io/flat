@@ -52,7 +52,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                     <ChatMessages
                         isCreator={classRoomStore.isCreator}
                         userUUID={classRoomStore.userUUID}
-                        allUsers={classRoomStore.allUsers}
+                        allUsers={classRoomStore.cachedUsers}
                         messages={classRoomStore.messages}
                         currentUser={classRoomStore.currentUser}
                         isBan={classRoomStore.isBan}

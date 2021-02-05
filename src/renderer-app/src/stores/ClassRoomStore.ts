@@ -49,8 +49,8 @@ export class ClassRoomStore {
     readonly userUUID: string;
     /** RTM messages */
     messages = observable.array<RTMessage>([]);
-    /** allUsers info */
-    allUsers = observable.map<string, User>();
+    /** cache all users info including users who have left the room */
+    cachedUsers = observable.map<string, User>();
     /** creator info */
     creator: User | null = null;
     /** current user info */
@@ -274,6 +274,8 @@ export class ClassRoomStore {
         runInAction(() => {
             this.messages.unshift(...textMessages);
         });
+
+        this.syncExtraUsersInfo(textMessages.map(msg => msg.userUUID));
     };
 
     /** joiner updates own camera and mic state */
@@ -409,6 +411,19 @@ export class ClassRoomStore {
         }
     };
 
+    /**
+     * Fetch info of users who have left the room.
+     * For RTM message title.
+     */
+    syncExtraUsersInfo = async (userUUIDs: string[]): Promise<void> => {
+        const users = await this.createUsers(
+            userUUIDs.filter(userUUID => !this.cachedUsers.has(userUUID)),
+        );
+        for (const user of users) {
+            this.cacheUser(user);
+        }
+    };
+
     async init(): Promise<void> {
         await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
 
@@ -423,14 +438,13 @@ export class ClassRoomStore {
 
         channel.on("MemberJoined", async userUUID => {
             (await this.createUsers([userUUID])).forEach(user => {
-                this.allUsers.set(user.userUUID, user);
+                this.cacheUser(user);
                 this.sortOneUser(user);
             });
         });
         channel.on(
             "MemberLeft",
             action("MemberLeft", userUUID => {
-                this.allUsers.delete(userUUID);
                 if (this.creator && this.creator.userUUID === userUUID) {
                     this.creator = null;
                 } else {
@@ -469,6 +483,10 @@ export class ClassRoomStore {
         } catch (e) {
             console.error(e);
         }
+    }
+
+    private cacheUser(user: User): void {
+        this.cachedUsers.set(user.userUUID, user);
     }
 
     private async switchRoomStatus(roomStatus: RoomStatus): Promise<void> {
@@ -585,6 +603,7 @@ export class ClassRoomStore {
     private startListenCommands = (): void => {
         this.rtm.on(RTMessageType.ChannelMessage, (text, senderId) => {
             this.addMessage(RTMessageType.ChannelMessage, text, senderId);
+            this.syncExtraUsersInfo([senderId]);
         });
 
         this.rtm.on(RTMessageType.CancelAllHandRaising, (_value, senderId) => {
@@ -813,13 +832,12 @@ export class ClassRoomStore {
     };
 
     private resetUsers = (users: User[]): void => {
-        this.allUsers.clear();
         this.otherJoiners.clear();
         this.speakingJoiners.clear();
         this.handRaisingJoiners.clear();
         users.forEach(user => {
             this.sortOneUser(user);
-            this.allUsers.set(user.userUUID, user);
+            this.cacheUser(user);
         });
     };
 
@@ -902,6 +920,8 @@ export class ClassRoomStore {
     }
 
     private async createUsers(userUUIDs: string[]): Promise<User[]> {
+        userUUIDs = [...new Set(userUUIDs)];
+
         const users = await usersInfo({ roomUUID: this.roomUUID, usersUUID: userUUIDs });
 
         return userUUIDs.map(userUUID =>
