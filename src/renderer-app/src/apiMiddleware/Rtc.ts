@@ -94,6 +94,7 @@ export class Rtc {
         }
 
         this.rtcEngine.enableLocalVideo(false);
+        this.rtcEngine.enableLocalAudio(false);
 
         this.rtcEngine.joinChannel(token, this.roomUUID, "", rtcUID);
     }
