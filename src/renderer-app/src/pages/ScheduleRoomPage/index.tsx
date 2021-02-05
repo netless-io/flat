@@ -21,6 +21,7 @@ import { RoomItem } from "../../stores/RoomStore";
 import { getWeekName } from "../../utils/getTypeName";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import "./ScheduleRoomPage.less";
+import { RemoveRoomModal } from "../../components/Modal/RemoveRoomModal";
 
 const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
 const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
@@ -50,14 +51,6 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
     }
 
     const isCreator = globalStore.userUUID === periodicInfo.periodic.ownerUUID;
-
-    const cancelRoom = async (): Promise<void> => {
-        await roomStore.cancelRoom({
-            all: true,
-            periodicUUID,
-        });
-        pushHistory(RouteNameType.HomePage);
-    };
 
     // if the room has been cancelled and return to the previous page, an error will be reported
     const backPreviousPage = (): void => {
@@ -209,22 +202,12 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                     </div>
                 </div>
             </div>
-            <Modal
-                visible={cancelModalVisible}
-                title="取消房间"
+            <RemoveRoomModal
+                cancelModalVisible={cancelModalVisible}
+                isCreator={isCreator}
                 onCancel={() => showCancelModal(false)}
-                onOk={cancelRoom}
-                footer={[
-                    <Button key="Cancel" onClick={() => showCancelModal(false)}>
-                        再想想
-                    </Button>,
-                    <Button key="Ok" type="primary" onClick={cancelRoom}>
-                        确定
-                    </Button>,
-                ]}
-            >
-                确定取消该系列全部周期性房间吗？
-            </Modal>
+                periodicUUID={periodicUUID}
+            />
         </MainPageLayout>
     );
 });

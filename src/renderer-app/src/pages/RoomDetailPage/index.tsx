@@ -10,14 +10,13 @@ import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProv
 import LoadingPage from "../../LoadingPage";
 import { useComputed } from "../../utils/mobx";
 import { RoomDetailFooter } from "./RoomDetailFooter";
-import { InviteModal } from "./InviteModal";
 
 import backSVG from "../../assets/image/back.svg";
 import homeIconGraySVG from "../../assets/image/home-icon-gray.svg";
 import roomTypeSVG from "../../assets/image/room-type.svg";
 import docsIconSVG from "../../assets/image/docs-icon.svg";
 import "./RoomDetailPage.less";
-import { Button, Checkbox, Divider, message, Modal } from "antd";
+import { Divider } from "antd";
 import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatusElement";
 
 export type RoomDetailPageProps = {};
@@ -28,10 +27,6 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
     const globalStore = useContext(GlobalStoreContext);
     const roomStore = useContext(RoomStoreContext);
     const roomInfo = roomStore.rooms.get(roomUUID);
-
-    const [cancelModalVisible, showCancelModal] = useState(false);
-    const [isCancelAll, setIsCancelAll] = useState(false);
-    const [isShowInviteModal, showInviteModal] = useState(false);
 
     const formattedBeginTime = useComputed(() => formatTime(roomInfo?.beginTime), [roomInfo]).get();
     const formattedEndTime = useComputed(() => formatTime(roomInfo?.endTime), [roomInfo]).get();
@@ -164,69 +159,12 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                             isCreator={isCreator}
                             room={roomInfo}
                             onJoinRoom={joinRoom}
-                            onCancelRoom={showCancelRoomModal}
-                            onInvite={() => showInviteModal(true)}
                         />
                     </div>
                 </div>
             </div>
-            <InviteModal
-                visible={isShowInviteModal}
-                room={roomInfo}
-                onCancel={() => showInviteModal(false)}
-            />
-            <Modal
-                visible={cancelModalVisible}
-                title="取消房间"
-                onCancel={() => showCancelModal(false)}
-                onOk={confirmCancelRoom}
-                footer={[
-                    <Button key="Cancel" onClick={() => showCancelModal(false)}>
-                        再想想
-                    </Button>,
-                    <Button key="Ok" type="primary" onClick={confirmCancelRoom}>
-                        确定
-                    </Button>,
-                ]}
-            >
-                {periodicUUID ? (
-                    <Checkbox
-                        checked={isCancelAll}
-                        onChange={e => setIsCancelAll(e.target.checked)}
-                    >
-                        取消该系列全部周期性房间
-                    </Checkbox>
-                ) : (
-                    "确定取消该房间吗？"
-                )}
-            </Modal>
         </MainPageLayout>
     );
-
-    async function confirmCancelRoom(): Promise<void> {
-        showCancelModal(false);
-        await cancelRoom();
-    }
-
-    function showCancelRoomModal(): void {
-        setIsCancelAll(false);
-        showCancelModal(true);
-    }
-
-    async function cancelRoom(): Promise<void> {
-        try {
-            await roomStore.cancelRoom({
-                all: isCancelAll,
-                roomUUID,
-                periodicUUID,
-            });
-            message.success("已取消该房间");
-        } catch (e) {
-            console.error(e);
-        } finally {
-            pushHistory(RouteNameType.HomePage);
-        }
-    }
 
     async function joinRoom(): Promise<void> {
         if (roomInfo) {
