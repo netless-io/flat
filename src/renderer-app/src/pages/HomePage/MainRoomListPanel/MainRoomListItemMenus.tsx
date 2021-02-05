@@ -1,13 +1,13 @@
-import { Button, Checkbox, Menu, message, Modal } from "antd";
+import { Menu } from "antd";
 import { MenuProps } from "antd/lib/menu";
-import { clipboard } from "electron";
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import { cancelHistoryRoom } from "../../../apiMiddleware/flatServer";
+import React, { useContext } from "react";
 import { RoomStoreContext } from "../../../components/StoreProvider";
-import { generateRoutePath, RouteNameType, usePushHistory } from "../../../utils/routes";
 import { globalStore } from "../../../stores/GlobalStore";
-import { RoomStatus } from "../../../apiMiddleware/flatServer/constants";
+import { ModifyRoomItem } from "../../../components/MoreMenu/ModifyRoomItem";
+import { RemoveRoomItem } from "../../../components/MoreMenu/RemoveRoomItem";
+import { DeleteRoomHistoryItem } from "../../../components/MoreMenu/DeleteRoomHistoryItem";
+import { CopyInvitationItem } from "../../../components/MoreMenu/CopyInvitationItem";
+import { RoomDetailsItem } from "../../../components/MoreMenu/RoomDetailsItem";
 
 export interface MainRoomListItemMenusProps extends MenuProps {
     roomUUID: string;
@@ -25,139 +25,29 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
         onClick,
         ...restProps
     }) {
-        const [cancelModalVisible, setCancelModalVisible] = useState(false);
-        const [isCancelAll, setIsCancelAll] = useState(false);
-        const pushHistory = usePushHistory();
         const roomStore = useContext(RoomStoreContext);
 
         const roomInfo = roomStore.rooms.get(roomUUID);
 
         const isCreator = ownerUUID === globalStore.userUUID;
 
-        const modifyButton = (): React.ReactElement => {
-            if (isCreator && roomInfo?.roomStatus === RoomStatus.Idle) {
-                return (
-                    <Menu.Item
-                        onClick={() =>
-                            pushHistory(RouteNameType.ModifyOrdinaryRoomPage, {
-                                roomUUID,
-                                periodicUUID: periodicUUID || void 0,
-                            })
-                        }
-                    >
-                        修改房间
-                    </Menu.Item>
-                );
-            }
-
-            return <></>;
-        };
-
-        const removeButton = (): React.ReactElement => {
-            if (isCreator && roomInfo?.roomStatus !== RoomStatus.Idle) {
-                return <></>;
-            }
-
-            return (
-                <Menu.Item onClick={showCancelRoomModal}>
-                    {isCreator ? "取消房间" : "移除房间"}
-                </Menu.Item>
-            );
-        };
-
         return (
             // pass down props so that antd dropdrown menu shadow is rendered properly
             <>
                 <Menu {...restProps} onClick={e => e.domEvent.stopPropagation()}>
-                    <Menu.Item>
-                        <Link
-                            to={{
-                                pathname: generateRoutePath(RouteNameType.RoomDetailPage, {
-                                    roomUUID,
-                                    periodicUUID,
-                                }),
-                            }}
-                        >
-                            房间详情
-                        </Link>
-                    </Menu.Item>
+                    <RoomDetailsItem {...restProps} room={roomInfo} />
                     {isHistoryList ? (
-                        <Menu.Item onClick={deleteRoomHistory}>删除记录</Menu.Item>
+                        <DeleteRoomHistoryItem {...restProps} room={roomInfo} />
                     ) : (
                         <>
-                            {modifyButton()}
-                            {removeButton()}
-                            <Menu.Item onClick={copyInvitation}>复制邀请</Menu.Item>
+                            <ModifyRoomItem {...restProps} room={roomInfo} isCreator={isCreator} />
+                            <RemoveRoomItem {...restProps} room={roomInfo} isCreator={isCreator} />
+                            <CopyInvitationItem {...restProps} room={roomInfo} />
                         </>
                     )}
                 </Menu>
-                <Modal
-                    visible={cancelModalVisible}
-                    title="取消房间"
-                    onCancel={hideCancelModal}
-                    onOk={confirmCancelRoom}
-                    footer={[
-                        <Button key="Cancel" onClick={hideCancelModal}>
-                            再想想
-                        </Button>,
-                        <Button key="Ok" type="primary" onClick={confirmCancelRoom}>
-                            确定
-                        </Button>,
-                    ]}
-                >
-                    {periodicUUID ? (
-                        <Checkbox
-                            checked={isCancelAll}
-                            onChange={e => setIsCancelAll(e.target.checked)}
-                        >
-                            取消该系列全部周期性房间
-                        </Checkbox>
-                    ) : (
-                        "确定取消该房间吗？"
-                    )}
-                </Modal>
             </>
         );
-
-        function hideCancelModal(): void {
-            setCancelModalVisible(false);
-        }
-
-        async function confirmCancelRoom(): Promise<void> {
-            setCancelModalVisible(false);
-            await cancelRoom();
-        }
-
-        function showCancelRoomModal(): void {
-            setIsCancelAll(false);
-            setCancelModalVisible(true);
-        }
-
-        async function cancelRoom(): Promise<void> {
-            try {
-                await roomStore.cancelRoom({
-                    all: isCancelAll,
-                    roomUUID,
-                    periodicUUID,
-                });
-                message.success("已取消该房间");
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        async function deleteRoomHistory(): Promise<void> {
-            try {
-                await cancelHistoryRoom(roomUUID);
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        function copyInvitation(): void {
-            clipboard.writeText(roomUUID);
-            message.success("复制成功");
-        }
     },
 );
 
