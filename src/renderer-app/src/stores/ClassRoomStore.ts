@@ -165,7 +165,10 @@ export class ClassRoomStore {
         if (this.isCalling || !this.currentUser) {
             return;
         }
-        this.isCalling = true;
+
+        runInAction(() => {
+            this.isCalling = true;
+        });
 
         try {
             await this.rtc.join(this.currentUser.rtcUID, this.rtcChannelType);
@@ -182,7 +185,10 @@ export class ClassRoomStore {
         if (!this.isCalling || !this.currentUser) {
             return;
         }
-        this.isCalling = false;
+
+        runInAction(() => {
+            this.isCalling = false;
+        });
 
         try {
             if (this.isRecording) {
@@ -310,8 +316,6 @@ export class ClassRoomStore {
                 if (userUUID === user.userUUID) {
                     user.isRaiseHand = false;
                     user.isSpeak = true;
-                    user.camera = false;
-                    user.mic = true;
                     return false;
                 }
                 return true;
@@ -418,7 +422,10 @@ export class ClassRoomStore {
         this.updateHistory();
 
         channel.on("MemberJoined", async userUUID => {
-            (await this.createUsers([userUUID])).forEach(this.sortOneUser);
+            (await this.createUsers([userUUID])).forEach(user => {
+                this.allUsers.set(user.userUUID, user);
+                this.sortOneUser(user);
+            });
         });
         channel.on(
             "MemberLeft",
@@ -602,8 +609,6 @@ export class ClassRoomStore {
                     if (userUUID === user.userUUID) {
                         user.isRaiseHand = false;
                         user.isSpeak = accept;
-                        user.camera = false;
-                        user.mic = accept;
                         return false;
                     }
                     return true;
@@ -946,7 +951,7 @@ export class ClassRoomStore {
         }
 
         this.sortUsers(user => {
-            if (user.userUUID !== this.userUUID) {
+            if (user.userUUID !== this.userUUID && status.uStates[user.userUUID]) {
                 const [name, userStatusCode] = status.uStates[user.userUUID];
                 if (name) {
                     user.name = name;
