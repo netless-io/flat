@@ -111,24 +111,22 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                     <div className="table-line" />
                     <Table
                         dataSource={polymerizationRooms[key]}
+                        rowKey="roomUUID"
                         showHeader={false}
                         bordered={false}
                         pagination={false}
                     >
                         <Table.Column
-                            key={1}
                             render={(_, room: RoomItem) =>
                                 dayFormat(room.beginTime || defaultDate) + "日"
                             }
                         />
                         <Table.Column
-                            key={2}
                             render={(_, room: RoomItem) =>
                                 getWeekName(getDay(room.beginTime || defaultDate))
                             }
                         />
                         <Table.Column
-                            key={3}
                             render={(_, room: RoomItem) => {
                                 return (
                                     timeSuffixFormat(room.beginTime || defaultDate) +
@@ -138,7 +136,6 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                             }}
                         />
                         <Table.Column
-                            key={4}
                             render={(_, room: RoomItem) => {
                                 return <RoomStatusElement room={room} />;
                             }}
