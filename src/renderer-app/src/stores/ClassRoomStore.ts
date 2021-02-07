@@ -222,7 +222,7 @@ export class ClassRoomStore {
         this.classMode = classMode;
     };
 
-    updateRoomStatus = (roomStatus: RoomStatus): void => {
+    updateRoomStatus = (roomStatus?: RoomStatus): void => {
         if (this.roomInfo) {
             this.roomInfo.roomStatus = roomStatus;
         }
@@ -447,7 +447,6 @@ export class ClassRoomStore {
         }
 
         const oldRoomStatus = this.roomInfo.roomStatus;
-        this.roomInfo.roomStatus = roomStatus;
 
         try {
             switch (roomStatus) {
@@ -473,14 +472,14 @@ export class ClassRoomStore {
                 value: roomStatus,
                 keepHistory: true,
             });
+
+            // update room status finally
+            // so that the component won't unmount before sending commands
+            this.updateRoomStatus(roomStatus);
         } catch (e) {
             // @TODO handle error
             console.error(e);
-            runInAction(() => {
-                if (this.roomInfo) {
-                    this.roomInfo.roomStatus = oldRoomStatus;
-                }
-            });
+            this.updateRoomStatus(oldRoomStatus);
         }
     }
 

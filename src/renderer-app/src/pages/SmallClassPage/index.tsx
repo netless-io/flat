@@ -16,6 +16,7 @@ import { RecordButton } from "../../components/RecordButton";
 import { RoomInfo } from "../../components/RoomInfo";
 import { Whiteboard } from "../../components/Whiteboard";
 import ExitRoomConfirm, { ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
+import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import LoadingPage from "../../LoadingPage";
 
 import { ipcAsyncByMain } from "../../utils/ipc";
@@ -26,7 +27,7 @@ import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { AgoraCloudRecordLayoutConfigItem } from "../../apiMiddleware/flatServer/agora";
 import { useWhiteboardStore } from "../../stores/WhiteboardStore";
 import { RecordingConfig, useClassRoomStore, User } from "../../stores/ClassRoomStore";
-import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
+import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import "./SmallClassPage.less";
 
@@ -59,7 +60,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
     const params = useParams<RouteParams<RouteNameType.SmallClassPage>>();
-    const pushHistory = usePushHistory();
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = useWhiteboardStore(classRoomStore.isCreator);
@@ -89,16 +89,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             height: 700,
         });
     }, []);
-
-    useAutoRun(() => {
-        if (classRoomStore.roomStatus === RoomStatus.Stopped) {
-            ipcAsyncByMain("set-close-window", {
-                close: true,
-            });
-
-            pushHistory(RouteNameType.HomePage);
-        }
-    });
 
     // control whiteboard writable
     useAutoRun(reaction => {
@@ -154,6 +144,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 hangClass={classRoomStore.hangClass}
                 stopClass={classRoomStore.stopClass}
                 confirmRef={exitRoomConfirmRef}
+            />
+            <RoomStatusStoppedModal
+                isCreator={classRoomStore.isCreator}
+                roomStatus={classRoomStore.roomStatus}
             />
         </div>
     );
