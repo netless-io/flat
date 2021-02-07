@@ -6,6 +6,8 @@ import { audioPlugin } from "@netless/white-audio-plugin";
 import { CursorTool } from "@netless/cursor-tool";
 import { NETLESS, NODE_ENV } from "../constants/Process";
 import { globalStore } from "./GlobalStore";
+import { RouteNameType, usePushHistory } from "../utils/routes";
+import { useSafePromise } from "../utils/hooks/lifecycle";
 
 export class WhiteboardStore {
     room: Room | null = null;
@@ -61,67 +63,63 @@ export class WhiteboardStore {
             throw new Error("Missing Whiteboard UUID and Token");
         }
 
-        try {
-            const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
-            const contextIdentity = this.isCreator ? "host" : "";
-            plugins.setPluginContext("video", { identity: contextIdentity });
-            plugins.setPluginContext("audio", { identity: contextIdentity });
-            const whiteWebSdk = new WhiteWebSdk({
-                appIdentifier: NETLESS.APP_IDENTIFIER,
-                plugins: plugins,
+        const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
+        const contextIdentity = this.isCreator ? "host" : "";
+        plugins.setPluginContext("video", { identity: contextIdentity });
+        plugins.setPluginContext("audio", { identity: contextIdentity });
+        const whiteWebSdk = new WhiteWebSdk({
+            appIdentifier: NETLESS.APP_IDENTIFIER,
+            plugins: plugins,
+        });
+        const cursorName = globalStore.wechat?.name;
+        const cursorAdapter = new CursorTool();
+        const room = await whiteWebSdk.joinRoom(
+            {
+                uuid: globalStore.whiteboardRoomUUID,
+                roomToken: globalStore.whiteboardRoomToken,
+                cursorAdapter: cursorAdapter,
+                userPayload: { userId: globalStore.userUUID, cursorName },
+                floatBar: true,
+                isWritable: this.isCreator,
+            },
+            {
+                onPhaseChanged: phase => {
+                    this.updatePhase(phase);
+                },
+                onRoomStateChanged: (modifyState: Partial<RoomState>): void => {
+                    if (modifyState.broadcastState) {
+                        this.updateViewMode(modifyState.broadcastState.mode);
+                    }
+                },
+                onDisconnectWithError: error => {
+                    console.error(error);
+                },
+            },
+        );
+
+        room.disableDeviceInputs = !this.isCreator;
+
+        cursorAdapter.setRoom(room);
+
+        if (this.isCreator) {
+            room.setMemberState({
+                pencilOptions: {
+                    disableBezier: false,
+                    sparseHump: 1.0,
+                    sparseWidth: 1.0,
+                    enableDrawPoint: false,
+                },
             });
-            const cursorName = globalStore.wechat?.name;
-            const cursorAdapter = new CursorTool();
-            const room = await whiteWebSdk.joinRoom(
-                {
-                    uuid: globalStore.whiteboardRoomUUID,
-                    roomToken: globalStore.whiteboardRoomToken,
-                    cursorAdapter: cursorAdapter,
-                    userPayload: { userId: globalStore.userUUID, cursorName },
-                    floatBar: true,
-                    isWritable: this.isCreator,
-                },
-                {
-                    onPhaseChanged: phase => {
-                        this.updatePhase(phase);
-                    },
-                    onRoomStateChanged: (modifyState: Partial<RoomState>): void => {
-                        if (modifyState.broadcastState) {
-                            this.updateViewMode(modifyState.broadcastState.mode);
-                        }
-                    },
-                    onDisconnectWithError: error => {
-                        console.error(error);
-                    },
-                },
-            );
+        }
 
-            room.disableDeviceInputs = !this.isCreator;
+        if (room.state.broadcastState) {
+            this.updateViewMode(room.state.broadcastState.mode);
+        }
 
-            cursorAdapter.setRoom(room);
+        this.updateRoom(room);
 
-            if (this.isCreator) {
-                room.setMemberState({
-                    pencilOptions: {
-                        disableBezier: false,
-                        sparseHump: 1.0,
-                        sparseWidth: 1.0,
-                        enableDrawPoint: false,
-                    },
-                });
-            }
-
-            if (room.state.broadcastState) {
-                this.updateViewMode(room.state.broadcastState.mode);
-            }
-
-            this.updateRoom(room);
-
-            if (NODE_ENV === "development") {
-                (window as any).room = room;
-            }
-        } catch (error) {
-            console.error(error);
+        if (NODE_ENV === "development") {
+            (window as any).room = room;
         }
     }
 
@@ -138,9 +136,18 @@ export class WhiteboardStore {
 
 export function useWhiteboardStore(isCreator: boolean): WhiteboardStore {
     const [whiteboardStore] = useState(() => new WhiteboardStore({ isCreator }));
+    const pushHistory = usePushHistory();
+    const sp = useSafePromise();
 
     useEffect(() => {
-        whiteboardStore.joinWhiteboardRoom();
+        sp(whiteboardStore.joinWhiteboardRoom()).catch(e => {
+            console.error(e);
+            // @TODO
+            // if (e.message.endsWith("is ban")) {
+            //     show error("房间已关闭");
+            // }
+            pushHistory(RouteNameType.HomePage);
+        });
 
         return () => {
             whiteboardStore.destroy();
