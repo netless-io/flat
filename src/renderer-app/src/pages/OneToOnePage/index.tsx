@@ -63,7 +63,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         }
 
         // track all joiners
-        const { speakingJoiners, handRaisingJoiners, otherJoiners } = classRoomStore;
+        const { speakingJoiners, handRaisingJoiners, otherJoiners } = classRoomStore.users;
 
         if (speakingJoiners.length > 0) {
             return;
@@ -105,8 +105,8 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             reaction.dispose();
             return;
         }
-        if (whiteboardStore.room && classRoomStore.currentUser) {
-            const isWritable = classRoomStore.currentUser.isSpeak;
+        if (whiteboardStore.room && classRoomStore.users.currentUser) {
+            const isWritable = classRoomStore.users.currentUser.isSpeak;
             if (whiteboardStore.room.disableDeviceInputs === isWritable) {
                 whiteboardStore.room.disableDeviceInputs = !isWritable;
                 whiteboardStore.room.setWritable(isWritable);
@@ -244,20 +244,20 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 isVideoOn={true}
                 videoSlot={
                     <div className="one-to-one-rtc-avatar-container">
-                        {classRoomStore.creator && (
+                        {classRoomStore.users.creator && (
                             <OneToOneAvatar
                                 isCreator={classRoomStore.isCreator}
                                 userUUID={classRoomStore.userUUID}
-                                avatarUser={classRoomStore.creator}
+                                avatarUser={classRoomStore.users.creator}
                                 rtcEngine={classRoomStore.rtc.rtcEngine}
                                 updateDeviceState={classRoomStore.updateDeviceState}
                             />
                         )}
-                        {classRoomStore.speakingJoiners.length > 0 && (
+                        {classRoomStore.users.speakingJoiners.length > 0 && (
                             <OneToOneAvatar
                                 isCreator={classRoomStore.isCreator}
                                 userUUID={classRoomStore.userUUID}
-                                avatarUser={classRoomStore.speakingJoiners[0]}
+                                avatarUser={classRoomStore.users.speakingJoiners[0]}
                                 rtcEngine={classRoomStore.rtc.rtcEngine}
                                 updateDeviceState={classRoomStore.updateDeviceState}
                             />

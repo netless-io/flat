@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { action, autorun, makeAutoObservable, observable, runInAction, toJS } from "mobx";
+import { autorun, makeAutoObservable, observable, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import { Rtc as RTCAPI, RtcChannelType } from "../apiMiddleware/Rtc";
@@ -19,25 +19,15 @@ import {
     startRecordRoom,
     stopClass,
     stopRecordRoom,
-    usersInfo,
 } from "../apiMiddleware/flatServer";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { RoomItem, roomStore } from "./RoomStore";
 import { globalStore } from "./GlobalStore";
 import { NODE_ENV } from "../constants/Process";
 import { useAutoRun } from "../utils/mobx";
-import { configStore } from "./ConfigStore";
+import { User, UserStore } from "./UserStore";
 
-export interface User {
-    userUUID: string;
-    rtcUID: number;
-    avatar: string;
-    name: string;
-    camera: boolean;
-    mic: boolean;
-    isSpeak: boolean;
-    isRaiseHand: boolean;
-}
+export type { User } from "./UserStore";
 
 export type RecordingConfig = Required<
     CloudRecordStartPayload["agoraData"]["clientRequest"]
@@ -49,18 +39,6 @@ export class ClassRoomStore {
     readonly userUUID: string;
     /** RTM messages */
     messages = observable.array<RTMessage>([]);
-    /** cache all users info including users who have left the room */
-    cachedUsers = observable.map<string, User>();
-    /** creator info */
-    creator: User | null = null;
-    /** current user info */
-    currentUser: User | null = null;
-    /** joiners who have speaking access */
-    speakingJoiners = observable.array<User>([]);
-    /** joiners who are raising hands */
-    handRaisingJoiners = observable.array<User>([]);
-    /** the rest of joiners */
-    otherJoiners = observable.array<User>([]);
     /** room class mode */
     classMode = ClassModeType.Lecture;
     /** is creator temporary banned room for joiner operations */
@@ -69,6 +47,8 @@ export class ClassRoomStore {
     isRecording = false;
     /** is RTC on */
     isCalling = false;
+
+    readonly users: UserStore;
 
     readonly rtcChannelType: RtcChannelType;
 
@@ -113,12 +93,18 @@ export class ClassRoomStore {
             _collectChannelStatusTimeout: false,
         });
 
+        this.users = new UserStore({
+            roomUUID: this.roomUUID,
+            ownerUUID: this.ownerUUID,
+            userUUID: this.userUUID,
+        });
+
         autorun(() => {
             if (
-                this.creator &&
-                (this.creator?.isSpeak ||
-                    this.currentUser?.isSpeak ||
-                    this.speakingJoiners.length > 0)
+                this.users.creator &&
+                (this.users.creator?.isSpeak ||
+                    this.users.currentUser?.isSpeak ||
+                    this.users.speakingJoiners.length > 0)
             ) {
                 this.joinRTC();
             } else {
@@ -151,16 +137,6 @@ export class ClassRoomStore {
         return this.roomInfo?.roomStatus || RoomStatus.Idle;
     }
 
-    get joiners(): User[] {
-        return [...this.speakingJoiners, ...this.handRaisingJoiners, ...this.otherJoiners];
-    }
-
-    get joinerTotalCount(): number {
-        return (
-            this.speakingJoiners.length + this.handRaisingJoiners.length + this.otherJoiners.length
-        );
-    }
-
     startClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
 
     pauseClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Paused);
@@ -170,43 +146,38 @@ export class ClassRoomStore {
     stopClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Stopped);
 
     hangClass = async (): Promise<void> => {
-        const configs = [...this.speakingJoiners, ...this.handRaisingJoiners].map(user => ({
-            userUUID: user.userUUID,
-            speak: false,
-        }));
+        const configs = [...this.users.speakingJoiners, ...this.users.handRaisingJoiners].map(
+            user => ({
+                userUUID: user.userUUID,
+                speak: false,
+            }),
+        );
         if (configs.length > 0) {
             await this.onSpeak(configs);
         }
     };
 
     joinRTC = async (): Promise<void> => {
-        if (this.isCalling || !this.currentUser) {
+        if (this.isCalling || !this.users.currentUser) {
             return;
         }
 
-        runInAction(() => {
-            this.isCalling = true;
-        });
+        this.updateCalling(true);
 
         try {
-            await this.rtc.join(this.currentUser.rtcUID, this.rtcChannelType);
+            await this.rtc.join(this.users.currentUser.rtcUID, this.rtcChannelType);
         } catch (e) {
             console.error(e);
-            runInAction(() => {
-                // reset state
-                this.isCalling = false;
-            });
+            this.updateCalling(false);
         }
     };
 
     leaveRTC = async (): Promise<void> => {
-        if (!this.isCalling || !this.currentUser) {
+        if (!this.isCalling || !this.users.currentUser) {
             return;
         }
 
-        runInAction(() => {
-            this.isCalling = false;
-        });
+        this.updateCalling(false);
 
         try {
             if (this.isRecording) {
@@ -215,10 +186,7 @@ export class ClassRoomStore {
             this.rtc.leave();
         } catch (e) {
             console.error(e);
-            runInAction(() => {
-                // reset state
-                this.isCalling = true;
-            });
+            this.updateCalling(true);
         }
     };
 
@@ -293,13 +261,13 @@ export class ClassRoomStore {
             this.messages.unshift(...textMessages);
         });
 
-        this.syncExtraUsersInfo(textMessages.map(msg => msg.userUUID));
+        this.users.syncExtraUsersInfo(textMessages.map(msg => msg.userUUID));
     };
 
     /** joiner updates own camera and mic state */
     updateDeviceState = (userUUID: string, camera: boolean, mic: boolean): void => {
         if (this.userUUID === userUUID || this.isCreator) {
-            this.sortUsers(user => {
+            this.users.updateUsers(user => {
                 if (user.userUUID === userUUID) {
                     // creator can turn off joiner's camera and mic
                     // creator can request joiner to turn on camera and mic
@@ -332,7 +300,7 @@ export class ClassRoomStore {
 
     acceptRaiseHand = (userUUID: string): void => {
         if (this.isCreator) {
-            this.sortUsers(user => {
+            this.users.updateUsers(user => {
                 if (userUUID === user.userUUID) {
                     user.isRaiseHand = false;
                     user.isSpeak = true;
@@ -369,20 +337,20 @@ export class ClassRoomStore {
 
     /** When current user (who is a joiner) raises hand */
     onToggleHandRaising = (): void => {
-        if (this.isCreator || this.currentUser?.isSpeak) {
+        if (this.isCreator || this.users.currentUser?.isSpeak) {
             return;
         }
-        this.sortUsers(user => {
+        this.users.updateUsers(user => {
             if (user.userUUID === this.userUUID) {
                 user.isRaiseHand = !user.isRaiseHand;
                 return false;
             }
             return true;
         });
-        if (this.currentUser) {
+        if (this.users.currentUser) {
             this.rtm.sendCommand({
                 type: RTMessageType.RaiseHand,
-                value: this.currentUser.isRaiseHand,
+                value: this.users.currentUser.isRaiseHand,
                 keepHistory: true,
             });
         }
@@ -429,19 +397,6 @@ export class ClassRoomStore {
         }
     };
 
-    /**
-     * Fetch info of users who have left the room.
-     * For RTM message title.
-     */
-    syncExtraUsersInfo = async (userUUIDs: string[]): Promise<void> => {
-        const users = await this.createUsers(
-            userUUIDs.filter(userUUID => !this.cachedUsers.has(userUUID)),
-        );
-        for (const user of users) {
-            this.cacheUser(user);
-        }
-    };
-
     async init(): Promise<void> {
         await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
 
@@ -449,34 +404,13 @@ export class ClassRoomStore {
         this.startListenCommands();
 
         const members = await channel.getMembers();
-        this.resetUsers(await this.createUsers(members));
+        this.users.initUsers(members);
         this.updateInitialRoomState();
 
         this.updateHistory();
 
-        channel.on("MemberJoined", async userUUID => {
-            (await this.createUsers([userUUID])).forEach(user => {
-                this.cacheUser(user);
-                this.sortOneUser(user);
-            });
-        });
-        channel.on(
-            "MemberLeft",
-            action("MemberLeft", userUUID => {
-                if (this.creator && this.creator.userUUID === userUUID) {
-                    this.creator = null;
-                } else {
-                    for (const { group } of this.joinerGroups) {
-                        for (let i = 0; i < this[group].length; i++) {
-                            if (this[group][i].userUUID === userUUID) {
-                                this[group].splice(i, 1);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }),
-        );
+        channel.on("MemberJoined", this.users.addUser);
+        channel.on("MemberLeft", this.users.removeUser);
     }
 
     async destroy(): Promise<void> {
@@ -501,10 +435,6 @@ export class ClassRoomStore {
         } catch (e) {
             console.error(e);
         }
-    }
-
-    private cacheUser(user: User): void {
-        this.cachedUsers.set(user.userUUID, user);
     }
 
     private async switchRoomStatus(roomStatus: RoomStatus): Promise<void> {
@@ -611,7 +541,7 @@ export class ClassRoomStore {
     }
 
     private cancelAllHandRaising(): void {
-        this.sortUsers(user => {
+        this.users.updateUsers(user => {
             if (user.isRaiseHand) {
                 user.isRaiseHand = false;
             }
@@ -621,7 +551,7 @@ export class ClassRoomStore {
     private startListenCommands = (): void => {
         this.rtm.on(RTMessageType.ChannelMessage, (text, senderId) => {
             this.addMessage(RTMessageType.ChannelMessage, text, senderId);
-            this.syncExtraUsersInfo([senderId]);
+            this.users.syncExtraUsersInfo([senderId]);
         });
 
         this.rtm.on(RTMessageType.CancelAllHandRaising, (_value, senderId) => {
@@ -631,7 +561,7 @@ export class ClassRoomStore {
         });
 
         this.rtm.on(RTMessageType.RaiseHand, (isRaiseHand, senderId) => {
-            this.sortUsers(user => {
+            this.users.updateUsers(user => {
                 if (user.userUUID === senderId && (!isRaiseHand || !user.isSpeak)) {
                     user.isRaiseHand = isRaiseHand;
                     return false;
@@ -642,7 +572,7 @@ export class ClassRoomStore {
 
         this.rtm.on(RTMessageType.AcceptRaiseHand, ({ userUUID, accept }, senderId) => {
             if (senderId === this.ownerUUID) {
-                this.sortUsers(user => {
+                this.users.updateUsers(user => {
                     if (userUUID === user.userUUID) {
                         user.isRaiseHand = false;
                         user.isSpeak = accept;
@@ -661,7 +591,7 @@ export class ClassRoomStore {
 
         this.rtm.on(RTMessageType.DeviceState, ({ userUUID, camera, mic }, senderId) => {
             if (userUUID === senderId) {
-                this.sortUsers(user => {
+                this.users.updateUsers(user => {
                     if (user.userUUID === userUUID) {
                         user.camera = camera;
                         user.mic = mic;
@@ -671,7 +601,7 @@ export class ClassRoomStore {
                 });
             } else if (senderId === this.ownerUUID && (!camera || !mic)) {
                 // creator can only turn off other's camera and mic
-                this.sortUsers(user => {
+                this.users.updateUsers(user => {
                     if (user.userUUID === userUUID) {
                         user.camera = camera && user.camera;
                         user.mic = mic && user.mic;
@@ -713,9 +643,9 @@ export class ClassRoomStore {
 
         this.rtm.on(RTMessageType.RequestChannelStatus, (status, senderId) => {
             if (status.roomUUID === this.roomUUID) {
-                this.sortUsers(user => {
+                this.users.updateUsers(user => {
                     if (user.userUUID === senderId) {
-                        if (this.creator && user.userUUID === this.creator.userUUID) {
+                        if (this.users.creator && user.userUUID === this.users.creator.userUUID) {
                             // only creator can update speaking state
                             user.isSpeak = status.user.isSpeak;
                         }
@@ -754,10 +684,10 @@ export class ClassRoomStore {
                     }
                 };
 
-                generateUStates(this.creator);
-                this.speakingJoiners.forEach(generateUStates);
-                this.handRaisingJoiners.forEach(generateUStates);
-                this.otherJoiners.forEach(generateUStates);
+                generateUStates(this.users.creator);
+                this.users.speakingJoiners.forEach(generateUStates);
+                this.users.handRaisingJoiners.forEach(generateUStates);
+                this.users.otherJoiners.forEach(generateUStates);
 
                 this.rtm.sendCommand({
                     type: RTMessageType.ChannelStatus,
@@ -791,7 +721,7 @@ export class ClassRoomStore {
         dropHands?: boolean,
     ): void {
         const configMap = new Map(configs.map(config => [config.userUUID, config]));
-        this.sortUsers(user => {
+        this.users.updateUsers(user => {
             const config = configMap.get(user.userUUID);
             if (config) {
                 user.isSpeak = config.speak;
@@ -802,85 +732,12 @@ export class ClassRoomStore {
         });
     }
 
-    private readonly joinerGroups = [
-        { group: "speakingJoiners", shouldMoveOut: (user: User): boolean => !user.isSpeak },
-        { group: "handRaisingJoiners", shouldMoveOut: (user: User): boolean => !user.isRaiseHand },
-        {
-            group: "otherJoiners",
-            shouldMoveOut: (user: User): boolean => user.isRaiseHand || user.isSpeak,
-        },
-    ] as const;
-
-    /**
-     * Sort users into different groups.
-     * @param editUser Update a user state. Return `false` to stop traversing.
-     */
-    private sortUsers = (editUser: (user: User) => boolean | void): void => {
-        const editUserAction = action("editUser", editUser);
-        const unSortedUsers: User[] = [];
-
-        let shouldStopEditUser = false;
-
-        if (this.creator) {
-            shouldStopEditUser = editUserAction(this.creator) === false;
-        }
-
-        for (const { group, shouldMoveOut } of this.joinerGroups) {
-            if (shouldStopEditUser) {
-                break;
-            }
-
-            for (let i = 0; i < this[group].length; i++) {
-                if (shouldStopEditUser) {
-                    break;
-                }
-
-                const user = this[group][i];
-                shouldStopEditUser = editUserAction(user) === false;
-                if (shouldMoveOut(user)) {
-                    this[group].splice(i, 1);
-                    i--;
-                    unSortedUsers.push(user);
-                }
-            }
-        }
-
-        // Sort each unsorted users into different group
-        unSortedUsers.forEach(this.sortOneUser);
-    };
-
-    private resetUsers = (users: User[]): void => {
-        this.otherJoiners.clear();
-        this.speakingJoiners.clear();
-        this.handRaisingJoiners.clear();
-        users.forEach(user => {
-            this.sortOneUser(user);
-            this.cacheUser(user);
-        });
-    };
-
-    private sortOneUser = (user: User): void => {
-        if (user.userUUID === this.userUUID) {
-            this.currentUser = user;
-        }
-
-        if (user.userUUID === this.ownerUUID) {
-            this.creator = user;
-        } else if (user.isSpeak) {
-            this.speakingJoiners.push(user);
-        } else if (user.isRaiseHand) {
-            this.handRaisingJoiners.push(user);
-        } else {
-            this.otherJoiners.push(user);
-        }
-    };
-
     /**
      * There are states (e.g. user camera and mic states) that are not stored in server.
      * New joined user will request these states from other users in the room.
      */
     private async updateInitialRoomState(): Promise<void> {
-        if (!this.currentUser) {
+        if (!this.users.currentUser) {
             if (NODE_ENV === "development") {
                 console.warn(`updateInitialRoomState: current user not exits`);
             }
@@ -890,20 +747,17 @@ export class ClassRoomStore {
         this.tempChannelStatus.clear();
         window.clearTimeout(this._collectChannelStatusTimeout);
 
-        // creator plus joiners
-        const usersTotal = 1 + this.joinerTotalCount;
-
         // request room info from these users
         const pickedSenders: string[] = [];
 
-        if (usersTotal >= 2) {
-            if (usersTotal <= 50 && this.creator && !this.isCreator) {
+        if (this.users.totalUserCount >= 2) {
+            if (this.users.totalUserCount <= 50 && this.users.creator && !this.isCreator) {
                 // in a small room, ask creator directly for info
-                pickedSenders.push(this.creator.userUUID);
+                pickedSenders.push(this.users.creator.userUUID);
             } else {
                 // too many users. pick a random user instead.
                 // @TODO pick three random users
-                pickedSenders.push(this.pickRandomJoiner()?.userUUID || this.ownerUUID);
+                pickedSenders.push(this.users.pickRandomJoiner()?.userUUID || this.ownerUUID);
             }
         }
 
@@ -919,9 +773,9 @@ export class ClassRoomStore {
                     userUUIDs: pickedSenders,
                     user: {
                         name: globalStore.wechat?.name || "",
-                        isSpeak: this.currentUser.isSpeak,
-                        mic: this.currentUser.mic,
-                        camera: this.currentUser.camera,
+                        isSpeak: this.users.currentUser.isSpeak,
+                        mic: this.users.currentUser.mic,
+                        camera: this.users.currentUser.camera,
                     },
                 },
                 keepHistory: false,
@@ -937,43 +791,8 @@ export class ClassRoomStore {
         }
     }
 
-    private async createUsers(userUUIDs: string[]): Promise<User[]> {
-        userUUIDs = [...new Set(userUUIDs)];
-
-        if (userUUIDs.length <= 0) {
-            return [];
-        }
-
-        const users = await usersInfo({ roomUUID: this.roomUUID, usersUUID: userUUIDs });
-
-        return userUUIDs.map(userUUID =>
-            // must convert to observable first so that it may be reused by other logic
-            observable.object<User>({
-                userUUID,
-                rtcUID: users[userUUID].rtcUID,
-                avatar: users[userUUID].avatarURL,
-                name: users[userUUID].name,
-                camera: userUUID === this.userUUID ? toJS(configStore.autoCameraOn) : false,
-                mic: userUUID === this.userUUID ? toJS(configStore.autoMicOn) : false,
-                isSpeak: userUUID === this.userUUID && this.isCreator,
-                isRaiseHand: false,
-            }),
-        );
-    }
-
-    private pickRandomJoiner(): User | undefined {
-        let startIndex = Math.floor(Math.random() * this.joiners.length);
-
-        // keep picking until a suitable user is found
-        for (let count = 0; count < this.joiners.length; count++) {
-            const joiner = this.joiners[(startIndex + count) % this.joiners.length];
-
-            if (joiner && joiner.userUUID !== this.userUUID) {
-                return joiner;
-            }
-        }
-
-        return;
+    private updateCalling(isCalling: boolean): void {
+        this.isCalling = isCalling;
     }
 
     private updateChannelStatus(): void {
@@ -987,7 +806,7 @@ export class ClassRoomStore {
             this.roomInfo.roomStatus = status.rStatus;
         }
 
-        this.sortUsers(user => {
+        this.users.updateUsers(user => {
             if (user.userUUID !== this.userUUID && status.uStates[user.userUUID]) {
                 for (const code of status.uStates[user.userUUID]) {
                     switch (code) {

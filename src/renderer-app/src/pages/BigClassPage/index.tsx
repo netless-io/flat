@@ -74,14 +74,17 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const whiteboardStore = useWhiteboardStore(classRoomStore.isCreator);
 
     const [speakingJoiner, setSpeakingJoiner] = useState<User | undefined>(() =>
-        classRoomStore.speakingJoiners.length > 0 ? classRoomStore.speakingJoiners[0] : void 0,
+        classRoomStore.users.speakingJoiners.length > 0
+            ? classRoomStore.users.speakingJoiners[0]
+            : void 0,
     );
     const [mainSpeaker, setMainSpeaker] = useState<User | undefined>(speakingJoiner);
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
     const isVideoAvatarOn = useComputed((): boolean => {
         return Boolean(
-            classRoomStore.creator?.isSpeak || classRoomStore.speakingJoiners.length > 0,
+            classRoomStore.users.creator?.isSpeak ||
+                classRoomStore.users.speakingJoiners.length > 0,
         );
     }).get();
 
@@ -109,8 +112,8 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             reaction.dispose();
             return;
         }
-        if (whiteboardStore.room && classRoomStore.currentUser) {
-            const isWritable = classRoomStore.currentUser.isSpeak;
+        if (whiteboardStore.room && classRoomStore.users.currentUser) {
+            const isWritable = classRoomStore.users.currentUser.isSpeak;
             if (whiteboardStore.room.disableDeviceInputs === isWritable) {
                 whiteboardStore.room.disableDeviceInputs = !isWritable;
                 whiteboardStore.room.setWritable(isWritable);
@@ -119,14 +122,16 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     });
 
     useAutoRun(() => {
-        if (classRoomStore.speakingJoiners.length <= 0) {
+        if (classRoomStore.users.speakingJoiners.length <= 0) {
             setSpeakingJoiner(void 0);
-            setMainSpeaker(classRoomStore.creator?.isSpeak ? classRoomStore.creator : void 0);
+            setMainSpeaker(
+                classRoomStore.users.creator?.isSpeak ? classRoomStore.users.creator : void 0,
+            );
             return;
         }
 
         // only one user is allowed to speak in big class
-        const user = classRoomStore.speakingJoiners[0];
+        const user = classRoomStore.users.speakingJoiners[0];
 
         setSpeakingJoiner(user);
         setMainSpeaker(user);
@@ -278,7 +283,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     }
 
     function renderRealtimePanel(): React.ReactNode {
-        const { creator } = classRoomStore;
+        const { creator } = classRoomStore.users;
 
         return (
             <RealtimePanel
@@ -362,24 +367,24 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     function onVideoAvatarExpand(): void {
         setMainSpeaker(mainSpeaker =>
-            mainSpeaker?.userUUID === classRoomStore.creator?.userUUID
+            mainSpeaker?.userUUID === classRoomStore.users.creator?.userUUID
                 ? speakingJoiner
-                : classRoomStore.creator ?? void 0,
+                : classRoomStore.users.creator ?? void 0,
         );
     }
 
     async function toggleCalling(): Promise<void> {
-        if (!classRoomStore.currentUser) {
+        if (!classRoomStore.users.currentUser) {
             return;
         }
 
         const speakConfigs: Array<{ userUUID: string; speak: boolean }> = [
-            { userUUID: classRoomStore.userUUID, speak: !classRoomStore.currentUser.isSpeak },
+            { userUUID: classRoomStore.userUUID, speak: !classRoomStore.users.currentUser.isSpeak },
         ];
 
-        if (classRoomStore.currentUser.isSpeak) {
+        if (classRoomStore.users.currentUser.isSpeak) {
             speakConfigs.push(
-                ...classRoomStore.speakingJoiners.map(user => ({
+                ...classRoomStore.users.speakingJoiners.map(user => ({
                     userUUID: user.userUUID,
                     speak: false,
                 })),
