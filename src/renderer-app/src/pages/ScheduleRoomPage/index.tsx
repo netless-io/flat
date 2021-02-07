@@ -51,6 +51,9 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
     }
 
     const isCreator = globalStore.userUUID === periodicInfo.periodic.ownerUUID;
+    const hasRunning = rooms.some(room =>
+        [RoomStatus.Started, RoomStatus.Paused].includes(room?.roomStatus as RoomStatus),
+    );
 
     // if the room has been cancelled and return to the previous page, an error will be reported
     const backPreviousPage = (): void => {
@@ -178,23 +181,31 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                             </div>
                         </div>
                         <div className="schedule-btn-list">
-                            <Button
-                                disabled={!isCreator}
-                                onClick={() =>
-                                    pushHistory(RouteNameType.ModifyPeriodicRoomPage, {
-                                        periodicUUID,
-                                    })
-                                }
-                            >
-                                修改周期性房间
-                            </Button>
-                            <Button
-                                danger
-                                onClick={() => showCancelModal(true)}
-                                disabled={!isCreator}
-                            >
-                                取消周期性房间
-                            </Button>
+                            {isCreator ? (
+                                <>
+                                    <Button
+                                        disabled={hasRunning}
+                                        onClick={() =>
+                                            pushHistory(RouteNameType.ModifyPeriodicRoomPage, {
+                                                periodicUUID,
+                                            })
+                                        }
+                                    >
+                                        修改周期性房间
+                                    </Button>
+                                    <Button
+                                        danger
+                                        onClick={() => showCancelModal(true)}
+                                        disabled={hasRunning}
+                                    >
+                                        取消周期性房间
+                                    </Button>
+                                </>
+                            ) : (
+                                <Button danger onClick={() => showCancelModal(true)}>
+                                    移除周期性房间
+                                </Button>
+                            )}
                         </div>
                         <div className="schedule-room-list">
                             <div className="schedule-room-list-month">{renderRoomTable()}</div>
