@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Modal } from "antd";
+import { Button, message, Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { ipcAsyncByMain, ipcReceiveByMain, ipcReceiveRemoveByMain } from "../utils/ipc";
+import { useSafePromise } from "../utils/hooks/lifecycle";
 
 export enum ExitRoomConfirmType {
     StopClassButton,
@@ -28,28 +29,39 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
 }) {
     const [confirmType, setConfirmType] = useState(ExitRoomConfirmType.ExitButton);
     const [visible, setVisible] = useState(false);
+    const [isLoading, setLoading] = useState(false);
+    const sp = useSafePromise();
     const pushHistory = usePushHistory();
 
-    const onReturnMain = useCallback(() => {
-        setVisible(false);
+    const onReturnMain = useCallback(async () => {
+        setLoading(true);
 
         ipcAsyncByMain("set-close-window", {
             close: true,
         });
 
-        hangClass();
+        try {
+            await sp(hangClass());
+        } catch (e) {
+            setLoading(false);
+            console.error(e);
+            message.error(e.message);
+        }
 
         pushHistory(RouteNameType.HomePage);
-    }, [pushHistory, hangClass]);
+    }, [pushHistory, hangClass, sp]);
 
-    const onStopClass = useCallback(() => {
-        setVisible(false);
+    const onStopClass = useCallback(async () => {
+        setLoading(true);
 
-        // TODO: 改为错误弹窗
-        stopClass().catch(e => {
+        try {
+            await sp(stopClass());
+        } catch (e) {
+            setLoading(false);
             console.error(e);
-        });
-    }, [stopClass]);
+            message.error(e.message);
+        }
+    }, [stopClass, sp]);
 
     const onCancel = useCallback(() => {
         setVisible(false);
@@ -76,6 +88,10 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
         });
 
         return () => {
+            ipcAsyncByMain("set-close-window", {
+                close: true,
+            });
+
             ipcReceiveRemoveByMain("window-will-close");
         };
     }, [confirm]);
@@ -93,10 +109,15 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
                     <Button key="Cancel" onClick={onCancel}>
                         取消
                     </Button>,
-                    <Button key="ReturnMain" onClick={onReturnMain}>
+                    <Button key="ReturnMain" loading={isLoading} onClick={onReturnMain}>
                         挂起房间
                     </Button>,
-                    <Button key="StopClass" type="primary" onClick={onStopClass}>
+                    <Button
+                        key="StopClass"
+                        type="primary"
+                        loading={isLoading}
+                        onClick={onStopClass}
+                    >
                         结束上课
                     </Button>,
                 ]}
