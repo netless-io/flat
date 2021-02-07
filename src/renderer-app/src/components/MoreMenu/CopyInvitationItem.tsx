@@ -1,17 +1,18 @@
-import { Menu, message } from "antd";
-import { clipboard } from "electron";
+import { Menu } from "antd";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
+import { MenuItemProps } from "antd/lib/menu/MenuItem";
 import { InviteModal } from "../Modal/InviteModal";
 import { RoomItem } from "../../stores/RoomStore";
 
-interface CopyInvitationItemProps {
+interface CopyInvitationItemProps extends MenuItemProps {
     room: RoomItem | undefined;
     handleClick?: () => void;
 }
 
 export const CopyInvitationItem = observer<CopyInvitationItemProps>(function DeleteRoomHistoryItem({
     room,
+    onClick,
     handleClick,
     ...restProps
 }) {
@@ -24,9 +25,13 @@ export const CopyInvitationItem = observer<CopyInvitationItemProps>(function Del
         <>
             <Menu.Item
                 {...restProps}
-                onClick={async () => {
+                onClick={async e => {
                     if (handleClick) {
                         handleClick();
+                    }
+
+                    if (onClick) {
+                        onClick(e);
                     }
 
                     setIsShowInviteModal(true);

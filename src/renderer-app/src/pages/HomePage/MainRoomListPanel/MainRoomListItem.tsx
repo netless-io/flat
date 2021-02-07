@@ -48,7 +48,7 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                         <RoomListDuration beginTime={room.beginTime} endTime={room.endTime} />
                     </div>
                 </div>
-                <div className="room-list-cell-right">
+                <div className="room-list-cell-right" onClick={e => e.stopPropagation()}>
                     <Dropdown
                         overlay={
                             <MainRoomListItemMenus

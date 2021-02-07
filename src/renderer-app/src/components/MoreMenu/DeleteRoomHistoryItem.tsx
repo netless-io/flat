@@ -1,15 +1,16 @@
 import { Menu } from "antd";
+import { MenuItemProps } from "antd/lib/menu/MenuItem";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { RoomItem, roomStore } from "../../stores/RoomStore";
 
-interface DeleteRoomHistoryItemProps {
+interface DeleteRoomHistoryItemProps extends MenuItemProps {
     room: RoomItem | undefined;
     handleClick?: () => void;
 }
 
 export const DeleteRoomHistoryItem = observer<DeleteRoomHistoryItemProps>(
-    function DeleteRoomHistoryItem({ room, handleClick, ...restProps }) {
+    function DeleteRoomHistoryItem({ room, handleClick, onClick, ...restProps }) {
         if (!room?.roomUUID) {
             return null;
         }
@@ -17,9 +18,13 @@ export const DeleteRoomHistoryItem = observer<DeleteRoomHistoryItemProps>(
         return (
             <Menu.Item
                 {...restProps}
-                onClick={async () => {
+                onClick={async e => {
                     if (handleClick) {
                         handleClick();
+                    }
+
+                    if (onClick) {
+                        onClick(e);
                     }
 
                     try {
