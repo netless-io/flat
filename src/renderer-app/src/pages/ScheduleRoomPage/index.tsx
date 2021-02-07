@@ -1,4 +1,6 @@
-import { Button, Divider, Dropdown, Menu, Modal, Table } from "antd";
+import "./ScheduleRoomPage.less";
+
+import { Button, Divider, Dropdown, Menu, Table } from "antd";
 import { getDay } from "date-fns";
 import { format, formatWithOptions } from "date-fns/fp";
 import { zhCN } from "date-fns/locale";
@@ -20,8 +22,8 @@ import { globalStore } from "../../stores/GlobalStore";
 import { RoomItem } from "../../stores/RoomStore";
 import { getWeekName } from "../../utils/getTypeName";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
-import "./ScheduleRoomPage.less";
 import { RemoveRoomModal } from "../../components/Modal/RemoveRoomModal";
+import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 
 const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
 const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
