@@ -60,7 +60,7 @@ export class UserStore {
     constructor(config: { userUUID: string; ownerUUID: string; roomUUID: string }) {
         this.roomUUID = config.roomUUID;
         this.userUUID = config.userUUID;
-        this.ownerUUID = config.userUUID;
+        this.ownerUUID = config.ownerUUID;
 
         makeAutoObservable(this);
     }
