@@ -72,10 +72,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
      * users with camera or mic on
      */
     const activeUserCount = useComputed(() => {
-        let count = (classRoomStore.creator ? 1 : 0) + classRoomStore.speakingJoiners.length;
+        let count =
+            (classRoomStore.users.creator ? 1 : 0) + classRoomStore.users.speakingJoiners.length;
         if (classRoomStore.classMode === ClassModeType.Interaction) {
             // all users are on in interaction mode
-            count += classRoomStore.handRaisingJoiners.length + classRoomStore.otherJoiners.length;
+            count +=
+                classRoomStore.users.handRaisingJoiners.length +
+                classRoomStore.users.otherJoiners.length;
         }
         return count;
     });
@@ -104,8 +107,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             reaction.dispose();
             return;
         }
-        if (whiteboardStore.room && classRoomStore.currentUser) {
-            const isWritable = classRoomStore.currentUser.isSpeak;
+        if (whiteboardStore.room && classRoomStore.users.currentUser) {
+            const isWritable = classRoomStore.users.currentUser.isSpeak;
             if (whiteboardStore.room.disableDeviceInputs === isWritable) {
                 whiteboardStore.room.disableDeviceInputs = !isWritable;
                 whiteboardStore.room.setWritable(isWritable);
@@ -156,19 +159,19 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     );
 
     function renderAvatars(): React.ReactNode {
-        if (!classRoomStore.creator) {
+        if (!classRoomStore.users.creator) {
             return null;
         }
 
         return (
             <div className="realtime-avatars-wrap">
                 <div className="realtime-avatars">
-                    {renderAvatar(classRoomStore.creator)}
-                    {classRoomStore.speakingJoiners.map(renderAvatar)}
+                    {renderAvatar(classRoomStore.users.creator)}
+                    {classRoomStore.users.speakingJoiners.map(renderAvatar)}
                     {classRoomStore.classMode === ClassModeType.Interaction && (
                         <>
-                            {classRoomStore.handRaisingJoiners.map(renderAvatar)}
-                            {classRoomStore.otherJoiners.map(renderAvatar)}
+                            {classRoomStore.users.handRaisingJoiners.map(renderAvatar)}
+                            {classRoomStore.users.otherJoiners.map(renderAvatar)}
                         </>
                     )}
                 </div>

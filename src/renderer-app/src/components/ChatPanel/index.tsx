@@ -21,7 +21,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
 }) {
     const onAcceptRaiseHand = useCallback(
         (userUUID: string): void => {
-            if (classRoomStore.speakingJoiners.length > 0 && disableMultipleSpeakers) {
+            if (classRoomStore.users.speakingJoiners.length > 0 && disableMultipleSpeakers) {
                 // only one speaker is allowed
                 return;
             }
@@ -30,7 +30,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
         // exhaustive-deps is not compatible with mobx
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
-            classRoomStore.speakingJoiners.length,
+            classRoomStore.users.speakingJoiners.length,
             classRoomStore.acceptRaiseHand,
             disableMultipleSpeakers,
         ],
@@ -52,11 +52,11 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                     <ChatMessages
                         isCreator={classRoomStore.isCreator}
                         userUUID={classRoomStore.userUUID}
-                        allUsers={classRoomStore.cachedUsers}
+                        allUsers={classRoomStore.users.cachedUsers}
                         messages={classRoomStore.messages}
-                        currentUser={classRoomStore.currentUser}
+                        currentUser={classRoomStore.users.currentUser}
                         isBan={classRoomStore.isBan}
-                        disableHandRaising={disableHandRaising || !classRoomStore.creator}
+                        disableHandRaising={disableHandRaising || !classRoomStore.users.creator}
                         onMessageSend={classRoomStore.onMessageSend}
                         onLoadMore={classRoomStore.updateHistory}
                         onRaiseHandChange={classRoomStore.onToggleHandRaising}
@@ -66,7 +66,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                 <Tabs.TabPane
                     tab={
                         <ChatTabTitle
-                            unreadCount={classRoomStore.handRaisingJoiners.length || null}
+                            unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
                         >
                             用户列表
                         </ChatTabTitle>
@@ -77,10 +77,10 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                         isCreator={classRoomStore.isCreator}
                         ownerUUID={classRoomStore.ownerUUID}
                         userUUID={classRoomStore.userUUID}
-                        speakingJoiners={classRoomStore.speakingJoiners}
-                        handRaisingJoiners={classRoomStore.handRaisingJoiners}
-                        creator={classRoomStore.creator}
-                        otherJoiners={classRoomStore.otherJoiners}
+                        speakingJoiners={classRoomStore.users.speakingJoiners}
+                        handRaisingJoiners={classRoomStore.users.handRaisingJoiners}
+                        creator={classRoomStore.users.creator}
+                        otherJoiners={classRoomStore.users.otherJoiners}
                         onAcceptRaiseHand={onAcceptRaiseHand}
                         onEndSpeaking={onEndSpeaking}
                         onCancelAllHandRaising={classRoomStore.onCancelAllHandRaising}
