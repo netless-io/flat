@@ -1,11 +1,12 @@
 import { Menu } from "antd";
+import { MenuItemProps } from "antd/lib/menu/MenuItem";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { RoomItem } from "../../stores/RoomStore";
 import { RemoveRoomModal } from "../Modal/RemoveRoomModal";
 
-interface RemoveRoomItemProps {
+interface RemoveRoomItemProps extends MenuItemProps {
     room: RoomItem | undefined;
     isCreator: boolean;
     onRemoveRoom?: (roomUUID: string | undefined) => void;
@@ -16,6 +17,7 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
     isCreator,
     room,
     onRemoveRoom,
+    onClick,
     ...restProps
 }) {
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
@@ -34,7 +36,10 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
         <>
             <Menu.Item
                 {...restProps}
-                onClick={() => {
+                onClick={e => {
+                    if (onClick) {
+                        onClick(e);
+                    }
                     setCancelModalVisible(true);
                 }}
             >

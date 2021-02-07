@@ -33,22 +33,21 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
         const isCreator = ownerUUID === globalStore.userUUID;
 
         return (
-            // pass down props so that antd dropdrown menu shadow is rendered properly
+            // pass down props so that antd dropdown menu shadow is rendered properly
             <>
-                <Menu {...restProps} onClick={e => e.domEvent.stopPropagation()}>
-                    <RoomDetailsItem {...restProps} room={roomInfo} />
+                <Menu {...restProps}>
+                    <RoomDetailsItem room={roomInfo} />
                     {isHistoryList ? (
-                        <DeleteRoomHistoryItem {...restProps} room={roomInfo} />
+                        <DeleteRoomHistoryItem room={roomInfo} />
                     ) : (
                         <>
-                            <ModifyRoomItem {...restProps} room={roomInfo} isCreator={isCreator} />
+                            <ModifyRoomItem room={roomInfo} isCreator={isCreator} />
                             <RemoveRoomItem
-                                {...restProps}
                                 onRemoveRoom={onRemoveRoom}
                                 room={roomInfo}
                                 isCreator={isCreator}
                             />
-                            <CopyInvitationItem {...restProps} room={roomInfo} />
+                            <CopyInvitationItem room={roomInfo} />
                         </>
                     )}
                 </Menu>

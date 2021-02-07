@@ -1,4 +1,5 @@
 import { Menu } from "antd";
+import { MenuItemProps } from "antd/lib/menu/MenuItem";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
@@ -6,7 +7,7 @@ import { RouteNameType } from "../../route-config";
 import { RoomItem } from "../../stores/RoomStore";
 import { usePushHistory } from "../../utils/routes";
 
-interface ModifyRoomItemProps {
+interface ModifyRoomItemProps extends MenuItemProps {
     room: RoomItem | undefined;
     isCreator: boolean;
     handleClick?: () => void;
@@ -17,6 +18,7 @@ export const ModifyRoomItem = observer<ModifyRoomItemProps>(function ModifyButto
     room,
     isCreator,
     handleClick,
+    onClick,
     autoJumpRouter = true,
     ...restProps
 }) {
@@ -33,10 +35,15 @@ export const ModifyRoomItem = observer<ModifyRoomItemProps>(function ModifyButto
     return (
         <Menu.Item
             {...restProps}
-            onClick={() => {
+            onClick={e => {
                 if (handleClick) {
                     handleClick();
                 }
+
+                if (onClick) {
+                    onClick(e);
+                }
+
                 if (autoJumpRouter) {
                     pushHistory(RouteNameType.ModifyOrdinaryRoomPage, {
                         roomUUID: room?.roomUUID,
