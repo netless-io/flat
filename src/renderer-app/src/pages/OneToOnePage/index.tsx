@@ -16,6 +16,7 @@ import { RoomInfo } from "../../components/RoomInfo";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 import { Whiteboard } from "../../components/Whiteboard";
+import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import LoadingPage from "../../LoadingPage";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { useWhiteboardStore } from "../../stores/WhiteboardStore";
@@ -23,7 +24,7 @@ import { RecordingConfig, useClassRoomStore } from "../../stores/ClassRoomStore"
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ipcAsyncByMain } from "../../utils/ipc";
 import { useAutoRun } from "../../utils/mobx";
-import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
+import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import "./OneToOnePage.less";
 
@@ -49,7 +50,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
     const params = useParams<RouteParams<RouteNameType.OneToOnePage>>();
-    const pushHistory = usePushHistory();
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = useWhiteboardStore(classRoomStore.isCreator);
@@ -87,16 +87,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             height: 700,
         });
     }, []);
-
-    useAutoRun(() => {
-        if (classRoomStore.roomStatus === RoomStatus.Stopped) {
-            ipcAsyncByMain("set-close-window", {
-                close: true,
-            });
-
-            pushHistory(RouteNameType.HomePage);
-        }
-    });
 
     // control whiteboard writable
     useAutoRun(reaction => {
@@ -140,6 +130,10 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 hangClass={classRoomStore.hangClass}
                 stopClass={classRoomStore.stopClass}
                 confirmRef={exitRoomConfirmRef}
+            />
+            <RoomStatusStoppedModal
+                isCreator={classRoomStore.isCreator}
+                roomStatus={classRoomStore.roomStatus}
             />
         </div>
     );
