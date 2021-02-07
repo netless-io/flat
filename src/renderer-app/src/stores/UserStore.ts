@@ -1,4 +1,4 @@
-import { action, observable } from "mobx";
+import { action, makeAutoObservable, observable } from "mobx";
 import { CloudRecordStartPayload } from "../apiMiddleware/flatServer/agora";
 import { usersInfo } from "../apiMiddleware/flatServer";
 import { configStore } from "./ConfigStore";
@@ -61,6 +61,8 @@ export class UserStore {
         this.roomUUID = config.roomUUID;
         this.userUUID = config.userUUID;
         this.ownerUUID = config.userUUID;
+
+        makeAutoObservable(this);
     }
 
     initUsers = async (userUUIDs: string[]): Promise<void> => {

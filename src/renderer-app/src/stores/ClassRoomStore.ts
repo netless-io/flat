@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { autorun, makeAutoObservable, observable, runInAction } from "mobx";
+import { action, autorun, makeAutoObservable, observable, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import { Rtc as RTCAPI, RtcChannelType } from "../apiMiddleware/Rtc";
@@ -404,7 +404,7 @@ export class ClassRoomStore {
         this.startListenCommands();
 
         const members = await channel.getMembers();
-        this.users.initUsers(members);
+        await this.users.initUsers(members);
         this.updateInitialRoomState();
 
         this.updateHistory();
@@ -791,9 +791,10 @@ export class ClassRoomStore {
         }
     }
 
-    private updateCalling(isCalling: boolean): void {
+    // makeAutoObservable some how doesn't work in autorun
+    private updateCalling = action("updateCalling", (isCalling: boolean): void => {
         this.isCalling = isCalling;
-    }
+    });
 
     private updateChannelStatus(): void {
         const status = [...this.tempChannelStatus.values()].find(Boolean);
