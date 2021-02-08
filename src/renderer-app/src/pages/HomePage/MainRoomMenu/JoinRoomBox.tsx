@@ -1,9 +1,8 @@
 import joinSVG from "../../../assets/image/join.svg";
-import dropdownSVG from "../../../assets/image/dropdown.svg";
 
 import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form, message, Menu, Dropdown } from "antd";
+import { Button, Input, Modal, Checkbox, Form, message } from "antd";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 
 interface JoinRoomFormValues {
@@ -31,18 +30,18 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
         autoMicOn: configStore.autoMicOn,
     };
 
-    const historyMenu = (
-        <Menu className="modal-menu-item">
-            {/* {// @TODO add join room history
-    joinRoomHistories.map(room => (
-        <Menu.Item key={room.uuid}>{room.name || room.uuid}</Menu.Item>
-    ))} */}
-            <Menu.Divider />
-            <Button className="modal-inner-select" type="link">
-                清空记录
-            </Button>
-        </Menu>
-    );
+    // const historyMenu = (
+    //     <Menu className="modal-menu-item">
+    //         {/* {// @TODO add join room history
+    // joinRoomHistories.map(room => (
+    //     <Menu.Item key={room.uuid}>{room.name || room.uuid}</Menu.Item>
+    // ))} */}
+    //         <Menu.Divider />
+    //         <Button className="modal-inner-select" type="link">
+    //             清空记录
+    //         </Button>
+    //     </Menu>
+    // );
 
     return (
         <>
@@ -88,19 +87,19 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                     >
                         <Input
                             placeholder="请输入房间号"
-                            suffix={
-                                <Dropdown
-                                    trigger={["click"]}
-                                    placement="bottomRight"
-                                    overlay={historyMenu}
-                                >
-                                    <img
-                                        className="modal-dropdown-icon"
-                                        src={dropdownSVG}
-                                        alt={"dropdown"}
-                                    />
-                                </Dropdown>
-                            }
+                            // suffix={
+                            //     <Dropdown
+                            //         trigger={["click"]}
+                            //         placement="bottomRight"
+                            //         overlay={historyMenu}
+                            //     >
+                            //         <img
+                            //             className="modal-dropdown-icon"
+                            //             src={dropdownSVG}
+                            //             alt={"dropdown"}
+                            //         />
+                            //     </Dropdown>
+                            // }
                         />
                     </Form.Item>
                     <Form.Item label="昵称">
