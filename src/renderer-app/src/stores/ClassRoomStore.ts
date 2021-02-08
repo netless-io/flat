@@ -360,19 +360,18 @@ export class ClassRoomStore {
         if (!this.isCreator) {
             return;
         }
-        this.isBan = !this.isBan;
-        this.addMessage(RTMessageType.BanText, this.isBan, this.userUUID);
+        const newBanStatus = !this.isBan;
         try {
             await this.rtm.sendCommand({
                 type: RTMessageType.BanText,
-                value: this.isBan,
+                value: newBanStatus,
                 keepHistory: true,
             });
+            this.updateBanStatus(newBanStatus);
+            this.addMessage(RTMessageType.BanText, newBanStatus, this.userUUID);
         } catch (e) {
             console.error(e);
-            runInAction(() => {
-                this.isBan = !this.isBan;
-            });
+            this.updateBanStatus(!newBanStatus);
         }
     };
 
@@ -549,8 +548,12 @@ export class ClassRoomStore {
 
     private startListenCommands = (): void => {
         this.rtm.on(RTMessageType.ChannelMessage, (text, senderId) => {
-            this.addMessage(RTMessageType.ChannelMessage, text, senderId);
-            this.users.syncExtraUsersInfo([senderId]);
+            if (!this.isBan || senderId === this.ownerUUID) {
+                this.addMessage(RTMessageType.ChannelMessage, text, senderId);
+                if (!this.users.cachedUsers.has(senderId)) {
+                    this.users.syncExtraUsersInfo([senderId]);
+                }
+            }
         });
 
         this.rtm.on(RTMessageType.CancelAllHandRaising, (_value, senderId) => {
@@ -584,6 +587,7 @@ export class ClassRoomStore {
 
         this.rtm.on(RTMessageType.BanText, (isBan, senderId) => {
             if (senderId === this.ownerUUID && !this.isCreator) {
+                this.updateBanStatus(isBan);
                 this.addMessage(RTMessageType.BanText, isBan, this.userUUID);
             }
         });
@@ -796,6 +800,10 @@ export class ClassRoomStore {
         this.isCalling = isCalling;
     });
 
+    private updateBanStatus = (isBan: boolean): void => {
+        this.isBan = isBan;
+    };
+
     private updateChannelStatus(): void {
         const status = [...this.tempChannelStatus.values()].find(Boolean);
 
@@ -807,7 +815,7 @@ export class ClassRoomStore {
             this.roomInfo.roomStatus = status.rStatus;
         }
 
-        this.isBan = status.ban;
+        this.updateBanStatus(status.ban);
 
         this.users.updateUsers(user => {
             if (user.userUUID !== this.userUUID && status.uStates[user.userUUID]) {
