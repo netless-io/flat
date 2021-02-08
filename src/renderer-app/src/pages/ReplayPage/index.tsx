@@ -2,11 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps, useParams } from "react-router";
 import PlayerController from "@netless/player-controller";
 import LoadingPage from "../../LoadingPage";
-import { ipcAsyncByMain } from "../../utils/ipc";
+import { ipcAsyncByMain, ipcReceiveByMain, ipcReceiveRemoveByMain } from "../../utils/ipc";
 import PageError from "../../PageError";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanelReplay } from "../../components/ChatPanelReplay";
-import ExitButtonPlayer from "../../components/ExitButtonPlayer";
 import { OrdinaryRoomInfo } from "../../apiMiddleware/flatServer";
 import { RoomType } from "../../apiMiddleware/flatServer/constants";
 import { observer } from "mobx-react-lite";
@@ -16,6 +15,9 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import video_play from "../../assets/image/video-play.svg";
 import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
+import { ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
+import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
+import { useHistory } from "react-router-dom";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;
@@ -38,6 +40,8 @@ export type ReplayPageState = {
 export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     const whiteboardElRef = useRef<HTMLDivElement>(null);
     const videoElRef = useRef<HTMLVideoElement>(null);
+    const [showExitReplayModal, setShowExitReplayModal] = useState(false);
+    const history = useHistory();
 
     const params = useParams<RouteParams<RouteNameType.ReplayPage>>();
     const classRoomReplayStore = useClassRoomReplayStore(
@@ -51,6 +55,13 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     const lastMouseRef = useRef({ lastMouseX: -100, lastMouseY: -100 });
 
     useEffect(() => {
+        ipcAsyncByMain("set-close-window", {
+            close: false,
+        });
+        ipcReceiveByMain("window-will-close", () => {
+            setShowExitReplayModal(true);
+        });
+
         ipcAsyncByMain("set-win-size", {
             width: 1200,
             height: 700,
@@ -58,6 +69,12 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
 
         return () => {
             window.clearTimeout(hideControllerTimeoutRef.current);
+
+            ipcAsyncByMain("set-close-window", {
+                close: true,
+            });
+
+            ipcReceiveRemoveByMain("window-will-close");
         };
     }, []);
 
@@ -78,6 +95,10 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         };
     }, [classRoomReplayStore]);
 
+    const exitConfirm = (): void => {
+        history.goBack();
+    };
+
     return (
         <div className="replay-container">
             {classRoomReplayStore.roomType === RoomType.SmallClass && renderSmallClassAvatars()}
@@ -86,15 +107,11 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
                 {renderRealtimePanel()}
             </div>
             {renderOverlay()}
-            {classRoomReplayStore.roomInfo && (
-                <div className="replay-exit">
-                    <ExitButtonPlayer
-                        roomType={classRoomReplayStore.roomType ?? RoomType.BigClass}
-                        roomUUID={classRoomReplayStore.roomUUID}
-                        ownerUUID={classRoomReplayStore.ownerUUID}
-                    />
-                </div>
-            )}
+            <ExitReplayConfirmModal
+                visible={showExitReplayModal}
+                onConfirm={exitConfirm}
+                onCancel={() => setShowExitReplayModal(false)}
+            />
         </div>
     );
 
@@ -113,7 +130,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
                     className="replay-whiteboard"
                     ref={whiteboardElRef}
                     onMouseMove={handleMouseMove}
-                ></div>
+                />
                 {!classRoomReplayStore.isPlaying && (
                     <div
                         className="replay-play-overlay"
