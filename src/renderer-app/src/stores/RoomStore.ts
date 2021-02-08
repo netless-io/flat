@@ -210,6 +210,7 @@ export class RoomStore {
         roomInfo.rooms.forEach(room => {
             this.updateRoom(room.roomUUID, roomInfo.periodic.ownerUUID, {
                 ...room,
+                title: roomInfo.periodic.title,
                 roomType: roomInfo.periodic.roomType,
                 periodicUUID: periodicUUID,
             });
