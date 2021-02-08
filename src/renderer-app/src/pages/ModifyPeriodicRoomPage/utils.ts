@@ -85,6 +85,8 @@ export function syncPeriodicEndAmount(
     }
 
     form.setFieldsValue({ periodic: newPeriodic });
+
+    form.validateFields();
 }
 
 export function timeToRate(begin: Date, end: Date, weeks: Week[]): number {
