@@ -142,7 +142,10 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                             render={(_, room: RoomItem) => {
                                 return (
                                     <MoreMenu
-                                        room={room}
+                                        room={{
+                                            ...room,
+                                            title: periodicInfo.periodic.title,
+                                        }}
                                         isCreator={isCreator}
                                         removeHandle={addRemoveRoomUUID}
                                     />
