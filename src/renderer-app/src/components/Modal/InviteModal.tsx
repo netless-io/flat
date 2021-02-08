@@ -78,15 +78,16 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
                 <span>点击链接加入，或添加至房间列表</span>
             </div>
             <div className="modal-content">
-                <div className="modal-content-left">
+                <div className="modal-content-item">
                     <span>房间主题</span>
-                    <span>房间号</span>
-                    <span>开始时间</span>
-                </div>
-                <div className="modal-content-right">
                     <span>{title}</span>
+                </div>
+                <div className="modal-content-item">
+                    <span>房间号</span>
                     <span style={{ userSelect: "text" }}>{uuid}</span>
-                    {/* @TODO Add time */}
+                </div>
+                <div className="modal-content-item">
+                    <span>开始时间</span>
                     <span>
                         {formatBeginTime}~{formatEndTime}
                     </span>
