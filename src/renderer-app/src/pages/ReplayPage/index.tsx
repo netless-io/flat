@@ -15,7 +15,6 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import video_play from "../../assets/image/video-play.svg";
 import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
-import { ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
 import { useHistory } from "react-router-dom";
 
