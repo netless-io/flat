@@ -2,45 +2,44 @@ import "./ChatMessages.less";
 
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { User } from "../../stores/ClassRoomStore";
-import { ChatTypeBox, ChatTypeBoxProps } from "./ChatTypeBox";
-import { ChatMessageItem } from "./ChatMessage";
-import { ChatMessageList, OnLoadMore } from "./ChatMessageList";
+import { ClassRoomStore } from "../../stores/ClassRoomStore";
+import { ChatTypeBox } from "./ChatTypeBox";
+import { ChatMessageList } from "./ChatMessageList";
 
-export interface ChatMessagesProps extends ChatTypeBoxProps {
-    userUUID: string;
-    allUsers: Map<string, User>;
-    messages: ChatMessageItem[];
-    isBan: boolean;
-    onMessageSend: (text: string) => Promise<void>;
-    onLoadMore: OnLoadMore;
-    onBanChange: () => void;
+export interface ChatMessagesProps {
+    classRoomStore: ClassRoomStore;
+    disableHandRaising?: boolean;
 }
 
 export const ChatMessages = observer<ChatMessagesProps>(function ChatMessages({
-    userUUID,
-    allUsers,
-    messages,
-    onLoadMore,
-    ...restProps
+    classRoomStore,
+    disableHandRaising,
 }) {
     return (
         <div className="chat-messages-wrap">
             <div className="chat-messages">
-                {messages.length > 0 ? (
+                {classRoomStore.messages.length > 0 ? (
                     <div className="chat-messages-box">
                         <ChatMessageList
-                            userUUID={userUUID}
-                            allUsers={allUsers}
-                            messages={messages}
-                            onLoadMore={onLoadMore}
+                            userUUID={classRoomStore.userUUID}
+                            allUsers={classRoomStore.users.cachedUsers}
+                            messages={classRoomStore.messages}
+                            onLoadMore={classRoomStore.updateHistory}
                         />
                     </div>
                 ) : (
                     <div className="chat-messages-default">说点什么吧...</div>
                 )}
             </div>
-            <ChatTypeBox {...restProps} />
+            <ChatTypeBox
+                isCreator={classRoomStore.isCreator}
+                isBan={classRoomStore.isBan}
+                currentUser={classRoomStore.users.currentUser}
+                disableHandRaising={disableHandRaising || !classRoomStore.users.creator}
+                onBanChange={classRoomStore.onToggleBan}
+                onMessageSend={classRoomStore.onMessageSend}
+                onRaiseHandChange={classRoomStore.onToggleHandRaising}
+            />
         </div>
     );
 });
