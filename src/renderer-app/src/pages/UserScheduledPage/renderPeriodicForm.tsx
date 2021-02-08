@@ -87,12 +87,12 @@ export function renderPeriodicForm(
                 name={["periodic", "rate"]}
                 rules={[
                     {
-                        type: "number",
+                        type: "integer",
                         min: 1,
                         message: "不能少于 1 个房间",
                     },
                     {
-                        type: "number",
+                        type: "integer",
                         max: 50,
                         message: "最多允许预定 50 个房间",
                     },
