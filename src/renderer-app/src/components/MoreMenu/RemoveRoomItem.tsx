@@ -11,6 +11,7 @@ interface RemoveRoomItemProps extends MenuItemProps {
     isCreator: boolean;
     onRemoveRoom?: (roomUUID: string | undefined) => void;
     autoPopupModal?: boolean;
+    isPeriodicDetailsPage: boolean;
 }
 
 export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButton({
@@ -18,6 +19,7 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
     room,
     onRemoveRoom,
     onClick,
+    isPeriodicDetailsPage,
     ...restProps
 }) {
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
@@ -52,6 +54,7 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
                 onRemoveRoom={onRemoveRoom}
                 roomUUID={room?.roomUUID}
                 periodicUUID={room?.periodicUUID}
+                isPeriodicDetailsPage={isPeriodicDetailsPage}
             />
         </>
     );

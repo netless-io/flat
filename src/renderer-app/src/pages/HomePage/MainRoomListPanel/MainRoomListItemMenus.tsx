@@ -46,6 +46,7 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
                                 onRemoveRoom={onRemoveRoom}
                                 room={roomInfo}
                                 isCreator={isCreator}
+                                isPeriodicDetailsPage={false}
                             />
                             <CopyInvitationItem room={roomInfo} />
                         </>
