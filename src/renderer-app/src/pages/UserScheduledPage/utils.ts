@@ -85,4 +85,6 @@ export function syncPeriodicEndAmount(
     }
 
     form.setFieldsValue({ periodic: newPeriodic });
+
+    form.validateFields();
 }
