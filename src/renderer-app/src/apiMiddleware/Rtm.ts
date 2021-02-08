@@ -111,6 +111,8 @@ export type RTMEvents = {
         };
     };
     [RTMessageType.ChannelStatus]: {
+        /** ban messaging */
+        ban: boolean;
         /** room status */
         rStatus: RoomStatus;
         /** users with non-default states */
