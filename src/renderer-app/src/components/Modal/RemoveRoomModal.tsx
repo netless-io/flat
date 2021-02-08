@@ -10,6 +10,7 @@ interface RemoveRoomModalProps {
     isCreator: boolean;
     roomUUID?: string;
     periodicUUID?: string;
+    isPeriodicDetailsPage: boolean;
 }
 
 export const RemoveRoomModal = observer<RemoveRoomModalProps>(function RemoveRoomModal({
@@ -19,13 +20,64 @@ export const RemoveRoomModal = observer<RemoveRoomModalProps>(function RemoveRoo
     isCreator,
     roomUUID,
     periodicUUID,
+    isPeriodicDetailsPage,
 }) {
     const [isCancelAll, setIsCancelAll] = useState(false);
+    const isPeriodicRoom = !!periodicUUID && !roomUUID;
+    const isSubPeriodicRoom = periodicUUID && roomUUID;
+
+    const title = (() => {
+        if (!isCreator) {
+            return "移除房间";
+        }
+
+        if (isPeriodicRoom && isPeriodicDetailsPage) {
+            return "取消周期性房间";
+        }
+
+        return "取消房间";
+    })();
+
+    const content = (): React.ReactElement => {
+        if (!periodicUUID) {
+            if (isCreator) {
+                return <span>确定取消该房间？取消后其他成员将无法加入。</span>;
+            }
+
+            return <span>确定从房间列表移除该房间？移除后可通过房间号再次加入。</span>;
+        }
+
+        if (!isCreator) {
+            return <span>确定从房间列表中移除该系列周期性房间？移除后可通过房间号再次加入。</span>;
+        }
+
+        if (!isPeriodicDetailsPage) {
+            return (
+                <>
+                    <span>确定取消该房间？</span>
+                    <br />
+                    <br />
+                    <Checkbox
+                        checked={isCancelAll}
+                        onChange={e => setIsCancelAll(e.target.checked)}
+                    >
+                        取消该系列全部周期性房间？
+                    </Checkbox>
+                </>
+            );
+        }
+
+        if (isSubPeriodicRoom) {
+            return <span>确定将此房间从该周期性房间中取消？取消后其他成员将无法加入。</span>;
+        }
+
+        return <span>确定取消该周期性房间？取消后其他成员将无法加入。</span>;
+    };
 
     const confirmCancelRoom = async (): Promise<void> => {
         try {
             await roomStore.cancelRoom({
-                all: isCancelAll,
+                all: isCancelAll || isPeriodicRoom,
                 roomUUID,
                 periodicUUID,
             });
@@ -42,8 +94,6 @@ export const RemoveRoomModal = observer<RemoveRoomModalProps>(function RemoveRoo
         }
     };
 
-    const title = isCreator ? "取消房间" : "移除房间";
-
     return (
         <Modal
             visible={cancelModalVisible}
@@ -51,20 +101,14 @@ export const RemoveRoomModal = observer<RemoveRoomModalProps>(function RemoveRoo
             onCancel={onCancel}
             footer={[
                 <Button key="Cancel" onClick={onCancel}>
-                    再想想
+                    {isCreator ? "再想想" : "取消"}
                 </Button>,
                 <Button key="Ok" type="primary" onClick={confirmCancelRoom}>
                     确定
                 </Button>,
             ]}
         >
-            {periodicUUID ? (
-                <Checkbox checked={isCancelAll} onChange={e => setIsCancelAll(e.target.checked)}>
-                    取消该系列全部周期性房间？
-                </Checkbox>
-            ) : (
-                "确定取消该房间？"
-            )}
+            {content()}
         </Modal>
     );
 });

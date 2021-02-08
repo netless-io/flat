@@ -220,6 +220,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                 isCreator={isCreator}
                 onCancel={() => showCancelModal(false)}
                 periodicUUID={periodicUUID}
+                isPeriodicDetailsPage={true}
             />
         </MainPageLayout>
     );
@@ -244,6 +245,7 @@ const MoreMenu = observer<MoreMenuProps>(function MoreMenu({ room, isCreator, re
                                 room={room}
                                 isCreator={isCreator}
                                 onRemoveRoom={removeHandle}
+                                isPeriodicDetailsPage={true}
                             />
                         )}
                         <CopyInvitationItem room={room} />

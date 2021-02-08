@@ -85,6 +85,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
                 isCreator={isCreator}
                 roomUUID={room?.roomUUID}
                 periodicUUID={room?.periodicUUID}
+                isPeriodicDetailsPage={false}
             />
         </div>
     );
