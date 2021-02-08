@@ -1,44 +1,64 @@
 import { Menu } from "antd";
 import { MenuItemProps } from "antd/lib/menu/MenuItem";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useState } from "react";
 import { RoomItem, roomStore } from "../../stores/RoomStore";
+import { RemoveHistoryRoomModal } from "../Modal/RemoveHistoryRoomModal";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 interface DeleteRoomHistoryItemProps extends MenuItemProps {
     room: RoomItem | undefined;
-    handleClick?: () => void;
 }
 
 export const DeleteRoomHistoryItem = observer<DeleteRoomHistoryItemProps>(
-    function DeleteRoomHistoryItem({ room, handleClick, onClick, ...restProps }) {
+    function DeleteRoomHistoryItem({ room, onClick, ...restProps }) {
+        const [showRemoveHistoryRoomModal, setShowRemoveHistoryRoomModal] = useState(false);
+        const [loading, setLoading] = useState(false);
+        const sp = useSafePromise();
+
         if (!room?.roomUUID) {
             return null;
         }
 
+        const removeConfirm = async (): Promise<void> => {
+            setLoading(true);
+            try {
+                await sp(
+                    roomStore.cancelRoom({
+                        isHistory: true,
+                        roomUUID: room?.roomUUID,
+                    }),
+                );
+
+                setShowRemoveHistoryRoomModal(false);
+            } catch (e) {
+                console.error(e);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         return (
-            <Menu.Item
-                {...restProps}
-                onClick={async e => {
-                    if (handleClick) {
-                        handleClick();
-                    }
+            <>
+                <Menu.Item
+                    {...restProps}
+                    onClick={async e => {
+                        if (onClick) {
+                            onClick(e);
+                        }
 
-                    if (onClick) {
-                        onClick(e);
-                    }
-
-                    try {
-                        await roomStore.cancelRoom({
-                            isHistory: true,
-                            roomUUID: room?.roomUUID,
-                        });
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }}
-            >
-                删除记录
-            </Menu.Item>
+                        setShowRemoveHistoryRoomModal(true);
+                    }}
+                >
+                    删除记录
+                </Menu.Item>
+                <RemoveHistoryRoomModal
+                    visible={showRemoveHistoryRoomModal}
+                    onConfirm={removeConfirm}
+                    onCancel={() => setShowRemoveHistoryRoomModal(false)}
+                    loading={loading}
+                />
+            </>
         );
     },
 );

@@ -56,5 +56,3 @@ export const MainRoomListItemMenus = React.memo<MainRoomListItemMenusProps>(
         );
     },
 );
-
-export default MainRoomListItemMenus;
