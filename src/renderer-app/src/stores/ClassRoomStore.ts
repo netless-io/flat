@@ -691,6 +691,7 @@ export class ClassRoomStore {
                 this.rtm.sendCommand({
                     type: RTMessageType.ChannelStatus,
                     value: {
+                        ban: this.isBan,
                         rStatus: this.roomStatus,
                         uStates,
                     },
@@ -805,6 +806,8 @@ export class ClassRoomStore {
         if (this.roomInfo) {
             this.roomInfo.roomStatus = status.rStatus;
         }
+
+        this.isBan = status.ban;
 
         this.users.updateUsers(user => {
             if (user.userUUID !== this.userUUID && status.uStates[user.userUUID]) {
