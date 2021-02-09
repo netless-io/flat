@@ -2,7 +2,7 @@ import { FormInstance } from "antd/lib/form";
 import { addDays, endOfDay, format, getDay, isBefore } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { PeriodicEndType } from "../../constants/Periodic";
-import { CreatePeriodicFormValues } from "./typings";
+import { EditRoomFormValues } from "./typings";
 
 export function formatISODayWeekiii(date: Date): string {
     // TODO: i18n
@@ -14,11 +14,11 @@ export function formatISODayWeekiii(date: Date): string {
  * In time endType mode: recalculate classroom rate.
  */
 export function syncPeriodicEndAmount(
-    form: FormInstance<CreatePeriodicFormValues>,
-    beginTime: CreatePeriodicFormValues["beginTime"],
-    periodic: CreatePeriodicFormValues["periodic"],
+    form: FormInstance<EditRoomFormValues>,
+    beginTime: EditRoomFormValues["beginTime"],
+    periodic: EditRoomFormValues["periodic"],
 ): void {
-    const isPeriodic: CreatePeriodicFormValues["isPeriodic"] = form.getFieldValue("isPeriodic");
+    const isPeriodic: EditRoomFormValues["isPeriodic"] = form.getFieldValue("isPeriodic");
     if (!isPeriodic) {
         return;
     }

@@ -1,7 +1,7 @@
 import { RoomType, Week } from "../../apiMiddleware/flatServer/constants";
 import { PeriodicEndType } from "../../constants/Periodic";
 
-export interface CreatePeriodicFormValues {
+export interface EditRoomFormValues {
     title: string;
     type: RoomType;
     isPeriodic: boolean;

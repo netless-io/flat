@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
 import { isBefore, addMinutes, setHours } from "date-fns";
-import { CreatePeriodicFormValues } from "./typings";
+import { EditRoomFormValues } from "./typings";
 import { syncPeriodicEndAmount } from "./utils";
 import {
     compareDay,
@@ -14,9 +14,7 @@ import {
 } from "../../utils/date";
 import { FullTimePicker } from "../../components/antd-date-fns";
 
-export function renderBeginTimePicker(
-    form: FormInstance<CreatePeriodicFormValues>,
-): React.ReactElement {
+export function renderBeginTimePicker(form: FormInstance<EditRoomFormValues>): React.ReactElement {
     return (
         <Form.Item label="开始时间" name="beginTime" rules={[validateTime]}>
             <FullTimePicker
@@ -43,7 +41,7 @@ export function renderBeginTimePicker(
     }
 
     function disabledHours(): number[] {
-        const beginTime: CreatePeriodicFormValues["beginTime"] = form.getFieldValue("beginTime");
+        const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
         const now = getRoughNow();
 
         const diff = compareDay(now, beginTime);
@@ -60,7 +58,7 @@ export function renderBeginTimePicker(
     }
 
     function disabledMinutes(selectedHour: number): number[] {
-        const beginTime: CreatePeriodicFormValues["beginTime"] = form.getFieldValue("beginTime");
+        const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
         const now = getRoughNow();
 
         const diff = compareHour(now, setHours(beginTime, selectedHour));
@@ -81,7 +79,7 @@ export function renderBeginTimePicker(
         const {
             endTime,
             periodic,
-        }: Pick<CreatePeriodicFormValues, "endTime" | "periodic"> = form.getFieldsValue([
+        }: Pick<EditRoomFormValues, "endTime" | "periodic"> = form.getFieldsValue([
             "endTime",
             "periodic",
         ]);

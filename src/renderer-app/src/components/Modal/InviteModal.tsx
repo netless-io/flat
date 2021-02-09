@@ -5,7 +5,7 @@ import { differenceInCalendarDays, format } from "date-fns/fp";
 import { RoomItem } from "../../stores/RoomStore";
 import { GlobalStoreContext, RoomStoreContext } from "../StoreProvider";
 import { clipboard } from "electron";
-import { getWeekNames } from "../../pages/UserScheduledPage/WeekRateSelector";
+import { getWeekNames } from "../WeekRateSelector";
 
 const completeTimeFormat = format("yyyy-MM-dd HH:mm");
 const onlySuffixTimeFormat = format("HH:mm");
