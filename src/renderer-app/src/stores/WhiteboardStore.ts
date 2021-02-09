@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { makeAutoObservable, observable } from "mobx";
+import { makeAutoObservable, observable, reaction } from "mobx";
 import { createPlugins, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk } from "white-web-sdk";
 import { videoPlugin } from "@netless/white-video-plugin";
 import { audioPlugin } from "@netless/white-audio-plugin";
@@ -13,6 +13,7 @@ export class WhiteboardStore {
     room: Room | null = null;
     phase: RoomPhase = RoomPhase.Connecting;
     viewMode: ViewMode | null = null;
+    isWritable: boolean;
     isShowPreviewPanel: boolean = false;
     isFileOpen: boolean = false;
 
@@ -21,9 +22,20 @@ export class WhiteboardStore {
 
     constructor(config: { isCreator: boolean }) {
         this.isCreator = config.isCreator;
+        this.isWritable = config.isCreator;
         makeAutoObservable(this, {
             room: observable.ref,
         });
+
+        reaction(
+            () => this.isWritable,
+            isWritable => {
+                if (this.room) {
+                    this.room.disableDeviceInputs = !isWritable;
+                    this.room.setWritable(isWritable);
+                }
+            },
+        );
     }
 
     updateRoom = (room: Room): void => {
@@ -36,6 +48,10 @@ export class WhiteboardStore {
 
     updateViewMode = (viewMode: ViewMode): void => {
         this.viewMode = viewMode;
+    };
+
+    updateWritable = (isWritable: boolean): void => {
+        this.isWritable = isWritable;
     };
 
     setFileOpen = (open: boolean): void => {
@@ -80,7 +96,7 @@ export class WhiteboardStore {
                 cursorAdapter: cursorAdapter,
                 userPayload: { userId: globalStore.userUUID, cursorName },
                 floatBar: true,
-                isWritable: this.isCreator,
+                isWritable: this.isWritable,
             },
             {
                 onPhaseChanged: phase => {

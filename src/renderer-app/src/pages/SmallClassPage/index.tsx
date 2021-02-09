@@ -91,20 +91,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     }, []);
 
     // control whiteboard writable
-    useAutoRun(reaction => {
-        // ignore creator
-        if (classRoomStore.isCreator) {
-            reaction.dispose();
-            return;
+    useEffect(() => {
+        if (!classRoomStore.isCreator && classRoomStore.users.currentUser) {
+            whiteboardStore.updateWritable(classRoomStore.users.currentUser.isSpeak);
         }
-        if (whiteboardStore.room && classRoomStore.users.currentUser) {
-            const isWritable = classRoomStore.users.currentUser.isSpeak;
-            if (whiteboardStore.room.disableDeviceInputs === isWritable) {
-                whiteboardStore.room.disableDeviceInputs = !isWritable;
-                whiteboardStore.room.setWritable(isWritable);
-            }
-        }
-    });
+        // dumb exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [classRoomStore.users.currentUser?.isSpeak]);
 
     // update cloud recording layout
     useAutoRun(() => {

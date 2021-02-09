@@ -26,6 +26,7 @@ import { globalStore } from "./GlobalStore";
 import { NODE_ENV } from "../constants/Process";
 import { useAutoRun } from "../utils/mobx";
 import { User, UserStore } from "./UserStore";
+import { WhiteboardStore } from "./WhiteboardStore";
 
 export type { User } from "./UserStore";
 
@@ -56,6 +57,8 @@ export class ClassRoomStore {
     readonly rtm: RTMAPI;
     readonly cloudRecording: CloudRecording;
 
+    readonly whiteboard: WhiteboardStore;
+
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
 
@@ -84,6 +87,8 @@ export class ClassRoomStore {
         this.rtc = new RTCAPI({ roomUUID: config.roomUUID, isCreator: this.isCreator });
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
+
+        this.whiteboard = new WhiteboardStore({ isCreator: this.isCreator });
 
         makeAutoObservable<this, "_noMoreRemoteMessages" | "_collectChannelStatusTimeout">(this, {
             rtc: observable.ref,
