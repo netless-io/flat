@@ -1,9 +1,10 @@
 import React from "react";
-import { Input, message, Popover } from "antd";
+import { Button, Input, message, Popover } from "antd";
 import { clipboard } from "electron";
 import "./InviteButton.less";
 import { CopyOutlined } from "@ant-design/icons";
 import { TopBarRightBtn } from "./TopBarRightBtn";
+import { Identity } from "../utils/localStorage/room";
 
 export type InviteButtonStates = {
     inviteDisable: boolean;
@@ -33,6 +34,15 @@ export default class InviteButton extends React.Component<InviteButtonProps, Inv
         this.setState({ inviteDisable: !this.state.inviteDisable });
     };
 
+    private handleCopy = (): void => {
+        const { uuid } = this.props;
+        this.handleInvite();
+        clipboard.writeText(
+            `房间号：${uuid}\n加入链接：https://demo.netless.link/whiteboard/${Identity.joiner}/${uuid}/`,
+        );
+        message.success("已复制邀请信息");
+    };
+
     private renderInviteContent = (): React.ReactNode => {
         const { uuid } = this.props;
         return (
@@ -49,12 +59,39 @@ export default class InviteButton extends React.Component<InviteButtonProps, Inv
                                 <CopyOutlined
                                     onClick={() => {
                                         clipboard.writeText(uuid);
-                                        message.success("已经将 uuid 黏贴到剪贴板");
+                                        message.success("已复制房间号");
                                     }}
                                 />
                             }
                         />
                     </div>
+                    <div className="invite-url-box">
+                        <span style={{ width: 96 }}>加入链接：</span>
+                        <Input
+                            size={"middle"}
+                            value={`https://demo.netless.link/whiteboard/${Identity.joiner}/${uuid}/`}
+                            addonAfter={
+                                <CopyOutlined
+                                    onClick={() => {
+                                        clipboard.writeText(
+                                            `https://demo.netless.link/whiteboard/${Identity.joiner}/${uuid}/`,
+                                        );
+                                        message.success("已复制邀请链接");
+                                    }}
+                                />
+                            }
+                        />
+                    </div>
+                </div>
+                <div className="invite-button-box">
+                    <Button
+                        onClick={this.handleCopy}
+                        style={{ width: 164, height: 40 }}
+                        type={"primary"}
+                        size={"middle"}
+                    >
+                        复制
+                    </Button>
                 </div>
             </div>
         );
