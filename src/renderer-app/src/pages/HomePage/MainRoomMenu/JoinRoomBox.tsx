@@ -3,6 +3,7 @@ import joinSVG from "../../../assets/image/join.svg";
 import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form, message } from "antd";
+import { validate, version } from "uuid";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 
 interface JoinRoomFormValues {
@@ -45,7 +46,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
 
     return (
         <>
-            <Button onClick={() => showModal(true)}>
+            <Button onClick={handleShowModal}>
                 <img src={joinSVG} alt="join room" />
                 加入房间
             </Button>
@@ -118,11 +119,24 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
         </>
     );
 
+    async function handleShowModal(): Promise<void> {
+        try {
+            const roomUUID = await navigator.clipboard.readText();
+            if (validate(roomUUID) && version(roomUUID) === 4) {
+                form.setFieldsValue({ roomUUID });
+                setIsFormValidated(true);
+            }
+        } catch {
+            // ignore
+        }
+        showModal(true);
+    }
+
     async function handleOk(): Promise<void> {
         try {
             await form.validateFields();
         } catch (e) {
-            // errors are showed on form
+            // errors are displayed on the form
             return;
         }
 
