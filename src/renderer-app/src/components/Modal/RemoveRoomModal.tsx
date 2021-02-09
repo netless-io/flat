@@ -61,7 +61,7 @@ export const RemoveRoomModal = observer<RemoveRoomModalProps>(function RemoveRoo
                         checked={isCancelAll}
                         onChange={e => setIsCancelAll(e.target.checked)}
                     >
-                        同时取消该系列周期性房间？
+                        同时取消该系列周期性房间
                     </Checkbox>
                 </>
             );
