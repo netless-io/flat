@@ -49,7 +49,7 @@ export default class InviteButton extends React.Component<InviteButtonProps, Inv
                                 <CopyOutlined
                                     onClick={() => {
                                         clipboard.writeText(uuid);
-                                        message.success("已经将 uuid 黏贴到剪贴板").then();
+                                        message.success("已经将 uuid 黏贴到剪贴板");
                                     }}
                                 />
                             }
