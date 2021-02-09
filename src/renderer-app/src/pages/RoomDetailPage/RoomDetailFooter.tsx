@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { generateRoutePath, RouteNameType, usePushHistory } from "../../utils/routes";
 import { RoomItem } from "../../stores/RoomStore";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
@@ -21,6 +21,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
 }) {
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
     const [isShowInviteModal, setIsShowInviteModal] = useState(false);
+    const history = useHistory();
     const pushHistory = usePushHistory();
 
     if (room.roomStatus === RoomStatus.Stopped) {
@@ -41,7 +42,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
         );
     }
 
-    const isIdleStatus = room.roomStatus === RoomStatus.Idle;
+    const disabled = !isCreator || room.roomStatus === RoomStatus.Idle;
     const title = isCreator ? "取消房间" : "移除房间";
 
     return (
@@ -50,12 +51,12 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
                 className="user-room-btn"
                 danger
                 onClick={() => setCancelModalVisible(true)}
-                disabled={!isIdleStatus}
+                disabled={!disabled}
             >
                 {title}
             </Button>
             {isCreator && (
-                <Button className="user-room-btn" disabled={!isIdleStatus}>
+                <Button className="user-room-btn" disabled={!disabled}>
                     <Link
                         to={{
                             pathname: generateRoutePath(RouteNameType.ModifyOrdinaryRoomPage, {
@@ -82,7 +83,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
             <RemoveRoomModal
                 cancelModalVisible={cancelModalVisible}
                 onCancel={() => setCancelModalVisible(false)}
-                onRemoveRoom={() => setCancelModalVisible(false)}
+                onRemoveRoom={onRemoveRoom}
                 isCreator={isCreator}
                 roomUUID={room?.roomUUID}
                 periodicUUID={room?.periodicUUID}
@@ -90,4 +91,9 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
             />
         </div>
     );
+
+    function onRemoveRoom(): void {
+        // setCancelModalVisible(false)
+        history.goBack();
+    }
 });
