@@ -1122,10 +1122,10 @@
     ali-oss "^6.10.0"
     react-dropzone "4.2.10"
 
-"@netless/oss-upload-button@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@netless/oss-upload-button/-/oss-upload-button-0.0.9.tgz#49bfb1e32abd5976064e9703e20c2dae22d279b1"
-  integrity sha512-rEM60wL0OdFP6fvuIP2GVw24FrRrRUbbJPDGeXyGFnkM5RfvmBP8On9DaFnWmp9aRlE7FwM2r5m8Ve0Zht+ilQ==
+"@netless/oss-upload-button@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@netless/oss-upload-button/-/oss-upload-button-0.1.0.tgz#0f9c9d87fca29f0d6340c393e061086d1e9983c4"
+  integrity sha512-v65mJ8oBTnX1JujbVVFXCld2efmGupl6WjnWA2yn0hzQI+1A78m2Qpovww0gSgJ4/ZSt7bu6LYKlbyEeLZl1bA==
   dependencies:
     "@netless/loading-bar" "^0.0.1"
     "@netless/oss-upload-manager" "^1.1.3"
@@ -1142,10 +1142,10 @@
     ali-oss "^6.10.0"
     uuid "^8.3.0"
 
-"@netless/page-controller@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/@netless/page-controller/-/page-controller-0.0.2.tgz#d44cd138c35557cd49b486b7aad65b1b056bdde7"
-  integrity sha512-y1CrS48tX8S2PbeqlkqKV/nuoENr0w+cPQsKe0lB5mDAldYeJa5DDE6KT3pMOhwgeSj7MINLGm8Jy4H2umyOwg==
+"@netless/page-controller@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@netless/page-controller/-/page-controller-0.0.3.tgz#f1333d80ae58e582383a644eec19bbe2840529d9"
+  integrity sha512-3n9I0jWZzcEZ1lwXjxWsJxA2oOWfdHJsGVYNJqZvrbjN4ctgBVzhF6+4twW1oTEvV3dtC7tyPkKPxo/Noe1feQ==
 
 "@netless/player-controller@^0.0.6":
   version "0.0.6"
@@ -1163,32 +1163,32 @@
   dependencies:
     "@netless/menu-box" "^0.0.1"
 
-"@netless/redo-undo@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/@netless/redo-undo/-/redo-undo-0.0.2.tgz#ce75d4903cd74e37dfe83a0641dd8992ce24e1fe"
-  integrity sha512-BCu4VWeyCFbov04Uw5c08lysAR9B4vL36smXmqBJdibRYVCFLBe2jV8VOZ5ivZZUmx8Phn2jSv0WUDHin9z1wg==
+"@netless/redo-undo@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@netless/redo-undo/-/redo-undo-0.0.5.tgz#c5b00f5940ef33a0d6a810cd0935f4d9c172ea52"
+  integrity sha512-P8ceK3hSY2eMfFIjBeSpRsqXpjjTea9bBWyRF8t8q0kLR4ICld2VMFMRbytqZ8sjCFy9CgbicuBOdMj7juABIQ==
 
-"@netless/tool-box@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/@netless/tool-box/-/tool-box-0.0.2.tgz#c7aeca540bea57509a7ff12ce47a11a386e2c481"
-  integrity sha512-NZZJYLT55xBGaRaEIiw3lQBKJv7+3eSNBT8MlVQzsemgLii7eifh2JnorZL4jBrhBOWSG516PojQ3ZB5Id0tNA==
+"@netless/tool-box@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@netless/tool-box/-/tool-box-0.0.5.tgz#37fb0d8f0587b8ac5afe1e106a99f23bcfbb1dc5"
+  integrity sha512-SYIvHO6yYuYBNxmdyjBQBUn6ngtQJGyHSMt67ixU5wiJfJIrLrx+7dBhOrj9GV2V2VJBVsvsjNNX9rNTqaNyvg==
   dependencies:
     antd "^4.4.3"
 
-"@netless/white-audio-plugin@^1.2.16":
-  version "1.2.16"
-  resolved "https://registry.npmjs.org/@netless/white-audio-plugin/-/white-audio-plugin-1.2.16.tgz#ee8eea3b3c370d7648579129b8e280a48825111c"
-  integrity sha512-Gst6R9kplf+t/ZrGMX7JFHOpc/M+tobKhU7TtJNIIiubYAKxILeEvFNRkbULv5+QX8BJ3qF85MJxAKatWHxztA==
+"@netless/white-audio-plugin@^1.2.19":
+  version "1.2.19"
+  resolved "https://registry.yarnpkg.com/@netless/white-audio-plugin/-/white-audio-plugin-1.2.19.tgz#0e3d01ee902bc931ce99f9eaf5f278195fb89d4e"
+  integrity sha512-5ZeX8ezpx0T1Y5CFH5kOWMDbLNegGVFm7shSa6p648hhcNN93tccwIc6yHrC60ownmfmUeYvbiJMCYGx6Hq1UQ==
 
-"@netless/white-video-plugin@^1.2.15":
-  version "1.2.15"
-  resolved "https://registry.npmjs.org/@netless/white-video-plugin/-/white-video-plugin-1.2.15.tgz#99bbfeb058e898faec636f477a0c609f789746cb"
-  integrity sha512-nuuuRfqP+u2zhQYzxUXBtZTf0ywyQ3GrUtkf2Eas27A/A8wcXoodnwnRE+KddeMGsMQt6T3uYDhqT/K9Wb2XDA==
+"@netless/white-video-plugin@^1.2.18":
+  version "1.2.18"
+  resolved "https://registry.yarnpkg.com/@netless/white-video-plugin/-/white-video-plugin-1.2.18.tgz#0a2007b5b15ee572a24e6d4b9c658cce49124ac1"
+  integrity sha512-G6qIcakRu68R0j5ASub1hAr5V0b6QDX2C3UYOl891P2/ZupvzfqTB99jxSGsJCpS1tLd4EMjkTTVBMrDsrWcXA==
 
-"@netless/zoom-controller@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@netless/zoom-controller/-/zoom-controller-0.0.4.tgz#a07bbe69ba3dbf264d65882e31a6215372055623"
-  integrity sha512-+ZYu/9/Ubi18asdkav1CbFmkjGx2uitKj0fl3evh9yTlrSB/xfgukwAPWJiSfBfurgnpUvnisYjMwoIZ3Ohs+A==
+"@netless/zoom-controller@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@netless/zoom-controller/-/zoom-controller-0.0.6.tgz#b27358660143dec2e152cddc1051416c0ade3eab"
+  integrity sha512-jMiKKsTQp6WRr+fLZ2QZcMaNpSjsqSpfPi+3IgRMqxU7iZQlW3Y9OopCmYaVoV05d5Q5HIpGiRB/nOHGsRqJ2A==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"

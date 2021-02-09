@@ -30,5 +30,3 @@ export class TopBarRightBtn extends React.PureComponent<TopBarRightBtnProps> {
         );
     }
 }
-
-export default TopBarRightBtn;

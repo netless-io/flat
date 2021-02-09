@@ -60,13 +60,13 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                 </div>
                 <div className="page-controller-box">
                     <div className="page-controller-mid-box">
+                        <PageController room={room} />
                         <div
-                            className="page-controller-cell"
+                            className="page-preview-cell"
                             onClick={whiteboardStore.showPreviewPanel}
                         >
                             <img src={pages} alt={"pages"} />
                         </div>
-                        <PageController room={room} />
                     </div>
                 </div>
                 <PreviewController
