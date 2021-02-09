@@ -133,9 +133,9 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                                 </Form.Item>
                             ) : (
                                 type === EditRoomType.EditPeriodic && (
-                                    <Form.Item>
-                                        <span className="edit-room-cycle">周期性房间</span>
-                                    </Form.Item>
+                                    <div className="ant-form-item-label edit-room-form-label">
+                                        周期性房间
+                                    </div>
                                 )
                             )}
                             <Form.Item
