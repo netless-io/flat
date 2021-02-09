@@ -1,12 +1,12 @@
 import "./EditRoomPage.less";
 import back from "../../assets/image/back.svg";
 
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Button, Checkbox, Input, Form, Divider, Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import { Link, useHistory } from "react-router-dom";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
-import { getDay, addWeeks, endOfDay } from "date-fns";
+import { getDay, addWeeks, endOfDay, addMinutes } from "date-fns";
 import { generateRoutePath, RouteNameType } from "../../utils/routes";
 import MainPageLayout from "../../components/MainPageLayout";
 import { RoomTypeSelect } from "../../components/RoomType";
@@ -14,8 +14,14 @@ import { EditRoomFormValues } from "./typings";
 import { renderBeginTimePicker } from "./renderBeginTimePicker";
 import { renderEndTimePicker } from "./renderEndTimePicker";
 import { renderPeriodicForm } from "./renderPeriodicForm";
+import { PeriodicEndType } from "../../constants/Periodic";
 
 export type { EditRoomFormValues } from "./typings";
+
+export type EditRoomFormInitialValues =
+    | ({ isPeriodic: true } & Omit<EditRoomFormValues, "isPeriodic">)
+    | ({ isPeriodic: false } & Omit<EditRoomFormValues, "periodic" | "isPeriodic"> &
+          Pick<Partial<EditRoomFormValues>, "periodic">);
 
 export enum EditRoomType {
     Schedule,
@@ -26,7 +32,7 @@ export enum EditRoomType {
 
 export interface EditRoomPageProps {
     type: EditRoomType;
-    initialValues: EditRoomFormValues;
+    initialValues: EditRoomFormInitialValues;
     loading: boolean;
     onSubmit: (value: EditRoomFormValues) => void;
 }
@@ -40,10 +46,23 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
     const history = useHistory();
 
     const [isFormVetted, setIsFormVetted] = useState(true);
+    const [isShowEditSubmitConfirm, showEditSubmitConfirm] = useState(false);
 
     const hasInputAutoSelectedRef = useRef(false);
 
     const [form] = Form.useForm<EditRoomFormValues>();
+
+    const defaultValues = useMemo<EditRoomFormValues>(() => {
+        return {
+            periodic: {
+                endType: PeriodicEndType.Rate,
+                weeks: [getDay(initialValues.beginTime)],
+                rate: 7,
+                endTime: addWeeks(addMinutes(initialValues.beginTime, 30), 6),
+            },
+            ...initialValues,
+        };
+    }, [initialValues]);
 
     return (
         <MainPageLayout>
@@ -54,7 +73,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                             to={generateRoutePath(RouteNameType.HomePage, {})}
                             onClick={e => {
                                 e.preventDefault();
-                                cancelSchedule();
+                                onCancelForm();
                             }}
                             className="edit-room-back"
                         >
@@ -73,7 +92,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                             form={form}
                             layout="vertical"
                             name="createRoom"
-                            initialValues={initialValues}
+                            initialValues={defaultValues}
                             className="edit-room-form"
                             onFieldsChange={formValidateStatus}
                         >
@@ -113,9 +132,11 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                                     </Checkbox>
                                 </Form.Item>
                             ) : (
-                                <Form.Item>
-                                    <span className="edit-room-cycle">周期性房间</span>
-                                </Form.Item>
+                                type === EditRoomType.EditPeriodic && (
+                                    <Form.Item>
+                                        <span className="edit-room-cycle">周期性房间</span>
+                                    </Form.Item>
+                                )
                             )}
                             <Form.Item
                                 noStyle
@@ -128,14 +149,18 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                             </Form.Item>
                         </Form>
                         <div className="edit-room-under">
-                            <Button className="edit-room-cancel" onClick={cancelSchedule}>
+                            <Button className="edit-room-cancel" onClick={onCancelForm}>
                                 取消
                             </Button>
                             <Button
                                 className="edit-room-ok"
                                 onClick={() => {
-                                    if (!loading && isFormVetted) {
-                                        onSubmit(form.getFieldsValue(true));
+                                    if (type === EditRoomType.Schedule) {
+                                        onSubmitForm();
+                                    } else if (form.isFieldsTouched()) {
+                                        showEditSubmitConfirm(true);
+                                    } else {
+                                        history.goBack();
                                     }
                                 }}
                                 loading={loading}
@@ -147,6 +172,30 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                     </div>
                 </div>
             </div>
+            {type !== EditRoomType.Schedule && (
+                <Modal
+                    visible={isShowEditSubmitConfirm}
+                    title="修改房间"
+                    onCancel={hideEditSubmitConfirm}
+                    onOk={onSubmitForm}
+                    footer={[
+                        <Button key="Cancel" onClick={hideEditSubmitConfirm}>
+                            取消
+                        </Button>,
+                        <Button
+                            key="Ok"
+                            type="primary"
+                            loading={loading}
+                            disabled={!loading && !isFormVetted}
+                            onClick={onSubmitForm}
+                        >
+                            确定
+                        </Button>,
+                    ]}
+                >
+                    确定修改该房间？
+                </Modal>
+            )}
         </MainPageLayout>
     );
 
@@ -163,7 +212,13 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
         }
     }
 
-    function cancelSchedule(): void {
+    function onSubmitForm(): void {
+        if (!loading && isFormVetted) {
+            onSubmit(form.getFieldsValue(true));
+        }
+    }
+
+    function onCancelForm(): void {
         if (form.isFieldsTouched()) {
             Modal.confirm({
                 content: "房间信息未保存，是否返回？",
@@ -174,6 +229,10 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
         } else {
             history.goBack();
         }
+    }
+
+    function hideEditSubmitConfirm(): void {
+        showEditSubmitConfirm(false);
     }
 
     function formValidateStatus(): void {
