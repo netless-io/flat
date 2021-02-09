@@ -154,11 +154,16 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                             </Button>
                             <Button
                                 className="edit-room-ok"
-                                onClick={() => {
-                                    if (type === EditRoomType.Schedule) {
-                                        onSubmitForm();
-                                    } else if (form.isFieldsTouched()) {
-                                        showEditSubmitConfirm(true);
+                                onClick={async () => {
+                                    if (form.isFieldsTouched()) {
+                                        await form.validateFields();
+                                        if (!loading && isFormVetted) {
+                                            if (type === EditRoomType.Schedule) {
+                                                onSubmitForm();
+                                            } else {
+                                                showEditSubmitConfirm(true);
+                                            }
+                                        }
                                     } else {
                                         history.goBack();
                                     }
