@@ -10,7 +10,6 @@ import EditRoomPage, {
     EditRoomType,
 } from "../../components/EditRoomPage";
 import { RouteNameType, RouteParams } from "../../utils/routes";
-import "./ModifyPeriodicRoomPage.less";
 import { periodicRoomInfo, updatePeriodicRoom } from "../../apiMiddleware/flatServer";
 import { getEndTimeFromRate, getRateFromEndTime } from "../../components/EditRoomPage/utils";
 import LoadingPage from "../../LoadingPage";
