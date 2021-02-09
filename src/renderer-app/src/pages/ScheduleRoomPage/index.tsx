@@ -42,7 +42,9 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
     const { periodicUUID } = params;
 
     const periodicInfo = roomStore.periodicRooms.get(periodicUUID);
-    const rooms = periodicInfo?.rooms.map(roomUUID => roomStore.rooms.get(roomUUID));
+    const rooms = periodicInfo?.rooms
+        .filter(roomUUID => !cancelRoomUUIDList.includes(roomUUID))
+        .map(roomUUID => roomStore.rooms.get(roomUUID));
 
     useEffect(() => {
         void roomStore.syncPeriodicRoomInfo(periodicUUID);
@@ -76,7 +78,15 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
 
     const addRemoveRoomUUID = (roomUUID: string | undefined): void => {
         if (roomUUID) {
-            setCancelRoomUUIDList([...cancelRoomUUIDList, roomUUID]);
+            const nextList = [...cancelRoomUUIDList, roomUUID];
+            const nextRooms = rooms.filter(room => {
+                return room && !nextList.includes(room.roomUUID);
+            });
+            if (nextRooms.length === 0) {
+                pushHistory(RouteNameType.HomePage);
+            } else {
+                setCancelRoomUUIDList(nextList);
+            }
         }
     };
 
@@ -219,12 +229,17 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                 cancelModalVisible={cancelModalVisible}
                 isCreator={isCreator}
                 onCancel={() => showCancelModal(false)}
-                onRemoveRoom={() => showCancelModal(false)}
+                onRemoveRoom={onRemoveRoom}
                 periodicUUID={periodicUUID}
                 isPeriodicDetailsPage={true}
             />
         </MainPageLayout>
     );
+
+    function onRemoveRoom(): void {
+        // showCancelModal(false);
+        pushHistory(RouteNameType.HomePage);
+    }
 });
 
 interface MoreMenuProps {
