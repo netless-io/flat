@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
-import { isBefore, addMinutes } from "date-fns";
+import { isBefore, addMinutes, setHours } from "date-fns";
 import { EditRoomFormValues } from "./typings";
 import { compareDay, compareHour, MIN_CLASS_DURATION, range } from "../../utils/date";
 import { FullTimePicker } from "../../components/antd-date-fns";
@@ -67,17 +67,17 @@ export function renderEndTimePicker(form: FormInstance<EditRoomFormValues>): Rea
             "endTime",
         ]);
 
-        const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
-        compareTime.setHours(selectedHour);
+        const comparedTime = addMinutes(beginTime, MIN_CLASS_DURATION);
+        const selectedEndTime = setHours(endTime, selectedHour);
 
-        const diff = compareHour(endTime, compareTime);
+        const diff = compareHour(comparedTime, selectedEndTime);
 
         if (diff < 0) {
             return [];
         }
 
         if (diff === 0) {
-            return range(endTime.getMinutes());
+            return range(comparedTime.getMinutes());
         }
 
         return range(60);
