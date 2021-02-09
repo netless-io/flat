@@ -268,14 +268,14 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         onClick={handleRoomController}
                     />
                 )}
-                <TopBarRightBtn
+                {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
                     onClick={whiteboardStore.toggleFileOpen}
-                />
+                /> */}
                 <InviteButton uuid={classRoomStore.roomUUID} />
                 {/* @TODO implement Options menu */}
-                <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
+                {/* <TopBarRightBtn title="Options" icon="options" onClick={() => {}} /> */}
                 <TopBarRightBtn
                     title="Exit"
                     icon="exit"
