@@ -7,11 +7,13 @@ import { ChatTypeBox } from "./ChatTypeBox";
 import { ChatMessageList } from "./ChatMessageList";
 
 export interface ChatMessagesProps {
+    visible: boolean;
     classRoomStore: ClassRoomStore;
     disableHandRaising?: boolean;
 }
 
 export const ChatMessages = observer<ChatMessagesProps>(function ChatMessages({
+    visible,
     classRoomStore,
     disableHandRaising,
 }) {
@@ -20,12 +22,7 @@ export const ChatMessages = observer<ChatMessagesProps>(function ChatMessages({
             <div className="chat-messages">
                 {classRoomStore.messages.length > 0 ? (
                     <div className="chat-messages-box">
-                        <ChatMessageList
-                            userUUID={classRoomStore.userUUID}
-                            allUsers={classRoomStore.users.cachedUsers}
-                            messages={classRoomStore.messages}
-                            onLoadMore={classRoomStore.updateHistory}
-                        />
+                        <ChatMessageList visible={visible} classRoomStore={classRoomStore} />
                     </div>
                 ) : (
                     <div className="chat-messages-default">说点什么吧...</div>
