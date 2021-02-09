@@ -165,11 +165,25 @@ export default function UserSettingPage(): React.ReactElement {
     }
 
     function renderFooter(): React.ReactNode {
-        return (
-            <Button type="primary" onClick={reset} className="user-setting-modal-button">
-                重新检测
-            </Button>
-        );
+        const isSuccess =
+            system === "" &&
+            camera === TestingResult.Success &&
+            speaker === TestingResult.Success &&
+            microphone === TestingResult.Success;
+
+        if (!isSuccess) {
+            return (
+                <Button type="primary" onClick={reset} className="user-setting-modal-button">
+                    重新检测
+                </Button>
+            );
+        } else {
+            return (
+                <Button type="primary" onClick={() => showResultModal(false)} className="user-setting-modal-button">
+                    确定
+                </Button>
+            );
+        }
     }
 
     function renderDescription(result: null | TestingResult | string): React.ReactNode {
