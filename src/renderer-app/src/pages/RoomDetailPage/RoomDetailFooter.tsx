@@ -82,6 +82,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
             <RemoveRoomModal
                 cancelModalVisible={cancelModalVisible}
                 onCancel={() => setCancelModalVisible(false)}
+                onRemoveRoom={() => setCancelModalVisible(false)}
                 isCreator={isCreator}
                 roomUUID={room?.roomUUID}
                 periodicUUID={room?.periodicUUID}
