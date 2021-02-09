@@ -75,7 +75,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
         >
             <div className="modal-header">
                 <span>{globalStore.userName} 邀请加入 FLAT 房间</span>
-                <span>点击链接加入，或添加至房间列表</span>
+                <span>可通过房间号加入和预约</span>
             </div>
             <div className="modal-content">
                 <div className="modal-content-item">

@@ -204,7 +204,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     icon="folder"
                     onClick={whiteboardStore.toggleFileOpen}
                 /> */}
-                <InviteButton uuid={classRoomStore.roomUUID} />
+                <InviteButton roomInfo={classRoomStore.roomInfo} />
                 {/* @TODO implement Options menu */}
                 {/* <TopBarRightBtn title="Options" icon="options" onClick={() => {}} /> */}
                 <TopBarRightBtn
