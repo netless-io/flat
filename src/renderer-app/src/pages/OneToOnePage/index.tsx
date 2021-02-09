@@ -191,12 +191,14 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                             onClick={classRoomStore.toggleRecording}
                         />
                     )}
-                <TopBarRightBtn
-                    title="Vision control"
-                    icon="follow"
-                    active={whiteboardStore.viewMode === ViewMode.Broadcaster}
-                    onClick={handleRoomController}
-                />
+                {classRoomStore.isCreator && (
+                    <TopBarRightBtn
+                        title="Vision control"
+                        icon="follow"
+                        active={whiteboardStore.viewMode === ViewMode.Broadcaster}
+                        onClick={handleRoomController}
+                    />
+                )}
                 {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"

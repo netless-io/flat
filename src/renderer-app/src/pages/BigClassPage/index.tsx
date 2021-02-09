@@ -236,12 +236,14 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                         onClick={toggleCalling}
                     />
                 )}
-                <TopBarRightBtn
-                    title="Vision control"
-                    icon="follow"
-                    active={whiteboardStore.viewMode === ViewMode.Broadcaster}
-                    onClick={handleRoomController}
-                />
+                {classRoomStore.isCreator && (
+                    <TopBarRightBtn
+                        title="Vision control"
+                        icon="follow"
+                        active={whiteboardStore.viewMode === ViewMode.Broadcaster}
+                        onClick={handleRoomController}
+                    />
+                )}
                 {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
