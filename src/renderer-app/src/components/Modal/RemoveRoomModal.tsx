@@ -76,11 +76,18 @@ export const RemoveRoomModal = observer<RemoveRoomModalProps>(function RemoveRoo
 
     const confirmCancelRoom = async (): Promise<void> => {
         try {
-            await roomStore.cancelRoom({
-                all: isCancelAll || isPeriodicRoom,
-                roomUUID,
-                periodicUUID,
-            });
+            if (!isCreator && periodicUUID) {
+                await roomStore.cancelRoom({
+                    all: true,
+                    periodicUUID,
+                });
+            } else {
+                await roomStore.cancelRoom({
+                    all: isCancelAll || isPeriodicRoom,
+                    roomUUID,
+                    periodicUUID,
+                });
+            }
 
             if (onRemoveRoom) {
                 onRemoveRoom(roomUUID);
