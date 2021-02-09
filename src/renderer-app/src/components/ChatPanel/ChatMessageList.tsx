@@ -1,4 +1,4 @@
-import { observer } from "mobx-react-lite";
+import { Observer, observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
 import { useUpdate } from "react-use";
 import {
@@ -120,14 +120,18 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
             {({ measure, registerChild }) => {
                 return (
                     <div ref={el => el && registerChild && registerChild(el)} style={style}>
-                        <ChatMessage
-                            onMount={measure}
-                            userUUID={classRoomStore.userUUID}
-                            messageUser={classRoomStore.users.cachedUsers.get(
-                                classRoomStore.messages[index].userUUID,
+                        <Observer>
+                            {() => (
+                                <ChatMessage
+                                    onMount={measure}
+                                    userUUID={classRoomStore.userUUID}
+                                    messageUser={classRoomStore.users.cachedUsers.get(
+                                        classRoomStore.messages[index].userUUID,
+                                    )}
+                                    message={classRoomStore.messages[index]}
+                                />
                             )}
-                            message={classRoomStore.messages[index]}
-                        />
+                        </Observer>
                     </div>
                 );
             }}
