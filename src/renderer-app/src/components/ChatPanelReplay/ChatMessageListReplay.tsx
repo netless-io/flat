@@ -39,7 +39,7 @@ export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
                             // @ts-ignore bug of react-vituralized typing
                             <div ref={registerChild} style={style}>
                                 <ChatMessage
-                                    onLayoutMount={measure}
+                                    onMount={measure}
                                     userUUID={userUUID}
                                     message={messages[index]}
                                 />

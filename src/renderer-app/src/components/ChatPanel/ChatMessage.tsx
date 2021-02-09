@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { RTMessage, RTMessageType } from "../../apiMiddleware/Rtm";
 import { User } from "../../stores/ClassRoomStore";
 
@@ -12,17 +12,17 @@ export interface ChatMessageProps {
     userUUID: string;
     messageUser?: User;
     message: ChatMessageItem;
-    onLayoutMount: () => void;
+    onMount: () => void;
 }
 
 export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
     userUUID,
     messageUser,
     message,
-    onLayoutMount,
+    onMount,
 }) {
-    useLayoutEffect(() => {
-        onLayoutMount();
+    useEffect(() => {
+        onMount();
         // run only once
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

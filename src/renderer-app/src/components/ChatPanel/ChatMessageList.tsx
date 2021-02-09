@@ -1,5 +1,6 @@
-import { Observer, observer } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
+import { useUpdate } from "react-use";
 import {
     AutoSizer,
     CellMeasurer,
@@ -10,42 +11,46 @@ import {
     Index,
     IndexRange,
 } from "react-virtualized";
-import { User } from "../../stores/ClassRoomStore";
+import { ClassRoomStore } from "../../stores/ClassRoomStore";
 import { useReaction } from "../../utils/mobx";
-import ChatMessage, { ChatMessageItem } from "./ChatMessage";
+import ChatMessage from "./ChatMessage";
 
 export type OnLoadMore = (range: IndexRange) => Promise<void>;
 
 export interface ChatMessageListProps {
-    userUUID: string;
-    allUsers: Map<string, User>;
-    messages: ChatMessageItem[];
-    onLoadMore: OnLoadMore;
-}
-
-export interface ChatMessageListState {
-    lastMessagesCount: number;
-    lastLatestMessage?: ChatMessageItem | null;
-    scrollToIndex?: number;
-    clearScrollToIndex: boolean;
+    visible: boolean;
+    classRoomStore: ClassRoomStore;
 }
 
 export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessageList({
-    userUUID,
-    allUsers,
-    messages,
-    onLoadMore,
+    visible,
+    classRoomStore,
 }) {
-    const [scrollToIndex, setScrollToIndex] = useState<number | undefined>(messages.length - 1);
+    const forceUpdate = useUpdate();
+
+    const [scrollToIndex, setScrollToIndex] = useState<number | undefined>(
+        classRoomStore.messages.length - 1,
+    );
 
     const [cellCache] = useState(
         () =>
             new CellMeasurerCache({
                 defaultHeight: 72,
                 fixedWidth: true,
-                keyMapper: index => messages[index].uuid,
+                keyMapper: index => classRoomStore.messages[index].uuid,
             }),
     );
+
+    useEffect(() => {
+        // re-measure cell when tab panel is visible
+        if (visible) {
+            cellCache.clearAll();
+            forceUpdate();
+            setScrollToIndex(classRoomStore.messages.length - 1);
+        }
+        // only listen to visible
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [visible]);
 
     /**
      * The scrollToIndex is causing scroll jumping in random situation.
@@ -66,8 +71,11 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
 
     useReaction(
         () => ({
-            messageCount: messages.length,
-            latestMessage: messages.length > 0 ? messages[messages.length - 1] : null,
+            messageCount: classRoomStore.messages.length,
+            latestMessage:
+                classRoomStore.messages.length > 0
+                    ? classRoomStore.messages[classRoomStore.messages.length - 1]
+                    : null,
         }),
         ({ messageCount, latestMessage }, prev) => {
             if (messageCount > prev.messageCount) {
@@ -105,25 +113,22 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
         <CellMeasurer
             cache={cellCache}
             parent={parent}
-            key={messages[index].uuid}
+            key={classRoomStore.messages[index].uuid}
             columnIndex={0}
             rowIndex={index}
         >
             {({ measure, registerChild }) => {
                 return (
-                    <Observer>
-                        {() => (
-                            // @ts-ignore bug of react-vituralized typing
-                            <div ref={registerChild} style={style}>
-                                <ChatMessage
-                                    onLayoutMount={measure}
-                                    userUUID={userUUID}
-                                    messageUser={allUsers.get(messages[index].userUUID)}
-                                    message={messages[index]}
-                                />
-                            </div>
-                        )}
-                    </Observer>
+                    <div ref={el => el && registerChild && registerChild(el)} style={style}>
+                        <ChatMessage
+                            onMount={measure}
+                            userUUID={classRoomStore.userUUID}
+                            messageUser={classRoomStore.users.cachedUsers.get(
+                                classRoomStore.messages[index].userUUID,
+                            )}
+                            message={classRoomStore.messages[index]}
+                        />
+                    </div>
                 );
             }}
         </CellMeasurer>
@@ -132,28 +137,24 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
     return (
         <InfiniteLoader
             isRowLoaded={isRowLoaded}
-            loadMoreRows={onLoadMore}
-            rowCount={messages.length}
+            loadMoreRows={classRoomStore.updateHistory}
+            rowCount={classRoomStore.messages.length}
             threshold={1}
         >
             {({ onRowsRendered, registerChild }) => (
                 <AutoSizer>
                     {({ height, width }) => (
-                        <Observer>
-                            {() => (
-                                <List
-                                    ref={registerChild}
-                                    height={height}
-                                    width={width}
-                                    rowCount={messages.length}
-                                    rowHeight={cellCache.rowHeight}
-                                    rowRenderer={rowRenderer}
-                                    scrollToIndex={scrollToIndex}
-                                    scrollToAlignment="start"
-                                    onRowsRendered={onRowsRendered}
-                                />
-                            )}
-                        </Observer>
+                        <List
+                            ref={registerChild}
+                            height={height}
+                            width={width}
+                            rowCount={classRoomStore.messages.length}
+                            rowHeight={cellCache.rowHeight}
+                            rowRenderer={rowRenderer}
+                            scrollToIndex={scrollToIndex}
+                            scrollToAlignment="start"
+                            onRowsRendered={onRowsRendered}
+                        />
                     )}
                 </AutoSizer>
             )}

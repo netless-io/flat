@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Tabs } from "antd";
 import { observer } from "mobx-react-lite";
 import { ChatMessages } from "./ChatMessages";
@@ -7,6 +7,11 @@ import { ChatTabTitle } from "./ChatTabTitle";
 import { ClassRoomStore } from "../../stores/ClassRoomStore";
 
 import "./ChatPanel.less";
+
+enum RTMTab {
+    Messages = "Messages",
+    Users = "Users",
+}
 
 export interface ChatPanelProps {
     classRoomStore: ClassRoomStore;
@@ -19,11 +24,17 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     disableMultipleSpeakers,
     disableHandRaising,
 }) {
+    const [activeTab, setActiveTab] = useState(RTMTab.Messages);
     return (
         <div className="chat-panel">
-            <Tabs defaultActiveKey="messages" tabBarGutter={0}>
-                <Tabs.TabPane tab={<ChatTabTitle>消息列表</ChatTabTitle>} key="messages">
+            <Tabs
+                activeKey={activeTab}
+                onChange={setActiveTab as (key: string) => void}
+                tabBarGutter={0}
+            >
+                <Tabs.TabPane tab={<ChatTabTitle>消息列表</ChatTabTitle>} key={RTMTab.Messages}>
                     <ChatMessages
+                        visible={activeTab === RTMTab.Messages}
                         classRoomStore={classRoomStore}
                         disableHandRaising={disableHandRaising}
                     />
@@ -36,7 +47,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                             用户列表
                         </ChatTabTitle>
                     }
-                    key="users"
+                    key={RTMTab.Users}
                 >
                     <ChatUsers
                         classRoomStore={classRoomStore}
