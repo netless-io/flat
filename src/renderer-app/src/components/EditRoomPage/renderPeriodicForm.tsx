@@ -117,7 +117,7 @@ export function renderPeriodicForm(
     }
 
     function onWeekSelected(w: Week[]): Week[] {
-        const week = getDay(form.getFieldValue(["beginTime", "date"]));
+        const week = getDay(form.getFieldValue("beginTime"));
         if (!w.includes(week)) {
             w.push(week);
         }

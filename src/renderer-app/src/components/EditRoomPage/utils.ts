@@ -70,11 +70,11 @@ export function syncPeriodicEndAmount(
     }
 
     if (periodic.endType === PeriodicEndType.Rate) {
-        newPeriodic.endTime = getEndTimeFromRate(beginTime, periodic.weeks, periodic.rate);
+        newPeriodic.endTime = getEndTimeFromRate(beginTime, newPeriodic.weeks, newPeriodic.rate);
     } else {
         const { endTime, rate } = getRateFromEndTime(
             beginTime,
-            periodic.weeks,
+            newPeriodic.weeks,
             newPeriodic.endTime,
         );
         newPeriodic.endTime = endTime;
