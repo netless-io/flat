@@ -96,20 +96,13 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     }, []);
 
     // control whiteboard writable
-    useAutoRun(reaction => {
-        // ignore creator
-        if (classRoomStore.isCreator) {
-            reaction.dispose();
-            return;
+    useEffect(() => {
+        if (!classRoomStore.isCreator && classRoomStore.users.currentUser) {
+            whiteboardStore.updateWritable(classRoomStore.users.currentUser.isSpeak);
         }
-        if (whiteboardStore.room && classRoomStore.users.currentUser) {
-            const isWritable = classRoomStore.users.currentUser.isSpeak;
-            if (whiteboardStore.room.disableDeviceInputs === isWritable) {
-                whiteboardStore.room.disableDeviceInputs = !isWritable;
-                whiteboardStore.room.setWritable(isWritable);
-            }
-        }
-    });
+        // dumb exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [classRoomStore.users.currentUser?.isSpeak]);
 
     useAutoRun(() => {
         if (classRoomStore.users.speakingJoiners.length <= 0) {
@@ -243,20 +236,22 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                         onClick={toggleCalling}
                     />
                 )}
-                <TopBarRightBtn
-                    title="Vision control"
-                    icon="follow"
-                    active={whiteboardStore.viewMode === ViewMode.Broadcaster}
-                    onClick={handleRoomController}
-                />
-                <TopBarRightBtn
+                {classRoomStore.isCreator && (
+                    <TopBarRightBtn
+                        title="Vision control"
+                        icon="follow"
+                        active={whiteboardStore.viewMode === ViewMode.Broadcaster}
+                        onClick={handleRoomController}
+                    />
+                )}
+                {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
                     onClick={whiteboardStore.toggleFileOpen}
-                />
+                /> */}
                 <InviteButton uuid={classRoomStore.roomUUID} />
                 {/* @TODO implement Options menu */}
-                <TopBarRightBtn title="Options" icon="options" onClick={() => {}} />
+                {/* <TopBarRightBtn title="Options" icon="options" onClick={() => {}} /> */}
                 <TopBarRightBtn
                     title="Exit"
                     icon="exit"
