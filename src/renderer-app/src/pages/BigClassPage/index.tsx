@@ -249,7 +249,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     icon="folder"
                     onClick={whiteboardStore.toggleFileOpen}
                 /> */}
-                <InviteButton uuid={classRoomStore.roomUUID} />
+                <InviteButton roomInfo={classRoomStore.roomInfo} />
                 {/* @TODO implement Options menu */}
                 {/* <TopBarRightBtn title="Options" icon="options" onClick={() => {}} /> */}
                 <TopBarRightBtn
