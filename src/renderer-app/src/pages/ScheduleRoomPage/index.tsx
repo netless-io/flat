@@ -219,6 +219,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                 cancelModalVisible={cancelModalVisible}
                 isCreator={isCreator}
                 onCancel={() => showCancelModal(false)}
+                onRemoveRoom={() => showCancelModal(false)}
                 periodicUUID={periodicUUID}
                 isPeriodicDetailsPage={true}
             />

@@ -34,6 +34,11 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
         setCancelModalVisible(false);
     };
 
+    const removeRoomHandler = (roomUUID: string | undefined): void => {
+        setCancelModalVisible(false);
+        onRemoveRoom && onRemoveRoom(roomUUID);
+    };
+
     return (
         <>
             <Menu.Item
@@ -51,7 +56,7 @@ export const RemoveRoomItem = observer<RemoveRoomItemProps>(function RemoveButto
                 cancelModalVisible={cancelModalVisible}
                 onCancel={hideCancelModal}
                 isCreator={isCreator}
-                onRemoveRoom={onRemoveRoom}
+                onRemoveRoom={removeRoomHandler}
                 roomUUID={room?.roomUUID}
                 periodicUUID={room?.periodicUUID}
                 isPeriodicDetailsPage={isPeriodicDetailsPage}
