@@ -5,6 +5,7 @@ import { ListRoomsType } from "../../../apiMiddleware/flatServer";
 import { RoomType } from "../../../apiMiddleware/flatServer/constants";
 import emptyBoxSVG from "../../../assets/image/empty-box.svg";
 import { RoomStoreContext } from "../../../components/StoreProvider";
+import { RoomItem } from "../../../stores/RoomStore";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
 import { MainRoomListItem } from "./MainRoomListItem";
 
@@ -54,9 +55,8 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
 
     return (
         <>
-            {roomUUIDs
-                .map(roomUUID => roomStore.rooms.get(roomUUID))
-                .map((room, index, rooms) => {
+            {customSort(roomUUIDs.map(roomUUID => roomStore.rooms.get(roomUUID))).map(
+                (room, index, rooms) => {
                     if (!room) {
                         return null;
                     }
@@ -81,7 +81,8 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                             onRemoveRoom={() => forceRefreshRooms(e => ~e)}
                         />
                     );
-                })}
+                },
+            )}
         </>
     );
 
@@ -109,6 +110,14 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
 
     function replayRoom(config: { roomUUID: string; ownerUUID: string; roomType: RoomType }): void {
         pushHistory(RouteNameType.ReplayPage, config);
+    }
+
+    function customSort(rooms: (RoomItem | undefined)[]): (RoomItem | undefined)[] {
+        if (listRoomsType === ListRoomsType.History) {
+            return rooms.sort((a, b) => (a && b ? Number(b.beginTime) - Number(a.beginTime) : 0));
+        } else {
+            return rooms;
+        }
     }
 });
 
