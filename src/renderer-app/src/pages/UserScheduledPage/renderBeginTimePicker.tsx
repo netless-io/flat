@@ -1,134 +1,97 @@
 import React from "react";
-import { Form, Row, Col } from "antd";
-import { isBefore, startOfDay, isSameDay, addMinutes } from "date-fns";
+import { Form } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
-import { DatePicker, TimePicker } from "../../components/antd-date-fns";
+import { isBefore, addMinutes, setHours } from "date-fns";
 import { CreatePeriodicFormValues } from "./typings";
-import { getFinalDate, MIN_DURATION, syncPeriodicEndAmount } from "./utils";
+import { syncPeriodicEndAmount } from "./utils";
+import {
+    compareDay,
+    compareHour,
+    compareMinute,
+    getRoughNow,
+    MIN_CLASS_DURATION,
+    range,
+} from "../../utils/date";
+import { FullTimePicker } from "../../components/antd-date-fns";
 
 export function renderBeginTimePicker(
     form: FormInstance<CreatePeriodicFormValues>,
 ): React.ReactElement {
     return (
-        <Form.Item label="开始时间">
-            <Row gutter={16}>
-                <Col span={12}>
-                    <Form.Item name={["beginTime", "date"]} noStyle rules={[validateBeginTimeDate]}>
-                        <DatePicker
-                            allowClear={false}
-                            disabledDate={disableBeginTimeDate}
-                            onChange={onStartTimeDateChanged}
-                        />
-                    </Form.Item>
-                </Col>
-                <Col span={12}>
-                    <Form.Item name={["beginTime", "time"]} noStyle rules={[validateBeginTimeTime]}>
-                        <TimePicker
-                            format="HH:mm"
-                            allowClear={false}
-                            disabledHours={disableBeginTimeHours}
-                            disabledMinutes={disableBeginTimeMinutes}
-                            onChange={onStartTimeTimeChanged}
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
+        <Form.Item label="开始时间" name="beginTime" rules={[validateTime]}>
+            <FullTimePicker
+                disabledDate={disabledDate}
+                disabledHours={disabledHours}
+                disabledMinutes={disabledMinutes}
+                onChange={onBeginTimeChanged}
+            />
         </Form.Item>
     );
 
-    function validateBeginTimeDate(): RuleObject {
+    function validateTime(): RuleObject {
         return {
             validator: async (_, value: Date) => {
-                if (isBefore(value, startOfDay(new Date()))) {
-                    throw new Error("开始日期不能为过去");
-                }
-            },
-        };
-    }
-
-    function validateBeginTimeTime(): RuleObject {
-        return {
-            validator: async (_, value: Date) => {
-                const beginDate: CreatePeriodicFormValues["beginTime"]["date"] = form.getFieldValue(
-                    ["beginTime", "date"],
-                );
-                if (
-                    isBefore(getFinalDate({ date: beginDate, time: value }), startOfDay(new Date()))
-                ) {
+                if (isBefore(value, getRoughNow())) {
                     throw new Error("开始时间不能为过去");
                 }
             },
         };
     }
 
-    /** disable date before now  */
-    function disableBeginTimeDate(date: Date): boolean {
-        return isBefore(date, startOfDay(new Date()));
+    function disabledDate(date: Date): boolean {
+        return isBefore(date, getRoughNow());
     }
 
-    /** disable hours before now  */
-    function disableBeginTimeHours(): number[] {
-        const beginDate: CreatePeriodicFormValues["beginTime"]["date"] = form.getFieldValue([
-            "beginTime",
-            "date",
-        ]);
-        const now = new Date();
-        return isSameDay(beginDate, now)
-            ? Array(now.getHours() + 1)
-                  .fill(0)
-                  .map((_, i) => i)
-            : [];
-    }
-
-    /** disable minutes before now  */
-    function disableBeginTimeMinutes(): number[] {
+    function disabledHours(): number[] {
         const beginTime: CreatePeriodicFormValues["beginTime"] = form.getFieldValue("beginTime");
-        const now = new Date();
-        return isSameDay(beginTime.date, now) && beginTime.time.getHours() === now.getHours()
-            ? Array(now.getMinutes() + 1)
-                  .fill(0)
-                  .map((_, i) => i)
-            : [];
+        const now = getRoughNow();
+
+        const diff = compareDay(now, beginTime);
+
+        if (diff < 0) {
+            return [];
+        }
+
+        if (diff === 0) {
+            return range(now.getHours());
+        }
+
+        return range(24);
+    }
+
+    function disabledMinutes(selectedHour: number): number[] {
+        const beginTime: CreatePeriodicFormValues["beginTime"] = form.getFieldValue("beginTime");
+        const now = getRoughNow();
+
+        const diff = compareHour(now, setHours(beginTime, selectedHour));
+
+        if (diff < 0) {
+            return [];
+        }
+
+        if (diff === 0) {
+            return range(now.getMinutes());
+        }
+
+        return range(60);
     }
 
     /** make sure end time is at least min duration after begin time */
-    function syncEndTime(beginTime: CreatePeriodicFormValues["beginTime"]): void {
-        const endTime: CreatePeriodicFormValues["endTime"] = form.getFieldValue("endTime");
-        const periodic: CreatePeriodicFormValues["periodic"] = form.getFieldValue("periodic");
-        const finalEndTime = getFinalDate(endTime);
-        const compareTime = addMinutes(getFinalDate(beginTime), MIN_DURATION);
+    function onBeginTimeChanged(beginTime: Date): void {
+        const {
+            endTime,
+            periodic,
+        }: Pick<CreatePeriodicFormValues, "endTime" | "periodic"> = form.getFieldsValue([
+            "endTime",
+            "periodic",
+        ]);
 
-        if (isBefore(finalEndTime, compareTime)) {
-            const newEndTime = {
-                date: new Date(compareTime),
-                time: new Date(compareTime),
-            };
+        const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
 
-            form.setFieldsValue({
-                endTime: newEndTime,
-            });
-
-            syncPeriodicEndAmount(form, beginTime, newEndTime, periodic);
-        } else {
-            syncPeriodicEndAmount(form, beginTime, endTime, periodic);
+        if (compareMinute(endTime, compareTime) < 0) {
+            form.setFieldsValue({ endTime: compareTime });
         }
-    }
 
-    function onStartTimeDateChanged(date: Date | null): void {
-        if (date) {
-            const beginTimeTime: CreatePeriodicFormValues["beginTime"]["time"] = form.getFieldValue(
-                ["beginTime", "time"],
-            );
-            syncEndTime({ date, time: beginTimeTime });
-        }
-    }
-
-    function onStartTimeTimeChanged(time: Date | null): void {
-        if (time) {
-            const beginTimeDate: CreatePeriodicFormValues["beginTime"]["date"] = form.getFieldValue(
-                ["beginTime", "date"],
-            );
-            syncEndTime({ date: beginTimeDate, time });
-        }
+        syncPeriodicEndAmount(form, beginTime, periodic);
     }
 }

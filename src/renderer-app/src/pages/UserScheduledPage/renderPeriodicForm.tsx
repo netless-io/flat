@@ -6,7 +6,7 @@ import { PeriodicEndType } from "../../constants/Periodic";
 import { getRoomTypeName } from "../../utils/getTypeName";
 import { DatePicker } from "../../components/antd-date-fns";
 import { CreatePeriodicFormValues } from "./typings";
-import { formatISODayWeekiii, getFinalDate, syncPeriodicEndAmount } from "./utils";
+import { formatISODayWeekiii, syncPeriodicEndAmount } from "./utils";
 import { PeriodicEndTypeSelector } from "./PeriodicEndTypeSelector";
 import { WeekRateSelector, getWeekNames } from "./WeekRateSelector";
 import { FormInstance, RuleObject } from "antd/lib/form";
@@ -127,13 +127,12 @@ export function renderPeriodicForm(
     function onWeekRateChanged(weeks: Week[]): void {
         const {
             beginTime,
-            endTime,
             periodic,
-        }: Pick<
-            CreatePeriodicFormValues,
-            "beginTime" | "endTime" | "periodic"
-        > = form.getFieldsValue(["beginTime", "endTime", "periodic"]);
-        syncPeriodicEndAmount(form, beginTime, endTime, { ...periodic, weeks });
+        }: Pick<CreatePeriodicFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
+            "beginTime",
+            "periodic",
+        ]);
+        syncPeriodicEndAmount(form, beginTime, { ...periodic, weeks });
     }
 
     function onPeriodicRateChanged(value: string | number | undefined): void {
@@ -141,13 +140,12 @@ export function renderPeriodicForm(
         if (!Number.isNaN(rate)) {
             const {
                 beginTime,
-                endTime,
                 periodic,
             }: Pick<
                 CreatePeriodicFormValues,
                 "beginTime" | "endTime" | "periodic"
-            > = form.getFieldsValue(["beginTime", "endTime", "periodic"]);
-            syncPeriodicEndAmount(form, beginTime, endTime, { ...periodic, rate });
+            > = form.getFieldsValue(["beginTime", "periodic"]);
+            syncPeriodicEndAmount(form, beginTime, { ...periodic, rate });
         }
     }
 
@@ -155,22 +153,21 @@ export function renderPeriodicForm(
         if (date) {
             const {
                 beginTime,
-                endTime,
                 periodic,
-            }: Pick<
-                CreatePeriodicFormValues,
-                "beginTime" | "endTime" | "periodic"
-            > = form.getFieldsValue(["beginTime", "endTime", "periodic"]);
-            syncPeriodicEndAmount(form, beginTime, endTime, { ...periodic, endTime: date });
+            }: Pick<CreatePeriodicFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
+                "beginTime",
+                "periodic",
+            ]);
+            syncPeriodicEndAmount(form, beginTime, { ...periodic, endTime: date });
         }
     }
 
     function disablePeriodicEndTime(currentTime: Date | null): boolean {
         if (currentTime) {
-            const beginTimeDate: CreatePeriodicFormValues["beginTime"]["date"] = form.getFieldValue(
-                ["beginTime", "date"],
+            const beginTime: CreatePeriodicFormValues["beginTime"] = form.getFieldValue(
+                "beginTime",
             );
-            return isBefore(currentTime, startOfDay(beginTimeDate));
+            return isBefore(currentTime, startOfDay(beginTime));
         }
         return false;
     }
@@ -190,7 +187,7 @@ export function renderPeriodicForm(
                     throw new Error("最多允许预定 50 个房间");
                 }
 
-                if (isBefore(value, getFinalDate(beginTime))) {
+                if (isBefore(value, beginTime)) {
                     throw new Error(`结束重复日期不能小于开始时间日期`);
                 }
             },

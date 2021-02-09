@@ -14,17 +14,19 @@ import MainPageLayout from "../../components/MainPageLayout";
 import { RoomTypeSelect } from "../../components/RoomType";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { CreatePeriodicFormValues } from "./typings";
-import { getFinalDate } from "./utils";
 import { renderBeginTimePicker } from "./renderBeginTimePicker";
 import { renderEndTimePicker } from "./renderEndTimePicker";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { renderPeriodicForm } from "./renderPeriodicForm";
 
 const getInitialBeginTime = (): Date => {
-    let time = roundToNearestMinutes(Date.now(), { nearestTo: 30 });
-    if (isBefore(time, Date.now())) {
+    const now = new Date();
+    let time = roundToNearestMinutes(now, { nearestTo: 30 });
+    if (isBefore(time, now)) {
         time = addMinutes(time, 30);
     }
+    time.setSeconds(0);
+    time.setMilliseconds(0);
     return time;
 };
 
@@ -47,14 +49,8 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
             title: globalStore.wechat?.name ? `${globalStore.wechat.name}预定的房间` : "",
             type: RoomType.BigClass,
             isPeriodic: false,
-            beginTime: {
-                date: new Date(scheduleBeginTime),
-                time: new Date(scheduleBeginTime),
-            },
-            endTime: {
-                date: addMinutes(scheduleBeginTime, 30),
-                time: addMinutes(scheduleBeginTime, 30),
-            },
+            beginTime: new Date(scheduleBeginTime),
+            endTime: addMinutes(scheduleBeginTime, 30),
             periodic: {
                 endType: PeriodicEndType.Rate,
                 weeks: [getDay(scheduleBeginTime)],
@@ -161,7 +157,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
 
     function onToggleIsPeriodic(e: CheckboxChangeEvent): void {
         if (e.target.checked) {
-            const today = form.getFieldValue(["beginTime", "date"]);
+            const today: CreatePeriodicFormValues["beginTime"] = form.getFieldValue("beginTime");
             form.setFieldsValue({
                 periodic: {
                     weeks: [getDay(today)],
@@ -184,8 +180,8 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
             const basePayload = {
                 title: values.title,
                 type: values.type,
-                beginTime: getFinalDate(values.beginTime).valueOf(),
-                endTime: getFinalDate(values.endTime).valueOf(),
+                beginTime: values.beginTime.valueOf(),
+                endTime: values.endTime.valueOf(),
             };
 
             if (values.isPeriodic) {

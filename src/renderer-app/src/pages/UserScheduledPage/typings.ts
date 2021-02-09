@@ -5,14 +5,8 @@ export interface CreatePeriodicFormValues {
     title: string;
     type: RoomType;
     isPeriodic: boolean;
-    beginTime: {
-        date: Date;
-        time: Date;
-    };
-    endTime: {
-        date: Date;
-        time: Date;
-    };
+    beginTime: Date;
+    endTime: Date;
     periodic: {
         endType: PeriodicEndType;
         weeks: Week[];
