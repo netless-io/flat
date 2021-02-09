@@ -1,20 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./CameraTesting.less";
 import { Button } from "antd";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import type AgoraSdk from "agora-electron-sdk";
 import { AGORA } from "../../constants/Process";
 import { Device } from "../../types/Device";
 import { DeviceSelect } from "../../components/DeviceSelect";
+import { TestingResult } from ".";
 
-export const CameraTesting = (): React.ReactElement => {
+export interface CameraTestingProps {
+    onChange: (result: TestingResult) => void;
+}
+
+export const CameraTesting = ({ onChange: setCamera }: CameraTestingProps): React.ReactElement => {
     const [rtcEngine] = useState<AgoraSdk>(() => new window.AgoraRtcEngine());
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
     const cameraStream = useRef<HTMLDivElement>(null);
+    const history = useHistory();
 
     useEffect(() => {
+        setCamera(TestingResult.Undefined);
         rtcEngine.initialize(AGORA.APP_ID);
+        rtcEngine.on("error", e => {
+            console.error("rtc error", e);
+        });
         setDevices(rtcEngine.getVideoDevices() as Device[]);
 
         rtcEngine.on("videoDeviceStateChanged", () => {
@@ -25,6 +35,7 @@ export const CameraTesting = (): React.ReactElement => {
             rtcEngine.removeAllListeners();
             rtcEngine.release();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rtcEngine]);
 
     useEffect(() => {
@@ -66,12 +77,22 @@ export const CameraTesting = (): React.ReactElement => {
                 />
                 <div className="camera-info" ref={cameraStream} />
                 <div className="testing-btn">
-                    <Button>不可以看到</Button>
-                    <Button type="primary">
-                        <Link to="/setting/speaker/">可以看到</Link>
+                    <Button onClick={fail}>不可以看到</Button>
+                    <Button onClick={success} type="primary">
+                        可以看到
                     </Button>
                 </div>
             </div>
         </div>
     );
+
+    function success(): void {
+        setCamera(TestingResult.Success);
+        history.push("/setting/speaker/");
+    }
+
+    function fail(): void {
+        setCamera(TestingResult.Fail);
+        history.push("/setting/speaker/");
+    }
 };

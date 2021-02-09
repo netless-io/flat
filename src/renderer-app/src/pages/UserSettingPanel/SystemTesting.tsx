@@ -6,7 +6,13 @@ import { Link } from "react-router-dom";
 import { AGORA } from "../../constants/Process";
 import os from "os";
 
-export const SystemTesting = (): React.ReactElement => {
+export interface SystemTestingProps {
+    onChange?: (description: string) => void;
+}
+
+export const SystemTesting = ({
+    onChange: setNetworkDescription,
+}: SystemTestingProps): React.ReactElement => {
     const [networkSituation, setNetworkSituation] = useState(0);
 
     const networkDescription = [
@@ -15,9 +21,9 @@ export const SystemTesting = (): React.ReactElement => {
         "网络质量极好",
         "网络质量优秀",
         "网络质量一般",
-        "网络质量较差",
-        "网络质量非常差",
-        "网络连接已断开",
+        "网络质量较差", // 5
+        "网络质量非常差", // 6
+        "网络连接已断开", // 7
     ];
 
     const cpuModel = os.cpus()[0].model;
@@ -26,6 +32,10 @@ export const SystemTesting = (): React.ReactElement => {
     useEffect(() => {
         const rtcEngine: AgoraSdk = new window.AgoraRtcEngine();
         rtcEngine.initialize(AGORA.APP_ID);
+        rtcEngine.on("error", e => {
+            console.error("rtc error", e);
+            setNetworkDescription?.("检测失败");
+        });
 
         // see: https://docs.agora.io/en/Voice/API%20Reference/electron/globals.html#agoranetworkquality
         rtcEngine.on("lastMileQuality", quality => {
@@ -43,7 +53,17 @@ export const SystemTesting = (): React.ReactElement => {
             rtcEngine.removeAllListeners();
             rtcEngine.release();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (networkSituation >= 5) {
+            setNetworkDescription?.(networkDescription[networkSituation]);
+        } else {
+            setNetworkDescription?.("");
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [networkSituation]);
 
     return (
         <div className="content-container">

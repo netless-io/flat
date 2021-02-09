@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
-import { Link } from "react-router-dom";
 import "./MicrophoneTesting.less";
 import type AgoraSDK from "agora-electron-sdk";
 import { AGORA } from "../../constants/Process";
 import { DeviceSelect } from "../../components/DeviceSelect";
 import { Device } from "../../types/Device";
 import { observer } from "mobx-react-lite";
+import { TestingResult } from ".";
 
 interface SpeakerVolumeProps {
     percent: number;
@@ -21,7 +21,13 @@ const SpeakerVolume = observer<SpeakerVolumeProps>(function SpeakerVolume({ perc
     );
 });
 
-export const MicrophoneTesting = (): React.ReactElement => {
+export interface MicrophoneTestingProps {
+    onChange: (result: TestingResult) => void;
+}
+
+export const MicrophoneTesting = ({
+    onChange: setMicrophone,
+}: MicrophoneTestingProps): React.ReactElement => {
     const [rtcEngine] = useState<AgoraSDK>(() => new window.AgoraRtcEngine());
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
@@ -29,7 +35,9 @@ export const MicrophoneTesting = (): React.ReactElement => {
 
     useEffect(() => {
         rtcEngine.initialize(AGORA.APP_ID);
-
+        rtcEngine.on("error", e => {
+            console.error("rtc error", e);
+        });
         setDevices(rtcEngine.getAudioRecordingDevices() as Device[]);
 
         rtcEngine.on("audioDeviceStateChanged", () => {
@@ -40,6 +48,7 @@ export const MicrophoneTesting = (): React.ReactElement => {
             rtcEngine.removeAllListeners();
             rtcEngine.release();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rtcEngine]);
 
     useEffect(() => {
@@ -85,11 +94,9 @@ export const MicrophoneTesting = (): React.ReactElement => {
                 <p>试听声音</p>
                 <SpeakerVolume percent={currentVolume} />
                 <div className="testing-btn">
-                    <Button>
-                        <Link to="/setting/microphone/">不可以看到</Link>
-                    </Button>
-                    <Button type="primary">
-                        <Link to="/setting/microphone/">可以看到</Link>
+                    <Button onClick={() => setMicrophone(TestingResult.Fail)}>不可以看到</Button>
+                    <Button onClick={() => setMicrophone(TestingResult.Success)} type="primary">
+                        可以看到
                     </Button>
                 </div>
             </div>

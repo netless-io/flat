@@ -5,21 +5,20 @@
 
     .ant-menu-item {
         a:hover {
-            color: #444E60;
+            color: #444e60;
         }
     }
 
     .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-        background: #F3F6F9;
+        background: #f3f6f9;
         a {
-            color: #444E60;
+            color: #444e60;
         }
     }
 
     .ant-menu-submenu-title:hover {
-        color: #444E60;
+        color: #444e60;
     }
-    
 }
 
 .menu-item-container.ant-menu {
@@ -29,4 +28,55 @@
 .setting-content-container {
     display: flex;
     margin-right: 24px;
+}
+
+.user-setting-modal-title {
+    display: flex;
+    align-items: center;
+    padding-top: 8px;
+
+    img {
+        margin-right: 12px;
+    }
+}
+
+.user-setting-modal-button.ant-btn {
+    margin: 6px 0;
+    padding: 0 36px;
+    border-radius: 4px;
+}
+
+.user-setting-modal {
+    .table {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        grid-gap: 8px 24px;
+        gap: 8px 24px;
+
+        .left {
+            color: #7a7b7c;
+            font-size: 14px;
+            line-height: 22px;
+        }
+
+        .middle {
+            display: inline-flex;
+            align-items: center;
+        }
+    }
+
+    .red {
+        color: #f45454;
+    }
+
+    .green {
+        color: #7ec452;
+    }
+
+    .success {
+        display: inline-block;
+        width: 28px;
+        border-bottom: 2px solid #7ec452;
+    }
 }
