@@ -104,19 +104,6 @@ export class ClassRoomStore {
             ownerUUID: this.ownerUUID,
             userUUID: this.userUUID,
         });
-
-        autorun(() => {
-            if (
-                this.users.creator &&
-                (this.users.creator?.isSpeak ||
-                    this.users.currentUser?.isSpeak ||
-                    this.users.speakingJoiners.length > 0)
-            ) {
-                this.joinRTC();
-            } else {
-                this.leaveRTC();
-            }
-        });
     }
 
     get ownerUUID(): string {
@@ -415,9 +402,12 @@ export class ClassRoomStore {
 
         const members = await channel.getMembers();
         await this.users.initUsers(members);
-        this.updateInitialRoomState();
 
-        this.updateHistory();
+        await this.joinRTC();
+
+        await this.updateInitialRoomState();
+
+        await this.updateHistory();
 
         channel.on("MemberJoined", this.users.addUser);
         channel.on("MemberLeft", this.users.removeUser);
@@ -432,9 +422,7 @@ export class ClassRoomStore {
             promises.push(this.cloudRecording.stop());
         }
 
-        if (this.isCalling) {
-            this.rtc.leave();
-        }
+        promises.push(this.leaveRTC());
 
         this.rtc.destroy();
 
