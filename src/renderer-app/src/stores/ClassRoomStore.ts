@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { action, autorun, makeAutoObservable, observable, runInAction } from "mobx";
+import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import { Rtc as RTCAPI, RtcChannelType } from "../apiMiddleware/Rtc";
