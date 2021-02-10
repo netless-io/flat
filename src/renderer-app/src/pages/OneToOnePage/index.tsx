@@ -23,7 +23,7 @@ import { useWhiteboardStore } from "../../stores/WhiteboardStore";
 import { RecordingConfig, useClassRoomStore } from "../../stores/ClassRoomStore";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ipcAsyncByMain } from "../../utils/ipc";
-import { useAutoRun } from "../../utils/mobx";
+import { useComputed } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import "./OneToOnePage.less";
@@ -52,34 +52,23 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     const params = useParams<RouteParams<RouteNameType.OneToOnePage>>();
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
-    const whiteboardStore = useWhiteboardStore(classRoomStore.isCreator);
+    const whiteboardStore = useWhiteboardStore(true);
 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
-    useAutoRun(reaction => {
-        if (!classRoomStore.isCreator) {
-            reaction.dispose();
-            return;
-        }
-
-        // track all joiners
-        const { speakingJoiners, handRaisingJoiners, otherJoiners } = classRoomStore.users;
-
-        if (speakingJoiners.length > 0) {
-            return;
-        }
-
-        let joiner =
-            handRaisingJoiners.length > 0
-                ? handRaisingJoiners[0]
-                : otherJoiners.length > 0
-                ? otherJoiners[0]
+    const joiner = useComputed(() => {
+        if (classRoomStore.isCreator) {
+            return classRoomStore.users.speakingJoiners.length > 0
+                ? classRoomStore.users.speakingJoiners[0]
+                : classRoomStore.users.handRaisingJoiners.length > 0
+                ? classRoomStore.users.handRaisingJoiners[0]
+                : classRoomStore.users.otherJoiners.length > 0
+                ? classRoomStore.users.otherJoiners[0]
                 : null;
-
-        if (joiner) {
-            classRoomStore.onSpeak([{ userUUID: joiner.userUUID, speak: true }]);
         }
-    });
+
+        return classRoomStore.users.currentUser;
+    }).get();
 
     useEffect(() => {
         ipcAsyncByMain("set-win-size", {
@@ -87,15 +76,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             height: 700,
         });
     }, []);
-
-    // control whiteboard writable
-    useEffect(() => {
-        if (!classRoomStore.isCreator && classRoomStore.users.currentUser) {
-            whiteboardStore.updateWritable(classRoomStore.users.currentUser.isSpeak);
-        }
-        // dumb exhaustive-deps
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [classRoomStore.users.currentUser?.isSpeak]);
 
     if (
         !whiteboardStore.room ||
@@ -242,11 +222,11 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                                 updateDeviceState={classRoomStore.updateDeviceState}
                             />
                         )}
-                        {classRoomStore.users.speakingJoiners.length > 0 && (
+                        {joiner && (
                             <OneToOneAvatar
                                 isCreator={classRoomStore.isCreator}
                                 userUUID={classRoomStore.userUUID}
-                                avatarUser={classRoomStore.users.speakingJoiners[0]}
+                                avatarUser={joiner}
                                 rtcEngine={classRoomStore.rtc.rtcEngine}
                                 updateDeviceState={classRoomStore.updateDeviceState}
                             />

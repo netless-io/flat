@@ -18,6 +18,7 @@ export class GlobalStore {
     whiteboardRoomUUID: string | null = null;
     whiteboardRoomToken: string | null = null;
     rtcToken: string | null = null;
+    rtcUID: number | null = null;
     rtmToken: string | null = null;
 
     get userUUID(): string | undefined {
@@ -40,15 +41,21 @@ export class GlobalStore {
         config: Partial<
             Pick<
                 GlobalStore,
-                "whiteboardRoomUUID" | "whiteboardRoomToken" | "rtcToken" | "rtmToken"
+                "whiteboardRoomUUID" | "whiteboardRoomToken" | "rtcToken" | "rtmToken" | "rtcUID"
             >
         >,
     ): void => {
-        const keys = ["whiteboardRoomUUID", "whiteboardRoomToken", "rtcToken", "rtmToken"] as const;
+        const keys = [
+            "whiteboardRoomUUID",
+            "whiteboardRoomToken",
+            "rtcToken",
+            "rtmToken",
+            "rtcUID",
+        ] as const;
         for (const key of keys) {
             const value = config[key];
-            if (value) {
-                this[key] = value;
+            if (value !== null && value !== undefined) {
+                this[key] = value as any;
             }
         }
     };
