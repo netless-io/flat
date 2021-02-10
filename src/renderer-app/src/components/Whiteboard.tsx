@@ -46,55 +46,51 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                 <div className="zoom-controller-box">
                     <ZoomController room={room} />
                 </div>
-                {whiteboardStore.isWritable ? (
-                    <>
-                        <div className="tool-box-out">
-                            <ToolBox
-                                room={room}
-                                customerComponent={[
-                                    <OssUploadButton
-                                        oss={OSS_CONFIG}
-                                        appIdentifier={NETLESS.APP_IDENTIFIER}
-                                        sdkToken={NETLESS.SDK_TOKEN}
-                                        room={room}
-                                        whiteboardRef={whiteboardEl}
-                                    />,
-                                ]}
-                            />
-                        </div>
-                        <div className="redo-undo-box">
-                            <RedoUndo room={room} />
-                        </div>
-                        <div className="page-controller-box">
-                            <div className="page-controller-mid-box">
-                                <PageController room={room} />
-                                <div
-                                    className="page-preview-cell"
-                                    onClick={whiteboardStore.showPreviewPanel}
-                                >
-                                    <img src={pages} alt={"pages"} />
-                                </div>
+                <div className="whiteboard-writable-area">
+                    <div className="tool-box-out">
+                        <ToolBox
+                            room={room}
+                            customerComponent={[
+                                <OssUploadButton
+                                    oss={OSS_CONFIG}
+                                    appIdentifier={NETLESS.APP_IDENTIFIER}
+                                    sdkToken={NETLESS.SDK_TOKEN}
+                                    room={room}
+                                    whiteboardRef={whiteboardEl}
+                                />,
+                            ]}
+                        />
+                    </div>
+                    <div className="redo-undo-box">
+                        <RedoUndo room={room} />
+                    </div>
+                    <div className="page-controller-box">
+                        <div className="page-controller-mid-box">
+                            <PageController room={room} />
+                            <div
+                                className="page-preview-cell"
+                                onClick={whiteboardStore.showPreviewPanel}
+                            >
+                                <img src={pages} alt={"pages"} />
                             </div>
                         </div>
-                        <PreviewController
-                            handlePreviewState={whiteboardStore.setPreviewPanel}
-                            isVisible={whiteboardStore.isShowPreviewPanel}
-                            room={room}
-                        />
-                        {/*
+                    </div>
+                    <PreviewController
+                        handlePreviewState={whiteboardStore.setPreviewPanel}
+                        isVisible={whiteboardStore.isShowPreviewPanel}
+                        room={room}
+                    />
+                    {/*
                             <DocsCenter
                                 handleDocCenterState={whiteboardStore.setFileOpen}
                                 isFileOpen={whiteboardStore.isFileOpen}
                                 room={room}
                             />
                         */}
-                        <OssDropUpload room={room} oss={OSS_CONFIG}>
-                            <div ref={bindWhiteboard} className="whiteboard-box" />
-                        </OssDropUpload>
-                    </>
-                ) : (
+                </div>
+                <OssDropUpload room={room} oss={OSS_CONFIG}>
                     <div ref={bindWhiteboard} className="whiteboard-box" />
-                )}
+                </OssDropUpload>
             </div>
         )
     );

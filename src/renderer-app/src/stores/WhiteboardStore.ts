@@ -29,10 +29,11 @@ export class WhiteboardStore {
 
         reaction(
             () => this.isWritable,
-            isWritable => {
+            async isWritable => {
                 if (this.room) {
+                    await this.room.setWritable(isWritable);
                     this.room.disableDeviceInputs = !isWritable;
-                    this.room.setWritable(isWritable);
+                    this.room.disableSerialization = !isWritable;
                 }
             },
         );
@@ -113,7 +114,7 @@ export class WhiteboardStore {
             },
         );
 
-        room.disableDeviceInputs = !this.isCreator;
+        room.disableDeviceInputs = !this.isWritable;
 
         cursorAdapter.setRoom(room);
 
