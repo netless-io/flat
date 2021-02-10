@@ -21,10 +21,10 @@ export default class UserInfoMsg extends React.PureComponent<{}> {
                     <div>微信</div>
                     <div>{this.userName}</div>
                 </div>
-                <div className="user-google-info-box">
-                    <div>Google</div>
-                    <a>立即绑定</a>
-                </div>
+                {/*<div className="user-google-info-box">*/}
+                {/*    <div>Google</div>*/}
+                {/*    <a>立即绑定</a>*/}
+                {/*</div>*/}
             </div>
         );
     }
