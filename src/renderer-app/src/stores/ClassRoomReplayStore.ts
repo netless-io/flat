@@ -8,6 +8,7 @@ import { RoomItem, roomStore } from "./RoomStore";
 import { NODE_ENV } from "../constants/Process";
 import { useAutoRun } from "../utils/mobx";
 import { RoomType } from "../apiMiddleware/flatServer/constants";
+import { ipcAsyncByMain } from "../utils/ipc";
 
 export class ClassRoomReplayStore {
     readonly roomUUID: string;
@@ -311,6 +312,9 @@ export function useClassRoomReplayStore(
         const title = classRoomReplayStore.roomInfo?.title;
         if (title) {
             document.title = title;
+            ipcAsyncByMain("set-title", {
+                title: document.title,
+            });
         }
     });
 
