@@ -28,14 +28,14 @@ export function useIsUnMounted(): RefObject<boolean> {
  * setLoading(false)
  * ```
  */
-export function useSafePromise<T, E = unknown>(): (
+export function useSafePromise(): <T, E = unknown>(
     promise: PromiseLike<T>,
     /** When error occurs after the component is umounted */
     onUnmountedError?: (error: E) => void,
 ) => Promise<T> {
     const isUnMountRef = useIsUnMounted();
 
-    function safePromise(
+    function safePromise<T, E = unknown>(
         promise: PromiseLike<T>,
         onUnmountedError?: (error: E) => void,
     ): Promise<T> {
@@ -82,7 +82,7 @@ export function useAPI<P, R>(
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [result, setResult] = useState<R | null>(null);
-    const sp = useSafePromise<R>();
+    const sp = useSafePromise();
 
     const fetch = useCallback(
         async (payload: P) => {
