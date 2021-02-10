@@ -10,7 +10,7 @@ import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { OneToOneAvatar } from "./OneToOneAvatar";
-import { NetworkStatus } from "../../components/NetworkStatus";
+// import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
 import { RoomInfo } from "../../components/RoomInfo";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
@@ -134,7 +134,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     function renderTopBarLeft(): React.ReactNode {
         return (
             <>
-                <NetworkStatus />
+                {/* <NetworkStatus /> */}
                 {!classRoomStore.isCreator && (
                     <RoomInfo roomStatus={classRoomStore.roomStatus} roomType={RoomType.OneToOne} />
                 )}

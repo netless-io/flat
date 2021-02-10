@@ -11,7 +11,7 @@ import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { SmallClassAvatar } from "./SmallClassAvatar";
-import { NetworkStatus } from "../../components/NetworkStatus";
+// import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
 import { RoomInfo } from "../../components/RoomInfo";
 import { Whiteboard } from "../../components/Whiteboard";
@@ -169,7 +169,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     function renderTopBarLeft(): React.ReactNode {
         return (
             <>
-                <NetworkStatus />
+                {/* <NetworkStatus /> */}
                 {!classRoomStore.isCreator && (
                     <RoomInfo
                         roomStatus={classRoomStore.roomStatus}
