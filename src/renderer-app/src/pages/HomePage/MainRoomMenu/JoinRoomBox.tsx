@@ -48,7 +48,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
         <>
             <Button onClick={handleShowModal}>
                 <img src={joinSVG} alt="join room" />
-                加入房间
+                <span className="label">加入房间</span>
             </Button>
             <Modal
                 title="加入房间"

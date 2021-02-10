@@ -3,19 +3,29 @@
     flex-direction: row;
     align-items: center;
     font-size: 14px;
+    padding: 0 12px;
 
     .ant-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
         height: 80px;
         width: 176px;
-        margin: 24px;
+        margin: 24px 12px;
         border-radius: 16px;
         background-color: white;
         font-size: 16px;
         border-color: white;
-    }
 
-    img {
-        padding-right: 16px;
+        &:hover {
+            color: inherit;
+            border-color: white;
+            box-shadow: 0px 16px 32px 0px rgba(0, 0, 0, 0.08);
+        }
+
+        .label {
+            margin-right: 12px;
+        }
     }
 }
 
