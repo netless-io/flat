@@ -27,6 +27,7 @@ import { NODE_ENV } from "../constants/Process";
 import { useAutoRun } from "../utils/mobx";
 import { User, UserStore } from "./UserStore";
 import { WhiteboardStore } from "./WhiteboardStore";
+import { ipcAsyncByMain } from "../utils/ipc";
 
 export type { User } from "./UserStore";
 
@@ -873,6 +874,9 @@ export function useClassRoomStore(
         const title = classRoomStore.roomInfo?.title;
         if (title) {
             document.title = title;
+            ipcAsyncByMain("set-title", {
+                title: document.title,
+            });
         }
     });
 

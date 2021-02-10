@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router";
 import { message } from "antd";
 import { LastLocationProvider } from "react-router-last-location";
 import { RouteConfig, routeConfig } from "./route-config";
+import { ipcAsyncByMain } from "./utils/ipc";
 
 export class AppRoutes extends React.Component {
     public componentDidCatch(error: any): void {
@@ -28,6 +29,9 @@ export class AppRoutes extends React.Component {
                                             process.env.NODE_ENV === "development"
                                                 ? Comp.displayName ?? title
                                                 : title;
+                                        ipcAsyncByMain("set-title", {
+                                            title: document.title,
+                                        });
                                         return <Comp {...routeProps} />;
                                     }}
                                 />

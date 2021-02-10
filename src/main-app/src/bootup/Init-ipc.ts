@@ -27,6 +27,9 @@ export default (context: Context) => {
             "set-close-window": args => {
                 windows.mainState.realClose = args.close;
             },
+            "set-title": args => {
+                mainWin.setTitle(args.title);
+            },
         };
 
         const actionsSync: ipc.ActionSync = {
