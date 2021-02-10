@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { makeAutoObservable, observable, reaction } from "mobx";
+import { makeAutoObservable, observable } from "mobx";
 import { createPlugins, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk } from "white-web-sdk";
 import { videoPlugin } from "@netless/white-video-plugin";
 import { audioPlugin } from "@netless/white-audio-plugin";
@@ -26,19 +26,6 @@ export class WhiteboardStore {
         makeAutoObservable(this, {
             room: observable.ref,
         });
-
-        reaction(
-            () => this.isWritable,
-            async isWritable => {
-                if (this.room) {
-                    await this.room.setWritable(isWritable);
-                    this.room.disableDeviceInputs = !isWritable;
-                    if (isWritable) {
-                        this.room.disableSerialization = false;
-                    }
-                }
-            },
-        );
     }
 
     updateRoom = (room: Room): void => {
@@ -53,8 +40,18 @@ export class WhiteboardStore {
         this.viewMode = viewMode;
     };
 
-    updateWritable = (isWritable: boolean): void => {
+    updateWritable = async (isWritable: boolean): Promise<void> => {
+        const oldWritable = this.isWritable;
+
         this.isWritable = isWritable;
+
+        if (oldWritable !== isWritable && this.room) {
+            await this.room.setWritable(isWritable);
+            this.room.disableDeviceInputs = !isWritable;
+            if (isWritable) {
+                this.room.disableSerialization = false;
+            }
+        }
     };
 
     setFileOpen = (open: boolean): void => {
