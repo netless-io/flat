@@ -62,6 +62,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                     }
 
                     const lastRoom = index > 0 ? rooms[index - 1] : void 0;
+                    const nextRoom = index < rooms.length - 1 ? rooms[index + 1] : void 0;
 
                     // show date title when two adjacent rooms are not the same day
                     const shouldShowDate = !(
@@ -70,10 +71,18 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                         isSameDay(room.beginTime, lastRoom.beginTime)
                     );
 
+                    // show divider when two adjacent rooms are not the same day
+                    const shouldShowDivider = !(
+                        room.beginTime &&
+                        nextRoom?.beginTime &&
+                        isSameDay(room.beginTime, nextRoom.beginTime)
+                    );
+
                     return (
                         <MainRoomListItem
                             key={room.roomUUID}
                             showDate={shouldShowDate}
+                            showDivider={shouldShowDivider}
                             room={room}
                             isHistoryList={isHistoryList}
                             onJoinRoom={joinRoom}

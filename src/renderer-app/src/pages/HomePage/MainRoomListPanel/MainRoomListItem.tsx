@@ -10,6 +10,7 @@ import { MainRoomListItemMenus } from "./MainRoomListItemMenus";
 
 export interface MainRoomListItemProps {
     showDate: boolean;
+    showDivider: boolean;
     room: RoomItem;
     isHistoryList: boolean;
     onJoinRoom: (roomUUID: string) => void;
@@ -19,6 +20,7 @@ export interface MainRoomListItemProps {
 
 export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoomListItem({
     showDate,
+    showDivider,
     room,
     isHistoryList,
     onJoinRoom,
@@ -92,6 +94,7 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                     )}
                 </div>
             </div>
+            {showDivider && <div className="room-list-cell-divider" />}
         </div>
     );
 });

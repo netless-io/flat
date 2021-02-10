@@ -43,7 +43,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                 }}
             >
                 <img src={createSVG} alt="create room" />
-                创建房间
+                <span className="label">创建房间</span>
             </Button>
             <Modal
                 title="创建房间"
