@@ -191,7 +191,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                             onClick={classRoomStore.toggleRecording}
                         />
                     )}
-                {classRoomStore.isCreator && (
+                {(classRoomStore.isCreator || classRoomStore.users.currentUser?.isSpeak) && (
                     <TopBarRightBtn
                         title="Vision control"
                         icon="follow"

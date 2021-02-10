@@ -236,7 +236,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                         onClick={toggleCalling}
                     />
                 )}
-                {classRoomStore.isCreator && (
+                {(classRoomStore.isCreator || classRoomStore.users.currentUser?.isSpeak) && (
                     <TopBarRightBtn
                         title="Vision control"
                         icon="follow"
