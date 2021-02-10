@@ -29,12 +29,13 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
 }) {
     const [confirmType, setConfirmType] = useState(ExitRoomConfirmType.ExitButton);
     const [visible, setVisible] = useState(false);
-    const [isLoading, setLoading] = useState(false);
+    const [isReturnLoading, setReturnLoading] = useState(false);
+    const [isStopLoading, setStopLoading] = useState(false);
     const sp = useSafePromise();
     const pushHistory = usePushHistory();
 
     const onReturnMain = useCallback(async () => {
-        setLoading(true);
+        setReturnLoading(true);
 
         ipcAsyncByMain("set-close-window", {
             close: true,
@@ -43,7 +44,7 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
         try {
             await sp(hangClass());
         } catch (e) {
-            setLoading(false);
+            setReturnLoading(false);
             console.error(e);
             message.error(e.message);
         }
@@ -52,12 +53,12 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
     }, [pushHistory, hangClass, sp]);
 
     const onStopClass = useCallback(async () => {
-        setLoading(true);
+        setStopLoading(true);
 
         try {
             await sp(stopClass());
         } catch (e) {
-            setLoading(false);
+            setStopLoading(false);
             console.error(e);
             message.error(e.message);
         }
@@ -109,13 +110,19 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
                     <Button key="Cancel" onClick={onCancel}>
                         取消
                     </Button>,
-                    <Button key="ReturnMain" loading={isLoading} onClick={onReturnMain}>
+                    <Button
+                        key="ReturnMain"
+                        disabled={isReturnLoading || isStopLoading}
+                        loading={isReturnLoading}
+                        onClick={onReturnMain}
+                    >
                         挂起房间
                     </Button>,
                     <Button
                         key="StopClass"
                         type="primary"
-                        loading={isLoading}
+                        disabled={isReturnLoading || isStopLoading}
+                        loading={isStopLoading}
                         onClick={onStopClass}
                     >
                         结束上课
@@ -125,15 +132,15 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
                 <p>课堂正在继续，你是暂时退出挂起房间还是结束上课？</p>
             </Modal>
         ) : (
-            <Modal visible={visible} title="确认结束上课" onOk={onStopClass} onCancel={onCancel}>
+            <Modal visible={visible} title="确定结束上课" onOk={onStopClass} onCancel={onCancel}>
                 <p>
                     一旦结束上课，所有用户自动退出房间，并且自动结束课程和录制（如有），不能继续直播。
                 </p>
             </Modal>
         )
     ) : (
-        <Modal visible={visible} title="确认退出房间" onOk={onReturnMain} onCancel={onCancel}>
-            <p>课堂正在继续，确认退出房间？</p>
+        <Modal visible={visible} title="确定退出房间" onOk={onReturnMain} onCancel={onCancel}>
+            <p>课堂正在继续，确定退出房间？</p>
         </Modal>
     );
 });

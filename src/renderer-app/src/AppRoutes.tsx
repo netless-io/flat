@@ -23,8 +23,11 @@ export class AppRoutes extends React.Component {
                                     exact={true}
                                     path={path}
                                     render={routeProps => {
-                                        document.title = title;
                                         const Comp = component as React.ComponentType<any>;
+                                        document.title =
+                                            process.env.NODE_ENV === "development"
+                                                ? Comp.displayName ?? title
+                                                : title;
                                         return <Comp {...routeProps} />;
                                     }}
                                 />

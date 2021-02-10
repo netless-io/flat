@@ -21,11 +21,11 @@ export const RemoveHistoryRoomModal = observer<RemoveHistoryRoomModalProps>(
                         取消
                     </Button>,
                     <Button key="exit-confirm" danger loading={loading} onClick={onConfirm}>
-                        确认
+                        确定
                     </Button>,
                 ]}
             >
-                确认删除当前房间记录？
+                确定删除当前房间记录？
             </Modal>
         );
     },

@@ -39,7 +39,7 @@ export const routeConfig = {
         component: SplashPage,
     },
     [RouteNameType.LoginPage]: {
-        title: "Flat Login",
+        title: "Flat",
         path: "/login/",
         component: LoginPage,
     },
@@ -49,58 +49,58 @@ export const routeConfig = {
         component: HomePage,
     },
     [RouteNameType.SmallClassPage]: {
-        title: "Flat Small Class",
+        title: "小班课",
         path: "/classroom/SmallClass/:roomUUID/:ownerUUID/",
         component: SmallClassPage,
     },
     [RouteNameType.OneToOnePage]: {
-        title: "Flat Small Class",
+        title: "一对一",
         path: "/classroom/OneToOne/:roomUUID/:ownerUUID/",
         component: OneToOnePage,
     },
     [RouteNameType.BigClassPage]: {
-        title: "Flat Big Class",
+        title: "大班课",
         path: "/classroom/BigClass/:roomUUID/:ownerUUID/",
         component: BigClassPage,
     },
     [RouteNameType.RoomDetailPage]: {
-        title: "Flat Room Detail",
+        title: "房间详情",
         path: "/user/room/:roomUUID/:periodicUUID?/",
         component: RoomDetailPage,
     },
     [RouteNameType.UserScheduledPage]: {
-        title: "Flat Schedule Room",
+        title: "预定房间",
         path: "/user/scheduled/",
         component: UserScheduledPage,
     },
 
     [RouteNameType.ScheduleRoomDetailPage]: {
-        title: "Flat Scheduled Room Detail",
+        title: "周期性房间详情",
         path: "/user/scheduled/info/:periodicUUID",
         component: ScheduleRoomDetailPage,
     },
     [RouteNameType.UserInfoPage]: {
-        title: "Flat Info",
+        title: "Flat",
         path: "/info/",
         component: UserInfoPage,
     },
     [RouteNameType.UserSettingPage]: {
-        title: "Flat Setting",
+        title: "Flat",
         path: "/setting/:settingType/",
         component: UserSettingPage,
     },
     [RouteNameType.ReplayPage]: {
-        title: "Flat Replay",
+        title: "房间回放",
         path: "/replay/:roomType/:roomUUID/:ownerUUID/",
         component: ReplayPage,
     },
     [RouteNameType.ModifyOrdinaryRoomPage]: {
-        title: "Flat Modify",
+        title: "修改房间",
         path: "/modify/:roomUUID/:periodicUUID?/",
         component: ModifyOrdinaryRoomPage,
     },
     [RouteNameType.ModifyPeriodicRoomPage]: {
-        title: "Flat Modify",
+        title: "修改周期性房间",
         path: "/modify/periodic/room/:periodicUUID/",
         component: ModifyPeriodicRoomPage,
     },
