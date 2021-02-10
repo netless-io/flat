@@ -157,14 +157,14 @@ export class ClassRoomStore {
     };
 
     joinRTC = async (): Promise<void> => {
-        if (this.isCalling || !this.users.currentUser) {
+        if (this.isCalling || globalStore.rtcUID === null || globalStore.rtcUID === void 0) {
             return;
         }
 
         this.updateCalling(true);
 
         try {
-            await this.rtc.join(this.users.currentUser.rtcUID, this.rtcChannelType);
+            await this.rtc.join(globalStore.rtcUID, this.rtcChannelType);
         } catch (e) {
             console.error(e);
             this.updateCalling(false);
@@ -172,7 +172,7 @@ export class ClassRoomStore {
     };
 
     leaveRTC = async (): Promise<void> => {
-        if (!this.isCalling || !this.users.currentUser) {
+        if (!this.isCalling) {
             return;
         }
 
