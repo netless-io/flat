@@ -1,6 +1,9 @@
 .chat-user {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
     overflow: hidden;
-    text-overflow: ellipsis;
     height: 40px;
     padding: 0 16px;
     line-height: 40px;
@@ -16,6 +19,13 @@
     height: 22px;
     margin-right: 8px;
     border-radius: 50%;
+}
+
+.chat-user-name {
+    overflow: hidden;
+    display: inline-block;
+    // max-width: 50%;
+    text-overflow: ellipsis;
 }
 
 .chat-user-status {
@@ -35,9 +45,8 @@
 }
 
 .chat-user-ctl-btn {
-    float: right;
-    margin: 0;
-    padding: 0;
+    margin: 0 0 0 auto;
+    padding: 0 0 0 16px;
     border: none;
     outline: none;
     background: transparent;

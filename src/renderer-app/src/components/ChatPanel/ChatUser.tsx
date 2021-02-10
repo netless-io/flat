@@ -33,7 +33,7 @@ export const ChatUser = observer<ChatUserProps>(function ChatUser({
     return (
         <div className="chat-user">
             <img className="chat-user-avatar" src={user.avatar} alt={`User ${user.name}`} />
-            {user.name}
+            <span className="chat-user-name">{user.name}</span>
             {ownerUUID === user.userUUID ? (
                 <span className="chat-user-status is-teacher">(老师)</span>
             ) : user.isSpeak ? (
