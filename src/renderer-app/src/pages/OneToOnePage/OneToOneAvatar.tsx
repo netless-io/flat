@@ -1,5 +1,5 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
+import { Observer, observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { VideoAvatar, VideoAvatarProps } from "../../components/VideoAvatar";
 
@@ -16,22 +16,26 @@ export const OneToOneAvatar = observer<OneToOneAvatarProps>(function OneToOneAva
     return (
         <VideoAvatar {...restProps} avatarUser={avatarUser}>
             {(canvas, ctrlBtns) => (
-                <section className="one-to-one-avatar-wrap">
-                    {canvas}
-                    {!avatarUser.camera && (
-                        <div className="one-to-one-avatar-background">
-                            <img src={noCamera} alt="no camera" />
-                        </div>
+                <Observer>
+                    {() => (
+                        <section className="one-to-one-avatar-wrap">
+                            {canvas}
+                            {!avatarUser.camera && (
+                                <div className="one-to-one-avatar-background">
+                                    <img src={noCamera} alt="no camera" />
+                                </div>
+                            )}
+                            <div
+                                className={classNames("one-to-one-avatar-ctrl-layer", {
+                                    "with-video": avatarUser.camera,
+                                })}
+                            >
+                                <h1 className="one-to-one-avatar-title">{avatarUser.name}</h1>
+                                {ctrlBtns}
+                            </div>
+                        </section>
                     )}
-                    <div
-                        className={classNames("one-to-one-avatar-ctrl-layer", {
-                            "with-video": avatarUser.camera,
-                        })}
-                    >
-                        <h1 className="one-to-one-avatar-title">{avatarUser.name}</h1>
-                        {ctrlBtns}
-                    </div>
-                </section>
+                </Observer>
             )}
         </VideoAvatar>
     );

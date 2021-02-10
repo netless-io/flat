@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import type AgoraSDK from "agora-electron-sdk";
 import { observer } from "mobx-react-lite";
+import { useUpdateEffect } from "react-use";
 import { User } from "../stores/ClassRoomStore";
-import { useReaction } from "../utils/mobx";
 
 import cameraIcon from "../assets/image/camera.svg";
 import cameraDisabled from "../assets/image/camera-disabled.svg";
@@ -31,41 +31,21 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
     /** avatar element */
     const elRef = useRef<HTMLDivElement | null>(null);
 
-    useReaction(
-        () => avatarUser.camera,
-        (camera, prevCamera) => {
-            if (!elRef.current) {
-                return;
-            }
+    useUpdateEffect(() => {
+        if (userUUID === avatarUser.userUUID) {
+            rtcEngine.enableLocalVideo(avatarUser.camera);
+        } else {
+            rtcEngine.muteRemoteVideoStream(avatarUser.rtcUID, !avatarUser.camera);
+        }
+    }, [avatarUser.camera]);
 
-            if (camera !== prevCamera) {
-                if (userUUID === avatarUser.userUUID) {
-                    rtcEngine.enableLocalVideo(camera);
-                } else {
-                    rtcEngine.setupRemoteVideo(avatarUser.rtcUID, elRef.current);
-                    rtcEngine.muteRemoteVideoStream(avatarUser.rtcUID, !camera);
-                }
-            }
-        },
-    );
-
-    useReaction(
-        () => avatarUser.mic,
-        (mic, prevMic) => {
-            if (!elRef.current) {
-                return;
-            }
-
-            if (mic !== prevMic) {
-                if (userUUID === avatarUser.userUUID) {
-                    rtcEngine.enableLocalAudio(mic);
-                } else {
-                    rtcEngine.setupRemoteVideo(avatarUser.rtcUID, elRef.current);
-                    rtcEngine.muteRemoteAudioStream(avatarUser.rtcUID, !mic);
-                }
-            }
-        },
-    );
+    useUpdateEffect(() => {
+        if (userUUID === avatarUser.userUUID) {
+            rtcEngine.enableLocalAudio(avatarUser.mic);
+        } else {
+            rtcEngine.muteRemoteAudioStream(avatarUser.rtcUID, !avatarUser.mic);
+        }
+    }, [avatarUser.mic]);
 
     useEffect(
         () => () => {

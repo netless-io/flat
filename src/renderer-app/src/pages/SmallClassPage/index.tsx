@@ -155,7 +155,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     );
 
     function renderAvatars(): React.ReactNode {
-        if (!classRoomStore.users.creator) {
+        if (!classRoomStore.users.creator || !classRoomStore.isCalling) {
             return null;
         }
 
@@ -262,7 +262,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                             onClick={classRoomStore.toggleRecording}
                         />
                     )}
-                {(classRoomStore.isCreator || classRoomStore.users.currentUser?.isSpeak) && (
+                {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
                         icon="follow"
