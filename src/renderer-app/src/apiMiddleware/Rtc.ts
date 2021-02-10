@@ -93,13 +93,7 @@ export class Rtc {
             }
         }
 
-        this.rtcEngine.enableLocalVideo(false);
-        this.rtcEngine.enableLocalAudio(false);
-
         this.rtcEngine.joinChannel(token, this.roomUUID, "", rtcUID);
-
-        this.rtcEngine.muteAllRemoteVideoStreams(true);
-        this.rtcEngine.muteAllRemoteAudioStreams(true);
     }
 
     leave(): void {

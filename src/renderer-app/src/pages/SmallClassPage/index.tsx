@@ -97,7 +97,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     // control whiteboard writable
     useEffect(() => {
-        if (!classRoomStore.isCreator) {
+        if (!classRoomStore.isCreator && whiteboardStore.room) {
             if (classRoomStore.classMode === ClassModeType.Interaction) {
                 whiteboardStore.updateWritable(true);
             } else if (classRoomStore.users.currentUser) {
@@ -106,7 +106,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         }
         // dumb exhaustive-deps
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [classRoomStore.classMode, classRoomStore.users.currentUser?.isSpeak]);
+    }, [classRoomStore.classMode, whiteboardStore.room, classRoomStore.users.currentUser?.isSpeak]);
 
     // update cloud recording layout
     useAutoRun(() => {
@@ -155,7 +155,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     );
 
     function renderAvatars(): React.ReactNode {
-        if (!classRoomStore.users.creator) {
+        if (!classRoomStore.users.creator || !classRoomStore.isCalling) {
             return null;
         }
 
@@ -262,7 +262,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                             onClick={classRoomStore.toggleRecording}
                         />
                     )}
-                {(classRoomStore.isCreator || classRoomStore.users.currentUser?.isSpeak) && (
+                {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
                         icon="follow"

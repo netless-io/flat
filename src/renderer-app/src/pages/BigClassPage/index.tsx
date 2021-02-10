@@ -83,8 +83,9 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     const isVideoAvatarOn = useComputed((): boolean => {
         return Boolean(
-            classRoomStore.users.creator?.isSpeak ||
-                classRoomStore.users.speakingJoiners.length > 0,
+            classRoomStore.isCalling &&
+                (classRoomStore.users.creator?.isSpeak ||
+                    classRoomStore.users.speakingJoiners.length > 0),
         );
     }).get();
 
@@ -236,7 +237,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                         onClick={toggleCalling}
                     />
                 )}
-                {(classRoomStore.isCreator || classRoomStore.users.currentUser?.isSpeak) && (
+                {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
                         icon="follow"

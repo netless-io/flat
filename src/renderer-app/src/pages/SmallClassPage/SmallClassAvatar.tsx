@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import { observer } from "mobx-react-lite";
+import { Observer, observer } from "mobx-react-lite";
 import { VideoAvatar, VideoAvatarProps } from "../../components/VideoAvatar";
 
 import noCameraSmall from "../../assets/image/no-camera-small.svg";
@@ -13,22 +13,28 @@ export const SmallClassAvatar = observer<SmallClassAvatarProps>(function SmallCl
     return (
         <VideoAvatar {...props}>
             {(canvas, ctrlBtns) => (
-                <section
-                    className={classNames("small-class-avatar-wrap", {
-                        "with-video": props.avatarUser.camera,
-                    })}
-                >
-                    {canvas}
-                    <div className="small-class-avatar-ctrl-layer">
-                        <img
-                            className="small-class-avatar-no-camera"
-                            src={noCameraSmall}
-                            alt="no camera"
-                        />
-                        <h1 className="small-class-avatar-title">{props.avatarUser.name}</h1>
-                        {ctrlBtns}
-                    </div>
-                </section>
+                <Observer>
+                    {() => (
+                        <section
+                            className={classNames("small-class-avatar-wrap", {
+                                "with-video": props.avatarUser.camera,
+                            })}
+                        >
+                            {canvas}
+                            <div className="small-class-avatar-ctrl-layer">
+                                <img
+                                    className="small-class-avatar-no-camera"
+                                    src={noCameraSmall}
+                                    alt="no camera"
+                                />
+                                <h1 className="small-class-avatar-title">
+                                    {props.avatarUser.name}
+                                </h1>
+                                {ctrlBtns}
+                            </div>
+                        </section>
+                    )}
+                </Observer>
             )}
         </VideoAvatar>
     );
