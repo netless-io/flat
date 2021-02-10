@@ -159,6 +159,11 @@ export class ClassRoomStore {
         );
         if (configs.length > 0) {
             await this.onSpeak(configs);
+        } else {
+            // for user experience
+            return new Promise(resolve => {
+                setTimeout(resolve, 200);
+            });
         }
     };
 

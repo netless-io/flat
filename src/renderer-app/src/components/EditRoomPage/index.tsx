@@ -226,7 +226,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
     function onCancelForm(): void {
         if (form.isFieldsTouched()) {
             Modal.confirm({
-                content: "房间信息未保存，是否返回？",
+                content: "房间信息未保存，确定返回？",
                 onOk() {
                     history.goBack();
                 },

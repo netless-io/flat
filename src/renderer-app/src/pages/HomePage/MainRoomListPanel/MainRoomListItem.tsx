@@ -40,9 +40,7 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                     <div className="room-list-cell-name">{room.title}</div>
                     <div className="room-list-cell-state">
                         {<RoomStatusElement room={room} />}
-                        {!isHistoryList && room.periodicUUID && (
-                            <span className="room-list-cell-periodic">周期</span>
-                        )}
+                        {room.periodicUUID && <span className="room-list-cell-periodic">周期</span>}
                     </div>
                     <div className="room-list-cell-time">
                         <RoomListDuration beginTime={room.beginTime} endTime={room.endTime} />

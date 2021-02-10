@@ -20,7 +20,7 @@ export const ExitReplayConfirmModal = observer<ExitReplayConfirmModalProps>(
                         取消
                     </Button>,
                     <Button key="exit-confirm" onClick={onConfirm}>
-                        确认
+                        确定
                     </Button>,
                 ]}
             >
