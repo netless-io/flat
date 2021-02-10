@@ -61,7 +61,12 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     const params = useParams<RouteParams<RouteNameType.SmallClassPage>>();
 
-    const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
+    const classRoomStore = useClassRoomStore(
+        params.roomUUID,
+        params.ownerUUID,
+        recordingConfig,
+        ClassModeType.Interaction,
+    );
     const whiteboardStore = useWhiteboardStore(classRoomStore.isCreator);
 
     const { room, phase } = whiteboardStore;
@@ -92,12 +97,16 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     // control whiteboard writable
     useEffect(() => {
-        if (!classRoomStore.isCreator && classRoomStore.users.currentUser) {
-            whiteboardStore.updateWritable(classRoomStore.users.currentUser.isSpeak);
+        if (!classRoomStore.isCreator) {
+            if (classRoomStore.classMode === ClassModeType.Interaction) {
+                whiteboardStore.updateWritable(true);
+            } else if (classRoomStore.users.currentUser) {
+                whiteboardStore.updateWritable(classRoomStore.users.currentUser.isSpeak);
+            }
         }
         // dumb exhaustive-deps
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [classRoomStore.users.currentUser?.isSpeak]);
+    }, [classRoomStore.classMode, classRoomStore.users.currentUser?.isSpeak]);
 
     // update cloud recording layout
     useAutoRun(() => {

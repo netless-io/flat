@@ -26,7 +26,6 @@ import { globalStore } from "./GlobalStore";
 import { NODE_ENV } from "../constants/Process";
 import { useAutoRun } from "../utils/mobx";
 import { User, UserStore } from "./UserStore";
-import { WhiteboardStore } from "./WhiteboardStore";
 import { ipcAsyncByMain } from "../utils/ipc";
 
 export type { User } from "./UserStore";
@@ -42,7 +41,7 @@ export class ClassRoomStore {
     /** RTM messages */
     messages = observable.array<RTMessage>([]);
     /** room class mode */
-    classMode = ClassModeType.Lecture;
+    classMode: ClassModeType;
     /** is creator temporary banned room for joiner operations */
     isBan = false;
     /** is Cloud Recording on */
@@ -58,8 +57,6 @@ export class ClassRoomStore {
     readonly rtm: RTMAPI;
     readonly cloudRecording: CloudRecording;
 
-    readonly whiteboard: WhiteboardStore;
-
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
 
@@ -74,7 +71,12 @@ export class ClassRoomStore {
 
     private _collectChannelStatusTimeout?: number;
 
-    constructor(config: { roomUUID: string; ownerUUID: string; recordingConfig: RecordingConfig }) {
+    constructor(config: {
+        roomUUID: string;
+        ownerUUID: string;
+        recordingConfig: RecordingConfig;
+        classMode?: ClassModeType;
+    }) {
         if (!globalStore.userUUID) {
             throw new Error("Missing user uuid");
         }
@@ -83,13 +85,12 @@ export class ClassRoomStore {
         this.ownerUUIDFromParams = config.ownerUUID;
         this.userUUID = globalStore.userUUID;
         this.recordingConfig = config.recordingConfig;
+        this.classMode = config.classMode ?? ClassModeType.Lecture;
         this.rtcChannelType = config.recordingConfig.channelType ?? RtcChannelType.Communication;
 
         this.rtc = new RTCAPI({ roomUUID: config.roomUUID, isCreator: this.isCreator });
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
-
-        this.whiteboard = new WhiteboardStore({ isCreator: this.isCreator });
 
         makeAutoObservable<this, "_noMoreRemoteMessages" | "_collectChannelStatusTimeout">(this, {
             rtc: observable.ref,
@@ -856,9 +857,10 @@ export function useClassRoomStore(
     roomUUID: string,
     ownerUUID: string,
     recordingConfig: RecordingConfig,
+    classMode?: ClassModeType,
 ): ClassRoomStore {
     const [classRoomStore] = useState(
-        () => new ClassRoomStore({ roomUUID, ownerUUID, recordingConfig }),
+        () => new ClassRoomStore({ roomUUID, ownerUUID, recordingConfig, classMode }),
     );
 
     useAutoRun(() => {
