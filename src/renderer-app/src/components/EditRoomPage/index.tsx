@@ -180,7 +180,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
             {type !== EditRoomType.Schedule && (
                 <Modal
                     visible={isShowEditSubmitConfirm}
-                    title="修改房间"
+                    title={renderModalTitle(type)}
                     onCancel={hideEditSubmitConfirm}
                     onOk={onSubmitForm}
                     footer={[
@@ -198,11 +198,37 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                         </Button>,
                     ]}
                 >
-                    确定修改该房间？
+                    {renderModalContent(type)}
                 </Modal>
             )}
         </MainPageLayout>
     );
+
+    function renderModalTitle(editRoomType: EditRoomType): string {
+        switch (editRoomType) {
+            case EditRoomType.EditOrdinary:
+                return "修改房间";
+            case EditRoomType.EditPeriodicSub:
+                return "修改本次房间";
+            case EditRoomType.EditPeriodic:
+                return "修改周期性房间";
+            default:
+                return "修改房间";
+        }
+    }
+
+    function renderModalContent(editRoomType: EditRoomType): string {
+        switch (editRoomType) {
+            case EditRoomType.EditOrdinary:
+                return "确定修改该房间？";
+            case EditRoomType.EditPeriodicSub:
+                return "确定修改本次房间？";
+            case EditRoomType.EditPeriodic:
+                return "确定修改该系列周期性房间？";
+            default:
+                return "确定修改房间？";
+        }
+    }
 
     function onToggleIsPeriodic(e: CheckboxChangeEvent): void {
         if (e.target.checked) {
