@@ -115,6 +115,8 @@ export type RTMEvents = {
         ban: boolean;
         /** room status */
         rStatus: RoomStatus;
+        /** class mode type */
+        rMode: ClassModeType;
         /** users with non-default states */
         uStates: {
             [uuid: string]: `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${

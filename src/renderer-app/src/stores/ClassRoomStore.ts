@@ -696,6 +696,7 @@ export class ClassRoomStore {
                     value: {
                         ban: this.isBan,
                         rStatus: this.roomStatus,
+                        rMode: this.classMode,
                         uStates,
                     },
                     keepHistory: false,
@@ -813,6 +814,8 @@ export class ClassRoomStore {
         if (this.roomInfo) {
             this.roomInfo.roomStatus = status.rStatus;
         }
+
+        this.classMode = status.rMode;
 
         this.updateBanStatus(status.ban);
 
