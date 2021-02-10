@@ -12,24 +12,24 @@
     .ant-btn {
         width: 86px;
     }
-}
 
-.user-wechat-info-box {
-    margin-top: 24px;
-    &:first-child {
-        color: #7A7B7C;
-        padding-bottom: 8px;
+    > div:not(:first-child) {
+        margin-top: 24px;
     }
-    color: #444E60;
-}
 
-.user-google-info-box {
-    margin-top: 24px;
-    &:first-child {
-        color: #7A7B7C;
+    > div > div:first-child {
+        margin-top: 24px;
         padding-bottom: 8px;
+        color: #7A7B7C;
     }
-    a {
-        color: #3381FF;
+
+    .user-wechat-info-box {
+        color: #444E60;
+    }
+
+    .user-google-info-box {
+        a {
+            color: #3381FF;
+        }
     }
 }
