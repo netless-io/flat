@@ -253,7 +253,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                             onClick={classRoomStore.toggleRecording}
                         />
                     )}
-                {classRoomStore.isCreator && (
+                {(classRoomStore.isCreator || classRoomStore.users.currentUser?.isSpeak) && (
                     <TopBarRightBtn
                         title="Vision control"
                         icon="follow"
