@@ -81,14 +81,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const [mainSpeaker, setMainSpeaker] = useState<User | undefined>(speakingJoiner);
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
-    const isVideoAvatarOn = useComputed((): boolean => {
-        return Boolean(
-            classRoomStore.isCalling &&
-                (classRoomStore.users.creator?.isSpeak ||
-                    classRoomStore.users.speakingJoiners.length > 0),
-        );
-    }).get();
-
     useEffect(() => {
         ipcAsyncByMain("set-win-size", {
             width: 1200,
@@ -229,14 +221,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                             onClick={classRoomStore.toggleRecording}
                         />
                     )}
-                {classRoomStore.isCreator && (
-                    <TopBarRightBtn
-                        title="Call"
-                        icon="phone"
-                        active={classRoomStore.isCalling}
-                        onClick={toggleCalling}
-                    />
-                )}
                 {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
@@ -278,54 +262,49 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         return (
             <RealtimePanel
                 isShow={isRealtimeSideOpen}
-                isVideoOn={isVideoAvatarOn}
+                isVideoOn={Boolean(creator || speakingJoiner)}
                 videoSlot={
-                    isVideoAvatarOn && (
-                        <div
-                            className={classNames("whiteboard-rtc-box", {
-                                "with-small": speakingJoiner,
-                            })}
-                        >
-                            {creator && (
-                                <div
-                                    className={classNames("whiteboard-rtc-avatar", {
-                                        "is-small":
-                                            mainSpeaker &&
-                                            mainSpeaker.userUUID !== creator.userUUID,
-                                    })}
-                                >
-                                    <BigClassAvatar
-                                        isCreator={classRoomStore.isCreator}
-                                        userUUID={classRoomStore.userUUID}
-                                        avatarUser={creator}
-                                        rtcEngine={classRoomStore.rtc.rtcEngine}
-                                        updateDeviceState={classRoomStore.updateDeviceState}
-                                        small={
-                                            mainSpeaker && mainSpeaker.userUUID !== creator.userUUID
-                                        }
-                                        onExpand={onVideoAvatarExpand}
-                                    />
-                                </div>
-                            )}
-                            {speakingJoiner && (
-                                <div
-                                    className={classNames("whiteboard-rtc-avatar", {
-                                        "is-small": mainSpeaker !== speakingJoiner,
-                                    })}
-                                >
-                                    <BigClassAvatar
-                                        isCreator={classRoomStore.isCreator}
-                                        avatarUser={speakingJoiner}
-                                        userUUID={classRoomStore.userUUID}
-                                        rtcEngine={classRoomStore.rtc.rtcEngine}
-                                        updateDeviceState={classRoomStore.updateDeviceState}
-                                        small={mainSpeaker !== speakingJoiner}
-                                        onExpand={onVideoAvatarExpand}
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    )
+                    <div
+                        className={classNames("whiteboard-rtc-box", {
+                            "with-small": speakingJoiner,
+                        })}
+                    >
+                        {creator && (
+                            <div
+                                className={classNames("whiteboard-rtc-avatar", {
+                                    "is-small":
+                                        mainSpeaker && mainSpeaker.userUUID !== creator.userUUID,
+                                })}
+                            >
+                                <BigClassAvatar
+                                    isCreator={classRoomStore.isCreator}
+                                    userUUID={classRoomStore.userUUID}
+                                    avatarUser={creator}
+                                    rtcEngine={classRoomStore.rtc.rtcEngine}
+                                    updateDeviceState={classRoomStore.updateDeviceState}
+                                    small={mainSpeaker && mainSpeaker.userUUID !== creator.userUUID}
+                                    onExpand={onVideoAvatarExpand}
+                                />
+                            </div>
+                        )}
+                        {speakingJoiner && (
+                            <div
+                                className={classNames("whiteboard-rtc-avatar", {
+                                    "is-small": mainSpeaker !== speakingJoiner,
+                                })}
+                            >
+                                <BigClassAvatar
+                                    isCreator={classRoomStore.isCreator}
+                                    avatarUser={speakingJoiner}
+                                    userUUID={classRoomStore.userUUID}
+                                    rtcEngine={classRoomStore.rtc.rtcEngine}
+                                    updateDeviceState={classRoomStore.updateDeviceState}
+                                    small={mainSpeaker !== speakingJoiner}
+                                    onExpand={onVideoAvatarExpand}
+                                />
+                            </div>
+                        )}
+                    </div>
                 }
                 chatSlot={
                     <ChatPanel
