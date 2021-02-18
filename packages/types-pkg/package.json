@@ -8,9 +8,11 @@
   "scripts": {
     "start": "tsc",
     "build": "tsc",
-    "postinstall": "yarn run build"
+    "postinstall": "yarn run build",
+    "lint": "lint-staged"
   },
   "devDependencies": {
+    "lint-staged": "^10.5.4",
     "typescript": "^4.0.5"
   }
 }

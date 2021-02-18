@@ -26,7 +26,8 @@
     "download:agoraAddon:mac": "node ./scripts/Download-agora-addon.js --arch=x64 --platform=darwin && npm run move:agoraAddon",
     "download:agoraAddon:win": "node ./scripts/Download-agora-addon.js --arch=x86 --platform=win32 && npm run move:agoraAddon",
     "move:agoraAddon": "move-cli ./build/ ./node_modules/agora-electron-sdk/build/",
-    "postinstall": "npm run download:agoraAddon"
+    "postinstall": "npm run download:agoraAddon",
+    "lint": "lint-staged"
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",
@@ -55,6 +56,7 @@
     "fork-ts-checker-webpack-plugin": "^6.0.4",
     "fs-extra": "^9.0.1",
     "js-yaml": "^3.14.0",
+    "lint-staged": "^10.5.4",
     "move-cli": "^1.2.1",
     "nodemon": "^2.0.4",
     "prettier": "^2.1.0",
