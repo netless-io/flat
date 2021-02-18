@@ -303,7 +303,12 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 isShow={isRealtimeSideOpen}
                 isVideoOn={false}
                 videoSlot={null}
-                chatSlot={<ChatPanel classRoomStore={classRoomStore}></ChatPanel>}
+                chatSlot={
+                    <ChatPanel
+                        classRoomStore={classRoomStore}
+                        disableHandRaising={classRoomStore.classMode === ClassModeType.Interaction}
+                    ></ChatPanel>
+                }
             />
         );
     }
