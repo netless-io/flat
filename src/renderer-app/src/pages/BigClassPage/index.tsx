@@ -11,7 +11,7 @@ import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { BigClassAvatar } from "./BigClassAvatar";
-// import { NetworkStatus } from "../../components/NetworkStatus";
+import { NetworkStatus } from "../../components/NetworkStatus";
 import { RecordButton } from "../../components/RecordButton";
 import { RoomInfo } from "../../components/RoomInfo";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
@@ -172,7 +172,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     function renderTopBarLeft(): React.ReactNode {
         return (
             <>
-                {/* <NetworkStatus /> */}
+                <NetworkStatus networkQuality={classRoomStore.networkQuality} />
                 {!classRoomStore.isCreator && (
                     <RoomInfo roomStatus={classRoomStore.roomStatus} roomType={RoomType.BigClass} />
                 )}

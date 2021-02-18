@@ -27,6 +27,7 @@ import { NODE_ENV } from "../constants/Process";
 import { useAutoRun } from "../utils/mobx";
 import { User, UserStore } from "./UserStore";
 import { ipcAsyncByMain } from "../utils/ipc";
+import type { AgoraNetworkQuality, RtcStats } from "agora-electron-sdk/types/Api/native_type";
 
 export type { User } from "./UserStore";
 
@@ -48,6 +49,12 @@ export class ClassRoomStore {
     isRecording = false;
     /** is RTC on */
     isCalling = false;
+
+    networkQuality = {
+        delay: 0,
+        uplink: 0,
+        downlink: 0,
+    };
 
     readonly users: UserStore;
 
@@ -412,6 +419,9 @@ export class ClassRoomStore {
 
         channel.on("MemberJoined", this.users.addUser);
         channel.on("MemberLeft", this.users.removeUser);
+
+        this.rtc.rtcEngine.on("rtcStats", this.checkDelay);
+        this.rtc.rtcEngine.on("networkQuality", this.checkNetworkQuality);
     }
 
     async destroy(): Promise<void> {
@@ -851,6 +861,24 @@ export class ClassRoomStore {
         this.tempChannelStatus.clear();
         window.clearTimeout(this._collectChannelStatusTimeout);
     }
+
+    private checkDelay = action((stats: RtcStats): void => {
+        this.networkQuality.delay = stats.lastmileDelay;
+    });
+
+    private checkNetworkQuality = action(
+        (
+            uid: number,
+            uplinkQuality: AgoraNetworkQuality,
+            downlinkQuality: AgoraNetworkQuality,
+        ): void => {
+            if (uid === 0) {
+                // current user
+                this.networkQuality.uplink = uplinkQuality;
+                this.networkQuality.downlink = downlinkQuality;
+            }
+        },
+    );
 }
 
 export function useClassRoomStore(
