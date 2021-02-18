@@ -25,10 +25,12 @@ export class AppRoutes extends React.Component {
                                     path={path}
                                     render={routeProps => {
                                         const Comp = component as React.ComponentType<any>;
+                                        const compName = Comp.displayName || Comp.name;
                                         document.title =
-                                            process.env.NODE_ENV === "development"
-                                                ? Comp.displayName ?? title
-                                                : title;
+                                            title +
+                                            (process.env.NODE_ENV === "development" && compName
+                                                ? ` (${compName})`
+                                                : "");
                                         ipcAsyncByMain("set-title", {
                                             title: document.title,
                                         });
