@@ -1,11 +1,11 @@
 import { ipcMain, app } from "electron";
-import { ipc } from "types-pkg";
+import { main } from "types-pkg";
 import { windows } from "../storage/Windows";
 
 export default (context: Context) => {
     const mainSource = () => {
         const mainWin = context.wins.main;
-        const actionsAsync: ipc.ActionAsync = {
+        const actionsAsync: main.ipc.ActionAsync = {
             "set-win-size": args => {
                 args = {
                     autoCenter: false,
@@ -32,7 +32,7 @@ export default (context: Context) => {
             },
         };
 
-        const actionsSync: ipc.ActionSync = {
+        const actionsSync: main.ipc.ActionSync = {
             "get-runtime": () => {
                 return context.runtime;
             },

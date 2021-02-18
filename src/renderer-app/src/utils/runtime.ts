@@ -1,6 +1,6 @@
-import { runtime as runtimeInfo } from "types-pkg";
+import { main } from "types-pkg";
 
-export const runtime: runtimeInfo.Type = {
+export const runtime: main.runtime.Type = {
     isDevelopment: false,
     isProduction: false,
     startURL: "",
