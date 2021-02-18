@@ -90,6 +90,7 @@
     "html-webpack-plugin": "^4.3.0",
     "less": "^3.12.2",
     "less-loader": "^6.2.0",
+    "lint-staged": "^10.5.4",
     "minimist": "^1.2.5",
     "prettier": "^2.0.5",
     "progress-bar-webpack-plugin": "^2.1.0",
@@ -108,6 +109,7 @@
     "start": "cross-env NODE_ENV=development node ./scripts/Start.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "lint-staged"
   }
 }
