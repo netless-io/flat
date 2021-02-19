@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Button, Checkbox, message, Modal } from "antd";
 import React, { useState } from "react";
 import { roomStore } from "../../stores/RoomStore";
+import { errorTips } from "../Tips/ErrorTips";
 
 interface RemoveRoomModalProps {
     cancelModalVisible: boolean;
@@ -98,6 +99,7 @@ export const RemoveRoomModal = observer<RemoveRoomModalProps>(function RemoveRoo
             message.success(content);
         } catch (e) {
             console.error(e);
+            errorTips(e);
         }
     };
 

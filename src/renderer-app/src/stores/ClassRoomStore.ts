@@ -28,6 +28,7 @@ import { useAutoRun } from "../utils/mobx";
 import { User, UserStore } from "./UserStore";
 import { ipcAsyncByMain } from "../utils/ipc";
 import type { AgoraNetworkQuality, RtcStats } from "agora-electron-sdk/types/Api/native_type";
+import { errorTips } from "../components/Tips/ErrorTips";
 
 export type { User } from "./UserStore";
 
@@ -267,7 +268,8 @@ export class ClassRoomStore {
             this.messages.unshift(...textMessages);
         });
 
-        this.users.syncExtraUsersInfo(textMessages.map(msg => msg.userUUID));
+        // not use errorTips function (because there is no need)
+        this.users.syncExtraUsersInfo(textMessages.map(msg => msg.userUUID)).catch(console.warn);
     };
 
     /** joiner updates own camera and mic state */
@@ -417,7 +419,10 @@ export class ClassRoomStore {
 
         await this.updateHistory();
 
-        channel.on("MemberJoined", this.users.addUser);
+        channel.on("MemberJoined", userUUID => {
+            // not use errorTips function (because there is no need)
+            this.users.addUser(userUUID).catch(console.warn);
+        });
         channel.on("MemberLeft", this.users.removeUser);
 
         this.rtc.rtcEngine.on("rtcStats", this.checkDelay);
@@ -460,15 +465,15 @@ export class ClassRoomStore {
         try {
             switch (roomStatus) {
                 case RoomStatus.Started: {
-                    await startClass(this.roomUUID);
+                    await startClass(this.roomUUID).catch(errorTips);
                     break;
                 }
                 case RoomStatus.Paused: {
-                    await pauseClass(this.roomUUID);
+                    await pauseClass(this.roomUUID).catch(errorTips);
                     break;
                 }
                 case RoomStatus.Stopped: {
-                    await stopClass(this.roomUUID);
+                    await stopClass(this.roomUUID).catch(errorTips);
                     break;
                 }
                 default: {
@@ -528,6 +533,7 @@ export class ClassRoomStore {
             clearTimeout();
         } catch (e) {
             console.error(e);
+            errorTips(e);
             runInAction(() => {
                 // reset state
                 this.isRecording = false;
@@ -544,6 +550,7 @@ export class ClassRoomStore {
                 await stopRecordRoom(this.roomUUID);
             }
         } catch (e) {
+            errorTips(e);
             console.error(e);
         }
     }
@@ -561,7 +568,8 @@ export class ClassRoomStore {
             if (!this.isBan || senderId === this.ownerUUID) {
                 this.addMessage(RTMessageType.ChannelMessage, text, senderId);
                 if (!this.users.cachedUsers.has(senderId)) {
-                    this.users.syncExtraUsersInfo([senderId]);
+                    // not use errorTips function (because there is no need)
+                    this.users.syncExtraUsersInfo([senderId]).catch(console.warn);
                 }
             }
         });
@@ -902,7 +910,7 @@ export function useClassRoomStore(
     });
 
     useEffect(() => {
-        classRoomStore.init();
+        classRoomStore.init().catch(errorTips);
         return () => {
             classRoomStore.destroy();
         };

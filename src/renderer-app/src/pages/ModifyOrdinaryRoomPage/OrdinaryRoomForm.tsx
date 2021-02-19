@@ -10,6 +10,7 @@ import EditRoomPage, {
 } from "../../components/EditRoomPage";
 import LoadingPage from "../../LoadingPage";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { errorTips } from "../../components/Tips/ErrorTips";
 export interface OrdinaryRoomFormProps {
     roomUUID: string;
 }
@@ -35,7 +36,7 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
             })
             .catch(e => {
                 console.error(e);
-                message.error("无法打开修改页面");
+                errorTips(e);
                 history.goBack();
             });
         // Only listen to roomUUID
@@ -71,9 +72,9 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
             );
             message.success("修改成功");
             history.goBack();
-        } catch (error) {
-            console.error(error);
-            message.error(error.message);
+        } catch (e) {
+            console.error(e);
+            errorTips(e);
             setLoading(false);
         }
     }

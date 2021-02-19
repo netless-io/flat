@@ -18,6 +18,8 @@ import docsIconSVG from "../../assets/image/docs-icon.svg";
 import "./RoomDetailPage.less";
 import { Divider } from "antd";
 import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatusElement";
+import { joinRoomHandler } from "../utils/joinRoomHandler";
+import { errorTips } from "../../components/Tips/ErrorTips";
 
 export type RoomDetailPageProps = {};
 
@@ -33,9 +35,9 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
 
     useEffect(() => {
         if (periodicUUID) {
-            roomStore.syncPeriodicSubRoomInfo({ roomUUID, periodicUUID });
+            roomStore.syncPeriodicSubRoomInfo({ roomUUID, periodicUUID }).catch(errorTips);
         } else {
-            roomStore.syncOrdinaryRoomInfo(roomUUID);
+            roomStore.syncOrdinaryRoomInfo(roomUUID).catch(errorTips);
         }
     }, [roomStore, roomUUID, periodicUUID]);
 
@@ -168,21 +170,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
 
     async function joinRoom(): Promise<void> {
         if (roomInfo) {
-            const data = await roomStore.joinRoom(roomInfo.roomUUID);
-            // @TODO make roomType a param
-            switch (data.roomType) {
-                case RoomType.OneToOne: {
-                    pushHistory(RouteNameType.OneToOnePage, data);
-                    break;
-                }
-                case RoomType.SmallClass: {
-                    pushHistory(RouteNameType.SmallClassPage, data);
-                    break;
-                }
-                default: {
-                    pushHistory(RouteNameType.BigClassPage, data);
-                }
-            }
+            await joinRoomHandler(roomInfo.roomUUID, pushHistory);
         }
     }
 });

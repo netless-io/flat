@@ -7,6 +7,7 @@ import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 import logo from "../../assets/image/logo.svg";
 import "./SplashPage.less";
+import { errorTips } from "../../components/Tips/ErrorTips";
 
 enum LoginStatusType {
     Idle = "Idle",
@@ -37,6 +38,7 @@ export const SplashPage = observer<SplashPageProps>(function SplashPage() {
                     nextPage = RouteNameType.HomePage;
                 } catch (e) {
                     console.error(e);
+                    errorTips(e);
                 }
             }
 

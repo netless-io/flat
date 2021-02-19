@@ -17,6 +17,7 @@ import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
 import { useHistory } from "react-router-dom";
+import { errorTips } from "../../components/Tips/ErrorTips";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;
@@ -78,7 +79,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     }, []);
 
     useEffect(() => {
-        classRoomReplayStore.init(whiteboardElRef.current!, videoElRef.current!);
+        classRoomReplayStore.init(whiteboardElRef.current!, videoElRef.current!).catch(errorTips);
 
         const handleSpaceKey = (evt: KeyboardEvent): void => {
             if (evt.key === "Space") {

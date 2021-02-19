@@ -8,6 +8,8 @@ import { RoomStoreContext } from "../../../components/StoreProvider";
 import { RoomItem } from "../../../stores/RoomStore";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
 import { MainRoomListItem } from "./MainRoomListItem";
+import { errorTips } from "../../../components/Tips/ErrorTips";
+import { joinRoomHandler } from "../../utils/joinRoomHandler";
 
 export interface MainRoomListProps {
     listRoomsType: ListRoomsType;
@@ -31,7 +33,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                         setRoomUUIDs(roomUUIDs);
                     }
                 })
-                .catch(console.warn);
+                .catch(errorTips);
         }
 
         refreshRooms();
@@ -85,7 +87,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                             showDivider={shouldShowDivider}
                             room={room}
                             isHistoryList={isHistoryList}
-                            onJoinRoom={joinRoom}
+                            onJoinRoom={roomUUID => joinRoomHandler(roomUUID, pushHistory)}
                             onReplayRoom={replayRoom}
                             onRemoveRoom={() => forceRefreshRooms(e => ~e)}
                         />
@@ -94,28 +96,6 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
             )}
         </>
     );
-
-    async function joinRoom(roomUUID: string): Promise<void> {
-        const data = await roomStore.joinRoom(roomUUID);
-        // @TODO make roomType a param
-        switch (data.roomType) {
-            case RoomType.BigClass: {
-                pushHistory(RouteNameType.BigClassPage, data);
-                break;
-            }
-            case RoomType.SmallClass: {
-                pushHistory(RouteNameType.SmallClassPage, data);
-                break;
-            }
-            case RoomType.OneToOne: {
-                pushHistory(RouteNameType.OneToOnePage, data);
-                break;
-            }
-            default: {
-                console.error(new Error("failed to join room: incorrect room type"));
-            }
-        }
-    }
 
     function replayRoom(config: { roomUUID: string; ownerUUID: string; roomType: RoomType }): void {
         pushHistory(RouteNameType.ReplayPage, config);

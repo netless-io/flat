@@ -1,6 +1,4 @@
-import Axios from "axios";
-import { globalStore } from "../../stores/GlobalStore";
-import { DocsType, FLAT_SERVER_VERSIONS, RoomDoc, RoomStatus, RoomType, Week } from "./constants";
+import { DocsType, RoomDoc, RoomStatus, RoomType, Week } from "./constants";
 import { post } from "./utils";
 
 export interface CreateOrdinaryRoomPayload {
@@ -268,44 +266,56 @@ export function stopClass(roomUUID: string): Promise<StopClassResult> {
     return post<StopClassPayload, StopClassResult>("room/update-status/stopped", { roomUUID });
 }
 
-export type CancelOrdinaryRoomResult = {};
+type CancelOrdinaryRoomResult = {};
 
-export interface CancelOrdinaryRoomPayload {
+interface CancelOrdinaryRoomPayload {
     roomUUID: string;
 }
 
-export function cancelOrdinaryRoom(roomUUID: string): Promise<CancelOrdinaryRoomResult> {
+function cancelOrdinaryRoom(roomUUID: string): Promise<CancelOrdinaryRoomResult> {
     return post<CancelOrdinaryRoomPayload, CancelOrdinaryRoomResult>("room/cancel/ordinary", {
         roomUUID,
     });
 }
 
-export type CancelPeriodicRoomResult = {};
+type CancelPeriodicRoomResult = {};
 
-export interface CancelPeriodicRoomPayload {
+interface CancelPeriodicRoomPayload {
     periodicUUID: string;
 }
 
-export function cancelPeriodicRoom(periodicUUID: string): Promise<CancelPeriodicRoomResult> {
+function cancelPeriodicRoom(periodicUUID: string): Promise<CancelPeriodicRoomResult> {
     return post<CancelPeriodicRoomPayload, CancelPeriodicRoomResult>("room/cancel/periodic", {
         periodicUUID,
     });
 }
 
-export type CancelPeriodicSubRoomResult = {};
+type CancelPeriodicSubRoomResult = {};
 
-export interface CancelPeriodicSubRoomPayload {
+interface CancelPeriodicSubRoomPayload {
     roomUUID: string;
     periodicUUID: string;
 }
 
-export function cancelPeriodicSubRoom(
+function cancelPeriodicSubRoom(
     payload: CancelPeriodicSubRoomPayload,
 ): Promise<CancelPeriodicSubRoomResult> {
     return post<CancelPeriodicSubRoomPayload, CancelPeriodicSubRoomResult>(
         "room/cancel/periodic-sub-room",
         payload,
     );
+}
+
+type CancelHistoryRoomResult = {};
+
+interface CancelHistoryRoomPayload {
+    roomUUID: string;
+}
+
+function cancelHistoryRoom(roomUUID: string): Promise<CancelHistoryRoomResult> {
+    return post<CancelHistoryRoomPayload, CancelHistoryRoomResult>("room/cancel/history", {
+        roomUUID,
+    });
 }
 
 export type CancelRoomResult = {};
@@ -342,18 +352,6 @@ export function cancelRoom({
     }
 
     return;
-}
-
-export type CancelHistoryRoomResult = {};
-
-export interface CancelHistoryRoomPayload {
-    roomUUID: string;
-}
-
-export function cancelHistoryRoom(roomUUID: string): Promise<CancelHistoryRoomResult> {
-    return post<CancelHistoryRoomPayload, CancelHistoryRoomResult>("room/cancel/history", {
-        roomUUID,
-    });
 }
 
 export interface StartRecordRoomPayload {
@@ -499,18 +497,5 @@ export interface LoginCheck {
 }
 
 export async function loginCheck(): Promise<LoginCheck> {
-    const Authorization = globalStore.wechat?.token;
-    if (!Authorization) {
-        throw new Error("not login");
-    }
-    const { data } = await Axios.post<LoginCheck>(
-        `${FLAT_SERVER_VERSIONS.V1HTTPS}/login`,
-        undefined,
-        {
-            headers: {
-                Authorization: "Bearer " + Authorization,
-            },
-        },
-    );
-    return data;
+    return await post<{}, LoginCheck>("/login", {});
 }
