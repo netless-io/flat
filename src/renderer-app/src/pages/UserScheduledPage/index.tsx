@@ -39,7 +39,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
                 endType: PeriodicEndType.Rate,
                 weeks: [getDay(scheduleBeginTime)],
                 rate: 7,
-                endTime: addWeeks(addMinutes(scheduleBeginTime, 30), 6),
+                endTime: addWeeks(scheduleBeginTime, 6),
             },
         };
     });
