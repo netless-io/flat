@@ -34,7 +34,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     };
 
     useEffect(() => {
-        let ticket: number | undefined;
+        let ticket = NaN;
         if (isShowModal) {
             // wait a cycle till antd modal updated
             ticket = window.setTimeout(() => {
