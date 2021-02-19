@@ -25,8 +25,11 @@ export enum RequestErrorCode {
 }
 
 export const RequestErrorMessage = {
+    // request parameter error
     [RequestErrorCode.ParamsCheckFailed]: "参数错误",
+    // this error may occur in high concurrency situations, the request should be retried
     [RequestErrorCode.ServerFail]: "请求失败",
+    // server operation failed, possibly due to database failure or other reasons
     [RequestErrorCode.CurrentProcessFailed]: "请求出错",
     [RequestErrorCode.NotPermission]: "没有权限操作",
     [RequestErrorCode.NeedLoginAgain]: "凭证已过期，请重新登录",
