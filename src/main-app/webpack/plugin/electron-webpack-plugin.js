@@ -15,7 +15,7 @@ class ElectronWebpackPlugin {
 
     spreadStdoutAndStdErr(proc) {
         proc.stdout.pipe(process.stdout);
-        proc.stderr.pipe(process.stdout);
+        proc.stderr.pipe(process.stderr);
     }
 
     serializeScript(script) {
@@ -29,12 +29,13 @@ class ElectronWebpackPlugin {
 
     handleScript(script) {
         if (os.platform() === "win32") {
-            this.spreadStdoutAndStdErr(exec(script, this.puts));
+            const proc = exec(script, this.puts);
+            this.spreadStdoutAndStdErr(proc);
         } else {
             const { command, args } = this.serializeScript(script);
             const proc = spawn(command, args);
             proc.on("close", this.puts);
-            proc.stdout.pipe(process.stdout);
+            this.spreadStdoutAndStdErr(proc);
         }
     }
 
