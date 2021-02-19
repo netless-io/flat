@@ -3,10 +3,11 @@ import "./MainRoomMenu.less";
 import React, { FC, useContext } from "react";
 import { RoomType } from "../../../apiMiddleware/flatServer/constants";
 import { RoomStoreContext } from "../../../components/StoreProvider";
-import { RouteNameType, usePushHistory } from "../../../utils/routes";
+import { usePushHistory } from "../../../utils/routes";
 import { CreateRoomBox } from "./CreateRoomBox";
 import { JoinRoomBox } from "./JoinRoomBox";
 import { ScheduleRoomBox } from "./ScheduleRoomBox";
+import { joinRoomHandler } from "../../utils/joinRoomHandler";
 
 export interface MainRoomMenuProps {}
 
@@ -16,7 +17,7 @@ export const MainRoomMenu: FC = () => {
 
     return (
         <div className="main-room-menu-container">
-            <JoinRoomBox onJoinRoom={joinRoom} />
+            <JoinRoomBox onJoinRoom={roomUUID => joinRoomHandler(roomUUID, pushHistory)} />
             <CreateRoomBox onCreateRoom={createOrdinaryRoom} />
             <ScheduleRoomBox />
         </div>
@@ -29,29 +30,7 @@ export const MainRoomMenu: FC = () => {
             beginTime: Date.now(),
             // TODO docs:[]
         });
-        await joinRoom(roomUUID);
-    }
-
-    async function joinRoom(roomUUID: string): Promise<void> {
-        const data = await roomStore.joinRoom(roomUUID);
-        // @TODO make roomType a param
-        switch (data.roomType) {
-            case RoomType.BigClass: {
-                pushHistory(RouteNameType.BigClassPage, data);
-                break;
-            }
-            case RoomType.SmallClass: {
-                pushHistory(RouteNameType.SmallClassPage, data);
-                break;
-            }
-            case RoomType.OneToOne: {
-                pushHistory(RouteNameType.OneToOnePage, data);
-                break;
-            }
-            default: {
-                console.error(new Error("failed to join room: incorrect room type"));
-            }
-        }
+        await joinRoomHandler(roomUUID, pushHistory);
     }
 };
 

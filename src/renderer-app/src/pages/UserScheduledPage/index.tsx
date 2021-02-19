@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { message } from "antd";
 import { observer } from "mobx-react-lite";
 import { isBefore, addMinutes, roundToNearestMinutes, getDay, addWeeks } from "date-fns";
 import { RoomType } from "../../apiMiddleware/flatServer/constants";
@@ -8,6 +7,7 @@ import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProv
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import EditRoomPage, { EditRoomFormValues, EditRoomType } from "../../components/EditRoomPage";
 import { useHistory } from "react-router";
+import { errorTips } from "../../components/Tips/ErrorTips";
 
 const getInitialBeginTime = (): Date => {
     const now = new Date();
@@ -87,7 +87,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
             history.goBack();
         } catch (e) {
             console.error(e);
-            message.error(e.message);
+            errorTips(e);
             setLoading(false);
         }
     }

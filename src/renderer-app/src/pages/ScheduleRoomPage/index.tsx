@@ -24,6 +24,7 @@ import { getWeekName } from "../../utils/getTypeName";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { RemoveRoomModal } from "../../components/Modal/RemoveRoomModal";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
+import { errorTips } from "../../components/Tips/ErrorTips";
 
 const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
 const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
@@ -47,7 +48,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
         .map(roomUUID => roomStore.rooms.get(roomUUID));
 
     useEffect(() => {
-        void roomStore.syncPeriodicRoomInfo(periodicUUID);
+        roomStore.syncPeriodicRoomInfo(periodicUUID).catch(errorTips);
     }, [periodicUUID, roomStore]);
 
     if (!periodicInfo || !rooms) {
