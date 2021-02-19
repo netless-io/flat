@@ -98,7 +98,7 @@ export function renderPeriodicForm(
                     },
                 ]}
             >
-                <InputNumber min={1} max={50} onChange={onPeriodicRateChanged} />
+                <InputNumber min={1} max={50} precision={0} onChange={onPeriodicRateChanged} />
             </Form.Item>
         ) : (
             <Form.Item
