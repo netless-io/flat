@@ -1,6 +1,6 @@
 import createSVG from "../../../assets/image/creat.svg";
 
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form, message } from "antd";
 import { RoomType } from "../../../apiMiddleware/flatServer/constants";
@@ -25,13 +25,29 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const [isLoading, setLoading] = useState(false);
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
-    const hasInputAutoSelectedRef = useRef(false);
+    const roomTitleInputRef = useRef<Input>(null);
 
     const defaultValues: CreateRoomFormValues = {
         roomTitle: globalStore.wechat?.name ? `${globalStore.wechat.name}创建的房间` : "",
         roomType: RoomType.BigClass,
         autoCameraOn: configStore.autoCameraOn,
     };
+
+    useEffect(() => {
+        let ticket: number | undefined;
+        if (isShowModal) {
+            // wait a cycle till antd modal updated
+            ticket = window.setTimeout(() => {
+                if (roomTitleInputRef.current) {
+                    roomTitleInputRef.current.focus();
+                    roomTitleInputRef.current.select();
+                }
+            }, 0);
+        }
+        return () => {
+            window.clearTimeout(ticket);
+        };
+    }, [isShowModal]);
 
     return (
         <>
@@ -83,19 +99,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                             { max: 50, message: "主题最多为 50 个字符" },
                         ]}
                     >
-                        <Input
-                            placeholder="请输入房间主题"
-                            ref={input => {
-                                if (hasInputAutoSelectedRef.current) {
-                                    return;
-                                }
-                                if (input) {
-                                    input.focus();
-                                    input.select();
-                                    hasInputAutoSelectedRef.current = true;
-                                }
-                            }}
-                        />
+                        <Input placeholder="请输入房间主题" ref={roomTitleInputRef} />
                     </Form.Item>
                     <Form.Item name="roomType" label="类型">
                         <RoomTypeSelect />
