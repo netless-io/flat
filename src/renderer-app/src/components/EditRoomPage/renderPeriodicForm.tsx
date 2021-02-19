@@ -98,7 +98,7 @@ export function renderPeriodicForm(
                     },
                 ]}
             >
-                <InputNumber min={1} max={50} precision={0} onChange={onPeriodicRateChanged} />
+                <InputNumber min={1} max={50} onChange={onPeriodicRateChanged} />
             </Form.Item>
         ) : (
             <Form.Item
@@ -141,10 +141,10 @@ export function renderPeriodicForm(
             const {
                 beginTime,
                 periodic,
-            }: Pick<
-                EditRoomFormValues,
-                "beginTime" | "endTime" | "periodic"
-            > = form.getFieldsValue(["beginTime", "periodic"]);
+            }: Pick<EditRoomFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
+                "beginTime",
+                "periodic",
+            ]);
             syncPeriodicEndAmount(form, beginTime, { ...periodic, rate });
         }
     }
