@@ -1,5 +1,29 @@
-.iframe-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.wechat-login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.wechat-login-iframe {
+    position: relative;
+    z-index: 1;
+    height: 333px;
+    transform: scale(0.7) translateY(-80px);
+    margin-bottom: -100px;
+}
+
+.wechat-login-spin {
+    width: 190px;
+    height: 190px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    margin: auto;
+    background: #f3f6f9;
 }
