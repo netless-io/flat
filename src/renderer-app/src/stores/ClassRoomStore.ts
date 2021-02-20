@@ -26,7 +26,7 @@ import { globalStore } from "./GlobalStore";
 import { NODE_ENV } from "../constants/Process";
 import { useAutoRun } from "../utils/mobx";
 import { User, UserStore } from "./UserStore";
-import { ipcAsyncByMain } from "../utils/ipc";
+import { ipcAsyncByMainWindow } from "../utils/ipc";
 import type { AgoraNetworkQuality, RtcStats } from "agora-electron-sdk/types/Api/native_type";
 import { errorTips } from "../components/Tips/ErrorTips";
 
@@ -903,7 +903,7 @@ export function useClassRoomStore(
         const title = classRoomStore.roomInfo?.title;
         if (title) {
             document.title = title;
-            ipcAsyncByMain("set-title", {
+            ipcAsyncByMainWindow("set-title", {
                 title: document.title,
             });
         }

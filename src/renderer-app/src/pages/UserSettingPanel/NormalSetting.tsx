@@ -3,7 +3,7 @@ import "./NormalSetting.less";
 import { Radio, Checkbox, Button } from "antd";
 import { useHistory } from "react-router";
 import { observer } from "mobx-react-lite";
-import { ipcAsyncByMain, ipcSyncByMain } from "../../utils/ipc";
+import { ipcAsyncByApp, ipcSyncByApp } from "../../utils/ipc";
 
 // enum NoticeInterval {
 //     FiveMinutes,
@@ -31,7 +31,7 @@ export const NormalSetting = observer(function NormalSetting() {
     // };
 
     useEffect(() => {
-        ipcSyncByMain("get-open-at-login")
+        ipcSyncByApp("get-open-at-login")
             .then(data => {
                 setOpenAtLogin(data);
             })
@@ -42,7 +42,7 @@ export const NormalSetting = observer(function NormalSetting() {
 
     const toggleOpenAtLogin = (): void => {
         setOpenAtLogin(!openAtLogin);
-        ipcAsyncByMain("set-open-at-login", {
+        ipcAsyncByApp("set-open-at-login", {
             isOpenAtLogin: !openAtLogin,
         });
     };

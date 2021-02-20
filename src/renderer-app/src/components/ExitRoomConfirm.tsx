@@ -3,8 +3,8 @@ import { Button, message, Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { RouteNameType, usePushHistory } from "../utils/routes";
-import { ipcAsyncByMain, ipcReceiveByMain, ipcReceiveRemoveByMain } from "../utils/ipc";
 import { useSafePromise } from "../utils/hooks/lifecycle";
+import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../utils/ipc";
 
 export enum ExitRoomConfirmType {
     StopClassButton,
@@ -37,8 +37,8 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
     const onReturnMain = useCallback(async () => {
         setReturnLoading(true);
 
-        ipcAsyncByMain("set-close-window", {
-            close: true,
+        ipcAsyncByMainWindow("disable-window", {
+            disable: false,
         });
 
         try {
@@ -81,19 +81,19 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
     );
 
     useEffect(() => {
-        ipcAsyncByMain("set-close-window", {
-            close: false,
+        ipcAsyncByMainWindow("disable-window", {
+            disable: true,
         });
-        ipcReceiveByMain("window-will-close", () => {
+        ipcReceive("window-will-close", () => {
             confirm(ExitRoomConfirmType.ExitButton);
         });
 
         return () => {
-            ipcAsyncByMain("set-close-window", {
-                close: true,
+            ipcAsyncByMainWindow("disable-window", {
+                disable: false,
             });
 
-            ipcReceiveRemoveByMain("window-will-close");
+            ipcReceiveRemove("window-will-close");
         };
     }, [confirm]);
 

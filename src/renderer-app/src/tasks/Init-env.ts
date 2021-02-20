@@ -1,10 +1,10 @@
 import { runtime } from "../utils/runtime";
-import { ipcSyncByMain } from "../utils/ipc";
+import { ipcSyncByApp } from "../utils/ipc";
 
 const initEnv = async (): Promise<void> => {
     const runtimeKeys = Object.keys(runtime);
 
-    const result = await ipcSyncByMain("get-runtime");
+    const result = await ipcSyncByApp("get-runtime");
 
     runtimeKeys.forEach(key => {
         // @ts-ignore
