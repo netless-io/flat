@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { LoadingOutlined } from "@ant-design/icons";
 import { io } from "socket.io-client";
+import { v4 as uuidv4 } from "uuid";
 import { QRURL } from "../utils/wechatUrl";
 import { setWechatInfo, setUserUuid } from "../utils/localStorage/accounts";
 import { RouteNameType, usePushHistory } from "../utils/routes";
@@ -30,7 +31,7 @@ export const WeChatLogin = observer(function WeChatLogin() {
     useEffect(() => {
         const socket = io(FLAT_SERVER_LOGIN.WSS_LOGIN, { transports: ["websocket"] });
 
-        const uuid = Math.random().toString(36).substring(2);
+        const uuid = uuidv4();
 
         socket.on("connect", () => {
             socket.emit("WeChat/AuthID", { uuid });
