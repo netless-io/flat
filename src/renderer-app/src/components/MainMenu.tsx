@@ -56,7 +56,14 @@ export const MainMenu = React.memo<MainMenuProps>(function MainMenu() {
         <Menu className="menu-container" defaultSelectedKeys={[selectedKey]}>
             {MainMenuItems.map(({ routeName, title, icon, iconActive, href }) => (
                 <Menu.Item
-                    icon={<img src={selectedKey === routeName ? iconActive : icon} alt={title} />}
+                    icon={
+                        <img
+                            width={44}
+                            height={44}
+                            src={selectedKey === routeName ? iconActive : icon}
+                            alt={title}
+                        />
+                    }
                     key={routeName}
                 >
                     <Link to={href}>

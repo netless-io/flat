@@ -159,3 +159,20 @@
 .room-list-under {
     height: 16px;
 }
+
+.main-room-list-skeletons {
+    padding: 0 24px;
+
+    & > * {
+        padding-top: 16px;
+        border-bottom: 1px solid #dbe1ea;
+
+        &:last-of-type {
+            border-bottom: none;
+        }
+    }
+
+    .ant-skeleton-paragraph > * {
+        border-radius: 6px !important;
+    }
+}
