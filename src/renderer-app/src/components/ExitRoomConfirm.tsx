@@ -47,7 +47,7 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
         } catch (e) {
             setReturnLoading(false);
             console.error(e);
-            errorTips(e.message);
+            errorTips(e);
         }
 
         pushHistory(RouteNameType.HomePage);
@@ -61,7 +61,7 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
         } catch (e) {
             setStopLoading(false);
             console.error(e);
-            errorTips(e.message);
+            errorTips(e);
         }
     }, [stopClass, sp]);
 
