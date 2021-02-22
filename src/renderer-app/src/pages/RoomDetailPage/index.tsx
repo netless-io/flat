@@ -123,7 +123,12 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                         <div className="user-room-detail">
                             <div className="user-room-inf">
                                 <div className="user-room-docs-title">
-                                    <img src={homeIconGraySVG} alt={"home_icon_gray"} />
+                                    <img
+                                        width={22}
+                                        height={22}
+                                        src={homeIconGraySVG}
+                                        alt={"home_icon_gray"}
+                                    />
                                     <span>房间号</span>
                                 </div>
                                 <div
@@ -135,7 +140,12 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                             </div>
                             <div className="user-room-inf">
                                 <div className="user-room-docs-title">
-                                    <img src={roomTypeSVG} alt={"room_type"} />
+                                    <img
+                                        width={22}
+                                        height={22}
+                                        src={roomTypeSVG}
+                                        alt={"room_type"}
+                                    />
                                     <span>房间类型</span>
                                 </div>
                                 <div className="user-room-docs-right">
@@ -144,14 +154,24 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                             </div>
                             <div className="user-room-docs">
                                 <div className="user-room-docs-title">
-                                    <img src={docsIconSVG} alt={"docs_icon"} />
+                                    <img
+                                        width={22}
+                                        height={22}
+                                        src={docsIconSVG}
+                                        alt={"docs_icon"}
+                                    />
                                     <span>课件.xxx (动态)</span>
                                 </div>
                                 <div className="user-room-docs-set">缓存</div>
                             </div>
                             <div className="user-room-docs">
                                 <div className="user-room-docs-title">
-                                    <img src={docsIconSVG} alt={"docs_icon"} />
+                                    <img
+                                        width={22}
+                                        height={22}
+                                        src={docsIconSVG}
+                                        alt={"docs_icon"}
+                                    />
                                     <span>课件.xxx (动态)</span>
                                 </div>
                                 <div className="user-room-docs-set">缓存</div>

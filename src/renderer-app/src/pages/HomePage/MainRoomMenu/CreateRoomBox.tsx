@@ -77,7 +77,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                         type="primary"
                         loading={isLoading}
                         onClick={handleOk}
-                        disabled={isLoading || !isFormValidated}
+                        disabled={!isFormValidated}
                     >
                         创建
                     </Button>,

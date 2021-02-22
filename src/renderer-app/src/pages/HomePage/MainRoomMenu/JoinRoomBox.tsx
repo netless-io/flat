@@ -67,7 +67,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                         type="primary"
                         loading={isLoading}
                         onClick={handleOk}
-                        disabled={isLoading || !isFormValidated}
+                        disabled={!isFormValidated}
                     >
                         加入
                     </Button>,

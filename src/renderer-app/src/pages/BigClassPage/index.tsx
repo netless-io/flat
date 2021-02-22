@@ -21,10 +21,15 @@ import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusSto
 import LoadingPage from "../../LoadingPage";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { useWhiteboardStore } from "../../stores/WhiteboardStore";
-import { RecordingConfig, useClassRoomStore, User } from "../../stores/ClassRoomStore";
+import {
+    RecordingConfig,
+    RoomStatusLoadingType,
+    useClassRoomStore,
+    User,
+} from "../../stores/ClassRoomStore";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ipcAsyncByMainWindow } from "../../utils/ipc";
-import { useAutoRun, useComputed, useReaction } from "../../utils/mobx";
+import { useAutoRun, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import "./BigClassPage.less";
@@ -178,34 +183,47 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         }
 
         switch (classRoomStore.roomStatus) {
-            case RoomStatus.Started:
+            case RoomStatus.Started: {
                 return (
                     <>
                         <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.pauseClass}>
-                            暂停上课
+                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Pausing
+                                ? "暂停中..."
+                                : "暂停上课"}
                         </TopBarRoundBtn>
                         <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
-                            结束上课
+                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
+                                ? "结束中..."
+                                : "结束上课"}
                         </TopBarRoundBtn>
                     </>
                 );
-            case RoomStatus.Paused:
+            }
+            case RoomStatus.Paused: {
                 return (
                     <>
                         <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.resumeClass}>
-                            恢复上课
+                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
+                                ? "开始中..."
+                                : "恢复上课"}
                         </TopBarRoundBtn>
                         <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
-                            结束上课
+                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
+                                ? "结束中..."
+                                : "结束上课"}
                         </TopBarRoundBtn>
                     </>
                 );
-            default:
+            }
+            default: {
                 return (
                     <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
-                        开始上课
+                        {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
+                            ? "开始中..."
+                            : "开始上课"}
                     </TopBarRoundBtn>
                 );
+            }
         }
     }
 
@@ -340,27 +358,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 ? speakingJoiner
                 : classRoomStore.users.creator ?? void 0,
         );
-    }
-
-    async function toggleCalling(): Promise<void> {
-        if (!classRoomStore.users.currentUser) {
-            return;
-        }
-
-        const speakConfigs: Array<{ userUUID: string; speak: boolean }> = [
-            { userUUID: classRoomStore.userUUID, speak: !classRoomStore.users.currentUser.isSpeak },
-        ];
-
-        if (classRoomStore.users.currentUser.isSpeak) {
-            speakConfigs.push(
-                ...classRoomStore.users.speakingJoiners.map(user => ({
-                    userUUID: user.userUUID,
-                    speak: false,
-                })),
-            );
-        }
-
-        classRoomStore.onSpeak(speakConfigs);
     }
 
     function stopClass(): void {
