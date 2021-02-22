@@ -36,6 +36,13 @@ export type RecordingConfig = Required<
     CloudRecordStartPayload["agoraData"]["clientRequest"]
 >["recordingConfig"];
 
+export enum RoomStatusLoadingType {
+    Null,
+    Starting,
+    Pausing,
+    Stopping,
+}
+
 export class ClassRoomStore {
     readonly roomUUID: string;
     /** User uuid of the current user */
@@ -50,6 +57,8 @@ export class ClassRoomStore {
     isRecording = false;
     /** is RTC on */
     isCalling = false;
+
+    roomStatusLoading = RoomStatusLoadingType.Null;
 
     networkQuality = {
         delay: 0,
@@ -452,7 +461,7 @@ export class ClassRoomStore {
     }
 
     private async switchRoomStatus(roomStatus: RoomStatus): Promise<void> {
-        if (!this.isCreator) {
+        if (!this.isCreator || this.roomStatusLoading !== RoomStatusLoadingType.Null) {
             return;
         }
 
@@ -460,20 +469,21 @@ export class ClassRoomStore {
             throw new Error("Room not ready!");
         }
 
-        const oldRoomStatus = this.roomInfo.roomStatus;
-
         try {
             switch (roomStatus) {
                 case RoomStatus.Started: {
-                    await startClass(this.roomUUID).catch(errorTips);
+                    this.updateRoomStatusLoading(RoomStatusLoadingType.Starting);
+                    await startClass(this.roomUUID);
                     break;
                 }
                 case RoomStatus.Paused: {
-                    await pauseClass(this.roomUUID).catch(errorTips);
+                    this.updateRoomStatusLoading(RoomStatusLoadingType.Pausing);
+                    await pauseClass(this.roomUUID);
                     break;
                 }
                 case RoomStatus.Stopped: {
-                    await stopClass(this.roomUUID).catch(errorTips);
+                    this.updateRoomStatusLoading(RoomStatusLoadingType.Stopping);
+                    await stopClass(this.roomUUID);
                     break;
                 }
                 default: {
@@ -481,20 +491,24 @@ export class ClassRoomStore {
                 }
             }
 
-            await this.rtm.sendCommand({
-                type: RTMessageType.RoomStatus,
-                value: roomStatus,
-                keepHistory: true,
-            });
+            try {
+                await this.rtm.sendCommand({
+                    type: RTMessageType.RoomStatus,
+                    value: roomStatus,
+                    keepHistory: true,
+                });
+            } catch (e) {
+                console.error(e);
+            }
 
             // update room status finally
             // so that the component won't unmount before sending commands
             this.updateRoomStatus(roomStatus);
         } catch (e) {
-            // @TODO handle error
+            errorTips(e);
             console.error(e);
-            this.updateRoomStatus(oldRoomStatus);
         }
+        this.updateRoomStatusLoading(RoomStatusLoadingType.Null);
     }
 
     /** Add the new message to message list */
@@ -821,6 +835,10 @@ export class ClassRoomStore {
 
     private updateBanStatus = (isBan: boolean): void => {
         this.isBan = isBan;
+    };
+
+    private updateRoomStatusLoading = (loading: RoomStatusLoadingType): void => {
+        this.roomStatusLoading = loading;
     };
 
     private updateChannelStatus(): void {
