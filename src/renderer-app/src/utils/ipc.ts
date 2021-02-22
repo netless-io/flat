@@ -1,33 +1,70 @@
-import { main } from "types-pkg";
+import { ipc } from "types-pkg";
 import { ipcRenderer } from "electron";
+import { constants } from "types-pkg";
 
-export const ipcAsyncByMain = <T extends keyof main.ipc.ActionAsync>(
-    action: T,
-    args: Parameters<main.ipc.ActionAsync[T]>[0],
-): void => {
-    ipcRenderer.send("mainSource", {
-        actions: action,
-        args,
-    });
+const ipcAsync = (windowName: constants.WindowsName) => {
+    return <T extends keyof ipc.WindowActionAsync>(
+        action: T,
+        args: Parameters<ipc.WindowActionAsync[T]>[0],
+    ): void => {
+        ipcRenderer.send(windowName, {
+            actions: action,
+            args,
+        });
+    };
 };
 
-export const ipcSyncByMain = <
-    T extends keyof main.ipc.ActionSync,
-    U extends Parameters<main.ipc.ActionSync[T]>[0]
+export const ipcAsyncByMainWindow = <
+    T extends keyof ipc.WindowActionAsync,
+    U extends Parameters<ipc.WindowActionAsync[T]>[0]
+>(
+    action: T,
+    args: U,
+): void => {
+    ipcAsync(constants.WindowsName.Main)(action, args);
+};
+
+export const ipcAsyncByMainClass = <
+    T extends keyof ipc.WindowActionAsync,
+    U extends Parameters<ipc.WindowActionAsync[T]>[0]
+>(
+    action: T,
+    args: U,
+): void => {
+    ipcAsync(constants.WindowsName.Class)(action, args);
+};
+
+export const ipcAsyncByMainReplay = <
+    T extends keyof ipc.WindowActionAsync,
+    U extends Parameters<ipc.WindowActionAsync[T]>[0]
+>(
+    action: T,
+    args: U,
+): void => {
+    ipcAsync(constants.WindowsName.Replay)(action, args);
+};
+
+export const ipcAsyncByApp = <
+    T extends keyof ipc.AppActionAsync,
+    U extends Parameters<ipc.AppActionAsync[T]>[0]
 >(
     action: T,
     args?: U,
-): Promise<ReturnType<main.ipc.ActionSync[T]>> => {
-    return ipcRenderer.invoke("mainSource", {
-        actions: action,
-        args,
-    });
+): void => {
+    ipcRenderer.send(action, args);
 };
 
-export const ipcReceiveByMain = <
-    T extends keyof main.ipc.EmitEvents,
-    U extends main.ipc.EmitEvents[T]
+export const ipcSyncByApp = <
+    T extends keyof ipc.AppActionSync,
+    U extends Parameters<ipc.AppActionSync[T]>[0]
 >(
+    action: T,
+    args?: U,
+): Promise<ReturnType<ipc.AppActionSync[T]>> => {
+    return ipcRenderer.invoke(action, args);
+};
+
+export const ipcReceive = <T extends keyof ipc.EmitEvents, U extends ipc.EmitEvents[T]>(
     action: T,
     callback: (args: U) => void,
 ): void => {
@@ -36,6 +73,6 @@ export const ipcReceiveByMain = <
     });
 };
 
-export const ipcReceiveRemoveByMain = <T extends keyof main.ipc.EmitEvents>(action: T): void => {
+export const ipcReceiveRemove = <T extends keyof ipc.EmitEvents>(action: T): void => {
     ipcRenderer.removeAllListeners(action);
 };

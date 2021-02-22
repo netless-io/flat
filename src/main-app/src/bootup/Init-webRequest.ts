@@ -1,15 +1,16 @@
 import { session } from "electron";
 import fs from "fs-extra";
 import path from "path";
+import runtime from "../utils/Runtime";
 
-export default (context: Context) => {
+export default () => {
     const filter = {
         urls: ["https://convertcdn.netless.link/*"],
     };
 
     session.defaultSession.webRequest.onBeforeRequest(filter, (details, callback) => {
         const p = details.url.replace("https://convertcdn.netless.link/", "");
-        const localPath = path.join(context.runtime.downloadsDirectory, p);
+        const localPath = path.join(runtime.downloadsDirectory, p);
 
         // 如果文件存在，则替换原有请求，使用本地资源进行加载
         if (fs.existsSync(localPath)) {

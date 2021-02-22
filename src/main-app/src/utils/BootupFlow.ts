@@ -1,6 +1,5 @@
-export default async <C extends Context>(context: C, itemNames: ((c: C) => any)[]) => {
+export default async (itemNames: (() => any)[]) => {
     for (const item of itemNames) {
-        await item(context);
+        await item();
     }
-    return context;
 };

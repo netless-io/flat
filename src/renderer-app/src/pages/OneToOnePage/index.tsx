@@ -22,7 +22,7 @@ import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { useWhiteboardStore } from "../../stores/WhiteboardStore";
 import { RecordingConfig, useClassRoomStore } from "../../stores/ClassRoomStore";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
-import { ipcAsyncByMain } from "../../utils/ipc";
+import { ipcAsyncByMainWindow } from "../../utils/ipc";
 import { useComputed } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 
@@ -71,7 +71,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     }).get();
 
     useEffect(() => {
-        ipcAsyncByMain("set-win-size", {
+        ipcAsyncByMainWindow("set-win-size", {
             width: 1200,
             height: 700,
         });

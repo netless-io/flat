@@ -1,7 +1,7 @@
 import path from "path";
 import { app } from "electron";
 import { platform } from "os";
-import { main } from "types-pkg";
+import { runtime as Runtime } from "types-pkg";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
@@ -32,7 +32,7 @@ const appVersion = isProduction ? app.getVersion() : require("../../package.json
 
 const downloadsDirectory = path.join(app.getPath("userData"), "downloads");
 
-const runtime: main.runtime.Type = {
+const runtime: Runtime.Type = {
     isDevelopment,
     isProduction,
     startURL,

@@ -19,7 +19,7 @@ import ExitRoomConfirm, { ExitRoomConfirmType } from "../../components/ExitRoomC
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import LoadingPage from "../../LoadingPage";
 
-import { ipcAsyncByMain } from "../../utils/ipc";
+import { ipcAsyncByMainWindow } from "../../utils/ipc";
 import { useAutoRun, useComputed } from "../../utils/mobx";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ClassModeType } from "../../apiMiddleware/Rtm";
@@ -89,7 +89,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     });
 
     useEffect(() => {
-        ipcAsyncByMain("set-win-size", {
+        ipcAsyncByMainWindow("set-win-size", {
             width: 1200,
             height: 700,
         });

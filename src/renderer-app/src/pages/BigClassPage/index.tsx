@@ -23,7 +23,7 @@ import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { useWhiteboardStore } from "../../stores/WhiteboardStore";
 import { RecordingConfig, useClassRoomStore, User } from "../../stores/ClassRoomStore";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
-import { ipcAsyncByMain } from "../../utils/ipc";
+import { ipcAsyncByMainWindow } from "../../utils/ipc";
 import { useAutoRun, useComputed, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 
@@ -82,7 +82,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
     useEffect(() => {
-        ipcAsyncByMain("set-win-size", {
+        ipcAsyncByMainWindow("set-win-size", {
             width: 1200,
             height: 700,
         });

@@ -3,8 +3,8 @@ module.exports = {
     plugins: ["prettier", "@typescript-eslint"],
     parserOptions: {
         project: "./tsconfig.json",
-        "ecmaVersion": 7,
-        "sourceType": "module"
+        ecmaVersion: 7,
+        sourceType: "module",
     },
     extends: [
         "eslint:recommended",
@@ -86,6 +86,7 @@ module.exports = {
         "prettier/prettier": "error",
         "@typescript-eslint/restrict-template-expressions": "off",
         "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
         "no-use-before-define": "off",
     },
 };
