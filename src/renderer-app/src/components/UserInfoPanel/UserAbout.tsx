@@ -14,7 +14,7 @@ export default class UserAbout extends React.PureComponent {
                     </div>
                 </div>
                 <div className="check-update-footer">
-                    © 2020 Netless 沪 ICP 备 19010127 号 - 2 沪公网安备 31011002004621 号
+                    © 2020 沪 ICP 备 14053584 号 上海兆言网络科技有限公司
                 </div>
             </div>
         );
