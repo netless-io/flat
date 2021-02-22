@@ -56,6 +56,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                         <Skeleton
                             key={i}
                             active
+                            round
                             title={false}
                             paragraph={{ rows: 4, width: ["13%", "50%", "13%", "13%"] }}
                         />
