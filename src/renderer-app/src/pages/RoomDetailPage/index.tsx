@@ -1,25 +1,25 @@
+import backSVG from "../../assets/image/back.svg";
+import homeIconGraySVG from "../../assets/image/home-icon-gray.svg";
+import roomTypeSVG from "../../assets/image/room-type.svg";
+// import docsIconSVG from "../../assets/image/docs-icon.svg";
+import "./RoomDetailPage.less";
+
 import React, { useContext, useEffect } from "react";
-import { format } from "date-fns";
+import { format, formatDistanceStrict } from "date-fns";
+import { Divider } from "antd";
+import { observer } from "mobx-react-lite";
 import { zhCN } from "date-fns/locale";
 import { Link, useParams } from "react-router-dom";
 import MainPageLayout from "../../components/MainPageLayout";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
-import { observer } from "mobx-react-lite";
 import { generateRoutePath, RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import LoadingPage from "../../LoadingPage";
 import { useComputed } from "../../utils/mobx";
-import { RoomDetailFooter } from "./RoomDetailFooter";
-
-import backSVG from "../../assets/image/back.svg";
-import homeIconGraySVG from "../../assets/image/home-icon-gray.svg";
-import roomTypeSVG from "../../assets/image/room-type.svg";
-import docsIconSVG from "../../assets/image/docs-icon.svg";
-import "./RoomDetailPage.less";
-import { Divider } from "antd";
 import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatusElement";
 import { joinRoomHandler } from "../utils/joinRoomHandler";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { RoomDetailFooter } from "./RoomDetailFooter";
 
 export type RoomDetailPageProps = {};
 
@@ -102,12 +102,20 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                                     </div>
                                 </div>
                             )}
-                            <div className="user-room-time-mid">
-                                <div className="user-room-time-during">1 小时</div>
-                                <div className="user-room-time-state">
-                                    <RoomStatusElement room={roomInfo} />
+                            {roomInfo.endTime && roomInfo.beginTime && (
+                                <div className="user-room-time-mid">
+                                    <div className="user-room-time-during">
+                                        {formatDistanceStrict(
+                                            roomInfo.endTime,
+                                            roomInfo.beginTime,
+                                            { locale: zhCN },
+                                        )}
+                                    </div>
+                                    <div className="user-room-time-state">
+                                        <RoomStatusElement room={roomInfo} />
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                             {formattedEndTime && (
                                 <div className="user-room-time-box">
                                     <div className="user-room-time-number">
