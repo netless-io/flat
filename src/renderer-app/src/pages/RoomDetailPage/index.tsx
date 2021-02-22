@@ -152,7 +152,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                                     {roomTypeLocale(roomInfo.roomType)}
                                 </div>
                             </div>
-                            <div className="user-room-docs">
+                            {/* <div className="user-room-docs">
                                 <div className="user-room-docs-title">
                                     <img
                                         width={22}
@@ -175,7 +175,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                                     <span>课件.xxx (动态)</span>
                                 </div>
                                 <div className="user-room-docs-set">缓存</div>
-                            </div>
+                            </div> */}
                         </div>
                         <RoomDetailFooter
                             isCreator={isCreator}

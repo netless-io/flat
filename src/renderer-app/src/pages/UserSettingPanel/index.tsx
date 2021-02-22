@@ -49,15 +49,15 @@ export default function UserSettingPage(): React.ReactElement {
                 <Menu.Item key={SettingMenuKey.NormalSetting}>
                     <Link to="/setting/normal/">常规设置</Link>
                 </Menu.Item>
-                <Menu.Item key={SettingMenuKey.RoomSetting}>
+                {/* <Menu.Item key={SettingMenuKey.RoomSetting}>
                     <Link to="/setting/room/">房间设置</Link>
-                </Menu.Item>
+                </Menu.Item> */}
                 <Menu.Item key={SettingMenuKey.HotKeySetting}>
                     <Link to="/setting/hotkey/">热键设置</Link>
                 </Menu.Item>
-                <Menu.Item key={SettingMenuKey.FileSetting}>
+                {/* <Menu.Item key={SettingMenuKey.FileSetting}>
                     <Link to="/setting/file/">文件设置</Link>
-                </Menu.Item>
+                </Menu.Item> */}
                 <SubMenu title="设备检测" key="DeviceTesting">
                     <Menu.Item key={SettingMenuKey.SystemTesting}>
                         <Link to="/setting/system/">系统检测</Link>
@@ -179,7 +179,11 @@ export default function UserSettingPage(): React.ReactElement {
             );
         } else {
             return (
-                <Button type="primary" onClick={() => showResultModal(false)} className="user-setting-modal-button">
+                <Button
+                    type="primary"
+                    onClick={() => showResultModal(false)}
+                    className="user-setting-modal-button"
+                >
                     确定
                 </Button>
             );

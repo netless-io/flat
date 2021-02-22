@@ -84,9 +84,11 @@ export const NormalSetting = observer(function NormalSetting() {
                 {/*<Checkbox>开启预订通知提醒声音</Checkbox>*/}
                 <div className="select-language">
                     <span>语言设置</span>
-                    <Radio.Group>
+                    <Radio.Group defaultValue={SelectLanguage.Chinese}>
                         <Radio value={SelectLanguage.Chinese}>中文</Radio>
-                        <Radio value={SelectLanguage.English}>English</Radio>
+                        <Radio disabled value={SelectLanguage.English}>
+                            English
+                        </Radio>
                     </Radio.Group>
                     <Button danger onClick={quitAccount}>
                         退出登录
