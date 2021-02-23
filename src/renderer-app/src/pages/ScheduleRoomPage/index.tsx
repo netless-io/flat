@@ -20,10 +20,12 @@ import { RoomStoreContext } from "../../components/StoreProvider";
 import LoadingPage from "../../LoadingPage";
 import { globalStore } from "../../stores/GlobalStore";
 import { RoomItem } from "../../stores/RoomStore";
-import { getWeekName } from "../../utils/getTypeName";
+import { getRoomTypeName, getWeekName } from "../../utils/getTypeName";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { RemoveRoomModal } from "../../components/Modal/RemoveRoomModal";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
+import { errorTips } from "../../components/Tips/ErrorTips";
+import { getWeekNames } from "../../components/WeekRateSelector";
 
 const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
 const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
@@ -47,7 +49,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
         .map(roomUUID => roomStore.rooms.get(roomUUID));
 
     useEffect(() => {
-        void roomStore.syncPeriodicRoomInfo(periodicUUID);
+        roomStore.syncPeriodicRoomInfo(periodicUUID).catch(errorTips);
     }, [periodicUUID, roomStore]);
 
     if (!periodicInfo || !rooms) {
@@ -183,13 +185,14 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                 <div className="schedule-room-body">
                     <div className="schedule-room-mid">
                         <div className="schedule-room-tips">
-                            <div className="schedule-room-tips-title">每周六</div>
+                            <div className="schedule-room-tips-title">
+                                每{getWeekNames(periodicInfo.periodic.weeks)}
+                            </div>
                             <div className="schedule-room-tips-type">
-                                房间类型： {periodicInfo.periodic.roomType}
+                                房间类型：{getRoomTypeName(periodicInfo.periodic.roomType)}
                             </div>
                             <div className="schedule-room-tips-inner">
-                                结束于 {dayWeekFormat(periodicInfo.periodic.endTime)} ，共
-                                {rooms.length}个房间
+                                结束于 {dayWeekFormat(periodicInfo.periodic.endTime)} ，共 {rooms.length} 个房间
                             </div>
                         </div>
                         <div className="schedule-btn-list">

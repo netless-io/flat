@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, message, Modal } from "antd";
+import { Button, Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 import { RouteNameType, usePushHistory } from "../utils/routes";
-import { ipcAsyncByMain, ipcReceiveByMain, ipcReceiveRemoveByMain } from "../utils/ipc";
 import { useSafePromise } from "../utils/hooks/lifecycle";
+import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../utils/ipc";
+import { errorTips } from "./Tips/ErrorTips";
 
 export enum ExitRoomConfirmType {
     StopClassButton,
@@ -37,8 +38,8 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
     const onReturnMain = useCallback(async () => {
         setReturnLoading(true);
 
-        ipcAsyncByMain("set-close-window", {
-            close: true,
+        ipcAsyncByMainWindow("disable-window", {
+            disable: false,
         });
 
         try {
@@ -46,7 +47,7 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
         } catch (e) {
             setReturnLoading(false);
             console.error(e);
-            message.error(e.message);
+            errorTips(e);
         }
 
         pushHistory(RouteNameType.HomePage);
@@ -60,7 +61,7 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
         } catch (e) {
             setStopLoading(false);
             console.error(e);
-            message.error(e.message);
+            errorTips(e);
         }
     }, [stopClass, sp]);
 
@@ -81,19 +82,19 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
     );
 
     useEffect(() => {
-        ipcAsyncByMain("set-close-window", {
-            close: false,
+        ipcAsyncByMainWindow("disable-window", {
+            disable: true,
         });
-        ipcReceiveByMain("window-will-close", () => {
+        ipcReceive("window-will-close", () => {
             confirm(ExitRoomConfirmType.ExitButton);
         });
 
         return () => {
-            ipcAsyncByMain("set-close-window", {
-                close: true,
+            ipcAsyncByMainWindow("disable-window", {
+                disable: false,
             });
 
-            ipcReceiveRemoveByMain("window-will-close");
+            ipcReceiveRemove("window-will-close");
         };
     }, [confirm]);
 
@@ -110,18 +111,12 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
                     <Button key="Cancel" onClick={onCancel}>
                         取消
                     </Button>,
-                    <Button
-                        key="ReturnMain"
-                        disabled={isReturnLoading || isStopLoading}
-                        loading={isReturnLoading}
-                        onClick={onReturnMain}
-                    >
+                    <Button key="ReturnMain" loading={isReturnLoading} onClick={onReturnMain}>
                         挂起房间
                     </Button>,
                     <Button
                         key="StopClass"
                         type="primary"
-                        disabled={isReturnLoading || isStopLoading}
                         loading={isStopLoading}
                         onClick={onStopClass}
                     >
@@ -132,7 +127,13 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
                 <p>课堂正在继续，你是暂时退出挂起房间还是结束上课？</p>
             </Modal>
         ) : (
-            <Modal visible={visible} title="确定结束上课" onOk={onStopClass} onCancel={onCancel}>
+            <Modal
+                visible={visible}
+                title="确定结束上课"
+                okButtonProps={{ loading: isStopLoading }}
+                onOk={onStopClass}
+                onCancel={onCancel}
+            >
                 <p>
                     一旦结束上课，所有用户自动退出房间，并且自动结束课程和录制（如有），不能继续直播。
                 </p>

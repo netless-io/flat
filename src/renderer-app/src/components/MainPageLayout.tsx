@@ -19,7 +19,7 @@ export default class MainPageLayout extends React.PureComponent<MainPageLayoutPr
             <div className="layout-container">
                 <div className="layout-container-menu">
                     <div className="layout-container-header">
-                        <img src={this.userAvatar} alt="avatar" />
+                        <img width={40} height={40} src={this.userAvatar} alt="avatar" />
                     </div>
                     <MainMenu />
                 </div>

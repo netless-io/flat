@@ -19,14 +19,19 @@ import ExitRoomConfirm, { ExitRoomConfirmType } from "../../components/ExitRoomC
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import LoadingPage from "../../LoadingPage";
 
-import { ipcAsyncByMain } from "../../utils/ipc";
+import { ipcAsyncByMainWindow } from "../../utils/ipc";
 import { useAutoRun, useComputed } from "../../utils/mobx";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ClassModeType } from "../../apiMiddleware/Rtm";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { AgoraCloudRecordLayoutConfigItem } from "../../apiMiddleware/flatServer/agora";
 import { useWhiteboardStore } from "../../stores/WhiteboardStore";
-import { RecordingConfig, useClassRoomStore, User } from "../../stores/ClassRoomStore";
+import {
+    RecordingConfig,
+    RoomStatusLoadingType,
+    useClassRoomStore,
+    User,
+} from "../../stores/ClassRoomStore";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import "./SmallClassPage.less";
@@ -89,7 +94,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     });
 
     useEffect(() => {
-        ipcAsyncByMain("set-win-size", {
+        ipcAsyncByMainWindow("set-win-size", {
             width: 1200,
             height: 700,
         });
@@ -217,36 +222,49 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         }
 
         switch (classRoomStore.roomStatus) {
-            case RoomStatus.Started:
+            case RoomStatus.Started: {
                 return (
                     <>
                         {renderClassMode()}
                         <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.pauseClass}>
-                            暂停上课
+                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Pausing
+                                ? "暂停中..."
+                                : "暂停上课"}
                         </TopBarRoundBtn>
                         <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
-                            结束上课
+                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
+                                ? "结束中..."
+                                : "结束上课"}
                         </TopBarRoundBtn>
                     </>
                 );
-            case RoomStatus.Paused:
+            }
+            case RoomStatus.Paused: {
                 return (
                     <>
                         {renderClassMode()}
                         <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.resumeClass}>
-                            恢复上课
+                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
+                                ? "开始中..."
+                                : "恢复上课"}
                         </TopBarRoundBtn>
                         <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
-                            结束上课
+                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
+                                ? "结束中..."
+                                : "结束上课"}
                         </TopBarRoundBtn>
                     </>
                 );
-            default:
+            }
+            default: {
                 return (
                     <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
-                        开始上课
+                        {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
+                            ? "开始中..."
+                            : "开始上课"}
                     </TopBarRoundBtn>
                 );
+            }
         }
     }
 

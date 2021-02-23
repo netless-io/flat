@@ -13,6 +13,7 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { periodicRoomInfo, updatePeriodicRoom } from "../../apiMiddleware/flatServer";
 import { getEndTimeFromRate, getRateFromEndTime } from "../../components/EditRoomPage/utils";
 import LoadingPage from "../../LoadingPage";
+import { errorTips } from "../../components/Tips/ErrorTips";
 
 type ModifyPeriodicRoomPageProps = {
     periodicUUID: string;
@@ -62,7 +63,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                 })
                 .catch(e => {
                     console.error(e);
-                    message.error("无法打开修改页面");
+                    errorTips(e);
                     history.goBack();
                 });
             // Only listen to roomUUID
@@ -108,9 +109,9 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                 );
                 message.success("修改成功");
                 history.goBack();
-            } catch (error) {
-                console.error(error);
-                message.error(error.message);
+            } catch (e) {
+                console.error(e);
+                errorTips(e);
                 setLoading(false);
             }
         }

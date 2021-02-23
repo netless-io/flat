@@ -1,6 +1,7 @@
 import { app, Menu, MenuItemConstructorOptions } from "electron";
+import runtime from "../utils/Runtime";
 
-export default (context: Context) => {
+export default () => {
     const appByMacMenu: IMenu = {
         label: app.name,
         submenu: [
@@ -20,7 +21,7 @@ export default (context: Context) => {
         label: "File",
         submenu: [{ role: "close" }],
     };
-    if (context.runtime.isWin) {
+    if (runtime.isWin) {
         fileMenu.submenu = [{ role: "quit" }];
     }
 
@@ -35,7 +36,7 @@ export default (context: Context) => {
             { role: "paste" },
         ],
     };
-    if (context.runtime.isWin) {
+    if (runtime.isWin) {
         editMenu.submenu.push({ role: "delete" }, { type: "separator" }, { role: "selectAll" });
     } else {
         editMenu.submenu.push(
@@ -54,7 +55,7 @@ export default (context: Context) => {
         label: "Window",
         submenu: [{ role: "minimize" }, { role: "zoom" }],
     };
-    if (context.runtime.isWin) {
+    if (runtime.isWin) {
         windowMenu.submenu.push({ role: "close" });
     } else {
         windowMenu.submenu.push(
@@ -85,7 +86,7 @@ export default (context: Context) => {
         windowMenu,
     ];
 
-    if (context.runtime.isMac) {
+    if (runtime.isMac) {
         template.unshift(appByMacMenu);
     }
 

@@ -1,23 +1,25 @@
+import backSVG from "../../assets/image/back.svg";
+import homeIconGraySVG from "../../assets/image/home-icon-gray.svg";
+import roomTypeSVG from "../../assets/image/room-type.svg";
+// import docsIconSVG from "../../assets/image/docs-icon.svg";
+import "./RoomDetailPage.less";
+
 import React, { useContext, useEffect } from "react";
-import { format } from "date-fns";
+import { format, formatDistanceStrict } from "date-fns";
+import { Divider } from "antd";
+import { observer } from "mobx-react-lite";
 import { zhCN } from "date-fns/locale";
 import { Link, useParams } from "react-router-dom";
 import MainPageLayout from "../../components/MainPageLayout";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
-import { observer } from "mobx-react-lite";
 import { generateRoutePath, RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import LoadingPage from "../../LoadingPage";
 import { useComputed } from "../../utils/mobx";
-import { RoomDetailFooter } from "./RoomDetailFooter";
-
-import backSVG from "../../assets/image/back.svg";
-import homeIconGraySVG from "../../assets/image/home-icon-gray.svg";
-import roomTypeSVG from "../../assets/image/room-type.svg";
-import docsIconSVG from "../../assets/image/docs-icon.svg";
-import "./RoomDetailPage.less";
-import { Divider } from "antd";
 import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatusElement";
+import { joinRoomHandler } from "../utils/joinRoomHandler";
+import { errorTips } from "../../components/Tips/ErrorTips";
+import { RoomDetailFooter } from "./RoomDetailFooter";
 
 export type RoomDetailPageProps = {};
 
@@ -33,9 +35,9 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
 
     useEffect(() => {
         if (periodicUUID) {
-            roomStore.syncPeriodicSubRoomInfo({ roomUUID, periodicUUID });
+            roomStore.syncPeriodicSubRoomInfo({ roomUUID, periodicUUID }).catch(errorTips);
         } else {
-            roomStore.syncOrdinaryRoomInfo(roomUUID);
+            roomStore.syncOrdinaryRoomInfo(roomUUID).catch(errorTips);
         }
     }, [roomStore, roomUUID, periodicUUID]);
 
@@ -100,12 +102,20 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                                     </div>
                                 </div>
                             )}
-                            <div className="user-room-time-mid">
-                                <div className="user-room-time-during">1 小时</div>
-                                <div className="user-room-time-state">
-                                    <RoomStatusElement room={roomInfo} />
+                            {roomInfo.endTime && roomInfo.beginTime && (
+                                <div className="user-room-time-mid">
+                                    <div className="user-room-time-during">
+                                        {formatDistanceStrict(
+                                            roomInfo.endTime,
+                                            roomInfo.beginTime,
+                                            { locale: zhCN },
+                                        )}
+                                    </div>
+                                    <div className="user-room-time-state">
+                                        <RoomStatusElement room={roomInfo} />
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                             {formattedEndTime && (
                                 <div className="user-room-time-box">
                                     <div className="user-room-time-number">
@@ -121,7 +131,12 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                         <div className="user-room-detail">
                             <div className="user-room-inf">
                                 <div className="user-room-docs-title">
-                                    <img src={homeIconGraySVG} alt={"home_icon_gray"} />
+                                    <img
+                                        width={22}
+                                        height={22}
+                                        src={homeIconGraySVG}
+                                        alt={"home_icon_gray"}
+                                    />
                                     <span>房间号</span>
                                 </div>
                                 <div
@@ -133,27 +148,42 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                             </div>
                             <div className="user-room-inf">
                                 <div className="user-room-docs-title">
-                                    <img src={roomTypeSVG} alt={"room_type"} />
+                                    <img
+                                        width={22}
+                                        height={22}
+                                        src={roomTypeSVG}
+                                        alt={"room_type"}
+                                    />
                                     <span>房间类型</span>
                                 </div>
                                 <div className="user-room-docs-right">
                                     {roomTypeLocale(roomInfo.roomType)}
                                 </div>
                             </div>
-                            <div className="user-room-docs">
+                            {/* <div className="user-room-docs">
                                 <div className="user-room-docs-title">
-                                    <img src={docsIconSVG} alt={"docs_icon"} />
+                                    <img
+                                        width={22}
+                                        height={22}
+                                        src={docsIconSVG}
+                                        alt={"docs_icon"}
+                                    />
                                     <span>课件.xxx (动态)</span>
                                 </div>
                                 <div className="user-room-docs-set">缓存</div>
                             </div>
                             <div className="user-room-docs">
                                 <div className="user-room-docs-title">
-                                    <img src={docsIconSVG} alt={"docs_icon"} />
+                                    <img
+                                        width={22}
+                                        height={22}
+                                        src={docsIconSVG}
+                                        alt={"docs_icon"}
+                                    />
                                     <span>课件.xxx (动态)</span>
                                 </div>
                                 <div className="user-room-docs-set">缓存</div>
-                            </div>
+                            </div> */}
                         </div>
                         <RoomDetailFooter
                             isCreator={isCreator}
@@ -168,21 +198,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
 
     async function joinRoom(): Promise<void> {
         if (roomInfo) {
-            const data = await roomStore.joinRoom(roomInfo.roomUUID);
-            // @TODO make roomType a param
-            switch (data.roomType) {
-                case RoomType.OneToOne: {
-                    pushHistory(RouteNameType.OneToOnePage, data);
-                    break;
-                }
-                case RoomType.SmallClass: {
-                    pushHistory(RouteNameType.SmallClassPage, data);
-                    break;
-                }
-                default: {
-                    pushHistory(RouteNameType.BigClassPage, data);
-                }
-            }
+            await joinRoomHandler(roomInfo.roomUUID, pushHistory);
         }
     }
 });

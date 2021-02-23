@@ -26,14 +26,22 @@ import { globalStore } from "./GlobalStore";
 import { NODE_ENV } from "../constants/Process";
 import { useAutoRun } from "../utils/mobx";
 import { User, UserStore } from "./UserStore";
-import { ipcAsyncByMain } from "../utils/ipc";
+import { ipcAsyncByMainWindow } from "../utils/ipc";
 import type { AgoraNetworkQuality, RtcStats } from "agora-electron-sdk/types/Api/native_type";
+import { errorTips } from "../components/Tips/ErrorTips";
 
 export type { User } from "./UserStore";
 
 export type RecordingConfig = Required<
     CloudRecordStartPayload["agoraData"]["clientRequest"]
 >["recordingConfig"];
+
+export enum RoomStatusLoadingType {
+    Null,
+    Starting,
+    Pausing,
+    Stopping,
+}
 
 export class ClassRoomStore {
     readonly roomUUID: string;
@@ -49,6 +57,8 @@ export class ClassRoomStore {
     isRecording = false;
     /** is RTC on */
     isCalling = false;
+
+    roomStatusLoading = RoomStatusLoadingType.Null;
 
     networkQuality = {
         delay: 0,
@@ -267,7 +277,8 @@ export class ClassRoomStore {
             this.messages.unshift(...textMessages);
         });
 
-        this.users.syncExtraUsersInfo(textMessages.map(msg => msg.userUUID));
+        // not use errorTips function (because there is no need)
+        this.users.syncExtraUsersInfo(textMessages.map(msg => msg.userUUID)).catch(console.warn);
     };
 
     /** joiner updates own camera and mic state */
@@ -417,7 +428,10 @@ export class ClassRoomStore {
 
         await this.updateHistory();
 
-        channel.on("MemberJoined", this.users.addUser);
+        channel.on("MemberJoined", userUUID => {
+            // not use errorTips function (because there is no need)
+            this.users.addUser(userUUID).catch(console.warn);
+        });
         channel.on("MemberLeft", this.users.removeUser);
 
         this.rtc.rtcEngine.on("rtcStats", this.checkDelay);
@@ -447,7 +461,7 @@ export class ClassRoomStore {
     }
 
     private async switchRoomStatus(roomStatus: RoomStatus): Promise<void> {
-        if (!this.isCreator) {
+        if (!this.isCreator || this.roomStatusLoading !== RoomStatusLoadingType.Null) {
             return;
         }
 
@@ -455,19 +469,20 @@ export class ClassRoomStore {
             throw new Error("Room not ready!");
         }
 
-        const oldRoomStatus = this.roomInfo.roomStatus;
-
         try {
             switch (roomStatus) {
                 case RoomStatus.Started: {
+                    this.updateRoomStatusLoading(RoomStatusLoadingType.Starting);
                     await startClass(this.roomUUID);
                     break;
                 }
                 case RoomStatus.Paused: {
+                    this.updateRoomStatusLoading(RoomStatusLoadingType.Pausing);
                     await pauseClass(this.roomUUID);
                     break;
                 }
                 case RoomStatus.Stopped: {
+                    this.updateRoomStatusLoading(RoomStatusLoadingType.Stopping);
                     await stopClass(this.roomUUID);
                     break;
                 }
@@ -476,20 +491,24 @@ export class ClassRoomStore {
                 }
             }
 
-            await this.rtm.sendCommand({
-                type: RTMessageType.RoomStatus,
-                value: roomStatus,
-                keepHistory: true,
-            });
+            try {
+                await this.rtm.sendCommand({
+                    type: RTMessageType.RoomStatus,
+                    value: roomStatus,
+                    keepHistory: true,
+                });
+            } catch (e) {
+                console.error(e);
+            }
 
             // update room status finally
             // so that the component won't unmount before sending commands
             this.updateRoomStatus(roomStatus);
         } catch (e) {
-            // @TODO handle error
+            errorTips(e);
             console.error(e);
-            this.updateRoomStatus(oldRoomStatus);
         }
+        this.updateRoomStatusLoading(RoomStatusLoadingType.Null);
     }
 
     /** Add the new message to message list */
@@ -528,6 +547,7 @@ export class ClassRoomStore {
             clearTimeout();
         } catch (e) {
             console.error(e);
+            errorTips(e);
             runInAction(() => {
                 // reset state
                 this.isRecording = false;
@@ -544,6 +564,7 @@ export class ClassRoomStore {
                 await stopRecordRoom(this.roomUUID);
             }
         } catch (e) {
+            errorTips(e);
             console.error(e);
         }
     }
@@ -561,7 +582,8 @@ export class ClassRoomStore {
             if (!this.isBan || senderId === this.ownerUUID) {
                 this.addMessage(RTMessageType.ChannelMessage, text, senderId);
                 if (!this.users.cachedUsers.has(senderId)) {
-                    this.users.syncExtraUsersInfo([senderId]);
+                    // not use errorTips function (because there is no need)
+                    this.users.syncExtraUsersInfo([senderId]).catch(console.warn);
                 }
             }
         });
@@ -815,6 +837,10 @@ export class ClassRoomStore {
         this.isBan = isBan;
     };
 
+    private updateRoomStatusLoading = (loading: RoomStatusLoadingType): void => {
+        this.roomStatusLoading = loading;
+    };
+
     private updateChannelStatus(): void {
         const status = [...this.tempChannelStatus.values()].find(Boolean);
 
@@ -895,14 +921,14 @@ export function useClassRoomStore(
         const title = classRoomStore.roomInfo?.title;
         if (title) {
             document.title = title;
-            ipcAsyncByMain("set-title", {
+            ipcAsyncByMainWindow("set-title", {
                 title: document.title,
             });
         }
     });
 
     useEffect(() => {
-        classRoomStore.init();
+        classRoomStore.init().catch(errorTips);
         return () => {
             classRoomStore.destroy();
         };

@@ -1,12 +1,16 @@
-import React from "react";
-import { io, Socket } from "socket.io-client";
-import { QRURL } from "../utils/wechatUrl";
 import "./WeChatLogin.less";
-import { RouteComponentProps, withRouter } from "react-router";
+
+import React, { useContext, useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { LoadingOutlined } from "@ant-design/icons";
+import { io } from "socket.io-client";
+import { v4 as uuidv4 } from "uuid";
+import { QRURL } from "../utils/wechatUrl";
 import { setWechatInfo, setUserUuid } from "../utils/localStorage/accounts";
-import { ipcAsyncByMain } from "../utils/ipc";
+import { RouteNameType, usePushHistory } from "../utils/routes";
 import { FLAT_SERVER_LOGIN, Status } from "../apiMiddleware/flatServer/constants";
-import { globalStore } from "../stores/GlobalStore";
+import { NODE_ENV } from "../constants/Process";
+import { GlobalStoreContext } from "./StoreProvider";
 
 export interface WeChatLoginResponse {
     status: Status;
@@ -19,52 +23,30 @@ export interface WeChatLoginResponse {
     };
 }
 
-export type WeChatLoginStates = {
-    uuid: string;
-    ws: Socket;
-    QRURL: string;
-};
+export const WeChatLogin = observer(function WeChatLogin() {
+    const globalStore = useContext(GlobalStoreContext);
+    const [qrCodeURL, setQRCodeURL] = useState("");
+    const pushHistory = usePushHistory();
 
-class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates> {
-    public constructor(props: RouteComponentProps) {
-        super(props);
-        const ws = io(FLAT_SERVER_LOGIN.WSS_LOGIN, {
-            transports: ["websocket"],
-        });
-        const uuid = Math.random().toString(36).substring(2);
-        this.state = {
-            uuid,
-            ws,
-            QRURL: "",
-        };
-    }
+    useEffect(() => {
+        const socket = io(FLAT_SERVER_LOGIN.WSS_LOGIN, { transports: ["websocket"] });
 
-    public joinRoom = (): void => {
-        ipcAsyncByMain("set-win-size", {
-            width: 1200,
-            height: 668,
-            autoCenter: true,
-        });
-        this.props.history.push("/user/");
-    };
-
-    public WeChatLoginFlow(): void {
-        const { ws: socket, uuid } = this.state;
+        const uuid = uuidv4();
 
         socket.on("connect", () => {
-            socket.emit("WeChat/AuthID", {
-                uuid,
-            });
+            socket.emit("WeChat/AuthID", { uuid });
         });
 
         socket.on("WeChat/AuthID", (data: { status: Status; code: number }) => {
             if (data.status === 0) {
-                this.setState({
-                    QRURL: QRURL(this.state.ws.id, uuid),
-                });
-                console.log("server 已经收到，开始展示二维码");
+                setQRCodeURL(QRURL(socket.id, uuid));
+                if (NODE_ENV === "development") {
+                    console.log("server 已经收到，开始展示二维码");
+                }
             } else {
-                console.log(`server 出现问题，请重试。错误代码：${data.code}`);
+                if (NODE_ENV === "development") {
+                    console.log(`server 出现问题，请重试。错误代码：${data.code}`);
+                }
             }
         });
 
@@ -75,51 +57,49 @@ class WeChatLogin extends React.Component<RouteComponentProps, WeChatLoginStates
                 case Status.Success: {
                     setWechatInfo(data);
                     setUserUuid(data.userUUID);
-                    // @TODO useContext
                     globalStore.updateWechat(data);
-                    console.log("登陆成功", data);
-                    this.joinRoom();
+                    if (NODE_ENV === "development") {
+                        console.log("登陆成功", data);
+                    }
+                    pushHistory(RouteNameType.HomePage);
                     break;
                 }
                 case Status.AuthFailed: {
-                    console.log(`认证失败，请重试。错误代码：${code}`);
+                    if (NODE_ENV === "development") {
+                        console.log(`认证失败，请重试。错误代码：${code}`);
+                    }
                     break;
                 }
                 case Status.Process: {
-                    console.log("正在处理");
+                    if (NODE_ENV === "development") {
+                        console.log("正在处理");
+                    }
                     break;
                 }
                 default:
                     break;
             }
         });
-    }
 
-    public componentDidMount(): void {
-        this.WeChatLoginFlow();
-    }
+        return () => {
+            socket.disconnect();
+        };
+    }, [globalStore, pushHistory]);
 
-    public componentWillUnmount(): void {
-        this.state.ws.disconnect();
-    }
-
-    public render(): React.ReactNode {
-        return (
-            <div className="iframe-container">
-                <iframe
-                    title="wechat"
-                    style={{
-                        height: 333,
-                        transform: "scale(0.7) translateY(-80px)",
-                        marginBottom: -100,
-                    }}
-                    src={this.state.QRURL}
-                    scrolling="no"
-                    frameBorder="0"
-                ></iframe>
+    return (
+        <div className="wechat-login-container">
+            <iframe
+                className="wechat-login-iframe"
+                title="wechat"
+                src={qrCodeURL}
+                scrolling="no"
+                frameBorder="0"
+            />
+            <div className="wechat-login-spin">
+                <LoadingOutlined spin />
             </div>
-        );
-    }
-}
+        </div>
+    );
+});
 
-export default withRouter(WeChatLogin);
+export default WeChatLogin;

@@ -1,23 +1,23 @@
 import React from "react";
 import "./UserInfoContent.less";
-import { TabMap } from "../../UserInfoPage";
+import { MenuMap } from "../../UserInfoPage";
 
 export type UserInfoContentProps = {
-    userInfo: TabMap;
-    checkUpdate: TabMap;
-    suggest: TabMap;
-    about: TabMap;
+    userInfo: MenuMap;
+    checkUpdate: MenuMap;
+    suggest: MenuMap;
+    about: MenuMap;
 };
 
 export default class UserInfoContent extends React.PureComponent<
-    { tab: TabMap },
+    { menu: MenuMap },
     UserInfoContentProps
 > {
     public render(): JSX.Element {
         return (
             <div className="info-content-container">
                 <div className="info-content-header">
-                    <span>{this.props.tab}</span>
+                    <span>{this.props.menu}</span>
                 </div>
                 <div className="info-content-inner">{this.props.children}</div>
             </div>

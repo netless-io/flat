@@ -1,6 +1,8 @@
 import Axios, { AxiosRequestConfig } from "axios";
 import { globalStore } from "../../stores/GlobalStore";
 import { FLAT_SERVER_VERSIONS, Status } from "./constants";
+import { ServerRequestError } from "../../utils/error/ServerRequestError";
+import { RequestErrorCode } from "../../constants/ErrorCode";
 
 export type FlatServerResponse<T> =
     | {
@@ -9,7 +11,7 @@ export type FlatServerResponse<T> =
       }
     | {
           status: Status.Failed;
-          code: number;
+          code: RequestErrorCode;
       };
 
 export async function post<Payload, Result>(
@@ -22,13 +24,13 @@ export async function post<Payload, Result>(
     };
 
     const Authorization = globalStore.wechat?.token;
-    if (Authorization) {
-        config.headers = {
-            Authorization: "Bearer " + Authorization,
-        };
-    } else {
-        throw new Error("not login");
+    if (!Authorization) {
+        throw new ServerRequestError(RequestErrorCode.NeedLoginAgain);
     }
+
+    config.headers = {
+        Authorization: "Bearer " + Authorization,
+    };
 
     const { data: res } = await Axios.post<FlatServerResponse<Result>>(
         `${FLAT_SERVER_VERSIONS.V1HTTPS}/${action}`,
@@ -37,8 +39,7 @@ export async function post<Payload, Result>(
     );
 
     if (res.status !== Status.Success) {
-        // @TODO handle fetcher error
-        throw new Error(`Flat server error code ${res.code} for location "${action}".`);
+        throw new ServerRequestError(res.code);
     }
 
     return res.data;

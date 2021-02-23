@@ -11,6 +11,7 @@ import {
 } from "../../components/EditRoomPage";
 import LoadingPage from "../../LoadingPage";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { errorTips } from "../../components/Tips/ErrorTips";
 
 export interface PeriodicSubRoomFormProps {
     roomUUID: string;
@@ -47,7 +48,7 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
             })
             .catch(e => {
                 console.error(e);
-                message.error("无法打开修改页面");
+                errorTips(e);
                 history.goBack();
             });
         // Only listen to roomUUID
@@ -81,9 +82,9 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
             );
             message.success("修改成功");
             history.goBack();
-        } catch (error) {
-            console.error(error);
-            message.error(error.message);
+        } catch (e) {
+            console.error(e);
+            errorTips(e);
             setLoading(false);
         }
     }

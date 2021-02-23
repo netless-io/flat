@@ -2,7 +2,7 @@ import "./HomePage.less";
 
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { ipcAsyncByMain } from "../../utils/ipc";
+import { ipcAsyncByMainWindow } from "../../utils/ipc";
 import MainPageLayout from "../../components/MainPageLayout";
 import { MainRoomMenu } from "./MainRoomMenu";
 import { MainRoomListPanel } from "./MainRoomListPanel";
@@ -16,7 +16,7 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
     const lastLocation = useLastLocation();
 
     useEffect(() => {
-        ipcAsyncByMain("set-win-size", {
+        ipcAsyncByMainWindow("set-win-size", {
             width: 1200,
             height: 668,
             autoCenter: shouldWindowCenter(lastLocation?.pathname),

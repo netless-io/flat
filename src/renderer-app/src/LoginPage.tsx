@@ -7,7 +7,7 @@ import logo from "./assets/image/logo.svg";
 // import wechat from "./assets/image/wechat.svg";
 // import google from "./assets/image/google.svg";
 import { shell } from "electron";
-import { ipcAsyncByMain } from "./utils/ipc";
+import { ipcAsyncByMainWindow } from "./utils/ipc";
 import WeChatLogin from "./components/WeChatLogin";
 
 export type IndexPageStates = {
@@ -28,7 +28,7 @@ export class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPag
     }
 
     public componentDidMount = (): void => {
-        ipcAsyncByMain("set-win-size", {
+        ipcAsyncByMainWindow("set-win-size", {
             width: 375,
             height: 667,
             autoCenter: true,
@@ -75,7 +75,7 @@ export class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPag
     };
 
     public joinRoom = (): void => {
-        ipcAsyncByMain("set-win-size", {
+        ipcAsyncByMainWindow("set-win-size", {
             width: 1200,
             height: 668,
             autoCenter: true,

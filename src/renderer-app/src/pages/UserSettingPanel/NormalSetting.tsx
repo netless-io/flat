@@ -3,7 +3,7 @@ import "./NormalSetting.less";
 import { Radio, Checkbox, Button } from "antd";
 import { useHistory } from "react-router";
 import { observer } from "mobx-react-lite";
-import { ipcAsyncByMain, ipcSyncByMain } from "../../utils/ipc";
+import { ipcAsyncByApp, ipcSyncByApp } from "../../utils/ipc";
 
 // enum NoticeInterval {
 //     FiveMinutes,
@@ -31,7 +31,7 @@ export const NormalSetting = observer(function NormalSetting() {
     // };
 
     useEffect(() => {
-        ipcSyncByMain("get-open-at-login")
+        ipcSyncByApp("get-open-at-login")
             .then(data => {
                 setOpenAtLogin(data);
             })
@@ -42,7 +42,7 @@ export const NormalSetting = observer(function NormalSetting() {
 
     const toggleOpenAtLogin = (): void => {
         setOpenAtLogin(!openAtLogin);
-        ipcAsyncByMain("set-open-at-login", {
+        ipcAsyncByApp("set-open-at-login", {
             isOpenAtLogin: !openAtLogin,
         });
     };
@@ -84,9 +84,11 @@ export const NormalSetting = observer(function NormalSetting() {
                 {/*<Checkbox>开启预订通知提醒声音</Checkbox>*/}
                 <div className="select-language">
                     <span>语言设置</span>
-                    <Radio.Group>
+                    <Radio.Group defaultValue={SelectLanguage.Chinese}>
                         <Radio value={SelectLanguage.Chinese}>中文</Radio>
-                        <Radio value={SelectLanguage.English}>English</Radio>
+                        <Radio disabled value={SelectLanguage.English}>
+                            English
+                        </Radio>
                     </Radio.Group>
                     <Button danger onClick={quitAccount}>
                         退出登录

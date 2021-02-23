@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps, useParams } from "react-router";
 import PlayerController from "@netless/player-controller";
 import LoadingPage from "../../LoadingPage";
-import { ipcAsyncByMain, ipcReceiveByMain, ipcReceiveRemoveByMain } from "../../utils/ipc";
+import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
 import PageError from "../../PageError";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanelReplay } from "../../components/ChatPanelReplay";
@@ -17,6 +17,7 @@ import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
 import { useHistory } from "react-router-dom";
+import { errorTips } from "../../components/Tips/ErrorTips";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;
@@ -54,14 +55,14 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     const lastMouseRef = useRef({ lastMouseX: -100, lastMouseY: -100 });
 
     useEffect(() => {
-        ipcAsyncByMain("set-close-window", {
-            close: false,
+        ipcAsyncByMainWindow("disable-window", {
+            disable: true,
         });
-        ipcReceiveByMain("window-will-close", () => {
+        ipcReceive("window-will-close", () => {
             setShowExitReplayModal(true);
         });
 
-        ipcAsyncByMain("set-win-size", {
+        ipcAsyncByMainWindow("set-win-size", {
             width: 1200,
             height: 700,
         });
@@ -69,16 +70,16 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         return () => {
             window.clearTimeout(hideControllerTimeoutRef.current);
 
-            ipcAsyncByMain("set-close-window", {
-                close: true,
+            ipcAsyncByMainWindow("disable-window", {
+                disable: false,
             });
 
-            ipcReceiveRemoveByMain("window-will-close");
+            ipcReceiveRemove("window-will-close");
         };
     }, []);
 
     useEffect(() => {
-        classRoomReplayStore.init(whiteboardElRef.current!, videoElRef.current!);
+        classRoomReplayStore.init(whiteboardElRef.current!, videoElRef.current!).catch(errorTips);
 
         const handleSpaceKey = (evt: KeyboardEvent): void => {
             if (evt.key === "Space") {

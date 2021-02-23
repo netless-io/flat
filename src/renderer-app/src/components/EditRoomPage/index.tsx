@@ -6,7 +6,7 @@ import { Button, Checkbox, Input, Form, Divider, Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import { Link, useHistory } from "react-router-dom";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
-import { getDay, addWeeks, endOfDay, addMinutes } from "date-fns";
+import { getDay, addWeeks, endOfDay } from "date-fns";
 import { generateRoutePath, RouteNameType } from "../../utils/routes";
 import MainPageLayout from "../../components/MainPageLayout";
 import { RoomTypeSelect } from "../../components/RoomType";
@@ -58,7 +58,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                 endType: PeriodicEndType.Rate,
                 weeks: [getDay(initialValues.beginTime)],
                 rate: 7,
-                endTime: addWeeks(addMinutes(initialValues.beginTime, 30), 6),
+                endTime: addWeeks(initialValues.beginTime, 6),
             },
             ...initialValues,
         };
@@ -237,7 +237,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                 periodic: {
                     weeks: [getDay(today)],
                     rate: 7,
-                    endTime: endOfDay(addWeeks(today, 7)),
+                    endTime: endOfDay(addWeeks(today, 6)),
                 },
             });
         }

@@ -6,6 +6,7 @@ import { RoomItem } from "../../stores/RoomStore";
 import { GlobalStoreContext, RoomStoreContext } from "../StoreProvider";
 import { clipboard } from "electron";
 import { getWeekNames } from "../WeekRateSelector";
+import { errorTips } from "../Tips/ErrorTips";
 
 const completeTimeFormat = format("yyyy-MM-dd HH:mm");
 const onlySuffixTimeFormat = format("HH:mm");
@@ -29,7 +30,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
 
     useEffect(() => {
         if (periodicUUID) {
-            void roomStore.syncPeriodicRoomInfo(periodicUUID);
+            roomStore.syncPeriodicRoomInfo(periodicUUID).catch(errorTips);
         }
     }, [periodicUUID, roomStore]);
 

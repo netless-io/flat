@@ -69,7 +69,8 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "agora-electron-sdk": "education290"
+    "agora-electron-sdk": "education290",
+    "ts-enum-util": "^4.0.2"
   },
   "license": "MIT"
 }

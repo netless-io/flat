@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { RoomItem, roomStore } from "../../stores/RoomStore";
 import { RemoveHistoryRoomModal } from "../Modal/RemoveHistoryRoomModal";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { errorTips } from "../Tips/ErrorTips";
 
 interface DeleteRoomHistoryItemProps extends MenuItemProps {
     room: RoomItem | undefined;
@@ -33,6 +34,7 @@ export const DeleteRoomHistoryItem = observer<DeleteRoomHistoryItemProps>(
                 setShowRemoveHistoryRoomModal(false);
             } catch (e) {
                 console.error(e);
+                errorTips(e);
             } finally {
                 setLoading(false);
             }
