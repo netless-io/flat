@@ -34,6 +34,9 @@ export class AppRouteContainer extends React.Component<
         ipcAsyncByMainWindow("set-title", {
             title: document.title,
         });
+
+        // clear selection
+        window.getSelection()?.removeAllRanges();
     }
 
     componentDidCatch(error: any, errorInfo: any): void {
