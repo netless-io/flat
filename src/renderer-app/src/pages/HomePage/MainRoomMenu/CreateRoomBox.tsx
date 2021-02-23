@@ -2,10 +2,11 @@ import createSVG from "../../../assets/image/creat.svg";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form, message } from "antd";
+import { Button, Input, Modal, Checkbox, Form } from "antd";
 import { RoomType } from "../../../apiMiddleware/flatServer/constants";
 import { RoomTypeSelect } from "../../../components/RoomType";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
+import { useSafePromise } from "../../../utils/hooks/lifecycle";
 
 interface CreateRoomFormValues {
     roomTitle: string;
@@ -18,6 +19,7 @@ export interface CreateRoomBoxProps {
 }
 
 export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox({ onCreateRoom }) {
+    const sp = useSafePromise();
     const globalStore = useContext(GlobalStoreContext);
     const configStore = useContext(ConfigStoreContext);
     const [form] = Form.useForm<CreateRoomFormValues>();
@@ -116,7 +118,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
 
     async function handleOk(): Promise<void> {
         try {
-            await form.validateFields();
+            await sp(form.validateFields());
         } catch (e) {
             // errors are showed on form
             return;
@@ -127,12 +129,12 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
         try {
             const values = form.getFieldsValue();
             configStore.updateAutoCameraOn(values.autoCameraOn);
-            await onCreateRoom(values.roomTitle, values.roomType);
-        } catch (e) {
-            message.error(e.message);
-            console.error(e);
+            await sp(onCreateRoom(values.roomTitle, values.roomType));
             setLoading(false);
             showModal(false);
+        } catch (e) {
+            console.error(e);
+            setLoading(false);
         }
     }
 
