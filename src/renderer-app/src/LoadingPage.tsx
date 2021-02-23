@@ -1,19 +1,19 @@
-import React from "react";
 import loading from "./assets/image/loading.gif";
 import "./LoadingPage.less";
-export type LoadingPageProps = {
+
+import React, { FC } from "react";
+
+export interface LoadingPageProps {
     text?: string;
+}
+
+export const LoadingPage: FC<LoadingPageProps> = ({ text }) => {
+    return (
+        <div className="loading-page-container">
+            <img className="loading-page-image" src={loading} alt={"loading"} />
+            {text && <span>{text}</span>}
+        </div>
+    );
 };
 
-export default class LoadingPage extends React.Component<LoadingPageProps, {}> {
-    public render(): React.ReactNode {
-        return (
-            <div className="white-board-loading">
-                <div className="white-board-loading-mid">
-                    <img src={loading} alt={"loading"} />
-                    {this.props.text ? <div>{this.props.text}</div> : null}
-                </div>
-            </div>
-        );
-    }
-}
+export default LoadingPage;

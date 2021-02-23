@@ -8,6 +8,7 @@ import { CreateRoomBox } from "./CreateRoomBox";
 import { JoinRoomBox } from "./JoinRoomBox";
 import { ScheduleRoomBox } from "./ScheduleRoomBox";
 import { joinRoomHandler } from "../../utils/joinRoomHandler";
+import { errorTips } from "../../../components/Tips/ErrorTips";
 
 export interface MainRoomMenuProps {}
 
@@ -24,13 +25,17 @@ export const MainRoomMenu: FC = () => {
     );
 
     async function createOrdinaryRoom(title: string, type: RoomType): Promise<void> {
-        const roomUUID = await roomStore.createOrdinaryRoom({
-            title,
-            type,
-            beginTime: Date.now(),
-            // TODO docs:[]
-        });
-        await joinRoomHandler(roomUUID, pushHistory);
+        try {
+            const roomUUID = await roomStore.createOrdinaryRoom({
+                title,
+                type,
+                beginTime: Date.now(),
+                // TODO docs:[]
+            });
+            await joinRoomHandler(roomUUID, pushHistory);
+        } catch (e) {
+            errorTips(e);
+        }
     }
 };
 

@@ -3,8 +3,8 @@ import { HashRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import { message } from "antd";
 import { LastLocationProvider } from "react-router-last-location";
-import { RouteConfig, routeConfig } from "./route-config";
-import { ipcAsyncByMainWindow } from "./utils/ipc";
+import { RouteConfig, routeConfig } from "../route-config";
+import { AppRouteContainer } from "./AppRouteContainer";
 
 export class AppRoutes extends React.Component {
     public componentDidCatch(error: any): void {
@@ -23,19 +23,13 @@ export class AppRoutes extends React.Component {
                                     key={name}
                                     exact={true}
                                     path={path}
-                                    render={routeProps => {
-                                        const Comp = component as React.ComponentType<any>;
-                                        const compName = Comp.displayName || Comp.name;
-                                        document.title =
-                                            title +
-                                            (process.env.NODE_ENV === "development" && compName
-                                                ? ` (${compName})`
-                                                : "");
-                                        ipcAsyncByMainWindow("set-title", {
-                                            title: document.title,
-                                        });
-                                        return <Comp {...routeProps} />;
-                                    }}
+                                    render={routeProps => (
+                                        <AppRouteContainer
+                                            Comp={component}
+                                            title={title}
+                                            routeProps={routeProps}
+                                        />
+                                    )}
                                 />
                             );
                         }) as (name: string) => React.ReactElement)}

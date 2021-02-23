@@ -16,12 +16,6 @@ export const OSS_CONFIG = Object.freeze({
 
 export const AGORA = Object.freeze({
     APP_ID: process.env.AGORA_APP_ID,
-    OSS_ACCESS_KEY_ID: process.env.AGORA_OSS_ACCESS_KEY_ID,
-    OSS_ACCESS_KEY_SECRET: process.env.AGORA_OSS_ACCESS_KEY_SECRET,
-    OSS_REGION: process.env.AGORA_OSS_REGION,
-    OSS_BUCKET: process.env.AGORA_OSS_BUCKET,
-    OSS_FOLDER: process.env.AGORA_OSS_FOLDER,
-    OSS_PREFIX: process.env.AGORA_OSS_PREFIX,
 });
 
 export const WECHAT = Object.freeze({
