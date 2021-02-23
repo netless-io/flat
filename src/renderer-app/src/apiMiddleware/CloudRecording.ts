@@ -1,4 +1,4 @@
-import { AGORA } from "../constants/Process";
+import { updateRecordEndTime } from "./flatServer";
 import {
     cloudRecordAcquire,
     CloudRecordStopResult,
@@ -51,29 +51,13 @@ export class CloudRecording {
     private _sid: string | null = null;
     private _isRecording = false;
 
+    private _reportEndTimeTimeout = NaN;
+
     public constructor(init: {
         /** 待录制的频道名 */
         roomUUID: string;
     }) {
         this.roomUUID = init.roomUUID;
-    }
-
-    public defaultStorageConfig(): {
-        vendor: number;
-        region: number;
-        bucket: string;
-        accessKey: string;
-        secretKey: string;
-        fileNamePrefix: string[];
-    } {
-        return {
-            vendor: 2, // 阿里云
-            region: 0, // 杭州
-            bucket: AGORA.OSS_BUCKET,
-            accessKey: AGORA.OSS_ACCESS_KEY_ID,
-            secretKey: AGORA.OSS_ACCESS_KEY_SECRET,
-            fileNamePrefix: [AGORA.OSS_FOLDER],
-        };
     }
 
     /**
@@ -120,6 +104,7 @@ export class CloudRecording {
                 agoraData: { clientRequest: startPayload },
             });
             this._sid = sid;
+            this.startReportEndTime();
         } catch (e) {
             this._isRecording = false;
             throw e;
@@ -128,6 +113,7 @@ export class CloudRecording {
 
     /** 停止录制 */
     public async stop(): Promise<CloudRecordStopResult> {
+        window.clearTimeout(this._reportEndTimeTimeout);
         try {
             const response = await cloudRecordStop({
                 roomUUID: this.roomUUID,
@@ -180,6 +166,17 @@ export class CloudRecording {
             },
             agoraData: { clientRequest: payload },
         });
+    }
+
+    /** Report endTime to flat server */
+    private startReportEndTime(): void {
+        this._reportEndTimeTimeout = window.setInterval(() => {
+            if (this._isRecording) {
+                updateRecordEndTime(this.roomUUID);
+            } else {
+                window.clearInterval(this._reportEndTimeTimeout);
+            }
+        }, 10000);
     }
 }
 
