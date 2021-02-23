@@ -6,7 +6,7 @@ export enum RoomType {
     historied = "historied",
 }
 
-const fetcher = new Fetcher(10000, "https://shunt-api.netless.link/v5");
+const fetcher = new Fetcher(10000, "https://api.netless.link/v5");
 export class RoomOperator {
     public async createRoomApi(name: string, limit: number): Promise<any> {
         const json = await fetcher.post<any>({

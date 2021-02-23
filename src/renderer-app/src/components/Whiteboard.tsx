@@ -31,6 +31,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
             setWhiteboardEl(ref);
             if (room) {
                 room.bindHtmlElement(ref);
+                room.scalePptToFit();
             }
         },
         [room],
