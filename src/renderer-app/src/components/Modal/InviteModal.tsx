@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { message, Modal } from "antd";
 import { differenceInCalendarDays, format } from "date-fns/fp";
@@ -34,22 +34,29 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
         }
     }, [periodicUUID, roomStore]);
 
-    const formatBeginTime = completeTimeFormat(beginTime!);
-    const formatEndTime =
-        differenceInCalendarDays(beginTime!, endTime!) !== 0
-            ? completeTimeFormat(endTime!)
-            : onlySuffixTimeFormat(endTime!);
+    const formattedTimeRange = useMemo<string>(() => {
+        if (!beginTime || !endTime) {
+            return "";
+        }
 
-    const basePrefixText = `${globalStore.userName} 邀请你加入 Flat 房间
-房间主题：${title}
-开始时间：${formatBeginTime}～${formatEndTime}
-`;
-    const baseSuffixText = `
-房间号：${uuid}
+        const formatBeginTime = completeTimeFormat(beginTime!);
+        const formatEndTime =
+            differenceInCalendarDays(beginTime!, endTime!) !== 0
+                ? completeTimeFormat(endTime!)
+                : onlySuffixTimeFormat(endTime!);
 
-打开（没有安装的话请先下载并安装）并登录 Flat，点击加入房间，输入房间号即可加入和预约`;
+        return `${formatBeginTime}~${formatEndTime}`;
+    }, [beginTime, endTime]);
 
     const onCopy = (): void => {
+        const basePrefixText =
+            `${globalStore.userName} 邀请你加入 Flat 房间\n` +
+            `房间主题：${title}\n` +
+            (formattedTimeRange ? `开始时间：${formattedTimeRange}\n` : "");
+        const baseSuffixText =
+            `\n房间号：${uuid}\n\n` +
+            `打开（没有安装的话请先下载并安装）并登录 Flat，点击加入房间，输入房间号即可加入和预约`;
+
         if (periodicUUID) {
             const periodicInfo = roomStore.periodicRooms.get(periodicUUID);
 
@@ -87,12 +94,12 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
                     <span>房间号</span>
                     <span style={{ userSelect: "text" }}>{uuid}</span>
                 </div>
-                <div className="modal-content-item">
-                    <span>开始时间</span>
-                    <span>
-                        {formatBeginTime}~{formatEndTime}
-                    </span>
-                </div>
+                {formattedTimeRange && (
+                    <div className="modal-content-item">
+                        <span>开始时间</span>
+                        <span>{formattedTimeRange}</span>
+                    </div>
+                )}
             </div>
             {/* @TODO Add invite URL */}
             {/*<Input type="text" placeholder="https://netless.link/url/5f2259d5069bc052d2" />*/}
