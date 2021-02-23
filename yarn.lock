@@ -1225,13 +1225,6 @@
   resolved "https://registry.npmjs.org/@netless/cursor-tool/-/cursor-tool-0.0.5.tgz#7ca47501cb656b3e623ade37462bf2d38450f6f2"
   integrity sha512-Nmf9ksGzFbrkuG9dlod8V7ODbQgfM8LYrkT7azM3Jiid/X/GuWQSBO/tI6b44hJXTFH1tQCJ487jcYC1myvCaQ==
 
-"@netless/docs-center@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@netless/docs-center/-/docs-center-0.0.4.tgz#3b85a14f331a315d1aeca03d25345e28b9cc2b30"
-  integrity sha512-xIDjq+S/67CksuP9FngJQyDBD9O/HzH0sutx7UEC7Ri2H0BndVt6s3W9rv/3DWOwWmcpSPamggmw+4rBc83WSA==
-  dependencies:
-    "@netless/menu-box" "^0.0.1"
-
 "@netless/fetch-middleware@^1.0.6":
   version "1.0.6"
   resolved "https://registry.npmjs.org/@netless/fetch-middleware/-/fetch-middleware-1.0.6.tgz#0f3683d76cf1e12879d01e3376c5436b47b47bbe"
@@ -1263,13 +1256,13 @@
     ali-oss "^6.10.0"
     react-dropzone "4.2.10"
 
-"@netless/oss-upload-button@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@netless/oss-upload-button/-/oss-upload-button-0.1.0.tgz#0f9c9d87fca29f0d6340c393e061086d1e9983c4"
-  integrity sha512-v65mJ8oBTnX1JujbVVFXCld2efmGupl6WjnWA2yn0hzQI+1A78m2Qpovww0gSgJ4/ZSt7bu6LYKlbyEeLZl1bA==
+"@netless/oss-upload-button@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@netless/oss-upload-button/-/oss-upload-button-0.1.3.tgz#9937d1c64049d47fbcf7afbdf4e6f046a62ec963"
+  integrity sha512-zaGCR4atr4DONGDVWaN/rsejmi7PfPA5gXT0ZTYbYJp+CLGPBh6syv28PfQoPdjbPTYTW6M9mhg0jkbfJewaeQ==
   dependencies:
     "@netless/loading-bar" "^0.0.1"
-    "@netless/oss-upload-manager" "^1.1.3"
+    "@netless/oss-upload-manager" "^1.1.7"
     ali-oss "^6.10.0"
     antd "^4.4.3"
 
@@ -1277,6 +1270,16 @@
   version "1.1.3"
   resolved "https://registry.npmjs.org/@netless/oss-upload-manager/-/oss-upload-manager-1.1.3.tgz#31d423fa1d91337cd1bf8abcf456caafa5112a4e"
   integrity sha512-6bDPeoWPdt6GoKSgeoYDlqSKKkr2P7V5k81Dk/YJn/WosdzL7CL7G3RjP1X1KwtiMV4TZpj1W2le7aYgyAQF2g==
+  dependencies:
+    "@netless/fetch-middleware" "^1.0.6"
+    "@types/uuid" "^8.0.1"
+    ali-oss "^6.10.0"
+    uuid "^8.3.0"
+
+"@netless/oss-upload-manager@^1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@netless/oss-upload-manager/-/oss-upload-manager-1.1.7.tgz#f1f4cd92eb56ed680e6908448f8a1cdee4f35c27"
+  integrity sha512-v5+jfQ7+HBXka6sq2W3hsYhCf4boKaPJJIiYaq52UgINGNLqwVZ6DCLOTJnbu4hVFBD1rrx2LPeaIApQdnB00w==
   dependencies:
     "@netless/fetch-middleware" "^1.0.6"
     "@types/uuid" "^8.0.1"
@@ -1309,22 +1312,22 @@
   resolved "https://registry.yarnpkg.com/@netless/redo-undo/-/redo-undo-0.0.5.tgz#c5b00f5940ef33a0d6a810cd0935f4d9c172ea52"
   integrity sha512-P8ceK3hSY2eMfFIjBeSpRsqXpjjTea9bBWyRF8t8q0kLR4ICld2VMFMRbytqZ8sjCFy9CgbicuBOdMj7juABIQ==
 
-"@netless/tool-box@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@netless/tool-box/-/tool-box-0.0.5.tgz#37fb0d8f0587b8ac5afe1e106a99f23bcfbb1dc5"
-  integrity sha512-SYIvHO6yYuYBNxmdyjBQBUn6ngtQJGyHSMt67ixU5wiJfJIrLrx+7dBhOrj9GV2V2VJBVsvsjNNX9rNTqaNyvg==
+"@netless/tool-box@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@netless/tool-box/-/tool-box-0.0.6.tgz#a74cf28791ed95ae92f6f7cbe8638682ea6b5509"
+  integrity sha512-g2EpvhAYT26ABP2Bs71KACU1I+6WmQoDUuwPfQpnc/WTLQwz+PDWWsAZ34R+obpwNETVOiLiWQCkzxEuhxI4EQ==
   dependencies:
     antd "^4.4.3"
 
-"@netless/white-audio-plugin@^1.2.19":
-  version "1.2.19"
-  resolved "https://registry.yarnpkg.com/@netless/white-audio-plugin/-/white-audio-plugin-1.2.19.tgz#0e3d01ee902bc931ce99f9eaf5f278195fb89d4e"
-  integrity sha512-5ZeX8ezpx0T1Y5CFH5kOWMDbLNegGVFm7shSa6p648hhcNN93tccwIc6yHrC60ownmfmUeYvbiJMCYGx6Hq1UQ==
+"@netless/white-audio-plugin@^1.2.20":
+  version "1.2.20"
+  resolved "https://registry.yarnpkg.com/@netless/white-audio-plugin/-/white-audio-plugin-1.2.20.tgz#32541b91b7cb135a459b40b5d3a9ea53eee09731"
+  integrity sha512-ngd5mBP0KcTupq55iOWPlIaX0D9nj0mGmTVcN+PMXSsS1Ggv6JreCEgUDHFTm6inmC29EcAEYx8Bz31jgkdkag==
 
-"@netless/white-video-plugin@^1.2.18":
-  version "1.2.18"
-  resolved "https://registry.yarnpkg.com/@netless/white-video-plugin/-/white-video-plugin-1.2.18.tgz#0a2007b5b15ee572a24e6d4b9c658cce49124ac1"
-  integrity sha512-G6qIcakRu68R0j5ASub1hAr5V0b6QDX2C3UYOl891P2/ZupvzfqTB99jxSGsJCpS1tLd4EMjkTTVBMrDsrWcXA==
+"@netless/white-video-plugin@^1.2.19":
+  version "1.2.19"
+  resolved "https://registry.yarnpkg.com/@netless/white-video-plugin/-/white-video-plugin-1.2.19.tgz#3458b7816af6618c995dc7bce3088b532de59212"
+  integrity sha512-fV2/DFt+MSbin4lbcM9w5vE9ImblLbzxBjSeNrl9Fqk6KT2w8yJ4BsEc/xM4P469TJS3zLk4TSVtOH0jURcLeQ==
 
 "@netless/zoom-controller@^0.0.6":
   version "0.0.6"
