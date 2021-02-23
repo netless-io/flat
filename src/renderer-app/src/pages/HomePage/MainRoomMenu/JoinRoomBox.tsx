@@ -2,9 +2,10 @@ import joinSVG from "../../../assets/image/join.svg";
 
 import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form, message } from "antd";
+import { Button, Input, Modal, Checkbox, Form } from "antd";
 import { validate, version } from "uuid";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
+import { useSafePromise } from "../../../utils/hooks/lifecycle";
 
 interface JoinRoomFormValues {
     roomUUID: string;
@@ -13,10 +14,11 @@ interface JoinRoomFormValues {
 }
 
 export interface JoinRoomBoxProps {
-    onJoinRoom: (roomUUID: string) => void;
+    onJoinRoom: (roomUUID: string) => Promise<void>;
 }
 
 export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJoinRoom }) {
+    const sp = useSafePromise();
     const globalStore = useContext(GlobalStoreContext);
     const configStore = useContext(ConfigStoreContext);
     const [form] = Form.useForm<JoinRoomFormValues>();
@@ -134,7 +136,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
 
     async function handleOk(): Promise<void> {
         try {
-            await form.validateFields();
+            await sp(form.validateFields());
         } catch (e) {
             // errors are displayed on the form
             return;
@@ -146,12 +148,11 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
             const values = form.getFieldsValue();
             configStore.updateAutoMicOn(values.autoMicOn);
             configStore.updateAutoCameraOn(values.autoCameraOn);
-            await onJoinRoom(values.roomUUID);
+            await sp(onJoinRoom(values.roomUUID));
+            setLoading(false);
         } catch (e) {
-            message.error(e.message);
             console.error(e);
             setLoading(false);
-            showModal(false);
         }
     }
 
