@@ -1225,13 +1225,6 @@
   resolved "https://registry.npmjs.org/@netless/cursor-tool/-/cursor-tool-0.0.5.tgz#7ca47501cb656b3e623ade37462bf2d38450f6f2"
   integrity sha512-Nmf9ksGzFbrkuG9dlod8V7ODbQgfM8LYrkT7azM3Jiid/X/GuWQSBO/tI6b44hJXTFH1tQCJ487jcYC1myvCaQ==
 
-"@netless/docs-center@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@netless/docs-center/-/docs-center-0.0.4.tgz#3b85a14f331a315d1aeca03d25345e28b9cc2b30"
-  integrity sha512-xIDjq+S/67CksuP9FngJQyDBD9O/HzH0sutx7UEC7Ri2H0BndVt6s3W9rv/3DWOwWmcpSPamggmw+4rBc83WSA==
-  dependencies:
-    "@netless/menu-box" "^0.0.1"
-
 "@netless/fetch-middleware@^1.0.6":
   version "1.0.6"
   resolved "https://registry.npmjs.org/@netless/fetch-middleware/-/fetch-middleware-1.0.6.tgz#0f3683d76cf1e12879d01e3376c5436b47b47bbe"
@@ -1316,15 +1309,15 @@
   dependencies:
     antd "^4.4.3"
 
-"@netless/white-audio-plugin@^1.2.19":
-  version "1.2.19"
-  resolved "https://registry.yarnpkg.com/@netless/white-audio-plugin/-/white-audio-plugin-1.2.19.tgz#0e3d01ee902bc931ce99f9eaf5f278195fb89d4e"
-  integrity sha512-5ZeX8ezpx0T1Y5CFH5kOWMDbLNegGVFm7shSa6p648hhcNN93tccwIc6yHrC60ownmfmUeYvbiJMCYGx6Hq1UQ==
+"@netless/white-audio-plugin@^1.2.20":
+  version "1.2.20"
+  resolved "https://registry.yarnpkg.com/@netless/white-audio-plugin/-/white-audio-plugin-1.2.20.tgz#32541b91b7cb135a459b40b5d3a9ea53eee09731"
+  integrity sha512-ngd5mBP0KcTupq55iOWPlIaX0D9nj0mGmTVcN+PMXSsS1Ggv6JreCEgUDHFTm6inmC29EcAEYx8Bz31jgkdkag==
 
-"@netless/white-video-plugin@^1.2.18":
-  version "1.2.18"
-  resolved "https://registry.yarnpkg.com/@netless/white-video-plugin/-/white-video-plugin-1.2.18.tgz#0a2007b5b15ee572a24e6d4b9c658cce49124ac1"
-  integrity sha512-G6qIcakRu68R0j5ASub1hAr5V0b6QDX2C3UYOl891P2/ZupvzfqTB99jxSGsJCpS1tLd4EMjkTTVBMrDsrWcXA==
+"@netless/white-video-plugin@^1.2.19":
+  version "1.2.19"
+  resolved "https://registry.yarnpkg.com/@netless/white-video-plugin/-/white-video-plugin-1.2.19.tgz#3458b7816af6618c995dc7bce3088b532de59212"
+  integrity sha512-fV2/DFt+MSbin4lbcM9w5vE9ImblLbzxBjSeNrl9Fqk6KT2w8yJ4BsEc/xM4P469TJS3zLk4TSVtOH0jURcLeQ==
 
 "@netless/zoom-controller@^0.0.6":
   version "0.0.6"
