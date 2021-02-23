@@ -1,4 +1,4 @@
-import { AGORA } from "../constants/Process";
+import { updateRecordEndTime } from "./flatServer";
 import {
     cloudRecordAcquire,
     CloudRecordStopResult,
@@ -56,24 +56,6 @@ export class CloudRecording {
         roomUUID: string;
     }) {
         this.roomUUID = init.roomUUID;
-    }
-
-    public defaultStorageConfig(): {
-        vendor: number;
-        region: number;
-        bucket: string;
-        accessKey: string;
-        secretKey: string;
-        fileNamePrefix: string[];
-    } {
-        return {
-            vendor: 2, // 阿里云
-            region: 0, // 杭州
-            bucket: AGORA.OSS_BUCKET,
-            accessKey: AGORA.OSS_ACCESS_KEY_ID,
-            secretKey: AGORA.OSS_ACCESS_KEY_SECRET,
-            fileNamePrefix: [AGORA.OSS_FOLDER],
-        };
     }
 
     /**
