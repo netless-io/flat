@@ -9,10 +9,11 @@ import { errorTips } from "../Tips/ErrorTips";
 
 interface DeleteRoomHistoryItemProps extends MenuItemProps {
     room: RoomItem | undefined;
+    onRemoveRoom?: (roomUUID?: string) => void;
 }
 
 export const DeleteRoomHistoryItem = observer<DeleteRoomHistoryItemProps>(
-    function DeleteRoomHistoryItem({ room, onClick, ...restProps }) {
+    function DeleteRoomHistoryItem({ room, onRemoveRoom, onClick, ...restProps }) {
         const [showRemoveHistoryRoomModal, setShowRemoveHistoryRoomModal] = useState(false);
         const [loading, setLoading] = useState(false);
         const sp = useSafePromise();
@@ -30,7 +31,7 @@ export const DeleteRoomHistoryItem = observer<DeleteRoomHistoryItemProps>(
                         roomUUID: room?.roomUUID,
                     }),
                 );
-
+                onRemoveRoom?.(room?.roomUUID);
                 setShowRemoveHistoryRoomModal(false);
             } catch (e) {
                 console.error(e);
