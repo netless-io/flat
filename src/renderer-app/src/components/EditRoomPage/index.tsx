@@ -109,14 +109,21 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                                     placeholder="请输入房间主题"
                                     disabled={type === EditRoomType.EditPeriodicSub}
                                     ref={input => {
-                                        if (hasInputAutoSelectedRef.current) {
+                                        if (!input) {
                                             return;
                                         }
-                                        if (input) {
-                                            input.focus();
-                                            input.select();
-                                            hasInputAutoSelectedRef.current = true;
-                                        }
+                                        // select text on next cycle so that
+                                        // dom is always ready
+                                        setTimeout(() => {
+                                            if (hasInputAutoSelectedRef.current) {
+                                                return;
+                                            }
+                                            if (input) {
+                                                input.focus();
+                                                input.select();
+                                                hasInputAutoSelectedRef.current = true;
+                                            }
+                                        }, 0);
                                     }}
                                 />
                             </Form.Item>

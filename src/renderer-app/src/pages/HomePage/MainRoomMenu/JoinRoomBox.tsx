@@ -1,6 +1,6 @@
 import joinSVG from "../../../assets/image/join.svg";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form } from "antd";
 import { validate, version } from "uuid";
@@ -26,6 +26,23 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
     const [isLoading, setLoading] = useState(false);
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
+    const roomTitleInputRef = useRef<Input>(null);
+
+    useEffect(() => {
+        let ticket = NaN;
+        if (isShowModal) {
+            // wait a cycle till antd modal updated
+            ticket = window.setTimeout(() => {
+                if (roomTitleInputRef.current) {
+                    roomTitleInputRef.current.focus();
+                    roomTitleInputRef.current.select();
+                }
+            }, 0);
+        }
+        return () => {
+            window.clearTimeout(ticket);
+        };
+    }, [isShowModal]);
 
     const defaultValues: JoinRoomFormValues = {
         roomUUID: "",
@@ -90,6 +107,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                     >
                         <Input
                             placeholder="请输入房间号"
+                            ref={roomTitleInputRef}
                             // suffix={
                             //     <Dropdown
                             //         trigger={["click"]}
