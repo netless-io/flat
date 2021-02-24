@@ -13,7 +13,25 @@
     background-color: white;
 }
 
+.loading-page-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
 .loading-page-image {
     width: 200px;
     height: 200px;
+}
+
+.loading-page-return-btn {
+    margin-bottom: 64px;
+    opacity: 0;
+    transition: opacity 0.4s;
+
+    &.is-show {
+        opacity: 1;
+    }
 }
