@@ -17,6 +17,7 @@ import { RoomInfo } from "../../components/RoomInfo";
 import { Whiteboard } from "../../components/Whiteboard";
 import ExitRoomConfirm, { ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
+import { RecordHintTips } from "../../components/RecordHintTips";
 import LoadingPage from "../../LoadingPage";
 
 import { ipcAsyncByMainWindow } from "../../utils/ipc";
@@ -258,11 +259,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             }
             default: {
                 return (
-                    <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
-                        {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
-                            ? "开始中..."
-                            : "开始上课"}
-                    </TopBarRoundBtn>
+                    <RecordHintTips>
+                        <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
+                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
+                                ? "开始中..."
+                                : "开始上课"}
+                        </TopBarRoundBtn>
+                    </RecordHintTips>
                 );
             }
         }

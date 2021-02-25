@@ -14,6 +14,11 @@ export interface WechatInfo {
  * Properties in Global Store are persisted and shared globally.
  */
 export class GlobalStore {
+    /**
+     * Show tooltips for classroom record hints.
+     * Hide it permanently if user close the tooltip.
+     */
+    isShowRecordHintTips = true;
     wechat: WechatInfo | null = null;
     whiteboardRoomUUID: string | null = null;
     whiteboardRoomToken: string | null = null;
@@ -58,6 +63,10 @@ export class GlobalStore {
                 this[key] = value as any;
             }
         }
+    };
+
+    hideRecordHintTips = (): void => {
+        this.isShowRecordHintTips = false;
     };
 }
 
