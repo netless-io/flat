@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { message } from "antd";
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
@@ -207,10 +208,15 @@ export class ClassRoomStore {
     };
 
     toggleRecording = async (): Promise<void> => {
-        if (this.isRecording) {
-            await this.stopRecording();
-        } else {
-            await this.startRecording();
+        try {
+            if (this.isRecording) {
+                await this.stopRecording();
+                message.success("录制完成，可到历史记录查看");
+            } else {
+                await this.startRecording();
+            }
+        } catch (e) {
+            errorTips(e);
         }
     };
 
@@ -546,26 +552,20 @@ export class ClassRoomStore {
             }
             clearTimeout();
         } catch (e) {
-            console.error(e);
-            errorTips(e);
             runInAction(() => {
                 // reset state
                 this.isRecording = false;
             });
+            throw e;
         }
     }
 
     private async stopRecording(): Promise<void> {
         this.isRecording = false;
-        try {
-            if (this.cloudRecording.isRecording) {
-                await this.cloudRecording.stop();
-            } else {
-                await stopRecordRoom(this.roomUUID);
-            }
-        } catch (e) {
-            errorTips(e);
-            console.error(e);
+        if (this.cloudRecording.isRecording) {
+            await this.cloudRecording.stop();
+        } else {
+            await stopRecordRoom(this.roomUUID);
         }
     }
 
