@@ -17,6 +17,7 @@ import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
+import { RecordHintTips } from "../../components/RecordHintTips";
 import LoadingPage from "../../LoadingPage";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { useWhiteboardStore } from "../../stores/WhiteboardStore";
@@ -166,11 +167,13 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             }
             default: {
                 return (
-                    <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
-                        {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
-                            ? "开始中..."
-                            : "开始上课"}
-                    </TopBarRoundBtn>
+                    <RecordHintTips>
+                        <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
+                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
+                                ? "开始中..."
+                                : "开始上课"}
+                        </TopBarRoundBtn>
+                    </RecordHintTips>
                 );
             }
         }
