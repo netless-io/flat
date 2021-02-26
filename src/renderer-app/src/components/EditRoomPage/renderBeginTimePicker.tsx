@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
-import { isBefore, addMinutes, setHours } from "date-fns";
+import { isBefore, addMinutes, setHours, isAfter, isSameDay, startOfDay } from "date-fns";
 import { EditRoomFormValues } from "./typings";
 import { syncPeriodicEndAmount } from "./utils";
 import {
@@ -10,11 +10,15 @@ import {
     compareMinute,
     getRoughNow,
     MIN_CLASS_DURATION,
-    range,
+    excludeRange,
 } from "../../utils/date";
 import { FullTimePicker } from "../../components/antd-date-fns";
 
-export function renderBeginTimePicker(form: FormInstance<EditRoomFormValues>): React.ReactElement {
+export function renderBeginTimePicker(
+    form: FormInstance<EditRoomFormValues>,
+    previousPeriodicRoomBeginTime?: number | null,
+    nextPeriodicRoomEndTime?: number | null,
+): React.ReactElement {
     return (
         <Form.Item label="开始时间" name="beginTime" rules={[validateTime]}>
             <FullTimePicker
@@ -37,24 +41,73 @@ export function renderBeginTimePicker(form: FormInstance<EditRoomFormValues>): R
     }
 
     function disabledDate(date: Date): boolean {
-        return isBefore(date, getRoughNow());
+        if (previousPeriodicRoomBeginTime && nextPeriodicRoomEndTime) {
+            const isBeforeNow = isBefore(date, getRoughNow());
+            const isBeforePreTime = isBefore(date, previousPeriodicRoomBeginTime);
+            const isAfterNextTime = isAfter(date, nextPeriodicRoomEndTime);
+            return isBeforePreTime || isAfterNextTime || isBeforeNow;
+        } else if (nextPeriodicRoomEndTime && previousPeriodicRoomBeginTime === null) {
+            const isBeforeNow = isBefore(date, startOfDay(getRoughNow()));
+            const isAfterNextTime = isAfter(date, nextPeriodicRoomEndTime);
+            return isBeforeNow || isAfterNextTime;
+        } else if (previousPeriodicRoomBeginTime && nextPeriodicRoomEndTime === null) {
+            const isBeforePreTime = isBefore(date, previousPeriodicRoomBeginTime);
+            const isBeforeNow = isBefore(date, getRoughNow());
+            return isBeforePreTime || isBeforeNow;
+        }
+        return isBefore(date, startOfDay(getRoughNow()));
     }
 
     function disabledHours(): number[] {
         const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
+
         const now = getRoughNow();
 
         const diff = compareDay(now, beginTime);
+        if (previousPeriodicRoomBeginTime && nextPeriodicRoomEndTime) {
+            const preBeginTime = new Date(previousPeriodicRoomBeginTime);
+            const nextEndTime = new Date(nextPeriodicRoomEndTime);
+            const diff = compareDay(preBeginTime, beginTime);
+            const endDiff = compareDay(nextEndTime, beginTime);
+
+            if (diff < 0) {
+                if (endDiff === 0) {
+                    if (nextEndTime.getMinutes() < 15) {
+                        // 如果下一节课的结束时间的分钟数小于15分钟，不允许选择下一节课结束时间的Hour
+                        return excludeRange(nextEndTime.getHours(), 23);
+                    }
+                    return excludeRange(nextEndTime.getHours() + 1, 23);
+                }
+                return [];
+            }
+
+            if (diff === 0) {
+                return excludeRange(preBeginTime.getHours());
+            }
+
+            return excludeRange(24);
+        } else if (previousPeriodicRoomBeginTime) {
+            const preBeginTime = new Date(previousPeriodicRoomBeginTime);
+            const diff = compareDay(preBeginTime, beginTime);
+
+            if (diff < 0) {
+                return [];
+            }
+
+            if (diff === 0) {
+                return excludeRange(preBeginTime.getHours());
+            }
+        }
 
         if (diff < 0) {
             return [];
         }
 
         if (diff === 0) {
-            return range(now.getHours());
+            return excludeRange(now.getHours());
         }
 
-        return range(24);
+        return excludeRange(24);
     }
 
     function disabledMinutes(selectedHour: number): number[] {
@@ -63,15 +116,58 @@ export function renderBeginTimePicker(form: FormInstance<EditRoomFormValues>): R
 
         const diff = compareHour(now, setHours(beginTime, selectedHour));
 
+        if (previousPeriodicRoomBeginTime && nextPeriodicRoomEndTime) {
+            const preBeginTime = new Date(previousPeriodicRoomBeginTime);
+            const nextEndTime = new Date(nextPeriodicRoomEndTime);
+            const diff = compareHour(preBeginTime, setHours(beginTime, selectedHour));
+
+            const sameHour = selectedHour === nextEndTime.getHours();
+
+            if (diff < 0) {
+                if (sameHour) {
+                    return excludeRange(nextEndTime.getMinutes(), 59);
+                }
+                const isPreHours = nextEndTime.getHours() - selectedHour === 1;
+
+                if (isPreHours) {
+                    if (nextEndTime.getMinutes() < 15) {
+                        const roomDurationCompareTime =
+                            MIN_CLASS_DURATION - nextEndTime.getMinutes();
+                        return excludeRange(60 - roomDurationCompareTime, 59);
+                    }
+                    return [];
+                }
+                return [];
+            }
+
+            if (diff === 0) {
+                return excludeRange(preBeginTime.getMinutes() + 1);
+            }
+
+            return excludeRange(59);
+        } else if (previousPeriodicRoomBeginTime) {
+            const preBeginTime = new Date(previousPeriodicRoomBeginTime);
+            const diff = compareHour(preBeginTime, setHours(beginTime, selectedHour));
+            if (diff < 0) {
+                return [];
+            }
+
+            if (diff === 0) {
+                return excludeRange(preBeginTime.getMinutes() + 1);
+            }
+
+            return excludeRange(59);
+        }
+
         if (diff < 0) {
             return [];
         }
 
         if (diff === 0) {
-            return range(now.getMinutes());
+            return excludeRange(now.getMinutes());
         }
 
-        return range(60);
+        return excludeRange(59);
     }
 
     /** make sure end time is at least min duration after begin time */

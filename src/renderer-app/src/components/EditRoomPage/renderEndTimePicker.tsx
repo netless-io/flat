@@ -1,12 +1,15 @@
 import React from "react";
 import { Form } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
-import { isBefore, addMinutes, setHours } from "date-fns";
+import { isBefore, addMinutes, setHours, isAfter, isSameDay } from "date-fns";
 import { EditRoomFormValues } from "./typings";
-import { compareDay, compareHour, MIN_CLASS_DURATION, range } from "../../utils/date";
+import { compareDay, compareHour, MIN_CLASS_DURATION, excludeRange } from "../../utils/date";
 import { FullTimePicker } from "../../components/antd-date-fns";
 
-export function renderEndTimePicker(form: FormInstance<EditRoomFormValues>): React.ReactElement {
+export function renderEndTimePicker(
+    form: FormInstance<EditRoomFormValues>,
+    nextPeriodicRoomEndTime?: number | null,
+): React.ReactElement {
     return (
         <Form.Item label="结束时间" name="endTime" rules={[validateTime]}>
             <FullTimePicker
@@ -31,6 +34,11 @@ export function renderEndTimePicker(form: FormInstance<EditRoomFormValues>): Rea
 
     function disabledDate(date: Date): boolean {
         const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
+        if (nextPeriodicRoomEndTime) {
+            const isBeforeTime = compareDay(addMinutes(beginTime, MIN_CLASS_DURATION), date) > 0;
+            const isAfterTime = isAfter(date, nextPeriodicRoomEndTime);
+            return isBeforeTime || isAfterTime;
+        }
         return compareDay(addMinutes(beginTime, MIN_CLASS_DURATION), date) > 0;
     }
 
@@ -47,15 +55,38 @@ export function renderEndTimePicker(form: FormInstance<EditRoomFormValues>): Rea
 
         const diff = compareDay(compareTime, endTime);
 
+        if (nextPeriodicRoomEndTime) {
+            const nextPeriodicEndTime = new Date(nextPeriodicRoomEndTime);
+            const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
+            const diff = compareDay(compareTime, endTime);
+            const endDiff = compareDay(nextPeriodicEndTime, endTime);
+
+            if (diff < 0) {
+                if (endDiff === 0) {
+                    return excludeRange(nextPeriodicEndTime.getHours() + 1, 23);
+                }
+                return [];
+            }
+
+            if (diff === 0) {
+                if (endDiff === 0) {
+                    return excludeRange(nextPeriodicEndTime.getHours() + 1, 23);
+                }
+                return excludeRange(compareTime.getHours());
+            }
+
+            return excludeRange(24);
+        }
+
         if (diff < 0) {
             return [];
         }
 
         if (diff === 0) {
-            return range(compareTime.getHours());
+            return excludeRange(compareTime.getHours());
         }
 
-        return range(24);
+        return excludeRange(24);
     }
 
     function disabledMinutes(selectedHour: number): number[] {
@@ -72,14 +103,39 @@ export function renderEndTimePicker(form: FormInstance<EditRoomFormValues>): Rea
 
         const diff = compareHour(comparedTime, selectedEndTime);
 
+        if (nextPeriodicRoomEndTime) {
+            const nextPeriodicEndTime = new Date(nextPeriodicRoomEndTime);
+            const comparedTime = addMinutes(beginTime, MIN_CLASS_DURATION);
+            const selectedEndTime = setHours(endTime, selectedHour);
+
+            const diff = compareDay(comparedTime, selectedEndTime);
+            const sameHour = selectedHour === nextPeriodicEndTime.getHours();
+
+            if (diff < 0) {
+                if (sameHour) {
+                    return excludeRange(nextPeriodicEndTime.getMinutes(), 59);
+                }
+                return [];
+            }
+
+            if (diff === 0) {
+                if (sameHour) {
+                    return excludeRange(nextPeriodicEndTime.getMinutes(), 59);
+                }
+                return [];
+            }
+
+            return excludeRange(59);
+        }
+
         if (diff < 0) {
             return [];
         }
 
         if (diff === 0) {
-            return range(comparedTime.getMinutes());
+            return excludeRange(comparedTime.getMinutes());
         }
 
-        return range(60);
+        return excludeRange(59);
     }
 }
