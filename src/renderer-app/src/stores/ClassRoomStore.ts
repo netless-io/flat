@@ -13,7 +13,10 @@ import {
     RTMEvents,
 } from "../apiMiddleware/Rtm";
 import { CloudRecording } from "../apiMiddleware/CloudRecording";
-import { CloudRecordStartPayload } from "../apiMiddleware/flatServer/agora";
+import {
+    CloudRecordStartPayload,
+    CloudRecordUpdateLayoutPayload,
+} from "../apiMiddleware/flatServer/agora";
 import {
     pauseClass,
     startClass,
@@ -318,6 +321,24 @@ export class ClassRoomStore {
                 value: { userUUID, camera, mic },
                 keepHistory: true,
             });
+        }
+    };
+
+    updateRecordingLayout = (
+        payload: CloudRecordUpdateLayoutPayload["agoraData"]["clientRequest"],
+    ): void => {
+        if (!this.recordingConfig.transcodingConfig) {
+            return;
+        }
+
+        // just update transcodingConfig if recording is off
+        this.recordingConfig.transcodingConfig = {
+            ...this.recordingConfig.transcodingConfig,
+            ...payload,
+        };
+
+        if (this.isRecording) {
+            this.cloudRecording.updateLayout(payload);
         }
     };
 
