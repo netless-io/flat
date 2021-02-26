@@ -1,1 +1,21 @@
-window.AgoraRtcEngine = require("agora-electron-sdk").default;
+const fixJQueryHosts = ["open.weixin.qq.com"];
+
+if (fixJQueryHosts.includes(location.host)) {
+    document.addEventListener("DOMNodeInserted", function fixJQuery() {
+        if (window && !window.$) {
+            window.$ = window.jQuery = require("jquery");
+            document.removeEventListener("DOMNodeInserted", fixJQuery);
+        }
+    });
+}
+
+const disableInjectionAgoraAddonHosts = ["open.weixin.qq.com"];
+
+if (!disableInjectionAgoraAddonHosts.includes(location.host)) {
+    document.addEventListener("DOMNodeInserted", function injectionAgoraAddon() {
+        if (window) {
+            window.AgoraRtcEngine = require("agora-electron-sdk").default;
+            document.removeEventListener("DOMNodeInserted", injectionAgoraAddon);
+        }
+    });
+}
