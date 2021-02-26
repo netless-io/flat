@@ -117,7 +117,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     // update cloud recording layout
     useAutoRun(() => {
         if (classRoomStore.isRecording) {
-            classRoomStore.cloudRecording.updateLayout({
+            classRoomStore.updateRecordingLayout({
                 mixedVideoLayout: 3,
                 backgroundColor: "#F3F6F9",
                 layoutConfig: updateRecordLayout(activeUserCount.get()),
