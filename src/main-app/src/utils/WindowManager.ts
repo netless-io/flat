@@ -22,6 +22,7 @@ const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
         webviewTag: true,
         nativeWindowOpen: true,
         backgroundThrottling: false,
+        nodeIntegrationInSubFrames: true,
     },
 };
 
