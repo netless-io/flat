@@ -35,6 +35,8 @@ export interface EditRoomPageProps {
     initialValues: EditRoomFormInitialValues;
     loading: boolean;
     onSubmit: (value: EditRoomFormValues) => void;
+    previousPeriodicRoomBeginTime?: number | null;
+    nextPeriodicRoomEndTime?: number | null;
 }
 
 export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
@@ -42,6 +44,8 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
     initialValues,
     loading,
     onSubmit,
+    previousPeriodicRoomBeginTime,
+    nextPeriodicRoomEndTime,
 }) {
     const history = useHistory();
 
@@ -130,8 +134,12 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                             <Form.Item label="类型" name="type">
                                 <RoomTypeSelect disabled={type === EditRoomType.EditPeriodicSub} />
                             </Form.Item>
-                            {renderBeginTimePicker(form)}
-                            {renderEndTimePicker(form)}
+                            {renderBeginTimePicker(
+                                form,
+                                previousPeriodicRoomBeginTime,
+                                nextPeriodicRoomEndTime,
+                            )}
+                            {renderEndTimePicker(form, nextPeriodicRoomEndTime)}
                             {type === EditRoomType.Schedule ? (
                                 <Form.Item name="isPeriodic" valuePropName="checked">
                                     <Checkbox onChange={onToggleIsPeriodic}>
