@@ -1,10 +1,18 @@
 /** Minimum class duration in minutes */
 export const MIN_CLASS_DURATION = 15;
 
-export const range = (num: number): number[] =>
-    Array(num)
-        .fill(0)
-        .map((_, i) => i);
+/**
+ * generate array of numbers in some range
+ * @example
+ * excludeRange(2, 5) //=> [2, 3, 4, 5]
+ * excludeRange(3)    //=> [0, 1, 2]
+ */
+export const excludeRange = (slice1: number, slice2?: number): number[] =>
+    slice2
+        ? Array(slice2 - slice1 + 1)
+              .fill(slice1)
+              .map((i, k) => i + k)
+        : Array.from(Array(slice1).keys());
 
 /** get a now Date object with 0 second and 0 millisecond */
 export const getRoughNow = (): Date => {
