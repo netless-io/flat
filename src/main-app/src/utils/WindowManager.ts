@@ -1,7 +1,7 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from "electron";
 import { windowHookClose, windowReadyToShow } from "./WindowEvent";
 import runtime from "./Runtime";
-import { constants } from "types-pkg";
+import { constants, portal } from "types-pkg";
 
 const defaultWindowOptions: Pick<WindowOptions, "disableClose" | "isOpenDevTools"> = {
     disableClose: false,
@@ -53,15 +53,18 @@ export class WindowManager {
 
         const innerWin = this.getWindow(options.name)!;
 
-        void innerWin.window.loadURL(options.url);
+        this.interceptPortalNewWindow(innerWin);
+
+        if ("url" in options) {
+            void innerWin.window.loadURL(options.url);
+            windowReadyToShow(innerWin);
+        }
 
         if (options.isOpenDevTools) {
             innerWin.window.webContents.openDevTools();
         }
 
         windowHookClose(innerWin);
-
-        windowReadyToShow(innerWin);
 
         return innerWin;
     }
@@ -83,6 +86,49 @@ export class WindowManager {
             },
         );
     }
+
+    private interceptPortalNewWindow(customWindow: CustomSingleWindow): void {
+        customWindow.window.webContents.on(
+            "new-window",
+            (event, _url, frameName, _disposition, options) => {
+                if (!frameName.startsWith(constants.Portal)) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                const customOptions: portal.Options = JSON.parse(
+                    frameName.substring(constants.Portal.length),
+                );
+
+                const { name, title, width, height, disableClose } = customOptions;
+
+                const win = this.createWindow(
+                    {
+                        name,
+                        isOpenDevTools: false,
+                        isPortal: true,
+                        disableClose: !!disableClose,
+                    },
+                    {
+                        ...options,
+                        show: true,
+                        // must be undefined. otherwise, the child window will always be in front of the parent window
+                        parent: undefined,
+                        title: title,
+                        width: width,
+                        height: height,
+                    },
+                );
+
+                // This must be called explicitly. Otherwise the window will not be centered
+                win.window.center();
+
+                // @ts-ignore
+                event.newGuest = win.window;
+            },
+        );
+    }
 }
 
 export const windowManager = new WindowManager();
@@ -96,9 +142,15 @@ type CustomWindows = {
     [k in constants.WindowsName]?: CustomSingleWindow;
 };
 
-interface WindowOptions {
-    url: string;
+type WindowOptions = {
     name: constants.WindowsName;
     disableClose?: boolean;
     isOpenDevTools?: boolean;
-}
+} & (
+    | {
+          url: string;
+      }
+    | {
+          isPortal: true;
+      }
+);
