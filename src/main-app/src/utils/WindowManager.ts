@@ -17,6 +17,7 @@ const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
     webPreferences: {
         autoplayPolicy: "no-user-gesture-required",
         nodeIntegration: true,
+        contextIsolation: false,
         preload: runtime.preloadPath,
         webSecurity: false,
         webviewTag: true,

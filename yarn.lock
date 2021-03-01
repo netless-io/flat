@@ -2011,9 +2011,9 @@ aggregate-error@^3.0.0:
     indent-string "^4.0.0"
 
 agora-electron-sdk@education290:
-  version "2.9.0-rc.107-build.998"
-  resolved "https://registry.npmjs.org/agora-electron-sdk/-/agora-electron-sdk-2.9.0-rc.107-build.998.tgz#4c32ae58ff8a69ed4ae01d13061fa2c16966a09f"
-  integrity sha512-dMDM2WtZ2P5Cs0mCP37GGBKPulgyDQkiZPrxOV9cIYiceyw7cXpX1/d9nCl8EUIYsey3aYFnu8cKpsj4HhngIg==
+  version "2.9.0-rc.107-build.1307"
+  resolved "https://registry.yarnpkg.com/agora-electron-sdk/-/agora-electron-sdk-2.9.0-rc.107-build.1307.tgz#d61f1122f20e8974c4a13150e0ceddf729d95057"
+  integrity sha512-UAxmr/jB/gWYh/unSzT5dtDfOZ4VZkoFLVgLuQcxImq6qZmhL7Oe50bgyBHK/Q5Scoi/Xy5rJyBDuHoSgAToyQ==
   dependencies:
     bluebird "^3.7.1"
     download "^7.1.0"
@@ -4788,10 +4788,10 @@ electron-webpack@^2.8.2:
     webpack-merge "^4.2.2"
     yargs "^15.3.1"
 
-electron@7.1.14:
-  version "7.1.14"
-  resolved "https://registry.npmjs.org/electron/-/electron-7.1.14.tgz#1a58aa5968677a4fe564442f3b72771166c8904c"
-  integrity sha512-y9Nbja4rl+5fPVw9e/lFudwRax3a+jenzS7WXzUkjF7GI8YFxNH2eH9K9PZFNuSwc/OOCja2ul70+D44tKTQEw==
+electron@11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-11.0.0.tgz#e4966d358832e47189069444799e3b72224e37d9"
+  integrity sha512-bbT6vmc04I0+cuG5e26+2rAOQYLH90Exf11a+NpGCSMTXsSjSpSZdjWGffWRIowOJzSwcSk8EHdCKdeet1rz9A==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
