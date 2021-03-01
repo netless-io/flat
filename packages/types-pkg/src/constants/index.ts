@@ -3,3 +3,5 @@ export enum WindowsName {
     Replay = "Replay",
     Class = "Class",
 }
+
+export const Portal = "portal;";
