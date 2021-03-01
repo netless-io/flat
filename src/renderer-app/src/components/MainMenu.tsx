@@ -30,7 +30,7 @@ export const MainMenu = React.memo<MainMenuProps>(function MainMenu() {
                 title: "我的",
                 icon: userSVG,
                 iconActive: userActiveSVG,
-                href: generateRoutePath(RouteNameType.UserInfoPage, {}),
+                href: generateRoutePath(RouteNameType.UserInfoPage, { testParams: "success" }),
             },
             {
                 routeName: RouteNameType.UserSettingPage,

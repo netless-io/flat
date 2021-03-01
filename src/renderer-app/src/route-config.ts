@@ -81,7 +81,7 @@ export const routeConfig = {
     },
     [RouteNameType.UserInfoPage]: {
         title: "Flat",
-        path: "/info/",
+        path: "/info/:testParams",
         component: UserInfoPage,
     },
     [RouteNameType.UserSettingPage]: {
