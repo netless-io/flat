@@ -2,8 +2,7 @@
 const agoraSdkOptions = {
     arch: process.platform === "win32" ? "ia32" : "x64",
     platform: process.platform === "win32" ? "win32" : "darwin",
-    // agora-electron-sdk currently only supports 7.1.2 pre-compilation, but supports 7.1.14 version of electron
-    electron_version: "7.1.2",
+    electron_version: "11.0.0",
     msvs_version: "2017",
     silent: false,
     debug: false,
