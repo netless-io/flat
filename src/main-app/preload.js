@@ -9,9 +9,11 @@ if (fixJQueryHosts.includes(location.host)) {
     });
 }
 
-const disableInjectionAgoraAddonHosts = ["open.weixin.qq.com"];
-
-if (!disableInjectionAgoraAddonHosts.includes(location.host)) {
+if (
+    (location.protocol === "file:" && location.pathname.endsWith("static/render/index.html")) ||
+    location.hostname === "localhost" ||
+    location.hostname === "127.0.0.1"
+) {
     document.addEventListener("DOMNodeInserted", function injectionAgoraAddon() {
         if (window) {
             window.AgoraRtcEngine = require("agora-electron-sdk").default;
