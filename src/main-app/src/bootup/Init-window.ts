@@ -8,6 +8,8 @@ export default async () => {
         app.on("ready", resolve);
     });
 
+    app.allowRendererProcessReuse = false;
+
     if (runtime.isDevelopment) {
         installExtension([REACT_DEVELOPER_TOOLS]).catch(err =>
             console.log("added extension failed", err),
