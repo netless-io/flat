@@ -6,4 +6,5 @@ export interface Options {
     width: number;
     height: number;
     disableClose?: boolean;
+    isChildWindow?: boolean;
 }

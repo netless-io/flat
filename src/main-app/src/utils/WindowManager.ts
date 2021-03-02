@@ -101,7 +101,7 @@ export class WindowManager {
                     frameName.substring(constants.Portal.length),
                 );
 
-                const { name, title, width, height, disableClose } = customOptions;
+                const { name, title, width, height, disableClose, isChildWindow } = customOptions;
 
                 const win = this.createWindow(
                     {
@@ -113,8 +113,8 @@ export class WindowManager {
                     {
                         ...options,
                         show: true,
-                        // must be undefined. otherwise, the child window will always be in front of the parent window
-                        parent: undefined,
+                        // the child window will always be in front of the parent window
+                        parent: isChildWindow ? customWindow.window : undefined,
                         title: title,
                         width: width,
                         height: height,
