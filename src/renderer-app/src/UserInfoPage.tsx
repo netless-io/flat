@@ -39,9 +39,9 @@ export default class UserInfoPage extends React.PureComponent<{}, UserInfoPagePr
             case MenuMap.Suggest: {
                 return <UserSeggest />;
             }
-            case MenuMap.About: {
-                return <UserAbout />;
-            }
+            // case MenuMap.About: {
+            //     return <UserAbout />;
+            // }
             default:
                 return null;
         }
@@ -53,6 +53,7 @@ export default class UserInfoPage extends React.PureComponent<{}, UserInfoPagePr
                 <div className="user-info-wrapper">
                     <UserInfoMenu menu={this.state.menu} setMenu={this.setMenu} />
                     <UserInfoContent menu={this.state.menu}>{this.renderContent()}</UserInfoContent>
+                    <UserAbout />
                 </div>
             </MainPageLayout>
         );
