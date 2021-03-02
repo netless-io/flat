@@ -5,10 +5,22 @@ const {
     currentSystem,
 } = require("./Utils");
 
-const buildType = process.argv[2];
+let buildType = process.argv[2];
 
 if (!["mac", "win"].includes(buildType)) {
-    throw Error("build type must is: mac or win");
+    switch(process.platform) {
+        case "win32": {
+            buildType = "win"
+            break
+        }
+        case "darwin": {
+            buildType = "mac"
+            break
+        }
+        default: {
+            throw Error("Only 'mac' or 'win' build type is supported");
+        }
+    }
 }
 
 (async () => {
