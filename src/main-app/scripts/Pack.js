@@ -7,18 +7,29 @@ const {
 
 let buildType = process.argv[2];
 
-if (!["mac", "win"].includes(buildType)) {
-    switch(process.platform) {
-        case "win32": {
-            buildType = "win"
-            break
+switch (buildType) {
+    case "mac": {
+        if (process.platform === "win32") {
+            throw new Error("Cannot build mac on win32 platform");
         }
-        case "darwin": {
-            buildType = "mac"
-            break
-        }
-        default: {
-            throw Error("Only 'mac' or 'win' build type is supported");
+        break;
+    }
+    case "win": {
+        break;
+    }
+    default: {
+        switch (process.platform) {
+            case "win32": {
+                buildType = "win";
+                break;
+            }
+            case "darwin": {
+                buildType = "mac";
+                break;
+            }
+            default: {
+                throw new Error("Only 'mac' or 'win' build type is supported");
+            }
         }
     }
 }
