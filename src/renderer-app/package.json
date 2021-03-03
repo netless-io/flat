@@ -75,7 +75,7 @@
     "dotenv-flow": "^3.2.0",
     "dotenv-flow-webpack": "^1.1.0",
     "edit-json-file": "^1.4.1",
-    "electron": "11.0.0",
+    "electron": "11.3.0",
     "eslint": "^7.7.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-react-app": "^6.0.0",
