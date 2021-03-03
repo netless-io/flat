@@ -497,5 +497,5 @@ export interface LoginCheck {
 }
 
 export async function loginCheck(): Promise<LoginCheck> {
-    return await post<{}, LoginCheck>("/login", {});
+    return await post<{}, LoginCheck>("login", {});
 }
