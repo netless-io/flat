@@ -1,8 +1,10 @@
-import { FLAT_SERVER_DOMAIN } from "../../constants/Process";
+import { FLAT_SERVER_DOMAIN, NODE_ENV } from "../../constants/Process";
+
+const sslFlag = NODE_ENV === "development" ? "" : "s";
 
 export const FLAT_SERVER_PROTOCOL = {
-    HTTPS: `https://${FLAT_SERVER_DOMAIN}`,
-    WSS: `wss://${FLAT_SERVER_DOMAIN}`,
+    HTTPS: `http${sslFlag}://${FLAT_SERVER_DOMAIN}`,
+    WSS: `ws${sslFlag}://${FLAT_SERVER_DOMAIN}`,
 } as const;
 
 export const FLAT_SERVER_VERSIONS = {
