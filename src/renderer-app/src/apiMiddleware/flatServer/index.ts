@@ -433,7 +433,7 @@ export type UpdateOrdinaryRoomResult = {};
 
 export async function updateOrdinaryRoom(payload: UpdateOrdinaryRoomPayload): Promise<void> {
     await post<UpdateOrdinaryRoomPayload, UpdateOrdinaryRoomResult>(
-        "/room/update/ordinary",
+        "room/update/ordinary",
         payload,
     );
 }
@@ -468,7 +468,7 @@ export type UpdatePeriodicRoomResult = {};
 
 export async function updatePeriodicRoom(payload: UpdatePeriodicRoomPayload): Promise<void> {
     await post<UpdatePeriodicRoomPayload, UpdatePeriodicRoomResult>(
-        "/room/update/periodic",
+        "room/update/periodic",
         payload,
     );
 }
@@ -484,7 +484,7 @@ export type UpdatePeriodicSubRoomResult = {};
 
 export async function updatePeriodicSubRoom(payload: UpdatePeriodicSubRoomPayload): Promise<void> {
     await post<UpdatePeriodicSubRoomPayload, UpdatePeriodicSubRoomResult>(
-        "/room/update/periodic-sub-room",
+        "room/update/periodic-sub-room",
         payload,
     );
 }
