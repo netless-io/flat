@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { makeAutoObservable, observable } from "mobx";
 import { createPlugins, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk } from "white-web-sdk";
 import { videoPlugin } from "@netless/white-video-plugin";
@@ -6,8 +5,6 @@ import { audioPlugin } from "@netless/white-audio-plugin";
 import { CursorTool } from "@netless/cursor-tool";
 import { NETLESS, NODE_ENV } from "../constants/Process";
 import { globalStore } from "./GlobalStore";
-import { RouteNameType, usePushHistory } from "../utils/routes";
-import { useSafePromise } from "../utils/hooks/lifecycle";
 
 export class WhiteboardStore {
     room: Room | null = null;
@@ -23,6 +20,7 @@ export class WhiteboardStore {
     constructor(config: { isCreator: boolean }) {
         this.isCreator = config.isCreator;
         this.isWritable = config.isCreator;
+
         makeAutoObservable(this, {
             room: observable.ref,
         });
@@ -83,12 +81,15 @@ export class WhiteboardStore {
         const contextIdentity = this.isCreator ? "host" : "";
         plugins.setPluginContext("video", { identity: contextIdentity });
         plugins.setPluginContext("audio", { identity: contextIdentity });
+
         const whiteWebSdk = new WhiteWebSdk({
             appIdentifier: NETLESS.APP_IDENTIFIER,
             plugins: plugins,
         });
+
         const cursorName = globalStore.wechat?.name;
         const cursorAdapter = new CursorTool();
+
         const room = await whiteWebSdk.joinRoom(
             {
                 uuid: globalStore.whiteboardRoomUUID,
@@ -148,29 +149,4 @@ export class WhiteboardStore {
         }
         console.log(`Whiteboard unloaded: ${globalStore.whiteboardRoomUUID}`);
     }
-}
-
-export function useWhiteboardStore(isCreator: boolean): WhiteboardStore {
-    const [whiteboardStore] = useState(() => new WhiteboardStore({ isCreator }));
-    const pushHistory = usePushHistory();
-    const sp = useSafePromise();
-
-    useEffect(() => {
-        sp(whiteboardStore.joinWhiteboardRoom()).catch(e => {
-            console.error(e);
-            // @TODO
-            // if (e.message.endsWith("is ban")) {
-            //     show error("房间已关闭");
-            // }
-            pushHistory(RouteNameType.HomePage);
-        });
-
-        return () => {
-            whiteboardStore.destroy();
-        };
-        // only join room once
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    return whiteboardStore;
 }

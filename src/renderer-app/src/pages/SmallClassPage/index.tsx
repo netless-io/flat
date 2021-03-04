@@ -26,7 +26,6 @@ import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ClassModeType } from "../../apiMiddleware/Rtm";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { AgoraCloudRecordLayoutConfigItem } from "../../apiMiddleware/flatServer/agora";
-import { useWhiteboardStore } from "../../stores/WhiteboardStore";
 import {
     RecordingConfig,
     RoomStatusLoadingType,
@@ -73,7 +72,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         recordingConfig,
         ClassModeType.Interaction,
     );
-    const whiteboardStore = useWhiteboardStore(classRoomStore.isCreator);
+    const whiteboardStore = classRoomStore.whiteboardStore;
 
     const { room, phase } = whiteboardStore;
 
