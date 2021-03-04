@@ -33,6 +33,9 @@ import { User, UserStore } from "./UserStore";
 import { ipcAsyncByMainWindow } from "../utils/ipc";
 import type { AgoraNetworkQuality, RtcStats } from "agora-electron-sdk/types/Api/native_type";
 import { errorTips } from "../components/Tips/ErrorTips";
+import { WhiteboardStore } from "./WhiteboardStore";
+import { RouteNameType, usePushHistory } from "../utils/routes";
+import { useSafePromise } from "../utils/hooks/lifecycle";
 
 export type { User } from "./UserStore";
 
@@ -77,6 +80,8 @@ export class ClassRoomStore {
     readonly rtc: RTCAPI;
     readonly rtm: RTMAPI;
     readonly cloudRecording: CloudRecording;
+
+    readonly whiteboardStore: WhiteboardStore;
 
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
@@ -125,6 +130,10 @@ export class ClassRoomStore {
             roomUUID: this.roomUUID,
             ownerUUID: this.ownerUUID,
             userUUID: this.userUUID,
+        });
+
+        this.whiteboardStore = new WhiteboardStore({
+            isCreator: this.isCreator,
         });
     }
 
@@ -455,12 +464,18 @@ export class ClassRoomStore {
 
         await this.updateHistory();
 
+        await this.whiteboardStore.joinWhiteboardRoom();
+
         channel.on("MemberJoined", userUUID => {
             // not use errorTips function (because there is no need)
             this.users.addUser(userUUID).catch(console.warn);
         });
         channel.on("MemberLeft", this.users.removeUser);
 
+        this.onRTCEvents();
+    }
+
+    onRTCEvents(): void {
         this.rtc.rtcEngine.on("rtcStats", this.checkDelay);
         this.rtc.rtcEngine.on("networkQuality", this.checkNetworkQuality);
     }
@@ -475,6 +490,8 @@ export class ClassRoomStore {
         }
 
         promises.push(this.leaveRTC());
+
+        this.whiteboardStore.destroy();
 
         this.rtc.destroy();
 
@@ -938,6 +955,9 @@ export function useClassRoomStore(
         () => new ClassRoomStore({ roomUUID, ownerUUID, recordingConfig, classMode }),
     );
 
+    const pushHistory = usePushHistory();
+    const sp = useSafePromise();
+
     useAutoRun(() => {
         const title = classRoomStore.roomInfo?.title;
         if (title) {
@@ -949,7 +969,10 @@ export function useClassRoomStore(
     });
 
     useEffect(() => {
-        classRoomStore.init().catch(errorTips);
+        sp(classRoomStore.init()).catch(e => {
+            errorTips(e);
+            pushHistory(RouteNameType.HomePage);
+        });
         return () => {
             classRoomStore.destroy();
         };

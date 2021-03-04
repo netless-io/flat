@@ -20,7 +20,6 @@ import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusSto
 import { RecordHintTips } from "../../components/RecordHintTips";
 import LoadingPage from "../../LoadingPage";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
-import { useWhiteboardStore } from "../../stores/WhiteboardStore";
 import {
     RecordingConfig,
     RoomStatusLoadingType,
@@ -57,7 +56,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     const params = useParams<RouteParams<RouteNameType.OneToOnePage>>();
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
-    const whiteboardStore = useWhiteboardStore(true);
+    const whiteboardStore = classRoomStore.whiteboardStore;
 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
