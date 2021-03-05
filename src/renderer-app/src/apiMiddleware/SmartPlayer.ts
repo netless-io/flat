@@ -110,7 +110,7 @@ export class SmartPlayer extends EventEmitter {
         }
 
         await polly()
-            .waitAndRetry(10)
+            .waitAndRetry(30)
             .executeForPromise(
                 async (): Promise<void> => {
                     const replayState = await whiteWebSdk.isPlayable(rangeQuery);
