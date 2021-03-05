@@ -1,5 +1,6 @@
 const paths = require("./paths");
 const threadLoader = require("thread-loader");
+const DotenvFlow = require("dotenv-flow-webpack");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -19,7 +20,10 @@ const tsWorkerOptions = {
 threadLoader.warmup(tsWorkerOptions, ["eslint-loader", "babel-loader"]);
 
 module.exports = {
-    entry: [paths.entryFile],
+    entry: {
+        main: paths.entryFile,
+        preload: paths.preloadPath,
+    },
     target: "electron-main",
 
     stats: {
@@ -56,6 +60,11 @@ module.exports = {
     },
 
     plugins: [
+        new DotenvFlow({
+            path: paths.envConfig,
+            system_vars: true,
+            default_node_env: "development",
+        }),
         new ForkTsCheckerWebpackPlugin({
             typescript: {
                 configFile: paths.tsConfig,
@@ -70,13 +79,14 @@ module.exports = {
 
     externals: {
         "agora-electron-sdk": "commonjs2 agora-electron-sdk",
+        "jquery": "commonjs2 jquery"
     },
 
     resolve: {
         extensions: [".ts", ".js"],
     },
     output: {
-        filename: "main.js",
+        filename: "[name].js",
         path: paths.dist,
         libraryTarget: "commonjs2",
     },

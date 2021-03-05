@@ -3,3 +3,10 @@ declare namespace NodeJS {
         runtime: import("../src/utils/runtime").Runtime;
     }
 }
+
+interface Window {
+    AgoraRtcEngine: any;
+    rtcEngine: any;
+    $: any;
+    jQuery: any;
+}

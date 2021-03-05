@@ -4742,7 +4742,7 @@ dotenv-expand@^5.1.0:
 
 dotenv-flow-webpack@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.npmjs.org/dotenv-flow-webpack/-/dotenv-flow-webpack-1.1.0.tgz#40976386d3bf93ad1d636cacd62ef79ed14917d5"
+  resolved "https://registry.yarnpkg.com/dotenv-flow-webpack/-/dotenv-flow-webpack-1.1.0.tgz#40976386d3bf93ad1d636cacd62ef79ed14917d5"
   integrity sha512-U6klxT4Tjeka7RoEr//8b4fBm+LupsWgiHOoAE/vSfKzx4g8xpRh4dn59QyyTczbLS7SjKSHchlAHzhSu2ER3Q==
   dependencies:
     dotenv-flow "^3.2.0"

@@ -88,5 +88,6 @@ module.exports = {
         "@typescript-eslint/no-misused-promises": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "no-use-before-define": "off",
+        "@typescript-eslint/no-var-requires": "off",
     },
 };
