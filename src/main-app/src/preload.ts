@@ -7,7 +7,6 @@ setImmediate(() => {
         }
 
         if (fixJQueryHosts.includes(location.host) && !window.$) {
-            // @ts-ignore
             window.$ = window.jQuery = require("jquery");
         }
 
@@ -17,7 +16,6 @@ setImmediate(() => {
             location.hostname === "localhost" ||
             location.hostname === "127.0.0.1"
         ) {
-            // @ts-ignore
             window.AgoraRtcEngine = require("agora-electron-sdk").default;
 
             window.rtcEngine = new window.AgoraRtcEngine();
