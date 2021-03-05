@@ -28,4 +28,5 @@ download({
     platform: argv.platform,
     arch: argv.arch,
     packageVersion: agoraVersion,
+    no_symbol: false,
 });
