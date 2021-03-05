@@ -17,8 +17,6 @@ const buildElectron = async buildType => {
 
     config.directories.output = `release/${buildType}`;
 
-    config.files = ["preload.js"];
-
     config.extraResources = [
         {
             from: "static",
