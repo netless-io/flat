@@ -14,7 +14,6 @@ mac:
     NSCameraUsageDescription: To ensure normal use, flat-native needs access to your camera.
   target:
     - dmg
-    - zip
 
 dmg:
   contents:
@@ -23,7 +22,6 @@ dmg:
 
 win:
   target:
-    - target: zip
     - target: nsis
       arch:
         - ia32
