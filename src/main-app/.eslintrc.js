@@ -1,8 +1,10 @@
+const path = require("path");
+
 module.exports = {
     parser: "@typescript-eslint/parser",
     plugins: ["prettier", "@typescript-eslint"],
     parserOptions: {
-        project: "./tsconfig.json",
+        project: path.join(__dirname, "tsconfig.json"),
         ecmaVersion: 7,
         sourceType: "module",
     },
