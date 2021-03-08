@@ -1,3 +1,5 @@
+import "./InviteModal.less";
+
 import React, { useContext, useEffect, useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { message, Modal } from "antd";
@@ -81,21 +83,21 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
             cancelText="取消"
             className="invite-modal"
         >
-            <div className="modal-header">
+            <div className="invite-modal-header">
                 <span>{globalStore.userName} 邀请加入 FLAT 房间</span>
                 <span>可通过房间号加入和预约</span>
             </div>
-            <div className="modal-content">
-                <div className="modal-content-item">
+            <div className="invite-modal-content">
+                <div className="invite-modal-content-item">
                     <span>房间主题</span>
-                    <span>{title}</span>
+                    <span className="invite-modal-content-title">{title}</span>
                 </div>
-                <div className="modal-content-item">
+                <div className="invite-modal-content-item">
                     <span>房间号</span>
                     <span style={{ userSelect: "text" }}>{uuid}</span>
                 </div>
                 {formattedTimeRange && (
-                    <div className="modal-content-item">
+                    <div className="invite-modal-content-item">
                         <span>开始时间</span>
                         <span>{formattedTimeRange}</span>
                     </div>
