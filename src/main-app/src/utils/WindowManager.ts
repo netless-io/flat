@@ -1,7 +1,9 @@
-import { BrowserWindow, BrowserWindowConstructorOptions } from "electron";
+import { BrowserWindow, BrowserWindowConstructorOptions, ipcMain, IpcMainEvent } from "electron";
 import { windowHookClose, windowReadyToShow } from "./WindowEvent";
 import runtime from "./Runtime";
 import { constants } from "types-pkg";
+import { Subject, zip } from "rxjs";
+import { ignoreElements, mergeMap } from "rxjs/operators";
 
 const defaultWindowOptions: Pick<WindowOptions, "disableClose" | "isOpenDevTools"> = {
     disableClose: false,
@@ -71,7 +73,7 @@ export class WindowManager {
     }
 
     public createMainWindow(): CustomSingleWindow {
-        return this.createWindow(
+        const win = this.createWindow(
             {
                 url: runtime.startURL,
                 name: constants.WindowsName.Main,
@@ -82,6 +84,32 @@ export class WindowManager {
                 height: 668,
             },
         );
+
+        const domReady = new Subject<string>();
+        const preloadLoad = new Subject<IpcMainEvent>();
+
+        win.window.webContents.on("dom-ready", () => {
+            domReady.next("");
+        });
+
+        ipcMain.on("preload-load", event => {
+            preloadLoad.next(event);
+        });
+
+        // use the zip operator to solve the problem of not sending xx event after refreshing the page
+        // don’t worry about sending multiple times, because once is used in preload.ts
+        // link: https://www.learnrxjs.io/learn-rxjs/operators/combination/zip
+        zip(domReady, preloadLoad)
+            .pipe(
+                mergeMap(([, event]) => {
+                    event.sender.send("inject-agora-electron-sdk-addon");
+                    return [];
+                }),
+                ignoreElements(),
+            )
+            .subscribe();
+
+        return win;
     }
 }
 
