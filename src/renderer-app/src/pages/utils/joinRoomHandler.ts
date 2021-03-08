@@ -2,6 +2,8 @@ import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { roomStore } from "../../stores/RoomStore";
 import { RoomType } from "../../apiMiddleware/flatServer/constants";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { ServerRequestError } from "../../utils/error/ServerRequestError";
+import { message } from "antd";
 
 export const joinRoomHandler = async (
     roomUUID: string,
@@ -28,6 +30,10 @@ export const joinRoomHandler = async (
             }
         }
     } catch (e) {
-        errorTips(e);
+        if (e instanceof ServerRequestError && e.errorCode === 100000) {
+            message.error("房间号不正确");
+        } else {
+            errorTips(e);
+        }
     }
 };
