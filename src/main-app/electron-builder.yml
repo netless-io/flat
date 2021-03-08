@@ -34,7 +34,7 @@ nsis:
   createDesktopShortcut: true
   createStartMenuShortcut: true
   allowToChangeInstallationDirectory: true
-  installerIcon: resources/icon.ico
+  installerIcon: resources/install.ico
   shortcutName: Flat
   artifactName: Flat-${version}.${ext}
 
