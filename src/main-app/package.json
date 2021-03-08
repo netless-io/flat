@@ -73,6 +73,7 @@
   "dependencies": {
     "agora-electron-sdk": "education290",
     "jquery": "^3.5.1",
+    "rxjs": "^6.6.6",
     "ts-enum-util": "^4.0.2"
   },
   "license": "MIT"
