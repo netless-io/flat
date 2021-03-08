@@ -24,7 +24,7 @@ const staticPath = isProduction
     : path.resolve(__dirname, "..", "..", "static");
 
 const preloadPath = isProduction
-    ? path.join(__dirname, "..", "dist", "main", "preload.js")
+    ? path.join(__dirname, "preload.js")
     : path.resolve(__dirname, "..", "..", "dist", "main", "preload.js");
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
