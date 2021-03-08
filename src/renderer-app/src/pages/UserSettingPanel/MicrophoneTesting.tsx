@@ -1,12 +1,12 @@
+import "./MicrophoneTesting.less";
+
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
-import "./MicrophoneTesting.less";
-import type AgoraSDK from "agora-electron-sdk";
-import { AGORA } from "../../constants/Process";
 import { DeviceSelect } from "../../components/DeviceSelect";
 import { Device } from "../../types/Device";
 import { observer } from "mobx-react-lite";
 import { TestingResult } from ".";
+import { useRTCEngine } from "../../utils/hooks/useRTCEngine";
 
 interface SpeakerVolumeProps {
     percent: number;
@@ -28,25 +28,22 @@ export interface MicrophoneTestingProps {
 export const MicrophoneTesting = ({
     onChange: setMicrophone,
 }: MicrophoneTestingProps): React.ReactElement => {
-    const [rtcEngine] = useState<AgoraSDK>(() => new window.AgoraRtcEngine());
+    const rtcEngine = useRTCEngine();
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
     const [currentVolume, setCurrentVolume] = useState(0);
 
     useEffect(() => {
-        rtcEngine.initialize(AGORA.APP_ID);
-        rtcEngine.on("error", e => {
-            console.error("rtc error", e);
-        });
         setDevices(rtcEngine.getAudioRecordingDevices() as Device[]);
 
-        rtcEngine.on("audioDeviceStateChanged", () => {
+        const onAudioDeviceStateChanged = (): void => {
             setDevices(rtcEngine.getVideoDevices() as Device[]);
-        });
+        };
+
+        rtcEngine.on("audioDeviceStateChanged", onAudioDeviceStateChanged);
 
         return () => {
-            rtcEngine.removeAllListeners();
-            rtcEngine.release();
+            rtcEngine.off("audioDeviceStateChanged", onAudioDeviceStateChanged);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rtcEngine]);

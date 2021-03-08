@@ -27,5 +27,5 @@ declare namespace NodeJS {
 }
 
 interface Window {
-    AgoraRtcEngine: import("agora-electron-sdk");
+    rtcEngine: any;
 }

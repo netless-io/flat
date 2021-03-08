@@ -1,3 +1,4 @@
+import type AgoraRtcEngine from "agora-electron-sdk";
 const { ipcRenderer } = require("electron");
 
 /**
@@ -10,10 +11,36 @@ const { ipcRenderer } = require("electron");
  * see: WindowManager.ts
  */
 ipcRenderer.once("inject-agora-electron-sdk-addon", () => {
-    window.AgoraRtcEngine = require("agora-electron-sdk").default;
+    if (!process.env.AGORA_APP_ID) {
+        throw new Error("Agora App Id not set.");
+    }
 
-    window.rtcEngine = new window.AgoraRtcEngine();
-    window.rtcEngine.initialize(process.env.AGORA_APP_ID);
+    const AgoraRtcSDK = require("agora-electron-sdk").default;
+
+    const rtcEngine: AgoraRtcEngine = new AgoraRtcSDK();
+    window.rtcEngine = rtcEngine;
+
+    if (rtcEngine.initialize(process.env.AGORA_APP_ID) < 0) {
+        throw new Error("[RTC] The app ID is invalid. Check if it is in the correct format.");
+    }
+
+    if (process.env.NODE_ENV === "development") {
+        rtcEngine.on("joinedChannel", (channel, uid) => {
+            console.log(`[RTC] ${uid} join channel ${channel}`);
+        });
+
+        rtcEngine.on("userJoined", uid => {
+            console.log("[RTC] userJoined", uid);
+        });
+
+        rtcEngine.on("leavechannel", () => {
+            console.log("[RTC] onleaveChannel");
+        });
+
+        rtcEngine.on("error", (err, msg) => {
+            console.error("[RTC] onerror----", err, msg);
+        });
+    }
 });
 
 // delay sending event. prevent the main process from being too late listen for this event

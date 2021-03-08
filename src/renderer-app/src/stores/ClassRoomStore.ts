@@ -114,7 +114,7 @@ export class ClassRoomStore {
         this.classMode = config.classMode ?? ClassModeType.Lecture;
         this.rtcChannelType = config.recordingConfig.channelType ?? RtcChannelType.Communication;
 
-        this.rtc = new RTCAPI({ roomUUID: config.roomUUID, isCreator: this.isCreator });
+        this.rtc = new RTCAPI();
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
 
@@ -194,7 +194,12 @@ export class ClassRoomStore {
         this.updateCalling(true);
 
         try {
-            await this.rtc.join(globalStore.rtcUID, this.rtcChannelType);
+            await this.rtc.join({
+                roomUUID: this.roomUUID,
+                isCreator: this.isCreator,
+                rtcUID: globalStore.rtcUID,
+                channelType: this.rtcChannelType,
+            });
         } catch (e) {
             console.error(e);
             this.updateCalling(false);
@@ -480,6 +485,11 @@ export class ClassRoomStore {
         this.rtc.rtcEngine.on("networkQuality", this.checkNetworkQuality);
     }
 
+    offRTCEvents(): void {
+        this.rtc.rtcEngine.off("rtcStats", this.checkDelay);
+        this.rtc.rtcEngine.off("networkQuality", this.checkNetworkQuality);
+    }
+
     async destroy(): Promise<void> {
         const promises: Promise<any>[] = [];
 
@@ -493,6 +503,7 @@ export class ClassRoomStore {
 
         this.whiteboardStore.destroy();
 
+        this.offRTCEvents();
         this.rtc.destroy();
 
         window.clearTimeout(this._collectChannelStatusTimeout);
