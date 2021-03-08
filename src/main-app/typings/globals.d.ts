@@ -5,7 +5,6 @@ declare namespace NodeJS {
 }
 
 interface Window {
-    AgoraRtcEngine: any;
     rtcEngine: any;
     $: any;
     jQuery: any;

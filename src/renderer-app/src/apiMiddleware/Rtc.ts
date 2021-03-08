@@ -1,10 +1,9 @@
 import type AgoraSdk from "agora-electron-sdk";
-import { AGORA, NODE_ENV } from "../constants/Process";
+import { AGORA } from "../constants/Process";
 import { globalStore } from "../stores/GlobalStore";
 import { generateRTCToken } from "./flatServer/agora";
 
 /** @see {@link https://docs.agora.io/cn/Video/API%20Reference/electron/index.html} */
-const AgoraRtcEngine = window.AgoraRtcEngine;
 
 export enum RtcChannelType {
     Communication = 0,
@@ -20,56 +19,34 @@ export class Rtc {
     rtcEngine: AgoraSdk;
     private appID: string = AGORA.APP_ID || "";
     // User can only join one RTC channel at a time.
-    private roomUUID: string;
-    private isCreator: boolean;
+    private roomUUID: string | null = null;
 
-    constructor(config: { roomUUID: string; isCreator: boolean }) {
-        this.roomUUID = config.roomUUID;
-        this.isCreator = config.isCreator;
-
+    constructor() {
         if (!this.appID) {
             throw new Error("Agora App Id not set.");
         }
 
-        this.rtcEngine = new AgoraRtcEngine();
+        this.rtcEngine = window.rtcEngine;
 
-        this.rtcEngine.on("tokenPrivilegeWillExpire", async () => {
-            if (this.roomUUID) {
-                const token = await generateRTCToken(this.roomUUID);
-                this.rtcEngine.renewToken(token);
-            }
-        });
-
-        if (NODE_ENV === "development") {
-            const path = require("path");
-            const logpath = path.join(__dirname, "..", "..", "agorasdk.log");
-            // set where log file should be put for problem diagnostic
-            this.rtcEngine.setLogFile(logpath);
-
-            this.rtcEngine.on("joinedChannel", async (channel, uid) => {
-                console.log(`[RTC] ${uid} join channel ${channel}`);
-            });
-
-            this.rtcEngine.on("userJoined", uid => {
-                console.log("[RTC] userJoined", uid);
-            });
-
-            this.rtcEngine.on("leavechannel", () => {
-                console.log(`[RTC] onleaveChannel`);
-            });
-
-            this.rtcEngine.on("error", (err, msg) => {
-                console.error(`[RTC] onerror----`, err, msg);
-            });
-        }
-
-        if (this.rtcEngine.initialize(this.appID) < 0) {
-            throw new Error("[RTC] The app ID is invalid. Check if it is in the correct format.");
-        }
+        this.rtcEngine.on("tokenPrivilegeWillExpire", this.renewToken);
     }
 
-    async join(rtcUID: number, channelType = RtcChannelType.Communication): Promise<void> {
-        const token = globalStore.rtcToken || (await generateRTCToken(this.roomUUID));
+    async join({
+        roomUUID,
+        isCreator,
+        rtcUID,
+        channelType = RtcChannelType.Communication,
+    }: {
+        roomUUID: string;
+        isCreator: boolean;
+        rtcUID: number;
+        channelType: RtcChannelType;
+    }): Promise<void> {
+        if (this.roomUUID !== null) {
+            this.leave();
+        }
+
+        const token = globalStore.rtcToken || (await generateRTCToken(roomUUID));
 
         this.rtcEngine.setChannelProfile(channelType);
         this.rtcEngine.videoSourceSetChannelProfile(channelType);
@@ -86,23 +63,37 @@ export class Rtc {
         });
 
         if (channelType === RtcChannelType.Broadcast) {
-            if (this.isCreator) {
+            if (isCreator) {
                 this.rtcEngine.setClientRole(1);
             } else {
                 this.rtcEngine.setClientRole(2);
             }
         }
 
-        this.rtcEngine.joinChannel(token, this.roomUUID, "", rtcUID);
+        if (this.rtcEngine.joinChannel(token, roomUUID, "", rtcUID) < 0) {
+            throw new Error("[RTC]: join channel failed");
+        }
+
+        this.roomUUID = roomUUID;
     }
 
     leave(): void {
-        this.rtcEngine.leaveChannel();
-        this.rtcEngine.videoSourceLeave();
+        if (this.roomUUID !== null) {
+            this.rtcEngine.leaveChannel();
+            this.rtcEngine.videoSourceLeave();
+            this.roomUUID = null;
+        }
     }
 
     destroy(): void {
-        this.rtcEngine.removeAllListeners();
-        this.rtcEngine.release();
+        this.leave();
+        this.rtcEngine.removeAllListeners("tokenPrivilegeWillExpire");
     }
+
+    private renewToken = async (): Promise<void> => {
+        if (this.roomUUID) {
+            const token = await generateRTCToken(this.roomUUID);
+            this.rtcEngine.renewToken(token);
+        }
+    };
 }

@@ -8,10 +8,10 @@ import _testMP3 from "../../assets/media/Goldberg Variations, BWV 988 - 05 - Var
 import playSVG from "../../assets/image/play.svg";
 import stopSVG from "../../assets/image/stop.svg";
 import { Device } from "../../types/Device";
-import { AGORA } from "../../constants/Process";
 import { DeviceSelect } from "../../components/DeviceSelect";
 import { runtime } from "../../utils/runtime";
 import { TestingResult } from ".";
+import { useRTCEngine } from "../../utils/hooks/useRTCEngine";
 
 export interface SpeakerTestingProps {
     onChange: (result: TestingResult) => void;
@@ -20,7 +20,7 @@ export interface SpeakerTestingProps {
 export const SpeakerTesting = ({
     onChange: setSpeaker,
 }: SpeakerTestingProps): React.ReactElement => {
-    const [rtcEngine] = useState(() => new window.AgoraRtcEngine());
+    const rtcEngine = useRTCEngine();
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
     const [currentVolume, setCurrentVolume] = useState(30);
@@ -29,17 +29,16 @@ export const SpeakerTesting = ({
 
     useEffect(() => {
         setSpeaker(TestingResult.Undefined);
-        rtcEngine.initialize(AGORA.APP_ID);
-        rtcEngine.on("error", (e: any) => console.error("rtc error", e));
         setDevices(rtcEngine.getAudioPlaybackDevices() as Device[]);
 
-        rtcEngine.on("audioDeviceStateChanged", () => {
+        const onAudioDeviceStateChanged = (): void => {
             setDevices(rtcEngine.getAudioPlaybackDevices() as Device[]);
-        });
+        };
+
+        rtcEngine.on("audioDeviceStateChanged", onAudioDeviceStateChanged);
 
         return () => {
-            rtcEngine.removeAllListeners();
-            rtcEngine.release();
+            rtcEngine.off("audioDeviceStateChanged", onAudioDeviceStateChanged);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rtcEngine]);

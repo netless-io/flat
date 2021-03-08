@@ -2,18 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import "./CameraTesting.less";
 import { Button } from "antd";
 import { useHistory } from "react-router-dom";
-import type AgoraSdk from "agora-electron-sdk";
-import { AGORA } from "../../constants/Process";
 import { Device } from "../../types/Device";
 import { DeviceSelect } from "../../components/DeviceSelect";
 import { TestingResult } from ".";
+import { useRTCEngine } from "../../utils/hooks/useRTCEngine";
 
 export interface CameraTestingProps {
     onChange: (result: TestingResult) => void;
 }
 
 export const CameraTesting = ({ onChange: setCamera }: CameraTestingProps): React.ReactElement => {
-    const [rtcEngine] = useState<AgoraSdk>(() => new window.AgoraRtcEngine());
+    const rtcEngine = useRTCEngine();
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
     const cameraStream = useRef<HTMLDivElement>(null);
@@ -21,19 +20,17 @@ export const CameraTesting = ({ onChange: setCamera }: CameraTestingProps): Reac
 
     useEffect(() => {
         setCamera(TestingResult.Undefined);
-        rtcEngine.initialize(AGORA.APP_ID);
-        rtcEngine.on("error", e => {
-            console.error("rtc error", e);
-        });
+
+        const onVideoDeviceStateChanged = (): void => {
+            setDevices(rtcEngine.getVideoDevices() as Device[]);
+        };
+
         setDevices(rtcEngine.getVideoDevices() as Device[]);
 
-        rtcEngine.on("videoDeviceStateChanged", () => {
-            setDevices(rtcEngine.getVideoDevices() as Device[]);
-        });
+        rtcEngine.on("videoDeviceStateChanged", onVideoDeviceStateChanged);
 
         return () => {
-            rtcEngine.removeAllListeners();
-            rtcEngine.release();
+            rtcEngine.off("videoDeviceStateChanged", onVideoDeviceStateChanged);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rtcEngine]);
