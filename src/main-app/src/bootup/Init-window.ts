@@ -11,9 +11,14 @@ export default async () => {
     app.allowRendererProcessReuse = false;
 
     if (runtime.isDevelopment) {
-        installExtension([REACT_DEVELOPER_TOOLS]).catch(err =>
-            console.log("added extension failed", err),
-        );
+        // TODO: replace official package version
+        // when writing this code, electron-devtools-installer has not released the latest version
+        // Expected version, greater than: v3.1.1
+        installExtension([REACT_DEVELOPER_TOOLS], {
+            loadExtensionOptions: {
+                allowFileAccess: true,
+            },
+        }).catch(err => console.log("added extension failed", err));
     }
 
     windowManager.createMainWindow();
