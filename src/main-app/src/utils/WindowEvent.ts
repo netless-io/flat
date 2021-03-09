@@ -15,3 +15,13 @@ export const windowReadyToShow = (customWindow: CustomSingleWindow) => {
         customWindow.window.show();
     });
 };
+
+export const windowOpenDevTools = (customWindow: CustomSingleWindow) => {
+    customWindow.window.webContents.once("dom-ready", () => {
+        // open devTools must be completed after dom ready
+        // link: https://github.com/electron/electron/issues/12438
+        if (customWindow.options.isOpenDevTools) {
+            customWindow.window.webContents.openDevTools();
+        }
+    });
+};
