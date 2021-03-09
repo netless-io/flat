@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
-import { isBefore, addMinutes, setHours, isAfter, isSameDay } from "date-fns";
+import { isBefore, addMinutes, setHours, isAfter } from "date-fns";
 import { EditRoomFormValues } from "./typings";
 import { compareDay, compareHour, MIN_CLASS_DURATION, excludeRange } from "../../utils/date";
 import { FullTimePicker } from "../../components/antd-date-fns";

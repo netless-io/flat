@@ -5,7 +5,7 @@ import ToolBox from "@netless/tool-box";
 import RedoUndo from "@netless/redo-undo";
 import PageController from "@netless/page-controller";
 import ZoomController from "@netless/zoom-controller";
-import OssUploadButton from "@netless/oss-upload-button";
+import OssUploadButton, { UploadType } from "@netless/oss-upload-button";
 import PreviewController from "@netless/preview-controller";
 // import DocsCenter from "@netless/docs-center";
 import OssDropUpload from "@netless/oss-drop-upload";
@@ -58,6 +58,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                                     sdkToken={NETLESS.SDK_TOKEN}
                                     room={room}
                                     whiteboardRef={whiteboardEl}
+                                    enables={whiteboardStore.isWritable ? undefined : [UploadType.Image]}
                                 />,
                             ]}
                         />

@@ -1,7 +1,7 @@
 import React from "react";
 import "./UserInfoMsg.less";
 import { getWechatInfo } from "../../utils/localStorage/accounts";
-import { Button, Input } from "antd";
+// import { Button, Input } from "antd";
 
 export default class UserInfoMsg extends React.PureComponent<{}> {
     private userName: string;
