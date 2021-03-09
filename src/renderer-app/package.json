@@ -9,7 +9,7 @@
     "@netless/cursor-tool": "^0.0.5",
     "@netless/fetch-middleware": "^1.0.6",
     "@netless/oss-drop-upload": "^0.0.4",
-    "@netless/oss-upload-button": "^0.1.3",
+    "@netless/oss-upload-button": "^0.1.8",
     "@netless/page-controller": "^0.0.3",
     "@netless/player-controller": "^0.0.6",
     "@netless/preview-controller": "^0.0.2",

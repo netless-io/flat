@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
-import { isBefore, addMinutes, setHours, isAfter, isSameDay, startOfDay } from "date-fns";
+import { isBefore, addMinutes, setHours, isAfter, startOfDay } from "date-fns";
 import { EditRoomFormValues } from "./typings";
 import { syncPeriodicEndAmount } from "./utils";
 import {
