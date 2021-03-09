@@ -59,7 +59,7 @@ export const NetworkStatus = observer<NetworkStatusProps>(function NetworkStatus
     return (
         <div className="network-status">
             <span className="network-status-delay" title="客户端到边缘服务器的网络延迟">
-                延迟：{networkQuality.delay}ms
+                延迟：<span className="network-status-delay-ms">{networkQuality.delay}ms</span>
             </span>
             <span className="network-status-signal" title={signalText}>
                 网络：
