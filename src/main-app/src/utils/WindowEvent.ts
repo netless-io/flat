@@ -21,6 +21,10 @@ export const windowOpenDevTools = (customWindow: CustomSingleWindow) => {
         // open devTools must be completed after dom ready
         // link: https://github.com/electron/electron/issues/12438
         if (customWindow.options.isOpenDevTools) {
+            customWindow.window.webContents.once("devtools-opened", () => {
+                customWindow.window.focus();
+            });
+
             customWindow.window.webContents.openDevTools();
         }
     });
