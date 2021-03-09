@@ -1,5 +1,5 @@
 import { BrowserWindow, BrowserWindowConstructorOptions, ipcMain, IpcMainEvent } from "electron";
-import { windowHookClose, windowReadyToShow } from "./WindowEvent";
+import { windowHookClose, windowOpenDevTools, windowReadyToShow } from "./WindowEvent";
 import runtime from "./Runtime";
 import { constants } from "types-pkg";
 import { Subject, zip } from "rxjs";
@@ -57,9 +57,7 @@ export class WindowManager {
 
         void innerWin.window.loadURL(options.url);
 
-        if (options.isOpenDevTools) {
-            innerWin.window.webContents.openDevTools();
-        }
+        windowOpenDevTools(innerWin);
 
         windowHookClose(innerWin);
 
