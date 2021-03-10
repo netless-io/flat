@@ -69,6 +69,10 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
         <div
             className="video-avatar-canvas"
             ref={el => {
+                if (!el || elRef.current === el) {
+                    return;
+                }
+
                 elRef.current = el;
 
                 if (el) {
