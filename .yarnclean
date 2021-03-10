@@ -3,7 +3,6 @@ __tests__
 test
 tests
 powered-test
-test.js
 *.spec.js
 testData
 
@@ -39,7 +38,7 @@ tsconfig.json
 .yarn-metadata.json
 
 # locks
-package-lock.json 
+package-lock.json
 .yarn-integrity
 yarn.lock
 
