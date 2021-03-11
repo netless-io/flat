@@ -15,7 +15,7 @@ export class WhiteboardStore {
     isFileOpen: boolean = false;
 
     /** is room Creator */
-    private readonly isCreator: boolean;
+    readonly isCreator: boolean;
 
     constructor(config: { isCreator: boolean }) {
         this.isCreator = config.isCreator;
