@@ -17,6 +17,7 @@ import { WhiteboardStore } from "../stores/WhiteboardStore";
 
 import pages from "../assets/image/pages.svg";
 import "./Whiteboard.less";
+import { i18n } from "../utils/i18n";
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
 }
@@ -53,12 +54,15 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                             room={room}
                             customerComponent={[
                                 <OssUploadButton
+                                    i18nLanguage={i18n.language}
                                     oss={OSS_CONFIG}
                                     appIdentifier={NETLESS.APP_IDENTIFIER}
                                     sdkToken={NETLESS.SDK_TOKEN}
                                     room={room}
                                     whiteboardRef={whiteboardEl}
-                                    enables={whiteboardStore.isWritable ? undefined : [UploadType.Image]}
+                                    enables={
+                                        whiteboardStore.isCreator ? undefined : [UploadType.Image]
+                                    }
                                 />,
                             ]}
                         />
