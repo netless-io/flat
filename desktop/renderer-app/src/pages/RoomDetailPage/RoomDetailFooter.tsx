@@ -21,6 +21,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
 }) {
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
     const [isShowInviteModal, setIsShowInviteModal] = useState(false);
+    const hideInviteModal = (): void => setIsShowInviteModal(false);
     const history = useHistory();
     const pushHistory = usePushHistory();
 
@@ -78,7 +79,8 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
             <InviteModal
                 visible={isShowInviteModal}
                 room={room}
-                onCancel={() => setIsShowInviteModal(false)}
+                onCopied={hideInviteModal}
+                onCancel={hideInviteModal}
             />
             <RemoveRoomModal
                 cancelModalVisible={cancelModalVisible}

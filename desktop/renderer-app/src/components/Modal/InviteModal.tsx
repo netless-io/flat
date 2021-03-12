@@ -16,12 +16,15 @@ const onlySuffixTimeFormat = format("HH:mm");
 export interface InviteModalProps {
     visible: boolean;
     room: RoomItem;
+    // after copy is performed
+    onCopied: () => void;
     onCancel: () => void;
 }
 
 export const InviteModal = observer<InviteModalProps>(function InviteModal({
     visible,
     room,
+    onCopied,
     onCancel,
 }) {
     const globalStore = useContext(GlobalStoreContext);
@@ -71,6 +74,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
             clipboard.writeText(`${basePrefixText}${baseSuffixText}`);
         }
         message.success("复制成功");
+        onCopied();
     };
 
     return (

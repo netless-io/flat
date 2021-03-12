@@ -17,6 +17,7 @@ export const CopyInvitationItem = observer<CopyInvitationItemProps>(function Del
     ...restProps
 }) {
     const [isShowInviteModal, setIsShowInviteModal] = useState(false);
+    const hideInviteModal = (): void => setIsShowInviteModal(false);
     if (!room?.roomUUID) {
         return null;
     }
@@ -42,9 +43,8 @@ export const CopyInvitationItem = observer<CopyInvitationItemProps>(function Del
             <InviteModal
                 visible={isShowInviteModal}
                 room={room}
-                onCancel={() => {
-                    setIsShowInviteModal(false);
-                }}
+                onCopied={hideInviteModal}
+                onCancel={hideInviteModal}
             />
         </>
     );
