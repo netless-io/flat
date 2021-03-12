@@ -10,6 +10,7 @@ export interface InviteButtonProps {
 
 export const InviteButton = observer<InviteButtonProps>(function InviteButton({ roomInfo }) {
     const [isShowInviteModal, showInviteModal] = useState(false);
+    const hideInviteModal = (): void => showInviteModal(false);
     return (
         <div>
             <TopBarRightBtn title="Invite" icon="invite" onClick={() => showInviteModal(true)} />
@@ -17,7 +18,8 @@ export const InviteButton = observer<InviteButtonProps>(function InviteButton({ 
                 <InviteModal
                     room={roomInfo}
                     visible={isShowInviteModal}
-                    onCancel={() => showInviteModal(false)}
+                    onCopied={hideInviteModal}
+                    onCancel={hideInviteModal}
                 />
             )}
         </div>
