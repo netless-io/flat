@@ -8,7 +8,7 @@
     "scripts": {
         "lint": "lint-staged",
         "storybook": "start-storybook -p 6006",
-        "build": "yarn run cleanup && rollup -c",
+        "build": "yarn run cleanup && node ./scripts/generate-index && rollup -c",
         "build-storybook": "build-storybook",
         "cleanup": "rimraf ./build",
         "postinstall": "yarn run build"
