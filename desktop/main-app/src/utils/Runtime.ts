@@ -1,7 +1,7 @@
 import path from "path";
 import { app } from "electron";
 import { platform } from "os";
-import { runtime as Runtime } from "types-pkg";
+import { runtime as Runtime } from "flat-types";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 

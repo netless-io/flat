@@ -74,7 +74,7 @@
         "rollup-plugin-styles": "^3.14.1",
         "rollup-plugin-typescript2": "^0.30.0",
         "rollup-pluginutils": "^2.8.2",
-        "types-pkg": "^0.1.0",
+        "flat-types": "^0.1.0",
         "typescript": "^4.1.2"
     }
 }

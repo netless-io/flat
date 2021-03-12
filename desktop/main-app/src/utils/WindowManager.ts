@@ -1,7 +1,7 @@
 import { BrowserWindow, BrowserWindowConstructorOptions, ipcMain, IpcMainEvent } from "electron";
 import { windowHookClose, windowOpenDevTools, windowReadyToShow } from "./WindowEvent";
 import runtime from "./Runtime";
-import { constants } from "types-pkg";
+import { constants } from "flat-types";
 import { Subject, zip } from "rxjs";
 import { ignoreElements, mergeMap } from "rxjs/operators";
 
