@@ -1,4 +1,4 @@
-import { runtime as Runtime } from "types-pkg";
+import { runtime as Runtime } from "flat-types";
 
 export const runtime: Runtime.Type = {
     isDevelopment: false,

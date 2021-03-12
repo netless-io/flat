@@ -1,5 +1,5 @@
 import { CustomSingleWindow } from "./WindowManager";
-import { ipc } from "types-pkg";
+import { ipc } from "flat-types";
 import { app, ipcMain } from "electron";
 import runtime from "./Runtime";
 

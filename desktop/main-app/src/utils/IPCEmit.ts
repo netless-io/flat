@@ -1,7 +1,7 @@
-import { EmitEvents } from "types-pkg/dist/ipc";
+import { EmitEvents } from "flat-types/dist/ipc";
 import { windowManager } from "./WindowManager";
 import runtime from "./Runtime";
-import { constants } from "types-pkg";
+import { constants } from "flat-types";
 
 const ipcEmitHandler = (windowName: constants.WindowsName): IPCEmit => {
     return (eventName, args): void => {
