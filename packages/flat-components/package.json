@@ -3,18 +3,20 @@
     "description": "Reusable components for the Flat app.",
     "version": "0.1.0",
     "private": false,
+    "sideEffects": false,
     "license": "MIT",
     "homepage": "https://github.com/netless-io/flat",
     "scripts": {
         "lint": "lint-staged",
         "storybook": "start-storybook -p 6006",
-        "build": "yarn run cleanup && node ./scripts/generate-index && rollup -c",
+        "build": "yarn run cleanup && rollup -c",
         "build-storybook": "build-storybook",
         "cleanup": "rimraf ./build",
         "postinstall": "yarn run build"
     },
-    "main": "./build/cjs/index.js",
-    "module": "./build/index.js",
+    "main": "./build/index.js",
+    "module": "./build/esm/index.js",
+    "types": "./build/index.d.ts",
     "dependencies": {
         "classnames": "^2.2.6",
         "i18next": "^19.8.4",
@@ -57,6 +59,7 @@
         "eslint-plugin-prettier": "^3.1.4",
         "eslint-plugin-react": "^7.20.6",
         "eslint-plugin-react-app": "^6.2.2",
+        "flat-types": "^0.1.0",
         "fork-ts-checker-webpack-plugin": "^6.0.4",
         "less": "^3.12.2",
         "lint-staged": "^10.5.4",
@@ -74,7 +77,6 @@
         "rollup-plugin-styles": "^3.14.1",
         "rollup-plugin-typescript2": "^0.30.0",
         "rollup-pluginutils": "^2.8.2",
-        "flat-types": "^0.1.0",
         "typescript": "^4.1.2"
     }
 }
