@@ -67,11 +67,29 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
             height: 700,
         });
 
+        ipcAsyncByMainWindow("set-resizable", {
+            resizable: true,
+            minWidth: 1200,
+            minHeight: 700,
+        });
+
+        ipcAsyncByMainWindow("set-maximizable", {
+            maximizable: true,
+        });
+
         return () => {
             window.clearTimeout(hideControllerTimeoutRef.current);
 
             ipcAsyncByMainWindow("disable-window", {
                 disable: false,
+            });
+
+            ipcAsyncByMainWindow("set-resizable", {
+                resizable: false,
+            });
+
+            ipcAsyncByMainWindow("set-maximizable", {
+                maximizable: false,
             });
 
             ipcReceiveRemove("window-will-close");
