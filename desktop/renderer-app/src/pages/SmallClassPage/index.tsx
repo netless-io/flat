@@ -33,6 +33,7 @@ import {
     User,
 } from "../../stores/ClassRoomStore";
 import { RouteNameType, RouteParams } from "../../utils/routes";
+import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 
 import "./SmallClassPage.less";
 
@@ -61,6 +62,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type SmallClassPageProps = {};
 
 export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassPage() {
+    usePowerSaveBlocker()
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 

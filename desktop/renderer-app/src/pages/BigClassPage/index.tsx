@@ -31,6 +31,7 @@ import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ipcAsyncByMainWindow } from "../../utils/ipc";
 import { useAutoRun, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
+import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 
 import "./BigClassPage.less";
 
@@ -70,6 +71,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type BigClassPageProps = {};
 
 export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
+    usePowerSaveBlocker()
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
