@@ -1,10 +1,11 @@
-import { makeAutoObservable, observable } from "mobx";
-import { createPlugins, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk } from "white-web-sdk";
-import { videoPlugin } from "@netless/white-video-plugin";
-import { audioPlugin } from "@netless/white-audio-plugin";
-import { CursorTool } from "@netless/cursor-tool";
-import { NETLESS, NODE_ENV } from "../constants/Process";
-import { globalStore } from "./GlobalStore";
+import {makeAutoObservable, observable} from "mobx";
+import {createPlugins, DeviceType, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk} from "white-web-sdk";
+import {videoPlugin} from "@netless/white-video-plugin";
+import {audioPlugin} from "@netless/white-audio-plugin";
+import {CursorTool} from "@netless/cursor-tool";
+import {NETLESS, NODE_ENV} from "../constants/Process";
+import {globalStore} from "./GlobalStore";
+import {isMobile, isWindows} from "react-device-detect";
 
 export class WhiteboardStore {
     room: Room | null = null;
@@ -82,9 +83,20 @@ export class WhiteboardStore {
         plugins.setPluginContext("video", { identity: contextIdentity });
         plugins.setPluginContext("audio", { identity: contextIdentity });
 
+        let deviceType: DeviceType;
+        if (isWindows) {
+            deviceType = DeviceType.Surface;
+        } else {
+            if (isMobile) {
+                deviceType = DeviceType.Touch;
+            } else {
+                deviceType = DeviceType.Desktop;
+            }
+        }
         const whiteWebSdk = new WhiteWebSdk({
             appIdentifier: NETLESS.APP_IDENTIFIER,
             plugins: plugins,
+            deviceType: deviceType,
         });
 
         const cursorName = globalStore.wechat?.name;
