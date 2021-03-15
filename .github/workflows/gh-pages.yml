@@ -5,7 +5,7 @@ on:
 
 jobs:
     build-and-deploy:
-        runs-on: windows-latest
+        runs-on: macos-latest
         steps:
             - name: Checkout 🛎️
               uses: actions/checkout@v2
@@ -16,7 +16,8 @@ jobs:
                   registry-url: "https://registry.npmjs.org"
             - name: Install and Build 🔧
               run: |
-                  yarn install --frozen-lockfile
+                  rm .yarnrc
+                  yarn install
                   yarn --cwd ./packages/flat-components build-storybook
             - name: Deploy 🚀
               uses: peaceiris/actions-gh-pages@v3
