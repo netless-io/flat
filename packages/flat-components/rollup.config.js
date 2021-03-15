@@ -30,7 +30,12 @@ export default rollupConfig;
  */
 function getMainEntryConfig() {
     const input = "./src/index.ts";
-    const sharedPlugins = [...commonPlugins, typescript()];
+    const sharedPlugins = [
+        ...commonPlugins,
+        typescript({
+            clean: true,
+        }),
+    ];
 
     return [
         {
@@ -81,6 +86,7 @@ function getComponentConfig(name) {
             },
             // already checked in main entry bundling
             check: false,
+            clean: true,
         }),
     ];
 
