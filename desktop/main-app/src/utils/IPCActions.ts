@@ -1,6 +1,6 @@
 import { CustomSingleWindow } from "./WindowManager";
 import { ipc } from "flat-types";
-import { app, ipcMain } from "electron";
+import { app, ipcMain, powerSaveBlocker } from "electron";
 import runtime from "./Runtime";
 
 const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAsync => {
@@ -35,6 +35,21 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
         "set-maximizable": args => {
             window.maximizable = args.maximizable;
         },
+        "set-prevent-sleep": args =>
+            (() => {
+                let powerSaveBlockerId = 0;
+                return () => {
+                    if (args.enable) {
+                        if (!powerSaveBlocker.isStarted(powerSaveBlockerId)) {
+                            powerSaveBlockerId = powerSaveBlocker.start("prevent-display-sleep");
+                        }
+                    } else {
+                        if (powerSaveBlocker.isStarted(powerSaveBlockerId)) {
+                            powerSaveBlocker.stop(powerSaveBlockerId);
+                        }
+                    }
+                };
+            })(),
     };
 };
 

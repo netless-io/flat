@@ -16,6 +16,7 @@ export type WindowActionAsync = {
               },
     ) => void;
     "set-maximizable": (args: { maximizable: boolean }) => void;
+    "set-prevent-sleep": (args: { enable: boolean }) => void;
 };
 
 export type AppActionAsync = {
