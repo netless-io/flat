@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useState } from "react";
 import { User } from "../../stores/ClassRoomStore";
+import { generateAvatar } from "../../utils/generateAvatar";
 import "./ChatUser.less";
 
 export type { User } from "../../stores/ClassRoomStore";
@@ -25,6 +26,7 @@ export const ChatUser = observer<ChatUserProps>(function ChatUser({
     onAcceptRaiseHand,
     onEndSpeaking,
 }) {
+    const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
     /** is current user the room owner */
     const isCreator = ownerUUID === userUUID;
     /** is this chat user element belongs to the current user */
@@ -32,7 +34,12 @@ export const ChatUser = observer<ChatUserProps>(function ChatUser({
 
     return (
         <div className="chat-user">
-            <img className="chat-user-avatar" src={user.avatar} alt={`User ${user.name}`} />
+            <img
+                className="chat-user-avatar"
+                src={isAvatarLoadFailed ? generateAvatar(userUUID) : user.avatar}
+                onError={() => setAvatarLoadFailed(true)}
+                alt={`User ${user.name}`}
+            />
             <span className="chat-user-name">{user.name}</span>
             {ownerUUID === user.userUUID ? (
                 <span className="chat-user-status is-teacher">(老师)</span>
