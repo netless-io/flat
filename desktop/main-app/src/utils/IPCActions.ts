@@ -25,6 +25,16 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
         "set-title": args => {
             window.setTitle(args.title);
         },
+        "set-resizable": args => {
+            window.resizable = args.resizable;
+
+            if ("minWidth" in args) {
+                window.setMinimumSize(args.minWidth, args.minHeight);
+            }
+        },
+        "set-maximizable": args => {
+            window.maximizable = args.maximizable;
+        },
     };
 };
 

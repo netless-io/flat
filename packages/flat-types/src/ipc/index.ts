@@ -4,6 +4,18 @@ export type WindowActionAsync = {
     "set-win-size": (args: { width: number; height: number; autoCenter?: boolean }) => void;
     "disable-window": (args: { disable: boolean }) => void;
     "set-title": (args: { title: string }) => void;
+    "set-resizable": (
+        args:
+            | {
+                  resizable: boolean;
+              }
+            | {
+                  resizable: boolean;
+                  minWidth: number;
+                  minHeight: number;
+              },
+    ) => void;
+    "set-maximizable": (args: { maximizable: boolean }) => void;
 };
 
 export type AppActionAsync = {
