@@ -5,7 +5,7 @@ on:
 
 jobs:
     build-and-deploy:
-        runs-on: macos-latest
+        runs-on: ubuntu-latest
         steps:
             - name: Checkout 🛎️
               uses: actions/checkout@v2
@@ -15,9 +15,11 @@ jobs:
                   node-version: "14.x"
                   registry-url: "https://registry.npmjs.org"
             - name: Install and Build 🔧
+              # don't install electron and agora
               run: |
-                  rm .yarnrc
-                  yarn install
+                  rm .yarnrc yarn.lock
+                  node -e 'var pkg=require("./package.json");pkg.workspaces.packages.pop();pkg=JSON.stringify(pkg,null,4);fs.writeFileSync("package.json",pkg)'
+                  yarn install --verbose
                   yarn --cwd ./packages/flat-components build-storybook
             - name: Deploy 🚀
               uses: peaceiris/actions-gh-pages@v3
