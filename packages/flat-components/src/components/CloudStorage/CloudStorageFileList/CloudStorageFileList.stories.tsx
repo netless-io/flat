@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { Story, Meta } from "@storybook/react";
 import Chance from "chance";
 import faker from "faker";
 
-import { CloudStorageFileList } from "./index";
+import { CloudStorageFileList, CloudStorageFileListProps } from "./index";
 
 const chance = new Chance();
 
@@ -17,24 +17,42 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
-export const PlayableList: Story<{ itemCount: number }> = ({ itemCount }) => (
-    <CloudStorageFileList
-        files={Array(itemCount)
-            .fill(0)
-            .map(() => {
-                return {
-                    name: faker.random.words() + "." + faker.system.commonFileExt(),
-                    size: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
-                    createAt: faker.date.past(),
-                };
-            })}
-    />
-);
-PlayableList.args = {
+export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileListProps> = ({
+    itemCount,
+    onSelectionChange,
+}) => {
+    const [selectedFileUUIDs, setSelectedFileUUIDs] = useState<string[]>([]);
+    const files = useMemo(
+        () =>
+            Array(itemCount)
+                .fill(0)
+                .map(() => {
+                    return {
+                        fileUUID: faker.random.uuid(),
+                        fileName: faker.random.words() + "." + faker.system.commonFileExt(),
+                        fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                        createAt: faker.date.past(),
+                    };
+                }),
+        [itemCount],
+    );
+    return (
+        <CloudStorageFileList
+            files={files}
+            selectedFileUUIDs={selectedFileUUIDs}
+            onSelectionChange={keys => {
+                setSelectedFileUUIDs(keys);
+                onSelectionChange(keys);
+            }}
+        />
+    );
+};
+PlayableExample.args = {
     itemCount: chance.integer({ min: 0, max: 100 }),
 };
-PlayableList.argTypes = {
+PlayableExample.argTypes = {
     files: { control: false },
+    selectedFileUUIDs: { control: false },
     itemCount: {
         name: "Item Count",
         description: "Number of auto-generated random items",
@@ -43,22 +61,39 @@ PlayableList.argTypes = {
     },
 };
 
-export const LongFileName: Story<{ fileName: string }> = ({ fileName }) => (
-    <CloudStorageFileList
-        files={[
+export const LongFileName: Story<{ fileName: string } & CloudStorageFileListProps> = ({
+    fileName,
+    onSelectionChange,
+}) => {
+    const [selectedFileUUIDs, setSelectedFileUUIDs] = useState<string[]>([]);
+    const files = useMemo(
+        () => [
             {
-                name: fileName,
-                size: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                fileUUID: faker.random.uuid(),
+                fileName,
+                fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
                 createAt: faker.date.past(),
             },
-        ]}
-    />
-);
+        ],
+        [fileName],
+    );
+    return (
+        <CloudStorageFileList
+            files={files}
+            selectedFileUUIDs={selectedFileUUIDs}
+            onSelectionChange={keys => {
+                setSelectedFileUUIDs(keys);
+                onSelectionChange(keys);
+            }}
+        />
+    );
+};
 LongFileName.args = {
     fileName: faker.random.words(20) + "." + faker.system.commonFileExt(),
 };
 LongFileName.argTypes = {
     files: { control: false },
+    selectedFileUUIDs: { control: false },
     fileName: {
         table: { category: "Showcase" },
     },
