@@ -12,7 +12,8 @@
     "workspaces": {
         "packages": [
             "packages/*",
-            "desktop/*"
+            "desktop/*",
+            "web/*"
         ],
         "nohoist": [
             "**"
