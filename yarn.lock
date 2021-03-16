@@ -2443,10 +2443,10 @@
   resolved "https://registry.yarnpkg.com/@netless/white-video-plugin/-/white-video-plugin-1.2.19.tgz#3458b7816af6618c995dc7bce3088b532de59212"
   integrity sha512-fV2/DFt+MSbin4lbcM9w5vE9ImblLbzxBjSeNrl9Fqk6KT2w8yJ4BsEc/xM4P469TJS3zLk4TSVtOH0jURcLeQ==
 
-"@netless/zoom-controller@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@netless/zoom-controller/-/zoom-controller-0.0.6.tgz#b27358660143dec2e152cddc1051416c0ade3eab"
-  integrity sha512-jMiKKsTQp6WRr+fLZ2QZcMaNpSjsqSpfPi+3IgRMqxU7iZQlW3Y9OopCmYaVoV05d5Q5HIpGiRB/nOHGsRqJ2A==
+"@netless/zoom-controller@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@netless/zoom-controller/-/zoom-controller-0.0.8.tgz#b15aca0e92c97e7ae05c0e40813b9753e021140a"
+  integrity sha512-26LVoG59RJsHxNOTUp6GNVHQOfuZfjQe+Jo+Qn3LAExeAk6iiPXqimL6Ds0Q6CDTSWZneAV3eZNZDSSxnO6wPQ==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
@@ -7995,7 +7995,7 @@ es6-shim@^0.35.5:
   resolved "https://registry.yarnpkg.com/es6-shim/-/es6-shim-0.35.6.tgz#d10578301a83af2de58b9eadb7c2c9945f7388a0"
   integrity sha512-EmTr31wppcaIAgblChZiuN/l9Y7DPyw8Xtbg7fIVngn6zMW+IEBJDJngeKC3x6wr0V/vcA2wqeFnaw1bFJbDdA==
 
-es6-symbol@^3.1.1, es6-symbol@~3.1.3:
+es6-symbol@^3.1.1, es6-symbol@^3.1.3, es6-symbol@~3.1.3:
   version "3.1.3"
   resolved "https://registry.npmjs.org/es6-symbol/-/es6-symbol-3.1.3.tgz#bad5d3c1bcdac28269f4cb331e431c78ac705d18"
   integrity sha512-NJ6Yn3FuDinBaBRWl/q5X/s4koRHBrgKAu+yGI6JCBeiu3qrcbJhwT2GeR/EXVfylRk8dpQVJoLEFhK+Mu31NA==
@@ -12791,6 +12791,11 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
+
+numeric@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/numeric/-/numeric-1.2.6.tgz#765b02bef97988fcf880d4eb3f36b80fa31335aa"
+  integrity sha1-dlsCvvl5iPz4gNTrPza4D6MTNao=
 
 oauth-sign@~0.9.0:
   version "0.9.0"
@@ -18414,19 +18419,21 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@2.11.8:
-  version "2.11.8"
-  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.11.8.tgz#2224db642c5afcf236c6ccb39381690049523ed7"
-  integrity sha512-GY3O65s75rifJCo2ko511G2SC1a0hH8SOLzYaKD82Gv6Sb+XbW72AmTWVaDa6F6nhQ0aTxzQo/2OdUh6Lrr6Wg==
+white-web-sdk@2.12.3:
+  version "2.12.3"
+  resolved "https://registry.yarnpkg.com/white-web-sdk/-/white-web-sdk-2.12.3.tgz#3d2afceedb334708019ae202d571ffff3b1b3254"
+  integrity sha512-gJrrIof+aFgImjeDifdjU+AqxgJMijEw3TUkf4Ch4azm5q7+LywHIrUM1Woswug5N+/O+USvf/D9bEmR8D7OLA==
   dependencies:
     "@netless/canvas-polyfill" "^0.0.4"
     atob "^2.1.0"
     bezier-js "^2.4.4"
     color "^3.1.0"
     detect-it "^3.0.5"
+    es6-symbol "^3.1.3"
     mathjs "^6.2.2"
     mobx "^4.9.0"
     mobx-react "^5.4.0"
+    numeric "^1.2.6"
     query-string "5"
     react "^16.8.0"
     react-dom "^16.8.0"
