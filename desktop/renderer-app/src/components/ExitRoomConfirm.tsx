@@ -44,6 +44,8 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
 
         ipcAsyncByMainWindow("set-resizable", {
             resizable: false,
+            minWidth: 1200,
+            minHeight: 668,
         });
 
         ipcAsyncByMainWindow("set-maximizable", {
@@ -116,6 +118,8 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
 
             ipcAsyncByMainWindow("set-resizable", {
                 resizable: false,
+                minWidth: 1200,
+                minHeight: 668,
             });
 
             ipcAsyncByMainWindow("set-maximizable", {

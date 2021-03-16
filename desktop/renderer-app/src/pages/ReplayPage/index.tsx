@@ -86,6 +86,8 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
 
             ipcAsyncByMainWindow("set-resizable", {
                 resizable: false,
+                minWidth: 1200,
+                minHeight: 668,
             });
 
             ipcAsyncByMainWindow("set-maximizable", {
