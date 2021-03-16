@@ -17,7 +17,7 @@
         "@netless/tool-box": "^0.0.6",
         "@netless/white-audio-plugin": "^1.2.20",
         "@netless/white-video-plugin": "^1.2.19",
-        "@netless/zoom-controller": "^0.0.6",
+        "@netless/zoom-controller": "^0.0.8",
         "agora-rtm-sdk": "^1.4.1",
         "antd": "^4.9.3",
         "axios": "^0.21.1",
@@ -44,7 +44,7 @@
         "react-virtualized": "^9.22.2",
         "socket.io-client": "^3.0.3",
         "uuid": "^8.3.0",
-        "white-web-sdk": "2.11.8"
+        "white-web-sdk": "2.12.3"
     },
     "devDependencies": {
         "@babel/core": "^7.11.4",
