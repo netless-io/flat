@@ -1,48 +1,48 @@
 name: Storybook
 on:
-    push:
-        branches:
-            - "main"
-        paths:
-            - "packages/flat-components/src/**"
+  push:
+    branches:
+      - "main"
+    paths:
+      - "packages/flat-components/src/**"
 
 jobs:
-    build-and-deploy:
-        runs-on: ubuntu-latest
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-            - name: Install NodeJS
-              uses: actions/setup-node@v2
-              with:
-                  node-version: "12.18.2"
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: "12.18.2"
 
-            - uses: actions/cache@v2
-              id: yarn-cache
-              with:
-                  key: yarn-storybook-v1-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-                  path: |
-                      ./node_modules
-                      ./packages/**/node_modules
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          key: yarn-storybook-v1-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            ./node_modules
+            ./packages/**/node_modules
 
-            - name: Install dependencies
-              run: |
-                  node ./scripts/ci/storybook/remove-desktop-workspaces-packages.js
-                  yarn install --frozen-lockfile
-              if: steps.yarn-cache.outputs.cache-hit != 'true'
+      - name: Install dependencies
+        run: |
+          node ./scripts/ci/storybook/remove-desktop-workspaces-packages.js
+          yarn install --frozen-lockfile
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
 
-            - name: Build Types
-              # it must be added here, otherwise when the cache matches, there will be flat-types not found
-              run: yarn workspace flat-types build
-              if: steps.yarn-cache.outputs.cache-hit == 'true'
+      - name: Build Types
+        # it must be added here, otherwise when the cache matches, there will be flat-types not found
+        run: yarn workspace flat-types build
+        if: steps.yarn-cache.outputs.cache-hit == 'true'
 
-            - name: Build Storybook
-              run: yarn workspace flat-components build-storybook
+      - name: Build Storybook
+        run: yarn workspace flat-components build-storybook
 
-            - name: Deploy Storybook
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./packages/flat-components/storybook-static
+      - name: Deploy Storybook
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./packages/flat-components/storybook-static
