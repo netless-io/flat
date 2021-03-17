@@ -7,13 +7,7 @@ import { format } from "date-fns";
 import { FileOutlined } from "@ant-design/icons";
 import { CloudStorageFileListHeadTip } from "../CloudStorageFileListHeadTip";
 import { ColumnsType } from "antd/lib/table";
-
-export interface CloudStorageFile {
-    fileUUID: string;
-    fileName: string;
-    fileSize: number;
-    createAt: Date;
-}
+import { CloudStorageFile } from "../types";
 
 export interface CloudStorageFileListProps {
     /** Cloud Storage List items */

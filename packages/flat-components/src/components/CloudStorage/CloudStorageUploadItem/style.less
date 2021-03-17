@@ -1,0 +1,52 @@
+.cloud-storage-upload-item {
+    position: relative;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #444E60;
+    border-bottom: 1px #DBE1EA solid;
+    user-select: none;
+}
+
+.cloud-storage-upload-file-icon {
+    margin-right: 4px;
+}
+
+.cloud-storage-upload-item-name {
+    display: inline-block;
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+    white-space: nowrap;
+}
+
+.cloud-storage-upload-status {
+    margin-left: auto;
+    color: #7A7B7C;
+
+    &.is-success {
+        color: #7EC452;
+    }
+
+    &.is-error {
+        color: #F45454;
+    }
+}
+
+.cloud-storage-upload-status-btn {
+    border: none;
+}
+
+.cloud-storage-upload-item-progress-bar {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 1px;
+    background: #3381FF;
+
+    &.is-error {
+        background: #F45454;
+    }
+}
