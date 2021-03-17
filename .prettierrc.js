@@ -6,4 +6,12 @@ module.exports = {
     'arrowParens': 'avoid',
     'trailingComma': 'all',
     'bracketSpacing': true,
+    'overrides': [
+        {
+            'files': ['*.json', '*.yaml', '*.yml'],
+            'options': {
+                'tabWidth': 2
+            }
+        }
+    ]
 }

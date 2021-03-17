@@ -1,25 +1,25 @@
 {
-    "name": "flat-web-react",
-    "version": "0.1.0",
-    "license": "MIT",
-    "devDependencies": {
-        "@types/react": "^17.0.3",
-        "@types/react-dom": "^17.0.2",
-        "@vitejs/plugin-react-refresh": "^1.3.1",
-        "prettier": "^2.2.1",
-        "pretty-quick": "^3.1.0",
-        "vite": "^2.1.0"
-    },
-    "dependencies": {
-        "@ant-design/icons": "^4.5.0",
-        "antd": "^4.14.0",
-        "react": "^17.0.1",
-        "react-dom": "^17.0.1"
-    },
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build",
-        "serve": "vite preview",
-        "lint": "pretty-quick --staged"
-    }
+  "name": "flat-web-react",
+  "version": "0.1.0",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.2",
+    "@vitejs/plugin-react-refresh": "^1.3.1",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0",
+    "vite": "^2.1.0"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.5.0",
+    "antd": "^4.14.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "lint": "pretty-quick --staged"
+  }
 }

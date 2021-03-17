@@ -1,29 +1,29 @@
 {
-    "name": "root",
-    "private": true,
-    "scripts": {
-        "preinstall": "node ./scripts/preinstall",
-        "lint": "yarn workspaces run lint",
-        "start:mac": "osascript ./scripts/start.scpt",
-        "ship": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship",
-        "ship:mac": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship:mac",
-        "ship:win": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship:win"
-    },
-    "workspaces": {
-        "packages": [
-            "packages/*",
-            "desktop/*",
-            "web/*"
-        ],
-        "nohoist": [
-            "**"
-        ]
-    },
-    "license": "MIT",
-    "dependencies": {},
-    "devDependencies": {
-        "@commitlint/cli": "^11.0.0",
-        "@commitlint/config-angular": "^11.0.0",
-        "husky": "^5.0.9"
-    }
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "preinstall": "node ./scripts/preinstall",
+    "lint": "yarn workspaces run lint",
+    "start:mac": "osascript ./scripts/start.scpt",
+    "ship": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship",
+    "ship:mac": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship:mac",
+    "ship:win": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship:win"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "desktop/*",
+      "web/*"
+    ],
+    "nohoist": [
+      "**"
+    ]
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-angular": "^11.0.0",
+    "husky": "^5.0.9"
+  }
 }
