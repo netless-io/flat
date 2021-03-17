@@ -1,26 +1,20 @@
-export interface LSWechatInfo {
-    avatar: string;
-    name: string;
-    token: string;
-}
+import { WechatInfo } from "../../stores/GlobalStore";
 
-export type LSWechatUserUuid = string;
-
-export function getWechatInfo(): LSWechatInfo | null {
+export function getWechatInfo(): WechatInfo | null {
     const wechatInfo = localStorage.getItem("wechatInfo");
     return wechatInfo ? JSON.parse(wechatInfo) : null;
 }
 
-export function setWechatInfo(config: LSWechatInfo): LSWechatInfo {
+export function setWechatInfo(config: WechatInfo): WechatInfo {
     localStorage.setItem("wechatInfo", JSON.stringify(config));
     return config;
 }
 
-export function getUserUuid(): LSWechatUserUuid | null {
+export function getUserUuid(): string | null {
     return localStorage.getItem("userUUID");
 }
 
-export function setUserUuid(userUUID: LSWechatUserUuid): LSWechatUserUuid {
+export function setUserUuid(userUUID: string): string {
     localStorage.setItem("userUUID", userUUID);
     return userUUID;
 }
