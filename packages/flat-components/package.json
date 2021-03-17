@@ -11,6 +11,7 @@
     "storybook": "start-storybook -p 6006",
     "build": "yarn run cleanup && rollup -c",
     "build-storybook": "build-storybook",
+    "deploy-storybook": "build-storybook && node scripts/deploy-storybook.js",
     "cleanup": "rimraf ./build",
     "postinstall": "yarn run build"
   },
