@@ -4,9 +4,14 @@ module.exports = {
     stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(ts|tsx)"],
     addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
     webpackFinal: async config => {
-        config.module.rules.push({
+        config.module.rules.unshift({
             test: /\.less$/,
-            use: [{ loader: "style-loader" }, { loader: "css-loader" }, { loader: "less-loader" }],
+            sideEffects: true,
+            use: [
+                { loader: require.resolve("style-loader") },
+                { loader: require.resolve("css-loader") },
+                { loader: require.resolve("less-loader") },
+            ],
         });
         return config;
     },
