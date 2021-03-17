@@ -10,9 +10,6 @@ const chance = new Chance();
 const storyMeta: Meta = {
     title: "Components/CloudStorageFileList",
     component: CloudStorageFileList,
-    parameters: {
-        controls: { expanded: true },
-    },
 };
 
 export default storyMeta;
