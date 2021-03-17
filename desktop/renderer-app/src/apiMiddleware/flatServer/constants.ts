@@ -62,3 +62,8 @@ export enum Status {
     Process,
     AuthFailed,
 }
+
+export enum Sex {
+    Man = "Man",
+    Woman = "Woman",
+}

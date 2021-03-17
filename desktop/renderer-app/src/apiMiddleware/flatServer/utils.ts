@@ -44,3 +44,45 @@ export async function post<Payload, Result>(
 
     return res.data;
 }
+
+export async function postNotAuth<Payload, Result>(
+    action: string,
+    payload: Payload,
+    params?: AxiosRequestConfig["params"],
+): Promise<Result> {
+    const config: AxiosRequestConfig = {
+        params,
+    };
+
+    const { data: res } = await Axios.post<FlatServerResponse<Result>>(
+        `${FLAT_SERVER_VERSIONS.V1HTTPS}/${action}`,
+        payload,
+        config,
+    );
+
+    if (res.status !== Status.Success) {
+        throw new ServerRequestError(res.code);
+    }
+
+    return res.data;
+}
+
+export async function getNotAuth<Result>(
+    action: string,
+    params?: AxiosRequestConfig["params"],
+): Promise<Result> {
+    const config: AxiosRequestConfig = {
+        params,
+    };
+
+    const { data: res } = await Axios.get<FlatServerResponse<Result>>(
+        `${FLAT_SERVER_VERSIONS.V1HTTPS}/${action}`,
+        config,
+    );
+
+    if (res.status !== Status.Success) {
+        throw new ServerRequestError(res.code);
+    }
+
+    return res.data;
+}

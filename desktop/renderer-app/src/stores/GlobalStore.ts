@@ -1,14 +1,10 @@
 import { autoPersistStore } from "./utils";
+import { WechatProcessResult } from "../apiMiddleware/flatServer";
 
 // clear storage if not match
 const LS_VERSION = 1;
 
-export interface WechatInfo {
-    userUUID: string;
-    avatar: string;
-    name: string;
-    token: string;
-}
+export type WechatInfo = WechatProcessResult;
 
 /**
  * Properties in Global Store are persisted and shared globally.

@@ -4,9 +4,6 @@ import { withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { Button, Modal } from "antd";
 import logo from "./assets/image/logo.svg";
-// import wechat from "./assets/image/wechat.svg";
-// import google from "./assets/image/google.svg";
-import { shell } from "electron";
 import { ipcAsyncByMainWindow } from "./utils/ipc";
 import WeChatLogin from "./components/WeChatLogin";
 
@@ -33,37 +30,6 @@ export class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPag
             height: 667,
             autoCenter: true,
         });
-    };
-
-    private handleCreate = (): void => {
-        // if (this.state.name) {
-        //     this.props.history.push(`/create/`);
-        // } else {
-        //     this.props.history.push("/name/");
-        // }
-        // @TODO google 登陆
-    };
-
-    private updateName = (isEmpty?: boolean): void => {
-        if (isEmpty) {
-            localStorage.removeItem("userName");
-            this.setState({ visible: false, name: "" });
-        } else {
-            localStorage.setItem("userName", this.state.name);
-            this.setState({ visible: false });
-        }
-    };
-
-    private openGithub = async (): Promise<void> => {
-        await shell.openExternal("https://github.com/netless-io/Flat-native");
-    };
-
-    private openLanding = async (): Promise<void> => {
-        await shell.openExternal("https://netless.link/");
-    };
-
-    private openMIT = async (): Promise<void> => {
-        await shell.openExternal("https://opensource.org/licenses/MIT");
     };
 
     public showModal = (): void => {
@@ -130,6 +96,7 @@ export class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPag
                     centered={true}
                     visible={this.state.toggleLoginModel}
                     onCancel={this.handleCancel}
+                    destroyOnClose
                 >
                     <WeChatLogin />
                 </Modal>

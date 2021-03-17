@@ -1,5 +1,5 @@
-import { DocsType, RoomDoc, RoomStatus, RoomType, Week } from "./constants";
-import { post } from "./utils";
+import { DocsType, RoomDoc, RoomStatus, RoomType, Sex, Week } from "./constants";
+import { post, postNotAuth } from "./utils";
 
 export interface CreateOrdinaryRoomPayload {
     /** 房间主题, 最多 50 字 */
@@ -491,11 +491,46 @@ export async function updatePeriodicSubRoom(payload: UpdatePeriodicSubRoomPayloa
 
 export interface LoginCheck {
     name: string;
-    sex: "Man" | "Woman";
+    sex: Sex;
     avatar: string; // 头像地址
     userUUID: string; // 用户信息，需要进行保存
 }
 
 export async function loginCheck(): Promise<LoginCheck> {
     return await post<{}, LoginCheck>("login", {});
+}
+
+export interface SetWechatAuthIDPayload {
+    authID: string;
+}
+
+export interface SetWechatAuthIDResult {
+    authID: string;
+}
+
+export async function setWechatAuthID(authID: string): Promise<SetWechatAuthIDResult> {
+    return await postNotAuth<SetWechatAuthIDPayload, SetWechatAuthIDResult>(
+        "login/weChat/set-auth-id",
+        {
+            authID,
+        },
+    );
+}
+
+export interface WechatProcessPayload {
+    authID: string;
+}
+
+export interface WechatProcessResult {
+    name: string;
+    sex: Sex;
+    avatar: string;
+    userUUID: string;
+    token: string;
+}
+
+export async function wechatProcess(authID: string): Promise<WechatProcessResult> {
+    return await postNotAuth<WechatProcessPayload, WechatProcessResult>("login/weChat/process", {
+        authID,
+    });
 }
