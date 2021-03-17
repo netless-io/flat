@@ -18791,10 +18791,10 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@2.12.3:
-  version "2.12.3"
-  resolved "https://registry.yarnpkg.com/white-web-sdk/-/white-web-sdk-2.12.3.tgz#3d2afceedb334708019ae202d571ffff3b1b3254"
-  integrity sha512-gJrrIof+aFgImjeDifdjU+AqxgJMijEw3TUkf4Ch4azm5q7+LywHIrUM1Woswug5N+/O+USvf/D9bEmR8D7OLA==
+white-web-sdk@2.12.4:
+  version "2.12.4"
+  resolved "https://registry.yarnpkg.com/white-web-sdk/-/white-web-sdk-2.12.4.tgz#c435c39c7fcb7e8b5098f517bac6440981794816"
+  integrity sha512-KetAw6hprikvlZYpiEjezvEJ4t+kN4kAC/UtJCXrhuVcPv2wxGGyAB1bPxhx3lInYOzk6mc+iItBAPaCaAwAUQ==
   dependencies:
     "@netless/canvas-polyfill" "^0.0.4"
     atob "^2.1.0"

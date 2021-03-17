@@ -44,7 +44,7 @@
     "react-virtualized": "^9.22.2",
     "socket.io-client": "^3.0.3",
     "uuid": "^8.3.0",
-    "white-web-sdk": "2.12.3"
+    "white-web-sdk": "2.12.4"
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",
