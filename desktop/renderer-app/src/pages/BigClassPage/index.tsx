@@ -71,7 +71,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type BigClassPageProps = {};
 
 export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
-    usePowerSaveBlocker()
+    usePowerSaveBlocker();
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 

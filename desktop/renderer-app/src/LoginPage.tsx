@@ -40,16 +40,6 @@ export class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPag
         this.setState({ toggleLoginModel: false });
     };
 
-    public joinRoom = (): void => {
-        ipcAsyncByMainWindow("set-win-size", {
-            width: 1200,
-            height: 668,
-            autoCenter: true,
-        });
-
-        this.props.history.push("/user/");
-    };
-
     public render(): React.ReactNode {
         return (
             <div className="page-index-box">

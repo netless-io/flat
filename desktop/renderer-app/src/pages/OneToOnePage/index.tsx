@@ -51,7 +51,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type OneToOnePageProps = {};
 
 export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() {
-    usePowerSaveBlocker()
+    usePowerSaveBlocker();
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 

@@ -62,7 +62,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type SmallClassPageProps = {};
 
 export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassPage() {
-    usePowerSaveBlocker()
+    usePowerSaveBlocker();
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
