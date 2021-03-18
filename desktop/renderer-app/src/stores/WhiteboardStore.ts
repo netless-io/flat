@@ -1,5 +1,5 @@
 import {makeAutoObservable, observable} from "mobx";
-import {createPlugins, DeviceType, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk} from "white-web-sdk";
+import {createPlugins, DefaultHotKeys, DeviceType, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk} from "white-web-sdk";
 import {videoPlugin} from "@netless/white-video-plugin";
 import {audioPlugin} from "@netless/white-audio-plugin";
 import {CursorTool} from "@netless/cursor-tool";
@@ -110,6 +110,18 @@ export class WhiteboardStore {
                 userPayload: { userId: globalStore.userUUID, cursorName },
                 floatBar: true,
                 isWritable: this.isWritable,
+                hotKeys: {
+                    ...DefaultHotKeys,
+                    changeToSelector: "s",
+                    changeToLaserPointer: "l",
+                    changeToPencil: "p",
+                    changeToRectangle: "r",
+                    changeToEllipse: "c",
+                    changeToEraser: "e",
+                    changeToStraight: "t",
+                    changeToArrow: "a",
+                    changeToHand: "h",
+                }
             },
             {
                 onPhaseChanged: phase => {
