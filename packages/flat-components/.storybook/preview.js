@@ -1,5 +1,5 @@
 import "antd/dist/antd.min.css";
-import "bulma/css/bulma.min.css";
+import "./custom-bulma.scss";
 import "tachyons/css/tachyons.min.css";
 
 export const parameters = {
