@@ -86,6 +86,8 @@
     "rollup-plugin-styles": "^3.14.1",
     "rollup-plugin-typescript2": "^0.30.0",
     "rollup-pluginutils": "^2.8.2",
+    "sass": "^1.32.8",
+    "sass-loader": "^10.1.1",
     "tachyons": "^4.12.0",
     "typescript": "^4.1.2"
   }
