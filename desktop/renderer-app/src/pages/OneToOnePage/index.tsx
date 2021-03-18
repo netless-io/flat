@@ -33,6 +33,7 @@ import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 
 import "./OneToOnePage.less";
 import { constants } from "flat-types";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -53,6 +54,7 @@ export type OneToOnePageProps = {};
 
 export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() {
     usePowerSaveBlocker();
+    useWindowSize("Class");
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
@@ -76,12 +78,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
         return classRoomStore.users.currentUser;
     }).get();
-
-    useEffect(() => {
-        ipcAsyncByMainWindow("set-win-size", {
-            ...constants.PageSize.Class,
-        });
-    }, []);
 
     if (
         !whiteboardStore.room ||

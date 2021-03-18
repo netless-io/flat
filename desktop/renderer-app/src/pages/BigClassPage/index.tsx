@@ -35,6 +35,7 @@ import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 
 import "./BigClassPage.less";
 import { constants } from "flat-types";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -73,6 +74,7 @@ export type BigClassPageProps = {};
 
 export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
     usePowerSaveBlocker();
+    useWindowSize("Class");
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
@@ -88,12 +90,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     );
     const [mainSpeaker, setMainSpeaker] = useState<User | undefined>(speakingJoiner);
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
-
-    useEffect(() => {
-        ipcAsyncByMainWindow("set-win-size", {
-            ...constants.PageSize.Class,
-        });
-    }, []);
 
     // control whiteboard writable
     useEffect(() => {

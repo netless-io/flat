@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { OrdinaryRoomForm } from "./OrdinaryRoomForm";
 import { PeriodicSubRoomForm } from "./PeriodicSubRoomForm";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 type ModifyOrdinaryRoomPageProps = {
     roomUUID: string;
@@ -12,6 +13,8 @@ type ModifyOrdinaryRoomPageProps = {
 
 export const ModifyOrdinaryRoomPage = observer<ModifyOrdinaryRoomPageProps>(
     function ModifyOrdinaryRoomPage() {
+        useWindowSize("Main");
+
         const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
         if (periodicUUID) {
             return <PeriodicSubRoomForm roomUUID={roomUUID} periodicUUID={periodicUUID} />;

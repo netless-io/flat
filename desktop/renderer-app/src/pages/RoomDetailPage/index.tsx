@@ -20,10 +20,13 @@ import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatus
 import { joinRoomHandler } from "../utils/joinRoomHandler";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { RoomDetailFooter } from "./RoomDetailFooter";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 export type RoomDetailPageProps = {};
 
 export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailPage() {
+    useWindowSize("Main");
+
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);

@@ -10,6 +10,7 @@ import "./SplashPage.less";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { ipcAsyncByMainWindow } from "../../utils/ipc";
 import { constants } from "flat-types";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 enum LoginStatusType {
     Idle = "Idle",
@@ -21,16 +22,11 @@ enum LoginStatusType {
 export interface SplashPageProps {}
 
 export const SplashPage = observer<SplashPageProps>(function SplashPage() {
+    useWindowSize("Splash");
+
     const [loginStatus, updateLoginStatus] = useState(LoginStatusType.Idle);
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
-
-    useEffect(() => {
-        ipcAsyncByMainWindow("set-win-size", {
-            ...constants.PageSize.Root,
-            autoCenter: true,
-        });
-    });
 
     useEffect(() => {
         let isUnMount = false;

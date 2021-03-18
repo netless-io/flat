@@ -13,6 +13,7 @@ import { SpeakerTesting } from "./SpeakerTesting";
 import { MicrophoneTesting } from "./MicrophoneTesting";
 import info from "../../assets/image/info.svg";
 import success from "../../assets/image/success.svg";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 export enum SettingMenuKey {
     NormalSetting = "/setting/normal/",
@@ -34,6 +35,8 @@ export enum TestingResult {
 const { SubMenu } = Menu;
 
 export default function UserSettingPage(): React.ReactElement {
+    useWindowSize("Main");
+
     const location = useLocation();
     const [system, setSystem] = useState<string | null>(null);
     const [camera, setCamera] = useState<TestingResult>(TestingResult.Undefined);

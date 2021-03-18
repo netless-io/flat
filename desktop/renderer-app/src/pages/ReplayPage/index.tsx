@@ -19,6 +19,7 @@ import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirm
 import { useHistory } from "react-router-dom";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { constants } from "flat-types";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;
@@ -39,6 +40,8 @@ export type ReplayPageState = {
 };
 
 export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
+    useWindowSize("Replay");
+
     const whiteboardElRef = useRef<HTMLDivElement>(null);
     const videoElRef = useRef<HTMLVideoElement>(null);
     const [showExitReplayModal, setShowExitReplayModal] = useState(false);
@@ -63,35 +66,11 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
             setShowExitReplayModal(true);
         });
 
-        ipcAsyncByMainWindow("set-win-size", {
-            ...constants.PageSize.Replay,
-        });
-
-        ipcAsyncByMainWindow("set-resizable", {
-            resizable: true,
-            minWidth: 1200,
-            minHeight: 700,
-        });
-
-        ipcAsyncByMainWindow("set-maximizable", {
-            maximizable: true,
-        });
-
         return () => {
             window.clearTimeout(hideControllerTimeoutRef.current);
 
             ipcAsyncByMainWindow("disable-window", {
                 disable: false,
-            });
-
-            ipcAsyncByMainWindow("set-resizable", {
-                resizable: false,
-                minWidth: 1200,
-                minHeight: 668,
-            });
-
-            ipcAsyncByMainWindow("set-maximizable", {
-                maximizable: false,
             });
 
             ipcReceiveRemove("window-will-close");
