@@ -11,6 +11,13 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
+export const Overview: Story<CloudStorageFileTitleProps> = args => (
+    <CloudStorageFileTitle {...args} />
+);
+Overview.args = {
+    fileName: faker.random.word() + "." + faker.system.commonFileExt(),
+};
+
 const renderFileTitles = (fileType: string, exts: string[]): React.ReactElement => (
     <div className="column is-one-quarter-tablet">
         <div className="box">
