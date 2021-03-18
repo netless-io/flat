@@ -37,6 +37,7 @@ import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 
 import "./SmallClassPage.less";
 import { constants } from "flat-types";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 const AVATAR_WIDTH = 144;
 const AVATAR_HEIGHT = 108;
@@ -64,6 +65,7 @@ export type SmallClassPageProps = {};
 
 export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassPage() {
     usePowerSaveBlocker();
+    useWindowSize("Class");
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
@@ -95,12 +97,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         }
         return count;
     });
-
-    useEffect(() => {
-        ipcAsyncByMainWindow("set-win-size", {
-            ...constants.PageSize.Class,
-        });
-    }, []);
 
     // control whiteboard writable
     useEffect(() => {

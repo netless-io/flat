@@ -8,6 +8,7 @@ import { useSafePromise } from "../../utils/hooks/lifecycle";
 import EditRoomPage, { EditRoomFormValues, EditRoomType } from "../../components/EditRoomPage";
 import { useHistory } from "react-router";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 const getInitialBeginTime = (): Date => {
     const now = new Date();
@@ -21,6 +22,8 @@ const getInitialBeginTime = (): Date => {
 };
 
 export const UserScheduledPage = observer(function UserScheduledPage() {
+    useWindowSize("Main");
+
     const history = useHistory();
     const sp = useSafePromise();
     const roomStore = useContext(RoomStoreContext);

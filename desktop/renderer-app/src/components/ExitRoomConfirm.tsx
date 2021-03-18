@@ -38,20 +38,6 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
     const onReturnMain = useCallback(async () => {
         setReturnLoading(true);
 
-        ipcAsyncByMainWindow("disable-window", {
-            disable: false,
-        });
-
-        ipcAsyncByMainWindow("set-resizable", {
-            resizable: false,
-            minWidth: 1200,
-            minHeight: 668,
-        });
-
-        ipcAsyncByMainWindow("set-maximizable", {
-            maximizable: false,
-        });
-
         try {
             await sp(hangClass());
         } catch (e) {
@@ -99,32 +85,12 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
             confirm(ExitRoomConfirmType.ExitButton);
         });
 
-        ipcAsyncByMainWindow("set-resizable", {
-            resizable: true,
-            minWidth: 1200,
-            minHeight: 700,
-        });
-
-        ipcAsyncByMainWindow("set-maximizable", {
-            maximizable: true,
-        });
-
         return () => {
             ipcAsyncByMainWindow("disable-window", {
                 disable: false,
             });
 
             ipcReceiveRemove("window-will-close");
-
-            ipcAsyncByMainWindow("set-resizable", {
-                resizable: false,
-                minWidth: 1200,
-                minHeight: 668,
-            });
-
-            ipcAsyncByMainWindow("set-maximizable", {
-                maximizable: false,
-            });
         };
     }, [confirm]);
 

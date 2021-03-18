@@ -5,7 +5,7 @@ export enum WindowsName {
 }
 
 export const PageSize = {
-    Root: {
+    Splash: {
         width: 375,
         height: 667,
     },
@@ -25,4 +25,4 @@ export const PageSize = {
         width: 1200,
         height: 700,
     },
-};
+} as const;

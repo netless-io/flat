@@ -26,6 +26,7 @@ import { RemoveRoomModal } from "../../components/Modal/RemoveRoomModal";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { getWeekNames } from "../../components/WeekRateSelector";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
 const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
@@ -33,6 +34,8 @@ const timeSuffixFormat = format("HH:mm");
 const dayWeekFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM/dd iii");
 
 export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPage() {
+    useWindowSize("Main");
+
     const params = useParams<RouteParams<RouteNameType.ScheduleRoomDetailPage>>();
     const roomStore = useContext(RoomStoreContext);
     const [cancelRoomUUIDList, setCancelRoomUUIDList] = useState<Array<string>>([]);
@@ -192,7 +195,8 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                                 房间类型：{getRoomTypeName(periodicInfo.periodic.roomType)}
                             </div>
                             <div className="schedule-room-tips-inner">
-                                结束于 {dayWeekFormat(periodicInfo.periodic.endTime)} ，共 {rooms.length} 个房间
+                                结束于 {dayWeekFormat(periodicInfo.periodic.endTime)} ，共{" "}
+                                {rooms.length} 个房间
                             </div>
                         </div>
                         <div className="schedule-btn-list">

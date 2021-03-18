@@ -8,15 +8,34 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
 
     return {
         "set-win-size": args => {
-            args = {
-                autoCenter: false,
-                ...args,
-            };
-
             window.setSize(args.width, args.height);
 
             if (args.autoCenter) {
                 window.center();
+            }
+
+            window.resizable = !!args.resizable;
+            window.maximizable = !!args.maximizable;
+
+            switch (typeof args.setMinimumSize) {
+                case "undefined": {
+                    window.setMinimumSize(1, 1);
+                    break;
+                }
+                case "boolean": {
+                    window.setMinimumSize(args.width, args.height);
+                    break;
+                }
+                case "object": {
+                    window.setMinimumSize(
+                        args.setMinimumSize.minWidth,
+                        args.setMinimumSize.minHeight,
+                    );
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
         },
         "disable-window": args => {
@@ -24,16 +43,6 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
         },
         "set-title": args => {
             window.setTitle(args.title);
-        },
-        "set-resizable": args => {
-            window.resizable = args.resizable;
-
-            if ("minWidth" in args) {
-                window.setMinimumSize(args.minWidth, args.minHeight);
-            }
-        },
-        "set-maximizable": args => {
-            window.maximizable = args.maximizable;
         },
         "set-prevent-sleep": args =>
             (() => {

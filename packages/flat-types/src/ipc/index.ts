@@ -1,21 +1,21 @@
 import * as runtime from "../runtime";
 
 export type WindowActionAsync = {
-    "set-win-size": (args: { width: number; height: number; autoCenter?: boolean }) => void;
-    "disable-window": (args: { disable: boolean }) => void;
-    "set-title": (args: { title: string }) => void;
-    "set-resizable": (
-        args:
+    "set-win-size": (args: {
+        width: number;
+        height: number;
+        autoCenter?: boolean;
+        resizable?: boolean;
+        setMinimumSize?:
+            | true
             | {
-                  resizable: boolean;
-              }
-            | {
-                  resizable: boolean;
                   minWidth: number;
                   minHeight: number;
-              },
-    ) => void;
-    "set-maximizable": (args: { maximizable: boolean }) => void;
+              };
+        maximizable?: boolean;
+    }) => void;
+    "disable-window": (args: { disable: boolean }) => void;
+    "set-title": (args: { title: string }) => void;
     "set-prevent-sleep": (args: { enable: boolean }) => void;
 };
 

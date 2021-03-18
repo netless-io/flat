@@ -14,6 +14,7 @@ import { periodicRoomInfo, updatePeriodicRoom } from "../../apiMiddleware/flatSe
 import { getEndTimeFromRate, getRateFromEndTime } from "../../components/EditRoomPage/utils";
 import LoadingPage from "../../LoadingPage";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 type ModifyPeriodicRoomPageProps = {
     periodicUUID: string;
@@ -21,6 +22,8 @@ type ModifyPeriodicRoomPageProps = {
 
 export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
     function ModifyPeriodicRoomPage() {
+        useWindowSize("Main");
+
         const { periodicUUID } = useParams<RouteParams<RouteNameType.ModifyPeriodicRoomPage>>();
         const history = useHistory();
         const sp = useSafePromise();
