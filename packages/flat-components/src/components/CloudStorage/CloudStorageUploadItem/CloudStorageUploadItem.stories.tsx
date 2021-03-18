@@ -20,6 +20,15 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
+export const Overview: Story<CloudStorageUploadItemProps> = args => (
+    <CloudStorageUploadItem {...args} />
+);
+Overview.args = {
+    file: getCloudStorageFile(),
+    percent: chance.integer({ min: 0, max: 100 }),
+    hasError: faker.random.boolean(),
+};
+
 export const UploadList: Story<CloudStorageUploadItemProps> = ({ onCancel, onRetry }) => {
     function getItem(percent: number, hasError = false): React.ReactElement {
         return (
