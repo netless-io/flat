@@ -18,6 +18,7 @@ import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
 import { useHistory } from "react-router-dom";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { constants } from "flat-types";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;
@@ -63,8 +64,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         });
 
         ipcAsyncByMainWindow("set-win-size", {
-            width: 1200,
-            height: 700,
+            ...constants.PageSize.Replay,
         });
 
         ipcAsyncByMainWindow("set-resizable", {

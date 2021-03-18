@@ -34,6 +34,7 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 
 import "./BigClassPage.less";
+import { constants } from "flat-types";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -71,7 +72,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type BigClassPageProps = {};
 
 export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
-    usePowerSaveBlocker()
+    usePowerSaveBlocker();
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
@@ -90,8 +91,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     useEffect(() => {
         ipcAsyncByMainWindow("set-win-size", {
-            width: 1200,
-            height: 700,
+            ...constants.PageSize.Class,
         });
     }, []);
 

@@ -9,6 +9,7 @@ import { MainRoomListPanel } from "./MainRoomListPanel";
 import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
 import { useLastLocation } from "react-router-last-location";
 import { shouldWindowCenter } from "./utils";
+import { constants } from "flat-types";
 
 export type HomePageProps = {};
 
@@ -17,8 +18,7 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
 
     useEffect(() => {
         ipcAsyncByMainWindow("set-win-size", {
-            width: 1200,
-            height: 668,
+            ...constants.PageSize.Main,
             autoCenter: shouldWindowCenter(lastLocation?.pathname),
         });
     }, [lastLocation]);
