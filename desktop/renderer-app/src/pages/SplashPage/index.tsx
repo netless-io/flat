@@ -8,6 +8,8 @@ import { RouteNameType, usePushHistory } from "../../utils/routes";
 import logo from "../../assets/image/logo.svg";
 import "./SplashPage.less";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { ipcAsyncByMainWindow } from "../../utils/ipc";
+import { constants } from "flat-types";
 
 enum LoginStatusType {
     Idle = "Idle",
@@ -22,6 +24,13 @@ export const SplashPage = observer<SplashPageProps>(function SplashPage() {
     const [loginStatus, updateLoginStatus] = useState(LoginStatusType.Idle);
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
+
+    useEffect(() => {
+        ipcAsyncByMainWindow("set-win-size", {
+            ...constants.PageSize.Root,
+            autoCenter: true,
+        });
+    });
 
     useEffect(() => {
         let isUnMount = false;

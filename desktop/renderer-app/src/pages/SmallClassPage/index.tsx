@@ -36,6 +36,7 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 
 import "./SmallClassPage.less";
+import { constants } from "flat-types";
 
 const AVATAR_WIDTH = 144;
 const AVATAR_HEIGHT = 108;
@@ -62,7 +63,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type SmallClassPageProps = {};
 
 export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassPage() {
-    usePowerSaveBlocker()
+    usePowerSaveBlocker();
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
@@ -97,8 +98,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     useEffect(() => {
         ipcAsyncByMainWindow("set-win-size", {
-            width: 1200,
-            height: 700,
+            ...constants.PageSize.Class,
         });
     }, []);
 

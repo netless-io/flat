@@ -32,6 +32,7 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 
 import "./OneToOnePage.less";
+import { constants } from "flat-types";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -51,7 +52,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type OneToOnePageProps = {};
 
 export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() {
-    usePowerSaveBlocker()
+    usePowerSaveBlocker();
     // @TODO remove ref
     const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
@@ -78,8 +79,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     useEffect(() => {
         ipcAsyncByMainWindow("set-win-size", {
-            width: 1200,
-            height: 700,
+            ...constants.PageSize.Class,
         });
     }, []);
 

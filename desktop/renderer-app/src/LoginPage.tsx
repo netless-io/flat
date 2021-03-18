@@ -3,6 +3,7 @@ import "./LoginPage.less";
 import { withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { Button, Modal } from "antd";
+import { constants } from "flat-types";
 import logo from "./assets/image/logo.svg";
 import { ipcAsyncByMainWindow } from "./utils/ipc";
 import WeChatLogin from "./components/WeChatLogin";
@@ -26,8 +27,7 @@ export class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPag
 
     public componentDidMount = (): void => {
         ipcAsyncByMainWindow("set-win-size", {
-            width: 375,
-            height: 667,
+            ...constants.PageSize.Login,
             autoCenter: true,
         });
     };
@@ -38,16 +38,6 @@ export class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPag
 
     public handleCancel = (): void => {
         this.setState({ toggleLoginModel: false });
-    };
-
-    public joinRoom = (): void => {
-        ipcAsyncByMainWindow("set-win-size", {
-            width: 1200,
-            height: 668,
-            autoCenter: true,
-        });
-
-        this.props.history.push("/user/");
     };
 
     public render(): React.ReactNode {
