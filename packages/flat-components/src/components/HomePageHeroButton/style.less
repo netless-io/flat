@@ -14,6 +14,12 @@
     border-color: white;
     margin-right: 16px;
 
+    &:hover {
+        color: inherit;
+        border-color: white;
+        box-shadow: 0px 16px 32px 0px rgba(0, 0, 0, 0.08);
+    }
+
     &:last-child {
         margin-right: 0;
     }
@@ -31,19 +37,6 @@
         &.schedule {
             background-image: url(../../assets/buttons/schedule.svg);
         }
-        @media screen and (max-width: 660px) {
-            width: 24px;
-            height: 24px;
-            &.join {
-                background-image: url(../../assets/buttons/join-small.svg);
-            }
-            &.create {
-                background-image: url(../../assets/buttons/create-small.svg);
-            }
-            &.schedule {
-                background-image: url(../../assets/buttons/schedule-small.svg);
-            }
-        }
     }
 
     .text {
@@ -53,28 +46,22 @@
         padding-left: 14px;
         padding-right: 25px;
 
-        &.short {
-            display: none;
-        }
-
         @media screen and (max-width: 660px) {
             font-size: 14px;
-            padding-left: 6px;
-            padding-right: 8px;
-
-            &.long {
-                display: none;
-            }
-            &.short {
-                display: inline;
-            }
+            padding: 8px 0 0;
         }
     }
 
     @media screen and (max-width: 660px) {
         flex: 1;
-        height: 44px !important;
-        border-radius: 9999px;
-        margin-right: 8px;
+        height: 110px !important;
+        border-radius: 0;
+        margin-right: 0;
+        flex-flow: column nowrap;
+
+        &:hover {
+            z-index: 9;
+            box-shadow: none;
+        }
     }
 }

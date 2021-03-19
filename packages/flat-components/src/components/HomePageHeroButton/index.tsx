@@ -7,24 +7,15 @@ type HomePageHeroButtonType = "join" | "create" | "schedule";
 
 interface HomePageHeroButtonBaseProps {
     type: HomePageHeroButtonType;
-    longText: string;
-    shortText: string;
+    text: string;
     onClick?: () => void;
 }
 
-const HomePageHeroButtonBase: React.FC<HomePageHeroButtonBaseProps> = ({
-    type,
-    longText,
-    shortText,
-    onClick,
-}) => {
+const HomePageHeroButtonBase: React.FC<HomePageHeroButtonBaseProps> = ({ type, text, onClick }) => {
     return (
-        <Button
-            className="home-page-hero-button"
-            onClick={onClick}>
+        <Button className="home-page-hero-button" onClick={onClick}>
             <span className={classNames("icon", type)}></span>
-            <span className="text long">{longText}</span>
-            <span className="text short">{shortText}</span>
+            <span className="text">{text}</span>
         </Button>
     );
 };
@@ -34,26 +25,20 @@ export interface HomePageHeroButtonProps {
     onClick?: () => void;
 }
 
-const Presets: Record<
-    HomePageHeroButtonType,
-    Pick<HomePageHeroButtonBaseProps, "longText" | "shortText">
-> = {
-    join: {
-        longText: "加入房间",
-        shortText: "加入",
-    },
-    create: {
-        longText: "创建房间",
-        shortText: "创建",
-    },
-    schedule: {
-        longText: "预定房间",
-        shortText: "预定",
-    },
+const HomePageHeroButtonTypeTexts: Record<HomePageHeroButtonType, string> = {
+    join: "加入房间",
+    create: "创建房间",
+    schedule: "预定房间",
 };
 
 export const HomePageHeroButton: React.FC<HomePageHeroButtonProps> = ({ type, onClick }) => {
-    return <HomePageHeroButtonBase type={type} {...Presets[type]} onClick={onClick} />;
+    return (
+        <HomePageHeroButtonBase
+            type={type}
+            text={HomePageHeroButtonTypeTexts[type]}
+            onClick={onClick}
+        />
+    );
 };
 
 export interface HomePageHeroButtonsProps {
