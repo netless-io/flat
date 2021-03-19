@@ -3,7 +3,7 @@ import React from "react";
 import { HomePageHeroButtons, HomePageHeroButtonsProps } from ".";
 
 const storyMeta: Meta = {
-    title: "Components/HomePageHeroButtons",
+    title: "HomePage/HomePageHeroButtons",
     component: HomePageHeroButtons,
     parameters: {
         backgrounds: {
