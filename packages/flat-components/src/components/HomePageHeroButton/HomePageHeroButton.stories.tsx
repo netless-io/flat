@@ -1,5 +1,4 @@
 import { Meta, Story } from "@storybook/react";
-import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
 import React from "react";
 import { HomePageHeroButtons, HomePageHeroButtonsProps } from ".";
 
@@ -8,31 +7,14 @@ const storyMeta: Meta = {
     component: HomePageHeroButtons,
     parameters: {
         backgrounds: {
-            default: "flat",
-            values: [
-                {
-                    name: "flat",
-                    value: "#F3F6F9",
-                },
-            ],
-        },
-        viewport: {
-            viewports: {
-                ...MINIMAL_VIEWPORTS,
-                tablet2: {
-                    name: "Large Tablet",
-                    styles: { width: "659px", height: "1000px" },
-                },
-            },
+            default: "Homepage Background",
         },
     },
 };
 
 export default storyMeta;
 
-export const Overview: Story<HomePageHeroButtonsProps> = args => (
-    <HomePageHeroButtons {...args} />
-);
+export const Overview: Story<HomePageHeroButtonsProps> = args => <HomePageHeroButtons {...args} />;
 
 export const TabletScreen: Story<HomePageHeroButtonsProps> = args => (
     <HomePageHeroButtons {...args} />
