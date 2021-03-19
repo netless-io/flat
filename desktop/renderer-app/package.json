@@ -12,7 +12,7 @@
     "@netless/oss-upload-button": "^0.1.8",
     "@netless/page-controller": "^0.0.3",
     "@netless/player-controller": "^0.0.6",
-    "@netless/preview-controller": "^0.0.2",
+    "@netless/preview-controller": "^0.0.5",
     "@netless/redo-undo": "^0.0.5",
     "@netless/tool-box": "^0.0.6",
     "@netless/white-audio-plugin": "^1.2.20",
