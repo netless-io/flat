@@ -2463,10 +2463,10 @@
     "@netless/combine-player" "^1.1.3"
     antd "^4.4.3"
 
-"@netless/preview-controller@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/@netless/preview-controller/-/preview-controller-0.0.2.tgz#b7d7c1c2bda86cea1d52b11c452dab1a181a47d7"
-  integrity sha512-m2s4zr4DZAdZHa5+2soG5uA2jKTtJgVao1HBe0K63x9BCVCN/ej6L3OhAw09/oKs6/g/C2UcrHGXEuDl78PNxA==
+"@netless/preview-controller@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@netless/preview-controller/-/preview-controller-0.0.5.tgz#1bf1f24ece08767e88fa754e60c40ecfecd0736f"
+  integrity sha512-F0z7JU6e4XDU5q/e6u/i9B0NumEksYEH8A5PykoV+LImS1nOrz54htPv7Vui5DZoyH8z5oZbbtImjXsV5azLgQ==
   dependencies:
     "@netless/menu-box" "^0.0.1"
 
