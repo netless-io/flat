@@ -4,7 +4,6 @@ import Chance from "chance";
 import faker from "faker";
 
 import { CloudStorageUploadItem, CloudStorageUploadItemProps } from "./index";
-import { CloudStorageFile } from "../types";
 
 const chance = new Chance();
 
@@ -24,7 +23,8 @@ export const Overview: Story<CloudStorageUploadItemProps> = args => (
     <CloudStorageUploadItem {...args} />
 );
 Overview.args = {
-    file: getCloudStorageFile(),
+    fileUUID: faker.random.uuid(),
+    fileName: faker.random.word() + "." + faker.system.commonFileExt(),
     percent: chance.integer({ min: 0, max: 100 }),
     hasError: faker.random.boolean(),
 };
@@ -33,7 +33,8 @@ export const UploadList: Story<CloudStorageUploadItemProps> = ({ onCancel, onRet
     function getItem(percent: number, hasError = false): React.ReactElement {
         return (
             <CloudStorageUploadItem
-                file={getCloudStorageFile()}
+                fileUUID={faker.random.uuid()}
+                fileName={faker.random.word() + "." + faker.system.commonFileExt()}
                 percent={percent}
                 hasError={hasError}
                 onCancel={onCancel}
@@ -70,39 +71,32 @@ const Template: Story<CloudStorageUploadItemProps> = props => {
 
 export const Pending = Template.bind({});
 Pending.args = {
-    file: getCloudStorageFile(),
+    fileUUID: faker.random.uuid(),
+    fileName: faker.random.word() + "." + faker.system.commonFileExt(),
     percent: 0,
     hasError: false,
 };
 
 export const Uploading = Template.bind({});
 Uploading.args = {
-    file: getCloudStorageFile(),
+    fileUUID: faker.random.uuid(),
+    fileName: faker.random.word() + "." + faker.system.commonFileExt(),
     percent: chance.integer({ min: 1, max: 99 }),
     hasError: false,
 };
 
 export const Success = Template.bind({});
 Success.args = {
-    file: getCloudStorageFile(),
+    fileUUID: faker.random.uuid(),
+    fileName: faker.random.word() + "." + faker.system.commonFileExt(),
     percent: 100,
     hasError: false,
 };
 
 export const Error = Template.bind({});
 Error.args = {
-    file: getCloudStorageFile(),
+    fileUUID: faker.random.uuid(),
+    fileName: faker.random.word() + "." + faker.system.commonFileExt(),
     percent: 20,
     hasError: true,
 };
-
-function getCloudStorageFile(): CloudStorageFile {
-    const chance = new Chance();
-
-    return {
-        fileUUID: faker.random.uuid(),
-        fileName: faker.random.word() + "." + faker.system.commonFileExt(),
-        fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
-        createAt: faker.date.past(),
-    };
-}
