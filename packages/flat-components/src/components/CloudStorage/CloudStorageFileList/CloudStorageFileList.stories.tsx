@@ -8,7 +8,7 @@ import { CloudStorageFileList, CloudStorageFileListProps } from "./index";
 const chance = new Chance();
 
 const storyMeta: Meta = {
-    title: "Components/CloudStorageFileList",
+    title: "CloudStorage/CloudStorageFileList",
     component: CloudStorageFileList,
 };
 

@@ -8,7 +8,7 @@ import { CloudStorageUploadItem, CloudStorageUploadItemProps } from "./index";
 const chance = new Chance();
 
 const storyMeta: Meta = {
-    title: "Components/CloudStorageUploadItem",
+    title: "CloudStorage/CloudStorageUploadItem",
     component: CloudStorageUploadItem,
     argTypes: {
         percent: {
