@@ -1,11 +1,20 @@
-import {makeAutoObservable, observable} from "mobx";
-import {createPlugins, DefaultHotKeys, DeviceType, Room, RoomPhase, RoomState, ViewMode, WhiteWebSdk} from "white-web-sdk";
-import {videoPlugin} from "@netless/white-video-plugin";
-import {audioPlugin} from "@netless/white-audio-plugin";
-import {CursorTool} from "@netless/cursor-tool";
-import {NETLESS, NODE_ENV} from "../constants/Process";
-import {globalStore} from "./GlobalStore";
-import {isMobile, isWindows} from "react-device-detect";
+import { makeAutoObservable, observable } from "mobx";
+import {
+    createPlugins,
+    DefaultHotKeys,
+    DeviceType,
+    Room,
+    RoomPhase,
+    RoomState,
+    ViewMode,
+    WhiteWebSdk,
+} from "white-web-sdk";
+import { videoPlugin } from "@netless/white-video-plugin";
+import { audioPlugin } from "@netless/white-audio-plugin";
+import { CursorTool } from "@netless/cursor-tool";
+import { NETLESS, NODE_ENV } from "../constants/Process";
+import { globalStore } from "./GlobalStore";
+import { isMobile, isWindows } from "react-device-detect";
 
 export class WhiteboardStore {
     room: Room | null = null;
@@ -107,9 +116,13 @@ export class WhiteboardStore {
                 uuid: globalStore.whiteboardRoomUUID,
                 roomToken: globalStore.whiteboardRoomToken,
                 cursorAdapter: cursorAdapter,
-                userPayload: { userId: globalStore.userUUID, cursorName },
+                userPayload: {
+                    userId: globalStore.userUUID,
+                    cursorName,
+                },
                 floatBar: true,
                 isWritable: this.isWritable,
+                disableNewPencil: false,
                 hotKeys: {
                     ...DefaultHotKeys,
                     changeToSelector: "s",
@@ -121,7 +134,7 @@ export class WhiteboardStore {
                     changeToStraight: "t",
                     changeToArrow: "a",
                     changeToHand: "h",
-                }
+                },
             },
             {
                 onPhaseChanged: phase => {
