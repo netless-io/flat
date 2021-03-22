@@ -24,61 +24,81 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
     fileUUID,
     fileName,
     percent,
-    hasError,
+    status = "idle",
     onRetry,
     onCancel,
 }) => {
-    const isSuccess = !hasError && percent >= 100;
-
     return (
         <div className="cloud-storage-upload-item">
             <CloudStorageFileTitle
                 iconClassName="cloud-storage-upload-file-icon"
                 fileName={fileName}
             />
-            {hasError ? (
-                <>
-                    <span className="cloud-storage-upload-status is-error">上传失败</span>
-                    <Button
-                        className="cloud-storage-upload-status-btn"
-                        shape="circle"
-                        size="small"
-                        onClick={() => onRetry(fileUUID)}
-                    >
-                        <img width={22} height={22} src={retrySVG} aria-hidden />
-                    </Button>
-                </>
-            ) : isSuccess ? (
-                <>
-                    <span className="cloud-storage-upload-status is-success">上传成功</span>
-                    <div className="cloud-storage-upload-status-btn">
-                        <img width={22} height={22} src={checkSVG} aria-hidden />
-                    </div>
-                </>
-            ) : (
-                <>
-                    <span className="cloud-storage-upload-status">
-                        {percent <= 0 ? "待上传" : `${percent}%`}
-                    </span>
-                    <Button
-                        className="cloud-storage-upload-status-btn"
-                        shape="circle"
-                        size="small"
-                        onClick={() => onCancel(fileUUID)}
-                    >
-                        <img width={22} height={22} src={trashBinSVG} aria-hidden />
-                    </Button>
-                </>
-            )}
-
+            {renderUploadBody()}
             <div
                 className={classNames("cloud-storage-upload-item-progress-bar", {
-                    "is-error": hasError,
+                    "is-error": status === "error",
                 })}
                 style={{ width: `${percent}%` }}
             />
         </div>
     );
+
+    function renderUploadBody(): React.ReactElement {
+        switch (status) {
+            case "uploading":
+                return (
+                    <>
+                        <span className="cloud-storage-upload-status">{`${percent}%`}</span>
+                        <Button
+                            className="cloud-storage-upload-status-btn"
+                            shape="circle"
+                            size="small"
+                            onClick={() => onCancel(fileUUID)}
+                        >
+                            <img width={22} height={22} src={trashBinSVG} aria-hidden />
+                        </Button>
+                    </>
+                );
+            case "error":
+                return (
+                    <>
+                        <span className="cloud-storage-upload-status is-error">上传失败</span>
+                        <Button
+                            className="cloud-storage-upload-status-btn"
+                            shape="circle"
+                            size="small"
+                            onClick={() => onRetry(fileUUID)}
+                        >
+                            <img width={22} height={22} src={retrySVG} aria-hidden />
+                        </Button>
+                    </>
+                );
+            case "success":
+                return (
+                    <>
+                        <span className="cloud-storage-upload-status is-success">上传成功</span>
+                        <div className="cloud-storage-upload-status-btn">
+                            <img width={22} height={22} src={checkSVG} aria-hidden />
+                        </div>
+                    </>
+                );
+            default:
+                return (
+                    <>
+                        <span className="cloud-storage-upload-status">待上传</span>
+                        <Button
+                            className="cloud-storage-upload-status-btn"
+                            shape="circle"
+                            size="small"
+                            onClick={() => onCancel(fileUUID)}
+                        >
+                            <img width={22} height={22} src={trashBinSVG} aria-hidden />
+                        </Button>
+                    </>
+                );
+        }
+    }
 };
 
 export default CloudStorageUploadItem;

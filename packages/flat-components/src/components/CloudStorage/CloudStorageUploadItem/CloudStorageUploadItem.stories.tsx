@@ -4,6 +4,7 @@ import Chance from "chance";
 import faker from "faker";
 
 import { CloudStorageUploadItem, CloudStorageUploadItemProps } from "./index";
+import { CloudStorageUploadStatusType } from "../types";
 
 const chance = new Chance();
 
@@ -26,17 +27,20 @@ Overview.args = {
     fileUUID: faker.random.uuid(),
     fileName: faker.random.word() + "." + faker.system.commonFileExt(),
     percent: chance.integer({ min: 0, max: 100 }),
-    hasError: faker.random.boolean(),
+    status: chance.pickone(["idle", "error", "success", "uploading"]),
 };
 
 export const UploadList: Story<CloudStorageUploadItemProps> = ({ onCancel, onRetry }) => {
-    function getItem(percent: number, hasError = false): React.ReactElement {
+    function getItem(
+        percent: number,
+        status: CloudStorageUploadStatusType = "uploading",
+    ): React.ReactElement {
         return (
             <CloudStorageUploadItem
                 fileUUID={faker.random.uuid()}
                 fileName={faker.random.word() + "." + faker.system.commonFileExt()}
                 percent={percent}
-                hasError={hasError}
+                status={status}
                 onCancel={onCancel}
                 onRetry={onRetry}
             />
@@ -47,10 +51,10 @@ export const UploadList: Story<CloudStorageUploadItemProps> = ({ onCancel, onRet
         <div style={{ width: 336 }}>
             {getItem(20)}
             {getItem(62)}
-            {getItem(43, true)}
+            {getItem(43, "error")}
+            {getItem(0, "idle")}
             {getItem(0)}
-            {getItem(0)}
-            {getItem(100)}
+            {getItem(100, "success")}
             {getItem(100)}
         </div>
     );
@@ -74,7 +78,7 @@ Pending.args = {
     fileUUID: faker.random.uuid(),
     fileName: faker.random.word() + "." + faker.system.commonFileExt(),
     percent: 0,
-    hasError: false,
+    status: "idle",
 };
 
 export const Uploading = Template.bind({});
@@ -82,7 +86,7 @@ Uploading.args = {
     fileUUID: faker.random.uuid(),
     fileName: faker.random.word() + "." + faker.system.commonFileExt(),
     percent: chance.integer({ min: 1, max: 99 }),
-    hasError: false,
+    status: "uploading",
 };
 
 export const Success = Template.bind({});
@@ -90,7 +94,7 @@ Success.args = {
     fileUUID: faker.random.uuid(),
     fileName: faker.random.word() + "." + faker.system.commonFileExt(),
     percent: 100,
-    hasError: false,
+    status: "success",
 };
 
 export const Error = Template.bind({});
@@ -98,5 +102,5 @@ Error.args = {
     fileUUID: faker.random.uuid(),
     fileName: faker.random.word() + "." + faker.system.commonFileExt(),
     percent: 20,
-    hasError: true,
+    status: "error",
 };
