@@ -5,7 +5,7 @@ import faker from "faker";
 import { CloudStorageFileTitle, CloudStorageFileTitleProps } from "./index";
 
 const storyMeta: Meta = {
-    title: "Components/CloudStorageFileTitle",
+    title: "CloudStorage/CloudStorageFileTitle",
     component: CloudStorageFileTitle,
 };
 
