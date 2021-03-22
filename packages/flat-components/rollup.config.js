@@ -21,7 +21,10 @@ const ignoreAssets = ignoreImport({
 
 const extractCSS = styles({ mode: "extract", sourceMap: true });
 
-const rollupConfig = [...getMainEntryConfig(), ...getAllComponentConfigs(compNames)];
+const rollupConfig = [...getMainEntryConfig()];
+if (process.env.INCLUDE_COMPONENT_ENTRIES) {
+    rollupConfig.push(...getAllComponentConfigs(compNames));
+}
 
 export default rollupConfig;
 

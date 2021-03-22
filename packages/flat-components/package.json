@@ -9,11 +9,11 @@
   "scripts": {
     "lint": "lint-staged",
     "storybook": "start-storybook -p 6006",
-    "build": "yarn run cleanup && rollup -c",
+    "build": "yarn run cleanup && rollup -c --environment INCLUDE_COMPONENT_ENTRIES",
     "build-storybook": "build-storybook",
     "deploy-storybook": "build-storybook && node scripts/deploy-storybook.js",
     "cleanup": "rimraf ./build",
-    "postinstall": "yarn run build"
+    "postinstall": "yarn run cleanup && rollup -c"
   },
   "main": "./build/index.js",
   "module": "./build/esm/index.js",
