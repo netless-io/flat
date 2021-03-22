@@ -102,7 +102,7 @@ function getUploadStatuses(count: number): CloudStorageUploadStatus[] {
         .map(() => ({
             fileUUID: faker.random.uuid(),
             fileName: faker.random.word() + "." + faker.system.commonFileExt(),
-            hasError: false,
+            status: "uploading",
             percent: chance.integer({ min: 0, max: 100 }),
         }));
 }

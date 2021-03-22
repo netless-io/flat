@@ -8,6 +8,8 @@ export interface CloudStorageFile {
     createAt: Date;
 }
 
+export type CloudStorageUploadStatusType = "idle" | "error" | "uploading" | "success";
+
 export interface CloudStorageUploadStatus {
     /** File uuid */
     fileUUID: string;
@@ -16,5 +18,5 @@ export interface CloudStorageUploadStatus {
     /** Uploading percentage */
     percent: number;
     /** Uploading failed */
-    hasError: boolean;
+    status: CloudStorageUploadStatusType;
 }
