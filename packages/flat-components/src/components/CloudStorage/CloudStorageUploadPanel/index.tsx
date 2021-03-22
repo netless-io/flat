@@ -12,21 +12,24 @@ export interface CloudStorageUploadPanelProps
     maxHeight?: number;
     /** If at least one failed upload */
     hasError?: boolean;
+    /** Compact version of the panel */
+    compact?: boolean;
     /** Should expand panel */
     expand: boolean;
     /** Number of finished upload */
     finished: number;
     /** Number of total upload */
     total: number;
-    /** Panel expand button clicked */
-    onExpandChange: (isExpand: boolean) => void;
     /** Panel close button clicked */
     onClose: (event?: React.MouseEvent<HTMLElement>) => void;
+    /** Panel expand button clicked */
+    onExpandChange?: (isExpand: boolean) => void;
 }
 
 export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
     maxHeight = 260,
     hasError,
+    compact,
     expand,
     finished,
     total,
@@ -53,9 +56,15 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
                     {finished}/{total}
                 </div>
                 <div className="cloud-storage-upload-panel-head-btns">
-                    <Button shape="circle" size="small" onClick={() => onExpandChange(!expand)}>
-                        <UpOutlined rotate={expand ? 180 : 0} />
-                    </Button>
+                    {!compact && (
+                        <Button
+                            shape="circle"
+                            size="small"
+                            onClick={() => onExpandChange && onExpandChange(!expand)}
+                        >
+                            <UpOutlined rotate={expand ? 180 : 0} />
+                        </Button>
+                    )}
                     <Button shape="circle" size="small" onClick={onClose}>
                         <CloseOutlined />
                     </Button>
@@ -64,7 +73,12 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
             <div
                 className="cloud-storage-upload-panel-content"
                 style={{
-                    height: expand ? (contentHeight < maxHeight ? contentHeight : maxHeight) : 0,
+                    height:
+                        expand || compact
+                            ? contentHeight < maxHeight
+                                ? contentHeight
+                                : maxHeight
+                            : 0,
                 }}
             >
                 <div className="cloud-storage-upload-panel-content-sizer">
