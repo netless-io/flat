@@ -2492,10 +2492,10 @@
   resolved "https://registry.yarnpkg.com/@netless/white-video-plugin/-/white-video-plugin-1.2.19.tgz#3458b7816af6618c995dc7bce3088b532de59212"
   integrity sha512-fV2/DFt+MSbin4lbcM9w5vE9ImblLbzxBjSeNrl9Fqk6KT2w8yJ4BsEc/xM4P469TJS3zLk4TSVtOH0jURcLeQ==
 
-"@netless/zoom-controller@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@netless/zoom-controller/-/zoom-controller-0.0.8.tgz#b15aca0e92c97e7ae05c0e40813b9753e021140a"
-  integrity sha512-26LVoG59RJsHxNOTUp6GNVHQOfuZfjQe+Jo+Qn3LAExeAk6iiPXqimL6Ds0Q6CDTSWZneAV3eZNZDSSxnO6wPQ==
+"@netless/zoom-controller@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@netless/zoom-controller/-/zoom-controller-0.0.9.tgz#74ba814833825f30006afa224e0402dbc25e5188"
+  integrity sha512-2UWHMCkkcEYgLvAVAY+0UplKd5DLRwPXU0LGIlMum6Mc/HEHr4ZZwyZzAzNoWkv9elEm4vvjHYoagWDu7uO2rA==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
