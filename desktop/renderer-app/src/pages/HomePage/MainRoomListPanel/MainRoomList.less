@@ -1,21 +1,17 @@
 .room-list-container {
-    width: 523px;
-    height: 512px;
     border-radius: 16px 16px 0 0;
     background-color: white;
-    margin-left: 24px;
-    position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+    overflow: hidden;
 }
 
 .room-list-header {
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 64px;
-    padding-left: 24px;
-    padding-right: 24px;
-    position: absolute;
+    padding: 0 24px;
     border-radius: 16px 16px 0 0;
     background-color: white;
 }
@@ -56,22 +52,16 @@
 }
 
 .room-list-line {
-    width: 475px;
     height: 1px;
+    margin: 0 24px;
     background-color: #dbe1ea;
-    margin-left: 24px;
-    position: absolute;
-    margin-top: 64px;
 }
 
 .room-list-body {
-    // let popup scrolls with container
-    position: relative;
-    height: 447px;
+    flex: 1;
     padding-bottom: 16px;
-    overflow-y: auto;
-    margin-top: 65px;
     background-color: white;
+    overflow-y: auto;
 }
 
 .room-list-cell-day {
