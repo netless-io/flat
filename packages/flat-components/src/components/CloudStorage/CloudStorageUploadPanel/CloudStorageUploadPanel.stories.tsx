@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Story, Meta } from "@storybook/react";
 import Chance from "chance";
 import faker from "faker";
@@ -21,7 +21,7 @@ export const Overview: Story<CloudStorageUploadPanelProps> = args => (
         {String(args.children)
             .split("\n")
             .map(line => (
-                <p className="ma1">{line}</p>
+                <p className="pv1">{line}</p>
             ))}
     </CloudStorageUploadPanel>
 );
