@@ -1,35 +1,39 @@
 .user-index-container {
-  width: 1200px;
-  height: 700px;
-  background-color: #f3f6f9;
+    width: 1200px;
+    height: 700px;
+    background-color: #f3f6f9;
 }
 
 .user-index-container-menu {
-  width: 82px;
-  height: 668px;
-  position: relative;
-  left: 0;
-  bottom: 0;
+    width: 82px;
+    height: 668px;
+    position: relative;
+    left: 0;
+    bottom: 0;
 }
 
 .user-index-container-info {
-  width: 1118px;
-  height: 668px;
-  background-color: pink;
+    width: 1118px;
+    height: 668px;
+    background-color: pink;
 }
 
 .ant-layout-header {
-  height: 50px !important;
-  line-height: 50px !important;
-  background-color: #fff !important;
-  padding-left: 24px !important;
-  img {
-    display: inline-block !important;
-  }
+    height: 50px !important;
+    line-height: 50px !important;
+    background-color: #fff !important;
+    padding-left: 24px !important;
+    img {
+        display: inline-block !important;
+    }
 }
 
 .main-room-layout {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+    flex: 1;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 24px;
+    justify-content: space-between;
+    overflow: hidden;
 }
