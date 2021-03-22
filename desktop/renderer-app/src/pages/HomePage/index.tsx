@@ -26,7 +26,7 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
     return (
         <MainPageLayout columnLayout>
             <MainRoomMenu />
-            <div className="main-room-layout">
+            <div className="homepage-layout">
                 <MainRoomListPanel />
                 <MainRoomHistoryPanel />
             </div>
