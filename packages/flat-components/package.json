@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@rollup/plugin-url": "^6.0.0",
