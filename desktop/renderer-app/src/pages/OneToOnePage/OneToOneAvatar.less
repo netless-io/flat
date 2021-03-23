@@ -21,6 +21,10 @@
         bottom: 10px;
         right: 10px;
         display: flex;
+        opacity: 0.64;
+        &:hover {
+            opacity: 1;
+        }
 
         & > button {
             margin: 0 0 0 4px;
@@ -47,6 +51,15 @@
     justify-content: center;
     align-items: center;
     background: #1a1e21;
+
+    img {
+        display: inline-block;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border: 1px solid white;
+        z-index: 1;
+    }
 }
 
 .one-to-one-avatar-ctrl-layer {
@@ -75,6 +88,10 @@
     font-size: 16px;
     font-weight: normal;
     color: #fff;
+    opacity: 0.64;
+    &:hover {
+        opacity: 1;
+    }
 }
 
 .one-to-one-avatar-expand {

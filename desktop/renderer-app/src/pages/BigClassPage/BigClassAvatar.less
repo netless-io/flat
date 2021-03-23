@@ -32,6 +32,10 @@
         bottom: 10px;
         right: 10px;
         display: flex;
+        opacity: 0.64;
+        &:hover {
+            opacity: 1;
+        }
 
         & > button {
             margin: 0 0 0 4px;
@@ -58,6 +62,15 @@
     justify-content: center;
     align-items: center;
     background: #1a1e21;
+
+    img {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 1px solid white;
+        z-index: 1;
+    }
 }
 
 .big-class-avatar-ctrl-layer {
@@ -86,6 +99,10 @@
     font-size: 16px;
     font-weight: normal;
     color: #fff;
+    opacity: 0.64;
+    &:hover {
+        opacity: 1;
+    }
 }
 
 .big-class-avatar-expand {
