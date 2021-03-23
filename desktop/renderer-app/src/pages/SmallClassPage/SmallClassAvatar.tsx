@@ -3,13 +3,12 @@ import classNames from "classnames";
 import { Observer, observer } from "mobx-react-lite";
 import { VideoAvatar, VideoAvatarProps } from "../../components/VideoAvatar";
 
-import noCameraSmall from "../../assets/image/no-camera-small.svg";
-
 import "./SmallClassAvatar.less";
 
 export interface SmallClassAvatarProps extends Omit<VideoAvatarProps, "children"> {}
 
 export const SmallClassAvatar = observer<SmallClassAvatarProps>(function SmallClassAvatar(props) {
+    const { avatarUser } = props;
     return (
         <VideoAvatar {...props}>
             {(canvas, ctrlBtns) => (
@@ -17,19 +16,23 @@ export const SmallClassAvatar = observer<SmallClassAvatarProps>(function SmallCl
                     {() => (
                         <section
                             className={classNames("small-class-avatar-wrap", {
-                                "with-video": props.avatarUser.camera,
+                                "with-video": avatarUser.camera,
                             })}
                         >
                             {canvas}
+                            {!avatarUser.camera && (
+                                <div className="small-class-avatar-background">
+                                    <div
+                                        className="video-avatar-background"
+                                        style={{
+                                            backgroundImage: `url(${avatarUser.avatar})`,
+                                        }}
+                                    ></div>
+                                    <img src={avatarUser.avatar} alt="no camera" />
+                                </div>
+                            )}
                             <div className="small-class-avatar-ctrl-layer">
-                                <img
-                                    className="small-class-avatar-no-camera"
-                                    src={noCameraSmall}
-                                    alt="no camera"
-                                />
-                                <h1 className="small-class-avatar-title">
-                                    {props.avatarUser.name}
-                                </h1>
+                                <h1 className="small-class-avatar-title">{avatarUser.name}</h1>
                                 {ctrlBtns}
                             </div>
                         </section>

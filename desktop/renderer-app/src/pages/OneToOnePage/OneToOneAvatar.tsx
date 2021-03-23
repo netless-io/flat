@@ -3,8 +3,6 @@ import { Observer, observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { VideoAvatar, VideoAvatarProps } from "../../components/VideoAvatar";
 
-import noCamera from "../../assets/image/no-camera.svg";
-
 import "./OneToOneAvatar.less";
 
 export interface OneToOneAvatarProps extends Omit<VideoAvatarProps, "children"> {}
@@ -22,7 +20,13 @@ export const OneToOneAvatar = observer<OneToOneAvatarProps>(function OneToOneAva
                             {canvas}
                             {!avatarUser.camera && (
                                 <div className="one-to-one-avatar-background">
-                                    <img src={noCamera} alt="no camera" />
+                                    <div
+                                        className="video-avatar-background"
+                                        style={{
+                                            backgroundImage: `url(${avatarUser.avatar})`,
+                                        }}
+                                    ></div>
+                                    <img src={avatarUser.avatar} alt="no camera" />
                                 </div>
                             )}
                             <div

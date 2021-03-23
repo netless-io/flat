@@ -48,8 +48,15 @@
     }
 
     .video-avatar-ctrl-btns {
+        position: absolute;
+        z-index: 20;
+        bottom: 4px;
+        right: 4px;
         display: flex;
-        user-select: none;
+        opacity: 0.64;
+        &:hover {
+            opacity: 1;
+        }
 
         & > button {
             margin: 0 0 0 4px;
@@ -73,12 +80,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     opacity: 1;
     transition: opacity 0.4s;
+
+    &.with-video {
+        opacity: 0;
+        background: rgba(0, 0, 0, 0.4);
+    }
 }
 
 .small-class-avatar-no-camera {
@@ -86,14 +94,41 @@
     height: 22px;
 }
 
-.small-class-avatar-title {
-    max-width: 100%;
-    margin: 0 0 2px 0;
-    padding: 0;
+.small-class-avatar-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1a1e21;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+
+    img {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid white;
+        z-index: 1;
+    }
+}
+
+.small-class-avatar-title {
+    position: absolute;
+    z-index: 20;
+    bottom: 4px;
+    left: 8px;
+    margin: 0;
+    padding: 0;
     font-size: 16px;
     font-weight: normal;
+    line-height: 1.5;
     color: #fff;
+    opacity: 0.64;
+    &:hover {
+        opacity: 1;
+    }
 }

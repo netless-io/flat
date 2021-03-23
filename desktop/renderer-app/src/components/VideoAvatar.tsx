@@ -8,6 +8,7 @@ import cameraIcon from "../assets/image/camera.svg";
 import cameraDisabled from "../assets/image/camera-disabled.svg";
 import microphone from "../assets/image/microphone.svg";
 import microphoneDisabled from "../assets/image/microphone-disabled.svg";
+import "./VideoAvatar.less";
 
 export interface VideoAvatarProps {
     isCreator: boolean;

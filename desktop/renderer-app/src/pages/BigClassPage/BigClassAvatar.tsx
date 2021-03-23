@@ -3,8 +3,6 @@ import { Observer, observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { VideoAvatar, VideoAvatarProps } from "../../components/VideoAvatar";
 
-import noCamera from "../../assets/image/no-camera.svg";
-import noCameraSmall from "../../assets/image/no-camera-small.svg";
 import videoExpand from "../../assets/image/video-expand.svg";
 
 import "./BigClassAvatar.less";
@@ -31,7 +29,13 @@ export const BigClassAvatar = observer<BigClassAvatarProps>(function BigClassAva
                             {canvas}
                             {!avatarUser.camera && (
                                 <div className="big-class-avatar-background">
-                                    <img src={small ? noCameraSmall : noCamera} alt="no camera" />
+                                    <div
+                                        className="video-avatar-background"
+                                        style={{
+                                            backgroundImage: `url(${avatarUser.avatar})`,
+                                        }}
+                                    ></div>
+                                    <img src={avatarUser.avatar} alt="no camera" />
                                 </div>
                             )}
                             <div
