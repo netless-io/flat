@@ -1,6 +1,15 @@
 module.exports = {
     stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(ts|tsx)"],
     addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
+    babel: async options => {
+        return {
+            ...options,
+            plugins: [
+                [require.resolve("@babel/plugin-proposal-class-properties"), { loose: true }],
+                ...(options.plugins || []),
+            ],
+        };
+    },
     webpackFinal: async config => {
         setupUrlLoader(config);
 
