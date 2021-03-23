@@ -1,0 +1,50 @@
+.cloud-storage-container {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.cloud-storage-container-controls {
+    display: flex;
+    // align-items: center;
+    margin-bottom: 30px;
+    padding: 24px 24px 0 32px;
+    user-select: none;
+}
+
+.cloud-storage-container-title {
+    font-size: 16px;
+    line-height: 1.2;
+    margin: 0 0 5px;
+    color: #444e60;
+}
+
+.cloud-storage-container-subtitle {
+    font-size: 12px;
+    line-height: 1.2;
+    color: #7a7b7c;
+}
+
+.cloud-storage-container-btns {
+    margin-left: auto;
+
+    & > button {
+        border-radius: 5px;
+        margin-left: 0.5em;
+        padding: 0 2em;
+    }
+}
+
+.cloud-storage-container-file-list {
+    flex: 1;
+    overflow: auto;
+    padding: 10px 24px;
+}
+
+.cloud-storage-container-upload-panel {
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+}

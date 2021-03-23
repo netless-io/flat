@@ -42,9 +42,9 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
     const [contentHeight, setContentHeight] = useState(0);
 
     return (
-        <section {...restProps} className={classNames(classNames, "cloud-storage-upload-panel")}>
+        <section {...restProps} className={classNames(className, "cloud-storage-upload-panel")}>
             <header className="cloud-storage-upload-panel-head">
-                {hasError ? (
+                {hasError && !expand ? (
                     <>
                         <ExclamationCircleOutlined className="cloud-storage-upload-panel-warning" />{" "}
                         <h1 className="cloud-storage-upload-panel-title">上传异常</h1>

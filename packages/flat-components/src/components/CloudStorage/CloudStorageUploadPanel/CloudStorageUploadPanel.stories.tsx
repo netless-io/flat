@@ -20,8 +20,10 @@ export const Overview: Story<CloudStorageUploadPanelProps> = args => (
     <CloudStorageUploadPanel {...args}>
         {String(args.children)
             .split("\n")
-            .map(line => (
-                <p className="pv1">{line}</p>
+            .map((line, i) => (
+                <p className="pv1" key={i}>
+                    {line}
+                </p>
             ))}
     </CloudStorageUploadPanel>
 );
@@ -79,7 +81,7 @@ PlayableExample.argTypes = {
     },
 };
 
-function useUploadStatusList(count: number): CloudStorageUploadStatus[] {
+export function useUploadStatusList(count: number): CloudStorageUploadStatus[] {
     const [statuses, setStatuses] = useState(() => getUploadStatuses(count));
 
     useEffect(() => {
@@ -96,7 +98,7 @@ function useUploadStatusList(count: number): CloudStorageUploadStatus[] {
     return statuses;
 }
 
-function getUploadStatuses(count: number): CloudStorageUploadStatus[] {
+export function getUploadStatuses(count: number): CloudStorageUploadStatus[] {
     return Array(count)
         .fill(0)
         .map(() => ({
