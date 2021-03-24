@@ -19,6 +19,7 @@
   "module": "./build/esm/index.js",
   "types": "./build/index.d.ts",
   "dependencies": {
+    "@types/react-transition-group": "^4.4.1",
     "classnames": "^2.2.6",
     "date-fns": "^2.19.0",
     "i18next": "^19.8.4",
@@ -26,6 +27,7 @@
     "pretty-bytes": "^5.6.0",
     "react-i18next": "^11.8.4",
     "react-resize-reporter": "^1.0.2",
+    "react-transition-group": "^4.4.1",
     "react-use": "^15.3.8"
   },
   "peerDependencies": {

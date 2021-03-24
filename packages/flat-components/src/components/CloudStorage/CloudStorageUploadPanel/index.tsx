@@ -1,6 +1,7 @@
 import "./style.less";
+import arrowSVG from "./panel-arrow.svg";
+import closeSVG from "./panel-close.svg";
 
-import { UpOutlined, CloseOutlined } from "@ant-design/icons";
 import React, { FC, useState } from "react";
 import { Button } from "antd";
 import classNames from "classnames";
@@ -43,7 +44,13 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
     const [contentHeight, setContentHeight] = useState(0);
 
     return (
-        <section {...restProps} className={classNames(className, "cloud-storage-upload-panel")}>
+        <section
+            {...restProps}
+            className={classNames(className, "cloud-storage-upload-panel", {
+                "is-panel-compact": compact,
+                "is-panel-fold": !expand,
+            })}
+        >
             <header className="cloud-storage-upload-panel-head">
                 <CloudStorageUploadTitle
                     finishWithError={finishWithError}
@@ -51,29 +58,25 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
                     finished={finished}
                 />
                 <div className="cloud-storage-upload-panel-head-btns">
+                    <Button
+                        className="cloud-storage-upload-panel-expand-btn"
+                        shape="circle"
+                        size="small"
+                        onClick={() => onExpandChange && onExpandChange(!expand)}
+                    >
+                        <img src={arrowSVG} width={22} height={22} />
+                    </Button>
                     {!compact && (
-                        <Button
-                            shape="circle"
-                            size="small"
-                            onClick={() => onExpandChange && onExpandChange(!expand)}
-                        >
-                            <UpOutlined rotate={expand ? 180 : 0} />
+                        <Button shape="circle" size="small" onClick={onClose}>
+                            <img src={closeSVG} width={22} height={22} />
                         </Button>
                     )}
-                    <Button shape="circle" size="small" onClick={onClose}>
-                        <CloseOutlined />
-                    </Button>
                 </div>
             </header>
             <div
                 className="cloud-storage-upload-panel-content"
                 style={{
-                    height:
-                        expand || compact
-                            ? contentHeight < maxHeight
-                                ? contentHeight
-                                : maxHeight
-                            : 0,
+                    height: expand ? (contentHeight < maxHeight ? contentHeight : maxHeight) : 0,
                 }}
             >
                 <div className="cloud-storage-upload-panel-content-sizer">

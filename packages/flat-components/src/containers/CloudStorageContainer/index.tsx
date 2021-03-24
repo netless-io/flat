@@ -4,6 +4,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
 import { Button } from "antd";
+import { CSSTransition } from "react-transition-group";
 import { CloudStorageStore } from "./store";
 import { CloudStorageFileList, CloudStorageUploadPanel } from "../../components/CloudStorage";
 import { CloudStorageUploadListContainer } from "./CloudStorageUploadListContainer";
@@ -20,30 +21,24 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store }) {
         return (
             <div className="cloud-storage-container">
-                <div className="cloud-storage-container-controls">
-                    {store.compact ? (
-                        <div>
-                            <h1 className="cloud-storage-upload-panel-title">传输列表</h1>
-                        </div>
-                    ) : (
+                {!store.compact && (
+                    <div className="cloud-storage-container-head">
                         <div>
                             <h1 className="cloud-storage-container-title">我的云盘</h1>
-                            {store.totalUsageHR && (
-                                <small className="cloud-storage-container-subtitle">
-                                    已使用 {store.totalUsageHR}
-                                </small>
-                            )}
+                            <small className="cloud-storage-container-subtitle">
+                                {store.totalUsageHR ? `已使用 ${store.totalUsageHR}` : " "}
+                            </small>
                         </div>
-                    )}
-                    <div className="cloud-storage-container-btns">
-                        <Button danger onClick={store.onBatchDelete}>
-                            删除
-                        </Button>
-                        <Button type="primary" onClick={store.onUpload}>
-                            上传
-                        </Button>
+                        <div className="cloud-storage-container-btns">
+                            <Button danger onClick={store.onBatchDelete}>
+                                删除
+                            </Button>
+                            <Button type="primary" onClick={store.onUpload}>
+                                上传
+                            </Button>
+                        </div>
                     </div>
-                </div>
+                )}
                 <div className="cloud-storage-container-file-list">
                     <CloudStorageFileList
                         files={toJS(store.files)}
@@ -51,6 +46,15 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                         onSelectionChange={store.onSelectionChange}
                     />
                 </div>
+                <CSSTransition
+                    in={store.isUploadPanelExpand && store.compact}
+                    timeout={400}
+                    classNames="cloud-storage-container-mask"
+                    mountOnEnter
+                    unmountOnExit
+                >
+                    <div className="cloud-storage-container-mask" />
+                </CSSTransition>
                 {store.isUploadPanelVisible && (
                     <CloudStorageUploadPanel
                         className="cloud-storage-container-upload-panel"
@@ -68,6 +72,18 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                             onRetry={store.onUploadRetry}
                         />
                     </CloudStorageUploadPanel>
+                )}
+                {store.compact && (
+                    <div className="cloud-storage-container-footer">
+                        <div className="cloud-storage-container-btns">
+                            <Button danger onClick={store.onBatchDelete}>
+                                删除
+                            </Button>
+                            <Button type="primary" onClick={store.onUpload}>
+                                上传
+                            </Button>
+                        </div>
+                    </div>
                 )}
             </div>
         );

@@ -19,14 +19,8 @@ export abstract class CloudStorageStore {
     uploadTotalCount = 0;
     /** Files in the upload panel list */
     uploadStatuses: CloudStorageUploadStatus[] = [];
-
     /** It changes when user toggles the expand button */
-    private shouldUploadPanelExpand = false;
-
-    /** Always expand upload panel in compact mode */
-    get isUploadPanelExpand(): boolean {
-        return this.compact || this.shouldUploadPanelExpand;
-    }
+    isUploadPanelExpand = false;
 
     /** Human readable user total cloud storage usage */
     get totalUsageHR(): string {
@@ -77,7 +71,7 @@ export abstract class CloudStorageStore {
     }
 
     constructor() {
-        makeObservable<this, "shouldUploadPanelExpand">(this, {
+        makeObservable(this, {
             compact: observable,
             totalUsage: observable,
             files: observable,
@@ -86,10 +80,8 @@ export abstract class CloudStorageStore {
             uploadFinishedCount: observable,
             uploadTotalCount: observable,
             uploadStatuses: observable,
+            isUploadPanelExpand: observable,
 
-            shouldUploadPanelExpand: observable,
-
-            isUploadPanelExpand: computed,
             totalUsageHR: computed,
             uploadFinishWithError: computed,
 
@@ -100,7 +92,7 @@ export abstract class CloudStorageStore {
 
     /** When upload panel expand button clicked */
     onUploadPanelExpandChange = (isExpand: boolean): void => {
-        this.shouldUploadPanelExpand = isExpand;
+        this.isUploadPanelExpand = isExpand;
     };
 
     /** When file list item selection changed */
