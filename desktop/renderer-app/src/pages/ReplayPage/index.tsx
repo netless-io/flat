@@ -200,7 +200,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         window.clearTimeout(hideControllerTimeoutRef.current);
         hideControllerTimeoutRef.current = window.setTimeout(() => {
             setShowController(false);
-        }, 2000);
+        }, 5000);
     }
 });
 
