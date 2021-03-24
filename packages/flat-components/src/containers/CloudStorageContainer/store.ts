@@ -30,7 +30,7 @@ export abstract class CloudStorageStore {
 
     /** Human readable user total cloud storage usage */
     get totalUsageHR(): string {
-        return isNaN(this.totalUsage) ? "" : prettyBytes(this.totalUsage);
+        return Number.isNaN(this.totalUsage) ? "" : prettyBytes(this.totalUsage);
     }
 
     /** If upload finishes with error */

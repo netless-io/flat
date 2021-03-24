@@ -31,7 +31,7 @@ export const CloudStorageUploadTitle = React.memo<CloudStorageUploadTitleProps>(
                 <h1 className="cloud-storage-upload-title-content">
                     {finishWithError ? "上传异常" : isFinish ? "上传完成" : "传输列表"}
                 </h1>
-                {!isFinish && !finishWithError && total && !isNaN(finished) && (
+                {!isFinish && !finishWithError && total && !Number.isNaN(finished) && (
                     <span className="cloud-storage-upload-title-count">
                         {finished}/{total}
                     </span>
