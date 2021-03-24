@@ -33,9 +33,18 @@ export abstract class CloudStorageStore {
         return isNaN(this.totalUsage) ? "" : prettyBytes(this.totalUsage);
     }
 
-    /** If at least one failed upload */
-    get hasUploadError(): boolean {
-        return this.uploadStatuses.some(status => status.status === "error");
+    /** If upload finishes with error */
+    get uploadFinishWithError(): boolean {
+        let hasError = false;
+        for (const status of this.uploadStatuses) {
+            if (status.status === "error") {
+                hasError = true;
+                continue;
+            } else if (status.percent !== 100) {
+                return false;
+            }
+        }
+        return hasError;
     }
 
     /** Uploading -> Error -> Idle -> Success */
@@ -82,7 +91,7 @@ export abstract class CloudStorageStore {
 
             isUploadPanelExpand: computed,
             totalUsageHR: computed,
-            hasUploadError: computed,
+            uploadFinishWithError: computed,
 
             onUploadPanelExpandChange: action,
             onSelectionChange: action,

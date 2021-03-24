@@ -56,40 +56,45 @@ class FakeStore extends CloudStorageStore {
     }
 }
 
-export const Overview: Story<FakeStoreConfig> = config => {
-    const [store] = useState(() => {
-        const store = new FakeStore(config);
-        store.totalUsage = chance.integer({ min: 0, max: 1000 * 1000 * 1000 });
-        store.files = Array(25)
-            .fill(0)
-            .map(() => {
-                return {
-                    fileUUID: faker.random.uuid(),
-                    fileName: faker.random.words() + "." + faker.system.commonFileExt(),
-                    fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
-                    createAt: faker.date.past(),
-                };
-            });
-        store.uploadTotalCount = chance.integer({ min: 0, max: 200 });
-        store.uploadFinishedCount = chance.integer({ min: 0, max: store.uploadTotalCount });
-        store.uploadStatuses = Array(store.uploadTotalCount)
-            .fill(0)
-            .map(() => ({
+function createFakeStore(config: FakeStoreConfig): FakeStore {
+    const store = new FakeStore(config);
+    store.totalUsage = chance.integer({ min: 0, max: 1000 * 1000 * 1000 });
+    store.files = Array(25)
+        .fill(0)
+        .map(() => {
+            return {
                 fileUUID: faker.random.uuid(),
-                fileName: faker.random.word() + "." + faker.system.commonFileExt(),
-                status: chance.pickone(["idle", "error", "success", "uploading"]),
-                percent: chance.integer({ min: 0, max: 100 }),
-            }));
-        return store;
-    });
+                fileName: faker.random.words() + "." + faker.system.commonFileExt(),
+                fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                createAt: faker.date.past(),
+            };
+        });
+    store.uploadTotalCount = chance.integer({ min: 0, max: 200 });
+    store.uploadFinishedCount = chance.integer({ min: 0, max: store.uploadTotalCount });
+    store.uploadStatuses = Array(store.uploadTotalCount)
+        .fill(0)
+        .map(() => ({
+            fileUUID: faker.random.uuid(),
+            fileName: faker.random.word() + "." + faker.system.commonFileExt(),
+            status: chance.pickone(["idle", "error", "success", "uploading"]),
+            percent: chance.integer({ min: 0, max: 100 }),
+        }));
+    return store;
+}
 
+function fakeStoreArgTypes(): ArgTypes {
+    return fakeStoreImplProps.reduce((o, k) => {
+        o[k] = { table: { disable: true } };
+        return o;
+    }, {} as ArgTypes);
+}
+
+export const Overview: Story<FakeStoreConfig> = config => {
+    const [store] = useState(() => createFakeStore(config));
     return (
         <div className="ba br3 b--light-gray" style={{ height: 600, maxHeight: "80vh" }}>
             <CloudStorageContainer store={store} />
         </div>
     );
 };
-Overview.argTypes = fakeStoreImplProps.reduce((o, k) => {
-    o[k] = { table: { disable: true } };
-    return o;
-}, {} as ArgTypes);
+Overview.argTypes = fakeStoreArgTypes();

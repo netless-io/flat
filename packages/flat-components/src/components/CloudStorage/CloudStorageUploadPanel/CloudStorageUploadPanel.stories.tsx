@@ -81,7 +81,7 @@ PlayableExample.argTypes = {
     },
 };
 
-export function useUploadStatusList(count: number): CloudStorageUploadStatus[] {
+function useUploadStatusList(count: number): CloudStorageUploadStatus[] {
     const [statuses, setStatuses] = useState(() => getUploadStatuses(count));
 
     useEffect(() => {
@@ -98,7 +98,7 @@ export function useUploadStatusList(count: number): CloudStorageUploadStatus[] {
     return statuses;
 }
 
-export function getUploadStatuses(count: number): CloudStorageUploadStatus[] {
+function getUploadStatuses(count: number): CloudStorageUploadStatus[] {
     return Array(count)
         .fill(0)
         .map(() => ({

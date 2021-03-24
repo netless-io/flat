@@ -1,17 +1,18 @@
 import "./style.less";
 
-import { ExclamationCircleOutlined, UpOutlined, CloseOutlined } from "@ant-design/icons";
+import { UpOutlined, CloseOutlined } from "@ant-design/icons";
 import React, { FC, useState } from "react";
 import { Button } from "antd";
 import classNames from "classnames";
 import { ResizeReporter } from "react-resize-reporter/scroll";
+import { CloudStorageUploadTitle } from "../CloudStorageUploadTitle";
 
 export interface CloudStorageUploadPanelProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {
     /** Max Panel Height */
     maxHeight?: number;
-    /** If at least one failed upload */
-    hasError?: boolean;
+    /** Upload finish with error */
+    finishWithError?: boolean;
     /** Compact version of the panel */
     compact?: boolean;
     /** Should expand panel */
@@ -28,7 +29,7 @@ export interface CloudStorageUploadPanelProps
 
 export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
     maxHeight = 260,
-    hasError,
+    finishWithError,
     compact,
     expand,
     finished,
@@ -44,17 +45,11 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
     return (
         <section {...restProps} className={classNames(className, "cloud-storage-upload-panel")}>
             <header className="cloud-storage-upload-panel-head">
-                {hasError && !expand ? (
-                    <>
-                        <ExclamationCircleOutlined className="cloud-storage-upload-panel-warning" />{" "}
-                        <h1 className="cloud-storage-upload-panel-title">上传异常</h1>
-                    </>
-                ) : (
-                    <h1 className="cloud-storage-upload-panel-title">传输列表</h1>
-                )}
-                <div className="cloud-storage-upload-panel-count">
-                    {finished}/{total}
-                </div>
+                <CloudStorageUploadTitle
+                    finishWithError={finishWithError}
+                    total={total}
+                    finished={finished}
+                />
                 <div className="cloud-storage-upload-panel-head-btns">
                     {!compact && (
                         <Button

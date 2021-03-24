@@ -15,13 +15,16 @@ export interface CloudStorageContainerProps {
     store: CloudStorageStore;
 }
 
+/** CloudStorage page with MobX Store */
 export const CloudStorageContainer = observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store }) {
         return (
             <div className="cloud-storage-container">
                 <div className="cloud-storage-container-controls">
                     {store.compact ? (
-                        <div></div>
+                        <div>
+                            <h1 className="cloud-storage-upload-panel-title">传输列表</h1>
+                        </div>
                     ) : (
                         <div>
                             <h1 className="cloud-storage-container-title">我的云盘</h1>
@@ -48,22 +51,24 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                         onSelectionChange={store.onSelectionChange}
                     />
                 </div>
-                <CloudStorageUploadPanel
-                    className="cloud-storage-container-upload-panel"
-                    compact={store.compact}
-                    hasError={store.hasUploadError}
-                    expand={store.isUploadPanelExpand}
-                    finished={store.uploadFinishedCount}
-                    total={store.uploadTotalCount}
-                    onClose={store.onUploadPanelClose}
-                    onExpandChange={store.onUploadPanelExpandChange}
-                >
-                    <CloudStorageUploadListContainer
-                        statuses={store.sortedUploadStatus}
-                        onCancel={store.onUploadCancel}
-                        onRetry={store.onUploadRetry}
-                    />
-                </CloudStorageUploadPanel>
+                {store.isUploadPanelVisible && (
+                    <CloudStorageUploadPanel
+                        className="cloud-storage-container-upload-panel"
+                        compact={store.compact}
+                        finishWithError={store.uploadFinishWithError}
+                        expand={store.isUploadPanelExpand}
+                        finished={store.uploadFinishedCount}
+                        total={store.uploadTotalCount}
+                        onClose={store.onUploadPanelClose}
+                        onExpandChange={store.onUploadPanelExpandChange}
+                    >
+                        <CloudStorageUploadListContainer
+                            statuses={store.sortedUploadStatus}
+                            onCancel={store.onUploadCancel}
+                            onRetry={store.onUploadRetry}
+                        />
+                    </CloudStorageUploadPanel>
+                )}
             </div>
         );
     },
