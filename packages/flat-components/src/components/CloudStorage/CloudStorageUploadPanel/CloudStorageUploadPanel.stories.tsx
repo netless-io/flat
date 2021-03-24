@@ -20,8 +20,10 @@ export const Overview: Story<CloudStorageUploadPanelProps> = args => (
     <CloudStorageUploadPanel {...args}>
         {String(args.children)
             .split("\n")
-            .map(line => (
-                <p className="pv1">{line}</p>
+            .map((line, i) => (
+                <p className="pv1" key={i}>
+                    {line}
+                </p>
             ))}
     </CloudStorageUploadPanel>
 );
