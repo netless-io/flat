@@ -103,7 +103,6 @@ export const CompactMode: Story<FakeStoreConfig> = config => {
     const [store] = useState(() => {
         const store = createFakeStore(config);
         store.compact = true;
-        store.isUploadPanelVisible = true;
         return store;
     });
     return (

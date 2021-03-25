@@ -11,8 +11,6 @@ export abstract class CloudStorageStore {
     files: CloudStorageFile[] = [];
     /** User selected file uuids */
     selectedFileUUIDs: string[] = [];
-    /** Display upload panel */
-    isUploadPanelVisible = true;
     /** Number of finished upload */
     uploadFinishedCount = 0;
     /** Number of total upload */
@@ -21,6 +19,11 @@ export abstract class CloudStorageStore {
     uploadStatuses: CloudStorageUploadStatus[] = [];
     /** It changes when user toggles the expand button */
     isUploadPanelExpand = false;
+
+    /** Display upload panel */
+    get isUploadPanelVisible(): boolean {
+        return this.uploadStatuses.length > 0;
+    }
 
     /** Human readable user total cloud storage usage */
     get totalUsageHR(): string {
@@ -76,12 +79,12 @@ export abstract class CloudStorageStore {
             totalUsage: observable,
             files: observable,
             selectedFileUUIDs: observable,
-            isUploadPanelVisible: observable,
             uploadFinishedCount: observable,
             uploadTotalCount: observable,
             uploadStatuses: observable,
             isUploadPanelExpand: observable,
 
+            isUploadPanelVisible: computed,
             totalUsageHR: computed,
             uploadFinishWithError: computed,
 
