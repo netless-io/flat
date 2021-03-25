@@ -63,6 +63,8 @@ export class WindowManager {
 
         windowReadyToShow(innerWin);
 
+        innerWin.window.setAutoHideMenuBar(true);
+
         return innerWin;
     }
 
