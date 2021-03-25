@@ -14,9 +14,6 @@
       "packages/*",
       "desktop/*",
       "web/*"
-    ],
-    "nohoist": [
-      "**"
     ]
   },
   "license": "MIT",
