@@ -1,7 +1,7 @@
 import "./style.less";
-import checkSVG from "../../../assets/check.svg";
-import trashBinSVG from "../../../assets/trash-bin.svg";
-import retrySVG from "../../../assets/retry.svg";
+import checkSVG from "./icons/check.svg";
+import trashBinSVG from "./icons/trash-bin.svg";
+import retrySVG from "./icons/retry.svg";
 
 import React from "react";
 import { Button } from "antd";

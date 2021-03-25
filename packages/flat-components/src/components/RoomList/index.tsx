@@ -1,5 +1,5 @@
 import "./style.less";
-import calendar from "../../assets/calendar.svg";
+import calendar from "./icons/calendar.svg";
 
 import React from "react";
 import { format, isToday, isTomorrow } from "date-fns";

@@ -1,7 +1,7 @@
 import "./style.less";
-import joinSVG from "./buttons/join.svg";
-import createSVG from "./buttons/create.svg";
-import scheduleSVG from "./buttons/schedule.svg";
+import joinSVG from "./icons/join.svg";
+import createSVG from "./icons/create.svg";
+import scheduleSVG from "./icons/schedule.svg";
 import React from "react";
 import { Button } from "antd";
 
