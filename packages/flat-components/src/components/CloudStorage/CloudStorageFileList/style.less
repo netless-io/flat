@@ -1,4 +1,6 @@
 .cloud-storage-file-list-table {
+    position: relative;
+
     .ant-table {
         color: #7a7b7c;
     }
@@ -8,9 +10,64 @@
         background: transparent;
         user-select: none;
     }
+
+    .ant-table-tbody > tr.ant-table-row:hover {
+        .cloud-storage-file-list-menu-btn-wrap {
+            width: 85px;
+        }
+    }
 }
 
-.cloud-storage-file-list-name {
+.cloud-storage-file-list-filename-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.cloud-storage-file-list-filename {
     margin-left: 0.5em;
     color: #444e60;
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
+}
+
+.cloud-storage-file-list-menu-btn-wrap {
+    width: 0;
+    overflow: hidden;
+    margin-left: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    transition: width 0.2s;
+}
+
+.cloud-storage-file-list-menu-btn {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    line-height: none;
+    background-color: transparent;
+
+    &:hover {
+        background-color: transparent;
+    }
+
+    & > img {
+        max-width: none;
+        max-height: none;
+    }
+}
+
+.cloud-storage-file-list-menu {
+    & > .ant-dropdown-menu {
+        border-radius: 8px;
+        box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.08);
+    }
+
+    .ant-dropdown-menu-item {
+        padding: 9px 16px;
+        min-width: 164px;
+    }
 }
