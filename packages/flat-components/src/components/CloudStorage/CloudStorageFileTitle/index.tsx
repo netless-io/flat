@@ -25,7 +25,9 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
         return (
             <>
                 <img className={iconClassName} src={getFileIcon(fileName)} aria-hidden />
-                <span className={titleClassName}>{fileName}</span>
+                <span className={titleClassName} title={fileName}>
+                    {fileName}
+                </span>
             </>
         );
     },

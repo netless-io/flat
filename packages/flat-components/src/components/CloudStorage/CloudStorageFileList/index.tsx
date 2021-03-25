@@ -4,10 +4,10 @@ import React, { useMemo } from "react";
 import { Table } from "antd";
 import prettyBytes from "pretty-bytes";
 import { format } from "date-fns";
-import { FileOutlined } from "@ant-design/icons";
-import { CloudStorageFileListHeadTip } from "../CloudStorageFileListHeadTip";
 import { ColumnsType } from "antd/lib/table";
 import { CloudStorageFile } from "../types";
+import { CloudStorageFileListHeadTip } from "../CloudStorageFileListHeadTip";
+import { CloudStorageFileTitle } from "../CloudStorageFileTitle";
 
 export interface CloudStorageFileListProps {
     /** Cloud Storage List items */
@@ -44,9 +44,10 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                     fileName: CloudStorageFile["fileName"],
                 ) {
                     return (
-                        <span className="cloud-storage-file-list-name" title={fileName}>
-                            <FileOutlined /> {fileName}
-                        </span>
+                        <CloudStorageFileTitle
+                            fileName={fileName}
+                            titleClassName="cloud-storage-file-list-name"
+                        />
                     );
                 },
             },
