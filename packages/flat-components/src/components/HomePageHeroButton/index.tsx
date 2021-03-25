@@ -1,6 +1,8 @@
 import "./style.less";
+import joinSVG from "./buttons/join.svg";
+import createSVG from "./buttons/create.svg";
+import scheduleSVG from "./buttons/schedule.svg";
 import React from "react";
-import classNames from "classnames";
 import { Button } from "antd";
 
 type HomePageHeroButtonType = "join" | "create" | "schedule";
@@ -11,10 +13,16 @@ interface HomePageHeroButtonBaseProps {
     onClick?: () => void;
 }
 
+const HomePageHeroButtonIcons: Record<HomePageHeroButtonType, string> = {
+    join: joinSVG,
+    create: createSVG,
+    schedule: scheduleSVG,
+};
+
 const HomePageHeroButtonBase: React.FC<HomePageHeroButtonBaseProps> = ({ type, text, onClick }) => {
     return (
         <Button className="home-page-hero-button" onClick={onClick}>
-            <span className={classNames("icon", type)}></span>
+            <img className="icon" src={HomePageHeroButtonIcons[type]}></img>
             <span className="text">{text}</span>
         </Button>
     );
