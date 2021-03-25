@@ -9,15 +9,15 @@
   "scripts": {
     "lint": "lint-staged",
     "storybook": "start-storybook -p 6006",
-    "build": "yarn run cleanup && rollup -c --environment INCLUDE_COMPONENT_ENTRIES",
+    "build": "yarn run cleanup && rollup -c",
     "build-storybook": "build-storybook",
     "deploy-storybook": "build-storybook && node scripts/deploy-storybook.js",
-    "cleanup": "rimraf ./build",
-    "postinstall": "yarn run cleanup && rollup -c"
+    "cleanup": "rimraf ./build"
   },
   "main": "./build/index.js",
-  "module": "./build/esm/index.js",
+  "module": "./build/index.js",
   "types": "./build/index.d.ts",
+  "type": "module",
   "dependencies": {
     "@types/react-transition-group": "^4.4.1",
     "classnames": "^2.2.6",
