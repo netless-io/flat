@@ -98,3 +98,18 @@ export const Overview: Story<FakeStoreConfig> = config => {
     );
 };
 Overview.argTypes = fakeStoreArgTypes();
+
+export const CompactMode: Story<FakeStoreConfig> = config => {
+    const [store] = useState(() => {
+        const store = createFakeStore(config);
+        store.compact = true;
+        store.isUploadPanelVisible = true;
+        return store;
+    });
+    return (
+        <div className="ba br3 b--light-gray" style={{ height: 600, maxHeight: "80vh" }}>
+            <CloudStorageContainer store={store} />
+        </div>
+    );
+};
+CompactMode.argTypes = fakeStoreArgTypes();

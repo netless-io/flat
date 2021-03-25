@@ -6,9 +6,8 @@
     flex-direction: column;
 }
 
-.cloud-storage-container-controls {
+.cloud-storage-container-head {
     display: flex;
-    // align-items: center;
     margin-bottom: 30px;
     padding: 24px 24px 0 32px;
     user-select: none;
@@ -47,4 +46,53 @@
     position: absolute;
     right: 24px;
     bottom: 24px;
+    z-index: 101;
+
+    &.is-panel-compact {
+        left: 50%;
+        right: unset;
+        bottom: 50%;
+        transform: translate(-50%, 50%);
+        transition: left 0.4s, bottom 0.4s, transform 0.4s;
+
+        &.is-panel-fold {
+            left: 0;
+            bottom: 0;
+            transform: translate(0, 0);
+        }
+    }
+}
+
+.cloud-storage-container-footer {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px 0 32px;
+    border-top: 1px solid #dbe1ea;
+    user-select: none;
+}
+
+.cloud-storage-container-mask {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.cloud-storage-container-mask-enter {
+    opacity: 0;
+}
+.cloud-storage-container-mask-enter-active {
+    opacity: 1;
+    transition: opacity 0.4s;
+}
+.cloud-storage-container-mask-exit {
+    opacity: 1;
+}
+.cloud-storage-container-mask-exit-active {
+    opacity: 0;
+    transition: opacity 0.4s;
 }

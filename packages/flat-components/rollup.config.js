@@ -8,7 +8,9 @@ import styles from "rollup-plugin-styles";
 import ignoreImport from "rollup-plugin-ignore-import";
 import url from "@rollup/plugin-url";
 
-const compNames = fs.readdirSync(path.resolve(__dirname, "src", "components"));
+const compNames = fs
+    .readdirSync(path.resolve(__dirname, "src", "components"))
+    .filter(name => !name.startsWith("."));
 
 generateIndexTS(compNames);
 
