@@ -12,8 +12,13 @@
     "build": "yarn run cleanup && rollup -c",
     "build-storybook": "build-storybook",
     "deploy-storybook": "build-storybook && node scripts/deploy-storybook.js",
+    "postinstall": "yarn run build",
     "cleanup": "rimraf ./build"
   },
+  "files": [
+    "src",
+    "build"
+  ],
   "main": "./build/index.js",
   "module": "./build/index.js",
   "types": "./build/index.d.ts",
