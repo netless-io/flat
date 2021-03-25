@@ -1,10 +1,5 @@
 const path = require("path");
 
-const agoraElectronSdkPath = path.join(
-    __dirname,
-    "..",
-    "node_modules",
-    "agora-electron-sdk",
-);
+const agoraElectronSdkPath = path.join(require.resolve("agora-electron-sdk"), "..", "..");
 
 module.exports.agoraElectronSdkPath = agoraElectronSdkPath;

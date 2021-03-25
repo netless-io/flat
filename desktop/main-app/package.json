@@ -26,8 +26,8 @@
     "download:agoraAddon": "node ./scripts/Download-agora-addon.js && yarn move:agoraAddon",
     "download:agoraAddon:mac": "node ./scripts/Download-agora-addon.js --arch=x64 --platform=darwin && yarn move:agoraAddon",
     "download:agoraAddon:win": "node ./scripts/Download-agora-addon.js --arch=x86 --platform=win32 && yarn move:agoraAddon",
-    "move:agoraAddon": "move-cli ./build/ ./node_modules/agora-electron-sdk/build/",
-    "postinstall": "yarn download:agoraAddon",
+    "move:agoraAddon": "node scripts/mv-agora-addon.js",
+    "postinstall": "download:agoraAddon",
     "lint": "lint-staged"
   },
   "devDependencies": {
