@@ -1,10 +1,10 @@
-import defaultSVG from "../../../assets/files/default.svg";
-import audioSVG from "../../../assets/files/audio.svg";
-import imgSVG from "../../../assets/files/img.svg";
-import pdfSVG from "../../../assets/files/pdf.svg";
-import pptSVG from "../../../assets/files/ppt.svg";
-import videoSVG from "../../../assets/files/video.svg";
-import wordSVG from "../../../assets/files/word.svg";
+import defaultSVG from "./icons/default.svg";
+import audioSVG from "./icons/audio.svg";
+import imgSVG from "./icons/img.svg";
+import pdfSVG from "./icons/pdf.svg";
+import pptSVG from "./icons/ppt.svg";
+import videoSVG from "./icons/video.svg";
+import wordSVG from "./icons/word.svg";
 
 import React from "react";
 

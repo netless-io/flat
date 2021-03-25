@@ -1,6 +1,6 @@
 import "./style.less";
-import arrowSVG from "./panel-arrow.svg";
-import closeSVG from "./panel-close.svg";
+import arrowSVG from "./icons/panel-arrow.svg";
+import closeSVG from "./icons/panel-close.svg";
 
 import React, { FC, useState } from "react";
 import { Button } from "antd";
