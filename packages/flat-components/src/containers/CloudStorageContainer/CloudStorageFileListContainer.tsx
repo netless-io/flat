@@ -16,7 +16,9 @@ export const CloudStorageFileListContainer = observer<CloudStorageFileListContai
                 selectedFileUUIDs={store.selectedFileUUIDs}
                 onSelectionChange={store.onSelectionChange}
                 fileMenus={store.fileMenus}
+                titleClickable={store.compact}
                 onItemMenuClick={store.onItemMenuClick}
+                onItemTitleClick={store.onItemTitleClick}
             />
         );
     },

@@ -40,7 +40,7 @@ Overview.args.fileMenus = () => [
 export const LongFileName: Story<{ fileName: string } & CloudStorageFileListProps> = ({
     fileName,
     onSelectionChange,
-    onItemMenuClick,
+    ...restProps
 }) => {
     const [selectedFileUUIDs, setSelectedFileUUIDs] = useState<string[]>([]);
     const files = useMemo(
@@ -56,6 +56,7 @@ export const LongFileName: Story<{ fileName: string } & CloudStorageFileListProp
     );
     return (
         <CloudStorageFileList
+            {...restProps}
             files={files}
             selectedFileUUIDs={selectedFileUUIDs}
             onSelectionChange={keys => {
@@ -67,7 +68,6 @@ export const LongFileName: Story<{ fileName: string } & CloudStorageFileListProp
                 { key: "rename", name: "重命名" },
                 { key: "delete", name: "删除" },
             ]}
-            onItemMenuClick={onItemMenuClick}
         />
     );
 };
@@ -85,7 +85,7 @@ LongFileName.argTypes = {
 export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileListProps> = ({
     itemCount,
     onSelectionChange,
-    onItemMenuClick,
+    ...restProps
 }) => {
     const [selectedFileUUIDs, setSelectedFileUUIDs] = useState<string[]>([]);
     const files = useMemo(
@@ -104,6 +104,7 @@ export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileList
     );
     return (
         <CloudStorageFileList
+            {...restProps}
             files={files}
             selectedFileUUIDs={selectedFileUUIDs}
             onSelectionChange={keys => {
@@ -115,7 +116,6 @@ export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileList
                 { key: "rename", name: "重命名" },
                 { key: "delete", name: <span className="red">删除</span> },
             ]}
-            onItemMenuClick={onItemMenuClick}
         />
     );
 };
