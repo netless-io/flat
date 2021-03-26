@@ -3,7 +3,9 @@
   "description": "Reusable components for the Flat app.",
   "version": "0.1.0",
   "private": false,
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "license": "MIT",
   "homepage": "https://github.com/netless-io/flat",
   "scripts": {
