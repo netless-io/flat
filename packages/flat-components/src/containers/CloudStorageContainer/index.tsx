@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React from "react";
+import React, { useCallback } from "react";
 import { observer } from "mobx-react-lite";
 import { Button } from "antd";
 import { CSSTransition } from "react-transition-group";
@@ -19,6 +19,16 @@ export interface CloudStorageContainerProps {
 /** CloudStorage page with MobX Store */
 export const CloudStorageContainer = observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store }) {
+        const onUploadPanelClick = useCallback(
+            (e: React.MouseEvent) => {
+                if (store.compact) {
+                    store.setPanelExpand(!store.isUploadPanelExpand);
+                    e.stopPropagation();
+                }
+            },
+            [store],
+        );
+
         return (
             <div className="cloud-storage-container">
                 {!store.compact && (
@@ -70,7 +80,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                         expand={store.isUploadPanelExpand}
                         finished={store.uploadFinishedCount}
                         total={store.uploadTotalCount}
-                        onClick={store.expandPanel}
+                        onClickCapture={onUploadPanelClick}
                         onClose={store.onUploadPanelClose}
                         onExpandChange={store.setPanelExpand}
                     >
