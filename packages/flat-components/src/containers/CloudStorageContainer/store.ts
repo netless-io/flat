@@ -1,3 +1,4 @@
+import React from "react";
 import { action, computed, makeObservable, observable } from "mobx";
 import prettyBytes from "pretty-bytes";
 import { CloudStorageFile, CloudStorageUploadStatus } from "../../components/CloudStorage/types";
@@ -11,18 +12,30 @@ export abstract class CloudStorageStore {
     files: CloudStorageFile[] = [];
     /** User selected file uuids */
     selectedFileUUIDs: string[] = [];
-    /** Number of finished upload */
-    uploadFinishedCount = 0;
-    /** Number of total upload */
-    uploadTotalCount = 0;
     /** Files in the upload panel list */
-    uploadStatuses: CloudStorageUploadStatus[] = [];
+    uploadStatusesMap = observable.map</** fileUUID */ string, CloudStorageUploadStatus>();
     /** It changes when user toggles the expand button */
     isUploadPanelExpand = false;
 
+    /** Number of total upload */
+    get uploadTotalCount(): number {
+        return this.uploadStatusesMap.size;
+    }
+
+    /** Number of finished upload */
+    get uploadFinishedCount(): number {
+        let count = 0;
+        for (const status of this.uploadStatusesMap.values()) {
+            if (status.status === "success") {
+                count += 1;
+            }
+        }
+        return count;
+    }
+
     /** Display upload panel */
     get isUploadPanelVisible(): boolean {
-        return this.uploadStatuses.length > 0;
+        return this.uploadTotalCount > 0;
     }
 
     /** Human readable user total cloud storage usage */
@@ -33,7 +46,7 @@ export abstract class CloudStorageStore {
     /** If upload finishes with error */
     get uploadFinishWithError(): boolean {
         let hasError = false;
-        for (const status of this.uploadStatuses) {
+        for (const status of this.uploadStatusesMap.values()) {
             if (status.status === "error") {
                 hasError = true;
                 continue;
@@ -50,7 +63,7 @@ export abstract class CloudStorageStore {
         const uploading: CloudStorageUploadStatus[] = [];
         const error: CloudStorageUploadStatus[] = [];
         const success: CloudStorageUploadStatus[] = [];
-        for (const status of this.uploadStatuses) {
+        for (const status of this.uploadStatusesMap.values()) {
             switch (status.status) {
                 case "uploading": {
                     uploading.push(status);
@@ -79,29 +92,41 @@ export abstract class CloudStorageStore {
             totalUsage: observable,
             files: observable,
             selectedFileUUIDs: observable,
-            uploadFinishedCount: observable,
-            uploadTotalCount: observable,
-            uploadStatuses: observable,
             isUploadPanelExpand: observable,
 
+            uploadFinishedCount: computed,
+            uploadTotalCount: computed,
             isUploadPanelVisible: computed,
             totalUsageHR: computed,
             uploadFinishWithError: computed,
 
-            onUploadPanelExpandChange: action,
+            setPanelExpand: action,
+            setCompact: action,
             onSelectionChange: action,
         });
     }
 
-    /** When upload panel expand button clicked */
-    onUploadPanelExpandChange = (isExpand: boolean): void => {
+    setPanelExpand = (isExpand: boolean): void => {
         this.isUploadPanelExpand = isExpand;
+    };
+
+    setCompact = (compact: boolean): void => {
+        this.compact = compact;
     };
 
     /** When file list item selection changed */
     onSelectionChange = (fileUUIDs: string[]): void => {
         this.selectedFileUUIDs = fileUUIDs;
     };
+
+    /** Render file menus item base on fileUUID */
+    abstract fileMenus: (
+        file: CloudStorageFile,
+        index: number,
+    ) => Array<{ key: React.Key; name: React.ReactNode }> | void | undefined | null;
+
+    /** When a file menus item is clicked */
+    abstract onItemMenuClick: (fileUUID: string, menuKey: React.Key) => void;
 
     /** When page delete button is pressed */
     abstract onBatchDelete(): void;
