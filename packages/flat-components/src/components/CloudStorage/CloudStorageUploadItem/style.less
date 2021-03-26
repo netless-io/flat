@@ -4,8 +4,8 @@
     display: flex;
     align-items: center;
     font-size: 14px;
-    color: #444E60;
-    border-bottom: 1px #DBE1EA solid;
+    color: #444e60;
+    border-bottom: 1px #dbe1ea solid;
     user-select: none;
 }
 
@@ -22,21 +22,33 @@
     white-space: nowrap;
 }
 
+.cloud-storage-upload-file-title {
+    text-overflow: ellipsis;
+    word-break: keep-all;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-right: 1em;
+}
+
 .cloud-storage-upload-status {
+    word-break: keep-all;
+    white-space: nowrap;
     margin-left: auto;
-    color: #7A7B7C;
+    color: #7a7b7c;
 
     &.is-success {
-        color: #7EC452;
+        color: #7ec452;
     }
 
     &.is-error {
-        color: #F45454;
+        color: #f45454;
     }
 }
 
 .cloud-storage-upload-status-btn {
     border: none;
+    box-shadow: none;
+    margin-left: 2px;
 }
 
 .cloud-storage-upload-item-progress-bar {
@@ -44,9 +56,9 @@
     left: 0;
     bottom: -1px;
     height: 1px;
-    background: #3381FF;
+    background: #3381ff;
 
     &.is-error {
-        background: #F45454;
+        background: #f45454;
     }
 }

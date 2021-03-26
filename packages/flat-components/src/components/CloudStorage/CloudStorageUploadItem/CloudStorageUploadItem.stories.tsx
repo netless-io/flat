@@ -30,6 +30,21 @@ Overview.args = {
     status: chance.pickone(["idle", "error", "success", "uploading"]),
 };
 
+export const LongFileName: Story<CloudStorageUploadItemProps> = args => (
+    <CloudStorageUploadItem {...args} />
+);
+LongFileName.args = {
+    fileUUID: faker.random.uuid(),
+    fileName: faker.random.words(20) + "." + faker.system.commonFileExt(),
+    percent: chance.integer({ min: 0, max: 100 }),
+    status: chance.pickone(["idle", "error", "success", "uploading"]),
+};
+LongFileName.parameters = {
+    viewport: {
+        defaultViewport: "mobile2",
+    },
+};
+
 export const UploadList: Story<CloudStorageUploadItemProps> = ({ onCancel, onRetry }) => {
     function getItem(
         percent: number,
