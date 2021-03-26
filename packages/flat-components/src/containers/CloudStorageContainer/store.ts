@@ -110,6 +110,10 @@ export abstract class CloudStorageStore {
         this.isUploadPanelExpand = isExpand;
     };
 
+    expandPanel = (): void => {
+        this.isUploadPanelExpand = true;
+    };
+
     setCompact = (compact: boolean): void => {
         this.compact = compact;
     };

@@ -53,7 +53,14 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                     mountOnEnter
                     unmountOnExit
                 >
-                    <div className="cloud-storage-container-mask" />
+                    <div
+                        className="cloud-storage-container-mask"
+                        onClick={e => {
+                            if (e.target === e.currentTarget) {
+                                store.setPanelExpand(false);
+                            }
+                        }}
+                    />
                 </CSSTransition>
                 {store.isUploadPanelVisible && (
                     <CloudStorageUploadPanel
@@ -63,6 +70,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                         expand={store.isUploadPanelExpand}
                         finished={store.uploadFinishedCount}
                         total={store.uploadTotalCount}
+                        onClick={store.expandPanel}
                         onClose={store.onUploadPanelClose}
                         onExpandChange={store.setPanelExpand}
                     >
