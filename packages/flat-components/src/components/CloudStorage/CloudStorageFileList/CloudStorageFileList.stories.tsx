@@ -31,10 +31,16 @@ Overview.args = {
         }),
 };
 Overview.args.selectedFileUUIDs = [Overview.args.files![1].fileUUID];
+Overview.args.fileMenus = () => [
+    { key: "download", name: "下载" },
+    { key: "rename", name: "重命名" },
+    { key: "delete", name: "删除" },
+];
 
 export const LongFileName: Story<{ fileName: string } & CloudStorageFileListProps> = ({
     fileName,
     onSelectionChange,
+    onItemMenuClick,
 }) => {
     const [selectedFileUUIDs, setSelectedFileUUIDs] = useState<string[]>([]);
     const files = useMemo(
@@ -56,6 +62,12 @@ export const LongFileName: Story<{ fileName: string } & CloudStorageFileListProp
                 setSelectedFileUUIDs(keys);
                 onSelectionChange(keys);
             }}
+            fileMenus={() => [
+                { key: "download", name: "下载" },
+                { key: "rename", name: "重命名" },
+                { key: "delete", name: "删除" },
+            ]}
+            onItemMenuClick={onItemMenuClick}
         />
     );
 };
@@ -73,6 +85,7 @@ LongFileName.argTypes = {
 export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileListProps> = ({
     itemCount,
     onSelectionChange,
+    onItemMenuClick,
 }) => {
     const [selectedFileUUIDs, setSelectedFileUUIDs] = useState<string[]>([]);
     const files = useMemo(
@@ -97,6 +110,12 @@ export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileList
                 setSelectedFileUUIDs(keys);
                 onSelectionChange(keys);
             }}
+            fileMenus={() => [
+                { key: "download", name: "下载" },
+                { key: "rename", name: "重命名" },
+                { key: "delete", name: <span className="red">删除</span> },
+            ]}
+            onItemMenuClick={onItemMenuClick}
         />
     );
 };

@@ -1,13 +1,13 @@
 import "./style.less";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { Table } from "antd";
 import prettyBytes from "pretty-bytes";
 import { format } from "date-fns";
 import { ColumnsType } from "antd/lib/table";
 import { CloudStorageFile } from "../types";
 import { CloudStorageFileListHeadTip } from "../CloudStorageFileListHeadTip";
-import { CloudStorageFileTitle } from "../CloudStorageFileTitle";
+import { CloudStorageFileListFileName } from "./CloudStorageFileListFileName";
 
 export interface CloudStorageFileListProps {
     /** Cloud Storage List items */
@@ -16,6 +16,13 @@ export interface CloudStorageFileListProps {
     selectedFileUUIDs: string[];
     /** Fires when user select or deselect files */
     onSelectionChange: (fileUUID: string[]) => void;
+    /** Render file menus item base on fileUUID */
+    fileMenus?: (
+        file: CloudStorageFile,
+        index: number,
+    ) => Array<{ key: React.Key; name: React.ReactNode }> | void | undefined | null;
+    /** When a file menus item is clicked */
+    onItemMenuClick?: (fileUUID: string, menuKey: React.Key) => void;
 }
 
 /**
@@ -25,7 +32,11 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
     files,
     selectedFileUUIDs,
     onSelectionChange,
+    fileMenus,
+    onItemMenuClick,
 }) => {
+    const popupContainerRef = useRef<HTMLDivElement>(null);
+
     const columns = useMemo<ColumnsType<CloudStorageFile>>(
         () => [
             {
@@ -40,13 +51,14 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 ),
                 dataIndex: "fileName",
                 ellipsis: true,
-                render: function renderCloudStorageFileName(
-                    fileName: CloudStorageFile["fileName"],
-                ) {
+                render: function renderCloudStorageFileName(_fileName, file, index) {
                     return (
-                        <CloudStorageFileTitle
-                            fileName={fileName}
-                            titleClassName="cloud-storage-file-list-name"
+                        <CloudStorageFileListFileName
+                            popupContainerRef={popupContainerRef}
+                            file={file}
+                            index={index}
+                            fileMenus={fileMenus}
+                            onItemMenuClick={onItemMenuClick}
                         />
                     );
                 },
@@ -74,20 +86,21 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 },
             },
         ],
-        [],
+        [fileMenus, onItemMenuClick],
     );
 
     return (
-        <Table
-            className="cloud-storage-file-list-table"
-            columns={columns}
-            dataSource={files}
-            rowKey="fileUUID"
-            pagination={false}
-            rowSelection={{
-                selectedRowKeys: selectedFileUUIDs,
-                onChange: onSelectionChange as (keys: React.Key[]) => void,
-            }}
-        />
+        <div ref={popupContainerRef} className="cloud-storage-file-list-table">
+            <Table
+                columns={columns}
+                dataSource={files}
+                rowKey="fileUUID"
+                pagination={false}
+                rowSelection={{
+                    selectedRowKeys: selectedFileUUIDs,
+                    onChange: onSelectionChange as (keys: React.Key[]) => void,
+                }}
+            />
+        </div>
     );
 };
