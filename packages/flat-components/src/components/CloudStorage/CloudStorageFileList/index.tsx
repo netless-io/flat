@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { Table } from "antd";
 import prettyBytes from "pretty-bytes";
 import { format } from "date-fns";
@@ -36,6 +36,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
     onItemMenuClick,
 }) => {
     const popupContainerRef = useRef<HTMLDivElement>(null);
+    const getPopupContainer = useCallback(() => popupContainerRef.current || document.body, []);
 
     const columns = useMemo<ColumnsType<CloudStorageFile>>(
         () => [
@@ -46,6 +47,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                         <CloudStorageFileListHeadTip
                             title="支持上传 PPT、PPTX、DOC、DOCX、PDF、PNG、JPG、GIF 文件格式"
                             placement="right"
+                            getPopupContainer={getPopupContainer}
                         />
                     </>
                 ),
@@ -54,7 +56,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 render: function renderCloudStorageFileName(_fileName, file, index) {
                     return (
                         <CloudStorageFileListFileName
-                            popupContainerRef={popupContainerRef}
+                            getPopupContainer={getPopupContainer}
                             file={file}
                             index={index}
                             fileMenus={fileMenus}
@@ -86,7 +88,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 },
             },
         ],
-        [fileMenus, onItemMenuClick],
+        [fileMenus, getPopupContainer, onItemMenuClick],
     );
 
     return (

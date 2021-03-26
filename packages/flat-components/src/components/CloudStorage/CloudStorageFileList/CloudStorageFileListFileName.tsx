@@ -8,7 +8,7 @@ import { CloudStorageFile } from "../types";
 export interface CloudStorageFileListFileNameProps {
     file: CloudStorageFile;
     index: number;
-    popupContainerRef: React.RefObject<HTMLDivElement | null>;
+    getPopupContainer: () => HTMLElement;
     /** Render file menus item base on fileUUID */
     fileMenus?: (
         file: CloudStorageFile,
@@ -21,7 +21,7 @@ export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileN
     function CloudStorageFileListFileName({
         file,
         index,
-        popupContainerRef,
+        getPopupContainer,
         fileMenus,
         onItemMenuClick,
     }) {
@@ -37,10 +37,7 @@ export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileN
                     <div className="cloud-storage-file-list-menu-btn-wrap">
                         <Dropdown
                             className="cloud-storage-file-list-menu-btn"
-                            getPopupContainer={() => {
-                                console.log(popupContainerRef.current);
-                                return popupContainerRef.current || document.body;
-                            }}
+                            getPopupContainer={getPopupContainer}
                             overlay={
                                 <Menu
                                     onClick={({ key }) =>
