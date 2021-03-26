@@ -2,12 +2,12 @@ import "./style.less";
 
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 import { Button } from "antd";
 import { CSSTransition } from "react-transition-group";
 import { CloudStorageStore } from "./store";
-import { CloudStorageFileList, CloudStorageUploadPanel } from "../../components/CloudStorage";
+import { CloudStorageUploadPanel } from "../../components/CloudStorage";
 import { CloudStorageUploadListContainer } from "./CloudStorageUploadListContainer";
+import { CloudStorageFileListContainer } from "./CloudStorageFileListContainer";
 
 export * from "./store";
 
@@ -44,11 +44,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                     </div>
                 )}
                 <div className="cloud-storage-container-file-list">
-                    <CloudStorageFileList
-                        files={toJS(store.files)}
-                        selectedFileUUIDs={store.selectedFileUUIDs}
-                        onSelectionChange={store.onSelectionChange}
-                    />
+                    <CloudStorageFileListContainer store={store} />
                 </div>
                 <CSSTransition
                     in={store.isUploadPanelExpand && store.compact}
@@ -68,7 +64,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                         finished={store.uploadFinishedCount}
                         total={store.uploadTotalCount}
                         onClose={store.onUploadPanelClose}
-                        onExpandChange={store.onUploadPanelExpandChange}
+                        onExpandChange={store.setPanelExpand}
                     >
                         <CloudStorageUploadListContainer
                             statuses={store.sortedUploadStatus}

@@ -24,6 +24,7 @@ const fakeStoreImplProps = [
     "onUploadCancel",
     "onUploadPanelClose",
     "onUploadRetry",
+    "onItemMenuClick",
 ] as const;
 
 type FakeStoreImplProps = typeof fakeStoreImplProps[number];
@@ -36,6 +37,7 @@ class FakeStore extends CloudStorageStore {
     onUploadCancel;
     onUploadPanelClose;
     onUploadRetry;
+    onItemMenuClick;
 
     constructor(config: FakeStoreConfig) {
         super();
@@ -45,6 +47,7 @@ class FakeStore extends CloudStorageStore {
         this.onUploadCancel = config.onUploadCancel;
         this.onUploadPanelClose = config.onUploadPanelClose;
         this.onUploadRetry = config.onUploadRetry;
+        this.onItemMenuClick = config.onItemMenuClick;
 
         makeObservable(
             this,
@@ -54,6 +57,12 @@ class FakeStore extends CloudStorageStore {
             }, {} as AnnotationsMap<this, never>),
         );
     }
+
+    fileMenus = (): Array<{ key: React.Key; name: React.ReactNode }> => [
+        { key: "download", name: "下载" },
+        { key: "rename", name: "重命名" },
+        { key: "delete", name: <span className="red">删除</span> },
+    ];
 }
 
 function createFakeStore(config: FakeStoreConfig): FakeStore {
@@ -69,16 +78,16 @@ function createFakeStore(config: FakeStoreConfig): FakeStore {
                 createAt: faker.date.past(),
             };
         });
-    store.uploadTotalCount = chance.integer({ min: 0, max: 200 });
-    store.uploadFinishedCount = chance.integer({ min: 0, max: store.uploadTotalCount });
-    store.uploadStatuses = Array(store.uploadTotalCount)
-        .fill(0)
-        .map(() => ({
-            fileUUID: faker.random.uuid(),
+
+    for (let i = chance.integer({ min: 0, max: 200 }); i >= 0; i--) {
+        const fileUUID = faker.random.uuid();
+        store.uploadStatusesMap.set(fileUUID, {
+            fileUUID,
             fileName: faker.random.word() + "." + faker.system.commonFileExt(),
             status: chance.pickone(["idle", "error", "success", "uploading"]),
             percent: chance.integer({ min: 0, max: 100 }),
-        }));
+        });
+    }
     return store;
 }
 
