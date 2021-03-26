@@ -30,7 +30,11 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                             </small>
                         </div>
                         <div className="cloud-storage-container-btns">
-                            <Button danger onClick={store.onBatchDelete}>
+                            <Button
+                                danger
+                                onClick={store.onBatchDelete}
+                                disabled={store.selectedFileUUIDs.length <= 0}
+                            >
                                 删除
                             </Button>
                             <Button type="primary" onClick={store.onUpload}>
