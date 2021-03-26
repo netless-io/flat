@@ -32,7 +32,7 @@ const commonPlugins = [
 
 // ignore assets that are not picked up by url plugin
 const ignoreAssets = ignoreImport({
-    extensions: [".less", ".css", ".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp"],
+    extensions: [".less", ".css"],
 });
 
 const extractCSS = styles({
@@ -41,7 +41,7 @@ const extractCSS = styles({
     url: { publicPath: "./assets" },
 });
 
-const rollupConfig = [getMainEntryConfig()];
+const rollupConfig = [...getMainEntryConfig()];
 if (process.env.INCLUDE_COMPONENT_ENTRIES) {
     rollupConfig.push(...getAllComponentConfigs(compNames));
 }
@@ -60,16 +60,27 @@ function getMainEntryConfig() {
         }),
     ];
 
-    return {
-        input,
-        output: {
-            dir: "./build/",
-            format: "esm",
-            sourcemap: true,
-            assetFileNames,
+    return [
+        {
+            input,
+            output: {
+                dir: "./build/",
+                format: "esm",
+                sourcemap: true,
+                assetFileNames,
+            },
+            plugins: [...sharedPlugins, extractCSS],
         },
-        plugins: [...sharedPlugins, extractCSS],
-    };
+        {
+            input,
+            output: {
+                dir: "./build/cjs",
+                format: "cjs",
+                sourcemap: true,
+            },
+            plugins: [...sharedPlugins, ignoreAssets],
+        },
+    ];
 }
 
 /**

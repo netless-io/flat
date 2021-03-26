@@ -19,10 +19,9 @@
     "src",
     "build"
   ],
-  "main": "./build/index.js",
+  "main": "./build/cjs/index.js",
   "module": "./build/index.js",
   "types": "./build/index.d.ts",
-  "type": "module",
   "dependencies": {
     "@types/react-transition-group": "^4.4.1",
     "classnames": "^2.2.6",
