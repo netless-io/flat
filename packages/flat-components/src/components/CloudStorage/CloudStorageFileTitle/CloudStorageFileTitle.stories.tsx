@@ -15,27 +15,31 @@ export const Overview: Story<CloudStorageFileTitleProps> = args => (
     <CloudStorageFileTitle {...args} />
 );
 Overview.args = {
+    fileUUID: faker.random.uuid(),
     fileName: faker.random.word() + "." + faker.system.commonFileExt(),
 };
 
-const renderFileTitles = (fileType: string, exts: string[]): React.ReactElement => (
-    <div className="column is-one-quarter-tablet">
-        <div className="box">
-            <h1 className="title">{fileType}</h1>
-            {exts.map(ext => (
-                <div className="flex items-center ma2">
-                    <CloudStorageFileTitle
-                        key={ext}
-                        fileName={faker.random.word() + ext}
-                        iconClassName="mr1"
-                    />
-                </div>
-            ))}
+export const FileTitles: Story<CloudStorageFileTitleProps> = ({ titleClickable, onClick }) => {
+    const renderFileTitles = (fileType: string, exts: string[]): React.ReactElement => (
+        <div className="column is-one-quarter-tablet">
+            <div className="box">
+                <h1 className="title">{fileType}</h1>
+                {exts.map(ext => (
+                    <div className="flex items-center ma2">
+                        <CloudStorageFileTitle
+                            key={ext}
+                            fileUUID={faker.random.uuid()}
+                            fileName={faker.random.word() + ext}
+                            iconClassName="mr1"
+                            titleClickable={titleClickable}
+                            onClick={onClick}
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
-    </div>
-);
+    );
 
-export const FileTitles: Story<CloudStorageFileTitleProps> = () => {
     return (
         <div className="columns">
             {renderFileTitles("Office", [".ppt", ".pptx", ".doc", ".docx", ".pdf"])}

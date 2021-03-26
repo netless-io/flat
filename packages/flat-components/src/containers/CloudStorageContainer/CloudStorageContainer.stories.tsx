@@ -25,6 +25,7 @@ const fakeStoreImplProps = [
     "onUploadPanelClose",
     "onUploadRetry",
     "onItemMenuClick",
+    "onItemTitleClick",
 ] as const;
 
 type FakeStoreImplProps = typeof fakeStoreImplProps[number];
@@ -38,6 +39,7 @@ class FakeStore extends CloudStorageStore {
     onUploadPanelClose;
     onUploadRetry;
     onItemMenuClick;
+    onItemTitleClick;
 
     constructor(config: FakeStoreConfig) {
         super();
@@ -48,6 +50,7 @@ class FakeStore extends CloudStorageStore {
         this.onUploadPanelClose = config.onUploadPanelClose;
         this.onUploadRetry = config.onUploadRetry;
         this.onItemMenuClick = config.onItemMenuClick;
+        this.onItemTitleClick = config.onItemTitleClick;
 
         makeObservable(
             this,

@@ -128,6 +128,9 @@ export abstract class CloudStorageStore {
     /** When a file menus item is clicked */
     abstract onItemMenuClick: (fileUUID: string, menuKey: React.Key) => void;
 
+    /** When file title click */
+    abstract onItemTitleClick: (fileUUID: string) => void;
+
     /** When page delete button is pressed */
     abstract onBatchDelete(): void;
 

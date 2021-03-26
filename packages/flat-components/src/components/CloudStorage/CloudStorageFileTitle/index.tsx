@@ -9,25 +9,51 @@ import wordSVG from "./icons/word.svg";
 import React from "react";
 
 export interface CloudStorageFileTitleProps {
+    /** file UUID */
+    fileUUID: string;
     /** File Name */
     fileName: string;
     /** Class name for file icon */
     iconClassName?: string;
     /** Class name for title text */
     titleClassName?: string;
+    /** Is title clickable. Default false */
+    titleClickable?: boolean;
+    /** When title is clicked */
+    onClick?: (fileUUID: string) => void;
 }
 
 /**
  * Render a file icon in front of file name according to file extension.
  */
 export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
-    function CloudStorageFileTitle({ fileName, iconClassName, titleClassName }) {
+    function CloudStorageFileTitle({
+        fileUUID,
+        fileName,
+        iconClassName,
+        titleClassName,
+        titleClickable = false,
+        onClick,
+    }) {
         return (
             <>
                 <img className={iconClassName} src={getFileIcon(fileName)} aria-hidden />
-                <span className={titleClassName} title={fileName}>
-                    {fileName}
-                </span>
+                {titleClickable ? (
+                    <a
+                        className={titleClassName}
+                        title={fileName}
+                        onClick={e => {
+                            e.preventDefault();
+                            onClick && onClick(fileUUID);
+                        }}
+                    >
+                        {fileName}
+                    </a>
+                ) : (
+                    <span className={titleClassName} title={fileName}>
+                        {fileName}
+                    </span>
+                )}
             </>
         );
     },
