@@ -30,12 +30,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
 }) => {
     return (
         <div className="cloud-storage-upload-item">
-            <CloudStorageFileTitle
-                fileUUID={fileUUID}
-                titleClassName="cloud-storage-upload-file-title"
-                iconClassName="cloud-storage-upload-file-icon"
-                fileName={fileName}
-            />
+            <CloudStorageFileTitle fileUUID={fileUUID} fileName={fileName} />
             {renderUploadBody()}
             <div
                 className={classNames("cloud-storage-upload-item-progress-bar", {
