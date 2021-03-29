@@ -19,7 +19,25 @@ Overview.args = {
     fileName: faker.random.word() + "." + faker.system.commonFileExt(),
 };
 
-export const FileTitles: Story<CloudStorageFileTitleProps> = ({ titleClickable, onClick }) => {
+export const Converting: Story<CloudStorageFileTitleProps> = args => (
+    <CloudStorageFileTitle {...args} />
+);
+Converting.args = {
+    fileUUID: faker.random.uuid(),
+    fileName: faker.random.word() + ".pptx",
+    convertStatus: "converting",
+};
+
+export const ConvertError: Story<CloudStorageFileTitleProps> = args => (
+    <CloudStorageFileTitle {...args} />
+);
+ConvertError.args = {
+    fileUUID: faker.random.uuid(),
+    fileName: faker.random.word() + ".doc",
+    convertStatus: "error",
+};
+
+export const FileTitles: Story<CloudStorageFileTitleProps> = ({ onTitleClick }) => {
     const renderFileTitles = (fileType: string, exts: string[]): React.ReactElement => (
         <div className="column is-one-quarter-tablet">
             <div className="box">
@@ -30,9 +48,7 @@ export const FileTitles: Story<CloudStorageFileTitleProps> = ({ titleClickable, 
                             key={ext}
                             fileUUID={faker.random.uuid()}
                             fileName={faker.random.word() + ext}
-                            iconClassName="mr1"
-                            titleClickable={titleClickable}
-                            onClick={onClick}
+                            onTitleClick={onTitleClick}
                         />
                     </div>
                 ))}

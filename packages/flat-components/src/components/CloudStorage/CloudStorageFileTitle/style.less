@@ -1,0 +1,54 @@
+.cloud-storage-file-title {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 1em;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #444e60;
+
+    &.is-convert-ready {
+        & > .cloud-storage-file-title-content {
+            opacity: 1;
+        }
+    }
+}
+
+.cloud-storage-file-title-icon-wrap {
+    flex-shrink: 0;
+    position: relative;
+    margin-right: 4px;
+}
+
+.cloud-storage-file-title-content {
+    text-overflow: ellipsis;
+    word-break: keep-all;
+    overflow: hidden;
+    white-space: nowrap;
+    color: currentColor;
+    opacity: 0.6;
+    user-select: none;
+}
+
+.cloud-storage-file-title-converting,
+.cloud-storage-file-title-convert-error {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+}
+
+.cloud-storage-file-title-converting {
+    animation: cloud-storage-file-title-subicon-spin 1s linear infinite;
+}
+
+@keyframes cloud-storage-file-title-subicon-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
