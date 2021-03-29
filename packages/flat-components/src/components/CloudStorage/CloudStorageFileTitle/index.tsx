@@ -81,7 +81,6 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
                 {titleClickable ? (
                     <a
                         className="cloud-storage-file-title-content"
-                        title={fileName}
                         onClick={e => {
                             e.preventDefault();
                             onTitleClick && onTitleClick(fileUUID);
@@ -90,9 +89,7 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
                         {fileName}
                     </a>
                 ) : (
-                    <span className="cloud-storage-file-title-content" title={fileName}>
-                        {fileName}
-                    </span>
+                    <span className="cloud-storage-file-title-content">{fileName}</span>
                 )}
             </span>
         );
