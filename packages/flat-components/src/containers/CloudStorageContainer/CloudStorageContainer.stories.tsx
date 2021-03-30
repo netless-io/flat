@@ -3,7 +3,7 @@ import { Story, Meta, ArgTypes } from "@storybook/react";
 import Chance from "chance";
 import faker from "faker";
 import { action, AnnotationsMap, makeObservable } from "mobx";
-
+import { Modal } from "antd";
 import { CloudStorageContainer, CloudStorageStore } from "./index";
 
 const chance = new Chance();
@@ -52,8 +52,26 @@ class FakeStore extends CloudStorageStore {
         this.onUploadPanelClose = config.onUploadPanelClose;
         this.onUploadRetry = config.onUploadRetry;
         this.onItemMenuClick = (fileUUID, menuKey) => {
-            if (menuKey === "rename") {
-                this.setRenamePanel(fileUUID);
+            switch (menuKey) {
+                case "download": {
+                    const file = this.files.find(file => file.fileUUID === fileUUID);
+                    Modal.info({ content: `Fake download file "${file?.fileName}".` });
+                    break;
+                }
+                case "rename": {
+                    this.setRenamePanel(fileUUID);
+                    break;
+                }
+                case "delete": {
+                    const index = this.files.findIndex(file => file.fileUUID === fileUUID);
+                    if (index >= 0) {
+                        this.files.splice(index, 1);
+                    }
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
             config.onItemMenuClick(fileUUID, menuKey);
         };
