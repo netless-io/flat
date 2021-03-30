@@ -74,7 +74,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     onItemMenuClick = async (fileUUID: string, menuKey: React.Key): Promise<void> => {
         const key = menuKey as FileMenusKey;
-        console.log("onItemMenuClick", fileUUID, key);
+        console.log("[cloud-storage] onItemMenuClick", fileUUID, key);
         switch (key) {
             case "download": {
                 const { fileName } = this.files.find(file => file.fileUUID === fileUUID)!;
@@ -102,7 +102,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     // }
 
     onItemTitleClick = (fileUUID: string): void => {
-        console.log("onItemTitleClick", fileUUID);
+        console.log("[cloud-storage] onItemTitleClick", fileUUID);
         const file = this.files.find(file => file.fileUUID === fileUUID);
         switch (file?.convert) {
             case "converting": {
@@ -121,7 +121,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     onBatchDelete = async (): Promise<void> => {
         const fileUUIDs = toJS(this.selectedFileUUIDs);
-        console.log("onBatchDelete", fileUUIDs);
+        console.log("[cloud-storage] onBatchDelete", fileUUIDs);
         await removeFiles({ fileUUIDs });
     };
 
@@ -136,19 +136,19 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     onUploadRetry = (fileUUID: string): void => {
-        console.log("onUploadRetry", fileUUID);
+        console.log("[cloud-storage] onUploadRetry", fileUUID);
         const file = this.retryable.get(fileUUID);
         if (file) {
             this.retryable.delete(fileUUID);
             this.setupUpload(file);
         } else {
-            console.log("can not retry such file", fileUUID);
+            console.log("[cloud-storage] can not retry such file", fileUUID);
         }
     };
 
     onUploadCancel = (fileUUID: string): void => {
-        console.log("onUploadCancel", fileUUID);
-        console.log(`TODO: remove zombie task ${fileUUID}`);
+        console.log("[cloud-storage] onUploadCancel", fileUUID);
+        console.log(`[cloud-storage] TODO: remove zombie task ${fileUUID}`);
         uploadManager.clean([fileUUID]);
         this.uploadStatusesMap.delete(fileUUID);
     };
@@ -156,7 +156,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     setupUpload(file: File): void {
         const task = uploadManager.upload(file);
         task.onInit = fileUUID => {
-            console.log("start uploading", fileUUID, file.name, file.size);
+            console.log("[cloud-storage] start uploading", fileUUID, file.name, file.size);
             this.onUploadInit(fileUUID, file);
         };
         task.onError = error => {
@@ -167,7 +167,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             }
         };
         task.onEnd = () => {
-            console.log("finish uploading", task.fileUUID);
+            console.log("[cloud-storage] finish uploading", task.fileUUID);
             this.onUploadEnd(task.fileUUID);
             this.refreshFiles();
         };
@@ -244,7 +244,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             if (file.fileName.endsWith(".pptx") || file.fileName.endsWith(".pdf")) {
                 switch (file.convertStep) {
                     case FileConvertStep.None: {
-                        console.log("convert start", file.fileUUID, file.fileName);
+                        console.log("[cloud-storage] convert start", file.fileUUID, file.fileName);
                         const task = await convertStart({ fileUUID: file.fileUUID });
                         file.convertStep = FileConvertStep.Converting;
                         file.convert = "converting";
@@ -280,7 +280,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             taskToken,
             fileName.endsWith(".pptx"),
         );
-        console.log("convert", fileUUID, status, progress?.convertedPercentage);
+        console.log("[cloud-storage] convert", fileUUID, status, progress?.convertedPercentage);
         switch (status) {
             case "Fail":
             case "Finished": {

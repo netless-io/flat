@@ -15,12 +15,12 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
 }) {
     useWindowSize("Main");
 
-    const [store] = useState(() => new CloudStorageStore(false));
+    const [store] = useState(() => new CloudStorageStore(compact ?? false));
 
     useEffect(() => {
         store.initialize();
         return () => store.destroy();
-    }, [store, compact]);
+    }, [store]);
 
     return compact ? (
         <CloudStorageContainer store={store} />
