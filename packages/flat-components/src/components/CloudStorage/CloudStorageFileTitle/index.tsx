@@ -1,3 +1,4 @@
+import "./style.less";
 import defaultSVG from "./icons/default.svg";
 import audioSVG from "./icons/audio.svg";
 import imgSVG from "./icons/img.svg";
@@ -5,22 +6,25 @@ import pdfSVG from "./icons/pdf.svg";
 import pptSVG from "./icons/ppt.svg";
 import videoSVG from "./icons/video.svg";
 import wordSVG from "./icons/word.svg";
+import convertingSVG from "./icons/converting.svg";
+import convertErrorSVG from "./icons/convert-error.svg";
 
 import React from "react";
+import classNames from "classnames";
+import { CloudStorageConvertStatusType } from "../types";
 
-export interface CloudStorageFileTitleProps {
+export interface CloudStorageFileTitleProps
+    extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
     /** file UUID */
     fileUUID: string;
     /** File Name */
     fileName: string;
-    /** Class name for file icon */
-    iconClassName?: string;
-    /** Class name for title text */
-    titleClassName?: string;
+    /** Cloud converting status */
+    convertStatus?: CloudStorageConvertStatusType;
     /** Is title clickable. Default false */
     titleClickable?: boolean;
     /** When title is clicked */
-    onClick?: (fileUUID: string) => void;
+    onTitleClick?: (fileUUID: string) => void;
 }
 
 /**
@@ -30,31 +34,64 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
     function CloudStorageFileTitle({
         fileUUID,
         fileName,
-        iconClassName,
-        titleClassName,
+        convertStatus,
         titleClickable = false,
-        onClick,
+        onTitleClick,
+        ...restProps
     }) {
+        const isConverting = convertStatus === "converting";
+        const isConvertError = !isConverting && convertStatus === "error";
+
         return (
-            <>
-                <img className={iconClassName} src={getFileIcon(fileName)} aria-hidden />
+            <span
+                title={`${
+                    isConvertError ? "（转码失败）" : isConverting ? "（转码中...）" : ""
+                }${fileName}`}
+                {...restProps}
+                className={classNames(restProps.className, "cloud-storage-file-title", {
+                    "is-convert-ready": !isConverting && !isConvertError,
+                })}
+            >
+                <span className="cloud-storage-file-title-icon-wrap">
+                    <img
+                        className="cloud-storage-file-title-icon"
+                        src={getFileIcon(fileName)}
+                        width={22}
+                        height={22}
+                        aria-hidden
+                    />
+                    {isConverting ? (
+                        <img
+                            className="cloud-storage-file-title-converting"
+                            src={convertingSVG}
+                            width={11}
+                            height={11}
+                            aria-hidden
+                        />
+                    ) : isConvertError ? (
+                        <img
+                            className="cloud-storage-file-title-convert-error"
+                            src={convertErrorSVG}
+                            width={11}
+                            height={11}
+                            aria-hidden
+                        />
+                    ) : null}
+                </span>
                 {titleClickable ? (
                     <a
-                        className={titleClassName}
-                        title={fileName}
+                        className="cloud-storage-file-title-content"
                         onClick={e => {
                             e.preventDefault();
-                            onClick && onClick(fileUUID);
+                            onTitleClick && onTitleClick(fileUUID);
                         }}
                     >
                         {fileName}
                     </a>
                 ) : (
-                    <span className={titleClassName} title={fileName}>
-                        {fileName}
-                    </span>
+                    <span className="cloud-storage-file-title-content">{fileName}</span>
                 )}
-            </>
+            </span>
         );
     },
 );

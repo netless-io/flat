@@ -5,6 +5,7 @@ export interface CloudStorageFile {
     fileUUID: string;
     fileName: string;
     fileSize: number;
+    convert: CloudStorageConvertStatusType;
     createAt: Date;
 }
 
@@ -20,3 +21,5 @@ export interface CloudStorageUploadStatus {
     /** Uploading failed */
     status: CloudStorageUploadStatusType;
 }
+
+export type CloudStorageConvertStatusType = "idle" | "error" | "converting" | "success";

@@ -78,6 +78,7 @@ function createFakeStore(config: FakeStoreConfig): FakeStore {
                 fileUUID: faker.random.uuid(),
                 fileName: faker.random.words() + "." + faker.system.commonFileExt(),
                 fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                convert: chance.pickone(["idle", "error", "success", "converting"]),
                 createAt: faker.date.past(),
             };
         });

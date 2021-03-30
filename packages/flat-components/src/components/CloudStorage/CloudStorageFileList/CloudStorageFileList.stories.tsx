@@ -4,6 +4,7 @@ import Chance from "chance";
 import faker from "faker";
 
 import { CloudStorageFileList, CloudStorageFileListProps } from "./index";
+import { CloudStorageFile } from "../types";
 
 const chance = new Chance();
 
@@ -26,6 +27,7 @@ Overview.args = {
                 fileUUID: faker.random.uuid(),
                 fileName: faker.random.word() + "." + faker.system.commonFileExt(),
                 fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                convert: chance.pickone(["idle", "error", "success", "converting"]),
                 createAt: faker.date.past(),
             };
         }),
@@ -43,12 +45,13 @@ export const LongFileName: Story<{ fileName: string } & CloudStorageFileListProp
     ...restProps
 }) => {
     const [selectedFileUUIDs, setSelectedFileUUIDs] = useState<string[]>([]);
-    const files = useMemo(
+    const files = useMemo<CloudStorageFile[]>(
         () => [
             {
                 fileUUID: faker.random.uuid(),
                 fileName,
                 fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                convert: chance.pickone(["idle", "error", "success", "converting"]),
                 createAt: faker.date.past(),
             },
         ],
@@ -81,6 +84,11 @@ LongFileName.argTypes = {
         table: { category: "Showcase" },
     },
 };
+LongFileName.parameters = {
+    viewport: {
+        defaultViewport: "tablet2",
+    },
+};
 
 export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileListProps> = ({
     itemCount,
@@ -88,7 +96,7 @@ export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileList
     ...restProps
 }) => {
     const [selectedFileUUIDs, setSelectedFileUUIDs] = useState<string[]>([]);
-    const files = useMemo(
+    const files = useMemo<CloudStorageFile[]>(
         () =>
             Array(itemCount)
                 .fill(0)
@@ -97,6 +105,7 @@ export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileList
                         fileUUID: faker.random.uuid(),
                         fileName: faker.random.words() + "." + faker.system.commonFileExt(),
                         fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                        convert: chance.pickone(["idle", "error", "success", "converting"]),
                         createAt: faker.date.past(),
                     };
                 }),

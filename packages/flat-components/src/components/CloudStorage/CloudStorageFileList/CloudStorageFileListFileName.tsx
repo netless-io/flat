@@ -39,9 +39,9 @@ export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileN
                 <CloudStorageFileTitle
                     fileUUID={file.fileUUID}
                     fileName={file.fileName}
-                    titleClassName="cloud-storage-file-list-filename"
                     titleClickable={titleClickable}
-                    onClick={onItemTitleClick}
+                    convertStatus={file.convert}
+                    onTitleClick={onItemTitleClick}
                 />
                 {menuItems && menuItems.length > 0 && (
                     <div className="cloud-storage-file-list-menu-btn-wrap">

@@ -13,7 +13,7 @@
 
     .ant-table-tbody > tr.ant-table-row:hover {
         .cloud-storage-file-list-menu-btn-wrap {
-            width: 85px;
+            width: 40px;
         }
     }
 }
@@ -24,15 +24,8 @@
     align-items: center;
 }
 
-.cloud-storage-file-list-filename {
-    margin-left: 0.5em;
-    color: #444e60;
-    overflow: hidden;
-    word-break: break-all;
-    text-overflow: ellipsis;
-}
-
 .cloud-storage-file-list-menu-btn-wrap {
+    flex-shrink: 0;
     width: 0;
     overflow: hidden;
     margin-left: auto;
@@ -43,16 +36,13 @@
 }
 
 .cloud-storage-file-list-menu-btn {
+    overflow: hidden;
     height: 100%;
     margin: 0;
     padding: 0;
     border: none;
     line-height: none;
-    background-color: transparent;
-
-    &:hover {
-        background-color: transparent;
-    }
+    background-color: transparent !important;
 
     & > img {
         max-width: none;
