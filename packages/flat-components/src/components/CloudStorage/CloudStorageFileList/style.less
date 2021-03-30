@@ -13,7 +13,7 @@
 
     .ant-table-tbody > tr.ant-table-row:hover {
         .cloud-storage-file-list-menu-btn-wrap {
-            width: 40px;
+            opacity: 1;
         }
     }
 }
@@ -25,14 +25,12 @@
 }
 
 .cloud-storage-file-list-menu-btn-wrap {
-    flex-shrink: 0;
-    width: 0;
+    position: absolute;
+    right: -16px;
+    top: 0;
+    opacity: 0;
     overflow: hidden;
-    margin-left: auto;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    transition: width 0.2s;
+    transition: opacity 0.4s;
 }
 
 .cloud-storage-file-list-menu-btn {
