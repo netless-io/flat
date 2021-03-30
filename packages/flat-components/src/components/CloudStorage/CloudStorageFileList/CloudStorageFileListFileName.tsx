@@ -20,6 +20,10 @@ export interface CloudStorageFileListFileNameProps {
     onItemMenuClick?: (fileUUID: string, menuKey: React.Key) => void;
     /** When title is clicked */
     onItemTitleClick?: (fileUUID: string) => void;
+    /** UUID of file that is under renaming */
+    renamingFileUUID?: string;
+    /** Rename file. Empty name for cancelling */
+    onRename?: (fileUUID: string, name: string) => void;
 }
 
 export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileNameProps>(
@@ -31,6 +35,8 @@ export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileN
         fileMenus,
         onItemMenuClick,
         onItemTitleClick,
+        renamingFileUUID,
+        onRename,
     }) {
         const menuItems = fileMenus && fileMenus(file, index);
 
@@ -42,6 +48,8 @@ export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileN
                     titleClickable={titleClickable}
                     convertStatus={file.convert}
                     onTitleClick={onItemTitleClick}
+                    renamingFileUUID={renamingFileUUID}
+                    onRename={onRename}
                 />
                 {menuItems && menuItems.length > 0 && (
                     <div className="cloud-storage-file-list-menu-btn-wrap">

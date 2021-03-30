@@ -26,6 +26,7 @@ const fakeStoreImplProps = [
     "onUploadRetry",
     "onItemMenuClick",
     "onItemTitleClick",
+    "onNewFileName",
 ] as const;
 
 type FakeStoreImplProps = typeof fakeStoreImplProps[number];
@@ -38,8 +39,9 @@ class FakeStore extends CloudStorageStore {
     onUploadCancel;
     onUploadPanelClose;
     onUploadRetry;
-    onItemMenuClick;
+    onItemMenuClick: FakeStoreConfig["onItemMenuClick"];
     onItemTitleClick;
+    onNewFileName: FakeStoreConfig["onNewFileName"];
 
     constructor(config: FakeStoreConfig) {
         super();
@@ -49,8 +51,20 @@ class FakeStore extends CloudStorageStore {
         this.onUploadCancel = config.onUploadCancel;
         this.onUploadPanelClose = config.onUploadPanelClose;
         this.onUploadRetry = config.onUploadRetry;
-        this.onItemMenuClick = config.onItemMenuClick;
+        this.onItemMenuClick = (fileUUID, menuKey) => {
+            if (menuKey === "rename") {
+                this.setRenamePanel(fileUUID);
+            }
+            config.onItemMenuClick(fileUUID, menuKey);
+        };
         this.onItemTitleClick = config.onItemTitleClick;
+        this.onNewFileName = (fileUUID, name) => {
+            const file = this.files.find(file => file.fileUUID === fileUUID);
+            if (file) {
+                file.fileName = name;
+            }
+            config.onNewFileName(fileUUID, name);
+        };
 
         makeObservable(
             this,

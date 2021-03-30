@@ -15,7 +15,12 @@ import {
 export interface CloudStorageFileListProps
     extends Pick<
         CloudStorageFileListFileNameProps,
-        "fileMenus" | "onItemMenuClick" | "titleClickable" | "onItemTitleClick"
+        | "fileMenus"
+        | "onItemMenuClick"
+        | "titleClickable"
+        | "onItemTitleClick"
+        | "renamingFileUUID"
+        | "onRename"
     > {
     /** Cloud Storage List items */
     files: CloudStorageFile[];
@@ -36,6 +41,8 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
     onItemMenuClick,
     titleClickable = false,
     onItemTitleClick,
+    renamingFileUUID,
+    onRename,
 }) => {
     const popupContainerRef = useRef<HTMLDivElement>(null);
     const getPopupContainer = useCallback(() => popupContainerRef.current || document.body, []);
@@ -65,6 +72,8 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                             titleClickable={titleClickable}
                             onItemMenuClick={onItemMenuClick}
                             onItemTitleClick={onItemTitleClick}
+                            renamingFileUUID={renamingFileUUID}
+                            onRename={onRename}
                         />
                     );
                 },
@@ -92,7 +101,15 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 },
             },
         ],
-        [fileMenus, getPopupContainer, onItemMenuClick, onItemTitleClick, titleClickable],
+        [
+            fileMenus,
+            getPopupContainer,
+            onItemMenuClick,
+            onItemTitleClick,
+            onRename,
+            renamingFileUUID,
+            titleClickable,
+        ],
     );
 
     return (

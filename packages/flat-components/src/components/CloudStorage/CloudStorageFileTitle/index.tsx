@@ -12,6 +12,7 @@ import convertErrorSVG from "./icons/convert-error.svg";
 import React from "react";
 import classNames from "classnames";
 import { CloudStorageConvertStatusType } from "../types";
+import { CloudStorageFileTitleRename } from "./CloudStorageFileTitleRename";
 
 export interface CloudStorageFileTitleProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
@@ -25,6 +26,10 @@ export interface CloudStorageFileTitleProps
     titleClickable?: boolean;
     /** When title is clicked */
     onTitleClick?: (fileUUID: string) => void;
+    /** UUID of file that is under renaming */
+    renamingFileUUID?: string;
+    /** Rename file. Empty name for cancelling */
+    onRename?: (fileUUID: string, name: string) => void;
 }
 
 /**
@@ -37,6 +42,8 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
         convertStatus,
         titleClickable = false,
         onTitleClick,
+        renamingFileUUID,
+        onRename,
         ...restProps
     }) {
         const isConverting = convertStatus === "converting";
@@ -78,7 +85,13 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
                         />
                     ) : null}
                 </span>
-                {titleClickable ? (
+                {renamingFileUUID === fileUUID ? (
+                    <CloudStorageFileTitleRename
+                        fileUUID={fileUUID}
+                        fileName={fileName}
+                        onRename={onRename}
+                    />
+                ) : titleClickable ? (
                     <a
                         className="cloud-storage-file-title-content"
                         onClick={e => {
