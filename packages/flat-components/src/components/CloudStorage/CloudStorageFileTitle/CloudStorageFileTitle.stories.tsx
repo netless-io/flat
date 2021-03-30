@@ -37,6 +37,16 @@ ConvertError.args = {
     convertStatus: "error",
 };
 
+export const Rename: Story<CloudStorageFileTitleProps> = args => (
+    <CloudStorageFileTitle {...args} />
+);
+Rename.args = {
+    fileUUID: faker.random.uuid(),
+    fileName: faker.random.word() + ".doc",
+    convertStatus: "success",
+};
+Rename.args.renamingFileUUID = Rename.args.fileUUID;
+
 export const FileTitles: Story<CloudStorageFileTitleProps> = ({ onTitleClick }) => {
     const renderFileTitles = (fileType: string, exts: string[]): React.ReactElement => (
         <div className="column is-one-quarter-tablet">

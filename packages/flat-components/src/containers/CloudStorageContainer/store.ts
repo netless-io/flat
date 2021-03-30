@@ -16,6 +16,8 @@ export abstract class CloudStorageStore {
     uploadStatusesMap = observable.map</** fileUUID */ string, CloudStorageUploadStatus>();
     /** It changes when user toggles the expand button */
     isUploadPanelExpand = false;
+    /** UUID of file that is under renaming */
+    renamingFileUUID?: string = "";
 
     /** Number of total upload */
     get uploadTotalCount(): number {
@@ -93,6 +95,7 @@ export abstract class CloudStorageStore {
             files: observable,
             selectedFileUUIDs: observable,
             isUploadPanelExpand: observable,
+            renamingFileUUID: observable,
 
             uploadFinishedCount: computed,
             uploadTotalCount: computed,
@@ -106,6 +109,10 @@ export abstract class CloudStorageStore {
         });
     }
 
+    setRenamePanel = (fileUUID?: string): void => {
+        this.renamingFileUUID = fileUUID;
+    };
+
     setPanelExpand = (isExpand: boolean): void => {
         this.isUploadPanelExpand = isExpand;
     };
@@ -117,6 +124,16 @@ export abstract class CloudStorageStore {
     /** When file list item selection changed */
     onSelectionChange = (fileUUIDs: string[]): void => {
         this.selectedFileUUIDs = fileUUIDs;
+    };
+
+    /** When a rename event is received. Could be empty. Put business logic in `onNewFileName` instead. */
+    onRename = (fileUUID: string, name: string): void => {
+        // hide rename panel
+        this.renamingFileUUID = "";
+
+        if (name) {
+            this.onNewFileName(fileUUID, name);
+        }
     };
 
     /** Render file menus item base on fileUUID */
@@ -145,4 +162,7 @@ export abstract class CloudStorageStore {
 
     /** Stop uploading a file */
     abstract onUploadCancel(fileUUID: string): void;
+
+    /** When a filename is changed to a meaningful new name */
+    abstract onNewFileName(fileUUID: string, name: string): void;
 }

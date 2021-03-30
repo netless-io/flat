@@ -19,6 +19,8 @@ export const CloudStorageFileListContainer = observer<CloudStorageFileListContai
                 fileMenus={store.fileMenus}
                 onItemMenuClick={store.onItemMenuClick}
                 onItemTitleClick={store.onItemTitleClick}
+                renamingFileUUID={store.renamingFileUUID}
+                onRename={store.onRename}
             />
         );
     },
