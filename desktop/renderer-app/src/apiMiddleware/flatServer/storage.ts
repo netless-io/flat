@@ -68,7 +68,7 @@ export interface RenameFilePayload {
 export interface RenameFileResult {}
 
 export async function renameFile(payload: RenameFilePayload): Promise<void> {
-    await post("cloud-storage/rename", payload);
+    await post("cloud-storage/alibaba-cloud/rename", payload);
 }
 
 export interface RemoveFilesPayload {
