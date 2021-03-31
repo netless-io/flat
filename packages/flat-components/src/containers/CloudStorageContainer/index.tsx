@@ -29,6 +29,21 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
             [store],
         );
 
+        const containerBtns = (
+            <div className="cloud-storage-container-btns">
+                <Button
+                    danger
+                    onClick={store.onBatchDelete}
+                    disabled={store.selectedFileUUIDs.length <= 0}
+                >
+                    删除
+                </Button>
+                <Button type="primary" onClick={store.onUpload}>
+                    上传
+                </Button>
+            </div>
+        );
+
         return (
             <div className="cloud-storage-container">
                 {!store.compact && (
@@ -39,18 +54,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                                 {store.totalUsageHR ? `已使用 ${store.totalUsageHR}` : " "}
                             </small>
                         </div>
-                        <div className="cloud-storage-container-btns">
-                            <Button
-                                danger
-                                onClick={store.onBatchDelete}
-                                disabled={store.selectedFileUUIDs.length <= 0}
-                            >
-                                删除
-                            </Button>
-                            <Button type="primary" onClick={store.onUpload}>
-                                上传
-                            </Button>
-                        </div>
+                        {containerBtns}
                     </div>
                 )}
                 <div className="cloud-storage-container-file-list">
@@ -92,16 +96,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                     </CloudStorageUploadPanel>
                 )}
                 {store.compact && (
-                    <div className="cloud-storage-container-footer">
-                        <div className="cloud-storage-container-btns">
-                            <Button danger onClick={store.onBatchDelete}>
-                                删除
-                            </Button>
-                            <Button type="primary" onClick={store.onUpload}>
-                                上传
-                            </Button>
-                        </div>
-                    </div>
+                    <div className="cloud-storage-container-footer">{containerBtns}</div>
                 )}
             </div>
         );
