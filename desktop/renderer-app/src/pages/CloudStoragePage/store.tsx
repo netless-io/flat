@@ -1,6 +1,10 @@
 import { message, Modal } from "antd";
-import { CloudStorageFile, CloudStorageStore as CloudStorageStoreBase } from "flat-components";
-import { action, makeObservable, toJS } from "mobx";
+import {
+    CloudStorageFile,
+    CloudStorageFileName,
+    CloudStorageStore as CloudStorageStoreBase,
+} from "flat-components";
+import { action, makeObservable } from "mobx";
 import React, { ReactNode } from "react";
 import { FileConvertStep } from "../../apiMiddleware/flatServer/constants";
 import {
@@ -9,6 +13,7 @@ import {
     convertStart,
     listFiles,
     removeFiles,
+    renameFile,
 } from "../../apiMiddleware/flatServer/storage";
 import {
     convertStepToType,
@@ -48,6 +53,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         this.setCompact(compact);
         makeObservable(this, {
             updateFiles: action,
+            updateFileName: action,
             expandUploadPanel: action,
             onUploadInit: action,
             onUploadEnd: action,
@@ -82,12 +88,11 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 break;
             }
             case "rename": {
-                // this.renamePanelVisible = true
+                this.setRenamePanel(fileUUID);
                 break;
             }
             case "delete": {
-                const tempFiles = toJS(this.files).filter(file => file.fileUUID !== fileUUID);
-                this.updateFiles({ files: tempFiles });
+                this.updateFiles({ files: this.files.filter(file => file.fileUUID !== fileUUID) });
                 await removeFiles({ fileUUIDs: [fileUUID] });
                 await this.refreshFiles();
                 break;
@@ -96,10 +101,25 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
     };
 
-    // onRename = (fileUUID, fileName): void => {
-    //     this.renamePanelVisible = false
-    //     await renameFile({ fileUUID, fileName })
-    // }
+    updateFileName(file: CloudStorageFile, fileName: string): void {
+        file.fileName = fileName;
+    }
+
+    async onNewFileName(
+        fileUUID: string,
+        { fullName: fileName }: CloudStorageFileName,
+    ): Promise<void> {
+        const file = this.files.find(file => file.fileUUID === fileUUID);
+        if (file) {
+            if (file.fileName === fileName) {
+                return;
+            } else {
+                this.updateFileName(file, fileName);
+                await renameFile({ fileUUID, fileName });
+                await this.refreshFiles();
+            }
+        }
+    }
 
     onItemTitleClick = (fileUUID: string): void => {
         console.log("[cloud-storage] onItemTitleClick", fileUUID);
@@ -120,9 +140,11 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     onBatchDelete = async (): Promise<void> => {
-        const fileUUIDs = toJS(this.selectedFileUUIDs);
+        const fileUUIDs = this.selectedFileUUIDs;
         console.log("[cloud-storage] onBatchDelete", fileUUIDs);
+        this.updateFiles({ files: this.files.filter(file => !fileUUIDs.includes(file.fileUUID)) });
         await removeFiles({ fileUUIDs });
+        await this.refreshFiles();
     };
 
     onUploadPanelClose = (): void => {
