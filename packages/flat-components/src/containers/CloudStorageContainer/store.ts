@@ -103,9 +103,11 @@ export abstract class CloudStorageStore {
             totalUsageHR: computed,
             uploadFinishWithError: computed,
 
+            setRenamePanel: action,
             setPanelExpand: action,
             setCompact: action,
             onSelectionChange: action,
+            onRename: action,
         });
     }
 
