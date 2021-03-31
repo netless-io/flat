@@ -3,7 +3,7 @@ import fileMenusSVG from "./icons/file-menus.svg";
 import React from "react";
 import { Button, Dropdown, Menu } from "antd";
 import { CloudStorageFileTitle } from "../CloudStorageFileTitle";
-import { CloudStorageFile } from "../types";
+import { CloudStorageFile, CloudStorageFileName } from "../types";
 
 export interface CloudStorageFileListFileNameProps {
     file: CloudStorageFile;
@@ -23,7 +23,7 @@ export interface CloudStorageFileListFileNameProps {
     /** UUID of file that is under renaming */
     renamingFileUUID?: string;
     /** Rename file. Empty name for cancelling */
-    onRename?: (fileUUID: string, name: string) => void;
+    onRename?: (fileUUID: string, fileName?: CloudStorageFileName) => void;
 }
 
 export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileNameProps>(

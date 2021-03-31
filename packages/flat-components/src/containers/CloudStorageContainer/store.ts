@@ -1,7 +1,11 @@
 import React from "react";
 import { action, computed, makeObservable, observable } from "mobx";
 import prettyBytes from "pretty-bytes";
-import { CloudStorageFile, CloudStorageUploadStatus } from "../../components/CloudStorage/types";
+import {
+    CloudStorageFile,
+    CloudStorageFileName,
+    CloudStorageUploadStatus,
+} from "../../components/CloudStorage/types";
 
 export abstract class CloudStorageStore {
     /** Compact UI for small panel */
@@ -129,12 +133,12 @@ export abstract class CloudStorageStore {
     };
 
     /** When a rename event is received. Could be empty. Put business logic in `onNewFileName` instead. */
-    onRename = (fileUUID: string, name: string): void => {
+    onRename = (fileUUID: string, fileName?: CloudStorageFileName): void => {
         // hide rename panel
         this.renamingFileUUID = "";
 
-        if (name) {
-            this.onNewFileName(fileUUID, name);
+        if (fileName) {
+            this.onNewFileName(fileUUID, fileName);
         }
     };
 
@@ -166,5 +170,5 @@ export abstract class CloudStorageStore {
     abstract onUploadCancel(fileUUID: string): void;
 
     /** When a filename is changed to a meaningful new name */
-    abstract onNewFileName(fileUUID: string, name: string): void;
+    abstract onNewFileName(fileUUID: string, fileName: CloudStorageFileName): void;
 }

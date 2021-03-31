@@ -11,7 +11,7 @@ import convertErrorSVG from "./icons/convert-error.svg";
 
 import React from "react";
 import classNames from "classnames";
-import { CloudStorageConvertStatusType } from "../types";
+import { CloudStorageConvertStatusType, CloudStorageFileName } from "../types";
 import { CloudStorageFileTitleRename } from "./CloudStorageFileTitleRename";
 
 export interface CloudStorageFileTitleProps
@@ -29,7 +29,7 @@ export interface CloudStorageFileTitleProps
     /** UUID of file that is under renaming */
     renamingFileUUID?: string;
     /** Rename file. Empty name for cancelling */
-    onRename?: (fileUUID: string, name: string) => void;
+    onRename?: (fileUUID: string, fileName?: CloudStorageFileName) => void;
 }
 
 /**
