@@ -14,6 +14,7 @@ import UserSettingPage from "./pages/UserSettingPanel";
 import { ModifyOrdinaryRoomPage } from "./pages/ModifyOrdinaryRoomPage";
 import { ModifyPeriodicRoomPage } from "./pages/ModifyPeriodicRoomPage";
 import { RoomType } from "./apiMiddleware/flatServer/constants";
+import { CloudStoragePage } from "./pages/CloudStoragePage";
 
 export enum RouteNameType {
     SplashPage = "SplashPage",
@@ -30,6 +31,7 @@ export enum RouteNameType {
     ReplayPage = "ReplayPage",
     ModifyOrdinaryRoomPage = "ModifyOrdinaryRoomPage",
     ModifyPeriodicRoomPage = "ModifyPeriodicRoomPage",
+    CloudStoragePage = "CloudStoragePage",
 }
 
 export const routeConfig = {
@@ -73,7 +75,6 @@ export const routeConfig = {
         path: "/user/scheduled/",
         component: UserScheduledPage,
     },
-
     [RouteNameType.ScheduleRoomDetailPage]: {
         title: "周期性房间详情",
         path: "/user/scheduled/info/:periodicUUID",
@@ -103,6 +104,11 @@ export const routeConfig = {
         title: "修改周期性房间",
         path: "/modify/periodic/room/:periodicUUID/",
         component: ModifyPeriodicRoomPage,
+    },
+    [RouteNameType.CloudStoragePage]: {
+        title: "Flat",
+        path: "/pan/",
+        component: CloudStoragePage,
     },
 } as const;
 

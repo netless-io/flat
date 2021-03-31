@@ -4,6 +4,8 @@ import userSVG from "../assets/image/user.svg";
 import userActiveSVG from "../assets/image/user-active.svg";
 import settingSVG from "../assets/image/setting.svg";
 import settingActiveSVG from "../assets/image/setting-active.svg";
+import diskSVG from "../assets/image/disk.svg";
+import diskActiveSVG from "../assets/image/disk-active.svg";
 
 import React, { useState } from "react";
 import { Menu } from "antd";
@@ -40,6 +42,13 @@ export const MainMenu = React.memo<MainMenuProps>(function MainMenu() {
                 href: generateRoutePath(RouteNameType.UserSettingPage, {
                     settingType: SettingPageType.Normal,
                 }),
+            },
+            {
+                routeName: RouteNameType.CloudStoragePage,
+                title: "云盘",
+                icon: diskSVG,
+                iconActive: diskActiveSVG,
+                href: generateRoutePath(RouteNameType.CloudStoragePage, {}),
             },
         ]),
     );

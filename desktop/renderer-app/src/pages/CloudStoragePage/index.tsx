@@ -1,12 +1,32 @@
-import React from "react";
+import { CloudStorageContainer } from "flat-components";
 import { observer } from "mobx-react-lite";
-import { CloudStorage } from "flat-components";
+import React, { useEffect, useState } from "react";
+import MainPageLayout from "../../components/MainPageLayout";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { CloudStorageStore } from "./store";
+import "./style.less";
 
-export interface CloudStoragePageProps {}
+export interface CloudStoragePageProps {
+    compact?: boolean;
+}
 
-export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudStoragePage() {
+export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudStoragePage({
+    compact,
+}) {
     useWindowSize("Main");
 
-    return <CloudStorage />;
+    const [store] = useState(() => new CloudStorageStore(compact ?? false));
+
+    useEffect(() => {
+        store.initialize();
+        return () => store.destroy();
+    }, [store]);
+
+    return compact ? (
+        <CloudStorageContainer store={store} />
+    ) : (
+        <MainPageLayout>
+            <CloudStorageContainer store={store} />
+        </MainPageLayout>
+    );
 });

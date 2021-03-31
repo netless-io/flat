@@ -67,3 +67,10 @@ export enum Sex {
     Man = "Man",
     Woman = "Woman",
 }
+
+export enum FileConvertStep {
+    None = "None",
+    Converting = "Converting",
+    Done = "Done",
+    Failed = "Failed",
+}

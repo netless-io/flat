@@ -7,6 +7,7 @@ import { StoreProvider } from "../components/StoreProvider";
 
 import "antd/dist/antd.less";
 import "../theme.less";
+import "flat-components/build/style.css";
 
 /** configure right after import */
 import { configure } from "mobx";

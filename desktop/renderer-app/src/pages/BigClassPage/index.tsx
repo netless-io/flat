@@ -20,7 +20,7 @@ import { Whiteboard } from "../../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import { RecordHintTips } from "../../components/RecordHintTips";
 import LoadingPage from "../../LoadingPage";
-import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
+import { FileConvertStep, RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import {
     RecordingConfig,
     RoomStatusLoadingType,
@@ -36,6 +36,9 @@ import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 import "./BigClassPage.less";
 import { constants } from "flat-types";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { convertFinish, listFiles } from "../../apiMiddleware/flatServer/storage";
+import { v4 } from "uuid";
+import { getFileUrl, queryTask } from "../CloudStoragePage/utils";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -252,6 +255,12 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     icon="folder"
                     onClick={whiteboardStore.toggleFileOpen}
                 /> */}
+                {/* TODO: open cloud-storage sub window */}
+                <TopBarRightBtn
+                    title="Open Cloud Storage"
+                    icon="cloud-storage"
+                    onClick={debugInsertRecentFileIntoWhiteboard}
+                />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 {/* @TODO implement Options menu */}
                 {/* <TopBarRightBtn title="Options" icon="options" onClick={() => {}} /> */}
@@ -363,6 +372,105 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     function stopClass(): void {
         // @TODO remove ref
         exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
+    }
+
+    async function debugInsertRecentFileIntoWhiteboard(): Promise<void> {
+        const { files, totalUsage } = await listFiles({ page: 1 });
+        console.log("totalUsage:", totalUsage);
+        if (files.length === 0) {
+            console.log("no files");
+            return;
+        }
+        const file = files[files.length - 1];
+        const { fileName, fileUUID } = file;
+        const img = [".jpg", ".jpeg", ".png", ".webp"];
+        const src = getFileUrl(fileName, fileUUID);
+        console.log("insert", fileName, src);
+        if (img.some(ext => fileName.endsWith(ext))) {
+            const uuid = v4();
+            if (src) {
+                const image = new Image();
+                image.onload = () => {
+                    const { width, height } = image;
+                    whiteboardStore.room?.insertImage({
+                        uuid,
+                        centerX: 0,
+                        centerY: 0,
+                        width,
+                        height,
+                        locked: false,
+                    });
+                    whiteboardStore.room?.completeImageUpload(uuid, src);
+                };
+                image.src = src;
+            } else {
+                const { innerWidth: width, innerHeight: height } = window;
+                whiteboardStore.room?.insertImage({
+                    uuid: v4(),
+                    centerX: 0,
+                    centerY: 0,
+                    width,
+                    height,
+                    locked: false,
+                });
+                whiteboardStore.room?.completeImageUpload(uuid, src);
+            }
+        } else if (fileName.endsWith(".mp3")) {
+            // whiteboardStore.room?.insertPlugin("audio", {
+            //     originX: -240,
+            //     originY: -43,
+            //     width: 480,
+            //     height: 86,
+            //     attributes: {
+            //         pluginAudioUrl: src,
+            //     },
+            // });
+            console.log("not support mp3 yet");
+        } else if (fileName.endsWith(".mp4")) {
+            // whiteboardStore.room?.insertPlugin("video", {
+            //     originX: -240,
+            //     originY: -135,
+            //     width: 480,
+            //     height: 270,
+            //     attributes: {
+            //         pluginAudioUrl: src,
+            //     },
+            // });
+            console.log("not support mp4 yet");
+        } else if (fileName.endsWith(".pptx") || fileName.endsWith(".pdf")) {
+            const uuid = v4();
+            const { taskUUID, taskToken } = file;
+            const { status, progress, failedReason } = await queryTask(
+                taskUUID,
+                taskToken,
+                fileName.endsWith(".pptx"),
+            );
+            if (file.convertStep !== FileConvertStep.Done) {
+                if (status === "Finished" || status === "Fail") {
+                    await convertFinish({ fileUUID });
+                    if (status === "Fail") {
+                        message.error(`convert failed, reason: ${failedReason}`);
+                    }
+                } else {
+                    message.info("still converting..., wait and try again");
+                    return;
+                }
+            }
+            console.log(status, progress, failedReason);
+            if (status === "Finished" && progress) {
+                const room = whiteboardStore.room!;
+                const scenes = progress.convertedFileList.map(f => ({
+                    name: v4(),
+                    ppt: {
+                        width: f.width,
+                        height: f.height,
+                        src: f.conversionFileUrl,
+                    },
+                }));
+                room.putScenes(`/${taskUUID}/${uuid}`, scenes);
+                room.setScenePath(`/${taskUUID}/${uuid}/${scenes[0].name}`);
+            }
+        }
     }
 });
 
