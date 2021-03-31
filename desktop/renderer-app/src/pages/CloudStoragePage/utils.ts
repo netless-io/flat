@@ -2,10 +2,12 @@ import Axios from "axios";
 import { CloudStorageConvertStatusType } from "flat-components";
 import { FileConvertStep } from "../../apiMiddleware/flatServer/constants";
 import {
+    cancelUpload,
     uploadFinish,
     uploadStart,
     UploadStartResult,
 } from "../../apiMiddleware/flatServer/storage";
+import { OSS_CONFIG } from "../../constants/Process";
 
 export const shuntConversionTaskURL = "https://api.netless.link/v5/services/conversion/tasks";
 
@@ -90,6 +92,14 @@ export function convertStepToType(convertStep: FileConvertStep): CloudStorageCon
     }
 }
 
+function createFakeID(): string {
+    return "fake-" + Math.random().toString(36).substring(2);
+}
+
+export function isFakeID(str: string): boolean {
+    return str.startsWith("fake-");
+}
+
 // n.b. https://caniuse.com/mdn-api_eventtarget
 // n.b. https://ungap.github.io/event-target
 /**
@@ -101,11 +111,13 @@ export function convertStepToType(convertStep: FileConvertStep): CloudStorageCon
  * .onProgress(e => console.log(e.loaded, e.total))
  */
 class UploadTask {
-    fileUUID = "";
+    fileUUID = createFakeID();
+    source = Axios.CancelToken.source();
     onError?: (error: Error) => void;
     onInit?: (fileUUID: string) => void;
     onEnd?: () => void;
     onProgress?: (e: ProgressEvent) => void;
+    onCancel?: () => void;
 }
 
 class UploadManager {
@@ -118,11 +130,20 @@ class UploadManager {
     get tasks(): string[] {
         const result: string[] = [];
         for (const { fileUUID } of this._tasks) {
-            if (fileUUID) {
+            if (!isFakeID(fileUUID)) {
                 result.push(fileUUID);
             }
         }
         return result;
+    }
+
+    getTask(fileUUID: string): UploadTask | undefined {
+        for (const task of this._tasks) {
+            if (task.fileUUID === fileUUID) {
+                return task;
+            }
+        }
+        return;
     }
 
     _syncTasks(): void {
@@ -138,7 +159,10 @@ class UploadManager {
     }
 
     clean(fileUUIDs: string[]): void {
-        console.log(`TODO: remove zombie tasks ${fileUUIDs}`);
+        cancelUpload({ fileUUIDs }).catch(() => {});
+        for (const fileUUID of fileUUIDs) {
+            this.getTask(fileUUID)?.source.cancel();
+        }
     }
 
     upload(file: File, task?: UploadTask): UploadTask {
@@ -148,7 +172,13 @@ class UploadManager {
         } else {
             this._tasks.add(currentTask);
             this._upload(file, currentTask)
-                .catch(error => currentTask.onError?.(error))
+                .catch(error => {
+                    if (error instanceof Axios.Cancel) {
+                        currentTask.onCancel?.();
+                    } else {
+                        currentTask.onError?.(error);
+                    }
+                })
                 .then(() => {
                     this._tasks.delete(currentTask);
                     const { pending } = this;
@@ -156,8 +186,10 @@ class UploadManager {
                     for (const { file, task } of pending) {
                         this.upload(file, task);
                     }
+                    this._syncTasks();
                 });
         }
+        this._syncTasks();
         return currentTask;
     }
 
@@ -175,7 +207,7 @@ class UploadManager {
         formData.append("key", filePath);
         formData.append("name", fileName);
         formData.append("policy", policy);
-        formData.append("OSSAccessKeyId", "LTAI5tGuF6ibwB91CWEiKNvJ");
+        formData.append("OSSAccessKeyId", OSS_CONFIG.accessKeyId);
         formData.append("success_action_status", "200");
         formData.append("callback", "");
         formData.append("signature", signature);
@@ -190,6 +222,7 @@ class UploadManager {
             onUploadProgress: (e: ProgressEvent) => {
                 task.onProgress?.(e);
             },
+            cancelToken: task.source.token,
         });
 
         await uploadFinish({ fileUUID });

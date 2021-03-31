@@ -3,6 +3,7 @@ import {
     CloudStorageFile,
     CloudStorageFileName,
     CloudStorageStore as CloudStorageStoreBase,
+    CloudStorageUploadStatus,
 } from "flat-components";
 import { action, makeObservable } from "mobx";
 import React, { ReactNode } from "react";
@@ -19,6 +20,7 @@ import {
     convertStepToType,
     download,
     getFileUrl,
+    isFakeID,
     pickFiles,
     queryTask,
     uploadManager,
@@ -27,12 +29,7 @@ import {
 type FileMenusKey = "download" | "rename" | "delete";
 
 export class CloudStorageStore extends CloudStorageStoreBase {
-    pulling = {
-        queue: [] as CloudFile[],
-        index: 0,
-        timer: NaN,
-    };
-
+    pulling = new Map<string, number>();
     retryable = new Map<string, File>();
 
     fileMenus = (
@@ -55,15 +52,30 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             updateFiles: action,
             updateFileName: action,
             expandUploadPanel: action,
+            clearUploadStatusesMap: action,
+            deleteFileFromUploadStatusesMap: action,
             onUploadInit: action,
             onUploadEnd: action,
             onUploadError: action,
             onUploadProgress: action,
+            unselectAll: action,
         });
+    }
+
+    unselectAll(): void {
+        this.selectedFileUUIDs = [];
     }
 
     expandUploadPanel(): void {
         this.isUploadPanelExpand = true;
+    }
+
+    clearUploadStatusesMap(): void {
+        this.uploadStatusesMap.clear();
+    }
+
+    deleteFileFromUploadStatusesMap(fileUUID: string): void {
+        this.uploadStatusesMap.delete(fileUUID);
     }
 
     onUpload = async (): Promise<void> => {
@@ -78,7 +90,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
     };
 
-    onItemMenuClick = async (fileUUID: string, menuKey: React.Key): Promise<void> => {
+    onItemMenuClick = (fileUUID: string, menuKey: React.Key): void => {
         const key = menuKey as FileMenusKey;
         console.log("[cloud-storage] onItemMenuClick", fileUUID, key);
         switch (key) {
@@ -92,9 +104,17 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 break;
             }
             case "delete": {
-                this.updateFiles({ files: this.files.filter(file => file.fileUUID !== fileUUID) });
-                await removeFiles({ fileUUIDs: [fileUUID] });
-                await this.refreshFiles();
+                Modal.confirm({
+                    content: "确定删除所选课件？课件删除后不可恢复",
+                    onOk: async () => {
+                        this.updateFiles({
+                            files: this.files.filter(file => file.fileUUID !== fileUUID),
+                        });
+                        await removeFiles({ fileUUIDs: [fileUUID] });
+                        await this.refreshFiles();
+                        this.unselectAll();
+                    },
+                });
                 break;
             }
             default:
@@ -139,22 +159,32 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
     };
 
-    onBatchDelete = async (): Promise<void> => {
-        const fileUUIDs = this.selectedFileUUIDs;
-        console.log("[cloud-storage] onBatchDelete", fileUUIDs);
-        this.updateFiles({ files: this.files.filter(file => !fileUUIDs.includes(file.fileUUID)) });
-        await removeFiles({ fileUUIDs });
-        await this.refreshFiles();
+    onBatchDelete = (): void => {
+        Modal.confirm({
+            content: "确定删除所选课件？课件删除后不可恢复",
+            onOk: async () => {
+                const fileUUIDs = this.selectedFileUUIDs;
+                console.log("[cloud-storage] onBatchDelete", fileUUIDs);
+                this.updateFiles({
+                    files: this.files.filter(file => !fileUUIDs.includes(file.fileUUID)),
+                });
+                await removeFiles({ fileUUIDs });
+                await this.refreshFiles();
+                this.unselectAll();
+            },
+        });
+    };
+
+    isUploadNotFinished = ({ status }: CloudStorageUploadStatus): boolean => {
+        return status !== "success" && status !== "error";
     };
 
     onUploadPanelClose = (): void => {
-        for (const { status } of this.uploadStatusesMap.values()) {
-            if (status !== "success") {
-                message.warning("there are tasks not finished");
-                return;
-            }
+        if (Array.from(this.uploadStatusesMap.values()).some(this.isUploadNotFinished)) {
+            message.warning("there are tasks not finished");
+        } else {
+            this.clearUploadStatusesMap();
         }
-        this.uploadStatusesMap.clear();
     };
 
     onUploadRetry = (fileUUID: string): void => {
@@ -168,25 +198,33 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
     };
 
-    onUploadCancel = (fileUUID: string): void => {
+    onUploadCancel = async (fileUUID: string): Promise<void> => {
         console.log("[cloud-storage] onUploadCancel", fileUUID);
-        console.log(`[cloud-storage] TODO: remove zombie task ${fileUUID}`);
         uploadManager.clean([fileUUID]);
-        this.uploadStatusesMap.delete(fileUUID);
+        this.deleteFileFromUploadStatusesMap(fileUUID);
+        await this.refreshFiles();
     };
 
     setupUpload(file: File): void {
         const task = uploadManager.upload(file);
+        const { fileUUID: fakeID } = task;
+        this.onUploadInit(fakeID, file);
         task.onInit = fileUUID => {
             console.log("[cloud-storage] start uploading", fileUUID, file.name, file.size);
+            this.deleteFileFromUploadStatusesMap(fakeID);
             this.onUploadInit(fileUUID, file);
+            this.refreshFiles();
         };
         task.onError = error => {
             console.error(error);
             message.error(error.message);
-            if (task.fileUUID) {
+            if (!isFakeID(task.fileUUID)) {
                 this.onUploadError(task.fileUUID, file);
+                this.refreshFiles();
             }
+        };
+        task.onCancel = () => {
+            this.refreshFiles();
         };
         task.onEnd = () => {
             console.log("[cloud-storage] finish uploading", task.fileUUID);
@@ -243,41 +281,45 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     destroy(): void {
-        const { timer } = this.pulling;
-        if (!Number.isNaN(timer)) {
-            this.pulling.timer = NaN;
+        this.clearPullingTasks();
+    }
+
+    clearPullingTasks(): void {
+        for (const timer of this.pulling.values()) {
             window.clearTimeout(timer);
         }
+        this.pulling.clear();
     }
 
     async refreshFiles(): Promise<void> {
+        this.clearPullingTasks();
         const { files, totalUsage } = await listFiles({ page: 1 });
         const tempFiles = files.map(file => ({
             ...file,
             convert: convertStepToType(file.convertStep),
         }));
-        const { timer } = this.pulling;
-        if (!Number.isNaN(timer)) {
-            this.pulling.timer = NaN;
-            window.clearTimeout(timer);
-        }
-        const queue: CloudFile[] = [];
         for (const file of tempFiles) {
             if (file.fileName.endsWith(".pptx") || file.fileName.endsWith(".pdf")) {
-                switch (file.convertStep) {
-                    case FileConvertStep.None: {
+                let shouldPull = false;
+                if (file.convertStep === FileConvertStep.None) {
+                    try {
                         console.log("[cloud-storage] convert start", file.fileUUID, file.fileName);
-                        const task = await convertStart({ fileUUID: file.fileUUID });
+                        const { taskToken, taskUUID } = await convertStart({
+                            fileUUID: file.fileUUID,
+                        });
                         file.convertStep = FileConvertStep.Converting;
                         file.convert = "converting";
-                        queue.push({ ...file, ...task });
-                        break;
+                        file.taskToken = taskToken;
+                        file.taskUUID = taskUUID;
+                        shouldPull = true;
+                    } catch {
+                        // ignore convert start failed
                     }
-                    case FileConvertStep.Converting: {
-                        queue.push(file);
-                        break;
-                    }
-                    default:
+                } else if (file.convertStep === FileConvertStep.Converting) {
+                    shouldPull = true;
+                }
+                if (shouldPull) {
+                    this.setupPullingFile(file);
                 }
             }
         }
@@ -285,40 +327,49 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             files: tempFiles,
             totalUsage,
         });
-        this.pulling = {
-            queue,
-            index: 0,
-            timer: window.setTimeout(this.pullConvertSteps, 1000),
-        };
     }
 
-    pullConvertSteps = async (): Promise<void> => {
-        const { queue, index } = this.pulling;
-        if (queue.length === 0) return;
-        const { fileName, fileUUID, taskUUID, taskToken } = queue[index];
-        // TODO: if queryTask failed because of network, retry?
-        const { status, progress } = await queryTask(
-            taskUUID,
-            taskToken,
-            fileName.endsWith(".pptx"),
-        );
-        console.log("[cloud-storage] convert", fileUUID, status, progress?.convertedPercentage);
-        switch (status) {
-            case "Fail":
-            case "Finished": {
-                try {
-                    await convertFinish({ fileUUID });
-                } catch {
-                    message.error(`${fileName} convert failed`);
-                } finally {
-                    await this.refreshFiles();
+    setupPullingFile({ fileName, fileUUID, taskUUID, taskToken }: CloudFile): void {
+        let task: () => Promise<void>;
+        const next = (): void => {
+            const timer = this.pulling.get(fileUUID);
+            if (timer) {
+                window.clearTimeout(timer);
+            }
+            this.pulling.set(fileUUID, window.setTimeout(task, 1000));
+        };
+        task = async (): Promise<void> => {
+            const { status, progress } = await queryTask(
+                taskUUID,
+                taskToken,
+                fileName.endsWith(".pptx"),
+            );
+            console.log(
+                "[cloud-storage] convert",
+                fileUUID,
+                fileName,
+                status,
+                progress?.convertedPercentage,
+            );
+            switch (status) {
+                case "Fail":
+                case "Finished": {
+                    try {
+                        await convertFinish({ fileUUID });
+                    } catch (e) {
+                        if (status === "Fail") {
+                            message.error(`${fileName} convert failed`);
+                        }
+                    } finally {
+                        await this.refreshFiles();
+                    }
+                    break;
                 }
-                break;
+                default: {
+                    next();
+                }
             }
-            default: {
-                this.pulling.index = (index + 1) % queue.length;
-                this.pulling.timer = window.setTimeout(this.pullConvertSteps, 1000);
-            }
-        }
-    };
+        };
+        next();
+    }
 }
