@@ -3,12 +3,13 @@ import crossSVG from "./icons/cross.svg";
 
 import { Button, Input } from "antd";
 import React, { useEffect, useRef, useState } from "react";
+import { CloudStorageFileName } from "../types";
 
 export interface CloudStorageFileTitleRenameProps {
     fileUUID: string;
     fileName: string;
     /** Rename file. Empty name for cancelling */
-    onRename?: (fileUUID: string, name: string) => void;
+    onRename?: (fileUUID: string, fileName?: CloudStorageFileName) => void;
 }
 
 export const CloudStorageFileTitleRename = React.memo<CloudStorageFileTitleRenameProps>(
@@ -16,14 +17,18 @@ export const CloudStorageFileTitleRename = React.memo<CloudStorageFileTitleRenam
         // Antd docs uses any
         const inputRef = useRef<any>();
         const [oldName, ext] = splitFileName(fileName);
-        const [newName, setText] = useState(oldName);
+        const [name, setText] = useState(oldName);
 
-        const onCancel = onRename && (() => onRename(fileUUID, ""));
+        const onCancel = onRename && (() => onRename(fileUUID));
         const onConfirm =
             onRename &&
             (() => {
-                const newFileName = newName + ext;
-                onRename(fileUUID, newFileName === fileName ? "" : newFileName);
+                const fullName = name + ext;
+                if (fullName === fileName) {
+                    onRename(fileUUID);
+                } else {
+                    onRename(fileUUID, { name, ext, fullName });
+                }
             });
 
         useEffect(() => {
@@ -40,7 +45,7 @@ export const CloudStorageFileTitleRename = React.memo<CloudStorageFileTitleRenam
                     ref={inputRef}
                     size="small"
                     className="cloud-storage-file-title-rename-input"
-                    value={newName}
+                    value={name}
                     onChange={e => setText(e.currentTarget.value)}
                     onPressEnter={onConfirm}
                 />

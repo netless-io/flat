@@ -23,3 +23,12 @@ export interface CloudStorageUploadStatus {
 }
 
 export type CloudStorageConvertStatusType = "idle" | "error" | "converting" | "success";
+
+export interface CloudStorageFileName {
+    /** File name without extension */
+    name: string;
+    /** File extension (e.g. .pdf) */
+    ext: string;
+    /** File name with extension */
+    fullName: string;
+}

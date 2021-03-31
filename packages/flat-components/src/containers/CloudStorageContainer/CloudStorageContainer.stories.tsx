@@ -76,12 +76,12 @@ class FakeStore extends CloudStorageStore {
             config.onItemMenuClick(fileUUID, menuKey);
         };
         this.onItemTitleClick = config.onItemTitleClick;
-        this.onNewFileName = (fileUUID, name) => {
+        this.onNewFileName = (fileUUID, fileName) => {
             const file = this.files.find(file => file.fileUUID === fileUUID);
             if (file) {
-                file.fileName = name;
+                file.fileName = fileName.fullName;
             }
-            config.onNewFileName(fileUUID, name);
+            config.onNewFileName(fileUUID, fileName);
         };
 
         makeObservable(
