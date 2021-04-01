@@ -187,6 +187,9 @@ class UploadManager {
             this._tasks.add(currentTask);
             this._upload(file, currentTask)
                 .catch(error => {
+                    if (!isFakeID(currentTask.fileUUID)) {
+                        cancelUpload({ fileUUIDs: [currentTask.fileUUID] });
+                    }
                     if (error instanceof Axios.Cancel) {
                         currentTask.onCancel?.();
                     } else {
