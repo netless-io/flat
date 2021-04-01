@@ -3,6 +3,7 @@ import isToday from "date-fns/isToday";
 import isTomorrow from "date-fns/isTomorrow";
 import { zhCN } from "date-fns/locale";
 import React from "react";
+import calendarSVG from "../../assets/image/calendar.svg";
 
 type RoomListDateProps = {
     beginTime?: number;
@@ -11,7 +12,8 @@ type RoomListDateProps = {
 export const RoomListDate = React.memo<RoomListDateProps>(function RoomListDate({ beginTime }) {
     return beginTime ? (
         <time dateTime={new Date(beginTime).toUTCString()}>
-            {format(beginTime, "MMM do", { locale: zhCN })}
+            <img src={calendarSVG} alt="" style={{ marginTop: -4, marginRight: 4 }} />
+            {format(beginTime, "MMMdo", { locale: zhCN })}
             {" · "}
             {isToday(beginTime)
                 ? "今天"

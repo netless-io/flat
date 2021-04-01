@@ -27,11 +27,11 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
     onReplayRoom,
     onRemoveRoom,
 }) {
+    void showDivider;
     return (
         <div className="room-list-cell-item">
             {showDate && (
                 <div className="room-list-cell-day">
-                    <div className="room-list-cell-modify" />
                     <div className="room-list-cell-title">
                         <RoomListDate beginTime={room.beginTime} />
                     </div>
@@ -40,12 +40,12 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
             <div className="room-list-cell">
                 <div className="room-list-cell-left">
                     <div className="room-list-cell-name">{room.title}</div>
+                    <div className="room-list-cell-time">
+                        <RoomListDuration beginTime={room.beginTime} endTime={room.endTime} />
+                    </div>
                     <div className="room-list-cell-state">
                         {<RoomStatusElement room={room} />}
                         {room.periodicUUID && <span className="room-list-cell-periodic">周期</span>}
-                    </div>
-                    <div className="room-list-cell-time">
-                        <RoomListDuration beginTime={room.beginTime} endTime={room.endTime} />
                     </div>
                 </div>
                 <div className="room-list-cell-right" onClick={e => e.stopPropagation()}>
@@ -61,7 +61,7 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                         }
                         trigger={["click"]}
                     >
-                        <Button className="room-list-cell-more">更多</Button>
+                        <Button className="room-list-cell-more">...</Button>
                     </Dropdown>
                     {isHistoryList ? (
                         room.hasRecord ? (
@@ -89,12 +89,12 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                             type="primary"
                             onClick={() => onJoinRoom(room.roomUUID)}
                         >
-                            进入房间
+                            进入
                         </Button>
                     )}
                 </div>
             </div>
-            {showDivider && <div className="room-list-cell-divider" />}
+            <div className="room-list-cell-divider" />
         </div>
     );
 });

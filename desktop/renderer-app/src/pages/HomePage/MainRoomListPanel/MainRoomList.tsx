@@ -4,7 +4,9 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Skeleton } from "antd";
 import { ListRoomsType } from "../../../apiMiddleware/flatServer";
 import { RoomType } from "../../../apiMiddleware/flatServer/constants";
-import emptyBoxSVG from "../../../assets/image/empty-box.svg";
+// import emptyBoxSVG from "../../../assets/image/empty-box.svg";
+import emptyRoomSVG from "../../../assets/image/empty-room.svg";
+import emptyHistorySVG from "../../../assets/image/empty-history.svg";
 import { RoomStoreContext } from "../../../components/StoreProvider";
 import { RoomItem } from "../../../stores/RoomStore";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
@@ -56,7 +58,6 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                         <Skeleton
                             key={i}
                             active
-                            round
                             title={false}
                             paragraph={{ rows: 4, width: ["13%", "50%", "13%", "13%"] }}
                         />
@@ -68,8 +69,8 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
     if (roomUUIDs.length <= 0) {
         return (
             <div className="room-empty-box">
-                <img src={emptyBoxSVG} alt={"emptyBoxSVG"} />
-                <span>{isHistoryList ? "暂无历史记录" : "暂无预约课程"}</span>
+                <img src={isHistoryList ? emptyHistorySVG : emptyRoomSVG} alt={"emptyBoxSVG"} />
+                <span>{isHistoryList ? "暂无记录" : "暂无房间"}</span>
             </div>
         );
     }
@@ -113,6 +114,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                     );
                 },
             )}
+            <div className="room-list-footer">已加载全部</div>
         </>
     );
 
