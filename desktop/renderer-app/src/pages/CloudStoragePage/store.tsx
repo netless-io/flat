@@ -322,7 +322,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             }
         }
         this.updateFiles(tempFiles);
-        this.updateTotalUsage(totalUsage);
+        this.updateTotalUsage(totalUsage === 0 ? NaN : totalUsage);
     }
 
     setupPullingFile({ fileName, fileUUID, taskUUID, taskToken }: CloudFile): void {
