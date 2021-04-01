@@ -103,3 +103,13 @@ export interface ConvertFinishResult {}
 export async function convertFinish(payload: ConvertFinishPayload): Promise<ConvertFinishResult> {
     return await post("cloud-storage/convert/finish", payload);
 }
+
+export interface CancelUploadPayload {
+    fileUUIDs: string[];
+}
+
+export interface CancelUploadResult {}
+
+export async function cancelUpload(payload: CancelUploadPayload): Promise<void> {
+    await post("cloud-storage/upload/cancel", payload);
+}
