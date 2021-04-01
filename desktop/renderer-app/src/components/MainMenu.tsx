@@ -1,7 +1,7 @@
 import homeSVG from "../assets/image/home.svg";
 import homeActiveSVG from "../assets/image/home-active.svg";
-import userSVG from "../assets/image/user.svg";
-import userActiveSVG from "../assets/image/user-active.svg";
+// import userSVG from "../assets/image/user.svg";
+// import userActiveSVG from "../assets/image/user-active.svg";
 import settingSVG from "../assets/image/setting.svg";
 import settingActiveSVG from "../assets/image/setting-active.svg";
 import diskSVG from "../assets/image/disk.svg";
@@ -12,6 +12,7 @@ import { Menu } from "antd";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { generateRoutePath, RouteNameType, SettingPageType } from "../utils/routes";
 import { routeConfig } from "../route-config";
+import "./MainMenu.less";
 
 export interface MainMenuProps {}
 
@@ -27,13 +28,13 @@ export const MainMenu = React.memo<MainMenuProps>(function MainMenu() {
                 iconActive: homeActiveSVG,
                 href: generateRoutePath(RouteNameType.HomePage, {}),
             },
-            {
-                routeName: RouteNameType.UserInfoPage,
-                title: "我的",
-                icon: userSVG,
-                iconActive: userActiveSVG,
-                href: generateRoutePath(RouteNameType.UserInfoPage, {}),
-            },
+            // {
+            //     routeName: RouteNameType.UserInfoPage,
+            //     title: "我的",
+            //     icon: userSVG,
+            //     iconActive: userActiveSVG,
+            //     href: generateRoutePath(RouteNameType.UserInfoPage, {}),
+            // },
             {
                 routeName: RouteNameType.UserSettingPage,
                 title: "设置",
@@ -63,23 +64,43 @@ export const MainMenu = React.memo<MainMenuProps>(function MainMenu() {
 
     return (
         <Menu className="menu-container" defaultSelectedKeys={[selectedKey]}>
-            {MainMenuItems.map(({ routeName, title, icon, iconActive, href }) => (
-                <Menu.Item
-                    icon={
-                        <img
-                            width={44}
-                            height={44}
-                            src={selectedKey === routeName ? iconActive : icon}
-                            alt={title}
-                        />
-                    }
-                    key={routeName}
+            {MainMenuItems.map(({ routeName, title, icon, iconActive, href }) =>
+                routeName === RouteNameType.UserSettingPage ? null : (
+                    <Menu.Item key={routeName}>
+                        <Link to={href}>
+                            <img
+                                width={44}
+                                height={44}
+                                src={selectedKey === routeName ? iconActive : icon}
+                                alt={title}
+                                title={title}
+                                draggable={false}
+                            />
+                        </Link>
+                    </Menu.Item>
+                ),
+            )}
+            <li className="splitter"></li>
+            <Menu.Item key={RouteNameType.UserSettingPage}>
+                <Link
+                    to={generateRoutePath(RouteNameType.UserSettingPage, {
+                        settingType: SettingPageType.Normal,
+                    })}
                 >
-                    <Link to={href}>
-                        <span>{title}</span>
-                    </Link>
-                </Menu.Item>
-            ))}
+                    <img
+                        width={44}
+                        height={44}
+                        src={
+                            selectedKey === RouteNameType.UserSettingPage
+                                ? settingActiveSVG
+                                : settingSVG
+                        }
+                        alt={"设置"}
+                        title={"设置"}
+                        draggable={false}
+                    />
+                </Link>
+            </Menu.Item>
         </Menu>
     );
 });

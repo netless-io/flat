@@ -11,13 +11,13 @@
     align-items: center;
     justify-content: space-between;
     height: 64px;
-    padding: 0 24px;
+    padding: 0 16px;
     border-radius: 16px 16px 0 0;
     background-color: white;
 }
 
 .room-list-tab {
-    margin-left: 24px;
+    margin-left: 15px;
     font-size: 14px;
     font-weight: 400;
     color: #7a7b7c;
@@ -40,7 +40,6 @@
         font-size: 14px;
         font-weight: 400;
         color: #7a7b7c;
-        margin-top: 16px;
     }
 }
 
@@ -53,7 +52,7 @@
 
 .room-list-line {
     height: 1px;
-    margin: 0 24px;
+    margin: 0 16px;
     background-color: #dbe1ea;
 }
 
@@ -62,6 +61,12 @@
     padding-bottom: 16px;
     background-color: white;
     overflow-y: auto;
+}
+
+.room-list-footer {
+    margin-top: 15px;
+    text-align: center;
+    color: #7a7b7c;
 }
 
 .room-list-cell-day {
@@ -82,7 +87,7 @@
     font-size: 16px;
     font-weight: 500;
     color: #444e60;
-    margin-left: 22px;
+    margin-left: 16px;
 }
 
 .room-list-cell {
@@ -90,9 +95,13 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: 16px;
+    padding-right: 16px;
     margin-top: 16px;
+
+    &:hover .room-list-cell-right {
+        display: flex;
+    }
 }
 
 .room-list-cell-left {
@@ -102,8 +111,8 @@
 }
 
 .room-list-cell-name {
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 16px;
+    font-weight: 500;
     color: #444e60;
     margin-bottom: 8px;
     word-break: break-all;
@@ -113,7 +122,7 @@
     font-size: 12px;
     font-weight: 400;
     color: #7a7b7c;
-    margin-bottom: 8px;
+    margin-top: 8px;
 }
 
 .room-list-cell-time {
@@ -123,13 +132,20 @@
 }
 
 .room-list-cell-right {
-    display: flex;
+    display: none;
     flex-direction: row;
+
+    .ant-btn {
+        height: 28px;
+        padding: 0;
+    }
 }
 
 .room-list-cell-more {
-    margin-right: 8px;
-    width: 86px;
+    &.ant-btn {
+        margin-right: 8px;
+        width: 28px;
+    }
 }
 
 .room-list-cell-enter {
@@ -143,7 +159,7 @@
 }
 .room-list-cell-divider {
     height: 1px;
-    margin: 16px 24px 0;
+    margin: 16px 16px 0;
     border-bottom: 1px solid #dbe1ea;
 }
 
@@ -154,7 +170,7 @@
 .main-room-list-skeletons {
     padding: 0 24px;
 
-    & > * {
+    > * {
         padding-top: 16px;
         border-bottom: 1px solid #dbe1ea;
 

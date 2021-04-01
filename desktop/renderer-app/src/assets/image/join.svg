@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>编组 5</title>
-    <defs>
-        <rect id="path-1" x="0" y="0" width="48" height="48" rx="24"></rect>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
-            <stop stop-color="#A9CAFF" offset="0%"></stop>
-            <stop stop-color="#A9CAFF" stop-opacity="0" offset="100%"></stop>
-        </linearGradient>
-    </defs>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="首页" transform="translate(-584.000000, -160.000000)">
-            <g id="编组-5" transform="translate(584.000000, 160.000000)">
-                <g id="编组-3备份-3">
-                    <mask id="mask-2" fill="white">
-                        <use xlink:href="#path-1"></use>
-                    </mask>
-                    <use id="矩形" fill="#3381FF" xlink:href="#path-1"></use>
-                    <rect id="矩形" fill="url(#linearGradient-3)" style="mix-blend-mode: overlay;" mask="url(#mask-2)" transform="translate(24.000000, 48.000000) scale(-1, -1) translate(-24.000000, -48.000000) " x="0" y="24" width="48" height="48" rx="24"></rect>
+<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 6</title>
+    <g id="Flat-Web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="660*1080（页面的padding-right小于16切到手机布局）" transform="translate(-102.000000, -38.000000)">
+            <g id="编组" transform="translate(88.000000, 24.000000)">
+                <g id="编组-6" transform="translate(14.000000, 14.000000)">
+                    <circle id="椭圆形" fill="#3381FF" cx="22" cy="22" r="22"></circle>
+                    <path d="M29,13 L29,29 L22.1231056,29 L15,27.2192236 L15,13 L29,13 Z" id="矩形" stroke="#FFFFFF" stroke-width="2"></path>
+                    <polygon id="矩形" fill="#FFFFFF" points="14 12 22 16 22 32 14 28"></polygon>
                 </g>
-                <path d="M14.3675445,15.5441518 L22.3675445,12.8774852 C23.4154311,12.5281896 24.5480711,13.0945096 24.8973666,14.1423962 C24.9653442,14.3463292 25,14.5598876 25,14.7748518 L25,33.2251482 C25,34.3297177 24.1045695,35.2251482 23,35.2251482 C22.7850358,35.2251482 22.5714774,35.1904925 22.3675445,35.1225148 L14.3675445,32.4558482 C13.5508602,32.1836201 13,31.4193424 13,30.5584816 L13,17.4415184 C13,16.5806576 13.5508602,15.8163799 14.3675445,15.5441518 Z" id="矩形" fill="#FFFFFF"></path>
-                <rect id="矩形备份" fill-opacity="0.64" fill="#FFFFFF" x="27" y="16" width="8" height="16" rx="2"></rect>
             </g>
         </g>
     </g>

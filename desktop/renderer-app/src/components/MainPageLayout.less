@@ -13,20 +13,37 @@
     margin-top: 42px;
     margin-bottom: 36px;
     img {
-        width: 40px;
-        height: 40px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
+        border: 1px solid white;
     }
 }
 
 .layout-container-menu {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
     .ant-menu {
         background-color: #131415;
         border: 0;
     }
 
+    ul {
+        flex: 1;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+
+        .splitter {
+            flex: 1;
+        }
+    }
+
     li.ant-menu-item {
         height: 80px;
+        padding: 0 14px;
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
