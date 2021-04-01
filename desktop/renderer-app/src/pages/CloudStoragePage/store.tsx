@@ -178,7 +178,14 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     onUploadPanelClose = (): void => {
         if (Array.from(this.uploadStatusesMap.values()).some(this.isUploadNotFinished)) {
-            message.warning("there are tasks not finished");
+            Modal.confirm({
+                title: "取消上传",
+                content: "上传尚未完成，确定取消所有正在进行的上传吗?",
+                cancelText: "再想想",
+                onOk: () => {
+                    this.clearUploadStatusesMap();
+                },
+            });
         } else {
             this.clearUploadStatusesMap();
         }
