@@ -197,10 +197,13 @@ class UploadManager {
                     this._tasks.delete(currentTask);
                     const { pending } = this;
                     this.pending = [];
-                    for (const { file, task } of pending) {
-                        this.upload(file, task);
-                    }
-                    this._syncTasks();
+                    // prevent upload too often
+                    window.setTimeout(() => {
+                        for (const { file, task } of pending) {
+                            this.upload(file, task);
+                        }
+                        this._syncTasks();
+                    }, 200);
                 });
         }
         this._syncTasks();
