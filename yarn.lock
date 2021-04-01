@@ -2486,12 +2486,12 @@
   resolved "https://registry.yarnpkg.com/@netless/redo-undo/-/redo-undo-0.0.5.tgz#c5b00f5940ef33a0d6a810cd0935f4d9c172ea52"
   integrity sha512-P8ceK3hSY2eMfFIjBeSpRsqXpjjTea9bBWyRF8t8q0kLR4ICld2VMFMRbytqZ8sjCFy9CgbicuBOdMj7juABIQ==
 
-"@netless/tool-box@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@netless/tool-box/-/tool-box-0.0.6.tgz#a74cf28791ed95ae92f6f7cbe8638682ea6b5509"
-  integrity sha512-g2EpvhAYT26ABP2Bs71KACU1I+6WmQoDUuwPfQpnc/WTLQwz+PDWWsAZ34R+obpwNETVOiLiWQCkzxEuhxI4EQ==
+"@netless/tool-box@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@netless/tool-box/-/tool-box-0.0.8.tgz#90a5f898b2e56be6f3cc40f70d97c0bd086dfc75"
+  integrity sha512-SXLoO+/FqBPi5Di4z2ix58n7ncYHq1PBfhlcbv5KYUG/ept38T8Zt1MRaIc1TIX9yDHXJJzH29+5aAut1IuHZw==
   dependencies:
-    antd "^4.4.3"
+    antd "^4.13.1"
 
 "@netless/white-audio-plugin@^1.2.21":
   version "1.2.21"
