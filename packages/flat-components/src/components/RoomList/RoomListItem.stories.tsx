@@ -1,5 +1,4 @@
 import { Meta, Story } from "@storybook/react";
-import { Button } from "antd";
 import faker from "faker";
 import React from "react";
 import { RoomListItem, RoomListItemProps } from ".";
@@ -17,7 +16,13 @@ Overview.args = {
     beginTime: faker.date.past(),
     endTime: faker.date.future(),
     status: "idle",
-    extra: <Button type="primary">Enter</Button>,
+    buttons: [
+        [
+            { key: "modify", text: "修改" },
+            { key: "cancel", text: "取消" },
+        ],
+        { key: "enter", text: "进入" },
+    ],
     isPeriodic: faker.random.boolean(),
 };
 Overview.argTypes = {
@@ -32,7 +37,13 @@ LongRoomName.args = {
     beginTime: faker.date.past(),
     endTime: faker.date.future(),
     status: "idle",
-    extra: <Button type="primary">Enter</Button>,
+    buttons: [
+        [
+            { key: "modify", text: "修改" },
+            { key: "cancel", text: "取消" },
+        ],
+        { key: "enter", text: "进入" },
+    ],
     isPeriodic: faker.random.boolean(),
 };
 LongRoomName.argTypes = {
