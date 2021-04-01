@@ -7,11 +7,6 @@ export const NETLESS = Object.freeze({
 
 export const OSS_CONFIG = Object.freeze({
     accessKeyId: process.env.OSS_ACCESS_KEY_ID,
-    accessKeySecret: process.env.OSS_ACCESS_KEY_SECRET,
-    region: process.env.OSS_REGION,
-    bucket: process.env.OSS_BUCKET,
-    folder: process.env.OSS_FOLDER,
-    prefix: process.env.OSS_PREFIX,
 });
 
 export const AGORA = Object.freeze({
