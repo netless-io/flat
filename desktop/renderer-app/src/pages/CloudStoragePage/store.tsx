@@ -50,6 +50,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         this.setCompact(compact);
         makeObservable(this, {
             updateFiles: action,
+            updateTotalUsage: action,
             updateFileName: action,
             expandUploadPanel: action,
             clearUploadStatusesMap: action,
@@ -107,9 +108,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 Modal.confirm({
                     content: "确定删除所选课件？课件删除后不可恢复",
                     onOk: async () => {
-                        this.updateFiles({
-                            files: this.files.filter(file => file.fileUUID !== fileUUID),
-                        });
+                        this.updateFiles(this.files.filter(file => file.fileUUID !== fileUUID));
                         await removeFiles({ fileUUIDs: [fileUUID] });
                         await this.refreshFiles();
                         this.unselectAll();
@@ -165,9 +164,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             onOk: async () => {
                 const fileUUIDs = this.selectedFileUUIDs;
                 console.log("[cloud-storage] onBatchDelete", fileUUIDs);
-                this.updateFiles({
-                    files: this.files.filter(file => !fileUUIDs.includes(file.fileUUID)),
-                });
+                this.updateFiles(this.files.filter(file => !fileUUIDs.includes(file.fileUUID)));
                 await removeFiles({ fileUUIDs });
                 await this.refreshFiles();
                 this.unselectAll();
@@ -269,11 +266,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         });
     }
 
-    updateFiles({ files, totalUsage }: { files: CloudStorageFile[]; totalUsage?: number }): void {
+    updateFiles(files: CloudStorageFile[]): void {
         this.files = files;
-        if (totalUsage) {
-            this.totalUsage = totalUsage;
-        }
+    }
+
+    updateTotalUsage(totalUsage: number): void {
+        this.totalUsage = totalUsage;
     }
 
     async initialize(): Promise<void> {
@@ -323,10 +321,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 }
             }
         }
-        this.updateFiles({
-            files: tempFiles,
-            totalUsage,
-        });
+        this.updateFiles(tempFiles);
+        this.updateTotalUsage(totalUsage);
     }
 
     setupPullingFile({ fileName, fileUUID, taskUUID, taskToken }: CloudFile): void {

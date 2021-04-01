@@ -120,6 +120,18 @@ class UploadTask {
     onCancel?: () => void;
 }
 
+/**
+ * queue: [...].length <= MaxConcurrent
+ * pending: [...]
+ * upload(file):
+ *     task = Task(file)
+ *     task.onfinish:
+ *         queue << pending.pop().start()
+ *     if queue is not empty:
+ *         queue << task.start()
+ *     else:
+ *         pending << task
+ */
 class UploadManager {
     private static readonly StorageKey = "upload";
     private static readonly MaxConcurrent = 3;
@@ -159,7 +171,9 @@ class UploadManager {
     }
 
     clean(fileUUIDs: string[]): void {
-        cancelUpload({ fileUUIDs }).catch(() => {});
+        fileUUIDs = fileUUIDs.filter(id => !isFakeID(id));
+        if (fileUUIDs.length === 0) return;
+        cancelUpload({ fileUUIDs });
         for (const fileUUID of fileUUIDs) {
             this.getTask(fileUUID)?.source.cancel();
         }
