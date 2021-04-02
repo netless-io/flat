@@ -8,6 +8,7 @@ import { CloudStorageStore } from "./store";
 import { CloudStorageUploadPanel } from "../../components/CloudStorage";
 import { CloudStorageUploadListContainer } from "./CloudStorageUploadListContainer";
 import { CloudStorageFileListContainer } from "./CloudStorageFileListContainer";
+import classNames from "classnames";
 
 export * from "./store";
 
@@ -50,8 +51,12 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                     <div className="cloud-storage-container-head">
                         <div>
                             <h1 className="cloud-storage-container-title">我的云盘</h1>
-                            <small className="cloud-storage-container-subtitle">
-                                {store.totalUsageHR ? `已使用 ${store.totalUsageHR}` : " "}
+                            <small
+                                className={classNames("cloud-storage-container-subtitle", {
+                                    "is-hide": !store.totalUsage,
+                                })}
+                            >
+                                {store.totalUsageHR ? `已使用 ${store.totalUsageHR}` : "-"}
                             </small>
                         </div>
                         {containerBtns}

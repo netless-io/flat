@@ -2,7 +2,7 @@ import "./style.less";
 import emptyFileSVG from "./icons/empty-file.svg";
 
 import React, { useCallback, useMemo, useRef } from "react";
-import { Table } from "antd";
+import { Empty, Table } from "antd";
 import prettyBytes from "pretty-bytes";
 import { format } from "date-fns";
 import { ColumnsType } from "antd/lib/table";
@@ -118,7 +118,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
             <Table
                 size="small"
                 columns={columns}
-                dataSource={files}
+                dataSource={files || []}
                 rowKey="fileUUID"
                 pagination={false}
                 rowSelection={{
@@ -126,9 +126,17 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                     onChange: onSelectionChange as (keys: React.Key[]) => void,
                 }}
                 locale={{
-                    emptyText: <img width={124} height={124} src={emptyFileSVG}></img>,
+                    emptyText: " ",
                 }}
             />
+            {files.length <= 0 && (
+                <div className="cloud-storage-file-list-empty">
+                    <div className="cloud-storage-file-list-empty-content">
+                        <img width={124} height={124} src={emptyFileSVG} />
+                        <div className="cloud-storage-file-list-empty-text">暂无数据</div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

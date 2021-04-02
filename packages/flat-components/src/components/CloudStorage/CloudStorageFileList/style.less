@@ -1,5 +1,9 @@
 .cloud-storage-file-list-table {
     position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100%;
+
     .ant-table {
         color: #7a7b7c;
     }
@@ -30,7 +34,7 @@
 
 .cloud-storage-file-list-menu-btn-wrap {
     position: absolute;
-    right: -16px;
+    right: -10px;
     top: 0;
     opacity: 0;
     overflow: hidden;
@@ -72,4 +76,23 @@
     line-height: 22px;
     color: #7a7b7c;
     padding-right: 4px;
+}
+.cloud-storage-file-list-empty {
+    flex: 1;
+    margin-top: -2px;
+    position: relative;
+    background-color: #fff;
+}
+
+.cloud-storage-file-list-empty-content {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.cloud-storage-file-list-empty-text {
+    margin-left: -0.75em;
+    color: #7a7b7c;
 }

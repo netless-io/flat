@@ -90,7 +90,9 @@ LongFileName.parameters = {
 };
 
 export const EmptyFile: Story<CloudStorageFileListProps> = args => (
-    <CloudStorageFileList {...args} />
+    <div className="vh-75">
+        <CloudStorageFileList {...args} />
+    </div>
 );
 EmptyFile.args = {
     files: [],
