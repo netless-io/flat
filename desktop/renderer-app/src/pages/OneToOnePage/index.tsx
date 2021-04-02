@@ -34,6 +34,7 @@ import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 import "./OneToOnePage.less";
 import { constants } from "flat-types";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { CloudStorageButton } from "../../components/CloudStorageButton";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -202,6 +203,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     onClick={whiteboardStore.toggleFileOpen}
                 /> */}
                 {/* TODO: open cloud-storage sub window */}
+                <CloudStorageButton whiteboard={whiteboardStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 {/* @TODO implement Options menu */}
                 {/* <TopBarRightBtn title="Options" icon="options" onClick={() => {}} /> */}

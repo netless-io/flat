@@ -38,6 +38,7 @@ import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 import "./SmallClassPage.less";
 import { constants } from "flat-types";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { CloudStorageButton } from "../../components/CloudStorageButton";
 
 const AVATAR_WIDTH = 144;
 const AVATAR_HEIGHT = 108;
@@ -294,6 +295,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     onClick={whiteboardStore.toggleFileOpen}
                 /> */}
                 {/* TODO: open cloud-storage sub window */}
+                <CloudStorageButton whiteboard={whiteboardStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 {/* @TODO implement Options menu */}
                 {/* <TopBarRightBtn title="Options" icon="options" onClick={() => {}} /> */}

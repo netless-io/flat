@@ -13,11 +13,6 @@ declare namespace NodeJS {
         NETLESS_APP_IDENTIFIER: string;
 
         OSS_ACCESS_KEY_ID: string;
-        OSS_ACCESS_KEY_SECRET: string;
-        OSS_REGION: string;
-        OSS_BUCKET: string;
-        OSS_FOLDER: string;
-        OSS_PREFIX: string;
 
         AGORA_APP_ID: string;
 

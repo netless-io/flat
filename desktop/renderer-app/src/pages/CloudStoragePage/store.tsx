@@ -16,10 +16,12 @@ import {
     removeFiles,
     renameFile,
 } from "../../apiMiddleware/flatServer/storage";
+import { WhiteboardStore } from "../../stores/WhiteboardStore";
 import {
     convertStepToType,
     download,
     getFileUrl,
+    insertFileIntoRoom,
     isFakeID,
     pickFiles,
     queryTask,
@@ -29,6 +31,8 @@ import {
 type FileMenusKey = "download" | "rename" | "delete";
 
 export class CloudStorageStore extends CloudStorageStoreBase {
+    whiteboard?: WhiteboardStore;
+
     pulling = new Map<string, number>();
     retryable = new Map<string, File>();
 
@@ -45,9 +49,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         return menus;
     };
 
-    constructor(compact: boolean) {
+    constructor({ compact, whiteboard }: { compact?: boolean; whiteboard?: WhiteboardStore }) {
         super();
-        this.setCompact(compact);
+        this.whiteboard = whiteboard;
+        this.setCompact(Boolean(compact));
         makeObservable(this, {
             updateFiles: action,
             updateTotalUsage: action,
@@ -141,6 +146,21 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     onItemTitleClick = (fileUUID: string): void => {
+        if (this.compact) {
+            this.onItemTitleClickInRoom(fileUUID);
+        } else {
+            this.onItemTitleClickInPage(fileUUID);
+        }
+    };
+
+    onItemTitleClickInRoom(fileUUID: string): void {
+        const room = this.whiteboard?.room;
+        if (room) {
+            insertFileIntoRoom(fileUUID, room);
+        }
+    }
+
+    onItemTitleClickInPage(fileUUID: string): void {
         console.log("[cloud-storage] onItemTitleClick", fileUUID);
         const file = this.files.find(file => file.fileUUID === fileUUID);
         switch (file?.convert) {
@@ -156,7 +176,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 Modal.info({ content: "请到房间内查看课件" });
             }
         }
-    };
+    }
 
     onBatchDelete = (): void => {
         Modal.confirm({
