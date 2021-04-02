@@ -1,4 +1,5 @@
 import "./style.less";
+import emptyFileSVG from "./icons/empty-file.svg";
 
 import React, { useCallback, useMemo, useRef } from "react";
 import { Table } from "antd";
@@ -52,7 +53,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
             {
                 title: (
                     <>
-                        文件名称{" "}
+                        <span className="cloud-storage-file-list-title">文件名称</span>
                         <CloudStorageFileListHeadTip
                             title="支持上传 PPT、PPTX、DOC、DOCX、PDF、PNG、JPG、GIF 文件格式"
                             placement="right"
@@ -79,7 +80,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 },
             },
             {
-                title: "大小",
+                title: <span className="cloud-storage-file-list-title">大小</span>,
                 dataIndex: "fileSize",
                 ellipsis: true,
                 width: "20%",
@@ -91,7 +92,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 },
             },
             {
-                title: "修改日期",
+                title: <span className="cloud-storage-file-list-title">修改日期</span>,
                 dataIndex: "createAt",
                 ellipsis: true,
                 width: "20%",
@@ -115,6 +116,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
     return (
         <div ref={popupContainerRef} className="cloud-storage-file-list-table">
             <Table
+                size="small"
                 columns={columns}
                 dataSource={files}
                 rowKey="fileUUID"
@@ -122,6 +124,9 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 rowSelection={{
                     selectedRowKeys: selectedFileUUIDs,
                     onChange: onSelectionChange as (keys: React.Key[]) => void,
+                }}
+                locale={{
+                    emptyText: <img width={124} height={124} src={emptyFileSVG}></img>,
                 }}
             />
         </div>

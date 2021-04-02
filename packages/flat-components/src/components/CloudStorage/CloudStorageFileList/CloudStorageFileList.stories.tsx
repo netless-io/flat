@@ -18,7 +18,6 @@ export default storyMeta;
 export const Overview: Story<CloudStorageFileListProps> = args => (
     <CloudStorageFileList {...args} />
 );
-
 Overview.args = {
     files: Array(3)
         .fill(0)
@@ -87,6 +86,18 @@ LongFileName.argTypes = {
 LongFileName.parameters = {
     viewport: {
         defaultViewport: "tablet2",
+    },
+};
+
+export const EmptyFile: Story<CloudStorageFileListProps> = args => (
+    <CloudStorageFileList {...args} />
+);
+EmptyFile.args = {
+    files: [],
+};
+EmptyFile.argTypes = {
+    files: {
+        control: false,
     },
 };
 
