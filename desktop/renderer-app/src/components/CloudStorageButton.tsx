@@ -25,6 +25,7 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
                 onClick={() => setVisible(true)}
             />
             <Modal
+                title="我的云盘"
                 onCancel={() => setVisible(false)}
                 destroyOnClose
                 footer={[]}
