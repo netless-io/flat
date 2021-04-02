@@ -30,6 +30,7 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
                 footer={[]}
                 visible={visible}
                 className="cloud-storage-button-modal"
+                centered
             >
                 <CloudStoragePage compact whiteboard={whiteboard} />
             </Modal>
