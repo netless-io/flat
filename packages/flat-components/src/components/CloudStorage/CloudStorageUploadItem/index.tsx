@@ -7,13 +7,14 @@ import React from "react";
 import { Button } from "antd";
 import classNames from "classnames";
 import { CloudStorageFileTitle } from "../CloudStorageFileTitle";
-import { CloudStorageUploadStatus } from "../types";
+import { CloudStorageUploadTask } from "../types";
 
-export interface CloudStorageUploadItemProps extends CloudStorageUploadStatus {
+export interface CloudStorageUploadItemProps
+    extends Pick<CloudStorageUploadTask, "uploadID" | "fileName" | "percent" | "status"> {
     /** Restart uploading this file */
-    onRetry: (fileUUID: string) => void;
+    onRetry: (uploadID: string) => void;
     /** Stop uploading this file */
-    onCancel: (fileUUID: string) => void;
+    onCancel: (uploadID: string) => void;
 }
 
 /**
@@ -21,16 +22,16 @@ export interface CloudStorageUploadItemProps extends CloudStorageUploadStatus {
  * Cloud Storage upload list item.
  */
 export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
-    fileUUID,
+    uploadID,
     fileName,
     percent,
-    status = "idle",
+    status,
     onRetry,
     onCancel,
 }) => {
     return (
         <div className="cloud-storage-upload-item">
-            <CloudStorageFileTitle fileUUID={fileUUID} fileName={fileName} />
+            <CloudStorageFileTitle fileUUID={uploadID} fileName={fileName} />
             {renderUploadBody()}
             <div
                 className={classNames("cloud-storage-upload-item-progress-bar", {
@@ -51,7 +52,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                             className="cloud-storage-upload-status-btn"
                             shape="circle"
                             size="small"
-                            onClick={() => onCancel(fileUUID)}
+                            onClick={() => onCancel(uploadID)}
                         >
                             <img width={22} height={22} src={trashBinSVG} aria-hidden />
                         </Button>
@@ -65,7 +66,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                             className="cloud-storage-upload-status-btn"
                             shape="circle"
                             size="small"
-                            onClick={() => onRetry(fileUUID)}
+                            onClick={() => onRetry(uploadID)}
                         >
                             <img width={22} height={22} src={retrySVG} aria-hidden />
                         </Button>
@@ -88,7 +89,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                             className="cloud-storage-upload-status-btn"
                             shape="circle"
                             size="small"
-                            onClick={() => onCancel(fileUUID)}
+                            onClick={() => onCancel(uploadID)}
                         >
                             <img width={22} height={22} src={trashBinSVG} aria-hidden />
                         </Button>

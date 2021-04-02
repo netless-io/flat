@@ -3,7 +3,7 @@ import {
     CloudStorageFile,
     CloudStorageFileName,
     CloudStorageStore as CloudStorageStoreBase,
-    CloudStorageUploadStatus,
+    CloudStorageUploadTask,
 } from "flat-components";
 import { action, makeObservable } from "mobx";
 import React, { ReactNode } from "react";
@@ -58,8 +58,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             updateTotalUsage: action,
             updateFileName: action,
             expandUploadPanel: action,
-            clearUploadStatusesMap: action,
-            deleteFileFromUploadStatusesMap: action,
+            clearUploadTasksMap: action,
+            deleteFileFromUploadTasksMap: action,
             onUploadInit: action,
             onUploadEnd: action,
             onUploadError: action,
@@ -76,12 +76,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         this.isUploadPanelExpand = true;
     }
 
-    clearUploadStatusesMap(): void {
-        this.uploadStatusesMap.clear();
+    clearUploadTasksMap(): void {
+        this.uploadTasksMap.clear();
     }
 
-    deleteFileFromUploadStatusesMap(fileUUID: string): void {
-        this.uploadStatusesMap.delete(fileUUID);
+    deleteFileFromUploadTasksMap(fileUUID: string): void {
+        this.uploadTasksMap.delete(fileUUID);
     }
 
     onUpload = async (): Promise<void> => {
@@ -192,22 +192,22 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         });
     };
 
-    isUploadNotFinished = ({ status }: CloudStorageUploadStatus): boolean => {
+    isUploadNotFinished = ({ status }: CloudStorageUploadTask): boolean => {
         return status !== "success" && status !== "error";
     };
 
     onUploadPanelClose = (): void => {
-        if (Array.from(this.uploadStatusesMap.values()).some(this.isUploadNotFinished)) {
+        if (Array.from(this.uploadTasksMap.values()).some(this.isUploadNotFinished)) {
             Modal.confirm({
                 title: "取消上传",
                 content: "上传尚未完成，确定取消所有正在进行的上传吗?",
                 cancelText: "再想想",
                 onOk: () => {
-                    this.clearUploadStatusesMap();
+                    this.clearUploadTasksMap();
                 },
             });
         } else {
-            this.clearUploadStatusesMap();
+            this.clearUploadTasksMap();
         }
     };
 
@@ -225,7 +225,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     onUploadCancel = async (fileUUID: string): Promise<void> => {
         console.log("[cloud-storage] onUploadCancel", fileUUID);
         uploadManager.clean([fileUUID]);
-        this.deleteFileFromUploadStatusesMap(fileUUID);
+        this.deleteFileFromUploadTasksMap(fileUUID);
         await this.refreshFiles();
     };
 
@@ -235,7 +235,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         this.onUploadInit(fakeID, file);
         task.onInit = fileUUID => {
             console.log("[cloud-storage] start uploading", fileUUID, file.name, file.size);
-            this.deleteFileFromUploadStatusesMap(fakeID);
+            this.deleteFileFromUploadTasksMap(fakeID);
             this.onUploadInit(fileUUID, file);
             this.refreshFiles();
         };
@@ -261,8 +261,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     onUploadProgress(fileUUID: string, file: File, e: ProgressEvent): void {
-        this.uploadStatusesMap.set(fileUUID, {
-            fileUUID: fileUUID,
+        this.uploadTasksMap.set(fileUUID, {
+            uploadID: fileUUID,
             fileName: file.name,
             percent: ((100 * e.loaded) / e.total) | 0,
             status: "uploading",
@@ -270,14 +270,14 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     onUploadEnd(fileUUID: string): void {
-        const status = this.uploadStatusesMap.get(fileUUID);
+        const status = this.uploadTasksMap.get(fileUUID);
         if (status) {
             status.status = "success";
         }
     }
 
     onUploadError(fileUUID: string, file: File): void {
-        const status = this.uploadStatusesMap.get(fileUUID);
+        const status = this.uploadTasksMap.get(fileUUID);
         if (status) {
             this.retryable.set(fileUUID, file);
             status.status = "error";
@@ -285,8 +285,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     onUploadInit(fileUUID: string, file: File): void {
-        this.uploadStatusesMap.set(fileUUID, {
-            fileUUID,
+        this.uploadTasksMap.set(fileUUID, {
+            uploadID: fileUUID,
             fileName: file.name,
             percent: 0,
             status: "idle",
