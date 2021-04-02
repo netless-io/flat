@@ -57,7 +57,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                         {containerBtns}
                     </div>
                 )}
-                <div className="cloud-storage-container-file-list">
+                <div className="cloud-storage-container-file-list fancy-scrollbar">
                     <CloudStorageFileListContainer store={store} />
                 </div>
                 <CSSTransition

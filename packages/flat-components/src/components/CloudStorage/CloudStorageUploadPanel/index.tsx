@@ -74,7 +74,7 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
                 </div>
             </header>
             <div
-                className="cloud-storage-upload-panel-content"
+                className="cloud-storage-upload-panel-content fancy-scrollbar"
                 style={{
                     height: expand ? (contentHeight < maxHeight ? contentHeight : maxHeight) : 0,
                 }}

@@ -1,0 +1,55 @@
+@scrollbar-size: 8px;
+@scrollbar-ff-width: auto; // FF-only accepts auto, thin, none
+@scrollbar-minlength: 50px; // Minimum length of scrollbar thumb
+@scrollbar-track-color: transparent;
+@scrollbar-color: rgba(68, 78, 96, 0.1);
+@scrollbar-color-hover: rgba(68, 78, 96, 0.2);
+@scrollbar-color-active: rgba(68, 78, 96, 0.2);
+
+.fancy-scrollbar {
+    overscroll-behavior: contain;
+    overflow: auto;
+    overflow-y: scroll;
+    overflow-y: overlay; // for webkit
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    scrollbar-width: @scrollbar-ff-width;
+    // Firefox has incorrect track color
+    // scrollbar-color: @scrollbar-color @scrollbar-track-color;
+
+    &::-webkit-scrollbar {
+        height: @scrollbar-size;
+        width: @scrollbar-size;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: @scrollbar-track-color;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: @scrollbar-color;
+        background-color: @scrollbar-track-color;
+        border-radius: @scrollbar-size / 2;
+        transition: background-color 0.4s;
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+        background-color: @scrollbar-color;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: @scrollbar-color-hover;
+    }
+
+    &::-webkit-scrollbar-thumb:active {
+        background-color: @scrollbar-color-active;
+    }
+
+    &::-webkit-scrollbar-thumb:vertical {
+        min-height: @scrollbar-minlength;
+    }
+
+    &::-webkit-scrollbar-thumb:horizontal {
+        min-width: @scrollbar-minlength;
+    }
+}
