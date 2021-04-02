@@ -117,8 +117,8 @@ function createFakeStore(config: FakeStoreConfig): FakeStore {
 
     for (let i = chance.integer({ min: 0, max: 200 }); i >= 0; i--) {
         const fileUUID = faker.random.uuid();
-        store.uploadStatusesMap.set(fileUUID, {
-            fileUUID,
+        store.uploadTasksMap.set(fileUUID, {
+            uploadID: fileUUID,
             fileName: faker.random.word() + "." + faker.system.commonFileExt(),
             status: chance.pickone(["idle", "error", "success", "uploading"]),
             percent: chance.integer({ min: 0, max: 100 }),

@@ -4,7 +4,7 @@ import prettyBytes from "pretty-bytes";
 import {
     CloudStorageFile,
     CloudStorageFileName,
-    CloudStorageUploadStatus,
+    CloudStorageUploadTask,
 } from "../../components/CloudStorage/types";
 
 export abstract class CloudStorageStore {
@@ -17,7 +17,7 @@ export abstract class CloudStorageStore {
     /** User selected file uuids */
     selectedFileUUIDs: string[] = [];
     /** Files in the upload panel list */
-    uploadStatusesMap = observable.map</** fileUUID */ string, CloudStorageUploadStatus>();
+    uploadTasksMap = observable.map</** uploadUUID */ string, CloudStorageUploadTask>();
     /** It changes when user toggles the expand button */
     isUploadPanelExpand = false;
     /** UUID of file that is under renaming */
@@ -25,13 +25,13 @@ export abstract class CloudStorageStore {
 
     /** Number of total upload */
     get uploadTotalCount(): number {
-        return this.uploadStatusesMap.size;
+        return this.uploadTasksMap.size;
     }
 
     /** Number of finished upload */
     get uploadFinishedCount(): number {
         let count = 0;
-        for (const status of this.uploadStatusesMap.values()) {
+        for (const status of this.uploadTasksMap.values()) {
             if (status.status === "success") {
                 count += 1;
             }
@@ -52,11 +52,11 @@ export abstract class CloudStorageStore {
     /** If upload finishes with error */
     get uploadFinishWithError(): boolean {
         let hasError = false;
-        for (const status of this.uploadStatusesMap.values()) {
-            if (status.status === "error") {
+        for (const task of this.uploadTasksMap.values()) {
+            if (task.status === "error") {
                 hasError = true;
                 continue;
-            } else if (status.percent !== 100) {
+            } else if (task.percent !== 100) {
                 return false;
             }
         }
@@ -64,27 +64,27 @@ export abstract class CloudStorageStore {
     }
 
     /** Uploading -> Error -> Idle -> Success */
-    get sortedUploadStatus(): CloudStorageUploadStatus[] {
-        const idle: CloudStorageUploadStatus[] = [];
-        const uploading: CloudStorageUploadStatus[] = [];
-        const error: CloudStorageUploadStatus[] = [];
-        const success: CloudStorageUploadStatus[] = [];
-        for (const status of this.uploadStatusesMap.values()) {
-            switch (status.status) {
+    get sortedUploadTasks(): CloudStorageUploadTask[] {
+        const idle: CloudStorageUploadTask[] = [];
+        const uploading: CloudStorageUploadTask[] = [];
+        const error: CloudStorageUploadTask[] = [];
+        const success: CloudStorageUploadTask[] = [];
+        for (const task of this.uploadTasksMap.values()) {
+            switch (task.status) {
                 case "uploading": {
-                    uploading.push(status);
+                    uploading.push(task);
                     break;
                 }
                 case "success": {
-                    success.push(status);
+                    success.push(task);
                     break;
                 }
                 case "error": {
-                    error.push(status);
+                    error.push(task);
                     break;
                 }
                 default: {
-                    idle.push(status);
+                    idle.push(task);
                     break;
                 }
             }

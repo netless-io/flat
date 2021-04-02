@@ -89,7 +89,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                         onExpandChange={store.setPanelExpand}
                     >
                         <CloudStorageUploadListContainer
-                            statuses={store.sortedUploadStatus}
+                            tasks={store.sortedUploadTasks}
                             onCancel={store.onUploadCancel}
                             onRetry={store.onUploadRetry}
                         />

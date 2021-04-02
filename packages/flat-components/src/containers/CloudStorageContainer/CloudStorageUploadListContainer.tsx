@@ -1,23 +1,23 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { CloudStorageUploadStatus } from "../../components/CloudStorage/types";
+import { CloudStorageUploadTask } from "../../components/CloudStorage/types";
 import {
     CloudStorageUploadItemContainer,
     CloudStorageUploadItemContainerProps,
 } from "./CloudStorageUploadItemContainer";
 
 export type CloudStorageUploadListContainerProps = {
-    statuses: CloudStorageUploadStatus[];
+    tasks: CloudStorageUploadTask[];
 } & Pick<CloudStorageUploadItemContainerProps, "onCancel" | "onRetry">;
 
 export const CloudStorageUploadListContainer = observer<CloudStorageUploadListContainerProps>(
-    function CloudStorageUploadListContainer({ statuses, onCancel, onRetry }) {
+    function CloudStorageUploadListContainer({ tasks, onCancel, onRetry }) {
         return (
             <>
-                {statuses.map(status => (
+                {tasks.map(task => (
                     <CloudStorageUploadItemContainer
-                        key={status.fileUUID}
-                        status={status}
+                        key={task.uploadID}
+                        task={task}
                         onCancel={onCancel}
                         onRetry={onRetry}
                     />

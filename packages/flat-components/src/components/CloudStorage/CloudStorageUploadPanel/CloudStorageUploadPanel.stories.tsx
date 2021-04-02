@@ -4,7 +4,7 @@ import Chance from "chance";
 import faker from "faker";
 
 import { CloudStorageUploadPanel, CloudStorageUploadPanelProps } from "./index";
-import { CloudStorageUploadStatus } from "../types";
+import { CloudStorageUploadTask } from "../types";
 import CloudStorageUploadItem from "../CloudStorageUploadItem";
 
 const chance = new Chance();
@@ -47,11 +47,11 @@ interface PlayableExampleArgs extends CloudStorageUploadPanelProps {
     onCancel: (fileUUID: string) => void;
 }
 export const PlayableExample: Story<PlayableExampleArgs> = ({ onRetry, onCancel, ...props }) => {
-    const uploadStatuses = useUploadStatusList(props.total);
+    const uploadTasks = useUploadTasksList(props.total);
     const [expand, setExpand] = useState(false);
     return (
         <CloudStorageUploadPanel {...props} expand={expand} onExpandChange={setExpand}>
-            {uploadStatuses.map(status => (
+            {uploadTasks.map(status => (
                 <CloudStorageUploadItem
                     {...status}
                     key={status.fileUUID}
@@ -81,13 +81,13 @@ PlayableExample.argTypes = {
     },
 };
 
-function useUploadStatusList(count: number): CloudStorageUploadStatus[] {
-    const [statuses, setStatuses] = useState(() => getUploadStatuses(count));
+function useUploadTasksList(count: number): CloudStorageUploadTask[] {
+    const [statuses, setStatuses] = useState(() => getuploadTasks(count));
 
     useEffect(() => {
         setStatuses(statuses => {
             if (count > statuses.length) {
-                return [...statuses, ...getUploadStatuses(count - statuses.length)];
+                return [...statuses, ...getuploadTasks(count - statuses.length)];
             } else if (count < statuses.length) {
                 return statuses.slice(0, count);
             }
@@ -98,11 +98,11 @@ function useUploadStatusList(count: number): CloudStorageUploadStatus[] {
     return statuses;
 }
 
-function getUploadStatuses(count: number): CloudStorageUploadStatus[] {
+function getuploadTasks(count: number): CloudStorageUploadTask[] {
     return Array(count)
         .fill(0)
         .map(() => ({
-            fileUUID: faker.random.uuid(),
+            uploadID: faker.random.uuid(),
             fileName: faker.random.word() + "." + faker.system.commonFileExt(),
             status: "uploading",
             percent: chance.integer({ min: 0, max: 100 }),

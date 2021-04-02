@@ -11,9 +11,9 @@ export interface CloudStorageFile {
 
 export type CloudStorageUploadStatusType = "idle" | "error" | "uploading" | "success";
 
-export interface CloudStorageUploadStatus {
-    /** File uuid */
-    fileUUID: string;
+export interface CloudStorageUploadTask {
+    /** Upload id */
+    uploadID: string;
     /** File name */
     fileName: string;
     /** Uploading percentage */
