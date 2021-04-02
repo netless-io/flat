@@ -277,9 +277,9 @@ export async function insertFileIntoRoom(fileUUID: string, room: Room): Promise<
     }
     const { fileName } = file;
     const src = getFileUrl(fileName, fileUUID);
-    message.info("正在插入课件……");
     console.log("[cloud storage] insert file into room", fileName, src);
     if ([".jpg", ".jpeg", ".png", ".webp"].some(ext => fileName.endsWith(ext))) {
+        message.info("正在插入课件……");
         const uuid = v4();
         if (src) {
             const img = new Image();
@@ -327,13 +327,14 @@ export async function insertFileIntoRoom(fileUUID: string, room: Room): Promise<
                     // ignore convert finish fail
                 }
                 if (status === "Fail") {
-                    message.error(`convert failed, reason: ${failedReason}`);
+                    message.error(`转码失败，原因: ${failedReason}`);
                 }
             } else {
-                message.error("still converting..., wait and try again");
+                message.error("正在转码中，请稍后再试");
                 return;
             }
         }
+        message.info("正在插入课件……");
         console.log(status, progress);
         if (status === "Finished" && progress) {
             const scenes = progress.convertedFileList.map(f => ({

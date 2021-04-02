@@ -14,8 +14,8 @@ export const PageSize = {
         height: 667,
     },
     Main: {
-        width: 960,
-        height: 640,
+        width: 1200,
+        height: 700,
     },
     Class: {
         width: 1200,
