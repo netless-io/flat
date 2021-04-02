@@ -5,6 +5,7 @@ import React from "react";
 import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import classNames from "classnames";
+import { Button, Dropdown, Menu } from "antd";
 
 export interface RoomListDateProps {
     date: Date;
@@ -27,14 +28,21 @@ export const RoomListDate: React.FC<RoomListDateProps> = ({ date }) => (
 
 type RoomStatusType = "idle" | "running" | "stopped";
 
+interface RoomListItemButton {
+    key: string;
+    text: string;
+}
+type RoomListItemButtons = (RoomListItemButton | RoomListItemButton[])[];
+
 export interface RoomListItemProps {
     title: string;
     beginTime?: Date;
     endTime?: Date;
     status: RoomStatusType;
     isPeriodic?: boolean;
-    extra?: React.ReactNode;
+    buttons?: RoomListItemButtons;
     onClick?: () => void;
+    onClickMenu?: (key: string) => void;
 }
 
 const RoomStatusTexts: Record<RoomStatusType, string> = {
@@ -49,11 +57,15 @@ export const RoomListItem: React.FC<RoomListItemProps> = ({
     endTime,
     status,
     isPeriodic,
-    extra,
+    buttons,
     onClick,
+    onClickMenu,
 }) => (
-    <div className={classNames("room-list-item", { pointer: !!onClick })} onClick={onClick}>
-        <div className="room-list-item-left">
+    <div className="room-list-item">
+        <div
+            className={classNames("room-list-item-left", { pointer: !!onClick })}
+            onClick={onClick}
+        >
             <div className="room-list-item-title">{title}</div>
             <div className="room-list-item-info">
                 {(beginTime || endTime) && (
@@ -69,9 +81,52 @@ export const RoomListItem: React.FC<RoomListItemProps> = ({
                 </div>
             </div>
         </div>
-        <div className="room-list-item-right">{extra}</div>
+        <div className="room-list-item-right">{buttons && renderButtons(buttons, onClickMenu)}</div>
     </div>
 );
+
+function renderButtons(
+    buttons: RoomListItemButtons,
+    onClickMenu?: (key: string) => void,
+): React.ReactNode {
+    const result: React.ReactNode[] = [];
+    for (const buttonConfig of buttons) {
+        if (Array.isArray(buttonConfig)) {
+            result.push(renderSubMenu(buttonConfig, onClickMenu));
+        } else {
+            const { key, text } = buttonConfig;
+            result.push(
+                <Button key={key} type="primary" onClick={() => onClickMenu?.(key)}>
+                    {text}
+                </Button>,
+            );
+        }
+    }
+    return result;
+}
+
+function renderSubMenu(
+    buttons: RoomListItemButton[],
+    onClickMenu?: (key: string) => void,
+): React.ReactNode {
+    return (
+        <Dropdown
+            key={Math.random()}
+            overlay={
+                <Menu>
+                    {buttons.map(button => (
+                        <Menu.Item key={button.key} onClick={() => onClickMenu?.(button.key)}>
+                            {button.text}
+                        </Menu.Item>
+                    ))}
+                </Menu>
+            }
+            trigger={["click"]}
+        >
+            <Button className="room-list-item-more">...</Button>
+        </Dropdown>
+    );
+}
 
 export interface RoomListProps {
     /** will be hidden on mobile */
