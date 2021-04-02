@@ -1,8 +1,13 @@
+import { message } from "antd";
 import Axios from "axios";
 import { CloudStorageConvertStatusType } from "flat-components";
+import { v4 } from "uuid";
+import { Room } from "white-web-sdk";
 import { FileConvertStep } from "../../apiMiddleware/flatServer/constants";
 import {
     cancelUpload,
+    convertFinish,
+    listFiles,
     uploadFinish,
     uploadStart,
     UploadStartResult,
@@ -251,3 +256,96 @@ class UploadManager {
 }
 
 export const uploadManager = new UploadManager();
+
+function insertImageIntoRoom(
+    room: Room,
+    width: number,
+    height: number,
+    uuid: string,
+    src: string,
+): void {
+    room.insertImage({ uuid, centerX: 0, centerY: 0, width, height, locked: false });
+    room.completeImageUpload(uuid, src);
+}
+
+export async function insertFileIntoRoom(fileUUID: string, room: Room): Promise<void> {
+    const { files } = await listFiles({ page: 1 });
+    const file = files.find(file => file.fileUUID === fileUUID);
+    if (!file) {
+        console.log("[cloud storage] not found file", fileUUID);
+        return;
+    }
+    const { fileName } = file;
+    const src = getFileUrl(fileName, fileUUID);
+    message.info("正在插入课件……");
+    console.log("[cloud storage] insert file into room", fileName, src);
+    if ([".jpg", ".jpeg", ".png", ".webp"].some(ext => fileName.endsWith(ext))) {
+        const uuid = v4();
+        if (src) {
+            const img = new Image();
+            img.onload = () => {
+                const { width, height } = img;
+                insertImageIntoRoom(room, width, height, uuid, src);
+            };
+            img.src = src;
+        } else {
+            const { innerWidth: width, innerHeight: height } = window;
+            insertImageIntoRoom(room, width, height, uuid, src);
+        }
+    } else if (fileName.endsWith(".mp3")) {
+        // room.insertPlugin("audio", {
+        //     originX: -240,
+        //     originY: -43,
+        //     width: 480,
+        //     height: 86,
+        //     attributes: {
+        //         pluginAudioUrl: src,
+        //     },
+        // });
+        console.log("[cloud storage] not support mp3 yet");
+    } else if (fileName.endsWith(".mp4")) {
+        // room.insertPlugin("video", {
+        //     originX: -240,
+        //     originY: -135,
+        //     width: 480,
+        //     height: 270,
+        //     attributes: {
+        //         pluginAudioUrl: src,
+        //     },
+        // });
+        console.log("[cloud storage] not support mp4 yet");
+    } else {
+        const uuid = v4();
+        const { taskUUID, taskToken } = file;
+        const isDynamic = fileName.endsWith(".pptx");
+        const { status, progress, failedReason } = await queryTask(taskUUID, taskToken, isDynamic);
+        if (file.convertStep !== FileConvertStep.Done) {
+            if (status === "Finished" || status === "Fail") {
+                try {
+                    await convertFinish({ fileUUID });
+                } catch {
+                    // ignore convert finish fail
+                }
+                if (status === "Fail") {
+                    message.error(`convert failed, reason: ${failedReason}`);
+                }
+            } else {
+                message.error("still converting..., wait and try again");
+                return;
+            }
+        }
+        console.log(status, progress);
+        if (status === "Finished" && progress) {
+            const scenes = progress.convertedFileList.map(f => ({
+                name: v4(),
+                ppt: {
+                    width: f.width,
+                    height: f.height,
+                    src: f.conversionFileUrl,
+                },
+            }));
+            room.putScenes(`/${taskUUID}/${uuid}`, scenes);
+            room.setScenePath(`/${taskUUID}/${uuid}/${scenes[0].name}`);
+        }
+    }
+}
