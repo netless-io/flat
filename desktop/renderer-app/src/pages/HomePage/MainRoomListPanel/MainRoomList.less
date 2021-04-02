@@ -98,10 +98,6 @@
     padding-left: 16px;
     padding-right: 16px;
     margin-top: 16px;
-
-    &:hover .room-list-cell-right {
-        display: flex;
-    }
 }
 
 .room-list-cell-left {
@@ -132,19 +128,15 @@
 }
 
 .room-list-cell-right {
-    display: none;
+    display: flex;
     flex-direction: row;
-
-    .ant-btn {
-        height: 28px;
-        padding: 0;
-    }
+    align-items: center;
 }
 
 .room-list-cell-more {
     &.ant-btn {
         margin-right: 8px;
-        width: 28px;
+        // width: 28px;
     }
 }
 
