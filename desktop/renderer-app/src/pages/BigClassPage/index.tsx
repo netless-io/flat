@@ -1,44 +1,40 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
-import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import classNames from "classnames";
+import { observer } from "mobx-react-lite";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router";
+import { v4 } from "uuid";
 import { RoomPhase, ViewMode } from "white-web-sdk";
-
+import { FileConvertStep, RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
+import { convertFinish, listFiles } from "../../apiMiddleware/flatServer/storage";
+import { RtcChannelType } from "../../apiMiddleware/Rtc";
+import { ChatPanel } from "../../components/ChatPanel";
+import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
+import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 import InviteButton from "../../components/InviteButton";
+import { NetworkStatus } from "../../components/NetworkStatus";
+import { RealtimePanel } from "../../components/RealtimePanel";
+import { RecordButton } from "../../components/RecordButton";
+import { RecordHintTips } from "../../components/RecordHintTips";
+import { RoomInfo } from "../../components/RoomInfo";
 import { TopBar, TopBarDivider } from "../../components/TopBar";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
-import { RealtimePanel } from "../../components/RealtimePanel";
-import { ChatPanel } from "../../components/ChatPanel";
-import { BigClassAvatar } from "./BigClassAvatar";
-import { NetworkStatus } from "../../components/NetworkStatus";
-import { RecordButton } from "../../components/RecordButton";
-import { RoomInfo } from "../../components/RoomInfo";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
-import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 import { Whiteboard } from "../../components/Whiteboard";
-import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import { RecordHintTips } from "../../components/RecordHintTips";
 import LoadingPage from "../../LoadingPage";
-import { FileConvertStep, RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import {
     RecordingConfig,
     RoomStatusLoadingType,
     useClassRoomStore,
     User,
 } from "../../stores/ClassRoomStore";
-import { RtcChannelType } from "../../apiMiddleware/Rtc";
-import { ipcAsyncByMainWindow } from "../../utils/ipc";
+import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { useAutoRun, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
-import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
-
-import "./BigClassPage.less";
-import { constants } from "flat-types";
-import { useWindowSize } from "../../utils/hooks/useWindowSize";
-import { convertFinish, listFiles } from "../../apiMiddleware/flatServer/storage";
-import { v4 } from "uuid";
 import { getFileUrl, queryTask } from "../CloudStoragePage/utils";
+import { BigClassAvatar } from "./BigClassAvatar";
+import "./BigClassPage.less";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,

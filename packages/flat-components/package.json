@@ -64,7 +64,7 @@
     "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.11.0",
-    "antd": "^4.9.3",
+    "antd": "^4.15.0",
     "bulma": "^0.9.2",
     "chance": "^1.1.7",
     "cross-env": "^7.0.2",

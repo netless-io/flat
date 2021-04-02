@@ -5,7 +5,7 @@ import ToolBox from "@netless/tool-box";
 import ZoomController from "@netless/zoom-controller";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import pages from "../assets/image/pages.svg";
 import { WhiteboardStore } from "../stores/WhiteboardStore";
 import "./Whiteboard.less";
@@ -15,13 +15,10 @@ export interface WhiteboardProps {
 }
 
 export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteboardStore }) {
-    const [whiteboardEl, setWhiteboardEl] = useState<HTMLDivElement>();
-
     const { room } = whiteboardStore;
 
     const bindWhiteboard = useCallback(
         (ref: HTMLDivElement) => {
-            setWhiteboardEl(ref);
             if (room) {
                 room.bindHtmlElement(ref);
                 room.scalePptToFit();
