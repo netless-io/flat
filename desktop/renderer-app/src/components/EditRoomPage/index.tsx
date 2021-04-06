@@ -1,5 +1,5 @@
 import "./EditRoomPage.less";
-import back from "../../assets/image/back.svg";
+import backSVG from "../../assets/image/back.svg";
 
 import React, { useMemo, useRef, useState } from "react";
 import { Button, Checkbox, Input, Form, Divider, Modal } from "antd";
@@ -81,7 +81,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                             }}
                             className="edit-room-back"
                         >
-                            <img src={back} alt="back" />
+                            <img src={backSVG} alt="back" />
                             <span>返回</span>
                         </Link>
                         <Divider type="vertical" />
@@ -221,27 +221,35 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
 
     function renderModalTitle(editRoomType: EditRoomType): string {
         switch (editRoomType) {
-            case EditRoomType.EditOrdinary:
+            case EditRoomType.EditOrdinary: {
                 return "修改房间";
-            case EditRoomType.EditPeriodicSub:
+            }
+            case EditRoomType.EditPeriodicSub: {
                 return "修改本次房间";
-            case EditRoomType.EditPeriodic:
+            }
+            case EditRoomType.EditPeriodic: {
                 return "修改周期性房间";
-            default:
+            }
+            default: {
                 return "修改房间";
+            }
         }
     }
 
     function renderModalContent(editRoomType: EditRoomType): string {
         switch (editRoomType) {
-            case EditRoomType.EditOrdinary:
+            case EditRoomType.EditOrdinary: {
                 return "确定修改该房间？";
-            case EditRoomType.EditPeriodicSub:
+            }
+            case EditRoomType.EditPeriodicSub: {
                 return "确定修改本次房间？";
-            case EditRoomType.EditPeriodic:
+            }
+            case EditRoomType.EditPeriodic: {
                 return "确定修改该系列周期性房间？";
-            default:
+            }
+            default: {
                 return "确定修改房间？";
+            }
         }
     }
 

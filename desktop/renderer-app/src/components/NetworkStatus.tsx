@@ -1,7 +1,7 @@
-import signal0 from "../assets/image/signal-0.svg";
-import signal1 from "../assets/image/signal-1.svg";
-import signal2 from "../assets/image/signal-2.svg";
-import signal3 from "../assets/image/signal-3.svg";
+import signal0SVG from "../assets/image/signal-0.svg";
+import signal1SVG from "../assets/image/signal-1.svg";
+import signal2SVG from "../assets/image/signal-2.svg";
+import signal3SVG from "../assets/image/signal-3.svg";
 import "./NetworkStatus.less";
 
 import React from "react";
@@ -34,19 +34,19 @@ export const NetworkStatus = observer<NetworkStatusProps>(function NetworkStatus
     const signalIcon = useComputed<string>(() => {
         const { uplink, downlink } = networkQuality;
         if (uplink === 5 || downlink === 5 || uplink === 4 || downlink === 4) {
-            return signal1;
+            return signal1SVG;
         }
         if (uplink === 3 || downlink === 3) {
-            return signal2;
+            return signal2SVG;
         }
         if (uplink === 2 || downlink === 2 || uplink === 1 || downlink === 1) {
-            return signal3;
+            return signal3SVG;
         }
         if (uplink === 8 || downlink === 8) {
             // checking
-            return signal3;
+            return signal3SVG;
         }
-        return signal0;
+        return signal0SVG;
     }).get();
 
     const signalText = useComputed<string>(

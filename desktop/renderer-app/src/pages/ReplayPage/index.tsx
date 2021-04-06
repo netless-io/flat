@@ -12,13 +12,12 @@ import { observer } from "mobx-react-lite";
 import { useClassRoomReplayStore } from "../../stores/ClassRoomReplayStore";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 
-import video_play from "../../assets/image/video-play.svg";
+import videoPlaySVG from "../../assets/image/video-play.svg";
 import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
 import { useHistory } from "react-router-dom";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { constants } from "flat-types";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 export type ReplayPageProps = RouteComponentProps<{
@@ -136,7 +135,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
                         onClick={classRoomReplayStore.togglePlayPause}
                     >
                         <button className="replay-play-icon">
-                            <img src={video_play} alt="play" />
+                            <img src={videoPlaySVG} alt="play" />
                         </button>
                     </div>
                 )}

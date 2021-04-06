@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { User } from "./ChatUser";
 
-import send from "../../assets/image/send.svg";
-import banChat from "../../assets/image/ban-chat.svg";
-import banChatActive from "../../assets/image/ban-chat-active.svg";
-import hand from "../../assets/image/hand.svg";
-import handActive from "../../assets/image/hand-active.svg";
+import sendSVG from "../../assets/image/send.svg";
+import banChatSVG from "../../assets/image/ban-chat.svg";
+import banChatActiveSVG from "../../assets/image/ban-chat-active.svg";
+import handSVG from "../../assets/image/hand.svg";
+import handActiveSVG from "../../assets/image/hand-active.svg";
 
 export interface ChatTypeBoxProps {
     /** Only room owner can ban chatting. */
@@ -77,12 +77,12 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
         <div className="chat-typebox">
             {isCreator ? (
                 <button className="chat-typebox-icon" title="禁言" onClick={onBanChange}>
-                    <img src={isBan ? banChatActive : banChat} />
+                    <img src={isBan ? banChatActiveSVG : banChatSVG} />
                 </button>
             ) : (
                 !disableHandRaising && (
                     <button className="chat-typebox-icon" title="举手" onClick={onRaiseHandChange}>
-                        <img src={currentUser?.isRaiseHand ? handActive : hand} />
+                        <img src={currentUser?.isRaiseHand ? handActiveSVG : handSVG} />
                     </button>
                 )
             )}
@@ -106,7 +106,7 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
                 onClick={onSendBtnPressed}
                 disabled={isBan || isSending || text.length <= 0}
             >
-                <img src={send} />
+                <img src={sendSVG} />
             </button>
         </div>
     );

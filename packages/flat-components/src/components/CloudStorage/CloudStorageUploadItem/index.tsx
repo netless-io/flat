@@ -44,7 +44,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
 
     function renderUploadBody(): React.ReactElement {
         switch (status) {
-            case "uploading":
+            case "uploading": {
                 return (
                     <>
                         <span className="cloud-storage-upload-status">{`${percent}%`}</span>
@@ -58,7 +58,8 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                         </Button>
                     </>
                 );
-            case "error":
+            }
+            case "error": {
                 return (
                     <>
                         <span className="cloud-storage-upload-status is-error">上传失败</span>
@@ -72,7 +73,8 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                         </Button>
                     </>
                 );
-            case "success":
+            }
+            case "success": {
                 return (
                     <>
                         <span className="cloud-storage-upload-status is-success">上传成功</span>
@@ -81,7 +83,8 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                         </div>
                     </>
                 );
-            default:
+            }
+            default: {
                 return (
                     <>
                         <span className="cloud-storage-upload-status">待上传</span>
@@ -95,6 +98,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                         </Button>
                     </>
                 );
+            }
         }
     }
 };

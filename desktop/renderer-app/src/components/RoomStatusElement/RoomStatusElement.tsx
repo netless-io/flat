@@ -19,7 +19,8 @@ export const RoomStatusElement = observer<RoomStatusElementProps>(function RoomS
         case RoomStatus.Stopped: {
             return <span className="room-status-stopped">已结束</span>;
         }
-        default:
+        default: {
             return <span className="room-status-idle">待开始</span>;
+        }
     }
 });

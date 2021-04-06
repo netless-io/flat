@@ -1,7 +1,7 @@
 import React from "react";
-import classBegin from "../assets/image/class-begin.svg";
-import classPause from "../assets/image/class-pause.svg";
-import classStop from "../assets/image/class-stop.svg";
+import classBeginSVG from "../assets/image/class-begin.svg";
+import classPauseSVG from "../assets/image/class-pause.svg";
+import classStopSVG from "../assets/image/class-stop.svg";
 
 export interface TopBarClassOperationsProps {
     isBegin: boolean;
@@ -16,17 +16,17 @@ export class TopBarClassOperations extends React.PureComponent<TopBarClassOperat
         return isBegin ? (
             <>
                 <button className="topbar-class-operations-btn" onClick={onPause}>
-                    <img src={classPause} alt="pause class" />
+                    <img src={classPauseSVG} alt="pause class" />
                     <span>暂停上课</span>
                 </button>
                 <button className="topbar-class-operations-btn" onClick={onStop}>
-                    <img src={classStop} alt="stop class" />
+                    <img src={classStopSVG} alt="stop class" />
                     <span>结束上课</span>
                 </button>
             </>
         ) : (
             <button className="topbar-class-operations-btn" onClick={onBegin}>
-                <img src={classBegin} alt="start class" />
+                <img src={classBeginSVG} alt="start class" />
                 <span>开始上课</span>
             </button>
         );

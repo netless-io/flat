@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { Button, Modal } from "antd";
 import { constants } from "flat-types";
-import logo from "./assets/image/logo.svg";
+import logoSVG from "./assets/image/logo.svg";
 import { ipcAsyncByMainWindow } from "./utils/ipc";
 import WeChatLogin from "./components/WeChatLogin";
 
@@ -45,7 +45,7 @@ export class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPag
             <div className="page-index-box">
                 <div className="page-index-mid-box">
                     <div className="page-index-logo-box">
-                        <img src={logo} alt={"logo"} />
+                        <img src={logoSVG} alt={"logo"} />
                         <span>在线互动 让想法同步</span>
                     </div>
                     {/*<div className="page-index-start-box page-index-fade-in">*/}

@@ -4,6 +4,7 @@ module.exports = {
         "plugin:react/recommended",
         "react-app",
         "plugin:jsx-a11y/recommended",
+        "plugin:@netless/recommended",
     ],
     plugins: ["jsx-a11y", "react", "prettier"],
     parserOptions: {
