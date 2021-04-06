@@ -47,9 +47,6 @@ const HotKeyTableExpandRow : {
             name: "画笔",
             hotKey: "P"
         }, {
-            name: "文字",
-            hotKey: "T"
-        }, {
             name: "橡皮擦",
             hotKey: "E"
         }, {
@@ -62,8 +59,11 @@ const HotKeyTableExpandRow : {
             name: "箭头",
             hotKey: "A"
         }, {
-            name: "激光笔",
+            name: "直线",
             hotKey: "L"
+        }, {
+            name: "激光笔",
+            hotKey: "Z"
         }, {
             name: "抓手",
             hotKey: "H"
