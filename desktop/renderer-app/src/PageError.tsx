@@ -1,4 +1,4 @@
-import room_not_find from "./assets/image/room_not_find.svg";
+import roomNotFindSVG from "./assets/image/room_not_find.svg";
 import "./PageError.less";
 
 import React, { useEffect, useState } from "react";
@@ -29,7 +29,7 @@ export const PageError = React.memo(function PageError() {
     return (
         <div className="page404-box">
             <div className="page404-image-box">
-                <img className="page404-image-inner" src={room_not_find} />
+                <img className="page404-image-inner" src={roomNotFindSVG} />
                 <div className="page404-inner">
                     <div className="page404-inner-title">抱歉，遇到未知错误</div>
                     <div className="page404-inner-script">请重试</div>

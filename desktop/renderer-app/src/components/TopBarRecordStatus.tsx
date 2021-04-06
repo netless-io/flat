@@ -1,7 +1,7 @@
 import React from "react";
 import memoizeOne from "memoize-one";
-import topbarRecording from "../assets/image/topbar-recording.svg";
-import topbarPlay from "../assets/image/topbar-play.svg";
+import topbarRecordingSVG from "../assets/image/topbar-recording.svg";
+import topbarPlaySVG from "../assets/image/topbar-play.svg";
 import "./TopBarRecordStatus.less";
 
 export interface TopBarRecordStatusProps {
@@ -63,7 +63,7 @@ export class TopBarRecordStatus extends React.PureComponent<
                         <span className="topbar-record-status">正在录制中…</span>
                         <span className="topbar-record-time-recording">{this.state.count}</span>
                         <button className="topbar-record-btn" onClick={onStop}>
-                            <img src={topbarRecording} alt="recording" />
+                            <img src={topbarRecordingSVG} alt="recording" />
                             <span>结束录制</span>
                         </button>
                     </>
@@ -72,7 +72,7 @@ export class TopBarRecordStatus extends React.PureComponent<
                         <span className="topbar-record-status">录制完成</span>
                         <span className="topbar-record-time">{this.state.count}</span>
                         <button className="topbar-record-btn" onClick={onReplay}>
-                            <img src={topbarPlay} alt="play" />
+                            <img src={topbarPlaySVG} alt="play" />
                             <span>查看回放</span>
                         </button>
                     </>

@@ -84,16 +84,21 @@ export function pickFiles({
 
 export function convertStepToType(convertStep: FileConvertStep): CloudStorageConvertStatusType {
     switch (convertStep) {
-        case FileConvertStep.None:
+        case FileConvertStep.None: {
             return "idle";
-        case FileConvertStep.Failed:
+        }
+        case FileConvertStep.Failed: {
             return "error";
-        case FileConvertStep.Converting:
+        }
+        case FileConvertStep.Converting: {
             return "converting";
-        case FileConvertStep.Done:
+        }
+        case FileConvertStep.Done: {
             return "success";
-        default:
+        }
+        default: {
             return "idle";
+        }
     }
 }
 

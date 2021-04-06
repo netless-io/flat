@@ -6,7 +6,7 @@ import ZoomController from "@netless/zoom-controller";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
-import pages from "../assets/image/pages.svg";
+import pagesSVG from "../assets/image/pages.svg";
 import { WhiteboardStore } from "../stores/WhiteboardStore";
 import "./Whiteboard.less";
 
@@ -51,7 +51,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                                 className="page-preview-cell"
                                 onClick={whiteboardStore.showPreviewPanel}
                             >
-                                <img src={pages} alt={"pages"} />
+                                <img src={pagesSVG} alt={"pages"} />
                             </div>
                         </div>
                     </div>

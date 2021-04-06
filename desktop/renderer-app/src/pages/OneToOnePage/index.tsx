@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useParams } from "react-router";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
@@ -26,13 +26,11 @@ import {
     useClassRoomStore,
 } from "../../stores/ClassRoomStore";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
-import { ipcAsyncByMainWindow } from "../../utils/ipc";
 import { useComputed } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 
 import "./OneToOnePage.less";
-import { constants } from "flat-types";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 

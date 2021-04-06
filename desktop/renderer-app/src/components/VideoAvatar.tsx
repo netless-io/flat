@@ -4,10 +4,10 @@ import { observer } from "mobx-react-lite";
 import { useUpdateEffect } from "react-use";
 import { User } from "../stores/ClassRoomStore";
 
-import cameraIcon from "../assets/image/camera.svg";
-import cameraDisabled from "../assets/image/camera-disabled.svg";
-import microphone from "../assets/image/microphone.svg";
-import microphoneDisabled from "../assets/image/microphone-disabled.svg";
+import cameraIconSVG from "../assets/image/camera.svg";
+import cameraDisabledSVG from "../assets/image/camera-disabled.svg";
+import microphoneSVG from "../assets/image/microphone.svg";
+import microphoneDisabledSVG from "../assets/image/microphone-disabled.svg";
 import "./VideoAvatar.less";
 
 export interface VideoAvatarProps {
@@ -101,7 +101,7 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
                 }}
                 disabled={isCameraCtrlDisable}
             >
-                <img src={avatarUser.camera ? cameraIcon : cameraDisabled} alt="camera" />
+                <img src={avatarUser.camera ? cameraIconSVG : cameraDisabledSVG} alt="camera" />
             </button>
             <button
                 onClick={() => {
@@ -111,7 +111,10 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
                 }}
                 disabled={isMicCtrlDisable}
             >
-                <img src={avatarUser.mic ? microphone : microphoneDisabled} alt="microphone" />
+                <img
+                    src={avatarUser.mic ? microphoneSVG : microphoneDisabledSVG}
+                    alt="microphone"
+                />
             </button>
         </div>
     );

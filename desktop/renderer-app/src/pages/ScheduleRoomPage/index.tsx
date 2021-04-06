@@ -8,8 +8,8 @@ import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { useLastLocation } from "react-router-last-location";
-import back from "../../assets/image/back.svg";
-import moreBtn from "../../assets/image/moreBtn.svg";
+import backSVG from "../../assets/image/back.svg";
+import moreBtnSVG from "../../assets/image/moreBtn.svg";
 import MainPageLayout from "../../components/MainPageLayout";
 import { CopyInvitationItem } from "../../components/MoreMenu/CopyInvitationItem";
 import { ModifyRoomItem } from "../../components/MoreMenu/ModifyRoomItem";
@@ -177,7 +177,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                 <div className="schedule-room-nav">
                     <div className="schedule-room-head">
                         <div className="schedule-room-back" onClick={() => backPreviousPage()}>
-                            <img src={back} alt="back" />
+                            <img src={backSVG} alt="back" />
                             <span>返回</span>
                         </div>
                         <Divider type="vertical" />
@@ -277,7 +277,7 @@ const MoreMenu = observer<MoreMenuProps>(function MoreMenu({ room, isCreator, re
             }}
             trigger={["click"]}
         >
-            <img src={moreBtn} alt="更多" />
+            <img src={moreBtnSVG} alt="更多" />
         </Dropdown>
     );
 });

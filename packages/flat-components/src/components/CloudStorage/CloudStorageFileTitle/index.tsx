@@ -114,21 +114,25 @@ function getFileIcon(fileName: string): string {
 
     switch (ext) {
         case ".ppt":
-        case ".pptx":
+        case ".pptx": {
             return pptSVG;
+        }
         case ".doc":
-        case ".docx":
+        case ".docx": {
             return wordSVG;
-        case ".pdf":
+        }
+        case ".pdf": {
             return pdfSVG;
+        }
         case ".jpg":
         case ".png":
         case ".gif":
         case ".jpeg":
         case ".svg":
         case ".bmp":
-        case ".eps":
+        case ".eps": {
             return imgSVG;
+        }
         case ".mp4":
         case ".avi":
         case ".mov":
@@ -138,15 +142,18 @@ function getFileIcon(fileName: string): string {
         case ".flv":
         case ".f4v":
         case ".rmvb":
-        case ".webm":
+        case ".webm": {
             return videoSVG;
+        }
         case ".aac":
         case ".mp3":
         case ".wave":
         case ".wma":
-        case ".flac":
+        case ".flac": {
             return audioSVG;
-        default:
+        }
+        default: {
             return defaultSVG;
+        }
     }
 }

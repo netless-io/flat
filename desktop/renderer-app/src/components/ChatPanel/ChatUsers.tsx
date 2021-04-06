@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { AutoSizer, List, ListRowRenderer, Size } from "react-virtualized";
 import classNames from "classnames";
 import { ChatUser } from "./ChatUser";
-import noHand from "../../assets/image/no-hand.svg";
+import noHandSVG from "../../assets/image/no-hand.svg";
 import "./ChatUsers.less";
 import { useComputed } from "../../utils/mobx";
 import { ClassRoomStore } from "../../stores/ClassRoomStore";
@@ -78,7 +78,7 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
                         className="chat-users-cancel-hands"
                         onClick={classRoomStore.onCancelAllHandRaising}
                     >
-                        <img src={noHand} alt="cancel hand raising" />
+                        <img src={noHandSVG} alt="cancel hand raising" />
                         取消举手
                     </button>
                 </div>

@@ -1,5 +1,5 @@
 import "./style.less";
-import calendar from "./icons/calendar.svg";
+import calendarSVG from "./icons/calendar.svg";
 
 import React from "react";
 import { format, isToday, isTomorrow } from "date-fns";
@@ -13,7 +13,7 @@ export interface RoomListDateProps {
 
 export const RoomListDate: React.FC<RoomListDateProps> = ({ date }) => (
     <div className="room-list-date">
-        <img src={calendar} alt="" />
+        <img src={calendarSVG} alt="" />
         <time dateTime={date.toUTCString()}>
             {format(date, "MMM do", { locale: zhCN })}
             {" · "}

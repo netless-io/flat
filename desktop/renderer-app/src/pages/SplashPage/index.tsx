@@ -5,11 +5,9 @@ import { loginCheck } from "../../apiMiddleware/flatServer";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 
-import logo from "../../assets/image/logo.svg";
+import logoSVG from "../../assets/image/logo.svg";
 import "./SplashPage.less";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { ipcAsyncByMainWindow } from "../../utils/ipc";
-import { constants } from "flat-types";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 enum LoginStatusType {
@@ -83,7 +81,7 @@ export const SplashPage = observer<SplashPageProps>(function SplashPage() {
                     "is-success": loginStatus === LoginStatusType.Success,
                 })}
             >
-                <img src={logo} alt="flat logo" />
+                <img src={logoSVG} alt="flat logo" />
                 <span>在线互动 让想法同步</span>
             </div>
         </div>

@@ -44,8 +44,9 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
                 </div>
             );
         }
-        default:
+        default: {
             break;
+        }
     }
 
     if (userUUID === message.userUUID) {

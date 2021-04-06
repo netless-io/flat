@@ -3,7 +3,7 @@ import { Observer, observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { VideoAvatar, VideoAvatarProps } from "../../components/VideoAvatar";
 
-import videoExpand from "../../assets/image/video-expand.svg";
+import videoExpandSVG from "../../assets/image/video-expand.svg";
 
 import "./BigClassAvatar.less";
 
@@ -34,7 +34,7 @@ export const BigClassAvatar = observer<BigClassAvatarProps>(function BigClassAva
                                         style={{
                                             backgroundImage: `url(${avatarUser.avatar})`,
                                         }}
-                                    ></div>
+                                    />
                                     <img src={avatarUser.avatar} alt="no camera" />
                                 </div>
                             )}
@@ -45,7 +45,7 @@ export const BigClassAvatar = observer<BigClassAvatarProps>(function BigClassAva
                             >
                                 {small ? (
                                     <button className="big-class-avatar-expand" onClick={onExpand}>
-                                        <img src={videoExpand} alt="expand" />
+                                        <img src={videoExpandSVG} alt="expand" />
                                     </button>
                                 ) : (
                                     <>

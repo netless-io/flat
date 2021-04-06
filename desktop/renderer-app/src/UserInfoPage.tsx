@@ -42,8 +42,9 @@ export default class UserInfoPage extends React.PureComponent<{}, UserInfoPagePr
             case MenuMap.About: {
                 return <UserAbout />;
             }
-            default:
+            default: {
                 return null;
+            }
         }
     };
 

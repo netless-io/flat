@@ -51,6 +51,7 @@
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@netless/eslint-plugin": "^1.1.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.1",
     "@types/classnames": "^2.2.11",
     "@types/fs-extra": "^9.0.6",

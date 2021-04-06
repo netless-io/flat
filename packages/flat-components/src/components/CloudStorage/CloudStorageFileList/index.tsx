@@ -2,7 +2,7 @@ import "./style.less";
 import emptyFileSVG from "./icons/empty-file.svg";
 
 import React, { useCallback, useMemo, useRef } from "react";
-import { Empty, Table } from "antd";
+import { Table } from "antd";
 import prettyBytes from "pretty-bytes";
 import { format } from "date-fns";
 import { ColumnsType } from "antd/lib/table";

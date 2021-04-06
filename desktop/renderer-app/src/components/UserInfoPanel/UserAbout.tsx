@@ -1,12 +1,12 @@
 import React from "react";
-import logo from "../../assets/image/logo-large.svg";
+import logoSVG from "../../assets/image/logo-large.svg";
 import "./UserAbout.less";
 export default class UserAbout extends React.PureComponent {
     public render(): JSX.Element {
         return (
             <div className="check-update-container">
                 <div className="check-update-logo">
-                    <img src={logo} alt="flat web logo" />
+                    <img src={logoSVG} alt="flat web logo" />
                     <div className="check-update-info">
                         <a>服务协议</a>
                         <span>|</span>

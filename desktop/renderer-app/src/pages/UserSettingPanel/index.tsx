@@ -11,8 +11,8 @@ import { NormalSetting } from "./NormalSetting";
 import { CameraTesting } from "./CameraTesting";
 import { SpeakerTesting } from "./SpeakerTesting";
 import { MicrophoneTesting } from "./MicrophoneTesting";
-import info from "../../assets/image/info.svg";
-import success from "../../assets/image/success.svg";
+import infoSVG from "../../assets/image/info.svg";
+import successSVG from "../../assets/image/success.svg";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 export enum SettingMenuKey {
@@ -144,14 +144,14 @@ export default function UserSettingPage(): React.ReactElement {
         if (isSuccess) {
             return (
                 <div className="user-setting-modal-title">
-                    <img src={success} alt="success" />
+                    <img src={successSVG} alt="success" />
                     设备检测成功
                 </div>
             );
         } else {
             return (
                 <div className="user-setting-modal-title">
-                    <img src={info} alt="info" />
+                    <img src={infoSVG} alt="info" />
                     设备检测异常
                 </div>
             );

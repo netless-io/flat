@@ -20,7 +20,6 @@ import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusSto
 import { RecordHintTips } from "../../components/RecordHintTips";
 import LoadingPage from "../../LoadingPage";
 
-import { ipcAsyncByMainWindow } from "../../utils/ipc";
 import { useAutoRun, useComputed } from "../../utils/mobx";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ClassModeType } from "../../apiMiddleware/Rtm";
@@ -36,7 +35,6 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 
 import "./SmallClassPage.less";
-import { constants } from "flat-types";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 
