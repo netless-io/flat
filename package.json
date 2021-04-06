@@ -4,6 +4,7 @@
   "scripts": {
     "preinstall": "node ./scripts/preinstall",
     "lint": "yarn workspaces run lint",
+    "start": "node scripts/start.js",
     "start:mac": "osascript ./scripts/start.scpt",
     "start:win": "scripts\\start.cmd",
     "ship": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship",
