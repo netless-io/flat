@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>copy备份@2x</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="组件规范" transform="translate(-133.000000, -1866.000000)" stroke="#7A7B7C">
-            <g id="编组-22" transform="translate(32.000000, 1858.000000)">
-                <g id="编组-4备份-2" transform="translate(82.000000, 8.000000)">
-                    <g id="copy备份" transform="translate(19.000000, 0.000000)">
-                        <path d="M10,18 L19.7811992,11.4792005 C21.1247969,10.5834688 22.8752031,10.5834688 24.2188008,11.4792005 L34,18 L34,18" id="路径-39"></path>
-                        <path d="M12,20 L12,30 C12,32.209139 13.790861,34 16,34 L28,34 C30.209139,34 32,32.209139 32,30 L32,20 L32,20" id="路径-3"></path>
-                        <polyline id="路径-7" points="18 34 18 26 26 26 26 34"></polyline>
-                    </g>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>copy备份 9@2x</title>
+    <g id="Flat-单窗口" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="菜单栏（单窗口）" transform="translate(-103.000000, -122.000000)" stroke="#7A7B7C">
+            <g id="编组备份" transform="translate(83.000000, 0.000000)">
+                <g id="copy备份-9" transform="translate(20.000000, 122.000000)">
+                    <path d="M8,13.3333333 L14.5207995,8.98613368 C15.4165312,8.38897917 16.5834688,8.38897917 17.4792005,8.98613368 L24,13.3333333 L24,13.3333333 L22.6666667,13.3333333 L22.6666667,21.3333333 C22.6666667,22.8060927 21.4727593,24 20,24 L12,24 C10.5272407,24 9.33333333,22.8060927 9.33333333,21.3333333 L9.33333333,13.3333333 L9.33333333,13.3333333 L8,13.3333333 Z" id="路径-39"></path>
                 </g>
             </g>
         </g>

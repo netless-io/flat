@@ -61,7 +61,7 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                         }
                         trigger={["click"]}
                     >
-                        <Button className="room-list-cell-more">更多</Button>
+                        <Button className="room-list-cell-more">...</Button>
                     </Dropdown>
                     {isHistoryList ? (
                         room.hasRecord ? (
@@ -76,11 +76,11 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                                     })
                                 }
                             >
-                                查看回放
+                                回放
                             </Button>
                         ) : (
                             <Button disabled className="room-list-cell-enter" type="primary">
-                                查看回放
+                                回放
                             </Button>
                         )
                     ) : (

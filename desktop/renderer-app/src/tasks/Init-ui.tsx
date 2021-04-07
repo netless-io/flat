@@ -18,6 +18,7 @@ configure({
 const initUI = (): void => {
     ReactDOM.render(
         <ConfigProvider
+            autoInsertSpaceInButton={false}
             locale={zhCN}
             // let popups scrolls with container parent
             getPopupContainer={trigger => trigger?.parentElement || document.body}
