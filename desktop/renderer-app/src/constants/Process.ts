@@ -5,8 +5,10 @@ export const NETLESS = Object.freeze({
     APP_IDENTIFIER: process.env.NETLESS_APP_IDENTIFIER,
 });
 
-export const OSS_CONFIG = Object.freeze({
-    accessKeyId: process.env.OSS_ACCESS_KEY_ID,
+export const CLOUD_STORAGE_OSS_ALIBABA_CONFIG = Object.freeze({
+    accessKey: process.env.CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY,
+    bucket: process.env.CLOUD_STORAGE_OSS_ALIBABA_BUCKET,
+    region: process.env.CLOUD_STORAGE_OSS_ALIBABA_REGION,
 });
 
 export const AGORA = Object.freeze({
