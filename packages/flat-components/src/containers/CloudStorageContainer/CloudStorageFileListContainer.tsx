@@ -14,7 +14,7 @@ export const CloudStorageFileListContainer = observer<CloudStorageFileListContai
             <CloudStorageFileList
                 titleClickable
                 files={toJS(store.files)}
-                selectedFileUUIDs={store.selectedFileUUIDs}
+                selectedFileUUIDs={toJS(store.selectedFileUUIDs)}
                 onSelectionChange={store.onSelectionChange}
                 fileMenus={store.fileMenus}
                 onItemMenuClick={store.onItemMenuClick}

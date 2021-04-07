@@ -7,37 +7,20 @@ import {
     CloudStorageUploadTask,
 } from "../../components/CloudStorage/types";
 
+export type UploadID = string;
+export type FileUUID = string;
+
 export abstract class CloudStorageStore {
     /** Compact UI for small panel */
     compact = false;
     /** User total cloud storage usage */
     totalUsage = NaN;
-    /** User cloud storage files */
-    files: CloudStorageFile[] = [];
     /** User selected file uuids */
-    selectedFileUUIDs: string[] = [];
-    /** Files in the upload panel list */
-    uploadTasksMap = observable.map</** uploadUUID */ string, CloudStorageUploadTask>();
+    selectedFileUUIDs = observable.array<FileUUID>();
     /** It changes when user toggles the expand button */
     isUploadPanelExpand = false;
     /** UUID of file that is under renaming */
-    renamingFileUUID?: string = "";
-
-    /** Number of total upload */
-    get uploadTotalCount(): number {
-        return this.uploadTasksMap.size;
-    }
-
-    /** Number of finished upload */
-    get uploadFinishedCount(): number {
-        let count = 0;
-        for (const status of this.uploadTasksMap.values()) {
-            if (status.status === "success") {
-                count += 1;
-            }
-        }
-        return count;
-    }
+    renamingFileUUID?: FileUUID = "";
 
     /** Display upload panel */
     get isUploadPanelVisible(): boolean {
@@ -49,63 +32,16 @@ export abstract class CloudStorageStore {
         return Number.isNaN(this.totalUsage) ? "" : prettyBytes(this.totalUsage);
     }
 
-    /** If upload finishes with error */
-    get uploadFinishWithError(): boolean {
-        let hasError = false;
-        for (const task of this.uploadTasksMap.values()) {
-            if (task.status === "error") {
-                hasError = true;
-                continue;
-            } else if (task.percent !== 100) {
-                return false;
-            }
-        }
-        return hasError;
-    }
-
-    /** Uploading -> Error -> Idle -> Success */
-    get sortedUploadTasks(): CloudStorageUploadTask[] {
-        const idle: CloudStorageUploadTask[] = [];
-        const uploading: CloudStorageUploadTask[] = [];
-        const error: CloudStorageUploadTask[] = [];
-        const success: CloudStorageUploadTask[] = [];
-        for (const task of this.uploadTasksMap.values()) {
-            switch (task.status) {
-                case "uploading": {
-                    uploading.push(task);
-                    break;
-                }
-                case "success": {
-                    success.push(task);
-                    break;
-                }
-                case "error": {
-                    error.push(task);
-                    break;
-                }
-                default: {
-                    idle.push(task);
-                    break;
-                }
-            }
-        }
-        return [...uploading, ...error, ...idle, ...success];
-    }
-
     constructor() {
         makeObservable(this, {
             compact: observable,
             totalUsage: observable,
-            files: observable,
             selectedFileUUIDs: observable,
             isUploadPanelExpand: observable,
             renamingFileUUID: observable,
 
-            uploadFinishedCount: computed,
-            uploadTotalCount: computed,
             isUploadPanelVisible: computed,
             totalUsageHR: computed,
-            uploadFinishWithError: computed,
 
             setRenamePanel: action,
             setPanelExpand: action,
@@ -115,7 +51,7 @@ export abstract class CloudStorageStore {
         });
     }
 
-    setRenamePanel = (fileUUID?: string): void => {
+    setRenamePanel = (fileUUID?: FileUUID): void => {
         this.renamingFileUUID = fileUUID;
     };
 
@@ -128,12 +64,12 @@ export abstract class CloudStorageStore {
     };
 
     /** When file list item selection changed */
-    onSelectionChange = (fileUUIDs: string[]): void => {
-        this.selectedFileUUIDs = fileUUIDs;
+    onSelectionChange = (fileUUIDs: FileUUID[]): void => {
+        this.selectedFileUUIDs.replace(fileUUIDs);
     };
 
     /** When a rename event is received. Could be empty. Put business logic in `onNewFileName` instead. */
-    onRename = (fileUUID: string, fileName?: CloudStorageFileName): void => {
+    onRename = (fileUUID: FileUUID, fileName?: CloudStorageFileName): void => {
         // hide rename panel
         this.renamingFileUUID = "";
 
@@ -142,6 +78,21 @@ export abstract class CloudStorageStore {
         }
     };
 
+    /** Uploading -> Error -> Idle -> Success */
+    abstract sortedUploadTasks: CloudStorageUploadTask[];
+
+    /** If upload finishes with error */
+    abstract uploadFinishWithError: boolean;
+
+    /** Number of finished upload */
+    abstract uploadFinishedCount: number;
+
+    /** Number of total upload */
+    abstract uploadTotalCount: number;
+
+    /** User cloud storage files */
+    abstract files: CloudStorageFile[];
+
     /** Render file menus item base on fileUUID */
     abstract fileMenus: (
         file: CloudStorageFile,
@@ -149,10 +100,10 @@ export abstract class CloudStorageStore {
     ) => Array<{ key: React.Key; name: React.ReactNode }> | void | undefined | null;
 
     /** When a file menus item is clicked */
-    abstract onItemMenuClick: (fileUUID: string, menuKey: React.Key) => void;
+    abstract onItemMenuClick: (fileUUID: FileUUID, menuKey: React.Key) => void;
 
     /** When file title click */
-    abstract onItemTitleClick: (fileUUID: string) => void;
+    abstract onItemTitleClick: (fileUUID: FileUUID) => void;
 
     /** When page delete button is pressed */
     abstract onBatchDelete(): void;
@@ -164,11 +115,11 @@ export abstract class CloudStorageStore {
     abstract onUploadPanelClose(): void;
 
     /** Restart uploading a file */
-    abstract onUploadRetry(fileUUID: string): void;
+    abstract onUploadRetry(fileUUID: FileUUID): void;
 
     /** Stop uploading a file */
-    abstract onUploadCancel(fileUUID: string): void;
+    abstract onUploadCancel(fileUUID: FileUUID): void;
 
     /** When a filename is changed to a meaningful new name */
-    abstract onNewFileName(fileUUID: string, fileName: CloudStorageFileName): void;
+    abstract onNewFileName(fileUUID: FileUUID, fileName: CloudStorageFileName): void;
 }
