@@ -2,8 +2,8 @@ import homeSVG from "../assets/image/home.svg";
 import homeActiveSVG from "../assets/image/home-active.svg";
 // import userSVG from "../assets/image/user.svg";
 // import userActiveSVG from "../assets/image/user-active.svg";
-import settingSVG from "../assets/image/setting.svg";
-import settingActiveSVG from "../assets/image/setting-active.svg";
+import deviceSVG from "../assets/image/device.svg";
+import deviceActiveSVG from "../assets/image/device-active.svg";
 import diskSVG from "../assets/image/disk.svg";
 import diskActiveSVG from "../assets/image/disk-active.svg";
 
@@ -38,8 +38,8 @@ export const MainMenu = React.memo<MainMenuProps>(function MainMenu() {
             {
                 routeName: RouteNameType.UserSettingPage,
                 title: "设置",
-                icon: settingSVG,
-                iconActive: settingActiveSVG,
+                icon: deviceSVG,
+                iconActive: deviceActiveSVG, //TODO setting jump router
                 href: generateRoutePath(RouteNameType.UserSettingPage, {
                     settingType: SettingPageType.Normal,
                 }),
@@ -69,8 +69,8 @@ export const MainMenu = React.memo<MainMenuProps>(function MainMenu() {
                     <Menu.Item key={routeName}>
                         <Link to={href}>
                             <img
-                                width={44}
-                                height={44}
+                                width={32}
+                                height={32}
                                 src={selectedKey === routeName ? iconActive : icon}
                                 alt={title}
                                 title={title}
@@ -83,20 +83,21 @@ export const MainMenu = React.memo<MainMenuProps>(function MainMenu() {
             <li className="splitter"></li>
             <Menu.Item key={RouteNameType.UserSettingPage}>
                 <Link
+                    className="menu-container-bottom-button"
                     to={generateRoutePath(RouteNameType.UserSettingPage, {
                         settingType: SettingPageType.Normal,
                     })}
                 >
                     <img
-                        width={44}
-                        height={44}
+                        width={32}
+                        height={32}
                         src={
                             selectedKey === RouteNameType.UserSettingPage
-                                ? settingActiveSVG
-                                : settingSVG
+                                ? deviceActiveSVG
+                                : deviceSVG
                         }
-                        alt={"设置"}
-                        title={"设置"}
+                        alt={"设备检测"}
+                        title={"设备检测"}
                         draggable={false}
                     />
                 </Link>
