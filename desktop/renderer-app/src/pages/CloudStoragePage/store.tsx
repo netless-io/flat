@@ -176,10 +176,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 title: "取消上传",
                 content: "上传尚未完成，确定取消所有正在进行的上传吗?",
                 cancelText: "再想想",
-                onOk: () => this.uploadTaskManager.cancelAll(),
+                onOk: () => this.cancelAll(),
             });
         } else {
-            this.uploadTaskManager.cancelAll();
+            this.cancelAll();
         }
     };
 
@@ -189,8 +189,22 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     /** Stop uploading a file */
-    onUploadCancel = (uploadID: UploadID): void => {
-        this.uploadTaskManager.cancel(uploadID);
+    onUploadCancel = async (uploadID: UploadID): Promise<void> => {
+        try {
+            await this.uploadTaskManager.cancel(uploadID);
+        } catch (e) {
+            console.error(e);
+        }
+
+        const totalUploadTasksCount =
+            this.uploadTaskManager.pending.length +
+            this.uploadTaskManager.success.length +
+            this.uploadTaskManager.failed.length +
+            this.uploadTaskManager.uploading.length;
+
+        if (totalUploadTasksCount <= 0) {
+            this.setPanelExpand(false);
+        }
     };
 
     /** When a filename is changed to a meaningful new name */
@@ -459,5 +473,14 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
 
         window.setTimeout(() => this.pollConvertState(file, dynamic), 1500);
+    }
+
+    private async cancelAll(): Promise<void> {
+        try {
+            await this.uploadTaskManager.cancelAll();
+        } catch (e) {
+            console.error(e);
+        }
+        this.setPanelExpand(false);
     }
 }

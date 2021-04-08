@@ -21,7 +21,7 @@ export class UploadTaskManager {
     failed = observable.array<UploadTask>();
 
     get uploading(): UploadTask[] {
-        return [...this.uploadingMap.values()].reverse();
+        return observable.array([...this.uploadingMap.values()].reverse());
     }
 
     constructor() {
