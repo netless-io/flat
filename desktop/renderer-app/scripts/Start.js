@@ -4,6 +4,7 @@ const webpackConfig = require("../webpack/webpack.dev.js");
 
 const compiler = Webpack(webpackConfig);
 
+/** @type {import("webpack-dev-server").Configuration} */
 const devServerOptions = {
     stats: {
         colors: true,
