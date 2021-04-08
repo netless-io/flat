@@ -32,6 +32,35 @@ export abstract class CloudStorageStore {
         return Number.isNaN(this.totalUsage) ? "" : prettyBytes(this.totalUsage);
     }
 
+    /** Uploading -> Error -> Idle -> Success */
+    get sortedUploadTasks(): CloudStorageUploadTask[] {
+        return [
+            ...this.uploadingUploadTasks,
+            ...this.failedUploadTasks,
+            ...this.pendingUploadTasks,
+            ...this.successUploadTasks,
+        ];
+    }
+
+    /** If upload finishes with error */
+    get uploadFinishWithError(): boolean {
+        if (this.pendingUploadTasks.length > 0 || this.uploadingUploadTasks.length > 0) {
+            return false;
+        }
+        return this.failedUploadTasks.length > 0;
+    }
+
+    /** Number of finished upload */
+    get uploadFinishedCount(): number {
+        // @TODO use percentage instead
+        return this.successUploadTasks.length;
+    }
+
+    /** Number of total upload */
+    get uploadTotalCount(): number {
+        return this.sortedUploadTasks.length;
+    }
+
     constructor() {
         makeObservable(this, {
             compact: observable,
@@ -42,6 +71,10 @@ export abstract class CloudStorageStore {
 
             isUploadPanelVisible: computed,
             totalUsageHR: computed,
+            sortedUploadTasks: computed,
+            uploadFinishWithError: computed,
+            uploadFinishedCount: computed,
+            uploadTotalCount: computed,
 
             setRenamePanel: action,
             setPanelExpand: action,
@@ -78,17 +111,13 @@ export abstract class CloudStorageStore {
         }
     };
 
-    /** Uploading -> Error -> Idle -> Success */
-    abstract sortedUploadTasks: CloudStorageUploadTask[];
+    abstract pendingUploadTasks: CloudStorageUploadTask[];
 
-    /** If upload finishes with error */
-    abstract uploadFinishWithError: boolean;
+    abstract uploadingUploadTasks: CloudStorageUploadTask[];
 
-    /** Number of finished upload */
-    abstract uploadFinishedCount: number;
+    abstract successUploadTasks: CloudStorageUploadTask[];
 
-    /** Number of total upload */
-    abstract uploadTotalCount: number;
+    abstract failedUploadTasks: CloudStorageUploadTask[];
 
     /** User cloud storage files */
     abstract files: CloudStorageFile[];

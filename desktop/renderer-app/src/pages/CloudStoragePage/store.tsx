@@ -20,7 +20,7 @@ import {
 } from "../../apiMiddleware/flatServer/storage";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { getUploadTaskManager } from "../../utils/UploadTaskManager";
-import { UploadStatusType } from "../../utils/UploadTaskManager/UploadTask";
+import { UploadStatusType, UploadTask } from "../../utils/UploadTaskManager/UploadTask";
 
 export type CloudStorageFile = CloudStorageFileUI &
     Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken">;
@@ -50,10 +50,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         makeObservable(this, {
             filesMap: observable,
 
-            sortedUploadTasks: computed,
-            uploadFinishWithError: computed,
-            uploadFinishedCount: computed,
-            uploadTotalCount: computed,
+            pendingUploadTasks: computed,
+            uploadingUploadTasks: computed,
+            successUploadTasks: computed,
+            failedUploadTasks: computed,
             files: computed,
 
             fileMenus: action,
@@ -68,41 +68,20 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         });
     }
 
-    /** Uploading -> Error -> Idle -> Success */
-    get sortedUploadTasks(): CloudStorageUploadTask[] {
-        return [
-            ...this.uploadTaskManager.uploadingMap.values(),
-            ...this.uploadTaskManager.failed,
-            ...this.uploadTaskManager.pending,
-            ...this.uploadTaskManager.success,
-        ].map(uploadTask => ({
-            uploadID: uploadTask.uploadID,
-            fileName: uploadTask.file.name,
-            percent: uploadTask.percent,
-            status: this.convertUploadStatus(uploadTask.status),
-        }));
+    get pendingUploadTasks(): CloudStorageUploadTask[] {
+        return this.mapUploadTasks(this.uploadTaskManager.pending);
     }
 
-    /** If upload finishes with error */
-    get uploadFinishWithError(): boolean {
-        if (
-            this.uploadTaskManager.pending.length > 0 ||
-            this.uploadTaskManager.uploadingMap.size > 0
-        ) {
-            return false;
-        }
-        return this.uploadTaskManager.failed.length > 0;
+    get uploadingUploadTasks(): CloudStorageUploadTask[] {
+        return this.mapUploadTasks(this.uploadTaskManager.uploading);
     }
 
-    /** Number of finished upload */
-    get uploadFinishedCount(): number {
-        // @TODO use percentage instead
-        return this.uploadTaskManager.success.length;
+    get successUploadTasks(): CloudStorageUploadTask[] {
+        return this.mapUploadTasks(this.uploadTaskManager.success);
     }
 
-    /** Number of total upload */
-    get uploadTotalCount(): number {
-        return this.sortedUploadTasks.length;
+    get failedUploadTasks(): CloudStorageUploadTask[] {
+        return this.mapUploadTasks(this.uploadTaskManager.failed);
     }
 
     /** User cloud storage files */
@@ -366,7 +345,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     /** convert business upload status to ui upload status type */
-    private convertUploadStatus(uploadStatus: UploadStatusType): CloudStorageUploadStatusType {
+    private mapUploadStatus(uploadStatus: UploadStatusType): CloudStorageUploadStatusType {
         switch (uploadStatus) {
             case UploadStatusType.Pending: {
                 return "idle";
@@ -378,12 +357,22 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             case UploadStatusType.Uploading: {
                 return "uploading";
             }
-            // Failed,
-            // Cancelling,
-            // Cancelled,
             default: {
+                // Failed,
+                // Cancelling,
+                // Cancelled,
                 return "error";
             }
         }
+    }
+
+    /** Map upload task type to ui upload task type  */
+    private mapUploadTasks(uploadTasks: UploadTask[]): CloudStorageUploadTask[] {
+        return uploadTasks.map(task => ({
+            uploadID: task.uploadID,
+            fileName: task.file.name,
+            percent: task.percent,
+            status: this.mapUploadStatus(task.status),
+        }));
     }
 }
