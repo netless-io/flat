@@ -155,10 +155,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     /** When upload button is pressed */
     onUpload = async (): Promise<void> => {
-        this.setPanelExpand(true);
         try {
             const files = await this.pickCourseware();
             if (files && files.length > 0) {
+                this.setPanelExpand(true);
                 this.uploadTaskManager.addTasks(Array.from(files));
             }
         } catch (e) {

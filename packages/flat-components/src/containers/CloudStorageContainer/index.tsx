@@ -20,16 +20,6 @@ export interface CloudStorageContainerProps {
 /** CloudStorage page with MobX Store */
 export const CloudStorageContainer = observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store }) {
-        const onUploadPanelClick = useCallback(
-            (e: React.MouseEvent) => {
-                if (store.compact) {
-                    store.setPanelExpand(!store.isUploadPanelExpand);
-                    e.stopPropagation();
-                }
-            },
-            [store],
-        );
-
         const containerBtns = (
             <div className="cloud-storage-container-btns">
                 <Button
@@ -89,7 +79,6 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                         expand={store.isUploadPanelExpand}
                         finished={store.uploadFinishedCount}
                         total={store.uploadTotalCount}
-                        onClickCapture={onUploadPanelClick}
                         onClose={store.onUploadPanelClose}
                         onExpandChange={store.setPanelExpand}
                     >
