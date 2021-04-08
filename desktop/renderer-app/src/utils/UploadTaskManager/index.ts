@@ -37,12 +37,12 @@ export class UploadTaskManager {
     }
 
     async startUpload(): Promise<void> {
-        if (this.pending.length <= 0) {
-            this.updateStatus(UploadTaskManagerStatusType.Idle);
+        if (this.getStatus() === UploadTaskManagerStatusType.Cancelling) {
             return;
         }
 
-        if (this.getStatus() !== UploadTaskManagerStatusType.Idle) {
+        if (this.pending.length <= 0) {
+            this.updateStatus(UploadTaskManagerStatusType.Idle);
             return;
         }
 
@@ -61,14 +61,11 @@ export class UploadTaskManager {
                 if (process.env.NODE_ENV === "development") {
                     console.log(`[cloud storage]: UploadTaskManager uploads "${task.file.name}"`);
                 }
-                await task.upload();
-                this.finishUpload(task);
+                task.upload().then(() => this.finishUpload(task));
             }
 
             await new Promise(resolve => setTimeout(resolve, 200));
         }
-
-        this.updateStatus(UploadTaskManagerStatusType.Idle);
     }
 
     finishUpload(task: UploadTask): void {
