@@ -1,13 +1,12 @@
 {
-  "name": "main-app",
-  "version": "0.1.0",
+  "name": "flat",
+  "version": "1.0.0-alpha.1",
   "private": true,
   "description": "",
   "homepage": "https://github.com/netless-io/Flat-native",
   "author": {
-    "email": "158blackhole@gmail.com",
-    "name": "Black-Hole",
-    "url": "https://bugs.cc/"
+    "email": "flat@agora.io",
+    "name": "Agora"
   },
   "repository": {
     "url": "https://github.com/netless-io/Flat-native"
@@ -72,6 +71,7 @@
   },
   "dependencies": {
     "agora-electron-sdk": "education290",
+    "electron-updater": "^4.3.8",
     "jquery": "^3.5.1",
     "rxjs": "^6.6.6",
     "ts-enum-util": "^4.0.2"

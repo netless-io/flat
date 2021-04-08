@@ -2,6 +2,7 @@ import { CustomSingleWindow } from "./WindowManager";
 import { ipc } from "flat-types";
 import { app, ipcMain, powerSaveBlocker } from "electron";
 import runtime from "./Runtime";
+import { updateService } from "./UpdateService";
 
 const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAsync => {
     const { window, options } = customWindow;
@@ -69,6 +70,12 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
                     }
                 };
             })(),
+        "start-update": args => {
+            updateService.update(args.prereleaseTag);
+        },
+        "cancel-update": () => {
+            updateService.cancel();
+        },
     };
 };
 
@@ -87,6 +94,14 @@ export const appActionSync: ipc.AppActionSync = {
     },
     "get-open-at-login": () => {
         return app.getLoginItemSettings().openAtLogin;
+    },
+    "get-update-info": (_event, args) => {
+        return updateService.check(args.prereleaseTag).catch((err: Error) => {
+            console.error(err.message);
+            return {
+                hasNewVersion: false,
+            };
+        }) as any;
     },
 };
 

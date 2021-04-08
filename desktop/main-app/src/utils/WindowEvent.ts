@@ -1,8 +1,14 @@
 import { ipcEmit } from "./IPCEmit";
 import { CustomSingleWindow } from "./WindowManager";
+import { autoUpdater } from "electron-updater";
 
 export const windowHookClose = (customWindow: CustomSingleWindow) => {
     customWindow.window.on("close", e => {
+        // see: https://github.com/electron/electron/issues/7792
+        if (!autoUpdater.autoInstallOnAppQuit) {
+            return;
+        }
+
         if (customWindow.options.disableClose) {
             e.preventDefault();
             ipcEmit(customWindow.options.name)("window-will-close", {});

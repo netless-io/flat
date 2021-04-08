@@ -4,18 +4,25 @@ const fs = require("fs-extra");
 const path = require("path");
 const { platform } = require("os");
 const { spawnSync } = require("child_process");
-const { agoraElectronSdkPath } = require("./Constant");
+const { version } = require("../package.json");
+const { agoraElectronSdkPath, rootPath, mainAppPath } = require("./Constant");
 
 /**
- * 构建 electron 应用
- * @param {"win" | "mac"} buildType - 要构建的平台
+ * build electron app
+ * @param {"win" | "mac"} buildType - build platform
  */
 const buildElectron = async buildType => {
     const config = yaml.safeLoad(
-        fs.readFileSync(path.join(__dirname, "..", "electron-builder.yml")),
+        fs.readFileSync(path.join(mainAppPath, "electron-builder.yml"), {
+            encoding: "utf8",
+        }),
     );
 
-    config.directories.output = `release/${buildType}`;
+    config.directories.output = path.join("release", buildType);
+
+    if (!version.include("alpha")) {
+        config.releaseInfo.releaseNotes = generateReleaseNote();
+    }
 
     config.extraResources = [
         {
@@ -42,7 +49,7 @@ const buildElectron = async buildType => {
 };
 
 /**
- * 获取当前 agora-electron-sdk 所构建的类型
+ * get current agora-electron-sdk platform type
  * @return {"win" | "mac" | "none"}
  */
 const getAgoraReleaseType = () => {
@@ -78,6 +85,25 @@ const currentSystem = () => {
     }
 
     return "win";
+};
+
+const generateReleaseNote = () => {
+    const docsReleasesPath = path.join(rootPath, "docs", "releases", `v${version}`);
+    const zhNote = fs.readFileSync(path.join(docsReleasesPath, "zh.md"), {
+        encoding: "utf8",
+    });
+    const enNote = fs.readFileSync(path.join(docsReleasesPath, "en.md"), {
+        encoding: "utf8",
+    });
+
+    return JSON.stringify(
+        {
+            zhNote,
+            enNote,
+        },
+        null,
+        2,
+    );
 };
 
 module.exports.agoraElectronSdkPath = agoraElectronSdkPath;
