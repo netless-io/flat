@@ -34,12 +34,12 @@ export abstract class CloudStorageStore {
 
     /** Uploading -> Error -> Idle -> Success */
     get sortedUploadTasks(): CloudStorageUploadTask[] {
-        return [
+        return observable.array([
             ...this.uploadingUploadTasks,
             ...this.failedUploadTasks,
             ...this.pendingUploadTasks,
             ...this.successUploadTasks,
-        ];
+        ]);
     }
 
     /** If upload finishes with error */

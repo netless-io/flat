@@ -89,7 +89,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     /** User cloud storage files */
     get files(): CloudStorageFileUI[] {
-        return [...this.filesMap.values()];
+        return observable.array([...this.filesMap.values()]);
     }
 
     /** Render file menus item base on fileUUID */
@@ -350,6 +350,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 return "success";
             }
             default: {
+                console.error("[cloud storage]: cannot map convert step", convertStep);
                 return "idle";
             }
         }
