@@ -11,9 +11,12 @@ import {
 } from "flat-components";
 import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
 import React, { ReactNode } from "react";
+import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-converting";
 import { FileConvertStep } from "../../apiMiddleware/flatServer/constants";
 import {
     CloudFile,
+    convertFinish,
+    convertStart,
     listFiles,
     removeFiles,
     renameFile,
@@ -226,24 +229,30 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         );
 
         return () => {
-            window.clearTimeout(this.refreshFilesTimeout);
+            window.clearTimeout(this._refreshFilesTimeout);
             disposer();
         };
     }
 
-    private refreshFilesTimeout = NaN;
+    // a set of taskUUIDs representing querying tasks
+    private _convertStatusQuerying = new Set<string>();
+
+    private _refreshFilesTimeout = NaN;
 
     private async refreshFiles(): Promise<void> {
-        window.clearTimeout(this.refreshFilesTimeout);
+        window.clearTimeout(this._refreshFilesTimeout);
 
         try {
             const { totalUsage, files: cloudFiles } = await listFiles({ page: 1 });
 
             runInAction(() => {
                 this.totalUsage = totalUsage;
+            });
 
-                for (const cloudFile of cloudFiles) {
-                    const file = this.filesMap.get(cloudFile.fileUUID);
+            for (const cloudFile of cloudFiles) {
+                const file = this.filesMap.get(cloudFile.fileUUID);
+
+                runInAction(() => {
                     if (file) {
                         file.fileName = cloudFile.fileName;
                         file.createAt = cloudFile.createAt;
@@ -252,13 +261,26 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         file.taskToken = cloudFile.taskToken;
                         file.taskUUID = cloudFile.taskUUID;
                     } else {
-                        this.filesMap.set(cloudFile.fileUUID, {
-                            ...cloudFile,
-                            convert: this.mapConvertStep(cloudFile.convertStep),
-                        });
+                        this.filesMap.set(
+                            cloudFile.fileUUID,
+                            observable.object({
+                                ...cloudFile,
+                                convert: this.mapConvertStep(cloudFile.convertStep),
+                            }),
+                        );
                     }
+                });
+
+                if (
+                    cloudFile.convertStep === FileConvertStep.Done ||
+                    cloudFile.convertStep === FileConvertStep.Failed
+                ) {
+                    this._convertStatusQuerying.delete(cloudFile.fileUUID);
+                } else if (!this._convertStatusQuerying.has(cloudFile.fileUUID)) {
+                    this._convertStatusQuerying.add(cloudFile.fileUUID);
+                    this.queryConvertStatus(cloudFile.fileUUID);
                 }
-            });
+            }
         } catch (e) {
             errorTips(e);
         }
@@ -267,8 +289,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     private refreshFilesDebounced(timeout = 1000): void {
-        window.clearTimeout(this.refreshFilesTimeout);
-        this.refreshFilesTimeout = window.setTimeout(() => {
+        window.clearTimeout(this._refreshFilesTimeout);
+        this._refreshFilesTimeout = window.setTimeout(() => {
             this.refreshFiles();
         }, timeout);
     }
@@ -374,5 +396,67 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             percent: task.percent,
             status: this.mapUploadStatus(task.status),
         }));
+    }
+
+    /** Query courseware converting status */
+    private async queryConvertStatus(fileUUID: FileUUID): Promise<void> {
+        const file = this.filesMap.get(fileUUID);
+        if (!file) {
+            return;
+        }
+
+        const isDynamic = file.fileName.endsWith(".pptx");
+
+        if (!isDynamic && !/\.(ppt|pdf|doc|docx)$/i.test(file.fileName)) {
+            return;
+        }
+
+        if (file.convert === "idle") {
+            try {
+                if (process.env.NODE_ENV === "development") {
+                    console.log("[cloud-storage] convert start", file.fileUUID, file.fileName);
+                }
+                const { taskToken, taskUUID } = await convertStart({ fileUUID: file.fileUUID });
+                runInAction(() => {
+                    file.convert = "converting";
+                    file.taskToken = taskToken;
+                    file.taskUUID = taskUUID;
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        if (file.convert === "converting") {
+            this.pollConvertState(file, isDynamic);
+        }
+    }
+
+    private async pollConvertState(file: CloudStorageFile, dynamic: boolean): Promise<void> {
+        if (process.env.NODE_ENV === "development") {
+            console.log("[cloud-storage] query convert status", file.fileName);
+        }
+
+        try {
+            const { status } = await queryConvertingTaskStatus({
+                taskToken: file.taskToken,
+                taskUUID: file.taskUUID,
+                dynamic,
+            });
+            if (status === "Fail" || status === "Finished") {
+                if (process.env.NODE_ENV === "development") {
+                    console.log("[cloud storage]: convert finish", file.fileName);
+                }
+                await convertFinish({ fileUUID: file.fileUUID });
+                runInAction(() => {
+                    file.convert = status === "Fail" ? "error" : "success";
+                });
+                return;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+        window.setTimeout(() => this.pollConvertState(file, dynamic), 1500);
     }
 }

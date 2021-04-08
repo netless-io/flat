@@ -32,7 +32,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
         </MainPageLayout>
     );
 
-    function insertCourseware(file: CloudStorageFile) {
+    function insertCourseware(file: CloudStorageFile): void {
         message.info("正在插入课件……");
 
         const ext = (/\.[^.]+$/.exec(file.fileName) || [""])[0].toLowerCase();
@@ -66,7 +66,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
         }
     }
 
-    async function insertImage(file: CloudStorageFile) {
+    async function insertImage(file: CloudStorageFile): Promise<void> {
         const room = whiteboard?.room;
         if (!room) {
             return;
@@ -79,7 +79,8 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             ({ width, height } = await new Promise<{ width: number; height: number }>(resolve => {
                 const img = new Image();
                 img.onload = () => resolve(img);
-                img.onerror = () => resolve({ width: window.innerWidth, height: innerHeight });
+                img.onerror = () =>
+                    resolve({ width: window.innerWidth, height: window.innerHeight });
                 img.src = file.fileURL;
             }));
         } else {
