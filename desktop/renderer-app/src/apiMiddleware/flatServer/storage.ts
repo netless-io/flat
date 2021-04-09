@@ -64,7 +64,6 @@ export async function uploadFinish(payload: UploadFinishPayload): Promise<void> 
 
 export interface RenameFilePayload {
     fileUUID: string;
-    /** File name without extension */
     fileName: string;
 }
 

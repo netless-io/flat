@@ -218,7 +218,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             if (file.fileName === fileNameObject.fullName) {
                 return;
             } else {
-                await renameFile({ fileUUID, fileName: fileNameObject.name });
+                await renameFile({ fileUUID, fileName: fileNameObject.fullName });
                 runInAction(() => {
                     file.fileName = fileNameObject.fullName;
                 });
