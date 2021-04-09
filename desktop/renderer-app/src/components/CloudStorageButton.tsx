@@ -2,7 +2,7 @@
 
 import { Modal } from "antd";
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { CloudStoragePage } from "../pages/CloudStoragePage";
 import { WhiteboardStore } from "../stores/WhiteboardStore";
 import { TopBarRightBtn } from "./TopBarRightBtn";
@@ -16,6 +16,8 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
     whiteboard,
 }) {
     const [visible, setVisible] = useState(false);
+    const hideModal = useCallback(() => setVisible(false), [setVisible]);
+    const showModal = useCallback(() => setVisible(true), [setVisible]);
 
     if (!whiteboard.isWritable) {
         return null;
@@ -23,21 +25,21 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
 
     return (
         <>
-            <TopBarRightBtn
-                title="Open Cloud Storage"
-                icon="cloud-storage"
-                onClick={() => setVisible(true)}
-            />
+            <TopBarRightBtn title="Open Cloud Storage" icon="cloud-storage" onClick={showModal} />
             <Modal
                 title="我的云盘"
-                onCancel={() => setVisible(false)}
+                onCancel={hideModal}
                 destroyOnClose
                 footer={[]}
                 visible={visible}
                 className="cloud-storage-button-modal"
                 centered
             >
-                <CloudStoragePage compact whiteboard={whiteboard} />
+                <CloudStoragePage
+                    compact
+                    whiteboard={whiteboard}
+                    onCoursewareInserted={hideModal}
+                />
             </Modal>
         </>
     );
