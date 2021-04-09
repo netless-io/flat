@@ -9,8 +9,6 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
 
     return {
         "set-win-size": args => {
-            window.setSize(args.width, args.height);
-
             // cannot use isMaximized, because after testing, under mac, the return value of this method is always false
             const isExitMaximized = window.isMaximizable() && !args.maximizable;
 
@@ -23,10 +21,6 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
 
             window.resizable = !!args.resizable;
             window.maximizable = !!args.maximizable;
-
-            if (args.autoCenter) {
-                window.center();
-            }
 
             switch (typeof args.setMinimumSize) {
                 case "undefined": {
@@ -47,6 +41,12 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
                 default: {
                     break;
                 }
+            }
+
+            window.setSize(args.width, args.height);
+
+            if (args.autoCenter) {
+                window.center();
             }
         },
         "disable-window": args => {
