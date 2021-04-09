@@ -137,10 +137,14 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     onItemTitleClick = (fileUUID: FileUUID): void => {
         const file = this.filesMap.get(fileUUID);
         if (file) {
-            if (this.compact) {
-                this.insertCourseware(file);
-            } else {
-                this.previewCourseware(file);
+            try {
+                if (this.compact) {
+                    this.insertCourseware(file);
+                } else {
+                    this.previewCourseware(file);
+                }
+            } catch (e) {
+                console.error(e);
             }
         }
     };

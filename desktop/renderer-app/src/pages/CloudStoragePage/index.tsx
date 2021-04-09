@@ -9,20 +9,28 @@ import { WhiteboardStore } from "../../stores/WhiteboardStore";
 import { CloudStorageStore, CloudStorageFile } from "./store";
 import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-converting";
 import { convertFinish } from "../../apiMiddleware/flatServer/storage";
+import { useIsomorphicLayoutEffect } from "react-use";
 
 export interface CloudStoragePageProps {
     compact?: boolean;
     /** only works in compact mode */
     whiteboard?: WhiteboardStore;
+    onCoursewareInserted?: () => void;
 }
 
 export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudStoragePage({
     compact = false,
     whiteboard,
+    onCoursewareInserted,
 }) {
     const [store] = useState(() => new CloudStorageStore({ compact, insertCourseware }));
 
     useEffect(() => store.initialize(), [store]);
+
+    // @TODO clean logic
+    useIsomorphicLayoutEffect(() => {
+        store.insertCourseware = insertCourseware;
+    });
 
     return compact ? (
         <CloudStorageContainer store={store} />
@@ -32,7 +40,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
         </MainPageLayout>
     );
 
-    function insertCourseware(file: CloudStorageFile): void {
+    async function insertCourseware(file: CloudStorageFile): Promise<void> {
         if (file.convert === "converting") {
             message.warn("正在转码中，请稍后再试");
             return;
@@ -46,21 +54,21 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             case ".jpeg":
             case ".png":
             case ".webp": {
-                insertImage(file);
+                await insertImage(file);
                 break;
             }
             case ".mp3": {
-                insertAudio(file);
+                await insertAudio(file);
                 break;
             }
             case ".mp4": {
-                insertVideo(file);
+                await insertVideo(file);
                 break;
             }
             case ".ppt":
             case ".pptx":
             case ".pdf": {
-                insertDocs(file, ext);
+                await insertDocs(file, ext);
                 break;
             }
             default: {
@@ -68,6 +76,10 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                     `[cloud storage]: insert unknown format "${file.fileName}" into whiteboard`,
                 );
             }
+        }
+
+        if (onCoursewareInserted) {
+            onCoursewareInserted();
         }
     }
 
