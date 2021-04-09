@@ -17,6 +17,10 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
 }) {
     const [visible, setVisible] = useState(false);
 
+    if (!whiteboard.isWritable) {
+        return null;
+    }
+
     return (
         <>
             <TopBarRightBtn
