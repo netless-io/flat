@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
@@ -77,6 +77,11 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
         return classRoomStore.users.currentUser;
     }).get();
+
+    useEffect(() => {
+        whiteboardStore.updateWritable(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     if (
         !whiteboardStore.room ||
@@ -237,6 +242,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                                     isCreator={classRoomStore.isCreator}
                                     userUUID={classRoomStore.userUUID}
                                     avatarUser={classRoomStore.users.creator}
+                                    roomStatus={classRoomStore.roomStatus}
                                     rtcEngine={classRoomStore.rtc.rtcEngine}
                                     updateDeviceState={classRoomStore.updateDeviceState}
                                 />
@@ -246,6 +252,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                                     isCreator={classRoomStore.isCreator}
                                     userUUID={classRoomStore.userUUID}
                                     avatarUser={joiner}
+                                    roomStatus={classRoomStore.roomStatus}
                                     rtcEngine={classRoomStore.rtc.rtcEngine}
                                     updateDeviceState={classRoomStore.updateDeviceState}
                                 />

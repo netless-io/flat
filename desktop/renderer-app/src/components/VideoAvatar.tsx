@@ -9,6 +9,7 @@ import cameraDisabledSVG from "../assets/image/camera-disabled.svg";
 import microphoneSVG from "../assets/image/microphone.svg";
 import microphoneDisabledSVG from "../assets/image/microphone-disabled.svg";
 import "./VideoAvatar.less";
+import { RoomStatus } from "../apiMiddleware/flatServer/constants";
 
 export interface VideoAvatarProps {
     isCreator: boolean;
@@ -16,6 +17,7 @@ export interface VideoAvatarProps {
     userUUID: string;
     /** the user of this avatar */
     avatarUser: User;
+    roomStatus: RoomStatus;
     rtcEngine: AgoraSDK;
     updateDeviceState: (id: string, camera: boolean, mic: boolean) => void;
     children: (canvas: React.ReactNode, ctrlBtns: React.ReactNode) => JSX.Element | null;
@@ -25,6 +27,7 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
     isCreator,
     userUUID,
     avatarUser,
+    roomStatus,
     rtcEngine,
     updateDeviceState,
     children,
@@ -34,19 +37,19 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
 
     useUpdateEffect(() => {
         if (userUUID === avatarUser.userUUID) {
-            rtcEngine.enableLocalVideo(avatarUser.camera);
+            rtcEngine.enableLocalVideo(roomStatus === RoomStatus.Started && avatarUser.camera);
         } else {
             rtcEngine.muteRemoteVideoStream(avatarUser.rtcUID, !avatarUser.camera);
         }
-    }, [avatarUser.camera]);
+    }, [avatarUser.camera, roomStatus]);
 
     useUpdateEffect(() => {
         if (userUUID === avatarUser.userUUID) {
-            rtcEngine.enableLocalAudio(avatarUser.mic);
+            rtcEngine.enableLocalAudio(roomStatus === RoomStatus.Started && avatarUser.mic);
         } else {
             rtcEngine.muteRemoteAudioStream(avatarUser.rtcUID, !avatarUser.mic);
         }
-    }, [avatarUser.mic]);
+    }, [avatarUser.mic, roomStatus]);
 
     useEffect(
         () => () => {
