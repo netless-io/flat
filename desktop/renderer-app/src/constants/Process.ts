@@ -1,7 +1,6 @@
 export const NODE_ENV = process.env.NODE_ENV;
 
 export const NETLESS = Object.freeze({
-    SDK_TOKEN: process.env.NETLESS_SDK_TOKEN,
     APP_IDENTIFIER: process.env.NETLESS_APP_IDENTIFIER,
 });
 
