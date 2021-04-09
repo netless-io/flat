@@ -115,7 +115,13 @@ export class UploadTask {
                 this.updateStatus(UploadStatusType.Cancelled);
             } else {
                 console.error(e);
-                await this.finish();
+                if (this.fileUUID) {
+                    try {
+                        await cancelUpload({ fileUUIDs: [this.fileUUID] });
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
                 this.updateStatus(UploadStatusType.Failed);
             }
         }
