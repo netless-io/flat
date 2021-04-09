@@ -14,6 +14,7 @@ export function useWindowSize(pageName: keyof typeof constants.PageSize): void {
             case "Replay": {
                 ipcAsyncByMainWindow("set-win-size", {
                     ...constants.PageSize.Replay,
+                    autoCenter: true,
                     resizable: true,
                     setMinimumSize: true,
                     maximizable: true,
@@ -23,6 +24,7 @@ export function useWindowSize(pageName: keyof typeof constants.PageSize): void {
             case "Class": {
                 ipcAsyncByMainWindow("set-win-size", {
                     ...constants.PageSize.Class,
+                    autoCenter: true,
                     resizable: true,
                     setMinimumSize: true,
                     maximizable: true,
