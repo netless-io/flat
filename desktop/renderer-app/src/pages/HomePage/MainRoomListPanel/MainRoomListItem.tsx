@@ -52,6 +52,7 @@ export const MainRoomListItem = observer<MainRoomListItemProps>(function MainRoo
                     <Dropdown
                         overlay={
                             <MainRoomListItemMenus
+                                className="room-list-cell-more-menu"
                                 roomUUID={room.roomUUID}
                                 periodicUUID={room.periodicUUID}
                                 isHistoryList={isHistoryList}
