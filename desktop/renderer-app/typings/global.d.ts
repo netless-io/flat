@@ -9,7 +9,6 @@ declare module "*.mp3";
 declare namespace NodeJS {
     interface ProcessEnv {
         NODE_ENV: "development" | "production";
-        NETLESS_SDK_TOKEN: string;
         NETLESS_APP_IDENTIFIER: string;
 
         CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY: string;
