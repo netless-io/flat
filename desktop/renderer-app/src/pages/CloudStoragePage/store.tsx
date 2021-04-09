@@ -11,7 +11,10 @@ import {
 } from "flat-components";
 import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
 import React, { ReactNode } from "react";
-import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-converting";
+import {
+    ConvertingTaskStatus,
+    queryConvertingTaskStatus,
+} from "../../apiMiddleware/courseware-converting";
 import { FileConvertStep } from "../../apiMiddleware/flatServer/constants";
 import {
     CloudFile,
@@ -22,7 +25,6 @@ import {
     renameFile,
 } from "../../apiMiddleware/flatServer/storage";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { ServerRequestError } from "../../utils/error/ServerRequestError";
 import { getUploadTaskManager } from "../../utils/UploadTaskManager";
 import { UploadStatusType, UploadTask } from "../../utils/UploadTaskManager/UploadTask";
 
@@ -38,6 +40,9 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     filesMap = observable.map<FileUUID, CloudStorageFile>();
 
     insertCourseware: (file: CloudStorageFile) => void;
+
+    // a set of taskUUIDs representing querying tasks
+    private _convertStatusQuerying = new Map<FileUUID, number>();
 
     constructor({
         compact,
@@ -244,13 +249,15 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         );
 
         return () => {
-            window.clearTimeout(this._refreshFilesTimeout);
             disposer();
+            window.clearTimeout(this._refreshFilesTimeout);
+            this._refreshFilesTimeout = NaN;
+            for (const timeout of this._convertStatusQuerying.values()) {
+                window.clearTimeout(timeout);
+            }
+            this._convertStatusQuerying.clear();
         };
     }
-
-    // a set of taskUUIDs representing querying tasks
-    private _convertStatusQuerying = new Set<string>();
 
     private _refreshFilesTimeout = NaN;
 
@@ -292,7 +299,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 ) {
                     this._convertStatusQuerying.delete(cloudFile.fileUUID);
                 } else if (!this._convertStatusQuerying.has(cloudFile.fileUUID)) {
-                    this._convertStatusQuerying.add(cloudFile.fileUUID);
+                    this._convertStatusQuerying.set(cloudFile.fileUUID, NaN);
                     this.queryConvertStatus(cloudFile.fileUUID);
                 }
             }
@@ -303,7 +310,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         this.refreshFilesDebounced(10 * 1000);
     }
 
-    private refreshFilesDebounced(timeout = 1000): void {
+    private refreshFilesDebounced(timeout = 500): void {
         window.clearTimeout(this._refreshFilesTimeout);
         this._refreshFilesTimeout = window.setTimeout(() => {
             this.refreshFiles();
@@ -453,34 +460,41 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             console.log("[cloud-storage] query convert status", file.fileName);
         }
 
+        let status: ConvertingTaskStatus["status"];
+
         try {
-            const { status } = await queryConvertingTaskStatus({
+            ({ status } = await queryConvertingTaskStatus({
                 taskToken: file.taskToken,
                 taskUUID: file.taskUUID,
                 dynamic,
-            });
-            if (status === "Fail" || status === "Finished") {
-                if (process.env.NODE_ENV === "development") {
-                    console.log("[cloud storage]: convert finish", file.fileName);
-                }
-                try {
-                    await convertFinish({ fileUUID: file.fileUUID });
-                } catch (e) {
-                    // ignore file converted error
-                    if (!(e instanceof ServerRequestError && e.errorCode === 800000)) {
-                        throw e;
-                    }
-                }
-                runInAction(() => {
-                    file.convert = status === "Fail" ? "error" : "success";
-                });
-                return;
-            }
+            }));
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            return;
         }
 
-        window.setTimeout(() => this.pollConvertState(file, dynamic), 1500);
+        if (status === "Fail" || status === "Finished") {
+            if (process.env.NODE_ENV === "development") {
+                console.log("[cloud storage]: convert finish", file.fileName);
+            }
+            try {
+                await convertFinish({ fileUUID: file.fileUUID });
+            } catch (e) {
+                // ignore error when notifying server finish status
+                console.warn(e);
+            }
+            runInAction(() => {
+                file.convert = status === "Fail" ? "error" : "success";
+            });
+            return;
+        }
+
+        if (this._convertStatusQuerying.has(file.fileUUID)) {
+            this._convertStatusQuerying.set(
+                file.fileUUID,
+                window.setTimeout(() => this.pollConvertState(file, dynamic), 1500),
+            );
+        }
     }
 
     private async cancelAll(): Promise<void> {

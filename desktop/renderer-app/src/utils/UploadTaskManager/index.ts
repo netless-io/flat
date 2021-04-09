@@ -1,4 +1,4 @@
-import { autorun, makeAutoObservable, observable, runInAction } from "mobx";
+import { makeAutoObservable, observable, runInAction } from "mobx";
 import { cancelUpload } from "../../apiMiddleware/flatServer/storage";
 import { UploadStatusType, UploadTask } from "./UploadTask";
 import { UploadID } from "flat-components";
