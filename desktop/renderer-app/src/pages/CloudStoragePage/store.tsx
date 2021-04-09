@@ -1,12 +1,17 @@
-import { message, Modal } from "antd";
+import { Modal } from "antd";
 import {
-    CloudStorageFile,
+    CloudStorageConvertStatusType,
+    CloudStorageFile as CloudStorageFileUI,
     CloudStorageFileName,
     CloudStorageStore as CloudStorageStoreBase,
+    CloudStorageUploadStatusType,
     CloudStorageUploadTask,
+    FileUUID,
+    UploadID,
 } from "flat-components";
-import { action, makeObservable } from "mobx";
+import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
 import React, { ReactNode } from "react";
+import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-converting";
 import { FileConvertStep } from "../../apiMiddleware/flatServer/constants";
 import {
     CloudFile,
@@ -16,30 +21,80 @@ import {
     removeFiles,
     renameFile,
 } from "../../apiMiddleware/flatServer/storage";
-import { WhiteboardStore } from "../../stores/WhiteboardStore";
-import {
-    convertStepToType,
-    download,
-    getFileUrl,
-    insertFileIntoRoom,
-    isFakeID,
-    pickFiles,
-    queryTask,
-    uploadManager,
-} from "./utils";
+import { errorTips } from "../../components/Tips/ErrorTips";
+import { ServerRequestError } from "../../utils/error/ServerRequestError";
+import { getUploadTaskManager } from "../../utils/UploadTaskManager";
+import { UploadStatusType, UploadTask } from "../../utils/UploadTaskManager/UploadTask";
 
-type FileMenusKey = "download" | "rename" | "delete";
+export type CloudStorageFile = CloudStorageFileUI &
+    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken">;
+
+export type FileMenusKey = "download" | "rename" | "delete";
 
 export class CloudStorageStore extends CloudStorageStoreBase {
-    whiteboard?: WhiteboardStore;
+    uploadTaskManager = getUploadTaskManager();
 
-    pulling = new Map<string, number>();
-    retryable = new Map<string, File>();
+    /** User cloud storage files */
+    filesMap = observable.map<FileUUID, CloudStorageFile>();
 
-    fileMenus = (
-        file: CloudStorageFile,
-        _index: number,
-    ): { key: FileMenusKey; name: ReactNode }[] => {
+    insertCourseware: (file: CloudStorageFile) => void;
+
+    constructor({
+        compact,
+        insertCourseware,
+    }: {
+        compact: boolean;
+        insertCourseware: (file: CloudStorageFile) => void;
+    }) {
+        super();
+
+        this.insertCourseware = insertCourseware;
+        this.compact = compact;
+
+        makeObservable(this, {
+            filesMap: observable,
+
+            pendingUploadTasks: computed,
+            uploadingUploadTasks: computed,
+            successUploadTasks: computed,
+            failedUploadTasks: computed,
+            files: computed,
+
+            fileMenus: action,
+            onItemMenuClick: action,
+            onItemTitleClick: action,
+            onBatchDelete: action,
+            onUpload: action,
+            onUploadPanelClose: action,
+            onUploadRetry: action,
+            onUploadCancel: action,
+            onNewFileName: action,
+        });
+    }
+
+    get pendingUploadTasks(): CloudStorageUploadTask[] {
+        return this.mapUploadTasks(this.uploadTaskManager.pending);
+    }
+
+    get uploadingUploadTasks(): CloudStorageUploadTask[] {
+        return this.mapUploadTasks(this.uploadTaskManager.uploading);
+    }
+
+    get successUploadTasks(): CloudStorageUploadTask[] {
+        return this.mapUploadTasks(this.uploadTaskManager.success);
+    }
+
+    get failedUploadTasks(): CloudStorageUploadTask[] {
+        return this.mapUploadTasks(this.uploadTaskManager.failed);
+    }
+
+    /** User cloud storage files */
+    get files(): CloudStorageFileUI[] {
+        return observable.array([...this.filesMap.values()]);
+    }
+
+    /** Render file menus item base on fileUUID */
+    fileMenus = (file: CloudStorageFileUI): Array<{ key: React.Key; name: React.ReactNode }> => {
         const menus: { key: FileMenusKey; name: ReactNode }[] = [];
         menus.push({ key: "download", name: "下载" });
         if (file.convert !== "error") {
@@ -49,60 +104,11 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         return menus;
     };
 
-    constructor({ compact, whiteboard }: { compact?: boolean; whiteboard?: WhiteboardStore }) {
-        super();
-        this.whiteboard = whiteboard;
-        this.setCompact(Boolean(compact));
-        makeObservable(this, {
-            updateFiles: action,
-            updateTotalUsage: action,
-            updateFileName: action,
-            expandUploadPanel: action,
-            clearUploadTasksMap: action,
-            deleteFileFromUploadTasksMap: action,
-            onUploadInit: action,
-            onUploadEnd: action,
-            onUploadError: action,
-            onUploadProgress: action,
-            unselectAll: action,
-        });
-    }
-
-    unselectAll(): void {
-        this.selectedFileUUIDs = [];
-    }
-
-    expandUploadPanel(): void {
-        this.isUploadPanelExpand = true;
-    }
-
-    clearUploadTasksMap(): void {
-        this.uploadTasksMap.clear();
-    }
-
-    deleteFileFromUploadTasksMap(fileUUID: string): void {
-        this.uploadTasksMap.delete(fileUUID);
-    }
-
-    onUpload = async (): Promise<void> => {
-        this.expandUploadPanel();
-        const files = await pickFiles({
-            multiple: true,
-            accept: ".ppt,.pptx,.doc,.docx,.pdf,.png,.jpg,.jpeg,.gif",
-        });
-        if (!files || files.length === 0) return;
-        for (const file of Array.from(files)) {
-            this.setupUpload(file);
-        }
-    };
-
-    onItemMenuClick = (fileUUID: string, menuKey: React.Key): void => {
-        const key = menuKey as FileMenusKey;
-        console.log("[cloud-storage] onItemMenuClick", fileUUID, key);
-        switch (key) {
+    /** When a file menus item is clicked */
+    onItemMenuClick = (fileUUID: FileUUID, menuKey: React.Key): void => {
+        switch (menuKey) {
             case "download": {
-                const { fileName } = this.files.find(file => file.fileUUID === fileUUID)!;
-                download(getFileUrl(fileName, fileUUID));
+                this.downloadFile(fileUUID);
                 break;
             }
             case "rename": {
@@ -111,59 +117,201 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             }
             case "delete": {
                 Modal.confirm({
-                    content: "确定删除所选课件？课件删除后不可恢复",
-                    onOk: async () => {
-                        this.updateFiles(this.files.filter(file => file.fileUUID !== fileUUID));
-                        await removeFiles({ fileUUIDs: [fileUUID] });
-                        await this.refreshFiles();
-                        this.unselectAll();
-                    },
+                    content: "确定删除该课件？课件删除后不可恢复",
+                    onOk: () => this.removeFiles([fileUUID]),
                 });
                 break;
             }
-            default:
-        }
-    };
-
-    updateFileName(file: CloudStorageFile, fileName: string): void {
-        file.fileName = fileName;
-    }
-
-    async onNewFileName(
-        fileUUID: string,
-        { fullName: fileName }: CloudStorageFileName,
-    ): Promise<void> {
-        const file = this.files.find(file => file.fileUUID === fileUUID);
-        if (file) {
-            if (file.fileName === fileName) {
-                return;
-            } else {
-                this.updateFileName(file, fileName);
-                await renameFile({ fileUUID, fileName });
-                await this.refreshFiles();
+            default: {
+                console.warn("[cloud-storage]: unhandled item menu click");
             }
         }
-    }
+    };
 
-    onItemTitleClick = (fileUUID: string): void => {
-        if (this.compact) {
-            this.onItemTitleClickInRoom(fileUUID);
-        } else {
-            this.onItemTitleClickInPage(fileUUID);
+    /** When file title click */
+    onItemTitleClick = (fileUUID: FileUUID): void => {
+        const file = this.filesMap.get(fileUUID);
+        if (file) {
+            if (this.compact) {
+                this.insertCourseware(file);
+            } else {
+                this.previewCourseware(file);
+            }
         }
     };
 
-    onItemTitleClickInRoom(fileUUID: string): void {
-        const room = this.whiteboard?.room;
-        if (room) {
-            insertFileIntoRoom(fileUUID, room);
+    /** When page delete button is pressed */
+    onBatchDelete = (): void => {
+        if (this.selectedFileUUIDs.length > 0) {
+            Modal.confirm({
+                content: "确定删除所选课件？课件删除后不可恢复",
+                onOk: async () => {
+                    if (this.selectedFileUUIDs.length > 0) {
+                        await this.removeFiles(this.selectedFileUUIDs);
+                    }
+                },
+            });
         }
+    };
+
+    /** When upload button is pressed */
+    onUpload = async (): Promise<void> => {
+        try {
+            const files = await this.pickCourseware();
+            if (files && files.length > 0) {
+                this.setPanelExpand(true);
+                this.uploadTaskManager.addTasks(Array.from(files));
+            }
+        } catch (e) {
+            errorTips(e);
+        }
+    };
+
+    /** When upload panel close button is pressed */
+    onUploadPanelClose = (): void => {
+        if (
+            this.uploadTaskManager.pending.length > 0 ||
+            this.uploadTaskManager.uploading.length > 0
+        ) {
+            Modal.confirm({
+                title: "取消上传",
+                content: "上传尚未完成，确定取消所有正在进行的上传吗?",
+                cancelText: "再想想",
+                onOk: () => this.cancelAll(),
+            });
+        } else {
+            this.cancelAll();
+        }
+    };
+
+    /** Restart uploading a file */
+    onUploadRetry = (uploadID: UploadID): void => {
+        this.uploadTaskManager.retry(uploadID);
+    };
+
+    /** Stop uploading a file */
+    onUploadCancel = async (uploadID: UploadID): Promise<void> => {
+        try {
+            await this.uploadTaskManager.cancel(uploadID);
+        } catch (e) {
+            console.error(e);
+        }
+
+        const totalUploadTasksCount =
+            this.uploadTaskManager.pending.length +
+            this.uploadTaskManager.success.length +
+            this.uploadTaskManager.failed.length +
+            this.uploadTaskManager.uploading.length;
+
+        if (totalUploadTasksCount <= 0) {
+            this.setPanelExpand(false);
+        }
+    };
+
+    /** When a filename is changed to a meaningful new name */
+    onNewFileName = async (
+        fileUUID: FileUUID,
+        fileNameObject: CloudStorageFileName,
+    ): Promise<void> => {
+        const file = this.filesMap.get(fileUUID);
+        if (file) {
+            if (file.fileName === fileNameObject.fullName) {
+                return;
+            } else {
+                await renameFile({ fileUUID, fileName: fileNameObject.fullName });
+                runInAction(() => {
+                    file.fileName = fileNameObject.fullName;
+                });
+            }
+        }
+    };
+
+    initialize(): () => void {
+        this.refreshFiles();
+
+        if (
+            this.uploadTaskManager.pending.length <= 0 &&
+            this.uploadTaskManager.uploadingMap.size <= 0
+        ) {
+            this.uploadTaskManager.cancelAll();
+        }
+
+        const disposer = reaction(
+            () => this.sortedUploadTasks.length,
+            () => {
+                this.refreshFilesDebounced();
+            },
+        );
+
+        return () => {
+            window.clearTimeout(this._refreshFilesTimeout);
+            disposer();
+        };
     }
 
-    onItemTitleClickInPage(fileUUID: string): void {
-        console.log("[cloud-storage] onItemTitleClick", fileUUID);
-        const file = this.files.find(file => file.fileUUID === fileUUID);
-        switch (file?.convert) {
+    // a set of taskUUIDs representing querying tasks
+    private _convertStatusQuerying = new Set<string>();
+
+    private _refreshFilesTimeout = NaN;
+
+    private async refreshFiles(): Promise<void> {
+        window.clearTimeout(this._refreshFilesTimeout);
+
+        try {
+            const { totalUsage, files: cloudFiles } = await listFiles({ page: 1 });
+
+            runInAction(() => {
+                this.totalUsage = totalUsage;
+            });
+
+            for (const cloudFile of cloudFiles) {
+                const file = this.filesMap.get(cloudFile.fileUUID);
+
+                runInAction(() => {
+                    if (file) {
+                        file.fileName = cloudFile.fileName;
+                        file.createAt = cloudFile.createAt;
+                        file.fileSize = cloudFile.fileSize;
+                        file.convert = this.mapConvertStep(cloudFile.convertStep);
+                        file.taskToken = cloudFile.taskToken;
+                        file.taskUUID = cloudFile.taskUUID;
+                    } else {
+                        this.filesMap.set(
+                            cloudFile.fileUUID,
+                            observable.object({
+                                ...cloudFile,
+                                convert: this.mapConvertStep(cloudFile.convertStep),
+                            }),
+                        );
+                    }
+                });
+
+                if (
+                    cloudFile.convertStep === FileConvertStep.Done ||
+                    cloudFile.convertStep === FileConvertStep.Failed
+                ) {
+                    this._convertStatusQuerying.delete(cloudFile.fileUUID);
+                } else if (!this._convertStatusQuerying.has(cloudFile.fileUUID)) {
+                    this._convertStatusQuerying.add(cloudFile.fileUUID);
+                    this.queryConvertStatus(cloudFile.fileUUID);
+                }
+            }
+        } catch (e) {
+            errorTips(e);
+        }
+
+        this.refreshFilesDebounced(10 * 1000);
+    }
+
+    private refreshFilesDebounced(timeout = 1000): void {
+        window.clearTimeout(this._refreshFilesTimeout);
+        this._refreshFilesTimeout = window.setTimeout(() => {
+            this.refreshFiles();
+        }, timeout);
+    }
+
+    private previewCourseware(file: CloudStorageFile): void {
+        switch (file.convert) {
             case "converting": {
                 Modal.info({ content: "课件转码中，请稍后……" });
                 return;
@@ -173,226 +321,174 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 return;
             }
             default: {
+                // @TODO preview courseware
                 Modal.info({ content: "请到房间内查看课件" });
             }
         }
     }
 
-    onBatchDelete = (): void => {
-        Modal.confirm({
-            content: "确定删除所选课件？课件删除后不可恢复",
-            onOk: async () => {
-                const fileUUIDs = this.selectedFileUUIDs;
-                console.log("[cloud-storage] onBatchDelete", fileUUIDs);
-                this.updateFiles(this.files.filter(file => !fileUUIDs.includes(file.fileUUID)));
-                await removeFiles({ fileUUIDs });
-                await this.refreshFiles();
-                this.unselectAll();
-            },
-        });
-    };
-
-    isUploadNotFinished = ({ status }: CloudStorageUploadTask): boolean => {
-        return status !== "success" && status !== "error";
-    };
-
-    onUploadPanelClose = (): void => {
-        if (Array.from(this.uploadTasksMap.values()).some(this.isUploadNotFinished)) {
-            Modal.confirm({
-                title: "取消上传",
-                content: "上传尚未完成，确定取消所有正在进行的上传吗?",
-                cancelText: "再想想",
-                onOk: () => {
-                    this.clearUploadTasksMap();
-                },
+    private async removeFiles(fileUUIDs: FileUUID[]): Promise<void> {
+        try {
+            await removeFiles({ fileUUIDs });
+            runInAction(() => {
+                for (const fileUUID of fileUUIDs) {
+                    this.filesMap.delete(fileUUID);
+                }
+                this.selectedFileUUIDs.clear();
             });
-        } else {
-            this.clearUploadTasksMap();
+        } catch (e) {
+            errorTips(e);
         }
-    };
+    }
 
-    onUploadRetry = (fileUUID: string): void => {
-        console.log("[cloud-storage] onUploadRetry", fileUUID);
-        const file = this.retryable.get(fileUUID);
-        if (file) {
-            this.retryable.delete(fileUUID);
-            this.setupUpload(file);
-        } else {
-            console.log("[cloud-storage] can not retry such file", fileUUID);
+    private downloadFile(fileUUID: FileUUID): void {
+        const file = this.filesMap.get(fileUUID);
+        if (file && file.fileURL) {
+            const a = document.createElement("a");
+            a.href = file.fileURL;
+            a.click();
         }
-    };
+    }
 
-    onUploadCancel = async (fileUUID: string): Promise<void> => {
-        console.log("[cloud-storage] onUploadCancel", fileUUID);
-        uploadManager.clean([fileUUID]);
-        this.deleteFileFromUploadTasksMap(fileUUID);
-        await this.refreshFiles();
-    };
-
-    setupUpload(file: File): void {
-        const task = uploadManager.upload(file);
-        const { fileUUID: fakeID } = task;
-        this.onUploadInit(fakeID, file);
-        task.onInit = fileUUID => {
-            console.log("[cloud-storage] start uploading", fileUUID, file.name, file.size);
-            this.deleteFileFromUploadTasksMap(fakeID);
-            this.onUploadInit(fileUUID, file);
-            this.refreshFiles();
-        };
-        task.onError = error => {
-            console.error(error);
-            message.error(error.message);
-            if (!isFakeID(task.fileUUID)) {
-                this.onUploadError(task.fileUUID, file);
-                this.refreshFiles();
+    private mapConvertStep(convertStep: FileConvertStep): CloudStorageConvertStatusType {
+        switch (convertStep) {
+            case FileConvertStep.None: {
+                return "idle";
             }
-        };
-        task.onCancel = () => {
-            this.refreshFiles();
-        };
-        task.onEnd = () => {
-            console.log("[cloud-storage] finish uploading", task.fileUUID);
-            this.onUploadEnd(task.fileUUID);
-            this.refreshFiles();
-        };
-        task.onProgress = e => {
-            this.onUploadProgress(task.fileUUID, file, e);
-        };
+            case FileConvertStep.Failed: {
+                return "error";
+            }
+            case FileConvertStep.Converting: {
+                return "converting";
+            }
+            case FileConvertStep.Done: {
+                return "success";
+            }
+            default: {
+                console.error("[cloud storage]: cannot map convert step", convertStep);
+                return "idle";
+            }
+        }
     }
 
-    onUploadProgress(fileUUID: string, file: File, e: ProgressEvent): void {
-        this.uploadTasksMap.set(fileUUID, {
-            uploadID: fileUUID,
-            fileName: file.name,
-            percent: ((100 * e.loaded) / e.total) | 0,
-            status: "uploading",
+    private pickCourseware(): Promise<FileList | null> {
+        return new Promise(resolve => {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.multiple = true;
+            input.accept = ".ppt,.pptx,.doc,.docx,.pdf,.png,.jpg,.jpeg,.gif";
+            input.onchange = () => resolve(input.files);
+            input.click();
         });
     }
 
-    onUploadEnd(fileUUID: string): void {
-        const status = this.uploadTasksMap.get(fileUUID);
-        if (status) {
-            status.status = "success";
+    /** convert business upload status to ui upload status type */
+    private mapUploadStatus(uploadStatus: UploadStatusType): CloudStorageUploadStatusType {
+        switch (uploadStatus) {
+            case UploadStatusType.Pending: {
+                return "idle";
+            }
+            case UploadStatusType.Success: {
+                return "success";
+            }
+            case UploadStatusType.Starting:
+            case UploadStatusType.Uploading: {
+                return "uploading";
+            }
+            default: {
+                // Failed,
+                // Cancelling,
+                // Cancelled,
+                return "error";
+            }
         }
     }
 
-    onUploadError(fileUUID: string, file: File): void {
-        const status = this.uploadTasksMap.get(fileUUID);
-        if (status) {
-            this.retryable.set(fileUUID, file);
-            status.status = "error";
-        }
-    }
-
-    onUploadInit(fileUUID: string, file: File): void {
-        this.uploadTasksMap.set(fileUUID, {
-            uploadID: fileUUID,
-            fileName: file.name,
-            percent: 0,
-            status: "idle",
-        });
-    }
-
-    updateFiles(files: CloudStorageFile[]): void {
-        this.files = files;
-    }
-
-    updateTotalUsage(totalUsage: number): void {
-        this.totalUsage = totalUsage;
-    }
-
-    async initialize(): Promise<void> {
-        await this.refreshFiles();
-    }
-
-    destroy(): void {
-        this.clearPullingTasks();
-    }
-
-    clearPullingTasks(): void {
-        for (const timer of this.pulling.values()) {
-            window.clearTimeout(timer);
-        }
-        this.pulling.clear();
-    }
-
-    async refreshFiles(): Promise<void> {
-        this.clearPullingTasks();
-        const { files, totalUsage } = await listFiles({ page: 1 });
-        const tempFiles = files.map(file => ({
-            ...file,
-            convert: convertStepToType(file.convertStep),
+    /** Map upload task type to ui upload task type  */
+    private mapUploadTasks(uploadTasks: UploadTask[]): CloudStorageUploadTask[] {
+        return uploadTasks.map(task => ({
+            uploadID: task.uploadID,
+            fileName: task.file.name,
+            percent: task.percent,
+            status: this.mapUploadStatus(task.status),
         }));
-        for (const file of tempFiles) {
-            if (file.fileName.endsWith(".pptx") || file.fileName.endsWith(".pdf")) {
-                let shouldPull = false;
-                if (file.convertStep === FileConvertStep.None) {
-                    try {
-                        console.log("[cloud-storage] convert start", file.fileUUID, file.fileName);
-                        const { taskToken, taskUUID } = await convertStart({
-                            fileUUID: file.fileUUID,
-                        });
-                        file.convertStep = FileConvertStep.Converting;
-                        file.convert = "converting";
-                        file.taskToken = taskToken;
-                        file.taskUUID = taskUUID;
-                        shouldPull = true;
-                    } catch {
-                        // ignore convert start failed
-                    }
-                } else if (file.convertStep === FileConvertStep.Converting) {
-                    shouldPull = true;
-                }
-                if (shouldPull) {
-                    this.setupPullingFile(file);
-                }
-            }
-        }
-        this.updateFiles(tempFiles);
-        this.updateTotalUsage(totalUsage === 0 ? NaN : totalUsage);
     }
 
-    setupPullingFile({ fileName, fileUUID, taskUUID, taskToken }: CloudFile): void {
-        let task: () => Promise<void>;
-        const next = (): void => {
-            const timer = this.pulling.get(fileUUID);
-            if (timer) {
-                window.clearTimeout(timer);
+    /** Query courseware converting status */
+    private async queryConvertStatus(fileUUID: FileUUID): Promise<void> {
+        const file = this.filesMap.get(fileUUID);
+        if (!file) {
+            return;
+        }
+
+        const isDynamic = file.fileName.endsWith(".pptx");
+
+        if (!isDynamic && !/\.(ppt|pdf|doc|docx)$/i.test(file.fileName)) {
+            return;
+        }
+
+        if (file.convert === "idle") {
+            try {
+                if (process.env.NODE_ENV === "development") {
+                    console.log("[cloud-storage] convert start", file.fileUUID, file.fileName);
+                }
+                const { taskToken, taskUUID } = await convertStart({ fileUUID: file.fileUUID });
+                runInAction(() => {
+                    file.convert = "converting";
+                    file.taskToken = taskToken;
+                    file.taskUUID = taskUUID;
+                });
+            } catch (e) {
+                console.error(e);
             }
-            this.pulling.set(fileUUID, window.setTimeout(task, 1000));
-        };
-        task = async (): Promise<void> => {
-            const { status, progress } = await queryTask(
-                taskUUID,
-                taskToken,
-                fileName.endsWith(".pptx"),
-            );
-            console.log(
-                "[cloud-storage] convert",
-                fileUUID,
-                fileName,
-                status,
-                progress?.convertedPercentage,
-            );
-            switch (status) {
-                case "Fail":
-                case "Finished": {
-                    try {
-                        await convertFinish({ fileUUID });
-                    } catch (e) {
-                        if (status === "Fail") {
-                            message.error(`${fileName} convert failed`);
-                        }
-                    } finally {
-                        await this.refreshFiles();
+        }
+
+        if (file.convert === "converting") {
+            this.pollConvertState(file, isDynamic);
+        }
+    }
+
+    private async pollConvertState(file: CloudStorageFile, dynamic: boolean): Promise<void> {
+        if (process.env.NODE_ENV === "development") {
+            console.log("[cloud-storage] query convert status", file.fileName);
+        }
+
+        try {
+            const { status } = await queryConvertingTaskStatus({
+                taskToken: file.taskToken,
+                taskUUID: file.taskUUID,
+                dynamic,
+            });
+            if (status === "Fail" || status === "Finished") {
+                if (process.env.NODE_ENV === "development") {
+                    console.log("[cloud storage]: convert finish", file.fileName);
+                }
+                try {
+                    await convertFinish({ fileUUID: file.fileUUID });
+                } catch (e) {
+                    // ignore file converted error
+                    if (!(e instanceof ServerRequestError && e.errorCode === 800000)) {
+                        throw e;
                     }
-                    break;
                 }
-                default: {
-                    next();
-                }
+                runInAction(() => {
+                    file.convert = status === "Fail" ? "error" : "success";
+                });
+                return;
             }
-        };
-        next();
+        } catch (e) {
+            console.log(e);
+        }
+
+        window.setTimeout(() => this.pollConvertState(file, dynamic), 1500);
+    }
+
+    private async cancelAll(): Promise<void> {
+        try {
+            await this.uploadTaskManager.cancelAll();
+        } catch (e) {
+            console.error(e);
+        }
+        this.setPanelExpand(false);
     }
 }

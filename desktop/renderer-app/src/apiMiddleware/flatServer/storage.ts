@@ -15,7 +15,9 @@ export interface CloudFile {
     fileSize: number;
     fileURL: string;
     convertStep: FileConvertStep;
+    /** Query courceware converting status */
     taskUUID: string;
+    /** Query courceware converting status */
     taskToken: string;
     createAt: Date;
 }
@@ -105,11 +107,11 @@ export async function convertFinish(payload: ConvertFinishPayload): Promise<Conv
 }
 
 export interface CancelUploadPayload {
-    fileUUIDs: string[];
+    fileUUIDs?: string[];
 }
 
 export interface CancelUploadResult {}
 
-export async function cancelUpload(payload: CancelUploadPayload): Promise<void> {
-    await post("cloud-storage/upload/cancel", payload);
+export async function cancelUpload(payload?: CancelUploadPayload): Promise<void> {
+    await post("cloud-storage/upload/cancel", payload || {});
 }

@@ -5,6 +5,7 @@ import faker from "faker";
 import { action, AnnotationsMap, makeObservable } from "mobx";
 import { Modal } from "antd";
 import { CloudStorageContainer, CloudStorageStore } from "./index";
+import { CloudStorageUploadTask } from "../../components/CloudStorage/types";
 
 const chance = new Chance();
 
@@ -43,8 +44,57 @@ class FakeStore extends CloudStorageStore {
     onItemTitleClick;
     onNewFileName: FakeStoreConfig["onNewFileName"];
 
+    pendingUploadTasks: CloudStorageStore["pendingUploadTasks"] = [];
+    uploadingUploadTasks: CloudStorageStore["uploadingUploadTasks"] = [];
+    successUploadTasks: CloudStorageStore["successUploadTasks"] = [];
+    failedUploadTasks: CloudStorageStore["failedUploadTasks"] = [];
+    files: CloudStorageStore["files"] = [];
+
     constructor(config: FakeStoreConfig) {
         super();
+
+        this.files = Array(25)
+            .fill(0)
+            .map(() => ({
+                fileUUID: faker.random.uuid(),
+                fileName: faker.random.words() + "." + faker.system.commonFileExt(),
+                fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                convert: chance.pickone(["idle", "error", "success", "converting"]),
+                createAt: faker.date.past(),
+            }));
+
+        this.totalUsage = this.files.reduce((sum, file) => sum + file.fileSize, 0);
+
+        for (let i = chance.integer({ min: 0, max: 200 }); i >= 0; i--) {
+            const fileUUID = faker.random.uuid();
+
+            const task: CloudStorageUploadTask = {
+                uploadID: fileUUID,
+                fileName: faker.random.word() + "." + faker.system.commonFileExt(),
+                status: chance.pickone(["idle", "error", "success", "uploading"]),
+                percent: chance.integer({ min: 0, max: 100 }),
+            };
+            switch (task.status) {
+                case "idle": {
+                    this.pendingUploadTasks.push(task);
+                    break;
+                }
+                case "error": {
+                    this.failedUploadTasks.push(task);
+                    break;
+                }
+                case "success": {
+                    this.successUploadTasks.push(task);
+                    break;
+                }
+                case "uploading": {
+                    this.uploadingUploadTasks.push(task);
+                    break;
+                }
+                default: {
+                }
+            }
+        }
 
         this.onBatchDelete = config.onBatchDelete;
         this.onUpload = config.onUpload;
@@ -100,33 +150,6 @@ class FakeStore extends CloudStorageStore {
     ];
 }
 
-function createFakeStore(config: FakeStoreConfig): FakeStore {
-    const store = new FakeStore(config);
-    store.totalUsage = chance.integer({ min: 0, max: 1000 * 1000 * 1000 });
-    store.files = Array(25)
-        .fill(0)
-        .map(() => {
-            return {
-                fileUUID: faker.random.uuid(),
-                fileName: faker.random.words() + "." + faker.system.commonFileExt(),
-                fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
-                convert: chance.pickone(["idle", "error", "success", "converting"]),
-                createAt: faker.date.past(),
-            };
-        });
-
-    for (let i = chance.integer({ min: 0, max: 200 }); i >= 0; i--) {
-        const fileUUID = faker.random.uuid();
-        store.uploadTasksMap.set(fileUUID, {
-            uploadID: fileUUID,
-            fileName: faker.random.word() + "." + faker.system.commonFileExt(),
-            status: chance.pickone(["idle", "error", "success", "uploading"]),
-            percent: chance.integer({ min: 0, max: 100 }),
-        });
-    }
-    return store;
-}
-
 function fakeStoreArgTypes(): ArgTypes {
     return fakeStoreImplProps.reduce((o, k) => {
         o[k] = { table: { disable: true } };
@@ -135,7 +158,7 @@ function fakeStoreArgTypes(): ArgTypes {
 }
 
 export const Overview: Story<FakeStoreConfig> = config => {
-    const [store] = useState(() => createFakeStore(config));
+    const [store] = useState(() => new FakeStore(config));
     return (
         <div className="ba br3 b--light-gray" style={{ height: 600, maxHeight: "80vh" }}>
             <CloudStorageContainer store={store} />
@@ -146,7 +169,7 @@ Overview.argTypes = fakeStoreArgTypes();
 
 export const CompactMode: Story<FakeStoreConfig> = config => {
     const [store] = useState(() => {
-        const store = createFakeStore(config);
+        const store = new FakeStore(config);
         store.compact = true;
         return store;
     });

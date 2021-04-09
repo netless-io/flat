@@ -51,7 +51,15 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
                 "is-panel-fold": !expand,
             })}
         >
-            <header className="cloud-storage-upload-panel-head">
+            <header
+                className="cloud-storage-upload-panel-head"
+                onClickCapture={(e: React.MouseEvent) => {
+                    if (compact && onExpandChange) {
+                        onExpandChange(!expand);
+                        e.stopPropagation();
+                    }
+                }}
+            >
                 <CloudStorageUploadTitle
                     finishWithError={finishWithError}
                     total={total}

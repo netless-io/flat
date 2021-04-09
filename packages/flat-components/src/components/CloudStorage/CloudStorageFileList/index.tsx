@@ -84,6 +84,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 dataIndex: "fileSize",
                 ellipsis: true,
                 width: "20%",
+                sorter: (file1, file2) => file1.fileSize - file2.fileSize,
                 render: function renderCloudStorageFileSize(
                     fileSize: CloudStorageFile["fileSize"],
                 ) {
@@ -95,7 +96,9 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 title: <span className="cloud-storage-file-list-title">修改日期</span>,
                 dataIndex: "createAt",
                 ellipsis: true,
-                width: "20%",
+                width: "25%",
+                sorter: (file1, file2) => file1.createAt.valueOf() - file2.createAt.valueOf(),
+                defaultSortOrder: "descend",
                 render: function renderCloudStorageCreateAt(date: CloudStorageFile["createAt"]) {
                     const formattedDate = format(date, "yyyy/MM/dd HH:mm:ss");
                     return <span title={formattedDate}>{formattedDate}</span>;

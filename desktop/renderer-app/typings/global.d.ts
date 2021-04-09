@@ -12,7 +12,9 @@ declare namespace NodeJS {
         NETLESS_SDK_TOKEN: string;
         NETLESS_APP_IDENTIFIER: string;
 
-        OSS_ACCESS_KEY_ID: string;
+        CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY: string;
+        CLOUD_STORAGE_OSS_ALIBABA_BUCKET: string;
+        CLOUD_STORAGE_OSS_ALIBABA_REGION: string;
 
         AGORA_APP_ID: string;
 
