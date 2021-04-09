@@ -25,7 +25,7 @@ export const MainRoomListPanel = observer<MainRoomListPanelProps>(function MainR
                 />
             </div>
             <div className="room-list-line" />
-            <div className="room-list-body">
+            <div className="room-list-body fancy-scrollbar">
                 <MainRoomList listRoomsType={activeListRoomsType} />
             </div>
         </div>

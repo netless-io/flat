@@ -15,7 +15,7 @@ export const MainRoomHistoryPanel = observer<MainRoomHistoryPanelProps>(
                     </div>
                 </div>
                 <div className="room-list-line" />
-                <div className="room-list-body">
+                <div className="room-list-body fancy-scrollbar">
                     <MainRoomList listRoomsType={ListRoomsType.History} />
                 </div>
             </div>

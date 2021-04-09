@@ -170,7 +170,7 @@ export const RoomList: React.FC<RoomListProps> = ({
                     ))}
                 </div>
             </div>
-            <div className="room-list-body">
+            <div className="room-list-body fancy-scrollbar">
                 {children}
                 {!loading && <div className="room-list-footer">已加载全部</div>}
             </div>
