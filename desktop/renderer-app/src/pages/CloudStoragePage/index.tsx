@@ -33,6 +33,11 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
     );
 
     function insertCourseware(file: CloudStorageFile): void {
+        if (file.convert === "converting") {
+            message.warn("正在转码中，请稍后再试");
+            return;
+        }
+
         message.info("正在插入课件……");
 
         const ext = (/\.[^.]+$/.exec(file.fileName) || [""])[0].toLowerCase();
@@ -146,7 +151,8 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                     message.error(`转码失败，原因: ${convertingStatus.failedReason}`);
                 }
             } else {
-                message.error("正在转码中，请稍后再试");
+                message.destroy();
+                message.warn("正在转码中，请稍后再试");
                 return;
             }
         } else if (convertingStatus.status === "Finished" && convertingStatus.progress) {
