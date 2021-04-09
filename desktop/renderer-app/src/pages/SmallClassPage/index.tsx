@@ -166,12 +166,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 <div className="realtime-avatars">
                     {renderAvatar(classRoomStore.users.creator)}
                     {classRoomStore.users.speakingJoiners.map(renderAvatar)}
-                    {classRoomStore.classMode === ClassModeType.Interaction && (
-                        <>
-                            {classRoomStore.users.handRaisingJoiners.map(renderAvatar)}
-                            {classRoomStore.users.otherJoiners.map(renderAvatar)}
-                        </>
-                    )}
+                    {classRoomStore.users.handRaisingJoiners.map(renderAvatar)}
+                    {classRoomStore.users.otherJoiners.map(renderAvatar)}
                 </div>
             </div>
         );
