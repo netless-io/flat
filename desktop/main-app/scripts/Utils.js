@@ -20,7 +20,7 @@ const buildElectron = async buildType => {
 
     config.directories.output = path.join("release", buildType);
 
-    if (!version.include("alpha")) {
+    if (!version.includes("alpha")) {
         config.releaseInfo.releaseNotes = generateReleaseNote();
     }
 
