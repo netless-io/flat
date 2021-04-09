@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
@@ -77,6 +77,11 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
         return classRoomStore.users.currentUser;
     }).get();
+
+    useEffect(() => {
+        whiteboardStore.updateWritable(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     if (
         !whiteboardStore.room ||
