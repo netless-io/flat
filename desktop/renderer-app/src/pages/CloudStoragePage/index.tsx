@@ -99,30 +99,35 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
         room.completeImageUpload(uuid, file.fileURL);
     }
 
-    function insertAudio(_file: CloudStorageFile): void {
-        // room.insertPlugin("audio", {
-        //     originX: -240,
-        //     originY: -43,
-        //     width: 480,
-        //     height: 86,
-        //     attributes: {
-        //         pluginAudioUrl: src,
-        //     },
-        // });
+    function insertAudio(file: CloudStorageFile): void {
+        const room = whiteboard?.room;
+        if (!room) {
+            return;
+        }
+
+        room.insertPlugin("audio", {
+            originX: -240,
+            originY: -43,
+            width: 480,
+            height: 86,
+            attributes: { pluginAudioUrl: file.fileURL },
+        });
         console.log("[cloud storage] does not support audio yet");
     }
 
-    function insertVideo(_file: CloudStorageFile): void {
-        // room.insertPlugin("video", {
-        //     originX: -240,
-        //     originY: -135,
-        //     width: 480,
-        //     height: 270,
-        //     attributes: {
-        //         pluginAudioUrl: src,
-        //     },
-        // });
-        console.log("[cloud storage] does not support video yet");
+    function insertVideo(file: CloudStorageFile): void {
+        const room = whiteboard?.room;
+        if (!room) {
+            return;
+        }
+
+        room.insertPlugin("video", {
+            originX: -240,
+            originY: -135,
+            width: 480,
+            height: 270,
+            attributes: { pluginAudioUrl: file.fileURL },
+        });
     }
 
     async function insertDocs(file: CloudStorageFile, ext: string): Promise<void> {
