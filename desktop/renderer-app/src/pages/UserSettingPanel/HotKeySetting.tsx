@@ -17,77 +17,92 @@ interface HotKey {
 const HotKeyTableTitleList = [
     {
         title: "名称",
-        dataIndex: "desc"
+        dataIndex: "desc",
     },
     {
         title: "快捷键",
-        dataIndex: ""
-    }
+        dataIndex: "",
+    },
 ];
 
 const HotKeyTableRow = Object.freeze(["工具栏", "编辑"]);
 
 const HotKeyTableExpandTitleList = [
     {
-        dataIndex: "name"
+        dataIndex: "name",
     },
     {
-        dataIndex: "hotKey"
-    }
+        dataIndex: "hotKey",
+    },
 ];
 
-const HotKeyTableExpandRow : {
-    [index: string]: HotKey[]
+const HotKeyTableExpandRow: {
+    [index: string]: HotKey[];
 } = {
-    "tools": [
+    tools: [
         {
             name: "选择",
-            hotKey: "S"
-        }, {
+            hotKey: "S",
+        },
+        {
             name: "画笔",
-            hotKey: "P"
-        }, {
+            hotKey: "P",
+        },
+        {
             name: "橡皮擦",
-            hotKey: "E"
-        }, {
+            hotKey: "E",
+        },
+        {
             name: "圆形",
-            hotKey: "C"
-        }, {
+            hotKey: "C",
+        },
+        {
             name: "矩形",
-            hotKey: "R"
-        }, {
+            hotKey: "R",
+        },
+        {
             name: "箭头",
-            hotKey: "A"
-        }, {
+            hotKey: "A",
+        },
+        {
             name: "直线",
-            hotKey: "L"
-        }, {
+            hotKey: "L",
+        },
+        {
             name: "激光笔",
-            hotKey: "Z"
-        }, {
+            hotKey: "Z",
+        },
+        {
             name: "抓手",
-            hotKey: "H"
-        }],
-    "edit": [
+            hotKey: "H",
+        },
+    ],
+    edit: [
         {
             name: "删除所选对象",
-            hotKey: "Backspace / Delete"
-        }, {
+            hotKey: "Backspace / Delete",
+        },
+        {
             name: "等比例缩放",
-            hotKey: "Shift / ⇧"
-        }, {
+            hotKey: "Shift / ⇧",
+        },
+        {
             name: "撤销",
-            hotKey: "Ctrl + Z / ⌘ + Z"
-        }, {
+            hotKey: "Ctrl + Z / ⌘ + Z",
+        },
+        {
             name: "重做",
-            hotKey: "Ctrl + Y / ⌘ + Y"
-        }, {
+            hotKey: "Ctrl + Y / ⌘ + Y",
+        },
+        {
             name: "复制",
-            hotKey: "Ctrl + C / ⌘ + C"
-        }, {
+            hotKey: "Ctrl + C / ⌘ + C",
+        },
+        {
             name: "粘贴",
-            hotKey: "Ctrl + V / ⌘ + V"
-        }]
+            hotKey: "Ctrl + V / ⌘ + V",
+        },
+    ],
 };
 
 const HotKeyTableKeys = Object.freeze(Object.keys(HotKeyTableExpandRow));
@@ -100,15 +115,21 @@ HotKeyTableKeys.forEach((data: string) => {
 });
 
 const tableRow: HotKeyTable[] = HotKeyTableKeys.map((data: string, index) => {
-        return {
-            name: data,
-            key: `${data + index}`,
-            desc: HotKeyTableRow[index]
-        };
-    });
+    return {
+        name: data,
+        key: `${data + index}`,
+        desc: HotKeyTableRow[index],
+    };
+});
 
 const expandedRowRender = (row: HotKeyTable): React.ReactElement => {
-    return <Table columns={HotKeyTableExpandTitleList} dataSource={HotKeyTableExpandRow[row.name]} pagination={false} />;
+    return (
+        <Table
+            columns={HotKeyTableExpandTitleList}
+            dataSource={HotKeyTableExpandRow[row.name]}
+            pagination={false}
+        />
+    );
 };
 
 export const HotKeySetting = React.memo(function HotKeySetting() {
@@ -119,7 +140,13 @@ export const HotKeySetting = React.memo(function HotKeySetting() {
                 <span>热键设置</span>
             </div>
             <div className="content-inner">
-                <Table columns={HotKeyTableTitleList} dataSource={tableRow} expandable={{expandedRowRender}} pagination={false} scroll={{y: 500}} />
+                <Table
+                    columns={HotKeyTableTitleList}
+                    dataSource={tableRow}
+                    expandable={{ expandedRowRender }}
+                    pagination={false}
+                    scroll={{ y: 500 }}
+                />
             </div>
         </div>
     );

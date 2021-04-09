@@ -8,8 +8,10 @@
     }
 
     .ant-table-body {
-        overflow-y: scroll;
-        height: 450px;
+        width: 537px !important;
+        overflow-y: hidden !important;
+        max-height: initial !important;
+        margin-bottom: 24px;
         border: 1px solid #e0e0e0;
         border-radius: 15px;
 
@@ -20,5 +22,9 @@
         .ant-table-tbody .ant-table-tbody tr > td {
             width: 50%;
         }
+    }
+
+    tr.ant-table-expanded-row > td {
+        background-color: #fff !important;
     }
 }
