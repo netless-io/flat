@@ -90,7 +90,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                         </h1>
                     </div>
                 </div>
-                <div className="edit-room-body">
+                <div className="edit-room-body fancy-scrollbar">
                     <div className="edit-room-mid">
                         <Form
                             form={form}
