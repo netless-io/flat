@@ -92,6 +92,7 @@ class FakeStore extends CloudStorageStore {
                     break;
                 }
                 default: {
+                    break;
                 }
             }
         }
@@ -180,3 +181,14 @@ export const CompactMode: Story<FakeStoreConfig> = config => {
     );
 };
 CompactMode.argTypes = fakeStoreArgTypes();
+CompactMode.parameters = {
+    viewport: {
+        viewports: {
+            compact: {
+                name: "Compact Mode",
+                styles: { width: "640px", height: "1000px" },
+            },
+        },
+        defaultViewport: "compact",
+    },
+};
