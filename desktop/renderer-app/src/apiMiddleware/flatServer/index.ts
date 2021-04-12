@@ -489,15 +489,21 @@ export async function updatePeriodicSubRoom(payload: UpdatePeriodicSubRoomPayloa
     );
 }
 
-export interface LoginCheck {
+export interface LoginCheckPayload {
+    type: "web" | "mobile";
+}
+
+export interface LoginCheckResult {
     name: string;
     sex: Sex;
     avatar: string; // 头像地址
     userUUID: string; // 用户信息，需要进行保存
 }
 
-export async function loginCheck(): Promise<LoginCheck> {
-    return await post<{}, LoginCheck>("login", {});
+export async function loginCheck(): Promise<LoginCheckResult> {
+    return await post<LoginCheckPayload, LoginCheckResult>("login", {
+        type: "web",
+    });
 }
 
 export interface SetWechatAuthIDPayload {
@@ -530,7 +536,10 @@ export interface WechatProcessResult {
 }
 
 export async function wechatProcess(authID: string): Promise<WechatProcessResult> {
-    return await postNotAuth<WechatProcessPayload, WechatProcessResult>("login/weChat/process", {
-        authID,
-    });
+    return await postNotAuth<WechatProcessPayload, WechatProcessResult>(
+        "login/weChat/web/process",
+        {
+            authID,
+        },
+    );
 }

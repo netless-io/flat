@@ -14,7 +14,7 @@ export const FLAT_SERVER_VERSIONS = {
 
 export const FLAT_SERVER_LOGIN = {
     WSS_LOGIN: `${FLAT_SERVER_VERSIONS.V1WSS}/Login`,
-    WECHAT_CALLBACK: `${FLAT_SERVER_VERSIONS.V1HTTPS}/login/weChat/callback`,
+    WECHAT_CALLBACK: `${FLAT_SERVER_VERSIONS.V1HTTPS}/login/weChat/web/callback`,
     HTTPS_LOGIN: `${FLAT_SERVER_VERSIONS.V1HTTPS}/login`,
 } as const;
 
