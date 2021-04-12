@@ -184,6 +184,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             const uuid = v4uuid();
             room.putScenes(`/${taskUUID}/${uuid}`, scenes);
             room.setScenePath(`/${taskUUID}/${uuid}/${scenes[0].name}`);
+            room.scalePptToFit();
         } else {
             message.error("无法插入课件");
         }
