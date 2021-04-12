@@ -2,10 +2,10 @@ import "./style.less";
 import arrowSVG from "./icons/panel-arrow.svg";
 import closeSVG from "./icons/panel-close.svg";
 
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { Button } from "antd";
 import classNames from "classnames";
-import { ResizeReporter } from "react-resize-reporter/scroll";
+import { useResizeDetector } from "react-resize-detector";
 import { CloudStorageUploadTitle } from "../CloudStorageUploadTitle";
 
 export interface CloudStorageUploadPanelProps
@@ -41,7 +41,7 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
     onClose,
     ...restProps
 }) => {
-    const [contentHeight, setContentHeight] = useState(0);
+    const { height: contentHeight = 0, width: contentWidth, ref: resizeRef } = useResizeDetector();
 
     return (
         <section
@@ -84,11 +84,11 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
             <div
                 className="cloud-storage-upload-panel-content fancy-scrollbar"
                 style={{
+                    width: compact && !expand ? 200 : contentWidth,
                     height: expand ? (contentHeight < maxHeight ? contentHeight : maxHeight) : 0,
                 }}
             >
-                <div className="cloud-storage-upload-panel-content-sizer">
-                    <ResizeReporter reportInit onHeightChanged={setContentHeight} />
+                <div className="cloud-storage-upload-panel-content-sizer" ref={resizeRef}>
                     <div className="cloud-storage-upload-panel-status-list">{children}</div>
                 </div>
             </div>

@@ -175,7 +175,7 @@ export const CompactMode: Story<FakeStoreConfig> = config => {
         return store;
     });
     return (
-        <div className="ba br3 b--light-gray" style={{ height: 600, maxHeight: "80vh" }}>
+        <div className="ba br3 b--light-gray" style={{ height: "400px" }}>
             <CloudStorageContainer store={store} />
         </div>
     );
@@ -186,7 +186,7 @@ CompactMode.parameters = {
         viewports: {
             compact: {
                 name: "Compact Mode",
-                styles: { width: "640px", height: "1000px" },
+                styles: { width: "640px", height: "432px" },
             },
         },
         defaultViewport: "compact",

@@ -417,12 +417,14 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     /** Map upload task type to ui upload task type  */
     private mapUploadTasks(uploadTasks: UploadTask[]): CloudStorageUploadTask[] {
-        return uploadTasks.map(task => ({
-            uploadID: task.uploadID,
-            fileName: task.file.name,
-            percent: task.percent,
-            status: this.mapUploadStatus(task.status),
-        }));
+        return observable.array(
+            uploadTasks.map(task => ({
+                uploadID: task.uploadID,
+                fileName: task.file.name,
+                percent: task.percent,
+                status: this.mapUploadStatus(task.status),
+            })),
+        );
     }
 
     /** Query courseware converting status */
