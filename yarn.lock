@@ -2439,15 +2439,15 @@
   resolved "https://registry.npmjs.org/@netless/tool-box/-/tool-box-0.0.9.tgz#dcf865787a7219a7f00c588addcb8306a272fe22"
   integrity sha512-jtSBimJEXb1yXjmsh8LbuooEzgLLOGMLIvx0USCMQjRmFKQ10YLjWNQ3nYKmbnnsnC/6czurls2h18d+Ys5szw==
 
-"@netless/white-audio-plugin@^1.2.21":
-  version "1.2.21"
-  resolved "https://registry.yarnpkg.com/@netless/white-audio-plugin/-/white-audio-plugin-1.2.21.tgz#8a9b4e6a8a4f7094ac576e55a3480f67436c09f4"
-  integrity sha512-YDukS7K1L06zvnmsbOFZz6azg8EW+D8qpq521lMRqEEhL+6S8ZgFpAvopHfe13lXFM1laEjCG0JH6tuuG/L53A==
+"@netless/white-audio-plugin@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@netless/white-audio-plugin/-/white-audio-plugin-2.0.0.tgz#4e40933c749099587b8fd445d9fe675f83f6f3db"
+  integrity sha512-98dTU6ifvfyNOUsGPFo1gSQixq0Kgak6wlutcZIuZZzQ2CXNpmIygOnpLI/pdYCgqerp8kNAvsPa4rFwGd9fVQ==
 
-"@netless/white-video-plugin@^1.2.21":
-  version "1.2.21"
-  resolved "https://registry.yarnpkg.com/@netless/white-video-plugin/-/white-video-plugin-1.2.21.tgz#facd980e268d8471c60f8adc04d8a2728b05ca85"
-  integrity sha512-Mm17qqHwAJ5Key/cKbhzAQjnYAovXrMActzeKuIZFH1jJieDncbjOs6HCECjOfJogPcIi8rOHhU8dOJd9xNAEQ==
+"@netless/white-video-plugin@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/@netless/white-video-plugin/-/white-video-plugin-2.0.1.tgz#fd5b9b611a91b73a5395ffc128cd558faef20606"
+  integrity sha512-oz0aMcvtuJyPjwa0QYkBg+u+2B3lkNbzAbj+YtZgsHV506YrAHIrqDgLENiCSWpk2lwBCqx/EGsdl2Ug4iX73Q==
 
 "@netless/zoom-controller@^0.1.1":
   version "0.1.1"
@@ -12174,6 +12174,11 @@ mobx-react-lite@^3.1.6:
   resolved "https://registry.yarnpkg.com/mobx-react-lite/-/mobx-react-lite-3.1.6.tgz#e7f4809ab66edd1acca5adb00c6b88c600ae1952"
   integrity sha512-MM3x9BLt5nC7iE/ILA5n2+hfrplEKYbFjqROEuGkzBdZP/KD+Z44+2gseczRrTG0xFuiPWfEzgT68+6/zqOiEw==
 
+mobx-react-lite@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.npmjs.org/mobx-react-lite/-/mobx-react-lite-3.2.0.tgz#331d7365a6b053378dfe9c087315b4e41c5df69f"
+  integrity sha512-q5+UHIqYCOpBoFm/PElDuOhbcatvTllgRp3M1s+Hp5j0Z6XNgDbgqxawJ0ZAUEyKM8X1zs70PCuhAIzX1f4Q/g==
+
 mobx-react@^5.4.0:
   version "5.4.4"
   resolved "https://registry.npmjs.org/mobx-react/-/mobx-react-5.4.4.tgz#b3de9c6eabcd0ed8a40036888cb0221ab9568b80"
@@ -12181,6 +12186,13 @@ mobx-react@^5.4.0:
   dependencies:
     hoist-non-react-statics "^3.0.0"
     react-lifecycles-compat "^3.0.2"
+
+mobx-react@^7.1.0:
+  version "7.1.0"
+  resolved "https://registry.npmjs.org/mobx-react/-/mobx-react-7.1.0.tgz#d947cada3cfad294b4b6f692e969c242b9c16eaf"
+  integrity sha512-DxvA6VXmnZ+N9f/UTtolWtdRnAAQY2iHWTSPLktfpj8NKlXUe4dabBAjuXrBcZUM8GjLWnxD1ZEjssXq1M0RAw==
+  dependencies:
+    mobx-react-lite "^3.2.0"
 
 mobx@^4.9.0:
   version "4.15.7"
