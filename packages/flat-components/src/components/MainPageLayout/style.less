@@ -1,0 +1,159 @@
+.main-layout-container {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(19, 20, 21);
+    display: flex;
+}
+
+.main-layout-container-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 42px;
+    margin-bottom: 24px;
+
+    > img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid white;
+    }
+
+    & > .ant-avatar {
+        cursor: pointer;
+    }
+}
+
+.main-layout-container-content {
+    display: flex;
+    flex: 1;
+    background-color: #f4f6f9;
+}
+
+.main-layout-side-menu-container {
+    display: flex;
+    width: 72px;
+    flex-direction: column;
+
+    a {
+        color: #fff;
+        padding-bottom: 16px;
+    }
+}
+
+.side-menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 14px;
+}
+
+.side-menu-footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: 16px;
+}
+
+.main-layout-menu-link {
+    display: flex;
+    padding: 9px 0px 9px 16px;
+    transition: background-color 0.4s;
+    align-items: center;
+    color: #444e60;
+
+    &:hover,
+    &:active {
+        color: #444e60;
+        background-color: rgba(243, 246, 249, 1);
+    }
+
+    &.is-active {
+        color: #444e60;
+        background-color: rgba(51, 129, 255, 0.06);
+    }
+}
+
+.main-layout-sub-menu-container {
+    width: 240px;
+    padding-top: 24px;
+    background-color: #fff;
+
+    ul {
+        list-style-type: none;
+        padding-inline-start: 0px;
+    }
+
+    span {
+        margin-left: 8px;
+    }
+}
+
+.main-layout-container-popover {
+    .ant-popover-title {
+        min-width: 164px;
+        border-bottom: none;
+    }
+
+    .ant-popover-inner {
+        border-radius: 8px;
+    }
+
+    &.ant-popover-placement-bottomLeft {
+        padding-top: 0;
+    }
+}
+
+.popmenu-title {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    user-select: none;
+}
+
+.popmenu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 8px;
+
+    .ant-divider-horizontal {
+        margin: 0;
+        min-width: initial;
+        width: 80%;
+    }
+}
+
+.popmenu-item {
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    color: #444e60;
+
+    span {
+        padding-right: 8px;
+    }
+}
+
+.popmenu-item-logout {
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    color: #f45454;
+
+    &:hover,
+    &:active {
+        color: #f45454;
+    }
+
+    span {
+        padding-right: 8px;
+    }
+}
