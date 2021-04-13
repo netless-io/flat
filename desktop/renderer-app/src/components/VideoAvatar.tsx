@@ -35,21 +35,26 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
     /** avatar element */
     const elRef = useRef<HTMLDivElement | null>(null);
 
-    useUpdateEffect(() => {
-        if (userUUID === avatarUser.userUUID) {
-            rtcEngine.enableLocalVideo(roomStatus === RoomStatus.Started && avatarUser.camera);
-        } else {
-            rtcEngine.muteRemoteVideoStream(avatarUser.rtcUID, !avatarUser.camera);
-        }
-    }, [avatarUser.camera, roomStatus]);
+    // when classroom is paused, turn off the creator's camera and mic
+    // but leave joiners' unchanged
+    const isCameraOn = (!isCreator || roomStatus === RoomStatus.Started) && avatarUser.camera
+    const isMicOn = (!isCreator || roomStatus === RoomStatus.Started) && avatarUser.mic;
 
     useUpdateEffect(() => {
         if (userUUID === avatarUser.userUUID) {
-            rtcEngine.enableLocalAudio(roomStatus === RoomStatus.Started && avatarUser.mic);
+            rtcEngine.enableLocalVideo(isCameraOn);
         } else {
-            rtcEngine.muteRemoteAudioStream(avatarUser.rtcUID, !avatarUser.mic);
+            rtcEngine.muteRemoteVideoStream(avatarUser.rtcUID, !isCameraOn);
         }
-    }, [avatarUser.mic, roomStatus]);
+    }, [isCameraOn]);
+
+    useUpdateEffect(() => {
+        if (userUUID === avatarUser.userUUID) {
+            rtcEngine.enableLocalAudio(isMicOn);
+        } else {
+            rtcEngine.muteRemoteAudioStream(avatarUser.rtcUID, !isMicOn);
+        }
+    }, [isMicOn]);
 
     useEffect(
         () => () => {
@@ -64,10 +69,9 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
         [rtcEngine, userUUID, avatarUser.userUUID, avatarUser.rtcUID],
     );
 
-    const isCameraCtrlDisable =
-        avatarUser.userUUID !== userUUID && (!isCreator || !avatarUser.camera);
+    const isCameraCtrlDisable = avatarUser.userUUID !== userUUID && (!isCreator || !isCameraOn);
 
-    const isMicCtrlDisable = avatarUser.userUUID !== userUUID && (!isCreator || !avatarUser.mic);
+    const isMicCtrlDisable = avatarUser.userUUID !== userUUID && (!isCreator || !isMicOn);
 
     const canvas = (
         <div
@@ -82,12 +86,12 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
                 if (el) {
                     if (userUUID === avatarUser.userUUID) {
                         rtcEngine.setupLocalVideo(el);
-                        rtcEngine.enableLocalVideo(avatarUser.camera);
-                        rtcEngine.enableLocalAudio(avatarUser.mic);
+                        rtcEngine.enableLocalVideo(isCameraOn);
+                        rtcEngine.enableLocalAudio(isMicOn);
                     } else {
                         rtcEngine.setupRemoteVideo(avatarUser.rtcUID, el);
-                        rtcEngine.muteRemoteVideoStream(avatarUser.rtcUID, !avatarUser.camera);
-                        rtcEngine.muteRemoteAudioStream(avatarUser.rtcUID, !avatarUser.mic);
+                        rtcEngine.muteRemoteVideoStream(avatarUser.rtcUID, !isCameraOn);
+                        rtcEngine.muteRemoteAudioStream(avatarUser.rtcUID, !isMicOn);
                     }
                 }
             }}
@@ -99,23 +103,23 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
             <button
                 onClick={() => {
                     if (isCreator || userUUID === avatarUser.userUUID) {
-                        updateDeviceState(avatarUser.userUUID, !avatarUser.camera, avatarUser.mic);
+                        updateDeviceState(avatarUser.userUUID, !isCameraOn, isMicOn);
                     }
                 }}
                 disabled={isCameraCtrlDisable}
             >
-                <img src={avatarUser.camera ? cameraIconSVG : cameraDisabledSVG} alt="camera" />
+                <img src={isCameraOn ? cameraIconSVG : cameraDisabledSVG} alt="camera" />
             </button>
             <button
                 onClick={() => {
                     if (isCreator || userUUID === avatarUser.userUUID) {
-                        updateDeviceState(avatarUser.userUUID, avatarUser.camera, !avatarUser.mic);
+                        updateDeviceState(avatarUser.userUUID, isCameraOn, !isMicOn);
                     }
                 }}
                 disabled={isMicCtrlDisable}
             >
                 <img
-                    src={avatarUser.mic ? microphoneSVG : microphoneDisabledSVG}
+                    src={isMicOn ? microphoneSVG : microphoneDisabledSVG}
                     alt="microphone"
                 />
             </button>
