@@ -25,6 +25,7 @@ import {
     renameFile,
 } from "../../apiMiddleware/flatServer/storage";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { getCoursewarePreloader } from "../../utils/CoursewarePreloader";
 import { getUploadTaskManager } from "../../utils/UploadTaskManager";
 import { UploadStatusType, UploadTask } from "../../utils/UploadTaskManager/UploadTask";
 
@@ -483,15 +484,22 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             if (process.env.NODE_ENV === "development") {
                 console.log("[cloud storage]: convert finish", file.fileName);
             }
+
             try {
                 await convertFinish({ fileUUID: file.fileUUID });
             } catch (e) {
                 // ignore error when notifying server finish status
                 console.warn(e);
             }
+
             runInAction(() => {
                 file.convert = status === "Fail" ? "error" : "success";
             });
+
+            if (status === "Finished") {
+                getCoursewarePreloader().preload(file.taskUUID, dynamic ? "dynamic" : "static");
+            }
+
             return;
         }
 
