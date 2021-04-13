@@ -127,7 +127,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             originY: -43,
             width: 480,
             height: 86,
-            attributes: { pluginAudioUrl: file.fileURL },
+            attributes: { src: file.fileURL },
         });
         console.log("[cloud storage] does not support audio yet");
     }
@@ -143,7 +143,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             originY: -135,
             width: 480,
             height: 270,
-            attributes: { pluginAudioUrl: file.fileURL },
+            attributes: { src: file.fileURL },
         });
     }
 
