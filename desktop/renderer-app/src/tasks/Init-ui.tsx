@@ -5,7 +5,6 @@ import zhCN from "antd/lib/locale/zh_CN";
 import { AppRoutes } from "../AppRoutes";
 import { StoreProvider } from "../components/StoreProvider";
 
-import "antd/dist/antd.less";
 import "../theme.less";
 import "flat-components/build/style.css";
 

@@ -1,3 +1,7 @@
+@import "~antd/lib/style/themes/default.less";
+@import "~antd/dist/antd.less";
+@import "./variables.less";
+
 .ant-modal-content {
     border-radius: 8px;
 }
@@ -29,5 +33,97 @@
 
 .ant-btn {
     border-radius: 4px;
-    box-shadow: none !important;
+    padding: 6px 28px;
+    line-height: 1;
+    box-shadow: none;
+}
+
+.ant-input {
+    padding: 8px;
+    line-height: 20px;
+    color: #444e60;
+    border-radius: 4px;
+    border: 1px solid #dbe1ea;
+
+    &::placeholder {
+        color: #dbe1ea;
+    }
+
+    &::selection {
+        color: inherit;
+        background: #b3d7ff;
+    }
+}
+
+.ant-input-focused,
+.ant-input:focus {
+    border: 1px solid @primary-color;
+    outline: 0;
+    box-shadow: 0px 0px 4px 0px rgba(51, 129, 255, 0.24);
+}
+
+.ant-radio-inner {
+    &:after {
+        top: 2px;
+        left: 2px;
+        width: 10px;
+        height: 10px;
+        // background-color: @primary-color;
+    }
+}
+
+.ant-checkbox-wrapper.is-hover .ant-checkbox-inner,
+.ant-radio-wrapper.is-hover .ant-radio-inner {
+    border-color: @primary-color;
+}
+
+.ant-checkbox-inner::after {
+    top: 45%;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner::after {
+    border-width: 1px;
+}
+
+.ant-btn-dashed[disabled],
+.ant-btn-dashed[disabled]:hover,
+.ant-btn-dashed[disabled]:focus,
+.ant-btn-dashed[disabled]:active {
+    color: @disabled-bg;
+    border: 1px dashed @disabled-bg;
+    background: transparent;
+}
+
+.ant-btn-dangerous[disabled],
+.ant-btn-dangerous[disabled]:hover,
+.ant-btn-dangerous[disabled]:focus,
+.ant-btn-dangerous[disabled]:active {
+    color: @error-color;
+    border: 1px solid @error-color;
+    opacity: 0.32;
+    background: transparent;
+}
+
+.ant-btn {
+    &.is-hover {
+        color: #5ca0ff;
+        background: #fff;
+        border-color: #5ca0ff;
+    }
+}
+
+.ant-btn-primary {
+    &.is-hover {
+        color: #fff;
+        background: #5ca0ff;
+        border-color: #5ca0ff;
+    }
+}
+
+.ant-btn-dangerous {
+    &.is-hover {
+        color: #ff8480;
+        background: #fff;
+        border-color: #ff8480;
+    }
 }
