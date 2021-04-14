@@ -1,4 +1,4 @@
-import { observer } from "mobx-react-lite";
+import { Observer, observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import {
     AutoSizer,
@@ -7,21 +7,21 @@ import {
     List,
     ListRowRenderer,
 } from "react-virtualized";
-import ChatMessage, { ChatMessageItem } from "../ChatPanel/ChatMessage";
+import { ClassRoomReplayStore } from "../../stores/ClassRoomReplayStore";
+import ChatMessage from "../ChatPanel/ChatMessage";
 
 export interface ChatMessageListReplayProps {
-    userUUID: string;
-    messages: ChatMessageItem[];
+    classRoomReplayStore: ClassRoomReplayStore;
 }
 
 export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
-    function ChatMessageListReplay({ userUUID, messages }) {
+    function ChatMessageListReplay({ classRoomReplayStore }) {
         const [cellCache] = useState(
             () =>
                 new CellMeasurerCache({
                     defaultHeight: 72,
                     fixedWidth: true,
-                    keyMapper: index => messages[index].uuid,
+                    keyMapper: index => classRoomReplayStore.messages[index].uuid,
                 }),
         );
 
@@ -30,19 +30,25 @@ export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
                 <CellMeasurer
                     cache={cellCache}
                     parent={parent}
-                    key={messages[index].uuid}
+                    key={classRoomReplayStore.messages[index].uuid}
                     columnIndex={0}
                     rowIndex={index}
                 >
                     {({ measure, registerChild }) => {
                         return (
-                            // @ts-ignore bug of react-vituralized typing
-                            <div ref={registerChild} style={style}>
-                                <ChatMessage
-                                    onMount={measure}
-                                    userUUID={userUUID}
-                                    message={messages[index]}
-                                />
+                            <div ref={el => el && registerChild && registerChild(el)} style={style}>
+                                <Observer>
+                                    {() => (
+                                        <ChatMessage
+                                            onMount={measure}
+                                            userUUID={classRoomReplayStore.userUUID}
+                                            messageUser={classRoomReplayStore.users.cachedUsers.get(
+                                                classRoomReplayStore.messages[index].userUUID,
+                                            )}
+                                            message={classRoomReplayStore.messages[index]}
+                                        />
+                                    )}
+                                </Observer>
                             </div>
                         );
                     }}
@@ -56,10 +62,10 @@ export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
                     <List
                         height={height}
                         width={width}
-                        rowCount={messages.length}
+                        rowCount={classRoomReplayStore.messages.length}
                         rowHeight={cellCache.rowHeight}
                         rowRenderer={rowRenderer}
-                        scrollToIndex={messages.length - 1}
+                        scrollToIndex={classRoomReplayStore.messages.length - 1}
                         scrollToAlignment="start"
                     />
                 )}

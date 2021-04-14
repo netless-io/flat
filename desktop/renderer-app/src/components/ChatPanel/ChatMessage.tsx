@@ -52,6 +52,7 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
     if (userUUID === message.userUUID) {
         return (
             <div className="chat-message-line is-reverse">
+                <div className="chat-message-user">{messageUser?.name || message.userUUID}</div>
                 <div className="chat-message-bubble">{message.value}</div>
             </div>
         );

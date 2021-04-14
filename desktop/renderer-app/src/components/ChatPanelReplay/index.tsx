@@ -1,25 +1,23 @@
+import "../ChatPanel/ChatPanel.less";
+
 import React from "react";
 import { Tabs } from "antd";
 import { observer } from "mobx-react-lite";
-import { ChatMessageItem } from "../ChatPanel/ChatMessage";
 import { ChatMessagesReplay } from "./ChatMessagesReplay";
-
-import "../ChatPanel/ChatPanel.less";
+import { ClassRoomReplayStore } from "../../stores/ClassRoomReplayStore";
 
 export interface ChatPanelReplayProps {
-    userUUID: string;
-    messages: ChatMessageItem[];
+    classRoomReplayStore: ClassRoomReplayStore;
 }
 
 export const ChatPanelReplay = observer<ChatPanelReplayProps>(function ChatPanelReplay({
-    userUUID,
-    messages,
+    classRoomReplayStore,
 }) {
     return (
         <div className="chat-panel">
             <Tabs defaultActiveKey="messages" tabBarGutter={0}>
                 <Tabs.TabPane tab="消息列表" key="messages">
-                    <ChatMessagesReplay userUUID={userUUID} messages={messages} />
+                    <ChatMessagesReplay classRoomReplayStore={classRoomReplayStore} />
                 </Tabs.TabPane>
             </Tabs>
         </div>
