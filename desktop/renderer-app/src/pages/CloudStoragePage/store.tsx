@@ -249,7 +249,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         const disposer = reaction(
             () => this.sortedUploadTasks.length,
             () => {
-                this.refreshFilesDebounced();
+                this.refreshFilesNowDebounced();
             },
         );
 
@@ -265,9 +265,16 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     private _refreshFilesTimeout = NaN;
+    private _refreshFilesNowTimeout = NaN;
+
+    private clearRefreshFilesNowTimeout(): void {
+        window.clearTimeout(this._refreshFilesNowTimeout);
+        this._refreshFilesNowTimeout = NaN;
+    }
 
     private async refreshFiles(): Promise<void> {
         window.clearTimeout(this._refreshFilesTimeout);
+        this.clearRefreshFilesNowTimeout();
 
         try {
             const { totalUsage, files: cloudFiles } = await listFiles({ page: 1 });
@@ -312,12 +319,21 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             errorTips(e);
         }
 
-        this.refreshFilesDebounced(10 * 1000);
+        if (!this._refreshFilesNowTimeout) {
+            this.refreshFilesDebounced(10 * 1000);
+        }
     }
 
     private refreshFilesDebounced(timeout = 500): void {
         window.clearTimeout(this._refreshFilesTimeout);
         this._refreshFilesTimeout = window.setTimeout(() => {
+            this.refreshFiles();
+        }, timeout);
+    }
+
+    private refreshFilesNowDebounced(timeout = 800): void {
+        this.clearRefreshFilesNowTimeout();
+        this._refreshFilesNowTimeout = window.setTimeout(() => {
             this.refreshFiles();
         }, timeout);
     }
