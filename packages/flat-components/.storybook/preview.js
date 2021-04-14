@@ -1,7 +1,6 @@
-import "antd/dist/antd.min.css";
+import "../theme/index.less";
 import "./custom-bulma.scss";
 import "tachyons/css/tachyons.min.css";
-import "../theme/index.less";
 
 import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
 

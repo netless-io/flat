@@ -1,5 +1,9 @@
 module.exports = {
-    stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(ts|tsx)"],
+    stories: [
+        "../src/**/*.stories.mdx",
+        "../src/**/*.stories.@(ts|tsx)",
+        "../theme/**/*.stories.@(ts|tsx)",
+    ],
     addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
     babel: async options => {
         return {
@@ -29,7 +33,14 @@ module.exports = {
             use: [
                 { loader: require.resolve("style-loader") },
                 { loader: require.resolve("css-loader") },
-                { loader: require.resolve("less-loader") },
+                {
+                    loader: require.resolve("less-loader"),
+                    options: {
+                        lessOptions: {
+                            javascriptEnabled: true,
+                        },
+                    },
+                },
             ],
         });
 

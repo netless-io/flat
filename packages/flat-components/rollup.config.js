@@ -39,6 +39,9 @@ const extractCSS = styles({
     mode: "extract",
     sourceMap: true,
     url: { publicPath: "./assets" },
+    less: {
+        javascriptEnabled: true,
+    },
 });
 
 const rollupConfig = [...getMainEntryConfig()];
