@@ -28,6 +28,17 @@
     .ant-table-thead th.ant-table-column-has-sorters:hover {
         background: inherit;
     }
+
+    .ant-table-column-sorter {
+        opacity: 0;
+        transition: opacity 0.4s;
+    }
+
+    .ant-table-column-has-sorters:hover {
+        .ant-table-column-sorter {
+            opacity: 1;
+        }
+    }
 }
 
 .cloud-storage-file-list-filename-container {
