@@ -1,24 +1,23 @@
-import React from "react";
-import { observer } from "mobx-react-lite";
-import { ChatMessageItem } from "../ChatPanel/ChatMessage";
-import { ChatMessageListReplay } from "./ChatMessageListReplay";
 import "../ChatPanel/ChatMessages.less";
 
+import React from "react";
+import { observer } from "mobx-react-lite";
+import { ChatMessageListReplay } from "./ChatMessageListReplay";
+import { ClassRoomReplayStore } from "../../stores/ClassRoomReplayStore";
+
 export interface ChatMessagesReplayProps {
-    userUUID: string;
-    messages: ChatMessageItem[];
+    classRoomReplayStore: ClassRoomReplayStore;
 }
 
 export const ChatMessagesReplay = observer<ChatMessagesReplayProps>(function ChatMessagesReplay({
-    userUUID,
-    messages,
+    classRoomReplayStore,
 }) {
     return (
         <div className="chat-messages-wrap">
             <div className="chat-messages">
-                {messages.length > 0 ? (
+                {classRoomReplayStore.messages.length > 0 ? (
                     <div className="chat-messages-box">
-                        {<ChatMessageListReplay userUUID={userUUID} messages={messages} />}
+                        {<ChatMessageListReplay classRoomReplayStore={classRoomReplayStore} />}
                     </div>
                 ) : (
                     <div className="chat-messages-default">无消息...</div>

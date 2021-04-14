@@ -9,6 +9,7 @@ import { NODE_ENV } from "../constants/Process";
 import { useAutoRun } from "../utils/mobx";
 import { RoomType } from "../apiMiddleware/flatServer/constants";
 import { ipcAsyncByMainWindow } from "../utils/ipc";
+import { UserStore } from "./UserStore";
 
 export class ClassRoomReplayStore {
     readonly roomUUID: string;
@@ -18,6 +19,8 @@ export class ClassRoomReplayStore {
     readonly rtm = new RTMAPI();
 
     readonly smartPlayer = new SmartPlayer();
+
+    readonly users: UserStore;
 
     /** RTM messages */
     messages = observable.array<RTMessage>([]);
@@ -58,6 +61,12 @@ export class ClassRoomReplayStore {
         this.ownerUUIDFromParams = config.ownerUUID;
         this.roomTypeFromParams = config.roomType;
         this.userUUID = globalStore.userUUID;
+
+        this.users = new UserStore({
+            roomUUID: this.roomUUID,
+            ownerUUID: this.ownerUUID,
+            userUUID: this.userUUID,
+        });
 
         makeAutoObservable<
             this,
@@ -247,6 +256,8 @@ export class ClassRoomReplayStore {
         runInAction(() => {
             this.messages.push(...this.cachedMessages.slice(this.messages.length, start));
         });
+
+        this.users.syncExtraUsersInfo(this.messages.map(msg => msg.userUUID)).catch(console.warn);
     };
 
     private getHistory = async (newestTimestamp: number): Promise<RTMessage[]> => {

@@ -166,10 +166,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
                 }
                 chatSlot={
                     classRoomReplayStore.smartPlayer.whiteboardPlayer && (
-                        <ChatPanelReplay
-                            userUUID={classRoomReplayStore.userUUID}
-                            messages={classRoomReplayStore.messages}
-                        />
+                        <ChatPanelReplay classRoomReplayStore={classRoomReplayStore} />
                     )
                 }
             />
