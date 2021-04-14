@@ -99,6 +99,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 ellipsis: true,
                 width: 150,
                 sorter: (file1, file2) => file1.createAt.valueOf() - file2.createAt.valueOf(),
+                sortDirections: ["ascend", "descend", "ascend"],
                 defaultSortOrder: "descend",
                 showSorterTooltip: false,
                 render: function renderCloudStorageCreateAt(date: CloudStorageFile["createAt"]) {
