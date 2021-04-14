@@ -38,7 +38,7 @@ const ignoreAssets = ignoreImport({
 const extractCSS = styles({
     mode: "extract",
     sourceMap: true,
-    url: { publicPath: "./assets" },
+    url: false, // disable url parsing for antd
     less: {
         javascriptEnabled: true,
     },
