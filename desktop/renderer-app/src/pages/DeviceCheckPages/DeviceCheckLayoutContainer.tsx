@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
-import systemSVG from "../../assets/image/system.svg";
-import cameraSVG from "../../assets/image/camera.svg";
-import speakerSVG from "../../assets/image/speaker.svg";
-import microphoneSVG from "../../assets/image/microphone.svg";
+import systemSVG from "./icons/system.svg";
+import cameraSVG from "./icons/camera.svg";
+import speakerSVG from "./icons/speaker.svg";
+import microphoneSVG from "./icons/microphone.svg";
 import "./DeviceCheckLayoutContainer.less";
 
 import React from "react";
