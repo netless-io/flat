@@ -335,7 +335,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 key={user.userUUID}
                 userUUID={classRoomStore.userUUID}
                 avatarUser={user}
-                roomStatus={classRoomStore.roomStatus}
                 rtcEngine={classRoomStore.rtc.rtcEngine}
                 updateDeviceState={classRoomStore.updateDeviceState}
             />

@@ -532,6 +532,9 @@ export class ClassRoomStore {
                     break;
                 }
                 case RoomStatus.Paused: {
+                    if (this.isCreator) {
+                        this.updateDeviceState(this.userUUID, false, false);
+                    }
                     this.updateRoomStatusLoading(RoomStatusLoadingType.Pausing);
                     await pauseClass(this.roomUUID);
                     break;
