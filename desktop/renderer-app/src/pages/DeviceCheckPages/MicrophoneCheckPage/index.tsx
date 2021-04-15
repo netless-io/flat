@@ -17,12 +17,6 @@ interface SpeakerVolumeProps {
     percent: number;
 }
 
-export enum TestingResult {
-    Undefined = -1,
-    Success = 0,
-    Fail = 1,
-}
-
 const SpeakerVolume = observer<SpeakerVolumeProps>(function SpeakerVolume({ percent }) {
     return (
         <div className="speaker-audio-wrapper">
@@ -41,6 +35,15 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
     const [micCheckState, setMicCheckState] = useState<DeviceCheckState>();
     const location = useLocation<DeviceCheckResults | undefined>();
     const history = useHistory<DeviceCheckResults>();
+
+    const { systemCheck, cameraCheck, speakerCheck } = location.state || {};
+
+    const isSuccess =
+        // also checked undefined
+        systemCheck?.hasError === false &&
+        cameraCheck?.hasError === false &&
+        speakerCheck?.hasError === false &&
+        micCheckState?.hasError === false;
 
     useEffect(() => {
         setDevices(rtcEngine.getAudioRecordingDevices() as Device[]);
@@ -149,14 +152,6 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
     }
 
     function renderTitle(): React.ReactNode {
-        const { systemCheck, cameraCheck, speakerCheck } = location.state || {};
-
-        const isSuccess =
-            !systemCheck?.hasError &&
-            !cameraCheck?.hasError &&
-            !speakerCheck?.hasError &&
-            !micCheckState?.hasError;
-
         if (isSuccess) {
             return (
                 <div className="device-check-modal-title">
@@ -175,13 +170,6 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
     }
 
     function renderFooter(): React.ReactNode {
-        const { systemCheck, cameraCheck, speakerCheck } = location.state || {};
-        const isSuccess =
-            !systemCheck?.hasError &&
-            !cameraCheck?.hasError &&
-            !speakerCheck?.hasError &&
-            !micCheckState?.hasError;
-
         if (!isSuccess) {
             return (
                 <Button type="primary" onClick={resetCheck} className="device-check-modal-btn">
