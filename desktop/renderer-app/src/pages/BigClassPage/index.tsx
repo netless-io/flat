@@ -297,7 +297,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                                     isCreator={classRoomStore.isCreator}
                                     userUUID={classRoomStore.userUUID}
                                     avatarUser={creator}
-                                    roomStatus={classRoomStore.roomStatus}
                                     rtcEngine={classRoomStore.rtc.rtcEngine}
                                     updateDeviceState={classRoomStore.updateDeviceState}
                                     small={mainSpeaker && mainSpeaker.userUUID !== creator.userUUID}
@@ -314,7 +313,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                                 <BigClassAvatar
                                     isCreator={classRoomStore.isCreator}
                                     avatarUser={speakingJoiner}
-                                    roomStatus={classRoomStore.roomStatus}
                                     userUUID={classRoomStore.userUUID}
                                     rtcEngine={classRoomStore.rtc.rtcEngine}
                                     updateDeviceState={classRoomStore.updateDeviceState}
