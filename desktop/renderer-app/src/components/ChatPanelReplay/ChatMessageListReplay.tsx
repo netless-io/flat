@@ -59,15 +59,19 @@ export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
         return (
             <AutoSizer>
                 {({ height, width }) => (
-                    <List
-                        height={height}
-                        width={width}
-                        rowCount={classRoomReplayStore.messages.length}
-                        rowHeight={cellCache.rowHeight}
-                        rowRenderer={rowRenderer}
-                        scrollToIndex={classRoomReplayStore.messages.length - 1}
-                        scrollToAlignment="start"
-                    />
+                    <Observer>
+                        {() => (
+                            <List
+                                height={height}
+                                width={width}
+                                rowCount={classRoomReplayStore.messages.length}
+                                rowHeight={cellCache.rowHeight}
+                                rowRenderer={rowRenderer}
+                                scrollToIndex={classRoomReplayStore.messages.length - 1}
+                                scrollToAlignment="start"
+                            />
+                        )}
+                    </Observer>
                 )}
             </AutoSizer>
         );
