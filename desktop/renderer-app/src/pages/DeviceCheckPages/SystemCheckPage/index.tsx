@@ -1,19 +1,19 @@
+import "./index.less";
 import React, { useEffect, useState } from "react";
-import "./SystemTesting.less";
 import { Button } from "antd";
-import { Link } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import os from "os";
-import { useRTCEngine } from "../../utils/hooks/useRTCEngine";
+import { routeConfig } from "../../../route-config";
+import { useRTCEngine } from "../../../utils/hooks/useRTCEngine";
+import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
+import { DeviceCheckResults, DeviceCheckState } from "../utils";
 
-export interface SystemTestingProps {
-    onChange?: (description: string) => void;
-}
-
-export const SystemTesting = ({
-    onChange: setNetworkDescription,
-}: SystemTestingProps): React.ReactElement => {
+export const SystemCheckPage = (): React.ReactElement => {
     const [networkSituation, setNetworkSituation] = useState(0);
     const rtcEngine = useRTCEngine();
+    const resultRef = React.useRef<DeviceCheckState>();
+    const history = useHistory<DeviceCheckResults>();
+    const location = useLocation<DeviceCheckResults | undefined>();
 
     const networkDescription = [
         "正在检测...",
@@ -32,7 +32,7 @@ export const SystemTesting = ({
     useEffect(() => {
         const onError = (e: Error): void => {
             console.error("rtc error", e);
-            setNetworkDescription?.("检测失败");
+            resultRef.current = { content: "检测失败", hasError: true };
         };
 
         // see: https://docs.agora.io/en/Voice/API%20Reference/electron/globals.html#agoranetworkquality
@@ -60,33 +60,40 @@ export const SystemTesting = ({
 
     useEffect(() => {
         if (networkSituation >= 5) {
-            setNetworkDescription?.(networkDescription[networkSituation]);
+            resultRef.current = { content: networkDescription[networkSituation], hasError: true };
         } else {
-            setNetworkDescription?.("");
+            resultRef.current = { content: "", hasError: false };
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [networkSituation]);
 
+    function historyPush(): void {
+        history.push({
+            pathname: routeConfig.CameraCheckPage.path,
+            state: {
+                ...location.state,
+                systemCheck: resultRef.current,
+            },
+        });
+    }
+
     return (
-        <div className="content-container">
-            <div className="header-container">
-                <span>系统检测</span>
-            </div>
-            <div className="system-info-container">
-                <div className="system-title-info">
-                    <span>处理器(CPU)</span>
+        <DeviceCheckLayoutContainer>
+            <div className="system-check-container">
+                <div className="system-check-inner-left">
+                    <span>处理器 (CPU)</span>
                     <span>缓存可用空间</span>
-                    <span>网络情况</span>
+                    <span>网络质量情况</span>
                 </div>
-                <div className="system-value-info">
+                <div className="system-check-inner-right">
                     <span>{cpuModel}</span>
                     <span>{freeMemory} MB</span>
                     <span>{networkDescription[networkSituation]}</span>
-                    <Button type="primary">
-                        <Link to="/setting/camera/">下一步</Link>
-                    </Button>
                 </div>
             </div>
-        </div>
+            <Button type="primary" onClick={historyPush}>
+                下一步
+            </Button>
+        </DeviceCheckLayoutContainer>
     );
 };

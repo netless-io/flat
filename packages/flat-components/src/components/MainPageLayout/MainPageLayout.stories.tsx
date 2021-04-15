@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
 import { MainPageLayout, MainPageLayoutProps } from ".";
@@ -11,7 +12,7 @@ import {
 } from "@ant-design/icons";
 
 const storyMeta: Meta = {
-    title: "HomePage/MainPageLayout",
+    title: "Components/MainPageLayout",
     component: MainPageLayout,
 };
 

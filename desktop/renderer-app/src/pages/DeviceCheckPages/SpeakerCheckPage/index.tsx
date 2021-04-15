@@ -1,34 +1,33 @@
+import playSVG from "../../../assets/image/play.svg";
+import stopSVG from "../../../assets/image/stop.svg";
+import muteSVG from "../../../assets/image/mute.svg";
+import volumeSVG from "../../../assets/image/volume.svg";
+import "./index.less";
+
 import React, { useEffect, useState } from "react";
 import { Slider, Button } from "antd";
-import "./SpeakerTesting.less";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 // let webpack recognize
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import _testMP3 from "../../assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
-import playSVG from "../../assets/image/play.svg";
-import stopSVG from "../../assets/image/stop.svg";
-import { Device } from "../../types/Device";
-import { DeviceSelect } from "../../components/DeviceSelect";
-import { runtime } from "../../utils/runtime";
-import { TestingResult } from ".";
-import { useRTCEngine } from "../../utils/hooks/useRTCEngine";
+import _testMP3 from "../../../assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
+import { DeviceSelect } from "../../../components/DeviceSelect";
+import { Device } from "../../../types/Device";
+import { useRTCEngine } from "../../../utils/hooks/useRTCEngine";
+import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
+import { runtime } from "../../../utils/runtime";
+import { routeConfig } from "../../../route-config";
+import { DeviceCheckResults } from "../utils";
 
-export interface SpeakerTestingProps {
-    onChange: (result: TestingResult) => void;
-}
-
-export const SpeakerTesting = ({
-    onChange: setSpeaker,
-}: SpeakerTestingProps): React.ReactElement => {
+export const SpeakerCheckPage = (): React.ReactElement => {
     const rtcEngine = useRTCEngine();
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
     const [currentVolume, setCurrentVolume] = useState(30);
     const [isPlaying, setIsPlaying] = useState(false);
-    const history = useHistory();
+    const history = useHistory<DeviceCheckResults>();
+    const location = useLocation<DeviceCheckResults | undefined>();
 
     useEffect(() => {
-        setSpeaker(TestingResult.Undefined);
         setDevices(rtcEngine.getAudioPlaybackDevices() as Device[]);
 
         const onAudioDeviceStateChanged = (): void => {
@@ -71,12 +70,9 @@ export const SpeakerTesting = ({
     };
 
     return (
-        <div className="content-container">
-            <div className="header-container">
-                <span>扬声器检测</span>
-            </div>
-            <div className="speaker-testing-container">
-                <div className="speaker-container">
+        <DeviceCheckLayoutContainer>
+            <div className="speaker-check-container">
+                <div className="speaker-check-inner">
                     <p>扬声器</p>
                     <DeviceSelect
                         devices={devices}
@@ -88,27 +84,41 @@ export const SpeakerTesting = ({
                         BWV 988 - 05 - Variatio 4 a 1 Clav.mp3
                     </Button>
                 </div>
-                <div className="speaker-audio-testing">
+                <div className="speaker-audio-check-container">
                     <p>音量</p>
-                    <Slider value={currentVolume} onChange={setCurrentVolume} />
+                    <div className="speaker-audio-check-inner">
+                        <img src={muteSVG} />
+                        <Slider value={currentVolume} onChange={setCurrentVolume} />
+                        <img src={volumeSVG} />
+                    </div>
                 </div>
-                <div className="testing-btn">
-                    <Button onClick={fail}>不可以听到</Button>
-                    <Button onClick={success} type="primary">
-                        可以听到
+                <div className="speaker-btn-container">
+                    <Button onClick={checkFail}>不能听到</Button>
+                    <Button onClick={checkSuccess} type="primary">
+                        能听到
                     </Button>
                 </div>
             </div>
-        </div>
+        </DeviceCheckLayoutContainer>
     );
 
-    function success(): void {
-        setSpeaker(TestingResult.Success);
-        history.push("/setting/microphone/");
+    function checkSuccess(): void {
+        history.push({
+            pathname: routeConfig.MicrophoneCheckPage.path,
+            state: {
+                ...location.state,
+                speakerCheck: { content: "", hasError: false },
+            },
+        });
     }
 
-    function fail(): void {
-        setSpeaker(TestingResult.Fail);
-        history.push("/setting/microphone/");
+    function checkFail(): void {
+        history.push({
+            pathname: routeConfig.MicrophoneCheckPage.path,
+            state: {
+                ...location.state,
+                speakerCheck: { content: "", hasError: true },
+            },
+        });
     }
 };

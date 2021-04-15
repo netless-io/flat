@@ -4,12 +4,12 @@ import { v4 as v4uuid } from "uuid";
 import { CloudStorageContainer } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import MainPageLayout from "../../components/MainPageLayout";
 import { WhiteboardStore } from "../../stores/WhiteboardStore";
 import { CloudStorageStore, CloudStorageFile } from "./store";
 import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-converting";
 import { convertFinish } from "../../apiMiddleware/flatServer/storage";
 import { useIsomorphicLayoutEffect } from "react-use";
+import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 
 export interface CloudStoragePageProps {
     compact?: boolean;
@@ -35,9 +35,9 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
     return compact ? (
         <CloudStorageContainer store={store} />
     ) : (
-        <MainPageLayout>
+        <MainPageLayoutContainer>
             <CloudStorageContainer store={store} />
-        </MainPageLayout>
+        </MainPageLayoutContainer>
     );
 
     async function insertCourseware(file: CloudStorageFile): Promise<void> {

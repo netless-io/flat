@@ -11,17 +11,21 @@ import logoutSVG from "../assets/image/logout.svg";
 
 import React from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { MainPageLayout, MainPageLayoutItem } from "flat-components";
+import { MainPageLayout, MainPageLayoutItem, MainPageLayoutProps } from "flat-components";
 import { getWechatInfo } from "../utils/localStorage/accounts";
 import { routeConfig, RouteNameType } from "../route-config";
 
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];
+    activeKeys?: string[];
+    onRouteChange?: MainPageLayoutProps["onClick"];
 }
 
 export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = ({
     subMenu,
     children,
+    activeKeys,
+    onRouteChange,
 }) => {
     const sideMenu = [
         {
@@ -49,7 +53,7 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
                 <img src={active ? deviceActiveSVG : deviceSVG} />
             ),
             title: "deviceCheck",
-            route: "/deviceCheck",
+            route: routeConfig[RouteNameType.SystemCheckPage].path,
         },
     ];
 
@@ -75,15 +79,16 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
     ];
 
     const location = useLocation();
-    console.log(location.pathname);
 
-    const activeKeys = [location.pathname];
+    activeKeys ??= [location.pathname];
 
     const history = useHistory();
 
-    const historyPush = (mainPageLayoutItem: MainPageLayoutItem): void => {
-        history.push(mainPageLayoutItem.route);
-    };
+    const historyPush =
+        onRouteChange ||
+        ((mainPageLayoutItem: MainPageLayoutItem): void => {
+            history.push(mainPageLayoutItem.route);
+        });
 
     return (
         <MainPageLayout

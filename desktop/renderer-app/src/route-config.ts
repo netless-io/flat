@@ -10,11 +10,15 @@ import RoomDetailPage from "./pages/RoomDetailPage";
 import HomePage from "./pages/HomePage";
 import UserInfoPage from "./UserInfoPage";
 import UserScheduledPage from "./pages/UserScheduledPage";
-import UserSettingPage from "./pages/UserSettingPanel";
 import { ModifyOrdinaryRoomPage } from "./pages/ModifyOrdinaryRoomPage";
 import { ModifyPeriodicRoomPage } from "./pages/ModifyPeriodicRoomPage";
 import { RoomType } from "./apiMiddleware/flatServer/constants";
 import { CloudStoragePage } from "./pages/CloudStoragePage";
+import { CameraCheckPage } from "./pages/DeviceCheckPages/CameraCheckPage";
+import { MicrophoneCheckPage } from "./pages/DeviceCheckPages/MicrophoneCheckPage";
+import { SpeakerCheckPage } from "./pages/DeviceCheckPages/SpeakerCheckPage";
+import { SystemCheckPage } from "./pages/DeviceCheckPages/SystemCheckPage";
+import UserSettingPage from "./pages/UserSettingPanel";
 
 export enum RouteNameType {
     SplashPage = "SplashPage",
@@ -32,6 +36,10 @@ export enum RouteNameType {
     ModifyOrdinaryRoomPage = "ModifyOrdinaryRoomPage",
     ModifyPeriodicRoomPage = "ModifyPeriodicRoomPage",
     CloudStoragePage = "CloudStoragePage",
+    SystemCheckPage = "SystemCheckPage",
+    CameraCheckPage = "CameraCheckPage",
+    SpeakerCheckPage = "SpeakerCheckPage",
+    MicrophoneCheckPage = "MicrophoneCheckPage",
 }
 
 export const routeConfig = {
@@ -109,6 +117,26 @@ export const routeConfig = {
         title: "Flat",
         path: "/pan/",
         component: CloudStoragePage,
+    },
+    [RouteNameType.SystemCheckPage]: {
+        title: "系统检测",
+        path: "/device/system/",
+        component: SystemCheckPage,
+    },
+    [RouteNameType.CameraCheckPage]: {
+        title: "摄像头检测",
+        path: "/device/camera/",
+        component: CameraCheckPage,
+    },
+    [RouteNameType.SpeakerCheckPage]: {
+        title: "扬声器检测",
+        path: "/device/speaker/",
+        component: SpeakerCheckPage,
+    },
+    [RouteNameType.MicrophoneCheckPage]: {
+        title: "麦克风检测",
+        path: "/device/microphone/",
+        component: MicrophoneCheckPage,
     },
 } as const;
 

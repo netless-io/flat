@@ -1,5 +1,5 @@
 import "./style.less";
-import { CloudOutlined, UserOutlined } from "@ant-design/icons";
+import { CloudOutlined } from "@ant-design/icons";
 import { Avatar, Divider, Popover } from "antd";
 import React, { useState } from "react";
 import classNames from "classnames";
@@ -43,7 +43,7 @@ export const MainPageLayout: React.FC<MainPageLayoutProps> = ({
 }) => {
     const [popHide, popHideState] = useState(false);
 
-    const changePopHideState = () => {
+    const changePopHideState = (): void => {
         popHideState(!popHide);
     };
 
@@ -142,9 +142,8 @@ export const MainPageLayout: React.FC<MainPageLayoutProps> = ({
                     <ul>
                         {subMenu.map(menuItem => {
                             return (
-                                <li>
+                                <li key={menuItem.key}>
                                     <a
-                                        key={menuItem.key}
                                         className={classNames(
                                             "sub-menu-item main-layout-menu-link",
                                             {
@@ -156,7 +155,7 @@ export const MainPageLayout: React.FC<MainPageLayoutProps> = ({
                                             onClick(menuItem);
                                         }}
                                     >
-                                        {menuItem.icon}
+                                        {menuItem.icon(activeKeys.includes(menuItem.key))}
                                         <span>{menuItem.title}</span>
                                     </a>
                                 </li>

@@ -1,26 +1,25 @@
+import "./index.less";
+
 import React, { useEffect, useRef, useState } from "react";
-import "./CameraTesting.less";
 import { Button } from "antd";
-import { useHistory } from "react-router-dom";
-import { Device } from "../../types/Device";
-import { DeviceSelect } from "../../components/DeviceSelect";
-import { TestingResult } from ".";
-import { useRTCEngine } from "../../utils/hooks/useRTCEngine";
+import { useHistory, useLocation } from "react-router-dom";
+import { DeviceSelect } from "../../../components/DeviceSelect";
+import { Device } from "../../../types/Device";
+import { useRTCEngine } from "../../../utils/hooks/useRTCEngine";
+import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
+import { routeConfig } from "../../../route-config";
+import { DeviceCheckResults } from "../utils";
+export interface CameraCheckPageProps {}
 
-export interface CameraTestingProps {
-    onChange: (result: TestingResult) => void;
-}
-
-export const CameraTesting = ({ onChange: setCamera }: CameraTestingProps): React.ReactElement => {
+export const CameraCheckPage = (): React.ReactElement => {
     const rtcEngine = useRTCEngine();
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
     const cameraStream = useRef<HTMLDivElement>(null);
-    const history = useHistory();
+    const history = useHistory<DeviceCheckResults>();
+    const location = useLocation<DeviceCheckResults | undefined>();
 
     useEffect(() => {
-        setCamera(TestingResult.Undefined);
-
         const onVideoDeviceStateChanged = (): void => {
             setDevices(rtcEngine.getVideoDevices() as Device[]);
         };
@@ -61,35 +60,42 @@ export const CameraTesting = ({ onChange: setCamera }: CameraTestingProps): Reac
     }, [currentDeviceID, cameraStream, rtcEngine]);
 
     return (
-        <div className="content-container">
-            <div className="header-container">
-                <span>摄像头检测</span>
-            </div>
-            <div className="camera-container">
+        <DeviceCheckLayoutContainer>
+            <div className="camera-check-container">
                 <p>摄像头</p>
                 <DeviceSelect
                     devices={devices}
                     currentDeviceID={currentDeviceID}
                     onChange={setCurrentDeviceID}
                 />
-                <div className="camera-info" ref={cameraStream} />
-                <div className="testing-btn">
-                    <Button onClick={fail}>不可以看到</Button>
-                    <Button onClick={success} type="primary">
-                        可以看到
+                <div className="camera-check-info" ref={cameraStream} />
+                <div className="camera-check-btn">
+                    <Button onClick={checkFail}>不能看到</Button>
+                    <Button onClick={checkSuccess} type="primary">
+                        能看到
                     </Button>
                 </div>
             </div>
-        </div>
+        </DeviceCheckLayoutContainer>
     );
 
-    function success(): void {
-        setCamera(TestingResult.Success);
-        history.push("/setting/speaker/");
+    function checkSuccess(): void {
+        history.push({
+            pathname: routeConfig.SpeakerCheckPage.path,
+            state: {
+                ...location.state,
+                cameraCheck: { content: "", hasError: false },
+            },
+        });
     }
 
-    function fail(): void {
-        setCamera(TestingResult.Fail);
-        history.push("/setting/speaker/");
+    function checkFail(): void {
+        history.push({
+            pathname: routeConfig.SpeakerCheckPage.path,
+            state: {
+                ...location.state,
+                cameraCheck: { content: "", hasError: true },
+            },
+        });
     }
 };
