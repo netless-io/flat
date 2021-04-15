@@ -10,6 +10,7 @@ import {
     ToolFilled,
     ToolOutlined,
 } from "@ant-design/icons";
+import faker from "faker";
 
 const storyMeta: Meta = {
     title: "Components/MainPageLayout",
@@ -76,6 +77,12 @@ Overview.args = {
             title: "获取源码",
             route: "/github",
         },
+        {
+            key: "logout",
+            icon: () => <CloudOutlined className="red" />,
+            title: <span className="red">退出登录</span>,
+            route: "/logout",
+        },
     ],
     activeKeys: ["home"],
     avatarSrc: "http://placekitten.com/200/200",
@@ -97,6 +104,48 @@ export const WithSubMenu: Story<MainPageLayoutProps> = args => (
     </div>
 );
 WithSubMenu.args = {
+    ...Overview.args,
+    subMenu: [
+        {
+            key: "systemTesting",
+            icon: () => <ToolOutlined />,
+            title: "系统检测",
+            route: "/device/system",
+        },
+        {
+            key: "cameraTesting",
+            icon: () => <CloudOutlined />,
+            title: "摄像头检测",
+            route: "/device/camera",
+        },
+        {
+            key: "speakerTesting",
+            icon: () => <CloudOutlined />,
+            title: "扬声器检测",
+            route: "/device/speaker",
+        },
+        {
+            key: "microphoneTesting",
+            icon: () => <CloudOutlined />,
+            title: "麦克风检测",
+            route: "/device/microphone",
+        },
+    ],
+    activeKeys: ["systemTesting"],
+};
+
+export const LongContent: Story<MainPageLayoutProps> = args => (
+    <div className="vh-75 mw8-ns">
+        <MainPageLayout {...args}>
+            {Array(300)
+                .fill(0)
+                .map(() => (
+                    <p>{faker.random.words()}</p>
+                ))}
+        </MainPageLayout>
+    </div>
+);
+LongContent.args = {
     ...Overview.args,
     subMenu: [
         {
