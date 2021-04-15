@@ -145,7 +145,9 @@ export const Overview: Story = () => {
                 </div>
             </div>
             <div className="columns">
-                <div className="column is-half-widescreen">{buttonExample}</div>
+                <div className="column is-half-desktop is-three-quarters-tablet">
+                    {buttonExample}
+                </div>
             </div>
         </div>
     );
