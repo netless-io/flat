@@ -1,5 +1,4 @@
 import "./style.less";
-import { CloudOutlined } from "@ant-design/icons";
 import { Avatar, Divider, Popover } from "antd";
 import React, { useState } from "react";
 import classNames from "classnames";
@@ -7,7 +6,7 @@ import classNames from "classnames";
 export interface MainPageLayoutItem {
     key: string;
     icon: (active: boolean) => React.ReactNode;
-    title: string;
+    title: React.ReactNode;
     route: string;
 }
 
@@ -61,15 +60,13 @@ export const MainPageLayout: React.FC<MainPageLayoutProps> = ({
                                 onClick(menuItem);
                             }}
                         >
-                            {menuItem.icon(activeKeys.includes(menuItem.key))}
+                            <span className="popmenu-item-icon">
+                                {menuItem.icon(activeKeys.includes(menuItem.key))}
+                            </span>
                             {menuItem.title}
                         </a>
                     );
                 })}
-                <a className="popmenu-item-logout main-layout-menu-link">
-                    <CloudOutlined />
-                    退出登录
-                </a>
             </div>
         );
     }
@@ -155,8 +152,10 @@ export const MainPageLayout: React.FC<MainPageLayoutProps> = ({
                                             onClick(menuItem);
                                         }}
                                     >
-                                        {menuItem.icon(activeKeys.includes(menuItem.key))}
-                                        <span>{menuItem.title}</span>
+                                        <span className="sub-menu-item-icon">
+                                            {menuItem.icon(activeKeys.includes(menuItem.key))}
+                                        </span>
+                                        {menuItem.title}
                                     </a>
                                 </li>
                             );
@@ -164,7 +163,7 @@ export const MainPageLayout: React.FC<MainPageLayoutProps> = ({
                     </ul>
                 </div>
             )}
-            <div className="main-layout-container-content">{children}</div>
+            <div className="main-layout-container-content fancy-scrollbar">{children}</div>
         </div>
     );
 };

@@ -61,19 +61,19 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
         {
             key: "userConfig",
             icon: (): React.ReactNode => <img src={settingSVG} />,
-            title: "userConfig",
+            title: "个人设置",
             route: "/userConfig",
         },
         {
             key: "getGitHubCode",
             icon: (): React.ReactNode => <img src={gitHubSVG} />,
-            title: "getGitHubCode",
+            title: "获取源码",
             route: "/getGitHubCode",
         },
         {
             key: "logout",
             icon: (): React.ReactNode => <img src={logoutSVG} />,
-            title: "logout",
+            title: <span className="logout-title">退出登录</span>,
             route: "/logout",
         },
     ];
