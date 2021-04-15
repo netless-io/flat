@@ -148,17 +148,21 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
             {({ onRowsRendered, registerChild }) => (
                 <AutoSizer>
                     {({ height, width }) => (
-                        <List
-                            ref={registerChild}
-                            height={height}
-                            width={width}
-                            rowCount={classRoomStore.messages.length}
-                            rowHeight={cellCache.rowHeight}
-                            rowRenderer={rowRenderer}
-                            scrollToIndex={scrollToIndex}
-                            scrollToAlignment="start"
-                            onRowsRendered={onRowsRendered}
-                        />
+                        <Observer>
+                            {() => (
+                                <List
+                                    ref={registerChild}
+                                    height={height}
+                                    width={width}
+                                    rowCount={classRoomStore.messages.length}
+                                    rowHeight={cellCache.rowHeight}
+                                    rowRenderer={rowRenderer}
+                                    scrollToIndex={scrollToIndex}
+                                    scrollToAlignment="start"
+                                    onRowsRendered={onRowsRendered}
+                                />
+                            )}
+                        </Observer>
                     )}
                 </AutoSizer>
             )}

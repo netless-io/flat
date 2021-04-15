@@ -256,8 +256,6 @@ export class ClassRoomReplayStore {
         runInAction(() => {
             this.messages.push(...this.cachedMessages.slice(this.messages.length, start));
         });
-
-        this.users.syncExtraUsersInfo(this.messages.map(msg => msg.userUUID)).catch(console.warn);
     };
 
     private getHistory = async (newestTimestamp: number): Promise<RTMessage[]> => {
@@ -282,6 +280,11 @@ export class ClassRoomReplayStore {
             histories = messages.filter(
                 (message): message is RTMessage => message.type === RTMessageType.ChannelMessage,
             );
+
+            // fetch user name first to avoid flashing
+            await this.users
+                .syncExtraUsersInfo(histories.map(msg => msg.userUUID))
+                .catch(console.warn); // swallow error
         } catch (e) {
             console.warn(e);
         }
