@@ -247,9 +247,11 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
 
         const disposer = reaction(
-            () => this.sortedUploadTasks.length,
-            () => {
-                this.refreshFilesNowDebounced();
+            () => this.uploadTaskManager.uploading.length,
+            (currLen, prevLen) => {
+                if (currLen < prevLen) {
+                    this.refreshFilesNowDebounced();
+                }
             },
         );
 
@@ -333,7 +335,9 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     private refreshFilesNowDebounced(timeout = 800): void {
         this.clearRefreshFilesNowTimeout();
+        console.log("[cloud storage]: start now refresh");
         this._refreshFilesNowTimeout = window.setTimeout(() => {
+            console.log("[cloud storage]: start now refresh!!!!!!!!!");
             this.refreshFiles();
         }, timeout);
     }
