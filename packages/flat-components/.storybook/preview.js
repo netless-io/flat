@@ -5,6 +5,9 @@ import "tachyons/css/tachyons.min.css";
 import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
 
 export const parameters = {
+    options: {
+        showPanel: true,
+    },
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
         expanded: true,
