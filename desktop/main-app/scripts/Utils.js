@@ -3,9 +3,15 @@ const yaml = require("js-yaml");
 const fs = require("fs-extra");
 const path = require("path");
 const { platform } = require("os");
+const dotenvFlow = require("dotenv-flow");
 const { spawnSync } = require("child_process");
 const { version } = require("../package.json");
 const { agoraElectronSdkPath, rootPath, mainAppPath } = require("./Constant");
+
+dotenvFlow.config({
+    path: path.resolve(__dirname, "..", "..", "..", "config"),
+    default_node_env: "production",
+});
 
 /**
  * build electron app
@@ -25,6 +31,20 @@ const buildElectron = async buildType => {
 
         if (buildType === "mac") {
             config.afterSign = path.join("scripts", "Notarize.js");
+        }
+    }
+
+    if (buildType === "win") {
+        if (
+            process.env.WINDOWS_CODE_SIGNING_CA_PATH &&
+            process.env.WINDOWS_CODE_SIGNING_CA_PASSWORD
+        ) {
+            config.win = {
+                ...config.win,
+                certificateFile: process.env.WINDOWS_CODE_SIGNING_CA_PATH,
+                certificatePassword: process.env.WINDOWS_CODE_SIGNING_CA_PASSWORD,
+                signDlls: true,
+            };
         }
     }
 
