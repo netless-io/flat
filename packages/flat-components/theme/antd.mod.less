@@ -55,6 +55,16 @@
         color: inherit;
         background: #b3d7ff;
     }
+
+    &[disabled] {
+        background: #eef0f6;
+        border: 1px solid #dbe1ea;
+
+        &,
+        &::placeholder {
+            color: rgba(122, 123, 124, 0.4);
+        }
+    }
 }
 
 .ant-input-focused,

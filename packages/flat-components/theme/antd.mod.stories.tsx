@@ -2,6 +2,7 @@ import React from "react";
 import { Story, Meta } from "@storybook/react";
 import { Input, Radio, Checkbox, Button } from "antd";
 import { useRef } from "@storybook/client-api";
+import faker from "faker";
 
 const storyMeta: Meta = {
     title: "Theme/AntdMod",
@@ -42,11 +43,19 @@ export const Overview: Story = () => {
                     onClick={() => selectAllRef.current?.focus({ cursor: "all" })}
                 />
             </div>
+            <div className="mb3">
+                <div className="mb1">禁用</div>
+                <Input placeholder="请输入房间号" disabled />
+            </div>
+            <div className="mb3">
+                <div className="mb1">禁用（带值）</div>
+                <Input placeholder="请输入房间号" value="888 888 888 888" disabled />
+            </div>
         </div>
     );
 
     const radioExample = (
-        <Radio.Group value={3}>
+        <div>
             <div className="db mv4">
                 <Radio value={1}>默认</Radio>
             </div>
@@ -56,7 +65,9 @@ export const Overview: Story = () => {
                 </Radio>
             </div>
             <div className="db mv4">
-                <Radio value={3}>选中</Radio>
+                <Radio value={3} checked>
+                    选中
+                </Radio>
             </div>
             <div className="db mv4">
                 <Radio value={4} disabled>
@@ -64,11 +75,11 @@ export const Overview: Story = () => {
                 </Radio>
             </div>
             <div className="db mv4">
-                <Radio className="is-hover" value={5} disabled>
-                    禁用
+                <Radio className="is-hover" value={5} disabled checked>
+                    禁用（选中）
                 </Radio>
             </div>
-        </Radio.Group>
+        </div>
     );
 
     const checkboxExample = (
@@ -89,7 +100,7 @@ export const Overview: Story = () => {
             </div>
             <div className="mv4">
                 <Checkbox checked disabled>
-                    禁用
+                    禁用（选中）
                 </Checkbox>
             </div>
         </div>
@@ -133,6 +144,10 @@ export const Overview: Story = () => {
         </div>
     );
 
+    const textAreaExample = (
+        <Input.TextArea rows={5} value={Array(50).fill(faker.lorem.words(100)).join("\n\n")} />
+    );
+
     return (
         <div className="w-80-ns center" style={{ color: "#7A7B7C" }}>
             <div className="columns is-variable is-8">
@@ -147,6 +162,9 @@ export const Overview: Story = () => {
             <div className="columns">
                 <div className="column is-half-desktop is-three-quarters-tablet">
                     {buttonExample}
+                </div>
+                <div className="column is-half-desktop is-three-quarters-tablet">
+                    {textAreaExample}
                 </div>
             </div>
         </div>
