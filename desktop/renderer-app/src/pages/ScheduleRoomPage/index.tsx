@@ -183,9 +183,8 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                         <Divider type="vertical" />
                         <div className="schedule-room-title">{periodicInfo.periodic.title}</div>
                     </div>
-                    <div className="schedule-room-cut-line" />
                 </div>
-                <div className="schedule-room-body">
+                <div className="schedule-room-body fancy-scrollbar">
                     <div className="schedule-room-mid">
                         <div className="schedule-room-tips">
                             <div className="schedule-room-tips-title">

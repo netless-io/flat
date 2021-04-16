@@ -80,14 +80,16 @@ export const SystemCheckPage = (): React.ReactElement => {
     return (
         <DeviceCheckLayoutContainer>
             <div className="system-check-container">
-                <div className="system-check-inner-left">
-                    <span>处理器 (CPU)</span>
-                    <span>缓存可用空间</span>
-                    <span>网络质量情况</span>
-                </div>
-                <div className="system-check-inner-right">
+                <div className="system-check-item">
+                    <span className="system-check-item-name">处理器 (CPU)</span>
                     <span>{cpuModel}</span>
+                </div>
+                <div className="system-check-item">
+                    <span className="system-check-item-name">缓存可用空间</span>
                     <span>{freeMemory} MB</span>
+                </div>
+                <div className="system-check-item">
+                    <span className="system-check-item-name">网络质量情况</span>
                     <span>{networkDescription[networkSituation]}</span>
                 </div>
             </div>
