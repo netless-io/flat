@@ -2,7 +2,7 @@ import { routeConfig, RouteConfig, RouteNameType, ExtraRouteConfig } from "../ro
 import { generatePath, useHistory } from "react-router";
 import { useCallback } from "react";
 
-export { RouteNameType, SettingPageType } from "../route-config";
+export { RouteNameType } from "../route-config";
 
 type PickExtraRouteConfig<
     T extends RouteNameType,

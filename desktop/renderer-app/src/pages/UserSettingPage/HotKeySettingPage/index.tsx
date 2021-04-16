@@ -1,6 +1,8 @@
-import React from "react";
+import "./index.less";
+
 import { Table } from "antd";
-import "./HotKeySetting.less";
+import React from "react";
+import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 
 interface HotKeyTable {
     name: string;
@@ -132,22 +134,20 @@ const expandedRowRender = (row: HotKeyTable): React.ReactElement => {
     );
 };
 
-export const HotKeySetting = React.memo(function HotKeySetting() {
-    // only renders if props(param) have changed
+export const HotKeySettingPage = (): React.ReactElement => {
     return (
-        <div className="content-container">
-            <div className="header-container">
-                <span>热键设置</span>
+        <UserSettingLayoutContainer>
+            <div className="hotkey-setting-container">
+                <div className="hotkey-setting-content">
+                    <Table
+                        columns={HotKeyTableTitleList}
+                        dataSource={tableRow}
+                        expandable={{ expandedRowRender }}
+                        pagination={false}
+                        scroll={{ y: 500 }}
+                    />
+                </div>
             </div>
-            <div className="content-inner">
-                <Table
-                    columns={HotKeyTableTitleList}
-                    dataSource={tableRow}
-                    expandable={{ expandedRowRender }}
-                    pagination={false}
-                    scroll={{ y: 500 }}
-                />
-            </div>
-        </div>
+        </UserSettingLayoutContainer>
     );
-});
+};

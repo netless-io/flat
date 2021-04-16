@@ -10,7 +10,6 @@ import { Divider } from "antd";
 import { observer } from "mobx-react-lite";
 import { zhCN } from "date-fns/locale";
 import { Link, useParams } from "react-router-dom";
-import MainPageLayout from "../../components/MainPageLayout";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { generateRoutePath, RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
@@ -21,6 +20,7 @@ import { joinRoomHandler } from "../utils/joinRoomHandler";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { RoomDetailFooter } from "./RoomDetailFooter";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 
 export type RoomDetailPageProps = {};
 
@@ -51,7 +51,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
     const isCreator = roomInfo.ownerUUID === globalStore.userUUID;
 
     return (
-        <MainPageLayout>
+        <MainPageLayoutContainer>
             <div className="user-room-detail-box">
                 <div className="user-room-detail-nav">
                     <div className="user-room-detail-head">
@@ -196,7 +196,7 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                     </div>
                 </div>
             </div>
-        </MainPageLayout>
+        </MainPageLayoutContainer>
     );
 
     async function joinRoom(): Promise<void> {

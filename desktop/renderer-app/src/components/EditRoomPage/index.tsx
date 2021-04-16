@@ -8,13 +8,13 @@ import { Link, useHistory } from "react-router-dom";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { getDay, addWeeks, endOfDay } from "date-fns";
 import { generateRoutePath, RouteNameType } from "../../utils/routes";
-import MainPageLayout from "../../components/MainPageLayout";
 import { RoomTypeSelect } from "../../components/RoomType";
 import { EditRoomFormValues } from "./typings";
 import { renderBeginTimePicker } from "./renderBeginTimePicker";
 import { renderEndTimePicker } from "./renderEndTimePicker";
 import { renderPeriodicForm } from "./renderPeriodicForm";
 import { PeriodicEndType } from "../../constants/Periodic";
+import { MainPageLayoutContainer } from "../MainPageLayoutContainer";
 
 export type { EditRoomFormValues } from "./typings";
 
@@ -69,7 +69,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
     }, [initialValues]);
 
     return (
-        <MainPageLayout>
+        <MainPageLayoutContainer>
             <div className="edit-room-box">
                 <div className="edit-room-nav">
                     <div className="edit-room-head">
@@ -216,7 +216,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage({
                     {renderModalContent(type)}
                 </Modal>
             )}
-        </MainPageLayout>
+        </MainPageLayoutContainer>
     );
 
     function renderModalTitle(editRoomType: EditRoomType): string {
