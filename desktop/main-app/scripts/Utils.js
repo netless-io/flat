@@ -22,6 +22,10 @@ const buildElectron = async buildType => {
 
     if (!version.includes("alpha")) {
         config.releaseInfo.releaseNotes = generateReleaseNote();
+
+        if (buildType === "mac") {
+            config.afterSign = path.join("scripts", "Notarize.js");
+        }
     }
 
     config.extraResources = [
