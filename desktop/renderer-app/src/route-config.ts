@@ -8,7 +8,6 @@ import OneToOnePage from "./pages/OneToOnePage";
 import ReplayPage from "./pages/ReplayPage";
 import RoomDetailPage from "./pages/RoomDetailPage";
 import HomePage from "./pages/HomePage";
-import UserInfoPage from "./UserInfoPage";
 import UserScheduledPage from "./pages/UserScheduledPage";
 import { ModifyOrdinaryRoomPage } from "./pages/ModifyOrdinaryRoomPage";
 import { ModifyPeriodicRoomPage } from "./pages/ModifyPeriodicRoomPage";
@@ -18,7 +17,10 @@ import { CameraCheckPage } from "./pages/DeviceCheckPages/CameraCheckPage";
 import { MicrophoneCheckPage } from "./pages/DeviceCheckPages/MicrophoneCheckPage";
 import { SpeakerCheckPage } from "./pages/DeviceCheckPages/SpeakerCheckPage";
 import { SystemCheckPage } from "./pages/DeviceCheckPages/SystemCheckPage";
-import UserSettingPage from "./pages/UserSettingPanel";
+import { GeneralSettingPage } from "./pages/UserSettingPage/GeneralSettingPage";
+import { HotKeySettingPage } from "./pages/UserSettingPage/HotKeySettingPage";
+import { FeedbackPage } from "./pages/UserSettingPage/FeedBackPage";
+import { AboutPage } from "./pages/UserSettingPage/AboutPage";
 
 export enum RouteNameType {
     SplashPage = "SplashPage",
@@ -30,8 +32,6 @@ export enum RouteNameType {
     RoomDetailPage = "RoomDetailPage",
     UserScheduledPage = "UserScheduledPage",
     ScheduleRoomDetailPage = "ScheduleRoomDetailPage",
-    UserInfoPage = "UserInfoPage",
-    UserSettingPage = "UserSettingPage",
     ReplayPage = "ReplayPage",
     ModifyOrdinaryRoomPage = "ModifyOrdinaryRoomPage",
     ModifyPeriodicRoomPage = "ModifyPeriodicRoomPage",
@@ -40,6 +40,10 @@ export enum RouteNameType {
     CameraCheckPage = "CameraCheckPage",
     SpeakerCheckPage = "SpeakerCheckPage",
     MicrophoneCheckPage = "MicrophoneCheckPage",
+    GeneralSettingPage = "GeneralSettingPage",
+    HotKeySettingPage = "HotKeySettingPage",
+    FeedbackPage = "FeedbackPage",
+    AboutPage = "AboutPage",
 }
 
 export const routeConfig = {
@@ -88,16 +92,6 @@ export const routeConfig = {
         path: "/user/scheduled/info/:periodicUUID",
         component: ScheduleRoomDetailPage,
     },
-    [RouteNameType.UserInfoPage]: {
-        title: "Flat",
-        path: "/info/",
-        component: UserInfoPage,
-    },
-    [RouteNameType.UserSettingPage]: {
-        title: "Flat",
-        path: "/setting/:settingType/",
-        component: UserSettingPage,
-    },
     [RouteNameType.ReplayPage]: {
         title: "房间回放",
         path: "/replay/:roomType/:roomUUID/:ownerUUID/",
@@ -138,27 +132,33 @@ export const routeConfig = {
         path: "/device/microphone/",
         component: MicrophoneCheckPage,
     },
+    [RouteNameType.GeneralSettingPage]: {
+        title: "常规设置",
+        path: "/general-settings/",
+        component: GeneralSettingPage,
+    },
+    [RouteNameType.HotKeySettingPage]: {
+        title: "热键设置",
+        path: "/hotkey/",
+        component: HotKeySettingPage,
+    },
+    [RouteNameType.FeedbackPage]: {
+        title: "吐个槽",
+        path: "/feedback/",
+        component: FeedbackPage,
+    },
+    [RouteNameType.AboutPage]: {
+        title: "吐个槽",
+        path: "/about/",
+        component: AboutPage,
+    },
 } as const;
 
 export type ExtraRouteConfig = {
     [RouteNameType.ReplayPage]: {
         roomType: RoomType;
     };
-    [RouteNameType.UserSettingPage]: {
-        settingType: SettingPageType;
-    };
 };
-
-export enum SettingPageType {
-    Normal = "normal",
-    Room = "room",
-    Hotkey = "hotkey",
-    File = "file",
-    System = "system",
-    Camera = "camera",
-    Speaker = "speaker",
-    Microphone = "microphone",
-}
 
 type CheckRouteConfig<
     T extends {

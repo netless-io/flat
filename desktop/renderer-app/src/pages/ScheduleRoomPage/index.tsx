@@ -10,7 +10,6 @@ import { useHistory, useParams } from "react-router";
 import { useLastLocation } from "react-router-last-location";
 import backSVG from "../../assets/image/back.svg";
 import moreBtnSVG from "../../assets/image/moreBtn.svg";
-import MainPageLayout from "../../components/MainPageLayout";
 import { CopyInvitationItem } from "../../components/MoreMenu/CopyInvitationItem";
 import { ModifyRoomItem } from "../../components/MoreMenu/ModifyRoomItem";
 import { RemoveRoomItem } from "../../components/MoreMenu/RemoveRoomItem";
@@ -27,6 +26,7 @@ import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { getWeekNames } from "../../components/WeekRateSelector";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 
 const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
 const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
@@ -172,7 +172,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
     };
 
     return (
-        <MainPageLayout>
+        <MainPageLayoutContainer>
             <div className="schedule-room-box">
                 <div className="schedule-room-nav">
                     <div className="schedule-room-head">
@@ -240,7 +240,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
                 periodicUUID={periodicUUID}
                 isPeriodicDetailsPage={true}
             />
-        </MainPageLayout>
+        </MainPageLayoutContainer>
     );
 
     function onRemoveRoom(): void {

@@ -1,19 +1,22 @@
 /* eslint-disable react/display-name */
-import homeSVG from "../assets/image/home.svg";
-import homeActiveSVG from "../assets/image/home-active.svg";
-import diskSVG from "../assets/image/disk.svg";
-import diskActiveSVG from "../assets/image/disk-active.svg";
-import deviceSVG from "../assets/image/device.svg";
-import deviceActiveSVG from "../assets/image/device-active.svg";
-import settingSVG from "../assets/image/setting.svg";
-import gitHubSVG from "../assets/image/github.svg";
-import logoutSVG from "../assets/image/logout.svg";
+import homeSVG from "./icons/home.svg";
+import homeActiveSVG from "./icons/home-active.svg";
+import diskSVG from "./icons/disk.svg";
+import diskActiveSVG from "./icons/disk-active.svg";
+import deviceSVG from "./icons/device.svg";
+import deviceActiveSVG from "./icons/device-active.svg";
+import settingSVG from "./icons/setting.svg";
+import gitHubSVG from "./icons/github.svg";
+import feedbackSVG from "./icons/feedback.svg";
+import logoutSVG from "./icons/logout.svg";
+import "./index.less";
 
 import React from "react";
+import { shell } from "electron";
 import { useHistory, useLocation } from "react-router-dom";
 import { MainPageLayout, MainPageLayoutItem, MainPageLayoutProps } from "flat-components";
-import { getWechatInfo } from "../utils/localStorage/accounts";
-import { routeConfig, RouteNameType } from "../route-config";
+import { getWechatInfo } from "../../utils/localStorage/accounts";
+import { routeConfig, RouteNameType } from "../../route-config";
 
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];
@@ -59,22 +62,32 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
 
     const popMenu = [
         {
-            key: "userConfig",
+            key: routeConfig[RouteNameType.GeneralSettingPage].path,
             icon: (): React.ReactNode => <img src={settingSVG} />,
             title: "个人设置",
-            route: "/userConfig",
+            route: routeConfig[RouteNameType.GeneralSettingPage].path,
         },
         {
             key: "getGitHubCode",
             icon: (): React.ReactNode => <img src={gitHubSVG} />,
             title: "获取源码",
-            route: "/getGitHubCode",
+            route: "https://github.com/netless-io/flat/",
+        },
+        {
+            key: "feedback",
+            icon: (): React.ReactNode => <img src={feedbackSVG} />,
+            title: "反馈意见",
+            route: "https://github.com/netless-io/flat/issues",
         },
         {
             key: "logout",
             icon: (): React.ReactNode => <img src={logoutSVG} />,
-            title: <span className="logout-title">退出登录</span>,
-            route: "/logout",
+            title: (
+                <span className="logout-title" onClick={() => localStorage.clear()}>
+                    退出登录
+                </span>
+            ),
+            route: routeConfig[RouteNameType.LoginPage].path,
         },
     ];
 
@@ -84,11 +97,15 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
 
     const history = useHistory();
 
-    const historyPush =
-        onRouteChange ||
-        ((mainPageLayoutItem: MainPageLayoutItem): void => {
-            history.push(mainPageLayoutItem.route);
-        });
+    const historyPush = (mainPageLayoutItem: MainPageLayoutItem): void => {
+        if (mainPageLayoutItem.route.startsWith("/")) {
+            onRouteChange
+                ? onRouteChange(mainPageLayoutItem)
+                : history.push(mainPageLayoutItem.route);
+        } else {
+            shell.openExternal(mainPageLayoutItem.route);
+        }
+    };
 
     return (
         <MainPageLayout
