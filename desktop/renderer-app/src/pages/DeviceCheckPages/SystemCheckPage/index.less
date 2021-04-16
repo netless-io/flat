@@ -1,23 +1,20 @@
 .system-check-container {
     display: flex;
+    flex-direction: column;
+    width: 100%;
     min-width: 360px;
     margin-bottom: 36px;
 
-    span {
-        margin-bottom: 8px;
+    .system-check-item {
+        margin-bottom: 16px;
+
+        .system-check-item-name {
+            margin-right: 24px;
+            color: #7a7b7c;
+        }
+
+        > span {
+            color: #444e60;
+        }
     }
-}
-
-.system-check-inner-left {
-    display: flex;
-    margin-right: 24px;
-    flex-direction: column;
-    color: #7a7b7c;
-}
-
-.system-check-inner-right {
-    display: flex;
-    flex-direction: column;
-    color: #444e60;
-    align-items: flex-end;
 }

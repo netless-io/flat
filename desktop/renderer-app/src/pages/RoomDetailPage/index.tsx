@@ -61,7 +61,6 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                                 <span>返回</span>
                             </div>
                         </Link>
-                        <div className="user-segmentation" />
                         {roomInfo.title && (
                             <>
                                 <Divider type="vertical" />
@@ -90,7 +89,6 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
                             </>
                         )}
                     </div>
-                    <div className="user-room-detail-cut-line" />
                 </div>
                 <div className="user-room-detail-body">
                     <div className="user-room-detail-mid">
