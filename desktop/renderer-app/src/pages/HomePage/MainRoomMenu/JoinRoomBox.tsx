@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form } from "antd";
 import { validate, version } from "uuid";
-import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
+import { ConfigStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 
 interface JoinRoomFormValues {
@@ -19,7 +19,6 @@ export interface JoinRoomBoxProps {
 
 export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJoinRoom }) {
     const sp = useSafePromise();
-    const globalStore = useContext(GlobalStoreContext);
     const configStore = useContext(ConfigStoreContext);
     const [form] = Form.useForm<JoinRoomFormValues>();
 
@@ -123,9 +122,9 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                             // }
                         />
                     </Form.Item>
-                    <Form.Item label="昵称">
+                    {/* <Form.Item label="昵称">
                         <Input disabled value={globalStore.wechat?.name} />
-                    </Form.Item>
+                    </Form.Item> */}
                     <Form.Item label="加入选项">
                         <Form.Item name="autoMicOn" noStyle valuePropName="checked">
                             <Checkbox>开启麦克风</Checkbox>
