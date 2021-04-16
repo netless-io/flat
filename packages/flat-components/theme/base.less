@@ -5,3 +5,9 @@ body {
     font-family: "PingFang SC", "Source Han Sans SC", "Microsoft YaHei", "Helvetica Neue",
         "Noto Sans CJK SC", "WenQuanYi Micro Hei", sans-serif;
 }
+
+@import "./fancy-scrollbar.less";
+body,
+textarea {
+    .fancy-scrollbar-mixin();
+}
