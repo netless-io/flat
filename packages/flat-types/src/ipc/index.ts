@@ -1,5 +1,5 @@
 import type { Type as RuntimeType } from "../runtime";
-import type { PrereleaseTag, UpdateCheckInfo } from "../update";
+import type { UpdateCheckInfo } from "../update";
 
 export type WindowActionAsync = {
     "set-win-size": (args: {
@@ -18,7 +18,7 @@ export type WindowActionAsync = {
     "disable-window": (args: { disable: boolean }) => void;
     "set-title": (args: { title: string }) => void;
     "set-prevent-sleep": (args: { enable: boolean }) => void;
-    "start-update": (args: { prereleaseTag: PrereleaseTag }) => void;
+    "start-update": () => void;
     "cancel-update": () => void;
 };
 
@@ -29,7 +29,7 @@ export type AppActionAsync = {
 export type AppActionSync = {
     "get-runtime": () => RuntimeType;
     "get-open-at-login": () => boolean;
-    "get-update-info": (events: any, args: { prereleaseTag: PrereleaseTag }) => UpdateCheckInfo;
+    "get-update-info": () => UpdateCheckInfo;
 };
 
 export interface EmitEvents {

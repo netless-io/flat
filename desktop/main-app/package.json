@@ -76,6 +76,7 @@
     "electron-updater": "^4.3.8",
     "jquery": "^3.5.1",
     "rxjs": "^6.6.6",
+    "semver": "^7.3.5",
     "ts-enum-util": "^4.0.2"
   },
   "license": "MIT"

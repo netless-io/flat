@@ -2,6 +2,7 @@ import path from "path";
 import { app } from "electron";
 import { platform } from "os";
 import { runtime as Runtime } from "flat-types";
+import { prerelease } from "semver";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
@@ -32,6 +33,19 @@ const appVersion = isProduction ? app.getVersion() : require("../../package.json
 
 const downloadsDirectory = path.join(app.getPath("userData"), "downloads");
 
+const prereleaseTag = (() => {
+    // e.g:
+    // version: 1.0.0-beta.1
+    // tag: ["beta", 1];
+    const tag = prerelease(require("../../package.json").version);
+
+    if (tag) {
+        return tag[0] as "alpha" | "beta" | "stable";
+    }
+
+    return "stable";
+})();
+
 const runtime: Runtime.Type = {
     isDevelopment,
     isProduction,
@@ -43,6 +57,7 @@ const runtime: Runtime.Type = {
     appVersion,
     downloadsDirectory,
     assetsPath,
+    prereleaseTag,
 };
 
 export default runtime;
