@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Observer, observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { VideoAvatar, VideoAvatarProps } from "../../components/VideoAvatar";
@@ -15,11 +15,20 @@ export interface BigClassAvatarProps extends Omit<VideoAvatarProps, "children"> 
 export const BigClassAvatar = observer<BigClassAvatarProps>(function BigClassAvatar({
     avatarUser,
     small,
+    rtcEngine,
     onExpand,
     ...restProps
 }) {
+    useEffect(() => {
+        if (avatarUser.camera) {
+            rtcEngine.resizeRender(avatarUser.rtcUID, void 0);
+        }
+        // only listen to small changes
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [small]);
+
     return (
-        <VideoAvatar {...restProps} avatarUser={avatarUser}>
+        <VideoAvatar {...restProps} avatarUser={avatarUser} rtcEngine={rtcEngine}>
             {(canvas, ctrlBtns) => (
                 <Observer>
                     {() => (
