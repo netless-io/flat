@@ -48,13 +48,11 @@ export const CameraCheckPage = (): React.ReactElement => {
                 width: 320,
                 height: 240,
             });
-            rtcEngine.enableVideo();
             rtcEngine.setupLocalVideo(cameraStream.current);
             rtcEngine.startPreview();
         }
 
         return () => {
-            rtcEngine.disableVideo();
             rtcEngine.stopPreview();
         };
     }, [currentDeviceID, cameraStream, rtcEngine]);
