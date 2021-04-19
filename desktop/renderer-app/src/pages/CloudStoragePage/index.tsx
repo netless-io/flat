@@ -10,6 +10,7 @@ import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-conver
 import { convertFinish } from "../../apiMiddleware/flatServer/storage";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
+import { RoomPhase } from "white-web-sdk";
 
 export interface CloudStoragePageProps {
     compact?: boolean;
@@ -184,7 +185,9 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             const uuid = v4uuid();
             room.putScenes(`/${taskUUID}/${uuid}`, scenes);
             room.setScenePath(`/${taskUUID}/${uuid}/${scenes[0].name}`);
-            room.scalePptToFit();
+            if (room.phase === RoomPhase.Connected) {
+                room.scalePptToFit();
+            }
         } else {
             message.error("无法插入课件");
         }

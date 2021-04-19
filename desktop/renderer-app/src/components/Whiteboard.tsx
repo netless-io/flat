@@ -6,6 +6,7 @@ import ZoomController from "@netless/zoom-controller";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
+import { RoomPhase } from "white-web-sdk";
 import pagesSVG from "../assets/image/pages.svg";
 import { WhiteboardStore } from "../stores/WhiteboardStore";
 import "./Whiteboard.less";
@@ -21,7 +22,9 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
         (ref: HTMLDivElement) => {
             if (room) {
                 room.bindHtmlElement(ref);
-                room.scalePptToFit();
+                if (room.phase === RoomPhase.Connected) {
+                    room.scalePptToFit();
+                }
             }
         },
         [room],
