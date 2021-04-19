@@ -12,5 +12,3 @@ export type UpdateCheckInfo =
     | {
           hasNewVersion: false;
       };
-
-export type PrereleaseTag = "beta" | "stable";

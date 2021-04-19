@@ -70,8 +70,8 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
                     }
                 };
             })(),
-        "start-update": args => {
-            updateService.update(args.prereleaseTag);
+        "start-update": () => {
+            updateService.update();
         },
         "cancel-update": () => {
             updateService.cancel();
@@ -95,8 +95,8 @@ export const appActionSync: ipc.AppActionSync = {
     "get-open-at-login": () => {
         return app.getLoginItemSettings().openAtLogin;
     },
-    "get-update-info": (_event, args) => {
-        return updateService.check(args.prereleaseTag).catch((err: Error) => {
+    "get-update-info": () => {
+        return updateService.check().catch((err: Error) => {
             console.error(err.message);
             return {
                 hasNewVersion: false,

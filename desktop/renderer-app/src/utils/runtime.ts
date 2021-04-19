@@ -11,4 +11,5 @@ export const runtime: Runtime.Type = {
     assetsPath: "",
     appVersion: "",
     downloadsDirectory: "",
+    prereleaseTag: "stable",
 };
