@@ -61,6 +61,7 @@ export class Rtc {
             height: 216,
             width: 288,
         });
+        this.rtcEngine.enableVideo();
 
         if (channelType === RtcChannelType.Broadcast) {
             if (isCreator) {
@@ -88,6 +89,7 @@ export class Rtc {
     destroy(): void {
         this.leave();
         this.rtcEngine.removeAllListeners("tokenPrivilegeWillExpire");
+        this.rtcEngine.enableVideo();
     }
 
     private renewToken = async (): Promise<void> => {
