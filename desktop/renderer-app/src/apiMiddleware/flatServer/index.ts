@@ -515,7 +515,7 @@ export interface setAuthUUIDResult {
 }
 
 export async function setAuthUUID(authUUID: string): Promise<setAuthUUIDResult> {
-    return await postNotAuth<setAuthUUIDPayload, setAuthUUIDResult>("login/set-auth-id", {
+    return await postNotAuth<setAuthUUIDPayload, setAuthUUIDResult>("login/set-auth-uuid", {
         authUUID,
     });
 }
