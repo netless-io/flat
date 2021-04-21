@@ -506,28 +506,25 @@ export async function loginCheck(): Promise<LoginCheckResult> {
     });
 }
 
-export interface SetWechatAuthIDPayload {
-    authID: string;
+export interface setAuthUUIDPayload {
+    authUUID: string;
 }
 
-export interface SetWechatAuthIDResult {
-    authID: string;
+export interface setAuthUUIDResult {
+    authUUID: string;
 }
 
-export async function setWechatAuthID(authID: string): Promise<SetWechatAuthIDResult> {
-    return await postNotAuth<SetWechatAuthIDPayload, SetWechatAuthIDResult>(
-        "login/weChat/set-auth-id",
-        {
-            authID,
-        },
-    );
+export async function setAuthUUID(authUUID: string): Promise<setAuthUUIDResult> {
+    return await postNotAuth<setAuthUUIDPayload, setAuthUUIDResult>("login/set-auth-id", {
+        authUUID,
+    });
 }
 
-export interface WechatProcessPayload {
-    authID: string;
+export interface LoginProcessPayload {
+    authUUID: string;
 }
 
-export interface WechatProcessResult {
+export interface LoginProcessResult {
     name: string;
     sex: Sex;
     avatar: string;
@@ -535,11 +532,8 @@ export interface WechatProcessResult {
     token: string;
 }
 
-export async function wechatProcess(authID: string): Promise<WechatProcessResult> {
-    return await postNotAuth<WechatProcessPayload, WechatProcessResult>(
-        "login/weChat/web/process",
-        {
-            authID,
-        },
-    );
+export async function loginProcess(authUUID: string): Promise<LoginProcessResult> {
+    return await postNotAuth<LoginProcessPayload, LoginProcessResult>("login/process", {
+        authUUID,
+    });
 }

@@ -9,7 +9,7 @@ import { setWechatInfo, setUserUuid } from "../utils/localStorage/accounts";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { GlobalStoreContext } from "./StoreProvider";
 import { useSafePromise } from "../utils/hooks/lifecycle";
-import { setWechatAuthID, wechatProcess } from "../apiMiddleware/flatServer";
+import { setAuthUUID, loginProcess } from "../apiMiddleware/flatServer";
 import { errorTips } from "./Tips/ErrorTips";
 import type { WechatInfo } from "../stores/GlobalStore";
 
@@ -21,25 +21,25 @@ export const WeChatLogin = observer(function WeChatLogin() {
     const sp = useSafePromise();
 
     useEffect(() => {
-        const authID = uuidv4();
+        const authUUID = uuidv4();
         const ticket: { current?: number } = {};
 
-        setQRCodeURL(QRURL(authID));
+        setQRCodeURL(QRURL(authUUID));
 
-        const wechatProcessRequest = (ticket: { current?: number }, authID: string): void => {
+        const loginProcessRequest = (ticket: { current?: number }, authUUID: string): void => {
             ticket.current = window.setTimeout(async () => {
-                const data = await sp(wechatProcess(authID));
+                const data = await sp(loginProcess(authUUID));
                 if (data.userUUID === "") {
-                    wechatProcessRequest(ticket, authID);
+                    loginProcessRequest(ticket, authUUID);
                 } else {
                     setAuthData(data);
                 }
             }, 2000);
         };
 
-        sp(setWechatAuthID(authID))
+        sp(setAuthUUID(authUUID))
             .then(() => {
-                wechatProcessRequest(ticket, authID);
+                loginProcessRequest(ticket, authUUID);
             })
             .catch(errorTips);
 
