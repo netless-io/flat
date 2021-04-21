@@ -5,6 +5,7 @@ const { notarize } = require("electron-notarize");
 dotenvFlow.config({
     path: path.resolve(__dirname, "..", "..", "..", "config"),
     default_node_env: "production",
+    silent: true,
 });
 
 exports.default = async function notarizing(context) {
