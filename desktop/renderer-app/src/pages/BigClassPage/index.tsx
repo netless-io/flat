@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { RoomPhase, ViewMode } from "white-web-sdk";
+import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ChatPanel } from "../../components/ChatPanel";
@@ -44,6 +45,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
         bitrate: 280,
         mixedVideoLayout: 3,
         backgroundColor: "#000000",
+        defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
         layoutConfig: [
             {
                 x_axis: 0,
@@ -88,6 +90,8 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const [mainSpeaker, setMainSpeaker] = useState<User | undefined>(speakingJoiner);
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
+    const updateLayoutTimeoutRef = useRef(NaN);
+
     // control whiteboard writable
     useEffect(() => {
         if (!classRoomStore.isCreator && classRoomStore.users.currentUser) {
@@ -126,6 +130,25 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             }
         },
     );
+
+    useEffect(() => {
+        if (classRoomStore.isRecording) {
+            window.clearTimeout(updateLayoutTimeoutRef.current);
+            updateLayoutTimeoutRef.current = window.setTimeout(() => {
+                if (classRoomStore.isRecording) {
+                    updateCloudRecordLayout();
+                }
+            }, 1000);
+
+            return () => {
+                window.clearTimeout(updateLayoutTimeoutRef.current);
+                updateLayoutTimeoutRef.current = NaN;
+            };
+        }
+        return;
+        // ignore updateCloudRecordLayout
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [speakingJoiner, mainSpeaker, classRoomStore.isRecording]);
 
     if (
         !whiteboardStore.room ||
@@ -362,6 +385,49 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     function stopClass(): void {
         // @TODO remove ref
         exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
+    }
+
+    function updateCloudRecordLayout(): void {
+        const backgroundConfig: AgoraCloudRecordBackgroundConfigItem[] = [];
+
+        if (mainSpeaker) {
+            backgroundConfig.push({
+                uid: String(mainSpeaker.rtcUID),
+                image_url: mainSpeaker.avatar,
+            });
+        }
+
+        if (speakingJoiner) {
+            backgroundConfig.push({
+                uid: String(speakingJoiner.rtcUID),
+                image_url: speakingJoiner.avatar,
+            });
+        }
+
+        classRoomStore.updateRecordingLayout({
+            mixedVideoLayout: 3,
+            backgroundColor: "#000000",
+            defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+            backgroundConfig,
+            layoutConfig: [
+                {
+                    x_axis: 0,
+                    y_axis: 0,
+                    width: 1,
+                    height: 1,
+                    alpha: 1.0,
+                    render_mode: 1,
+                },
+                {
+                    x_axis: 0.0,
+                    y_axis: 0.67,
+                    width: 0.33,
+                    height: 0.33,
+                    alpha: 1.0,
+                    render_mode: 1,
+                },
+            ],
+        });
     }
 });
 

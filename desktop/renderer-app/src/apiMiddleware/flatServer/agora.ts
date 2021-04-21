@@ -89,6 +89,7 @@ export interface AgoraCloudRecordStartRequestBody {
                 maxResolutionUid?: string;
                 mixedVideoLayout?: number;
                 backgroundColor?: string;
+                defaultUserBackgroundImage?: string;
                 layoutConfig?: Array<{
                     uid?: string;
                     x_axis?: number;
@@ -96,6 +97,11 @@ export interface AgoraCloudRecordStartRequestBody {
                     width?: number;
                     height?: number;
                     alpha?: number;
+                    render_mode?: number;
+                }>;
+                backgroundConfig?: Array<{
+                    uid: string;
+                    image_url: string;
                     render_mode?: number;
                 }>;
             };
@@ -250,12 +256,20 @@ export interface AgoraCloudRecordLayoutConfigItem {
     render_mode?: number;
 }
 
+export interface AgoraCloudRecordBackgroundConfigItem {
+    uid: string;
+    image_url: string;
+    render_mode?: number;
+}
+
 export interface AgoraCloudRecordUpdateLayoutRequestBody {
     clientRequest?: {
         maxResolutionUid?: string;
         mixedVideoLayout?: number;
         backgroundColor?: string;
         layoutConfig?: AgoraCloudRecordLayoutConfigItem[];
+        defaultUserBackgroundImage?: string;
+        backgroundConfig?: AgoraCloudRecordBackgroundConfigItem[];
     };
 }
 

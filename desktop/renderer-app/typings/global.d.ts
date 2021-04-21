@@ -19,6 +19,8 @@ declare namespace NodeJS {
 
         WECHAT_APP_ID: string;
         FLAT_SERVER_DOMAIN: string;
+
+        CLOUD_RECORDING_DEFAULT_AVATAR?: string;
     }
 }
 
