@@ -148,7 +148,7 @@ export const routeConfig = {
         component: FeedbackPage,
     },
     [RouteNameType.AboutPage]: {
-        title: "吐个槽",
+        title: "关于我们",
         path: "/about/",
         component: AboutPage,
     },
