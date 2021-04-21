@@ -2434,20 +2434,20 @@
   resolved "https://registry.yarnpkg.com/@netless/redo-undo/-/redo-undo-0.0.5.tgz#c5b00f5940ef33a0d6a810cd0935f4d9c172ea52"
   integrity sha512-P8ceK3hSY2eMfFIjBeSpRsqXpjjTea9bBWyRF8t8q0kLR4ICld2VMFMRbytqZ8sjCFy9CgbicuBOdMj7juABIQ==
 
-"@netless/tool-box@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.npmjs.org/@netless/tool-box/-/tool-box-0.0.9.tgz#dcf865787a7219a7f00c588addcb8306a272fe22"
-  integrity sha512-jtSBimJEXb1yXjmsh8LbuooEzgLLOGMLIvx0USCMQjRmFKQ10YLjWNQ3nYKmbnnsnC/6czurls2h18d+Ys5szw==
+"@netless/tool-box@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.npmjs.org/@netless/tool-box/-/tool-box-0.0.11.tgz#28d5526710cc9b96519a41dd20adae512be347f7"
+  integrity sha512-ppftClycVVdfjAADT4a3eDoiDlxv5l51UAN3O/t4v3ToAYbkMN6p0/jp9SoBvIpjvrsfXK1odBgu0ccZvZlcSw==
 
-"@netless/white-audio-plugin@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/@netless/white-audio-plugin/-/white-audio-plugin-2.0.0.tgz#4e40933c749099587b8fd445d9fe675f83f6f3db"
-  integrity sha512-98dTU6ifvfyNOUsGPFo1gSQixq0Kgak6wlutcZIuZZzQ2CXNpmIygOnpLI/pdYCgqerp8kNAvsPa4rFwGd9fVQ==
+"@netless/white-audio-plugin@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.npmjs.org/@netless/white-audio-plugin/-/white-audio-plugin-2.0.3.tgz#f5edb6f8d32ece49ac023bcf6bc01458db50aca8"
+  integrity sha512-RAMmTzdGpVC5KC5sJd2FRLj/fslIeSkJ1BY3vBk3X6U11j/2uCE95G4W4e+tIocQgbWgIwEBsSIW60Dxbx65Jg==
 
-"@netless/white-video-plugin@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/@netless/white-video-plugin/-/white-video-plugin-2.0.1.tgz#fd5b9b611a91b73a5395ffc128cd558faef20606"
-  integrity sha512-oz0aMcvtuJyPjwa0QYkBg+u+2B3lkNbzAbj+YtZgsHV506YrAHIrqDgLENiCSWpk2lwBCqx/EGsdl2Ug4iX73Q==
+"@netless/white-video-plugin@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.npmjs.org/@netless/white-video-plugin/-/white-video-plugin-2.0.3.tgz#7502979430dd28a8982b8d630e2b1b457a8a1074"
+  integrity sha512-kXIavQ2192EHiY8M4almndWhGnhDAyXqjTIrZvXhjslaQp1FUfKvmSy3AjNcGU+sjVCKBKmkoYVc2PeUx0Ho1g==
 
 "@netless/zoom-controller@^0.1.1":
   version "0.1.1"
@@ -9770,7 +9770,7 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
+hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.npmjs.org/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -12187,14 +12187,6 @@ mobx-react-lite@^3.2.0:
   resolved "https://registry.npmjs.org/mobx-react-lite/-/mobx-react-lite-3.2.0.tgz#331d7365a6b053378dfe9c087315b4e41c5df69f"
   integrity sha512-q5+UHIqYCOpBoFm/PElDuOhbcatvTllgRp3M1s+Hp5j0Z6XNgDbgqxawJ0ZAUEyKM8X1zs70PCuhAIzX1f4Q/g==
 
-mobx-react@^5.4.0:
-  version "5.4.4"
-  resolved "https://registry.npmjs.org/mobx-react/-/mobx-react-5.4.4.tgz#b3de9c6eabcd0ed8a40036888cb0221ab9568b80"
-  integrity sha512-2mTzpyEjVB/RGk2i6KbcmP4HWcAUFox5ZRCrGvSyz49w20I4C4qql63grPpYrS9E9GKwgydBHQlA4y665LuRCQ==
-  dependencies:
-    hoist-non-react-statics "^3.0.0"
-    react-lifecycles-compat "^3.0.2"
-
 mobx-react@^7.1.0:
   version "7.1.0"
   resolved "https://registry.npmjs.org/mobx-react/-/mobx-react-7.1.0.tgz#d947cada3cfad294b4b6f692e969c242b9c16eaf"
@@ -12202,15 +12194,10 @@ mobx-react@^7.1.0:
   dependencies:
     mobx-react-lite "^3.2.0"
 
-mobx@^4.9.0:
-  version "4.15.7"
-  resolved "https://registry.npmjs.org/mobx/-/mobx-4.15.7.tgz#933281268c3b4658b6cf2526e872cf78ea48ab95"
-  integrity sha512-X4uQvuf2zYKHVO5kRT5Utmr+J9fDnRgxWWnSqJ4oiccPTQU38YG+/O3nPmOhUy4jeHexl7XJJpWDBgEnEfp+8w==
-
-mobx@^6.0.4:
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.0.4.tgz#8fc3e3629a3346f8afddf5bd954411974744dad1"
-  integrity sha512-wT2QJT9tW19VSHo9x7RPKU3z/I2Ps6wUS8Kb1OO+kzmg7UY3n4AkcaYG6jq95Lp1R9ohjC/NGYuT2PtuvBjhFg==
+mobx@^6.1.0:
+  version "6.2.0"
+  resolved "https://registry.npmjs.org/mobx/-/mobx-6.2.0.tgz#9a5afe3525a0302691c7805d0df6ef60834d79e5"
+  integrity sha512-j5f16JIq2v4flvYCqaAB9tMtJt/y5efR2OO5Xy+w4/MBMeQ1WeGR0T8BtiNgmxM/OQzPFUKb5DTex9Y8a/yk+g==
 
 moment@^2.24.0, moment@^2.25.3:
   version "2.29.1"
@@ -14782,7 +14769,7 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
-react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
+react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
@@ -18166,10 +18153,10 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@2.12.5:
-  version "2.12.5"
-  resolved "https://registry.yarnpkg.com/white-web-sdk/-/white-web-sdk-2.12.5.tgz#6df5ab57cba402eeba1049bdaf78a37b96ff2a81"
-  integrity sha512-v/1yjeLkbiC/7eohrywdApk38F81DeLldFsPwAkvVCmMvMAvlGCZM4Gk8SD3pwCEC/so998TxgMupoGl3Q/sfQ==
+white-web-sdk@2.12.13:
+  version "2.12.13"
+  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.12.13.tgz#79a3c3aecdaacd0c21edfadd5f98cb912171bafe"
+  integrity sha512-oMhkmItIdz+QKOAwjMgMygHpYIIb85A5YL3Q0gk0vKvpI1HBehRClJWFzhBg2Xg0TT8y89DMQtKxx/hHBBsDEw==
   dependencies:
     "@netless/canvas-polyfill" "^0.0.4"
     atob "^2.1.0"
@@ -18178,8 +18165,8 @@ white-web-sdk@2.12.5:
     detect-it "^3.0.5"
     es6-symbol "^3.1.3"
     mathjs "^6.2.2"
-    mobx "^4.9.0"
-    mobx-react "^5.4.0"
+    mobx "^6.1.0"
+    mobx-react "^7.1.0"
     numeric "^1.2.6"
     query-string "5"
     react "^16.8.0"
