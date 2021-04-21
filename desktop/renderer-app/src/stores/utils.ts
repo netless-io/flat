@@ -2,7 +2,7 @@ import { autorun, makeAutoObservable, toJS } from "mobx";
 
 type LSPersistStore<TStore> = [number, TStore];
 
-export function autoPersistStore<TStore>({
+export function autoPersistStore<TStore extends object>({
     storeLSName,
     store,
     version = 1,

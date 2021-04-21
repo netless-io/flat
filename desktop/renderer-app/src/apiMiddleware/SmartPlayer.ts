@@ -101,6 +101,7 @@ export class SmartPlayer extends EventEmitter {
 
         const rangeQuery: PlayableCheckingParams = {
             room: whiteboardUUID,
+            roomToken: whiteboardRoomToken,
             region: "cn-hz",
         };
 
