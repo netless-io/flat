@@ -1,3 +1,5 @@
+import "./OneToOnePage.less";
+
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { observer } from "mobx-react-lite";
@@ -29,10 +31,9 @@ import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { useComputed } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
-
-import "./OneToOnePage.less";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
+import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -44,6 +45,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
         bitrate: 140,
         mixedVideoLayout: 1,
         backgroundColor: "#000000",
+        defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
     },
     maxIdleTime: 60,
     subscribeUidGroup: 0,
@@ -64,6 +66,8 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
+    const updateLayoutTimeoutRef = useRef(NaN);
+
     const joiner = useComputed(() => {
         if (classRoomStore.isCreator) {
             return classRoomStore.users.speakingJoiners.length > 0
@@ -81,7 +85,26 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     useEffect(() => {
         whiteboardStore.updateWritable(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (classRoomStore.isRecording) {
+            window.clearTimeout(updateLayoutTimeoutRef.current);
+            updateLayoutTimeoutRef.current = window.setTimeout(() => {
+                if (classRoomStore.isRecording) {
+                    updateCloudRecordLayout();
+                }
+            }, 1000);
+
+            return () => {
+                window.clearTimeout(updateLayoutTimeoutRef.current);
+                updateLayoutTimeoutRef.current = NaN;
+            };
+        }
+        return;
+        // ignore updateCloudRecordLayout
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [classRoomStore.users.creator, joiner, classRoomStore.isRecording]);
 
     if (
         !whiteboardStore.room ||
@@ -290,6 +313,32 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     function stopClass(): void {
         // @TODO remove ref
         exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
+    }
+
+    function updateCloudRecordLayout(): void {
+        const { creator } = classRoomStore.users;
+        const backgroundConfig: AgoraCloudRecordBackgroundConfigItem[] = [];
+
+        if (creator) {
+            backgroundConfig.push({
+                uid: String(creator.rtcUID),
+                image_url: creator.avatar,
+            });
+        }
+
+        if (joiner) {
+            backgroundConfig.push({
+                uid: String(joiner.rtcUID),
+                image_url: joiner.avatar,
+            });
+        }
+
+        classRoomStore.updateRecordingLayout({
+            mixedVideoLayout: 1,
+            backgroundColor: "#000000",
+            defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+            backgroundConfig,
+        });
     }
 });
 

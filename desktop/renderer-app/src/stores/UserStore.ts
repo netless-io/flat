@@ -40,6 +40,10 @@ export class UserStore {
     /** the rest joiners */
     otherJoiners = observable.array<User>([]);
 
+    get allUsers(): User[] {
+        return this.creator ? [this.creator, ...this.joiners] : this.joiners;
+    }
+
     get joiners(): User[] {
         return [...this.speakingJoiners, ...this.handRaisingJoiners, ...this.otherJoiners];
     }

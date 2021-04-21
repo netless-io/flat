@@ -593,32 +593,27 @@ export class ClassRoomStore {
     };
 
     private async startRecording(): Promise<void> {
-        this.isRecording = true;
-        try {
-            if (this.isCalling) {
-                await this.cloudRecording.start({
-                    recordingConfig: this.recordingConfig,
-                });
-            } else {
-                await startRecordRoom(this.roomUUID);
-            }
-            clearTimeout();
-        } catch (e) {
-            runInAction(() => {
-                // reset state
-                this.isRecording = false;
+        if (this.isCalling) {
+            await this.cloudRecording.start({
+                recordingConfig: this.recordingConfig,
             });
-            throw e;
+        } else {
+            await startRecordRoom(this.roomUUID);
         }
+        runInAction(() => {
+            this.isRecording = true;
+        });
     }
 
     private async stopRecording(): Promise<void> {
-        this.isRecording = false;
         if (this.cloudRecording.isRecording) {
             await this.cloudRecording.stop();
         } else {
             await stopRecordRoom(this.roomUUID);
         }
+        runInAction(() => {
+            this.isRecording = false;
+        });
     }
 
     private cancelAllHandRaising(): void {

@@ -20,11 +20,13 @@ import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusSto
 import { RecordHintTips } from "../../components/RecordHintTips";
 import LoadingPage from "../../LoadingPage";
 
-import { useAutoRun, useComputed } from "../../utils/mobx";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ClassModeType } from "../../apiMiddleware/Rtm";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
-import { AgoraCloudRecordLayoutConfigItem } from "../../apiMiddleware/flatServer/agora";
+import {
+    AgoraCloudRecordBackgroundConfigItem,
+    AgoraCloudRecordLayoutConfigItem,
+} from "../../apiMiddleware/flatServer/agora";
 import {
     RecordingConfig,
     RoomStatusLoadingType,
@@ -38,6 +40,8 @@ import "./SmallClassPage.less";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 
+const CLASSROOM_WIDTH = 1200;
+const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
 const AVATAR_WIDTH = 144;
 const AVATAR_HEIGHT = 108;
 const MAX_AVATAR_COUNT = 17;
@@ -54,7 +58,15 @@ const recordingConfig: RecordingConfig = Object.freeze({
         bitrate: 500,
         mixedVideoLayout: 3,
         backgroundColor: "#F3F6F9",
-        layoutConfig: updateRecordLayout(1),
+        defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+        layoutConfig: [
+            {
+                x_axis: (AVATAR_AREA_WIDTH - AVATAR_WIDTH) / 2 / AVATAR_BAR_WIDTH,
+                y_axis: 0,
+                width: AVATAR_WIDTH / AVATAR_BAR_WIDTH,
+                height: 1,
+            },
+        ],
     },
     maxIdleTime: 60,
     subscribeUidGroup: 3,
@@ -82,20 +94,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
-    /**
-     * users with camera or mic on
-     */
-    const activeUserCount = useComputed(() => {
-        let count =
-            (classRoomStore.users.creator ? 1 : 0) + classRoomStore.users.speakingJoiners.length;
-        if (classRoomStore.classMode === ClassModeType.Interaction) {
-            // all users are on in interaction mode
-            count +=
-                classRoomStore.users.handRaisingJoiners.length +
-                classRoomStore.users.otherJoiners.length;
-        }
-        return count;
-    });
+    const updateLayoutTimeoutRef = useRef(NaN);
 
     // control whiteboard writable
     useEffect(() => {
@@ -110,16 +109,24 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [classRoomStore.classMode, whiteboardStore.room, classRoomStore.users.currentUser?.isSpeak]);
 
-    // update cloud recording layout
-    useAutoRun(() => {
+    useEffect(() => {
         if (classRoomStore.isRecording) {
-            classRoomStore.updateRecordingLayout({
-                mixedVideoLayout: 3,
-                backgroundColor: "#F3F6F9",
-                layoutConfig: updateRecordLayout(activeUserCount.get()),
-            });
+            window.clearTimeout(updateLayoutTimeoutRef.current);
+            updateLayoutTimeoutRef.current = window.setTimeout(() => {
+                if (classRoomStore.isRecording) {
+                    updateCloudRecordLayout();
+                }
+            }, 1000);
+
+            return () => {
+                window.clearTimeout(updateLayoutTimeoutRef.current);
+                updateLayoutTimeoutRef.current = NaN;
+            };
         }
-    });
+        return;
+        // ignore updateCloudRecordLayout
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [classRoomStore.users.totalUserCount, classRoomStore.isRecording]);
 
     if (
         !room ||
@@ -359,36 +366,51 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         // @TODO remove ref
         exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
     }
+
+    function updateCloudRecordLayout(): void {
+        const { allUsers } = classRoomStore.users;
+        const layoutConfig: AgoraCloudRecordLayoutConfigItem[] = [];
+        const backgroundConfig: AgoraCloudRecordBackgroundConfigItem[] = [];
+
+        let startX = 0;
+
+        if (allUsers.length < 7) {
+            // center the avatars
+            const avatarsWidth = allUsers.length * (AVATAR_WIDTH + AVATAR_BAR_GAP) - AVATAR_BAR_GAP;
+            startX = (AVATAR_AREA_WIDTH - avatarsWidth) / 2;
+        }
+
+        // calculate the max rendered config count
+        // because x_axis cannot overflow
+        const layoutConfigCount = Math.min(
+            allUsers.length,
+            Math.floor(
+                (AVATAR_BAR_WIDTH - startX + AVATAR_BAR_GAP) / (AVATAR_WIDTH + AVATAR_BAR_GAP),
+            ),
+        );
+
+        for (let i = 0; i < layoutConfigCount; i++) {
+            layoutConfig.push({
+                x_axis: (startX + i * (AVATAR_WIDTH + AVATAR_BAR_GAP)) / AVATAR_BAR_WIDTH,
+                y_axis: 0,
+                width: AVATAR_WIDTH / AVATAR_BAR_WIDTH,
+                height: 1,
+            });
+
+            backgroundConfig.push({
+                uid: String(allUsers[i].rtcUID),
+                image_url: allUsers[i].avatar,
+            });
+        }
+
+        classRoomStore.updateRecordingLayout({
+            mixedVideoLayout: 3,
+            backgroundColor: "#F3F6F9",
+            defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+            layoutConfig,
+            backgroundConfig,
+        });
+    }
 });
 
 export default SmallClassPage;
-
-function updateRecordLayout(userCount: number): AgoraCloudRecordLayoutConfigItem[] {
-    const layoutConfig: AgoraCloudRecordLayoutConfigItem[] = [];
-    // the left most x position to start rendering the avatars
-    let startX = 0;
-
-    if (userCount < 7) {
-        // center the avatars
-        const avatarsWidth = userCount * (AVATAR_WIDTH + AVATAR_BAR_GAP) - AVATAR_BAR_GAP;
-        // 1168 is the default visible avatar bar width
-        startX = (1168 - avatarsWidth) / 2;
-    }
-
-    // calculate the max rendered config count
-    // because x_axis cannot overflow
-    const layoutConfigCount = Math.floor(
-        (AVATAR_BAR_WIDTH - startX + AVATAR_BAR_GAP) / (AVATAR_WIDTH + AVATAR_BAR_GAP),
-    );
-
-    for (let i = 0; i < layoutConfigCount; i++) {
-        layoutConfig.push({
-            x_axis: (startX + i * (AVATAR_WIDTH + AVATAR_BAR_GAP)) / AVATAR_BAR_WIDTH,
-            y_axis: 0,
-            width: AVATAR_WIDTH / AVATAR_BAR_WIDTH,
-            height: 1,
-        });
-    }
-
-    return layoutConfig;
-}
