@@ -66,6 +66,8 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 await insertVideo(file);
                 break;
             }
+            case ".doc":
+            case ".docx":
             case ".ppt":
             case ".pptx":
             case ".pdf": {
