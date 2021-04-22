@@ -1,5 +1,6 @@
-import React from "react";
 import "./LoginPage.less";
+
+import React from "react";
 import { withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { Button, Modal } from "antd";
@@ -7,6 +8,7 @@ import { constants } from "flat-types";
 import logoSVG from "./assets/image/logo.svg";
 import { ipcAsyncByMainWindow } from "./utils/ipc";
 import WeChatLogin from "./components/WeChatLogin";
+import { runtime } from "./utils/runtime";
 
 export type IndexPageStates = {
     name: string;
@@ -76,7 +78,9 @@ export class LoginPage extends React.Component<RouteComponentProps<{}>, IndexPag
                         >
                             微信登录
                         </Button>
-                        <div className="page-index-line page-index-fade-in">v2.1.0</div>
+                        <div className="page-index-line page-index-fade-in">
+                            Version {runtime.appVersion}
+                        </div>
                     </div>
                 </div>
                 <Modal
