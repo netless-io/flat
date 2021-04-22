@@ -1,17 +1,19 @@
 import "./index.less";
 import { Button, Modal } from "antd";
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect, useState } from "react";
-import { GlobalStoreContext } from "../StoreProvider";
+import React, { useEffect, useState } from "react";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove, ipcSyncByApp } from "../../utils/ipc";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 export interface AppUpgradeModalProps {
-    hasNewVersion?: boolean;
+    visible: boolean;
+    onClose: () => void;
 }
 
-export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgradeModal() {
-    const globalStore = useContext(GlobalStoreContext);
+export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgradeModal({
+    onClose,
+    visible,
+}) {
     const [appVersion, setAppVersion] = useState(" ");
     const [upgradePercent, setUpgradePercent] = useState(0);
     const [showUpgradeProgress, setShowUpgradeProgress] = useState(false);
@@ -32,7 +34,7 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
         return () => {
             ipcReceiveRemove("update-progress");
         };
-    }, [appVersion, globalStore, sp]);
+    }, [appVersion, sp]);
 
     const renderModalTitle = (): React.ReactNode => {
         return <div className="app-upgrade-modal-title">版本更新</div>;
@@ -40,7 +42,7 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
 
     const cancelUpgrade = (): void => {
         setShowUpgradeProgress(false);
-        globalStore.hideAppUpgradeModal();
+        onClose();
     };
 
     const upgradeStart = (): void => {
@@ -71,7 +73,7 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
             maskClosable={false}
             title={renderModalTitle()}
             footer={[]}
-            visible={globalStore.isShowAppUpgradeModal}
+            visible={visible}
             onCancel={cancelUpgrade}
             wrapClassName="app-upgrade-modal-container"
             closable={false}
