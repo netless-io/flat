@@ -2,39 +2,39 @@ import "./index.less";
 import { Button, Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove, ipcSyncByApp } from "../../utils/ipc";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
 
 export interface AppUpgradeModalProps {
-    visible: boolean;
+    /** open modal when newVersion has truthy value */
+    newVersion?: string;
+    /** close modal  */
     onClose: () => void;
 }
 
 export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgradeModal({
+    newVersion,
     onClose,
-    visible,
 }) {
-    const [appVersion, setAppVersion] = useState(" ");
     const [upgradePercent, setUpgradePercent] = useState(0);
     const [showUpgradeProgress, setShowUpgradeProgress] = useState(false);
     const [upgradeFail, setUpgradeFail] = useState(false);
-    const sp = useSafePromise();
 
     useEffect(() => {
-        sp(ipcSyncByApp("get-update-info"))
-            .then(data => {
-                if (data.hasNewVersion) {
-                    setAppVersion(data.version);
+        if (showUpgradeProgress) {
+            ipcReceive("update-progress", args => {
+                if (args.status) {
+                    setUpgradePercent(args.percent);
+                } else {
+                    setUpgradeFail(true);
                 }
-            })
-            .catch(err => {
-                console.error("ipc failed", err);
             });
 
+            ipcAsyncByMainWindow("start-update", undefined);
+        }
         return () => {
             ipcReceiveRemove("update-progress");
         };
-    }, [appVersion, sp]);
+    }, [showUpgradeProgress]);
 
     const renderModalTitle = (): React.ReactNode => {
         return <div className="app-upgrade-modal-title">版本更新</div>;
@@ -47,23 +47,6 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
 
     const upgradeStart = (): void => {
         setShowUpgradeProgress(true);
-        sp(ipcSyncByApp("get-update-info"))
-            .then(data => {
-                if (data.hasNewVersion) {
-                    ipcReceive("update-progress", args => {
-                        if (args.status) {
-                            setUpgradePercent(args.percent);
-                        } else {
-                            setUpgradeFail(true);
-                        }
-                    });
-
-                    ipcAsyncByMainWindow("start-update", undefined);
-                }
-            })
-            .catch(err => {
-                console.error("ipc failed", err);
-            });
     };
 
     return (
@@ -73,7 +56,7 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
             maskClosable={false}
             title={renderModalTitle()}
             footer={[]}
-            visible={visible}
+            visible={Boolean(newVersion)}
             onCancel={cancelUpgrade}
             wrapClassName="app-upgrade-modal-container"
             closable={false}
@@ -102,7 +85,7 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
             ) : (
                 <div>
                     <span className="app-upgrade-modal-font">
-                        发现新版本{appVersion}, 请更新到最新版本获取更好的产品体验
+                        发现新版本{newVersion || " "}, 请更新到最新版本获取更好的产品体验
                     </span>
                     <div className="app-upgrade-modal-btn">
                         <Button type="primary" onClick={upgradeStart}>
