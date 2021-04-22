@@ -15,7 +15,6 @@ export class GlobalStore {
      * Hide it permanently if user close the tooltip.
      */
     isShowRecordHintTips = true;
-    isShowAppUpgradeModal = false;
     wechat: WechatInfo | null = null;
     whiteboardRoomUUID: string | null = null;
     whiteboardRoomToken: string | null = null;
@@ -64,14 +63,6 @@ export class GlobalStore {
 
     hideRecordHintTips = (): void => {
         this.isShowRecordHintTips = false;
-    };
-
-    showAppUpgradeModal = (): void => {
-        this.isShowAppUpgradeModal = true;
-    };
-
-    hideAppUpgradeModal = (): void => {
-        this.isShowAppUpgradeModal = false;
     };
 }
 

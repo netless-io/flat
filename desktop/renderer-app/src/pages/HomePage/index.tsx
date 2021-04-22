@@ -1,6 +1,6 @@
 import "./HomePage.less";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { ipcAsyncByMainWindow, ipcReceiveRemove, ipcSyncByApp } from "../../utils/ipc";
 import { MainRoomMenu } from "./MainRoomMenu";
@@ -11,13 +11,13 @@ import { shouldWindowCenter } from "./utils";
 import { constants } from "flat-types";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { AppUpgradeModal } from "../../components/AppUpgradeModal";
-import { globalStore } from "../../stores/GlobalStore";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 export type HomePageProps = {};
 
 export const HomePage = observer<HomePageProps>(function HomePage() {
     const lastLocation = useLastLocation();
+    const [showModal, setShowModal] = useState(false);
     const sp = useSafePromise();
 
     useEffect(() => {
@@ -31,7 +31,8 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
         sp(ipcSyncByApp("get-update-info"))
             .then(data => {
                 if (data.hasNewVersion) {
-                    globalStore.showAppUpgradeModal();
+                    console.log("[Auto Updater]: has newVersion", data.hasNewVersion);
+                    setShowModal(true);
                 }
             })
             .catch(err => {
@@ -52,7 +53,7 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
                     <MainRoomHistoryPanel />
                 </div>
             </div>
-            <AppUpgradeModal />
+            <AppUpgradeModal visible={showModal} onClose={() => setShowModal(false)} />
         </MainPageLayoutContainer>
     );
 });

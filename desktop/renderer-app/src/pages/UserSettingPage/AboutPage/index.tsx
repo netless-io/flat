@@ -2,33 +2,26 @@ import logoSVG from "../icons/logo.svg";
 import updateSVG from "../icons/update.svg";
 import "./index.less";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { Button, message } from "antd";
-import { GlobalStoreContext } from "../../../components/StoreProvider";
 import { runtime } from "../../../utils/runtime";
 import { ipcSyncByApp } from "../../../utils/ipc";
 import { AppUpgradeModal } from "../../../components/AppUpgradeModal";
+import { useSafePromise } from "../../../utils/hooks/lifecycle";
 
 export const AboutPage = (): React.ReactElement => {
-    const [appVersionState, setAppVersionState] = useState<string>();
-
-    const globalStore = useContext(GlobalStoreContext);
-
-    useEffect(() => {
-        ipcSyncByApp("get-update-info").then(data => {
-            if (data.hasNewVersion) {
-                setAppVersionState(data.version);
-            }
-        });
-    }, [appVersionState]);
+    const sp = useSafePromise();
+    const [showModal, setShowModal] = useState(false);
 
     const checkUpgradeVersion = (): void => {
-        if (appVersionState === runtime.appVersion) {
-            message.info("当前已是最新版本");
-        } else {
-            globalStore.showAppUpgradeModal();
-        }
+        sp(ipcSyncByApp("get-update-info")).then(data => {
+            if (!data.hasNewVersion || data.version === runtime.appVersion) {
+                message.info("当前已是最新版本");
+            } else {
+                setShowModal(true);
+            }
+        });
     };
 
     return (
@@ -47,7 +40,7 @@ export const AboutPage = (): React.ReactElement => {
                     <a href="">服务协议</a>｜<a href="">隐私政策</a>｜<a href="">GitHub</a>
                 </div> */}
             </div>
-            <AppUpgradeModal />
+            <AppUpgradeModal visible={showModal} onClose={() => setShowModal(false)} />
         </UserSettingLayoutContainer>
     );
 };
