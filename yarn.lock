@@ -2383,10 +2383,10 @@
   dependencies:
     video.js "^7.8.4"
 
-"@netless/cursor-tool@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/@netless/cursor-tool/-/cursor-tool-0.0.5.tgz#7ca47501cb656b3e623ade37462bf2d38450f6f2"
-  integrity sha512-Nmf9ksGzFbrkuG9dlod8V7ODbQgfM8LYrkT7azM3Jiid/X/GuWQSBO/tI6b44hJXTFH1tQCJ487jcYC1myvCaQ==
+"@netless/cursor-tool@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.npmjs.org/@netless/cursor-tool/-/cursor-tool-0.0.7.tgz#bab2ef0e68130ddd76008fc66fdb1d119c67707e"
+  integrity sha512-GhzOcIIZvsHsjHNm35otbJC1kOsXzpTOKbN172wctI8nE+3W50M4lXsTAeHEIg+Z8fPGKUgLSISGACt7c2/e/Q==
 
 "@netless/eslint-plugin@^1.1.1":
   version "1.1.1"
@@ -2395,17 +2395,17 @@
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.20.0"
 
-"@netless/fetch-middleware@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/@netless/fetch-middleware/-/fetch-middleware-1.0.6.tgz#0f3683d76cf1e12879d01e3376c5436b47b47bbe"
-  integrity sha512-fsMD7TLKvW5piZY6PO2HrtCgU47wofF/Ka3GyrCp291TYxWPWFqSZU8PEoUGz3QheZmwOL4zlnorywxBzeL79g==
+"@netless/fetch-middleware@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/@netless/fetch-middleware/-/fetch-middleware-1.0.7.tgz#7205aad27d4b4448df045bd4f9d9486f309ae824"
+  integrity sha512-Axu9FNffRM9rIkrYqrWfebqfqs7g325hLVCrGcoz1rh0skAt2LLydPVC0etJ0hIHDnAqRc8msTn8wIfctCQTSQ==
   dependencies:
     query-string "^6.13.1"
 
-"@netless/menu-box@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@netless/menu-box/-/menu-box-0.0.1.tgz#ea11edecaee0b2a8d9f3167a92f4bdeb906bb327"
-  integrity sha512-wjHBYKBIG0JxLE0/TTSfYdan7eYDevFbox/d03hgQHK+HFImTgKuXNZ1zy5mF3lDLJHbUoT/z1rgCzb6K25jHg==
+"@netless/menu-box@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.npmjs.org/@netless/menu-box/-/menu-box-0.0.6.tgz#2460ff7ddef6c07066ba1036ff15bfc647bbee28"
+  integrity sha512-ShiDPCFa4yk6JaP45DCiKr2Iyg7cmwP7fvO7/TkxEiaNWJJpNdPsFwlqzaE64p0INT5Jw0hGy0osNpYIhIfvhQ==
   dependencies:
     react-burger-menu "^2.7.1"
 
@@ -2414,20 +2414,20 @@
   resolved "https://registry.yarnpkg.com/@netless/page-controller/-/page-controller-0.0.4.tgz#6f21140f35a279fc37db69f66332d187d180e5ae"
   integrity sha512-eDGwbBSpIZB6efrQlTz+sO4oei6Zroiz7IslAxQVFBzmgUnLrbcYyjJm+oz4pP8u+PfyWEKdc6gJzh3kND1iIw==
 
-"@netless/player-controller@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@netless/player-controller/-/player-controller-0.0.8.tgz#5360678a7e8b301359eeedc3d7996ff8537b2187"
-  integrity sha512-gHfpjjomiayBYsJ132sWwJoIPgNNTgs+ju1c2tUhbHWwQn6QFhoTaPZW9r0hq7hSrrX3KYEmzurRU3qW9phNbQ==
+"@netless/player-controller@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/@netless/player-controller/-/player-controller-0.0.9.tgz#2c2bad03d1d51c623a09cfa3e36a022809242fbb"
+  integrity sha512-n+30ug/DMYsGI6awfe0JP8JxgQto3FN20V5IPkDZjXfo2vXfeySkGTE9/36r67p9UV4e19uiF5wq8BsG73Ra3A==
   dependencies:
     "@ant-design/icons" "^4.5.0"
     "@netless/combine-player" "^1.1.3"
 
-"@netless/preview-controller@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/@netless/preview-controller/-/preview-controller-0.0.5.tgz#1bf1f24ece08767e88fa754e60c40ecfecd0736f"
-  integrity sha512-F0z7JU6e4XDU5q/e6u/i9B0NumEksYEH8A5PykoV+LImS1nOrz54htPv7Vui5DZoyH8z5oZbbtImjXsV5azLgQ==
+"@netless/preview-controller@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/@netless/preview-controller/-/preview-controller-0.0.9.tgz#9b58c5eb360f76adcec7bfa86370488a1eae0531"
+  integrity sha512-F50uo/GF3dO9tSm3Lt2jlUNau59sie3uSigQ6g6XJpw74TfPBxn4I7ZVQk84Y576nuahGGdWrBaH0jcrFDN/BQ==
   dependencies:
-    "@netless/menu-box" "^0.0.1"
+    "@netless/menu-box" "^0.0.6"
 
 "@netless/redo-undo@^0.0.5":
   version "0.0.5"
