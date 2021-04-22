@@ -2,6 +2,7 @@
 <img width="200" height="200" src="./assets/flat-logo.png">
 <h1>Agora Flat</h1>
 <p>Project flat is the Web(under development), Windows and macOS client of <a href="https://flat.whiteboard.agora.io/en/">Agora Flat</a> open source classroom.</p>
+<p><a href="./README-zh.md">中文</a></p>
 <img src="./assets/flat-showcase.png">
 </div>
 
@@ -35,6 +36,7 @@
     -   [x] Messaging replaying
 -   [x] Cloud Storage for multi-media courseware
 -   [x] Device self-check
+-   [x] Auto Updater
 
 ## Development
 
