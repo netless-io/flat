@@ -12,14 +12,14 @@ import { useSafePromise } from "../../../utils/hooks/lifecycle";
 
 export const AboutPage = (): React.ReactElement => {
     const sp = useSafePromise();
-    const [showModal, setShowModal] = useState(false);
+    const [newVersion, setNewVersion] = useState<string>();
 
     const checkUpgradeVersion = (): void => {
         sp(ipcSyncByApp("get-update-info")).then(data => {
             if (!data.hasNewVersion || data.version === runtime.appVersion) {
                 message.info("当前已是最新版本");
             } else {
-                setShowModal(true);
+                setNewVersion(data.version);
             }
         });
     };
@@ -40,7 +40,7 @@ export const AboutPage = (): React.ReactElement => {
                     <a href="">服务协议</a>｜<a href="">隐私政策</a>｜<a href="">GitHub</a>
                 </div> */}
             </div>
-            <AppUpgradeModal visible={showModal} onClose={() => setShowModal(false)} />
+            <AppUpgradeModal newVersion={newVersion} onClose={() => setNewVersion(void 0)} />
         </UserSettingLayoutContainer>
     );
 };

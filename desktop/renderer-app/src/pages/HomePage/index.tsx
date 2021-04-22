@@ -2,7 +2,7 @@ import "./HomePage.less";
 
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { ipcAsyncByMainWindow, ipcReceiveRemove, ipcSyncByApp } from "../../utils/ipc";
+import { ipcAsyncByMainWindow, ipcSyncByApp } from "../../utils/ipc";
 import { MainRoomMenu } from "./MainRoomMenu";
 import { MainRoomListPanel } from "./MainRoomListPanel";
 import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
@@ -12,12 +12,13 @@ import { constants } from "flat-types";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { AppUpgradeModal } from "../../components/AppUpgradeModal";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { runtime } from "../../utils/runtime";
 
 export type HomePageProps = {};
 
 export const HomePage = observer<HomePageProps>(function HomePage() {
     const lastLocation = useLastLocation();
-    const [showModal, setShowModal] = useState(false);
+    const [newVersion, setNewVersion] = useState<string>();
     const sp = useSafePromise();
 
     useEffect(() => {
@@ -30,18 +31,19 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
     useEffect(() => {
         sp(ipcSyncByApp("get-update-info"))
             .then(data => {
+                console.log("[Auto Updater]: Get Update Info");
                 if (data.hasNewVersion) {
-                    console.log("[Auto Updater]: has newVersion", data.hasNewVersion);
-                    setShowModal(true);
+                    console.log(
+                        `[Auto Updater]: Remote Version "${data.version}", Local Version "${runtime.appVersion}"`,
+                    );
+                    if (data.version !== runtime.appVersion) {
+                        setNewVersion(data.version);
+                    }
                 }
             })
             .catch(err => {
                 console.error("ipc failed", err);
             });
-
-        return () => {
-            ipcReceiveRemove("update-progress");
-        };
     }, [sp]);
 
     return (
@@ -53,7 +55,7 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
                     <MainRoomHistoryPanel />
                 </div>
             </div>
-            <AppUpgradeModal visible={showModal} onClose={() => setShowModal(false)} />
+            <AppUpgradeModal newVersion={newVersion} onClose={() => setNewVersion(void 0)} />
         </MainPageLayoutContainer>
     );
 });
