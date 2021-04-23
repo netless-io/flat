@@ -32,7 +32,9 @@ export const SmallClassAvatar = observer<SmallClassAvatarProps>(function SmallCl
                                 </div>
                             )}
                             <div className="small-class-avatar-ctrl-layer">
-                                <h1 className="small-class-avatar-title">{avatarUser.name}</h1>
+                                <h1 className="small-class-avatar-title" title={avatarUser.name}>
+                                    {avatarUser.name}
+                                </h1>
                                 {ctrlBtns}
                             </div>
                         </section>
