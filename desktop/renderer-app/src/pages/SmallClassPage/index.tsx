@@ -295,7 +295,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     icon="folder"
                     onClick={whiteboardStore.toggleFileOpen}
                 /> */}
-                {/* TODO: open cloud-storage sub window */}
+                {/* TODO: open cloud-storage sub window */}
                 <CloudStorageButton whiteboard={whiteboardStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 {/* @TODO implement Options menu */}
