@@ -471,10 +471,11 @@ export class ClassRoomStore {
 
         await this.whiteboardStore.joinWhiteboardRoom();
 
-        channel.on("MemberJoined", userUUID => {
-            // not use errorTips function (because there is no need)
-            this.users.addUser(userUUID).catch(console.warn);
-        });
+        // add user on RequestChannelStatus
+        // channel.on("MemberJoined", userUUID => {
+        //     // not use errorTips function (because there is no need)
+        //     this.users.addUser(userUUID).catch(console.warn);
+        // });
         channel.on("MemberLeft", this.users.removeUser);
 
         this.onRTCEvents();
@@ -723,8 +724,10 @@ export class ClassRoomStore {
             }
         });
 
-        this.rtm.on(RTMessageType.RequestChannelStatus, (status, senderId) => {
+        this.rtm.on(RTMessageType.RequestChannelStatus, async (status, senderId) => {
             if (status.roomUUID === this.roomUUID) {
+                // not use errorTips function (because there is no need)
+                await this.users.addUser(senderId).catch(console.warn);
                 this.users.updateUsers(user => {
                     if (user.userUUID === senderId) {
                         if (this.users.creator && user.userUUID === this.users.creator.userUUID) {
@@ -733,6 +736,7 @@ export class ClassRoomStore {
                         }
                         user.camera = status.user.camera;
                         user.mic = status.user.mic;
+
                         return false;
                     }
                     return true;
