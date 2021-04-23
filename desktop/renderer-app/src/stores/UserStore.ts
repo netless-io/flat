@@ -182,8 +182,20 @@ export class UserStore {
         if (user.userUUID === this.ownerUUID) {
             this.creator = user;
         } else if (user.isSpeak) {
+            const index = this.speakingJoiners.findIndex(
+                ({ userUUID }) => userUUID === user.userUUID,
+            );
+            if (index >= 0) {
+                this.speakingJoiners.splice(index, 1);
+            }
             this.speakingJoiners.push(user);
         } else if (user.isRaiseHand) {
+            const index = this.handRaisingJoiners.findIndex(
+                ({ userUUID }) => userUUID === user.userUUID,
+            );
+            if (index >= 0) {
+                this.handRaisingJoiners.splice(index, 1);
+            }
             this.handRaisingJoiners.push(user);
         } else {
             this.otherJoiners.push(user);
