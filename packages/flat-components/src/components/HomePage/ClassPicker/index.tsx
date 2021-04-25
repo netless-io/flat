@@ -1,6 +1,7 @@
 import bigClassSVG from "./icons/big-class.svg";
 import oneToOneSVG from "./icons/one-to-one.svg";
 import smallClassSVG from "./icons/small-class.svg";
+
 import "./index.less";
 
 import React from "react";
@@ -26,9 +27,9 @@ const ClassPickerTitles: Record<ClassPickerItemType, string> = {
 };
 
 const ClassPickerTexts: Record<ClassPickerItemType, string> = {
-    bigClass: "房间类型功能描述，房间类型功能描述",
-    oneToOne: "房间类型功能描述，房间类型功能描述",
-    smallClass: "房间类型功能描述，房间类型功能描述",
+    bigClass: "适用于 1 位老师面向大量学生",
+    oneToOne: "适用于 1 位老师与 1 名学生",
+    smallClass: "适用于 1 位老师面向最多 16 名学生",
 };
 
 export const ClassPickerItem: React.FC<Pick<ClassPickerProps, "type">> = ({ type }) => {
@@ -50,9 +51,9 @@ export const ClassPicker: React.FC<ClassPickerProps> = ({ type, onChange }) => {
             value={type}
             onChange={e => onChange && e.target.value && onChange(e.target.value)}
         >
-            <ClassPickerItem type="oneToOne" />
             <ClassPickerItem type="bigClass" />
             <ClassPickerItem type="smallClass" />
+            <ClassPickerItem type="oneToOne" />
         </Radio.Group>
     );
 };
