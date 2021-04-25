@@ -2434,10 +2434,10 @@
   resolved "https://registry.yarnpkg.com/@netless/redo-undo/-/redo-undo-0.0.5.tgz#c5b00f5940ef33a0d6a810cd0935f4d9c172ea52"
   integrity sha512-P8ceK3hSY2eMfFIjBeSpRsqXpjjTea9bBWyRF8t8q0kLR4ICld2VMFMRbytqZ8sjCFy9CgbicuBOdMj7juABIQ==
 
-"@netless/tool-box@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/@netless/tool-box/-/tool-box-0.1.2.tgz#7c78f99bdfd54ec08154e443ceb270803045df9f"
-  integrity sha512-fsRDBNNvKNElEFbaLs4MDVB+PUxfpflYxmmWWGoA5CZecrAPRQKsoSaxps/oVHn70Kh2wvevYjIl/Aq44JlXGQ==
+"@netless/tool-box@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.npmjs.org/@netless/tool-box/-/tool-box-0.1.3.tgz#09d775174039b38098724d26ab8daad6bcd032bc"
+  integrity sha512-vGJvzoi00uIm3rBOePgjsFLk8596Vym8yyuEk/CdBT0mhZP+lAnlLmpGb7uV8vM1vhIf6v8toKlFm4NojaX/Fw==
 
 "@netless/white-audio-plugin@^2.0.3":
   version "2.0.3"
