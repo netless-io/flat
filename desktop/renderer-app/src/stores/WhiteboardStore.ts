@@ -106,6 +106,9 @@ export class WhiteboardStore {
             appIdentifier: NETLESS.APP_IDENTIFIER,
             plugins: plugins,
             deviceType: deviceType,
+            pptParams: {
+                useServerWrap: true
+            }
         });
 
         const cursorName = globalStore.wechat?.name;
