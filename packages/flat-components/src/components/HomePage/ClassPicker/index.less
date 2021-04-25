@@ -1,3 +1,5 @@
+@import "../../../../theme/variables.less";
+
 .class-picker-item-container {
     display: flex;
     flex-direction: column;
@@ -11,6 +13,7 @@
     margin-bottom: 16px;
     line-height: 1.5;
     font-weight: 400;
+    border-radius: 4px;
 }
 
 .class-picker-item-title {
@@ -25,20 +28,17 @@
 }
 
 .class-picker-container {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
 
     > .ant-radio-wrapper {
         position: relative;
         flex-direction: column-reverse;
         align-items: center;
+        margin-right: 0;
         border-radius: 4px;
-        margin: 0 16px 0 0;
         padding: 16px;
-
-        &:last-of-type {
-            margin-right: 0;
-        }
 
         > span {
             padding: 0;
@@ -56,9 +56,11 @@
             transition: border-color 0.4s;
         }
 
-        &:hover {
+        &.ant-radio-wrapper-checked,
+        &:hover,
+        &:active {
             &::after {
-                border: 2px solid #3381ff;
+                border: 2px solid @primary-color;
             }
         }
     }
