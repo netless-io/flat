@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { useCallback } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import { Button } from "antd";
 import { CSSTransition } from "react-transition-group";
@@ -56,7 +56,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                     <CloudStorageFileListContainer store={store} />
                 </div>
                 <CSSTransition
-                    in={store.isUploadPanelExpand && store.compact}
+                    in={store.isUploadPanelVisible && store.isUploadPanelExpand && store.compact}
                     timeout={400}
                     classNames="cloud-storage-container-mask"
                     mountOnEnter
