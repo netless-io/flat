@@ -3,7 +3,7 @@
 <h1>Agora Flat</h1>
 <p>Project flat is the Web(under development), Windows and macOS client of <a href="https://flat.whiteboard.agora.io/en/">Agora Flat</a> open source classroom.</p>
 <p><a href="./README-zh.md">中文</a></p>
-<img src="./assets/flat-showcase.png">
+<img src="./assets/flat-showcase-en.png">
 </div>
 
 ## Try it now
