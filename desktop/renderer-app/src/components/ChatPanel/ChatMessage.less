@@ -16,12 +16,21 @@
 .chat-message-bubble {
     display: inline-block;
     padding: 8px 12px;
-    text-align: initial;
     background: #dbe1ea;
     border-radius: 4px;
     user-select: text;
-    word-break: break-all;
-    text-align: justify;
+
+    & > pre {
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+        text-align: initial;
+        font-family: inherit;
+        white-space: normal;
+        word-break: break-all;
+        text-align: justify;
+        user-select: auto;
+    }
 }
 
 .chat-message-notice {
