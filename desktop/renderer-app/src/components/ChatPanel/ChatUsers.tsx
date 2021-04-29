@@ -56,6 +56,7 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
     const renderList = ({ height, width }: Size): React.ReactNode => {
         return (
             <List
+                className="fancy-scrollbar"
                 height={height}
                 width={width}
                 rowCount={users.length}
