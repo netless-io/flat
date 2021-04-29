@@ -10,7 +10,7 @@ import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-conver
 import { convertFinish } from "../../apiMiddleware/flatServer/storage";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
-import { RoomPhase } from "white-web-sdk";
+import { RoomPhase, SceneDefinition } from "white-web-sdk";
 
 export interface CloudStoragePageProps {
     compact?: boolean;
@@ -176,12 +176,13 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 return;
             }
         } else if (convertingStatus.status === "Finished" && convertingStatus.progress) {
-            const scenes = convertingStatus.progress.convertedFileList.map(f => ({
+            const scenes: SceneDefinition[] = convertingStatus.progress.convertedFileList.map(f => ({
                 name: v4uuid(),
                 ppt: {
                     width: f.width,
                     height: f.height,
                     src: f.conversionFileUrl,
+                    previewURL: f.preview,
                 },
             }));
             const uuid = v4uuid();
