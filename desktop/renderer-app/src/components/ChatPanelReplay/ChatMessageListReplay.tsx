@@ -62,6 +62,7 @@ export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
                     <Observer>
                         {() => (
                             <List
+                                className="fancy-scrollbar"
                                 height={height}
                                 width={width}
                                 rowCount={classRoomReplayStore.messages.length}

@@ -151,6 +151,7 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
                         <Observer>
                             {() => (
                                 <List
+                                    className="fancy-scrollbar"
                                     ref={registerChild}
                                     height={height}
                                     width={width}
