@@ -9,30 +9,30 @@ import { LoginContent, LoginContentProps } from "./LoginContent";
 
 export type { LoginChannelType } from "./LoginChannel";
 
-export interface LoginPageProps {
+export interface LoginPanelProps {
     onLogin: LoginContentProps["onLogin"];
 }
 
-export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
+export const LoginPanel: React.FC<LoginPanelProps> = ({ onLogin }) => {
     return (
-        <div className="login-page-container">
-            <div className="login-page-cover">
+        <div className="login-panel-container">
+            <div className="login-panel-cover">
                 <img src={coverSVG} />
             </div>
-            <div className="login-page-inner">
-                <div className="login-page-inner-bg-top-left">
+            <div className="login-panel-inner">
+                <div className="login-panel-inner-bg-top-left">
                     <img src={bgTopLeftSVG} />
                 </div>
-                <div className="login-page-inner-bg-bottom-left">
+                <div className="login-panel-inner-bg-bottom-left">
                     <img src={bgBottomLeftSVG} />
                 </div>
-                <div className="login-page-inner-bg-bottom-right">
+                <div className="login-panel-inner-bg-bottom-right">
                     <img src={bgBottomRightSVG} />
                 </div>
-                <div className="login-page-inner-content-container">
+                <div className="login-panel-inner-content-container">
                     <LoginContent onLogin={onLogin} />
                 </div>
-                <span className="login-page-inner-bottom-text">powered by Agora</span>
+                <span className="login-panel-inner-bottom-text">powered by Agora</span>
             </div>
         </div>
     );

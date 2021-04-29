@@ -27,7 +27,9 @@ const commonPlugins = [
     peerDepsExternal({
         packageJsonPath: path.join(__dirname, "package.json"),
     }),
-    url(),
+    url({
+        limit: Infinity,
+    }),
 ];
 
 // ignore assets that are not picked up by url plugin
