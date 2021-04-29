@@ -53,7 +53,9 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
         return (
             <div className="chat-message-line is-reverse">
                 <div className="chat-message-user">{messageUser?.name || message.userUUID}</div>
-                <div className="chat-message-bubble">{message.value}</div>
+                <div className="chat-message-bubble">
+                    <pre>{message.value}</pre>
+                </div>
             </div>
         );
     }
@@ -61,7 +63,9 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
     return (
         <div className="chat-message-line">
             <div className="chat-message-user">{messageUser?.name || message.userUUID}</div>
-            <div className="chat-message-bubble">{message.value}</div>
+            <div className="chat-message-bubble">
+                <pre>{message.value}</pre>
+            </div>
         </div>
     );
 });

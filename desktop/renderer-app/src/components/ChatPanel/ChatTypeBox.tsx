@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { User } from "./ChatUser";
 
@@ -7,6 +7,7 @@ import banChatSVG from "../../assets/image/ban-chat.svg";
 import banChatActiveSVG from "../../assets/image/ban-chat-active.svg";
 import handSVG from "../../assets/image/hand.svg";
 import handActiveSVG from "../../assets/image/hand-active.svg";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 export interface ChatTypeBoxProps {
     /** Only room owner can ban chatting. */
@@ -33,45 +34,30 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
     onMessageSend,
     onRaiseHandChange,
 }) {
+    const sp = useSafePromise();
+    const inputRef = useRef<HTMLInputElement>(null);
     const [text, updateText] = useState("");
     const [isSending, updateSending] = useState(false);
 
-    const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
-        updateText(e.currentTarget.value.slice(0, 200));
-    }, []);
+    const trimmedText = useMemo(() => text.trim(), [text]);
 
-    const onInputKeyPress = useCallback((e: React.KeyboardEvent<HTMLInputElement>): void => {
-        if (e.key === "Enter") {
-            updateSending(true);
-        }
-    }, []);
-
-    const onSendBtnPressed = useCallback(() => {
-        updateSending(true);
-    }, []);
-
-    useEffect(() => {
-        if (!isSending || !text) {
+    async function sendMessage(): Promise<void> {
+        if (isSending || trimmedText.length <= 0) {
             return;
         }
 
-        let isUmount = false;
+        updateSending(true);
 
-        onMessageSend(text)
-            .catch(error => {
-                console.warn(error);
-            })
-            .then(() => {
-                if (!isUmount) {
-                    updateText("");
-                    updateSending(false);
-                }
-            });
+        try {
+            await sp(onMessageSend(text));
+            updateText("");
+            inputRef.current?.focus();
+        } catch (e) {
+            console.warn(e);
+        }
 
-        return () => {
-            isUmount = true;
-        };
-    }, [isSending, text, onMessageSend]);
+        updateSending(false);
+    }
 
     return (
         <div className="chat-typebox">
@@ -95,16 +81,21 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
                     className="chat-typebox-input"
                     type="text"
                     placeholder="说点什么…"
+                    ref={inputRef}
                     value={text}
-                    onChange={onInputChange}
-                    onKeyPress={onInputKeyPress}
+                    onChange={e => updateText(e.currentTarget.value.slice(0, 200))}
+                    onKeyPress={e => {
+                        if (e.key === "Enter") {
+                            sendMessage();
+                        }
+                    }}
                 />
             )}
             <button
                 className="chat-typebox-send"
                 title="发送"
-                onClick={onSendBtnPressed}
-                disabled={isBan || isSending || text.length <= 0}
+                onClick={sendMessage}
+                disabled={isBan || isSending || trimmedText.length <= 0}
             >
                 <img src={sendSVG} />
             </button>
