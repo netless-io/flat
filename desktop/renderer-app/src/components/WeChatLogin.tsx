@@ -4,19 +4,19 @@ import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { LoadingOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
-import { QRURL } from "../utils/wechatUrl";
-import { setWechatInfo, setUserUuid } from "../utils/localStorage/accounts";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { GlobalStoreContext } from "./StoreProvider";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { setAuthUUID, loginProcess } from "../apiMiddleware/flatServer";
 import { errorTips } from "./Tips/ErrorTips";
-import type { WechatInfo } from "../stores/GlobalStore";
+import type { UserInfo } from "../stores/GlobalStore";
+import { FLAT_SERVER_LOGIN } from "../apiMiddleware/flatServer/constants";
+import { WECHAT } from "../constants/Process";
 
 export const WeChatLogin = observer(function WeChatLogin() {
     const globalStore = useContext(GlobalStoreContext);
     const [qrCodeURL, setQRCodeURL] = useState("");
-    const [authData, setAuthData] = useState<WechatInfo | null>(null);
+    const [authData, setAuthData] = useState<UserInfo | null>(null);
     const pushHistory = usePushHistory();
     const sp = useSafePromise();
 
@@ -24,7 +24,7 @@ export const WeChatLogin = observer(function WeChatLogin() {
         const authUUID = uuidv4();
         const ticket: { current?: number } = {};
 
-        setQRCodeURL(QRURL(authUUID));
+        setQRCodeURL(getQRCodeURL(authUUID));
 
         const loginProcessRequest = (ticket: { current?: number }, authUUID: string): void => {
             ticket.current = window.setTimeout(async () => {
@@ -51,9 +51,7 @@ export const WeChatLogin = observer(function WeChatLogin() {
 
     useEffect(() => {
         if (authData) {
-            setWechatInfo(authData);
-            setUserUuid(authData.userUUID);
-            globalStore.updateWechat(authData);
+            globalStore.updateUserInfo(authData);
             pushHistory(RouteNameType.HomePage);
         }
     }, [authData, globalStore, pushHistory]);
@@ -70,8 +68,37 @@ export const WeChatLogin = observer(function WeChatLogin() {
             <div className="wechat-login-spin">
                 <LoadingOutlined spin />
             </div>
+            <span className="wechat-login-text">请使用微信扫描二维码登录</span>
         </div>
     );
 });
 
 export default WeChatLogin;
+
+function getQRCodeURL(authUUID: string): string {
+    const redirectURL = encodeURIComponent(`${FLAT_SERVER_LOGIN.WECHAT_CALLBACK}`);
+    const qrCodeStyle = `
+        .impowerBox .qrcode {
+            width: 238px;
+            margin: 0;
+        }
+        .impowerBox .title {
+            display: none;
+        }
+        .status_icon {
+            display: none;
+        }
+        .impowerBox .status {
+            text-align: center;
+        }
+        .impowerBox .info {
+            display: none;
+        }
+    `;
+
+    return `https://open.weixin.qq.com/connect/qrconnect?appid=${
+        WECHAT.APP_ID
+    }&scope=snsapi_login&redirect_uri=${redirectURL}&state=${authUUID}&login_type=jssdk&self_redirect=true&style=black&href=data:text/css;base64,${window.btoa(
+        qrCodeStyle,
+    )}`;
+}
