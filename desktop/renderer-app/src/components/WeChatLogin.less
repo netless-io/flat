@@ -1,5 +1,6 @@
 .wechat-login-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
@@ -9,13 +10,12 @@
     position: relative;
     z-index: 1;
     height: 333px;
-    transform: scale(0.7) translateY(-80px);
     margin-bottom: -100px;
 }
 
 .wechat-login-spin {
-    width: 190px;
-    height: 190px;
+    width: 240px;
+    height: 240px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,7 +23,14 @@
     z-index: 0;
     left: 0;
     right: 0;
-    bottom: 10px;
+    bottom: 30px;
     margin: auto;
     background: #f3f6f9;
+}
+
+.wechat-login-text {
+    font-size: 16px;
+    font-weight: 400;
+    color: #7a7b7c;
+    margin-top: 12px;
 }
