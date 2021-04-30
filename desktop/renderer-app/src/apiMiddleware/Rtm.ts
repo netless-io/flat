@@ -5,7 +5,6 @@ import { AGORA, NODE_ENV } from "../constants/Process";
 import { EventEmitter } from "events";
 import { RoomStatus } from "./flatServer/constants";
 import { generateRTMToken } from "./flatServer/agora";
-import { getUserUuid } from "../utils/localStorage/accounts";
 import { globalStore } from "../stores/GlobalStore";
 
 /**
@@ -455,7 +454,7 @@ export class Rtm extends EventEmitter {
                 method: "POST",
                 headers: {
                     "x-agora-token": this.token,
-                    "x-agora-uid": getUserUuid(),
+                    "x-agora-uid": globalStore.userUUID,
                     "Content-Type": "application/json",
                     ...(config.headers || {}),
                 },

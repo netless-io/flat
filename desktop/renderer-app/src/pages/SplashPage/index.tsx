@@ -34,7 +34,7 @@ export const SplashPage = observer<SplashPageProps>(function SplashPage() {
         async function checkLogin(): Promise<RouteNameType.HomePage | RouteNameType.LoginPage> {
             let nextPage = RouteNameType.LoginPage;
 
-            const token = globalStore.wechat?.token;
+            const token = globalStore.userInfo?.token;
             if (token) {
                 try {
                     await loginCheck();

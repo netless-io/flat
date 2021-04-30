@@ -11,12 +11,12 @@ import feedbackSVG from "./icons/feedback.svg";
 import logoutSVG from "./icons/logout.svg";
 import "./index.less";
 
-import React from "react";
+import React, { useContext } from "react";
 import { shell } from "electron";
 import { useHistory, useLocation } from "react-router-dom";
 import { MainPageLayout, MainPageLayoutItem, MainPageLayoutProps } from "flat-components";
-import { getWechatInfo } from "../../utils/localStorage/accounts";
 import { routeConfig, RouteNameType } from "../../route-config";
+import { GlobalStoreContext } from "../StoreProvider";
 
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];
@@ -97,6 +97,8 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
 
     const history = useHistory();
 
+    const globalStore = useContext(GlobalStoreContext);
+
     const historyPush = (mainPageLayoutItem: MainPageLayoutItem): void => {
         if (mainPageLayoutItem.route.startsWith("/")) {
             onRouteChange
@@ -115,8 +117,8 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
             subMenu={subMenu}
             onClick={historyPush}
             activeKeys={activeKeys}
-            avatarSrc={getWechatInfo()?.avatar ?? ""}
-            userName={getWechatInfo()?.name ?? ""}
+            avatarSrc={globalStore.userInfo?.avatar ?? ""}
+            userName={globalStore.userInfo?.name ?? ""}
         >
             {children}
         </MainPageLayout>
