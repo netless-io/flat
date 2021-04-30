@@ -134,6 +134,7 @@ export class WhiteboardStore {
                     changeToRectangle: "r",
                     changeToEllipse: "c",
                     changeToEraser: "e",
+                    changeToText: "t",
                     changeToStraight: "l",
                     changeToArrow: "a",
                     changeToHand: "h",
