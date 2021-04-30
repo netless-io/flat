@@ -1,22 +1,14 @@
 import { FLAT_SERVER_DOMAIN } from "../../constants/Process";
 
-const sslFlag = "s";
-
-export const FLAT_SERVER_PROTOCOL = {
-    HTTPS: `http${sslFlag}://${FLAT_SERVER_DOMAIN}`,
-    WSS: `ws${sslFlag}://${FLAT_SERVER_DOMAIN}`,
-} as const;
+const FLAT_SERVER_PROTOCOL = `https://${FLAT_SERVER_DOMAIN}`;
 
 export const FLAT_SERVER_VERSIONS = {
-    V1HTTPS: `${FLAT_SERVER_PROTOCOL.HTTPS}/v1`,
-    V1WSS: `${FLAT_SERVER_PROTOCOL.WSS}/v1`,
+    V1: `${FLAT_SERVER_PROTOCOL}/v1`,
 } as const;
 
 export const FLAT_SERVER_LOGIN = {
-    WSS_LOGIN: `${FLAT_SERVER_VERSIONS.V1WSS}/Login`,
-    HTTPS_LOGIN: `${FLAT_SERVER_VERSIONS.V1HTTPS}/login`,
-    GITHUB_CALLBACK: `${FLAT_SERVER_VERSIONS.V1HTTPS}/login/github/callback`,
-    WECHAT_CALLBACK: `${FLAT_SERVER_VERSIONS.V1HTTPS}/login/weChat/web/callback`,
+    GITHUB_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/login/github/callback`,
+    WECHAT_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/login/weChat/web/callback`,
 } as const;
 
 export enum RoomType {
