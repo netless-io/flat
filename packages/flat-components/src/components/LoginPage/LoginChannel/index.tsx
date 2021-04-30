@@ -16,11 +16,11 @@ export const LoginChannel: React.FC<LoginChannelProps> = ({ onLogin }) => {
         <div className="login-channel-container">
             <Button onClick={() => onLogin("wechat")} className="login-channel-wechat">
                 <img src={wechatSVG} />
-                微信登陆
+                微信登录
             </Button>
             <Button onClick={() => onLogin("github")} className="login-channel-github">
                 <img src={githubSVG} />
-                GitHub登陆
+                GitHub登录
             </Button>
         </div>
     );
