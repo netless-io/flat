@@ -1,6 +1,6 @@
 import { ComponentType } from "react";
 import SplashPage from "./pages/SplashPage";
-import LoginPage from "./LoginPage";
+import LoginPage from "./pages/LoginPage";
 import BigClassPage from "./pages/BigClassPage";
 import { ScheduleRoomDetailPage } from "./pages/ScheduleRoomPage";
 import SmallClassPage from "./pages/SmallClassPage";

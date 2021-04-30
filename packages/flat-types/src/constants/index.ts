@@ -6,12 +6,12 @@ export enum WindowsName {
 
 export const PageSize = {
     Splash: {
-        width: 375,
-        height: 667,
+        width: 960,
+        height: 640,
     },
     Login: {
-        width: 375,
-        height: 667,
+        width: 960,
+        height: 640,
     },
     Main: {
         width: 960,
