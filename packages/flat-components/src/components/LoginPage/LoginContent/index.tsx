@@ -55,7 +55,7 @@ export const LoginContent: React.FC<LoginContentProps> = ({ onLogin }) => {
                         <div className="qr-code-container">
                             <div className="qr-code">{inPageLogin}</div>
                             <a className="qr-code-link" onClick={() => setInPageLogin(void 0)}>
-                                使用其他方式登陆
+                                使用其他方式登录
                             </a>
                         </div>
                     </div>
