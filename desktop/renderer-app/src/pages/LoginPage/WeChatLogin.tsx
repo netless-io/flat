@@ -4,14 +4,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { LoadingOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
-import { RouteNameType, usePushHistory } from "../utils/routes";
-import { GlobalStoreContext } from "./StoreProvider";
-import { useSafePromise } from "../utils/hooks/lifecycle";
-import { setAuthUUID, loginProcess } from "../apiMiddleware/flatServer";
-import { errorTips } from "./Tips/ErrorTips";
-import type { UserInfo } from "../stores/GlobalStore";
-import { FLAT_SERVER_LOGIN } from "../apiMiddleware/flatServer/constants";
-import { WECHAT } from "../constants/Process";
+import { UserInfo } from "../../stores/GlobalStore";
+import { loginProcess, setAuthUUID } from "../../apiMiddleware/flatServer";
+import { FLAT_SERVER_LOGIN } from "../../apiMiddleware/flatServer/constants";
+import { GlobalStoreContext } from "../../components/StoreProvider";
+import { errorTips } from "../../components/Tips/ErrorTips";
+import { WECHAT } from "../../constants/Process";
+import { RouteNameType } from "../../route-config";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { usePushHistory } from "../../utils/routes";
 
 export const WeChatLogin = observer(function WeChatLogin() {
     const globalStore = useContext(GlobalStoreContext);
