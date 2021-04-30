@@ -6,7 +6,6 @@ import { observer } from "mobx-react-lite";
 import { withRouter } from "react-router-dom";
 import { ipcAsyncByMainWindow, ipcSyncByApp } from "../../utils/ipc";
 import { LoginChannelType, LoginPanel } from "flat-components";
-import WeChatLogin from "../../components/WeChatLogin";
 import { LoginDisposer } from "./utils";
 import { githubLogin } from "./githubLogin";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
@@ -14,6 +13,7 @@ import { GlobalStoreContext } from "../../components/StoreProvider";
 import { AppUpgradeModal } from "../../components/AppUpgradeModal";
 import { runtime } from "../../utils/runtime";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { WeChatLogin } from "./WeChatLogin";
 
 export interface LoginPageProps {}
 
