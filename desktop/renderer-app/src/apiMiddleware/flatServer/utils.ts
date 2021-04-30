@@ -33,7 +33,7 @@ export async function post<Payload, Result>(
     };
 
     const { data: res } = await Axios.post<FlatServerResponse<Result>>(
-        `${FLAT_SERVER_VERSIONS.V1HTTPS}/${action}`,
+        `${FLAT_SERVER_VERSIONS.V1}/${action}`,
         payload,
         config,
     );
@@ -55,7 +55,7 @@ export async function postNotAuth<Payload, Result>(
     };
 
     const { data: res } = await Axios.post<FlatServerResponse<Result>>(
-        `${FLAT_SERVER_VERSIONS.V1HTTPS}/${action}`,
+        `${FLAT_SERVER_VERSIONS.V1}/${action}`,
         payload,
         config,
     );
@@ -76,7 +76,7 @@ export async function getNotAuth<Result>(
     };
 
     const { data: res } = await Axios.get<FlatServerResponse<Result>>(
-        `${FLAT_SERVER_VERSIONS.V1HTTPS}/${action}`,
+        `${FLAT_SERVER_VERSIONS.V1}/${action}`,
         config,
     );
 
