@@ -860,7 +860,7 @@ export class ClassRoomStore {
                     roomUUID: this.roomUUID,
                     userUUIDs: pickedSenders,
                     user: {
-                        name: globalStore.wechat?.name || "",
+                        name: globalStore.userInfo?.name || "",
                         isSpeak: this.users.currentUser.isSpeak,
                         mic: this.users.currentUser.mic,
                         camera: this.users.currentUser.camera,

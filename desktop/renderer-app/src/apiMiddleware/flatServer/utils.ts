@@ -23,7 +23,7 @@ export async function post<Payload, Result>(
         params,
     };
 
-    const Authorization = globalStore.wechat?.token;
+    const Authorization = globalStore.userInfo?.token;
     if (!Authorization) {
         throw new ServerRequestError(RequestErrorCode.NeedLoginAgain);
     }

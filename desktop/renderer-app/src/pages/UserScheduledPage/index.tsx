@@ -33,7 +33,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
     const [defaultValues] = useState<EditRoomFormValues>(() => {
         const scheduleBeginTime = getInitialBeginTime();
         return {
-            title: globalStore.wechat?.name ? `${globalStore.wechat.name}预定的房间` : "",
+            title: globalStore.userInfo?.name ? `${globalStore.userInfo.name}预定的房间` : "",
             type: RoomType.BigClass,
             isPeriodic: false,
             beginTime: new Date(scheduleBeginTime),

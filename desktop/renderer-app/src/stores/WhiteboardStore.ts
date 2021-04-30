@@ -107,11 +107,11 @@ export class WhiteboardStore {
             plugins: plugins,
             deviceType: deviceType,
             pptParams: {
-                useServerWrap: true
-            }
+                useServerWrap: true,
+            },
         });
 
-        const cursorName = globalStore.wechat?.name;
+        const cursorName = globalStore.userInfo?.name;
         const cursorAdapter = new CursorTool();
 
         const room = await whiteWebSdk.joinRoom(

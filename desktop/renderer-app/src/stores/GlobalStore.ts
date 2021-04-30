@@ -4,7 +4,7 @@ import { LoginProcessResult } from "../apiMiddleware/flatServer";
 // clear storage if not match
 const LS_VERSION = 1;
 
-export type WechatInfo = LoginProcessResult;
+export type UserInfo = LoginProcessResult;
 
 /**
  * Properties in Global Store are persisted and shared globally.
@@ -15,7 +15,7 @@ export class GlobalStore {
      * Hide it permanently if user close the tooltip.
      */
     isShowRecordHintTips = true;
-    wechat: WechatInfo | null = null;
+    userInfo: UserInfo | null = null;
     whiteboardRoomUUID: string | null = null;
     whiteboardRoomToken: string | null = null;
     rtcToken: string | null = null;
@@ -23,19 +23,19 @@ export class GlobalStore {
     rtmToken: string | null = null;
 
     get userUUID(): string | undefined {
-        return this.wechat?.userUUID;
+        return this.userInfo?.userUUID;
     }
 
     get userName(): string | undefined {
-        return this.wechat?.name;
+        return this.userInfo?.name;
     }
 
     constructor() {
         autoPersistStore({ storeLSName: "GlobalStore", store: this, version: LS_VERSION });
     }
 
-    updateWechat = (wechatInfo: WechatInfo): void => {
-        this.wechat = wechatInfo;
+    updateUserInfo = (userInfo: UserInfo): void => {
+        this.userInfo = userInfo;
     };
 
     updateToken = (
