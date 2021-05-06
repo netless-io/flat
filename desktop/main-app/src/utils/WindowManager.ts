@@ -75,6 +75,10 @@ export class WindowManager {
         return this.wins[name];
     }
 
+    public getMainWindow(): CustomSingleWindow | undefined {
+        return this.wins[constants.WindowsName.Main];
+    }
+
     public createMainWindow(): CustomSingleWindow {
         const win = this.createWindow(
             {
