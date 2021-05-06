@@ -8,4 +8,5 @@ export default () => {
     process.env.EVENT_NOKQUEUE = 1;
 
     app.disableHardwareAcceleration();
+    app.setAsDefaultProtocolClient("x-agora-flat-client");
 };
