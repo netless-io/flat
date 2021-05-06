@@ -83,8 +83,8 @@ export class WindowManager {
                 isOpenDevTools: runtime.isDevelopment,
             },
             {
-                width: 375,
-                height: 668,
+                width: 960,
+                height: 640,
             },
         );
 
