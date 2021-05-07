@@ -24,7 +24,7 @@
     -   [x] Participant hand raising
 -   Login via
     -   [x] Wechat
-    -   [ ] GitHub
+    -   [x] GitHub
     -   [ ] Google
 -   Classroom management
     -   [x] Join, create and schedule classrooms
