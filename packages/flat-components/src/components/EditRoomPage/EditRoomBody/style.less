@@ -1,0 +1,154 @@
+.edit-room-form {
+    &,
+    input,
+    .ant-select,
+    .ant-picker-input > input {
+        color: #444e60;
+    }
+
+    .ant-picker {
+        display: flex;
+    }
+
+    .edit-room-form-label,
+    .ant-form-item-label > label {
+        color: #7a7b7c;
+    }
+
+    .ant-picker,
+    .ant-select-selector,
+    .ant-input,
+    .ant-input-number,
+    .ant-input-number-input {
+        border-radius: 4px !important;
+    }
+}
+
+.edit-room-box {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    position: relative;
+}
+
+.edit-room-head {
+    line-height: 24px;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.edit-room-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #444e60;
+    line-height: 1;
+    margin: 0;
+}
+
+.edit-room-back {
+    span {
+        color: #3381ff;
+    }
+}
+
+.edit-room-nav {
+    width: 100%;
+    position: absolute;
+    background-color: white;
+    z-index: 1;
+    padding: 0 24px;
+
+    &::after {
+        content: "";
+        display: block;
+        height: 1px;
+        width: 100%;
+        background-color: #dbe1ea;
+    }
+
+    .ant-divider-vertical {
+        height: 23px;
+        border-color: #dbe1ea;
+        margin: 0 16px;
+    }
+}
+
+.edit-room-body {
+    overflow-y: auto;
+}
+
+.edit-room-mid {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.edit-room-cycle {
+    font-size: 12px;
+    font-weight: 400;
+    color: #7a7b7c;
+}
+
+.edit-room-under {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.edit-room-cancel {
+    width: 82px;
+    margin-right: 8px;
+}
+
+.edit-room-ok {
+    width: 82px;
+}
+
+.edit-room-tips {
+    background-color: #f3f6f9;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.edit-room-tips-title {
+    color: #3381ff;
+}
+
+.edit-room-tips-type {
+    color: #7a7b7c;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.edit-room-tips-inner {
+    color: #7a7b7c;
+}
+
+.edit-room-docs {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.edit-room-docs-list {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.edit-room-docs-left {
+    display: flex;
+    align-items: center;
+    span {
+        color: #7a7b7c;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+    }
+}

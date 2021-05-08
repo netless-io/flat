@@ -71,3 +71,5 @@ export enum RoomStatus {
     Paused = "Paused",
     Stopped = "Stopped",
 }
+
+export type PeriodicEndType = "rate" | "time"
