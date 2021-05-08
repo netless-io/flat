@@ -1,13 +1,10 @@
+import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useHistory } from "react-router-dom";
-import { message } from "antd";
+import { EditRoomFormInitialValues, EditRoomFormValues } from "flat-components";
 import { ordinaryRoomInfo, updateOrdinaryRoom } from "../../apiMiddleware/flatServer";
-import EditRoomPage, {
-    EditRoomFormInitialValues,
-    EditRoomFormValues,
-    EditRoomType,
-} from "../../components/EditRoomPage";
+import EditRoomPage from "../../components/EditRoomPage";
 import LoadingPage from "../../LoadingPage";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { errorTips } from "../../components/Tips/ErrorTips";
@@ -49,7 +46,7 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
 
     return (
         <EditRoomPage
-            type={EditRoomType.EditOrdinary}
+            type="ordinary"
             initialValues={initialValues}
             loading={isLoading}
             onSubmit={editOrdinaryRoom}

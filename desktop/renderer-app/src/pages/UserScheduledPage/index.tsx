@@ -2,13 +2,13 @@ import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { isBefore, addMinutes, roundToNearestMinutes, getDay, addWeeks } from "date-fns";
 import { RoomType } from "../../apiMiddleware/flatServer/constants";
-import { PeriodicEndType } from "../../constants/Periodic";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
-import EditRoomPage, { EditRoomFormValues, EditRoomType } from "../../components/EditRoomPage";
+import EditRoomPage from "../../components/EditRoomPage";
 import { useHistory } from "react-router-dom";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { EditRoomFormValues } from "flat-components";
 
 const getInitialBeginTime = (): Date => {
     const now = new Date();
@@ -39,7 +39,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
             beginTime: new Date(scheduleBeginTime),
             endTime: addMinutes(scheduleBeginTime, 30),
             periodic: {
-                endType: PeriodicEndType.Rate,
+                endType: "rate",
                 weeks: [getDay(scheduleBeginTime)],
                 rate: 7,
                 endTime: addWeeks(scheduleBeginTime, 6),
@@ -49,7 +49,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
 
     return (
         <EditRoomPage
-            type={EditRoomType.Schedule}
+            type="schedule"
             initialValues={defaultValues}
             loading={isLoading}
             onSubmit={createRoom}
@@ -72,7 +72,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
                     roomStore.createPeriodicRoom({
                         ...basePayload,
                         periodic:
-                            values.periodic.endType === PeriodicEndType.Rate
+                            values.periodic.endType === "rate"
                                 ? {
                                       weeks: values.periodic.weeks,
                                       rate: values.periodic.rate,
