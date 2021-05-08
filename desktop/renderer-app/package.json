@@ -12,7 +12,7 @@
     "@netless/player-controller": "^0.0.9",
     "@netless/preview-controller": "^0.0.9",
     "@netless/redo-undo": "^0.0.5",
-    "@netless/tool-box": "^0.1.3",
+    "@netless/tool-box": "^0.1.4",
     "@netless/white-audio-plugin": "^2.0.3",
     "@netless/white-video-plugin": "^2.0.3",
     "@netless/zoom-controller": "^0.1.1",
