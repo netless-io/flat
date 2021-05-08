@@ -58,7 +58,7 @@
 1. 因涉及到 Github Action 等配置，请先右上方 <kbd>Fork</kbd> 此项目，然后再 `git clone` fork 出来的项目克隆到本地。
 2. 在项目根目录执行：
     ```shell
-    yarn install --frozen-lockfile
+    yarn run bootstrap
     ```
 
 ### 开发模式

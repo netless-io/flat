@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "preinstall": "node ./scripts/preinstall",
+    "bootstrap": "yarn install --frozen-lockfile && node ./scripts/build-packages",
     "lint": "yarn workspaces run lint",
     "start": "node scripts/start.js",
     "start:mac": "osascript ./scripts/start.scpt",
