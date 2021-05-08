@@ -140,7 +140,11 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         if (file) {
             try {
                 if (this.compact) {
-                    this.insertCourseware(file);
+                    if (file.convert === "error") {
+                        Modal.info({ content: "转码失败，该课件无法转码" });
+                    } else {
+                        this.insertCourseware(file);
+                    }
                 } else {
                     this.previewCourseware(file);
                 }
