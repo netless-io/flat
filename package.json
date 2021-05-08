@@ -9,7 +9,8 @@
     "start:win": "scripts\\start.cmd",
     "ship": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship",
     "ship:mac": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship:mac",
-    "ship:win": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship:win"
+    "ship:win": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship:win",
+    "ship:all": "yarn --cwd ./desktop/renderer-app build && yarn --cwd ./desktop/main-app ship:win && yarn --cwd ./desktop/main-app pack:mac"
   },
   "workspaces": {
     "packages": [
