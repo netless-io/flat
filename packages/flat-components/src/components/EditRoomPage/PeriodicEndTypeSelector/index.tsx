@@ -10,7 +10,7 @@ export const PeriodicEndTypeSelector: FC<PeriodicEndTypeSelectorProps> = props =
     return (
         <Select {...props}>
             {["rate", "time"].map(type => {
-                const periodicEndTypeName = getPeriodicEndTypeName(type);
+                const periodicEndTypeName = getPeriodicEndTypeName(type as PeriodicEndType);
                 return (
                     <Select.Option key={type} value={type} label={periodicEndTypeName}>
                         {periodicEndTypeName}
