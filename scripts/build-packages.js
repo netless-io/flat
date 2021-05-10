@@ -20,8 +20,9 @@ for (const package of packages) {
         if (pkgJSON && pkgJSON.scripts && pkgJSON.scripts.build) {
             console.log(`\nbuilding "/packages/${package}"\n`);
 
-            if (shell.exec(`yarn --cwd "${pkgPath}" build`).code !== 0) {
-                shell.exit(1);
+            const buildExitCode = shell.exec(`yarn --cwd "${pkgPath}" build`).code;
+            if (buildExitCode !== 0) {
+                shell.exit(buildExitCode);
             }
         }
     }
