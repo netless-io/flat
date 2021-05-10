@@ -1,0 +1,38 @@
+name: Code Lint
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+      - ".yarnrc"
+      - "LICENSE"
+
+jobs:
+  build-and-lint:
+    runs-on: macos-10.15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: "15.10.0"
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          key: yarn-code-lint-v1-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            ./node_modules
+            ./packages/**/node_modules
+            ./desktop/**/node_modules
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Code Lint
+        run: yarn run lint
