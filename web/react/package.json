@@ -35,7 +35,7 @@
     "white-web-sdk": "^2.12.15"
   },
   "scripts": {
-    "postinstall": "esbuild-dev ./hack/index.ts",
+    "postinstall": "esbuild-dev ./scripts/white-web-sdk.ts",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",

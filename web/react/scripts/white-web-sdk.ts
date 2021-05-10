@@ -1,7 +1,7 @@
 /**
- * TODO: since white-web-sdk currently not exports vite compatible lib,
- *       we hack into its source code to create a umd one.
- *       wait for white-web-sdk to fix it so we could remove this hack.
+ * Create a umd module from white-web-sdk.
+ *
+ * @TODO: Remove this file when white-web-sdk supports umd.
  */
 
 /// <reference types="node" />
@@ -12,7 +12,18 @@ import https from "https";
 import zlib from "zlib";
 import { Readable } from "stream";
 
-const sdkPath = path.resolve(__dirname, "../node_modules/white-web-sdk");
+let sdkPath = "../node_modules/white-web-sdk";
+let tryCount = 5;
+while (!fs.existsSync(path.resolve(__dirname, sdkPath)) && tryCount > 0) {
+    sdkPath = "../" + sdkPath;
+    tryCount--;
+}
+sdkPath = path.resolve(__dirname, sdkPath);
+if (!fs.existsSync(sdkPath)) {
+    console.log("hack: not found white-web-sdk");
+    process.exit();
+}
+
 const pkgJSON = path.resolve(sdkPath, "package.json");
 
 function hackAndReplaceMainScript(script: string, main: string): void {

@@ -14426,7 +14426,7 @@ rc-pagination@~3.1.6:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.1"
 
-rc-picker@~2.5.10:
+rc-picker@^2.5.10, rc-picker@~2.5.10:
   version "2.5.10"
   resolved "https://registry.npmjs.org/rc-picker/-/rc-picker-2.5.10.tgz#0db17c535a37abbe5d016bdcdfb13d6626f802d0"
   integrity sha512-d2or2jql9SSY8CaRPybpbKkXBq3bZ6g88UKyWQZBLTCrc92Xm87RfRC/P3UEQo/CLmia3jVF7IXVi1HmNe2DZA==
