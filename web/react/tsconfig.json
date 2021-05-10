@@ -1,14 +1,14 @@
 {
   "include": ["src"],
   "compilerOptions": {
-    "jsx": "react",
     "noEmit": true,
+    "jsx": "react",
     "lib": ["DOM", "ESNext"],
     "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "Node",
+    "strict": true,
     "esModuleInterop": true,
-    "strictNullChecks": true,
     "resolveJsonModule": true,
     "skipLibCheck": true
   }
