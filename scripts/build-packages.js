@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const shell = require("shelljs");
 
+// Set commands context to project root
 shell.cd(path.join(__dirname, ".."));
 
 const packages = fs
