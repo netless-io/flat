@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "preinstall": "node ./scripts/preinstall",
+    "bootstrap": "yarn install --frozen-lockfile && node ./scripts/build-packages",
     "lint": "yarn workspaces run lint",
     "start": "node scripts/start.js",
     "start:mac": "osascript ./scripts/start.scpt",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-angular": "^11.0.0",
-    "husky": "^5.0.9"
+    "husky": "^5.0.9",
+    "shelljs": "^0.8.4"
   }
 }

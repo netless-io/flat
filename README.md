@@ -60,7 +60,7 @@ Note that full-built Flat requires [Agora Flat Server][flat-server] backend.
 2. Then `git clone` the forked repo to local.
 3. At project root：
     ```shell
-    yarn install --frozen-lockfile
+    yarn run bootstrap
     ```
 
 ### Development Mode

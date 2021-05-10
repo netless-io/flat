@@ -9,7 +9,6 @@
   "scripts": {
     "start": "tsc",
     "build": "tsc",
-    "postinstall": "yarn run build",
     "lint": "lint-staged"
   },
   "devDependencies": {
