@@ -15,6 +15,7 @@ for (const package of packages) {
     if (fs.existsSync(pkgJSONPath)) {
         const pkgJSON = require(pkgJSONPath);
 
+        // some packages may not have build command
         if (pkgJSON && pkgJSON.scripts && pkgJSON.scripts.build) {
             console.log(`\nbuilding "/packages/${package}"\n`);
 
