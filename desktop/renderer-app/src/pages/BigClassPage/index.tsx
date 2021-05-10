@@ -2,7 +2,7 @@ import { message } from "antd";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";

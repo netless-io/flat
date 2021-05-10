@@ -1,5 +1,5 @@
 import React from "react";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router-dom";
 import PageError from "../PageError";
 import { ipcAsyncByMainWindow } from "../utils/ipc";
 

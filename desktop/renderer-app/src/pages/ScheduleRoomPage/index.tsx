@@ -6,7 +6,7 @@ import { format, formatWithOptions } from "date-fns/fp";
 import { zhCN } from "date-fns/locale";
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router";
+import { useHistory, useParams } from "react-router-dom";
 import { useLastLocation } from "react-router-last-location";
 import backSVG from "../../assets/image/back.svg";
 import moreBtnSVG from "../../assets/image/moreBtn.svg";

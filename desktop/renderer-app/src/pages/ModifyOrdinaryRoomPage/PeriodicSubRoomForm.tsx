@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { message } from "antd";
 import { periodicSubRoomInfo, updatePeriodicSubRoom } from "../../apiMiddleware/flatServer";
 import {

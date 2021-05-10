@@ -1,7 +1,7 @@
 import "./OneToOnePage.less";
 
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import { RoomPhase, ViewMode } from "white-web-sdk";

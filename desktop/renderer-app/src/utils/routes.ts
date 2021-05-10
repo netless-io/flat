@@ -1,5 +1,5 @@
 import { routeConfig, RouteConfig, RouteNameType, ExtraRouteConfig } from "../route-config";
-import { generatePath, useHistory } from "react-router";
+import { generatePath, useHistory } from "react-router-dom";
 import { useCallback } from "react";
 
 export { RouteNameType } from "../route-config";
