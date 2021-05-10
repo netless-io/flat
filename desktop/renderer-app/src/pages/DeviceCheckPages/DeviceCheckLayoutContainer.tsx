@@ -9,7 +9,7 @@ import React from "react";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { routeConfig, RouteNameType } from "../../route-config";
-import { useHistory, useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router-dom";
 import { DeviceCheckState } from "./utils";
 import { MainPageLayoutItem } from "flat-components";
 

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { message } from "antd";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 import { observer } from "mobx-react-lite";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 
 import InviteButton from "../../components/InviteButton";
 import { TopBar, TopBarDivider } from "../../components/TopBar";

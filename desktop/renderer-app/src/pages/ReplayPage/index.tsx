@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RouteComponentProps, useParams } from "react-router";
+import { RouteComponentProps, useParams, useHistory } from "react-router-dom";
 import PlayerController from "@netless/player-controller";
 import LoadingPage from "../../LoadingPage";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
@@ -16,7 +16,6 @@ import videoPlaySVG from "../../assets/image/video-play.svg";
 import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
-import { useHistory } from "react-router-dom";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 

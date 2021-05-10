@@ -6,7 +6,7 @@ import { PeriodicEndType } from "../../constants/Periodic";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import EditRoomPage, { EditRoomFormValues, EditRoomType } from "../../components/EditRoomPage";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 

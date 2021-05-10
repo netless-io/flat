@@ -1,6 +1,5 @@
 import React from "react";
-import { HashRouter } from "react-router-dom";
-import { Route, Switch } from "react-router";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import { message } from "antd";
 import { LastLocationProvider } from "react-router-last-location";
 import { RouteConfig, routeConfig } from "../route-config";
