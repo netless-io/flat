@@ -29,6 +29,7 @@ jobs:
           path: |
             ./node_modules
             ./packages/**/node_modules
+            ./desktop/**/node_modules
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
