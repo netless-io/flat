@@ -109,6 +109,7 @@
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "lint": "lint-staged"
+    "lint": "lint-staged",
+    "check": "eslint \"src/**/*.*(ts|tsx)\" && prettier --check --loglevel=warn \"src/**/*.*(ts|tsx)\""
   }
 }

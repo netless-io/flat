@@ -1,4 +1,4 @@
-name: Code Lint
+name: Code Check
 on:
   pull_request:
     branches:
@@ -34,5 +34,5 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Code Lint
-        run: yarn run lint
+      - name: Code Check
+        run: yarn run check
