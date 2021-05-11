@@ -58,7 +58,7 @@
     "classnames": "^2.2.6",
     "cross-env": "^7.0.2",
     "date-fns": "^2.19.0",
-    "eslint": "^7.7.0",
+    "eslint": "^7.26.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-react-app": "^6.0.0",
     "eslint-loader": "^4.0.2",
