@@ -2,7 +2,7 @@ import { FormInstance } from "antd";
 import { addDays, endOfDay, format, getDay, isBefore, startOfWeek } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { EditRoomFormValues } from "../components/EditRoomPage";
-import { PeriodicEndType, RoomType, Week } from "../types/room";
+import { PeriodicEndType, RoomStatus, RoomType, Week } from "../types/room";
 
 export function getWeekNames(weeks: Week[]): string {
     return weeks.map(getWeekName).join("、");
@@ -200,3 +200,13 @@ export function roomTypeLocale(roomType?: RoomType): string {
         }
     }
 }
+
+export const getRoomStatusName = (status: RoomStatus): string => {
+    const statusNameMap: Record<RoomStatus, string> = {
+        [RoomStatus.Idle]: "待开始",
+        [RoomStatus.Started]: "进行中",
+        [RoomStatus.Paused]: "已暂停",
+        [RoomStatus.Stopped]: "已结束",
+    };
+    return statusNameMap[status];
+};
