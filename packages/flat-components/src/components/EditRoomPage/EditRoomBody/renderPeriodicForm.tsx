@@ -8,7 +8,7 @@ import {
     formatISODayWeekiii,
     getRoomTypeName,
     getWeekNames,
-    syncPeriodicEndAmount
+    syncPeriodicEndAmount,
 } from "../../../utils/room";
 import { DatePicker } from "../FullTimePicker";
 import { PeriodicEndTypeSelector } from "../PeriodicEndTypeSelector";

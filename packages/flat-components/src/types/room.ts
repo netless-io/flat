@@ -72,4 +72,4 @@ export enum RoomStatus {
     Stopped = "Stopped",
 }
 
-export type PeriodicEndType = "rate" | "time"
+export type PeriodicEndType = "rate" | "time";
