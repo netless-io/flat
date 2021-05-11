@@ -193,7 +193,6 @@ $RECYCLE.BIN/
 
 # IDE
 .idea/
-.vscode/
 
 .npmrc
 
