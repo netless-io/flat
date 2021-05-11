@@ -177,3 +177,26 @@ export const getPeriodicEndTypeName = (type: PeriodicEndType): string => {
 
     return endTypeNameMap[type];
 };
+
+export function formatTime(time?: number): { date: string; time: string } | null {
+    return time
+        ? {
+              date: format(time, "yyyy/MM/dd", { locale: zhCN }),
+              time: format(time, "HH:mm"),
+          }
+        : null;
+}
+
+export function roomTypeLocale(roomType?: RoomType): string {
+    switch (roomType) {
+        case RoomType.OneToOne: {
+            return "一对一";
+        }
+        case RoomType.SmallClass: {
+            return "小班课";
+        }
+        default: {
+            return "大班课";
+        }
+    }
+}

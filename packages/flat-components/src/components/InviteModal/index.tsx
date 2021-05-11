@@ -12,8 +12,9 @@ const onlySuffixTimeFormat = format("HH:mm");
 export interface InviteModalProps {
     visible: boolean;
     room: RoomInfo;
-    weeks?: Week[];
     userName: string;
+    // repeated weeks for periodic rooms
+    periodicWeeks?: Week[];
     onCopy: (text: string) => void;
     onCancel: () => void;
 }
@@ -21,7 +22,7 @@ export interface InviteModalProps {
 export const InviteModal: React.FC<InviteModalProps> = ({
     visible,
     room,
-    weeks,
+    periodicWeeks,
     userName,
     onCopy,
     onCancel,
@@ -53,7 +54,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
             `打开（没有安装的话请先下载并安装）并登录 Flat，点击加入房间，输入房间号即可加入和预约`;
 
         if (periodicUUID) {
-            const content = weeks ? `重复周期：${getWeekNames(weeks || [])}` : "";
+            const content = periodicWeeks ? `重复周期：${getWeekNames(periodicWeeks || [])}` : "";
 
             onCopy(`${basePrefixText}${content}${baseSuffixText}`);
         } else {
