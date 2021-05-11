@@ -176,15 +176,17 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 return;
             }
         } else if (convertingStatus.status === "Finished" && convertingStatus.progress) {
-            const scenes: SceneDefinition[] = convertingStatus.progress.convertedFileList.map(f => ({
-                name: v4uuid(),
-                ppt: {
-                    width: f.width,
-                    height: f.height,
-                    src: f.conversionFileUrl,
-                    previewURL: f.preview,
-                },
-            }));
+            const scenes: SceneDefinition[] = convertingStatus.progress.convertedFileList.map(
+                f => ({
+                    name: v4uuid(),
+                    ppt: {
+                        width: f.width,
+                        height: f.height,
+                        src: f.conversionFileUrl,
+                        previewURL: f.preview,
+                    },
+                }),
+            );
             const uuid = v4uuid();
             room.putScenes(`/${taskUUID}/${uuid}`, scenes);
             room.setScenePath(`/${taskUUID}/${uuid}/${scenes[0].name}`);

@@ -3,7 +3,14 @@ import { FormInstance, RuleObject } from "antd/lib/form";
 import { addMinutes, isAfter, isBefore, setHours, startOfDay } from "date-fns";
 import React from "react";
 import { EditRoomFormValues } from ".";
-import { compareDay, compareHour, compareMinute, excludeRange, getRoughNow, syncPeriodicEndAmount } from "../../../utils/room";
+import {
+    compareDay,
+    compareHour,
+    compareMinute,
+    excludeRange,
+    getRoughNow,
+    syncPeriodicEndAmount,
+} from "../../../utils/room";
 import { FullTimePicker } from "../FullTimePicker";
 import { MIN_CLASS_DURATION } from "./constants";
 
