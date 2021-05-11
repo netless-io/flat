@@ -39,7 +39,8 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "lint": "pretty-quick --staged"
+    "lint": "pretty-quick --staged",
+    "check": "eslint \"src/**/*.*(ts|tsx)\" && prettier --check --loglevel=warn \"src/**/*.*(ts|tsx)\""
   },
   "resolutions": {
     "@vitejs/plugin-legacy/**/@babel/standalone": "7.13.9"

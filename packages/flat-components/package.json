@@ -18,6 +18,7 @@
   ],
   "scripts": {
     "lint": "lint-staged",
+    "check": "eslint \"src/**/*.*(ts|tsx)\" && prettier --check --loglevel=warn \"src/**/*.*(ts|tsx)\"",
     "storybook": "start-storybook -p 6006",
     "build": "yarn run cleanup && rollup -c",
     "build-storybook": "build-storybook && node scripts/move-storybook.js",
