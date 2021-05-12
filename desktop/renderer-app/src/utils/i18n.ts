@@ -1,8 +1,8 @@
 import i18next, { Resource } from "i18next";
 import I18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
-import en from "../locales/en.json";
-import zhCN from "../locales/zh-CN.json";
+import en from "flat-i18n/locales/en.json";
+import zhCN from "flat-i18n/locales/zh-CN.json";
 
 const messages: Resource = {
     en: { translation: en },
@@ -16,7 +16,7 @@ i18next
         resources: messages,
         fallbackLng: "en",
         interpolation: {
-            escapeValue: false,
+            escapeValue: false, // react already safes from xss
         },
     });
 
