@@ -9,8 +9,7 @@
   "scripts": {
     "start": "tsc",
     "build": "tsc",
-    "lint": "lint-staged",
-    "check": "tsc --noEmit && prettier --check --loglevel=warn \"src/**/*.*(ts|tsx)\""
+    "lint": "lint-staged"
   },
   "devDependencies": {
     "lint-staged": "^10.5.4",
