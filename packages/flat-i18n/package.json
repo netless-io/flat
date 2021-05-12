@@ -1,0 +1,8 @@
+{
+  "name": "flat-i18n",
+  "description": "Locales for the Flat app.",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "homepage": "https://github.com/netless-io/flat"
+}

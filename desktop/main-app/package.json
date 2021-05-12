@@ -27,8 +27,7 @@
     "download:agoraAddon:win": "node ./scripts/Download-agora-addon.js --arch=x86 --platform=win32 && yarn move:agoraAddon",
     "move:agoraAddon": "node scripts/mv-agora-addon.js",
     "postinstall": "yarn run download:agoraAddon",
-    "lint": "lint-staged",
-    "check": "eslint \"src/**/*.*(ts|tsx)\" && prettier --check --loglevel=warn \"src/**/*.*(ts|tsx)\""
+    "lint": "lint-staged"
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",

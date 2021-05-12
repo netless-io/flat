@@ -10,29 +10,72 @@ on:
       - "LICENSE"
 
 jobs:
-  build-and-lint:
+  check:
     runs-on: macos-10.15
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            components: &components
+              - 'packages/flat-components/**/*.(ts|tsx|css|less)'
+              # e.g: package.json / tsconfig.json rollup.config.js eslintrc.js
+              - 'packages/flat-components/*.(js|json)'
+              - 'packages/flat-components/.eslintignore'
+            types: &types
+              - 'packages/flat-types/*.json'
+              - 'packages/flat-types/**/*.ts'
+            renderer:
+              - *components
+              - *types
+              - 'desktop/renderer-app/*.(js|json)'
+              - 'desktop/renderer-app/.eslintignore'
+              - 'desktop/renderer-app/webpack/**'
+              - 'desktop/renderer-app/typings/**'
+              - 'desktop/renderer-app/**/*.(ts|tsx|css|less)'
+            main:
+              - *types
+              - 'desktop/main-app/*.(js|json)'
+              - 'desktop/main-app/.eslintignore'
+              - 'desktop/main-app/webpack/**'
+              - 'desktop/main-app/typings/**'
+              - 'desktop/main-app/**/*.ts'
+            web-react:
+              - 'web/react/**/*.(ts|tsx)'
       - name: Install NodeJS
         uses: actions/setup-node@v2
         with:
           node-version: "15.10.0"
+        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.web-react == 'true'
 
       - uses: actions/cache@v2
         id: yarn-cache
         with:
-          key: yarn-code-lint-v1-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: yarn-code-check-v1-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           path: |
             ./node_modules
             ./packages/**/node_modules
             ./desktop/**/node_modules
+            ./packages/**/node_modules
+        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.web-react == 'true'
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      - name: Install dependencies and build packages
+        # failure automatically retries 3 times
+        run: yarn run bootstrap || yarn run bootstrap || yarn run bootstrap
+        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.web-react == 'true'
 
-      - name: Code Check
-        run: yarn run check
+      - name: Build renderer
+        run: yarn workspace renderer-app build
+        if: steps.filter.outputs.renderer == 'true'
+
+      - name: Build main
+        run: yarn workspace flat build:main
+        if: steps.filter.outputs.main == 'true'
+
+      - name: Build web-react
+        run: yarn workspace flat-web-react build
+        if: steps.filter.outputs.web-react == 'true'
