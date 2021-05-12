@@ -26,7 +26,7 @@
     "fs-extra": "^9.0.1",
     "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "^6.0.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "memoize-one": "^5.1.1",
     "mobx": "^6.1.0",
     "mobx-react": "^7.1.0",
