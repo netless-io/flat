@@ -9,7 +9,8 @@ export interface StopClassConfirmModalProps {
 }
 
 /**
- * Teacher side, [cancel] [stop]
+ * When room creator presses the the Stop Class button.
+ * [cancel] [stop]
  */
 export const StopClassConfirmModal: FC<StopClassConfirmModalProps> = ({
     visible,
@@ -42,7 +43,8 @@ export interface CloseRoomConfirmModalProps {
 }
 
 /**
- * Teacher side, [cancel] [hang] [stop]
+ * When room creator presses the exit button.
+ * [cancel] [hang] [stop]
  */
 export const CloseRoomConfirmModal: FC<CloseRoomConfirmModalProps> = ({
     visible,
@@ -82,7 +84,8 @@ export interface ExitRoomConfirmModalProps {
 }
 
 /**
- * Student side, [cancel] [ok]
+ * When joiner presses exit room button.
+ * [cancel] [ok]
  */
 export const ExitRoomConfirmModal: FC<ExitRoomConfirmModalProps> = ({
     visible,
