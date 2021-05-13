@@ -32,7 +32,6 @@ export const RecordButton: FC<RecordButtonProps> = ({
     onClick,
 }) => {
     const countTimeout = useRef(NaN);
-    const prevIsRecording = useRef(isRecording);
     const startTime = useRef(0);
     const [count, setCount] = useState("");
 
@@ -58,17 +57,13 @@ export const RecordButton: FC<RecordButtonProps> = ({
 
     useEffect(() => {
         if (isRecording) {
-            if (!prevIsRecording.current) {
-                startTime.current = Date.now();
-                stopCount();
-                countUp();
-            }
+            startTime.current = Date.now();
+            stopCount();
+            countUp();
         } else {
             stopCount();
             setCount("");
         }
-
-        prevIsRecording.current = isRecording;
 
         return stopCount;
         // eslint-disable-next-line react-hooks/exhaustive-deps
