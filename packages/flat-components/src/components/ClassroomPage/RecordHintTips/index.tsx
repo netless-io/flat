@@ -1,11 +1,15 @@
 import "./style.less";
 
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Tooltip } from "antd";
 
-export const RecordHintTips: FC = ({ children }) => {
-    const [visible, setVisible] = useState(true);
+export interface RecordHintTipsProps {
+    visible: boolean;
+    onClose: () => void;
+}
+
+export const RecordHintTips: FC<RecordHintTipsProps> = ({ visible, onClose, children }) => {
     return (
         <Tooltip
             overlayClassName="record-hint-tips"
@@ -20,7 +24,7 @@ export const RecordHintTips: FC = ({ children }) => {
                         size="small"
                         type="text"
                         icon={<CloseOutlined />}
-                        onClick={() => setVisible(false)}
+                        onClick={onClose}
                     />
                 </div>
             }

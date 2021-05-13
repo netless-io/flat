@@ -1,14 +1,14 @@
 import "./style.less";
+import recordSVG from "./icons/record.svg";
+import recordActiveSVG from "./icons/record-active.svg";
+import recordDisabledSVG from "./icons/record-disabled.svg";
 
-import React, { ReactElement } from "react";
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { TopBarRightBtn } from "../TopBar/TopBarRightBtn";
 
 export interface RecordButtonProps {
     disabled: boolean;
     isRecording: boolean;
-    icon?: ReactElement;
-    iconActive?: ReactElement;
     onClick: () => void;
 }
 
@@ -24,13 +24,7 @@ function renderTime(seconds: number): string {
     );
 }
 
-export const RecordButton: FC<RecordButtonProps> = ({
-    disabled,
-    isRecording,
-    icon,
-    iconActive,
-    onClick,
-}) => {
+export const RecordButton: FC<RecordButtonProps> = ({ disabled, isRecording, onClick }) => {
     const countTimeout = useRef(NaN);
     const startTime = useRef(0);
     const [count, setCount] = useState("");
@@ -69,11 +63,13 @@ export const RecordButton: FC<RecordButtonProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isRecording]);
 
+    const iconSVG = disabled ? recordDisabledSVG : isRecording ? recordActiveSVG : recordSVG;
+
     return (
         <div className="record-button">
             <TopBarRightBtn
                 title="Record"
-                icon={isRecording ? icon : iconActive}
+                icon={<img src={iconSVG} />}
                 onClick={onClick}
                 disabled={disabled}
             />

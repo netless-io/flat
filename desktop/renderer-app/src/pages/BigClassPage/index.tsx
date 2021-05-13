@@ -1,7 +1,15 @@
 import { message } from "antd";
 import classNames from "classnames";
+import {
+    NetworkStatus,
+    RoomInfo,
+    RecordHintTips,
+    RecordButton,
+    TopBar,
+    TopBarDivider,
+} from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
@@ -12,13 +20,9 @@ import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusSto
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 import InviteButton from "../../components/InviteButton";
-import { NetworkStatus } from "../../components/NetworkStatus";
 import { RealtimePanel } from "../../components/RealtimePanel";
-import { RecordButton } from "../../components/RecordButton";
-import { RecordHintTips } from "../../components/RecordHintTips";
-import { RoomInfo } from "../../components/RoomInfo";
-import { TopBar, TopBarDivider } from "../../components/TopBar";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
+import { GlobalStoreContext } from "../../components/StoreProvider";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import { Whiteboard } from "../../components/Whiteboard";
 import LoadingPage from "../../LoadingPage";
@@ -34,6 +38,7 @@ import { useAutoRun, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { BigClassAvatar } from "./BigClassAvatar";
 import "./BigClassPage.less";
+import { runtime } from "../../utils/runtime";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -81,6 +86,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = classRoomStore.whiteboardStore;
+    const globalStore = useContext(GlobalStoreContext);
 
     const [speakingJoiner, setSpeakingJoiner] = useState<User | undefined>(() =>
         classRoomStore.users.speakingJoiners.length > 0
@@ -162,6 +168,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     return (
         <div className="realtime-box">
             <TopBar
+                isMac={runtime.isMac}
                 left={renderTopBarLeft()}
                 center={renderTopBarCenter()}
                 right={renderTopBarRight()}
@@ -235,7 +242,10 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             }
             default: {
                 return (
-                    <RecordHintTips>
+                    <RecordHintTips
+                        visible={globalStore.isShowRecordHintTips}
+                        onClose={globalStore.hideRecordHintTips}
+                    >
                         <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
                                 ? "开始中..."
@@ -279,7 +289,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 {/* <TopBarRightBtn title="Options" icon="options" onClick={() => {}} /> */}
                 <TopBarRightBtn
                     title="Exit"
-                    icon="exit"
+                    icon="follow"
                     onClick={() => {
                         // @TODO remove ref
                         exitRoomConfirmRef.current(ExitRoomConfirmType.ExitButton);

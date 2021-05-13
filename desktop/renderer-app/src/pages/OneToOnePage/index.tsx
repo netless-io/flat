@@ -1,25 +1,28 @@
 import "./OneToOnePage.less";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import { RoomPhase, ViewMode } from "white-web-sdk";
+import {
+    NetworkStatus,
+    RoomInfo,
+    RecordHintTips,
+    RecordButton,
+    TopBar,
+    TopBarDivider,
+} from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
-import { TopBar, TopBarDivider } from "../../components/TopBar";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { OneToOneAvatar } from "./OneToOneAvatar";
-import { NetworkStatus } from "../../components/NetworkStatus";
-import { RecordButton } from "../../components/RecordButton";
-import { RoomInfo } from "../../components/RoomInfo";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import { RecordHintTips } from "../../components/RecordHintTips";
 import LoadingPage from "../../LoadingPage";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import {
@@ -34,6 +37,8 @@ import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
+import { GlobalStoreContext } from "../../components/StoreProvider";
+import { runtime } from "../../utils/runtime";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -63,6 +68,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = classRoomStore.whiteboardStore;
+    const globalStore = useContext(GlobalStoreContext);
 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
@@ -118,6 +124,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     return (
         <div className="one-to-one-realtime-box">
             <TopBar
+                isMac={runtime.isMac}
                 left={renderTopBarLeft()}
                 center={renderTopBarCenter()}
                 right={renderTopBarRight()}
@@ -191,7 +198,10 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             }
             default: {
                 return (
-                    <RecordHintTips>
+                    <RecordHintTips
+                        visible={globalStore.isShowRecordHintTips}
+                        onClose={globalStore.hideRecordHintTips}
+                    >
                         <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
                                 ? "开始中..."

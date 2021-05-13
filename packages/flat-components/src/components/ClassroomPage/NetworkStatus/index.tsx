@@ -4,7 +4,8 @@ import signal1SVG from "./icons/signal-1.svg";
 import signal2SVG from "./icons/signal-2.svg";
 import signal3SVG from "./icons/signal-3.svg";
 
-import React, { FC, useMemo } from "react";
+import React, { useMemo } from "react";
+import { observer } from "mobx-react-lite";
 
 interface NetworkQuality {
     delay: number;
@@ -49,7 +50,9 @@ export interface NetworkStatusProps {
     networkQuality: NetworkQuality;
 }
 
-export const NetworkStatus: FC<NetworkStatusProps> = ({ networkQuality }) => {
+export const NetworkStatus = observer<NetworkStatusProps>(function NetworkStatus({
+    networkQuality,
+}) {
     const signalIcon = useMemo(() => getSignalIcon(networkQuality), [networkQuality]);
     const signalText = useMemo(() => getSignalText(networkQuality), [networkQuality]);
     return (
@@ -63,4 +66,4 @@ export const NetworkStatus: FC<NetworkStatusProps> = ({ networkQuality }) => {
             </span>
         </div>
     );
-};
+});

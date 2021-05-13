@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { ReactElement, FC } from "react";
+import React, { FC, ReactNode } from "react";
 import classNames from "classnames";
 
 export * from "./TopBarRightBtn";
@@ -11,9 +11,9 @@ export const TopBarDivider: FC = () => {
 };
 
 export interface TopBarProps {
-    left: ReactElement;
-    center: ReactElement;
-    right: ReactElement;
+    left: ReactNode;
+    center: ReactNode;
+    right: ReactNode;
     isMac?: boolean;
 }
 
