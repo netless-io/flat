@@ -1,5 +1,5 @@
-import React from "react";
-import classNames from "classnames";
+import { TopBarRightBtn as TopBarRightBtnImpl } from "flat-components";
+import React, { ReactElement } from "react";
 
 export interface TopBarRightBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     title: string;
@@ -7,17 +7,19 @@ export interface TopBarRightBtnProps extends React.ButtonHTMLAttributes<HTMLButt
     active?: boolean;
 }
 
-export class TopBarRightBtn extends React.PureComponent<TopBarRightBtnProps> {
-    render(): React.ReactNode {
-        const { title, icon, active, disabled, className, ...restProps } = this.props;
-
-        return (
-            <button
-                {...restProps}
-                title={title}
-                disabled={disabled}
-                className={classNames("topbar-content-right-cell", className)}
-            >
+export function TopBarRightBtn({
+    title,
+    icon,
+    active,
+    disabled,
+    ...restProps
+}: TopBarRightBtnProps): ReactElement {
+    return (
+        <TopBarRightBtnImpl
+            {...restProps}
+            title={title}
+            disabled={disabled}
+            icon={
                 <img
                     src={
                         require(`../assets/image/${icon}${
@@ -26,7 +28,7 @@ export class TopBarRightBtn extends React.PureComponent<TopBarRightBtnProps> {
                     }
                     alt={title}
                 />
-            </button>
-        );
-    }
+            }
+        />
+    );
 }

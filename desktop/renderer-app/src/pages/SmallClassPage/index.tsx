@@ -1,23 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { message } from "antd";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
+import {
+    NetworkStatus,
+    RoomInfo,
+    RecordHintTips,
+    RecordButton,
+    TopBar,
+    TopBarDivider,
+} from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
-import { TopBar, TopBarDivider } from "../../components/TopBar";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { SmallClassAvatar } from "./SmallClassAvatar";
-import { NetworkStatus } from "../../components/NetworkStatus";
-import { RecordButton } from "../../components/RecordButton";
-import { RoomInfo } from "../../components/RoomInfo";
 import { Whiteboard } from "../../components/Whiteboard";
 import ExitRoomConfirm, { ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import { RecordHintTips } from "../../components/RecordHintTips";
 import LoadingPage from "../../LoadingPage";
 
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
@@ -39,6 +42,8 @@ import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 import "./SmallClassPage.less";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
+import { GlobalStoreContext } from "../../components/StoreProvider";
+import { runtime } from "../../utils/runtime";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -89,6 +94,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         ClassModeType.Interaction,
     );
     const whiteboardStore = classRoomStore.whiteboardStore;
+    const globalStore = useContext(GlobalStoreContext);
 
     const { room, phase } = whiteboardStore;
 
@@ -140,6 +146,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     return (
         <div className="realtime-box">
             <TopBar
+                isMac={runtime.isMac}
                 left={renderTopBarLeft()}
                 center={renderTopBarCenter()}
                 right={renderTopBarRight()}
@@ -258,7 +265,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             }
             default: {
                 return (
-                    <RecordHintTips>
+                    <RecordHintTips
+                        visible={globalStore.isShowRecordHintTips}
+                        onClose={globalStore.hideRecordHintTips}
+                    >
                         <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
                                 ? "开始中..."
