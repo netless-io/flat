@@ -1,0 +1,29 @@
+@topbar-icon-width: 22px;
+@topbar-right-btn-width: 32px;
+@topbar-right-btn-gap: 16px;
+
+.topbar-right-btn {
+    display: block;
+    width: @topbar-right-btn-width;
+    height: @topbar-right-btn-width;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0
+        (
+            (
+                    @topbar-right-btn-gap -
+                        (@topbar-right-btn-width - @topbar-icon-width)
+                ) / 2
+        );
+    padding: 0;
+    cursor: pointer;
+    background-color: white;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+
+    &:hover {
+        background: rgba(33, 35, 36, 0.1);
+    }
+}
