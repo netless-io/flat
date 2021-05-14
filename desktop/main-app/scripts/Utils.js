@@ -18,7 +18,7 @@ dotenvFlow.config({
  * @param {"win" | "mac"} buildType - build platform
  */
 const buildElectron = async buildType => {
-    const config = yaml.safeLoad(
+    const config = yaml.load(
         fs.readFileSync(path.join(mainAppPath, "electron-builder.yml"), {
             encoding: "utf8",
         }),
