@@ -1,12 +1,10 @@
 const { merge } = require("webpack-merge");
 const common = require("./webpack.common.js");
-const { NamedModulesPlugin, NoEmitOnErrorsPlugin } = require("webpack");
+const { NoEmitOnErrorsPlugin } = require("webpack");
 const ElectronWebpackPlugin = require("./plugin/electron-webpack-plugin");
 
 module.exports = merge(common, {
     mode: "development",
-
-    devtool: "eval-cheap-module-source-map",
 
     watch: true,
     watchOptions: {
@@ -14,9 +12,5 @@ module.exports = merge(common, {
         ignored: ["node_modules/**"],
     },
 
-    plugins: [
-        new NamedModulesPlugin(),
-        new NoEmitOnErrorsPlugin(),
-        new ElectronWebpackPlugin("yarn run launch:electron"),
-    ],
+    plugins: [new NoEmitOnErrorsPlugin(), new ElectronWebpackPlugin("yarn run launch:electron")],
 });

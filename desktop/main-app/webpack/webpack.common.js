@@ -1,23 +1,10 @@
 const paths = require("./paths");
-const threadLoader = require("thread-loader");
 const DotenvFlow = require("dotenv-flow-webpack");
+const ESLintPlugin = require("eslint-webpack-plugin");
+const nodeExternals = require("webpack-node-externals");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV === "development";
-
-const workerCommonOptions = {
-    workerParallelJobs: 50,
-    poolParallelJobs: 50,
-    poolTimeout: isDevelopment ? Infinity : 1000,
-    workerNodeArgs: ["--max-old-space-size=2048"],
-};
-
-const tsWorkerOptions = {
-    ...workerCommonOptions,
-    name: "ts-pool",
-};
-
-threadLoader.warmup(tsWorkerOptions, ["eslint-loader", "babel-loader"]);
 
 module.exports = {
     entry: {
@@ -25,6 +12,8 @@ module.exports = {
         preload: paths.preloadPath,
     },
     target: "electron-main",
+
+    devtool: "source-map",
 
     stats: {
         colors: true,
@@ -41,17 +30,10 @@ module.exports = {
                 test: /\.ts?$/,
                 use: [
                     {
-                        loader: "babel-loader",
-                    },
-                    {
-                        loader: "eslint-loader",
+                        loader: "ts-loader",
                         options: {
-                            fix: true,
+                            transpileOnly: true,
                         },
-                    },
-                    {
-                        loader: "thread-loader",
-                        options: tsWorkerOptions,
                     },
                 ],
                 exclude: /node_modules/,
@@ -65,6 +47,10 @@ module.exports = {
             system_vars: true,
             default_node_env: "development",
         }),
+        new ESLintPlugin({
+            fix: true,
+            extensions: "ts",
+        }),
         new ForkTsCheckerWebpackPlugin({
             typescript: {
                 configFile: paths.tsConfig,
@@ -77,13 +63,17 @@ module.exports = {
         }),
     ],
 
-    externals: {
-        "agora-electron-sdk": "commonjs2 agora-electron-sdk",
-        "jquery": "commonjs2 jquery"
+    externalsPresets: {
+        node: true,
     },
+    externals: [
+        nodeExternals({
+            modulesFromFile: true,
+        }),
+    ],
 
     resolve: {
-        extensions: [".ts", ".js"],
+        extensions: [".ts", ".js", ".node"],
     },
     output: {
         filename: "[name].js",

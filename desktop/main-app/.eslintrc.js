@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
     parser: "@typescript-eslint/parser",
-    plugins: ["prettier", "@typescript-eslint"],
+    plugins: ["@netless", "prettier", "@typescript-eslint"],
     parserOptions: {
         project: path.join(__dirname, "tsconfig.json"),
         ecmaVersion: 7,
@@ -12,9 +12,8 @@ module.exports = {
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "prettier/@typescript-eslint",
-        "plugin:prettier/recommended",
         "plugin:@netless/recommended",
+        "plugin:prettier/recommended",
     ],
     rules: {
         "@typescript-eslint/array-type": [

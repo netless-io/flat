@@ -3,6 +3,14 @@ productName: Flat
 artifactName: Flat-${version}.${ext}
 asar: true
 
+extraMetadata:
+  main: main.js
+
+files:
+  - filter:
+    - package.json
+  - from: ./dist
+
 mac:
   category: public.app-category.productivity
   hardenedRuntime: true
