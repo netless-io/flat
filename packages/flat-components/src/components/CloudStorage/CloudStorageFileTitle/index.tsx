@@ -13,6 +13,7 @@ import React from "react";
 import classNames from "classnames";
 import { CloudStorageConvertStatusType, CloudStorageFileName } from "../types";
 import { CloudStorageFileTitleRename } from "./CloudStorageFileTitleRename";
+import { useTranslation } from "react-i18next";
 
 export interface CloudStorageFileTitleProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
@@ -46,14 +47,14 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
         onRename,
         ...restProps
     }) {
+        const { t } = useTranslation();
         const isConverting = convertStatus === "converting";
         const isConvertError = !isConverting && convertStatus === "error";
 
         return (
             <span
-                title={`${
-                    isConvertError ? "（转码失败）" : isConverting ? "（转码中...）" : ""
-                }${fileName}`}
+                title={`${isConvertError ? t('transcoding-failure') : isConverting ? t('transcoding-in-progress') : ""
+                    }${fileName}`}
                 {...restProps}
                 className={classNames(restProps.className, "cloud-storage-file-title", {
                     "is-convert-ready": !isConverting && !isConvertError,

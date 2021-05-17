@@ -12,6 +12,7 @@ import {
     CloudStorageFileListFileName,
     CloudStorageFileListFileNameProps,
 } from "./CloudStorageFileListFileName";
+import { useTranslation } from "react-i18next";
 
 export interface CloudStorageFileListProps
     extends Pick<
@@ -45,6 +46,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
     renamingFileUUID,
     onRename,
 }) => {
+    const { t } = useTranslation();
     const popupContainerRef = useRef<HTMLDivElement>(null);
     const getPopupContainer = useCallback(() => popupContainerRef.current || document.body, []);
 
@@ -53,9 +55,9 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
             {
                 title: (
                     <>
-                        <span className="cloud-storage-file-list-title">文件名称</span>
+                        <span className="cloud-storage-file-list-title">{t("file-name")}</span>
                         <CloudStorageFileListHeadTip
-                            title="支持上传 PPT、PPTX、DOC、DOCX、PDF、PNG、JPG、GIF 文件格式"
+                            title={t("supported-file-types")}
                             placement="right"
                             getPopupContainer={getPopupContainer}
                         />
@@ -80,7 +82,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 },
             },
             {
-                title: <span className="cloud-storage-file-list-title">大小</span>,
+                title: <span className="cloud-storage-file-list-title">{t("file-size")}</span>,
                 dataIndex: "fileSize",
                 ellipsis: true,
                 width: 100,
@@ -94,7 +96,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 },
             },
             {
-                title: <span className="cloud-storage-file-list-title">修改日期</span>,
+                title: <span className="cloud-storage-file-list-title">{t("edit-date")}</span>,
                 dataIndex: "createAt",
                 ellipsis: true,
                 width: 170,
@@ -116,6 +118,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
             onRename,
             renamingFileUUID,
             titleClickable,
+            t,
         ],
     );
 
@@ -139,7 +142,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 <div className="cloud-storage-file-list-empty">
                     <div className="cloud-storage-file-list-empty-content">
                         <img width={124} height={124} src={emptyFileSVG} />
-                        <div className="cloud-storage-file-list-empty-text">暂无数据</div>
+                        <div className="cloud-storage-file-list-empty-text">{t("no-data")}</div>
                     </div>
                 </div>
             )}

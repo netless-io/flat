@@ -8,6 +8,7 @@ import { Button } from "antd";
 import classNames from "classnames";
 import { CloudStorageFileTitle } from "../CloudStorageFileTitle";
 import { CloudStorageUploadTask } from "../types";
+import { useTranslation } from "react-i18next";
 
 export interface CloudStorageUploadItemProps
     extends Pick<CloudStorageUploadTask, "uploadID" | "fileName" | "percent" | "status"> {
@@ -29,6 +30,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
     onRetry,
     onCancel,
 }) => {
+    const { t } = useTranslation();
     return (
         <div className="cloud-storage-upload-item">
             <CloudStorageFileTitle fileUUID={uploadID} fileName={fileName} />
@@ -62,7 +64,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
             case "error": {
                 return (
                     <>
-                        <span className="cloud-storage-upload-status is-error">上传失败</span>
+                        <span className="cloud-storage-upload-status is-error">{t('upload-fail')}</span>
                         <Button
                             className="cloud-storage-upload-status-btn"
                             shape="circle"
@@ -77,7 +79,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
             case "success": {
                 return (
                     <>
-                        <span className="cloud-storage-upload-status is-success">上传成功</span>
+                        <span className="cloud-storage-upload-status is-success">{t('upload-success')}</span>
                         <div className="cloud-storage-upload-status-btn">
                             <img width={22} height={22} src={checkSVG} aria-hidden />
                         </div>
@@ -87,7 +89,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
             default: {
                 return (
                     <>
-                        <span className="cloud-storage-upload-status">待上传</span>
+                        <span className="cloud-storage-upload-status">{t('pending-upload')}</span>
                         <Button
                             className="cloud-storage-upload-status-btn"
                             shape="circle"
