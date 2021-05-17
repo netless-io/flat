@@ -4,5 +4,11 @@
   "version": "0.1.0",
   "private": false,
   "license": "MIT",
-  "homepage": "https://github.com/netless-io/flat"
+  "homepage": "https://github.com/netless-io/flat",
+  "scripts": {
+    "lint": "lint-staged"
+  },
+  "devDependencies": {
+    "lint-staged": "^11.0.0"
+  }
 }

@@ -1,0 +1,5 @@
+{
+  "*.json": [
+    "node ./scripts/check.js"
+  ]
+}
