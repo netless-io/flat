@@ -5,3 +5,4 @@ export * from "./RecordHintTips";
 export * from "./RoomInfo";
 export * from "./RoomStoppedModal";
 export * from "./TopBar";
+export * from "./VideoAvatar";
