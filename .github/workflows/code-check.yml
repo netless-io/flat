@@ -21,6 +21,8 @@ jobs:
         id: filter
         with:
           filters: |
+            i18n: &i18n
+              - 'packages/flat-i18n/locales/*.json'
             components: &components
               - 'packages/flat-components/**/*.(ts|tsx|css|less)'
               # e.g: package.json / tsconfig.json rollup.config.js eslintrc.js
@@ -46,6 +48,7 @@ jobs:
               - 'desktop/main-app/**/*.ts'
             web-react:
               - 'web/react/**/*.(ts|tsx)'
+
       - name: Install NodeJS
         uses: actions/setup-node@v2
         with:
@@ -79,3 +82,7 @@ jobs:
       - name: Build web-react
         run: yarn workspace flat-web-react build
         if: steps.filter.outputs.web-react == 'true'
+
+      - name: Check i18n
+        run: node packages/flat-i18n/scripts/check.js
+        if: steps.filter.outputs.i18n == 'true'
