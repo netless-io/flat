@@ -1,1 +1,15 @@
-{}
+{
+  "file-name": "File Name",
+  "file-size": "File Size",
+  "edit-date": "Last Updated",
+  "no-data": "No data",
+  "pending-upload": "To be uploaded",
+  "supported-file-types": "Support uploading PPT, PPTX, DOC, DOCX, PDF, PNG, JPG, GIF file formats",
+  "transcoding-failure": "(Transcoding failed)",
+  "transcoding-in-progress": "(Transcoding...)",
+  "transfer-list": "Transmission list",
+  "upload-completed": "Upload complete",
+  "upload-exception": "Uploading exception",
+  "upload-fail": "Upload failed",
+  "upload-success": "Successful"
+}

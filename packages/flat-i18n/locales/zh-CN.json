@@ -1,1 +1,15 @@
-{}
+{
+  "edit-date": "修改日期",
+  "file-name": "文件名称",
+  "file-size": "大小",
+  "no-data": "暂无数据",
+  "pending-upload": "待上传",
+  "supported-file-types": "支持上传PPT，PPTX，DOC，DOCX，PDF，PNG，JPG，GIF文件格式",
+  "transcoding-failure": "（转码失败）",
+  "transcoding-in-progress": "（转码中...）",
+  "transfer-list": "传输列表",
+  "upload-completed": "上传完成",
+  "upload-exception": "上传异常",
+  "upload-fail": "上传失败",
+  "upload-success": "上传成功"
+}
