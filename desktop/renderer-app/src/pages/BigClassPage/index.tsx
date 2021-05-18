@@ -18,7 +18,11 @@ import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ChatPanel } from "../../components/ChatPanel";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
-import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
+import {
+    ExitRoomConfirm,
+    ExitRoomConfirmType,
+    useExitRoomConfirmModal,
+} from "../../components/ExitRoomConfirm";
 import InviteButton from "../../components/InviteButton";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
@@ -79,14 +83,13 @@ export type BigClassPageProps = {};
 export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
     usePowerSaveBlocker();
     useWindowSize("Class");
-    // @TODO remove ref
-    const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
     const params = useParams<RouteParams<RouteNameType.BigClassPage>>();
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = classRoomStore.whiteboardStore;
     const globalStore = useContext(GlobalStoreContext);
+    const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
     const [speakingJoiner, setSpeakingJoiner] = useState<User | undefined>(() =>
         classRoomStore.users.speakingJoiners.length > 0
@@ -177,13 +180,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 <Whiteboard whiteboardStore={whiteboardStore} />
                 {renderRealtimePanel()}
             </div>
-            <ExitRoomConfirm
-                isCreator={classRoomStore.isCreator}
-                roomStatus={classRoomStore.roomStatus}
-                hangClass={classRoomStore.hangClass}
-                stopClass={classRoomStore.stopClass}
-                confirmRef={exitRoomConfirmRef}
-            />
+            <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
             <RoomStatusStoppedModal
                 isCreator={classRoomStore.isCreator}
                 roomStatus={classRoomStore.roomStatus}
@@ -289,11 +286,8 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 {/* <TopBarRightBtn title="Options" icon="options" onClick={() => {}} /> */}
                 <TopBarRightBtn
                     title="Exit"
-                    icon="follow"
-                    onClick={() => {
-                        // @TODO remove ref
-                        exitRoomConfirmRef.current(ExitRoomConfirmType.ExitButton);
-                    }}
+                    icon="exit"
+                    onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
@@ -393,8 +387,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     }
 
     function stopClass(): void {
-        // @TODO remove ref
-        exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
+        confirm(ExitRoomConfirmType.StopClassButton);
     }
 
     function updateCloudRecordLayout(): void {

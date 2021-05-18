@@ -20,7 +20,11 @@ import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { OneToOneAvatar } from "./OneToOneAvatar";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
-import { ExitRoomConfirm, ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
+import {
+    ExitRoomConfirm,
+    ExitRoomConfirmType,
+    useExitRoomConfirmModal,
+} from "../../components/ExitRoomConfirm";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import LoadingPage from "../../LoadingPage";
@@ -61,14 +65,13 @@ export type OneToOnePageProps = {};
 export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() {
     usePowerSaveBlocker();
     useWindowSize("Class");
-    // @TODO remove ref
-    const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
     const params = useParams<RouteParams<RouteNameType.OneToOnePage>>();
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = classRoomStore.whiteboardStore;
     const globalStore = useContext(GlobalStoreContext);
+    const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
@@ -133,13 +136,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 <Whiteboard whiteboardStore={whiteboardStore} />
                 {renderRealtimePanel()}
             </div>
-            <ExitRoomConfirm
-                isCreator={classRoomStore.isCreator}
-                roomStatus={classRoomStore.roomStatus}
-                hangClass={classRoomStore.hangClass}
-                stopClass={classRoomStore.stopClass}
-                confirmRef={exitRoomConfirmRef}
-            />
+            <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
             <RoomStatusStoppedModal
                 isCreator={classRoomStore.isCreator}
                 roomStatus={classRoomStore.roomStatus}
@@ -246,10 +243,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 <TopBarRightBtn
                     title="Exit"
                     icon="exit"
-                    onClick={() => {
-                        // @TODO remove ref
-                        exitRoomConfirmRef.current(ExitRoomConfirmType.ExitButton);
-                    }}
+                    onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
@@ -321,8 +315,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     }
 
     function stopClass(): void {
-        // @TODO remove ref
-        exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
+        confirm(ExitRoomConfirmType.StopClassButton);
     }
 
     function updateCloudRecordLayout(): void {

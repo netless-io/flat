@@ -1,47 +1,23 @@
 import React from "react";
-import classNames from "classnames";
-import { Observer, observer } from "mobx-react-lite";
-import { VideoAvatar, VideoAvatarProps } from "../../components/VideoAvatar";
+import { observer } from "mobx-react-lite";
+import type AgoraSDK from "agora-electron-sdk";
+import { SmallClassAvatar as SmallClassAvatarImpl } from "flat-components";
+import { User } from "../../stores/UserStore";
+import { AvatarCanvas } from "../../components/AvatarCanvas";
 
-import "./SmallClassAvatar.less";
-
-export interface SmallClassAvatarProps extends Omit<VideoAvatarProps, "children"> {}
+interface SmallClassAvatarProps {
+    userUUID: string;
+    isCreator: boolean;
+    avatarUser: User;
+    rtcEngine: AgoraSDK;
+    updateDeviceState(id: string, camera: boolean, mic: boolean): void;
+}
 
 export const SmallClassAvatar = observer<SmallClassAvatarProps>(function SmallClassAvatar(props) {
-    const { avatarUser } = props;
     return (
-        <VideoAvatar {...props}>
-            {(canvas, ctrlBtns) => (
-                <Observer>
-                    {() => (
-                        <section
-                            className={classNames("small-class-avatar-wrap", {
-                                "with-video": avatarUser.camera,
-                            })}
-                        >
-                            {canvas}
-                            {!avatarUser.camera && (
-                                <div className="small-class-avatar-background">
-                                    <div
-                                        className="video-avatar-background"
-                                        style={{
-                                            backgroundImage: `url(${avatarUser.avatar})`,
-                                        }}
-                                    ></div>
-                                    <img src={avatarUser.avatar} alt="no camera" />
-                                </div>
-                            )}
-                            <div className="small-class-avatar-ctrl-layer">
-                                <h1 className="small-class-avatar-title" title={avatarUser.name}>
-                                    {avatarUser.name}
-                                </h1>
-                                {ctrlBtns}
-                            </div>
-                        </section>
-                    )}
-                </Observer>
-            )}
-        </VideoAvatar>
+        <SmallClassAvatarImpl {...props}>
+            <AvatarCanvas {...props} />
+        </SmallClassAvatarImpl>
     );
 });
 

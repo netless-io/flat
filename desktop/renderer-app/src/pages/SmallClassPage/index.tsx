@@ -19,7 +19,10 @@ import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { SmallClassAvatar } from "./SmallClassAvatar";
 import { Whiteboard } from "../../components/Whiteboard";
-import ExitRoomConfirm, { ExitRoomConfirmType } from "../../components/ExitRoomConfirm";
+import ExitRoomConfirm, {
+    ExitRoomConfirmType,
+    useExitRoomConfirmModal,
+} from "../../components/ExitRoomConfirm";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import LoadingPage from "../../LoadingPage";
 
@@ -82,8 +85,6 @@ export type SmallClassPageProps = {};
 export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassPage() {
     usePowerSaveBlocker();
     useWindowSize("Class");
-    // @TODO remove ref
-    const exitRoomConfirmRef = useRef((_confirmType: ExitRoomConfirmType) => {});
 
     const params = useParams<RouteParams<RouteNameType.SmallClassPage>>();
 
@@ -95,6 +96,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     );
     const whiteboardStore = classRoomStore.whiteboardStore;
     const globalStore = useContext(GlobalStoreContext);
+    const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
     const { room, phase } = whiteboardStore;
 
@@ -156,13 +158,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 <Whiteboard whiteboardStore={whiteboardStore} />
                 {renderRealtimePanel()}
             </div>
-            <ExitRoomConfirm
-                isCreator={classRoomStore.isCreator}
-                roomStatus={classRoomStore.roomStatus}
-                hangClass={classRoomStore.hangClass}
-                stopClass={classRoomStore.stopClass}
-                confirmRef={exitRoomConfirmRef}
-            />
+            <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
             <RoomStatusStoppedModal
                 isCreator={classRoomStore.isCreator}
                 roomStatus={classRoomStore.roomStatus}
@@ -313,10 +309,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 <TopBarRightBtn
                     title="Exit"
                     icon="exit"
-                    onClick={() => {
-                        // @TODO remove ref
-                        exitRoomConfirmRef.current(ExitRoomConfirmType.ExitButton);
-                    }}
+                    onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
@@ -373,8 +366,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     }
 
     function stopClass(): void {
-        // @TODO remove ref
-        exitRoomConfirmRef.current(ExitRoomConfirmType.StopClassButton);
+        confirm(ExitRoomConfirmType.StopClassButton);
     }
 
     function updateCloudRecordLayout(): void {

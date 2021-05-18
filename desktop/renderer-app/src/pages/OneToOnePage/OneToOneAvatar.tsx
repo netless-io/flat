@@ -1,47 +1,23 @@
 import React from "react";
-import { Observer, observer } from "mobx-react-lite";
-import classNames from "classnames";
-import { VideoAvatar, VideoAvatarProps } from "../../components/VideoAvatar";
+import { observer } from "mobx-react-lite";
+import type AgoraSDK from "agora-electron-sdk";
+import { OneToOneAvatar as OneToOneAvatarImpl } from "flat-components";
+import { AvatarCanvas } from "../../components/AvatarCanvas";
+import { User } from "../../stores/UserStore";
 
-import "./OneToOneAvatar.less";
+export interface OneToOneAvatarProps {
+    userUUID: string;
+    isCreator: boolean;
+    avatarUser: User;
+    rtcEngine: AgoraSDK;
+    updateDeviceState(id: string, camera: boolean, mic: boolean): void;
+}
 
-export interface OneToOneAvatarProps extends Omit<VideoAvatarProps, "children"> {}
-
-export const OneToOneAvatar = observer<OneToOneAvatarProps>(function OneToOneAvatar({
-    avatarUser,
-    ...restProps
-}) {
+export const OneToOneAvatar = observer<OneToOneAvatarProps>(function OneToOneAvatar(props) {
     return (
-        <VideoAvatar {...restProps} avatarUser={avatarUser}>
-            {(canvas, ctrlBtns) => (
-                <Observer>
-                    {() => (
-                        <section className="one-to-one-avatar-wrap">
-                            {canvas}
-                            {!avatarUser.camera && (
-                                <div className="one-to-one-avatar-background">
-                                    <div
-                                        className="video-avatar-background"
-                                        style={{
-                                            backgroundImage: `url(${avatarUser.avatar})`,
-                                        }}
-                                    ></div>
-                                    <img src={avatarUser.avatar} alt="no camera" />
-                                </div>
-                            )}
-                            <div
-                                className={classNames("one-to-one-avatar-ctrl-layer", {
-                                    "with-video": avatarUser.camera,
-                                })}
-                            >
-                                <h1 className="one-to-one-avatar-title">{avatarUser.name}</h1>
-                                {ctrlBtns}
-                            </div>
-                        </section>
-                    )}
-                </Observer>
-            )}
-        </VideoAvatar>
+        <OneToOneAvatarImpl {...props}>
+            <AvatarCanvas {...props} />
+        </OneToOneAvatarImpl>
     );
 });
 
