@@ -3,6 +3,8 @@ import { Avatar, Divider, Popover } from "antd";
 import React, { useState } from "react";
 import classNames from "classnames";
 
+export * from "./MainPageHeader";
+
 export interface MainPageLayoutItem {
     key: string;
     icon: (active: boolean) => React.ReactNode;

@@ -7,15 +7,10 @@ import { Divider } from "antd";
 
 export interface MainPageHeaderProps {
     routePath: string;
-    title: string;
-    periodicUUID?: string;
+    title: React.ReactNode;
 }
 
-export const MainPageHeader: React.FC<MainPageHeaderProps> = ({
-    routePath,
-    title,
-    periodicUUID,
-}) => {
+export const MainPageHeader: React.FC<MainPageHeaderProps> = ({ routePath, title }) => {
     return (
         <div className="main-page-header-container">
             <Link to={routePath}>
@@ -25,8 +20,7 @@ export const MainPageHeader: React.FC<MainPageHeaderProps> = ({
                 </div>
             </Link>
             <Divider type="vertical" />
-            <h1 className="main-page-header-title">{title}</h1>
-            {periodicUUID && <span className="main-page-header-periodic-sign">周期</span>}
+            {title}
         </div>
     );
 };
