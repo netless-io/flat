@@ -9,9 +9,11 @@ import { RoomInfo, RoomStatus, RoomType, Week } from "../../types/room";
 import { getRoomTypeName, getWeekName, getWeekNames } from "../../utils/room";
 import { RoomStatusElement } from "../RoomStatusElement";
 import { RemoveRoomModal } from "../RemoveRoomModal";
+import { MoreMenu } from "./MoreMenu";
 
 export interface PeriodicRoomPanelProps {
     rooms: RoomInfo[];
+    userName: string;
     isCreator: boolean;
     periodicInfo: {
         weeks: Week[];
@@ -20,17 +22,24 @@ export interface PeriodicRoomPanelProps {
         roomCount: number;
     };
     jumpToPeriodicModifyPage: () => void;
+    onCopy: () => void;
     onCancelRoom: () => void;
+    jumpToRoomInfoPage: () => void;
+    jumpToModifyRoomPage: () => void;
 }
 
 export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
     rooms,
-    periodicInfo,
+    userName,
     isCreator,
+    periodicInfo,
     jumpToPeriodicModifyPage,
+    onCopy,
     onCancelRoom,
+    jumpToRoomInfoPage,
+    jumpToModifyRoomPage,
 }) => {
-    const [cancelModalVisible, showCancelModal] = useState(false);
+    const [confirmRemovePeriodicRoomVisible, setConfirmRemovePeriodicRoomVisible] = useState(false);
 
     const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
     const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
@@ -76,16 +85,19 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                         pagination={false}
                     >
                         <Table.Column
+                            align="left"
                             render={(_, room: RoomInfo) =>
                                 dayFormat(room.beginTime || defaultDate) + "日"
                             }
                         />
                         <Table.Column
+                            align="center"
                             render={(_, room: RoomInfo) =>
                                 getWeekName(getDay(room.beginTime || defaultDate))
                             }
                         />
                         <Table.Column
+                            align="center"
                             render={(_, room: RoomInfo) => {
                                 return (
                                     timeSuffixFormat(room.beginTime || defaultDate) +
@@ -95,17 +107,27 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                             }}
                         />
                         <Table.Column
+                            align="center"
                             render={(_, room: RoomInfo) => {
                                 return <RoomStatusElement room={room} />;
                             }}
                         />
-                        {/* 
-                        // TODO: MoreMenu component
                         <Table.Column
-                        render={(_, room: RoomInfo) => {
-                            return null;
-                        }}
-                    /> */}
+                            align="right"
+                            render={(_, room: RoomInfo) => {
+                                return (
+                                    <MoreMenu
+                                        room={room}
+                                        userName={userName}
+                                        isCreator={isCreator}
+                                        onCopy={onCopy}
+                                        onRemoveRoom={onCancelRoom}
+                                        jumpToRoomInfoPage={jumpToRoomInfoPage}
+                                        jumpToModifyRoomPage={jumpToModifyRoomPage}
+                                    />
+                                );
+                            }}
+                        />
                     </Table>
                 </div>
             ));
@@ -135,14 +157,14 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                             </Button>
                             <Button
                                 danger
-                                onClick={() => showCancelModal(true)}
+                                onClick={() => setConfirmRemovePeriodicRoomVisible(true)}
                                 disabled={hasRunning}
                             >
                                 取消周期性房间
                             </Button>
                         </>
                     ) : (
-                        <Button danger onClick={() => showCancelModal(true)}>
+                        <Button danger onClick={() => setConfirmRemovePeriodicRoomVisible(true)}>
                             移除周期性房间
                         </Button>
                     )}
@@ -150,9 +172,9 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                 {renderPeriodicRoomTable()}
             </div>
             <RemoveRoomModal
-                cancelModalVisible={cancelModalVisible}
+                cancelModalVisible={confirmRemovePeriodicRoomVisible}
                 isCreator={isCreator}
-                onCancel={() => showCancelModal(false)}
+                onCancel={() => setConfirmRemovePeriodicRoomVisible(false)}
                 onCancelRoom={onCancelRoom}
                 isPeriodicDetailsPage={true}
             />
