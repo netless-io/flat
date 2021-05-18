@@ -19,6 +19,5 @@ export const Overview: Story<MainPageHeaderProps> = args => (
 );
 Overview.args = {
     routePath: "/example/path",
-    title: "Example",
-    periodicUUID: "periodicUUID",
+    title: <span>Example</span>,
 };
