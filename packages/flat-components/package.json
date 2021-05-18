@@ -10,7 +10,7 @@
   ],
   "main": "./build/cjs/index.js",
   "module": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "types": "./src/index.ts",
   "files": [
     "theme",
     "src",

@@ -1,10 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Modal } from "antd";
 import { observer } from "mobx-react-lite";
+import {
+    CloseRoomConfirmModal,
+    ExitRoomConfirmModal,
+    StopClassConfirmModal,
+} from "flat-components";
 import { RoomStatus } from "../apiMiddleware/flatServer/constants";
-import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../utils/ipc";
+import { RouteNameType, usePushHistory } from "../utils/routes";
 import { errorTips } from "./Tips/ErrorTips";
 
 export enum ExitRoomConfirmType {
@@ -14,20 +18,25 @@ export enum ExitRoomConfirmType {
 
 export interface ExitRoomConfirmProps {
     isCreator: boolean;
-    roomStatus: RoomStatus;
-    hangClass: () => Promise<void>;
-    stopClass: () => Promise<void>;
-    // @TODO remove ref
-    confirmRef: { current: (confirmType: ExitRoomConfirmType) => void };
+    confirmType: ExitRoomConfirmType;
+    visible: boolean;
+    isReturnLoading: boolean;
+    isStopLoading: boolean;
+    onReturnMain: () => Promise<void>;
+    onStopClass: () => Promise<void>;
+    onCancel: () => void;
+    confirm: (confirmType: ExitRoomConfirmType) => void;
 }
 
-export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomConfirm({
-    isCreator,
+export function useExitRoomConfirmModal({
     roomStatus,
     hangClass,
     stopClass,
-    confirmRef,
-}) {
+}: {
+    roomStatus: RoomStatus;
+    hangClass: () => Promise<void>;
+    stopClass: () => Promise<void>;
+}): Omit<ExitRoomConfirmProps, "isCreator"> {
     const [confirmType, setConfirmType] = useState(ExitRoomConfirmType.ExitButton);
     const [visible, setVisible] = useState(false);
     const [isReturnLoading, setReturnLoading] = useState(false);
@@ -94,52 +103,48 @@ export const ExitRoomConfirm = observer<ExitRoomConfirmProps>(function ExitRoomC
         };
     }, [confirm]);
 
-    confirmRef.current = confirm;
+    return {
+        confirmType,
+        visible,
+        isReturnLoading,
+        isStopLoading,
+        onReturnMain,
+        onStopClass,
+        onCancel,
+        confirm,
+    };
+}
 
-    return isCreator ? (
-        confirmType === ExitRoomConfirmType.ExitButton ? (
-            <Modal
-                visible={visible}
-                title="关闭选项"
-                onOk={onCancel}
-                onCancel={onCancel}
-                footer={[
-                    <Button key="Cancel" onClick={onCancel}>
-                        取消
-                    </Button>,
-                    <Button key="ReturnMain" loading={isReturnLoading} onClick={onReturnMain}>
-                        挂起房间
-                    </Button>,
-                    <Button
-                        key="StopClass"
-                        type="primary"
-                        loading={isStopLoading}
-                        onClick={onStopClass}
-                    >
-                        结束上课
-                    </Button>,
-                ]}
-            >
-                <p>课堂正在继续，你是暂时退出挂起房间还是结束上课？</p>
-            </Modal>
+export const ExitRoomConfirm = observer<Omit<ExitRoomConfirmProps, "confirm">>(
+    function ExitRoomConfirm({
+        isCreator,
+        confirmType,
+        isReturnLoading,
+        isStopLoading,
+        onReturnMain,
+        onStopClass,
+        ...restProps
+    }) {
+        return isCreator ? (
+            confirmType === ExitRoomConfirmType.ExitButton ? (
+                <CloseRoomConfirmModal
+                    {...restProps}
+                    stopLoading={isStopLoading}
+                    hangLoading={isReturnLoading}
+                    onStop={onStopClass}
+                    onHang={onReturnMain}
+                />
+            ) : (
+                <StopClassConfirmModal
+                    {...restProps}
+                    loading={isStopLoading}
+                    onStop={onStopClass}
+                />
+            )
         ) : (
-            <Modal
-                visible={visible}
-                title="确定结束上课"
-                okButtonProps={{ loading: isStopLoading }}
-                onOk={onStopClass}
-                onCancel={onCancel}
-            >
-                <p>
-                    一旦结束上课，所有用户自动退出房间，并且自动结束课程和录制（如有），不能继续直播。
-                </p>
-            </Modal>
-        )
-    ) : (
-        <Modal visible={visible} title="确定退出房间" onOk={onReturnMain} onCancel={onCancel}>
-            <p>课堂正在继续，确定退出房间？</p>
-        </Modal>
-    );
-});
+            <ExitRoomConfirmModal {...restProps} onExit={onReturnMain} />
+        );
+    },
+);
 
 export default ExitRoomConfirm;

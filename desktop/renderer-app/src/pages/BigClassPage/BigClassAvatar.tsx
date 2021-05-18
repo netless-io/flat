@@ -1,22 +1,24 @@
 import React, { useEffect } from "react";
-import { Observer, observer } from "mobx-react-lite";
-import classNames from "classnames";
-import { VideoAvatar, VideoAvatarProps } from "../../components/VideoAvatar";
+import { observer } from "mobx-react-lite";
+import type AgoraSDK from "agora-electron-sdk";
+import { BigClassAvatar as BigClassAvatarImpl } from "flat-components";
+import { AvatarCanvas } from "../../components/AvatarCanvas";
+import { User } from "../../stores/UserStore";
 
-import videoExpandSVG from "../../assets/image/video-expand.svg";
-
-import "./BigClassAvatar.less";
-
-export interface BigClassAvatarProps extends Omit<VideoAvatarProps, "children"> {
+interface BigClassAvatarProps {
+    userUUID: string;
+    isCreator: boolean;
+    avatarUser: User;
     small?: boolean;
-    onExpand?: () => void;
+    rtcEngine: AgoraSDK;
+    updateDeviceState(id: string, camera: boolean, mic: boolean): void;
+    onExpand: () => void;
 }
 
 export const BigClassAvatar = observer<BigClassAvatarProps>(function BigClassAvatar({
     avatarUser,
     small,
     rtcEngine,
-    onExpand,
     ...restProps
 }) {
     useEffect(() => {
@@ -28,48 +30,9 @@ export const BigClassAvatar = observer<BigClassAvatarProps>(function BigClassAva
     }, [small]);
 
     return (
-        <VideoAvatar {...restProps} avatarUser={avatarUser} rtcEngine={rtcEngine}>
-            {(canvas, ctrlBtns) => (
-                <Observer>
-                    {() => (
-                        <section
-                            className={classNames("big-class-avatar-wrap", { "is-small": small })}
-                        >
-                            {canvas}
-                            {!avatarUser.camera && (
-                                <div className="big-class-avatar-background">
-                                    <div
-                                        className="video-avatar-background"
-                                        style={{
-                                            backgroundImage: `url(${avatarUser.avatar})`,
-                                        }}
-                                    />
-                                    <img src={avatarUser.avatar} alt="no camera" />
-                                </div>
-                            )}
-                            <div
-                                className={classNames("big-class-avatar-ctrl-layer", {
-                                    "with-video": avatarUser.camera,
-                                })}
-                            >
-                                {small ? (
-                                    <button className="big-class-avatar-expand" onClick={onExpand}>
-                                        <img src={videoExpandSVG} alt="expand" />
-                                    </button>
-                                ) : (
-                                    <>
-                                        <h1 className="big-class-avatar-title">
-                                            {avatarUser.name}
-                                        </h1>
-                                        {ctrlBtns}
-                                    </>
-                                )}
-                            </div>
-                        </section>
-                    )}
-                </Observer>
-            )}
-        </VideoAvatar>
+        <BigClassAvatarImpl {...restProps} small={small} avatarUser={avatarUser}>
+            <AvatarCanvas {...restProps} avatarUser={avatarUser} rtcEngine={rtcEngine} />
+        </BigClassAvatarImpl>
     );
 });
 
