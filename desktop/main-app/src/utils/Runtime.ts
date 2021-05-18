@@ -26,7 +26,7 @@ const staticPath = isProduction
 
 const preloadPath = isProduction
     ? path.join(__dirname, "preload.js")
-    : path.resolve(__dirname, "..", "..", "dist", "main", "preload.js");
+    : path.resolve(__dirname, "..", "..", "dist", "preload.js");
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const appVersion = isProduction ? app.getVersion() : require("../../package.json").version;
