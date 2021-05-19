@@ -17,17 +17,17 @@ import { globalStore } from "./GlobalStore";
 import { isMobile, isWindows } from "react-device-detect";
 
 export class WhiteboardStore {
-    room: Room | null = null;
-    phase: RoomPhase = RoomPhase.Connecting;
-    viewMode: ViewMode | null = null;
-    isWritable: boolean;
-    isShowPreviewPanel = false;
-    isFileOpen = false;
+    public room: Room | null = null;
+    public phase: RoomPhase = RoomPhase.Connecting;
+    public viewMode: ViewMode | null = null;
+    public isWritable: boolean;
+    public isShowPreviewPanel = false;
+    public isFileOpen = false;
 
     /** is room Creator */
-    readonly isCreator: boolean;
+    public readonly isCreator: boolean;
 
-    constructor(config: { isCreator: boolean }) {
+    public constructor(config: { isCreator: boolean }) {
         this.isCreator = config.isCreator;
         this.isWritable = config.isCreator;
 
@@ -36,19 +36,19 @@ export class WhiteboardStore {
         });
     }
 
-    updateRoom = (room: Room): void => {
+    public updateRoom = (room: Room): void => {
         this.room = room;
     };
 
-    updatePhase = (phase: RoomPhase): void => {
+    public updatePhase = (phase: RoomPhase): void => {
         this.phase = phase;
     };
 
-    updateViewMode = (viewMode: ViewMode): void => {
+    public updateViewMode = (viewMode: ViewMode): void => {
         this.viewMode = viewMode;
     };
 
-    updateWritable = async (isWritable: boolean): Promise<void> => {
+    public updateWritable = async (isWritable: boolean): Promise<void> => {
         const oldWritable = this.isWritable;
 
         this.isWritable = isWritable;
@@ -62,23 +62,23 @@ export class WhiteboardStore {
         }
     };
 
-    setFileOpen = (open: boolean): void => {
+    public setFileOpen = (open: boolean): void => {
         this.isFileOpen = open;
     };
 
-    toggleFileOpen = (): void => {
+    public toggleFileOpen = (): void => {
         this.isFileOpen = !this.isFileOpen;
     };
 
-    showPreviewPanel = (): void => {
+    public showPreviewPanel = (): void => {
         this.isShowPreviewPanel = true;
     };
 
-    setPreviewPanel = (show: boolean): void => {
+    public setPreviewPanel = (show: boolean): void => {
         this.isShowPreviewPanel = show;
     };
 
-    async joinWhiteboardRoom(): Promise<void> {
+    public async joinWhiteboardRoom(): Promise<void> {
         if (!globalStore.userUUID) {
             throw new Error("Missing userUUID");
         }
@@ -181,7 +181,7 @@ export class WhiteboardStore {
         }
     }
 
-    destroy(): void {
+    public destroy(): void {
         if (this.room) {
             this.room.callbacks.off();
         }

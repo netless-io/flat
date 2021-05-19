@@ -146,18 +146,18 @@ export declare interface Rtm {
 
 // eslint-disable-next-line no-redeclare
 export class Rtm extends EventEmitter {
-    static MessageType = AgoraRTM.MessageType;
+    public static MessageType = AgoraRTM.MessageType;
 
-    client: RtmClient;
-    channel?: RtmChannel;
+    public client: RtmClient;
+    public channel?: RtmChannel;
     /** Channel for commands */
-    commands?: RtmChannel;
-    token?: string;
+    public commands?: RtmChannel;
+    public token?: string;
 
     private channelID: string | null = null;
     private commandsID: string | null = null;
 
-    constructor() {
+    public constructor() {
         super();
 
         if (!AGORA.APP_ID) {
@@ -190,7 +190,7 @@ export class Rtm extends EventEmitter {
         });
     }
 
-    async init(userUUID: string, channelID: string): Promise<RtmChannel> {
+    public async init(userUUID: string, channelID: string): Promise<RtmChannel> {
         if (this.channel) {
             if (this.channelID === channelID) {
                 return this.channel;
@@ -243,7 +243,7 @@ export class Rtm extends EventEmitter {
         return this.channel;
     }
 
-    async destroy(): Promise<void> {
+    public async destroy(): Promise<void> {
         const { channel, commands } = this;
 
         this.channelID = null;
@@ -276,9 +276,12 @@ export class Rtm extends EventEmitter {
         }
     }
 
-    async sendMessage(text: string): Promise<void>;
-    async sendMessage(text: string, peerId: string): Promise<{ hasPeerReceived: boolean }>;
-    async sendMessage(text: string, peerId?: string): Promise<{ hasPeerReceived: boolean } | void> {
+    public async sendMessage(text: string): Promise<void>;
+    public async sendMessage(text: string, peerId: string): Promise<{ hasPeerReceived: boolean }>;
+    public async sendMessage(
+        text: string,
+        peerId?: string,
+    ): Promise<{ hasPeerReceived: boolean } | void> {
         if (peerId !== undefined) {
             const result = await this.client.sendMessageToPeer(
                 {
@@ -306,19 +309,19 @@ export class Rtm extends EventEmitter {
         }
     }
 
-    async sendCommand<U extends keyof RTMEvents>(command: {
+    public async sendCommand<U extends keyof RTMEvents>(command: {
         type: U;
         value: RTMEvents[U];
         keepHistory: boolean;
     }): Promise<void>;
-    async sendCommand<U extends keyof RTMEvents>(command: {
+    public async sendCommand<U extends keyof RTMEvents>(command: {
         type: U;
         value: RTMEvents[U];
         keepHistory: boolean;
         peerId: string;
         retry?: number;
     }): Promise<void>;
-    async sendCommand<U extends keyof RTMEvents>({
+    public async sendCommand<U extends keyof RTMEvents>({
         type,
         value,
         keepHistory = false,
@@ -371,7 +374,7 @@ export class Rtm extends EventEmitter {
         }
     }
 
-    async fetchTextHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
+    public async fetchTextHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
         return (await this.fetchHistory(this.channelID, startTime, endTime)).map(message => ({
             type: RTMessageType.ChannelMessage,
             value: message.payload,
@@ -381,7 +384,7 @@ export class Rtm extends EventEmitter {
         }));
     }
 
-    async fetchCommandHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
+    public async fetchCommandHistory(startTime: number, endTime: number): Promise<RTMessage[]> {
         return (await this.fetchHistory(this.channelID, startTime, endTime))
             .map((message): RTMessage | null => {
                 try {
@@ -403,7 +406,7 @@ export class Rtm extends EventEmitter {
             .filter((v): v is RTMessage => v !== null);
     }
 
-    async fetchHistory(
+    public async fetchHistory(
         channel: string | null,
         startTime: number,
         endTime: number,

@@ -15,9 +15,9 @@ function getCoursewareDir(taskUUID: string, taskType: TaskType): string {
  * Preload courseware
  */
 class CoursewarePreloader {
-    downloaders = new Map<TaskUUID, DownloaderHelper>();
+    public downloaders = new Map<TaskUUID, DownloaderHelper>();
 
-    async preload(taskUUID: string, taskType: TaskType): Promise<void> {
+    public async preload(taskUUID: string, taskType: TaskType): Promise<void> {
         if (this.downloaders.has(taskUUID) || (await this.has(taskUUID, taskType))) {
             return;
         }
@@ -63,11 +63,11 @@ class CoursewarePreloader {
         }
     }
 
-    has(taskUUID: string, taskType: TaskType): Promise<boolean> {
+    public has(taskUUID: string, taskType: TaskType): Promise<boolean> {
         return pathExists(getCoursewareDir(taskUUID, taskType));
     }
 
-    async remove(taskUUID: string, taskType: TaskType): Promise<void> {
+    public async remove(taskUUID: string, taskType: TaskType): Promise<void> {
         const downloader = this.downloaders.get(taskUUID);
         if (downloader) {
             try {

@@ -14,31 +14,31 @@ export class GlobalStore {
      * Show tooltips for classroom record hints.
      * Hide it permanently if user close the tooltip.
      */
-    isShowRecordHintTips = true;
-    userInfo: UserInfo | null = null;
-    whiteboardRoomUUID: string | null = null;
-    whiteboardRoomToken: string | null = null;
-    rtcToken: string | null = null;
-    rtcUID: number | null = null;
-    rtmToken: string | null = null;
+    public isShowRecordHintTips = true;
+    public userInfo: UserInfo | null = null;
+    public whiteboardRoomUUID: string | null = null;
+    public whiteboardRoomToken: string | null = null;
+    public rtcToken: string | null = null;
+    public rtcUID: number | null = null;
+    public rtmToken: string | null = null;
 
-    get userUUID(): string | undefined {
+    public get userUUID(): string | undefined {
         return this.userInfo?.userUUID;
     }
 
-    get userName(): string | undefined {
+    public get userName(): string | undefined {
         return this.userInfo?.name;
     }
 
-    constructor() {
+    public constructor() {
         autoPersistStore({ storeLSName: "GlobalStore", store: this, version: LS_VERSION });
     }
 
-    updateUserInfo = (userInfo: UserInfo): void => {
+    public updateUserInfo = (userInfo: UserInfo): void => {
         this.userInfo = userInfo;
     };
 
-    updateToken = (
+    public updateToken = (
         config: Partial<
             Pick<
                 GlobalStore,
@@ -61,7 +61,7 @@ export class GlobalStore {
         }
     };
 
-    hideRecordHintTips = (): void => {
+    public hideRecordHintTips = (): void => {
         this.isShowRecordHintTips = false;
     };
 }

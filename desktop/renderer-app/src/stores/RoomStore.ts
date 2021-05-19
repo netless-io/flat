@@ -73,17 +73,17 @@ export interface PeriodicRoomItem {
  * This should be the only central store for all the room info.
  */
 export class RoomStore {
-    rooms = observable.map<string, RoomItem>();
-    periodicRooms = observable.map<string, PeriodicRoomItem>();
+    public rooms = observable.map<string, RoomItem>();
+    public periodicRooms = observable.map<string, PeriodicRoomItem>();
 
-    constructor() {
+    public constructor() {
         makeAutoObservable(this);
     }
 
     /**
      * @returns roomUUID
      */
-    async createOrdinaryRoom(payload: CreateOrdinaryRoomPayload): Promise<string> {
+    public async createOrdinaryRoom(payload: CreateOrdinaryRoomPayload): Promise<string> {
         if (!globalStore.userUUID) {
             throw new Error("cannot create room: user not login.");
         }
@@ -100,12 +100,12 @@ export class RoomStore {
         return roomUUID;
     }
 
-    async createPeriodicRoom(payload: CreatePeriodicRoomPayload): Promise<void> {
+    public async createPeriodicRoom(payload: CreatePeriodicRoomPayload): Promise<void> {
         await createPeriodicRoom(payload);
         // need roomUUID and periodicUUID from server to cache the payload
     }
 
-    async joinRoom(roomUUID: string): Promise<JoinRoomResult> {
+    public async joinRoom(roomUUID: string): Promise<JoinRoomResult> {
         const data = await joinRoom(roomUUID);
         globalStore.updateToken(data);
         this.updateRoom(roomUUID, data.ownerUUID, {
@@ -119,7 +119,7 @@ export class RoomStore {
     /**
      * @returns a list of room uuids
      */
-    async listRooms(type: ListRoomsType, payload: ListRoomsPayload): Promise<string[]> {
+    public async listRooms(type: ListRoomsType, payload: ListRoomsPayload): Promise<string[]> {
         const rooms = await listRooms(type, payload);
         const roomUUIDs: string[] = [];
         runInAction(() => {
@@ -134,11 +134,11 @@ export class RoomStore {
         return roomUUIDs;
     }
 
-    async cancelRoom(payload: CancelRoomPayload): Promise<void> {
+    public async cancelRoom(payload: CancelRoomPayload): Promise<void> {
         await cancelRoom(payload);
     }
 
-    async syncOrdinaryRoomInfo(roomUUID: string): Promise<void> {
+    public async syncOrdinaryRoomInfo(roomUUID: string): Promise<void> {
         const { roomInfo, ...restInfo } = await ordinaryRoomInfo(roomUUID);
         this.updateRoom(roomUUID, roomInfo.ownerUUID, {
             ...restInfo,
@@ -147,11 +147,11 @@ export class RoomStore {
         });
     }
 
-    async syncPeriodicRoomInfo(periodicUUID: string): Promise<void> {
+    public async syncPeriodicRoomInfo(periodicUUID: string): Promise<void> {
         this.updatePeriodicRoom(periodicUUID, await periodicRoomInfo(periodicUUID));
     }
 
-    async syncPeriodicSubRoomInfo(payload: PeriodicSubRoomInfoPayload): Promise<void> {
+    public async syncPeriodicSubRoomInfo(payload: PeriodicSubRoomInfoPayload): Promise<void> {
         const { roomInfo, previousPeriodicRoomBeginTime, nextPeriodicRoomEndTime, ...restInfo } =
             await periodicSubRoomInfo(payload);
         this.updateRoom(payload.roomUUID, roomInfo.ownerUUID, {
@@ -164,7 +164,7 @@ export class RoomStore {
         });
     }
 
-    async syncRecordInfo(roomUUID: string): Promise<void> {
+    public async syncRecordInfo(roomUUID: string): Promise<void> {
         const roomInfo = await recordInfo(roomUUID);
         const {
             ownerUUID,
@@ -188,7 +188,7 @@ export class RoomStore {
         });
     }
 
-    updateRoom(roomUUID: string, ownerUUID: string, roomInfo: Partial<RoomItem>): void {
+    public updateRoom(roomUUID: string, ownerUUID: string, roomInfo: Partial<RoomItem>): void {
         const room = this.rooms.get(roomUUID);
         if (room) {
             const keys = Object.keys(roomInfo) as unknown as Array<keyof RoomItem>;
@@ -202,7 +202,7 @@ export class RoomStore {
         }
     }
 
-    updatePeriodicRoom(periodicUUID: string, roomInfo: PeriodicRoomInfoResult): void {
+    public updatePeriodicRoom(periodicUUID: string, roomInfo: PeriodicRoomInfoResult): void {
         roomInfo.rooms.forEach(room => {
             this.updateRoom(room.roomUUID, roomInfo.periodic.ownerUUID, {
                 ...room,

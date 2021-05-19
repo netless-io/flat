@@ -218,16 +218,16 @@ module.exports = {
             },
         ],
         "@typescript-eslint/consistent-type-assertions": "error",
-        // "@typescript-eslint/explicit-member-accessibility": [
-        //     "error",
-        //     {
-        //         accessibility: "explicit",
-        //         overrides: {
-        //             accessors: "explicit",
-        //             constructors: "explicit",
-        //         },
-        //     },
-        // ],
+        "@typescript-eslint/explicit-member-accessibility": [
+            "error",
+            {
+                accessibility: "explicit",
+                overrides: {
+                    accessors: "explicit",
+                    constructors: "explicit",
+                },
+            },
+        ],
         "@typescript-eslint/member-delimiter-style": [
             "error",
             {

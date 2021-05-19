@@ -8,19 +8,19 @@ const LS_VERSION = 1;
  */
 export class ConfigStore {
     /** Turn on camera when joining room */
-    autoCameraOn = false;
+    public autoCameraOn = false;
     /** Turn on mic when joining room */
-    autoMicOn = true;
+    public autoMicOn = true;
 
-    constructor() {
+    public constructor() {
         autoPersistStore({ storeLSName: "ConfigStore", store: this, version: LS_VERSION });
     }
 
-    updateAutoCameraOn = (isOn: boolean): void => {
+    public updateAutoCameraOn = (isOn: boolean): void => {
         this.autoCameraOn = isOn;
     };
 
-    updateAutoMicOn = (isOn: boolean): void => {
+    public updateAutoMicOn = (isOn: boolean): void => {
         this.autoMicOn = isOn;
     };
 }

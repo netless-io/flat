@@ -21,19 +21,19 @@ export enum UploadStatusType {
 }
 
 export class UploadTask {
-    uploadID = v4uuid();
+    public uploadID = v4uuid();
 
-    status = UploadStatusType.Pending;
+    public status = UploadStatusType.Pending;
 
-    percent = 0;
+    public percent = 0;
 
-    file: File;
+    public file: File;
 
-    fileUUID?: string;
+    public fileUUID?: string;
 
     private _cancelTokenSource?: CancelTokenSource;
 
-    constructor(file: File) {
+    public constructor(file: File) {
         this.file = file;
 
         makeAutoObservable<this, "_cancelTokenSource">(this, {
@@ -42,7 +42,7 @@ export class UploadTask {
         });
     }
 
-    async upload(): Promise<void> {
+    public async upload(): Promise<void> {
         if (this.getStatus() !== UploadStatusType.Pending) {
             return;
         }
@@ -134,7 +134,7 @@ export class UploadTask {
         }
     }
 
-    async finish(): Promise<void> {
+    public async finish(): Promise<void> {
         if (this.fileUUID) {
             try {
                 await uploadFinish({ fileUUID: this.fileUUID });
@@ -144,14 +144,14 @@ export class UploadTask {
         }
     }
 
-    cancelUploadProgress(): void {
+    public cancelUploadProgress(): void {
         if (this._cancelTokenSource) {
             this._cancelTokenSource.cancel();
             this._cancelTokenSource = void 0;
         }
     }
 
-    async cancelUpload(): Promise<void> {
+    public async cancelUpload(): Promise<void> {
         if (this.getStatus() === UploadStatusType.Cancelling || !this.fileUUID) {
             return;
         }
@@ -168,19 +168,19 @@ export class UploadTask {
         this.updateStatus(UploadStatusType.Cancelled);
     }
 
-    updateFileUUID(fileUUID: string): void {
+    public updateFileUUID(fileUUID: string): void {
         this.fileUUID = fileUUID;
     }
 
-    updatePercent(percent: number): void {
+    public updatePercent(percent: number): void {
         this.percent = percent;
     }
 
-    updateStatus(status: UploadStatusType): void {
+    public updateStatus(status: UploadStatusType): void {
         this.status = status;
     }
 
-    getStatus(): UploadStatusType {
+    public getStatus(): UploadStatusType {
         return this.status;
     }
 }

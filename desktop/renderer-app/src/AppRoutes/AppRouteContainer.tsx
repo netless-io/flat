@@ -17,16 +17,16 @@ export class AppRouteContainer extends React.Component<
     AppRouteContainerProps,
     AppRouteContainerState
 > {
-    constructor(props: AppRouteContainerProps) {
+    public constructor(props: AppRouteContainerProps) {
         super(props);
         this.state = { hasError: false };
     }
 
-    static getDerivedStateFromError(): Partial<AppRouteContainerState> {
+    public static getDerivedStateFromError(): Partial<AppRouteContainerState> {
         return { hasError: true };
     }
 
-    componentDidMount(): void {
+    public componentDidMount(): void {
         const { Comp, title } = this.props;
         const compName = Comp.displayName || Comp.name;
         document.title =
@@ -39,11 +39,11 @@ export class AppRouteContainer extends React.Component<
         window.getSelection()?.removeAllRanges();
     }
 
-    componentDidCatch(error: any, errorInfo: any): void {
+    public componentDidCatch(error: any, errorInfo: any): void {
         console.error(error, errorInfo);
     }
 
-    render(): React.ReactNode {
+    public render(): React.ReactNode {
         if (this.state.hasError) {
             return <PageError />;
         }
