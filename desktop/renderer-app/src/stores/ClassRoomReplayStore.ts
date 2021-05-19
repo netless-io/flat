@@ -164,7 +164,7 @@ export class ClassRoomReplayStore {
     destroy = (): void => {
         this.smartPlayer.destroy();
         this.smartPlayer.removeAllListeners();
-        this.rtm.destroy();
+        void this.rtm.destroy();
         this.smartPlayer.whiteboardPlayer?.callbacks.off(
             "onProgressTimeChanged",
             this.onPlayerProgressTimeChanged,
@@ -297,7 +297,7 @@ export class ClassRoomReplayStore {
     private onPlayerProgressTimeChanged = (offset: number): void => {
         // always keep the latest current time
         this._currentPlayTime = this.smartPlayer.whiteboardPlayer!.beginTimestamp + offset;
-        this.syncMessages();
+        void this.syncMessages();
     };
 
     private updateReadyState = (ready: boolean): void => {

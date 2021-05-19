@@ -15,9 +15,9 @@ export const AboutPage = (): React.ReactElement => {
     const [newVersion, setNewVersion] = useState<string>();
 
     const checkUpgradeVersion = (): void => {
-        sp(ipcSyncByApp("get-update-info")).then(data => {
+        void sp(ipcSyncByApp("get-update-info")).then(data => {
             if (!data.hasNewVersion || data.version === runtime.appVersion) {
-                message.info("当前已是最新版本");
+                void message.info("当前已是最新版本");
             } else {
                 setNewVersion(data.version);
             }

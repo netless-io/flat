@@ -38,7 +38,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
     const onCopy = useCallback(
         (text: string): void => {
             clipboard.writeText(text);
-            message.success("复制成功");
+            void message.success("复制成功");
             onCopied();
         },
         [onCopied],

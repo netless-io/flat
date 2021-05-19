@@ -112,14 +112,14 @@ const HotKeyTableKeys = Object.freeze(Object.keys(HotKeyTableExpandRow));
 // gen key of expanded table
 HotKeyTableKeys.forEach((data: string) => {
     HotKeyTableExpandRow[data].forEach((row: HotKey, index) => {
-        row.key = `${row.name + index}`;
+        row.key = `${row.name + String(index)}`;
     });
 });
 
 const tableRow: HotKeyTable[] = HotKeyTableKeys.map((data: string, index) => {
     return {
         name: data,
-        key: `${data + index}`,
+        key: `${data + String(index)}`,
         desc: HotKeyTableRow[index],
     };
 });

@@ -17,9 +17,7 @@ enum LoginStatusType {
     Failed = "Failed",
 }
 
-export interface SplashPageProps {}
-
-export const SplashPage = observer<SplashPageProps>(function SplashPage() {
+export const SplashPage = observer<{}>(function SplashPage() {
     useWindowSize("Splash");
 
     const [loginStatus, updateLoginStatus] = useState(LoginStatusType.Idle);
@@ -55,7 +53,7 @@ export const SplashPage = observer<SplashPageProps>(function SplashPage() {
         // wait at least 1s until animation finishes
         const pWait1s = new Promise(resolve => setTimeout(resolve, 1000));
 
-        Promise.all([checkLogin(), pWait1s]).then(([nextPage]) => {
+        void Promise.all([checkLogin(), pWait1s]).then(([nextPage]) => {
             if (!isUnMount) {
                 if (nextPage === RouteNameType.HomePage) {
                     pushHistory(nextPage);

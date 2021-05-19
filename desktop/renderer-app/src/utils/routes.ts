@@ -4,14 +4,12 @@ import { useCallback } from "react";
 
 export { RouteNameType } from "../route-config";
 
-type PickExtraRouteConfig<
-    T extends RouteNameType,
-    K extends string
-> = T extends keyof ExtraRouteConfig
-    ? K extends keyof ExtraRouteConfig[T]
-        ? ExtraRouteConfig[T][K]
-        : string
-    : string;
+type PickExtraRouteConfig<T extends RouteNameType, K extends string> =
+    T extends keyof ExtraRouteConfig
+        ? K extends keyof ExtraRouteConfig[T]
+            ? ExtraRouteConfig[T][K]
+            : string
+        : string;
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /**

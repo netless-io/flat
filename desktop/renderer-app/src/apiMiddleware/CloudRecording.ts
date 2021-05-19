@@ -173,7 +173,7 @@ export class CloudRecording {
     private startReportEndTime(): void {
         this._reportEndTimeTimeout = window.setInterval(() => {
             if (this._isRecording) {
-                updateRecordEndTime(this.roomUUID);
+                void updateRecordEndTime(this.roomUUID);
             } else {
                 window.clearInterval(this._reportEndTimeTimeout);
             }

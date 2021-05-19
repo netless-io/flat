@@ -168,7 +168,7 @@ export class Rtm extends EventEmitter {
         });
         this.client.on("TokenExpired", async () => {
             this.token = await generateRTMToken();
-            this.client.renewToken(this.token);
+            await this.client.renewToken(this.token);
         });
         this.client.on("ConnectionStateChanged", (newState, reason) => {
             console.log("RTM client state: ", newState, reason);
@@ -251,7 +251,7 @@ export class Rtm extends EventEmitter {
         this.channel = void 0;
         this.commands = void 0;
 
-        const promises: Promise<any>[] = [];
+        const promises: Array<Promise<any>> = [];
 
         if (channel) {
             promises.push(channel.leave());
@@ -301,7 +301,7 @@ export class Rtm extends EventEmitter {
                 { enableHistoricalMessaging: true },
             );
             if (NODE_ENV === "development") {
-                console.log(`[RTM] send group message: `, text);
+                console.log("[RTM] send group message: ", text);
             }
         }
     }
@@ -341,24 +341,22 @@ export class Rtm extends EventEmitter {
         if (peerId !== undefined) {
             await polly()
                 .waitAndRetry(retry)
-                .executeForPromise(
-                    async (): Promise<void> => {
-                        const { hasPeerReceived } = await this.client.sendMessageToPeer(
-                            {
-                                messageType: AgoraRTM.MessageType.TEXT,
-                                text: JSON.stringify({ r: this.commandsID, t: type, v: value }),
-                            },
-                            peerId,
-                            { enableHistoricalMessaging: keepHistory },
-                        );
-                        if (NODE_ENV === "development") {
-                            console.log(`[RTM] send p2p command to ${peerId}: `, type, value);
-                        }
-                        if (!hasPeerReceived) {
-                            return Promise.reject("peer not received");
-                        }
-                    },
-                );
+                .executeForPromise(async (): Promise<void> => {
+                    const { hasPeerReceived } = await this.client.sendMessageToPeer(
+                        {
+                            messageType: AgoraRTM.MessageType.TEXT,
+                            text: JSON.stringify({ r: this.commandsID, t: type, v: value }),
+                        },
+                        peerId,
+                        { enableHistoricalMessaging: keepHistory },
+                    );
+                    if (NODE_ENV === "development") {
+                        console.log(`[RTM] send p2p command to ${peerId}: `, type, value);
+                    }
+                    if (!hasPeerReceived) {
+                        return Promise.reject("peer not received");
+                    }
+                });
         } else {
             await this.commands.sendMessage(
                 {
@@ -368,7 +366,7 @@ export class Rtm extends EventEmitter {
                 { enableHistoricalMessaging: keepHistory },
             );
             if (NODE_ENV === "development") {
-                console.log(`[RTM] send group command: `, type, value);
+                console.log("[RTM] send group command: ", type, value);
             }
         }
     }

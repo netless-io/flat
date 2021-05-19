@@ -33,7 +33,7 @@ export class UploadTaskManager {
             const task = new UploadTask(file);
             this.pending.unshift(task);
         }
-        this.startUpload();
+        void this.startUpload();
     }
 
     async startUpload(): Promise<void> {
@@ -61,7 +61,7 @@ export class UploadTaskManager {
                 if (process.env.NODE_ENV === "development") {
                     console.log(`[cloud storage]: UploadTaskManager uploads "${task.file.name}"`);
                 }
-                task.upload().then(() => this.finishUpload(task));
+                void task.upload().then(() => this.finishUpload(task));
             }
 
             await new Promise(resolve => setTimeout(resolve, 200));
@@ -75,7 +75,7 @@ export class UploadTaskManager {
         } else if (task.status === UploadStatusType.Failed) {
             this.failed.unshift(task);
         }
-        this.startUpload();
+        void this.startUpload();
     }
 
     retry(uploadID: UploadID): void {

@@ -24,7 +24,7 @@ export interface CloudFile {
 
 export interface ListFilesResult {
     totalUsage: number;
-    files: Array<CloudFile>;
+    files: CloudFile[];
 }
 
 export async function listFiles(payload: ListFilesPayload): Promise<ListFilesResult> {
@@ -67,8 +67,6 @@ export interface RenameFilePayload {
     fileName: string;
 }
 
-export interface RenameFileResult {}
-
 export async function renameFile(payload: RenameFilePayload): Promise<void> {
     await post("cloud-storage/alibaba-cloud/rename", payload);
 }
@@ -76,8 +74,6 @@ export async function renameFile(payload: RenameFilePayload): Promise<void> {
 export interface RemoveFilesPayload {
     fileUUIDs: string[];
 }
-
-export interface RemoveFilesResult {}
 
 export async function removeFiles(payload: RemoveFilesPayload): Promise<void> {
     await post("cloud-storage/alibaba-cloud/remove", payload);
@@ -100,17 +96,13 @@ export interface ConvertFinishPayload {
     fileUUID: string;
 }
 
-export interface ConvertFinishResult {}
-
-export async function convertFinish(payload: ConvertFinishPayload): Promise<ConvertFinishResult> {
+export async function convertFinish(payload: ConvertFinishPayload): Promise<{}> {
     return await post("cloud-storage/convert/finish", payload);
 }
 
 export interface CancelUploadPayload {
     fileUUIDs?: string[];
 }
-
-export interface CancelUploadResult {}
 
 export async function cancelUpload(payload?: CancelUploadPayload): Promise<void> {
     await post("cloud-storage/upload/cancel", payload || {});

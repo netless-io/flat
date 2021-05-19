@@ -8,6 +8,7 @@ module.exports = merge(common, {
     output: {
         filename: "static/js/[name].[contenthash:8].js",
         path: paths.appBuild,
+        clean: true,
         chunkFilename: "static/js/[name].[contenthash:8].chunk.js",
     },
 });

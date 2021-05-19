@@ -43,11 +43,11 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
 
     async function insertCourseware(file: CloudStorageFile): Promise<void> {
         if (file.convert === "converting") {
-            message.warn("正在转码中，请稍后再试");
+            void message.warn("正在转码中，请稍后再试");
             return;
         }
 
-        message.info("正在插入课件……");
+        void message.info("正在插入课件……");
 
         const ext = (/\.[^.]+$/.exec(file.fileName) || [""])[0].toLowerCase();
         switch (ext) {
@@ -59,11 +59,11 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 break;
             }
             case ".mp3": {
-                await insertAudio(file);
+                insertAudio(file);
                 break;
             }
             case ".mp4": {
-                await insertVideo(file);
+                insertVideo(file);
                 break;
             }
             case ".doc":
@@ -168,11 +168,11 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                     console.error(e);
                 }
                 if (convertingStatus.status === "Fail") {
-                    message.error(`转码失败，原因: ${convertingStatus.failedReason}`);
+                    void message.error(`转码失败，原因: ${convertingStatus.failedReason}`);
                 }
             } else {
                 message.destroy();
-                message.warn("正在转码中，请稍后再试");
+                void message.warn("正在转码中，请稍后再试");
                 return;
             }
         } else if (convertingStatus.status === "Finished" && convertingStatus.progress) {
@@ -194,7 +194,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 room.scalePptToFit();
             }
         } else {
-            message.error("无法插入课件");
+            void message.error("无法插入课件");
         }
     }
 });

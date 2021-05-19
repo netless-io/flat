@@ -101,7 +101,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     /** Render file menus item base on fileUUID */
     fileMenus = (file: CloudStorageFileUI): Array<{ key: React.Key; name: React.ReactNode }> => {
-        const menus: { key: FileMenusKey; name: ReactNode }[] = [];
+        const menus: Array<{ key: FileMenusKey; name: ReactNode }> = [];
         menus.push({ key: "download", name: "下载" });
         if (file.convert !== "error") {
             menus.push({ key: "rename", name: "重命名" });
@@ -194,7 +194,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 onOk: () => this.cancelAll(),
             });
         } else {
-            this.cancelAll();
+            void this.cancelAll();
         }
     };
 
@@ -241,13 +241,13 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     initialize(): () => void {
-        this.refreshFiles();
+        void this.refreshFiles();
 
         if (
             this.uploadTaskManager.pending.length <= 0 &&
             this.uploadTaskManager.uploadingMap.size <= 0
         ) {
-            this.uploadTaskManager.cancelAll();
+            void this.uploadTaskManager.cancelAll();
         }
 
         const disposer = reaction(
@@ -318,7 +318,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                     this._convertStatusQuerying.delete(cloudFile.fileUUID);
                 } else if (!this._convertStatusQuerying.has(cloudFile.fileUUID)) {
                     this._convertStatusQuerying.set(cloudFile.fileUUID, NaN);
-                    this.queryConvertStatus(cloudFile.fileUUID);
+                    void this.queryConvertStatus(cloudFile.fileUUID);
                 }
             }
         } catch (e) {
@@ -333,7 +333,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     private refreshFilesDebounced(timeout = 500): void {
         window.clearTimeout(this._refreshFilesTimeout);
         this._refreshFilesTimeout = window.setTimeout(() => {
-            this.refreshFiles();
+            void this.refreshFiles();
         }, timeout);
     }
 
@@ -342,7 +342,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         console.log("[cloud storage]: start now refresh");
         this._refreshFilesNowTimeout = window.setTimeout(() => {
             console.log("[cloud storage]: start now refresh!!!!!!!!!");
-            this.refreshFiles();
+            void this.refreshFiles();
         }, timeout);
     }
 
@@ -482,7 +482,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
 
         if (file.convert === "converting") {
-            this.pollConvertState(file, isDynamic);
+            void this.pollConvertState(file, isDynamic);
         }
     }
 
@@ -521,7 +521,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             });
 
             if (status === "Finished") {
-                getCoursewarePreloader().preload(file.taskUUID, dynamic ? "dynamic" : "static");
+                void getCoursewarePreloader().preload(
+                    file.taskUUID,
+                    dynamic ? "dynamic" : "static",
+                );
             }
 
             return;

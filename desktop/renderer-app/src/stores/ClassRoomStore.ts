@@ -86,10 +86,8 @@ export class ClassRoomStore {
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
 
-    private tempChannelStatus = observable.map<
-        string,
-        null | RTMEvents[RTMessageType.ChannelStatus]
-    >();
+    private tempChannelStatus =
+        observable.map<string, null | RTMEvents[RTMessageType.ChannelStatus]>();
 
     private recordingConfig: RecordingConfig;
 
@@ -228,7 +226,7 @@ export class ClassRoomStore {
         try {
             if (this.isRecording) {
                 await this.stopRecording();
-                message.success("录制完成，可到历史记录查看");
+                void message.success("录制完成，可到历史记录查看");
             } else {
                 await this.startRecording();
             }
@@ -330,7 +328,7 @@ export class ClassRoomStore {
                 }
                 return true;
             });
-            this.rtm.sendCommand({
+            void this.rtm.sendCommand({
                 type: RTMessageType.DeviceState,
                 value: { userUUID, camera, mic },
                 keepHistory: true,
@@ -352,7 +350,7 @@ export class ClassRoomStore {
         };
 
         if (this.isRecording) {
-            this.cloudRecording.updateLayout(payload);
+            void this.cloudRecording.updateLayout(payload);
         }
     };
 
@@ -366,7 +364,7 @@ export class ClassRoomStore {
                 }
                 return true;
             });
-            this.rtm.sendCommand({
+            void this.rtm.sendCommand({
                 type: RTMessageType.AcceptRaiseHand,
                 value: { userUUID, accept: true },
                 keepHistory: true,
@@ -385,7 +383,7 @@ export class ClassRoomStore {
     onCancelAllHandRaising = (): void => {
         if (this.isCreator) {
             this.cancelAllHandRaising();
-            this.rtm.sendCommand({
+            void this.rtm.sendCommand({
                 type: RTMessageType.CancelAllHandRaising,
                 value: true,
                 keepHistory: true,
@@ -406,7 +404,7 @@ export class ClassRoomStore {
             return true;
         });
         if (this.users.currentUser) {
-            this.rtm.sendCommand({
+            void this.rtm.sendCommand({
                 type: RTMessageType.RaiseHand,
                 value: this.users.currentUser.isRaiseHand,
                 keepHistory: true,
@@ -433,7 +431,7 @@ export class ClassRoomStore {
         }
     };
 
-    onSpeak = async (configs: { userUUID: string; speak: boolean }[]): Promise<void> => {
+    onSpeak = async (configs: Array<{ userUUID: string; speak: boolean }>): Promise<void> => {
         if (!this.isCreator) {
             // joiner can only turn off speaking
             configs = configs.filter(config => !config.speak && config.userUUID === this.userUUID);
@@ -492,7 +490,7 @@ export class ClassRoomStore {
     }
 
     async destroy(): Promise<void> {
-        const promises: Promise<any>[] = [];
+        const promises: Array<Promise<any>> = [];
 
         promises.push(this.rtm.destroy());
 
@@ -775,7 +773,7 @@ export class ClassRoomStore {
                 this.users.handRaisingJoiners.forEach(generateUStates);
                 this.users.otherJoiners.forEach(generateUStates);
 
-                this.rtm.sendCommand({
+                void this.rtm.sendCommand({
                     type: RTMessageType.ChannelStatus,
                     value: {
                         ban: this.isBan,
@@ -827,7 +825,7 @@ export class ClassRoomStore {
     private async updateInitialRoomState(): Promise<void> {
         if (!this.users.currentUser) {
             if (NODE_ENV === "development") {
-                console.warn(`updateInitialRoomState: current user not exits`);
+                console.warn("updateInitialRoomState: current user not exits");
             }
             return;
         }
@@ -987,7 +985,7 @@ export function useClassRoomStore(
             pushHistory(RouteNameType.HomePage);
         });
         return () => {
-            classRoomStore.destroy();
+            void classRoomStore.destroy();
         };
         // run only on component mount
         // eslint-disable-next-line react-hooks/exhaustive-deps

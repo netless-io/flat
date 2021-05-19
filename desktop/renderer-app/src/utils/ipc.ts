@@ -16,7 +16,7 @@ const ipcAsync = (windowName: constants.WindowsName) => {
 
 export const ipcAsyncByMainWindow = <
     T extends keyof ipc.WindowActionAsync,
-    U extends Parameters<ipc.WindowActionAsync[T]>[0]
+    U extends Parameters<ipc.WindowActionAsync[T]>[0],
 >(
     action: T,
     args: U,
@@ -26,7 +26,7 @@ export const ipcAsyncByMainWindow = <
 
 export const ipcAsyncByMainClass = <
     T extends keyof ipc.WindowActionAsync,
-    U extends Parameters<ipc.WindowActionAsync[T]>[0]
+    U extends Parameters<ipc.WindowActionAsync[T]>[0],
 >(
     action: T,
     args: U,
@@ -36,7 +36,7 @@ export const ipcAsyncByMainClass = <
 
 export const ipcAsyncByMainReplay = <
     T extends keyof ipc.WindowActionAsync,
-    U extends Parameters<ipc.WindowActionAsync[T]>[0]
+    U extends Parameters<ipc.WindowActionAsync[T]>[0],
 >(
     action: T,
     args: U,
@@ -46,7 +46,7 @@ export const ipcAsyncByMainReplay = <
 
 export const ipcAsyncByApp = <
     T extends keyof ipc.AppActionAsync,
-    U extends Parameters<ipc.AppActionAsync[T]>[0]
+    U extends Parameters<ipc.AppActionAsync[T]>[0],
 >(
     action: T,
     args?: U,
@@ -56,7 +56,7 @@ export const ipcAsyncByApp = <
 
 export const ipcSyncByApp = <
     T extends keyof ipc.AppActionSync,
-    U extends Parameters<ipc.AppActionSync[T]>[0]
+    U extends Parameters<ipc.AppActionSync[T]>[0],
 >(
     action: T,
     args?: U,

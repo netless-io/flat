@@ -110,7 +110,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                                   },
                     }),
                 );
-                message.success("修改成功");
+                void message.success("修改成功");
                 history.goBack();
             } catch (e) {
                 console.error(e);

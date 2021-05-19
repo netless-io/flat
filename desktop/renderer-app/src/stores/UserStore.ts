@@ -156,7 +156,7 @@ export class UserStore {
 
     /** Return a random joiner that is not current user */
     pickRandomJoiner = (): User | undefined => {
-        let startIndex = Math.floor(Math.random() * this.joiners.length);
+        const startIndex = Math.floor(Math.random() * this.joiners.length);
 
         // keep picking until a suitable user is found
         for (let count = 0; count < this.joiners.length; count++) {

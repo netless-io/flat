@@ -152,12 +152,8 @@ export class RoomStore {
     }
 
     async syncPeriodicSubRoomInfo(payload: PeriodicSubRoomInfoPayload): Promise<void> {
-        const {
-            roomInfo,
-            previousPeriodicRoomBeginTime,
-            nextPeriodicRoomEndTime,
-            ...restInfo
-        } = await periodicSubRoomInfo(payload);
+        const { roomInfo, previousPeriodicRoomBeginTime, nextPeriodicRoomEndTime, ...restInfo } =
+            await periodicSubRoomInfo(payload);
         this.updateRoom(payload.roomUUID, roomInfo.ownerUUID, {
             ...restInfo,
             ...roomInfo,
@@ -195,7 +191,7 @@ export class RoomStore {
     updateRoom(roomUUID: string, ownerUUID: string, roomInfo: Partial<RoomItem>): void {
         const room = this.rooms.get(roomUUID);
         if (room) {
-            const keys = (Object.keys(roomInfo) as unknown) as Array<keyof RoomItem>;
+            const keys = Object.keys(roomInfo) as unknown as Array<keyof RoomItem>;
             for (const key of keys) {
                 if (key !== "roomUUID") {
                     (room[key] as any) = roomInfo[key];

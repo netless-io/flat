@@ -21,8 +21,8 @@ export class WhiteboardStore {
     phase: RoomPhase = RoomPhase.Connecting;
     viewMode: ViewMode | null = null;
     isWritable: boolean;
-    isShowPreviewPanel: boolean = false;
-    isFileOpen: boolean = false;
+    isShowPreviewPanel = false;
+    isFileOpen = false;
 
     /** is room Creator */
     readonly isCreator: boolean;

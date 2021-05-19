@@ -26,7 +26,7 @@ export const CopyInvitationItem = observer<CopyInvitationItemProps>(function Del
         <>
             <Menu.Item
                 {...restProps}
-                onClick={async e => {
+                onClick={e => {
                     if (handleClick) {
                         handleClick();
                     }

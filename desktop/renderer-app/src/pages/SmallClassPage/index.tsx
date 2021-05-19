@@ -108,9 +108,9 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     useEffect(() => {
         if (!classRoomStore.isCreator && whiteboardStore.room) {
             if (classRoomStore.classMode === ClassModeType.Interaction) {
-                whiteboardStore.updateWritable(true);
+                void whiteboardStore.updateWritable(true);
             } else if (classRoomStore.users.currentUser) {
-                whiteboardStore.updateWritable(classRoomStore.users.currentUser.isSpeak);
+                void whiteboardStore.updateWritable(classRoomStore.users.currentUser.isSpeak);
             }
         }
         // dumb exhaustive-deps
@@ -358,10 +358,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         }
         if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
             room.setViewMode(ViewMode.Broadcaster);
-            message.success("其他用户将跟随您的视角");
+            void message.success("其他用户将跟随您的视角");
         } else {
             room.setViewMode(ViewMode.Freedom);
-            message.success("其他用户将停止跟随您的视角");
+            void message.success("其他用户将停止跟随您的视角");
         }
     }
 

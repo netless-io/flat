@@ -7,7 +7,7 @@ import { SelectProps } from "antd/lib/select";
 
 const RoomTypeList = Object.freeze([RoomType.BigClass, RoomType.SmallClass, RoomType.OneToOne]);
 
-interface RoomTypeSelectProps extends SelectProps<RoomType> {}
+type RoomTypeSelectProps = SelectProps<RoomType>;
 
 export const RoomTypeSelect = observer<RoomTypeSelectProps>(function RoomTypeOption(props) {
     return (

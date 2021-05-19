@@ -96,7 +96,7 @@ export const RemoveRoomModal = observer<RemoveRoomModalProps>(function RemoveRoo
 
             const content = isCreator ? "已取消该房间" : "已移除该房间";
 
-            message.success(content);
+            void message.success(content);
         } catch (e) {
             console.error(e);
             errorTips(e);

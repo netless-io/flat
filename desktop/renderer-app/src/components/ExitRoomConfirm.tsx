@@ -80,7 +80,7 @@ export function useExitRoomConfirmModal({
                 setVisible(true);
                 setConfirmType(confirmType);
             } else {
-                onReturnMain();
+                void onReturnMain();
             }
         },
         [onReturnMain, roomStatus],

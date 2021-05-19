@@ -57,7 +57,7 @@ class CoursewarePreloader {
             }
         });
 
-        downloader.start();
+        await downloader.start();
         if (process.env.NODE_ENV === "development") {
             console.log("[preloader] download started", taskUUID, taskType);
         }

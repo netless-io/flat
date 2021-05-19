@@ -11,7 +11,7 @@ export const excludeRange = (slice1: number, slice2?: number): number[] =>
     slice2
         ? Array(slice2 - slice1 + 1)
               .fill(slice1)
-              .map((i, k) => i + k)
+              .map((i, k) => Number(i) + k)
         : Array.from(Array(slice1).keys());
 
 /** get a now Date object with 0 second and 0 millisecond */

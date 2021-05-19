@@ -14,9 +14,8 @@ const DatePickerInner = generatePicker<Date>(dateFnsGenerateConfig);
 export const DatePicker: FC<DatePickerProps> = props => {
     // For some reason DatePickerInner does not receive configs from ConfigContext.
     // Pass them to DatePickerInner manually.
-    const { getPopupContainer: getContextPopupContainer, locale: localeContext } = useContext(
-        ConfigContext,
-    );
+    const { getPopupContainer: getContextPopupContainer, locale: localeContext } =
+        useContext(ConfigContext);
 
     return (
         <DatePickerInner

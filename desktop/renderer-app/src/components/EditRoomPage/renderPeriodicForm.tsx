@@ -58,13 +58,8 @@ export function renderPeriodicForm(
     );
 
     function renderPeriodicRoomTips(): React.ReactElement {
-        const {
-            periodic,
-            type: roomType,
-        }: Pick<EditRoomFormValues, "periodic" | "type"> = form.getFieldsValue([
-            "periodic",
-            "type",
-        ]);
+        const { periodic, type: roomType }: Pick<EditRoomFormValues, "periodic" | "type"> =
+            form.getFieldsValue(["periodic", "type"]);
         return (
             <div className="edit-room-tips">
                 {periodic.weeks.length > 0 ? (
@@ -125,39 +120,24 @@ export function renderPeriodicForm(
     }
 
     function onWeekRateChanged(weeks: Week[]): void {
-        const {
-            beginTime,
-            periodic,
-        }: Pick<EditRoomFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
-            "beginTime",
-            "periodic",
-        ]);
+        const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
+            form.getFieldsValue(["beginTime", "periodic"]);
         syncPeriodicEndAmount(form, beginTime, { ...periodic, weeks });
     }
 
     function onPeriodicRateChanged(value: string | number | undefined): void {
         const rate = Number(value);
         if (!Number.isNaN(rate)) {
-            const {
-                beginTime,
-                periodic,
-            }: Pick<EditRoomFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
-                "beginTime",
-                "periodic",
-            ]);
+            const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
+                form.getFieldsValue(["beginTime", "periodic"]);
             syncPeriodicEndAmount(form, beginTime, { ...periodic, rate });
         }
     }
 
     function onPeriodicEndTimeChanged(date: Date | null): void {
         if (date) {
-            const {
-                beginTime,
-                periodic,
-            }: Pick<EditRoomFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
-                "beginTime",
-                "periodic",
-            ]);
+            const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
+                form.getFieldsValue(["beginTime", "periodic"]);
             syncPeriodicEndAmount(form, beginTime, { ...periodic, endTime: date });
         }
     }
@@ -172,21 +152,16 @@ export function renderPeriodicForm(
 
     function validatePeriodicEndTime(): RuleObject {
         return {
-            validator: async (_, value: Date) => {
-                const {
-                    periodic,
-                    beginTime,
-                }: Pick<EditRoomFormValues, "periodic" | "beginTime"> = form.getFieldsValue([
-                    "periodic",
-                    "beginTime",
-                ]);
+            validator: (_, value: Date) => {
+                const { periodic, beginTime }: Pick<EditRoomFormValues, "periodic" | "beginTime"> =
+                    form.getFieldsValue(["periodic", "beginTime"]);
 
                 if (periodic.rate > 50) {
                     throw new Error("最多允许预定 50 个房间");
                 }
 
                 if (isBefore(value, beginTime)) {
-                    throw new Error(`结束重复日期不能小于开始时间日期`);
+                    throw new Error("结束重复日期不能小于开始时间日期");
                 }
             },
         };

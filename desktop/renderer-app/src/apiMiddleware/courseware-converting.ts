@@ -9,12 +9,12 @@ export interface ConvertingTaskStatus {
         totalPageSize: number;
         convertedPageSize: number;
         convertedPercentage: number;
-        convertedFileList: {
+        convertedFileList: Array<{
             width: number;
             height: number;
             conversionFileUrl: string;
             preview?: string;
-        }[];
+        }>;
         currentStep: "Extracting" | "Packaging" | "GeneratingPreview" | "MediaTranscode";
     };
 }
