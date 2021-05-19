@@ -161,6 +161,7 @@ module.exports = {
             system_vars: true,
             default_node_env: "development",
         }),
+        new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|zh-cn/),
         new ESLintPlugin({
             fix: true,
             extensions: ["ts", "tsx"],
