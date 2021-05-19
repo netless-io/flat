@@ -18,6 +18,5 @@ export const Overview: Story<MainPageHeaderProps> = args => (
     </Router>
 );
 Overview.args = {
-    routePath: "/example/path",
     title: <span>Example</span>,
 };

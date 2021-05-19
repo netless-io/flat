@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 import { RoomDetailFooter, RoomDetailFooterProps } from ".";
-import { RoomStatus, RoomType } from "../../../types/room";
+import { RoomStatus, RoomType, Week } from "../../../types/room";
 import { BrowserRouter as Router } from "react-router-dom";
 
 const storyMeta: Meta = {
@@ -28,11 +28,7 @@ Overview.args = {
         beginTime: 1619771930756,
         endTime: 1619775530756,
     },
-    periodicWeeks: [1, 3, 5],
-    routePath: "/example",
+    periodicWeeks: [Week.Friday, Week.Saturday, Week.Sunday],
     isCreator: true,
     userName: "Flat",
-    onJoinRoom: () => {},
-    onReplayRoom: () => {},
-    onCancelRoom: () => {},
 };
