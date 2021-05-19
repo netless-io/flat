@@ -38,18 +38,15 @@
     width: 72px;
     flex-direction: column;
     background-color: rgb(19, 20, 21);
-
-    a {
-        color: #fff;
-        padding-bottom: 16px;
-    }
 }
 
 .side-menu-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 14px;
+    > a {
+        padding-top: 16px;
+    }
 }
 
 .side-menu-footer-container {
@@ -130,9 +127,10 @@
     padding-bottom: 8px;
 
     .ant-divider-horizontal {
-        margin: 0;
         min-width: initial;
         width: 80%;
+        margin: 0;
+        margin-bottom: 7px;
     }
 }
 
