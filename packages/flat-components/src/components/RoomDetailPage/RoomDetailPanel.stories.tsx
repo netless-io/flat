@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 import { RoomDetailPanel, RoomDetailPanelProps } from ".";
-import { RoomInfo, RoomStatus, RoomType } from "../../types/room";
+import { RoomInfo, RoomStatus, RoomType, Week } from "../../types/room";
 import { BrowserRouter as Router } from "react-router-dom";
 
 const storyMeta: Meta = {
@@ -31,11 +31,8 @@ export const Overview: Story<RoomDetailPanelProps> = args => (
 Overview.args = {
     roomInfo,
     room: roomInfo,
-    weeks: [1, 3, 5],
-    routePath: "/example",
-    isCreator: true,
     userName: "Flat",
-    onJoinRoom: () => {},
-    onReplayRoom: () => {},
-    onCancelRoom: () => {},
+    periodicWeeks: [Week.Friday, Week.Sunday, Week.Wednesday],
+    isCreator: true,
+    isPeriodicDetailsPage: false,
 };
