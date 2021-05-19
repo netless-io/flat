@@ -17,7 +17,6 @@ export const Overview: Story<RemoveRoomModalProps> = args => (
 Overview.args = {
     cancelModalVisible: true,
     isCreator: true,
-    roomUUID: "roomUUID",
     periodicUUID: "periodicUUID",
     isPeriodicDetailsPage: true,
     onCancel: () => {},

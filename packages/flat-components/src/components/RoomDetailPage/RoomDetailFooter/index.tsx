@@ -2,7 +2,6 @@ import "./index.less";
 
 import React, { useState } from "react";
 import { Button, message } from "antd";
-import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { RoomInfo, RoomStatus, Week } from "../../../types/room";
 import { InviteModal } from "../../InviteModal";
@@ -10,25 +9,27 @@ import { RemoveRoomModal } from "../../RemoveRoomModal";
 
 export interface RoomDetailFooterProps {
     room: RoomInfo;
-    routePath: string;
     userName: string;
     isCreator: boolean;
+    isPeriodicDetailsPage: boolean;
     // repeated weeks for periodic rooms
     periodicWeeks?: Week[];
     onJoinRoom: () => void;
     onReplayRoom: () => void;
-    onCancelRoom: () => void;
+    onModifyRoom: () => void;
+    onCancelRoom: (all: boolean) => void;
     onCopyInvitation: (text: string) => void;
 }
 
 export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDetailFooter({
     room,
     userName,
-    routePath,
     isCreator,
+    isPeriodicDetailsPage,
     periodicWeeks,
     onJoinRoom,
     onReplayRoom,
+    onModifyRoom,
     onCancelRoom,
     onCopyInvitation,
 }) {
@@ -64,18 +65,12 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
                 {title}
             </Button>
             {isCreator && (
-                <Button className="room-detail-footer-btn" disabled={!disabled}>
-                    <Link
-                        to={{
-                            pathname: routePath,
-                            state: {
-                                roomUUID: room.roomUUID,
-                                periodicUUID: room.periodicUUID,
-                            },
-                        }}
-                    >
-                        修改房间
-                    </Link>
+                <Button
+                    className="room-detail-footer-btn"
+                    onClick={onModifyRoom}
+                    disabled={!disabled}
+                >
+                    修改房间
                 </Button>
             )}
             <Button className="room-detail-footer-btn" onClick={() => setIsShowInviteModal(true)}>
@@ -102,7 +97,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
                 isCreator={isCreator}
                 roomUUID={room?.roomUUID}
                 periodicUUID={room?.periodicUUID}
-                isPeriodicDetailsPage={false}
+                isPeriodicDetailsPage={isPeriodicDetailsPage}
                 onCancelRoom={onCancelRoom}
             />
         </div>
