@@ -51,53 +51,51 @@ export enum RoomStatusLoadingType {
 }
 
 export class ClassRoomStore {
-    readonly roomUUID: string;
+    public readonly roomUUID: string;
     /** User uuid of the current user */
-    readonly userUUID: string;
+    public readonly userUUID: string;
     /** RTM messages */
-    messages = observable.array<RTMessage>([]);
+    public messages = observable.array<RTMessage>([]);
     /** room class mode */
-    classMode: ClassModeType;
+    public classMode: ClassModeType;
     /** is creator temporary banned room for joiner operations */
-    isBan = false;
+    public isBan = false;
     /** is Cloud Recording on */
-    isRecording = false;
+    public isRecording = false;
     /** is RTC on */
-    isCalling = false;
+    public isCalling = false;
 
-    roomStatusLoading = RoomStatusLoadingType.Null;
+    public roomStatusLoading = RoomStatusLoadingType.Null;
 
-    networkQuality = {
+    public networkQuality = {
         delay: 0,
         uplink: 0,
         downlink: 0,
     };
 
-    readonly users: UserStore;
+    public readonly users: UserStore;
 
-    readonly rtcChannelType: RtcChannelType;
+    public readonly rtcChannelType: RtcChannelType;
 
-    readonly rtc: RTCAPI;
-    readonly rtm: RTMAPI;
-    readonly cloudRecording: CloudRecording;
+    public readonly rtc: RTCAPI;
+    public readonly rtm: RTMAPI;
+    public readonly cloudRecording: CloudRecording;
 
-    readonly whiteboardStore: WhiteboardStore;
+    public readonly whiteboardStore: WhiteboardStore;
 
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
 
-    private tempChannelStatus = observable.map<
-        string,
-        null | RTMEvents[RTMessageType.ChannelStatus]
-    >();
+    private tempChannelStatus =
+        observable.map<string, null | RTMEvents[RTMessageType.ChannelStatus]>();
 
-    private recordingConfig: RecordingConfig;
+    private readonly recordingConfig: RecordingConfig;
 
     private _noMoreRemoteMessages = false;
 
     private _collectChannelStatusTimeout?: number;
 
-    constructor(config: {
+    public constructor(config: {
         roomUUID: string;
         ownerUUID: string;
         recordingConfig: RecordingConfig;
@@ -137,7 +135,7 @@ export class ClassRoomStore {
         });
     }
 
-    get ownerUUID(): string {
+    public get ownerUUID(): string {
         if (this.roomInfo) {
             if (NODE_ENV === "development") {
                 if (this.roomInfo.ownerUUID !== this.ownerUUIDFromParams) {
@@ -149,27 +147,27 @@ export class ClassRoomStore {
         return this.ownerUUIDFromParams;
     }
 
-    get roomInfo(): RoomItem | undefined {
+    public get roomInfo(): RoomItem | undefined {
         return roomStore.rooms.get(this.roomUUID);
     }
 
-    get isCreator(): boolean {
+    public get isCreator(): boolean {
         return this.ownerUUID === this.userUUID;
     }
 
-    get roomStatus(): RoomStatus {
+    public get roomStatus(): RoomStatus {
         return this.roomInfo?.roomStatus || RoomStatus.Idle;
     }
 
-    startClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
+    public startClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
 
-    pauseClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Paused);
+    public pauseClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Paused);
 
-    resumeClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
+    public resumeClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
 
-    stopClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Stopped);
+    public stopClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Stopped);
 
-    hangClass = async (): Promise<void> => {
+    public hangClass = async (): Promise<void> => {
         const configs = [...this.users.speakingJoiners, ...this.users.handRaisingJoiners].map(
             user => ({
                 userUUID: user.userUUID,
@@ -186,7 +184,7 @@ export class ClassRoomStore {
         }
     };
 
-    joinRTC = async (): Promise<void> => {
+    public joinRTC = async (): Promise<void> => {
         if (this.isCalling || globalStore.rtcUID === null || globalStore.rtcUID === void 0) {
             return;
         }
@@ -206,7 +204,7 @@ export class ClassRoomStore {
         }
     };
 
-    leaveRTC = async (): Promise<void> => {
+    public leaveRTC = async (): Promise<void> => {
         if (!this.isCalling) {
             return;
         }
@@ -224,11 +222,11 @@ export class ClassRoomStore {
         }
     };
 
-    toggleRecording = async (): Promise<void> => {
+    public toggleRecording = async (): Promise<void> => {
         try {
             if (this.isRecording) {
                 await this.stopRecording();
-                message.success("录制完成，可到历史记录查看");
+                void message.success("录制完成，可到历史记录查看");
             } else {
                 await this.startRecording();
             }
@@ -237,7 +235,7 @@ export class ClassRoomStore {
         }
     };
 
-    toggleClassMode = async (): Promise<void> => {
+    public toggleClassMode = async (): Promise<void> => {
         const oldClassMode = this.classMode;
         this.classMode =
             oldClassMode === ClassModeType.Lecture
@@ -257,17 +255,17 @@ export class ClassRoomStore {
         }
     };
 
-    updateClassMode = (classMode: ClassModeType): void => {
+    public updateClassMode = (classMode: ClassModeType): void => {
         this.classMode = classMode;
     };
 
-    updateRoomStatus = (roomStatus?: RoomStatus): void => {
+    public updateRoomStatus = (roomStatus?: RoomStatus): void => {
         if (this.roomInfo) {
             this.roomInfo.roomStatus = roomStatus;
         }
     };
 
-    updateHistory = async (): Promise<void> => {
+    public updateHistory = async (): Promise<void> => {
         if (this._noMoreRemoteMessages) {
             return;
         }
@@ -305,7 +303,7 @@ export class ClassRoomStore {
     };
 
     /** joiner updates own camera and mic state */
-    updateDeviceState = (userUUID: string, camera: boolean, mic: boolean): void => {
+    public updateDeviceState = (userUUID: string, camera: boolean, mic: boolean): void => {
         if (this.userUUID === userUUID || this.isCreator) {
             this.users.updateUsers(user => {
                 if (user.userUUID === userUUID) {
@@ -330,7 +328,7 @@ export class ClassRoomStore {
                 }
                 return true;
             });
-            this.rtm.sendCommand({
+            void this.rtm.sendCommand({
                 type: RTMessageType.DeviceState,
                 value: { userUUID, camera, mic },
                 keepHistory: true,
@@ -338,7 +336,7 @@ export class ClassRoomStore {
         }
     };
 
-    updateRecordingLayout = (
+    public updateRecordingLayout = (
         payload: CloudRecordUpdateLayoutPayload["agoraData"]["clientRequest"],
     ): void => {
         if (!this.recordingConfig.transcodingConfig) {
@@ -352,11 +350,11 @@ export class ClassRoomStore {
         };
 
         if (this.isRecording) {
-            this.cloudRecording.updateLayout(payload);
+            void this.cloudRecording.updateLayout(payload);
         }
     };
 
-    acceptRaiseHand = (userUUID: string): void => {
+    public acceptRaiseHand = (userUUID: string): void => {
         if (this.isCreator) {
             this.users.updateUsers(user => {
                 if (userUUID === user.userUUID) {
@@ -366,7 +364,7 @@ export class ClassRoomStore {
                 }
                 return true;
             });
-            this.rtm.sendCommand({
+            void this.rtm.sendCommand({
                 type: RTMessageType.AcceptRaiseHand,
                 value: { userUUID, accept: true },
                 keepHistory: true,
@@ -374,7 +372,7 @@ export class ClassRoomStore {
         }
     };
 
-    onMessageSend = async (text: string): Promise<void> => {
+    public onMessageSend = async (text: string): Promise<void> => {
         if (this.isBan && !this.isCreator) {
             return;
         }
@@ -382,10 +380,10 @@ export class ClassRoomStore {
         this.addMessage(RTMessageType.ChannelMessage, text, this.userUUID);
     };
 
-    onCancelAllHandRaising = (): void => {
+    public onCancelAllHandRaising = (): void => {
         if (this.isCreator) {
             this.cancelAllHandRaising();
-            this.rtm.sendCommand({
+            void this.rtm.sendCommand({
                 type: RTMessageType.CancelAllHandRaising,
                 value: true,
                 keepHistory: true,
@@ -394,7 +392,7 @@ export class ClassRoomStore {
     };
 
     /** When current user (who is a joiner) raises hand */
-    onToggleHandRaising = (): void => {
+    public onToggleHandRaising = (): void => {
         if (this.isCreator || this.users.currentUser?.isSpeak) {
             return;
         }
@@ -406,7 +404,7 @@ export class ClassRoomStore {
             return true;
         });
         if (this.users.currentUser) {
-            this.rtm.sendCommand({
+            void this.rtm.sendCommand({
                 type: RTMessageType.RaiseHand,
                 value: this.users.currentUser.isRaiseHand,
                 keepHistory: true,
@@ -414,7 +412,7 @@ export class ClassRoomStore {
         }
     };
 
-    onToggleBan = async (): Promise<void> => {
+    public onToggleBan = async (): Promise<void> => {
         if (!this.isCreator) {
             return;
         }
@@ -433,7 +431,9 @@ export class ClassRoomStore {
         }
     };
 
-    onSpeak = async (configs: { userUUID: string; speak: boolean }[]): Promise<void> => {
+    public onSpeak = async (
+        configs: Array<{ userUUID: string; speak: boolean }>,
+    ): Promise<void> => {
         if (!this.isCreator) {
             // joiner can only turn off speaking
             configs = configs.filter(config => !config.speak && config.userUUID === this.userUUID);
@@ -454,7 +454,7 @@ export class ClassRoomStore {
         }
     };
 
-    async init(): Promise<void> {
+    public async init(): Promise<void> {
         await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
 
         const channel = await this.rtm.init(this.userUUID, this.roomUUID);
@@ -481,18 +481,18 @@ export class ClassRoomStore {
         this.onRTCEvents();
     }
 
-    onRTCEvents(): void {
+    public onRTCEvents(): void {
         this.rtc.rtcEngine.on("rtcStats", this.checkDelay);
         this.rtc.rtcEngine.on("networkQuality", this.checkNetworkQuality);
     }
 
-    offRTCEvents(): void {
+    public offRTCEvents(): void {
         this.rtc.rtcEngine.off("rtcStats", this.checkDelay);
         this.rtc.rtcEngine.off("networkQuality", this.checkNetworkQuality);
     }
 
-    async destroy(): Promise<void> {
-        const promises: Promise<any>[] = [];
+    public async destroy(): Promise<void> {
+        const promises: Array<Promise<any>> = [];
 
         promises.push(this.rtm.destroy());
 
@@ -775,7 +775,7 @@ export class ClassRoomStore {
                 this.users.handRaisingJoiners.forEach(generateUStates);
                 this.users.otherJoiners.forEach(generateUStates);
 
-                this.rtm.sendCommand({
+                await this.rtm.sendCommand({
                     type: RTMessageType.ChannelStatus,
                     value: {
                         ban: this.isBan,
@@ -827,7 +827,7 @@ export class ClassRoomStore {
     private async updateInitialRoomState(): Promise<void> {
         if (!this.users.currentUser) {
             if (NODE_ENV === "development") {
-                console.warn(`updateInitialRoomState: current user not exits`);
+                console.warn("updateInitialRoomState: current user not exits");
             }
             return;
         }
@@ -987,7 +987,7 @@ export function useClassRoomStore(
             pushHistory(RouteNameType.HomePage);
         });
         return () => {
-            classRoomStore.destroy();
+            void classRoomStore.destroy();
         };
         // run only on component mount
         // eslint-disable-next-line react-hooks/exhaustive-deps

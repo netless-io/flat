@@ -10,8 +10,6 @@ import { ScheduleRoomBox } from "./ScheduleRoomBox";
 import { joinRoomHandler } from "../../utils/joinRoomHandler";
 import { errorTips } from "../../../components/Tips/ErrorTips";
 
-export interface MainRoomMenuProps {}
-
 export const MainRoomMenu: FC = () => {
     const roomStore = useContext(RoomStoreContext);
     const pushHistory = usePushHistory();

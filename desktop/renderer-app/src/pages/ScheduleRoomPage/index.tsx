@@ -38,7 +38,7 @@ export const ScheduleRoomDetailPage = observer<{}>(function ScheduleRoomDetailPa
 
     const params = useParams<RouteParams<RouteNameType.ScheduleRoomDetailPage>>();
     const roomStore = useContext(RoomStoreContext);
-    const [cancelRoomUUIDList, setCancelRoomUUIDList] = useState<Array<string>>([]);
+    const [cancelRoomUUIDList, setCancelRoomUUIDList] = useState<string[]>([]);
     const [cancelModalVisible, showCancelModal] = useState(false);
     const history = useHistory();
     const pushHistory = usePushHistory();

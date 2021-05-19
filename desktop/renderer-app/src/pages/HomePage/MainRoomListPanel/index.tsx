@@ -6,9 +6,7 @@ import { ListRoomsType } from "../../../apiMiddleware/flatServer";
 import { MainRoomListTabs } from "./MainRoomListTabs";
 import MainRoomList from "./MainRoomList";
 
-export interface MainRoomListPanelProps {}
-
-export const MainRoomListPanel = observer<MainRoomListPanelProps>(function MainRoomListPanel() {
+export const MainRoomListPanel = observer<{}>(function MainRoomListPanel() {
     const [activeListRoomsType, setActiveListRoomsType] = useState<
         ListRoomsType.All | ListRoomsType.Today | ListRoomsType.Periodic
     >(ListRoomsType.All);

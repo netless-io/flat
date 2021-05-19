@@ -40,7 +40,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
     );
 
     useEffect(() => {
-        refreshRooms();
+        void refreshRooms();
 
         const ticket = window.setInterval(refreshRooms, 30 * 1000);
 
@@ -122,7 +122,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
         pushHistory(RouteNameType.ReplayPage, config);
     }
 
-    function customSort(rooms: (RoomItem | undefined)[]): (RoomItem | undefined)[] {
+    function customSort(rooms: Array<RoomItem | undefined>): Array<RoomItem | undefined> {
         if (listRoomsType === ListRoomsType.History) {
             return rooms.sort((a, b) => (a && b ? Number(b.beginTime) - Number(a.beginTime) : 0));
         } else {

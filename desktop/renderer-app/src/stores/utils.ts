@@ -13,7 +13,7 @@ export function autoPersistStore<TStore extends object>({
 }): void {
     const config = getLSStore<TStore>(storeLSName, version);
     if (config) {
-        const keys = (Object.keys(config) as unknown) as Array<keyof TStore>;
+        const keys = Object.keys(config) as unknown as Array<keyof TStore>;
         for (const key of keys) {
             if (typeof store[key] !== "function") {
                 store[key] = config[key];

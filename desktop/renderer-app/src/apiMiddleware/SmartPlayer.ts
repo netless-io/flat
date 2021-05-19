@@ -112,14 +112,12 @@ export class SmartPlayer extends EventEmitter {
 
         await polly()
             .waitAndRetry(30)
-            .executeForPromise(
-                async (): Promise<void> => {
-                    const replayState = await whiteWebSdk.isPlayable(rangeQuery);
-                    if (!replayState) {
-                        return Promise.reject("Whiteboard is not playable");
-                    }
-                },
-            );
+            .executeForPromise(async (): Promise<void> => {
+                const replayState = await whiteWebSdk.isPlayable(rangeQuery);
+                if (!replayState) {
+                    return Promise.reject("Whiteboard is not playable");
+                }
+            });
 
         const cursorAdapter = new CursorTool();
 
@@ -307,11 +305,11 @@ export class SmartPlayer extends EventEmitter {
         }
     }
 
-    private _isPlaying: boolean = false;
+    private _isPlaying = false;
 
-    private _isReady: boolean = false;
+    private _isReady = false;
 
-    private _isEnded: boolean = false;
+    private _isEnded = false;
 
     private checkWhiteboardLoaded(): Player {
         if (!this.whiteboardPlayer) {

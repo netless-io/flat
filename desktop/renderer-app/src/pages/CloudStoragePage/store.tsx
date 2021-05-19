@@ -35,17 +35,17 @@ export type CloudStorageFile = CloudStorageFileUI &
 export type FileMenusKey = "download" | "rename" | "delete";
 
 export class CloudStorageStore extends CloudStorageStoreBase {
-    uploadTaskManager = getUploadTaskManager();
+    public uploadTaskManager = getUploadTaskManager();
 
     /** User cloud storage files */
-    filesMap = observable.map<FileUUID, CloudStorageFile>();
+    public filesMap = observable.map<FileUUID, CloudStorageFile>();
 
-    insertCourseware: (file: CloudStorageFile) => void;
+    public insertCourseware: (file: CloudStorageFile) => void;
 
     // a set of taskUUIDs representing querying tasks
     private _convertStatusQuerying = new Map<FileUUID, number>();
 
-    constructor({
+    public constructor({
         compact,
         insertCourseware,
     }: {
@@ -78,30 +78,32 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         });
     }
 
-    get pendingUploadTasks(): CloudStorageUploadTask[] {
+    public get pendingUploadTasks(): CloudStorageUploadTask[] {
         return this.mapUploadTasks(this.uploadTaskManager.pending);
     }
 
-    get uploadingUploadTasks(): CloudStorageUploadTask[] {
+    public get uploadingUploadTasks(): CloudStorageUploadTask[] {
         return this.mapUploadTasks(this.uploadTaskManager.uploading);
     }
 
-    get successUploadTasks(): CloudStorageUploadTask[] {
+    public get successUploadTasks(): CloudStorageUploadTask[] {
         return this.mapUploadTasks(this.uploadTaskManager.success);
     }
 
-    get failedUploadTasks(): CloudStorageUploadTask[] {
+    public get failedUploadTasks(): CloudStorageUploadTask[] {
         return this.mapUploadTasks(this.uploadTaskManager.failed);
     }
 
     /** User cloud storage files */
-    get files(): CloudStorageFileUI[] {
+    public get files(): CloudStorageFileUI[] {
         return observable.array([...this.filesMap.values()]);
     }
 
     /** Render file menus item base on fileUUID */
-    fileMenus = (file: CloudStorageFileUI): Array<{ key: React.Key; name: React.ReactNode }> => {
-        const menus: { key: FileMenusKey; name: ReactNode }[] = [];
+    public fileMenus = (
+        file: CloudStorageFileUI,
+    ): Array<{ key: React.Key; name: React.ReactNode }> => {
+        const menus: Array<{ key: FileMenusKey; name: ReactNode }> = [];
         menus.push({ key: "download", name: "下载" });
         if (file.convert !== "error") {
             menus.push({ key: "rename", name: "重命名" });
@@ -111,7 +113,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     /** When a file menus item is clicked */
-    onItemMenuClick = (fileUUID: FileUUID, menuKey: React.Key): void => {
+    public onItemMenuClick = (fileUUID: FileUUID, menuKey: React.Key): void => {
         switch (menuKey) {
             case "download": {
                 this.downloadFile(fileUUID);
@@ -135,7 +137,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     /** When file title click */
-    onItemTitleClick = (fileUUID: FileUUID): void => {
+    public onItemTitleClick = (fileUUID: FileUUID): void => {
         const file = this.filesMap.get(fileUUID);
         if (file) {
             try {
@@ -146,7 +148,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         this.insertCourseware(file);
                     }
                 } else {
-                    this.previewCourseware(file);
+                    CloudStorageStore.previewCourseware(file);
                 }
             } catch (e) {
                 console.error(e);
@@ -155,7 +157,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     /** When page delete button is pressed */
-    onBatchDelete = (): void => {
+    public onBatchDelete = (): void => {
         if (this.selectedFileUUIDs.length > 0) {
             Modal.confirm({
                 content: "确定删除所选课件？课件删除后不可恢复",
@@ -169,7 +171,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     /** When upload button is pressed */
-    onUpload = async (): Promise<void> => {
+    public onUpload = async (): Promise<void> => {
         try {
             const files = await this.pickCourseware();
             if (files && files.length > 0) {
@@ -182,7 +184,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     /** When upload panel close button is pressed */
-    onUploadPanelClose = (): void => {
+    public onUploadPanelClose = (): void => {
         if (
             this.uploadTaskManager.pending.length > 0 ||
             this.uploadTaskManager.uploading.length > 0
@@ -194,17 +196,17 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 onOk: () => this.cancelAll(),
             });
         } else {
-            this.cancelAll();
+            void this.cancelAll();
         }
     };
 
     /** Restart uploading a file */
-    onUploadRetry = (uploadID: UploadID): void => {
+    public onUploadRetry = (uploadID: UploadID): void => {
         this.uploadTaskManager.retry(uploadID);
     };
 
     /** Stop uploading a file */
-    onUploadCancel = async (uploadID: UploadID): Promise<void> => {
+    public onUploadCancel = async (uploadID: UploadID): Promise<void> => {
         try {
             await this.uploadTaskManager.cancel(uploadID);
         } catch (e) {
@@ -223,7 +225,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     /** When a filename is changed to a meaningful new name */
-    onNewFileName = async (
+    public onNewFileName = async (
         fileUUID: FileUUID,
         fileNameObject: CloudStorageFileName,
     ): Promise<void> => {
@@ -240,14 +242,14 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
     };
 
-    initialize(): () => void {
-        this.refreshFiles();
+    public initialize(): () => void {
+        void this.refreshFiles();
 
         if (
             this.uploadTaskManager.pending.length <= 0 &&
             this.uploadTaskManager.uploadingMap.size <= 0
         ) {
-            this.uploadTaskManager.cancelAll();
+            void this.uploadTaskManager.cancelAll();
         }
 
         const disposer = reaction(
@@ -297,7 +299,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         file.fileName = cloudFile.fileName;
                         file.createAt = cloudFile.createAt;
                         file.fileSize = cloudFile.fileSize;
-                        file.convert = this.mapConvertStep(cloudFile.convertStep);
+                        file.convert = CloudStorageStore.mapConvertStep(cloudFile.convertStep);
                         file.taskToken = cloudFile.taskToken;
                         file.taskUUID = cloudFile.taskUUID;
                     } else {
@@ -305,7 +307,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                             cloudFile.fileUUID,
                             observable.object({
                                 ...cloudFile,
-                                convert: this.mapConvertStep(cloudFile.convertStep),
+                                convert: CloudStorageStore.mapConvertStep(cloudFile.convertStep),
                             }),
                         );
                     }
@@ -318,7 +320,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                     this._convertStatusQuerying.delete(cloudFile.fileUUID);
                 } else if (!this._convertStatusQuerying.has(cloudFile.fileUUID)) {
                     this._convertStatusQuerying.set(cloudFile.fileUUID, NaN);
-                    this.queryConvertStatus(cloudFile.fileUUID);
+                    await this.queryConvertStatus(cloudFile.fileUUID);
                 }
             }
         } catch (e) {
@@ -333,7 +335,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     private refreshFilesDebounced(timeout = 500): void {
         window.clearTimeout(this._refreshFilesTimeout);
         this._refreshFilesTimeout = window.setTimeout(() => {
-            this.refreshFiles();
+            void this.refreshFiles();
         }, timeout);
     }
 
@@ -342,11 +344,11 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         console.log("[cloud storage]: start now refresh");
         this._refreshFilesNowTimeout = window.setTimeout(() => {
             console.log("[cloud storage]: start now refresh!!!!!!!!!");
-            this.refreshFiles();
+            void this.refreshFiles();
         }, timeout);
     }
 
-    private previewCourseware(file: CloudStorageFile): void {
+    private static previewCourseware(file: CloudStorageFile): void {
         switch (file.convert) {
             case "converting": {
                 Modal.info({ content: "课件转码中，请稍后……" });
@@ -386,7 +388,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
     }
 
-    private mapConvertStep(convertStep: FileConvertStep): CloudStorageConvertStatusType {
+    private static mapConvertStep(convertStep: FileConvertStep): CloudStorageConvertStatusType {
         switch (convertStep) {
             case FileConvertStep.None: {
                 return "idle";
@@ -419,7 +421,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     /** convert business upload status to ui upload status type */
-    private mapUploadStatus(uploadStatus: UploadStatusType): CloudStorageUploadStatusType {
+    private static mapUploadStatus(uploadStatus: UploadStatusType): CloudStorageUploadStatusType {
         switch (uploadStatus) {
             case UploadStatusType.Pending: {
                 return "idle";
@@ -447,7 +449,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 uploadID: task.uploadID,
                 fileName: task.file.name,
                 percent: task.percent,
-                status: this.mapUploadStatus(task.status),
+                status: CloudStorageStore.mapUploadStatus(task.status),
             })),
         );
     }
@@ -482,7 +484,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
 
         if (file.convert === "converting") {
-            this.pollConvertState(file, isDynamic);
+            await this.pollConvertState(file, isDynamic);
         }
     }
 
@@ -521,7 +523,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             });
 
             if (status === "Finished") {
-                getCoursewarePreloader().preload(file.taskUUID, dynamic ? "dynamic" : "static");
+                void getCoursewarePreloader().preload(
+                    file.taskUUID,
+                    dynamic ? "dynamic" : "static",
+                );
             }
 
             return;

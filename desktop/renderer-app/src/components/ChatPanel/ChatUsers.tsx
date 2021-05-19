@@ -46,7 +46,7 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
                         classRoomStore.acceptRaiseHand(userUUID);
                     }}
                     onEndSpeaking={userUUID => {
-                        classRoomStore.onSpeak([{ userUUID, speak: false }]);
+                        void classRoomStore.onSpeak([{ userUUID, speak: false }]);
                     }}
                 />
             </div>

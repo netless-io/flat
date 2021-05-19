@@ -167,7 +167,7 @@ type CheckRouteConfig<
             path: string;
             component: ComponentType<any>;
         };
-    }
+    },
 > = T;
 
 export type RouteConfig = CheckRouteConfig<typeof routeConfig>;

@@ -86,7 +86,7 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
                     onChange={e => updateText(e.currentTarget.value.slice(0, 200))}
                     onKeyPress={e => {
                         if (e.key === "Enter") {
-                            sendMessage();
+                            void sendMessage();
                         }
                     }}
                 />

@@ -9,7 +9,6 @@ import { useRTCEngine } from "../../../utils/hooks/useRTCEngine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckResults } from "../utils";
-export interface CameraCheckPageProps {}
 
 export const CameraCheckPage = (): React.ReactElement => {
     const rtcEngine = useRTCEngine();

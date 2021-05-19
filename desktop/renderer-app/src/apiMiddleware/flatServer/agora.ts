@@ -105,17 +105,17 @@ export interface AgoraCloudRecordStartRequestBody {
                     render_mode?: number;
                 }>;
             };
-            subscribeVideoUids?: Array<string>;
-            unSubscribeVideoUids?: Array<string>;
-            subscribeAudioUids?: Array<string>;
-            unSubscribeAudioUids?: Array<string>;
+            subscribeVideoUids?: string[];
+            unSubscribeVideoUids?: string[];
+            subscribeAudioUids?: string[];
+            unSubscribeAudioUids?: string[];
             subscribeUidGroup?: number;
         };
         recordingFileConfig?: {
-            avFileType?: Array<string>;
+            avFileType?: string[];
         };
         snapshotConfig?: {
-            fileType: Array<string>;
+            fileType: string[];
             captureInterval?: number;
         };
         // This setting is moved to flat-server

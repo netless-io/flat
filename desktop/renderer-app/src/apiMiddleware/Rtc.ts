@@ -16,12 +16,12 @@ export interface RtcConfig {
 }
 
 export class Rtc {
-    rtcEngine: AgoraSdk;
+    public rtcEngine: AgoraSdk;
     private appID: string = AGORA.APP_ID || "";
     // User can only join one RTC channel at a time.
     private roomUUID: string | null = null;
 
-    constructor() {
+    public constructor() {
         if (!this.appID) {
             throw new Error("Agora App Id not set.");
         }
@@ -31,7 +31,7 @@ export class Rtc {
         this.rtcEngine.on("tokenPrivilegeWillExpire", this.renewToken);
     }
 
-    async join({
+    public async join({
         roomUUID,
         isCreator,
         rtcUID,
@@ -78,7 +78,7 @@ export class Rtc {
         this.roomUUID = roomUUID;
     }
 
-    leave(): void {
+    public leave(): void {
         if (this.roomUUID !== null) {
             this.rtcEngine.leaveChannel();
             this.rtcEngine.videoSourceLeave();
@@ -86,7 +86,7 @@ export class Rtc {
         }
     }
 
-    destroy(): void {
+    public destroy(): void {
         this.leave();
         this.rtcEngine.removeAllListeners("tokenPrivilegeWillExpire");
         this.rtcEngine.enableVideo();
