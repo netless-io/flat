@@ -1,17 +1,17 @@
-import { useHistory, useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
 import { message } from "antd";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { PeriodicEndType } from "../../constants/Periodic";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
-import EditRoomPage, {
+import { useHistory, useParams } from "react-router-dom";
+import {
     EditRoomFormInitialValues,
     EditRoomFormValues,
-    EditRoomType,
-} from "../../components/EditRoomPage";
-import { RouteNameType, RouteParams } from "../../utils/routes";
+    getEndTimeFromRate,
+    getRateFromEndTime,
+} from "flat-components";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
+import EditRoomPage from "../../components/EditRoomPage";
+import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { periodicRoomInfo, updatePeriodicRoom } from "../../apiMiddleware/flatServer";
-import { getEndTimeFromRate, getRateFromEndTime } from "../../components/EditRoomPage/utils";
 import LoadingPage from "../../LoadingPage";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
@@ -26,6 +26,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
 
         const { periodicUUID } = useParams<RouteParams<RouteNameType.ModifyPeriodicRoomPage>>();
         const history = useHistory();
+        const pushHistory = usePushHistory();
         const sp = useSafePromise();
         const [isLoading, setLoading] = useState(false);
         const [initialValues, setInitialValues] = useState<EditRoomFormInitialValues>();
@@ -45,7 +46,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                             periodic.rate === null || periodic.rate === void 0
                                 ? {
                                       weeks: periodic.weeks,
-                                      endType: PeriodicEndType.Time,
+                                      endType: "time",
                                       ...getRateFromEndTime(
                                           beginTime,
                                           periodic.weeks,
@@ -54,7 +55,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                                   }
                                 : {
                                       weeks: periodic.weeks,
-                                      endType: PeriodicEndType.Rate,
+                                      endType: "rate",
                                       rate: periodic.rate,
                                       endTime: getEndTimeFromRate(
                                           beginTime,
@@ -79,7 +80,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
 
         return (
             <EditRoomPage
-                type={EditRoomType.EditPeriodic}
+                type="periodic"
                 initialValues={initialValues}
                 loading={isLoading}
                 onSubmit={editPeriodicRoom}
@@ -99,7 +100,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                         type: values.type,
                         docs: [],
                         periodic:
-                            values.periodic.endType === PeriodicEndType.Rate
+                            values.periodic.endType === "rate"
                                 ? {
                                       weeks: values.periodic.weeks,
                                       rate: values.periodic.rate,
@@ -111,7 +112,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                     }),
                 );
                 void message.success("修改成功");
-                history.goBack();
+                pushHistory(RouteNameType.HomePage);
             } catch (e) {
                 console.error(e);
                 errorTips(e);

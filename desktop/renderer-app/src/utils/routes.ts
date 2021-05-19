@@ -33,7 +33,7 @@ export type RouteParams<T extends RouteNameType> = ExtractRouteParams<T, RouteCo
 
 export function generateRoutePath<T extends RouteNameType>(
     name: T,
-    params: RouteParams<T>,
+    params?: RouteParams<T>,
 ): string {
     return generatePath(routeConfig[name].path, params);
 }
