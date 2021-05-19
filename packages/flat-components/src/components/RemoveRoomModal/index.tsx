@@ -8,7 +8,7 @@ export interface RemoveRoomModalProps {
     periodicUUID?: string;
     isPeriodicDetailsPage: boolean;
     onCancel: () => void;
-    onCancelRoom: () => void;
+    onCancelRoom: (all: boolean) => void;
 }
 
 export const RemoveRoomModal: React.FC<RemoveRoomModalProps> = ({
@@ -81,7 +81,11 @@ export const RemoveRoomModal: React.FC<RemoveRoomModalProps> = ({
                 <Button key="Cancel" onClick={onCancel}>
                     {isCreator ? "再想想" : "取消"}
                 </Button>,
-                <Button key="Ok" type="primary" onClick={onCancelRoom}>
+                <Button
+                    key="Ok"
+                    type="primary"
+                    onClick={() => onCancelRoom(isCancelAll || isPeriodicRoom)}
+                >
                     确定
                 </Button>,
             ]}
