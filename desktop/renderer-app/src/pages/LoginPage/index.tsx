@@ -15,9 +15,7 @@ import { runtime } from "../../utils/runtime";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { WeChatLogin } from "./WeChatLogin";
 
-export interface LoginPageProps {}
-
-export const LoginPage = observer<LoginPageProps>(function LoginPage() {
+export const LoginPage = observer<{}>(function LoginPage() {
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const loginDisposer = useRef<LoginDisposer>();

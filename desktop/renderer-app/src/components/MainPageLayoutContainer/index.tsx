@@ -105,7 +105,7 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
                 ? onRouteChange(mainPageLayoutItem)
                 : history.push(mainPageLayoutItem.route);
         } else {
-            shell.openExternal(mainPageLayoutItem.route);
+            void shell.openExternal(mainPageLayoutItem.route);
         }
     };
 

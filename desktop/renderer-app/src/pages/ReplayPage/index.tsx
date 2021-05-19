@@ -49,7 +49,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     const classRoomReplayStore = useClassRoomReplayStore(
         params.roomUUID,
         params.ownerUUID,
-        params.roomType as RoomType,
+        params.roomType,
     );
 
     const [isShowController, setShowController] = useState(false);

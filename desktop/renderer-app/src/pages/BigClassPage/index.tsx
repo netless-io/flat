@@ -104,7 +104,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     // control whiteboard writable
     useEffect(() => {
         if (!classRoomStore.isCreator && classRoomStore.users.currentUser) {
-            whiteboardStore.updateWritable(classRoomStore.users.currentUser.isSpeak);
+            void whiteboardStore.updateWritable(classRoomStore.users.currentUser.isSpeak);
         }
         // dumb exhaustive-deps
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -367,10 +367,10 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         }
         if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
             room.setViewMode(ViewMode.Broadcaster);
-            message.success("其他用户将跟随您的视角");
+            void message.success("其他用户将跟随您的视角");
         } else {
             room.setViewMode(ViewMode.Freedom);
-            message.success("其他用户将停止跟随您的视角");
+            void message.success("其他用户将停止跟随您的视角");
         }
     }
 

@@ -7,7 +7,7 @@ import { AppRouteContainer } from "./AppRouteContainer";
 
 export class AppRoutes extends React.Component {
     public componentDidCatch(error: any): void {
-        message.error(`网页加载发生错误：${error}`);
+        void message.error(`网页加载发生错误：${error}`);
     }
 
     public render(): React.ReactElement {

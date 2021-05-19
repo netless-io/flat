@@ -1,8 +1,11 @@
 const paths = require("./paths");
+const webpack = require("webpack");
 const threadLoader = require("thread-loader");
 const DotenvFlow = require("dotenv-flow-webpack");
+const ESLintPlugin = require("eslint-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const nodeExternals = require("webpack-node-externals");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -14,11 +17,6 @@ const workerCommonOptions = {
     workerNodeArgs: ["--max-old-space-size=2048"],
 };
 
-const tsWorkerOptions = {
-    ...workerCommonOptions,
-    name: "ts-pool",
-};
-
 const lessWorkerOptions = {
     ...workerCommonOptions,
     name: "css-pool",
@@ -28,8 +26,6 @@ const cssWorkerOptions = {
     ...workerCommonOptions,
     name: "css-pool",
 };
-
-threadLoader.warmup(tsWorkerOptions, ["eslint-loader", "babel-loader"]);
 
 threadLoader.warmup(cssWorkerOptions, ["css-loader", "style-loader"]);
 
@@ -45,17 +41,10 @@ module.exports = {
                 test: /\.ts(x)?$/,
                 use: [
                     {
-                        loader: "babel-loader",
-                    },
-                    {
-                        loader: "eslint-loader",
+                        loader: "ts-loader",
                         options: {
-                            fix: true,
+                            transpileOnly: true,
                         },
-                    },
-                    {
-                        loader: "thread-loader",
-                        options: tsWorkerOptions,
                     },
                 ],
                 exclude: /node_modules/,
@@ -134,6 +123,16 @@ module.exports = {
 
     optimization: {
         runtimeChunk: "single",
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    format: {
+                        comments: false,
+                    },
+                },
+                extractComments: false,
+            }),
+        ],
         splitChunks: {
             cacheGroups: {
                 commons: {
@@ -153,12 +152,18 @@ module.exports = {
         },
     },
 
+    externals: [nodeExternals()],
+
     plugins: [
-        new ProgressBarPlugin(),
+        new webpack.ProgressPlugin(),
         new DotenvFlow({
             path: paths.envConfig,
             system_vars: true,
             default_node_env: "development",
+        }),
+        new ESLintPlugin({
+            fix: true,
+            extensions: ["ts", "tsx"],
         }),
         new HtmlWebpackPlugin({
             inject: true,
@@ -174,7 +179,7 @@ module.exports = {
                 },
             },
         }),
-    ].filter(Boolean),
+    ],
 
     resolve: {
         extensions: [".ts", ".tsx", ".js"],

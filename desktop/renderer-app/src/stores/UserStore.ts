@@ -22,33 +22,33 @@ export type RecordingConfig = Required<
  * Manage users in a classroom
  */
 export class UserStore {
-    readonly roomUUID: string;
+    public readonly roomUUID: string;
     /** Current user UUID */
-    readonly userUUID: string;
+    public readonly userUUID: string;
     /** Room owner UUID */
-    readonly ownerUUID: string;
+    public readonly ownerUUID: string;
     /** cache all users info including users who have left the room */
-    cachedUsers = observable.map<string, User>();
+    public cachedUsers = observable.map<string, User>();
     /** creator info */
-    creator: User | null = null;
+    public creator: User | null = null;
     /** current user info */
-    currentUser: User | null = null;
+    public currentUser: User | null = null;
     /** joiners who have speaking access */
-    speakingJoiners = observable.array<User>([]);
+    public speakingJoiners = observable.array<User>([]);
     /** joiners who are raising hands */
-    handRaisingJoiners = observable.array<User>([]);
+    public handRaisingJoiners = observable.array<User>([]);
     /** the rest joiners */
-    otherJoiners = observable.array<User>([]);
+    public otherJoiners = observable.array<User>([]);
 
-    get allUsers(): User[] {
+    public get allUsers(): User[] {
         return this.creator ? [this.creator, ...this.joiners] : this.joiners;
     }
 
-    get joiners(): User[] {
+    public get joiners(): User[] {
         return [...this.speakingJoiners, ...this.handRaisingJoiners, ...this.otherJoiners];
     }
 
-    get totalUserCount(): number {
+    public get totalUserCount(): number {
         return (
             (this.creator ? 1 : 0) +
             (this.speakingJoiners.length +
@@ -57,11 +57,11 @@ export class UserStore {
         );
     }
 
-    get isCreator(): boolean {
+    public get isCreator(): boolean {
         return this.ownerUUID === this.userUUID;
     }
 
-    constructor(config: { userUUID: string; ownerUUID: string; roomUUID: string }) {
+    public constructor(config: { userUUID: string; ownerUUID: string; roomUUID: string }) {
         this.roomUUID = config.roomUUID;
         this.userUUID = config.userUUID;
         this.ownerUUID = config.ownerUUID;
@@ -69,7 +69,7 @@ export class UserStore {
         makeAutoObservable(this);
     }
 
-    initUsers = async (userUUIDs: string[]): Promise<void> => {
+    public initUsers = async (userUUIDs: string[]): Promise<void> => {
         this.otherJoiners.clear();
         this.speakingJoiners.clear();
         this.handRaisingJoiners.clear();
@@ -80,14 +80,14 @@ export class UserStore {
         });
     };
 
-    addUser = async (userUUID: string): Promise<void> => {
+    public addUser = async (userUUID: string): Promise<void> => {
         (await this.createUsers([userUUID])).forEach(user => {
             this.cacheUser(user);
             this.sortUser(user);
         });
     };
 
-    removeUser = (userUUID: string): void => {
+    public removeUser = (userUUID: string): void => {
         if (this.creator && this.creator.userUUID === userUUID) {
             this.creator = null;
         } else {
@@ -107,7 +107,7 @@ export class UserStore {
      * @param editUser Update user state. This callback will be applied on all users.
      * Return `false` to stop traversing.
      */
-    updateUsers = (editUser: (user: User) => boolean | void): void => {
+    public updateUsers = (editUser: (user: User) => boolean | void): void => {
         const editUserAction = action("editUser", editUser);
         const unSortedUsers: User[] = [];
 
@@ -145,7 +145,7 @@ export class UserStore {
      * Fetch info of users who have left the room.
      * For RTM message title.
      */
-    syncExtraUsersInfo = async (userUUIDs: string[]): Promise<void> => {
+    public syncExtraUsersInfo = async (userUUIDs: string[]): Promise<void> => {
         const users = await this.createUsers(
             userUUIDs.filter(userUUID => !this.cachedUsers.has(userUUID)),
         );
@@ -155,8 +155,8 @@ export class UserStore {
     };
 
     /** Return a random joiner that is not current user */
-    pickRandomJoiner = (): User | undefined => {
-        let startIndex = Math.floor(Math.random() * this.joiners.length);
+    public pickRandomJoiner = (): User | undefined => {
+        const startIndex = Math.floor(Math.random() * this.joiners.length);
 
         // keep picking until a suitable user is found
         for (let count = 0; count < this.joiners.length; count++) {

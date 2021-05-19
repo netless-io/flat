@@ -25,7 +25,7 @@ export const RoomDetailsItem = observer<RoomDetailsItemProps>(function DeleteRoo
     return (
         <Menu.Item
             {...restProps}
-            onClick={async e => {
+            onClick={e => {
                 if (handleClick) {
                     handleClick();
                 }

@@ -12,26 +12,26 @@ import { ipcAsyncByMainWindow } from "../utils/ipc";
 import { UserStore } from "./UserStore";
 
 export class ClassRoomReplayStore {
-    readonly roomUUID: string;
+    public readonly roomUUID: string;
 
-    readonly userUUID: string;
+    public readonly userUUID: string;
 
-    readonly rtm = new RTMAPI();
+    public readonly rtm = new RTMAPI();
 
-    readonly smartPlayer = new SmartPlayer();
+    public readonly smartPlayer = new SmartPlayer();
 
-    readonly users: UserStore;
+    public readonly users: UserStore;
 
     /** RTM messages */
-    messages = observable.array<RTMessage>([]);
+    public messages = observable.array<RTMessage>([]);
 
-    withRTCVideo = false;
+    public withRTCVideo = false;
 
-    isReady = false;
+    public isReady = false;
 
-    isPlaying = false;
+    public isPlaying = false;
 
-    error?: Error;
+    public error?: Error;
 
     /** All of the fetched messages */
     private cachedMessages = observable.array<RTMessage>([]);
@@ -52,7 +52,7 @@ export class ClassRoomReplayStore {
     /** The timestamp of the newest message on remote */
     private _remoteNewestTimestamp = Infinity;
 
-    constructor(config: { roomUUID: string; ownerUUID: string; roomType: RoomType }) {
+    public constructor(config: { roomUUID: string; ownerUUID: string; roomType: RoomType }) {
         if (!globalStore.userUUID) {
             throw new Error("Missing userUUID");
         }
@@ -90,7 +90,7 @@ export class ClassRoomReplayStore {
         this.smartPlayer.on(SmartPlayerEventType.Error, this.updateError);
     }
 
-    get ownerUUID(): string {
+    public get ownerUUID(): string {
         if (this.roomInfo) {
             if (NODE_ENV === "development") {
                 if (this.roomInfo.ownerUUID !== this.ownerUUIDFromParams) {
@@ -102,15 +102,15 @@ export class ClassRoomReplayStore {
         return this.ownerUUIDFromParams;
     }
 
-    get roomInfo(): RoomItem | undefined {
+    public get roomInfo(): RoomItem | undefined {
         return roomStore.rooms.get(this.roomUUID);
     }
 
-    get isCreator(): boolean {
+    public get isCreator(): boolean {
         return this.ownerUUID === this.userUUID;
     }
 
-    get roomType(): RoomType {
+    public get roomType(): RoomType {
         if (this.roomInfo?.roomType) {
             if (NODE_ENV === "development") {
                 if (this.roomInfo.roomType !== this.roomTypeFromParams) {
@@ -122,7 +122,10 @@ export class ClassRoomReplayStore {
         return this.roomTypeFromParams;
     }
 
-    init = async (whiteboardEl: HTMLDivElement, videoEl: HTMLVideoElement): Promise<void> => {
+    public init = async (
+        whiteboardEl: HTMLDivElement,
+        videoEl: HTMLVideoElement,
+    ): Promise<void> => {
         await roomStore.syncRecordInfo(this.roomUUID);
 
         if (!globalStore.whiteboardRoomUUID || !globalStore.whiteboardRoomToken) {
@@ -161,17 +164,17 @@ export class ClassRoomReplayStore {
         await this.rtm.init(this.userUUID, this.roomUUID);
     };
 
-    destroy = (): void => {
+    public destroy = (): void => {
         this.smartPlayer.destroy();
         this.smartPlayer.removeAllListeners();
-        this.rtm.destroy();
+        void this.rtm.destroy();
         this.smartPlayer.whiteboardPlayer?.callbacks.off(
             "onProgressTimeChanged",
             this.onPlayerProgressTimeChanged,
         );
     };
 
-    togglePlayPause = (): void => {
+    public togglePlayPause = (): void => {
         if (!this.smartPlayer.isReady) {
             return;
         }
@@ -297,7 +300,7 @@ export class ClassRoomReplayStore {
     private onPlayerProgressTimeChanged = (offset: number): void => {
         // always keep the latest current time
         this._currentPlayTime = this.smartPlayer.whiteboardPlayer!.beginTimestamp + offset;
-        this.syncMessages();
+        void this.syncMessages();
     };
 
     private updateReadyState = (ready: boolean): void => {

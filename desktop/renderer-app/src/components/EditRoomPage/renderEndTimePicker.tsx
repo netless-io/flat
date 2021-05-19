@@ -22,7 +22,7 @@ export function renderEndTimePicker(
 
     function validateTime(): RuleObject {
         return {
-            validator: async (_, value: Date) => {
+            validator: (_, value: Date) => {
                 const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
                 const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
                 if (isBefore(value, compareTime)) {
@@ -43,13 +43,8 @@ export function renderEndTimePicker(
     }
 
     function disabledHours(): number[] {
-        const {
-            beginTime,
-            endTime,
-        }: Pick<EditRoomFormValues, "beginTime" | "endTime"> = form.getFieldsValue([
-            "beginTime",
-            "endTime",
-        ]);
+        const { beginTime, endTime }: Pick<EditRoomFormValues, "beginTime" | "endTime"> =
+            form.getFieldsValue(["beginTime", "endTime"]);
 
         const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
 
@@ -90,13 +85,8 @@ export function renderEndTimePicker(
     }
 
     function disabledMinutes(selectedHour: number): number[] {
-        const {
-            beginTime,
-            endTime,
-        }: Pick<EditRoomFormValues, "beginTime" | "endTime"> = form.getFieldsValue([
-            "beginTime",
-            "endTime",
-        ]);
+        const { beginTime, endTime }: Pick<EditRoomFormValues, "beginTime" | "endTime"> =
+            form.getFieldsValue(["beginTime", "endTime"]);
 
         const comparedTime = addMinutes(beginTime, MIN_CLASS_DURATION);
         const selectedEndTime = setHours(endTime, selectedHour);

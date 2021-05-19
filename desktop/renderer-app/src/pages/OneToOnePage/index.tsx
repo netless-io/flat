@@ -92,7 +92,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     }).get();
 
     useEffect(() => {
-        whiteboardStore.updateWritable(true);
+        void whiteboardStore.updateWritable(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -303,10 +303,10 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         }
         if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
             room.setViewMode(ViewMode.Broadcaster);
-            message.success("其他用户将跟随您的视角");
+            void message.success("其他用户将跟随您的视角");
         } else {
             room.setViewMode(ViewMode.Freedom);
-            message.success("其他用户将停止跟随您的视角");
+            void message.success("其他用户将停止跟随您的视角");
         }
     }
 

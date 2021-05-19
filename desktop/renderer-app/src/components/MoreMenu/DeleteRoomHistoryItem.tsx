@@ -45,7 +45,7 @@ export const DeleteRoomHistoryItem = observer<DeleteRoomHistoryItemProps>(
             <>
                 <Menu.Item
                     {...restProps}
-                    onClick={async e => {
+                    onClick={e => {
                         if (onClick) {
                             onClick(e);
                         }

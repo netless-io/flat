@@ -15,14 +15,14 @@ export const githubLogin: LoginExecutor = onSuccess => {
         return `https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}&redirect_uri=${redirectURL}&state=${authUUID}`;
     }
 
-    (async () => {
+    void (async () => {
         try {
             await setAuthUUID(authUUID);
         } catch (err) {
             errorTips(err);
         }
 
-        shell.openExternal(getGithubURL(authUUID));
+        void shell.openExternal(getGithubURL(authUUID));
 
         const githubLoginProcessRequest = async (): Promise<void> => {
             try {
@@ -39,7 +39,7 @@ export const githubLogin: LoginExecutor = onSuccess => {
             }
         };
 
-        githubLoginProcessRequest();
+        void githubLoginProcessRequest();
     })();
 
     return () => {

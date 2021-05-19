@@ -4,9 +4,7 @@ import React from "react";
 import { Button } from "antd";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
 
-export interface MainRoomMenuProps {}
-
-export const ScheduleRoomBox = React.memo<MainRoomMenuProps>(function ScheduleRoomBox() {
+export const ScheduleRoomBox = React.memo<{}>(function ScheduleRoomBox() {
     const pushHistory = usePushHistory();
 
     return (

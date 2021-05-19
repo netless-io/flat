@@ -12,31 +12,31 @@ export enum UploadTaskManagerStatusType {
 export class UploadTaskManager {
     private static readonly MaxUploadingCount = 3;
 
-    status = UploadTaskManagerStatusType.Idle;
+    public status = UploadTaskManagerStatusType.Idle;
 
-    uploadingMap = observable.map<UploadID, UploadTask>();
+    public uploadingMap = observable.map<UploadID, UploadTask>();
 
-    pending = observable.array<UploadTask>();
-    success = observable.array<UploadTask>();
-    failed = observable.array<UploadTask>();
+    public pending = observable.array<UploadTask>();
+    public success = observable.array<UploadTask>();
+    public failed = observable.array<UploadTask>();
 
-    get uploading(): UploadTask[] {
+    public get uploading(): UploadTask[] {
         return observable.array([...this.uploadingMap.values()].reverse());
     }
 
-    constructor() {
+    public constructor() {
         makeAutoObservable(this);
     }
 
-    addTasks(files: File[]): void {
+    public addTasks(files: File[]): void {
         for (const file of files) {
             const task = new UploadTask(file);
             this.pending.unshift(task);
         }
-        this.startUpload();
+        void this.startUpload();
     }
 
-    async startUpload(): Promise<void> {
+    public async startUpload(): Promise<void> {
         if (this.getStatus() === UploadTaskManagerStatusType.Cancelling) {
             return;
         }
@@ -61,24 +61,24 @@ export class UploadTaskManager {
                 if (process.env.NODE_ENV === "development") {
                     console.log(`[cloud storage]: UploadTaskManager uploads "${task.file.name}"`);
                 }
-                task.upload().then(() => this.finishUpload(task));
+                void task.upload().then(() => this.finishUpload(task));
             }
 
             await new Promise(resolve => setTimeout(resolve, 200));
         }
     }
 
-    finishUpload(task: UploadTask): void {
+    public finishUpload(task: UploadTask): void {
         this.uploadingMap.delete(task.uploadID);
         if (task.status === UploadStatusType.Success) {
             this.success.unshift(task);
         } else if (task.status === UploadStatusType.Failed) {
             this.failed.unshift(task);
         }
-        this.startUpload();
+        void this.startUpload();
     }
 
-    retry(uploadID: UploadID): void {
+    public retry(uploadID: UploadID): void {
         const index = this.failed.findIndex(task => task.uploadID === uploadID);
         if (index >= 0) {
             const task = this.failed[index];
@@ -87,7 +87,7 @@ export class UploadTaskManager {
         }
     }
 
-    async cancel(uploadID: UploadID): Promise<void> {
+    public async cancel(uploadID: UploadID): Promise<void> {
         const task = this.uploadingMap.get(uploadID);
         if (task) {
             await task.cancelUpload();
@@ -97,7 +97,7 @@ export class UploadTaskManager {
         }
     }
 
-    async cancelAll(): Promise<void> {
+    public async cancelAll(): Promise<void> {
         if (this.getStatus() === UploadTaskManagerStatusType.Cancelling) {
             return;
         }
@@ -122,11 +122,11 @@ export class UploadTaskManager {
         this.updateStatus(UploadTaskManagerStatusType.Idle);
     }
 
-    updateStatus(status: UploadTaskManagerStatusType): void {
+    public updateStatus(status: UploadTaskManagerStatusType): void {
         this.status = status;
     }
 
-    getStatus(): UploadTaskManagerStatusType {
+    public getStatus(): UploadTaskManagerStatusType {
         return this.status;
     }
 
