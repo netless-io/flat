@@ -23,6 +23,7 @@ export class WhiteboardStore {
     public isWritable: boolean;
     public isShowPreviewPanel = false;
     public isFileOpen = false;
+    public isKicked = false;
 
     /** is room Creator */
     public readonly isCreator: boolean;
@@ -151,6 +152,15 @@ export class WhiteboardStore {
                 },
                 onDisconnectWithError: error => {
                     console.error(error);
+                },
+                onKickedWithReason: reason => {
+                    if (
+                        reason === "kickByAdmin" ||
+                        reason === "roomDelete" ||
+                        reason === "roomBan"
+                    ) {
+                        this.isKicked = true;
+                    }
                 },
             },
         );
