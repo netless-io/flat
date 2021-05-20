@@ -3,6 +3,7 @@
 import "../theme/index.less";
 export * from "./utils/room";
 export * from "./utils/hooks";
+export * from "./components/ChatPanel";
 export * from "./components/ClassroomPage";
 export * from "./components/CloudStorage";
 export * from "./components/EditRoomPage";

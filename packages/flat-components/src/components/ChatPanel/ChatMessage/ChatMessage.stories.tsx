@@ -1,0 +1,28 @@
+import { Meta, Story } from "@storybook/react";
+import Chance from "chance";
+import faker from "faker";
+import React from "react";
+import { ChatMessage, ChatMessageProps, ChatMsgType } from ".";
+
+const chance = new Chance();
+
+const storyMeta: Meta = {
+    title: "ChatPanel/ChatMessage",
+    component: ChatMessage,
+};
+
+export default storyMeta;
+
+export const Overview: Story<ChatMessageProps> = args => <ChatMessage {...args} />;
+const userUUID = faker.random.uuid();
+Overview.args = {
+    userUUID,
+    messageUser: { name: faker.name.lastName() },
+    message: {
+        timestamp: +faker.date.past(),
+        type: ChatMsgType.ChannelMessage,
+        userUUID: faker.random.boolean() ? userUUID : faker.random.uuid(),
+        uuid: faker.random.uuid(),
+        value: chance.sentence({ words: faker.random.number(20) }),
+    },
+};

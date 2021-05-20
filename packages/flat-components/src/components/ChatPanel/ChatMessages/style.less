@@ -1,0 +1,35 @@
+.chat-messages-default {
+    position: absolute;
+    top: 40%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    word-break: keep-all;
+    font-weight: lighter;
+    color: #7a7b7c;
+    user-select: none;
+    pointer-events: none;
+}
+
+.chat-messages-wrap {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex: 1;
+    position: relative;
+}
+
+.chat-messages-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 6px 0;
+}

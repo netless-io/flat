@@ -1,0 +1,65 @@
+.chat-user {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+    height: 40px;
+    padding: 0 16px;
+    line-height: 40px;
+    color: #444e60;
+    font-size: 14px;
+    word-break: keep-all;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.chat-user-avatar {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    margin-right: 8px;
+    border-radius: 50%;
+}
+
+.chat-user-name {
+    overflow: hidden;
+    display: inline-block;
+    // max-width: 50%;
+    text-overflow: ellipsis;
+}
+
+.chat-user-status {
+    flex-shrink: 0;
+    margin-left: 5px;
+
+    &.is-teacher {
+        color: #7a7b7c;
+    }
+
+    &.is-speaking {
+        color: #7ec452;
+    }
+
+    &.is-hand-raising {
+        color: #3381ff;
+    }
+}
+
+.chat-user-ctl-btn {
+    flex-shrink: 0;
+    margin: 0 0 0 auto;
+    padding: 0 0 0 16px;
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+
+    &.is-speaking {
+        color: #f45454;
+    }
+
+    &.is-hand-raising {
+        color: #3381ff;
+    }
+}

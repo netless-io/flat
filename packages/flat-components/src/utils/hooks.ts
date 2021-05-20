@@ -1,4 +1,15 @@
-import { RefObject, useCallback, useEffect, useRef } from "react";
+import {
+    computed,
+    IComputedValue,
+    IComputedValueOptions,
+    IReactionOptions,
+    IReactionPublic,
+    observable,
+    reaction,
+} from "mobx";
+import { useLocalObservable } from "mobx-react-lite";
+import { DependencyList, RefObject, useCallback, useEffect, useMemo, useRef } from "react";
+import { useIsomorphicLayoutEffect } from "react-use";
 
 export function useIsUnMounted(): RefObject<boolean> {
     const isUnMountRef = useRef(false);
@@ -65,4 +76,69 @@ export function useSafePromise(): <T, E = unknown>(
     }
 
     return useCallback(safePromise, []);
+}
+
+/**
+ * Reruns a side effect when any selected data changes.
+ * @see {@link https://mobx.js.org/reactions.html#reaction}
+ *
+ * @param expression observes changes and return a value that is used as input for the effect function.
+ * @param effect execute side-effects.
+ * @param extraDeps provide extra dependencies for detection if non-observable values are used
+ */
+export function useReaction<T>(
+    expression: (reaction: IReactionPublic) => T,
+    effect: (value: T, previousValue: T, reaction: IReactionPublic) => void,
+    extraDeps: DependencyList = [],
+    opts?: IReactionOptions,
+): void {
+    // always keeps the latest callback
+    // so that no stale values
+    const effectRef = useRef(effect);
+
+    const deps = useLocalObservable(() => observable.array(extraDeps as any[]));
+
+    // Update the effect callback
+    // synchronously after every rendering being committed
+    useIsomorphicLayoutEffect(() => {
+        effectRef.current = effect;
+    });
+
+    useEffect(() => {
+        deps.replace(extraDeps as any[]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, extraDeps);
+
+    useEffect(
+        () =>
+            reaction(
+                reaction => ({
+                    result: expression(reaction),
+                    // track all the dependencies
+                    deps: deps.slice(),
+                }),
+                (arg, prev, reaction) => effectRef.current(arg.result, prev.result, reaction),
+                opts,
+            ),
+        // MobX takes care of the deps.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [],
+    );
+}
+
+/**
+ * Computed values can be used to derive information from other observables.
+ * @see {@link https://mobx.js.org/computeds.html}
+ *
+ * @param func derive information from other observables
+ * @param extraDeps provide extra dependencies to re-compute if non-observable values are used
+ */
+export function useComputed<T>(
+    func: () => T,
+    extraDeps: DependencyList = [],
+    opts?: IComputedValueOptions<T>,
+): IComputedValue<T> {
+    // MobX takes care of the deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return useMemo(() => computed(func, opts), extraDeps);
 }
