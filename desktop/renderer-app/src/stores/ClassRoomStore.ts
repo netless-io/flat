@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { message } from "antd";
-import { action, makeAutoObservable, observable, runInAction } from "mobx";
+import { action, autorun, makeAutoObservable, observable, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import { Rtc as RTCAPI, RtcChannelType } from "../apiMiddleware/Rtc";
@@ -91,6 +91,8 @@ export class ClassRoomStore {
 
     private readonly recordingConfig: RecordingConfig;
 
+    private roomStatusOverride: RoomStatus | null = null;
+
     private _noMoreRemoteMessages = false;
 
     private _collectChannelStatusTimeout?: number;
@@ -133,6 +135,13 @@ export class ClassRoomStore {
         this.whiteboardStore = new WhiteboardStore({
             isCreator: this.isCreator,
         });
+
+        autorun(reaction => {
+            if (this.whiteboardStore.isKicked) {
+                reaction.dispose();
+                this.roomStatusOverride = RoomStatus.Stopped;
+            }
+        });
     }
 
     public get ownerUUID(): string {
@@ -156,7 +165,7 @@ export class ClassRoomStore {
     }
 
     public get roomStatus(): RoomStatus {
-        return this.roomInfo?.roomStatus || RoomStatus.Idle;
+        return this.roomStatusOverride || this.roomInfo?.roomStatus || RoomStatus.Idle;
     }
 
     public startClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
