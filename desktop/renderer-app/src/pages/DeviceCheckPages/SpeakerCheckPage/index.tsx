@@ -8,8 +8,7 @@ import React, { useEffect, useState } from "react";
 import { Slider, Button } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
 // let webpack recognize
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import _testMP3 from "../../../assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
+import "../../../assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
 import { DeviceSelect } from "../../../components/DeviceSelect";
 import { Device } from "../../../types/Device";
 import { useRTCEngine } from "../../../utils/hooks/useRTCEngine";

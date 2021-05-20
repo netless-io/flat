@@ -152,8 +152,6 @@ module.exports = {
         },
     },
 
-    externals: [nodeExternals()],
-
     plugins: [
         new webpack.ProgressPlugin(),
         new DotenvFlow({
