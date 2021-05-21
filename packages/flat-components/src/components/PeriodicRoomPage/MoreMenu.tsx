@@ -1,32 +1,32 @@
 import moreMenuSVG from "./icons/more-menu.svg";
 
 import React, { useState } from "react";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import { RoomInfo } from "../../types/room";
 import { InviteModal } from "../InviteModal";
-import { RemoveRoomModal } from "../RemoveRoomModal";
+import { CancelSubPeriodicRoomModal } from "./CancelSubPeriodicRoomModal";
 
 export interface MoreMenuProps {
     room: RoomInfo;
     userName: string;
     isCreator: boolean;
-    onCopy: () => void;
-    onRemoveRoom: () => void;
-    jumpToRoomInfoPage: () => void;
-    jumpToModifyRoomPage: () => void;
+    onCopyInvitation: (text: string) => void;
+    onCancelSubPeriodicRoom: () => void;
+    jumpToRoomDetailPage: () => void;
+    jumpToModifyOrdinaryRoomPage: () => void;
 }
 
 export const MoreMenu: React.FC<MoreMenuProps> = ({
     room,
     userName,
     isCreator,
-    onCopy,
-    onRemoveRoom,
-    jumpToRoomInfoPage,
-    jumpToModifyRoomPage,
+    onCopyInvitation,
+    onCancelSubPeriodicRoom,
+    jumpToRoomDetailPage,
+    jumpToModifyOrdinaryRoomPage,
 }) => {
-    const [removeRoomVisible, setRemoveRoomVisible] = useState(false);
+    const [cancelSubPeriodicRoomVisible, setCancelSubPeriodicRoomVisible] = useState(false);
     const [inviteRoomVisible, setInviteRoomVisible] = useState(false);
 
     return (
@@ -34,28 +34,31 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
             overlay={() => {
                 return (
                     <Menu>
-                        <MenuItem onClick={jumpToRoomInfoPage}>房间详情</MenuItem>
+                        <MenuItem onClick={jumpToRoomDetailPage}>房间详情</MenuItem>
                         {isCreator && (
                             <>
-                                <MenuItem onClick={jumpToModifyRoomPage}>修改房间</MenuItem>
-                                <MenuItem onClick={() => setRemoveRoomVisible(true)}>
+                                <MenuItem onClick={jumpToModifyOrdinaryRoomPage}>修改房间</MenuItem>
+                                <MenuItem onClick={() => setCancelSubPeriodicRoomVisible(true)}>
                                     取消房间
                                 </MenuItem>
                             </>
                         )}
                         <MenuItem onClick={() => setInviteRoomVisible(true)}>复制邀请</MenuItem>
-                        <RemoveRoomModal
-                            cancelModalVisible={removeRoomVisible}
+                        <CancelSubPeriodicRoomModal
+                            visible={cancelSubPeriodicRoomVisible}
                             isCreator={isCreator}
-                            onCancel={() => setRemoveRoomVisible(false)}
-                            onCancelRoom={onRemoveRoom}
-                            isPeriodicDetailsPage={false}
+                            onCancel={() => setCancelSubPeriodicRoomVisible(false)}
+                            onCancelSubPeriodicRoom={onCancelSubPeriodicRoom}
                         />
                         <InviteModal
                             visible={inviteRoomVisible}
                             room={room}
                             userName={userName}
-                            onCopy={onCopy}
+                            onCopy={text => {
+                                onCopyInvitation(text);
+                                message.success("复制成功");
+                                setInviteRoomVisible(false);
+                            }}
                             onCancel={() => setInviteRoomVisible(false)}
                         />
                     </Menu>
