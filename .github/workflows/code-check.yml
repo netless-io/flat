@@ -46,14 +46,14 @@ jobs:
               - 'desktop/main-app/webpack/**'
               - 'desktop/main-app/typings/**'
               - 'desktop/main-app/**/*.ts'
-            web-react:
-              - 'web/react/**/*.(ts|tsx)'
+            flat-web:
+              - 'web/flat-web/**/*.(ts|tsx)'
 
       - name: Install NodeJS
         uses: actions/setup-node@v2
         with:
           node-version: "15.10.0"
-        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.web-react == 'true'
+        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.flat-web == 'true'
 
       - uses: actions/cache@v2
         id: yarn-cache
@@ -64,12 +64,12 @@ jobs:
             ./packages/**/node_modules
             ./desktop/**/node_modules
             ./packages/**/node_modules
-        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.web-react == 'true'
+        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.flat-web == 'true'
 
       - name: Install dependencies and build packages
         # failure automatically retries 3 times
         run: yarn run bootstrap || yarn run bootstrap || yarn run bootstrap
-        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.web-react == 'true'
+        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.flat-web == 'true'
 
       - name: Build renderer
         run: yarn workspace renderer-app build
@@ -79,9 +79,9 @@ jobs:
         run: yarn workspace flat build:main
         if: steps.filter.outputs.main == 'true'
 
-      - name: Build web-react
-        run: yarn workspace flat-web-react build
-        if: steps.filter.outputs.web-react == 'true'
+      - name: Build flat-web
+        run: yarn workspace flat-web build
+        if: steps.filter.outputs.flat-web == 'true'
 
       - name: Check i18n
         run: node packages/flat-i18n/scripts/check.js
