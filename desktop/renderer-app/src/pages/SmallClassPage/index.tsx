@@ -167,14 +167,16 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     );
 
     function renderAvatars(): React.ReactNode {
-        if (!classRoomStore.users.creator || !classRoomStore.isCalling) {
-            return null;
-        }
-
         return (
             <div className="realtime-avatars-wrap">
                 <div className="realtime-avatars">
-                    {renderAvatar(classRoomStore.users.creator)}
+                    <SmallClassAvatar
+                        isCreator={true}
+                        userUUID={classRoomStore.userUUID}
+                        avatarUser={classRoomStore.users.creator}
+                        rtcEngine={classRoomStore.rtc.rtcEngine}
+                        updateDeviceState={classRoomStore.updateDeviceState}
+                    />
                     {classRoomStore.users.speakingJoiners.map(renderAvatar)}
                     {classRoomStore.users.handRaisingJoiners.map(renderAvatar)}
                     {classRoomStore.users.otherJoiners.map(renderAvatar)}
