@@ -4,7 +4,7 @@ import faker from "faker";
 import React from "react";
 import { ChatMessages, ChatMessagesProps } from ".";
 import { User } from "../../../types/user";
-import { ChatMsgType } from "../ChatMessage";
+import { ChatMsgType } from "../types";
 
 const chance = new Chance();
 

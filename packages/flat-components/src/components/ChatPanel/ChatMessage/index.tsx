@@ -2,20 +2,7 @@ import "./style.less";
 
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-
-export enum ChatMsgType {
-    Notice = "Notice",
-    BanText = "BanText",
-    ChannelMessage = "ChannelMessage",
-}
-
-export interface ChatMsg {
-    uuid: string;
-    type: ChatMsgType;
-    value: string;
-    userUUID: string;
-    timestamp: number;
-}
+import { ChatMsg, ChatMsgType } from "../types";
 
 export interface ChatMessageProps {
     /** current user uuid */

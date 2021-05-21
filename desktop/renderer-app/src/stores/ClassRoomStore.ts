@@ -39,6 +39,10 @@ import { useSafePromise } from "../utils/hooks/lifecycle";
 
 export type { User } from "./UserStore";
 
+export type RTMChannelMessage = RTMessage<
+    RTMessageType.ChannelMessage | RTMessageType.Notice | RTMessageType.BanText
+>;
+
 export type RecordingConfig = Required<
     CloudRecordStartPayload["agoraData"]["clientRequest"]
 >["recordingConfig"];
@@ -55,7 +59,7 @@ export class ClassRoomStore {
     /** User uuid of the current user */
     public readonly userUUID: string;
     /** RTM messages */
-    public messages = observable.array<RTMessage>([]);
+    public messages = observable.array<RTMChannelMessage>([]);
     /** room class mode */
     public classMode: ClassModeType;
     /** is creator temporary banned room for joiner operations */
@@ -298,7 +302,7 @@ export class ClassRoomStore {
         }
 
         const textMessages = messages.filter(
-            (message): message is RTMessage =>
+            (message): message is RTMChannelMessage =>
                 message.type === RTMessageType.ChannelMessage ||
                 message.type === RTMessageType.Notice,
         );

@@ -31,3 +31,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel(props) {
         </div>
     );
 });
+
+export { ChatMessage } from "./ChatMessage";
+
+export * from "./types";

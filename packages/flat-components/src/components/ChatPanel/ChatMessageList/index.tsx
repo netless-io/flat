@@ -13,13 +13,14 @@ import {
 } from "react-virtualized";
 import { User } from "../../../types/user";
 import { useReaction } from "../../../utils/hooks";
-import { ChatMessage, ChatMsg } from "../ChatMessage";
+import { ChatMessage } from "../ChatMessage";
+import { ChatMsg } from "../types";
 
 export interface ChatMessageListProps {
     visible: boolean;
     userUUID: string;
     messages: ChatMsg[];
-    getUserByUUID: (uuid: string) => User;
+    getUserByUUID: (uuid: string) => User | undefined;
     loadMoreRows: InfiniteLoaderProps["loadMoreRows"];
 }
 

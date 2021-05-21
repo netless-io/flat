@@ -3,8 +3,8 @@ import faker from "faker";
 import Chance from "chance";
 import React from "react";
 import { ChatPanel, ChatPanelProps } from ".";
-import { ChatMsgType } from "./ChatMessage";
 import { User } from "../../types/user";
+import { ChatMsgType } from "./types";
 
 const chance = new Chance();
 
@@ -38,7 +38,7 @@ Overview.args = {
     isCreator: faker.random.boolean(),
     isBan: faker.random.boolean(),
     isRaiseHand: faker.random.boolean(),
-    hasHandRaisingJoiners: faker.random.boolean(),
+    hasHandRaising: faker.random.boolean(),
     hasSpeaking: faker.random.boolean(),
     disableHandRaising: faker.random.boolean(),
     generateAvatar: () => "http://placekitten.com/64/64",

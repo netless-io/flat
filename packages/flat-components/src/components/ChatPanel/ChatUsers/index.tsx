@@ -10,15 +10,15 @@ import { User } from "../../../types/user";
 
 export type ChatUsersProps = {
     isCreator: boolean;
-    hasHandRaisingJoiners: boolean;
+    hasHandRaising: boolean;
     hasSpeaking: boolean;
     users: User[];
     onCancelAllHandRaising: () => void;
-} & ChatUserProps;
+} & Omit<ChatUserProps, "user">;
 
 export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
     isCreator,
-    hasHandRaisingJoiners,
+    hasHandRaising,
     hasSpeaking,
     users,
     onCancelAllHandRaising,
@@ -47,7 +47,7 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
         );
     };
 
-    const isShowCancelAllHandRaising = isCreator && hasHandRaisingJoiners;
+    const isShowCancelAllHandRaising = isCreator && hasHandRaising;
 
     return (
         <div className={classNames("chat-users-wrap", { "has-speaking": hasSpeaking })}>
