@@ -8,24 +8,24 @@ import { zhCN } from "date-fns/locale";
 import { RoomInfo, RoomStatus, RoomType, Week } from "../../types/room";
 import { getRoomTypeName, getWeekName, getWeekNames } from "../../utils/room";
 import { RoomStatusElement } from "../RoomStatusElement";
-import { RemoveRoomModal } from "../RemoveRoomModal";
 import { MoreMenu } from "./MoreMenu";
+import { CancelPeriodicRoomModal } from "./CancelPeriodicRoomModal";
 
 export interface PeriodicRoomPanelProps {
-    rooms: RoomInfo[];
+    rooms: (RoomInfo | undefined)[];
     userName: string;
     isCreator: boolean;
     periodicInfo: {
         weeks: Week[];
         roomType: RoomType;
-        endTime: Date;
-        roomCount: number;
+        endTime: number;
     };
-    jumpToPeriodicModifyPage: () => void;
-    onCopy: () => void;
-    onCancelRoom: () => void;
-    jumpToRoomInfoPage: () => void;
-    jumpToModifyRoomPage: () => void;
+    onCopyInvitation: (text: string) => void;
+    onCancelPeriodicRoom: () => void;
+    onCancelSubPeriodicRoom: (roomUUID: string, periodicUUID: string) => void;
+    jumpToRoomDetailPage: (roomUUID: string, periodicUUID: string) => void;
+    jumpToModifyOrdinaryRoomPage: (roomUUID: string, periodicUUID: string) => void;
+    jumpToModifyPeriodicRoomPage: () => void;
 }
 
 export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
@@ -33,13 +33,14 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
     userName,
     isCreator,
     periodicInfo,
-    jumpToPeriodicModifyPage,
-    onCopy,
-    onCancelRoom,
-    jumpToRoomInfoPage,
-    jumpToModifyRoomPage,
+    onCopyInvitation,
+    onCancelPeriodicRoom,
+    onCancelSubPeriodicRoom,
+    jumpToRoomDetailPage,
+    jumpToModifyPeriodicRoomPage,
+    jumpToModifyOrdinaryRoomPage,
 }) => {
-    const [confirmRemovePeriodicRoomVisible, setConfirmRemovePeriodicRoomVisible] = useState(false);
+    const [cancelPeriodicRoomModalVisible, setCancelPeriodicRoomModalVisible] = useState(false);
 
     const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
     const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
@@ -120,10 +121,22 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                                         room={room}
                                         userName={userName}
                                         isCreator={isCreator}
-                                        onCopy={onCopy}
-                                        onRemoveRoom={onCancelRoom}
-                                        jumpToRoomInfoPage={jumpToRoomInfoPage}
-                                        jumpToModifyRoomPage={jumpToModifyRoomPage}
+                                        onCopyInvitation={onCopyInvitation}
+                                        onCancelSubPeriodicRoom={() =>
+                                            onCancelSubPeriodicRoom(
+                                                room.roomUUID,
+                                                room.periodicUUID!,
+                                            )
+                                        }
+                                        jumpToRoomDetailPage={() =>
+                                            jumpToRoomDetailPage(room.roomUUID, room.periodicUUID!)
+                                        }
+                                        jumpToModifyOrdinaryRoomPage={() =>
+                                            jumpToModifyOrdinaryRoomPage(
+                                                room.roomUUID,
+                                                room.periodicUUID!,
+                                            )
+                                        }
                                     />
                                 );
                             }}
@@ -145,38 +158,36 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                         房间类型：{getRoomTypeName(periodicInfo.roomType)}
                     </div>
                     <div className="periodic-room-panel-tips-inner">
-                        结束于 {dayWeekFormat(periodicInfo.endTime)} ，共 {periodicInfo.roomCount}{" "}
-                        个房间
+                        结束于 {dayWeekFormat(periodicInfo.endTime)} ，共 {rooms.length} 个房间
                     </div>
                 </div>
                 <div className="periodic-room-panel-btn-list">
                     {isCreator ? (
                         <>
-                            <Button disabled={hasRunning} onClick={jumpToPeriodicModifyPage}>
+                            <Button disabled={hasRunning} onClick={jumpToModifyPeriodicRoomPage}>
                                 修改周期性房间
                             </Button>
                             <Button
                                 danger
-                                onClick={() => setConfirmRemovePeriodicRoomVisible(true)}
+                                onClick={() => setCancelPeriodicRoomModalVisible(true)}
                                 disabled={hasRunning}
                             >
                                 取消周期性房间
                             </Button>
                         </>
                     ) : (
-                        <Button danger onClick={() => setConfirmRemovePeriodicRoomVisible(true)}>
+                        <Button danger onClick={() => setCancelPeriodicRoomModalVisible(true)}>
                             移除周期性房间
                         </Button>
                     )}
                 </div>
                 {renderPeriodicRoomTable()}
             </div>
-            <RemoveRoomModal
-                cancelModalVisible={confirmRemovePeriodicRoomVisible}
+            <CancelPeriodicRoomModal
+                visible={cancelPeriodicRoomModalVisible}
                 isCreator={isCreator}
-                onCancel={() => setConfirmRemovePeriodicRoomVisible(false)}
-                onCancelRoom={onCancelRoom}
-                isPeriodicDetailsPage={true}
+                onCancelPeriodicRoom={onCancelPeriodicRoom}
+                onCancel={() => setCancelPeriodicRoomModalVisible(false)}
             />
         </div>
     );

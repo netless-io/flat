@@ -37,7 +37,6 @@ Overview.args = {
     periodicInfo: {
         weeks: [Week.Friday, Week.Sunday, Week.Wednesday],
         roomType: chance.pickone([RoomType.BigClass, RoomType.OneToOne, RoomType.SmallClass]),
-        endTime: faker.date.future(),
-        roomCount: randomRoomCount,
+        endTime: faker.date.future().valueOf(),
     },
 };
