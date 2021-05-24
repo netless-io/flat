@@ -1,24 +1,24 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
 import type AgoraSDK from "agora-electron-sdk";
-import { OneToOneAvatar as OneToOneAvatarImpl } from "flat-components";
+import { OneToOneVideoAvatar, OneToOneVideoAvatarProps } from "flat-components";
 import { AvatarCanvas } from "../../components/AvatarCanvas";
 import { User } from "../../stores/UserStore";
 
-export interface OneToOneAvatarProps {
-    userUUID: string;
-    isCreator: boolean;
-    avatarUser: User;
+export interface OneToOneAvatarProps extends Omit<OneToOneVideoAvatarProps, "avatarUser"> {
     rtcEngine: AgoraSDK;
-    updateDeviceState(id: string, camera: boolean, mic: boolean): void;
+    avatarUser?: User | null;
 }
 
-export const OneToOneAvatar = observer<OneToOneAvatarProps>(function OneToOneAvatar(props) {
-    return (
-        <OneToOneAvatarImpl {...props}>
-            <AvatarCanvas {...props} />
-        </OneToOneAvatarImpl>
-    );
-});
+export const OneToOneAvatar: React.FC<OneToOneAvatarProps> = ({
+    avatarUser,
+    rtcEngine,
+    ...restProps
+}) => (
+    <OneToOneVideoAvatar {...restProps} avatarUser={avatarUser}>
+        {avatarUser && (
+            <AvatarCanvas {...restProps} avatarUser={avatarUser} rtcEngine={rtcEngine} />
+        )}
+    </OneToOneVideoAvatar>
+);
 
 export default OneToOneAvatar;
