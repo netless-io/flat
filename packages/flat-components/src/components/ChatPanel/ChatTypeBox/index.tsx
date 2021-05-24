@@ -8,6 +8,7 @@ import handActiveSVG from "./icons/hand-active.svg";
 import React, { useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useSafePromise } from "../../../utils/hooks";
+import { useTranslation } from "react-i18next";
 
 export interface ChatTypeBoxProps {
     /** Only room owner can ban chatting. */
@@ -29,6 +30,7 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
     onMessageSend,
     onRaiseHandChange,
 }) {
+    const { t } = useTranslation();
     const sp = useSafePromise();
     const inputRef = useRef<HTMLInputElement>(null);
     const [text, updateText] = useState("");
@@ -57,25 +59,29 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
     return (
         <div className="chat-typebox">
             {isCreator ? (
-                <button className="chat-typebox-icon" title="禁言" onClick={onBanChange}>
+                <button className="chat-typebox-icon" title={t("ban")} onClick={onBanChange}>
                     <img src={isBan ? banChatActiveSVG : banChatSVG} />
                 </button>
             ) : (
                 !disableHandRaising && (
-                    <button className="chat-typebox-icon" title="举手" onClick={onRaiseHandChange}>
+                    <button
+                        className="chat-typebox-icon"
+                        title={t("raise-your-hand")}
+                        onClick={onRaiseHandChange}
+                    >
                         <img src={isRaiseHand ? handActiveSVG : handSVG} />
                     </button>
                 )
             )}
             {!isCreator && isBan ? (
-                <span className="chat-typebox-ban-input" title="全员禁言中">
-                    全员禁言中
+                <span className="chat-typebox-ban-input" title={t("all-staff-are-under-ban")}>
+                    {t("all-staff-are-under-ban")}
                 </span>
             ) : (
                 <input
                     className="chat-typebox-input"
                     type="text"
-                    placeholder="说点什么…"
+                    placeholder={t("say-something")}
                     ref={inputRef}
                     value={text}
                     onChange={e => updateText(e.currentTarget.value.slice(0, 200))}
@@ -88,7 +94,7 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
             )}
             <button
                 className="chat-typebox-send"
-                title="发送"
+                title={t("send")}
                 onClick={sendMessage}
                 disabled={isBan || isSending || trimmedText.length <= 0}
             >

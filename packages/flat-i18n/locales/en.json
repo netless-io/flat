@@ -11,5 +11,21 @@
   "upload-completed": "Upload complete",
   "upload-exception": "Uploading exception",
   "upload-fail": "Upload failed",
-  "upload-success": "Successful"
+  "upload-success": "Successful",
+  "agree": "by",
+  "all-staff-are-under-ban": "All members are mute",
+  "ban": "Mute",
+  "banned": "Muted",
+  "cancel-hand-raising": "Cancel raise of hand",
+  "during-the-presentation": "(Speaking)",
+  "end": "the end",
+  "me": "(I)",
+  "messages": "Message list",
+  "raise-your-hand": "Raise hand",
+  "raised-hand": "(Hands raised)",
+  "say-something": "Say something...",
+  "send": "send",
+  "teacher": "(Teacher)",
+  "unban": "Unmuted",
+  "users": "user list"
 }

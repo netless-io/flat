@@ -11,5 +11,21 @@
   "upload-completed": "上传完成",
   "upload-exception": "上传异常",
   "upload-fail": "上传失败",
-  "upload-success": "上传成功"
+  "upload-success": "上传成功",
+  "banned": "已禁言",
+  "unban": "已解除禁言",
+  "say-something": "说点什么…",
+  "ban": "禁言",
+  "raise-your-hand": "举手",
+  "all-staff-are-under-ban": "全员禁言中",
+  "send": "发送",
+  "teacher": "(老师)",
+  "during-the-presentation": "(发言中)",
+  "end": "结束",
+  "raised-hand": "(已举手)",
+  "agree": "通过",
+  "me": "(我)",
+  "cancel-hand-raising": "取消举手",
+  "messages": "消息列表",
+  "users": "用户列表"
 }
