@@ -1,17 +1,14 @@
-import { observer } from "mobx-react-lite";
+import "./style.less";
+
 import React, { useEffect } from "react";
-import { RTMessage, RTMessageType } from "../../apiMiddleware/Rtm";
-import { User } from "../../stores/ClassRoomStore";
-
-import "./ChatMessage.less";
-
-export type ChatMessageItem = RTMessage;
+import { observer } from "mobx-react-lite";
+import { ChatMsg, ChatMsgType } from "../types";
 
 export interface ChatMessageProps {
     /** current user uuid */
     userUUID: string;
-    messageUser?: User;
-    message: ChatMessageItem;
+    messageUser?: { name: string };
+    message: ChatMsg;
     onMount: () => void;
 }
 
@@ -28,14 +25,14 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
     }, []);
 
     switch (message.type) {
-        case RTMessageType.Notice: {
+        case ChatMsgType.Notice: {
             return (
                 <div className="chat-message-line">
                     <div className="chat-message-notice">{message.value}</div>
                 </div>
             );
         }
-        case RTMessageType.BanText: {
+        case ChatMsgType.BanText: {
             return (
                 <div className="chat-message-line">
                     <div className="chat-message-ban">
@@ -69,5 +66,3 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
         </div>
     );
 });
-
-export default ChatMessage;

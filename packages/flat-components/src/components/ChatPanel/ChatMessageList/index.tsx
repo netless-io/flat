@@ -1,43 +1,46 @@
-import { Observer, observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
 import { useUpdate } from "react-use";
+import { Observer, observer } from "mobx-react-lite";
 import {
     AutoSizer,
     CellMeasurer,
     CellMeasurerCache,
+    Index,
     InfiniteLoader,
+    InfiniteLoaderProps,
     List,
     ListRowRenderer,
-    Index,
-    IndexRange,
 } from "react-virtualized";
-import { ClassRoomStore } from "../../stores/ClassRoomStore";
-import { useReaction } from "../../utils/mobx";
-import ChatMessage from "./ChatMessage";
-
-export type OnLoadMore = (range: IndexRange) => Promise<void>;
+import { User } from "../../../types/user";
+import { useReaction } from "../../../utils/hooks";
+import { ChatMessage } from "../ChatMessage";
+import { ChatMsg } from "../types";
 
 export interface ChatMessageListProps {
     visible: boolean;
-    classRoomStore: ClassRoomStore;
+    userUUID: string;
+    messages: ChatMsg[];
+    getUserByUUID: (uuid: string) => User | undefined;
+    loadMoreRows: InfiniteLoaderProps["loadMoreRows"];
 }
 
 export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessageList({
     visible,
-    classRoomStore,
+    userUUID,
+    messages,
+    getUserByUUID,
+    loadMoreRows,
 }) {
     const forceUpdate = useUpdate();
 
-    const [scrollToIndex, setScrollToIndex] = useState<number | undefined>(
-        classRoomStore.messages.length - 1,
-    );
+    const [scrollToIndex, setScrollToIndex] = useState<number | undefined>(messages.length - 1);
 
     const [cellCache] = useState(
         () =>
             new CellMeasurerCache({
                 defaultHeight: 72,
                 fixedWidth: true,
-                keyMapper: index => classRoomStore.messages[index].uuid,
+                keyMapper: index => messages[index].uuid,
             }),
     );
 
@@ -46,7 +49,7 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
         if (visible) {
             cellCache.clearAll();
             forceUpdate();
-            setScrollToIndex(classRoomStore.messages.length - 1);
+            setScrollToIndex(messages.length - 1);
         }
         // only listen to visible
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -71,11 +74,8 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
 
     useReaction(
         () => ({
-            messageCount: classRoomStore.messages.length,
-            latestMessage:
-                classRoomStore.messages.length > 0
-                    ? classRoomStore.messages[classRoomStore.messages.length - 1]
-                    : null,
+            messageCount: messages.length,
+            latestMessage: messages.length > 0 ? messages[messages.length - 1] : null,
         }),
         ({ messageCount, latestMessage }, prev) => {
             if (messageCount > prev.messageCount) {
@@ -113,7 +113,7 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
         <CellMeasurer
             cache={cellCache}
             parent={parent}
-            key={classRoomStore.messages[index].uuid}
+            key={messages[index].uuid}
             columnIndex={0}
             rowIndex={index}
         >
@@ -124,11 +124,9 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
                             {() => (
                                 <ChatMessage
                                     onMount={measure}
-                                    userUUID={classRoomStore.userUUID}
-                                    messageUser={classRoomStore.users.cachedUsers.get(
-                                        classRoomStore.messages[index].userUUID,
-                                    )}
-                                    message={classRoomStore.messages[index]}
+                                    userUUID={userUUID}
+                                    messageUser={getUserByUUID(messages[index].userUUID)}
+                                    message={messages[index]}
                                 />
                             )}
                         </Observer>
@@ -141,8 +139,8 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
     return (
         <InfiniteLoader
             isRowLoaded={isRowLoaded}
-            loadMoreRows={classRoomStore.updateHistory}
-            rowCount={classRoomStore.messages.length}
+            loadMoreRows={loadMoreRows}
+            rowCount={messages.length}
             threshold={1}
         >
             {({ onRowsRendered, registerChild }) => (
@@ -155,7 +153,7 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
                                     ref={registerChild}
                                     height={height}
                                     width={width}
-                                    rowCount={classRoomStore.messages.length}
+                                    rowCount={messages.length}
                                     rowHeight={cellCache.rowHeight}
                                     rowRenderer={rowRenderer}
                                     scrollToIndex={scrollToIndex}
@@ -170,5 +168,3 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
         </InfiniteLoader>
     );
 });
-
-export default ChatMessageList;

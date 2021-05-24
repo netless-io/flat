@@ -1,16 +1,20 @@
+import "./style.less";
+
 import React, { FC, useMemo } from "react";
 import classNames from "classnames";
-import "./ChatTabTitle.less";
 
 export interface ChatTabTitleProps {
     unreadCount?: number | null;
 }
 
+function isInteger(n: unknown): n is number {
+    return Number.isSafeInteger(n);
+}
+
 export const ChatTabTitle: FC<ChatTabTitleProps> = ({ unreadCount, children }) => {
     const count = useMemo(
         () =>
-            unreadCount !== null &&
-            unreadCount !== void 0 && (
+            isInteger(unreadCount) && (
                 <span
                     className={classNames("chat-tab-red-dot", {
                         "is-large": unreadCount > 99,
@@ -29,5 +33,3 @@ export const ChatTabTitle: FC<ChatTabTitleProps> = ({ unreadCount, children }) =
         </span>
     );
 };
-
-export default ChatTabTitle;

@@ -1,10 +1,8 @@
-import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
-import { User } from "../../stores/ClassRoomStore";
-import { generateAvatar } from "../../utils/generateAvatar";
-import "./ChatUser.less";
+import "./style.less";
 
-export type { User } from "../../stores/ClassRoomStore";
+import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
+import { User } from "../../../types/user";
 
 export interface ChatUserProps {
     /** room owner uuid */
@@ -13,10 +11,12 @@ export interface ChatUserProps {
     userUUID: string;
     /** a user */
     user: User;
-    /** when hand reising is accepted by the teacher */
+    /** when hand raising is accepted by the teacher */
     onAcceptRaiseHand: (uid: string) => void;
     /** user stops speaking */
     onEndSpeaking: (uid: string) => void;
+    /** function to generate placeholder avatar */
+    generateAvatar: (uid: string) => string;
 }
 
 export const ChatUser = observer<ChatUserProps>(function ChatUser({
@@ -25,6 +25,7 @@ export const ChatUser = observer<ChatUserProps>(function ChatUser({
     user,
     onAcceptRaiseHand,
     onEndSpeaking,
+    generateAvatar,
 }) {
     const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
     /** is current user the room owner */
@@ -67,11 +68,9 @@ export const ChatUser = observer<ChatUserProps>(function ChatUser({
                         </button>
                     )}
                 </>
-            ) : isCurrentUser ? (
-                <span className="chat-user-status is-teacher">(我)</span>
-            ) : null}
+            ) : (
+                isCurrentUser && <span className="chat-user-status is-teacher">(我)</span>
+            )}
         </div>
     );
 });
-
-export default ChatUser;

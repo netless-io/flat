@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import dateAdd from "date-fns/add";
-import { Rtm as RTMAPI, RTMessage, RTMessageType } from "../apiMiddleware/Rtm";
+import { Rtm as RTMAPI, RTMessageType } from "../apiMiddleware/Rtm";
 import { SmartPlayer, SmartPlayerEventType } from "../apiMiddleware/SmartPlayer";
 import { globalStore } from "./GlobalStore";
 import { RoomItem, roomStore } from "./RoomStore";
@@ -10,6 +10,7 @@ import { useAutoRun } from "../utils/mobx";
 import { RoomType } from "../apiMiddleware/flatServer/constants";
 import { ipcAsyncByMainWindow } from "../utils/ipc";
 import { UserStore } from "./UserStore";
+import { RTMChannelMessage } from "./ClassRoomStore";
 
 export class ClassRoomReplayStore {
     public readonly roomUUID: string;
@@ -23,7 +24,7 @@ export class ClassRoomReplayStore {
     public readonly users: UserStore;
 
     /** RTM messages */
-    public messages = observable.array<RTMessage>([]);
+    public messages = observable.array<RTMChannelMessage>([]);
 
     public withRTCVideo = false;
 
@@ -34,7 +35,7 @@ export class ClassRoomReplayStore {
     public error?: Error;
 
     /** All of the fetched messages */
-    private cachedMessages = observable.array<RTMessage>([]);
+    private cachedMessages = observable.array<RTMChannelMessage>([]);
 
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
@@ -261,8 +262,8 @@ export class ClassRoomReplayStore {
         });
     };
 
-    private getHistory = async (newestTimestamp: number): Promise<RTMessage[]> => {
-        let histories: RTMessage[] = [];
+    private getHistory = async (newestTimestamp: number): Promise<RTMChannelMessage[]> => {
+        let histories: RTMChannelMessage[] = [];
 
         if (newestTimestamp >= this._remoteNewestTimestamp) {
             return histories;
@@ -281,7 +282,8 @@ export class ClassRoomReplayStore {
             }
 
             histories = messages.filter(
-                (message): message is RTMessage => message.type === RTMessageType.ChannelMessage,
+                (message): message is RTMChannelMessage =>
+                    message.type === RTMessageType.ChannelMessage,
             );
 
             // fetch user name first to avoid flashing

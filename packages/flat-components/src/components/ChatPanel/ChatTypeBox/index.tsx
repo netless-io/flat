@@ -1,34 +1,29 @@
+import "./style.less";
+import sendSVG from "./icons/send.svg";
+import banChatSVG from "./icons/ban-chat.svg";
+import banChatActiveSVG from "./icons/ban-chat-active.svg";
+import handSVG from "./icons/hand.svg";
+import handActiveSVG from "./icons/hand-active.svg";
+
 import React, { useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { User } from "./ChatUser";
-
-import sendSVG from "../../assets/image/send.svg";
-import banChatSVG from "../../assets/image/ban-chat.svg";
-import banChatActiveSVG from "../../assets/image/ban-chat-active.svg";
-import handSVG from "../../assets/image/hand.svg";
-import handActiveSVG from "../../assets/image/hand-active.svg";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { useSafePromise } from "../../../utils/hooks";
 
 export interface ChatTypeBoxProps {
     /** Only room owner can ban chatting. */
     isCreator: boolean;
     isBan: boolean;
-    currentUser?: User | null;
+    isRaiseHand?: boolean;
     disableHandRaising?: boolean;
     onBanChange: () => void;
     onMessageSend: (text: string) => Promise<void>;
     onRaiseHandChange: () => void;
 }
 
-export interface ChatTypeBoxState {
-    text: string;
-    isSending: boolean;
-}
-
 export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
     isCreator,
     isBan,
-    currentUser,
+    isRaiseHand,
     disableHandRaising,
     onBanChange,
     onMessageSend,
@@ -68,7 +63,7 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
             ) : (
                 !disableHandRaising && (
                     <button className="chat-typebox-icon" title="举手" onClick={onRaiseHandChange}>
-                        <img src={currentUser?.isRaiseHand ? handActiveSVG : handSVG} />
+                        <img src={isRaiseHand ? handActiveSVG : handSVG} />
                     </button>
                 )
             )}
@@ -102,5 +97,3 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
         </div>
     );
 });
-
-export default ChatTypeBox;

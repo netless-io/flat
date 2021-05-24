@@ -1,5 +1,6 @@
-import { Observer, observer } from "mobx-react-lite";
 import React, { useState } from "react";
+import { Observer, observer } from "mobx-react-lite";
+import { ChatMessage } from "flat-components";
 import {
     AutoSizer,
     CellMeasurer,
@@ -8,7 +9,6 @@ import {
     ListRowRenderer,
 } from "react-virtualized";
 import { ClassRoomReplayStore } from "../../stores/ClassRoomReplayStore";
-import ChatMessage from "../ChatPanel/ChatMessage";
 
 export interface ChatMessageListReplayProps {
     classRoomReplayStore: ClassRoomReplayStore;

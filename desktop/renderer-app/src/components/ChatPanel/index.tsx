@@ -1,17 +1,8 @@
-import React, { useState } from "react";
-import { Tabs } from "antd";
+import React from "react";
 import { observer } from "mobx-react-lite";
-import { ChatMessages } from "./ChatMessages";
-import { ChatUsers } from "./ChatUsers";
-import { ChatTabTitle } from "./ChatTabTitle";
+import { ChatPanel as ChatPanelImpl, useComputed } from "flat-components";
 import { ClassRoomStore } from "../../stores/ClassRoomStore";
-
-import "./ChatPanel.less";
-
-enum RTMTab {
-    Messages = "Messages",
-    Users = "Users",
-}
+import { generateAvatar } from "../../utils/generateAvatar";
 
 export interface ChatPanelProps {
     classRoomStore: ClassRoomStore;
@@ -24,38 +15,44 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     disableMultipleSpeakers,
     disableHandRaising,
 }) {
-    const [activeTab, setActiveTab] = useState(RTMTab.Messages);
+    const users = useComputed(() => {
+        const { creator, speakingJoiners, handRaisingJoiners, otherJoiners } = classRoomStore.users;
+        return creator
+            ? [...speakingJoiners, ...handRaisingJoiners, creator, ...otherJoiners]
+            : [...speakingJoiners, ...handRaisingJoiners, ...otherJoiners];
+    }).get();
+
     return (
-        <div className="chat-panel">
-            <Tabs
-                activeKey={activeTab}
-                onChange={setActiveTab as (key: string) => void}
-                tabBarGutter={0}
-            >
-                <Tabs.TabPane tab={<ChatTabTitle>消息列表</ChatTabTitle>} key={RTMTab.Messages}>
-                    <ChatMessages
-                        visible={activeTab === RTMTab.Messages}
-                        classRoomStore={classRoomStore}
-                        disableHandRaising={disableHandRaising}
-                    />
-                </Tabs.TabPane>
-                <Tabs.TabPane
-                    tab={
-                        <ChatTabTitle
-                            unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
-                        >
-                            用户列表
-                        </ChatTabTitle>
-                    }
-                    key={RTMTab.Users}
-                >
-                    <ChatUsers
-                        classRoomStore={classRoomStore}
-                        disableMultipleSpeakers={disableMultipleSpeakers}
-                    />
-                </Tabs.TabPane>
-            </Tabs>
-        </div>
+        <ChatPanelImpl
+            isCreator={classRoomStore.isCreator}
+            isBan={classRoomStore.isBan}
+            onBanChange={classRoomStore.onToggleBan}
+            onMessageSend={classRoomStore.onMessageSend}
+            onRaiseHandChange={classRoomStore.onToggleHandRaising}
+            userUUID={classRoomStore.userUUID}
+            messages={classRoomStore.messages}
+            getUserByUUID={(userUUID: string) => classRoomStore.users.cachedUsers.get(userUUID)}
+            loadMoreRows={classRoomStore.updateHistory}
+            hasHandRaising={classRoomStore.users.handRaisingJoiners.length > 0}
+            hasSpeaking={classRoomStore.users.speakingJoiners.length > 0}
+            users={users}
+            onCancelAllHandRaising={classRoomStore.onCancelAllHandRaising}
+            ownerUUID={classRoomStore.ownerUUID}
+            onAcceptRaiseHand={(userUUID: string) => {
+                if (classRoomStore.users.speakingJoiners.length > 0 && disableMultipleSpeakers) {
+                    // only one speaker is allowed
+                    return;
+                }
+                classRoomStore.acceptRaiseHand(userUUID);
+            }}
+            onEndSpeaking={userUUID => {
+                void classRoomStore.onSpeak([{ userUUID, speak: false }]);
+            }}
+            generateAvatar={generateAvatar}
+            disableHandRaising={disableHandRaising}
+            isRaiseHand={classRoomStore.users.currentUser?.isRaiseHand}
+            unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
+        />
     );
 });
 

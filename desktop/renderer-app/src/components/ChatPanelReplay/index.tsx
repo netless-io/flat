@@ -1,5 +1,3 @@
-import "../ChatPanel/ChatPanel.less";
-
 import React from "react";
 import { Tabs } from "antd";
 import { observer } from "mobx-react-lite";
