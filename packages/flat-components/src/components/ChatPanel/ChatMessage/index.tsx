@@ -3,6 +3,7 @@ import "./style.less";
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { ChatMsg, ChatMsgType } from "../types";
+import { useTranslation } from "react-i18next";
 
 export interface ChatMessageProps {
     /** current user uuid */
@@ -18,6 +19,7 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
     message,
     onMount,
 }) {
+    const { t } = useTranslation();
     useEffect(() => {
         onMount();
         // run only once
@@ -36,7 +38,7 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
             return (
                 <div className="chat-message-line">
                     <div className="chat-message-ban">
-                        <span>{message.value ? "已禁言" : "已解除禁言"}</span>
+                        <span>{message.value ? t("banned") : t("unban")}</span>
                     </div>
                 </div>
             );

@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import { AutoSizer, List, ListRowRenderer, Size } from "react-virtualized";
 import { ChatUser, ChatUserProps } from "../ChatUser";
 import { User } from "../../../types/user";
+import { useTranslation } from "react-i18next";
 
 export type ChatUsersProps = {
     isCreator: boolean;
@@ -24,6 +25,7 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
     onCancelAllHandRaising,
     ...restProps
 }) {
+    const { t } = useTranslation();
     const rowRenderer: ListRowRenderer = ({ index, style }): React.ReactNode => {
         const user = users[index];
         return (
@@ -55,7 +57,7 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
                 <div className="chat-users-cancel-hands-wrap">
                     <button className="chat-users-cancel-hands" onClick={onCancelAllHandRaising}>
                         <img src={noHandSVG} alt="cancel hand raising" />
-                        取消举手
+                        {t("cancel-hand-raising")}
                     </button>
                 </div>
             )}

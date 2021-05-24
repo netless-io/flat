@@ -3,6 +3,7 @@ import "./style.less";
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { User } from "../../../types/user";
+import { useTranslation } from "react-i18next";
 
 export interface ChatUserProps {
     /** room owner uuid */
@@ -27,6 +28,7 @@ export const ChatUser = observer<ChatUserProps>(function ChatUser({
     onEndSpeaking,
     generateAvatar,
 }) {
+    const { t } = useTranslation();
     const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
     /** is current user the room owner */
     const isCreator = ownerUUID === userUUID;
@@ -43,33 +45,35 @@ export const ChatUser = observer<ChatUserProps>(function ChatUser({
             />
             <span className="chat-user-name">{user.name}</span>
             {ownerUUID === user.userUUID ? (
-                <span className="chat-user-status is-teacher">(老师)</span>
+                <span className="chat-user-status is-teacher">{t("teacher")}</span>
             ) : user.isSpeak ? (
                 <>
-                    <span className="chat-user-status is-speaking">(发言中)</span>
+                    <span className="chat-user-status is-speaking">
+                        {t("during-the-presentation")}
+                    </span>
                     {(isCreator || isCurrentUser) && (
                         <button
                             className="chat-user-ctl-btn is-speaking"
                             onClick={() => onEndSpeaking(user.userUUID)}
                         >
-                            结束
+                            {t("end")}
                         </button>
                     )}
                 </>
             ) : user.isRaiseHand ? (
                 <>
-                    <span className="chat-user-status is-hand-raising">(已举手)</span>
+                    <span className="chat-user-status is-hand-raising">{t("raised-hand")}</span>
                     {isCreator && (
                         <button
                             className="chat-user-ctl-btn is-hand-raising"
                             onClick={() => onAcceptRaiseHand(user.userUUID)}
                         >
-                            通过
+                            {t("agree")}
                         </button>
                     )}
                 </>
             ) : (
-                isCurrentUser && <span className="chat-user-status is-teacher">(我)</span>
+                isCurrentUser && <span className="chat-user-status is-teacher">{t("me")}</span>
             )}
         </div>
     );
