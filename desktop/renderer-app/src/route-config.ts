@@ -21,6 +21,7 @@ import { GeneralSettingPage } from "./pages/UserSettingPage/GeneralSettingPage";
 import { HotKeySettingPage } from "./pages/UserSettingPage/HotKeySettingPage";
 import { FeedbackPage } from "./pages/UserSettingPage/FeedBackPage";
 import { AboutPage } from "./pages/UserSettingPage/AboutPage";
+import { PeriodicRoomDetailPage } from "./pages/PeriodicRoomDetailPage";
 
 export enum RouteNameType {
     SplashPage = "SplashPage",
@@ -32,6 +33,7 @@ export enum RouteNameType {
     RoomDetailPage = "RoomDetailPage",
     UserScheduledPage = "UserScheduledPage",
     ScheduleRoomDetailPage = "ScheduleRoomDetailPage",
+    PeriodicRoomDetailPage = "PeriodicRoomDetailPage",
     ReplayPage = "ReplayPage",
     ModifyOrdinaryRoomPage = "ModifyOrdinaryRoomPage",
     ModifyPeriodicRoomPage = "ModifyPeriodicRoomPage",
@@ -91,6 +93,11 @@ export const routeConfig = {
         title: "周期性房间详情",
         path: "/user/scheduled/info/:periodicUUID",
         component: ScheduleRoomDetailPage,
+    },
+    [RouteNameType.PeriodicRoomDetailPage]: {
+        title: "周期性房间详情",
+        path: "/user/periodic/info/:periodicUUID",
+        component: PeriodicRoomDetailPage,
     },
     [RouteNameType.ReplayPage]: {
         title: "房间回放",

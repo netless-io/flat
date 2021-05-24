@@ -1,40 +1,31 @@
-import backSVG from "../../assets/image/back.svg";
-import homeIconGraySVG from "../../assets/image/home-icon-gray.svg";
-import roomTypeSVG from "../../assets/image/room-type.svg";
 // import docsIconSVG from "../../assets/image/docs-icon.svg";
-import "./RoomDetailPage.less";
+import "./index.less";
 
 import React, { useContext, useEffect } from "react";
-import { format, formatDistanceStrict } from "date-fns";
-import { Divider } from "antd";
+import { clipboard } from "electron";
+import { MainPageHeader, RoomDetailPanel } from "flat-components";
 import { observer } from "mobx-react-lite";
-import { zhCN } from "date-fns/locale";
-import { Link, useParams } from "react-router-dom";
-import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
-import { generateRoutePath, RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
-import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
-import LoadingPage from "../../LoadingPage";
-import { useComputed } from "../../utils/mobx";
-import { RoomStatusElement } from "../../components/RoomStatusElement/RoomStatusElement";
-import { joinRoomHandler } from "../utils/joinRoomHandler";
-import { errorTips } from "../../components/Tips/ErrorTips";
-import { RoomDetailFooter } from "./RoomDetailFooter";
-import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { useHistory, useParams } from "react-router-dom";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
+import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
+import { errorTips } from "../../components/Tips/ErrorTips";
+import LoadingPage from "../../LoadingPage";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
+import { joinRoomHandler } from "../utils/joinRoomHandler";
+import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
+import { message } from "antd";
 
-export type RoomDetailPageProps = {};
-
-export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailPage() {
+export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
     useWindowSize("Main");
 
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
     const pushHistory = usePushHistory();
+    const history = useHistory();
     const globalStore = useContext(GlobalStoreContext);
     const roomStore = useContext(RoomStoreContext);
     const roomInfo = roomStore.rooms.get(roomUUID);
-
-    const formattedBeginTime = useComputed(() => formatTime(roomInfo?.beginTime), [roomInfo]).get();
-    const formattedEndTime = useComputed(() => formatTime(roomInfo?.endTime), [roomInfo]).get();
+    const periodicInfo = periodicUUID ? roomStore.periodicRooms.get(periodicUUID) : undefined;
 
     useEffect(() => {
         if (periodicUUID) {
@@ -50,181 +41,112 @@ export const RoomDetailPage = observer<RoomDetailPageProps>(function RoomDetailP
 
     const isCreator = roomInfo.ownerUUID === globalStore.userUUID;
 
-    return (
-        <MainPageLayoutContainer>
-            <div className="user-room-detail-box">
-                <div className="user-room-detail-nav">
-                    <div className="user-room-detail-head">
-                        <Link to={"/user/"}>
-                            <div className="user-room-detail-back">
-                                <img src={backSVG} alt="back" />
-                                <span>返回</span>
-                            </div>
-                        </Link>
-                        {roomInfo.title && (
-                            <>
-                                <Divider type="vertical" />
-                                <h1 className="user-room-detail-title">{roomInfo.title}</h1>
-                            </>
-                        )}
-                        {periodicUUID && (
-                            <>
-                                <div className="user-periodic">周期</div>
-                                {roomInfo.roomStatus !== RoomStatus.Stopped && (
-                                    <div className="user-periodic-room">
-                                        {roomInfo.count && (
-                                            <Link
-                                                to={generateRoutePath(
-                                                    RouteNameType.ScheduleRoomDetailPage,
-                                                    {
-                                                        periodicUUID,
-                                                    },
-                                                )}
-                                            >
-                                                查看全部 {roomInfo.count} 场房间
-                                            </Link>
-                                        )}
-                                    </div>
-                                )}
-                            </>
-                        )}
-                    </div>
-                </div>
-                <div className="user-room-detail-body">
-                    <div className="user-room-detail-mid">
-                        <div className="user-room-time">
-                            {formattedBeginTime && (
-                                <div className="user-room-time-box">
-                                    <div className="user-room-time-number">
-                                        {formattedBeginTime.time}
-                                    </div>
-                                    <div className="user-room-time-date">
-                                        {formattedBeginTime.date}
-                                    </div>
-                                </div>
-                            )}
-                            {roomInfo.endTime && roomInfo.beginTime && (
-                                <div className="user-room-time-mid">
-                                    <div className="user-room-time-during">
-                                        {formatDistanceStrict(
-                                            roomInfo.endTime,
-                                            roomInfo.beginTime,
-                                            { locale: zhCN },
-                                        )}
-                                    </div>
-                                    <div className="user-room-time-state">
-                                        <RoomStatusElement room={roomInfo} />
-                                    </div>
-                                </div>
-                            )}
-                            {formattedEndTime && (
-                                <div className="user-room-time-box">
-                                    <div className="user-room-time-number">
-                                        {formattedEndTime.time}
-                                    </div>
-                                    <div className="user-room-time-date">
-                                        {formattedEndTime.date}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                        <div className="user-room-cut-line" />
-                        <div className="user-room-detail">
-                            <div className="user-room-inf">
-                                <div className="user-room-docs-title">
-                                    <img
-                                        width={22}
-                                        height={22}
-                                        src={homeIconGraySVG}
-                                        alt={"home_icon_gray"}
-                                    />
-                                    <span>房间号</span>
-                                </div>
-                                <div
-                                    className="user-room-docs-right"
-                                    style={{ userSelect: "text" }}
-                                >
-                                    {periodicUUID || roomUUID}
-                                </div>
-                            </div>
-                            <div className="user-room-inf">
-                                <div className="user-room-docs-title">
-                                    <img
-                                        width={22}
-                                        height={22}
-                                        src={roomTypeSVG}
-                                        alt={"room_type"}
-                                    />
-                                    <span>房间类型</span>
-                                </div>
-                                <div className="user-room-docs-right">
-                                    {roomTypeLocale(roomInfo.roomType)}
-                                </div>
-                            </div>
-                            {/* <div className="user-room-docs">
-                                <div className="user-room-docs-title">
-                                    <img
-                                        width={22}
-                                        height={22}
-                                        src={docsIconSVG}
-                                        alt={"docs_icon"}
-                                    />
-                                    <span>课件.xxx (动态)</span>
-                                </div>
-                                <div className="user-room-docs-set">缓存</div>
-                            </div>
-                            <div className="user-room-docs">
-                                <div className="user-room-docs-title">
-                                    <img
-                                        width={22}
-                                        height={22}
-                                        src={docsIconSVG}
-                                        alt={"docs_icon"}
-                                    />
-                                    <span>课件.xxx (动态)</span>
-                                </div>
-                                <div className="user-room-docs-set">缓存</div>
-                            </div> */}
-                        </div>
-                        <RoomDetailFooter
-                            isCreator={isCreator}
-                            room={roomInfo}
-                            onJoinRoom={joinRoom}
-                        />
-                    </div>
-                </div>
-            </div>
-        </MainPageLayoutContainer>
-    );
-
     async function joinRoom(): Promise<void> {
         if (roomInfo) {
             await joinRoomHandler(roomInfo.roomUUID, pushHistory);
         }
     }
+
+    async function onCancelRoom(all: boolean): Promise<void> {
+        try {
+            if (!isCreator && periodicUUID) {
+                await roomStore.cancelRoom({
+                    all: true,
+                    periodicUUID,
+                });
+            } else {
+                await roomStore.cancelRoom({
+                    all,
+                    roomUUID,
+                    periodicUUID,
+                });
+            }
+        } catch (err) {
+            console.log(err);
+            errorTips(err);
+        }
+
+        void message.success("已取消该房间");
+
+        history.goBack();
+    }
+
+    function jumpToPeriodicRoomDetailPage(): void {
+        if (roomInfo?.periodicUUID) {
+            pushHistory(RouteNameType.PeriodicRoomDetailPage, {
+                periodicUUID: roomInfo.periodicUUID,
+            });
+        }
+    }
+
+    function jumpToReplayPage(): void {
+        if (roomInfo) {
+            pushHistory(RouteNameType.ReplayPage, {
+                roomUUID: roomInfo.roomUUID,
+                ownerUUID: roomInfo.ownerUUID,
+                roomType: roomInfo.roomType!,
+            });
+        }
+    }
+
+    function jumpToModifyRoom(): void {
+        if (roomInfo) {
+            if (roomInfo.roomUUID) {
+                pushHistory(RouteNameType.ModifyOrdinaryRoomPage, {
+                    roomUUID: roomInfo.roomUUID,
+                    periodicUUID: roomInfo.periodicUUID,
+                });
+            }
+            if (roomInfo.periodicUUID) {
+                pushHistory(RouteNameType.ModifyPeriodicRoomPage, {
+                    periodicUUID: roomInfo.periodicUUID,
+                });
+            }
+        }
+    }
+
+    return (
+        <MainPageLayoutContainer>
+            <div className="room-detail-page-header-container">
+                <MainPageHeader
+                    title={
+                        <>
+                            <h1 className="room-detail-page-header-title">{roomInfo.title}</h1>
+                            {periodicUUID && (
+                                <>
+                                    <span className="room-detail-page-header-sign">周期</span>
+                                    {roomInfo.roomStatus !== RoomStatus.Stopped && (
+                                        <div
+                                            className="room-detail-page-header-right"
+                                            onClick={jumpToPeriodicRoomDetailPage}
+                                        >
+                                            查看全部 {roomInfo.count} 场房间
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                        </>
+                    }
+                    onBackPreviousPage={() => history.goBack()}
+                />
+            </div>
+            <div className="room-detail-page-container">
+                <RoomDetailPanel
+                    roomInfo={roomInfo}
+                    room={roomInfo}
+                    userName={roomInfo.ownerUserName || ""}
+                    isCreator={isCreator}
+                    isPeriodicDetailsPage={false}
+                    periodicWeeks={periodicInfo?.periodic.weeks}
+                    onJoinRoom={joinRoom}
+                    onModifyRoom={jumpToModifyRoom}
+                    onReplayRoom={jumpToReplayPage}
+                    onCancelRoom={onCancelRoom}
+                    onCopyInvitation={text => clipboard.writeText(text)}
+                />
+            </div>
+        </MainPageLayoutContainer>
+    );
 });
 
 export default RoomDetailPage;
-
-function formatTime(time?: number): { date: string; time: string } | null {
-    return time
-        ? {
-              date: format(time, "yyyy/MM/dd", { locale: zhCN }),
-              time: format(time, "HH:mm"),
-          }
-        : null;
-}
-
-function roomTypeLocale(roomType?: RoomType): string {
-    switch (roomType) {
-        case RoomType.OneToOne: {
-            return "一对一";
-        }
-        case RoomType.SmallClass: {
-            return "小班课";
-        }
-        default: {
-            return "大班课";
-        }
-    }
-}

@@ -284,7 +284,7 @@ interface CancelPeriodicRoomPayload {
     periodicUUID: string;
 }
 
-function cancelPeriodicRoom(periodicUUID: string): Promise<CancelPeriodicRoomResult> {
+export function cancelPeriodicRoom(periodicUUID: string): Promise<CancelPeriodicRoomResult> {
     return post<CancelPeriodicRoomPayload, CancelPeriodicRoomResult>("room/cancel/periodic", {
         periodicUUID,
     });
@@ -297,7 +297,7 @@ interface CancelPeriodicSubRoomPayload {
     periodicUUID: string;
 }
 
-function cancelPeriodicSubRoom(
+export function cancelPeriodicSubRoom(
     payload: CancelPeriodicSubRoomPayload,
 ): Promise<CancelPeriodicSubRoomResult> {
     return post<CancelPeriodicSubRoomPayload, CancelPeriodicSubRoomResult>(
