@@ -1,7 +1,7 @@
 import "./style.less";
 import calendarSVG from "./icons/calendar.svg";
 
-import React from "react";
+import React, { PropsWithChildren, ReactElement } from "react";
 import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import classNames from "classnames";
@@ -26,23 +26,27 @@ export const RoomListDate: React.FC<RoomListDateProps> = ({ date }) => (
     </div>
 );
 
-type RoomStatusType = "idle" | "running" | "stopped";
+export type RoomStatusType = "idle" | "running" | "stopped";
 
-interface RoomListItemButton {
-    key: string;
+export interface RoomListItemButton<T extends string> {
+    key: T;
     text: string;
+    disabled?: boolean;
 }
-type RoomListItemButtons = (RoomListItemButton | RoomListItemButton[])[];
+export type RoomListItemButtons<T extends string> = (
+    | RoomListItemButton<T>
+    | RoomListItemButton<T>[]
+)[];
 
-export interface RoomListItemProps {
+export interface RoomListItemProps<T extends string> {
     title: string;
     beginTime?: Date;
     endTime?: Date;
     status: RoomStatusType;
     isPeriodic?: boolean;
-    buttons?: RoomListItemButtons;
+    buttons?: RoomListItemButtons<T>;
     onClick?: () => void;
-    onClickMenu?: (key: string) => void;
+    onClickMenu?: (key: T) => void;
 }
 
 const RoomStatusTexts: Record<RoomStatusType, string> = {
@@ -51,7 +55,7 @@ const RoomStatusTexts: Record<RoomStatusType, string> = {
     stopped: "已结束",
 };
 
-export const RoomListItem: React.FC<RoomListItemProps> = ({
+export function RoomListItem<T extends string = string>({
     title,
     beginTime,
     endTime,
@@ -60,43 +64,52 @@ export const RoomListItem: React.FC<RoomListItemProps> = ({
     buttons,
     onClick,
     onClickMenu,
-}) => (
-    <div className="room-list-item">
-        <div
-            className={classNames("room-list-item-left", { pointer: !!onClick })}
-            onClick={onClick}
-        >
-            <div className="room-list-item-title">{title}</div>
-            <div className="room-list-item-info">
-                {(beginTime || endTime) && (
-                    <div className="room-list-item-duration">
-                        {beginTime && format(beginTime, "HH:mm")}
-                        {" ~ "}
-                        {endTime && format(endTime, "HH:mm")}
+}: PropsWithChildren<RoomListItemProps<T>>): ReactElement {
+    return (
+        <div className="room-list-item">
+            <div
+                className={classNames("room-list-item-left", { pointer: !!onClick })}
+                onClick={onClick}
+            >
+                <div className="room-list-item-title">{title}</div>
+                <div className="room-list-item-info">
+                    {(beginTime || endTime) && (
+                        <div className="room-list-item-duration">
+                            {beginTime && format(beginTime, "HH:mm")}
+                            {" ~ "}
+                            {endTime && format(endTime, "HH:mm")}
+                        </div>
+                    )}
+                    <div className="room-list-item-status">
+                        <span className={status}>{RoomStatusTexts[status]}</span>
+                        {isPeriodic && <span className="periodic">周期</span>}
                     </div>
-                )}
-                <div className="room-list-item-status">
-                    <span className={status}>{RoomStatusTexts[status]}</span>
-                    {isPeriodic && <span className="periodic">周期</span>}
                 </div>
             </div>
+            <div className="room-list-item-right">
+                {buttons && renderButtons(buttons, onClickMenu)}
+            </div>
         </div>
-        <div className="room-list-item-right">{buttons && renderButtons(buttons, onClickMenu)}</div>
-    </div>
-);
+    );
+}
 
-function renderButtons(
-    buttons: RoomListItemButtons,
-    onClickMenu?: (key: string) => void,
+function renderButtons<T extends string>(
+    buttons: RoomListItemButtons<T>,
+    onClickMenu?: (key: T) => void,
 ): React.ReactNode {
     const result: React.ReactNode[] = [];
     for (const buttonConfig of buttons) {
         if (Array.isArray(buttonConfig)) {
-            result.push(renderSubMenu(buttonConfig, onClickMenu));
+            result.push(renderSubMenu(buttonConfig, "room-list-item-sub-menu", onClickMenu));
         } else {
-            const { key, text } = buttonConfig;
+            const { key, text, disabled } = buttonConfig;
             result.push(
-                <Button key={key} type="primary" onClick={() => onClickMenu?.(key)}>
+                <Button
+                    key={key}
+                    type="primary"
+                    onClick={() => onClickMenu?.(key)}
+                    disabled={disabled}
+                >
                     {text}
                 </Button>,
             );
@@ -105,9 +118,10 @@ function renderButtons(
     return result;
 }
 
-function renderSubMenu(
-    buttons: RoomListItemButton[],
-    onClickMenu?: (key: string) => void,
+function renderSubMenu<T extends string>(
+    buttons: RoomListItemButton<T>[],
+    overlayClassName?: string,
+    onClickMenu?: (key: T) => void,
 ): React.ReactNode {
     return (
         <Dropdown
@@ -122,27 +136,28 @@ function renderSubMenu(
                 </Menu>
             }
             trigger={["click"]}
+            overlayClassName={overlayClassName}
         >
             <Button className="room-list-item-more">...</Button>
         </Dropdown>
     );
 }
 
-export interface RoomListProps {
+export interface RoomListProps<T extends string> {
     /** will be hidden on mobile */
     title?: string;
     /** will be title on mobile */
     filters?: {
         title: string;
-        key: string;
+        key: T;
     }[];
-    activeTab?: string;
-    onTabActive?: (key: string) => void;
+    activeTab?: T;
+    onTabActive?: (key: T) => void;
     style?: React.CSSProperties;
     loading?: boolean;
 }
 
-export const RoomList: React.FC<RoomListProps> = ({
+export function RoomList<T extends string>({
     title,
     filters,
     activeTab,
@@ -150,7 +165,7 @@ export const RoomList: React.FC<RoomListProps> = ({
     children,
     style,
     loading,
-}) => {
+}: PropsWithChildren<RoomListProps<T>>): ReactElement {
     return (
         <div className="room-list" style={style}>
             <div className="room-list-header">
@@ -176,4 +191,4 @@ export const RoomList: React.FC<RoomListProps> = ({
             </div>
         </div>
     );
-};
+}
