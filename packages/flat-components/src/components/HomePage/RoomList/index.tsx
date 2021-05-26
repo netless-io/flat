@@ -6,6 +6,7 @@ import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import classNames from "classnames";
 import { Button, Dropdown, Menu } from "antd";
+import { useTranslation } from "react-i18next";
 
 export interface RoomListDateProps {
     date: Date;
@@ -49,12 +50,6 @@ export interface RoomListItemProps<T extends string> {
     onClickMenu?: (key: T) => void;
 }
 
-const RoomStatusTexts: Record<RoomStatusType, string> = {
-    idle: "待开始",
-    running: "进行中",
-    stopped: "已结束",
-};
-
 export function RoomListItem<T extends string = string>({
     title,
     beginTime,
@@ -65,6 +60,7 @@ export function RoomListItem<T extends string = string>({
     onClick,
     onClickMenu,
 }: PropsWithChildren<RoomListItemProps<T>>): ReactElement {
+    const { t } = useTranslation();
     return (
         <div className="room-list-item">
             <div
@@ -81,7 +77,7 @@ export function RoomListItem<T extends string = string>({
                         </div>
                     )}
                     <div className="room-list-item-status">
-                        <span className={status}>{RoomStatusTexts[status]}</span>
+                        <span className={status}>{t(`room-status.${status}`)}</span>
                         {isPeriodic && <span className="periodic">周期</span>}
                     </div>
                 </div>

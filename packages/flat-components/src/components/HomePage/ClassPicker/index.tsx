@@ -7,6 +7,7 @@ import "./index.less";
 import React from "react";
 import { Radio } from "antd";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 
 export type ClassPickerItemType = "oneToOne" | "bigClass" | "smallClass";
 
@@ -22,22 +23,11 @@ const ClassPickerIcons: Record<ClassPickerItemType, string> = {
     smallClass: smallClassSVG,
 };
 
-const ClassPickerTitles: Record<ClassPickerItemType, string> = {
-    bigClass: "大班课",
-    oneToOne: "一对一",
-    smallClass: "小班课",
-};
-
-const ClassPickerTexts: Record<ClassPickerItemType, string> = {
-    bigClass: "适用于 1 位老师面向大量学生",
-    oneToOne: "适用于 1 位老师与 1 名学生",
-    smallClass: "适用于 1 位老师面向最多 16 名学生",
-};
-
 export const ClassPickerItem: React.FC<Pick<ClassPickerProps, "type" | "large">> = ({
     type,
     large,
 }) => {
+    const { t } = useTranslation();
     return (
         <Radio value={type}>
             {large ? (
@@ -48,18 +38,22 @@ export const ClassPickerItem: React.FC<Pick<ClassPickerProps, "type" | "large">>
                     ></img>
                     <div className="class-large-picker-item-right">
                         <span className="class-large-picker-item-title">
-                            {ClassPickerTitles[type]}
+                            {t(`class-picker-title.${type}`)}
                         </span>
                         <span className="class-large-picker-item-content">
-                            {ClassPickerTexts[type]}
+                            {t(`class-picker-text.${type}`)}
                         </span>
                     </div>
                 </div>
             ) : (
                 <div className="class-picker-item-container">
                     <img className="class-picker-item-icon" src={ClassPickerIcons[type]}></img>
-                    <span className="class-picker-item-title">{ClassPickerTitles[type]}</span>
-                    <span className="class-picker-item-content">{ClassPickerTexts[type]}</span>
+                    <span className="class-picker-item-title">
+                        {t(`class-picker-title.${type}`)}
+                    </span>
+                    <span className="class-picker-item-content">
+                        {t(`class-picker-text.${type}`)}
+                    </span>
                 </div>
             )}
         </Radio>

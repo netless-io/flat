@@ -56,5 +56,25 @@
   "student-exit-room-tip": "The class is continuing, are you sure to leave the room?",
   "student-sure-to-exit-the-room": "Sure to exit the room",
   "teacher-left-temporarily": "The teacher leaves temporarily",
-  "the-room-has-ended-and-is-about-to-exit": "The room has ended and is about to exit..."
+  "the-room-has-ended-and-is-about-to-exit": "The room has ended and is about to exit...",
+  "class-picker-text": {
+    "bigClass": "Suitable for 1 teacher for a large number of students",
+    "oneToOne": "Suitable for 1 teacher and 1 student",
+    "smallClass": "Suitable for 1 teacher for up to 16 students"
+  },
+  "class-picker-title": {
+    "bigClass": "Large Class",
+    "oneToOne": "One to One",
+    "smallClass": "Small Class"
+  },
+  "home-page-hero-button-type": {
+    "create": "Create",
+    "join": "Join",
+    "schedule": "Schedule"
+  },
+  "room-status": {
+    "idle": "idle",
+    "running": "running",
+    "stopped": "stopped"
+  }
 }

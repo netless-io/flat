@@ -4,6 +4,7 @@ import createSVG from "./icons/create.svg";
 import scheduleSVG from "./icons/schedule.svg";
 import React from "react";
 import { Button } from "antd";
+import { useTranslation } from "react-i18next";
 
 type HomePageHeroButtonType = "join" | "create" | "schedule";
 
@@ -33,17 +34,12 @@ export interface HomePageHeroButtonProps {
     onClick?: () => void;
 }
 
-const HomePageHeroButtonTypeTexts: Record<HomePageHeroButtonType, string> = {
-    join: "加入房间",
-    create: "创建房间",
-    schedule: "预定房间",
-};
-
 export const HomePageHeroButton: React.FC<HomePageHeroButtonProps> = ({ type, onClick }) => {
+    const { t } = useTranslation();
     return (
         <HomePageHeroButtonBase
             type={type}
-            text={HomePageHeroButtonTypeTexts[type]}
+            text={t(`home-page-hero-button-type.${type}`)}
             onClick={onClick}
         />
     );

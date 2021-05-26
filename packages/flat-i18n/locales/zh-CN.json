@@ -56,5 +56,25 @@
   "network-quality5": "网络质量非常差",
   "network-quality6": "网络连接已断开",
   "network-quality7": "暂时无法检测网络质量",
-  "network-quality8": "正在检测..."
+  "network-quality8": "正在检测...",
+  "room-status": {
+    "idle": "待开始",
+    "running": "进行中",
+    "stopped": "已结束"
+  },
+  "home-page-hero-button-type": {
+    "join": "加入房间",
+    "create": "创建房间",
+    "schedule": "预定房间"
+  },
+  "class-picker-title": {
+    "bigClass": "大班课",
+    "oneToOne": "一对一",
+    "smallClass": "小班课"
+  },
+  "class-picker-text": {
+    "bigClass": "适用于 1 位老师面向大量学生",
+    "oneToOne": "适用于 1 位老师与 1 名学生",
+    "smallClass": "适用于 1 位老师面向最多 16 名学生"
+  }
 }
