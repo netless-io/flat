@@ -1,5 +1,6 @@
-import { Modal } from "antd";
 import { FC, useEffect, useRef, useState } from "react";
+import { Modal } from "antd";
+import { useTranslation } from "react-i18next";
 import { RoomStatus } from "../../../types/room";
 
 export interface RoomStoppedModalProps {
@@ -16,6 +17,7 @@ export interface RoomStoppedModalProps {
 export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({ isCreator, roomStatus, onExit }) => {
     const modalRef = useRef<ReturnType<typeof Modal.info>>();
     const [visible, setVisible] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (roomStatus === RoomStatus.Stopped) {
@@ -33,14 +35,14 @@ export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({ isCreator, roomSta
         if (visible) {
             let countdown = 5;
             modalRef.current = Modal.info({
-                title: "房间已结束，即将退出...",
-                okText: `知道了 (${countdown})`,
+                title: t("the-room-has-ended-and-is-about-to-exit"),
+                okText: t("i-know", { countdown }),
                 onOk: onExit,
                 onCancel: onExit,
             });
             ticket = window.setInterval(() => {
                 modalRef.current?.update({
-                    okText: `知道了 (${--countdown})`,
+                    okText: t("i-know", { countdown: --countdown }),
                 });
                 if (countdown <= 0) {
                     window.clearInterval(ticket);
@@ -53,7 +55,7 @@ export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({ isCreator, roomSta
             window.clearInterval(ticket);
             modalRef.current?.destroy();
         };
-    }, [visible, onExit]);
+    }, [visible, onExit, t]);
 
     return null;
 };

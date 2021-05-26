@@ -8,6 +8,7 @@ import videoExpandSVG from "./icons/video-expand.svg";
 import React from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 
 export interface AvatarUser {
     name: string;
@@ -40,6 +41,7 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
     className,
     ...restProps
 }) {
+    const { t } = useTranslation();
     if (!avatarUser) {
         return (
             <div
@@ -48,7 +50,7 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
                     "is-mini": mini,
                 })}
             >
-                老师暂时离开
+                {t("teacher-left-temporarily")}
             </div>
         );
     }

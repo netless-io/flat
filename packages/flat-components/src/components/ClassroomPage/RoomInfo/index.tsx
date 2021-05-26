@@ -1,7 +1,8 @@
-import "./style.less"
+import "./style.less";
 
 import classNames from "classnames";
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { RoomStatus, RoomType } from "../../../types/room";
 import { getRoomStatusName, getRoomTypeName } from "../../../utils/room";
 
@@ -10,23 +11,26 @@ export interface RoomInfoProps {
     roomType?: RoomType;
 }
 
-export const RoomInfo: FC<RoomInfoProps> = ({ roomStatus, roomType }) => (
-    <div className="room-info">
-        <span>
-            当前状态：
-            <span
-                className={classNames("room-info-progress", {
-                    "is-active": roomStatus !== RoomStatus.Idle,
-                })}
-            >
-                {getRoomStatusName(roomStatus)}
+export const RoomInfo: FC<RoomInfoProps> = ({ roomStatus, roomType }) => {
+    const { t } = useTranslation();
+    return (
+        <div className="room-info">
+            <span>
+                {t("current-status")}
+                <span
+                    className={classNames("room-info-progress", {
+                        "is-active": roomStatus !== RoomStatus.Idle,
+                    })}
+                >
+                    {getRoomStatusName(roomStatus)}
+                </span>
             </span>
-        </span>
-        <span>
-            当前模式：
-            <span className="room-info-mode">
-                {getRoomTypeName(roomType || RoomType.BigClass)}
+            <span>
+                {t("current-mode")}
+                <span className="room-info-mode">
+                    {getRoomTypeName(roomType || RoomType.BigClass)}
+                </span>
             </span>
-        </span>
-    </div>
-);
+        </div>
+    );
+};

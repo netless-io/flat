@@ -1,5 +1,6 @@
-import { Button, Modal } from "antd";
 import React, { FC } from "react";
+import { Button, Modal } from "antd";
+import { useTranslation } from "react-i18next";
 
 export interface StopClassConfirmModalProps {
     visible: boolean;
@@ -18,17 +19,16 @@ export const StopClassConfirmModal: FC<StopClassConfirmModalProps> = ({
     onStop,
     onCancel,
 }) => {
+    const { t } = useTranslation();
     return (
         <Modal
             visible={visible}
-            title="确定结束上课"
+            title={t("confirmation-of-the-end-of-classes")}
             okButtonProps={{ loading }}
             onOk={onStop}
             onCancel={onCancel}
         >
-            <p>
-                一旦结束上课，所有用户自动退出房间，并且自动结束课程和录制（如有），不能继续直播。
-            </p>
+            <p>{t("end-of-class-tips")}</p>
         </Modal>
     );
 };
@@ -54,25 +54,26 @@ export const CloseRoomConfirmModal: FC<CloseRoomConfirmModalProps> = ({
     onStop,
     onCancel,
 }) => {
+    const { t } = useTranslation();
     return (
         <Modal
             visible={visible}
-            title="关闭选项"
+            title={t("close-option")}
             onOk={onCancel}
             onCancel={onCancel}
             footer={[
                 <Button key="Cancel" onClick={onCancel}>
-                    取消
+                    {t("cancel")}
                 </Button>,
                 <Button key="ReturnMain" loading={hangLoading} onClick={onHang}>
-                    挂起房间
+                    {t("hang-up-the-room")}
                 </Button>,
                 <Button key="StopClass" type="primary" loading={stopLoading} onClick={onStop}>
-                    结束上课
+                    {t("end-the-class")}
                 </Button>,
             ]}
         >
-            <p>课堂正在继续，你是暂时退出挂起房间还是结束上课？</p>
+            <p>{t("exit-room-tips")}</p>
         </Modal>
     );
 };
@@ -92,9 +93,15 @@ export const ExitRoomConfirmModal: FC<ExitRoomConfirmModalProps> = ({
     onExit,
     onCancel,
 }) => {
+    const { t } = useTranslation();
     return (
-        <Modal visible={visible} title="确定退出房间" onOk={onExit} onCancel={onCancel}>
-            <p>课堂正在继续，确定退出房间？</p>
+        <Modal
+            visible={visible}
+            title={t("student-sure-to-exit-the-room")}
+            onOk={onExit}
+            onCancel={onCancel}
+        >
+            <p>{t("student-exit-room-tip")}</p>
         </Modal>
     );
 };
