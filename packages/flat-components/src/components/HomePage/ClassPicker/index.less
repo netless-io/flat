@@ -8,6 +8,13 @@
     text-align: center;
 }
 
+.class-large-picker-item-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+}
+
 .class-picker-item-icon {
     width: 100%;
     margin-bottom: 16px;
@@ -16,18 +23,46 @@
     border-radius: 4px;
 }
 
+.class-large-picker-item-icon {
+    width: 100%;
+    line-height: 1.5;
+    font-weight: 400;
+    border-radius: 4px;
+}
+
+.class-large-picker-item-right {
+    display: flex;
+    flex-direction: column;
+    margin-left: 16px;
+}
+
 .class-picker-item-title {
     font-size: 16px;
+    color: #444e60;
+}
+
+.class-large-picker-item-title {
+    font-size: 16px;
+    text-align: left;
     color: #444e60;
 }
 
 .class-picker-item-content {
     width: 100%;
     margin-bottom: 16px;
+    letter-spacing: -0.3px;
+    color: #7a7b7c;
+}
+
+.class-large-picker-item-content {
+    width: 100%;
+    text-align: left;
+    letter-spacing: -0.3px;
     color: #7a7b7c;
 }
 
 .class-picker-container {
+    overflow: hidden;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 16px;
@@ -39,6 +74,56 @@
         margin-right: 0;
         border-radius: 4px;
         padding: 16px;
+
+        > span {
+            padding: 0;
+        }
+
+        &::after {
+            content: "";
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            border: 1px solid #dbe1ea;
+            border-radius: 4px;
+            transition: border-color 0.4s;
+        }
+
+        &.ant-radio-wrapper-checked,
+        &:hover,
+        &:active {
+            &::after {
+                border: 2px solid @primary-color;
+            }
+        }
+    }
+}
+
+.class-large-picker-container {
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+
+    > .ant-radio-wrapper {
+        position: relative;
+        flex-direction: row-reverse;
+        align-items: flex-end;
+        margin-right: 0;
+        border-radius: 4px;
+        padding: 16px;
+
+        > .ant-radio {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            bottom: 16px;
+            right: 16px;
+            top: unset;
+            left: unset;
+        }
 
         > span {
             padding: 0;
