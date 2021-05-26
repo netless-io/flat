@@ -61,7 +61,6 @@ export class Rtc {
             height: 216,
             width: 288,
         });
-        this.rtcEngine.enableVideo();
 
         if (channelType === RtcChannelType.Broadcast) {
             if (isCreator) {
@@ -70,6 +69,10 @@ export class Rtc {
                 this.rtcEngine.setClientRole(2);
             }
         }
+
+        this.rtcEngine.enableVideo();
+        // prevent camera being turned on temporarily right after joining room
+        this.rtcEngine.enableLocalVideo(false);
 
         if (this.rtcEngine.joinChannel(token, roomUUID, "", rtcUID) < 0) {
             throw new Error("[RTC]: join channel failed");
