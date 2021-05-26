@@ -4,7 +4,7 @@ import emptyRoomSVG from "../../../assets/image/empty-room.svg";
 
 import { clipboard } from "electron";
 import { message, Skeleton } from "antd";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { isSameDay } from "date-fns";
 import {
@@ -128,12 +128,9 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                         : { key: "join", text: "加入" };
 
                     return (
-                        <>
-                            {shouldShowDate && beginTime && (
-                                <RoomListDate key={room.roomUUID + "-date"} date={beginTime} />
-                            )}
+                        <Fragment key={room.roomUUID}>
+                            {shouldShowDate && beginTime && <RoomListDate date={beginTime} />}
                             <RoomListItem
-                                key={room.roomUUID}
                                 title={room.title!}
                                 beginTime={beginTime}
                                 endTime={endTime}
@@ -187,7 +184,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                                     }
                                 }}
                             />
-                        </>
+                        </Fragment>
                     );
                 },
             )}
