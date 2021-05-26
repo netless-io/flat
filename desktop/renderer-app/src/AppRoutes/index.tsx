@@ -4,6 +4,8 @@ import { message } from "antd";
 import { LastLocationProvider } from "react-router-last-location";
 import { RouteConfig, routeConfig } from "../route-config";
 import { AppRouteContainer } from "./AppRouteContainer";
+import { I18nextProvider } from "react-i18next";
+import { i18n } from "../utils/i18n";
 
 export class AppRoutes extends React.Component {
     public componentDidCatch(error: any): void {
@@ -13,27 +15,29 @@ export class AppRoutes extends React.Component {
     public render(): React.ReactElement {
         return (
             <HashRouter>
-                <LastLocationProvider watchOnlyPathname>
-                    <Switch>
-                        {Object.keys(routeConfig).map(((name: keyof RouteConfig) => {
-                            const { path, component, title } = routeConfig[name];
-                            return (
-                                <Route
-                                    key={name}
-                                    exact={true}
-                                    path={path}
-                                    render={routeProps => (
-                                        <AppRouteContainer
-                                            Comp={component}
-                                            title={title}
-                                            routeProps={routeProps}
-                                        />
-                                    )}
-                                />
-                            );
-                        }) as (name: string) => React.ReactElement)}
-                    </Switch>
-                </LastLocationProvider>
+                <I18nextProvider i18n={i18n}>
+                    <LastLocationProvider watchOnlyPathname>
+                        <Switch>
+                            {Object.keys(routeConfig).map(((name: keyof RouteConfig) => {
+                                const { path, component, title } = routeConfig[name];
+                                return (
+                                    <Route
+                                        key={name}
+                                        exact={true}
+                                        path={path}
+                                        render={routeProps => (
+                                            <AppRouteContainer
+                                                Comp={component}
+                                                title={title}
+                                                routeProps={routeProps}
+                                            />
+                                        )}
+                                    />
+                                );
+                            }) as (name: string) => React.ReactElement)}
+                        </Switch>
+                    </LastLocationProvider>
+                </I18nextProvider>
             </HashRouter>
         );
     }

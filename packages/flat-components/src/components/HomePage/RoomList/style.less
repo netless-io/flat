@@ -2,6 +2,7 @@
     display: flex;
     align-items: center;
     margin-top: 16px;
+    padding: 0 16px;
 
     time {
         font-weight: 500;
@@ -11,10 +12,20 @@
 }
 
 .room-list-item {
+    padding: 12px 16px;
+    position: relative;
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
-    border-bottom: 1px solid #dbe1ea;
-    padding: 12px 0;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 0;
+        border-bottom: 1px solid #dbe1ea;
+    }
 
     &.pointer {
         cursor: pointer;
@@ -79,13 +90,16 @@
     }
 
     .room-list-item-right {
+        display: inline-flex;
+        align-items: center;
+
         .ant-btn {
             line-height: 1;
             padding: 4px 7px;
             height: 28px;
 
-            &:not(:last-child) {
-                margin-right: 8px;
+            &:not(:first-of-type) {
+                margin-left: 8px;
             }
         }
 
@@ -104,20 +118,31 @@
     display: flex;
     flex-flow: column nowrap;
     position: relative;
-    padding: 0 16px;
+    overflow: hidden;
+    background-color: white;
 
     @media screen and (max-width: 660px) {
         padding: 0;
     }
 
     .room-list-header {
+        position: relative;
+        padding: 0 16px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid #dbe1ea;
 
-        @media screen and (max-width: 660px) {
-            border-bottom-width: 0;
+        &::after {
+            content: "";
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 0;
+            border-bottom: 1px solid #dbe1ea;
+
+            @media screen and (max-width: 660px) {
+                border-bottom-width: 0;
+            }
         }
     }
 
@@ -161,7 +186,7 @@
 
     .room-list-body {
         flex: 1;
-        overflow-y: auto;
+        padding-bottom: 16px;
     }
 
     .room-list-footer {
@@ -169,5 +194,11 @@
         font-size: 12px;
         color: #7a7b7c;
         text-align: center;
+    }
+}
+
+.room-list-item-sub-menu {
+    .ant-dropdown-menu {
+        border-radius: 8px;
     }
 }

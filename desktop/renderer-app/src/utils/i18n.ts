@@ -9,7 +9,7 @@ const messages: Resource = {
     "zh-CN": { translation: zhCN },
 };
 
-i18next
+void i18next
     .use(I18nextBrowserLanguageDetector)
     .use(initReactI18next)
     .init({

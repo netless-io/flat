@@ -1,32 +1,40 @@
-import "./MainRoomList.less";
+import "./style.less";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
+import { RoomList } from "flat-components";
+import { MainRoomList } from "./MainRoomList";
 import { ListRoomsType } from "../../../apiMiddleware/flatServer";
-import { MainRoomListTabs } from "./MainRoomListTabs";
-import MainRoomList from "./MainRoomList";
 
 export const MainRoomListPanel = observer<{}>(function MainRoomListPanel() {
-    const [activeListRoomsType, setActiveListRoomsType] = useState<
-        ListRoomsType.All | ListRoomsType.Today | ListRoomsType.Periodic
-    >(ListRoomsType.All);
+    const [activeTab, setActiveTab] = useState<"all" | "today" | "periodic">("all");
+    const filters = useMemo<Array<{ key: "all" | "today" | "periodic"; title: string }>>(
+        () => [
+            {
+                key: "all",
+                title: "全部",
+            },
+            {
+                key: "today",
+                title: "今天",
+            },
+            {
+                key: "periodic",
+                title: "周期",
+            },
+        ],
+        [],
+    );
 
     return (
-        <div className="room-list-container">
-            <div className="room-list-header">
-                <div>
-                    <span className="room-list-title">房间列表</span>
-                </div>
-                <MainRoomListTabs
-                    activeListRoomsType={activeListRoomsType}
-                    onActiveListRoomsTypeChange={setActiveListRoomsType}
-                />
-            </div>
-            <div className="room-list-line" />
-            <div className="room-list-body fancy-scrollbar">
-                <MainRoomList listRoomsType={activeListRoomsType} />
-            </div>
-        </div>
+        <RoomList
+            title="房间列表"
+            filters={filters}
+            activeTab={activeTab}
+            onTabActive={setActiveTab}
+        >
+            <MainRoomList listRoomsType={activeTab as ListRoomsType} />
+        </RoomList>
     );
 });
 

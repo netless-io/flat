@@ -20,6 +20,7 @@
     "lint": "lint-staged",
     "storybook": "start-storybook -p 6006 --no-version-updates",
     "build": "yarn run cleanup && rollup -c",
+    "build:esbuild": "node scripts/run-esbuild.js",
     "build-storybook": "build-storybook --no-version-updates && node scripts/move-storybook.js",
     "deploy-storybook": "yarn run build-storybook --no-version-updates && node scripts/deploy-storybook.js",
     "cleanup": "rimraf ./build"
@@ -59,6 +60,7 @@
     "classnames": "^2.2.6",
     "cross-env": "^7.0.2",
     "date-fns": "^2.19.0",
+    "esbuild": "^0.12.2",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-react-app": "^6.0.0",
