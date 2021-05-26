@@ -6,6 +6,7 @@ import signal3SVG from "./icons/signal-3.svg";
 
 import React, { useMemo } from "react";
 import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 
 interface NetworkQuality {
     delay: number;
@@ -13,7 +14,7 @@ interface NetworkQuality {
     downlink: number;
 }
 
-function getSignalIcon({ uplink, downlink }: NetworkQuality): string {
+function getSignalIcon(uplink: number, downlink: number): string {
     if (uplink === 5 || downlink === 5 || uplink === 4 || downlink === 4) {
         return signal1SVG;
     }
@@ -30,22 +31,6 @@ function getSignalIcon({ uplink, downlink }: NetworkQuality): string {
     return signal0SVG;
 }
 
-const signalLocale = [
-    "质量未知",
-    "网络质量极好",
-    "网络质量优秀",
-    "网络质量一般",
-    "网络质量较差",
-    "网络质量非常差",
-    "网络连接已断开",
-    "暂时无法检测网络质量",
-    "正在检测...",
-];
-
-function getSignalText({ uplink, downlink }: NetworkQuality): string {
-    return `上行：${signalLocale[uplink]}，下行：${signalLocale[downlink]}`;
-}
-
 export interface NetworkStatusProps {
     networkQuality: NetworkQuality;
 }
@@ -53,8 +38,20 @@ export interface NetworkStatusProps {
 export const NetworkStatus = observer<NetworkStatusProps>(function NetworkStatus({
     networkQuality,
 }) {
-    const signalIcon = useMemo(() => getSignalIcon(networkQuality), [networkQuality]);
-    const signalText = useMemo(() => getSignalText(networkQuality), [networkQuality]);
+    const { t } = useTranslation();
+    const { uplink, downlink } = networkQuality;
+
+    const signalIcon = useMemo(() => getSignalIcon(uplink, downlink), [uplink, downlink]);
+
+    const signalText = useMemo(
+        () =>
+            t("network-quality", {
+                uplink: t(`network-quality${uplink}`),
+                downlink: t(`network-quality${downlink}`),
+            }),
+        [t, uplink, downlink],
+    );
+
     return (
         <div className="network-status">
             <span className="network-status-delay" title="客户端到边缘服务器的网络延迟">

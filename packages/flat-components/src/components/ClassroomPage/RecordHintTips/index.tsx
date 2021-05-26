@@ -3,6 +3,7 @@ import "./style.less";
 import React, { FC } from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Tooltip } from "antd";
+import { useTranslation } from "react-i18next";
 
 export interface RecordHintTipsProps {
     visible: boolean;
@@ -10,6 +11,7 @@ export interface RecordHintTipsProps {
 }
 
 export const RecordHintTips: FC<RecordHintTipsProps> = ({ visible, onClose, children }) => {
+    const { t } = useTranslation();
     return (
         <Tooltip
             overlayClassName="record-hint-tips"
@@ -18,7 +20,7 @@ export const RecordHintTips: FC<RecordHintTipsProps> = ({ visible, onClose, chil
             visible={visible}
             title={
                 <div>
-                    点击「开始上课」才能录制并生成回放哦~
+                    {t("start-class-tips")}
                     <Button
                         className="record-hint-tips-close"
                         size="small"
