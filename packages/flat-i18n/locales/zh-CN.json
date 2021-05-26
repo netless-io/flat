@@ -46,7 +46,7 @@
   "client-to-edge-server-network-latency": "客户端到边缘服务器的网络延迟",
   "delay": "延迟：",
   "network": "网络：",
-  "i-know": "知道了 ({{countdown}})",
+  "got-it-countdown": "知道了 ({{countdown}})",
   "network-quality": "上行：{{uplink}}，下行：{{downlink}}",
   "network-quality0": "质量未知",
   "network-quality1": "网络质量极好",
