@@ -36,13 +36,13 @@ export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({ isCreator, roomSta
             let countdown = 5;
             modalRef.current = Modal.info({
                 title: t("the-room-has-ended-and-is-about-to-exit"),
-                okText: t("i-know", { countdown }),
+                okText: t("got-it-countdown", { countdown }),
                 onOk: onExit,
                 onCancel: onExit,
             });
             ticket = window.setInterval(() => {
                 modalRef.current?.update({
-                    okText: t("i-know", { countdown: --countdown }),
+                    okText: t("got-it-countdown", { countdown: --countdown }),
                 });
                 if (countdown <= 0) {
                     window.clearInterval(ticket);

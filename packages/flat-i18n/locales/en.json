@@ -39,7 +39,7 @@
   "end-the-class": "End of class",
   "exit-room-tips": "The class is continuing, do you want to quit hanging up the room for now or end the class?",
   "hang-up-the-room": "Hang up the room",
-  "i-know": "Got it ({{countdown}})",
+  "got-it-countdown": "Got it ({{countdown}})",
   "network": "The internet:",
   "network-quality": "Uplink: {{uplink}}, Downlink: {{downlink}}",
   "network-quality0": "Unknown quality",
