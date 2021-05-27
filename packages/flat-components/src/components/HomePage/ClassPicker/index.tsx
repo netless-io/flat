@@ -10,12 +10,14 @@ export type { ClassPickerItemType } from "./ClassPickerItem";
 export interface ClassPickerProps {
     value?: ClassPickerItemType;
     large?: boolean;
+    disabled?: boolean;
     onChange?: (value: ClassPickerItemType) => void;
 }
 
-export const ClassPicker: React.FC<ClassPickerProps> = ({ value, onChange, large }) => {
+export const ClassPicker: React.FC<ClassPickerProps> = ({ value, onChange, large, disabled }) => {
     return (
         <Radio.Group
+            disabled={disabled}
             className={classNames("class-picker-container", {
                 "class-large-picker-container": large,
             })}
