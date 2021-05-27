@@ -30,12 +30,12 @@ export default storyMeta;
 
 export const Overview: Story<ClassPickerProps> = args => <ClassPicker {...args} />;
 Overview.args = {
-    type: "oneToOne",
+    value: "BigClass",
 };
 
 export const PlayableExample: Story<ClassPickerProps> = () => {
-    const [classType, setClassType] = useState<ClassPickerItemType>("oneToOne");
-    return <ClassPicker type={classType} onChange={setClassType} />;
+    const [classType, setClassType] = useState<ClassPickerItemType>("BigClass");
+    return <ClassPicker value={classType} onChange={setClassType} />;
 };
 PlayableExample.argTypes = {
     type: {
@@ -44,8 +44,8 @@ PlayableExample.argTypes = {
 };
 
 export const LargeMode: Story<ClassPickerProps> = args => {
-    const [classType, setClassType] = useState<ClassPickerItemType>("oneToOne");
-    return <ClassPicker {...args} type={classType} onChange={setClassType} />;
+    const [classType, setClassType] = useState<ClassPickerItemType>("BigClass");
+    return <ClassPicker {...args} value={classType} onChange={setClassType} />;
 };
 LargeMode.argTypes = {
     type: {
