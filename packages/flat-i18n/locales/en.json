@@ -62,7 +62,7 @@
     "oneToOne": "Suitable for 1 teacher and 1 student",
     "smallClass": "Suitable for 1 teacher for up to 16 students"
   },
-  "class-picker-title": {
+  "class-room-type": {
     "bigClass": "Large Class",
     "oneToOne": "One to One",
     "smallClass": "Small Class"
