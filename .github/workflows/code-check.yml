@@ -55,21 +55,16 @@ jobs:
           node-version: "15.10.0"
         if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.flat-web == 'true'
 
-      - uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          key: yarn-code-check-v1-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-          path: |
-            ./node_modules
-            ./packages/**/node_modules
-            ./desktop/**/node_modules
-            ./packages/**/node_modules
-        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.flat-web == 'true'
-
-      - name: Install dependencies and build packages
+      - name: Install changed package dependencies and build packages
         # failure automatically retries 3 times
-        run: yarn run bootstrap || yarn run bootstrap || yarn run bootstrap
-        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.flat-web == 'true'
+        run: |
+          (node ./scripts/ci/install-changed-package-dependencies.js && (yarn run bootstrap || yarn run bootstrap || yarn run bootstrap)) || true
+        env:
+          components: ${{ steps.filter.outputs.components }}
+          types: ${{ steps.filter.outputs.types }}
+          renderer: ${{ steps.filter.outputs.renderer }}
+          main: ${{ steps.filter.outputs.main }}
+          flatWeb: ${{ steps.filter.outputs.flat-web }}
 
       - name: Build renderer
         run: yarn workspace renderer-app build

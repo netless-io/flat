@@ -29,8 +29,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          node ./scripts/ci/storybook/remove-desktop-workspaces-packages.js
-          yarn install --frozen-lockfile
+          (node ./scripts/ci/install-changed-package-dependencies.js && (yarn run bootstrap || yarn run bootstrap || yarn run bootstrap)) || true
+        env:
+          components: true
         if: steps.yarn-cache.outputs.cache-hit != 'true'
 
       - name: Build Types
