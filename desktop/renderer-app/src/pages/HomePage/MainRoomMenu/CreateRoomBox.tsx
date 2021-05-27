@@ -1,4 +1,5 @@
 import createSVG from "../../../assets/image/creat.svg";
+import "./CreateRoomBox.less";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
@@ -7,6 +8,7 @@ import { RoomType } from "../../../apiMiddleware/flatServer/constants";
 import { RoomTypeSelect } from "../../../components/RoomType";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
+import { ClassPicker } from "flat-components";
 
 interface CreateRoomFormValues {
     roomTitle: string;
@@ -27,6 +29,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const [isLoading, setLoading] = useState(false);
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
+    const [classType, setClassType] = useState<RoomType>(RoomType.BigClass);
     const roomTitleInputRef = useRef<Input>(null);
 
     const defaultValues: CreateRoomFormValues = {
@@ -64,8 +67,9 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                 <span className="label">创建房间</span>
             </Button>
             <Modal
+                wrapClassName="create-room-box-container"
                 title="创建房间"
-                width={368}
+                width={556}
                 visible={isShowModal}
                 destroyOnClose
                 onOk={handleOk}
@@ -103,8 +107,9 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                     >
                         <Input placeholder="请输入房间主题" ref={roomTitleInputRef} />
                     </Form.Item>
-                    <Form.Item name="roomType" label="类型">
-                        <RoomTypeSelect />
+                    <Form.Item name="roomType" label="类型" valuePropName="type">
+                        {/* <RoomTypeSelect /> */}
+                        <ClassPicker value={classType} onChange={e => setClassType(RoomType[e])} />
                     </Form.Item>
                     <Form.Item label="加入选项">
                         <Form.Item name="autoCameraOn" noStyle valuePropName="checked">
