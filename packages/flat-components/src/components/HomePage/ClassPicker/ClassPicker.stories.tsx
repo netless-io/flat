@@ -60,3 +60,22 @@ LargeMode.parameters = {
         defaultViewport: "large",
     },
 };
+
+export const DisabledLargeMode: Story<ClassPickerProps> = args => {
+    const [classType, setClassType] = useState<ClassPickerItemType>("BigClass");
+    return <ClassPicker {...args} value={classType} onChange={setClassType} />;
+};
+DisabledLargeMode.argTypes = {
+    type: {
+        control: false,
+    },
+};
+DisabledLargeMode.args = {
+    large: true,
+    disabled: true,
+};
+DisabledLargeMode.parameters = {
+    viewport: {
+        defaultViewport: "large",
+    },
+};

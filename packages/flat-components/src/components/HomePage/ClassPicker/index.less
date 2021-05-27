@@ -149,4 +149,45 @@
             }
         }
     }
+
+    .ant-radio-wrapper-disabled {
+        opacity: 0.4;
+        cursor: default;
+
+        > .ant-radio-disabled .ant-radio-input {
+            cursor: default;
+        }
+
+        &.ant-radio-wrapper-checked {
+            opacity: 1;
+
+            &:hover,
+            &:active {
+                &::after {
+                    border: 2px solid @primary-color;
+                }
+            }
+
+            > .ant-radio-checked .ant-radio-inner {
+                background-color: unset;
+                border-color: #3381ff !important;
+
+                &::after {
+                    background-color: #3381ff;
+                }
+            }
+        }
+
+        &::after {
+            transition: none;
+        }
+
+        &.ant-radio-checked,
+        &:hover,
+        &:active {
+            &::after {
+                border: 1px solid #dbe1ea;
+            }
+        }
+    }
 }
