@@ -30,7 +30,7 @@
     "lint": "lint-staged"
   },
   "devDependencies": {
-    "@netless/eslint-plugin": "^1.1.1",
+    "@netless/eslint-plugin": "^1.1.2",
     "@types/fs-extra": "^9.0.11",
     "@types/node": "^15.0.3",
     "@types/webpack-env": "^1.16.0",
