@@ -20,7 +20,7 @@ if (isTrue(components)) {
 }
 
 if (isTrue(renderer)) {
-    workspaces.push("packages/flat-types", "packages/flat-components", "packages/renderer-app");
+    workspaces.push("packages/flat-types", "packages/flat-components", "desktop/renderer-app");
 }
 
 if (isTrue(main)) {
