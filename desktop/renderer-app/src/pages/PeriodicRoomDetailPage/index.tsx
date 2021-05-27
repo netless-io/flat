@@ -1,20 +1,19 @@
 import "./index.less";
 
 import { clipboard } from "electron";
-import { MainPageHeader, PeriodicRoomPanel } from "flat-components";
+import { message } from "antd";
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import { useLastLocation } from "react-router-last-location";
+import { LoadingPage, MainPageHeader, PeriodicRoomPanel } from "flat-components";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { RoomStoreContext } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import LoadingPage from "../../LoadingPage";
 import { globalStore } from "../../stores/GlobalStore";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { cancelPeriodicRoom, cancelPeriodicSubRoom } from "../../apiMiddleware/flatServer";
-import { message } from "antd";
 
 export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPage() {
     useWindowSize("Main");

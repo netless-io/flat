@@ -7,6 +7,7 @@ import {
     RecordButton,
     TopBar,
     TopBarDivider,
+    LoadingPage,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -29,7 +30,6 @@ import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import { Whiteboard } from "../../components/Whiteboard";
-import LoadingPage from "../../LoadingPage";
 import {
     RecordingConfig,
     RoomStatusLoadingType,

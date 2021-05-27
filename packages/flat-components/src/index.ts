@@ -9,6 +9,7 @@ export * from "./components/CloudStorage";
 export * from "./components/EditRoomPage";
 export * from "./components/HomePage";
 export * from "./components/InviteModal";
+export * from "./components/LoadingPage";
 export * from "./components/LoginPage";
 export * from "./components/MainPageLayout";
 export * from "./components/PeriodicRoomPage";

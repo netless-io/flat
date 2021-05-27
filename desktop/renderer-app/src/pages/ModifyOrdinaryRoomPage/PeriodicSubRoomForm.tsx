@@ -2,12 +2,11 @@ import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useHistory } from "react-router-dom";
+import { EditRoomFormInitialValues, EditRoomFormValues, LoadingPage } from "flat-components";
 import { periodicSubRoomInfo, updatePeriodicSubRoom } from "../../apiMiddleware/flatServer";
 import EditRoomPage from "../../components/EditRoomPage";
-import LoadingPage from "../../LoadingPage";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { EditRoomFormInitialValues, EditRoomFormValues } from "flat-components";
 
 export interface PeriodicSubRoomFormProps {
     roomUUID: string;

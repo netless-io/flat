@@ -2,10 +2,9 @@ import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useHistory } from "react-router-dom";
-import { EditRoomFormInitialValues, EditRoomFormValues } from "flat-components";
+import { EditRoomFormInitialValues, EditRoomFormValues, LoadingPage } from "flat-components";
 import { ordinaryRoomInfo, updateOrdinaryRoom } from "../../apiMiddleware/flatServer";
 import EditRoomPage from "../../components/EditRoomPage";
-import LoadingPage from "../../LoadingPage";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { errorTips } from "../../components/Tips/ErrorTips";
 export interface OrdinaryRoomFormProps {
