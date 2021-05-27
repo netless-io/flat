@@ -6,10 +6,10 @@ import { addWeeks, endOfDay, getDay } from "date-fns";
 import React, { useMemo, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { PeriodicEndType, RoomType, Week } from "../../../types/room";
-import { RoomTypeSelect } from "../RoomType";
 import { renderBeginTimePicker } from "./renderBeginTimePicker";
 import { renderEndTimePicker } from "./renderEndTimePicker";
 import { renderPeriodicForm } from "./renderPeriodicForm";
+import { ClassPicker } from "../../HomePage/ClassPicker";
 
 export interface EditRoomFormValues {
     title: string;
@@ -114,7 +114,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                             />
                         </Form.Item>
                         <Form.Item label="类型" name="type">
-                            <RoomTypeSelect disabled={type === "periodicSub"} />
+                            <ClassPicker large={true} disabled={type === "periodicSub"} />
                         </Form.Item>
                         {renderBeginTimePicker(
                             form,

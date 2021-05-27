@@ -5,7 +5,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form } from "antd";
 import { RoomType } from "../../../apiMiddleware/flatServer/constants";
-import { RoomTypeSelect } from "../../../components/RoomType";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { ClassPicker } from "flat-components";
@@ -108,7 +107,6 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                         <Input placeholder="请输入房间主题" ref={roomTitleInputRef} />
                     </Form.Item>
                     <Form.Item name="roomType" label="类型" valuePropName="type">
-                        {/* <RoomTypeSelect /> */}
                         <ClassPicker value={classType} onChange={e => setClassType(RoomType[e])} />
                     </Form.Item>
                     <Form.Item label="加入选项">
