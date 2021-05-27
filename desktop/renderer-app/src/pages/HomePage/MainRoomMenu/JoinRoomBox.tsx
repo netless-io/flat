@@ -70,7 +70,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
             </Button>
             <Modal
                 title="加入房间"
-                width={368}
+                width={500}
                 visible={isShowModal}
                 okText={"加入"}
                 cancelText={"取消"}
