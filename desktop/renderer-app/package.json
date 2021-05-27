@@ -46,7 +46,7 @@
     "white-web-sdk": "2.12.15"
   },
   "devDependencies": {
-    "@netless/eslint-plugin": "^1.1.1",
+    "@netless/eslint-plugin": "^1.1.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/classnames": "^2.2.11",
     "@types/fs-extra": "^9.0.6",

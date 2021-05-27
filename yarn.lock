@@ -1884,10 +1884,10 @@
   resolved "https://registry.npmjs.org/@netless/cursor-tool/-/cursor-tool-0.0.7.tgz#bab2ef0e68130ddd76008fc66fdb1d119c67707e"
   integrity sha512-GhzOcIIZvsHsjHNm35otbJC1kOsXzpTOKbN172wctI8nE+3W50M4lXsTAeHEIg+Z8fPGKUgLSISGACt7c2/e/Q==
 
-"@netless/eslint-plugin@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@netless/eslint-plugin/-/eslint-plugin-1.1.1.tgz#52b96d85388839acafafab0ee4afc836516b33f5"
-  integrity sha512-euBxCv8jdcKMaGvHq7pgkF2JnBF9qBcapfSbUAxh6P/QyCI95hNsmMQ3w6I67/IeNOjpj0ykPsyRvr5UkEm9hg==
+"@netless/eslint-plugin@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@netless/eslint-plugin/-/eslint-plugin-1.1.2.tgz#3ffd97d245bf628715b61fbe89b94ec6dd772ecb"
+  integrity sha512-XZIYd3nRjCTMFH6s7JYc+qnf89aoHvX0azPoFH3uWGTq8usXvp+GMCbrkkkcN84Q7MQKa2kgrUuy9xab34groQ==
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.20.0"
 
