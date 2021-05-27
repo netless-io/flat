@@ -58,14 +58,14 @@
   "teacher-left-temporarily": "The teacher leaves temporarily",
   "the-room-has-ended-and-is-about-to-exit": "The room has ended and is about to exit...",
   "class-picker-text": {
-    "bigClass": "Suitable for 1 teacher for a large number of students",
-    "oneToOne": "Suitable for 1 teacher and 1 student",
-    "smallClass": "Suitable for 1 teacher for up to 16 students"
+    "BigClass": "Suitable for 1 teacher for a large number of students",
+    "OneToOne": "Suitable for 1 teacher and 1 student",
+    "SmallClass": "Suitable for 1 teacher for up to 16 students"
   },
   "class-room-type": {
-    "bigClass": "Large Class",
-    "oneToOne": "One to One",
-    "smallClass": "Small Class"
+    "BigClass": "Large Class",
+    "OneToOne": "One to One",
+    "SmallClass": "Small Class"
   },
   "home-page-hero-button-type": {
     "create": "Create",
@@ -76,5 +76,7 @@
     "idle": "idle",
     "running": "running",
     "stopped": "stopped"
-  }
+  },
+  "return-home": "Return Home",
+  "waiting-for-record": "Replay is being generated, please wait patiently."
 }

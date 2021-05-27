@@ -10,6 +10,7 @@ import {
     RecordButton,
     TopBar,
     TopBarDivider,
+    LoadingPage,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
@@ -24,7 +25,6 @@ import ExitRoomConfirm, {
     useExitRoomConfirmModal,
 } from "../../components/ExitRoomConfirm";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import LoadingPage from "../../LoadingPage";
 
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
 import { ClassModeType } from "../../apiMiddleware/Rtm";

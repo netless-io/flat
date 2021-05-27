@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps, useParams, useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { LoadingPage } from "flat-components";
 import PlayerController from "@netless/player-controller";
-import LoadingPage from "../../LoadingPage";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
 import PageError from "../../PageError";
 import { RealtimePanel } from "../../components/RealtimePanel";
@@ -40,6 +41,7 @@ export type ReplayPageState = {
 export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     useWindowSize("Replay");
 
+    const { t } = useTranslation();
     const whiteboardElRef = useRef<HTMLDivElement>(null);
     const videoElRef = useRef<HTMLVideoElement>(null);
     const [showExitReplayModal, setShowExitReplayModal] = useState(false);
@@ -179,7 +181,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
             </div>
         ) : classRoomReplayStore.isReady ? null : (
             <div className="replay-overlay">
-                <LoadingPage text={"正在生成回放请耐心等待"} />
+                <LoadingPage text={t("waiting-for-record")} />
             </div>
         );
     }

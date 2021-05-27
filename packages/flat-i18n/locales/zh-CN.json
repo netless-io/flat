@@ -76,5 +76,7 @@
     "BigClass": "适用于 1 位老师面向大量学生",
     "OneToOne": "适用于 1 位老师与 1 名学生",
     "SmallClass": "适用于 1 位老师面向最多 16 名学生"
-  }
+  },
+  "return-home": "返回首页",
+  "waiting-for-record": "正在生成回放请耐心等待"
 }

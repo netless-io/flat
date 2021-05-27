@@ -12,6 +12,7 @@ import {
     RecordButton,
     TopBar,
     TopBarDivider,
+    LoadingPage,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
@@ -27,7 +28,6 @@ import {
 } from "../../components/ExitRoomConfirm";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import LoadingPage from "../../LoadingPage";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import {
     RecordingConfig,

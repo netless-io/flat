@@ -3,13 +3,12 @@ import "./index.less";
 
 import React, { useContext, useEffect } from "react";
 import { clipboard } from "electron";
-import { MainPageHeader, RoomDetailPanel } from "flat-components";
+import { LoadingPage, MainPageHeader, RoomDetailPanel } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { useHistory, useParams } from "react-router-dom";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import LoadingPage from "../../LoadingPage";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/joinRoomHandler";

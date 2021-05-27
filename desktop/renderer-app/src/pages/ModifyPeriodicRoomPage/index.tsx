@@ -7,12 +7,12 @@ import {
     EditRoomFormValues,
     getEndTimeFromRate,
     getRateFromEndTime,
+    LoadingPage,
 } from "flat-components";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import EditRoomPage from "../../components/EditRoomPage";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { periodicRoomInfo, updatePeriodicRoom } from "../../apiMiddleware/flatServer";
-import LoadingPage from "../../LoadingPage";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
