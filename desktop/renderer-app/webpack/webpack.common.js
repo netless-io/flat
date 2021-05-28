@@ -4,7 +4,6 @@ const threadLoader = require("thread-loader");
 const DotenvFlow = require("dotenv-flow-webpack");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const nodeExternals = require("webpack-node-externals");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
