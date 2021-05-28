@@ -1,11 +1,12 @@
 import i18next, { Resource } from "i18next";
 import I18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
-import en from "flat-i18n/locales/en.json";
+// import en from "flat-i18n/locales/en.json";
 import zhCN from "flat-i18n/locales/zh-CN.json";
 
 const messages: Resource = {
-    en: { translation: en },
+    // @TODO wait until en translation completes
+    // en: { translation: en },
     "zh-CN": { translation: zhCN },
 };
 
@@ -13,8 +14,9 @@ void i18next
     .use(I18nextBrowserLanguageDetector)
     .use(initReactI18next)
     .init({
+        debug: process.env.NODE_ENV === "development",
         resources: messages,
-        fallbackLng: "en",
+        fallbackLng: "zh-CN",
         interpolation: {
             escapeValue: false, // react already safes from xss
         },
@@ -40,11 +42,6 @@ void i18next
 export const i18n = i18next;
 
 export const languages = ["en", "zh-CN"] as const;
-
-export const languagesWithName = [
-    { lang: "en", name: "English" },
-    { lang: "zh-CN", name: "简体中文" },
-] as const;
 
 /**
  * NOTE: to use this library, also install https://github.com/antfu/i18n-ally

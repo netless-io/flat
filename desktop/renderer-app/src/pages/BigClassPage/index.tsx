@@ -322,6 +322,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                                 isCreator={classRoomStore.isCreator}
                                 userUUID={classRoomStore.userUUID}
                                 avatarUser={creator}
+                                isAvatarUserCreator={true}
                                 rtcEngine={classRoomStore.rtc.rtcEngine}
                                 updateDeviceState={classRoomStore.updateDeviceState}
                                 mini={isCreatorMini}

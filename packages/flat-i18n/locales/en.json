@@ -55,7 +55,8 @@
   "start-class-tips": "Please start the lesson first to enable room recording.",
   "student-exit-room-tip": "The class is continuing, are you sure to leave the room?",
   "student-sure-to-exit-the-room": "Sure to exit the room",
-  "teacher-left-temporarily": "The teacher leaves temporarily",
+  "teacher-left-temporarily": "Teacher has left",
+  "student-left-temporarily": "Student has left",
   "the-room-has-ended-and-is-about-to-exit": "The room has ended and is about to exit...",
   "class-picker-text": {
     "BigClass": "Suitable for 1 teacher for a large number of students",

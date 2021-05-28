@@ -140,8 +140,22 @@
 
 .video-avatar-placeholder {
     display: flex;
-    justify-content: center;
     align-items: center;
-    color: #7a7b7c;
-    background: #eef0f6;
+    justify-content: center;
+    position: relative;
+    background: #f3f6f9;
+    user-select: none;
+}
+
+.video-avatar-placeholder-img {
+    width: 100%;
+}
+
+.video-avatar-placeholder-content {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 0 16px;
+    color: #bcbfc2;
 }
