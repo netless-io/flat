@@ -78,5 +78,8 @@
     "stopped": "stopped"
   },
   "return-home": "Return Home",
-  "waiting-for-record": "Replay is being generated, please wait patiently."
+  "waiting-for-record": "Replay is being generated, please wait patiently.",
+  "error-page-description": "Please try again",
+  "error-page-title": "Sorry, we have an unknow error",
+  "error-page-return-home": "({{countdown}}) Go Back"
 }

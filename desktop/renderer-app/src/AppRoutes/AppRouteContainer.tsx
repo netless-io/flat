@@ -1,6 +1,6 @@
 import React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import PageError from "../PageError";
+import { ErrorPage } from "flat-components";
 import { ipcAsyncByMainWindow } from "../utils/ipc";
 
 export interface AppRouteContainerProps {
@@ -45,7 +45,7 @@ export class AppRouteContainer extends React.Component<
 
     public render(): React.ReactNode {
         if (this.state.hasError) {
-            return <PageError />;
+            return <ErrorPage />;
         }
 
         const { Comp, routeProps } = this.props;
