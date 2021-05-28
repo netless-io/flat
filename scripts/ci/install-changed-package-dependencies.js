@@ -16,11 +16,16 @@ if (isTrue(types)) {
 }
 
 if (isTrue(components)) {
-    workspaces.push("packages/flat-types", "packages/flat-components");
+    workspaces.push("packages/flat-i18n", "packages/flat-types", "packages/flat-components");
 }
 
 if (isTrue(renderer)) {
-    workspaces.push("packages/flat-types", "packages/flat-components", "desktop/renderer-app");
+    workspaces.push(
+        "packages/flat-i18n",
+        "packages/flat-types",
+        "packages/flat-components",
+        "desktop/renderer-app",
+    );
 }
 
 if (isTrue(main)) {
@@ -28,7 +33,12 @@ if (isTrue(main)) {
 }
 
 if (isTrue(flatWeb)) {
-    workspaces.push("packages/flat-types", "packages/flat-components", "web/flat-web");
+    workspaces.push(
+        "packages/flat-i18n",
+        "packages/flat-types",
+        "packages/flat-components",
+        "web/flat-web",
+    );
 }
 
 workspaces = Array.from(new Set(workspaces));
