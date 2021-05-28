@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps, useParams, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { LoadingPage } from "flat-components";
+import { ErrorPage, LoadingPage } from "flat-components";
 import PlayerController from "@netless/player-controller";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
-import { ErrorPage } from "flat-components";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanelReplay } from "../../components/ChatPanelReplay";
 import { OrdinaryRoomInfo } from "../../apiMiddleware/flatServer";
