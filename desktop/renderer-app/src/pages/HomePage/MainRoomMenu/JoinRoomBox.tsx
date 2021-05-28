@@ -1,4 +1,5 @@
 import joinSVG from "../../../assets/image/join.svg";
+import "./JoinRoomBox.less";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
@@ -70,7 +71,8 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
             </Button>
             <Modal
                 title="加入房间"
-                width={500}
+                width={400}
+                wrapClassName="join-room-box-container"
                 visible={isShowModal}
                 okText={"加入"}
                 cancelText={"取消"}

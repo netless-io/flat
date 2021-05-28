@@ -106,7 +106,7 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
                             showResultModal(true);
                         }}
                     >
-                        不能听到
+                        不能看到
                     </Button>
                     <Button
                         type="primary"
@@ -115,7 +115,7 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
                             showResultModal(true);
                         }}
                     >
-                        能听到
+                        能看到
                     </Button>
                 </div>
                 <Modal

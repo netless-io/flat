@@ -14,11 +14,11 @@ const storyMeta: Meta = {
             viewports: {
                 compact: {
                     name: "Compact Mode",
-                    styles: { width: "556px", height: "611px" },
+                    styles: { width: "368px", height: "206px" },
                 },
                 large: {
                     name: "Large Mode",
-                    styles: { width: "840px", height: "164px" },
+                    styles: { width: "560px", height: "96px" },
                 },
             },
             defaultViewport: "compact",
