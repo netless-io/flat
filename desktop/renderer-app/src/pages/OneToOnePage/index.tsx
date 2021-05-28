@@ -267,6 +267,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                             isCreator={classRoomStore.isCreator}
                             userUUID={classRoomStore.userUUID}
                             avatarUser={classRoomStore.users.creator}
+                            isAvatarUserCreator={true}
                             rtcEngine={classRoomStore.rtc.rtcEngine}
                             updateDeviceState={classRoomStore.updateDeviceState}
                         />

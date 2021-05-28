@@ -4,6 +4,7 @@ import cameraDisabledSVG from "./icons/camera-disabled.svg";
 import microphoneSVG from "./icons/microphone.svg";
 import microphoneDisabledSVG from "./icons/microphone-disabled.svg";
 import videoExpandSVG from "./icons/video-expand.svg";
+import placeholderSVG from "./icons/placeholder.svg";
 
 import React from "react";
 import { observer } from "mobx-react-lite";
@@ -20,9 +21,14 @@ export interface AvatarUser {
 
 export interface VideoAvatarProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+    /** Is current user room creator */
     isCreator: boolean;
+    /** Current user uuid */
     userUUID: string;
+    /** Avatar user uuid */
     avatarUser?: AvatarUser | null;
+    /** For placeholder */
+    isAvatarUserCreator?: boolean;
     updateDeviceState(id: string, camera: boolean, mic: boolean): void;
     /** Mini avatar */
     mini?: boolean;
@@ -34,6 +40,7 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
     isCreator,
     userUUID,
     avatarUser,
+    isAvatarUserCreator,
     children: canvas,
     updateDeviceState,
     mini,
@@ -50,7 +57,10 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
                     "is-mini": mini,
                 })}
             >
-                {t("teacher-left-temporarily")}
+                <img className="video-avatar-placeholder-img" src={placeholderSVG} />
+                <span className="video-avatar-placeholder-content">
+                    {t(`${isAvatarUserCreator ? "teacher" : "student"}-left-temporarily`)}
+                </span>
             </div>
         );
     }

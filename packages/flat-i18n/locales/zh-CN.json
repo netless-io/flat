@@ -42,6 +42,7 @@
   "current-mode": "当前模式：",
   "the-room-has-ended-and-is-about-to-exit": "房间已结束，即将退出...",
   "teacher-left-temporarily": "老师暂时离开",
+  "student-left-temporarily": "学生暂时离开",
   "signal-text": "上行：{{up}}，下行：{{down}}",
   "client-to-edge-server-network-latency": "客户端到边缘服务器的网络延迟",
   "delay": "延迟：",
