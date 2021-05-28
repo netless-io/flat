@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { LoadingPage } from "flat-components";
 import PlayerController from "@netless/player-controller";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
-import PageError from "../../PageError";
+import { ErrorPage } from "flat-components";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanelReplay } from "../../components/ChatPanelReplay";
 import { OrdinaryRoomInfo } from "../../apiMiddleware/flatServer";
@@ -177,7 +177,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     function renderOverlay(): React.ReactElement | null {
         return classRoomReplayStore.error ? (
             <div className="replay-overlay">
-                <PageError />
+                <ErrorPage />
             </div>
         ) : classRoomReplayStore.isReady ? null : (
             <div className="replay-overlay">
