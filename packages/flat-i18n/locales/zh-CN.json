@@ -78,5 +78,8 @@
     "SmallClass": "适用于 1 位老师面向最多 16 名学生"
   },
   "return-home": "返回首页",
-  "waiting-for-record": "正在生成回放请耐心等待"
+  "waiting-for-record": "正在生成回放请耐心等待",
+  "error-page-title": "抱歉，遇到未知错误",
+  "error-page-description": "请重试",
+  "error-page-return-home": "({{countdown}}) 返回首页"
 }

@@ -1,0 +1,39 @@
+.error-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.error-page-title {
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: 300;
+    color: rgba(33, 35, 36, 1);
+    line-height: 30px;
+}
+
+.error-page-description {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(122, 123, 124, 1);
+    line-height: 24px;
+    margin-top: 8px;
+    margin-bottom: 34px;
+}
+
+.error-page-image {
+    width: 420px;
+    margin-bottom: 2em;
+}
+
+@media screen and (max-width: 660px) {
+    .error-page-image-inner {
+        width: 280px;
+    }
+}
