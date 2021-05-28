@@ -1,7 +1,3 @@
-import emptyHistorySVG from "../../../assets/image/empty-history.svg";
-// import emptyBoxSVG from "../../../assets/image/empty-box.svg";
-import emptyRoomSVG from "../../../assets/image/empty-room.svg";
-
 import { clipboard } from "electron";
 import { message, Skeleton } from "antd";
 import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
@@ -10,7 +6,9 @@ import { isSameDay } from "date-fns";
 import {
     InviteModal,
     RemoveRoomModal,
+    RoomListAlreadyLoaded,
     RoomListDate,
+    RoomListEmpty,
     RoomListItem,
     RoomListItemButton,
     RoomStatusType,
@@ -83,12 +81,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
     }
 
     if (roomUUIDs.length <= 0) {
-        return (
-            <div className="room-empty-box">
-                <img src={isHistoryList ? emptyHistorySVG : emptyRoomSVG} alt={"emptyBoxSVG"} />
-                <span>{isHistoryList ? "暂无记录" : "暂无房间"}</span>
-            </div>
-        );
+        return <RoomListEmpty isHistory={isHistoryList} />;
     }
 
     const periodicInfo = currentRoom?.periodicUUID
@@ -188,6 +181,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                     );
                 },
             )}
+            <RoomListAlreadyLoaded />
             {currentRoom && (
                 <RemoveRoomModal
                     cancelModalVisible={cancelModalVisible}
