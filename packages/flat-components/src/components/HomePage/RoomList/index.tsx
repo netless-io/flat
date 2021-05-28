@@ -1,5 +1,7 @@
 import "./style.less";
 import calendarSVG from "./icons/calendar.svg";
+import emptyHistorySVG from "./icons/empty-history.svg";
+import emptyRoomSVG from "./icons/empty-room.svg";
 
 import React, { PropsWithChildren, ReactElement } from "react";
 import { format, isToday, isTomorrow } from "date-fns";
@@ -139,6 +141,23 @@ function renderSubMenu<T extends string>(
     );
 }
 
+export function RoomListAlreadyLoaded(): ReactElement {
+    return <div className="room-list-footer">已加载全部</div>;
+}
+
+export interface RoomListEmptyProps {
+    isHistory: boolean;
+}
+
+export function RoomListEmpty({ isHistory }: RoomListEmptyProps): ReactElement {
+    return (
+        <div className="room-empty-box">
+            <img src={isHistory ? emptyHistorySVG : emptyRoomSVG} alt="empty" />
+            <span>{isHistory ? "暂无记录" : "暂无房间"}</span>
+        </div>
+    );
+}
+
 export interface RoomListProps<T extends string> {
     /** will be hidden on mobile */
     title?: string;
@@ -150,7 +169,6 @@ export interface RoomListProps<T extends string> {
     activeTab?: T;
     onTabActive?: (key: T) => void;
     style?: React.CSSProperties;
-    loading?: boolean;
 }
 
 export function RoomList<T extends string>({
@@ -160,7 +178,6 @@ export function RoomList<T extends string>({
     onTabActive,
     children,
     style,
-    loading,
 }: PropsWithChildren<RoomListProps<T>>): ReactElement {
     return (
         <div className="room-list" style={style}>
@@ -181,10 +198,7 @@ export function RoomList<T extends string>({
                     ))}
                 </div>
             </div>
-            <div className="room-list-body fancy-scrollbar">
-                {children}
-                {!loading && <div className="room-list-footer">已加载全部</div>}
-            </div>
+            <div className="room-list-body fancy-scrollbar">{children}</div>
         </div>
     );
 }
