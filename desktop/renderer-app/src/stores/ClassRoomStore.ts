@@ -143,7 +143,9 @@ export class ClassRoomStore {
         autorun(reaction => {
             if (this.whiteboardStore.isKicked) {
                 reaction.dispose();
-                this.roomStatusOverride = RoomStatus.Stopped;
+                runInAction(() => {
+                    this.roomStatusOverride = RoomStatus.Stopped;
+                });
             }
         });
     }

@@ -1,4 +1,4 @@
-import { makeAutoObservable, observable } from "mobx";
+import { makeAutoObservable, observable, runInAction } from "mobx";
 import {
     createPlugins,
     DefaultHotKeys,
@@ -159,7 +159,16 @@ export class WhiteboardStore {
                         reason === "roomDelete" ||
                         reason === "roomBan"
                     ) {
-                        this.isKicked = true;
+                        // Kick in-room joiners when creator cancels room
+                        // from the homepage list menu
+                        runInAction(() => {
+                            // Room creator do not need to listen to this event
+                            // as they are in control of exiting room.
+                            // Listening to this may interrupt the stop room process.
+                            if (!this.isCreator) {
+                                this.isKicked = true;
+                            }
+                        });
                     }
                 },
             },

@@ -13,7 +13,7 @@ export const RemoveHistoryRoomModal = observer<RemoveHistoryRoomModalProps>(
     function RemoveHistoryRoomModal({ visible, onCancel, onConfirm, loading }) {
         return (
             <Modal
-                title={"删除房间记录"}
+                title="删除房间记录"
                 visible={visible}
                 onCancel={onCancel}
                 footer={[
@@ -24,6 +24,7 @@ export const RemoveHistoryRoomModal = observer<RemoveHistoryRoomModalProps>(
                         确定
                     </Button>,
                 ]}
+                destroyOnClose
             >
                 确定删除当前房间记录？
             </Modal>
