@@ -14,11 +14,19 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(pr
     return (
         <MainPageLayoutContainer>
             <div className="edit-room-page">
-                <MainPageHeader
-                    onBackPreviousPage={() => history.goBack()}
-                    title={props.type === "schedule" ? "预定房间" : "修改房间"}
-                />
-                <EditRoomBody {...props} />
+                <div className="edit-room-page-header-container">
+                    <MainPageHeader
+                        onBackPreviousPage={() => history.goBack()}
+                        title={
+                            <span className="edit-room-page-header-title">
+                                {props.type === "schedule" ? "预定房间" : "修改房间"}
+                            </span>
+                        }
+                    />
+                </div>
+                <div className="edit-room-page-body">
+                    <EditRoomBody {...props} />
+                </div>
             </div>
         </MainPageLayoutContainer>
     );

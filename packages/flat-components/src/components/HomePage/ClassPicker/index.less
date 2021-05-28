@@ -17,14 +17,14 @@
 
 .class-picker-item-icon {
     width: 100%;
-    margin-bottom: 16px;
     line-height: 1.5;
     font-weight: 400;
     border-radius: 4px;
 }
 
 .class-large-picker-item-icon {
-    width: 100%;
+    width: 72px;
+    height: 72px;
     line-height: 1.5;
     font-weight: 400;
     border-radius: 4px;
@@ -33,10 +33,11 @@
 .class-large-picker-item-right {
     display: flex;
     flex-direction: column;
-    margin-left: 16px;
+    margin-left: 12px;
 }
 
 .class-picker-item-title {
+    margin-top: 12px;
     font-size: 16px;
     color: #444e60;
 }
@@ -49,15 +50,15 @@
 
 .class-picker-item-content {
     width: 100%;
-    margin-bottom: 16px;
-    letter-spacing: -0.3px;
+    margin-top: 2px;
     color: #7a7b7c;
 }
 
 .class-large-picker-item-content {
     width: 100%;
+    font-size: 12px;
+    word-break: break-all;
     text-align: left;
-    letter-spacing: -0.3px;
     color: #7a7b7c;
 }
 
@@ -65,7 +66,7 @@
     overflow: hidden;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
+    gap: 4px;
 
     > .ant-radio-wrapper {
         position: relative;
@@ -73,10 +74,14 @@
         align-items: center;
         margin-right: 0;
         border-radius: 4px;
-        padding: 16px;
+        padding: 12px;
 
         > span {
             padding: 0;
+        }
+
+        .ant-radio {
+            margin-top: 9px;
         }
 
         &::after {
@@ -102,10 +107,11 @@
 }
 
 .class-large-picker-container {
+    min-width: 96px;
     overflow: hidden;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
+    gap: 4px;
 
     > .ant-radio-wrapper {
         position: relative;
@@ -113,14 +119,14 @@
         align-items: flex-end;
         margin-right: 0;
         border-radius: 4px;
-        padding: 16px;
+        padding: 12px;
 
         > .ant-radio {
             position: absolute;
             width: 16px;
             height: 16px;
-            bottom: 16px;
-            right: 16px;
+            bottom: 12px;
+            right: 12px;
             top: unset;
             left: unset;
         }

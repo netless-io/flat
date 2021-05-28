@@ -68,7 +68,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
             <Modal
                 wrapClassName="create-room-box-container"
                 title="创建房间"
-                width={556}
+                width={400}
                 visible={isShowModal}
                 destroyOnClose
                 onOk={handleOk}
