@@ -21,8 +21,8 @@
     "storybook": "start-storybook -p 6006 --no-version-updates",
     "build": "yarn run cleanup && rollup -c",
     "build:esbuild": "node scripts/run-esbuild.js",
-    "build-storybook": "build-storybook --no-version-updates && node scripts/move-storybook.js",
-    "deploy-storybook": "yarn run build-storybook --no-version-updates && node scripts/deploy-storybook.js",
+    "build-storybook": "build-storybook && node scripts/move-storybook.js",
+    "deploy-storybook": "yarn run build-storybook && node scripts/deploy-storybook.js",
     "cleanup": "rimraf ./build"
   },
   "dependencies": {
