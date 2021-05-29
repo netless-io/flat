@@ -9,10 +9,10 @@
     "start": "node scripts/start.js",
     "start:mac": "osascript ./scripts/start.scpt",
     "start:win": "scripts\\start.cmd",
-    "ship": "yarn workspace renderer-app build && yarn workspace main-app ship",
-    "ship:mac": "yarn workspace renderer-app build && yarn workspace main-app ship:mac",
-    "ship:win": "yarn workspace renderer-app build && yarn workspace main-app ship:win",
-    "ship:all": "yarn workspace renderer-app build && yarn workspace main-app ship:win && yarn workspace main-app pack:mac"
+    "ship": "yarn workspace renderer-app build && yarn workspace flat ship",
+    "ship:mac": "yarn workspace renderer-app build && yarn workspace flat ship:mac",
+    "ship:win": "yarn workspace renderer-app build && yarn workspace flat ship:win",
+    "ship:all": "yarn workspace renderer-app build && yarn workspace flat ship:win && yarn workspace flat pack:mac"
   },
   "workspaces": {
     "packages": [
