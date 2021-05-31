@@ -1,5 +1,5 @@
 import { clipboard } from "electron";
-import { message, Skeleton } from "antd";
+import { message } from "antd";
 import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { isSameDay } from "date-fns";
@@ -11,6 +11,7 @@ import {
     RoomListEmpty,
     RoomListItem,
     RoomListItemButton,
+    RoomListSkeletons,
     RoomStatusType,
 } from "flat-components";
 import { ListRoomsType } from "../../../apiMiddleware/flatServer";
@@ -64,20 +65,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
     }, [refreshRooms]);
 
     if (!roomUUIDs) {
-        return (
-            <div className="main-room-list-skeletons">
-                {Array(4)
-                    .fill(0)
-                    .map((_, i) => (
-                        <Skeleton
-                            key={i}
-                            active
-                            title={false}
-                            paragraph={{ rows: 4, width: ["13%", "50%", "13%", "13%"] }}
-                        />
-                    ))}
-            </div>
-        );
+        return <RoomListSkeletons />;
     }
 
     if (roomUUIDs.length <= 0) {
