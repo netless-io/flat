@@ -7,7 +7,7 @@ import React, { PropsWithChildren, ReactElement } from "react";
 import { format, isToday, isTomorrow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import classNames from "classnames";
-import { Button, Dropdown, Menu } from "antd";
+import { Button, Dropdown, Menu, Skeleton } from "antd";
 import { useTranslation } from "react-i18next";
 
 export interface RoomListDateProps {
@@ -154,6 +154,23 @@ export function RoomListEmpty({ isHistory }: RoomListEmptyProps): ReactElement {
         <div className="room-empty-box">
             <img src={isHistory ? emptyHistorySVG : emptyRoomSVG} alt="empty" />
             <span>{isHistory ? "暂无记录" : "暂无房间"}</span>
+        </div>
+    );
+}
+
+export function RoomListSkeletons(): ReactElement {
+    return (
+        <div className="room-list-skeletons">
+            {Array(4)
+                .fill(0)
+                .map((_, i) => (
+                    <Skeleton
+                        key={i}
+                        active
+                        title={false}
+                        paragraph={{ rows: 4, width: ["13%", "50%", "13%", "13%"] }}
+                    />
+                ))}
         </div>
     );
 }

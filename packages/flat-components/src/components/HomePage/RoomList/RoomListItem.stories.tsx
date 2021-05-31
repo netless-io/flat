@@ -10,7 +10,7 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
-export const Overview: Story<RoomListItemProps> = args => <RoomListItem {...args} />;
+export const Overview: Story<RoomListItemProps<string>> = args => <RoomListItem {...args} />;
 Overview.args = {
     title: faker.random.words(4),
     beginTime: faker.date.past(),
@@ -31,7 +31,7 @@ Overview.argTypes = {
     extra: { control: false },
 };
 
-export const LongRoomName: Story<RoomListItemProps> = args => <RoomListItem {...args} />;
+export const LongRoomName: Story<RoomListItemProps<string>> = args => <RoomListItem {...args} />;
 LongRoomName.args = {
     title: faker.random.words(20),
     beginTime: faker.date.past(),

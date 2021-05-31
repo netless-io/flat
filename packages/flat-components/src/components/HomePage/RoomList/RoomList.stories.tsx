@@ -13,7 +13,7 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
-export const Overview: Story<RoomListProps> = args => (
+export const Overview: Story<RoomListProps<string>> = args => (
     <RoomList {...args}>
         <RoomListDate date={chance.date()} />
         {Array(20)
