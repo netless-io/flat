@@ -14,20 +14,23 @@ export interface RoomListDateProps {
     date: Date;
 }
 
-export const RoomListDate: React.FC<RoomListDateProps> = ({ date }) => (
-    <div className="room-list-date">
-        <img src={calendarSVG} alt="" />
-        <time dateTime={date.toUTCString()}>
-            {format(date, "MMM do", { locale: zhCN })}
-            {" · "}
-            {isToday(date)
-                ? "今天"
-                : isTomorrow(date)
-                ? "明天"
-                : format(date, "E", { locale: zhCN })}
-        </time>
-    </div>
-);
+export const RoomListDate: React.FC<RoomListDateProps> = ({ date }) => {
+    const { t } = useTranslation();
+    return (
+        <div className="room-list-date">
+            <img src={calendarSVG} alt="" />
+            <time dateTime={date.toUTCString()}>
+                {format(date, "MMM do", { locale: zhCN })}
+                {" · "}
+                {isToday(date)
+                    ? t("today")
+                    : isTomorrow(date)
+                    ? t("tomorrow")
+                    : format(date, "E", { locale: zhCN })}
+            </time>
+        </div>
+    );
+};
 
 export type RoomStatusType = "idle" | "running" | "stopped";
 
@@ -80,7 +83,7 @@ export function RoomListItem<T extends string = string>({
                     )}
                     <div className="room-list-item-status">
                         <span className={status}>{t(`room-status.${status}`)}</span>
-                        {isPeriodic && <span className="periodic">周期</span>}
+                        {isPeriodic && <span className="periodic">{t("periodicity")}</span>}
                     </div>
                 </div>
             </div>
@@ -142,7 +145,9 @@ function renderSubMenu<T extends string>(
 }
 
 export function RoomListAlreadyLoaded(): ReactElement {
-    return <div className="room-list-footer">已加载全部</div>;
+    const { t } = useTranslation();
+
+    return <div className="room-list-footer">{t("loaded-all")}</div>;
 }
 
 export interface RoomListEmptyProps {
@@ -150,10 +155,11 @@ export interface RoomListEmptyProps {
 }
 
 export function RoomListEmpty({ isHistory }: RoomListEmptyProps): ReactElement {
+    const { t } = useTranslation();
     return (
         <div className="room-empty-box">
             <img src={isHistory ? emptyHistorySVG : emptyRoomSVG} alt="empty" />
-            <span>{isHistory ? "暂无记录" : "暂无房间"}</span>
+            <span>{isHistory ? t("no-record") : t("no-room")}</span>
         </div>
     );
 }

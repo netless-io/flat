@@ -74,13 +74,29 @@
     "schedule": "Schedule"
   },
   "room-status": {
-    "idle": "idle",
-    "running": "running",
-    "stopped": "stopped"
+    "idle": "Idle",
+    "running": "Running",
+    "stopped": "Stopped"
   },
   "return-home": "Return Home",
   "waiting-for-record": "Replay is being generated, please wait patiently.",
   "error-page-description": "Please try again",
   "error-page-title": "Sorry, we have an unknow error",
-  "error-page-return-home": "({{countdown}}) Go Back"
+  "error-page-return-home": "({{countdown}}) Go Back",
+  "loaded-all": "Loaded all",
+  "no-record": "No records",
+  "no-room": "No room available",
+  "periodicity": "Periodicity",
+  "today": "Today",
+  "tomorrow": "Tomorrow",
+  "begin-time": "Start time: {{time}}",
+  "invite-prefix": "{{userName}} invites you to join the Flat room\n\nRoom theme: {{title}}",
+  "invite-suffix": "Room number: {{uuid}}\n\n\nOpen (if not installed, please download and install first) and log in to Flat, click to add to the room, enter the room number to join and make an appointment",
+  "invite-title": "{{userName}} invite to join the FLAT room",
+  "repeat-weeks": "Repeat period: {{weeks}}",
+  "room-number": "Room number",
+  "room-theme": "Room theme",
+  "start-time": "Starting time",
+  "you-can-join-and-book-by-room-number": "Can join and reserve by room number",
+  "copy": "Copy"
 }

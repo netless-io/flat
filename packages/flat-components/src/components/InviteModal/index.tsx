@@ -5,6 +5,7 @@ import { Modal } from "antd";
 import { differenceInCalendarDays, format } from "date-fns/fp";
 import { RoomInfo, Week } from "../../types/room";
 import { getWeekNames } from "../../utils/room";
+import { useTranslation } from "react-i18next";
 
 const completeTimeFormat = format("yyyy-MM-dd HH:mm");
 const onlySuffixTimeFormat = format("HH:mm");
@@ -27,6 +28,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     onCopy,
     onCancel,
 }) => {
+    const { t } = useTranslation();
     const { beginTime, endTime, periodicUUID, roomUUID, title } = room;
     const uuid = periodicUUID || roomUUID;
 
@@ -46,15 +48,14 @@ export const InviteModal: React.FC<InviteModalProps> = ({
 
     const onCopyClicked = (): void => {
         const basePrefixText =
-            `${userName} 邀请你加入 Flat 房间\n` +
-            `房间主题：${title}\n` +
-            (formattedTimeRange ? `开始时间：${formattedTimeRange}\n` : "");
-        const baseSuffixText =
-            `\n房间号：${uuid}\n\n` +
-            `打开（没有安装的话请先下载并安装）并登录 Flat，点击加入房间，输入房间号即可加入和预约`;
+            t("invite-prefix", { userName, title }) +
+            (formattedTimeRange ? t("begin-time", { time: formattedTimeRange }) : "");
+        const baseSuffixText = "\n" + t("invite-suffix", { uuid });
 
         if (periodicUUID) {
-            const content = periodicWeeks ? `重复周期：${getWeekNames(periodicWeeks || [])}` : "";
+            const content = periodicWeeks
+                ? t("repeat-weeks", { weeks: getWeekNames(periodicWeeks) })
+                : "";
 
             onCopy(`${basePrefixText}${content}${baseSuffixText}`);
         } else {
@@ -68,26 +69,26 @@ export const InviteModal: React.FC<InviteModalProps> = ({
             visible={visible}
             onOk={onCopyClicked}
             onCancel={onCancel}
-            okText="复制"
-            cancelText="取消"
+            okText={t("copy")}
+            cancelText={t("cancel")}
             className="invite-modal"
         >
             <div className="invite-modal-header">
-                <span>{userName} 邀请加入 FLAT 房间</span>
-                <span>可通过房间号加入和预约</span>
+                <span>{t("invite-title", { userName })}</span>
+                <span>{t("you-can-join-and-book-by-room-number")}</span>
             </div>
             <div className="invite-modal-content">
                 <div className="invite-modal-content-item">
-                    <span>房间主题</span>
+                    <span>{t("room-theme")}</span>
                     <span className="invite-modal-content-title">{title}</span>
                 </div>
                 <div className="invite-modal-content-item">
-                    <span>房间号</span>
+                    <span>{t("room-number")}</span>
                     <span style={{ userSelect: "text" }}>{uuid}</span>
                 </div>
                 {formattedTimeRange && (
                     <div className="invite-modal-content-item">
-                        <span>开始时间</span>
+                        <span>{t("start-time")}</span>
                         <span>{formattedTimeRange}</span>
                     </div>
                 )}
