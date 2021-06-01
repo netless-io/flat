@@ -5,12 +5,14 @@ import React, { useState } from "react";
 import { LoginChannel, LoginChannelType } from "../LoginChannel";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { message, Checkbox } from "antd";
+import { useTranslation } from "react-i18next";
 
 export interface LoginContentProps {
     onLogin: (loginChannel: LoginChannelType) => React.ReactElement | undefined;
 }
 
 export const LoginContent: React.FC<LoginContentProps> = ({ onLogin }) => {
+    const { t } = useTranslation();
     const [inPageLogin, setInPageLogin] = useState<React.ReactElement | undefined>();
     const [isChecked, setIsChecked] = useState(false);
 
@@ -27,14 +29,16 @@ export const LoginContent: React.FC<LoginContentProps> = ({ onLogin }) => {
                     <div className="login-content-container">
                         <div className="login-content-logo">
                             <img src={logoSVG} />
-                            <span className="login-content-title">欢迎使用 Flat</span>
-                            <span className="login-content-text">在线互动，让想法同步</span>
+                            <span className="login-content-title">{t("welcome-to-Flat")}</span>
+                            <span className="login-content-text">
+                                {t("online-interaction-to-synchronize-ideas")}
+                            </span>
                         </div>
                         <div className="login-content-channel">
                             <LoginChannel
                                 onLogin={loginChannel => {
                                     if (!isChecked) {
-                                        message.info("请先同意服务条款");
+                                        message.info(t("agree-to-the-terms"));
                                     } else {
                                         setInPageLogin(onLogin(loginChannel));
                                     }
@@ -46,7 +50,8 @@ export const LoginContent: React.FC<LoginContentProps> = ({ onLogin }) => {
                                 defaultChecked={isChecked}
                                 onClick={() => setIsChecked(!isChecked)}
                             >
-                                已阅读并同意 <a href="">隐私协议</a> 和 <a href="">服务政策</a>
+                                {t("have-read-and-agree")} <a href="">{t("privacy-agreement")}</a>{" "}
+                                {t("and")} <a href="">{t("service-policy")}</a>
                             </Checkbox>
                         </div>
                     </div>
@@ -55,7 +60,7 @@ export const LoginContent: React.FC<LoginContentProps> = ({ onLogin }) => {
                         <div className="qr-code-container">
                             <div className="qr-code">{inPageLogin}</div>
                             <a className="qr-code-link" onClick={() => setInPageLogin(void 0)}>
-                                使用其他方式登录
+                                {t("login-using-other-methods")}
                             </a>
                         </div>
                     </div>

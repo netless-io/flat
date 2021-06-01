@@ -98,5 +98,15 @@
   "room-theme": "房间主题",
   "room-number": "房间号",
   "start-time": "开始时间",
-  "copy": "复制"
+  "copy": "复制",
+  "login-wechat": "微信登录",
+  "login-github": "GitHub登录",
+  "welcome-to-Flat": "欢迎使用 Flat",
+  "online-interaction-to-synchronize-ideas": "在线互动，让想法同步",
+  "agree-to-the-terms": "请先同意服务条款",
+  "have-read-and-agree": "已阅读并同意",
+  "privacy-agreement": "隐私协议",
+  "and": "和",
+  "service-policy": "服务政策",
+  "login-using-other-methods": "使用其他方式登录"
 }

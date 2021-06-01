@@ -98,5 +98,15 @@
   "room-theme": "Room theme",
   "start-time": "Starting time",
   "you-can-join-and-book-by-room-number": "Can join and reserve by room number",
-  "copy": "Copy"
+  "copy": "Copy",
+  "login-github": "GitHub login",
+  "login-wechat": "WeChat login",
+  "agree-to-the-terms": "Please agree to the terms of service first",
+  "and": "and",
+  "have-read-and-agree": "Have read and agree",
+  "login-using-other-methods": "Use other methods to log in",
+  "online-interaction-to-synchronize-ideas": "Interact online to keep ideas in sync",
+  "privacy-agreement": "Privacy agreement",
+  "service-policy": "Service Policy",
+  "welcome-to-Flat": "Welcome to Flat"
 }
