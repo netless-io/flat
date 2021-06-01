@@ -4,7 +4,7 @@ import { MainPageHeader, MainPageHeaderProps } from ".";
 import { BrowserRouter as Router } from "react-router-dom";
 
 const storyMeta: Meta = {
-    title: "Components/MainPageHeader",
+    title: "MainPageLayout/MainPageHeader",
     component: MainPageHeader,
 };
 

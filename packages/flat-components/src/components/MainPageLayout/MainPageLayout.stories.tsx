@@ -13,7 +13,7 @@ import {
 import faker from "faker";
 
 const storyMeta: Meta = {
-    title: "Components/MainPageLayout",
+    title: "MainPageLayout/MainPageLayout",
     component: MainPageLayout,
 };
 
