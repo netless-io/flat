@@ -1,0 +1,37 @@
+.main-page-nav-horizontal-container {
+    width: 100%;
+    background-color: #fff;
+}
+
+.main-page-nav-horizontal-content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 960px;
+    max-height: 50px;
+    margin: 0 auto;
+}
+
+.main-page-nav-horizontal-left {
+    & .ant-tabs-tab {
+        color: #7a7b7c;
+        font-size: 16px;
+    }
+
+    & .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: #444e60;
+    }
+
+    .ant-tabs-nav::before {
+        border-bottom: none;
+    }
+}
+
+.main-page-nav-horizontal-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.main-page-nav-horizontal-right-item {
+    margin-right: 32px;
+}
