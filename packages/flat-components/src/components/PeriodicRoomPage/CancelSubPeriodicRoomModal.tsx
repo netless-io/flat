@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Modal } from "antd";
+import { useTranslation } from "react-i18next";
 
 export interface CancelSubPeriodicRoomModalProps {
     visible: boolean;
@@ -14,21 +15,22 @@ export const CancelSubPeriodicRoomModal: React.FC<CancelSubPeriodicRoomModalProp
     onCancel,
     onCancelSubPeriodicRoom,
 }) => {
+    const { t } = useTranslation();
     return (
         <Modal
             visible={visible}
-            title={"取消房间"}
+            title={t("cancel-room")}
             onCancel={onCancel}
             footer={[
                 <Button key="Cancel" onClick={onCancel}>
-                    {isCreator ? "再想想" : "取消"}
+                    {isCreator ? t("think-again") : t("cancel")}
                 </Button>,
                 <Button key="Ok" type="primary" onClick={onCancelSubPeriodicRoom}>
-                    确定
+                    {t("confirm")}
                 </Button>,
             ]}
         >
-            <span>确定将此房间从该周期性房间中取消？取消后其他成员将无法加入。</span>
+            <span>{t("cancel-subperiodicroom-tips")}</span>
         </Modal>
     );
 };

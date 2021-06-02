@@ -3,6 +3,7 @@ import "./index.less";
 
 import React from "react";
 import { Divider } from "antd";
+import { useTranslation } from "react-i18next";
 
 export interface MainPageHeaderProps {
     onBackPreviousPage: () => void;
@@ -10,11 +11,12 @@ export interface MainPageHeaderProps {
 }
 
 export const MainPageHeader: React.FC<MainPageHeaderProps> = ({ onBackPreviousPage, title }) => {
+    const { t } = useTranslation();
     return (
         <div className="main-page-header-container">
             <div className="main-page-header-back" onClick={onBackPreviousPage}>
                 <img src={backSVG} alt="back" />
-                <span>返回</span>
+                <span>{t("back")}</span>
             </div>
             <Divider type="vertical" />
             {title}

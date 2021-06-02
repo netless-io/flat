@@ -10,6 +10,7 @@ import { getRoomTypeName, getWeekName, getWeekNames } from "../../utils/room";
 import { RoomStatusElement } from "../RoomStatusElement";
 import { MoreMenu } from "./MoreMenu";
 import { CancelPeriodicRoomModal } from "./CancelPeriodicRoomModal";
+import { useTranslation } from "react-i18next";
 
 export interface PeriodicRoomPanelProps {
     rooms: (RoomInfo | undefined)[];
@@ -40,6 +41,7 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
     jumpToModifyPeriodicRoomPage,
     jumpToModifyOrdinaryRoomPage,
 }) => {
+    const { t } = useTranslation();
     const [cancelPeriodicRoomModalVisible, setCancelPeriodicRoomModalVisible] = useState(false);
 
     const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
@@ -165,19 +167,19 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                     {isCreator ? (
                         <>
                             <Button disabled={hasRunning} onClick={jumpToModifyPeriodicRoomPage}>
-                                修改周期性房间
+                                {t("modify-periodic-rooms")}
                             </Button>
                             <Button
                                 danger
                                 onClick={() => setCancelPeriodicRoomModalVisible(true)}
                                 disabled={hasRunning}
                             >
-                                取消周期性房间
+                                {t("cancel-of-periodic-rooms")}
                             </Button>
                         </>
                     ) : (
                         <Button danger onClick={() => setCancelPeriodicRoomModalVisible(true)}>
-                            移除周期性房间
+                            {t("remove-periodic-room")}
                         </Button>
                     )}
                 </div>

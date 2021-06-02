@@ -8,12 +8,14 @@ import { formatDistanceStrict } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { RoomInfo } from "../../../types/room";
 import { RoomStatusElement } from "../../RoomStatusElement";
+import { useTranslation } from "react-i18next";
 
 export interface RoomDetailBodyProps {
     roomInfo: RoomInfo;
 }
 
 export const RoomDetailBody: React.FC<RoomDetailBodyProps> = ({ roomInfo }) => {
+    const { t } = useTranslation();
     const { beginTime, endTime } = roomInfo;
 
     const formattedBeginTime = useMemo(() => formatTime(beginTime), [beginTime]);
@@ -60,7 +62,7 @@ export const RoomDetailBody: React.FC<RoomDetailBodyProps> = ({ roomInfo }) => {
                 <div className="room-detail-body-content-info">
                     <div>
                         <img src={homeIconGraySVG} />
-                        <span>房间号</span>
+                        <span>{t("room-uuid")}</span>
                     </div>
                     <div className="room-detail-body-content-info-right">
                         {roomInfo.periodicUUID || roomInfo.roomUUID}
@@ -69,7 +71,7 @@ export const RoomDetailBody: React.FC<RoomDetailBodyProps> = ({ roomInfo }) => {
                 <div className="room-detail-body-content-info">
                     <div>
                         <img src={roomTypeSVG} />
-                        <span>房间类型</span>
+                        <span>{t("room-type")}</span>
                     </div>
                     <div className="room-detail-body-content-info-right">
                         {roomTypeLocale(roomInfo.roomType)}

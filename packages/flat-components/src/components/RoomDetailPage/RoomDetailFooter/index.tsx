@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import { RoomInfo, RoomStatus, Week } from "../../../types/room";
 import { InviteModal } from "../../InviteModal";
 import { RemoveRoomModal } from "../../RemoveRoomModal";
+import { useTranslation } from "react-i18next";
 
 export interface RoomDetailFooterProps {
     room: RoomInfo;
@@ -33,6 +34,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
     onCancelRoom,
     onCopyInvitation,
 }) {
+    const { t } = useTranslation();
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
     const [isShowInviteModal, setIsShowInviteModal] = useState(false);
     const hideInviteModal = (): void => setIsShowInviteModal(false);
@@ -45,14 +47,14 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
                     onClick={onReplayRoom}
                     disabled={!room.hasRecord}
                 >
-                    查看回放
+                    {t("view-replay")}
                 </Button>
             </div>
         );
     }
 
     const disabled = !isCreator || room.roomStatus === RoomStatus.Idle;
-    const title = isCreator ? "取消房间" : "移除房间";
+    const title = isCreator ? t("cancel-room") : t("remove-room");
 
     return (
         <div className="room-detail-footer-btn-container">
@@ -70,14 +72,14 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
                     onClick={onModifyRoom}
                     disabled={!disabled}
                 >
-                    修改房间
+                    {t("modify-room")}
                 </Button>
             )}
             <Button className="room-detail-footer-btn" onClick={() => setIsShowInviteModal(true)}>
-                复制邀请
+                {t("copy-invitation")}
             </Button>
             <Button className="room-detail-footer-btn" type="primary" onClick={onJoinRoom}>
-                进入房间
+                {t("enter-room")}
             </Button>
             <InviteModal
                 visible={isShowInviteModal}
@@ -86,7 +88,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
                 userName={userName}
                 onCopy={text => {
                     onCopyInvitation(text);
-                    message.success("复制成功");
+                    message.success(t("replication-success"));
                     hideInviteModal();
                 }}
                 onCancel={hideInviteModal}
