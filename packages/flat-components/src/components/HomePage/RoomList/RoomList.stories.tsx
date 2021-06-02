@@ -21,7 +21,7 @@ export const Overview: Story<RoomListProps<string>> = args => (
             .map(() => (
                 <RoomListItem
                     title={faker.random.words()}
-                    status={chance.pickone(["idle", "running", "stopped"])}
+                    status={chance.pickone(["upcoming", "running", "stopped"])}
                     isPeriodic={chance.bool()}
                     beginTime={chance.date()}
                 />

@@ -15,7 +15,7 @@ Overview.args = {
     title: faker.random.words(4),
     beginTime: faker.date.past(),
     endTime: faker.date.future(),
-    status: "idle",
+    status: "upcoming",
     buttons: [
         [
             { key: "modify", text: "修改" },
@@ -36,7 +36,7 @@ LongRoomName.args = {
     title: faker.random.words(20),
     beginTime: faker.date.past(),
     endTime: faker.date.future(),
-    status: "idle",
+    status: "upcoming",
     buttons: [
         [
             { key: "modify", text: "修改" },

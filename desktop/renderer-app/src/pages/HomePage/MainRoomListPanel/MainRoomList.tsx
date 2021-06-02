@@ -310,7 +310,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
     function getRoomStatus(roomStatus?: RoomStatus): RoomStatusType {
         switch (roomStatus) {
             case RoomStatus.Idle: {
-                return "idle";
+                return "upcoming";
             }
             case RoomStatus.Started:
             case RoomStatus.Paused: {
@@ -320,7 +320,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                 return "stopped";
             }
             default: {
-                return "idle";
+                return "upcoming";
             }
         }
     }
