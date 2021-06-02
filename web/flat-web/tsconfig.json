@@ -1,5 +1,4 @@
 {
-  "include": ["src"],
   "compilerOptions": {
     "noEmit": true,
     "jsx": "react",
@@ -10,6 +9,9 @@
     "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "types": ["vite/client", "@types/node"]
+  },
+  "exclude": ["node_modules"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts"]
 }

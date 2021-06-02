@@ -1,18 +1,63 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { WhiteVersion } from "white-web-sdk";
-import { VERSION } from "agora-rtc-sdk";
+import "./theme.less";
+import "flat-components/build/style.css";
 
-function App(): React.ReactElement {
-    return (
-        <>
-            <pre>
-                using white-web-sdk@{WhiteVersion}
-                <br />
-                using agora-rtc-sdk@{VERSION}
-            </pre>
-        </>
+import React, { useEffect, useMemo } from "react";
+import ReactDOM from "react-dom";
+import { useUpdate } from "react-use";
+
+import { ConfigProvider } from "antd";
+import zhCN from "antd/lib/locale/zh_CN";
+import enUS from "antd/lib/locale/en_US";
+
+import { I18nextProvider } from "react-i18next";
+import { i18n } from "./utils/i18n";
+
+import { AppRoutes } from "./AppRoutes";
+
+/** configure right after import */
+import { configure } from "mobx";
+configure({
+    isolateGlobalState: true,
+});
+
+const App: React.FC = () => {
+    const forceUpdate = useUpdate();
+
+    const antdLocale = useMemo(
+        () => (i18n.language.startsWith("zh") ? zhCN : enUS),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [i18n.language],
     );
-}
+
+    useEffect(() => {
+        const onLangChanged = (): void => {
+            forceUpdate();
+        };
+
+        i18n.on("languageChanged", onLangChanged);
+
+        return () => {
+            i18n.off("languageChanged", onLangChanged);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return (
+        <I18nextProvider i18n={i18n}>
+            <ConfigProvider
+                autoInsertSpaceInButton={false}
+                locale={antdLocale}
+                // let popups scrolls with container parent
+                getPopupContainer={getPopupContainer}
+            >
+                <AppRoutes />
+            </ConfigProvider>
+        </I18nextProvider>
+    );
+};
 
 ReactDOM.render(<App />, document.getElementById("app"));
+
+function getPopupContainer(trigger?: HTMLElement): HTMLElement {
+    return trigger?.parentElement || document.body;
+}
