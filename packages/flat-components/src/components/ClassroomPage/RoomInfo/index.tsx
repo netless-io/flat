@@ -4,7 +4,7 @@ import classNames from "classnames";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { RoomStatus, RoomType } from "../../../types/room";
-import { getRoomStatusName, getRoomTypeName } from "../../../utils/room";
+import { roomStatusToI18nKey } from "../../../utils/room";
 
 export interface RoomInfoProps {
     roomStatus: RoomStatus;
@@ -22,13 +22,13 @@ export const RoomInfo: FC<RoomInfoProps> = ({ roomStatus, roomType }) => {
                         "is-active": roomStatus !== RoomStatus.Idle,
                     })}
                 >
-                    {getRoomStatusName(roomStatus)}
+                    {t(`room-status.${roomStatusToI18nKey(roomStatus)}`)}
                 </span>
             </span>
             <span>
                 {t("current-mode")}
                 <span className="room-info-mode">
-                    {getRoomTypeName(roomType || RoomType.BigClass)}
+                    {t(`class-room-type.${roomType || RoomType.BigClass}`)}
                 </span>
             </span>
         </div>

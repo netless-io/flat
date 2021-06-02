@@ -28,7 +28,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     onCopy,
     onCancel,
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { beginTime, endTime, periodicUUID, roomUUID, title } = room;
     const uuid = periodicUUID || roomUUID;
 
@@ -54,7 +54,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
 
         if (periodicUUID) {
             const content = periodicWeeks
-                ? t("repeat-weeks", { weeks: getWeekNames(periodicWeeks) })
+                ? t("repeat-weeks", { weeks: getWeekNames(periodicWeeks, i18n.language) })
                 : "";
 
             onCopy(`${basePrefixText}${content}${baseSuffixText}`);

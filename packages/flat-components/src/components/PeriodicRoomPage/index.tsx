@@ -6,7 +6,7 @@ import { getDay } from "date-fns";
 import { format, formatWithOptions } from "date-fns/fp";
 import { zhCN } from "date-fns/locale";
 import { RoomInfo, RoomStatus, RoomType, Week } from "../../types/room";
-import { getRoomTypeName, getWeekName, getWeekNames } from "../../utils/room";
+import { getWeekName, getWeekNames } from "../../utils/room";
 import { RoomStatusElement } from "../RoomStatusElement";
 import { MoreMenu } from "./MoreMenu";
 import { CancelPeriodicRoomModal } from "./CancelPeriodicRoomModal";
@@ -43,6 +43,7 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
 }) => {
     const { t } = useTranslation();
     const [cancelPeriodicRoomModalVisible, setCancelPeriodicRoomModalVisible] = useState(false);
+    const { i18n } = useTranslation();
 
     const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
     const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
@@ -96,7 +97,7 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                         <Table.Column
                             align="center"
                             render={(_, room: RoomInfo) =>
-                                getWeekName(getDay(room.beginTime || defaultDate))
+                                getWeekName(getDay(room.beginTime || defaultDate), i18n.language)
                             }
                         />
                         <Table.Column
@@ -154,10 +155,10 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
             <div className="periodic-room-panel-body">
                 <div className="periodic-room-panel-tips">
                     <div className="periodic-room-panel-tips-title">
-                        每{getWeekNames(periodicInfo.weeks)}
+                        每{getWeekNames(periodicInfo.weeks, i18n.language)}
                     </div>
                     <div className="periodic-room-panel-tips-type">
-                        房间类型：{getRoomTypeName(periodicInfo.roomType)}
+                        房间类型：{t(`class-room-type.${periodicInfo.roomType}`)}
                     </div>
                     <div className="periodic-room-panel-tips-inner">
                         结束于 {dayWeekFormat(periodicInfo.endTime)} ，共 {rooms.length} 个房间

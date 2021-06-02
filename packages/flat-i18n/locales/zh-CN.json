@@ -61,7 +61,12 @@
   "room-status": {
     "upcoming": "待开始",
     "running": "进行中",
+    "paused": "已暂停",
     "stopped": "已结束"
+  },
+  "end-repeat-type": {
+    "rate": "限定房间个数",
+    "time": "结束于某天"
   },
   "home-page-hero-button-type": {
     "join": "加入房间",

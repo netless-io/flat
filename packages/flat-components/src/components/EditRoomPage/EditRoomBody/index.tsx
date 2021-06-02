@@ -5,6 +5,7 @@ import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { addWeeks, endOfDay, getDay } from "date-fns";
 import React, { useMemo, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { PeriodicEndType, RoomType, Week } from "../../../types/room";
 import { renderBeginTimePicker } from "./renderBeginTimePicker";
 import { renderEndTimePicker } from "./renderEndTimePicker";
@@ -53,6 +54,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
 
     const [isFormVetted, setIsFormVetted] = useState(true);
     const [isShowEditSubmitConfirm, showEditSubmitConfirm] = useState(false);
+    const { t, i18n } = useTranslation();
 
     const hasInputAutoSelectedRef = useRef(false);
 
@@ -141,7 +143,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                                 prev.isPeriodic !== curr.isPeriodic
                             }
                         >
-                            {renderPeriodicForm}
+                            {renderPeriodicForm(t, i18n.language)}
                         </Form.Item>
                     </Form>
                     <div className="edit-room-under">

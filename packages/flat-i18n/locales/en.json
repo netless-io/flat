@@ -76,7 +76,12 @@
   "room-status": {
     "upcoming": "Upcoming",
     "running": "Running",
+    "paused": "Paused",
     "stopped": "Stopped"
+  },
+  "end-repeat-type": {
+    "rate": "by room counts",
+    "time": "by room end date"
   },
   "return-home": "Return Home",
   "waiting-for-record": "Replay is being generated, please wait patiently.",
