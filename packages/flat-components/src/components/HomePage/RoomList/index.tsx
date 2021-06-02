@@ -32,7 +32,7 @@ export const RoomListDate: React.FC<RoomListDateProps> = ({ date }) => {
     );
 };
 
-export type RoomStatusType = "idle" | "running" | "stopped";
+export type RoomStatusType = "upcoming" | "running" | "paused" | "stopped";
 
 export interface RoomListItemButton<T extends string> {
     key: T;
