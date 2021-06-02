@@ -14,6 +14,7 @@ export class GlobalStore {
      * Show tooltips for classroom record hints.
      * Hide it permanently if user close the tooltip.
      */
+    public checkNewVersionDate: number = new Date().getTime();
     public isShowRecordHintTips = true;
     public userInfo: UserInfo | null = null;
     public whiteboardRoomUUID: string | null = null;
@@ -59,6 +60,10 @@ export class GlobalStore {
                 this[key] = value as any;
             }
         }
+    };
+
+    public updateCheckNewVersionDate = (): void => {
+        this.checkNewVersionDate = new Date().getTime();
     };
 
     public hideRecordHintTips = (): void => {

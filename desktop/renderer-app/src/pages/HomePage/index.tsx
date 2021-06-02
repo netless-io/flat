@@ -13,6 +13,8 @@ import { MainPageLayoutContainer } from "../../components/MainPageLayoutContaine
 import { AppUpgradeModal } from "../../components/AppUpgradeModal";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { runtime } from "../../utils/runtime";
+import { globalStore } from "../../stores/GlobalStore";
+import { differenceInHours } from "date-fns";
 
 export type HomePageProps = {};
 
@@ -29,21 +31,28 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
     }, [lastLocation]);
 
     useEffect(() => {
-        sp(ipcSyncByApp("get-update-info"))
-            .then(data => {
-                console.log("[Auto Updater]: Get Update Info");
-                if (data.hasNewVersion) {
-                    console.log(
-                        `[Auto Updater]: Remote Version "${data.version}", Local Version "${runtime.appVersion}"`,
-                    );
-                    if (data.version !== runtime.appVersion) {
-                        setNewVersion(data.version);
+        // check for updates only here
+        const checkUpdateVisible =
+            differenceInHours(new Date().getTime(), globalStore.checkNewVersionDate) >= 1;
+
+        if (checkUpdateVisible) {
+            sp(ipcSyncByApp("get-update-info"))
+                .then(data => {
+                    console.log("[Auto Updater]: Get Update Info");
+                    if (data.hasNewVersion) {
+                        console.log(
+                            `[Auto Updater]: Remote Version "${data.version}", Local Version "${runtime.appVersion}"`,
+                        );
+                        if (data.version !== runtime.appVersion) {
+                            setNewVersion(data.version);
+                        }
                     }
-                }
-            })
-            .catch(err => {
-                console.error("ipc failed", err);
-            });
+                })
+                .catch(err => {
+                    console.error("ipc failed", err);
+                });
+            globalStore.updateCheckNewVersionDate();
+        }
     }, [sp]);
 
     return (
