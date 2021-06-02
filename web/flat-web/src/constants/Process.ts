@@ -1,0 +1,25 @@
+export const NODE_ENV = process.env.NODE_ENV;
+
+export const NETLESS = Object.freeze({
+    APP_IDENTIFIER: import.meta.env.NETLESS_APP_IDENTIFIER,
+});
+
+export const CLOUD_STORAGE_OSS_ALIBABA_CONFIG = Object.freeze({
+    accessKey: import.meta.env.CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY,
+    bucket: import.meta.env.CLOUD_STORAGE_OSS_ALIBABA_BUCKET,
+    region: import.meta.env.CLOUD_STORAGE_OSS_ALIBABA_REGION,
+});
+
+export const AGORA = Object.freeze({
+    APP_ID: import.meta.env.AGORA_APP_ID,
+});
+
+export const WECHAT = Object.freeze({
+    APP_ID: import.meta.env.WECHAT_APP_ID,
+});
+
+export const GITHUB = Object.freeze({
+    CLIENT_ID: import.meta.env.GITHUB_CLIENT_ID,
+});
+
+export const FLAT_SERVER_DOMAIN = import.meta.env.FLAT_SERVER_DOMAIN;

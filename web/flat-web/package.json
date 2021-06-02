@@ -6,6 +6,7 @@
     "@babel/standalone": "7.14.1",
     "@hyrious/esbuild-dev": "^0.2.7",
     "@netless/eslint-plugin": "^1.1.2",
+    "@types/loadable__component": "^5.13.3",
     "@types/node": "^15.0.2",
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.3",
@@ -23,19 +24,22 @@
     "eslint-plugin-react-app": "^6.2.2",
     "less": "^4.1.1",
     "prettier": "^2.3.0",
-    "vite": "^2.2.4"
+    "vite": "^2.3.5"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
-    "agora-rtc-sdk": "^3.5.2",
+    "@loadable/component": "^5.15.0",
+    "agora-rtc-sdk-ng": "^4.5.0",
     "antd": "^4.15.4",
+    "eventemitter3": "^4.0.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-use": "^17.2.4",
     "white-web-sdk": "^2.12.15"
   },
   "scripts": {
     "postinstall": "esbuild-dev ./scripts/white-web-sdk.ts",
-    "dev": "vite",
+    "start": "vite --open",
     "build": "vite build",
     "serve": "vite preview",
     "lint": "lint-staged"
