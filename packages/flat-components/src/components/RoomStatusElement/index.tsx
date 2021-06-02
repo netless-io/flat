@@ -19,7 +19,7 @@ export const RoomStatusElement: React.FC<RoomStatusElementProps> = ({ room }) =>
             return <span className="room-status-stopped">{t("room-status.stopped")}</span>;
         }
         default: {
-            return <span className="room-status-idle">{t("room-status.idle")}</span>;
+            return <span className="room-status-idle">{t("room-status.upcoming")}</span>;
         }
     }
 };

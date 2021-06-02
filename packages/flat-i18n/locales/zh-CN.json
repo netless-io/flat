@@ -59,7 +59,7 @@
   "network-quality7": "暂时无法检测网络质量",
   "network-quality8": "正在检测...",
   "room-status": {
-    "Upcoming": "待开始",
+    "upcoming": "待开始",
     "running": "进行中",
     "stopped": "已结束"
   },
