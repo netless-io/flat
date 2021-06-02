@@ -62,7 +62,7 @@ export const RoomDetailBody: React.FC<RoomDetailBodyProps> = ({ roomInfo }) => {
                 <div className="room-detail-body-content-info">
                     <div>
                         <img src={homeIconGraySVG} />
-                        <span>{t("room-uuid")}</span>
+                        <span>{t("room-ID")}</span>
                     </div>
                     <div className="room-detail-body-content-info-right">
                         {roomInfo.periodicUUID || roomInfo.roomUUID}

@@ -75,7 +75,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
         >
             <div className="invite-modal-header">
                 <span>{t("invite-title", { userName })}</span>
-                <span>{t("join-and-book-by-room-uuid")}</span>
+                <span>{t("join-and-book-by-room-ID")}</span>
             </div>
             <div className="invite-modal-content">
                 <div className="invite-modal-content-item">
@@ -83,7 +83,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                     <span className="invite-modal-content-title">{title}</span>
                 </div>
                 <div className="invite-modal-content-item">
-                    <span>{t("room-uuid")}</span>
+                    <span>{t("room-ID")}</span>
                     <span style={{ userSelect: "text" }}>{uuid}</span>
                 </div>
                 {formattedTimeRange && (

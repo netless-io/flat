@@ -74,7 +74,7 @@
     "schedule": "Schedule"
   },
   "room-status": {
-    "idle": "Idle",
+    "upcoming": "Upcoming",
     "running": "Running",
     "stopped": "Stopped"
   },
@@ -91,13 +91,13 @@
   "tomorrow": "Tomorrow",
   "invite-begin-time": "Start time: {{time}}",
   "invite-prefix": "{{userName}} invites you to join the Flat room\n\nRoom theme: {{title}}",
-  "invite-suffix": "Room number: {{uuid}}\n\n\nOpen (if not installed, please download and install first) and log in to Flat, click to add to the room, enter the room number to join and make an appointment",
+  "invite-suffix": "Room ID: {{uuid}}\n\n\nOpen (if not installed, please download and install first) and log in to Flat, click to add to the room, enter the room ID to join and make an appointment",
   "invite-title": "{{userName}} invite to join the FLAT room",
   "repeat-weeks": "Repeat period: {{weeks}}",
-  "room-uuid": "Room number",
+  "room-ID": "Room ID",
   "room-theme": "Room theme",
   "begin-time": "Starting time",
-  "join-and-book-by-room-uuid": "Can join and book by room uuid",
+  "join-and-book-by-room-ID": "Can join and book by room ID",
   "copy": "Copy",
   "login-github": "GitHub login",
   "login-wechat": "WeChat login",
@@ -115,13 +115,18 @@
   "cancel-periodic-room-tips": "Are you sure to cancel this periodic room? \nAfter cancellation, other members will not be able to join.",
   "cancel-room": "Cancel room",
   "cancel-subperiodicroom-tips": "Are you sure to cancel this room from this periodic room? \nAfter cancellation, other members will not be able to join.",
-  "confirm": "confirm",
+  "confirm": "Confirm",
   "modify-periodic-rooms": "Modify periodic rooms",
-  "remove-general-room-tips": "Are you sure to remove this room from the room list? \nAfter removal, it can be added again by room uuid.",
+  "remove-general-room-tips": "Are you sure to remove this room from the room list? \nAfter removal, it can be added again by room ID.",
   "remove-periodic-room": "Remove periodic rooms",
   "remove-room": "Remove room",
-  "remove-series-of-periodic-room-tips": "Are you sure to remove this series of periodic rooms from the room list? \nAfter removal, it can be added again by room uuid.",
+  "remove-series-of-periodic-room-tips": "Are you sure to remove this series of periodic rooms from the room list? \nAfter removal, it can be added again by room ID.",
   "room-type": "Room type",
   "think-again": "Think again",
-  "cancel-general-room-tips": "Are you sure to cancel this room? \nAfter cancellation, other members will not be able to join."
+  "cancel-general-room-tips": "Are you sure to cancel this room? \nAfter cancellation, other members will not be able to join.",
+  "copy-invitation": "Copy invitation",
+  "enter-room": "Enter room",
+  "modify-room": "Modify room",
+  "replication-success": "Copy successfully",
+  "view-replay": "View replay"
 }
