@@ -83,7 +83,7 @@ export function RoomListItem<T extends string = string>({
                     )}
                     <div className="room-list-item-status">
                         <span className={status}>{t(`room-status.${status}`)}</span>
-                        {isPeriodic && <span className="periodic">{t("periodicity")}</span>}
+                        {isPeriodic && <span className="periodic">{t("periodic")}</span>}
                     </div>
                 </div>
             </div>

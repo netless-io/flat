@@ -49,7 +49,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     const onCopyClicked = (): void => {
         const basePrefixText =
             t("invite-prefix", { userName, title }) +
-            (formattedTimeRange ? t("begin-time", { time: formattedTimeRange }) : "");
+            (formattedTimeRange ? t("invite-begin-time", { time: formattedTimeRange }) : "");
         const baseSuffixText = "\n" + t("invite-suffix", { uuid });
 
         if (periodicUUID) {
@@ -75,7 +75,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
         >
             <div className="invite-modal-header">
                 <span>{t("invite-title", { userName })}</span>
-                <span>{t("you-can-join-and-book-by-room-number")}</span>
+                <span>{t("join-and-book-by-room-uuid")}</span>
             </div>
             <div className="invite-modal-content">
                 <div className="invite-modal-content-item">
@@ -83,12 +83,12 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                     <span className="invite-modal-content-title">{title}</span>
                 </div>
                 <div className="invite-modal-content-item">
-                    <span>{t("room-number")}</span>
+                    <span>{t("room-uuid")}</span>
                     <span style={{ userSelect: "text" }}>{uuid}</span>
                 </div>
                 {formattedTimeRange && (
                     <div className="invite-modal-content-item">
-                        <span>{t("start-time")}</span>
+                        <span>{t("begin-time")}</span>
                         <span>{formattedTimeRange}</span>
                     </div>
                 )}

@@ -1,5 +1,6 @@
 import { Button, Checkbox, Modal } from "antd";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface RemoveRoomModalProps {
     cancelModalVisible: boolean;
@@ -20,56 +21,57 @@ export const RemoveRoomModal: React.FC<RemoveRoomModalProps> = ({
     onCancel,
     onCancelRoom,
 }) => {
+    const { t } = useTranslation();
     const [isCancelAll, setIsCancelAll] = useState(false);
     const isPeriodicRoom = !!periodicUUID && !roomUUID;
     const isSubPeriodicRoom = periodicUUID && roomUUID;
 
     const title = (() => {
         if (!isCreator) {
-            return "移除房间";
+            return t("remove-room");
         }
 
         if (isPeriodicRoom && isPeriodicDetailsPage) {
-            return "取消周期性房间";
+            return t("cancel-of-periodic-rooms");
         }
 
-        return "取消房间";
+        return t("cancel-room");
     })();
 
     const content = (): React.ReactElement => {
         if (!periodicUUID) {
             if (isCreator) {
-                return <span>确定取消该房间？取消后其他成员将无法加入。</span>;
+                return <span>{t("cancel-general-room-tips")}</span>;
             }
 
-            return <span>确定从房间列表移除该房间？移除后可通过房间号再次加入。</span>;
+            return <span>{t("remove-general-room-tips")}</span>;
         }
 
         if (!isCreator) {
-            return <span>确定从房间列表中移除该系列周期性房间？移除后可通过房间号再次加入。</span>;
+            return <span>{t("remove-series-of-periodic-room-tips")}</span>;
         }
 
         if (!isPeriodicDetailsPage) {
             return (
                 <>
-                    <span>确定取消该房间？</span>
+                    <span>{t("cancel-periodic-room-tips")}</span>
                     <br />
                     <br />
                     <Checkbox
                         checked={isCancelAll}
                         onChange={e => setIsCancelAll(e.target.checked)}
                     >
-                        同时取消该系列周期性房间
+                        {t("also-cancel-the-series-of-periodic-rooms")}
                     </Checkbox>
                 </>
             );
         }
 
         if (isSubPeriodicRoom) {
-            return <span>确定将此房间从该周期性房间中取消？取消后其他成员将无法加入。</span>;
+            return <span>{t("cancel-subperiodicroom-tips")}</span>;
         }
 
-        return <span>确定取消该周期性房间？取消后其他成员将无法加入。</span>;
+        return <span>{t("cancel-periodic-room-tips")}</span>;
     };
 
     return (
@@ -79,14 +81,14 @@ export const RemoveRoomModal: React.FC<RemoveRoomModalProps> = ({
             onCancel={onCancel}
             footer={[
                 <Button key="Cancel" onClick={onCancel}>
-                    {isCreator ? "再想想" : "取消"}
+                    {isCreator ? t("think-again") : t("cancel")}
                 </Button>,
                 <Button
                     key="Ok"
                     type="primary"
                     onClick={() => onCancelRoom(isCancelAll || isPeriodicRoom)}
                 >
-                    确定
+                    {t("confirm")}
                 </Button>,
             ]}
         >

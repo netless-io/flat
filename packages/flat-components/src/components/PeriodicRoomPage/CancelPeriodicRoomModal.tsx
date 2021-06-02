@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Modal } from "antd";
+import { useTranslation } from "react-i18next";
 
 export interface CancelPeriodicRoomModalProps {
     visible: boolean;
@@ -14,20 +15,21 @@ export const CancelPeriodicRoomModal: React.FC<CancelPeriodicRoomModalProps> = (
     onCancel,
     onCancelPeriodicRoom,
 }) => {
+    const { t } = useTranslation();
     const title = (() => {
         if (!isCreator) {
-            return "移除房间";
+            return t("remove-room");
         }
 
-        return "取消周期性房间";
+        return t("cancel-of-periodic-rooms");
     })();
 
     const content = (): React.ReactElement => {
         if (!isCreator) {
-            return <span>确定从房间列表中移除该系列周期性房间？移除后可通过房间号再次加入。</span>;
+            return <span>{t("remove-series-of-periodic-room-tips")}</span>;
         }
 
-        return <span>确定取消该周期性房间？取消后其他成员将无法加入。</span>;
+        return <span>{t("cancel-periodic-room-tips")}</span>;
     };
 
     return (
@@ -37,10 +39,10 @@ export const CancelPeriodicRoomModal: React.FC<CancelPeriodicRoomModalProps> = (
             onCancel={onCancel}
             footer={[
                 <Button key="Cancel" onClick={onCancel}>
-                    {isCreator ? "再想想" : "取消"}
+                    {isCreator ? t("think-again") : t("cancel")}
                 </Button>,
                 <Button key="Ok" type="primary" onClick={onCancelPeriodicRoom}>
-                    确定
+                    {t("confirm")}
                 </Button>,
             ]}
         >

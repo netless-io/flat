@@ -38,7 +38,7 @@ export const LoginContent: React.FC<LoginContentProps> = ({ onLogin }) => {
                             <LoginChannel
                                 onLogin={loginChannel => {
                                     if (!isChecked) {
-                                        message.info(t("agree-to-the-terms"));
+                                        message.info(t("agree-terms"));
                                     } else {
                                         setInPageLogin(onLogin(loginChannel));
                                     }
