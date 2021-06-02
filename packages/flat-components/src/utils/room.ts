@@ -1,30 +1,20 @@
 import { FormInstance } from "antd";
 import { addDays, endOfDay, format, getDay, isBefore, startOfWeek } from "date-fns";
-import { zhCN } from "date-fns/locale";
+import { enUS, zhCN } from "date-fns/locale";
 import { EditRoomFormValues } from "../components/EditRoomPage";
-import { PeriodicEndType, RoomStatus, RoomType, Week } from "../types/room";
+import { RoomStatus, Week } from "../types/room";
 
-export function getWeekNames(weeks: Week[]): string {
-    return weeks.map(getWeekName).join("、");
+export function getWeekNames(weeks: Week[], lang?: string): string {
+    return weeks.map(week => getWeekName(week, lang)).join(lang?.startsWith("zh") ? "、" : ", ");
 }
 
-export function getWeekName(week: Week): string {
+export function getWeekName(week: Week, lang?: string): string {
     const t = addDays(startOfWeek(new Date()), week);
-    return format(t, "iii", { locale: zhCN });
+    return format(t, "iii", { locale: lang?.startsWith("zh") ? zhCN : enUS });
 }
 
-export const getRoomTypeName = (type: RoomType): string => {
-    const typeNameMap: Record<RoomType, string> = {
-        [RoomType.OneToOne]: "一对一",
-        [RoomType.SmallClass]: "小班课",
-        [RoomType.BigClass]: "大班课",
-    };
-    return typeNameMap[type];
-};
-
-export function formatISODayWeekiii(date: Date): string {
-    // TODO: i18n
-    return format(date, "yyyy/MM/dd iii", { locale: zhCN });
+export function formatISODayWeekiii(date: Date, lang?: string): string {
+    return format(date, "yyyy/MM/dd iii", { locale: lang?.startsWith("zh") ? zhCN : enUS });
 }
 
 /**
@@ -169,44 +159,33 @@ export function syncPeriodicEndAmount(
     form.validateFields();
 }
 
-export const getPeriodicEndTypeName = (type: PeriodicEndType): string => {
-    const endTypeNameMap: Record<PeriodicEndType, string> = {
-        rate: "限定房间个数",
-        time: "结束于某天",
-    };
-
-    return endTypeNameMap[type];
-};
-
-export function formatTime(time?: number): { date: string; time: string } | null {
+export function formatTime(time: number, lang: string): { date: string; time: string } | null {
     return time
         ? {
-              date: format(time, "yyyy/MM/dd", { locale: zhCN }),
+              date: format(time, "yyyy/MM/dd", { locale: lang.startsWith("zh") ? zhCN : enUS }),
               time: format(time, "HH:mm"),
           }
         : null;
 }
 
-export function roomTypeLocale(roomType?: RoomType): string {
-    switch (roomType) {
-        case RoomType.OneToOne: {
-            return "一对一";
+export function roomStatusToI18nKey(
+    status: RoomStatus,
+): "upcoming" | "running" | "paused" | "stopped" {
+    switch (status) {
+        case RoomStatus.Idle: {
+            return "upcoming";
         }
-        case RoomType.SmallClass: {
-            return "小班课";
+        case RoomStatus.Started: {
+            return "running";
+        }
+        case RoomStatus.Paused: {
+            return "paused";
+        }
+        case RoomStatus.Stopped: {
+            return "stopped";
         }
         default: {
-            return "大班课";
+            return "stopped";
         }
     }
 }
-
-export const getRoomStatusName = (status: RoomStatus): string => {
-    const statusNameMap: Record<RoomStatus, string> = {
-        [RoomStatus.Idle]: "待开始",
-        [RoomStatus.Started]: "进行中",
-        [RoomStatus.Paused]: "已暂停",
-        [RoomStatus.Stopped]: "已结束",
-    };
-    return statusNameMap[status];
-};
