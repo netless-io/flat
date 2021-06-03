@@ -53,12 +53,13 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "15.10.0"
-        if: steps.filter.outputs.renderer == 'true' || steps.filter.outputs.main == 'true' || steps.filter.outputs.flat-web == 'true'
 
       - name: Install changed package dependencies and build packages
-        # failure automatically retries 3 times
-        run: |
-          (node ./scripts/ci/install-changed-package-dependencies.js && (yarn run bootstrap || yarn run bootstrap || yarn run bootstrap)) || true
+        run: |-
+          if node ./scripts/ci/install-changed-package-dependencies.js; then
+            # failure automatically retries 3 times
+            yarn run bootstrap || yarn run bootstrap || yarn run bootstrap
+          fi
         env:
           components: ${{ steps.filter.outputs.components }}
           types: ${{ steps.filter.outputs.types }}
