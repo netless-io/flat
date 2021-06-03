@@ -28,8 +28,11 @@ jobs:
             ./packages/**/node_modules
 
       - name: Install dependencies
-        run: |
-          (node ./scripts/ci/install-changed-package-dependencies.js && (yarn run bootstrap || yarn run bootstrap || yarn run bootstrap)) || true
+        run: |-
+          if node ./scripts/ci/install-changed-package-dependencies.js; then
+            # failure automatically retries 3 times
+            yarn run bootstrap || yarn run bootstrap || yarn run bootstrap
+          fi
         env:
           components: true
         if: steps.yarn-cache.outputs.cache-hit != 'true'
