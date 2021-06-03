@@ -1342,11 +1342,6 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/standalone@7.13.9":
-  version "7.13.9"
-  resolved "https://registry.npmjs.org/@babel/standalone/-/standalone-7.13.9.tgz#38e78673e19f5077f4b294ad346780634e59e276"
-  integrity sha512-9ZpIl8rXXQqm5OdsQVhlBSPttwabiHGPGrl5N2bIxB9XS2NJW+1oiPFgMMNd+57C/xVwsEwD2mzv0KValOwlQA==
-
 "@babel/standalone@7.14.1", "@babel/standalone@^7.13.12":
   version "7.14.1"
   resolved "https://registry.npmjs.org/@babel/standalone/-/standalone-7.14.1.tgz#2c5f6908f03108583eea75bdcc94eb29e720fbac"
@@ -2992,6 +2987,15 @@
   version "5.1.6"
   resolved "https://registry.npmjs.org/@types/react-router-dom/-/react-router-dom-5.1.6.tgz#07b14e7ab1893a837c8565634960dc398564b1fb"
   integrity sha512-gjrxYqxz37zWEdMVvQtWPFMFj1dRDb4TGOcgyOfSXTrEXdF92L00WE3C471O3TV/RF1oskcStkXsOU0Ete4s/g==
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
+
+"@types/react-router-dom@^5.1.7":
+  version "5.1.7"
+  resolved "https://registry.npmjs.org/@types/react-router-dom/-/react-router-dom-5.1.7.tgz#a126d9ea76079ffbbdb0d9225073eb5797ab7271"
+  integrity sha512-D5mHD6TbdV/DNHYsnwBTv+y73ei+mMjrkGrla86HthE4/PVvL1J94Bu3qABU+COXzpL23T1EZapVVpwHuBXiUg==
   dependencies:
     "@types/history" "*"
     "@types/react" "*"
