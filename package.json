@@ -26,6 +26,8 @@
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-angular": "^11.0.0",
+    "ali-oss": "^6.15.2",
+    "dotenv-flow": "^3.2.0",
     "husky": "^5.0.9",
     "shelljs": "^0.8.4"
   }
