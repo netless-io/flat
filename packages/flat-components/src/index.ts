@@ -13,6 +13,7 @@ export * from "./components/InviteModal";
 export * from "./components/LoadingPage";
 export * from "./components/LoginPage";
 export * from "./components/MainPageLayout";
+export * from "./components/MainPageLayoutHorizontal";
 export * from "./components/PeriodicRoomPage";
 export * from "./components/RemoveRoomModal";
 export * from "./components/RoomDetailPage";
