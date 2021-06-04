@@ -7,9 +7,6 @@ import {
     MainPageNavHorizontalProps,
 } from "../MainPageLayout/MainPageNavHorizontal";
 
-export * from "../MainPageLayout/MainPageHeader";
-export type { MainPageLayoutItem } from "../MainPageLayout/types";
-
 export interface MainPageLayoutHorizontalProps extends MainPageNavHorizontalProps {
     /** when an item is clicked */
     onClick: (mainPageLayoutItem: MainPageLayoutItem) => void;

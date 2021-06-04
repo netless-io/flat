@@ -39,18 +39,18 @@ export const routePages: RoutePages = {
     },
     [RouteNameType.UserScheduledPage]: {
         title: "UserScheduledPage",
-        component: () => Promise.resolve({ default: () => null }),
-    },
-    [RouteNameType.ReplayPage]: {
-        title: "ReplayPage",
-        component: () => Promise.resolve({ default: () => null }),
+        component: () => import("../pages/UserScheduledPage"),
     },
     [RouteNameType.ModifyOrdinaryRoomPage]: {
         title: "ModifyOrdinaryRoomPage",
-        component: () => Promise.resolve({ default: () => null }),
+        component: () => import("../pages/ModifyOrdinaryRoomPage"),
     },
     [RouteNameType.ModifyPeriodicRoomPage]: {
         title: "ModifyPeriodicRoomPage",
+        component: () => import("../pages/ModifyPeriodicRoomPage"),
+    },
+    [RouteNameType.ReplayPage]: {
+        title: "ReplayPage",
         component: () => Promise.resolve({ default: () => null }),
     },
     [RouteNameType.SystemCheckPage]: {
