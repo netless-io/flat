@@ -1,0 +1,81 @@
+.whiteboard-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    &.is-readonly {
+        .zoom-controller-box {
+            left: 8px;
+        }
+
+        .whiteboard-writable-area {
+            display: none;
+        }
+    }
+}
+
+.tool-box-out {
+    height: 100%;
+    width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    z-index: 3;
+    left: 8px;
+}
+
+.redo-undo-box {
+    position: absolute;
+    z-index: 3;
+    bottom: 8px;
+    left: 8px;
+}
+
+.zoom-controller-box {
+    position: absolute;
+    left: 76px;
+    z-index: 3;
+    bottom: 8px;
+}
+
+.page-controller-box {
+    position: absolute;
+    z-index: 3;
+    bottom: 8px;
+    right: 8px;
+}
+
+.page-controller-mid-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    height: 32px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 4px;
+    user-select: none;
+    font-size: 12px;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+}
+
+.page-preview-cell {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 2px;
+    &:hover {
+        background: rgba(33, 35, 36, 0.1);
+    }
+}
+
+.whiteboard-box {
+    width: 100%;
+    height: 100%;
+    background: #f3f6f9;
+}
