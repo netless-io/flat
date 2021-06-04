@@ -50,6 +50,10 @@ const client = new OSS({
         os.EOL,
     );
 
+    const generalAlibabaCloudOSSOptions = {
+        timeout: 1000 * 60 * 2,
+    };
+
     const uploadBackupFile = objectInfo.map(({ backupPath, localPath, size }) => {
         const uploadCompleteLog = () => {
             console.log(`upload backup file complete: ${backupPath}`);
@@ -61,15 +65,11 @@ const client = new OSS({
             // use multipart upload when more then 80M
             if (size >= 80 * 1000 * 1024) {
                 return client
-                    .multipartUpload(backupPath, localPath, {
-                        timeout: 1000 * 60 * 2,
-                    })
+                    .multipartUpload(backupPath, localPath, generalAlibabaCloudOSSOptions)
                     .then(uploadCompleteLog);
             } else {
                 return client
-                    .put(backupPath, localPath, {
-                        timeout: 1000 * 60 * 2,
-                    })
+                    .put(backupPath, localPath, generalAlibabaCloudOSSOptions)
                     .then(uploadCompleteLog);
             }
         };
@@ -95,10 +95,16 @@ const client = new OSS({
             console.log(`upload effect file complete: ${effectPath}`);
         };
 
+        // because we used useMultipleRangeRequest: false
+        // so, we don't need to set a header of mime-type: multipart/byteranges for *.blockmap
+        // see: https://github.com/electron-userland/electron-builder/blob/28cb86bdcb6dd0b10e75a69ccd34ece6cca1d204/packages/electron-updater/src/differentialDownloader/DifferentialDownloader.ts#L188
         return client
-            .copy(effectPath, backupPath, process.env.ALIBABA_CLOUD_OSS_BUCKET, {
-                timeout: 1000 * 60 * 2,
-            })
+            .copy(
+                effectPath,
+                backupPath,
+                process.env.ALIBABA_CLOUD_OSS_BUCKET,
+                generalAlibabaCloudOSSOptions,
+            )
             .then(uploadCompleteLog);
     });
 
