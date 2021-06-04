@@ -31,14 +31,14 @@ export const routePages: RoutePages = {
     },
     [RouteNameType.RoomDetailPage]: {
         title: "RoomDetailPage",
-        component: () => Promise.resolve({ default: () => null }),
-    },
-    [RouteNameType.UserScheduledPage]: {
-        title: "UserScheduledPage",
-        component: () => Promise.resolve({ default: () => null }),
+        component: () => import("../pages/RoomDetailPage"),
     },
     [RouteNameType.PeriodicRoomDetailPage]: {
         title: "PeriodicRoomDetailPage",
+        component: () => import("../pages/PeriodicRoomDetailPage"),
+    },
+    [RouteNameType.UserScheduledPage]: {
+        title: "UserScheduledPage",
         component: () => Promise.resolve({ default: () => null }),
     },
     [RouteNameType.ReplayPage]: {

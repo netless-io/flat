@@ -1,4 +1,3 @@
-// import { clipboard } from "electron";
 import { message } from "antd";
 import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
