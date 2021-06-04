@@ -126,7 +126,7 @@ export class WhiteboardStore {
                 },
                 floatBar: true,
                 isWritable: this.isWritable,
-                disableNewPencil: false,
+                disableNewPencil: true,
                 hotKeys: {
                     ...DefaultHotKeys,
                     changeToSelector: "s",
