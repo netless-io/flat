@@ -15,17 +15,17 @@ ${JSON.stringify([...winArtifactsFiles, ...macArtifactsFiles], null, 2)}
 `);
 
 const client = new OSS({
-    bucket: process.env.ALIBABA_CLOUD_OSS_BUCKET,
-    region: process.env.ALIBABA_CLOUD_OSS_REGION,
-    accessKeyId: process.env.ALIBABA_CLOUD_OSS_ACCESS_KEY,
-    accessKeySecret: process.env.ALIBABA_CLOUD_OSS_ACCESS_KEY_SECRET,
+    bucket: process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_BUCKET,
+    region: process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_REGION,
+    accessKeyId: process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_ACCESS_KEY,
+    accessKeySecret: process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_ACCESS_KEY_SECRET,
     secure: true,
     retryMax: 2,
 });
 
 (async () => {
-    const winUploadRule = uploadRule(process.env.ALIBABA_CLOUD_OSS_FOLDER, "win");
-    const macUploadRule = uploadRule(process.env.ALIBABA_CLOUD_OSS_FOLDER, "mac");
+    const winUploadRule = uploadRule(process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_FOLDER, "win");
+    const macUploadRule = uploadRule(process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_FOLDER, "mac");
 
     const objectInfo = [
         ...winArtifactsFiles.map(fileInfo => {
@@ -102,7 +102,7 @@ const client = new OSS({
             .copy(
                 effectPath,
                 backupPath,
-                process.env.ALIBABA_CLOUD_OSS_BUCKET,
+                process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_BUCKET,
                 generalAlibabaCloudOSSOptions,
             )
             .then(uploadCompleteLog);
