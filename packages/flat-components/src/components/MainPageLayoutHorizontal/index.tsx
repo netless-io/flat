@@ -26,8 +26,8 @@ export const MainPageLayoutHorizontal: React.FC<MainPageLayoutHorizontalProps> =
     return (
         <div className="main-horizontal-layout-container">
             <MainPageNavHorizontal {...restProps} onClick={onClick} activeKeys={activeKeys} />
-            <div className="main-horizontal-layout-outside-wrapper">
-                <div className="main-horizontal-layout-content-wrapper">
+            <div className="main-horizontal-layout-content-background fancy-scrollbar">
+                <div className="main-horizontal-layout-content-container">
                     {subMenu && (
                         <MainPageSubMenu
                             onClick={onClick}
@@ -35,9 +35,7 @@ export const MainPageLayoutHorizontal: React.FC<MainPageLayoutHorizontalProps> =
                             subMenu={subMenu}
                         />
                     )}
-                    <div className="main-horizontal-layout-container-content fancy-scrollbar">
-                        {children}
-                    </div>
+                    <div className="main-horizontal-layout-content">{children}</div>
                 </div>
             </div>
         </div>
