@@ -32,6 +32,11 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
             <div className="main-page-nav-horizontal-content">
                 <div className="main-page-nav-horizontal-left">
                     <Tabs
+                        activeKey={
+                            activeKeys.find(key =>
+                                leftMenu.some(menuItem => menuItem.key === key),
+                            ) || "none"
+                        }
                         onChange={key => {
                             const item = leftMenu.find(e => e.key === key);
                             if (item) {
