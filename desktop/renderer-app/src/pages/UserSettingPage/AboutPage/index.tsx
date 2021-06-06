@@ -1,6 +1,6 @@
 import logoSVG from "../icons/logo.svg";
 import updateSVG from "../icons/update.svg";
-import "./index.less";
+import "./style.less";
 
 import React, { useState } from "react";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";

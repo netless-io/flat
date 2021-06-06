@@ -12,6 +12,8 @@ export enum RouteNameType {
     ModifyPeriodicRoomPage = "ModifyPeriodicRoomPage",
     SystemCheckPage = "SystemCheckPage",
     GeneralSettingPage = "GeneralSettingPage",
+    HotKeySettingPage = "HotKeySettingPage",
+    AboutPage = "AboutPage",
     CloudStoragePage = "CloudStoragePage",
 }
 
@@ -54,6 +56,12 @@ export const routeConfig = {
     },
     [RouteNameType.GeneralSettingPage]: {
         path: "/general-settings/",
+    },
+    [RouteNameType.HotKeySettingPage]: {
+        path: "/hotkey/",
+    },
+    [RouteNameType.AboutPage]: {
+        path: "/about/",
     },
     [RouteNameType.CloudStoragePage]: {
         path: "/pan/",

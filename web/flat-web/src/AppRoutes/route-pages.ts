@@ -58,8 +58,16 @@ export const routePages: RoutePages = {
         component: () => Promise.resolve({ default: () => null }),
     },
     [RouteNameType.GeneralSettingPage]: {
-        title: "Flat",
-        component: () => Promise.resolve({ default: () => null }),
+        title: "GeneralSettingPage",
+        component: () => import("../pages/UserSettingPage/GeneralSettingPage"),
+    },
+    [RouteNameType.HotKeySettingPage]: {
+        title: "HotKeySettingPage",
+        component: () => import("../pages/UserSettingPage/HotKeySettingPage"),
+    },
+    [RouteNameType.AboutPage]: {
+        title: "AboutPage",
+        component: () => import("../pages/UserSettingPage/AboutPage"),
     },
     [RouteNameType.CloudStoragePage]: {
         title: "Flat",

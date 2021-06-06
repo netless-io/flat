@@ -1,4 +1,4 @@
-import "./index.less";
+import "./style.less";
 
 import React, { useState } from "react";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";

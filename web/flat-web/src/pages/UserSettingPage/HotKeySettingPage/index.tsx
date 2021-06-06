@@ -1,4 +1,4 @@
-import "./style.less";
+import "./index.less";
 
 import { Table } from "antd";
 import React from "react";
@@ -151,3 +151,5 @@ export const HotKeySettingPage = (): React.ReactElement => {
         </UserSettingLayoutContainer>
     );
 };
+
+export default HotKeySettingPage;
