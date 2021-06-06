@@ -24,7 +24,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(pr
                         }
                     />
                 </div>
-                <div className="edit-room-page-body">
+                <div className="edit-room-page-body fancy-scrollbar">
                     <div className="edit-room-page-body-content">
                         <EditRoomBody {...props} />
                     </div>
