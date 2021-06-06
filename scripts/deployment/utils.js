@@ -1,9 +1,9 @@
 const fs = require("fs");
 const path = require("path");
+const { version } = require("../constants");
 const {
     winBuildPath,
     macBuildPath,
-    version,
     isBeta,
     winArtifactsRegExp,
     macArtifactsRegExp,

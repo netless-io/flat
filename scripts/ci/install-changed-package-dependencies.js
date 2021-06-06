@@ -3,7 +3,7 @@ if (!process.env.CI) {
 }
 
 const fs = require("fs");
-const path = require("path");
+const { rootPackageJSONPath } = require("../constants");
 
 const { components, types, renderer, main, flatWeb } = process.env;
 
@@ -51,13 +51,12 @@ if (workspaces.length === 0) {
 
 console.log(`will install dependencies in: ${workspaces.join(", ")}`);
 
-const packageJSONFilePath = path.join(__dirname, "..", "..", "package.json");
-const packageJSONFileContent = require(packageJSONFilePath);
+const packageJSONFileContent = require(rootPackageJSONPath);
 
 packageJSONFileContent.workspaces.packages = workspaces;
 
 const newFileContent = JSON.stringify(packageJSONFileContent, null, 2);
 
-fs.writeFileSync(packageJSONFilePath, newFileContent, {
+fs.writeFileSync(rootPackageJSONPath, newFileContent, {
     encoding: "utf-8",
 });

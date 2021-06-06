@@ -1,11 +1,9 @@
-const path = require("path");
+const { join } = require("path");
+const { mainPath, version } = require("../constants");
 
-const rootPath = path.join(__dirname, "..", "..");
-const buildPath = path.join(rootPath, "desktop", "main-app", "release");
-const winBuildPath = path.join(buildPath, "win");
-const macBuildPath = path.join(buildPath, "mac");
-const configPath = path.join(rootPath, "config");
-const version = require(path.join(rootPath, "desktop", "main-app", "package.json")).version;
+const buildPath = join(mainPath, "release");
+const winBuildPath = join(buildPath, "win");
+const macBuildPath = join(buildPath, "mac");
 const isBeta = version.includes("beta");
 
 const winArtifactsRegExp = [
@@ -24,8 +22,6 @@ const macArtifactsRegExp = [
 
 module.exports.winBuildPath = winBuildPath;
 module.exports.macBuildPath = macBuildPath;
-module.exports.configPath = configPath;
-module.exports.version = version;
 module.exports.isBeta = isBeta;
 
 module.exports.winArtifactsRegExp = winArtifactsRegExp;

@@ -18,7 +18,8 @@ const argv = {
     ...commandsArgs,
 };
 
-const electronVersion = require("../../../scripts/agora-electron-options").electron_version;
+const electronVersion =
+    require("../../../scripts/preinstall/agora-electron-options").electron_version;
 const agoraVersion = require(path.join(agoraElectronSdkPath, "package.json")).version;
 
 fs.removeSync(path.join(agoraElectronSdkPath, "build"));

@@ -1,6 +1,6 @@
 const os = require("os");
 const OSS = require("ali-oss");
-const { configPath } = require("./constants");
+const { configPath } = require("../constants");
 const { winArtifactsFiles, macArtifactsFiles, uploadRule, arrayChunks } = require("./utils");
 
 require("dotenv-flow").config({

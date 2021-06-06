@@ -1,9 +1,9 @@
-const path = require("path");
 const dotenvFlow = require("dotenv-flow");
 const { notarize } = require("electron-notarize");
+const { configPath } = require("../../../scripts/constants");
 
 dotenvFlow.config({
-    path: path.resolve(__dirname, "..", "..", "..", "config"),
+    path: configPath,
     default_node_env: "production",
     silent: true,
 });
