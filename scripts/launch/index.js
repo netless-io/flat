@@ -5,7 +5,7 @@ function system(cmd) {
 }
 
 if (process.platform === "win32") {
-    system("yarn start:win");
+    system("scripts\\launch\\start.cmd");
 } else if (process.platform === "darwin") {
-    system("yarn start:mac");
+    system("osascript ./scripts/launch/start.scpt");
 }
