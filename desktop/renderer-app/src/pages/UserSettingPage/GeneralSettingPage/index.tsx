@@ -1,4 +1,4 @@
-import "./index.less";
+import "./style.less";
 
 import { Checkbox, Radio } from "antd";
 import React, { useEffect, useState } from "react";
