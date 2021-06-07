@@ -93,6 +93,9 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             return;
         }
 
+        const maxWidth = window.innerWidth * 0.8;
+        const maxHeight = window.innerHeight * 0.8;
+
         let width: number;
         let height: number;
 
@@ -108,13 +111,18 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             ({ innerWidth: width, innerHeight: height } = window);
         }
 
+        let scale = 1;
+        if (width > maxWidth || height > maxHeight) {
+            scale = Math.min(maxWidth / width, maxHeight / height);
+        }
+
         const uuid = v4uuid();
         room.insertImage({
             uuid,
             centerX: 0,
             centerY: 0,
-            width,
-            height,
+            width: Math.floor(width * scale),
+            height: Math.floor(height * scale),
             locked: false,
         });
         room.completeImageUpload(uuid, file.fileURL);
