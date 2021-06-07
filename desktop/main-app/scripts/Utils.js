@@ -5,12 +5,13 @@ const path = require("path");
 const { platform } = require("os");
 const dotenvFlow = require("dotenv-flow");
 const { spawnSync } = require("child_process");
-const { version } = require("../package.json");
-const { agoraElectronSdkPath, rootPath, mainAppPath } = require("./Constant");
+const { version, configPath, rootPath, mainPath } = require("../../../scripts/constants");
+const { agoraElectronSdkPath } = require("./Constant");
 
 dotenvFlow.config({
-    path: path.resolve(__dirname, "..", "..", "..", "config"),
+    path: configPath,
     default_node_env: "production",
+    silent: true,
 });
 
 /**
@@ -19,7 +20,7 @@ dotenvFlow.config({
  */
 const buildElectron = async buildType => {
     const config = yaml.load(
-        fs.readFileSync(path.join(mainAppPath, "electron-builder.yml"), {
+        fs.readFileSync(path.join(mainPath, "electron-builder.yml"), {
             encoding: "utf8",
         }),
     );
@@ -90,7 +91,7 @@ const getAgoraReleaseType = () => {
 
 const downloadAgoraElectronAddon = platform => {
     const spawnOptions = {
-        cwd: path.join(__dirname, ".."),
+        cwd: mainPath,
         env: process.env,
         stdio: [process.stdin, process.stdout, process.stderr],
         encoding: "utf-8",

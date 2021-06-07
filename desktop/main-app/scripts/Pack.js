@@ -43,7 +43,7 @@ switch (buildType) {
 
     await buildElectron(buildType);
 
-    // 当构建完成后，我们需要还原 agora addon，否则构建完成后，继续开发的话，就会出现问题
+    // when the build is complete, we need to restore agora addon, otherwise there will be problems if we continue development after the build is complete
     const systemType = currentSystem();
     if (systemType !== getAgoraReleaseType()) {
         return downloadAgoraElectronAddon(systemType);

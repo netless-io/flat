@@ -1,8 +1,9 @@
 const fs = require("fs").promises;
 const path = require("path");
-const agoraSdkOptions = require("../agora-electron-options");
+const { rootPath } = require("../constants");
+const agoraSdkOptions = require("./agora-electron-options");
 
-const npmrcPath = path.join(__dirname, "..", "..", ".npmrc");
+const npmrcPath = path.join(rootPath, ".npmrc");
 
 writeAgoraToNpmrc().catch(console.error);
 

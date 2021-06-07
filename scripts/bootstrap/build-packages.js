@@ -1,15 +1,16 @@
 const path = require("path");
 const fs = require("fs");
 const shell = require("shelljs");
+const { rootPath, rootPackageJSONPath, packagesPath } = require("../constants");
 
 // Set commands context to project root
-shell.cd(path.join(__dirname, ".."));
+shell.cd(rootPath);
 
 const packages = (() => {
     // if the current environment is CI, the package to be compiled is selected by reading the workspaces.packages information under package.json.
     // because in a CI environment, we will first call the install-changed-package-dependencies.js script to selectively install which package dependencies
     if (process.env.CI) {
-        const rootPackageJSON = require(path.join(__dirname, "..", "package.json"));
+        const rootPackageJSON = require(rootPackageJSONPath);
         const prefixPath = "packages/";
 
         // ["packages/flat-type", "desktop/main-app"] => ["flat-type"]
@@ -18,13 +19,11 @@ const packages = (() => {
             .map(packagePath => packagePath.slice(prefixPath.length));
     }
 
-    return fs
-        .readdirSync(path.join(__dirname, "..", "packages"))
-        .filter(name => !name.startsWith("."));
+    return fs.readdirSync(packagesPath).filter(name => !name.startsWith("."));
 })();
 
 for (const packageName of packages) {
-    const pkgPath = path.join(__dirname, "..", "packages", packageName);
+    const pkgPath = path.join(packagesPath, packageName);
     const pkgJSONPath = path.join(pkgPath, "package.json");
 
     if (fs.existsSync(pkgJSONPath)) {
