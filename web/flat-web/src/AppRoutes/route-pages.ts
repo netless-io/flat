@@ -70,7 +70,7 @@ export const routePages: RoutePages = {
         component: () => import("../pages/UserSettingPage/AboutPage"),
     },
     [RouteNameType.CloudStoragePage]: {
-        title: "Flat",
-        component: () => Promise.resolve({ default: () => null }),
+        title: "CloudStoragePage",
+        component: () => import("../pages/CloudStoragePage"),
     },
 };
