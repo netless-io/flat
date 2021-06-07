@@ -2,8 +2,8 @@ import "./style.less";
 
 import React from "react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import Tooltip, { TooltipProps } from "antd/lib/tooltip";
 import classNames from "classnames";
+import { Tooltip, TooltipProps } from "antd";
 
 export type CloudStorageFileListHeadTipProps = TooltipProps;
 
