@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { useHistory, useParams } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 import { useLastLocation } from "react-router-last-location";
-import { LoadingPage, MainPageHeader, PeriodicRoomPanel } from "flat-components";
+import { LoadingPage, PeriodicRoomPanel } from "flat-components";
 import { RoomStoreContext } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { globalStore } from "../../stores/GlobalStore";
@@ -120,19 +120,12 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
     }
 
     return (
-        <MainPageLayoutHorizontalContainer>
+        <MainPageLayoutHorizontalContainer
+            title={<h1 className="periodic-room-detail-page-header-title">{title}</h1>}
+            onBackPreviousPage={backPreviousPage}
+        >
             <div className="periodic-room-detail-page-container">
-                <div className="periodic-room-detail-page-header-container">
-                    <MainPageHeader
-                        title={
-                            <>
-                                <h1 className="periodic-room-detail-page-header-title">{title}</h1>
-                            </>
-                        }
-                        onBackPreviousPage={backPreviousPage}
-                    />
-                </div>
-                <div className="periodic-room-detail-page-panel-container fancy-scrollbar">
+                <div className="periodic-room-detail-page-panel-container">
                     <PeriodicRoomPanel
                         rooms={rooms}
                         userName={ownerUserName}

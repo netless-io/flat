@@ -16,10 +16,12 @@ export interface MainPageLayoutHorizontalContainerProps {
     subMenu?: MainPageLayoutItem[];
     activeKeys?: string[];
     onRouteChange?: MainPageLayoutProps["onClick"];
+    title?: React.ReactNode;
+    onBackPreviousPage?: () => void;
 }
 
 export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizontalContainerProps> =
-    ({ subMenu, children, activeKeys, onRouteChange }) => {
+    ({ subMenu, children, activeKeys, onRouteChange, title, onBackPreviousPage }) => {
         const leftMenu = [
             {
                 key: routeConfig[RouteNameType.HomePage].path,
@@ -97,6 +99,8 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
 
         return (
             <MainPageLayoutHorizontal
+                title={title}
+                onBackPreviousPage={onBackPreviousPage}
                 leftMenu={leftMenu}
                 rightMenu={rightMenu}
                 popMenu={popMenu}

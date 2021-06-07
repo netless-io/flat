@@ -6,8 +6,8 @@ import { Divider } from "antd";
 import { useTranslation } from "react-i18next";
 
 export interface MainPageHeaderProps {
-    onBackPreviousPage: () => void;
-    title: React.ReactNode;
+    onBackPreviousPage?: () => void;
+    title?: React.ReactNode;
 }
 
 export const MainPageHeader: React.FC<MainPageHeaderProps> = ({ onBackPreviousPage, title }) => {

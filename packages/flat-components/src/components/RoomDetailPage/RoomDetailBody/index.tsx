@@ -9,12 +9,19 @@ import { zhCN } from "date-fns/locale";
 import { RoomInfo, RoomType } from "../../../types/room";
 import { RoomStatusElement } from "../../RoomStatusElement";
 import { useTranslation } from "react-i18next";
+import { observer } from "mobx-react-lite";
 
 export interface RoomDetailBodyProps {
     roomInfo: RoomInfo;
+    showRoomCountVisible?: boolean;
+    jumpToPeriodicRoomDetailPage?: () => void;
 }
 
-export const RoomDetailBody: React.FC<RoomDetailBodyProps> = ({ roomInfo }) => {
+export const RoomDetailBody = observer<RoomDetailBodyProps>(function RoomDetailBody({
+    roomInfo,
+    showRoomCountVisible,
+    jumpToPeriodicRoomDetailPage,
+}) {
     const { t } = useTranslation();
     const { beginTime, endTime } = roomInfo;
     const { i18n } = useTranslation();
@@ -23,10 +30,10 @@ export const RoomDetailBody: React.FC<RoomDetailBodyProps> = ({ roomInfo }) => {
         () => (beginTime ? formatTime(beginTime, i18n.language) : null),
         [beginTime, i18n.language],
     );
-    const formattedEndTime = useMemo(() => (endTime ? formatTime(endTime, i18n.language) : null), [
-        endTime,
-        i18n.language,
-    ]);
+    const formattedEndTime = useMemo(
+        () => (endTime ? formatTime(endTime, i18n.language) : null),
+        [endTime, i18n.language],
+    );
 
     return (
         <div className="room-detail-body">
@@ -65,6 +72,14 @@ export const RoomDetailBody: React.FC<RoomDetailBodyProps> = ({ roomInfo }) => {
                         </div>
                     )}
                 </div>
+                {showRoomCountVisible && (
+                    <div
+                        className="room-detail-body-content-room-count"
+                        onClick={jumpToPeriodicRoomDetailPage}
+                    >
+                        查看全部 {roomInfo.count} 场房间
+                    </div>
+                )}
                 <div className="room-detail-body-content-cut-line" />
                 <div className="room-detail-body-content-info">
                     <div>
@@ -87,4 +102,4 @@ export const RoomDetailBody: React.FC<RoomDetailBodyProps> = ({ roomInfo }) => {
             </div>
         </div>
     );
-};
+});

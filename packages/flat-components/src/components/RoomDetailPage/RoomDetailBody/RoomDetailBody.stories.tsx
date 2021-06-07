@@ -24,5 +24,7 @@ Overview.args = {
         roomStatus: RoomStatus.Started,
         beginTime: 1619771930756,
         endTime: 1619775530756,
+        count: 7,
     },
+    showRoomCountVisible: true,
 };
