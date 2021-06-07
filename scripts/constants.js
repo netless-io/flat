@@ -1,6 +1,6 @@
 const { join } = require("path");
 
-const rootPath = join(__dirname, "..", "..");
+const rootPath = join(__dirname, "..");
 const configPath = join(rootPath, "config");
 const packagesPath = join(rootPath, "packages");
 const desktopPath = join(rootPath, "desktop");
