@@ -1895,10 +1895,10 @@
   dependencies:
     video.js "^7.8.4"
 
-"@netless/combine-player@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.npmjs.org/@netless/combine-player/-/combine-player-1.1.5.tgz#18fb5b9168f0963867b6ef065fa1684fab4be181"
-  integrity sha512-/vOYNCn6tmZx1NefOpYPLqnxKiTzfdBOxYkf/gi+9I6mrGfBQ1JTtJTLrJDXCXyThnWsjK3pOdrZsaQHuasS0A==
+"@netless/combine-player@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.npmjs.org/@netless/combine-player/-/combine-player-1.1.6.tgz#1f0a8ea8acf2d4fc99045ef9e8f8d00ca4f89b1f"
+  integrity sha512-UUGRxF0kY6fD+HqGTQU9vFKbpiFNcvQTMd217M+AbjT/nsYXgznmySRXqMfuZVUHy+76767mj1yVyPkRF0cQxw==
   dependencies:
     video.js "^7.8.4"
 
@@ -18151,7 +18151,7 @@ vfile@^4.0.0:
     unist-util-stringify-position "^2.0.0"
     vfile-message "^2.0.0"
 
-"video.js@^6 || ^7", video.js@^7.8.4:
+video.js@7.10.2, "video.js@^6 || ^7", video.js@^7.8.4:
   version "7.10.2"
   resolved "https://registry.npmjs.org/video.js/-/video.js-7.10.2.tgz#5156aabad7820e726d72ea6c32324059c68885a4"
   integrity sha512-kJTTrqcQn2MhPzWR8zQs6W3HPJWpowO/ZGZcKt2dcJeJdJT0dEDLYtiFdjV37SylCmu66V0flRnV8cipbthveQ==

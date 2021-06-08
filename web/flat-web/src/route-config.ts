@@ -75,6 +75,9 @@ export const routeConfig = {
     [RouteNameType.OneToOnePage]: {
         path: "/classroom/OneToOne/:roomUUID/:ownerUUID/",
     },
+    [RouteNameType.ReplayPage]: {
+        path: "/replay/:roomType/:roomUUID/:ownerUUID/",
+    },
 } as const;
 
 export type ExtraRouteConfig = {};
