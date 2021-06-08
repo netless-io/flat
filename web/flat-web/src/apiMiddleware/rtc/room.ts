@@ -43,9 +43,11 @@ export class RtcRoom {
 
         this.client.on("token-privilege-will-expire", this.renewToken);
 
-        await this.client.setClientRole(
-            channelType === RtcChannelType.Broadcast && !isCreator ? "audience" : "host",
-        );
+        if (mode !== "rtc") {
+            await this.client.setClientRole(
+                channelType === RtcChannelType.Broadcast && !isCreator ? "audience" : "host",
+            );
+        }
         const token = globalStore.rtcToken || (await generateRTCToken(roomUUID));
         await this.client.join(AGORA.APP_ID, roomUUID, token, rtcUID);
 
