@@ -15,6 +15,7 @@ export * from "./components/LoginPage";
 export * from "./components/MainPageLayout";
 export * from "./components/MainPageLayoutHorizontal";
 export * from "./components/PeriodicRoomPage";
+export * from "./components/RemoveHistoryRoomModal";
 export * from "./components/RemoveRoomModal";
 export * from "./components/RoomDetailPage";
 export * from "./components/RoomStatusElement";
