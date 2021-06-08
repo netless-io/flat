@@ -89,6 +89,8 @@ Overview.args = {
     activeKeys: ["home"],
     avatarSrc: "http://placekitten.com/200/200",
     userName: "Flat Name",
+    title: <div>Title</div>,
+    onBackPreviousPage: () => null,
 };
 Overview.argTypes = {
     activeKeys: {

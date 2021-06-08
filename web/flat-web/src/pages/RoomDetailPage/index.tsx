@@ -2,7 +2,7 @@
 import "./style.less";
 
 import React, { useContext, useEffect } from "react";
-import { LoadingPage, MainPageHeader, RoomDetailPanel } from "flat-components";
+import { LoadingPage, RoomDetailPanel } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { useHistory, useParams } from "react-router-dom";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
@@ -13,7 +13,7 @@ import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { message } from "antd";
 import { MainPageLayoutHorizontalContainer } from "../../components/MainPageLayoutHorizontalContainer";
 
-export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
+export const RoomDetailPage = observer(function RoomDetailPage() {
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
     const pushHistory = usePushHistory();
     const history = useHistory();
@@ -101,33 +101,17 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
     }
 
     return (
-        <MainPageLayoutHorizontalContainer>
+        <MainPageLayoutHorizontalContainer
+            title={<h1 className="room-detail-page-header-title">{roomInfo.title}</h1>}
+            onBackPreviousPage={() => history.goBack()}
+        >
             <div className="room-detail-page-container">
-                <div className="room-detail-page-header-container">
-                    <MainPageHeader
-                        title={
-                            <>
-                                <h1 className="room-detail-page-header-title">{roomInfo.title}</h1>
-                                {periodicUUID && (
-                                    <>
-                                        <span className="room-detail-page-header-sign">周期</span>
-                                        {roomInfo.roomStatus !== RoomStatus.Stopped && (
-                                            <div
-                                                className="room-detail-page-header-right"
-                                                onClick={jumpToPeriodicRoomDetailPage}
-                                            >
-                                                查看全部 {roomInfo.count} 场房间
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-                            </>
-                        }
-                        onBackPreviousPage={() => history.goBack()}
-                    />
-                </div>
                 <div className="room-detail-page-panel-container">
                     <RoomDetailPanel
+                        showRoomCountVisible={
+                            periodicUUID ? roomInfo.roomStatus !== RoomStatus.Stopped : false
+                        }
+                        jumpToPeriodicRoomDetailPage={jumpToPeriodicRoomDetailPage}
                         roomInfo={roomInfo}
                         room={roomInfo}
                         userName={roomInfo.ownerUserName || ""}

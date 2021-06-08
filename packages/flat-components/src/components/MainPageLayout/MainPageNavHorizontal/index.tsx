@@ -4,8 +4,9 @@ import classNames from "classnames";
 import { MainPageLayoutItem } from "../types";
 import { MainPageNavAvatar, MainPageNavAvatarProps } from "../MainPageNavAvatar";
 import { Tabs } from "antd";
+import { MainPageHeader, MainPageHeaderProps } from "../MainPageHeader";
 
-export interface MainPageNavHorizontalProps extends MainPageNavAvatarProps {
+export interface MainPageNavHorizontalProps extends MainPageNavAvatarProps, MainPageHeaderProps {
     /** when an item is clicked */
     onClick: (mainPageLayoutItem: MainPageLayoutItem) => void;
     /** a list of keys to highlight the items */
@@ -14,6 +15,8 @@ export interface MainPageNavHorizontalProps extends MainPageNavAvatarProps {
     leftMenu: MainPageLayoutItem[];
     /** outside footer menu in MainPageLayout */
     rightMenu: MainPageLayoutItem[];
+    /** display return to previous page button if provided*/
+    onBackPreviousPage?: () => void;
 }
 
 export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
@@ -24,6 +27,8 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
     leftMenu,
     rightMenu,
     popMenu,
+    onBackPreviousPage,
+    title,
 }) => {
     const { TabPane } = Tabs;
 
@@ -31,27 +36,33 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
         <div className="main-page-nav-horizontal-container">
             <div className="main-page-nav-horizontal-content">
                 <div className="main-page-nav-horizontal-left">
-                    <Tabs
-                        activeKey={
-                            activeKeys.find(key =>
-                                leftMenu.some(menuItem => menuItem.key === key),
-                            ) || "none"
-                        }
-                        onChange={key => {
-                            const item = leftMenu.find(e => e.key === key);
-                            if (item) {
-                                onClick(item);
-                            } else {
-                                if (process.env.NODE_ENV === "development") {
-                                    console.warn("[MainPageNav] tab missing key", key);
-                                }
+                    {onBackPreviousPage ? (
+                        <div className="main-page-nav-horizontal-left-header">
+                            <MainPageHeader title={title} onBackPreviousPage={onBackPreviousPage} />
+                        </div>
+                    ) : (
+                        <Tabs
+                            activeKey={
+                                activeKeys.find(key =>
+                                    leftMenu.some(menuItem => menuItem.key === key),
+                                ) || "none"
                             }
-                        }}
-                    >
-                        {leftMenu.map(menuItem => {
-                            return <TabPane tab={menuItem.title} key={menuItem.key}></TabPane>;
-                        })}
-                    </Tabs>
+                            onChange={key => {
+                                const item = leftMenu.find(e => e.key === key);
+                                if (item) {
+                                    onClick(item);
+                                } else {
+                                    if (process.env.NODE_ENV === "development") {
+                                        console.warn("[MainPageNav] tab missing key", key);
+                                    }
+                                }
+                            }}
+                        >
+                            {leftMenu.map(menuItem => {
+                                return <TabPane tab={menuItem.title} key={menuItem.key}></TabPane>;
+                            })}
+                        </Tabs>
+                    )}
                 </div>
                 <div className="main-page-nav-horizontal-right">
                     <div className="main-page-nav-horizontal-right-item">

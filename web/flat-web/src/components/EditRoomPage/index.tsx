@@ -2,7 +2,7 @@ import "./style.less";
 
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { EditRoomBody, EditRoomBodyProps, MainPageHeader } from "flat-components";
+import { EditRoomBody, EditRoomBodyProps } from "flat-components";
 import { useHistory } from "react-router";
 import { MainPageLayoutHorizontalContainer } from "../MainPageLayoutHorizontalContainer";
 
@@ -12,19 +12,16 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(pr
     const history = useHistory();
 
     return (
-        <MainPageLayoutHorizontalContainer>
-            <div className="edit-room-page">
-                <div className="edit-room-page-header-container">
-                    <MainPageHeader
-                        onBackPreviousPage={() => history.goBack()}
-                        title={
-                            <span className="edit-room-page-header-title">
-                                {props.type === "schedule" ? "预定房间" : "修改房间"}
-                            </span>
-                        }
-                    />
+        <MainPageLayoutHorizontalContainer
+            title={
+                <div className="edit-room-page-header-title">
+                    {props.type === "schedule" ? "预定房间" : "修改房间"}
                 </div>
-                <div className="edit-room-page-body fancy-scrollbar">
+            }
+            onBackPreviousPage={() => history.goBack()}
+        >
+            <div className="edit-room-page">
+                <div className="edit-room-page-body">
                     <div className="edit-room-page-body-content">
                         <EditRoomBody {...props} />
                     </div>
