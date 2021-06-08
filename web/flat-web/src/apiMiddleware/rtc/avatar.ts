@@ -77,6 +77,17 @@ export class RtcAvatar {
     }
 
     public destroy(): void {
+        if (this.isLocal) {
+            const { audioTrack, videoTrack } = this;
+            if (audioTrack) {
+                this.audioTrack = undefined;
+                (audioTrack as IMicrophoneAudioTrack).close();
+            }
+            if (videoTrack) {
+                this.videoTrack = undefined;
+                (videoTrack as ICameraVideoTrack).close();
+            }
+        }
         if (!this.isLocal && this.client) {
             this.client.off("user-published", this.onUserPublished);
         }
