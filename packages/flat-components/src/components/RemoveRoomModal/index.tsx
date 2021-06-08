@@ -1,3 +1,5 @@
+import "./style.less";
+
 import { Button, Checkbox, Modal } from "antd";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -76,6 +78,7 @@ export const RemoveRoomModal: React.FC<RemoveRoomModalProps> = ({
 
     return (
         <Modal
+            wrapClassName="remove-room-modal-container"
             visible={cancelModalVisible}
             title={title}
             onCancel={onCancel}

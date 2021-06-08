@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { isSameDay } from "date-fns";
 import {
     InviteModal,
+    RemoveHistoryRoomModal,
     RemoveRoomModal,
     RoomListAlreadyLoaded,
     RoomListDate,
@@ -15,7 +16,6 @@ import {
 } from "flat-components";
 import { ListRoomsType } from "../../../apiMiddleware/flatServer";
 import { RoomStatus, RoomType } from "../../../apiMiddleware/flatServer/constants";
-// import { RemoveHistoryRoomModal } from "../../../components/Modal/RemoveHistoryRoomModal";
 import { GlobalStoreContext, RoomStoreContext } from "../../../components/StoreProvider";
 import { errorTips } from "../../../components/Tips/ErrorTips";
 import { RoomItem } from "../../../stores/RoomStore";
@@ -191,14 +191,14 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                 />
             )}
             {/* TODO: add removeHistoryLoading to flat-component */}
-            {/* {currentRoom && (
+            {currentRoom && (
                 <RemoveHistoryRoomModal
                     visible={removeHistoryVisible}
                     onConfirm={removeConfirm}
                     onCancel={hideRemoveHistoryModal}
                     loading={removeHistoryLoading}
                 />
-            )} */}
+            )}
         </>
     );
 
