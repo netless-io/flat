@@ -8,6 +8,12 @@ export type RoutePages = {
     };
 };
 
+/**
+ * NOTE: If you see error from "loadable-component", the real error
+ *       message may be hidden by `import()` below. You can change
+ *       `import("../pages/SomePage")` to
+ *       `Promise.resolve({ default: SomePage })` to see the real error.
+ */
 export const routePages: RoutePages = {
     [RouteNameType.LoginPage]: {
         title: "Flat Login",
@@ -27,7 +33,7 @@ export const routePages: RoutePages = {
     },
     [RouteNameType.BigClassPage]: {
         title: "BigClassPage",
-        component: () => Promise.resolve({ default: () => null }),
+        component: () => import("../pages/BigClassPage"),
     },
     [RouteNameType.RoomDetailPage]: {
         title: "RoomDetailPage",

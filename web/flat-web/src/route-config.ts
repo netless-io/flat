@@ -66,6 +66,9 @@ export const routeConfig = {
     [RouteNameType.CloudStoragePage]: {
         path: "/pan/",
     },
+    [RouteNameType.BigClassPage]: {
+        path: "/classroom/BigClass/:roomUUID/:ownerUUID/",
+    },
 } as const;
 
 export type ExtraRouteConfig = {};
