@@ -2,7 +2,7 @@ import AgoraRTM, { RtmChannel, RtmClient } from "agora-rtm-sdk";
 import polly from "polly-js";
 import { v4 as uuidv4 } from "uuid";
 import { AGORA, NODE_ENV } from "../constants/Process";
-import { EventEmitter } from "events";
+import { EventEmitter } from "eventemitter3";
 import { RoomStatus } from "./flatServer/constants";
 import { generateRTMToken } from "./flatServer/agora";
 import { globalStore } from "../stores/GlobalStore";
@@ -145,7 +145,7 @@ export declare interface Rtm {
 }
 
 // eslint-disable-next-line no-redeclare
-export class Rtm extends EventEmitter {
+export class Rtm extends EventEmitter<keyof RTMEvents> {
     public static MessageType = AgoraRTM.MessageType;
 
     public client: RtmClient;

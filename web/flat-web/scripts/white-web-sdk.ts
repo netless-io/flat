@@ -47,7 +47,7 @@ function hackAndReplaceMainScript(script: string, main: string): void {
     // webpack will add polyfill under the hood so it is ok, but not rollup/esbuild
     script = script.replace(/=require\([^)]+\)/g, "=void 0");
     fs.writeFileSync(path.resolve(sdkPath, main), script);
-    console.log("hack: done!");
+    console.log("white-web-sdk: done!");
 }
 
 if (fs.existsSync(pkgJSON)) {

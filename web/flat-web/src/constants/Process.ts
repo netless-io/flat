@@ -1,4 +1,4 @@
-export const NODE_ENV = process.env.NODE_ENV;
+export const NODE_ENV = import.meta.env.MODE;
 
 export const NETLESS = Object.freeze({
     APP_IDENTIFIER: import.meta.env.NETLESS_APP_IDENTIFIER,

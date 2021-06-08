@@ -3,7 +3,7 @@ import { message } from "antd";
 import { action, autorun, makeAutoObservable, observable, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
-import { Rtc as RTCAPI, RtcChannelType } from "../apiMiddleware/Rtc";
+import { RtcRoom as RTCAPI, RtcChannelType } from "../apiMiddleware/rtc/room";
 import {
     ClassModeType,
     NonDefaultUserProp,
@@ -30,11 +30,11 @@ import { globalStore } from "./GlobalStore";
 import { NODE_ENV } from "../constants/Process";
 import { useAutoRun } from "../utils/mobx";
 import { User, UserStore } from "./UserStore";
-import type { AgoraNetworkQuality, RtcStats } from "agora-electron-sdk/types/Api/native_type";
 import { errorTips } from "../components/Tips/ErrorTips";
 import { WhiteboardStore } from "./WhiteboardStore";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
+import { NetworkQuality } from "agora-rtc-sdk-ng";
 
 export type { User } from "./UserStore";
 
@@ -118,6 +118,7 @@ export class ClassRoomStore {
         this.rtcChannelType = config.recordingConfig.channelType ?? RtcChannelType.Communication;
 
         this.rtc = new RTCAPI();
+        (window as any).rtc = this.rtc;
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
 
@@ -229,7 +230,6 @@ export class ClassRoomStore {
             if (this.isRecording) {
                 await this.stopRecording();
             }
-            this.rtc.leave();
         } catch (e) {
             console.error(e);
             this.updateCalling(true);
@@ -496,13 +496,11 @@ export class ClassRoomStore {
     }
 
     public onRTCEvents(): void {
-        this.rtc.rtcEngine.on("rtcStats", this.checkDelay);
-        this.rtc.rtcEngine.on("networkQuality", this.checkNetworkQuality);
+        this.rtc.client?.on("network-quality", this.checkNetworkQuality);
     }
 
     public offRTCEvents(): void {
-        this.rtc.rtcEngine.off("rtcStats", this.checkDelay);
-        this.rtc.rtcEngine.off("networkQuality", this.checkNetworkQuality);
+        this.rtc.client?.off("network-quality", this.checkNetworkQuality);
     }
 
     public async destroy(): Promise<void> {
@@ -953,21 +951,11 @@ export class ClassRoomStore {
         window.clearTimeout(this._collectChannelStatusTimeout);
     }
 
-    private checkDelay = action((stats: RtcStats): void => {
-        this.networkQuality.delay = stats.lastmileDelay;
-    });
-
     private checkNetworkQuality = action(
-        (
-            uid: number,
-            uplinkQuality: AgoraNetworkQuality,
-            downlinkQuality: AgoraNetworkQuality,
-        ): void => {
-            if (uid === 0) {
-                // current user
-                this.networkQuality.uplink = uplinkQuality;
-                this.networkQuality.downlink = downlinkQuality;
-            }
+        ({ uplinkNetworkQuality, downlinkNetworkQuality }: NetworkQuality): void => {
+            this.networkQuality.uplink = uplinkNetworkQuality;
+            this.networkQuality.downlink = downlinkNetworkQuality;
+            this.networkQuality.delay = this.rtc.getLatency();
         },
     );
 }
