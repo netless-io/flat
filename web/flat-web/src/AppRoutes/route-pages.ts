@@ -25,7 +25,7 @@ export const routePages: RoutePages = {
     },
     [RouteNameType.SmallClassPage]: {
         title: "SmallClassPage",
-        component: () => Promise.resolve({ default: () => null }),
+        component: () => import("../pages/SmallClassPage"),
     },
     [RouteNameType.OneToOnePage]: {
         title: "OneToOnePage",

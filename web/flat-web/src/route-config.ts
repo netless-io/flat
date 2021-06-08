@@ -69,6 +69,9 @@ export const routeConfig = {
     [RouteNameType.BigClassPage]: {
         path: "/classroom/BigClass/:roomUUID/:ownerUUID/",
     },
+    [RouteNameType.SmallClassPage]: {
+        path: "/classroom/SmallClass/:roomUUID/:ownerUUID/",
+    },
 } as const;
 
 export type ExtraRouteConfig = {};
