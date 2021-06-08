@@ -1,8 +1,8 @@
 export enum RouteNameType {
     LoginPage = "LoginPage",
     HomePage = "HomePage",
-    SmallClassPage = "SmallClassPage",
     BigClassPage = "BigClassPage",
+    SmallClassPage = "SmallClassPage",
     OneToOnePage = "OneToOnePage",
     UserScheduledPage = "UserScheduledPage",
     RoomDetailPage = "RoomDetailPage",
@@ -71,6 +71,9 @@ export const routeConfig = {
     },
     [RouteNameType.SmallClassPage]: {
         path: "/classroom/SmallClass/:roomUUID/:ownerUUID/",
+    },
+    [RouteNameType.OneToOnePage]: {
+        path: "/classroom/OneToOne/:roomUUID/:ownerUUID/",
     },
 } as const;
 

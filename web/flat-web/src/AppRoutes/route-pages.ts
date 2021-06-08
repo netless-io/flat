@@ -23,17 +23,17 @@ export const routePages: RoutePages = {
         title: "Flat",
         component: () => import("../pages/HomePage"),
     },
+    [RouteNameType.BigClassPage]: {
+        title: "BigClassPage",
+        component: () => import("../pages/BigClassPage"),
+    },
     [RouteNameType.SmallClassPage]: {
         title: "SmallClassPage",
         component: () => import("../pages/SmallClassPage"),
     },
     [RouteNameType.OneToOnePage]: {
         title: "OneToOnePage",
-        component: () => Promise.resolve({ default: () => null }),
-    },
-    [RouteNameType.BigClassPage]: {
-        title: "BigClassPage",
-        component: () => import("../pages/BigClassPage"),
+        component: () => import("../pages/OneToOnePage"),
     },
     [RouteNameType.RoomDetailPage]: {
         title: "RoomDetailPage",
