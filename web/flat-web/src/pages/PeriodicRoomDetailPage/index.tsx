@@ -6,12 +6,11 @@ import { useHistory, useParams } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 import { useLastLocation } from "react-router-last-location";
 import { LoadingPage, PeriodicRoomPanel } from "flat-components";
-import { RoomStoreContext } from "../../components/StoreProvider";
+import { PageStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { globalStore } from "../../stores/GlobalStore";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { cancelPeriodicRoom, cancelPeriodicSubRoom } from "../../apiMiddleware/flatServer";
-import { MainPageLayoutHorizontalContainer } from "../../components/MainPageLayoutHorizontalContainer";
 
 export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPage() {
     const params = useParams<RouteParams<RouteNameType.PeriodicRoomDetailPage>>();
@@ -20,6 +19,32 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
     const history = useHistory();
     const pushHistory = usePushHistory();
     const previousPage = useLastLocation();
+    const pageStore = useContext(PageStoreContext);
+
+    useEffect(() => {
+        // if the room has been cancelled and return to the previous page, an error will be reported
+        function backPreviousPage(): void {
+            if (!previousPage?.pathname) {
+                return pushHistory(RouteNameType.HomePage);
+            }
+
+            const previousRouterContainRemoveRoomUUID = cancelRoomUUIDList.some(roomUUID => {
+                return previousPage.pathname.includes(roomUUID);
+            });
+
+            if (previousRouterContainRemoveRoomUUID) {
+                return pushHistory(RouteNameType.HomePage);
+            }
+
+            history.goBack();
+        }
+
+        pageStore.configure({
+            title: <h1 className="periodic-room-detail-page-header-title">{title}</h1>,
+            onBackPreviousPage: backPreviousPage,
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const { periodicUUID } = params;
 
@@ -39,23 +64,6 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
     const { title, ownerUUID, ownerUserName } = periodicInfo.periodic;
 
     const isCreator = globalStore.userUUID === ownerUUID;
-
-    // if the room has been cancelled and return to the previous page, an error will be reported
-    const backPreviousPage = (): void => {
-        if (!previousPage?.pathname) {
-            return pushHistory(RouteNameType.HomePage);
-        }
-
-        const previousRouterContainRemoveRoomUUID = cancelRoomUUIDList.some(roomUUID => {
-            return previousPage.pathname.includes(roomUUID);
-        });
-
-        if (previousRouterContainRemoveRoomUUID) {
-            return pushHistory(RouteNameType.HomePage);
-        }
-
-        history.goBack();
-    };
 
     const onCancelSubPeriodicRoom = async (
         roomUUID: string,
@@ -120,27 +128,22 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
     }
 
     return (
-        <MainPageLayoutHorizontalContainer
-            title={<h1 className="periodic-room-detail-page-header-title">{title}</h1>}
-            onBackPreviousPage={backPreviousPage}
-        >
-            <div className="periodic-room-detail-page-container">
-                <div className="periodic-room-detail-page-panel-container">
-                    <PeriodicRoomPanel
-                        rooms={rooms}
-                        userName={ownerUserName}
-                        isCreator={isCreator}
-                        periodicInfo={periodicInfo.periodic}
-                        onCopyInvitation={text => navigator.clipboard.writeText(text)}
-                        onCancelPeriodicRoom={onCancelPeriodicRoom}
-                        onCancelSubPeriodicRoom={onCancelSubPeriodicRoom}
-                        jumpToRoomDetailPage={jumpToRoomDetailPage}
-                        jumpToModifyOrdinaryRoomPage={jumpToModifyOrdinaryRoomPage}
-                        jumpToModifyPeriodicRoomPage={jumpToModifyPeriodicRoomPage}
-                    />
-                </div>
+        <div className="periodic-room-detail-page-container">
+            <div className="periodic-room-detail-page-panel-container">
+                <PeriodicRoomPanel
+                    rooms={rooms}
+                    userName={ownerUserName}
+                    isCreator={isCreator}
+                    periodicInfo={periodicInfo.periodic}
+                    onCopyInvitation={text => navigator.clipboard.writeText(text)}
+                    onCancelPeriodicRoom={onCancelPeriodicRoom}
+                    onCancelSubPeriodicRoom={onCancelSubPeriodicRoom}
+                    jumpToRoomDetailPage={jumpToRoomDetailPage}
+                    jumpToModifyOrdinaryRoomPage={jumpToModifyOrdinaryRoomPage}
+                    jumpToModifyPeriodicRoomPage={jumpToModifyPeriodicRoomPage}
+                />
             </div>
-        </MainPageLayoutHorizontalContainer>
+        </div>
     );
 });
 

@@ -5,13 +5,16 @@ import React, { useContext, useEffect } from "react";
 import { LoadingPage, RoomDetailPanel } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { useHistory, useParams } from "react-router-dom";
-import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
+import {
+    GlobalStoreContext,
+    PageStoreContext,
+    RoomStoreContext,
+} from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/joinRoomHandler";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { message } from "antd";
-import { MainPageLayoutHorizontalContainer } from "../../components/MainPageLayoutHorizontalContainer";
 
 export const RoomDetailPage = observer(function RoomDetailPage() {
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
@@ -19,6 +22,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
     const history = useHistory();
     const globalStore = useContext(GlobalStoreContext);
     const roomStore = useContext(RoomStoreContext);
+    const pageStore = useContext(PageStoreContext);
     const roomInfo = roomStore.rooms.get(roomUUID);
     const periodicInfo = periodicUUID ? roomStore.periodicRooms.get(periodicUUID) : undefined;
 
@@ -29,6 +33,16 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
             roomStore.syncOrdinaryRoomInfo(roomUUID).catch(errorTips);
         }
     }, [roomStore, roomUUID, periodicUUID]);
+
+    useEffect(() => {
+        if (roomInfo) {
+            pageStore.configure({
+                title: <h1 className="room-detail-page-header-title">{roomInfo.title}</h1>,
+                onBackPreviousPage: () => history.goBack(),
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [roomInfo?.title]);
 
     if (!roomInfo) {
         return <LoadingPage />;
@@ -101,32 +115,27 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
     }
 
     return (
-        <MainPageLayoutHorizontalContainer
-            title={<h1 className="room-detail-page-header-title">{roomInfo.title}</h1>}
-            onBackPreviousPage={() => history.goBack()}
-        >
-            <div className="room-detail-page-container">
-                <div className="room-detail-page-panel-container">
-                    <RoomDetailPanel
-                        showRoomCountVisible={
-                            periodicUUID ? roomInfo.roomStatus !== RoomStatus.Stopped : false
-                        }
-                        jumpToPeriodicRoomDetailPage={jumpToPeriodicRoomDetailPage}
-                        roomInfo={roomInfo}
-                        room={roomInfo}
-                        userName={roomInfo.ownerUserName || ""}
-                        isCreator={isCreator}
-                        isPeriodicDetailsPage={false}
-                        periodicWeeks={periodicInfo?.periodic.weeks}
-                        onJoinRoom={joinRoom}
-                        onModifyRoom={jumpToModifyRoom}
-                        onReplayRoom={jumpToReplayPage}
-                        onCancelRoom={onCancelRoom}
-                        onCopyInvitation={text => navigator.clipboard.writeText(text)}
-                    />
-                </div>
+        <div className="room-detail-page-container">
+            <div className="room-detail-page-panel-container">
+                <RoomDetailPanel
+                    showRoomCountVisible={
+                        periodicUUID ? roomInfo.roomStatus !== RoomStatus.Stopped : false
+                    }
+                    jumpToPeriodicRoomDetailPage={jumpToPeriodicRoomDetailPage}
+                    roomInfo={roomInfo}
+                    room={roomInfo}
+                    userName={roomInfo.ownerUserName || ""}
+                    isCreator={isCreator}
+                    isPeriodicDetailsPage={false}
+                    periodicWeeks={periodicInfo?.periodic.weeks}
+                    onJoinRoom={joinRoom}
+                    onModifyRoom={jumpToModifyRoom}
+                    onReplayRoom={jumpToReplayPage}
+                    onCancelRoom={onCancelRoom}
+                    onCopyInvitation={text => navigator.clipboard.writeText(text)}
+                />
             </div>
-        </MainPageLayoutHorizontalContainer>
+        </div>
     );
 });
 

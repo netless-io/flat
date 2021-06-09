@@ -4,6 +4,7 @@ import { RouteNameType } from "../route-config";
 export type RoutePages = {
     readonly [key in RouteNameType]: {
         readonly title: string;
+        readonly hasHeader?: true;
         readonly component: () => Promise<{ default: ComponentType<any> }>;
     };
 };
@@ -21,6 +22,7 @@ export const routePages: RoutePages = {
     },
     [RouteNameType.HomePage]: {
         title: "Flat",
+        hasHeader: true,
         component: () => import("../pages/HomePage"),
     },
     [RouteNameType.BigClassPage]: {
@@ -37,22 +39,27 @@ export const routePages: RoutePages = {
     },
     [RouteNameType.RoomDetailPage]: {
         title: "RoomDetailPage",
+        hasHeader: true,
         component: () => import("../pages/RoomDetailPage"),
     },
     [RouteNameType.PeriodicRoomDetailPage]: {
         title: "PeriodicRoomDetailPage",
+        hasHeader: true,
         component: () => import("../pages/PeriodicRoomDetailPage"),
     },
     [RouteNameType.UserScheduledPage]: {
         title: "UserScheduledPage",
+        hasHeader: true,
         component: () => import("../pages/UserScheduledPage"),
     },
     [RouteNameType.ModifyOrdinaryRoomPage]: {
         title: "ModifyOrdinaryRoomPage",
+        hasHeader: true,
         component: () => import("../pages/ModifyOrdinaryRoomPage"),
     },
     [RouteNameType.ModifyPeriodicRoomPage]: {
         title: "ModifyPeriodicRoomPage",
+        hasHeader: true,
         component: () => import("../pages/ModifyPeriodicRoomPage"),
     },
     [RouteNameType.ReplayPage]: {
@@ -61,22 +68,27 @@ export const routePages: RoutePages = {
     },
     [RouteNameType.SystemCheckPage]: {
         title: "SystemCheckPage",
+        hasHeader: true,
         component: () => Promise.resolve({ default: () => null }),
     },
     [RouteNameType.GeneralSettingPage]: {
         title: "GeneralSettingPage",
+        hasHeader: true,
         component: () => import("../pages/UserSettingPage/GeneralSettingPage"),
     },
     [RouteNameType.HotKeySettingPage]: {
         title: "HotKeySettingPage",
+        hasHeader: true,
         component: () => import("../pages/UserSettingPage/HotKeySettingPage"),
     },
     [RouteNameType.AboutPage]: {
         title: "AboutPage",
+        hasHeader: true,
         component: () => import("../pages/UserSettingPage/AboutPage"),
     },
     [RouteNameType.CloudStoragePage]: {
         title: "CloudStoragePage",
+        hasHeader: true,
         component: () => import("../pages/CloudStoragePage"),
     },
 };

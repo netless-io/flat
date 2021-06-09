@@ -3,17 +3,21 @@ import "./style.less";
 import React, { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { MainRoomMenu } from "./MainRoomMenu";
-import { MainPageLayoutHorizontalContainer } from "../../components/MainPageLayoutHorizontalContainer";
 import { MainRoomListPanel } from "./MainRoomListPanel";
 import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
-import { GlobalStoreContext } from "../../components/StoreProvider";
+import { GlobalStoreContext, PageStoreContext } from "../../components/StoreProvider";
 import { loginCheck } from "../../apiMiddleware/flatServer";
 import { errorTips } from "../../components/Tips/ErrorTips";
 
 export const HomePage = observer(function HomePage() {
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
+    const pageStore = useContext(PageStoreContext);
+
+    (window as any).pageStore = pageStore;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => pageStore.configure(), []);
 
     useEffect(() => {
         let isUnMount = false;
@@ -55,15 +59,13 @@ export const HomePage = observer(function HomePage() {
     }, []);
 
     return (
-        <MainPageLayoutHorizontalContainer>
-            <div className="homepage-layout-horizontal-container">
-                <MainRoomMenu />
-                <div className="homepage-layout-horizontal-content">
-                    <MainRoomListPanel />
-                    <MainRoomHistoryPanel />
-                </div>
+        <div className="homepage-layout-horizontal-container">
+            <MainRoomMenu />
+            <div className="homepage-layout-horizontal-content">
+                <MainRoomListPanel />
+                <MainRoomHistoryPanel />
             </div>
-        </MainPageLayoutHorizontalContainer>
+        </div>
     );
 });
 
