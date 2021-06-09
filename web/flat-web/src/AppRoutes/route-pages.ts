@@ -57,7 +57,7 @@ export const routePages: RoutePages = {
     },
     [RouteNameType.ReplayPage]: {
         title: "ReplayPage",
-        component: () => Promise.resolve({ default: () => null }),
+        component: () => import("../pages/ReplayPage"),
     },
     [RouteNameType.SystemCheckPage]: {
         title: "SystemCheckPage",
