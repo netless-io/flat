@@ -10,7 +10,7 @@ export const githubLogin: LoginExecutor = onSuccess => {
     const authUUID = uuidv4();
 
     function getGithubURL(authUUID: string): string {
-        const redirectURL = FLAT_SERVER_LOGIN.GITHUB_CALLBACK;
+        const redirectURL = encodeURIComponent(FLAT_SERVER_LOGIN.GITHUB_CALLBACK);
         return `https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}&redirect_uri=${redirectURL}&state=${authUUID}`;
     }
 

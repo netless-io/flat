@@ -7,7 +7,7 @@ export const FLAT_SERVER_VERSIONS = {
 } as const;
 
 export const FLAT_SERVER_LOGIN = {
-    GITHUB_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/login/github/callback`,
+    GITHUB_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/login/github/callback?platform=web`,
     WECHAT_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/login/weChat/web/callback`,
 } as const;
 
