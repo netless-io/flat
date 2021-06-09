@@ -39,6 +39,8 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
             history.goBack();
         }
 
+        const title = periodicInfo?.periodic.title;
+
         pageStore.configure({
             title: <h1 className="periodic-room-detail-page-header-title">{title}</h1>,
             onBackPreviousPage: backPreviousPage,
@@ -61,7 +63,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
         return <LoadingPage />;
     }
 
-    const { title, ownerUUID, ownerUserName } = periodicInfo.periodic;
+    const { ownerUUID, ownerUserName } = periodicInfo.periodic;
 
     const isCreator = globalStore.userUUID === ownerUUID;
 
