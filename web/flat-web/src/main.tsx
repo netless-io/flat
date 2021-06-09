@@ -13,6 +13,7 @@ import { I18nextProvider } from "react-i18next";
 import { i18n } from "./utils/i18n";
 
 import { AppRoutes } from "./AppRoutes";
+import { StoreProvider } from "./components/StoreProvider";
 
 /** configure right after import */
 import { configure } from "mobx";
@@ -50,7 +51,9 @@ const App: React.FC = () => {
                 // let popups scrolls with container parent
                 getPopupContainer={getPopupContainer}
             >
-                <AppRoutes />
+                <StoreProvider>
+                    <AppRoutes />
+                </StoreProvider>
             </ConfigProvider>
         </I18nextProvider>
     );

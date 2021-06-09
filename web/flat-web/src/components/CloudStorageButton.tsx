@@ -4,7 +4,7 @@ import { Modal } from "antd";
 import { TopBarRightBtn } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useState } from "react";
-import { CloudStoragePage } from "../pages/CloudStoragePage";
+import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
 import { WhiteboardStore } from "../stores/WhiteboardStore";
 import "./CloudStorageButton.less";
 
@@ -39,11 +39,7 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
                 className="cloud-storage-button-modal"
                 centered
             >
-                <CloudStoragePage
-                    compact
-                    whiteboard={whiteboard}
-                    onCoursewareInserted={hideModal}
-                />
+                <CloudStoragePanel whiteboard={whiteboard} onCoursewareInserted={hideModal} />
             </Modal>
         </>
     );
