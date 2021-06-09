@@ -37,9 +37,7 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
             <div className="main-page-nav-horizontal-content">
                 <div className="main-page-nav-horizontal-left">
                     {onBackPreviousPage ? (
-                        <div className="main-page-nav-horizontal-left-header">
-                            <MainPageHeader title={title} onBackPreviousPage={onBackPreviousPage} />
-                        </div>
+                        <MainPageHeader title={title} onBackPreviousPage={onBackPreviousPage} />
                     ) : (
                         <Tabs
                             activeKey={
