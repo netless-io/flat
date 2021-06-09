@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
-import deviceSVG from "./icons/device.svg";
-import deviceActiveSVG from "./icons/device-active.svg";
+// import deviceSVG from "./icons/device.svg";
+// import deviceActiveSVG from "./icons/device-active.svg";
 import settingSVG from "./icons/setting.svg";
 import gitHubSVG from "./icons/github.svg";
 import feedbackSVG from "./icons/feedback.svg";
@@ -37,15 +37,15 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
             },
         ];
 
-        const rightMenu = [
-            {
-                key: "deviceCheck",
-                icon: (active: boolean): React.ReactNode => (
-                    <img src={active ? deviceActiveSVG : deviceSVG} />
-                ),
-                title: "deviceCheck",
-                route: routeConfig[RouteNameType.SystemCheckPage].path,
-            },
+        const rightMenu: MainPageLayoutItem[] = [
+            // {
+            //     key: "deviceCheck",
+            //     icon: (active: boolean): React.ReactNode => (
+            //         <img src={active ? deviceActiveSVG : deviceSVG} />
+            //     ),
+            //     title: "deviceCheck",
+            //     route: routeConfig[RouteNameType.SystemCheckPage].path,
+            // },
         ];
 
         const popMenu = [
