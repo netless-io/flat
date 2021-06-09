@@ -2,7 +2,6 @@ import moreMenuSVG from "./icons/more-menu.svg";
 
 import React, { useState } from "react";
 import { Dropdown, Menu, message } from "antd";
-import MenuItem from "antd/lib/menu/MenuItem";
 import { RoomInfo } from "../../types/room";
 import { InviteModal } from "../InviteModal";
 import { CancelSubPeriodicRoomModal } from "./CancelSubPeriodicRoomModal";
@@ -34,16 +33,18 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
             overlay={() => {
                 return (
                     <Menu>
-                        <MenuItem onClick={jumpToRoomDetailPage}>房间详情</MenuItem>
+                        <Menu.Item onClick={jumpToRoomDetailPage}>房间详情</Menu.Item>
                         {isCreator && (
                             <>
-                                <MenuItem onClick={jumpToModifyOrdinaryRoomPage}>修改房间</MenuItem>
-                                <MenuItem onClick={() => setCancelSubPeriodicRoomVisible(true)}>
+                                <Menu.Item onClick={jumpToModifyOrdinaryRoomPage}>
+                                    修改房间
+                                </Menu.Item>
+                                <Menu.Item onClick={() => setCancelSubPeriodicRoomVisible(true)}>
                                     取消房间
-                                </MenuItem>
+                                </Menu.Item>
                             </>
                         )}
-                        <MenuItem onClick={() => setInviteRoomVisible(true)}>复制邀请</MenuItem>
+                        <Menu.Item onClick={() => setInviteRoomVisible(true)}>复制邀请</Menu.Item>
                         <CancelSubPeriodicRoomModal
                             visible={cancelSubPeriodicRoomVisible}
                             isCreator={isCreator}
