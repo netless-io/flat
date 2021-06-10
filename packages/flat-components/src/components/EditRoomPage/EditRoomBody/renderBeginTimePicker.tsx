@@ -2,6 +2,7 @@ import { Form } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
 import { addMinutes, isAfter, isBefore, setHours, startOfDay } from "date-fns";
 import React from "react";
+import { TFunction } from "react-i18next";
 import { EditRoomFormValues } from ".";
 import {
     compareDay,
@@ -15,12 +16,13 @@ import { FullTimePicker } from "../FullTimePicker";
 import { MIN_CLASS_DURATION } from "./constants";
 
 export function renderBeginTimePicker(
+    t: TFunction<string>,
     form: FormInstance<EditRoomFormValues>,
     previousPeriodicRoomBeginTime?: number | null,
     nextPeriodicRoomEndTime?: number | null,
 ): React.ReactElement {
     return (
-        <Form.Item label="开始时间" name="beginTime" rules={[validateTime]}>
+        <Form.Item label={t("begin-time")} name="beginTime" rules={[validateTime]}>
             <FullTimePicker
                 disabledDate={disabledDate}
                 disabledHours={disabledHours}
@@ -34,7 +36,7 @@ export function renderBeginTimePicker(
         return {
             validator: async (_, value: Date) => {
                 if (isBefore(value, getRoughNow())) {
-                    throw new Error("开始时间不能为过去");
+                    throw new Error(t("begin-time-cannot-be-in-the-past"));
                 }
             },
         };

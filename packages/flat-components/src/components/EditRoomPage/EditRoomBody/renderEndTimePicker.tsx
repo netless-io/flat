@@ -2,17 +2,19 @@ import { Form } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
 import { addMinutes, isAfter, isBefore, setHours } from "date-fns";
 import React from "react";
-import { EditRoomFormValues } from ".";
+import { TFunction } from "react-i18next";
+import type { EditRoomFormValues } from ".";
 import { compareDay, compareHour, excludeRange } from "../../../utils/room";
 import { FullTimePicker } from "../FullTimePicker";
 import { MIN_CLASS_DURATION } from "./constants";
 
 export function renderEndTimePicker(
+    t: TFunction<string>,
     form: FormInstance<EditRoomFormValues>,
     nextPeriodicRoomEndTime?: number | null,
 ): React.ReactElement {
     return (
-        <Form.Item label="结束时间" name="endTime" rules={[validateTime]}>
+        <Form.Item label={t("end-time")} name="endTime" rules={[validateTime]}>
             <FullTimePicker
                 disabledDate={disabledDate}
                 disabledHours={disabledHours}
@@ -27,7 +29,7 @@ export function renderEndTimePicker(
                 const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
                 const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
                 if (isBefore(value, compareTime)) {
-                    throw new Error(`房间时长最少 ${MIN_CLASS_DURATION} 分钟`);
+                    throw new Error(t("room-duration-limit", { minutes: MIN_CLASS_DURATION }));
                 }
             },
         };

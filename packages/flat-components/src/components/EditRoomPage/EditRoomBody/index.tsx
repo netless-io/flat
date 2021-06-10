@@ -54,7 +54,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
 
     const [isFormVetted, setIsFormVetted] = useState(true);
     const [isShowEditSubmitConfirm, showEditSubmitConfirm] = useState(false);
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation<string>();
 
     const hasInputAutoSelectedRef = useRef(false);
 
@@ -85,16 +85,16 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                         onFieldsChange={formValidateStatus}
                     >
                         <Form.Item
-                            label="主题"
+                            label={t("theme")}
                             name="title"
                             required={false}
                             rules={[
-                                { required: true, message: "请输入主题" },
-                                { max: 50, message: "主题最多为 50 个字符" },
+                                { required: true, message: t("enter-room-theme") },
+                                { max: 50, message: t("theme-can-be-up-to-50-characters") },
                             ]}
                         >
                             <Input
-                                placeholder="请输入房间主题"
+                                placeholder={t("enter-room-theme")}
                                 disabled={type === "periodicSub"}
                                 ref={input => {
                                     if (!input) {
@@ -115,25 +115,26 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                                 }}
                             />
                         </Form.Item>
-                        <Form.Item label="类型" name="type">
+                        <Form.Item label={t("type")} name="type">
                             <ClassPicker large={true} disabled={type === "periodicSub"} />
                         </Form.Item>
                         {renderBeginTimePicker(
+                            t,
                             form,
                             previousPeriodicRoomBeginTime,
                             nextPeriodicRoomEndTime,
                         )}
-                        {renderEndTimePicker(form, nextPeriodicRoomEndTime)}
+                        {renderEndTimePicker(t, form, nextPeriodicRoomEndTime)}
                         {type === "schedule" ? (
                             <Form.Item name="isPeriodic" valuePropName="checked">
                                 <Checkbox onChange={onToggleIsPeriodic}>
-                                    <span className="edit-room-cycle">周期性房间</span>
+                                    <span className="edit-room-cycle">{t("periodic-room")}</span>
                                 </Checkbox>
                             </Form.Item>
                         ) : (
                             type === "periodic" && (
                                 <div className="ant-form-item-label edit-room-form-label">
-                                    周期性房间
+                                    {t("periodic-room")}
                                 </div>
                             )
                         )}
@@ -148,7 +149,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                     </Form>
                     <div className="edit-room-under">
                         <Button className="edit-room-cancel" onClick={onCancelForm}>
-                            取消
+                            {t("cancel")}
                         </Button>
                         <Button
                             className="edit-room-ok"
@@ -169,7 +170,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                             loading={loading}
                             disabled={!loading && !isFormVetted}
                         >
-                            {type === "schedule" ? "预定" : "修改"}
+                            {type === "schedule" ? t("schedule") : t("modify")}
                         </Button>
                     </div>
                 </div>
@@ -182,7 +183,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                     onOk={onSubmitForm}
                     footer={[
                         <Button key="Cancel" onClick={hideEditSubmitConfirm}>
-                            取消
+                            {t("cancel")}
                         </Button>,
                         <Button
                             key="Ok"
@@ -191,7 +192,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                             disabled={!loading && !isFormVetted}
                             onClick={onSubmitForm}
                         >
-                            确定
+                            {t("confirm")}
                         </Button>,
                     ]}
                 >
@@ -204,16 +205,16 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
     function renderModalTitle(editRoomType: EditRoomType): string {
         switch (editRoomType) {
             case "ordinary": {
-                return "修改房间";
+                return t("modify-room");
             }
             case "periodicSub": {
-                return "修改本次房间";
+                return t("modify-this-room");
             }
             case "periodic": {
-                return "修改周期性房间";
+                return t("modify-periodic-rooms");
             }
             default: {
-                return "修改房间";
+                return t("modify-room");
             }
         }
     }
@@ -221,16 +222,16 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
     function renderModalContent(editRoomType: EditRoomType): string {
         switch (editRoomType) {
             case "ordinary": {
-                return "确定修改该房间？";
+                return t("make-sure-to-modify-room");
             }
             case "periodicSub": {
-                return "确定修改本次房间？";
+                return t("make-sure-to-modify-this-room");
             }
             case "periodic": {
-                return "确定修改该系列周期性房间？";
+                return t("make-sure-to-modify-the-series-of-periodic-rooms");
             }
             default: {
-                return "确定修改房间？";
+                return t("make-sure-to-modify-room");
             }
         }
     }
@@ -257,7 +258,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
     function onCancelForm(): void {
         if (form.isFieldsTouched()) {
             Modal.confirm({
-                content: "房间信息未保存，确定返回？",
+                content: t("back-tips"),
                 onOk() {
                     history.goBack();
                 },
