@@ -27,13 +27,13 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
                     {renderPeriodicRoomTips}
                 </Form.Item>
                 <Form.Item
-                    label="重复频率"
+                    label={t("frequency")}
                     name={["periodic", "weeks"]}
                     getValueFromEvent={onWeekSelected}
                 >
                     <WeekRateSelector onChange={onWeekRateChanged} />
                 </Form.Item>
-                <Form.Item label="结束重复">
+                <Form.Item label={t("end-series")}>
                     <Row gutter={16}>
                         <Col span={12}>
                             <Form.Item name={["periodic", "endType"]}>
@@ -57,23 +57,31 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
         );
 
         function renderPeriodicRoomTips(): React.ReactElement {
-            const { periodic, type: roomType }: Pick<EditRoomFormValues, "periodic" | "type"> =
-                form.getFieldsValue(["periodic", "type"]);
+            const {
+                periodic,
+                type: roomType,
+            }: Pick<EditRoomFormValues, "periodic" | "type"> = form.getFieldsValue([
+                "periodic",
+                "type",
+            ]);
             return (
                 <div className="edit-room-tips">
                     {periodic.weeks.length > 0 ? (
                         <div className="edit-room-tips-title">
-                            每{getWeekNames(periodic.weeks, lang)}
+                            {t("every-frequency", { freq: getWeekNames(periodic.weeks, lang) })}
                         </div>
                     ) : (
-                        <div>暂未选择频率</div>
+                        <div>{t("no-frequency-selected")}</div>
                     )}
                     <div className="edit-room-tips-type">
-                        房间类型：{t(`class-room-type.${roomType}`)}
+                        {t("roomtype")}
+                        {t(`class-room-type.${roomType}`)}
                     </div>
                     <div className="edit-room-tips-inner">
-                        结束于 {formatISODayWeekiii(periodic.endTime, lang)}
-                        ，共 {periodic.rate} 个房间
+                        {t("periodic-room-tip", {
+                            date: formatISODayWeekiii(periodic.endTime, lang),
+                            rate: periodic.rate,
+                        })}
                     </div>
                 </div>
             );
@@ -87,12 +95,12 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
                         {
                             type: "integer",
                             min: 1,
-                            message: "不能少于 1 个房间",
+                            message: t("no-less-than-one-room"),
                         },
                         {
                             type: "integer",
                             max: 50,
-                            message: "最多允许预定 50 个房间",
+                            message: t("maximum-of-50-rooms-allowed"),
                         },
                     ]}
                 >
@@ -123,24 +131,39 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
         }
 
         function onWeekRateChanged(weeks: Week[]): void {
-            const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
-                form.getFieldsValue(["beginTime", "periodic"]);
+            const {
+                beginTime,
+                periodic,
+            }: Pick<EditRoomFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
+                "beginTime",
+                "periodic",
+            ]);
             syncPeriodicEndAmount(form, beginTime, { ...periodic, weeks });
         }
 
         function onPeriodicRateChanged(value: string | number | undefined): void {
             const rate = Number(value);
             if (!Number.isNaN(rate)) {
-                const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
-                    form.getFieldsValue(["beginTime", "periodic"]);
+                const {
+                    beginTime,
+                    periodic,
+                }: Pick<EditRoomFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
+                    "beginTime",
+                    "periodic",
+                ]);
                 syncPeriodicEndAmount(form, beginTime, { ...periodic, rate });
             }
         }
 
         function onPeriodicEndTimeChanged(date: Date | null): void {
             if (date) {
-                const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
-                    form.getFieldsValue(["beginTime", "periodic"]);
+                const {
+                    beginTime,
+                    periodic,
+                }: Pick<EditRoomFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
+                    "beginTime",
+                    "periodic",
+                ]);
                 syncPeriodicEndAmount(form, beginTime, { ...periodic, endTime: date });
             }
         }
@@ -165,11 +188,13 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
                     ]);
 
                     if (periodic.rate > 50) {
-                        throw new Error("最多允许预定 50 个房间");
+                        throw new Error(t("maximum-of-50-rooms-allowed"));
                     }
 
                     if (isBefore(value, beginTime)) {
-                        throw new Error(`结束重复日期不能小于开始时间日期`);
+                        throw new Error(
+                            t("end-series-date-cannot-be-less-than-the-begin-time-date"),
+                        );
                     }
                 },
             };
