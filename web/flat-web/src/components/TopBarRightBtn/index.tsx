@@ -1,6 +1,8 @@
 import { TopBarRightBtn as TopBarRightBtnImpl } from "flat-components";
 import React, { ReactElement } from "react";
 
+const Icons = import.meta.globEager("./icons/*.svg");
+
 export interface TopBarRightBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     title: string;
     icon: string;
@@ -14,19 +16,14 @@ export function TopBarRightBtn({
     disabled,
     ...restProps
 }: TopBarRightBtnProps): ReactElement {
+    const src =
+        Icons[`./icons/${icon}${disabled ? "-disabled" : active ? "-active" : ""}.svg`].default;
     return (
         <TopBarRightBtnImpl
             {...restProps}
             title={title}
             disabled={disabled}
-            icon={
-                <img
-                    src={`/src/assets/image/${icon}${
-                        disabled ? "-disabled" : active ? "-active" : ""
-                    }.svg`}
-                    alt={title}
-                />
-            }
+            icon={<img src={src} alt={title} />}
         />
     );
 }
