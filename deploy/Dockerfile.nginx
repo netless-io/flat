@@ -2,6 +2,7 @@ FROM nginx
 
 WORKDIR /app
 COPY deploy/nginx.conf /etc/nginx/nginx.conf
+COPY deploy/nginx-mime.types /etc/nginx/nginx-mime.types
 
 COPY web/flat-web/dist /app
 
