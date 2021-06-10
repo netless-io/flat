@@ -1,4 +1,5 @@
 // TODO: remove this component when multi sub window is Done
+import cloudStorageSVG from "../assets/image/cloud-storage.svg";
 
 import { Modal } from "antd";
 import { TopBarRightBtn } from "flat-components";
@@ -27,7 +28,7 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
         <>
             <TopBarRightBtn
                 title="Open Cloud Storage"
-                icon={<img src="/src/assets/image/cloud-storage.svg" />}
+                icon={<img src={cloudStorageSVG} />}
                 onClick={showModal}
             />
             <Modal
