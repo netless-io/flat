@@ -9708,13 +9708,6 @@ html-minifier-terser@^5.0.1:
     relateurl "^0.2.7"
     terser "^4.6.3"
 
-html-parse-stringify2@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/html-parse-stringify2/-/html-parse-stringify2-2.0.1.tgz#dc5670b7292ca158b7bc916c9a6735ac8872834a"
-  integrity sha1-3FZwtyksoVi3vJFsmmc1rIhyg0o=
-  dependencies:
-    void-elements "^2.0.1"
-
 html-parse-stringify@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/html-parse-stringify/-/html-parse-stringify-3.0.1.tgz#dfc1017347ce9f77c8141a507f233040c59c55d2"
@@ -14862,14 +14855,6 @@ react-i18next@^11.10.0:
     "@babel/runtime" "^7.14.0"
     html-parse-stringify "^3.0.1"
 
-react-i18next@^11.8.4:
-  version "11.8.4"
-  resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-11.8.4.tgz#5407d2edcaa704c38e4034e7ac06413914ed6e6d"
-  integrity sha512-QlPJfX+Roi+jEQ6frBSsLHHH+VWbUoCl6wZDT8XHMd6PsSgepjgD2sZf/h7F46JnHeuy0U+SxY3TtrJF+aDIyg==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    html-parse-stringify2 "2.0.1"
-
 react-inspector@^5.0.1:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/react-inspector/-/react-inspector-5.1.0.tgz#45a325e15f33e595be5356ca2d3ceffb7d6b8c3a"
@@ -18198,11 +18183,6 @@ void-elements@3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
   integrity sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=
-
-void-elements@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
-  integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
 w-json@^1.3.5:
   version "1.3.10"
