@@ -1,3 +1,5 @@
+import inviteSVG from "../assets/image/invite.svg";
+
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { RoomItem } from "../stores/RoomStore";
@@ -15,7 +17,7 @@ export const InviteButton = observer<InviteButtonProps>(function InviteButton({ 
         <div>
             <TopBarRightBtn
                 title="Invite"
-                icon={<img src="/src/assets/image/invite.svg" />}
+                icon={<img src={inviteSVG} />}
                 onClick={() => showInviteModal(true)}
             />
             {roomInfo && (
