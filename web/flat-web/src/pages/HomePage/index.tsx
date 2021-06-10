@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { MainRoomMenu } from "./MainRoomMenu";
 import { MainRoomListPanel } from "./MainRoomListPanel";
@@ -14,6 +14,7 @@ export const HomePage = observer(function HomePage() {
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const pageStore = useContext(PageStoreContext);
+    const [loading, setLoading] = useState(true);
 
     (window as any).pageStore = pageStore;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,17 +37,15 @@ export const HomePage = observer(function HomePage() {
                 }
             }
 
-            // if (!isUnMount) {
-            //     updateLoginStatus(LoginStatusType.Success);
-            // }
-
             return nextPage;
         }
 
-        void Promise.all([checkLogin()]).then(([nextPage]) => {
+        void checkLogin().then(nextPage => {
             if (!isUnMount) {
                 if (nextPage !== RouteNameType.HomePage) {
                     pushHistory(nextPage);
+                } else {
+                    setLoading(false);
                 }
             }
         });
@@ -57,6 +56,10 @@ export const HomePage = observer(function HomePage() {
         // Only check login once on start
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    if (loading) {
+        return null;
+    }
 
     return (
         <div className="homepage-layout-horizontal-container">
