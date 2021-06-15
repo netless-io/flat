@@ -62,7 +62,7 @@
     "@types/webpack-env": "^1.15.2",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.24.0",
-    "agora-electron-sdk": "education290",
+    "agora-electron-sdk": "3.4.2-rc.1-build.609",
     "cross-env": "^7.0.3",
     "css-loader": "^5.2.4",
     "dotenv-flow": "^3.2.0",
