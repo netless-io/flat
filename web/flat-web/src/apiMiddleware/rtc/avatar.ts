@@ -146,7 +146,8 @@ export class RtcAvatar {
                 } else if (enable) {
                     const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
                     this.audioTrack = audioTrack;
-                    audioTrack.play();
+                    // NOTE: playing local audio track may cause echo
+                    // audioTrack.play();
                     await this.client.publish(audioTrack);
                 }
             } else {
