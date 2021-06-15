@@ -63,7 +63,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "agora-electron-sdk": "education290",
+    "agora-electron-sdk": "3.4.2-rc.1-build.609",
     "electron-updater": "^4.3.8",
     "flat-types": "^0.1.0",
     "fs-extra": "^9.0.1",
