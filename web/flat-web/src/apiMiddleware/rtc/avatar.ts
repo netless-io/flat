@@ -2,9 +2,8 @@ import type {
     IAgoraRTCClient,
     IAgoraRTCRemoteUser,
     ICameraVideoTrack,
+    ILocalTrack,
     IMicrophoneAudioTrack,
-    IRemoteAudioTrack,
-    IRemoteVideoTrack,
     ITrack,
 } from "agora-rtc-sdk-ng";
 import AgoraRTC from "agora-rtc-sdk-ng";
@@ -33,23 +32,12 @@ export class RtcAvatar {
     public videoTrack?: ITrack;
 
     private readonly isLocal: boolean;
-    private readonly remoteAudioTrack: Promise<IRemoteAudioTrack>;
-    private readonly remoteVideoTrack: Promise<IRemoteVideoTrack>;
-
-    private resolveRemoteAudioTrack?: (value: IRemoteAudioTrack) => void;
-    private resolveRemoteVideoTrack?: (value: IRemoteVideoTrack) => void;
 
     constructor({ rtc, userUUID, avatarUser }: RtcAvatarParams) {
         this.rtc = rtc;
         this.userUUID = userUUID;
         this.avatarUser = avatarUser;
         this.isLocal = userUUID === avatarUser.userUUID;
-        this.remoteAudioTrack = new Promise<IRemoteAudioTrack>(resolve => {
-            this.resolveRemoteAudioTrack = resolve;
-        });
-        this.remoteVideoTrack = new Promise<IRemoteVideoTrack>(resolve => {
-            this.resolveRemoteVideoTrack = resolve;
-        });
         if (!this.isLocal) {
             this.setupExistingTracks();
             this.client.on("user-published", this.onUserPublished);
@@ -65,34 +53,40 @@ export class RtcAvatar {
         if (exist) {
             if (exist.hasAudio) {
                 const audioTrack = await this.client.subscribe(exist, "audio");
-                this.resolveRemoteAudioTrack?.(audioTrack);
-                this.resolveRemoteAudioTrack = undefined;
+                audioTrack.play();
             }
             if (exist.hasVideo) {
                 const videoTrack = await this.client.subscribe(exist, "video");
-                this.resolveRemoteVideoTrack?.(videoTrack);
-                this.resolveRemoteVideoTrack = undefined;
+                this.element && videoTrack.play(this.element);
             }
         }
     }
 
-    public destroy(): void {
-        if (this.isLocal) {
-            const { audioTrack, videoTrack } = this;
-            if (audioTrack) {
-                this.audioTrack = undefined;
-                (audioTrack as IMicrophoneAudioTrack).close();
-            }
-            if (videoTrack) {
-                this.videoTrack = undefined;
-                (videoTrack as ICameraVideoTrack).close();
-            }
+    public async destroy(): Promise<void> {
+        const { audioTrack, videoTrack } = this;
+        const tracks: ITrack[] = [];
+        if (audioTrack) {
+            this.audioTrack = undefined;
+            tracks.push(audioTrack);
         }
-        if (!this.isLocal && this.client) {
+        if (videoTrack) {
+            this.videoTrack = undefined;
+            tracks.push(videoTrack);
+        }
+        if (this.isLocal) {
+            if (tracks.length > 0) {
+                try {
+                    await this.client.unpublish(tracks as ILocalTrack[]);
+                } catch (error) {
+                    console.info("unpublish failed", error);
+                }
+            }
+            for (const track of tracks) {
+                (track as ILocalTrack).close();
+            }
+        } else {
             this.client.off("user-published", this.onUserPublished);
         }
-        this.resolveRemoteAudioTrack = undefined;
-        this.resolveRemoteVideoTrack = undefined;
     }
 
     private onUserPublished = async (
@@ -100,13 +94,23 @@ export class RtcAvatar {
         mediaType: "video" | "audio",
     ): Promise<void> => {
         if (user.uid === this.avatarUser.rtcUID) {
+            if (mediaType === "audio") {
+                this.audioTrack?.stop();
+            } else {
+                this.videoTrack?.stop();
+            }
+            try {
+                await this.client.unsubscribe(user, mediaType);
+            } catch (error) {
+                console.info("unsubscribe failed", error);
+            }
             const track = await this.client.subscribe(user, mediaType);
             if (mediaType === "audio") {
-                this.resolveRemoteAudioTrack?.(track as IRemoteAudioTrack);
-                this.resolveRemoteAudioTrack = undefined;
+                this.audioTrack = track;
+                this.audioTrack.play();
             } else {
-                this.resolveRemoteVideoTrack?.(track as IRemoteVideoTrack);
-                this.resolveRemoteVideoTrack = undefined;
+                this.videoTrack = track;
+                this.element && this.videoTrack.play(this.element);
             }
         }
     };
@@ -116,20 +120,14 @@ export class RtcAvatar {
             if (this.isLocal) {
                 const videoTrack = this.videoTrack as ICameraVideoTrack | undefined;
                 if (videoTrack) {
-                    videoTrack.setEnabled(enable);
+                    await videoTrack.setEnabled(enable);
                 } else if (enable) {
                     const videoTrack = await AgoraRTC.createCameraVideoTrack({
                         encoderConfig: { width: 288, height: 216 },
                     });
                     this.videoTrack = videoTrack;
                     this.element && videoTrack.play(this.element);
-                    await this.client.publish([videoTrack]);
-                }
-            } else {
-                if (!this.videoTrack && enable) {
-                    const videoTrack = await this.remoteVideoTrack;
-                    this.videoTrack = videoTrack;
-                    this.element && videoTrack.play(this.element);
+                    await this.client.publish(videoTrack);
                 }
             }
         } catch (error) {
@@ -142,19 +140,13 @@ export class RtcAvatar {
             if (this.isLocal) {
                 const audioTrack = this.audioTrack as IMicrophoneAudioTrack | undefined;
                 if (audioTrack) {
-                    audioTrack.setEnabled(enable);
+                    await audioTrack.setEnabled(enable);
                 } else if (enable) {
                     const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
                     this.audioTrack = audioTrack;
-                    // NOTE: playing local audio track may cause echo
+                    // NOTE: playing local audio track causes echo
                     // audioTrack.play();
                     await this.client.publish(audioTrack);
-                }
-            } else {
-                if (!this.audioTrack && enable) {
-                    const audioTrack = await this.remoteAudioTrack;
-                    this.audioTrack = audioTrack;
-                    audioTrack.play();
                 }
             }
         } catch (error) {
@@ -162,5 +154,3 @@ export class RtcAvatar {
         }
     }
 }
-
-(window as any).RtcAvatar = RtcAvatar;
