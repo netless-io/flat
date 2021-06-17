@@ -14,6 +14,7 @@ import { globalStore } from "../../stores/GlobalStore";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { cancelPeriodicRoom, cancelPeriodicSubRoom } from "../../apiMiddleware/flatServer";
+import { INVITE_BASEURL } from "../../constants/Process";
 
 export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPage() {
     useWindowSize("Main");
@@ -138,6 +139,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
                 </div>
                 <div className="periodic-room-detail-page-panel-container fancy-scrollbar">
                     <PeriodicRoomPanel
+                        inviteBaseUrl={INVITE_BASEURL}
                         rooms={rooms}
                         userName={ownerUserName}
                         isCreator={isCreator}

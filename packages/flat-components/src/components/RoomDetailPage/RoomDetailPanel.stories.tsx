@@ -32,6 +32,7 @@ Overview.args = {
     roomInfo,
     room: roomInfo,
     userName: "Flat",
+    inviteBaseUrl: "https://flat-web.whiteboard.agora.io",
     periodicWeeks: [Week.Friday, Week.Sunday, Week.Wednesday],
     isCreator: true,
     isPeriodicDetailsPage: false,

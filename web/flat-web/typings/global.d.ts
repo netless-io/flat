@@ -29,6 +29,7 @@ interface ImportMetaEnv {
 
     WECHAT_APP_ID: string;
     FLAT_SERVER_DOMAIN: string;
+    FLAT_WEB_DOMAIN: string;
 
     CLOUD_RECORDING_DEFAULT_AVATAR?: string;
 }

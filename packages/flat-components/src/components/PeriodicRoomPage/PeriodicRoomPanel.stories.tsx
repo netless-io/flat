@@ -34,6 +34,7 @@ Overview.args = {
             };
         }),
     isCreator: true,
+    inviteBaseUrl: "https://flat-web.whiteboard.agora.io",
     periodicInfo: {
         weeks: [Week.Friday, Week.Sunday, Week.Wednesday],
         roomType: chance.pickone([RoomType.BigClass, RoomType.OneToOne, RoomType.SmallClass]),

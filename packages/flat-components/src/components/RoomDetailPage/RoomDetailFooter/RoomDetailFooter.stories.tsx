@@ -28,6 +28,7 @@ Overview.args = {
         beginTime: 1619771930756,
         endTime: 1619775530756,
     },
+    inviteBaseUrl: "https://flat-web.whiteboard.agora.io",
     periodicWeeks: [Week.Friday, Week.Saturday, Week.Sunday],
     isCreator: true,
     userName: "Flat",

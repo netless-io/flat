@@ -15,6 +15,7 @@ import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/joinRoomHandler";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { message } from "antd";
+import { INVITE_BASEURL } from "../../constants/Process";
 
 export const RoomDetailPage = observer(function RoomDetailPage() {
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
@@ -118,6 +119,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
         <div className="room-detail-page-container">
             <div className="room-detail-page-panel-container">
                 <RoomDetailPanel
+                    inviteBaseUrl={INVITE_BASEURL}
                     showRoomCountVisible={
                         periodicUUID ? roomInfo.roomStatus !== RoomStatus.Stopped : false
                     }

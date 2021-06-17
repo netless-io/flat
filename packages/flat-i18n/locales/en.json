@@ -98,7 +98,7 @@
   "invite-prefix": "{{userName}} invites you to join the Flat room\n\nRoom theme: {{title}}",
   "invite-suffix": "Room ID: {{uuid}}",
   "invite-title": "{{userName}} invite to join the FLAT room",
-  "join-link": "Join Link : https://flat-web.whiteboard.agora.io/join/{{uuid}}",
+  "join-link": "Join Link : {{link}}",
   "repeat-weeks": "Repeat period: {{weeks}}",
   "room-uuid": "Room ID",
   "room-theme": "Room theme",
