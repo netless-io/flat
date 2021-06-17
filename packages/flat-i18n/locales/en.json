@@ -164,7 +164,7 @@
   "upload": "Upload",
   "used-storage": "Used {{usage}}",
   "downloading": "Downloading",
-  "new-version-tips": "Found a new version {{version}}, please update to the latest version for a better product experience",
+  "new-version-tips": "Found a new version: {{version}}, please update to the latest version for a better product experience",
   "update-failed-tips": "Update failed, please reopen the program",
   "update-now": "Update immediately",
   "version-updates": "New version update"
