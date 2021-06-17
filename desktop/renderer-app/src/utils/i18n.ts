@@ -1,12 +1,12 @@
+import en from "flat-i18n/locales/en.json";
+import zhCN from "flat-i18n/locales/zh-CN.json";
 import i18next, { Resource } from "i18next";
 import I18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
-// import en from "flat-i18n/locales/en.json";
-import zhCN from "flat-i18n/locales/zh-CN.json";
 
 const messages: Resource = {
     // @TODO wait until en translation completes
-    // en: { translation: en },
+    en: { translation: en },
     "zh-CN": { translation: zhCN },
 };
 
@@ -14,9 +14,11 @@ void i18next
     .use(I18nextBrowserLanguageDetector)
     .use(initReactI18next)
     .init({
+        load: "currentOnly",
         debug: process.env.NODE_ENV === "development",
         resources: messages,
         fallbackLng: "zh-CN",
+        supportedLngs: ["zh-CN", "en"],
         interpolation: {
             escapeValue: false, // react already safes from xss
         },

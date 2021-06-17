@@ -15,6 +15,7 @@ void i18next
     .init({
         resources: messages,
         fallbackLng: "en",
+        supportedLngs: ["zh-CN", "en"],
         interpolation: {
             escapeValue: false, // react already safes from xss
         },
