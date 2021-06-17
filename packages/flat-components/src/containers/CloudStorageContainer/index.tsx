@@ -9,6 +9,7 @@ import { CloudStorageUploadPanel } from "../../components/CloudStorage";
 import { CloudStorageUploadListContainer } from "./CloudStorageUploadListContainer";
 import { CloudStorageFileListContainer } from "./CloudStorageFileListContainer";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 
 export * from "./store";
 
@@ -20,6 +21,7 @@ export interface CloudStorageContainerProps {
 /** CloudStorage page with MobX Store */
 export const CloudStorageContainer = observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store }) {
+        const { t } = useTranslation();
         const containerBtns = (
             <div className="cloud-storage-container-btns">
                 <Button
@@ -27,26 +29,30 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                     onClick={store.onBatchDelete}
                     disabled={store.selectedFileUUIDs.length <= 0}
                 >
-                    删除
+                    {t("delete")}
                 </Button>
                 <Button type="primary" onClick={store.onUpload}>
-                    上传
+                    {t("upload")}
                 </Button>
             </div>
         );
+
+        (window as any).aaa = store;
 
         return (
             <div className="cloud-storage-container">
                 {!store.compact && (
                     <div className="cloud-storage-container-head">
                         <div>
-                            <h1 className="cloud-storage-container-title">我的云盘</h1>
+                            <h1 className="cloud-storage-container-title">{t("my-cloud ")}</h1>
                             <small
                                 className={classNames("cloud-storage-container-subtitle", {
                                     "is-hide": !store.totalUsage,
                                 })}
                             >
-                                {store.totalUsageHR ? `已使用 ${store.totalUsageHR}` : "-"}
+                                {store.totalUsageHR
+                                    ? t("used-storage", { usage: store.totalUsageHR })
+                                    : "-"}
                             </small>
                         </div>
                         {containerBtns}
