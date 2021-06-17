@@ -8,11 +8,13 @@ import { githubLogin } from "./githubLogin";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { WeChatLogin } from "./WeChatLogin";
+import { joinRoomHandler } from "../utils/joinRoomHandler";
 
 export const LoginPage = observer(function LoginPage() {
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const loginDisposer = useRef<LoginDisposer>();
+    const roomUUID = sessionStorage.getItem("roomUUID");
 
     useEffect(() => {
         return () => {
@@ -20,6 +22,7 @@ export const LoginPage = observer(function LoginPage() {
                 loginDisposer.current();
                 loginDisposer.current = void 0;
             }
+            sessionStorage.clear();
         };
     }, []);
 
@@ -31,9 +34,13 @@ export const LoginPage = observer(function LoginPage() {
 
         switch (loginChannel) {
             case "github": {
-                loginDisposer.current = githubLogin(authData => {
+                loginDisposer.current = githubLogin(async authData => {
                     globalStore.updateUserInfo(authData);
-                    pushHistory(RouteNameType.HomePage);
+                    if (roomUUID) {
+                        await joinRoomHandler(roomUUID, pushHistory);
+                    } else {
+                        pushHistory(RouteNameType.HomePage);
+                    }
                 });
                 return;
             }
