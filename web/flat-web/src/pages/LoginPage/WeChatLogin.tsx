@@ -13,6 +13,7 @@ import { WECHAT } from "../../constants/Process";
 import { RouteNameType } from "../../route-config";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { usePushHistory } from "../../utils/routes";
+import { joinRoomHandler } from "../utils/joinRoomHandler";
 
 export const WeChatLogin = observer(function WeChatLogin() {
     const globalStore = useContext(GlobalStoreContext);
@@ -20,6 +21,7 @@ export const WeChatLogin = observer(function WeChatLogin() {
     const [authData, setAuthData] = useState<UserInfo | null>(null);
     const pushHistory = usePushHistory();
     const sp = useSafePromise();
+    const roomUUID = sessionStorage.getItem("roomUUID");
 
     useEffect(() => {
         const authUUID = uuidv4();
@@ -51,11 +53,19 @@ export const WeChatLogin = observer(function WeChatLogin() {
     }, []);
 
     useEffect(() => {
-        if (authData) {
-            globalStore.updateUserInfo(authData);
-            pushHistory(RouteNameType.HomePage);
-        }
-    }, [authData, globalStore, pushHistory]);
+        const loginJump = async (): Promise<void> => {
+            if (authData) {
+                globalStore.updateUserInfo(authData);
+                if (roomUUID) {
+                    await joinRoomHandler(roomUUID, pushHistory);
+                } else {
+                    pushHistory(RouteNameType.HomePage);
+                }
+            }
+        };
+
+        loginJump();
+    }, [authData, globalStore, pushHistory, roomUUID]);
 
     return (
         <div className="wechat-login-container">

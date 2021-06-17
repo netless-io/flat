@@ -91,4 +91,8 @@ export const routePages: RoutePages = {
         hasHeader: true,
         component: () => import("../pages/CloudStoragePage"),
     },
+    [RouteNameType.JoinPage]: {
+        title: "JoinPage",
+        component: () => import("../pages/JoinPage"),
+    },
 };

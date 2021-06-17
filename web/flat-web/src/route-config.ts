@@ -15,6 +15,7 @@ export enum RouteNameType {
     HotKeySettingPage = "HotKeySettingPage",
     AboutPage = "AboutPage",
     CloudStoragePage = "CloudStoragePage",
+    JoinPage = "JoinPage",
 }
 
 export const routeConfig = {
@@ -77,6 +78,9 @@ export const routeConfig = {
     },
     [RouteNameType.ReplayPage]: {
         path: "/replay/:roomType/:roomUUID/:ownerUUID/",
+    },
+    [RouteNameType.JoinPage]: {
+        path: "/join/:roomUUID/",
     },
 } as const;
 
