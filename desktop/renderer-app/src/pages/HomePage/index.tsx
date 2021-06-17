@@ -1,26 +1,28 @@
-import "./HomePage.less";
-
-import React, { useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
-import { ipcAsyncByMainWindow, ipcSyncByApp } from "../../utils/ipc";
-import { MainRoomMenu } from "./MainRoomMenu";
-import { MainRoomListPanel } from "./MainRoomListPanel";
-import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
-import { useLastLocation } from "react-router-last-location";
-import { shouldWindowCenter } from "./utils";
-import { constants } from "flat-types";
-import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
-import { AppUpgradeModal } from "../../components/AppUpgradeModal";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
-import { runtime } from "../../utils/runtime";
-import { globalStore } from "../../stores/GlobalStore";
 import { differenceInHours } from "date-fns";
+import { constants } from "flat-types";
+import { observer } from "mobx-react-lite";
+import React, { useEffect, useState } from "react";
+import { useLastLocation } from "react-router-last-location";
+import { AppUpgradeModal } from "../../components/AppUpgradeModal";
+import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
+import { globalStore } from "../../stores/GlobalStore";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove, ipcSyncByApp } from "../../utils/ipc";
+import { usePushHistory } from "../../utils/routes";
+import { runtime } from "../../utils/runtime";
+import { joinRoomHandler } from "../utils/joinRoomHandler";
+import "./HomePage.less";
+import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
+import { MainRoomListPanel } from "./MainRoomListPanel";
+import { MainRoomMenu } from "./MainRoomMenu";
+import { shouldWindowCenter } from "./utils";
 
 export type HomePageProps = {};
 
 export const HomePage = observer<HomePageProps>(function HomePage() {
     const lastLocation = useLastLocation();
     const [newVersion, setNewVersion] = useState<string>();
+    const pushHistory = usePushHistory();
     const sp = useSafePromise();
 
     useEffect(() => {
@@ -29,6 +31,16 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
             autoCenter: shouldWindowCenter(lastLocation?.pathname),
         });
     }, [lastLocation]);
+
+    useEffect(() => {
+        ipcReceive("join-room", ({ roomUUID }) => {
+            void joinRoomHandler(roomUUID, pushHistory);
+        });
+
+        return () => {
+            ipcReceiveRemove("join-room");
+        };
+    }, [pushHistory]);
 
     useEffect(() => {
         // check for updates only here
