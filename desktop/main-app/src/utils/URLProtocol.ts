@@ -1,31 +1,17 @@
 import { app } from "electron";
-import closeAPP from "./CloseAPP";
 import runtime from "./Runtime";
+import closeAPP from "./CloseAPP";
 import { windowManager } from "./WindowManager";
 
 const actionHandler = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    active(_arg: URLSearchParams) {
+    active: (_arg: URLSearchParams) => {
         const mainWindow = windowManager.getMainWindow()?.window;
         if (mainWindow) {
             if (mainWindow.isMinimized()) {
                 mainWindow.restore();
             }
             mainWindow.focus();
-        }
-    },
-
-    open(arg: URLSearchParams) {
-        const mainWindow = windowManager.getMainWindow()?.window;
-        if (mainWindow) {
-            if (mainWindow.isMinimized()) {
-                mainWindow.restore();
-            }
-            mainWindow.focus();
-            // x-agora-flat-client://open?join=room-uuid
-            if (arg.has("join")) {
-                mainWindow.webContents.send("join-room", { roomUUID: arg.get("join") });
-            }
         }
     },
 };
@@ -68,9 +54,6 @@ const win = () => {
     });
 };
 
-const actions = ["active", "open"] as const;
-type Actions = typeof actions[number];
-
 const parseURL = (
     url: string,
 ): {
@@ -95,3 +78,6 @@ const parseURL = (
 };
 
 export const URLProtocol = runtime.isMac ? mac : win;
+
+const actions = ["active"] as const;
+type Actions = typeof actions[number];
