@@ -50,7 +50,8 @@ export const InviteModal: React.FC<InviteModalProps> = ({
         const basePrefixText =
             t("invite-prefix", { userName, title }) +
             (formattedTimeRange ? t("invite-begin-time", { time: formattedTimeRange }) : "");
-        const baseSuffixText = "\n" + t("invite-suffix", { uuid });
+        const baseSuffixText =
+            "\n" + t("invite-suffix", { uuid }) + "\n" + t("join-link", { uuid });
 
         if (periodicUUID) {
             const content = periodicWeeks
