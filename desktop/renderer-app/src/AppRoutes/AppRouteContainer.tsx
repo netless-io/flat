@@ -1,6 +1,6 @@
+import { ErrorPage } from "flat-components";
 import React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { ErrorPage } from "flat-components";
 import { ipcAsyncByMainWindow } from "../utils/ipc";
 
 export interface AppRouteContainerProps {
