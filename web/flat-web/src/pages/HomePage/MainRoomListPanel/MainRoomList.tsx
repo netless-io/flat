@@ -22,6 +22,7 @@ import { RoomItem } from "../../../stores/RoomStore";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
 import { joinRoomHandler } from "../../utils/joinRoomHandler";
+import { INVITE_BASEURL } from "../../../constants/Process";
 
 export interface MainRoomListProps {
     listRoomsType: ListRoomsType;
@@ -182,6 +183,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
             )}
             {currentRoom && (
                 <InviteModal
+                    baseUrl={INVITE_BASEURL}
                     visible={inviteModalVisible}
                     room={currentRoom}
                     userName={globalStore.userName ?? ""}

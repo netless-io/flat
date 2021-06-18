@@ -9,6 +9,7 @@ import { CancelSubPeriodicRoomModal } from "./CancelSubPeriodicRoomModal";
 export interface MoreMenuProps {
     room: RoomInfo;
     userName: string;
+    inviteBaseUrl: string;
     isCreator: boolean;
     onCopyInvitation: (text: string) => void;
     onCancelSubPeriodicRoom: () => void;
@@ -19,6 +20,7 @@ export interface MoreMenuProps {
 export const MoreMenu: React.FC<MoreMenuProps> = ({
     room,
     userName,
+    inviteBaseUrl,
     isCreator,
     onCopyInvitation,
     onCancelSubPeriodicRoom,
@@ -54,6 +56,7 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
                         <InviteModal
                             visible={inviteRoomVisible}
                             room={room}
+                            baseUrl={inviteBaseUrl}
                             userName={userName}
                             onCopy={text => {
                                 onCopyInvitation(text);

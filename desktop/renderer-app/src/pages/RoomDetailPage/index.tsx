@@ -14,6 +14,7 @@ import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/joinRoomHandler";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { message } from "antd";
+import { INVITE_BASEURL } from "../../constants/Process";
 
 export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
     useWindowSize("Main");
@@ -131,6 +132,7 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
             </div>
             <div className="room-detail-page-container">
                 <RoomDetailPanel
+                    inviteBaseUrl={INVITE_BASEURL}
                     roomInfo={roomInfo}
                     room={roomInfo}
                     userName={roomInfo.ownerUserName || ""}

@@ -16,6 +16,7 @@ export interface PeriodicRoomPanelProps {
     rooms: (RoomInfo | undefined)[];
     userName: string;
     isCreator: boolean;
+    inviteBaseUrl: string;
     periodicInfo: {
         weeks: Week[];
         roomType: RoomType;
@@ -32,6 +33,7 @@ export interface PeriodicRoomPanelProps {
 export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
     rooms,
     userName,
+    inviteBaseUrl,
     isCreator,
     periodicInfo,
     onCopyInvitation,
@@ -121,6 +123,7 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                             render={(_, room: RoomInfo) => {
                                 return (
                                     <MoreMenu
+                                        inviteBaseUrl={inviteBaseUrl}
                                         room={room}
                                         userName={userName}
                                         isCreator={isCreator}

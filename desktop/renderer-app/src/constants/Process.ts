@@ -23,3 +23,6 @@ export const GITHUB = Object.freeze({
 });
 
 export const FLAT_SERVER_DOMAIN = process.env.FLAT_SERVER_DOMAIN;
+export const FLAT_WEB_DOMAIN = process.env.FLAT_WEB_DOMAIN;
+
+export const INVITE_BASEURL = `https://${FLAT_WEB_DOMAIN}`;

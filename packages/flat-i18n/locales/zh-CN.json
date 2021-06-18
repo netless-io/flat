@@ -97,7 +97,7 @@
   "invite-prefix": "{{userName}} 邀请你加入 Flat 房间\n房间主题：{{title}}\n",
   "invite-begin-time": "开始时间：{{time}}\n",
   "invite-suffix": "房间号： {{uuid}}",
-  "join-link": "加入链接: https://flat-web.whiteboard.agora.io/join/{{uuid}}",
+  "join-link": "加入链接: {{link}}",
   "repeat-weeks": "重复周期：{{weeks}}",
   "invite-title": "{{userName}} 邀请加入 FLAT 房间",
   "join-and-book-by-room-uuid": "可通过房间号加入和预约",

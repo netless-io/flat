@@ -27,6 +27,7 @@ Overview.args = {
         beginTime: 1619771930756,
         endTime: 1619775530756,
     },
+    baseUrl: "https://flat-web.whiteboard.agora.io/join/34513345f235",
     userName: "Flat",
     onCopy: () => {
         message.success("复制成功");

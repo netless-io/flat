@@ -7,6 +7,7 @@ import { InviteModal as InviteModalImpl } from "flat-components";
 import { RoomItem } from "../../stores/RoomStore";
 import { GlobalStoreContext, RoomStoreContext } from "../StoreProvider";
 import { errorTips } from "../Tips/ErrorTips";
+import { INVITE_BASEURL } from "../../constants/Process";
 
 export interface InviteModalProps {
     visible: boolean;
@@ -45,6 +46,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
 
     return (
         <InviteModalImpl
+            baseUrl={INVITE_BASEURL}
             visible={visible}
             room={room}
             userName={globalStore.userName ?? ""}

@@ -14,6 +14,7 @@ export interface InviteModalProps {
     visible: boolean;
     room: RoomInfo;
     userName: string;
+    baseUrl: string;
     // repeated weeks for periodic rooms
     periodicWeeks?: Week[];
     onCopy: (text: string) => void;
@@ -25,6 +26,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     room,
     periodicWeeks,
     userName,
+    baseUrl,
     onCopy,
     onCancel,
 }) => {
@@ -51,7 +53,10 @@ export const InviteModal: React.FC<InviteModalProps> = ({
             t("invite-prefix", { userName, title }) +
             (formattedTimeRange ? t("invite-begin-time", { time: formattedTimeRange }) : "");
         const baseSuffixText =
-            "\n" + t("invite-suffix", { uuid }) + "\n" + t("join-link", { uuid });
+            "\n" +
+            t("invite-suffix", { uuid }) +
+            "\n" +
+            t("join-link", { link: `${baseUrl}/join/${uuid}` });
 
         if (periodicUUID) {
             const content = periodicWeeks
