@@ -1,5 +1,6 @@
 import loadable from "@loadable/component";
 import React, { ComponentType, FC, useContext, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { PageStoreContext } from "../components/StoreProvider";
@@ -20,17 +21,18 @@ export const AppRouteContainer: FC<AppRouteContainerProps> = ({
     routeProps,
 }) => {
     const pageStore = useContext(PageStoreContext);
+    const { t } = useTranslation();
 
     useIsomorphicLayoutEffect(() => {
         pageStore.setName(name);
     }, [name, pageStore]);
 
     useEffect(() => {
-        document.title = title;
+        document.title = t("title-" + title);
 
         // clear selection
         window.getSelection()?.removeAllRanges();
-    }, [title]);
+    }, [t, title]);
 
     return <AppRouteErrorBoundary Comp={loadable(Comp)} {...{ title, routeProps }} />;
 };

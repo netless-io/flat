@@ -17,11 +17,11 @@ export type RoutePages = {
  */
 export const routePages: RoutePages = {
     [RouteNameType.LoginPage]: {
-        title: "Flat Login",
+        title: "LoginPage",
         component: () => import("../pages/LoginPage"),
     },
     [RouteNameType.HomePage]: {
-        title: "Flat",
+        title: "HomePage",
         hasHeader: true,
         component: () => import("../pages/HomePage"),
     },
