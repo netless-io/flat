@@ -41,6 +41,7 @@
   "current-status": "当前状态：",
   "current-mode": "当前模式：",
   "the-room-has-ended-and-is-about-to-exit": "房间已结束，即将退出...",
+  "you-have-entered-the-room-at-another-device": "你已在另外一台设备进入房间",
   "teacher-left-temporarily": "老师暂时离开",
   "student-left-temporarily": "学生暂时离开",
   "signal-text": "上行：{{up}}，下行：{{down}}",

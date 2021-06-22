@@ -58,6 +58,7 @@
   "teacher-left-temporarily": "Teacher has left",
   "student-left-temporarily": "Student has left",
   "the-room-has-ended-and-is-about-to-exit": "The room has ended and is about to exit...",
+  "you-have-entered-the-room-at-another-device": "You have entered the room at another device",
   "class-picker-text": {
     "BigClass": "Suitable for 1 teacher for a large number of students",
     "OneToOne": "Suitable for 1 teacher and 1 student",

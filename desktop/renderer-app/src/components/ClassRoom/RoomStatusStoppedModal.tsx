@@ -6,6 +6,7 @@ import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 export interface RoomStatusStoppedModalProps {
     isCreator: boolean;
+    isRemoteLogin: boolean;
     roomStatus: RoomStatus;
 }
 
@@ -13,14 +14,21 @@ export interface RoomStatusStoppedModalProps {
  * Show an info modal on joiner side when room status becomes stopped
  */
 export const RoomStatusStoppedModal = observer<RoomStatusStoppedModalProps>(
-    function RoomStatusStoppedModal({ isCreator, roomStatus }) {
+    function RoomStatusStoppedModal({ isCreator, isRemoteLogin, roomStatus }) {
         const pushHistory = usePushHistory();
 
         const onExit = useCallback(() => {
             pushHistory(RouteNameType.HomePage);
         }, [pushHistory]);
 
-        return <RoomStoppedModal isCreator={isCreator} roomStatus={roomStatus} onExit={onExit} />;
+        return (
+            <RoomStoppedModal
+                isCreator={isCreator}
+                isRemoteLogin={isRemoteLogin}
+                roomStatus={roomStatus}
+                onExit={onExit}
+            />
+        );
     },
 );
 

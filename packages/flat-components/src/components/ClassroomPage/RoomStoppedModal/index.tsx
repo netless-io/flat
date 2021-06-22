@@ -5,6 +5,7 @@ import { RoomStatus } from "../../../types/room";
 
 export interface RoomStoppedModalProps {
     isCreator: boolean;
+    isRemoteLogin: boolean;
     roomStatus: RoomStatus;
     onExit: () => void;
 }
@@ -14,10 +15,21 @@ export interface RoomStoppedModalProps {
  *
  * **Note**: be sure to use `useCallback` when passing the `onExit` prop.
  */
-export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({ isCreator, roomStatus, onExit }) => {
+export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({
+    isCreator,
+    isRemoteLogin,
+    roomStatus,
+    onExit,
+}) => {
     const modalRef = useRef<ReturnType<typeof Modal.info>>();
     const [visible, setVisible] = useState(false);
     const { t } = useTranslation();
+
+    useEffect(() => {
+        if (isRemoteLogin) {
+            setVisible(true);
+        }
+    }, [isRemoteLogin]);
 
     useEffect(() => {
         if (roomStatus === RoomStatus.Stopped) {
@@ -34,12 +46,16 @@ export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({ isCreator, roomSta
 
         if (visible) {
             let countdown = 5;
+
             modalRef.current = Modal.info({
-                title: t("the-room-has-ended-and-is-about-to-exit"),
+                title: isRemoteLogin
+                    ? t("you-have-entered-the-room-at-another-device")
+                    : t("the-room-has-ended-and-is-about-to-exit"),
                 okText: t("got-it-countdown", { countdown }),
                 onOk: onExit,
                 onCancel: onExit,
             });
+
             ticket = window.setInterval(() => {
                 modalRef.current?.update({
                     okText: t("got-it-countdown", { countdown: --countdown }),
@@ -55,7 +71,7 @@ export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({ isCreator, roomSta
             window.clearInterval(ticket);
             modalRef.current?.destroy();
         };
-    }, [visible, onExit, t]);
+    }, [visible, onExit, t, isRemoteLogin]);
 
     return null;
 };

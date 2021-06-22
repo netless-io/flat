@@ -179,6 +179,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
             <RoomStatusStoppedModal
                 isCreator={classRoomStore.isCreator}
+                isRemoteLogin={classRoomStore.isRemoteLogin}
                 roomStatus={classRoomStore.roomStatus}
             />
         </div>
