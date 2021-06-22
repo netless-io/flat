@@ -23,6 +23,7 @@ export const AppRoutes: React.FC = () => {
                                     render={routeProps => {
                                         return (
                                             <AppRouteContainer
+                                                key={routeProps.location.pathname}
                                                 name={name}
                                                 Comp={component}
                                                 title={title}

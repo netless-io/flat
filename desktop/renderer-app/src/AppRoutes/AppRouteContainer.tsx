@@ -1,7 +1,9 @@
-import { ErrorPage } from "flat-components";
-import React from "react";
+import React, { FC } from "react";
+import { useIsomorphicLayoutEffect } from "react-use";
 import { RouteComponentProps } from "react-router-dom";
 import { ipcAsyncByMainWindow } from "../utils/ipc";
+import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
+import { useURLAppLauncher } from "../utils/hooks/useURLAppLauncher";
 
 export interface AppRouteContainerProps {
     Comp: React.ComponentType<any>;
@@ -9,26 +11,12 @@ export interface AppRouteContainerProps {
     routeProps: RouteComponentProps;
 }
 
-export interface AppRouteContainerState {
-    hasError: boolean;
-}
+export const AppRouteContainer: FC<AppRouteContainerProps> = ({ Comp, title, routeProps }) => {
+    useURLAppLauncher();
 
-export class AppRouteContainer extends React.Component<
-    AppRouteContainerProps,
-    AppRouteContainerState
-> {
-    public constructor(props: AppRouteContainerProps) {
-        super(props);
-        this.state = { hasError: false };
-    }
-
-    public static getDerivedStateFromError(): Partial<AppRouteContainerState> {
-        return { hasError: true };
-    }
-
-    public componentDidMount(): void {
-        const { Comp, title } = this.props;
+    useIsomorphicLayoutEffect(() => {
         const compName = Comp.displayName || Comp.name;
+        // @TODO i18n
         document.title =
             title + (process.env.NODE_ENV === "development" && compName ? ` (${compName})` : "");
         ipcAsyncByMainWindow("set-title", {
@@ -37,21 +25,9 @@ export class AppRouteContainer extends React.Component<
 
         // clear selection
         window.getSelection()?.removeAllRanges();
-    }
+    }, []);
 
-    public componentDidCatch(error: any, errorInfo: any): void {
-        console.error(error, errorInfo);
-    }
-
-    public render(): React.ReactNode {
-        if (this.state.hasError) {
-            return <ErrorPage />;
-        }
-
-        const { Comp, routeProps } = this.props;
-
-        return <Comp {...routeProps} />;
-    }
-}
+    return <AppRouteErrorBoundary Comp={Comp} {...{ title, routeProps }} />;
+};
 
 export default AppRouteContainer;

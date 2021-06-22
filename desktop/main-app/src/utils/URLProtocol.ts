@@ -3,18 +3,39 @@ import runtime from "./Runtime";
 import closeAPP from "./CloseAPP";
 import { windowManager } from "./WindowManager";
 
-const actionHandler = {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    active: (_arg: URLSearchParams) => {
+class ActionHandler {
+    public active() {
+        this.activeWindow();
+    }
+
+    public joinRoom(args: URLSearchParams): void {
+        this.activeWindow();
+        if (args.has("roomUUID")) {
+            const innerWindow = windowManager.getMainWindow();
+            if (innerWindow) {
+                const mainWindow = windowManager.getMainWindow()?.window;
+                void innerWindow.didFinishLoad.then(() => {
+                    mainWindow?.webContents.send("request-join-room", {
+                        roomUUID: args.get("roomUUID"),
+                    });
+                });
+            }
+        }
+    }
+
+    private activeWindow() {
         const mainWindow = windowManager.getMainWindow()?.window;
+
         if (mainWindow) {
             if (mainWindow.isMinimized()) {
                 mainWindow.restore();
             }
             mainWindow.focus();
         }
-    },
-};
+    }
+}
+
+const actionHandler = new ActionHandler();
 
 const mac = () => {
     app.on("open-url", (event, url) => {
@@ -79,5 +100,5 @@ const parseURL = (
 
 export const URLProtocol = runtime.isMac ? mac : win;
 
-const actions = ["active"] as const;
+const actions = ["active", "joinRoom"] as const;
 type Actions = typeof actions[number];

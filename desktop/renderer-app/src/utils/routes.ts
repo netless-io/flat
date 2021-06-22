@@ -41,15 +41,16 @@ export function generateRoutePath<T extends RouteNameType>(
 /**
  * Push history with Flat route
  */
-export function usePushHistory(): <T extends RouteNameType>(
+export function usePushHistory(): <T extends RouteNameType, S>(
     name: T,
     params?: RouteParams<T>,
+    state?: S,
 ) => void {
     const history = useHistory();
 
     const pushHistory = useCallback(
-        (name: RouteNameType, params: RouteParams<RouteNameType> = {}) => {
-            history.push(generateRoutePath(name, params));
+        <S>(name: RouteNameType, params: RouteParams<RouteNameType> = {}, state: S) => {
+            history.push(generateRoutePath(name, params), state);
         },
         [history],
     );
