@@ -139,6 +139,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
             <RoomStatusStoppedModal
                 isCreator={classRoomStore.isCreator}
+                isRemoteLogin={classRoomStore.isRemoteLogin}
                 roomStatus={classRoomStore.roomStatus}
             />
         </div>

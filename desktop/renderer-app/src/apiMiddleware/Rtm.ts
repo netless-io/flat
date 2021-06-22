@@ -83,6 +83,8 @@ export enum RTMessageType {
     RequestChannelStatus = "RequestChannelStatus",
     /** send room's status */
     ChannelStatus = "ChannelStatus",
+    /** user login on other device */
+    REMOTE_LOGIN = "REMOTE_LOGIN",
 }
 
 export type RTMEvents = {
@@ -123,6 +125,7 @@ export type RTMEvents = {
                 | ""}${NonDefaultUserProp | ""}`;
         };
     };
+    [RTMessageType.REMOTE_LOGIN]: void;
 };
 
 export interface RTMessage<U extends keyof RTMEvents = keyof RTMEvents> {
@@ -171,6 +174,9 @@ export class Rtm extends EventEmitter {
             await this.client.renewToken(this.token);
         });
         this.client.on("ConnectionStateChanged", (newState, reason) => {
+            if (reason === "REMOTE_LOGIN") {
+                this.emit(RTMessageType.REMOTE_LOGIN);
+            }
             console.log("RTM client state: ", newState, reason);
         });
         this.client.on("MessageFromPeer", (msg, senderId) => {

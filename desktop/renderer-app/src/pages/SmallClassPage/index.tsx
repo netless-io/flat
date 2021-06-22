@@ -161,6 +161,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
             <RoomStatusStoppedModal
                 isCreator={classRoomStore.isCreator}
+                isRemoteLogin={classRoomStore.isRemoteLogin}
                 roomStatus={classRoomStore.roomStatus}
             />
         </div>

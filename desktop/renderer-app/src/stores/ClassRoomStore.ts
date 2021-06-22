@@ -68,6 +68,8 @@ export class ClassRoomStore {
     public isRecording = false;
     /** is RTC on */
     public isCalling = false;
+    /** is user login on other device */
+    public isRemoteLogin = false;
 
     public roomStatusLoading = RoomStatusLoadingType.Null;
 
@@ -147,6 +149,12 @@ export class ClassRoomStore {
                     this.roomStatusOverride = RoomStatus.Stopped;
                 });
             }
+        });
+
+        this.rtm.once(RTMessageType.REMOTE_LOGIN, () => {
+            runInAction(() => {
+                this.isRemoteLogin = true;
+            });
         });
     }
 
