@@ -103,6 +103,9 @@ export class ClassRoomStore {
 
     private _collectChannelStatusTimeout?: number;
 
+    /** preserve creator state before pausing class */
+    private _userDeviceStatePrePause?: { mic: boolean; camera: boolean } | null;
+
     public constructor(config: {
         roomUUID: string;
         ownerUUID: string;
@@ -124,12 +127,16 @@ export class ClassRoomStore {
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
 
-        makeAutoObservable<this, "_noMoreRemoteMessages" | "_collectChannelStatusTimeout">(this, {
+        makeAutoObservable<
+            this,
+            "_noMoreRemoteMessages" | "_collectChannelStatusTimeout" | "_userDeviceStatePrePause"
+        >(this, {
             rtc: observable.ref,
             rtm: observable.ref,
             cloudRecording: observable.ref,
             _noMoreRemoteMessages: false,
             _collectChannelStatusTimeout: false,
+            _userDeviceStatePrePause: false,
         });
 
         this.users = new UserStore({
@@ -553,10 +560,27 @@ export class ClassRoomStore {
                 case RoomStatus.Started: {
                     this.updateRoomStatusLoading(RoomStatusLoadingType.Starting);
                     await startClass(this.roomUUID);
+                    if (this.isCreator && this._userDeviceStatePrePause) {
+                        const user = this.users.currentUser;
+                        if (user) {
+                            const { mic, camera } = this._userDeviceStatePrePause;
+                            this.updateDeviceState(
+                                this.userUUID,
+                                user.camera || camera,
+                                user.mic || mic,
+                            );
+                        }
+                        this._userDeviceStatePrePause = null;
+                    }
                     break;
                 }
                 case RoomStatus.Paused: {
                     if (this.isCreator) {
+                        const user = this.users.currentUser;
+                        this._userDeviceStatePrePause = user && {
+                            mic: user.mic,
+                            camera: user.camera,
+                        };
                         this.updateDeviceState(this.userUUID, false, false);
                     }
                     this.updateRoomStatusLoading(RoomStatusLoadingType.Pausing);
