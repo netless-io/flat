@@ -9,6 +9,7 @@ import {
     FileUUID,
     UploadID,
 } from "flat-components";
+import { i18n } from "i18next";
 import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
 import React, { ReactNode } from "react";
 import {
@@ -44,17 +45,22 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     // a set of taskUUIDs representing querying tasks
     private _convertStatusQuerying = new Map<FileUUID, number>();
 
+    private i18n: i18n;
+
     public constructor({
         compact,
         insertCourseware,
+        i18n,
     }: {
         compact: boolean;
         insertCourseware: (file: CloudStorageFile) => void;
+        i18n: i18n;
     }) {
         super();
 
         this.insertCourseware = insertCourseware;
         this.compact = compact;
+        this.i18n = i18n;
 
         makeObservable(this, {
             filesMap: observable,
@@ -103,11 +109,14 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         file: CloudStorageFileUI,
     ): Array<{ key: React.Key; name: React.ReactNode }> => {
         const menus: Array<{ key: FileMenusKey; name: ReactNode }> = [];
-        menus.push({ key: "download", name: "下载" });
+        menus.push({ key: "download", name: this.i18n.t("download") });
         if (file.convert !== "error") {
-            menus.push({ key: "rename", name: "重命名" });
+            menus.push({ key: "rename", name: this.i18n.t("rename") });
         }
-        menus.push({ key: "delete", name: <span style={{ color: "red" }}>删除</span> });
+        menus.push({
+            key: "delete",
+            name: <span style={{ color: "red" }}>{this.i18n.t("delete")}</span>,
+        });
         return menus;
     };
 
@@ -124,7 +133,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             }
             case "delete": {
                 Modal.confirm({
-                    content: "确定删除该课件？课件删除后不可恢复",
+                    content: this.i18n.t("delete-courseware-tips"),
                     onOk: () => this.removeFiles([fileUUID]),
                 });
                 break;
@@ -142,12 +151,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             try {
                 if (this.compact) {
                     if (file.convert === "error") {
-                        Modal.info({ content: "转码失败，该课件无法转码" });
+                        Modal.info({ content: this.i18n.t("the-courseware-cannot-be-transcoded") });
                     } else {
                         this.insertCourseware(file);
                     }
                 } else {
-                    CloudStorageStore.previewCourseware(file);
+                    this.previewCourseware(file);
                 }
             } catch (e) {
                 console.error(e);
@@ -159,7 +168,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     public onBatchDelete = (): void => {
         if (this.selectedFileUUIDs.length > 0) {
             Modal.confirm({
-                content: "确定删除所选课件？课件删除后不可恢复",
+                content: this.i18n.t("delete-select-courseware-tips"),
                 onOk: async () => {
                     if (this.selectedFileUUIDs.length > 0) {
                         await this.removeFiles(this.selectedFileUUIDs);
@@ -189,9 +198,9 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             this.uploadTaskManager.uploading.length > 0
         ) {
             Modal.confirm({
-                title: "取消上传",
-                content: "上传尚未完成，确定取消所有正在进行的上传吗?",
-                cancelText: "再想想",
+                title: this.i18n.t("cancel-upload"),
+                content: this.i18n.t("cancel-upload-tips"),
+                cancelText: this.i18n.t("think-again"),
                 onOk: () => this.cancelAll(),
             });
         } else {
@@ -347,19 +356,21 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }, timeout);
     }
 
-    private static previewCourseware(file: CloudStorageFile): void {
+    private previewCourseware(file: CloudStorageFile): void {
         switch (file.convert) {
             case "converting": {
-                Modal.info({ content: "课件转码中，请稍后……" });
+                Modal.info({ content: this.i18n.t("please-wait-while-the-lesson-is-transcoded") });
                 return;
             }
             case "error": {
-                Modal.info({ content: "转码失败，该课件无法转码" });
+                Modal.info({ content: this.i18n.t("the-courseware-cannot-be-transcoded") });
                 return;
             }
             default: {
                 // @TODO preview courseware
-                Modal.info({ content: "请到房间内查看课件" });
+                Modal.info({
+                    content: this.i18n.t("please-go-to-the-room-to-view-the-courseware"),
+                });
             }
         }
     }

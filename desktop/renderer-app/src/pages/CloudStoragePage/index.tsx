@@ -11,6 +11,7 @@ import { convertFinish } from "../../apiMiddleware/flatServer/storage";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { RoomPhase, SceneDefinition } from "white-web-sdk";
+import { useTranslation } from "react-i18next";
 
 export interface CloudStoragePageProps {
     compact?: boolean;
@@ -24,7 +25,8 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
     whiteboard,
     onCoursewareInserted,
 }) {
-    const [store] = useState(() => new CloudStorageStore({ compact, insertCourseware }));
+    const { t, i18n } = useTranslation();
+    const [store] = useState(() => new CloudStorageStore({ compact, insertCourseware, i18n }));
 
     useEffect(() => store.initialize(), [store]);
 
@@ -43,11 +45,11 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
 
     async function insertCourseware(file: CloudStorageFile): Promise<void> {
         if (file.convert === "converting") {
-            void message.warn("正在转码中，请稍后再试");
+            void message.warn(t("in-the-process-of-transcoding-tips"));
             return;
         }
 
-        void message.info("正在插入课件……");
+        void message.info(t("Inserting-courseware-tips"));
 
         const ext = (/\.[^.]+$/.exec(file.fileName) || [""])[0].toLowerCase();
         switch (ext) {
@@ -176,11 +178,13 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                     console.error(e);
                 }
                 if (convertingStatus.status === "Fail") {
-                    void message.error(`转码失败，原因: ${convertingStatus.failedReason}`);
+                    void message.error(
+                        t("transcoding-failure-reason", { reason: convertingStatus.failedReason }),
+                    );
                 }
             } else {
                 message.destroy();
-                void message.warn("正在转码中，请稍后再试");
+                void message.warn(t("in-the-process-of-transcoding-tips"));
                 return;
             }
         } else if (convertingStatus.status === "Finished" && convertingStatus.progress) {
@@ -202,7 +206,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 room.scalePptToFit();
             }
         } else {
-            void message.error("无法插入课件");
+            void message.error(t("unable-to-insert-courseware"));
         }
     }
 });

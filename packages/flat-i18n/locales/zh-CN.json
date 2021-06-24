@@ -189,5 +189,18 @@
   "title-GeneralSettingPage": "常规设置",
   "title-HotKeySettingPage": "热键设置",
   "title-FeedbackPage": "吐个槽",
-  "title-AboutPage": "关于我们"
+  "title-AboutPage": "关于我们",
+  "in-the-process-of-transcoding-tips": "正在转码中，请稍后再试",
+  "Inserting-courseware-tips": "正在插入课件……",
+  "unable-to-insert-courseware": "无法插入课件",
+  "transcoding-failure-reason": "转码失败，原因: {{reason}}",
+  "download": "下载",
+  "rename": "重命名",
+  "delete-courseware-tips": "确定删除该课件？课件删除后不可恢复",
+  "the-courseware-cannot-be-transcoded": "转码失败，该课件无法转码",
+  "delete-select-courseware-tips": "确定删除所选课件？课件删除后不可恢复",
+  "cancel-upload": "取消上传",
+  "cancel-upload-tips": "上传尚未完成，确定取消所有正在进行的上传吗?",
+  "please-wait-while-the-lesson-is-transcoded": "课件转码中，请稍后……",
+  "please-go-to-the-room-to-view-the-courseware": "请到房间内查看课件"
 }
