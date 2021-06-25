@@ -45,4 +45,7 @@ export interface EmitEvents {
         | {
               status: false;
           };
+    "request-join-room": {
+        roomUUID: string;
+    };
 }

@@ -62,6 +62,10 @@ export class GlobalStore {
         }
     };
 
+    public logout = (): void => {
+        this.userInfo = null;
+    };
+
     public updateCheckNewVersionDate = (): void => {
         this.checkNewVersionDate = new Date().getTime();
     };

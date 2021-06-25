@@ -13,6 +13,8 @@ import { AppUpgradeModal } from "../../components/AppUpgradeModal";
 import { runtime } from "../../utils/runtime";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { WeChatLogin } from "./WeChatLogin";
+import { useLocation } from "react-router-dom";
+import { joinRoomHandler } from "../utils/joinRoomHandler";
 
 export const LoginPage = observer(function LoginPage() {
     const pushHistory = usePushHistory();
@@ -20,6 +22,7 @@ export const LoginPage = observer(function LoginPage() {
     const loginDisposer = useRef<LoginDisposer>();
     const [newVersion, setNewVersion] = useState<string>();
     const sp = useSafePromise();
+    const location = useLocation<string>();
 
     useEffect(() => {
         ipcAsyncByMainWindow("set-win-size", {
@@ -63,6 +66,7 @@ export const LoginPage = observer(function LoginPage() {
             case "github": {
                 loginDisposer.current = githubLogin(authData => {
                     globalStore.updateUserInfo(authData);
+                    void joinRoomHandler(location.state, pushHistory);
                     pushHistory(RouteNameType.HomePage);
                 });
                 return;
