@@ -190,5 +190,18 @@
   "title-GeneralSettingPage": "General Settings",
   "title-HotKeySettingPage": "HotKey Settings",
   "title-FeedbackPage": "Feedback",
-  "title-AboutPage": "About"
+  "title-AboutPage": "About",
+  "Inserting-courseware-tips": "Inserting courseware...",
+  "cancel-upload": "Cancel upload",
+  "cancel-upload-tips": "The upload has not been completed. Are you sure to cancel all ongoing uploads?",
+  "delete-courseware-tips": "Are you sure to delete this courseware? \nUnrecoverable after the courseware is deleted",
+  "delete-select-courseware-tips": "Are you sure to delete the selected courseware? \nUnrecoverable after the courseware is deleted",
+  "download": "Download",
+  "in-the-process-of-transcoding-tips": "Transcoding in progress, please try again later",
+  "please-go-to-the-room-to-view-the-courseware": "Please check the courseware in the room",
+  "please-wait-while-the-lesson-is-transcoded": "Courseware is being transcoded, please wait...",
+  "rename": "Rename",
+  "the-courseware-cannot-be-transcoded": "Transcoding failed, the courseware cannot be transcoded",
+  "transcoding-failure-reason": "Transcoding failed, reason: {{reason}}",
+  "unable-to-insert-courseware": "Unable to insert courseware"
 }
