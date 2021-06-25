@@ -45,17 +45,18 @@ export class WindowManager {
             ...windowOptions,
         };
 
+        const window = new BrowserWindow({
+            ...defaultBrowserWindowOptions,
+            ...browserWindowOptions,
+        });
+
         this.wins[options.name] = {
             options,
-            window: new BrowserWindow({
-                ...defaultBrowserWindowOptions,
-                ...browserWindowOptions,
-            }),
+            window,
+            didFinishLoad: window.loadURL(options.url),
         };
 
         const innerWin = this.getWindow(options.name)!;
-
-        void innerWin.window.loadURL(options.url);
 
         windowOpenDevTools(innerWin);
 
@@ -125,6 +126,7 @@ export const windowManager = new WindowManager();
 export type CustomSingleWindow = {
     window: BrowserWindow;
     options: WindowOptions;
+    didFinishLoad: Promise<void>;
 };
 
 type CustomWindows = {
