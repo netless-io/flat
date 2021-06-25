@@ -1,8 +1,20 @@
 <div align="center">
-<img width="200" height="200" src="./assets/flat-logo.png">
-<h1>Agora Flat</h1>
-<p>项目 flat 是 <a href="https://flat.whiteboard.agora.io/">Agora Flat</a> 开源教室的 Web 端（开发中）、Windows 客户端与 macOS 客户端。</p>
-<img src="./assets/flat-showcase.png">
+    <img width="200" height="200" style="display: block;" src="./assets/flat-logo.png">
+</div>
+
+<div align="center">
+    <img alt="GitHub" src="https://img.shields.io/github/license/netless-io/flat?color=9cf&style=flat-square">
+    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/netless-io/flat?color=9cf&style=flat-square">
+    <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/netless-io/flat?color=9cf&style=flat-square">
+    <a target="_blank" href="https://github.com/netless-io/flat/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22">
+        <img alt="GitHub issues by-label" src="https://img.shields.io/github/issues/netless-io/flat/good%20first%20issue?color=9cf&label=good%20first%20issue&style=flat-square">
+    </a>
+</div>
+
+<div align="center">
+    <h1>Agora Flat</h1>
+    <p>项目 flat 是 <a href="https://flat.whiteboard.agora.io/">Agora Flat</a> 开源教室的 Web 端（开发中）、Windows 客户端与 macOS 客户端。</p>
+    <img src="./assets/flat-showcase.png">
 </div>
 
 ## 产品体验
