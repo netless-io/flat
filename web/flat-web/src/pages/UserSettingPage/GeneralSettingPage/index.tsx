@@ -3,6 +3,7 @@ import "./index.less";
 import { Radio } from "antd";
 import React from "react";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
+import { useTranslation } from "react-i18next";
 
 enum SelectLanguage {
     Chinese,
@@ -10,13 +11,14 @@ enum SelectLanguage {
 }
 
 export const GeneralSettingPage = (): React.ReactElement => {
+    const { t } = useTranslation();
     return (
         <UserSettingLayoutContainer>
             <div className="general-setting-container">
                 <div className="general-setting-select-language">
-                    <span>语言设置</span>
+                    <span>{t("language-settings")}</span>
                     <Radio.Group defaultValue={SelectLanguage.Chinese}>
-                        <Radio value={SelectLanguage.Chinese}>中文</Radio>
+                        <Radio value={SelectLanguage.Chinese}>{t("chinese")}</Radio>
                         <Radio disabled value={SelectLanguage.English}>
                             English
                         </Radio>

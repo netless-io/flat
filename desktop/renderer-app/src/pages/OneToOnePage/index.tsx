@@ -43,6 +43,7 @@ import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
+import { useTranslation } from "react-i18next";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -76,6 +77,8 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
     const updateLayoutTimeoutRef = useRef(NaN);
+
+    const { t } = useTranslation();
 
     const joiner = useComputed(() => {
         if (classRoomStore.isCreator) {
@@ -220,7 +223,13 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                         <RecordButton
                             disabled={false}
                             isRecording={classRoomStore.isRecording}
-                            onClick={classRoomStore.toggleRecording}
+                            onClick={() =>
+                                classRoomStore.toggleRecording({
+                                    onStop() {
+                                        void message.success(t("recording-completed-tips"));
+                                    },
+                                })
+                            }
                         />
                     )}
                 {whiteboardStore.isWritable && (

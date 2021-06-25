@@ -21,6 +21,9 @@ export default () => {
 
         // 如果文件存在，则替换原有请求，使用本地资源进行加载
         if (fs.existsSync(localPath)) {
+            if (process.env.NODE_ENV === "development") {
+                console.log("preloaded courseware: ", p);
+            }
             callback({
                 // 这里需要注意的是，直接使用 file 协议进行重定向，请求时会报错
                 // 所以需要在 webPreferences 里设置 webSecurity 为 false

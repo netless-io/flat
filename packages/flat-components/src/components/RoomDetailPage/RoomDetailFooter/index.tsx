@@ -81,7 +81,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
                 {t("copy-invitation")}
             </Button>
             <Button className="room-detail-footer-btn" type="primary" onClick={onJoinRoom}>
-                {t("enter-room")}
+                {t("join-room")}
             </Button>
             <InviteModal
                 visible={isShowInviteModal}
@@ -91,7 +91,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
                 userName={userName}
                 onCopy={text => {
                     onCopyInvitation(text);
-                    message.success(t("replication-success"));
+                    message.success(t("copy-success"));
                     hideInviteModal();
                 }}
                 onCancel={hideInviteModal}

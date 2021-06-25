@@ -5,10 +5,12 @@ import { observer } from "mobx-react-lite";
 import { EditRoomBody, EditRoomBodyProps, MainPageHeader } from "flat-components";
 import { MainPageLayoutContainer } from "../MainPageLayoutContainer";
 import { useHistory } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export type EditRoomPageProps = EditRoomBodyProps;
 
 export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(props) {
+    const { t } = useTranslation();
     const history = useHistory();
 
     return (
@@ -19,7 +21,9 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(pr
                         onBackPreviousPage={() => history.goBack()}
                         title={
                             <span className="edit-room-page-header-title">
-                                {props.type === "schedule" ? "预定房间" : "修改房间"}
+                                {props.type === "schedule"
+                                    ? t("home-page-hero-button-type.schedule")
+                                    : t("modify-room")}
                             </span>
                         }
                     />

@@ -5,6 +5,7 @@ import { Dropdown, Menu, message } from "antd";
 import { RoomInfo } from "../../types/room";
 import { InviteModal } from "../InviteModal";
 import { CancelSubPeriodicRoomModal } from "./CancelSubPeriodicRoomModal";
+import { useTranslation } from "react-i18next";
 
 export interface MoreMenuProps {
     room: RoomInfo;
@@ -27,6 +28,7 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
     jumpToRoomDetailPage,
     jumpToModifyOrdinaryRoomPage,
 }) => {
+    const { t } = useTranslation();
     const [cancelSubPeriodicRoomVisible, setCancelSubPeriodicRoomVisible] = useState(false);
     const [inviteRoomVisible, setInviteRoomVisible] = useState(false);
 
@@ -35,18 +37,20 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
             overlay={() => {
                 return (
                     <Menu>
-                        <Menu.Item onClick={jumpToRoomDetailPage}>房间详情</Menu.Item>
+                        <Menu.Item onClick={jumpToRoomDetailPage}>{t("room-detail")}</Menu.Item>
                         {isCreator && (
                             <>
                                 <Menu.Item onClick={jumpToModifyOrdinaryRoomPage}>
-                                    修改房间
+                                    {t("modify-room")}
                                 </Menu.Item>
                                 <Menu.Item onClick={() => setCancelSubPeriodicRoomVisible(true)}>
-                                    取消房间
+                                    {t("cancel-room")}
                                 </Menu.Item>
                             </>
                         )}
-                        <Menu.Item onClick={() => setInviteRoomVisible(true)}>复制邀请</Menu.Item>
+                        <Menu.Item onClick={() => setInviteRoomVisible(true)}>
+                            {t("copy-invitation")}
+                        </Menu.Item>
                         <CancelSubPeriodicRoomModal
                             visible={cancelSubPeriodicRoomVisible}
                             isCreator={isCreator}
@@ -60,7 +64,7 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
                             userName={userName}
                             onCopy={text => {
                                 onCopyInvitation(text);
-                                message.success("复制成功");
+                                message.success(t("copy-success"));
                                 setInviteRoomVisible(false);
                             }}
                             onCancel={() => setInviteRoomVisible(false)}
@@ -70,7 +74,7 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
             }}
             trigger={["click"]}
         >
-            <img src={moreMenuSVG} alt="更多" />
+            <img src={moreMenuSVG} alt={t("more")} />
         </Dropdown>
     );
 };

@@ -23,12 +23,14 @@ import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
 import { joinRoomHandler } from "../../utils/joinRoomHandler";
 import { INVITE_BASEURL } from "../../../constants/Process";
+import { useTranslation } from "react-i18next";
 
 export interface MainRoomListProps {
     listRoomsType: ListRoomsType;
 }
 
 export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ listRoomsType }) {
+    const { t } = useTranslation();
     const roomStore = useContext(RoomStoreContext);
     const [roomUUIDs, setRoomUUIDs] = useState<string[]>();
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
@@ -105,8 +107,8 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                     const endTime = room.endTime ? new Date(room.endTime) : void 0;
 
                     const primaryAction: RoomListItemButton<"replay" | "join"> = isHistoryList
-                        ? { key: "replay", text: "回放", disabled: !room.hasRecord }
-                        : { key: "join", text: "加入" };
+                        ? { key: "replay", text: t("replay"), disabled: !room.hasRecord }
+                        : { key: "join", text: t("join") };
 
                     return (
                         <Fragment key={room.roomUUID}>
@@ -222,7 +224,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
 
     function onCopy(text: string): void {
         navigator.clipboard.writeText(text);
-        void message.success("复制成功");
+        void message.success(t("copy-success"));
         hideInviteModal();
     }
 
@@ -244,7 +246,9 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
             }
             setCancelModalVisible(false);
             void refreshRooms();
-            const content = isCreator ? "已取消该房间" : "已移除该房间";
+            const content = isCreator
+                ? t("the-room-has-been-cancelled")
+                : t("the-room-has-been-removed");
             void message.success(content);
         } catch (e) {
             console.error(e);
@@ -276,10 +280,10 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
         | Array<{ key: "details" | "modify" | "cancel" | "invite"; text: string }>;
 
     function getSubActions(room: RoomItem): SubActions {
-        const result = [{ key: "details", text: "房间详情" }];
+        const result = [{ key: "details", text: t("room-detail") }];
         if (isHistoryList) {
             if (room.roomUUID) {
-                result.push({ key: "delete-history", text: "删除记录" });
+                result.push({ key: "delete-history", text: t("delete-records") });
             }
         } else {
             const ownerUUID = room.ownerUUID;
@@ -289,13 +293,16 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                 isCreator &&
                 room.roomStatus === RoomStatus.Idle
             ) {
-                result.push({ key: "modify", text: "修改房间" });
+                result.push({ key: "modify", text: t("modify-room") });
             }
             if (!isCreator || room.roomStatus === RoomStatus.Idle) {
-                result.push({ key: "cancel", text: isCreator ? "取消房间" : "移除房间" });
+                result.push({
+                    key: "cancel",
+                    text: isCreator ? t("cancel-room") : t("remove-room"),
+                });
             }
             if (room.roomUUID) {
-                result.push({ key: "invite", text: "复制邀请" });
+                result.push({ key: "invite", text: t("copy-invitation") });
             }
         }
         return result as SubActions;

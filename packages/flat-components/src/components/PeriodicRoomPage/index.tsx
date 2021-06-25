@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Button, Table } from "antd";
 import { getDay } from "date-fns";
 import { format, formatWithOptions } from "date-fns/fp";
-import { zhCN } from "date-fns/locale";
+import { zhCN, enUS } from "date-fns/locale";
 import { RoomInfo, RoomStatus, RoomType, Week } from "../../types/room";
 import { getWeekName, getWeekNames } from "../../utils/room";
 import { RoomStatusElement } from "../RoomStatusElement";
@@ -43,14 +43,15 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
     jumpToModifyPeriodicRoomPage,
     jumpToModifyOrdinaryRoomPage,
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [cancelPeriodicRoomModalVisible, setCancelPeriodicRoomModalVisible] = useState(false);
-    const { i18n } = useTranslation();
 
-    const yearMonthFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM");
-    const dayFormat = formatWithOptions({ locale: zhCN }, "dd");
+    const lang = i18n.language;
+    const locale = lang.startsWith("zh") ? zhCN : enUS;
+    const yearMonthFormat = formatWithOptions({ locale }, "yyyy/MM");
+    const dayFormat = formatWithOptions({ locale }, "dd");
     const timeSuffixFormat = format("HH:mm");
-    const dayWeekFormat = formatWithOptions({ locale: zhCN }, "yyyy/MM/dd iii");
+    const dayWeekFormat = formatWithOptions({ locale }, "yyyy/MM/dd iii");
 
     const hasRunning = rooms.some(room =>
         [RoomStatus.Started, RoomStatus.Paused].includes(room?.roomStatus as RoomStatus),
@@ -158,13 +159,20 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
             <div className="periodic-room-panel-body">
                 <div className="periodic-room-panel-tips">
                     <div className="periodic-room-panel-tips-title">
-                        每{getWeekNames(periodicInfo.weeks, i18n.language)}
+                        {t("repeat-frequency", {
+                            week: getWeekNames(periodicInfo.weeks, i18n.language),
+                        })}
                     </div>
                     <div className="periodic-room-panel-tips-type">
-                        房间类型：{t(`class-room-type.${periodicInfo.roomType}`)}
+                        {t("schedule-room-type", {
+                            type: t(`class-room-type.${periodicInfo.roomType}`),
+                        })}
                     </div>
                     <div className="periodic-room-panel-tips-inner">
-                        结束于 {dayWeekFormat(periodicInfo.endTime)} ，共 {rooms.length} 个房间
+                        {t("schedule-room-detail", {
+                            time: dayWeekFormat(periodicInfo.endTime),
+                            length: rooms.length,
+                        })}
                     </div>
                 </div>
                 <div className="periodic-room-panel-btn-list">

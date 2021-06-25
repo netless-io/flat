@@ -3,6 +3,7 @@ import { message } from "antd";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
     NetworkStatus,
     RoomInfo,
@@ -103,6 +104,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
     const updateLayoutTimeoutRef = useRef(NaN);
+
+    const { t } = useTranslation();
 
     // control whiteboard writable
     useEffect(() => {
@@ -289,7 +292,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         <RecordButton
                             disabled={false}
                             isRecording={classRoomStore.isRecording}
-                            onClick={classRoomStore.toggleRecording}
+                            onClick={() =>
+                                classRoomStore.toggleRecording({
+                                    onStop() {
+                                        void message.success(t("recording-completed-tips"));
+                                    },
+                                })
+                            }
                         />
                     )}
                 {whiteboardStore.isWritable && (

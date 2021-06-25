@@ -5,22 +5,24 @@ import { observer } from "mobx-react-lite";
 import { RoomList } from "flat-components";
 import { MainRoomList } from "./MainRoomList";
 import { ListRoomsType } from "../../../apiMiddleware/flatServer";
+import { useTranslation } from "react-i18next";
 
 export const MainRoomListPanel = observer<{}>(function MainRoomListPanel() {
+    const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState<"all" | "today" | "periodic">("all");
     const filters = useMemo<Array<{ key: "all" | "today" | "periodic"; title: string }>>(
         () => [
             {
                 key: "all",
-                title: "全部",
+                title: t("all"),
             },
             {
                 key: "today",
-                title: "今天",
+                title: t("today"),
             },
             {
                 key: "periodic",
-                title: "周期",
+                title: t("periodic"),
             },
         ],
         [],
@@ -28,7 +30,7 @@ export const MainRoomListPanel = observer<{}>(function MainRoomListPanel() {
 
     return (
         <RoomList
-            title="房间列表"
+            title={t("room-list")}
             filters={filters}
             activeTab={activeTab}
             onTabActive={setActiveTab}
