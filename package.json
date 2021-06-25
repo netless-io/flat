@@ -1,6 +1,7 @@
 {
   "name": "root",
   "private": true,
+  "snyk": true,
   "scripts": {
     "preinstall": "node ./scripts/preinstall",
     "bootstrap": "yarn install --frozen-lockfile && node ./scripts/bootstrap/build-packages.js",
@@ -10,7 +11,8 @@
     "ship": "yarn workspace renderer-app build && yarn workspace flat ship",
     "ship:mac": "yarn workspace renderer-app build && yarn workspace flat ship:mac",
     "ship:win": "yarn workspace renderer-app build && yarn workspace flat ship:win",
-    "ship:all": "yarn workspace renderer-app build && yarn workspace flat ship:win && yarn workspace flat pack:mac"
+    "ship:all": "yarn workspace renderer-app build && yarn workspace flat ship:win && yarn workspace flat pack:mac",
+    "test": "snyk test --yarn-workspaces --strict-out-of-sync=false --detection-depth=5 --dev"
   },
   "workspaces": {
     "packages": [
@@ -27,6 +29,7 @@
     "ali-oss": "^6.15.2",
     "dotenv-flow": "^3.2.0",
     "husky": "^5.0.9",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.4",
+    "snyk": "^1.645.0"
   }
 }
