@@ -29,11 +29,17 @@ const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
     },
 };
 
-export class WindowManager {
-    private readonly wins: CustomWindows;
+class RxSubject {
+    public constructor(
+        public readonly mainWindowCreated = new Subject(),
+        public readonly domReady = new Subject<string>(),
+        public readonly preloadLoad = new Subject<IpcMainEvent>(),
+    ) {}
+}
 
-    public constructor() {
-        this.wins = {};
+export class WindowManager extends RxSubject {
+    public constructor(private readonly wins: CustomWindows = {}) {
+        super();
     }
 
     private createWindow(
@@ -72,12 +78,22 @@ export class WindowManager {
         return innerWin;
     }
 
-    public getWindow(name: constants.WindowsName): CustomSingleWindow | undefined {
-        return this.wins[name];
-    }
-
-    public getMainWindow(): CustomSingleWindow | undefined {
-        return this.wins[constants.WindowsName.Main];
+    public getWindow<W extends true>(
+        name: constants.WindowsName,
+        waiting: W,
+    ): Promise<CustomSingleWindow>;
+    public getWindow(name: constants.WindowsName, waiting?: false): CustomSingleWindow | undefined;
+    public getWindow(
+        name: constants.WindowsName,
+        waiting?: boolean,
+    ): Promise<CustomSingleWindow> | (CustomSingleWindow | undefined) {
+        if (waiting) {
+            return this.mainWindowCreated.toPromise().then(() => {
+                return this.wins[name]!;
+            });
+        } else {
+            return this.wins[name];
+        }
     }
 
     public createMainWindow(): CustomSingleWindow {
@@ -93,21 +109,20 @@ export class WindowManager {
             },
         );
 
-        const domReady = new Subject<string>();
-        const preloadLoad = new Subject<IpcMainEvent>();
+        this.mainWindowCreated.complete();
 
         win.window.webContents.on("dom-ready", () => {
-            domReady.next("");
+            this.domReady.next("");
         });
 
         ipcMain.on("preload-load", event => {
-            preloadLoad.next(event);
+            this.preloadLoad.next(event);
         });
 
         // use the zip operator to solve the problem of not sending xx event after refreshing the page
         // don’t worry about sending multiple times, because once is used in preload.ts
         // link: https://www.learnrxjs.io/learn-rxjs/operators/combination/zip
-        zip(domReady, preloadLoad)
+        zip(this.domReady, this.preloadLoad)
             .pipe(
                 mergeMap(([, event]) => {
                     event.sender.send("inject-agora-electron-sdk-addon");
