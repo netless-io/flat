@@ -35,6 +35,7 @@ import { WhiteboardStore } from "./WhiteboardStore";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { NetworkQuality } from "agora-rtc-sdk-ng";
+import { useTranslation } from "react-i18next";
 
 export type { User } from "./UserStore";
 
@@ -252,11 +253,11 @@ export class ClassRoomStore {
         }
     };
 
-    public toggleRecording = async (): Promise<void> => {
+    public toggleRecording = async ({ onStop }: { onStop?: () => void } = {}): Promise<void> => {
         try {
             if (this.isRecording) {
                 await this.stopRecording();
-                void message.success("录制完成，可到历史记录查看");
+                onStop?.();
             } else {
                 await this.startRecording();
             }

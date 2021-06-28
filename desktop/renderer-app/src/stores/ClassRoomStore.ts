@@ -252,11 +252,11 @@ export class ClassRoomStore {
         }
     };
 
-    public toggleRecording = async (): Promise<void> => {
+    public toggleRecording = async ({ onStop }: { onStop?: () => void } = {}): Promise<void> => {
         try {
             if (this.isRecording) {
                 await this.stopRecording();
-                void message.success("录制完成，可到历史记录查看");
+                onStop?.();
             } else {
                 await this.startRecording();
             }

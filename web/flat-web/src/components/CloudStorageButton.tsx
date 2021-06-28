@@ -8,6 +8,7 @@ import React, { useCallback, useState } from "react";
 import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
 import { WhiteboardStore } from "../stores/WhiteboardStore";
 import "./CloudStorageButton.less";
+import { useTranslation } from "react-i18next";
 
 interface CloudStorageButtonProps {
     whiteboard: WhiteboardStore;
@@ -16,6 +17,7 @@ interface CloudStorageButtonProps {
 export const CloudStorageButton = observer<CloudStorageButtonProps>(function CloudStorageButton({
     whiteboard,
 }) {
+    const { t } = useTranslation();
     const [visible, setVisible] = useState(false);
     const hideModal = useCallback(() => setVisible(false), [setVisible]);
     const showModal = useCallback(() => setVisible(true), [setVisible]);
@@ -32,7 +34,7 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
                 onClick={showModal}
             />
             <Modal
-                title="我的云盘"
+                title={t("my-cloud ")}
                 onCancel={hideModal}
                 destroyOnClose
                 footer={[]}

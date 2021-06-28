@@ -31,7 +31,7 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
                     name={["periodic", "weeks"]}
                     getValueFromEvent={onWeekSelected}
                 >
-                    <WeekRateSelector onChange={onWeekRateChanged} />
+                    <WeekRateSelector onChange={onWeekRateChanged} lang={lang} />
                 </Form.Item>
                 <Form.Item label={t("end-series")}>
                     <Row gutter={16}>

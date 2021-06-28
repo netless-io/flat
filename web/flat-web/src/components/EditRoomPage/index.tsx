@@ -6,10 +6,12 @@ import { EditRoomBody, EditRoomBodyProps } from "flat-components";
 import { useHistory } from "react-router";
 import { useContext } from "react";
 import { PageStoreContext } from "../StoreProvider";
+import { useTranslation } from "react-i18next";
 
 export type EditRoomPageProps = EditRoomBodyProps;
 
 export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(props) {
+    const { t } = useTranslation();
     const history = useHistory();
     const pageStore = useContext(PageStoreContext);
 
@@ -17,7 +19,9 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(pr
         pageStore.configure({
             title: (
                 <div className="edit-room-page-header-title">
-                    {props.type === "schedule" ? "预定房间" : "修改房间"}
+                    {props.type === "schedule"
+                        ? t("home-page-hero-button-type.schedule")
+                        : t("modify-room")}
                 </div>
             ),
             onBackPreviousPage: () => history.goBack(),

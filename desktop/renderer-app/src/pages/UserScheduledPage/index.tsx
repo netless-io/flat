@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { EditRoomFormValues } from "flat-components";
+import { useTranslation } from "react-i18next";
 
 const getInitialBeginTime = (): Date => {
     const now = new Date();
@@ -22,6 +23,7 @@ const getInitialBeginTime = (): Date => {
 };
 
 export const UserScheduledPage = observer(function UserScheduledPage() {
+    const { t } = useTranslation();
     useWindowSize("Main");
 
     const history = useHistory();
@@ -33,7 +35,9 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
     const [defaultValues] = useState<EditRoomFormValues>(() => {
         const scheduleBeginTime = getInitialBeginTime();
         return {
-            title: globalStore.userInfo?.name ? `${globalStore.userInfo.name}预定的房间` : "",
+            title: globalStore.userInfo?.name
+                ? t("schedule-room-default-title", { name: globalStore.userInfo.name })
+                : "",
             type: RoomType.BigClass,
             isPeriodic: false,
             beginTime: new Date(scheduleBeginTime),

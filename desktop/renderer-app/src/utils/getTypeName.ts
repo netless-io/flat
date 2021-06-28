@@ -1,4 +1,4 @@
-import { RoomStatus, RoomType, Week } from "../apiMiddleware/flatServer/constants";
+import { RoomType, Week } from "../apiMiddleware/flatServer/constants";
 
 export const getWeekName = (week: Week): string => {
     const weekNameMap: Record<Week, string> = {
@@ -11,16 +11,6 @@ export const getWeekName = (week: Week): string => {
         [Week.Saturday]: "周六",
     };
     return weekNameMap[week];
-};
-
-export const getRoomStatusName = (status: RoomStatus): string => {
-    const statusNameMap: Record<RoomStatus, string> = {
-        [RoomStatus.Idle]: "待开始",
-        [RoomStatus.Started]: "进行中",
-        [RoomStatus.Paused]: "已暂停",
-        [RoomStatus.Stopped]: "已结束",
-    };
-    return statusNameMap[status];
 };
 
 export const getRoomTypeName = (type: RoomType): string => {

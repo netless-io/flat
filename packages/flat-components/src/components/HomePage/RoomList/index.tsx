@@ -5,7 +5,7 @@ import emptyRoomSVG from "./icons/empty-room.svg";
 
 import React, { PropsWithChildren, ReactElement } from "react";
 import { format, isToday, isTomorrow } from "date-fns";
-import { zhCN } from "date-fns/locale";
+import { zhCN, enUS } from "date-fns/locale";
 import classNames from "classnames";
 import { Button, Dropdown, Menu, Skeleton } from "antd";
 import { useTranslation } from "react-i18next";
@@ -15,18 +15,19 @@ export interface RoomListDateProps {
 }
 
 export const RoomListDate: React.FC<RoomListDateProps> = ({ date }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const lang = i18n.language;
     return (
         <div className="room-list-date">
             <img src={calendarSVG} alt="" />
             <time dateTime={date.toUTCString()}>
-                {format(date, "MMM do", { locale: zhCN })}
+                {format(date, "MMM do", { locale: lang?.startsWith("zh") ? zhCN : enUS })}
                 {" · "}
                 {isToday(date)
                     ? t("today")
                     : isTomorrow(date)
                     ? t("tomorrow")
-                    : format(date, "E", { locale: zhCN })}
+                    : format(date, "E", { locale: lang?.startsWith("zh") ? zhCN : enUS })}
             </time>
         </div>
     );

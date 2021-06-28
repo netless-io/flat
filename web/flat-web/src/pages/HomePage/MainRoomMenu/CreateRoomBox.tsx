@@ -8,6 +8,7 @@ import { RoomType } from "../../../apiMiddleware/flatServer/constants";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { ClassPicker } from "flat-components";
+import { useTranslation } from "react-i18next";
 
 interface CreateRoomFormValues {
     roomTitle: string;
@@ -20,6 +21,7 @@ export interface CreateRoomBoxProps {
 }
 
 export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox({ onCreateRoom }) {
+    const { t } = useTranslation();
     const sp = useSafePromise();
     const globalStore = useContext(GlobalStoreContext);
     const configStore = useContext(ConfigStoreContext);
@@ -32,7 +34,9 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const roomTitleInputRef = useRef<Input>(null);
 
     const defaultValues: CreateRoomFormValues = {
-        roomTitle: globalStore.userInfo?.name ? `${globalStore.userInfo.name}创建的房间` : "",
+        roomTitle: globalStore.userInfo?.name
+            ? t("create-room-default-title", { name: globalStore.userInfo.name })
+            : "",
         roomType: RoomType.BigClass,
         autoCameraOn: configStore.autoCameraOn,
     };
@@ -63,11 +67,11 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                 }}
             >
                 <img src={createSVG} alt="create room" />
-                <span className="label">创建房间</span>
+                <span className="label">{t("home-page-hero-button-type.create")}</span>
             </Button>
             <Modal
                 wrapClassName="create-room-box-container"
-                title="创建房间"
+                title={t("home-page-hero-button-type.create")}
                 width={400}
                 visible={isShowModal}
                 destroyOnClose
@@ -75,7 +79,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                 onCancel={handleCancel}
                 footer={[
                     <Button key="cancel" onClick={handleCancel}>
-                        取消
+                        {t("cancel")}
                     </Button>,
                     <Button
                         key="submit"
@@ -84,7 +88,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                         onClick={handleOk}
                         disabled={!isFormValidated}
                     >
-                        创建
+                        {t("create")}
                     </Button>,
                 ]}
             >
@@ -98,20 +102,20 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                 >
                     <Form.Item
                         name="roomTitle"
-                        label="主题"
+                        label={t("theme")}
                         rules={[
-                            { required: true, message: "请输入主题" },
-                            { max: 50, message: "主题最多为 50 个字符" },
+                            { required: true, message: t("enter-room-theme") },
+                            { max: 50, message: t("theme-can-be-up-to-50-characters") },
                         ]}
                     >
-                        <Input placeholder="请输入房间主题" ref={roomTitleInputRef} />
+                        <Input placeholder={t("enter-room-theme")} ref={roomTitleInputRef} />
                     </Form.Item>
-                    <Form.Item name="roomType" label="类型" valuePropName="type">
+                    <Form.Item name="roomType" label={t("type")} valuePropName="type">
                         <ClassPicker value={classType} onChange={e => setClassType(RoomType[e])} />
                     </Form.Item>
-                    <Form.Item label="加入选项">
+                    <Form.Item label={t("join-options")}>
                         <Form.Item name="autoCameraOn" noStyle valuePropName="checked">
-                            <Checkbox>开启摄像头</Checkbox>
+                            <Checkbox>{t("turn-on-the-camera")}</Checkbox>
                         </Form.Item>
                     </Form.Item>
                 </Form>

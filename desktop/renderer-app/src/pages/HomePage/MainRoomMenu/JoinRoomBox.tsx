@@ -7,6 +7,7 @@ import { Button, Input, Modal, Checkbox, Form } from "antd";
 import { validate, version } from "uuid";
 import { ConfigStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
+import { useTranslation } from "react-i18next";
 
 interface JoinRoomFormValues {
     roomUUID: string;
@@ -19,6 +20,7 @@ export interface JoinRoomBoxProps {
 }
 
 export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJoinRoom }) {
+    const { t } = useTranslation();
     const sp = useSafePromise();
     const configStore = useContext(ConfigStoreContext);
     const [form] = Form.useForm<JoinRoomFormValues>();
@@ -67,20 +69,20 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
         <>
             <Button onClick={handleShowModal}>
                 <img src={joinSVG} alt="join room" />
-                <span className="label">加入房间</span>
+                <span className="label">{t("home-page-hero-button-type.join")}</span>
             </Button>
             <Modal
-                title="加入房间"
+                title={t("home-page-hero-button-type.join")}
                 width={400}
                 wrapClassName="join-room-box-container"
                 visible={isShowModal}
-                okText={"加入"}
-                cancelText={"取消"}
+                okText={t("join")}
+                cancelText={t("cancel")}
                 onOk={handleOk}
                 onCancel={handleCancel}
                 footer={[
                     <Button key="cancel" onClick={handleCancel}>
-                        取消
+                        {t("cancel")}
                     </Button>,
                     <Button
                         key="submit"
@@ -89,7 +91,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                         onClick={handleOk}
                         disabled={!isFormValidated}
                     >
-                        加入
+                        {t("join")}
                     </Button>,
                 ]}
             >
@@ -103,11 +105,11 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                 >
                     <Form.Item
                         name="roomUUID"
-                        label="房间号"
-                        rules={[{ required: true, message: "请输入房间号" }]}
+                        label={t("room-uuid")}
+                        rules={[{ required: true, message: t("enter-room-uuid") }]}
                     >
                         <Input
-                            placeholder="请输入房间号"
+                            placeholder={t("enter-room-uuid")}
                             ref={roomTitleInputRef}
                             // suffix={
                             //     <Dropdown
@@ -127,12 +129,12 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                     {/* <Form.Item label="昵称">
                         <Input disabled value={globalStore.wechat?.name} />
                     </Form.Item> */}
-                    <Form.Item label="加入选项">
+                    <Form.Item label={t("join-options")}>
                         <Form.Item name="autoMicOn" noStyle valuePropName="checked">
-                            <Checkbox>开启麦克风</Checkbox>
+                            <Checkbox>{t("turn-on-the-microphone")}</Checkbox>
                         </Form.Item>
                         <Form.Item name="autoCameraOn" noStyle valuePropName="checked">
-                            <Checkbox>开启摄像头</Checkbox>
+                            <Checkbox>{t("turn-on-the-camera")}</Checkbox>
                         </Form.Item>
                     </Form.Item>
                 </Form>

@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { RoomItem } from "../../stores/RoomStore";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
+import { useTranslation } from "react-i18next";
 
 interface RoomDetailsItemProps extends MenuItemProps {
     room: RoomItem | undefined;
@@ -16,6 +17,7 @@ export const RoomDetailsItem = observer<RoomDetailsItemProps>(function DeleteRoo
     onClick,
     ...restProps
 }) {
+    const { t } = useTranslation();
     const pushHistory = usePushHistory();
 
     if (!room?.roomUUID) {
@@ -40,7 +42,7 @@ export const RoomDetailsItem = observer<RoomDetailsItemProps>(function DeleteRoo
                 });
             }}
         >
-            房间详情
+            {t("room-detail")}
         </Menu.Item>
     );
 });

@@ -11,6 +11,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { MainPageLayoutHorizontal, MainPageLayoutItem, MainPageLayoutProps } from "flat-components";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
+import { useTranslation } from "react-i18next";
 
 export interface MainPageLayoutHorizontalContainerProps {
     subMenu?: MainPageLayoutItem[];
@@ -22,17 +23,18 @@ export interface MainPageLayoutHorizontalContainerProps {
 
 export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizontalContainerProps> =
     ({ subMenu, children, activeKeys, onRouteChange, title, onBackPreviousPage }) => {
+        const { t } = useTranslation();
         const leftMenu = [
             {
                 key: routeConfig[RouteNameType.HomePage].path,
                 icon: (active: boolean): React.ReactNode => <></>,
-                title: "首页",
+                title: t("home"),
                 route: routeConfig[RouteNameType.HomePage].path,
             },
             {
                 key: routeConfig[RouteNameType.CloudStoragePage].path,
                 icon: (active: boolean): React.ReactNode => <></>,
-                title: "云盘",
+                title: t("cloud-storage"),
                 route: routeConfig[RouteNameType.CloudStoragePage].path,
             },
         ];
@@ -52,19 +54,19 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
             {
                 key: routeConfig[RouteNameType.GeneralSettingPage].path,
                 icon: (): React.ReactNode => <img src={settingSVG} />,
-                title: "个人设置",
+                title: t("settings"),
                 route: routeConfig[RouteNameType.GeneralSettingPage].path,
             },
             {
                 key: "getGitHubCode",
                 icon: (): React.ReactNode => <img src={gitHubSVG} />,
-                title: "获取源码",
+                title: t("source-code"),
                 route: "https://github.com/netless-io/flat/",
             },
             {
                 key: "feedback",
                 icon: (): React.ReactNode => <img src={feedbackSVG} />,
-                title: "反馈意见",
+                title: t("feedback"),
                 route: "https://github.com/netless-io/flat/issues",
             },
             {
@@ -72,7 +74,7 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
                 icon: (): React.ReactNode => <img src={logoutSVG} />,
                 title: (
                     <span className="logout-title" onClick={() => localStorage.clear()}>
-                        退出登录
+                        {t("logout")}
                     </span>
                 ),
                 route: routeConfig[RouteNameType.LoginPage].path,

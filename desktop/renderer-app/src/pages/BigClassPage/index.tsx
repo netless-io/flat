@@ -13,6 +13,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RoomPhase, ViewMode } from "white-web-sdk";
+import { useTranslation } from "react-i18next";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
 import { RtcChannelType } from "../../apiMiddleware/Rtc";
@@ -100,6 +101,8 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
     const updateLayoutTimeoutRef = useRef(NaN);
+
+    const { t } = useTranslation();
 
     // control whiteboard writable
     useEffect(() => {
@@ -264,7 +267,13 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                         <RecordButton
                             disabled={false}
                             isRecording={classRoomStore.isRecording}
-                            onClick={classRoomStore.toggleRecording}
+                            onClick={() =>
+                                classRoomStore.toggleRecording({
+                                    onStop() {
+                                        void message.success(t("recording-completed-tips"));
+                                    },
+                                })
+                            }
                         />
                     )}
                 {whiteboardStore.isWritable && (

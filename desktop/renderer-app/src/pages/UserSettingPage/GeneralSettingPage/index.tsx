@@ -4,6 +4,7 @@ import { Checkbox, Radio } from "antd";
 import React, { useEffect, useState } from "react";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { ipcSyncByApp, ipcAsyncByApp } from "../../../utils/ipc";
+import { useTranslation } from "react-i18next";
 
 enum SelectLanguage {
     Chinese,
@@ -11,6 +12,7 @@ enum SelectLanguage {
 }
 
 export const GeneralSettingPage = (): React.ReactElement => {
+    const { t } = useTranslation();
     const [openAtLogin, setOpenAtLogin] = useState(false);
 
     useEffect(() => {
@@ -35,13 +37,13 @@ export const GeneralSettingPage = (): React.ReactElement => {
             <div className="general-setting-container">
                 <div className="general-setting-checkbox">
                     <Checkbox onClick={toggleOpenAtLogin} checked={openAtLogin}>
-                        开机自动运行
+                        {t("boot-up-and-run-automatically")}
                     </Checkbox>
                 </div>
                 <div className="general-setting-select-language">
-                    <span>语言设置</span>
+                    <span>{t("language-settings")}</span>
                     <Radio.Group defaultValue={SelectLanguage.Chinese}>
-                        <Radio value={SelectLanguage.Chinese}>中文</Radio>
+                        <Radio value={SelectLanguage.Chinese}>{t("chinese")}</Radio>
                         <Radio disabled value={SelectLanguage.English}>
                             English
                         </Radio>

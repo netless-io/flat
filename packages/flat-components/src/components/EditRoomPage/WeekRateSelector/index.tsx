@@ -1,13 +1,12 @@
 import { Select } from "antd";
-import { addDays, format, startOfWeek } from "date-fns";
 import React, { FC } from "react";
-import { zhCN } from "date-fns/locale";
 import { SelectProps } from "antd/lib/select";
 import { Week } from "../../../types/room";
+import { getWeekName } from "../../../utils/room";
 
-export type WeekRateSelectorProps = SelectProps<Week[]>;
+export type WeekRateSelectorProps = SelectProps<Week[]> & { lang: string };
 
-export const WeekRateSelector: FC<WeekRateSelectorProps> = props => {
+export const WeekRateSelector: FC<WeekRateSelectorProps> = ({ lang, ...props }) => {
     return (
         <Select mode="multiple" allowClear {...props}>
             {[
@@ -19,7 +18,7 @@ export const WeekRateSelector: FC<WeekRateSelectorProps> = props => {
                 Week.Friday,
                 Week.Saturday,
             ].map(week => {
-                const weekName = getWeekName(week);
+                const weekName = getWeekName(week, lang);
                 return (
                     <Select.Option key={week} value={week} label={weekName}>
                         {weekName}
@@ -29,12 +28,3 @@ export const WeekRateSelector: FC<WeekRateSelectorProps> = props => {
         </Select>
     );
 };
-
-export function getWeekName(week: Week): string {
-    const t = addDays(startOfWeek(new Date()), week);
-    return format(t, "iii", { locale: zhCN });
-}
-
-export function getWeekNames(weeks: Week[]): string {
-    return weeks.map(getWeekName).join("、");
-}

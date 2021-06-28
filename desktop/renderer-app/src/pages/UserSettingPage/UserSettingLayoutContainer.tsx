@@ -9,21 +9,23 @@ import React from "react";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { routeConfig, RouteNameType } from "../../route-config";
+import { useTranslation } from "react-i18next";
 
 export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactElement => {
+    const { t } = useTranslation();
     useWindowSize("Main");
 
     const subMenu = [
         {
             key: routeConfig[RouteNameType.GeneralSettingPage].path,
             icon: (): React.ReactNode => <img src={generalSVG} />,
-            title: "常规设置",
+            title: t("general-settings"),
             route: routeConfig[RouteNameType.GeneralSettingPage].path,
         },
         {
             key: routeConfig[RouteNameType.HotKeySettingPage].path,
             icon: (): React.ReactNode => <img src={hotkeySVG} />,
-            title: "热键设置",
+            title: t("shortcut-settings"),
             route: routeConfig[RouteNameType.HotKeySettingPage].path,
         },
         // {
@@ -35,7 +37,7 @@ export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactE
         {
             key: routeConfig[RouteNameType.AboutPage].path,
             icon: (): React.ReactNode => <img src={aboutSVG} />,
-            title: "关于我们",
+            title: t("about-us"),
             route: routeConfig[RouteNameType.AboutPage].path,
         },
     ];
