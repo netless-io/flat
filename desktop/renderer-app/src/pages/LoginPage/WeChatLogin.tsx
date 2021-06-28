@@ -13,15 +13,12 @@ import { WECHAT } from "../../constants/Process";
 import { RouteNameType } from "../../route-config";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { usePushHistory } from "../../utils/routes";
-import { useLocation } from "react-router";
-import { joinRoomHandler } from "../utils/joinRoomHandler";
 
 export const WeChatLogin = observer(function WeChatLogin() {
     const globalStore = useContext(GlobalStoreContext);
     const [qrCodeURL, setQRCodeURL] = useState("");
     const [authData, setAuthData] = useState<UserInfo | null>(null);
     const pushHistory = usePushHistory();
-    const location = useLocation<string>();
     const sp = useSafePromise();
 
     useEffect(() => {
@@ -56,7 +53,6 @@ export const WeChatLogin = observer(function WeChatLogin() {
     useEffect(() => {
         if (authData) {
             globalStore.updateUserInfo(authData);
-            void joinRoomHandler(location.state, pushHistory);
             pushHistory(RouteNameType.HomePage);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,7 +1,7 @@
 import { runtime } from "../utils/runtime";
 import { ipcSyncByApp } from "../utils/ipc";
 
-const initEnv = async (): Promise<void> => {
+export const initEnv = async (): Promise<void> => {
     const runtimeKeys = Object.keys(runtime);
 
     const result = await ipcSyncByApp("get-runtime");
@@ -11,5 +11,3 @@ const initEnv = async (): Promise<void> => {
         runtime[key] = result[key];
     });
 };
-
-export default initEnv;
