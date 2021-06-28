@@ -1,11 +1,7 @@
 import { app } from "electron";
 import { windowManager } from "../utils/WindowManager";
 
-export default async () => {
-    await new Promise(resolve => {
-        app.on("ready", resolve);
-    });
-
+export default () => {
     app.allowRendererProcessReuse = false;
 
     if (process.env.NODE_ENV === "development") {
