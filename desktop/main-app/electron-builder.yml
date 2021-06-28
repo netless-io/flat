@@ -20,8 +20,11 @@ mac:
   extendInfo:
     NSMicrophoneUsageDescription: To ensure normal use, flat-native needs access to your microphone.
     NSCameraUsageDescription: To ensure normal use, flat-native needs access to your camera.
-    CFBundleURLSchemes:
-      - x-agora-flat-client
+    CFBundleURLTypes:
+      - CFBundleURLName: x-agora-flat-client
+        CFBundleURLSchemes:
+          - x-agora-flat-client
+    NSPrincipalClass: AtomApplication
   target:
     - dmg
     - zip
