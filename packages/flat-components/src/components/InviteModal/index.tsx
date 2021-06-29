@@ -51,8 +51,10 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     const onCopyClicked = (): void => {
         const basePrefixText =
             t("invite-prefix", { userName, title }) +
+            "\n" +
             (formattedTimeRange ? t("invite-begin-time", { time: formattedTimeRange }) : "");
         const baseSuffixText =
+            "\n" +
             "\n" +
             t("invite-suffix", { uuid }) +
             "\n" +

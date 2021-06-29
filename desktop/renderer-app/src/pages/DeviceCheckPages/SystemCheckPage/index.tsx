@@ -7,8 +7,10 @@ import { routeConfig } from "../../../route-config";
 import { useRTCEngine } from "../../../utils/hooks/useRTCEngine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { DeviceCheckResults, DeviceCheckState } from "../utils";
+import { useTranslation } from "react-i18next";
 
 export const SystemCheckPage = (): React.ReactElement => {
+    const { t } = useTranslation();
     const [networkSituation, setNetworkSituation] = useState(0);
     const rtcEngine = useRTCEngine();
     const resultRef = React.useRef<DeviceCheckState>();
@@ -16,14 +18,14 @@ export const SystemCheckPage = (): React.ReactElement => {
     const location = useLocation<DeviceCheckResults | undefined>();
 
     const networkDescription = [
-        "正在检测...",
-        "网络质量未知",
-        "网络质量极好",
-        "网络质量优秀",
-        "网络质量一般",
-        "网络质量较差", // 5
-        "网络质量非常差", // 6
-        "网络连接已断开", // 7
+        t("network-status.testing"),
+        t("network-status.network-quality-unknown"),
+        t("network-status.network-quality-excellent"),
+        t("network-status.network-quality-good"),
+        t("network-status.network-quality-average"),
+        t("network-status.network-quality-poor"), // 5
+        t("network-status.network-quality-very-poor"), // 6
+        t("network-status.network-connection-disconnected"), // 7
     ];
 
     const cpuModel = os.cpus()[0].model;
@@ -32,7 +34,7 @@ export const SystemCheckPage = (): React.ReactElement => {
     useEffect(() => {
         const onError = (e: Error): void => {
             console.error("rtc error", e);
-            resultRef.current = { content: "检测失败", hasError: true };
+            resultRef.current = { content: t("testing-failed"), hasError: true };
         };
 
         // see: https://docs.agora.io/en/Voice/API%20Reference/electron/globals.html#agoranetworkquality
@@ -81,20 +83,22 @@ export const SystemCheckPage = (): React.ReactElement => {
         <DeviceCheckLayoutContainer>
             <div className="system-check-container">
                 <div className="system-check-item">
-                    <span className="system-check-item-name">处理器 (CPU)</span>
+                    <span className="system-check-item-name">{t("cpu")}</span>
                     <span>{cpuModel}</span>
                 </div>
                 <div className="system-check-item">
-                    <span className="system-check-item-name">缓存可用空间</span>
+                    <span className="system-check-item-name">
+                        {t("cache-available-storage-space")}
+                    </span>
                     <span>{freeMemory} MB</span>
                 </div>
                 <div className="system-check-item">
-                    <span className="system-check-item-name">网络质量情况</span>
+                    <span className="system-check-item-name">{t("network-quality-situation")}</span>
                     <span>{networkDescription[networkSituation]}</span>
                 </div>
             </div>
             <Button type="primary" onClick={historyPush}>
-                下一步
+                {t("next-step")}
             </Button>
         </DeviceCheckLayoutContainer>
     );

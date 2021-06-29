@@ -2,6 +2,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { ChatMessageListReplay } from "./ChatMessageListReplay";
 import { ClassRoomReplayStore } from "../../stores/ClassRoomReplayStore";
+import { useTranslation } from "react-i18next";
 
 export interface ChatMessagesReplayProps {
     classRoomReplayStore: ClassRoomReplayStore;
@@ -10,6 +11,7 @@ export interface ChatMessagesReplayProps {
 export const ChatMessagesReplay = observer<ChatMessagesReplayProps>(function ChatMessagesReplay({
     classRoomReplayStore,
 }) {
+    const { t } = useTranslation();
     return (
         <div className="chat-messages-wrap">
             <div className="chat-messages">
@@ -18,7 +20,7 @@ export const ChatMessagesReplay = observer<ChatMessagesReplayProps>(function Cha
                         {<ChatMessageListReplay classRoomReplayStore={classRoomReplayStore} />}
                     </div>
                 ) : (
-                    <div className="chat-messages-default">无消息...</div>
+                    <div className="chat-messages-default">{t("no-message-tips")}</div>
                 )}
             </div>
         </div>
