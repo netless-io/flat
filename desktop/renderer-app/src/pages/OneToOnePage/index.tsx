@@ -170,13 +170,13 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     <>
                         <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.pauseClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Pausing
-                                ? "暂停中..."
-                                : "暂停上课"}
+                                ? t("pausing")
+                                : t("pause")}
                         </TopBarRoundBtn>
                         <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
-                                ? "结束中..."
-                                : "结束上课"}
+                                ? t("ending")
+                                : t("end-the-class")}
                         </TopBarRoundBtn>
                     </>
                 );
@@ -186,13 +186,13 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     <>
                         <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.resumeClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
-                                ? "开始中..."
-                                : "恢复上课"}
+                                ? t("starting")
+                                : t("resume")}
                         </TopBarRoundBtn>
                         <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
-                                ? "结束中..."
-                                : "结束上课"}
+                                ? t("ending")
+                                : t("end-the-class")}
                         </TopBarRoundBtn>
                     </>
                 );
@@ -205,8 +205,8 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     >
                         <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
-                                ? "开始中..."
-                                : "开始上课"}
+                                ? t("starting")
+                                : t("start")}
                         </TopBarRoundBtn>
                     </RecordHintTips>
                 );
@@ -308,10 +308,10 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         }
         if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
             room.setViewMode(ViewMode.Broadcaster);
-            void message.success("其他用户将跟随您的视角");
+            void message.success(t("follow-your-perspective-tips"));
         } else {
             room.setViewMode(ViewMode.Freedom);
-            void message.success("其他用户将停止跟随您的视角");
+            void message.success(t("Stop-following-your-perspective-tips"));
         }
     }
 

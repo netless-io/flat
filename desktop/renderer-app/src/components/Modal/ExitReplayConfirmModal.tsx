@@ -1,6 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Modal } from "antd";
+import { useTranslation } from "react-i18next";
 
 interface ExitReplayConfirmModalProps {
     visible: boolean;
@@ -10,21 +11,22 @@ interface ExitReplayConfirmModalProps {
 
 export const ExitReplayConfirmModal = observer<ExitReplayConfirmModalProps>(
     function ExitReplayConfirmModal({ visible, onCancel, onConfirm }) {
+        const { t } = useTranslation();
         return (
             <Modal
-                title={"退出回放"}
+                title={t("exit-replay")}
                 visible={visible}
                 onCancel={onCancel}
                 footer={[
                     <Button key="exit-cancel" onClick={onCancel}>
-                        取消
+                        {t("cancel")}
                     </Button>,
                     <Button key="exit-confirm" onClick={onConfirm}>
-                        确定
+                        {t("confirm")}
                     </Button>,
                 ]}
             >
-                确定退出回放？
+                {t("exit-reply-tips")}
             </Modal>
         );
     },

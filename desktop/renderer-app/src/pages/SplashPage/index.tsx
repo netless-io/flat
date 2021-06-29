@@ -9,6 +9,7 @@ import logoSVG from "../../assets/image/logo.svg";
 import "./SplashPage.less";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { useTranslation } from "react-i18next";
 
 enum LoginStatusType {
     Idle = "Idle",
@@ -20,6 +21,7 @@ enum LoginStatusType {
 export const SplashPage = observer<{}>(function SplashPage() {
     useWindowSize("Splash");
 
+    const { t } = useTranslation();
     const [loginStatus, updateLoginStatus] = useState(LoginStatusType.Idle);
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
@@ -80,7 +82,7 @@ export const SplashPage = observer<{}>(function SplashPage() {
                 })}
             >
                 <img src={logoSVG} alt="flat logo" />
-                <span>在线互动 让想法同步</span>
+                <span>{t("online-interaction-to-synchronize-ideas")}</span>
             </div>
         </div>
     );

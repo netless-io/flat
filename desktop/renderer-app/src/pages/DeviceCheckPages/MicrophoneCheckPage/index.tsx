@@ -12,6 +12,7 @@ import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { useHistory, useLocation } from "react-router-dom";
 import { DeviceCheckResults, DeviceCheckState } from "../utils";
 import { routeConfig } from "../../../route-config";
+import { useTranslation } from "react-i18next";
 
 interface SpeakerVolumeProps {
     percent: number;
@@ -27,6 +28,7 @@ const SpeakerVolume = observer<SpeakerVolumeProps>(function SpeakerVolume({ perc
 });
 
 export const MicrophoneCheckPage = (): React.ReactElement => {
+    const { t } = useTranslation();
     const rtcEngine = useRTCEngine();
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
@@ -88,16 +90,17 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
         };
     }, [currentDeviceID, rtcEngine]);
 
+    console.log("render");
     return (
         <DeviceCheckLayoutContainer>
             <div className="speaker-check-container">
-                <p>麦克风</p>
+                <p>{t("microphone")}</p>
                 <DeviceSelect
                     devices={devices}
                     currentDeviceID={currentDeviceID}
                     onChange={setCurrentDeviceID}
                 />
-                <p>试听声音</p>
+                <p>{t("audition-sound")}</p>
                 <SpeakerVolume percent={currentVolume} />
                 <div className="speaker-check-btn-container">
                     <Button
@@ -106,7 +109,7 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
                             showResultModal(true);
                         }}
                     >
-                        不能看到
+                        {t("unable-to-see")}
                     </Button>
                     <Button
                         type="primary"
@@ -115,7 +118,7 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
                             showResultModal(true);
                         }}
                     >
-                        能看到
+                        {t("able-to-see")}
                     </Button>
                 </div>
                 <Modal
@@ -129,16 +132,16 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
                     onCancel={() => showResultModal(false)}
                 >
                     <div className="table">
-                        <div className="left">系统检测</div>{" "}
+                        <div className="left">{t("system-testing")}</div>{" "}
                         <div className="middle">{renderDescription("systemCheck")}</div>
                         <div className="right">{renderSummary("systemCheck")}</div>
-                        <div className="left">摄像头检测</div>{" "}
+                        <div className="left">{t("camera-testing")}</div>{" "}
                         <div className="middle">{renderDescription("cameraCheck")}</div>
                         <div className="right">{renderSummary("cameraCheck")}</div>
-                        <div className="left">扬声器检测</div>{" "}
+                        <div className="left">{t("headphone-testing")}</div>{" "}
                         <div className="middle">{renderDescription("speakerCheck")}</div>
                         <div className="right">{renderSummary("speakerCheck")}</div>
-                        <div className="left">麦克风检测</div>{" "}
+                        <div className="left">{t("microphone-testing")}</div>{" "}
                         <div className="middle">{renderDescription("microphoneCheck")}</div>
                         <div className="right">{renderSummary("microphoneCheck")}</div>
                     </div>
@@ -156,14 +159,14 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
             return (
                 <div className="device-check-modal-title">
                     <img src={successSVG} alt="success" />
-                    设备检测成功
+                    {t("device-condition-is-normal")}
                 </div>
             );
         } else {
             return (
                 <div className="device-check-modal-title">
                     <img src={infoSVG} alt="info" />
-                    设备检测异常
+                    {t("device-condition-is-abnormal")}
                 </div>
             );
         }
@@ -173,7 +176,7 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
         if (!isSuccess) {
             return (
                 <Button type="primary" onClick={resetCheck} className="device-check-modal-btn">
-                    重新检测
+                    {t("test-again")}
                 </Button>
             );
         } else {
@@ -183,7 +186,7 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
                     onClick={() => showResultModal(false)}
                     className="device-check-modal-btn"
                 >
-                    完成
+                    {t("ok")}
                 </Button>
             );
         }
@@ -194,11 +197,11 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
             key === "microphoneCheck" ? micCheckState : location.state?.[key];
 
         if (!deviceCheckState) {
-            return <span className="red">未检测</span>;
+            return <span className="red">{t("Untested")}</span>;
         }
 
         if (deviceCheckState.hasError) {
-            return <span className="red">{deviceCheckState.content || "检测失败"}</span>;
+            return <span className="red">{deviceCheckState.content || t("testing-failed")}</span>;
         }
 
         return <span className="success">{deviceCheckState.content}</span>;
@@ -209,8 +212,8 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
             key === "microphoneCheck" ? micCheckState : location.state?.[key];
 
         if (!deviceCheckState || deviceCheckState.hasError) {
-            return <span className="red">异常</span>;
+            return <span className="red">{t("abnormal")}</span>;
         }
-        return <span className="green">正常</span>;
+        return <span className="green">{t("normal")}</span>;
     }
 };

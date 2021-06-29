@@ -16,8 +16,10 @@ import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { runtime } from "../../../utils/runtime";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckResults } from "../utils";
+import { useTranslation } from "react-i18next";
 
 export const SpeakerCheckPage = (): React.ReactElement => {
+    const { t } = useTranslation();
     const rtcEngine = useRTCEngine();
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
@@ -72,19 +74,19 @@ export const SpeakerCheckPage = (): React.ReactElement => {
         <DeviceCheckLayoutContainer>
             <div className="speaker-check-container">
                 <div className="speaker-check-inner">
-                    <p>扬声器</p>
+                    <p>{t("headphone")}</p>
                     <DeviceSelect
                         devices={devices}
                         currentDeviceID={currentDeviceID}
                         onChange={setCurrentDeviceID}
                     />
-                    <p>试听声音</p>
+                    <p>{t("audition-sound")}</p>
                     <Button icon={<img src={isPlaying ? stopSVG : playSVG} />} onClick={togglePlay}>
                         BWV 988 - 05 - Variatio 4 a 1 Clav.mp3
                     </Button>
                 </div>
                 <div className="speaker-audio-check-container">
-                    <p>音量</p>
+                    <p>{t("volume")}</p>
                     <div className="speaker-audio-check-inner">
                         <img src={muteSVG} />
                         <Slider value={currentVolume} onChange={setCurrentVolume} />
@@ -92,9 +94,9 @@ export const SpeakerCheckPage = (): React.ReactElement => {
                     </div>
                 </div>
                 <div className="speaker-btn-container">
-                    <Button onClick={checkFail}>不能听到</Button>
+                    <Button onClick={checkFail}>{t("unable-to-hear")}</Button>
                     <Button onClick={checkSuccess} type="primary">
-                        能听到
+                        {t("able-to-hear")}
                     </Button>
                 </div>
             </div>

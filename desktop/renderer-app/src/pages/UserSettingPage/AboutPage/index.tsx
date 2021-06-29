@@ -9,15 +9,17 @@ import { runtime } from "../../../utils/runtime";
 import { ipcSyncByApp } from "../../../utils/ipc";
 import { AppUpgradeModal } from "../../../components/AppUpgradeModal";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
+import { useTranslation } from "react-i18next";
 
 export const AboutPage = (): React.ReactElement => {
+    const { t } = useTranslation();
     const sp = useSafePromise();
     const [newVersion, setNewVersion] = useState<string>();
 
     const checkUpgradeVersion = (): void => {
         void sp(ipcSyncByApp("get-update-info")).then(data => {
             if (!data.hasNewVersion || data.version === runtime.appVersion) {
-                void message.info("当前已是最新版本");
+                void message.info(t("latest-version-tips"));
             } else {
                 setNewVersion(data.version);
             }
@@ -33,7 +35,7 @@ export const AboutPage = (): React.ReactElement => {
                     <div className="flat-version">Version {runtime.appVersion}</div>
                     <Button type="primary" onClick={checkUpgradeVersion}>
                         <img src={updateSVG} />
-                        检查更新
+                        {t("check-updates")}
                     </Button>
                 </div>
                 {/* <div className="about-page-bottom-container">

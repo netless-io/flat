@@ -9,8 +9,10 @@ import { useRTCEngine } from "../../../utils/hooks/useRTCEngine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckResults } from "../utils";
+import { useTranslation } from "react-i18next";
 
 export const CameraCheckPage = (): React.ReactElement => {
+    const { t } = useTranslation();
     const rtcEngine = useRTCEngine();
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
@@ -62,7 +64,7 @@ export const CameraCheckPage = (): React.ReactElement => {
     return (
         <DeviceCheckLayoutContainer>
             <div className="camera-check-container">
-                <p>摄像头</p>
+                <p>{t("camera")}</p>
                 <DeviceSelect
                     devices={devices}
                     currentDeviceID={currentDeviceID}
@@ -70,9 +72,9 @@ export const CameraCheckPage = (): React.ReactElement => {
                 />
                 <div className="camera-check-info" ref={cameraStream} />
                 <div className="camera-check-btn">
-                    <Button onClick={checkFail}>不能看到</Button>
+                    <Button onClick={checkFail}>{t("unable-to-see")}</Button>
                     <Button onClick={checkSuccess} type="primary">
-                        能看到
+                        {t("able-to-see")}
                     </Button>
                 </div>
             </div>

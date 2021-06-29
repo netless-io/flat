@@ -180,7 +180,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
             </div>
         ) : classRoomReplayStore.isReady ? null : (
             <div className="replay-overlay">
-                <LoadingPage text={t("waiting-for-record")} />
+                <LoadingPage />
             </div>
         );
     }
