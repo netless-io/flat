@@ -16,7 +16,7 @@ export function useURLAppLauncher(): void {
     const pushHistory = usePushHistory();
     const location = useLocation();
 
-    const currentRoomUUID = (): string | null => {
+    const inClassRoom = (): { roomUUID: string } | null => {
         const classPages: ClassRouteName[] = [
             RouteNameType.SmallClassPage,
             RouteNameType.OneToOnePage,
@@ -29,8 +29,8 @@ export function useURLAppLauncher(): void {
                 routeConfig[name].path,
             );
 
-            if (result && result.params.roomUUID) {
-                return result.params.roomUUID;
+            if (result) {
+                return result.params;
             }
         }
 
@@ -47,11 +47,10 @@ export function useURLAppLauncher(): void {
             return;
         }
 
-        if (currentRoomUUID() === urlProtocolStore.toJoinRoomUUID) {
-            return;
+        if (inClassRoom()?.roomUUID !== urlProtocolStore.toJoinRoomUUID) {
+            void joinRoomHandler(urlProtocolStore.toJoinRoomUUID, pushHistory);
         }
 
-        void joinRoomHandler(urlProtocolStore.toJoinRoomUUID, pushHistory);
         urlProtocolStore.clearToJoinRoomUUID();
     });
 }
