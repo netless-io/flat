@@ -82,11 +82,7 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
         {
             key: "logout",
             icon: (): React.ReactNode => <img src={logoutSVG} />,
-            title: (
-                <span className="logout-title" onClick={() => localStorage.clear()}>
-                    退出登录
-                </span>
-            ),
+            title: <span className="logout-title">退出登录</span>,
             route: routeConfig[RouteNameType.LoginPage].path,
         },
     ];
@@ -99,7 +95,11 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
 
     const globalStore = useContext(GlobalStoreContext);
 
-    const historyPush = (mainPageLayoutItem: MainPageLayoutItem): void => {
+    const onMenuItemClick = (mainPageLayoutItem: MainPageLayoutItem): void => {
+        if (mainPageLayoutItem.key === "logout") {
+            globalStore.logout();
+        }
+
         if (mainPageLayoutItem.route.startsWith("/")) {
             onRouteChange
                 ? onRouteChange(mainPageLayoutItem)
@@ -115,7 +115,7 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
             sideMenuFooter={sideMenuFooter}
             popMenu={popMenu}
             subMenu={subMenu}
-            onClick={historyPush}
+            onClick={onMenuItemClick}
             activeKeys={activeKeys}
             avatarSrc={globalStore.userInfo?.avatar ?? ""}
             userName={globalStore.userInfo?.name ?? ""}

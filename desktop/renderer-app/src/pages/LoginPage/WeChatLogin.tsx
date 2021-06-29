@@ -55,6 +55,7 @@ export const WeChatLogin = observer(function WeChatLogin() {
             globalStore.updateUserInfo(authData);
             pushHistory(RouteNameType.HomePage);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [authData, globalStore, pushHistory]);
 
     return (

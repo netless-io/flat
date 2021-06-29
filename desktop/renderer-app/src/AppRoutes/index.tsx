@@ -7,6 +7,7 @@ import { AppRouteContainer } from "./AppRouteContainer";
 
 export const AppRoutes: FC = () => {
     const { t } = useTranslation();
+
     return (
         <HashRouter>
             <LastLocationProvider watchOnlyPathname>
@@ -20,6 +21,7 @@ export const AppRoutes: FC = () => {
                                 path={path}
                                 render={routeProps => (
                                     <AppRouteContainer
+                                        key={routeProps.location.pathname}
                                         Comp={component}
                                         title={t("title-" + title)}
                                         routeProps={routeProps}

@@ -40,7 +40,7 @@ export const JoinPage = observer(function JoinPage() {
 
         checkLogin();
 
-        window.location.href = "x-agora-flat-client://active";
+        window.location.href = `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -107,7 +107,7 @@ export const JoinPage = observer(function JoinPage() {
                 </div>
                 <div className="join-page-content-container-open-flat">
                     <span>已经安装 Flat ? </span>
-                    <a href="x-agora-flat-client://active">立即打开</a>
+                    <a href={`x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`}>立即打开</a>
                 </div>
             </div>
             <div className="join-page-footer-container">

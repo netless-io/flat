@@ -63,8 +63,6 @@ function getPopupContainer(trigger?: HTMLElement): HTMLElement {
     return trigger?.parentElement || document.body;
 }
 
-const initUI = (): void => {
+export const initUI = (): void => {
     ReactDOM.render(<App />, document.getElementById("root"));
 };
-
-export default initUI;

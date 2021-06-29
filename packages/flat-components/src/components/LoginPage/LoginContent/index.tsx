@@ -50,8 +50,9 @@ export const LoginContent: React.FC<LoginContentProps> = ({ onLogin }) => {
                                 defaultChecked={isChecked}
                                 onClick={() => setIsChecked(!isChecked)}
                             >
-                                {t("have-read-and-agree")} <a href="">{t("privacy-agreement")}</a>{" "}
-                                {t("and")} <a href="">{t("service-policy")}</a>
+                                {t("have-read-and-agree")}{" "}
+                                <a href={void 0}>{t("privacy-agreement")}</a> {t("and")}{" "}
+                                <a href={void 0}>{t("service-policy")}</a>
                             </Checkbox>
                         </div>
                     </div>
