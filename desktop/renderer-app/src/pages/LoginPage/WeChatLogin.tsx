@@ -13,6 +13,7 @@ import { WECHAT } from "../../constants/Process";
 import { RouteNameType } from "../../route-config";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { usePushHistory } from "../../utils/routes";
+import { useTranslation } from "react-i18next";
 
 export const WeChatLogin = observer(function WeChatLogin() {
     const globalStore = useContext(GlobalStoreContext);
@@ -20,6 +21,8 @@ export const WeChatLogin = observer(function WeChatLogin() {
     const [authData, setAuthData] = useState<UserInfo | null>(null);
     const pushHistory = usePushHistory();
     const sp = useSafePromise();
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         const authUUID = uuidv4();
@@ -70,7 +73,7 @@ export const WeChatLogin = observer(function WeChatLogin() {
             <div className="wechat-login-spin">
                 <LoadingOutlined spin />
             </div>
-            <span className="wechat-login-text">请使用微信扫描二维码登录</span>
+            <span className="wechat-login-text">{t("wechat-login-tips")}</span>
         </div>
     );
 });

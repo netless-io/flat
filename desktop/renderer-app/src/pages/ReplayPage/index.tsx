@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps, useParams, useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { ErrorPage, LoadingPage } from "flat-components";
 import PlayerController from "@netless/player-controller";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
@@ -40,7 +39,6 @@ export type ReplayPageState = {
 export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     useWindowSize("Replay");
 
-    const { t } = useTranslation();
     const whiteboardElRef = useRef<HTMLDivElement>(null);
     const videoElRef = useRef<HTMLVideoElement>(null);
     const [showExitReplayModal, setShowExitReplayModal] = useState(false);
@@ -180,7 +178,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
             </div>
         ) : classRoomReplayStore.isReady ? null : (
             <div className="replay-overlay">
-                <LoadingPage text={t("waiting-for-record")} />
+                <LoadingPage />
             </div>
         );
     }

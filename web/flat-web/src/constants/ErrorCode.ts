@@ -26,28 +26,28 @@ export enum RequestErrorCode {
 
 export const RequestErrorMessage = {
     // request parameter error
-    [RequestErrorCode.ParamsCheckFailed]: "参数错误",
+    [RequestErrorCode.ParamsCheckFailed]: "parameter-error",
     // this error may occur in high concurrency situations, the request should be retried
-    [RequestErrorCode.ServerFail]: "请求失败",
+    [RequestErrorCode.ServerFail]: "request-failed",
     // server operation failed, possibly due to database failure or other reasons
-    [RequestErrorCode.CurrentProcessFailed]: "请求出错",
-    [RequestErrorCode.NotPermission]: "没有权限操作",
-    [RequestErrorCode.NeedLoginAgain]: "凭证已过期，请重新登录",
-    [RequestErrorCode.UnsupportedPlatform]: "不支持的登录平台",
-    [RequestErrorCode.JWTSignFailed]: "认证信息校验失败，请重新登录",
+    [RequestErrorCode.CurrentProcessFailed]: "request-error",
+    [RequestErrorCode.NotPermission]: "no-permission",
+    [RequestErrorCode.NeedLoginAgain]: "voucher-expired",
+    [RequestErrorCode.UnsupportedPlatform]: "unsupported-login-platforms",
+    [RequestErrorCode.JWTSignFailed]: "authentication-information-verification-failed",
 
-    [RequestErrorCode.RoomNotFound]: "房间不存在",
-    [RequestErrorCode.RoomIsEnded]: "房间已结束",
-    [RequestErrorCode.RoomIsRunning]: "房间正在进行中",
-    [RequestErrorCode.RoomNotIsRunning]: "房间不在进行中",
-    [RequestErrorCode.RoomNotIsEnded]: "房间还未结束",
-    [RequestErrorCode.RoomNotIsIdle]: "房间还未开始",
+    [RequestErrorCode.RoomNotFound]: "room-does-not-exist",
+    [RequestErrorCode.RoomIsEnded]: "the-room-has-ended",
+    [RequestErrorCode.RoomIsRunning]: "the-room-is-in-progress",
+    [RequestErrorCode.RoomNotIsRunning]: "the-room-is-not-in-progress",
+    [RequestErrorCode.RoomNotIsEnded]: "the-room-is-not-over-yet",
+    [RequestErrorCode.RoomNotIsIdle]: "the-room-has-not-yet-started",
 
-    [RequestErrorCode.PeriodicNotFound]: "周期性房间不存在",
-    [RequestErrorCode.PeriodicIsEnded]: "周期性房间已结束",
-    [RequestErrorCode.PeriodicSubRoomHasRunning]: "周期性子房间不存在",
+    [RequestErrorCode.PeriodicNotFound]: "periodic-rooms-do-not-exist",
+    [RequestErrorCode.PeriodicIsEnded]: "periodic-rooms-have-ended",
+    [RequestErrorCode.PeriodicSubRoomHasRunning]: "periodic-sub-rooms-do-not-exist",
 
-    [RequestErrorCode.UserNotFound]: "用户不存在",
+    [RequestErrorCode.UserNotFound]: "user-does-not-exist",
 
-    [RequestErrorCode.RecordNotFound]: "回放不存在",
+    [RequestErrorCode.RecordNotFound]: "replay-does-not-exist",
 };

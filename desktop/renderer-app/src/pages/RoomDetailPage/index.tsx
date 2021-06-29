@@ -15,10 +15,12 @@ import { joinRoomHandler } from "../utils/joinRoomHandler";
 import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
 import { message } from "antd";
 import { INVITE_BASEURL } from "../../constants/Process";
+import { useTranslation } from "react-i18next";
 
 export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
     useWindowSize("Main");
 
+    const { t } = useTranslation();
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
     const pushHistory = usePushHistory();
     const history = useHistory();
@@ -66,7 +68,7 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
             errorTips(err);
         }
 
-        void message.success("已取消该房间");
+        void message.success(t("the-room-has-been-cancelled"));
 
         history.goBack();
     }
@@ -114,13 +116,17 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
                             <h1 className="room-detail-page-header-title">{roomInfo.title}</h1>
                             {periodicUUID && (
                                 <>
-                                    <span className="room-detail-page-header-sign">周期</span>
+                                    <span className="room-detail-page-header-sign">
+                                        {t("periodic")}
+                                    </span>
                                     {roomInfo.roomStatus !== RoomStatus.Stopped && (
                                         <div
                                             className="room-detail-page-header-right"
                                             onClick={jumpToPeriodicRoomDetailPage}
                                         >
-                                            查看全部 {roomInfo.count} 场房间
+                                            {t("view-all-rooms-in-periodic-rooms", {
+                                                count: roomInfo.count,
+                                            })}
                                         </div>
                                     )}
                                 </>

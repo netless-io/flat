@@ -12,10 +12,12 @@ import { routeConfig, RouteNameType } from "../../route-config";
 import { useHistory, useLocation } from "react-router-dom";
 import { DeviceCheckState } from "./utils";
 import { MainPageLayoutItem } from "flat-components";
+import { useTranslation } from "react-i18next";
 
 export const DeviceCheckLayoutContainer: React.FC = ({ children }): React.ReactElement => {
     useWindowSize("Main");
 
+    const { t } = useTranslation();
     const history = useHistory<DeviceCheckState>();
     const location = useLocation<DeviceCheckState | undefined>();
 
@@ -23,25 +25,25 @@ export const DeviceCheckLayoutContainer: React.FC = ({ children }): React.ReactE
         {
             key: routeConfig[RouteNameType.SystemCheckPage].path,
             icon: (): React.ReactNode => <img src={systemSVG} />,
-            title: "系统检测",
+            title: t("system-testing"),
             route: routeConfig[RouteNameType.SystemCheckPage].path,
         },
         {
             key: routeConfig[RouteNameType.CameraCheckPage].path,
             icon: (): React.ReactNode => <img src={cameraSVG} />,
-            title: "摄像头检测",
+            title: t("camera-testing"),
             route: routeConfig[RouteNameType.CameraCheckPage].path,
         },
         {
             key: routeConfig[RouteNameType.SpeakerCheckPage].path,
             icon: (): React.ReactNode => <img src={speakerSVG} />,
-            title: "扬声器检测",
+            title: t("headphone-testing"),
             route: routeConfig[RouteNameType.SpeakerCheckPage].path,
         },
         {
             key: routeConfig[RouteNameType.MicrophoneCheckPage].path,
             icon: (): React.ReactNode => <img src={microphoneSVG} />,
-            title: "麦克风检测",
+            title: t("microphone-testing"),
             route: routeConfig[RouteNameType.MicrophoneCheckPage].path,
         },
     ];

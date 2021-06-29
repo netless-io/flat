@@ -17,6 +17,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { MainPageLayout, MainPageLayoutItem, MainPageLayoutProps } from "flat-components";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
+import { useTranslation } from "react-i18next";
 
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];
@@ -30,6 +31,7 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
     activeKeys,
     onRouteChange,
 }) => {
+    const { t } = useTranslation();
     const sideMenu = [
         {
             key: routeConfig[RouteNameType.HomePage].path,
@@ -64,25 +66,25 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
         {
             key: routeConfig[RouteNameType.GeneralSettingPage].path,
             icon: (): React.ReactNode => <img src={settingSVG} />,
-            title: "个人设置",
+            title: t("settings"),
             route: routeConfig[RouteNameType.GeneralSettingPage].path,
         },
         {
             key: "getGitHubCode",
             icon: (): React.ReactNode => <img src={gitHubSVG} />,
-            title: "获取源码",
+            title: t("source-code"),
             route: "https://github.com/netless-io/flat/",
         },
         {
             key: "feedback",
             icon: (): React.ReactNode => <img src={feedbackSVG} />,
-            title: "反馈意见",
+            title: t("feedback"),
             route: "https://github.com/netless-io/flat/issues",
         },
         {
             key: "logout",
             icon: (): React.ReactNode => <img src={logoutSVG} />,
-            title: <span className="logout-title">退出登录</span>,
+            title: <span className="logout-title">{t("logout")}</span>,
             route: routeConfig[RouteNameType.LoginPage].path,
         },
     ];

@@ -207,21 +207,21 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     function renderClassMode(): React.ReactNode {
         return classRoomStore.classMode === ClassModeType.Lecture ? (
             <TopBarRoundBtn
-                title="当前为讲课模式"
+                title={t("lecture-mode")}
                 dark
                 iconName="class-interaction"
                 onClick={classRoomStore.toggleClassMode}
             >
-                切换至互动模式
+                {t("switch-to-interactive-mode")}
             </TopBarRoundBtn>
         ) : (
             <TopBarRoundBtn
-                title="当前为互动模式"
+                title={t("interactive-mode")}
                 dark
                 iconName="class-lecture"
                 onClick={classRoomStore.toggleClassMode}
             >
-                切换至讲课模式
+                {t("switch-to-lecture-mode")}
             </TopBarRoundBtn>
         );
     }
@@ -238,13 +238,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         {renderClassMode()}
                         <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.pauseClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Pausing
-                                ? "暂停中..."
-                                : "暂停上课"}
+                                ? t("pausing")
+                                : t("pause")}
                         </TopBarRoundBtn>
                         <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
-                                ? "结束中..."
-                                : "结束上课"}
+                                ? t("ending")
+                                : t("end-the-class")}
                         </TopBarRoundBtn>
                     </>
                 );
@@ -255,13 +255,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         {renderClassMode()}
                         <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.resumeClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
-                                ? "开始中..."
-                                : "恢复上课"}
+                                ? t("starting")
+                                : t("resume")}
                         </TopBarRoundBtn>
                         <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
-                                ? "结束中..."
-                                : "结束上课"}
+                                ? t("ending")
+                                : t("end-the-class")}
                         </TopBarRoundBtn>
                     </>
                 );
@@ -274,8 +274,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     >
                         <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
                             {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
-                                ? "开始中..."
-                                : "开始上课"}
+                                ? t("starting")
+                                : t("start")}
                         </TopBarRoundBtn>
                     </RecordHintTips>
                 );
@@ -371,10 +371,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         }
         if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
             room.setViewMode(ViewMode.Broadcaster);
-            void message.success("其他用户将跟随您的视角");
+            void message.success(t("follow-your-perspective-tips"));
         } else {
             room.setViewMode(ViewMode.Freedom);
-            void message.success("其他用户将停止跟随您的视角");
+            void message.success(t("Stop-following-your-perspective-tips"));
         }
     }
 
