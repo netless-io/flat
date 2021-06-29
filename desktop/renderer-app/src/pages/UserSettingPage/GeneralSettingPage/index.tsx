@@ -1,6 +1,7 @@
 import "./style.less";
 
 import { Checkbox, Radio } from "antd";
+import type { CheckboxChangeEvent } from "antd/lib/checkbox";
 import React, { useEffect, useState } from "react";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { ipcSyncByApp, ipcAsyncByApp } from "../../../utils/ipc";
@@ -12,7 +13,7 @@ enum SelectLanguage {
 }
 
 export const GeneralSettingPage = (): React.ReactElement => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [openAtLogin, setOpenAtLogin] = useState(false);
 
     useEffect(() => {
@@ -32,6 +33,11 @@ export const GeneralSettingPage = (): React.ReactElement => {
         });
     };
 
+    async function changeLanguage(event: CheckboxChangeEvent): Promise<void> {
+        const language: SelectLanguage = event.target.value;
+        await i18n.changeLanguage(language === SelectLanguage.Chinese ? "zh-CN" : "en");
+    }
+
     return (
         <UserSettingLayoutContainer>
             <div className="general-setting-container">
@@ -42,11 +48,16 @@ export const GeneralSettingPage = (): React.ReactElement => {
                 </div>
                 <div className="general-setting-select-language">
                     <span>{t("language-settings")}</span>
-                    <Radio.Group defaultValue={SelectLanguage.Chinese}>
+                    <Radio.Group
+                        defaultValue={
+                            i18n.language === "zh-CN"
+                                ? SelectLanguage.Chinese
+                                : SelectLanguage.English
+                        }
+                        onChange={changeLanguage}
+                    >
                         <Radio value={SelectLanguage.Chinese}>{t("chinese")}</Radio>
-                        <Radio disabled value={SelectLanguage.English}>
-                            English
-                        </Radio>
+                        <Radio value={SelectLanguage.English}>English</Radio>
                     </Radio.Group>
                 </div>
             </div>
