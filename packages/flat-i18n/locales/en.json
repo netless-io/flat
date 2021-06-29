@@ -60,9 +60,9 @@
   "the-room-has-ended-and-is-about-to-exit": "The room has ended and is about to exit...",
   "you-have-entered-the-room-at-another-device": "You have entered the room at another device",
   "class-picker-text": {
-    "BigClass": "1 teacher for a large number of students",
+    "BigClass": "Large number of students",
     "OneToOne": "1 teacher and 1 student",
-    "SmallClass": "1 teacher for up to 16 students"
+    "SmallClass": "Up to 16 students"
   },
   "class-room-type": {
     "BigClass": "Large Class",
