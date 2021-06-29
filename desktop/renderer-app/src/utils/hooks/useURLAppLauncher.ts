@@ -43,7 +43,7 @@ export function useURLAppLauncher(): void {
         }
 
         if (!globalStore.userUUID) {
-            pushHistory(RouteNameType.LoginPage, {}, urlProtocolStore.toJoinRoomUUID);
+            pushHistory(RouteNameType.LoginPage, {});
             return;
         }
 
