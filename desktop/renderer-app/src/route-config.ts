@@ -48,6 +48,11 @@ export enum RouteNameType {
     AboutPage = "AboutPage",
 }
 
+export type ClassRouteName =
+    | RouteNameType.SmallClassPage
+    | RouteNameType.OneToOnePage
+    | RouteNameType.BigClassPage;
+
 export const routeConfig = {
     [RouteNameType.SplashPage]: {
         title: "SplashPage",
