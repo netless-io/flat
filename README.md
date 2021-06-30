@@ -53,32 +53,23 @@
 
 ## Development
 
-UI and business logic are separated in Flat. You can run flat with [full build](#full-build) or quickly develop UI via [Storybook](#storybook).
-
-## Full Build
-
-Note that full-built Flat requires [Agora Flat Server][flat-server] backend.
-
-### Setup Environment
-
-1. Create two files `config/.env.development.local` and `config/.env.production.local`.
-1. Add environment variables following the `config/.env` format.
-
--   See [Environment Variables Reference](#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%80%BC%E5%8F%82%E8%80%83) bellow.
--   See [Files under version control](https://github.com/kerimdzhanov/dotenv-flow#files-under-version-control) for more about _.env.\*_ naming.
+UI and business logic are separated in Flat. You can run flat with [development mode](#development-mode) or quickly develop UI via [Storybook](#storybook).
 
 ### Installation
 
-1. <kbd>Fork</kbd> this repo so that Github Actions can work properly.
-2. Then `git clone` the forked repo to local.
-3. At project root：
-    ```shell
-    yarn run bootstrap
-    ```
+At project root:
+
+```shell
+yarn run bootstrap
+```
 
 ### Development Mode
 
-Run `yarn start` at project root.
+At project root:
+
+```shell
+yarn run start
+```
 
 ### Package Executable
 
