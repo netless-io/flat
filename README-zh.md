@@ -19,7 +19,8 @@
 
 ## 产品体验
 
--   [下载地址][flat-homepage]
+-   [快速体验 Flat Web][flat-web]
+-   [APP 下载地址][flat-homepage]
 -   [Flat 组件库 Storybook][flat-storybook]
 
 ## 特性
@@ -99,7 +100,8 @@ yarn run start
 | WINDOWS_CODE_SIGNING_CA_PATH         | Windows 签名证书文件路径，可选，留空时不做签名     | 相对路径，相对于 `desktop/main-app` 目录                         |
 | WINDOWS_CODE_SIGNING_CA_PASSWORD     | Windows 签名证书密码，可选，留空时不做签名         |                                                                  |
 
-[flat-homepage]: https://flat.whiteboard.agora.io/
+[flat-homepage]: https://flat.whiteboard.agora.io/#download
+[flat-web]: https://flat-web.whiteboard.agora.io/
 [flat-server]: https://github.com/netless-io/flat-server
 [flat-storybook]: https://netless-io.github.io/flat/storybook/
 [open-wechat]: https://open.weixin.qq.com/

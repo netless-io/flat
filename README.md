@@ -18,9 +18,9 @@
     <img src="./assets/flat-showcase-en.png">
 </div>
 
-
 ## Try it now
 
+-   [Start using Flat Web][flat-web]
 -   [Download artifact][flat-homepage]
 -   [Flat Components Storybook][flat-storybook]
 
@@ -101,8 +101,8 @@ Many Flat components UI can be quickly viewed and developed via Storybook ([Onli
 | WINDOWS_CODE_SIGNING_CA_PATH         | Windows Code Signing CA file path. Skip if not provided  | Relative to `desktop/main-app`                                                      |
 | WINDOWS_CODE_SIGNING_CA_PASSWORD     | Windows Code Signing CA password. Skip if not provided   |                                                                                     |
 
-[flat-homepage]: https://flat.whiteboard.agora.io/
-[flat-server]: https://github.com/netless-io/flat-server
+[flat-homepage]: https://flat.whiteboard.agora.io/en/#download
+[flat-web]: https://flat-web.whiteboard.agora.io/
 [flat-storybook]: https://netless-io.github.io/flat/storybook/
 [open-wechat]: https://open.weixin.qq.com/
 [netless-auth]: https://docs.agora.io/en/whiteboard/generate_whiteboard_token_at_app_server?platform=RESTful
