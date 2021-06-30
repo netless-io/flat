@@ -51,31 +51,23 @@
 
 ## 本地开发
 
-在 Flat 中 UI 逻辑与业务逻辑分开开发。可通过[完整配置](#%E5%AE%8C%E6%95%B4%E8%B7%91%E8%B5%B7%E9%A1%B9%E7%9B%AE)跑起项目，也可以通过 [Storybook](#storybook) 快速查看与开发部分 UI。
-
-## 完整跑起项目
-
-注意完整跑起项目需要配合 [Agora Flat Server][flat-server] 后端运行。
-
-### 配置环境变量
-
-1. 创建两个文件 `config/.env.development.local` 和 `config/.env.production.local`。
-2. 按照文件 `config/.env` 的格式添加环境变量。
-
--   环境变量值可参考下方: [环境变量值参考](#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%80%BC%E5%8F%82%E8%80%83)。
--   关于 _.env.\*_ 命名规范可参看: [Files under version control](https://github.com/kerimdzhanov/dotenv-flow#files-under-version-control)
+在 Flat 中 UI 逻辑与业务逻辑分开开发。可通过 [开发模式](#开发模式) 跑起项目，也可以通过 [Storybook](#storybook) 快速查看与开发部分 UI。
 
 ### 安装
 
-1. 因涉及到 Github Action 等配置，请先右上方 <kbd>Fork</kbd> 此项目，然后再 `git clone` fork 出来的项目克隆到本地。
-2. 在项目根目录执行：
-    ```shell
-    yarn run bootstrap
-    ```
+在项目根目录执行：
+
+```shell
+yarn run bootstrap
+```
 
 ### 开发模式
 
-项目根执行 `yarn start` 即可。
+在项目根目录执行：
+
+```shell
+yarn run start
+```
 
 ### 打包可执行文件
 
