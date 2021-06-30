@@ -222,10 +222,15 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
         setRemoveHistoryVisible(false);
     }
 
-    function onCopy(text: string): void {
-        navigator.clipboard.writeText(text);
-        void message.success(t("copy-success"));
-        hideInviteModal();
+    async function onCopy(text: string): Promise<void> {
+        try {
+            await navigator.clipboard.writeText(text);
+            void message.success(t("copy-success"));
+        } catch {
+            void message.error(t("copy-fail"));
+        } finally {
+            hideInviteModal();
+        }
     }
 
     async function removeRoomHandler(isCancelAll: boolean): Promise<void> {

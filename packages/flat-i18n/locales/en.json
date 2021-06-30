@@ -134,6 +134,7 @@
   "join-room": "Join room",
   "modify-room": "Modify",
   "copy-success": "Copy successfully",
+  "copy-fail": "Failed to copy, make sure you have granted the permission of writing to clipboard.",
   "view-replay": "View replay",
   "back-tips": "The room information is not saved, are you sure to back?",
   "begin-time-cannot-be-in-the-past": "Start time cannot be in the past",
