@@ -13,7 +13,7 @@
 
 <div align="center">
     <h1>Agora Flat</h1>
-    <p>项目 flat 是 <a href="https://flat.whiteboard.agora.io/">Agora Flat</a> 开源教室的 Web 端（开发中）、Windows 客户端与 macOS 客户端。</p>
+    <p>项目 flat 是 <a href="https://flat.whiteboard.agora.io/">Agora Flat</a> 开源教室的 Web 端、Windows 客户端与 macOS 客户端。</p>
     <img src="./assets/flat-showcase.png">
 </div>
 
@@ -25,6 +25,11 @@
 
 ## 特性
 
+-   前后端完全开源
+    -   [x] [Flat Web][flat-web]
+    -   [x] Flat 桌面端（[Windows][flat-homepage] 与 [macOS][flat-homepage]）
+    -   [x] [Flat Android][flat-android]
+    -   [x] [Flat Server][flat-server] 服务器
 -   多场景课堂
     -   [x] 大班课
     -   [x] 小班课
@@ -103,6 +108,7 @@ yarn run start
 [flat-homepage]: https://flat.whiteboard.agora.io/#download
 [flat-web]: https://flat-web.whiteboard.agora.io/
 [flat-server]: https://github.com/netless-io/flat-server
+[flat-android]: https://github.com/netless-io/flat-android
 [flat-storybook]: https://netless-io.github.io/flat/storybook/
 [open-wechat]: https://open.weixin.qq.com/
 [netless-auth]: https://docs.agora.io/cn/whiteboard/generate_whiteboard_token_at_app_server?platform=RESTful
