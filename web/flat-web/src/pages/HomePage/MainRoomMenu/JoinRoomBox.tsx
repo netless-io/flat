@@ -19,6 +19,9 @@ export interface JoinRoomBoxProps {
     onJoinRoom: (roomUUID: string) => Promise<void>;
 }
 
+const uuidRE =
+    /(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)/i;
+
 export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJoinRoom }) {
     const { t } = useTranslation();
     const sp = useSafePromise();
@@ -142,10 +145,16 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
         </>
     );
 
+    async function extractUUIDFromClipboard(): Promise<string | undefined> {
+        const text = await navigator.clipboard.readText();
+        const m = uuidRE.exec(text);
+        return m?.[0];
+    }
+
     async function handleShowModal(): Promise<void> {
         try {
-            const roomUUID = await navigator.clipboard.readText();
-            if (validate(roomUUID) && version(roomUUID) === 4) {
+            const roomUUID = await extractUUIDFromClipboard();
+            if (roomUUID && validate(roomUUID) && version(roomUUID) === 4) {
                 form.setFieldsValue({ roomUUID });
                 setIsFormValidated(true);
             }

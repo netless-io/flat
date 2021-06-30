@@ -123,6 +123,7 @@
   "copy-invitation": "复制邀请",
   "join-room": "进入房间",
   "copy-success": "复制成功",
+  "copy-fail": "复制失败，请确保已允许相关权限",
   "view-replay": "查看回放",
   "cancel-of-periodic-rooms": "取消周期性房间",
   "cancel-general-room-tips": "确定取消该房间？取消后其他成员将无法加入。",
@@ -324,7 +325,7 @@
     "network-quality-excellent": "网络质量极好",
     "network-quality-good": "网络质量优秀",
     "network-quality-average": "网络质量一般",
-    "network-quality-poor": "网络质量较差", 
+    "network-quality-poor": "网络质量较差",
     "network-quality-very-poor": "网络质量非常差",
     "network-connection-disconnected": "网络连接已断开"
   }
