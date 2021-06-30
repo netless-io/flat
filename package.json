@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "flat-monorepo",
   "private": true,
   "scripts": {
     "preinstall": "node ./scripts/preinstall",
