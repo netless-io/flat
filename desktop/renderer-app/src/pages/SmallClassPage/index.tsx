@@ -182,9 +182,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         rtcEngine={classRoomStore.rtc.rtcEngine}
                         updateDeviceState={classRoomStore.updateDeviceState}
                     />
-                    {classRoomStore.users.speakingJoiners.map(renderAvatar)}
-                    {classRoomStore.users.handRaisingJoiners.map(renderAvatar)}
-                    {classRoomStore.users.otherJoiners.map(renderAvatar)}
+                    {classRoomStore.users.joiners.map(renderAvatar)}
                 </div>
             </div>
         );
