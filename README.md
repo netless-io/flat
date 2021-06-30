@@ -13,19 +13,24 @@
 
 <div align="center">
     <h1>Agora Flat</h1>
-    <p>Project flat is the Web(under development), Windows and macOS client of <a href="https://flat.whiteboard.agora.io/en/">Agora Flat</a> open source classroom.</p>
+    <p>Project flat is the Web, Windows and macOS client of <a href="https://flat.whiteboard.agora.io/en/">Agora Flat</a> open source classroom.</p>
     <p><a href="./README-zh.md">中文</a></p>
     <img src="./assets/flat-showcase-en.png">
 </div>
 
-
 ## Try it now
 
+-   [Start using Flat Web][flat-web]
 -   [Download artifact][flat-homepage]
 -   [Flat Components Storybook][flat-storybook]
 
 ## Features
 
+-   Open sourced front-end and back-end
+    -   [x] [Flat Web][flat-web]
+    -   [x] Flat Desktop ([Windows][flat-homepage] and [macOS][flat-homepage])
+    -   [x] [Flat Android][flat-android]
+    -   [x] [Flat Server][flat-server]
 -   Optimized teaching experience
     -   [x] Big class
     -   [x] Small class
@@ -101,8 +106,10 @@ Many Flat components UI can be quickly viewed and developed via Storybook ([Onli
 | WINDOWS_CODE_SIGNING_CA_PATH         | Windows Code Signing CA file path. Skip if not provided  | Relative to `desktop/main-app`                                                      |
 | WINDOWS_CODE_SIGNING_CA_PASSWORD     | Windows Code Signing CA password. Skip if not provided   |                                                                                     |
 
-[flat-homepage]: https://flat.whiteboard.agora.io/
+[flat-homepage]: https://flat.whiteboard.agora.io/en/#download
+[flat-web]: https://flat-web.whiteboard.agora.io/
 [flat-server]: https://github.com/netless-io/flat-server
+[flat-android]: https://github.com/netless-io/flat-android
 [flat-storybook]: https://netless-io.github.io/flat/storybook/
 [open-wechat]: https://open.weixin.qq.com/
 [netless-auth]: https://docs.agora.io/en/whiteboard/generate_whiteboard_token_at_app_server?platform=RESTful
