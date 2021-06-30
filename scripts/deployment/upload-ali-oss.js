@@ -50,9 +50,12 @@ const client = new OSS({
         os.EOL,
     );
 
-    const generalAlibabaCloudOSSOptions = {
+    // ali oss will modify option, cause the upload file type to be incorrect
+    // so change the variable to a function
+    // see: https://github.com/ali-sdk/ali-oss/blob/d3583e8460a062a28e12bd719a1929ea659c1c5e/lib/browser/object.js#L69
+    const generalAlibabaCloudOSSOptions = () => ({
         timeout: 1000 * 60 * 2,
-    };
+    });
 
     const uploadBackupFile = objectInfo.map(({ backupPath, localPath, size }) => {
         const uploadCompleteLog = () => {
@@ -65,11 +68,11 @@ const client = new OSS({
             // use multipart upload when more then 80M
             if (size >= 80 * 1000 * 1024) {
                 return client
-                    .multipartUpload(backupPath, localPath, generalAlibabaCloudOSSOptions)
+                    .multipartUpload(backupPath, localPath, generalAlibabaCloudOSSOptions())
                     .then(uploadCompleteLog);
             } else {
                 return client
-                    .put(backupPath, localPath, generalAlibabaCloudOSSOptions)
+                    .put(backupPath, localPath, generalAlibabaCloudOSSOptions())
                     .then(uploadCompleteLog);
             }
         };
