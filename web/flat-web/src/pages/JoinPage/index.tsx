@@ -11,8 +11,10 @@ import { loginCheck } from "../../apiMiddleware/flatServer";
 import { joinRoomHandler } from "../utils/joinRoomHandler";
 import { Avatar, Button } from "antd";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const JoinPage = observer(function JoinPage() {
+    const { t } = useTranslation();
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const pageStore = useContext(PageStoreContext);
@@ -73,12 +75,12 @@ export const JoinPage = observer(function JoinPage() {
                             }
                         }}
                     >
-                        登录
+                        {t("login")}
                     </div>
                 )}
             </div>
             <div className="join-page-content-container">
-                <div className="join-page-content-title">请选择加入房间的方式</div>
+                <div className="join-page-content-title">{t("select-the-way-to-join-room")}</div>
                 <div className="join-page-content-btn-container">
                     <Button
                         className="join-page-content-btn"
@@ -88,32 +90,40 @@ export const JoinPage = observer(function JoinPage() {
                     >
                         <img src={downloadSVG} alt="download icon" />
                         <div className="join-page-content-text-container">
-                            <div className="join-page-content-text">下载桌面端应用</div>
-                            <span className="join-page-content-sub-text">获得完整的课堂体验</span>
+                            <div className="join-page-content-text">
+                                {t("download-desktop-application")}
+                            </div>
+                            <span className="join-page-content-sub-text">
+                                {t("download-desktop-application-tips")}
+                            </span>
                         </div>
                     </Button>
                     <Button className="join-page-content-btn" onClick={joinRoom}>
                         <img src={joinSVG} alt="join icon" />
                         <div className="join-page-content-text-container">
-                            <div className="join-page-content-text">使用网页版加入房间</div>
+                            <div className="join-page-content-text">
+                                {t("web-version-join-room")}
+                            </div>
                             <span className="join-page-content-sub-text">
-                                无需下载应用, 快速加入
+                                {t("web-version-join-room-tips")}
                             </span>
                         </div>
                     </Button>
                 </div>
                 <div className="join-page-content-divider">
-                    <span>或</span>
+                    <span>{t("or")}</span>
                 </div>
                 <div className="join-page-content-container-open-flat">
-                    <span>已经安装 Flat ? </span>
-                    <a href={`x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`}>立即打开</a>
+                    <span>{t("already-installed-flat-tips")}</span>
+                    <a href={`x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`}>
+                        {t("open-now")}
+                    </a>
                 </div>
             </div>
             <div className="join-page-footer-container">
-                <a href={void 0}>隐私协议</a>
+                <a href={void 0}>{t("privacy-agreement")}</a>
                 <span>｜</span>
-                <a href={void 0}>服务政策</a>
+                <a href={void 0}>{t("service-policy")}</a>
             </div>
         </div>
     );
