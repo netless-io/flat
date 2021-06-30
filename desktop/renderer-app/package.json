@@ -43,7 +43,7 @@
     "react-use": "^15.3.8",
     "react-virtualized": "^9.22.2",
     "uuid": "^8.3.0",
-    "white-web-sdk": "2.12.15"
+    "white-web-sdk": "2.13.8"
   },
   "devDependencies": {
     "@netless/eslint-plugin": "^1.1.2",

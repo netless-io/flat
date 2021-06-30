@@ -27,8 +27,8 @@ if (!fs.existsSync(sdkPath)) {
 const pkgJSON = path.resolve(sdkPath, "package.json");
 
 function hackAndReplaceMainScript(script: string, main: string): void {
-    const prefix = "window.WhiteWebSdk=(function(require){";
-    const suffix = "\nreturn module.WhiteWebSdk;})(function(){return undefined});";
+    const prefix = "var WhiteWebSdk=(function(){";
+    const suffix = "\nvar sdk=module.WhiteWebSdk;Object.assign(sdk,module);return sdk}());";
     if (!script.startsWith(prefix)) {
         console.error("hack error: bad prefix string");
         process.exit(1);
