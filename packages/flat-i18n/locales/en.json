@@ -191,6 +191,7 @@
   "title-HotKeySettingPage": "HotKey Settings",
   "title-FeedbackPage": "Feedback",
   "title-AboutPage": "About",
+  "title-JoinPage": "Join room",
   "Inserting-courseware-tips": "Inserting courseware...",
   "cancel-upload": "Cancel upload",
   "cancel-upload-tips": "The upload has not been completed. Are you sure to cancel all ongoing uploads?",
@@ -328,5 +329,14 @@
   },
   "next-step": "Next step",
   "unable-to-hear": "Unable to hear",
-  "volume": "Volume"
+  "volume": "Volume",
+  "already-installed-flat-tips": "Flat already installed? ",
+  "download-desktop-application": "Download Flat app",
+  "download-desktop-application-tips": "Get the best experience",
+  "login": "Login",
+  "open-now": "Open now",
+  "or": "or",
+  "select-the-way-to-join-room": "How do you want to join room?",
+  "web-version-join-room": "Join on this browser",
+  "web-version-join-room-tips": "No download or installation"
 }

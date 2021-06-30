@@ -191,6 +191,7 @@
   "title-HotKeySettingPage": "热键设置",
   "title-FeedbackPage": "吐个槽",
   "title-AboutPage": "关于我们",
+  "title-JoinPage": "加入房间",
   "in-the-process-of-transcoding-tips": "正在转码中，请稍后再试",
   "Inserting-courseware-tips": "正在插入课件……",
   "unable-to-insert-courseware": "无法插入课件",
@@ -328,5 +329,14 @@
     "network-quality-poor": "网络质量较差",
     "network-quality-very-poor": "网络质量非常差",
     "network-connection-disconnected": "网络连接已断开"
-  }
+  },
+  "login": "登录",
+  "select-the-way-to-join-room": "请选择加入房间的方式",
+  "download-desktop-application": "下载桌面端应用",
+  "download-desktop-application-tips": "获得稳定的课堂体验",
+  "web-version-join-room": "使用网页版加入房间",
+  "web-version-join-room-tips": "无需下载应用, 快速加入",
+  "or": "或",
+  "already-installed-flat-tips": "已安装 Flat？",
+  "open-now": "立即打开"
 }
