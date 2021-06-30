@@ -41,6 +41,7 @@ export class RtcAvatar {
         if (!this.isLocal) {
             this.setupExistingTracks();
             this.client.on("user-published", this.onUserPublished);
+            this.client.on("user-unpublished", this.onUserUnpublished);
         }
     }
 
@@ -66,10 +67,12 @@ export class RtcAvatar {
         const { audioTrack, videoTrack } = this;
         const tracks: ITrack[] = [];
         if (audioTrack) {
+            audioTrack.stop();
             this.audioTrack = undefined;
             tracks.push(audioTrack);
         }
         if (videoTrack) {
+            videoTrack.stop();
             this.videoTrack = undefined;
             tracks.push(videoTrack);
         }
@@ -94,16 +97,6 @@ export class RtcAvatar {
         mediaType: "video" | "audio",
     ): Promise<void> => {
         if (user.uid === this.avatarUser.rtcUID) {
-            if (mediaType === "audio") {
-                this.audioTrack?.stop();
-            } else {
-                this.videoTrack?.stop();
-            }
-            try {
-                await this.client.unsubscribe(user, mediaType);
-            } catch (error) {
-                console.info("unsubscribe failed", error);
-            }
             const track = await this.client.subscribe(user, mediaType);
             if (mediaType === "audio") {
                 this.audioTrack = track;
@@ -111,6 +104,30 @@ export class RtcAvatar {
             } else {
                 this.videoTrack = track;
                 this.element && this.videoTrack.play(this.element);
+            }
+        }
+    };
+
+    private onUserUnpublished = async (
+        user: IAgoraRTCRemoteUser,
+        mediaType: "video" | "audio",
+    ): Promise<void> => {
+        if (user.uid === this.avatarUser.rtcUID) {
+            if (mediaType === "audio") {
+                if (this.audioTrack) {
+                    this.audioTrack.stop();
+                    this.audioTrack = undefined;
+                }
+            } else {
+                if (this.videoTrack) {
+                    this.videoTrack.stop();
+                    this.videoTrack = undefined;
+                }
+            }
+            try {
+                await this.client.unsubscribe(user, mediaType);
+            } catch (error) {
+                console.info("unsubscribe failed", error);
             }
         }
     };
@@ -125,9 +142,9 @@ export class RtcAvatar {
                     const videoTrack = await AgoraRTC.createCameraVideoTrack({
                         encoderConfig: { width: 288, height: 216 },
                     });
-                    this.videoTrack = videoTrack;
-                    this.element && videoTrack.play(this.element);
                     await this.client.publish(videoTrack);
+                    this.element && videoTrack.play(this.element);
+                    this.videoTrack = videoTrack;
                 }
             }
         } catch (error) {
@@ -143,10 +160,10 @@ export class RtcAvatar {
                     await audioTrack.setEnabled(enable);
                 } else if (enable) {
                     const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-                    this.audioTrack = audioTrack;
+                    await this.client.publish(audioTrack);
                     // NOTE: playing local audio track causes echo
                     // audioTrack.play();
-                    await this.client.publish(audioTrack);
+                    this.audioTrack = audioTrack;
                 }
             }
         } catch (error) {

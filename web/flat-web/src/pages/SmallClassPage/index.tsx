@@ -176,9 +176,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         rtc={classRoomStore.rtc}
                         updateDeviceState={classRoomStore.updateDeviceState}
                     />
-                    {classRoomStore.users.speakingJoiners.map(renderAvatar)}
-                    {classRoomStore.users.handRaisingJoiners.map(renderAvatar)}
-                    {classRoomStore.users.otherJoiners.map(renderAvatar)}
+                    {classRoomStore.users.joiners.map(renderAvatar)}
                 </div>
             </div>
         );
