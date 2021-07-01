@@ -87,9 +87,10 @@ export class Rtc {
                     ordered: true,
                     syncWithAudio: true,
                 });
-                this.startStreamMessage(5000);
+                this.startStreamMessage(1000);
             } else {
-                this.rtcEngine.setClientRoleWithOptions(2, { audienceLatencyLevel: 1 });
+                this.rtcEngine.setClientRole(2);
+                // this.rtcEngine.setClientRoleWithOptions(2, { audienceLatencyLevel: 1 });
             }
         }
 
