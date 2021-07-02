@@ -23,7 +23,6 @@ export const JoinPage = observer(function JoinPage() {
     const params = useParams<RouteParams<RouteNameType.ReplayPage>>();
     const { roomUUID } = params;
 
-    (window as any).pageStore = pageStore;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => pageStore.configure(), []);
 

@@ -7,6 +7,7 @@
     "lint": "yarn workspaces run lint",
     "storybook": "yarn workspace flat-components storybook",
     "start": "node scripts/launch/index.js",
+    "preship": "rimraf desktop/renderer-app/dist desktop/main-app/dist desktop/main-app/release desktop/main-app/static",
     "ship": "yarn workspace renderer-app build && yarn workspace flat ship",
     "ship:mac": "yarn workspace renderer-app build && yarn workspace flat ship:mac",
     "ship:win": "yarn workspace renderer-app build && yarn workspace flat ship:win",
@@ -27,6 +28,7 @@
     "ali-oss": "^6.15.2",
     "dotenv-flow": "^3.2.0",
     "husky": "^5.0.9",
+    "rimraf": "^3.0.2",
     "shelljs": "^0.8.4"
   }
 }

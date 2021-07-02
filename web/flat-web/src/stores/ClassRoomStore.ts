@@ -122,7 +122,6 @@ export class ClassRoomStore {
         this.rtcChannelType = config.recordingConfig.channelType ?? RtcChannelType.Communication;
 
         this.rtc = new RTCAPI();
-        (window as any).rtc = this.rtc;
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
 

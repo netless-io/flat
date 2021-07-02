@@ -21,6 +21,7 @@ export class GlobalStore {
     public rtcToken: string | null = null;
     public rtcUID: number | null = null;
     public rtmToken: string | null = null;
+    public lastLoginCheck: number | null = null;
 
     public get userUUID(): string | undefined {
         return this.userInfo?.userUUID;
