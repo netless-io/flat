@@ -75,5 +75,3 @@ export class RtcRoom {
         }
     };
 }
-
-(window as any).RtcRoom = RtcRoom;
