@@ -16,36 +16,42 @@ export const HomePage = observer(function HomePage() {
     const pageStore = useContext(PageStoreContext);
     const [loading, setLoading] = useState(true);
 
-    (window as any).pageStore = pageStore;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => pageStore.configure(), []);
 
     useEffect(() => {
         let isUnMount = false;
 
-        async function checkLogin(): Promise<RouteNameType.HomePage | RouteNameType.LoginPage> {
-            let nextPage = RouteNameType.LoginPage;
+        async function checkLogin(): Promise<boolean> {
+            if (!globalStore.userInfo?.token) {
+                return false;
+            }
 
-            const token = globalStore.userInfo?.token;
-            if (token) {
-                try {
-                    await loginCheck();
-                    nextPage = RouteNameType.HomePage;
-                } catch (e) {
-                    console.error(e);
-                    errorTips(e);
+            if (globalStore.lastLoginCheck) {
+                if (Date.now() - globalStore.lastLoginCheck < 2 * 60 * 60 * 1000) {
+                    return true;
                 }
             }
 
-            return nextPage;
+            try {
+                await loginCheck();
+                globalStore.lastLoginCheck = Date.now();
+                return true;
+            } catch (e) {
+                globalStore.lastLoginCheck = null;
+                console.error(e);
+                errorTips(e);
+            }
+
+            return false;
         }
 
-        void checkLogin().then(nextPage => {
+        void checkLogin().then(isLoggedIn => {
             if (!isUnMount) {
-                if (nextPage !== RouteNameType.HomePage) {
-                    pushHistory(nextPage);
-                } else {
+                if (isLoggedIn) {
                     setLoading(false);
+                } else {
+                    pushHistory(RouteNameType.LoginPage);
                 }
             }
         });
@@ -57,16 +63,16 @@ export const HomePage = observer(function HomePage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (loading) {
-        return null;
-    }
-
     return (
         <div className="homepage-layout-horizontal-container">
             <MainRoomMenu />
             <div className="homepage-layout-horizontal-content">
-                <MainRoomListPanel />
-                <MainRoomHistoryPanel />
+                {!loading && (
+                    <>
+                        <MainRoomListPanel />
+                        <MainRoomHistoryPanel />
+                    </>
+                )}
             </div>
         </div>
     );
