@@ -81,7 +81,11 @@ export class UserStore {
     };
 
     public addUser = async (userUUID: string): Promise<void> => {
-        (await this.createUsers([userUUID])).forEach(user => {
+        if (this.cachedUsers.has(userUUID)) {
+            this.removeUser(userUUID);
+        }
+        const users = await this.createUsers([userUUID]);
+        users.forEach(user => {
             this.cacheUser(user);
             this.sortUser(user);
         });
