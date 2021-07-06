@@ -55,6 +55,7 @@ class CoursewarePreloader {
                 console.log("downloaded", info.filePath);
             }
             this.downloaders.delete(taskUUID);
+
             if (process.env.NODE_ENV === "development") {
                 console.log("[preloader] download complete", coursewareDir);
             }
