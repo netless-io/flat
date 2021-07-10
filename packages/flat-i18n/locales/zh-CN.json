@@ -338,5 +338,10 @@
   "web-version-join-room-tips": "无需下载应用, 快速加入",
   "or": "或",
   "already-installed-flat-tips": "已安装 Flat？",
-  "open-now": "立即打开"
+  "open-now": "立即打开",
+  "region-cn-hz": "中国",
+  "region-us-sv": "美国",
+  "region-sg": "新加坡",
+  "region-in-mum": "印度",
+  "region-gb-lon": "英国"
 }

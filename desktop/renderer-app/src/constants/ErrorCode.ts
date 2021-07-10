@@ -22,6 +22,21 @@ export enum RequestErrorCode {
     UserNotFound = 400000,
 
     RecordNotFound = 500000,
+
+    UploadConcurrentLimit = 700000,
+    NotEnoughTotalUsage, // not enough total usage
+    FileSizeTooBig, // single file size too big
+    FileNotFound, // file info not found
+    FileExists, // file already exists
+
+    FileIsConverted = 800000,
+    FileConvertFailed, // file convert failed
+    FileIsConverting, // file is converting
+    FileIsConvertWaiting, // file convert is in waiting status
+
+    LoginGithubSuspended = 900000, // https://docs.github.com/en/developers/apps/troubleshooting-authorization-request-errors
+    LoginGithubURLMismatch,
+    LoginGithubAccessDenied,
 }
 
 export const RequestErrorMessage = {
@@ -50,4 +65,20 @@ export const RequestErrorMessage = {
     [RequestErrorCode.UserNotFound]: "user-does-not-exist",
 
     [RequestErrorCode.RecordNotFound]: "replay-does-not-exist",
+
+    // TODO: translate messages below
+    [RequestErrorCode.UploadConcurrentLimit]: "upload-concurrent-limit",
+    [RequestErrorCode.NotEnoughTotalUsage]: "total-usage-is-full",
+    [RequestErrorCode.FileSizeTooBig]: "file-is-too-big",
+    [RequestErrorCode.FileNotFound]: "file-not-found",
+    [RequestErrorCode.FileExists]: "file-already-exists",
+
+    [RequestErrorCode.FileIsConverted]: "file-is-converted",
+    [RequestErrorCode.FileConvertFailed]: "convert-failed",
+    [RequestErrorCode.FileIsConverting]: "file-is-converting",
+    [RequestErrorCode.FileIsConvertWaiting]: "convert-is-pending",
+
+    [RequestErrorCode.LoginGithubSuspended]: "login-github-suspended",
+    [RequestErrorCode.LoginGithubURLMismatch]: "login-github-url-is-wrong",
+    [RequestErrorCode.LoginGithubAccessDenied]: "login-github-access-denied",
 };

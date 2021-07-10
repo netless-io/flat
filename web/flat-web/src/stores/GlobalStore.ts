@@ -1,3 +1,4 @@
+import { Region } from "flat-components";
 import { autoPersistStore } from "./utils";
 import { LoginProcessResult } from "../apiMiddleware/flatServer";
 
@@ -18,6 +19,7 @@ export class GlobalStore {
     public userInfo: UserInfo | null = null;
     public whiteboardRoomUUID: string | null = null;
     public whiteboardRoomToken: string | null = null;
+    public region: Region | null = null;
     public rtcToken: string | null = null;
     public rtcUID: number | null = null;
     public rtmToken: string | null = null;
@@ -43,7 +45,12 @@ export class GlobalStore {
         config: Partial<
             Pick<
                 GlobalStore,
-                "whiteboardRoomUUID" | "whiteboardRoomToken" | "rtcToken" | "rtmToken" | "rtcUID"
+                | "whiteboardRoomUUID"
+                | "whiteboardRoomToken"
+                | "rtcToken"
+                | "rtmToken"
+                | "rtcUID"
+                | "region"
             >
         >,
     ): void => {
@@ -53,6 +60,7 @@ export class GlobalStore {
             "rtcToken",
             "rtmToken",
             "rtcUID",
+            "region",
         ] as const;
         for (const key of keys) {
             const value = config[key];

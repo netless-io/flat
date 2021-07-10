@@ -1,6 +1,7 @@
 import "./MainRoomMenu.less";
 
 import React, { FC, useContext } from "react";
+import { Region } from "flat-components";
 import { RoomType } from "../../../apiMiddleware/flatServer/constants";
 import { RoomStoreContext } from "../../../components/StoreProvider";
 import { usePushHistory } from "../../../utils/routes";
@@ -22,12 +23,17 @@ export const MainRoomMenu: FC = () => {
         </div>
     );
 
-    async function createOrdinaryRoom(title: string, type: RoomType): Promise<void> {
+    async function createOrdinaryRoom(
+        title: string,
+        type: RoomType,
+        region: Region,
+    ): Promise<void> {
         try {
             const roomUUID = await roomStore.createOrdinaryRoom({
                 title,
                 type,
                 beginTime: Date.now(),
+                region,
                 // TODO docs:[]
             });
             await joinRoomHandler(roomUUID, pushHistory);

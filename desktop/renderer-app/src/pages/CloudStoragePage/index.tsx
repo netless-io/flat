@@ -173,7 +173,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
         if (file.convert !== "success") {
             if (convertingStatus.status === "Finished" || convertingStatus.status === "Fail") {
                 try {
-                    await convertFinish({ fileUUID: file.fileUUID });
+                    await convertFinish({ fileUUID: file.fileUUID, region: file.region });
                 } catch (e) {
                     console.error(e);
                 }
