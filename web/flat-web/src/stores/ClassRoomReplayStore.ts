@@ -138,6 +138,7 @@ export class ClassRoomReplayStore {
                 isCreator: this.isCreator,
                 whiteboardUUID: globalStore.whiteboardRoomUUID,
                 whiteboardRoomToken: globalStore.whiteboardRoomToken,
+                region: globalStore.region ?? undefined,
                 whiteboardEl,
                 videoEl,
                 recording:

@@ -90,7 +90,6 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
         };
     }, [currentDeviceID, rtcEngine]);
 
-    console.log("render");
     return (
         <DeviceCheckLayoutContainer>
             <div className="speaker-check-container">

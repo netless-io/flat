@@ -39,6 +39,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                         beginTime,
                         endTime: new Date(rooms[0].endTime),
                         isPeriodic: true,
+                        region: periodic.region,
                         periodic:
                             periodic.rate === null || periodic.rate === void 0
                                 ? {

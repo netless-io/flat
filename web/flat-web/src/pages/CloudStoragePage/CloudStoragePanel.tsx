@@ -38,11 +38,11 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
 
     async function insertCourseware(file: CloudStorageFile): Promise<void> {
         if (file.convert === "converting") {
-            void message.warn(t('in-the-process-of-transcoding-tips'));
+            void message.warn(t("in-the-process-of-transcoding-tips"));
             return;
         }
 
-        void message.info(t('Inserting-courseware-tips'));
+        void message.info(t("Inserting-courseware-tips"));
 
         const ext = (/\.[^.]+$/.exec(file.fileName) || [""])[0].toLowerCase();
         switch (ext) {
@@ -166,16 +166,18 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
         if (file.convert !== "success") {
             if (convertingStatus.status === "Finished" || convertingStatus.status === "Fail") {
                 try {
-                    await convertFinish({ fileUUID: file.fileUUID });
+                    await convertFinish({ fileUUID: file.fileUUID, region: file.region });
                 } catch (e) {
                     console.error(e);
                 }
                 if (convertingStatus.status === "Fail") {
-                    void message.error(t("transcoding-failure-reason", { reason: convertingStatus.failedReason }));
+                    void message.error(
+                        t("transcoding-failure-reason", { reason: convertingStatus.failedReason }),
+                    );
                 }
             } else {
                 message.destroy();
-                void message.warn(t('in-the-process-of-transcoding-tips'));
+                void message.warn(t("in-the-process-of-transcoding-tips"));
                 return;
             }
         } else if (convertingStatus.status === "Finished" && convertingStatus.progress) {
@@ -197,7 +199,7 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
                 room.scalePptToFit();
             }
         } else {
-            void message.error(t('unable-to-insert-courseware'));
+            void message.error(t("unable-to-insert-courseware"));
         }
     }
 });

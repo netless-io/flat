@@ -120,6 +120,7 @@ export class WhiteboardStore {
                 uuid: globalStore.whiteboardRoomUUID,
                 roomToken: globalStore.whiteboardRoomToken,
                 cursorAdapter: cursorAdapter,
+                region: globalStore.region ?? undefined,
                 userPayload: {
                     userId: globalStore.userUUID,
                     cursorName,

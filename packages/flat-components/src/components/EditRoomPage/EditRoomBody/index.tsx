@@ -1,6 +1,11 @@
 import "./style.less";
+import cnSVG from "./icons/cn.svg";
+import inSVG from "./icons/in.svg";
+import gbSVG from "./icons/gb.svg";
+import usSVG from "./icons/us.svg";
+import sgSVG from "./icons/sg.svg";
 
-import { Button, Checkbox, Form, Input, Modal } from "antd";
+import { Button, Checkbox, Dropdown, Form, Input, Menu, Modal } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { addWeeks, endOfDay, getDay } from "date-fns";
 import React, { useMemo, useRef, useState } from "react";
@@ -12,12 +17,37 @@ import { renderEndTimePicker } from "./renderEndTimePicker";
 import { renderPeriodicForm } from "./renderPeriodicForm";
 import { ClassPicker } from "../../HomePage/ClassPicker";
 
+export enum Region {
+    CN_HZ = "cn-hz",
+    US_SV = "us-sv",
+    SG = "sg",
+    IN_MUM = "in-mum",
+    GB_LON = "gb-lon",
+}
+
+export const regions: Region[] = [
+    Region.CN_HZ,
+    Region.IN_MUM,
+    Region.GB_LON,
+    Region.US_SV,
+    Region.SG,
+];
+
+export const RegionSVG: Record<Region, string> = {
+    [Region.CN_HZ]: cnSVG,
+    [Region.IN_MUM]: inSVG,
+    [Region.GB_LON]: gbSVG,
+    [Region.US_SV]: usSVG,
+    [Region.SG]: sgSVG,
+};
+
 export interface EditRoomFormValues {
     title: string;
     type: RoomType;
     isPeriodic: boolean;
     beginTime: Date;
     endTime: Date;
+    region: Region;
     periodic: {
         endType: PeriodicEndType;
         weeks: Week[];
@@ -28,8 +58,7 @@ export interface EditRoomFormValues {
 
 export type EditRoomFormInitialValues =
     | ({ isPeriodic: true } & Omit<EditRoomFormValues, "isPeriodic">)
-    | ({ isPeriodic: false } & Omit<EditRoomFormValues, "periodic" | "isPeriodic"> &
-          Pick<Partial<EditRoomFormValues>, "periodic">);
+    | ({ isPeriodic: false } & Omit<EditRoomFormValues, "periodic" | "isPeriodic">);
 
 export type EditRoomType = "schedule" | "ordinary" | "periodic" | "periodicSub";
 
@@ -54,6 +83,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
 
     const [isFormVetted, setIsFormVetted] = useState(true);
     const [isShowEditSubmitConfirm, showEditSubmitConfirm] = useState(false);
+    const [region, setRegion] = useState<Region>(initialValues.region);
     const { t, i18n } = useTranslation<string>();
 
     const hasInputAutoSelectedRef = useRef(false);
@@ -71,6 +101,22 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
             ...initialValues,
         };
     }, [initialValues]);
+
+    const regionMenu = (
+        <Menu
+            className="edit-room-body-menu-item"
+            style={{ width: "auto" }}
+            onClick={e => setRegion(e.key as Region)}
+        >
+            <div style={{ padding: "4px 12px 0 14px", color: "gray" }}>服务器</div>
+            {regions.map(region => (
+                <Menu.Item key={region}>
+                    <img src={RegionSVG[region]} alt={region} style={{ width: 22 }} />
+                    <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
+                </Menu.Item>
+            ))}
+        </Menu>
+    );
 
     return (
         <>
@@ -113,6 +159,19 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                                         }
                                     }, 0);
                                 }}
+                                suffix={
+                                    <Dropdown
+                                        trigger={["click"]}
+                                        overlay={regionMenu}
+                                        placement="bottomRight"
+                                    >
+                                        <img
+                                            src={RegionSVG[region]}
+                                            alt={region}
+                                            style={{ cursor: "pointer", width: 22 }}
+                                        />
+                                    </Dropdown>
+                                }
                             />
                         </Form.Item>
                         <Form.Item label={t("type")} name="type">
@@ -251,7 +310,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
 
     function onSubmitForm(): void {
         if (!loading && isFormVetted) {
-            onSubmit(form.getFieldsValue(true));
+            onSubmit({ ...form.getFieldsValue(true), region });
         }
     }
 

@@ -1,3 +1,4 @@
+import { Region } from "flat-components";
 import { FileConvertStep } from "./constants";
 import { post } from "./utils";
 
@@ -20,6 +21,7 @@ export interface CloudFile {
     /** Query courceware converting status */
     taskToken: string;
     createAt: Date;
+    region: Region;
 }
 
 export interface ListFilesResult {
@@ -56,6 +58,7 @@ export async function uploadStart(payload: UploadStartPayload): Promise<UploadSt
 }
 interface UploadFinishPayload {
     fileUUID: string;
+    region: Region;
 }
 
 export async function uploadFinish(payload: UploadFinishPayload): Promise<void> {
@@ -94,6 +97,7 @@ export async function convertStart(payload: ConvertStartPayload): Promise<Conver
 
 export interface ConvertFinishPayload {
     fileUUID: string;
+    region: Region;
 }
 
 export async function convertFinish(payload: ConvertFinishPayload): Promise<{}> {

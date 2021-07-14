@@ -9,6 +9,8 @@ import {
 } from "../../apiMiddleware/flatServer/storage";
 import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/Process";
 import { ServerRequestError } from "../error/ServerRequestError";
+import { RequestErrorCode } from "../../constants/ErrorCode";
+import { configStore } from "../../stores/ConfigStore";
 
 export enum UploadStatusType {
     Pending = 1,
@@ -60,7 +62,10 @@ export class UploadTask {
                 });
             } catch (e) {
                 // max concurrent upload count limit
-                if (e instanceof ServerRequestError && e.errorCode === 700000) {
+                if (
+                    e instanceof ServerRequestError &&
+                    e.errorCode === RequestErrorCode.UploadConcurrentLimit
+                ) {
                     console.warn("[cloud-storage]: hit max concurrent upload count limit");
                     await cancelUpload();
                     uploadStartResult = await uploadStart({
@@ -137,7 +142,7 @@ export class UploadTask {
     public async finish(): Promise<void> {
         if (this.fileUUID) {
             try {
-                await uploadFinish({ fileUUID: this.fileUUID });
+                await uploadFinish({ fileUUID: this.fileUUID, region: configStore.getRegion() });
             } catch (e) {
                 console.error(e);
             }

@@ -41,6 +41,7 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
                     beginTime: new Date(roomInfo.beginTime),
                     endTime: new Date(roomInfo.endTime),
                     isPeriodic: false,
+                    region: roomInfo.region,
                 });
                 setPreviousPeriodicRoomBeginTime(previousPeriodicRoomBeginTime);
                 setNextPeriodicRoomEndTime(nextPeriodicRoomEndTime);

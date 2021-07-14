@@ -31,7 +31,7 @@ import { getUploadTaskManager } from "../../utils/UploadTaskManager";
 import { UploadStatusType, UploadTask } from "../../utils/UploadTaskManager/UploadTask";
 
 export type CloudStorageFile = CloudStorageFileUI &
-    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken">;
+    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region">;
 
 export type FileMenusKey = "download" | "rename" | "delete";
 
@@ -523,7 +523,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             }
 
             try {
-                await convertFinish({ fileUUID: file.fileUUID });
+                await convertFinish({ fileUUID: file.fileUUID, region: file.region });
             } catch (e) {
                 // ignore error when notifying server finish status
                 console.warn(e);

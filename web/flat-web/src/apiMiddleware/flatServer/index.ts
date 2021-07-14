@@ -1,3 +1,4 @@
+import { Region } from "flat-components";
 import { DocsType, RoomDoc, RoomStatus, RoomType, Sex, Week } from "./constants";
 import { post, postNotAuth } from "./utils";
 
@@ -8,6 +9,8 @@ export interface CreateOrdinaryRoomPayload {
     type: RoomType;
     /** UTC时间戳 */
     beginTime: number;
+    /** 区域 */
+    region: Region;
     /** 如果不传，则默认是 beginTime 后的一个小时 */
     endTime?: number;
     /**课件 */
@@ -157,6 +160,7 @@ export interface OrdinaryRoomInfo {
     roomStatus: RoomStatus;
     ownerUUID: string;
     ownerUserName: string;
+    region: Region;
 }
 
 export interface OrdinaryRoomInfoPayload {
@@ -189,6 +193,7 @@ export interface PeriodicSubRoomInfo {
     roomStatus: RoomStatus;
     ownerUUID: string;
     ownerUserName: string;
+    region: Region;
 }
 
 export interface PeriodicSubRoomInfoResult {
@@ -221,6 +226,7 @@ export type PeriodicRoomInfoResult = {
         title: string;
         weeks: Week[];
         roomType: RoomType;
+        region: Region;
     };
     rooms: Array<{
         roomUUID: string;
@@ -403,6 +409,7 @@ export interface RecordInfoResult {
     roomType: RoomType;
     whiteboardRoomToken: string;
     whiteboardRoomUUID: string;
+    region: Region;
     rtmToken: string;
     recordInfo: Array<{
         beginTime: number;

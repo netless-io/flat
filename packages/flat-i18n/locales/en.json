@@ -338,5 +338,10 @@
   "or": "or",
   "select-the-way-to-join-room": "How do you want to join room?",
   "web-version-join-room": "Join on this browser",
-  "web-version-join-room-tips": "No download or installation"
+  "web-version-join-room-tips": "No download or installation",
+  "region-cn-hz": "China",
+  "region-us-sv": "United States",
+  "region-sg": "Singapore",
+  "region-in-mum": "India",
+  "region-gb-lon": "United Kingdom"
 }

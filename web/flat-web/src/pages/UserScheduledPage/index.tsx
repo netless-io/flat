@@ -2,7 +2,11 @@ import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { isBefore, addMinutes, roundToNearestMinutes, getDay, addWeeks } from "date-fns";
 import { RoomType } from "../../apiMiddleware/flatServer/constants";
-import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
+import {
+    ConfigStoreContext,
+    GlobalStoreContext,
+    RoomStoreContext,
+} from "../../components/StoreProvider";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import EditRoomPage from "../../components/EditRoomPage";
 import { useHistory } from "react-router-dom";
@@ -27,6 +31,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
     const sp = useSafePromise();
     const roomStore = useContext(RoomStoreContext);
     const globalStore = useContext(GlobalStoreContext);
+    const configStore = useContext(ConfigStoreContext);
     const [isLoading, setLoading] = useState(false);
 
     const [defaultValues] = useState<EditRoomFormValues>(() => {
@@ -37,6 +42,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
                 : "",
             type: RoomType.BigClass,
             isPeriodic: false,
+            region: configStore.getRegion(),
             beginTime: new Date(scheduleBeginTime),
             endTime: addMinutes(scheduleBeginTime, 30),
             periodic: {
@@ -64,6 +70,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
             const basePayload = {
                 title: values.title,
                 type: values.type,
+                region: values.region,
                 beginTime: values.beginTime.valueOf(),
                 endTime: values.endTime.valueOf(),
             };
