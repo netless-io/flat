@@ -1,4 +1,4 @@
-import "./theme.less";
+import "../theme.less";
 import "flat-components/build/style.css";
 
 import React, { useEffect, useMemo } from "react";
@@ -10,10 +10,9 @@ import zhCN from "antd/lib/locale/zh_CN";
 import enUS from "antd/lib/locale/en_US";
 
 import { I18nextProvider } from "react-i18next";
-import { i18n } from "./utils/i18n";
-
-import { AppRoutes } from "./AppRoutes";
-import { StoreProvider } from "./components/StoreProvider";
+import { i18n } from "../utils/i18n";
+import { AppRoutes } from "../AppRoutes";
+import { StoreProvider } from "../components/StoreProvider";
 
 /** configure right after import */
 import { configure } from "mobx";
@@ -59,8 +58,10 @@ const App: React.FC = () => {
     );
 };
 
-ReactDOM.render(<App />, document.getElementById("app"));
-
 function getPopupContainer(trigger?: HTMLElement): HTMLElement {
     return trigger?.parentElement || document.body;
 }
+
+export const initUI = (): void => {
+    ReactDOM.render(<App />, document.getElementById("app"));
+};
