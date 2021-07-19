@@ -1,5 +1,7 @@
+import { message } from "antd";
 import type { Room, Size } from "white-web-sdk";
 import { listFiles } from "../../apiMiddleware/flatServer/storage";
+import { i18n } from "../i18n";
 import { UploadTask } from "../UploadTaskManager/UploadTask";
 
 const ImageFileTypes = [
@@ -25,11 +27,15 @@ export async function onDropImage(file: File, x: number, y: number, room: Room):
         return;
     }
 
+    const hideLoading = message.loading(i18n.t("Inserting-courseware-tips"));
+
     const getSize = getImageSize(file);
     const task = new UploadTask(file);
     await task.upload();
     const { files } = await listFiles({ page: 1 });
     const cloudFile = files.find(f => f.fileUUID === task.fileUUID);
+
+    hideLoading();
 
     if (!cloudFile?.fileURL) {
         console.log("[dnd:image] upload failed:", file.name);
