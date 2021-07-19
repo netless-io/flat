@@ -11533,11 +11533,6 @@ lodash-es@^4.17.15, lodash-es@^4.17.21:
   resolved "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
 
-lodash-es@^4.17.21:
-  version "4.17.21"
-  resolved "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
-  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
-
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
@@ -11783,7 +11778,7 @@ material-colors@^1.2.1:
   resolved "https://registry.yarnpkg.com/material-colors/-/material-colors-1.2.6.tgz#6d1958871126992ceecc72f4bcc4d8f010865f46"
   integrity sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==
 
-mathjs@^6.2.2:
+mathjs@6.6.5:
   version "6.6.5"
   resolved "https://registry.npmjs.org/mathjs/-/mathjs-6.6.5.tgz#6bbad1fa3ac09e8f7106ef64af8d3908f877b8e8"
   integrity sha512-jvRqk7eoEHBcx/lskmy05m+8M7xDHAJcJzRJoqIsqExtlTHPDQO0Zv85g5F0rasDAXF+DLog/70hcqCJijSzPQ==
@@ -18494,10 +18489,10 @@ which@^2.0.1, which@^2.0.2:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@2.13.10:
-  version "2.13.10"
-  resolved "https://registry.yarnpkg.com/white-web-sdk/-/white-web-sdk-2.13.10.tgz#233ce4cb0c161fc25cd6d99d0d895a616e19a439"
-  integrity sha512-3m4d7VtjIBlwXq2kXnhZdCSJZazaIaI9lCUdLT6eXBr/V3TbNr4HYGaVFAtnX+DY5oBwurLpK++84MtXWoLvZQ==
+white-web-sdk@2.13.11:
+  version "2.13.11"
+  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.13.11.tgz#70455ca04a8ca28f16e7cac33d82bb9915883c47"
+  integrity sha512-24opNfLd0JinJAOcyyOfG4q7X78o+dq5vLtwCsgzqYONqWp2WQOZtJzopB2uUSSW2YEbYQCglz+wmr9FWuv/Yg==
   dependencies:
     "@netless/canvas-polyfill" "^0.0.4"
     atob "^2.1.0"
@@ -18505,7 +18500,8 @@ white-web-sdk@2.13.10:
     color "^3.1.0"
     detect-it "^3.0.5"
     es6-symbol "^3.1.1"
-    mathjs "^6.2.2"
+    eventemitter3 "^4.0.7"
+    mathjs "6.6.5"
     mobx "^4.15.7"
     mobx-react "^5.4.4"
     numeric "^1.2.6"
