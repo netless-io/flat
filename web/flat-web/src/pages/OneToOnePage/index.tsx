@@ -39,7 +39,7 @@ import { useComputed } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
-import { GlobalStoreContext } from "../../components/StoreProvider";
+import { ConfigStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 import { useTranslation } from "react-i18next";
 
@@ -68,6 +68,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = classRoomStore.whiteboardStore;
     const globalStore = useContext(GlobalStoreContext);
+    const configStore = useContext(ConfigStoreContext);
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
@@ -130,7 +131,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 right={renderTopBarRight()}
             />
             <div className="one-to-one-realtime-content">
-                <Whiteboard whiteboardStore={whiteboardStore} />
+                <Whiteboard whiteboardStore={whiteboardStore} configStore={configStore} />
                 {renderRealtimePanel()}
             </div>
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
