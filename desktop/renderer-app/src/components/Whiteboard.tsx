@@ -9,6 +9,7 @@ import React, { useCallback } from "react";
 import { RoomPhase } from "white-web-sdk";
 import pagesSVG from "../assets/image/pages.svg";
 import { WhiteboardStore } from "../stores/WhiteboardStore";
+import { isSupportedImageType, onDropImage } from "../utils/dnd/image";
 import "./Whiteboard.less";
 
 export interface WhiteboardProps {
@@ -30,12 +31,40 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
         [room],
     );
 
+    const onDragOver = useCallback(
+        (event: React.DragEvent<HTMLDivElement>) => {
+            event.preventDefault();
+            const file = event.dataTransfer.files[0];
+            if (room && file && isSupportedImageType(file)) {
+                event.dataTransfer.dropEffect = "copy";
+            }
+        },
+        [room],
+    );
+
+    const onDrop = useCallback(
+        async (event: React.DragEvent<HTMLDivElement>) => {
+            event.preventDefault();
+            const file = event.dataTransfer.files[0];
+            if (room && file && isSupportedImageType(file)) {
+                const rect = (event.target as HTMLDivElement).getBoundingClientRect();
+                const rx = event.clientX - rect.left;
+                const ry = event.clientY - rect.top;
+                const { x, y } = room.convertToPointInWorld({ x: rx, y: ry });
+                await onDropImage(file, x, y, room);
+            }
+        },
+        [room],
+    );
+
     return (
         room && (
             <div
                 className={classNames("whiteboard-container", {
                     "is-readonly": !whiteboardStore.isWritable,
                 })}
+                onDragOver={onDragOver}
+                onDrop={onDrop}
             >
                 <div className="zoom-controller-box">
                     <ZoomController room={room} />
