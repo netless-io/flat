@@ -50,6 +50,7 @@ export interface UploadStartResult {
     fileUUID: string;
     filePath: string;
     policy: string;
+    policyURL: string;
     signature: string;
 }
 
