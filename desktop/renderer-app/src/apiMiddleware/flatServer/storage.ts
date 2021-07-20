@@ -44,6 +44,7 @@ export async function listFiles(payload: ListFilesPayload): Promise<ListFilesRes
 export interface UploadStartPayload {
     fileName: string;
     fileSize: number;
+    region: Region;
 }
 
 export interface UploadStartResult {
@@ -59,7 +60,6 @@ export async function uploadStart(payload: UploadStartPayload): Promise<UploadSt
 }
 interface UploadFinishPayload {
     fileUUID: string;
-    region: Region;
 }
 
 export async function uploadFinish(payload: UploadFinishPayload): Promise<void> {

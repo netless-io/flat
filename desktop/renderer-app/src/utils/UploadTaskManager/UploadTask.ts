@@ -59,6 +59,7 @@ export class UploadTask {
                 uploadStartResult = await uploadStart({
                     fileName,
                     fileSize,
+                    region: configStore.getRegion(),
                 });
             } catch (e) {
                 // max concurrent upload count limit
@@ -71,6 +72,7 @@ export class UploadTask {
                     uploadStartResult = await uploadStart({
                         fileName,
                         fileSize,
+                        region: configStore.getRegion(),
                     });
                 } else {
                     throw e;
@@ -140,7 +142,9 @@ export class UploadTask {
     public async finish(): Promise<void> {
         if (this.fileUUID) {
             try {
-                await uploadFinish({ fileUUID: this.fileUUID, region: configStore.getRegion() });
+                await uploadFinish({
+                    fileUUID: this.fileUUID,
+                });
             } catch (e) {
                 console.error(e);
             }
