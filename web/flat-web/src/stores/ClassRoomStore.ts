@@ -642,7 +642,9 @@ export class ClassRoomStore {
         if (this.cloudRecording.isRecording) {
             await this.cloudRecording.stop();
         } else {
-            await stopRecordRoom(this.roomUUID);
+            if (this.isRecording) {
+                await stopRecordRoom(this.roomUUID);
+            }
         }
         runInAction(() => {
             this.isRecording = false;
