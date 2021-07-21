@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import { InviteModal as InviteModalImpl } from "flat-components";
+import { useTranslation } from "react-i18next";
 import { RoomItem } from "../../stores/RoomStore";
 import { GlobalStoreContext, RoomStoreContext } from "../StoreProvider";
 import { errorTips } from "../Tips/ErrorTips";
@@ -23,6 +24,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
     onCopied,
     onCancel,
 }) {
+    const { t } = useTranslation();
     const globalStore = useContext(GlobalStoreContext);
     const roomStore = useContext(RoomStoreContext);
 
@@ -38,7 +40,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
     const onCopy = useCallback(
         async (text: string): Promise<void> => {
             await navigator.clipboard.writeText(text);
-            void message.success("复制成功");
+            void message.success(t("copy-success"));
             onCopied();
         },
         [onCopied],
