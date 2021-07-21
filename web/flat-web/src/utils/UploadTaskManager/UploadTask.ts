@@ -59,6 +59,7 @@ export class UploadTask {
                 uploadStartResult = await uploadStart({
                     fileName,
                     fileSize,
+                    region: configStore.getRegion(),
                 });
             } catch (e) {
                 // max concurrent upload count limit
@@ -71,13 +72,14 @@ export class UploadTask {
                     uploadStartResult = await uploadStart({
                         fileName,
                         fileSize,
+                        region: configStore.getRegion(),
                     });
                 } else {
                     throw e;
                 }
             }
 
-            const { filePath, fileUUID, policy, signature } = uploadStartResult;
+            const { filePath, fileUUID, policy, policyURL, signature } = uploadStartResult;
 
             if (this.getStatus() !== UploadStatusType.Starting) {
                 return;
@@ -104,17 +106,15 @@ export class UploadTask {
 
             this.updateStatus(UploadStatusType.Uploading);
 
-            await Axios.post(
-                `https://${CLOUD_STORAGE_OSS_ALIBABA_CONFIG.bucket}.${CLOUD_STORAGE_OSS_ALIBABA_CONFIG.region}.aliyuncs.com`,
-                formData,
-                {
-                    headers: { "Content-Type": "multipart/form-data" },
-                    onUploadProgress: (e: ProgressEvent) => {
-                        this.updatePercent(Math.floor((100 * e.loaded) / e.total));
-                    },
-                    cancelToken: this._cancelTokenSource.token,
+            await Axios.post(policyURL, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
                 },
-            );
+                onUploadProgress: (e: ProgressEvent) => {
+                    this.updatePercent(Math.floor((100 * e.loaded) / e.total));
+                },
+                cancelToken: this._cancelTokenSource.token,
+            });
         } catch (e) {
             if (e instanceof Axios.Cancel) {
                 this.updateStatus(UploadStatusType.Cancelled);
@@ -144,7 +144,6 @@ export class UploadTask {
             try {
                 await uploadFinish({
                     fileUUID: this.fileUUID,
-                    region: configStore.getRegion(),
                 });
             } catch (e) {
                 console.error(e);
