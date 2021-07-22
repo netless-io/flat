@@ -18516,6 +18516,33 @@ white-web-sdk@2.13.11:
     uuid "^7.0.3"
     xml-js "^1.6.11"
 
+white-web-sdk@2.13.12:
+  version "2.13.12"
+  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.13.12.tgz#c247d5896f2f502ef51e72d2d13a8764959a7ee8"
+  integrity sha512-IeZCeldJWftR+81+uc/49pItEHEWm7iLxqTWJfAJZ3FvmMcvDmEFB3+kaZH0I3NLlb7CXFXtfre41LLSFs59yw==
+  dependencies:
+    "@netless/canvas-polyfill" "^0.0.4"
+    atob "^2.1.0"
+    bezier-js "^2.4.4"
+    color "^3.1.0"
+    detect-it "^3.0.5"
+    es6-symbol "^3.1.1"
+    eventemitter3 "^4.0.7"
+    mathjs "6.6.5"
+    mobx "^4.15.7"
+    mobx-react "^5.4.4"
+    numeric "^1.2.6"
+    protobufjs "^6.11.2"
+    query-string "5"
+    react "^16.8.0"
+    react-dom "^16.8.0"
+    resize-observer-polyfill "^1.5.1"
+    spark-md5 "^3.0.0"
+    textarea-caret-ts "^4.1.0"
+    url-parse "^1.4.0"
+    uuid "^7.0.3"
+    xml-js "^1.6.11"
+
 wide-align@^1.1.0:
   version "1.1.3"
   resolved "https://registry.npmjs.org/wide-align/-/wide-align-1.1.3.tgz#ae074e6bdc0c14a431e804e624549c633b000457"
