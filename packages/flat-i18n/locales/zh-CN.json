@@ -343,5 +343,8 @@
   "region-us-sv": "美国",
   "region-sg": "新加坡",
   "region-in-mum": "印度",
-  "region-gb-lon": "英国"
+  "region-gb-lon": "英国",
+  "nav-download": "下载",
+  "nav-source-code": "源码",
+  "nav-settings": "设置"
 }

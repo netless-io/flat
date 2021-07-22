@@ -7,7 +7,6 @@ import {
     CloudOutlined,
     HomeFilled,
     HomeOutlined,
-    ToolFilled,
     ToolOutlined,
 } from "@ant-design/icons";
 import faker from "faker";
@@ -53,19 +52,6 @@ Overview.args = {
     ],
     rightMenu: [
         {
-            key: "deviceCheck",
-            icon: active =>
-                active ? (
-                    <ToolFilled style={sideMenuStyles} />
-                ) : (
-                    <ToolOutlined style={sideMenuStyles} />
-                ),
-            title: "deviceCheck",
-            route: "/deviceCheck",
-        },
-    ],
-    popMenu: [
-        {
             key: "userConfig",
             icon: () => <CloudOutlined />,
             title: "个人设置",
@@ -77,6 +63,8 @@ Overview.args = {
             title: "获取源码",
             route: "/github",
         },
+    ],
+    popMenu: [
         {
             key: "logout",
             icon: () => <CloudOutlined className="red" />,
