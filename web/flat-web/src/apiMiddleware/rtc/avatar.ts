@@ -156,7 +156,6 @@ export class RtcAvatar extends EventEmitter {
                 }
             }
         } catch (error) {
-            console.info("setCamera failed", error);
             this.emit(RtcEvents.SetCameraError, error);
         }
     }
@@ -176,7 +175,6 @@ export class RtcAvatar extends EventEmitter {
                 }
             }
         } catch (error) {
-            console.info("setMic failed", error);
             this.emit(RtcEvents.SetMicError, error);
         }
     }
