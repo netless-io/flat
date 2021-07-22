@@ -63,25 +63,28 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
                     )}
                 </div>
                 <div className="main-page-nav-horizontal-right">
-                    <div className="main-page-nav-horizontal-right-item">
-                        {rightMenu.map(menuItem => {
-                            return (
-                                <a
-                                    key={menuItem.key}
-                                    className={classNames({
-                                        "is-active": activeKeys.includes(menuItem.key),
-                                    })}
-                                    href={menuItem.route}
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        onClick(menuItem);
-                                    }}
-                                >
+                    {rightMenu.map(menuItem => {
+                        return (
+                            <a
+                                key={menuItem.key}
+                                className={classNames("main-page-nav-horizontal-right-item", {
+                                    "is-active": activeKeys.includes(menuItem.key),
+                                })}
+                                href={menuItem.route}
+                                onClick={e => {
+                                    e.preventDefault();
+                                    onClick(menuItem);
+                                }}
+                            >
+                                <span className="main-page-nav-horizontal-right-item-img">
                                     {menuItem.icon(activeKeys.includes(menuItem.key))}
-                                </a>
-                            );
-                        })}
-                    </div>
+                                </span>
+                                <span className="main-page-nav-horizontal-right-item-title">
+                                    {menuItem.title}
+                                </span>
+                            </a>
+                        );
+                    })}
                     <div className="main-page-nav-horizontal-right-header">
                         <MainPageNavAvatar
                             avatarSrc={avatarSrc}

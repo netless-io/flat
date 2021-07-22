@@ -343,5 +343,8 @@
   "region-us-sv": "United States",
   "region-sg": "Singapore",
   "region-in-mum": "India",
-  "region-gb-lon": "United Kingdom"
+  "region-gb-lon": "United Kingdom",
+  "nav-download": "Download",
+  "nav-source-code": "Source Code",
+  "nav-settings": "Settings"
 }
