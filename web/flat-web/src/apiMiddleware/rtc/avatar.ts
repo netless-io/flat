@@ -7,6 +7,8 @@ import type {
     ITrack,
 } from "agora-rtc-sdk-ng";
 import AgoraRTC from "agora-rtc-sdk-ng";
+import { EventEmitter } from "eventemitter3";
+
 import type { User } from "../../stores/UserStore";
 import type { RtcRoom } from "./room";
 
@@ -16,13 +18,18 @@ export interface RtcAvatarParams {
     avatarUser: User;
 }
 
+export enum RtcEvents {
+    SetCameraError = "set-camera-error",
+    SetMicError = "set-mic-error",
+}
+
 /**
  * @example
  * const avatar = new RtcAvatar({ rtc, userUUID, avatarUser })
  * avatar.element = el
  * avatar.setCamera(true)
  */
-export class RtcAvatar {
+export class RtcAvatar extends EventEmitter {
     private readonly rtc: RtcRoom;
 
     public readonly userUUID: string;
@@ -34,6 +41,7 @@ export class RtcAvatar {
     private readonly isLocal: boolean;
 
     constructor({ rtc, userUUID, avatarUser }: RtcAvatarParams) {
+        super();
         this.rtc = rtc;
         this.userUUID = userUUID;
         this.avatarUser = avatarUser;
@@ -148,7 +156,7 @@ export class RtcAvatar {
                 }
             }
         } catch (error) {
-            console.info("setCamera failed", error);
+            this.emit(RtcEvents.SetCameraError, error);
         }
     }
 
@@ -167,7 +175,7 @@ export class RtcAvatar {
                 }
             }
         } catch (error) {
-            console.info("setMic failed", error);
+            this.emit(RtcEvents.SetMicError, error);
         }
     }
 }

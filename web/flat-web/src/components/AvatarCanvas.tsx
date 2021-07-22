@@ -1,8 +1,11 @@
 import "./AvatarCanvas.less";
 
-import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { RtcAvatar } from "../apiMiddleware/rtc/avatar";
+import { message } from "antd";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
+
+import { RtcAvatar, RtcEvents } from "../apiMiddleware/rtc/avatar";
 import { RtcRoom } from "../apiMiddleware/rtc/room";
 import { User } from "../stores/ClassRoomStore";
 
@@ -21,6 +24,7 @@ export const AvatarCanvas = observer<AvatarCanvasProps>(function AvatarCanvas({
     avatarUser,
     rtcRoom,
 }) {
+    const { t } = useTranslation();
     const [rtcAvatar] = useState(() => new RtcAvatar({ rtc: rtcRoom, userUUID, avatarUser }));
 
     useEffect(() => {
@@ -31,12 +35,17 @@ export const AvatarCanvas = observer<AvatarCanvasProps>(function AvatarCanvas({
         rtcAvatar.setMic(avatarUser.mic);
     }, [avatarUser.mic, rtcAvatar]);
 
-    useEffect(
-        () => () => {
-            rtcAvatar.destroy();
-        },
-        [rtcAvatar],
-    );
+    useEffect(() => {
+        rtcAvatar.on(RtcEvents.SetCameraError, (error: Error) => {
+            console.log("set camera error", error);
+            void message.error(t("set-camera-error"));
+        });
+        rtcAvatar.on(RtcEvents.SetMicError, (error: Error) => {
+            console.log("set microphone error", error);
+            void message.error(t("set-mic-error"));
+        });
+        return () => void rtcAvatar.destroy();
+    }, [rtcAvatar, t]);
 
     const canvas = (
         <div
