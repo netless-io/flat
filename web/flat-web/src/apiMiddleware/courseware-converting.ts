@@ -36,3 +36,18 @@ export async function queryConvertingTaskStatus({
     );
     return data;
 }
+
+export async function getZipData({
+    pptType,
+    taskUUID,
+}: {
+    pptType: "static" | "dynamic";
+    taskUUID: string;
+}): Promise<Blob> {
+    const { data } = await Axios.get<Blob>(
+        `https://convertcdn.netless.link/${pptType}Convert/${taskUUID}.zip`,
+        { responseType: "blob" },
+    );
+
+    return data;
+}

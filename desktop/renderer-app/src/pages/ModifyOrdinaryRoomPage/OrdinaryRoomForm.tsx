@@ -28,6 +28,7 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
                     beginTime: new Date(roomInfo.beginTime),
                     endTime: new Date(roomInfo.endTime),
                     isPeriodic: false,
+                    region: roomInfo.region,
                 });
             })
             .catch(e => {

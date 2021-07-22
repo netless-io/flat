@@ -233,7 +233,7 @@ export class ClassRoomStore {
         }
     };
 
-    public leaveRTC = async (): Promise<void> => {
+    public leaveRTC = (): void => {
         if (!this.isCalling) {
             return;
         }
@@ -241,9 +241,6 @@ export class ClassRoomStore {
         this.updateCalling(false);
 
         try {
-            if (this.isRecording) {
-                await this.stopRecording();
-            }
             this.rtc.leave();
         } catch (e) {
             console.error(e);
@@ -525,11 +522,9 @@ export class ClassRoomStore {
 
         promises.push(this.rtm.destroy());
 
-        if (this.cloudRecording?.isRecording) {
-            promises.push(this.cloudRecording.stop());
-        }
+        promises.push(this.stopRecording());
 
-        promises.push(this.leaveRTC());
+        this.leaveRTC();
 
         this.whiteboardStore.destroy();
 
@@ -656,7 +651,9 @@ export class ClassRoomStore {
         if (this.cloudRecording.isRecording) {
             await this.cloudRecording.stop();
         } else {
-            await stopRecordRoom(this.roomUUID);
+            if (this.isRecording) {
+                await stopRecordRoom(this.roomUUID);
+            }
         }
         runInAction(() => {
             this.isRecording = false;

@@ -15,6 +15,8 @@ import { CursorTool } from "@netless/cursor-tool";
 import { NETLESS, NODE_ENV } from "../constants/Process";
 import { globalStore } from "./GlobalStore";
 import { isMobile, isWindows } from "react-device-detect";
+import { debounce } from "lodash-es";
+import { coursewarePreloader } from "../utils/CoursewarePreloader";
 
 export class WhiteboardStore {
     public room: Room | null = null;
@@ -32,8 +34,9 @@ export class WhiteboardStore {
         this.isCreator = config.isCreator;
         this.isWritable = config.isCreator;
 
-        makeAutoObservable(this, {
+        makeAutoObservable<this, "preloadPPTResource">(this, {
             room: observable.ref,
+            preloadPPTResource: false,
         });
     }
 
@@ -119,6 +122,7 @@ export class WhiteboardStore {
             {
                 uuid: globalStore.whiteboardRoomUUID,
                 roomToken: globalStore.whiteboardRoomToken,
+                region: globalStore.region ?? undefined,
                 cursorAdapter: cursorAdapter,
                 userPayload: {
                     userId: globalStore.userUUID,
@@ -145,13 +149,23 @@ export class WhiteboardStore {
                 onPhaseChanged: phase => {
                     this.updatePhase(phase);
                 },
-                onRoomStateChanged: (modifyState: Partial<RoomState>): void => {
+                onRoomStateChanged: async (modifyState: Partial<RoomState>): Promise<void> => {
                     if (modifyState.broadcastState) {
                         this.updateViewMode(modifyState.broadcastState.mode);
+                    }
+
+                    const pptSrc = modifyState.sceneState?.scenes[0]?.ppt?.src;
+                    if (pptSrc) {
+                        try {
+                            await this.preloadPPTResource(pptSrc);
+                        } catch (err) {
+                            console.log(err);
+                        }
                     }
                 },
                 onDisconnectWithError: error => {
                     console.error(error);
+                    this.preloadPPTResource.cancel();
                 },
                 onKickedWithReason: reason => {
                     if (
@@ -202,6 +216,7 @@ export class WhiteboardStore {
 
     public destroy(): void {
         if (this.room) {
+            this.preloadPPTResource.cancel();
             this.room.callbacks.off();
         }
         if (NODE_ENV === "development") {
@@ -209,4 +224,8 @@ export class WhiteboardStore {
         }
         console.log(`Whiteboard unloaded: ${globalStore.whiteboardRoomUUID}`);
     }
+
+    private preloadPPTResource = debounce(async (pptSrc: string): Promise<void> => {
+        await coursewarePreloader.preload(pptSrc);
+    }, 2000);
 }

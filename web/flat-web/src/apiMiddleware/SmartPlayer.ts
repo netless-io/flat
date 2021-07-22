@@ -12,6 +12,7 @@ import {
     ReplayRoomParams,
     WhiteWebSdk,
 } from "white-web-sdk";
+import { Region } from "flat-components";
 import { NETLESS, NODE_ENV } from "../constants/Process";
 
 export enum SmartPlayerEventType {
@@ -66,6 +67,7 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
         isCreator,
         whiteboardUUID,
         whiteboardRoomToken,
+        region,
         whiteboardEl,
         videoEl,
         recording,
@@ -74,6 +76,7 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
         isCreator: boolean;
         whiteboardUUID: string;
         whiteboardRoomToken: string;
+        region?: Region;
         whiteboardEl: HTMLDivElement;
         videoEl: HTMLVideoElement;
         recording?: {
@@ -95,6 +98,7 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
         const whiteWebSdk = new WhiteWebSdk({
             appIdentifier: NETLESS.APP_IDENTIFIER,
             plugins: plugins,
+            region,
         });
 
         this.whiteWebSdk = whiteWebSdk;
@@ -102,7 +106,7 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
         const rangeQuery: PlayableCheckingParams = {
             room: whiteboardUUID,
             roomToken: whiteboardRoomToken,
-            region: "cn-hz",
+            region,
         };
 
         if (recording) {
@@ -125,6 +129,7 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
             room: whiteboardUUID,
             roomToken: whiteboardRoomToken,
             cursorAdapter: cursorAdapter,
+            region,
         };
 
         if (recording) {

@@ -15,6 +15,8 @@ import { CursorTool } from "@netless/cursor-tool";
 import { NETLESS, NODE_ENV } from "../constants/Process";
 import { globalStore } from "./GlobalStore";
 import { isMobile, isWindows } from "react-device-detect";
+import { getCoursewarePreloader } from "../utils/CoursewarePreloader";
+import { debounce } from "lodash-es";
 
 export class WhiteboardStore {
     public room: Room | null = null;
@@ -32,8 +34,9 @@ export class WhiteboardStore {
         this.isCreator = config.isCreator;
         this.isWritable = config.isCreator;
 
-        makeAutoObservable(this, {
+        makeAutoObservable<this, "preloadPPTResource">(this, {
             room: observable.ref,
+            preloadPPTResource: false,
         });
     }
 
@@ -79,6 +82,14 @@ export class WhiteboardStore {
         this.isShowPreviewPanel = show;
     };
 
+    private preloadPPTResource = debounce(async (pptSrc: string): Promise<void> => {
+        // TODO: the parse PPT URL method will split into preload method, that for consistent code style with FLAT_Web.
+        const pptFiles = /(static|dynamic)Convert\/([0-9a-f]{32})\//.exec(pptSrc);
+        if (!pptFiles) return;
+        const [, pptType, taskUUID] = pptFiles;
+        await getCoursewarePreloader().preload(taskUUID, pptType as "dynamic" | "static");
+    }, 2000);
+
     public async joinWhiteboardRoom(): Promise<void> {
         if (!globalStore.userUUID) {
             throw new Error("Missing userUUID");
@@ -120,6 +131,7 @@ export class WhiteboardStore {
                 uuid: globalStore.whiteboardRoomUUID,
                 roomToken: globalStore.whiteboardRoomToken,
                 cursorAdapter: cursorAdapter,
+                region: globalStore.region ?? undefined,
                 userPayload: {
                     userId: globalStore.userUUID,
                     cursorName,
@@ -145,12 +157,27 @@ export class WhiteboardStore {
                 onPhaseChanged: phase => {
                     this.updatePhase(phase);
                 },
-                onRoomStateChanged: (modifyState: Partial<RoomState>): void => {
+                onRoomStateChanged: async (modifyState: Partial<RoomState>): Promise<void> => {
                     if (modifyState.broadcastState) {
                         this.updateViewMode(modifyState.broadcastState.mode);
                     }
+
+                    // TODO: That is temporarily plan, use RTM emit message is follow-up plan.
+                    try {
+                        const pptSrc = modifyState.sceneState?.scenes[0]?.ppt?.src;
+                        if (pptSrc) {
+                            try {
+                                await this.preloadPPTResource(pptSrc);
+                            } catch (err) {
+                                console.log(err);
+                            }
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
                 },
                 onDisconnectWithError: error => {
+                    this.preloadPPTResource.cancel();
                     console.error(error);
                 },
                 onKickedWithReason: reason => {
@@ -202,6 +229,7 @@ export class WhiteboardStore {
 
     public destroy(): void {
         if (this.room) {
+            this.preloadPPTResource.cancel();
             this.room.callbacks.off();
         }
         if (NODE_ENV === "development") {

@@ -125,7 +125,7 @@
   "modify-periodic-rooms": "Modify",
   "remove-general-room-tips": "Are you sure to remove this room from the room list? \nAfter removal, it can be added again by room ID.",
   "remove-periodic-room": "Remove periodic rooms",
-  "remove-room": "Remove room",
+  "remove-room": "Remove",
   "remove-series-of-periodic-room-tips": "Are you sure to remove this series of periodic rooms from the room list? \nAfter removal, it can be added again by room ID.",
   "room-type": "Room Type",
   "think-again": "Think again",
@@ -338,5 +338,10 @@
   "or": "or",
   "select-the-way-to-join-room": "How do you want to join room?",
   "web-version-join-room": "Join on this browser",
-  "web-version-join-room-tips": "No download or installation"
+  "web-version-join-room-tips": "No download or installation",
+  "region-cn-hz": "China",
+  "region-us-sv": "United States",
+  "region-sg": "Singapore",
+  "region-in-mum": "India",
+  "region-gb-lon": "United Kingdom"
 }

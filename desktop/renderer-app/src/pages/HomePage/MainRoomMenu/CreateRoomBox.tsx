@@ -3,11 +3,11 @@ import "./CreateRoomBox.less";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form } from "antd";
+import { Button, Input, Modal, Checkbox, Form, Menu, Dropdown } from "antd";
 import { RoomType } from "../../../apiMiddleware/flatServer/constants";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { ClassPicker } from "flat-components";
+import { ClassPicker, Region, regions, RegionSVG } from "flat-components";
 import { useTranslation } from "react-i18next";
 
 interface CreateRoomFormValues {
@@ -17,7 +17,7 @@ interface CreateRoomFormValues {
 }
 
 export interface CreateRoomBoxProps {
-    onCreateRoom: (title: string, type: RoomType) => Promise<void>;
+    onCreateRoom: (title: string, type: RoomType, region: Region) => Promise<void>;
 }
 
 export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox({ onCreateRoom }) {
@@ -31,6 +31,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
     const [classType, setClassType] = useState<RoomType>(RoomType.BigClass);
+    const [roomRegion, setRoomRegion] = useState<Region>(configStore.getRegion());
     const roomTitleInputRef = useRef<Input>(null);
 
     const defaultValues: CreateRoomFormValues = {
@@ -56,6 +57,22 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
             window.clearTimeout(ticket);
         };
     }, [isShowModal]);
+
+    const regionMenu = (
+        <Menu
+            className="create-room-modal-menu-item"
+            style={{ width: "auto" }}
+            onClick={e => setRoomRegion(e.key as Region)}
+        >
+            <div style={{ padding: "4px 12px 0 14px", color: "gray" }}>服务器</div>
+            {regions.map(region => (
+                <Menu.Item key={region}>
+                    <img src={RegionSVG[region]} alt={region} style={{ width: 22 }} />
+                    <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
+                </Menu.Item>
+            ))}
+        </Menu>
+    );
 
     return (
         <>
@@ -108,7 +125,23 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                             { max: 50, message: t("theme-can-be-up-to-50-characters") },
                         ]}
                     >
-                        <Input placeholder={t("enter-room-theme")} ref={roomTitleInputRef} />
+                        <Input
+                            placeholder={t("enter-room-theme")}
+                            ref={roomTitleInputRef}
+                            suffix={
+                                <Dropdown
+                                    trigger={["click"]}
+                                    overlay={regionMenu}
+                                    placement="bottomRight"
+                                >
+                                    <img
+                                        src={RegionSVG[roomRegion]}
+                                        alt={roomRegion}
+                                        style={{ cursor: "pointer", width: 22 }}
+                                    />
+                                </Dropdown>
+                            }
+                        />
                     </Form.Item>
                     <Form.Item name="roomType" label={t("type")} valuePropName="type">
                         <ClassPicker value={classType} onChange={e => setClassType(RoomType[e])} />
@@ -136,7 +169,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
         try {
             const values = form.getFieldsValue();
             configStore.updateAutoCameraOn(values.autoCameraOn);
-            await sp(onCreateRoom(values.roomTitle, values.roomType));
+            await sp(onCreateRoom(values.roomTitle, values.roomType, roomRegion));
             setLoading(false);
             showModal(false);
         } catch (e) {

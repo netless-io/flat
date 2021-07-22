@@ -239,15 +239,6 @@ export class ClassRoomStore {
         }
 
         this.updateCalling(false);
-
-        try {
-            if (this.isRecording) {
-                await this.stopRecording();
-            }
-        } catch (e) {
-            console.error(e);
-            this.updateCalling(true);
-        }
     };
 
     public toggleRecording = async ({ onStop }: { onStop?: () => void } = {}): Promise<void> => {
@@ -522,9 +513,7 @@ export class ClassRoomStore {
 
         promises.push(this.rtm.destroy());
 
-        if (this.cloudRecording?.isRecording) {
-            promises.push(this.cloudRecording.stop());
-        }
+        promises.push(this.stopRecording());
 
         promises.push(this.leaveRTC());
 
@@ -653,7 +642,9 @@ export class ClassRoomStore {
         if (this.cloudRecording.isRecording) {
             await this.cloudRecording.stop();
         } else {
-            await stopRecordRoom(this.roomUUID);
+            if (this.isRecording) {
+                await stopRecordRoom(this.roomUUID);
+            }
         }
         runInAction(() => {
             this.isRecording = false;

@@ -25,7 +25,7 @@ export const MainRoomListPanel = observer<{}>(function MainRoomListPanel() {
                 title: t("periodic"),
             },
         ],
-        [],
+        [t],
     );
 
     return (

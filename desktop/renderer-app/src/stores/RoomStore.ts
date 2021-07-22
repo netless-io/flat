@@ -1,5 +1,6 @@
 /* eslint-disable no-redeclare */
 import { makeAutoObservable, observable, runInAction } from "mobx";
+import { Region } from "flat-components";
 import {
     cancelRoom,
     CancelRoomPayload,
@@ -39,6 +40,8 @@ export interface RoomItem {
     title?: string;
     /** 房间状态 */
     roomStatus?: RoomStatus;
+    /** 区域 */
+    region?: Region;
     /** 房间开始时间 */
     beginTime?: number;
     /** 结束时间 */
@@ -108,6 +111,10 @@ export class RoomStore {
     public async joinRoom(roomUUID: string): Promise<JoinRoomResult> {
         const data = await joinRoom(roomUUID);
         globalStore.updateToken(data);
+        const room = this.rooms.get(roomUUID);
+        if (room) {
+            globalStore.updateToken({ region: room.region });
+        }
         this.updateRoom(roomUUID, data.ownerUUID, {
             roomUUID,
             ownerUUID: data.ownerUUID,

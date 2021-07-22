@@ -101,7 +101,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                     </div>
                 )}
                 <div className="invite-modal-content-item">
-                    <span>{t("join-link")}</span>
+                    <span>{t("join-link", { link: "" })}</span>
                     <span style={{ userSelect: "text" }}>
                         {baseUrl}/join/{uuid}
                     </span>

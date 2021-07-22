@@ -76,7 +76,7 @@ jobs:
         if: steps.filter.outputs.main == 'true'
 
       - name: Build flat-web
-        run: NODE_OPTIONS="--max-old-space-size=4096" yarn workspace flat-web build
+        run: NODE_OPTIONS="--max-old-space-size=6144" yarn workspace flat-web build
         if: steps.filter.outputs.flat-web == 'true'
 
       - name: Check i18n

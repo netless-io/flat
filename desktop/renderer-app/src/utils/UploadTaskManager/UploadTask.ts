@@ -9,6 +9,8 @@ import {
 } from "../../apiMiddleware/flatServer/storage";
 import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/Process";
 import { ServerRequestError } from "../error/ServerRequestError";
+import { RequestErrorCode } from "../../constants/ErrorCode";
+import { configStore } from "../../stores/ConfigStore";
 
 export enum UploadStatusType {
     Pending = 1,
@@ -57,22 +59,27 @@ export class UploadTask {
                 uploadStartResult = await uploadStart({
                     fileName,
                     fileSize,
+                    region: configStore.getRegion(),
                 });
             } catch (e) {
                 // max concurrent upload count limit
-                if (e instanceof ServerRequestError && e.errorCode === 700000) {
+                if (
+                    e instanceof ServerRequestError &&
+                    e.errorCode === RequestErrorCode.UploadConcurrentLimit
+                ) {
                     console.warn("[cloud-storage]: hit max concurrent upload count limit");
                     await cancelUpload();
                     uploadStartResult = await uploadStart({
                         fileName,
                         fileSize,
+                        region: configStore.getRegion(),
                     });
                 } else {
                     throw e;
                 }
             }
 
-            const { filePath, fileUUID, policy, signature } = uploadStartResult;
+            const { filePath, fileUUID, policy, policyURL, signature } = uploadStartResult;
 
             if (this.getStatus() !== UploadStatusType.Starting) {
                 return;
@@ -99,17 +106,15 @@ export class UploadTask {
 
             this.updateStatus(UploadStatusType.Uploading);
 
-            await Axios.post(
-                `https://${CLOUD_STORAGE_OSS_ALIBABA_CONFIG.bucket}.${CLOUD_STORAGE_OSS_ALIBABA_CONFIG.region}.aliyuncs.com`,
-                formData,
-                {
-                    headers: { "Content-Type": "multipart/form-data" },
-                    onUploadProgress: (e: ProgressEvent) => {
-                        this.updatePercent(Math.floor((100 * e.loaded) / e.total));
-                    },
-                    cancelToken: this._cancelTokenSource.token,
+            await Axios.post(policyURL, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
                 },
-            );
+                onUploadProgress: (e: ProgressEvent) => {
+                    this.updatePercent(Math.floor((100 * e.loaded) / e.total));
+                },
+                cancelToken: this._cancelTokenSource.token,
+            });
         } catch (e) {
             if (e instanceof Axios.Cancel) {
                 this.updateStatus(UploadStatusType.Cancelled);
@@ -137,7 +142,9 @@ export class UploadTask {
     public async finish(): Promise<void> {
         if (this.fileUUID) {
             try {
-                await uploadFinish({ fileUUID: this.fileUUID });
+                await uploadFinish({
+                    fileUUID: this.fileUUID,
+                });
             } catch (e) {
                 console.error(e);
             }

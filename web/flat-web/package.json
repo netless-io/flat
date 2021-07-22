@@ -7,6 +7,7 @@
     "@hyrious/esbuild-dev": "^0.2.7",
     "@netless/eslint-plugin": "^1.1.2",
     "@types/loadable__component": "^5.13.3",
+    "@types/lodash-es": "^4.17.4",
     "@types/node": "^15.0.2",
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.3",
@@ -41,6 +42,7 @@
     "@netless/white-audio-plugin": "^2.0.3",
     "@netless/white-video-plugin": "^2.0.3",
     "@netless/zoom-controller": "^0.1.1",
+    "@zip.js/zip.js": "^2.3.7",
     "agora-rtc-sdk-ng": "^4.5.0",
     "agora-rtm-sdk": "^1.4.3",
     "antd": "^4.15.4",
@@ -50,6 +52,7 @@
     "eventemitter3": "^4.0.7",
     "i18next": "^20.3.1",
     "i18next-browser-languagedetector": "^6.1.1",
+    "lodash-es": "^4.17.21",
     "mobx": "^6.1.0",
     "mobx-react-lite": "^3.2.0",
     "polly-js": "^1.8.2",
@@ -65,7 +68,7 @@
     "react-virtualized": "^9.22.3",
     "uuid": "^8.3.2",
     "video.js": "7.10.2",
-    "white-web-sdk": "2.13.8"
+    "white-web-sdk": "2.13.11"
   },
   "scripts": {
     "postinstall": "esbuild-dev ./scripts/post-install.ts",
