@@ -135,14 +135,13 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             return;
         }
 
-        room.insertPlugin("audio", {
+        room.insertPlugin("video.js", {
             originX: -240,
             originY: -43,
             width: 480,
             height: 86,
             attributes: { src: file.fileURL },
         });
-        console.log("[cloud storage] does not support audio yet");
     }
 
     function insertVideo(file: CloudStorageFile): void {
@@ -151,7 +150,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             return;
         }
 
-        room.insertPlugin("video", {
+        room.insertPlugin("video.js", {
             originX: -240,
             originY: -135,
             width: 480,

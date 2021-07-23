@@ -13,8 +13,7 @@
     "@netless/preview-controller": "^0.0.9",
     "@netless/redo-undo": "^0.0.5",
     "@netless/tool-box": "^0.1.4",
-    "@netless/white-audio-plugin": "^2.0.3",
-    "@netless/white-video-plugin": "^2.0.3",
+    "@netless/video-js-plugin": "^0.3.4",
     "@netless/zoom-controller": "^0.1.1",
     "agora-rtm-sdk": "^1.4.1",
     "antd": "^4.15.0",
@@ -44,6 +43,7 @@
     "react-use": "^15.3.8",
     "react-virtualized": "^9.22.2",
     "uuid": "^8.3.0",
+    "video.js": "7.10.2",
     "white-web-sdk": "2.13.11"
   },
   "devDependencies": {
