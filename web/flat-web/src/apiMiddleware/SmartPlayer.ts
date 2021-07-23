@@ -1,7 +1,12 @@
+import "video.js/dist/video-js.css";
+
 import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netless/combine-player";
 import { CursorTool } from "@netless/cursor-tool";
-import { audioPlugin } from "@netless/white-audio-plugin";
-import { videoPlugin } from "@netless/white-video-plugin";
+import {
+    PluginId as VideoJsPluginId,
+    videoJsPlugin,
+    PluginContext as VideoJsPluginContext,
+} from "@netless/video-js-plugin";
 import { EventEmitter } from "eventemitter3";
 import polly from "polly-js";
 import {
@@ -64,7 +69,6 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
     }
 
     public async load({
-        isCreator,
         whiteboardUUID,
         whiteboardRoomToken,
         region,
@@ -90,10 +94,9 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
         this._isEnded = false;
         this.destroy();
 
-        const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
-        const contextIdentity = isCreator ? "host" : "";
-        plugins.setPluginContext("video", { identity: contextIdentity });
-        plugins.setPluginContext("audio", { identity: contextIdentity });
+        const plugins = createPlugins({ [VideoJsPluginId]: videoJsPlugin() });
+        const videoJsPluginContext: Partial<VideoJsPluginContext> = { verbose: true };
+        plugins.setPluginContext(VideoJsPluginId, videoJsPluginContext);
 
         const whiteWebSdk = new WhiteWebSdk({
             appIdentifier: NETLESS.APP_IDENTIFIER,

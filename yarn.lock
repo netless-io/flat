@@ -1968,15 +1968,10 @@
   resolved "https://registry.npmjs.org/@netless/tool-box/-/tool-box-0.1.5.tgz#39977a0075c069aab90895bcee6268a8e6bf8afd"
   integrity sha512-eoIyRdnVDnNosMZ1Jix6bVkg6Fc0Pg0UzgR9fLuB2dZaaeBDbmC82fOd3rRQiG+PNM0hBhT6vfJ1iE1tw7Juzg==
 
-"@netless/white-audio-plugin@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/@netless/white-audio-plugin/-/white-audio-plugin-2.0.3.tgz#f5edb6f8d32ece49ac023bcf6bc01458db50aca8"
-  integrity sha512-RAMmTzdGpVC5KC5sJd2FRLj/fslIeSkJ1BY3vBk3X6U11j/2uCE95G4W4e+tIocQgbWgIwEBsSIW60Dxbx65Jg==
-
-"@netless/white-video-plugin@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/@netless/white-video-plugin/-/white-video-plugin-2.0.3.tgz#7502979430dd28a8982b8d630e2b1b457a8a1074"
-  integrity sha512-kXIavQ2192EHiY8M4almndWhGnhDAyXqjTIrZvXhjslaQp1FUfKvmSy3AjNcGU+sjVCKBKmkoYVc2PeUx0Ho1g==
+"@netless/video-js-plugin@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.npmjs.org/@netless/video-js-plugin/-/video-js-plugin-0.3.4.tgz#21466377bd790acc4d8be1fba5e137d019a7e166"
+  integrity sha512-5wAi0a+X6RFM7DTXeiY2Ga/wGrSV3MnzcgZguwbaZOt4CzMVFb/DGwRxHqvZ4gHSMIijWfuRurpMrzovlwAXsQ==
 
 "@netless/zoom-controller@^0.1.1":
   version "0.1.1"
