@@ -1,4 +1,5 @@
 import { message } from "antd";
+import { v4 as v4uuid } from "uuid";
 import type { Room, Size } from "white-web-sdk";
 import { listFiles } from "../../apiMiddleware/flatServer/storage";
 import { i18n } from "../i18n";
@@ -42,20 +43,32 @@ export async function onDropImage(file: File, x: number, y: number, room: Room):
         return;
     }
 
-    const uuid = cloudFile.fileUUID;
+    const uuid = v4uuid();
     const { width, height } = await getSize;
     room.insertImage({ uuid, centerX: x, centerY: y, width, height, locked: false });
     room.completeImageUpload(uuid, cloudFile.fileURL);
 }
 
-function getImageSize(file: File): Promise<Size> {
+export function getImageSize(file: File): Promise<Size> {
     const image = new Image();
     const url = URL.createObjectURL(file);
+    const { innerWidth, innerHeight } = window;
+    // shrink the image a little to fit the screen
+    const maxWidth = innerWidth * 0.8;
+    const maxHeight = innerHeight * 0.8;
+    image.src = url;
     return new Promise(resolve => {
-        image.src = url;
         image.onload = () => {
             URL.revokeObjectURL(url);
-            resolve({ width: image.width, height: image.height });
+            let { width, height } = image;
+            let scale = 1;
+            if (width > maxWidth || height > maxHeight) {
+                scale = Math.min(maxWidth / width, maxHeight / height);
+            }
+            resolve({ width: Math.floor(width * scale), height: Math.floor(height * scale) });
+        };
+        image.onerror = () => {
+            resolve({ width: innerWidth, height: innerHeight });
         };
     });
 }
