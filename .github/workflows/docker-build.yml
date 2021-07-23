@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - "sa/*"
     paths-ignore:
       - "docs/**"
       - "*.md"
@@ -35,5 +36,5 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/flat-web:${{ env.BUILD_ENV }}-${{ github.ref }}
-          file: deploy/Dockerfile
+          file: web/flat-web/deploy/Dockerfile
           build-args: build_env=${{ env.BUILD_ENV }}
