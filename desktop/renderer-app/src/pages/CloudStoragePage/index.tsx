@@ -94,6 +94,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             return;
         }
 
+        // shrink the image a little to fit the screen
         const maxWidth = window.innerWidth * 0.8;
         const maxHeight = window.innerHeight * 0.8;
 
@@ -120,8 +121,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
         const uuid = v4uuid();
         room.insertImage({
             uuid,
-            centerX: room.state.cameraState.centerX,
-            centerY: room.state.cameraState.centerY,
+            ...room.state.cameraState,
             width: Math.floor(width * scale),
             height: Math.floor(height * scale),
             locked: false,

@@ -53,10 +53,11 @@ export function getImageSize(file: File): Promise<Size> {
     const image = new Image();
     const url = URL.createObjectURL(file);
     const { innerWidth, innerHeight } = window;
+    // shrink the image a little to fit the screen
     const maxWidth = innerWidth * 0.8;
     const maxHeight = innerHeight * 0.8;
+    image.src = url;
     return new Promise(resolve => {
-        image.src = url;
         image.onload = () => {
             URL.revokeObjectURL(url);
             const { width, height } = image;
