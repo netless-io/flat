@@ -1,3 +1,5 @@
+import "video.js/dist/video-js.css";
+
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import {
     createPlugins,
@@ -9,8 +11,11 @@ import {
     ViewMode,
     WhiteWebSdk,
 } from "white-web-sdk";
-import { videoPlugin } from "@netless/white-video-plugin";
-import { audioPlugin } from "@netless/white-audio-plugin";
+import {
+    PluginId as VideoJsPluginId,
+    videoJsPlugin,
+    PluginContext as VideoJsPluginContext,
+} from "@netless/video-js-plugin";
 import { CursorTool } from "@netless/cursor-tool";
 import { NETLESS, NODE_ENV } from "../constants/Process";
 import { globalStore } from "./GlobalStore";
@@ -99,10 +104,9 @@ export class WhiteboardStore {
             throw new Error("Missing Whiteboard UUID and Token");
         }
 
-        const plugins = createPlugins({ video: videoPlugin, audio: audioPlugin });
-        const contextIdentity = this.isCreator ? "host" : "";
-        plugins.setPluginContext("video", { identity: contextIdentity });
-        plugins.setPluginContext("audio", { identity: contextIdentity });
+        const plugins = createPlugins({ [VideoJsPluginId]: videoJsPlugin() });
+        const videoJsPluginContext: Partial<VideoJsPluginContext> = { enable: true, verbose: true };
+        plugins.setPluginContext(VideoJsPluginId, videoJsPluginContext);
 
         let deviceType: DeviceType;
         if (isWindows) {

@@ -7,8 +7,8 @@ import {
     CloudOutlined,
     HomeFilled,
     HomeOutlined,
-    ToolFilled,
-    ToolOutlined,
+    DownloadOutlined,
+    SettingOutlined,
 } from "@ant-design/icons";
 
 const storyMeta: Meta = {
@@ -21,6 +21,7 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
+const rightMenuStyles: React.CSSProperties = { fontSize: 22 };
 const sideMenuStyles: React.CSSProperties = { fontSize: 25 };
 
 export const Overview: Story<PropsWithChildren<MainPageNavHorizontalProps>> = args => (
@@ -55,30 +56,25 @@ Overview.args = {
     ],
     rightMenu: [
         {
-            key: "deviceCheck",
-            icon: active =>
-                active ? (
-                    <ToolFilled style={sideMenuStyles} />
-                ) : (
-                    <ToolOutlined style={sideMenuStyles} />
-                ),
-            title: "deviceCheck",
-            route: "/deviceCheck",
+            key: "download",
+            icon: () => <DownloadOutlined style={rightMenuStyles} />,
+            title: "下载",
+            route: "/download",
+        },
+        {
+            key: "source-code",
+            icon: () => <CloudOutlined style={rightMenuStyles} />,
+            title: "源码",
+            route: "/github",
+        },
+        {
+            key: "userConfig",
+            icon: () => <SettingOutlined style={rightMenuStyles} />,
+            title: "设置",
+            route: "/config",
         },
     ],
     popMenu: [
-        {
-            key: "userConfig",
-            icon: () => <CloudOutlined />,
-            title: "个人设置",
-            route: "/config",
-        },
-        {
-            key: "getGitHubCode",
-            icon: () => <CloudOutlined />,
-            title: "获取源码",
-            route: "/github",
-        },
         {
             key: "logout",
             icon: () => <CloudOutlined className="red" />,

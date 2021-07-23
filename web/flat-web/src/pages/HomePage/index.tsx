@@ -14,7 +14,7 @@ export const HomePage = observer(function HomePage() {
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const pageStore = useContext(PageStoreContext);
-    const [loading, setLoading] = useState(true);
+    const [isLogin, setIsLogin] = useState(false);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => pageStore.configure(), []);
@@ -49,7 +49,7 @@ export const HomePage = observer(function HomePage() {
         void checkLogin().then(isLoggedIn => {
             if (!isUnMount) {
                 if (isLoggedIn) {
-                    setLoading(false);
+                    setIsLogin(true);
                 } else {
                     pushHistory(RouteNameType.LoginPage);
                 }
@@ -67,12 +67,8 @@ export const HomePage = observer(function HomePage() {
         <div className="homepage-layout-horizontal-container">
             <MainRoomMenu />
             <div className="homepage-layout-horizontal-content">
-                {!loading && (
-                    <>
-                        <MainRoomListPanel />
-                        <MainRoomHistoryPanel />
-                    </>
-                )}
+                <MainRoomListPanel isLogin={isLogin} />
+                <MainRoomHistoryPanel isLogin={isLogin} />
             </div>
         </div>
     );

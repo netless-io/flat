@@ -1,6 +1,7 @@
 /* eslint-disable react/display-name */
 // import deviceSVG from "./icons/device.svg";
 // import deviceActiveSVG from "./icons/device-active.svg";
+import downloadSVG from "./icons/download.svg";
 import settingSVG from "./icons/setting.svg";
 import gitHubSVG from "./icons/github.svg";
 import feedbackSVG from "./icons/feedback.svg";
@@ -40,29 +41,27 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
         ];
 
         const rightMenu: MainPageLayoutItem[] = [
-            // {
-            //     key: "deviceCheck",
-            //     icon: (active: boolean): React.ReactNode => (
-            //         <img src={active ? deviceActiveSVG : deviceSVG} />
-            //     ),
-            //     title: "deviceCheck",
-            //     route: routeConfig[RouteNameType.SystemCheckPage].path,
-            // },
-        ];
-
-        const popMenu = [
             {
-                key: routeConfig[RouteNameType.GeneralSettingPage].path,
-                icon: (): React.ReactNode => <img src={settingSVG} />,
-                title: t("settings"),
-                route: routeConfig[RouteNameType.GeneralSettingPage].path,
+                key: "download",
+                icon: (): React.ReactNode => <img src={downloadSVG} />,
+                title: t("nav-download"),
+                route: "https://flat.whiteboard.agora.io/#download",
             },
             {
                 key: "getGitHubCode",
                 icon: (): React.ReactNode => <img src={gitHubSVG} />,
-                title: t("source-code"),
+                title: t("nav-source-code"),
                 route: "https://github.com/netless-io/flat/",
             },
+            {
+                key: routeConfig[RouteNameType.GeneralSettingPage].path,
+                icon: (): React.ReactNode => <img src={settingSVG} />,
+                title: t("nav-settings"),
+                route: routeConfig[RouteNameType.GeneralSettingPage].path,
+            },
+        ];
+
+        const popMenu = [
             {
                 key: "feedback",
                 icon: (): React.ReactNode => <img src={feedbackSVG} />,
