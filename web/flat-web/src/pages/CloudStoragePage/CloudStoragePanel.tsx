@@ -113,8 +113,8 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
         const uuid = v4uuid();
         room.insertImage({
             uuid,
-            centerX: 0,
-            centerY: 0,
+            centerX: room.state.cameraState.centerX,
+            centerY: room.state.cameraState.centerY,
             width: Math.floor(width * scale),
             height: Math.floor(height * scale),
             locked: false,
