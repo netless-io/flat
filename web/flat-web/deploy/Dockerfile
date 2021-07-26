@@ -1,4 +1,4 @@
-FROM node:15 as build
+FROM agoraflat/flat-web:cache as build
 
 ARG build_env=development
 

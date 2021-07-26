@@ -34,6 +34,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: docker cache
+        run: |
+          docker build . -f web/flat-web/deploy/Dockerfile.cache -t agoraflat/flat-web:cache --cache-from agoraflat/flat-web:cache --ulimit nofile=65535:65535
+          docker push agoraflat/flat-web:cache
+
       - name: docker build and push with commit sha
         env:
           ENV: development
@@ -67,6 +72,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: docker cache
+        run: |
+          docker build . -f web/flat-web/deploy/Dockerfile.cache -t agoraflat/flat-web:cache --cache-from agoraflat/flat-web:cache --ulimit nofile=65535:65535
+          docker push agoraflat/flat-web:cache
 
       - name: docker build and push with commit sha
         env:
