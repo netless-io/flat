@@ -44,7 +44,7 @@
     "react-virtualized": "^9.22.2",
     "uuid": "^8.3.0",
     "video.js": "7.10.2",
-    "white-web-sdk": "2.13.11"
+    "white-web-sdk": "2.13.12"
   },
   "devDependencies": {
     "@netless/eslint-plugin": "^1.1.2",
