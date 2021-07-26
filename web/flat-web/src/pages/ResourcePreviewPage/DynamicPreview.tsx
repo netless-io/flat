@@ -8,6 +8,7 @@ import { ConversionResponse, previewPPT } from "white-web-sdk";
 import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-converting";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { EventEmitter } from "eventemitter3";
+import classNames from "classnames";
 
 export interface DynamicPreviewProps {
     taskUUID: string;
@@ -24,6 +25,9 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
     const [eventEmit] = useState(() => new EventEmitter());
+
+    const isFirstPage = currentPage === 1;
+    const isLastPage = currentPage === totalPage;
 
     useEffect(() => {
         async function getDynamicResource(): Promise<void> {
@@ -70,7 +74,9 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
             <div ref={DynamicPreviewRef} className="dynamic-preview-inner" />
             <div className="dynamic-preview-pagination-container">
                 <div
-                    className="dynamic-preview-pagination-previous"
+                    className={classNames("dynamic-preview-pagination-previous", {
+                        "dynamic-preview-pagination-not-allow": isFirstPage,
+                    })}
                     onClick={() => {
                         eventEmit.emit("preStep");
                     }}
@@ -81,7 +87,9 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
                     {currentPage} / {totalPage}
                 </div>
                 <div
-                    className="dynamic-preview-pagination-next"
+                    className={classNames("dynamic-preview-pagination-previous", {
+                        "dynamic-preview-pagination-not-allow": isLastPage,
+                    })}
                     onClick={() => {
                         eventEmit.emit("nextStep");
                     }}

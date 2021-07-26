@@ -2,9 +2,13 @@
     background-color: #eee;
 }
 
+.dynamic-preview-inner {
+    height: 100vh;
+}
+
 .ppt-preview-container {
     .ppt-preview-main-container {
-        padding-top: 25px;
+        padding-top: 24px;
         border: none;
     }
 }
@@ -23,9 +27,11 @@
 
 .dynamic-preview-pagination-container {
     position: absolute;
-    bottom: 24px;
+    bottom: 0;
     z-index: 2;
-    left: 48%;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
     width: 140px;
     height: 44px;
     display: flex;
@@ -37,4 +43,9 @@
 
 .dynamic-preview-pagination-middle {
     color: #fff;
+}
+
+.dynamic-preview-pagination-not-allow {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
