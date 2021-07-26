@@ -31,7 +31,9 @@ jobs:
         env:
           GPG_SECRET_PASSWORD: '${{ secrets.GPG_SECRET_PASSWORD }}'
           GPG_SECRET_FILE: '${{ secrets.GPG_SECRET_FILE }}'
-        run: echo $GPG_SECRET_FILE | base64 -d | gpg --quiet --batch --yes --decrypt --passphrase="$GPG_SECRET_PASSWORD" --output config/.env.${{ secrets.BUILD_ENV }}.local
+          BUILD_ENV: '${{ secrets.BUILD_ENV }}'
+        run: echo $GPG_SECRET_FILE | base64 -d | gpg --quiet --batch --yes --decrypt --passphrase="$GPG_SECRET_PASSWORD" --output config/.env.$BUILD_ENV.local
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
