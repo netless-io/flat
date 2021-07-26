@@ -34,17 +34,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: docker build and push
+      - name: docker build and push with commit sha
         env:
           ENV: development
           TAG: development-${{ github.sha }}
-        run: ./web/flat-web/deploy/build.sh
+        run: ./web/flat-web/deploy/build.sh && docker push agoraflat/flat-web:$TAG
 
-      - name: Decrypt secret to envfile
+      - name: docker build and push latest
         env:
           ENV: development
           TAG: dev-latest
-        run: ./web/flat-web/deploy/build.sh
+        run: ./web/flat-web/deploy/build.sh && docker push agoraflat/flat-web:$TAG
 
   build_prod:
     runs-on: ubuntu-latest
@@ -68,15 +68,15 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: docker build and push
+      - name: docker build and push with commit sha
         env:
           ENV: production
           TAG: production-${{ github.sha }}
-        run: ./web/flat-web/deploy/build.sh
+        run: ./web/flat-web/deploy/build.sh && docker push agoraflat/flat-web:$TAG
 
-      - name: Decrypt secret to envfile
+      - name: docker build and push latest
         env:
           ENV: production
           TAG: latest
-        run: ./web/flat-web/deploy/build.sh
+        run: ./web/flat-web/deploy/build.sh && docker push agoraflat/flat-web:$TAG
 
