@@ -12,20 +12,16 @@ on:
       - "desktop"
 
 jobs:
+
   build_docker:
     runs-on: ubuntu-latest
+    environment:
+      name: development
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: chrnorm/deployment-action@releases/v1
-        name: Create GitHub deployment
-        id: deployment
-        with:
-          token: "${{ github.token }}"
-          target_url: https://flat-web-dev.whiteboard.agora.io
-          environment: development
       - name: Decrypt secret to envfile
         env:
           TEST_ENV: ${{ secrets.TEST_ENV }}
