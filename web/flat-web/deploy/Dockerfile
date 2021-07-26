@@ -32,7 +32,7 @@ RUN yarn run bootstrap
 
 COPY web web
 
-RUN cd web/flat-web && ls -al ../../config/ && NODE_OPTIONS="--max-old-space-size=6145" yarn build -m $build_env
+RUN NODE_OPTIONS="--max-old-space-size=6145" yarn --cwd web/flat-web build -m $build_env
 
 
 FROM nginx
