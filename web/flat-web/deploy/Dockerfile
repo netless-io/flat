@@ -42,8 +42,8 @@ WORKDIR /app
 # keep previous version
 COPY --from=agoraflat/flat-web:latest /app/assets /app/assets
 
-COPY deploy/nginx.conf /etc/nginx/nginx.conf
-COPY deploy/nginx-mime.types /etc/nginx/nginx-mime.types
+COPY web/flat-web/deploy/nginx.conf /etc/nginx/nginx.conf
+COPY web/flat-web/deploy/nginx-mime.types /etc/nginx/nginx-mime.types
 
 COPY --from=build /app/web/flat-web/dist /app
 
