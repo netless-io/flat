@@ -37,4 +37,4 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/flat-web:${{ env.BUILD_ENV }}-${{ github.ref }}
           file: web/flat-web/deploy/Dockerfile
-          build-args: build_env=${{ env.BUILD_ENV }}
+          build-args: build_env=${{ secrets.BUILD_ENV }}

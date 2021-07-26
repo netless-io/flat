@@ -78,6 +78,7 @@ web_modules/
 .env.test
 .env.local
 .env.*.local
+.env.*.gpg
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
