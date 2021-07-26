@@ -36,13 +36,13 @@ jobs:
 
       - name: docker build and push
         env:
-          ENV: deveployment
+          ENV: development
           TAG: development-${{ github.sha }}
         run: ./web/flat-web/deploy/build.sh
 
       - name: Decrypt secret to envfile
         env:
-          ENV: deveployment
+          ENV: development
           TAG: dev-latest
         run: ./web/flat-web/deploy/build.sh
 
