@@ -2,8 +2,8 @@ name: flat-web Docker Build
 on:
   push:
     branches:
-      - main
-      - "sa/*"
+      - "main"
+      - "sa/deploy"
     paths-ignore:
       - "docs/**"
       - "*.md"
@@ -19,12 +19,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - uses: chrnorm/deployment-action@releases/v1
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          token: "${{ github.token }}"
+          target_url: https://flat-web-dev.whiteboard.agora.io
+          environment: development
+
       - name: Decrypt secret to envfile
         env:
           GPG_SECRET_PASSWORD: ${{ secrets.GPG_SECRET_PASSWORD }}
           GPG_SECRET_FILE: ${{ secrets.GPG_SECRET_FILE }}
         run: echo $GPG_SECRET_FILE | base64 -d | gpg --quiet --batch --yes --decrypt --passphrase="$GPG_SECRET_PASSWORD" --output config/.env.${{ env.BUILD_ENV }}.local
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
@@ -38,3 +45,21 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/flat-web:${{ env.BUILD_ENV }}-${{ github.ref }}
           file: web/flat-web/deploy/Dockerfile
           build-args: build_env=${{ secrets.BUILD_ENV }}
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: "${{ github.token }}"
+          target_url: https://flat-web-dev.whiteboard.agora.io
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          state: "success"
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: "${{ github.token }}"
+          target_url: https://flat-web-dev.whiteboard.agora.io
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          state: "failure"
