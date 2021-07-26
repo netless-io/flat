@@ -4,15 +4,18 @@ ARG build_env=development
 
 WORKDIR /app
 
+# cache node_modules
+COPY package.json package.json
+COPY yarn.lock yarn.lock
+
+COPY desktop/main-app/package.json desktop/main-app/package.json
+COPY desktop/renderer-app/package.json desktop/renderer-app/package.json
+
 COPY packages/flat-components/package.json packages/flat-components/package.json
 COPY packages/flat-i18n/package.json packages/flat-i18n/package.json
 COPY packages/flat-types/package.json packages/flat-types/package.json
 
 COPY web/flat-web/package.json web/flat-web/package.json
-
-# cache node_modules
-COPY package.json package.json
-COPY yarn.lock yarn.lock
 
 RUN sed -i "s/.*preinstall.*//g" package.json && sed -i "s/.*desktop.*//g" package.json && yarn install --frozen-lockfile
 
