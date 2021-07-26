@@ -20,6 +20,8 @@ export function dotenv(envDir: string = process.cwd()): Plugin {
                     define[`import.meta.env.${key}`] = JSON.stringify(value);
                 }
                 config.define = { ...config.define, ...define };
+            } else {
+                throw new Error("cannot found env file" + targetFile);
             }
         },
     };
