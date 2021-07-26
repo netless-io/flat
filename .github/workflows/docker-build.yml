@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/flat-web:${{ secrets.BUILD_ENV }}-${{ github.ref }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/flat-web:${{ secrets.BUILD_ENV }}-${{ github.sha }}
           file: web/flat-web/deploy/Dockerfile
           build-args: build_env=${{ secrets.BUILD_ENV }}
 
