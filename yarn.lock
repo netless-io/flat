@@ -1968,10 +1968,10 @@
   resolved "https://registry.npmjs.org/@netless/tool-box/-/tool-box-0.1.5.tgz#39977a0075c069aab90895bcee6268a8e6bf8afd"
   integrity sha512-eoIyRdnVDnNosMZ1Jix6bVkg6Fc0Pg0UzgR9fLuB2dZaaeBDbmC82fOd3rRQiG+PNM0hBhT6vfJ1iE1tw7Juzg==
 
-"@netless/video-js-plugin@^0.3.4":
-  version "0.3.4"
-  resolved "https://registry.npmjs.org/@netless/video-js-plugin/-/video-js-plugin-0.3.4.tgz#21466377bd790acc4d8be1fba5e137d019a7e166"
-  integrity sha512-5wAi0a+X6RFM7DTXeiY2Ga/wGrSV3MnzcgZguwbaZOt4CzMVFb/DGwRxHqvZ4gHSMIijWfuRurpMrzovlwAXsQ==
+"@netless/video-js-plugin@^0.3.6":
+  version "0.3.6"
+  resolved "https://registry.npmjs.org/@netless/video-js-plugin/-/video-js-plugin-0.3.6.tgz#46cc8f4a23a7673e9cf4ca96820130aee2f8b781"
+  integrity sha512-ivdmYr6bGz/4BlQgCCgb8Hw5V4ImngCCIZq0LqJwQaJAhSwyai1KqokVeIPa7U1V0ve75OckktStDuyMBPoe2Q==
 
 "@netless/zoom-controller@^0.1.1":
   version "0.1.1"
