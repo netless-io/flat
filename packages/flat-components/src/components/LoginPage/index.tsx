@@ -11,9 +11,11 @@ export type { LoginChannelType } from "./LoginChannel";
 
 export interface LoginPanelProps {
     onLogin: LoginContentProps["onLogin"];
+    privacyURL?: string;
+    serviceURL?: string;
 }
 
-export const LoginPanel: React.FC<LoginPanelProps> = ({ onLogin }) => {
+export const LoginPanel: React.FC<LoginPanelProps> = (props) => {
     return (
         <div className="login-panel-container">
             <div className="login-panel-cover">
@@ -30,7 +32,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({ onLogin }) => {
                     <img src={bgBottomRightSVG} />
                 </div>
                 <div className="login-panel-inner-content-container">
-                    <LoginContent onLogin={onLogin} />
+                    <LoginContent {...props} />
                 </div>
                 <span className="login-panel-inner-bottom-text">powered by Agora</span>
             </div>
