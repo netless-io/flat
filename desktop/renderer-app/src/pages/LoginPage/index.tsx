@@ -13,8 +13,11 @@ import { AppUpgradeModal, AppUpgradeModalProps } from "../../components/AppUpgra
 import { runtime } from "../../utils/runtime";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { WeChatLogin } from "./WeChatLogin";
+import { useTranslation } from "react-i18next";
+import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/Process";
 
 export const LoginPage = observer(function LoginPage() {
+    const { i18n } = useTranslation();
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const loginDisposer = useRef<LoginDisposer>();
@@ -76,9 +79,12 @@ export const LoginPage = observer(function LoginPage() {
         }
     };
 
+    const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
+    const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
+
     return (
         <div className="login-page-container">
-            <LoginPanel onLogin={handleLogin} />
+            <LoginPanel onLogin={handleLogin} privacyURL={privacyURL} serviceURL={serviceURL} />
             <AppUpgradeModal updateInfo={updateInfo} onClose={() => setUpdateInfo(null)} />
         </div>
     );

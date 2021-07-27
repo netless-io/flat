@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 import logoSVG from "./icons/logo.svg";
 import "./index.less";
 
@@ -9,9 +10,11 @@ import { useTranslation } from "react-i18next";
 
 export interface LoginContentProps {
     onLogin: (loginChannel: LoginChannelType) => React.ReactElement | undefined;
+    privacyURL?: string;
+    serviceURL?: string;
 }
 
-export const LoginContent: React.FC<LoginContentProps> = ({ onLogin }) => {
+export const LoginContent: React.FC<LoginContentProps> = ({ onLogin, privacyURL, serviceURL }) => {
     const { t } = useTranslation();
     const [inPageLogin, setInPageLogin] = useState<React.ReactElement | undefined>();
     const [isChecked, setIsChecked] = useState(false);
@@ -51,8 +54,13 @@ export const LoginContent: React.FC<LoginContentProps> = ({ onLogin }) => {
                                 onClick={() => setIsChecked(!isChecked)}
                             >
                                 {t("have-read-and-agree")}{" "}
-                                <a href={void 0}>{t("privacy-agreement")}</a> {t("and")}{" "}
-                                <a href={void 0}>{t("service-policy")}</a>
+                                <a href={privacyURL} target="_blank">
+                                    {t("privacy-agreement")}
+                                </a>{" "}
+                                {t("and")}{" "}
+                                <a href={serviceURL} target="_blank">
+                                    {t("service-policy")}
+                                </a>
                             </Checkbox>
                         </div>
                     </div>
