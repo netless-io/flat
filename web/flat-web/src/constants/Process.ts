@@ -27,6 +27,7 @@ export const FLAT_WEB_DOMAIN = import.meta.env.FLAT_WEB_DOMAIN;
 
 export const INVITE_BASEURL = `https://${FLAT_WEB_DOMAIN}`;
 
+// TODO: english version is WIP
 export const PRIVACY_URL_CN = "https://flat.whiteboard.agora.io/privacy.html";
 export const PRIVACY_URL = "https://flat.whiteboard.agora.io/privacy.html";
 
