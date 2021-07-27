@@ -4,16 +4,19 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
 import { useTranslation } from "react-i18next";
+import { update } from "flat-types";
 
 export interface AppUpgradeModalProps {
-    /** open modal when newVersion has truthy value */
-    newVersion?: string;
-    /** close modal  */
+    updateInfo:
+        | (update.UpdateCheckInfo & {
+              hasNewVersion: true;
+          })
+        | null;
     onClose: () => void;
 }
 
 export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgradeModal({
-    newVersion,
+    updateInfo,
     onClose,
 }) {
     const { t } = useTranslation();
@@ -22,7 +25,7 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
     const [upgradeFail, setUpgradeFail] = useState(false);
 
     useEffect(() => {
-        if (showUpgradeProgress) {
+        if (showUpgradeProgress && updateInfo !== null) {
             ipcReceive("update-progress", args => {
                 if (args.status) {
                     setUpgradePercent(args.percent);
@@ -31,12 +34,14 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
                 }
             });
 
-            ipcAsyncByMainWindow("start-update", undefined);
+            ipcAsyncByMainWindow("start-update", {
+                prereleaseTag: updateInfo.prereleaseTag,
+            });
         }
         return () => {
             ipcReceiveRemove("update-progress");
         };
-    }, [showUpgradeProgress]);
+    }, [showUpgradeProgress, updateInfo]);
 
     const renderModalTitle = (): React.ReactNode => {
         return <div className="app-upgrade-modal-title">{t("version-updates")}</div>;
@@ -58,7 +63,7 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
             maskClosable={false}
             title={renderModalTitle()}
             footer={[]}
-            visible={Boolean(newVersion)}
+            visible={updateInfo !== null}
             onCancel={cancelUpgrade}
             wrapClassName="app-upgrade-modal-container"
             closable={false}
@@ -68,11 +73,11 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
                     <span className="app-upgrade-modal-font">
                         {t("downloading")} ({upgradePercent.toFixed(2)}%)...
                     </span>
-                    <div className="app-upgrade-modal-progress"></div>
+                    <div className="app-upgrade-modal-progress" />
                     <div
                         className="app-upgrade-active-progress"
                         style={{ width: `${upgradePercent}%` }}
-                    ></div>
+                    />
                     {upgradeFail && (
                         <div>
                             <span className="app-upgrade-modal-font">
@@ -89,7 +94,7 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
             ) : (
                 <div>
                     <span className="app-upgrade-modal-font">
-                        {t("new-version-tips", { version: newVersion || " " })}
+                        {t("new-version-tips", { version: updateInfo?.version || " " })}
                     </span>
                     <div className="app-upgrade-modal-btn">
                         <Button type="primary" onClick={upgradeStart}>

@@ -60,8 +60,8 @@ export const ipcSyncByApp = <
 >(
     action: T,
     args?: U,
-): Promise<ReturnType<ipc.AppActionSync[T]>> => {
-    return ipcRenderer.invoke(action, args);
+): ReturnType<ipc.AppActionSync[T]> => {
+    return ipcRenderer.invoke(action, args) as any;
 };
 
 export const ipcReceive = <T extends keyof ipc.EmitEvents, U extends ipc.EmitEvents[T]>(
