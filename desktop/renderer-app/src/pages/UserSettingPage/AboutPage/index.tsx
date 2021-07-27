@@ -7,21 +7,21 @@ import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { Button, message } from "antd";
 import { runtime } from "../../../utils/runtime";
 import { ipcSyncByApp } from "../../../utils/ipc";
-import { AppUpgradeModal } from "../../../components/AppUpgradeModal";
+import { AppUpgradeModal, AppUpgradeModalProps } from "../../../components/AppUpgradeModal";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { useTranslation } from "react-i18next";
 
 export const AboutPage = (): React.ReactElement => {
     const { t } = useTranslation();
     const sp = useSafePromise();
-    const [newVersion, setNewVersion] = useState<string>();
+    const [updateInfo, setUpdateInfo] = useState<AppUpgradeModalProps["updateInfo"]>(null);
 
     const checkUpgradeVersion = (): void => {
         void sp(ipcSyncByApp("get-update-info")).then(data => {
             if (!data.hasNewVersion || data.version === runtime.appVersion) {
                 void message.info(t("latest-version-tips"));
             } else {
-                setNewVersion(data.version);
+                setUpdateInfo(data);
             }
         });
     };
@@ -38,11 +38,8 @@ export const AboutPage = (): React.ReactElement => {
                         {t("check-updates")}
                     </Button>
                 </div>
-                {/* <div className="about-page-bottom-container">
-                    <a href="">服务协议</a>｜<a href="">隐私政策</a>｜<a href="">GitHub</a>
-                </div> */}
             </div>
-            <AppUpgradeModal newVersion={newVersion} onClose={() => setNewVersion(void 0)} />
+            <AppUpgradeModal updateInfo={updateInfo} onClose={() => setUpdateInfo(null)} />
         </UserSettingLayoutContainer>
     );
 };

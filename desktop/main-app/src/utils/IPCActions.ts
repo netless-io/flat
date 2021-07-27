@@ -3,6 +3,8 @@ import { ipc } from "flat-types";
 import { app, ipcMain, powerSaveBlocker } from "electron";
 import runtime from "./Runtime";
 import { updateService } from "./UpdateService";
+import { update } from "flat-types";
+import { gt } from "semver";
 
 const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAsync => {
     const { window, options } = customWindow;
@@ -70,8 +72,8 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
                     }
                 };
             })(),
-        "start-update": () => {
-            updateService.update();
+        "start-update": args => {
+            updateService.update(args.prereleaseTag);
         },
         "cancel-update": () => {
             updateService.cancel();
@@ -90,18 +92,31 @@ export const appActionAsync: ipc.AppActionAsync = {
 
 export const appActionSync: ipc.AppActionSync = {
     "get-runtime": () => {
-        return runtime;
+        return Promise.resolve(runtime);
     },
     "get-open-at-login": () => {
-        return app.getLoginItemSettings().openAtLogin;
+        return Promise.resolve(app.getLoginItemSettings().openAtLogin);
     },
-    "get-update-info": () => {
-        return updateService.check().catch((err: Error) => {
-            console.error(err.message);
-            return {
-                hasNewVersion: false,
-            };
-        }) as any;
+    "get-update-info": async () => {
+        const warpUpdateCheck = async (
+            prereleaseTag: update.PrereleaseTag,
+        ): Promise<update.UpdateCheckInfo> => {
+            return await updateService.check(prereleaseTag).catch((err: Error) => {
+                console.error(err.message);
+                return {
+                    hasNewVersion: false,
+                };
+            });
+        };
+
+        const beta = await warpUpdateCheck("beta");
+        const stable = await warpUpdateCheck("stable");
+
+        if (beta.hasNewVersion && stable.hasNewVersion) {
+            return gt(beta.version, stable.version) ? beta : stable;
+        }
+
+        return beta.hasNewVersion ? beta : stable;
     },
 };
 

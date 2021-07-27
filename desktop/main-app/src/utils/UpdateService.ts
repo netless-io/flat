@@ -7,9 +7,9 @@ import { update } from "flat-types";
 class UpdateService {
     private cancellationToken: UpdateCheckResult["cancellationToken"];
 
-    public check(): Promise<update.UpdateCheckInfo> {
+    public check(prereleaseTag: update.PrereleaseTag): Promise<update.UpdateCheckInfo> {
         autoUpdater.autoDownload = false;
-        UpdateService.setUpdateURL();
+        UpdateService.setUpdateURL(prereleaseTag);
 
         return new Promise((resolve, reject) => {
             const updateAvailable = (info: UpdateCheckResult["updateInfo"]) => {
@@ -22,6 +22,7 @@ class UpdateService {
                         typeof info.releaseNotes === "string"
                             ? JSON.parse(info.releaseNotes)
                             : undefined,
+                    prereleaseTag,
                 });
             };
 
@@ -53,7 +54,7 @@ class UpdateService {
         });
     }
 
-    public update(): void {
+    public update(prereleaseTag: update.PrereleaseTag): void {
         autoUpdater.autoDownload = true;
 
         // must be set to false here
@@ -63,7 +64,7 @@ class UpdateService {
         //     domain: 'RACCommandErrorDomain'
         autoUpdater.autoInstallOnAppQuit = false;
 
-        UpdateService.setUpdateURL();
+        UpdateService.setUpdateURL(prereleaseTag);
 
         const updateNotAvailable = () => {
             removeListeners();
@@ -122,9 +123,9 @@ class UpdateService {
         this.cancellationToken?.cancel();
     }
 
-    private static setUpdateURL(): void {
+    private static setUpdateURL(prereleaseTag: update.PrereleaseTag): void {
         const osName = runtime.isWin ? "win" : "mac";
-        const updateURL = `${process.env.UPDATE_DOMAIN}/latest/${runtime.prereleaseTag}/${osName}`;
+        const updateURL = `${process.env.UPDATE_DOMAIN}/latest/${prereleaseTag}/${osName}`;
 
         autoUpdater.setFeedURL({
             provider: "generic",
