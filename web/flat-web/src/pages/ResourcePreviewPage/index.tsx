@@ -5,14 +5,14 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { DynamicPreview } from "./DynamicPreview";
 import { MediaPreview } from "./MediaPreview";
 import { StaticPreview } from "./StaticPreview";
-import { ErrorPage } from "flat-components";
+import { ErrorPage, Region } from "flat-components";
 import { getFileSuffix } from "./utils";
 
 export interface ResourcePreviewPagePageProps {}
 
 export const ResourcePreviewPage = observer<ResourcePreviewPagePageProps>(
     function ResourcePreviewPage() {
-        const { fileURL, taskToken, taskUUID } =
+        const { fileURL, taskToken, taskUUID, region } =
             useParams<RouteParams<RouteNameType.ResourcePreviewPage>>();
 
         const decodeFileName = decodeURIComponent(fileURL);
@@ -25,7 +25,13 @@ export const ResourcePreviewPage = observer<ResourcePreviewPagePageProps>(
             switch (fileSuffix) {
                 case ".pptx": {
                     if (taskUUID && taskToken) {
-                        return <DynamicPreview taskUUID={taskUUID} taskToken={taskToken} />;
+                        return (
+                            <DynamicPreview
+                                taskUUID={taskUUID}
+                                taskToken={taskToken}
+                                region={region as Region}
+                            />
+                        );
                     }
                     return <ErrorPage />;
                 }
@@ -34,7 +40,13 @@ export const ResourcePreviewPage = observer<ResourcePreviewPagePageProps>(
                 case ".doc":
                 case ".docx": {
                     if (taskUUID && taskToken) {
-                        return <StaticPreview taskUUID={taskUUID} taskToken={taskToken} />;
+                        return (
+                            <StaticPreview
+                                taskUUID={taskUUID}
+                                taskToken={taskToken}
+                                region={region as Region}
+                            />
+                        );
                     }
                     return <ErrorPage />;
                 }

@@ -358,7 +358,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     private previewCourseware(file: CloudStorageFile): void {
-        const { fileURL, taskToken, taskUUID } = file;
+        const { fileURL, taskToken, taskUUID, region } = file;
 
         const convertFileTypeList = [".pptx", ".ppt", ".pdf", ".doc", ".docx"];
 
@@ -367,7 +367,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         const encodeFileURL = encodeURIComponent(fileURL);
 
         const resourcePreviewURL = isConvertFileType
-            ? `${INVITE_BASEURL}/preview/${encodeFileURL}/${taskToken}/${taskUUID}/`
+            ? `${INVITE_BASEURL}/preview/${encodeFileURL}/${taskToken}/${taskUUID}/${region}/`
             : `${INVITE_BASEURL}/preview/${encodeFileURL}/`;
 
         switch (file.convert) {
@@ -520,6 +520,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 taskToken: file.taskToken,
                 taskUUID: file.taskUUID,
                 dynamic,
+                region: file.region,
             }));
         } catch (e) {
             console.error(e);

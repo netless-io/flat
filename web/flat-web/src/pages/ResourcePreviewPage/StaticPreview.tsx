@@ -1,6 +1,7 @@
 import "./StaticPreview.less";
 
 import { observer } from "mobx-react-lite";
+import { Region } from "flat-components";
 import React, { useEffect, useState } from "react";
 import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-converting";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
@@ -8,6 +9,7 @@ import { useSafePromise } from "../../utils/hooks/lifecycle";
 export interface StaticPreviewProps {
     taskUUID: string;
     taskToken: string;
+    region: Region;
 }
 
 type ConvertedFileList =
@@ -22,6 +24,7 @@ type ConvertedFileList =
 export const StaticPreview = observer<StaticPreviewProps>(function DocumentPreview({
     taskUUID,
     taskToken,
+    region,
 }) {
     const [convertList, setConvertList] = useState<ConvertedFileList>([]);
     const sp = useSafePromise();
@@ -33,6 +36,7 @@ export const StaticPreview = observer<StaticPreviewProps>(function DocumentPrevi
                     taskUUID,
                     taskToken,
                     dynamic: false,
+                    region,
                 }),
             );
 

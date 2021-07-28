@@ -84,7 +84,7 @@ export const routeConfig = {
         path: "/join/:roomUUID/",
     },
     [RouteNameType.ResourcePreviewPage]: {
-        path: "/preview/:fileURL/:taskToken?/:taskUUID?/",
+        path: "/preview/:fileURL/:taskToken?/:taskUUID?/:region?/",
     },
 } as const;
 
