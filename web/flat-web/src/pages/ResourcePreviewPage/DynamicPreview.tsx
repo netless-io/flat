@@ -9,15 +9,18 @@ import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-conver
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { EventEmitter } from "eventemitter3";
 import classNames from "classnames";
+import { Region } from "flat-components";
 
 export interface DynamicPreviewProps {
     taskUUID: string;
     taskToken: string;
+    region: Region;
 }
 
 export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview({
     taskUUID,
     taskToken,
+    region,
 }) {
     const DynamicPreviewRef = useRef<HTMLDivElement>(null);
     const sp = useSafePromise();
@@ -36,6 +39,7 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
                     taskUUID,
                     taskToken,
                     dynamic: true,
+                    region,
                 }),
             );
 

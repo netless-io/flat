@@ -158,9 +158,14 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
             return;
         }
 
-        const { taskUUID, taskToken } = file;
+        const { taskUUID, taskToken, region } = file;
         const dynamic = ext === ".pptx";
-        const convertingStatus = await queryConvertingTaskStatus({ taskUUID, taskToken, dynamic });
+        const convertingStatus = await queryConvertingTaskStatus({
+            taskUUID,
+            taskToken,
+            dynamic,
+            region,
+        });
 
         if (file.convert !== "success") {
             if (convertingStatus.status === "Finished" || convertingStatus.status === "Fail") {

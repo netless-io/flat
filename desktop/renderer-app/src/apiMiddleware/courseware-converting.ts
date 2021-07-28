@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { Region } from "flat-components";
 
 export interface ConvertingTaskStatus {
     uuid: string;
@@ -23,16 +24,18 @@ export async function queryConvertingTaskStatus({
     taskUUID,
     taskToken,
     dynamic,
+    region,
 }: {
     taskUUID: string;
     taskToken: string;
     dynamic: boolean;
+    region: Region;
 }): Promise<ConvertingTaskStatus> {
     const { data } = await Axios.get<ConvertingTaskStatus>(
         `https://api.netless.link/v5/services/conversion/tasks/${taskUUID}?type=${
             dynamic ? "dynamic" : "static"
         }`,
-        { headers: { token: taskToken /* TODO:, region: 'cn-hz' */ } },
+        { headers: { token: taskToken, region } },
     );
     return data;
 }
