@@ -2,6 +2,14 @@ FROM node:15
 
 WORKDIR /app
 
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales
+
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=en_US.UTF-8
+
+ENV LANG en_US.UTF-8
+
 # cache node_modules
 COPY package.json package.json
 COPY yarn.lock yarn.lock
