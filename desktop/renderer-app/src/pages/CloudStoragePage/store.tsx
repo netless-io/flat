@@ -511,6 +511,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 taskToken: file.taskToken,
                 taskUUID: file.taskUUID,
                 dynamic,
+                region: file.region,
             }));
         } catch (e) {
             console.error(e);

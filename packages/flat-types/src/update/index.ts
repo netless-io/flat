@@ -1,3 +1,5 @@
+export type PrereleaseTag = "beta" | "stable";
+
 export type UpdateCheckInfo =
     | {
           hasNewVersion: true;
@@ -8,6 +10,7 @@ export type UpdateCheckInfo =
                     enNote: string;
                 }
               | undefined;
+          prereleaseTag: PrereleaseTag;
       }
     | {
           hasNewVersion: false;

@@ -165,14 +165,19 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             return;
         }
 
-        const { taskUUID, taskToken } = file;
+        const { taskUUID, taskToken, region } = file;
         const dynamic = ext === ".pptx";
-        const convertingStatus = await queryConvertingTaskStatus({ taskUUID, taskToken, dynamic });
+        const convertingStatus = await queryConvertingTaskStatus({
+            taskUUID,
+            taskToken,
+            dynamic,
+            region,
+        });
 
         if (file.convert !== "success") {
             if (convertingStatus.status === "Finished" || convertingStatus.status === "Fail") {
                 try {
-                    await convertFinish({ fileUUID: file.fileUUID, region: file.region });
+                    await convertFinish({ fileUUID: file.fileUUID, region });
                 } catch (e) {
                     console.error(e);
                 }

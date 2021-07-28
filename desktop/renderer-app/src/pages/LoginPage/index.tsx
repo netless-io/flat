@@ -9,16 +9,19 @@ import { LoginDisposer } from "./utils";
 import { githubLogin } from "./githubLogin";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { GlobalStoreContext } from "../../components/StoreProvider";
-import { AppUpgradeModal } from "../../components/AppUpgradeModal";
+import { AppUpgradeModal, AppUpgradeModalProps } from "../../components/AppUpgradeModal";
 import { runtime } from "../../utils/runtime";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { WeChatLogin } from "./WeChatLogin";
+import { useTranslation } from "react-i18next";
+import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/Process";
 
 export const LoginPage = observer(function LoginPage() {
+    const { i18n } = useTranslation();
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const loginDisposer = useRef<LoginDisposer>();
-    const [newVersion, setNewVersion] = useState<string>();
+    const [updateInfo, setUpdateInfo] = useState<AppUpgradeModalProps["updateInfo"]>(null);
     const sp = useSafePromise();
 
     useEffect(() => {
@@ -44,7 +47,7 @@ export const LoginPage = observer(function LoginPage() {
                         `[Auto Updater]: Remote Version "${data.version}", Local Version "${runtime.appVersion}"`,
                     );
                     if (data.version !== runtime.appVersion) {
-                        setNewVersion(data.version);
+                        setUpdateInfo(data);
                     }
                 }
             })
@@ -76,10 +79,13 @@ export const LoginPage = observer(function LoginPage() {
         }
     };
 
+    const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
+    const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
+
     return (
         <div className="login-page-container">
-            <LoginPanel onLogin={handleLogin} />
-            <AppUpgradeModal newVersion={newVersion} onClose={() => setNewVersion(void 0)} />
+            <LoginPanel onLogin={handleLogin} privacyURL={privacyURL} serviceURL={serviceURL} />
+            <AppUpgradeModal updateInfo={updateInfo} onClose={() => setUpdateInfo(null)} />
         </div>
     );
 });

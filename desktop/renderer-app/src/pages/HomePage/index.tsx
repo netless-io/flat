@@ -10,7 +10,7 @@ import { useLastLocation } from "react-router-last-location";
 import { shouldWindowCenter } from "./utils";
 import { constants } from "flat-types";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
-import { AppUpgradeModal } from "../../components/AppUpgradeModal";
+import { AppUpgradeModal, AppUpgradeModalProps } from "../../components/AppUpgradeModal";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { runtime } from "../../utils/runtime";
 import { globalStore } from "../../stores/GlobalStore";
@@ -20,7 +20,7 @@ export type HomePageProps = {};
 
 export const HomePage = observer<HomePageProps>(function HomePage() {
     const lastLocation = useLastLocation();
-    const [newVersion, setNewVersion] = useState<string>();
+    const [updateInfo, setUpdateInfo] = useState<AppUpgradeModalProps["updateInfo"]>(null);
     const sp = useSafePromise();
 
     useEffect(() => {
@@ -44,7 +44,7 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
                             `[Auto Updater]: Remote Version "${data.version}", Local Version "${runtime.appVersion}"`,
                         );
                         if (data.version !== runtime.appVersion) {
-                            setNewVersion(data.version);
+                            setUpdateInfo(data);
                         }
                     }
                 })
@@ -64,7 +64,7 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
                     <MainRoomHistoryPanel />
                 </div>
             </div>
-            <AppUpgradeModal newVersion={newVersion} onClose={() => setNewVersion(void 0)} />
+            <AppUpgradeModal updateInfo={updateInfo} onClose={() => setUpdateInfo(null)} />
         </MainPageLayoutContainer>
     );
 });

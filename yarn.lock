@@ -1968,10 +1968,10 @@
   resolved "https://registry.npmjs.org/@netless/tool-box/-/tool-box-0.1.5.tgz#39977a0075c069aab90895bcee6268a8e6bf8afd"
   integrity sha512-eoIyRdnVDnNosMZ1Jix6bVkg6Fc0Pg0UzgR9fLuB2dZaaeBDbmC82fOd3rRQiG+PNM0hBhT6vfJ1iE1tw7Juzg==
 
-"@netless/video-js-plugin@^0.3.4":
-  version "0.3.4"
-  resolved "https://registry.npmjs.org/@netless/video-js-plugin/-/video-js-plugin-0.3.4.tgz#21466377bd790acc4d8be1fba5e137d019a7e166"
-  integrity sha512-5wAi0a+X6RFM7DTXeiY2Ga/wGrSV3MnzcgZguwbaZOt4CzMVFb/DGwRxHqvZ4gHSMIijWfuRurpMrzovlwAXsQ==
+"@netless/video-js-plugin@^0.3.6":
+  version "0.3.6"
+  resolved "https://registry.npmjs.org/@netless/video-js-plugin/-/video-js-plugin-0.3.6.tgz#46cc8f4a23a7673e9cf4ca96820130aee2f8b781"
+  integrity sha512-ivdmYr6bGz/4BlQgCCgb8Hw5V4ImngCCIZq0LqJwQaJAhSwyai1KqokVeIPa7U1V0ve75OckktStDuyMBPoe2Q==
 
 "@netless/zoom-controller@^0.1.1":
   version "0.1.1"
@@ -18483,33 +18483,6 @@ which@^2.0.1, which@^2.0.2:
   integrity sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==
   dependencies:
     isexe "^2.0.0"
-
-white-web-sdk@2.13.11:
-  version "2.13.11"
-  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.13.11.tgz#70455ca04a8ca28f16e7cac33d82bb9915883c47"
-  integrity sha512-24opNfLd0JinJAOcyyOfG4q7X78o+dq5vLtwCsgzqYONqWp2WQOZtJzopB2uUSSW2YEbYQCglz+wmr9FWuv/Yg==
-  dependencies:
-    "@netless/canvas-polyfill" "^0.0.4"
-    atob "^2.1.0"
-    bezier-js "^2.4.4"
-    color "^3.1.0"
-    detect-it "^3.0.5"
-    es6-symbol "^3.1.1"
-    eventemitter3 "^4.0.7"
-    mathjs "6.6.5"
-    mobx "^4.15.7"
-    mobx-react "^5.4.4"
-    numeric "^1.2.6"
-    protobufjs "^6.11.2"
-    query-string "5"
-    react "^16.8.0"
-    react-dom "^16.8.0"
-    resize-observer-polyfill "^1.5.1"
-    spark-md5 "^3.0.0"
-    textarea-caret-ts "^4.1.0"
-    url-parse "^1.4.0"
-    uuid "^7.0.3"
-    xml-js "^1.6.11"
 
 white-web-sdk@2.13.12:
   version "2.13.12"
