@@ -1,0 +1,52 @@
+name: flat-web Docker Build
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "web/flat-web/**"
+
+
+jobs:
+
+  build_dev:
+    runs-on: ubuntu-latest
+    environment:
+      name: development
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Decrypt secret to envfile
+        env:
+          GPG_SECRET_PASSWORD: ${{ secrets.GPG_SECRET_PASSWORD }}
+          GPG_SECRET_FILE: ${{ secrets.GPG_SECRET_FILE }}
+        run: echo $GPG_SECRET_FILE | base64 -d | gpg --quiet --batch --yes --decrypt --passphrase="$GPG_SECRET_PASSWORD" --output config/.env.development.local
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: docker cache
+        run: |
+          docker build . -f web/flat-web/deploy/Dockerfile.cache -t agoraflat/flat-web:cache --cache-from agoraflat/flat-web:cache --ulimit nofile=65535:65535
+          docker push agoraflat/flat-web:cache
+
+      - name: docker build and push with commit sha
+        env:
+          ENV: development
+          TAG: development-${{ github.sha }}
+        run: |
+          docker build . -f web/flat-web/deploy/Dockerfile -t agoraflat/flat-web:$TAG --build-arg build_env=$ENV --ulimit nofile=65535:65535
+          docker push agoraflat/flat-web:$TAG
+
+      - name: docker build and push latest
+        env:
+          ENV: development
+          TAG: dev-latest
+        run: |
+          docker build . -f web/flat-web/deploy/Dockerfile -t agoraflat/flat-web:$TAG --build-arg build_env=$ENV --ulimit nofile=65535:65535
+          docker push agoraflat/flat-web:$TAG
