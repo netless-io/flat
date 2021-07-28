@@ -420,9 +420,11 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         classRoomStore.updateRecordingLayout({
             mixedVideoLayout: 3,
             backgroundColor: "#F3F6F9",
-            defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+            transcodingConfig: {
+                defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+                backgroundConfig,
+            },
             layoutConfig,
-            backgroundConfig,
         });
     }
 });

@@ -267,9 +267,11 @@ export interface AgoraCloudRecordUpdateLayoutRequestBody {
         maxResolutionUid?: string;
         mixedVideoLayout?: number;
         backgroundColor?: string;
+        transcodingConfig?: {
+            backgroundConfig?: AgoraCloudRecordBackgroundConfigItem[];
+            defaultUserBackgroundImage?: string;
+        };
         layoutConfig?: AgoraCloudRecordLayoutConfigItem[];
-        defaultUserBackgroundImage?: string;
-        backgroundConfig?: AgoraCloudRecordBackgroundConfigItem[];
     };
 }
 

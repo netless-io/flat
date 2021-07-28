@@ -418,8 +418,10 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         classRoomStore.updateRecordingLayout({
             mixedVideoLayout: 3,
             backgroundColor: "#000000",
-            defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
-            backgroundConfig,
+            transcodingConfig: {
+                defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+                backgroundConfig,
+            },
             layoutConfig: [
                 {
                     x_axis: 0,

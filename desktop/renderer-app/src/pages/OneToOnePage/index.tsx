@@ -345,8 +345,10 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         classRoomStore.updateRecordingLayout({
             mixedVideoLayout: 1,
             backgroundColor: "#000000",
-            defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
-            backgroundConfig,
+            transcodingConfig: {
+                defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+                backgroundConfig,
+            },
         });
     }
 });
