@@ -88,11 +88,7 @@ export class WhiteboardStore {
     };
 
     private preloadPPTResource = debounce(async (pptSrc: string): Promise<void> => {
-        // TODO: the parse PPT URL method will split into preload method, that for consistent code style with FLAT_Web.
-        const pptFiles = /(static|dynamic)Convert\/([0-9a-f]{32})\//.exec(pptSrc);
-        if (!pptFiles) return;
-        const [, pptType, taskUUID] = pptFiles;
-        await getCoursewarePreloader().preload(taskUUID, pptType as "dynamic" | "static");
+        await getCoursewarePreloader().preload(pptSrc);
     }, 2000);
 
     public async joinWhiteboardRoom(): Promise<void> {

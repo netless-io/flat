@@ -3,6 +3,7 @@ import { getZipData } from "../../apiMiddleware/courseware-converting";
 import { cachePPTConvert, contentType } from "./utils";
 
 type PPTInfo = {
+    baseURL: string;
     pptType: "static" | "dynamic";
     taskUUID: string;
 };
@@ -12,7 +13,7 @@ class CoursewarePreloader {
 
     public async preload(pptSrc: string): Promise<void> {
         const pptInfo = CoursewarePreloader.parsePPTURLInfo(pptSrc);
-        const { pptType, taskUUID } = pptInfo;
+        const { baseURL, pptType, taskUUID } = pptInfo;
 
         if (this.downloaders.has(taskUUID)) {
             return;
@@ -22,19 +23,20 @@ class CoursewarePreloader {
 
         this.downloaders.set(taskUUID, zipData);
 
-        const resourceUrlPrefix = `https://convertcdn.netless.link/${pptType}Convert`;
+        const resourceUrlPrefix = `${baseURL}/${pptType}Convert`;
 
         return CoursewarePreloader.unzip(zipData, resourceUrlPrefix);
     }
 
     public static parsePPTURLInfo(pptSrc: string): PPTInfo {
-        const pptFiles = /(static|dynamic)Convert\/([0-9a-f]{32})\//.exec(pptSrc);
+        const pptFiles = /^(\S+)\/(static|dynamic)Convert\/([0-9a-f]{32})\//.exec(pptSrc);
         if (!pptFiles) {
             throw new Error(`parse ppt url failed.`);
         }
-        const [, pptType, taskUUID] = pptFiles;
+        const [, baseURL, pptType, taskUUID] = pptFiles;
 
         return {
+            baseURL,
             pptType: pptType as "static" | "dynamic",
             taskUUID,
         };
