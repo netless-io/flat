@@ -28,7 +28,7 @@ import {
 import InviteButton from "../../components/InviteButton";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
-import { ConfigStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
+import { GlobalStoreContext } from "../../components/StoreProvider";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import { Whiteboard } from "../../components/Whiteboard";
 import {
@@ -90,7 +90,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = classRoomStore.whiteboardStore;
     const globalStore = useContext(GlobalStoreContext);
-    const configStore = useContext(ConfigStoreContext);
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
     const [speakingJoiner, setSpeakingJoiner] = useState<User | undefined>(() =>
@@ -179,7 +178,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 right={renderTopBarRight()}
             />
             <div className="realtime-content">
-                <Whiteboard whiteboardStore={whiteboardStore} configStore={configStore} />
+                <Whiteboard whiteboardStore={whiteboardStore} />
                 {renderRealtimePanel()}
             </div>
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />

@@ -46,7 +46,7 @@ import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
 import "./SmallClassPage.less";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
-import { ConfigStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
+import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 
 const CLASSROOM_WIDTH = 1200;
@@ -97,7 +97,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     );
     const whiteboardStore = classRoomStore.whiteboardStore;
     const globalStore = useContext(GlobalStoreContext);
-    const configStore = useContext(ConfigStoreContext);
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
     const { room, phase } = whiteboardStore;
@@ -159,7 +158,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             />
             {renderAvatars()}
             <div className="realtime-content">
-                <Whiteboard whiteboardStore={whiteboardStore} configStore={configStore} />
+                <Whiteboard whiteboardStore={whiteboardStore} />
                 {renderRealtimePanel()}
             </div>
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
