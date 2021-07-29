@@ -67,6 +67,9 @@ class CoursewarePreloader {
         downloader.once("end", async info => {
             try {
                 await extractZIP(info.filePath, coursewareDir);
+                // TODO: the convert service may fail in some cases, which
+                //       results in incorrect zip structure.
+                //       when it occurs, we manually correct it by code below.
                 if (await pathExists(tempCoursewareDir)) {
                     await copy(tempCoursewareDir, coursewareDir);
                     await remove(tempCoursewareDir);
