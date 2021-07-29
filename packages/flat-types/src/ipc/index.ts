@@ -49,3 +49,6 @@ export interface EmitEvents {
         roomUUID: string;
     };
 }
+
+export type curriedReply =
+    (name: string, actionName: keyof WindowActionAsync) => (arg: any) => void
