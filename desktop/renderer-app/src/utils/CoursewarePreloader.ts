@@ -67,8 +67,10 @@ class CoursewarePreloader {
         downloader.once("end", async info => {
             try {
                 await extractZIP(info.filePath, coursewareDir);
-                await copy(tempCoursewareDir, coursewareDir);
-                await remove(tempCoursewareDir);
+                if (await pathExists(tempCoursewareDir)) {
+                    await copy(tempCoursewareDir, coursewareDir);
+                    await remove(tempCoursewareDir);
+                }
                 await remove(info.filePath);
             } catch (e) {
                 console.error(e);
