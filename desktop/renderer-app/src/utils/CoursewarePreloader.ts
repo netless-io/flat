@@ -11,18 +11,40 @@ function getCoursewareDir(taskUUID: string, taskType: TaskType): string {
     return path.join(runtime.downloadsDirectory, `${taskType}Convert`, taskUUID);
 }
 
+type PPTInfo = {
+    baseURL: string;
+    taskType: TaskType;
+    taskUUID: string;
+};
+
 /**
  * Preload courseware
  */
 class CoursewarePreloader {
     public downloaders = new Map<TaskUUID, DownloaderHelper>();
 
-    public async preload(taskUUID: string, taskType: TaskType): Promise<void> {
+    public parsePPTURLInfo(pptSrc: string): PPTInfo {
+        const pptFiles = /^(\S+)\/(static|dynamic)Convert\/([0-9a-f]{32})\//.exec(pptSrc);
+        if (!pptFiles) {
+            throw new Error("parse ppt url failed.");
+        }
+        const [, baseURL, taskType, taskUUID] = pptFiles;
+
+        return {
+            baseURL,
+            taskType: taskType as TaskType,
+            taskUUID,
+        };
+    }
+
+    public async preload(pptSrc: string): Promise<void> {
+        const { baseURL, taskType, taskUUID } = this.parsePPTURLInfo(pptSrc);
+
         if (this.downloaders.has(taskUUID) || (await this.has(taskUUID, taskType))) {
             return;
         }
 
-        const url = `https://convertcdn.netless.link/${taskType}Convert/${taskUUID}.zip`;
+        const url = `${baseURL}/${taskType}Convert/${taskUUID}.zip`;
         const coursewareDir = getCoursewareDir(taskUUID, taskType);
         const tempCoursewareDir = path.join(coursewareDir, taskUUID);
 

@@ -27,6 +27,7 @@ import {
 } from "../../apiMiddleware/flatServer/storage";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { INVITE_BASEURL } from "../../constants/Process";
+import { coursewarePreloader } from "../../utils/CoursewarePreloader";
 import { getUploadTaskManager } from "../../utils/UploadTaskManager";
 import { UploadStatusType, UploadTask } from "../../utils/UploadTaskManager/UploadTask";
 
@@ -514,9 +515,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
 
         let status: ConvertingTaskStatus["status"];
+        let progress: ConvertingTaskStatus["progress"];
 
         try {
-            ({ status } = await queryConvertingTaskStatus({
+            ({ status, progress } = await queryConvertingTaskStatus({
                 taskToken: file.taskToken,
                 taskUUID: file.taskUUID,
                 dynamic,
@@ -542,6 +544,13 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             runInAction(() => {
                 file.convert = status === "Fail" ? "error" : "success";
             });
+
+            if (status === "Finished") {
+                const src = progress?.convertedFileList?.[0].conversionFileUrl;
+                if (src) {
+                    void coursewarePreloader.preload(src).catch(error => console.warn(error));
+                }
+            }
 
             return;
         }

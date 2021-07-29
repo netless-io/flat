@@ -505,9 +505,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
 
         let status: ConvertingTaskStatus["status"];
+        let progress: ConvertingTaskStatus["progress"];
 
         try {
-            ({ status } = await queryConvertingTaskStatus({
+            ({ status, progress } = await queryConvertingTaskStatus({
                 taskToken: file.taskToken,
                 taskUUID: file.taskUUID,
                 dynamic,
@@ -535,10 +536,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             });
 
             if (status === "Finished") {
-                void getCoursewarePreloader().preload(
-                    file.taskUUID,
-                    dynamic ? "dynamic" : "static",
-                );
+                const src = progress?.convertedFileList?.[0].conversionFileUrl;
+                if (src) {
+                    void getCoursewarePreloader()
+                        .preload(src)
+                        .catch(error => console.warn(error));
+                }
             }
 
             return;
