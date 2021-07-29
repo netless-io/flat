@@ -213,7 +213,8 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     );
 
     function replayRoom(config: { roomUUID: string; ownerUUID: string; roomType: RoomType }): void {
-        pushHistory(RouteNameType.ReplayPage, config);
+        const { roomUUID, ownerUUID, roomType } = config;
+        window.open(`${INVITE_BASEURL}/replay/${roomType}/${roomUUID}/${ownerUUID}/`, "_blank");
     }
 
     function hideCancelModal(): void {
