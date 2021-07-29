@@ -12,11 +12,17 @@ export default () => {
     });
 
     const filter = {
-        urls: ["https://convertcdn.netless.link/*"],
+        urls: [
+            "https://convertcdn.netless.link/*",
+            "https://convertcdn-us-sv.netless.link/*",
+            "https://convertcdn-gb-lon.netless.link/*",
+            "https://convertcdn-sg.netless.link/*",
+            "https://convertcdn-in-mum.netless.link/*",
+        ],
     };
 
     session.defaultSession.webRequest.onBeforeRequest(filter, (details, callback) => {
-        const p = details.url.replace("https://convertcdn.netless.link/", "");
+        const p = details.url.replace(/^https:\/\/convertcdn\S*\.netless\.link\//, "");
         const localPath = path.join(runtime.downloadsDirectory, p);
 
         // 如果文件存在，则替换原有请求，使用本地资源进行加载
