@@ -548,7 +548,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             if (status === "Finished") {
                 const src = progress?.convertedFileList?.[0].conversionFileUrl;
                 if (src) {
-                    void coursewarePreloader.preload(src);
+                    void coursewarePreloader.preload(src).catch(error => console.warn(error));
                 }
             }
 
