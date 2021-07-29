@@ -39,6 +39,8 @@ export interface CreatePeriodicRoomPayload {
     title: string;
     /** 上课类型 */
     type: RoomType;
+    /** 区域 */
+    region: Region;
     /** UTC时间戳 */
     beginTime: number;
     endTime: number;

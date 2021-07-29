@@ -26,7 +26,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     const { room } = whiteboardStore;
 
     useEffect(() => {
-        if (room) {
+        if (room && !configStore.region) {
             configStore.setRegion(room.region as Region);
         }
     }, [room, configStore]);
