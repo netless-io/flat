@@ -42,7 +42,7 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import "./SmallClassPage.less";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
-import { ConfigStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
+import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 import { RtcChannelType } from "../../apiMiddleware/rtc/room";
 import { useTranslation } from "react-i18next";
@@ -93,7 +93,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     );
     const whiteboardStore = classRoomStore.whiteboardStore;
     const globalStore = useContext(GlobalStoreContext);
-    const configStore = useContext(ConfigStoreContext);
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
     const { room, phase } = whiteboardStore;
@@ -153,7 +152,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             />
             {renderAvatars()}
             <div className="realtime-content">
-                <Whiteboard whiteboardStore={whiteboardStore} configStore={configStore} />
+                <Whiteboard whiteboardStore={whiteboardStore} />
                 {renderRealtimePanel()}
             </div>
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />

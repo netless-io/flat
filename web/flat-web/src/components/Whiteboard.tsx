@@ -5,31 +5,19 @@ import ToolBox from "@netless/tool-box";
 import ZoomController from "@netless/zoom-controller";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { RoomPhase } from "white-web-sdk";
-import { Region } from "flat-components";
 import pagesSVG from "../assets/image/pages.svg";
-import { ConfigStore } from "../stores/ConfigStore";
 import { WhiteboardStore } from "../stores/WhiteboardStore";
 import { isSupportedImageType, onDropImage } from "../utils/dnd/image";
 import "./Whiteboard.less";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
-    configStore: ConfigStore;
 }
 
-export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
-    whiteboardStore,
-    configStore,
-}) {
+export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteboardStore }) {
     const { room } = whiteboardStore;
-
-    useEffect(() => {
-        if (room) {
-            configStore.setRegion(room.region as Region);
-        }
-    }, [room, configStore]);
 
     const bindWhiteboard = useCallback(
         (ref: HTMLDivElement) => {
