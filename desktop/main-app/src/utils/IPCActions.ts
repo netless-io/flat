@@ -124,13 +124,15 @@ export const injectionWindowIPCAction = (customWindow: CustomSingleWindow) => {
     ipcMain.on(
         customWindow.options.name,
         (
-            _event,
+            event,
             args: {
                 actions: keyof ipc.WindowActionAsync;
                 args: any;
             },
         ) => {
-            windowActionAsync(customWindow)[args.actions](args.args);
+            const curriedReply = (name, actionName) => (arg) => event.reply(name, { action: actionName, payload: arg });
+            const reply = curriedReply(win.options.name,args.action);
+            windowActionAsync(customWindow)[args.actions]({ ...args.args, reply });
         },
     );
 };
