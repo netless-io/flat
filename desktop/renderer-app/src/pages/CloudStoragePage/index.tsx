@@ -12,6 +12,8 @@ import { useIsomorphicLayoutEffect } from "react-use";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { RoomPhase, SceneDefinition } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
+import { RequestErrorCode } from "../../constants/ErrorCode";
+import { ServerRequestError } from "../../utils/error/ServerRequestError";
 
 export interface CloudStoragePageProps {
     compact?: boolean;
@@ -179,7 +181,16 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 try {
                     await convertFinish({ fileUUID: file.fileUUID, region });
                 } catch (e) {
-                    console.error(e);
+                    if (
+                        e instanceof ServerRequestError &&
+                        e.errorCode === RequestErrorCode.FileIsConverted
+                    ) {
+                        // ignore this error
+                        // there's another `convertFinish()` call in ./store.tsx
+                        // we call this api in two places to make sure the file is correctly converted (in server)
+                    } else {
+                        console.error(e);
+                    }
                 }
                 if (convertingStatus.status === "Fail") {
                     void message.error(
