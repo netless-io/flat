@@ -31,7 +31,7 @@ class CoursewarePreloader {
         const [, baseURL, taskType, taskUUID] = pptFiles;
 
         return {
-            baseURL,
+            baseURL: baseURL.replace(/^pptx:\/\//, "https://"),
             taskType: taskType as TaskType,
             taskUUID,
         };
