@@ -19,7 +19,6 @@ COPY web/flat-web/package.json web/flat-web/package.json
 
 RUN sed -i "s/.*preinstall.*//g" package.json && sed -i "s/.*desktop.*//g" package.json && yarn install --frozen-lockfile
 
-
 COPY scripts scripts
 COPY packages packages
 COPY config config

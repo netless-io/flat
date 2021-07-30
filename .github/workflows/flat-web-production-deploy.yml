@@ -7,7 +7,6 @@ on:
       - "sa/deploy"
     paths:
       - "web/flat-web/**"
-      - ".github"
 
 
 jobs:
