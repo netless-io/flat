@@ -186,6 +186,8 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                         e.errorCode === RequestErrorCode.FileIsConverted
                     ) {
                         // ignore this error
+                        // there's another `convertFinish()` call in ./store.tsx
+                        // we call this api in two places to make sure the file is correctly converted (in server)
                     } else {
                         console.error(e);
                     }
