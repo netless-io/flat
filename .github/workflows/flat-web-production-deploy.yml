@@ -4,6 +4,7 @@ on:
     branches:
       - "stable"
       - "release/**"
+      - "sa/deploy"
     paths:
       - "web/flat-web/**"
 
