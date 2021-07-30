@@ -1,4 +1,4 @@
-name: flat-web Docker Build
+name: flat-web production Docker Build
 on:
   push:
     branches:
