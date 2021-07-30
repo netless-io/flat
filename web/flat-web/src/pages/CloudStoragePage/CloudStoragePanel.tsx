@@ -12,6 +12,8 @@ import { useIsomorphicLayoutEffect } from "react-use";
 import { RoomPhase, SceneDefinition } from "white-web-sdk";
 import { CloudStorageContainer } from "flat-components";
 import { useTranslation } from "react-i18next";
+import { RequestErrorCode } from "../../constants/ErrorCode";
+import { ServerRequestError } from "../../utils/error/ServerRequestError";
 
 export interface CloudStoragePanelProps {
     whiteboard?: WhiteboardStore;
@@ -172,7 +174,14 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
                 try {
                     await convertFinish({ fileUUID: file.fileUUID, region: file.region });
                 } catch (e) {
-                    console.error(e);
+                    if (
+                        e instanceof ServerRequestError &&
+                        e.errorCode === RequestErrorCode.FileIsConverted
+                    ) {
+                        // ignore this error
+                    } else {
+                        console.error(e);
+                    }
                 }
                 if (convertingStatus.status === "Fail") {
                     void message.error(
