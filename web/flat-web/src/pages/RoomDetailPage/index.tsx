@@ -91,11 +91,8 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
 
     function jumpToReplayPage(): void {
         if (roomInfo) {
-            pushHistory(RouteNameType.ReplayPage, {
-                roomUUID: roomInfo.roomUUID,
-                ownerUUID: roomInfo.ownerUUID,
-                roomType: roomInfo.roomType!,
-            });
+            const { roomType, roomUUID, ownerUUID } = roomInfo;
+            window.open(`${INVITE_BASEURL}/replay/${roomType}/${roomUUID}/${ownerUUID}/`, "_blank");
         }
     }
 

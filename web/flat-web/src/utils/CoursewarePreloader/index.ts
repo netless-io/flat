@@ -36,7 +36,7 @@ class CoursewarePreloader {
         const [, baseURL, pptType, taskUUID] = pptFiles;
 
         return {
-            baseURL,
+            baseURL: baseURL.replace(/^pptx:\/\//, "https://"),
             pptType: pptType as "static" | "dynamic",
             taskUUID,
         };

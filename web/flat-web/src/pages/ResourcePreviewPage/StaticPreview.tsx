@@ -48,7 +48,7 @@ export const StaticPreview = observer<StaticPreviewProps>(function DocumentPrevi
     }, []);
 
     return (
-        <div className="static-preview-container fancy-scrollbar">
+        <div className="static-preview-container">
             <div className="static-preview-list">
                 {convertList?.map(file => {
                     return (
