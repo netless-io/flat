@@ -114,10 +114,6 @@ export class RoomStore {
     public async joinRoom(roomUUID: string): Promise<JoinRoomResult> {
         const data = await joinRoom(roomUUID);
         globalStore.updateToken(data);
-        const room = this.rooms.get(roomUUID);
-        if (room) {
-            globalStore.updateToken({ region: room.region });
-        }
         this.updateRoom(roomUUID, data.ownerUUID, {
             roomUUID,
             ownerUUID: data.ownerUUID,
