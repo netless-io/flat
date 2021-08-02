@@ -1,3 +1,5 @@
+import "./store.less";
+
 import { Modal } from "antd";
 import {
     CloudStorageConvertStatusType,
@@ -29,6 +31,7 @@ import { errorTips } from "../../components/Tips/ErrorTips";
 import { getCoursewarePreloader } from "../../utils/CoursewarePreloader";
 import { getUploadTaskManager } from "../../utils/UploadTaskManager";
 import { UploadStatusType, UploadTask } from "../../utils/UploadTaskManager/UploadTask";
+import { fileInfo, ResourcePreview } from "./CloudStorageFilePreview";
 
 export type CloudStorageFile = CloudStorageFileUI &
     Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region">;
@@ -133,7 +136,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 break;
             }
             case "delete": {
-                Modal.confirm({
+                Modal.info({
                     content: this.i18n.t("delete-courseware-tips"),
                     onOk: () => this.removeFiles([fileUUID]),
                 });
@@ -358,6 +361,13 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     private previewCourseware(file: CloudStorageFile): void {
+        const fileInfo: fileInfo = {
+            fileURL: file.fileURL,
+            taskUUID: file.taskUUID,
+            taskToken: file.taskToken,
+            region: file.region,
+        };
+
         switch (file.convert) {
             case "converting": {
                 Modal.info({ content: this.i18n.t("please-wait-while-the-lesson-is-transcoded") });
@@ -368,9 +378,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 return;
             }
             default: {
-                // @TODO preview courseware
                 Modal.info({
-                    content: this.i18n.t("please-go-to-the-room-to-view-the-courseware"),
+                    content: <ResourcePreview fileInfo={fileInfo} />,
+                    className: "resource-preview-container",
+                    width: "100%",
+                    centered: true,
+                    closable: true,
                 });
             }
         }
