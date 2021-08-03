@@ -1,4 +1,5 @@
 import "./store.less";
+import closeSVG from "./image/close.svg";
 
 import { Modal } from "antd";
 import {
@@ -384,6 +385,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                     width: "100%",
                     centered: true,
                     closable: true,
+                    maskClosable: true,
+                    closeIcon: <img src={closeSVG} />,
                 });
             }
         }
