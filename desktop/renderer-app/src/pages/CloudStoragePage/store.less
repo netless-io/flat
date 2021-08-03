@@ -1,12 +1,19 @@
 .resource-preview-container {
     max-width: 100%;
+    padding-bottom: 0px;
 
     .ant-modal-content {
         border-radius: 0px;
+        background-color: #000;
+    }
+
+    .ant-modal-confirm-content {
+        margin-top: 0;
     }
 
     .ant-modal-body {
-        height: 100vh;
+        height: 88vh;
+        padding: 0;
         overflow-y: auto;
     }
 
@@ -16,5 +23,9 @@
 
     .ant-modal-confirm-btns {
         display: none;
+    }
+
+    .ant-modal-confirm-body-wrapper {
+        width: 100vw;
     }
 }
