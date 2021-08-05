@@ -33,7 +33,6 @@ COPY web web
 
 RUN NODE_OPTIONS="--max-old-space-size=6145" yarn --cwd web/flat-web build -m $build_env
 
-
 FROM nginx
 
 WORKDIR /app
