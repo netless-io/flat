@@ -5,7 +5,7 @@ const path = require("path");
 const { platform } = require("os");
 const dotenvFlow = require("dotenv-flow");
 const { spawnSync } = require("child_process");
-const { version, configPath, rootPath, mainPath } = require("../../../scripts/constants");
+const { version, configPath, rootPath, mainPath, releaseTag } = require("../../../scripts/constants");
 const { agoraElectronSdkPath } = require("./Constant");
 
 dotenvFlow.config({
@@ -24,6 +24,8 @@ const buildElectron = async buildType => {
             encoding: "utf8",
         }),
     );
+
+    config.directories.buildResources = path.join("resources", releaseTag);
 
     config.directories.output = path.join("release", buildType);
 
