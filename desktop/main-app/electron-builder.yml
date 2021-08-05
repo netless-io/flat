@@ -57,7 +57,7 @@ nsis:
   artifactName: Flat-${version}.${ext}
 
 directories:
-  buildResources: resources/
+  buildResources:
 
 releaseInfo:
   releaseNotes:
