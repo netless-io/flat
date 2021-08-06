@@ -20,6 +20,37 @@ self.onfetch = event => {
         event.respondWith(
             pptConvertCache.then(async cache => {
                 const response = await cache.match(request);
+
+                // https://web.dev/sw-range-requests
+                const range = request.headers.get("range");
+                if (range && response) {
+                    if (response.status === 206) return response;
+                    try {
+                        const blob = await response.blob();
+                        const [x, y] = range.replace("bytes=", "").split("-");
+                        const end = parseInt(y, 10) || blob.size - 1;
+                        const start = parseInt(x, 10) || 0;
+                        const sliced = blob.slice(start, end);
+                        const slicedSize = sliced.size;
+                        const slicedResponse = new Response(sliced, {
+                            status: 206,
+                            statusText: "Partial Content",
+                            headers: response.headers,
+                        });
+                        slicedResponse.headers.set("Content-Length", String(slicedSize));
+                        slicedResponse.headers.set(
+                            "Content-Range",
+                            `bytes ${start}-${end}/${blob.size}`,
+                        );
+                        return slicedResponse;
+                    } catch (error) {
+                        return new Response("", {
+                            status: 416,
+                            statusText: "Range Not Satisfiable",
+                        });
+                    }
+                }
+
                 return response || fetch(request);
             }),
         );
