@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "preinstall": "node ./scripts/preinstall",
+    "postinstall": "husky install",
     "bootstrap": "yarn install --frozen-lockfile && node ./scripts/bootstrap/build-packages.js",
     "lint": "yarn workspaces run lint",
     "storybook": "yarn workspace flat-components storybook",
