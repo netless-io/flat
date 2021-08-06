@@ -24,7 +24,9 @@ self.onfetch = event => {
                 // https://web.dev/sw-range-requests
                 const range = request.headers.get("range");
                 if (range && response) {
-                    if (response.status === 206) return response;
+                    if (response.status === 206) {
+                        return response;
+                    }
                     try {
                         const blob = await response.blob();
                         const [x, y] = range.replace("bytes=", "").split("-");
@@ -44,10 +46,8 @@ self.onfetch = event => {
                         );
                         return slicedResponse;
                     } catch (error) {
-                        return new Response("", {
-                            status: 416,
-                            statusText: "Range Not Satisfiable",
-                        });
+                        console.error(error);
+                        return fetch(request);
                     }
                 }
 
