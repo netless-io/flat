@@ -37,5 +37,4 @@ Overview.args = {
     generateAvatar: () => "http://placekitten.com/64/64",
     ownerUUID: faker.random.boolean() ? currentUser.userUUID : chance.pickone(users).userUUID,
     userUUID: faker.random.boolean() ? currentUser.userUUID : chance.pickone(users).userUUID,
-    user: currentUser,
 };
