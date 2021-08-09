@@ -16,9 +16,9 @@ export interface CloudFile {
     fileSize: number;
     fileURL: string;
     convertStep: FileConvertStep;
-    /** Query courceware converting status */
+    /** Query courseware converting status */
     taskUUID: string;
-    /** Query courceware converting status */
+    /** Query courseware converting status */
     taskToken: string;
     createAt: Date;
     region: Region;

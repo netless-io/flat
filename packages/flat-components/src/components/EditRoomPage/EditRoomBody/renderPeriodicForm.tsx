@@ -74,7 +74,8 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
                         <div>{t("no-frequency-selected")}</div>
                     )}
                     <div className="edit-room-tips-type">
-                        {t("roomtype")}
+                        {t("room-type")}
+                        {t("colon")}
                         {t(`class-room-type.${roomType}`)}
                     </div>
                     <div className="edit-room-tips-inner">

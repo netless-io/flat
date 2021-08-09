@@ -65,7 +65,7 @@ export interface RoomItem {
     }>;
 }
 
-// Only keep subroom ids. Subroom info are stored in ordinaryRooms.
+// Only keep sub-room ids. sub-room info are stored in ordinaryRooms.
 export interface PeriodicRoomItem {
     periodicUUID: string;
     periodic: PeriodicRoomInfoResult["periodic"];
