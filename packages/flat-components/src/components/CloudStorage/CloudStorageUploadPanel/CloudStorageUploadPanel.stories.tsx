@@ -54,7 +54,7 @@ export const PlayableExample: Story<PlayableExampleArgs> = ({ onRetry, onCancel,
             {uploadTasks.map(status => (
                 <CloudStorageUploadItem
                     {...status}
-                    key={status.fileUUID}
+                    key={status.uploadID}
                     onRetry={onRetry}
                     onCancel={onCancel}
                 />
