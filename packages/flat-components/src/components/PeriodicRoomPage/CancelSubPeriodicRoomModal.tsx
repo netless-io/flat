@@ -30,7 +30,7 @@ export const CancelSubPeriodicRoomModal: React.FC<CancelSubPeriodicRoomModalProp
                 </Button>,
             ]}
         >
-            <span>{t("cancel-subperiodicroom-tips")}</span>
+            <span>{t("cancel-sub-periodic-room-tips")}</span>
         </Modal>
     );
 };

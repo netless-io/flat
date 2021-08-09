@@ -1,21 +1,5 @@
 {
   "editor.formatOnSave": true,
-  "cSpell.words": [
-    "activedescendant",
-    "autorun",
-    "bulma",
-    "downloaders",
-    "eqeqeq",
-    "flowtype",
-    "isnan",
-    "pickone",
-    "proptypes",
-    "tabindex",
-    "textnodes",
-    "viewports",
-    "vite",
-    "vitejs"
-  ],
   "i18n-ally.localesPaths": ["./packages/flat-i18n/locales/"],
   "i18n-ally.enabledFrameworks": ["react", "i18next"],
   "i18n-ally.keystyle": "nested",

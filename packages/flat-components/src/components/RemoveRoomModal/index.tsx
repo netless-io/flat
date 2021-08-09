@@ -70,7 +70,7 @@ export const RemoveRoomModal: React.FC<RemoveRoomModalProps> = ({
         }
 
         if (isSubPeriodicRoom) {
-            return <span>{t("cancel-subperiodicroom-tips")}</span>;
+            return <span>{t("cancel-sub-periodic-room-tips")}</span>;
         }
 
         return <span>{t("cancel-periodic-room-tips")}</span>;
