@@ -74,7 +74,11 @@ module.exports = {
 
     resolve: {
         extensions: [".ts", ".js", ".node"],
+        alias: {
+            "flat-types": paths.resolvePath("..", "..", "packages", "flat-types", "src"),
+        },
     },
+
     output: {
         filename: "[name].js",
         path: paths.dist,

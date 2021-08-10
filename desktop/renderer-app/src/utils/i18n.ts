@@ -1,5 +1,5 @@
-import en from "flat-i18n/locales/en.json";
-import zhCN from "flat-i18n/locales/zh-CN.json";
+import en from "flat-i18n/en.json";
+import zhCN from "flat-i18n/zh-CN.json";
 import i18next, { Resource } from "i18next";
 import I18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";

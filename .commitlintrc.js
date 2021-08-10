@@ -47,6 +47,7 @@ module.exports = {
                 "prettier",
                 "husky",
                 "lint",
+                "project",
             ],
         ],
         "scope-case": [2, "always", ["lower-case", "kebab-case"]],

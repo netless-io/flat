@@ -21,8 +21,6 @@
     "classnames": "^2.2.6",
     "date-fns": "^2.16.1",
     "extract-zip": "^2.0.1",
-    "flat-i18n": "^0.1.0",
-    "flat-types": "^0.1.0",
     "fs-extra": "^9.0.1",
     "i18next": "^20.3.1",
     "i18next-browser-languagedetector": "^6.0.1",

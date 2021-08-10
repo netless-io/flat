@@ -22,7 +22,11 @@
     "strictBindCallApply": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "flat-types": ["../../packages/flat-types/src"],
+    }
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*.ts", "typings/*.ts"]
