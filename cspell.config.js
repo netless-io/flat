@@ -116,6 +116,7 @@ module.exports = {
         "**/node_modules/**",
         "**/dist/**",
         "packages/flat-components/build/**",
+        "packages/flat-components/storybook-static/**",
         "desktop/main-app/release/**",
         "desktop/main-app/static/**",
         "cspell.config.js",

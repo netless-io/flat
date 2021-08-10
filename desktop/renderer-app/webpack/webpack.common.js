@@ -181,5 +181,9 @@ module.exports = {
 
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
+        alias: {
+            "flat-types": paths.resolvePath("..", "..", "packages", "flat-types", "src"),
+            "flat-i18n": paths.resolvePath("..", "..", "packages", "flat-i18n", "locales"),
+        },
     },
 };
