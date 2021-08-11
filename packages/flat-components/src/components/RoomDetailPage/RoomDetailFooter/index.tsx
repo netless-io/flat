@@ -91,7 +91,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
                 userName={userName}
                 onCopy={text => {
                     onCopyInvitation(text);
-                    message.success(t("copy-success"));
+                    void message.success(t("copy-success"));
                     hideInviteModal();
                 }}
                 onCancel={hideInviteModal}

@@ -30,7 +30,8 @@ Overview.args = {
     baseUrl: "https://flat-web.whiteboard.agora.io/join/34513345f235",
     userName: "Flat",
     onCopy: () => {
-        message.success("复制成功");
+        void message.success("复制成功");
     },
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onCancel: () => {},
 };

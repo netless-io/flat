@@ -12,28 +12,28 @@ export type FileUUID = string;
 
 export abstract class CloudStorageStore {
     /** Compact UI for small panel */
-    compact = false;
+    public compact = false;
     /** User total cloud storage usage */
-    totalUsage = NaN;
+    public totalUsage = NaN;
     /** User selected file uuids */
-    selectedFileUUIDs = observable.array<FileUUID>();
+    public selectedFileUUIDs = observable.array<FileUUID>();
     /** It changes when user toggles the expand button */
-    isUploadPanelExpand = false;
+    public isUploadPanelExpand = false;
     /** UUID of file that is under renaming */
-    renamingFileUUID?: FileUUID = "";
+    public renamingFileUUID?: FileUUID = "";
 
     /** Display upload panel */
-    get isUploadPanelVisible(): boolean {
+    public get isUploadPanelVisible(): boolean {
         return this.uploadTotalCount > 0;
     }
 
     /** Human readable user total cloud storage usage */
-    get totalUsageHR(): string {
+    public get totalUsageHR(): string {
         return Number.isNaN(this.totalUsage) ? "" : prettyBytes(this.totalUsage);
     }
 
     /** Uploading -> Error -> Idle -> Success */
-    get sortedUploadTasks(): CloudStorageUploadTask[] {
+    public get sortedUploadTasks(): CloudStorageUploadTask[] {
         return observable.array([
             ...this.uploadingUploadTasks,
             ...this.failedUploadTasks,
@@ -43,7 +43,7 @@ export abstract class CloudStorageStore {
     }
 
     /** If upload finishes with error */
-    get uploadFinishWithError(): boolean {
+    public get uploadFinishWithError(): boolean {
         if (this.pendingUploadTasks.length > 0 || this.uploadingUploadTasks.length > 0) {
             return false;
         }
@@ -51,17 +51,17 @@ export abstract class CloudStorageStore {
     }
 
     /** Number of finished upload */
-    get uploadFinishedCount(): number {
+    public get uploadFinishedCount(): number {
         // @TODO use percentage instead
         return this.successUploadTasks.length;
     }
 
     /** Number of total upload */
-    get uploadTotalCount(): number {
+    public get uploadTotalCount(): number {
         return this.sortedUploadTasks.length;
     }
 
-    constructor() {
+    protected constructor() {
         makeObservable(this, {
             compact: observable,
             totalUsage: observable,
@@ -84,25 +84,25 @@ export abstract class CloudStorageStore {
         });
     }
 
-    setRenamePanel = (fileUUID?: FileUUID): void => {
+    public setRenamePanel = (fileUUID?: FileUUID): void => {
         this.renamingFileUUID = fileUUID;
     };
 
-    setPanelExpand = (isExpand: boolean): void => {
+    public setPanelExpand = (isExpand: boolean): void => {
         this.isUploadPanelExpand = isExpand;
     };
 
-    setCompact = (compact: boolean): void => {
+    public setCompact = (compact: boolean): void => {
         this.compact = compact;
     };
 
     /** When file list item selection changed */
-    onSelectionChange = (fileUUIDs: FileUUID[]): void => {
+    public onSelectionChange = (fileUUIDs: FileUUID[]): void => {
         this.selectedFileUUIDs.replace(fileUUIDs);
     };
 
     /** When a rename event is received. Could be empty. Put business logic in `onNewFileName` instead. */
-    onRename = (fileUUID: FileUUID, fileName?: CloudStorageFileName): void => {
+    public onRename = (fileUUID: FileUUID, fileName?: CloudStorageFileName): void => {
         // hide rename panel
         this.renamingFileUUID = "";
 

@@ -64,7 +64,7 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
                             userName={userName}
                             onCopy={text => {
                                 onCopyInvitation(text);
-                                message.success(t("copy-success"));
+                                void message.success(t("copy-success"));
                                 setInviteRoomVisible(false);
                             }}
                             onCancel={() => setInviteRoomVisible(false)}

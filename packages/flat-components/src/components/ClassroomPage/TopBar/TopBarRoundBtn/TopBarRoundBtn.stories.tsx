@@ -16,5 +16,5 @@ Overview.args = {
     dark: faker.random.boolean(),
     icon: <UserAddOutlined />,
     className: "pa2",
-    children: "Hello, world!"
+    children: "Hello, world!",
 };

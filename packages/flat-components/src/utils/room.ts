@@ -27,7 +27,7 @@ export const excludeRange = (slice1: number, slice2?: number): number[] =>
     slice2
         ? Array(slice2 - slice1 + 1)
               .fill(slice1)
-              .map((i, k) => i + k)
+              .map((i: number, k) => i + k)
         : Array.from(Array(slice1).keys());
 
 /** get a now Date object with 0 second and 0 millisecond */
@@ -156,7 +156,7 @@ export function syncPeriodicEndAmount(
 
     form.setFieldsValue({ periodic: newPeriodic });
 
-    form.validateFields();
+    void form.validateFields();
 }
 
 export function formatTime(time: number, lang: string): { date: string; time: string } | null {

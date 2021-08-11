@@ -13,7 +13,7 @@ import { CancelPeriodicRoomModal } from "./CancelPeriodicRoomModal";
 import { useTranslation } from "react-i18next";
 
 export interface PeriodicRoomPanelProps {
-    rooms: (RoomInfo | undefined)[];
+    rooms: Array<RoomInfo | undefined>;
     userName: string;
     isCreator: boolean;
     inviteBaseUrl: string;

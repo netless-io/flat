@@ -179,7 +179,7 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
 
         function validatePeriodicEndTime(): RuleObject {
             return {
-                validator: async (_, value: Date) => {
+                validator: (_, value: Date): void => {
                     const {
                         periodic,
                         beginTime,
