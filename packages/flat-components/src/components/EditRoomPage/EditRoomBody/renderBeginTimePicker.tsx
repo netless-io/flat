@@ -34,10 +34,11 @@ export function renderBeginTimePicker(
 
     function validateTime(): RuleObject {
         return {
-            validator: async (_, value: Date) => {
+            validator(_, value: Date): Promise<void> {
                 if (isBefore(value, getRoughNow())) {
                     throw new Error(t("begin-time-cannot-be-in-the-past"));
                 }
+                return Promise.resolve();
             },
         };
     }

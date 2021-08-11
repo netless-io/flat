@@ -1,7 +1,8 @@
 .cloud-storage-file-title {
     display: inline-flex;
+    flex: 1;
     align-items: center;
-    margin-right: 1em;
+    margin-right: 2em;
     text-overflow: ellipsis;
     word-break: keep-all;
     overflow: hidden;
@@ -10,6 +11,7 @@
 
     &.is-convert-ready {
         & > .cloud-storage-file-title-content {
+            flex: 1;
             opacity: 1;
         }
     }
@@ -22,6 +24,7 @@
 }
 
 .cloud-storage-file-title-content {
+    flex: 1;
     text-overflow: ellipsis;
     word-break: keep-all;
     overflow: hidden;
@@ -57,10 +60,10 @@
 }
 
 .cloud-storage-file-title-converting {
-    animation: cloud-storage-file-title-subicon-spin 1s linear infinite;
+    animation: cloud-storage-file-title-sub-icon-spin 1s linear infinite;
 }
 
-@keyframes cloud-storage-file-title-subicon-spin {
+@keyframes cloud-storage-file-title-sub-icon-spin {
     to {
         transform: rotate(360deg);
     }

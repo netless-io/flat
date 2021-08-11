@@ -1,15 +1,20 @@
 module.exports = {
+    parser: "@typescript-eslint/parser",
     extends: [
         "eslint:recommended",
         "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "react-app",
         "plugin:jsx-a11y/recommended",
         "plugin:@netless/recommended",
+        "plugin:prettier/recommended",
     ],
-    plugins: ["jsx-a11y", "react", "prettier"],
+    plugins: ["jsx-a11y", "react", "@netless", "prettier", "@typescript-eslint"],
     parserOptions: {
         ecmaVersion: 2018,
-        sourceType: "module",
+        project: "tsconfig.json",
+        tsconfigRootDir: __dirname,
         ecmaFeatures: {
             jsx: true,
         },
@@ -205,6 +210,56 @@ module.exports = {
         "@typescript-eslint/no-redeclare": "off",
         "no-use-before-define": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/array-type": [
+            "error",
+            {
+                default: "array-simple",
+                readonly: "array-simple",
+            },
+        ],
+        "@typescript-eslint/consistent-type-assertions": "error",
+        "@typescript-eslint/explicit-member-accessibility": [
+            "error",
+            {
+                accessibility: "explicit",
+                overrides: {
+                    accessors: "explicit",
+                    constructors: "explicit",
+                },
+            },
+        ],
+        "@typescript-eslint/member-delimiter-style": [
+            "error",
+            {
+                multiline: {
+                    delimiter: "semi",
+                    requireLast: true,
+                },
+                singleline: {
+                    delimiter: "semi",
+                    requireLast: false,
+                },
+            },
+        ],
+        "@typescript-eslint/no-unused-expressions": "error",
+        "@typescript-eslint/prefer-namespace-keyword": "error",
+        "@typescript-eslint/quotes": ["error", "double"],
+        "@typescript-eslint/semi": ["error", "always"],
+        "@typescript-eslint/type-annotation-spacing": "error",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "prettier/prettier": "error",
+        "@typescript-eslint/restrict-template-expressions": "off",
+        "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-var-requires": "off",
     },
 
     overrides: [

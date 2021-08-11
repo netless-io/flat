@@ -1,6 +1,6 @@
 {
   "name": "flat",
-  "version": "1.0.0-beta.7",
+  "version": "1.0.0",
   "private": true,
   "description": "",
   "homepage": "https://github.com/netless-io/Flat-native",
@@ -65,7 +65,6 @@
   "dependencies": {
     "agora-electron-sdk": "3.4.2-rc.1-build.609",
     "electron-updater": "^4.3.8",
-    "flat-types": "^0.1.0",
     "fs-extra": "^9.0.1",
     "jquery": "^3.5.1",
     "rxjs": "^6.6.6",

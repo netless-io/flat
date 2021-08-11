@@ -54,7 +54,7 @@ export const PlayableExample: Story<PlayableExampleArgs> = ({ onRetry, onCancel,
             {uploadTasks.map(status => (
                 <CloudStorageUploadItem
                     {...status}
-                    key={status.fileUUID}
+                    key={status.uploadID}
                     onRetry={onRetry}
                     onCancel={onCancel}
                 />
@@ -82,12 +82,12 @@ PlayableExample.argTypes = {
 };
 
 function useUploadTasksList(count: number): CloudStorageUploadTask[] {
-    const [statuses, setStatuses] = useState(() => getuploadTasks(count));
+    const [statuses, setStatuses] = useState(() => getUploadTasks(count));
 
     useEffect(() => {
         setStatuses(statuses => {
             if (count > statuses.length) {
-                return [...statuses, ...getuploadTasks(count - statuses.length)];
+                return [...statuses, ...getUploadTasks(count - statuses.length)];
             } else if (count < statuses.length) {
                 return statuses.slice(0, count);
             }
@@ -98,7 +98,7 @@ function useUploadTasksList(count: number): CloudStorageUploadTask[] {
     return statuses;
 }
 
-function getuploadTasks(count: number): CloudStorageUploadTask[] {
+function getUploadTasks(count: number): CloudStorageUploadTask[] {
     return Array(count)
         .fill(0)
         .map(() => ({

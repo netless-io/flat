@@ -23,7 +23,7 @@ export function useIsUnMounted(): RefObject<boolean> {
 }
 
 /**
- * Leave promise unresolved when the component is umounted.
+ * Leave promise unresolved when the component is unmounted.
  * @example
  * ```ts
  * const sp = useSafePromise()
@@ -40,7 +40,7 @@ export function useIsUnMounted(): RefObject<boolean> {
  */
 export function useSafePromise(): <T, E = unknown>(
     promise: PromiseLike<T>,
-    /** When error occurs after the component is umounted */
+    /** When error occurs after the component is unmounted */
     onUnmountedError?: (error: E) => void,
 ) => Promise<T> {
     const isUnMountRef = useIsUnMounted();

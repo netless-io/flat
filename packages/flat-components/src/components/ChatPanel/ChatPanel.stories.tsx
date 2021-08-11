@@ -53,7 +53,6 @@ Overview.args = {
             value: chance.sentence({ words: faker.random.number(20) }),
         })),
     ownerUUID: faker.random.uuid(),
-    user: chance.bool() ? currentUser : chance.pickone(users),
     userUUID: currentUser.userUUID,
     users,
 };

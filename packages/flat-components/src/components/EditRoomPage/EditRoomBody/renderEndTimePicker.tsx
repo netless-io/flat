@@ -25,12 +25,13 @@ export function renderEndTimePicker(
 
     function validateTime(): RuleObject {
         return {
-            validator: async (_, value: Date) => {
+            validator: (_, value: Date): Promise<void> => {
                 const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
                 const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
                 if (isBefore(value, compareTime)) {
                     throw new Error(t("room-duration-limit", { minutes: MIN_CLASS_DURATION }));
                 }
+                return Promise.resolve();
             },
         };
     }

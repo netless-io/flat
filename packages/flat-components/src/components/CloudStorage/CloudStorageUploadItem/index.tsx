@@ -64,7 +64,9 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
             case "error": {
                 return (
                     <>
-                        <span className="cloud-storage-upload-status is-error">{t('upload-fail')}</span>
+                        <span className="cloud-storage-upload-status is-error">
+                            {t("upload-fail")}
+                        </span>
                         <Button
                             className="cloud-storage-upload-status-btn"
                             shape="circle"
@@ -79,7 +81,9 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
             case "success": {
                 return (
                     <>
-                        <span className="cloud-storage-upload-status is-success">{t('upload-success')}</span>
+                        <span className="cloud-storage-upload-status is-success">
+                            {t("upload-success")}
+                        </span>
                         <div className="cloud-storage-upload-status-btn">
                             <img width={22} height={22} src={checkSVG} aria-hidden />
                         </div>
@@ -89,7 +93,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
             default: {
                 return (
                     <>
-                        <span className="cloud-storage-upload-status">{t('pending-upload')}</span>
+                        <span className="cloud-storage-upload-status">{t("pending-upload")}</span>
                         <Button
                             className="cloud-storage-upload-status-btn"
                             shape="circle"

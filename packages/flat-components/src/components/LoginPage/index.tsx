@@ -15,7 +15,7 @@ export interface LoginPanelProps {
     serviceURL?: string;
 }
 
-export const LoginPanel: React.FC<LoginPanelProps> = (props) => {
+export const LoginPanel: React.FC<LoginPanelProps> = props => {
     return (
         <div className="login-panel-container">
             <div className="login-panel-cover">

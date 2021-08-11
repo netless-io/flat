@@ -5,8 +5,8 @@ const path = require("path");
 const { platform } = require("os");
 const dotenvFlow = require("dotenv-flow");
 const { spawnSync } = require("child_process");
-const { version, configPath, rootPath, mainPath, releaseTag } = require("../../../scripts/constants");
-const { agoraElectronSdkPath } = require("./Constant");
+const { version, configPath, rootPath, mainPath } = require("../../../scripts/constants");
+const { agoraElectronSdkPath, releaseTag } = require("./Constant");
 
 dotenvFlow.config({
     path: configPath,

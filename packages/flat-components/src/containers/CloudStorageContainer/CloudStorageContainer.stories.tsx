@@ -35,22 +35,22 @@ type FakeStoreImplProps = typeof fakeStoreImplProps[number];
 type FakeStoreConfig = Pick<CloudStorageStore, FakeStoreImplProps>;
 
 class FakeStore extends CloudStorageStore {
-    onBatchDelete;
-    onUpload;
-    onUploadCancel;
-    onUploadPanelClose;
-    onUploadRetry;
-    onItemMenuClick: FakeStoreConfig["onItemMenuClick"];
-    onItemTitleClick;
-    onNewFileName: FakeStoreConfig["onNewFileName"];
+    public onBatchDelete;
+    public onUpload;
+    public onUploadCancel;
+    public onUploadPanelClose;
+    public onUploadRetry;
+    public onItemMenuClick: FakeStoreConfig["onItemMenuClick"];
+    public onItemTitleClick;
+    public onNewFileName: FakeStoreConfig["onNewFileName"];
 
-    pendingUploadTasks: CloudStorageStore["pendingUploadTasks"] = [];
-    uploadingUploadTasks: CloudStorageStore["uploadingUploadTasks"] = [];
-    successUploadTasks: CloudStorageStore["successUploadTasks"] = [];
-    failedUploadTasks: CloudStorageStore["failedUploadTasks"] = [];
-    files: CloudStorageStore["files"] = [];
+    public pendingUploadTasks: CloudStorageStore["pendingUploadTasks"] = [];
+    public uploadingUploadTasks: CloudStorageStore["uploadingUploadTasks"] = [];
+    public successUploadTasks: CloudStorageStore["successUploadTasks"] = [];
+    public failedUploadTasks: CloudStorageStore["failedUploadTasks"] = [];
+    public files: CloudStorageStore["files"] = [];
 
-    constructor(config: FakeStoreConfig) {
+    public constructor(config: FakeStoreConfig) {
         super();
 
         this.files = Array(25)
@@ -144,7 +144,7 @@ class FakeStore extends CloudStorageStore {
         );
     }
 
-    fileMenus = (): Array<{ key: React.Key; name: React.ReactNode }> => [
+    public fileMenus = (): Array<{ key: React.Key; name: React.ReactNode }> => [
         { key: "download", name: "下载" },
         { key: "rename", name: "重命名" },
         { key: "delete", name: <span className="red">删除</span> },

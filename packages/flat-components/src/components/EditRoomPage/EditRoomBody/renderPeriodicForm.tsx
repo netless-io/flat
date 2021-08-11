@@ -74,7 +74,8 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
                         <div>{t("no-frequency-selected")}</div>
                     )}
                     <div className="edit-room-tips-type">
-                        {t("roomtype")}
+                        {t("room-type")}
+                        {t("colon")}
                         {t(`class-room-type.${roomType}`)}
                     </div>
                     <div className="edit-room-tips-inner">
@@ -178,7 +179,7 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
 
         function validatePeriodicEndTime(): RuleObject {
             return {
-                validator: async (_, value: Date) => {
+                validator: (_, value: Date): Promise<void> => {
                     const {
                         periodic,
                         beginTime,
@@ -196,6 +197,7 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
                             t("end-series-date-cannot-be-less-than-the-begin-time-date"),
                         );
                     }
+                    return Promise.resolve();
                 },
             };
         }

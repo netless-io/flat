@@ -1,7 +1,7 @@
 import { Meta, Story } from "@storybook/react";
 import faker from "faker";
 import React from "react";
-import { EditRoomBody, EditRoomBodyProps } from ".";
+import { EditRoomBody, EditRoomBodyProps, Region } from ".";
 import { RoomType } from "../../../types/room";
 
 const storyMeta: Meta = {
@@ -17,6 +17,7 @@ Overview.args = {
     initialValues: {
         isPeriodic: false,
         type: RoomType.BigClass,
+        region: Region.CN_HZ,
         beginTime: faker.date.future(),
         endTime: faker.date.future(),
         title: faker.random.words(),
