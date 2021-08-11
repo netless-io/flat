@@ -1,7 +1,7 @@
 import { Meta, Story } from "@storybook/react";
 import React from "react";
 import { TopBarRightBtn, TopBarRightBtnProps } from ".";
-import faker from "faker"
+import faker from "faker";
 import { UserAddOutlined } from "@ant-design/icons";
 
 const storyMeta: Meta = {
@@ -15,5 +15,5 @@ export const Overview: Story<TopBarRightBtnProps> = args => <TopBarRightBtn {...
 Overview.args = {
     title: "Hello, world",
     disabled: faker.random.boolean(),
-    icon: <UserAddOutlined />
+    icon: <UserAddOutlined />,
 };

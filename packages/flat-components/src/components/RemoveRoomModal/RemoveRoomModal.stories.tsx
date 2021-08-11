@@ -19,6 +19,8 @@ Overview.args = {
     isCreator: true,
     periodicUUID: "periodicUUID",
     isPeriodicDetailsPage: true,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onCancel: () => {},
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onCancelRoom: () => {},
 };

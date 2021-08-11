@@ -40,10 +40,9 @@ export interface RoomListItemButton<T extends string> {
     text: string;
     disabled?: boolean;
 }
-export type RoomListItemButtons<T extends string> = (
-    | RoomListItemButton<T>
-    | RoomListItemButton<T>[]
-)[];
+export type RoomListItemButtons<T extends string> = Array<
+    RoomListItemButton<T> | Array<RoomListItemButton<T>>
+>;
 
 export interface RoomListItemProps<T extends string> {
     title: string;
@@ -121,7 +120,7 @@ function renderButtons<T extends string>(
 }
 
 function renderSubMenu<T extends string>(
-    buttons: RoomListItemButton<T>[],
+    buttons: Array<RoomListItemButton<T>>,
     overlayClassName?: string,
     onClickMenu?: (key: T) => void,
 ): React.ReactNode {
@@ -186,10 +185,10 @@ export interface RoomListProps<T extends string> {
     /** will be hidden on mobile */
     title?: string;
     /** will be title on mobile */
-    filters?: {
+    filters?: Array<{
         title: string;
         key: T;
-    }[];
+    }>;
     activeTab?: T;
     onTabActive?: (key: T) => void;
     style?: React.CSSProperties;

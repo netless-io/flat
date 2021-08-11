@@ -25,7 +25,7 @@ export function renderEndTimePicker(
 
     function validateTime(): RuleObject {
         return {
-            validator: async (_, value: Date) => {
+            validator: (_, value: Date): void => {
                 const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
                 const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
                 if (isBefore(value, compareTime)) {
