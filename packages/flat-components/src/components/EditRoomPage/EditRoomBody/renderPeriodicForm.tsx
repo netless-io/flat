@@ -179,7 +179,7 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
 
         function validatePeriodicEndTime(): RuleObject {
             return {
-                validator: (_, value: Date): void => {
+                validator: (_, value: Date): Promise<void> => {
                     const {
                         periodic,
                         beginTime,
@@ -197,6 +197,7 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
                             t("end-series-date-cannot-be-less-than-the-begin-time-date"),
                         );
                     }
+                    return Promise.resolve();
                 },
             };
         }
