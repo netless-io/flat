@@ -58,7 +58,7 @@ export function usePushHistory(): <T extends RouteNameType>(
 }
 
 /**
- * Push history with Flat route
+ * Replace history with Flat route
  */
 export function useReplaceHistory(): <T extends RouteNameType>(
     name: T,
