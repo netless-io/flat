@@ -5,13 +5,13 @@ import { observer } from "mobx-react-lite";
 import { MainRoomMenu } from "./MainRoomMenu";
 import { MainRoomListPanel } from "./MainRoomListPanel";
 import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
-import { RouteNameType, usePushHistory } from "../../utils/routes";
+import { RouteNameType, useReplaceHistory } from "../../utils/routes";
 import { GlobalStoreContext, PageStoreContext } from "../../components/StoreProvider";
 import { loginCheck } from "../../apiMiddleware/flatServer";
 import { errorTips } from "../../components/Tips/ErrorTips";
 
 export const HomePage = observer(function HomePage() {
-    const pushHistory = usePushHistory();
+    const replaceHistory = useReplaceHistory();
     const globalStore = useContext(GlobalStoreContext);
     const pageStore = useContext(PageStoreContext);
     const [isLogin, setIsLogin] = useState(false);
@@ -51,7 +51,7 @@ export const HomePage = observer(function HomePage() {
                 if (isLoggedIn) {
                     setIsLogin(true);
                 } else {
-                    pushHistory(RouteNameType.LoginPage);
+                    replaceHistory(RouteNameType.LoginPage);
                 }
             }
         });
