@@ -65,7 +65,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
         bitrate: 500,
         mixedVideoLayout: 3,
         backgroundColor: "#F3F6F9",
-        defaultUserBackgroundImage: import.meta.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+        defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
         layoutConfig: [
             {
                 x_axis: (AVATAR_AREA_WIDTH - AVATAR_WIDTH) / 2 / AVATAR_BAR_WIDTH,
@@ -413,7 +413,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         classRoomStore.updateRecordingLayout({
             mixedVideoLayout: 3,
             backgroundColor: "#F3F6F9",
-            defaultUserBackgroundImage: import.meta.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+            defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
             layoutConfig,
             backgroundConfig,
         });

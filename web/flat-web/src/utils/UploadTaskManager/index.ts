@@ -58,7 +58,7 @@ export class UploadTaskManager {
                 runInAction(() => {
                     this.uploadingMap.set(task.uploadID, task);
                 });
-                if (import.meta.env.DEV) {
+                if (process.env.DEV) {
                     console.log(`[cloud storage]: UploadTaskManager uploads "${task.file.name}"`);
                 }
                 void task.upload().then(() => this.finishUpload(task));
