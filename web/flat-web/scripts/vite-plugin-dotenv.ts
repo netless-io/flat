@@ -10,9 +10,10 @@ export function dotenv(envDir: string = process.cwd()): Plugin {
         name: "flat:dotenv",
         enforce: "pre",
         config(config, { mode }) {
-            const targetFile = path.join(envDir, `.env.${mode}.local`);
-            if (fs.existsSync(targetFile) && fs.statSync(targetFile).isFile()) {
-                const parsed = dotenvReal.parse(fs.readFileSync(targetFile));
+            const envConfigContent = getEnvConfigContent(envDir, mode);
+
+            if (envConfigContent) {
+                const parsed = dotenvReal.parse(envConfigContent);
                 dotenvExpand({ parsed });
                 const env = { ...parsed };
                 const define: Record<string, string | {}> = {};
@@ -24,3 +25,18 @@ export function dotenv(envDir: string = process.cwd()): Plugin {
         },
     };
 }
+
+const getEnvConfigContent = (envDir: string, mode: string): string | null => {
+    const configFileList = [
+        path.join(envDir, `.env.${mode}.local`),
+        path.join(envDir, `.env.${mode}`),
+    ];
+
+    for (const filepath of configFileList) {
+        if (fs.existsSync(filepath) && fs.statSync(filepath).isFile()) {
+            return fs.readFileSync(filepath, "utf-8");
+        }
+    }
+
+    return null;
+};
