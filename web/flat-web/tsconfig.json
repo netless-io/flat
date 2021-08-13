@@ -10,7 +10,11 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "types": ["vite/client"]
+    "baseUrl": ".",
+    "paths": {
+      "flat-types": ["../../packages/flat-types/src"],
+      "flat-i18n": ["../../packages/flat-i18n/locales"]
+    }
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts"]
