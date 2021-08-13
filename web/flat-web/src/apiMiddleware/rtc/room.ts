@@ -3,7 +3,7 @@ import { AGORA } from "../../constants/Process";
 import { globalStore } from "../../stores/GlobalStore";
 import { generateRTCToken } from "../flatServer/agora";
 
-if (import.meta.env.PROD) {
+if (process.env.PROD) {
     AgoraRTC.setLogLevel(/* WARNING */ 2);
 }
 

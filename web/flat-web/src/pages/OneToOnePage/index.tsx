@@ -53,7 +53,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
         bitrate: 140,
         mixedVideoLayout: 1,
         backgroundColor: "#000000",
-        defaultUserBackgroundImage: import.meta.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+        defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
     },
     maxIdleTime: 60,
     subscribeUidGroup: 0,
@@ -338,7 +338,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         classRoomStore.updateRecordingLayout({
             mixedVideoLayout: 1,
             backgroundColor: "#000000",
-            defaultUserBackgroundImage: import.meta.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+            defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
             backgroundConfig,
         });
     }

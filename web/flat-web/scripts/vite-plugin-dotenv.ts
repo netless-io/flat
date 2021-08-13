@@ -17,9 +17,15 @@ export function dotenv(envDir: string = process.cwd()): Plugin {
                 dotenvExpand({ parsed });
                 const env = { ...parsed };
                 const define: Record<string, string | {}> = {};
+
                 for (const [key, value] of Object.entries(env)) {
-                    define[`import.meta.env.${key}`] = JSON.stringify(value);
+                    define[`process.env.${key}`] = JSON.stringify(value);
                 }
+
+                define["process.env.PROD"] = mode === "production";
+                define["process.env.DEV"] = mode === "development";
+                define["process.env.NODE_DEV"] = JSON.stringify(mode);
+
                 config.define = { ...config.define, ...define };
             }
         },

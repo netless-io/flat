@@ -76,7 +76,7 @@ export class CloudRecording {
                     height: 360,
                     fps: 15,
                     bitrate: 500,
-                    defaultUserBackgroundImage: import.meta.env.CLOUD_RECORDING_DEFAULT_AVATAR,
+                    defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
                 },
             },
         },

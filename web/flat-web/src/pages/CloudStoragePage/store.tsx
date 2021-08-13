@@ -490,7 +490,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
         if (file.convert === "idle") {
             try {
-                if (import.meta.env.DEV) {
+                if (process.env.DEV) {
                     console.log("[cloud-storage] convert start", file.fileUUID, file.fileName);
                 }
                 const { taskToken, taskUUID } = await convertStart({ fileUUID: file.fileUUID });
@@ -510,7 +510,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     private async pollConvertState(file: CloudStorageFile, dynamic: boolean): Promise<void> {
-        if (import.meta.env.DEV) {
+        if (process.env.DEV) {
             console.log("[cloud-storage] query convert status", file.fileName);
         }
 
@@ -530,7 +530,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
 
         if (status === "Fail" || status === "Finished") {
-            if (import.meta.env.DEV) {
+            if (process.env.DEV) {
                 console.log("[cloud storage]: convert finish", file.fileName);
             }
 
