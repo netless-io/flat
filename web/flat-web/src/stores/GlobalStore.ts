@@ -70,6 +70,10 @@ export class GlobalStore {
         }
     };
 
+    public logout = (): void => {
+        this.userInfo = null;
+    };
+
     public hideRecordHintTips = (): void => {
         this.isShowRecordHintTips = false;
     };

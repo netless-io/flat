@@ -71,11 +71,7 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
             {
                 key: "logout",
                 icon: (): React.ReactNode => <img src={logoutSVG} />,
-                title: (
-                    <span className="logout-title" onClick={() => localStorage.clear()}>
-                        {t("logout")}
-                    </span>
-                ),
+                title: <span className="logout-title">{t("logout")}</span>,
                 route: routeConfig[RouteNameType.LoginPage].path,
             },
         ];
@@ -88,7 +84,11 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
 
         const globalStore = useContext(GlobalStoreContext);
 
-        const historyPush = (mainPageLayoutItem: MainPageLayoutItem): void => {
+        const onMenuItemClick = (mainPageLayoutItem: MainPageLayoutItem): void => {
+            if (mainPageLayoutItem.key === "logout") {
+                globalStore.logout();
+            }
+
             if (mainPageLayoutItem.route.startsWith("/")) {
                 onRouteChange
                     ? onRouteChange(mainPageLayoutItem)
@@ -106,7 +106,7 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
                 rightMenu={rightMenu}
                 popMenu={popMenu}
                 subMenu={subMenu}
-                onClick={historyPush}
+                onClick={onMenuItemClick}
                 activeKeys={activeKeys}
                 avatarSrc={globalStore.userInfo?.avatar ?? ""}
                 userName={globalStore.userInfo?.name ?? ""}
