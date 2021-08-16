@@ -10,20 +10,20 @@ export interface RoomInfoProps {
 }
 
 export class RoomInfo extends React.PureComponent<RoomInfoProps> {
-    public roomStatusLocale = {
+    roomStatusLocale = {
         [RoomStatus.Idle]: "待开始",
         [RoomStatus.Started]: "进行中",
         [RoomStatus.Paused]: "已暂停",
         [RoomStatus.Stopped]: "已结束",
     };
 
-    public roomInfoLocale = {
+    roomInfoLocale = {
         [RoomType.BigClass]: "大班课",
         [RoomType.SmallClass]: "小班课",
         [RoomType.OneToOne]: "一对一",
     };
 
-    public render(): React.ReactNode {
+    render(): React.ReactNode {
         const { roomStatus, roomType } = this.props;
 
         return (

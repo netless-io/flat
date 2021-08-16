@@ -13,8 +13,7 @@
     "baseUrl": ".",
     "paths": {
       "flat-types": ["../../packages/flat-types/src"],
-      "flat-i18n": ["../../packages/flat-i18n/locales"],
-      "flat-components": ["../../packages/flat-components/src"]
+      "flat-i18n": ["../../packages/flat-i18n/locales"]
     }
   },
   "exclude": ["node_modules"],

@@ -85,7 +85,7 @@ yarn run start
 
 Many Flat components UI can be quickly viewed and developed via Storybook ([Online address][flat-storybook]).
 
--   Run `yarn run storybook` at project root to run Storybook locally.
+-   Run `yarn --cwd packages/flat-components storybook` at project root to run Storybook locally.
 
 ## Environment Variables Reference
 
