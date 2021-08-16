@@ -12,7 +12,7 @@
     "lint": "lint-staged"
   },
   "devDependencies": {
-    "lint-staged": "^10.5.4",
+    "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "typescript": "^4.2.4"
   }
