@@ -5,7 +5,7 @@ import "../src/theme/index.less";
 import "tachyons/css/tachyons.min.css";
 
 // see: https://stackoverflow.com/a/67153285/6596777
-import '!style-loader!css-loader!sass-loader!../src/theme/custom-bulma.scss';
+import '../src/theme/custom-bulma.scss';
 
 export const parameters = {
   options: {
