@@ -17,12 +17,9 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*",
       "desktop/*",
-      "web/*"
-    ],
-    "nohoist": [
-      "flat-components/@pmmmwh/react-refresh-webpack-plugin/**"
+      "web/*",
+      "packages/*"
     ]
   },
   "license": "MIT",

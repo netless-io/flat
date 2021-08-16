@@ -26,7 +26,12 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "strictBindCallApply": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "flat-types": ["../flat-types/src"],
+      "flat-i18n": ["../flat-i18n/locales"]
+    }
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts"]

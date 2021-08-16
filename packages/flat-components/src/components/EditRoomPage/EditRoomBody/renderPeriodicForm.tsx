@@ -57,13 +57,8 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
         );
 
         function renderPeriodicRoomTips(): React.ReactElement {
-            const {
-                periodic,
-                type: roomType,
-            }: Pick<EditRoomFormValues, "periodic" | "type"> = form.getFieldsValue([
-                "periodic",
-                "type",
-            ]);
+            const { periodic, type: roomType }: Pick<EditRoomFormValues, "periodic" | "type"> =
+                form.getFieldsValue(["periodic", "type"]);
             return (
                 <div className="edit-room-tips">
                     {periodic.weeks.length > 0 ? (
@@ -132,39 +127,24 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
         }
 
         function onWeekRateChanged(weeks: Week[]): void {
-            const {
-                beginTime,
-                periodic,
-            }: Pick<EditRoomFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
-                "beginTime",
-                "periodic",
-            ]);
+            const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
+                form.getFieldsValue(["beginTime", "periodic"]);
             syncPeriodicEndAmount(form, beginTime, { ...periodic, weeks });
         }
 
         function onPeriodicRateChanged(value: string | number | undefined): void {
             const rate = Number(value);
             if (!Number.isNaN(rate)) {
-                const {
-                    beginTime,
-                    periodic,
-                }: Pick<EditRoomFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
-                    "beginTime",
-                    "periodic",
-                ]);
+                const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
+                    form.getFieldsValue(["beginTime", "periodic"]);
                 syncPeriodicEndAmount(form, beginTime, { ...periodic, rate });
             }
         }
 
         function onPeriodicEndTimeChanged(date: Date | null): void {
             if (date) {
-                const {
-                    beginTime,
-                    periodic,
-                }: Pick<EditRoomFormValues, "beginTime" | "periodic"> = form.getFieldsValue([
-                    "beginTime",
-                    "periodic",
-                ]);
+                const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
+                    form.getFieldsValue(["beginTime", "periodic"]);
                 syncPeriodicEndAmount(form, beginTime, { ...periodic, endTime: date });
             }
         }

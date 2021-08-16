@@ -4,7 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "@ant-design/icons": "^4.2.2",
+    "@ant-design/icons": "^4.6.2",
     "@netless/combine-player": "^1.1.4",
     "@netless/cursor-tool": "^0.0.7",
     "@netless/fetch-middleware": "^1.0.7",
@@ -45,7 +45,7 @@
     "white-web-sdk": "2.13.12"
   },
   "devDependencies": {
-    "@netless/eslint-plugin": "^1.1.2",
+    "@netless/eslint-plugin": "^1.1.4",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/classnames": "^2.2.11",
     "@types/fs-extra": "^9.0.6",
