@@ -31,7 +31,7 @@
   "devDependencies": {
     "@babel/core": "^7.15.0",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@netless/eslint-plugin": "^1.1.4",
+    "@netless/eslint-plugin": "1.1.2",
     "@storybook/addon-actions": "^6.3.7",
     "@storybook/addon-essentials": "^6.3.7",
     "@storybook/addon-links": "^6.3.7",

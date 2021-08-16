@@ -1564,11 +1564,6 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/standalone@7.13.9":
-  version "7.13.9"
-  resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.13.9.tgz#38e78673e19f5077f4b294ad346780634e59e276"
-  integrity sha512-9ZpIl8rXXQqm5OdsQVhlBSPttwabiHGPGrl5N2bIxB9XS2NJW+1oiPFgMMNd+57C/xVwsEwD2mzv0KValOwlQA==
-
 "@babel/standalone@7.14.1", "@babel/standalone@^7.13.12":
   version "7.14.1"
   resolved "https://registry.npmjs.org/@babel/standalone/-/standalone-7.14.1.tgz#2c5f6908f03108583eea75bdcc94eb29e720fbac"
@@ -2376,20 +2371,12 @@
   resolved "https://registry.npmjs.org/@netless/cursor-tool/-/cursor-tool-0.1.0.tgz#6f837e7120f258b9b561041df8d6c16fb769b731"
   integrity sha512-XxWU/XbP7kNoC3jCBK6qkle9KnHO9+aVA2fSjwnGnoRG7HbACfBvUxG5+HocHUhnDb7Yc4c66FRv/ELIFq4JwA==
 
-"@netless/eslint-plugin@^1.1.2":
+"@netless/eslint-plugin@1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@netless/eslint-plugin/-/eslint-plugin-1.1.2.tgz#3ffd97d245bf628715b61fbe89b94ec6dd772ecb"
   integrity sha512-XZIYd3nRjCTMFH6s7JYc+qnf89aoHvX0azPoFH3uWGTq8usXvp+GMCbrkkkcN84Q7MQKa2kgrUuy9xab34groQ==
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.20.0"
-
-"@netless/eslint-plugin@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@netless/eslint-plugin/-/eslint-plugin-1.1.4.tgz#b15e42f3a546ef45a05e0dc5dc46beafada09660"
-  integrity sha512-Oe4fSiRWuhErQ0KN9yTLfOWjdBbtPvCExSi3p9muCU0382SBO16Bnn/azb3OaHd7bvyUrpi3Pnv4PjVqDlO/iA==
-  dependencies:
-    "@typescript-eslint/experimental-utils" "^4.20.0"
-    typescript "^4.3.5"
 
 "@netless/fetch-middleware@^1.0.7":
   version "1.0.7"
@@ -9625,12 +9612,6 @@ flat-cache@^3.0.4:
   dependencies:
     flatted "^3.1.0"
     rimraf "^3.0.2"
-
-"flat-i18n@file:packages/flat-i18n":
-  version "0.1.0"
-
-"flat-types@file:packages/flat-types":
-  version "0.1.0"
 
 flatted@^3.1.0:
   version "3.1.0"
@@ -18421,11 +18402,6 @@ typescript@^4.2.4:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.4.tgz#8610b59747de028fda898a8aef0e103f156d0961"
   integrity sha512-V+evlYHZnQkaz8TRBuxTA92yZBPotr5H+WhQ7bD3hZUndx5tGOa1fuCgeSjxAzM1RiN5IzvadIXTVefuuwZCRg==
-
-typescript@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
-  integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
 
 ua-parser-js@^0.7.24:
   version "0.7.24"
