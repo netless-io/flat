@@ -43,7 +43,7 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit == 'true'
 
       - name: Build Storybook
-        run: yarn workspace flat-components build
+        run: yarn workspace flat-components build-storybook
 
       - name: Deploy Storybook
         uses: peaceiris/actions-gh-pages@v3

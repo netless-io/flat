@@ -184,7 +184,6 @@ module.exports = {
         alias: {
             "flat-types": paths.resolvePath("..", "..", "packages", "flat-types", "src"),
             "flat-i18n": paths.resolvePath("..", "..", "packages", "flat-i18n", "locales"),
-            "flat-components": paths.resolvePath("..", "..", "packages", "flat-components", "src"),
         },
     },
 };

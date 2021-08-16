@@ -65,8 +65,7 @@ export class GlobalStore {
         for (const key of keys) {
             const value = config[key];
             if (value !== null && value !== undefined) {
-                // @ts-ignore
-                this[key] = value;
+                this[key] = value as any;
             }
         }
     };

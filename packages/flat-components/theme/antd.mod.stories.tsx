@@ -22,25 +22,21 @@ export const Overview: Story = () => {
     const inputExample = (
         <div>
             <div className="mb3">
-                <div className="mb1">Default</div>
-                <Input placeholder="Please enter the room number" value="" />
+                <div className="mb1">默认</div>
+                <Input placeholder="请输入房间号" value="" />
             </div>
             <div className="mb3">
-                <div className="mb1">Selected</div>
+                <div className="mb1">选中</div>
+                <Input placeholder="请输入房间号" className="ant-input-focused" value="" />
+            </div>
+            <div className="mb3">
+                <div className="mb1">输入</div>
+                <Input placeholder="请输入房间号" value="888 888 888 888" />
+            </div>
+            <div className="mb3">
+                <div className="mb1">全选</div>
                 <Input
-                    placeholder="Please enter the room number"
-                    className="ant-input-focused"
-                    value=""
-                />
-            </div>
-            <div className="mb3">
-                <div className="mb1">Input</div>
-                <Input placeholder="Please enter the room number" value="888 888 888 888" />
-            </div>
-            <div className="mb3">
-                <div className="mb1">Select All</div>
-                <Input
-                    placeholder="Please enter the room number"
+                    placeholder="请输入房间号"
                     className="ant-input-selected"
                     value="888 888 888 888"
                     ref={selectAllRef}
@@ -48,16 +44,12 @@ export const Overview: Story = () => {
                 />
             </div>
             <div className="mb3">
-                <div className="mb1">Disable</div>
-                <Input placeholder="Please enter the room number" disabled />
+                <div className="mb1">禁用</div>
+                <Input placeholder="请输入房间号" disabled />
             </div>
             <div className="mb3">
-                <div className="mb1">Disable(has value)</div>
-                <Input
-                    placeholder="Please enter the room number"
-                    value="888 888 888 888"
-                    disabled
-                />
+                <div className="mb1">禁用（带值）</div>
+                <Input placeholder="请输入房间号" value="888 888 888 888" disabled />
             </div>
         </div>
     );
@@ -65,26 +57,26 @@ export const Overview: Story = () => {
     const radioExample = (
         <div>
             <div className="db mv4">
-                <Radio value={1}>Default</Radio>
+                <Radio value={1}>默认</Radio>
             </div>
             <div className="db mv4">
                 <Radio className="is-hover" value={2}>
-                    Hover
+                    悬停
                 </Radio>
             </div>
             <div className="db mv4">
                 <Radio value={3} checked>
-                    Selected
+                    选中
                 </Radio>
             </div>
             <div className="db mv4">
                 <Radio value={4} disabled>
-                    Disable
+                    禁用
                 </Radio>
             </div>
             <div className="db mv4">
                 <Radio className="is-hover" value={5} disabled checked>
-                    Disable(Selected)
+                    禁用（选中）
                 </Radio>
             </div>
         </div>
@@ -93,22 +85,22 @@ export const Overview: Story = () => {
     const checkboxExample = (
         <div>
             <div className="mv4">
-                <Checkbox checked={false}>Default</Checkbox>
+                <Checkbox checked={false}>默认</Checkbox>
             </div>
             <div className="mv4">
                 <Checkbox checked={false} className="ant-checkbox-hovered">
-                    Hover
+                    悬停
                 </Checkbox>
             </div>
             <div className="mv4">
-                <Checkbox checked>Selected</Checkbox>
+                <Checkbox checked>选中</Checkbox>
             </div>
             <div className="mv4">
-                <Checkbox disabled>Disable</Checkbox>
+                <Checkbox disabled>禁用</Checkbox>
             </div>
             <div className="mv4">
                 <Checkbox checked disabled>
-                    Disable(Selected)
+                    禁用（选中）
                 </Checkbox>
             </div>
         </div>
@@ -117,37 +109,37 @@ export const Overview: Story = () => {
     const buttonExample = (
         <div>
             <div className="flex justify-around items-center mb3">
-                <Button type="primary">Upload</Button>
-                <Button>Secondary Button</Button>
-                <Button type="dashed">Dashed Button</Button>
-                <Button danger>Warning Button</Button>
-                Default
+                <Button type="primary">上传</Button>
+                <Button>次按钮</Button>
+                <Button type="dashed">虚线按钮</Button>
+                <Button danger>警示按钮</Button>
+                默认
             </div>
             <div className="flex justify-around items-center mb3">
                 <Button type="primary" className="is-hover">
-                    Upload
+                    上传
                 </Button>
-                <Button className="is-hover">Secondary Button</Button>
+                <Button className="is-hover">次按钮</Button>
                 <Button type="dashed" className="is-hover">
-                    Dashed Button
+                    虚线按钮
                 </Button>
                 <Button danger className="is-hover">
-                    Warning Button
+                    警示按钮
                 </Button>
-                Hover
+                悬停
             </div>
             <div className="flex justify-around items-center mb3">
                 <Button disabled type="primary">
-                    Upload
+                    上传
                 </Button>
-                <Button disabled>Secondary Button</Button>
+                <Button disabled>次按钮</Button>
                 <Button disabled type="dashed">
-                    Dashed Button
+                    虚线按钮
                 </Button>
                 <Button disabled danger>
-                    Warning Button
+                    警示按钮
                 </Button>
-                Disable
+                禁用
             </div>
         </div>
     );

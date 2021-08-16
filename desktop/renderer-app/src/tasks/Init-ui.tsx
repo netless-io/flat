@@ -1,4 +1,4 @@
-import "flat-components/theme/index.less";
+import "flat-components/build/style.css";
 import "../theme.less";
 
 import { ConfigProvider } from "antd";

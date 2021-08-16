@@ -97,8 +97,6 @@ module.exports = {
         "Variatio",
         "Clav",
         "webfonts",
-        "browserslist",
-        "estree",
     ],
     flagWords: ["fuck", "bitch", "asshole", "bullshit", "crap", "suck", "wtf"],
     dictionaries: [

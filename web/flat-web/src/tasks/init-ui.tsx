@@ -1,6 +1,5 @@
-import "flat-components/theme/index.less";
-
 import "../theme.less";
+import "flat-components/build/style.css";
 
 import React, { useEffect, useMemo } from "react";
 import ReactDOM from "react-dom";
