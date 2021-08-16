@@ -12,9 +12,9 @@ module.exports = {
     ],
     plugins: ["jsx-a11y", "react", "@netless", "prettier", "@typescript-eslint"],
     parserOptions: {
-        ecmaVersion: 2018,
         project: "tsconfig.json",
         tsconfigRootDir: __dirname,
+        ecmaVersion: 7,
         ecmaFeatures: {
             jsx: true,
         },
@@ -260,6 +260,7 @@ module.exports = {
         "@typescript-eslint/no-misused-promises": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/restrict-plus-operands": "off",
     },
 
     overrides: [

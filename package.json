@@ -4,10 +4,10 @@
   "scripts": {
     "preinstall": "node ./scripts/preinstall",
     "postinstall": "husky install",
-    "bootstrap": "yarn install --frozen-lockfile && node ./scripts/bootstrap/build-packages.js",
+    "bootstrap": "yarn install --frozen-lockfile",
     "lint": "yarn workspaces run lint",
     "check-spelling": "cspell --no-progress \"**/*.{md,ts,tsx,js,css,less,json,yml,yaml,html,sh}\"",
-    "storybook": "yarn workspace flat-components storybook",
+    "storybook": "yarn workspace flat-components start",
     "start": "node scripts/launch/index.js",
     "preship": "rimraf desktop/renderer-app/dist desktop/main-app/dist desktop/main-app/release desktop/main-app/static",
     "ship": "yarn workspace renderer-app build && yarn workspace flat ship",
@@ -20,6 +20,9 @@
       "packages/*",
       "desktop/*",
       "web/*"
+    ],
+    "nohoist": [
+      "flat-components/@pmmmwh/react-refresh-webpack-plugin/**"
     ]
   },
   "license": "MIT",

@@ -30,7 +30,8 @@
     "baseUrl": ".",
     "paths": {
       "flat-types": ["../../packages/flat-types/src"],
-      "flat-i18n": ["../../packages/flat-i18n/locales"]
+      "flat-i18n": ["../../packages/flat-i18n/locales"],
+      "flat-components": ["../../packages/flat-components/src"]
     }
   },
   "exclude": ["node_modules"],
