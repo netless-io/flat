@@ -4,7 +4,7 @@
   "scripts": {
     "preinstall": "node ./scripts/preinstall",
     "postinstall": "husky install",
-    "bootstrap": "yarn install --frozen-lockfile && node ./scripts/bootstrap/build-packages.js",
+    "bootstrap": "yarn install --frozen-lockfile",
     "lint": "yarn workspaces run lint",
     "check-spelling": "cspell --no-progress \"**/*.{md,ts,tsx,js,css,less,json,yml,yaml,html,sh}\"",
     "storybook": "yarn workspace flat-components start",
