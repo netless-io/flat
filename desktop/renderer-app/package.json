@@ -15,6 +15,7 @@
     "@netless/tool-box": "^0.1.4",
     "@netless/video-js-plugin": "^0.3.6",
     "@netless/zoom-controller": "^0.1.1",
+    "@videojs/vhs-utils": "^2.3.0",
     "agora-rtm-sdk": "^1.4.3",
     "antd": "^4.15.4",
     "axios": "^0.21.1",
