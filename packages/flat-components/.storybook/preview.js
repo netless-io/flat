@@ -1,9 +1,9 @@
-import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
-import { i18n } from './i18next.js';
-
 import "../src/theme/index.less";
 import '../src/theme/custom-bulma.scss';
 import "tachyons/css/tachyons.min.css";
+
+import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
+import { i18n } from './i18next.js';
 
 export const parameters = {
   options: {
