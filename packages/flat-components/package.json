@@ -2,6 +2,7 @@
   "name": "flat-components",
   "version": "0.1.0",
   "private": false,
+  "license": "MIT",
   "homepage": "https://github.com/netless-io/flat",
   "dependencies": {
     "antd": "^4.15.0",
