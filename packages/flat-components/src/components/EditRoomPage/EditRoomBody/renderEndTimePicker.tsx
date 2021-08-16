@@ -47,13 +47,8 @@ export function renderEndTimePicker(
     }
 
     function disabledHours(): number[] {
-        const {
-            beginTime,
-            endTime,
-        }: Pick<EditRoomFormValues, "beginTime" | "endTime"> = form.getFieldsValue([
-            "beginTime",
-            "endTime",
-        ]);
+        const { beginTime, endTime }: Pick<EditRoomFormValues, "beginTime" | "endTime"> =
+            form.getFieldsValue(["beginTime", "endTime"]);
 
         const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
 
@@ -94,13 +89,8 @@ export function renderEndTimePicker(
     }
 
     function disabledMinutes(selectedHour: number): number[] {
-        const {
-            beginTime,
-            endTime,
-        }: Pick<EditRoomFormValues, "beginTime" | "endTime"> = form.getFieldsValue([
-            "beginTime",
-            "endTime",
-        ]);
+        const { beginTime, endTime }: Pick<EditRoomFormValues, "beginTime" | "endTime"> =
+            form.getFieldsValue(["beginTime", "endTime"]);
 
         const comparedTime = addMinutes(beginTime, MIN_CLASS_DURATION);
         const selectedEndTime = setHours(endTime, selectedHour);

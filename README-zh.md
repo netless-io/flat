@@ -84,7 +84,7 @@ yarn run start
 
 部分 Flat 组件 UI 可通过 Storybook 快速查看与开发（[线上地址][flat-storybook]）。
 
--   项目根执行 `yarn --cwd packages/flat-components storybook` 可在本地运行 Storybook。
+-   项目根执行 `yarn run storybook` 可在本地运行 Storybook。
 
 ## 环境变量值参考
 

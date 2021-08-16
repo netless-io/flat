@@ -1,4 +1,4 @@
-import { EmitEvents } from "flat-types/dist/ipc";
+import { ipc } from "flat-types";
 import { windowManager } from "./WindowManager";
 import runtime from "./Runtime";
 import { constants } from "flat-types";
@@ -33,7 +33,7 @@ export const ipcEmit = (windowName: constants.WindowsName): IPCEmit => {
     }
 };
 
-type IPCEmit<T extends keyof EmitEvents = keyof EmitEvents> = (
+type IPCEmit<T extends keyof ipc.EmitEvents = keyof ipc.EmitEvents> = (
     eventName: T,
-    args: EmitEvents[T],
+    args: ipc.EmitEvents[T],
 ) => void;

@@ -18,9 +18,20 @@ export default defineConfig({
                 find: "flat-i18n",
                 replacement: path.join(__dirname, "..", "..", "packages", "flat-i18n", "locales"),
             },
+            {
+                find: "flat-components",
+                replacement: path.join(__dirname, "..", "..", "packages", "flat-components", "src"),
+            },
         ],
     },
     build: {
         sourcemap: true,
+    },
+    css: {
+        preprocessorOptions: {
+            less: {
+                javascriptEnabled: true,
+            },
+        },
     },
 });

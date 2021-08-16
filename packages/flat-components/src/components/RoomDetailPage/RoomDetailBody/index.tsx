@@ -30,10 +30,10 @@ export const RoomDetailBody = observer<RoomDetailBodyProps>(function RoomDetailB
         () => (beginTime ? formatTime(beginTime, i18n.language) : null),
         [beginTime, i18n.language],
     );
-    const formattedEndTime = useMemo(() => (endTime ? formatTime(endTime, i18n.language) : null), [
-        endTime,
-        i18n.language,
-    ]);
+    const formattedEndTime = useMemo(
+        () => (endTime ? formatTime(endTime, i18n.language) : null),
+        [endTime, i18n.language],
+    );
 
     return (
         <div className="room-detail-body">

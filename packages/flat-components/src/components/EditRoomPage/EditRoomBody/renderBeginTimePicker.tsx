@@ -175,13 +175,8 @@ export function renderBeginTimePicker(
 
     /** make sure end time is at least min duration after begin time */
     function onBeginTimeChanged(beginTime: Date): void {
-        const {
-            endTime,
-            periodic,
-        }: Pick<EditRoomFormValues, "endTime" | "periodic"> = form.getFieldsValue([
-            "endTime",
-            "periodic",
-        ]);
+        const { endTime, periodic }: Pick<EditRoomFormValues, "endTime" | "periodic"> =
+            form.getFieldsValue(["endTime", "periodic"]);
 
         const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
 
