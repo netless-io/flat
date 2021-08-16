@@ -2,9 +2,7 @@ name: Storybook
 on:
   push:
     branches:
-      - "main"
-    paths:
-      - "packages/flat-components/src/**"
+      - "run-storybook"
 
 jobs:
   build-and-deploy:
