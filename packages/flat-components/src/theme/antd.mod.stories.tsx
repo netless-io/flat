@@ -3,7 +3,6 @@ import { Story, Meta } from "@storybook/react";
 import { Input, Radio, Checkbox, Button } from "antd";
 import { useRef } from "@storybook/client-api";
 import faker from "faker";
-import "./custom-bulma.scss";
 
 const storyMeta: Meta = {
     title: "Theme/AntdMod",
