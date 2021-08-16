@@ -1,6 +1,6 @@
-import { initReactI18next } from 'react-i18next';
-import i18next from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from "react-i18next";
+import i18next from "i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 import en from "flat-i18n/en.json";
 import zhCN from "flat-i18n/zh-CN.json";
 

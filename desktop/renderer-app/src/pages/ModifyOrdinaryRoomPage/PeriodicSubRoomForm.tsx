@@ -23,8 +23,9 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
     const sp = useSafePromise();
 
     const [initialValues, setInitialValues] = useState<EditRoomFormInitialValues>();
-    const [previousPeriodicRoomBeginTime, setPreviousPeriodicRoomBeginTime] =
-        useState<number | null>(0);
+    const [previousPeriodicRoomBeginTime, setPreviousPeriodicRoomBeginTime] = useState<
+        number | null
+    >(0);
     const [nextPeriodicRoomEndTime, setNextPeriodicRoomEndTime] = useState<number | null>(0);
     useEffect(() => {
         sp(

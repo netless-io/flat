@@ -91,8 +91,10 @@ export class ClassRoomStore {
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
 
-    private tempChannelStatus =
-        observable.map<string, null | RTMEvents[RTMessageType.ChannelStatus]>();
+    private tempChannelStatus = observable.map<
+        string,
+        null | RTMEvents[RTMessageType.ChannelStatus]
+    >();
 
     private readonly recordingConfig: RecordingConfig;
 

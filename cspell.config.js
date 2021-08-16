@@ -83,6 +83,7 @@ module.exports = {
         "pmmmwh", // @pmmmwh/react-refresh-webpack-plugin
         "pickone", // chance
         "viewports", // storybook
+        "videojs", // @videojs/vhs-utils
 
         // misc
         "npmrc",
