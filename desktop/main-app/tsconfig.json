@@ -25,7 +25,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "flat-types": ["../../packages/flat-types/src"],
+      "flat-types": ["../../packages/flat-types/src"]
     }
   },
   "exclude": ["node_modules"],
