@@ -110,7 +110,7 @@ Many Flat components UI can be quickly viewed and developed via Storybook ([Onli
 [flat-web]: https://flat-web.whiteboard.agora.io/
 [flat-server]: https://github.com/netless-io/flat-server
 [flat-android]: https://github.com/netless-io/flat-android
-[flat-storybook]: https://netless-io.github.io/flat/storybook/
+[flat-storybook]: https://netless-io.github.io/flat/
 [open-wechat]: https://open.weixin.qq.com/
 [netless-auth]: https://docs.agora.io/en/whiteboard/generate_whiteboard_token_at_app_server?platform=RESTful
 [agora-app-id-auth]: https://docs.agora.io/en/Agora%20Platform/token#a-name--appidause-an-app-id-for-authentication
