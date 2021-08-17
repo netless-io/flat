@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  check:
+  check-spell:
     runs-on: ubuntu-18.04
 
     steps:
