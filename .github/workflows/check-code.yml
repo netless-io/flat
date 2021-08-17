@@ -10,7 +10,7 @@ on:
       - "LICENSE"
 
 jobs:
-  check:
+  check-code:
     runs-on: macos-10.15
 
     steps:
