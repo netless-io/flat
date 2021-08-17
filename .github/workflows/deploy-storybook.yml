@@ -7,7 +7,7 @@ on:
       - "packages/flat-components/src/**"
 
 jobs:
-  build-and-deploy:
+  deploy-storybook:
     runs-on: ubuntu-latest
 
     steps:
