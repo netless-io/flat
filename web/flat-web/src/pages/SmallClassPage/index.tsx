@@ -46,6 +46,7 @@ import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 import { RtcChannelType } from "../../apiMiddleware/rtc/room";
 import { useTranslation } from "react-i18next";
+import { ShareScreen } from "../../components/ShareScreen";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -92,6 +93,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         ClassModeType.Interaction,
     );
     const whiteboardStore = classRoomStore.whiteboardStore;
+    const shareScreenStore = classRoomStore.shareScreenStore;
+
     const globalStore = useContext(GlobalStoreContext);
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
@@ -142,6 +145,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         return <LoadingPage />;
     }
 
+    function handleShareScreen(): void {
+        void shareScreenStore.toggle();
+    }
+
     return (
         <div className="realtime-box">
             <TopBar
@@ -152,7 +159,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             />
             {renderAvatars()}
             <div className="realtime-content">
-                <Whiteboard whiteboardStore={whiteboardStore} />
+                <div className="container">
+                    <ShareScreen shareScreenStore={shareScreenStore} />
+                    <Whiteboard whiteboardStore={whiteboardStore} />
+                </div>
                 {renderRealtimePanel()}
             </div>
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
@@ -293,6 +303,19 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                             }
                         />
                     )}
+
+                {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
+                    <TopBarRightBtn
+                        title="Share Screen"
+                        icon={
+                            shareScreenStore.enableShareScreenStatus
+                                ? "share-screen-active"
+                                : "share-screen"
+                        }
+                        onClick={handleShareScreen}
+                    />
+                )}
+
                 {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"

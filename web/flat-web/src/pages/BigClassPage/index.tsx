@@ -43,6 +43,7 @@ import { useAutoRun, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { runtime } from "../../utils/runtime";
 import { BigClassAvatar } from "./BigClassAvatar";
+import { ShareScreen } from "../../components/ShareScreen";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -85,8 +86,11 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const params = useParams<RouteParams<RouteNameType.BigClassPage>>();
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
+    const shareScreenStore = classRoomStore.shareScreenStore;
+
     const whiteboardStore = classRoomStore.whiteboardStore;
     const globalStore = useContext(GlobalStoreContext);
+
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
     const [speakingJoiner, setSpeakingJoiner] = useState<User | undefined>(() =>
@@ -175,7 +179,10 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 right={renderTopBarRight()}
             />
             <div className="realtime-content">
-                <Whiteboard whiteboardStore={whiteboardStore} />
+                <div className="container">
+                    <ShareScreen shareScreenStore={shareScreenStore} />
+                    <Whiteboard whiteboardStore={whiteboardStore} />
+                </div>
                 {renderRealtimePanel()}
             </div>
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
@@ -271,6 +278,19 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                             }
                         />
                     )}
+
+                {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
+                    <TopBarRightBtn
+                        title="Share Screen"
+                        icon={
+                            shareScreenStore.enableShareScreenStatus
+                                ? "share-screen-active"
+                                : "share-screen"
+                        }
+                        onClick={handleShareScreen}
+                    />
+                )}
+
                 {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
@@ -279,6 +299,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                         onClick={handleRoomController}
                     />
                 )}
+
                 {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
@@ -376,6 +397,10 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             room.setViewMode(ViewMode.Freedom);
             void message.success(t("Stop-following-your-perspective-tips"));
         }
+    }
+
+    function handleShareScreen(): void {
+        void shareScreenStore.toggle();
     }
 
     function handleSideOpenerSwitch(): void {

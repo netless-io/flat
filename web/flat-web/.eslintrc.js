@@ -99,7 +99,7 @@ module.exports = {
         "no-unused-vars": "off",
         "no-useless-computed-key": "warn",
         "no-useless-concat": "warn",
-        "no-useless-constructor": "warn",
+        "no-useless-constructor": "off",
         "no-useless-escape": "warn",
         "no-useless-rename": [
             "warn",
@@ -205,6 +205,7 @@ module.exports = {
         "@typescript-eslint/no-redeclare": "off",
         "no-use-before-define": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-useless-constructor": ["error"],
     },
 
     overrides: [

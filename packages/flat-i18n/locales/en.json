@@ -350,5 +350,8 @@
   "nav-settings": "Settings",
   "servers": "Server",
   "set-camera-error": "Failed to turn on camera",
-  "set-mic-error": "Failed to turn on microphone"
+  "set-mic-error": "Failed to turn on microphone",
+  "share-screen": {
+    "browser-not-permission": "Please grant your browser access to screen recording"
+  }
 }

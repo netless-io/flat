@@ -42,6 +42,7 @@ import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatSe
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 import { useTranslation } from "react-i18next";
+import { ShareScreen } from "../../components/ShareScreen";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -66,6 +67,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     const params = useParams<RouteParams<RouteNameType.OneToOnePage>>();
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
+    const shareScreenStore = classRoomStore.shareScreenStore;
     const whiteboardStore = classRoomStore.whiteboardStore;
     const globalStore = useContext(GlobalStoreContext);
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
@@ -130,7 +132,10 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 right={renderTopBarRight()}
             />
             <div className="one-to-one-realtime-content">
-                <Whiteboard whiteboardStore={whiteboardStore} />
+                <div className="container">
+                    <ShareScreen shareScreenStore={shareScreenStore} />
+                    <Whiteboard whiteboardStore={whiteboardStore} />
+                </div>
                 {renderRealtimePanel()}
             </div>
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
@@ -141,6 +146,10 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             />
         </div>
     );
+
+    function handleShareScreen(): void {
+        void shareScreenStore.toggle();
+    }
 
     function renderTopBarLeft(): React.ReactNode {
         return (
@@ -226,6 +235,19 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                             }
                         />
                     )}
+
+                {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
+                    <TopBarRightBtn
+                        title="Share Screen"
+                        icon={
+                            shareScreenStore.enableShareScreenStatus
+                                ? "share-screen-active"
+                                : "share-screen"
+                        }
+                        onClick={handleShareScreen}
+                    />
+                )}
+
                 {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"

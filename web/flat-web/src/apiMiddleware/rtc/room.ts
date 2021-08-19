@@ -35,7 +35,7 @@ export class RtcRoom {
         isCreator: boolean;
         rtcUID: number;
         channelType: RtcChannelType;
-    }): Promise<void> {
+    }): Promise<IAgoraRTCClient> {
         if (this.client) {
             await this.destroy();
         }
@@ -54,6 +54,8 @@ export class RtcRoom {
         await this.client.join(AGORA.APP_ID, roomUUID, token, rtcUID);
 
         this.roomUUID = roomUUID;
+
+        return this.client;
     }
 
     public getLatency(): number {

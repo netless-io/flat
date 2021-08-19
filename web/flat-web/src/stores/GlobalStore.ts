@@ -1,6 +1,7 @@
 import { Region } from "flat-components";
 import { autoPersistStore } from "./utils";
 import { LoginProcessResult } from "../apiMiddleware/flatServer";
+import type { UID } from "agora-rtc-sdk-ng";
 
 // clear storage if not match
 const LS_VERSION = 1;
@@ -22,6 +23,10 @@ export class GlobalStore {
     public region: Region | null = null;
     public rtcToken: string | null = null;
     public rtcUID: number | null = null;
+    public rtcShareScreen: {
+        uid: number;
+        token: string;
+    } | null = null;
     public rtmToken: string | null = null;
     public lastLoginCheck: number | null = null;
 
@@ -50,6 +55,7 @@ export class GlobalStore {
                 | "rtcToken"
                 | "rtmToken"
                 | "rtcUID"
+                | "rtcShareScreen"
                 | "region"
             >
         >,
@@ -60,6 +66,7 @@ export class GlobalStore {
             "rtcToken",
             "rtmToken",
             "rtcUID",
+            "rtcShareScreen",
             "region",
         ] as const;
         for (const key of keys) {
@@ -76,6 +83,10 @@ export class GlobalStore {
 
     public hideRecordHintTips = (): void => {
         this.isShowRecordHintTips = false;
+    };
+
+    public isShareScreenUID = (uid: UID): boolean => {
+        return this.rtcShareScreen?.uid === Number(uid);
     };
 }
 
