@@ -31,7 +31,7 @@ class CoursewarePreloader {
     public static parsePPTURLInfo(pptSrc: string): PPTInfo {
         const pptFiles = /^(\S+)\/(static|dynamic)Convert\/([0-9a-f]{32})\//.exec(pptSrc);
         if (!pptFiles) {
-            throw new Error(`parse ppt url failed.`);
+            throw new Error("parse ppt url failed.");
         }
         const [, baseURL, pptType, taskUUID] = pptFiles;
 
@@ -64,7 +64,7 @@ class CoursewarePreloader {
                 "Content-Type": contentType(resourceUrl),
             },
         });
-        flatCache.put(resourceUrl, response);
+        void flatCache.put(resourceUrl, response);
     }
 }
 

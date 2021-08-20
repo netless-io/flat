@@ -61,7 +61,9 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     );
 
     useEffect(() => {
-        if (!isLogin) return;
+        if (!isLogin) {
+            return;
+        }
 
         void refreshRooms();
 

@@ -1,14 +1,14 @@
 import { app } from "electron";
 import closeAPP from "../utils/CloseAPP";
 
-export default () => {
-    const windowAllClosed = () => {
+export default (): void => {
+    const windowAllClosed = (): void => {
         app.on("window-all-closed", () => {
             closeAPP();
         });
     };
 
-    const appQuit = () => {
+    const appQuit = (): void => {
         app.on("quit", () => {
             closeAPP();
         });

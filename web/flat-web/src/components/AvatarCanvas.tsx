@@ -28,11 +28,11 @@ export const AvatarCanvas = observer<AvatarCanvasProps>(function AvatarCanvas({
     const [rtcAvatar] = useState(() => new RtcAvatar({ rtc: rtcRoom, userUUID, avatarUser }));
 
     useEffect(() => {
-        rtcAvatar.setCamera(avatarUser.camera);
+        void rtcAvatar.setCamera(avatarUser.camera);
     }, [avatarUser.camera, rtcAvatar]);
 
     useEffect(() => {
-        rtcAvatar.setMic(avatarUser.mic);
+        void rtcAvatar.setMic(avatarUser.mic);
     }, [avatarUser.mic, rtcAvatar]);
 
     useEffect(() => {

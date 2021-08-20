@@ -23,9 +23,9 @@ export class RTCShareScreen {
 
             this.localScreenTrack = await AgoraRTC.createScreenVideoTrack({}, "disable");
 
-            this.localScreenTrack.once("track-ended", () => {
+            this.localScreenTrack.once("track-ended", async () => {
                 // user click browser comes with cancel button
-                this.close();
+                await this.close();
             });
 
             this.shareScreenClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
@@ -60,7 +60,7 @@ export class RTCShareScreen {
     public async close(): Promise<void> {
         try {
             if (this.localScreenTrack) {
-                await this.localScreenTrack.close();
+                this.localScreenTrack.close();
 
                 if (this.shareScreenClient) {
                     await this.shareScreenClient.unpublish(this.localScreenTrack);

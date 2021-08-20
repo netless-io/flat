@@ -16,7 +16,7 @@ export const GeneralSettingPage = (): React.ReactElement => {
 
     function changeLanguage(event: CheckboxChangeEvent): void {
         const language: SelectLanguage = event.target.value;
-        i18n.changeLanguage(language === SelectLanguage.Chinese ? "zh-CN" : "en");
+        void i18n.changeLanguage(language === SelectLanguage.Chinese ? "zh-CN" : "en");
     }
 
     return (

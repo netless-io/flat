@@ -11,6 +11,7 @@ export interface CloudStoragePageProps {}
 export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudStoragePage() {
     const { i18n } = useTranslation();
     const [store] = useState(
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => new CloudStorageStore({ compact: false, insertCourseware: () => {}, i18n }),
     );
     useEffect(() => store.initialize(), [store]);

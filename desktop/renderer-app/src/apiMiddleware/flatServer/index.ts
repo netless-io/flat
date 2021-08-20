@@ -13,11 +13,11 @@ export interface CreateOrdinaryRoomPayload {
     beginTime: number;
     /** 如果不传，则默认是 beginTime 后的一个小时 */
     endTime?: number;
-    /**课件 */
+    /** 课件 */
     docs?: Array<{
-        /**文档类型 */
+        /** 文档类型 */
         type: DocsType;
-        /**文档的 uuid */
+        /** 文档的 uuid */
         uuid: string;
     }>;
 }
@@ -47,7 +47,7 @@ export interface CreatePeriodicRoomPayload {
     /** 重复 */
     periodic:
         | {
-              /**重复周期, 每周的周几 */
+              /** 重复周期, 每周的周几 */
               weeks: Week[];
               /** 重复几次就结束, -1..50 */
               rate: number;
@@ -57,11 +57,11 @@ export interface CreatePeriodicRoomPayload {
               /** UTC时间戳, 到这个点就结束 */
               endTime: number;
           };
-    /**课件 */
+    /** 课件 */
     docs?: Array<{
-        /**文档类型 */
+        /** 文档类型 */
         type: DocsType;
-        /**文档的 uuid */
+        /** 文档的 uuid */
         uuid: string;
     }>;
 }
@@ -430,9 +430,9 @@ export interface UpdateOrdinaryRoomPayload {
     title: string;
     type: RoomType;
     docs?: Array<{
-        /**文档类型 */
+        /** 文档类型 */
         type: DocsType;
-        /**文档的 uuid */
+        /** 文档的 uuid */
         uuid: string;
     }>;
 }
@@ -454,7 +454,7 @@ export interface UpdatePeriodicRoomPayload {
     /** 重复 */
     periodic:
         | {
-              /**重复周期, 每周的周几 */
+              /** 重复周期, 每周的周几 */
               weeks: Week[];
               /** 重复几次就结束, -1..50 */
               rate: number;
@@ -465,9 +465,9 @@ export interface UpdatePeriodicRoomPayload {
               endTime: number;
           };
     docs?: Array<{
-        /**文档类型 */
+        /** 文档类型 */
         type: DocsType;
-        /**文档的 uuid */
+        /** 文档的 uuid */
         uuid: string;
     }>;
 }

@@ -45,7 +45,7 @@ export class WindowManager extends RxSubject {
     private createWindow(
         windowOptions: WindowOptions,
         browserWindowOptions: BrowserWindowConstructorOptions,
-    ) {
+    ): CustomSingleWindow {
         const options = {
             ...defaultWindowOptions,
             ...windowOptions,

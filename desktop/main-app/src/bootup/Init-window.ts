@@ -1,7 +1,7 @@
 import { app } from "electron";
 import { windowManager } from "../utils/WindowManager";
 
-export default () => {
+export default (): void => {
     app.allowRendererProcessReuse = false;
 
     if (process.env.NODE_ENV === "development") {

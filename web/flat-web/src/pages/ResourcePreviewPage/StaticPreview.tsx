@@ -13,12 +13,12 @@ export interface StaticPreviewProps {
 }
 
 type ConvertedFileList =
-    | {
+    | Array<{
           width: number;
           height: number;
           conversionFileUrl: string;
           preview?: string | undefined;
-      }[]
+      }>
     | undefined;
 
 export const StaticPreview = observer<StaticPreviewProps>(function DocumentPreview({

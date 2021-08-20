@@ -120,7 +120,7 @@ export const appActionSync: ipc.AppActionSync = {
     },
 };
 
-export const injectionWindowIPCAction = (customWindow: CustomSingleWindow) => {
+export const injectionWindowIPCAction = (customWindow: CustomSingleWindow): void => {
     ipcMain.on(
         customWindow.options.name,
         (

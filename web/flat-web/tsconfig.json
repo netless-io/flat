@@ -1,15 +1,10 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true,
+    "target": "ESNext",
     "jsx": "react",
     "lib": ["DOM", "ESNext"],
     "module": "ESNext",
-    "target": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "flat-types": ["../../packages/flat-types/src"],
@@ -17,6 +12,5 @@
       "flat-components": ["../../packages/flat-components/src"]
     }
   },
-  "exclude": ["node_modules"],
   "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts"]
 }

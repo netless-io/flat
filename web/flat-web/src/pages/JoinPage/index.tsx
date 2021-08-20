@@ -41,7 +41,7 @@ export const JoinPage = observer(function JoinPage() {
             }
         }
 
-        checkLogin();
+        void checkLogin();
 
         window.location.href = `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`;
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -12,7 +12,7 @@ class UpdateService {
         UpdateService.setUpdateURL(prereleaseTag);
 
         return new Promise((resolve, reject) => {
-            const updateAvailable = (info: UpdateCheckResult["updateInfo"]) => {
+            const updateAvailable = (info: UpdateCheckResult["updateInfo"]): void => {
                 removeListeners();
 
                 return resolve({
@@ -26,14 +26,14 @@ class UpdateService {
                 });
             };
 
-            const updateNotAvailable = () => {
+            const updateNotAvailable = (): void => {
                 removeListeners();
                 return resolve({
                     hasNewVersion: false,
                 });
             };
 
-            const error = (err: Error) => {
+            const error = (err: Error): void => {
                 removeListeners();
                 reject(err);
             };
@@ -42,7 +42,7 @@ class UpdateService {
             autoUpdater.once("update-not-available", updateNotAvailable);
             autoUpdater.once("error", error);
 
-            const removeListeners = () => {
+            const removeListeners = (): void => {
                 autoUpdater.removeListener("update-available", updateAvailable);
                 autoUpdater.removeListener("update-not-available", updateNotAvailable);
                 autoUpdater.removeListener("error", error);
@@ -66,7 +66,7 @@ class UpdateService {
 
         UpdateService.setUpdateURL(prereleaseTag);
 
-        const updateNotAvailable = () => {
+        const updateNotAvailable = (): void => {
             removeListeners();
         };
 
@@ -75,7 +75,7 @@ class UpdateService {
             transferred,
             percent,
             bytesPerSecond,
-        }: ProgressInfo) => {
+        }: ProgressInfo): void => {
             ipcEmitByMain("update-progress", {
                 status: true,
                 total,
@@ -85,12 +85,12 @@ class UpdateService {
             });
         };
 
-        const updateDownloaded = () => {
+        const updateDownloaded = (): void => {
             removeListeners();
             autoUpdater.quitAndInstall();
         };
 
-        const error = (err: Error) => {
+        const error = (err: Error): void => {
             removeListeners();
             console.error(err.message);
 
@@ -104,7 +104,7 @@ class UpdateService {
         autoUpdater.once("update-downloaded", updateDownloaded);
         autoUpdater.once("error", error);
 
-        const removeListeners = () => {
+        const removeListeners = (): void => {
             autoUpdater.removeListener("update-not-available", updateNotAvailable);
             autoUpdater.removeListener("download-progress", downloadProgress);
             autoUpdater.removeListener("update-downloaded", updateDownloaded);

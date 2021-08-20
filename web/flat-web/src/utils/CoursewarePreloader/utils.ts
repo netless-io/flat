@@ -3,8 +3,7 @@
 class CacheBuilder {
     private cache: Promise<Cache> | undefined;
 
-    // eslint-disable-next-line no-useless-constructor
-    constructor(private cacheName: string) {}
+    public constructor(private cacheName: string) {}
 
     public build = (): Promise<Cache> => {
         return (this.cache ||= caches.open(this.cacheName));

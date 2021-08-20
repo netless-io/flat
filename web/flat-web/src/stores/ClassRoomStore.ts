@@ -241,7 +241,7 @@ export class ClassRoomStore {
         }
     };
 
-    public leaveRTC = async (): Promise<void> => {
+    public leaveRTC = (): void => {
         if (!this.isCalling) {
             return;
         }
@@ -523,13 +523,13 @@ export class ClassRoomStore {
 
         promises.push(this.stopRecording());
 
-        promises.push(this.leaveRTC());
-
         promises.push(this.shareScreenStore.destroy());
 
         promises.push(this.rtc.destroy());
 
         this.whiteboardStore.destroy();
+
+        this.leaveRTC();
 
         this.offRTCEvents();
 
