@@ -1,6 +1,6 @@
 import { app } from "electron";
 
-const closeAPP = () => {
+const closeAPP = (): void => {
     app.exit(0);
 };
 

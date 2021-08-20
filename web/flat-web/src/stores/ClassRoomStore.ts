@@ -241,7 +241,7 @@ export class ClassRoomStore {
         }
     };
 
-    public leaveRTC = async (): Promise<void> => {
+    public leaveRTC = (): void => {
         if (!this.isCalling) {
             return;
         }

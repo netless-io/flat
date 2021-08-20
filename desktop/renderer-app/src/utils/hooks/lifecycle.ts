@@ -86,16 +86,24 @@ export function useAPI<P, R>(
 
     const fetch = useCallback(
         async (payload: P) => {
-            if (isUnMountRef.current) return;
+            if (isUnMountRef.current) {
+                return;
+            }
             setFirst(false);
             try {
                 setLoading(true);
                 const result = await sp(api(payload));
-                if (!isUnMountRef.current) setResult(result);
+                if (!isUnMountRef.current) {
+                    setResult(result);
+                }
             } catch {
-                if (!isUnMountRef.current) setError(true);
+                if (!isUnMountRef.current) {
+                    setError(true);
+                }
             } finally {
-                if (!isUnMountRef.current) setLoading(false);
+                if (!isUnMountRef.current) {
+                    setLoading(false);
+                }
             }
         },
         // it's wrong for eslint to add `P` to deps

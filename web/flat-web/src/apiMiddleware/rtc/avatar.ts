@@ -40,14 +40,14 @@ export class RtcAvatar extends EventEmitter {
 
     private readonly isLocal: boolean;
 
-    constructor({ rtc, userUUID, avatarUser }: RtcAvatarParams) {
+    public constructor({ rtc, userUUID, avatarUser }: RtcAvatarParams) {
         super();
         this.rtc = rtc;
         this.userUUID = userUUID;
         this.avatarUser = avatarUser;
         this.isLocal = userUUID === avatarUser.userUUID;
         if (!this.isLocal) {
-            this.setupExistingTracks();
+            void this.setupExistingTracks();
             this.client.on("user-published", this.onUserPublished);
             this.client.on("user-unpublished", this.onUserUnpublished);
         }

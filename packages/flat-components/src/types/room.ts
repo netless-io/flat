@@ -23,7 +23,7 @@ export type RoomInfo = {
     nextPeriodicRoomEndTime?: number;
     /** 当前周期性房间下一共有多少节课 */
     count?: number;
-    /**课件 */
+    /** 课件 */
     docs?: RoomDoc[];
     /** 是否存在录制(只有历史记录才会有) */
     hasRecord?: boolean;
@@ -48,9 +48,9 @@ export enum DocsType {
 
 /** 课件 */
 export interface RoomDoc {
-    /**文档的 uuid */
+    /** 文档的 uuid */
     docUUID: string;
-    /**文档类型 */
+    /** 文档类型 */
     docType: DocsType;
     isPreload: boolean;
 }

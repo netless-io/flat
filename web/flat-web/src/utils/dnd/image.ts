@@ -60,7 +60,7 @@ export function getImageSize(file: File): Promise<Size> {
     return new Promise(resolve => {
         image.onload = () => {
             URL.revokeObjectURL(url);
-            let { width, height } = image;
+            const { width, height } = image;
             let scale = 1;
             if (width > maxWidth || height > maxHeight) {
                 scale = Math.min(maxWidth / width, maxHeight / height);

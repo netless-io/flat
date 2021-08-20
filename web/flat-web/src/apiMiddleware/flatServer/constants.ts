@@ -24,9 +24,9 @@ export enum DocsType {
 
 /** 课件 */
 export interface RoomDoc {
-    /**文档的 uuid */
+    /** 文档的 uuid */
     docUUID: string;
-    /**文档类型 */
+    /** 文档类型 */
     docType: DocsType;
     isPreload: boolean;
 }

@@ -4,7 +4,7 @@ import closeAPP from "../utils/CloseAPP";
 import { CustomSingleWindow, windowManager } from "../utils/WindowManager";
 import { constants } from "flat-types";
 
-export default async () => {
+export default async (): Promise<void> => {
     const protocol = new URLProtocolHandler({
         active: () => {
             // nothing...

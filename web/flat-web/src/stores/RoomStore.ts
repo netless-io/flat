@@ -53,7 +53,7 @@ export interface RoomItem {
     nextPeriodicRoomEndTime?: number;
     /** 当前周期性房间下一共有多少节课 */
     count?: number;
-    /**课件 */
+    /** 课件 */
     docs?: RoomDoc[];
     /** 是否存在录制(只有历史记录才会有) */
     hasRecord?: boolean;

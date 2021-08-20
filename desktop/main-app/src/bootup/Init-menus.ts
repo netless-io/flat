@@ -1,7 +1,7 @@
 import { app, Menu, MenuItemConstructorOptions } from "electron";
 import runtime from "../utils/Runtime";
 
-export default () => {
+export default (): void => {
     const appByMacMenu: IMenu = {
         label: app.name,
         submenu: [

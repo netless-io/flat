@@ -1,6 +1,6 @@
 import { session } from "electron";
 
-export default () => {
+export default (): void => {
     // fix electron bug
     // turn off annoying warnings
     // see: https://github.com/electron/electron/issues/13008#issuecomment-575909942

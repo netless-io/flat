@@ -67,7 +67,7 @@ export const WeChatLogin = observer(function WeChatLogin() {
             }
         };
 
-        loginJump();
+        void loginJump();
     }, [authData, globalStore, pushHistory, roomUUID]);
 
     return (
