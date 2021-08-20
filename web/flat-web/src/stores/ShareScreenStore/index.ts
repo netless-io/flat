@@ -12,7 +12,7 @@ export class ShareScreenStore {
     private element?: HTMLElement;
     private listenerOtherUserShareScreen?: ListenerOtherUserShareScreen;
 
-    public constructor(private readonly roomUUID: string) {
+    public constructor(roomUUID: string) {
         makeAutoObservable<
             this,
             "roomClient" | "element" | "rtcShareScreen" | "listenerOtherUserShareScreen"
@@ -38,6 +38,7 @@ export class ShareScreenStore {
             }),
             ({ roomClient, element }) => {
                 if (roomClient && element) {
+                    this.listenerOtherUserShareScreen?.destroy();
                     this.listenerOtherUserShareScreen = new ListenerOtherUserShareScreen(
                         roomClient,
                         element,
@@ -77,6 +78,12 @@ export class ShareScreenStore {
 
     public async destroy(): Promise<void> {
         this.listenerOtherUserShareScreen?.destroy();
+        this.listenerOtherUserShareScreen = undefined;
+
+        this.enableShareScreenStatus = false;
+        this.existOtherUserStream = false;
+        this.roomClient = undefined;
+        this.element = undefined;
 
         try {
             await this.close();
