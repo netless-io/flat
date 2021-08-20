@@ -34,6 +34,7 @@ import { WhiteboardStore } from "./WhiteboardStore";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { NetworkQuality } from "agora-rtc-sdk-ng";
+import { ShareScreenStore } from "./ShareScreenStore";
 
 export type { User } from "./UserStore";
 
@@ -87,11 +88,15 @@ export class ClassRoomStore {
 
     public readonly whiteboardStore: WhiteboardStore;
 
+    public readonly shareScreenStore: ShareScreenStore;
+
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
 
-    private tempChannelStatus =
-        observable.map<string, null | RTMEvents[RTMessageType.ChannelStatus]>();
+    private tempChannelStatus = observable.map<
+        string,
+        null | RTMEvents[RTMessageType.ChannelStatus]
+    >();
 
     private readonly recordingConfig: RecordingConfig;
 
@@ -146,6 +151,8 @@ export class ClassRoomStore {
         this.whiteboardStore = new WhiteboardStore({
             isCreator: this.isCreator,
         });
+
+        this.shareScreenStore = new ShareScreenStore(this.roomUUID);
 
         autorun(reaction => {
             if (this.whiteboardStore.isKicked) {
@@ -221,12 +228,13 @@ export class ClassRoomStore {
         this.updateCalling(true);
 
         try {
-            await this.rtc.join({
+            const roomClient = await this.rtc.join({
                 roomUUID: this.roomUUID,
                 isCreator: this.isCreator,
                 rtcUID: globalStore.rtcUID,
                 channelType: this.rtcChannelType,
             });
+            this.shareScreenStore.updateRoomClient(roomClient);
         } catch (e) {
             console.error(e);
             this.updateCalling(false);
@@ -517,10 +525,13 @@ export class ClassRoomStore {
 
         promises.push(this.leaveRTC());
 
+        promises.push(this.shareScreenStore.destroy());
+
+        promises.push(this.rtc.destroy());
+
         this.whiteboardStore.destroy();
 
         this.offRTCEvents();
-        this.rtc.destroy();
 
         window.clearTimeout(this._collectChannelStatusTimeout);
 

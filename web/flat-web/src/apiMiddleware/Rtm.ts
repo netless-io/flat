@@ -475,5 +475,3 @@ export class Rtm extends EventEmitter<keyof RTMEvents> {
         return response.json();
     }
 }
-
-export default Rtm;

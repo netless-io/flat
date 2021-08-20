@@ -130,6 +130,10 @@ export interface JoinRoomResult {
     whiteboardRoomUUID: string; // 白板的 room uuid
     rtcUID: number; // rtc 的 uid
     rtcToken: string; // rtc token
+    rtcShareScreen: {
+        uid: number;
+        token: string;
+    };
     rtmToken: string; // rtm token
 }
 

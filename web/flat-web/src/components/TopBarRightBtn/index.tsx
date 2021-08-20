@@ -6,6 +6,8 @@ import followActiveSVG from "./icons/follow-active.svg";
 import followSVG from "./icons/follow.svg";
 import hideSideActiveSVG from "./icons/hide-side-active.svg";
 import hideSideSVG from "./icons/hide-side.svg";
+import shareScreenSVG from "./icons/share-screen.svg";
+import shareScreenActiveSVG from "./icons/share-screen-active.svg";
 
 const Icons = {
     exit: exitSVG,
@@ -13,6 +15,8 @@ const Icons = {
     follow: followSVG,
     "hide-side-active": hideSideActiveSVG,
     "hide-side": hideSideSVG,
+    "share-screen": shareScreenSVG,
+    "share-screen-active": shareScreenActiveSVG,
 };
 
 export interface TopBarRightBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
