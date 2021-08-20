@@ -78,7 +78,7 @@
   "scripts": {
     "postinstall": "esbuild-dev ./scripts/post-install.ts",
     "start": "vite --open",
-    "build": "vite build",
+    "build": "NODE_OPTIONS=\"--max-old-space-size=6144\" vite build",
     "serve": "vite preview",
     "lint": "lint-staged"
   },
