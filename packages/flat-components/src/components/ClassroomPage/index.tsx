@@ -8,3 +8,4 @@ export * from "./TopBar";
 export * from "./BigVideoAvatar";
 export * from "./SmallVideoAvatar";
 export * from "./OneToOneVideoAvatar";
+export * from "./ScenesController";
