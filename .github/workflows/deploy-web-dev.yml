@@ -8,9 +8,6 @@ on:
       - "packages/flat-components/src/**"
       - "packages/flat-i18n/locales/**"
       - "packages/flat-types/src/**"
-  pull_request:
-    branches:
-      - main
 
 jobs:
   deploy-flat-web-dev:
@@ -30,11 +27,11 @@ jobs:
       - name: Build flat web development
         run: yarn workspace flat-web build -m development
 
-#      - name: Log in to Docker Hub
-#        uses: docker/login-action@v1
-#        with:
-#          username: ${{ secrets.DOCKER_USERNAME }}
-#          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Reset dockerignore
         run: |
@@ -47,8 +44,6 @@ jobs:
           COMMIT_SHA_TAG: development-${{ github.sha }}
           LATEST_DEV_TAG: dev-latest
         run: |
-          cat .dockerignore
-          ls -a web/flat-web/deploy/nginx
           docker build . -f web/flat-web/deploy/Dockerfile -t agoraflat/flat-web:$COMMIT_SHA_TAG -t agoraflat/flat-web:$LATEST_DEV_TAG
-#          docker push agoraflat/flat-web:$COMMIT_SHA_TAG
-#          docker push agoraflat/flat-web:$LATEST_DEV_TAG
+          docker push agoraflat/flat-web:$COMMIT_SHA_TAG
+          docker push agoraflat/flat-web:$LATEST_DEV_TAG
