@@ -39,8 +39,8 @@ jobs:
       - name: Reset dockerignore
         run: |
           echo "*" > .dockerignore
-          echo "\!web/flat-web/dist" >> .dockerignore
-          echo "\!web/flat-web/deploy/nginx" >> .dockerignore
+          echo "!web/flat-web/dist" >> .dockerignore
+          echo "!web/flat-web/deploy/nginx" >> .dockerignore
 
       - name: Build and push images
         env:
