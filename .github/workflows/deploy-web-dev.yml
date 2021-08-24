@@ -47,10 +47,7 @@ jobs:
           COMMIT_SHA_TAG: development-${{ github.sha }}
           LATEST_DEV_TAG: dev-latest
         run: |
-          ls -a
-          ls -a web
-          ls -a web/flat-web
-          ls -a web/flat-web/deploy
+          cat .dockerignore
           ls -a web/flat-web/deploy/nginx
           docker build . -f web/flat-web/deploy/Dockerfile -t agoraflat/flat-web:$COMMIT_SHA_TAG -t agoraflat/flat-web:$LATEST_DEV_TAG
 #          docker push agoraflat/flat-web:$COMMIT_SHA_TAG
