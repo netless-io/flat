@@ -53,5 +53,5 @@ jobs:
           ls -a web/flat-web/deploy
           ls -a web/flat-web/deploy/nginx
           docker build . -f web/flat-web/deploy/Dockerfile -t agoraflat/flat-web:$COMMIT_SHA_TAG -t agoraflat/flat-web:$LATEST_DEV_TAG
-          docker push agoraflat/flat-web:$COMMIT_SHA_TAG
-          docker push agoraflat/flat-web:$LATEST_DEV_TAG
+#          docker push agoraflat/flat-web:$COMMIT_SHA_TAG
+#          docker push agoraflat/flat-web:$LATEST_DEV_TAG
