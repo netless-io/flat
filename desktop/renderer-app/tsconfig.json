@@ -11,5 +11,6 @@
       "flat-components": ["../../packages/flat-components/src"]
     }
   },
+  "exclude": ["node_modules", "dist", "public"],
   "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts"]
 }
