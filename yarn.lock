@@ -4020,10 +4020,10 @@ aggregate-error@^3.0.0:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
 
-agora-electron-sdk@3.4.2-rc.1-build.609:
-  version "3.4.2-rc.1-build.609"
-  resolved "https://registry.yarnpkg.com/agora-electron-sdk/-/agora-electron-sdk-3.4.2-rc.1-build.609.tgz#6cd8fa1d903e2a7cc7761edb4a4c62734b94144e"
-  integrity sha512-MCt5DBVpo56XDYUBmPSLMDFtQcVWfBCxMACsRhE4FLiyRM1Vu8acJ45EtGaA2m0MAC3pgbugn6/YKXoacrYm/w==
+agora-electron-sdk@^3.4.7-rc.1-build.817:
+  version "3.4.7-rc.1-build.817"
+  resolved "https://registry.yarnpkg.com/agora-electron-sdk/-/agora-electron-sdk-3.4.7-rc.1-build.817.tgz#06095d019d08291e2d3de50ca268eceaa74449f1"
+  integrity sha512-xIn6OJp3mi3wZOCpyfMztmEDO1Baj0ipWxPLhdUdBFvoFIGSZrzj4G77L+7ezCWIUh/FpVvCR8Lc4Wsfi/6ikw==
   dependencies:
     download "^7.1.0"
     extract-zip "^1.6.7"
