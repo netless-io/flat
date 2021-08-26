@@ -48,6 +48,7 @@ module.exports = {
                 "husky",
                 "lint",
                 "project",
+                "vscode",
             ],
         ],
         "scope-case": [2, "always", ["lower-case", "kebab-case"]],

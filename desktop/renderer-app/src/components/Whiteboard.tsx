@@ -1,16 +1,15 @@
-import PageController from "@netless/page-controller";
-import PreviewController from "@netless/preview-controller";
+import "@netless/window-manager/dist/style.css";
+import "./Whiteboard.less";
+
 import RedoUndo from "@netless/redo-undo";
 import ToolBox from "@netless/tool-box";
-import ZoomController from "@netless/zoom-controller";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
-import { RoomPhase } from "white-web-sdk";
-import pagesSVG from "../assets/image/pages.svg";
+import { WindowManager } from "@netless/window-manager";
 import { WhiteboardStore } from "../stores/WhiteboardStore";
 import { isSupportedImageType, onDropImage } from "../utils/dnd/image";
-import "./Whiteboard.less";
+import { ScenesController } from "flat-components";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -20,14 +19,22 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
     const { room } = whiteboardStore;
 
     const bindWhiteboard = useCallback(
-        (ref: HTMLDivElement) => {
-            if (room) {
-                room.bindHtmlElement(ref);
-                if (room.phase === RoomPhase.Connected) {
-                    room.scalePptToFit();
-                }
+        async (ref: HTMLDivElement | null) => {
+            if (ref && room) {
+                await WindowManager.mount({
+                    room,
+                    container: ref,
+                    collectorStyles: {
+                        position: "absolute",
+                        right: "10px",
+                        bottom: "60px",
+                    },
+                });
+                whiteboardStore.onMainViewModeChange();
+                whiteboardStore.onWindowManagerBoxStateChange();
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [room],
     );
 
@@ -66,37 +73,31 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                 onDragOver={onDragOver}
                 onDrop={onDrop}
             >
-                <div className="zoom-controller-box">
-                    <ZoomController room={room} />
-                </div>
                 <div className="whiteboard-writable-area">
                     <div className="tool-box-out">
                         <ToolBox room={room} />
                     </div>
-                    <div className="redo-undo-box">
+                    <div
+                        className={classNames("redo-undo-box", {
+                            "is-disabled": whiteboardStore.isWindowMaximization,
+                        })}
+                    >
                         <RedoUndo room={room} />
                     </div>
-                    <div className="page-controller-box">
-                        <div className="page-controller-mid-box">
-                            <PageController room={room} />
-                            <div
-                                className="page-preview-cell"
-                                onClick={whiteboardStore.showPreviewPanel}
-                            >
-                                <img src={pagesSVG} alt={"pages"} />
-                            </div>
-                        </div>
+                    <div
+                        className={classNames("page-controller-box", {
+                            "is-disabled": whiteboardStore.isWindowMaximization,
+                        })}
+                    >
+                        <ScenesController
+                            addScene={whiteboardStore.addMainViewScene}
+                            preScene={whiteboardStore.preMainViewScene}
+                            nextScene={whiteboardStore.nextMainViewScene}
+                            currentSceneIndex={whiteboardStore.currentSceneIndex}
+                            scenesCount={whiteboardStore.scenesCount}
+                            disabled={whiteboardStore.isFocusWindow}
+                        />
                     </div>
-                    <PreviewController
-                        handlePreviewState={whiteboardStore.setPreviewPanel}
-                        isVisible={whiteboardStore.isShowPreviewPanel}
-                        room={room}
-                    />
-                    {/* <DocsCenter
-                        handleDocCenterState={whiteboardStore.setFileOpen}
-                        isFileOpen={whiteboardStore.isFileOpen}
-                        room={room}
-                    /> */}
                 </div>
                 <div ref={bindWhiteboard} className="whiteboard-box" />
             </div>
