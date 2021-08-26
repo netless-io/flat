@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { action, autorun, makeAutoObservable, observable, runInAction } from "mobx";
+import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import { RtcRoom as RTCAPI, RtcChannelType } from "../apiMiddleware/rtc/room";
@@ -162,6 +162,16 @@ export class ClassRoomStore {
                 });
             }
         });
+
+        reaction(
+            () => this.whiteboardStore.isWritable,
+            () => {
+                this.shareScreenStore.updateIsWritable(this.whiteboardStore.isWritable);
+            },
+            {
+                fireImmediately: true,
+            },
+        );
 
         this.rtm.once(RTMessageType.REMOTE_LOGIN, () => {
             console.log("REMOTE_LOGIN");
