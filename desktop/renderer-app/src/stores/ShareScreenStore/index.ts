@@ -19,6 +19,8 @@ export class ShareScreenStore {
         makeAutoObservable<this, "element">(this, {
             element: observable.ref,
             screenInfo: observable.ref,
+            rtcShareScreen: observable.ref,
+            listenerOtherUserShareScreen: observable.ref,
         });
 
         const roomClient = window.rtcEngine;
