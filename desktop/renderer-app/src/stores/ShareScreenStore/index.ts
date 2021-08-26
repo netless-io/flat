@@ -112,6 +112,11 @@ export class ShareScreenStore {
         await this.rtcShareScreen?.close();
     }
 
+    public async destroy(): Promise<void> {
+        this.listenerOtherUserShareScreen.destroy();
+        await this.rtcShareScreen?.destroy();
+    }
+
     public enable(): void {
         // same as updateScreenInfo
         setTimeout(() => {

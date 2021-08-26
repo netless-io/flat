@@ -535,6 +535,8 @@ export class ClassRoomStore {
 
         promises.push(this.stopRecording());
 
+        promises.push(this.shareScreenStore.destroy());
+
         this.leaveRTC();
 
         this.whiteboardStore.destroy();
