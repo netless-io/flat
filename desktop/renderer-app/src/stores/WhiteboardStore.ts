@@ -1,5 +1,6 @@
 import "video.js/dist/video-js.css";
 
+import { BuiltinApps, WindowManager } from "@netless/window-manager";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import {
     createPlugins,
@@ -8,7 +9,9 @@ import {
     Room,
     RoomPhase,
     RoomState,
+    SceneDefinition,
     ViewMode,
+    ViewVisionMode,
     WhiteWebSdk,
 } from "white-web-sdk";
 import {
@@ -27,10 +30,15 @@ export class WhiteboardStore {
     public room: Room | null = null;
     public phase: RoomPhase = RoomPhase.Connecting;
     public viewMode: ViewMode | null = null;
+    public windowManager: WindowManager | null = null;
     public isWritable: boolean;
     public isShowPreviewPanel = false;
     public isFileOpen = false;
     public isKicked = false;
+    public isFocusWindow = false;
+    public isWindowMaximization = false;
+    public currentSceneIndex = 0;
+    public scenesCount = 0;
 
     /** is room Creator */
     public readonly isCreator: boolean;
@@ -71,6 +79,26 @@ export class WhiteboardStore {
         }
     };
 
+    public updateWindowManager = (windowManager: WindowManager): void => {
+        this.windowManager = windowManager;
+    };
+
+    public updateCurrentSceneIndex = (currentSceneIndex: number): void => {
+        this.currentSceneIndex = currentSceneIndex;
+    };
+
+    public updateScenesCount = (scenesCount: number): void => {
+        this.scenesCount = scenesCount;
+    };
+
+    public updateWindowMaximization = (isMaximization: boolean): void => {
+        this.isWindowMaximization = isMaximization;
+    };
+
+    public updateFocusWindowManager = (isFocus: boolean): void => {
+        this.isFocusWindow = isFocus;
+    };
+
     public setFileOpen = (open: boolean): void => {
         this.isFileOpen = open;
     };
@@ -87,9 +115,86 @@ export class WhiteboardStore {
         this.isShowPreviewPanel = show;
     };
 
+    public switchMainViewToWriter = async (): Promise<void> => {
+        if (this.windowManager && this.isFocusWindow) {
+            await this.windowManager.switchMainViewToWriter();
+        }
+    };
+
+    public addMainViewScene = (): void => {
+        if (this.room && this.windowManager) {
+            const currentScene = this.currentSceneIndex + 1;
+            const scenePath = this.room.state.sceneState.scenePath;
+            const pathName = this.scenesPathName(scenePath);
+
+            this.room.putScenes(pathName, [{}], currentScene);
+            this.windowManager.setMainViewSceneIndex(this.currentSceneIndex + 1);
+        }
+    };
+
+    public preMainViewScene = (): void => {
+        if (this.windowManager && this.currentSceneIndex > 0) {
+            this.windowManager.setMainViewSceneIndex(this.currentSceneIndex - 1);
+        }
+    };
+
+    public nextMainViewScene = (): void => {
+        if (this.windowManager && this.currentSceneIndex < this.scenesCount - 1) {
+            this.windowManager.setMainViewSceneIndex(this.currentSceneIndex + 1);
+        }
+    };
+
     private preloadPPTResource = debounce(async (pptSrc: string): Promise<void> => {
         await getCoursewarePreloader().preload(pptSrc);
     }, 2000);
+
+    public openDocsFileInWindowManager = async (
+        scenePath: string,
+        title: string,
+        scenes: SceneDefinition[],
+    ): Promise<void> => {
+        await this.windowManager?.addApp({
+            kind: BuiltinApps.DocsViewer,
+            options: {
+                scenePath,
+                title,
+                scenes: scenes,
+            },
+        });
+    };
+
+    public openMediaFileInWindowManager = async (
+        resourceSrc: string,
+        title: string,
+    ): Promise<void> => {
+        await this.windowManager?.addApp({
+            kind: BuiltinApps.MediaPlayer,
+            options: {
+                title,
+            },
+            attributes: {
+                src: resourceSrc,
+            },
+        });
+    };
+
+    public onMainViewModeChange = (): void => {
+        this.windowManager?.emitter.on("mainViewModeChange", mode => {
+            const isWindow = mode !== ViewVisionMode.Writable;
+            this.updateFocusWindowManager(isWindow);
+            if (!isWindow && this.room) {
+                this.updateCurrentSceneIndex(this.room.state.sceneState.index);
+                this.updateScenesCount(this.room.state.sceneState.scenes.length);
+            }
+        });
+    };
+
+    public onWindowManagerBoxStateChange = (): void => {
+        this.windowManager?.emitter.on("boxStateChange", mode => {
+            const isMaximization = mode === "maximized";
+            this.updateWindowMaximization(isMaximization);
+        });
+    };
 
     public async joinWhiteboardRoom(): Promise<void> {
         if (!globalStore.userUUID) {
@@ -152,6 +257,8 @@ export class WhiteboardStore {
                     changeToArrow: "a",
                     changeToHand: "h",
                 },
+                useMultiViews: true,
+                invisiblePlugins: [WindowManager],
             },
             {
                 onPhaseChanged: phase => {
@@ -174,6 +281,14 @@ export class WhiteboardStore {
                         }
                     } catch (err) {
                         console.log(err);
+                    }
+
+                    if (
+                        this.room &&
+                        this.windowManager?.mainView.mode === ViewVisionMode.Writable
+                    ) {
+                        this.updateCurrentSceneIndex(this.room.state.sceneState.index);
+                        this.updateScenesCount(this.room.state.sceneState.scenes.length);
                     }
                 },
                 onDisconnectWithError: error => {
@@ -222,19 +337,39 @@ export class WhiteboardStore {
 
         this.updateRoom(room);
 
+        this.updateCurrentSceneIndex(room.state.sceneState.index);
+
+        this.updateScenesCount(room.state.sceneState.scenes.length);
+
+        if (this.room) {
+            const windowManager = this.room.getInvisiblePlugin(WindowManager.kind) as WindowManager;
+            this.updateWindowManager(windowManager);
+        }
+
         if (NODE_ENV === "development") {
             (window as any).room = room;
+            (window as any).manager = this.windowManager;
         }
     }
 
     public destroy(): void {
-        if (this.room) {
-            this.preloadPPTResource.cancel();
-            this.room.callbacks.off();
-        }
+        this.preloadPPTResource.cancel();
+        this.windowManager?.destroy();
+        this.room?.callbacks.off();
+
         if (NODE_ENV === "development") {
             (window as any).room = null;
+            (window as any).manager = null;
         }
         console.log(`Whiteboard unloaded: ${globalStore.whiteboardRoomUUID}`);
     }
+
+    private scenesPathName = (scenePath: string): string => {
+        const cells = scenePath.split("/");
+        const popCell = cells.pop();
+        if (popCell === "") {
+            cells.pop();
+        }
+        return cells.join("/");
+    };
 }
