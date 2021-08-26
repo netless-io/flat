@@ -164,7 +164,7 @@ export class ClassRoomStore {
             }
         });
 
-        autorun(() => {
+        runInAction(() => {
             this.shareScreenStore.updateIsWritable(this.whiteboardStore.isWritable);
         });
 
