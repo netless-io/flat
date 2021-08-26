@@ -16,7 +16,6 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
     shareScreenStore,
     handleOk,
 }) {
-    const [confirmLoading, setConfirmLoading] = useState(false);
     const { t } = useTranslation();
 
     useLayoutEffect(() => {
@@ -50,19 +49,7 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
                     <Button key="cancel" onClick={closeModal} className="footer-button">
                         {t("cancel")}
                     </Button>,
-                    <Button
-                        key="submit"
-                        type="primary"
-                        className="footer-button"
-                        disabled={!isSelected}
-                        onClick={() => {
-                            setConfirmLoading(true);
-                            handleOk();
-                        }}
-                        loading={confirmLoading}
-                    >
-                        {t("confirm")}
-                    </Button>,
+                    <ConfirmButton key={"confirm"} isSelected={isSelected} handleOk={handleOk} />,
                 ]}
             >
                 <div
@@ -91,4 +78,33 @@ export const ShareScreenPicker = observer<ShareScreenPickerProps>(function Share
     return shareScreenStore.showShareScreenPicker ? (
         <ShareScreenPickerModel shareScreenStore={shareScreenStore} handleOk={handleOk} />
     ) : null;
+});
+
+interface ConfirmButtonProps {
+    isSelected: boolean;
+    handleOk: () => void;
+}
+
+const ConfirmButton = observer<ConfirmButtonProps>(function ConfirmButton({
+    isSelected,
+    handleOk,
+}) {
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const { t } = useTranslation();
+
+    return (
+        <Button
+            key="submit"
+            type="primary"
+            className="footer-button"
+            disabled={!isSelected}
+            onClick={() => {
+                setConfirmLoading(true);
+                handleOk();
+            }}
+            loading={confirmLoading}
+        >
+            {t("confirm")}
+        </Button>
+    );
 });

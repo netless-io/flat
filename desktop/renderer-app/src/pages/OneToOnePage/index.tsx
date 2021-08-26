@@ -153,7 +153,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                         shareScreenStore={shareScreenStore}
                         handleOk={() => {
                             shareScreenStore.enable();
-                            shareScreenStore.updateShowShareScreenPicker(false);
                         }}
                     />
                     <Whiteboard whiteboardStore={whiteboardStore} />

@@ -195,7 +195,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                         shareScreenStore={shareScreenStore}
                         handleOk={() => {
                             shareScreenStore.enable();
-                            shareScreenStore.updateShowShareScreenPicker(false);
                         }}
                     />
                     <Whiteboard whiteboardStore={whiteboardStore} />

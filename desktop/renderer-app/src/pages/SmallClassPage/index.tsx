@@ -175,7 +175,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         shareScreenStore={shareScreenStore}
                         handleOk={() => {
                             shareScreenStore.enable();
-                            shareScreenStore.updateShowShareScreenPicker(false);
                         }}
                     />
                     <Whiteboard whiteboardStore={whiteboardStore} />

@@ -113,10 +113,13 @@ export class ShareScreenStore {
     }
 
     public enable(): void {
-        if (!this.rtcShareScreen || this.isDisplayScreen === null || this.screenID === null) {
-            return;
-        }
+        // same as updateScreenInfo
+        setTimeout(() => {
+            if (this.rtcShareScreen && this.isDisplayScreen !== null && this.screenID !== null) {
+                this.rtcShareScreen.enable(this.isDisplayScreen, this.screenID);
+            }
 
-        this.rtcShareScreen.enable(this.isDisplayScreen, this.screenID);
+            this.updateShowShareScreenPicker(false);
+        }, 500);
     }
 }
