@@ -34,6 +34,7 @@ module.exports = {
         "lastmile",
         "onleave",
         "leavechannel",
+        "videosource",
 
         // css / less
         "minlength",

@@ -44,6 +44,7 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { BigClassAvatar } from "./BigClassAvatar";
 import "./BigClassPage.less";
 import { runtime } from "../../utils/runtime";
+import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -89,6 +90,8 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = classRoomStore.whiteboardStore;
+    const shareScreenStore = classRoomStore.shareScreenStore;
+
     const globalStore = useContext(GlobalStoreContext);
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
@@ -169,6 +172,14 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         return <LoadingPage />;
     }
 
+    function handleShareScreen(): void {
+        if (shareScreenStore.enableShareScreenStatus) {
+            shareScreenStore.close().catch(console.error);
+        } else {
+            shareScreenStore.updateShowShareScreenPicker(true);
+        }
+    }
+
     return (
         <div className="realtime-box">
             <TopBar
@@ -178,7 +189,17 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 right={renderTopBarRight()}
             />
             <div className="realtime-content">
-                <Whiteboard whiteboardStore={whiteboardStore} />
+                <div className="container">
+                    <ShareScreen shareScreenStore={shareScreenStore} />
+                    <ShareScreenPicker
+                        shareScreenStore={shareScreenStore}
+                        handleOk={() => {
+                            shareScreenStore.enable();
+                            shareScreenStore.updateShowShareScreenPicker(false);
+                        }}
+                    />
+                    <Whiteboard whiteboardStore={whiteboardStore} />
+                </div>
                 {renderRealtimePanel()}
             </div>
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
@@ -274,6 +295,19 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                             }
                         />
                     )}
+
+                {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
+                    <TopBarRightBtn
+                        title="Share Screen"
+                        icon={
+                            shareScreenStore.enableShareScreenStatus
+                                ? "share-screen-active"
+                                : "share-screen"
+                        }
+                        onClick={handleShareScreen}
+                    />
+                )}
+
                 {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"

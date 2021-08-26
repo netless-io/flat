@@ -35,6 +35,7 @@ import { errorTips } from "../components/Tips/ErrorTips";
 import { WhiteboardStore } from "./WhiteboardStore";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
+import { ShareScreenStore } from "./ShareScreenStore";
 
 export type { User } from "./UserStore";
 
@@ -87,6 +88,8 @@ export class ClassRoomStore {
     public readonly cloudRecording: CloudRecording;
 
     public readonly whiteboardStore: WhiteboardStore;
+
+    public readonly shareScreenStore: ShareScreenStore;
 
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
@@ -150,6 +153,8 @@ export class ClassRoomStore {
             isCreator: this.isCreator,
         });
 
+        this.shareScreenStore = new ShareScreenStore(this.roomUUID);
+
         autorun(reaction => {
             if (this.whiteboardStore.isKicked) {
                 reaction.dispose();
@@ -157,6 +162,10 @@ export class ClassRoomStore {
                     this.roomStatusOverride = RoomStatus.Stopped;
                 });
             }
+        });
+
+        autorun(() => {
+            this.shareScreenStore.updateIsWritable(this.whiteboardStore.isWritable);
         });
 
         this.rtm.once(RTMessageType.REMOTE_LOGIN, () => {

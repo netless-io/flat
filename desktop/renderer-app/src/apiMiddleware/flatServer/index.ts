@@ -131,6 +131,10 @@ export interface JoinRoomResult {
     rtcUID: number; // rtc 的 uid
     rtcToken: string; // rtc token
     rtmToken: string; // rtm token
+    rtcShareScreen: {
+        uid: number;
+        token: string;
+    };
 }
 
 export function joinRoom(uuid: string): Promise<JoinRoomResult> {

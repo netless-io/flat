@@ -22,6 +22,10 @@ export class GlobalStore {
     public whiteboardRoomToken: string | null = null;
     public rtcToken: string | null = null;
     public rtcUID: number | null = null;
+    public rtcShareScreen: {
+        uid: number;
+        token: string;
+    } | null = null;
     public rtmToken: string | null = null;
     public region: Region | null = null;
 
@@ -50,6 +54,7 @@ export class GlobalStore {
                 | "rtcToken"
                 | "rtmToken"
                 | "rtcUID"
+                | "rtcShareScreen"
                 | "region"
             >
         >,
@@ -60,6 +65,7 @@ export class GlobalStore {
             "rtcToken",
             "rtmToken",
             "rtcUID",
+            "rtcShareScreen",
             "region",
         ] as const;
         for (const key of keys) {
@@ -81,6 +87,10 @@ export class GlobalStore {
 
     public hideRecordHintTips = (): void => {
         this.isShowRecordHintTips = false;
+    };
+
+    public isShareScreenUID = (uid: number): boolean => {
+        return this.rtcShareScreen?.uid === uid;
     };
 }
 
