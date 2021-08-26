@@ -352,6 +352,7 @@
   "set-camera-error": "Failed to turn on camera",
   "set-mic-error": "Failed to turn on microphone",
   "share-screen": {
-    "browser-not-permission": "Please grant your browser access to screen recording"
+    "browser-not-permission": "Please grant your browser access to screen recording",
+    "choose-share-content": "Choose what to share"
   }
 }

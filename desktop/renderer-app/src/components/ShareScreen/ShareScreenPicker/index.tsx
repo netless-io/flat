@@ -5,6 +5,7 @@ import { Button, Modal, Spin } from "antd";
 import { ShareScreenStore } from "../../../stores/ShareScreenStore";
 import { ScreenList } from "./ScreenList";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 
 interface ShareScreenPickerProps {
     shareScreenStore: ShareScreenStore;
@@ -16,6 +17,7 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
     handleOk,
 }) {
     const [confirmLoading, setConfirmLoading] = useState(false);
+    const { t } = useTranslation();
 
     useLayoutEffect(() => {
         shareScreenStore.resetScreenInfo();
@@ -35,7 +37,7 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
     return (
         <div>
             <Modal
-                title="选择共享内容"
+                title={t("share-screen.choose-share-content")}
                 onCancel={closeModal}
                 visible={true}
                 bodyStyle={{
@@ -46,7 +48,7 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
                 width="784px"
                 footer={[
                     <Button key="cancel" onClick={closeModal} className="footer-button">
-                        取消
+                        {t("cancel")}
                     </Button>,
                     <Button
                         key="submit"
@@ -59,7 +61,7 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
                         }}
                         loading={confirmLoading}
                     >
-                        确认
+                        {t("confirm")}
                     </Button>,
                 ]}
             >
