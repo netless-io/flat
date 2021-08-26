@@ -17,6 +17,10 @@ export class ListenerOtherUserShareScreen {
     }
 
     public render(element: HTMLElement): void {
+        // this is a bug in agora sdk, when the `desktop` screen sharing is done,
+        // and then the `web` side does the screen sharing,
+        // the `desktop` will have a black screen.
+        // this is because the sdk has `mute` the remote screen sharing stream
         this.roomClient.muteRemoteVideoStream(this.shareScreenUID, false);
         this.roomClient.setupRemoteVideo(this.shareScreenUID, element, undefined);
         this.roomClient.setupViewContentMode(this.shareScreenUID, 1, undefined);
