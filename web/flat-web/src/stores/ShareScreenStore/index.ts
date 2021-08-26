@@ -1,4 +1,4 @@
-import { makeAutoObservable, observable, reaction } from "mobx";
+import { autorun, makeAutoObservable, observable, reaction } from "mobx";
 import { RTCShareScreen } from "../../apiMiddleware/rtc/share-screen";
 import { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import { ListenerOtherUserShareScreen } from "./ListenerOtherUserShareScreen";
@@ -6,6 +6,7 @@ import { ListenerOtherUserShareScreen } from "./ListenerOtherUserShareScreen";
 export class ShareScreenStore {
     public enableShareScreenStatus = false;
     public existOtherUserStream = false;
+    public isWritable = false;
 
     private rtcShareScreen: RTCShareScreen;
     private roomClient?: IAgoraRTCClient;
@@ -50,6 +51,13 @@ export class ShareScreenStore {
                 }
             },
         );
+
+        autorun(() => {
+            // when permission is recalled, close share screen
+            if (!this.isWritable && this.enableShareScreenStatus) {
+                this.close().catch(console.error);
+            }
+        });
     }
 
     public updateRoomClient(roomClient: IAgoraRTCClient): void {
@@ -58,6 +66,10 @@ export class ShareScreenStore {
 
     public updateElement(element: HTMLElement): void {
         this.element = element;
+    }
+
+    public updateIsWritable(isWritable: boolean): void {
+        this.isWritable = isWritable;
     }
 
     public async toggle(): Promise<void> {
