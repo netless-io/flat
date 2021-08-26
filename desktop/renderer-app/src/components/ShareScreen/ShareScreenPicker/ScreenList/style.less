@@ -1,0 +1,43 @@
+.screen-list {
+    display: flex;
+    flex-wrap: wrap;
+
+    .screen-item {
+        width: 240px;
+        height: 192px;
+        margin-right: 16px;
+
+        &:nth-child(3n + 3) {
+            margin-right: 0;
+        }
+
+        .screen-image-box {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid #DBE1EA;
+            cursor: pointer;
+
+            &.active {
+                border: 2px solid #3381FF;
+                padding: 11px 19px;
+            }
+
+            & > img {
+                width: 200px;
+                height: 125px;
+            }
+        }
+
+        span {
+            display: block;
+            margin-top: 5px;
+            padding: 0 4px;
+            font-size: 14px;
+            text-align: center;
+            color: #7A7B7C;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+}

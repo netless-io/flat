@@ -44,6 +44,7 @@ import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatSe
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 import { useTranslation } from "react-i18next";
+import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -71,6 +72,8 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
     const whiteboardStore = classRoomStore.whiteboardStore;
+    const shareScreenStore = classRoomStore.shareScreenStore;
+
     const globalStore = useContext(GlobalStoreContext);
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
@@ -127,6 +130,14 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         return <LoadingPage />;
     }
 
+    function handleShareScreen(): void {
+        if (shareScreenStore.enableShareScreenStatus) {
+            shareScreenStore.close().catch(console.error);
+        } else {
+            shareScreenStore.updateShowShareScreenPicker(true);
+        }
+    }
+
     return (
         <div className="one-to-one-realtime-box">
             <TopBar
@@ -136,7 +147,16 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 right={renderTopBarRight()}
             />
             <div className="one-to-one-realtime-content">
-                <Whiteboard whiteboardStore={whiteboardStore} />
+                <div className="container">
+                    <ShareScreen shareScreenStore={shareScreenStore} />
+                    <ShareScreenPicker
+                        shareScreenStore={shareScreenStore}
+                        handleOk={() => {
+                            shareScreenStore.enable();
+                        }}
+                    />
+                    <Whiteboard whiteboardStore={whiteboardStore} />
+                </div>
                 {renderRealtimePanel()}
             </div>
             <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
@@ -232,6 +252,19 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                             }
                         />
                     )}
+
+                {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
+                    <TopBarRightBtn
+                        title="Share Screen"
+                        icon={
+                            shareScreenStore.enableShareScreenStatus
+                                ? "share-screen-active"
+                                : "share-screen"
+                        }
+                        onClick={handleShareScreen}
+                    />
+                )}
+
                 {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"

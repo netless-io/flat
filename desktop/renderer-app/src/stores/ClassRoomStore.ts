@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { action, autorun, makeAutoObservable, observable, runInAction } from "mobx";
+import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import { Rtc as RTCAPI, RtcChannelType } from "../apiMiddleware/Rtc";
@@ -35,6 +35,7 @@ import { errorTips } from "../components/Tips/ErrorTips";
 import { WhiteboardStore } from "./WhiteboardStore";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
+import { ShareScreenStore } from "./ShareScreenStore";
 
 export type { User } from "./UserStore";
 
@@ -87,6 +88,8 @@ export class ClassRoomStore {
     public readonly cloudRecording: CloudRecording;
 
     public readonly whiteboardStore: WhiteboardStore;
+
+    public readonly shareScreenStore: ShareScreenStore;
 
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
@@ -150,6 +153,8 @@ export class ClassRoomStore {
             isCreator: this.isCreator,
         });
 
+        this.shareScreenStore = new ShareScreenStore(this.roomUUID);
+
         autorun(reaction => {
             if (this.whiteboardStore.isKicked) {
                 reaction.dispose();
@@ -158,6 +163,16 @@ export class ClassRoomStore {
                 });
             }
         });
+
+        reaction(
+            () => this.whiteboardStore.isWritable,
+            () => {
+                this.shareScreenStore.updateIsWritable(this.whiteboardStore.isWritable);
+            },
+            {
+                fireImmediately: true,
+            },
+        );
 
         this.rtm.once(RTMessageType.REMOTE_LOGIN, () => {
             runInAction(() => {
@@ -525,6 +540,8 @@ export class ClassRoomStore {
         promises.push(this.rtm.destroy());
 
         promises.push(this.stopRecording());
+
+        promises.push(this.shareScreenStore.destroy());
 
         this.leaveRTC();
 
