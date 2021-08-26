@@ -1,10 +1,12 @@
 import "./style.less";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { ScreenInfo } from "../../../../apiMiddleware/share-screen";
 import { getScreenInfo, uint8ArrayToImageURL } from "./Utils";
 import classNames from "classnames";
 import { ShareScreenStore } from "../../../../stores/ShareScreenStore";
+import { message } from "antd";
+import { useTranslation } from "react-i18next";
 
 interface ScreenListProps {
     screenInfo: ScreenInfo;
@@ -16,6 +18,13 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
     shareScreenStore,
 }) {
     const [activeInfo, setActiveInfo] = useState("");
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        if (screenInfo.windowList.length === 0) {
+            void message.error(t("share-screen.desktop-not-permission"));
+        }
+    }, [screenInfo.windowList, t]);
 
     const onClick = useCallback(
         (isDisplay: boolean, id: number) => {
