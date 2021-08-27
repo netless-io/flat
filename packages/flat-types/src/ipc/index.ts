@@ -15,6 +15,7 @@ export type WindowActionAsync = {
               };
         maximizable?: boolean;
     }) => void;
+    "set-aspect-ratio": (args: { aspectRatio: number }) => void;
     "disable-window": (args: { disable: boolean }) => void;
     "set-title": (args: { title: string }) => void;
     "set-prevent-sleep": (args: { enable: boolean }) => void;
