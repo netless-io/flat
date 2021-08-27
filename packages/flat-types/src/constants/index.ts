@@ -18,11 +18,11 @@ export const PageSize = {
         height: 640,
     },
     Class: {
-        width: 1200,
-        height: 700,
+        width: 1280,
+        height: 720,
     },
     Replay: {
-        width: 1200,
-        height: 700,
+        width: 1280,
+        height: 720,
     },
 } as const;
