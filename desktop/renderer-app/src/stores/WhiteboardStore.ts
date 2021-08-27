@@ -25,6 +25,7 @@ import { globalStore } from "./GlobalStore";
 import { isMobile, isWindows } from "react-device-detect";
 import { getCoursewarePreloader } from "../utils/CoursewarePreloader";
 import { debounce } from "lodash-es";
+import { RoomType } from "../../../../packages/flat-components/src/types/room";
 
 export class WhiteboardStore {
     public room: Room | null = null;
@@ -42,10 +43,12 @@ export class WhiteboardStore {
 
     /** is room Creator */
     public readonly isCreator: boolean;
+    public readonly roomType: RoomType;
 
-    public constructor(config: { isCreator: boolean }) {
+    public constructor(config: { isCreator: boolean; roomType: RoomType }) {
         this.isCreator = config.isCreator;
         this.isWritable = config.isCreator;
+        this.roomType = config.roomType;
 
         makeAutoObservable<this, "preloadPPTResource">(this, {
             room: observable.ref,
@@ -99,6 +102,14 @@ export class WhiteboardStore {
         this.isFocusWindow = isFocus;
     };
 
+    public updateWhiteboardResize = (): number => {
+        // the Ratio of whiteboard compute method is height / width.
+        if (this.roomType === RoomType.SmallClass) {
+            return 8.3 / 16;
+        }
+        return 10.46 / 16;
+    };
+
     public setFileOpen = (open: boolean): void => {
         this.isFileOpen = open;
     };
@@ -125,9 +136,8 @@ export class WhiteboardStore {
         if (this.room && this.windowManager) {
             const currentScene = this.currentSceneIndex + 1;
             const scenePath = this.room.state.sceneState.scenePath;
-            const pathName = this.scenesPathName(scenePath);
 
-            this.room.putScenes(pathName, [{}], currentScene);
+            this.room.putScenes(scenePath, [{}], currentScene);
             this.windowManager.setMainViewSceneIndex(this.currentSceneIndex + 1);
         }
     };
@@ -363,13 +373,4 @@ export class WhiteboardStore {
         }
         console.log(`Whiteboard unloaded: ${globalStore.whiteboardRoomUUID}`);
     }
-
-    private scenesPathName = (scenePath: string): string => {
-        const cells = scenePath.split("/");
-        const popCell = cells.pop();
-        if (popCell === "") {
-            cells.pop();
-        }
-        return cells.join("/");
-    };
 }
