@@ -25,6 +25,7 @@ import { isMobile, isWindows } from "react-device-detect";
 import { debounce } from "lodash-es";
 import { coursewarePreloader } from "../utils/CoursewarePreloader";
 import { WindowManager, BuiltinApps } from "@netless/window-manager";
+import { RoomType } from "../apiMiddleware/flatServer/constants";
 
 export class WhiteboardStore {
     public room: Room | null = null;
@@ -42,11 +43,13 @@ export class WhiteboardStore {
 
     /** is room Creator */
     public readonly isCreator: boolean;
+    public readonly roomType: RoomType;
     public readonly isSpeaker?: boolean;
 
-    public constructor(config: { isCreator: boolean; isSpeaker?: boolean }) {
+    public constructor(config: { isCreator: boolean; isSpeaker?: boolean; roomType: RoomType }) {
         this.isCreator = config.isCreator;
         this.isWritable = config.isCreator;
+        this.roomType = config.roomType;
 
         makeAutoObservable<this, "preloadPPTResource">(this, {
             room: observable.ref,
@@ -70,7 +73,6 @@ export class WhiteboardStore {
         const oldWritable = this.isWritable;
 
         this.isWritable = isWritable;
-
         if (oldWritable !== isWritable && this.room) {
             await this.room.setWritable(isWritable);
             this.room.disableDeviceInputs = !isWritable;
@@ -98,6 +100,14 @@ export class WhiteboardStore {
 
     public updateFocusWindow = (isFocus: boolean): void => {
         this.isFocusWindow = isFocus;
+    };
+
+    public updateWhiteboardResize = (): number => {
+        // the Ratio of whiteboard compute method is height / width.
+        if (this.roomType === RoomType.SmallClass) {
+            return 8.3 / 16;
+        }
+        return 10.46 / 16;
     };
 
     public setFileOpen = (open: boolean): void => {
@@ -132,9 +142,8 @@ export class WhiteboardStore {
         if (this.room && this.windowManager) {
             const currentScene = this.currentSceneIndex + 1;
             const scenePath = this.room.state.sceneState.scenePath;
-            const pathName = this.scenesPathName(scenePath);
 
-            this.room.putScenes(pathName, [{}], currentScene);
+            this.room.putScenes(scenePath, [{}], currentScene);
             this.windowManager.setMainViewSceneIndex(this.currentSceneIndex + 1);
         }
     };
@@ -254,7 +263,7 @@ export class WhiteboardStore {
                 },
                 floatBar: true,
                 isWritable: this.isWritable,
-                disableNewPencil: true,
+                disableNewPencil: false,
                 hotKeys: {
                     ...DefaultHotKeys,
                     changeToSelector: "s",
@@ -373,14 +382,4 @@ export class WhiteboardStore {
     private preloadPPTResource = debounce(async (pptSrc: string): Promise<void> => {
         await coursewarePreloader.preload(pptSrc);
     }, 2000);
-
-    // TODO: The method is ambiguous
-    private scenesPathName = (scenePath: string): string => {
-        const cells = scenePath.split("/");
-        const popCell = cells.pop();
-        if (popCell === "") {
-            cells.pop();
-        }
-        return cells.join("/");
-    };
 }
