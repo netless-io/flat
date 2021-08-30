@@ -23,7 +23,7 @@ import {
     stopClass,
     stopRecordRoom,
 } from "../apiMiddleware/flatServer";
-import { RoomStatus } from "../apiMiddleware/flatServer/constants";
+import { RoomStatus, RoomType } from "../apiMiddleware/flatServer/constants";
 import { RoomItem, roomStore } from "./RoomStore";
 import { globalStore } from "./GlobalStore";
 import { NODE_ENV } from "../constants/Process";
@@ -151,6 +151,7 @@ export class ClassRoomStore {
 
         this.whiteboardStore = new WhiteboardStore({
             isCreator: this.isCreator,
+            roomType: this.roomInfo?.roomType || RoomType.BigClass,
         });
 
         this.shareScreenStore = new ShareScreenStore(this.roomUUID);
