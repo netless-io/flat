@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - "main"
+      - "dev"
     paths:
       - "web/flat-web/**"
       - "packages/flat-components/src/**"

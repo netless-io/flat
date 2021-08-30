@@ -85,6 +85,8 @@ module.exports = {
         "pickone", // chance
         "viewports", // storybook
         "videojs", // @videojs/vhs-utils
+        "telebox", // @netless/widnow-manager
+        "Buildin", // @netless/widnow-manager
 
         // misc
         "npmrc",
