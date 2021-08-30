@@ -24,11 +24,15 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                 await WindowManager.mount({
                     room,
                     container: ref,
+                    /* the containerSizeRatio config limit width and height ratio of windowManager
+                     for make sure windowManager sync in whiteboard. */
+                    containerSizeRatio: whiteboardStore.updateWhiteboardResize(),
                     collectorStyles: {
                         position: "absolute",
                         right: "10px",
                         bottom: "60px",
                     },
+                    chessboard: false,
                 });
                 whiteboardStore.onMainViewModeChange();
                 whiteboardStore.onWindowManagerBoxStateChange();
