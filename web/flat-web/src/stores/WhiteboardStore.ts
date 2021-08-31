@@ -126,12 +126,6 @@ export class WhiteboardStore {
         this.isShowPreviewPanel = show;
     };
 
-    public setWindowReadonlyState = (isReadonly: boolean): void => {
-        if (this.windowManager) {
-            this.windowManager.setReadonly(isReadonly);
-        }
-    };
-
     public switchMainViewToWriter = async (): Promise<void> => {
         if (this.windowManager && this.isFocusWindow) {
             await this.windowManager.switchMainViewToWriter();
@@ -142,8 +136,9 @@ export class WhiteboardStore {
         if (this.room && this.windowManager) {
             const currentScene = this.currentSceneIndex + 1;
             const scenePath = this.room.state.sceneState.scenePath;
+            const path = this.dirName(scenePath);
 
-            this.room.putScenes(scenePath, [{}], currentScene);
+            this.room.putScenes(path, [{}], currentScene);
             this.windowManager.setMainViewSceneIndex(this.currentSceneIndex + 1);
         }
     };
@@ -382,4 +377,8 @@ export class WhiteboardStore {
     private preloadPPTResource = debounce(async (pptSrc: string): Promise<void> => {
         await coursewarePreloader.preload(pptSrc);
     }, 2000);
+
+    private dirName = (scenePath: string): string => {
+        return scenePath.slice(0, scenePath.lastIndexOf("/"));
+    };
 }
