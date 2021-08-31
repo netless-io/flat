@@ -1870,10 +1870,10 @@
     debounce-fn "^5.0.0"
     vanilla-lazyload "^17.4.0"
 
-"@netless/app-media-player@0.1.0-beta.4":
-  version "0.1.0-beta.4"
-  resolved "https://registry.npmjs.org/@netless/app-media-player/-/app-media-player-0.1.0-beta.4.tgz#2283b8a1e0a104bd8d36a5dbe9798309041e262c"
-  integrity sha512-mwBrhITav9moFRS9lGmsWnLN1jBJhTjEfnQAVyLCjQvrzGGvZl+bakTSLhaazWvmdbo/V9YKoP0JlbytwAMHlg==
+"@netless/app-media-player@0.1.0-beta.5":
+  version "0.1.0-beta.5"
+  resolved "https://registry.npmjs.org/@netless/app-media-player/-/app-media-player-0.1.0-beta.5.tgz#13ad8680be81503f5dc48c4c4e9848ba15b76e5a"
+  integrity sha512-q24tZnDGwTM8fvSs97qavuF8w8cXa4Tx3Nl7Xvig5Um4XKrfNijjLK9pI1cdctfuefl9s8wrG8JNCN2C6yqeDw==
 
 "@netless/canvas-polyfill@^0.0.4":
   version "0.0.4"
@@ -1937,14 +1937,14 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.1.49":
-  version "0.1.49"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.1.49.tgz#262875d25026d4bd096f24ec969e689b086aac03"
-  integrity sha512-/yIC+tNqbnx0OmKFfMhoKvVdbMeLyrt9yPnIPoB9J2+2VxY8XOcFG3Z0yRku05GTKSEt5zpehVp9FF7hOes4Tw==
+"@netless/window-manager@^0.1.51":
+  version "0.1.51"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.1.51.tgz#b734dd8ff2d9160d88a0894e4a92d7ff8be117bc"
+  integrity sha512-bR4YyCBdsruJNtsS0bXHEPRpBJKEvsESGjv2dXk1Fu585y8wD4AgBIbuh4hXSMiQFZRebFESQxcziMm0UZnLNQ==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/app-docs-viewer" "^0.1.17"
-    "@netless/app-media-player" "0.1.0-beta.4"
+    "@netless/app-media-player" "0.1.0-beta.5"
     "@netless/telebox-insider" "^0.1.15"
     emittery "^0.9.2"
     lodash-es "^4.17.21"
