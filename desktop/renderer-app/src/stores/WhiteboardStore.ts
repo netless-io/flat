@@ -136,8 +136,9 @@ export class WhiteboardStore {
         if (this.room && this.windowManager) {
             const currentScene = this.currentSceneIndex + 1;
             const scenePath = this.room.state.sceneState.scenePath;
+            const path = this.dirName(scenePath);
 
-            this.room.putScenes(scenePath, [{}], currentScene);
+            this.room.putScenes(path, [{}], currentScene);
             this.windowManager.setMainViewSceneIndex(this.currentSceneIndex + 1);
         }
     };
@@ -373,4 +374,8 @@ export class WhiteboardStore {
         }
         console.log(`Whiteboard unloaded: ${globalStore.whiteboardRoomUUID}`);
     }
+
+    private dirName = (scenePath: string): string => {
+        return scenePath.slice(0, scenePath.lastIndexOf("/"));
+    };
 }
