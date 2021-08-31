@@ -5,7 +5,7 @@ import RedoUndo from "@netless/redo-undo";
 import ToolBox from "@netless/tool-box";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { WindowManager } from "@netless/window-manager";
 import { WhiteboardStore } from "../stores/WhiteboardStore";
 import { isSupportedImageType, onDropImage } from "../utils/dnd/image";
@@ -18,12 +18,16 @@ export interface WhiteboardProps {
 export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteboardStore }) {
     const { room } = whiteboardStore;
 
-    const bindWhiteboard = useCallback(
-        async (ref: HTMLDivElement | null) => {
-            if (ref && room) {
+    const [whiteboardEl, setWhiteboardEl] = useState<HTMLElement | null>(null);
+    const [collectorEl, setCollectorEl] = useState<HTMLElement | null>(null);
+
+    useEffect(() => {
+        const mountWindowManager = async (): Promise<void> => {
+            if (whiteboardEl && collectorEl && room) {
                 await WindowManager.mount({
                     room,
-                    container: ref,
+                    container: whiteboardEl,
+                    collectorContainer: collectorEl,
                     /* the containerSizeRatio config limit width and height ratio of windowManager
                      for make sure windowManager sync in whiteboard. */
                     containerSizeRatio: whiteboardStore.updateWhiteboardResize(),
@@ -37,10 +41,23 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                 whiteboardStore.onMainViewModeChange();
                 whiteboardStore.onWindowManagerBoxStateChange();
             }
-        },
+        };
+
+        void mountWindowManager();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [room],
-    );
+    }, [whiteboardEl, collectorEl, room]);
+
+    const bindWhiteboard = useCallback((ref: HTMLDivElement | null) => {
+        if (ref) {
+            setWhiteboardEl(ref);
+        }
+    }, []);
+
+    const bindCollector = useCallback((ref: HTMLDivElement | null) => {
+        if (ref) {
+            setCollectorEl(ref);
+        }
+    }, []);
 
     const onDragOver = useCallback(
         (event: React.DragEvent<HTMLDivElement>) => {
@@ -103,6 +120,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                         />
                     </div>
                 </div>
+                <div ref={bindCollector} className="collector-container" />
                 <div ref={bindWhiteboard} className="whiteboard-box" />
             </div>
         )
