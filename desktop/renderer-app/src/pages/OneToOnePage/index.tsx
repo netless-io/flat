@@ -265,14 +265,15 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     />
                 )}
 
-                {whiteboardStore.isWritable && (
+                {/* {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
                         icon="follow"
                         active={whiteboardStore.viewMode === ViewMode.Broadcaster}
                         onClick={handleRoomController}
                     />
-                )}
+                )} */}
+
                 {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
@@ -334,6 +335,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         );
     }
 
+    // @ts-ignore
     function handleRoomController(): void {
         const { room } = whiteboardStore;
         if (!room) {
