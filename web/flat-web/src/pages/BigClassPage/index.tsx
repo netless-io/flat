@@ -291,6 +291,9 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     />
                 )}
 
+                {/*
+                 * TODO: After the whiteboard supports multi-window, the vision control function is disabled, so hide the function for the time being.
+                 */}
                 {/* {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
@@ -385,6 +388,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         );
     }
 
+    // @ts-ignore
     function handleRoomController(): void {
         const { room } = whiteboardStore;
         if (!room) {

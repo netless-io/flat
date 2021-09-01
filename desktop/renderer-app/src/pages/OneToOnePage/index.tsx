@@ -335,6 +335,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         );
     }
 
+    // @ts-ignore
     function handleRoomController(): void {
         const { room } = whiteboardStore;
         if (!room) {

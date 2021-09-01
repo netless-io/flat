@@ -401,6 +401,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         );
     }
 
+    // @ts-ignore
     function handleRoomController(): void {
         const { room } = whiteboardStore;
         if (!room) {
