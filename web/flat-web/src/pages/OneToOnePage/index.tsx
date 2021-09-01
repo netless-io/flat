@@ -247,7 +247,9 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                         onClick={handleShareScreen}
                     />
                 )}
-
+                {/*
+                 * TODO:After the whiteboard supports multi-window, the vision control function is disabled, so hide the function for the time being.
+                 */}
                 {/* {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
