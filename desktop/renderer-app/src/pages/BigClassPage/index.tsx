@@ -307,14 +307,15 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     />
                 )}
 
-                {whiteboardStore.isWritable && (
+                {/* {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
                         icon="follow"
                         active={whiteboardStore.viewMode === ViewMode.Broadcaster}
                         onClick={handleRoomController}
                     />
-                )}
+                )} */}
+
                 {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
@@ -400,6 +401,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         );
     }
 
+    // @ts-ignore
     function handleRoomController(): void {
         const { room } = whiteboardStore;
         if (!room) {
