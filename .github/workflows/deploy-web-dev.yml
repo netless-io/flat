@@ -11,6 +11,8 @@ on:
 
 jobs:
   deploy-flat-web-dev:
+    environment: development
+
     runs-on: ubuntu-latest
 
     steps:
@@ -47,3 +49,16 @@ jobs:
           docker build . -f web/flat-web/deploy/Dockerfile -t agoraflat/flat-web:$COMMIT_SHA_TAG -t agoraflat/flat-web:$LATEST_DEV_TAG
           docker push agoraflat/flat-web:$COMMIT_SHA_TAG
           docker push agoraflat/flat-web:$LATEST_DEV_TAG
+
+      - name: Prep helm chart
+        run: |
+          export APPVERSION=development-${{ github.sha }} &&
+          export CHART=./web/flat-web/deploy/helm/Chart.yaml &&
+          sed -i "s/^appVersion:.*$/appVersion: $APPVERSION/" $CHART &&
+          cat $CHART
+
+      - name: Deploy
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm upgrade flat-web ./web/flat-web/deploy/helm --install --wait --atomic --namespace=default
+          kubeconfig: '${{ secrets.KUBECONFIG }}'

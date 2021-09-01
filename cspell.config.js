@@ -85,6 +85,8 @@ module.exports = {
         "pickone", // chance
         "viewports", // storybook
         "videojs", // @videojs/vhs-utils
+        "telebox", // @netless/widnow-manager
+        "Buildin", // @netless/widnow-manager
 
         // misc
         "npmrc",
@@ -101,6 +103,15 @@ module.exports = {
         "webfonts",
         "browserslist",
         "estree",
+
+        // CNCF
+        "nindent",
+        "kubernetes",
+        "fullname",
+        "Minikube",
+        "tolerations",
+        "Kube",
+        "agoraflat"
     ],
     flagWords: ["fuck", "bitch", "asshole", "bullshit", "crap", "suck", "wtf"],
     dictionaries: [
