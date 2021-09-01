@@ -85,6 +85,8 @@ module.exports = {
         "pickone", // chance
         "viewports", // storybook
         "videojs", // @videojs/vhs-utils
+        "telebox", // @netless/widnow-manager
+        "Buildin", // @netless/widnow-manager
 
         // misc
         "npmrc",
@@ -119,6 +121,8 @@ module.exports = {
         "**/coverage/**",
         "**/node_modules/**",
         "**/dist/**",
+        "web/flat-web/helm/**",
+        "web/flat-web/deploy/**",
         "packages/flat-components/build/**",
         "packages/flat-components/storybook-static/**",
         "desktop/main-app/release/**",
