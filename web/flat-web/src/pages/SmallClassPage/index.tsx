@@ -316,7 +316,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     />
                 )}
 
-                {whiteboardStore.isWritable && (
+                {/* {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
                         icon={
@@ -326,7 +326,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         }
                         onClick={handleRoomController}
                     />
-                )}
+                )} */}
+
                 {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
@@ -381,6 +382,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         );
     }
 
+    // @ts-ignore
     function handleRoomController(): void {
         const { room } = whiteboardStore;
         if (!room) {
