@@ -104,7 +104,7 @@ module.exports = {
         "browserslist",
         "estree",
 
-        //CNCF
+        // CNCF
         "nindent",
         "kubernetes",
         "fullname",
