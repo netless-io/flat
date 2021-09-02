@@ -28,13 +28,13 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
         const leftMenu = [
             {
                 key: routeConfig[RouteNameType.HomePage].path,
-                icon: (active: boolean): React.ReactNode => <></>,
+                icon: (): React.ReactNode => <></>,
                 title: t("home"),
                 route: routeConfig[RouteNameType.HomePage].path,
             },
             {
                 key: routeConfig[RouteNameType.CloudStoragePage].path,
-                icon: (active: boolean): React.ReactNode => <></>,
+                icon: (): React.ReactNode => <></>,
                 title: t("cloud-storage"),
                 route: routeConfig[RouteNameType.CloudStoragePage].path,
             },
