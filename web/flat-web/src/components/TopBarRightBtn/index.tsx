@@ -22,13 +22,11 @@ const Icons = {
 export interface TopBarRightBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     title: string;
     icon: keyof typeof Icons;
-    active?: boolean;
 }
 
 export function TopBarRightBtn({
     title,
     icon,
-    active,
     disabled,
     ...restProps
 }: TopBarRightBtnProps): ReactElement {

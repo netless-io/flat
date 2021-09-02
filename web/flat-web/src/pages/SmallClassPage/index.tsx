@@ -319,8 +319,11 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
-                        icon="follow"
-                        active={whiteboardStore.viewMode === ViewMode.Broadcaster}
+                        icon={
+                            whiteboardStore.viewMode === ViewMode.Broadcaster
+                                ? "follow-active"
+                                : "follow"
+                        }
                         onClick={handleRoomController}
                     />
                 )}
@@ -342,8 +345,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 <TopBarDivider />
                 <TopBarRightBtn
                     title="Open side panel"
-                    icon="hide-side"
-                    active={isRealtimeSideOpen}
+                    icon={isRealtimeSideOpen ? "hide-side-active" : "hide-side"}
                     onClick={() => openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen)}
                 />
             </>
