@@ -91,6 +91,12 @@ Many Flat components UI can be quickly viewed and developed via Storybook ([Onli
 
 * [Environment Variables Reference](docs/env/README.md)
 
+## Code Contributors
+
+Thank you to all the people who already contributed to Flat!
+
+<a href="https://github.com/netless-io/flat/graphs/contributors"><img src="https://opencollective.com/agora-flat/contributors.svg?width=890&button=false"/></a>
+
 [flat-homepage]: https://flat.whiteboard.agora.io/en/#download
 [flat-web]: https://flat-web.whiteboard.agora.io/
 [flat-server]: https://github.com/netless-io/flat-server
