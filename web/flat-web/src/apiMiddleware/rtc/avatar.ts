@@ -2,13 +2,10 @@ import type {
     IAgoraRTCClient,
     IAgoraRTCRemoteUser,
     ICameraVideoTrack,
-    ILocalTrack,
     IMicrophoneAudioTrack,
     ITrack,
 } from "agora-rtc-sdk-ng";
-import AgoraRTC from "agora-rtc-sdk-ng";
 import { EventEmitter } from "eventemitter3";
-
 import type { User } from "../../stores/UserStore";
 import type { RtcRoom } from "./room";
 
@@ -30,15 +27,17 @@ export enum RtcEvents {
  * avatar.setCamera(true)
  */
 export class RtcAvatar extends EventEmitter {
-    private readonly rtc: RtcRoom;
-
     public readonly userUUID: string;
     public readonly avatarUser: User;
     public element?: HTMLElement;
     public audioTrack?: ITrack;
     public videoTrack?: ITrack;
 
+    private readonly rtc: RtcRoom;
     private readonly isLocal: boolean;
+    private remoteUser?: IAgoraRTCRemoteUser;
+    private mic = false;
+    private camera = false;
 
     public constructor({ rtc, userUUID, avatarUser }: RtcAvatarParams) {
         super();
@@ -46,136 +45,77 @@ export class RtcAvatar extends EventEmitter {
         this.userUUID = userUUID;
         this.avatarUser = avatarUser;
         this.isLocal = userUUID === avatarUser.userUUID;
-        if (!this.isLocal) {
-            void this.setupExistingTracks();
-            this.client.on("user-published", this.onUserPublished);
-            this.client.on("user-unpublished", this.onUserUnpublished);
-        }
+        this.rtc.addAvatar(this);
+    }
+
+    public destroy(): void {
+        this.rtc.removeAvatar(this);
     }
 
     private get client(): IAgoraRTCClient {
         return this.rtc.client!;
     }
 
-    private async setupExistingTracks(): Promise<void> {
-        const exist = this.client.remoteUsers.find(e => e.uid === this.avatarUser.rtcUID);
-        if (exist) {
-            if (exist.hasAudio) {
-                const audioTrack = await this.client.subscribe(exist, "audio");
-                audioTrack.play();
-            }
-            if (exist.hasVideo) {
-                const videoTrack = await this.client.subscribe(exist, "video");
-                this.element && videoTrack.play(this.element);
-            }
-        }
-    }
-
-    public async destroy(): Promise<void> {
-        const { audioTrack, videoTrack } = this;
-        const tracks: ITrack[] = [];
-        if (audioTrack) {
-            audioTrack.stop();
-            this.audioTrack = undefined;
-            tracks.push(audioTrack);
-        }
-        if (videoTrack) {
-            videoTrack.stop();
-            this.videoTrack = undefined;
-            tracks.push(videoTrack);
-        }
+    public async refresh(): Promise<void> {
         if (this.isLocal) {
-            if (tracks.length > 0) {
-                try {
-                    await this.client.unpublish(tracks as ILocalTrack[]);
-                } catch (error) {
-                    console.info("unpublish failed", error);
-                }
-            }
-            for (const track of tracks) {
-                (track as ILocalTrack).close();
-            }
+            await this.refreshLocalMic();
+            await this.refreshLocalCamera();
         } else {
-            this.client.off("user-published", this.onUserPublished);
+            this.remoteUser = this.client.remoteUsers.find(
+                user => user.uid === this.avatarUser.rtcUID,
+            );
+            if (!this.remoteUser) {
+                this.audioTrack = undefined;
+                this.videoTrack = undefined;
+                return;
+            }
+            this.audioTrack = this.remoteUser.audioTrack;
+            this.videoTrack = this.remoteUser.videoTrack;
+            this.refreshRemoteTracks();
         }
     }
 
-    private onUserPublished = async (
-        user: IAgoraRTCRemoteUser,
-        mediaType: "video" | "audio",
-    ): Promise<void> => {
-        if (user.uid === this.avatarUser.rtcUID) {
-            const track = await this.client.subscribe(user, mediaType);
-            if (mediaType === "audio") {
-                this.audioTrack = track;
-                this.audioTrack.play();
-            } else {
-                this.videoTrack = track;
-                this.element && this.videoTrack.play(this.element);
+    private refreshRemoteTracks(): void {
+        if (this.audioTrack) {
+            if (this.audioTrack.isPlaying !== this.mic) {
+                this.mic ? this.audioTrack.play() : this.audioTrack.stop();
             }
         }
-    };
+        if (this.videoTrack) {
+            if (this.videoTrack.isPlaying !== this.camera) {
+                this.camera
+                    ? this.element && this.videoTrack.play(this.element)
+                    : this.videoTrack.stop();
+            }
+        }
+    }
 
-    private onUserUnpublished = async (
-        user: IAgoraRTCRemoteUser,
-        mediaType: "video" | "audio",
-    ): Promise<void> => {
-        if (user.uid === this.avatarUser.rtcUID) {
-            if (mediaType === "audio") {
-                if (this.audioTrack) {
-                    this.audioTrack.stop();
-                    this.audioTrack = undefined;
-                }
-            } else {
-                if (this.videoTrack) {
-                    this.videoTrack.stop();
-                    this.videoTrack = undefined;
-                }
-            }
-            try {
-                await this.client.unsubscribe(user, mediaType);
-            } catch (error) {
-                console.info("unsubscribe failed", error);
-            }
+    private async refreshLocalCamera(): Promise<void> {
+        if (this.camera && !this.videoTrack) {
+            this.videoTrack = await this.rtc.getLocalVideoTrack();
+            this.element && this.videoTrack.play(this.element);
+        } else if (this.videoTrack && this.videoTrack.isPlaying !== this.camera) {
+            await (this.videoTrack as ICameraVideoTrack).setEnabled(this.camera);
         }
-    };
+    }
+
+    private async refreshLocalMic(): Promise<void> {
+        if (this.mic && !this.audioTrack) {
+            this.audioTrack = await this.rtc.getLocalAudioTrack();
+            // NOTE: play local audio will cause echo
+            // this.audioTrack.play();
+        } else if (this.audioTrack && this.audioTrack.isPlaying !== this.mic) {
+            await (this.audioTrack as IMicrophoneAudioTrack).setEnabled(this.mic);
+        }
+    }
 
     public async setCamera(enable: boolean): Promise<void> {
-        try {
-            if (this.isLocal) {
-                const videoTrack = this.videoTrack as ICameraVideoTrack | undefined;
-                if (videoTrack) {
-                    await videoTrack.setEnabled(enable);
-                } else if (enable) {
-                    const videoTrack = await AgoraRTC.createCameraVideoTrack({
-                        encoderConfig: { width: 288, height: 216 },
-                    });
-                    await this.client.publish(videoTrack);
-                    this.element && videoTrack.play(this.element);
-                    this.videoTrack = videoTrack;
-                }
-            }
-        } catch (error) {
-            this.emit(RtcEvents.SetCameraError, error);
-        }
+        this.camera = enable;
+        await this.refresh().catch(error => this.emit(RtcEvents.SetMicError, error));
     }
 
     public async setMic(enable: boolean): Promise<void> {
-        try {
-            if (this.isLocal) {
-                const audioTrack = this.audioTrack as IMicrophoneAudioTrack | undefined;
-                if (audioTrack) {
-                    await audioTrack.setEnabled(enable);
-                } else if (enable) {
-                    const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-                    await this.client.publish(audioTrack);
-                    // NOTE: playing local audio track causes echo
-                    // audioTrack.play();
-                    this.audioTrack = audioTrack;
-                }
-            }
-        } catch (error) {
-            this.emit(RtcEvents.SetMicError, error);
-        }
+        this.mic = enable;
+        await this.refresh().catch(error => this.emit(RtcEvents.SetCameraError, error));
     }
 }
