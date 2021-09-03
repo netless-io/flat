@@ -185,6 +185,13 @@ const eslintCommon = {
             "@typescript-eslint/quotes": ["error", "double"],
             "@typescript-eslint/semi": ["error", "always"],
             "@typescript-eslint/type-annotation-spacing": "error",
+            "@typescript-eslint/no-unused-vars": [
+                "error",
+                {
+                    args: "after-used",
+                    argsIgnorePattern: "^_",
+                },
+            ],
         },
         overrides: [
             {
