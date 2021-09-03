@@ -19,6 +19,10 @@ export function useWindowSize(pageName: keyof typeof constants.PageSize): void {
                     setMinimumSize: true,
                     maximizable: true,
                 });
+
+                ipcAsyncByMainWindow("set-aspect-ratio", {
+                    aspectRatio: 16 / 9,
+                });
                 break;
             }
             case "Class": {
@@ -28,6 +32,10 @@ export function useWindowSize(pageName: keyof typeof constants.PageSize): void {
                     resizable: true,
                     setMinimumSize: true,
                     maximizable: true,
+                });
+
+                ipcAsyncByMainWindow("set-aspect-ratio", {
+                    aspectRatio: 16 / 9,
                 });
                 break;
             }
@@ -49,6 +57,12 @@ export function useWindowSize(pageName: keyof typeof constants.PageSize): void {
                 break;
             }
         }
+
+        return () => {
+            ipcAsyncByMainWindow("set-aspect-ratio", {
+                aspectRatio: 0,
+            });
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 }
