@@ -77,7 +77,10 @@ export class RtcRoom {
     public async destroy(): Promise<void> {
         if (this.client) {
             if (this.client.localTracks.length > 0) {
-                this.client.localTracks.forEach(track => track.stop());
+                for (const track of this.client.localTracks) {
+                    track.stop();
+                    track.close();
+                }
                 await this.client.unpublish(this.client.localTracks);
             }
             this.client.off("token-privilege-will-expire", this.renewToken);
