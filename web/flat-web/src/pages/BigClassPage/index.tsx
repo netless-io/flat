@@ -14,7 +14,7 @@ import {
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { RoomPhase, ViewMode } from "white-web-sdk";
+import { RoomPhase } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
@@ -390,20 +390,19 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         );
     }
 
-    // @ts-ignore
-    function handleRoomController(): void {
-        const { room } = whiteboardStore;
-        if (!room) {
-            return;
-        }
-        if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
-            room.setViewMode(ViewMode.Broadcaster);
-            void message.success(t("follow-your-perspective-tips"));
-        } else {
-            room.setViewMode(ViewMode.Freedom);
-            void message.success(t("Stop-following-your-perspective-tips"));
-        }
-    }
+    // function handleRoomController(): void {
+    //     const { room } = whiteboardStore;
+    //     if (!room) {
+    //         return;
+    //     }
+    //     if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
+    //         room.setViewMode(ViewMode.Broadcaster);
+    //         void message.success(t("follow-your-perspective-tips"));
+    //     } else {
+    //         room.setViewMode(ViewMode.Freedom);
+    //         void message.success(t("Stop-following-your-perspective-tips"));
+    //     }
+    // }
 
     function handleShareScreen(): void {
         void shareScreenStore.toggle();

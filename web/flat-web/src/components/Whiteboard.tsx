@@ -27,6 +27,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                 await WindowManager.mount({
                     room,
                     container: whiteboardEl,
+                    cursor: true,
                     collectorContainer: collectorEl,
                     /* the containerSizeRatio config limit width and height ratio of windowManager
                      for make sure windowManager sync in whiteboard. */

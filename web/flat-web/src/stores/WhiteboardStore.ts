@@ -40,6 +40,8 @@ export class WhiteboardStore {
     public isWindowMaximization = false;
     public currentSceneIndex = 0;
     public scenesCount = 0;
+    public smallClassRatio = 8.3 / 16;
+    public otherClassRatio = 10.46 / 16;
 
     /** is room Creator */
     public readonly isCreator: boolean;
@@ -105,9 +107,9 @@ export class WhiteboardStore {
     public updateWhiteboardResize = (): number => {
         // the Ratio of whiteboard compute method is height / width.
         if (this.roomType === RoomType.SmallClass) {
-            return 8.3 / 16;
+            return this.smallClassRatio;
         }
-        return 10.46 / 16;
+        return this.otherClassRatio;
     };
 
     public setFileOpen = (open: boolean): void => {
@@ -251,7 +253,6 @@ export class WhiteboardStore {
                 uuid: globalStore.whiteboardRoomUUID,
                 roomToken: globalStore.whiteboardRoomToken,
                 region: globalStore.region ?? undefined,
-                cursorAdapter: cursorAdapter,
                 userPayload: {
                     userId: globalStore.userUUID,
                     cursorName,
