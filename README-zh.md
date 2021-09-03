@@ -88,13 +88,17 @@ yarn run start
 
 ## 文档
 
-* [环境变量值参考](docs/env/README-zh.md)
+-   [环境变量值参考](docs/env/README-zh.md)
 
 ## 代码贡献者
 
 感谢所有为 Flat 做出过贡献的人！
 
 <a href="https://github.com/netless-io/flat/graphs/contributors"><img src="https://opencollective.com/agora-flat/contributors.svg?width=890&button=false"/></a>
+
+## 免责声明
+
+本项目仅用于学习和交流使用，请遵守所在国的法律法规，切勿用于涉及政治、宗教、色情、犯罪等领域，一切违法后果请自负。
 
 [flat-homepage]: https://flat.whiteboard.agora.io/#download
 [flat-web]: https://flat-web.whiteboard.agora.io/
