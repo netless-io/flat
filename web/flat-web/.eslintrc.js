@@ -1,4 +1,4 @@
-const { react } = require("../../.eslint.common.js")
+const { react } = require("../../.eslint.common.js");
 
 module.exports = {
     ...react,
