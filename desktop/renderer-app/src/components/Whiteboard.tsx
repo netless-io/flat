@@ -28,6 +28,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                     room,
                     container: whiteboardEl,
                     collectorContainer: collectorEl,
+                    cursor: true,
                     /* the containerSizeRatio config limit width and height ratio of windowManager
                      for make sure windowManager sync in whiteboard. */
                     containerSizeRatio: whiteboardStore.updateWhiteboardResize(),

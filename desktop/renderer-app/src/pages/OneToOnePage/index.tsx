@@ -335,7 +335,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         );
     }
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function handleRoomController(): void {
         const { room } = whiteboardStore;
         if (!room) {

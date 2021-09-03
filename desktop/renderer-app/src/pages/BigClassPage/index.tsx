@@ -401,7 +401,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         );
     }
 
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function handleRoomController(): void {
         const { room } = whiteboardStore;
         if (!room) {
