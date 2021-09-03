@@ -12,7 +12,7 @@ function getType(width: number): BreakpointType {
 export function onBreakpoint(callback: (type: BreakpointType) => void): () => void {
     let lastType: BreakpointType = getType(window.innerWidth);
     callback(lastType);
-    let timer: number = NaN;
+    let timer = NaN;
     function onresize(): void {
         window.clearTimeout(timer);
         timer = window.setTimeout(() => {
