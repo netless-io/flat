@@ -44,7 +44,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
             void message.success(t("copy-success"));
             onCopied();
         },
-        [onCopied],
+        [onCopied, t],
     );
 
     return (
