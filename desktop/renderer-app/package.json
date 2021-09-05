@@ -8,13 +8,11 @@
     "@netless/combine-player": "^1.1.4",
     "@netless/cursor-tool": "^0.1.0",
     "@netless/fetch-middleware": "^1.0.7",
-    "@netless/page-controller": "^0.0.4",
     "@netless/player-controller": "^0.0.9",
-    "@netless/preview-controller": "^0.0.9",
     "@netless/redo-undo": "^0.0.5",
     "@netless/tool-box": "^0.1.4",
     "@netless/video-js-plugin": "^0.3.6",
-    "@netless/zoom-controller": "^0.1.1",
+    "@netless/window-manager": "^0.1.55",
     "@videojs/vhs-utils": "^2.3.0",
     "agora-rtm-sdk": "^1.4.3",
     "antd": "^4.15.4",
@@ -43,7 +41,7 @@
     "react-virtualized": "^9.22.2",
     "uuid": "^8.3.2",
     "video.js": "7.10.2",
-    "white-web-sdk": "2.13.17"
+    "white-web-sdk": "2.13.19"
   },
   "devDependencies": {
     "@netless/eslint-plugin": "1.1.2",

@@ -11,7 +11,7 @@ import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-conver
 import { convertFinish } from "../../apiMiddleware/flatServer/storage";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
-import { RoomPhase, SceneDefinition } from "white-web-sdk";
+import { SceneDefinition } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
 import { RequestErrorCode } from "../../constants/ErrorCode";
 import { ServerRequestError } from "../../utils/error/ServerRequestError";
@@ -63,12 +63,9 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 await insertImage(file);
                 break;
             }
-            case ".mp3": {
-                insertAudio(file);
-                break;
-            }
+            case ".mp3":
             case ".mp4": {
-                insertVideo(file);
+                insertMediaFile(file);
                 break;
             }
             case ".doc":
@@ -92,6 +89,8 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
     }
 
     async function insertImage(file: CloudStorageFile): Promise<void> {
+        await whiteboard?.switchMainViewToWriter();
+
         const room = whiteboard?.room;
         if (!room) {
             return;
@@ -132,34 +131,8 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
         room.completeImageUpload(uuid, file.fileURL);
     }
 
-    function insertAudio(file: CloudStorageFile): void {
-        const room = whiteboard?.room;
-        if (!room) {
-            return;
-        }
-
-        room.insertPlugin("video.js", {
-            originX: -240,
-            originY: -43,
-            width: 480,
-            height: 86,
-            attributes: { src: file.fileURL },
-        });
-    }
-
-    function insertVideo(file: CloudStorageFile): void {
-        const room = whiteboard?.room;
-        if (!room) {
-            return;
-        }
-
-        room.insertPlugin("video.js", {
-            originX: -240,
-            originY: -135,
-            width: 480,
-            height: 270,
-            attributes: { src: file.fileURL },
-        });
+    function insertMediaFile(file: CloudStorageFile): void {
+        whiteboard?.openMediaFileInWindowManager(file.fileURL, file.fileName);
     }
 
     async function insertDocs(file: CloudStorageFile, ext: string): Promise<void> {
@@ -208,19 +181,16 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 f => ({
                     name: v4uuid(),
                     ppt: {
+                        src: f.conversionFileUrl,
                         width: f.width,
                         height: f.height,
-                        src: f.conversionFileUrl,
                         previewURL: f.preview,
                     },
                 }),
             );
             const uuid = v4uuid();
-            room.putScenes(`/${taskUUID}/${uuid}`, scenes);
-            room.setScenePath(`/${taskUUID}/${uuid}/${scenes[0].name}`);
-            if (room.phase === RoomPhase.Connected) {
-                room.scalePptToFit();
-            }
+            const scenesPath = `/${taskUUID}/${uuid}`;
+            whiteboard?.openDocsFileInWindowManager(scenesPath, file.fileName, scenes);
         } else {
             void message.error(t("unable-to-insert-courseware"));
         }

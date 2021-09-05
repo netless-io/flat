@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
-import { RoomPhase, ViewMode } from "white-web-sdk";
+import { RoomPhase } from "white-web-sdk";
 import {
     NetworkStatus,
     RoomInfo,
@@ -265,14 +265,15 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     />
                 )}
 
-                {whiteboardStore.isWritable && (
+                {/* {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
                         icon="follow"
                         active={whiteboardStore.viewMode === ViewMode.Broadcaster}
                         onClick={handleRoomController}
                     />
-                )}
+                )} */}
+
                 {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
@@ -334,19 +335,19 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         );
     }
 
-    function handleRoomController(): void {
-        const { room } = whiteboardStore;
-        if (!room) {
-            return;
-        }
-        if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
-            room.setViewMode(ViewMode.Broadcaster);
-            void message.success(t("follow-your-perspective-tips"));
-        } else {
-            room.setViewMode(ViewMode.Freedom);
-            void message.success(t("Stop-following-your-perspective-tips"));
-        }
-    }
+    // function handleRoomController(): void {
+    //     const { room } = whiteboardStore;
+    //     if (!room) {
+    //         return;
+    //     }
+    //     if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
+    //         room.setViewMode(ViewMode.Broadcaster);
+    //         void message.success(t("follow-your-perspective-tips"));
+    //     } else {
+    //         room.setViewMode(ViewMode.Freedom);
+    //         void message.success(t("Stop-following-your-perspective-tips"));
+    //     }
+    // }
 
     function handleSideOpenerSwitch(): void {
         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);

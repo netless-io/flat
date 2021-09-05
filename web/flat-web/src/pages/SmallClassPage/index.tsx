@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { message } from "antd";
-import { RoomPhase, ViewMode } from "white-web-sdk";
+import { RoomPhase } from "white-web-sdk";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 import {
@@ -316,7 +316,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     />
                 )}
 
-                {whiteboardStore.isWritable && (
+                {/* {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
                         icon={
@@ -326,7 +326,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         }
                         onClick={handleRoomController}
                     />
-                )}
+                )} */}
+
                 {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
@@ -381,19 +382,19 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         );
     }
 
-    function handleRoomController(): void {
-        const { room } = whiteboardStore;
-        if (!room) {
-            return;
-        }
-        if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
-            room.setViewMode(ViewMode.Broadcaster);
-            void message.success(t("follow-your-perspective-tips"));
-        } else {
-            room.setViewMode(ViewMode.Freedom);
-            void message.success(t("Stop-following-your-perspective-tips"));
-        }
-    }
+    // function handleRoomController(): void {
+    //     const { room } = whiteboardStore;
+    //     if (!room) {
+    //         return;
+    //     }
+    //     if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
+    //         room.setViewMode(ViewMode.Broadcaster);
+    //         void message.success(t("follow-your-perspective-tips"));
+    //     } else {
+    //         room.setViewMode(ViewMode.Freedom);
+    //         void message.success(t("Stop-following-your-perspective-tips"));
+    //     }
+    // }
 
     function stopClass(): void {
         confirm(ExitRoomConfirmType.StopClassButton);
