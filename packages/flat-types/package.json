@@ -2,8 +2,7 @@
   "name": "flat-types",
   "version": "0.1.0",
   "description": "Shared TypeScript typings for the Flat app and Flat Server.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
   "private": true,
   "license": "MIT",
   "scripts": {

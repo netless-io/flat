@@ -17,6 +17,7 @@
     "launch:electron": "node --trace-uncaught ./scripts/Launch-electron.js",
     "build:main": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "build": "yarn copy:renderBuildCode && yarn build:main",
+    "build:debug": "cross-env FLAT_DEBUG=debug webpack --config webpack/webpack.debug.js",
     "pack:win": "node ./scripts/Pack.js win",
     "pack:mac": "node ./scripts/Pack.js mac",
     "ship": "yarn build && node ./scripts/Pack.js",

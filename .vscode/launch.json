@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Main",
+      "cwd": "${workspaceFolder}/desktop/main-app",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "args": ["--enable-logging", "--inspect=5859", "./dist/main.js"],
+      "preLaunchTask": {
+        "type": "npm",
+        "script": "build:debug"
+      }
+    }
+  ]
+}

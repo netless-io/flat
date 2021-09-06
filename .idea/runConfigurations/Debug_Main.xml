@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Debug Main" type="NodeJSConfigurationType" path-to-node="$PROJECT_DIR$/node_modules/.bin/electron" node-parameters="--enable-logging --inspect=5859 ./dist/main.js" working-dir="$PROJECT_DIR$/desktop/main-app">
+    <method v="2">
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/desktop/main-app/package.json" />
+        <command value="run" />
+        <scripts>
+          <script value="build:debug" />
+        </scripts>
+        <node-interpreter value="project" />
+        <envs />
+      </option>
+    </method>
+  </configuration>
+</component>
