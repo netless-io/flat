@@ -191,9 +191,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# IDE
-.idea/
-
 .npmrc
 
 build/
