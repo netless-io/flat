@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/temp" />
+      <excludeFolder url="file://$MODULE_DIR$/.tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/desktop/main-app/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/desktop/main-app/release" />
+      <excludeFolder url="file://$MODULE_DIR$/desktop/main-app/resources" />
+      <excludeFolder url="file://$MODULE_DIR$/desktop/renderer-app/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/desktop/renderer-app/public" />
+      <excludeFolder url="file://$MODULE_DIR$/desktop/main-app/static" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/flat-components/storybook-static" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/flat-components/public" />
+      <excludeFolder url="file://$MODULE_DIR$/web/flat-web/public" />
+      <excludeFolder url="file://$MODULE_DIR$/web/flat-web/dist" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
