@@ -49,6 +49,7 @@ module.exports = {
                 "lint",
                 "project",
                 "ide",
+                "license",
             ],
         ],
         "scope-case": [2, "always", ["lower-case", "kebab-case"]],
