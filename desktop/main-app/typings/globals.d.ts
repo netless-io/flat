@@ -5,6 +5,7 @@ declare namespace NodeJS {
 
     export interface ProcessEnv {
         NODE_ENV: "development" | "production";
+        FLAT_DEBUG?: "debug";
         UPDATE_DOMAIN: string;
     }
 }
