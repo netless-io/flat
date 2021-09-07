@@ -78,11 +78,13 @@ export class RtcAvatar extends EventEmitter {
     private refreshRemoteTracks(): void {
         if (this.audioTrack) {
             if (this.audioTrack.isPlaying !== this.mic) {
+                console.log("[rtc] mic=%O, uid=%O", this.mic, this.avatarUser.rtcUID);
                 this.mic ? this.audioTrack.play() : this.audioTrack.stop();
             }
         }
         if (this.videoTrack) {
             if (this.videoTrack.isPlaying !== this.camera) {
+                console.log("[rtc] camera=%O, uid=%O", this.camera, this.avatarUser.rtcUID);
                 this.camera
                     ? this.element && this.videoTrack.play(this.element)
                     : this.videoTrack.stop();
