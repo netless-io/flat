@@ -50,6 +50,7 @@ module.exports = {
                 "project",
                 "ide",
                 "license",
+                "debug",
             ],
         ],
         "scope-case": [2, "always", ["lower-case", "kebab-case"]],
