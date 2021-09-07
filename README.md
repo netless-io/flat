@@ -37,6 +37,25 @@
 - [Flat Server][flat-server]
 - [Flat HomePage][flat-homepage]
 
+## Features
+
+- Real-time interaction
+    - Multifunctional interactive whiteboard
+    - Real-time video/audio chat(RTC)
+    - Real-time messaging(RTM)
+- Login via
+    - Wechat
+    - GitHub
+- Classroom management
+    - Join, create and schedule classrooms
+    - Support periodic rooms
+- Classroom recording and replaying
+    - Whiteboard replaying
+    - Cloud recording for video and audio
+    - Messaging replaying
+- Cloud Storage for multi-media courseware
+- Screen sharing
+
 ## Development
 
 UI and business logic are separated in Flat. You can run flat with quickly develop UI via [Storybook](#storybook).
