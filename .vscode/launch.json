@@ -11,10 +11,7 @@
         "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
       },
       "args": ["--enable-logging", "--inspect=5859", "./dist/main.js"],
-      "preLaunchTask": {
-        "type": "npm",
-        "script": "build:debug"
-      }
+      "preLaunchTask": "npm: build:debug - desktop/main-app"
     }
   ]
 }
