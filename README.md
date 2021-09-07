@@ -85,8 +85,9 @@ Many Flat components UI can be quickly viewed and developed via Storybook ([Onli
 
 ## Documents
 
-- [Environment Variables Reference](docs/env/README.md)
 - [Release Version Description](docs/releases)
+- [Environment Variables Reference](docs/env/README.md)
+- [Debugging Flat](docs/debugging/README.md)
 
 ## Code Contributors
 

@@ -84,8 +84,9 @@ yarn run start
 
 ## 文档
 
-- [环境变量值参考](docs/env/README-zh.md)
 - [发布版本说明](docs/releases)
+- [环境变量值参考](docs/env/README-zh.md)
+- [调试 Flat](docs/debugging/README-zh.md)
 
 ## 代码贡献者
 

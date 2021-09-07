@@ -103,6 +103,7 @@ module.exports = {
         "webfonts",
         "browserslist",
         "estree",
+        "webstorm",
 
         // CNCF
         "nindent",
@@ -111,7 +112,7 @@ module.exports = {
         "Minikube",
         "tolerations",
         "Kube",
-        "agoraflat"
+        "agoraflat",
     ],
     flagWords: ["fuck", "bitch", "asshole", "bullshit", "crap", "suck", "wtf"],
     dictionaries: [
