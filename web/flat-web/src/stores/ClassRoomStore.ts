@@ -269,7 +269,7 @@ export class ClassRoomStore {
                 await this.startRecording();
             }
         } catch (e) {
-            errorTips(e);
+            errorTips(e as Error);
         }
     };
 
@@ -618,7 +618,7 @@ export class ClassRoomStore {
             // so that the component won't unmount before sending commands
             this.updateRoomStatus(roomStatus);
         } catch (e) {
-            errorTips(e);
+            errorTips(e as Error);
             console.error(e);
         }
         this.updateRoomStatusLoading(RoomStatusLoadingType.Null);

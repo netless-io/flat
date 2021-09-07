@@ -60,12 +60,12 @@ export class RtcRoom {
             );
         }
         const token = globalStore.rtcToken || (await generateRTCToken(roomUUID));
-        await this.client.join(AGORA.APP_ID, roomUUID, token, rtcUID);
-
-        this.roomUUID = roomUUID;
 
         this.client.on("user-published", this.onUserPublished);
         this.client.on("user-unpublished", this.onUserUnpublished);
+        await this.client.join(AGORA.APP_ID, roomUUID, token, rtcUID);
+
+        this.roomUUID = roomUUID;
 
         return this.client;
     }
@@ -83,6 +83,8 @@ export class RtcRoom {
                 }
                 await this.client.unpublish(this.client.localTracks);
             }
+            this.client.off("user-published", this.onUserPublished);
+            this.client.off("user-unpublished", this.onUserUnpublished);
             this.client.off("token-privilege-will-expire", this.renewToken);
             await this.client.leave();
             this.client = undefined;
@@ -123,6 +125,11 @@ export class RtcRoom {
         user: IAgoraRTCRemoteUser,
         mediaType: "audio" | "video",
     ): Promise<void> => {
+        if (user.uid === globalStore?.rtcShareScreen?.uid) {
+            console.log("[rtc] subscribe (skip share screen) uid=%O", user.uid);
+            return;
+        }
+        console.log("[rtc] subscribe uid=%O, media=%O", user.uid, mediaType);
         await this.client?.subscribe(user, mediaType);
         this.avatars.forEach(avatar => avatar.refresh());
     };
@@ -131,6 +138,11 @@ export class RtcRoom {
         user: IAgoraRTCRemoteUser,
         mediaType: "audio" | "video",
     ): Promise<void> => {
+        if (user.uid === globalStore?.rtcShareScreen?.uid) {
+            console.log("[rtc] unsubscribe (skip share screen) uid=%O", user.uid);
+            return;
+        }
+        console.log("[rtc] unsubscribe uid=%O, media=%O", user.uid, mediaType);
         await this.client?.unsubscribe(user, mediaType);
         this.avatars.forEach(avatar => avatar.refresh());
     };
