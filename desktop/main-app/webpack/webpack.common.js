@@ -83,5 +83,6 @@ module.exports = {
         filename: "[name].js",
         path: paths.dist,
         libraryTarget: "commonjs2",
+        devtoolModuleFilenameTemplate:'file:///[absolute-resource-path]',
     },
 };
