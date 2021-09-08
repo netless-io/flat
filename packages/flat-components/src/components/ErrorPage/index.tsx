@@ -3,22 +3,31 @@ import "./style.less";
 
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export type ErrorPageProps = {};
 
 export const ErrorPage: React.FC = () => {
     const [countdown, setCountdown] = useState(15);
+    const location = useLocation();
     const history = useHistory();
     const { t } = useTranslation();
+
+    const goHome = (): void => {
+        if (location.pathname !== "/") {
+            history.push("/");
+        } else {
+            window.location.reload();
+        }
+    };
 
     useEffect(() => {
         let countdown = 15;
         const ticket = window.setInterval(() => {
             if (--countdown < 0) {
                 window.clearInterval(ticket);
-                history.push("/");
+                goHome();
                 return;
             }
             setCountdown(countdown);
@@ -35,9 +44,9 @@ export const ErrorPage: React.FC = () => {
             <img className="error-page-image" src={errorSVG} />
             <p className="error-page-title">{t("error-page-title")}</p>
             <p className="error-page-description">{t("error-page-description")}</p>
-            <Link to={"/"}>
-                <Button size="large">{t("error-page-return-home", { countdown })}</Button>
-            </Link>
+            <Button size="large" onClick={goHome}>
+                {t("error-page-return-home", { countdown })}
+            </Button>
         </div>
     );
 };
