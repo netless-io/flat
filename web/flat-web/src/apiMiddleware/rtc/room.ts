@@ -81,6 +81,7 @@ export class RtcRoom {
                     track.stop();
                     track.close();
                 }
+                console.log("[rtc] unpublish local tracks");
                 await this.client.unpublish(this.client.localTracks);
             }
             this.client.off("user-published", this.onUserPublished);
@@ -106,6 +107,10 @@ export class RtcRoom {
     public async getLocalAudioTrack(): Promise<ILocalAudioTrack> {
         if (!this._localAudioTrack) {
             this._localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+            this._localAudioTrack.once("track-ended", () => {
+                console.log("[rtc] track-ended local audio");
+            });
+            console.log("[rtc] publish audio track");
             await this.client?.publish(this._localAudioTrack);
         }
         return this._localAudioTrack;
@@ -116,6 +121,10 @@ export class RtcRoom {
             this._localVideoTrack = await AgoraRTC.createCameraVideoTrack({
                 encoderConfig: { width: 288, height: 216 },
             });
+            this._localVideoTrack.once("track-ended", () => {
+                console.log("[rtc] track-ended local video");
+            });
+            console.log("[rtc] publish video track");
             await this.client?.publish(this._localVideoTrack);
         }
         return this._localVideoTrack;

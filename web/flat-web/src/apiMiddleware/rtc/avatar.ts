@@ -93,31 +93,41 @@ export class RtcAvatar extends EventEmitter {
     }
 
     private async refreshLocalCamera(): Promise<void> {
-        if (this.camera && !this.videoTrack) {
-            this.videoTrack = await this.rtc.getLocalVideoTrack();
-            this.element && this.videoTrack.play(this.element);
-        } else if (this.videoTrack && this.videoTrack.isPlaying !== this.camera) {
-            await (this.videoTrack as ICameraVideoTrack).setEnabled(this.camera);
+        try {
+            if (this.camera && !this.videoTrack) {
+                this.videoTrack = await this.rtc.getLocalVideoTrack();
+                this.element && this.videoTrack?.play(this.element);
+            } else if (this.videoTrack && this.videoTrack.isPlaying !== this.camera) {
+                await (this.videoTrack as ICameraVideoTrack).setEnabled(this.camera);
+            }
+        } catch (error) {
+            this.videoTrack = undefined;
+            this.emit(RtcEvents.SetCameraError, error);
         }
     }
 
     private async refreshLocalMic(): Promise<void> {
-        if (this.mic && !this.audioTrack) {
-            this.audioTrack = await this.rtc.getLocalAudioTrack();
-            // NOTE: play local audio will cause echo
-            // this.audioTrack.play();
-        } else if (this.audioTrack && this.audioTrack.isPlaying !== this.mic) {
-            await (this.audioTrack as IMicrophoneAudioTrack).setEnabled(this.mic);
+        try {
+            if (this.mic && !this.audioTrack) {
+                this.audioTrack = await this.rtc.getLocalAudioTrack();
+                // NOTE: play local audio will cause echo
+                // this.audioTrack.play();
+            } else if (this.audioTrack && this.audioTrack.isPlaying !== this.mic) {
+                await (this.audioTrack as IMicrophoneAudioTrack).setEnabled(this.mic);
+            }
+        } catch (error) {
+            this.audioTrack = undefined;
+            this.emit(RtcEvents.SetMicError, error);
         }
     }
 
     public async setCamera(enable: boolean): Promise<void> {
         this.camera = enable;
-        await this.refresh().catch(error => this.emit(RtcEvents.SetMicError, error));
+        await this.refresh().catch(error => this.emit(RtcEvents.SetCameraError, error));
     }
 
     public async setMic(enable: boolean): Promise<void> {
         this.mic = enable;
-        await this.refresh().catch(error => this.emit(RtcEvents.SetCameraError, error));
+        await this.refresh().catch(error => this.emit(RtcEvents.SetMicError, error));
     }
 }
