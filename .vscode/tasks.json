@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "build:debug",
+      "path": "desktop/main-app/",
+      "group": "build",
+      "label": "npm: build:debug - desktop/main-app",
+      "detail": "cross-env FLAT_DEBUG=debug webpack --config webpack/webpack.debug.js"
+    }
+  ]
+}
