@@ -13,7 +13,7 @@ module.exports = {
     },
     target: "electron-main",
 
-    devtool: "source-map",
+    devtool: "inline-source-map",
 
     stats: {
         colors: true,
