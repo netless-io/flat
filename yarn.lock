@@ -1937,7 +1937,7 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@0.1.55", "@netless/window-manager@^0.1.55":
+"@netless/window-manager@^0.1.55":
   version "0.1.55"
   resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.1.55.tgz#25d650c13b18953b2b7c6e74dc4466872507f2a6"
   integrity sha512-zanEmfdLCMAC44263fiqZHcQDfSLgbVijxO3YMgzCjxKC4cJEwvb4Udgf+TdsOjsuRjBRLOgscpjwamETuevMQ==
@@ -1949,6 +1949,22 @@
     emittery "^0.9.2"
     lodash-es "^4.17.21"
     nanoid "^3.1.25"
+    video.js ">=7"
+
+"@netless/window-manager@^0.1.63-canary.1":
+  version "0.1.63-canary.1"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.1.63-canary.1.tgz#0c9a0e09a4d95ed7073a7bed2fe293ab58b278fa"
+  integrity sha512-LsDDwR5ajnzaSmlfxQTNJBVfuZ/S+mZZaS6vpIYR8nApLxpIyfV2W6siw9Z6vQwwkOyPvQJqtFkL/WynXlKSOQ==
+  dependencies:
+    "@juggle/resize-observer" "^3.3.1"
+    "@netless/app-docs-viewer" "^0.1.19"
+    "@netless/app-media-player" "0.1.0-beta.5"
+    "@netless/telebox-insider" "^0.1.17"
+    dexie "^3.0.3"
+    emittery "^0.9.2"
+    lodash-es "^4.17.21"
+    nanoid "^3.1.25"
+    p-retry "^4.6.1"
     video.js ">=7"
 
 "@netless/xml-js@1.6.15":
@@ -3362,6 +3378,11 @@
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@types/resize-observer-browser/-/resize-observer-browser-0.1.6.tgz#d8e6c2f830e2650dc06fe74464472ff64b54a302"
   integrity sha512-61IfTac0s9jvNtBCpyo86QeaN8qqpMGHdK0uGKCCIy2dt5/Yk84VduHIdWAcmkC5QvdkPL0p5eWYgUZtHKKUVg==
+
+"@types/retry@^0.12.0":
+  version "0.12.1"
+  resolved "https://registry.npmjs.org/@types/retry/-/retry-0.12.1.tgz#d8f1c0d0dc23afad6dc16a9e993a0865774b4065"
+  integrity sha512-xoDlM2S4ortawSWORYqsdU+2rxdh4LRW9ytc3zmT37RIKQh6IHyKwwtKhKis9ah8ol07DCkZxPt8BBvPjC6v4g==
 
 "@types/scheduler@*":
   version "0.16.2"
@@ -6782,6 +6803,11 @@ detect-touch-events@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/detect-touch-events/-/detect-touch-events-2.0.2.tgz#541cc49b05ca544726a3bf2802c5b23e53aeeebb"
   integrity sha512-g8GWBkJLiIDRJfRXEdrd1wMXpNyGId2DkbfuwFahSb4OCvn717hyRJtAcEDISfp3zkwEhZ4Y4woHPA6DeyB3Fw==
+
+dexie@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.npmjs.org/dexie/-/dexie-3.0.3.tgz#ede63849dfe5f07e13e99bb72a040e8ac1d29dab"
+  integrity sha512-BSFhGpngnCl1DOr+8YNwBDobRMH0ziJs2vts69VilwetHYOtEDcLqo7d/XiIphM0tJZ2rPPyAGd31lgH2Ln3nw==
 
 diffie-hellman@^5.0.0:
   version "5.0.3"
@@ -12358,6 +12384,14 @@ p-retry@^3.0.1:
   dependencies:
     retry "^0.12.0"
 
+p-retry@^4.6.1:
+  version "4.6.1"
+  resolved "https://registry.npmjs.org/p-retry/-/p-retry-4.6.1.tgz#8fcddd5cdf7a67a0911a9cf2ef0e5df7f602316c"
+  integrity sha512-e2xXGNhZOZ0lfgR9kL34iGlU8N/KO0xZnQxVEwdeOvpqNDQfdnxIYizvWtK8RglUa3bGqI8g0R/BdfzLMxRkiA==
+  dependencies:
+    "@types/retry" "^0.12.0"
+    retry "^0.13.1"
+
 p-timeout@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/p-timeout/-/p-timeout-2.0.1.tgz#d8dd1979595d2dc0139e1fe46b8b646cb3cdf038"
@@ -14426,6 +14460,11 @@ retry@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/retry/-/retry-0.12.0.tgz#1b42a6266a21f07421d1b0b54b7dc167b01c013b"
   integrity sha1-G0KmJmoh8HQh0bC1S33BZ7AcATs=
+
+retry@^0.13.1:
+  version "0.13.1"
+  resolved "https://registry.npmjs.org/retry/-/retry-0.13.1.tgz#185b1587acf67919d63b357349e03537b2484658"
+  integrity sha512-XQBQ3I8W1Cge0Seh+6gjj03LbmRFWuoszgK9ooCpwYIrhhoO80pfq4cUkU5DkknwfOfFteRwlZ56PYOGYyFWdg==
 
 reusify@^1.0.4:
   version "1.0.4"
