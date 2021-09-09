@@ -104,7 +104,7 @@ export class WhiteboardStore {
         this.isFocusWindow = isFocus;
     };
 
-    public updateWhiteboardResize = (): number => {
+    public getWhiteboardRatio = (): number => {
         // the Ratio of whiteboard compute method is height / width.
         if (this.roomType === RoomType.SmallClass) {
             return this.smallClassRatio;
