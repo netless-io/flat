@@ -31,7 +31,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                     collectorContainer: collectorEl,
                     /* the containerSizeRatio config limit width and height ratio of windowManager
                      for make sure windowManager sync in whiteboard. */
-                    containerSizeRatio: whiteboardStore.updateWhiteboardResize(),
+                    containerSizeRatio: whiteboardStore.getWhiteboardRatio(),
                     collectorStyles: {
                         position: "absolute",
                         right: "10px",
@@ -47,6 +47,17 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
         void mountWindowManager();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [whiteboardEl, collectorEl, room]);
+
+    useEffect(() => {
+        if (whiteboardEl) {
+            whiteboardOnResize();
+            window.addEventListener("resize", whiteboardOnResize);
+        }
+        return () => {
+            window.removeEventListener("resize", whiteboardOnResize);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [whiteboardEl]);
 
     const bindWhiteboard = useCallback((ref: HTMLDivElement | null) => {
         if (ref) {
@@ -85,6 +96,45 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
         },
         [room],
     );
+
+    const whiteboardOnResize = (): void => {
+        if (whiteboardEl) {
+            const whiteboardRatio = whiteboardStore.getWhiteboardRatio();
+
+            if (window.innerHeight < 600 || window.innerWidth < 800) {
+                whiteboardEl.style.minWidth = "550px";
+                whiteboardEl.style.minHeight = `${550 * whiteboardRatio}px`;
+            }
+
+            if (whiteboardStore.smallClassRatio === whiteboardRatio) {
+                const classRoomRightSideWidth = 304;
+                const classRoomTopBarHeight = 182;
+
+                const whiteboardWidth = Math.min(
+                    window.innerWidth - classRoomRightSideWidth,
+                    (window.innerHeight - classRoomTopBarHeight) / whiteboardRatio,
+                );
+
+                const whiteboardHeight = whiteboardWidth * whiteboardRatio;
+
+                whiteboardEl.style.width = `${whiteboardWidth}px`;
+                whiteboardEl.style.height = `${whiteboardHeight}px`;
+            } else {
+                const classRoomRightSideWidth = 304;
+                const classRoomTopBarHeight = 50;
+
+                const whiteboardWidth = Math.min(
+                    window.innerWidth - classRoomRightSideWidth,
+                    (window.innerHeight - classRoomTopBarHeight) / whiteboardRatio,
+                );
+
+                const whiteboardHeight = whiteboardWidth * whiteboardRatio;
+
+                whiteboardEl.style.width = `${whiteboardWidth}px`;
+                whiteboardEl.style.height = `${whiteboardHeight}px`;
+            }
+        }
+    };
 
     return (
         room && (

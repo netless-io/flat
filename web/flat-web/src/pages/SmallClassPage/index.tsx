@@ -150,27 +150,29 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     }
 
     return (
-        <div className="realtime-box">
-            <TopBar
-                isMac={runtime.isMac}
-                left={renderTopBarLeft()}
-                center={renderTopBarCenter()}
-                right={renderTopBarRight()}
-            />
-            {renderAvatars()}
-            <div className="realtime-content">
-                <div className="container">
-                    <ShareScreen shareScreenStore={shareScreenStore} />
-                    <Whiteboard whiteboardStore={whiteboardStore} />
+        <div className="realtime-container">
+            <div className="realtime-box">
+                <TopBar
+                    isMac={runtime.isMac}
+                    left={renderTopBarLeft()}
+                    center={renderTopBarCenter()}
+                    right={renderTopBarRight()}
+                />
+                {renderAvatars()}
+                <div className="realtime-content">
+                    <div className="container">
+                        <ShareScreen shareScreenStore={shareScreenStore} />
+                        <Whiteboard whiteboardStore={whiteboardStore} />
+                    </div>
+                    {renderRealtimePanel()}
                 </div>
-                {renderRealtimePanel()}
+                <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
+                <RoomStatusStoppedModal
+                    isCreator={classRoomStore.isCreator}
+                    isRemoteLogin={classRoomStore.isRemoteLogin}
+                    roomStatus={classRoomStore.roomStatus}
+                />
             </div>
-            <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
-            <RoomStatusStoppedModal
-                isCreator={classRoomStore.isCreator}
-                isRemoteLogin={classRoomStore.isRemoteLogin}
-                roomStatus={classRoomStore.roomStatus}
-            />
         </div>
     );
 
