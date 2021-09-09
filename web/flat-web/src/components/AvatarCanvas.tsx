@@ -44,6 +44,10 @@ export const AvatarCanvas = observer<AvatarCanvasProps>(function AvatarCanvas({
             console.log("[rtc] set microphone error", error);
             void message.error(t("set-mic-error"));
         });
+        rtcAvatar.on(RtcEvents.LowVolume, () => {
+            console.log("[rtc] low volume");
+            void message.error(t("low-volume"));
+        });
         return () => void rtcAvatar.destroy();
     }, [rtcAvatar, t]);
 

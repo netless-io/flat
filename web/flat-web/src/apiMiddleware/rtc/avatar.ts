@@ -2,7 +2,9 @@ import type {
     IAgoraRTCClient,
     IAgoraRTCRemoteUser,
     ICameraVideoTrack,
+    ILocalAudioTrack,
     IMicrophoneAudioTrack,
+    IRemoteAudioTrack,
     ITrack,
 } from "agora-rtc-sdk-ng";
 import { EventEmitter } from "eventemitter3";
@@ -18,6 +20,7 @@ export interface RtcAvatarParams {
 export enum RtcEvents {
     SetCameraError = "set-camera-error",
     SetMicError = "set-mic-error",
+    LowVolume = "low-volume",
 }
 
 /**
@@ -27,6 +30,9 @@ export enum RtcEvents {
  * avatar.setCamera(true)
  */
 export class RtcAvatar extends EventEmitter {
+    public static readonly LowVolume = 0.25;
+    public static readonly LowVolumeMaxCount = 10;
+
     public readonly userUUID: string;
     public readonly avatarUser: User;
     public element?: HTMLElement;
@@ -38,6 +44,8 @@ export class RtcAvatar extends EventEmitter {
     private remoteUser?: IAgoraRTCRemoteUser;
     private mic = false;
     private camera = false;
+    private observeVolumeId: number;
+    private observeVolumeCounter = 0;
 
     public constructor({ rtc, userUUID, avatarUser }: RtcAvatarParams) {
         super();
@@ -46,9 +54,11 @@ export class RtcAvatar extends EventEmitter {
         this.avatarUser = avatarUser;
         this.isLocal = userUUID === avatarUser.userUUID;
         this.rtc.addAvatar(this);
+        this.observeVolumeId = window.setInterval(this.checkVolume, 500);
     }
 
     public destroy(): void {
+        clearInterval(this.observeVolumeId);
         this.rtc.removeAvatar(this);
     }
 
@@ -130,4 +140,18 @@ export class RtcAvatar extends EventEmitter {
         this.mic = enable;
         await this.refresh().catch(error => this.emit(RtcEvents.SetMicError, error));
     }
+
+    private checkVolume = (): void => {
+        if (this.mic && this.audioTrack) {
+            const track = this.audioTrack as ILocalAudioTrack | IRemoteAudioTrack;
+            if (track.getVolumeLevel() < RtcAvatar.LowVolume) {
+                this.observeVolumeCounter += 1;
+                if (this.observeVolumeCounter === RtcAvatar.LowVolumeMaxCount) {
+                    this.emit(RtcEvents.LowVolume);
+                }
+            } else {
+                this.observeVolumeCounter = 0;
+            }
+        }
+    };
 }

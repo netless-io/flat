@@ -79,6 +79,8 @@ export class RtcRoom {
 
     public async destroy(): Promise<void> {
         if (this.client) {
+            setMicrophoneTrack();
+            setCameraTrack();
             if (this.client.localTracks.length > 0) {
                 for (const track of this.client.localTracks) {
                     track.stop();
