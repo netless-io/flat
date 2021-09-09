@@ -46,7 +46,7 @@ export const AvatarCanvas = observer<AvatarCanvasProps>(function AvatarCanvas({
         });
         rtcAvatar.on(RtcEvents.LowVolume, () => {
             console.log("[rtc] low volume");
-            void message.error(t("low-volume"));
+            void message.warn(t("low-volume"));
         });
         return () => void rtcAvatar.destroy();
     }, [rtcAvatar, t]);

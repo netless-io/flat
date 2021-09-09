@@ -30,7 +30,7 @@ export enum RtcEvents {
  * avatar.setCamera(true)
  */
 export class RtcAvatar extends EventEmitter {
-    public static readonly LowVolume = 0.25;
+    public static readonly LowVolume = 0.1;
     public static readonly LowVolumeMaxCount = 10;
 
     public readonly userUUID: string;
@@ -144,14 +144,16 @@ export class RtcAvatar extends EventEmitter {
     private checkVolume = (): void => {
         if (this.mic && this.audioTrack) {
             const track = this.audioTrack as ILocalAudioTrack | IRemoteAudioTrack;
-            if (track.getVolumeLevel() < RtcAvatar.LowVolume) {
+            const volume = track.getVolumeLevel();
+            console.log("[rtc] volume: %O", volume);
+            if (volume < RtcAvatar.LowVolume) {
                 this.observeVolumeCounter += 1;
                 if (this.observeVolumeCounter === RtcAvatar.LowVolumeMaxCount) {
                     this.emit(RtcEvents.LowVolume);
                 }
-            } else {
-                this.observeVolumeCounter = 0;
             }
+        } else {
+            this.observeVolumeCounter = 0;
         }
     };
 }
