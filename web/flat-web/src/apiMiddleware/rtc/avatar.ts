@@ -142,11 +142,11 @@ export class RtcAvatar extends EventEmitter {
     }
 
     private checkVolume = (): void => {
-        if (this.mic && this.audioTrack) {
+        if (this.isLocal && this.mic && this.audioTrack) {
             const track = this.audioTrack as ILocalAudioTrack | IRemoteAudioTrack;
             const volume = track.getVolumeLevel();
-            console.log("[rtc] volume: %O", volume);
             if (volume < RtcAvatar.LowVolume) {
+                console.log("[rtc] volume low: %O", volume);
                 this.observeVolumeCounter += 1;
                 if (this.observeVolumeCounter === RtcAvatar.LowVolumeMaxCount) {
                     this.emit(RtcEvents.LowVolume);
