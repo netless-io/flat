@@ -13,7 +13,7 @@ module.exports = {
     },
     target: "electron-main",
 
-    devtool: "source-map",
+    devtool: "inline-source-map",
 
     stats: {
         colors: true,
@@ -83,6 +83,5 @@ module.exports = {
         filename: "[name].js",
         path: paths.dist,
         libraryTarget: "commonjs2",
-        devtoolModuleFilenameTemplate:'file:///[absolute-resource-path]',
     },
 };
