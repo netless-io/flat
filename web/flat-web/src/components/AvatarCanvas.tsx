@@ -37,12 +37,16 @@ export const AvatarCanvas = observer<AvatarCanvasProps>(function AvatarCanvas({
 
     useEffect(() => {
         rtcAvatar.on(RtcEvents.SetCameraError, (error: Error) => {
-            console.log("set camera error", error);
+            console.log("[rtc] set camera error", error);
             void message.error(t("set-camera-error"));
         });
         rtcAvatar.on(RtcEvents.SetMicError, (error: Error) => {
-            console.log("set microphone error", error);
+            console.log("[rtc] set microphone error", error);
             void message.error(t("set-mic-error"));
+        });
+        rtcAvatar.on(RtcEvents.LowVolume, () => {
+            console.log("[rtc] low volume");
+            void message.warn(t("low-volume"));
         });
         return () => void rtcAvatar.destroy();
     }, [rtcAvatar, t]);

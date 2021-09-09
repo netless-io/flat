@@ -351,6 +351,7 @@
   "servers": "Server",
   "set-camera-error": "Failed to turn on camera",
   "set-mic-error": "Failed to turn on microphone",
+  "low-volume": "The volume is too low",
   "share-screen": {
     "browser-not-permission": "Please grant your browser access to screen recording",
     "desktop-not-permission": "Please grant Flat access to screen recording",

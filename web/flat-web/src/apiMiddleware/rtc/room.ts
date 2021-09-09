@@ -1,14 +1,17 @@
 import type {
     IAgoraRTCClient,
     IAgoraRTCRemoteUser,
+    ICameraVideoTrack,
     ILocalAudioTrack,
     ILocalVideoTrack,
+    IMicrophoneAudioTrack,
 } from "agora-rtc-sdk-ng";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import type { RtcAvatar } from "./avatar";
 import { AGORA } from "../../constants/Process";
 import { globalStore } from "../../stores/GlobalStore";
 import { generateRTCToken } from "../flatServer/agora";
+import { setCameraTrack, setMicrophoneTrack } from "./hot-plug";
 
 AgoraRTC.enableLogUpload();
 
@@ -76,11 +79,14 @@ export class RtcRoom {
 
     public async destroy(): Promise<void> {
         if (this.client) {
+            setMicrophoneTrack();
+            setCameraTrack();
             if (this.client.localTracks.length > 0) {
                 for (const track of this.client.localTracks) {
                     track.stop();
                     track.close();
                 }
+                console.log("[rtc] unpublish local tracks");
                 await this.client.unpublish(this.client.localTracks);
             }
             this.client.off("user-published", this.onUserPublished);
@@ -106,6 +112,11 @@ export class RtcRoom {
     public async getLocalAudioTrack(): Promise<ILocalAudioTrack> {
         if (!this._localAudioTrack) {
             this._localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+            setMicrophoneTrack(this._localAudioTrack as IMicrophoneAudioTrack);
+            this._localAudioTrack.once("track-ended", () => {
+                console.log("[rtc] track-ended local audio");
+            });
+            console.log("[rtc] publish audio track");
             await this.client?.publish(this._localAudioTrack);
         }
         return this._localAudioTrack;
@@ -116,6 +127,11 @@ export class RtcRoom {
             this._localVideoTrack = await AgoraRTC.createCameraVideoTrack({
                 encoderConfig: { width: 288, height: 216 },
             });
+            setCameraTrack(this._localVideoTrack as ICameraVideoTrack);
+            this._localVideoTrack.once("track-ended", () => {
+                console.log("[rtc] track-ended local video");
+            });
+            console.log("[rtc] publish video track");
             await this.client?.publish(this._localVideoTrack);
         }
         return this._localVideoTrack;
