@@ -338,6 +338,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     function handleSideOpenerSwitch(): void {
         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
+        whiteboardStore.setRightSideClose(isRealtimeSideOpen);
     }
 
     function stopClass(): void {
