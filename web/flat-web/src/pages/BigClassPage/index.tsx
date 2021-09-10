@@ -412,6 +412,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     function handleSideOpenerSwitch(): void {
         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
+        whiteboardStore.setRightSideClose(isRealtimeSideOpen);
     }
 
     function onVideoAvatarExpand(): void {

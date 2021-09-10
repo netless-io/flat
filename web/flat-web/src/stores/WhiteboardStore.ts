@@ -38,6 +38,7 @@ export class WhiteboardStore {
     public isKicked = false;
     public isFocusWindow = false;
     public isWindowMaximization = false;
+    public isRightSideClose = false;
     public currentSceneIndex = 0;
     public scenesCount = 0;
     public smallClassRatio = 8.3 / 16;
@@ -45,13 +46,17 @@ export class WhiteboardStore {
 
     /** is room Creator */
     public readonly isCreator: boolean;
-    public readonly roomType: RoomType;
+    public readonly getRoomType: () => RoomType;
     public readonly isSpeaker?: boolean;
 
-    public constructor(config: { isCreator: boolean; isSpeaker?: boolean; roomType: RoomType }) {
+    public constructor(config: {
+        isCreator: boolean;
+        isSpeaker?: boolean;
+        getRoomType: () => RoomType;
+    }) {
         this.isCreator = config.isCreator;
         this.isWritable = config.isCreator;
-        this.roomType = config.roomType;
+        this.getRoomType = config.getRoomType;
 
         makeAutoObservable<this, "preloadPPTResource">(this, {
             room: observable.ref,
@@ -106,7 +111,7 @@ export class WhiteboardStore {
 
     public getWhiteboardRatio = (): number => {
         // the Ratio of whiteboard compute method is height / width.
-        if (this.roomType === RoomType.SmallClass) {
+        if (this.getRoomType() === RoomType.SmallClass) {
             return this.smallClassRatio;
         }
         return this.otherClassRatio;
@@ -126,6 +131,10 @@ export class WhiteboardStore {
 
     public setPreviewPanel = (show: boolean): void => {
         this.isShowPreviewPanel = show;
+    };
+
+    public setRightSideClose = (close: boolean): void => {
+        this.isRightSideClose = close;
     };
 
     public switchMainViewToWriter = async (): Promise<void> => {

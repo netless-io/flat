@@ -150,7 +150,7 @@ export class ClassRoomStore {
 
         this.whiteboardStore = new WhiteboardStore({
             isCreator: this.isCreator,
-            roomType: this.roomInfo?.roomType || RoomType.BigClass,
+            getRoomType: () => this.roomInfo?.roomType || RoomType.BigClass,
         });
 
         this.shareScreenStore = new ShareScreenStore(this.roomUUID);
