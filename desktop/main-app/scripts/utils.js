@@ -6,7 +6,7 @@ const { platform } = require("os");
 const dotenvFlow = require("dotenv-flow");
 const { spawnSync } = require("child_process");
 const { version, configPath, rootPath, mainPath } = require("../../../scripts/constants");
-const { agoraElectronSdkPath, releaseTag } = require("./Constant");
+const { agoraElectronSdkPath, releaseTag } = require("./constant");
 
 dotenvFlow.config({
     path: configPath,
@@ -100,9 +100,9 @@ const downloadAgoraElectronAddon = platform => {
     };
 
     if (platform === "mac") {
-        spawnSync("npm", ["run", "download:agoraAddon:mac"], spawnOptions);
+        spawnSync("npm", ["run", "_download:agora-addon:mac"], spawnOptions);
     } else {
-        spawnSync("npm", ["run", "download:agoraAddon:win"], spawnOptions);
+        spawnSync("npm", ["run", "_download:agora-addon:win"], spawnOptions);
     }
 };
 
