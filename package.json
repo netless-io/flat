@@ -2,9 +2,8 @@
   "name": "flat-monorepo",
   "private": true,
   "scripts": {
-    "preinstall": "node ./scripts/preinstall",
     "postinstall": "husky install",
-    "bootstrap": "yarn install --frozen-lockfile",
+    "bootstrap": "yarn run _init:agora-configure && yarn install --frozen-lockfile",
     "lint": "yarn workspaces run lint",
     "check-spelling": "cspell --no-progress \"**/*.{md,ts,tsx,js,css,less,json,yml,yaml,html,sh}\"",
     "storybook": "yarn workspace flat-components start",
@@ -13,7 +12,8 @@
     "ship": "yarn workspace renderer-app build && yarn workspace flat ship",
     "ship:mac": "yarn workspace renderer-app build && yarn workspace flat ship:mac",
     "ship:win": "yarn workspace renderer-app build && yarn workspace flat ship:win",
-    "ship:all": "yarn workspace renderer-app build && yarn workspace flat ship:win && yarn workspace flat pack:mac"
+    "ship:all": "yarn workspace renderer-app build && yarn workspace flat ship:win && yarn workspace flat pack:mac",
+    "_init:agora-configure": "node scripts/init-agora-configure"
   },
   "workspaces": {
     "packages": [
