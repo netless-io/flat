@@ -12,5 +12,5 @@ module.exports = merge(common, {
         ignored: ["node_modules/**"],
     },
 
-    plugins: [new NoEmitOnErrorsPlugin(), new ElectronWebpackPlugin("yarn run launch:electron")],
+    plugins: [new NoEmitOnErrorsPlugin(), new ElectronWebpackPlugin("yarn run _launch:electron")],
 });

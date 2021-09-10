@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs-extra");
 const minimist = require("minimist");
-const { agoraElectronSdkPath } = require("./Constant");
+const { agoraElectronSdkPath } = require("../constant");
 const download = require(path.join(agoraElectronSdkPath, "scripts", "download"));
 
 const commandsArgs = minimist(process.argv.slice(2));
@@ -19,7 +19,7 @@ const argv = {
 };
 
 const electronVersion =
-    require("../../../scripts/init-agora-configure/agora-electron-options").electron_version;
+    require("../../../../scripts/init-agora-configure/agora-electron-options").electron_version;
 const agoraVersion = require(path.join(agoraElectronSdkPath, "package.json")).version;
 
 fs.removeSync(path.join(agoraElectronSdkPath, "build"));

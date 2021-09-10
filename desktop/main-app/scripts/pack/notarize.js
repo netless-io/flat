@@ -1,6 +1,6 @@
 const dotenvFlow = require("dotenv-flow");
 const { notarize } = require("electron-notarize");
-const { configPath } = require("../../../scripts/constants");
+const { configPath } = require("../../../../scripts/constants");
 
 dotenvFlow.config({
     path: configPath,
