@@ -24,7 +24,7 @@
     "postinstall": "yarn _download:agora-addon",
     "lint": "lint-staged",
     "_copy:render-build-code": "node ./scripts/build/copy-render-build-code.js",
-    "_move:agora-addon": "node ./scripts/mv-agora-addon.js",
+    "_move:agora-addon": "node ./scripts/agora/mv-addon.js",
     "_download:agora-addon": "node ./scripts/agora/download-addon.js && yarn _move:agora-addon",
     "_download:agora-addon:mac": "node ./scripts/agora/download-addon.js --arch=x64 --platform=darwin && yarn _move:agora-addon",
     "_download:agora-addon:win": "node ./scripts/agora/download-addon.js --arch=x86 --platform=win32 && yarn _move:agora-addon",
