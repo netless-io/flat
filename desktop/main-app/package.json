@@ -3,13 +3,13 @@
   "version": "1.1.0-beta.1",
   "private": true,
   "description": "",
-  "homepage": "https://github.com/netless-io/Flat-native",
+  "homepage": "https://github.com/netless-io/flat",
   "author": {
     "email": "flat@agora.io",
     "name": "Agora"
   },
   "repository": {
-    "url": "https://github.com/netless-io/Flat-native"
+    "url": "https://github.com/netless-io/flat"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js",
