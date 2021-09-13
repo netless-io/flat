@@ -52,9 +52,16 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
             }
         },
         "set-aspect-ratio": args => {
-            window.setAspectRatio(args.aspectRatio);
-
             const isReset = args.aspectRatio === 0;
+
+            if (isReset) {
+                window.setAspectRatio(args.aspectRatio);
+            } else {
+                window.setAspectRatio(args.aspectRatio, {
+                    width: 50,
+                    height: 0,
+                });
+            }
 
             window.setFullScreenable(isReset);
         },
