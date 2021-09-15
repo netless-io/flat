@@ -147,7 +147,22 @@ export class RtcRoom {
         }
         console.log("[rtc] subscribe uid=%O, media=%O", user.uid, mediaType);
         await this.client?.subscribe(user, mediaType);
-        this.avatars.forEach(avatar => avatar.refresh());
+        this.avatars.forEach(avatar => {
+            if (mediaType === "video") {
+                if (!avatar.pendingSetCamera) {
+                    avatar.pendingSetCamera = { promise: Promise.resolve() };
+                } else {
+                    avatar.pendingSetCamera.resolve?.();
+                }
+            }
+            if (mediaType === "audio") {
+                if (!avatar.pendingSetMic) {
+                    avatar.pendingSetMic = { promise: Promise.resolve() };
+                } else {
+                    avatar.pendingSetMic.resolve?.();
+                }
+            }
+        });
     };
 
     private onUserUnpublished = async (
@@ -160,7 +175,7 @@ export class RtcRoom {
         }
         console.log("[rtc] unsubscribe uid=%O, media=%O", user.uid, mediaType);
         await this.client?.unsubscribe(user, mediaType);
-        this.avatars.forEach(avatar => avatar.refresh());
+        this.avatars.forEach(avatar => avatar.refreshRemoteTracks());
     };
 
     private renewToken = async (): Promise<void> => {

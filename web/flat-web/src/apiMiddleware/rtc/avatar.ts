@@ -66,26 +66,15 @@ export class RtcAvatar extends EventEmitter {
         return this.rtc.client!;
     }
 
-    public async refresh(): Promise<void> {
-        if (this.isLocal) {
-            await this.refreshLocalMic();
-            await this.refreshLocalCamera();
-        } else {
-            this.remoteUser = this.client.remoteUsers.find(
-                user => user.uid === this.avatarUser.rtcUID,
-            );
-            if (!this.remoteUser) {
-                this.audioTrack = undefined;
-                this.videoTrack = undefined;
-                return;
-            }
-            this.audioTrack = this.remoteUser.audioTrack;
-            this.videoTrack = this.remoteUser.videoTrack;
-            this.refreshRemoteTracks();
+    public refreshRemoteTracks(): void {
+        this.remoteUser = this.client.remoteUsers.find(user => user.uid === this.avatarUser.rtcUID);
+        if (!this.remoteUser) {
+            this.audioTrack = undefined;
+            this.videoTrack = undefined;
+            return;
         }
-    }
-
-    private refreshRemoteTracks(): void {
+        this.audioTrack = this.remoteUser.audioTrack;
+        this.videoTrack = this.remoteUser.videoTrack;
         if (this.audioTrack) {
             if (this.audioTrack.isPlaying !== this.mic) {
                 console.log("[rtc] mic=%O, uid=%O", this.mic, this.avatarUser.rtcUID);
@@ -105,7 +94,9 @@ export class RtcAvatar extends EventEmitter {
     private async refreshLocalCamera(): Promise<void> {
         try {
             if (this.camera && !this.videoTrack) {
+                console.log("[rtc] start get local camera");
                 this.videoTrack = await this.rtc.getLocalVideoTrack();
+                console.log("[rtc] got local camera");
                 this.element && this.videoTrack?.play(this.element);
             } else if (this.videoTrack && this.videoTrack.isPlaying !== this.camera) {
                 await (this.videoTrack as ICameraVideoTrack).setEnabled(this.camera);
@@ -119,7 +110,9 @@ export class RtcAvatar extends EventEmitter {
     private async refreshLocalMic(): Promise<void> {
         try {
             if (this.mic && !this.audioTrack) {
+                console.log("[rtc] start get local mic");
                 this.audioTrack = await this.rtc.getLocalAudioTrack();
+                console.log("[rtc] got local mic");
                 // NOTE: play local audio will cause echo
                 // this.audioTrack.play();
             } else if (this.audioTrack && this.audioTrack.isPlaying !== this.mic) {
@@ -131,14 +124,68 @@ export class RtcAvatar extends EventEmitter {
         }
     }
 
+    public pendingSetCamera: { resolve?: () => void; promise: Promise<any> } | undefined;
+    public pendingSetMic: { resolve?: () => void; promise: Promise<any> } | undefined;
+
+    private isPendingCamera = false;
+    private isPendingMic = false;
+
     public async setCamera(enable: boolean): Promise<void> {
+        if (this.isPendingCamera) {
+            return;
+        }
+        this.isPendingCamera = true;
         this.camera = enable;
-        await this.refresh().catch(error => this.emit(RtcEvents.SetCameraError, error));
+        if (this.isLocal) {
+            try {
+                await this.refreshLocalCamera();
+            } catch (error) {
+                this.emit(RtcEvents.SetCameraError, error);
+            }
+        } else {
+            if (!this.pendingSetCamera) {
+                let resolve: (() => void) | undefined;
+                const promise = new Promise<void>(r => {
+                    resolve = r;
+                });
+                this.pendingSetCamera = { resolve, promise };
+                console.log("[rtc] set camera promise");
+            }
+            await this.pendingSetCamera.promise;
+            this.pendingSetCamera = void 0;
+            console.log("[rtc] camera promise done");
+            this.refreshRemoteTracks();
+        }
+        this.isPendingCamera = false;
     }
 
     public async setMic(enable: boolean): Promise<void> {
+        if (this.isPendingMic) {
+            return;
+        }
+        this.isPendingMic = true;
         this.mic = enable;
-        await this.refresh().catch(error => this.emit(RtcEvents.SetMicError, error));
+        if (this.isLocal) {
+            try {
+                await this.refreshLocalMic();
+            } catch (error) {
+                this.emit(RtcEvents.SetMicError, error);
+            }
+        } else {
+            if (!this.pendingSetMic) {
+                let resolve: (() => void) | undefined;
+                const promise = new Promise<void>(r => {
+                    resolve = r;
+                });
+                this.pendingSetMic = { resolve, promise };
+                console.log("[rtc] set mic promise");
+            }
+            await this.pendingSetMic.promise;
+            this.pendingSetMic = void 0;
+            console.log("[rtc] mic promise done");
+            this.refreshRemoteTracks();
+        }
+        this.isPendingMic = false;
     }
 
     private checkVolume = (): void => {
