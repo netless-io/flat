@@ -127,7 +127,14 @@ export class RtcAvatar extends EventEmitter {
     public pendingSetCamera: { resolve?: () => void; promise: Promise<any> } | undefined;
     public pendingSetMic: { resolve?: () => void; promise: Promise<any> } | undefined;
 
+    private isPendingCamera = false;
+    private isPendingMic = false;
+
     public async setCamera(enable: boolean): Promise<void> {
+        if (this.isPendingCamera) {
+            return;
+        }
+        this.isPendingCamera = true;
         this.camera = enable;
         if (this.isLocal) {
             try {
@@ -149,9 +156,14 @@ export class RtcAvatar extends EventEmitter {
             console.log("[rtc] camera promise done");
             this.refreshRemoteTracks();
         }
+        this.isPendingCamera = false;
     }
 
     public async setMic(enable: boolean): Promise<void> {
+        if (this.isPendingMic) {
+            return;
+        }
+        this.isPendingMic = true;
         this.mic = enable;
         if (this.isLocal) {
             try {
@@ -173,6 +185,7 @@ export class RtcAvatar extends EventEmitter {
             console.log("[rtc] mic promise done");
             this.refreshRemoteTracks();
         }
+        this.isPendingMic = false;
     }
 
     private checkVolume = (): void => {
