@@ -31,7 +31,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                     cursor: true,
                     /* the containerSizeRatio config limit width and height ratio of windowManager
                      for make sure windowManager sync in whiteboard. */
-                    containerSizeRatio: whiteboardStore.updateWhiteboardResize(),
+                    containerSizeRatio: whiteboardStore.getWhiteboardRatio(),
                     collectorStyles: {
                         position: "absolute",
                         right: "10px",
@@ -47,6 +47,53 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
         void mountWindowManager();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [whiteboardEl, collectorEl, room]);
+
+    const whiteboardOnResize = useCallback(() => {
+        if (whiteboardEl) {
+            const whiteboardRatio = whiteboardStore.getWhiteboardRatio();
+
+            const classRoomRightSideWidth = 304;
+            let classRoomTopBarHeight: number;
+            let classRoomMinWidth: number;
+            let classRoomMinHeight: number;
+
+            if (whiteboardStore.smallClassRatio === whiteboardRatio) {
+                classRoomTopBarHeight = 182;
+                classRoomMinWidth = 1130;
+                classRoomMinHeight = 610;
+            } else {
+                classRoomTopBarHeight = 50;
+                classRoomMinWidth = 1020;
+                classRoomMinHeight = 522;
+            }
+
+            const whiteboardWidth = Math.min(
+                window.innerWidth - classRoomRightSideWidth,
+                (window.innerHeight - classRoomTopBarHeight) / whiteboardRatio,
+            );
+
+            const whiteboardHeight = whiteboardWidth * whiteboardRatio;
+
+            whiteboardEl.style.width = `${whiteboardWidth}px`;
+            whiteboardEl.style.height = `${whiteboardHeight}px`;
+
+            if (window.innerHeight < classRoomMinHeight || window.innerWidth < classRoomMinWidth) {
+                const whiteboardMinWidth = classRoomMinWidth - classRoomRightSideWidth;
+                whiteboardEl.style.minWidth = `${whiteboardMinWidth}px`;
+                whiteboardEl.style.minHeight = `${whiteboardMinWidth * whiteboardRatio}px`;
+            }
+        }
+    }, [whiteboardEl, whiteboardStore]);
+
+    useEffect(() => {
+        if (whiteboardEl) {
+            whiteboardOnResize();
+            window.addEventListener("resize", whiteboardOnResize);
+        }
+        return () => {
+            window.removeEventListener("resize", whiteboardOnResize);
+        };
+    }, [whiteboardEl, whiteboardOnResize]);
 
     const bindWhiteboard = useCallback((ref: HTMLDivElement | null) => {
         if (ref) {
