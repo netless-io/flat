@@ -48,17 +48,6 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [whiteboardEl, collectorEl, room]);
 
-    useEffect(() => {
-        if (whiteboardEl) {
-            whiteboardOnResize();
-            window.addEventListener("resize", whiteboardOnResize);
-        }
-        return () => {
-            window.removeEventListener("resize", whiteboardOnResize);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [whiteboardEl]);
-
     const whiteboardOnResize = useCallback(() => {
         if (whiteboardEl) {
             const whiteboardRatio = whiteboardStore.getWhiteboardRatio();
@@ -95,6 +84,16 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
             }
         }
     }, [whiteboardEl, whiteboardStore]);
+
+    useEffect(() => {
+        if (whiteboardEl) {
+            whiteboardOnResize();
+            window.addEventListener("resize", whiteboardOnResize);
+        }
+        return () => {
+            window.removeEventListener("resize", whiteboardOnResize);
+        };
+    }, [whiteboardEl, whiteboardOnResize]);
 
     const bindWhiteboard = useCallback((ref: HTMLDivElement | null) => {
         if (ref) {
