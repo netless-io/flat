@@ -106,35 +106,54 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
         if (whiteboardEl) {
             const whiteboardRatio = whiteboardStore.getWhiteboardRatio();
 
-            const classRoomRightSideWidth = whiteboardStore.isRightSideClose ? 0 : 304;
-            let classRoomTopBarHeight: number;
-            let classRoomMinWidth: number;
-            let classRoomMinHeight: number;
-
             if (whiteboardStore.smallClassRatio === whiteboardRatio) {
-                classRoomTopBarHeight = 182;
-                classRoomMinWidth = 1130;
-                classRoomMinHeight = 610;
+                const classRoomRightSideWidth = whiteboardStore.isRightSideClose ? 0 : 304;
+                const classRoomTopBarHeight = 182;
+                const classRoomMinWidth = 1130;
+                const classRoomMinHeight = 610;
+
+                const whiteboardWidth = Math.min(
+                    window.innerWidth - classRoomRightSideWidth,
+                    (window.innerHeight - classRoomTopBarHeight) / whiteboardRatio,
+                );
+
+                const whiteboardHeight = whiteboardWidth * whiteboardRatio;
+
+                whiteboardEl.style.width = `${whiteboardWidth}px`;
+                whiteboardEl.style.height = `${whiteboardHeight}px`;
+
+                if (
+                    window.innerHeight < classRoomMinHeight ||
+                    window.innerWidth < classRoomMinWidth
+                ) {
+                    const whiteboardMinWidth = classRoomMinWidth - classRoomRightSideWidth;
+                    whiteboardEl.style.minWidth = `${whiteboardMinWidth}px`;
+                    whiteboardEl.style.minHeight = `${whiteboardMinWidth * whiteboardRatio}px`;
+                }
             } else {
-                classRoomTopBarHeight = 50;
-                classRoomMinWidth = 1020;
-                classRoomMinHeight = 522;
-            }
+                const classRoomRightSideWidth = whiteboardStore.isRightSideClose ? 0 : 304;
+                const classRoomTopBarHeight = 50;
+                const classRoomMinWidth = 1020;
+                const classRoomMinHeight = 522;
 
-            const whiteboardWidth = Math.min(
-                window.innerWidth - classRoomRightSideWidth,
-                (window.innerHeight - classRoomTopBarHeight) / whiteboardRatio,
-            );
+                const whiteboardWidth = Math.min(
+                    window.innerWidth - classRoomRightSideWidth,
+                    (window.innerHeight - classRoomTopBarHeight) / whiteboardRatio,
+                );
 
-            const whiteboardHeight = whiteboardWidth * whiteboardRatio;
+                const whiteboardHeight = whiteboardWidth * whiteboardRatio;
 
-            whiteboardEl.style.width = `${whiteboardWidth}px`;
-            whiteboardEl.style.height = `${whiteboardHeight}px`;
+                whiteboardEl.style.width = `${whiteboardWidth}px`;
+                whiteboardEl.style.height = `${whiteboardHeight}px`;
 
-            if (window.innerHeight < classRoomMinHeight || window.innerWidth < classRoomMinWidth) {
-                const whiteboardMinWidth = classRoomMinWidth - classRoomRightSideWidth;
-                whiteboardEl.style.minWidth = `${whiteboardMinWidth}px`;
-                whiteboardEl.style.minHeight = `${whiteboardMinWidth * whiteboardRatio}px`;
+                if (
+                    window.innerHeight < classRoomMinHeight ||
+                    window.innerWidth < classRoomMinWidth
+                ) {
+                    const whiteboardMinWidth = classRoomMinWidth - classRoomRightSideWidth;
+                    whiteboardEl.style.minWidth = `${whiteboardMinWidth}px`;
+                    whiteboardEl.style.minHeight = `${whiteboardMinWidth * whiteboardRatio}px`;
+                }
             }
         }
     };
