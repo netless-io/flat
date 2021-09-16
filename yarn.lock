@@ -1862,10 +1862,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@netless/app-docs-viewer@^0.1.19":
-  version "0.1.19"
-  resolved "https://registry.npmjs.org/@netless/app-docs-viewer/-/app-docs-viewer-0.1.19.tgz#4343a06f844433f20c6d4ed3ea734cb103ae0760"
-  integrity sha512-ZV/5q1ADMwuFW0vO/SDP81j6DR+Rbp1bLfA4cWTqqf2qrlkLLt4H5qI3WpB8qGrdWYrk4XKYqvhuRWiiZEs4mA==
+"@netless/app-docs-viewer@^0.1.21":
+  version "0.1.21"
+  resolved "https://registry.npmjs.org/@netless/app-docs-viewer/-/app-docs-viewer-0.1.21.tgz#781f74070ae9b6a98f60f2935be1d4e0409bad1f"
+  integrity sha512-vz2NVpkfoqkg+0n3gx0dVziyqrdVgsuGh5Z/cSHmF9cNSjiCc+9yyERo2pQV9J6n5RB+UfL/WYTTJD2ApedIAw==
   dependencies:
     debounce-fn "^5.0.0"
     vanilla-lazyload "^17.4.0"
@@ -1937,32 +1937,18 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.1.55":
-  version "0.1.55"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.1.55.tgz#25d650c13b18953b2b7c6e74dc4466872507f2a6"
-  integrity sha512-zanEmfdLCMAC44263fiqZHcQDfSLgbVijxO3YMgzCjxKC4cJEwvb4Udgf+TdsOjsuRjBRLOgscpjwamETuevMQ==
+"@netless/window-manager@^0.1.64-canary.2":
+  version "0.1.64-canary.2"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.1.64-canary.2.tgz#2005a986178242b07ad5a6c0e30488edb2a8e8c2"
+  integrity sha512-ruTEW6c1FIl8aLjGkW/GoirjP810nIRMGsHNX9uHuvp3XfEEJYyU/ekaTx7AAlE4zFDJSQ7V4d0ugE+RXzjmoA==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
-    "@netless/app-docs-viewer" "^0.1.19"
-    "@netless/app-media-player" "0.1.0-beta.5"
-    "@netless/telebox-insider" "^0.1.17"
-    emittery "^0.9.2"
-    lodash-es "^4.17.21"
-    nanoid "^3.1.25"
-    video.js ">=7"
-
-"@netless/window-manager@^0.1.63-canary.1":
-  version "0.1.63-canary.1"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.1.63-canary.1.tgz#0c9a0e09a4d95ed7073a7bed2fe293ab58b278fa"
-  integrity sha512-LsDDwR5ajnzaSmlfxQTNJBVfuZ/S+mZZaS6vpIYR8nApLxpIyfV2W6siw9Z6vQwwkOyPvQJqtFkL/WynXlKSOQ==
-  dependencies:
-    "@juggle/resize-observer" "^3.3.1"
-    "@netless/app-docs-viewer" "^0.1.19"
+    "@netless/app-docs-viewer" "^0.1.21"
     "@netless/app-media-player" "0.1.0-beta.5"
     "@netless/telebox-insider" "^0.1.17"
     dexie "^3.0.3"
     emittery "^0.9.2"
-    lodash-es "^4.17.21"
+    lodash "^4.17.21"
     nanoid "^3.1.25"
     p-retry "^4.6.1"
     video.js ">=7"
@@ -17224,11 +17210,12 @@ which@^2.0.1, which@^2.0.2:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@2.13.19:
-  version "2.13.19"
-  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.13.19.tgz#2d0a45518f5e54c9283ffe770570b02db8785965"
-  integrity sha512-hIV59tvIPUOeGVlqDIp7bb7HilPYJfvMH6Op3Od6yauOR3ss18E1ftaDN+qPn3Ys7A+FkvP1BwKNkYezHiQ5mw==
+white-web-sdk@2.14.2:
+  version "2.14.2"
+  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.14.2.tgz#12393fa50904c5f677f41d9d7c078e259d337b57"
+  integrity sha512-j4atMyNW2evhRKLWhkfytvvk54pcGy1W4FEBVOtxRr4crW92iqracRufG2jXOBh2NzJqSwXvOLezYkDXbvbO8g==
   dependencies:
+    "@juggle/resize-observer" "^3.3.1"
     "@netless/canvas-polyfill" "^0.0.4"
     "@netless/xml-js" "1.6.15"
     atob "^2.1.2"
@@ -17244,7 +17231,6 @@ white-web-sdk@2.13.19:
     query-string "5"
     react "^16.8.0"
     react-dom "^16.8.0"
-    resize-observer-polyfill "^1.5.1"
     spark-md5 "^3.0.0"
     textarea-caret-ts "^4.1.0"
     url-parse "^1.4.0"
