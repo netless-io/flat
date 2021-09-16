@@ -51,19 +51,22 @@ const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAs
                 window.center();
             }
         },
-        "set-aspect-ratio": args => {
-            const isReset = args.aspectRatio === 0;
-
-            if (isReset) {
-                window.setAspectRatio(args.aspectRatio);
-            } else {
-                window.setAspectRatio(args.aspectRatio, {
-                    width: 50,
-                    height: 0,
-                });
-            }
-
-            window.setFullScreenable(isReset);
+        // TODO: AspectRatio in electron has compatibility issues. Temporarily remove this feature.
+        //  - see: https://github.com/electron/electron/issues/30979
+        //         https://github.com/electron/electron/pull/30989
+        "set-aspect-ratio": _args => {
+            // const isReset = args.aspectRatio === 0;
+            //
+            // if (isReset) {
+            //     window.setAspectRatio(args.aspectRatio);
+            // } else {
+            //     window.setAspectRatio(args.aspectRatio, {
+            //         width: 50,
+            //         height: 0,
+            //     });
+            // }
+            //
+            // window.setFullScreenable(isReset);
         },
         "disable-window": args => {
             options.disableClose = args.disable;
