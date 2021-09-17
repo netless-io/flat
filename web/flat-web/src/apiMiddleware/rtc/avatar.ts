@@ -54,6 +54,7 @@ export class RtcAvatar extends EventEmitter {
         this.avatarUser = avatarUser;
         this.isLocal = userUUID === avatarUser.userUUID;
         this.rtc.addAvatar(this);
+        this.prepareRemoteTracks();
         this.observeVolumeId = window.setInterval(this.checkVolume, 500);
     }
 
@@ -64,6 +65,18 @@ export class RtcAvatar extends EventEmitter {
 
     private get client(): IAgoraRTCClient {
         return this.rtc.client!;
+    }
+
+    public prepareRemoteTracks(): void {
+        this.remoteUser = this.client.remoteUsers.find(user => user.uid === this.avatarUser.rtcUID);
+        if (this.remoteUser) {
+            if (this.remoteUser.videoTrack) {
+                this.pendingSetCamera = { promise: Promise.resolve() };
+            }
+            if (this.remoteUser.audioTrack) {
+                this.pendingSetMic = { promise: Promise.resolve() };
+            }
+        }
     }
 
     public refreshRemoteTracks(): void {
@@ -129,6 +142,22 @@ export class RtcAvatar extends EventEmitter {
 
     private isPendingCamera = false;
     private isPendingMic = false;
+
+    public onSubscribeCamera(): void {
+        if (!this.pendingSetCamera) {
+            this.pendingSetCamera = { promise: Promise.resolve() };
+        } else {
+            this.pendingSetCamera.resolve?.();
+        }
+    }
+
+    public onSubscribeMic(): void {
+        if (!this.pendingSetMic) {
+            this.pendingSetMic = { promise: Promise.resolve() };
+        } else {
+            this.pendingSetMic.resolve?.();
+        }
+    }
 
     public async setCamera(enable: boolean): Promise<void> {
         if (this.isPendingCamera) {
