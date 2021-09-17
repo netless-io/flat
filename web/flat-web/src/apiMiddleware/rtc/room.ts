@@ -147,7 +147,7 @@ export class RtcRoom {
         }
         console.log("[rtc] subscribe uid=%O, media=%O", user.uid, mediaType);
         await this.client?.subscribe(user, mediaType);
-        this.refreshAvatar(user, mediaType);
+        this.avatars.forEach(avatar => avatar.refreshRemoteTracks());
     };
 
     private onUserUnpublished = async (
@@ -169,17 +169,4 @@ export class RtcRoom {
             await this.client.renewToken(token);
         }
     };
-
-    private refreshAvatar(user: IAgoraRTCRemoteUser, mediaType: string): void {
-        this.avatars.forEach(avatar => {
-            if (avatar.avatarUser.rtcUID === user.uid) {
-                if (mediaType === "video") {
-                    avatar.onSubscribeCamera();
-                }
-                if (mediaType === "audio") {
-                    avatar.onSubscribeMic();
-                }
-            }
-        });
-    }
 }
