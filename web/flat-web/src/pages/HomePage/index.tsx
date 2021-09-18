@@ -40,7 +40,7 @@ export const HomePage = observer(function HomePage() {
             } catch (e) {
                 globalStore.lastLoginCheck = null;
                 console.error(e);
-                errorTips(e);
+                errorTips(e as Error);
             }
 
             return false;

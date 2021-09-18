@@ -47,6 +47,7 @@ import { runtime } from "../../utils/runtime";
 import { RtcChannelType } from "../../apiMiddleware/rtc/room";
 import { useTranslation } from "react-i18next";
 import { ShareScreen } from "../../components/ShareScreen";
+import { generateAvatar } from "../../utils/generateAvatar";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -187,6 +188,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         isAvatarUserCreator={true}
                         rtc={classRoomStore.rtc}
                         updateDeviceState={classRoomStore.updateDeviceState}
+                        generateAvatar={generateAvatar}
                     />
                     {classRoomStore.users.joiners.map(renderAvatar)}
                 </div>
@@ -383,6 +385,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 avatarUser={user}
                 rtc={classRoomStore.rtc}
                 updateDeviceState={classRoomStore.updateDeviceState}
+                generateAvatar={generateAvatar}
             />
         );
     }

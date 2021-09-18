@@ -15,9 +15,10 @@ import React, { useContext } from "react";
 import { shell } from "electron";
 import { useHistory, useLocation } from "react-router-dom";
 import { MainPageLayout, MainPageLayoutItem, MainPageLayoutProps } from "flat-components";
+import { useTranslation } from "react-i18next";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
-import { useTranslation } from "react-i18next";
+import { generateAvatar } from "../../utils/generateAvatar";
 
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];
@@ -121,6 +122,7 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
             activeKeys={activeKeys}
             avatarSrc={globalStore.userInfo?.avatar ?? ""}
             userName={globalStore.userInfo?.name ?? ""}
+            generateAvatar={generateAvatar}
         >
             {children}
         </MainPageLayout>

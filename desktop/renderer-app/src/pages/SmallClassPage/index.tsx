@@ -49,6 +49,7 @@ import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
+import { generateAvatar } from "../../utils/generateAvatar";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -201,6 +202,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         isAvatarUserCreator={true}
                         rtcEngine={classRoomStore.rtc.rtcEngine}
                         updateDeviceState={classRoomStore.updateDeviceState}
+                        generateAvatar={generateAvatar}
                     />
                     {classRoomStore.users.joiners.map(renderAvatar)}
                 </div>
@@ -392,6 +394,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 avatarUser={user}
                 rtcEngine={classRoomStore.rtc.rtcEngine}
                 updateDeviceState={classRoomStore.updateDeviceState}
+                generateAvatar={generateAvatar}
             />
         );
     }

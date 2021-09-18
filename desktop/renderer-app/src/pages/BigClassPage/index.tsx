@@ -45,6 +45,7 @@ import { BigClassAvatar } from "./BigClassAvatar";
 import "./BigClassPage.less";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
+import { generateAvatar } from "../../utils/generateAvatar";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -369,6 +370,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                                 updateDeviceState={classRoomStore.updateDeviceState}
                                 mini={isCreatorMini}
                                 onExpand={onVideoAvatarExpand}
+                                generateAvatar={generateAvatar}
                             />
                         </div>
 
@@ -386,6 +388,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                                     updateDeviceState={classRoomStore.updateDeviceState}
                                     mini={mainSpeaker !== speakingJoiner}
                                     onExpand={onVideoAvatarExpand}
+                                    generateAvatar={generateAvatar}
                                 />
                             </div>
                         )}

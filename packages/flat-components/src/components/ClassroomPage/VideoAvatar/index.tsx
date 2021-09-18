@@ -6,7 +6,7 @@ import microphoneDisabledSVG from "./icons/microphone-disabled.svg";
 import videoExpandSVG from "./icons/video-expand.svg";
 import placeholderSVG from "./icons/placeholder.svg";
 
-import React from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
@@ -34,6 +34,8 @@ export interface VideoAvatarProps
     mini?: boolean;
     /** When the expand button of mini avatar is clicked */
     onExpand?: () => void;
+    /** function to generate placeholder avatar */
+    generateAvatar: (uid: string) => string;
 }
 
 export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
@@ -46,9 +48,12 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
     mini,
     onExpand,
     className,
+    generateAvatar,
     ...restProps
 }) {
     const { t } = useTranslation();
+    const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
+
     if (!avatarUser) {
         return (
             <div
@@ -64,6 +69,8 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
             </div>
         );
     }
+
+    const avatar = isAvatarLoadFailed ? generateAvatar(avatarUser.userUUID) : avatarUser.avatar;
 
     const isCameraCtrlDisable =
         avatarUser.userUUID !== userUUID && (!isCreator || !avatarUser.camera);
@@ -81,12 +88,13 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
                     <div
                         className="video-avatar-background-blur"
                         style={{
-                            backgroundImage: `url(${avatarUser.avatar})`,
+                            backgroundImage: `url(${avatar})`,
                         }}
                     />
                     <img
                         className="video-avatar-background-avatar"
-                        src={avatarUser.avatar}
+                        src={avatar}
+                        onError={() => setAvatarLoadFailed(true)}
                         alt="no camera"
                     />
                 </div>

@@ -17,6 +17,8 @@ export interface MainPageNavHorizontalProps extends MainPageNavAvatarProps, Main
     rightMenu: MainPageLayoutItem[];
     /** display return to previous page button if provided*/
     onBackPreviousPage?: () => void;
+    /** function to generate placeholder avatar */
+    generateAvatar: (uid: string) => string;
 }
 
 export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
@@ -28,6 +30,7 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
     rightMenu,
     popMenu,
     onBackPreviousPage,
+    generateAvatar,
     title,
 }) => {
     const { TabPane } = Tabs;
@@ -92,6 +95,7 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
                             onClick={onClick}
                             activeKeys={activeKeys}
                             popMenu={popMenu}
+                            generateAvatar={generateAvatar}
                         />
                     </div>
                 </div>
