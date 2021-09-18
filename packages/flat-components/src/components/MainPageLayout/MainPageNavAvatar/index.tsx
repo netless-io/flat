@@ -15,6 +15,8 @@ export interface MainPageNavAvatarProps {
     activeKeys: string[];
     /** appear when click avatar component */
     popMenu: MainPageLayoutItem[];
+    /** function to generate placeholder avatar */
+    generateAvatar: (uid: string) => string;
 }
 
 export const MainPageNavAvatar: React.FC<MainPageNavAvatarProps> = ({
@@ -23,8 +25,12 @@ export const MainPageNavAvatar: React.FC<MainPageNavAvatarProps> = ({
     onClick,
     activeKeys,
     popMenu,
+    generateAvatar,
 }) => {
     const [popMenuVisible, setPopMenuVisible] = useState(false);
+    const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
+
+    const avatar = isAvatarLoadFailed ? generateAvatar(avatarSrc) : avatarSrc;
 
     const togglePopMenuVisible = (): void => {
         setPopMenuVisible(!popMenuVisible);
@@ -40,7 +46,11 @@ export const MainPageNavAvatar: React.FC<MainPageNavAvatarProps> = ({
             onVisibleChange={togglePopMenuVisible}
             content={renderPopMenuInner}
         >
-            <Avatar className="main-page-nav-avatar" size={32} icon={<img src={avatarSrc} />} />
+            <Avatar
+                className="main-page-nav-avatar"
+                size={32}
+                icon={<img src={avatar} onError={() => setAvatarLoadFailed(true)} />}
+            />
         </Popover>
     );
 

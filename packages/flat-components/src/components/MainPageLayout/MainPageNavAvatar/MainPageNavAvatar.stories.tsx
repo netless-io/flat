@@ -43,6 +43,7 @@ Overview.args = {
     activeKeys: ["home"],
     avatarSrc: "http://placekitten.com/200/200",
     userName: "Flat Name",
+    generateAvatar: () => "http://placekitten.com/64/64",
 };
 Overview.argTypes = {
     activeKeys: {
