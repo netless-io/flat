@@ -10,9 +10,10 @@ import logoutSVG from "./icons/logout.svg";
 import React, { useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { MainPageLayoutHorizontal, MainPageLayoutItem, MainPageLayoutProps } from "flat-components";
+import { useTranslation } from "react-i18next";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
-import { useTranslation } from "react-i18next";
+import { generateAvatar } from "../../utils/generateAvatar";
 
 export interface MainPageLayoutHorizontalContainerProps {
     subMenu?: MainPageLayoutItem[];
@@ -110,6 +111,7 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
                 activeKeys={activeKeys}
                 avatarSrc={globalStore.userInfo?.avatar ?? ""}
                 userName={globalStore.userInfo?.name ?? ""}
+                generateAvatar={generateAvatar}
             >
                 {children}
             </MainPageLayoutHorizontal>

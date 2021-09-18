@@ -41,6 +41,7 @@ Mini.args = {
         name: faker.name.lastName(20),
         userUUID: "",
     },
+    generateAvatar: () => "http://placekitten.com/64/64",
 };
 Mini.argTypes = {
     updateDeviceState: { action: "updateDeviceState" },

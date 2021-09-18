@@ -13,6 +13,8 @@ export interface MainPageNavProps extends MainPageNavAvatarProps {
     sideMenu: MainPageLayoutItem[];
     /** outside footer menu in MainPageLayout */
     sideMenuFooter: MainPageLayoutItem[];
+    /** function to generate placeholder avatar */
+    generateAvatar: (uid: string) => string;
 }
 
 export const MainPageNav: React.FC<MainPageNavProps> = ({
@@ -22,6 +24,7 @@ export const MainPageNav: React.FC<MainPageNavProps> = ({
     activeKeys,
     sideMenu,
     sideMenuFooter,
+    generateAvatar,
     popMenu,
 }) => {
     return (
@@ -33,6 +36,7 @@ export const MainPageNav: React.FC<MainPageNavProps> = ({
                     onClick={onClick}
                     activeKeys={activeKeys}
                     popMenu={popMenu}
+                    generateAvatar={generateAvatar}
                 />
             </div>
             <div className="main-page-nav-content">

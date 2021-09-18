@@ -43,6 +43,7 @@ import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 import { useTranslation } from "react-i18next";
 import { ShareScreen } from "../../components/ShareScreen";
+import { generateAvatar } from "../../utils/generateAvatar";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -301,6 +302,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                             isAvatarUserCreator={true}
                             rtc={classRoomStore.rtc}
                             updateDeviceState={classRoomStore.updateDeviceState}
+                            generateAvatar={generateAvatar}
                         />
                         <OneToOneAvatar
                             isCreator={classRoomStore.isCreator}
@@ -308,6 +310,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                             avatarUser={joiner}
                             rtc={classRoomStore.rtc}
                             updateDeviceState={classRoomStore.updateDeviceState}
+                            generateAvatar={generateAvatar}
                         />
                     </div>
                 }
