@@ -87,6 +87,7 @@ module.exports = {
         "videojs", // @videojs/vhs-utils
         "telebox", // @netless/widnow-manager
         "Buildin", // @netless/widnow-manager
+        "zindex", // antd
 
         // misc
         "npmrc",
