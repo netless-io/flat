@@ -17210,12 +17210,11 @@ which@^2.0.1, which@^2.0.2:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@2.14.2:
-  version "2.14.2"
-  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.14.2.tgz#12393fa50904c5f677f41d9d7c078e259d337b57"
-  integrity sha512-j4atMyNW2evhRKLWhkfytvvk54pcGy1W4FEBVOtxRr4crW92iqracRufG2jXOBh2NzJqSwXvOLezYkDXbvbO8g==
+white-web-sdk@2.13.20:
+  version "2.13.20"
+  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.13.20.tgz#da1b5175c0c8ca37c323a90d0b6e93c365e94217"
+  integrity sha512-zpN66Jtvc/mY1pFcJDMBRsqH3BU5hFxNn/g0+xyPlN5OBIaIDMxzg2rPPcIbjNp/aZ0Zc1+XTk1iU8O3mlQGmg==
   dependencies:
-    "@juggle/resize-observer" "^3.3.1"
     "@netless/canvas-polyfill" "^0.0.4"
     "@netless/xml-js" "1.6.15"
     atob "^2.1.2"
@@ -17231,6 +17230,7 @@ white-web-sdk@2.14.2:
     query-string "5"
     react "^16.8.0"
     react-dom "^16.8.0"
+    resize-observer-polyfill "^1.5.1"
     spark-md5 "^3.0.0"
     textarea-caret-ts "^4.1.0"
     url-parse "^1.4.0"
