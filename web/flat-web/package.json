@@ -34,6 +34,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
     "@loadable/component": "^5.15.0",
+    "@netless/app-monaco": "^0.1.7",
     "@netless/combine-player": "^1.1.6",
     "@netless/cursor-tool": "^0.1.0",
     "@netless/player-controller": "^0.0.9",

@@ -10,6 +10,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { WhiteboardStore } from "../stores/WhiteboardStore";
 import { isSupportedImageType, onDropImage } from "../utils/dnd/image";
 import { ScenesController } from "../../../../packages/flat-components/src";
+import { AppStoreButton } from "./AppStoreButton";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -169,7 +170,10 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
             >
                 <div className="whiteboard-writable-area">
                     <div className="tool-box-out">
-                        <ToolBox room={room} />
+                        <ToolBox
+                            room={room}
+                            customerComponent={[<AppStoreButton addApp={whiteboardStore.addApp} />]}
+                        />
                     </div>
                     <div
                         className={classNames("redo-undo-box", {
