@@ -71,6 +71,8 @@ yarn run bootstrap
 yarn run start
 ```
 
+> 如果你的开发环境是 macOS，请确保你安装了 iTerm 或 iTerm2，否则命令会启动失败。
+
 ### 打包可执行文件
 
 - 项目根执行 `yarn ship` 将根据当前系统打包。
