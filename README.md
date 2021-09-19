@@ -72,6 +72,8 @@ yarn run bootstrap
 yarn run start
 ```
 
+> If your development environment is macOS, ensure that you have iTerm or iTerm2 installed. Otherwise, the command fails.
+
 ### Package Executable
 
 - Run `yarn ship` at project root to package base on current system type.
