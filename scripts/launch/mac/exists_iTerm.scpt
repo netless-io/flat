@@ -1,5 +1,5 @@
 try
-    exists application id "com.googlecode.iterm2"
+    exists application "iTerm"
     return true
 on error
     return false
