@@ -5,10 +5,12 @@ on:
       - "stable"
       - "only-deploy-prod-web"
     paths:
+      - "config/**"
       - "web/flat-web/**"
       - "packages/flat-components/src/**"
       - "packages/flat-i18n/locales/**"
       - "packages/flat-types/src/**"
+      - ".github/workflows/deploy-web-prod.yml"
 
 jobs:
   deploy-flat-web-prod:
