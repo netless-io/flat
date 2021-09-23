@@ -115,7 +115,7 @@ export class RtcAvatar extends EventEmitter {
                 this.videoTrack = await this.rtc.getLocalVideoTrack();
                 console.log("[rtc] got local camera, start play");
                 this.element && this.videoTrack?.play(this.element);
-            } else if (this.videoTrack && this.videoTrack.isPlaying !== this.camera) {
+            } else if (this.videoTrack) {
                 await (this.videoTrack as ICameraVideoTrack).setEnabled(this.camera);
             }
         } catch (error) {
@@ -143,7 +143,7 @@ export class RtcAvatar extends EventEmitter {
                 console.log("[rtc] got local mic, not play");
                 // NOTE: play local audio will cause echo
                 // this.audioTrack.play();
-            } else if (this.audioTrack && this.audioTrack.isPlaying !== this.mic) {
+            } else if (this.audioTrack) {
                 await (this.audioTrack as IMicrophoneAudioTrack).setEnabled(this.mic);
             }
         } catch (error) {
