@@ -4,10 +4,12 @@ on:
     branches:
       - "main"
     paths:
+      - "config/**"
       - "web/flat-web/**"
       - "packages/flat-components/src/**"
       - "packages/flat-i18n/locales/**"
       - "packages/flat-types/src/**"
+      - ".github/workflows/deploy-web-dev.yml"
 
 jobs:
   deploy-flat-web-dev:
