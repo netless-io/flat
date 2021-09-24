@@ -1,9 +1,8 @@
 import "video.js/dist/video-js.css";
 
-import { BuiltinApps, WindowManager } from "@netless/window-manager";
+import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manager";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import {
-    createPlugins,
     DefaultHotKeys,
     DeviceType,
     Room,
@@ -14,11 +13,6 @@ import {
     ViewVisionMode,
     WhiteWebSdk,
 } from "white-web-sdk";
-import {
-    PluginId as VideoJsPluginId,
-    videoJsPlugin,
-    PluginContext as VideoJsPluginContext,
-} from "@netless/video-js-plugin";
 import { CursorTool } from "@netless/cursor-tool";
 import { NETLESS, NODE_ENV } from "../constants/Process";
 import { globalStore } from "./GlobalStore";
@@ -191,6 +185,10 @@ export class WhiteboardStore {
         });
     };
 
+    public addApp = async (config: AddAppParams): Promise<void> => {
+        await this.windowManager?.addApp(config);
+    };
+
     public onMainViewModeChange = (): void => {
         this.windowManager?.emitter.on("mainViewModeChange", mode => {
             const isWindow = mode !== ViewVisionMode.Writable;
@@ -218,10 +216,6 @@ export class WhiteboardStore {
             throw new Error("Missing Whiteboard UUID and Token");
         }
 
-        const plugins = createPlugins({ [VideoJsPluginId]: videoJsPlugin() });
-        const videoJsPluginContext: Partial<VideoJsPluginContext> = { enable: true, verbose: true };
-        plugins.setPluginContext(VideoJsPluginId, videoJsPluginContext);
-
         let deviceType: DeviceType;
         if (isWindows) {
             deviceType = DeviceType.Surface;
@@ -234,11 +228,11 @@ export class WhiteboardStore {
         }
         const whiteWebSdk = new WhiteWebSdk({
             appIdentifier: NETLESS.APP_IDENTIFIER,
-            plugins: plugins,
             deviceType: deviceType,
             pptParams: {
                 useServerWrap: true,
             },
+            useMobXState: true,
         });
 
         const cursorName = globalStore.userInfo?.name;
