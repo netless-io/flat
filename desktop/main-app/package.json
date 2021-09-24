@@ -20,7 +20,7 @@
     "pack:mac": "node ./scripts/pack mac",
     "ship": "yarn build && node ./scripts/pack auto",
     "ship:win": "yarn build && yarn pack:win",
-    "ship:mac": "yarn build && node pack:mac",
+    "ship:mac": "yarn build && yarn pack:mac",
     "postinstall": "yarn _download:agora-addon",
     "lint": "lint-staged",
     "_copy:render-build-code": "node ./scripts/build/copy-render-build-code.js",
