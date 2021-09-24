@@ -13,5 +13,5 @@
     }
   },
   "exclude": ["node_modules", "dist", "public"],
-  "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "scripts/*.ts", "typings/*.ts", "vite.config.ts"]
 }
