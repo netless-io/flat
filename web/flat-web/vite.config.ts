@@ -3,9 +3,10 @@ import refresh from "@vitejs/plugin-react-refresh";
 import { defineConfig } from "vite";
 import path from "path";
 import { dotenv } from "./scripts/vite-plugin-dotenv";
+import { injectHtmlHash } from "./scripts/vite-plugin-html-hash";
 
 export default defineConfig({
-    plugins: [refresh(), legacy(), dotenv("../../config")],
+    plugins: [refresh(), legacy(), dotenv("../../config"), injectHtmlHash()],
     resolve: {
         alias: [
             // replace webpack alias
