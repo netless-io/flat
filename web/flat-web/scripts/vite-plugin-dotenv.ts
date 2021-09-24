@@ -5,7 +5,7 @@ import dotenvExpand from "dotenv-expand";
 import type { Plugin } from "vite";
 
 // based on https://github.com/IndexXuan/vite-plugin-env-compatible
-export function dotenv(envDir: string = process.cwd()): Plugin {
+export function dotenv(envDir: string): Plugin {
     return {
         name: "flat:dotenv",
         enforce: "pre",
