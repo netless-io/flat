@@ -194,5 +194,6 @@ $RECYCLE.BIN/
 .npmrc
 
 build/
+!desktop/main-app/scripts/build
 
 agoraAddonlog.txt
