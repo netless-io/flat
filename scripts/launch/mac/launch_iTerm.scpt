@@ -1,4 +1,5 @@
 tell application "iTerm"
+    activate
     set W to create window with default profile
     tell W's current session
         split vertically with default profile
