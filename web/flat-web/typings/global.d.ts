@@ -2,8 +2,8 @@ interface Window {
     rtcEngine: any;
 }
 
-declare namespace process {
-    const env: {
+declare namespace NodeJS {
+    export interface ProcessEnv {
         NODE_ENV: "development" | "production";
         DEV: boolean;
         PROD: boolean;
@@ -23,5 +23,5 @@ declare namespace process {
         FLAT_WEB_DOMAIN: string;
 
         CLOUD_RECORDING_DEFAULT_AVATAR?: string;
-    };
+    }
 }
