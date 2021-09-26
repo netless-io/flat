@@ -1875,10 +1875,10 @@
   resolved "https://registry.npmjs.org/@netless/app-media-player/-/app-media-player-0.1.0-beta.5.tgz#13ad8680be81503f5dc48c4c4e9848ba15b76e5a"
   integrity sha512-q24tZnDGwTM8fvSs97qavuF8w8cXa4Tx3Nl7Xvig5Um4XKrfNijjLK9pI1cdctfuefl9s8wrG8JNCN2C6yqeDw==
 
-"@netless/app-monaco@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.7.tgz#9ded155c1be0f8e432c78a11dd64f4e7356d3629"
-  integrity sha512-ZHmuEmyAXaBxOFkjc1/qyQr5pLV3RkGxLQUJS4RYLTYyNmv22TJ2Uuqt3pDdZZgWkW3MTNpzxYfODyRkzHaWQQ==
+"@netless/app-monaco@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.8.tgz#297afb5e5c11940c609dc38f6a5d3ece7243f7aa"
+  integrity sha512-dh/ixusEYcNtiKUwYU/GYvl+NK+iLCkpFVpWj4RwT9YoPW3WuTbQzTuGu115rPmQDqsqnNaRq0dkKGSlTgfGcg==
 
 "@netless/canvas-polyfill@^0.0.4":
   version "0.0.4"
@@ -1942,10 +1942,10 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.1.64-canary.3":
-  version "0.1.64-canary.3"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.1.64-canary.3.tgz#fc3405ab162111deac83dd8b60804edf2947be2a"
-  integrity sha512-5Lp51ZITlxxphFkAFxryLNaPxkjTkrP6saktUADf/Mklwq0r8QutkKTikYeT2IYQ66CRgu+cJzQpShwYHhpahw==
+"@netless/window-manager@^0.1.65":
+  version "0.1.65"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.1.65.tgz#f47fe261e3337bd172d7b50d6d2b95ee614a8e49"
+  integrity sha512-6Szw1Ypdov5cqbmM5OZiQSKHKP4om9nfoZB5+43/daTHgWOrSFR9QS+fb7VZQHNMP2VnQkWH/l6iw+V/nPi8sQ==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/app-docs-viewer" "^0.1.21"
@@ -6119,6 +6119,19 @@ copy-to@^2.0.1:
   resolved "https://registry.yarnpkg.com/copy-to/-/copy-to-2.0.1.tgz#2680fbb8068a48d08656b6098092bdafc906f4a5"
   integrity sha1-JoD7uAaKSNCGVrYJgJK9r8kG9KU=
 
+copy-webpack-plugin@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-9.0.1.tgz#b71d21991599f61a4ee00ba79087b8ba279bbb59"
+  integrity sha512-14gHKKdYIxF84jCEgPgYXCPpldbwpxxLbCmA7LReY7gvbaT555DgeBWBgBZM116tv/fO6RRJrsivBqRyRlukhw==
+  dependencies:
+    fast-glob "^3.2.5"
+    glob-parent "^6.0.0"
+    globby "^11.0.3"
+    normalize-path "^3.0.0"
+    p-limit "^3.1.0"
+    schema-utils "^3.0.0"
+    serialize-javascript "^6.0.0"
+
 core-js-compat@^3.14.0, core-js-compat@^3.16.0, core-js-compat@^3.8.1:
   version "3.16.1"
   resolved "https://registry.yarnpkg.com/core-js-compat/-/core-js-compat-3.16.1.tgz#c44b7caa2dcb94b673a98f27eee1c8312f55bc2d"
@@ -8023,7 +8036,7 @@ fast-glob@^2.2.6:
     merge2 "^1.2.3"
     micromatch "^3.1.10"
 
-fast-glob@^3.1.1:
+fast-glob@^3.1.1, fast-glob@^3.2.5:
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.7.tgz#fd6cb7a2d7e9aa7a7846111e85a196d6b2f766a1"
   integrity sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==
@@ -8736,6 +8749,13 @@ glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
   integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
+  dependencies:
+    is-glob "^4.0.1"
+
+glob-parent@^6.0.0:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-6.0.1.tgz#42054f685eb6a44e7a7d189a96efa40a54971aa7"
+  integrity sha512-kEVjS71mQazDBHKcsq4E9u/vUzaLcw1A8EtUeydawvIWQCJM0qQ08G1H7/XTjFUulla6XQiDOG6MXSaG0HDKog==
   dependencies:
     is-glob "^4.0.1"
 
@@ -11556,6 +11576,11 @@ moment@^2.24.0, moment@^2.25.3:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+
+monaco-editor@^0.27.0:
+  version "0.27.0"
+  resolved "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.27.0.tgz#4b69108bb1dc1f60174c5dcdf51bc5306ab5ba26"
+  integrity sha512-UhwP78Wb8w0ZSYoKXQNTV/0CHObp6NS3nCt51QfKE6sKyBo5PBsvuDOHoI2ooBakc6uIwByRLHVeT7+yXQe2fQ==
 
 move-cli@^1.2.1:
   version "1.2.1"
