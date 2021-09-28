@@ -12,7 +12,7 @@ import {
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { RoomPhase } from "white-web-sdk";
+import { RoomPhase, ViewMode } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
 import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
@@ -308,14 +308,17 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     />
                 )}
 
-                {/* {whiteboardStore.isWritable && (
+                {whiteboardStore.isWritable && (
                     <TopBarRightBtn
                         title="Vision control"
-                        icon="follow"
-                        active={whiteboardStore.viewMode === ViewMode.Broadcaster}
-                        onClick={handleRoomController}
+                        icon={
+                            whiteboardStore.isBroadcasterMode === undefined
+                                ? "follow"
+                                : "follow-active"
+                        }
+                        onClick={toggleRoomVisionController}
                     />
-                )} */}
+                )}
 
                 {/* <TopBarRightBtn
                     title="Docs center"
@@ -404,19 +407,16 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         );
     }
 
-    // function handleRoomController(): void {
-    //     const { room } = whiteboardStore;
-    //     if (!room) {
-    //         return;
-    //     }
-    //     if (room.state.broadcastState.mode !== ViewMode.Broadcaster) {
-    //         room.setViewMode(ViewMode.Broadcaster);
-    //         void message.success(t("follow-your-perspective-tips"));
-    //     } else {
-    //         room.setViewMode(ViewMode.Freedom);
-    //         void message.success(t("Stop-following-your-perspective-tips"));
-    //     }
-    // }
+    function toggleRoomVisionController(): void {
+        const { isBroadcasterMode } = whiteboardStore;
+        if (isBroadcasterMode === undefined) {
+            whiteboardStore.toggleMainViewVisionMode(ViewMode.Broadcaster);
+            void message.success(t("follow-your-perspective-tips"));
+        } else {
+            whiteboardStore.toggleMainViewVisionMode(ViewMode.Freedom);
+            void message.success(t("Stop-following-your-perspective-tips"));
+        }
+    }
 
     function handleSideOpenerSwitch(): void {
         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
