@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { Button } from "antd";
 import { CSSTransition } from "react-transition-group";
 import { CloudStorageStore } from "./store";
-import { CloudStorageUploadPanel } from "../../components/CloudStorage";
+import { CloudStorageSkeletons, CloudStorageUploadPanel } from "../../components/CloudStorage";
 import { CloudStorageUploadListContainer } from "./CloudStorageUploadListContainer";
 import { CloudStorageFileListContainer } from "./CloudStorageFileListContainer";
 import classNames from "classnames";
@@ -59,7 +59,11 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                     </div>
                 )}
                 <div className="cloud-storage-container-file-list fancy-scrollbar">
-                    <CloudStorageFileListContainer store={store} />
+                    {!store.totalUsageHR ? (
+                        <CloudStorageSkeletons isCompactMode={store.compact} />
+                    ) : (
+                        <CloudStorageFileListContainer store={store} />
+                    )}
                 </div>
                 <CSSTransition
                     in={store.isUploadPanelVisible && store.isUploadPanelExpand && store.compact}
