@@ -1942,20 +1942,19 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.1.68":
-  version "0.1.68"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.1.68.tgz#07ec669d49664c9a51eaebbd422622e81797947b"
-  integrity sha512-F68XdlDeRiyilNDmuRadXsZqf4kgkLySe0XCZtp0xTU5taJNXVCoWlwPc5xUtyYA3EloRR7y5wjwjKqlwyf8zQ==
+"@netless/window-manager@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.2.2.tgz#68089313017a3b95a95a437f90d39766e796d49e"
+  integrity sha512-db2B5j+K2AIT4Q7hnRrgQFNrv8kWVfexduxloLd++jnN4jrhOCevGulgqH+3UCMnFtXLT7bJ3GxsY0eLX3jgRw==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/app-docs-viewer" "^0.1.21"
     "@netless/app-media-player" "0.1.0-beta.5"
     "@netless/telebox-insider" "^0.1.17"
-    dexie "^3.0.3"
     emittery "^0.9.2"
     lodash "^4.17.21"
-    nanoid "^3.1.25"
     p-retry "^4.6.1"
+    uuid "^7.0.3"
     video.js ">=7"
 
 "@netless/xml-js@1.6.15":
@@ -6807,11 +6806,6 @@ detect-touch-events@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/detect-touch-events/-/detect-touch-events-2.0.2.tgz#541cc49b05ca544726a3bf2802c5b23e53aeeebb"
   integrity sha512-g8GWBkJLiIDRJfRXEdrd1wMXpNyGId2DkbfuwFahSb4OCvn717hyRJtAcEDISfp3zkwEhZ4Y4woHPA6DeyB3Fw==
-
-dexie@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.npmjs.org/dexie/-/dexie-3.0.3.tgz#ede63849dfe5f07e13e99bb72a040e8ac1d29dab"
-  integrity sha512-BSFhGpngnCl1DOr+8YNwBDobRMH0ziJs2vts69VilwetHYOtEDcLqo7d/XiIphM0tJZ2rPPyAGd31lgH2Ln3nw==
 
 diffie-hellman@^5.0.0:
   version "5.0.3"
@@ -11715,7 +11709,7 @@ nano-css@^5.3.1:
     stacktrace-js "^2.0.2"
     stylis "^4.0.6"
 
-nanoid@^3.1.23, nanoid@^3.1.25:
+nanoid@^3.1.23:
   version "3.1.25"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.25.tgz#09ca32747c0e543f0e1814b7d3793477f9c8e152"
   integrity sha512-rdwtIXaXCLFAQbnfqDRnI6jaRHp9fTcYBjtFKE8eezcZ7LuLjhUaQGNeMXf1HmRoCH32CLz6XwX0TtxEOS/A3Q==
@@ -17240,10 +17234,10 @@ which@^2.0.1, which@^2.0.2:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@2.14.3:
-  version "2.14.3"
-  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.14.3.tgz#7bd465beed1ab2db4d6c888d9a4cca22f89bfc9a"
-  integrity sha512-+7sk7Tc4aGY9OFhAW+TJZpZHb6xehDutAJ1UETEgoHWebIFKGwiVXqS+Zni87XcTYM4i2wZKgfcsAm+HvUdThw==
+white-web-sdk@2.14.4:
+  version "2.14.4"
+  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.14.4.tgz#6848e4127ff232a4c41749330ebde9319939f6b0"
+  integrity sha512-k2D4PELUz3cV4JrASjPfIekxwgcF0SdZg+tp50D2PphrSDvEsEv3gbf8byaat9DXP3MkpPZCNYGved2qXMg83w==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/canvas-polyfill" "^0.0.4"
