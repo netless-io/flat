@@ -12,7 +12,3 @@ export default storyMeta;
 export const Overview: Story<CloudStorageSkeletonsProps> = args => (
     <CloudStorageSkeletons {...args} />
 );
-
-Overview.args = {
-    filesCount: 10,
-};
