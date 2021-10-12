@@ -31,8 +31,16 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     onCancel,
 }) => {
     const { t, i18n } = useTranslation();
-    const { beginTime, endTime, periodicUUID, roomUUID, title } = room;
+    const { beginTime, endTime, periodicUUID, roomUUID, inviteCode, title } = room;
     const uuid = periodicUUID || roomUUID;
+
+    let roomInviteCode: string;
+    if (inviteCode && /^\d{10}$/.test(inviteCode)) {
+        roomInviteCode =
+            inviteCode.slice(0, 3) + " " + inviteCode.slice(3, 6) + " " + inviteCode.slice(6);
+    } else {
+        roomInviteCode = uuid;
+    }
 
     const formattedTimeRange = useMemo<string>(() => {
         if (!beginTime || !endTime) {
@@ -56,7 +64,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
         const baseSuffixText =
             "\n" +
             "\n" +
-            t("invite-suffix", { uuid }) +
+            t("invite-suffix", { uuid: roomInviteCode }) +
             "\n" +
             t("join-link", { link: `${baseUrl}/join/${uuid}` });
 
@@ -92,7 +100,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                 </div>
                 <div className="invite-modal-content-item">
                     <span>{t("room-uuid")}</span>
-                    <span style={{ userSelect: "text" }}>{uuid}</span>
+                    <span style={{ userSelect: "text" }}>{roomInviteCode}</span>
                 </div>
                 {formattedTimeRange && (
                     <div className="invite-modal-content-item">

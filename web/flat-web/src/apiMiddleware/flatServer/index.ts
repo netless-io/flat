@@ -24,6 +24,7 @@ export interface CreateOrdinaryRoomPayload {
 
 export interface CreateOrdinaryRoomResult {
     roomUUID: string;
+    inviteCode: string;
 }
 
 export async function createOrdinaryRoom(payload: CreateOrdinaryRoomPayload): Promise<string> {
@@ -89,6 +90,8 @@ export interface FlatServerRoom {
     periodicUUID: string | null;
     /** 房间所有者的 uuid */
     ownerUUID: string;
+    /** 房间邀请码 */
+    inviteCode: string;
     /** 房间类型  */
     roomType: RoomType;
     /** 房间所有者的名称 */
@@ -176,6 +179,7 @@ export interface OrdinaryRoomInfoPayload {
 export interface OrdinaryRoomInfoResult {
     roomInfo: OrdinaryRoomInfo;
     docs: RoomDoc[];
+    inviteCode: string;
 }
 
 export function ordinaryRoomInfo(roomUUID: string): Promise<OrdinaryRoomInfoResult> {
@@ -233,6 +237,7 @@ export type PeriodicRoomInfoResult = {
         weeks: Week[];
         roomType: RoomType;
         region: Region;
+        inviteCode: string;
     };
     rooms: Array<{
         roomUUID: string;

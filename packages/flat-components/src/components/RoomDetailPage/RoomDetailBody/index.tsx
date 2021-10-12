@@ -23,8 +23,16 @@ export const RoomDetailBody = observer<RoomDetailBodyProps>(function RoomDetailB
     jumpToPeriodicRoomDetailPage,
 }) {
     const { t, i18n } = useTranslation();
-    const { beginTime, endTime } = roomInfo;
+    const { beginTime, endTime, inviteCode, roomUUID, periodicUUID } = roomInfo;
     const lang = i18n.language;
+
+    let roomInviteCode: string;
+    if (inviteCode && /^\d{10}$/.test(inviteCode)) {
+        roomInviteCode =
+            inviteCode.slice(0, 3) + " " + inviteCode.slice(3, 6) + " " + inviteCode.slice(6);
+    } else {
+        roomInviteCode = periodicUUID || roomUUID;
+    }
 
     const formattedBeginTime = useMemo(
         () => (beginTime ? formatTime(beginTime, i18n.language) : null),
@@ -86,9 +94,7 @@ export const RoomDetailBody = observer<RoomDetailBodyProps>(function RoomDetailB
                         <img src={homeIconGraySVG} />
                         <span>{t("room-uuid")}</span>
                     </div>
-                    <div className="room-detail-body-content-info-right">
-                        {roomInfo.periodicUUID || roomInfo.roomUUID}
-                    </div>
+                    <div className="room-detail-body-content-info-right">{roomInviteCode}</div>
                 </div>
                 <div className="room-detail-body-content-info">
                     <div>
