@@ -18,7 +18,16 @@ export const windowHookClose = (customWindow: CustomSingleWindow): void => {
 
 export const windowReadyToShow = (customWindow: CustomSingleWindow): void => {
     customWindow.window.on("ready-to-show", () => {
-        customWindow.window.show();
+        if (customWindow.options.isPortal) {
+            // waiting dom load finish
+            setTimeout(() => {
+                if (!customWindow.window.isDestroyed()) {
+                    customWindow.window.show();
+                }
+            }, 100);
+        } else {
+            customWindow.window.show();
+        }
     });
 };
 

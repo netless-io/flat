@@ -16,19 +16,15 @@ const ipcEmitHandler = (windowName: constants.WindowsName): IPCEmit => {
 };
 
 export const ipcEmitByMain = ipcEmitHandler(constants.WindowsName.Main);
-export const ipcEmitByClass = ipcEmitHandler(constants.WindowsName.Class);
-export const ipcEmitByReplay = ipcEmitHandler(constants.WindowsName.Replay);
+export const ipcEmitByShareScreenTip = ipcEmitHandler(constants.WindowsName.ShareScreenTip);
 
 export const ipcEmit = (windowName: constants.WindowsName): IPCEmit => {
     switch (windowName) {
         case constants.WindowsName.Main: {
             return ipcEmitByMain;
         }
-        case constants.WindowsName.Class: {
-            return ipcEmitByClass;
-        }
-        case constants.WindowsName.Replay: {
-            return ipcEmitByReplay;
+        case constants.WindowsName.ShareScreenTip: {
+            return ipcEmitByShareScreenTip;
         }
     }
 };

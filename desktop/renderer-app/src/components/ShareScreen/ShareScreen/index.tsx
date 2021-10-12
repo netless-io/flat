@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import type { ShareScreenStore } from "../../../stores/ShareScreenStore";
+import { ShareScreenTip } from "../ShareScreenTip";
 
 interface ShareScreenProps {
     shareScreenStore: ShareScreenStore;
@@ -24,5 +25,12 @@ export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ sha
         });
     }, [shareScreenStore.existOtherShareScreen]);
 
-    return <div className={classNameList} ref={ref} />;
+    return (
+        <>
+            <div className={classNameList} ref={ref} />
+            {shareScreenStore.enableShareScreenStatus && (
+                <ShareScreenTip shareScreenStore={shareScreenStore} />
+            )}
+        </>
+    );
 });

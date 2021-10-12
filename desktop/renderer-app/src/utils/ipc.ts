@@ -24,26 +24,6 @@ export const ipcAsyncByMainWindow = <
     ipcAsync(constants.WindowsName.Main)(action, args);
 };
 
-export const ipcAsyncByMainClass = <
-    T extends keyof ipc.WindowActionAsync,
-    U extends Parameters<ipc.WindowActionAsync[T]>[0],
->(
-    action: T,
-    args: U,
-): void => {
-    ipcAsync(constants.WindowsName.Class)(action, args);
-};
-
-export const ipcAsyncByMainReplay = <
-    T extends keyof ipc.WindowActionAsync,
-    U extends Parameters<ipc.WindowActionAsync[T]>[0],
->(
-    action: T,
-    args: U,
-): void => {
-    ipcAsync(constants.WindowsName.Replay)(action, args);
-};
-
 export const ipcAsyncByApp = <
     T extends keyof ipc.AppActionAsync,
     U extends Parameters<ipc.AppActionAsync[T]>[0],

@@ -355,6 +355,9 @@
   "share-screen": {
     "browser-not-permission": "Please grant your browser access to screen recording",
     "desktop-not-permission": "Please grant Flat access to screen recording",
-    "choose-share-content": "Choose what to share"
+    "choose-share-content": "Choose what to share",
+    "tip-window-title": "Ending screen sharing",
+    "tip-window-body": "You are sharing the current screen",
+    "tip-window-button": "End Sharing"
   }
 }

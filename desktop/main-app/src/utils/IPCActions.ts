@@ -1,4 +1,4 @@
-import { CustomSingleWindow } from "./WindowManager";
+import { CustomSingleWindow, windowManager } from "./WindowManager";
 import { ipc } from "flat-types";
 import { app, ipcMain, powerSaveBlocker } from "electron";
 import runtime from "./Runtime";
@@ -104,6 +104,9 @@ export const appActionAsync: ipc.AppActionAsync = {
             openAtLogin: args.isOpenAtLogin,
             openAsHidden: false,
         });
+    },
+    "force-close-window": ({ windowName }) => {
+        windowManager.removeWindow(windowName);
     },
 };
 

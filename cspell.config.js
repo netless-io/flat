@@ -105,6 +105,7 @@ module.exports = {
         "browserslist",
         "estree",
         "webstorm",
+        "Frameless",
 
         // CNCF
         "nindent",

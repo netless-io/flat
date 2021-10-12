@@ -355,6 +355,9 @@
   "share-screen": {
     "browser-not-permission": "请授予浏览器访问屏幕录制的权限",
     "desktop-not-permission": "请授予 Flat 访问屏幕录制的权限",
-    "choose-share-content": "选择共享内容"
+    "choose-share-content": "选择共享内容",
+    "tip-window-title": "结束屏幕共享",
+    "tip-window-body": "正在共享屏幕",
+    "tip-window-button": "结束共享"
   }
 }

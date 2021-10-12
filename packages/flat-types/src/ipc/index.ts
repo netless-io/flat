@@ -1,5 +1,6 @@
 import type { Type as RuntimeType } from "../runtime";
 import type { UpdateCheckInfo, PrereleaseTag } from "../update";
+import { WindowsName } from "../constants";
 
 export type WindowActionAsync = {
     "set-win-size": (args: {
@@ -25,6 +26,7 @@ export type WindowActionAsync = {
 
 export type AppActionAsync = {
     "set-open-at-login": (args: { isOpenAtLogin: boolean }) => void;
+    "force-close-window": (args: { windowName: WindowsName }) => void;
 };
 
 export type AppActionSync = {
