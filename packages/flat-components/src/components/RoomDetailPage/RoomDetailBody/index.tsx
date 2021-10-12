@@ -3,7 +3,7 @@ import roomTypeSVG from "./icons/room-type.svg";
 import "./index.less";
 
 import React, { useMemo } from "react";
-import { formatTime } from "../../../utils/room";
+import { formatInviteCode, formatTime } from "../../../utils/room";
 import { formatDistanceStrict } from "date-fns";
 import { zhCN, enUS } from "date-fns/locale";
 import { RoomInfo, RoomType } from "../../../types/room";
@@ -23,16 +23,9 @@ export const RoomDetailBody = observer<RoomDetailBodyProps>(function RoomDetailB
     jumpToPeriodicRoomDetailPage,
 }) {
     const { t, i18n } = useTranslation();
-    const { beginTime, endTime, inviteCode, roomUUID, periodicUUID } = roomInfo;
+    const { beginTime, endTime, inviteCode, periodicUUID, roomUUID } = roomInfo;
+    const uuid = periodicUUID || roomUUID;
     const lang = i18n.language;
-
-    let roomInviteCode: string;
-    if (inviteCode && /^\d{10}$/.test(inviteCode)) {
-        roomInviteCode =
-            inviteCode.slice(0, 3) + " " + inviteCode.slice(3, 6) + " " + inviteCode.slice(6);
-    } else {
-        roomInviteCode = periodicUUID || roomUUID;
-    }
 
     const formattedBeginTime = useMemo(
         () => (beginTime ? formatTime(beginTime, i18n.language) : null),
@@ -94,7 +87,9 @@ export const RoomDetailBody = observer<RoomDetailBodyProps>(function RoomDetailB
                         <img src={homeIconGraySVG} />
                         <span>{t("room-uuid")}</span>
                     </div>
-                    <div className="room-detail-body-content-info-right">{roomInviteCode}</div>
+                    <div className="room-detail-body-content-info-right">
+                        {formatInviteCode(uuid, inviteCode)}
+                    </div>
                 </div>
                 <div className="room-detail-body-content-info">
                     <div>

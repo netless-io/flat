@@ -178,7 +178,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
             const values = form.getFieldsValue();
             configStore.updateAutoMicOn(values.autoMicOn);
             configStore.updateAutoCameraOn(values.autoCameraOn);
-            await sp(onJoinRoom(values.roomUUID.replaceAll(" ", "")));
+            await sp(onJoinRoom(values.roomUUID));
             setLoading(false);
             showModal(false);
         } catch (e) {

@@ -90,7 +90,7 @@ export interface FlatServerRoom {
     periodicUUID: string | null;
     /** 房间所有者的 uuid */
     ownerUUID: string;
-    /** 房间邀请码 */
+    /** invite code of room */
     inviteCode: string;
     /** 房间类型  */
     roomType: RoomType;
