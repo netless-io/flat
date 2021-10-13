@@ -3,6 +3,8 @@ export type RoomInfo = {
     roomUUID: string;
     /** 房间所有者的 uuid */
     ownerUUID: string;
+    /** 房间邀请码 */
+    inviteCode?: string;
     /** 房间类型 */
     roomType?: RoomType;
     /** 子房间隶属的周期性房间 uuid */
