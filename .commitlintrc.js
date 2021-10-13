@@ -52,6 +52,7 @@ module.exports = {
                 "license",
                 "debug",
                 "github",
+                "style",
             ],
         ],
         "scope-case": [2, "always", ["lower-case", "kebab-case"]],
