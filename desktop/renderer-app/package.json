@@ -13,7 +13,7 @@
     "@netless/redo-undo": "^0.0.5",
     "@netless/tool-box": "^0.1.4",
     "@netless/video-js-plugin": "^0.3.6",
-    "@netless/window-manager": "^0.1.68",
+    "@netless/window-manager": "^0.2.2",
     "@videojs/vhs-utils": "^2.3.0",
     "agora-rtm-sdk": "^1.4.3",
     "antd": "^4.15.4",
@@ -42,7 +42,7 @@
     "react-virtualized": "^9.22.2",
     "uuid": "^8.3.2",
     "video.js": "7.10.2",
-    "white-web-sdk": "2.14.3"
+    "white-web-sdk": "2.14.4"
   },
   "devDependencies": {
     "@netless/eslint-plugin": "1.1.2",
