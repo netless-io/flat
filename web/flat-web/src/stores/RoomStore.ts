@@ -31,6 +31,8 @@ export interface RoomItem {
     roomUUID: string;
     /** 房间所有者的 uuid */
     ownerUUID: string;
+    /** invite code of room */
+    inviteCode?: string;
     /** 房间类型 */
     roomType?: RoomType;
     /** 子房间隶属的周期性房间 uuid */
@@ -70,6 +72,7 @@ export interface PeriodicRoomItem {
     periodicUUID: string;
     periodic: PeriodicRoomInfoResult["periodic"];
     rooms: string[];
+    inviteCode: string;
 }
 
 /**
@@ -215,6 +218,7 @@ export class RoomStore {
         roomInfo.rooms.forEach(room => {
             this.updateRoom(room.roomUUID, roomInfo.periodic.ownerUUID, {
                 ...room,
+                inviteCode: roomInfo.periodic.inviteCode,
                 title: roomInfo.periodic.title,
                 roomType: roomInfo.periodic.roomType,
                 periodicUUID: periodicUUID,
@@ -224,6 +228,7 @@ export class RoomStore {
             periodicUUID,
             periodic: roomInfo.periodic,
             rooms: roomInfo.rooms.map(room => room.roomUUID),
+            inviteCode: roomInfo.periodic.inviteCode,
         });
     }
 }

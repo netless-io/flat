@@ -8,7 +8,8 @@ export const joinRoomHandler = async (
     pushHistory: ReturnType<typeof usePushHistory>,
 ): Promise<void> => {
     try {
-        const data = await roomStore.joinRoom(roomUUID);
+        const formatRoomUUID = roomUUID.replace(/\s+/g, "");
+        const data = await roomStore.joinRoom(formatRoomUUID);
         // @TODO make roomType a param
         switch (data.roomType) {
             case RoomType.BigClass: {

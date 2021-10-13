@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import { Modal } from "antd";
 import { differenceInCalendarDays, format } from "date-fns/fp";
 import { RoomInfo, Week } from "../../types/room";
-import { getWeekNames } from "../../utils/room";
+import { formatInviteCode, getWeekNames } from "../../utils/room";
 import { useTranslation } from "react-i18next";
 
 const completeTimeFormat = format("yyyy-MM-dd HH:mm");
@@ -31,7 +31,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     onCancel,
 }) => {
     const { t, i18n } = useTranslation();
-    const { beginTime, endTime, periodicUUID, roomUUID, title } = room;
+    const { beginTime, endTime, periodicUUID, roomUUID, inviteCode, title } = room;
     const uuid = periodicUUID || roomUUID;
 
     const formattedTimeRange = useMemo<string>(() => {
@@ -56,7 +56,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
         const baseSuffixText =
             "\n" +
             "\n" +
-            t("invite-suffix", { uuid }) +
+            t("invite-suffix", { uuid: formatInviteCode(uuid, inviteCode) }) +
             "\n" +
             t("join-link", { link: `${baseUrl}/join/${uuid}` });
 
@@ -92,7 +92,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                 </div>
                 <div className="invite-modal-content-item">
                     <span>{t("room-uuid")}</span>
-                    <span style={{ userSelect: "text" }}>{uuid}</span>
+                    <span style={{ userSelect: "text" }}>{formatInviteCode(uuid, inviteCode)}</span>
                 </div>
                 {formattedTimeRange && (
                     <div className="invite-modal-content-item">

@@ -89,6 +89,8 @@ export interface FlatServerRoom {
     periodicUUID: string | null;
     /** 房间所有者的 uuid */
     ownerUUID: string;
+    /** invite code of room  */
+    inviteCode: string;
     /** 房间类型  */
     roomType: RoomType;
     /** 房间所有者的名称 */
@@ -176,6 +178,7 @@ export interface OrdinaryRoomInfoPayload {
 export interface OrdinaryRoomInfoResult {
     roomInfo: OrdinaryRoomInfo;
     docs: RoomDoc[];
+    inviteCode: string;
 }
 
 export function ordinaryRoomInfo(roomUUID: string): Promise<OrdinaryRoomInfoResult> {
@@ -227,6 +230,7 @@ export type PeriodicRoomInfoResult = {
     periodic: {
         ownerUUID: string; // 创建者的 uuid
         ownerUserName: string;
+        inviteCode: string;
         endTime: number;
         rate: number | null; // 默认为 0（即 用户选择的是 endTime）
         title: string;
