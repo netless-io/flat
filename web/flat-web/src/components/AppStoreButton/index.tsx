@@ -19,6 +19,12 @@ const apps: AddAppParams[] = [
             title: "Code Editor",
         },
     },
+    {
+        kind: "Countdown",
+        options: {
+            title: "Countdown",
+        },
+    },
 ];
 
 export const AppStoreButton = observer<AppStoreButtonProps>(function AppStoreButton({ addApp }) {

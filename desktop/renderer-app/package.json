@@ -5,6 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@netless/app-countdown": "^0.0.1",
     "@netless/app-monaco": "^0.1.8",
     "@netless/combine-player": "^1.1.4",
     "@netless/cursor-tool": "^0.1.0",
