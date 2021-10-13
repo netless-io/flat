@@ -1,7 +1,14 @@
-import { BrowserWindow, BrowserWindowConstructorOptions, ipcMain, IpcMainEvent } from "electron";
+import {
+    BrowserWindow,
+    screen,
+    BrowserWindowConstructorOptions,
+    ipcMain,
+    IpcMainEvent,
+    Display,
+} from "electron";
 import { windowHookClose, windowOpenDevTools, windowReadyToShow } from "./WindowEvent";
 import runtime from "./Runtime";
-import { constants } from "flat-types";
+import { constants, portal } from "flat-types";
 import { Subject, zip } from "rxjs";
 import { ignoreElements, mergeMap } from "rxjs/operators";
 
@@ -11,7 +18,6 @@ const defaultWindowOptions: Pick<WindowOptions, "disableClose" | "isOpenDevTools
 };
 
 const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
-    center: true,
     resizable: false,
     show: false,
     fullscreenable: false,
@@ -20,7 +26,6 @@ const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
         autoplayPolicy: "no-user-gesture-required",
         nodeIntegration: true,
         contextIsolation: false,
-        preload: runtime.preloadPath,
         webSecurity: false,
         webviewTag: true,
         nativeWindowOpen: true,
@@ -54,15 +59,21 @@ export class WindowManager extends RxSubject {
         const window = new BrowserWindow({
             ...defaultBrowserWindowOptions,
             ...browserWindowOptions,
+            webPreferences: {
+                ...defaultBrowserWindowOptions.webPreferences,
+                ...browserWindowOptions.webPreferences,
+            },
         });
 
         this.wins[options.name] = {
             options,
             window,
-            didFinishLoad: window.loadURL(options.url),
+            didFinishLoad: options.isPortal ? Promise.resolve() : window.loadURL(options.url),
         };
 
         const innerWin = this.getWindow(options.name)!;
+
+        this.interceptPortalNewWindow(innerWin);
 
         windowOpenDevTools(innerWin);
 
@@ -96,16 +107,37 @@ export class WindowManager extends RxSubject {
         }
     }
 
+    public removeWindow(name: constants.WindowsName): void {
+        const innerWin = this.wins[name];
+
+        if (!innerWin) {
+            return;
+        }
+
+        if (innerWin.window.isDestroyed()) {
+            delete this.wins[name];
+
+            return;
+        }
+
+        innerWin.options.disableClose = false;
+        innerWin.window.close();
+    }
+
     public createMainWindow(): CustomSingleWindow {
         const win = this.createWindow(
             {
                 url: runtime.startURL,
                 name: constants.WindowsName.Main,
                 isOpenDevTools: runtime.isDevelopment,
+                isPortal: false,
             },
             {
-                width: 960,
-                height: 640,
+                center: true,
+                ...constants.PageSize.Main,
+                webPreferences: {
+                    preload: runtime.preloadPath,
+                },
             },
         );
 
@@ -134,6 +166,93 @@ export class WindowManager extends RxSubject {
 
         return win;
     }
+
+    public createShareScreenTipWindow(
+        options: BrowserWindowConstructorOptions,
+    ): CustomSingleWindow {
+        const display = this.getDisplayByMainWindow();
+
+        const win = this.createWindow(
+            {
+                url: "",
+                name: constants.WindowsName.ShareScreenTip,
+                isOpenDevTools: false,
+                isPortal: true,
+                disableClose: true,
+            },
+            {
+                x: WindowManager.getXCenterPoint(display, constants.PageSize.ShareScreenTip.width),
+                y: display.workArea.y + 32,
+                // this may be a bug in electron
+                // when remove options.webContents will crash
+                // @ts-ignore
+                webContents: options.webContents,
+                ...constants.PageSize.ShareScreenTip,
+                frame: false,
+            },
+        );
+
+        // default level is: floating, at this level, other applications can still override this window
+        // so, we used modal-panel level
+        win.window.setAlwaysOnTop(true, "modal-panel");
+
+        return win;
+    }
+
+    private interceptPortalNewWindow(customWindow: CustomSingleWindow): void {
+        customWindow.window.webContents.on(
+            "new-window",
+            (event, _url, frameName, _disposition, options) => {
+                if (!frameName.startsWith(constants.Portal)) {
+                    return;
+                }
+
+                const customOptions: portal.Options = JSON.parse(
+                    frameName.substring(constants.Portal.length),
+                );
+
+                const handler = this.createPortalNewWindow(customOptions.name, options);
+
+                if (handler === null) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                event.newGuest = handler().window;
+            },
+        );
+    }
+
+    private createPortalNewWindow(
+        windowName: constants.WindowsName,
+        options: BrowserWindowConstructorOptions,
+    ): null | (() => CustomSingleWindow) {
+        switch (windowName) {
+            case constants.WindowsName.ShareScreenTip: {
+                return () => this.createShareScreenTipWindow(options);
+            }
+            default: {
+                return null;
+            }
+        }
+    }
+
+    private getDisplayByMainWindow(): Display {
+        const mainBounds = this.wins.Main!.window.getBounds();
+
+        return screen.getDisplayNearestPoint({
+            x: mainBounds.x,
+            y: mainBounds.y,
+        });
+    }
+
+    private static getXCenterPoint(display: Display, windowWidth: number): number {
+        const { x, width } = display.workArea;
+
+        // see: https://github.com/jenslind/electron-positioner/blob/85bb453453af050dda2479c88c4a24a262f8a2fb/index.js#L74
+        return Math.floor(x + (width / 2 - windowWidth / 2));
+    }
 }
 
 export const windowManager = new WindowManager();
@@ -153,4 +272,5 @@ interface WindowOptions {
     name: constants.WindowsName;
     disableClose?: boolean;
     isOpenDevTools?: boolean;
+    isPortal: boolean;
 }

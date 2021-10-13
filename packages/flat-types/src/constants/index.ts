@@ -1,7 +1,6 @@
 export enum WindowsName {
     Main = "Main",
-    Replay = "Replay",
-    Class = "Class",
+    ShareScreenTip = "ShareScreenTip",
 }
 
 export const PageSize = {
@@ -25,4 +24,10 @@ export const PageSize = {
         width: 1280,
         height: 720,
     },
+    ShareScreenTip: {
+        width: 320,
+        height: 48,
+    },
 } as const;
+
+export const Portal = "portal;";
