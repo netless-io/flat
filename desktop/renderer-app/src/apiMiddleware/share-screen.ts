@@ -1,6 +1,7 @@
 import { globalStore } from "../stores/GlobalStore";
 import { AGORA } from "../constants/Process";
 import type AgoraSDK from "agora-electron-sdk";
+import { ScreenSymbol } from "agora-electron-sdk/types/Api/native_type";
 
 export class RTCShareScreen {
     public constructor(
@@ -10,7 +11,7 @@ export class RTCShareScreen {
         private readonly existOtherUserStream: () => boolean,
     ) {}
 
-    public enable(isDisplayScreen: boolean, screenID: number): void {
+    public enable(shareSymbol: ShareSymbol): void {
         if (!globalStore.rtcShareScreen) {
             return;
         }
@@ -36,18 +37,16 @@ export class RTCShareScreen {
         this.roomClient.once("videoSourceJoinedSuccess", () => {
             this.roomClient.videoSourceSetVideoProfile(43, false);
 
-            if (isDisplayScreen) {
+            if (shareSymbol.type === "display") {
+                console.log(this.roomClient.getScreenDisplaysInfo());
                 this.roomClient.videoSourceStartScreenCaptureByScreen(
-                    {
-                        // @ts-ignore
-                        id: screenID,
-                    },
+                    shareSymbol.data,
                     rect,
                     videoSourceParam,
                 );
             } else {
                 this.roomClient.videoSourceStartScreenCaptureByWindow(
-                    screenID,
+                    shareSymbol.data as number,
                     rect,
                     videoSourceParam,
                 );
@@ -95,9 +94,7 @@ export class RTCShareScreen {
 }
 
 export type ScreenDisplaysInfo = {
-    readonly displayId: {
-        readonly id: number;
-    };
+    readonly displayId: ScreenSymbol;
     readonly width: number;
     readonly height: number;
     readonly image: Uint8Array;
@@ -123,4 +120,9 @@ export type ScreenWindowsInfo = {
 export type ScreenInfo = {
     displayList: ScreenDisplaysInfo[];
     windowList: ScreenWindowsInfo[];
+};
+
+export type ShareSymbol = {
+    type: "window" | "display";
+    data: ScreenSymbol | number;
 };

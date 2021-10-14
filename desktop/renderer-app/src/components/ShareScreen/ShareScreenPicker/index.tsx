@@ -30,8 +30,7 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
         shareScreenStore.updateShowShareScreenPicker(false);
     }, [shareScreenStore]);
 
-    const isSelected =
-        shareScreenStore.isDisplayScreen !== null && shareScreenStore.screenID !== null;
+    const isSelected = shareScreenStore.shareSymbol !== null;
 
     return (
         <div>

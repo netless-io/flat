@@ -1,5 +1,5 @@
 import { autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
-import { RTCShareScreen, ScreenInfo } from "../../apiMiddleware/share-screen";
+import { RTCShareScreen, ScreenInfo, ShareSymbol } from "../../apiMiddleware/share-screen";
 import { ListenerOtherUserShareScreen } from "./ListenerOtherUserShareScreen";
 
 export class ShareScreenStore {
@@ -9,8 +9,7 @@ export class ShareScreenStore {
     public screenInfo: ScreenInfo | null = null;
     public existOtherShareScreen = false;
     public showShareScreenPicker = false;
-    public isDisplayScreen: boolean | null = null;
-    public screenID: number | null = null;
+    public shareSymbol: ShareSymbol | null = null;
     public isWritable = false;
 
     private element: HTMLElement | null = null;
@@ -98,12 +97,8 @@ export class ShareScreenStore {
         this.screenInfo = null;
     }
 
-    public updateIsDisplayScreen(isDisplay: boolean | null): void {
-        this.isDisplayScreen = isDisplay;
-    }
-
-    public updateScreenID(id: number | null): void {
-        this.screenID = id;
+    public updateShareSymbolInfo(shareSymbol: ShareSymbol | null): void {
+        this.shareSymbol = shareSymbol;
     }
 
     public updateIsWritable(isWritable: boolean): void {
@@ -122,8 +117,8 @@ export class ShareScreenStore {
     public enable(): void {
         // same as updateScreenInfo
         setTimeout(() => {
-            if (this.rtcShareScreen && this.isDisplayScreen !== null && this.screenID !== null) {
-                this.rtcShareScreen.enable(this.isDisplayScreen, this.screenID);
+            if (this.rtcShareScreen && this.shareSymbol !== null) {
+                this.rtcShareScreen.enable(this.shareSymbol);
             }
 
             this.updateShowShareScreenPicker(false);
