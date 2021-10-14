@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "postinstall": "husky install",
-    "bootstrap": "yarn run _init:agora-configure && yarn install --frozen-lockfile",
+    "bootstrap": "yarn run _init:agora-configure && yarn install --frozen-lockfile --force",
     "lint": "yarn workspaces run lint",
     "check-spelling": "cspell --no-progress \"**/*.{md,ts,tsx,js,css,less,json,yml,yaml,html,sh}\"",
     "storybook": "yarn workspace flat-components start",
