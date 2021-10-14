@@ -1,7 +1,7 @@
 import "./style.less";
 import React, { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { ScreenInfo } from "../../../../apiMiddleware/share-screen";
+import { ScreenInfo, ShareSymbol } from "../../../../apiMiddleware/share-screen";
 import { getScreenInfo, uint8ArrayToImageURL } from "./Utils";
 import classNames from "classnames";
 import { ShareScreenStore } from "../../../../stores/ShareScreenStore";
@@ -27,24 +27,22 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
     }, [screenInfo.windowList, t]);
 
     const onClick = useCallback(
-        (isDisplay: boolean, id: number) => {
-            setActiveInfo(`${isDisplay ? "display" : "window"}-${id}`);
-            shareScreenStore.updateIsDisplayScreen(isDisplay);
-            shareScreenStore.updateScreenID(id);
+        (screenInfo: ShareSymbol, activeKey: string) => {
+            setActiveInfo(activeKey);
+            shareScreenStore.updateShareSymbolInfo(screenInfo);
         },
         [shareScreenStore],
     );
 
     const cancelSelected = useCallback(() => {
         setActiveInfo("");
-        shareScreenStore.updateIsDisplayScreen(null);
-        shareScreenStore.updateScreenID(null);
+        shareScreenStore.updateShareSymbolInfo(null);
     }, [shareScreenStore]);
 
     return (
         <div className="screen-list">
-            {screenInfo.displayList.map(info => {
-                const key = `display-${info.displayId.id}`;
+            {screenInfo.displayList.map((info, index) => {
+                const key = `display-${index}`;
                 const isActive = activeInfo === key;
 
                 return (
@@ -53,6 +51,7 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
                         handleClick={isActive ? cancelSelected : onClick}
                         active={isActive}
                         key={key}
+                        activeKey={key}
                     />
                 );
             })}
@@ -66,6 +65,7 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
                         handleClick={isActive ? cancelSelected : onClick}
                         active={activeInfo === key}
                         key={key}
+                        activeKey={key}
                     />
                 );
             })}
@@ -75,11 +75,17 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
 
 interface ScreenItemProps {
     info: ScreenInfo["windowList"][0] | ScreenInfo["displayList"][0];
-    handleClick: (isDisplay: boolean, id: number) => void;
+    handleClick: (screenInfo: ShareSymbol, key: string) => void;
     active: boolean;
+    activeKey: string;
 }
 
-const ScreenItem = observer<ScreenItemProps>(function ScreenItem({ info, handleClick, active }) {
+const ScreenItem = observer<ScreenItemProps>(function ScreenItem({
+    info,
+    handleClick,
+    active,
+    activeKey,
+}) {
     const screenInfo = getScreenInfo(info);
 
     return (
@@ -89,7 +95,7 @@ const ScreenItem = observer<ScreenItemProps>(function ScreenItem({ info, handleC
                     className={classNames("screen-image-box", {
                         active,
                     })}
-                    onClick={() => handleClick(screenInfo.isDisplay, screenInfo.id)}
+                    onClick={() => handleClick(screenInfo, activeKey)}
                 >
                     <img src={uint8ArrayToImageURL(info.image)} alt="screenshots" />
                 </div>
