@@ -1,4 +1,4 @@
-import { ScreenInfo } from "../../../../apiMiddleware/share-screen";
+import { ScreenInfo, ShareSymbol } from "../../../../apiMiddleware/share-screen";
 
 export const uint8ArrayToImageURL = (buffer: Uint8Array): string => {
     return URL.createObjectURL(
@@ -10,22 +10,22 @@ export const uint8ArrayToImageURL = (buffer: Uint8Array): string => {
 
 export const getScreenInfo = (
     info: ScreenInfo["windowList"][0] | ScreenInfo["displayList"][0],
-): {
-    id: number;
-    isDisplay: boolean;
-    name: string;
-} => {
+): IScreenInfo => {
     if ("displayId" in info) {
         return {
-            id: info.displayId.id,
-            isDisplay: true,
+            type: "display",
+            data: info.displayId,
             name: "Desktop",
         };
     } else {
         return {
-            id: info.windowId,
-            isDisplay: false,
+            type: "window",
+            data: info.windowId,
             name: `${info.ownerName} - ${info.name}`,
         };
     }
 };
+
+interface IScreenInfo extends ShareSymbol {
+    name: string;
+}
