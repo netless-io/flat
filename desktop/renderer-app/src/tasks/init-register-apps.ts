@@ -7,7 +7,7 @@ const registerApps = async (): Promise<void> => {
         appOptions: {
             loader: {
                 paths: {
-                    vs: `file://${getVSPath()}`,
+                    vs: getVSPath(),
                 },
             },
         },
@@ -23,14 +23,18 @@ export const initRegisterApps = async (): Promise<void> => {
 };
 
 const getVSPath = (): string => {
+    let vsPath;
     if (process.env.NODE_ENV === "production") {
-        return path.join(__dirname, "static", "monaco-editor", "min", "vs");
+        vsPath = path.join(__dirname, "static", "monaco-editor", "min", "vs");
+    } else {
+        const nodeModulesName = "node_modules";
+        const nodeModulesEndIndexByPath =
+            __dirname.indexOf(nodeModulesName) + nodeModulesName.length;
+
+        const rootNodeModulesPath = __dirname.slice(0, nodeModulesEndIndexByPath);
+
+        vsPath = path.join(rootNodeModulesPath, "monaco-editor", "min", "vs");
     }
 
-    const nodeModulesName = "node_modules";
-    const nodeModulesEndIndexByPath = __dirname.indexOf(nodeModulesName) + nodeModulesName.length;
-
-    const rootNodeModulesPath = __dirname.slice(0, nodeModulesEndIndexByPath);
-
-    return path.join(rootNodeModulesPath, "monaco-editor", "min", "vs");
+    return `file:///${vsPath.replace(/\\/g, "/")}`;
 };
