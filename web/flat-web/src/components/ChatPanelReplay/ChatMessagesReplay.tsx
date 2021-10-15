@@ -1,7 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { ChatMessageListReplay } from "./ChatMessageListReplay";
-import { ClassRoomReplayStore } from "../../stores/ClassRoomReplayStore";
+import { ClassRoomReplayStore } from "../../stores/class-room-replay-store";
 import { useTranslation } from "react-i18next";
 
 export interface ChatMessagesReplayProps {

@@ -5,7 +5,7 @@ import nextStepSVG from "./image/next-step.svg";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { queryConvertingTaskStatus } from "../../../apiMiddleware/courseware-converting";
+import { queryConvertingTaskStatus } from "../../../api-middleware/courseware-converting";
 import { ConversionResponse, previewPPT } from "white-web-sdk";
 import { EventEmitter } from "eventemitter3";
 import classNames from "classnames";

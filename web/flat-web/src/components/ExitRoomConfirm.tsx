@@ -5,7 +5,7 @@ import {
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useState } from "react";
-import { RoomStatus } from "../apiMiddleware/flatServer/constants";
+import { RoomStatus } from "../api-middleware/flatServer/constants";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { errorTips } from "./Tips/ErrorTips";

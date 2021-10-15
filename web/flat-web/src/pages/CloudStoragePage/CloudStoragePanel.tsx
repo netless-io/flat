@@ -4,16 +4,16 @@ import { message } from "antd";
 import { v4 as v4uuid } from "uuid";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { WhiteboardStore } from "../../stores/WhiteboardStore";
+import { WhiteboardStore } from "../../stores/whiteboard-store";
 import { CloudStorageStore, CloudStorageFile } from "./store";
-import { queryConvertingTaskStatus } from "../../apiMiddleware/courseware-converting";
-import { convertFinish } from "../../apiMiddleware/flatServer/storage";
+import { queryConvertingTaskStatus } from "../../api-middleware/courseware-converting";
+import { convertFinish } from "../../api-middleware/flatServer/storage";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { SceneDefinition } from "white-web-sdk";
 import { CloudStorageContainer } from "flat-components";
 import { useTranslation } from "react-i18next";
-import { RequestErrorCode } from "../../constants/ErrorCode";
-import { ServerRequestError } from "../../utils/error/ServerRequestError";
+import { RequestErrorCode } from "../../constants/error-code";
+import { ServerRequestError } from "../../utils/error/server-request-error";
 
 export interface CloudStoragePanelProps {
     whiteboard?: WhiteboardStore;

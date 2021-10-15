@@ -8,12 +8,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { GlobalStoreContext, PageStoreContext } from "../../components/StoreProvider";
-import { loginCheck } from "../../apiMiddleware/flatServer";
-import { joinRoomHandler } from "../utils/joinRoomHandler";
+import { loginCheck } from "../../api-middleware/flatServer";
+import { joinRoomHandler } from "../utils/join-room-handler";
 import { Avatar, Button } from "antd";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/Process";
+import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
 
 export const JoinPage = observer(function JoinPage() {
     const { t, i18n } = useTranslation();

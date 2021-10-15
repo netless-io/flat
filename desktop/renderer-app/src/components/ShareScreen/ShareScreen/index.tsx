@@ -3,7 +3,7 @@ import "./style.less";
 import React, { useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
-import type { ShareScreenStore } from "../../../stores/ShareScreenStore";
+import type { ShareScreenStore } from "../../../stores/share-screen-store";
 import { ShareScreenTip } from "../ShareScreenTip";
 
 interface ShareScreenProps {

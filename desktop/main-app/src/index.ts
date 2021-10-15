@@ -1,12 +1,12 @@
-import bootstrap from "./utils/BootupFlow";
-import initEnv from "./bootup/Init-env";
-import initWindow from "./bootup/Init-window";
-import initWebRequest from "./bootup/Init-webRequest";
-import initMenus from "./bootup/Init-menus";
-import intIPC from "./bootup/Init-ipc";
-import initAppListen from "./bootup/Init-app-listener";
-import initOtherListeners from "./bootup/Init-other";
-import initURLProtocol from "./bootup/Init-url-protocol";
+import bootstrap from "./utils/bootup-flow";
+import initEnv from "./bootup/init-env";
+import initWindow from "./bootup/init-window";
+import initWebRequest from "./bootup/init-webRequest";
+import initMenus from "./bootup/init-menus";
+import intIPC from "./bootup/init-ipc";
+import initAppListen from "./bootup/init-app-listener";
+import initOtherListeners from "./bootup/init-other";
+import initURLProtocol from "./bootup/init-url-protocol";
 
 void bootstrap([
     initEnv,

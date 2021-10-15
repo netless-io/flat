@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import { RoomStatus, RoomType } from "../apiMiddleware/flatServer/constants";
+import { RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
 
 import "./RoomInfo.less";
 

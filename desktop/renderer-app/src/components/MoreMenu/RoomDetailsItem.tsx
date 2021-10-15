@@ -2,7 +2,7 @@ import { Menu } from "antd";
 import { MenuItemProps } from "antd/lib/menu/MenuItem";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { RoomItem } from "../../stores/RoomStore";
+import { RoomItem } from "../../stores/room-store";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { useTranslation } from "react-i18next";
 

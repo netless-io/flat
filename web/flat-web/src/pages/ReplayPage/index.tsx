@@ -4,10 +4,10 @@ import { ErrorPage, LoadingPage } from "flat-components";
 import PlayerController from "@netless/player-controller";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanelReplay } from "../../components/ChatPanelReplay";
-import { OrdinaryRoomInfo } from "../../apiMiddleware/flatServer";
-import { RoomType } from "../../apiMiddleware/flatServer/constants";
+import { OrdinaryRoomInfo } from "../../api-middleware/flatServer";
+import { RoomType } from "../../api-middleware/flatServer/constants";
 import { observer } from "mobx-react-lite";
-import { useClassRoomReplayStore } from "../../stores/ClassRoomReplayStore";
+import { useClassRoomReplayStore } from "../../stores/class-room-replay-store";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import videoPlaySVG from "../../assets/image/video-play.svg";

@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { constants } from "flat-types";
 import "./style.less";
-import { portalWindowManager } from "../../../utils/portalWindowManager";
+import { portalWindowManager } from "../../../utils/portal-window-manager";
 import { ipcAsyncByApp } from "../../../utils/ipc";
 import dragSVG from "../../../assets/image/drag.svg";
 import { Button } from "antd";
-import { ShareScreenStore } from "../../../stores/ShareScreenStore";
+import { ShareScreenStore } from "../../../stores/share-screen-store";
 import { useTranslation } from "react-i18next";
 
 interface ShareScreenTipProps {

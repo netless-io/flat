@@ -14,7 +14,7 @@ import { runtime } from "../../utils/runtime";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { WeChatLogin } from "./WeChatLogin";
 import { useTranslation } from "react-i18next";
-import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/Process";
+import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
 
 export const LoginPage = observer(function LoginPage() {
     const { i18n } = useTranslation();

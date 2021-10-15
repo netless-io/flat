@@ -2,7 +2,7 @@ import { Menu } from "antd";
 import { MenuItemProps } from "antd/lib/menu/MenuItem";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
-import { RoomItem, roomStore } from "../../stores/RoomStore";
+import { RoomItem, roomStore } from "../../stores/room-store";
 import { RemoveHistoryRoomModal } from "../Modal/RemoveHistoryRoomModal";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { errorTips } from "../Tips/ErrorTips";

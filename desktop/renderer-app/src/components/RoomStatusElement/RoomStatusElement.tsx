@@ -1,8 +1,8 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import "./RoomStatusElement.less";
-import { RoomItem } from "../../stores/RoomStore";
+import { RoomItem } from "../../stores/room-store";
 
 export interface RoomStatusElementProps {
     room: RoomItem;

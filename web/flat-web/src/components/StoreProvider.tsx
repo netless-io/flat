@@ -1,8 +1,8 @@
 import React, { createContext, FC } from "react";
-import { configStore } from "../stores/ConfigStore";
+import { configStore } from "../stores/config-store";
 import { globalStore } from "../stores/GlobalStore";
-import { pageStore } from "../stores/PageStore";
-import { roomStore } from "../stores/RoomStore";
+import { pageStore } from "../stores/page-store";
+import { roomStore } from "../stores/room-store";
 
 export const GlobalStoreContext = createContext(globalStore);
 

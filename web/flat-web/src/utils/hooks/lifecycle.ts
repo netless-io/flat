@@ -1,5 +1,5 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
-import { NODE_ENV } from "../../constants/Process";
+import { NODE_ENV } from "../../constants/process";
 
 export function useIsUnMounted(): RefObject<boolean> {
     const isUnMountRef = useRef(false);

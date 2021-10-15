@@ -7,7 +7,7 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useEffect, useState } from "react";
 import { WindowManager } from "@netless/window-manager";
-import { WhiteboardStore } from "../stores/WhiteboardStore";
+import { WhiteboardStore } from "../stores/whiteboard-store";
 import { isSupportedImageType, onDropImage } from "../utils/dnd/image";
 import { ScenesController } from "flat-components";
 import { AppStoreButton } from "./AppStoreButton";

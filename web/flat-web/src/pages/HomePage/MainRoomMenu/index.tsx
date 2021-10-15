@@ -2,13 +2,13 @@ import "./MainRoomMenu.less";
 
 import React, { FC, useContext } from "react";
 import { Region } from "flat-components";
-import { RoomType } from "../../../apiMiddleware/flatServer/constants";
+import { RoomType } from "../../../api-middleware/flatServer/constants";
 import { RoomStoreContext } from "../../../components/StoreProvider";
 import { usePushHistory } from "../../../utils/routes";
 import { CreateRoomBox } from "./CreateRoomBox";
 import { JoinRoomBox } from "./JoinRoomBox";
 import { ScheduleRoomBox } from "./ScheduleRoomBox";
-import { joinRoomHandler } from "../../utils/joinRoomHandler";
+import { joinRoomHandler } from "../../utils/join-room-handler";
 import { errorTips } from "../../../components/Tips/ErrorTips";
 
 export const MainRoomMenu: FC = () => {

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useHistory } from "react-router-dom";
 import { EditRoomFormInitialValues, EditRoomFormValues, LoadingPage } from "flat-components";
-import { ordinaryRoomInfo, updateOrdinaryRoom } from "../../apiMiddleware/flatServer";
+import { ordinaryRoomInfo, updateOrdinaryRoom } from "../../api-middleware/flatServer";
 import EditRoomPage from "../../components/EditRoomPage";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { errorTips } from "../../components/Tips/ErrorTips";

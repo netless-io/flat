@@ -3,9 +3,9 @@ import "./style.less";
 import React, { useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
-import type { ShareScreenStore } from "../../stores/ShareScreenStore";
+import type { ShareScreenStore } from "../../stores/share-screen-store";
 import { message } from "antd";
-import { shareScreenEvents } from "../../apiMiddleware/rtc/share-screen";
+import { shareScreenEvents } from "../../api-middleware/rtc/share-screen";
 import { useTranslation } from "react-i18next";
 
 interface ShareScreenProps {

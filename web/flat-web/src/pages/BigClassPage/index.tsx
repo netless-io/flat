@@ -16,9 +16,9 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RoomPhase, ViewMode } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
-import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
-import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
-import { RtcChannelType } from "../../apiMiddleware/rtc/room";
+import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
+import { RoomStatus, RoomType } from "../../api-middleware/flatServer/constants";
+import { RtcChannelType } from "../../api-middleware/rtc/room";
 import { ChatPanel } from "../../components/ChatPanel";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
@@ -38,13 +38,13 @@ import {
     RoomStatusLoadingType,
     useClassRoomStore,
     User,
-} from "../../stores/ClassRoomStore";
+} from "../../stores/class-room-store";
 import { useAutoRun, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { runtime } from "../../utils/runtime";
 import { BigClassAvatar } from "./BigClassAvatar";
 import { ShareScreen } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generateAvatar";
+import { generateAvatar } from "../../utils/generate-avatar";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,

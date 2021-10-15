@@ -1,4 +1,4 @@
-import { ScreenInfo, ShareSymbol } from "../../../../apiMiddleware/share-screen";
+import { ScreenInfo, ShareSymbol } from "../../../../api-middleware/share-screen";
 
 export const uint8ArrayToImageURL = (buffer: Uint8Array): string => {
     return URL.createObjectURL(

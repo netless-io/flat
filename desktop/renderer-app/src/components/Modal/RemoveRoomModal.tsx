@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Button, Checkbox, message, Modal } from "antd";
 import React, { useState } from "react";
-import { roomStore } from "../../stores/RoomStore";
+import { roomStore } from "../../stores/room-store";
 import { errorTips } from "../Tips/ErrorTips";
 
 interface RemoveRoomModalProps {

@@ -7,7 +7,7 @@ import "./UserSettingLayoutContainer.less";
 
 import React from "react";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
-import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { useTranslation } from "react-i18next";
 

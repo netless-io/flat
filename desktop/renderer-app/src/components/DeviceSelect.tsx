@@ -1,7 +1,7 @@
 import React from "react";
 import { Select } from "antd";
 import { observer } from "mobx-react-lite";
-import { Device } from "../types/Device";
+import { Device } from "../types/device";
 
 export interface DeviceSelectProps {
     devices: Device[];

@@ -1,6 +1,6 @@
 import { Region } from "flat-components";
 import { autoPersistStore } from "./utils";
-import { LoginProcessResult } from "../apiMiddleware/flatServer";
+import { LoginProcessResult } from "../api-middleware/flatServer";
 import type { UID } from "agora-rtc-sdk-ng";
 
 // clear storage if not match

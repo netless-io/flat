@@ -5,7 +5,7 @@ import {
     ExitRoomConfirmModal,
     StopClassConfirmModal,
 } from "flat-components";
-import { RoomStatus } from "../apiMiddleware/flatServer/constants";
+import { RoomStatus } from "../api-middleware/flatServer/constants";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../utils/ipc";
 import { RouteNameType, usePushHistory } from "../utils/routes";

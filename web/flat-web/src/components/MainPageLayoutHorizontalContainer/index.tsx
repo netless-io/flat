@@ -13,7 +13,7 @@ import { MainPageLayoutHorizontal, MainPageLayoutItem, MainPageLayoutProps } fro
 import { useTranslation } from "react-i18next";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
-import { generateAvatar } from "../../utils/generateAvatar";
+import { generateAvatar } from "../../utils/generate-avatar";
 
 export interface MainPageLayoutHorizontalContainerProps {
     subMenu?: MainPageLayoutItem[];

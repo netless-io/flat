@@ -10,8 +10,8 @@ import { useHistory, useLocation } from "react-router-dom";
 // let webpack recognize
 import "../../../assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
 import { DeviceSelect } from "../../../components/DeviceSelect";
-import { Device } from "../../../types/Device";
-import { useRTCEngine } from "../../../utils/hooks/useRTCEngine";
+import { Device } from "../../../types/device";
+import { useRTCEngine } from "../../../utils/hooks/use-rtc-engine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { runtime } from "../../../utils/runtime";
 import { routeConfig } from "../../../route-config";

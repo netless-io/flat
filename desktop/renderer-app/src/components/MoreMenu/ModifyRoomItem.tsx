@@ -2,9 +2,9 @@ import { Menu } from "antd";
 import { MenuItemProps } from "antd/lib/menu/MenuItem";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RouteNameType } from "../../route-config";
-import { RoomItem } from "../../stores/RoomStore";
+import { RoomItem } from "../../stores/room-store";
 import { usePushHistory } from "../../utils/routes";
 
 interface ModifyRoomItemProps extends MenuItemProps {

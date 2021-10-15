@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { TopBarRightBtn } from "./TopBarRightBtn";
-import { RoomItem } from "../stores/RoomStore";
+import { RoomItem } from "../stores/room-store";
 import { InviteModal } from "./Modal/InviteModal";
 
 export interface InviteButtonProps {
