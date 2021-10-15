@@ -1,9 +1,9 @@
 import { BigVideoAvatar } from "flat-components";
 import { VideoAvatarProps } from "flat-components/src/components/ClassroomPage/VideoAvatar";
 import React from "react";
-import { RtcRoom } from "../../apiMiddleware/rtc/room";
+import { RtcRoom } from "../../api-middleware/rtc/room";
 import { AvatarCanvas } from "../../components/AvatarCanvas";
-import { User } from "../../stores/UserStore";
+import { User } from "../../stores/user-store";
 
 interface BigClassAvatarProps extends Omit<VideoAvatarProps, "avatarUser"> {
     rtc: RtcRoom;

@@ -1,4 +1,4 @@
-import { FLAT_SERVER_DOMAIN } from "../../constants/Process";
+import { FLAT_SERVER_DOMAIN } from "../../constants/process";
 
 const FLAT_SERVER_PROTOCOL = `https://${FLAT_SERVER_DOMAIN}`;
 

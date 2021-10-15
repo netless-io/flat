@@ -13,13 +13,13 @@ import {
     WhiteWebSdk,
 } from "white-web-sdk";
 import { CursorTool } from "@netless/cursor-tool";
-import { NETLESS, NODE_ENV } from "../constants/Process";
+import { NETLESS, NODE_ENV } from "../constants/process";
 import { globalStore } from "./GlobalStore";
 import { isMobile, isWindows } from "react-device-detect";
 import { debounce } from "lodash-es";
-import { coursewarePreloader } from "../utils/CoursewarePreloader";
+import { coursewarePreloader } from "../utils/courseware-preloader";
 import { WindowManager, BuiltinApps, AddAppParams } from "@netless/window-manager";
-import { RoomType } from "../apiMiddleware/flatServer/constants";
+import { RoomType } from "../api-middleware/flatServer/constants";
 
 export class WhiteboardStore {
     public room: Room | null = null;

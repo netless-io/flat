@@ -18,7 +18,7 @@ import {
     WhiteWebSdk,
 } from "white-web-sdk";
 import { Region } from "flat-components";
-import { NETLESS, NODE_ENV } from "../constants/Process";
+import { NETLESS, NODE_ENV } from "../constants/process";
 
 export enum SmartPlayerEventType {
     Ready = "Ready",

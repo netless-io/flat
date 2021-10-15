@@ -26,28 +26,28 @@ import ExitRoomConfirm, {
 } from "../../components/ExitRoomConfirm";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 
-import { ClassModeType } from "../../apiMiddleware/Rtm";
-import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
+import { ClassModeType } from "../../api-middleware/Rtm";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import {
     AgoraCloudRecordBackgroundConfigItem,
     AgoraCloudRecordLayoutConfigItem,
-} from "../../apiMiddleware/flatServer/agora";
+} from "../../api-middleware/flatServer/agora";
 import {
     RecordingConfig,
     RoomStatusLoadingType,
     useClassRoomStore,
     User,
-} from "../../stores/ClassRoomStore";
+} from "../../stores/class-room-store";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import "./SmallClassPage.less";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
-import { RtcChannelType } from "../../apiMiddleware/rtc/room";
+import { RtcChannelType } from "../../api-middleware/rtc/room";
 import { useTranslation } from "react-i18next";
 import { ShareScreen } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generateAvatar";
+import { generateAvatar } from "../../utils/generate-avatar";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;

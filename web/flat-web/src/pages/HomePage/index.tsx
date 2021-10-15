@@ -7,7 +7,7 @@ import { MainRoomListPanel } from "./MainRoomListPanel";
 import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
 import { RouteNameType, useReplaceHistory } from "../../utils/routes";
 import { GlobalStoreContext, PageStoreContext } from "../../components/StoreProvider";
-import { loginCheck } from "../../apiMiddleware/flatServer";
+import { loginCheck } from "../../api-middleware/flatServer";
 import { errorTips } from "../../components/Tips/ErrorTips";
 
 export const HomePage = observer(function HomePage() {

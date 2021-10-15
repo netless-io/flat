@@ -1,7 +1,7 @@
 import { autorun, makeAutoObservable, observable, reaction } from "mobx";
-import { RTCShareScreen } from "../../apiMiddleware/rtc/share-screen";
+import { RTCShareScreen } from "../../api-middleware/rtc/share-screen";
 import { IAgoraRTCClient } from "agora-rtc-sdk-ng";
-import { ListenerOtherUserShareScreen } from "./ListenerOtherUserShareScreen";
+import { ListenerOtherUserShareScreen } from "./listener-other-user-share-screen";
 
 export class ShareScreenStore {
     public enableShareScreenStatus = false;

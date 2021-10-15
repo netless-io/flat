@@ -12,10 +12,10 @@ import {
 } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
-import { joinRoomHandler } from "../utils/joinRoomHandler";
-import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
+import { joinRoomHandler } from "../utils/join-room-handler";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { message } from "antd";
-import { INVITE_BASEURL } from "../../constants/Process";
+import { INVITE_BASEURL } from "../../constants/process";
 
 export const RoomDetailPage = observer(function RoomDetailPage() {
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();

@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import dateAdd from "date-fns/add";
-import { Rtm as RTMAPI, RTMessageType } from "../apiMiddleware/Rtm";
-import { SmartPlayer, SmartPlayerEventType } from "../apiMiddleware/SmartPlayer";
+import { Rtm as RTMAPI, RTMessageType } from "../api-middleware/Rtm";
+import { SmartPlayer, SmartPlayerEventType } from "../api-middleware/SmartPlayer";
 import { globalStore } from "./GlobalStore";
-import { RoomItem, roomStore } from "./RoomStore";
-import { NODE_ENV } from "../constants/Process";
+import { RoomItem, roomStore } from "./room-store";
+import { NODE_ENV } from "../constants/process";
 import { useAutoRun } from "../utils/mobx";
-import { RoomType } from "../apiMiddleware/flatServer/constants";
-import { UserStore } from "./UserStore";
-import { RTMChannelMessage } from "./ClassRoomStore";
+import { RoomType } from "../api-middleware/flatServer/constants";
+import { UserStore } from "./user-store";
+import { RTMChannelMessage } from "./class-room-store";
 
 export class ClassRoomReplayStore {
     public readonly roomUUID: string;

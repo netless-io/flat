@@ -1,6 +1,6 @@
 import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import type { ILocalVideoTrack } from "agora-rtc-sdk-ng";
-import { AGORA } from "../../constants/Process";
+import { AGORA } from "../../constants/process";
 import { globalStore } from "../../stores/GlobalStore";
 import EventEmitter from "eventemitter3";
 

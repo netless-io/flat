@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
-import { RtcRoom as RTCAPI, RtcChannelType } from "../apiMiddleware/rtc/room";
+import { RtcRoom as RTCAPI, RtcChannelType } from "../api-middleware/rtc/room";
 import {
     ClassModeType,
     NonDefaultUserProp,
@@ -10,33 +10,33 @@ import {
     RTMessage,
     RTMessageType,
     RTMEvents,
-} from "../apiMiddleware/Rtm";
-import { CloudRecording } from "../apiMiddleware/CloudRecording";
+} from "../api-middleware/Rtm";
+import { CloudRecording } from "../api-middleware/CloudRecording";
 import {
     CloudRecordStartPayload,
     CloudRecordUpdateLayoutPayload,
-} from "../apiMiddleware/flatServer/agora";
+} from "../api-middleware/flatServer/agora";
 import {
     pauseClass,
     startClass,
     startRecordRoom,
     stopClass,
     stopRecordRoom,
-} from "../apiMiddleware/flatServer";
-import { RoomStatus, RoomType } from "../apiMiddleware/flatServer/constants";
-import { RoomItem, roomStore } from "./RoomStore";
+} from "../api-middleware/flatServer";
+import { RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
+import { RoomItem, roomStore } from "./room-store";
 import { globalStore } from "./GlobalStore";
-import { NODE_ENV } from "../constants/Process";
+import { NODE_ENV } from "../constants/process";
 import { useAutoRun } from "../utils/mobx";
-import { User, UserStore } from "./UserStore";
+import { User, UserStore } from "./user-store";
 import { errorTips } from "../components/Tips/ErrorTips";
-import { WhiteboardStore } from "./WhiteboardStore";
+import { WhiteboardStore } from "./whiteboard-store";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { NetworkQuality } from "agora-rtc-sdk-ng";
-import { ShareScreenStore } from "./ShareScreenStore";
+import { ShareScreenStore } from "./share-screen-store";
 
-export type { User } from "./UserStore";
+export type { User } from "./user-store";
 
 export type RTMChannelMessage = RTMessage<
     RTMessageType.ChannelMessage | RTMessageType.Notice | RTMessageType.BanText

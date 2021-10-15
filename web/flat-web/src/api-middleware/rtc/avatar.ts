@@ -8,7 +8,7 @@ import type {
     ITrack,
 } from "agora-rtc-sdk-ng";
 import { EventEmitter } from "eventemitter3";
-import type { User } from "../../stores/UserStore";
+import type { User } from "../../stores/user-store";
 import type { RtcRoom } from "./room";
 
 export interface RtcAvatarParams {

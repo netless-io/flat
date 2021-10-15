@@ -8,8 +8,8 @@ import { githubLogin } from "./githubLogin";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { WeChatLogin } from "./WeChatLogin";
-import { joinRoomHandler } from "../utils/joinRoomHandler";
-import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/Process";
+import { joinRoomHandler } from "../utils/join-room-handler";
+import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
 import { useTranslation } from "react-i18next";
 
 export const LoginPage = observer(function LoginPage() {

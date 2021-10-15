@@ -15,8 +15,8 @@ import React, { ReactNode } from "react";
 import {
     ConvertingTaskStatus,
     queryConvertingTaskStatus,
-} from "../../apiMiddleware/courseware-converting";
-import { FileConvertStep } from "../../apiMiddleware/flatServer/constants";
+} from "../../api-middleware/courseware-converting";
+import { FileConvertStep } from "../../api-middleware/flatServer/constants";
 import {
     CloudFile,
     convertFinish,
@@ -24,12 +24,12 @@ import {
     listFiles,
     removeFiles,
     renameFile,
-} from "../../apiMiddleware/flatServer/storage";
+} from "../../api-middleware/flatServer/storage";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { INVITE_BASEURL } from "../../constants/Process";
-import { coursewarePreloader } from "../../utils/CoursewarePreloader";
-import { getUploadTaskManager } from "../../utils/UploadTaskManager";
-import { UploadStatusType, UploadTask } from "../../utils/UploadTaskManager/UploadTask";
+import { INVITE_BASEURL } from "../../constants/process";
+import { coursewarePreloader } from "../../utils/courseware-preloader";
+import { getUploadTaskManager } from "../../utils/upload-task-manager";
+import { UploadStatusType, UploadTask } from "../../utils/upload-task-manager/upload-task";
 
 export type CloudStorageFile = CloudStorageFileUI &
     Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region">;

@@ -6,7 +6,7 @@ import { TopBarRightBtn } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useState } from "react";
 import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
-import { WhiteboardStore } from "../stores/WhiteboardStore";
+import { WhiteboardStore } from "../stores/whiteboard-store";
 import "./CloudStorageButton.less";
 import { useTranslation } from "react-i18next";
 

@@ -1,9 +1,9 @@
-import { setAuthUUID, loginProcess } from "../../apiMiddleware/flatServer";
+import { setAuthUUID, loginProcess } from "../../api-middleware/flatServer";
 import { v4 as uuidv4 } from "uuid";
 import { LoginExecutor } from "./utils";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { FLAT_SERVER_LOGIN } from "../../apiMiddleware/flatServer/constants";
-import { GITHUB } from "../../constants/Process";
+import { FLAT_SERVER_LOGIN } from "../../api-middleware/flatServer/constants";
+import { GITHUB } from "../../constants/process";
 
 export const githubLogin: LoginExecutor = onSuccess => {
     let timer = NaN;

@@ -5,9 +5,9 @@ import { message } from "antd";
 import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 
-import { RtcAvatar, RtcEvents } from "../apiMiddleware/rtc/avatar";
-import { RtcRoom } from "../apiMiddleware/rtc/room";
-import { User } from "../stores/ClassRoomStore";
+import { RtcAvatar, RtcEvents } from "../api-middleware/rtc/avatar";
+import { RtcRoom } from "../api-middleware/rtc/room";
+import { User } from "../stores/class-room-store";
 
 export interface AvatarCanvasProps {
     isCreator: boolean;

@@ -8,7 +8,7 @@ import {
     List,
     ListRowRenderer,
 } from "react-virtualized";
-import { ClassRoomReplayStore } from "../../stores/ClassRoomReplayStore";
+import { ClassRoomReplayStore } from "../../stores/class-room-replay-store";
 
 export interface ChatMessageListReplayProps {
     classRoomReplayStore: ClassRoomReplayStore;

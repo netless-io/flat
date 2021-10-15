@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { isBefore, addMinutes, roundToNearestMinutes, getDay, addWeeks } from "date-fns";
-import { RoomType } from "../../apiMiddleware/flatServer/constants";
+import { RoomType } from "../../api-middleware/flatServer/constants";
 import {
     ConfigStoreContext,
     GlobalStoreContext,

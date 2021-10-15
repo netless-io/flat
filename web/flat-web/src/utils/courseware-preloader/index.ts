@@ -1,5 +1,5 @@
 import { BlobReader, BlobWriter, ZipReader } from "@zip.js/zip.js";
-import { getZipData } from "../../apiMiddleware/courseware-converting";
+import { getZipData } from "../../api-middleware/courseware-converting";
 import { cachePPTConvert, contentType } from "./utils";
 
 type PPTInfo = {

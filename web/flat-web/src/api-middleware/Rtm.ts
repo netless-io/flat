@@ -1,7 +1,7 @@
 import AgoraRTM, { RtmChannel, RtmClient } from "agora-rtm-sdk";
 import polly from "polly-js";
 import { v4 as uuidv4 } from "uuid";
-import { AGORA, NODE_ENV } from "../constants/Process";
+import { AGORA, NODE_ENV } from "../constants/process";
 import { EventEmitter } from "eventemitter3";
 import { RoomStatus } from "./flatServer/constants";
 import { generateRTMToken } from "./flatServer/agora";

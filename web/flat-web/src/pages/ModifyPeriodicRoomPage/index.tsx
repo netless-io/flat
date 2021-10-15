@@ -12,7 +12,7 @@ import {
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import EditRoomPage from "../../components/EditRoomPage";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
-import { periodicRoomInfo, updatePeriodicRoom } from "../../apiMiddleware/flatServer";
+import { periodicRoomInfo, updatePeriodicRoom } from "../../api-middleware/flatServer";
 import { errorTips } from "../../components/Tips/ErrorTips";
 
 type ModifyPeriodicRoomPageProps = {

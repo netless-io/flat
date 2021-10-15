@@ -8,7 +8,7 @@ import type {
 } from "agora-rtc-sdk-ng";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import type { RtcAvatar } from "./avatar";
-import { AGORA } from "../../constants/Process";
+import { AGORA } from "../../constants/process";
 import { globalStore } from "../../stores/GlobalStore";
 import { generateRTCToken } from "../flatServer/agora";
 import { setCameraTrack, setMicrophoneTrack } from "./hot-plug";

@@ -5,10 +5,10 @@ import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import { InviteModal as InviteModalImpl } from "flat-components";
 import { useTranslation } from "react-i18next";
-import { RoomItem } from "../../stores/RoomStore";
+import { RoomItem } from "../../stores/room-store";
 import { GlobalStoreContext, RoomStoreContext } from "../StoreProvider";
 import { errorTips } from "../Tips/ErrorTips";
-import { INVITE_BASEURL } from "../../constants/Process";
+import { INVITE_BASEURL } from "../../constants/process";
 
 export interface InviteModalProps {
     visible: boolean;

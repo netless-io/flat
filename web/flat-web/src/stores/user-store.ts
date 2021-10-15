@@ -1,7 +1,7 @@
 import { action, makeAutoObservable, observable } from "mobx";
-import { CloudRecordStartPayload } from "../apiMiddleware/flatServer/agora";
-import { usersInfo } from "../apiMiddleware/flatServer";
-import { configStore } from "./ConfigStore";
+import { CloudRecordStartPayload } from "../api-middleware/flatServer/agora";
+import { usersInfo } from "../api-middleware/flatServer";
+import { configStore } from "./config-store";
 
 export interface User {
     userUUID: string;
