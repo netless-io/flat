@@ -1,7 +1,7 @@
 import { autoUpdater, UpdateCheckResult } from "electron-updater";
 import runtime from "./Runtime";
 import { ProgressInfo } from "electron-updater/out/differentialDownloader/ProgressDifferentialDownloadCallbackTransform";
-import { ipcEmitByMain } from "./IPCEmit";
+import { ipcEmitByMain } from "./ipc-emit";
 import { update } from "flat-types";
 
 class UpdateService {

@@ -1,5 +1,5 @@
 import { ipc } from "flat-types";
-import { windowManager } from "./WindowManager";
+import { windowManager } from "./window-manager";
 import runtime from "./Runtime";
 import { constants } from "flat-types";
 

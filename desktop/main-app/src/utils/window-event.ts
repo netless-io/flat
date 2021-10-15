@@ -1,5 +1,5 @@
-import { ipcEmit } from "./IPCEmit";
-import { CustomSingleWindow } from "./WindowManager";
+import { ipcEmit } from "./ipc-emit";
+import { CustomSingleWindow } from "./window-manager";
 import { autoUpdater } from "electron-updater";
 
 export const windowHookClose = (customWindow: CustomSingleWindow): void => {

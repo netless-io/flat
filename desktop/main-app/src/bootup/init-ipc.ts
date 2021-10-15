@@ -1,5 +1,5 @@
-import { windowManager } from "../utils/WindowManager";
-import { appActionAsync, appActionSync, injectionWindowIPCAction } from "../utils/IPCActions";
+import { windowManager } from "../utils/window-manager";
+import { appActionAsync, appActionSync, injectionWindowIPCAction } from "../utils/ipc-actions";
 import { constants, ipc } from "flat-types";
 import { ipcMain } from "electron";
 

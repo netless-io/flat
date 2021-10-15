@@ -1,5 +1,5 @@
 import { app } from "electron";
-import closeAPP from "../utils/CloseAPP";
+import closeAPP from "../utils/close-app";
 
 export default (): void => {
     const windowAllClosed = (): void => {

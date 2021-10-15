@@ -1,5 +1,5 @@
 import { app } from "electron";
-import { windowManager } from "../utils/WindowManager";
+import { windowManager } from "../utils/window-manager";
 
 export default (): void => {
     app.allowRendererProcessReuse = false;

@@ -6,7 +6,7 @@ import {
     IpcMainEvent,
     Display,
 } from "electron";
-import { windowHookClose, windowOpenDevTools, windowReadyToShow } from "./WindowEvent";
+import { windowHookClose, windowOpenDevTools, windowReadyToShow } from "./window-event";
 import runtime from "./Runtime";
 import { constants, portal } from "flat-types";
 import { Subject, zip } from "rxjs";

@@ -8,7 +8,7 @@ const { ipcRenderer } = require("electron");
 
 /**
  * this method will only be triggered on the main page
- * see: WindowManager.ts
+ * see: window-manager.ts
  */
 ipcRenderer.once("inject-agora-electron-sdk-addon", () => {
     if (!process.env.AGORA_APP_ID) {

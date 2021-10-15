@@ -1,8 +1,8 @@
-import { CustomSingleWindow, windowManager } from "./WindowManager";
+import { CustomSingleWindow, windowManager } from "./window-manager";
 import { ipc } from "flat-types";
 import { app, ipcMain, powerSaveBlocker } from "electron";
 import runtime from "./Runtime";
-import { updateService } from "./UpdateService";
+import { updateService } from "./update-service";
 import { update } from "flat-types";
 import { gt } from "semver";
 
