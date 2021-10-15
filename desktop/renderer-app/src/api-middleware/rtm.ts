@@ -1,11 +1,11 @@
 import AgoraRTM, { RtmChannel, RtmClient } from "agora-rtm-sdk";
 import polly from "polly-js";
 import { v4 as uuidv4 } from "uuid";
-import { AGORA, NODE_ENV } from "../constants/Process";
+import { AGORA, NODE_ENV } from "../constants/process";
 import { EventEmitter } from "events";
 import { RoomStatus } from "./flatServer/constants";
 import { generateRTMToken } from "./flatServer/agora";
-import { globalStore } from "../stores/GlobalStore";
+import { globalStore } from "../stores/global-store";
 
 /**
  * @see {@link https://docs.agora.io/cn/Real-time-Messaging/rtm_get_event?platform=RESTful#a-namecreate_history_resa创建历史消息查询资源-api（post）}

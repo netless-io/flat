@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import { MenuItemProps } from "antd/lib/menu/MenuItem";
 import { InviteModal } from "../Modal/InviteModal";
-import { RoomItem } from "../../stores/RoomStore";
+import { RoomItem } from "../../stores/room-store";
 
 interface CopyInvitationItemProps extends MenuItemProps {
     room: RoomItem | undefined;

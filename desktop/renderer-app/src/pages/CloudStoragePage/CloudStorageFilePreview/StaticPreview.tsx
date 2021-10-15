@@ -3,7 +3,7 @@ import "./StaticPreview.less";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { queryConvertingTaskStatus } from "../../../apiMiddleware/courseware-converting";
+import { queryConvertingTaskStatus } from "../../../api-middleware/courseware-converting";
 import { Region } from "flat-components";
 
 export interface StaticPreviewProps {

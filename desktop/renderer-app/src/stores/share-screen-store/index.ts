@@ -1,6 +1,6 @@
 import { autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
-import { RTCShareScreen, ScreenInfo, ShareSymbol } from "../../apiMiddleware/share-screen";
-import { ListenerOtherUserShareScreen } from "./ListenerOtherUserShareScreen";
+import { RTCShareScreen, ScreenInfo, ShareSymbol } from "../../api-middleware/share-screen";
+import { ListenerOtherUserShareScreen } from "./listener-other-user-share-screen";
 
 export class ShareScreenStore {
     public enableShareScreenStatus = false;

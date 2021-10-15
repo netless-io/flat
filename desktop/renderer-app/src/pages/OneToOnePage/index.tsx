@@ -28,24 +28,24 @@ import {
 } from "../../components/ExitRoomConfirm";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import { RoomStatus, RoomType } from "../../apiMiddleware/flatServer/constants";
+import { RoomStatus, RoomType } from "../../api-middleware/flatServer/constants";
 import {
     RecordingConfig,
     RoomStatusLoadingType,
     useClassRoomStore,
-} from "../../stores/ClassRoomStore";
-import { RtcChannelType } from "../../apiMiddleware/Rtc";
+} from "../../stores/class-room-store";
+import { RtcChannelType } from "../../api-middleware/rtc";
 import { useComputed } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
-import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
-import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { usePowerSaveBlocker } from "../../utils/hooks/use-power-save-blocker";
+import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
-import { AgoraCloudRecordBackgroundConfigItem } from "../../apiMiddleware/flatServer/agora";
+import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 import { useTranslation } from "react-i18next";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generateAvatar";
+import { generateAvatar } from "../../utils/generate-avatar";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,

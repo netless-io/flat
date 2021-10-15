@@ -19,10 +19,10 @@ import {
     periodicSubRoomInfo,
     PeriodicSubRoomInfoPayload,
     recordInfo,
-} from "../apiMiddleware/flatServer";
-import { RoomDoc, RoomStatus, RoomType } from "../apiMiddleware/flatServer/constants";
-import { globalStore } from "./GlobalStore";
-import { configStore } from "./ConfigStore";
+} from "../api-middleware/flatServer";
+import { RoomDoc, RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
+import { globalStore } from "./global-store";
+import { configStore } from "./config-store";
 
 // Sometime we may only have pieces of the room info
 /** Ordinary room + periodic sub-room */

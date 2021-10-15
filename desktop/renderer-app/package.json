@@ -104,7 +104,7 @@
     "webpack-merge": "^5.7.3"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development node ./scripts/Start.js",
+    "start": "cross-env NODE_ENV=development node scripts/start.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "build:analyzer": "cross-env NODE_ENV=production ANALYZER=true webpack --config webpack/webpack.prod.js",
     "lint": "lint-staged"

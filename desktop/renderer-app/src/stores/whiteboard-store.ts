@@ -14,10 +14,10 @@ import {
     WhiteWebSdk,
 } from "white-web-sdk";
 import { CursorTool } from "@netless/cursor-tool";
-import { NETLESS, NODE_ENV } from "../constants/Process";
-import { globalStore } from "./GlobalStore";
+import { NETLESS, NODE_ENV } from "../constants/process";
+import { globalStore } from "./global-store";
 import { isMobile, isWindows } from "react-device-detect";
-import { getCoursewarePreloader } from "../utils/CoursewarePreloader";
+import { getCoursewarePreloader } from "../utils/courseware-preloader";
 import { debounce } from "lodash-es";
 import { RoomType } from "../../../../packages/flat-components/src/types/room";
 

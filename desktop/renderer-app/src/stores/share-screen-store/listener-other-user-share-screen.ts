@@ -1,5 +1,5 @@
 import type AgoraSDK from "agora-electron-sdk";
-import { globalStore } from "../GlobalStore";
+import { globalStore } from "../global-store";
 
 export class ListenerOtherUserShareScreen {
     private readonly existOtherUserStream: (exist: boolean) => void;

@@ -7,7 +7,7 @@ import "./DeviceCheckLayoutContainer.less";
 
 import React from "react";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
-import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { useHistory, useLocation } from "react-router-dom";
 import { DeviceCheckState } from "./utils";

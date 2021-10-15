@@ -27,29 +27,29 @@ import ExitRoomConfirm, {
 } from "../../components/ExitRoomConfirm";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 
-import { RtcChannelType } from "../../apiMiddleware/Rtc";
-import { ClassModeType } from "../../apiMiddleware/Rtm";
-import { RoomStatus } from "../../apiMiddleware/flatServer/constants";
+import { RtcChannelType } from "../../api-middleware/rtc";
+import { ClassModeType } from "../../api-middleware/rtm";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import {
     AgoraCloudRecordBackgroundConfigItem,
     AgoraCloudRecordLayoutConfigItem,
-} from "../../apiMiddleware/flatServer/agora";
+} from "../../api-middleware/flatServer/agora";
 import {
     RecordingConfig,
     RoomStatusLoadingType,
     useClassRoomStore,
     User,
-} from "../../stores/ClassRoomStore";
+} from "../../stores/class-room-store";
 import { RouteNameType, RouteParams } from "../../utils/routes";
-import { usePowerSaveBlocker } from "../../utils/hooks/usePowerSaveBlocker";
+import { usePowerSaveBlocker } from "../../utils/hooks/use-power-save-blocker";
 
 import "./SmallClassPage.less";
-import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generateAvatar";
+import { generateAvatar } from "../../utils/generate-avatar";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;

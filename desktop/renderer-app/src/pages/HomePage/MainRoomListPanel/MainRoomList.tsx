@@ -14,16 +14,16 @@ import {
     RoomListSkeletons,
     RoomStatusType,
 } from "flat-components";
-import { ListRoomsType } from "../../../apiMiddleware/flatServer";
-import { RoomStatus, RoomType } from "../../../apiMiddleware/flatServer/constants";
+import { ListRoomsType } from "../../../api-middleware/flatServer";
+import { RoomStatus, RoomType } from "../../../api-middleware/flatServer/constants";
 import { RemoveHistoryRoomModal } from "../../../components/Modal/RemoveHistoryRoomModal";
 import { GlobalStoreContext, RoomStoreContext } from "../../../components/StoreProvider";
 import { errorTips } from "../../../components/Tips/ErrorTips";
-import { RoomItem } from "../../../stores/RoomStore";
+import { RoomItem } from "../../../stores/room-store";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
-import { joinRoomHandler } from "../../utils/joinRoomHandler";
-import { INVITE_BASEURL } from "../../../constants/Process";
+import { joinRoomHandler } from "../../utils/join-room-handler";
+import { INVITE_BASEURL } from "../../../constants/process";
 import { useTranslation } from "react-i18next";
 
 export interface MainRoomListProps {

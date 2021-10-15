@@ -2,7 +2,7 @@ import React from "react";
 import type AgoraSDK from "agora-electron-sdk";
 import { OneToOneVideoAvatar, OneToOneVideoAvatarProps } from "flat-components";
 import { AvatarCanvas } from "../../components/AvatarCanvas";
-import { User } from "../../stores/UserStore";
+import { User } from "../../stores/user-store";
 
 export interface OneToOneAvatarProps extends Omit<OneToOneVideoAvatarProps, "avatarUser"> {
     rtcEngine: AgoraSDK;

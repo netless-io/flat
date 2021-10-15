@@ -4,7 +4,7 @@ import { Button } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
 import os from "os";
 import { routeConfig } from "../../../route-config";
-import { useRTCEngine } from "../../../utils/hooks/useRTCEngine";
+import { useRTCEngine } from "../../../utils/hooks/use-rtc-engine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { DeviceCheckResults, DeviceCheckState } from "../utils";
 import { useTranslation } from "react-i18next";

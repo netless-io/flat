@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
-import { loginCheck } from "../../apiMiddleware/flatServer";
+import { loginCheck } from "../../api-middleware/flatServer";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 import logoSVG from "../../assets/image/logo.svg";
 import "./SplashPage.less";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { useTranslation } from "react-i18next";
 
 enum LoginStatusType {

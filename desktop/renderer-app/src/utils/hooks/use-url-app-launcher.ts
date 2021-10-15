@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { GlobalStoreContext, URLProtocolStoreContext } from "../../components/StoreProvider";
-import { joinRoomHandler } from "../../pages/utils/joinRoomHandler";
+import { joinRoomHandler } from "../../pages/utils/join-room-handler";
 import { useAutoRun } from "../mobx";
 import { usePushHistory, RouteNameType, RouteParams } from "../routes";
 import { matchPath, useLocation } from "react-router-dom";

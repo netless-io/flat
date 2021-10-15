@@ -6,11 +6,11 @@ import {
     uploadFinish,
     uploadStart,
     UploadStartResult,
-} from "../../apiMiddleware/flatServer/storage";
-import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/Process";
-import { ServerRequestError } from "../error/ServerRequestError";
-import { RequestErrorCode } from "../../constants/ErrorCode";
-import { configStore } from "../../stores/ConfigStore";
+} from "../../api-middleware/flatServer/storage";
+import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/process";
+import { ServerRequestError } from "../error/server-request-error";
+import { RequestErrorCode } from "../../constants/error-code";
+import { configStore } from "../../stores/config-store";
 
 export enum UploadStatusType {
     Pending = 1,

@@ -5,10 +5,10 @@ import PlayerController from "@netless/player-controller";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanelReplay } from "../../components/ChatPanelReplay";
-import { OrdinaryRoomInfo } from "../../apiMiddleware/flatServer";
-import { RoomType } from "../../apiMiddleware/flatServer/constants";
+import { OrdinaryRoomInfo } from "../../api-middleware/flatServer";
+import { RoomType } from "../../api-middleware/flatServer/constants";
 import { observer } from "mobx-react-lite";
-import { useClassRoomReplayStore } from "../../stores/ClassRoomReplayStore";
+import { useClassRoomReplayStore } from "../../stores/class-room-replay-store";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import videoPlaySVG from "../../assets/image/video-play.svg";
@@ -16,7 +16,7 @@ import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { useWindowSize } from "../../utils/hooks/use-window-size";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;

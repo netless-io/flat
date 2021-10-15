@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { RoomList } from "flat-components";
 import { MainRoomList } from "./MainRoomList";
-import { ListRoomsType } from "../../../apiMiddleware/flatServer";
+import { ListRoomsType } from "../../../api-middleware/flatServer";
 import { useTranslation } from "react-i18next";
 
 export const MainRoomListPanel = observer<{}>(function MainRoomListPanel() {

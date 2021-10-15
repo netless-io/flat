@@ -13,7 +13,7 @@ import { MainPageLayoutContainer } from "../../components/MainPageLayoutContaine
 import { AppUpgradeModal, AppUpgradeModalProps } from "../../components/AppUpgradeModal";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { runtime } from "../../utils/runtime";
-import { globalStore } from "../../stores/GlobalStore";
+import { globalStore } from "../../stores/global-store";
 import { differenceInHours } from "date-fns";
 
 export type HomePageProps = {};

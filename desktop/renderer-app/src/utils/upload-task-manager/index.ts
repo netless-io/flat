@@ -1,6 +1,6 @@
 import { makeAutoObservable, observable, runInAction } from "mobx";
-import { cancelUpload } from "../../apiMiddleware/flatServer/storage";
-import { UploadStatusType, UploadTask } from "./UploadTask";
+import { cancelUpload } from "../../api-middleware/flatServer/storage";
+import { UploadStatusType, UploadTask } from "./upload-task";
 import { UploadID } from "flat-components";
 
 export enum UploadTaskManagerStatusType {

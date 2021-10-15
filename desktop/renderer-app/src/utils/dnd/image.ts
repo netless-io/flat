@@ -1,9 +1,9 @@
 import { message } from "antd";
 import { v4 as v4uuid } from "uuid";
 import type { Room, Size } from "white-web-sdk";
-import { listFiles } from "../../apiMiddleware/flatServer/storage";
+import { listFiles } from "../../api-middleware/flatServer/storage";
 import { i18n } from "../i18n";
-import { UploadTask } from "../UploadTaskManager/UploadTask";
+import { UploadTask } from "../upload-task-manager/upload-task";
 
 const ImageFileTypes = [
     "image/png",

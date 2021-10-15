@@ -1,10 +1,10 @@
 import "./style.less";
 import React, { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { ScreenInfo, ShareSymbol } from "../../../../apiMiddleware/share-screen";
+import { ScreenInfo, ShareSymbol } from "../../../../api-middleware/share-screen";
 import { getScreenInfo, uint8ArrayToImageURL } from "./Utils";
 import classNames from "classnames";
-import { ShareScreenStore } from "../../../../stores/ShareScreenStore";
+import { ShareScreenStore } from "../../../../stores/share-screen-store";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
 

@@ -1,6 +1,6 @@
 import type AgoraSdk from "agora-electron-sdk";
-import { AGORA } from "../constants/Process";
-import { globalStore } from "../stores/GlobalStore";
+import { AGORA } from "../constants/process";
+import { globalStore } from "../stores/global-store";
 import { generateRTCToken } from "./flatServer/agora";
 
 /** @see {@link https://docs.agora.io/cn/Video/API%20Reference/electron/index.html} */

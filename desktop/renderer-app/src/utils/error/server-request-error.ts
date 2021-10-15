@@ -1,5 +1,5 @@
-import { RequestError } from "./RequestError";
-import { RequestErrorCode, RequestErrorMessage } from "../../constants/ErrorCode";
+import { RequestError } from "./request-error";
+import { RequestErrorCode, RequestErrorMessage } from "../../constants/error-code";
 
 export class ServerRequestError extends RequestError {
     public errorCode: RequestErrorCode;

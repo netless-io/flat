@@ -2,7 +2,7 @@ import "./style.less";
 import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Modal, Spin } from "antd";
-import { ShareScreenStore } from "../../../stores/ShareScreenStore";
+import { ShareScreenStore } from "../../../stores/share-screen-store";
 import { ScreenList } from "./ScreenList";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";

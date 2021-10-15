@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { isBefore, addMinutes, roundToNearestMinutes, getDay, addWeeks } from "date-fns";
-import { RoomType } from "../../apiMiddleware/flatServer/constants";
+import { RoomType } from "../../api-middleware/flatServer/constants";
 import {
     ConfigStoreContext,
     GlobalStoreContext,
@@ -11,7 +11,7 @@ import { useSafePromise } from "../../utils/hooks/lifecycle";
 import EditRoomPage from "../../components/EditRoomPage";
 import { useHistory } from "react-router-dom";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { EditRoomFormValues } from "flat-components";
 import { useTranslation } from "react-i18next";
 

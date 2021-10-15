@@ -3,7 +3,7 @@ import { useIsomorphicLayoutEffect } from "react-use";
 import { RouteComponentProps } from "react-router-dom";
 import { ipcAsyncByMainWindow } from "../utils/ipc";
 import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
-import { useURLAppLauncher } from "../utils/hooks/useURLAppLauncher";
+import { useURLAppLauncher } from "../utils/hooks/use-url-app-launcher";
 
 export interface AppRouteContainerProps {
     Comp: React.ComponentType<any>;

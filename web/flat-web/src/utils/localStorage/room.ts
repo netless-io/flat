@@ -35,7 +35,7 @@ interface LSRoomSaveConfig extends Omit<LSRoom, "time"> {
 }
 
 /**
- * Save new room or update current room to localStorage and move it to the top
+ * Save new room or update current room to local-storage and move it to the top
  */
 export function saveRoom(config: LSRoomSaveConfig): LSRoom {
     const rooms = getRooms();

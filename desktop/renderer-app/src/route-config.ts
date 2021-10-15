@@ -11,7 +11,7 @@ import HomePage from "./pages/HomePage";
 import UserScheduledPage from "./pages/UserScheduledPage";
 import { ModifyOrdinaryRoomPage } from "./pages/ModifyOrdinaryRoomPage";
 import { ModifyPeriodicRoomPage } from "./pages/ModifyPeriodicRoomPage";
-import { RoomType } from "./apiMiddleware/flatServer/constants";
+import { RoomType } from "./api-middleware/flatServer/constants";
 import { CloudStoragePage } from "./pages/CloudStoragePage";
 import { CameraCheckPage } from "./pages/DeviceCheckPages/CameraCheckPage";
 import { MicrophoneCheckPage } from "./pages/DeviceCheckPages/MicrophoneCheckPage";

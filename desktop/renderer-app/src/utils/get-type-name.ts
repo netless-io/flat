@@ -1,4 +1,4 @@
-import { RoomType, Week } from "../apiMiddleware/flatServer/constants";
+import { RoomType, Week } from "../api-middleware/flatServer/constants";
 
 export const getWeekName = (week: Week): string => {
     const weekNameMap: Record<Week, string> = {

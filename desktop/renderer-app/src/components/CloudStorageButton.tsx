@@ -4,7 +4,7 @@ import { Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useState } from "react";
 import { CloudStoragePage } from "../pages/CloudStoragePage";
-import { WhiteboardStore } from "../stores/WhiteboardStore";
+import { WhiteboardStore } from "../stores/whiteboard-store";
 import { TopBarRightBtn } from "./TopBarRightBtn";
 import "./CloudStorageButton.less";
 import { useTranslation } from "react-i18next";
