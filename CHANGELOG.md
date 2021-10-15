@@ -1,3 +1,65 @@
+# [1.1.0](https://github.com/netless-io/flat/compare/v1.0.0...v1.1.0) (2021-10-15)
+
+
+### Bug Fixes
+
+* **ci:** deploy web action fail ([#908](https://github.com/netless-io/flat/issues/908)) ([d85e7fc](https://github.com/netless-io/flat/commit/d85e7fc9c2dd2d41987d92d77d2769f7bf2412a0))
+* **ci:** flat-web dockerfile build failed ([#887](https://github.com/netless-io/flat/issues/887)) ([e997157](https://github.com/netless-io/flat/commit/e9971579e8432eb0dd1d7777df23626834bc495e))
+* **debug:** vscode debugging main process failed ([#933](https://github.com/netless-io/flat/issues/933)) ([097188e](https://github.com/netless-io/flat/commit/097188efec75a7e520d76d39c38f5aa78dcc4593))
+* **desktop:** cannot find build script, causing build to failed ([#975](https://github.com/netless-io/flat/issues/975)) ([9998435](https://github.com/netless-io/flat/commit/9998435602ab2487d191c93fe95d3d632aa842ae))
+* **desktop:** load source-map error ([#938](https://github.com/netless-io/flat/issues/938)) ([9306316](https://github.com/netless-io/flat/commit/9306316f57adfe60cd1001fbb894f3e5c09556e3)), closes [#804](https://github.com/netless-io/flat/issues/804)
+* **desktop:** share display failed in windows system ([#998](https://github.com/netless-io/flat/issues/998)) ([e1f4013](https://github.com/netless-io/flat/commit/e1f4013eb972344eaa50921b15add320dc99e838))
+* **eslint,flat-components:** eslint invalid and rule too weak ([#858](https://github.com/netless-io/flat/issues/858)) ([94977c5](https://github.com/netless-io/flat/commit/94977c56b5bc25c5bc6d2d298356ab1d79183ffe))
+* **eslint:** eslint error ([#916](https://github.com/netless-io/flat/issues/916)) ([97a5b90](https://github.com/netless-io/flat/commit/97a5b9062551c4b0750fcd17aabc44ebd0966441))
+* **eslint:** eslint rule no-unused-vars invalid ([#915](https://github.com/netless-io/flat/issues/915)) ([7d71753](https://github.com/netless-io/flat/commit/7d717533be54863fc8afe988cbcbe3fb1eeb74bf))
+* **flat-components:** rename fileUUID to uploadID ([#849](https://github.com/netless-io/flat/issues/849)) ([ed4e9c9](https://github.com/netless-io/flat/commit/ed4e9c91be685087f5eef9c822647d2df85bdee6))
+* **flat-components:** tips has higher priority than modal ([#960](https://github.com/netless-io/flat/issues/960)) ([c2d880e](https://github.com/netless-io/flat/commit/c2d880ed21cdd82df3c8df304381bfaf5621f9a3))
+* **flat-web:** blocking browser fallback ([#857](https://github.com/netless-io/flat/issues/857)) ([d833d18](https://github.com/netless-io/flat/commit/d833d1867e1cb041357bbdb2df3ec11e09a91835)), closes [#856](https://github.com/netless-io/flat/issues/856)
+* **husky:** git hooks invalid ([#847](https://github.com/netless-io/flat/issues/847)) ([6232ce1](https://github.com/netless-io/flat/commit/6232ce197f1cf445c62b99f8018ffea2dd4c0c09))
+* **main-app:** does not meet aspect ratio when resize window ([#949](https://github.com/netless-io/flat/issues/949)) ([00920b8](https://github.com/netless-io/flat/commit/00920b8a7bafa63124e9669483b247253f3befd4))
+* **main-app:** homepage and repo url incorrect in package.json ([#948](https://github.com/netless-io/flat/issues/948)) ([4d737e7](https://github.com/netless-io/flat/commit/4d737e7bb4bc1981f7223415c632eebf33fa9ee3))
+* **main-app:** npm script ship:mac failed ([#977](https://github.com/netless-io/flat/issues/977)) ([63b14ae](https://github.com/netless-io/flat/commit/63b14ae5ac38a9a9822f1dbdba0da3f6a3d6aa83))
+* **project:** run bootstrap script fail in linux ([#944](https://github.com/netless-io/flat/issues/944)) ([fe534f7](https://github.com/netless-io/flat/commit/fe534f79e978058fddc445e36e41a04e31fc1323))
+* **readme:** storybook link error ([#875](https://github.com/netless-io/flat/issues/875)) ([124fb33](https://github.com/netless-io/flat/commit/124fb33a90b066464621daa892db7c1cb3d21eaf))
+* **renderer-app:** monaco-editor load failed in windows system ([#999](https://github.com/netless-io/flat/issues/999)) ([388ea3f](https://github.com/netless-io/flat/commit/388ea3f6f434107dd80950d9e49480c35623045a))
+* **scripts:** activate terminal after start command ([#981](https://github.com/netless-io/flat/issues/981)) ([4c46d36](https://github.com/netless-io/flat/commit/4c46d363bbfa78bc684c306f0cf0fe933b49ef3c))
+* **scripts:** start will error when iTerm2 not installed ([#965](https://github.com/netless-io/flat/issues/965)) ([ef6668b](https://github.com/netless-io/flat/commit/ef6668bbcb75503b0fb6c502601ec2de910b2df8))
+* **service-worker:** support range ([#844](https://github.com/netless-io/flat/issues/844)) ([cae51ff](https://github.com/netless-io/flat/commit/cae51ffaaf40b61126fdaf8b9d8133e92995b522))
+* **storybook:** fix type error ([#853](https://github.com/netless-io/flat/issues/853)) ([2ae424c](https://github.com/netless-io/flat/commit/2ae424c42d18e56ec47160ba4d739fe3027e7e3c))
+* **style:** share screen z-index less then telebox collector ([#995](https://github.com/netless-io/flat/issues/995)) ([26cd62e](https://github.com/netless-io/flat/commit/26cd62ee2fb0cc81a79cc3b6d8564edfda79cf7b))
+* **vscode:** not found tsconfig.json ([#885](https://github.com/netless-io/flat/issues/885)) ([2eccd47](https://github.com/netless-io/flat/commit/2eccd47079cc2563323a79d1fc6bc64dafad6c5f))
+* **web:** class room topbar icon no change ([#913](https://github.com/netless-io/flat/issues/913)) ([d3c9134](https://github.com/netless-io/flat/commit/d3c913463bf5072f9e87b0b45808fc54221ae497))
+* **web:** ignore isPlaying when calling setEnabled ([#969](https://github.com/netless-io/flat/issues/969)) ([445b5ff](https://github.com/netless-io/flat/commit/445b5ffbb7f9da889a658dbac0cfa24f593be382))
+* **web:** make rtc more stable ([#937](https://github.com/netless-io/flat/issues/937)) ([4aba742](https://github.com/netless-io/flat/commit/4aba7420bd6368f472bcf8f9767cd6485f5a53b7))
+* **web:** not found env variable ([#863](https://github.com/netless-io/flat/issues/863)) ([1d5f879](https://github.com/netless-io/flat/commit/1d5f879499a612e8bb58c15258fb59c2fc3d3f6b))
+* **web:** process.env type not effective ([#980](https://github.com/netless-io/flat/issues/980)) ([3b3938f](https://github.com/netless-io/flat/commit/3b3938feaf1d3e70ec87e9657a0753936419c790))
+* **web:** rtc error on publishing video track ([#950](https://github.com/netless-io/flat/issues/950)) ([b4a6ef3](https://github.com/netless-io/flat/commit/b4a6ef3e65138aa156430f9e723e141d9e80cd48))
+* **web:** should check remote tracks when creating avatar ([#954](https://github.com/netless-io/flat/issues/954)) ([332cd17](https://github.com/netless-io/flat/commit/332cd17e51cec1e8816ed966e710de007f2d709f))
+* **web:** should listen event before join ([#935](https://github.com/netless-io/flat/issues/935)) ([9e959d5](https://github.com/netless-io/flat/commit/9e959d50860e6dcdae838d2debd43791fa94774c))
+* **web:** volume to low check logic inaccurate ([#942](https://github.com/netless-io/flat/issues/942)) ([319483a](https://github.com/netless-io/flat/commit/319483a0f6aa79c7ec5d22756514649363212989))
+* **web:** when room owner exit room, not close own share screen ([#895](https://github.com/netless-io/flat/issues/895)) ([c916329](https://github.com/netless-io/flat/commit/c916329f761c80fa0a6f5aa5a9b36973af90e0e6))
+
+
+### Features
+
+* **desktop:** add share screen tip window and support multiple window ([#992](https://github.com/netless-io/flat/issues/992)) ([7480733](https://github.com/netless-io/flat/commit/74807330c2235f74105e8a1ebf13cb81b6a2ea3e))
+* **desktop:** support share screen ([#894](https://github.com/netless-io/flat/issues/894)) ([0654db7](https://github.com/netless-io/flat/commit/0654db77448fcc1d25e810b2b0ae2b9be4ceec27))
+* **flat-components:** add invite code support ([#993](https://github.com/netless-io/flat/issues/993)) ([8e9e780](https://github.com/netless-io/flat/commit/8e9e780de0d04021f139877155c3aeb9561bda84))
+* **flat-components:** add scenes controller components ([#886](https://github.com/netless-io/flat/issues/886)) ([51f359f](https://github.com/netless-io/flat/commit/51f359f9a433509f5b1a0ad72e4ace23dee82e01))
+* **flat-components:** add skeletons component to cloud storage ([#985](https://github.com/netless-io/flat/issues/985)) ([44b537b](https://github.com/netless-io/flat/commit/44b537b6e0ad090fa7402968cf3a42dd51d6716c))
+* **renderer-app:** add Monaco app to whiteboard ([#978](https://github.com/netless-io/flat/issues/978)) ([ee33fee](https://github.com/netless-io/flat/commit/ee33feed9d0f8039f85b2d48b7893eaea0685c36))
+* **web:** add Monaco app to flat-web ([#961](https://github.com/netless-io/flat/issues/961)) ([af8cc68](https://github.com/netless-io/flat/commit/af8cc68d18189b0533a58558a52db91709f17945))
+* **web:** support share screen ([#881](https://github.com/netless-io/flat/issues/881)) ([ab19c10](https://github.com/netless-io/flat/commit/ab19c10c4cf07e0400055c0f933ff948a744170f))
+* **whiteboard:** add the resize EventListener event to change whiteboard size ([#941](https://github.com/netless-io/flat/issues/941)) ([b4b9805](https://github.com/netless-io/flat/commit/b4b98054e368cb02261ef89c0611fc0a1fbc0941))
+* **whiteboard:** support multi window ([#924](https://github.com/netless-io/flat/issues/924)) ([1b7b76b](https://github.com/netless-io/flat/commit/1b7b76be515d626d724e114826186e2b0f1809ae)), closes [#896](https://github.com/netless-io/flat/issues/896) [#899](https://github.com/netless-io/flat/issues/899) [#900](https://github.com/netless-io/flat/issues/900) [#901](https://github.com/netless-io/flat/issues/901) [#903](https://github.com/netless-io/flat/issues/903) [#907](https://github.com/netless-io/flat/issues/907) [#919](https://github.com/netless-io/flat/issues/919) [#920](https://github.com/netless-io/flat/issues/920) [#921](https://github.com/netless-io/flat/issues/921)
+
+
+### Reverts
+
+* Revert "chore(flat-components): remove rollup and add alias (#870)" (#871) ([8fc00d8](https://github.com/netless-io/flat/commit/8fc00d8b4ef0e1e2cf89413d79039b0f2ac34d4e)), closes [#870](https://github.com/netless-io/flat/issues/870) [#871](https://github.com/netless-io/flat/issues/871)
+
+
+
 # 1.0.0 (2021-08-06)
 
 
