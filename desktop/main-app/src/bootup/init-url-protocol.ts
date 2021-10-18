@@ -1,8 +1,9 @@
-import runtime from "../utils/Runtime";
+import runtime from "../utils/runtime";
 import { app } from "electron";
 import closeAPP from "../utils/close-app";
-import { CustomSingleWindow, windowManager } from "../utils/window-manager";
+import { windowManager } from "../window-manager";
 import { constants } from "flat-types";
+import { CustomWindow } from "../window-manager/abstract";
 
 export default async (): Promise<void> => {
     const protocol = new URLProtocolHandler({
@@ -69,8 +70,10 @@ class URLProtocolHandler {
         }
     }
 
-    private static async focus(): Promise<CustomSingleWindow> {
-        const innerWindow = await windowManager.getWindow(constants.WindowsName.Main, true);
+    private static async focus(): Promise<CustomWindow> {
+        const innerWindow = await windowManager
+            .customWindow(constants.WindowsName.Main)
+            .assertWindow();
 
         const mainWindow = innerWindow.window;
 
@@ -105,7 +108,7 @@ class URLProtocolHandler {
 
 type ActionNames = "active" | "joinRoom";
 type ActionHandler = {
-    [key in ActionNames]: (arg: URLSearchParams, innerWindow: CustomSingleWindow) => void;
+    [key in ActionNames]: (arg: URLSearchParams, innerWindow: CustomWindow) => void;
 };
 type ActionInfo = {
     name: ActionNames;
