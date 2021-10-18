@@ -88,6 +88,7 @@ module.exports = {
         "telebox", // @netless/widnow-manager
         "Buildin", // @netless/widnow-manager
         "zindex", // antd
+        "geogebra", // @netless/app-geogebra
 
         // misc
         "npmrc",

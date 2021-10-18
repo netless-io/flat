@@ -15,6 +15,13 @@ const registerApps = (): void => {
             return app.default ?? app;
         },
     });
+    void WindowManager.register({
+        kind: "GeoGebra",
+        src: async () => {
+            const app = await import("@netless/app-geogebra");
+            return app.default ?? app;
+        },
+    });
 };
 
 export const initRegisterApps = (): void => {

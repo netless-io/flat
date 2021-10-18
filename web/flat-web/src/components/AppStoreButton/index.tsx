@@ -25,6 +25,12 @@ const apps: AddAppParams[] = [
             title: "Countdown",
         },
     },
+    {
+        kind: "GeoGebra",
+        options: {
+            title: "GeoGebra",
+        },
+    },
 ];
 
 export const AppStoreButton = observer<AppStoreButtonProps>(function AppStoreButton({ addApp }) {
