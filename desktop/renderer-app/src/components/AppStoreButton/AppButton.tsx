@@ -15,7 +15,7 @@ export const AppButton = observer<AppButtonProps>(function AppButton({ kind, nam
 
     return (
         <Button
-            style={{ marginRight: 12 }}
+            style={{ marginRight: 12, marginBottom: 12 }}
             key={kind}
             loading={loading}
             onClick={async () => {
