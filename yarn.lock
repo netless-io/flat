@@ -1862,6 +1862,11 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
+"@netless/app-countdown@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/@netless/app-countdown/-/app-countdown-0.0.1.tgz#97772577008ead43c10812600a121e89fc18c8e3"
+  integrity sha512-pOJLEQEHoSujAN+Q0kB257XKo3D6+J5Lz7s57OMc0/clhgaciOidBvNoTpsN70mOGRGpGiWpMovaoSYTihuU4Q==
+
 "@netless/app-docs-viewer@^0.1.21":
   version "0.1.21"
   resolved "https://registry.npmjs.org/@netless/app-docs-viewer/-/app-docs-viewer-0.1.21.tgz#781f74070ae9b6a98f60f2935be1d4e0409bad1f"
@@ -1869,6 +1874,16 @@
   dependencies:
     debounce-fn "^5.0.0"
     vanilla-lazyload "^17.4.0"
+
+"@netless/app-geogebra@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/@netless/app-geogebra/-/app-geogebra-0.0.1.tgz#177396773c587d9cd45e66219b531c5f0e43fe9b"
+  integrity sha512-6yHisNwgxGN4TLrD80rQ1KtoBuPJkw6YOV/SdEDcgZwdIRaEKQ5N3p1Jj1ICAcdFxfb0yp7Ee1ecQVTRmadr4w==
+
+"@netless/app-iframe-bridge@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/@netless/app-iframe-bridge/-/app-iframe-bridge-0.0.2.tgz#308ea74220b83abf077395d6c819778ffa63b4ad"
+  integrity sha512-G7wZoX0CjqVBGeP0eYp8e7OYxRIN+vNwZJPxO45Gv4e8Nb/i3hF82F8FALaiLgWC89HG74XGNa98DJ3R+wSz2g==
 
 "@netless/app-media-player@0.1.0-beta.5":
   version "0.1.0-beta.5"
