@@ -30,6 +30,13 @@ const registerApps = (): void => {
             return app.default ?? app;
         },
     });
+    void WindowManager.register({
+        kind: "IframeBridge",
+        src: async () => {
+            const app = await import("@netless/app-iframe-bridge");
+            return app.default ?? app;
+        },
+    });
 };
 
 export const initRegisterApps = (): void => {

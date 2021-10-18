@@ -32,6 +32,15 @@ const apps: AddAppParams[] = [
             title: "GeoGebra",
         },
     },
+    {
+        kind: "IframeBridge",
+        options: {
+            title: "IframeBridge",
+        },
+        attributes: {
+            src: "https://demo-edu.cocos.com/agora-demo/index.html",
+        },
+    },
 ];
 
 export const AppStoreButton = observer<AppStoreButtonProps>(function AppStoreButton({ addApp }) {
