@@ -1958,10 +1958,10 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.2.5":
-  version "0.2.5"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.2.5.tgz#853f08bdd01c605e1a4202b552846200671120c5"
-  integrity sha512-ulYq0BNk8acLsorB9ZPMdmmumitGKH2xsF1RZegtapA4tKAeXDzUrcfMQRmq8YMnTOv+nFkFyaZ8QPahinsHEQ==
+"@netless/window-manager@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.2.6.tgz#a301dc3aa6c90376f410c5c4910d0f732c5b1443"
+  integrity sha512-daK3ce/aPkr2Pmtis3PRFwurO7/PNNvTsSC1BU3w72XVIS5R2mDrfm6bKZYP7U7zQ3JQIFtEbaIhtszzLb/iQA==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/app-docs-viewer" "^0.1.21"
