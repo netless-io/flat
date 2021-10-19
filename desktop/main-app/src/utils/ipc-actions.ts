@@ -1,12 +1,13 @@
-import { CustomSingleWindow, windowManager } from "./window-manager";
+import { windowManager } from "../window-manager";
 import { ipc } from "flat-types";
 import { app, ipcMain, powerSaveBlocker } from "electron";
-import runtime from "./Runtime";
+import runtime from "./runtime";
 import { updateService } from "./update-service";
 import { update } from "flat-types";
 import { gt } from "semver";
+import { CustomWindow } from "../window-manager/abstract";
 
-const windowActionAsync = (customWindow: CustomSingleWindow): ipc.WindowActionAsync => {
+const windowActionAsync = (customWindow: CustomWindow): ipc.WindowActionAsync => {
     const { window, options } = customWindow;
 
     return {
@@ -106,7 +107,7 @@ export const appActionAsync: ipc.AppActionAsync = {
         });
     },
     "force-close-window": ({ windowName }) => {
-        windowManager.removeWindow(windowName);
+        windowManager.remove(windowName);
     },
 };
 
@@ -140,7 +141,7 @@ export const appActionSync: ipc.AppActionSync = {
     },
 };
 
-export const injectionWindowIPCAction = (customWindow: CustomSingleWindow): void => {
+export const injectionWindowIPCAction = (customWindow: CustomWindow): void => {
     ipcMain.on(
         customWindow.options.name,
         (

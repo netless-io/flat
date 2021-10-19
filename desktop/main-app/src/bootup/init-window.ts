@@ -1,5 +1,6 @@
 import { app } from "electron";
-import { windowManager } from "../utils/window-manager";
+import { windowManager } from "../window-manager";
+import { constants } from "flat-types";
 
 export default (): void => {
     app.allowRendererProcessReuse = false;
@@ -18,5 +19,5 @@ export default (): void => {
             .catch((err: Error) => console.log("added extension failed", err));
     }
 
-    windowManager.createMainWindow();
+    windowManager.create(constants.WindowsName.Main);
 };
