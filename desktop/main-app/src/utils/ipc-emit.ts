@@ -1,11 +1,11 @@
 import { ipc } from "flat-types";
-import { windowManager } from "./window-manager";
-import runtime from "./Runtime";
+import { windowManager } from "../window-manager";
+import runtime from "./runtime";
 import { constants } from "flat-types";
 
 const ipcEmitHandler = (windowName: constants.WindowsName): IPCEmit => {
     return (eventName, args): void => {
-        const window = windowManager.getWindow(windowName)?.window;
+        const window = windowManager.window(windowName)?.window;
 
         if (window) {
             window.webContents.send(eventName, args);

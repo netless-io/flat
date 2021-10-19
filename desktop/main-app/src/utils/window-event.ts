@@ -1,8 +1,8 @@
 import { ipcEmit } from "./ipc-emit";
-import { CustomSingleWindow } from "./window-manager";
 import { autoUpdater } from "electron-updater";
+import { CustomWindow } from "../window-manager/abstract";
 
-export const windowHookClose = (customWindow: CustomSingleWindow): void => {
+export const windowHookClose = (customWindow: CustomWindow): void => {
     customWindow.window.on("close", e => {
         // see: https://github.com/electron/electron/issues/7792
         if (!autoUpdater.autoInstallOnAppQuit) {
@@ -16,7 +16,7 @@ export const windowHookClose = (customWindow: CustomSingleWindow): void => {
     });
 };
 
-export const windowReadyToShow = (customWindow: CustomSingleWindow): void => {
+export const windowReadyToShow = (customWindow: CustomWindow): void => {
     customWindow.window.on("ready-to-show", () => {
         if (customWindow.options.isPortal) {
             // waiting dom load finish
@@ -31,7 +31,7 @@ export const windowReadyToShow = (customWindow: CustomSingleWindow): void => {
     });
 };
 
-export const windowOpenDevTools = (customWindow: CustomSingleWindow): void => {
+export const windowOpenDevTools = (customWindow: CustomWindow): void => {
     customWindow.window.webContents.once("dom-ready", () => {
         // open devTools must be completed after dom ready
         // link: https://github.com/electron/electron/issues/12438
