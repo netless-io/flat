@@ -1,6 +1,7 @@
 .join-page-container {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     align-items: center;
     height: 100vh;
     background-color: #f8faff;
@@ -146,4 +147,149 @@
     > span {
         padding: 0 4px;
     }
+}
+
+.join-page-mobile-container {
+    min-height: 100vh;
+    background-color: #e5eff6;
+    overflow: hidden;
+}
+
+.join-page-mobile-header {
+    display: flex;
+    align-items: center;
+    padding: 24px;
+}
+
+.join-page-mobile-logo-texts {
+    padding-left: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: #1a1e21;
+    line-height: 1;
+}
+
+.join-page-mobile-logo-text {
+    font-weight: bold;
+    font-style: italic;
+    font-size: 18px;
+}
+
+.join-page-mobile-logo-text-second {
+    font-style: italic;
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.join-page-mobile-card-wrapper {
+    position: relative;
+    padding: 25vh 20px 20px;
+    text-align: center;
+}
+
+.join-page-mobile-card {
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    padding: 14px 20px;
+    box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    z-index: 10;
+}
+
+.join-page-mobile-card-title {
+    display: block;
+    font-weight: 500;
+    color: #444e60;
+    padding-top: 14px;
+}
+
+.join-page-mobile-card-desc {
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    color: #7a7b7c;
+    padding-bottom: 26px;
+}
+
+.join-page-mobile-btn {
+    display: block;
+    width: 100%;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    background-color: #3381ff;
+    color: #fff;
+    padding: 10px;
+}
+
+.join-page-mobile-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7a7b7c;
+    border-top-color: #dbe1ea;
+
+    > span {
+        padding: 0 1rem;
+    }
+
+    &::before {
+        position: relative;
+        top: 50%;
+        width: 25%;
+        border-top: 1px solid transparent;
+        border-top-color: inherit;
+        border-bottom: 0;
+        content: "";
+    }
+
+    &::after {
+        position: relative;
+        top: 50%;
+        width: 25%;
+        border-top: 1px solid transparent;
+        border-top-color: inherit;
+        border-bottom: 0;
+        content: "";
+    }
+}
+
+.join-page-mobile-download-flat {
+    padding-top: 16px;
+    text-align: center;
+    font-size: 14px;
+    color: #444e60;
+
+    > a {
+        color: #3381ff;
+    }
+}
+
+.join-page-mobile-effect::before {
+    content: " ";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 328px;
+    height: 412px;
+    background-color: #33fff7;
+    background-position: right;
+    opacity: 0.06;
+    filter: blur(50px);
+    z-index: 0;
+}
+
+.join-page-mobile-effect::after {
+    content: " ";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 249px;
+    height: 218px;
+    background-color: #335eff;
+    background-position: left;
+    opacity: 0.05;
+    filter: blur(50px);
+    z-index: 0;
 }
