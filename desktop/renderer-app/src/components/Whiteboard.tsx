@@ -11,6 +11,7 @@ import { WhiteboardStore } from "../stores/whiteboard-store";
 import { isSupportedImageType, onDropImage } from "../utils/dnd/image";
 import { ScenesController } from "flat-components";
 import { AppStoreButton } from "./AppStoreButton";
+import { useIsUnMounted } from "../utils/hooks/lifecycle";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -18,6 +19,7 @@ export interface WhiteboardProps {
 
 export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteboardStore }) {
     const { room } = whiteboardStore;
+    const isUnMountedRef = useIsUnMounted();
 
     const [whiteboardEl, setWhiteboardEl] = useState<HTMLElement | null>(null);
     const [collectorEl, setCollectorEl] = useState<HTMLElement | null>(null);
@@ -40,12 +42,20 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                     },
                     chessboard: false,
                 });
-                whiteboardStore.onMainViewModeChange();
-                whiteboardStore.onWindowManagerBoxStateChange();
+                if (isUnMountedRef.current) {
+                    whiteboardStore.destroyWindowManager();
+                } else {
+                    whiteboardStore.onMainViewModeChange();
+                    whiteboardStore.onWindowManagerBoxStateChange();
+                }
             }
         };
 
         void mountWindowManager();
+
+        return () => {
+            whiteboardStore.destroyWindowManager();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [whiteboardEl, collectorEl, room]);
 
