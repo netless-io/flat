@@ -217,6 +217,11 @@ export class WhiteboardStore {
         });
     };
 
+    public destroyWindowManager = (): void => {
+        this.windowManager?.destroy();
+        this.windowManager = null;
+    };
+
     public async joinWhiteboardRoom(): Promise<void> {
         if (!globalStore.userUUID) {
             throw new Error("Missing userUUID");
@@ -372,7 +377,7 @@ export class WhiteboardStore {
 
     public destroy(): void {
         this.preloadPPTResource.cancel();
-        this.windowManager?.destroy();
+        this.destroyWindowManager();
         this.room?.callbacks.off();
 
         if (NODE_ENV === "development") {
