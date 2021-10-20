@@ -50,6 +50,7 @@ import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
 import { generateAvatar } from "../../utils/generate-avatar";
+import { AppStoreButton } from "../../components/AppStoreButton";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -321,6 +322,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                             }
                         />
                     )}
+
+                {whiteboardStore.isWritable && <AppStoreButton addApp={whiteboardStore.addApp} />}
 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
                     <TopBarRightBtn

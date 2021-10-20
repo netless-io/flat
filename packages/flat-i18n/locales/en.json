@@ -105,8 +105,8 @@
   "begin-time": "Start time",
   "join-and-book-by-room-uuid": "Can join and book by room ID",
   "copy": "Copy",
-  "login-github": "GitHub login",
-  "login-wechat": "WeChat login",
+  "login-github": "Sign In with GitHub",
+  "login-wechat": "Sign In with WeChat",
   "agree-terms": "Please agree to the terms of service first",
   "and": "and",
   "have-read-and-agree": "Have read and agree",
@@ -359,5 +359,7 @@
     "tip-window-title": "Ending screen sharing",
     "tip-window-body": "You are sharing the current screen",
     "tip-window-button": "End Sharing"
-  }
+  },
+  "app-store": "AppStore(Beta)",
+  "recently-used": "Recently Used"
 }

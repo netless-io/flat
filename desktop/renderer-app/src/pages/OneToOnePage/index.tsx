@@ -46,6 +46,7 @@ import { runtime } from "../../utils/runtime";
 import { useTranslation } from "react-i18next";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
 import { generateAvatar } from "../../utils/generate-avatar";
+import { AppStoreButton } from "../../components/AppStoreButton";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -253,6 +254,8 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                             }
                         />
                     )}
+
+                {whiteboardStore.isWritable && <AppStoreButton addApp={whiteboardStore.addApp} />}
 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
                     <TopBarRightBtn
