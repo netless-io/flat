@@ -1,12 +1,18 @@
 import "./style.less";
+import appStoreSVG from "../../assets/image/app-store.svg";
+import codeEditorSVG from "../../assets/image/code-editor.svg";
+import countdownSVG from "../../assets/image/countdown.svg";
+import geogebraSVG from "../../assets/image/geogebra.svg";
+import cocosSVG from "../../assets/image/cocos.svg";
 
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Modal, Tooltip } from "antd";
+import { Modal } from "antd";
 
 import { AddAppParams } from "@netless/window-manager";
-import { useSafePromise } from "flat-components";
+import { TopBarRightBtn, useSafePromise } from "flat-components";
 import { AppButton } from "./AppButton";
+import { useTranslation } from "react-i18next";
 
 export interface AppStoreButtonProps {
     addApp: (config: AddAppParams) => Promise<void>;
@@ -34,7 +40,7 @@ const apps: AddAppParams[] = [
     {
         kind: "IframeBridge",
         options: {
-            title: "IframeBridge",
+            title: "Cocos",
         },
         attributes: {
             src: "https://demo-edu.cocos.com/agora-demo/index.html",
@@ -42,40 +48,52 @@ const apps: AddAppParams[] = [
     },
 ];
 
+export const appIcons = {
+    Monaco: codeEditorSVG,
+    Countdown: countdownSVG,
+    GeoGebra: geogebraSVG,
+    IframeBridge: cocosSVG,
+};
+
 export const AppStoreButton = observer<AppStoreButtonProps>(function AppStoreButton({ addApp }) {
     const [appStoreIsVisible, setAppStoreIsVisible] = useState(false);
     const sp = useSafePromise();
+    const { t } = useTranslation();
 
     return (
         <>
-            <Tooltip placement="right" key="apps" title="Apps">
-                <div className="apps-button" onClick={() => setAppStoreIsVisible(true)}>
-                    <svg focusable="false" width="1em" height="1em" viewBox="0 0 24 24">
-                        <path
-                            d="M16 20h4v-4h-4m0-2h4v-4h-4m-6-2h4V4h-4m6 4h4V4h-4m-6 10h4v-4h-4m-6 4h4v-4H4m0 10h4v-4H4m6 4h4v-4h-4M4 8h4V4H4v4z"
-                            fill="currentColor"
-                        ></path>
-                    </svg>
-                </div>
-            </Tooltip>
+            <TopBarRightBtn
+                title="Open App Store"
+                icon={<img src={appStoreSVG} />}
+                onClick={() => setAppStoreIsVisible(true)}
+            />
             <Modal
+                className="app-store-modal"
                 visible={appStoreIsVisible}
                 footer={null}
                 onCancel={() => setAppStoreIsVisible(false)}
-                title="App Store"
+                title={
+                    <div className="app-store-modal-title-box">
+                        <div className="app-store-modal-title">{t("app-store")}</div>
+                        <div className="app-store-modal-inner-text">{t("recently-used")}</div>
+                    </div>
+                }
                 destroyOnClose
             >
-                {apps.map((config, i) => (
-                    <AppButton
-                        key={`${config.kind}${i}`}
-                        kind={config.kind}
-                        name={config.options?.title ?? config.kind}
-                        addApp={async () => {
-                            await sp(addApp(config));
-                            setAppStoreIsVisible(false);
-                        }}
-                    />
-                ))}
+                <div className="apps-container">
+                    {apps.map((config, i) => (
+                        <AppButton
+                            key={`${config.kind}${i}`}
+                            kind={config.kind}
+                            name={config.options?.title ?? config.kind}
+                            icon={appIcons[config.kind as keyof typeof appIcons]}
+                            addApp={async () => {
+                                await sp(addApp(config));
+                                setAppStoreIsVisible(false);
+                            }}
+                        />
+                    ))}
+                </div>
             </Modal>
         </>
     );
