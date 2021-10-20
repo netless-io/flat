@@ -1890,10 +1890,10 @@
   resolved "https://registry.npmjs.org/@netless/app-media-player/-/app-media-player-0.1.0-beta.5.tgz#13ad8680be81503f5dc48c4c4e9848ba15b76e5a"
   integrity sha512-q24tZnDGwTM8fvSs97qavuF8w8cXa4Tx3Nl7Xvig5Um4XKrfNijjLK9pI1cdctfuefl9s8wrG8JNCN2C6yqeDw==
 
-"@netless/app-monaco@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.8.tgz#297afb5e5c11940c609dc38f6a5d3ece7243f7aa"
-  integrity sha512-dh/ixusEYcNtiKUwYU/GYvl+NK+iLCkpFVpWj4RwT9YoPW3WuTbQzTuGu115rPmQDqsqnNaRq0dkKGSlTgfGcg==
+"@netless/app-monaco@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.10.tgz#4f15da942560662d59a077cd08fc7fb80909cdc9"
+  integrity sha512-ZkPxwbaC3xNfXMegti5v6xZH70/Q0wgtRVg3CyMxsWfh7UkB2eMUXZdkplcciJb9U9ApeheB1EjupA+MIVWdDQ==
 
 "@netless/canvas-polyfill@^0.0.4":
   version "0.0.4"
