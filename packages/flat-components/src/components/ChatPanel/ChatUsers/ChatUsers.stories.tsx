@@ -20,7 +20,7 @@ export const Overview: Story<ChatUsersProps> = args => (
     </div>
 );
 const makeUser = (): User => ({
-    userUUID: faker.random.uuid(),
+    userUUID: faker.datatype.uuid(),
     name: faker.name.lastName(),
     isSpeak: faker.random.boolean(),
     isRaiseHand: faker.random.boolean(),

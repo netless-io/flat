@@ -13,7 +13,7 @@ export default storyMeta;
 
 export const Overview: Story<ChatUserProps> = args => <ChatUser {...args} />;
 const makeUser = (): User => ({
-    userUUID: faker.random.uuid(),
+    userUUID: faker.datatype.uuid(),
     name: faker.name.lastName(),
     isSpeak: faker.random.boolean(),
     isRaiseHand: faker.random.boolean(),
@@ -21,7 +21,7 @@ const makeUser = (): User => ({
 });
 Overview.args = {
     generateAvatar: () => "http://placekitten.com/64/64",
-    ownerUUID: faker.random.uuid(),
-    userUUID: faker.random.uuid(),
+    ownerUUID: faker.datatype.uuid(),
+    userUUID: faker.datatype.uuid(),
     user: makeUser(),
 };

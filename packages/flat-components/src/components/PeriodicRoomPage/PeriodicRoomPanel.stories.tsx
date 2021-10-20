@@ -26,8 +26,8 @@ Overview.args = {
         .fill(0)
         .map(() => {
             return {
-                ownerUUID: faker.random.uuid(),
-                roomUUID: faker.random.uuid(),
+                ownerUUID: faker.datatype.uuid(),
+                roomUUID: faker.datatype.uuid(),
                 beginTime: faker.date.past().valueOf(),
                 endTime: faker.date.future().valueOf(),
                 roomStatus: RoomStatus.Idle,

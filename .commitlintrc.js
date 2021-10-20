@@ -33,6 +33,7 @@ module.exports = {
                 "agora",
                 "whiteboard",
                 "component",
+                "storybook",
                 "flat-components",
                 "flat-types",
                 "web",

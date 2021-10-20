@@ -56,7 +56,7 @@ class FakeStore extends CloudStorageStore {
         this.files = Array(25)
             .fill(0)
             .map(() => ({
-                fileUUID: faker.random.uuid(),
+                fileUUID: faker.datatype.uuid(),
                 fileName: faker.random.words() + "." + faker.system.commonFileExt(),
                 fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
                 convert: chance.pickone(["idle", "error", "success", "converting"]),
@@ -66,7 +66,7 @@ class FakeStore extends CloudStorageStore {
         this.totalUsage = this.files.reduce((sum, file) => sum + file.fileSize, 0);
 
         for (let i = chance.integer({ min: 0, max: 200 }); i >= 0; i--) {
-            const fileUUID = faker.random.uuid();
+            const fileUUID = faker.datatype.uuid();
 
             const task: CloudStorageUploadTask = {
                 uploadID: fileUUID,

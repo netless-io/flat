@@ -15,15 +15,15 @@ const storyMeta: Meta = {
 export default storyMeta;
 
 export const Overview: Story<ChatMessageProps> = args => <ChatMessage {...args} />;
-const userUUID = faker.random.uuid();
+const userUUID = faker.datatype.uuid();
 Overview.args = {
     userUUID,
     messageUser: { name: faker.name.lastName() },
     message: {
         timestamp: +faker.date.past(),
         type: ChatMsgType.ChannelMessage,
-        userUUID: faker.random.boolean() ? userUUID : faker.random.uuid(),
-        uuid: faker.random.uuid(),
+        userUUID: faker.random.boolean() ? userUUID : faker.datatype.uuid(),
+        uuid: faker.datatype.uuid(),
         value: chance.sentence({ words: faker.random.number(20) }),
     },
 };
