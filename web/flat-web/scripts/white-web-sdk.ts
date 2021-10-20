@@ -14,3 +14,5 @@
 //          save it to /node_modules/white-web-sdk/index.mjs
 //       2. edit /node_modules/white-web-sdk/package.json
 //          set "module" to "index.mjs"
+
+export type {};
