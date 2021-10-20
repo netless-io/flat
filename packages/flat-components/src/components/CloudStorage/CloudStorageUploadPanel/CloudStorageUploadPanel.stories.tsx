@@ -102,7 +102,7 @@ function getUploadTasks(count: number): CloudStorageUploadTask[] {
     return Array(count)
         .fill(0)
         .map(() => ({
-            uploadID: faker.random.uuid(),
+            uploadID: faker.datatype.uuid(),
             fileName: faker.random.word() + "." + faker.system.commonFileExt(),
             status: "uploading",
             percent: chance.integer({ min: 0, max: 100 }),
