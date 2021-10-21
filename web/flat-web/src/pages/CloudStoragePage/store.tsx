@@ -13,7 +13,7 @@ import { i18n } from "i18next";
 import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
 import React, { ReactNode } from "react";
 import { queryH5ConvertingStatus } from "../../api-middleware/h5-converting";
-import { getFileExt } from "../../utils/file";
+import { getFileExt, isPPTX } from "../../utils/file";
 import {
     ConvertingTaskStatus,
     queryConvertingTaskStatus,
@@ -610,7 +610,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             ({ status, progress } = await queryConvertingTaskStatus({
                 taskToken: file.taskToken,
                 taskUUID: file.taskUUID,
-                dynamic: file.fileName.endsWith(".pptx"),
+                dynamic: isPPTX(file.fileName),
                 region: file.region,
             }));
         } catch (e) {

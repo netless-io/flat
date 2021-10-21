@@ -14,7 +14,7 @@ import { CloudStorageContainer } from "flat-components";
 import { useTranslation } from "react-i18next";
 import { RequestErrorCode } from "../../constants/error-code";
 import { ServerRequestError } from "../../utils/error/server-request-error";
-import { getFileExt } from "../../utils/file";
+import { getFileExt, isPPTX } from "../../utils/file";
 import { CLOUD_STORAGE_DOMAIN } from "../../constants/process";
 
 export interface CloudStoragePanelProps {
@@ -68,7 +68,7 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
             case "ppt":
             case "pptx":
             case "pdf": {
-                await insertDocs(file, ext);
+                await insertDocs(file);
                 break;
             }
             case "ice": {
@@ -138,18 +138,17 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
         whiteboard?.openMediaFileInWindowManager(file.fileURL, file.fileName);
     }
 
-    async function insertDocs(file: CloudStorageFile, ext: string): Promise<void> {
+    async function insertDocs(file: CloudStorageFile): Promise<void> {
         const room = whiteboard?.room;
         if (!room) {
             return;
         }
 
         const { taskUUID, taskToken, region } = file;
-        const dynamic = ext === ".pptx";
         const convertingStatus = await queryConvertingTaskStatus({
             taskUUID,
             taskToken,
-            dynamic,
+            dynamic: isPPTX(file.fileName),
             region,
         });
 
