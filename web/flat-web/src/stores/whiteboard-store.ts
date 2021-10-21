@@ -427,18 +427,19 @@ export class WhiteboardStore {
         const pptSrcRE = /^pptx?(?<prefix>:\/\/\S+?dynamicConvert)\/(?<taskId>\w+)\//;
 
         for (const { name, ppt } of scenes) {
+            // make sure scenesWithoutPPT.length === scenes.length
             scenesWithoutPPT.push({ name });
 
             if (!ppt || !ppt.src.startsWith("ppt")) {
                 continue;
             }
-            const { src } = ppt;
-            const match = pptSrcRE.exec(src);
+            const match = pptSrcRE.exec(ppt.src);
             if (!match || !match.groups) {
                 continue;
             }
             taskId = match.groups.taskId;
             url = "https" + match.groups.prefix;
+            break;
         }
 
         return { scenesWithoutPPT, taskId, url };
