@@ -25,7 +25,6 @@ const contentTypeByExt: Record<string, string> = {
     ".gif": "image/gif",
     ".svg": "image/svg+xml",
     ".mp3": "audio/mpeg",
-    ".mp4": "video/mp4",
     ".woff": "font/woff",
     ".woff2": "font/woff2",
     ".ttf": "font/ttf",
