@@ -28,7 +28,6 @@ export const CloudStorageOnlineH5Panel: FC<CloudStorageOnlineH5PanelProps> = ({
 
     const sp = useSafePromise();
     const [isLoading, setLoading] = useState(false);
-    const [isOkDisabled, setOkDisabled] = useState(true);
     const [fileExt, setFileExt] = useState(SUPPORTED_ONLINE_H5_FILES[0]);
 
     const onSubmit = async (values: FormValues): Promise<void> => {
@@ -57,24 +56,22 @@ export const CloudStorageOnlineH5Panel: FC<CloudStorageOnlineH5PanelProps> = ({
             confirmLoading={isLoading}
             title={t("online-h5.add")}
             visible={visible}
-            okButtonProps={{ disabled: isOkDisabled }}
-            onOk={() => formRef.current?.submit()}
+            onOk={async () => {
+                if (formRef.current) {
+                    try {
+                        await sp(formRef.current.validateFields());
+                        formRef.current.submit();
+                    } catch {
+                        // errors are shown on pages directly
+                    }
+                }
+            }}
             onCancel={onClose}
         >
             <Form
                 ref={formRef}
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 20 }}
-                onValuesChange={() => {
-                    if (formRef.current) {
-                        setOkDisabled(
-                            !formRef.current.isFieldsTouched(true) ||
-                                formRef.current
-                                    .getFieldsError()
-                                    .some(({ errors }) => errors.length > 0),
-                        );
-                    }
-                }}
                 onFinish={onSubmit}
                 onFinishFailed={() => {
                     void message.error(t("upload-fail"));
