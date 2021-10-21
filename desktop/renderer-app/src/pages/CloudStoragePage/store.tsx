@@ -36,7 +36,7 @@ import { getCoursewarePreloader } from "../../utils/courseware-preloader";
 import { getUploadTaskManager } from "../../utils/upload-task-manager";
 import { UploadStatusType, UploadTask } from "../../utils/upload-task-manager/upload-task";
 import { fileInfo, ResourcePreview } from "./CloudStorageFilePreview";
-import { getFileExt } from "../../utils/file";
+import { getFileExt, isPPTX } from "../../utils/file";
 import { ConvertStatusManager } from "./ConvertStatusManager";
 import { queryH5ConvertingStatus } from "../../api-middleware/h5-converting";
 
@@ -616,7 +616,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             ({ status, progress } = await queryConvertingTaskStatus({
                 taskToken: file.taskToken,
                 taskUUID: file.taskUUID,
-                dynamic: file.fileName.endsWith(".pptx"),
+                dynamic: isPPTX(file.fileName),
                 region: file.region,
             }));
         } catch (e) {
