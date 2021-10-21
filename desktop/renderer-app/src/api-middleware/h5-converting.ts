@@ -21,7 +21,7 @@ export async function queryH5ConvertingStatus(fileURL: string): Promise<H5Conver
     try {
         const response = await Axios.head(fileURL.replace(/[^/]+$/, "") + "result");
         if (response.headers["x-oss-meta-success"] !== "true") {
-            const errorCode = Number(response.headers["x-oss-meta-errorCode"]);
+            const errorCode = Number(response.headers["x-oss-meta-error-code"]);
             if (errorCode > 0) {
                 return {
                     status: "Failed",
