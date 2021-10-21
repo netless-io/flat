@@ -75,6 +75,10 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
                 await insertIce(file);
                 break;
             }
+            case "vf": {
+                await insertVf(file);
+                break;
+            }
             default: {
                 console.log(
                     `[cloud storage]: insert unknown format "${file.fileName}" into whiteboard`,
@@ -211,6 +215,27 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
                     },
                     attributes: {
                         src,
+                    },
+                });
+            } else {
+                void message.error(t("unable-to-insert-courseware"));
+            }
+        } catch (e) {
+            console.error(e);
+            void message.error(t("unable-to-insert-courseware"));
+        }
+    }
+
+    async function insertVf(file: CloudStorageFile): Promise<void> {
+        try {
+            if (whiteboard?.windowManager) {
+                await whiteboard.windowManager.addApp({
+                    kind: "IframeBridge",
+                    options: {
+                        title: file.fileName,
+                    },
+                    attributes: {
+                        src: file.fileURL,
                     },
                 });
             } else {

@@ -21,12 +21,15 @@ import {
 } from "../../api-middleware/courseware-converting";
 import { FileConvertStep } from "../../api-middleware/flatServer/constants";
 import {
+    addOnlineH5,
     CloudFile,
     convertFinish,
     convertStart,
     listFiles,
     removeFiles,
+    removeOnlineH5,
     renameFile,
+    renameOnlineH5,
 } from "../../api-middleware/flatServer/storage";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { getCoursewarePreloader } from "../../utils/courseware-preloader";
@@ -250,12 +253,24 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             if (file.fileName === fileNameObject.fullName) {
                 return;
             } else {
-                await renameFile({ fileUUID, fileName: fileNameObject.fullName });
+                if (this.isOnlineH5File(file)) {
+                    await renameOnlineH5({ fileUUID, fileName: fileNameObject.fullName });
+                } else {
+                    await renameFile({ fileUUID, fileName: fileNameObject.fullName });
+                }
                 runInAction(() => {
                     file.fileName = fileNameObject.fullName;
                 });
             }
         }
+    };
+
+    public addOnlineH5 = (fileName: string, fileURL: string): Promise<void> => {
+        return addOnlineH5({ fileName, url: fileURL });
+    };
+
+    public isOnlineH5File = (file?: CloudStorageFile): boolean => {
+        return !!file && file.fileSize <= 0;
     };
 
     public initialize(): () => void {
@@ -393,7 +408,19 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     private async removeFiles(fileUUIDs: FileUUID[]): Promise<void> {
         try {
-            await removeFiles({ fileUUIDs });
+            const onlineH5s: FileUUID[] = [];
+            const normalFiles: FileUUID[] = [];
+            fileUUIDs.forEach(fileUUID => {
+                if (this.isOnlineH5File(this.filesMap.get(fileUUID))) {
+                    onlineH5s.push(fileUUID);
+                } else {
+                    normalFiles.push(fileUUID);
+                }
+            });
+            await Promise.all([
+                removeOnlineH5({ fileUUIDs: onlineH5s }),
+                removeFiles({ fileUUIDs: normalFiles }),
+            ]);
             runInAction(() => {
                 for (const fileUUID of fileUUIDs) {
                     this.filesMap.delete(fileUUID);

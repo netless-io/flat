@@ -361,5 +361,10 @@
     "tip-window-button": "结束共享"
   },
   "app-store": "应用中心（测试版）",
-  "recently-used": "最近使用"
+  "recently-used": "最近使用",
+  "online-h5": {
+    "add": "添加在线 H5 课件",
+    "name": "课件名",
+    "url": "在线地址"
+  }
 }
