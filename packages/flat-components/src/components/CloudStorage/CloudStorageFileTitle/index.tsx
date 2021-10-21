@@ -8,8 +8,10 @@ import videoSVG from "./icons/video.svg";
 import wordSVG from "./icons/word.svg";
 import convertingSVG from "./icons/converting.svg";
 import convertErrorSVG from "./icons/convert-error.svg";
+import vfSVG from "./icons/vf.svg";
+import iceSVG from "./icons/ice.svg";
 
-import React from "react";
+import React, { useMemo } from "react";
 import classNames from "classnames";
 import { CloudStorageConvertStatusType, CloudStorageFileName } from "../types";
 import { CloudStorageFileTitleRename } from "./CloudStorageFileTitleRename";
@@ -50,6 +52,7 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
         const { t } = useTranslation();
         const isConverting = convertStatus === "converting";
         const isConvertError = !isConverting && convertStatus === "error";
+        const fileIcon = useMemo(() => getFileIcon(fileName), [fileName]);
 
         return (
             <span
@@ -68,7 +71,7 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
                 <span className="cloud-storage-file-title-icon-wrap">
                     <img
                         className="cloud-storage-file-title-icon"
-                        src={getFileIcon(fileName)}
+                        src={fileIcon}
                         width={22}
                         height={22}
                         aria-hidden
@@ -157,6 +160,12 @@ function getFileIcon(fileName: string): string {
         case ".wma":
         case ".flac": {
             return audioSVG;
+        }
+        case ".vf": {
+            return vfSVG;
+        }
+        case ".ice": {
+            return iceSVG;
         }
         default: {
             return defaultSVG;
