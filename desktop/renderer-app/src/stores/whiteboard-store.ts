@@ -188,7 +188,7 @@ export class WhiteboardStore {
                         } as SlideAttributes,
                     });
                 } else {
-                    await this.windowManager?.addApp({
+                    await this.windowManager.addApp({
                         kind: BuiltinApps.DocsViewer,
                         options: {
                             scenePath,
