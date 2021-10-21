@@ -20,6 +20,8 @@ declare namespace NodeJS {
         CLOUD_STORAGE_OSS_ALIBABA_BUCKET: string;
         CLOUD_STORAGE_OSS_ALIBABA_REGION: string;
 
+        CLOUD_STORAGE_DOMAIN: string;
+
         AGORA_APP_ID: string;
 
         GITHUB_CLIENT_ID: string;

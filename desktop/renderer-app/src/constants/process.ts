@@ -10,6 +10,8 @@ export const CLOUD_STORAGE_OSS_ALIBABA_CONFIG = Object.freeze({
     region: process.env.CLOUD_STORAGE_OSS_ALIBABA_REGION,
 });
 
+export const CLOUD_STORAGE_DOMAIN = process.env.CLOUD_STORAGE_DOMAIN;
+
 export const AGORA = Object.freeze({
     APP_ID: process.env.AGORA_APP_ID,
 });
