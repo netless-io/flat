@@ -418,25 +418,25 @@ export class WhiteboardStore {
         const scenesWithoutPPT: SceneDefinition[] = [];
         let taskId = "";
         let url = "";
+
+        // ppt.src = "pptx://cdn/prefix/dynamicConvert/{taskId}/1.slide"
+        const pptSrcRE = /^pptx?(?<prefix>:\/\/\S+?dynamicConvert)\/(?<taskId>\w+)\//;
+
         for (const { name, ppt } of scenes) {
             scenesWithoutPPT.push({ name });
+
             if (!ppt || !ppt.src.startsWith("ppt")) {
                 continue;
             }
             const { src } = ppt;
-            const protocolIndex = src.indexOf("://");
-            let prefixIndex = src.indexOf("/dynamicConvert/");
-            if (protocolIndex === -1 || prefixIndex === -1) {
+            const match = pptSrcRE.exec(src);
+            if (!match || !match.groups) {
                 continue;
             }
-            prefixIndex += 16; // "/dynamicConvert/".length;
-            const taskIdIndex = src.indexOf("/", prefixIndex);
-            if (taskIdIndex === -1) {
-                continue;
-            }
-            taskId = src.slice(prefixIndex, taskIdIndex);
-            url = "https" + src.slice(protocolIndex, prefixIndex - 1);
+            taskId = match.groups.taskId;
+            url = "https" + match.groups.prefix;
         }
+
         return { scenesWithoutPPT, taskId, url };
     }
 
