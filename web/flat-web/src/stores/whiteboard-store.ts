@@ -1,5 +1,6 @@
 import "video.js/dist/video-js.css";
 
+import type { Attributes as SlideAttributes } from "@netless/app-slide";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import {
     DefaultHotKeys,
@@ -175,17 +176,35 @@ export class WhiteboardStore {
         title: string,
         scenes: SceneDefinition[],
     ): Promise<void> => {
-        try {
-            await this.windowManager?.addApp({
-                kind: BuiltinApps.DocsViewer,
-                options: {
-                    scenePath,
-                    title,
-                    scenes: scenes,
-                },
-            });
-        } catch (err) {
-            console.log(err);
+        if (this.windowManager) {
+            const { scenesWithoutPPT, taskId, url } = this.makeSlideParams(scenes);
+            try {
+                if (taskId && url) {
+                    await this.windowManager.addApp({
+                        kind: "Slide",
+                        options: {
+                            scenePath,
+                            title,
+                            scenes: scenesWithoutPPT,
+                        },
+                        attributes: {
+                            taskId,
+                            url,
+                        } as SlideAttributes,
+                    });
+                } else {
+                    await this.windowManager.addApp({
+                        kind: BuiltinApps.DocsViewer,
+                        options: {
+                            scenePath,
+                            title,
+                            scenes,
+                        },
+                    });
+                }
+            } catch (err) {
+                console.log(err);
+            }
         }
     };
 
@@ -393,6 +412,37 @@ export class WhiteboardStore {
             (window as any).manager = null;
         }
         console.log(`Whiteboard unloaded: ${globalStore.whiteboardRoomUUID}`);
+    }
+
+    private makeSlideParams(scenes: SceneDefinition[]): {
+        scenesWithoutPPT: SceneDefinition[];
+        taskId: string;
+        url: string;
+    } {
+        const scenesWithoutPPT: SceneDefinition[] = [];
+        let taskId = "";
+        let url = "";
+
+        // e.g. "ppt(x)://cdn/prefix/dynamicConvert/{taskId}/1.slide"
+        const pptSrcRE = /^pptx?(?<prefix>:\/\/\S+?dynamicConvert)\/(?<taskId>\w+)\//;
+
+        for (const { name, ppt } of scenes) {
+            // make sure scenesWithoutPPT.length === scenes.length
+            scenesWithoutPPT.push({ name });
+
+            if (!ppt || !ppt.src.startsWith("ppt")) {
+                continue;
+            }
+            const match = pptSrcRE.exec(ppt.src);
+            if (!match || !match.groups) {
+                continue;
+            }
+            taskId = match.groups.taskId;
+            url = "https" + match.groups.prefix;
+            break;
+        }
+
+        return { scenesWithoutPPT, taskId, url };
     }
 
     private preloadPPTResource = debounce(async (pptSrc: string): Promise<void> => {

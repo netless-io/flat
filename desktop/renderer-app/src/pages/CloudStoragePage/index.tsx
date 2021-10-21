@@ -178,8 +178,8 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
             }
         } else if (convertingStatus.status === "Finished" && convertingStatus.progress) {
             const scenes: SceneDefinition[] = convertingStatus.progress.convertedFileList.map(
-                f => ({
-                    name: v4uuid(),
+                (f, i) => ({
+                    name: `${i + 1}`,
                     ppt: {
                         src: f.conversionFileUrl,
                         width: f.width,

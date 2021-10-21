@@ -510,10 +510,6 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     private async pollConvertState(file: CloudStorageFile, dynamic: boolean): Promise<void> {
-        if (process.env.DEV) {
-            console.log("[cloud-storage] query convert status", file.fileName);
-        }
-
         let status: ConvertingTaskStatus["status"];
         let progress: ConvertingTaskStatus["progress"];
 
@@ -527,6 +523,15 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         } catch (e) {
             console.error(e);
             return;
+        }
+
+        if (process.env.DEV) {
+            console.log(
+                "[cloud-storage] query convert status",
+                file.fileName,
+                status,
+                progress?.convertedPercentage,
+            );
         }
 
         if (status === "Fail" || status === "Finished") {
