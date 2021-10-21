@@ -419,7 +419,7 @@ export class WhiteboardStore {
         let taskId = "";
         let url = "";
 
-        // ppt.src = "pptx://cdn/prefix/dynamicConvert/{taskId}/1.slide"
+        // e.g. "ppt(x)://cdn/prefix/dynamicConvert/{taskId}/1.slide"
         const pptSrcRE = /^pptx?(?<prefix>:\/\/\S+?dynamicConvert)\/(?<taskId>\w+)\//;
 
         for (const { name, ppt } of scenes) {
