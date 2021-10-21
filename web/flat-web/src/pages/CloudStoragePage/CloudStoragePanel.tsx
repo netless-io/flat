@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { RequestErrorCode } from "../../constants/error-code";
 import { ServerRequestError } from "../../utils/error/server-request-error";
 import { getFileExt } from "../../utils/file";
+import { CLOUD_STORAGE_DOMAIN } from "../../constants/process";
 
 export interface CloudStoragePanelProps {
     whiteboard?: WhiteboardStore;
@@ -196,19 +197,27 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
     }
 
     async function insertIce(file: CloudStorageFile): Promise<void> {
-        const src = file.fileURL.replace(/[^/]+$/, "") + "ice/index.html";
+        try {
+            const src =
+                CLOUD_STORAGE_DOMAIN.replace("[region]", file.region) +
+                new URL(file.fileURL).pathname.replace(/[^/]+$/, "") +
+                "ice/index.html";
 
-        if (src && whiteboard?.windowManager) {
-            await whiteboard.windowManager.addApp({
-                kind: "IframeBridge",
-                options: {
-                    title: file.fileName,
-                },
-                attributes: {
-                    src,
-                },
-            });
-        } else {
+            if (src && whiteboard?.windowManager) {
+                await whiteboard.windowManager.addApp({
+                    kind: "IframeBridge",
+                    options: {
+                        title: file.fileName,
+                    },
+                    attributes: {
+                        src,
+                    },
+                });
+            } else {
+                void message.error(t("unable-to-insert-courseware"));
+            }
+        } catch (e) {
+            console.error(e);
             void message.error(t("unable-to-insert-courseware"));
         }
     }
