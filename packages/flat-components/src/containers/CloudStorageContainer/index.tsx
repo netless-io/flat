@@ -1,8 +1,9 @@
 import "./style.less";
 
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button } from "antd";
+import { Button, Dropdown, Menu } from "antd";
+import { FormOutlined } from "@ant-design/icons";
 import { CSSTransition } from "react-transition-group";
 import { CloudStorageStore } from "./store";
 import { CloudStorageSkeletons, CloudStorageUploadPanel } from "../../components/CloudStorage";
@@ -10,6 +11,7 @@ import { CloudStorageUploadListContainer } from "./CloudStorageUploadListContain
 import { CloudStorageFileListContainer } from "./CloudStorageFileListContainer";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import { CloudStorageOnlineH5Panel } from "./CloudStorageOnlineH5Panel";
 
 export * from "./store";
 
@@ -22,6 +24,15 @@ export interface CloudStorageContainerProps {
 export const CloudStorageContainer = observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store }) {
         const { t } = useTranslation();
+
+        const [isH5PanelVisible, setH5PanelVisible] = useState(false);
+
+        const handleMenuClick = useCallback(({ key }: { key: string }) => {
+            if (key === "h5") {
+                setH5PanelVisible(true);
+            }
+        }, []);
+
         const containerBtns = (
             <div className="cloud-storage-container-btns">
                 <Button
@@ -31,13 +42,21 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                 >
                     {t("delete")}
                 </Button>
-                <Button type="primary" onClick={store.onUpload}>
+                <Dropdown.Button
+                    type="primary"
+                    onClick={store.onUpload}
+                    overlay={
+                        <Menu onClick={handleMenuClick}>
+                            <Menu.Item key="h5" icon={<FormOutlined />}>
+                                {t("online-h5.add")}
+                            </Menu.Item>
+                        </Menu>
+                    }
+                >
                     {t("upload")}
-                </Button>
+                </Dropdown.Button>
             </div>
         );
-
-        (window as any).aaa = store;
 
         return (
             <div className="cloud-storage-container">
@@ -102,6 +121,11 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                 {store.compact && (
                     <div className="cloud-storage-container-footer">{containerBtns}</div>
                 )}
+                <CloudStorageOnlineH5Panel
+                    store={store}
+                    visible={isH5PanelVisible}
+                    onClose={() => setH5PanelVisible(false)}
+                />
             </div>
         );
     },
