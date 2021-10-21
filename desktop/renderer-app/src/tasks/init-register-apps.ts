@@ -39,6 +39,9 @@ const registerApps = (): void => {
     });
     void WindowManager.register({
         kind: "Slide",
+        appOptions: {
+            debug: process.env.NODE_ENV === "development",
+        },
         src: async () => {
             const app = await import("@netless/app-slide");
             return app.default ?? app;
