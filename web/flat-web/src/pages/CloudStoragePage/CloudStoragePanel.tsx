@@ -14,6 +14,7 @@ import { CloudStorageContainer } from "flat-components";
 import { useTranslation } from "react-i18next";
 import { RequestErrorCode } from "../../constants/error-code";
 import { ServerRequestError } from "../../utils/error/server-request-error";
+import { getFileExt } from "../../utils/file";
 
 export interface CloudStoragePanelProps {
     whiteboard?: WhiteboardStore;
@@ -46,26 +47,31 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
 
         void message.info(t("Inserting-courseware-tips"));
 
-        const ext = (/\.[^.]+$/.exec(file.fileName) || [""])[0].toLowerCase();
+        const ext = getFileExt(file.fileName);
+
         switch (ext) {
-            case ".jpg":
-            case ".jpeg":
-            case ".png":
-            case ".webp": {
+            case "jpg":
+            case "jpeg":
+            case "png":
+            case "webp": {
                 await insertImage(file);
                 break;
             }
-            case ".mp3":
-            case ".mp4": {
+            case "mp3":
+            case "mp4": {
                 insertMediaFile(file);
                 break;
             }
-            case ".doc":
-            case ".docx":
-            case ".ppt":
-            case ".pptx":
-            case ".pdf": {
+            case "doc":
+            case "docx":
+            case "ppt":
+            case "pptx":
+            case "pdf": {
                 await insertDocs(file, ext);
+                break;
+            }
+            case "ice": {
+                await insertIce(file);
                 break;
             }
             default: {
@@ -184,6 +190,24 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
             const uuid = v4uuid();
             const scenesPath = `/${taskUUID}/${uuid}`;
             whiteboard?.openDocsFileInWindowManager(scenesPath, file.fileName, scenes);
+        } else {
+            void message.error(t("unable-to-insert-courseware"));
+        }
+    }
+
+    async function insertIce(file: CloudStorageFile): Promise<void> {
+        const src = file.fileURL.replace(/[^/]+$/, "") + "ice/index.html";
+
+        if (src && whiteboard?.windowManager) {
+            await whiteboard.windowManager.addApp({
+                kind: "IframeBridge",
+                options: {
+                    title: file.fileName,
+                },
+                attributes: {
+                    src,
+                },
+            });
         } else {
             void message.error(t("unable-to-insert-courseware"));
         }

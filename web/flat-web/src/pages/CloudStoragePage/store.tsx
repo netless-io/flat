@@ -12,6 +12,8 @@ import {
 import { i18n } from "i18next";
 import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
 import React, { ReactNode } from "react";
+import { queryH5ConvertingStatus } from "../../api-middleware/h5-converting";
+import { getFileExt } from "../../utils/file";
 import {
     ConvertingTaskStatus,
     queryConvertingTaskStatus,
@@ -30,6 +32,7 @@ import { INVITE_BASEURL } from "../../constants/process";
 import { coursewarePreloader } from "../../utils/courseware-preloader";
 import { getUploadTaskManager } from "../../utils/upload-task-manager";
 import { UploadStatusType, UploadTask } from "../../utils/upload-task-manager/upload-task";
+import { ConvertStatusManager } from "./ConvertStatusManager";
 
 export type CloudStorageFile = CloudStorageFileUI &
     Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region">;
@@ -45,7 +48,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     public insertCourseware: (file: CloudStorageFile) => void;
 
     // a set of taskUUIDs representing querying tasks
-    private _convertStatusQuerying = new Map<FileUUID, number>();
+    private convertStatusManager = new ConvertStatusManager();
 
     private i18n: i18n;
 
@@ -275,10 +278,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             disposer();
             window.clearTimeout(this._refreshFilesTimeout);
             this._refreshFilesTimeout = NaN;
-            for (const timeout of this._convertStatusQuerying.values()) {
-                window.clearTimeout(timeout);
-            }
-            this._convertStatusQuerying.clear();
+            this.convertStatusManager.cancelAllTasks();
         };
     }
 
@@ -327,9 +327,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                     cloudFile.convertStep === FileConvertStep.Done ||
                     cloudFile.convertStep === FileConvertStep.Failed
                 ) {
-                    this._convertStatusQuerying.delete(cloudFile.fileUUID);
-                } else if (!this._convertStatusQuerying.has(cloudFile.fileUUID)) {
-                    this._convertStatusQuerying.set(cloudFile.fileUUID, NaN);
+                    this.convertStatusManager.cancelTask(cloudFile.fileUUID);
+                } else {
                     await this.queryConvertStatus(cloudFile.fileUUID);
                 }
             }
@@ -435,7 +434,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             const input = document.createElement("input");
             input.type = "file";
             input.multiple = true;
-            input.accept = ".ppt,.pptx,.doc,.docx,.pdf,.png,.jpg,.jpeg,.gif,.mp3,.mp4";
+            input.accept = ".ppt,.pptx,.doc,.docx,.pdf,.png,.jpg,.jpeg,.gif,.mp3,.mp4,.ice,.vf";
             input.onchange = () => resolve(input.files);
             input.click();
         });
@@ -482,34 +481,101 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             return;
         }
 
-        const isDynamic = file.fileName.endsWith(".pptx");
-
-        if (!isDynamic && !/\.(ppt|pdf|doc|docx)$/i.test(file.fileName)) {
-            return;
-        }
-
-        if (file.convert === "idle") {
-            try {
-                if (process.env.DEV) {
-                    console.log("[cloud-storage] convert start", file.fileUUID, file.fileName);
+        switch (getFileExt(file.fileName)) {
+            case "ice": {
+                if (file.convert === "converting") {
+                    await this.convertStatusManager.addTask(file.fileUUID, () =>
+                        this.pollH5ConvertStatus(file),
+                    );
                 }
-                const { taskToken, taskUUID } = await convertStart({ fileUUID: file.fileUUID });
-                runInAction(() => {
-                    file.convert = "converting";
-                    file.taskToken = taskToken;
-                    file.taskUUID = taskUUID;
-                });
-            } catch (e) {
-                console.error(e);
+                break;
             }
-        }
+            case "ppt":
+            case "pdf":
+            case "doc":
+            case "docx":
+            case "pptx": {
+                if (file.convert === "idle") {
+                    try {
+                        if (process.env.NODE_ENV === "development") {
+                            console.log(
+                                "[cloud-storage] convert start",
+                                file.fileUUID,
+                                file.fileName,
+                            );
+                        }
+                        const { taskToken, taskUUID } = await convertStart({
+                            fileUUID: file.fileUUID,
+                        });
+                        runInAction(() => {
+                            file.convert = "converting";
+                            file.taskToken = taskToken;
+                            file.taskUUID = taskUUID;
+                        });
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
 
-        if (file.convert === "converting") {
-            await this.pollConvertState(file, isDynamic);
+                if (file.convert === "converting") {
+                    await this.convertStatusManager.addTask(file.fileUUID, () =>
+                        this.pollDocConvertStatus(file),
+                    );
+                }
+                break;
+            }
+            default: {
+                break;
+            }
         }
     }
 
-    private async pollConvertState(file: CloudStorageFile, dynamic: boolean): Promise<void> {
+    private async pollH5ConvertStatus(file: CloudStorageFile): Promise<boolean> {
+        if (process.env.NODE_ENV === "development") {
+            console.log("[cloud-storage] query convert status", file.fileName);
+        }
+
+        if (!this.filesMap.has(file.fileUUID)) {
+            return true;
+        }
+
+        const result = await queryH5ConvertingStatus(file.fileURL);
+
+        if (result.status === "Failed" || result.status === "Finished") {
+            if (process.env.NODE_ENV === "development") {
+                console.log("[cloud storage]: convert finish", file.fileName);
+            }
+
+            if (result.status === "Failed") {
+                errorTips(result.error);
+            }
+
+            try {
+                await convertFinish({ fileUUID: file.fileUUID, region: file.region });
+            } catch (e) {
+                // ignore error when notifying server finish status
+                console.warn(e);
+            }
+
+            runInAction(() => {
+                file.convert = result.status === "Failed" ? "error" : "success";
+            });
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private async pollDocConvertStatus(file: CloudStorageFile): Promise<boolean> {
+        if (process.env.DEV) {
+            console.log("[cloud-storage] query convert status", file.fileName);
+        }
+
+        if (!this.filesMap.has(file.fileUUID)) {
+            return true;
+        }
+
         let status: ConvertingTaskStatus["status"];
         let progress: ConvertingTaskStatus["progress"];
 
@@ -517,12 +583,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             ({ status, progress } = await queryConvertingTaskStatus({
                 taskToken: file.taskToken,
                 taskUUID: file.taskUUID,
-                dynamic,
+                dynamic: file.fileName.endsWith(".pptx"),
                 region: file.region,
             }));
         } catch (e) {
             console.error(e);
-            return;
+            return false;
         }
 
         if (process.env.DEV) {
@@ -557,15 +623,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 }
             }
 
-            return;
+            return true;
         }
 
-        if (this._convertStatusQuerying.has(file.fileUUID)) {
-            this._convertStatusQuerying.set(
-                file.fileUUID,
-                window.setTimeout(() => this.pollConvertState(file, dynamic), 1500),
-            );
-        }
+        return false;
     }
 
     private async cancelAll(): Promise<void> {
