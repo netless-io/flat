@@ -201,7 +201,7 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
             const src =
                 CLOUD_STORAGE_DOMAIN.replace("[region]", file.region) +
                 new URL(file.fileURL).pathname.replace(/[^/]+$/, "") +
-                "ice/index.html";
+                "resource/index.html";
 
             if (src && whiteboard?.windowManager) {
                 await whiteboard.windowManager.addApp({
