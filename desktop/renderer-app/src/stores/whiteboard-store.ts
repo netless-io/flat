@@ -1,5 +1,6 @@
 import "video.js/dist/video-js.css";
 
+import type { Attributes as SlideAttributes } from "@netless/app-slide";
 import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manager";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import {
@@ -170,14 +171,36 @@ export class WhiteboardStore {
         title: string,
         scenes: SceneDefinition[],
     ): Promise<void> => {
-        await this.windowManager?.addApp({
-            kind: BuiltinApps.DocsViewer,
-            options: {
-                scenePath,
-                title,
-                scenes: scenes,
-            },
-        });
+        if (this.windowManager) {
+            const { scenesWithoutPPT, taskId, url } = this.makeSlideParams(scenes);
+            try {
+                if (taskId && url) {
+                    await this.windowManager.addApp({
+                        kind: "Slide",
+                        options: {
+                            scenePath,
+                            title,
+                            scenes: scenesWithoutPPT,
+                        },
+                        attributes: {
+                            taskId,
+                            url,
+                        } as SlideAttributes,
+                    });
+                } else {
+                    await this.windowManager?.addApp({
+                        kind: BuiltinApps.DocsViewer,
+                        options: {
+                            scenePath,
+                            title,
+                            scenes,
+                        },
+                    });
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
     };
 
     public openMediaFileInWindowManager = async (
@@ -385,6 +408,36 @@ export class WhiteboardStore {
             (window as any).manager = null;
         }
         console.log(`Whiteboard unloaded: ${globalStore.whiteboardRoomUUID}`);
+    }
+
+    private makeSlideParams(scenes: SceneDefinition[]): {
+        scenesWithoutPPT: SceneDefinition[];
+        taskId: string;
+        url: string;
+    } {
+        const scenesWithoutPPT: SceneDefinition[] = [];
+        let taskId = "";
+        let url = "";
+        for (const { name, ppt } of scenes) {
+            scenesWithoutPPT.push({ name });
+            if (!ppt || !ppt.src.startsWith("ppt")) {
+                continue;
+            }
+            const { src } = ppt;
+            const protocolIndex = src.indexOf("://");
+            let prefixIndex = src.indexOf("/dynamicConvert/");
+            if (protocolIndex === -1 || prefixIndex === -1) {
+                continue;
+            }
+            prefixIndex += 16; // "/dynamicConvert/".length;
+            const taskIdIndex = src.indexOf("/", prefixIndex);
+            if (taskIdIndex === -1) {
+                continue;
+            }
+            taskId = src.slice(prefixIndex, taskIdIndex);
+            url = "https" + src.slice(protocolIndex, prefixIndex - 1);
+        }
+        return { scenesWithoutPPT, taskId, url };
     }
 
     private dirName = (scenePath: string): string => {
