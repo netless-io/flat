@@ -80,7 +80,9 @@ export interface RemoveFilesPayload {
 }
 
 export async function removeFiles(payload: RemoveFilesPayload): Promise<void> {
-    await post("cloud-storage/alibaba-cloud/remove", payload);
+    if (payload.fileUUIDs.length > 0) {
+        await post("cloud-storage/alibaba-cloud/remove", payload);
+    }
 }
 
 export interface ConvertStartPayload {
@@ -111,4 +113,32 @@ export interface CancelUploadPayload {
 
 export async function cancelUpload(payload?: CancelUploadPayload): Promise<void> {
     await post("cloud-storage/upload/cancel", payload || {});
+}
+
+export interface AddOnlineH5Payload {
+    fileName: string;
+    url: string;
+}
+
+export async function addOnlineH5(payload: AddOnlineH5Payload): Promise<void> {
+    await post("cloud-storage/url-cloud/add", payload);
+}
+
+export interface RemoveOnlineH5Payload {
+    fileUUIDs: string[];
+}
+
+export async function removeOnlineH5(payload: RemoveOnlineH5Payload): Promise<void> {
+    if (payload.fileUUIDs.length > 0) {
+        await post("cloud-storage/url-cloud/remove", payload);
+    }
+}
+
+export interface RenameOnlineH5Payload {
+    fileName: string;
+    fileUUID: string;
+}
+
+export async function renameOnlineH5(payload: RenameOnlineH5Payload): Promise<void> {
+    await post("cloud-storage/url-cloud/rename", payload);
 }

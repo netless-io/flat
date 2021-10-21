@@ -33,9 +33,23 @@
 .cloud-storage-container-btns {
     margin-left: auto;
 
+    & > * {
+        margin-left: 1em !important;
+    }
+
+    .ant-btn-group > .ant-btn:first-child:not(:last-child),
+    .ant-btn-group > span:first-child:not(:last-child) > .ant-btn {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .ant-btn-group .ant-btn-primary:not(:first-child):not(:last-child) {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
     & > button {
         border-radius: 5px;
-        margin-left: 0.5em;
         padding: 0 2em;
     }
 }
