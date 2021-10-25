@@ -22,6 +22,8 @@ export interface CloudFile {
     taskToken: string;
     createAt: Date;
     region: Region;
+    /** online courseware */
+    external: boolean;
 }
 
 export interface ListFilesResult {
@@ -115,30 +117,30 @@ export async function cancelUpload(payload?: CancelUploadPayload): Promise<void>
     await post("cloud-storage/upload/cancel", payload || {});
 }
 
-export interface AddOnlineH5Payload {
+export interface AddExternalFilePayload {
     fileName: string;
     url: string;
 }
 
-export async function addOnlineH5(payload: AddOnlineH5Payload): Promise<void> {
+export async function addExternalFile(payload: AddExternalFilePayload): Promise<void> {
     await post("cloud-storage/url-cloud/add", payload);
 }
 
-export interface RemoveOnlineH5Payload {
+export interface RemoveExternalFilesPayload {
     fileUUIDs: string[];
 }
 
-export async function removeOnlineH5(payload: RemoveOnlineH5Payload): Promise<void> {
+export async function removeExternalFiles(payload: RemoveExternalFilesPayload): Promise<void> {
     if (payload.fileUUIDs.length > 0) {
         await post("cloud-storage/url-cloud/remove", payload);
     }
 }
 
-export interface RenameOnlineH5Payload {
+export interface RenameExternalFilePayload {
     fileName: string;
     fileUUID: string;
 }
 
-export async function renameOnlineH5(payload: RenameOnlineH5Payload): Promise<void> {
+export async function renameExternalFile(payload: RenameExternalFilePayload): Promise<void> {
     await post("cloud-storage/url-cloud/rename", payload);
 }
