@@ -9,15 +9,15 @@ interface FormValues {
     fileURL: string;
 }
 
-export interface CloudStorageOnlineH5PanelProps {
+export interface CloudStorageExternalFilePanelProps {
     store: CloudStorageStore;
     visible: boolean;
     onClose: () => void;
 }
 
-const SUPPORTED_ONLINE_H5_FILES = [".vf"];
+const SUPPORTED_EXTERNAL_FILES = [".vf"];
 
-export const CloudStorageOnlineH5Panel: FC<CloudStorageOnlineH5PanelProps> = ({
+export const CloudStorageExternalFilePanel: FC<CloudStorageExternalFilePanelProps> = ({
     store,
     visible,
     onClose,
@@ -28,13 +28,13 @@ export const CloudStorageOnlineH5Panel: FC<CloudStorageOnlineH5PanelProps> = ({
 
     const sp = useSafePromise();
     const [isLoading, setLoading] = useState(false);
-    const [fileExt, setFileExt] = useState(SUPPORTED_ONLINE_H5_FILES[0]);
+    const [fileExt, setFileExt] = useState(SUPPORTED_EXTERNAL_FILES[0]);
 
     const onSubmit = async (values: FormValues): Promise<void> => {
         if (values && values.fileName && values.fileURL) {
             setLoading(true);
             try {
-                await sp(store.addOnlineH5(values.fileName + fileExt, values.fileURL));
+                await sp(store.addExternalFile(values.fileName + fileExt, values.fileURL));
             } catch (e) {
                 console.error(e);
                 void message.error(t("upload-fail"));
@@ -87,7 +87,7 @@ export const CloudStorageOnlineH5Panel: FC<CloudStorageOnlineH5PanelProps> = ({
                     <Input
                         addonAfter={
                             <Select value={fileExt} onChange={setFileExt}>
-                                {SUPPORTED_ONLINE_H5_FILES.map(ext => (
+                                {SUPPORTED_EXTERNAL_FILES.map(ext => (
                                     <Select.Option key={ext} value={ext}>
                                         {ext}
                                     </Select.Option>

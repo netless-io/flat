@@ -28,7 +28,7 @@ const fakeStoreImplProps = [
     "onItemMenuClick",
     "onItemTitleClick",
     "onNewFileName",
-    "addOnlineH5",
+    "addExternalFile",
 ] as const;
 
 type FakeStoreImplProps = typeof fakeStoreImplProps[number];
@@ -44,7 +44,7 @@ class FakeStore extends CloudStorageStore {
     public onItemMenuClick: FakeStoreConfig["onItemMenuClick"];
     public onItemTitleClick;
     public onNewFileName: FakeStoreConfig["onNewFileName"];
-    public addOnlineH5;
+    public addExternalFile;
 
     public pendingUploadTasks: CloudStorageStore["pendingUploadTasks"] = [];
     public uploadingUploadTasks: CloudStorageStore["uploadingUploadTasks"] = [];
@@ -104,7 +104,7 @@ class FakeStore extends CloudStorageStore {
         this.onUploadCancel = config.onUploadCancel;
         this.onUploadPanelClose = config.onUploadPanelClose;
         this.onUploadRetry = config.onUploadRetry;
-        this.addOnlineH5 = config.addOnlineH5;
+        this.addExternalFile = config.addExternalFile;
         this.onItemMenuClick = (fileUUID, menuKey) => {
             switch (menuKey) {
                 case "download": {

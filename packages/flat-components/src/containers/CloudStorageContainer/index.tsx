@@ -11,7 +11,7 @@ import { CloudStorageUploadListContainer } from "./CloudStorageUploadListContain
 import { CloudStorageFileListContainer } from "./CloudStorageFileListContainer";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import { CloudStorageOnlineH5Panel } from "./CloudStorageOnlineH5Panel";
+import { CloudStorageExternalFilePanel } from "./CloudStorageExternalFilePanel";
 
 export * from "./store";
 
@@ -121,7 +121,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                 {store.compact && (
                     <div className="cloud-storage-container-footer">{containerBtns}</div>
                 )}
-                <CloudStorageOnlineH5Panel
+                <CloudStorageExternalFilePanel
                     store={store}
                     visible={isH5PanelVisible}
                     onClose={() => setH5PanelVisible(false)}

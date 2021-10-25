@@ -153,5 +153,5 @@ export abstract class CloudStorageStore {
     abstract onNewFileName(fileUUID: FileUUID, fileName: CloudStorageFileName): void;
 
     /** Add Online HTML5 Courseware to Cloud Storage */
-    abstract addOnlineH5(fileName: string, fileURL: string): Promise<void>;
+    abstract addExternalFile(fileName: string, fileURL: string): Promise<void>;
 }

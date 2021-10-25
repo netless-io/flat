@@ -20,15 +20,15 @@ import {
 } from "../../api-middleware/courseware-converting";
 import { FileConvertStep } from "../../api-middleware/flatServer/constants";
 import {
-    addOnlineH5,
+    addExternalFile,
     CloudFile,
     convertFinish,
     convertStart,
     listFiles,
     removeFiles,
-    removeOnlineH5,
+    removeExternalFiles,
     renameFile,
-    renameOnlineH5,
+    renameExternalFile,
 } from "../../api-middleware/flatServer/storage";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { INVITE_BASEURL } from "../../constants/process";
@@ -38,7 +38,7 @@ import { UploadStatusType, UploadTask } from "../../utils/upload-task-manager/up
 import { ConvertStatusManager } from "./ConvertStatusManager";
 
 export type CloudStorageFile = CloudStorageFileUI &
-    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region">;
+    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region" | "external">;
 
 export type FileMenusKey = "download" | "rename" | "delete";
 
@@ -250,8 +250,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             if (file.fileName === fileNameObject.fullName) {
                 return;
             } else {
-                if (this.isOnlineH5File(file)) {
-                    await renameOnlineH5({ fileUUID, fileName: fileNameObject.fullName });
+                if (file?.external) {
+                    await renameExternalFile({ fileUUID, fileName: fileNameObject.fullName });
                 } else {
                     await renameFile({ fileUUID, fileName: fileNameObject.fullName });
                 }
@@ -262,12 +262,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
     };
 
-    public addOnlineH5 = (fileName: string, fileURL: string): Promise<void> => {
-        return addOnlineH5({ fileName, url: fileURL });
-    };
-
-    public isOnlineH5File = (file?: CloudStorageFile): boolean => {
-        return !!file && file.fileSize <= 0;
+    public addExternalFile = (fileName: string, fileURL: string): Promise<void> => {
+        return addExternalFile({ fileName, url: fileURL });
     };
 
     public initialize(): () => void {
@@ -327,6 +323,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         file.convert = CloudStorageStore.mapConvertStep(cloudFile.convertStep);
                         file.taskToken = cloudFile.taskToken;
                         file.taskUUID = cloudFile.taskUUID;
+                        file.external = cloudFile.external;
                     } else {
                         this.filesMap.set(
                             cloudFile.fileUUID,
@@ -402,17 +399,17 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     private async removeFiles(fileUUIDs: FileUUID[]): Promise<void> {
         try {
-            const onlineH5s: FileUUID[] = [];
+            const externalFiles: FileUUID[] = [];
             const normalFiles: FileUUID[] = [];
             fileUUIDs.forEach(fileUUID => {
-                if (this.isOnlineH5File(this.filesMap.get(fileUUID))) {
-                    onlineH5s.push(fileUUID);
+                if (this.filesMap.get(fileUUID)?.external) {
+                    externalFiles.push(fileUUID);
                 } else {
                     normalFiles.push(fileUUID);
                 }
             });
             await Promise.all([
-                removeOnlineH5({ fileUUIDs: onlineH5s }),
+                removeExternalFiles({ fileUUIDs: externalFiles }),
                 removeFiles({ fileUUIDs: normalFiles }),
             ]);
             runInAction(() => {
