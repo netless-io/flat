@@ -1,5 +1,10 @@
 // see: https://github.com/netless-io/flat-server/blob/main/src/ErrorCode.ts
 export enum RequestErrorCode {
+    FILE_CHECK_FAILED = 1000,
+    FILE_DOWNLOAD_FAILED = 1002,
+    FILE_UNZIP_FAILED = 1003,
+    FILE_UPLOAD_FAILED = 1004,
+
     ParamsCheckFailed = 100000,
     ServerFail,
     CurrentProcessFailed,
@@ -40,6 +45,12 @@ export enum RequestErrorCode {
 }
 
 export const RequestErrorMessage = {
+    // HTML5 courseware
+    [RequestErrorCode.FILE_CHECK_FAILED]: "error-tips.file-check-failed",
+    [RequestErrorCode.FILE_DOWNLOAD_FAILED]: "error-tips.file-download-failed",
+    [RequestErrorCode.FILE_UNZIP_FAILED]: "error-tips.file-unzip-failed",
+    [RequestErrorCode.FILE_UPLOAD_FAILED]: "error-tips.file-upload-failed",
+
     // request parameter error
     [RequestErrorCode.ParamsCheckFailed]: "parameter-error",
     // this error may occur in high concurrency situations, the request should be retried
