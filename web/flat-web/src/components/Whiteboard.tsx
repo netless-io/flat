@@ -10,7 +10,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { WhiteboardStore } from "../stores/whiteboard-store";
 import { isSupportedImageType, onDropImage } from "../utils/dnd/image";
 import { ScenesController } from "../../../../packages/flat-components/src";
-import { useIsUnMounted } from "../utils/hooks/lifecycle";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -18,7 +17,6 @@ export interface WhiteboardProps {
 
 export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteboardStore }) {
     const { room } = whiteboardStore;
-    const isUnMountedRef = useIsUnMounted();
 
     const [whiteboardEl, setWhiteboardEl] = useState<HTMLElement | null>(null);
     const [collectorEl, setCollectorEl] = useState<HTMLElement | null>(null);
@@ -41,12 +39,9 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                     },
                     chessboard: false,
                 });
-                if (isUnMountedRef.current) {
-                    whiteboardStore.destroyWindowManager();
-                } else {
-                    whiteboardStore.onMainViewModeChange();
-                    whiteboardStore.onWindowManagerBoxStateChange();
-                }
+
+                whiteboardStore.onMainViewModeChange();
+                whiteboardStore.onWindowManagerBoxStateChange();
             }
         };
 

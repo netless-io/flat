@@ -109,6 +109,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
     const updateLayoutTimeoutRef = useRef(NaN);
+    const loadingPageRef = useRef(false);
 
     const { t } = useTranslation();
 
@@ -150,7 +151,9 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         phase === RoomPhase.Disconnecting ||
         phase === RoomPhase.Reconnecting
     ) {
-        return <LoadingPage />;
+        loadingPageRef.current = true;
+    } else {
+        loadingPageRef.current = false;
     }
 
     function handleShareScreen(): void {
@@ -163,6 +166,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     return (
         <div className="realtime-box">
+            {loadingPageRef.current && <LoadingPage />}
             <TopBar
                 isMac={runtime.isMac}
                 left={renderTopBarLeft()}

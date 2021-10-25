@@ -106,6 +106,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
     const updateLayoutTimeoutRef = useRef(NaN);
+    const loadingPageRef = useRef(false);
 
     // control whiteboard writable
     useEffect(() => {
@@ -171,7 +172,9 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         whiteboardStore.phase === RoomPhase.Disconnecting ||
         whiteboardStore.phase === RoomPhase.Reconnecting
     ) {
-        return <LoadingPage />;
+        loadingPageRef.current = true;
+    } else {
+        loadingPageRef.current = false;
     }
 
     function handleShareScreen(): void {
@@ -184,6 +187,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     return (
         <div className="realtime-box">
+            {loadingPageRef.current && <LoadingPage />}
             <TopBar
                 isMac={runtime.isMac}
                 left={renderTopBarLeft()}
