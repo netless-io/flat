@@ -77,6 +77,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
     const updateLayoutTimeoutRef = useRef(NaN);
+    const loadingPageRef = useRef(false);
 
     const joiner = useComputed(() => {
         if (classRoomStore.isCreator) {
@@ -122,11 +123,14 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         whiteboardStore.phase === RoomPhase.Disconnecting ||
         whiteboardStore.phase === RoomPhase.Reconnecting
     ) {
-        return <LoadingPage />;
+        loadingPageRef.current = true;
+    } else {
+        loadingPageRef.current = false;
     }
 
     return (
         <div className="one-to-one-realtime-container">
+            {loadingPageRef.current && <LoadingPage />}
             <div className="one-to-one-realtime-box">
                 <TopBar
                     isMac={runtime.isMac}
@@ -259,8 +263,8 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                         title="Vision control"
                         icon={
                             whiteboardStore.isBroadcasterMode === undefined
-                                ? "follow-active"
-                                : "follow"
+                                ? "follow"
+                                : "follow-active"
                         }
                         onClick={toggleRoomVisionController}
                     />

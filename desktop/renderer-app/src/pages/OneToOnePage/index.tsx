@@ -82,6 +82,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
     const updateLayoutTimeoutRef = useRef(NaN);
+    const loadingPageRef = useRef(false);
 
     const { t } = useTranslation();
 
@@ -129,7 +130,9 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         whiteboardStore.phase === RoomPhase.Disconnecting ||
         whiteboardStore.phase === RoomPhase.Reconnecting
     ) {
-        return <LoadingPage />;
+        loadingPageRef.current = true;
+    } else {
+        loadingPageRef.current = false;
     }
 
     function handleShareScreen(): void {
@@ -142,6 +145,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     return (
         <div className="one-to-one-realtime-box">
+            {loadingPageRef.current && <LoadingPage />}
             <TopBar
                 isMac={runtime.isMac}
                 left={renderTopBarLeft()}
