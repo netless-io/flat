@@ -366,5 +366,11 @@
     "add": "Online HTML5 Courseware",
     "name": "Name",
     "url": "Online Address"
+  },
+  "error-tips": {
+    "file-check-failed": "File is corrupted",
+    "file-download-failed": "Cannot retrieve file for processing",
+    "file-unzip-failed": "File processing failed",
+    "file-upload-failed": "File upload failed"
   }
 }

@@ -366,5 +366,11 @@
     "add": "添加在线 H5 课件",
     "name": "课件名",
     "url": "在线地址"
+  },
+  "error-tips": {
+    "file-check-failed": "资源文件已损坏",
+    "file-download-failed": "资源文件获取失败",
+    "file-unzip-failed": "资源文件转码失败",
+    "file-upload-failed": "资源文件上传失败"
   }
 }
