@@ -35,6 +35,10 @@ export enum RtcChannelType {
 export class RtcRoom {
     public client?: IAgoraRTCClient;
 
+    private resolveJoined!: () => void;
+    private joined = new Promise<void>(resolve => {
+        this.resolveJoined = resolve;
+    });
     private roomUUID?: string;
 
     public async join({
@@ -49,7 +53,7 @@ export class RtcRoom {
         channelType: RtcChannelType;
     }): Promise<IAgoraRTCClient> {
         if (this.client) {
-            await this.destroy();
+            return this.client;
         }
 
         const mode = channelType === RtcChannelType.Communication ? "rtc" : "live";
@@ -67,6 +71,7 @@ export class RtcRoom {
         this.client.on("user-published", this.onUserPublished);
         this.client.on("user-unpublished", this.onUserUnpublished);
         await this.client.join(AGORA.APP_ID, roomUUID, token, rtcUID);
+        this.resolveJoined();
 
         this.roomUUID = roomUUID;
 
@@ -79,6 +84,7 @@ export class RtcRoom {
 
     public async destroy(): Promise<void> {
         if (this.client) {
+            await this.joined;
             setMicrophoneTrack();
             setCameraTrack();
             if (this.client.localTracks.length > 0) {
@@ -111,6 +117,7 @@ export class RtcRoom {
 
     public async getLocalAudioTrack(): Promise<ILocalAudioTrack> {
         if (!this._localAudioTrack) {
+            await this.joined;
             this._localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
             setMicrophoneTrack(this._localAudioTrack as IMicrophoneAudioTrack);
             this._localAudioTrack.once("track-ended", () => {
@@ -124,6 +131,7 @@ export class RtcRoom {
 
     public async getLocalVideoTrack(): Promise<ILocalVideoTrack> {
         if (!this._localVideoTrack) {
+            await this.joined;
             this._localVideoTrack = await AgoraRTC.createCameraVideoTrack({
                 encoderConfig: { width: 288, height: 216 },
             });
