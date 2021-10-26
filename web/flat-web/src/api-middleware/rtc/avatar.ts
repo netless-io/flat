@@ -62,8 +62,8 @@ export class RtcAvatar extends EventEmitter {
         this.rtc.removeAvatar(this);
     }
 
-    private get client(): IAgoraRTCClient {
-        return this.rtc.client!;
+    private get client(): IAgoraRTCClient | undefined {
+        return this.rtc.client;
     }
 
     public get element(): HTMLElement | undefined {
@@ -76,6 +76,9 @@ export class RtcAvatar extends EventEmitter {
     }
 
     public refreshRemoteTracks(): void {
+        if (!this.client) {
+            return;
+        }
         this.remoteUser = this.client.remoteUsers.find(user => user.uid === this.avatarUser.rtcUID);
         if (!this.remoteUser) {
             this.audioTrack = undefined;
