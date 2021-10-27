@@ -6,6 +6,7 @@ import { useIsomorphicLayoutEffect } from "react-use";
 import { PageStoreContext } from "../components/StoreProvider";
 import { RouteNameType } from "../route-config";
 import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
+import { LoadingPage } from "flat-components";
 
 export interface AppRouteContainerProps {
     name: RouteNameType;
@@ -34,5 +35,12 @@ export const AppRouteContainer: FC<AppRouteContainerProps> = ({
         window.getSelection()?.removeAllRanges();
     }, [t, title]);
 
-    return <AppRouteErrorBoundary Comp={loadable(Comp)} {...{ title, routeProps }} />;
+    return (
+        <AppRouteErrorBoundary
+            Comp={loadable(Comp, {
+                fallback: <LoadingPage />,
+            })}
+            {...{ title, routeProps }}
+        />
+    );
 };
