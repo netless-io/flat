@@ -1,42 +1,58 @@
 import logoSVG from "./icons/logo-sm.svg";
 
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { isAndroid } from "react-device-detect";
 
 export interface JoinPageMobileProps {
+    privacyURL: string;
+    serviceURL: string;
     joinRoom: () => void;
 }
 
-export default function JoinPageMobile({ joinRoom }: JoinPageMobileProps): React.ReactElement {
+// TODO: change this url to some stable one
+const AndroidApkUrl =
+    "https://flat-storage.oss-cn-hangzhou.aliyuncs.com/versions/latest/stable/android/Flat-v1.0.2.apk";
+
+export default function JoinPageMobile({
+    privacyURL,
+    serviceURL,
+    joinRoom,
+}: JoinPageMobileProps): React.ReactElement {
     const { t } = useTranslation();
+
+    const download = useCallback(() => {
+        if (isAndroid) {
+            window.open(AndroidApkUrl);
+        } else {
+            window.open("https://flat.whiteboard.agora.io/#download", "_blank");
+        }
+    }, []);
 
     return (
         <div className="join-page-mobile-container">
             <div className="join-page-mobile-effect"></div>
             <div className="join-page-mobile-header">
-                <img src={logoSVG} alt="flat-logo" />
-                <div className="join-page-mobile-logo-texts">
-                    <span className="join-page-mobile-logo-text">FLAT</span>
-                    <span className="join-page-mobile-logo-text-second">powered by Agora</span>
+                <div className="join-page-mobile-app-icon">
+                    <img src={logoSVG} alt="flat-logo" />
                 </div>
             </div>
-            <div className="join-page-mobile-card-wrapper">
-                <div className="join-page-mobile-card">
-                    <strong className="join-page-mobile-card-title">XXX 创建的房间</strong>
-                    <div className="join-page-mobile-card-desc">
-                        {t("invite-suffix", { uuid: "123 456 7890" })}
-                    </div>
-                    <button className="join-page-mobile-btn" onClick={joinRoom}>
-                        {t("join-room")}
-                    </button>
-                </div>
+            <div className="join-page-mobile-big-btns">
+                <button className="join-page-mobile-big-btn" onClick={joinRoom}>
+                    {t("open")} Flat
+                </button>
+                <button className="join-page-mobile-big-btn secondary" onClick={download}>
+                    {t("download")} Flat
+                </button>
             </div>
-            <div className="join-page-mobile-divider">
-                <span>{t("or")}</span>
-            </div>
-            <div className="join-page-mobile-download-flat">
-                <span>{t("not-installed-flat-tips")}</span>
-                <a href="https://flat.whiteboard.agora.io/#download">{t("download-now")}</a>
+            <div className="join-page-mobile-footer">
+                <a href={privacyURL} target="_blank" rel="noreferrer">
+                    {t("privacy-agreement")}
+                </a>
+                <span>｜</span>
+                <a href={serviceURL} target="_blank" rel="noreferrer">
+                    {t("service-policy")}
+                </a>
             </div>
         </div>
     );

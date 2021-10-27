@@ -158,7 +158,61 @@
 .join-page-mobile-header {
     display: flex;
     align-items: center;
-    padding: 24px;
+    justify-content: center;
+    padding: 100px 32px 150px;
+}
+
+.join-page-mobile-app-icon {
+    width: 74px;
+    height: 74px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background-color: #fff;
+    box-shadow: 0 8px 24px 0 rgb(0 0 0 / 8%);
+}
+
+.join-page-mobile-big-btns {
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 9999;
+}
+
+.join-page-mobile-big-btn {
+    display: block;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #3381FF;
+    outline: none;
+    background-color: #3381ff;
+    color: #fff;
+    padding: 10px;
+    position: relative;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+        z-index: 10;
+        background-color: transparent;
+    }
+    &:focus::after {
+        background-color: rgb(0 0 0 / 8%);
+    }
+}
+
+.join-page-mobile-big-btn.secondary {
+    color: #3381FF;
+    background-color: transparent;
+}
+
+.join-page-mobile-footer {
+    font-size: 14px;
+    text-align: center;
+    color: #7A7B7C;
 }
 
 .join-page-mobile-logo-texts {
@@ -278,6 +332,7 @@
     opacity: 0.06;
     filter: blur(50px);
     z-index: 0;
+    pointer-events: none;
 }
 
 .join-page-mobile-effect::after {
@@ -292,4 +347,5 @@
     opacity: 0.05;
     filter: blur(50px);
     z-index: 0;
+    pointer-events: none;
 }

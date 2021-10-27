@@ -43,7 +43,7 @@ export const JoinPage = observer(function JoinPage() {
 
         void checkLogin();
 
-        // window.location.href = `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`;
+        window.location.href = `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -62,7 +62,7 @@ export const JoinPage = observer(function JoinPage() {
     const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
 
     return isMobile ? (
-        <JoinPageMobile joinRoom={joinRoom} />
+        <JoinPageMobile joinRoom={joinRoom} privacyURL={privacyURL} serviceURL={serviceURL} />
     ) : (
         <JoinPageDesktop
             isLogin={isLogin}
