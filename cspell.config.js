@@ -42,6 +42,7 @@ module.exports = {
         "Quan",
         "tabpane",
         "anticon",
+        "nums",
 
         // whiteboard
         "unban",
