@@ -226,8 +226,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             default: {
                 return (
                     <RecordHintTips
-                        isShow={Boolean(whiteboardStore.room)}
-                        visible={globalStore.isShowRecordHintTips}
+                        visible={Boolean(whiteboardStore.room) && globalStore.isShowRecordHintTips}
                         onClose={globalStore.hideRecordHintTips}
                     >
                         <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>

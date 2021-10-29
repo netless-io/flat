@@ -7,16 +7,11 @@ import { useTranslation } from "react-i18next";
 
 export interface RecordHintTipsProps {
     visible: boolean;
-    isShow: boolean;
     onClose: () => void;
 }
 
-export const RecordHintTips: FC<RecordHintTipsProps> = ({ visible, onClose, children, isShow }) => {
+export const RecordHintTips: FC<RecordHintTipsProps> = ({ visible, onClose, children }) => {
     const { t } = useTranslation();
-
-    if (!isShow) {
-        return null;
-    }
 
     return (
         <Tooltip
