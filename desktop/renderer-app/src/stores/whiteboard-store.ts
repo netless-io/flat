@@ -303,6 +303,7 @@ export class WhiteboardStore {
                 },
                 useMultiViews: true,
                 invisiblePlugins: [WindowManager],
+                uid: globalStore.userUUID,
             },
             {
                 onPhaseChanged: phase => {
@@ -363,17 +364,6 @@ export class WhiteboardStore {
         room.disableDeviceInputs = !this.isWritable;
 
         cursorAdapter.setRoom(room);
-
-        if (this.isCreator) {
-            room.setMemberState({
-                pencilOptions: {
-                    disableBezier: false,
-                    sparseHump: 1.0,
-                    sparseWidth: 1.0,
-                    enableDrawPoint: false,
-                },
-            });
-        }
 
         if (room.state.broadcastState) {
             this.updateViewMode(room.state.broadcastState.mode);
