@@ -1,13 +1,15 @@
 import logoSVG from "./icons/logo-sm.svg";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { isAndroid } from "react-device-detect";
+import { useWindowFocus } from "./use-window-focus";
+import { useIsUnMounted } from "../../utils/hooks/lifecycle";
 
 export interface JoinPageMobileProps {
+    roomUUID: string;
     privacyURL: string;
     serviceURL: string;
-    joinRoom: () => void;
 }
 
 // TODO: change this url to some stable one
@@ -15,11 +17,23 @@ const AndroidApkUrl =
     "https://flat-storage.oss-cn-hangzhou.aliyuncs.com/versions/latest/stable/android/Flat-v1.0.2.apk";
 
 export default function JoinPageMobile({
+    roomUUID,
     privacyURL,
     serviceURL,
-    joinRoom,
 }: JoinPageMobileProps): React.ReactElement {
     const { t } = useTranslation();
+    const [isCheckingApp, setCheckApp] = useState(false);
+    const isFocus = useWindowFocus();
+    const isUnmounted = useIsUnMounted();
+
+    const openApp = useCallback(() => {
+        window.location.href = `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`;
+        setTimeout(() => {
+            if (!isUnmounted.current) {
+                setCheckApp(true);
+            }
+        }, 3000);
+    }, [roomUUID, isUnmounted]);
 
     const download = useCallback(() => {
         if (isAndroid) {
@@ -28,6 +42,16 @@ export default function JoinPageMobile({
             window.open("https://flat.whiteboard.agora.io/#download", "_blank");
         }
     }, []);
+
+    useEffect(() => {
+        if (isCheckingApp) {
+            // if 5 seconds later the page is still in focus,
+            // then maybe the app is not opened.
+            if (isFocus) {
+                download();
+            }
+        }
+    }, [isCheckingApp, isFocus, download]);
 
     return (
         <div className="join-page-mobile-container">
@@ -38,7 +62,7 @@ export default function JoinPageMobile({
                 </div>
             </div>
             <div className="join-page-mobile-big-btns">
-                <button className="join-page-mobile-big-btn" onClick={joinRoom}>
+                <button className="join-page-mobile-big-btn" onClick={openApp}>
                     {t("open")} Flat
                 </button>
                 <button className="join-page-mobile-big-btn secondary" onClick={download}>
