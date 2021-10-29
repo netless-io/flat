@@ -17260,10 +17260,10 @@ which@^2.0.1, which@^2.0.2:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@2.14.6:
-  version "2.14.6"
-  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.14.6.tgz#03e0fda0d48391a43c26fdf279afdae3b46c4d8d"
-  integrity sha512-U6kATsnfLaozieX6As1oYQl5q2q/mKFcGPs0gNfo4HLkWqv6NNw1lQ3G9Yq85NHsrEqI/yRpRLYRThPmlCDkgA==
+white-web-sdk@2.15.1:
+  version "2.15.1"
+  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.15.1.tgz#9d112f6ec01a43ef56627fa11a6c31d59945e78f"
+  integrity sha512-zf4hVqoU639J5MqGPIKOpai296u7aNREW8EghzIcUNU8ztQr5WgiRToJAAweB/D4GftFc+h9TK1Mmi3h8fQ1UA==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/canvas-polyfill" "^0.0.4"
