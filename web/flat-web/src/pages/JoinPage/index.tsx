@@ -62,7 +62,7 @@ export const JoinPage = observer(function JoinPage() {
     const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
 
     return isMobile ? (
-        <JoinPageMobile joinRoom={joinRoom} privacyURL={privacyURL} serviceURL={serviceURL} />
+        <JoinPageMobile roomUUID={roomUUID} privacyURL={privacyURL} serviceURL={serviceURL} />
     ) : (
         <JoinPageDesktop
             isLogin={isLogin}
