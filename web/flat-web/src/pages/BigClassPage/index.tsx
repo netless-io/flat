@@ -254,6 +254,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             default: {
                 return (
                     <RecordHintTips
+                        isShow={Boolean(whiteboardStore.room)}
                         visible={globalStore.isShowRecordHintTips}
                         onClose={globalStore.hideRecordHintTips}
                     >

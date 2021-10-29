@@ -226,6 +226,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             default: {
                 return (
                     <RecordHintTips
+                        isShow={Boolean(whiteboardStore.room)}
                         visible={globalStore.isShowRecordHintTips}
                         onClose={globalStore.hideRecordHintTips}
                     >
