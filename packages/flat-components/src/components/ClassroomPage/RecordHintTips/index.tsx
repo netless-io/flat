@@ -12,6 +12,7 @@ export interface RecordHintTipsProps {
 
 export const RecordHintTips: FC<RecordHintTipsProps> = ({ visible, onClose, children }) => {
     const { t } = useTranslation();
+
     return (
         <Tooltip
             overlayClassName="record-hint-tips"
