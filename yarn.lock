@@ -1111,6 +1111,11 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/standalone@7.13.9":
+  version "7.13.9"
+  resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.13.9.tgz#38e78673e19f5077f4b294ad346780634e59e276"
+  integrity sha512-9ZpIl8rXXQqm5OdsQVhlBSPttwabiHGPGrl5N2bIxB9XS2NJW+1oiPFgMMNd+57C/xVwsEwD2mzv0KValOwlQA==
+
 "@babel/standalone@7.14.1":
   version "7.14.1"
   resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.14.1.tgz#2c5f6908f03108583eea75bdcc94eb29e720fbac"
@@ -1895,10 +1900,10 @@
   resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.10.tgz#4f15da942560662d59a077cd08fc7fb80909cdc9"
   integrity sha512-ZkPxwbaC3xNfXMegti5v6xZH70/Q0wgtRVg3CyMxsWfh7UkB2eMUXZdkplcciJb9U9ApeheB1EjupA+MIVWdDQ==
 
-"@netless/app-slide@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@netless/app-slide/-/app-slide-0.0.4.tgz#a2f675a546ff486643ac98bc6010775e85a859fd"
-  integrity sha512-XstXdYHzjetKEw5wVeCWOg6Acd/t0IZtyY10f/5dwaCC65rpLDKJFDhpklYm8QQVWataLcxjnCvTVekSBRwmPQ==
+"@netless/app-slide@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@netless/app-slide/-/app-slide-0.0.6.tgz#36f51f3816cc5f5bc3aa2991d30bf24eaff7330a"
+  integrity sha512-eIN3e2eKaGaRgnLDqp5I/BOkie69sqULn1VhsUNIpWlmxb08IkLrWvVZDIzrxFlv/mXYrIpGPXuH+KCZqwIn3g==
 
 "@netless/canvas-polyfill@^0.0.4":
   version "0.0.4"
