@@ -13,7 +13,7 @@ export default storyMeta;
 
 export const Overview: Story<TopBarRoundBtnProps> = args => <TopBarRoundBtn {...args} />;
 Overview.args = {
-    dark: faker.random.boolean(),
+    dark: faker.datatype.boolean(),
     icon: <UserAddOutlined />,
     className: "pa2",
     children: "Hello, world!",
