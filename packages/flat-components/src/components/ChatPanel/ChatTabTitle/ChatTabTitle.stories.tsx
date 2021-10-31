@@ -12,7 +12,7 @@ export default storyMeta;
 
 export const Overview: Story<ChatTabTitleProps> = args => <ChatTabTitle {...args} />;
 Overview.args = {
-    unreadCount: faker.random.number(20),
+    unreadCount: faker.datatype.number(20),
 };
 Overview.argTypes = {
     unreadCount: { control: { type: "number" } },

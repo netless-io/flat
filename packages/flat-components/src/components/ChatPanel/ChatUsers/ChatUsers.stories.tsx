@@ -22,8 +22,8 @@ export const Overview: Story<ChatUsersProps> = args => (
 const makeUser = (): User => ({
     userUUID: faker.datatype.uuid(),
     name: faker.name.lastName(),
-    isSpeak: faker.random.boolean(),
-    isRaiseHand: faker.random.boolean(),
+    isSpeak: faker.datatype.boolean(),
+    isRaiseHand: faker.datatype.boolean(),
     avatar: "http://placekitten.com/64/64",
 });
 const currentUser = makeUser();
@@ -35,6 +35,6 @@ const users = ((n: number) => {
 Overview.args = {
     users,
     generateAvatar: () => "http://placekitten.com/64/64",
-    ownerUUID: faker.random.boolean() ? currentUser.userUUID : chance.pickone(users).userUUID,
-    userUUID: faker.random.boolean() ? currentUser.userUUID : chance.pickone(users).userUUID,
+    ownerUUID: faker.datatype.boolean() ? currentUser.userUUID : chance.pickone(users).userUUID,
+    userUUID: faker.datatype.boolean() ? currentUser.userUUID : chance.pickone(users).userUUID,
 };
