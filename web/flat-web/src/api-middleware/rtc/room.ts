@@ -19,6 +19,10 @@ if (process.env.PROD) {
     AgoraRTC.setLogLevel(/* WARNING */ 2);
 }
 
+if (process.env.DEV) {
+    (window as any).AgoraRTC = AgoraRTC;
+}
+
 export enum RtcChannelType {
     Communication = 0,
     Broadcast = 1,
@@ -58,8 +62,10 @@ export class RtcRoom {
 
         const mode = channelType === RtcChannelType.Communication ? "rtc" : "live";
         this.client = AgoraRTC.createClient({ mode, codec: "vp8" });
+        (window as any).rtc_client = this.client;
 
         this.client.on("token-privilege-will-expire", this.renewToken);
+        this.client.on("exception", console.warn.bind(console, ">>>> exception >>>>"));
 
         if (mode !== "rtc") {
             await this.client.setClientRole(
