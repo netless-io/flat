@@ -1895,10 +1895,10 @@
   resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.10.tgz#4f15da942560662d59a077cd08fc7fb80909cdc9"
   integrity sha512-ZkPxwbaC3xNfXMegti5v6xZH70/Q0wgtRVg3CyMxsWfh7UkB2eMUXZdkplcciJb9U9ApeheB1EjupA+MIVWdDQ==
 
-"@netless/app-slide@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@netless/app-slide/-/app-slide-0.0.7.tgz#37bae5afa2c9f071585fc44f4238a452b5f98a44"
-  integrity sha512-5VimXfKLQzWmoQ2xofzGoaRkrl6N0bqYLFmLA3UYzqPH0cjrwxFYTMFYNl7UYsld7axL1cAECI0AQulyP9bpcA==
+"@netless/app-slide@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/@netless/app-slide/-/app-slide-0.0.8.tgz#1994838e94b0faf5caf20bcc441d12246dce61d3"
+  integrity sha512-8bRcEQLy1Q2WWAcwphOalznkZ2vN7JxBV7CsubQo6bJzbgqjB7nxlv4Ca5HwUGMMClajh9tMEfJA1ZPlt7iuYw==
 
 "@netless/canvas-polyfill@^0.0.4":
   version "0.0.4"
@@ -1963,10 +1963,10 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.2.10":
-  version "0.2.10"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.2.10.tgz#c197669c674ddec5b81fc7ebae8df597859c2919"
-  integrity sha512-bfXCQMPTzZX3J6aoLF0Hxl+uuwJdLM8644TN+PiD/kYoiA+Pk3yTcnSVIIgNsYGtmI3ws/neRpz7FcEc5G6c4Q==
+"@netless/window-manager@^0.2.12-canary.1":
+  version "0.2.12-canary.1"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.2.12-canary.1.tgz#8282562c8058222e4dc572aa963f035595edd586"
+  integrity sha512-hc5O3wPpALDkd78rNx3oeS8sgbSIRDZGB6lKQ1dzaJd2vwythDNXDxB8Ob7iBgOgCnGwvWAzec0Jz/Fhy94AIw==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/app-docs-viewer" "^0.1.21"
