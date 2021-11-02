@@ -291,7 +291,11 @@ export class WhiteboardStore {
                 roomToken: globalStore.whiteboardRoomToken,
                 region: globalStore.region ?? undefined,
                 userPayload: {
+                    uid: globalStore.userUUID,
+                    nickName: cursorName,
+                    // @deprecated
                     userId: globalStore.userUUID,
+                    // @deprecated
                     cursorName,
                 },
                 floatBar: true,
