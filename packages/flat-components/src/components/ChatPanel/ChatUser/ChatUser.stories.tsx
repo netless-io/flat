@@ -15,8 +15,8 @@ export const Overview: Story<ChatUserProps> = args => <ChatUser {...args} />;
 const makeUser = (): User => ({
     userUUID: faker.datatype.uuid(),
     name: faker.name.lastName(),
-    isSpeak: faker.random.boolean(),
-    isRaiseHand: faker.random.boolean(),
+    isSpeak: faker.datatype.boolean(),
+    isRaiseHand: faker.datatype.boolean(),
     avatar: "http://placekitten.com/64/64",
 });
 Overview.args = {

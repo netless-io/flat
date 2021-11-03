@@ -14,7 +14,7 @@ import {
     WhiteWebSdk,
 } from "white-web-sdk";
 import { CursorTool } from "@netless/cursor-tool";
-import { NETLESS, NODE_ENV } from "../constants/process";
+import { NETLESS } from "../constants/process";
 import { globalStore } from "./GlobalStore";
 import { isMobile, isWindows } from "react-device-detect";
 import { debounce } from "lodash-es";
@@ -291,7 +291,11 @@ export class WhiteboardStore {
                 roomToken: globalStore.whiteboardRoomToken,
                 region: globalStore.region ?? undefined,
                 userPayload: {
+                    uid: globalStore.userUUID,
+                    nickName: cursorName,
+                    // @deprecated
                     userId: globalStore.userUUID,
+                    // @deprecated
                     cursorName,
                 },
                 floatBar: true,
@@ -386,7 +390,7 @@ export class WhiteboardStore {
             this.updateWindowManager(windowManager);
         }
 
-        if (NODE_ENV === "development") {
+        if (process.env.DEV) {
             (window as any).room = room;
             (window as any).manager = this.windowManager;
         }
@@ -397,7 +401,7 @@ export class WhiteboardStore {
         this.destroyWindowManager();
         this.room?.callbacks.off();
 
-        if (NODE_ENV === "development") {
+        if (process.env.DEV) {
             (window as any).room = null;
             (window as any).manager = null;
         }

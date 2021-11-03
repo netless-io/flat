@@ -18,7 +18,7 @@ export const Overview: Story<CloudStorageUploadTitleProps> = args => (
     <CloudStorageUploadTitle {...args} />
 );
 Overview.args = {
-    finishWithError: faker.random.boolean(),
+    finishWithError: faker.datatype.boolean(),
     total: chance.integer({ min: 0, max: 200 }),
 };
 Overview.args.finished = chance.integer({ min: 0, max: Overview.args.total! });

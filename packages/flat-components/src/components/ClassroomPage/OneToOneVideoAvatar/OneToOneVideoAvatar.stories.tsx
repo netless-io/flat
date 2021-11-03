@@ -13,11 +13,11 @@ export default storyMeta;
 export const Overview: Story<OneToOneVideoAvatarProps> = args => <OneToOneVideoAvatar {...args} />;
 Overview.args = {
     userUUID: "",
-    isCreator: faker.random.boolean(),
+    isCreator: faker.datatype.boolean(),
     children: null,
     avatarUser: {
         avatar: "http://placekitten.com/64/64",
-        mic: faker.random.boolean(),
+        mic: faker.datatype.boolean(),
         camera: false,
         name: faker.name.lastName(20),
         userUUID: "",
@@ -38,11 +38,11 @@ export const Pair: Story<OneToOneVideoAvatarProps> = args => {
 };
 Pair.args = {
     userUUID: "",
-    isCreator: faker.random.boolean(),
+    isCreator: faker.datatype.boolean(),
     children: null,
     avatarUser: {
         avatar: "http://placekitten.com/64/64",
-        mic: faker.random.boolean(),
+        mic: faker.datatype.boolean(),
         camera: false,
         name: faker.name.lastName(20),
         userUUID: "",
@@ -57,11 +57,11 @@ export const LongUserName: Story<OneToOneVideoAvatarProps> = args => (
 );
 LongUserName.args = {
     userUUID: "",
-    isCreator: faker.random.boolean(),
+    isCreator: faker.datatype.boolean(),
     children: null,
     avatarUser: {
         avatar: "http://placekitten.com/64/64",
-        mic: faker.random.boolean(),
+        mic: faker.datatype.boolean(),
         camera: false,
         name: faker.random.words(20),
         userUUID: "",
@@ -76,7 +76,7 @@ export const Placeholder: Story<OneToOneVideoAvatarProps> = args => (
 );
 Placeholder.args = {
     userUUID: "",
-    isCreator: faker.random.boolean(),
+    isCreator: faker.datatype.boolean(),
     children: null,
     avatarUser: undefined,
 };

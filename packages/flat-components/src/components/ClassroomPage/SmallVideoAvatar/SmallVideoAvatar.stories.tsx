@@ -13,11 +13,11 @@ export default storyMeta;
 export const Overview: Story<SmallVideoAvatarProps> = args => <SmallVideoAvatar {...args} />;
 Overview.args = {
     userUUID: "",
-    isCreator: faker.random.boolean(),
+    isCreator: faker.datatype.boolean(),
     children: null,
     avatarUser: {
         avatar: "http://placekitten.com/64/64",
-        mic: faker.random.boolean(),
+        mic: faker.datatype.boolean(),
         camera: false,
         name: faker.name.lastName(20),
         userUUID: "",
@@ -31,11 +31,11 @@ Overview.argTypes = {
 export const LongUserName: Story<SmallVideoAvatarProps> = args => <SmallVideoAvatar {...args} />;
 LongUserName.args = {
     userUUID: "",
-    isCreator: faker.random.boolean(),
+    isCreator: faker.datatype.boolean(),
     children: null,
     avatarUser: {
         avatar: "http://placekitten.com/64/64",
-        mic: faker.random.boolean(),
+        mic: faker.datatype.boolean(),
         camera: false,
         name: faker.random.words(20),
         userUUID: "",
@@ -48,7 +48,7 @@ LongUserName.argTypes = {
 export const Placeholder: Story<SmallVideoAvatarProps> = args => <SmallVideoAvatar {...args} />;
 Placeholder.args = {
     userUUID: "",
-    isCreator: faker.random.boolean(),
+    isCreator: faker.datatype.boolean(),
     children: null,
     avatarUser: undefined,
 };

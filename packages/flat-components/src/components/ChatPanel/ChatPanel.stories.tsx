@@ -23,8 +23,8 @@ export const Overview: Story<ChatPanelProps> = args => (
 const makeUser = (): User => ({
     userUUID: faker.datatype.uuid(),
     name: faker.name.lastName(),
-    isSpeak: faker.random.boolean(),
-    isRaiseHand: faker.random.boolean(),
+    isSpeak: faker.datatype.boolean(),
+    isRaiseHand: faker.datatype.boolean(),
     avatar: "http://placekitten.com/64/64",
 });
 const currentUser = makeUser();
@@ -34,13 +34,13 @@ const users = (() => {
     return chance.shuffle(users);
 })();
 Overview.args = {
-    unreadCount: faker.random.number(),
-    isCreator: faker.random.boolean(),
-    isBan: faker.random.boolean(),
-    isRaiseHand: faker.random.boolean(),
-    hasHandRaising: faker.random.boolean(),
-    hasSpeaking: faker.random.boolean(),
-    disableHandRaising: faker.random.boolean(),
+    unreadCount: faker.datatype.number(),
+    isCreator: faker.datatype.boolean(),
+    isBan: faker.datatype.boolean(),
+    isRaiseHand: faker.datatype.boolean(),
+    hasHandRaising: faker.datatype.boolean(),
+    hasSpeaking: faker.datatype.boolean(),
+    disableHandRaising: faker.datatype.boolean(),
     generateAvatar: () => "http://placekitten.com/64/64",
     getUserByUUID: uuid => users.find(e => e.userUUID === uuid) || makeUser(),
     messages: Array(20)
@@ -50,7 +50,7 @@ Overview.args = {
             type: ChatMsgType.ChannelMessage,
             userUUID: chance.pickone(users).userUUID,
             uuid: faker.datatype.uuid(),
-            value: chance.sentence({ words: faker.random.number(20) }),
+            value: chance.sentence({ words: faker.datatype.number(20) }),
         })),
     ownerUUID: faker.datatype.uuid(),
     userUUID: currentUser.userUUID,

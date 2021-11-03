@@ -23,7 +23,7 @@ Overview.args = {
         ],
         { key: "enter", text: "进入" },
     ],
-    isPeriodic: faker.random.boolean(),
+    isPeriodic: faker.datatype.boolean(),
 };
 Overview.argTypes = {
     beginTime: { control: "date" },
@@ -44,7 +44,7 @@ LongRoomName.args = {
         ],
         { key: "enter", text: "进入" },
     ],
-    isPeriodic: faker.random.boolean(),
+    isPeriodic: faker.datatype.boolean(),
 };
 LongRoomName.argTypes = {
     title: { table: { category: "Showcase" } },

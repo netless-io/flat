@@ -14,6 +14,6 @@ export default storyMeta;
 export const Overview: Story<TopBarRightBtnProps> = args => <TopBarRightBtn {...args} />;
 Overview.args = {
     title: "Hello, world",
-    disabled: faker.random.boolean(),
+    disabled: faker.datatype.boolean(),
     icon: <UserAddOutlined />,
 };

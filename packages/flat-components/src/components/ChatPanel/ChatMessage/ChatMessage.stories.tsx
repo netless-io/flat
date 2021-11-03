@@ -22,8 +22,8 @@ Overview.args = {
     message: {
         timestamp: +faker.date.past(),
         type: ChatMsgType.ChannelMessage,
-        userUUID: faker.random.boolean() ? userUUID : faker.datatype.uuid(),
+        userUUID: faker.datatype.boolean() ? userUUID : faker.datatype.uuid(),
         uuid: faker.datatype.uuid(),
-        value: chance.sentence({ words: faker.random.number(20) }),
+        value: chance.sentence({ words: faker.datatype.number(20) }),
     },
 };
