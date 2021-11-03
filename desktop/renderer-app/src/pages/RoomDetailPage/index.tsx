@@ -14,7 +14,7 @@ import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { message } from "antd";
-import { INVITE_BASEURL } from "../../constants/process";
+import { FLAT_WEB_BASE_URL } from "../../constants/process";
 import { useTranslation } from "react-i18next";
 
 export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
@@ -138,7 +138,7 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
             </div>
             <div className="room-detail-page-container">
                 <RoomDetailPanel
-                    inviteBaseUrl={INVITE_BASEURL}
+                    inviteBaseUrl={FLAT_WEB_BASE_URL}
                     roomInfo={roomInfo}
                     room={roomInfo}
                     userName={roomInfo.ownerUserName || ""}

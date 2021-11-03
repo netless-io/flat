@@ -31,7 +31,7 @@ import {
     renameExternalFile,
 } from "../../api-middleware/flatServer/storage";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { INVITE_BASEURL } from "../../constants/process";
+import { FLAT_WEB_BASE_URL } from "../../constants/process";
 import { coursewarePreloader } from "../../utils/courseware-preloader";
 import { getUploadTaskManager } from "../../utils/upload-task-manager";
 import { UploadStatusType, UploadTask } from "../../utils/upload-task-manager/upload-task";
@@ -379,8 +379,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         const encodeFileURL = encodeURIComponent(fileURL);
 
         const resourcePreviewURL = isConvertFileType
-            ? `${INVITE_BASEURL}/preview/${encodeFileURL}/${taskToken}/${taskUUID}/${region}/`
-            : `${INVITE_BASEURL}/preview/${encodeFileURL}/`;
+            ? `${FLAT_WEB_BASE_URL}/preview/${encodeFileURL}/${taskToken}/${taskUUID}/${region}/`
+            : `${FLAT_WEB_BASE_URL}/preview/${encodeFileURL}/`;
 
         switch (file.convert) {
             case "converting": {
