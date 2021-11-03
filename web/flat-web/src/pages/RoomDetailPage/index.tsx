@@ -15,7 +15,7 @@ import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { message } from "antd";
-import { INVITE_BASEURL } from "../../constants/process";
+import { FLAT_WEB_BASE_URL } from "../../constants/process";
 
 export const RoomDetailPage = observer(function RoomDetailPage() {
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
@@ -92,7 +92,10 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
     function jumpToReplayPage(): void {
         if (roomInfo) {
             const { roomType, roomUUID, ownerUUID } = roomInfo;
-            window.open(`${INVITE_BASEURL}/replay/${roomType}/${roomUUID}/${ownerUUID}/`, "_blank");
+            window.open(
+                `${FLAT_WEB_BASE_URL}/replay/${roomType}/${roomUUID}/${ownerUUID}/`,
+                "_blank",
+            );
         }
     }
 
@@ -116,7 +119,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
         <div className="room-detail-page-container">
             <div className="room-detail-page-panel-container">
                 <RoomDetailPanel
-                    inviteBaseUrl={INVITE_BASEURL}
+                    inviteBaseUrl={FLAT_WEB_BASE_URL}
                     showRoomCountVisible={
                         periodicUUID ? roomInfo.roomStatus !== RoomStatus.Stopped : false
                     }
