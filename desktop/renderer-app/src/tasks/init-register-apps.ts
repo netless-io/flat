@@ -29,6 +29,11 @@ const registerApps = (): void => {
             const app = await import("@netless/app-geogebra");
             return app.default ?? app;
         },
+        appOptions: {
+            // TODO: replace it with non-country specific url
+            HTML5Codebase:
+                "https://flat-storage-cn-hz.whiteboard.agora.io/GeoGebra/HTML5/5.0/web3d",
+        },
     });
     void WindowManager.register({
         kind: "IframeBridge",

@@ -1875,10 +1875,10 @@
     debounce-fn "^5.0.0"
     vanilla-lazyload "^17.4.0"
 
-"@netless/app-geogebra@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@netless/app-geogebra/-/app-geogebra-0.0.1.tgz#177396773c587d9cd45e66219b531c5f0e43fe9b"
-  integrity sha512-6yHisNwgxGN4TLrD80rQ1KtoBuPJkw6YOV/SdEDcgZwdIRaEKQ5N3p1Jj1ICAcdFxfb0yp7Ee1ecQVTRmadr4w==
+"@netless/app-geogebra@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/@netless/app-geogebra/-/app-geogebra-0.0.2.tgz#0c462ab81d25817dd243632c85a99482c0cef34a"
+  integrity sha512-IKVOHsakK3ITbz1A92sgAqDNZblfTxzKDuMquCVBbsdwC5IikNeRSXgzEw0fZh+52KZ6DEXx+aews7C3pQvWdQ==
 
 "@netless/app-iframe-bridge@^0.0.2":
   version "0.0.2"
