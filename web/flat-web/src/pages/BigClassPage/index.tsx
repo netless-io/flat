@@ -14,7 +14,7 @@ import {
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { RoomPhase, ViewMode } from "white-web-sdk";
+import { RoomPhase } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
 import { RoomStatus, RoomType } from "../../api-middleware/flatServer/constants";
@@ -301,18 +301,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     />
                 )}
 
-                {whiteboardStore.isWritable && (
-                    <TopBarRightBtn
-                        title="Vision control"
-                        icon={
-                            whiteboardStore.isBroadcasterMode === undefined
-                                ? "follow"
-                                : "follow-active"
-                        }
-                        onClick={toggleRoomVisionController}
-                    />
-                )}
-
                 {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
@@ -397,17 +385,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 }
             />
         );
-    }
-
-    function toggleRoomVisionController(): void {
-        const { isBroadcasterMode } = whiteboardStore;
-        if (isBroadcasterMode === undefined) {
-            whiteboardStore.toggleMainViewVisionMode(ViewMode.Broadcaster);
-            void message.success(t("follow-your-perspective-tips"));
-        } else {
-            whiteboardStore.toggleMainViewVisionMode(ViewMode.Freedom);
-            void message.success(t("Stop-following-your-perspective-tips"));
-        }
     }
 
     function handleShareScreen(): void {

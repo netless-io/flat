@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { message } from "antd";
-import { RoomPhase, ViewMode } from "white-web-sdk";
+import { RoomPhase } from "white-web-sdk";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 import {
@@ -327,18 +327,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     />
                 )}
 
-                {whiteboardStore.isWritable && (
-                    <TopBarRightBtn
-                        title="Vision control"
-                        icon={
-                            whiteboardStore.isBroadcasterMode === undefined
-                                ? "follow"
-                                : "follow-active"
-                        }
-                        onClick={toggleRoomVisionController}
-                    />
-                )}
-
                 {/* <TopBarRightBtn
                     title="Docs center"
                     icon="folder"
@@ -395,17 +383,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 generateAvatar={generateAvatar}
             />
         );
-    }
-
-    function toggleRoomVisionController(): void {
-        const { isBroadcasterMode } = whiteboardStore;
-        if (isBroadcasterMode === undefined) {
-            whiteboardStore.toggleMainViewVisionMode(ViewMode.Broadcaster);
-            void message.success(t("follow-your-perspective-tips"));
-        } else {
-            whiteboardStore.toggleMainViewVisionMode(ViewMode.Freedom);
-            void message.success(t("Stop-following-your-perspective-tips"));
-        }
     }
 
     function stopClass(): void {
