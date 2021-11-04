@@ -27,7 +27,6 @@ export class WhiteboardStore {
     public phase: RoomPhase = RoomPhase.Connecting;
     public viewMode: ViewMode | null = null;
     public windowManager: WindowManager | null = null;
-    public isBroadcasterMode: number | undefined = undefined;
     public isWritable: boolean;
     public isShowPreviewPanel = false;
     public isFileOpen = false;
@@ -105,10 +104,6 @@ export class WhiteboardStore {
         this.isFocusWindow = isFocus;
     };
 
-    public updateBroadcasterMode = (isBroadcasterMode: number | undefined): void => {
-        this.isBroadcasterMode = isBroadcasterMode;
-    };
-
     public getWhiteboardRatio = (): number => {
         // the Ratio of whiteboard compute method is height / width.
         if (this.getRoomType() === RoomType.SmallClass) {
@@ -123,11 +118,6 @@ export class WhiteboardStore {
 
     public toggleFileOpen = (): void => {
         this.isFileOpen = !this.isFileOpen;
-    };
-
-    public toggleMainViewVisionMode = (mode: ViewMode): void => {
-        this.windowManager?.setViewMode(mode);
-        this.updateBroadcasterMode(this.windowManager?.broadcaster);
     };
 
     public showPreviewPanel = (): void => {
@@ -382,8 +372,6 @@ export class WhiteboardStore {
         this.updateCurrentSceneIndex(room.state.sceneState.index);
 
         this.updateScenesCount(room.state.sceneState.scenes.length);
-
-        this.updateBroadcasterMode(this.windowManager?.broadcaster);
 
         if (this.room) {
             const windowManager = this.room.getInvisiblePlugin(WindowManager.kind) as WindowManager;
