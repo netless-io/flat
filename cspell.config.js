@@ -93,6 +93,7 @@ module.exports = {
 
         // misc
         "npmrc",
+        "yarnrc",
         "scpt",
         "osascript",
         "blockmap",
