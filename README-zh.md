@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="200" height="200" style="display: block;" src="./assets/flat-logo.png">
+    <img width="200" height="200" style="display: block;" src="./assets/flat-logo.svg">
 </div>
 
 <div align="center">
