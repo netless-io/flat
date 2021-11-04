@@ -234,7 +234,6 @@
   "schedule-room-detail": "Ends at {{time}} with {{length}} rooms",
   "schedule-room-type": "Room type: {{type}}",
   "view-all-rooms-in-periodic-rooms": "View all {{count}} rooms",
-  "Stop-following-your-perspective-tips": "Other users will stop following your perspective",
   "ending": "Ending...",
   "follow-your-perspective-tips": "Other users will follow your perspective",
   "interactive-mode": "Currently in interactive mode",

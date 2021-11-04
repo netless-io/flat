@@ -11,7 +11,7 @@ import { errorTips } from "../../components/Tips/ErrorTips";
 import { globalStore } from "../../stores/GlobalStore";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { cancelPeriodicRoom, cancelPeriodicSubRoom } from "../../api-middleware/flatServer";
-import { INVITE_BASEURL } from "../../constants/process";
+import { FLAT_WEB_BASE_URL } from "../../constants/process";
 
 export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPage() {
     const params = useParams<RouteParams<RouteNameType.PeriodicRoomDetailPage>>();
@@ -134,7 +134,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
         <div className="periodic-room-detail-page-container">
             <div className="periodic-room-detail-page-panel-container">
                 <PeriodicRoomPanel
-                    inviteBaseUrl={INVITE_BASEURL}
+                    inviteBaseUrl={FLAT_WEB_BASE_URL}
                     rooms={rooms}
                     userName={ownerUserName}
                     isCreator={isCreator}
