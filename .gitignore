@@ -197,3 +197,4 @@ build/
 !desktop/main-app/scripts/build
 
 agoraAddonlog.txt
+.yarnrc
