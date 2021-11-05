@@ -1,21 +1,25 @@
-.one-to-one-realtime-box {
-    width: 100%;
+.one-to-one-realtime-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
+    background: #edeff2;
+}
+
+.one-to-one-realtime-box {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    background-color: #fff;
 
     .container {
         position: relative;
-        background-color: #edeff2;
     }
 }
 
 .one-to-one-realtime-content {
+    flex: 1;
     display: flex;
-    align-items: stretch;
-    justify-content: center;
-    background: #edeff2;
 }
 
 .one-to-one-rtc-avatar-container {
