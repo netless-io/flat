@@ -52,7 +52,7 @@
     "agora-rtc-sdk-ng": "^4.5.0",
     "agora-rtm-sdk": "^1.4.3",
     "antd": "^4.15.4",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "classnames": "^2.3.1",
     "date-fns": "^2.22.1",
     "eventemitter3": "^4.0.7",
