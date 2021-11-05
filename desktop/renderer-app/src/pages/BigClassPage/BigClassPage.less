@@ -1,21 +1,25 @@
-.realtime-box {
-    width: 100%;
+.realtime-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100vh;
+    background: #edeff2;
+}
+
+.realtime-box {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    background-color: #fff;
 
     .container {
         position: relative;
-        background-color: #fff;
     }
 }
 
 .realtime-content {
+    flex: 1;
     display: flex;
-    align-items: stretch;
-    justify-content: center;
-    background: #edeff2;
 }
 
 .whiteboard-rtc-box {
