@@ -67,11 +67,21 @@ yarn run bootstrap
 
 ### 开发模式
 
+#### web
+
+```shell
+yarn workspace flat-web start
+# or
+cd ./web/flat-web/ && yarn run start
+```
+
+#### electron
+
 ```shell
 yarn run start
 ```
 
-### 打包可执行文件
+##### 打包可执行文件
 
 - 项目根执行 `yarn ship` 将根据当前系统打包。
 - 或者项目根执行 `yarn ship:mac` 或 `yarn ship:win` 可针对相应系统打包。

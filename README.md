@@ -68,11 +68,21 @@ yarn run bootstrap
 
 ### Development Mode
 
+#### web
+
+```shell
+yarn workspace flat-web start
+# or
+cd ./web/flat-web/ && yarn run start
+```
+
+#### electron
+
 ```shell
 yarn run start
 ```
 
-### Package Executable
+##### Package Executable
 
 - Run `yarn ship` at project root to package base on current system type.
 - Or run `yarn ship:mac` or `yarn ship:win` at project root to package for the specified system.
