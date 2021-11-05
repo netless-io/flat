@@ -1895,10 +1895,10 @@
   resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.11.tgz#f5fc1bc66dfb1ba0fa561483e7974d3771665138"
   integrity sha512-PwQDGHycri2gYCIF/SykokqjSyP/z8SShET2bmQd2UaVyMX11W2i5iAK4gntq22Cp5NW6JHawrTNbpfpoDMwMg==
 
-"@netless/app-slide@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.npmjs.org/@netless/app-slide/-/app-slide-0.0.10.tgz#8f9bf2cc90b2b3020a919eb762718cd02e18d37b"
-  integrity sha512-Ssfkqf9wFIkIZVv3itf4+Odd7X69aI571ThP6o7oFumFZCTGfS16f3o6brM6inMTdd0eSgVxu2F2RV2JQGyTbg==
+"@netless/app-slide@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.npmjs.org/@netless/app-slide/-/app-slide-0.0.12.tgz#8745a8f9db52a7458fa1cb55c524638eb22edcc4"
+  integrity sha512-aK452LqOfqd3gQc0LZ875xWlLs56zGm8QRXfsHQSN5j//TDC7JAkb0c4zE411MPqeRJCBVwAoC6E4/IFBAQlVA==
 
 "@netless/canvas-polyfill@^0.0.4":
   version "0.0.4"
@@ -17260,10 +17260,10 @@ which@^2.0.1, which@^2.0.2:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@2.15.1:
-  version "2.15.1"
-  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.15.1.tgz#9d112f6ec01a43ef56627fa11a6c31d59945e78f"
-  integrity sha512-zf4hVqoU639J5MqGPIKOpai296u7aNREW8EghzIcUNU8ztQr5WgiRToJAAweB/D4GftFc+h9TK1Mmi3h8fQ1UA==
+white-web-sdk@2.15.2:
+  version "2.15.2"
+  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.15.2.tgz#8ea8b21742031d8f842301fbeef7746d1222aecd"
+  integrity sha512-jRQJJZE9hiiuxAqOaSo2h7mlan/xP0N3Peh4CVMFcP+0cy1pe26Qx1gSanR3rto5pqrGhdNuWSBnlCN2wKjeww==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/canvas-polyfill" "^0.0.4"
