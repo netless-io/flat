@@ -302,7 +302,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     }
 
     function renderRealtimePanel(): React.ReactNode {
-        console.log("11111", classRoomStore.isRTCJoined);
         return (
             <RealtimePanel
                 isShow={isRealtimeSideOpen}
