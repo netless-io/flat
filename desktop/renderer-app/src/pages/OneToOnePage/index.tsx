@@ -302,30 +302,33 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     }
 
     function renderRealtimePanel(): React.ReactNode {
+        console.log("11111", classRoomStore.isRTCJoined);
         return (
             <RealtimePanel
                 isShow={isRealtimeSideOpen}
-                isVideoOn={true}
+                isVideoOn={classRoomStore.isRTCJoined}
                 videoSlot={
-                    <div className="one-to-one-rtc-avatar-container">
-                        <OneToOneAvatar
-                            isCreator={classRoomStore.isCreator}
-                            userUUID={classRoomStore.userUUID}
-                            avatarUser={classRoomStore.users.creator}
-                            isAvatarUserCreator={true}
-                            rtcEngine={classRoomStore.rtc.rtcEngine}
-                            updateDeviceState={classRoomStore.updateDeviceState}
-                            generateAvatar={generateAvatar}
-                        />
-                        <OneToOneAvatar
-                            isCreator={classRoomStore.isCreator}
-                            userUUID={classRoomStore.userUUID}
-                            avatarUser={joiner}
-                            rtcEngine={classRoomStore.rtc.rtcEngine}
-                            updateDeviceState={classRoomStore.updateDeviceState}
-                            generateAvatar={generateAvatar}
-                        />
-                    </div>
+                    classRoomStore.isRTCJoined && (
+                        <div className="one-to-one-rtc-avatar-container">
+                            <OneToOneAvatar
+                                isCreator={classRoomStore.isCreator}
+                                userUUID={classRoomStore.userUUID}
+                                avatarUser={classRoomStore.users.creator}
+                                isAvatarUserCreator={true}
+                                rtcEngine={classRoomStore.rtc.rtcEngine}
+                                updateDeviceState={classRoomStore.updateDeviceState}
+                                generateAvatar={generateAvatar}
+                            />
+                            <OneToOneAvatar
+                                isCreator={classRoomStore.isCreator}
+                                userUUID={classRoomStore.userUUID}
+                                avatarUser={joiner}
+                                rtcEngine={classRoomStore.rtc.rtcEngine}
+                                updateDeviceState={classRoomStore.updateDeviceState}
+                                generateAvatar={generateAvatar}
+                            />
+                        </div>
+                    )
                 }
                 chatSlot={
                     <ChatPanel

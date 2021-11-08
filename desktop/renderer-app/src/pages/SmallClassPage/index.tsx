@@ -175,7 +175,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     center={renderTopBarCenter()}
                     right={renderTopBarRight()}
                 />
-                {renderAvatars()}
+                {classRoomStore.isRTCJoined && renderAvatars()}
                 <div className="realtime-content">
                     <div className="container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
