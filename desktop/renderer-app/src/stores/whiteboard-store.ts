@@ -40,12 +40,12 @@ export class WhiteboardStore {
 
     /** is room Creator */
     public readonly isCreator: boolean;
-    public readonly roomType: RoomType;
+    public readonly getRoomType: () => RoomType;
 
-    public constructor(config: { isCreator: boolean; roomType: RoomType }) {
+    public constructor(config: { isCreator: boolean; getRoomType: () => RoomType }) {
         this.isCreator = config.isCreator;
         this.isWritable = config.isCreator;
-        this.roomType = config.roomType;
+        this.getRoomType = config.getRoomType;
 
         makeAutoObservable<this, "preloadPPTResource">(this, {
             room: observable.ref,
@@ -101,7 +101,7 @@ export class WhiteboardStore {
 
     public getWhiteboardRatio = (): number => {
         // the Ratio of whiteboard compute method is height / width.
-        if (this.roomType === RoomType.SmallClass) {
+        if (this.getRoomType() === RoomType.SmallClass) {
             return this.smallClassRatio;
         }
         return this.otherClassRatio;
