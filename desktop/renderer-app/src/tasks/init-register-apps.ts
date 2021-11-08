@@ -46,6 +46,7 @@ const registerApps = (): void => {
         kind: "Slide",
         appOptions: {
             debug: false,
+            fixElection: true,
         },
         src: async () => {
             const app = await import("@netless/app-slide");
