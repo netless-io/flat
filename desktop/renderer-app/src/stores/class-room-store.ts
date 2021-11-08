@@ -66,8 +66,10 @@ export class ClassRoomStore {
     public isBan = false;
     /** is Cloud Recording on */
     public isRecording = false;
-    /** is RTC on */
+    /** is RTC on, for UI */
     public isCalling = false;
+    /** is joined RTC channel */
+    public isRTCJoined = false;
     /** is user login on other device */
     public isRemoteLogin = false;
 
@@ -507,6 +509,7 @@ export class ClassRoomStore {
         const members = await channel.getMembers();
         await this.users.initUsers(members);
 
+        this.onRTCEvents();
         await this.joinRTC();
 
         await this.updateInitialRoomState();
@@ -521,18 +524,20 @@ export class ClassRoomStore {
         //     this.users.addUser(userUUID).catch(console.warn);
         // });
         channel.on("MemberLeft", this.users.removeUser);
-
-        this.onRTCEvents();
     }
 
     public onRTCEvents(): void {
         this.rtc.rtcEngine.on("rtcStats", this.checkDelay);
         this.rtc.rtcEngine.on("networkQuality", this.checkNetworkQuality);
+        this.rtc.rtcEngine.on("joinedChannel", this.handleRTCJoined);
+        this.rtc.rtcEngine.on("leaveChannel", this.handleRTCLeft);
     }
 
     public offRTCEvents(): void {
         this.rtc.rtcEngine.off("rtcStats", this.checkDelay);
         this.rtc.rtcEngine.off("networkQuality", this.checkNetworkQuality);
+        this.rtc.rtcEngine.off("joinedChannel", this.handleRTCJoined);
+        this.rtc.rtcEngine.off("leaveChannel", this.handleRTCLeft);
     }
 
     public async destroy(): Promise<void> {
@@ -1004,6 +1009,14 @@ export class ClassRoomStore {
 
     private checkDelay = action((stats: RtcStats): void => {
         this.networkQuality.delay = stats.lastmileDelay;
+    });
+
+    private handleRTCJoined = action(() => {
+        this.isRTCJoined = true;
+    });
+
+    private handleRTCLeft = action(() => {
+        this.isRTCJoined = false;
     });
 
     private checkNetworkQuality = action(
