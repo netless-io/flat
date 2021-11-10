@@ -1953,10 +1953,10 @@
     side-effect-manager "^0.1.3"
     stylefire "^7.0.3"
 
-"@netless/tool-box@^0.1.4", "@netless/tool-box@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@netless/tool-box/-/tool-box-0.1.5.tgz#39977a0075c069aab90895bcee6268a8e6bf8afd"
-  integrity sha512-eoIyRdnVDnNosMZ1Jix6bVkg6Fc0Pg0UzgR9fLuB2dZaaeBDbmC82fOd3rRQiG+PNM0hBhT6vfJ1iE1tw7Juzg==
+"@netless/tool-box@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.npmjs.org/@netless/tool-box/-/tool-box-0.1.6.tgz#b125c0b68f93112122f56473a6cd3747514df49c"
+  integrity sha512-Io2SbvSFHn6+J2TPwSZQcjli0WtTsTDf5b5HpxEGM+7OjdN5OImLKZ8UkSiPuPFxHBqFP43hx4/cyAPkjz1X0Q==
 
 "@netless/video-js-plugin@^0.3.6":
   version "0.3.7"

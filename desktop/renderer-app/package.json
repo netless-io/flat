@@ -15,7 +15,7 @@
     "@netless/fetch-middleware": "^1.0.7",
     "@netless/player-controller": "^0.0.9",
     "@netless/redo-undo": "^0.0.5",
-    "@netless/tool-box": "^0.1.4",
+    "@netless/tool-box": "^0.1.6",
     "@netless/video-js-plugin": "^0.3.6",
     "@netless/window-manager": "^0.2.17",
     "@videojs/vhs-utils": "^2.3.0",
