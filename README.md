@@ -99,6 +99,16 @@ Many Flat components UI can be quickly viewed and developed via Storybook ([Onli
 - [Environment Variables Reference](docs/env/README.md)
 - [Debugging Flat](docs/debugging/README.md)
 
+## Contributing
+
+Development of Flat happens in the open on `GitHub`. We want to continue evolving Flat through this way, providing community an open standard of online realtime interactive classroom.
+
+Contributing to this repo is highly welcomed. Whether it is firing `issues` for bug reports and discussions, or submitting `pull requests` for bugfixes and improvements, we are grateful to any help from the community.
+
+You may contact us via the `Slack` link below.
+
+[💬 Join Slack Discussion Group][join-flat-slack]
+
 ## Code Contributors
 
 Thank you to all the people who already contributed to Flat!
@@ -112,6 +122,8 @@ Copyright © Agora Corporation. All rights reserved.
 Licensed under the [MIT license](LICENSE).
 
 When using the Flat or other GitHub logos, be sure to follow the [GitHub logo guidelines][github-logo].
+
+[join-flat-slack]: https://github.com/netless-io/flat/issues/926
 
 [flat-homepage]: https://flat.whiteboard.agora.io/en/#download
 
