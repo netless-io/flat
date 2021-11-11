@@ -102,15 +102,13 @@ yarn run start
 
 ## 贡献
 
-Flat 的开发过程一直在 `GitHub` 公开地进行。
+编写代码很棒，但还有许多其他方法可以为项目做出有意义的贡献：
 
-我们希望通过这种方式持续开发完善 Flat，为社区提供一套开放的在线实时互动教室。
+* [改进文档](CONTRIBUTING-zh.md#改进文档)
+* [改善问题](CONTRIBUTING-zh.md#改善问题)
+* [对问题进行反馈](CONTRIBUTING-zh.md#对问题进行反馈)
 
-我们非常欢迎来自社区的贡献，无论是通过 `issues` 参与反馈与讨论，还是通过 `pull requests` 为 Flat 提供改进优化与修复问题，你的任何帮助对我们都非常重要。
-
-你也可以通过点击下方 `Slack` 链接随时联系我们。
-
-[💬 加入 Slack 讨论组][join-flat-slack]
+有关此项目如何贡献的更多信息，请参阅 [CONTRIBUTING-zh.md](CONTRIBUTING-zh.md)
 
 ## 代码贡献者
 
