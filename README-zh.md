@@ -61,7 +61,7 @@
 
 ### 安装
 
-> 如果你因为网络问题导致无法下载 `electron`，可在项目目录新建: `.yarnrc` 文件，并写入 `electron_mirror "http://npm.taobao.org/mirrors/electron/"` 内容。重新执行 `yarn run bootstrap` 即可。
+> 如果你因为网络问题导致无法下载 `electron`，可在项目目录新建: `.yarnrc` 文件，并写入 `electron_mirror "https://npmmirror.com/mirrors/electron/"` 内容。重新执行 `yarn run bootstrap` 即可。
 
 ```shell
 yarn run bootstrap

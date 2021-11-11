@@ -7,15 +7,17 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useEffect, useState } from "react";
 import { WindowManager } from "@netless/window-manager";
+import { ScenesController } from "flat-components";
+import { useTranslation } from "react-i18next";
 import { WhiteboardStore } from "../stores/whiteboard-store";
 import { isSupportedImageType, onDropImage } from "../utils/dnd/image";
-import { ScenesController } from "flat-components";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
 }
 
 export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteboardStore }) {
+    const { i18n } = useTranslation();
     const { room } = whiteboardStore;
 
     const [whiteboardEl, setWhiteboardEl] = useState<HTMLElement | null>(null);
@@ -148,7 +150,25 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
             >
                 <div className="whiteboard-writable-area">
                     <div className="tool-box-out">
-                        <ToolBox room={room} />
+                        <ToolBox
+                            room={room}
+                            i18nLanguage={i18n.language}
+                            hotkeys={{
+                                arrow: "A",
+                                clear: "",
+                                clicker: "",
+                                ellipse: "C",
+                                eraser: "E",
+                                hand: "H",
+                                laserPointer: "Z",
+                                pencil: "P",
+                                rectangle: "R",
+                                selector: "S",
+                                shape: "",
+                                straight: "L",
+                                text: "T",
+                            }}
+                        />
                     </div>
                     <div
                         className={classNames("redo-undo-box", {

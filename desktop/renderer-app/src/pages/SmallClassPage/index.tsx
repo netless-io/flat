@@ -1,3 +1,5 @@
+import "./SmallClassPage.less";
+
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { message } from "antd";
 import { RoomPhase } from "white-web-sdk";
@@ -43,7 +45,6 @@ import {
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { usePowerSaveBlocker } from "../../utils/hooks/use-power-save-blocker";
 
-import "./SmallClassPage.less";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { GlobalStoreContext } from "../../components/StoreProvider";
@@ -165,34 +166,36 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     }
 
     return (
-        <div className="realtime-box">
+        <div className="realtime-container">
             {loadingPageRef.current && <LoadingPage />}
-            <TopBar
-                isMac={runtime.isMac}
-                left={renderTopBarLeft()}
-                center={renderTopBarCenter()}
-                right={renderTopBarRight()}
-            />
-            {renderAvatars()}
-            <div className="realtime-content">
-                <div className="container">
-                    <ShareScreen shareScreenStore={shareScreenStore} />
-                    <ShareScreenPicker
-                        shareScreenStore={shareScreenStore}
-                        handleOk={() => {
-                            shareScreenStore.enable();
-                        }}
-                    />
-                    <Whiteboard whiteboardStore={whiteboardStore} />
+            <div className="realtime-box">
+                <TopBar
+                    isMac={runtime.isMac}
+                    left={renderTopBarLeft()}
+                    center={renderTopBarCenter()}
+                    right={renderTopBarRight()}
+                />
+                {classRoomStore.isRTCJoined && renderAvatars()}
+                <div className="realtime-content">
+                    <div className="container">
+                        <ShareScreen shareScreenStore={shareScreenStore} />
+                        <ShareScreenPicker
+                            shareScreenStore={shareScreenStore}
+                            handleOk={() => {
+                                shareScreenStore.enable();
+                            }}
+                        />
+                        <Whiteboard whiteboardStore={whiteboardStore} />
+                    </div>
+                    {renderRealtimePanel()}
                 </div>
-                {renderRealtimePanel()}
+                <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
+                <RoomStatusStoppedModal
+                    isCreator={classRoomStore.isCreator}
+                    isRemoteLogin={classRoomStore.isRemoteLogin}
+                    roomStatus={classRoomStore.roomStatus}
+                />
             </div>
-            <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
-            <RoomStatusStoppedModal
-                isCreator={classRoomStore.isCreator}
-                isRemoteLogin={classRoomStore.isRemoteLogin}
-                roomStatus={classRoomStore.roomStatus}
-            />
         </div>
     );
 

@@ -42,13 +42,8 @@ export class WhiteboardStore {
     /** is room Creator */
     public readonly isCreator: boolean;
     public readonly getRoomType: () => RoomType;
-    public readonly isSpeaker?: boolean;
 
-    public constructor(config: {
-        isCreator: boolean;
-        isSpeaker?: boolean;
-        getRoomType: () => RoomType;
-    }) {
+    public constructor(config: { isCreator: boolean; getRoomType: () => RoomType }) {
         this.isCreator = config.isCreator;
         this.isWritable = config.isCreator;
         this.getRoomType = config.getRoomType;
