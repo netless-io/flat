@@ -1896,9 +1896,9 @@
   integrity sha512-PwQDGHycri2gYCIF/SykokqjSyP/z8SShET2bmQd2UaVyMX11W2i5iAK4gntq22Cp5NW6JHawrTNbpfpoDMwMg==
 
 "@netless/app-slide@^0.0.16":
-  version "0.0.15"
-  resolved "https://registry.npmjs.org/@netless/app-slide/-/app-slide-0.0.15.tgz#3ab79193ad7831299e64475a17066c486f7fd201"
-  integrity sha512-58ItwOk6ithuRUe6fBircVuOf5vKdQB2zmGISuIlB5T8JKByzwGSnJrGeZ2J+3pwBoiZXdKvKHEGxcxD+uuE7g==
+  version "0.0.16"
+  resolved "https://registry.npmjs.org/@netless/app-slide/-/app-slide-0.0.16.tgz#f805789f1ac9476609256f138d21f68d746cd139"
+  integrity sha512-/d8VeimGrDTcCaUwvG5D00klHQQ05dKl+Ao0KA2TudI6ngKXLGKlLI9PlvjdntXJe3LwnB6BcBDFe6UY5VleqQ==
 
 "@netless/canvas-polyfill@^0.0.4":
   version "0.0.4"
