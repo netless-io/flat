@@ -361,7 +361,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    title="Open side panel"
+                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
                     icon="hide-side"
                     active={isRealtimeSideOpen}
                     onClick={() => openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen)}

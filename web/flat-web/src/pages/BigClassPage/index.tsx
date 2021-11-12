@@ -318,8 +318,8 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    title="Open side panel"
-                    icon={isRealtimeSideOpen ? "hide-side-active" : "hide-side"}
+                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
+                    icon={isRealtimeSideOpen ? "hide-side" : "hide-side-active"}
                     onClick={handleSideOpenerSwitch}
                 />
             </>
