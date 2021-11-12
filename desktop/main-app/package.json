@@ -64,7 +64,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "agora-electron-sdk": "^3.4.7-rc.1-build.817",
+    "agora-electron-sdk": "3.5.0-rc.4-build.1105",
     "electron-updater": "^4.3.8",
     "fs-extra": "^9.0.1",
     "jquery": "^3.5.1",

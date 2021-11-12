@@ -100,6 +100,16 @@ yarn run start
 - [环境变量值参考](docs/env/README-zh.md)
 - [调试 Flat](docs/debugging/README-zh.md)
 
+## 贡献
+
+编写代码很棒，但还有许多其他方法可以为项目做出有意义的贡献：
+
+* [改进文档](CONTRIBUTING-zh.md#改进文档)
+* [改善问题](CONTRIBUTING-zh.md#改善问题)
+* [对问题进行反馈](CONTRIBUTING-zh.md#对问题进行反馈)
+
+有关此项目如何贡献的更多信息，请参阅 [CONTRIBUTING-zh.md](CONTRIBUTING-zh.md)
+
 ## 代码贡献者
 
 感谢所有为 Flat 做出过贡献的人！
@@ -117,6 +127,8 @@ yarn run start
 使用 [MIT 许可证](LICENSE)
 
 当使用 Flat 或其他 GitHub 徽标时，请务必遵循 [GitHub 徽标指南][github-logo]。
+
+[join-flat-slack]: https://github.com/netless-io/flat/issues/926
 
 [flat-homepage]: https://flat.whiteboard.agora.io/#download
 

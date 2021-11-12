@@ -99,6 +99,16 @@ Many Flat components UI can be quickly viewed and developed via Storybook ([Onli
 - [Environment Variables Reference](docs/env/README.md)
 - [Debugging Flat](docs/debugging/README.md)
 
+## Contributing
+
+Writing code is great, but there are many other ways to make meaningful contributions to the project:
+
+* [Improve documentation](CONTRIBUTING.md#improve-documentation)
+* [Improve issues](CONTRIBUTING.md#improve-issues)
+* [Give feedback on issues](CONTRIBUTING.md#give-feedback-on-issues)
+
+For more info about how to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md),
+
 ## Code Contributors
 
 Thank you to all the people who already contributed to Flat!
