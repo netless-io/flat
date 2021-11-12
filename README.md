@@ -107,7 +107,7 @@ Writing code is great, but there are many other ways to make meaningful contribu
 * [Improve issues](CONTRIBUTING.md#improve-issues)
 * [Give feedback on issues](CONTRIBUTING.md#give-feedback-on-issues)
 
-For more info about how to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md),
+For more info about how to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Code Contributors
 
