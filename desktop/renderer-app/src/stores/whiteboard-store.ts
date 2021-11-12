@@ -129,26 +129,26 @@ export class WhiteboardStore {
         }
     };
 
-    public addMainViewScene = (): void => {
+    public addMainViewScene = async (): Promise<void> => {
         if (this.room && this.windowManager) {
             const currentScene = this.currentSceneIndex + 1;
             const scenePath = this.room.state.sceneState.scenePath;
             const path = this.dirName(scenePath);
 
             this.room.putScenes(path, [{}], currentScene);
-            this.windowManager.setMainViewSceneIndex(this.currentSceneIndex + 1);
+            await this.windowManager.setMainViewSceneIndex(this.currentSceneIndex + 1);
         }
     };
 
-    public preMainViewScene = (): void => {
+    public preMainViewScene = async (): Promise<void> => {
         if (this.windowManager && this.currentSceneIndex > 0) {
-            this.windowManager.setMainViewSceneIndex(this.currentSceneIndex - 1);
+            await this.windowManager.setMainViewSceneIndex(this.currentSceneIndex - 1);
         }
     };
 
-    public nextMainViewScene = (): void => {
+    public nextMainViewScene = async (): Promise<void> => {
         if (this.windowManager && this.currentSceneIndex < this.scenesCount - 1) {
-            this.windowManager.setMainViewSceneIndex(this.currentSceneIndex + 1);
+            await this.windowManager.setMainViewSceneIndex(this.currentSceneIndex + 1);
         }
     };
 
