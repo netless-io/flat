@@ -21,7 +21,7 @@
 <div align="center">
     <h1>Agora Flat</h1>
     <p>Project flat is the Web, Windows and macOS client of <a href="https://flat.whiteboard.agora.io/en/">Agora Flat</a> open source classroom.</p>
-    <p><a href="./README-zh.md">中文</a></p>
+    <p><a href="./docs/readme/README-zh.md">中文</a></p>
     <img src="./assets/flat-showcase-en.png">
 </div>
 
@@ -98,6 +98,16 @@ Many Flat components UI can be quickly viewed and developed via Storybook ([Onli
 - [Release Version Description](docs/releases)
 - [Environment Variables Reference](docs/env/README.md)
 - [Debugging Flat](docs/debugging/README.md)
+
+## Contributing
+
+Writing code is great, but there are many other ways to make meaningful contributions to the project:
+
+* [Improve documentation](CONTRIBUTING.md#improve-documentation)
+* [Improve issues](CONTRIBUTING.md#improve-issues)
+* [Give feedback on issues](CONTRIBUTING.md#give-feedback-on-issues)
+
+For more info about how to contribute, see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Code Contributors
 
