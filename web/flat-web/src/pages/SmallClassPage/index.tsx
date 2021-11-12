@@ -344,8 +344,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    title="Open side panel"
-                    icon={isRealtimeSideOpen ? "hide-side-active" : "hide-side"}
+                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
+                    icon={isRealtimeSideOpen ? "hide-side" : "hide-side-active"}
                     onClick={() => {
                         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
                         whiteboardStore.setRightSideClose(isRealtimeSideOpen);

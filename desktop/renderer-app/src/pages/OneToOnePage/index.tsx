@@ -292,7 +292,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    title="Open side panel"
+                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
                     icon="hide-side"
                     active={isRealtimeSideOpen}
                     onClick={handleSideOpenerSwitch}
