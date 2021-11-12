@@ -39,7 +39,7 @@
     "@netless/app-geogebra": "^0.0.2",
     "@netless/app-iframe-bridge": "^0.0.2",
     "@netless/app-monaco": "^0.1.11",
-    "@netless/app-slide": "^0.0.18",
+    "@netless/app-slide": "^0.0.19",
     "@netless/combine-player": "^1.1.6",
     "@netless/cursor-tool": "^0.1.0",
     "@netless/player-controller": "^0.0.9",
@@ -77,7 +77,7 @@
     "react-virtualized": "^9.22.2",
     "uuid": "^8.3.2",
     "video.js": "7.10.2",
-    "white-web-sdk": "2.15.2"
+    "white-web-sdk": "2.15.4"
   },
   "scripts": {
     "postinstall": "esbuild-dev ./scripts/post-install.ts",
