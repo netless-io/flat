@@ -1,4 +1,4 @@
-/* eslint-disable react/display-name */
+/* eslint react/display-name: off */
 import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
 import { MainPageNavHorizontal, MainPageNavHorizontalProps } from ".";

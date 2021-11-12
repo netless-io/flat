@@ -1,4 +1,4 @@
-/* eslint-disable no-redeclare */
+/* eslint no-redeclare: off */
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { Region } from "flat-components";
 import {

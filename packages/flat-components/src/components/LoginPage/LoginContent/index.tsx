@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-no-target-blank */
+/* eslint react/jsx-no-target-blank: off */
 import logoSVG from "./icons/logo.svg";
 import "./index.less";
 

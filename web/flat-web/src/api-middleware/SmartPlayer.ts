@@ -290,7 +290,7 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
         if (this.combinePlayer) {
             this.combinePlayer.seek(ms);
         } else {
-            whiteboardPlayer.seekToProgressTime(ms);
+            void whiteboardPlayer.seekToProgressTime(ms);
         }
     }
 

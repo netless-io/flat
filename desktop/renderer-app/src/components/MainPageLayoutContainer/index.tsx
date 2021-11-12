@@ -1,4 +1,4 @@
-/* eslint-disable react/display-name */
+/* eslint react/display-name: off */
 import homeSVG from "./icons/home.svg";
 import homeActiveSVG from "./icons/home-active.svg";
 import diskSVG from "./icons/disk.svg";

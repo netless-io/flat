@@ -1,4 +1,4 @@
-/* eslint-disable react/display-name */
+/* eslint react/display-name: off */
 import systemSVG from "./icons/system.svg";
 import cameraSVG from "./icons/camera.svg";
 import speakerSVG from "./icons/speaker.svg";

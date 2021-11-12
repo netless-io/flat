@@ -1,4 +1,4 @@
-/* eslint-disable react/display-name */
+/* eslint react/display-name: off */
 // import deviceSVG from "./icons/device.svg";
 // import deviceActiveSVG from "./icons/device-active.svg";
 import downloadSVG from "./icons/download.svg";

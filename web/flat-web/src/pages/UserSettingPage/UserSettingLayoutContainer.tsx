@@ -1,4 +1,4 @@
-/* eslint-disable react/display-name */
+/* eslint react/display-name: off */
 import generalSVG from "./icons/general.svg";
 import aboutSVG from "./icons/about.svg";
 import hotkeySVG from "./icons/hotkey.svg";

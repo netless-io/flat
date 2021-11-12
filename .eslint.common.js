@@ -12,8 +12,9 @@ const eslintCommon = {
             "plugin:@typescript-eslint/recommended",
             "plugin:@typescript-eslint/recommended-requiring-type-checking",
             "plugin:prettier/recommended",
+            "plugin:eslint-comments/recommended"
         ],
-        plugins: ["@netless", "prettier", "@typescript-eslint"],
+        plugins: ["@netless", "prettier", "@typescript-eslint", "eslint-comments"],
         rules: {
             "array-callback-return": "warn",
             "default-case": "off",
