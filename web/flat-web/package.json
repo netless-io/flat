@@ -46,7 +46,7 @@
     "@netless/redo-undo": "^0.0.5",
     "@netless/tool-box": "^0.1.6",
     "@netless/video-js-plugin": "^0.3.6",
-    "@netless/window-manager": "^0.2.17",
+    "@netless/window-manager": "^0.2.19-canary.0",
     "@videojs/vhs-utils": "^2.3.0",
     "@zip.js/zip.js": "^2.3.7",
     "agora-rtc-sdk-ng": "^4.5.0",
