@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="200" height="200" style="display: block;" src="./assets/flat-logo.svg">
+    <img width="200" height="200" style="display: block;" src="/assets/flat-logo.svg">
 </div>
 
 <div align="center">
@@ -21,7 +21,7 @@
 <div align="center">
     <h1>Agora Flat</h1>
     <p>项目 flat 是 <a href="https://flat.whiteboard.agora.io/">Agora Flat</a> 开源教室的 Web 端、Windows 客户端与 macOS 客户端。</p>
-    <img src="./assets/flat-showcase.png">
+    <img src="/assets/flat-showcase.png">
 </div>
 
 ## 产品体验
@@ -96,19 +96,19 @@ yarn run start
 
 ## 文档
 
-- [发布版本说明](docs/releases)
-- [环境变量值参考](docs/env/README-zh.md)
-- [调试 Flat](docs/debugging/README-zh.md)
+- [发布版本说明](/docs/releases)
+- [环境变量值参考](/docs/env/README-zh.md)
+- [调试 Flat](/docs/debugging/README-zh.md)
 
 ## 贡献
 
 编写代码很棒，但还有许多其他方法可以为项目做出有意义的贡献：
 
-* [改进文档](CONTRIBUTING-zh.md#改进文档)
-* [改善问题](CONTRIBUTING-zh.md#改善问题)
-* [对问题进行反馈](CONTRIBUTING-zh.md#对问题进行反馈)
+* [改进文档](/docs/contributing/CONTRIBUTING-zh.md#改进文档)
+* [改善问题](/docs/contributing/CONTRIBUTING-zh.md#改善问题)
+* [对问题进行反馈](/docs/contributing/CONTRIBUTING-zh.md#对问题进行反馈)
 
-有关此项目如何贡献的更多信息，请参阅 [CONTRIBUTING-zh.md](CONTRIBUTING-zh.md)
+有关此项目如何贡献的更多信息，请参阅 [CONTRIBUTING-zh.md](/docs/contributing/CONTRIBUTING-zh.md)
 
 ## 代码贡献者
 
@@ -124,7 +124,7 @@ yarn run start
 
 版权所有 Agora, Inc. 保留所有权利。
 
-使用 [MIT 许可证](LICENSE)
+使用 [MIT 许可证](/LICENSE)
 
 当使用 Flat 或其他 GitHub 徽标时，请务必遵循 [GitHub 徽标指南][github-logo]。
 
