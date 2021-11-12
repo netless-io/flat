@@ -53,8 +53,15 @@ export class WindowMain extends AbstractWindow {
 
     private static loadExtensions(win: CustomWindow, extensionName: "react-devtools"): void {
         const extPath = path.resolve(
-            process.cwd(),
-            `../../third_party/extensions/${extensionName}`,
+            __dirname,
+            "..",
+            "..",
+            "..",
+            "..",
+            "..",
+            "third_party",
+            "extensions",
+            extensionName,
         );
         void win.window.webContents.session.loadExtension(extPath);
     }
