@@ -46,6 +46,7 @@
     "electron-notarize": "^1.0.0",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-webpack-plugin": "^3.0.1",
     "file-loader": "^6.2.0",
