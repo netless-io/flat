@@ -42,11 +42,10 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                     chessboard: false,
                 });
 
-                whiteboardStore.updateWindowMaximization(
-                    Boolean(whiteboardStore.windowManager?.boxState === "maximized"),
-                );
                 whiteboardStore.onMainViewModeChange();
-                whiteboardStore.onWindowManagerBoxStateChange();
+                whiteboardStore.onWindowManagerBoxStateChange(
+                    whiteboardStore.windowManager?.boxState,
+                );
             }
         };
 
