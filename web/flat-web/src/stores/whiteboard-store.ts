@@ -227,7 +227,11 @@ export class WhiteboardStore {
         });
     };
 
-    public onWindowManagerBoxStateChange = (): void => {
+    public onWindowManagerBoxStateChange = (
+        initialBoxState?: "normal" | "minimized" | "maximized",
+    ): void => {
+        this.updateWindowMaximization(Boolean(initialBoxState === "maximized"));
+
         this.windowManager?.emitter.on("boxStateChange", mode => {
             const isMaximization = mode === "maximized";
             this.updateWindowMaximization(isMaximization);
