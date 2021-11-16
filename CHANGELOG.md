@@ -1,3 +1,38 @@
+# [1.2.0](https://github.com/netless-io/flat/compare/v1.1.0...v1.2.0) (2021-11-16)
+
+
+### Bug Fixes
+
+* **deployment:** svg is not cached ([#1040](https://github.com/netless-io/flat/issues/1040)) ([d0c4fd2](https://github.com/netless-io/flat/commit/d0c4fd29fb61090d004b884283f2a94785964786))
+* **desktop:** cannot open camera on desktop ([#1072](https://github.com/netless-io/flat/issues/1072)) ([f46055c](https://github.com/netless-io/flat/commit/f46055c1f6d156d27a0e0f1beb3d4a11f37f52bb))
+* **flat-components:** add width value for avoid content dislocation when cover resource not loaded ([#1039](https://github.com/netless-io/flat/issues/1039)) ([508bfdb](https://github.com/netless-io/flat/commit/508bfdbf287ad7a9b73537e6e44b8cef5973b740))
+* **renderer-app:** the right side of classroom bar not hidden when click hidden button ([#1008](https://github.com/netless-io/flat/issues/1008)) ([08620d0](https://github.com/netless-io/flat/commit/08620d0f04bf5b6c10ade2b6a26d2ff1e285007e))
+* **scripts:** flat-web build failed on windows system ([#1062](https://github.com/netless-io/flat/issues/1062)) ([8a239fe](https://github.com/netless-io/flat/commit/8a239fe140f0e0e41a16d14588a686a085a8bf9a))
+* **storybook:** fix FakeStore api ([#1030](https://github.com/netless-io/flat/issues/1030)) ([5ed7415](https://github.com/netless-io/flat/commit/5ed7415c481963fdc4e56a4203a149e6f1a24cec))
+* **style:** error style of the slide button ([#1092](https://github.com/netless-io/flat/issues/1092)) ([8757bc0](https://github.com/netless-io/flat/commit/8757bc0e7903c1839996ed5e4eadd93a8e1316d4))
+* **web,scripts:** flat-web failed to startup in windows system ([#1007](https://github.com/netless-io/flat/issues/1007)) ([d2ab4a5](https://github.com/netless-io/flat/commit/d2ab4a5b2dff26b53e236903e64972f91cf22612))
+* **web:** black screen when playing dynamic PPT video ([#1024](https://github.com/netless-io/flat/issues/1024)) ([080ac55](https://github.com/netless-io/flat/commit/080ac55611af46f68dcd16fd79e5b1917e5974fc))
+* **web:** force wait rtc join ([#1036](https://github.com/netless-io/flat/issues/1036)) ([b3ea971](https://github.com/netless-io/flat/commit/b3ea97152c7b8e6f64e9a6766ca122f61ab3b46e))
+* **web:** pptx extension check failed ([#1028](https://github.com/netless-io/flat/issues/1028)) ([afcdf71](https://github.com/netless-io/flat/commit/afcdf715c6de8e4609a55f54ee34849200b2693a))
+* **web:** record tips position error ([#1041](https://github.com/netless-io/flat/issues/1041)) ([f9b3d99](https://github.com/netless-io/flat/commit/f9b3d9988f15687cb096b6d678271e2212224e71))
+* **web:** rtc is not initialized ([#1035](https://github.com/netless-io/flat/issues/1035)) ([d1dc852](https://github.com/netless-io/flat/commit/d1dc852da9819247b16548c283d5888bfc234feb))
+* **web:** try to fix chrome permission popup ([#1057](https://github.com/netless-io/flat/issues/1057)) ([dae0386](https://github.com/netless-io/flat/commit/dae0386b25eda9bd71995237270a8dcd0e35a5ce))
+* **whiteboard:** disabled read only the user zoom behavior ([#1073](https://github.com/netless-io/flat/issues/1073)) ([069861a](https://github.com/netless-io/flat/commit/069861af7ddd7746ce1c6a402f1c70b0b36e9604))
+* **whiteboard:** style error of the smallClassPage when join room ([#1076](https://github.com/netless-io/flat/issues/1076)) ([933a7e5](https://github.com/netless-io/flat/commit/933a7e5662976e31aa6f5cf1b782e890d5e1a068))
+* **whiteboard:** the buttons at the bottom of the whiteboard error style ([#1089](https://github.com/netless-io/flat/issues/1089)) ([885d936](https://github.com/netless-io/flat/commit/885d936974f2f4a4d217d06d8865e0c0320303d7))
+* **whiteboard:** window-manager not mount when whiteboard was connected ([#1034](https://github.com/netless-io/flat/issues/1034)) ([c555024](https://github.com/netless-io/flat/commit/c555024e2f6aecc980a29cb6445e82c924454e51))
+* **whiteboard:** window-manager repeat mount when whiteboard unMount ([#1014](https://github.com/netless-io/flat/issues/1014)) ([587b498](https://github.com/netless-io/flat/commit/587b498a20dca66c8a3c28cfddfcd2bceafdebf3))
+
+
+### Features
+
+* add html5 courseware uploading ([#1023](https://github.com/netless-io/flat/issues/1023)) ([4c25b01](https://github.com/netless-io/flat/commit/4c25b01a1a8cedbc6d5e0fa5c4c41f860396b4bb))
+* **web:** add apps in whiteboard  ([#994](https://github.com/netless-io/flat/issues/994)) ([a87b1e5](https://github.com/netless-io/flat/commit/a87b1e592599f2811db1b4af26781e74c08a37ec))
+* **web:** add loadingPage to AppRouteContainer ([#1038](https://github.com/netless-io/flat/issues/1038)) ([c402fcc](https://github.com/netless-io/flat/commit/c402fccf4b67c4f6e1367deeba29d5ecc5330bce))
+* **web:** add vf html5 courseware ([#1026](https://github.com/netless-io/flat/issues/1026)) ([2b3dc95](https://github.com/netless-io/flat/commit/2b3dc95409815b48829fcd8ea1a764280507754a))
+
+
+
 # [1.1.0](https://github.com/netless-io/flat/compare/v1.0.0...v1.1.0) (2021-10-15)
 
 

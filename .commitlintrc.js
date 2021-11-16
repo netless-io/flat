@@ -44,6 +44,7 @@ module.exports = {
                 "library",
                 "scripts",
                 "readme",
+                "changelog",
                 "eslint",
                 "prettier",
                 "husky",
