@@ -5,6 +5,7 @@ import { RxSubject } from "./rx-subject";
 import { ipcMain } from "electron";
 import { zip } from "rxjs";
 import { ignoreElements, mergeMap } from "rxjs/operators";
+import path from "path";
 
 export class WindowMain extends AbstractWindow {
     public readonly name = constants.WindowsName.Main;
@@ -37,6 +38,10 @@ export class WindowMain extends AbstractWindow {
 
         this.injectAgoraSDKAddon(customWindow);
 
+        if (process.env.NODE_ENV === "development") {
+            WindowMain.loadExtensions(customWindow, "react-devtools");
+        }
+
         return customWindow;
     }
 
@@ -44,6 +49,21 @@ export class WindowMain extends AbstractWindow {
         return this.subject.mainWindowCreated.toPromise().then(() => {
             return this.win!;
         });
+    }
+
+    private static loadExtensions(win: CustomWindow, extensionName: "react-devtools"): void {
+        const extPath = path.resolve(
+            __dirname,
+            "..",
+            "..",
+            "..",
+            "..",
+            "..",
+            "third_party",
+            "extensions",
+            extensionName,
+        );
+        void win.window.webContents.session.loadExtension(extPath);
     }
 
     private injectAgoraSDKAddon(win: CustomWindow): void {

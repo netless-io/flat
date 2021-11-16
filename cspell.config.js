@@ -143,5 +143,6 @@ module.exports = {
         "cspell.config.js",
         "yarn.lock",
         "CHANGELOG.md",
+        "third_party/**"
     ],
 };
