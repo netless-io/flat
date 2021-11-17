@@ -63,7 +63,11 @@ export class WindowMain extends AbstractWindow {
             "extensions",
             extensionName,
         );
-        void win.window.webContents.session.loadExtension(extPath);
+        win.window.webContents.session.loadExtension(extPath).catch(error => {
+            console.error(
+                `install ${extensionName} extensions failed! error message: ${error.message}. error stack: ${error.stack}`,
+            );
+        });
     }
 
     private injectAgoraSDKAddon(win: CustomWindow): void {
