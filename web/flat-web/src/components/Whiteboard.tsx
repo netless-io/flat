@@ -10,7 +10,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { WhiteboardStore } from "../stores/whiteboard-store";
 import { isSupportedImageType, onDropImage } from "../utils/dnd/image";
-import { ScenesController } from "../../../../packages/flat-components/src";
+import { ScenesController } from "flat-components";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -115,55 +115,54 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
         if (whiteboardEl) {
             const whiteboardRatio = whiteboardStore.getWhiteboardRatio();
 
-            if (whiteboardStore.smallClassRatio === whiteboardRatio) {
-                const classRoomRightSideWidth = whiteboardStore.isRightSideClose ? 0 : 304;
-                const classRoomTopBarHeight = 182;
-                const classRoomMinWidth = 1130;
-                const classRoomMinHeight = 610;
+            const isSmallClass = whiteboardStore.smallClassRatio === whiteboardRatio;
+            const classRoomRightSideWidth = whiteboardStore.isRightSideClose ? 0 : 304;
 
-                const whiteboardWidth = Math.min(
-                    window.innerWidth - classRoomRightSideWidth,
-                    (window.innerHeight - classRoomTopBarHeight) / whiteboardRatio,
-                );
+            let classRoomTopBarHeight: number;
+            let classRoomMinWidth: number;
+            let classRoomMinHeight: number;
+            let smallClassAvatarWrapMaxWidth: number;
 
-                const whiteboardHeight = whiteboardWidth * whiteboardRatio;
-
-                whiteboardEl.style.width = `${whiteboardWidth}px`;
-                whiteboardEl.style.height = `${whiteboardHeight}px`;
-
-                if (
-                    window.innerHeight < classRoomMinHeight ||
-                    window.innerWidth < classRoomMinWidth
-                ) {
-                    const whiteboardMinWidth = classRoomMinWidth - classRoomRightSideWidth;
-                    whiteboardEl.style.minWidth = `${whiteboardMinWidth}px`;
-                    whiteboardEl.style.minHeight = `${whiteboardMinWidth * whiteboardRatio}px`;
-                }
+            if (isSmallClass) {
+                classRoomMinWidth = whiteboardStore.isRightSideClose ? 826 : 1130;
+                classRoomMinHeight = 610;
+                classRoomTopBarHeight = 182;
             } else {
-                const classRoomRightSideWidth = whiteboardStore.isRightSideClose ? 0 : 304;
-                const classRoomTopBarHeight = 50;
-                const classRoomMinWidth = 1020;
-                const classRoomMinHeight = 522;
-
-                const whiteboardWidth = Math.min(
-                    window.innerWidth - classRoomRightSideWidth,
-                    (window.innerHeight - classRoomTopBarHeight) / whiteboardRatio,
-                );
-
-                const whiteboardHeight = whiteboardWidth * whiteboardRatio;
-
-                whiteboardEl.style.width = `${whiteboardWidth}px`;
-                whiteboardEl.style.height = `${whiteboardHeight}px`;
-
-                if (
-                    window.innerHeight < classRoomMinHeight ||
-                    window.innerWidth < classRoomMinWidth
-                ) {
-                    const whiteboardMinWidth = classRoomMinWidth - classRoomRightSideWidth;
-                    whiteboardEl.style.minWidth = `${whiteboardMinWidth}px`;
-                    whiteboardEl.style.minHeight = `${whiteboardMinWidth * whiteboardRatio}px`;
-                }
+                classRoomMinWidth = whiteboardStore.isRightSideClose ? 716 : 1020;
+                classRoomMinHeight = 522;
+                classRoomTopBarHeight = 50;
             }
+
+            const whiteboardWidth = Math.min(
+                window.innerWidth - classRoomRightSideWidth,
+                (window.innerHeight - classRoomTopBarHeight) / whiteboardRatio,
+            );
+
+            const whiteboardHeight = whiteboardWidth * whiteboardRatio;
+
+            whiteboardEl.style.width = `${whiteboardWidth}px`;
+            whiteboardEl.style.height = `${whiteboardHeight}px`;
+
+            if (window.innerHeight < classRoomMinHeight || window.innerWidth < classRoomMinWidth) {
+                const whiteboardMinWidth = classRoomMinWidth - classRoomRightSideWidth;
+
+                whiteboardEl.style.minWidth = `${whiteboardMinWidth}px`;
+                whiteboardEl.style.minHeight = `${whiteboardMinWidth * whiteboardRatio}px`;
+            }
+
+            const classRoomWidth = whiteboardWidth + classRoomRightSideWidth;
+            const classRoomWithoutRightSideWidth = classRoomMinWidth - classRoomRightSideWidth;
+
+            if (whiteboardStore.isRightSideClose) {
+                smallClassAvatarWrapMaxWidth =
+                    classRoomWidth < classRoomWithoutRightSideWidth
+                        ? classRoomWithoutRightSideWidth
+                        : classRoomWidth;
+            } else {
+                smallClassAvatarWrapMaxWidth =
+                    classRoomWidth < classRoomMinWidth ? classRoomMinWidth : classRoomWidth;
+            }
+            whiteboardStore.updateSmallClassAvatarWrapMaxWidth(smallClassAvatarWrapMaxWidth);
         }
     };
 

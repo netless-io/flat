@@ -38,6 +38,7 @@ export class WhiteboardStore {
     public scenesCount = 0;
     public smallClassRatio = 8.3 / 16;
     public otherClassRatio = 10.46 / 16;
+    public smallClassAvatarWrapMaxWidth = 0;
 
     /** is room Creator */
     public readonly isCreator: boolean;
@@ -97,6 +98,10 @@ export class WhiteboardStore {
 
     public updateFocusWindow = (isFocus: boolean): void => {
         this.isFocusWindow = isFocus;
+    };
+
+    public updateSmallClassAvatarWrapMaxWidth = (smallClassAvatarWrapMaxWidth: number): void => {
+        this.smallClassAvatarWrapMaxWidth = smallClassAvatarWrapMaxWidth;
     };
 
     public getWhiteboardRatio = (): number => {
