@@ -50,6 +50,13 @@ class CoursewarePreloader {
             if (!entry.getData) {
                 continue;
             }
+
+            // can't know if some .mp4 file in the cache is broken
+            // so we don't put in the cache
+            if (entry.filename.endsWith(".mp4")) {
+                continue;
+            }
+
             const blob: Blob = await entry.getData(new BlobWriter());
             const resourceUrl = `${resourceUrlPrefix}/${entry.filename}`;
             await this.cacheEntry(resourceUrl, blob);
