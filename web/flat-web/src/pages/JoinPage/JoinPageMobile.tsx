@@ -1,6 +1,6 @@
 import logoSVG from "./icons/logo-sm.svg";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { isAndroid } from "react-device-detect";
 import { useWindowFocus } from "./use-window-focus";
@@ -25,6 +25,7 @@ export default function JoinPageMobile({
     const [isCheckingApp, setCheckApp] = useState(false);
     const isFocus = useWindowFocus();
     const isUnmounted = useIsUnMounted();
+    const isDownloaded = useRef(false);
 
     const openApp = useCallback(() => {
         window.location.href = `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`;
@@ -36,6 +37,7 @@ export default function JoinPageMobile({
     }, [roomUUID, isUnmounted]);
 
     const download = useCallback(() => {
+        isDownloaded.current = true;
         if (isAndroid) {
             window.open(AndroidApkUrl);
         } else {
@@ -44,7 +46,7 @@ export default function JoinPageMobile({
     }, []);
 
     useEffect(() => {
-        if (isCheckingApp) {
+        if (isCheckingApp && !isDownloaded.current) {
             // if 5 seconds later the page is still in focus,
             // then maybe the app is not opened.
             if (isFocus) {
