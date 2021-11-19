@@ -5,10 +5,10 @@
 replicaCount: 3
 
 image:
-  repository: agoraflat/flat-web
+  repository: DOCKER_IMAGE_NAME
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: DOCKER_IMAGE_TAG
 
 imagePullSecrets: []
 nameOverride: ""
