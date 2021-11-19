@@ -56,7 +56,7 @@ jobs:
           docker push agoraflat/flat-web:$LATEST_DEV_TAG
 
           docker login -u $PRIVATE_DOCKERHUB_USERNAME -p $PRIVATE_DOCKERHUB_PASSWORD $PRIVATE_DOCKERHUB_REGISTRY
-          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web:$COMMIT_SHA_TA
+          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web:$COMMIT_SHA_TAG
           docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web:$LATEST_DEV_TAG
 
       - name: Prep helm chart
