@@ -22,7 +22,7 @@ export const JoinPage = observer(function JoinPage() {
     const [isLogin, setIsLogin] = useState(false);
     const { width } = useWindowSize(1080);
 
-    const iframeRef = useRef<HTMLIFrameElement | null>(null);
+    const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const params = useParams<RouteParams<RouteNameType.ReplayPage>>();
     const { roomUUID } = params;
