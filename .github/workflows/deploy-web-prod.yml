@@ -69,8 +69,8 @@ jobs:
           sed -i "s/^appVersion:.*$/appVersion: $APPVERSION/" $CHART
 
           export VALUE=./web/flat-web/helm/values.yaml
-          sed -i "s/DOCKER_IMAGE_NAME/$DOCKER_IMAGE_NAME/" $VALUE
-          sed -i "s/DOCKER_IMAGE_TAG/$DOCKER_IMAGE_TAG/" $VALUE
+          sed -i "s|DOCKER_IMAGE_NAME|$DOCKER_IMAGE_NAME|" $VALUE
+          sed -i "s|DOCKER_IMAGE_TAG|$DOCKER_IMAGE_TAG|" $VALUE
 
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
