@@ -1966,10 +1966,10 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.1.tgz#a3900ff284e782aa27790d2400e968c7cb0f4a13"
-  integrity sha512-YFtQin5Hx19cfv6sLQtx82GruXs0IkTXyQFfIabXSNuelUueq57UJPcPAyFHKNmJqp/c/FkzQ04DWhsn0/htKw==
+"@netless/window-manager@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.2.tgz#48d6602086b79e35fb3a75126fcd91d7017e4447"
+  integrity sha512-1tNPPGYz2ypkOD+6Opv3E0ie5js0PQ1ie17kaZqmv1nXDKlaYwyGvt7aMRh6qBXyP5tQBzd/Q+yGqAgr1RrCeg==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/app-docs-viewer" "^0.1.21"
@@ -3407,6 +3407,11 @@
   version "7.3.8"
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.8.tgz#508a27995498d7586dcecd77c25e289bfaf90c59"
   integrity sha512-D/2EJvAlCEtYFEYmmlGwbGXuK886HzyCc3nZX/tkFTQdEU8jZDAgiv08P162yB17y4ZXZoq7yFAnW4GDBb9Now==
+
+"@types/shallowequal@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/@types/shallowequal/-/shallowequal-1.1.1.tgz#aad262bb3f2b1257d94c71d545268d592575c9b1"
+  integrity sha512-Lhni3aX80zbpdxRuWhnuYPm8j8UQaa571lHP/xI4W+7BAFhSIhRReXnqjEgT/XzPoXZTJkCqstFMJ8CZTK6IlQ==
 
 "@types/source-list-map@*":
   version "0.1.2"
@@ -16791,6 +16796,13 @@ validator@^8.0.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/validator/-/validator-8.2.0.tgz#3c1237290e37092355344fef78c231249dab77b9"
   integrity sha512-Yw5wW34fSv5spzTXNkokD6S6/Oq92d8q/t14TqsS3fAiA1RYnxSFSIZ+CY3n6PGGRCq5HhJTSepQvFUS2QUDxA==
+
+value-enhancer@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.npmjs.org/value-enhancer/-/value-enhancer-0.0.7.tgz#b2440bc264ea8518653e367549762951cd1f46ca"
+  integrity sha512-Gns+pJcsv2+AXHf3p4l9Vry4wKYPb52a/YsGqJ7wOe1jXYqXetTL3p/9iwUPtFesJE3p7y80hX4HuX1tb6Hj1g==
+  dependencies:
+    side-effect-manager "^0.1.5"
 
 value-equal@^1.0.1:
   version "1.0.1"
