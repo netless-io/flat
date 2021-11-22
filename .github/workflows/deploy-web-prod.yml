@@ -62,7 +62,7 @@ jobs:
       - name: Prep helm chart
         env:
           DOCKER_IMAGE_NAME: ${{ secrets.PRIVATE_DOCKERHUB_REGISTRY }}/agoraflat/flat-web
-          DOCKER_IMAGE_TAG: $COMMIT_SHA_TAG
+          DOCKER_IMAGE_TAG: production-${{ github.sha }}
         run: |
           export APPVERSION=production-${{ github.sha }}
           export CHART=./web/flat-web/helm/Chart.yaml
