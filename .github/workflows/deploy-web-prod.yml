@@ -56,7 +56,7 @@ jobs:
           docker push agoraflat/flat-web:$LATEST_PROD_TAG
 
           docker login -u $PRIVATE_DOCKERHUB_USERNAME -p $PRIVATE_DOCKERHUB_PASSWORD $PRIVATE_DOCKERHUB_REGISTRY
-          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web:$COMMIT_SHA_TA
+          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web:$COMMIT_SHA_TAG
           docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web:$LATEST_DEV_TAG
 
       - name: Prep helm chart
@@ -68,9 +68,9 @@ jobs:
           export CHART=./web/flat-web/helm/Chart.yaml
           sed -i "s/^appVersion:.*$/appVersion: $APPVERSION/" $CHART
 
-          export Value=./web/flat-web/helm/values.yaml
-          sed -i "s/DOCKER_IMAGE_NAME/$DOCKER_IMAGE_NAME" $Value
-          sed -i "s/DOCKER_IMAGE_TAG/$DOCKER_IMAGE_TAG" $Value
+          export VALUE=./web/flat-web/helm/values.yaml
+          sed -i "s/DOCKER_IMAGE_NAME/$DOCKER_IMAGE_NAME/" $VALUE
+          sed -i "s/DOCKER_IMAGE_TAG/$DOCKER_IMAGE_TAG/" $VALUE
 
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
