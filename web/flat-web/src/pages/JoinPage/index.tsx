@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -21,6 +21,8 @@ export const JoinPage = observer(function JoinPage() {
     const pageStore = useContext(PageStoreContext);
     const [isLogin, setIsLogin] = useState(false);
     const { width } = useWindowSize(1080);
+
+    const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
     const params = useParams<RouteParams<RouteNameType.ReplayPage>>();
     const { roomUUID } = params;
@@ -43,9 +45,14 @@ export const JoinPage = observer(function JoinPage() {
 
         void checkLogin();
 
-        window.location.href = `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (iframeRef.current !== null) {
+            iframeRef.current.src = `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`;
+        }
+    }, [roomUUID]);
 
     async function joinRoom(): Promise<void> {
         if (isLogin && roomUUID) {
@@ -61,17 +68,27 @@ export const JoinPage = observer(function JoinPage() {
     const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
     const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
 
-    return isMobile ? (
-        <JoinPageMobile roomUUID={roomUUID} privacyURL={privacyURL} serviceURL={serviceURL} />
-    ) : (
-        <JoinPageDesktop
-            isLogin={isLogin}
-            avatar={globalStore.userInfo?.avatar ?? ""}
-            roomUUID={roomUUID}
-            joinRoom={joinRoom}
-            privacyURL={privacyURL}
-            serviceURL={serviceURL}
-        />
+    return (
+        <div>
+            <iframe width="0" height="0" style={{ display: "none" }} ref={iframeRef} />
+            {isMobile ? (
+                <JoinPageMobile
+                    roomUUID={roomUUID}
+                    privacyURL={privacyURL}
+                    serviceURL={serviceURL}
+                />
+            ) : (
+                <JoinPageDesktop
+                    isLogin={isLogin}
+                    avatar={globalStore.userInfo?.avatar ?? ""}
+                    roomUUID={roomUUID}
+                    joinRoom={joinRoom}
+                    privacyURL={privacyURL}
+                    serviceURL={serviceURL}
+                />
+            )}
+            ;
+        </div>
     );
 });
 
