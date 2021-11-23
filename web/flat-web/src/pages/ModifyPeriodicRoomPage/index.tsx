@@ -100,7 +100,6 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                         endTime: values.endTime.valueOf(),
                         title: values.title,
                         type: values.type,
-                        docs: [],
                         periodic:
                             values.periodic.endType === "rate"
                                 ? {
