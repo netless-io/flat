@@ -41,10 +41,10 @@
 
 - Real-time interaction
     - Multifunctional interactive whiteboard
-    - Real-time video/audio chat(RTC)
-    - Real-time messaging(RTM)
+    - Real-time video/audio chat (RTC)
+    - Real-time messaging (RTM)
 - Login via
-    - Wechat
+    - WeChat
     - GitHub
 - Classroom management
     - Join, create and schedule classrooms
