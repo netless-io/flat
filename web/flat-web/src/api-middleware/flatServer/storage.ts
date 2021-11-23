@@ -39,7 +39,10 @@ export async function listFiles(payload: ListFilesPayload): Promise<ListFilesRes
     );
     return {
         totalUsage,
-        files: files.map(file => ({ ...file, createAt: new Date(file.createAt) })),
+        files: files.map(file => ({
+            ...file,
+            createAt: new Date(file.createAt),
+        })),
     };
 }
 

@@ -61,7 +61,10 @@ export class RtcRoom {
         }
 
         const mode = channelType === RtcChannelType.Communication ? "rtc" : "live";
-        this.client = AgoraRTC.createClient({ mode, codec: "vp8" });
+        this.client = AgoraRTC.createClient({
+            mode,
+            codec: "vp8",
+        });
         (window as any).rtc_client = this.client;
 
         this.client.on("token-privilege-will-expire", this.renewToken);
@@ -139,7 +142,10 @@ export class RtcRoom {
         if (!this._localVideoTrack) {
             await this.joined;
             this._localVideoTrack = await AgoraRTC.createCameraVideoTrack({
-                encoderConfig: { width: 288, height: 216 },
+                encoderConfig: {
+                    width: 288,
+                    height: 216,
+                },
             });
             setCameraTrack(this._localVideoTrack as ICameraVideoTrack);
             this._localVideoTrack.once("track-ended", () => {

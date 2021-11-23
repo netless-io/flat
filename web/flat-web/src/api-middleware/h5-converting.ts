@@ -29,13 +29,22 @@ export async function queryH5ConvertingStatus(fileURL: string): Promise<H5Conver
                 };
             }
             if (response.status >= 200 && response.status < 500) {
-                return { status: "Converting" };
+                return {
+                    status: "Converting",
+                };
             }
-            return { status: "Failed", error: new Error(response.statusText) };
+            return {
+                status: "Failed",
+                error: new Error(response.statusText),
+            };
         }
-        return { status: "Finished" };
+        return {
+            status: "Finished",
+        };
     } catch (e) {
         console.warn(e);
-        return { status: "Converting" };
+        return {
+            status: "Converting",
+        };
     }
 }

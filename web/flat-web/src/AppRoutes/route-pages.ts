@@ -69,7 +69,10 @@ export const routePages: RoutePages = {
     [RouteNameType.SystemCheckPage]: {
         title: "SystemCheckPage",
         hasHeader: true,
-        component: () => Promise.resolve({ default: () => null }),
+        component: () =>
+            Promise.resolve({
+                default: () => null,
+            }),
     },
     [RouteNameType.GeneralSettingPage]: {
         title: "GeneralSettingPage",

@@ -141,7 +141,9 @@ export interface JoinRoomResult {
 }
 
 export function joinRoom(uuid: string): Promise<JoinRoomResult> {
-    return post<JoinRoomPayload, JoinRoomResult>("room/join", { uuid });
+    return post<JoinRoomPayload, JoinRoomResult>("room/join", {
+        uuid,
+    });
 }
 
 export interface UsersInfoPayload {
@@ -260,7 +262,9 @@ export interface StartClassPayload {
 export type StartClassResult = {};
 
 export function startClass(roomUUID: string): Promise<StartClassResult> {
-    return post<StartClassPayload, StartClassResult>("room/update-status/started", { roomUUID });
+    return post<StartClassPayload, StartClassResult>("room/update-status/started", {
+        roomUUID,
+    });
 }
 
 export interface PauseClassPayload {
@@ -270,7 +274,9 @@ export interface PauseClassPayload {
 export type PauseClassResult = {};
 
 export function pauseClass(roomUUID: string): Promise<PauseClassResult> {
-    return post<PauseClassPayload, PauseClassResult>("room/update-status/paused", { roomUUID });
+    return post<PauseClassPayload, PauseClassResult>("room/update-status/paused", {
+        roomUUID,
+    });
 }
 
 export interface StopClassPayload {
@@ -280,7 +286,9 @@ export interface StopClassPayload {
 export type StopClassResult = {};
 
 export function stopClass(roomUUID: string): Promise<StopClassResult> {
-    return post<StopClassPayload, StopClassResult>("room/update-status/stopped", { roomUUID });
+    return post<StopClassPayload, StopClassResult>("room/update-status/stopped", {
+        roomUUID,
+    });
 }
 
 type CancelOrdinaryRoomResult = {};
@@ -357,7 +365,10 @@ export function cancelRoom({
     }
 
     if (roomUUID && periodicUUID) {
-        return cancelPeriodicSubRoom({ roomUUID, periodicUUID });
+        return cancelPeriodicSubRoom({
+            roomUUID,
+            periodicUUID,
+        });
     }
 
     if (isHistory && roomUUID) {
@@ -430,7 +441,9 @@ export interface RecordInfoResult {
 }
 
 export function recordInfo(roomUUID: string): Promise<RecordInfoResult> {
-    return post<RecordInfoPayload, RecordInfoResult>("room/record/info", { roomUUID });
+    return post<RecordInfoPayload, RecordInfoResult>("room/record/info", {
+        roomUUID,
+    });
 }
 
 export interface UpdateOrdinaryRoomPayload {

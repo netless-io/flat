@@ -5,8 +5,12 @@ import en from "flat-i18n/en.json";
 import zhCN from "flat-i18n/zh-CN.json";
 
 const messages: Resource = {
-    en: { translation: en },
-    "zh-CN": { translation: zhCN },
+    en: {
+        translation: en,
+    },
+    "zh-CN": {
+        translation: zhCN,
+    },
 };
 
 void i18next

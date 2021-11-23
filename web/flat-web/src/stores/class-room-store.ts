@@ -128,7 +128,9 @@ export class ClassRoomStore {
 
         this.rtc = new RTCAPI();
         this.rtm = new RTMAPI();
-        this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
+        this.cloudRecording = new CloudRecording({
+            roomUUID: config.roomUUID,
+        });
 
         makeAutoObservable<
             this,
@@ -314,7 +316,9 @@ export class ClassRoomStore {
             const oldestTimestamp =
                 this.messages.length > 0 ? this.messages[0].timestamp : Date.now();
             messages = await this.rtm.fetchTextHistory(
-                dateSub(oldestTimestamp, { years: 1 }).valueOf(),
+                dateSub(oldestTimestamp, {
+                    years: 1,
+                }).valueOf(),
                 oldestTimestamp - 1,
             );
         } catch (e) {
@@ -368,7 +372,11 @@ export class ClassRoomStore {
             });
             void this.rtm.sendCommand({
                 type: RTMessageType.DeviceState,
-                value: { userUUID, camera, mic },
+                value: {
+                    userUUID,
+                    camera,
+                    mic,
+                },
                 keepHistory: true,
             });
         }
@@ -404,7 +412,10 @@ export class ClassRoomStore {
             });
             void this.rtm.sendCommand({
                 type: RTMessageType.AcceptRaiseHand,
-                value: { userUUID, accept: true },
+                value: {
+                    userUUID,
+                    accept: true,
+                },
                 keepHistory: true,
             });
         }
@@ -1011,7 +1022,13 @@ export function useClassRoomStore(
     classMode?: ClassModeType,
 ): ClassRoomStore {
     const [classRoomStore] = useState(
-        () => new ClassRoomStore({ roomUUID, ownerUUID, recordingConfig, classMode }),
+        () =>
+            new ClassRoomStore({
+                roomUUID,
+                ownerUUID,
+                recordingConfig,
+                classMode,
+            }),
     );
 
     const pushHistory = usePushHistory();

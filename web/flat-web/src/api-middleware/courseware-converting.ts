@@ -35,7 +35,12 @@ export async function queryConvertingTaskStatus({
         `https://api.netless.link/v5/services/conversion/tasks/${taskUUID}?type=${
             dynamic ? "dynamic" : "static"
         }`,
-        { headers: { token: taskToken, region } },
+        {
+            headers: {
+                token: taskToken,
+                region,
+            },
+        },
     );
     return data;
 }

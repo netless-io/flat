@@ -102,7 +102,11 @@ export class RoomStore {
             ...restPayload,
             docs:
                 docs &&
-                docs.map(doc => ({ docType: doc.type, docUUID: doc.uuid, isPreload: false })),
+                docs.map(doc => ({
+                    docType: doc.type,
+                    docUUID: doc.uuid,
+                    isPreload: false,
+                })),
             roomUUID,
         });
         return roomUUID;
@@ -210,7 +214,11 @@ export class RoomStore {
                 }
             }
         } else {
-            this.rooms.set(roomUUID, { ...roomInfo, roomUUID, ownerUUID });
+            this.rooms.set(roomUUID, {
+                ...roomInfo,
+                roomUUID,
+                ownerUUID,
+            });
         }
     }
 

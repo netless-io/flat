@@ -29,7 +29,10 @@ export class ConvertStatusManager {
                     this.cancelTask(fileUUID);
                 }
             }, interval);
-            this.tasks.set(fileUUID, { executor, ticket });
+            this.tasks.set(fileUUID, {
+                executor,
+                ticket,
+            });
         }
     }
 

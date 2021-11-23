@@ -94,8 +94,12 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
         this._isEnded = false;
         this.destroy();
 
-        const plugins = createPlugins({ [VideoJsPluginId]: videoJsPlugin() });
-        const videoJsPluginContext: Partial<VideoJsPluginContext> = { verbose: true };
+        const plugins = createPlugins({
+            [VideoJsPluginId]: videoJsPlugin(),
+        });
+        const videoJsPluginContext: Partial<VideoJsPluginContext> = {
+            verbose: true,
+        };
         plugins.setPluginContext(VideoJsPluginId, videoJsPluginContext);
 
         const whiteWebSdk = new WhiteWebSdk({

@@ -122,7 +122,9 @@ export class UploadTask {
                 console.error(e);
                 if (this.fileUUID) {
                     try {
-                        await cancelUpload({ fileUUIDs: [this.fileUUID] });
+                        await cancelUpload({
+                            fileUUIDs: [this.fileUUID],
+                        });
                     } catch (e) {
                         console.error(e);
                     }
@@ -167,7 +169,9 @@ export class UploadTask {
 
         try {
             this.cancelUploadProgress();
-            await cancelUpload({ fileUUIDs: [this.fileUUID] });
+            await cancelUpload({
+                fileUUIDs: [this.fileUUID],
+            });
         } catch (e) {
             console.error(e);
         }

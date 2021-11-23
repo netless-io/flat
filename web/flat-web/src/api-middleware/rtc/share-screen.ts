@@ -28,7 +28,10 @@ export class RTCShareScreen {
                 await this.close();
             });
 
-            this.shareScreenClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+            this.shareScreenClient = AgoraRTC.createClient({
+                mode: "rtc",
+                codec: "vp8",
+            });
 
             this.assertNotHasOtherUserShareScreenStream();
 

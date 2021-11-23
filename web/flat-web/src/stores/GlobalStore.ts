@@ -39,7 +39,11 @@ export class GlobalStore {
     }
 
     public constructor() {
-        autoPersistStore({ storeLSName: "GlobalStore", store: this, version: LS_VERSION });
+        autoPersistStore({
+            storeLSName: "GlobalStore",
+            store: this,
+            version: LS_VERSION,
+        });
     }
 
     public updateUserInfo = (userInfo: UserInfo): void => {

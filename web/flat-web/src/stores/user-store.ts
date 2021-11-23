@@ -220,7 +220,10 @@ export class UserStore {
             return [];
         }
 
-        const users = await usersInfo({ roomUUID: this.roomUUID, usersUUID: userUUIDs });
+        const users = await usersInfo({
+            roomUUID: this.roomUUID,
+            usersUUID: userUUIDs,
+        });
 
         return userUUIDs.map(userUUID =>
             // must convert to observable first so that it may be reused by other logic
@@ -238,8 +241,14 @@ export class UserStore {
     }
 
     private readonly joinerGroups = [
-        { group: "speakingJoiners", shouldMoveOut: (user: User): boolean => !user.isSpeak },
-        { group: "handRaisingJoiners", shouldMoveOut: (user: User): boolean => !user.isRaiseHand },
+        {
+            group: "speakingJoiners",
+            shouldMoveOut: (user: User): boolean => !user.isSpeak,
+        },
+        {
+            group: "handRaisingJoiners",
+            shouldMoveOut: (user: User): boolean => !user.isRaiseHand,
+        },
         {
             group: "otherJoiners",
             shouldMoveOut: (user: User): boolean => user.isRaiseHand || user.isSpeak,

@@ -274,7 +274,9 @@ export class ClassRoomReplayStore {
         try {
             const messages = await this.rtm.fetchTextHistory(
                 newestTimestamp + 1,
-                dateAdd(newestTimestamp, { years: 1 }).valueOf(),
+                dateAdd(newestTimestamp, {
+                    years: 1,
+                }).valueOf(),
             );
 
             if (messages.length <= 0) {
@@ -324,7 +326,12 @@ export function useClassRoomReplayStore(
     roomType: RoomType,
 ): ClassRoomReplayStore {
     const [classRoomReplayStore] = useState(
-        () => new ClassRoomReplayStore({ roomUUID, ownerUUID, roomType }),
+        () =>
+            new ClassRoomReplayStore({
+                roomUUID,
+                ownerUUID,
+                roomType,
+            }),
     );
 
     useAutoRun(() => {

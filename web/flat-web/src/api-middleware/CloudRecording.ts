@@ -1,6 +1,5 @@
 import { updateRecordEndTime } from "./flatServer";
-import {
-    cloudRecordAcquire,
+import {cloudRecordAcquire,
     CloudRecordStopResult,
     cloudRecordStop,
     CloudRecordAcquirePayload,
@@ -92,7 +91,9 @@ export class CloudRecording {
         try {
             const { resourceId } = await cloudRecordAcquire({
                 roomUUID: this.roomUUID,
-                agoraData: { clientRequest: acquirePayload },
+                agoraData: {
+                    clientRequest: acquirePayload,
+                },
             });
             this._resourceid = resourceId;
 
@@ -102,7 +103,9 @@ export class CloudRecording {
                     resourceid: this.resourceid,
                     mode: this.mode,
                 },
-                agoraData: { clientRequest: startPayload },
+                agoraData: {
+                    clientRequest: startPayload,
+                },
             });
             this._sid = sid;
             this.startReportEndTime();
@@ -165,7 +168,9 @@ export class CloudRecording {
                 mode: this.mode,
                 sid: this.sid,
             },
-            agoraData: { clientRequest: payload },
+            agoraData: {
+                clientRequest: payload,
+            },
         });
     }
 

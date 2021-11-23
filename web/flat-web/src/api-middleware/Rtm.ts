@@ -95,7 +95,11 @@ export type RTMEvents = {
     [RTMessageType.CancelAllHandRaising]: boolean;
     [RTMessageType.BanText]: boolean;
     [RTMessageType.Speak]: Array<{ userUUID: string; speak: boolean }>;
-    [RTMessageType.DeviceState]: { userUUID: string; camera: boolean; mic: boolean };
+    [RTMessageType.DeviceState]: {
+        userUUID: string;
+        camera: boolean;
+        mic: boolean;
+    };
     [RTMessageType.ClassMode]: ClassModeType;
     [RTMessageType.RoomStatus]: RoomStatus;
     [RTMessageType.RequestChannelStatus]: {
@@ -213,7 +217,12 @@ export class Rtm extends EventEmitter<keyof RTMEvents> {
         /** login may fail in dev due to live reload */
         await polly()
             .waitAndRetry(3)
-            .executeForPromise(() => this.client.login({ uid: userUUID, token: this.token }));
+            .executeForPromise(() =>
+                this.client.login({
+                    uid: userUUID,
+                    token: this.token,
+                }),
+            );
 
         this.channel = this.client.createChannel(channelID);
         await this.channel.join();
@@ -295,7 +304,9 @@ export class Rtm extends EventEmitter<keyof RTMEvents> {
                     text,
                 },
                 peerId,
-                { enableHistoricalMessaging: true },
+                {
+                    enableHistoricalMessaging: true,
+                },
             );
             if (NODE_ENV === "development") {
                 console.log(`[RTM] send p2p message to ${peerId}: `, text);
@@ -307,7 +318,9 @@ export class Rtm extends EventEmitter<keyof RTMEvents> {
                     messageType: AgoraRTM.MessageType.TEXT,
                     text,
                 },
-                { enableHistoricalMessaging: true },
+                {
+                    enableHistoricalMessaging: true,
+                },
             );
             if (NODE_ENV === "development") {
                 console.log("[RTM] send group message: ", text);
@@ -354,10 +367,16 @@ export class Rtm extends EventEmitter<keyof RTMEvents> {
                     const { hasPeerReceived } = await this.client.sendMessageToPeer(
                         {
                             messageType: AgoraRTM.MessageType.TEXT,
-                            text: JSON.stringify({ r: this.commandsID, t: type, v: value }),
+                            text: JSON.stringify({
+                                r: this.commandsID,
+                                t: type,
+                                v: value,
+                            }),
                         },
                         peerId,
-                        { enableHistoricalMessaging: keepHistory },
+                        {
+                            enableHistoricalMessaging: keepHistory,
+                        },
                     );
                     if (NODE_ENV === "development") {
                         console.log(`[RTM] send p2p command to ${peerId}: `, type, value);
@@ -370,9 +389,14 @@ export class Rtm extends EventEmitter<keyof RTMEvents> {
             await this.commands.sendMessage(
                 {
                     messageType: AgoraRTM.MessageType.TEXT,
-                    text: JSON.stringify({ t: type, v: value }),
+                    text: JSON.stringify({
+                        t: type,
+                        v: value,
+                    }),
                 },
-                { enableHistoricalMessaging: keepHistory },
+                {
+                    enableHistoricalMessaging: keepHistory,
+                },
             );
             if (NODE_ENV === "development") {
                 console.log("[RTM] send group command: ", type, value);
@@ -440,7 +464,9 @@ export class Rtm extends EventEmitter<keyof RTMEvents> {
                 return this.request<null, RtmRESTfulQueryResourceResponse>(
                     `query/${handle}`,
                     null,
-                    { method: "GET" },
+                    {
+                        method: "GET",
+                    },
                 ).then(response => (response.code === "ok" ? response : Promise.reject(response)));
             });
         return result.messages.reverse();
