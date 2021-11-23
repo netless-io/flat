@@ -24,6 +24,8 @@ declare namespace NodeJS {
         FLAT_SERVER_DOMAIN: string;
         FLAT_WEB_DOMAIN: string;
 
+        FLAT_DOWNLOAD_URL: string;
+
         CLOUD_RECORDING_DEFAULT_AVATAR?: string;
     }
 }

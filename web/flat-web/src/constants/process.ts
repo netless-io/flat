@@ -27,6 +27,8 @@ export const GITHUB = Object.freeze({
 export const FLAT_SERVER_DOMAIN = process.env.FLAT_SERVER_DOMAIN;
 export const FLAT_WEB_DOMAIN = process.env.FLAT_WEB_DOMAIN;
 
+export const FLAT_DOWNLOAD_URL = process.env.FLAT_DOWNLOAD_URL;
+
 export const FLAT_WEB_BASE_URL = `https://${FLAT_WEB_DOMAIN}`;
 
 // TODO: english version is WIP

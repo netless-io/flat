@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
 import { generateAvatar } from "../../utils/generate-avatar";
+import { FLAT_DOWNLOAD_URL } from "../../constants/process";
 
 export interface MainPageLayoutHorizontalContainerProps {
     subMenu?: MainPageLayoutItem[];
@@ -46,7 +47,7 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
                 key: "download",
                 icon: (): React.ReactNode => <img src={downloadSVG} />,
                 title: t("nav-download"),
-                route: "https://flat.whiteboard.agora.io/#download",
+                route: FLAT_DOWNLOAD_URL,
             },
             {
                 key: "getGitHubCode",
