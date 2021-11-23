@@ -64,7 +64,6 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
                     endTime: values.endTime.valueOf(),
                     title: values.title,
                     type: values.type,
-                    docs: [],
                 }),
             );
             void message.success("修改成功");
