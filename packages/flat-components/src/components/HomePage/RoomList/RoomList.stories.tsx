@@ -11,6 +11,10 @@ const storyMeta: Meta = {
     component: RoomList,
 };
 
+/**
+ * TODO: we forget set i18n in current file!!!
+ */
+
 export default storyMeta;
 
 export const Overview: Story<RoomListProps<string>> = args => (

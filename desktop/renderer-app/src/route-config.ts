@@ -2,7 +2,6 @@ import { ComponentType } from "react";
 import SplashPage from "./pages/SplashPage";
 import LoginPage from "./pages/LoginPage";
 import BigClassPage from "./pages/BigClassPage";
-import { ScheduleRoomDetailPage } from "./pages/ScheduleRoomPage";
 import SmallClassPage from "./pages/SmallClassPage";
 import OneToOnePage from "./pages/OneToOnePage";
 import ReplayPage from "./pages/ReplayPage";
@@ -19,7 +18,6 @@ import { SpeakerCheckPage } from "./pages/DeviceCheckPages/SpeakerCheckPage";
 import { SystemCheckPage } from "./pages/DeviceCheckPages/SystemCheckPage";
 import { GeneralSettingPage } from "./pages/UserSettingPage/GeneralSettingPage";
 import { HotKeySettingPage } from "./pages/UserSettingPage/HotKeySettingPage";
-import { FeedbackPage } from "./pages/UserSettingPage/FeedBackPage";
 import { AboutPage } from "./pages/UserSettingPage/AboutPage";
 import { PeriodicRoomDetailPage } from "./pages/PeriodicRoomDetailPage";
 
@@ -32,7 +30,6 @@ export enum RouteNameType {
     OneToOnePage = "OneToOnePage",
     RoomDetailPage = "RoomDetailPage",
     UserScheduledPage = "UserScheduledPage",
-    ScheduleRoomDetailPage = "ScheduleRoomDetailPage",
     PeriodicRoomDetailPage = "PeriodicRoomDetailPage",
     ReplayPage = "ReplayPage",
     ModifyOrdinaryRoomPage = "ModifyOrdinaryRoomPage",
@@ -44,7 +41,6 @@ export enum RouteNameType {
     MicrophoneCheckPage = "MicrophoneCheckPage",
     GeneralSettingPage = "GeneralSettingPage",
     HotKeySettingPage = "HotKeySettingPage",
-    FeedbackPage = "FeedbackPage",
     AboutPage = "AboutPage",
 }
 
@@ -93,11 +89,6 @@ export const routeConfig = {
         title: "UserScheduledPage",
         path: "/user/scheduled/",
         component: UserScheduledPage,
-    },
-    [RouteNameType.ScheduleRoomDetailPage]: {
-        title: "ScheduleRoomDetailPage",
-        path: "/user/scheduled/info/:periodicUUID",
-        component: ScheduleRoomDetailPage,
     },
     [RouteNameType.PeriodicRoomDetailPage]: {
         title: "PeriodicRoomDetailPage",
@@ -153,11 +144,6 @@ export const routeConfig = {
         title: "HotKeySettingPage",
         path: "/hotkey/",
         component: HotKeySettingPage,
-    },
-    [RouteNameType.FeedbackPage]: {
-        title: "FeedbackPage",
-        path: "/feedback/",
-        component: FeedbackPage,
     },
     [RouteNameType.AboutPage]: {
         title: "AboutPage",

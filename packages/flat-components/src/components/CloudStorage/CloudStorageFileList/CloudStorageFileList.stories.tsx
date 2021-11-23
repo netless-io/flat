@@ -8,6 +8,10 @@ import { CloudStorageFile } from "../types";
 
 const chance = new Chance();
 
+/**
+ * TODO: we forget set i18n in current file!!!
+ */
+
 const storyMeta: Meta = {
     title: "CloudStorage/CloudStorageFileList",
     component: CloudStorageFileList,

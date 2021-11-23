@@ -64,9 +64,9 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
                     endTime: values.endTime.valueOf(),
                     title: values.title,
                     type: values.type,
-                    docs: [],
                 }),
             );
+            // TODO: chinese??? i18n!
             void message.success("修改成功");
             history.goBack();
         } catch (e) {

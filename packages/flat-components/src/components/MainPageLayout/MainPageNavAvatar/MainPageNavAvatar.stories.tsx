@@ -14,6 +14,10 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
+/**
+ * TODO: we forget set i18n in current file!!!
+ */
+
 export const Overview: Story<PropsWithChildren<MainPageNavAvatarProps>> = args => (
     <div className="vh-100 pa3">
         <MainPageNavAvatar {...args} />

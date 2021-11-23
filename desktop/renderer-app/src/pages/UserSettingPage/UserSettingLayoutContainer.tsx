@@ -3,7 +3,6 @@ import generalSVG from "./icons/general.svg";
 import aboutSVG from "./icons/about.svg";
 import hotkeySVG from "./icons/hotkey.svg";
 import "./UserSettingLayoutContainer.less";
-// import feedbackSVG from "./icons/feedback.svg";
 
 import React from "react";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
@@ -28,12 +27,6 @@ export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactE
             title: t("shortcut-settings"),
             route: routeConfig[RouteNameType.HotKeySettingPage].path,
         },
-        // {
-        //     key: routeConfig[RouteNameType.FeedbackPage].path,
-        //     icon: (): React.ReactNode => <img src={feedbackSVG} />,
-        //     title: "吐个槽",
-        //     route: routeConfig[RouteNameType.FeedbackPage].path,
-        // },
         {
             key: routeConfig[RouteNameType.AboutPage].path,
             icon: (): React.ReactNode => <img src={aboutSVG} />,

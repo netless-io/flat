@@ -8,6 +8,10 @@ import EditRoomPage from "../../components/EditRoomPage";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { errorTips } from "../../components/Tips/ErrorTips";
 
+/**
+ * TODO: we forget set i18n in current file!!!
+ */
+
 export interface PeriodicSubRoomFormProps {
     roomUUID: string;
     periodicUUID: string;

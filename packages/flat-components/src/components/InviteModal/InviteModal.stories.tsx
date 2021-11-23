@@ -11,6 +11,10 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
+/**
+ * TODO: we forget set i18n in current file!!!
+ */
+
 export const Overview: Story<InviteModalProps> = args => (
     <div className="vh-75 mw8-ns">
         <InviteModal {...args} />

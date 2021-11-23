@@ -20,46 +20,28 @@ import {
     PeriodicSubRoomInfoPayload,
     recordInfo,
 } from "../api-middleware/flatServer";
-import { RoomDoc, RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
+import { RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
 import { globalStore } from "./GlobalStore";
 import { configStore } from "./config-store";
 
 // Sometime we may only have pieces of the room info
 /** Ordinary room + periodic sub-room */
 export interface RoomItem {
-    /** 普通房间或周期性房间子房间的 uuid */
     roomUUID: string;
-    /** 房间所有者的 uuid */
     ownerUUID: string;
-    /** invite code of room */
     inviteCode?: string;
-    /** 房间类型 */
     roomType?: RoomType;
-    /** 子房间隶属的周期性房间 uuid */
     periodicUUID?: string;
-    /** 房间所有者的名称 */
     ownerUserName?: string;
-    /** 房间标题 */
     title?: string;
-    /** 房间状态 */
     roomStatus?: RoomStatus;
-    /** 区域 */
     region?: Region;
-    /** 房间开始时间 */
     beginTime?: number;
-    /** 结束时间 */
     endTime?: number;
-    /** 上一节课的开始时间 */
     previousPeriodicRoomBeginTime?: number;
-    /** 下一节课的结束时间 */
     nextPeriodicRoomEndTime?: number;
-    /** 当前周期性房间下一共有多少节课 */
     count?: number;
-    /** 课件 */
-    docs?: RoomDoc[];
-    /** 是否存在录制(只有历史记录才会有) */
     hasRecord?: boolean;
-    /** 录制记录 */
     recordings?: Array<{
         beginTime: number;
         endTime: number;
@@ -97,12 +79,9 @@ export class RoomStore {
 
         const roomUUID = await createOrdinaryRoom(payload);
         configStore.setRegion(payload.region);
-        const { docs, ...restPayload } = payload;
+        const { ...restPayload } = payload;
         this.updateRoom(roomUUID, globalStore.userUUID, {
             ...restPayload,
-            docs:
-                docs &&
-                docs.map(doc => ({ docType: doc.type, docUUID: doc.uuid, isPreload: false })),
             roomUUID,
         });
         return roomUUID;

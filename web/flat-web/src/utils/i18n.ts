@@ -22,7 +22,6 @@ void i18next
     });
 
 /**
- * i18next 实例
  * ```tsx
  * // class component
  * import { withTranslation, WithTranslation } from 'react-i18next';
