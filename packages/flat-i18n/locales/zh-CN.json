@@ -374,5 +374,12 @@
     "file-download-failed": "资源文件获取失败",
     "file-unzip-failed": "资源文件转码失败",
     "file-upload-failed": "资源文件上传失败"
-  }
+  },
+  "no-device-permission": "未开启权限",
+  "speaker": "扬声器",
+  "enable-camera-permission-tip": "请开启浏览器的摄像头使用权限",
+  "device-test": "设备检测",
+  "close-tip": "不再提示",
+  "device-test-option": "设备检测选项",
+  "turn-on-device-test": "进入房间时开启"
 }

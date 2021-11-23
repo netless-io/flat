@@ -374,5 +374,12 @@
     "file-download-failed": "Cannot retrieve file for processing",
     "file-unzip-failed": "File processing failed",
     "file-upload-failed": "File upload failed"
-  }
+  },
+  "no-device-permission": "No permission",
+  "speaker": "Speaker",
+  "enable-camera-permission-tip": "Missing permission for camera access",
+  "device-test": "Devices Test",
+  "close-tip": "Close tip",
+  "device-test-option": "Device test option",
+  "turn-on-device-test": "Turn on when join the room"
 }

@@ -99,4 +99,8 @@ export const routePages: RoutePages = {
         title: "ResourcePreviewPage",
         component: () => import("../pages/ResourcePreviewPage"),
     },
+    [RouteNameType.DevicesTestPage]: {
+        title: "DevicesTestPage",
+        component: () => import("../pages/DevicesTestPage"),
+    },
 };
