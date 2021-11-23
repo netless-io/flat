@@ -85,8 +85,7 @@
     "start": "vite --open",
     "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" vite build",
     "serve": "vite preview",
-    "lint": "lint-staged",
-    "fix": "eslint --fix 'src/**/*.{ts, tsx}' 'typings/*.ts'"
+    "lint": "lint-staged"
   },
   "resolutions": {
     "@vitejs/plugin-legacy/**/@babel/standalone": "7.13.9"

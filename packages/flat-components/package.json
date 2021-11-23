@@ -25,7 +25,6 @@
   },
   "scripts": {
     "lint": "lint-staged",
-    "fix": "eslint --fix 'src/**/*.{ts, tsx}' 'typings/*.ts'",
     "start": "start-storybook -p 6006 -s public",
     "build": "build-storybook -s public"
   },
