@@ -100,13 +100,6 @@ export class RoomStore {
         const { docs, ...restPayload } = payload;
         this.updateRoom(roomUUID, globalStore.userUUID, {
             ...restPayload,
-            docs:
-                docs &&
-                docs.map(doc => ({
-                    docType: doc.type,
-                    docUUID: doc.uuid,
-                    isPreload: false,
-                })),
             roomUUID,
         });
         return roomUUID;
