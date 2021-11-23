@@ -33,7 +33,12 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
 
     useEffect(() => {
         if (periodicUUID) {
-            roomStore.syncPeriodicSubRoomInfo({ roomUUID, periodicUUID }).catch(errorTips);
+            roomStore
+                .syncPeriodicSubRoomInfo({
+                    roomUUID,
+                    periodicUUID,
+                })
+                .catch(errorTips);
         } else {
             roomStore.syncOrdinaryRoomInfo(roomUUID).catch(errorTips);
         }

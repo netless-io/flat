@@ -80,7 +80,9 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
     return (
         <div
             {...restProps}
-            className={classNames(className, "video-avatar-wrap", { "is-mini": mini })}
+            className={classNames(className, "video-avatar-wrap", {
+                "is-mini": mini,
+            })}
         >
             {canvas}
             {!avatarUser.camera && (

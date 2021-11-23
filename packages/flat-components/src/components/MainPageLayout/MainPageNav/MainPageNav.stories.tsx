@@ -25,7 +25,9 @@ export default storyMeta;
  * TODO: we forget set i18n in current file!!!
  */
 
-const sideMenuStyles: React.CSSProperties = { fontSize: 25 };
+const sideMenuStyles: React.CSSProperties = {
+    fontSize: 25,
+};
 
 export const Overview: Story<PropsWithChildren<MainPageNavProps>> = args => (
     <div className="vh-100 pa3">

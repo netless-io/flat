@@ -34,7 +34,10 @@ export const SystemCheckPage = (): React.ReactElement => {
     useEffect(() => {
         const onError = (e: Error): void => {
             console.error("rtc error", e);
-            resultRef.current = { content: t("testing-failed"), hasError: true };
+            resultRef.current = {
+                content: t("testing-failed"),
+                hasError: true,
+            };
         };
 
         // see: https://docs.agora.io/en/Voice/API%20Reference/electron/globals.html#agoranetworkquality
@@ -62,9 +65,15 @@ export const SystemCheckPage = (): React.ReactElement => {
 
     useEffect(() => {
         if (networkSituation >= 5) {
-            resultRef.current = { content: networkDescription[networkSituation], hasError: true };
+            resultRef.current = {
+                content: networkDescription[networkSituation],
+                hasError: true,
+            };
         } else {
-            resultRef.current = { content: "", hasError: false };
+            resultRef.current = {
+                content: "",
+                hasError: false,
+            };
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [networkSituation]);

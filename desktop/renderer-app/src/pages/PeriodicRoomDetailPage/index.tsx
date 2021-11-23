@@ -72,7 +72,10 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
     ): Promise<void> => {
         if (roomUUID) {
             try {
-                await cancelPeriodicSubRoom({ roomUUID, periodicUUID });
+                await cancelPeriodicSubRoom({
+                    roomUUID,
+                    periodicUUID,
+                });
 
                 const nextList = [...cancelRoomUUIDList, roomUUID];
                 const nextRooms = rooms.filter(room => {

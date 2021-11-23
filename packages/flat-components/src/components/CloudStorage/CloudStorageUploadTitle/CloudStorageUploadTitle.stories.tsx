@@ -19,33 +19,54 @@ export const Overview: Story<CloudStorageUploadTitleProps> = args => (
 );
 Overview.args = {
     finishWithError: faker.datatype.boolean(),
-    total: chance.integer({ min: 0, max: 200 }),
+    total: chance.integer({
+        min: 0,
+        max: 200,
+    }),
 };
-Overview.args.finished = chance.integer({ min: 0, max: Overview.args.total! });
+Overview.args.finished = chance.integer({
+    min: 0,
+    max: Overview.args.total!,
+});
 
 export const Uploading: Story<CloudStorageUploadTitleProps> = args => (
     <CloudStorageUploadTitle {...args} />
 );
 Uploading.args = {
     finishWithError: false,
-    total: chance.integer({ min: 0, max: 200 }),
+    total: chance.integer({
+        min: 0,
+        max: 200,
+    }),
 };
-Uploading.args.finished = chance.integer({ min: 0, max: Uploading.args.total! - 1 });
+Uploading.args.finished = chance.integer({
+    min: 0,
+    max: Uploading.args.total! - 1,
+});
 
 export const Error: Story<CloudStorageUploadTitleProps> = args => (
     <CloudStorageUploadTitle {...args} />
 );
 Error.args = {
     finishWithError: true,
-    total: chance.integer({ min: 0, max: 200 }),
+    total: chance.integer({
+        min: 0,
+        max: 200,
+    }),
 };
-Error.args.finished = chance.integer({ min: 0, max: Error.args.total! });
+Error.args.finished = chance.integer({
+    min: 0,
+    max: Error.args.total!,
+});
 
 export const Success: Story<CloudStorageUploadTitleProps> = args => (
     <CloudStorageUploadTitle {...args} />
 );
 Success.args = {
     finishWithError: false,
-    total: chance.integer({ min: 0, max: 200 }),
+    total: chance.integer({
+        min: 0,
+        max: 200,
+    }),
 };
 Success.args.finished = Success.args.total!;

@@ -18,11 +18,15 @@ export class AppRouteErrorBoundary extends React.PureComponent<
 > {
     public constructor(props: AppRouteErrorBoundaryProps) {
         super(props);
-        this.state = { hasError: false };
+        this.state = {
+            hasError: false,
+        };
     }
 
     public static getDerivedStateFromError(): Partial<AppRouteErrorBoundaryState> {
-        return { hasError: true };
+        return {
+            hasError: true,
+        };
     }
 
     public componentDidCatch(error: any, errorInfo: any): void {

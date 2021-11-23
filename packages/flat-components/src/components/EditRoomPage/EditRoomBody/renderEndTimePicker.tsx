@@ -29,7 +29,11 @@ export function renderEndTimePicker(
                 const beginTime: EditRoomFormValues["beginTime"] = form.getFieldValue("beginTime");
                 const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
                 if (isBefore(value, compareTime)) {
-                    throw new Error(t("room-duration-limit", { minutes: MIN_CLASS_DURATION }));
+                    throw new Error(
+                        t("room-duration-limit", {
+                            minutes: MIN_CLASS_DURATION,
+                        }),
+                    );
                 }
                 return Promise.resolve();
             },

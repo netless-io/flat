@@ -45,7 +45,9 @@ export const ErrorPage: React.FC = () => {
             <p className="error-page-title">{t("error-page-title")}</p>
             <p className="error-page-description">{t("error-page-description")}</p>
             <Button size="large" onClick={goHome}>
-                {t("error-page-return-home", { countdown })}
+                {t("error-page-return-home", {
+                    countdown,
+                })}
             </Button>
         </div>
     );

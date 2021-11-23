@@ -180,7 +180,9 @@ export function renderBeginTimePicker(
         const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
 
         if (compareMinute(endTime, compareTime) < 0) {
-            form.setFieldsValue({ endTime: compareTime });
+            form.setFieldsValue({
+                endTime: compareTime,
+            });
         }
 
         syncPeriodicEndAmount(form, beginTime, periodic);

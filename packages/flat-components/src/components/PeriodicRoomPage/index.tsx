@@ -48,10 +48,25 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
 
     const lang = i18n.language;
     const locale = lang.startsWith("zh") ? zhCN : enUS;
-    const yearMonthFormat = formatWithOptions({ locale }, "yyyy/MM");
-    const dayFormat = formatWithOptions({ locale }, "dd");
+    const yearMonthFormat = formatWithOptions(
+        {
+            locale,
+        },
+        "yyyy/MM",
+    );
+    const dayFormat = formatWithOptions(
+        {
+            locale,
+        },
+        "dd",
+    );
     const timeSuffixFormat = format("HH:mm");
-    const dayWeekFormat = formatWithOptions({ locale }, "yyyy/MM/dd iii");
+    const dayWeekFormat = formatWithOptions(
+        {
+            locale,
+        },
+        "yyyy/MM/dd iii",
+    );
 
     const hasRunning = rooms.some(room =>
         [RoomStatus.Started, RoomStatus.Paused].includes(room?.roomStatus as RoomStatus),

@@ -63,7 +63,9 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
                 <div className="edit-room-tips">
                     {periodic.weeks.length > 0 ? (
                         <div className="edit-room-tips-title">
-                            {t("every-frequency", { freq: getWeekNames(periodic.weeks, lang) })}
+                            {t("every-frequency", {
+                                freq: getWeekNames(periodic.weeks, lang),
+                            })}
                         </div>
                     ) : (
                         <div>{t("no-frequency-selected")}</div>
@@ -129,7 +131,10 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
         function onWeekRateChanged(weeks: Week[]): void {
             const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
                 form.getFieldsValue(["beginTime", "periodic"]);
-            syncPeriodicEndAmount(form, beginTime, { ...periodic, weeks });
+            syncPeriodicEndAmount(form, beginTime, {
+                ...periodic,
+                weeks,
+            });
         }
 
         function onPeriodicRateChanged(value: string | number | undefined): void {
@@ -137,7 +142,10 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
             if (!Number.isNaN(rate)) {
                 const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
                     form.getFieldsValue(["beginTime", "periodic"]);
-                syncPeriodicEndAmount(form, beginTime, { ...periodic, rate });
+                syncPeriodicEndAmount(form, beginTime, {
+                    ...periodic,
+                    rate,
+                });
             }
         }
 
@@ -145,7 +153,10 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
             if (date) {
                 const { beginTime, periodic }: Pick<EditRoomFormValues, "beginTime" | "periodic"> =
                     form.getFieldsValue(["beginTime", "periodic"]);
-                syncPeriodicEndAmount(form, beginTime, { ...periodic, endTime: date });
+                syncPeriodicEndAmount(form, beginTime, {
+                    ...periodic,
+                    endTime: date,
+                });
             }
         }
 

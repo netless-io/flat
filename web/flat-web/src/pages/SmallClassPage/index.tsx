@@ -186,7 +186,9 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         return (
             <div
                 className="realtime-avatars-wrap"
-                style={{ maxWidth: `${whiteboardStore.smallClassAvatarWrapMaxWidth}px` }}
+                style={{
+                    maxWidth: `${whiteboardStore.smallClassAvatarWrapMaxWidth}px`,
+                }}
             >
                 <div className="realtime-avatars">
                     <SmallClassAvatar

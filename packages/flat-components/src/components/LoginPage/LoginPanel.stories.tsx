@@ -14,11 +14,17 @@ const storyMeta: Meta = {
             viewports: {
                 desktop: {
                     name: "Desktop",
-                    styles: { width: "960px", height: "640px" },
+                    styles: {
+                        width: "960px",
+                        height: "640px",
+                    },
                 },
                 web: {
                     name: "Web",
-                    styles: { width: "1440px", height: "674px" },
+                    styles: {
+                        width: "1440px",
+                        height: "674px",
+                    },
                 },
             },
             defaultViewport: "desktop",
@@ -37,7 +43,9 @@ const handleLogin = (loginChannel: LoginChannelType): React.ReactElement | undef
             return <img src={QRCodeSVG} />;
         }
         case "github": {
-            Modal.info({ content: "This is Github Login" });
+            Modal.info({
+                content: "This is Github Login",
+            });
             return;
         }
         default: {

@@ -13,7 +13,9 @@ const storyMeta: Meta = {
     title: "ClassroomPage/CloseRoomConfirmModal",
     component: CloseRoomConfirmModal,
     parameters: {
-        docs: { page: null },
+        docs: {
+            page: null,
+        },
     },
 };
 

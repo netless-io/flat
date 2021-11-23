@@ -21,13 +21,17 @@ export const RoomListDate: React.FC<RoomListDateProps> = ({ date }) => {
         <div className="room-list-date">
             <img src={calendarSVG} alt="" />
             <time dateTime={date.toUTCString()}>
-                {format(date, "MMM do", { locale: lang?.startsWith("zh") ? zhCN : enUS })}
+                {format(date, "MMM do", {
+                    locale: lang?.startsWith("zh") ? zhCN : enUS,
+                })}
                 {" · "}
                 {isToday(date)
                     ? t("today")
                     : isTomorrow(date)
                     ? t("tomorrow")
-                    : format(date, "E", { locale: lang?.startsWith("zh") ? zhCN : enUS })}
+                    : format(date, "E", {
+                          locale: lang?.startsWith("zh") ? zhCN : enUS,
+                      })}
             </time>
         </div>
     );
@@ -69,7 +73,9 @@ export function RoomListItem<T extends string = string>({
     return (
         <div className="room-list-item">
             <div
-                className={classNames("room-list-item-left", { pointer: !!onClick })}
+                className={classNames("room-list-item-left", {
+                    pointer: !!onClick,
+                })}
                 onClick={onClick}
             >
                 <div className="room-list-item-title">{title}</div>
@@ -174,7 +180,10 @@ export function RoomListSkeletons(): ReactElement {
                         key={i}
                         active
                         title={false}
-                        paragraph={{ rows: 4, width: ["13%", "50%", "13%", "13%"] }}
+                        paragraph={{
+                            rows: 4,
+                            width: ["13%", "50%", "13%", "13%"],
+                        }}
                     />
                 ))}
         </div>

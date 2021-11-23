@@ -15,5 +15,7 @@ Overview.args = {
     date: faker.date.future(),
 };
 Overview.argTypes = {
-    date: { control: false },
+    date: {
+        control: false,
+    },
 };

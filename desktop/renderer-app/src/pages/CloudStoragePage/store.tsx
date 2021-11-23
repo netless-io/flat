@@ -120,13 +120,27 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         file: CloudStorageFileUI,
     ): Array<{ key: React.Key; name: React.ReactNode }> => {
         const menus: Array<{ key: FileMenusKey; name: ReactNode }> = [];
-        menus.push({ key: "download", name: this.i18n.t("download") });
+        menus.push({
+            key: "download",
+            name: this.i18n.t("download"),
+        });
         if (file.convert !== "error") {
-            menus.push({ key: "rename", name: this.i18n.t("rename") });
+            menus.push({
+                key: "rename",
+                name: this.i18n.t("rename"),
+            });
         }
         menus.push({
             key: "delete",
-            name: <span style={{ color: "red" }}>{this.i18n.t("delete")}</span>,
+            name: (
+                <span
+                    style={{
+                        color: "red",
+                    }}
+                >
+                    {this.i18n.t("delete")}
+                </span>
+            ),
         });
         return menus;
     };
@@ -162,7 +176,9 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             try {
                 if (this.compact) {
                     if (file.convert === "error") {
-                        Modal.info({ content: this.i18n.t("the-courseware-cannot-be-transcoded") });
+                        Modal.info({
+                            content: this.i18n.t("the-courseware-cannot-be-transcoded"),
+                        });
                     } else {
                         this.insertCourseware(file);
                     }
@@ -254,9 +270,15 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 return;
             } else {
                 if (file?.external) {
-                    await renameExternalFile({ fileUUID, fileName: fileNameObject.fullName });
+                    await renameExternalFile({
+                        fileUUID,
+                        fileName: fileNameObject.fullName,
+                    });
                 } else {
-                    await renameFile({ fileUUID, fileName: fileNameObject.fullName });
+                    await renameFile({
+                        fileUUID,
+                        fileName: fileNameObject.fullName,
+                    });
                 }
                 runInAction(() => {
                     file.fileName = fileNameObject.fullName;
@@ -266,7 +288,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     public addExternalFile = (fileName: string, fileURL: string): Promise<void> => {
-        return addExternalFile({ fileName, url: fileURL });
+        return addExternalFile({
+            fileName,
+            url: fileURL,
+        });
     };
 
     public initialize(): () => void {
@@ -309,7 +334,9 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         this.clearRefreshFilesNowTimeout();
 
         try {
-            const { totalUsage, files: cloudFiles } = await listFiles({ page: 1 });
+            const { totalUsage, files: cloudFiles } = await listFiles({
+                page: 1,
+            });
 
             runInAction(() => {
                 this.totalUsage = totalUsage;
@@ -382,11 +409,15 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
         switch (file.convert) {
             case "converting": {
-                Modal.info({ content: this.i18n.t("please-wait-while-the-lesson-is-transcoded") });
+                Modal.info({
+                    content: this.i18n.t("please-wait-while-the-lesson-is-transcoded"),
+                });
                 return;
             }
             case "error": {
-                Modal.info({ content: this.i18n.t("the-courseware-cannot-be-transcoded") });
+                Modal.info({
+                    content: this.i18n.t("the-courseware-cannot-be-transcoded"),
+                });
                 return;
             }
             default: {
@@ -415,8 +446,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 }
             });
             await Promise.all([
-                removeExternalFiles({ fileUUIDs: externalFiles }),
-                removeFiles({ fileUUIDs: normalFiles }),
+                removeExternalFiles({
+                    fileUUIDs: externalFiles,
+                }),
+                removeFiles({
+                    fileUUIDs: normalFiles,
+                }),
             ]);
             runInAction(() => {
                 for (const fileUUID of fileUUIDs) {
@@ -581,7 +616,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             }
 
             try {
-                await convertFinish({ fileUUID: file.fileUUID, region: file.region });
+                await convertFinish({
+                    fileUUID: file.fileUUID,
+                    region: file.region,
+                });
             } catch (e) {
                 // ignore error when notifying server finish status
                 console.warn(e);
@@ -627,7 +665,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             }
 
             try {
-                await convertFinish({ fileUUID: file.fileUUID, region: file.region });
+                await convertFinish({
+                    fileUUID: file.fileUUID,
+                    region: file.region,
+                });
             } catch (e) {
                 // ignore error when notifying server finish status
                 console.warn(e);

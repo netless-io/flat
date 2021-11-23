@@ -31,7 +31,14 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
     onCoursewareInserted,
 }) {
     const { t, i18n } = useTranslation();
-    const [store] = useState(() => new CloudStorageStore({ compact, insertCourseware, i18n }));
+    const [store] = useState(
+        () =>
+            new CloudStorageStore({
+                compact,
+                insertCourseware,
+                i18n,
+            }),
+    );
 
     useEffect(() => store.initialize(), [store]);
 
@@ -119,7 +126,10 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 const img = new Image();
                 img.onload = () => resolve(img);
                 img.onerror = () =>
-                    resolve({ width: window.innerWidth, height: window.innerHeight });
+                    resolve({
+                        width: window.innerWidth,
+                        height: window.innerHeight,
+                    });
                 img.src = file.fileURL;
             }));
         } else {
@@ -163,7 +173,10 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
         if (file.convert !== "success") {
             if (convertingStatus.status === "Finished" || convertingStatus.status === "Fail") {
                 try {
-                    await convertFinish({ fileUUID: file.fileUUID, region });
+                    await convertFinish({
+                        fileUUID: file.fileUUID,
+                        region,
+                    });
                 } catch (e) {
                     if (
                         e instanceof ServerRequestError &&
@@ -178,7 +191,9 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 }
                 if (convertingStatus.status === "Fail") {
                     void message.error(
-                        t("transcoding-failure-reason", { reason: convertingStatus.failedReason }),
+                        t("transcoding-failure-reason", {
+                            reason: convertingStatus.failedReason,
+                        }),
                     );
                 }
             } else {

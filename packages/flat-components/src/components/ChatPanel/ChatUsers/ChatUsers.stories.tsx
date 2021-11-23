@@ -15,7 +15,11 @@ const storyMeta: Meta = {
 export default storyMeta;
 
 export const Overview: Story<ChatUsersProps> = args => (
-    <div style={{ height: "80vh" }}>
+    <div
+        style={{
+            height: "80vh",
+        }}
+    >
         <ChatUsers {...args} />
     </div>
 );

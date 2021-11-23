@@ -53,7 +53,10 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
 
     const [isShowController, setShowController] = useState(false);
     const hideControllerTimeoutRef = useRef<number>();
-    const lastMouseRef = useRef({ lastMouseX: -100, lastMouseY: -100 });
+    const lastMouseRef = useRef({
+        lastMouseX: -100,
+        lastMouseY: -100,
+    });
 
     useEffect(() => {
         ipcAsyncByMainWindow("disable-window", {
@@ -185,7 +188,10 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
 
     function handleMouseMove(evt: React.MouseEvent<HTMLDivElement>): void {
         const { lastMouseX, lastMouseY } = lastMouseRef.current;
-        lastMouseRef.current = { lastMouseX: evt.clientX, lastMouseY: evt.clientY };
+        lastMouseRef.current = {
+            lastMouseX: evt.clientX,
+            lastMouseY: evt.clientY,
+        };
         // ignore movement within a few pixels
         if (Math.abs(evt.clientX - lastMouseX) < 2 || Math.abs(evt.clientY - lastMouseY) < 2) {
             return;

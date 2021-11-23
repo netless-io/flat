@@ -16,7 +16,9 @@ import { useTranslation } from "react-i18next";
 
 const getInitialBeginTime = (): Date => {
     const now = new Date();
-    let time = roundToNearestMinutes(now, { nearestTo: 30 });
+    let time = roundToNearestMinutes(now, {
+        nearestTo: 30,
+    });
     if (isBefore(time, now)) {
         time = addMinutes(time, 30);
     }
@@ -38,7 +40,9 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
         const scheduleBeginTime = getInitialBeginTime();
         return {
             title: globalStore.userInfo?.name
-                ? t("schedule-room-default-title", { name: globalStore.userInfo.name })
+                ? t("schedule-room-default-title", {
+                      name: globalStore.userInfo.name,
+                  })
                 : "",
             type: RoomType.BigClass,
             isPeriodic: false,

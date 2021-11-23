@@ -34,7 +34,9 @@ export default WeekRateSelector;
 
 export function getWeekName(week: Week): string {
     const t = addDays(startOfWeek(new Date()), week);
-    return format(t, "iii", { locale: zhCN });
+    return format(t, "iii", {
+        locale: zhCN,
+    });
 }
 
 export function getWeekNames(weeks: Week[]): string {

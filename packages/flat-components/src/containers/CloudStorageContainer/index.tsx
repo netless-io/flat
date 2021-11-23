@@ -70,7 +70,9 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                                 })}
                             >
                                 {store.totalUsageHR
-                                    ? t("used-storage", { usage: store.totalUsageHR })
+                                    ? t("used-storage", {
+                                          usage: store.totalUsageHR,
+                                      })
                                     : "-"}
                             </small>
                         </div>

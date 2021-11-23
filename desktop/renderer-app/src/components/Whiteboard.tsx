@@ -135,7 +135,10 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({ whiteb
                 const rect = (event.target as HTMLDivElement).getBoundingClientRect();
                 const rx = event.clientX - rect.left;
                 const ry = event.clientY - rect.top;
-                const { x, y } = room.convertToPointInWorld({ x: rx, y: ry });
+                const { x, y } = room.convertToPointInWorld({
+                    x: rx,
+                    y: ry,
+                });
                 await onDropImage(file, x, y, room);
             }
         },

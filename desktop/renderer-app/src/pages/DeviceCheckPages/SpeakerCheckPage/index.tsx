@@ -108,7 +108,10 @@ export const SpeakerCheckPage = (): React.ReactElement => {
             pathname: routeConfig.MicrophoneCheckPage.path,
             state: {
                 ...location.state,
-                speakerCheck: { content: "", hasError: false },
+                speakerCheck: {
+                    content: "",
+                    hasError: false,
+                },
             },
         });
     }
@@ -118,7 +121,10 @@ export const SpeakerCheckPage = (): React.ReactElement => {
             pathname: routeConfig.MicrophoneCheckPage.path,
             state: {
                 ...location.state,
-                speakerCheck: { content: "", hasError: true },
+                speakerCheck: {
+                    content: "",
+                    hasError: true,
+                },
             },
         });
     }

@@ -25,7 +25,14 @@ export const AvatarCanvas = observer<AvatarCanvasProps>(function AvatarCanvas({
     rtcRoom,
 }) {
     const { t } = useTranslation();
-    const [rtcAvatar] = useState(() => new RtcAvatar({ rtc: rtcRoom, userUUID, avatarUser }));
+    const [rtcAvatar] = useState(
+        () =>
+            new RtcAvatar({
+                rtc: rtcRoom,
+                userUUID,
+                avatarUser,
+            }),
+    );
 
     useEffect(() => {
         void rtcAvatar.setCamera(avatarUser.camera);

@@ -25,7 +25,9 @@ Overview.args = {
     generateAvatar: () => "http://placekitten.com/64/64",
 };
 Overview.argTypes = {
-    updateDeviceState: { action: "updateDeviceState" },
+    updateDeviceState: {
+        action: "updateDeviceState",
+    },
 };
 
 export const LongUserName: Story<SmallVideoAvatarProps> = args => <SmallVideoAvatar {...args} />;
@@ -42,7 +44,9 @@ LongUserName.args = {
     },
 };
 LongUserName.argTypes = {
-    updateDeviceState: { action: "updateDeviceState" },
+    updateDeviceState: {
+        action: "updateDeviceState",
+    },
 };
 
 export const Placeholder: Story<SmallVideoAvatarProps> = args => <SmallVideoAvatar {...args} />;
@@ -53,5 +57,7 @@ Placeholder.args = {
     avatarUser: undefined,
 };
 Placeholder.argTypes = {
-    updateDeviceState: { action: "updateDeviceState" },
+    updateDeviceState: {
+        action: "updateDeviceState",
+    },
 };

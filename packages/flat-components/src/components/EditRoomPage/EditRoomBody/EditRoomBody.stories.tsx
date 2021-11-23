@@ -24,5 +24,9 @@ Overview.args = {
     },
 };
 Overview.argTypes = {
-    type: { control: { type: "select" } },
+    type: {
+        control: {
+            type: "select",
+        },
+    },
 };

@@ -105,14 +105,35 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
     const regionMenu = (
         <Menu
             className="edit-room-body-menu-item"
-            style={{ width: "auto" }}
+            style={{
+                width: "auto",
+            }}
             onClick={e => setRegion(e.key as Region)}
         >
-            <div style={{ padding: "4px 12px 0 14px", color: "gray" }}>{t("servers")}</div>
+            <div
+                style={{
+                    padding: "4px 12px 0 14px",
+                    color: "gray",
+                }}
+            >
+                {t("servers")}
+            </div>
             {regions.map(region => (
                 <Menu.Item key={region}>
-                    <img src={RegionSVG[region]} alt={region} style={{ width: 22 }} />
-                    <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
+                    <img
+                        src={RegionSVG[region]}
+                        alt={region}
+                        style={{
+                            width: 22,
+                        }}
+                    />
+                    <span
+                        style={{
+                            paddingLeft: 8,
+                        }}
+                    >
+                        {t(`region-${region}`)}
+                    </span>
                 </Menu.Item>
             ))}
         </Menu>
@@ -135,8 +156,14 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                             name="title"
                             required={false}
                             rules={[
-                                { required: true, message: t("enter-room-theme") },
-                                { max: 50, message: t("theme-can-be-up-to-50-characters") },
+                                {
+                                    required: true,
+                                    message: t("enter-room-theme"),
+                                },
+                                {
+                                    max: 50,
+                                    message: t("theme-can-be-up-to-50-characters"),
+                                },
                             ]}
                         >
                             <Input
@@ -168,7 +195,10 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                                         <img
                                             src={RegionSVG[region]}
                                             alt={region}
-                                            style={{ cursor: "pointer", width: 22 }}
+                                            style={{
+                                                cursor: "pointer",
+                                                width: 22,
+                                            }}
                                         />
                                     </Dropdown>
                                 }
@@ -310,7 +340,10 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
 
     function onSubmitForm(): void {
         if (!loading && isFormVetted) {
-            onSubmit({ ...form.getFieldsValue(true), region });
+            onSubmit({
+                ...form.getFieldsValue(true),
+                region,
+            });
         }
     }
 

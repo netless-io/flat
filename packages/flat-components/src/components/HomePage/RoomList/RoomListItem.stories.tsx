@@ -22,17 +22,32 @@ Overview.args = {
     status: "upcoming",
     buttons: [
         [
-            { key: "modify", text: "修改" },
-            { key: "cancel", text: "取消" },
+            {
+                key: "modify",
+                text: "修改",
+            },
+            {
+                key: "cancel",
+                text: "取消",
+            },
         ],
-        { key: "enter", text: "进入" },
+        {
+            key: "enter",
+            text: "进入",
+        },
     ],
     isPeriodic: faker.datatype.boolean(),
 };
 Overview.argTypes = {
-    beginTime: { control: "date" },
-    endTime: { control: "date" },
-    extra: { control: false },
+    beginTime: {
+        control: "date",
+    },
+    endTime: {
+        control: "date",
+    },
+    extra: {
+        control: false,
+    },
 };
 
 export const LongRoomName: Story<RoomListItemProps<string>> = args => <RoomListItem {...args} />;
@@ -43,13 +58,26 @@ LongRoomName.args = {
     status: "upcoming",
     buttons: [
         [
-            { key: "modify", text: "修改" },
-            { key: "cancel", text: "取消" },
+            {
+                key: "modify",
+                text: "修改",
+            },
+            {
+                key: "cancel",
+                text: "取消",
+            },
         ],
-        { key: "enter", text: "进入" },
+        {
+            key: "enter",
+            text: "进入",
+        },
     ],
     isPeriodic: faker.datatype.boolean(),
 };
 LongRoomName.argTypes = {
-    title: { table: { category: "Showcase" } },
+    title: {
+        table: {
+            category: "Showcase",
+        },
+    },
 };

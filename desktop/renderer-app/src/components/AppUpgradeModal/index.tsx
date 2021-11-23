@@ -76,7 +76,9 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
                     <div className="app-upgrade-modal-progress" />
                     <div
                         className="app-upgrade-active-progress"
-                        style={{ width: `${upgradePercent}%` }}
+                        style={{
+                            width: `${upgradePercent}%`,
+                        }}
                     />
                     {upgradeFail && (
                         <div>
@@ -94,7 +96,9 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
             ) : (
                 <div>
                     <span className="app-upgrade-modal-font">
-                        {t("new-version-tips", { version: updateInfo?.version || " " })}
+                        {t("new-version-tips", {
+                            version: updateInfo?.version || " ",
+                        })}
                     </span>
                     <div className="app-upgrade-modal-btn">
                         <Button type="primary" onClick={upgradeStart}>

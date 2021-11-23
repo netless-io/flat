@@ -88,7 +88,13 @@ export const FileTitles: Story<CloudStorageFileTitleProps> = ({ onTitleClick }) 
     );
 };
 FileTitles.argTypes = {
-    fileName: { control: false },
-    iconClassName: { control: false },
-    titleClassName: { control: false },
+    fileName: {
+        control: false,
+    },
+    iconClassName: {
+        control: false,
+    },
+    titleClassName: {
+        control: false,
+    },
 };

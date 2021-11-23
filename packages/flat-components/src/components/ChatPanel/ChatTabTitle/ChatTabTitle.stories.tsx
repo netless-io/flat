@@ -15,5 +15,9 @@ Overview.args = {
     unreadCount: faker.datatype.number(20),
 };
 Overview.argTypes = {
-    unreadCount: { control: { type: "number" } },
+    unreadCount: {
+        control: {
+            type: "number",
+        },
+    },
 };

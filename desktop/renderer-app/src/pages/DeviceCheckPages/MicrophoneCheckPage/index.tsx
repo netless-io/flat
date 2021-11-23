@@ -21,7 +21,12 @@ interface SpeakerVolumeProps {
 const SpeakerVolume = observer<SpeakerVolumeProps>(function SpeakerVolume({ percent }) {
     return (
         <div className="speaker-audio-wrapper">
-            <div className="speaker-audio-volume" style={{ width: `${percent}%` }} />
+            <div
+                className="speaker-audio-volume"
+                style={{
+                    width: `${percent}%`,
+                }}
+            />
             <div className="speaker-audio-mask" />
         </div>
     );
@@ -104,7 +109,9 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
                 <div className="speaker-check-btn-container">
                     <Button
                         onClick={() => {
-                            setMicCheckState({ hasError: true });
+                            setMicCheckState({
+                                hasError: true,
+                            });
                             showResultModal(true);
                         }}
                     >
@@ -113,7 +120,9 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
                     <Button
                         type="primary"
                         onClick={() => {
-                            setMicCheckState({ hasError: false });
+                            setMicCheckState({
+                                hasError: false,
+                            });
                             showResultModal(true);
                         }}
                     >

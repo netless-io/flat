@@ -14,7 +14,10 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
-const randomRoomCount = chance.integer({ min: 1, max: 50 });
+const randomRoomCount = chance.integer({
+    min: 1,
+    max: 50,
+});
 
 export const Overview: Story<PeriodicRoomPanelProps> = args => (
     <div className="vh75 mw8-ns">

@@ -96,7 +96,12 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                     <Form.Item
                         name="roomUUID"
                         label={t("room-uuid")}
-                        rules={[{ required: true, message: t("enter-room-uuid") }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: t("enter-room-uuid"),
+                            },
+                        ]}
                     >
                         <Input placeholder={t("enter-room-uuid")} ref={roomTitleInputRef} />
                     </Form.Item>
@@ -123,7 +128,9 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
         try {
             const roomUUID = await extractUUIDFromClipboard();
             if (roomUUID && validate(roomUUID) && version(roomUUID) === 4) {
-                form.setFieldsValue({ roomUUID });
+                form.setFieldsValue({
+                    roomUUID,
+                });
                 setIsFormValidated(true);
             }
         } catch {

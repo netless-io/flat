@@ -78,7 +78,9 @@ export const RoomDetailBody = observer<RoomDetailBodyProps>(function RoomDetailB
                         className="room-detail-body-content-room-count"
                         onClick={jumpToPeriodicRoomDetailPage}
                     >
-                        {t("view-all-rooms-in-periodic-rooms", { count: roomInfo.count })}
+                        {t("view-all-rooms-in-periodic-rooms", {
+                            count: roomInfo.count,
+                        })}
                     </div>
                 )}
                 <div className="room-detail-body-content-cut-line" />

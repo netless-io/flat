@@ -52,7 +52,11 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
     const isShowCancelAllHandRaising = isCreator && hasHandRaising;
 
     return (
-        <div className={classNames("chat-users-wrap", { "has-speaking": hasSpeaking })}>
+        <div
+            className={classNames("chat-users-wrap", {
+                "has-speaking": hasSpeaking,
+            })}
+        >
             {isShowCancelAllHandRaising && (
                 <div className="chat-users-cancel-hands-wrap">
                     <button className="chat-users-cancel-hands" onClick={onCancelAllHandRaising}>

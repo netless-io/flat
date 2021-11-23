@@ -16,7 +16,11 @@ const storyMeta: Meta = {
 export default storyMeta;
 
 export const Overview: Story<ChatPanelProps> = args => (
-    <div style={{ height: "80vh" }}>
+    <div
+        style={{
+            height: "80vh",
+        }}
+    >
         <ChatPanel {...args} />
     </div>
 );
@@ -50,12 +54,16 @@ Overview.args = {
             type: ChatMsgType.ChannelMessage,
             userUUID: chance.pickone(users).userUUID,
             uuid: faker.datatype.uuid(),
-            value: chance.sentence({ words: faker.datatype.number(20) }),
+            value: chance.sentence({
+                words: faker.datatype.number(20),
+            }),
         })),
     ownerUUID: faker.datatype.uuid(),
     userUUID: currentUser.userUUID,
     users,
 };
 Overview.argTypes = {
-    loadMoreRows: { action: "loadMoreRows" },
+    loadMoreRows: {
+        action: "loadMoreRows",
+    },
 };

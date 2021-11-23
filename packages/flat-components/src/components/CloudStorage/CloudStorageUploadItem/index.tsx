@@ -39,7 +39,9 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                 className={classNames("cloud-storage-upload-item-progress-bar", {
                     "is-error": status === "error",
                 })}
-                style={{ width: `${percent}%` }}
+                style={{
+                    width: `${percent}%`,
+                }}
             />
         </div>
     );

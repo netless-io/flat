@@ -27,7 +27,15 @@ export const AppRouteContainer: FC<AppRouteContainerProps> = ({ Comp, title, rou
         window.getSelection()?.removeAllRanges();
     }, []);
 
-    return <AppRouteErrorBoundary Comp={Comp} {...{ title, routeProps }} />;
+    return (
+        <AppRouteErrorBoundary
+            Comp={Comp}
+            {...{
+                title,
+                routeProps,
+            }}
+        />
+    );
 };
 
 export default AppRouteContainer;

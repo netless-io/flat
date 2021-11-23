@@ -50,19 +50,32 @@ export const InviteModal: React.FC<InviteModalProps> = ({
 
     const onCopyClicked = (): void => {
         const basePrefixText =
-            t("invite-prefix", { userName, title }) +
+            t("invite-prefix", {
+                userName,
+                title,
+            }) +
             "\n" +
-            (formattedTimeRange ? t("invite-begin-time", { time: formattedTimeRange }) : "");
+            (formattedTimeRange
+                ? t("invite-begin-time", {
+                      time: formattedTimeRange,
+                  })
+                : "");
         const baseSuffixText =
             "\n" +
             "\n" +
-            t("invite-suffix", { uuid: formatInviteCode(uuid, inviteCode) }) +
+            t("invite-suffix", {
+                uuid: formatInviteCode(uuid, inviteCode),
+            }) +
             "\n" +
-            t("join-link", { link: `${baseUrl}/join/${uuid}` });
+            t("join-link", {
+                link: `${baseUrl}/join/${uuid}`,
+            });
 
         if (periodicUUID) {
             const content = periodicWeeks
-                ? t("repeat-weeks", { weeks: getWeekNames(periodicWeeks, i18n.language) })
+                ? t("repeat-weeks", {
+                      weeks: getWeekNames(periodicWeeks, i18n.language),
+                  })
                 : "";
 
             onCopy(`${basePrefixText}${content}${baseSuffixText}`);
@@ -82,7 +95,11 @@ export const InviteModal: React.FC<InviteModalProps> = ({
             className="invite-modal"
         >
             <div className="invite-modal-header">
-                <span>{t("invite-title", { userName })}</span>
+                <span>
+                    {t("invite-title", {
+                        userName,
+                    })}
+                </span>
                 <span>{t("join-and-book-by-room-uuid")}</span>
             </div>
             <div className="invite-modal-content">
@@ -92,7 +109,13 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                 </div>
                 <div className="invite-modal-content-item">
                     <span>{t("room-uuid")}</span>
-                    <span style={{ userSelect: "text" }}>{formatInviteCode(uuid, inviteCode)}</span>
+                    <span
+                        style={{
+                            userSelect: "text",
+                        }}
+                    >
+                        {formatInviteCode(uuid, inviteCode)}
+                    </span>
                 </div>
                 {formattedTimeRange && (
                     <div className="invite-modal-content-item">
@@ -101,8 +124,16 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                     </div>
                 )}
                 <div className="invite-modal-content-item">
-                    <span>{t("join-link", { link: "" })}</span>
-                    <span style={{ userSelect: "text" }}>
+                    <span>
+                        {t("join-link", {
+                            link: "",
+                        })}
+                    </span>
+                    <span
+                        style={{
+                            userSelect: "text",
+                        }}
+                    >
                         {baseUrl}/join/{uuid}
                     </span>
                 </div>

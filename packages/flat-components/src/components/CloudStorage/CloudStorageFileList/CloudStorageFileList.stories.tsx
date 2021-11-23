@@ -29,7 +29,10 @@ Overview.args = {
             return {
                 fileUUID: faker.datatype.uuid(),
                 fileName: faker.random.word() + "." + faker.system.commonFileExt(),
-                fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                fileSize: chance.integer({
+                    min: 0,
+                    max: 1000 * 1000 * 100,
+                }),
                 convert: chance.pickone(["idle", "error", "success", "converting"]),
                 createAt: faker.date.past(),
             };
@@ -37,9 +40,18 @@ Overview.args = {
 };
 Overview.args.selectedFileUUIDs = [Overview.args.files![1].fileUUID];
 Overview.args.fileMenus = () => [
-    { key: "download", name: "下载" },
-    { key: "rename", name: "重命名" },
-    { key: "delete", name: "删除" },
+    {
+        key: "download",
+        name: "下载",
+    },
+    {
+        key: "rename",
+        name: "重命名",
+    },
+    {
+        key: "delete",
+        name: "删除",
+    },
 ];
 
 export const LongFileName: Story<{ fileName: string } & CloudStorageFileListProps> = ({
@@ -53,7 +65,10 @@ export const LongFileName: Story<{ fileName: string } & CloudStorageFileListProp
             {
                 fileUUID: faker.datatype.uuid(),
                 fileName,
-                fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                fileSize: chance.integer({
+                    min: 0,
+                    max: 1000 * 1000 * 100,
+                }),
                 convert: chance.pickone(["idle", "error", "success", "converting"]),
                 createAt: faker.date.past(),
             },
@@ -70,9 +85,18 @@ export const LongFileName: Story<{ fileName: string } & CloudStorageFileListProp
                 onSelectionChange(keys);
             }}
             fileMenus={() => [
-                { key: "download", name: "下载" },
-                { key: "rename", name: "重命名" },
-                { key: "delete", name: "删除" },
+                {
+                    key: "download",
+                    name: "下载",
+                },
+                {
+                    key: "rename",
+                    name: "重命名",
+                },
+                {
+                    key: "delete",
+                    name: "删除",
+                },
             ]}
         />
     );
@@ -81,10 +105,16 @@ LongFileName.args = {
     fileName: faker.random.words(20) + "." + faker.system.commonFileExt(),
 };
 LongFileName.argTypes = {
-    files: { control: false },
-    selectedFileUUIDs: { control: false },
+    files: {
+        control: false,
+    },
+    selectedFileUUIDs: {
+        control: false,
+    },
     fileName: {
-        table: { category: "Showcase" },
+        table: {
+            category: "Showcase",
+        },
     },
 };
 LongFileName.parameters = {
@@ -121,7 +151,10 @@ export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileList
                     return {
                         fileUUID: faker.datatype.uuid(),
                         fileName: faker.random.words() + "." + faker.system.commonFileExt(),
-                        fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                        fileSize: chance.integer({
+                            min: 0,
+                            max: 1000 * 1000 * 100,
+                        }),
                         convert: chance.pickone(["idle", "error", "success", "converting"]),
                         createAt: faker.date.past(),
                     };
@@ -138,23 +171,46 @@ export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileList
                 onSelectionChange(keys);
             }}
             fileMenus={() => [
-                { key: "download", name: "下载" },
-                { key: "rename", name: "重命名" },
-                { key: "delete", name: <span className="red">删除</span> },
+                {
+                    key: "download",
+                    name: "下载",
+                },
+                {
+                    key: "rename",
+                    name: "重命名",
+                },
+                {
+                    key: "delete",
+                    name: <span className="red">删除</span>,
+                },
             ]}
         />
     );
 };
 PlayableExample.args = {
-    itemCount: chance.integer({ min: 0, max: 100 }),
+    itemCount: chance.integer({
+        min: 0,
+        max: 100,
+    }),
 };
 PlayableExample.argTypes = {
-    files: { control: false },
-    selectedFileUUIDs: { control: false },
+    files: {
+        control: false,
+    },
+    selectedFileUUIDs: {
+        control: false,
+    },
     itemCount: {
         name: "Item Count",
         description: "Number of auto-generated random items",
-        control: { type: "range", min: 0, max: 100, step: 1 },
-        table: { category: "Showcase" },
+        control: {
+            type: "range",
+            min: 0,
+            max: 100,
+            step: 1,
+        },
+        table: {
+            category: "Showcase",
+        },
     },
 };

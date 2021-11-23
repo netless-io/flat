@@ -18,7 +18,11 @@ export interface TopBarProps {
 }
 
 export const TopBar: FC<TopBarProps> = ({ left, center, right, isMac }) => (
-    <div className={classNames("topbar-box", { isMac })}>
+    <div
+        className={classNames("topbar-box", {
+            isMac,
+        })}
+    >
         <div className="topbar-content-left">{left}</div>
         <div className="topbar-content-center">{center}</div>
         <div className="topbar-content-right">{right}</div>

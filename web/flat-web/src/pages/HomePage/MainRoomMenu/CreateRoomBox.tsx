@@ -36,7 +36,9 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
 
     const defaultValues: CreateRoomFormValues = {
         roomTitle: globalStore.userInfo?.name
-            ? t("create-room-default-title", { name: globalStore.userInfo.name })
+            ? t("create-room-default-title", {
+                  name: globalStore.userInfo.name,
+              })
             : "",
         roomType: RoomType.BigClass,
         autoCameraOn: configStore.autoCameraOn,
@@ -61,14 +63,35 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const regionMenu = (
         <Menu
             className="create-room-modal-menu-item"
-            style={{ width: "auto" }}
+            style={{
+                width: "auto",
+            }}
             onClick={e => setRoomRegion(e.key as Region)}
         >
-            <div style={{ padding: "4px 12px 0 14px", color: "gray" }}>{t("servers")}</div>
+            <div
+                style={{
+                    padding: "4px 12px 0 14px",
+                    color: "gray",
+                }}
+            >
+                {t("servers")}
+            </div>
             {regions.map(region => (
                 <Menu.Item key={region}>
-                    <img src={RegionSVG[region]} alt={region} style={{ width: 22 }} />
-                    <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
+                    <img
+                        src={RegionSVG[region]}
+                        alt={region}
+                        style={{
+                            width: 22,
+                        }}
+                    />
+                    <span
+                        style={{
+                            paddingLeft: 8,
+                        }}
+                    >
+                        {t(`region-${region}`)}
+                    </span>
                 </Menu.Item>
             ))}
         </Menu>
@@ -121,8 +144,14 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                         name="roomTitle"
                         label={t("theme")}
                         rules={[
-                            { required: true, message: t("enter-room-theme") },
-                            { max: 50, message: t("theme-can-be-up-to-50-characters") },
+                            {
+                                required: true,
+                                message: t("enter-room-theme"),
+                            },
+                            {
+                                max: 50,
+                                message: t("theme-can-be-up-to-50-characters"),
+                            },
                         ]}
                     >
                         <Input
@@ -137,7 +166,10 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                                     <img
                                         src={RegionSVG[roomRegion]}
                                         alt={roomRegion}
-                                        style={{ cursor: "pointer", width: 22 }}
+                                        style={{
+                                            cursor: "pointer",
+                                            width: 22,
+                                        }}
                                     />
                                 </Dropdown>
                             }

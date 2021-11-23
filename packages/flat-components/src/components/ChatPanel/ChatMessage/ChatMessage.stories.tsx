@@ -18,12 +18,16 @@ export const Overview: Story<ChatMessageProps> = args => <ChatMessage {...args} 
 const userUUID = faker.datatype.uuid();
 Overview.args = {
     userUUID,
-    messageUser: { name: faker.name.lastName() },
+    messageUser: {
+        name: faker.name.lastName(),
+    },
     message: {
         timestamp: +faker.date.past(),
         type: ChatMsgType.ChannelMessage,
         userUUID: faker.datatype.boolean() ? userUUID : faker.datatype.uuid(),
         uuid: faker.datatype.uuid(),
-        value: chance.sentence({ words: faker.datatype.number(20) }),
+        value: chance.sentence({
+            words: faker.datatype.number(20),
+        }),
     },
 };

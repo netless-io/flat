@@ -86,7 +86,10 @@ export const CameraCheckPage = (): React.ReactElement => {
             pathname: routeConfig.SpeakerCheckPage.path,
             state: {
                 ...location.state,
-                cameraCheck: { content: "", hasError: false },
+                cameraCheck: {
+                    content: "",
+                    hasError: false,
+                },
             },
         });
     }
@@ -96,7 +99,10 @@ export const CameraCheckPage = (): React.ReactElement => {
             pathname: routeConfig.SpeakerCheckPage.path,
             state: {
                 ...location.state,
-                cameraCheck: { content: "", hasError: true },
+                cameraCheck: {
+                    content: "",
+                    hasError: true,
+                },
             },
         });
     }

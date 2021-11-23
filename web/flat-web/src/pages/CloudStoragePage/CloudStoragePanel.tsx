@@ -28,7 +28,12 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
 }) {
     const { t, i18n } = useTranslation();
     const [store] = useState(
-        () => new CloudStorageStore({ compact: true, insertCourseware, i18n }),
+        () =>
+            new CloudStorageStore({
+                compact: true,
+                insertCourseware,
+                i18n,
+            }),
     );
 
     useEffect(() => store.initialize(), [store]);
@@ -111,7 +116,10 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
                 const img = new Image();
                 img.onload = () => resolve(img);
                 img.onerror = () =>
-                    resolve({ width: window.innerWidth, height: window.innerHeight });
+                    resolve({
+                        width: window.innerWidth,
+                        height: window.innerHeight,
+                    });
                 img.src = file.fileURL;
             }));
         } else {
@@ -155,7 +163,10 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
         if (file.convert !== "success") {
             if (convertingStatus.status === "Finished" || convertingStatus.status === "Fail") {
                 try {
-                    await convertFinish({ fileUUID: file.fileUUID, region: file.region });
+                    await convertFinish({
+                        fileUUID: file.fileUUID,
+                        region: file.region,
+                    });
                 } catch (e) {
                     if (
                         e instanceof ServerRequestError &&
@@ -170,7 +181,9 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
                 }
                 if (convertingStatus.status === "Fail") {
                     void message.error(
-                        t("transcoding-failure-reason", { reason: convertingStatus.failedReason }),
+                        t("transcoding-failure-reason", {
+                            reason: convertingStatus.failedReason,
+                        }),
                     );
                 }
             } else {

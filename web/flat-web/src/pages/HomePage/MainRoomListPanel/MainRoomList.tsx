@@ -50,7 +50,11 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     const refreshRooms = useCallback(
         async function refreshRooms(): Promise<void> {
             try {
-                const roomUUIDs = await sp(roomStore.listRooms(listRoomsType, { page: 1 }));
+                const roomUUIDs = await sp(
+                    roomStore.listRooms(listRoomsType, {
+                        page: 1,
+                    }),
+                );
                 setRoomUUIDs(roomUUIDs);
             } catch (e) {
                 setRoomUUIDs([]);
@@ -115,8 +119,15 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                     const endTime = room.endTime ? new Date(room.endTime) : void 0;
 
                     const primaryAction: RoomListItemButton<"replay" | "join"> = isHistoryList
-                        ? { key: "replay", text: t("replay"), disabled: !room.hasRecord }
-                        : { key: "join", text: t("join") };
+                        ? {
+                              key: "replay",
+                              text: t("replay"),
+                              disabled: !room.hasRecord,
+                          }
+                        : {
+                              key: "join",
+                              text: t("join"),
+                          };
 
                     return (
                         <Fragment key={room.roomUUID}>
@@ -294,10 +305,18 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
         | Array<{ key: "details" | "modify" | "cancel" | "invite"; text: string }>;
 
     function getSubActions(room: RoomItem): SubActions {
-        const result = [{ key: "details", text: t("room-detail") }];
+        const result = [
+            {
+                key: "details",
+                text: t("room-detail"),
+            },
+        ];
         if (isHistoryList) {
             if (room.roomUUID) {
-                result.push({ key: "delete-history", text: t("delete-records") });
+                result.push({
+                    key: "delete-history",
+                    text: t("delete-records"),
+                });
             }
         } else {
             const ownerUUID = room.ownerUUID;
@@ -307,7 +326,10 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                 isCreator &&
                 room.roomStatus === RoomStatus.Idle
             ) {
-                result.push({ key: "modify", text: t("modify-room") });
+                result.push({
+                    key: "modify",
+                    text: t("modify-room"),
+                });
             }
             if (!isCreator || room.roomStatus === RoomStatus.Idle) {
                 result.push({
@@ -316,7 +338,10 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                 });
             }
             if (room.roomUUID) {
-                result.push({ key: "invite", text: t("copy-invitation") });
+                result.push({
+                    key: "invite",
+                    text: t("copy-invitation"),
+                });
             }
         }
         return result as SubActions;

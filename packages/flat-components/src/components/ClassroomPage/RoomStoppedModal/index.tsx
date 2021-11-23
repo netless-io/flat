@@ -51,14 +51,18 @@ export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({
                 title: isRemoteLogin
                     ? t("you-have-entered-the-room-at-another-device")
                     : t("the-room-has-ended-and-is-about-to-exit"),
-                okText: t("got-it-countdown", { countdown }),
+                okText: t("got-it-countdown", {
+                    countdown,
+                }),
                 onOk: onExit,
                 onCancel: onExit,
             });
 
             ticket = window.setInterval(() => {
                 modalRef.current?.update({
-                    okText: t("got-it-countdown", { countdown: --countdown }),
+                    okText: t("got-it-countdown", {
+                        countdown: --countdown,
+                    }),
                 });
                 if (countdown <= 0) {
                     window.clearInterval(ticket);

@@ -13,7 +13,12 @@ const storyMeta: Meta = {
     component: CloudStorageUploadItem,
     argTypes: {
         percent: {
-            control: { type: "range", min: 0, max: 100, step: 1 },
+            control: {
+                type: "range",
+                min: 0,
+                max: 100,
+                step: 1,
+            },
         },
     },
 };
@@ -26,7 +31,10 @@ export const Overview: Story<CloudStorageUploadItemProps> = args => (
 Overview.args = {
     uploadID: faker.datatype.uuid(),
     fileName: faker.random.word() + "." + faker.system.commonFileExt(),
-    percent: chance.integer({ min: 0, max: 100 }),
+    percent: chance.integer({
+        min: 0,
+        max: 100,
+    }),
     status: chance.pickone(["idle", "error", "success", "uploading"]),
 };
 
@@ -36,7 +44,10 @@ export const LongFileName: Story<CloudStorageUploadItemProps> = args => (
 LongFileName.args = {
     uploadID: faker.datatype.uuid(),
     fileName: faker.random.words(20) + "." + faker.system.commonFileExt(),
-    percent: chance.integer({ min: 0, max: 100 }),
+    percent: chance.integer({
+        min: 0,
+        max: 100,
+    }),
     status: chance.pickone(["idle", "error", "success", "uploading"]),
 };
 LongFileName.parameters = {
@@ -63,7 +74,11 @@ export const UploadList: Story<CloudStorageUploadItemProps> = ({ onCancel, onRet
     }
 
     return (
-        <div style={{ width: 336 }}>
+        <div
+            style={{
+                width: 336,
+            }}
+        >
             {getItem(20)}
             {getItem(62)}
             {getItem(43, "error")}
@@ -75,14 +90,24 @@ export const UploadList: Story<CloudStorageUploadItemProps> = ({ onCancel, onRet
     );
 };
 UploadList.argTypes = {
-    file: { control: false },
-    percent: { control: false },
-    hasError: { control: false },
+    file: {
+        control: false,
+    },
+    percent: {
+        control: false,
+    },
+    hasError: {
+        control: false,
+    },
 };
 
 const Template: Story<CloudStorageUploadItemProps> = props => {
     return (
-        <div style={{ width: 336 }}>
+        <div
+            style={{
+                width: 336,
+            }}
+        >
             <CloudStorageUploadItem {...props} />
         </div>
     );
@@ -100,7 +125,10 @@ export const Uploading = Template.bind({});
 Uploading.args = {
     uploadID: faker.datatype.uuid(),
     fileName: faker.random.word() + "." + faker.system.commonFileExt(),
-    percent: chance.integer({ min: 1, max: 99 }),
+    percent: chance.integer({
+        min: 1,
+        max: 99,
+    }),
     status: "uploading",
 };
 

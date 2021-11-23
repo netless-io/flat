@@ -17,7 +17,9 @@ const storyMeta: Meta = {
     title: "CloudStorage/CloudStorageContainer",
     component: CloudStorageContainer,
     argTypes: {
-        store: { control: false },
+        store: {
+            control: false,
+        },
     },
 };
 
@@ -64,21 +66,34 @@ class FakeStore extends CloudStorageStore {
             .map(() => ({
                 fileUUID: faker.datatype.uuid(),
                 fileName: faker.random.words() + "." + faker.system.commonFileExt(),
-                fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                fileSize: chance.integer({
+                    min: 0,
+                    max: 1000 * 1000 * 100,
+                }),
                 convert: chance.pickone(["idle", "error", "success", "converting"]),
                 createAt: faker.date.past(),
             }));
 
         this.totalUsage = this.files.reduce((sum, file) => sum + file.fileSize, 0);
 
-        for (let i = chance.integer({ min: 0, max: 200 }); i >= 0; i--) {
+        for (
+            let i = chance.integer({
+                min: 0,
+                max: 200,
+            });
+            i >= 0;
+            i--
+        ) {
             const fileUUID = faker.datatype.uuid();
 
             const task: CloudStorageUploadTask = {
                 uploadID: fileUUID,
                 fileName: faker.random.word() + "." + faker.system.commonFileExt(),
                 status: chance.pickone(["idle", "error", "success", "uploading"]),
-                percent: chance.integer({ min: 0, max: 100 }),
+                percent: chance.integer({
+                    min: 0,
+                    max: 100,
+                }),
             };
             switch (task.status) {
                 case "idle": {
@@ -113,7 +128,9 @@ class FakeStore extends CloudStorageStore {
             switch (menuKey) {
                 case "download": {
                     const file = this.files.find(file => file.fileUUID === fileUUID);
-                    Modal.info({ content: `Fake download file "${file?.fileName}".` });
+                    Modal.info({
+                        content: `Fake download file "${file?.fileName}".`,
+                    });
                     break;
                 }
                 case "rename": {
@@ -152,15 +169,29 @@ class FakeStore extends CloudStorageStore {
     }
 
     public fileMenus = (): Array<{ key: React.Key; name: React.ReactNode }> => [
-        { key: "download", name: "下载" },
-        { key: "rename", name: "重命名" },
-        { key: "delete", name: <span className="red">删除</span> },
+        {
+            key: "download",
+            name: "下载",
+        },
+        {
+            key: "rename",
+            name: "重命名",
+        },
+        {
+            key: "delete",
+            name: <span className="red">删除</span>,
+        },
     ];
 }
 
 function fakeStoreArgTypes(): ArgTypes {
     return fakeStoreImplProps.reduce((o, k) => {
-        o[k] = { table: { disable: true }, action: k };
+        o[k] = {
+            table: {
+                disable: true,
+            },
+            action: k,
+        };
         return o;
     }, {} as ArgTypes);
 }
@@ -168,7 +199,13 @@ function fakeStoreArgTypes(): ArgTypes {
 export const Overview: Story<FakeStoreConfig> = config => {
     const [store] = useState(() => new FakeStore(config));
     return (
-        <div className="ba br3 b--light-gray" style={{ height: 600, maxHeight: "80vh" }}>
+        <div
+            className="ba br3 b--light-gray"
+            style={{
+                height: 600,
+                maxHeight: "80vh",
+            }}
+        >
             <CloudStorageContainer store={store} />
         </div>
     );
@@ -182,7 +219,12 @@ export const CompactMode: Story<FakeStoreConfig> = config => {
         return store;
     });
     return (
-        <div className="ba br3 b--light-gray" style={{ height: "400px" }}>
+        <div
+            className="ba br3 b--light-gray"
+            style={{
+                height: "400px",
+            }}
+        >
             <CloudStorageContainer store={store} />
         </div>
     );
@@ -193,7 +235,10 @@ CompactMode.parameters = {
         viewports: {
             compact: {
                 name: "Compact Mode",
-                styles: { width: "640px", height: "432px" },
+                styles: {
+                    width: "640px",
+                    height: "432px",
+                },
             },
         },
         defaultViewport: "compact",

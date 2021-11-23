@@ -70,8 +70,12 @@ export const CloudStorageExternalFilePanel: FC<CloudStorageExternalFilePanelProp
         >
             <Form
                 ref={formRef}
-                labelCol={{ span: 4 }}
-                wrapperCol={{ span: 20 }}
+                labelCol={{
+                    span: 4,
+                }}
+                wrapperCol={{
+                    span: 20,
+                }}
                 onFinish={onSubmit}
                 onFinishFailed={() => {
                     void message.error(t("upload-fail"));
@@ -82,7 +86,14 @@ export const CloudStorageExternalFilePanel: FC<CloudStorageExternalFilePanelProp
                 <Form.Item
                     label={t("online-h5.name")}
                     name="fileName"
-                    rules={[{ required: true, message: "Please input filename", min: 1, max: 128 }]}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input filename",
+                            min: 1,
+                            max: 128,
+                        },
+                    ]}
                 >
                     <Input
                         addonAfter={
@@ -99,7 +110,12 @@ export const CloudStorageExternalFilePanel: FC<CloudStorageExternalFilePanelProp
                 <Form.Item
                     label={t("online-h5.url")}
                     name="fileURL"
-                    rules={[{ required: true, type: "url" }]}
+                    rules={[
+                        {
+                            required: true,
+                            type: "url",
+                        },
+                    ]}
                 >
                     <Input />
                 </Form.Item>

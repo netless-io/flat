@@ -28,7 +28,11 @@ export const CloudStorageFileTitleRename = React.memo<CloudStorageFileTitleRenam
                     // cancel on empty and same name
                     onRename(fileUUID);
                 } else {
-                    onRename(fileUUID, { name, ext, fullName });
+                    onRename(fileUUID, {
+                        name,
+                        ext,
+                        fullName,
+                    });
                 }
             });
 

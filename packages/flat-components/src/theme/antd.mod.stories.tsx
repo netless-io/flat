@@ -10,7 +10,9 @@ const storyMeta: Meta = {
         options: {
             showPanel: false,
         },
-        docs: { page: null },
+        docs: {
+            page: null,
+        },
     },
 };
 
@@ -44,7 +46,11 @@ export const Overview: Story = () => {
                     className="ant-input-selected"
                     value="888 888 888 888"
                     ref={selectAllRef}
-                    onClick={() => selectAllRef.current?.focus({ cursor: "all" })}
+                    onClick={() =>
+                        selectAllRef.current?.focus({
+                            cursor: "all",
+                        })
+                    }
                 />
             </div>
             <div className="mb3">
@@ -157,7 +163,12 @@ export const Overview: Story = () => {
     );
 
     return (
-        <div className="w-80-ns center" style={{ color: "#7A7B7C" }}>
+        <div
+            className="w-80-ns center"
+            style={{
+                color: "#7A7B7C",
+            }}
+        >
             <div className="columns is-variable is-8">
                 <div className="column is-half">{inputExample}</div>
                 <div className="column is-one-quarter-widescreen">

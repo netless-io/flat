@@ -46,7 +46,12 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                 classRoomStore.acceptRaiseHand(userUUID);
             }}
             onEndSpeaking={userUUID => {
-                void classRoomStore.onSpeak([{ userUUID, speak: false }]);
+                void classRoomStore.onSpeak([
+                    {
+                        userUUID,
+                        speak: false,
+                    },
+                ]);
             }}
             generateAvatar={generateAvatar}
             disableHandRaising={disableHandRaising}

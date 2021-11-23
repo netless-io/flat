@@ -34,15 +34,23 @@ export const Overview: Story<CloudStorageUploadPanelProps> = args => (
 Overview.args = {
     title: "传输列表",
     expand: true,
-    total: chance.integer({ min: 0, max: 200 }),
+    total: chance.integer({
+        min: 0,
+        max: 200,
+    }),
     children: "Example Content",
 };
-Overview.args.finished = chance.integer({ min: 0, max: Overview.args.total });
+Overview.args.finished = chance.integer({
+    min: 0,
+    max: Overview.args.total,
+});
 Overview.argTypes = {
     children: {
         description: "Child elements",
         control: "text",
-        table: { category: "Showcase" },
+        table: {
+            category: "Showcase",
+        },
     },
 };
 
@@ -68,20 +76,46 @@ export const PlayableExample: Story<PlayableExampleArgs> = ({ onRetry, onCancel,
 };
 PlayableExample.args = {
     expand: true,
-    total: chance.integer({ min: 0, max: 200 }),
+    total: chance.integer({
+        min: 0,
+        max: 200,
+    }),
 };
-PlayableExample.args.finished = chance.integer({ min: 0, max: PlayableExample.args.total });
+PlayableExample.args.finished = chance.integer({
+    min: 0,
+    max: PlayableExample.args.total,
+});
 PlayableExample.argTypes = {
-    expand: { control: false },
-    finished: { control: { type: "range", min: 0, max: 200, step: 1 } },
-    total: { control: { type: "range", min: 0, max: 200, step: 1 } },
+    expand: {
+        control: false,
+    },
+    finished: {
+        control: {
+            type: "range",
+            min: 0,
+            max: 200,
+            step: 1,
+        },
+    },
+    total: {
+        control: {
+            type: "range",
+            min: 0,
+            max: 200,
+            step: 1,
+        },
+    },
     onRetry: {
         action: "onRetry",
-        table: { disable: true },
+        table: {
+            disable: true,
+        },
     },
     onCancel: {
         action: "onCancel",
-        table: { disable: true },
+        table: {
+            disable: true,
+        },
     },
 };
 
@@ -109,6 +143,9 @@ function getUploadTasks(count: number): CloudStorageUploadTask[] {
             uploadID: faker.datatype.uuid(),
             fileName: faker.random.word() + "." + faker.system.commonFileExt(),
             status: "uploading",
-            percent: chance.integer({ min: 0, max: 100 }),
+            percent: chance.integer({
+                min: 0,
+                max: 100,
+            }),
         }));
 }

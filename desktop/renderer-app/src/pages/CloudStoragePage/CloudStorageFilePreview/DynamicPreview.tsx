@@ -78,7 +78,10 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
             <div
                 ref={DynamicPreviewRef}
                 className="dynamic-preview-inner"
-                style={{ width: "960px", height: "538px" }}
+                style={{
+                    width: "960px",
+                    height: "538px",
+                }}
             />
             <div className="dynamic-preview-pagination-container">
                 <div

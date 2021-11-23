@@ -40,7 +40,10 @@ export const AppRouteContainer: FC<AppRouteContainerProps> = ({
             Comp={loadable(Comp, {
                 fallback: <LoadingPage />,
             })}
-            {...{ title, routeProps }}
+            {...{
+                title,
+                routeProps,
+            }}
         />
     );
 };

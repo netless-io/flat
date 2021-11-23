@@ -25,12 +25,19 @@ Overview.args = {
     generateAvatar: () => "http://placekitten.com/64/64",
 };
 Overview.argTypes = {
-    updateDeviceState: { action: "updateDeviceState" },
+    updateDeviceState: {
+        action: "updateDeviceState",
+    },
 };
 
 export const Pair: Story<OneToOneVideoAvatarProps> = args => {
     return (
-        <div className="flex" style={{ width: 288 }}>
+        <div
+            className="flex"
+            style={{
+                width: 288,
+            }}
+        >
             <OneToOneVideoAvatar {...args} />
             <OneToOneVideoAvatar {...args} />
         </div>
@@ -49,7 +56,9 @@ Pair.args = {
     },
 };
 Pair.argTypes = {
-    updateDeviceState: { action: "updateDeviceState" },
+    updateDeviceState: {
+        action: "updateDeviceState",
+    },
 };
 
 export const LongUserName: Story<OneToOneVideoAvatarProps> = args => (
@@ -68,7 +77,9 @@ LongUserName.args = {
     },
 };
 LongUserName.argTypes = {
-    updateDeviceState: { action: "updateDeviceState" },
+    updateDeviceState: {
+        action: "updateDeviceState",
+    },
 };
 
 export const Placeholder: Story<OneToOneVideoAvatarProps> = args => (
@@ -81,5 +92,7 @@ Placeholder.args = {
     avatarUser: undefined,
 };
 Placeholder.argTypes = {
-    updateDeviceState: { action: "updateDeviceState" },
+    updateDeviceState: {
+        action: "updateDeviceState",
+    },
 };

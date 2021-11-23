@@ -145,9 +145,13 @@ export const HotKeySettingPage = (): React.ReactElement => {
                     <Table
                         columns={HotKeyTableTitleList}
                         dataSource={tableRow}
-                        expandable={{ expandedRowRender }}
+                        expandable={{
+                            expandedRowRender,
+                        }}
                         pagination={false}
-                        scroll={{ y: 500 }}
+                        scroll={{
+                            y: 500,
+                        }}
                     />
                 </div>
             </div>
