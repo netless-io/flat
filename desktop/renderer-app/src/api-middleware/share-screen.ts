@@ -22,7 +22,12 @@ export class RTCShareScreen {
 
         this.enableShareScreenStatus(true);
 
-        const rect = { x: 0, y: 0, width: 0, height: 0 };
+        const rect = {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0,
+        };
         const videoSourceParam = {
             width: 0,
             height: 0,

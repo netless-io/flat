@@ -10,11 +10,15 @@ export function getWeekNames(weeks: Week[], lang?: string): string {
 
 export function getWeekName(week: Week, lang?: string): string {
     const t = addDays(startOfWeek(new Date()), week);
-    return format(t, "iii", { locale: lang?.startsWith("zh") ? zhCN : enUS });
+    return format(t, "iii", {
+        locale: lang?.startsWith("zh") ? zhCN : enUS,
+    });
 }
 
 export function formatISODayWeekiii(date: Date, lang?: string): string {
-    return format(date, "yyyy/MM/dd iii", { locale: lang?.startsWith("zh") ? zhCN : enUS });
+    return format(date, "yyyy/MM/dd iii", {
+        locale: lang?.startsWith("zh") ? zhCN : enUS,
+    });
 }
 
 /**
@@ -117,7 +121,10 @@ export function getRateFromEndTime(
         t = addDays(t, 1);
     }
 
-    return { endTime: periodicEndTime, rate: times };
+    return {
+        endTime: periodicEndTime,
+        rate: times,
+    };
 }
 
 /**
@@ -134,7 +141,9 @@ export function syncPeriodicEndAmount(
         return;
     }
 
-    const newPeriodic = { ...periodic };
+    const newPeriodic = {
+        ...periodic,
+    };
 
     const day = getDay(beginTime);
 
@@ -154,7 +163,9 @@ export function syncPeriodicEndAmount(
         newPeriodic.rate = rate;
     }
 
-    form.setFieldsValue({ periodic: newPeriodic });
+    form.setFieldsValue({
+        periodic: newPeriodic,
+    });
 
     void form.validateFields();
 }
@@ -162,7 +173,9 @@ export function syncPeriodicEndAmount(
 export function formatTime(time: number, lang: string): { date: string; time: string } | null {
     return time
         ? {
-              date: format(time, "yyyy/MM/dd", { locale: lang.startsWith("zh") ? zhCN : enUS }),
+              date: format(time, "yyyy/MM/dd", {
+                  locale: lang.startsWith("zh") ? zhCN : enUS,
+              }),
               time: format(time, "HH:mm"),
           }
         : null;

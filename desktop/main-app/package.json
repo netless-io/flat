@@ -23,6 +23,7 @@
     "ship:mac": "yarn build && yarn pack:mac",
     "postinstall": "yarn _download:agora-addon",
     "lint": "lint-staged",
+    "fix": "eslint --fix 'src/**/*.{ts, tsx}' 'typings/*.ts'",
     "_copy:render-build-code": "node ./scripts/build/copy-render-build-code.js",
     "_move:agora-addon": "node ./scripts/agora/mv-addon.js",
     "_download:agora-addon": "node ./scripts/agora/download-addon.js && yarn _move:agora-addon",

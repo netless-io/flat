@@ -1,5 +1,6 @@
 import { updateRecordEndTime } from "./flatServer";
-import {cloudRecordAcquire,
+import {
+    cloudRecordAcquire,
     CloudRecordStopResult,
     cloudRecordStop,
     CloudRecordAcquirePayload,

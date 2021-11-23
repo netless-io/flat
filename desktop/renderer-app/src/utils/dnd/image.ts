@@ -33,7 +33,9 @@ export async function onDropImage(file: File, x: number, y: number, room: Room):
     const getSize = getImageSize(file);
     const task = new UploadTask(file);
     await task.upload();
-    const { files } = await listFiles({ page: 1 });
+    const { files } = await listFiles({
+        page: 1,
+    });
     const cloudFile = files.find(f => f.fileUUID === task.fileUUID);
 
     hideLoading();
@@ -45,7 +47,14 @@ export async function onDropImage(file: File, x: number, y: number, room: Room):
 
     const uuid = v4uuid();
     const { width, height } = await getSize;
-    room.insertImage({ uuid, centerX: x, centerY: y, width, height, locked: false });
+    room.insertImage({
+        uuid,
+        centerX: x,
+        centerY: y,
+        width,
+        height,
+        locked: false,
+    });
     room.completeImageUpload(uuid, cloudFile.fileURL);
 }
 
@@ -65,10 +74,16 @@ export function getImageSize(file: File): Promise<Size> {
             if (width > maxWidth || height > maxHeight) {
                 scale = Math.min(maxWidth / width, maxHeight / height);
             }
-            resolve({ width: Math.floor(width * scale), height: Math.floor(height * scale) });
+            resolve({
+                width: Math.floor(width * scale),
+                height: Math.floor(height * scale),
+            });
         };
         image.onerror = () => {
-            resolve({ width: innerWidth, height: innerHeight });
+            resolve({
+                width: innerWidth,
+                height: innerHeight,
+            });
         };
     });
 }

@@ -17,7 +17,11 @@ export class ConfigStore {
     public region: Region | null = null;
 
     public constructor() {
-        autoPersistStore({ storeLSName: "ConfigStore", store: this, version: LS_VERSION });
+        autoPersistStore({
+            storeLSName: "ConfigStore",
+            store: this,
+            version: LS_VERSION,
+        });
     }
 
     public updateAutoCameraOn = (isOn: boolean): void => {

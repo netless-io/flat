@@ -15,5 +15,7 @@ export const extractZIP = (filePath: string, extractDir?: string): Promise<void>
         dir = path.join(path.dirname(filePath), path.basename(filePath, ".zip"));
     }
 
-    return extract(filePath, { dir });
+    return extract(filePath, {
+        dir,
+    });
 };

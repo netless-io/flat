@@ -111,5 +111,11 @@ export function useAPI<P, R>(
         [api],
     );
 
-    return { first, loading, fetch, result, error };
+    return {
+        first,
+        loading,
+        fetch,
+        result,
+        error,
+    };
 }

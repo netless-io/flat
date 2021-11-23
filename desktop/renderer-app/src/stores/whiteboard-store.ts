@@ -410,7 +410,9 @@ export class WhiteboardStore {
 
         for (const { name, ppt } of scenes) {
             // make sure scenesWithoutPPT.length === scenes.length
-            scenesWithoutPPT.push({ name });
+            scenesWithoutPPT.push({
+                name,
+            });
 
             if (!ppt || !ppt.src.startsWith("ppt")) {
                 continue;
@@ -424,7 +426,11 @@ export class WhiteboardStore {
             break;
         }
 
-        return { scenesWithoutPPT, taskId, url };
+        return {
+            scenesWithoutPPT,
+            taskId,
+            url,
+        };
     }
 
     private dirName = (scenePath: string): string => {

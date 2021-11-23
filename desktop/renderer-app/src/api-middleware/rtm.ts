@@ -213,7 +213,12 @@ export class Rtm extends EventEmitter {
         /** login may fail in dev due to live reload */
         await polly()
             .waitAndRetry(3)
-            .executeForPromise(() => this.client.login({ uid: userUUID, token: this.token }));
+            .executeForPromise(() =>
+                this.client.login({
+                    uid: userUUID,
+                    token: this.token,
+                }),
+            );
 
         this.channel = this.client.createChannel(channelID);
         await this.channel.join();
@@ -295,7 +300,9 @@ export class Rtm extends EventEmitter {
                     text,
                 },
                 peerId,
-                { enableHistoricalMessaging: true },
+                {
+                    enableHistoricalMessaging: true,
+                },
             );
             if (NODE_ENV === "development") {
                 console.log(`[RTM] send p2p message to ${peerId}: `, text);
@@ -307,7 +314,9 @@ export class Rtm extends EventEmitter {
                     messageType: AgoraRTM.MessageType.TEXT,
                     text,
                 },
-                { enableHistoricalMessaging: true },
+                {
+                    enableHistoricalMessaging: true,
+                },
             );
             if (NODE_ENV === "development") {
                 console.log("[RTM] send group message: ", text);
@@ -354,10 +363,16 @@ export class Rtm extends EventEmitter {
                     const { hasPeerReceived } = await this.client.sendMessageToPeer(
                         {
                             messageType: AgoraRTM.MessageType.TEXT,
-                            text: JSON.stringify({ r: this.commandsID, t: type, v: value }),
+                            text: JSON.stringify({
+                                r: this.commandsID,
+                                t: type,
+                                v: value,
+                            }),
                         },
                         peerId,
-                        { enableHistoricalMessaging: keepHistory },
+                        {
+                            enableHistoricalMessaging: keepHistory,
+                        },
                     );
                     if (NODE_ENV === "development") {
                         console.log(`[RTM] send p2p command to ${peerId}: `, type, value);
@@ -370,9 +385,14 @@ export class Rtm extends EventEmitter {
             await this.commands.sendMessage(
                 {
                     messageType: AgoraRTM.MessageType.TEXT,
-                    text: JSON.stringify({ t: type, v: value }),
+                    text: JSON.stringify({
+                        t: type,
+                        v: value,
+                    }),
                 },
-                { enableHistoricalMessaging: keepHistory },
+                {
+                    enableHistoricalMessaging: keepHistory,
+                },
             );
             if (NODE_ENV === "development") {
                 console.log("[RTM] send group command: ", type, value);
@@ -440,7 +460,9 @@ export class Rtm extends EventEmitter {
                 return this.request<null, RtmRESTfulQueryResourceResponse>(
                     `query/${handle}`,
                     null,
-                    { method: "GET" },
+                    {
+                        method: "GET",
+                    },
                 ).then(response => (response.code === "ok" ? response : Promise.reject(response)));
             });
         return result.messages.reverse();

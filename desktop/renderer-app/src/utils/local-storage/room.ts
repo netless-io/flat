@@ -42,10 +42,16 @@ export function saveRoom(config: LSRoomSaveConfig): LSRoom {
     const existIndex = rooms.findIndex(data => data.uuid === config.uuid);
     if (existIndex >= 0) {
         const [existRoom] = rooms.splice(existIndex, 1);
-        rooms.unshift({ ...existRoom, ...config });
+        rooms.unshift({
+            ...existRoom,
+            ...config,
+        });
     } else {
         const time = dateFormat(new Date(), "LLL d, y h:m a");
-        rooms.unshift({ time, ...config });
+        rooms.unshift({
+            time,
+            ...config,
+        });
     }
     localStorage.setItem("rooms", JSON.stringify(rooms));
     return rooms[0];
@@ -64,7 +70,10 @@ export function updateRoomProps(
     if (roomIndex < 0) {
         return false;
     }
-    rooms[roomIndex] = { ...rooms[roomIndex], ...config };
+    rooms[roomIndex] = {
+        ...rooms[roomIndex],
+        ...config,
+    };
     localStorage.setItem("rooms", JSON.stringify(rooms));
     return true;
 }

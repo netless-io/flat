@@ -6,8 +6,12 @@ import { initReactI18next } from "react-i18next";
 
 const messages: Resource = {
     // @TODO wait until en translation completes
-    en: { translation: en },
-    "zh-CN": { translation: zhCN },
+    en: {
+        translation: en,
+    },
+    "zh-CN": {
+        translation: zhCN,
+    },
 };
 
 void i18next
