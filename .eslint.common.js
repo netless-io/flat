@@ -60,7 +60,7 @@ const eslintCommon = {
             ],
             "arrow-parens": ["error", "as-needed"],
             "brace-style": ["error", "1tbs"],
-            "comma-dangle": ["error", "always-multiline"],
+            "comma-dangle": "off",
             curly: "error",
             "no-multi-str": "warn",
             "no-native-reassign": "warn",
@@ -132,6 +132,24 @@ const eslintCommon = {
             "use-isnan": "error",
             "no-var": "error", // Disable var
             semi: ["error", "always"],
+            "object-curly-newline": [
+              "error",
+              {
+                  ObjectExpression: {
+                      multiline: true,
+                      minProperties: 1,
+                  },
+                  ObjectPattern: {
+                      multiline: true,
+                  },
+                  ImportDeclaration: {
+                      multiline: true,
+                  },
+                  ExportDeclaration: {
+                      multiline: true,
+                  },
+              },
+            ],
             "@typescript-eslint/explicit-module-boundary-types": "off",
             "@typescript-eslint/ban-ts-comment": "off",
             "@typescript-eslint/no-unsafe-call": "off",
