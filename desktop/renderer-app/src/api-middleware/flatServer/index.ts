@@ -1,25 +1,14 @@
 import { Region } from "flat-components";
-import { DocsType, RoomDoc, RoomStatus, RoomType, Sex, Week } from "./constants";
+import { RoomStatus, RoomType, Sex, Week } from "./constants";
 import { post, postNotAuth } from "./utils";
 
 export interface CreateOrdinaryRoomPayload {
-    /** 房间主题, 最多 50 字 */
     title: string;
-    /** 上课类型 */
     type: RoomType;
-    /** 区域 */
     region: Region;
-    /** UTC时间戳 */
     beginTime: number;
-    /** 如果不传，则默认是 beginTime 后的一个小时 */
+    /** default: one hour after beginTime */
     endTime?: number;
-    /** 课件 */
-    docs?: Array<{
-        /** 文档类型 */
-        type: DocsType;
-        /** 文档的 uuid */
-        uuid: string;
-    }>;
 }
 
 export interface CreateOrdinaryRoomResult {
@@ -35,35 +24,21 @@ export async function createOrdinaryRoom(payload: CreateOrdinaryRoomPayload): Pr
 }
 
 export interface CreatePeriodicRoomPayload {
-    /** 房间主题, 最多 50 字 */
     title: string;
-    /** 上课类型 */
     type: RoomType;
-    /** 区域 */
     region: Region;
-    /** UTC时间戳 */
     beginTime: number;
     endTime: number;
-    /** 重复 */
     periodic:
         | {
-              /** 重复周期, 每周的周几 */
               weeks: Week[];
-              /** 重复几次就结束, -1..50 */
+              // max: 50
               rate: number;
           }
         | {
               weeks: Week[];
-              /** UTC时间戳, 到这个点就结束 */
               endTime: number;
           };
-    /** 课件 */
-    docs?: Array<{
-        /** 文档类型 */
-        type: DocsType;
-        /** 文档的 uuid */
-        uuid: string;
-    }>;
 }
 
 export type CreatePeriodicRoomResult = {};
@@ -83,27 +58,16 @@ export enum ListRoomsType {
 }
 
 export interface FlatServerRoom {
-    /** 房间的 uuid */
     roomUUID: string;
-    /** 周期性房间的 uuid */
     periodicUUID: string | null;
-    /** 房间所有者的 uuid */
     ownerUUID: string;
-    /** invite code of room  */
     inviteCode: string;
-    /** 房间类型  */
     roomType: RoomType;
-    /** 房间所有者的名称 */
     ownerUserName: string;
-    /** 房间标题 */
     title: string;
-    /** 房间开始时间 */
     beginTime: number;
-    /** 结束时间 */
     endTime: number;
-    /** 房间状态 */
     roomStatus: RoomStatus;
-    /** 是否存在录制(只有历史记录才会有) */
     hasRecord?: boolean;
 }
 
@@ -125,14 +89,14 @@ export interface JoinRoomPayload {
 }
 
 export interface JoinRoomResult {
-    roomType: RoomType; // 房间类型
-    roomUUID: string; // 当前房间的 UUID
-    ownerUUID: string; // 房间创建者的 UUID
-    whiteboardRoomToken: string; // 白板的 room token
-    whiteboardRoomUUID: string; // 白板的 room uuid
-    rtcUID: number; // rtc 的 uid
-    rtcToken: string; // rtc token
-    rtmToken: string; // rtm token
+    roomType: RoomType;
+    roomUUID: string;
+    ownerUUID: string;
+    whiteboardRoomToken: string;
+    whiteboardRoomUUID: string;
+    rtcUID: number;
+    rtcToken: string;
+    rtmToken: string;
     rtcShareScreen: {
         uid: number;
         token: string;
@@ -145,7 +109,7 @@ export function joinRoom(uuid: string): Promise<JoinRoomResult> {
 
 export interface UsersInfoPayload {
     roomUUID: string;
-    usersUUID: string[]; // 要参看的用户 uuid 列表
+    usersUUID: string[];
 }
 
 export type UsersInfoResult = {
@@ -177,7 +141,6 @@ export interface OrdinaryRoomInfoPayload {
 
 export interface OrdinaryRoomInfoResult {
     roomInfo: OrdinaryRoomInfo;
-    docs: RoomDoc[];
     inviteCode: string;
 }
 
@@ -190,7 +153,6 @@ export function ordinaryRoomInfo(roomUUID: string): Promise<OrdinaryRoomInfoResu
 export interface PeriodicSubRoomInfoPayload {
     periodicUUID: string;
     roomUUID: string;
-    /** 是否需要上一节课和下一节课的相关时间(只对owner起作用 */
     needOtherRoomTimeInfo?: boolean;
 }
 
@@ -207,10 +169,9 @@ export interface PeriodicSubRoomInfo {
 
 export interface PeriodicSubRoomInfoResult {
     roomInfo: PeriodicSubRoomInfo;
-    previousPeriodicRoomBeginTime: number | null; // 上一节课的开始时间
-    nextPeriodicRoomEndTime: number | null; // 下一节课的结束时间
-    count: number; // 当前周期性房间下一共有多少节课
-    docs: RoomDoc[];
+    previousPeriodicRoomBeginTime: number | null;
+    nextPeriodicRoomEndTime: number | null;
+    count: number;
 }
 
 export function periodicSubRoomInfo(
@@ -228,11 +189,11 @@ export interface PeriodicRoomInfoPayload {
 
 export type PeriodicRoomInfoResult = {
     periodic: {
-        ownerUUID: string; // 创建者的 uuid
+        ownerUUID: string;
         ownerUserName: string;
         inviteCode: string;
         endTime: number;
-        rate: number | null; // 默认为 0（即 用户选择的是 endTime）
+        rate: number | null;
         title: string;
         weeks: Week[];
         roomType: RoomType;
@@ -437,12 +398,6 @@ export interface UpdateOrdinaryRoomPayload {
     endTime: number;
     title: string;
     type: RoomType;
-    docs?: Array<{
-        /** 文档类型 */
-        type: DocsType;
-        /** 文档的 uuid */
-        uuid: string;
-    }>;
 }
 
 export type UpdateOrdinaryRoomResult = {};
@@ -459,25 +414,15 @@ export interface UpdatePeriodicRoomPayload {
     endTime: number;
     title: string;
     type: RoomType;
-    /** 重复 */
     periodic:
         | {
-              /** 重复周期, 每周的周几 */
               weeks: Week[];
-              /** 重复几次就结束, -1..50 */
               rate: number;
           }
         | {
               weeks: Week[];
-              /** UTC时间戳, 到这个点就结束 */
               endTime: number;
           };
-    docs?: Array<{
-        /** 文档类型 */
-        type: DocsType;
-        /** 文档的 uuid */
-        uuid: string;
-    }>;
 }
 
 export type UpdatePeriodicRoomResult = {};
@@ -512,8 +457,8 @@ export interface LoginCheckPayload {
 export interface LoginCheckResult {
     name: string;
     sex: Sex;
-    avatar: string; // 头像地址
-    userUUID: string; // 用户信息，需要进行保存
+    avatar: string;
+    userUUID: string;
 }
 
 export async function loginCheck(): Promise<LoginCheckResult> {

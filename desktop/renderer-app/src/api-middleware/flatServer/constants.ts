@@ -17,20 +17,6 @@ export enum RoomType {
     BigClass = "BigClass",
 }
 
-export enum DocsType {
-    Dynamic = "Dynamic",
-    Static = "Static",
-}
-
-/** 课件 */
-export interface RoomDoc {
-    /** 文档的 uuid */
-    docUUID: string;
-    /** 文档类型 */
-    docType: DocsType;
-    isPreload: boolean;
-}
-
 export enum Week {
     Sunday,
     Monday,

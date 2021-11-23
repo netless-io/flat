@@ -13,6 +13,10 @@ import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { cancelPeriodicRoom, cancelPeriodicSubRoom } from "../../api-middleware/flatServer";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
 
+/**
+ * TODO: we forget set i18n in current file!!!
+ */
+
 export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPage() {
     const params = useParams<RouteParams<RouteNameType.PeriodicRoomDetailPage>>();
     const roomStore = useContext(RoomStoreContext);

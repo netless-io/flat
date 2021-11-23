@@ -1,7 +1,7 @@
 const os = require("os");
 const { spawn, exec } = require("child_process");
 
-// 代码参看: https://github.com/cdeutsch/webpack-shell-plugin/blob/master/src/webpack-shell-plugin.js
+// see: https://github.com/cdeutsch/webpack-shell-plugin/blob/master/src/webpack-shell-plugin.js
 class ElectronWebpackPlugin {
     constructor(script) {
         this.script = script;

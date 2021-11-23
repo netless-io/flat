@@ -55,19 +55,6 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
         autoMicOn: configStore.autoMicOn,
     };
 
-    // const historyMenu = (
-    //     <Menu className="modal-menu-item">
-    //         {/* {// @TODO add join room history
-    // joinRoomHistories.map(room => (
-    //     <Menu.Item key={room.uuid}>{room.name || room.uuid}</Menu.Item>
-    // ))} */}
-    //         <Menu.Divider />
-    //         <Button className="modal-inner-select" type="link">
-    //             清空记录
-    //         </Button>
-    //     </Menu>
-    // );
-
     return (
         <>
             <Button onClick={handleShowModal}>
@@ -111,27 +98,8 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                         label={t("room-uuid")}
                         rules={[{ required: true, message: t("enter-room-uuid") }]}
                     >
-                        <Input
-                            placeholder={t("enter-room-uuid")}
-                            ref={roomTitleInputRef}
-                            // suffix={
-                            //     <Dropdown
-                            //         trigger={["click"]}
-                            //         placement="bottomRight"
-                            //         overlay={historyMenu}
-                            //     >
-                            //         <img
-                            //             className="modal-dropdown-icon"
-                            //             src={dropdownSVG}
-                            //             alt={"dropdown"}
-                            //         />
-                            //     </Dropdown>
-                            // }
-                        />
+                        <Input placeholder={t("enter-room-uuid")} ref={roomTitleInputRef} />
                     </Form.Item>
-                    {/* <Form.Item label="昵称">
-                        <Input disabled value={globalStore.wechat?.name} />
-                    </Form.Item> */}
                     <Form.Item label={t("join-options")}>
                         <Form.Item name="autoMicOn" noStyle valuePropName="checked">
                             <Checkbox>{t("turn-on-the-microphone")}</Checkbox>

@@ -76,7 +76,6 @@ export function renderBeginTimePicker(
             if (diff < 0) {
                 if (endDiff === 0) {
                     if (nextEndTime.getMinutes() < 15) {
-                        // 如果下一节课的结束时间的分钟数小于15分钟，不允许选择下一节课结束时间的Hour
                         return excludeRange(nextEndTime.getHours(), 23);
                     }
                     return excludeRange(nextEndTime.getHours() + 1, 23);
