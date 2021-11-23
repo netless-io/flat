@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { isAndroid } from "react-device-detect";
 import { useWindowFocus } from "./use-window-focus";
 import { useIsUnMounted } from "../../utils/hooks/lifecycle";
+import { FLAT_DOWNLOAD_URL } from "../../constants/process";
 
 export interface JoinPageMobileProps {
     roomUUID: string;
@@ -41,7 +42,7 @@ export default function JoinPageMobile({
         if (isAndroid) {
             window.open(AndroidApkUrl);
         } else {
-            window.open("https://flat.whiteboard.agora.io/#download", "_blank");
+            window.open(FLAT_DOWNLOAD_URL, "_blank");
         }
     }, []);
 

@@ -47,9 +47,6 @@ export declare interface SmartPlayer {
     ): this;
 }
 
-/**
- * 智能播放画板与音视频，同时适应有无视频的情况
- */
 // eslint-disable-next-line no-redeclare
 export class SmartPlayer extends EventEmitter {
     public whiteboardPlayer: Player | undefined;
@@ -150,7 +147,6 @@ export class SmartPlayer extends EventEmitter {
             },
             onPhaseChanged: phase => {
                 if (this.combinePlayer) {
-                    // 让 combinePlayer 掌管
                     return;
                 }
                 switch (phase) {
@@ -249,7 +245,6 @@ export class SmartPlayer extends EventEmitter {
         }
 
         if (NODE_ENV === "development") {
-            // 供便捷调试
             (window as any).player = player;
             (window as any).combinePlayer = this.combinePlayer;
         }

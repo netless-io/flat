@@ -8,6 +8,7 @@ import { Avatar, Button } from "antd";
 import { useTranslation } from "react-i18next";
 
 import { RouteNameType, usePushHistory } from "../../utils/routes";
+import { FLAT_DOWNLOAD_URL } from "../../constants/process";
 
 export interface JoinPageDesktopProps {
     isLogin: boolean;
@@ -58,9 +59,7 @@ export default function JoinPageDesktop({
                 <div className="join-page-content-btn-container">
                     <Button
                         className="join-page-content-btn"
-                        onClick={() =>
-                            window.open("https://flat.whiteboard.agora.io/#download", "_blank")
-                        }
+                        onClick={() => window.open(FLAT_DOWNLOAD_URL, "_blank")}
                     >
                         <img src={downloadSVG} alt="download icon" />
                         <div className="join-page-content-text-container">

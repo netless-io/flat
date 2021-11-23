@@ -21,6 +21,10 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
+/**
+ * TODO: we forget set i18n in current file!!!
+ */
+
 const rightMenuStyles: React.CSSProperties = { fontSize: 22 };
 const sideMenuStyles: React.CSSProperties = { fontSize: 25 };
 

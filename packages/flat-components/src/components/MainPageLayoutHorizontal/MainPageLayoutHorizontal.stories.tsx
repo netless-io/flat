@@ -20,6 +20,10 @@ export default storyMeta;
 
 const sideMenuStyles: React.CSSProperties = { fontSize: 25 };
 
+/**
+ * TODO: we forget set i18n in current file!!!
+ */
+
 export const Overview: Story<PropsWithChildren<MainPageLayoutHorizontalProps>> = args => (
     <div className="vh-75 mw8-ns">
         <MainPageLayoutHorizontal {...args} />

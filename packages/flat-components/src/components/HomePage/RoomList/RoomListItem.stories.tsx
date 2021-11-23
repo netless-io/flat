@@ -10,6 +10,10 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
+/**
+ * TODO: we forget set i18n in current file!!!
+ */
+
 export const Overview: Story<RoomListItemProps<string>> = args => <RoomListItem {...args} />;
 Overview.args = {
     title: faker.random.words(4),

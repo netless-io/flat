@@ -61,7 +61,7 @@ export interface CloudRecordAcquireResult {
     resourceId: string;
 }
 
-/** {@link https://docs.agora.io/cn/cloud-recording/restfulapi/#/云端录制/acquire} */
+/** {@link https://docs.agora.io/en/cloud-recording/restfulapi/#/Cloud%20Recording/acquire} */
 export function cloudRecordAcquire(
     payload: CloudRecordAcquirePayload,
 ): Promise<CloudRecordAcquireResult> {
@@ -118,16 +118,6 @@ export interface AgoraCloudRecordStartRequestBody {
             fileType: string[];
             captureInterval?: number;
         };
-        // This setting is moved to flat-server
-        // @see {@link https://github.com/netless-io/flat-server/blob/7e4c5ef1d86b4ea94b691428fb170a6c756876a1/config/.env.defaults#L10-L17}
-        // storageConfig?: {
-        //     vendor: number;
-        //     region: number;
-        //     bucket: string;
-        //     accessKey: string;
-        //     secretKey: string;
-        //     fileNamePrefix?: Array<string>;
-        // };
         extensionServiceConfig?: {
             extensionServices: Array<{
                 serviceName?: string;
@@ -168,7 +158,7 @@ export interface CloudRecordStartResult {
     resourceId: string;
 }
 
-/** {@link https://docs.agora.io/cn/cloud-recording/restfulapi/#/云端录制/start} */
+/** {@link https://docs.agora.io/en/cloud-recording/restfulapi/#/Cloud%20Recording/start} */
 export function cloudRecordStart(
     payload: CloudRecordStartPayload,
 ): Promise<CloudRecordStartResult> {
@@ -236,7 +226,7 @@ export interface CloudRecordQueryPayload {
 
 export type CloudRecordQueryResult = AgoraCloudRecordQueryResponse<"string" | "json" | undefined>;
 
-/** {@link https://docs.agora.io/cn/cloud-recording/restfulapi/#/云端录制/query} */
+/** {@link https://docs.agora.io/en/cloud-recording/restfulapi/#/Cloud%20Recording/query} */
 export function cloudRecordQuery(
     payload: CloudRecordQueryPayload,
 ): Promise<CloudRecordQueryResult> {
@@ -284,7 +274,7 @@ export interface CloudRecordUpdateLayoutResult {
     resourceId: string;
 }
 
-/** {@link https://docs.agora.io/cn/cloud-recording/restfulapi/#/云端录制/updateLayout} */
+/** {@link https://docs.agora.io/en/cloud-recording/restfulapi/#/Cloud%20Recording/updateLayout} */
 export function cloudRecordUpdateLayout(
     payload: CloudRecordUpdateLayoutPayload,
 ): Promise<CloudRecordUpdateLayoutResult> {
@@ -330,7 +320,7 @@ export interface CloudRecordStopResult {
     };
 }
 
-/** {@link https://docs.agora.io/cn/cloud-recording/restfulapi/#/云端录制/stop} */
+/** {@link https://docs.agora.io/en/cloud-recording/restfulapi/#/Cloud%20Recording/stop} */
 export function cloudRecordStop(payload: CloudRecordStopPayload): Promise<CloudRecordStopResult> {
     return post<CloudRecordStopPayload, CloudRecordStopResult>(
         "room/record/agora/stopped",

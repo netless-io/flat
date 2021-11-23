@@ -17,6 +17,10 @@ import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { message } from "antd";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
 
+/**
+ * TODO: we forget set i18n in current file!!!
+ */
+
 export const RoomDetailPage = observer(function RoomDetailPage() {
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
     const pushHistory = usePushHistory();

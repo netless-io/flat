@@ -7,9 +7,6 @@ import { RoomStatus } from "./flatServer/constants";
 import { generateRTMToken } from "./flatServer/agora";
 import { globalStore } from "../stores/GlobalStore";
 
-/**
- * @see {@link https://docs.agora.io/cn/Real-time-Messaging/rtm_get_event?platform=RESTful#a-namecreate_history_resa创建历史消息查询资源-api（post）}
- */
 export interface RtmRESTfulQueryPayload {
     filter: {
         source?: string;

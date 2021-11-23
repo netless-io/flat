@@ -99,7 +99,6 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                         endTime: values.endTime.valueOf(),
                         title: values.title,
                         type: values.type,
-                        docs: [],
                         periodic:
                             values.periodic.endType === "rate"
                                 ? {
@@ -112,6 +111,7 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
                                   },
                     }),
                 );
+                // TODO: chinese??? i18n!
                 void message.success("修改成功");
                 pushHistory(RouteNameType.HomePage);
             } catch (e) {

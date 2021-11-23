@@ -94,6 +94,7 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                         <Table.Column
                             align="left"
                             render={(_, room: RoomInfo) =>
+                                // TODO: i18n
                                 dayFormat(room.beginTime || defaultDate) + "日"
                             }
                         />

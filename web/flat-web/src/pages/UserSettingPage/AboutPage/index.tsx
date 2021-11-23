@@ -11,9 +11,6 @@ export const AboutPage = (): React.ReactElement => {
                     <img src={logoSVG} alt="flat logo" />
                     <div className="flat-name">Flat</div>
                 </div>
-                {/* <div className="about-page-bottom-container">
-                    <a href="">服务协议</a>｜<a href="">隐私政策</a>｜<a href="">GitHub</a>
-                </div> */}
             </div>
         </UserSettingLayoutContainer>
     );
