@@ -34,7 +34,6 @@ export const MainRoomMenu: FC = () => {
                 type,
                 beginTime: Date.now(),
                 region,
-                // TODO docs:[]
             });
             await joinRoomHandler(roomUUID, pushHistory);
         } catch (e) {

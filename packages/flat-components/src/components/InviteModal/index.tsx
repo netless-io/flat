@@ -107,8 +107,6 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                     </span>
                 </div>
             </div>
-            {/* @TODO Add invite URL */}
-            {/* <Input type="text" placeholder="https://netless.link/url/5f2259d5069bc052d2" />*/}
         </Modal>
     );
 };

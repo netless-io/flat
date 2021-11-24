@@ -258,16 +258,9 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     />
                 )}
 
-                {/* <TopBarRightBtn
-                    title="Docs center"
-                    icon="folder"
-                    onClick={whiteboardStore.toggleFileOpen}
-                /> */}
                 {/* TODO: open cloud-storage sub window */}
                 <CloudStorageButton whiteboard={whiteboardStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
-                {/* @TODO implement Options menu */}
-                {/* <TopBarRightBtn title="Options" icon="options" onClick={() => {}} /> */}
                 <TopBarRightBtn
                     title="Exit"
                     icon="exit"

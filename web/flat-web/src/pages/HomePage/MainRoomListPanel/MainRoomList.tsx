@@ -202,7 +202,6 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                     onCancel={hideInviteModal}
                 />
             )}
-            {/* TODO: add removeHistoryLoading to flat-component */}
             {currentRoom && (
                 <RemoveHistoryRoomModal
                     visible={removeHistoryVisible}
