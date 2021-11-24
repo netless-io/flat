@@ -60,7 +60,7 @@ const eslintCommon = {
             ],
             "arrow-parens": ["error", "as-needed"],
             "brace-style": ["error", "1tbs"],
-            "comma-dangle": ["error", "always-multiline"],
+            "comma-dangle": "off",
             curly: "error",
             "no-multi-str": "warn",
             "no-native-reassign": "warn",
