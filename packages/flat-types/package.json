@@ -6,8 +6,6 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "tsc",
-    "build": "tsc",
     "lint": "lint-staged"
   },
   "devDependencies": {
