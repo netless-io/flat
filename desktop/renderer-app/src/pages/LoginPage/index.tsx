@@ -14,7 +14,12 @@ import { runtime } from "../../utils/runtime";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { WeChatLogin } from "./WeChatLogin";
 import { useTranslation } from "react-i18next";
-import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
+import {
+    PRIVACY_URL_EN,
+    PRIVACY_URL_CN,
+    SERVICE_URL_EN,
+    SERVICE_URL_CN,
+} from "../../constants/process";
 
 export const LoginPage = observer(function LoginPage() {
     const { i18n } = useTranslation();
@@ -79,8 +84,8 @@ export const LoginPage = observer(function LoginPage() {
         }
     };
 
-    const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
-    const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
+    const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL_EN;
+    const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL_EN;
 
     return (
         <div className="login-page-container">
