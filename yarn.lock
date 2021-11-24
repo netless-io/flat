@@ -1944,17 +1944,17 @@
   resolved "https://registry.yarnpkg.com/@netless/redo-undo/-/redo-undo-0.0.5.tgz#c5b00f5940ef33a0d6a810cd0935f4d9c172ea52"
   integrity sha512-P8ceK3hSY2eMfFIjBeSpRsqXpjjTea9bBWyRF8t8q0kLR4ICld2VMFMRbytqZ8sjCFy9CgbicuBOdMj7juABIQ==
 
-"@netless/telebox-insider@0.2.5":
-  version "0.2.5"
-  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.5.tgz#2331b0797fbf1daddb9b8fcb4f21f914e6566aff"
-  integrity sha512-nJCEGZDElZcXVIHnfWg8WGjNwVGdh9T2Z+fxYh62lOGHIVevN1K6gnnhlzRCjkboD+z0dxhjSTF2yrIivHu3jA==
+"@netless/telebox-insider@0.2.6":
+  version "0.2.6"
+  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.6.tgz#2b73a8308f874998de4186218b48a2f6a45eb4a5"
+  integrity sha512-JgWL1LumGmaDkVS1xMe7XkhBJsHUqvBZaMBO7EF/sSI1g3o6pX+dPMvfnz/ehQuRBWHMAGeW+Us2eeZeV1sWnw==
   dependencies:
     "@types/shallowequal" "^1.1.1"
     eventemitter3 "^4.0.7"
     shallowequal "^1.1.0"
     side-effect-manager "^0.1.5"
     stylefire "^7.0.3"
-    value-enhancer "^0.0.7"
+    value-enhancer "^0.0.8"
 
 "@netless/tool-box@^0.1.6":
   version "0.1.6"
@@ -1966,15 +1966,15 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.3.5-canary.1":
-  version "0.3.5-canary.1"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.5-canary.1.tgz#442aa2e442189d5dec4b80b45459f79d01118059"
-  integrity sha512-5uX2U8ak5GmT1kAmk8oLzBHjTuTZPx1YJDobRwkTZ9az5/htFHqrbBd8xqQLCN7zziyycnCGD4iWVB91ltmwgA==
+"@netless/window-manager@^0.3.6-canary.0":
+  version "0.3.6-canary.0"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.6-canary.0.tgz#5a257ca8ef62521a64ec2c9dda0e2fc4e918ba9e"
+  integrity sha512-kWkbgHw2+mmIGla/xJtIjmoyibAUIHwUADQQoYH2DMhmbOfbPzrnkrhwwE4zktuXYT/5XYADoyPnLYmECwQEgQ==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/app-docs-viewer" "^0.1.21"
     "@netless/app-media-player" "0.1.0-beta.5"
-    "@netless/telebox-insider" "0.2.5"
+    "@netless/telebox-insider" "0.2.6"
     emittery "^0.9.2"
     lodash "^4.17.21"
     p-retry "^4.6.1"
@@ -16797,10 +16797,10 @@ validator@^8.0.0:
   resolved "https://registry.yarnpkg.com/validator/-/validator-8.2.0.tgz#3c1237290e37092355344fef78c231249dab77b9"
   integrity sha512-Yw5wW34fSv5spzTXNkokD6S6/Oq92d8q/t14TqsS3fAiA1RYnxSFSIZ+CY3n6PGGRCq5HhJTSepQvFUS2QUDxA==
 
-value-enhancer@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/value-enhancer/-/value-enhancer-0.0.7.tgz#b2440bc264ea8518653e367549762951cd1f46ca"
-  integrity sha512-Gns+pJcsv2+AXHf3p4l9Vry4wKYPb52a/YsGqJ7wOe1jXYqXetTL3p/9iwUPtFesJE3p7y80hX4HuX1tb6Hj1g==
+value-enhancer@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/value-enhancer/-/value-enhancer-0.0.8.tgz#1e19655b678ddc3d93de61170e486e7f5b8e6f04"
+  integrity sha512-ba8Rcyp9ItqlLWoyZVqHGaEdY1tqP1mcbRhlOrCnIrDxdl8rKNH1Rq45syo4IMYNSkwC2oV9xBWcV9dmL14aQg==
   dependencies:
     side-effect-manager "^0.1.5"
 
