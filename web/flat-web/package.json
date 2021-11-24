@@ -40,7 +40,7 @@
     "@netless/app-geogebra": "^0.0.2",
     "@netless/app-iframe-bridge": "^0.0.2",
     "@netless/app-monaco": "^0.1.11",
-    "@netless/app-slide": "^0.0.27",
+    "@netless/app-slide": "^0.0.28",
     "@netless/combine-player": "^1.1.6",
     "@netless/cursor-tool": "^0.1.0",
     "@netless/player-controller": "^0.0.9",
