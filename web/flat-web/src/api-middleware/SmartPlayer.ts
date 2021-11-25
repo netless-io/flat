@@ -1,7 +1,6 @@
 import "video.js/dist/video-js.css";
-
+import "@netless/window-manager/dist/style.css";
 import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netless/combine-player";
-import { CursorTool } from "@netless/cursor-tool";
 import {
     PluginId as VideoJsPluginId,
     videoJsPlugin,
@@ -19,6 +18,7 @@ import {
 } from "white-web-sdk";
 import { Region } from "flat-components";
 import { NETLESS, NODE_ENV } from "../constants/process";
+import { WindowManager } from "@netless/window-manager";
 
 export enum SmartPlayerEventType {
     Ready = "Ready",
@@ -99,6 +99,7 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
             appIdentifier: NETLESS.APP_IDENTIFIER,
             plugins: plugins,
             region,
+            useMobXState: true,
         });
 
         this.whiteWebSdk = whiteWebSdk;
@@ -123,13 +124,12 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
                 }
             });
 
-        const cursorAdapter = new CursorTool();
-
         const replayRoomParams: ReplayRoomParams = {
             room: whiteboardUUID,
             roomToken: whiteboardRoomToken,
-            cursorAdapter: cursorAdapter,
             region,
+            invisiblePlugins: [WindowManager],
+            useMultiViews: true,
         };
 
         if (recording) {
@@ -138,9 +138,6 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
         }
 
         const player = await whiteWebSdk.replayRoom(replayRoomParams, {
-            onLoadFirstFrame: () => {
-                cursorAdapter.setPlayer(player);
-            },
             onPhaseChanged: phase => {
                 if (this.combinePlayer) {
                     return;
@@ -183,9 +180,12 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
             },
         });
 
-        cursorAdapter.setPlayer(player);
-
-        player.bindHtmlElement(whiteboardEl);
+        void WindowManager.mount({
+            room: player as any,
+            container: whiteboardEl,
+            cursor: true,
+            chessboard: false,
+        });
 
         this.whiteboardPlayer = player;
 
