@@ -148,7 +148,7 @@ export class ClassRoomReplayStore {
             });
         } catch (error) {
             console.error(error);
-            this.updateError(error);
+            this.updateError(error as Error);
         }
 
         runInAction(() => {
