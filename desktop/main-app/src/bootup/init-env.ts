@@ -8,4 +8,8 @@ export default (): void => {
     process.env.EVENT_NOKQUEUE = 1;
 
     app.setAsDefaultProtocolClient("x-agora-flat-client");
+
+    // support more WebGL contexts
+    // RTC and PPT will occupy WebGL contexts
+    app.commandLine.appendSwitch("max-active-webgl-contexts", "40");
 };
