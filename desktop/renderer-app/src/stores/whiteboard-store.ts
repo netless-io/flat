@@ -459,7 +459,7 @@ export class WhiteboardStore {
             return;
         }
 
-        void message.info(this.i18n.t("Inserting-courseware-tips"));
+        void message.info(this.i18n.t("inserting-courseware-tips"));
 
         const ext = getFileExt(file.fileName);
 

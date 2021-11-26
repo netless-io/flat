@@ -91,7 +91,11 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const { i18n, t } = useTranslation();
     const params = useParams<RouteParams<RouteNameType.BigClassPage>>();
 
-    const classRoomStore = useClassRoomStore({ ...params, recordingConfig, i18n });
+    const classRoomStore = useClassRoomStore({
+        ...params,
+        recordingConfig,
+        i18n,
+    });
     const whiteboardStore = classRoomStore.whiteboardStore;
     const shareScreenStore = classRoomStore.shareScreenStore;
 

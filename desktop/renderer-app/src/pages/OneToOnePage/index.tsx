@@ -73,7 +73,11 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     const params = useParams<RouteParams<RouteNameType.OneToOnePage>>();
 
     const { i18n, t } = useTranslation();
-    const classRoomStore = useClassRoomStore({ ...params, recordingConfig, i18n });
+    const classRoomStore = useClassRoomStore({
+        ...params,
+        recordingConfig,
+        i18n,
+    });
     const whiteboardStore = classRoomStore.whiteboardStore;
     const shareScreenStore = classRoomStore.shareScreenStore;
 

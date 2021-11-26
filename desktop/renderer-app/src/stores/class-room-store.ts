@@ -1066,7 +1066,14 @@ export function useClassRoomStore({
     i18n,
 }: ClassRoomStoreConfig): ClassRoomStore {
     const [classRoomStore] = useState(
-        () => new ClassRoomStore({ roomUUID, ownerUUID, recordingConfig, classMode, i18n }),
+        () =>
+            new ClassRoomStore({
+                roomUUID,
+                ownerUUID,
+                recordingConfig,
+                classMode,
+                i18n,
+            }),
     );
 
     const pushHistory = usePushHistory();
