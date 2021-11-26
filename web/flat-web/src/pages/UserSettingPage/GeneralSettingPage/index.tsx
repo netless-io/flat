@@ -44,7 +44,7 @@ export const GeneralSettingPage = (): React.ReactElement => {
                     <Checkbox
                         defaultChecked={!globalStore.isTurnOffDeviceTest}
                         onClick={() => {
-                            globalStore.toggleOnAndOffDeviceTest();
+                            globalStore.toggleDeviceTest();
                         }}
                     >
                         {t("turn-on-device-test")}

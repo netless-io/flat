@@ -86,7 +86,7 @@ export class GlobalStore {
         this.isShowRecordHintTips = false;
     };
 
-    public toggleOnAndOffDeviceTest = (): void => {
+    public toggleDeviceTest = (): void => {
         this.isTurnOffDeviceTest = !this.isTurnOffDeviceTest;
     };
 

@@ -136,10 +136,6 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
         refreshDevices();
     }, [isCameraAccessible, deviceTest, isMicrophoneAccessible, refreshDevices]);
 
-    const turnOffDeviceTest = (): void => {
-        globalStore.toggleOnAndOffDeviceTest();
-    };
-
     const joinRoom = async (): Promise<void> => {
         await joinRoomHandler(roomUUID, pushHistory);
     };
@@ -163,7 +159,7 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
                     // Currently, the browser does not support switch speaker devices
                     setSpeakerDevice={() => null}
                     setMicrophoneDevice={setMicrophoneDeviceId}
-                    closeDeviceTest={turnOffDeviceTest}
+                    toggleDeviceTest={() => globalStore.toggleDeviceTest()}
                     joinRoom={joinRoom}
                 />
             </div>

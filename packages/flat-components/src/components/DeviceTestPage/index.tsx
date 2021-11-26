@@ -27,7 +27,7 @@ export interface DeviceTestPanelProps {
     setSpeakerDevice: (deviceID: string) => void;
     setCameraDevice: (deviceID: string) => void;
     setMicrophoneDevice: (deviceID: string) => void;
-    closeDeviceTest: () => void;
+    toggleDeviceTest: () => void;
     joinRoom: () => void;
 }
 
@@ -48,7 +48,7 @@ export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
     setCameraDevice,
     setMicrophoneDevice,
     setSpeakerDevice,
-    closeDeviceTest,
+    toggleDeviceTest,
     joinRoom,
 }) => {
     const { t } = useTranslation();
@@ -85,7 +85,7 @@ export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
             </div>
             <div className="device-test-panel-tips-box">
                 <div className="device-test-panel-tips-radio">
-                    <Checkbox onClick={closeDeviceTest}>{t("close-tip")}</Checkbox>
+                    <Checkbox onClick={toggleDeviceTest}>{t("close-tip")}</Checkbox>
                 </div>
                 <div className="device-test-panel-join-btn">
                     <Button type="primary" onClick={joinRoom}>
