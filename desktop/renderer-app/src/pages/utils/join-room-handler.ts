@@ -29,6 +29,7 @@ export const joinRoomHandler = async (
             }
         }
     } catch (e) {
+        pushHistory(RouteNameType.HomePage);
         errorTips(e);
     }
 };

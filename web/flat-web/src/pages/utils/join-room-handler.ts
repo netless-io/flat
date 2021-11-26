@@ -5,7 +5,7 @@ import { errorTips } from "../../components/Tips/ErrorTips";
 
 export const joinRoomHandler = async (
     roomUUID: string,
-    _pushHistory: ReturnType<typeof usePushHistory>,
+    pushHistory: ReturnType<typeof usePushHistory>,
 ): Promise<void> => {
     try {
         const formatRoomUUID = roomUUID.replace(/\s+/g, "");
@@ -34,6 +34,7 @@ export const joinRoomHandler = async (
             }
         }
     } catch (e) {
+        pushHistory(RouteNameType.HomePage);
         errorTips(e);
     }
 };
