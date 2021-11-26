@@ -10,8 +10,8 @@ import { observer } from "mobx-react-lite";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { WhiteboardStore } from "../stores/whiteboard-store";
-import { isSupportedFileExt } from "../utils/dnd";
-import { isSupportedImageType, onDropImage } from "../utils/dnd/image";
+import { isSupportedFileExt } from "../utils/drag-and-drop";
+import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
