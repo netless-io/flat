@@ -28,7 +28,7 @@ export async function onDropImage(file: File, x: number, y: number, room: Room):
         return;
     }
 
-    const hideLoading = message.loading(i18n.t("Inserting-courseware-tips"));
+    const hideLoading = message.loading(i18n.t("inserting-courseware-tips"));
 
     const getSize = getImageSize(file);
     const task = new UploadTask(file);

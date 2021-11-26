@@ -14,10 +14,7 @@ export const CloudStoragePanel = observer<CloudStoragePanelProps>(function Cloud
     cloudStorage,
     onCoursewareInserted,
 }) {
-    useEffect(
-        () => cloudStorage.initialize({ onCoursewareInserted }),
-        [cloudStorage, onCoursewareInserted],
-    );
+    useEffect(() => cloudStorage.initialize(), [cloudStorage, onCoursewareInserted]);
 
     return <CloudStorageContainer store={cloudStorage} />;
 });

@@ -85,15 +85,15 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type SmallClassPageProps = {};
 
 export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassPage() {
-    const { t } = useTranslation();
+    const { i18n, t } = useTranslation();
     const params = useParams<RouteParams<RouteNameType.SmallClassPage>>();
 
-    const classRoomStore = useClassRoomStore(
-        params.roomUUID,
-        params.ownerUUID,
+    const classRoomStore = useClassRoomStore({
+        ...params,
         recordingConfig,
-        ClassModeType.Interaction,
-    );
+        classMode: ClassModeType.Interaction,
+        i18n,
+    });
     const whiteboardStore = classRoomStore.whiteboardStore;
     const shareScreenStore = classRoomStore.shareScreenStore;
 
@@ -330,7 +330,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     />
                 )}
 
-                <CloudStorageButton whiteboard={whiteboardStore} />
+                <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
                     title="Exit"

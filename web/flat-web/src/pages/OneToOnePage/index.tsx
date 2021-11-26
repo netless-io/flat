@@ -65,10 +65,10 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type OneToOnePageProps = {};
 
 export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() {
-    const { t } = useTranslation();
+    const { i18n, t } = useTranslation();
     const params = useParams<RouteParams<RouteNameType.OneToOnePage>>();
 
-    const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
+    const classRoomStore = useClassRoomStore({ ...params, recordingConfig, i18n });
     const shareScreenStore = classRoomStore.shareScreenStore;
     const whiteboardStore = classRoomStore.whiteboardStore;
     const globalStore = useContext(GlobalStoreContext);
@@ -259,7 +259,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 )}
 
                 {/* TODO: open cloud-storage sub window */}
-                <CloudStorageButton whiteboard={whiteboardStore} />
+                <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
                     title="Exit"

@@ -72,7 +72,12 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     const params = useParams<RouteParams<RouteNameType.OneToOnePage>>();
 
-    const classRoomStore = useClassRoomStore(params.roomUUID, params.ownerUUID, recordingConfig);
+    const { i18n, t } = useTranslation();
+    const classRoomStore = useClassRoomStore({
+        ...params,
+        recordingConfig,
+        i18n,
+    });
     const whiteboardStore = classRoomStore.whiteboardStore;
     const shareScreenStore = classRoomStore.shareScreenStore;
 
@@ -83,8 +88,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     const updateLayoutTimeoutRef = useRef(NaN);
     const loadingPageRef = useRef(false);
-
-    const { t } = useTranslation();
 
     const joiner = useComputed(() => {
         if (classRoomStore.isCreator) {
@@ -276,7 +279,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 )}
 
                 {/* TODO: open cloud-storage sub window */}
-                <CloudStorageButton whiteboard={whiteboardStore} />
+                <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
                     title="Exit"
