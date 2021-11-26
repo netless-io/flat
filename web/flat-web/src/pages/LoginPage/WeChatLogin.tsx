@@ -60,7 +60,11 @@ export const WeChatLogin = observer(function WeChatLogin() {
             if (authData) {
                 globalStore.updateUserInfo(authData);
                 if (roomUUID) {
-                    await joinRoomHandler(roomUUID, pushHistory);
+                    if (globalStore.isTurnOffDeviceTest) {
+                        await joinRoomHandler(roomUUID, pushHistory);
+                    } else {
+                        pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
+                    }
                 } else {
                     pushHistory(RouteNameType.HomePage);
                 }

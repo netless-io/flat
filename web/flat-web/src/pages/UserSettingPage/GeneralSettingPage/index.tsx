@@ -1,10 +1,11 @@
 import "./index.less";
 
-import { Radio } from "antd";
-import React from "react";
+import { Checkbox, Radio } from "antd";
+import React, { useContext } from "react";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { useTranslation } from "react-i18next";
 import type { CheckboxChangeEvent } from "antd/lib/checkbox";
+import { GlobalStoreContext } from "../../../components/StoreProvider";
 
 enum SelectLanguage {
     Chinese,
@@ -12,6 +13,8 @@ enum SelectLanguage {
 }
 
 export const GeneralSettingPage = (): React.ReactElement => {
+    const globalStore = useContext(GlobalStoreContext);
+
     const { t, i18n } = useTranslation();
 
     function changeLanguage(event: CheckboxChangeEvent): void {
@@ -35,6 +38,17 @@ export const GeneralSettingPage = (): React.ReactElement => {
                         <Radio value={SelectLanguage.Chinese}>{t("chinese")}</Radio>
                         <Radio value={SelectLanguage.English}>English</Radio>
                     </Radio.Group>
+                </div>
+                <div className="general-setting-device-test-box">
+                    <div className="general-setting-checkbox-title">{t("device-test-option")}</div>
+                    <Checkbox
+                        defaultChecked={!globalStore.isTurnOffDeviceTest}
+                        onClick={() => {
+                            globalStore.toggleDeviceTest();
+                        }}
+                    >
+                        {t("turn-on-device-test")}
+                    </Checkbox>
                 </div>
             </div>
         </UserSettingLayoutContainer>

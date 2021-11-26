@@ -48,7 +48,12 @@ export const JoinPage = observer(function JoinPage() {
 
     async function joinRoom(): Promise<void> {
         if (isLogin && roomUUID) {
-            await joinRoomHandler(roomUUID, pushHistory);
+            const isTurnOffDeviceTest = globalStore.isTurnOffDeviceTest;
+            if (isTurnOffDeviceTest) {
+                await joinRoomHandler(roomUUID, pushHistory);
+            } else {
+                pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
+            }
         } else {
             sessionStorage.setItem("roomUUID", roomUUID);
             pushHistory(RouteNameType.LoginPage);
