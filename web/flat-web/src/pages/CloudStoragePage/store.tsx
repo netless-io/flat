@@ -49,6 +49,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     public filesMap = observable.map<FileUUID, CloudStorageFile>();
 
     public insertCourseware: (file: CloudStorageFile) => void;
+    public onCoursewareInserted?: () => void;
 
     // a set of taskUUIDs representing querying tasks
     private convertStatusManager = new ConvertStatusManager();
@@ -266,7 +267,11 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         return addExternalFile({ fileName, url: fileURL });
     };
 
-    public initialize(): () => void {
+    public initialize({
+        onCoursewareInserted,
+    }: { onCoursewareInserted?: () => void } = {}): () => void {
+        this.onCoursewareInserted = onCoursewareInserted;
+
         void this.refreshFiles();
 
         if (
@@ -290,6 +295,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             window.clearTimeout(this._refreshFilesTimeout);
             this._refreshFilesTimeout = NaN;
             this.convertStatusManager.cancelAllTasks();
+            this.onCoursewareInserted = undefined;
         };
     }
 
