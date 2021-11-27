@@ -193,6 +193,7 @@
   "title-AboutPage": "关于我们",
   "title-JoinPage": "加入房间",
   "title-ResourcePreviewPage": "资源预览",
+  "title-DevicesTestPage": "设备检测",
   "in-the-process-of-transcoding-tips": "正在转码中，请稍后再试",
   "inserting-courseware-tips": "正在插入课件……",
   "unable-to-insert-courseware": "无法插入课件",
@@ -381,5 +382,5 @@
   "device-test": "设备检测",
   "close-tip": "不再提示",
   "device-test-option": "设备检测选项",
-  "turn-on-device-test": "进入房间时开启"
+  "turn-on-device-test": "进入房间时检测"
 }

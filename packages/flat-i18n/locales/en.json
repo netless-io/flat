@@ -193,6 +193,7 @@
   "title-AboutPage": "About",
   "title-JoinPage": "Join room",
   "title-ResourcePreviewPage": "Resource Preview",
+  "title-DevicesTestPage": "Device Test",
   "inserting-courseware-tips": "Inserting courseware...",
   "cancel-upload": "Cancel upload",
   "cancel-upload-tips": "The upload has not been completed. Are you sure to cancel all ongoing uploads?",
@@ -381,5 +382,5 @@
   "device-test": "Devices Test",
   "close-tip": "Close tip",
   "device-test-option": "Device test option",
-  "turn-on-device-test": "Turn on when join the room"
+  "turn-on-device-test": "Turn on device test when join the room"
 }
