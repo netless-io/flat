@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 16</title>
-    <g id="白板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Flat-规范" transform="translate(-570.000000, -3937.000000)" stroke="#444E60">
-            <g id="send备份-2" transform="translate(570.000000, 3937.000000)">
-                <polyline id="路径-5" points="14 9 9 14 9 19 13 15 17 18 19 3 3 12 7 13"></polyline>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="m14 9-5 5v5l4-4 4 3 2-15-16 9 4 1" stroke="#444E60" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>

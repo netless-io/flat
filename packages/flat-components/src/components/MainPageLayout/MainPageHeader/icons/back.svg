@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 24</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="首页-预定房间-周期性会议" transform="translate(-130.000000, -81.000000)" stroke="#3381FF">
-            <g id="编组-3" transform="translate(130.000000, 80.000000)">
-                <g id="编组-26" transform="translate(0.000000, 1.000000)">
-                    <g id="编组备份-6" transform="translate(11.000000, 11.000000) scale(-1, 1) translate(-11.000000, -11.000000) ">
-                        <polyline id="路径-68" points="9 7 13 11 9 15"></polyline>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="m13 7-4 4 4 4" stroke="#3381FF" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>

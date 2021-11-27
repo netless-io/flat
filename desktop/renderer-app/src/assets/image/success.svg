@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>编组 25</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="首页-设置-设备检测结果" transform="translate(-651.000000, -214.000000)">
-            <g id="编组-29" transform="translate(627.000000, 188.000000)">
-                <g id="编组-25" transform="translate(24.000000, 26.000000)">
-                    <circle id="椭圆形" fill="#7EC452" cx="10" cy="10" r="10"></circle>
-                    <polyline id="路径-36" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" points="6 10 9 13 14 8"></polyline>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><circle fill="#7EC452" cx="10" cy="10" r="10"/><path stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" d="m6 10 3 3 5-5"/></g></svg>

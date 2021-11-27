@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>编组</title>
-    <g id="Flat" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="规范（持续更新）" transform="translate(-1469.000000, -1110.000000)" stroke="#7EC452">
-            <g id="编组-29" transform="translate(1147.000000, 1042.000000)">
-                <g id="编组-28" transform="translate(16.000000, 68.000000)">
-                    <g id="编组-24" transform="translate(246.000000, 0.000000)">
-                        <polyline id="路径-14" points="65 11 70 15 77 7"></polyline>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="m5 11 5 4 7-8" stroke="#7EC452" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>

@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>folder</title>
-    <g id="白板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Flat-规范" transform="translate(-1288.000000, -16.000000)" stroke="#7A7B7C">
-            <g id="folder" transform="translate(1288.000000, 16.000000)">
-                <path d="M5,6 C5,5.44771525 5.44771525,5 6,5 L9.43844719,5 C10.3561825,5 11.1561487,5.62459475 11.3787322,6.51492875 L11.5,7 L15,7 C16.1045695,7 17,7.8954305 17,9 L17,15 C17,16.1045695 16.1045695,17 15,17 L7,17 C5.8954305,17 5,16.1045695 5,15 L5,6 Z" id="形状结合"></path>
-                <line x1="5" y1="9" x2="17" y2="9" id="路径-6"></line>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="M5 6a1 1 0 0 1 1-1h3.438a2 2 0 0 1 1.94 1.515L11.5 7H15a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6Zm0 3h12" stroke="#7A7B7C" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>

@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 21</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="组件规范" transform="translate(-1268.000000, -1418.000000)" stroke="#FFFFFF">
-            <g id="编组-4备份-4" transform="translate(1064.000000, 1372.000000)">
-                <g id="编组-21" transform="translate(200.000000, 0.000000)">
-                    <g id="编组" transform="translate(4.000000, 46.000000)">
-                        <polyline id="路径-8" points="5 13 5 17 9 17"></polyline>
-                        <line x1="5" y1="17" x2="9" y2="13" id="路径-10"></line>
-                        <polyline id="路径-15" points="13 5 17 5 17 9"></polyline>
-                        <line x1="17" y1="5" x2="13" y2="9" id="路径-17"></line>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="M5 13v4h4m-4 0 4-4m4-8h4v4m0-4-4 4" stroke="#FFF" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>

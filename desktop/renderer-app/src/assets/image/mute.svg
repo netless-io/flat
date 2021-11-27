@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>invite备份</title>
-    <g id="Flat-单窗口" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="检测_扬声器检测（单窗口）" transform="translate(-336.000000, -223.000000)" stroke="#7A7B7C">
-            <g id="编组-4" transform="translate(336.000000, 32.000000)">
-                <g id="invite备份" transform="translate(0.000000, 191.000000)">
-                    <polygon id="路径-4" points="7 14 7 8 10 8 14 4 14 18 10 14"></polygon>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="M7 14V8h3l4-4v14l-4-4z" stroke="#7A7B7C" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>

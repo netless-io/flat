@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>shortcut</title>
-    <g id="白板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Flat-规范" transform="translate(-1250.000000, -16.000000)" stroke="#7A7B7C">
-            <g id="follow" transform="translate(1250.000000, 16.000000)">
-                <rect id="矩形" x="5" y="5" width="12" height="10" rx="2"></rect>
-                <path d="M10.5144958,7.90869745 L12.5708451,9.14250707 C13.0444254,9.42665523 13.1979905,10.0409155 12.9138423,10.5144958 C12.8293925,10.6552454 12.7115947,10.7730432 12.5708451,10.8574929 L10.5144958,12.0913025 C10.0409155,12.3754507 9.42665523,12.2218856 9.14250707,11.7483054 C9.04925783,11.59289 9,11.4150536 9,11.2338096 L9,8.76619038 C9,8.21390563 9.44771525,7.76619038 10,7.76619038 C10.1812439,7.76619038 10.3590804,7.81544821 10.5144958,7.90869745 Z" id="矩形"></path>
-                <line x1="5" y1="17" x2="17" y2="17" id="路径-47"></line>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><g stroke="#7A7B7C" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="12" height="10" rx="2"/><path d="m10.514 7.909 2.057 1.234a1 1 0 0 1 0 1.714l-2.057 1.234A1 1 0 0 1 9 11.234V8.766a1 1 0 0 1 1.514-.857ZM5 17h12"/></g></svg>

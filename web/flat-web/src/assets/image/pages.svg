@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
-    <title>pages</title>
-    <desc>Created with Sketch.</desc>
-    <g id="页面-4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Whiteboard-Guidelines" transform="translate(-432.000000, -374.000000)">
-            <g id="pages" transform="translate(432.000000, 374.000000)">
-                <rect id="矩形备份-24" fill="#FFFFFF" opacity="0.01" x="0" y="0" width="32" height="32"></rect>
-                <rect id="矩形" stroke="#212324" stroke-linecap="round" stroke-linejoin="round" x="10" y="12" width="10" height="10" rx="2"></rect>
-                <path d="M14,10 L20,10 C21.1045695,10 22,10.8954305 22,12 L22,18" id="矩形备份-3" stroke="#212324" stroke-linecap="round" stroke-linejoin="round"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#FFF" opacity=".01" d="M0 0h32v32H0z"/><rect stroke="#212324" stroke-linecap="round" stroke-linejoin="round" x="10" y="12" width="10" height="10" rx="2"/><path d="M14 10h6a2 2 0 0 1 2 2v6" stroke="#212324" stroke-linecap="round" stroke-linejoin="round"/></g></svg>

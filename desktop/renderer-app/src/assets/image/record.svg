@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>follow</title>
-    <g id="Flat" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="白板-关闭摄像头-一对一" transform="translate(-934.000000, -46.000000)">
-            <g id="follow" transform="translate(934.000000, 46.000000)">
-                <g id="folder备份" fill="#FFFFFF" opacity="0.01">
-                    <rect id="矩形备份-25" x="0" y="0" width="22" height="22"></rect>
-                </g>
-                <path d="M12.5,6 C13.6045695,6 14.5,6.8954305 14.5,8 L14.5,9.4 L16.9855042,7.90869745 C17.4590845,7.62454929 18.0733448,7.77811436 18.3574929,8.25169462 C18.4507422,8.40711003 18.5,8.58494643 18.5,8.76619038 L18.5,13.2338096 C18.5,13.7860944 18.0522847,14.2338096 17.5,14.2338096 C17.3187561,14.2338096 17.1409196,14.1845518 16.9855042,14.0913025 L14.5,12.6 L14.5,14 C14.5,15.1045695 13.6045695,16 12.5,16 L5.5,16 C4.3954305,16 3.5,15.1045695 3.5,14 L3.5,8 C3.5,6.8954305 4.3954305,6 5.5,6 L12.5,6 Z" id="路径" stroke="#7A7B7C" stroke-linecap="round" stroke-linejoin="round"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h22v22H0z" fill="#FFF" opacity=".01"/><path d="M12.5 6a2 2 0 0 1 2 2v1.4l2.486-1.491a1 1 0 0 1 1.514.857v4.468a1 1 0 0 1-1.514.857L14.5 12.6V14a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7Z" stroke="#7A7B7C" stroke-linecap="round" stroke-linejoin="round"/></g></svg>

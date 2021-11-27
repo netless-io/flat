@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 21</title>
-    <g id="Flat-单窗口" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="检测_系统检测（单窗口）" transform="translate(-88.000000, -73.000000)" stroke="#7A7B7C">
-            <g id="编组-3" transform="translate(72.000000, 0.000000)">
-                <g id="编组-11" transform="translate(0.000000, 64.000000)">
-                    <g id="编组" transform="translate(16.000000, 9.000000)">
-                        <circle id="椭圆形" cx="11" cy="9" r="5"></circle>
-                        <circle id="椭圆形" cx="11" cy="9" r="2"></circle>
-                        <path d="M6,18 C8.92317549,15.6614596 13.0768245,15.6614596 16,18 L16,18 L16,18" id="路径-7"></path>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><g stroke="#7A7B7C" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="9" r="5"/><circle cx="11" cy="9" r="2"/><path d="M6 18a8.004 8.004 0 0 1 10 0h0"/></g></svg>

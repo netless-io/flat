@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>invite备份</title>
-    <g id="Flat-单窗口" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="设置_常规设置（单窗口）" transform="translate(-88.000000, -113.000000)" stroke="#7A7B7C">
-            <g id="编组-3" transform="translate(72.000000, 0.000000)">
-                <g id="编组-11备份" transform="translate(0.000000, 104.000000)">
-                    <g id="invite备份" transform="translate(16.000000, 9.000000)">
-                        <path d="M15,5 C16.1045695,5 17,5.8954305 17,7 L17,12 C17,13.1045695 16.1045695,14 15,14 L11,14 L8,17 L8,14 L7,14 C5.8954305,14 5,13.1045695 5,12 L5,7 C5,5.8954305 5.8954305,5 7,5 L15,5 Z" id="形状结合"></path>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="M15 5a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-4l-3 3v-3H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h8Z" stroke="#7A7B7C" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>

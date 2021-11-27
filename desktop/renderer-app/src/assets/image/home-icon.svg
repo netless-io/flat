@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="首页-预定房间" transform="translate(-106.000000, -56.000000)" stroke="#3381FF">
-            <g id="编组-7" transform="translate(106.000000, 56.000000)">
-                <path d="M5,9 L9.89059961,5.73960026 C10.5623984,5.29173438 11.4376016,5.29173438 12.1094004,5.73960026 L17,9 L17,9" id="路径-39"></path>
-                <path d="M6,10 L6,15 C6,16.1045695 6.8954305,17 8,17 L14,17 C15.1045695,17 16,16.1045695 16,15 L16,10 L16,10" id="路径-3"></path>
-                <polyline id="路径-7" points="9 17 9 13 13 13 13 17"></polyline>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><g stroke="#3381FF" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><path d="m5 9 4.89-3.26a2 2 0 0 1 2.22 0L17 9h0M6 10v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-5h0"/><path d="M9 17v-4h4v4"/></g></svg>

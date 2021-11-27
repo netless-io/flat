@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>编组 42</title>
-    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="云盘ppt预览-electron" transform="translate(-912.000000, -62.000000)">
-            <g id="编组-42" transform="translate(912.000000, 62.000000)">
-                <circle id="椭圆形" fill-opacity="0.502622378" fill="#000000" cx="18" cy="18" r="18"></circle>
-                <path d="M24.363961,10.5753788 L25.4246212,11.636039 L19.0603788,17.9993788 L25.4246212,24.363961 L24.363961,25.4246212 L17.9993788,19.0603788 L11.636039,25.4246212 L10.5753788,24.363961 L16.9393788,17.9993788 L10.5753788,11.636039 L11.636039,10.5753788 L17.9993788,16.9393788 L24.363961,10.5753788 Z" id="形状结合" fill="#FFFFFF" fill-rule="nonzero"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="36" height="36" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><circle fill-opacity=".503" fill="#000" cx="18" cy="18" r="18"/><path d="m24.364 10.575 1.06 1.061-6.364 6.363 6.365 6.365-1.061 1.06-6.365-6.364-6.363 6.365-1.06-1.061 6.363-6.365-6.364-6.363 1.061-1.06 6.363 6.363 6.365-6.364Z" fill="#FFF" fill-rule="nonzero"/></g></svg>

@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>invite</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="小班课-互动模式-macOS" transform="translate(-578.000000, -46.000000)">
-            <g id="编组-4" transform="translate(0.000000, 32.000000)">
-                <g id="编组-3" transform="translate(410.000000, 10.000000)">
-                    <g id="编组-6" transform="translate(160.000000, 0.000000)">
-                        <g id="invite" transform="translate(8.000000, 4.000000)">
-                            <rect id="矩形备份-25" fill="#FFFFFF" opacity="0.01" x="0" y="0" width="22" height="22"></rect>
-                            <path d="M8.18375417,6.14630913 L14.9168467,9.98356844 C15.4640099,10.2954024 15.6611492,11.0032183 15.3571696,11.5645195 C15.2543873,11.754308 15.1018549,11.9107817 14.9168467,12.0162198 L8.18375417,15.8534791 C7.63659098,16.165313 6.94660346,15.9630799 6.64262391,15.4017788 C6.54908598,15.2290601 6.5,15.0347365 6.5,14.8371534 L6.5,7.16263479 C6.5,6.52052933 7.00741831,6 7.63335051,6 C7.82595691,6 8.01538588,6.05035429 8.18375417,6.14630913 Z" id="矩形" stroke="#7A7B7C"></path>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#FFF" opacity=".01" d="M0 0h22v22H0z"/><path d="m8.184 6.146 6.733 3.838a1.179 1.179 0 0 1 0 2.032l-6.733 3.837a1.119 1.119 0 0 1-1.541-.451 1.186 1.186 0 0 1-.143-.565V7.163C6.5 6.52 7.007 6 7.633 6c.193 0 .382.05.55.146Z" stroke="#7A7B7C"/></g></svg>

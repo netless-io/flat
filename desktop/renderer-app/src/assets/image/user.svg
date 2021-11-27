@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>invite备份</title>
-    <g id="2.X" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="首页" transform="translate(-19.000000, -164.000000)" stroke="#7A7B7C">
-            <g id="编组-4备份" transform="translate(0.000000, 74.000000)">
-                <g id="invite备份" transform="translate(19.000000, 90.000000)">
-                    <path d="M10,34 L10,33.472136 C10,30.7313156 11.5485357,28.2257321 14,27 L15.4701779,26.2649111 C17.1457664,25.4271168 18.675331,24.324669 20,23 L20,23 L20,23 C18.7194215,21.7194215 18,19.9825843 18,18.1715729 L18,14 C18,11.790861 19.790861,10 22,10 C24.209139,10 26,11.790861 26,14 L26,18.1715729 C26,19.9825843 25.2805785,21.7194215 24,23 L24,23 L24,23 C25.324669,24.324669 26.8542336,25.4271168 28.5298221,26.2649111 L30,27 C32.4514643,28.2257321 34,30.7313156 34,33.472136 L34,34 L34,34" id="路径-8"></path>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="44" height="44" xmlns="http://www.w3.org/2000/svg"><path d="M10 34v-.528A7.236 7.236 0 0 1 14 27l1.47-.735A17.43 17.43 0 0 0 20 23h0a6.828 6.828 0 0 1-2-4.828V14a4 4 0 1 1 8 0v4.172c0 1.81-.72 3.547-2 4.828h0a17.43 17.43 0 0 0 4.53 3.265L30 27a7.236 7.236 0 0 1 4 6.472V34h0" stroke="#7A7B7C" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
