@@ -12,6 +12,7 @@ module.exports = {
         "bootup",
         "btns",
         "topbar",
+        "titlebar",
         "typebox",
         "downloaders",
 
@@ -143,6 +144,6 @@ module.exports = {
         "cspell.config.js",
         "yarn.lock",
         "CHANGELOG.md",
-        "third_party/**"
+        "third_party/**",
     ],
 };
