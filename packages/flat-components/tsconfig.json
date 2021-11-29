@@ -12,5 +12,5 @@
     }
   },
   "exclude": ["node_modules", "storybook-static", "public", ".storybook"],
-  "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts", "vite.config.ts"]
 }

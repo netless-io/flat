@@ -26,7 +26,8 @@
   "scripts": {
     "lint": "lint-staged",
     "start": "start-storybook -p 6006 -s public",
-    "build": "build-storybook -s public"
+    "build": "build-storybook -s public",
+    "build:dist": "vite build"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
@@ -75,6 +76,7 @@
     "style-loader": "^2.0.0",
     "tachyons": "^4.12.0",
     "typescript": "^4.2.4",
-    "webpack": "^5.37.0"
+    "webpack": "^5.37.0",
+    "vite": "^2.5.0"
   }
 }
