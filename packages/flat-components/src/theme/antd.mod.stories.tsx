@@ -117,37 +117,43 @@ export const Overview: Story = () => {
     const buttonExample = (
         <div>
             <div className="flex justify-around items-center mb3">
-                <Button type="primary">Upload</Button>
-                <Button>Secondary Button</Button>
-                <Button type="dashed">Dashed Button</Button>
-                <Button danger>Warning Button</Button>
-                Default
+                <Button type="primary">Primary</Button>
+                <Button>Default</Button>
+                <Button type="dashed">Dashed</Button>
+                <Button danger>Warning</Button>
+                <span style={{ width: "5em", display: "inline-block", textAlign: "center" }}>
+                    Default
+                </span>
             </div>
             <div className="flex justify-around items-center mb3">
                 <Button type="primary" className="is-hover">
-                    Upload
+                    Primary
                 </Button>
-                <Button className="is-hover">Secondary Button</Button>
+                <Button className="is-hover">Default</Button>
                 <Button type="dashed" className="is-hover">
-                    Dashed Button
+                    Dashed
                 </Button>
                 <Button danger className="is-hover">
-                    Warning Button
+                    Warning
                 </Button>
-                Hover
+                <span style={{ width: "5em", display: "inline-block", textAlign: "center" }}>
+                    Hover
+                </span>
             </div>
             <div className="flex justify-around items-center mb3">
                 <Button disabled type="primary">
-                    Upload
+                    Primary
                 </Button>
-                <Button disabled>Secondary Button</Button>
+                <Button disabled>Default</Button>
                 <Button disabled type="dashed">
-                    Dashed Button
+                    Dashed
                 </Button>
                 <Button disabled danger>
-                    Warning Button
+                    Warning
                 </Button>
-                Disable
+                <span style={{ width: "5em", display: "inline-block", textAlign: "center" }}>
+                    Disabled
+                </span>
             </div>
         </div>
     );
