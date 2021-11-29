@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 24</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="首页-周期性房间详情" transform="translate(-895.000000, -406.000000)" fill="#444E60">
-            <g id="编组-4" transform="translate(361.000000, 144.000000)">
-                <g id="编组-3" transform="translate(0.000000, 174.000000)">
-                    <g id="编组-10" transform="translate(420.000000, 48.000000)">
-                        <g id="编组备份-10" transform="translate(125.000000, 51.000000) rotate(-270.000000) translate(-125.000000, -51.000000) translate(114.000000, 40.000000)">
-                            <path d="M11,14 C11.5522847,14 12,14.4477153 12,15 C12,15.5522847 11.5522847,16 11,16 C10.4477153,16 10,15.5522847 10,15 C10,14.4477153 10.4477153,14 11,14 Z M11,10 C11.5522847,10 12,10.4477153 12,11 C12,11.5522847 11.5522847,12 11,12 C10.4477153,12 10,11.5522847 10,11 C10,10.4477153 10.4477153,10 11,10 Z M11,6 C11.5522847,6 12,6.44771525 12,7 C12,7.55228475 11.5522847,8 11,8 C10.4477153,8 10,7.55228475 10,7 C10,6.44771525 10.4477153,6 11,6 Z" id="形状结合"></path>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="M8 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" fill="#444E60" fill-rule="evenodd"/></svg>

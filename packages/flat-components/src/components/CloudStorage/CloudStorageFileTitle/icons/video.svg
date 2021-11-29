@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 21</title>
-    <g id="Flat" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="规范（持续更新）" transform="translate(-1086.000000, -236.000000)" stroke="#56C794">
-            <g id="编组-14" transform="translate(1086.000000, 236.000000)">
-                <circle id="椭圆形" cx="11" cy="11" r="7"></circle>
-                <path d="M10.0072479,8.45434873 L13.5354226,10.5712535 C13.7722127,10.7133276 13.8489952,11.0204577 13.7069211,11.2572479 C13.6646963,11.3276227 13.6057974,11.3865216 13.5354226,11.4287465 L10.0072479,13.5456513 C9.77045774,13.6877254 9.46332762,13.6109428 9.32125354,13.3741527 C9.27462892,13.296445 9.25,13.2075268 9.25,13.1169048 L9.25,8.88309519 C9.25,8.60695281 9.47385763,8.38309519 9.75,8.38309519 C9.84062197,8.38309519 9.92954018,8.40772411 10.0072479,8.45434873 Z" id="路径-32"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><g stroke="#56C794" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m10.007 8.454 3.528 2.117a.5.5 0 0 1 0 .858l-3.528 2.117a.5.5 0 0 1-.757-.43V8.884a.5.5 0 0 1 .757-.429Z"/></g></svg>

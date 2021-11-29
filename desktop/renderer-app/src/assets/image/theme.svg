@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>follow</title>
-    <g id="2.X" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="首页-macOS-历史记录" transform="translate(-1116.000000, -46.000000)">
-            <g id="follow" transform="translate(1116.000000, 46.000000)">
-                <g id="folder备份" fill="#FFFFFF" opacity="0">
-                    <rect id="矩形备份-25" x="0" y="0" width="22" height="22"></rect>
-                </g>
-                <path d="M8,5 L5,8 L6,11 L7,11 L7,15 C7,16.1045695 7.8954305,17 9,17 L13,17 C14.1045695,17 15,16.1045695 15,15 L15,11 L15,11 L16,11 L17,8 L14,5 C12.1833462,6.21110255 9.81665383,6.21110255 8,5 L8,5 L8,5 Z" id="路径-11" stroke="#7A7B7C" stroke-linecap="round" stroke-linejoin="round"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="M8 5 5 8l1 3h1v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-4h1l1-3-3-3a5.408 5.408 0 0 1-6 0h0Z" stroke="#7A7B7C" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>

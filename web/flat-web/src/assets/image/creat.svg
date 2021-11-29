@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>编组 10</title>
-    <g id="Flat-Web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="660*1080（页面的padding-right小于16切到手机布局）" transform="translate(-294.000000, -38.000000)">
-            <g id="编组-2" transform="translate(280.000000, 24.000000)">
-                <g id="编组-10" transform="translate(14.000000, 14.000000)">
-                    <circle id="椭圆形备份" fill="#3381FF" cx="22" cy="22" r="22"></circle>
-                    <rect id="矩形" fill="#FFFFFF" x="12" y="21" width="20" height="2"></rect>
-                    <rect id="矩形" fill="#FFFFFF" transform="translate(22.000000, 22.000000) rotate(-270.000000) translate(-22.000000, -22.000000) " x="12" y="21" width="20" height="2"></rect>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="44" height="44" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><circle fill="#3381FF" cx="22" cy="22" r="22"/><path fill="#FFF" d="M12 21h20v2H12z"/><path fill="#FFF" d="M23 12v20h-2V12z"/></g></svg>

@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="10px" height="18px" viewBox="0 0 10 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>编组 9备份</title>
-    <g id="白板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Flat-规范" transform="translate(-224.000000, -18.000000)" fill="#9FDF76">
-            <g id="编组-19" transform="translate(224.000000, 18.000000)">
-                <path d="M2,10 L2,14 L0,14 L0,10 L2,10 Z M6,6 L6,14 L4,14 L4,6 L6,6 Z M10,2 L10,14 L8,14 L8,2 L10,2 Z" id="形状结合"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="10" height="18" xmlns="http://www.w3.org/2000/svg"><path d="M2 10v4H0v-4h2Zm4-4v8H4V6h2Zm4-4v12H8V2h2Z" fill="#9FDF76" fill-rule="evenodd"/></svg>

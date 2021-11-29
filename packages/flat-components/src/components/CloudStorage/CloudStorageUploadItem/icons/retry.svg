@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 44</title>
-    <g id="Flat" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="规范（持续更新）" transform="translate(-1798.000000, -215.000000)">
-            <g id="编组-23备份" transform="translate(1468.000000, 129.000000)">
-                <g id="编组-3" transform="translate(16.000000, 40.000000)">
-                    <g id="编组-19" transform="translate(0.000000, 46.000000)">
-                        <g id="编组-2备份-5" transform="translate(314.000000, 0.000000)">
-                            <polygon id="路径-25" fill="#444E60" points="16.3284271 4.87867966 16.3284271 7.70710678 13.5 7.70710678"></polygon>
-                            <path d="M15.5261625,7.06110253 C14.426185,5.79819198 12.8063064,5 11,5 C7.6862915,5 5,7.6862915 5,11 C5,14.3137085 7.6862915,17 11,17 C14.3137085,17 17,14.3137085 17,11" id="路径" stroke="#444E60" stroke-linejoin="round"></path>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#444E60" d="M16.328 4.879v2.828H13.5z"/><path d="M15.526 7.061A6 6 0 1 0 17 11" stroke="#444E60" stroke-linejoin="round"/></g></svg>

@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 24</title>
-    <g id="Flat-Web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="中转" transform="translate(-748.000000, -283.000000)">
-            <g id="编组-4备份-2" transform="translate(748.000000, 283.000000)">
-                <rect id="矩形" fill="#FFFFFF" x="12" y="12" width="48" height="48"></rect>
-                <rect id="矩形" stroke="#3381FF" stroke-width="3" stroke-linejoin="round" x="18" y="18" width="36" height="36" rx="4"></rect>
-                <line x1="30" y1="41" x2="42" y2="41" id="路径-62" stroke="#3381FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></line>
-                <line x1="36" y1="35" x2="36" y2="47" id="路径-62" stroke="#3381FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></line>
-                <path d="M50,18 C52.209139,18 54,19.790861 54,22 L54,22 L54,30 L18,30 L18,22 C18,19.790861 19.790861,18 22,18 L22,18 Z M25,22 C23.8954305,22 23,22.8954305 23,24 C23,25.1045695 23.8954305,26 25,26 C26.1045695,26 27,25.1045695 27,24 C27,22.8954305 26.1045695,22 25,22 Z M32,22 C30.8954305,22 30,22.8954305 30,24 C30,25.1045695 30.8954305,26 32,26 C33.1045695,26 34,25.1045695 34,24 C34,22.8954305 33.1045695,22 32,22 Z" id="形状结合" fill="#3381FF"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="72" height="72" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#FFF" d="M12 12h48v48H12z"/><rect stroke="#3381FF" stroke-width="3" stroke-linejoin="round" x="18" y="18" width="36" height="36" rx="4"/><path stroke="#3381FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M30 41h12m-6-6v12"/><path d="M50 18a4 4 0 0 1 4 4v8H18v-8a4 4 0 0 1 4-4Zm-25 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" fill="#3381FF"/></g></svg>

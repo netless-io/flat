@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="9px" height="9px" viewBox="0 0 9 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>编组 27</title>
-    <g id="Flat" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="规范（持续更新）" transform="translate(-1407.000000, -319.000000)" stroke="#F45454">
-            <g id="编组-27" transform="translate(1408.000000, 320.000000)">
-                <circle id="椭圆形" cx="3.5" cy="3.5" r="3.5"></circle>
-                <line x1="1" y1="6" x2="6" y2="1" id="路径-2"></line>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="9" height="9" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1 1)" stroke="#F45454" fill="none" fill-rule="evenodd"><circle cx="3.5" cy="3.5" r="3.5"/><path d="m1 6 5-5"/></g></svg>

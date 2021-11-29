@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Flat-录制视频备份</title>
-    <g id="白板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Flat-规范" transform="translate(-753.000000, -85.000000)">
-            <g id="编组-9" transform="translate(0.000000, 66.000000)">
-                <g id="编组-4" transform="translate(602.000000, 11.000000)">
-                    <rect id="矩形备份-6" stroke="#DBE1EA" stroke-width="0.5" x="142" y="0" width="94" height="28" rx="14"></rect>
-                    <circle id="椭圆形备份" fill="#FF6C6C" cx="157" cy="14" r="3"></circle>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="12" height="12" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-151 -8)" fill="none" fill-rule="evenodd"><rect stroke="#DBE1EA" stroke-width=".5" x="142" width="94" height="28" rx="14"/><circle fill="#FF6C6C" cx="157" cy="14" r="3"/></g></svg>
