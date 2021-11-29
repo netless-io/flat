@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 24</title>
-    <g id="Flat-单窗口" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="首页（单窗口）" transform="translate(-36.000000, -159.000000)" stroke="#7A7B7C">
-            <g id="编组-4" transform="translate(20.000000, 88.000000)">
-                <g id="编组-11" transform="translate(0.000000, 62.000000)">
-                    <g id="编组-4备份" transform="translate(16.000000, 9.000000)">
-                        <path d="M12,4.57735027 L16.0621778,6.92264973 C16.68098,7.27991532 17.0621778,7.94016936 17.0621778,8.65470054 L17.0621778,13.3452995 C17.0621778,14.0598306 16.68098,14.7200847 16.0621778,15.0773503 L12,17.4226497 C11.3811978,17.7799153 10.6188022,17.7799153 10,17.4226497 L5.93782217,15.0773503 C5.31902002,14.7200847 4.93782217,14.0598306 4.93782217,13.3452995 L4.93782217,8.65470054 C4.93782217,7.94016936 5.31902002,7.27991532 5.93782217,6.92264973 L10,4.57735027 C10.6188022,4.22008468 11.3811978,4.22008468 12,4.57735027 Z" id="多边形"></path>
-                        <circle id="椭圆形" cx="11" cy="11" r="2"></circle>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><g stroke="#7A7B7C" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><path d="m12 4.577 4.062 2.346a2 2 0 0 1 1 1.732v4.69a2 2 0 0 1-1 1.732L12 17.423a2 2 0 0 1-2 0l-4.062-2.346a2 2 0 0 1-1-1.732v-4.69a2 2 0 0 1 1-1.732L10 4.577a2 2 0 0 1 2 0Z"/><circle cx="11" cy="11" r="2"/></g></svg>

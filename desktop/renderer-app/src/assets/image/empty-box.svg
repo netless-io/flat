@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="82px" height="73px" viewBox="0 0 82 73" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>编组</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="首页-macOS" transform="translate(-874.000000, -375.000000)" stroke="#DBE1EA" stroke-width="1.4">
-            <g id="编组-6" transform="translate(873.000000, 376.000000)">
-                <g id="编组" transform="translate(2.000000, 0.000000)">
-                    <path d="M80,49 L80,65 C80,68.3137085 77.3137085,71 74,71 L6,71 C2.6862915,71 0,68.3137085 0,65 L0,49 L29,49 C29,55.0751322 33.9248678,60 40,60 C46.0751322,60 51,55.0751322 51,49 L80,49 Z" id="路径"></path>
-                    <path d="M0,49 L14.2188008,27.6717988 C15.3315955,26.0026068 17.2049834,25 19.2111026,25 L60.7888974,25 C62.7950166,25 64.6684045,26.0026068 65.7811992,27.6717988 L80,49 L80,49" id="矩形"></path>
-                    <line x1="40" y1="19" x2="40" y2="0" id="路径-32"></line>
-                    <line x1="56" y1="19" x2="65" y2="10" id="路径-33"></line>
-                    <line x1="15" y1="19" x2="24" y2="10" id="路径-33备份" transform="translate(19.500000, 14.500000) scale(-1, 1) translate(-19.500000, -14.500000) "></line>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="82" height="73" xmlns="http://www.w3.org/2000/svg"><path d="M81 50v16a6 6 0 0 1-6 6H7a6 6 0 0 1-6-6V50h29c0 6.075 4.925 11 11 11s11-4.925 11-11h29ZM1 50l14.219-21.328A6 6 0 0 1 20.21 26h41.58a6 6 0 0 1 4.992 2.672L81 50h0M41 20V1m16 19 9-9m-41 9-9-9" stroke="#DBE1EA" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>

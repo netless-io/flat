@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="72px" height="72px" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 25</title>
-    <g id="Flat-Web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="中转" transform="translate(-420.000000, -283.000000)">
-            <g id="编组-2" transform="translate(420.000000, 283.000000)">
-                <path d="M18,42 L18,50 C18,52.209139 19.790861,54 22,54 L50,54 C52.209139,54 54,52.209139 54,50 L54,42 L54,42" id="路径-8" stroke="#3381FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M18,50 C18,52.209139 19.790861,54 22,54 L50,54 C52.209139,54 54,52.209139 54,50 L54,50 L54,50 L18,50 Z" id="路径" fill="#3381FF"></path>
-                <path d="M25.7071068,28.2928932 L35.2928932,18.7071068 C35.6834175,18.3165825 36.3165825,18.3165825 36.7071068,18.7071068 L46.2928932,28.2928932 C46.6834175,28.6834175 46.6834175,29.3165825 46.2928932,29.7071068 C46.1053568,29.8946432 45.8510029,30 45.5857864,30 L39,30 L39,30 L39,43 C39,43.5522847 38.5522847,44 38,44 L34,44 C33.4477153,44 33,43.5522847 33,43 L33,30 L33,30 L26.4142136,30 C25.8619288,30 25.4142136,29.5522847 25.4142136,29 C25.4142136,28.7347835 25.5195704,28.4804296 25.7071068,28.2928932 Z" id="路径-9" fill="#3381FF" transform="translate(36.000000, 31.000000) scale(1, -1) translate(-36.000000, -31.000000) "></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="72" height="72" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M18 42v8a4 4 0 0 0 4 4h28a4 4 0 0 0 4-4v-8h0" stroke="#3381FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 50a4 4 0 0 0 4 4h28a4 4 0 0 0 4-4H18Zm7.707-16.293 9.586 9.586a1 1 0 0 0 1.414 0l9.586-9.586A1 1 0 0 0 45.586 32H39V19a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v13h-6.586a1 1 0 0 0-.707 1.707Z" fill="#3381FF"/></g></svg>

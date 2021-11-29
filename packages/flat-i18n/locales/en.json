@@ -193,7 +193,8 @@
   "title-AboutPage": "About",
   "title-JoinPage": "Join room",
   "title-ResourcePreviewPage": "Resource Preview",
-  "Inserting-courseware-tips": "Inserting courseware...",
+  "title-DevicesTestPage": "Device Test",
+  "inserting-courseware-tips": "Inserting courseware...",
   "cancel-upload": "Cancel upload",
   "cancel-upload-tips": "The upload has not been completed. Are you sure to cancel all ongoing uploads?",
   "delete-courseware-tips": "Are you sure to delete this courseware? \nUnrecoverable after the courseware is deleted",
@@ -374,5 +375,12 @@
     "file-download-failed": "Cannot retrieve file for processing",
     "file-unzip-failed": "File processing failed",
     "file-upload-failed": "File upload failed"
-  }
+  },
+  "no-device-permission": "No permission",
+  "speaker": "Speaker",
+  "enable-camera-permission-tip": "Missing permission for camera access",
+  "device-test": "Devices Test",
+  "close-tip": "Close tip",
+  "device-test-option": "Device test option",
+  "turn-on-device-test": "Turn on device test when join the room"
 }

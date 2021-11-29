@@ -40,7 +40,11 @@ export const LoginPage = observer(function LoginPage() {
                 loginDisposer.current = githubLogin(async authData => {
                     globalStore.updateUserInfo(authData);
                     if (roomUUID) {
-                        await joinRoomHandler(roomUUID, pushHistory);
+                        if (globalStore.isTurnOffDeviceTest) {
+                            await joinRoomHandler(roomUUID, pushHistory);
+                        } else {
+                            pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
+                        }
                     } else {
                         pushHistory(RouteNameType.HomePage);
                     }

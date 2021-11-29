@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 25</title>
-    <g id="Flat-单窗口" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="菜单栏（单窗口）" transform="translate(-103.000000, -592.000000)" stroke="#7A7B7C">
-            <g id="编组备份" transform="translate(83.000000, 0.000000)">
-                <g id="invite备份-11" transform="translate(20.000000, 592.000000)">
-                    <rect id="矩形" x="8" y="8" width="16" height="13.3333333" rx="2.66666667"></rect>
-                    <line x1="10.6666667" y1="24" x2="21.3333333" y2="24" id="路径-9" stroke-linecap="round" stroke-linejoin="round"></line>
-                    <polyline id="路径-7" stroke-linecap="round" stroke-linejoin="round" points="10.6666667 14.6666667 13.3333333 14.6666667 14.6666667 12 16 14.6666667 17.3333333 17.3333333 18.6666667 14.6666667 21.3333333 14.6666667"></polyline>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><g stroke="#7A7B7C" fill="none" fill-rule="evenodd"><rect x="8" y="8" width="16" height="13.333" rx="2.667"/><path stroke-linecap="round" stroke-linejoin="round" d="M10.667 24h10.666m-10.666-9.333h2.666L14.667 12 16 14.667l1.333 2.666 1.334-2.666h2.666"/></g></svg>

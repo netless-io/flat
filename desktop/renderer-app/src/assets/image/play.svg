@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 24</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="首页-设置-扬声器检测" transform="translate(-945.000000, -269.000000)" fill="#444E60">
-            <g id="编组-6" transform="translate(945.000000, 269.000000)">
-                <polygon id="矩形" points="6 5 16 11 6 17"></polygon>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="m6 5 10 6-10 6z" fill="#444E60" fill-rule="evenodd"/></svg>

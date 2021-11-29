@@ -1,0 +1,36 @@
+.device-test-select-container {
+    width: 100%;
+}
+
+.device-test-select-box {
+    > .ant-select {
+        width: 100%;
+
+        > .ant-select-selector {
+            border-radius: 4px;
+            height: 36px;
+            align-items: center;
+        }
+    }
+}
+
+.device-test-select-disabled-btn {
+    > .ant-btn {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        text-align: left;
+        height: 36px;
+        cursor: not-allowed;
+        color: rgba(68, 78, 96, 0.5);
+        background-color: #f3f6f9;
+
+        > img {
+            padding-right: 10px;
+        }
+    }
+
+    > .ant-btn:hover {
+        border-color: #d9d9d9;
+    }
+}

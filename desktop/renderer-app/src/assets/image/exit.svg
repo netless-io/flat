@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 21</title>
-    <g id="白板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Flat-规范" transform="translate(-1402.000000, -16.000000)" stroke="#7A7B7C">
-            <g id="exit" transform="translate(1402.000000, 16.000000)">
-                <path d="M11,17 C14.3137085,17 17,14.3137085 17,11 C17,7.6862915 14.3137085,5 11,5 C7.6862915,5 5,7.6862915 5,11" id="椭圆形" transform="translate(11.000000, 11.000000) rotate(-225.000000) translate(-11.000000, -11.000000) "></path>
-                <line x1="11" y1="9" x2="11" y2="5" id="路径-13"></line>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="M6.757 6.757a6 6 0 1 0 8.486 0M11 9V5" stroke="#7A7B7C" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>

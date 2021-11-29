@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="96px" height="72px" viewBox="0 0 96 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>编组</title>
-    <g id="页面-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Flat-历史会议" transform="translate(-496.000000, -168.000000)">
-            <g id="编组" transform="translate(496.000000, 168.000000)">
-                <rect id="矩形" fill="#EEF0F6" x="0" y="0" width="96" height="72" rx="2"></rect>
-                <line x1="32" y1="46" x2="64" y2="46" id="路径-8" stroke="#BDC6D4" stroke-linecap="round" stroke-linejoin="round"></line>
-                <line x1="43" y1="46" x2="38" y2="56" id="路径-13" stroke="#BDC6D4" stroke-linecap="round" stroke-linejoin="round"></line>
-                <line x1="53" y1="46" x2="58" y2="56" id="路径-14" stroke="#BDC6D4" stroke-linecap="round" stroke-linejoin="round"></line>
-                <line x1="44.5" y1="17" x2="51.5" y2="17" id="路径-15" stroke="#BDC6D4" stroke-linecap="round" stroke-linejoin="round"></line>
-                <line x1="48" y1="15" x2="48" y2="17" id="路径-17" stroke="#BDC6D4" stroke-linecap="round" stroke-linejoin="round"></line>
-                <rect id="矩形" stroke="#BDC6D4" stroke-linecap="round" stroke-linejoin="round" x="32" y="21" width="32" height="21" rx="2"></rect>
-                <path d="M41,35 L43.7361537,32.2638463 C44.8552148,31.1447852 46.6695713,31.1447852 47.7886323,32.2638463 C47.8633907,32.3386047 47.9339545,32.4174431 48,32.5 C48.988637,33.7357962 50.7918964,33.9361584 52.0276926,32.9475214 C52.1102494,32.8814759 52.1890879,32.8109121 52.2638463,32.7361537 L55,30 L55,30" id="路径-33" stroke="#BDC6D4" stroke-linecap="round" stroke-linejoin="round"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="96" height="72" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><rect fill="#EEF0F6" width="96" height="72" rx="2"/><path stroke="#BDC6D4" stroke-linecap="round" stroke-linejoin="round" d="M32 46h32m-21 0-5 10m15-10 5 10M44.5 17h7M48 15v2"/><rect stroke="#BDC6D4" stroke-linecap="round" stroke-linejoin="round" x="32" y="21" width="32" height="21" rx="2"/><path d="m41 35 2.736-2.736A2.866 2.866 0 0 1 48 32.5a2.866 2.866 0 0 0 4.264.236L55 30h0" stroke="#BDC6D4" stroke-linecap="round" stroke-linejoin="round"/></g></svg>

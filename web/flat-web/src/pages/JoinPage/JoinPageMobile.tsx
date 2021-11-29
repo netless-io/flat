@@ -47,6 +47,10 @@ export default function JoinPageMobile({
     }, []);
 
     useEffect(() => {
+        openApp();
+    }, [openApp]);
+
+    useEffect(() => {
         if (isCheckingApp && !isDownloaded.current) {
             // if 5 seconds later the page is still in focus,
             // then maybe the app is not opened.

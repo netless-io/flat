@@ -1,8 +1,23 @@
-import { useEffect, useState } from "react";
-import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
-import { v4 as uuidv4 } from "uuid";
+import { NetworkQuality } from "agora-rtc-sdk-ng";
 import dateSub from "date-fns/sub";
-import { RtcRoom as RTCAPI, RtcChannelType } from "../api-middleware/rtc/room";
+import type { i18n } from "i18next";
+import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { CloudRecording } from "../api-middleware/CloudRecording";
+import {
+    pauseClass,
+    startClass,
+    startRecordRoom,
+    stopClass,
+    stopRecordRoom,
+} from "../api-middleware/flatServer";
+import {
+    CloudRecordStartPayload,
+    CloudRecordUpdateLayoutPayload,
+} from "../api-middleware/flatServer/agora";
+import { RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
+import { RtcChannelType, RtcRoom as RTCAPI } from "../api-middleware/rtc/room";
 import {
     ClassModeType,
     NonDefaultUserProp,
@@ -11,30 +26,16 @@ import {
     RTMessageType,
     RTMEvents,
 } from "../api-middleware/Rtm";
-import { CloudRecording } from "../api-middleware/CloudRecording";
-import {
-    CloudRecordStartPayload,
-    CloudRecordUpdateLayoutPayload,
-} from "../api-middleware/flatServer/agora";
-import {
-    pauseClass,
-    startClass,
-    startRecordRoom,
-    stopClass,
-    stopRecordRoom,
-} from "../api-middleware/flatServer";
-import { RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
-import { RoomItem, roomStore } from "./room-store";
-import { globalStore } from "./GlobalStore";
-import { NODE_ENV } from "../constants/process";
-import { useAutoRun } from "../utils/mobx";
-import { User, UserStore } from "./user-store";
 import { errorTips } from "../components/Tips/ErrorTips";
-import { WhiteboardStore } from "./whiteboard-store";
-import { RouteNameType, usePushHistory } from "../utils/routes";
+import { NODE_ENV } from "../constants/process";
 import { useSafePromise } from "../utils/hooks/lifecycle";
-import { NetworkQuality } from "agora-rtc-sdk-ng";
+import { useAutoRun } from "../utils/mobx";
+import { RouteNameType, usePushHistory } from "../utils/routes";
+import { globalStore } from "./GlobalStore";
+import { RoomItem, roomStore } from "./room-store";
 import { ShareScreenStore } from "./share-screen-store";
+import { User, UserStore } from "./user-store";
+import { WhiteboardStore } from "./whiteboard-store";
 
 export type { User } from "./user-store";
 
@@ -69,6 +70,8 @@ export class ClassRoomStore {
     public isCalling = false;
     /** is user login on other device */
     public isRemoteLogin = false;
+
+    public isCloudStoragePanelVisible = false;
 
     public roomStatusLoading = RoomStatusLoadingType.Null;
 
@@ -114,6 +117,7 @@ export class ClassRoomStore {
         ownerUUID: string;
         recordingConfig: RecordingConfig;
         classMode?: ClassModeType;
+        i18n: i18n;
     }) {
         if (!globalStore.userUUID) {
             throw new Error("Missing user uuid");
@@ -151,6 +155,8 @@ export class ClassRoomStore {
         this.whiteboardStore = new WhiteboardStore({
             isCreator: this.isCreator,
             getRoomType: () => this.roomInfo?.roomType || RoomType.BigClass,
+            i18n: config.i18n,
+            onDrop: this.onDrop,
         });
 
         this.shareScreenStore = new ShareScreenStore(this.roomUUID);
@@ -258,6 +264,17 @@ export class ClassRoomStore {
         }
 
         this.updateCalling(false);
+    };
+
+    public toggleCloudStoragePanel = (visible: boolean): void => {
+        this.isCloudStoragePanelVisible = visible;
+    };
+
+    public onDrop = (file: File): void => {
+        this.toggleCloudStoragePanel(true);
+        const cloudStorage = this.whiteboardStore.cloudStorageStore;
+        cloudStorage.setPanelExpand(true);
+        cloudStorage.uploadTaskManager.addTasks([file]);
     };
 
     public toggleRecording = async ({ onStop }: { onStop?: () => void } = {}): Promise<void> => {
@@ -1004,14 +1021,23 @@ export class ClassRoomStore {
     );
 }
 
-export function useClassRoomStore(
-    roomUUID: string,
-    ownerUUID: string,
-    recordingConfig: RecordingConfig,
-    classMode?: ClassModeType,
-): ClassRoomStore {
+export interface ClassRoomStoreConfig {
+    roomUUID: string;
+    ownerUUID: string;
+    recordingConfig: RecordingConfig;
+    classMode?: ClassModeType;
+    i18n: i18n;
+}
+
+export function useClassRoomStore({
+    roomUUID,
+    ownerUUID,
+    recordingConfig,
+    classMode,
+    i18n,
+}: ClassRoomStoreConfig): ClassRoomStore {
     const [classRoomStore] = useState(
-        () => new ClassRoomStore({ roomUUID, ownerUUID, recordingConfig, classMode }),
+        () => new ClassRoomStore({ roomUUID, ownerUUID, recordingConfig, classMode, i18n }),
     );
 
     const pushHistory = usePushHistory();

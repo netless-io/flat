@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 24</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="组件规范" transform="translate(-640.000000, -1372.000000)" stroke="#FFFFFF">
-            <g id="编组-4备份-3" transform="translate(376.000000, 1188.000000)">
-                <g id="位图备份-2" transform="translate(8.000000, 0.000000)">
-                    <g id="编组-2" transform="translate(256.000000, 184.000000)">
-                        <rect id="矩形" x="9" y="5" width="4" height="8" rx="2"></rect>
-                        <path d="M7,11 C7,13.209139 8.790861,15 11,15 C13.209139,15 15,13.209139 15,11 L15,11 L15,11" id="路径"></path>
-                        <line x1="11" y1="15" x2="11" y2="17" id="路径-2"></line>
-                        <line x1="9" y1="17" x2="13" y2="17" id="路径-3"></line>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><g stroke="#FFF" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="5" width="4" height="8" rx="2"/><path d="M7 11a4 4 0 1 0 8 0h0m-4 4v2m-2 0h4"/></g></svg>

@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -21,8 +21,6 @@ export const JoinPage = observer(function JoinPage() {
     const pageStore = useContext(PageStoreContext);
     const [isLogin, setIsLogin] = useState(false);
     const { width } = useWindowSize(1080);
-
-    const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const params = useParams<RouteParams<RouteNameType.ReplayPage>>();
     const { roomUUID } = params;
@@ -48,15 +46,14 @@ export const JoinPage = observer(function JoinPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        if (iframeRef.current !== null) {
-            iframeRef.current.src = `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`;
-        }
-    }, [roomUUID]);
-
     async function joinRoom(): Promise<void> {
         if (isLogin && roomUUID) {
-            await joinRoomHandler(roomUUID, pushHistory);
+            const isTurnOffDeviceTest = globalStore.isTurnOffDeviceTest;
+            if (isTurnOffDeviceTest) {
+                await joinRoomHandler(roomUUID, pushHistory);
+            } else {
+                pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
+            }
         } else {
             sessionStorage.setItem("roomUUID", roomUUID);
             pushHistory(RouteNameType.LoginPage);
@@ -70,7 +67,6 @@ export const JoinPage = observer(function JoinPage() {
 
     return (
         <div>
-            <iframe width="0" height="0" style={{ display: "none" }} ref={iframeRef} />
             {isMobile ? (
                 <JoinPageMobile
                     roomUUID={roomUUID}

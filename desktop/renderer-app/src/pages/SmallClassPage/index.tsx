@@ -93,12 +93,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     const params = useParams<RouteParams<RouteNameType.SmallClassPage>>();
 
-    const classRoomStore = useClassRoomStore(
-        params.roomUUID,
-        params.ownerUUID,
+    const { i18n, t } = useTranslation();
+    const classRoomStore = useClassRoomStore({
+        ...params,
         recordingConfig,
-        ClassModeType.Interaction,
-    );
+        classMode: ClassModeType.Interaction,
+        i18n,
+    });
     const whiteboardStore = classRoomStore.whiteboardStore;
     const shareScreenStore = classRoomStore.shareScreenStore;
 
@@ -111,8 +112,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     const updateLayoutTimeoutRef = useRef(NaN);
     const loadingPageRef = useRef(false);
-
-    const { t } = useTranslation();
 
     // control whiteboard writable
     useEffect(() => {
@@ -344,16 +343,9 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     />
                 )}
 
-                {/* <TopBarRightBtn
-                    title="Docs center"
-                    icon="folder"
-                    onClick={whiteboardStore.toggleFileOpen}
-                /> */}
                 {/* TODO: open cloud-storage sub window */}
-                <CloudStorageButton whiteboard={whiteboardStore} />
+                <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
-                {/* @TODO implement Options menu */}
-                {/* <TopBarRightBtn title="Options" icon="options" onClick={() => {}} /> */}
                 <TopBarRightBtn
                     title="Exit"
                     icon="exit"

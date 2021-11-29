@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>copy备份 8@2x</title>
-    <g id="Flat-单窗口" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="菜单栏（单窗口）" transform="translate(-20.000000, -122.000000)" fill="#FFFFFF" stroke="#FFFFFF">
-            <g id="copy备份-8" transform="translate(20.000000, 122.000000)">
-                <path d="M8,13.3333333 L14.5207995,8.98613368 C15.4165312,8.38897917 16.5834688,8.38897917 17.4792005,8.98613368 L24,13.3333333 L24,13.3333333 L22.6666667,13.3333333 L22.6666667,21.3333333 C22.6666667,22.8060927 21.4727593,24 20,24 L12,24 C10.5272407,24 9.33333333,22.8060927 9.33333333,21.3333333 L9.33333333,13.3333333 L9.33333333,13.3333333 L8,13.3333333 Z" id="路径-39"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"><path d="m8 13.333 6.52-4.347a2.667 2.667 0 0 1 2.96 0L24 13.333h0-1.333v8A2.667 2.667 0 0 1 20 24h-8a2.667 2.667 0 0 1-2.667-2.667v-8h0H8Z" fill="#FFF" stroke="#FFF" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/></svg>

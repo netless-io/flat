@@ -13,6 +13,7 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import videoPlaySVG from "../../assets/image/video-play.svg";
 import "video.js/dist/video-js.min.css";
+import "@netless/window-manager/dist/style.css";
 import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
 import { errorTips } from "../../components/Tips/ErrorTips";

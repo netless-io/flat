@@ -16,7 +16,6 @@ export const AppRouteContainer: FC<AppRouteContainerProps> = ({ Comp, title, rou
 
     useIsomorphicLayoutEffect(() => {
         const compName = Comp.displayName || Comp.name;
-        // @TODO i18n
         document.title =
             title + (process.env.NODE_ENV === "development" && compName ? ` (${compName})` : "");
         ipcAsyncByMainWindow("set-title", {

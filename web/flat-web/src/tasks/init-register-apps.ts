@@ -1,4 +1,5 @@
 import { WindowManager } from "@netless/window-manager";
+import { addHooks as addHooksSlide } from "@netless/app-slide";
 
 const registerApps = (): void => {
     void WindowManager.register({
@@ -39,6 +40,7 @@ const registerApps = (): void => {
         appOptions: {
             debug: false,
         },
+        addHooks: addHooksSlide,
         src: async () => {
             const app = await import("@netless/app-slide");
             return app.default ?? app;

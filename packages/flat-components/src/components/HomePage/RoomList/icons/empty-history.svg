@@ -1,15 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 124">
-  <defs>
-    <linearGradient id="a" x1="100%" x2="0%" y1="50%" y2="50%">
-      <stop offset="0%" stop-color="#7A7B7C" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#7A7B7C"/>
-    </linearGradient>
-  </defs>
-  <g fill="none" fill-rule="evenodd">
-    <path fill="#FFF" d="M0 0h124v124H0z" opacity=".01"/>
-    <path stroke="#7A7B7C" d="M25 101l-4 5 6 1zM97.136 20.965l7.728 2.07M102.035 18.136l-2.07 7.728"/>
-    <path stroke="#7A7B7C" stroke-width="2" d="M22 62c0 22.091 17.909 40 40 40s40-17.909 40-40-17.909-40-40-40c-15.705 0-29.296 9.05-35.841 22.22"/>
-    <circle cx="70" cy="72" r="33" fill="url(#a)" opacity=".1"/>
-    <path stroke="#7A7B7C" stroke-width="2" d="M25 33v12h12M61 37v24l16 16"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 124"><defs><linearGradient id="a" x1="100%" x2="0%" y1="50%" y2="50%"><stop offset="0%" stop-color="#7A7B7C" stop-opacity="0"/><stop offset="100%" stop-color="#7A7B7C"/></linearGradient></defs><g fill="none" fill-rule="evenodd"><path fill="#FFF" d="M0 0h124v124H0z" opacity=".01"/><path stroke="#7A7B7C" d="m25 101-4 5 6 1zm72.136-80.035 7.728 2.07m-2.829-4.899-2.07 7.728"/><path stroke="#7A7B7C" stroke-width="2" d="M22 62c0 22.091 17.909 40 40 40s40-17.909 40-40-17.909-40-40-40c-15.705 0-29.296 9.05-35.841 22.22"/><circle cx="70" cy="72" r="33" fill="url(#a)" opacity=".1"/><path stroke="#7A7B7C" stroke-width="2" d="M25 33v12h12m24-8v24l16 16"/></g></svg>

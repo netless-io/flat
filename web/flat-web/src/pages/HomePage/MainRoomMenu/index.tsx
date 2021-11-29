@@ -3,8 +3,8 @@ import "./MainRoomMenu.less";
 import React, { FC, useContext } from "react";
 import { Region } from "flat-components";
 import { RoomType } from "../../../api-middleware/flatServer/constants";
-import { RoomStoreContext } from "../../../components/StoreProvider";
-import { usePushHistory } from "../../../utils/routes";
+import { GlobalStoreContext, RoomStoreContext } from "../../../components/StoreProvider";
+import { RouteNameType, usePushHistory } from "../../../utils/routes";
 import { CreateRoomBox } from "./CreateRoomBox";
 import { JoinRoomBox } from "./JoinRoomBox";
 import { ScheduleRoomBox } from "./ScheduleRoomBox";
@@ -13,11 +13,20 @@ import { errorTips } from "../../../components/Tips/ErrorTips";
 
 export const MainRoomMenu: FC = () => {
     const roomStore = useContext(RoomStoreContext);
+    const globalStore = useContext(GlobalStoreContext);
     const pushHistory = usePushHistory();
+
+    const onJoinRoom = async (roomUUID: string): Promise<void> => {
+        if (globalStore.isTurnOffDeviceTest) {
+            await joinRoomHandler(roomUUID, pushHistory);
+        } else {
+            pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
+        }
+    };
 
     return (
         <div className="main-room-menu-container">
-            <JoinRoomBox onJoinRoom={roomUUID => joinRoomHandler(roomUUID, pushHistory)} />
+            <JoinRoomBox onJoinRoom={onJoinRoom} />
             <CreateRoomBox onCreateRoom={createOrdinaryRoom} />
             <ScheduleRoomBox />
         </div>
@@ -34,9 +43,8 @@ export const MainRoomMenu: FC = () => {
                 type,
                 beginTime: Date.now(),
                 region,
-                // TODO docs:[]
             });
-            await joinRoomHandler(roomUUID, pushHistory);
+            await onJoinRoom(roomUUID);
         } catch (e) {
             errorTips(e);
         }

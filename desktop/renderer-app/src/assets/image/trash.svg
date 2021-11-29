@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 21</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="首页-预定房间-周期性会议" transform="translate(-899.000000, -896.000000)">
-            <g id="编组备份" transform="translate(899.000000, 896.000000)">
-                <rect id="矩形备份-21" fill="#FFFFFF" opacity="0.01" x="0" y="0" width="22" height="22"></rect>
-                <path d="M15,9 L15,15 C15,16.1045695 14.1045695,17 13,17 L9,17 C7.8954305,17 7,16.1045695 7,15 L7,9 L7,9" id="矩形" stroke="#7A7B7C" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M8,7 C8,5.8954305 8.8954305,5 10,5 L12,5 C13.1045695,5 14,5.8954305 14,7 L14,7 L14,7" id="路径-28" stroke="#7A7B7C" stroke-linecap="round" stroke-linejoin="round"></path>
-                <line x1="6" y1="7" x2="16" y2="7" id="路径-27" stroke="#7A7B7C" stroke-linecap="round" stroke-linejoin="round"></line>
-                <line x1="12.5" y1="10" x2="12.5" y2="14" id="路径-29备份" stroke="#7A7B7C" stroke-linecap="round" stroke-linejoin="round"></line>
-                <line x1="9.5" y1="10" x2="9.5" y2="14" id="路径-29" stroke="#7A7B7C" stroke-linecap="round" stroke-linejoin="round"></line>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#FFF" opacity=".01" d="M0 0h22v22H0z"/><path d="M15 9v6a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9h0m1-2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2h0M6 7h10m-3.5 3v4m-3-4v4" stroke="#7A7B7C" stroke-linecap="round" stroke-linejoin="round"/></g></svg>

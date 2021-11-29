@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Flat-录制视频备份</title>
-    <g id="白板" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Flat-规范" transform="translate(-738.000000, -151.000000)">
-            <g id="编组-9备份" transform="translate(0.000000, 132.000000)">
-                <g id="编组-3" transform="translate(618.000000, 11.000000)">
-                    <rect id="矩形备份-7" stroke="#DBE1EA" stroke-width="0.5" x="111" y="0" width="94" height="28" rx="14"></rect>
-                    <path d="M124.496139,10.8549365 L128.480575,13.1317569 C128.960092,13.4057668 129.126689,14.0166215 128.852679,14.4961389 C128.764089,14.6511702 128.635606,14.7796538 128.480575,14.8682431 L124.496139,17.1450635 C124.016621,17.4190734 123.405767,17.2524767 123.131757,16.7729593 C123.045415,16.6218616 123,16.4508473 123,16.2768203 L123,11.7231797 C123,11.1708949 123.447715,10.7231797 124,10.7231797 C124.174027,10.7231797 124.345041,10.768595 124.496139,10.8549365 Z" id="矩形" fill="#3381FF"></path>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="12" height="12" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-120 -8)" fill="none" fill-rule="evenodd"><rect stroke="#DBE1EA" stroke-width=".5" x="111" width="94" height="28" rx="14"/><path d="m124.496 10.855 3.985 2.277a1 1 0 0 1 0 1.736l-3.985 2.277a1 1 0 0 1-1.496-.868v-4.554a1 1 0 0 1 1.496-.868Z" fill="#3381FF"/></g></svg>

@@ -1,7 +1,13 @@
 import "video.js/dist/video-js.css";
 
 import type { Attributes as SlideAttributes } from "@netless/app-slide";
+import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manager";
+import { message } from "antd";
+import type { i18n } from "i18next";
+import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
+import { isMobile, isWindows } from "react-device-detect";
+import { v4 as v4uuid } from "uuid";
 import {
     DefaultHotKeys,
     DeviceType,
@@ -13,14 +19,16 @@ import {
     ViewVisionMode,
     WhiteWebSdk,
 } from "white-web-sdk";
-import { CursorTool } from "@netless/cursor-tool";
-import { NETLESS } from "../constants/process";
-import { globalStore } from "./GlobalStore";
-import { isMobile, isWindows } from "react-device-detect";
-import { debounce } from "lodash-es";
-import { coursewarePreloader } from "../utils/courseware-preloader";
-import { WindowManager, BuiltinApps, AddAppParams } from "@netless/window-manager";
+import { queryConvertingTaskStatus } from "../api-middleware/courseware-converting";
 import { RoomType } from "../api-middleware/flatServer/constants";
+import { convertFinish } from "../api-middleware/flatServer/storage";
+import { RequestErrorCode } from "../constants/error-code";
+import { CLOUD_STORAGE_DOMAIN, NETLESS } from "../constants/process";
+import { CloudStorageFile, CloudStorageStore } from "../pages/CloudStoragePage/store";
+import { coursewarePreloader } from "../utils/courseware-preloader";
+import { ServerRequestError } from "../utils/error/server-request-error";
+import { getFileExt, isPPTX } from "../utils/file";
+import { globalStore } from "./GlobalStore";
 
 export class WhiteboardStore {
     public room: Room | null = null;
@@ -43,15 +51,32 @@ export class WhiteboardStore {
     /** is room Creator */
     public readonly isCreator: boolean;
     public readonly getRoomType: () => RoomType;
+    public readonly i18n: i18n;
+    public readonly onDrop: (file: File) => void;
 
-    public constructor(config: { isCreator: boolean; getRoomType: () => RoomType }) {
+    public readonly cloudStorageStore: CloudStorageStore;
+
+    public constructor(config: {
+        isCreator: boolean;
+        getRoomType: () => RoomType;
+        i18n: i18n;
+        onDrop: (file: File) => void;
+    }) {
         this.isCreator = config.isCreator;
         this.isWritable = config.isCreator;
         this.getRoomType = config.getRoomType;
+        this.i18n = config.i18n;
+        this.onDrop = config.onDrop;
 
         makeAutoObservable<this, "preloadPPTResource">(this, {
             room: observable.ref,
             preloadPPTResource: false,
+        });
+
+        this.cloudStorageStore = new CloudStorageStore({
+            compact: true,
+            insertCourseware: this.insertCourseware,
+            i18n: this.i18n,
         });
     }
 
@@ -277,7 +302,6 @@ export class WhiteboardStore {
         });
 
         const cursorName = globalStore.userInfo?.name;
-        const cursorAdapter = new CursorTool();
 
         const room = await whiteWebSdk.joinRoom(
             {
@@ -365,8 +389,6 @@ export class WhiteboardStore {
 
         room.disableDeviceInputs = !this.isWritable;
 
-        cursorAdapter.setRoom(room);
-
         if (room.state.broadcastState) {
             this.updateViewMode(room.state.broadcastState.mode);
         }
@@ -437,5 +459,213 @@ export class WhiteboardStore {
 
     private dirName = (scenePath: string): string => {
         return scenePath.slice(0, scenePath.lastIndexOf("/"));
+    };
+
+    public insertCourseware = async (file: CloudStorageFile): Promise<void> => {
+        if (file.convert === "converting") {
+            void message.warn(this.i18n.t("in-the-process-of-transcoding-tips"));
+            return;
+        }
+
+        void message.info(this.i18n.t("inserting-courseware-tips"));
+
+        const ext = getFileExt(file.fileName);
+
+        switch (ext) {
+            case "jpg":
+            case "jpeg":
+            case "png":
+            case "webp": {
+                await this.insertImage(file);
+                break;
+            }
+            case "mp3":
+            case "mp4": {
+                await this.insertMediaFile(file);
+                break;
+            }
+            case "doc":
+            case "docx":
+            case "ppt":
+            case "pptx":
+            case "pdf": {
+                await this.insertDocs(file);
+                break;
+            }
+            case "ice": {
+                await this.insertIce(file);
+                break;
+            }
+            case "vf": {
+                await this.insertVf(file);
+                break;
+            }
+            default: {
+                console.log(
+                    `[cloud storage]: insert unknown format "${file.fileName}" into whiteboard`,
+                );
+            }
+        }
+
+        if (this.cloudStorageStore.onCoursewareInserted) {
+            this.cloudStorageStore.onCoursewareInserted();
+        }
+    };
+
+    public insertImage = async (file: CloudStorageFile): Promise<void> => {
+        await this.switchMainViewToWriter();
+
+        const room = this.room;
+        if (!room) {
+            return;
+        }
+
+        // shrink the image a little to fit the screen
+        const maxWidth = window.innerWidth * 0.8;
+        const maxHeight = window.innerHeight * 0.8;
+
+        let width: number;
+        let height: number;
+
+        if (file.fileURL) {
+            ({ width, height } = await new Promise<{ width: number; height: number }>(resolve => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = () =>
+                    resolve({ width: window.innerWidth, height: window.innerHeight });
+                img.src = file.fileURL;
+            }));
+        } else {
+            ({ innerWidth: width, innerHeight: height } = window);
+        }
+
+        let scale = 1;
+        if (width > maxWidth || height > maxHeight) {
+            scale = Math.min(maxWidth / width, maxHeight / height);
+        }
+
+        const uuid = v4uuid();
+        room.insertImage({
+            uuid,
+            ...room.state.cameraState,
+            width: Math.floor(width * scale),
+            height: Math.floor(height * scale),
+            locked: false,
+        });
+        room.completeImageUpload(uuid, file.fileURL);
+    };
+
+    public insertMediaFile = async (file: CloudStorageFile): Promise<void> => {
+        await this.openMediaFileInWindowManager(file.fileURL, file.fileName);
+    };
+
+    public insertDocs = async (file: CloudStorageFile): Promise<void> => {
+        const room = this.room;
+        if (!room) {
+            return;
+        }
+
+        const { taskUUID, taskToken, region } = file;
+        const convertingStatus = await queryConvertingTaskStatus({
+            taskUUID,
+            taskToken,
+            dynamic: isPPTX(file.fileName),
+            region,
+        });
+
+        if (file.convert !== "success") {
+            if (convertingStatus.status === "Finished" || convertingStatus.status === "Fail") {
+                try {
+                    await convertFinish({ fileUUID: file.fileUUID, region: file.region });
+                } catch (e) {
+                    if (
+                        e instanceof ServerRequestError &&
+                        e.errorCode === RequestErrorCode.FileIsConverted
+                    ) {
+                        // ignore this error
+                        // there's another `convertFinish()` call in ./store.tsx
+                        // we call this api in two places to make sure the file is correctly converted (in server)
+                    } else {
+                        console.error(e);
+                    }
+                }
+                if (convertingStatus.status === "Fail") {
+                    void message.error(
+                        this.i18n.t("transcoding-failure-reason", {
+                            reason: convertingStatus.failedReason,
+                        }),
+                    );
+                }
+            } else {
+                message.destroy();
+                void message.warn(this.i18n.t("in-the-process-of-transcoding-tips"));
+                return;
+            }
+        } else if (convertingStatus.status === "Finished" && convertingStatus.progress) {
+            const scenes: SceneDefinition[] = convertingStatus.progress.convertedFileList.map(
+                (f, i) => ({
+                    name: `${i + 1}`,
+                    ppt: {
+                        src: f.conversionFileUrl,
+                        width: f.width,
+                        height: f.height,
+                        previewURL: f.preview,
+                    },
+                }),
+            );
+
+            const uuid = v4uuid();
+            const scenesPath = `/${taskUUID}/${uuid}`;
+            await this.openDocsFileInWindowManager(scenesPath, file.fileName, scenes);
+        } else {
+            void message.error(this.i18n.t("unable-to-insert-courseware"));
+        }
+    };
+
+    public insertIce = async (file: CloudStorageFile): Promise<void> => {
+        try {
+            const src =
+                CLOUD_STORAGE_DOMAIN.replace("[region]", file.region) +
+                new URL(file.fileURL).pathname.replace(/[^/]+$/, "") +
+                "resource/index.html";
+
+            if (src && this.windowManager) {
+                await this.windowManager.addApp({
+                    kind: "IframeBridge",
+                    options: {
+                        title: file.fileName,
+                    },
+                    attributes: {
+                        src,
+                    },
+                });
+            } else {
+                void message.error(this.i18n.t("unable-to-insert-courseware"));
+            }
+        } catch (e) {
+            console.error(e);
+            void message.error(this.i18n.t("unable-to-insert-courseware"));
+        }
+    };
+
+    public insertVf = async (file: CloudStorageFile): Promise<void> => {
+        try {
+            if (this.windowManager) {
+                await this.windowManager.addApp({
+                    kind: "IframeBridge",
+                    options: {
+                        title: file.fileName,
+                    },
+                    attributes: {
+                        src: file.fileURL,
+                    },
+                });
+            } else {
+                void message.error(this.i18n.t("unable-to-insert-courseware"));
+            }
+        } catch (e) {
+            console.error(e);
+            void message.error(this.i18n.t("unable-to-insert-courseware"));
+        }
     };
 }

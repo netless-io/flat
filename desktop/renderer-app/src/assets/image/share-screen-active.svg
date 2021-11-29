@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>follow备份 2</title>
-    <g id="屏幕共享" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="web端-分享完成-老师视角" transform="translate(-1248.000000, -13.000000)">
-            <g id="编组-24" transform="translate(1184.000000, 13.000000)">
-                <g id="follow备份-2" transform="translate(64.000000, 0.000000)">
-                    <rect id="矩形备份-25" fill="#FFFFFF" opacity="0.01" x="0" y="0" width="24" height="24"></rect>
-                    <path d="M18,12 L18,14 C18,15.1045695 17.1045695,16 16,16 L8,16 C6.8954305,16 6,15.1045695 6,14 L6,8 C6,6.8954305 6.8954305,6 8,6 C9.77777778,6 11.1111111,6 12,6" id="路径" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <polyline id="路径-13" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round" points="16 6 18 8 16 10"></polyline>
-                    <path d="M18,8 L15,8 C13.3431458,8 12,9.34314575 12,11 L12,11 L12,11" id="路径-15" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <line x1="6" y1="18" x2="18" y2="18" id="路径-47" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round"></line>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#FFF" opacity=".01" d="M0 0h24v24H0z"/><path d="M18 12v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round"/><path stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round" d="m16 6 2 2-2 2"/><path d="M18 8h-3a3 3 0 0 0-3 3h0m-6 7h12" stroke="#3381FF" stroke-linecap="round" stroke-linejoin="round"/></g></svg>

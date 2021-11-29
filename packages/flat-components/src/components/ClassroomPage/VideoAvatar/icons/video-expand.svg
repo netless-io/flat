@@ -1,5 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
-  <g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 13v4h4M5 17l4-4M13 5h4v4M17 5l-4 4"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M5 13v4h4m-4 0 4-4m4-8h4v4m0-4-4 4" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round"/></svg>

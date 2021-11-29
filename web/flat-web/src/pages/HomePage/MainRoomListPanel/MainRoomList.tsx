@@ -168,7 +168,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                                             break;
                                         }
                                         case "join": {
-                                            void joinRoomHandler(room.roomUUID, pushHistory);
+                                            void joinRoom(room.roomUUID);
                                             break;
                                         }
                                         default:
@@ -202,7 +202,6 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                     onCancel={hideInviteModal}
                 />
             )}
-            {/* TODO: add removeHistoryLoading to flat-component */}
             {currentRoom && (
                 <RemoveHistoryRoomModal
                     visible={removeHistoryVisible}
@@ -213,6 +212,14 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
             )}
         </>
     );
+
+    async function joinRoom(roomUUID: string): Promise<void> {
+        if (globalStore.isTurnOffDeviceTest) {
+            await joinRoomHandler(roomUUID, pushHistory);
+        } else {
+            pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
+        }
+    }
 
     function replayRoom(config: { roomUUID: string; ownerUUID: string; roomType: RoomType }): void {
         const { roomUUID, ownerUUID, roomType } = config;

@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>矩形备份 24</title>
-    <g id="2.1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="首页-加入房间-展开选项" transform="translate(-734.000000, -253.000000)" stroke="#7A7B7C">
-            <g id="编组-5" transform="translate(416.000000, 129.000000)">
-                <g id="编组备份-5" transform="translate(329.000000, 135.000000) rotate(-270.000000) translate(-329.000000, -135.000000) translate(318.000000, 124.000000)">
-                    <polyline id="路径-68" points="9 7 13 11 9 15"></polyline>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="m15 9-4 4-4-4" stroke="#7A7B7C" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>

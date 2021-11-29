@@ -4,25 +4,24 @@ import cloudStorageSVG from "../assets/image/cloud-storage.svg";
 import { Modal } from "antd";
 import { TopBarRightBtn } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
-import { WhiteboardStore } from "../stores/whiteboard-store";
+import { ClassRoomStore } from "../stores/class-room-store";
 import "./CloudStorageButton.less";
 import { useTranslation } from "react-i18next";
 
 interface CloudStorageButtonProps {
-    whiteboard: WhiteboardStore;
+    classroom: ClassRoomStore;
 }
 
 export const CloudStorageButton = observer<CloudStorageButtonProps>(function CloudStorageButton({
-    whiteboard,
+    classroom,
 }) {
     const { t } = useTranslation();
-    const [visible, setVisible] = useState(false);
-    const hideModal = useCallback(() => setVisible(false), [setVisible]);
-    const showModal = useCallback(() => setVisible(true), [setVisible]);
+    const hideModal = useCallback(() => classroom.toggleCloudStoragePanel(false), [classroom]);
+    const showModal = useCallback(() => classroom.toggleCloudStoragePanel(true), [classroom]);
 
-    if (!whiteboard.isWritable) {
+    if (!classroom.whiteboardStore.isWritable) {
         return null;
     }
 
@@ -38,11 +37,14 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
                 onCancel={hideModal}
                 destroyOnClose
                 footer={[]}
-                visible={visible}
+                visible={classroom.isCloudStoragePanelVisible}
                 className="cloud-storage-button-modal"
                 centered
             >
-                <CloudStoragePanel whiteboard={whiteboard} onCoursewareInserted={hideModal} />
+                <CloudStoragePanel
+                    cloudStorage={classroom.whiteboardStore.cloudStorageStore}
+                    onCoursewareInserted={hideModal}
+                />
             </Modal>
         </>
     );

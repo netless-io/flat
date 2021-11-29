@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="80px" height="80px" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 60.1 (88133) - https://sketch.com -->
-    <title>create</title>
-    <desc>Created with Sketch.</desc>
-    <g id="页面-4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Whiteboard-Guidelines" transform="translate(-520.000000, -424.000000)">
-            <g id="create" transform="translate(520.000000, 424.000000)">
-                <path d="M40,80 C70.4477612,80 80,62.09139 80,40 C80,17.90861 70.4477612,0 40,0 C9.55223881,0 0,17.90861 0,40 C0,62.09139 9.55223881,80 40,80 Z" id="Mask" fill="#3381FF"></path>
-                <circle id="椭圆形" fill="#FFFFFF" cx="40" cy="40" r="20"></circle>
-                <line x1="32" y1="40" x2="48" y2="40" id="路径-45" stroke="#3381FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line>
-                <line x1="40" y1="32" x2="40" y2="48" id="路径-45" stroke="#3381FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="80" height="80" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M40 80c30.448 0 40-17.909 40-40S70.448 0 40 0 0 17.909 0 40s9.552 40 40 40Z" fill="#3381FF"/><circle fill="#FFF" cx="40" cy="40" r="20"/><path stroke="#3381FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M32 40h16m-8-8v16"/></g></svg>

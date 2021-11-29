@@ -36,6 +36,7 @@ import { WhiteboardStore } from "./whiteboard-store";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { ShareScreenStore } from "./share-screen-store";
+import { i18n } from "i18next";
 
 export type { User } from "./user-store";
 
@@ -72,6 +73,8 @@ export class ClassRoomStore {
     public isRTCJoined = false;
     /** is user login on other device */
     public isRemoteLogin = false;
+
+    public isCloudStoragePanelVisible = false;
 
     public roomStatusLoading = RoomStatusLoadingType.Null;
 
@@ -117,6 +120,7 @@ export class ClassRoomStore {
         ownerUUID: string;
         recordingConfig: RecordingConfig;
         classMode?: ClassModeType;
+        i18n: i18n;
     }) {
         if (!globalStore.userUUID) {
             throw new Error("Missing user uuid");
@@ -154,6 +158,8 @@ export class ClassRoomStore {
         this.whiteboardStore = new WhiteboardStore({
             isCreator: this.isCreator,
             getRoomType: () => this.roomInfo?.roomType || RoomType.BigClass,
+            i18n: config.i18n,
+            onDrop: this.onDrop,
         });
 
         this.shareScreenStore = new ShareScreenStore(this.roomUUID);
@@ -251,6 +257,17 @@ export class ClassRoomStore {
             console.error(e);
             this.updateCalling(false);
         }
+    };
+
+    public toggleCloudStoragePanel = (visible: boolean): void => {
+        this.isCloudStoragePanelVisible = visible;
+    };
+
+    public onDrop = (file: File): void => {
+        this.toggleCloudStoragePanel(true);
+        const cloudStorage = this.whiteboardStore.cloudStorageStore;
+        cloudStorage.setPanelExpand(true);
+        cloudStorage.uploadTaskManager.addTasks([file]);
     };
 
     public leaveRTC = (): void => {
@@ -1033,15 +1050,30 @@ export class ClassRoomStore {
         },
     );
 }
+export interface ClassRoomStoreConfig {
+    roomUUID: string;
+    ownerUUID: string;
+    recordingConfig: RecordingConfig;
+    classMode?: ClassModeType;
+    i18n: i18n;
+}
 
-export function useClassRoomStore(
-    roomUUID: string,
-    ownerUUID: string,
-    recordingConfig: RecordingConfig,
-    classMode?: ClassModeType,
-): ClassRoomStore {
+export function useClassRoomStore({
+    roomUUID,
+    ownerUUID,
+    recordingConfig,
+    classMode,
+    i18n,
+}: ClassRoomStoreConfig): ClassRoomStore {
     const [classRoomStore] = useState(
-        () => new ClassRoomStore({ roomUUID, ownerUUID, recordingConfig, classMode }),
+        () =>
+            new ClassRoomStore({
+                roomUUID,
+                ownerUUID,
+                recordingConfig,
+                classMode,
+                i18n,
+            }),
     );
 
     const pushHistory = usePushHistory();
