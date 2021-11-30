@@ -5,7 +5,6 @@ import { RxSubject } from "./rx-subject";
 import { ipcMain } from "electron";
 import { zip } from "rxjs";
 import { ignoreElements, mergeMap } from "rxjs/operators";
-import path from "path";
 
 export class WindowMain extends AbstractWindow {
     public readonly name = constants.WindowsName.Main;
@@ -52,22 +51,17 @@ export class WindowMain extends AbstractWindow {
     }
 
     private static loadExtensions(win: CustomWindow, extensionName: "react-devtools"): void {
-        const extPath = path.resolve(
-            __dirname,
-            "..",
-            "..",
-            "..",
-            "..",
-            "..",
-            "third_party",
-            "extensions",
-            extensionName,
-        );
-        win.window.webContents.session.loadExtension(extPath).catch(error => {
-            console.error(
-                `install ${extensionName} extensions failed! error message: ${error.message}. error stack: ${error.stack}`,
-            );
-        });
+        const { REACT_DEVELOPER_TOOLS } = require("electron-devtools-vendor");
+
+        win.window.webContents.session
+            .loadExtension(REACT_DEVELOPER_TOOLS, {
+                allowFileAccess: true,
+            })
+            .catch(error => {
+                console.error(
+                    `install ${extensionName} extensions failed! error message: ${error.message}. error stack: ${error.stack}`,
+                );
+            });
     }
 
     private injectAgoraSDKAddon(win: CustomWindow): void {
