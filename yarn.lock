@@ -7169,6 +7169,11 @@ electron-builder@^22.10.5:
     update-notifier "^5.1.0"
     yargs "^17.0.1"
 
+electron-devtools-vendor@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/electron-devtools-vendor/-/electron-devtools-vendor-1.0.2.tgz#b9ee38712154d2f9ebc27fd32ed183986ef877cc"
+  integrity sha512-6aUAyl/xLQqHF5ric2jfF/O7A50Cw0bjghdevm+uNMQPnpI1BXFIBFupMh62gfFU5xJDEMBqV54O+HjSh2AlWw==
+
 electron-notarize@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/electron-notarize/-/electron-notarize-1.1.0.tgz#00ed0182366b97f5593cb5ccdcf1120f1de37179"
