@@ -40,7 +40,7 @@ import { ConvertStatusManager } from "./ConvertStatusManager";
 export type CloudStorageFile = CloudStorageFileUI &
     Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region" | "external">;
 
-export type FileMenusKey = "download" | "rename" | "delete";
+export type FileMenusKey = "open" | "download" | "rename" | "delete";
 
 export class CloudStorageStore extends CloudStorageStoreBase {
     public uploadTaskManager = getUploadTaskManager();
@@ -117,8 +117,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     public fileMenus = (
         file: CloudStorageFileUI,
     ): Array<{ key: React.Key; name: React.ReactNode }> => {
-        const menus: Array<{ key: FileMenusKey; name: ReactNode }> = [];
-        menus.push({ key: "download", name: this.i18n.t("download") });
+        const menus: Array<{ key: FileMenusKey; name: ReactNode }> = [
+            { key: "open", name: this.i18n.t("open") },
+            { key: "download", name: this.i18n.t("download") },
+        ];
         if (file.convert !== "error") {
             menus.push({ key: "rename", name: this.i18n.t("rename") });
         }
@@ -132,6 +134,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     /** When a file menus item is clicked */
     public onItemMenuClick = (fileUUID: FileUUID, menuKey: React.Key): void => {
         switch (menuKey) {
+            case "open": {
+                this.onItemTitleClick(fileUUID);
+                break;
+            }
             case "download": {
                 this.downloadFile(fileUUID);
                 break;
