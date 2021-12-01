@@ -1,15 +1,11 @@
 import "./DynamicPreview.less";
-import previousStepSVG from "./image/previous-step.svg";
-import nextStepSVG from "./image/next-step.svg";
 
+import React, { useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useRef, useState } from "react";
-import { ConversionResponse, previewPPT } from "white-web-sdk";
+import { Region } from "flat-components";
+import { previewSlide, SlidePreviewer } from "@netless/app-slide";
 import { queryConvertingTaskStatus } from "../../api-middleware/courseware-converting";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
-import { EventEmitter } from "eventemitter3";
-import classNames from "classnames";
-import { Region } from "flat-components";
 
 export interface DynamicPreviewProps {
     taskUUID: string;
@@ -22,15 +18,9 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
     taskToken,
     region,
 }) {
+    const previewer = useRef<SlidePreviewer | null>(null);
     const DynamicPreviewRef = useRef<HTMLDivElement>(null);
     const sp = useSafePromise();
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPage, setTotalPage] = useState(0);
-    const [eventEmit] = useState(() => new EventEmitter());
-
-    const isFirstPage = currentPage === 1;
-    const isLastPage = currentPage === totalPage;
 
     useEffect(() => {
         async function getDynamicResource(): Promise<void> {
@@ -44,63 +34,42 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
             );
 
             if (DynamicPreviewRef.current) {
-                previewPPT(
-                    convertState as ConversionResponse,
-                    DynamicPreviewRef.current,
-                    {},
-                    true,
-                    {},
-                    undefined,
-                    undefined,
-                    eventEmit,
-                );
+                previewer.current = previewSlide({
+                    container: DynamicPreviewRef.current,
+                    taskId: convertState.uuid,
+                    url: extractSlideUrlPrefix(
+                        convertState.progress?.convertedFileList[0].conversionFileUrl,
+                    ),
+                });
             }
         }
 
         getDynamicResource().catch(console.warn);
+
+        return () => {
+            if (previewer.current) {
+                previewer.current.destroy();
+                previewer.current = null;
+            }
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        eventEmit.on("update", data => {
-            setCurrentPage(data.index);
-        });
-        eventEmit.once("update", data => {
-            setTotalPage(data.total);
-        });
-        return () => {
-            eventEmit.removeAllListeners();
-        };
-    }, [eventEmit]);
-
-    return (
-        <div className="dynamic-preview-container">
-            <div ref={DynamicPreviewRef} className="dynamic-preview-inner" />
-            <div className="dynamic-preview-pagination-container">
-                <div
-                    className={classNames("dynamic-preview-pagination-previous", {
-                        "dynamic-preview-pagination-not-allow": isFirstPage,
-                    })}
-                    onClick={() => {
-                        eventEmit.emit("preStep");
-                    }}
-                >
-                    <img src={previousStepSVG} alt="previous step" />
-                </div>
-                <div className="dynamic-preview-pagination-middle">
-                    {currentPage} / {totalPage}
-                </div>
-                <div
-                    className={classNames("dynamic-preview-pagination-previous", {
-                        "dynamic-preview-pagination-not-allow": isLastPage,
-                    })}
-                    onClick={() => {
-                        eventEmit.emit("nextStep");
-                    }}
-                >
-                    <img src={nextStepSVG} alt="next step" />
-                </div>
-            </div>
-        </div>
-    );
+    return <div className="dynamic-preview-container" ref={DynamicPreviewRef}></div>;
 });
+
+function extractSlideUrlPrefix(fullUrl?: string): string | undefined {
+    if (!fullUrl || !fullUrl.startsWith("ppt")) {
+        return undefined;
+    }
+
+    // e.g. "ppt(x)://cdn/prefix/dynamicConvert/{taskId}/1.slide"
+    const pptSrcRE = /^pptx?(?<prefix>:\/\/\S+?dynamicConvert)\/(?<taskId>\w+)\//;
+
+    const match = pptSrcRE.exec(fullUrl);
+    if (!match || !match.groups) {
+        return undefined;
+    }
+
+    return "https" + match.groups.prefix;
+}
