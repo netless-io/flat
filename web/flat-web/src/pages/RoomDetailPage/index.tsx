@@ -17,8 +17,8 @@ import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { message } from "antd";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
 import { useTranslation } from "react-i18next";
-import { ServerRequestError } from "renderer-app/src/utils/error/server-request-error";
-import { RequestErrorCode } from "renderer-app/src/constants/error-code";
+import { ServerRequestError } from "../../utils/error/server-request-error";
+import { RequestErrorCode } from "../../constants/error-code";
 
 export const RoomDetailPage = observer(function RoomDetailPage() {
     const { t } = useTranslation();
