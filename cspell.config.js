@@ -91,6 +91,7 @@ module.exports = {
         "Buildin", // @netless/widnow-manager
         "zindex", // antd
         "geogebra", // @netless/app-geogebra
+        "commitlintrc", // @commitlint/cli
 
         // misc
         "npmrc",

@@ -16,12 +16,13 @@ import { joinRoomHandler } from "../utils/join-room-handler";
 import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { message } from "antd";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
-
-/**
- * TODO: we forget set i18n in current file!!!
- */
+import { useTranslation } from "react-i18next";
+import { ServerRequestError } from "renderer-app/src/utils/error/server-request-error";
+import { RequestErrorCode } from "renderer-app/src/constants/error-code";
 
 export const RoomDetailPage = observer(function RoomDetailPage() {
+    const { t } = useTranslation();
+
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
     const pushHistory = usePushHistory();
     const history = useHistory();
@@ -33,7 +34,15 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
 
     useEffect(() => {
         if (periodicUUID) {
-            roomStore.syncPeriodicSubRoomInfo({ roomUUID, periodicUUID }).catch(errorTips);
+            roomStore.syncPeriodicSubRoomInfo({ roomUUID, periodicUUID }).catch(error => {
+                if (
+                    error instanceof ServerRequestError &&
+                    error.errorCode !== RequestErrorCode.PeriodicNotFound
+                ) {
+                    // periodic canceled
+                    errorTips(error);
+                }
+            });
         } else {
             roomStore.syncOrdinaryRoomInfo(roomUUID).catch(errorTips);
         }
@@ -85,7 +94,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
             errorTips(err);
         }
 
-        void message.success("已取消该房间");
+        void message.success(t("the-room-has-been-cancelled"));
 
         history.goBack();
     }
