@@ -120,6 +120,7 @@ module.exports = {
         "tolerations",
         "Kube",
         "agoraflat",
+        "applinks",
     ],
     flagWords: ["fuck", "bitch", "asshole", "bullshit", "crap", "suck", "wtf"],
     dictionaries: [
