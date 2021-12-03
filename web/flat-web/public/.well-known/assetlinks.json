@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.agora.flat",
+      "sha256_cert_fingerprints": ["EB:AB:73:0D:1D:35:87:C5:23:82:88:F5:33:99:D6:BC:A3:A5:04:32:40:D6:00:12:4A:01:CE:FB:37:7B:EC:58"]
+    }
+  }
+]
