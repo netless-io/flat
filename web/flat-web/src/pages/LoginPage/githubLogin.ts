@@ -21,13 +21,7 @@ export const githubLogin: LoginExecutor = onSuccess => {
             errorTips(err);
         }
 
-        void window
-            .open(
-                getGithubURL(authUUID),
-                "LoginWithGithub",
-                "width=640,height=550,menubar=0,scrollbars=1,resizable=1,status=1,titlebar=0,toolbar=0,location=1",
-            )
-            ?.focus();
+        void window.open(getGithubURL(authUUID));
 
         const githubLoginProcessRequest = async (): Promise<void> => {
             try {
