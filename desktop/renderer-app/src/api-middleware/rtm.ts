@@ -82,6 +82,8 @@ export enum RTMessageType {
     ChannelStatus = "ChannelStatus",
     /** user login on other device */
     REMOTE_LOGIN = "REMOTE_LOGIN",
+    /** display a user guide message info when first create the classroom */
+    UserGuide = "UserGuide",
 }
 
 export type RTMEvents = {
@@ -123,6 +125,7 @@ export type RTMEvents = {
         };
     };
     [RTMessageType.REMOTE_LOGIN]: void;
+    [RTMessageType.UserGuide]: string;
 };
 
 export interface RTMessage<U extends keyof RTMEvents = keyof RTMEvents> {

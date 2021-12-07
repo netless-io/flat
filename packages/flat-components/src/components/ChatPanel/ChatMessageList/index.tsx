@@ -22,6 +22,7 @@ export interface ChatMessageListProps {
     messages: ChatMsg[];
     getUserByUUID: (uuid: string) => User | undefined;
     loadMoreRows: InfiniteLoaderProps["loadMoreRows"];
+    openCloudStorage: () => void;
 }
 
 export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessageList({
@@ -30,6 +31,7 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
     messages,
     getUserByUUID,
     loadMoreRows,
+    openCloudStorage,
 }) {
     const forceUpdate = useUpdate();
 
@@ -124,6 +126,7 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
                             {() => (
                                 <ChatMessage
                                     onMount={measure}
+                                    openCloudStorage={openCloudStorage}
                                     userUUID={userUUID}
                                     messageUser={getUserByUUID(messages[index].userUUID)}
                                     message={messages[index]}

@@ -11,6 +11,7 @@ export interface ChatMessageProps {
     messageUser?: { name: string };
     message: ChatMsg;
     onMount: () => void;
+    openCloudStorage?: () => void;
 }
 
 export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
@@ -18,6 +19,7 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
     messageUser,
     message,
     onMount,
+    openCloudStorage,
 }) {
     const { t } = useTranslation();
     useEffect(() => {
@@ -39,6 +41,23 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
                 <div className="chat-message-line">
                     <div className="chat-message-ban">
                         <span>{message.value ? t("banned") : t("unban")}</span>
+                    </div>
+                </div>
+            );
+        }
+        case ChatMsgType.UserGuide: {
+            return (
+                <div className="chat-message-line">
+                    <div className="chat-message-user-guide-bubble">
+                        <pre>
+                            {t("user-guide-text")}
+                            <span
+                                className="chat-message-user-guide-btn"
+                                onClick={openCloudStorage}
+                            >
+                                {t("user-guide-button")}
+                            </span>
+                        </pre>
                     </div>
                 </div>
             );

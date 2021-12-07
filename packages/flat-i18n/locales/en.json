@@ -382,5 +382,7 @@
   "device-test": "Devices Test",
   "close-tip": "Close tip",
   "device-test-option": "Device test option",
-  "turn-on-device-test": "Turn on device test when join the room"
+  "turn-on-device-test": "Turn on device test when join the room",
+  "user-guide-text": "Want to learn more about Flat?",
+  "user-guide-button": "Check it out now"
 }

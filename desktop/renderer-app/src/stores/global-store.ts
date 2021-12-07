@@ -17,6 +17,7 @@ export class GlobalStore {
      */
     public checkNewVersionDate: number = new Date().getTime();
     public isShowRecordHintTips = true;
+    public isShowGuide = false;
     public userInfo: UserInfo | null = null;
     public whiteboardRoomUUID: string | null = null;
     public whiteboardRoomToken: string | null = null;
@@ -91,6 +92,10 @@ export class GlobalStore {
 
     public isShareScreenUID = (uid: number): boolean => {
         return this.rtcShareScreen?.uid === uid;
+    };
+
+    public updateShowGuide = (showGuide: boolean): void => {
+        this.isShowGuide = showGuide;
     };
 }
 
