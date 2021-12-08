@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { GlobalStoreContext } from "../../components/StoreProvider";
+import { configStore } from "../../stores/config-store";
 
 export const DevicesTestPage = observer(function DeviceTestPage() {
     const pushHistory = usePushHistory();
@@ -118,6 +119,8 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     }, [microphoneDeviceId, deviceTest]);
 
     const joinRoom = async (): Promise<void> => {
+        configStore.updateCameraId(cameraDeviceId);
+        configStore.updateMicrophoneId(microphoneDeviceId);
         await joinRoomHandler(roomUUID, pushHistory);
     };
 
