@@ -70,7 +70,7 @@
     "SmallClass": "Small Class"
   },
   "home-page-hero-button-type": {
-    "create": "Create",
+    "begin": "Begin",
     "join": "Join",
     "schedule": "Schedule"
   },
@@ -222,7 +222,7 @@
   "the-room-has-been-cancelled": "The room has been cancelled",
   "the-room-has-been-removed": "The room has been removed",
   "history": "History",
-  "create": "Create",
+  "create": "Begin",
   "join-options": "Join option",
   "create-room-default-title": "The room created by {{name}}",
   "turn-on-the-camera": "Camera",

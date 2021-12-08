@@ -84,11 +84,11 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                 }}
             >
                 <img src={createSVG} alt="create room" />
-                <span className="label">{t("home-page-hero-button-type.create")}</span>
+                <span className="label">{t("home-page-hero-button-type.begin")}</span>
             </Button>
             <Modal
                 wrapClassName="create-room-box-container"
-                title={t("home-page-hero-button-type.create")}
+                title={t("home-page-hero-button-type.begin")}
                 width={400}
                 visible={isShowModal}
                 destroyOnClose
