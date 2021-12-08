@@ -1,3 +1,41 @@
+# [1.3.0](https://github.com/netless-io/flat/compare/v1.2.0...v1.3.0) (2021-12-08)
+
+
+### Bug Fixes
+
+* **electron:** load react devtools extension failed ([#1102](https://github.com/netless-io/flat/issues/1102)) ([5cccbca](https://github.com/netless-io/flat/commit/5cccbca9ecb4ac4886129dca811c87ab512c84b8))
+* **flat-components:** fix ant-mod text layout ([#1156](https://github.com/netless-io/flat/issues/1156)) ([0503813](https://github.com/netless-io/flat/commit/0503813fdfee6b10be32f38395c0c30812c0f875)), closes [#872](https://github.com/netless-io/flat/issues/872)
+* **flat-types:** ci failure with lose build script ([#1154](https://github.com/netless-io/flat/issues/1154)) ([174f695](https://github.com/netless-io/flat/commit/174f69515d58d9badc08c43140a186c4dc0a9e5e))
+* **project:** hanging on login page when no-login join room ([#1147](https://github.com/netless-io/flat/issues/1147)) ([54b271b](https://github.com/netless-io/flat/commit/54b271b0866542f7c94da3ddf5236c1ad76f54f2))
+* **renderer-app:** audio playback device test failed on windows system ([#1182](https://github.com/netless-io/flat/issues/1182)) ([1a2d13f](https://github.com/netless-io/flat/commit/1a2d13f2f3dcc26f3a10183d82a3db2c2c80324e))
+* **room:** room detail request failed ([#1165](https://github.com/netless-io/flat/issues/1165)) ([21001e5](https://github.com/netless-io/flat/commit/21001e5d5f2c68af4915eae435dc8a3a3cf578dd))
+* **web:** at most download once ([#1106](https://github.com/netless-io/flat/issues/1106)) ([90f467b](https://github.com/netless-io/flat/commit/90f467b46b3c8f1749caee4b3b88e11d9ff59e70))
+* **web:** import utils incorrect ([#1166](https://github.com/netless-io/flat/issues/1166)) ([26ead1f](https://github.com/netless-io/flat/commit/26ead1f3525fb2955cdc285d2a4c975b4ae763b3))
+* **web:** manual open invite url crash in safari ([#1146](https://github.com/netless-io/flat/issues/1146)) ([d2d6958](https://github.com/netless-io/flat/commit/d2d69589997d40dfed0cef4236797363cdb74768))
+* **web:** open invite url crash in safari ([#1113](https://github.com/netless-io/flat/issues/1113)) ([a5d3da1](https://github.com/netless-io/flat/commit/a5d3da1ba1f884e2baf4da0468c2e5f1697aed08))
+* **web:** prevent duplicate `network error` ([#1177](https://github.com/netless-io/flat/issues/1177)) ([e9be221](https://github.com/netless-io/flat/commit/e9be2213af83b817895ea294b2af70fb4906ba47))
+* **web:** whiteboard size error when the avatar wrap becomes longer ([#1103](https://github.com/netless-io/flat/issues/1103)) ([b11c83d](https://github.com/netless-io/flat/commit/b11c83df144b9e6af22f0b1b6ec7d475f8ce8be8))
+
+
+### Features
+
+* **classroom:** add user guide to the classroom ([#1179](https://github.com/netless-io/flat/issues/1179)) ([f75c14e](https://github.com/netless-io/flat/commit/f75c14e0e299c16f5c13d26183c1ece4afa06382))
+* **desktop:** support local react devtools ([#1084](https://github.com/netless-io/flat/issues/1084)) ([0ea1e5c](https://github.com/netless-io/flat/commit/0ea1e5c4670511904812ed559cdb635e1b573aa6))
+* **desktop:** support window manager in replay mode ([#1142](https://github.com/netless-io/flat/issues/1142)) ([d0edfe0](https://github.com/netless-io/flat/commit/d0edfe0bda752168bf2087c576cbf16268b3d3c9))
+* **project:** support drag and drop supported file in room ([#1144](https://github.com/netless-io/flat/issues/1144)) ([e779367](https://github.com/netless-io/flat/commit/e779367fb8aacd35596bbec60c2e606923b6706c))
+* **web:** add device test page ([#1145](https://github.com/netless-io/flat/issues/1145)) ([653bd2e](https://github.com/netless-io/flat/commit/653bd2ea7a9951c6829eac1741ce12aacee71d8e))
+* **web:** support android asset links ([#1170](https://github.com/netless-io/flat/issues/1170)) ([537f898](https://github.com/netless-io/flat/commit/537f898c41b2b212260959a6446633d2d8ce4e06))
+* **web:** support apple app site association ([#1167](https://github.com/netless-io/flat/issues/1167)) ([59bab15](https://github.com/netless-io/flat/commit/59bab15dc012137aede1322110e8f1379b05c8d2))
+* **web:** support window manager in replay mode ([#1140](https://github.com/netless-io/flat/issues/1140)) ([7d0360b](https://github.com/netless-io/flat/commit/7d0360b6ca2eb479dd88e726d1338fc04f66fd44))
+* **web:** the classroom page device keep consistent with devices selected by the devices test page ([#1183](https://github.com/netless-io/flat/issues/1183)) ([7c002d8](https://github.com/netless-io/flat/commit/7c002d88b2abd86cf14710c42fbee9756e4c9ec0))
+
+
+### Performance Improvements
+
+* **project:** optimize SVGs ([#1152](https://github.com/netless-io/flat/issues/1152)) ([0145f9f](https://github.com/netless-io/flat/commit/0145f9f1d20fc8fb0f3c88b6b8b8a09131b03deb))
+
+
+
 # [1.2.0](https://github.com/netless-io/flat/compare/v1.1.0...v1.2.0) (2021-11-16)
 
 
