@@ -451,6 +451,11 @@ export class ClassRoomStore {
     };
 
     public onUserGuide = (): void => {
+        // this callback is triggered immediately after joinRTC
+        // network may be offline status, user rejoin or refresh classroom page
+        // then this callback will trigger again that push the guide message
+        // the user guide message always at the end
+        // so that for avoid multiple send message of the user guide
         if (
             this.messages.length > 0 &&
             this.messages[this.messages.length - 1].type === RTMessageType.UserGuide
