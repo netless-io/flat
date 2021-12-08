@@ -14,6 +14,7 @@ import { AGORA } from "../../constants/process";
 import { globalStore } from "../../stores/GlobalStore";
 import { generateRTCToken } from "../flatServer/agora";
 import { setCameraTrack, setMicrophoneTrack, hotPlug } from "./hot-plug";
+import { configStore } from "../../stores/config-store";
 
 AgoraRTC.enableLogUpload();
 
@@ -132,7 +133,9 @@ export class RtcRoom {
     public async getLocalAudioTrack(): Promise<ILocalAudioTrack> {
         if (!this._localAudioTrack) {
             await this.joined;
-            this._localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+            this._localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+                microphoneId: configStore.microphoneId,
+            });
             setMicrophoneTrack(this._localAudioTrack as IMicrophoneAudioTrack);
             this._localAudioTrack.once("track-ended", () => {
                 console.log("[rtc] track-ended local audio");
@@ -148,6 +151,7 @@ export class RtcRoom {
             await this.joined;
             this._localVideoTrack = await AgoraRTC.createCameraVideoTrack({
                 encoderConfig: { width: 288, height: 216 },
+                cameraId: configStore.cameraId,
             });
             setCameraTrack(this._localVideoTrack as ICameraVideoTrack);
             this._localVideoTrack.once("track-ended", () => {
