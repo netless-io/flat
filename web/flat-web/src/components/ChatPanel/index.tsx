@@ -52,6 +52,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             disableHandRaising={disableHandRaising}
             isRaiseHand={classRoomStore.users.currentUser?.isRaiseHand}
             unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
+            openCloudStorage={() => classRoomStore.toggleCloudStoragePanel(true)}
         />
     );
 });

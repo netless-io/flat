@@ -100,6 +100,7 @@ export interface JoinRoomResult {
         token: string;
     };
     rtmToken: string;
+    showGuide: boolean;
 }
 
 export function joinRoom(uuid: string): Promise<JoinRoomResult> {

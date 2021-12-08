@@ -382,5 +382,7 @@
   "device-test": "设备检测",
   "close-tip": "不再提示",
   "device-test-option": "设备检测选项",
-  "turn-on-device-test": "进入房间时检测"
+  "turn-on-device-test": "进入房间时检测",
+  "user-guide-text": "想了解更多 Flat 的使用技巧？",
+  "user-guide-button": "立即查看"
 }
