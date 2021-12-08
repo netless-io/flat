@@ -22,7 +22,7 @@
   "me": "(Me)",
   "messages": "Message list",
   "raise-your-hand": "Raise hand",
-  "raised-hand": "(Hands raised)",
+  "raised-hand": "(Hand raised)",
   "say-something": "Say something...",
   "send": "send",
   "teacher": "(Teacher)",
@@ -383,6 +383,6 @@
   "close-tip": "Close tip",
   "device-test-option": "Device test option",
   "turn-on-device-test": "Turn on device test when join the room",
-  "user-guide-text": "Want to learn more about Flat?",
+  "user-guide-text": "Want to learn more about Flat? ",
   "user-guide-button": "Check it out now"
 }
