@@ -77,7 +77,6 @@ export const RequestErrorMessage = {
 
     [RequestErrorCode.RecordNotFound]: "replay-does-not-exist",
 
-    // TODO: translate messages below
     [RequestErrorCode.UploadConcurrentLimit]: "upload-concurrent-limit",
     [RequestErrorCode.NotEnoughTotalUsage]: "total-usage-is-full",
     [RequestErrorCode.FileSizeTooBig]: "file-is-too-big",
