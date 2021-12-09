@@ -119,8 +119,9 @@ export type RTMEvents = {
         rMode: ClassModeType;
         /** users with non-default states */
         uStates: {
-            [uuid: string]: `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${| NonDefaultUserProp
-            | ""}${NonDefaultUserProp | ""}`;
+            [uuid: string]: `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${
+	| NonDefaultUserProp
+            	| ""}${NonDefaultUserProp | ""}`;
         };
     };
     [RTMessageType.REMOTE_LOGIN]: void;
