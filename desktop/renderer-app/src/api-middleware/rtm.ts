@@ -120,8 +120,8 @@ export type RTMEvents = {
         /** users with non-default states */
         uStates: {
             [uuid: string]: `${NonDefaultUserProp | ""}${NonDefaultUserProp | ""}${
-	| NonDefaultUserProp
-            	| ""}${NonDefaultUserProp | ""}`;
+                | NonDefaultUserProp
+                | ""}${NonDefaultUserProp | ""}`;
         };
     };
     [RTMessageType.REMOTE_LOGIN]: void;
