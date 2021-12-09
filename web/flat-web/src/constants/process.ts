@@ -31,7 +31,6 @@ export const FLAT_DOWNLOAD_URL = process.env.FLAT_DOWNLOAD_URL;
 
 export const FLAT_WEB_BASE_URL = `https://${FLAT_WEB_DOMAIN}`;
 
-// TODO: english version is WIP
 export const PRIVACY_URL_CN = "https://flat.whiteboard.agora.io/privacy.html";
 export const PRIVACY_URL = "https://flat.whiteboard.agora.io/privacy.html";
 
