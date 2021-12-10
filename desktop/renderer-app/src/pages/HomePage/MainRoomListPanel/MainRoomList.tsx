@@ -28,9 +28,13 @@ import { useTranslation } from "react-i18next";
 
 export interface MainRoomListProps {
     listRoomsType: ListRoomsType;
+    isLogin: boolean;
 }
 
-export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ listRoomsType }) {
+export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
+    listRoomsType,
+    isLogin,
+}) {
     const { t } = useTranslation();
     const roomStore = useContext(RoomStoreContext);
     const [roomUUIDs, setRoomUUIDs] = useState<string[]>();
@@ -58,6 +62,10 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
     );
 
     useEffect(() => {
+        if (!isLogin) {
+            return;
+        }
+
         void refreshRooms();
 
         const ticket = window.setInterval(refreshRooms, 30 * 1000);
@@ -65,7 +73,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
         return () => {
             window.clearInterval(ticket);
         };
-    }, [refreshRooms]);
+    }, [isLogin, refreshRooms]);
 
     if (!roomUUIDs) {
         return <RoomListSkeletons />;

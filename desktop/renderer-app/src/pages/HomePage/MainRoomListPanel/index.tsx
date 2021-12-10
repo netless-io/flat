@@ -7,7 +7,9 @@ import { MainRoomList } from "./MainRoomList";
 import { ListRoomsType } from "../../../api-middleware/flatServer";
 import { useTranslation } from "react-i18next";
 
-export const MainRoomListPanel = observer<{}>(function MainRoomListPanel() {
+export const MainRoomListPanel = observer<{ isLogin: boolean }>(function MainRoomListPanel({
+    isLogin,
+}) {
     const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState<"all" | "today" | "periodic">("all");
     const filters = useMemo<Array<{ key: "all" | "today" | "periodic"; title: string }>>(
@@ -35,7 +37,7 @@ export const MainRoomListPanel = observer<{}>(function MainRoomListPanel() {
             activeTab={activeTab}
             onTabActive={setActiveTab}
         >
-            <MainRoomList listRoomsType={activeTab as ListRoomsType} />
+            <MainRoomList listRoomsType={activeTab as ListRoomsType} isLogin={isLogin} />
         </RoomList>
     );
 });

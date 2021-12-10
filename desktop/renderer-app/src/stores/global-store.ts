@@ -29,6 +29,7 @@ export class GlobalStore {
     } | null = null;
     public rtmToken: string | null = null;
     public region: Region | null = null;
+    public lastLoginCheck: number | null = null;
 
     public get userUUID(): string | undefined {
         return this.userInfo?.userUUID;
