@@ -12,7 +12,6 @@ export const joinRoomHandler = async (
         const formatRoomUUID = roomUUID.replace(/\s+/g, "");
         const data = await roomStore.joinRoom(formatRoomUUID);
         globalStore.updateShowGuide(data.showGuide);
-        // @TODO make roomType a param
         switch (data.roomType) {
             case RoomType.BigClass: {
                 pushHistory(RouteNameType.BigClassPage, data);

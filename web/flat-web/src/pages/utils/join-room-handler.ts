@@ -14,7 +14,6 @@ export const joinRoomHandler = async (
         globalStore.updateShowGuide(data.showGuide);
         // try to work around chrome does not show permission popup after
         // soft navigating. here we do a "hard" navigating instead.
-        // @TODO make roomType a param
         switch (data.roomType) {
             case RoomType.BigClass: {
                 // pushHistory(RouteNameType.BigClassPage, data);

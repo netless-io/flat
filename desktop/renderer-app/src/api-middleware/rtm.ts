@@ -153,7 +153,6 @@ export class Rtm extends EventEmitter {
 
     public client: RtmClient;
     public channel?: RtmChannel;
-    /** Channel for commands */
     public commands?: RtmChannel;
     public token?: string;
 
