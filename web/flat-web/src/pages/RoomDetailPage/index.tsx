@@ -17,8 +17,6 @@ import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { message } from "antd";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
 import { useTranslation } from "react-i18next";
-import { ServerRequestError } from "../../utils/error/server-request-error";
-import { RequestErrorCode } from "../../constants/error-code";
 
 export const RoomDetailPage = observer(function RoomDetailPage() {
     const { t } = useTranslation();
@@ -34,15 +32,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
 
     useEffect(() => {
         if (periodicUUID) {
-            roomStore.syncPeriodicSubRoomInfo({ roomUUID, periodicUUID }).catch(error => {
-                if (
-                    error instanceof ServerRequestError &&
-                    error.errorCode !== RequestErrorCode.PeriodicNotFound
-                ) {
-                    // periodic canceled
-                    errorTips(error);
-                }
-            });
+            roomStore.syncPeriodicSubRoomInfo({ roomUUID, periodicUUID }).catch(errorTips);
         } else {
             roomStore.syncOrdinaryRoomInfo(roomUUID).catch(errorTips);
         }
@@ -59,7 +49,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
     }, [roomInfo?.title]);
 
     if (!roomInfo) {
-        return <LoadingPage />;
+        return <LoadingPage timeMS={3 * 1000} />;
     }
 
     const isCreator = roomInfo.ownerUUID === globalStore.userUUID;
