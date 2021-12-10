@@ -58,3 +58,22 @@ export function usePushHistory(): <T extends RouteNameType>(
 
     return pushHistory;
 }
+
+/**
+ * Replace history with Flat route
+ */
+export function useReplaceHistory(): <T extends RouteNameType>(
+    name: T,
+    params?: RouteParams<T>,
+) => void {
+    const history = useHistory();
+
+    const pushHistory = useCallback(
+        (name: RouteNameType, params: RouteParams<RouteNameType> = {}) => {
+            history.replace(generateRoutePath(name, params));
+        },
+        [history],
+    );
+
+    return pushHistory;
+}
