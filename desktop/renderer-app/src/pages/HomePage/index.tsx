@@ -17,8 +17,7 @@ import { globalStore } from "../../stores/global-store";
 import { differenceInHours } from "date-fns";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { loginCheck } from "../../api-middleware/flatServer";
-import { RouteNameType } from "flat-web/src/route-config";
-import { useReplaceHistory } from "flat-web/src/utils/routes";
+import { RouteNameType, useReplaceHistory } from "../../utils/routes";
 
 export type HomePageProps = {};
 
