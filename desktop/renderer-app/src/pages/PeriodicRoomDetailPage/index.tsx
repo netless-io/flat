@@ -42,7 +42,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
     }, [periodicUUID, roomStore]);
 
     if (!periodicInfo || !rooms) {
-        return <LoadingPage />;
+        return <LoadingPage timeMS={3 * 1000} />;
     }
 
     const { title, ownerUUID, ownerUserName } = periodicInfo.periodic;
