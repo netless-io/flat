@@ -28,7 +28,7 @@ export class RTCShareScreen {
             height: 0,
             bitrate: 500,
             frameRate: 5,
-            captureMouseCursor: false,
+            captureMouseCursor: true,
             windowFocus: false,
             excludeWindowList: [],
             excludeWindowCount: 0,
