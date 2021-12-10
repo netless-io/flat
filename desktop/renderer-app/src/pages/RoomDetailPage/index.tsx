@@ -37,6 +37,8 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
     }, [roomStore, roomUUID, periodicUUID]);
 
     if (!roomInfo) {
+        // it is not a good idea to let the loading take too long on the current page
+        // 3 seconds is just right
         return <LoadingPage timeMS={3 * 1000} />;
     }
 
