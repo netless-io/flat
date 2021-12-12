@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["dom", "es2017"],
-    "module": "CommonJS",
+    "module": "ESNext",
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
@@ -12,5 +12,5 @@
     }
   },
   "exclude": ["node_modules", "dist", "public"],
-  "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts", "vite.config.ts"]
 }
