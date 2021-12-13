@@ -3,10 +3,11 @@ import React, { ComponentType, FC, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
 import { useIsomorphicLayoutEffect } from "react-use";
+import { LoadingPage } from "flat-components";
 import { PageStoreContext } from "../components/StoreProvider";
 import { RouteNameType } from "../route-config";
 import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
-import { LoadingPage } from "flat-components";
+import { routePages } from "./route-pages";
 
 export interface AppRouteContainerProps {
     name: RouteNameType;
@@ -35,10 +36,12 @@ export const AppRouteContainer: FC<AppRouteContainerProps> = ({
         window.getSelection()?.removeAllRanges();
     }, [t, title]);
 
+    const hasHeader = pageStore.name && routePages[pageStore.name].hasHeader;
+
     return (
         <AppRouteErrorBoundary
             Comp={loadable(Comp, {
-                fallback: <LoadingPage />,
+                fallback: <LoadingPage hasHeader={hasHeader} />,
             })}
             {...{ title, routeProps }}
         />

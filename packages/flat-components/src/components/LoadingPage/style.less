@@ -1,24 +1,37 @@
 .loading-page {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
     z-index: 1002;
-    color: #7a7b7c;
-    background-color: white;
+}
+
+.loading-page-mask {
+    width: 100%;
+    height: 50px;
+    pointer-events: none;
+    background-color: #fff;
+
+    &.is-transparent {
+        background-color: transparent;
+    }
 }
 
 .loading-page-content {
+    width: 100%;
+    padding-bottom: 50px;
     flex: 1;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    color: #7a7b7c;
+    background-color: white;
 }
 
 .loading-page-image {
@@ -27,9 +40,11 @@
 }
 
 .loading-page-return-btn {
-    margin-bottom: 64px;
+    position: absolute;
+    bottom: 64px;
     opacity: 0;
     transition: opacity 0.4s;
+    pointer-events: auto;
 
     &.is-show {
         opacity: 1;
