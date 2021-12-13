@@ -1944,10 +1944,10 @@
   resolved "https://registry.yarnpkg.com/@netless/redo-undo/-/redo-undo-0.0.5.tgz#c5b00f5940ef33a0d6a810cd0935f4d9c172ea52"
   integrity sha512-P8ceK3hSY2eMfFIjBeSpRsqXpjjTea9bBWyRF8t8q0kLR4ICld2VMFMRbytqZ8sjCFy9CgbicuBOdMj7juABIQ==
 
-"@netless/telebox-insider@0.2.6":
-  version "0.2.6"
-  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.6.tgz#2b73a8308f874998de4186218b48a2f6a45eb4a5"
-  integrity sha512-JgWL1LumGmaDkVS1xMe7XkhBJsHUqvBZaMBO7EF/sSI1g3o6pX+dPMvfnz/ehQuRBWHMAGeW+Us2eeZeV1sWnw==
+"@netless/telebox-insider@0.2.7":
+  version "0.2.7"
+  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.7.tgz#0525f8b72cb54e5d5f2f493d7b4b030e35e78163"
+  integrity sha512-DuvFuKM0h8RX1feSM/ZYNLNhlJw48yyQDbGcOvZW60Ncr+3t6BqN4z80gzvQLcNfpBD6yqYGWts2/k4fTLzlhQ==
   dependencies:
     "@types/shallowequal" "^1.1.1"
     eventemitter3 "^4.0.7"
@@ -1966,15 +1966,15 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.3.9-canary.0":
-  version "0.3.9"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.9.tgz#ccf77a8f582d76513b8bf5ce1bbd98014b0f01be"
-  integrity sha512-r5T9GwD/xvVYOXGa3QwdQrbPILifdZg4V+yKePfqSX/6OlZXOZ98UGwfYWRrzD3tQAdWH0UuxHe3VEBbFo3SgQ==
+"@netless/window-manager@^0.3.10-canary.0":
+  version "0.3.10-canary.0"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.10-canary.0.tgz#1f4a919cf9034165074731ca2ed657475142985c"
+  integrity sha512-nwIchQyKp4VqcwDBdkq4iyO8uweMZR692qFtq2bT7anaSEzSzyFB89MhrKq8OlJVTIU+EFUk4mSaU2D/lkTRTw==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/app-docs-viewer" "^0.1.21"
     "@netless/app-media-player" "0.1.0-beta.5"
-    "@netless/telebox-insider" "0.2.6"
+    "@netless/telebox-insider" "0.2.7"
     emittery "^0.9.2"
     lodash "^4.17.21"
     p-retry "^4.6.1"
