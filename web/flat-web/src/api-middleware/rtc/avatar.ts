@@ -57,8 +57,10 @@ export class RtcAvatar extends EventEmitter {
         this.observeVolumeId = window.setInterval(this.checkVolume, 500);
     }
 
-    public destroy(): void {
+    public async destroy(): Promise<void> {
         clearInterval(this.observeVolumeId);
+        await this.setMic(false);
+        await this.setCamera(false);
         this.rtc.removeAvatar(this);
     }
 
