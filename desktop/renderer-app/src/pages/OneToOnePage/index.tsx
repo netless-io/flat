@@ -165,7 +165,11 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                                 shareScreenStore.enable();
                             }}
                         />
-                        <Whiteboard whiteboardStore={whiteboardStore} />
+                        <Whiteboard
+                            whiteboardStore={whiteboardStore}
+                            classRoomStore={classRoomStore}
+                            disableHandRaising={true}
+                        />
                     </div>
                     {renderRealtimePanel()}
                 </div>
@@ -329,7 +333,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     <ChatPanel
                         classRoomStore={classRoomStore}
                         disableMultipleSpeakers={true}
-                        disableHandRaising={true}
                     ></ChatPanel>
                 }
             />

@@ -168,7 +168,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 <div className="realtime-content">
                     <div className="container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
-                        <Whiteboard whiteboardStore={whiteboardStore} />
+                        <Whiteboard
+                            whiteboardStore={whiteboardStore}
+                            classRoomStore={classRoomStore}
+                            disableHandRaising={
+                                classRoomStore.classMode === ClassModeType.Interaction
+                            }
+                        />
                     </div>
                     {renderRealtimePanel()}
                 </div>
@@ -356,12 +362,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 isShow={isRealtimeSideOpen}
                 isVideoOn={false}
                 videoSlot={null}
-                chatSlot={
-                    <ChatPanel
-                        classRoomStore={classRoomStore}
-                        disableHandRaising={classRoomStore.classMode === ClassModeType.Interaction}
-                    ></ChatPanel>
-                }
+                chatSlot={<ChatPanel classRoomStore={classRoomStore}></ChatPanel>}
             />
         );
     }
