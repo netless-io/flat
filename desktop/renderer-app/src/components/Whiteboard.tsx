@@ -47,6 +47,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                         bottom: "8px",
                     },
                     chessboard: false,
+                    prefersColorScheme: "auto",
                 });
 
                 whiteboardStore.onMainViewModeChange();
