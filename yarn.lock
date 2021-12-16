@@ -1867,13 +1867,13 @@
   resolved "https://registry.npmjs.org/@netless/app-countdown/-/app-countdown-0.0.1.tgz#97772577008ead43c10812600a121e89fc18c8e3"
   integrity sha512-pOJLEQEHoSujAN+Q0kB257XKo3D6+J5Lz7s57OMc0/clhgaciOidBvNoTpsN70mOGRGpGiWpMovaoSYTihuU4Q==
 
-"@netless/app-docs-viewer@^0.1.21":
-  version "0.1.21"
-  resolved "https://registry.npmjs.org/@netless/app-docs-viewer/-/app-docs-viewer-0.1.21.tgz#781f74070ae9b6a98f60f2935be1d4e0409bad1f"
-  integrity sha512-vz2NVpkfoqkg+0n3gx0dVziyqrdVgsuGh5Z/cSHmF9cNSjiCc+9yyERo2pQV9J6n5RB+UfL/WYTTJD2ApedIAw==
+"@netless/app-docs-viewer@0.1.22":
+  version "0.1.22"
+  resolved "https://registry.npmjs.org/@netless/app-docs-viewer/-/app-docs-viewer-0.1.22.tgz#41c632aa76c2596ebb37a9185cb00ef250fd7aa7"
+  integrity sha512-eXMr1KCPCHo2e5GwueuD78LqmZInsj+BaT9lOUnQnf3j8M36B/dIkme+BpSS9IIXiVXULgJ2W/uYqXrqj0knGw==
   dependencies:
     debounce-fn "^5.0.0"
-    vanilla-lazyload "^17.4.0"
+    vanilla-lazyload "^17.5.0"
 
 "@netless/app-geogebra@^0.0.2":
   version "0.0.2"
@@ -1890,10 +1890,10 @@
   resolved "https://registry.npmjs.org/@netless/app-media-player/-/app-media-player-0.1.0-beta.5.tgz#13ad8680be81503f5dc48c4c4e9848ba15b76e5a"
   integrity sha512-q24tZnDGwTM8fvSs97qavuF8w8cXa4Tx3Nl7Xvig5Um4XKrfNijjLK9pI1cdctfuefl9s8wrG8JNCN2C6yqeDw==
 
-"@netless/app-monaco@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.11.tgz#f5fc1bc66dfb1ba0fa561483e7974d3771665138"
-  integrity sha512-PwQDGHycri2gYCIF/SykokqjSyP/z8SShET2bmQd2UaVyMX11W2i5iAK4gntq22Cp5NW6JHawrTNbpfpoDMwMg==
+"@netless/app-monaco@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.12.tgz#bd289d088cd9f6db664220becc80a2db02313c2b"
+  integrity sha512-f8LLS5jVcBXn5Ua1HfWNHUq7wa/yax81+XTfjXJ8B2ztOGTHB1uHDveD/hjcWCTCEeZP/sv8c8HTXwqb0fLUcg==
 
 "@netless/app-slide@^0.0.44":
   version "0.0.44"
@@ -1944,10 +1944,10 @@
   resolved "https://registry.yarnpkg.com/@netless/redo-undo/-/redo-undo-0.0.5.tgz#c5b00f5940ef33a0d6a810cd0935f4d9c172ea52"
   integrity sha512-P8ceK3hSY2eMfFIjBeSpRsqXpjjTea9bBWyRF8t8q0kLR4ICld2VMFMRbytqZ8sjCFy9CgbicuBOdMj7juABIQ==
 
-"@netless/telebox-insider@0.2.7":
-  version "0.2.7"
-  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.7.tgz#0525f8b72cb54e5d5f2f493d7b4b030e35e78163"
-  integrity sha512-DuvFuKM0h8RX1feSM/ZYNLNhlJw48yyQDbGcOvZW60Ncr+3t6BqN4z80gzvQLcNfpBD6yqYGWts2/k4fTLzlhQ==
+"@netless/telebox-insider@0.2.9":
+  version "0.2.9"
+  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.9.tgz#1fd208da5ffc6ef61b35ce8378c9caffbbdc444c"
+  integrity sha512-PdVcM+HC/JGzHx8HD3spUCzgtlPjpjQjAushAAiqD/j0xkzB4sQfzKiFaNNKdBp6IWlHMXWp2sA53TpFVh4W3g==
   dependencies:
     "@types/shallowequal" "^1.1.1"
     eventemitter3 "^4.0.7"
@@ -1966,15 +1966,15 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.3.10-canary.0":
-  version "0.3.10-canary.0"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.10-canary.0.tgz#1f4a919cf9034165074731ca2ed657475142985c"
-  integrity sha512-nwIchQyKp4VqcwDBdkq4iyO8uweMZR692qFtq2bT7anaSEzSzyFB89MhrKq8OlJVTIU+EFUk4mSaU2D/lkTRTw==
+"@netless/window-manager@^0.3.12-canary.1":
+  version "0.3.12-canary.1"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.12-canary.1.tgz#f59f38d88ea87574e94f30e8ac7a59ed00ad87e1"
+  integrity sha512-pr9snZF8L98AqVVh5NyXfgU1YskZuhBCKddguzh1taOHVzqXUs9/1R+DHpE92h3qo6662EVb/UZ56C/MDQDMLg==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
-    "@netless/app-docs-viewer" "^0.1.21"
+    "@netless/app-docs-viewer" "0.1.22"
     "@netless/app-media-player" "0.1.0-beta.5"
-    "@netless/telebox-insider" "0.2.7"
+    "@netless/telebox-insider" "0.2.9"
     emittery "^0.9.2"
     lodash "^4.17.21"
     p-retry "^4.6.1"
@@ -16814,10 +16814,10 @@ value-equal@^1.0.1:
   resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-1.0.1.tgz#1e0b794c734c5c0cade179c437d356d931a34d6c"
   integrity sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==
 
-vanilla-lazyload@^17.4.0:
-  version "17.4.0"
-  resolved "https://registry.npmjs.org/vanilla-lazyload/-/vanilla-lazyload-17.4.0.tgz#09d65a5be46242b82b557b9ccd886613de76f4c2"
-  integrity sha512-4IVX93uLEgQGBdSCaSE1XJgeNNT1+sV8PKiImM21EkDGJBH3tTWL9wYrMA4xT5C2EIEfw8WkinUxUG+uMY2ZyA==
+vanilla-lazyload@^17.5.0:
+  version "17.5.0"
+  resolved "https://registry.npmjs.org/vanilla-lazyload/-/vanilla-lazyload-17.5.0.tgz#ca2690fcf0627af3ad13e7fe41e7d0fac58d2a7e"
+  integrity sha512-1d2kjFT2BTrA2ynBBbJ58kIZqtB6TxocAvUFwmzjJ34RqLDlVPy4VmBDuAi6xgv+3LSmP6coKstU2eeRdI+ixw==
 
 vary@~1.1.2:
   version "1.1.2"
