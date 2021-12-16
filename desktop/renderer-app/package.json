@@ -9,7 +9,7 @@
     "@netless/app-geogebra": "^0.0.2",
     "@netless/app-iframe-bridge": "^0.0.2",
     "@netless/app-monaco": "^0.1.12",
-    "@netless/app-slide": "^0.0.44",
+    "@netless/app-slide": "^0.0.45",
     "@netless/combine-player": "^1.1.4",
     "@netless/cursor-tool": "^0.1.0",
     "@netless/fetch-middleware": "^1.0.7",
