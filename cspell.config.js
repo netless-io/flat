@@ -92,6 +92,7 @@ module.exports = {
         "zindex", // antd
         "geogebra", // @netless/app-geogebra
         "commitlintrc", // @commitlint/cli
+        "unpublish", // agora-rtc-sdk-ng
 
         // misc
         "npmrc",
