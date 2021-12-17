@@ -222,7 +222,7 @@
   "the-room-has-been-cancelled": "The room has been cancelled",
   "the-room-has-been-removed": "The room has been removed",
   "history": "History",
-  "create": "Begin",
+  "begin": "Begin",
   "join-options": "Join option",
   "create-room-default-title": "The room created by {{name}}",
   "turn-on-the-camera": "Camera",
@@ -384,5 +384,7 @@
   "device-test-option": "Device test option",
   "turn-on-device-test": "Turn on device test when join the room",
   "user-guide-text": "Want to learn more about Flat? ",
-  "user-guide-button": "Check it out now"
+  "user-guide-button": "Check it out now",
+  "start-recording": "Start recording",
+  "stop-recording": "Stop recording"
 }

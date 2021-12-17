@@ -90,7 +90,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     const whiteboardStore = classRoomStore.whiteboardStore;
     const shareScreenStore = classRoomStore.shareScreenStore;
 
-    // const globalStore = useContext(GlobalStoreContext);
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
     const { room, phase } = whiteboardStore;

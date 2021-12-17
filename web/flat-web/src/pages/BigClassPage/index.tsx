@@ -83,7 +83,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const shareScreenStore = classRoomStore.shareScreenStore;
 
     const whiteboardStore = classRoomStore.whiteboardStore;
-    // const globalStore = useContext(GlobalStoreContext);
 
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 

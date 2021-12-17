@@ -120,7 +120,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                         let primaryAction: RoomListItemButton<"replay" | "join" | "begin">;
                         switch (roomStatus) {
                             case RoomStatus.Idle: {
-                                primaryAction = { key: "begin", text: "开始" };
+                                primaryAction = { key: "begin", text: t("begin") };
                                 break;
                             }
                             case RoomStatus.Started:
@@ -137,7 +137,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                                 break;
                             }
                             default: {
-                                primaryAction = { key: "begin", text: "开始" };
+                                primaryAction = { key: "begin", text: t("begin") };
                                 break;
                             }
                         }
