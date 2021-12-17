@@ -19,6 +19,7 @@ import {
     ViewVisionMode,
     WhiteWebSdk,
 } from "white-web-sdk";
+import { RoomType } from "../../../../packages/flat-components/src/types/room";
 import { CLOUD_STORAGE_DOMAIN, NETLESS, NODE_ENV } from "../constants/process";
 import { CloudStorageFile, CloudStorageStore } from "../pages/CloudStoragePage/store";
 import { getCoursewarePreloader } from "../utils/courseware-preloader";
@@ -28,7 +29,6 @@ import { queryConvertingTaskStatus } from "../api-middleware/courseware-converti
 import { convertFinish } from "../api-middleware/flatServer/storage";
 import { ServerRequestError } from "../utils/error/server-request-error";
 import { RequestErrorCode } from "../constants/error-code";
-import { RoomType } from "../api-middleware/flatServer/constants";
 
 export class WhiteboardStore {
     public room: Room | null = null;
