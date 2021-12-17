@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@babel/runtime": "^7.16.5",
     "@loadable/component": "^5.15.0",
     "@netless/app-countdown": "^0.0.1",
     "@netless/app-geogebra": "^0.0.2",
