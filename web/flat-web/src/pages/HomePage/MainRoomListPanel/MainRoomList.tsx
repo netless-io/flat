@@ -114,9 +114,35 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                     const beginTime = room.beginTime ? new Date(room.beginTime) : void 0;
                     const endTime = room.endTime ? new Date(room.endTime) : void 0;
 
-                    const primaryAction: RoomListItemButton<"replay" | "join"> = isHistoryList
-                        ? { key: "replay", text: t("replay"), disabled: !room.hasRecord }
-                        : { key: "join", text: t("join") };
+                    const primaryAction = (
+                        roomStatus?: RoomStatus,
+                    ): RoomListItemButton<"replay" | "join" | "begin"> => {
+                        let primaryAction: RoomListItemButton<"replay" | "join" | "begin">;
+                        switch (roomStatus) {
+                            case RoomStatus.Idle: {
+                                primaryAction = { key: "begin", text: "开始" };
+                                break;
+                            }
+                            case RoomStatus.Started:
+                            case RoomStatus.Paused: {
+                                primaryAction = { key: "join", text: t("join") };
+                                break;
+                            }
+                            case RoomStatus.Stopped: {
+                                primaryAction = {
+                                    key: "replay",
+                                    text: t("replay"),
+                                    disabled: !room.hasRecord,
+                                };
+                                break;
+                            }
+                            default: {
+                                primaryAction = { key: "begin", text: "开始" };
+                                break;
+                            }
+                        }
+                        return primaryAction;
+                    };
 
                     return (
                         <Fragment key={room.roomUUID}>
@@ -127,7 +153,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                                 endTime={endTime}
                                 status={getRoomStatus(room.roomStatus)}
                                 isPeriodic={!!room.periodicUUID}
-                                buttons={[getSubActions(room), primaryAction]}
+                                buttons={[getSubActions(room), primaryAction(room.roomStatus)]}
                                 onClickMenu={key => {
                                     switch (key) {
                                         case "details": {
@@ -167,7 +193,8 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                                             });
                                             break;
                                         }
-                                        case "join": {
+                                        case "join":
+                                        case "begin": {
                                             void joinRoom(room.roomUUID);
                                             break;
                                         }

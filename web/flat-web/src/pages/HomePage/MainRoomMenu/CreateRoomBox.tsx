@@ -105,7 +105,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                         onClick={handleOk}
                         disabled={!isFormValidated}
                     >
-                        {t("create")}
+                        {t("begin")}
                     </Button>,
                 ]}
             >

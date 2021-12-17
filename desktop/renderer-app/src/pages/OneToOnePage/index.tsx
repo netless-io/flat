@@ -1,6 +1,6 @@
 import "./OneToOnePage.less";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
@@ -8,7 +8,6 @@ import { RoomPhase } from "white-web-sdk";
 import {
     NetworkStatus,
     RoomInfo,
-    RecordHintTips,
     RecordButton,
     TopBar,
     TopBarDivider,
@@ -20,7 +19,6 @@ import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { OneToOneAvatar } from "./OneToOneAvatar";
-import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import {
     ExitRoomConfirm,
     ExitRoomConfirmType,
@@ -29,11 +27,7 @@ import {
 import { Whiteboard } from "../../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import { RoomStatus, RoomType } from "../../api-middleware/flatServer/constants";
-import {
-    RecordingConfig,
-    RoomStatusLoadingType,
-    useClassRoomStore,
-} from "../../stores/class-room-store";
+import { RecordingConfig, useClassRoomStore } from "../../stores/class-room-store";
 import { RtcChannelType } from "../../api-middleware/rtc";
 import { useComputed } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
@@ -41,7 +35,6 @@ import { usePowerSaveBlocker } from "../../utils/hooks/use-power-save-blocker";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
-import { GlobalStoreContext } from "../../components/StoreProvider";
 import { runtime } from "../../utils/runtime";
 import { useTranslation } from "react-i18next";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
@@ -81,7 +74,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     const whiteboardStore = classRoomStore.whiteboardStore;
     const shareScreenStore = classRoomStore.shareScreenStore;
 
-    const globalStore = useContext(GlobalStoreContext);
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
     const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
@@ -135,6 +127,9 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     ) {
         loadingPageRef.current = true;
     } else {
+        if (classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Idle) {
+            void classRoomStore.startClass();
+        }
         loadingPageRef.current = false;
     }
 
@@ -198,76 +193,27 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         if (!classRoomStore.isCreator) {
             return null;
         }
-
-        switch (classRoomStore.roomStatus) {
-            case RoomStatus.Started: {
-                return (
-                    <>
-                        <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.pauseClass}>
-                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Pausing
-                                ? t("pausing")
-                                : t("pause")}
-                        </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
-                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
-                                ? t("ending")
-                                : t("end-the-class")}
-                        </TopBarRoundBtn>
-                    </>
-                );
-            }
-            case RoomStatus.Paused: {
-                return (
-                    <>
-                        <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.resumeClass}>
-                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
-                                ? t("starting")
-                                : t("resume")}
-                        </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
-                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
-                                ? t("ending")
-                                : t("end-the-class")}
-                        </TopBarRoundBtn>
-                    </>
-                );
-            }
-            default: {
-                return (
-                    <RecordHintTips
-                        visible={Boolean(whiteboardStore.room) && globalStore.isShowRecordHintTips}
-                        onClose={globalStore.hideRecordHintTips}
-                    >
-                        <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
-                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
-                                ? t("starting")
-                                : t("start")}
-                        </TopBarRoundBtn>
-                    </RecordHintTips>
-                );
-            }
-        }
+        return (
+            <>
+                {classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Started && (
+                    <RecordButton
+                        isRecording={classRoomStore.isRecording}
+                        onClick={() =>
+                            classRoomStore.toggleRecording({
+                                onStop() {
+                                    void message.success(t("recording-completed-tips"));
+                                },
+                            })
+                        }
+                    />
+                )}
+            </>
+        );
     }
 
     function renderTopBarRight(): React.ReactNode {
         return (
             <>
-                {classRoomStore.isCreator &&
-                    (classRoomStore.roomStatus === RoomStatus.Started ||
-                        classRoomStore.roomStatus === RoomStatus.Paused) && (
-                        <RecordButton
-                            disabled={false}
-                            isRecording={classRoomStore.isRecording}
-                            onClick={() =>
-                                classRoomStore.toggleRecording({
-                                    onStop() {
-                                        void message.success(t("recording-completed-tips"));
-                                    },
-                                })
-                            }
-                        />
-                    )}
-
                 {whiteboardStore.isWritable && <AppStoreButton addApp={whiteboardStore.addApp} />}
 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
@@ -341,10 +287,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     function handleSideOpenerSwitch(): void {
         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
-    }
-
-    function stopClass(): void {
-        confirm(ExitRoomConfirmType.StopClassButton);
     }
 
     function updateCloudRecordLayout(): void {
