@@ -1,11 +1,11 @@
-import legacy from "@vitejs/plugin-legacy";
 import refresh from "@vitejs/plugin-react-refresh";
 import { defineConfig } from "vite";
 import path from "path";
 import { dotenv } from "../../web/flat-web/scripts/vite-plugin-dotenv";
+import { electron } from "./scripts/vite-plugin-electron";
 
 export default defineConfig({
-    plugins: [refresh(), legacy(), dotenv("../../config")],
+    plugins: [refresh(), dotenv("../../config"), electron()],
     resolve: {
         alias: [
             // replace webpack alias
@@ -26,10 +26,16 @@ export default defineConfig({
     },
     build: {
         sourcemap: true,
+        rollupOptions: {
+            output: {
+                format: "cjs",
+            },
+            external: [...electron.externals],
+        },
     },
     clearScreen: false,
     optimizeDeps: {
-        exclude: ["agora-electron-sdk"],
+        exclude: ["electron"],
     },
     css: {
         preprocessorOptions: {
