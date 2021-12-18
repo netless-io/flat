@@ -209,7 +209,10 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                                 shareScreenStore.enable();
                             }}
                         />
-                        <Whiteboard whiteboardStore={whiteboardStore} />
+                        <Whiteboard
+                            whiteboardStore={whiteboardStore}
+                            classRoomStore={classRoomStore}
+                        />
                     </div>
                     {renderRealtimePanel()}
                 </div>

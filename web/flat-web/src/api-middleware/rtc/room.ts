@@ -103,12 +103,13 @@ export class RtcRoom {
             setMicrophoneTrack();
             setCameraTrack();
             if (this.client.localTracks.length > 0) {
-                for (const track of this.client.localTracks) {
+                const tracks = this.client.localTracks;
+                console.log("[rtc] unpublish local tracks");
+                await this.client.unpublish(tracks);
+                for (const track of tracks) {
                     track.stop();
                     track.close();
                 }
-                console.log("[rtc] unpublish local tracks");
-                await this.client.unpublish(this.client.localTracks);
             }
             this.client.off("user-published", this.onUserPublished);
             this.client.off("user-unpublished", this.onUserUnpublished);

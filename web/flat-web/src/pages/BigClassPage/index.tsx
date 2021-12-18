@@ -188,7 +188,10 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 <div className="realtime-content">
                     <div className="container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
-                        <Whiteboard whiteboardStore={whiteboardStore} />
+                        <Whiteboard
+                            whiteboardStore={whiteboardStore}
+                            classRoomStore={classRoomStore}
+                        />
                     </div>
                     {renderRealtimePanel()}
                 </div>

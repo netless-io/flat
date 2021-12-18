@@ -2,8 +2,6 @@ import "./style.less";
 import sendSVG from "./icons/send.svg";
 import banChatSVG from "./icons/ban-chat.svg";
 import banChatActiveSVG from "./icons/ban-chat-active.svg";
-import handSVG from "./icons/hand.svg";
-import handActiveSVG from "./icons/hand-active.svg";
 
 import React, { useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
@@ -14,21 +12,15 @@ export interface ChatTypeBoxProps {
     /** Only room owner can ban chatting. */
     isCreator: boolean;
     isBan: boolean;
-    isRaiseHand?: boolean;
-    disableHandRaising?: boolean;
     onBanChange: () => void;
     onMessageSend: (text: string) => Promise<void>;
-    onRaiseHandChange: () => void;
 }
 
 export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
     isCreator,
     isBan,
-    isRaiseHand,
-    disableHandRaising,
     onBanChange,
     onMessageSend,
-    onRaiseHandChange,
 }) {
     const { t } = useTranslation();
     const sp = useSafePromise();
@@ -58,20 +50,10 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
 
     return (
         <div className="chat-typebox">
-            {isCreator ? (
+            {isCreator && (
                 <button className="chat-typebox-icon" title={t("ban")} onClick={onBanChange}>
                     <img src={isBan ? banChatActiveSVG : banChatSVG} />
                 </button>
-            ) : (
-                !disableHandRaising && (
-                    <button
-                        className="chat-typebox-icon"
-                        title={t("raise-your-hand")}
-                        onClick={onRaiseHandChange}
-                    >
-                        <img src={isRaiseHand ? handActiveSVG : handSVG} />
-                    </button>
-                )
             )}
             {!isCreator && isBan ? (
                 <span className="chat-typebox-ban-input" title={t("all-staff-are-under-ban")}>
