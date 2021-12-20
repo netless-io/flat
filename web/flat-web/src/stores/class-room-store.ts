@@ -219,8 +219,6 @@ export class ClassRoomStore {
 
     public pauseClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Paused);
 
-    public resumeClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
-
     public stopClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Stopped);
 
     public hangClass = async (): Promise<void> => {
