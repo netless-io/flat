@@ -37,7 +37,7 @@
   "delay": "Delay: ",
   "end-of-class-tips": "Once the lesson ends, all users are automatically logged out of the room and the lesson and recording (if any) is automatically ended and cannot be continued live.",
   "end-the-class": "End",
-  "exit-room-tips": "The class is continuing, do you want to leave temporarily or end your classes?",
+  "exit-room-tips": "The class is continuing, do you want to leave temporarily or end your classes? If you have opened the recording, you will also end it together.",
   "hang-up-the-room": "Leave",
   "got-it-countdown": "Got it ({{countdown}})",
   "network": "The internet: ",
