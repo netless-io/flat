@@ -34,7 +34,7 @@
   "hang-up-the-room": "暂时离开",
   "end-the-class": "结束上课",
   "close-option": "关闭选项",
-  "exit-room-tips": "课堂正在继续，你是暂时离开还是结束上课？",
+  "exit-room-tips": "课堂正在继续，你是暂时离开还是结束上课？如有开启录制，也将一并结束。",
   "student-sure-to-exit-the-room": "确定退出房间",
   "student-exit-room-tip": "课堂正在继续，确定退出房间？",
   "start-class-tips": "请先「开始上课」再开启房间录制功能",
