@@ -120,12 +120,24 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                         let primaryAction: RoomListItemButton<"replay" | "join" | "begin">;
                         switch (roomStatus) {
                             case RoomStatus.Idle: {
-                                primaryAction = { key: "begin", text: t("begin") };
+                                const isCreator = room.ownerUUID === globalStore.userUUID;
+                                primaryAction = isCreator
+                                    ? {
+                                          key: "begin",
+                                          text: t("begin"),
+                                      }
+                                    : {
+                                          key: "join",
+                                          text: t("join"),
+                                      };
                                 break;
                             }
                             case RoomStatus.Started:
                             case RoomStatus.Paused: {
-                                primaryAction = { key: "join", text: t("join") };
+                                primaryAction = {
+                                    key: "join",
+                                    text: t("join"),
+                                };
                                 break;
                             }
                             case RoomStatus.Stopped: {
@@ -137,7 +149,10 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                                 break;
                             }
                             default: {
-                                primaryAction = { key: "begin", text: t("begin") };
+                                primaryAction = {
+                                    key: "begin",
+                                    text: t("begin"),
+                                };
                                 break;
                             }
                         }
