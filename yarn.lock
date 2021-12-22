@@ -1867,10 +1867,10 @@
   resolved "https://registry.npmjs.org/@netless/app-countdown/-/app-countdown-0.0.1.tgz#97772577008ead43c10812600a121e89fc18c8e3"
   integrity sha512-pOJLEQEHoSujAN+Q0kB257XKo3D6+J5Lz7s57OMc0/clhgaciOidBvNoTpsN70mOGRGpGiWpMovaoSYTihuU4Q==
 
-"@netless/app-docs-viewer@0.1.22":
-  version "0.1.22"
-  resolved "https://registry.npmjs.org/@netless/app-docs-viewer/-/app-docs-viewer-0.1.22.tgz#41c632aa76c2596ebb37a9185cb00ef250fd7aa7"
-  integrity sha512-eXMr1KCPCHo2e5GwueuD78LqmZInsj+BaT9lOUnQnf3j8M36B/dIkme+BpSS9IIXiVXULgJ2W/uYqXrqj0knGw==
+"@netless/app-docs-viewer@0.1.24":
+  version "0.1.24"
+  resolved "https://registry.npmjs.org/@netless/app-docs-viewer/-/app-docs-viewer-0.1.24.tgz#90000b2f47df977b353153a4fee5be5add2fe0ec"
+  integrity sha512-0NfcTqRvWlqGXhLc451AclDobp6Uicr+J51pfJbFfapWBwCOwynF3dn1wpazlffr1YYHRP+V+CVi7MmVt4qEwA==
   dependencies:
     debounce-fn "^5.0.0"
     vanilla-lazyload "^17.5.0"
@@ -1944,10 +1944,10 @@
   resolved "https://registry.yarnpkg.com/@netless/redo-undo/-/redo-undo-0.0.5.tgz#c5b00f5940ef33a0d6a810cd0935f4d9c172ea52"
   integrity sha512-P8ceK3hSY2eMfFIjBeSpRsqXpjjTea9bBWyRF8t8q0kLR4ICld2VMFMRbytqZ8sjCFy9CgbicuBOdMj7juABIQ==
 
-"@netless/telebox-insider@0.2.9":
-  version "0.2.9"
-  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.9.tgz#1fd208da5ffc6ef61b35ce8378c9caffbbdc444c"
-  integrity sha512-PdVcM+HC/JGzHx8HD3spUCzgtlPjpjQjAushAAiqD/j0xkzB4sQfzKiFaNNKdBp6IWlHMXWp2sA53TpFVh4W3g==
+"@netless/telebox-insider@0.2.10":
+  version "0.2.10"
+  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.10.tgz#fdcebcb66d962b6f4b2278ff8ac5e735aaaf46f7"
+  integrity sha512-kBCwl040HVRuFs9YaM6DguNbkc6fl0d/CSRRbxS6FZwBRQ6k4tnI5pIZ4YkEqXXk/a+6CbQxmwEQEN9cYqm46w==
   dependencies:
     "@types/shallowequal" "^1.1.1"
     eventemitter3 "^4.0.7"
@@ -1966,15 +1966,15 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.3.12-canary.1":
-  version "0.3.12-canary.1"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.12-canary.1.tgz#f59f38d88ea87574e94f30e8ac7a59ed00ad87e1"
-  integrity sha512-pr9snZF8L98AqVVh5NyXfgU1YskZuhBCKddguzh1taOHVzqXUs9/1R+DHpE92h3qo6662EVb/UZ56C/MDQDMLg==
+"@netless/window-manager@^0.3.16-canary.0":
+  version "0.3.16-canary.0"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.16-canary.0.tgz#2fb8240acf288dc595ba01a15f74c1f09f619a36"
+  integrity sha512-LAq0fuBqCF3/mKzrYdYXMOqeRyXTNljLID/mMCGEqkJMOz2z22GsbB+SGT5VqFRi3eGFS+bWELMrc2NFnQPXmQ==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
-    "@netless/app-docs-viewer" "0.1.22"
+    "@netless/app-docs-viewer" "0.1.24"
     "@netless/app-media-player" "0.1.0-beta.5"
-    "@netless/telebox-insider" "0.2.9"
+    "@netless/telebox-insider" "0.2.10"
     emittery "^0.9.2"
     lodash "^4.17.21"
     p-retry "^4.6.1"
