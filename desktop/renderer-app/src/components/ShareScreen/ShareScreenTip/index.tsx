@@ -10,6 +10,7 @@ import dragSVG from "../../../assets/image/drag.svg";
 import { Button } from "antd";
 import { ShareScreenStore } from "../../../stores/share-screen-store";
 import { useTranslation } from "react-i18next";
+import { useSafePromise } from "../../../utils/hooks/lifecycle";
 
 interface ShareScreenTipProps {
     shareScreenStore: ShareScreenStore;
@@ -18,21 +19,22 @@ interface ShareScreenTipProps {
 export const ShareScreenTip = observer<ShareScreenTipProps>(function ShareScreenTip({
     shareScreenStore,
 }) {
+    const sp = useSafePromise();
     const { t } = useTranslation();
     const [windowInstance, setWindowInstance] = useState<null | Window>(null);
     const [containerEl] = useState(() => document.createElement("div"));
 
     useEffect(() => {
-        const instance = portalWindowManager.createShareScreenTipPortalWindow(containerEl);
-
-        setWindowInstance(instance);
+        sp(portalWindowManager.createShareScreenTipPortalWindow(containerEl))
+            .then(setWindowInstance)
+            .catch(console.error);
 
         return () => {
             ipcAsyncByApp("force-close-window", {
                 windowName: constants.WindowsName.ShareScreenTip,
             });
         };
-    }, [containerEl, t]);
+    }, [containerEl, sp, t]);
 
     useEffect(() => {
         if (windowInstance) {

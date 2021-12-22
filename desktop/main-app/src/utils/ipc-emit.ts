@@ -2,23 +2,31 @@ import { ipc } from "flat-types";
 import { windowManager } from "../window-manager";
 import runtime from "./runtime";
 import { constants } from "flat-types";
+import { CustomWindow, IsMultiInstance } from "../window-manager/abstract";
 
-const ipcEmitHandler = (windowName: constants.WindowsName): IPCEmit => {
-    return (eventName, args): void => {
-        const window = windowManager.window(windowName)?.window;
-
-        if (window) {
-            window.webContents.send(eventName, args);
-        } else if (runtime.isDevelopment) {
-            throw new Error("send ipc failed: window does not exist");
-        }
-    };
+const sendIPC = (customWindow: CustomWindow | null, eventName: string, ...args: any[]): void => {
+    if (customWindow) {
+        customWindow.window.webContents.send(eventName, args);
+    } else if (runtime.isDevelopment) {
+        throw new Error("send ipc failed: window does not exist");
+    }
 };
 
-export const ipcEmitByMain = ipcEmitHandler(constants.WindowsName.Main);
-export const ipcEmitByShareScreenTip = ipcEmitHandler(constants.WindowsName.ShareScreenTip);
+export const ipcEmitByMain: IPCEmit<constants.WindowsName.Main> = (eventName, args): void => {
+    const win = windowManager.customWindow(constants.WindowsName.Main).getWin();
 
-export const ipcEmit = (windowName: constants.WindowsName): IPCEmit => {
+    sendIPC(win, eventName, args);
+};
+export const ipcEmitByShareScreenTip: IPCEmit<constants.WindowsName.ShareScreenTip> = (
+    eventName,
+    args,
+) => {
+    const win = windowManager.customWindow(constants.WindowsName.ShareScreenTip).getWin();
+
+    sendIPC(win, eventName, args);
+};
+
+export const ipcEmit = <NAME extends constants.WindowsName>(windowName: NAME): IPCEmit<NAME> => {
     switch (windowName) {
         case constants.WindowsName.Main: {
             return ipcEmitByMain;
@@ -26,10 +34,15 @@ export const ipcEmit = (windowName: constants.WindowsName): IPCEmit => {
         case constants.WindowsName.ShareScreenTip: {
             return ipcEmitByShareScreenTip;
         }
+        default: {
+            throw new Error(`not found window name: ${windowName}`);
+        }
     }
 };
 
-type IPCEmit<T extends keyof ipc.EmitEvents = keyof ipc.EmitEvents> = (
+type IPCEmit<NAME extends constants.WindowsName> = <T extends keyof ipc.EmitEvents>(
     eventName: T,
-    args: ipc.EmitEvents[T],
+    args: IsMultiInstance<NAME> extends true
+        ? { id: number } & ipc.EmitEvents[T]
+        : ipc.EmitEvents[T],
 ) => void;

@@ -6,12 +6,12 @@ import { ipcMain } from "electron";
 import { zip } from "rxjs";
 import { ignoreElements, mergeMap } from "rxjs/operators";
 
-export class WindowMain extends AbstractWindow {
+export class WindowMain extends AbstractWindow<false> {
     public readonly name = constants.WindowsName.Main;
     private readonly subject: RxSubject;
 
     public constructor() {
-        super();
+        super(false);
 
         this.subject = new RxSubject();
     }
@@ -46,7 +46,7 @@ export class WindowMain extends AbstractWindow {
 
     public async assertWindow(): Promise<CustomWindow> {
         return this.subject.mainWindowCreated.toPromise().then(() => {
-            return this.win!;
+            return this.wins[0]!;
         });
     }
 

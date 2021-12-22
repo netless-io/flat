@@ -139,6 +139,15 @@ export const appActionSync: ipc.AppActionSync = {
 
         return beta.hasNewVersion ? beta : stable;
     },
+    "can-create-window": args => {
+        const customWindow = windowManager.customWindow(args.windowName);
+
+        // multi instance window type => true
+        // single instance window type + current no window => true
+        const result = customWindow.isMultiInstance || customWindow.isEmpty();
+
+        return Promise.resolve(result);
+    },
 };
 
 export const injectionWindowIPCAction = (customWindow: CustomWindow): void => {
