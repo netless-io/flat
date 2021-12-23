@@ -8,7 +8,7 @@ import { FlatThemeProvider, useDarkMode } from "../src/components/FlatThemeProvi
 import { i18n } from "./i18next.js";
 import { useEffect } from "react";
 
-document.body.classList.add("flat-theme-root");
+document.body.classList.add("flat-colors-root");
 
 export const parameters = {
     options: {
