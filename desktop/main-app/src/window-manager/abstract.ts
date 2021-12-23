@@ -22,23 +22,25 @@ export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {
 
         if (!this.isMultiInstance) {
             AbstractWindow.closeWindow(this.wins[0]);
-
             this.wins = [];
-        } else {
-            if (ids.length === 0) {
-                this.wins.forEach(AbstractWindow.closeWindow);
-                this.wins = [];
-            } else {
-                this.wins = this.wins.filter(win => {
-                    if ((ids as number[]).includes(win.window.id)) {
-                        AbstractWindow.closeWindow(win);
-                        return false;
-                    }
-
-                    return true;
-                });
-            }
+            return;
         }
+
+        if (ids.length === 0) {
+            this.wins.forEach(AbstractWindow.closeWindow);
+            this.wins = [];
+
+            return;
+        }
+
+        this.wins = this.wins.filter(win => {
+            if ((ids as number[]).includes(win.window.id)) {
+                AbstractWindow.closeWindow(win);
+                return false;
+            }
+
+            return true;
+        });
     }
 
     protected createWindow(
