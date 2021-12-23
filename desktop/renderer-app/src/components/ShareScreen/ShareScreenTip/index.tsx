@@ -21,13 +21,15 @@ export const ShareScreenTip = observer<ShareScreenTipProps>(function ShareScreen
 }) {
     const sp = useSafePromise();
     const { t } = useTranslation();
-    const [windowInstance, setWindowInstance] = useState<null | Window>(null);
     const [containerEl] = useState(() => document.createElement("div"));
 
     useEffect(() => {
-        sp(portalWindowManager.createShareScreenTipPortalWindow(containerEl))
-            .then(setWindowInstance)
-            .catch(console.error);
+        sp(
+            portalWindowManager.createShareScreenTipPortalWindow(
+                containerEl,
+                t("share-screen.tip-window-title"),
+            ),
+        ).catch(console.error);
 
         return () => {
             ipcAsyncByApp("force-close-window", {
@@ -35,12 +37,6 @@ export const ShareScreenTip = observer<ShareScreenTipProps>(function ShareScreen
             });
         };
     }, [containerEl, sp, t]);
-
-    useEffect(() => {
-        if (windowInstance) {
-            windowInstance.document.title = t("share-screen.tip-window-title");
-        }
-    }, [windowInstance, t]);
 
     const stopShareScreen = (): void => {
         shareScreenStore.close().catch(console.error);
