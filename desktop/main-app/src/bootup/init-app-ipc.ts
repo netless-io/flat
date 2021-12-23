@@ -1,6 +1,5 @@
-import { windowManager } from "../window-manager";
-import { appActionAsync, appActionSync, injectionWindowIPCAction } from "../utils/ipc-actions";
-import { constants, ipc } from "flat-types";
+import { appActionAsync, appActionSync } from "../utils/ipc-actions";
+import { ipc } from "flat-types";
 import { ipcMain } from "electron";
 
 export default (): void => {
@@ -15,7 +14,4 @@ export default (): void => {
     appActionSyncKeys.forEach(k => {
         ipcMain.handle(k, (_event, args) => appActionSync[k](args));
     });
-
-    const mainWin = windowManager.customWindow(constants.WindowsName.Main).getWin()!;
-    injectionWindowIPCAction(mainWin);
 };
