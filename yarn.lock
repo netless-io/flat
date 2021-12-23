@@ -1966,10 +1966,10 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.3.16-canary.2":
-  version "0.3.16-canary.2"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.16-canary.2.tgz#1cd9a17ffd502bf2329f90901a76cb0fb9ba2551"
-  integrity sha512-LdbCEr//9mXaHEAN8C64ES6MSb9YElDu2LMg0avZdZEXk9+Ue/elD573J/0pw/FEl9AGq2pEa1sHzu/md2M+eA==
+"@netless/window-manager@^0.3.16-canary.3":
+  version "0.3.16-canary.3"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.16-canary.3.tgz#2339feda458be14f8a704a1cf08f03066c7a0ae3"
+  integrity sha512-shWM5HaUT9j8JWVTr1hWKdu26dboU8w/BTzP6NUZrGTuGihRYRc7ICs5KxQ8ascH57jkqBABqhKX1NnrGDFWSw==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/app-docs-viewer" "0.1.24"
