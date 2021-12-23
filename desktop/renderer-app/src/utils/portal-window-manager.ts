@@ -5,21 +5,25 @@ import { ipcSyncByApp } from "./ipc";
 class PortalWindowManager {
     public async createShareScreenTipPortalWindow(
         containerElement: HTMLDivElement,
+        title: string,
     ): Promise<Window> {
-        const shareScreenTipWindow = await this.createWindow(containerElement, {
-            name: constants.WindowsName.ShareScreenTip,
-        });
+        const shareScreenTipWindow = await this.createWindow(
+            containerElement,
+            {
+                name: constants.WindowsName.ShareScreenTip,
+            },
+            title,
+        );
 
         PortalWindowManager.patchFramelessStyle(shareScreenTipWindow);
 
         return shareScreenTipWindow;
     }
 
-    // TODO: add title params
-    //  @BlackHole1
     private async createWindow(
         containerElement: HTMLDivElement,
         feature: portal.Options,
+        title: string,
     ): Promise<Window> {
         const canCreateWindow = await PortalWindowManager.canCreateWindow(feature.name);
         if (!canCreateWindow) {
@@ -37,6 +41,8 @@ class PortalWindowManager {
             `about:blank${urlHash}`,
             `${constants.Portal}${featureString}`,
         )!;
+
+        portalWindow.document.title = title;
 
         // avoid being unable to use defined style
         const styles = document.querySelectorAll("style");
