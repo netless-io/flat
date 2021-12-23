@@ -33,6 +33,7 @@ export type AppActionSync = {
     "get-runtime": () => Promise<RuntimeType>;
     "get-open-at-login": () => Promise<boolean>;
     "get-update-info": () => Promise<UpdateCheckInfo>;
+    "can-create-window": (args: { windowName: WindowsName }) => Promise<boolean>;
 };
 
 export interface EmitEvents {

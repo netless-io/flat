@@ -13,9 +13,9 @@ export default (): void => {
 
     const appActionSyncKeys = Object.keys(appActionSync) as Array<keyof ipc.AppActionSync>;
     appActionSyncKeys.forEach(k => {
-        ipcMain.handle(k, appActionSync[k]);
+        ipcMain.handle(k, (_event, args) => appActionSync[k](args));
     });
 
-    const mainWin = windowManager.window(constants.WindowsName.Main)!;
+    const mainWin = windowManager.customWindow(constants.WindowsName.Main).getWin()!;
     injectionWindowIPCAction(mainWin);
 };

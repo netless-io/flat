@@ -4,7 +4,7 @@ import { WindowStore } from "./window-store";
 import { CustomWindow, AbstractWindows } from "./abstract";
 
 export class WindowManager<
-    ABSTRACT_WINDOWS extends AbstractWindows = AbstractWindows,
+    ABSTRACT_WINDOWS extends AbstractWindows,
 > extends WindowStore<ABSTRACT_WINDOWS> {
     public constructor(wins: ABSTRACT_WINDOWS) {
         super(wins);
@@ -13,12 +13,12 @@ export class WindowManager<
     public create<NAME extends constants.WindowsName>(
         name: NAME,
         option?: BrowserWindowConstructorOptions,
-    ): NonNullable<ABSTRACT_WINDOWS[NAME]["win"]> {
+    ): CustomWindow {
         const customWindow = this.wins[name].create(option || {});
 
         this.interceptPortalNewWindow(customWindow);
 
-        return customWindow as NonNullable<ABSTRACT_WINDOWS[NAME]["win"]>;
+        return customWindow;
     }
 
     public remove(name: constants.WindowsName): void {

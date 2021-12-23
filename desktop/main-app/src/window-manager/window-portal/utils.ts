@@ -3,7 +3,10 @@ import { windowManager } from "../index";
 import { constants } from "flat-types";
 
 export const getDisplayByMainWindow = (): Display => {
-    const mainBounds = windowManager.window(constants.WindowsName.Main)!.window.getBounds();
+    const mainBounds = windowManager
+        .customWindow(constants.WindowsName.Main)
+        .getWin()!
+        .window.getBounds();
 
     return screen.getDisplayNearestPoint({
         x: mainBounds.x,
