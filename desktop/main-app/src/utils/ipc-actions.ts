@@ -158,9 +158,16 @@ export const injectionWindowIPCAction = (customWindow: CustomWindow): void => {
             args: {
                 actions: keyof ipc.WindowActionAsync;
                 args: any;
+                browserWindowID: number;
             },
         ) => {
-            windowActionAsync(customWindow)[args.actions](args.args);
+            const realCustomWindow = windowManager
+                .windowType(customWindow.options.name)
+                .getWin(args.browserWindowID);
+
+            if (realCustomWindow) {
+                windowActionAsync(customWindow)[args.actions](args.args);
+            }
         },
     );
 };

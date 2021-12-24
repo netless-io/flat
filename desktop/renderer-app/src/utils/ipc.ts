@@ -12,6 +12,7 @@ export const ipcAsyncByMainWindow = <
     ipcRenderer.send(constants.WindowsName.Main, {
         actions: action,
         args,
+        browserWindowID: NaN,
     });
 };
 
@@ -25,6 +26,7 @@ export const ipcAsyncByShareScreenTipWindow = <
     ipcRenderer.send(constants.WindowsName.ShareScreenTip, {
         actions: action,
         args,
+        browserWindowID: NaN,
     });
 };
 
