@@ -6,7 +6,7 @@ class PortalWindowManager {
     public async createShareScreenTipPortalWindow(
         containerElement: HTMLDivElement,
         title: string,
-    ): Promise<Window> {
+    ): Promise<PortalWindow> {
         const shareScreenTipWindow = await this.createWindow(
             containerElement,
             {
@@ -24,7 +24,7 @@ class PortalWindowManager {
         containerElement: HTMLDivElement,
         feature: portal.Options,
         title: string,
-    ): Promise<Window> {
+    ): Promise<PortalWindow> {
         const canCreateWindow = await PortalWindowManager.canCreateWindow(feature.name);
         if (!canCreateWindow) {
             throw new Error("can't create more window");
@@ -34,13 +34,14 @@ class PortalWindowManager {
         const featureString = JSON.stringify({
             ...feature,
             // if the parameter of window.open is the same as the existing one, no new window will be created
+            // it will reuse the previous window instance, but when the previous window instance is destroyed, it will raise a crash
             nonce: v4(),
         });
 
         const portalWindow = window.open(
             `about:blank${urlHash}`,
             `${constants.Portal}${featureString}`,
-        )!;
+        ) as PortalWindow;
 
         portalWindow.document.title = title;
 
@@ -62,6 +63,19 @@ class PortalWindowManager {
         portalWindow.document.head.appendChild(base);
 
         portalWindow.document.body.appendChild(containerElement);
+
+        // the main process injects browserWindowID by calling executeJavaScript asynchronously.
+        // so when a new window is opened, the window may not exist yet browserWindowID, and we need to wait awhile
+        // it will only take about 10ms to get the value. Even at 500ms, the user experience is not bad.
+        // the wait here does not block the creation of the window, only the subsequent rendering
+        await new Promise<void>(r => {
+            const id = setInterval(() => {
+                if (portalWindow.browserWindowID) {
+                    clearInterval(id);
+                    r();
+                }
+            }, 10);
+        });
 
         return portalWindow;
     }

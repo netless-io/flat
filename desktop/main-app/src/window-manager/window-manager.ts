@@ -42,8 +42,13 @@ export class WindowManager<
                     frameName.substring(constants.Portal.length),
                 );
 
-                // @ts-ignore
-                event.newGuest = this.create(customOptions.name, options).window;
+                const window = this.create(customOptions.name, options).window;
+
+                event.newGuest = window;
+
+                window.webContents
+                    .executeJavaScript(`window.browserWindowID = ${window.id}`)
+                    .catch(console.error);
             },
         );
     }
