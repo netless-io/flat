@@ -13,7 +13,7 @@ const sendIPC = (customWindow: CustomWindow | null, eventName: string, ...args: 
 };
 
 export const ipcEmitByMain: IPCEmit<constants.WindowsName.Main> = (eventName, args): void => {
-    const win = windowManager.customWindow(constants.WindowsName.Main).getWin();
+    const win = windowManager.windowType(constants.WindowsName.Main).getWin();
 
     sendIPC(win, eventName, args);
 };
@@ -21,7 +21,7 @@ export const ipcEmitByShareScreenTip: IPCEmit<constants.WindowsName.ShareScreenT
     eventName,
     args,
 ) => {
-    const win = windowManager.customWindow(constants.WindowsName.ShareScreenTip).getWin();
+    const win = windowManager.windowType(constants.WindowsName.ShareScreenTip).getWin();
 
     sendIPC(win, eventName, args);
 };
