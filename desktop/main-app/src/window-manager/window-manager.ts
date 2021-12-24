@@ -21,8 +21,8 @@ export class WindowManager<
         return customWindow;
     }
 
-    public remove(name: constants.WindowsName): void {
-        this.wins[name].remove();
+    public remove(customWindow: CustomWindow): void {
+        this.wins[customWindow.options.name].remove(customWindow.window.id);
     }
 
     private interceptPortalNewWindow(customWindow: CustomWindow): void {

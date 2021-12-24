@@ -17,32 +17,16 @@ export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {
         public readonly name: constants.WindowsName,
     ) {}
 
-    public remove(...ids: MULTI_INSTANCE extends true ? number[] : never[]): void {
-        if (this.isEmpty()) {
+    public remove(id: number): void {
+        const win = this.getWin(id);
+
+        if (win === null) {
             return;
         }
 
-        if (!this.isMultiInstance) {
-            AbstractWindow.closeWindow(this.wins[0]);
-            this.wins = [];
-            return;
-        }
+        AbstractWindow.closeWindow(win);
 
-        if (ids.length === 0) {
-            this.wins.forEach(AbstractWindow.closeWindow);
-            this.wins = [];
-
-            return;
-        }
-
-        this.wins = this.wins.filter(win => {
-            if ((ids as number[]).includes(win.window.id)) {
-                AbstractWindow.closeWindow(win);
-                return false;
-            }
-
-            return true;
-        });
+        this.wins = this.isMultiInstance ? this.wins.filter(win => win.window.id !== id) : [];
     }
 
     protected createWindow(
@@ -84,7 +68,7 @@ export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {
         return win;
     }
 
-    public getWin(...ids: MULTI_INSTANCE extends true ? [number] : never[]): CustomWindow | null;
+    public getWin(...ids: MULTI_INSTANCE extends true ? [number] : number[]): CustomWindow | null;
     public getWin(...ids: any[]): CustomWindow | null {
         if (this.isEmpty()) {
             return null;

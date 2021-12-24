@@ -76,7 +76,7 @@ const windowActionAsync = (customWindow: CustomWindow): ipc.WindowActionAsync =>
             window.setTitle(args.title);
         },
         "force-close-window": () => {
-            windowManager.remove(customWindow.options.name);
+            windowManager.remove(customWindow);
         },
     };
 };
