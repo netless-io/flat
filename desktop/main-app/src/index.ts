@@ -11,9 +11,9 @@ import initURLProtocol from "./bootup/init-url-protocol";
 void bootstrap([
     initEnv,
     initURLProtocol,
+    intAppIPC,
     initWindow,
     initMenus,
-    intAppIPC,
     initAppListen,
     initOtherListeners,
     initWebRequest,

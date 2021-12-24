@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { ipcAsyncByMainWindow } from "../ipc";
+import { ipcAsyncByApp } from "../ipc";
 
 export function usePowerSaveBlocker(): void {
     useEffect(() => {
-        ipcAsyncByMainWindow("set-prevent-sleep", { enable: true });
-        return () => ipcAsyncByMainWindow("set-prevent-sleep", { enable: false });
+        ipcAsyncByApp("set-prevent-sleep", { enable: true });
+        return () => ipcAsyncByApp("set-prevent-sleep", { enable: false });
     }, []);
 }
