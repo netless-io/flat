@@ -10,10 +10,12 @@ import {
 export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {
     public wins: CustomWindow[] = [];
 
-    public abstract readonly name: constants.WindowsName;
     public abstract create(option: BrowserWindowConstructorOptions): CustomWindow;
 
-    protected constructor(public isMultiInstance: MULTI_INSTANCE) {}
+    protected constructor(
+        public readonly isMultiInstance: MULTI_INSTANCE,
+        public readonly name: constants.WindowsName,
+    ) {}
 
     public remove(...ids: MULTI_INSTANCE extends true ? number[] : never[]): void {
         if (this.isEmpty()) {

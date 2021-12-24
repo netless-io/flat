@@ -8,11 +8,10 @@ import { ignoreElements, mergeMap } from "rxjs/operators";
 import { injectionWindowIPCAction } from "../../utils/ipc-actions";
 
 export class WindowMain extends AbstractWindow<false> {
-    public readonly name = constants.WindowsName.Main;
     private readonly subject: RxSubject;
 
     public constructor() {
-        super(false);
+        super(false, constants.WindowsName.Main);
 
         this.subject = new RxSubject();
     }
