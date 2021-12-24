@@ -72,7 +72,7 @@ class URLProtocolHandler {
 
     private static async focus(): Promise<CustomWindow> {
         const innerWindow = await windowManager
-            .customWindow(constants.WindowsName.Main)
+            .windowType(constants.WindowsName.Main)
             .assertWindow();
 
         const mainWindow = innerWindow.window;

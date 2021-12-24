@@ -4,7 +4,7 @@ import { constants } from "flat-types";
 
 export const getDisplayByMainWindow = (): Display => {
     const mainBounds = windowManager
-        .customWindow(constants.WindowsName.Main)
+        .windowType(constants.WindowsName.Main)
         .getWin()!
         .window.getBounds();
 

@@ -140,7 +140,7 @@ export const appActionSync: ipc.AppActionSync = {
         return beta.hasNewVersion ? beta : stable;
     },
     "can-create-window": args => {
-        const customWindow = windowManager.customWindow(args.windowName);
+        const customWindow = windowManager.windowType(args.windowName);
 
         // multi instance window type => true
         // single instance window type + current no window => true
