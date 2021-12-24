@@ -1,6 +1,7 @@
 export enum WindowsName {
     Main = "Main",
     ShareScreenTip = "ShareScreenTip",
+    PreviewFile = "PreviewFile",
 }
 
 export const PageSize = {
@@ -27,6 +28,11 @@ export const PageSize = {
     ShareScreenTip: {
         width: 320,
         height: 48,
+    },
+    PreviewFile: {
+        // approximately equal to 16/9
+        width: 888.9,
+        height: 500,
     },
 } as const;
 

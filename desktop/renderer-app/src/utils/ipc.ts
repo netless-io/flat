@@ -30,6 +30,21 @@ export const ipcAsyncByShareScreenTipWindow = <
     });
 };
 
+export const ipcAsyncByPreviewFileWindow = <
+    T extends keyof ipc.WindowActionAsync,
+    U extends Parameters<ipc.WindowActionAsync[T]>[0],
+>(
+    action: T,
+    args: U,
+    browserWindowID: string,
+): void => {
+    ipcRenderer.send(constants.WindowsName.PreviewFile, {
+        actions: action,
+        args,
+        browserWindowID,
+    });
+};
+
 export const ipcAsyncByApp = <
     T extends keyof ipc.AppActionAsync,
     U extends Parameters<ipc.AppActionAsync[T]>[0],
