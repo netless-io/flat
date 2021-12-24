@@ -16,6 +16,10 @@ export const windowHookClose = (customWindow: CustomWindow): void => {
     });
 };
 
+export const windowHookClosed = (customWindow: CustomWindow, cb: Function): void => {
+    customWindow.window.on("closed", cb);
+};
+
 export const windowReadyToShow = (customWindow: CustomWindow): void => {
     customWindow.window.on("ready-to-show", () => {
         if (customWindow.options.isPortal) {

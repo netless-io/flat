@@ -1,6 +1,11 @@
 import { constants } from "flat-types";
 import { BrowserWindow, BrowserWindowConstructorOptions } from "electron";
-import { windowHookClose, windowOpenDevTools, windowReadyToShow } from "../utils/window-event";
+import {
+    windowHookClose,
+    windowHookClosed,
+    windowOpenDevTools,
+    windowReadyToShow,
+} from "../utils/window-event";
 import {
     defaultBrowserWindowOptions,
     defaultWindowOptions,
@@ -17,8 +22,8 @@ export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {
         public readonly name: constants.WindowsName,
     ) {}
 
-    public remove(id: number): void {
-        const win = this.getWin(id);
+    public remove(id: number | CustomWindow): void {
+        const win = typeof id === "number" ? this.getWin(id) : id;
 
         if (win === null) {
             return;
@@ -26,7 +31,19 @@ export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {
 
         AbstractWindow.closeWindow(win);
 
-        this.wins = this.isMultiInstance ? this.wins.filter(win => win.window.id !== id) : [];
+        if (this.isMultiInstance) {
+            this.wins = this.wins.filter(({ window }) => {
+                if (window.isDestroyed()) {
+                    return false;
+                }
+
+                return window.id !== id;
+            });
+
+            return;
+        }
+
+        this.wins = [];
     }
 
     protected createWindow(
@@ -62,6 +79,10 @@ export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {
         windowOpenDevTools(win);
 
         windowHookClose(win);
+        windowHookClosed(win, () => {
+            // sync this.wins
+            this.remove(win);
+        });
 
         windowReadyToShow(win);
 
@@ -77,14 +98,14 @@ export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {
         if (this.isMultiInstance) {
             const id = ids[0];
             for (const win of this.wins) {
-                if (win.window.id === id) {
+                if (!win.window.isDestroyed() && win.window.id === id) {
                     return win;
                 }
             }
             return null;
         }
 
-        return this.wins[0] || null;
+        return this.wins[0].window.isDestroyed() ? null : this.wins[0];
     }
 
     public isEmpty(): boolean {
