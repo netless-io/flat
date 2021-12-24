@@ -78,6 +78,11 @@ const windowActionAsync = (customWindow: CustomWindow): ipc.WindowActionAsync =>
         "force-close-window": () => {
             windowManager.remove(customWindow);
         },
+        "set-visual-zoom-level": args => {
+            customWindow.window.webContents
+                .setVisualZoomLevelLimits(args.minimumLevel, args.maximumLevel)
+                .catch(console.error);
+        },
     };
 };
 

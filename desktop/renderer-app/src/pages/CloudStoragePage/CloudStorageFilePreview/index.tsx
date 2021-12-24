@@ -9,6 +9,7 @@ import { StaticPreview } from "./StaticPreview";
 import { getFileSuffix } from "./utils";
 import ReactDOM from "react-dom";
 import { portalWindowManager } from "../../../utils/portal-window-manager";
+import { ipcAsyncByPreviewFileWindow } from "../../../utils/ipc";
 
 export type FileInfo = {
     fileURL: string;
@@ -75,6 +76,19 @@ export const createResourcePreview = (fileInfo: FileInfo): void => {
             instance.onbeforeunload = () => {
                 ReactDOM.unmountComponentAtNode(containerEl);
             };
+
+            const fileSuffix = getFileSuffix(fileInfo.fileURL).toLowerCase();
+
+            if ([".png", ".jpg", ".jpeg"].includes(fileSuffix)) {
+                ipcAsyncByPreviewFileWindow(
+                    "set-visual-zoom-level",
+                    {
+                        minimumLevel: 1,
+                        maximumLevel: 3,
+                    },
+                    instance.browserWindowID,
+                );
+            }
         })
         .catch(console.error);
 };
