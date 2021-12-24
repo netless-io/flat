@@ -2,6 +2,7 @@ import { constants, portal } from "flat-types";
 import { BrowserWindowConstructorOptions } from "electron";
 import { WindowStore } from "./window-store";
 import { CustomWindow, AbstractWindows } from "./abstract";
+import { injectionWindowIPCAction } from "../utils/ipc-actions";
 
 export class WindowManager<
     ABSTRACT_WINDOWS extends AbstractWindows,
@@ -17,6 +18,8 @@ export class WindowManager<
         const customWindow = this.wins[name].create(option || {});
 
         this.interceptPortalNewWindow(customWindow);
+
+        injectionWindowIPCAction(customWindow);
 
         return customWindow;
     }
