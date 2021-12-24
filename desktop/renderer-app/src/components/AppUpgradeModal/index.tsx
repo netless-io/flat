@@ -2,7 +2,7 @@ import "./index.less";
 import { Button, Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
+import { ipcAsyncByApp, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
 import { useTranslation } from "react-i18next";
 import { update } from "flat-types";
 
@@ -34,7 +34,7 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
                 }
             });
 
-            ipcAsyncByMainWindow("start-update", {
+            ipcAsyncByApp("start-update", {
                 prereleaseTag: updateInfo.prereleaseTag,
             });
         }

@@ -75,26 +75,8 @@ const windowActionAsync = (customWindow: CustomWindow): ipc.WindowActionAsync =>
         "set-title": args => {
             window.setTitle(args.title);
         },
-        "set-prevent-sleep": args =>
-            (() => {
-                let powerSaveBlockerId = 0;
-                return () => {
-                    if (args.enable) {
-                        if (!powerSaveBlocker.isStarted(powerSaveBlockerId)) {
-                            powerSaveBlockerId = powerSaveBlocker.start("prevent-display-sleep");
-                        }
-                    } else {
-                        if (powerSaveBlocker.isStarted(powerSaveBlockerId)) {
-                            powerSaveBlocker.stop(powerSaveBlockerId);
-                        }
-                    }
-                };
-            })(),
-        "start-update": args => {
-            updateService.update(args.prereleaseTag);
-        },
-        "cancel-update": () => {
-            updateService.cancel();
+        "force-close-window": () => {
+            windowManager.remove(customWindow.options.name);
         },
     };
 };
@@ -106,8 +88,26 @@ export const appActionAsync: ipc.AppActionAsync = {
             openAsHidden: false,
         });
     },
-    "force-close-window": ({ windowName }) => {
-        windowManager.remove(windowName);
+    "set-prevent-sleep": args =>
+        (() => {
+            let powerSaveBlockerId = 0;
+            return () => {
+                if (args.enable) {
+                    if (!powerSaveBlocker.isStarted(powerSaveBlockerId)) {
+                        powerSaveBlockerId = powerSaveBlocker.start("prevent-display-sleep");
+                    }
+                } else {
+                    if (powerSaveBlocker.isStarted(powerSaveBlockerId)) {
+                        powerSaveBlocker.stop(powerSaveBlockerId);
+                    }
+                }
+            };
+        })(),
+    "start-update": args => {
+        updateService.update(args.prereleaseTag);
+    },
+    "cancel-update": () => {
+        updateService.cancel();
     },
 };
 

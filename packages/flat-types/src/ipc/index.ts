@@ -19,14 +19,14 @@ export type WindowActionAsync = {
     "set-aspect-ratio": (args: { aspectRatio: number }) => void;
     "disable-window": (args: { disable: boolean }) => void;
     "set-title": (args: { title: string }) => void;
-    "set-prevent-sleep": (args: { enable: boolean }) => void;
-    "start-update": (args: { prereleaseTag: PrereleaseTag }) => void;
-    "cancel-update": () => void;
+    "force-close-window": (args: {}) => void;
 };
 
 export type AppActionAsync = {
     "set-open-at-login": (args: { isOpenAtLogin: boolean }) => void;
-    "force-close-window": (args: { windowName: WindowsName }) => void;
+    "set-prevent-sleep": (args: { enable: boolean }) => void;
+    "start-update": (args: { prereleaseTag: PrereleaseTag }) => void;
+    "cancel-update": () => void;
 };
 
 export type AppActionSync = {
