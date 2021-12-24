@@ -5,7 +5,6 @@ import { RxSubject } from "./rx-subject";
 import { ipcMain } from "electron";
 import { zip } from "rxjs";
 import { ignoreElements, mergeMap } from "rxjs/operators";
-import { injectionWindowIPCAction } from "../../utils/ipc-actions";
 
 export class WindowMain extends AbstractWindow<false> {
     private readonly subject: RxSubject;
@@ -40,8 +39,6 @@ export class WindowMain extends AbstractWindow<false> {
         if (process.env.NODE_ENV === "development") {
             WindowMain.loadExtensions(customWindow, "react-devtools");
         }
-
-        injectionWindowIPCAction(customWindow);
 
         return customWindow;
     }
