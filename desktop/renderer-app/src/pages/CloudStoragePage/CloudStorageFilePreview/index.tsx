@@ -7,16 +7,20 @@ import { DynamicPreview } from "./DynamicPreview";
 import { MediaPreview } from "./MediaPreview";
 import { StaticPreview } from "./StaticPreview";
 import { getFileSuffix } from "./utils";
+import ReactDOM from "react-dom";
+import { portalWindowManager } from "../../../utils/portal-window-manager";
+import { ipcAsyncByPreviewFileWindow } from "../../../utils/ipc";
 
-export type fileInfo = {
+export type FileInfo = {
     fileURL: string;
     taskUUID: string;
     taskToken: string;
     region: Region;
+    fileName: string;
 };
 
 export interface ResourcePreviewProps {
-    fileInfo: fileInfo;
+    fileInfo: FileInfo;
 }
 
 export const ResourcePreview = observer<ResourcePreviewProps>(function PPTPreview({ fileInfo }) {
@@ -57,3 +61,34 @@ export const ResourcePreview = observer<ResourcePreviewProps>(function PPTPrevie
         </div>
     );
 });
+
+export const createResourcePreview = (fileInfo: FileInfo): void => {
+    const containerEl = document.createElement("div");
+
+    portalWindowManager
+        .createPreviewFilePortalWindow(containerEl, fileInfo.fileName)
+        .then(instance => {
+            ReactDOM.render(<ResourcePreview fileInfo={fileInfo} />, containerEl);
+
+            // when BrowserWindow close, will trigger onbeforeunload
+            // since the current function may be called in non-component code
+            // we need to manually call unmountComponentAtNode to unload the DOM
+            instance.onbeforeunload = () => {
+                ReactDOM.unmountComponentAtNode(containerEl);
+            };
+
+            const fileSuffix = getFileSuffix(fileInfo.fileURL).toLowerCase();
+
+            if ([".png", ".jpg", ".jpeg"].includes(fileSuffix)) {
+                ipcAsyncByPreviewFileWindow(
+                    "set-visual-zoom-level",
+                    {
+                        minimumLevel: 1,
+                        maximumLevel: 3,
+                    },
+                    instance.browserWindowID,
+                );
+            }
+        })
+        .catch(console.error);
+};

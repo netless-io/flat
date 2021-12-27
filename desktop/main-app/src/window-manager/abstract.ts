@@ -129,6 +129,7 @@ export type CustomWindow = {
 export type AbstractWindows = {
     [constants.WindowsName.Main]: AbstractWindow<false>;
     [constants.WindowsName.ShareScreenTip]: AbstractWindow<false>;
+    [constants.WindowsName.PreviewFile]: AbstractWindow<true>;
 };
 
 // see: https://stackoverflow.com/questions/67114094/typescript-get-type-of-generic-class-parameter

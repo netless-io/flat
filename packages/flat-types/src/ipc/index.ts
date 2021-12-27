@@ -20,6 +20,7 @@ export type WindowActionAsync = {
     "disable-window": (args: { disable: boolean }) => void;
     "set-title": (args: { title: string }) => void;
     "force-close-window": (args: {}) => void;
+    "set-visual-zoom-level": (args: { minimumLevel: number; maximumLevel: number }) => void;
 };
 
 export type AppActionAsync = {

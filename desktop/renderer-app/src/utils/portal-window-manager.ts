@@ -20,6 +20,19 @@ class PortalWindowManager {
         return shareScreenTipWindow;
     }
 
+    public async createPreviewFilePortalWindow(
+        containerElement: HTMLDivElement,
+        title: string,
+    ): Promise<PortalWindow> {
+        return await this.createWindow(
+            containerElement,
+            {
+                name: constants.WindowsName.PreviewFile,
+            },
+            title,
+        );
+    }
+
     private async createWindow(
         containerElement: HTMLDivElement,
         feature: portal.Options,
