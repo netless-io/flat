@@ -31,7 +31,7 @@ export const PageSize = {
     },
     PreviewFile: {
         // approximately equal to 16/9
-        width: 888.9,
+        width: 889,
         height: 500,
     },
 } as const;
