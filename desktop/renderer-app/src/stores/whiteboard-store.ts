@@ -326,6 +326,7 @@ export class WhiteboardStore {
                 useMultiViews: true,
                 invisiblePlugins: [WindowManager],
                 uid: globalStore.userUUID,
+                disableMagixEventDispatchLimit: true,
             },
             {
                 onPhaseChanged: phase => {
