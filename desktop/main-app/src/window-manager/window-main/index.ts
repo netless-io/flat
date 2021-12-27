@@ -69,16 +69,23 @@ export class WindowMain extends AbstractWindow<false> {
         });
 
         ipcMain.on("preload-load", event => {
-            this.subject.preloadLoad.next(event);
+            // preload-load is global event, any window create will trigger,
+            // but we only need Main window event
+            if (event.sender.id === win.window.webContents.id) {
+                this.subject.preloadLoad.next(event);
+            }
         });
 
-        // use the zip operator to solve the problem of not sending xx event after refreshing the page
+        // wait until the dom element is ready and the preload is ready, then inject agora-electron-sdk
+        // otherwise the window in the preload may not be ready
         // don’t worry about sending multiple times, because once is used in preload.ts
         // link: https://www.learnrxjs.io/learn-rxjs/operators/combination/zip
         zip(this.subject.domReady, this.subject.preloadLoad)
             .pipe(
                 mergeMap(([, event]) => {
-                    event.sender.send("inject-agora-electron-sdk-addon");
+                    if (!event.sender.isDestroyed()) {
+                        event.sender.send("inject-agora-electron-sdk-addon");
+                    }
                     return [];
                 }),
                 ignoreElements(),
