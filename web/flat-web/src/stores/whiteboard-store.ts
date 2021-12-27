@@ -522,7 +522,6 @@ export class WhiteboardStore {
 
         // 1. shrink the image a little to fit the screen
         const maxWidth = window.innerWidth * 0.8;
-        // const maxHeight = window.innerHeight * 0.8;
 
         let width: number;
         let height: number;
