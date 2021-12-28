@@ -1,7 +1,9 @@
-const req = require.context("../assets/image/default-avatars/", false, /\.png$/);
-const keys = req.keys();
+// Generate Avatar base on uid
+// vite should replace require.context
+// detail see: https://vitejs.dev/guide/features.html#glob-import
 
-/** Generate Avatar base on uid */
+const images = import.meta.glob("../assets/image/default-avatars/*.png");
+const keys = Object.keys(images);
 export const generateAvatar = (uid: string): string => {
     let index = 0;
     if (uid) {
@@ -12,5 +14,5 @@ export const generateAvatar = (uid: string): string => {
     } else {
         index = Math.floor(Math.random() * keys.length);
     }
-    return req(keys[index]).default;
+    return keys[index];
 };

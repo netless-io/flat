@@ -17,6 +17,14 @@ export function electron(): VitePlugin[] {
         return cid.endsWith("electron/index.js") || cid.endsWith(".vite/electron.js");
     };
 
+    const isLoadEvents = (id: string): boolean => {
+        const cid = cleanUrl(id);
+        // pre-build: 'node_modules/.vite/events.js'
+        // yarn     : 'node_modules/events/events.js'
+        // npm      : 'node_modules/events/events.js'
+        return cid.endsWith("events/events.js") || cid.endsWith(".vite/events.js");
+    };
+
     const electronResolve: VitePlugin = {
         name: "vite-plugin-electron:electron-resolve",
         apply: "serve",
@@ -58,6 +66,31 @@ export default { clipboard, nativeImage, shell, contextBridge, crashReporter, ip
             return null;
         },
     };
+    const eventsResolve: VitePlugin = {
+        name: "vite-plugin-electron:events-resolve",
+        apply: "serve",
+        transform(_code, id) {
+            if (isLoadEvents(id)) {
+                const eventsModule = `
+// The api doc is at: https://nodejs.org/api/events.html
+// I'd just export EventEmitter.
+const {
+  EventEmitter,
+} = require('events');
+export {
+  EventEmitter,
+}
+export default { EventEmitter };
+`;
+                return {
+                    code: eventsModule,
+                    map: null,
+                };
+            }
+
+            return null;
+        },
+    };
 
     const builtinModulesResolve: VitePlugin = {
         apply: "serve",
@@ -91,7 +124,7 @@ ${exportDefault}
         },
     };
 
-    return [electronResolve, builtinModulesResolve];
+    return [electronResolve, eventsResolve, builtinModulesResolve];
 }
 
 electron.externals = externals;
