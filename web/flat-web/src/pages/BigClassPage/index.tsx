@@ -6,13 +6,12 @@ import {
     LoadingPage,
     NetworkStatus,
     RecordButton,
-    RecordHintTips,
     RoomInfo,
     TopBar,
     TopBarDivider,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RoomPhase } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
@@ -29,16 +28,9 @@ import {
 } from "../../components/ExitRoomConfirm";
 import InviteButton from "../../components/InviteButton";
 import { RealtimePanel } from "../../components/RealtimePanel";
-import { GlobalStoreContext } from "../../components/StoreProvider";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
-import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
 import { Whiteboard } from "../../components/Whiteboard";
-import {
-    RecordingConfig,
-    RoomStatusLoadingType,
-    useClassRoomStore,
-    User,
-} from "../../stores/class-room-store";
+import { RecordingConfig, useClassRoomStore, User } from "../../stores/class-room-store";
 import { useAutoRun, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { runtime } from "../../utils/runtime";
@@ -91,7 +83,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const shareScreenStore = classRoomStore.shareScreenStore;
 
     const whiteboardStore = classRoomStore.whiteboardStore;
-    const globalStore = useContext(GlobalStoreContext);
 
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
@@ -172,6 +163,9 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     ) {
         loadingPageRef.current = true;
     } else {
+        if (classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Idle) {
+            void classRoomStore.startClass();
+        }
         loadingPageRef.current = false;
     }
 
@@ -220,76 +214,27 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         if (!classRoomStore.isCreator) {
             return null;
         }
-
-        switch (classRoomStore.roomStatus) {
-            case RoomStatus.Started: {
-                return (
-                    <>
-                        <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.pauseClass}>
-                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Pausing
-                                ? t("pausing")
-                                : t("pause")}
-                        </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
-                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
-                                ? t("ending")
-                                : t("end-the-class")}
-                        </TopBarRoundBtn>
-                    </>
-                );
-            }
-            case RoomStatus.Paused: {
-                return (
-                    <>
-                        <TopBarRoundBtn iconName="class-pause" onClick={classRoomStore.resumeClass}>
-                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
-                                ? t("starting")
-                                : t("resume")}
-                        </TopBarRoundBtn>
-                        <TopBarRoundBtn iconName="class-stop" onClick={stopClass}>
-                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Stopping
-                                ? t("ending")
-                                : t("end-the-class")}
-                        </TopBarRoundBtn>
-                    </>
-                );
-            }
-            default: {
-                return (
-                    <RecordHintTips
-                        visible={Boolean(whiteboardStore.room) && globalStore.isShowRecordHintTips}
-                        onClose={globalStore.hideRecordHintTips}
-                    >
-                        <TopBarRoundBtn iconName="class-begin" onClick={classRoomStore.startClass}>
-                            {classRoomStore.roomStatusLoading === RoomStatusLoadingType.Starting
-                                ? t("starting")
-                                : t("start")}
-                        </TopBarRoundBtn>
-                    </RecordHintTips>
-                );
-            }
-        }
+        return (
+            <>
+                {classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Started && (
+                    <RecordButton
+                        isRecording={classRoomStore.isRecording}
+                        onClick={() =>
+                            classRoomStore.toggleRecording({
+                                onStop() {
+                                    void message.success(t("recording-completed-tips"));
+                                },
+                            })
+                        }
+                    />
+                )}
+            </>
+        );
     }
 
     function renderTopBarRight(): React.ReactNode {
         return (
             <>
-                {classRoomStore.isCreator &&
-                    (classRoomStore.roomStatus === RoomStatus.Started ||
-                        classRoomStore.roomStatus === RoomStatus.Paused) && (
-                        <RecordButton
-                            disabled={false}
-                            isRecording={classRoomStore.isRecording}
-                            onClick={() =>
-                                classRoomStore.toggleRecording({
-                                    onStop() {
-                                        void message.success(t("recording-completed-tips"));
-                                    },
-                                })
-                            }
-                        />
-                    )}
-
                 {whiteboardStore.isWritable && <AppStoreButton addApp={whiteboardStore.addApp} />}
 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
@@ -398,10 +343,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 ? speakingJoiner
                 : classRoomStore.users.creator ?? void 0,
         );
-    }
-
-    function stopClass(): void {
-        confirm(ExitRoomConfirmType.StopClassButton);
     }
 
     function updateCloudRecordLayout(): void {

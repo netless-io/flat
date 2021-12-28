@@ -37,7 +37,7 @@
   "delay": "Delay: ",
   "end-of-class-tips": "Once the lesson ends, all users are automatically logged out of the room and the lesson and recording (if any) is automatically ended and cannot be continued live.",
   "end-the-class": "End",
-  "exit-room-tips": "The class is continuing, do you want to leave temporarily or end your classes?",
+  "exit-room-tips": "The class is continuing, do you want to leave temporarily or end your classes? If you have opened the recording, you will also end it together.",
   "hang-up-the-room": "Leave",
   "got-it-countdown": "Got it ({{countdown}})",
   "network": "The internet: ",
@@ -222,7 +222,7 @@
   "the-room-has-been-cancelled": "The room has been cancelled",
   "the-room-has-been-removed": "The room has been removed",
   "history": "History",
-  "create": "Begin",
+  "begin": "Begin",
   "join-options": "Join option",
   "create-room-default-title": "The room created by {{name}}",
   "turn-on-the-camera": "Camera",
@@ -384,5 +384,7 @@
   "device-test-option": "Device test option",
   "turn-on-device-test": "Turn on device test when join the room",
   "user-guide-text": "Want to learn more about Flat? ",
-  "user-guide-button": "Check it out now"
+  "user-guide-button": "Check it out now",
+  "start-recording": "Start recording",
+  "stop-recording": "Stop recording"
 }

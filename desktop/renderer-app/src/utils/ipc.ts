@@ -2,18 +2,6 @@ import { ipc } from "flat-types";
 import { ipcRenderer } from "electron";
 import { constants } from "flat-types";
 
-const ipcAsync = (windowName: constants.WindowsName) => {
-    return <T extends keyof ipc.WindowActionAsync>(
-        action: T,
-        args: Parameters<ipc.WindowActionAsync[T]>[0],
-    ): void => {
-        ipcRenderer.send(windowName, {
-            actions: action,
-            args,
-        });
-    };
-};
-
 export const ipcAsyncByMainWindow = <
     T extends keyof ipc.WindowActionAsync,
     U extends Parameters<ipc.WindowActionAsync[T]>[0],
@@ -21,7 +9,40 @@ export const ipcAsyncByMainWindow = <
     action: T,
     args: U,
 ): void => {
-    ipcAsync(constants.WindowsName.Main)(action, args);
+    ipcRenderer.send(constants.WindowsName.Main, {
+        actions: action,
+        args,
+        browserWindowID: NaN,
+    });
+};
+
+export const ipcAsyncByShareScreenTipWindow = <
+    T extends keyof ipc.WindowActionAsync,
+    U extends Parameters<ipc.WindowActionAsync[T]>[0],
+>(
+    action: T,
+    args: U,
+): void => {
+    ipcRenderer.send(constants.WindowsName.ShareScreenTip, {
+        actions: action,
+        args,
+        browserWindowID: NaN,
+    });
+};
+
+export const ipcAsyncByPreviewFileWindow = <
+    T extends keyof ipc.WindowActionAsync,
+    U extends Parameters<ipc.WindowActionAsync[T]>[0],
+>(
+    action: T,
+    args: U,
+    browserWindowID: string,
+): void => {
+    ipcRenderer.send(constants.WindowsName.PreviewFile, {
+        actions: action,
+        args,
+        browserWindowID,
+    });
 };
 
 export const ipcAsyncByApp = <

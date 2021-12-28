@@ -12,6 +12,5 @@ export default storyMeta;
 
 export const Overview: Story<RecordButtonProps> = args => <RecordButton {...args} />;
 Overview.args = {
-    disabled: faker.datatype.boolean(),
     isRecording: faker.datatype.boolean(),
 };

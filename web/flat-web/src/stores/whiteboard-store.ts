@@ -335,6 +335,7 @@ export class WhiteboardStore {
                 useMultiViews: true,
                 invisiblePlugins: [WindowManager],
                 uid: globalStore.userUUID,
+                disableMagixEventDispatchLimit: true,
             },
             {
                 onPhaseChanged: phase => {
@@ -520,9 +521,8 @@ export class WhiteboardStore {
             return;
         }
 
-        // shrink the image a little to fit the screen
+        // 1. shrink the image a little to fit the screen
         const maxWidth = window.innerWidth * 0.8;
-        const maxHeight = window.innerHeight * 0.8;
 
         let width: number;
         let height: number;
@@ -540,19 +540,33 @@ export class WhiteboardStore {
         }
 
         let scale = 1;
-        if (width > maxWidth || height > maxHeight) {
-            scale = Math.min(maxWidth / width, maxHeight / height);
+        if (width > maxWidth) {
+            scale = maxWidth / width;
         }
 
         const uuid = v4uuid();
+        const { centerX, centerY } = room.state.cameraState;
+        width *= scale;
+        height *= scale;
         room.insertImage({
             uuid,
-            ...room.state.cameraState,
-            width: Math.floor(width * scale),
-            height: Math.floor(height * scale),
+            centerX,
+            centerY,
+            width: Math.floor(width),
+            height: Math.floor(height),
             locked: false,
         });
         room.completeImageUpload(uuid, file.fileURL);
+
+        // 2. move camera to fit image height
+        width /= 0.8;
+        height /= 0.8;
+        room.moveCameraToContain({
+            originX: centerX - width / 2,
+            originY: centerY - height / 2,
+            width: width,
+            height: height,
+        });
     };
 
     public insertMediaFile = async (file: CloudStorageFile): Promise<void> => {

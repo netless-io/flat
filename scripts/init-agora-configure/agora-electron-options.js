@@ -2,7 +2,7 @@
 const agoraSdkOptions = {
     arch: process.platform === "win32" ? "ia32" : "x64",
     platform: process.platform === "win32" ? "win32" : "darwin",
-    electron_version: "11.0.0",
+    electron_version: "12.0.0",
     msvs_version: "2017",
     silent: false,
     debug: false,

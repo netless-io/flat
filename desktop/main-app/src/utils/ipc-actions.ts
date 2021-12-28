@@ -75,26 +75,13 @@ const windowActionAsync = (customWindow: CustomWindow): ipc.WindowActionAsync =>
         "set-title": args => {
             window.setTitle(args.title);
         },
-        "set-prevent-sleep": args =>
-            (() => {
-                let powerSaveBlockerId = 0;
-                return () => {
-                    if (args.enable) {
-                        if (!powerSaveBlocker.isStarted(powerSaveBlockerId)) {
-                            powerSaveBlockerId = powerSaveBlocker.start("prevent-display-sleep");
-                        }
-                    } else {
-                        if (powerSaveBlocker.isStarted(powerSaveBlockerId)) {
-                            powerSaveBlocker.stop(powerSaveBlockerId);
-                        }
-                    }
-                };
-            })(),
-        "start-update": args => {
-            updateService.update(args.prereleaseTag);
+        "force-close-window": () => {
+            windowManager.remove(customWindow);
         },
-        "cancel-update": () => {
-            updateService.cancel();
+        "set-visual-zoom-level": args => {
+            customWindow.window.webContents
+                .setVisualZoomLevelLimits(args.minimumLevel, args.maximumLevel)
+                .catch(console.error);
         },
     };
 };
@@ -106,8 +93,26 @@ export const appActionAsync: ipc.AppActionAsync = {
             openAsHidden: false,
         });
     },
-    "force-close-window": ({ windowName }) => {
-        windowManager.remove(windowName);
+    "set-prevent-sleep": args =>
+        (() => {
+            let powerSaveBlockerId = 0;
+            return () => {
+                if (args.enable) {
+                    if (!powerSaveBlocker.isStarted(powerSaveBlockerId)) {
+                        powerSaveBlockerId = powerSaveBlocker.start("prevent-display-sleep");
+                    }
+                } else {
+                    if (powerSaveBlocker.isStarted(powerSaveBlockerId)) {
+                        powerSaveBlocker.stop(powerSaveBlockerId);
+                    }
+                }
+            };
+        })(),
+    "start-update": args => {
+        updateService.update(args.prereleaseTag);
+    },
+    "cancel-update": () => {
+        updateService.cancel();
     },
 };
 
@@ -139,6 +144,15 @@ export const appActionSync: ipc.AppActionSync = {
 
         return beta.hasNewVersion ? beta : stable;
     },
+    "can-create-window": args => {
+        const customWindow = windowManager.windowType(args.windowName);
+
+        // multi instance window type => true
+        // single instance window type + current no window => true
+        const result = customWindow.isMultiInstance || customWindow.isEmpty();
+
+        return Promise.resolve(result);
+    },
 };
 
 export const injectionWindowIPCAction = (customWindow: CustomWindow): void => {
@@ -149,9 +163,16 @@ export const injectionWindowIPCAction = (customWindow: CustomWindow): void => {
             args: {
                 actions: keyof ipc.WindowActionAsync;
                 args: any;
+                browserWindowID: number;
             },
         ) => {
-            windowActionAsync(customWindow)[args.actions](args.args);
+            const realCustomWindow = windowManager
+                .windowType(customWindow.options.name)
+                .getWin(args.browserWindowID);
+
+            if (realCustomWindow) {
+                windowActionAsync(realCustomWindow)[args.actions](args.args);
+            }
         },
     );
 };

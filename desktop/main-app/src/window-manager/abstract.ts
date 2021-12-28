@@ -1,31 +1,49 @@
 import { constants } from "flat-types";
 import { BrowserWindow, BrowserWindowConstructorOptions } from "electron";
-import { windowHookClose, windowOpenDevTools, windowReadyToShow } from "../utils/window-event";
+import {
+    windowHookClose,
+    windowHookClosed,
+    windowOpenDevTools,
+    windowReadyToShow,
+} from "../utils/window-event";
 import {
     defaultBrowserWindowOptions,
     defaultWindowOptions,
     WindowOptions,
 } from "./default-options";
 
-export abstract class AbstractWindow {
-    public win: CustomWindow | null = null;
+export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {
+    public wins: CustomWindow[] = [];
 
-    public abstract readonly name: constants.WindowsName;
     public abstract create(option: BrowserWindowConstructorOptions): CustomWindow;
 
-    public remove(): void {
-        if (!this.win) {
+    protected constructor(
+        public readonly isMultiInstance: MULTI_INSTANCE,
+        public readonly name: constants.WindowsName,
+    ) {}
+
+    public remove(id: number | CustomWindow): void {
+        const win = typeof id === "number" ? this.getWin(id) : id;
+
+        if (win === null) {
             return;
         }
 
-        if (this.win.window.isDestroyed()) {
-            this.win = null;
+        AbstractWindow.closeWindow(win);
+
+        if (this.isMultiInstance) {
+            this.wins = this.wins.filter(({ window }) => {
+                if (window.isDestroyed()) {
+                    return false;
+                }
+
+                return window.id !== id;
+            });
 
             return;
         }
 
-        this.win.options.disableClose = false;
-        this.win.window.close();
+        this.wins = [];
     }
 
     protected createWindow(
@@ -46,19 +64,59 @@ export abstract class AbstractWindow {
             ...windowOptions,
         };
 
-        this.win = {
+        const win = {
             options,
             window,
             didFinishLoad: options.isPortal ? Promise.resolve() : window.loadURL(options.url),
         };
 
-        windowOpenDevTools(this.win);
+        if (this.isMultiInstance) {
+            this.wins.push(win);
+        } else {
+            this.wins[0] = win;
+        }
 
-        windowHookClose(this.win);
+        windowOpenDevTools(win);
 
-        windowReadyToShow(this.win);
+        windowHookClose(win);
+        windowHookClosed(win, () => {
+            // sync this.wins
+            this.remove(win);
+        });
 
-        return this.win;
+        windowReadyToShow(win);
+
+        return win;
+    }
+
+    public getWin(...ids: MULTI_INSTANCE extends true ? [number] : number[]): CustomWindow | null;
+    public getWin(...ids: any[]): CustomWindow | null {
+        if (this.isEmpty()) {
+            return null;
+        }
+
+        if (this.isMultiInstance) {
+            const id = ids[0];
+            for (const win of this.wins) {
+                if (!win.window.isDestroyed() && win.window.id === id) {
+                    return win;
+                }
+            }
+            return null;
+        }
+
+        return this.wins[0].window.isDestroyed() ? null : this.wins[0];
+    }
+
+    public isEmpty(): boolean {
+        return this.wins.length === 0;
+    }
+
+    private static closeWindow(win: CustomWindow): void {
+        if (!win.window.isDestroyed()) {
+            win.options.disableClose = false;
+            win.window.close();
+        }
     }
 }
 
@@ -69,5 +127,17 @@ export type CustomWindow = {
 };
 
 export type AbstractWindows = {
-    [K in constants.WindowsName]: AbstractWindow;
+    [constants.WindowsName.Main]: AbstractWindow<false>;
+    [constants.WindowsName.ShareScreenTip]: AbstractWindow<false>;
+    [constants.WindowsName.PreviewFile]: AbstractWindow<true>;
 };
+
+// see: https://stackoverflow.com/questions/67114094/typescript-get-type-of-generic-class-parameter
+type GetClassParameterForAbstractWindow<T extends AbstractWindow<any>> = T extends AbstractWindow<
+    infer R
+>
+    ? R
+    : unknown;
+
+export type IsMultiInstance<NAME extends constants.WindowsName> =
+    GetClassParameterForAbstractWindow<AbstractWindows[NAME]>;

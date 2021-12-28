@@ -26,8 +26,8 @@ export class RTCShareScreen {
         const videoSourceParam = {
             width: 0,
             height: 0,
-            bitrate: 500,
-            frameRate: 5,
+            bitrate: 0,
+            frameRate: 15,
             captureMouseCursor: true,
             windowFocus: false,
             excludeWindowList: [],
