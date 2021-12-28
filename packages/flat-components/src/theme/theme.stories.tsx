@@ -61,7 +61,7 @@ export const Overview: Story = () => {
                         {kinds.map(kind => {
                             const color = kind ? `--${type}-${kind}` : `--${type}`;
                             const textColor = kind.includes("light")
-                                ? "--text-dark"
+                                ? "--text-strong"
                                 : `--${type}-lighter`;
                             const subTextColor = kind.includes("light")
                                 ? "--text"

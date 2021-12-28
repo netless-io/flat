@@ -4,38 +4,94 @@
     --brand: var(--blue-6);
 
     --primary: var(--blue-5);
-    --primary-dark: var(--blue-6);
-    --primary-darker: var(--blue-7);
-    --primary-light: var(--blue-2);
-    --primary-lighter: var(--blue-1);
+    --primary-strong: var(--blue-6);
+    --primary-stronger: var(--blue-7);
+    --primary-weak: var(--blue-2);
+    --primary-weaker: var(--blue-1);
 
     --danger: var(--red-5);
-    --danger-dark: var(--red-6);
-    --danger-darker: var(--red-7);
-    --danger-light: var(--red-2);
-    --danger-lighter: var(--red-1);
+    --danger-strong: var(--red-6);
+    --danger-stronger: var(--red-7);
+    --danger-weak: var(--red-2);
+    --danger-weaker: var(--red-1);
 
     --success: var(--green-5);
-    --success-dark: var(--green-6);
-    --success-darker: var(--green-7);
-    --success-light: var(--green-2);
-    --success-lighter: var(--green-1);
+    --success-strong: var(--green-6);
+    --success-stronger: var(--green-7);
+    --success-weak: var(--green-2);
+    --success-weaker: var(--green-1);
 
     --warning: var(--yellow-5);
-    --warning-dark: var(--yellow-6);
-    --warning-darker: var(--yellow-7);
-    --warning-light: var(--yellow-2);
-    --warning-lighter: var(--yellow-1);
+    --warning-strong: var(--yellow-6);
+    --warning-stronger: var(--yellow-7);
+    --warning-weak: var(--yellow-2);
+    --warning-weaker: var(--yellow-1);
 
     --text: var(--grey-5);
-    --text-dark: var(--grey-6);
-    --text-darker: var(--grey-7);
-    --text-light: var(--grey-2);
-    --text-lighter: var(--grey-1);
+    --text-strong: var(--grey-6);
+    --text-stronger: var(--grey-12);
+    --text-weak: var(--grey-3);
+    --text-weaker: var(--grey-2);
 
     --link: var(--blue-6);
     --link-hover: var(--blue-5);
     --link-active: var(--blue-7);
     --link-focus: var(--blue-5);
     --link-visited: var(--blue-3);
+
+    --font-family: "PingFang SC", "Source Han Sans SC", "Microsoft YaHei", "Helvetica Neue",
+        "Noto Sans CJK SC", "WenQuanYi Micro Hei", sans-serif;
+
+    font-family: var(--font-family);
+    color: var(--text);
+
+    a {
+        color: var(--link);
+        &:visited {
+            color: var(--link-visited);
+        }
+        &:focus {
+            color: var(--link-focus);
+        }
+        &:hover {
+            color: var(--link-hover);
+        }
+        &:active {
+            color: var(--link-active);
+        }
+    }
+}
+
+.flat-color-scheme-dark .flat-theme-root,
+.flat-theme-root .flat-color-scheme-dark,
+.flat-color-scheme-dark.flat-theme-root {
+    --primary: var(--blue-6);
+    --primary-strong: var(--blue-5);
+    --primary-stronger: var(--blue-4);
+    --primary-weak: var(--blue-9);
+    --primary-weaker: var(--blue-10);
+
+    --danger: var(--red-6);
+    --danger-strong: var(--red-5);
+    --danger-stronger: var(--red-4);
+    --danger-weak: var(--red-9);
+    --danger-weaker: var(--red-10);
+
+    --success: var(--green-6);
+    --success-strong: var(--green-5);
+    --success-stronger: var(--green-4);
+    --success-weak: var(--green-9);
+    --success-weaker: var(--green-10);
+
+    --warning: var(--yellow-6);
+    --warning-strong: var(--yellow-5);
+    --warning-stronger: var(--yellow-4);
+    --warning-weak: var(--yellow-9);
+    --warning-weaker: var(--yellow-10);
+
+    --text: var(--grey-7);
+    --text-strong: var(--grey-4);
+    --text-stronger: var(--grey-0);
+    --text-weak: var(--grey-8);
+    --text-weaker: var(--grey-9);
 }
