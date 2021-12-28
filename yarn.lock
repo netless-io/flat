@@ -1111,6 +1111,11 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/standalone@7.13.9":
+  version "7.13.9"
+  resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.13.9.tgz#38e78673e19f5077f4b294ad346780634e59e276"
+  integrity sha512-9ZpIl8rXXQqm5OdsQVhlBSPttwabiHGPGrl5N2bIxB9XS2NJW+1oiPFgMMNd+57C/xVwsEwD2mzv0KValOwlQA==
+
 "@babel/standalone@7.14.1":
   version "7.14.1"
   resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.14.1.tgz#2c5f6908f03108583eea75bdcc94eb29e720fbac"
@@ -17248,10 +17253,10 @@ which@^2.0.1, which@^2.0.2:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@2.15.12:
-  version "2.15.12"
-  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.15.12.tgz#d113376ad77006ee9c4cb138e132eba7fbf0a1fd"
-  integrity sha512-CpuEmJf+RAp4cT8ot+FbgZNHqDjxreyaVDu4oUvI7qEC2iOSSb4BF6wvGKay0JFlXehGieBkehvnuLaFm9LDZg==
+white-web-sdk@2.15.14:
+  version "2.15.14"
+  resolved "https://registry.yarnpkg.com/white-web-sdk/-/white-web-sdk-2.15.14.tgz#83601a4599fc228c05e45ef2cd963d80a3b844bc"
+  integrity sha512-sGmFjj8bM9yvF40TIM3zyqPv+fWNjqYK4ijCZG0p23l1BHBMFwuK140ivmc1YW0gn8+Rid0e3/kUzqnrHHBKvA==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/canvas-polyfill" "^0.0.4"
