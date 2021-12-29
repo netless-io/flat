@@ -103,6 +103,9 @@ class PortalWindowManager {
     private static patchFramelessStyle(portalWindow: Window): void {
         // @ts-ignore
         portalWindow.document.body.style.webkitAppRegion = "drag";
+        // antd css has `overflow`, we need cancel impact
+        // see: https://github.com/electron/electron/issues/27528
+        portalWindow.document.body.style.overflow = "hidden";
 
         // see: https://stackoverflow.com/a/66395289/6596777
         portalWindow.document.head.appendChild(
