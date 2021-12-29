@@ -21,9 +21,9 @@ const colorNum = Array(13)
     .map((_, i) => i);
 
 const types = ["primary", "success", "warning", "danger", "text"];
-const kinds = ["lighter", "light", "", "dark", "darker"];
+const kinds = ["weaker", "weak", "", "strong", "stronger"];
 
-export const Overview: Story = () => {
+export const Colors: Story = () => {
     const [colorHex, setColorHex] = useState<Record<string, string>>({});
     const rootRef = useRef<HTMLDivElement>(null);
     useIsomorphicLayoutEffect(() => {
@@ -60,12 +60,12 @@ export const Overview: Story = () => {
                     <div className="cf ph2-ns">
                         {kinds.map(kind => {
                             const color = kind ? `--${type}-${kind}` : `--${type}`;
-                            const textColor = kind.includes("light")
+                            const textColor = kind.includes("weak")
                                 ? "--text-strong"
-                                : `--${type}-lighter`;
-                            const subTextColor = kind.includes("light")
+                                : `--${type}-weaker`;
+                            const subTextColor = kind.includes("weak")
                                 ? "--text"
-                                : `--${type}-light`;
+                                : `--${type}-weak`;
                             return (
                                 <div key={kind} className="fl w-100 w-20-ns pa2">
                                     <div
