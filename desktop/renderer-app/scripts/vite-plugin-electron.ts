@@ -1,5 +1,6 @@
 import { builtinModules } from "module";
 import { Plugin as VitePlugin } from "vite";
+import { build } from "esbuild";
 // based on https://github.com/caoxiemeihao/vite-plugins/blob/main/packages/electron/src/index.ts
 
 /**
@@ -124,7 +125,67 @@ ${exportDefault}
         },
     };
 
-    return [electronResolve, eventsResolve, builtinModulesResolve];
+    const isLoadFS = (id: string): boolean => {
+        const cid = cleanUrl(id);
+        // pre-build: '.vite/fs-extra.js'
+        // yarn     : 'node_modules/fs-extra/lib/index.js'
+        // npm      : 'node_modules/fs-extra/lib/index.js'
+        return cid.endsWith("fs-extra/lib/index.js");
+    };
+    const formatPath = (p: string): string => {
+        return p.replace(/(\?v=)(\w+)/g, "");
+    };
+    const fsResolve: VitePlugin = {
+        name: "vite-plugin-electron:fs-resolve",
+        apply: "serve",
+        transform(_code, id: string) {
+            if (isLoadFS(id)) {
+                const path = formatPath(id);
+                return build({
+                    entryPoints: [path],
+                    bundle: true,
+                    outfile: "index.js",
+                    platform: "node",
+                    write: false,
+                })
+                    .then(result => {
+                        console.log(result);
+                        return (
+                            result?.outputFiles
+                                ?.map(item => {
+                                    return item.text;
+                                })
+                                .join("") ?? ""
+                        );
+                    })
+                    .then(result => {
+                        return result.concat(`
+// We will use hack method to bundle file and export it with esm
+const {
+ copy,
+ ensureDir,
+ remove,
+ pathExists ,
+} = require('fs-extra');
+export {
+  copy,
+  ensureDir,
+  remove,
+  pathExists,
+}
+export default { copy, ensureDir, remove, pathExists, };
+                            `);
+                    })
+                    .catch(e => {
+                        console.warn(e);
+                        return null;
+                    });
+            }
+            return null;
+        },
+    };
+
+    return [electronResolve, eventsResolve, builtinModulesResolve, fsResolve];
 }
 
 electron.externals = externals;
