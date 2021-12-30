@@ -1,0 +1,2 @@
+NSMicrophoneUsageDescription = "为了能够正常使用，Flat 需要访问麦克风的权限。";
+NSCameraUsageDescription = "为了能够正常使用，Flat 需要访问摄像头的权限。";

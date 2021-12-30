@@ -1,0 +1,2 @@
+NSMicrophoneUsageDescription = "In order to work properly, Flat needs permission to access microphone.";
+NSCameraUsageDescription = "In order to work properly, Flat needs permission to access camera.";
