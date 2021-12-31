@@ -37,10 +37,8 @@ Overview.args = {
     unreadCount: faker.datatype.number(),
     isCreator: faker.datatype.boolean(),
     isBan: faker.datatype.boolean(),
-    isRaiseHand: faker.datatype.boolean(),
     hasHandRaising: faker.datatype.boolean(),
     hasSpeaking: faker.datatype.boolean(),
-    disableHandRaising: faker.datatype.boolean(),
     generateAvatar: () => "http://placekitten.com/64/64",
     getUserByUUID: uuid => users.find(e => e.userUUID === uuid) || makeUser(),
     messages: Array(20)

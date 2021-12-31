@@ -34,7 +34,7 @@
   "hang-up-the-room": "暂时离开",
   "end-the-class": "结束上课",
   "close-option": "关闭选项",
-  "exit-room-tips": "课堂正在继续，你是暂时离开还是结束上课？",
+  "exit-room-tips": "课堂正在继续，你是暂时离开还是结束上课？如有开启录制，也将一并结束。",
   "student-sure-to-exit-the-room": "确定退出房间",
   "student-exit-room-tip": "课堂正在继续，确定退出房间？",
   "start-class-tips": "请先「开始上课」再开启房间录制功能",
@@ -71,7 +71,7 @@
   },
   "home-page-hero-button-type": {
     "join": "加入房间",
-    "begin": "立即上课",
+    "begin": "快速开始",
     "schedule": "预定房间"
   },
   "class-room-type": {
@@ -121,7 +121,7 @@
   "cancel-room": "取消房间",
   "modify-room": "修改房间",
   "copy-invitation": "复制邀请",
-  "join-room": "进入房间",
+  "join-room": "加入房间",
   "copy-success": "复制成功",
   "copy-fail": "复制失败，请确保已允许相关权限",
   "view-replay": "查看回放",
@@ -223,7 +223,7 @@
   "delete-records": "删除记录",
   "history": "历史记录",
   "create-room-default-title": "{{name}} 创建的房间",
-  "create": "开始",
+  "begin": "开始",
   "join-options": "加入选项",
   "turn-on-the-camera": "开启摄像头",
   "enter-room-uuid": "请输入房间号",
@@ -384,5 +384,7 @@
   "device-test-option": "设备检测选项",
   "turn-on-device-test": "进入房间时检测",
   "user-guide-text": "想了解更多 Flat 的使用技巧？",
-  "user-guide-button": "立即查看"
+  "user-guide-button": "立即查看",
+  "start-recording": "开始录制",
+  "stop-recording": "停止录制"
 }

@@ -1,6 +1,6 @@
 {
   "name": "flat",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "private": true,
   "description": "",
   "homepage": "https://github.com/netless-io/flat",
@@ -40,7 +40,7 @@
     "cross-env": "^7.0.3",
     "dotenv-flow": "^3.2.0",
     "dotenv-flow-webpack": "^1.1.0",
-    "electron": "11.3.0",
+    "electron": "12.0.15",
     "electron-builder": "^22.10.5",
     "electron-devtools-vendor": "^1.0.2",
     "electron-notarize": "^1.0.0",

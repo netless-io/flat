@@ -39,15 +39,15 @@
     "@netless/app-countdown": "^0.0.1",
     "@netless/app-geogebra": "^0.0.2",
     "@netless/app-iframe-bridge": "^0.0.2",
-    "@netless/app-monaco": "^0.1.11",
-    "@netless/app-slide": "^0.0.36",
+    "@netless/app-monaco": "^0.1.12",
+    "@netless/app-slide": "^0.0.53",
     "@netless/combine-player": "^1.1.6",
     "@netless/cursor-tool": "^0.1.0",
     "@netless/player-controller": "^0.0.9",
     "@netless/redo-undo": "^0.0.5",
     "@netless/tool-box": "^0.1.6",
     "@netless/video-js-plugin": "^0.3.6",
-    "@netless/window-manager": "^0.3.10-canary.0",
+    "@netless/window-manager": "0.3.18",
     "@videojs/vhs-utils": "^2.3.0",
     "@zip.js/zip.js": "^2.3.7",
     "agora-rtc-sdk-ng": "^4.5.0",
@@ -78,7 +78,7 @@
     "react-virtualized": "^9.22.2",
     "uuid": "^8.3.2",
     "video.js": "7.10.2",
-    "white-web-sdk": "2.15.12"
+    "white-web-sdk": "2.15.14"
   },
   "scripts": {
     "postinstall": "esbuild-dev ./scripts/post-install.ts",

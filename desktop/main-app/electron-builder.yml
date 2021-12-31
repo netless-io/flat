@@ -18,8 +18,7 @@ mac:
   entitlementsInherit: entitlements.mac.plist
   gatekeeperAssess: false
   extendInfo:
-    NSMicrophoneUsageDescription: To ensure normal use, flat-native needs access to your microphone.
-    NSCameraUsageDescription: To ensure normal use, flat-native needs access to your camera.
+    LSHasLocalizedDisplayName: true
     CFBundleURLTypes:
       - CFBundleURLName: x-agora-flat-client
         CFBundleURLSchemes:

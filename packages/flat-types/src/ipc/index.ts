@@ -19,20 +19,22 @@ export type WindowActionAsync = {
     "set-aspect-ratio": (args: { aspectRatio: number }) => void;
     "disable-window": (args: { disable: boolean }) => void;
     "set-title": (args: { title: string }) => void;
-    "set-prevent-sleep": (args: { enable: boolean }) => void;
-    "start-update": (args: { prereleaseTag: PrereleaseTag }) => void;
-    "cancel-update": () => void;
+    "force-close-window": (args: {}) => void;
+    "set-visual-zoom-level": (args: { minimumLevel: number; maximumLevel: number }) => void;
 };
 
 export type AppActionAsync = {
     "set-open-at-login": (args: { isOpenAtLogin: boolean }) => void;
-    "force-close-window": (args: { windowName: WindowsName }) => void;
+    "set-prevent-sleep": (args: { enable: boolean }) => void;
+    "start-update": (args: { prereleaseTag: PrereleaseTag }) => void;
+    "cancel-update": () => void;
 };
 
 export type AppActionSync = {
     "get-runtime": () => Promise<RuntimeType>;
     "get-open-at-login": () => Promise<boolean>;
     "get-update-info": () => Promise<UpdateCheckInfo>;
+    "can-create-window": (args: { windowName: WindowsName }) => Promise<boolean>;
 };
 
 export interface EmitEvents {

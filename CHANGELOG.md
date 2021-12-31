@@ -1,3 +1,45 @@
+# [1.4.0](https://github.com/netless-io/flat/compare/v1.3.0...v1.4.0) (2021-12-30)
+
+
+### Bug Fixes
+
+* **ci:** docker push tag typo ([#1186](https://github.com/netless-io/flat/issues/1186)) ([a2ed313](https://github.com/netless-io/flat/commit/a2ed31333867919798ff61a1f3dfeb3416b0f449))
+* **desktop:** Apple M1 open and build failed on development  ([#1251](https://github.com/netless-io/flat/issues/1251)) ([70a6ef1](https://github.com/netless-io/flat/commit/70a6ef14569c51d8854a2381bbadb8d7aec6ec94))
+* **desktop:** mouse cannot be displayed during screen sharing ([#1199](https://github.com/netless-io/flat/issues/1199)) ([8f46b28](https://github.com/netless-io/flat/commit/8f46b2842d828318c8a21afba29bf256829e7b13))
+* **desktop:** not jumping to the login page when the token expires ([#1197](https://github.com/netless-io/flat/issues/1197)) ([cf22c0c](https://github.com/netless-io/flat/commit/cf22c0c43ca8451ae26ce6a615ad1a465921064b))
+* **desktop:** refresh crash in any page ([#1246](https://github.com/netless-io/flat/issues/1246)) ([bd02188](https://github.com/netless-io/flat/commit/bd02188c53e0583790c03778bed6f2fd3dc1caa0))
+* **desktop:** throw error after refreshing within classroom and device check ([#1248](https://github.com/netless-io/flat/issues/1248)) ([0f29a81](https://github.com/netless-io/flat/commit/0f29a8127b28dbdc0ff5b4c3505bd7efb01f5b34))
+* **flat-components:** button text error of RoomDetailFooter components ([#1227](https://github.com/netless-io/flat/issues/1227)) ([7f6f5b0](https://github.com/netless-io/flat/commit/7f6f5b0200dfc997e26edf73b8217ffa6e103ba9))
+* **flat-components:** loading page covers the top bar ([#1204](https://github.com/netless-io/flat/issues/1204)) ([d2d1694](https://github.com/netless-io/flat/commit/d2d1694500857281a94a73743a65d805f0822acf))
+* **main-app:** send ipc crash ([#1242](https://github.com/netless-io/flat/issues/1242)) ([22bcc47](https://github.com/netless-io/flat/commit/22bcc4795b602668065970d34f721e1a4fac853c))
+* **renderer-app:** close cloud storage panel fail after insert file ([#1193](https://github.com/netless-io/flat/issues/1193)) ([7b159ce](https://github.com/netless-io/flat/commit/7b159cecad6606a89d915a5e0059c2552882aa10))
+* **renderer-app:** share screen tips window style incorrect ([#1250](https://github.com/netless-io/flat/issues/1250)) ([56e8fb8](https://github.com/netless-io/flat/commit/56e8fb84a4df62439511812f7fc46a4917ef291c))
+* **renderer-app:** share screen tips window unable to drag ([#1256](https://github.com/netless-io/flat/issues/1256)) ([5689d92](https://github.com/netless-io/flat/commit/5689d929274b427586163842262987107ad29c4a))
+* **web,renderer-app:** tag type error of MainRoomList components ([#1224](https://github.com/netless-io/flat/issues/1224)) ([c5c391c](https://github.com/netless-io/flat/commit/c5c391c82464481613baa9c173a58029b150ef6f))
+* **web:** add dependency `@babel/runtime` ([#1216](https://github.com/netless-io/flat/issues/1216)) ([b37e2ad](https://github.com/netless-io/flat/commit/b37e2ad7ddc0123d9a392b7185ed722f39545419))
+* **web:** local track error introduced by [#1203](https://github.com/netless-io/flat/issues/1203) ([#1212](https://github.com/netless-io/flat/issues/1212)) ([b89fbb8](https://github.com/netless-io/flat/commit/b89fbb8c7acfbe8e71d16170da5b91c35d57f76e))
+* **web:** rtc not turn-ed off when destroy ([#1203](https://github.com/netless-io/flat/issues/1203)) ([eab733c](https://github.com/netless-io/flat/commit/eab733cf54c1e15adbb380caa94bf38605e9e061))
+
+
+### Features
+
+* **desktop:** support preview file at new window ([#1243](https://github.com/netless-io/flat/issues/1243)) ([aea964f](https://github.com/netless-io/flat/commit/aea964f41df7602b264efaa61272d14e6f0bcfde))
+* **flat-components:** add theme colors ([#1226](https://github.com/netless-io/flat/issues/1226)) ([5339370](https://github.com/netless-io/flat/commit/53393703ee90711e34e875ff2c3b61f24a6e6087))
+* **whiteboard:** add new config to whiteboard ([#1245](https://github.com/netless-io/flat/issues/1245)) ([18a94e9](https://github.com/netless-io/flat/commit/18a94e9c3b47ef706030acfb0ee8d898d64054d8))
+
+
+### Performance Improvements
+
+* **renderer-app:** improve clarity of screen share on desktop ([#1223](https://github.com/netless-io/flat/issues/1223)) ([bc73aea](https://github.com/netless-io/flat/commit/bc73aea55b258684e98bfefb0d597ad8a1ba1526))
+
+
+### Reverts
+
+* Revert "chore(web): upgrade vite to 2.7.2 (#1215)" (#1218) ([7b51497](https://github.com/netless-io/flat/commit/7b5149771c987d208de6640d8f73d0481b0dcab0)), closes [#1215](https://github.com/netless-io/flat/issues/1215) [#1218](https://github.com/netless-io/flat/issues/1218)
+* Revert "fix(web): add dependency `@babel/runtime` (#1216)" (#1217) ([47dc4d9](https://github.com/netless-io/flat/commit/47dc4d963ca89cd1a50e2c8a81f7ba0fd1a2e820)), closes [#1216](https://github.com/netless-io/flat/issues/1216) [#1217](https://github.com/netless-io/flat/issues/1217)
+
+
+
 # [1.3.0](https://github.com/netless-io/flat/compare/v1.2.0...v1.3.0) (2021-12-08)
 
 
