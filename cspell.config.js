@@ -15,6 +15,7 @@ module.exports = {
         "titlebar",
         "typebox",
         "downloaders",
+        "quickstart",
 
         // wechat
         "wechat",
