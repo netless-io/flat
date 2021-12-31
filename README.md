@@ -32,8 +32,8 @@
     -   Real-time video/audio chat (RTC)
     -   Real-time messaging (RTM)
 -   Login via
-    -   WeChat
     -   GitHub
+    -   WeChat
 -   Classroom management
     -   Join, create and schedule classrooms
     -   Support periodic rooms
