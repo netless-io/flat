@@ -21,7 +21,7 @@
 <div align="center">
     <h1>Agora Flat</h1>
     <p>项目 flat 是 <a href="https://flat.whiteboard.agora.io/">Agora Flat</a> 开源教室的 Web 端、Windows 客户端与 macOS 客户端。</p>
-    <img src="/assets/flat-showcase.png">
+    <img src="/assets/flat-showcase.gif">
 </div>
 
 ## 产品体验
