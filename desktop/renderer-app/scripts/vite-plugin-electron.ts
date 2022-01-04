@@ -1,95 +1,138 @@
 import { builtinModules } from "module";
 import { Plugin as VitePlugin } from "vite";
 import { build } from "esbuild";
+
 // based on https://github.com/caoxiemeihao/vite-plugins/blob/main/packages/electron/src/index.ts
 
+const entries = [
+    {
+        entryPoints: "electron/index.js",
+        shouldBundle: false,
+        code: `
+     /**
+     * All exports module see https://www.electronjs.org -> API -> Renderer Process Modules
+     */
+    const {
+      clipboard,
+      nativeImage,
+      shell,
+      contextBridge,
+      crashReporter,
+      ipcRenderer,
+      webFrame,
+      desktopCapturer,
+    } = require('electron');
+    export {
+      clipboard,
+      nativeImage,
+      shell,
+      contextBridge,
+      crashReporter,
+      ipcRenderer,
+      webFrame,
+      desktopCapturer,
+    }
+    export default { clipboard, nativeImage, shell, contextBridge, crashReporter, ipcRenderer, webFrame, desktopCapturer };
+        `,
+    },
+    {
+        entryPoints: "events/events.js",
+        shouldBundle: false,
+        code: `
+// The api doc is at: https://nodejs.org/api/events.html
+// I'd just export EventEmitter.
+const {
+    EventEmitter,
+} = require('events');
+export {
+    EventEmitter,
+}
+export default { EventEmitter };
+ `,
+    },
+    {
+        entryPoints: "fs-extra/lib/index.js",
+        code: `
+// We will use hack method to bundle file and export it with esm
+const {
+    copy,
+    ensureDir,
+    remove,
+    pathExists ,
+} = require('fs-extra');
+export {
+    copy,
+    ensureDir,
+    remove,
+    pathExists,
+}
+ `,
+        shouldBundle: true,
+    },
+    {
+        entryPoints: "extract-zip/index.js",
+        code: `
+// We will use hack method to bundle file and export it with esm
+const extract = require('fs-extra');
+export default extract;
+    `,
+        shouldBundle: true,
+    },
+];
+
+const cleanUrl = (url: string): string => url.replace(/\?.*$/s, "").replace(/#.*$/s, "");
+
+const needParse = (
+    id: string,
+    entries: Array<{ entryPoints: string; code: string; shouldBundle: boolean }>,
+): Promise<string | null> => {
+    const cid = cleanUrl(id);
+    let result: Promise<string | null> = Promise.resolve(null);
+    for (const key of entries) {
+        if (cid.endsWith(key.entryPoints)) {
+            if (key.shouldBundle) {
+                const path = id.replace(/(\?v=)(\w+)/g, "");
+                result = build({
+                    entryPoints: [path],
+                    bundle: true,
+                    outfile: "index.js",
+                    platform: "node",
+                    write: false,
+                })
+                    .then(result => {
+                        return (
+                            result?.outputFiles
+                                ?.map(item => {
+                                    return item.text;
+                                })
+                                .join("") ?? ""
+                        );
+                    })
+                    .then(result => {
+                        return result.concat(key?.code);
+                    })
+                    .catch(e => {
+                        console.warn(e);
+                        return null;
+                    });
+            } else {
+                return Promise.resolve(key.code);
+            }
+        }
+    }
+    return result;
+};
 /**
  * The externals will be work on 'viteConfig.build.rollupOptions.external', 'viteConfig.optimizeDeps.exclude' option.
  * and we should external ['electron', ...require('module').builtinModules]
  */
 const externals = ["electron", ...builtinModules];
 export function electron(): VitePlugin[] {
-    const cleanUrl = (url: string): string => url.replace(/\?.*$/s, "").replace(/#.*$/s, "");
-    const isLoadElectron = (id: string): boolean => {
-        const cid = cleanUrl(id);
-        // pre-build: 'node_modules/.vite/electron.js'
-        // yarn     : 'node_modules/electron/index.js'
-        // npm      : 'node_modules/electron/index.js'
-        return cid.endsWith("electron/index.js") || cid.endsWith(".vite/electron.js");
-    };
-
-    const isLoadEvents = (id: string): boolean => {
-        const cid = cleanUrl(id);
-        // pre-build: 'node_modules/.vite/events.js'
-        // yarn     : 'node_modules/events/events.js'
-        // npm      : 'node_modules/events/events.js'
-        return cid.endsWith("events/events.js") || cid.endsWith(".vite/events.js");
-    };
-
-    const electronResolve: VitePlugin = {
-        name: "vite-plugin-electron:electron-resolve",
+    const nodeModelResolve: VitePlugin = {
+        name: "vite-plugin-electron:node-model-resolve",
         apply: "serve",
         transform(_code, id) {
-            if (isLoadElectron(id)) {
-                const electronModule = `
-/**
- * All exports module see https://www.electronjs.org -> API -> Renderer Process Modules
- */
-const {
-  clipboard,
-  nativeImage,
-  shell,
-  contextBridge,
-  crashReporter,
-  ipcRenderer,
-  webFrame,
-  desktopCapturer,
-} = require('electron');
-export {
-  clipboard,
-  nativeImage,
-  shell,
-  contextBridge,
-  crashReporter,
-  ipcRenderer,
-  webFrame,
-  desktopCapturer,
-}
-export default { clipboard, nativeImage, shell, contextBridge, crashReporter, ipcRenderer, webFrame, desktopCapturer };
-`;
-
-                return {
-                    code: electronModule,
-                    map: null,
-                };
-            }
-
-            return null;
-        },
-    };
-    const eventsResolve: VitePlugin = {
-        name: "vite-plugin-electron:events-resolve",
-        apply: "serve",
-        transform(_code, id) {
-            if (isLoadEvents(id)) {
-                const eventsModule = `
-// The api doc is at: https://nodejs.org/api/events.html
-// I'd just export EventEmitter.
-const {
-  EventEmitter,
-} = require('events');
-export {
-  EventEmitter,
-}
-export default { EventEmitter };
-`;
-                return {
-                    code: eventsModule,
-                    map: null,
-                };
-            }
-
-            return null;
+            return needParse(id, entries);
         },
     };
 
@@ -124,68 +167,7 @@ ${exportDefault}
             return null;
         },
     };
-
-    const isLoadFS = (id: string): boolean => {
-        const cid = cleanUrl(id);
-        // pre-build: '.vite/fs-extra.js'
-        // yarn     : 'node_modules/fs-extra/lib/index.js'
-        // npm      : 'node_modules/fs-extra/lib/index.js'
-        return cid.endsWith("fs-extra/lib/index.js");
-    };
-    const formatPath = (p: string): string => {
-        return p.replace(/(\?v=)(\w+)/g, "");
-    };
-    const fsResolve: VitePlugin = {
-        name: "vite-plugin-electron:fs-resolve",
-        apply: "serve",
-        transform(_code, id: string) {
-            if (isLoadFS(id)) {
-                const path = formatPath(id);
-                return build({
-                    entryPoints: [path],
-                    bundle: true,
-                    outfile: "index.js",
-                    platform: "node",
-                    write: false,
-                })
-                    .then(result => {
-                        console.log(result);
-                        return (
-                            result?.outputFiles
-                                ?.map(item => {
-                                    return item.text;
-                                })
-                                .join("") ?? ""
-                        );
-                    })
-                    .then(result => {
-                        return result.concat(`
-// We will use hack method to bundle file and export it with esm
-const {
- copy,
- ensureDir,
- remove,
- pathExists ,
-} = require('fs-extra');
-export {
-  copy,
-  ensureDir,
-  remove,
-  pathExists,
-}
-export default { copy, ensureDir, remove, pathExists, };
-                            `);
-                    })
-                    .catch(e => {
-                        console.warn(e);
-                        return null;
-                    });
-            }
-            return null;
-        },
-    };
-
-    return [electronResolve, eventsResolve, builtinModulesResolve, fsResolve];
+    return [builtinModulesResolve, nodeModelResolve];
 }
 
 electron.externals = externals;

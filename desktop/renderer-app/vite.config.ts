@@ -35,7 +35,7 @@ export default defineConfig({
     },
     clearScreen: false,
     optimizeDeps: {
-        exclude: [...electron.externals, "fs-extra"],
+        exclude: [...electron.externals, "fs-extra", "extract-zip"],
     },
     css: {
         preprocessorOptions: {
