@@ -1111,6 +1111,11 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/standalone@7.13.9":
+  version "7.13.9"
+  resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.13.9.tgz#38e78673e19f5077f4b294ad346780634e59e276"
+  integrity sha512-9ZpIl8rXXQqm5OdsQVhlBSPttwabiHGPGrl5N2bIxB9XS2NJW+1oiPFgMMNd+57C/xVwsEwD2mzv0KValOwlQA==
+
 "@babel/standalone@7.14.1":
   version "7.14.1"
   resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.14.1.tgz#2c5f6908f03108583eea75bdcc94eb29e720fbac"
@@ -1895,10 +1900,10 @@
   resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.12.tgz#bd289d088cd9f6db664220becc80a2db02313c2b"
   integrity sha512-f8LLS5jVcBXn5Ua1HfWNHUq7wa/yax81+XTfjXJ8B2ztOGTHB1uHDveD/hjcWCTCEeZP/sv8c8HTXwqb0fLUcg==
 
-"@netless/app-slide@^0.0.53":
-  version "0.0.53"
-  resolved "https://registry.npmjs.org/@netless/app-slide/-/app-slide-0.0.53.tgz#f02d8ea23e04787b03325eface3a3c412cca0ce1"
-  integrity sha512-4rN4reUYttLwvFVemtTL0oz0hzd91kHGHm229r2aL6u/7VsTLSvyIddodtbKoo3Z3qb+0ZkrkOXHOKhhFCwTZg==
+"@netless/app-slide@0.0.54":
+  version "0.0.54"
+  resolved "https://registry.yarnpkg.com/@netless/app-slide/-/app-slide-0.0.54.tgz#d775bf43d7e04fc1b808e8145d54d127475a2909"
+  integrity sha512-SsaZGnkCeYB3meQaM3K8o9Z3NHRt0bFTM+aLdbftmc+fPJYFT/a/v1gWRib9Wjaln7cCKjQWoA7I8crK8SNvSg==
 
 "@netless/canvas-polyfill@^0.0.4":
   version "0.0.4"
@@ -1966,10 +1971,10 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.3.17-canary.2":
-  version "0.3.17-canary.2"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.3.17-canary.2.tgz#07f0ae1451732f106614bd16a5b22261fdcd5746"
-  integrity sha512-X7jFAm4rP/QpKm5IqvTLDc6YWKJtRnuZxiBsd6hwfnosWSUATvyA3oACWUIe9fmWJVYgTYBEG02ll2v1u1xqUA==
+"@netless/window-manager@0.3.18":
+  version "0.3.18"
+  resolved "https://registry.yarnpkg.com/@netless/window-manager/-/window-manager-0.3.18.tgz#eac4374e13dee0f3c5d0d0af469f9a68ca4a8c98"
+  integrity sha512-kAi31RJk4fNSxEiXyLXEUJiJkexGIDZm0Yjcmar2Rr5LlPb5DlE0c9r1JfiWNnpFy8xJjM4Y68HV/GR61f6wkw==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/app-docs-viewer" "0.1.26"
