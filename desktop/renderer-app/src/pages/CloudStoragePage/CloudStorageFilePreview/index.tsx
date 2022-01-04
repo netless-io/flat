@@ -21,9 +21,13 @@ export type FileInfo = {
 
 export interface ResourcePreviewProps {
     fileInfo: FileInfo;
+    windowInstance?: Window | PortalWindow;
 }
 
-export const ResourcePreview = observer<ResourcePreviewProps>(function PPTPreview({ fileInfo }) {
+export const ResourcePreview = observer<ResourcePreviewProps>(function PPTPreview({
+    fileInfo,
+    windowInstance,
+}) {
     const { fileURL, taskUUID, taskToken, region } = fileInfo;
     const ResourcePreviewRef = useRef<HTMLDivElement>(null);
 
@@ -36,7 +40,14 @@ export const ResourcePreview = observer<ResourcePreviewProps>(function PPTPrevie
                     // TODO: i18n
                     return <div> Failed to load, try again Please</div>;
                 }
-                return <DynamicPreview taskUUID={taskUUID} taskToken={taskToken} region={region} />;
+                return (
+                    <DynamicPreview
+                        taskUUID={taskUUID}
+                        taskToken={taskToken}
+                        region={region}
+                        windowInstance={windowInstance}
+                    />
+                );
             }
             case ".ppt":
             case ".pdf":
@@ -68,7 +79,10 @@ export const createResourcePreview = (fileInfo: FileInfo): void => {
     portalWindowManager
         .createPreviewFilePortalWindow(containerEl, fileInfo.fileName)
         .then(instance => {
-            ReactDOM.render(<ResourcePreview fileInfo={fileInfo} />, containerEl);
+            ReactDOM.render(
+                <ResourcePreview fileInfo={fileInfo} windowInstance={instance} />,
+                containerEl,
+            );
 
             // when BrowserWindow close, will trigger onbeforeunload
             // since the current function may be called in non-component code
