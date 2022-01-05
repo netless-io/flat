@@ -1,19 +1,26 @@
 import "./style.less";
 import loadingGIF from "./icons/loading.gif";
 
-import React, { FC, useEffect, useState } from "react";
-import { Button } from "antd";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import classNames from "classnames";
-import { Link } from "react-router-dom";
+import { Button } from "antd";
 import { useTranslation } from "react-i18next";
 
 export interface LoadingPageProps {
     text?: string;
     timeMS?: number;
     hasHeader?: boolean;
+    onTimeout?: "return-home" | "full-reload" | (() => void);
+    onTimeoutText?: string;
 }
 
-export const LoadingPage: FC<LoadingPageProps> = ({ text, timeMS = 20 * 1000, hasHeader }) => {
+export const LoadingPage: FC<LoadingPageProps> = ({
+    text,
+    timeMS = 20 * 1000,
+    hasHeader,
+    onTimeout = "return-home",
+    onTimeoutText,
+}) => {
     const [isShowReturnHomePage, showReturnHomePage] = useState(false);
     const { t } = useTranslation();
 
@@ -22,6 +29,21 @@ export const LoadingPage: FC<LoadingPageProps> = ({ text, timeMS = 20 * 1000, ha
         return () => window.clearTimeout(ticket);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const timeoutText =
+        onTimeoutText || (typeof onTimeout === "string" ? t(onTimeout) : t("return-home"));
+
+    const timeoutBehavior = useCallback(
+        (type: "return-home" | "full-reload") => () => {
+            if (type === "return-home") {
+                window.location.pathname = "/";
+            }
+            if (type === "full-reload") {
+                window.location.reload();
+            }
+        },
+        [],
+    );
 
     return (
         <div className="loading-page">
@@ -34,14 +56,15 @@ export const LoadingPage: FC<LoadingPageProps> = ({ text, timeMS = 20 * 1000, ha
                 <img className="loading-page-image" src={loadingGIF} alt="loading" />
                 {text && <span>{text}</span>}
             </div>
-            <Link
-                to="/"
+            <Button
+                size="large"
                 className={classNames("loading-page-return-btn", {
                     "is-show": isShowReturnHomePage,
                 })}
+                onClick={typeof onTimeout === "string" ? timeoutBehavior(onTimeout) : onTimeout}
             >
-                <Button size="large">{t("return-home")}</Button>
-            </Link>
+                {timeoutText}
+            </Button>
         </div>
     );
 };
