@@ -360,6 +360,7 @@ export class WhiteboardStore {
                     }
                 },
                 onDisconnectWithError: error => {
+                    void message.error(this.i18n.t("on-disconnect-with-error"));
                     this.preloadPPTResource.cancel();
                     console.error(error);
                 },
