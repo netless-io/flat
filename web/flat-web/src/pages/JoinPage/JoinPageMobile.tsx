@@ -1,4 +1,5 @@
 import logoSVG from "./icons/logo-sm.svg";
+import openInBrowserSVG from "./icons/open-in-browser.svg";
 
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,6 +10,8 @@ export interface JoinPageMobileProps {
     privacyURL: string;
     serviceURL: string;
 }
+
+const isWeChatBrowser = window.navigator.userAgent.toLowerCase().includes("micromessenger");
 
 export default function JoinPageMobile({
     roomUUID,
@@ -33,7 +36,7 @@ export default function JoinPageMobile({
 
     return (
         <div className="join-page-mobile-container">
-            <iframe width="0" height="0" style={{ display: "none" }} src={url} />
+            <iframe width="0" height="0" title="join flat" style={{ display: "none" }} src={url} />
             <div className="join-page-mobile-effect"></div>
             <div className="join-page-mobile-header">
                 <div className="join-page-mobile-app-icon">
@@ -57,6 +60,12 @@ export default function JoinPageMobile({
                     {t("service-policy")}
                 </a>
             </div>
+            {isWeChatBrowser && (
+                <div className="join-page-mobile-wechat-overlay">
+                    <img src={openInBrowserSVG} alt="[open-in-browser]" />
+                    <strong>{t("open-in-browser")}</strong>
+                </div>
+            )}
         </div>
     );
 }

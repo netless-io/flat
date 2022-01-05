@@ -113,6 +113,7 @@ module.exports = {
         "estree",
         "webstorm",
         "Frameless",
+        "micromessenger",
 
         // CNCF
         "nindent",

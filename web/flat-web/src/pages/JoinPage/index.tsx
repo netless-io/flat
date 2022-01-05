@@ -83,7 +83,6 @@ export const JoinPage = observer(function JoinPage() {
                     serviceURL={serviceURL}
                 />
             )}
-            ;
         </div>
     );
 });
