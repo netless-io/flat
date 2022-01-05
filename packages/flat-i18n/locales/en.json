@@ -85,6 +85,8 @@
     "time": "by room end date"
   },
   "return-home": "Return Home",
+  "full-reload": "Refresh",
+  "on-disconnect-with-error": "The network is not available",
   "error-page-description": "Please try again",
   "error-page-title": "Sorry, we have an unknown error",
   "error-page-return-home": "({{countdown}}) Go Back",

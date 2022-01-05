@@ -126,7 +126,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     return (
         <div className="one-to-one-realtime-container">
-            {loadingPageRef.current && <LoadingPage />}
+            {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
             <div className="one-to-one-realtime-box">
                 <TopBar
                     isMac={runtime.isMac}

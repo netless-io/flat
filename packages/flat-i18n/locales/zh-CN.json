@@ -85,6 +85,8 @@
     "SmallClass": "最多 16 位学生"
   },
   "return-home": "返回首页",
+  "full-reload": "刷新",
+  "on-disconnect-with-error": "当前网络不可用",
   "error-page-title": "抱歉，遇到未知错误",
   "error-page-description": "请重试",
   "error-page-return-home": "({{countdown}}) 返回首页",
