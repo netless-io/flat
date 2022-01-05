@@ -1944,10 +1944,10 @@
   resolved "https://registry.yarnpkg.com/@netless/redo-undo/-/redo-undo-0.0.5.tgz#c5b00f5940ef33a0d6a810cd0935f4d9c172ea52"
   integrity sha512-P8ceK3hSY2eMfFIjBeSpRsqXpjjTea9bBWyRF8t8q0kLR4ICld2VMFMRbytqZ8sjCFy9CgbicuBOdMj7juABIQ==
 
-"@netless/telebox-insider@^0.2.16":
-  version "0.2.16"
-  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.16.tgz#35b3d07216474c920da6d62eb5fb4ae9a5f6f788"
-  integrity sha512-eDoqIcIqRP2JfWeftymbamy9MdHDUWn7xhPvoPulofPjYyL/Wh3VZIr2UnktYZ1uwudpjV/Hdptf9jdsPKK65w==
+"@netless/telebox-insider@0.2.17":
+  version "0.2.17"
+  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.17.tgz#c351f48fc03c265f1cffe0bad0761011f13aad48"
+  integrity sha512-+nTLm/LM4NNso4epdLhtTfuYDx+J8iMwX41vSUlN6pEjMOCl4HFv8paEjeYT8WYywT4gd+vHG1n7vsx6KMRJZw==
   dependencies:
     "@types/shallowequal" "^1.1.1"
     eventemitter3 "^4.0.7"
@@ -1966,18 +1966,19 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@0.3.18":
-  version "0.3.18"
-  resolved "https://registry.yarnpkg.com/@netless/window-manager/-/window-manager-0.3.18.tgz#eac4374e13dee0f3c5d0d0af469f9a68ca4a8c98"
-  integrity sha512-kAi31RJk4fNSxEiXyLXEUJiJkexGIDZm0Yjcmar2Rr5LlPb5DlE0c9r1JfiWNnpFy8xJjM4Y68HV/GR61f6wkw==
+"@netless/window-manager@^0.4.0-canary.1":
+  version "0.4.0-canary.1"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.4.0-canary.1.tgz#344318b1933a1935d44592f0561110e74241df9e"
+  integrity sha512-7ldMmskfdkwggmc9diWCOersjx1c99HKeWhQ21WFh4meXSeSX5CIwiBJ9I5MBzZfcOZYlLf6M3aDDEPbuCrSRw==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/app-docs-viewer" "0.1.26"
     "@netless/app-media-player" "0.1.0-beta.5"
-    "@netless/telebox-insider" "^0.2.16"
+    "@netless/telebox-insider" "0.2.17"
     emittery "^0.9.2"
     lodash "^4.17.21"
     p-retry "^4.6.1"
+    side-effect-manager "^0.1.5"
     uuid "^7.0.3"
     video.js ">=7"
 
