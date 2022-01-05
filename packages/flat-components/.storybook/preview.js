@@ -73,7 +73,7 @@ export const decorators = [
         }, [darkMode]);
         return (
             <FlatThemeProvider prefersColorScheme={context.globals.prefersColorScheme}>
-                <Story {...context} />
+                {Story(context)}
             </FlatThemeProvider>
         );
     },

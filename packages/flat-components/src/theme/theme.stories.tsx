@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
-import { Story, Meta } from "@storybook/react";
+import type { Story, Meta } from "@storybook/react";
 import "./colors.less";
 import { useIsomorphicLayoutEffect } from "react-use";
 
 const storyMeta: Meta = {
-    title: "Theme/Theme",
+    title: "Theme/Colors",
     parameters: {
         options: {
             showPanel: false,
@@ -23,35 +23,47 @@ const colorNum = Array(13)
 const types = ["primary", "success", "warning", "danger", "text"];
 const kinds = ["weaker", "weak", "", "strong", "stronger"];
 
-export const Colors: Story = () => {
+export const Brand: Story = (_, config) => {
     const [colorHex, setColorHex] = useState<Record<string, string>>({});
     const rootRef = useRef<HTMLDivElement>(null);
     useIsomorphicLayoutEffect(() => {
-        if (rootRef.current) {
-            try {
-                const styles = window.getComputedStyle(rootRef.current);
-                const colorHex = colors.reduce((hex, color) => {
-                    colorNum.forEach(i => {
-                        const name = `--${color}-${i}`;
-                        const value = styles.getPropertyValue(name).toUpperCase().trim();
-                        hex[name] = value;
-                        hex[value] = name;
-                    });
-                    return hex;
-                }, {} as Record<string, string>);
-                const themeHex = types.reduce((hex, type) => {
-                    kinds.forEach(kind => {
-                        const name = kind ? `--${type}-${kind}` : `--${type}`;
-                        hex[name] = styles.getPropertyValue(name).toUpperCase().trim();
-                    });
-                    return hex;
-                }, {} as Record<string, string>);
-                setColorHex({ ...colorHex, ...themeHex });
-            } catch (e) {
-                console.error(e);
+        const updateColorCode = (): void => {
+            if (rootRef.current) {
+                try {
+                    const styles = window.getComputedStyle(rootRef.current);
+                    const colorHex = colors.reduce((hex, color) => {
+                        colorNum.forEach(i => {
+                            const name = `--${color}-${i}`;
+                            const value = styles.getPropertyValue(name).toUpperCase().trim();
+                            hex[name] = value;
+                            hex[value] = name;
+                        });
+                        return hex;
+                    }, {} as Record<string, string>);
+                    const themeHex = types.reduce((hex, type) => {
+                        kinds.forEach(kind => {
+                            const name = kind ? `--${type}-${kind}` : `--${type}`;
+                            hex[name] = styles.getPropertyValue(name).toUpperCase().trim();
+                        });
+                        return hex;
+                    }, {} as Record<string, string>);
+
+                    setColorHex({ ...colorHex, ...themeHex });
+                } catch (e) {
+                    console.error(e);
+                }
             }
+        };
+        if (Object.keys(colorHex).length <= 0) {
+            updateColorCode();
+            return;
+        } else {
+            const timer = window.setTimeout(updateColorCode, 0);
+            return () => {
+                window.clearTimeout(timer);
+            };
         }
-    }, []);
+    }, [config.globals.prefersColorScheme]);
 
     return (
         <div className="flat-theme-root center mw8" ref={rootRef}>
@@ -61,24 +73,21 @@ export const Colors: Story = () => {
                         {kinds.map(kind => {
                             const color = kind ? `--${type}-${kind}` : `--${type}`;
                             const textColor = kind.includes("weak")
-                                ? "--text-strong"
-                                : `--${type}-weaker`;
-                            const subTextColor = kind.includes("weak")
-                                ? "--text"
-                                : `--${type}-weak`;
+                                ? "var(--text-strong)"
+                                : "var(--text-weaker)";
                             return (
                                 <div key={kind} className="fl w-100 w-20-ns pa2">
                                     <div
                                         className="tc pv3"
                                         style={{
-                                            color: `var(${textColor})`,
+                                            color: textColor,
                                             background: `var(${color})`,
                                         }}
                                     >
                                         <div
                                             style={{
                                                 userSelect: "none",
-                                                color: `var(${subTextColor})`,
+                                                color: textColor,
                                             }}
                                         >
                                             {colorHex[colorHex[color]]}
@@ -86,7 +95,7 @@ export const Colors: Story = () => {
                                         <div
                                             style={{
                                                 userSelect: "none",
-                                                color: `var(${subTextColor})`,
+                                                color: textColor,
                                             }}
                                         >
                                             {colorHex[color]}

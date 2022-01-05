@@ -1,6 +1,9 @@
+import "./antd.mod.stories.less";
+
 import React from "react";
 import { Story, Meta } from "@storybook/react";
-import { Input, Radio, Checkbox, Button } from "antd";
+import { Input, Radio, Checkbox, Button, ButtonProps } from "antd";
+import { MessageOutlined } from "@ant-design/icons";
 import { useRef } from "@storybook/client-api";
 import faker from "faker";
 
@@ -15,6 +18,30 @@ const storyMeta: Meta = {
 };
 
 export default storyMeta;
+
+export const Buttons: Story = () => {
+    return (
+        <div className="flat-theme-root center mw8 br3 overflow-hidden antd-mod-buttons">
+            <ButtonRow type="primary">Primary</ButtonRow>
+            <ButtonRow type="default">Default</ButtonRow>
+            <ButtonRow type="dashed">Dashed</ButtonRow>
+            <ButtonRow type="text">Text</ButtonRow>
+            <ButtonRow type="link">Link</ButtonRow>
+            <ButtonRow type="text" danger>
+                Danger
+            </ButtonRow>
+            <ButtonRow type="default" danger>
+                Danger
+            </ButtonRow>
+            <ButtonRow type="primary" shape="circle" icon={<MessageOutlined />}></ButtonRow>
+            <ButtonRow type="default" shape="circle" icon={<MessageOutlined />}></ButtonRow>
+            <ButtonRow type="dashed" shape="circle" icon={<MessageOutlined />}></ButtonRow>
+            <div style={{ backgroundColor: "var(--grey-12)" }}>
+                <ButtonRow type="ghost">Ghost</ButtonRow>
+            </div>
+        </div>
+    );
+};
 
 export const Overview: Story = () => {
     const selectAllRef = useRef<Input | null>(null);
@@ -184,3 +211,32 @@ export const Overview: Story = () => {
         </div>
     );
 };
+
+function ButtonRow(props: ButtonProps): React.ReactElement {
+    return (
+        <div className="ph3-ns pv3">
+            <div className="cf ph2-ns">
+                <div className="fl w-100 w-20-ns">
+                    <h4 className="antd-mod-buttons-titles">Default</h4>
+                    <Button {...props}></Button>
+                </div>
+                <div className="fl w-100 w-20-ns">
+                    <h4 className="antd-mod-buttons-titles">Focus</h4>
+                    <Button {...props} className="is-focus"></Button>
+                </div>
+                <div className="fl w-100 w-20-ns">
+                    <h4 className="antd-mod-buttons-titles">Hover</h4>
+                    <Button {...props} className="is-hover"></Button>
+                </div>
+                <div className="fl w-100 w-20-ns">
+                    <h4 className="antd-mod-buttons-titles">Active</h4>
+                    <Button {...props} className="is-active"></Button>
+                </div>
+                <div className="fl w-100 w-20-ns">
+                    <h4 className="antd-mod-buttons-titles">Disabled</h4>
+                    <Button {...props} disabled></Button>
+                </div>
+            </div>
+        </div>
+    );
+}
