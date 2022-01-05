@@ -11,12 +11,14 @@ export interface DynamicPreviewProps {
     taskUUID: string;
     taskToken: string;
     region: Region;
+    windowInstance?: Window | PortalWindow;
 }
 
 export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview({
     taskUUID,
     taskToken,
     region,
+    windowInstance,
 }) {
     const previewer = useRef<SlidePreviewer | null>(null);
     const DynamicPreviewRef = useRef<HTMLDivElement>(null);
@@ -34,13 +36,19 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
             );
 
             if (DynamicPreviewRef.current) {
-                previewer.current = previewSlide({
+                const slidePreviewer = previewSlide({
                     container: DynamicPreviewRef.current,
                     taskId: convertState.uuid,
                     url: extractSlideUrlPrefix(
                         convertState.progress?.convertedFileList[0].conversionFileUrl,
                     ),
                 });
+
+                if (windowInstance) {
+                    slidePreviewer.registerHotKeys(windowInstance);
+                }
+
+                previewer.current = slidePreviewer;
             }
         }
 

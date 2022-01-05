@@ -171,7 +171,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     return (
         <div className="realtime-container">
-            {loadingPageRef.current && <LoadingPage />}
+            {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
             <div className="realtime-box">
                 <TopBar
                     isMac={runtime.isMac}

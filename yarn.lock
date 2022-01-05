@@ -1895,10 +1895,10 @@
   resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.12.tgz#bd289d088cd9f6db664220becc80a2db02313c2b"
   integrity sha512-f8LLS5jVcBXn5Ua1HfWNHUq7wa/yax81+XTfjXJ8B2ztOGTHB1uHDveD/hjcWCTCEeZP/sv8c8HTXwqb0fLUcg==
 
-"@netless/app-slide@^0.0.53":
-  version "0.0.53"
-  resolved "https://registry.npmjs.org/@netless/app-slide/-/app-slide-0.0.53.tgz#f02d8ea23e04787b03325eface3a3c412cca0ce1"
-  integrity sha512-4rN4reUYttLwvFVemtTL0oz0hzd91kHGHm229r2aL6u/7VsTLSvyIddodtbKoo3Z3qb+0ZkrkOXHOKhhFCwTZg==
+"@netless/app-slide@0.0.55":
+  version "0.0.55"
+  resolved "https://registry.npmjs.org/@netless/app-slide/-/app-slide-0.0.55.tgz#1b6b725234d336921f10074924d090116ad7c09d"
+  integrity sha512-HhPZ+WdtxnQLZFoM8wfBwLCXkL0gJV3B1jelTzecEnWnyCbEhngVb9BIIHnRfn31wq82pudeMsZvs9Tu1PfLiQ==
 
 "@netless/canvas-polyfill@^0.0.4":
   version "0.0.4"
