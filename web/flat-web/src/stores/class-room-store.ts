@@ -189,6 +189,11 @@ export class ClassRoomStore {
                 this.isRemoteLogin = true;
             });
         });
+
+        this.rtm.on(RTMessageType.CONNECTED, () => {
+            console.log("CONNECTED");
+            return this.updateInitialRoomState();
+        });
     }
 
     public get ownerUUID(): string {
