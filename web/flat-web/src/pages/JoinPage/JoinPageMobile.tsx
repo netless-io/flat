@@ -1,10 +1,8 @@
 import logoSVG from "./icons/logo-sm.svg";
+import openInBrowserSVG from "./icons/open-in-browser.svg";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { isAndroid } from "react-device-detect";
-import { useWindowFocus } from "./use-window-focus";
-import { useIsUnMounted } from "../../utils/hooks/lifecycle";
 import { FLAT_DOWNLOAD_URL } from "../../constants/process";
 
 export interface JoinPageMobileProps {
@@ -13,9 +11,7 @@ export interface JoinPageMobileProps {
     serviceURL: string;
 }
 
-// TODO: change this url to some stable one
-const AndroidApkUrl =
-    "https://flat-storage.oss-cn-hangzhou.aliyuncs.com/versions/latest/stable/android/Flat-v1.0.2.apk";
+const isWeChatBrowser = window.navigator.userAgent.toLowerCase().includes("micromessenger");
 
 export default function JoinPageMobile({
     roomUUID,
@@ -23,45 +19,24 @@ export default function JoinPageMobile({
     serviceURL,
 }: JoinPageMobileProps): React.ReactElement {
     const { t } = useTranslation();
-    const [isCheckingApp, setCheckApp] = useState(false);
-    const isFocus = useWindowFocus();
-    const isUnmounted = useIsUnMounted();
-    const isDownloaded = useRef(false);
+
+    const url = useMemo(() => `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`, [roomUUID]);
 
     const openApp = useCallback(() => {
-        window.location.href = `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`;
-        setTimeout(() => {
-            if (!isUnmounted.current) {
-                setCheckApp(true);
-            }
-        }, 3000);
-    }, [roomUUID, isUnmounted]);
+        window.location.href = url;
+    }, [url]);
 
-    const download = useCallback(() => {
-        isDownloaded.current = true;
-        if (isAndroid) {
-            window.open(AndroidApkUrl);
-        } else {
-            window.open(FLAT_DOWNLOAD_URL, "_blank");
-        }
-    }, []);
+    const download = (): void => {
+        window.location.href = FLAT_DOWNLOAD_URL;
+    };
 
     useEffect(() => {
         openApp();
     }, [openApp]);
 
-    useEffect(() => {
-        if (isCheckingApp && !isDownloaded.current) {
-            // if 5 seconds later the page is still in focus,
-            // then maybe the app is not opened.
-            if (isFocus) {
-                download();
-            }
-        }
-    }, [isCheckingApp, isFocus, download]);
-
     return (
         <div className="join-page-mobile-container">
+            <iframe width="0" height="0" title="join flat" style={{ display: "none" }} src={url} />
             <div className="join-page-mobile-effect"></div>
             <div className="join-page-mobile-header">
                 <div className="join-page-mobile-app-icon">
@@ -85,6 +60,12 @@ export default function JoinPageMobile({
                     {t("service-policy")}
                 </a>
             </div>
+            {isWeChatBrowser && (
+                <div className="join-page-mobile-wechat-overlay">
+                    <img src={openInBrowserSVG} alt="[open-in-browser]" />
+                    <strong>{t("open-in-browser")}</strong>
+                </div>
+            )}
         </div>
     );
 }

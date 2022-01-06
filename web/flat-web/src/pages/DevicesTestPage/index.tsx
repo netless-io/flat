@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { GlobalStoreContext } from "../../components/StoreProvider";
+import { configStore } from "../../stores/config-store";
 
 export const DevicesTestPage = observer(function DeviceTestPage() {
     const pushHistory = usePushHistory();
@@ -29,8 +30,6 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     const [isMicrophoneAccessible, setIsMicrophoneAccessible] = useState(true);
 
     const [volume, setVolume] = useState(0);
-
-    const refreshDevicesTimer = useRef(0);
 
     useEffect(() => {
         if (cameraDevices.length > 0 && !cameraDeviceId) {
@@ -55,47 +54,49 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
         setCameraElement(cameraVideoStreamRef.current);
     }, [cameraVideoStreamRef, setCameraElement]);
 
-    const onDevicesChanged = useCallback((devices: MediaDeviceInfo[]) => {
+    const onCameraDevicesChanged = useCallback((devices: MediaDeviceInfo[]) => {
         const cameraDevices: MediaDeviceInfo[] = [];
-        const speakerDevices: MediaDeviceInfo[] = [];
-        const microphoneDevices: MediaDeviceInfo[] = [];
-        for (const device of devices) {
-            if (!device.deviceId) {
+        for (const cameraDevice of devices) {
+            if (!cameraDevice.deviceId) {
                 continue;
             }
-            switch (device.kind) {
-                case "audioinput": {
-                    microphoneDevices.push(device);
-                    break;
-                }
-                case "audiooutput": {
-                    speakerDevices.push(device);
-                    break;
-                }
-                case "videoinput": {
-                    cameraDevices.push(device);
-                    break;
-                }
-            }
+            cameraDevices.push(cameraDevice);
+            setCameraDevices(cameraDevices);
+            setIsCameraAccessible(cameraDevices.length > 0);
         }
-        setCameraDevices(cameraDevices);
-        setMicrophoneDevices(microphoneDevices);
-        setIsCameraAccessible(cameraDevices.length > 0);
-        setIsMicrophoneAccessible(microphoneDevices.length > 0);
+    }, []);
+
+    const onMicrophoneDevicesChanged = useCallback((devices: MediaDeviceInfo[]) => {
+        const microphoneDevices: MediaDeviceInfo[] = [];
+        for (const microphoneDevice of devices) {
+            if (!microphoneDevice.deviceId) {
+                continue;
+            }
+            microphoneDevices.push(microphoneDevice);
+            setMicrophoneDevices(microphoneDevices);
+            setIsMicrophoneAccessible(microphoneDevices.length > 0);
+        }
     }, []);
 
     useEffect(() => {
         deviceTest.onVolumeChanged = setVolume;
-        deviceTest.onDevicesChanged = onDevicesChanged;
-        deviceTest.initialize().catch((error: any) => {
+        deviceTest.onCameraDevicesChanged = onCameraDevicesChanged;
+        deviceTest.onMicrophoneDevicesChanged = onMicrophoneDevicesChanged;
+
+        deviceTest.initializeCameraDevices().catch((error: any) => {
             if (DeviceTest.isPermissionError(error)) {
                 setIsCameraAccessible(false);
+            }
+        });
+
+        deviceTest.initializeMicrophoneDevices().catch((error: any) => {
+            if (DeviceTest.isPermissionError(error)) {
                 setIsMicrophoneAccessible(false);
             }
         });
 
         return deviceTest.destroy.bind(deviceTest);
-    }, [deviceTest, onDevicesChanged]);
+    }, [deviceTest, onCameraDevicesChanged, onMicrophoneDevicesChanged]);
 
     useEffect(() => {
         if (cameraDeviceId) {
@@ -117,26 +118,9 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
         }
     }, [microphoneDeviceId, deviceTest]);
 
-    const refreshDevices = useCallback(() => {
-        refreshDevicesTimer.current = window.setTimeout(() => {
-            refreshDevicesTimer.current = 0;
-            void deviceTest.refreshDevices();
-            refreshDevices();
-        }, 1000);
-    }, [deviceTest]);
-
-    useEffect(() => {
-        if (isCameraAccessible && isMicrophoneAccessible) {
-            return;
-        }
-
-        if (refreshDevicesTimer.current) {
-            return;
-        }
-        refreshDevices();
-    }, [isCameraAccessible, deviceTest, isMicrophoneAccessible, refreshDevices]);
-
     const joinRoom = async (): Promise<void> => {
+        configStore.updateCameraId(cameraDeviceId);
+        configStore.updateMicrophoneId(microphoneDeviceId);
         await joinRoomHandler(roomUUID, pushHistory);
     };
 

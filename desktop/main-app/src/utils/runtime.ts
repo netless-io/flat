@@ -10,8 +10,8 @@ const isProduction = process.env.NODE_ENV === "production";
 const isDebug = process.env.FLAT_DEBUG === "debug";
 
 const assetsPath = isProduction
-    ? `file://${path.resolve(__dirname, "..", "static", "render", "static", "assets")}`
-    : `file://${path.resolve(__dirname, "..", "..", "..", "renderer-app", "src", "assets")}`;
+    ? path.resolve(__dirname, "..", "static", "render", "static", "assets")
+    : path.resolve(__dirname, "..", "..", "..", "renderer-app", "src", "assets");
 
 const startURL = isProduction
     ? `file://${path.resolve(__dirname, "..", "static", "render", "index.html")}`

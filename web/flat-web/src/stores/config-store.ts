@@ -15,6 +15,10 @@ export class ConfigStore {
     public autoMicOn = true;
     /** Region, default by language */
     public region: Region | null = null;
+    /** selected camera device id on devices test page */
+    public cameraId?: string;
+    /** selected microphone device id on devices test page */
+    public microphoneId?: string;
 
     public constructor() {
         autoPersistStore({ storeLSName: "ConfigStore", store: this, version: LS_VERSION });
@@ -26,6 +30,14 @@ export class ConfigStore {
 
     public updateAutoMicOn = (isOn: boolean): void => {
         this.autoMicOn = isOn;
+    };
+
+    public updateCameraId = (cameraId: string): void => {
+        this.cameraId = cameraId;
+    };
+
+    public updateMicrophoneId = (microphoneId: string): void => {
+        this.microphoneId = microphoneId;
     };
 
     public setRegion = (region: Region): void => {

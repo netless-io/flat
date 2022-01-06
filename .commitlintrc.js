@@ -55,6 +55,8 @@ module.exports = {
                 "debug",
                 "github",
                 "style",
+                "room",
+                "classroom",
             ],
         ],
         "scope-case": [2, "always", ["lower-case", "kebab-case"]],

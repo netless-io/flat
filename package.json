@@ -31,7 +31,6 @@
     "cspell": "^5.6.6",
     "dotenv-flow": "^3.2.0",
     "husky": "^5.0.9",
-    "rimraf": "^3.0.2",
-    "shelljs": "^0.8.4"
+    "rimraf": "^3.0.2"
   }
 }

@@ -70,6 +70,13 @@ const buildElectron = async () => {
         },
     ];
 
+    if (buildType === "mac") {
+        config.extraResources.push({
+            from: "resources/macOS/locals",
+            to: "./",
+        });
+    }
+
     const packMac = () => {
         return build({
             config: config,

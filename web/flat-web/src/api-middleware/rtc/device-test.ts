@@ -3,7 +3,11 @@ import { addEventListener, removeEventListener } from "./hot-plug";
 
 export class DeviceTest {
     public devices: MediaDeviceInfo[] = [];
-    public onDevicesChanged?: (devices: MediaDeviceInfo[]) => void;
+    public cameraDevices: MediaDeviceInfo[] = [];
+    public microphoneDevices: MediaDeviceInfo[] = [];
+
+    public onCameraDevicesChanged?: (cameraDevices: MediaDeviceInfo[]) => void;
+    public onMicrophoneDevicesChanged?: (microphoneDevices: MediaDeviceInfo[]) => void;
 
     public cameraVideoTrack?: ICameraVideoTrack;
     public microphoneAudioTrack?: IMicrophoneAudioTrack;
@@ -15,19 +19,30 @@ export class DeviceTest {
     public cameraElement: HTMLDivElement | null = null;
 
     public constructor() {
-        addEventListener("camera", this.refreshDevices);
-        addEventListener("microphone", this.refreshDevices);
+        addEventListener("camera", this.refreshCameraDevices);
+        addEventListener("microphone", this.refreshMicrophoneDevices);
         this.refreshVolume();
     }
 
-    public initialize(): Promise<void> {
-        return this.refreshDevices();
+    public initializeCameraDevices(): Promise<void> {
+        return this.refreshCameraDevices();
     }
 
-    public refreshDevices = async (): Promise<void> => {
-        this.devices = await AgoraRTC.getDevices(true);
-        if (this.onDevicesChanged) {
-            this.onDevicesChanged(this.devices);
+    public initializeMicrophoneDevices(): Promise<void> {
+        return this.refreshMicrophoneDevices();
+    }
+
+    public refreshCameraDevices = async (): Promise<void> => {
+        this.cameraDevices = await AgoraRTC.getCameras(false);
+        if (this.onCameraDevicesChanged) {
+            this.onCameraDevicesChanged(this.cameraDevices);
+        }
+    };
+
+    public refreshMicrophoneDevices = async (): Promise<void> => {
+        this.microphoneDevices = await AgoraRTC.getMicrophones(false);
+        if (this.onMicrophoneDevicesChanged) {
+            this.onMicrophoneDevicesChanged(this.microphoneDevices);
         }
     };
 
@@ -73,8 +88,8 @@ export class DeviceTest {
 
     public destroy(): void {
         window.clearTimeout(this.volumeTimer);
-        removeEventListener("camera", this.refreshDevices);
-        removeEventListener("microphone", this.refreshDevices);
+        removeEventListener("camera", this.refreshCameraDevices);
+        removeEventListener("microphone", this.refreshMicrophoneDevices);
         if (this.cameraVideoTrack) {
             this.cameraVideoTrack.close();
             this.cameraVideoTrack = undefined;

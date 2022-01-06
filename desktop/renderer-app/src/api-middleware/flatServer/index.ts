@@ -101,6 +101,7 @@ export interface JoinRoomResult {
         uid: number;
         token: string;
     };
+    showGuide: boolean;
 }
 
 export function joinRoom(uuid: string): Promise<JoinRoomResult> {

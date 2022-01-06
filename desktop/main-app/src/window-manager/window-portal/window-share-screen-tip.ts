@@ -2,8 +2,10 @@ import { AbstractWindow, CustomWindow } from "../abstract";
 import { constants } from "flat-types";
 import { getDisplayByMainWindow, getXCenterPoint } from "./utils";
 
-export class WindowShareScreenTip extends AbstractWindow {
-    public readonly name = constants.WindowsName.ShareScreenTip;
+export class WindowShareScreenTip extends AbstractWindow<false> {
+    public constructor() {
+        super(false, constants.WindowsName.ShareScreenTip);
+    }
 
     public create(options: Electron.BrowserWindowConstructorOptions): CustomWindow {
         const display = getDisplayByMainWindow();

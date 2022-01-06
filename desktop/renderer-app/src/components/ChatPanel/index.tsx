@@ -7,13 +7,11 @@ import { generateAvatar } from "../../utils/generate-avatar";
 export interface ChatPanelProps {
     classRoomStore: ClassRoomStore;
     disableMultipleSpeakers?: boolean;
-    disableHandRaising?: boolean;
 }
 
 export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     classRoomStore,
     disableMultipleSpeakers,
-    disableHandRaising,
 }) {
     const users = useComputed(() => {
         const { creator, speakingJoiners, handRaisingJoiners, otherJoiners } = classRoomStore.users;
@@ -28,7 +26,6 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             isBan={classRoomStore.isBan}
             onBanChange={classRoomStore.onToggleBan}
             onMessageSend={classRoomStore.onMessageSend}
-            onRaiseHandChange={classRoomStore.onToggleHandRaising}
             userUUID={classRoomStore.userUUID}
             messages={classRoomStore.messages}
             getUserByUUID={(userUUID: string) => classRoomStore.users.cachedUsers.get(userUUID)}
@@ -49,9 +46,8 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                 void classRoomStore.onSpeak([{ userUUID, speak: false }]);
             }}
             generateAvatar={generateAvatar}
-            disableHandRaising={disableHandRaising}
-            isRaiseHand={classRoomStore.users.currentUser?.isRaiseHand}
             unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
+            openCloudStorage={() => classRoomStore.toggleCloudStoragePanel(true)}
         />
     );
 });

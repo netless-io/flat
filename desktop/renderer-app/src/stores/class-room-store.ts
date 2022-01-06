@@ -41,7 +41,10 @@ import { i18n } from "i18next";
 export type { User } from "./user-store";
 
 export type RTMChannelMessage = RTMessage<
-    RTMessageType.ChannelMessage | RTMessageType.Notice | RTMessageType.BanText
+    | RTMessageType.ChannelMessage
+    | RTMessageType.Notice
+    | RTMessageType.BanText
+    | RTMessageType.UserGuide
 >;
 
 export type RecordingConfig = Required<
@@ -188,6 +191,10 @@ export class ClassRoomStore {
                 this.isRemoteLogin = true;
             });
         });
+
+        this.rtm.on(RTMessageType.CONNECTED, () => {
+            return this.updateInitialRoomState();
+        });
     }
 
     public get ownerUUID(): string {
@@ -217,8 +224,6 @@ export class ClassRoomStore {
     public startClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
 
     public pauseClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Paused);
-
-    public resumeClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
 
     public stopClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Stopped);
 
@@ -256,6 +261,10 @@ export class ClassRoomStore {
         } catch (e) {
             console.error(e);
             this.updateCalling(false);
+        }
+
+        if (globalStore.isShowGuide) {
+            this.onUserGuide();
         }
     };
 
@@ -441,6 +450,27 @@ export class ClassRoomStore {
         }
         await this.rtm.sendMessage(text);
         this.addMessage(RTMessageType.ChannelMessage, text, this.userUUID);
+    };
+
+    public onUserGuide = (): void => {
+        // this callback is triggered immediately after joinRTC
+        // network may be offline status, user rejoin or refresh classroom page
+        // then this callback will trigger again that push the guide message
+        // the user guide message always at the end
+        // so that for avoid multiple send message of the user guide
+        if (
+            this.messages.length > 0 &&
+            this.messages[this.messages.length - 1].type === RTMessageType.UserGuide
+        ) {
+            return;
+        }
+        this.messages.push({
+            type: RTMessageType.UserGuide,
+            uuid: uuidv4(),
+            timestamp: Date.now(),
+            value: false,
+            userUUID: this.userUUID,
+        });
     };
 
     public onCancelAllHandRaising = (): void => {

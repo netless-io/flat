@@ -2,6 +2,7 @@ export enum ChatMsgType {
     Notice = "Notice",
     BanText = "BanText",
     ChannelMessage = "ChannelMessage",
+    UserGuide = "UserGuide",
 }
 
 export type ChatMsg = {

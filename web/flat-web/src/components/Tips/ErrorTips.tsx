@@ -9,8 +9,12 @@ export const errorTips = (e: unknown): void => {
     }
 
     if (e instanceof ServerRequestError) {
-        void message.error(i18n.t(e.errorMessage));
+        void message.error({
+            content: i18n.t(e.errorMessage),
+            key: e.errorMessage,
+        });
     } else {
-        void message.error((e as Error).message);
+        const { message: content, message: key } = e as Error;
+        void message.error({ content, key });
     }
 };

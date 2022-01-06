@@ -12,8 +12,10 @@ module.exports = {
         "bootup",
         "btns",
         "topbar",
+        "titlebar",
         "typebox",
         "downloaders",
+        "Magix",
 
         // wechat
         "wechat",
@@ -90,6 +92,8 @@ module.exports = {
         "Buildin", // @netless/widnow-manager
         "zindex", // antd
         "geogebra", // @netless/app-geogebra
+        "commitlintrc", // @commitlint/cli
+        "unpublish", // agora-rtc-sdk-ng
 
         // misc
         "npmrc",
@@ -109,6 +113,7 @@ module.exports = {
         "estree",
         "webstorm",
         "Frameless",
+        "micromessenger",
 
         // CNCF
         "nindent",
@@ -118,6 +123,7 @@ module.exports = {
         "tolerations",
         "Kube",
         "agoraflat",
+        "applinks",
     ],
     flagWords: ["fuck", "bitch", "asshole", "bullshit", "crap", "suck", "wtf"],
     dictionaries: [
@@ -143,6 +149,5 @@ module.exports = {
         "cspell.config.js",
         "yarn.lock",
         "CHANGELOG.md",
-        "third_party/**"
     ],
 };

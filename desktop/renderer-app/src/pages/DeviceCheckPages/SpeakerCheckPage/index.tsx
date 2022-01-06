@@ -17,6 +17,7 @@ import { runtime } from "../../../utils/runtime";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckResults } from "../utils";
 import { useTranslation } from "react-i18next";
+import path from "path";
 
 export const SpeakerCheckPage = (): React.ReactElement => {
     const { t } = useTranslation();
@@ -53,7 +54,11 @@ export const SpeakerCheckPage = (): React.ReactElement => {
         if (currentDeviceID && isPlaying) {
             rtcEngine.setAudioPlaybackDevice(currentDeviceID);
             rtcEngine.startAudioPlaybackDeviceTest(
-                `${runtime.assetsPath}/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3`,
+                path.join(
+                    runtime.assetsPath,
+                    "media",
+                    "Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3",
+                ),
             );
         }
 

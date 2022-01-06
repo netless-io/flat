@@ -1,6 +1,6 @@
 {
   "name": "flat",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "private": true,
   "description": "",
   "homepage": "https://github.com/netless-io/flat",
@@ -40,8 +40,9 @@
     "cross-env": "^7.0.3",
     "dotenv-flow": "^3.2.0",
     "dotenv-flow-webpack": "^1.1.0",
-    "electron": "11.3.0",
+    "electron": "12.0.15",
     "electron-builder": "^22.10.5",
+    "electron-devtools-vendor": "^1.0.2",
     "electron-notarize": "^1.0.0",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
@@ -69,8 +70,7 @@
     "fs-extra": "^9.0.1",
     "jquery": "^3.5.1",
     "rxjs": "^6.6.6",
-    "semver": "^7.3.5",
-    "ts-enum-util": "^4.0.2"
+    "semver": "^7.3.5"
   },
   "license": "MIT"
 }

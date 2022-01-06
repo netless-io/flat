@@ -1,4 +1,3 @@
-// import docsIconSVG from "../../assets/image/docs-icon.svg";
 import "./index.less";
 
 import React, { useContext, useEffect } from "react";
@@ -38,7 +37,9 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
     }, [roomStore, roomUUID, periodicUUID]);
 
     if (!roomInfo) {
-        return <LoadingPage />;
+        // it is not a good idea to let the loading take too long on the current page
+        // 3 seconds is just right
+        return <LoadingPage timeMS={3 * 1000} />;
     }
 
     const isCreator = roomInfo.ownerUUID === globalStore.userUUID;

@@ -28,9 +28,13 @@ import { useTranslation } from "react-i18next";
 
 export interface MainRoomListProps {
     listRoomsType: ListRoomsType;
+    isLogin: boolean;
 }
 
-export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ listRoomsType }) {
+export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
+    listRoomsType,
+    isLogin,
+}) {
     const { t } = useTranslation();
     const roomStore = useContext(RoomStoreContext);
     const [roomUUIDs, setRoomUUIDs] = useState<string[]>();
@@ -58,6 +62,10 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
     );
 
     useEffect(() => {
+        if (!isLogin) {
+            return;
+        }
+
         void refreshRooms();
 
         const ticket = window.setInterval(refreshRooms, 30 * 1000);
@@ -65,7 +73,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
         return () => {
             window.clearInterval(ticket);
         };
-    }, [refreshRooms]);
+    }, [isLogin, refreshRooms]);
 
     if (!roomUUIDs) {
         return <RoomListSkeletons />;
@@ -107,9 +115,50 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                     const beginTime = room.beginTime ? new Date(room.beginTime) : void 0;
                     const endTime = room.endTime ? new Date(room.endTime) : void 0;
 
-                    const primaryAction: RoomListItemButton<"replay" | "join"> = isHistoryList
-                        ? { key: "replay", text: t("replay"), disabled: !room.hasRecord }
-                        : { key: "join", text: t("join") };
+                    const primaryAction = (
+                        roomStatus?: RoomStatus,
+                    ): RoomListItemButton<"replay" | "join" | "begin"> => {
+                        let primaryAction: RoomListItemButton<"replay" | "join" | "begin">;
+                        switch (roomStatus) {
+                            case RoomStatus.Idle: {
+                                const isCreator = room.ownerUUID === globalStore.userUUID;
+                                primaryAction = isCreator
+                                    ? {
+                                          key: "begin",
+                                          text: t("begin"),
+                                      }
+                                    : {
+                                          key: "join",
+                                          text: t("join"),
+                                      };
+                                break;
+                            }
+                            case RoomStatus.Started:
+                            case RoomStatus.Paused: {
+                                primaryAction = {
+                                    key: "join",
+                                    text: t("join"),
+                                };
+                                break;
+                            }
+                            case RoomStatus.Stopped: {
+                                primaryAction = {
+                                    key: "replay",
+                                    text: t("replay"),
+                                    disabled: !room.hasRecord,
+                                };
+                                break;
+                            }
+                            default: {
+                                primaryAction = {
+                                    key: "begin",
+                                    text: t("begin"),
+                                };
+                                break;
+                            }
+                        }
+                        return primaryAction;
+                    };
 
                     return (
                         <Fragment key={room.roomUUID}>
@@ -120,7 +169,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                                 endTime={endTime}
                                 status={getRoomStatus(room.roomStatus)}
                                 isPeriodic={!!room.periodicUUID}
-                                buttons={[getSubActions(room), primaryAction]}
+                                buttons={[getSubActions(room), primaryAction(room.roomStatus)]}
                                 onClickMenu={key => {
                                     switch (key) {
                                         case "details": {
@@ -160,7 +209,8 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({ 
                                             });
                                             break;
                                         }
-                                        case "join": {
+                                        case "join":
+                                        case "begin": {
                                             void joinRoomHandler(room.roomUUID, pushHistory);
                                             break;
                                         }

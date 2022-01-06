@@ -82,6 +82,10 @@ export enum RTMessageType {
     ChannelStatus = "ChannelStatus",
     /** user login on other device */
     REMOTE_LOGIN = "REMOTE_LOGIN",
+    /** network environment not good */
+    CONNECTED = "CONNECTED",
+    /** display a user guide message info when first create the classroom */
+    UserGuide = "UserGuide",
 }
 
 export type RTMEvents = {
@@ -123,6 +127,8 @@ export type RTMEvents = {
         };
     };
     [RTMessageType.REMOTE_LOGIN]: void;
+    [RTMessageType.CONNECTED]: void;
+    [RTMessageType.UserGuide]: string;
 };
 
 export interface RTMessage<U extends keyof RTMEvents = keyof RTMEvents> {
@@ -150,7 +156,6 @@ export class Rtm extends EventEmitter<keyof RTMEvents> {
 
     public client: RtmClient;
     public channel?: RtmChannel;
-    /** Channel for commands */
     public commands?: RtmChannel;
     public token?: string;
 
@@ -173,6 +178,9 @@ export class Rtm extends EventEmitter<keyof RTMEvents> {
         this.client.on("ConnectionStateChanged", (newState, reason) => {
             if (reason === "REMOTE_LOGIN") {
                 this.emit(RTMessageType.REMOTE_LOGIN);
+            }
+            if (newState === "CONNECTED") {
+                this.emit(RTMessageType.CONNECTED);
             }
             console.log("RTM client state: ", newState, reason);
         });

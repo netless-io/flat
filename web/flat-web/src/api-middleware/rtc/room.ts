@@ -14,6 +14,7 @@ import { AGORA } from "../../constants/process";
 import { globalStore } from "../../stores/GlobalStore";
 import { generateRTCToken } from "../flatServer/agora";
 import { setCameraTrack, setMicrophoneTrack, hotPlug } from "./hot-plug";
+import { configStore } from "../../stores/config-store";
 
 AgoraRTC.enableLogUpload();
 
@@ -102,12 +103,13 @@ export class RtcRoom {
             setMicrophoneTrack();
             setCameraTrack();
             if (this.client.localTracks.length > 0) {
-                for (const track of this.client.localTracks) {
+                const tracks = this.client.localTracks;
+                console.log("[rtc] unpublish local tracks");
+                await this.client.unpublish(tracks);
+                for (const track of tracks) {
                     track.stop();
                     track.close();
                 }
-                console.log("[rtc] unpublish local tracks");
-                await this.client.unpublish(this.client.localTracks);
             }
             this.client.off("user-published", this.onUserPublished);
             this.client.off("user-unpublished", this.onUserUnpublished);
@@ -132,7 +134,9 @@ export class RtcRoom {
     public async getLocalAudioTrack(): Promise<ILocalAudioTrack> {
         if (!this._localAudioTrack) {
             await this.joined;
-            this._localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+            this._localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+                microphoneId: configStore.microphoneId,
+            });
             setMicrophoneTrack(this._localAudioTrack as IMicrophoneAudioTrack);
             this._localAudioTrack.once("track-ended", () => {
                 console.log("[rtc] track-ended local audio");
@@ -148,6 +152,7 @@ export class RtcRoom {
             await this.joined;
             this._localVideoTrack = await AgoraRTC.createCameraVideoTrack({
                 encoderConfig: { width: 288, height: 216 },
+                cameraId: configStore.cameraId,
             });
             setCameraTrack(this._localVideoTrack as ICameraVideoTrack);
             this._localVideoTrack.once("track-ended", () => {

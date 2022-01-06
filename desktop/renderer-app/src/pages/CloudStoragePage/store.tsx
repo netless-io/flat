@@ -1,6 +1,3 @@
-import "./store.less";
-import closeSVG from "./image/close.svg";
-
 import { Modal } from "antd";
 import {
     CloudStorageConvertStatusType,
@@ -35,7 +32,7 @@ import { errorTips } from "../../components/Tips/ErrorTips";
 import { getCoursewarePreloader } from "../../utils/courseware-preloader";
 import { getUploadTaskManager } from "../../utils/upload-task-manager";
 import { UploadStatusType, UploadTask } from "../../utils/upload-task-manager/upload-task";
-import { fileInfo, ResourcePreview } from "./CloudStorageFilePreview";
+import { createResourcePreview, FileInfo } from "./CloudStorageFilePreview";
 import { getFileExt, isPPTX } from "../../utils/file";
 import { ConvertStatusManager } from "./ConvertStatusManager";
 import { queryH5ConvertingStatus } from "../../api-middleware/h5-converting";
@@ -43,7 +40,7 @@ import { queryH5ConvertingStatus } from "../../api-middleware/h5-converting";
 export type CloudStorageFile = CloudStorageFileUI &
     Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region" | "external">;
 
-export type FileMenusKey = "download" | "rename" | "delete";
+export type FileMenusKey = "open" | "download" | "rename" | "delete";
 
 export class CloudStorageStore extends CloudStorageStoreBase {
     public uploadTaskManager = getUploadTaskManager();
@@ -120,8 +117,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     public fileMenus = (
         file: CloudStorageFileUI,
     ): Array<{ key: React.Key; name: React.ReactNode }> => {
-        const menus: Array<{ key: FileMenusKey; name: ReactNode }> = [];
-        menus.push({ key: "download", name: this.i18n.t("download") });
+        const menus: Array<{ key: FileMenusKey; name: ReactNode }> = [
+            { key: "open", name: this.i18n.t("open") },
+            { key: "download", name: this.i18n.t("download") },
+        ];
         if (file.convert !== "error") {
             menus.push({ key: "rename", name: this.i18n.t("rename") });
         }
@@ -135,6 +134,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     /** When a file menus item is clicked */
     public onItemMenuClick = (fileUUID: FileUUID, menuKey: React.Key): void => {
         switch (menuKey) {
+            case "open": {
+                this.onItemTitleClick(fileUUID);
+                break;
+            }
             case "download": {
                 this.downloadFile(fileUUID);
                 break;
@@ -379,11 +382,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     private previewCourseware(file: CloudStorageFile): void {
-        const fileInfo: fileInfo = {
+        const fileInfo: FileInfo = {
             fileURL: file.fileURL,
             taskUUID: file.taskUUID,
             taskToken: file.taskToken,
             region: file.region,
+            fileName: file.fileName,
         };
 
         switch (file.convert) {
@@ -396,15 +400,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 return;
             }
             default: {
-                Modal.info({
-                    content: <ResourcePreview fileInfo={fileInfo} />,
-                    className: "resource-preview-container",
-                    width: "100%",
-                    centered: true,
-                    closable: true,
-                    maskClosable: true,
-                    closeIcon: <img src={closeSVG} />,
-                });
+                createResourcePreview(fileInfo);
             }
         }
     }

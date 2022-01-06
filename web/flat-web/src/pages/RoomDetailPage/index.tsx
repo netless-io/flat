@@ -16,12 +16,11 @@ import { joinRoomHandler } from "../utils/join-room-handler";
 import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { message } from "antd";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
-
-/**
- * TODO: we forget set i18n in current file!!!
- */
+import { useTranslation } from "react-i18next";
 
 export const RoomDetailPage = observer(function RoomDetailPage() {
+    const { t } = useTranslation();
+
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
     const pushHistory = usePushHistory();
     const history = useHistory();
@@ -50,7 +49,9 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
     }, [roomInfo?.title]);
 
     if (!roomInfo) {
-        return <LoadingPage />;
+        // it is not a good idea to let the loading take too long on the current page
+        // 3 seconds is just right
+        return <LoadingPage timeMS={3 * 1000} />;
     }
 
     const isCreator = roomInfo.ownerUUID === globalStore.userUUID;
@@ -85,7 +86,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
             errorTips(err);
         }
 
-        void message.success("已取消该房间");
+        void message.success(t("the-room-has-been-cancelled"));
 
         history.goBack();
     }

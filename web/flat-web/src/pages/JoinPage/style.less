@@ -186,7 +186,7 @@
     width: 100%;
     max-width: 268px;
     border-radius: 8px;
-    border: 1px solid #3381FF;
+    border: 1px solid #3381ff;
     outline: none;
     background-color: #3381ff;
     color: #fff;
@@ -197,7 +197,10 @@
     &::after {
         content: "";
         position: absolute;
-        top: 0; right: 0; bottom: 0; left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
         z-index: 10;
         background-color: transparent;
     }
@@ -207,14 +210,14 @@
 }
 
 .join-page-mobile-big-btn.secondary {
-    color: #3381FF;
+    color: #3381ff;
     background-color: transparent;
 }
 
 .join-page-mobile-footer {
     font-size: 14px;
     text-align: center;
-    color: #7A7B7C;
+    color: #7a7b7c;
 }
 
 .join-page-mobile-logo-texts {
@@ -350,4 +353,29 @@
     filter: blur(50px);
     z-index: 0;
     pointer-events: none;
+}
+
+.join-page-mobile-wechat-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    img {
+        width: 176px;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    strong {
+        color: #fff;
+        font-size: 16px;
+        font-weight: 400;
+        position: absolute;
+        top: 96px;
+        right: 40px;
+    }
 }

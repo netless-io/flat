@@ -19,6 +19,10 @@ void i18next
         interpolation: {
             escapeValue: false, // react already safes from xss
         },
+        detection: {
+            // don't remember last language detection result
+            caches: [],
+        },
     });
 
 /**

@@ -53,3 +53,30 @@
         user-select: none;
     }
 }
+
+.chat-message-user-guide-bubble {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    user-select: text;
+    background: #eef0f6;
+    color: #7a7b7c;
+
+    & > pre {
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+        text-align: initial;
+        font-family: inherit;
+        white-space: normal;
+        word-break: break-all;
+        text-align: justify;
+        user-select: auto;
+    }
+}
+
+.chat-message-user-guide-btn {
+    color: #3381ff;
+    cursor: pointer;
+}
