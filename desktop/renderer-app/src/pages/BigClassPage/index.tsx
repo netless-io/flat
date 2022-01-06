@@ -165,8 +165,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     if (
         !whiteboardStore.room ||
         whiteboardStore.phase === RoomPhase.Connecting ||
-        whiteboardStore.phase === RoomPhase.Disconnecting ||
-        whiteboardStore.phase === RoomPhase.Reconnecting
+        whiteboardStore.phase === RoomPhase.Disconnecting
     ) {
         loadingPageRef.current = true;
     } else {
