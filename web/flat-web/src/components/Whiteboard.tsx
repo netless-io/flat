@@ -40,11 +40,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     const isReconnecting = phase === RoomPhase.Reconnecting;
 
     useEffect(() => {
-        let hideMessage: () => void = noop;
-        if (isReconnecting) {
-            hideMessage = message.info(t("reconnecting"), 0);
-        }
-        return hideMessage;
+        return isReconnecting ? message.info(t("reconnecting"), 0) : noop;
     }, [isReconnecting, t]);
 
     useEffect(() => {
