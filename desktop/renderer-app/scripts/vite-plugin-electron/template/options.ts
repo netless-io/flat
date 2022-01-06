@@ -1,4 +1,4 @@
-import { getTemplate } from "./lib";
+import { getTemplate } from "../utils";
 
 const electronCode = getTemplate("./template/electron.template.js");
 const eventsCode = getTemplate("./template/events.template.js");

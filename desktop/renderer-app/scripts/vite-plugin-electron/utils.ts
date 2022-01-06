@@ -46,5 +46,5 @@ export const needParse = (
 };
 
 export function getTemplate(path: string): string {
-    return readFileSync(join(__dirname, path)).toString();
+    return readFileSync(join(__dirname, path), "utf8");
 }

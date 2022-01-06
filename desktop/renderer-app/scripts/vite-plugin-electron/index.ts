@@ -1,7 +1,7 @@
 import { builtinModules } from "module";
 import { Plugin as VitePlugin } from "vite";
-import { needParse } from "./lib";
-import { options } from "./options.js";
+import { needParse } from "./utils";
+import { options } from "./template/options";
 
 // based on https://github.com/caoxiemeihao/vite-plugins/blob/main/packages/electron/src/index.ts
 

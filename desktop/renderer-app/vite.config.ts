@@ -1,6 +1,7 @@
 import refresh from "@vitejs/plugin-react-refresh";
 import { defineConfig } from "vite";
 import path from "path";
+// TODO: find new place to store vite-plugin-dotenv
 import { dotenv } from "../../web/flat-web/scripts/vite-plugin-dotenv";
 import { visualizer } from "rollup-plugin-visualizer";
 import { electron } from "./scripts/vite-plugin-electron";
