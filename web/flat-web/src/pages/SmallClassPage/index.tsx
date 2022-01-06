@@ -131,12 +131,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [classRoomStore.users.totalUserCount, classRoomStore.isRecording]);
 
-    if (
-        !room ||
-        phase === RoomPhase.Connecting ||
-        phase === RoomPhase.Disconnecting ||
-        phase === RoomPhase.Reconnecting
-    ) {
+    if (!room || phase === RoomPhase.Connecting || phase === RoomPhase.Disconnecting) {
         loadingPageRef.current = true;
     } else {
         if (classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Idle) {
