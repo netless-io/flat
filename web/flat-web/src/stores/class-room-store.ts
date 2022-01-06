@@ -191,7 +191,6 @@ export class ClassRoomStore {
         });
 
         this.rtm.on(RTMessageType.CONNECTED, () => {
-            console.log("CONNECTED");
             return this.updateInitialRoomState();
         });
     }
