@@ -8,7 +8,9 @@ import classNames from "classnames";
 import { RaiseHand, ScenesController } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useEffect, useState } from "react";
+import { message } from "antd";
 import { useTranslation } from "react-i18next";
+import { RoomPhase } from "white-web-sdk";
 import { WhiteboardStore } from "../stores/whiteboard-store";
 import { isSupportedFileExt } from "../utils/drag-and-drop";
 import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image";
@@ -20,16 +22,30 @@ export interface WhiteboardProps {
     disableHandRaising?: boolean;
 }
 
+const noop = (): void => {
+    // noop
+};
+
 export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     whiteboardStore,
     classRoomStore,
     disableHandRaising,
 }) {
-    const { i18n } = useTranslation();
-    const { room } = whiteboardStore;
+    const { i18n, t } = useTranslation();
+    const { room, phase } = whiteboardStore;
 
     const [whiteboardEl, setWhiteboardEl] = useState<HTMLElement | null>(null);
     const [collectorEl, setCollectorEl] = useState<HTMLElement | null>(null);
+
+    const isReconnecting = phase === RoomPhase.Reconnecting;
+
+    useEffect(() => {
+        let hideMessage: () => void = noop;
+        if (isReconnecting) {
+            hideMessage = message.info(t("reconnecting"), 0);
+        }
+        return hideMessage;
+    }, [isReconnecting, t]);
 
     useEffect(() => {
         const mountWindowManager = async (): Promise<void> => {
