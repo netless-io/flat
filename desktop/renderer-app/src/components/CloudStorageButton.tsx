@@ -6,8 +6,9 @@ import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
-import { TopBarRightBtn } from "./TopBarRightBtn";
+import { TopBarRightBtn } from "flat-components";
 import { ClassRoomStore } from "../stores/class-room-store";
+import cloudStorageSVG from "../assets/image/cloud-storage.svg";
 
 interface CloudStorageButtonProps {
     classroom: ClassRoomStore;
@@ -26,7 +27,11 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
 
     return (
         <>
-            <TopBarRightBtn title="Open Cloud Storage" icon="cloud-storage" onClick={showModal} />
+            <TopBarRightBtn
+                title="Open Cloud Storage"
+                icon={<img src={cloudStorageSVG} />}
+                onClick={showModal}
+            />
             <Modal
                 title={t("my-cloud ")}
                 onCancel={hideModal}
