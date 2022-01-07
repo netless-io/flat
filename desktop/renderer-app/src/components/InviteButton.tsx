@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { TopBarRightBtn } from "./TopBarRightBtn";
+import { TopBarRightBtn } from "flat-components";
 import { RoomItem } from "../stores/room-store";
 import { InviteModal } from "./Modal/InviteModal";
+import inviteSVG from "../assets/image/invite.svg";
 
 export interface InviteButtonProps {
     roomInfo?: RoomItem;
@@ -13,7 +14,11 @@ export const InviteButton = observer<InviteButtonProps>(function InviteButton({ 
     const hideInviteModal = (): void => showInviteModal(false);
     return (
         <div>
-            <TopBarRightBtn title="Invite" icon="invite" onClick={() => showInviteModal(true)} />
+            <TopBarRightBtn
+                title="Invite"
+                icon={<img src={inviteSVG} />}
+                onClick={() => showInviteModal(true)}
+            />
             {roomInfo && (
                 <InviteModal
                     room={roomInfo}
