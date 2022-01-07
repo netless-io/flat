@@ -17,7 +17,7 @@ import {
 
 import InviteButton from "../../components/InviteButton";
 import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
-import { TopBarRightBtn } from "../../components/TopBarRightBtn";
+import { TopBarRightBtn } from "flat-components";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { SmallClassAvatar } from "./SmallClassAvatar";
@@ -45,6 +45,12 @@ import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
 import { generateAvatar } from "../../utils/generate-avatar";
 import { AppStoreButton } from "../../components/AppStoreButton";
+
+import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
+import shareScreenSVG from "../../assets/image/share-screen.svg";
+import exitSVG from "../../assets/image/exit.svg";
+import hideSideSVG from "../../assets/image/hide-side.svg";
+import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -281,9 +287,11 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     <TopBarRightBtn
                         title="Share Screen"
                         icon={
-                            shareScreenStore.enableShareScreenStatus
-                                ? "share-screen-active"
-                                : "share-screen"
+                            shareScreenStore.enableShareScreenStatus ? (
+                                <img src={shareScreenActiveSVG} />
+                            ) : (
+                                <img src={shareScreenSVG} />
+                            )
                         }
                         onClick={handleShareScreen}
                     />
@@ -294,14 +302,19 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
                     title="Exit"
-                    icon="exit"
+                    icon={<img src={exitSVG} />}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
                     title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
-                    icon="hide-side"
-                    active={isRealtimeSideOpen}
+                    icon={
+                        isRealtimeSideOpen ? (
+                            <img src={hideSideActiveSVG} />
+                        ) : (
+                            <img src={hideSideSVG} />
+                        )
+                    }
                     onClick={() => openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen)}
                 />
             </>

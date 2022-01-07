@@ -28,7 +28,7 @@ import {
 } from "../../components/ExitRoomConfirm";
 import InviteButton from "../../components/InviteButton";
 import { RealtimePanel } from "../../components/RealtimePanel";
-import { TopBarRightBtn } from "../../components/TopBarRightBtn";
+import { TopBarRightBtn } from "flat-components";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RecordingConfig, useClassRoomStore, User } from "../../stores/class-room-store";
 import { usePowerSaveBlocker } from "../../utils/hooks/use-power-save-blocker";
@@ -40,6 +40,11 @@ import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
 import { generateAvatar } from "../../utils/generate-avatar";
 import { AppStoreButton } from "../../components/AppStoreButton";
+import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
+import shareScreenSVG from "../../assets/image/share-screen.svg";
+import exitSVG from "../../assets/image/exit.svg";
+import hideSideSVG from "../../assets/image/hide-side.svg";
+import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -261,9 +266,11 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     <TopBarRightBtn
                         title="Share Screen"
                         icon={
-                            shareScreenStore.enableShareScreenStatus
-                                ? "share-screen-active"
-                                : "share-screen"
+                            shareScreenStore.enableShareScreenStatus ? (
+                                <img src={shareScreenActiveSVG} />
+                            ) : (
+                                <img src={shareScreenSVG} />
+                            )
                         }
                         onClick={handleShareScreen}
                     />
@@ -274,14 +281,19 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
                     title="Exit"
-                    icon="exit"
+                    icon={<img src={exitSVG} />}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
                     title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
-                    icon="hide-side"
-                    active={isRealtimeSideOpen}
+                    icon={
+                        isRealtimeSideOpen ? (
+                            <img src={hideSideActiveSVG} />
+                        ) : (
+                            <img src={hideSideSVG} />
+                        )
+                    }
                     onClick={handleSideOpenerSwitch}
                 />
             </>
