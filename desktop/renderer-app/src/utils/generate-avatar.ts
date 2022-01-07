@@ -6,6 +6,7 @@ import index4PNG from "../assets/image/default-avatars/4.png";
 
 const defaultAvatars = [index0PNG, index1PNG, index2PNG, index3PNG, index4PNG];
 
+/** Generate Avatar base on uid */
 export const generateAvatar = (uid: string): string => {
     let index = 0;
     if (uid) {
