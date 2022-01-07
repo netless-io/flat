@@ -1,48 +1,49 @@
-import { build } from "esbuild";
+import { build, OutputFile } from "esbuild";
 import { readFileSync } from "fs";
 import { join } from "path";
 
-const cleanUrl = (url: string): string => url.replace(/\?.*$/s, "").replace(/#.*$/s, "");
+// e.g:
+// flat/node_modules/electron/index.js?v=19cea64f => flat/node_modules/electron/index.js
+const removeQueryString = (url: string): string => url.replace(/\?.*$/s, "").replace(/#.*$/s, "");
 
-export const needParse = (
+const bundleModel = (filePath: string): Promise<OutputFile[]> => {
+    return build({
+        entryPoints: [filePath],
+        bundle: true,
+        outfile: "index.js",
+        platform: "node",
+        write: false,
+    })
+        .then(({ outputFiles }) => outputFiles)
+        .catch(error => {
+            console.error(error);
+            return [];
+        });
+};
+
+// TODO: entryPoints need support string[]
+export const cjs2esm = async (
     id: string,
     entries: Array<{ entryPoints: string; code: string; shouldBundle: boolean }>,
 ): Promise<string | null> => {
-    const cid = cleanUrl(id);
-    let result: Promise<string | null> = Promise.resolve(null);
-    for (const key of entries) {
-        if (cid.endsWith(key.entryPoints)) {
-            if (key.shouldBundle) {
-                const path = id.replace(/(\?v=)(\w+)/g, "");
-                result = build({
-                    entryPoints: [path],
-                    bundle: true,
-                    outfile: "index.js",
-                    platform: "node",
-                    write: false,
-                })
-                    .then(result => {
-                        return (
-                            result?.outputFiles
-                                ?.map(item => {
-                                    return item.text;
-                                })
-                                .join("") ?? ""
-                        );
-                    })
-                    .then(result => {
-                        return result.concat(key.code);
-                    })
-                    .catch(e => {
-                        console.warn(e);
-                        return null;
-                    });
-            } else {
-                return Promise.resolve(key.code);
-            }
+    const filePath = removeQueryString(id);
+    for (const { entryPoints, code, shouldBundle } of entries) {
+        if (!filePath.endsWith(entryPoints)) {
+            continue;
         }
+        if (!shouldBundle) {
+            return code;
+        }
+        const outputFiles = await bundleModel(filePath);
+        if (outputFiles.length === 0) {
+            return code;
+        }
+        return outputFiles
+            .map(({ text }) => text)
+            .join("")
+            .concat(code);
     }
-    return result;
+    return null;
 };
 
 export function getTemplate(path: string): string {

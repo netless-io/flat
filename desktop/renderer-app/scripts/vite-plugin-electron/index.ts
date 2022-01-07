@@ -1,6 +1,6 @@
 import { builtinModules } from "module";
 import { Plugin as VitePlugin } from "vite";
-import { needParse } from "./utils";
+import { cjs2esm } from "./utils";
 import { options } from "./template/options";
 
 // based on https://github.com/caoxiemeihao/vite-plugins/blob/main/packages/electron/src/index.ts
@@ -16,7 +16,7 @@ export function electron(): VitePlugin[] {
         name: "vite-plugin-electron:node-model-resolve",
         apply: "serve",
         transform(_code, id) {
-            return needParse(id, options);
+            return cjs2esm(id, options);
         },
     };
 
