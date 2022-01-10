@@ -1867,10 +1867,10 @@
   resolved "https://registry.npmjs.org/@netless/app-countdown/-/app-countdown-0.0.1.tgz#97772577008ead43c10812600a121e89fc18c8e3"
   integrity sha512-pOJLEQEHoSujAN+Q0kB257XKo3D6+J5Lz7s57OMc0/clhgaciOidBvNoTpsN70mOGRGpGiWpMovaoSYTihuU4Q==
 
-"@netless/app-docs-viewer@0.1.26":
-  version "0.1.26"
-  resolved "https://registry.npmjs.org/@netless/app-docs-viewer/-/app-docs-viewer-0.1.26.tgz#7b7d75a2b87c134f9577b24466a0a7e2928d484d"
-  integrity sha512-pXyxT8km6yWzjOLgUaRId/14oOcHago5btG6WPFeaSNX4IYopAUe8wd87oG4bUK6zo+jBO1E17+AYzPWaEgBTw==
+"@netless/app-docs-viewer@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@netless/app-docs-viewer/-/app-docs-viewer-0.2.0.tgz#86d0241656f3716109a3659e9cfb4405c5d7964e"
+  integrity sha512-FjoPETCbznPtwm1ESAhAwtjm2bUyC9ccAdbpw6ZmNjbivLumLoQy+kRbzEUzOyOfZwwuu3qcwjw1NlrNyMYfug==
   dependencies:
     debounce-fn "^5.0.0"
     vanilla-lazyload "^17.5.0"
@@ -1966,13 +1966,13 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@^0.4.0-canary.1":
-  version "0.4.0-canary.1"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.4.0-canary.1.tgz#344318b1933a1935d44592f0561110e74241df9e"
-  integrity sha512-7ldMmskfdkwggmc9diWCOersjx1c99HKeWhQ21WFh4meXSeSX5CIwiBJ9I5MBzZfcOZYlLf6M3aDDEPbuCrSRw==
+"@netless/window-manager@^0.4.0-canary.3":
+  version "0.4.0-canary.3"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.4.0-canary.3.tgz#562e28d8653072291f6399ab0297dff4941d8809"
+  integrity sha512-54G4aNLxZK5+RTzQ5wU10xmMWyvUc+4zocunZHwLDLLhr7bzODhxtjFI+KdRNoogQIePd6wrjfYZegs+ot4eCA==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
-    "@netless/app-docs-viewer" "0.1.26"
+    "@netless/app-docs-viewer" "0.2.0"
     "@netless/app-media-player" "0.1.0-beta.5"
     "@netless/telebox-insider" "0.2.17"
     emittery "^0.9.2"
