@@ -5,15 +5,10 @@ import path from "path";
 import { dotenv } from "./scripts/vite-plugin-dotenv";
 import { injectHtmlHash } from "./scripts/vite-plugin-html-hash";
 import { version } from "./scripts/vite-plugin-version";
+import { inlineAssets } from "./scripts/vite-plugin-inline-assets";
 
 export default defineConfig({
-    plugins: [
-        refresh(),
-        legacy(),
-        dotenv(path.join(__dirname, "..", "..", "config")),
-        injectHtmlHash(),
-        version(path.join(__dirname, "..", "..", "desktop", "main-app", "package.json")),
-    ],
+    plugins: [refresh(), legacy(), dotenv("../../config"), injectHtmlHash(), version(path.join(__dirname, "..", "..", "desktop", "main-app", "package.json")), inlineAssets()],
     resolve: {
         alias: [
             // replace webpack alias
