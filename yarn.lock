@@ -1936,6 +1936,11 @@
   dependencies:
     query-string "^6.13.1"
 
+"@netless/mini-svg-data-uri@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@netless/mini-svg-data-uri/-/mini-svg-data-uri-0.0.1.tgz#caae00d4fa23850fbb10644dba8e7bf4b64f7f8d"
+  integrity sha512-HsQ04Yzuh8PV4+N31erOeS2pEC6IHGCO/Y7RNwi3AWaQ5ASRpzUka5TxWE4QEXZoseccthcjVL5XN687b/cwRg==
+
 "@netless/player-controller@^0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@netless/player-controller/-/player-controller-0.0.9.tgz#2c2bad03d1d51c623a09cfa3e36a022809242fbb"
