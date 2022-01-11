@@ -115,6 +115,7 @@ module.exports = {
         "webstorm",
         "Frameless",
         "micromessenger",
+        "bokeh",
 
         // CNCF
         "nindent",
