@@ -23,7 +23,7 @@ function specialHexEncode(match: string): string {
         }
         default: {
             return match.toLowerCase();
-        } // compresses better
+        }
     }
 }
 
