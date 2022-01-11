@@ -33,7 +33,7 @@ const cleanUrl = (url: string): string => url.replace(/#.*$/, "").replace(/\?.*$
 function uriEncodeSvg(content: string): string {
     const normalizedContent = content.trim().replace(/\s+/g, " ").replace(/"/g, "'");
 
-    return encodeURIComponent(normalizedContent).replace(urlHexPairsRE, specialHexEncode);
+    return encodeURIComponent(normalizedContent).replace(/%[\dA-F]{2}/g, specialHexEncode);
 }
 
 export function inlineAssets(): Plugin {
