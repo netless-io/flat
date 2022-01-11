@@ -31,7 +31,7 @@ const cleanUrl = (url: string): string => url.replace(/#.*$/, "").replace(/\?.*$
 
 // Adopted from https://github.com/tigt/mini-svg-data-uri
 function uriEncodeSvg(content: string): string {
-    const normalizedContent = content.trim().replace(whitespaceRE, " ").replace(doubleQuoteRE, "'");
+    const normalizedContent = content.trim().replace(/\s+/g, " ").replace(/"/g, "'");
 
     return encodeURIComponent(normalizedContent).replace(urlHexPairsRE, specialHexEncode);
 }
