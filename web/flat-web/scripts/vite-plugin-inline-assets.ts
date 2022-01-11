@@ -42,7 +42,7 @@ export function inlineAssets(): Plugin {
         enforce: "pre",
         async transform(_, id: string) {
             const filePath = cleanUrl(id);
-            if (/.(svg|jpg|jpeg|png|gif)$/i.test(filePath)) {
+            if (/\.(svg|jpg|jpeg|png|gif)$/i.test(filePath)) {
                 const content = await fsp.readFile(filePath);
                 const url = filePath.endsWith(".svg")
                     ? `data:image/svg+xml;utf8,${uriEncodeSvg(content.toString("utf-8"))}`
