@@ -27,7 +27,9 @@ function specialHexEncode(match: string): string {
     }
 }
 
-const cleanUrl = (url: string): string => url.replace(/#.*$/, "").replace(/\?.*$/, "");
+// e.g:
+// flat/node_modules/electron/index.js?v=19cea64f => flat/node_modules/electron/index.js
+const removeQueryString = (url: string): string => url.replace(/#.*$/, "").replace(/\?.*$/, "");
 
 // Adopted from https://github.com/tigt/mini-svg-data-uri
 function uriEncodeSvg(content: string): string {
