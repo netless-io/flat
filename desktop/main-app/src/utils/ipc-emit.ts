@@ -4,7 +4,7 @@ import runtime from "./runtime";
 import { constants } from "flat-types";
 import { CustomWindow, IsMultiInstance } from "../window-manager/abstract";
 
-const sendIPC = (customWindow: CustomWindow | null, eventName: string, ...args: any[]): void => {
+const sendIPC = (customWindow: CustomWindow | null, eventName: string, args: any): void => {
     if (customWindow) {
         customWindow.window.webContents.send(eventName, args);
     } else if (runtime.isDevelopment) {
