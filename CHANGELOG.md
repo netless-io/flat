@@ -1,3 +1,12 @@
+## [1.5.1](https://github.com/netless-io/flat/compare/v1.5.0...v1.5.1) (2022-01-11)
+
+
+### Bug Fixes
+
+* **electron:** ui display error when upgrading flat ([#1284](https://github.com/netless-io/flat/issues/1284)) ([9469f6a](https://github.com/netless-io/flat/commit/9469f6a5cbc9bd28a3b75a3793efc08b09eff22d))
+
+
+
 # [1.5.0](https://github.com/netless-io/flat/compare/v1.4.0...v1.5.0) (2022-01-11)
 
 
