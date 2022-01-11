@@ -21,7 +21,10 @@ export default defineConfig(() => {
         resolve: {
             alias: [
                 // replace webpack alias
-                { find: /^~/, replacement: "" },
+                {
+                    find: /^~/,
+                    replacement: "",
+                },
                 {
                     find: "flat-types",
                     replacement: path.join(__dirname, "..", "..", "packages", "flat-types", "src"),

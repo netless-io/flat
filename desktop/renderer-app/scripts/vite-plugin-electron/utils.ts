@@ -21,23 +21,26 @@ const bundleModel = (filePath: string): Promise<OutputFile[]> => {
         });
 };
 
-// TODO: entryPoints need support string[]
 export const cjs2esm = async (
     id: string,
     entries: Array<{ entryPoints: string; code: string; shouldBundle: boolean }>,
 ): Promise<string | null> => {
     const filePath = removeQueryString(id);
+
     for (const { entryPoints, code, shouldBundle } of entries) {
         if (!filePath.endsWith(entryPoints)) {
             continue;
         }
+
         if (!shouldBundle) {
             return code;
         }
+
         const outputFiles = await bundleModel(filePath);
         if (outputFiles.length === 0) {
             return code;
         }
+
         return outputFiles
             .map(({ text }) => text)
             .join("")

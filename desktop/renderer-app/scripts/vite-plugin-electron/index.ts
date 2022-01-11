@@ -24,44 +24,47 @@ export function electron(): VitePlugin[] {
         apply: "serve",
         name: "vite-plugin-electron:builtinModules-resolve",
         transform(_code, id) {
-            // vite not support node build in model，
-            // so will throw Error to tell `node api is not support in browser`
-            // We need transform and overwrite error
-            // e.g:
-            // if we use path in project
-            // `import path from 'path'`
-            // vite will analyze this import statement and replace to
-            // `throw new Error('path is not support in browser!')`
-            if (id.includes("__vite-browser-external")) {
-                const moduleId = id.split(":")[1];
-                if (builtinModules.includes(moduleId)) {
-                    // require all project import `nodeModule`
-                    const nodeModule = require(moduleId);
-                    const attrs = Object.keys(nodeModule);
-                    const requireTpl = `const __nodeModule = require('${moduleId}');`;
-                    const declaresTpl =
-                        attrs.map(attr => `const ${attr} = __nodeModule.${attr}`).join(";\n") + ";";
-                    // transform all `nodeModule` to ESM grammar
-                    const exportTpl = `export {\n  ${attrs.join(",\n  ")},\n}`;
-                    const exportDefault = `export default { ${attrs.join(", ")} };`;
-                    const nodeModuleCode = [
-                        "",
-                        requireTpl,
-                        declaresTpl,
-                        exportTpl,
-                        exportDefault,
-                        "",
-                    ].join("\n");
-                    return {
-                        code: nodeModuleCode,
-                        map: null,
-                    };
-                }
+            /**
+             * vite not support node build in model so will throw Error to tell `node api is not support in browser`
+             * We need transform and overwrite error.
+             * e.g:
+             *      `import path from 'path'`
+             * vite will analyze this import statement and replace to
+             * `throw new Error('path is not support in browser!')`
+             */
+            if (!id.startsWith("__vite-browser-external:")) {
+                return null;
             }
 
-            return null;
+            const moduleName = id.split(":")[1];
+
+            if (!builtinModules.includes(moduleName)) {
+                return null;
+            }
+
+            // require all project import `nodeModule`
+            const nodeModule = require(moduleName);
+            const exportKeys = Object.keys(nodeModule);
+            const requireTpl = `const __nodeModule = require("${moduleName}");`;
+            const declaresTpl = exportKeys
+                .map(key => `const ${key} = __nodeModule.${key};`)
+                .join("\n");
+
+            // transform all `nodeModule` to ESM grammar
+            const exportTpl = `export { ${exportKeys.join(", ")} };`;
+            const exportDefault = `export default { ${exportKeys.join(", ")} };`;
+
+            const nodeModuleCode = ["", requireTpl, declaresTpl, exportTpl, exportDefault, ""].join(
+                "\n",
+            );
+
+            return {
+                code: nodeModuleCode,
+                map: null,
+            };
         },
     };
+
     return [builtinModulesResolve, nodeModelResolve];
 }
 
