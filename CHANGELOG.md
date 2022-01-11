@@ -1,3 +1,20 @@
+# [1.5.0](https://github.com/netless-io/flat/compare/v1.4.0...v1.5.0) (2022-01-11)
+
+
+### Bug Fixes
+
+* **library:** sync camera on insert image ([#1281](https://github.com/netless-io/flat/issues/1281)) ([3b4e7d8](https://github.com/netless-io/flat/commit/3b4e7d895b858c461722f568d7655a15e01b4521))
+* **project:** refresh channel info on reconnect ([#1274](https://github.com/netless-io/flat/issues/1274)) ([8fa0c1f](https://github.com/netless-io/flat/commit/8fa0c1f43b971a864265eef972d7c623106fe7c5))
+* **renderer-app:** hot keys invalid in preview file window ([#1264](https://github.com/netless-io/flat/issues/1264)) ([f3f2bef](https://github.com/netless-io/flat/commit/f3f2bef138fa0c8b13027a6b28d7ad310399ca31))
+
+
+### Features
+
+* **desktop:** support macOS localized ([#1260](https://github.com/netless-io/flat/issues/1260)) ([d6c668a](https://github.com/netless-io/flat/commit/d6c668ab4fdd81b0662beee5b668d0a39604d058))
+* **web:** add "open in browser" tip in wechat browser ([#1268](https://github.com/netless-io/flat/issues/1268)) ([76e87c8](https://github.com/netless-io/flat/commit/76e87c8678e34604e922808bbd64b693d865e2e6))
+
+
+
 # [1.4.0](https://github.com/netless-io/flat/compare/v1.3.0...v1.4.0) (2021-12-30)
 
 
