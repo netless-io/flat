@@ -554,7 +554,7 @@ export class WhiteboardStore {
         // 2. move camera to fit image height
         width /= 0.8;
         height /= 0.8;
-        room.moveCameraToContain({
+        (this.windowManager || room).moveCameraToContain({
             originX: centerX - width / 2,
             originY: centerY - height / 2,
             width: width,

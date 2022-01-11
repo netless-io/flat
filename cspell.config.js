@@ -16,6 +16,7 @@ module.exports = {
         "typebox",
         "downloaders",
         "Magix",
+        "quickstart",
 
         // wechat
         "wechat",
@@ -114,6 +115,7 @@ module.exports = {
         "webstorm",
         "Frameless",
         "micromessenger",
+        "bokeh",
 
         // CNCF
         "nindent",
