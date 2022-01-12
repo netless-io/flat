@@ -3,6 +3,7 @@ import "./BigClassPage.less";
 import { message } from "antd";
 import classNames from "classnames";
 import {
+    Countdown,
     LoadingPage,
     NetworkStatus,
     RecordButton,
@@ -202,9 +203,12 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         return (
             <>
                 <NetworkStatus networkQuality={classRoomStore.networkQuality} />
-                {!classRoomStore.isCreator && (
-                    <RoomInfo roomStatus={classRoomStore.roomStatus} roomType={RoomType.BigClass} />
-                )}
+                {!classRoomStore.isCreator ? (
+                    <RoomInfo
+                        roomStatus={classRoomStore.roomStatus}
+                        roomType={classRoomStore.roomInfo?.roomType}
+                    />
+                ) : classRoomStore.roomInfo?.beginTime && <Countdown state={classRoomStore.roomStatus !== RoomStatus.Started ? 'paused' : 'started'} beginTime={classRoomStore.roomInfo.beginTime} />}
             </>
         );
     }

@@ -9,6 +9,7 @@ import {
     TopBar,
     TopBarDivider,
     LoadingPage,
+    Countdown,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
@@ -228,9 +229,12 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         return (
             <>
                 <NetworkStatus networkQuality={classRoomStore.networkQuality} />
-                {!classRoomStore.isCreator && (
-                    <RoomInfo roomStatus={classRoomStore.roomStatus} roomType={RoomType.BigClass} />
-                )}
+                {!classRoomStore.isCreator ? (
+                    <RoomInfo
+                        roomStatus={classRoomStore.roomStatus}
+                        roomType={classRoomStore.roomInfo?.roomType}
+                    />
+                ) : classRoomStore.roomInfo?.beginTime && <Countdown state={classRoomStore.roomStatus !== RoomStatus.Started ? 'paused' : 'started'} beginTime={classRoomStore.roomInfo.beginTime} />}
             </>
         );
     }

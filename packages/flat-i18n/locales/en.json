@@ -390,5 +390,6 @@
   "user-guide-button": "Check it out now",
   "start-recording": "Start recording",
   "stop-recording": "Stop recording",
-  "open-in-browser": "Open in Browser"
+  "open-in-browser": "Open in Browser",
+  "liveroom-started": "Started:"
 }

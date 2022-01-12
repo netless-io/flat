@@ -12,6 +12,7 @@ import {
     TopBar,
     TopBarDivider,
     LoadingPage,
+    Countdown,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
@@ -186,9 +187,12 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         return (
             <>
                 <NetworkStatus networkQuality={classRoomStore.networkQuality} />
-                {!classRoomStore.isCreator && (
-                    <RoomInfo roomStatus={classRoomStore.roomStatus} roomType={RoomType.OneToOne} />
-                )}
+                {!classRoomStore.isCreator ? (
+                    <RoomInfo
+                        roomStatus={classRoomStore.roomStatus}
+                        roomType={classRoomStore.roomInfo?.roomType}
+                    />
+                ) : classRoomStore.roomInfo?.beginTime && <Countdown state={classRoomStore.roomStatus !== RoomStatus.Started ? 'paused' : 'started'} beginTime={classRoomStore.roomInfo.beginTime} />}
             </>
         );
     }

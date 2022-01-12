@@ -13,6 +13,7 @@ import {
     TopBar,
     TopBarDivider,
     LoadingPage,
+    Countdown,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
@@ -30,7 +31,7 @@ import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusSto
 
 import { RtcChannelType } from "../../api-middleware/rtc";
 import { ClassModeType } from "../../api-middleware/rtm";
-import { RoomStatus } from "../../api-middleware/flatServer/constants";
+import { RoomStatus, RoomType } from "../../api-middleware/flatServer/constants";
 import {
     AgoraCloudRecordBackgroundConfigItem,
     AgoraCloudRecordLayoutConfigItem,
@@ -223,12 +224,12 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         return (
             <>
                 <NetworkStatus networkQuality={classRoomStore.networkQuality} />
-                {!classRoomStore.isCreator && (
+                {!classRoomStore.isCreator ? (
                     <RoomInfo
                         roomStatus={classRoomStore.roomStatus}
                         roomType={classRoomStore.roomInfo?.roomType}
                     />
-                )}
+                ) : classRoomStore.roomInfo?.beginTime && <Countdown state={classRoomStore.roomStatus !== RoomStatus.Started ? 'paused' : 'started'} beginTime={classRoomStore.roomInfo.beginTime} />}
             </>
         );
     }
