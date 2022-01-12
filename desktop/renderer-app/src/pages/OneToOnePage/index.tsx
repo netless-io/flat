@@ -27,7 +27,7 @@ import {
 } from "../../components/ExitRoomConfirm";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import { RoomStatus, RoomType } from "../../api-middleware/flatServer/constants";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RecordingConfig, useClassRoomStore } from "../../stores/class-room-store";
 import { RtcChannelType } from "../../api-middleware/rtc";
 import { useComputed } from "../../utils/mobx";
@@ -192,7 +192,18 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                         roomStatus={classRoomStore.roomStatus}
                         roomType={classRoomStore.roomInfo?.roomType}
                     />
-                ) : classRoomStore.roomInfo?.beginTime && <Countdown state={classRoomStore.roomStatus !== RoomStatus.Started ? 'paused' : 'started'} beginTime={classRoomStore.roomInfo.beginTime} />}
+                ) : (
+                    classRoomStore.roomInfo?.beginTime && (
+                        <Countdown
+                            state={
+                                classRoomStore.roomStatus !== RoomStatus.Started
+                                    ? "paused"
+                                    : "started"
+                            }
+                            beginTime={classRoomStore.roomInfo.beginTime}
+                        />
+                    )
+                )}
             </>
         );
     }

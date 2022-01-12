@@ -31,7 +31,7 @@ import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusSto
 
 import { RtcChannelType } from "../../api-middleware/rtc";
 import { ClassModeType } from "../../api-middleware/rtm";
-import { RoomStatus, RoomType } from "../../api-middleware/flatServer/constants";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import {
     AgoraCloudRecordBackgroundConfigItem,
     AgoraCloudRecordLayoutConfigItem,
@@ -229,7 +229,18 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         roomStatus={classRoomStore.roomStatus}
                         roomType={classRoomStore.roomInfo?.roomType}
                     />
-                ) : classRoomStore.roomInfo?.beginTime && <Countdown state={classRoomStore.roomStatus !== RoomStatus.Started ? 'paused' : 'started'} beginTime={classRoomStore.roomInfo.beginTime} />}
+                ) : (
+                    classRoomStore.roomInfo?.beginTime && (
+                        <Countdown
+                            state={
+                                classRoomStore.roomStatus !== RoomStatus.Started
+                                    ? "paused"
+                                    : "started"
+                            }
+                            beginTime={classRoomStore.roomInfo.beginTime}
+                        />
+                    )
+                )}
             </>
         );
     }

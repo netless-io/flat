@@ -82,7 +82,7 @@ export const Countdown: React.FC<CountdownProps> = ({ state = "paused", beginTim
 
     return (
         <span className="countdown-bar">
-            <span className={stateCls}>{t("liveroom-started")}</span>
+            <span className={stateCls}>{t("room-started")}</span>
             <span>{renderTime(timestamp)}</span>
         </span>
     );
