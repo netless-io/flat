@@ -10,9 +10,9 @@ export default defineConfig({
     plugins: [
         refresh(),
         legacy(),
-        dotenv("../../config"),
+        dotenv(path.join(__dirname, "..", "..", "config")),
         injectHtmlHash(),
-        version("../../desktop/main-app/package.json"),
+        version(path.join(__dirname, "..", "..", "desktop", "main-app", "package.json")),
     ],
     resolve: {
         alias: [
