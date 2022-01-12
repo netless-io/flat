@@ -17,6 +17,7 @@ export default defineConfig(() => {
         });
     }
     return {
+        base: "./",
         plugins,
         resolve: {
             alias: [
@@ -55,6 +56,12 @@ export default defineConfig(() => {
         },
         build: {
             sourcemap: true,
+            /**
+             * Vite will generate resources in assets folder after build，
+             * but index.html with './' relative path load module,
+             * instead of the default 'assets' folder.
+             */
+            assetsDir: "",
             rollupOptions: {
                 output: {
                     format: "cjs",
