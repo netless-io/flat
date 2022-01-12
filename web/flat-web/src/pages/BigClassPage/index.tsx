@@ -3,6 +3,7 @@ import "./BigClassPage.less";
 import { message } from "antd";
 import classNames from "classnames";
 import {
+    CloudRecordBtn,
     LoadingPage,
     NetworkStatus,
     RecordButton,
@@ -210,25 +211,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     }
 
     function renderTopBarCenter(): React.ReactNode {
-        if (!classRoomStore.isCreator) {
-            return null;
-        }
-        return (
-            <>
-                {classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Started && (
-                    <RecordButton
-                        isRecording={classRoomStore.isRecording}
-                        onClick={() =>
-                            classRoomStore.toggleRecording({
-                                onStop() {
-                                    void message.success(t("recording-completed-tips"));
-                                },
-                            })
-                        }
-                    />
-                )}
-            </>
-        );
+        return null;
     }
 
     function renderTopBarRight(): React.ReactNode {
@@ -248,6 +231,14 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     />
                 )}
 
+                {classRoomStore.isCreator &&
+                (<CloudRecordBtn isRecording={classRoomStore.isRecording} onClick={() => {
+                    classRoomStore.toggleRecording({
+                        onStop() {
+                            void message.success(t("recording-completed-tips"));
+                        },
+                    })
+                }} />)}
                 {/* TODO: open cloud-storage sub window */}
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />

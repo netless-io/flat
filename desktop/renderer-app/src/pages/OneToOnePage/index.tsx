@@ -12,6 +12,7 @@ import {
     TopBar,
     TopBarDivider,
     LoadingPage,
+    CloudRecordBtn,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
@@ -194,25 +195,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     }
 
     function renderTopBarCenter(): React.ReactNode {
-        if (!classRoomStore.isCreator) {
-            return null;
-        }
-        return (
-            <>
-                {classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Started && (
-                    <RecordButton
-                        isRecording={classRoomStore.isRecording}
-                        onClick={() =>
-                            classRoomStore.toggleRecording({
-                                onStop() {
-                                    void message.success(t("recording-completed-tips"));
-                                },
-                            })
-                        }
-                    />
-                )}
-            </>
-        );
+        return null;
     }
 
     function renderTopBarRight(): React.ReactNode {
@@ -234,6 +217,14 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     />
                 )}
 
+                {classRoomStore.isCreator &&
+                (<CloudRecordBtn isRecording={classRoomStore.isRecording} onClick={() => {
+                    classRoomStore.toggleRecording({
+                        onStop() {
+                            void message.success(t("recording-completed-tips"));
+                        },
+                    })
+                }} />)}
                 {/* TODO: open cloud-storage sub window */}
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />

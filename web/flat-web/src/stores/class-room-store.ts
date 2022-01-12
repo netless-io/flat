@@ -1,8 +1,10 @@
 import { NetworkQuality } from "agora-rtc-sdk-ng";
+import { message } from "antd";
 import dateSub from "date-fns/sub";
 import type { i18n } from "i18next";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { useEffect, useState } from "react";
+import { i18n as i18next } from "../utils/i18n";
 import { v4 as uuidv4 } from "uuid";
 import { CloudRecording } from "../api-middleware/CloudRecording";
 import {
@@ -182,6 +184,15 @@ export class ClassRoomStore {
                 fireImmediately: true,
             },
         );
+
+        reaction(
+            () => this.isRecording,
+            (isRecording: boolean) => {
+                if (isRecording) {
+                    message.success(i18next.t("start-recording"))
+                }
+            }
+        )
 
         this.rtm.once(RTMessageType.REMOTE_LOGIN, () => {
             console.log("REMOTE_LOGIN");
