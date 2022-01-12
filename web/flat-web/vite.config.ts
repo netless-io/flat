@@ -4,9 +4,16 @@ import { defineConfig } from "vite";
 import path from "path";
 import { dotenv } from "./scripts/vite-plugin-dotenv";
 import { injectHtmlHash } from "./scripts/vite-plugin-html-hash";
+import { version } from "./scripts/vite-plugin-version";
 
 export default defineConfig({
-    plugins: [refresh(), legacy(), dotenv("../../config"), injectHtmlHash()],
+    plugins: [
+        refresh(),
+        legacy(),
+        dotenv("../../config"),
+        injectHtmlHash(),
+        version("../../desktop/main-app/package.json"),
+    ],
     resolve: {
         alias: [
             // replace webpack alias
