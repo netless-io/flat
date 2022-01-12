@@ -7,6 +7,7 @@ declare namespace NodeJS {
         NODE_ENV: "development" | "production";
         DEV: boolean;
         PROD: boolean;
+        VERSION: string;
 
         NETLESS_APP_IDENTIFIER: string;
 
