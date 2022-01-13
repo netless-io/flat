@@ -17,7 +17,7 @@ import { useParams } from "react-router-dom";
 import { RoomPhase } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
-import { RoomStatus, RoomType } from "../../api-middleware/flatServer/constants";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RtcChannelType } from "../../api-middleware/rtc/room";
 import { ChatPanel } from "../../components/ChatPanel";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
@@ -208,7 +208,14 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                         roomStatus={classRoomStore.roomStatus}
                         roomType={classRoomStore.roomInfo?.roomType}
                     />
-                ) : classRoomStore.roomInfo?.beginTime && <Countdown state={classRoomStore.roomStatus !== RoomStatus.Started ? 'paused' : 'started'} beginTime={classRoomStore.roomInfo.beginTime} />}
+                ) : (
+                    classRoomStore.roomInfo?.beginTime && (
+                        <Countdown
+                            roomStatus={classRoomStore.roomStatus}
+                            beginTime={classRoomStore.roomInfo.beginTime}
+                        />
+                    )
+                )}
             </>
         );
     }

@@ -210,7 +210,14 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         roomStatus={classRoomStore.roomStatus}
                         roomType={classRoomStore.roomInfo?.roomType}
                     />
-                ) : classRoomStore.roomInfo?.beginTime && <Countdown state={classRoomStore.roomStatus !== RoomStatus.Started ? 'paused' : 'started'} beginTime={classRoomStore.roomInfo.beginTime} />}
+                ) : (
+                    classRoomStore.roomInfo?.beginTime && (
+                        <Countdown
+                            roomStatus={classRoomStore.roomStatus}
+                            beginTime={classRoomStore.roomInfo.beginTime}
+                        />
+                    )
+                )}
             </>
         );
     }

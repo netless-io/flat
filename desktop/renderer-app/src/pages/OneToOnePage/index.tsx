@@ -195,11 +195,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 ) : (
                     classRoomStore.roomInfo?.beginTime && (
                         <Countdown
-                            state={
-                                classRoomStore.roomStatus !== RoomStatus.Started
-                                    ? "paused"
-                                    : "started"
-                            }
+                            roomStatus={classRoomStore.roomStatus}
                             beginTime={classRoomStore.roomInfo.beginTime}
                         />
                     )

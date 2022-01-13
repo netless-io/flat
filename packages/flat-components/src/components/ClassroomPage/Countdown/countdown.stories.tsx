@@ -1,5 +1,6 @@
 import { Meta, Story } from "@storybook/react";
 import React from "react";
+import { RoomStatus } from "../../../types/room";
 import { Countdown, CountdownProps } from ".";
 
 const storyMeta: Meta = {
@@ -14,6 +15,6 @@ export const Overview: Story<CountdownProps> = args => {
 };
 
 Overview.args = {
-    state: "paused",
+    roomStatus: RoomStatus.Paused,
     beginTime: Date.now(),
 };
