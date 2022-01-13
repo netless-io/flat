@@ -1,17 +1,17 @@
 import { Meta, Story } from "@storybook/react";
 import React from "react";
 import { RoomStatus } from "../../../types/room";
-import { Countdown, CountdownProps } from ".";
+import { Timer, TimerProps } from ".";
 
 const storyMeta: Meta = {
-    title: "ClassroomPage/Countdown",
-    component: Countdown,
+    title: "ClassroomPage/Timer",
+    component: Timer,
 };
 
 export default storyMeta;
 
-export const Overview: Story<CountdownProps> = args => {
-    return <Countdown {...args} />;
+export const Overview: Story<TimerProps> = args => {
+    return <Timer {...args} />;
 };
 
 Overview.args = {

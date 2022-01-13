@@ -10,7 +10,7 @@ import {
     TopBar,
     TopBarDivider,
     LoadingPage,
-    Countdown,
+    Timer,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
@@ -212,7 +212,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     />
                 ) : (
                     classRoomStore.roomInfo?.beginTime && (
-                        <Countdown
+                        <Timer
                             roomStatus={classRoomStore.roomStatus}
                             beginTime={classRoomStore.roomInfo.beginTime}
                         />

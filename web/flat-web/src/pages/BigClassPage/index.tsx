@@ -3,7 +3,7 @@ import "./BigClassPage.less";
 import { message } from "antd";
 import classNames from "classnames";
 import {
-    Countdown,
+    Timer,
     LoadingPage,
     NetworkStatus,
     RecordButton,
@@ -210,7 +210,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     />
                 ) : (
                     classRoomStore.roomInfo?.beginTime && (
-                        <Countdown
+                        <Timer
                             roomStatus={classRoomStore.roomStatus}
                             beginTime={classRoomStore.roomInfo.beginTime}
                         />

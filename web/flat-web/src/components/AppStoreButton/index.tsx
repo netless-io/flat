@@ -26,9 +26,9 @@ const apps: AddAppParams[] = [
         },
     },
     {
-        kind: "Countdown",
+        kind: "Timer",
         options: {
-            title: "Countdown",
+            title: "Timer",
         },
     },
     {
@@ -50,7 +50,7 @@ const apps: AddAppParams[] = [
 
 export const appIcons = {
     Monaco: codeEditorSVG,
-    Countdown: countdownSVG,
+    Timer: countdownSVG,
     GeoGebra: geogebraSVG,
     IframeBridge: cocosSVG,
 };

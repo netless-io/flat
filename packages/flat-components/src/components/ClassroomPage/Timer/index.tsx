@@ -6,7 +6,7 @@ import format from "date-fns/format";
 import { useIsUnMounted } from "../../../utils/hooks";
 import { RoomStatus } from "../../../types/room";
 
-export type CountdownProps = {
+export type TimerProps = {
     roomStatus: RoomStatus;
     beginTime: number;
 };
@@ -53,10 +53,7 @@ const useClockTick = (beginTime: number, delay: number, cbArgs: any): number => 
     return timestamp;
 };
 
-export const Countdown: React.FC<CountdownProps> = ({
-    roomStatus = RoomStatus.Paused,
-    beginTime,
-}) => {
+export const Timer: React.FC<TimerProps> = ({ roomStatus = RoomStatus.Paused, beginTime }) => {
     const timestamp = useClockTick(beginTime, 100, roomStatus);
 
     const roomStatusCls = classnames(`countdown-${roomStatus}`);
