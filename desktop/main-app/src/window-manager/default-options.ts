@@ -13,13 +13,17 @@ export const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
     maximizable: false,
     webPreferences: {
         autoplayPolicy: "no-user-gesture-required",
+        // TODO: set nodeIntegration: false
+        //       This property is very unsafe and we should turn it off as soon as possible
+        //       Need to predict if agora-electron-sdk is supported
+        //       @BlackHole1
         nodeIntegration: true,
         contextIsolation: false,
         webSecurity: false,
         webviewTag: true,
         nativeWindowOpen: true,
         backgroundThrottling: false,
-        nodeIntegrationInSubFrames: true,
+        nodeIntegrationInSubFrames: false,
     },
 };
 
