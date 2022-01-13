@@ -77,18 +77,21 @@ class PortalWindowManager {
 
         portalWindow.document.body.appendChild(containerElement);
 
+        /**
+         * TODO: electron bug @BlackHole1
+         */
         // the main process injects browserWindowID by calling executeJavaScript asynchronously.
         // so when a new window is opened, the window may not exist yet browserWindowID, and we need to wait awhile
         // it will only take about 10ms to get the value. Even at 500ms, the user experience is not bad.
         // the wait here does not block the creation of the window, only the subsequent rendering
-        await new Promise<void>(r => {
-            const id = setInterval(() => {
-                if (portalWindow.browserWindowID) {
-                    clearInterval(id);
-                    r();
-                }
-            }, 10);
-        });
+        // await new Promise<void>(r => {
+        //     const id = setInterval(() => {
+        //         if (portalWindow.browserWindowID) {
+        //             clearInterval(id);
+        //             r();
+        //         }
+        //     }, 10);
+        // });
 
         return portalWindow;
     }
