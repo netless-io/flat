@@ -224,18 +224,18 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         return (
             <>
                 <NetworkStatus networkQuality={classRoomStore.networkQuality} />
-                {!classRoomStore.isCreator ? (
-                    <RoomInfo
-                        roomStatus={classRoomStore.roomStatus}
-                        roomType={classRoomStore.roomInfo?.roomType}
-                    />
-                ) : (
+                {classRoomStore.isCreator ? (
                     classRoomStore.roomInfo?.beginTime && (
                         <Timer
                             roomStatus={classRoomStore.roomStatus}
                             beginTime={classRoomStore.roomInfo.beginTime}
                         />
                     )
+                ) : (
+                    <RoomInfo
+                        roomStatus={classRoomStore.roomStatus}
+                        roomType={classRoomStore.roomInfo?.roomType}
+                    />
                 )}
             </>
         );
