@@ -2,25 +2,31 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import classnames from "classnames";
 import { useTranslation } from "react-i18next";
 import "./style.less";
-import format from "date-fns/format";
 import { useIsUnMounted } from "../../../utils/hooks";
 import { RoomStatus } from "../../../types/room";
+import { intervalToDuration } from "date-fns/esm";
 
 export type TimerProps = {
     roomStatus: RoomStatus;
     beginTime: number;
 };
 
-const timeElapsedInMs = (n: number): number => {
-    return Date.now() - n;
+const paddingZero = (number?: number): string => {
+    return String(number).padStart(2, "0");
 };
 
-const useClockTick = (beginTime: number, delay: number, cbArgs: any): number => {
-    const [timestamp, updateTimestamp] = useState<number>(timeElapsedInMs(beginTime));
+const renderTime = ({ hours, minutes, seconds }: Duration): string => {
+    return hours && hours > 0
+        ? `${paddingZero(hours)}:${paddingZero(minutes)}:${paddingZero(seconds)}`
+        : `${paddingZero(minutes)}:${paddingZero(seconds)}`;
+};
+
+const useClockTick = (beginTime: number, delay: number, cbArgs: any): Duration => {
+    const [timestamp, updateTimestamp] = useState<number>(Date.now());
 
     const updateTime = (state: string): void => {
         if (state === RoomStatus.Started) {
-            updateTimestamp(timeElapsedInMs(beginTime));
+            updateTimestamp(Date.now());
         }
     };
 
@@ -50,20 +56,20 @@ const useClockTick = (beginTime: number, delay: number, cbArgs: any): number => 
         return stopTimer;
     }, []);
 
-    return timestamp;
+    return intervalToDuration({ start: beginTime, end: timestamp });
 };
 
 export const Timer: React.FC<TimerProps> = ({ roomStatus = RoomStatus.Paused, beginTime }) => {
-    const timestamp = useClockTick(beginTime, 100, roomStatus);
+    const timeDuration = useClockTick(beginTime, 100, roomStatus);
 
-    const roomStatusCls = classnames(`countdown-${roomStatus}`);
+    const roomStatusCls = classnames(`timer-${roomStatus}`);
 
     const { t } = useTranslation();
 
     return (
-        <span className="countdown-bar">
+        <span className="timer-bar">
             <span className={roomStatusCls}>{t("room-started")}</span>
-            <span>{format(timestamp, "mm:ss")}</span>
+            <span>{renderTime(timeDuration)}</span>
         </span>
     );
 };
