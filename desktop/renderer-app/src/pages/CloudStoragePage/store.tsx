@@ -318,7 +318,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         this.clearRefreshFilesNowTimeout();
 
         try {
-            const { totalUsage, files: cloudFiles } = await listFiles({ page: 1 });
+            const { totalUsage, files: cloudFiles } = await listFiles({
+                page: 1,
+                order: "DESC",
+            });
 
             runInAction(() => {
                 this.totalUsage = totalUsage;
