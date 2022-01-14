@@ -1,3 +1,21 @@
+## [1.5.3](https://github.com/netless-io/flat/compare/v1.5.2...v1.5.3) (2022-01-13)
+
+
+### Bug Fixes
+
+* **desktop:** temp solution to the inability to screen share and preview files ([#1295](https://github.com/netless-io/flat/issues/1295)) ([00d5a6a](https://github.com/netless-io/flat/commit/00d5a6ab2c0d93bd7212ae5b47134c9f27e507bd))
+
+
+
+## [1.5.2](https://github.com/netless-io/flat/compare/v1.5.1...v1.5.2) (2022-01-13)
+
+
+### Bug Fixes
+
+* **desktop:** online courseware remote execution vulnerability ([#1290](https://github.com/netless-io/flat/issues/1290)) ([81c18a6](https://github.com/netless-io/flat/commit/81c18a6764a6bc4b7d6f149437a1f13d8e917223))
+
+
+
 ## [1.5.1](https://github.com/netless-io/flat/compare/v1.5.0...v1.5.1) (2022-01-11)
 
 
