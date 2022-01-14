@@ -58,22 +58,22 @@ class PortalWindowManager {
 
         portalWindow.document.title = title;
 
+        // if we don’t do this, the image resource will fail to load
+        const base = document.createElement("base");
+        base.href = PortalWindowManager.originPath();
+        portalWindow.document.head.appendChild(base);
+
         // avoid being unable to use defined style
         const styles = document.querySelectorAll("style");
-        const links = document.querySelectorAll("link");
+        const links = document.querySelectorAll("link[rel='stylesheet']");
 
         styles.forEach((ele: HTMLStyleElement) => {
             portalWindow.document.head.appendChild(ele.cloneNode(true));
         });
 
-        links.forEach((ele: HTMLLinkElement) => {
+        links.forEach((ele: Element) => {
             portalWindow.document.head.appendChild(ele.cloneNode(true));
         });
-
-        // if we don’t do this, the image resource will fail to load
-        const base = document.createElement("base");
-        base.href = window.location.origin;
-        portalWindow.document.head.appendChild(base);
 
         portalWindow.document.body.appendChild(containerElement);
 
@@ -118,6 +118,25 @@ class PortalWindowManager {
                 }`,
             }),
         );
+    }
+
+    /**
+     * get current origin
+     *   development env: http://localhost:3000/
+     *   production env: file:///Applications/Flat.app/Contents/Resources/static/render/
+     */
+    private static originPath(): string {
+        if (process.env.NODE_ENV === "development") {
+            return `${window.location.origin}/`;
+        }
+
+        /**
+         * /Applications/Flat.app/Contents/Resources/static/render/index.html
+         * to
+         * file:///Applications/Flat.app/Contents/Resources/static/render/
+         */
+        const pathname = window.location.pathname;
+        return `file://${pathname.slice(0, pathname.lastIndexOf("/") + 1)}`;
     }
 }
 
