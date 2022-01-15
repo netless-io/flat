@@ -172,13 +172,7 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
     }
 
     function renderFooter(): React.ReactNode {
-        if (!isSuccess) {
-            return (
-                <Button type="primary" onClick={resetCheck} className="device-check-modal-btn">
-                    {t("test-again")}
-                </Button>
-            );
-        } else {
+        if (isSuccess) {
             return (
                 <Button
                     type="primary"
@@ -186,6 +180,12 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
                     className="device-check-modal-btn"
                 >
                     {t("ok")}
+                </Button>
+            );
+        } else {
+            return (
+                <Button type="primary" onClick={resetCheck} className="device-check-modal-btn">
+                    {t("test-again")}
                 </Button>
             );
         }

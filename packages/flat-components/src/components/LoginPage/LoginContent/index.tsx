@@ -28,7 +28,16 @@ export const LoginContent: React.FC<LoginContentProps> = ({ onLogin, privacyURL,
                 classNames="slider-in"
                 unmountOnExit
             >
-                {!inPageLogin ? (
+                {inPageLogin ? (
+                    <div className="login-content-container">
+                        <div className="qr-code-container">
+                            <div className="qr-code">{inPageLogin}</div>
+                            <a className="qr-code-link" onClick={() => setInPageLogin(void 0)}>
+                                {t("login-using-other-methods")}
+                            </a>
+                        </div>
+                    </div>
+                ) : (
                     <div className="login-content-container">
                         <div className="login-content-logo">
                             <img src={logoSVG} />
@@ -40,10 +49,10 @@ export const LoginContent: React.FC<LoginContentProps> = ({ onLogin, privacyURL,
                         <div className="login-content-channel">
                             <LoginChannel
                                 onLogin={loginChannel => {
-                                    if (!isChecked) {
-                                        void message.info(t("agree-terms"));
-                                    } else {
+                                    if (isChecked) {
                                         setInPageLogin(onLogin(loginChannel));
+                                    } else {
+                                        void message.info(t("agree-terms"));
                                     }
                                 }}
                             />
@@ -62,15 +71,6 @@ export const LoginContent: React.FC<LoginContentProps> = ({ onLogin, privacyURL,
                                     {t("service-policy")}
                                 </a>
                             </Checkbox>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="login-content-container">
-                        <div className="qr-code-container">
-                            <div className="qr-code">{inPageLogin}</div>
-                            <a className="qr-code-link" onClick={() => setInPageLogin(void 0)}>
-                                {t("login-using-other-methods")}
-                            </a>
                         </div>
                     </div>
                 )}

@@ -41,9 +41,9 @@ export const InviteModal: React.FC<InviteModalProps> = ({
 
         const formatBeginTime = completeTimeFormat(beginTime);
         const formatEndTime =
-            differenceInCalendarDays(beginTime, endTime) !== 0
-                ? completeTimeFormat(endTime)
-                : onlySuffixTimeFormat(endTime);
+            differenceInCalendarDays(beginTime, endTime) === 0
+                ? onlySuffixTimeFormat(endTime)
+                : completeTimeFormat(endTime);
 
         return `${formatBeginTime}~${formatEndTime}`;
     }, [beginTime, endTime]);
