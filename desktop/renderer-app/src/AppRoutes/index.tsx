@@ -23,8 +23,8 @@ export const AppRoutes: FC = () => {
                                     <AppRouteContainer
                                         key={routeProps.location.pathname}
                                         Comp={component}
-                                        title={t("title-" + title)}
                                         routeProps={routeProps}
+                                        title={t("title-" + title)}
                                     />
                                 )}
                             />

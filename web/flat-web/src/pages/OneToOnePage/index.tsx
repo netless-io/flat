@@ -128,18 +128,18 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
             <div className="one-to-one-realtime-box">
                 <TopBar
+                    center={renderTopBarCenter()}
                     isMac={runtime.isMac}
                     left={renderTopBarLeft()}
-                    center={renderTopBarCenter()}
                     right={renderTopBarRight()}
                 />
                 <div className="one-to-one-realtime-content">
                     <div className="container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
                         <Whiteboard
-                            whiteboardStore={whiteboardStore}
                             classRoomStore={classRoomStore}
                             disableHandRaising={true}
+                            whiteboardStore={whiteboardStore}
                         />
                     </div>
                     {renderRealtimePanel()}
@@ -198,12 +198,12 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
                     <TopBarRightBtn
-                        title="Share Screen"
                         icon={
                             shareScreenStore.enableShareScreenStatus
                                 ? "share-screen-active"
                                 : "share-screen"
                         }
+                        title="Share Screen"
                         onClick={handleShareScreen}
                     />
                 )}
@@ -212,14 +212,14 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    title="Exit"
                     icon="exit"
+                    title="Exit"
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
                     icon={isRealtimeSideOpen ? "hide-side" : "hide-side-active"}
+                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
                     onClick={handleSideOpenerSwitch}
                 />
             </>
@@ -229,34 +229,34 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     function renderRealtimePanel(): React.ReactNode {
         return (
             <RealtimePanel
-                isShow={isRealtimeSideOpen}
-                isVideoOn={true}
-                videoSlot={
-                    <div className="one-to-one-rtc-avatar-container">
-                        <OneToOneAvatar
-                            isCreator={classRoomStore.isCreator}
-                            userUUID={classRoomStore.userUUID}
-                            avatarUser={classRoomStore.users.creator}
-                            isAvatarUserCreator={true}
-                            rtc={classRoomStore.rtc}
-                            updateDeviceState={classRoomStore.updateDeviceState}
-                            generateAvatar={generateAvatar}
-                        />
-                        <OneToOneAvatar
-                            isCreator={classRoomStore.isCreator}
-                            userUUID={classRoomStore.userUUID}
-                            avatarUser={joiner}
-                            rtc={classRoomStore.rtc}
-                            updateDeviceState={classRoomStore.updateDeviceState}
-                            generateAvatar={generateAvatar}
-                        />
-                    </div>
-                }
                 chatSlot={
                     <ChatPanel
                         classRoomStore={classRoomStore}
                         disableMultipleSpeakers={true}
                     ></ChatPanel>
+                }
+                isShow={isRealtimeSideOpen}
+                isVideoOn={true}
+                videoSlot={
+                    <div className="one-to-one-rtc-avatar-container">
+                        <OneToOneAvatar
+                            avatarUser={classRoomStore.users.creator}
+                            generateAvatar={generateAvatar}
+                            isAvatarUserCreator={true}
+                            isCreator={classRoomStore.isCreator}
+                            rtc={classRoomStore.rtc}
+                            updateDeviceState={classRoomStore.updateDeviceState}
+                            userUUID={classRoomStore.userUUID}
+                        />
+                        <OneToOneAvatar
+                            avatarUser={joiner}
+                            generateAvatar={generateAvatar}
+                            isCreator={classRoomStore.isCreator}
+                            rtc={classRoomStore.rtc}
+                            updateDeviceState={classRoomStore.updateDeviceState}
+                            userUUID={classRoomStore.userUUID}
+                        />
+                    </div>
                 }
             />
         );

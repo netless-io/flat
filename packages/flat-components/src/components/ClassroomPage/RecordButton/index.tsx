@@ -67,8 +67,8 @@ export const RecordButton: FC<RecordButtonProps> = ({ isRecording, onClick }) =>
     return (
         <div className="record-button-container">
             <TopBarRoundBtn
-                onClick={onClick}
                 icon={<img src={isRecording ? recordingStopSVG : recordingStartSVG} />}
+                onClick={onClick}
             >
                 {isRecording ? (
                     <span className="recording-text-stop">{t("stop-recording")}</span>

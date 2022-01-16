@@ -59,26 +59,26 @@ export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
                 <div className="device-test-panel-inner-left">
                     <CameraTest
                         cameraDevices={cameraDevices}
-                        isCameraAccessible={isCameraAccessible}
                         cameraVideoStreamRef={cameraVideoStreamRef}
                         currentCameraDeviceID={currentCameraDeviceID}
+                        isCameraAccessible={isCameraAccessible}
                         setCameraDevice={setCameraDevice}
                     />
                 </div>
                 <div className="device-test-panel-inner-right">
                     <SpeakerTest
+                        audioResourceSrc={audioResourceSrc}
+                        currentSpeakerDeviceID={currentSpeakerDeviceID}
+                        isSpeakerAccessible={isSpeakerAccessible}
+                        setSpeakerDevice={setSpeakerDevice}
                         speakerDevices={speakerDevices}
                         speakerTestFileName={speakerTestFileName}
-                        isSpeakerAccessible={isSpeakerAccessible}
-                        currentSpeakerDeviceID={currentSpeakerDeviceID}
-                        audioResourceSrc={audioResourceSrc}
-                        setSpeakerDevice={setSpeakerDevice}
                     />
                     <MicrophoneTest
-                        microphoneDevices={microphoneDevices}
-                        isMicrophoneAccessible={isMicrophoneAccessible}
-                        microphoneVolume={microphoneVolume}
                         currentMicrophoneDeviceID={currentMicrophoneDeviceID}
+                        isMicrophoneAccessible={isMicrophoneAccessible}
+                        microphoneDevices={microphoneDevices}
+                        microphoneVolume={microphoneVolume}
                         setMicrophoneDevice={setMicrophoneDevice}
                     />
                 </div>

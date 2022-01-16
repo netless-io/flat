@@ -52,29 +52,29 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
                             {t("copy-invitation")}
                         </Menu.Item>
                         <CancelSubPeriodicRoomModal
-                            visible={cancelSubPeriodicRoomVisible}
                             isCreator={isCreator}
+                            visible={cancelSubPeriodicRoomVisible}
                             onCancel={() => setCancelSubPeriodicRoomVisible(false)}
                             onCancelSubPeriodicRoom={onCancelSubPeriodicRoom}
                         />
                         <InviteModal
-                            visible={inviteRoomVisible}
-                            room={room}
                             baseUrl={inviteBaseUrl}
+                            room={room}
                             userName={userName}
+                            visible={inviteRoomVisible}
+                            onCancel={() => setInviteRoomVisible(false)}
                             onCopy={text => {
                                 onCopyInvitation(text);
                                 void message.success(t("copy-success"));
                                 setInviteRoomVisible(false);
                             }}
-                            onCancel={() => setInviteRoomVisible(false)}
                         />
                     </Menu>
                 );
             }}
             trigger={["click"]}
         >
-            <img src={moreMenuSVG} alt={t("more")} />
+            <img alt={t("more")} src={moreMenuSVG} />
         </Dropdown>
     );
 };

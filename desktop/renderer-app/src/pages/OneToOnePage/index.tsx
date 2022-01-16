@@ -150,24 +150,24 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
             <div className="one-to-one-realtime-box">
                 <TopBar
+                    center={renderTopBarCenter()}
                     isMac={runtime.isMac}
                     left={renderTopBarLeft()}
-                    center={renderTopBarCenter()}
                     right={renderTopBarRight()}
                 />
                 <div className="one-to-one-realtime-content">
                     <div className="container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
                         <ShareScreenPicker
-                            shareScreenStore={shareScreenStore}
                             handleOk={() => {
                                 shareScreenStore.enable();
                             }}
+                            shareScreenStore={shareScreenStore}
                         />
                         <Whiteboard
-                            whiteboardStore={whiteboardStore}
                             classRoomStore={classRoomStore}
                             disableHandRaising={true}
+                            whiteboardStore={whiteboardStore}
                         />
                     </div>
                     {renderRealtimePanel()}
@@ -222,7 +222,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
                     <TopBarRightBtn
-                        title="Share Screen"
                         icon={
                             shareScreenStore.enableShareScreenStatus ? (
                                 <img src={shareScreenActiveSVG} />
@@ -230,6 +229,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                                 <img src={shareScreenSVG} />
                             )
                         }
+                        title="Share Screen"
                         onClick={handleShareScreen}
                     />
                 )}
@@ -238,13 +238,12 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    title="Exit"
                     icon={<img src={exitSVG} />}
+                    title="Exit"
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
                     icon={
                         isRealtimeSideOpen ? (
                             <img src={hideSideActiveSVG} />
@@ -252,6 +251,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                             <img src={hideSideSVG} />
                         )
                     }
+                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
                     onClick={handleSideOpenerSwitch}
                 />
             </>
@@ -261,36 +261,36 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     function renderRealtimePanel(): React.ReactNode {
         return (
             <RealtimePanel
+                chatSlot={
+                    <ChatPanel
+                        classRoomStore={classRoomStore}
+                        disableMultipleSpeakers={true}
+                    ></ChatPanel>
+                }
                 isShow={isRealtimeSideOpen}
                 isVideoOn={classRoomStore.isRTCJoined}
                 videoSlot={
                     classRoomStore.isRTCJoined && (
                         <div className="one-to-one-rtc-avatar-container">
                             <OneToOneAvatar
-                                isCreator={classRoomStore.isCreator}
-                                userUUID={classRoomStore.userUUID}
                                 avatarUser={classRoomStore.users.creator}
+                                generateAvatar={generateAvatar}
                                 isAvatarUserCreator={true}
+                                isCreator={classRoomStore.isCreator}
                                 rtcEngine={classRoomStore.rtc.rtcEngine}
                                 updateDeviceState={classRoomStore.updateDeviceState}
-                                generateAvatar={generateAvatar}
+                                userUUID={classRoomStore.userUUID}
                             />
                             <OneToOneAvatar
-                                isCreator={classRoomStore.isCreator}
-                                userUUID={classRoomStore.userUUID}
                                 avatarUser={joiner}
+                                generateAvatar={generateAvatar}
+                                isCreator={classRoomStore.isCreator}
                                 rtcEngine={classRoomStore.rtc.rtcEngine}
                                 updateDeviceState={classRoomStore.updateDeviceState}
-                                generateAvatar={generateAvatar}
+                                userUUID={classRoomStore.userUUID}
                             />
                         </div>
                     )
-                }
-                chatSlot={
-                    <ChatPanel
-                        classRoomStore={classRoomStore}
-                        disableMultipleSpeakers={true}
-                    ></ChatPanel>
                 }
             />
         );

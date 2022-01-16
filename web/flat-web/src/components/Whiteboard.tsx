@@ -201,8 +201,6 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                 <div className="whiteboard-writable-area">
                     <div className="tool-box-out">
                         <ToolBox
-                            room={room}
-                            i18nLanguage={i18n.language}
                             hotkeys={{
                                 arrow: "A",
                                 clear: "",
@@ -218,6 +216,8 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                                 straight: "L",
                                 text: "T",
                             }}
+                            i18nLanguage={i18n.language}
+                            room={room}
                         />
                     </div>
                     <div
@@ -234,19 +234,19 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     >
                         <ScenesController
                             addScene={whiteboardStore.addMainViewScene}
-                            preScene={whiteboardStore.preMainViewScene}
-                            nextScene={whiteboardStore.nextMainViewScene}
                             currentSceneIndex={whiteboardStore.currentSceneIndex}
-                            scenesCount={whiteboardStore.scenesCount}
                             disabled={whiteboardStore.isFocusWindow}
+                            nextScene={whiteboardStore.nextMainViewScene}
+                            preScene={whiteboardStore.preMainViewScene}
+                            scenesCount={whiteboardStore.scenesCount}
                         />
                     </div>
                 </div>
                 {!whiteboardStore.isCreator && !whiteboardStore.isWritable && (
                     <div className="raise-hand-container">
                         <RaiseHand
-                            isRaiseHand={classRoomStore.users.currentUser?.isRaiseHand}
                             disableHandRaising={disableHandRaising}
+                            isRaiseHand={classRoomStore.users.currentUser?.isRaiseHand}
                             onRaiseHandChange={classRoomStore.onToggleHandRaising}
                         />
                     </div>

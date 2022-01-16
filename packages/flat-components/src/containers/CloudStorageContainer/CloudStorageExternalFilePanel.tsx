@@ -56,6 +56,7 @@ export const CloudStorageExternalFilePanel: FC<CloudStorageExternalFilePanelProp
             confirmLoading={isLoading}
             title={t("online-h5.add")}
             visible={visible}
+            onCancel={onClose}
             onOk={async () => {
                 if (formRef.current) {
                     try {
@@ -66,10 +67,10 @@ export const CloudStorageExternalFilePanel: FC<CloudStorageExternalFilePanelProp
                     }
                 }
             }}
-            onCancel={onClose}
         >
             <Form
                 ref={formRef}
+                autoComplete="off"
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 20 }}
                 onFinish={onSubmit}
@@ -77,7 +78,6 @@ export const CloudStorageExternalFilePanel: FC<CloudStorageExternalFilePanelProp
                     void message.error(t("upload-fail"));
                     onClose();
                 }}
-                autoComplete="off"
             >
                 <Form.Item
                     label={t("online-h5.name")}

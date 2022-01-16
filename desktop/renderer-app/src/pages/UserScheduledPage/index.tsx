@@ -59,9 +59,9 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
 
     return (
         <EditRoomPage
-            type="schedule"
             initialValues={defaultValues}
             loading={isLoading}
+            type="schedule"
             onSubmit={createRoom}
         />
     );

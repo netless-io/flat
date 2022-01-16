@@ -35,21 +35,21 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
     return (
         <div>
             <Modal
-                title={t("share-screen.choose-share-content")}
-                onCancel={closeModal}
-                visible={true}
+                centered
                 bodyStyle={{
                     padding: "16px 0 0 16px",
                 }}
                 className="share-screen-picker-model"
-                centered
-                width="784px"
                 footer={[
-                    <Button key="cancel" onClick={closeModal} className="footer-button">
+                    <Button key="cancel" className="footer-button" onClick={closeModal}>
                         {t("cancel")}
                     </Button>,
-                    <ConfirmButton key={"confirm"} isSelected={isSelected} handleOk={handleOk} />,
+                    <ConfirmButton key={"confirm"} handleOk={handleOk} isSelected={isSelected} />,
                 ]}
+                title={t("share-screen.choose-share-content")}
+                visible={true}
+                width="784px"
+                onCancel={closeModal}
             >
                 <div
                     className={classNames("share-screen-picker", {
@@ -75,7 +75,7 @@ export const ShareScreenPicker = observer<ShareScreenPickerProps>(function Share
     handleOk,
 }) {
     return shareScreenStore.showShareScreenPicker ? (
-        <ShareScreenPickerModel shareScreenStore={shareScreenStore} handleOk={handleOk} />
+        <ShareScreenPickerModel handleOk={handleOk} shareScreenStore={shareScreenStore} />
     ) : null;
 });
 
@@ -94,14 +94,14 @@ const ConfirmButton = observer<ConfirmButtonProps>(function ConfirmButton({
     return (
         <Button
             key="submit"
-            type="primary"
             className="footer-button"
             disabled={!isSelected}
+            loading={confirmLoading}
+            type="primary"
             onClick={() => {
                 setConfirmLoading(true);
                 handleOk();
             }}
-            loading={confirmLoading}
         >
             {t("confirm")}
         </Button>

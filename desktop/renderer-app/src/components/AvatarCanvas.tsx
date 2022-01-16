@@ -55,7 +55,6 @@ export const AvatarCanvas = observer<AvatarCanvasProps>(function AvatarCanvas({
 
     const canvas = (
         <div
-            className="video-avatar-canvas"
             ref={el => {
                 if (!el || elRef.current === el) {
                     return;
@@ -75,6 +74,7 @@ export const AvatarCanvas = observer<AvatarCanvasProps>(function AvatarCanvas({
                     }
                 }
             }}
+            className="video-avatar-canvas"
         />
     );
 

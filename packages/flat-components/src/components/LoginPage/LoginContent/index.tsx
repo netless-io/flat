@@ -22,11 +22,11 @@ export const LoginContent: React.FC<LoginContentProps> = ({ onLogin, privacyURL,
     return (
         <SwitchTransition mode="out-in">
             <CSSTransition
-                in={!inPageLogin}
                 key={inPageLogin ? "wechat" : "qrcode"}
-                timeout={400}
-                classNames="slider-in"
                 unmountOnExit
+                classNames="slider-in"
+                in={!inPageLogin}
+                timeout={400}
             >
                 {inPageLogin ? (
                     <div className="login-content-container">

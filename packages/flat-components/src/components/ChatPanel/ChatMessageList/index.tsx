@@ -113,10 +113,10 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
 
     const rowRenderer: ListRowRenderer = ({ index, parent, style }) => (
         <CellMeasurer
-            cache={cellCache}
-            parent={parent}
             key={messages[index].uuid}
+            cache={cellCache}
             columnIndex={0}
+            parent={parent}
             rowIndex={index}
         >
             {({ measure, registerChild }) => {
@@ -125,11 +125,11 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
                         <Observer>
                             {() => (
                                 <ChatMessage
-                                    onMount={measure}
+                                    message={messages[index]}
+                                    messageUser={getUserByUUID(messages[index].userUUID)}
                                     openCloudStorage={openCloudStorage}
                                     userUUID={userUUID}
-                                    messageUser={getUserByUUID(messages[index].userUUID)}
-                                    message={messages[index]}
+                                    onMount={measure}
                                 />
                             )}
                         </Observer>
@@ -152,15 +152,15 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
                         <Observer>
                             {() => (
                                 <List
-                                    className="fancy-scrollbar"
                                     ref={registerChild}
+                                    className="fancy-scrollbar"
                                     height={height}
-                                    width={width}
                                     rowCount={messages.length}
                                     rowHeight={cellCache.rowHeight}
                                     rowRenderer={rowRenderer}
-                                    scrollToIndex={scrollToIndex}
                                     scrollToAlignment="start"
+                                    scrollToIndex={scrollToIndex}
+                                    width={width}
                                     onRowsRendered={onRowsRendered}
                                 />
                             )}

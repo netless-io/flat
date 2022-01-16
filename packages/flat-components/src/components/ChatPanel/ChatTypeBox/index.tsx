@@ -61,10 +61,10 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
                 </span>
             ) : (
                 <input
-                    className="chat-typebox-input"
-                    type="text"
-                    placeholder={t("say-something")}
                     ref={inputRef}
+                    className="chat-typebox-input"
+                    placeholder={t("say-something")}
+                    type="text"
                     value={text}
                     onChange={e => updateText(e.currentTarget.value.slice(0, 200))}
                     onKeyPress={e => {
@@ -76,9 +76,9 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
             )}
             <button
                 className="chat-typebox-send"
+                disabled={isBan || isSending || trimmedText.length <= 0}
                 title={t("send")}
                 onClick={sendMessage}
-                disabled={isBan || isSending || trimmedText.length <= 0}
             >
                 <img src={sendSVG} />
             </button>

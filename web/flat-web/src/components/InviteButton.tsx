@@ -16,16 +16,16 @@ export const InviteButton = observer<InviteButtonProps>(function InviteButton({ 
     return (
         <div>
             <TopBarRightBtn
-                title="Invite"
                 icon={<img src={inviteSVG} />}
+                title="Invite"
                 onClick={() => showInviteModal(true)}
             />
             {roomInfo && (
                 <InviteModal
                     room={roomInfo}
                     visible={isShowInviteModal}
-                    onCopied={hideInviteModal}
                     onCancel={hideInviteModal}
+                    onCopied={hideInviteModal}
                 />
             )}
         </div>

@@ -60,7 +60,7 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
                             }}
                         >
                             {leftMenu.map(menuItem => {
-                                return <TabPane tab={menuItem.title} key={menuItem.key}></TabPane>;
+                                return <TabPane key={menuItem.key} tab={menuItem.title}></TabPane>;
                             })}
                         </Tabs>
                     )}
@@ -90,12 +90,12 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
                     })}
                     <div className="main-page-nav-horizontal-right-header">
                         <MainPageNavAvatar
+                            activeKeys={activeKeys}
                             avatarSrc={avatarSrc}
+                            generateAvatar={generateAvatar}
+                            popMenu={popMenu}
                             userName={userName}
                             onClick={onClick}
-                            activeKeys={activeKeys}
-                            popMenu={popMenu}
-                            generateAvatar={generateAvatar}
                         />
                     </div>
                 </div>

@@ -46,9 +46,9 @@ export const OrdinaryRoomForm = observer<OrdinaryRoomFormProps>(function RoomFor
 
     return (
         <EditRoomPage
-            type="ordinary"
             initialValues={initialValues}
             loading={isLoading}
+            type="ordinary"
             onSubmit={editOrdinaryRoom}
         />
     );

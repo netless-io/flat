@@ -17,8 +17,8 @@ export const AppButton = observer<AppButtonProps>(function AppButton({ kind, nam
     return (
         <>
             <div
-                className="app-box"
                 key={kind}
+                className="app-box"
                 onClick={async () => {
                     setLoading(true);
                     await sp(addApp());
@@ -26,7 +26,7 @@ export const AppButton = observer<AppButtonProps>(function AppButton({ kind, nam
                 }}
             >
                 <div className="app-icon-box">
-                    <img className="app-icon" src={icon} alt={name} />
+                    <img alt={name} className="app-icon" src={icon} />
                     {loading && (
                         <div className="app-loading-spin">
                             <LoadingOutlined spin />

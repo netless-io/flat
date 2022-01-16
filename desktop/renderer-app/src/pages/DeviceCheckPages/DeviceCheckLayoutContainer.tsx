@@ -52,8 +52,8 @@ export const DeviceCheckLayoutContainer: React.FC = ({ children }): React.ReactE
 
     return (
         <MainPageLayoutContainer
-            subMenu={subMenu}
             activeKeys={activeKeys}
+            subMenu={subMenu}
             onRouteChange={(mainPageLayoutItem: MainPageLayoutItem) => {
                 history.push({
                     pathname: mainPageLayoutItem.route,

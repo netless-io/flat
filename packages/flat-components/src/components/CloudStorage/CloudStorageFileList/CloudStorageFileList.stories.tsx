@@ -63,17 +63,17 @@ export const LongFileName: Story<{ fileName: string } & CloudStorageFileListProp
     return (
         <CloudStorageFileList
             {...restProps}
+            fileMenus={() => [
+                { key: "download", name: "下载" },
+                { key: "rename", name: "重命名" },
+                { key: "delete", name: "删除" },
+            ]}
             files={files}
             selectedFileUUIDs={selectedFileUUIDs}
             onSelectionChange={keys => {
                 setSelectedFileUUIDs(keys);
                 onSelectionChange(keys);
             }}
-            fileMenus={() => [
-                { key: "download", name: "下载" },
-                { key: "rename", name: "重命名" },
-                { key: "delete", name: "删除" },
-            ]}
         />
     );
 };
@@ -131,17 +131,17 @@ export const PlayableExample: Story<{ itemCount: number } & CloudStorageFileList
     return (
         <CloudStorageFileList
             {...restProps}
+            fileMenus={() => [
+                { key: "download", name: "下载" },
+                { key: "rename", name: "重命名" },
+                { key: "delete", name: <span className="red">删除</span> },
+            ]}
             files={files}
             selectedFileUUIDs={selectedFileUUIDs}
             onSelectionChange={keys => {
                 setSelectedFileUUIDs(keys);
                 onSelectionChange(keys);
             }}
-            fileMenus={() => [
-                { key: "download", name: "下载" },
-                { key: "rename", name: "重命名" },
-                { key: "delete", name: <span className="red">删除</span> },
-            ]}
         />
     );
 };

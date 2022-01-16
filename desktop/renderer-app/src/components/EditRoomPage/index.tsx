@@ -18,7 +18,6 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(pr
             <div className="edit-room-page">
                 <div className="edit-room-page-header-container">
                     <MainPageHeader
-                        onBackPreviousPage={() => history.goBack()}
                         title={
                             <span className="edit-room-page-header-title">
                                 {props.type === "schedule"
@@ -26,6 +25,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(pr
                                     : t("modify-room")}
                             </span>
                         }
+                        onBackPreviousPage={() => history.goBack()}
                     />
                 </div>
                 <div className="edit-room-page-body">

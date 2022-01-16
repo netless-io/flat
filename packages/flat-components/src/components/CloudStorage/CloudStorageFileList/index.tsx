@@ -57,9 +57,9 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                     <>
                         <span className="cloud-storage-file-list-title">{t("file-name")}</span>
                         <CloudStorageFileListHeadTip
-                            title={t("supported-file-types")}
-                            placement="right"
                             getPopupContainer={getPopupContainer}
+                            placement="right"
+                            title={t("supported-file-types")}
                         />
                     </>
                 ),
@@ -68,14 +68,14 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 render: function renderCloudStorageFileName(_fileName, file, index) {
                     return (
                         <CloudStorageFileListFileName
-                            getPopupContainer={getPopupContainer}
                             file={file}
-                            index={index}
                             fileMenus={fileMenus}
+                            getPopupContainer={getPopupContainer}
+                            index={index}
+                            renamingFileUUID={renamingFileUUID}
                             titleClickable={titleClickable}
                             onItemMenuClick={onItemMenuClick}
                             onItemTitleClick={onItemTitleClick}
-                            renamingFileUUID={renamingFileUUID}
                             onRename={onRename}
                         />
                     );
@@ -125,23 +125,23 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
     return (
         <div ref={popupContainerRef} className="cloud-storage-file-list-table">
             <Table
-                size="small"
                 columns={columns}
                 dataSource={files || []}
-                rowKey="fileUUID"
+                locale={{
+                    emptyText: " ",
+                }}
                 pagination={false}
+                rowKey="fileUUID"
                 rowSelection={{
                     selectedRowKeys: selectedFileUUIDs,
                     onChange: onSelectionChange as (keys: React.Key[]) => void,
                 }}
-                locale={{
-                    emptyText: " ",
-                }}
+                size="small"
             />
             {files.length <= 0 && (
                 <div className="cloud-storage-file-list-empty">
                     <div className="cloud-storage-file-list-empty-content">
-                        <img width={124} height={124} src={emptyFileSVG} />
+                        <img height={124} src={emptyFileSVG} width={124} />
                         <div className="cloud-storage-file-list-empty-text">{t("no-data")}</div>
                     </div>
                 </div>

@@ -114,15 +114,15 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
 
     return (
         <MainPageLayout
-            sideMenu={sideMenu}
-            sideMenuFooter={sideMenuFooter}
-            popMenu={popMenu}
-            subMenu={subMenu}
-            onClick={onMenuItemClick}
             activeKeys={activeKeys}
             avatarSrc={globalStore.userInfo?.avatar ?? ""}
-            userName={globalStore.userInfo?.name ?? ""}
             generateAvatar={generateAvatar}
+            popMenu={popMenu}
+            sideMenu={sideMenu}
+            sideMenuFooter={sideMenuFooter}
+            subMenu={subMenu}
+            userName={globalStore.userInfo?.name ?? ""}
+            onClick={onMenuItemClick}
         >
             {children}
         </MainPageLayout>

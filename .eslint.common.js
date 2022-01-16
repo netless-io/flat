@@ -239,6 +239,14 @@ const eslintCommon = {
                     ignore: [],
                 },
             ],
+            'react/jsx-sort-props': [
+                'error',
+                {
+                    callbacksLast: true,
+                    shorthandFirst: true,
+                    reservedFirst: true,
+                },
+            ],
             "react-hooks/exhaustive-deps": "warn",
             "react/jsx-uses-react": "warn",
             "react/jsx-uses-vars": "warn",

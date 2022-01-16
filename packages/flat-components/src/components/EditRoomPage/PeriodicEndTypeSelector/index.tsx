@@ -13,7 +13,7 @@ export const PeriodicEndTypeSelector: FC<PeriodicEndTypeSelectorProps> = props =
             {["rate", "time"].map(type => {
                 const periodicEndTypeName = t(`end-repeat-type.${type as PeriodicEndType}`);
                 return (
-                    <Select.Option key={type} value={type} label={periodicEndTypeName}>
+                    <Select.Option key={type} label={periodicEndTypeName} value={type}>
                         {periodicEndTypeName}
                     </Select.Option>
                 );

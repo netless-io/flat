@@ -63,34 +63,34 @@ export const AppStoreButton = observer<AppStoreButtonProps>(function AppStoreBut
     return (
         <>
             <TopBarRightBtn
-                title="Open App Store"
                 icon={<img src={appStoreSVG} />}
+                title="Open App Store"
                 onClick={() => setAppStoreIsVisible(true)}
             />
             <Modal
+                destroyOnClose
                 className="app-store-modal"
-                visible={appStoreIsVisible}
                 footer={null}
-                onCancel={() => setAppStoreIsVisible(false)}
                 title={
                     <div className="app-store-modal-title-box">
                         <div className="app-store-modal-title">{t("app-store")}</div>
                         <div className="app-store-modal-inner-text">{t("recently-used")}</div>
                     </div>
                 }
-                destroyOnClose
+                visible={appStoreIsVisible}
+                onCancel={() => setAppStoreIsVisible(false)}
             >
                 <div className="apps-container">
                     {apps.map((config, i) => (
                         <AppButton
                             key={`${config.kind}${i}`}
-                            kind={config.kind}
-                            name={config.options?.title ?? config.kind}
-                            icon={appIcons[config.kind as keyof typeof appIcons]}
                             addApp={async () => {
                                 await sp(addApp(config));
                                 setAppStoreIsVisible(false);
                             }}
+                            icon={appIcons[config.kind as keyof typeof appIcons]}
+                            kind={config.kind}
+                            name={config.options?.title ?? config.kind}
                         />
                     ))}
                 </div>

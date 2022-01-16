@@ -34,14 +34,14 @@ export default function JoinPageDesktop({
 
     return (
         <div className="join-page-container">
-            <iframe width="0" height="0" style={{ display: "none" }} src={url} />
+            <iframe height="0" src={url} style={{ display: "none" }} width="0" />
             <div className="join-page-header-container">
-                <img src={logoSVG} alt="flat-logo" />
+                <img alt="flat-logo" src={logoSVG} />
                 {isLogin ? (
                     <Avatar
                         className="join-page-header-avatar"
-                        size={32}
                         icon={<img src={avatar} />}
+                        size={32}
                     />
                 ) : (
                     <div
@@ -64,7 +64,7 @@ export default function JoinPageDesktop({
                         className="join-page-content-btn"
                         onClick={() => window.open(FLAT_DOWNLOAD_URL, "_blank")}
                     >
-                        <img src={downloadSVG} alt="download icon" />
+                        <img alt="download icon" src={downloadSVG} />
                         <div className="join-page-content-text-container">
                             <div className="join-page-content-text">
                                 {t("download-desktop-application")}
@@ -75,7 +75,7 @@ export default function JoinPageDesktop({
                         </div>
                     </Button>
                     <Button className="join-page-content-btn" onClick={joinRoom}>
-                        <img src={joinSVG} alt="join icon" />
+                        <img alt="join icon" src={joinSVG} />
                         <div className="join-page-content-text-container">
                             <div className="join-page-content-text">
                                 {t("web-version-join-room")}
@@ -95,11 +95,11 @@ export default function JoinPageDesktop({
                 </div>
             </div>
             <div className="join-page-footer-container">
-                <a href={privacyURL} target="_blank" rel="noreferrer">
+                <a href={privacyURL} rel="noreferrer" target="_blank">
                     {t("privacy-agreement")}
                 </a>
                 <span>｜</span>
-                <a href={serviceURL} target="_blank" rel="noreferrer">
+                <a href={serviceURL} rel="noreferrer" target="_blank">
                     {t("service-policy")}
                 </a>
             </div>

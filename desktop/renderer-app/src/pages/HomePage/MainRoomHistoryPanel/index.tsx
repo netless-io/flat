@@ -13,7 +13,7 @@ export const MainRoomHistoryPanel = observer<{ isLogin: boolean }>(function Main
     const { t } = useTranslation();
     return (
         <RoomList title={t("history")}>
-            <MainRoomList listRoomsType={ListRoomsType.History} isLogin={isLogin} />
+            <MainRoomList isLogin={isLogin} listRoomsType={ListRoomsType.History} />
         </RoomList>
     );
 });

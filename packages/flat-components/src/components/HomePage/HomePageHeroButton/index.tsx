@@ -38,8 +38,8 @@ export const HomePageHeroButton: React.FC<HomePageHeroButtonProps> = ({ type, on
     const { t } = useTranslation();
     return (
         <HomePageHeroButtonBase
-            type={type}
             text={t(`home-page-hero-button-type.${type}`)}
+            type={type}
             onClick={onClick}
         />
     );

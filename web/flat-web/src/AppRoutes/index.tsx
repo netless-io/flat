@@ -24,10 +24,10 @@ export const AppRoutes: React.FC = () => {
                                         return (
                                             <AppRouteContainer
                                                 key={routeProps.location.pathname}
-                                                name={name}
                                                 Comp={component}
-                                                title={title}
+                                                name={name}
                                                 routeProps={routeProps}
+                                                title={title}
                                             />
                                         );
                                     }}

@@ -56,8 +56,8 @@ export const FileTitles: Story<CloudStorageFileTitleProps> = ({ onTitleClick }) 
                     <div className="flex items-center ma2">
                         <CloudStorageFileTitle
                             key={ext}
-                            fileUUID={faker.datatype.uuid()}
                             fileName={faker.random.word() + ext}
+                            fileUUID={faker.datatype.uuid()}
                             onTitleClick={onTitleClick}
                         />
                     </div>

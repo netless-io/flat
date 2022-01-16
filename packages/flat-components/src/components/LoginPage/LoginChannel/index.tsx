@@ -16,11 +16,11 @@ export const LoginChannel: React.FC<LoginChannelProps> = ({ onLogin }) => {
     const { t } = useTranslation();
     return (
         <div className="login-channel-container">
-            <Button onClick={() => onLogin("wechat")} className="login-channel-wechat">
+            <Button className="login-channel-wechat" onClick={() => onLogin("wechat")}>
                 <img src={wechatSVG} />
                 {t("login-wechat")}
             </Button>
-            <Button onClick={() => onLogin("github")} className="login-channel-github">
+            <Button className="login-channel-github" onClick={() => onLogin("github")}>
                 <img src={githubSVG} />
                 {t("login-github")}
             </Button>

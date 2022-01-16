@@ -51,9 +51,9 @@ export const StaticPreview = observer<StaticPreviewProps>(function DocumentPrevi
             {convertList?.map(file => {
                 return (
                     <img
+                        key={file.conversionFileUrl}
                         className="static-preview-item"
                         src={file.conversionFileUrl}
-                        key={file.conversionFileUrl}
                     />
                 );
             })}

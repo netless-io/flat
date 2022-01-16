@@ -28,8 +28,8 @@ export const Overview: Story = () => {
             <div className="mb3">
                 <div className="mb1">Selected</div>
                 <Input
-                    placeholder="Please enter the room number"
                     className="ant-input-focused"
+                    placeholder="Please enter the room number"
                     value=""
                 />
             </div>
@@ -40,23 +40,23 @@ export const Overview: Story = () => {
             <div className="mb3">
                 <div className="mb1">Select All</div>
                 <Input
-                    placeholder="Please enter the room number"
-                    className="ant-input-selected"
-                    value="888 888 888 888"
                     ref={selectAllRef}
+                    className="ant-input-selected"
+                    placeholder="Please enter the room number"
+                    value="888 888 888 888"
                     onClick={() => selectAllRef.current?.focus({ cursor: "all" })}
                 />
             </div>
             <div className="mb3">
                 <div className="mb1">Disable</div>
-                <Input placeholder="Please enter the room number" disabled />
+                <Input disabled placeholder="Please enter the room number" />
             </div>
             <div className="mb3">
                 <div className="mb1">Disable(has value)</div>
                 <Input
+                    disabled
                     placeholder="Please enter the room number"
                     value="888 888 888 888"
-                    disabled
                 />
             </div>
         </div>
@@ -73,17 +73,17 @@ export const Overview: Story = () => {
                 </Radio>
             </div>
             <div className="db mv4">
-                <Radio value={3} checked>
+                <Radio checked value={3}>
                     Selected
                 </Radio>
             </div>
             <div className="db mv4">
-                <Radio value={4} disabled>
+                <Radio disabled value={4}>
                     Disable
                 </Radio>
             </div>
             <div className="db mv4">
-                <Radio className="is-hover" value={5} disabled checked>
+                <Radio checked disabled className="is-hover" value={5}>
                     Disable(Selected)
                 </Radio>
             </div>
@@ -126,11 +126,11 @@ export const Overview: Story = () => {
                 </span>
             </div>
             <div className="flex justify-around items-center mb3">
-                <Button type="primary" className="is-hover">
+                <Button className="is-hover" type="primary">
                     Primary
                 </Button>
                 <Button className="is-hover">Default</Button>
-                <Button type="dashed" className="is-hover">
+                <Button className="is-hover" type="dashed">
                     Dashed
                 </Button>
                 <Button danger className="is-hover">
@@ -148,7 +148,7 @@ export const Overview: Story = () => {
                 <Button disabled type="dashed">
                     Dashed
                 </Button>
-                <Button disabled danger>
+                <Button danger disabled>
                     Warning
                 </Button>
                 <span style={{ width: "5em", display: "inline-block", textAlign: "center" }}>
