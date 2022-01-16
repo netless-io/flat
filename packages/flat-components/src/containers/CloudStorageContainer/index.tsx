@@ -78,10 +78,10 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                     </div>
                 )}
                 <div className="cloud-storage-container-file-list fancy-scrollbar">
-                    {!store.totalUsageHR ? (
-                        <CloudStorageSkeletons isCompactMode={store.compact} />
-                    ) : (
+                    {store.totalUsageHR ? (
                         <CloudStorageFileListContainer store={store} />
+                    ) : (
+                        <CloudStorageSkeletons isCompactMode={store.compact} />
                     )}
                 </div>
                 <CSSTransition

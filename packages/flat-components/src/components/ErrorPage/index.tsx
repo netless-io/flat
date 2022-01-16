@@ -15,10 +15,10 @@ export const ErrorPage: React.FC = () => {
     const { t } = useTranslation();
 
     const goHome = (): void => {
-        if (location.pathname !== "/") {
-            history.push("/");
-        } else {
+        if (location.pathname === "/") {
             window.location.reload();
+        } else {
+            history.push("/");
         }
     };
 
