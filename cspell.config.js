@@ -95,6 +95,7 @@ module.exports = {
         "geogebra", // @netless/app-geogebra
         "commitlintrc", // @commitlint/cli
         "unpublish", // agora-rtc-sdk-ng
+        "multipass", // svgo
 
         // misc
         "npmrc",
@@ -116,6 +117,7 @@ module.exports = {
         "Frameless",
         "micromessenger",
         "bokeh",
+        "lintstagedrc",
 
         // CNCF
         "nindent",
