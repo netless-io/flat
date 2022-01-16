@@ -25,9 +25,9 @@ export const MainPageLayout: React.FC<MainPageLayoutProps> = ({
 }) => {
     return (
         <div className="main-layout-container">
-            <MainPageNav {...restProps} onClick={onClick} activeKeys={activeKeys} />
+            <MainPageNav {...restProps} activeKeys={activeKeys} onClick={onClick} />
             {subMenu && (
-                <MainPageSubMenu onClick={onClick} activeKeys={activeKeys} subMenu={subMenu} />
+                <MainPageSubMenu activeKeys={activeKeys} subMenu={subMenu} onClick={onClick} />
             )}
             <div className="main-layout-container-content fancy-scrollbar">{children}</div>
         </div>

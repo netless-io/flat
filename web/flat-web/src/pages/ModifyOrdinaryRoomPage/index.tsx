@@ -14,7 +14,7 @@ export const ModifyOrdinaryRoomPage = observer<ModifyOrdinaryRoomPageProps>(
     function ModifyOrdinaryRoomPage() {
         const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
         if (periodicUUID) {
-            return <PeriodicSubRoomForm roomUUID={roomUUID} periodicUUID={periodicUUID} />;
+            return <PeriodicSubRoomForm periodicUUID={periodicUUID} roomUUID={roomUUID} />;
         } else {
             return <OrdinaryRoomForm roomUUID={roomUUID} />;
         }

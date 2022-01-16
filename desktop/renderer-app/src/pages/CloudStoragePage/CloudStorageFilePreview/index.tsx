@@ -42,9 +42,9 @@ export const ResourcePreview = observer<ResourcePreviewProps>(function PPTPrevie
                 }
                 return (
                     <DynamicPreview
-                        taskUUID={taskUUID}
-                        taskToken={taskToken}
                         region={region}
+                        taskToken={taskToken}
+                        taskUUID={taskUUID}
                         windowInstance={windowInstance}
                     />
                 );
@@ -57,7 +57,7 @@ export const ResourcePreview = observer<ResourcePreviewProps>(function PPTPrevie
                     // TODO: i18n
                     return <div> Failed to load, try again Please</div>;
                 }
-                return <StaticPreview taskUUID={taskUUID} taskToken={taskToken} region={region} />;
+                return <StaticPreview region={region} taskToken={taskToken} taskUUID={taskUUID} />;
             }
 
             default: {

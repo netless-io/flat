@@ -81,7 +81,7 @@ export const SplashPage = observer<{}>(function SplashPage() {
                     "is-success": loginStatus === LoginStatusType.Success,
                 })}
             >
-                <img src={logoSVG} alt="flat logo" />
+                <img alt="flat logo" src={logoSVG} />
                 <span>{t("online-interaction-to-synchronize-ideas")}</span>
             </div>
         </div>

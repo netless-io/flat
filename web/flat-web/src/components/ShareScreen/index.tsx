@@ -40,5 +40,5 @@ export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ sha
         });
     }, [shareScreenStore.existOtherUserStream]);
 
-    return <div className={classNameList} ref={ref} />;
+    return <div ref={ref} className={classNameList} />;
 });

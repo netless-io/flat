@@ -58,53 +58,53 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
     return (
         <>
             <Button onClick={handleShowModal}>
-                <img src={joinSVG} alt="join room" />
+                <img alt="join room" src={joinSVG} />
                 <span className="label">{t("home-page-hero-button-type.join")}</span>
             </Button>
             <Modal
-                title={t("home-page-hero-button-type.join")}
-                width={400}
-                wrapClassName="join-room-box-container"
-                visible={isShowModal}
-                okText={t("join")}
                 cancelText={t("cancel")}
-                onOk={handleOk}
-                onCancel={handleCancel}
                 footer={[
                     <Button key="cancel" onClick={handleCancel}>
                         {t("cancel")}
                     </Button>,
                     <Button
                         key="submit"
-                        type="primary"
-                        loading={isLoading}
-                        onClick={handleOk}
                         disabled={!isFormValidated}
+                        loading={isLoading}
+                        type="primary"
+                        onClick={handleOk}
                     >
                         {t("join")}
                     </Button>,
                 ]}
+                okText={t("join")}
+                title={t("home-page-hero-button-type.join")}
+                visible={isShowModal}
+                width={400}
+                wrapClassName="join-room-box-container"
+                onCancel={handleCancel}
+                onOk={handleOk}
             >
                 <Form
+                    className="main-room-menu-form"
                     form={form}
+                    initialValues={defaultValues}
                     layout="vertical"
                     name="createRoom"
-                    className="main-room-menu-form"
-                    initialValues={defaultValues}
                     onFieldsChange={formValidateStatus}
                 >
                     <Form.Item
-                        name="roomUUID"
                         label={t("room-uuid")}
+                        name="roomUUID"
                         rules={[{ required: true, message: t("enter-room-uuid") }]}
                     >
-                        <Input placeholder={t("enter-room-uuid")} ref={roomTitleInputRef} />
+                        <Input ref={roomTitleInputRef} placeholder={t("enter-room-uuid")} />
                     </Form.Item>
                     <Form.Item label={t("join-options")}>
-                        <Form.Item name="autoMicOn" noStyle valuePropName="checked">
+                        <Form.Item noStyle name="autoMicOn" valuePropName="checked">
                             <Checkbox>{t("turn-on-the-microphone")}</Checkbox>
                         </Form.Item>
-                        <Form.Item name="autoCameraOn" noStyle valuePropName="checked">
+                        <Form.Item noStyle name="autoCameraOn" valuePropName="checked">
                             <Checkbox>{t("turn-on-the-camera")}</Checkbox>
                         </Form.Item>
                     </Form.Item>

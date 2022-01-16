@@ -25,7 +25,7 @@ export const Overview: Story<CloudStorageUploadPanelProps> = args => (
         {String(args.children)
             .split("\n")
             .map((line, i) => (
-                <p className="pv1" key={i}>
+                <p key={i} className="pv1">
                     {line}
                 </p>
             ))}
@@ -59,8 +59,8 @@ export const PlayableExample: Story<PlayableExampleArgs> = ({ onRetry, onCancel,
                 <CloudStorageUploadItem
                     {...status}
                     key={status.uploadID}
-                    onRetry={onRetry}
                     onCancel={onCancel}
+                    onRetry={onRetry}
                 />
             ))}
         </CloudStorageUploadPanel>

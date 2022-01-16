@@ -27,9 +27,9 @@ export const MicrophoneTest: React.FC<MicrophoneTestProps> = ({
             <div className="microphone-test-text">{t("microphone")}</div>
             <div className="microphone-text-select-box">
                 <DeviceTestSelect
+                    currentDeviceID={currentMicrophoneDeviceID}
                     devices={microphoneDevices}
                     isDeviceAccessible={isMicrophoneAccessible}
-                    currentDeviceID={currentMicrophoneDeviceID}
                     onChange={setMicrophoneDevice}
                 />
             </div>

@@ -29,14 +29,14 @@ export const CameraTest: React.FC<CameraTestProps> = ({
             <div className="camera-test-text">{t("camera")}</div>
             <div className="camera-test-select-box">
                 <DeviceTestSelect
+                    currentDeviceID={currentCameraDeviceID}
                     devices={cameraDevices}
                     isDeviceAccessible={isCameraAccessible}
-                    currentDeviceID={currentCameraDeviceID}
                     onChange={setCameraDevice}
                 />
             </div>
             <div className="camera-test-wrapper">
-                <div className="camera-box" ref={cameraVideoStreamRef} />
+                <div ref={cameraVideoStreamRef} className="camera-box" />
                 <div
                     className={classNames("camera-no-accredit-box", {
                         visible: !isCameraAccessible,

@@ -65,7 +65,7 @@ export const LoginPage = observer(function LoginPage() {
 
     return (
         <div className="login-page-container">
-            <LoginPanel onLogin={handleLogin} privacyURL={privacyURL} serviceURL={serviceURL} />
+            <LoginPanel privacyURL={privacyURL} serviceURL={serviceURL} onLogin={handleLogin} />
         </div>
     );
 });

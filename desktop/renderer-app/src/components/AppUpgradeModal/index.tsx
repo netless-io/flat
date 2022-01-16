@@ -58,15 +58,15 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
 
     return (
         <Modal
+            closable={false}
+            footer={[]}
             keyboard={false}
-            width={386}
             maskClosable={false}
             title={renderModalTitle()}
-            footer={[]}
             visible={updateInfo !== null}
-            onCancel={cancelUpgrade}
+            width={386}
             wrapClassName="app-upgrade-modal-container"
-            closable={false}
+            onCancel={cancelUpgrade}
         >
             {showUpgradeProgress ? (
                 <div>

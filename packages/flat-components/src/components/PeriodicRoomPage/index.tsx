@@ -85,11 +85,11 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                     <div className="periodic-room-panel-month-value">{key}</div>
                     <div className="periodic-room-panel-table-line" />
                     <Table
-                        rowKey="roomUUID"
-                        dataSource={polymerizationRooms[key]}
-                        showHeader={false}
                         bordered={false}
+                        dataSource={polymerizationRooms[key]}
                         pagination={false}
+                        rowKey="roomUUID"
+                        showHeader={false}
                     >
                         <Table.Column
                             align="left"
@@ -126,12 +126,9 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                                 return (
                                     <MoreMenu
                                         inviteBaseUrl={inviteBaseUrl}
-                                        room={room}
-                                        userName={userName}
                                         isCreator={isCreator}
-                                        onCopyInvitation={onCopyInvitation}
-                                        onCancelSubPeriodicRoom={() =>
-                                            onCancelSubPeriodicRoom(
+                                        jumpToModifyOrdinaryRoomPage={() =>
+                                            jumpToModifyOrdinaryRoomPage(
                                                 room.roomUUID,
                                                 room.periodicUUID!,
                                             )
@@ -139,12 +136,15 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                                         jumpToRoomDetailPage={() =>
                                             jumpToRoomDetailPage(room.roomUUID, room.periodicUUID!)
                                         }
-                                        jumpToModifyOrdinaryRoomPage={() =>
-                                            jumpToModifyOrdinaryRoomPage(
+                                        room={room}
+                                        userName={userName}
+                                        onCancelSubPeriodicRoom={() =>
+                                            onCancelSubPeriodicRoom(
                                                 room.roomUUID,
                                                 room.periodicUUID!,
                                             )
                                         }
+                                        onCopyInvitation={onCopyInvitation}
                                     />
                                 );
                             }}
@@ -184,8 +184,8 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                             </Button>
                             <Button
                                 danger
-                                onClick={() => setCancelPeriodicRoomModalVisible(true)}
                                 disabled={hasRunning}
+                                onClick={() => setCancelPeriodicRoomModalVisible(true)}
                             >
                                 {t("cancel-of-periodic-rooms")}
                             </Button>
@@ -199,10 +199,10 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                 {renderPeriodicRoomTable()}
             </div>
             <CancelPeriodicRoomModal
-                visible={cancelPeriodicRoomModalVisible}
                 isCreator={isCreator}
-                onCancelPeriodicRoom={onCancelPeriodicRoom}
+                visible={cancelPeriodicRoomModalVisible}
                 onCancel={() => setCancelPeriodicRoomModalVisible(false)}
+                onCancelPeriodicRoom={onCancelPeriodicRoom}
             />
         </div>
     );

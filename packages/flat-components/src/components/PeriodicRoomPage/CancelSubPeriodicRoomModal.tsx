@@ -18,9 +18,6 @@ export const CancelSubPeriodicRoomModal: React.FC<CancelSubPeriodicRoomModalProp
     const { t } = useTranslation();
     return (
         <Modal
-            visible={visible}
-            title={t("cancel-room")}
-            onCancel={onCancel}
             footer={[
                 <Button key="Cancel" onClick={onCancel}>
                     {isCreator ? t("think-again") : t("cancel")}
@@ -29,6 +26,9 @@ export const CancelSubPeriodicRoomModal: React.FC<CancelSubPeriodicRoomModalProp
                     {t("confirm")}
                 </Button>,
             ]}
+            title={t("cancel-room")}
+            visible={visible}
+            onCancel={onCancel}
         >
             <span>{t("cancel-sub-periodic-room-tips")}</span>
         </Modal>

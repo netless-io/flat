@@ -42,7 +42,7 @@ export const ShareScreenTip = observer<ShareScreenTipProps>(function ShareScreen
     return ReactDOM.createPortal(
         <div className={"share-screen-tip"}>
             <div>
-                <img src={dragSVG} alt="drag icon" />
+                <img alt="drag icon" src={dragSVG} />
                 <span>{t("share-screen.tip-window-body")}</span>
             </div>
             <Button danger ghost onClick={stopShareScreen}>

@@ -43,13 +43,13 @@ export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileN
         return (
             <div className="cloud-storage-file-list-filename-container">
                 <CloudStorageFileTitle
-                    fileUUID={file.fileUUID}
-                    fileName={file.fileName}
-                    titleClickable={titleClickable}
                     convertStatus={file.convert}
-                    onTitleClick={onItemTitleClick}
+                    fileName={file.fileName}
+                    fileUUID={file.fileUUID}
                     renamingFileUUID={renamingFileUUID}
+                    titleClickable={titleClickable}
                     onRename={onRename}
+                    onTitleClick={onItemTitleClick}
                 />
                 {menuItems && menuItems.length > 0 && (
                     <div className="cloud-storage-file-list-menu-btn-wrap">
@@ -70,7 +70,7 @@ export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileN
                             overlayClassName="cloud-storage-file-list-menu"
                         >
                             <Button>
-                                <img src={fileMenusSVG} width={22} height={22} aria-hidden />
+                                <img aria-hidden height={22} src={fileMenusSVG} width={22} />
                             </Button>
                         </Dropdown>
                     </div>

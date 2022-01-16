@@ -37,14 +37,12 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
             <div className="cloud-storage-container-btns">
                 <Button
                     danger
-                    onClick={store.onBatchDelete}
                     disabled={store.selectedFileUUIDs.length <= 0}
+                    onClick={store.onBatchDelete}
                 >
                     {t("delete")}
                 </Button>
                 <Dropdown.Button
-                    type="primary"
-                    onClick={store.onUpload}
                     overlay={
                         <Menu onClick={handleMenuClick}>
                             <Menu.Item key="h5" icon={<FormOutlined />}>
@@ -52,6 +50,8 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                             </Menu.Item>
                         </Menu>
                     }
+                    type="primary"
+                    onClick={store.onUpload}
                 >
                     {t("upload")}
                 </Dropdown.Button>
@@ -85,11 +85,11 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                     )}
                 </div>
                 <CSSTransition
-                    in={store.isUploadPanelVisible && store.isUploadPanelExpand && store.compact}
-                    timeout={400}
-                    classNames="cloud-storage-container-mask"
                     mountOnEnter
                     unmountOnExit
+                    classNames="cloud-storage-container-mask"
+                    in={store.isUploadPanelVisible && store.isUploadPanelExpand && store.compact}
+                    timeout={400}
                 >
                     <div
                         className="cloud-storage-container-mask"
@@ -104,8 +104,8 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                     <CloudStorageUploadPanel
                         className="cloud-storage-container-upload-panel"
                         compact={store.compact}
-                        finishWithError={store.uploadFinishWithError}
                         expand={store.isUploadPanelExpand}
+                        finishWithError={store.uploadFinishWithError}
                         finished={store.uploadFinishedCount}
                         total={store.uploadTotalCount}
                         onClose={store.onUploadPanelClose}

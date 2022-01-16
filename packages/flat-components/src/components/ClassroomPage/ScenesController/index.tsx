@@ -46,12 +46,12 @@ export const ScenesController: FC<ScenesControllerProps> = ({
         >
             <div className="scenes-controller-btn-list">
                 <div className="scenes-controller-btn" onClick={warpOnClick(addScene)}>
-                    <img src={addSceneSVG} alt="add scene" />
+                    <img alt="add scene" src={addSceneSVG} />
                 </div>
                 <div className="scenes-controller-btn" onClick={warpOnClick(preScene)}>
                     <img
-                        src={isFirstScene ? preScenesDisabledSVG : preScenesSVG}
                         alt="previous scene"
+                        src={isFirstScene ? preScenesDisabledSVG : preScenesSVG}
                     />
                 </div>
                 <div className="scenes-controller-info">
@@ -59,8 +59,8 @@ export const ScenesController: FC<ScenesControllerProps> = ({
                 </div>
                 <div className="scenes-controller-btn" onClick={warpOnClick(nextScene)}>
                     <img
-                        src={isLastScene ? nextScenesDisabledSVG : nextScenesSVG}
                         alt="next scene"
+                        src={isLastScene ? nextScenesDisabledSVG : nextScenesSVG}
                     />
                 </div>
             </div>

@@ -13,14 +13,14 @@ export const CloudStorageFileListContainer = observer<CloudStorageFileListContai
         return (
             <CloudStorageFileList
                 titleClickable
-                files={toJS(store.files)}
-                selectedFileUUIDs={toJS(store.selectedFileUUIDs)}
-                onSelectionChange={store.onSelectionChange}
                 fileMenus={store.fileMenus}
+                files={toJS(store.files)}
+                renamingFileUUID={store.renamingFileUUID}
+                selectedFileUUIDs={toJS(store.selectedFileUUIDs)}
                 onItemMenuClick={store.onItemMenuClick}
                 onItemTitleClick={store.onItemTitleClick}
-                renamingFileUUID={store.renamingFileUUID}
                 onRename={store.onRename}
+                onSelectionChange={store.onSelectionChange}
             />
         );
     },

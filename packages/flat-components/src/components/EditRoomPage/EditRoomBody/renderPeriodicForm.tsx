@@ -27,11 +27,11 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
                     {renderPeriodicRoomTips}
                 </Form.Item>
                 <Form.Item
+                    getValueFromEvent={onWeekSelected}
                     label={t("frequency")}
                     name={["periodic", "weeks"]}
-                    getValueFromEvent={onWeekSelected}
                 >
-                    <WeekRateSelector onChange={onWeekRateChanged} lang={lang} />
+                    <WeekRateSelector lang={lang} onChange={onWeekRateChanged} />
                 </Form.Item>
                 <Form.Item label={t("end-series")}>
                     <Row gutter={16}>
@@ -100,18 +100,18 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
                         },
                     ]}
                 >
-                    <InputNumber min={1} max={50} precision={0} onChange={onPeriodicRateChanged} />
+                    <InputNumber max={50} min={1} precision={0} onChange={onPeriodicRateChanged} />
                 </Form.Item>
             ) : (
                 <Form.Item
-                    name={["periodic", "endTime"]}
                     getValueFromEvent={(date: Date | null) => date && endOfDay(date)}
+                    name={["periodic", "endTime"]}
                     rules={[validatePeriodicEndTime]}
                 >
                     <DatePicker
-                        format="YYYY-MM-DD"
                         allowClear={false}
                         disabledDate={disablePeriodicEndTime}
+                        format="YYYY-MM-DD"
                         onChange={onPeriodicEndTimeChanged}
                     />
                 </Form.Item>

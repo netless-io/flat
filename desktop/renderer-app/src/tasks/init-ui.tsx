@@ -47,9 +47,9 @@ const App: React.FC = () => {
         <I18nextProvider i18n={i18n}>
             <ConfigProvider
                 autoInsertSpaceInButton={false}
-                locale={antdLocale}
-                // let popups scrolls with container parent
                 getPopupContainer={getPopupContainer}
+                // let popups scrolls with container parent
+                locale={antdLocale}
             >
                 <StoreProvider>
                     <AppRoutes />

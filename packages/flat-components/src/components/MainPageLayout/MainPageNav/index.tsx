@@ -31,12 +31,12 @@ export const MainPageNav: React.FC<MainPageNavProps> = ({
         <div className="main-page-nav-container">
             <div className="main-page-nav-header">
                 <MainPageNavAvatar
+                    activeKeys={activeKeys}
                     avatarSrc={avatarSrc}
+                    generateAvatar={generateAvatar}
+                    popMenu={popMenu}
                     userName={userName}
                     onClick={onClick}
-                    activeKeys={activeKeys}
-                    popMenu={popMenu}
-                    generateAvatar={generateAvatar}
                 />
             </div>
             <div className="main-page-nav-content">

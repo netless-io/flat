@@ -27,7 +27,7 @@ export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ sha
 
     return (
         <>
-            <div className={classNameList} ref={ref} />
+            <div ref={ref} className={classNameList} />
             {shareScreenStore.enableShareScreenStatus && (
                 <ShareScreenTip shareScreenStore={shareScreenStore} />
             )}

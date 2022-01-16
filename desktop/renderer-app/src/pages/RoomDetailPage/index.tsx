@@ -140,17 +140,17 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
             <div className="room-detail-page-container">
                 <RoomDetailPanel
                     inviteBaseUrl={FLAT_WEB_BASE_URL}
-                    roomInfo={roomInfo}
-                    room={roomInfo}
-                    userName={roomInfo.ownerUserName || ""}
                     isCreator={isCreator}
                     isPeriodicDetailsPage={false}
                     periodicWeeks={periodicInfo?.periodic.weeks}
+                    room={roomInfo}
+                    roomInfo={roomInfo}
+                    userName={roomInfo.ownerUserName || ""}
+                    onCancelRoom={onCancelRoom}
+                    onCopyInvitation={text => clipboard.writeText(text)}
                     onJoinRoom={joinRoom}
                     onModifyRoom={jumpToModifyRoom}
                     onReplayRoom={jumpToReplayPage}
-                    onCancelRoom={onCancelRoom}
-                    onCopyInvitation={text => clipboard.writeText(text)}
                 />
             </div>
         </MainPageLayoutContainer>

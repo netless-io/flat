@@ -11,7 +11,7 @@ export const ScheduleRoomBox = React.memo<{}>(function ScheduleRoomBox() {
 
     return (
         <Button onClick={() => pushHistory(RouteNameType.UserScheduledPage)}>
-            <img src={bookSVG} alt="Schedule Room" />
+            <img alt="Schedule Room" src={bookSVG} />
             <span className="label">{t("home-page-hero-button-type.schedule")}</span>
         </Button>
     );

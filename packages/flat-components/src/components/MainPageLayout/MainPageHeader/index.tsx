@@ -15,7 +15,7 @@ export const MainPageHeader: React.FC<MainPageHeaderProps> = ({ onBackPreviousPa
     return (
         <div className="main-page-header-container">
             <div className="main-page-header-back" onClick={onBackPreviousPage}>
-                <img src={backSVG} alt="back" />
+                <img alt="back" src={backSVG} />
                 <span>{t("back")}</span>
             </div>
             <Divider type="vertical" />

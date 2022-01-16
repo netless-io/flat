@@ -38,10 +38,10 @@ export const ChatUser = observer<ChatUserProps>(function ChatUser({
     return (
         <div className="chat-user">
             <img
+                alt={`User ${user.name}`}
                 className="chat-user-avatar"
                 src={isAvatarLoadFailed ? generateAvatar(userUUID) : user.avatar}
                 onError={() => setAvatarLoadFailed(true)}
-                alt={`User ${user.name}`}
             />
             <span className="chat-user-name">{user.name}</span>
             {ownerUUID === user.userUUID ? (

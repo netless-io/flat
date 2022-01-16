@@ -193,23 +193,23 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
             <div className="realtime-box">
                 <TopBar
+                    center={renderTopBarCenter()}
                     isMac={runtime.isMac}
                     left={renderTopBarLeft()}
-                    center={renderTopBarCenter()}
                     right={renderTopBarRight()}
                 />
                 <div className="realtime-content">
                     <div className="container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
                         <ShareScreenPicker
-                            shareScreenStore={shareScreenStore}
                             handleOk={() => {
                                 shareScreenStore.enable();
                             }}
+                            shareScreenStore={shareScreenStore}
                         />
                         <Whiteboard
-                            whiteboardStore={whiteboardStore}
                             classRoomStore={classRoomStore}
+                            whiteboardStore={whiteboardStore}
                         />
                     </div>
                     {renderRealtimePanel()}
@@ -264,7 +264,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
                     <TopBarRightBtn
-                        title="Share Screen"
                         icon={
                             shareScreenStore.enableShareScreenStatus ? (
                                 <img src={shareScreenActiveSVG} />
@@ -272,6 +271,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                                 <img src={shareScreenSVG} />
                             )
                         }
+                        title="Share Screen"
                         onClick={handleShareScreen}
                     />
                 )}
@@ -280,13 +280,12 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    title="Exit"
                     icon={<img src={exitSVG} />}
+                    title="Exit"
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
                     icon={
                         isRealtimeSideOpen ? (
                             <img src={hideSideActiveSVG} />
@@ -294,6 +293,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                             <img src={hideSideSVG} />
                         )
                     }
+                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
                     onClick={handleSideOpenerSwitch}
                 />
             </>
@@ -309,6 +309,12 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
         return (
             <RealtimePanel
+                chatSlot={
+                    <ChatPanel
+                        classRoomStore={classRoomStore}
+                        disableMultipleSpeakers={true}
+                    ></ChatPanel>
+                }
                 isShow={isRealtimeSideOpen}
                 isVideoOn={classRoomStore.isRTCJoined}
                 videoSlot={
@@ -320,15 +326,15 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                                 })}
                             >
                                 <BigClassAvatar
-                                    isCreator={classRoomStore.isCreator}
-                                    userUUID={classRoomStore.userUUID}
                                     avatarUser={creator}
+                                    generateAvatar={generateAvatar}
                                     isAvatarUserCreator={true}
+                                    isCreator={classRoomStore.isCreator}
+                                    mini={isCreatorMini}
                                     rtcEngine={classRoomStore.rtc.rtcEngine}
                                     updateDeviceState={classRoomStore.updateDeviceState}
-                                    mini={isCreatorMini}
+                                    userUUID={classRoomStore.userUUID}
                                     onExpand={onVideoAvatarExpand}
-                                    generateAvatar={generateAvatar}
                                 />
                             </div>
 
@@ -339,25 +345,19 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                                     })}
                                 >
                                     <BigClassAvatar
-                                        isCreator={classRoomStore.isCreator}
                                         avatarUser={speakingJoiner}
-                                        userUUID={classRoomStore.userUUID}
+                                        generateAvatar={generateAvatar}
+                                        isCreator={classRoomStore.isCreator}
+                                        mini={mainSpeaker !== speakingJoiner}
                                         rtcEngine={classRoomStore.rtc.rtcEngine}
                                         updateDeviceState={classRoomStore.updateDeviceState}
-                                        mini={mainSpeaker !== speakingJoiner}
+                                        userUUID={classRoomStore.userUUID}
                                         onExpand={onVideoAvatarExpand}
-                                        generateAvatar={generateAvatar}
                                     />
                                 </div>
                             )}
                         </div>
                     )
-                }
-                chatSlot={
-                    <ChatPanel
-                        classRoomStore={classRoomStore}
-                        disableMultipleSpeakers={true}
-                    ></ChatPanel>
                 }
             />
         );

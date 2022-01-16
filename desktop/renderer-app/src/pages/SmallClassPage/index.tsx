@@ -165,9 +165,9 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
             <div className="realtime-box">
                 <TopBar
+                    center={renderTopBarCenter()}
                     isMac={runtime.isMac}
                     left={renderTopBarLeft()}
-                    center={renderTopBarCenter()}
                     right={renderTopBarRight()}
                 />
                 {classRoomStore.isRTCJoined && renderAvatars()}
@@ -175,17 +175,17 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     <div className="container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
                         <ShareScreenPicker
-                            shareScreenStore={shareScreenStore}
                             handleOk={() => {
                                 shareScreenStore.enable();
                             }}
+                            shareScreenStore={shareScreenStore}
                         />
                         <Whiteboard
-                            whiteboardStore={whiteboardStore}
                             classRoomStore={classRoomStore}
                             disableHandRaising={
                                 classRoomStore.classMode === ClassModeType.Interaction
                             }
+                            whiteboardStore={whiteboardStore}
                         />
                     </div>
                     {renderRealtimePanel()}
@@ -205,13 +205,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
             <div className="realtime-avatars-wrap">
                 <div className="realtime-avatars">
                     <SmallClassAvatar
-                        isCreator={true}
-                        userUUID={classRoomStore.userUUID}
                         avatarUser={classRoomStore.users.creator}
+                        generateAvatar={generateAvatar}
                         isAvatarUserCreator={true}
+                        isCreator={true}
                         rtcEngine={classRoomStore.rtc.rtcEngine}
                         updateDeviceState={classRoomStore.updateDeviceState}
-                        generateAvatar={generateAvatar}
+                        userUUID={classRoomStore.userUUID}
                     />
                     {classRoomStore.users.joiners.map(renderAvatar)}
                 </div>
@@ -236,18 +236,18 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     function renderClassMode(): React.ReactNode {
         return classRoomStore.classMode === ClassModeType.Lecture ? (
             <TopBarRoundBtn
-                title={t("lecture-mode")}
                 dark
                 iconName="class-interaction"
+                title={t("lecture-mode")}
                 onClick={classRoomStore.toggleClassMode}
             >
                 {t("switch-to-interactive-mode")}
             </TopBarRoundBtn>
         ) : (
             <TopBarRoundBtn
-                title={t("interactive-mode")}
                 dark
                 iconName="class-lecture"
+                title={t("interactive-mode")}
                 onClick={classRoomStore.toggleClassMode}
             >
                 {t("switch-to-lecture-mode")}
@@ -285,7 +285,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
                     <TopBarRightBtn
-                        title="Share Screen"
                         icon={
                             shareScreenStore.enableShareScreenStatus ? (
                                 <img src={shareScreenActiveSVG} />
@@ -293,6 +292,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                                 <img src={shareScreenSVG} />
                             )
                         }
+                        title="Share Screen"
                         onClick={handleShareScreen}
                     />
                 )}
@@ -301,13 +301,12 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    title="Exit"
                     icon={<img src={exitSVG} />}
+                    title="Exit"
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
                     icon={
                         isRealtimeSideOpen ? (
                             <img src={hideSideActiveSVG} />
@@ -315,6 +314,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                             <img src={hideSideSVG} />
                         )
                     }
+                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
                     onClick={() => openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen)}
                 />
             </>
@@ -324,10 +324,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     function renderRealtimePanel(): React.ReactNode {
         return (
             <RealtimePanel
+                chatSlot={<ChatPanel classRoomStore={classRoomStore}></ChatPanel>}
                 isShow={isRealtimeSideOpen}
                 isVideoOn={false}
                 videoSlot={null}
-                chatSlot={<ChatPanel classRoomStore={classRoomStore}></ChatPanel>}
             />
         );
     }
@@ -335,13 +335,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     function renderAvatar(user: User): React.ReactNode {
         return (
             <SmallClassAvatar
-                isCreator={classRoomStore.isCreator}
                 key={user.userUUID}
-                userUUID={classRoomStore.userUUID}
                 avatarUser={user}
+                generateAvatar={generateAvatar}
+                isCreator={classRoomStore.isCreator}
                 rtcEngine={classRoomStore.rtc.rtcEngine}
                 updateDeviceState={classRoomStore.updateDeviceState}
-                generateAvatar={generateAvatar}
+                userUUID={classRoomStore.userUUID}
             />
         );
     }

@@ -28,10 +28,10 @@ export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
         const rowRenderer: ListRowRenderer = ({ index, parent, style }) => {
             return (
                 <CellMeasurer
-                    cache={cellCache}
-                    parent={parent}
                     key={classRoomReplayStore.messages[index].uuid}
+                    cache={cellCache}
                     columnIndex={0}
+                    parent={parent}
                     rowIndex={index}
                 >
                     {({ measure, registerChild }) => {
@@ -40,12 +40,12 @@ export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
                                 <Observer>
                                     {() => (
                                         <ChatMessage
-                                            onMount={measure}
-                                            userUUID={classRoomReplayStore.userUUID}
+                                            message={classRoomReplayStore.messages[index]}
                                             messageUser={classRoomReplayStore.users.cachedUsers.get(
                                                 classRoomReplayStore.messages[index].userUUID,
                                             )}
-                                            message={classRoomReplayStore.messages[index]}
+                                            userUUID={classRoomReplayStore.userUUID}
+                                            onMount={measure}
                                         />
                                     )}
                                 </Observer>
@@ -64,12 +64,12 @@ export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
                             <List
                                 className="fancy-scrollbar"
                                 height={height}
-                                width={width}
                                 rowCount={classRoomReplayStore.messages.length}
                                 rowHeight={cellCache.rowHeight}
                                 rowRenderer={rowRenderer}
-                                scrollToIndex={classRoomReplayStore.messages.length - 1}
                                 scrollToAlignment="start"
+                                scrollToIndex={classRoomReplayStore.messages.length - 1}
+                                width={width}
                             />
                         )}
                     </Observer>
