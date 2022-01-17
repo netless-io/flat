@@ -64,7 +64,7 @@ export const initRegisterApps = (): void => {
 const getVSPath = (): string => {
     let vsPath;
     if (process.env.NODE_ENV === "production") {
-        vsPath = path.join(__dirname, "static", "monaco-editor", "min", "vs");
+        vsPath = path.join(__dirname, "monaco-editor", "min", "vs");
     } else {
         const nodeModulesName = "node_modules";
         const nodeModulesEndIndexByPath =

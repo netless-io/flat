@@ -9,10 +9,10 @@ import { useTranslation } from "react-i18next";
 import {
     NetworkStatus,
     RoomInfo,
-    RecordButton,
     TopBar,
     TopBarDivider,
     LoadingPage,
+    CloudRecordBtn,
     Timer,
 } from "flat-components";
 
@@ -267,23 +267,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         if (!classRoomStore.isCreator) {
             return null;
         }
-        return (
-            <>
-                {renderClassMode()}
-                {classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Started && (
-                    <RecordButton
-                        isRecording={classRoomStore.isRecording}
-                        onClick={() =>
-                            classRoomStore.toggleRecording({
-                                onStop() {
-                                    void message.success(t("recording-completed-tips"));
-                                },
-                            })
-                        }
-                    />
-                )}
-            </>
-        );
+        return renderClassMode();
     }
 
     function renderTopBarRight(): React.ReactNode {
@@ -305,6 +289,18 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     />
                 )}
 
+                {classRoomStore.isCreator && (
+                    <CloudRecordBtn
+                        isRecording={classRoomStore.isRecording}
+                        onClick={() => {
+                            void classRoomStore.toggleRecording({
+                                onStop() {
+                                    void message.success(t("recording-completed-tips"));
+                                },
+                            });
+                        }}
+                    />
+                )}
                 {/* TODO: open cloud-storage sub window */}
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />

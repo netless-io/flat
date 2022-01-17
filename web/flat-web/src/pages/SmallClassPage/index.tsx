@@ -6,11 +6,11 @@ import { useParams } from "react-router-dom";
 import {
     NetworkStatus,
     RoomInfo,
-    RecordButton,
     TopBar,
     TopBarDivider,
     LoadingPage,
     Timer,
+    CloudRecordBtn,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
@@ -248,23 +248,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         if (!classRoomStore.isCreator) {
             return null;
         }
-        return (
-            <>
-                {renderClassMode()}
-                {classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Started && (
-                    <RecordButton
-                        isRecording={classRoomStore.isRecording}
-                        onClick={() =>
-                            classRoomStore.toggleRecording({
-                                onStop() {
-                                    void message.success(t("recording-completed-tips"));
-                                },
-                            })
-                        }
-                    />
-                )}
-            </>
-        );
+        return renderClassMode();
     }
 
     function renderTopBarRight(): React.ReactNode {
@@ -284,6 +268,18 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     />
                 )}
 
+                {classRoomStore.isCreator && (
+                    <CloudRecordBtn
+                        isRecording={classRoomStore.isRecording}
+                        onClick={() => {
+                            void classRoomStore.toggleRecording({
+                                onStop() {
+                                    void message.success(t("recording-completed-tips"));
+                                },
+                            });
+                        }}
+                    />
+                )}
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
