@@ -1,7 +1,7 @@
 import "./style.less";
 import appStoreSVG from "../../assets/image/app-store.svg";
 import codeEditorSVG from "../../assets/image/code-editor.svg";
-import timerSVG from "../../assets/image/timer.svg";
+import countdownSVG from "../../assets/image/countdonw.svg";
 import geogebraSVG from "../../assets/image/geogebra.svg";
 import cocosSVG from "../../assets/image/cocos.svg";
 
@@ -26,9 +26,9 @@ const apps: AddAppParams[] = [
         },
     },
     {
-        kind: "Timer",
+        kind: "Countdown",
         options: {
-            title: "Timer",
+            title: "Countdown",
         },
     },
     {
@@ -50,7 +50,7 @@ const apps: AddAppParams[] = [
 
 export const appIcons = {
     Monaco: codeEditorSVG,
-    Timer: timerSVG,
+    Countdown: countdownSVG,
     GeoGebra: geogebraSVG,
     IframeBridge: cocosSVG,
 };
