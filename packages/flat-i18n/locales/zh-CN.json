@@ -390,5 +390,6 @@
   "user-guide-button": "立即查看",
   "start-recording": "开始录制",
   "stop-recording": "停止录制",
-  "open-in-browser": "请在浏览器中打开"
+  "open-in-browser": "请在浏览器中打开",
+  "room-started": "已上课："
 }

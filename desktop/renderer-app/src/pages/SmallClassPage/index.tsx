@@ -13,6 +13,7 @@ import {
     TopBarDivider,
     LoadingPage,
     CloudRecordBtn,
+    Timer,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
@@ -223,7 +224,14 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         return (
             <>
                 <NetworkStatus networkQuality={classRoomStore.networkQuality} />
-                {!classRoomStore.isCreator && (
+                {classRoomStore.isCreator ? (
+                    classRoomStore.roomInfo?.beginTime && (
+                        <Timer
+                            beginTime={classRoomStore.roomInfo.beginTime}
+                            roomStatus={classRoomStore.roomStatus}
+                        />
+                    )
+                ) : (
                     <RoomInfo
                         roomStatus={classRoomStore.roomStatus}
                         roomType={classRoomStore.roomInfo?.roomType}

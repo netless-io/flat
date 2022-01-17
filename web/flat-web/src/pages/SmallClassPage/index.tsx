@@ -9,6 +9,7 @@ import {
     TopBar,
     TopBarDivider,
     LoadingPage,
+    Timer,
     CloudRecordBtn,
 } from "flat-components";
 
@@ -204,7 +205,14 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         return (
             <>
                 <NetworkStatus networkQuality={classRoomStore.networkQuality} />
-                {!classRoomStore.isCreator && (
+                {classRoomStore.isCreator ? (
+                    classRoomStore.roomInfo?.beginTime && (
+                        <Timer
+                            beginTime={classRoomStore.roomInfo.beginTime}
+                            roomStatus={classRoomStore.roomStatus}
+                        />
+                    )
+                ) : (
                     <RoomInfo
                         roomStatus={classRoomStore.roomStatus}
                         roomType={classRoomStore.roomInfo?.roomType}

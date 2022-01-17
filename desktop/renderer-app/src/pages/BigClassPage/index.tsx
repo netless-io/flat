@@ -9,6 +9,7 @@ import {
     TopBarDivider,
     LoadingPage,
     CloudRecordBtn,
+    Timer,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
@@ -16,7 +17,7 @@ import { useParams } from "react-router-dom";
 import { RoomPhase } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
-import { RoomStatus, RoomType } from "../../api-middleware/flatServer/constants";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RtcChannelType } from "../../api-middleware/rtc";
 import { ChatPanel } from "../../components/ChatPanel";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
@@ -227,8 +228,18 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         return (
             <>
                 <NetworkStatus networkQuality={classRoomStore.networkQuality} />
-                {!classRoomStore.isCreator && (
-                    <RoomInfo roomStatus={classRoomStore.roomStatus} roomType={RoomType.BigClass} />
+                {classRoomStore.isCreator ? (
+                    classRoomStore.roomInfo?.beginTime && (
+                        <Timer
+                            beginTime={classRoomStore.roomInfo.beginTime}
+                            roomStatus={classRoomStore.roomStatus}
+                        />
+                    )
+                ) : (
+                    <RoomInfo
+                        roomStatus={classRoomStore.roomStatus}
+                        roomType={classRoomStore.roomInfo?.roomType}
+                    />
                 )}
             </>
         );

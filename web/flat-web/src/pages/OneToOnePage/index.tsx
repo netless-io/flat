@@ -11,6 +11,7 @@ import {
     TopBar,
     TopBarDivider,
     LoadingPage,
+    Timer,
     CloudRecordBtn,
 } from "flat-components";
 
@@ -26,7 +27,7 @@ import {
 } from "../../components/ExitRoomConfirm";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import { RoomStatus, RoomType } from "../../api-middleware/flatServer/constants";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RecordingConfig, useClassRoomStore } from "../../stores/class-room-store";
 import { RtcChannelType } from "../../api-middleware/rtc/room";
 import { useComputed } from "../../utils/mobx";
@@ -161,8 +162,18 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         return (
             <>
                 <NetworkStatus networkQuality={classRoomStore.networkQuality} />
-                {!classRoomStore.isCreator && (
-                    <RoomInfo roomStatus={classRoomStore.roomStatus} roomType={RoomType.OneToOne} />
+                {classRoomStore.isCreator ? (
+                    classRoomStore.roomInfo?.beginTime && (
+                        <Timer
+                            beginTime={classRoomStore.roomInfo.beginTime}
+                            roomStatus={classRoomStore.roomStatus}
+                        />
+                    )
+                ) : (
+                    <RoomInfo
+                        roomStatus={classRoomStore.roomStatus}
+                        roomType={classRoomStore.roomInfo?.roomType}
+                    />
                 )}
             </>
         );

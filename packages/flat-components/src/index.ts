@@ -20,3 +20,4 @@ export * from "./components/RoomStatusElement";
 export * from "./containers/CloudStorageContainer";
 export * from "./components/DeviceTestPage";
 export * from "./components/ClassroomPage/CloudRecordBtn";
+export * from "./components/ClassroomPage/Timer";
