@@ -10,7 +10,7 @@ export type TimerProps = {
     beginTime: number;
 };
 
-const paddingZero = (number: number): string => {
+const paddingHexCode = (number: number): string => {
     return String(number).padStart(2, "0");
 };
 
@@ -19,14 +19,20 @@ const useClockTick = (beginTime: number, roomStatus: RoomStatus): string => {
     const unmounted = useIsUnMounted();
 
     useEffect(() => {
-        if (unmounted.current) {
-            return;
+        let timer = NaN;
+        if (!unmounted.current) {
+            if (roomStatus === RoomStatus.Started) {
+                const startTimer = (): void => {
+                    updateTimestamp(Math.floor(Date.now() / 1000) * 1000);
+                    timer = window.requestAnimationFrame(startTimer);
+                };
+                startTimer();
+            }
         }
-
-        if (roomStatus === RoomStatus.Started) {
-            updateTimestamp(Date.now());
-        }
-    }, [roomStatus, timestamp, unmounted]);
+        return () => {
+            window.cancelAnimationFrame(timer);
+        };
+    }, [roomStatus, unmounted]);
 
     return useMemo(() => {
         const {
@@ -39,10 +45,12 @@ const useClockTick = (beginTime: number, roomStatus: RoomStatus): string => {
             end: timestamp,
         });
 
-        const minutesAndSeconds = `${paddingZero(minutes)}:${paddingZero(seconds)}`;
+        const minutesAndSeconds = `${paddingHexCode(minutes)}:${paddingHexCode(seconds)}`;
         const dayHours = hours + days * 24;
 
-        return dayHours > 0 ? `${paddingZero(dayHours)}:${minutesAndSeconds}` : minutesAndSeconds;
+        return dayHours > 0
+            ? `${paddingHexCode(dayHours)}:${minutesAndSeconds}`
+            : minutesAndSeconds;
     }, [beginTime, timestamp]);
 };
 
