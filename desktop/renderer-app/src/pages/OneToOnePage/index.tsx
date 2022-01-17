@@ -8,10 +8,10 @@ import { RoomPhase } from "white-web-sdk";
 import {
     NetworkStatus,
     RoomInfo,
-    RecordButton,
     TopBar,
     TopBarDivider,
     LoadingPage,
+    CloudRecordBtn,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
@@ -150,7 +150,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
             <div className="one-to-one-realtime-box">
                 <TopBar
-                    center={renderTopBarCenter()}
                     isMac={runtime.isMac}
                     left={renderTopBarLeft()}
                     right={renderTopBarRight()}
@@ -193,28 +192,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         );
     }
 
-    function renderTopBarCenter(): React.ReactNode {
-        if (!classRoomStore.isCreator) {
-            return null;
-        }
-        return (
-            <>
-                {classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Started && (
-                    <RecordButton
-                        isRecording={classRoomStore.isRecording}
-                        onClick={() =>
-                            classRoomStore.toggleRecording({
-                                onStop() {
-                                    void message.success(t("recording-completed-tips"));
-                                },
-                            })
-                        }
-                    />
-                )}
-            </>
-        );
-    }
-
     function renderTopBarRight(): React.ReactNode {
         return (
             <>
@@ -234,6 +211,18 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     />
                 )}
 
+                {classRoomStore.isCreator && (
+                    <CloudRecordBtn
+                        isRecording={classRoomStore.isRecording}
+                        onClick={() => {
+                            void classRoomStore.toggleRecording({
+                                onStop() {
+                                    void message.success(t("recording-completed-tips"));
+                                },
+                            });
+                        }}
+                    />
+                )}
                 {/* TODO: open cloud-storage sub window */}
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
