@@ -128,7 +128,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
             <div className="one-to-one-realtime-box">
                 <TopBar
-                    center={renderTopBarCenter()}
                     isMac={runtime.isMac}
                     left={renderTopBarLeft()}
                     right={renderTopBarRight()}
@@ -167,10 +166,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 )}
             </>
         );
-    }
-
-    function renderTopBarCenter(): React.ReactNode {
-        return null;
     }
 
     function renderTopBarRight(): React.ReactNode {

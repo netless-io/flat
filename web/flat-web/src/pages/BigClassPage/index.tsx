@@ -173,7 +173,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
             <div className="realtime-box">
                 <TopBar
-                    center={renderTopBarCenter()}
                     isMac={runtime.isMac}
                     left={renderTopBarLeft()}
                     right={renderTopBarRight()}
@@ -207,10 +206,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 )}
             </>
         );
-    }
-
-    function renderTopBarCenter(): React.ReactNode {
-        return null;
     }
 
     function renderTopBarRight(): React.ReactNode {
