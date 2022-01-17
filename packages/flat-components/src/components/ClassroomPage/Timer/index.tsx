@@ -4,29 +4,17 @@ import "./style.less";
 import { useIsUnMounted } from "../../../utils/hooks";
 import { RoomStatus } from "../../../types/room";
 import { intervalToDuration } from "date-fns/fp";
-import type { Duration } from "date-fns";
 
 export type TimerProps = {
     roomStatus: RoomStatus;
     beginTime: number;
 };
 
-// see: https://github.com/date-fns/date-fns/issues/2891#issuecomment-1003070337
-export type TimerDuration = Omit<Required<Duration>, "weeks">;
-
 const paddingZero = (number: number): string => {
     return String(number).padStart(2, "0");
 };
 
-const useTiming = (duration: TimerDuration): string => {
-    return useMemo(() => {
-        const { hours, minutes, seconds } = duration;
-        const minutesAndSeconds = `${paddingZero(minutes)}:${paddingZero(seconds)}`;
-        return hours > 0 ? `${paddingZero(hours)}:${minutesAndSeconds}` : minutesAndSeconds;
-    }, [duration]);
-};
-
-const useClockTick = (beginTime: number, roomStatus: RoomStatus): TimerDuration => {
+const useClockTick = (beginTime: number, roomStatus: RoomStatus): string => {
     const [timestamp, updateTimestamp] = useState<number>(Date.now());
     const unmounted = useIsUnMounted();
 
@@ -39,18 +27,24 @@ const useClockTick = (beginTime: number, roomStatus: RoomStatus): TimerDuration 
         }
     }, [roomStatus, timestamp, unmounted]);
 
-    return useMemo(
-        () => intervalToDuration({ start: beginTime, end: timestamp }) as TimerDuration,
-        [beginTime, timestamp],
-    );
+    return useMemo(() => {
+        const {
+            hours = 0,
+            minutes = 0,
+            seconds = 0,
+        } = intervalToDuration({
+            start: beginTime,
+            end: timestamp,
+        });
+        const minutesAndSeconds = `${paddingZero(minutes)}:${paddingZero(seconds)}`;
+        return hours > 0 ? `${paddingZero(hours)}:${minutesAndSeconds}` : minutesAndSeconds;
+    }, [beginTime, timestamp]);
 };
 
 export const Timer: React.FC<TimerProps> = ({ roomStatus = RoomStatus.Paused, beginTime }) => {
-    const timeDuration = useClockTick(beginTime, roomStatus);
+    const timing = useClockTick(beginTime, roomStatus);
 
     const { t } = useTranslation();
-
-    const timing = useTiming(timeDuration);
 
     return (
         <span className="timer-bar">
