@@ -5,7 +5,6 @@ import classNames from "classnames";
 import {
     NetworkStatus,
     RoomInfo,
-    RecordButton,
     TopBar,
     TopBarDivider,
     LoadingPage,
@@ -259,14 +258,18 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     />
                 )}
 
-                {classRoomStore.isCreator &&
-                (<CloudRecordBtn isRecording={classRoomStore.isRecording} onClick={() => {
-                    classRoomStore.toggleRecording({
-                        onStop() {
-                            void message.success(t("recording-completed-tips"));
-                        },
-                    })
-                }} />)}
+                {classRoomStore.isCreator && (
+                    <CloudRecordBtn
+                        isRecording={classRoomStore.isRecording}
+                        onClick={() => {
+                            void classRoomStore.toggleRecording({
+                                onStop() {
+                                    void message.success(t("recording-completed-tips"));
+                                },
+                            });
+                        }}
+                    />
+                )}
                 {/* TODO: open cloud-storage sub window */}
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />

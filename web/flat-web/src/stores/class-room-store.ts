@@ -189,10 +189,10 @@ export class ClassRoomStore {
             () => this.isRecording,
             (isRecording: boolean) => {
                 if (isRecording) {
-                    message.success(i18next.t("start-recording"))
+                    void message.success(i18next.t("start-recording"));
                 }
-            }
-        )
+            },
+        );
 
         this.rtm.once(RTMessageType.REMOTE_LOGIN, () => {
             console.log("REMOTE_LOGIN");
