@@ -22,6 +22,7 @@ const useClockTick = (beginTime: number, roomStatus: RoomStatus): string => {
         if (unmounted.current) {
             return;
         }
+
         if (roomStatus === RoomStatus.Started) {
             updateTimestamp(Date.now());
         }
@@ -29,6 +30,7 @@ const useClockTick = (beginTime: number, roomStatus: RoomStatus): string => {
 
     return useMemo(() => {
         const {
+            days = 0,
             hours = 0,
             minutes = 0,
             seconds = 0,
@@ -36,8 +38,11 @@ const useClockTick = (beginTime: number, roomStatus: RoomStatus): string => {
             start: beginTime,
             end: timestamp,
         });
+
         const minutesAndSeconds = `${paddingZero(minutes)}:${paddingZero(seconds)}`;
-        return hours > 0 ? `${paddingZero(hours)}:${minutesAndSeconds}` : minutesAndSeconds;
+        const dayHours = hours + days * 24;
+
+        return dayHours > 0 ? `${paddingZero(dayHours)}:${minutesAndSeconds}` : minutesAndSeconds;
     }, [beginTime, timestamp]);
 };
 
