@@ -5,7 +5,7 @@ import svgToTinyDataUri from "@netless/mini-svg-data-uri";
 
 // e.g:
 // flat/node_modules/electron/index.js?v=19cea64f => flat/node_modules/electron/index.js
-const cleanUrl = (url: string): string => url.replace(/#.*$/, "").replace(/\?.*$/, "");
+const cleanUrl = (url: string): string => url.replace(/[?#].*$/, "");
 
 export function inlineAssets(): Plugin {
     return {
