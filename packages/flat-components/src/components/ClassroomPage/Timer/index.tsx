@@ -26,15 +26,9 @@ const renderTime = ({ hours, minutes, seconds }: TimerDuration): string => {
 const useClockTick = (beginTime: number, delay: number, roomStatus: RoomStatus): TimerDuration => {
     const [timestamp, updateTimestamp] = useState<number>(Date.now());
 
-    const updateTime = (state: RoomStatus): void => {
-        if (state === RoomStatus.Started) {
-            updateTimestamp(Date.now());
-        }
-    };
-
     const unmounted = useIsUnMounted();
 
-    const timer = useRef<number | null>(null);
+    const timer = useRef<number>(NaN);
 
     const state = useRef<typeof roomStatus>(roomStatus);
 
@@ -44,13 +38,15 @@ const useClockTick = (beginTime: number, delay: number, roomStatus: RoomStatus):
 
     const startTimer = useCallback((): void => {
         if (unmounted.current === false) {
-            updateTime(state.current);
+            if (state.current === RoomStatus.Started) {
+                updateTimestamp(Date.now());
+            }
             timer.current = window.setTimeout(startTimer, delay);
         }
     }, [timer, unmounted, state]);
 
     const stopTimer = useCallback((): void => {
-        timer.current && window.clearTimeout(timer.current);
+        window.clearTimeout(timer.current);
     }, [timer]);
 
     useEffect(() => {
