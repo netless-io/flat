@@ -44,8 +44,6 @@ import { ShareScreen } from "../../components/ShareScreen";
 import { generateAvatar } from "../../utils/generate-avatar";
 import { AppStoreButton } from "../../components/AppStoreButton";
 
-const a = "";
-
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
 const AVATAR_WIDTH = 144;
