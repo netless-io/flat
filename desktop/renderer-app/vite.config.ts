@@ -1,19 +1,50 @@
 import refresh from "@vitejs/plugin-react-refresh";
 import { defineConfig } from "vite";
+import eslintPlugin from "vite-plugin-eslint";
+import { visualizer } from "rollup-plugin-visualizer";
+import copy from "rollup-plugin-copy";
+import path from "path";
+
 // TODO: find new place to store vite-plugin-dotenv
 import { dotenv } from "../../web/flat-web/scripts/vite-plugin-dotenv";
-import { visualizer } from "rollup-plugin-visualizer";
 import { electron } from "./scripts/vite-plugin-electron";
-import eslintPlugin from "vite-plugin-eslint";
 import {
     configPath,
     typesEntryPath,
     i18nEntryPath,
     componentsEntryPath,
+    rootNodeModules,
+    rendererPath,
 } from "../../scripts/constants";
 
 export default defineConfig(() => {
-    const plugins = [refresh(), dotenv(configPath), electron(), eslintPlugin()];
+    const plugins = [
+        refresh(),
+        dotenv(configPath),
+        electron(),
+        eslintPlugin(),
+        copy({
+            targets: [
+                /**
+                 * e.g:
+                 * /Users/black-hole/Code/Job/Agora/flat/node_modules/monaco-editor/min/vs
+                 * to
+                 * /Users/black-hole/Code/Job/Agora/flat/desktop/renderer-app/dist/monaco-editor/min/vs
+                 */
+                {
+                    src: path.join(rootNodeModules, "monaco-editor", "min", "vs"),
+                    // don't write "vs". because dist path will is: dist/monaco-editor/min/vs/vs
+                    dest: path.join(rendererPath, "dist", "monaco-editor", "min"),
+                },
+                {
+                    src: path.join(rootNodeModules, "monaco-editor", "min-maps", "vs"),
+                    dest: path.join(rendererPath, "dist", "monaco-editor", "min-maps"),
+                },
+            ],
+            // see: https://github.com/vitejs/vite/issues/1231#issuecomment-753549857
+            hook: "writeBundle",
+        }),
+    ];
     if (process.env.ANALYZER) {
         plugins.push({
             ...visualizer(),
