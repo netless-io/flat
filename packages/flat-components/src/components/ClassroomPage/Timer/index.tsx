@@ -1,6 +1,7 @@
+import "./style.less";
+
 import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import "./style.less";
 import { useIsUnMounted } from "../../../utils/hooks";
 import { RoomStatus } from "../../../types/room";
 import { intervalToDuration } from "date-fns/fp";
