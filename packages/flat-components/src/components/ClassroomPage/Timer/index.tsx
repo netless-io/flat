@@ -18,7 +18,7 @@ const paddingZero = (number: number): string => {
 };
 
 const renderTime = ({ hours, minutes, seconds }: TimerDuration): string => {
-    const minutesAndSeconds = `${paddingZero(minutes)}:${paddingZero(seconds)};
+    const minutesAndSeconds = `${paddingZero(minutes)}:${paddingZero(seconds)}`;
 
     return hours > 0 ? `${paddingZero(hours)}:${minutesAndSeconds}` : minutesAndSeconds;
 };
