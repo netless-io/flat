@@ -259,7 +259,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         if (!classRoomStore.isCreator) {
             return null;
         }
-        return <>{renderClassMode()}</>;
+        return renderClassMode();
     }
 
     function renderTopBarRight(): React.ReactNode {
