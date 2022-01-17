@@ -1,7 +1,7 @@
 import "./style.less";
 import appStoreSVG from "../../assets/image/app-store.svg";
 import codeEditorSVG from "../../assets/image/code-editor.svg";
-import timerSVG from "../../assets/image/countdown.svg";
+import timerSVG from "../../assets/image/timer.svg";
 import geogebraSVG from "../../assets/image/geogebra.svg";
 import cocosSVG from "../../assets/image/cocos.svg";
 
