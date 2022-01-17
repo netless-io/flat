@@ -21,15 +21,19 @@ const useClockTick = (beginTime: number, roomStatus: RoomStatus): string => {
 
     useEffect(() => {
         let timer = NaN;
-        if (!unmounted.current) {
-            if (roomStatus === RoomStatus.Started) {
-                const startTimer = (): void => {
-                    updateTimestamp(Math.floor(Date.now() / 1000) * 1000);
-                    timer = window.requestAnimationFrame(startTimer);
-                };
-                startTimer();
-            }
+
+        if (unmounted.current) {
+            return;
         }
+
+        if (roomStatus === RoomStatus.Started) {
+            const startTimer = (): void => {
+                updateTimestamp(Math.floor(Date.now() / 1000) * 1000);
+                timer = window.requestAnimationFrame(startTimer);
+            };
+            startTimer();
+        }
+
         return () => {
             window.cancelAnimationFrame(timer);
         };
