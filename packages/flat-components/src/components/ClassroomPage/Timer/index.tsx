@@ -18,9 +18,9 @@ const paddingZero = (number: number): string => {
 };
 
 const renderTime = ({ hours, minutes, seconds }: TimerDuration): string => {
-    return hours > 0
-        ? `${paddingZero(hours)}:${paddingZero(minutes)}:${paddingZero(seconds)}`
-        : `${paddingZero(minutes)}:${paddingZero(seconds)}`;
+    const minutesAndSeconds = `${paddingZero(minutes)}:${paddingZero(seconds)};
+
+    return hours > 0 ? `${paddingZero(hours)}:${minutesAndSeconds}` : minutesAndSeconds;
 };
 
 const useClockTick = (beginTime: number, delay: number, roomStatus: RoomStatus): TimerDuration => {
