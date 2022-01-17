@@ -18,6 +18,8 @@ const componentsEntryPath = join(packagesPath, "flat-components", "src");
 const rootPackageJSONPath = join(rootPath, "package.json");
 const mainPackageJSONPath = join(mainPath, "package.json");
 
+const rootNodeModules = join(rootPath, "node_modules");
+
 const version = require(mainPackageJSONPath).version;
 
 module.exports.rootPath = rootPath;
@@ -39,3 +41,5 @@ module.exports.rootPackageJSONPath = rootPackageJSONPath;
 module.exports.mainPackageJSONPath = mainPackageJSONPath;
 
 module.exports.version = version;
+
+module.exports.rootNodeModules = rootNodeModules;
