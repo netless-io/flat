@@ -10,7 +10,8 @@ export type TimerProps = {
     beginTime: number;
 };
 
-export type TimerDuration = Required<Duration>;
+// see: https://github.com/date-fns/date-fns/issues/2891#issuecomment-1003070337
+export type TimerDuration = Omit<Required<Duration>, "weeks">;
 
 const paddingZero = (number: number): string => {
     return String(number).padStart(2, "0");
