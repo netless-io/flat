@@ -232,8 +232,8 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 {classRoomStore.isCreator ? (
                     classRoomStore.roomInfo?.beginTime && (
                         <Timer
-                            roomStatus={classRoomStore.roomStatus}
                             beginTime={classRoomStore.roomInfo.beginTime}
+                            roomStatus={classRoomStore.roomStatus}
                         />
                     )
                 ) : (
