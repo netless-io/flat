@@ -1,9 +1,10 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import "./style.less";
 import { useIsUnMounted } from "../../../utils/hooks";
 import { RoomStatus } from "../../../types/room";
 import { intervalToDuration } from "date-fns/fp";
+import type { Duration } from "date-fns";
 
 export type TimerProps = {
     roomStatus: RoomStatus;
@@ -17,55 +18,44 @@ const paddingZero = (number: number): string => {
     return String(number).padStart(2, "0");
 };
 
-const renderTime = ({ hours, minutes, seconds }: TimerDuration): string => {
-    const minutesAndSeconds = `${paddingZero(minutes)}:${paddingZero(seconds)}`;
-
-    return hours > 0 ? `${paddingZero(hours)}:${minutesAndSeconds}` : minutesAndSeconds;
+const useTiming = (duration: TimerDuration): string => {
+    return useMemo(() => {
+        const { hours, minutes, seconds } = duration;
+        const minutesAndSeconds = `${paddingZero(minutes)}:${paddingZero(seconds)}`;
+        return hours > 0 ? `${paddingZero(hours)}:${minutesAndSeconds}` : minutesAndSeconds;
+    }, [duration]);
 };
 
-const useClockTick = (beginTime: number, delay: number, roomStatus: RoomStatus): TimerDuration => {
+const useClockTick = (beginTime: number, roomStatus: RoomStatus): TimerDuration => {
     const [timestamp, updateTimestamp] = useState<number>(Date.now());
-
     const unmounted = useIsUnMounted();
 
-    const timer = useRef<number>(NaN);
-
-    const state = useRef<typeof roomStatus>(roomStatus);
-
     useEffect(() => {
-        state.current = roomStatus;
-    });
-
-    const startTimer = useCallback((): void => {
-        if (unmounted.current === false) {
-            if (state.current === RoomStatus.Started) {
-                updateTimestamp(Date.now());
-            }
-            timer.current = window.setTimeout(startTimer, delay);
+        if (unmounted.current) {
+            return;
         }
-    }, [timer, unmounted, state]);
+        if (roomStatus === RoomStatus.Started) {
+            updateTimestamp(Date.now());
+        }
+    }, [roomStatus, timestamp, unmounted]);
 
-    const stopTimer = useCallback((): void => {
-        window.clearTimeout(timer.current);
-    }, [timer]);
-
-    useEffect(() => {
-        startTimer();
-        return stopTimer;
-    }, []);
-
-    return intervalToDuration({ start: beginTime, end: timestamp }) as TimerDuration;
+    return useMemo(
+        () => intervalToDuration({ start: beginTime, end: timestamp }) as TimerDuration,
+        [beginTime, timestamp],
+    );
 };
 
 export const Timer: React.FC<TimerProps> = ({ roomStatus = RoomStatus.Paused, beginTime }) => {
-    const timeDuration = useClockTick(beginTime, 100, roomStatus);
+    const timeDuration = useClockTick(beginTime, roomStatus);
 
     const { t } = useTranslation();
+
+    const timing = useTiming(timeDuration);
 
     return (
         <span className="timer-bar">
             <span className={`timer-${roomStatus}`}>{t("room-started")}</span>
-            <span>{renderTime(timeDuration)}</span>
+            <span>{timing}</span>
         </span>
     );
 };
