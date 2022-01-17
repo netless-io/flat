@@ -1,14 +1,19 @@
 import refresh from "@vitejs/plugin-react-refresh";
 import { defineConfig } from "vite";
-import path from "path";
 // TODO: find new place to store vite-plugin-dotenv
 import { dotenv } from "../../web/flat-web/scripts/vite-plugin-dotenv";
 import { visualizer } from "rollup-plugin-visualizer";
 import { electron } from "./scripts/vite-plugin-electron";
 import eslintPlugin from "vite-plugin-eslint";
+import {
+    configPath,
+    typesEntryPath,
+    i18nEntryPath,
+    componentsEntryPath,
+} from "../../scripts/constants";
 
 export default defineConfig(() => {
-    const plugins = [refresh(), dotenv("../../config"), electron(), eslintPlugin()];
+    const plugins = [refresh(), dotenv(configPath), electron(), eslintPlugin()];
     if (process.env.ANALYZER) {
         plugins.push({
             ...visualizer(),
@@ -28,29 +33,15 @@ export default defineConfig(() => {
                 },
                 {
                     find: "flat-types",
-                    replacement: path.join(__dirname, "..", "..", "packages", "flat-types", "src"),
+                    replacement: typesEntryPath,
                 },
                 {
                     find: "flat-i18n",
-                    replacement: path.join(
-                        __dirname,
-                        "..",
-                        "..",
-                        "packages",
-                        "flat-i18n",
-                        "locales",
-                    ),
+                    replacement: i18nEntryPath,
                 },
                 {
                     find: "flat-components",
-                    replacement: path.join(
-                        __dirname,
-                        "..",
-                        "..",
-                        "packages",
-                        "flat-components",
-                        "src",
-                    ),
+                    replacement: componentsEntryPath,
                 },
             ],
         },
