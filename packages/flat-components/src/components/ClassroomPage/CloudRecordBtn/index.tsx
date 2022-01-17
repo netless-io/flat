@@ -13,7 +13,6 @@ export const CloudRecordBtn: React.FC<CloudRecordBtnProps> = observer(
     ({ isRecording, onClick }) => {
         return (
             <TopBarRightBtn
-                title={isRecording ? "Stop Recording" : "Start Recording"}
                 icon={<img src={isRecording ? RecordStartedSVG : RecordIdleSVG} />}
                 onClick={onClick}
             />
