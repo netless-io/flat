@@ -259,7 +259,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                                 <img src={shareScreenSVG} />
                             )
                         }
-                        title="Share Screen"
+                        title={t("share-screen.self")}
                         onClick={handleShareScreen}
                     />
                 )}
@@ -281,7 +281,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
                     icon={<img src={exitSVG} />}
-                    title="Exit"
+                    title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
@@ -293,7 +293,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                             <img src={hideSideSVG} />
                         )
                     }
-                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
+                    title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={handleSideOpenerSwitch}
                 />
             </>

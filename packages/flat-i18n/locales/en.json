@@ -133,7 +133,8 @@
   "room-type": "Room Type",
   "think-again": "Think again",
   "cancel-general-room-tips": "Are you sure to cancel this room? \nAfter cancellation, other members will not be able to join.",
-  "copy-invitation": "Invite",
+  "invitation": "Invite",
+  "copy-invitation": "Copy Invite",
   "join-room": "Join room",
   "modify-room": "Modify",
   "copy-success": "Copy successfully",
@@ -364,7 +365,8 @@
     "choose-share-content": "Choose what to share",
     "tip-window-title": "Ending screen sharing",
     "tip-window-body": "You are sharing the current screen",
-    "tip-window-button": "End Sharing"
+    "tip-window-button": "End Sharing",
+    "self": "Share Screen"
   },
   "app-store": "AppStore(Beta)",
   "recently-used": "Recently Used",
@@ -390,6 +392,12 @@
   "user-guide-button": "Check it out now",
   "start-recording": "Start recording",
   "stop-recording": "Stop recording",
+  "recording": "Recording",
   "open-in-browser": "Open in Browser",
-  "room-started": "Started:"
+  "room-started": "Started:",
+  "exit": "Exit",
+  "side-panel": {
+    "hide": "Hide",
+    "show":  "Show"
+  }
 }

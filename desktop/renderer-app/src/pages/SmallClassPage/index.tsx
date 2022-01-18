@@ -284,7 +284,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                                 <img src={shareScreenSVG} />
                             )
                         }
-                        title="Share Screen"
+                        title={t("share-screen.self")}
                         onClick={handleShareScreen}
                     />
                 )}
@@ -306,7 +306,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
                     icon={<img src={exitSVG} />}
-                    title="Exit"
+                    title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
@@ -318,7 +318,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                             <img src={hideSideSVG} />
                         )
                     }
-                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
+                    title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={() => openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen)}
                 />
             </>
