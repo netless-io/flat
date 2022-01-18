@@ -105,6 +105,22 @@ export default defineConfig(() => {
                     },
                 },
             },
+            postcss: {
+                plugins: [
+                    {
+                        // see: https://github.com/vitejs/vite/issues/5833
+                        // don't worry about causing any side effects, see: https://developer.mozilla.org/en-US/docs/Web/CSS/@charset
+                        postcssPlugin: "internal:charset-removal",
+                        AtRule: {
+                            charset: atRule => {
+                                if (atRule.name === "charset") {
+                                    atRule.remove();
+                                }
+                            },
+                        },
+                    },
+                ],
+            },
         },
     };
 });
