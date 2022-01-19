@@ -124,7 +124,6 @@
   "cancel-room": "取消房间",
   "modify-room": "修改房间",
   "invitation": "邀请",
-  "copy-invitation": "复制邀请",
   "join-room": "加入房间",
   "copy-success": "复制成功",
   "copy-fail": "复制失败，请确保已允许相关权限",

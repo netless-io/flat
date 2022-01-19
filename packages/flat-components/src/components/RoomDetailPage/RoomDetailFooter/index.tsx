@@ -78,7 +78,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
                 </Button>
             )}
             <Button className="room-detail-footer-btn" onClick={() => setIsShowInviteModal(true)}>
-                {t("copy-invitation")}
+                {t("invitation")}
             </Button>
             <Button className="room-detail-footer-btn" type="primary" onClick={onJoinRoom}>
                 {isCreator && room.roomStatus === RoomStatus.Idle ? t("begin") : t("join-room")}
