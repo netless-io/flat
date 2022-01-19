@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import type { Plugin } from "vite";
+import { Plugin } from "vite";
 
 export function injectHtmlHash(): Plugin {
     return {

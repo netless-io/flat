@@ -1,18 +1,16 @@
-import "./style.less";
+import React, { useState } from "react";
+import { AddAppParams } from "@netless/window-manager";
+import { Modal } from "antd";
+import { TopBarRightBtn, useSafePromise } from "flat-components";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import appStoreSVG from "../../assets/image/app-store.svg";
+import cocosSVG from "../../assets/image/cocos.svg";
 import codeEditorSVG from "../../assets/image/code-editor.svg";
 import countdownSVG from "../../assets/image/countdown.svg";
 import geogebraSVG from "../../assets/image/geogebra.svg";
-import cocosSVG from "../../assets/image/cocos.svg";
-
-import React, { useState } from "react";
-import { observer } from "mobx-react-lite";
-import { Modal } from "antd";
-
-import { AddAppParams } from "@netless/window-manager";
-import { TopBarRightBtn, useSafePromise } from "flat-components";
 import { AppButton } from "./AppButton";
-import { useTranslation } from "react-i18next";
+import "./style.less";
 
 export interface AppStoreButtonProps {
     addApp: (config: AddAppParams) => Promise<void>;

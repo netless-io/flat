@@ -1,6 +1,6 @@
+import React from "react";
 import { BigVideoAvatar } from "flat-components";
 import { VideoAvatarProps } from "flat-components/src/components/ClassroomPage/VideoAvatar";
-import React from "react";
 import { RtcRoom } from "../../api-middleware/rtc/room";
 import { AvatarCanvas } from "../../components/AvatarCanvas";
 import { User } from "../../stores/user-store";

@@ -1,10 +1,9 @@
-import errorSVG from "./icons/error.svg";
-import "./style.less";
-
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
-import { useHistory, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useHistory, useLocation } from "react-router-dom";
+import errorSVG from "./icons/error.svg";
+import "./style.less";
 
 export type ErrorPageProps = {};
 

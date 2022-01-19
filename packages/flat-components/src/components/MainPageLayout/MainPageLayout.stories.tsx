@@ -1,7 +1,5 @@
 /* eslint react/display-name: off */
-import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
-import { MainPageLayout, MainPageLayoutProps } from ".";
 import {
     CloudFilled,
     CloudOutlined,
@@ -10,7 +8,9 @@ import {
     ToolFilled,
     ToolOutlined,
 } from "@ant-design/icons";
+import { Meta, Story } from "@storybook/react";
 import faker from "faker";
+import { MainPageLayout, MainPageLayoutProps } from ".";
 
 const storyMeta: Meta = {
     title: "MainPageLayout/MainPageLayout",

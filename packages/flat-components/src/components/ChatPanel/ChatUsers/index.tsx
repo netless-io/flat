@@ -1,13 +1,12 @@
-import "./style.less";
-import noHandSVG from "./icons/no-hand.svg";
-
 import React from "react";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import { AutoSizer, List, ListRowRenderer, Size } from "react-virtualized";
-import { ChatUser, ChatUserProps } from "../ChatUser";
-import { User } from "../../../types/user";
 import { useTranslation } from "react-i18next";
+import { AutoSizer, List, ListRowRenderer, Size } from "react-virtualized";
+import { User } from "../../../types/user";
+import { ChatUser, ChatUserProps } from "../ChatUser";
+import noHandSVG from "./icons/no-hand.svg";
+import "./style.less";
 
 export type ChatUsersProps = {
     isCreator: boolean;

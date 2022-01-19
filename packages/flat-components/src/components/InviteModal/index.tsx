@@ -1,11 +1,10 @@
-import "./index.less";
-
 import React, { useMemo } from "react";
 import { Modal } from "antd";
 import { differenceInCalendarDays, format } from "date-fns/fp";
+import { useTranslation } from "react-i18next";
 import { RoomInfo, Week } from "../../types/room";
 import { formatInviteCode, getWeekNames } from "../../utils/room";
-import { useTranslation } from "react-i18next";
+import "./index.less";
 
 const completeTimeFormat = format("yyyy-MM-dd HH:mm");
 const onlySuffixTimeFormat = format("HH:mm");

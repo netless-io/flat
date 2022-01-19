@@ -1,10 +1,9 @@
-import "./style.less";
-
-import classNames from "classnames";
 import React, { FC } from "react";
+import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { RoomStatus, RoomType } from "../../../types/room";
 import { roomStatusToI18nKey } from "../../../utils/room";
+import "./style.less";
 
 export interface RoomInfoProps {
     roomStatus: RoomStatus;

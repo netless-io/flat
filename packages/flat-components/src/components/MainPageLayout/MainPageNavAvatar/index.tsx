@@ -1,8 +1,7 @@
-import "./style.less";
-
-import { Avatar, Divider, Popover } from "antd";
 import React, { useState } from "react";
+import { Avatar, Divider, Popover } from "antd";
 import { MainPageLayoutItem } from "../types";
+import "./style.less";
 
 export interface MainPageNavAvatarProps {
     /** user avatar src*/

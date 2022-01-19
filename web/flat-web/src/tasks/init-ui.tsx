@@ -1,22 +1,17 @@
-import "flat-components/theme/index.less";
-
-import "../theme.less";
-
 import React, { useEffect, useMemo } from "react";
-import ReactDOM from "react-dom";
-import { useUpdate } from "react-use";
-
 import { ConfigProvider } from "antd";
-import zhCN from "antd/lib/locale/zh_CN";
 import enUS from "antd/lib/locale/en_US";
-
+import zhCN from "antd/lib/locale/zh_CN";
+import { configure } from "mobx";
+import ReactDOM from "react-dom";
 import { I18nextProvider } from "react-i18next";
-import { i18n } from "../utils/i18n";
+import { useUpdate } from "react-use";
 import { AppRoutes } from "../AppRoutes";
 import { StoreProvider } from "../components/StoreProvider";
+import { i18n } from "../utils/i18n";
+import "../theme.less";
+import "flat-components/theme/index.less";
 
-/** configure right after import */
-import { configure } from "mobx";
 configure({
     isolateGlobalState: true,
 });

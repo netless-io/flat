@@ -1,16 +1,15 @@
-import "./index.less";
-
 import React, { useState } from "react";
 import { Button, Table } from "antd";
 import { getDay } from "date-fns";
 import { format, formatWithOptions } from "date-fns/fp";
-import { zhCN, enUS } from "date-fns/locale";
+import { enUS, zhCN } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 import { RoomInfo, RoomStatus, RoomType, Week } from "../../types/room";
 import { getWeekName, getWeekNames } from "../../utils/room";
 import { RoomStatusElement } from "../RoomStatusElement";
-import { MoreMenu } from "./MoreMenu";
 import { CancelPeriodicRoomModal } from "./CancelPeriodicRoomModal";
-import { useTranslation } from "react-i18next";
+import { MoreMenu } from "./MoreMenu";
+import "./index.less";
 
 export interface PeriodicRoomPanelProps {
     rooms: Array<RoomInfo | undefined>;

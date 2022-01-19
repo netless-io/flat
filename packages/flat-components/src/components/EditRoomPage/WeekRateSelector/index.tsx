@@ -1,5 +1,5 @@
-import { Select } from "antd";
 import React, { FC } from "react";
+import { Select } from "antd";
 import { SelectProps } from "antd/lib/select";
 import { Week } from "../../../types/room";
 import { getWeekName } from "../../../utils/room";

@@ -1,7 +1,7 @@
-import type { Plugin } from "vite";
 import { promises as fsp } from "fs";
-import mime from "mime/lite";
 import svgToTinyDataUri from "@netless/mini-svg-data-uri";
+import mime from "mime/lite";
+import { Plugin } from "vite";
 
 // e.g:
 // flat/node_modules/electron/index.js?v=19cea64f => flat/node_modules/electron/index.js

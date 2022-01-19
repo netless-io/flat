@@ -1,5 +1,5 @@
-import { Meta, Story } from "@storybook/react";
 import React from "react";
+import { Meta, Story } from "@storybook/react";
 import { RoomStatus } from "../../../types/room";
 import { Timer, TimerProps } from ".";
 

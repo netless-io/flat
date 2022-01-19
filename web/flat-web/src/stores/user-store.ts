@@ -1,6 +1,6 @@
 import { action, makeAutoObservable, observable } from "mobx";
-import { CloudRecordStartPayload } from "../api-middleware/flatServer/agora";
 import { usersInfo } from "../api-middleware/flatServer";
+import { CloudRecordStartPayload } from "../api-middleware/flatServer/agora";
 import { configStore } from "./config-store";
 
 export interface User {

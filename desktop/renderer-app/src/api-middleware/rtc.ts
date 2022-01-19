@@ -1,4 +1,4 @@
-import type AgoraSdk from "agora-electron-sdk";
+import AgoraSdk from "agora-electron-sdk";
 import { AGORA } from "../constants/process";
 import { globalStore } from "../stores/global-store";
 import { generateRTCToken } from "./flatServer/agora";

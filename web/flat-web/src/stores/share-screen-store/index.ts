@@ -1,6 +1,6 @@
+import { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import { autorun, makeAutoObservable, observable, reaction } from "mobx";
 import { RTCShareScreen } from "../../api-middleware/rtc/share-screen";
-import { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import { ListenerOtherUserShareScreen } from "./listener-other-user-share-screen";
 
 export class ShareScreenStore {

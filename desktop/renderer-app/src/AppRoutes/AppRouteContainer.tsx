@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { useIsomorphicLayoutEffect } from "react-use";
-import { RouteComponentProps } from "react-router-dom";
-import { ipcAsyncByMainWindow } from "../utils/ipc";
-import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
-import { useURLAppLauncher } from "../utils/hooks/use-url-app-launcher";
-import { ConfigStoreContext } from "../components/StoreProvider";
 import { FlatThemeBodyProvider } from "flat-components";
 import { observer } from "mobx-react-lite";
+import { RouteComponentProps } from "react-router-dom";
+import { useIsomorphicLayoutEffect } from "react-use";
+import { ConfigStoreContext } from "../components/StoreProvider";
+import { useURLAppLauncher } from "../utils/hooks/use-url-app-launcher";
+import { ipcAsyncByMainWindow } from "../utils/ipc";
+import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
 
 export interface AppRouteContainerProps {
     Comp: React.ComponentType<any>;

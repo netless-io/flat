@@ -1,13 +1,12 @@
-import playSVG from "../icons/play.svg";
-import stopSVG from "../icons/stop.svg";
-import "./style.less";
-
-import { Button } from "antd";
 import React, { useRef, useState } from "react";
+import { Button } from "antd";
+import { useTranslation } from "react-i18next";
 import { Device } from "../constants";
 import { DeviceTestSelect } from "../DeviceTestSelect";
-import { useTranslation } from "react-i18next";
+import playSVG from "../icons/play.svg";
+import stopSVG from "../icons/stop.svg";
 import audioLocalResourceMP3 from "./assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
+import "./style.less";
 
 export interface SpeakerTestProps {
     speakerDevices?: Device[];

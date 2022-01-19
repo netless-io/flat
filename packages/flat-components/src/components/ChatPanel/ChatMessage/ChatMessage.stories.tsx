@@ -1,9 +1,9 @@
+import React from "react";
 import { Meta, Story } from "@storybook/react";
 import Chance from "chance";
 import faker from "faker";
-import React from "react";
-import { ChatMessage, ChatMessageProps } from ".";
 import { ChatMsgType } from "../types";
+import { ChatMessage, ChatMessageProps } from ".";
 
 const chance = new Chance();
 

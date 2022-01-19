@@ -1,15 +1,14 @@
-import "./InviteModal.less";
-
 import React, { useCallback, useContext, useEffect } from "react";
-import { observer } from "mobx-react-lite";
 import { message } from "antd";
+import { clipboard } from "electron";
 import { InviteModal as InviteModalImpl } from "flat-components";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
+import { FLAT_WEB_BASE_URL } from "../../constants/process";
 import { RoomItem } from "../../stores/room-store";
 import { GlobalStoreContext, RoomStoreContext } from "../StoreProvider";
-import { clipboard } from "electron";
 import { errorTips } from "../Tips/ErrorTips";
-import { FLAT_WEB_BASE_URL } from "../../constants/process";
+import "./InviteModal.less";
 
 export interface InviteModalProps {
     visible: boolean;

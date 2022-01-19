@@ -1,22 +1,21 @@
-import "./StaticPreview.less";
-
-import { observer } from "mobx-react-lite";
-import { Region } from "flat-components";
 import React, { useEffect, useState } from "react";
+import { Region } from "flat-components";
+import { observer } from "mobx-react-lite";
 import { queryConvertingTaskStatus } from "../../api-middleware/courseware-converting";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import "./StaticPreview.less";
 
 export interface StaticPreviewProps {
     taskUUID: string;
     taskToken: string;
     region: Region;
 }
-
 type ConvertedFileList =
     | Array<{
           width: number;
           height: number;
           conversionFileUrl: string;
+
           preview?: string | undefined;
       }>
     | undefined;

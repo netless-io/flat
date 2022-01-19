@@ -1,8 +1,7 @@
-import "./index.less";
-
 import React from "react";
-import { RoomInfo, RoomStatus } from "../../types/room";
 import { useTranslation } from "react-i18next";
+import { RoomInfo, RoomStatus } from "../../types/room";
+import "./index.less";
 
 export interface RoomStatusElementProps {
     room: RoomInfo;

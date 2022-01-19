@@ -1,12 +1,12 @@
-import { Meta, Story } from "@storybook/react";
 import React from "react";
+import { Meta, Story } from "@storybook/react";
 import {
     CloseRoomConfirmModal,
     CloseRoomConfirmModalProps,
-    StopClassConfirmModal,
-    StopClassConfirmModalProps,
     ExitRoomConfirmModal,
     ExitRoomConfirmModalProps,
+    StopClassConfirmModal,
+    StopClassConfirmModalProps,
 } from ".";
 
 const storyMeta: Meta = {

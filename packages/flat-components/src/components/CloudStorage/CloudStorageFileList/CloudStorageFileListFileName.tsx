@@ -1,9 +1,8 @@
-import fileMenusSVG from "./icons/file-menus.svg";
-
 import React from "react";
 import { Button, Dropdown, Menu } from "antd";
 import { CloudStorageFileTitle } from "../CloudStorageFileTitle";
 import { CloudStorageFile, CloudStorageFileName } from "../types";
+import fileMenusSVG from "./icons/file-menus.svg";
 
 export interface CloudStorageFileListFileNameProps {
     file: CloudStorageFile;

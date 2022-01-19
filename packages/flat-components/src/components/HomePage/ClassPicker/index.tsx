@@ -1,9 +1,8 @@
-import "./index.less";
-
 import React from "react";
 import { Radio } from "antd";
 import classNames from "classnames";
 import { ClassPickerItem, ClassPickerItemType } from "./ClassPickerItem";
+import "./index.less";
 
 export type { ClassPickerItemType } from "./ClassPickerItem";
 

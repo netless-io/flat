@@ -1,58 +1,54 @@
-import "./SmallClassPage.less";
-
 import React, { useEffect, useRef, useState } from "react";
 import { message } from "antd";
-import { RoomPhase } from "white-web-sdk";
-import { observer } from "mobx-react-lite";
-import { useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import {
+    CloudRecordBtn,
+    LoadingPage,
     NetworkStatus,
     RoomInfo,
+    Timer,
     TopBar,
     TopBarDivider,
-    LoadingPage,
-    CloudRecordBtn,
-    Timer,
+    TopBarRightBtn,
+    TopBarRoundBtn,
 } from "flat-components";
-
-import InviteButton from "../../components/InviteButton";
-import { TopBarRightBtn, TopBarRoundBtn } from "flat-components";
-import { RealtimePanel } from "../../components/RealtimePanel";
-import { ChatPanel } from "../../components/ChatPanel";
-import { SmallClassAvatar } from "./SmallClassAvatar";
-import { Whiteboard } from "../../components/Whiteboard";
-import ExitRoomConfirm, {
-    ExitRoomConfirmType,
-    useExitRoomConfirmModal,
-} from "../../components/ExitRoomConfirm";
-import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-
-import { RtcChannelType } from "../../api-middleware/rtc";
-import { ClassModeType } from "../../api-middleware/rtm";
-import { RoomStatus } from "../../api-middleware/flatServer/constants";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
+import { RoomPhase } from "white-web-sdk";
 import {
     AgoraCloudRecordBackgroundConfigItem,
     AgoraCloudRecordLayoutConfigItem,
 } from "../../api-middleware/flatServer/agora";
-import { RecordingConfig, useClassRoomStore, User } from "../../stores/class-room-store";
-import { RouteNameType, RouteParams } from "../../utils/routes";
-import { usePowerSaveBlocker } from "../../utils/hooks/use-power-save-blocker";
-
-import { useWindowSize } from "../../utils/hooks/use-window-size";
-import { CloudStorageButton } from "../../components/CloudStorageButton";
-import { runtime } from "../../utils/runtime";
-import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
-import { AppStoreButton } from "../../components/AppStoreButton";
-
-import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
-import shareScreenSVG from "../../assets/image/share-screen.svg";
-import exitSVG from "../../assets/image/exit.svg";
-import hideSideSVG from "../../assets/image/hide-side.svg";
-import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
+import { RtcChannelType } from "../../api-middleware/rtc";
+import { ClassModeType } from "../../api-middleware/rtm";
 import classInteractionSVG from "../../assets/image/class-interaction.svg";
 import classLectureSVG from "../../assets/image/class-lecture.svg";
+import exitSVG from "../../assets/image/exit.svg";
+import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
+import hideSideSVG from "../../assets/image/hide-side.svg";
+import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
+import shareScreenSVG from "../../assets/image/share-screen.svg";
+import { AppStoreButton } from "../../components/AppStoreButton";
+import { ChatPanel } from "../../components/ChatPanel";
+import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
+import { CloudStorageButton } from "../../components/CloudStorageButton";
+import ExitRoomConfirm, {
+    ExitRoomConfirmType,
+    useExitRoomConfirmModal,
+} from "../../components/ExitRoomConfirm";
+import InviteButton from "../../components/InviteButton";
+import { RealtimePanel } from "../../components/RealtimePanel";
+import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
+import { Whiteboard } from "../../components/Whiteboard";
+import { RecordingConfig, User, useClassRoomStore } from "../../stores/class-room-store";
+import { generateAvatar } from "../../utils/generate-avatar";
+import { usePowerSaveBlocker } from "../../utils/hooks/use-power-save-blocker";
+import { useWindowSize } from "../../utils/hooks/use-window-size";
+import { RouteNameType, RouteParams } from "../../utils/routes";
+import { runtime } from "../../utils/runtime";
+import { SmallClassAvatar } from "./SmallClassAvatar";
+import "./SmallClassPage.less";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;

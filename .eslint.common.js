@@ -12,9 +12,9 @@ const eslintCommon = {
             "plugin:@typescript-eslint/recommended",
             "plugin:@typescript-eslint/recommended-requiring-type-checking",
             "plugin:prettier/recommended",
-            "plugin:eslint-comments/recommended"
+            "plugin:eslint-comments/recommended",
         ],
-        plugins: ["@netless", "prettier", "@typescript-eslint", "eslint-comments"],
+        plugins: ["@netless", "prettier", "@typescript-eslint", "import", "eslint-comments"],
         rules: {
             "array-callback-return": "warn",
             "default-case": "off",
@@ -125,6 +125,48 @@ const eslintCommon = {
             "no-whitespace-before-property": "warn",
             "require-yield": "warn",
             "rest-spread-spacing": ["warn", "never"],
+            "sort-imports": [
+                "error",
+                {
+                    ignoreCase: false,
+                    ignoreDeclarationSort: true,
+                    ignoreMemberSort: false,
+                    memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
+                    allowSeparatedGroups: false,
+                },
+            ],
+            "import/no-duplicates": "error",
+            "import/order": [
+                "error",
+                {
+                    groups: ["builtin", "external", "parent", "sibling", "index"],
+                    pathGroups: [
+                        {
+                            pattern: "react",
+                            group: "builtin",
+                            position: "before",
+                        },
+                        {
+                            pattern: "antd/es/*/style/index",
+                            group: "index",
+                            position: "after",
+                        },
+                        {
+                            pattern: "*.+(css|less|mp3)",
+                            patternOptions: { matchBase: true },
+                            group: "index",
+                            position: "after",
+                        },
+                    ],
+                    alphabetize: {
+                        order: "asc",
+                        caseInsensitive: true,
+                    },
+                    pathGroupsExcludedImportTypes: ["react"],
+                    warnOnUnassignedImports: true,
+                    "newlines-between": "never",
+                },
+            ],
             strict: ["warn", "never"],
             "unicode-bom": ["warn", "never"],
             "valid-typeof": "warn",
@@ -159,6 +201,12 @@ const eslintCommon = {
             ],
             "@typescript-eslint/no-empty-interface": "off",
             "@typescript-eslint/consistent-type-assertions": "error",
+            "@typescript-eslint/consistent-type-imports": [
+                "error",
+                {
+                    prefer: "no-type-imports",
+                },
+            ],
             "@typescript-eslint/explicit-member-accessibility": [
                 "error",
                 {
@@ -194,6 +242,13 @@ const eslintCommon = {
                     argsIgnorePattern: "^_",
                 },
             ],
+        },
+        settings: {
+            "import/resolver": {
+                node: {
+                    extensions: [".js", ".mjs", ".jsx", ".json", ".wasm", ".ts", "tsx"],
+                },
+            },
         },
         overrides: [
             {
@@ -239,8 +294,8 @@ const eslintCommon = {
                     ignore: [],
                 },
             ],
-            'react/jsx-sort-props': [
-                'error',
+            "react/jsx-sort-props": [
+                "error",
                 {
                     callbacksLast: true,
                     shorthandFirst: true,

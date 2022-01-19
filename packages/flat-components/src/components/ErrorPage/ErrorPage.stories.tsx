@@ -1,5 +1,5 @@
-import { Meta, Story } from "@storybook/react";
 import React from "react";
+import { Meta, Story } from "@storybook/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ErrorPage, ErrorPageProps } from ".";
 

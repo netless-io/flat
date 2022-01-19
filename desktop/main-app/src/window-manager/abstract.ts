@@ -1,5 +1,5 @@
-import { constants } from "flat-types";
 import { BrowserWindow, BrowserWindowConstructorOptions } from "electron";
+import { constants } from "flat-types";
 import {
     windowHookClose,
     windowHookClosed,
@@ -7,9 +7,9 @@ import {
     windowReadyToShow,
 } from "../utils/window-event";
 import {
+    WindowOptions,
     defaultBrowserWindowOptions,
     defaultWindowOptions,
-    WindowOptions,
 } from "./default-options";
 
 export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {

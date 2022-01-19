@@ -1,8 +1,8 @@
-import React, { FC, useEffect, useState, useRef } from "react";
-import { Form, Modal, Input, Select, message, FormInstance } from "antd";
+import React, { FC, useEffect, useRef, useState } from "react";
+import { Form, FormInstance, Input, Modal, Select, message } from "antd";
 import { useTranslation } from "react-i18next";
-import { CloudStorageStore } from "./store";
 import { useSafePromise } from "../../utils/hooks";
+import { CloudStorageStore } from "./store";
 
 interface FormValues {
     fileName: string;

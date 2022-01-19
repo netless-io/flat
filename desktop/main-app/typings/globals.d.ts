@@ -1,6 +1,9 @@
+import AgoraRtcSDK from "agora-electron-sdk";
+import { Runtime } from "../src/utils/runtime";
+
 declare namespace NodeJS {
     export interface Global {
-        runtime: import("../src/utils/runtime").Runtime;
+        runtime: Runtime;
     }
 
     export interface ProcessEnv {
@@ -10,8 +13,10 @@ declare namespace NodeJS {
     }
 }
 
-interface Window {
-    rtcEngine: any;
-    $: any;
-    jQuery: any;
+declare global {
+    interface Window {
+        rtcEngine: AgoraRtcSDK;
+        $: any;
+        jQuery: any;
+    }
 }

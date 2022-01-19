@@ -1,12 +1,11 @@
-import "./style.less";
+import React, { FC, useCallback } from "react";
+import classNames from "classnames";
 import addSceneSVG from "./image/add-scene.svg";
 import nextScenesDisabledSVG from "./image/next-scene-disabled.svg";
 import nextScenesSVG from "./image/next-scene.svg";
 import preScenesDisabledSVG from "./image/previous-scene-disabled.svg";
 import preScenesSVG from "./image/previous-scene.svg";
-
-import React, { FC, useCallback } from "react";
-import classNames from "classnames";
+import "./style.less";
 
 export interface ScenesControllerProps {
     addScene: () => void;

@@ -1,10 +1,10 @@
-import { constants } from "flat-types";
-import { AbstractWindow, CustomWindow } from "../abstract";
-import runtime from "../../utils/runtime";
-import { RxSubject } from "./rx-subject";
 import { ipcMain } from "electron";
+import { constants } from "flat-types";
 import { zip } from "rxjs";
 import { ignoreElements, mergeMap } from "rxjs/operators";
+import runtime from "../../utils/runtime";
+import { AbstractWindow, CustomWindow } from "../abstract";
+import { RxSubject } from "./rx-subject";
 
 export class WindowMain extends AbstractWindow<false> {
     private readonly subject: RxSubject;

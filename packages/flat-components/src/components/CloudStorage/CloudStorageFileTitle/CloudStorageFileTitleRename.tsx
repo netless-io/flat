@@ -1,9 +1,8 @@
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Input } from "antd";
+import { CloudStorageFileName } from "../types";
 import checkSVG from "./icons/check.svg";
 import crossSVG from "./icons/cross.svg";
-
-import { Button, Input } from "antd";
-import React, { useEffect, useRef, useState } from "react";
-import { CloudStorageFileName } from "../types";
 
 export interface CloudStorageFileTitleRenameProps {
     fileUUID: string;

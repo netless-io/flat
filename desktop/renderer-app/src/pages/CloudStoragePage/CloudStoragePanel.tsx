@@ -1,9 +1,8 @@
-import "./style.less";
-
+import React, { useEffect } from "react";
 import { CloudStorageContainer } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
 import { CloudStorageStore } from "./store";
+import "./style.less";
 
 export interface CloudStoragePanelProps {
     cloudStorage: CloudStorageStore;

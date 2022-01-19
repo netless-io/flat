@@ -1,8 +1,7 @@
-import QRCodeSVG from "./icons/qr-code.svg";
-
+import React from "react";
 import { Meta, Story } from "@storybook/react";
 import { Modal } from "antd";
-import React from "react";
+import QRCodeSVG from "./icons/qr-code.svg";
 import { LoginChannelType, LoginPanel, LoginPanelProps } from ".";
 
 const storyMeta: Meta = {

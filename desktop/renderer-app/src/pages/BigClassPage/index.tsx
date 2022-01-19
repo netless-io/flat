@@ -1,24 +1,29 @@
-import "./BigClassPage.less";
-
+import React, { useEffect, useRef, useState } from "react";
 import { message } from "antd";
 import classNames from "classnames";
 import {
+    CloudRecordBtn,
+    LoadingPage,
     NetworkStatus,
     RoomInfo,
+    Timer,
     TopBar,
     TopBarDivider,
-    LoadingPage,
-    CloudRecordBtn,
-    Timer,
+    TopBarRightBtn,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { RoomPhase } from "white-web-sdk";
-import { useTranslation } from "react-i18next";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
 import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RtcChannelType } from "../../api-middleware/rtc";
+import exitSVG from "../../assets/image/exit.svg";
+import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
+import hideSideSVG from "../../assets/image/hide-side.svg";
+import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
+import shareScreenSVG from "../../assets/image/share-screen.svg";
+import { AppStoreButton } from "../../components/AppStoreButton";
 import { ChatPanel } from "../../components/ChatPanel";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
@@ -29,23 +34,17 @@ import {
 } from "../../components/ExitRoomConfirm";
 import InviteButton from "../../components/InviteButton";
 import { RealtimePanel } from "../../components/RealtimePanel";
-import { TopBarRightBtn } from "flat-components";
+import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
 import { Whiteboard } from "../../components/Whiteboard";
-import { RecordingConfig, useClassRoomStore, User } from "../../stores/class-room-store";
+import { RecordingConfig, User, useClassRoomStore } from "../../stores/class-room-store";
+import { generateAvatar } from "../../utils/generate-avatar";
 import { usePowerSaveBlocker } from "../../utils/hooks/use-power-save-blocker";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { useAutoRun, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
-import { BigClassAvatar } from "./BigClassAvatar";
 import { runtime } from "../../utils/runtime";
-import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
-import { AppStoreButton } from "../../components/AppStoreButton";
-import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
-import shareScreenSVG from "../../assets/image/share-screen.svg";
-import exitSVG from "../../assets/image/exit.svg";
-import hideSideSVG from "../../assets/image/hide-side.svg";
-import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
+import { BigClassAvatar } from "./BigClassAvatar";
+import "./BigClassPage.less";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Observer, observer } from "mobx-react-lite";
 import { ChatMessage } from "flat-components";
+import { Observer, observer } from "mobx-react-lite";
 import {
     AutoSizer,
     CellMeasurer,

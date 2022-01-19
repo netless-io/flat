@@ -1,11 +1,10 @@
-import "./style.less";
-
 import React, { useMemo, useState } from "react";
-import { observer } from "mobx-react-lite";
 import { RoomList } from "flat-components";
-import { MainRoomList } from "./MainRoomList";
-import { ListRoomsType } from "../../../api-middleware/flatServer";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
+import { ListRoomsType } from "../../../api-middleware/flatServer";
+import { MainRoomList } from "./MainRoomList";
+import "./style.less";
 
 export const MainRoomListPanel = observer<{ isLogin: boolean }>(function MainRoomListPanel({
     isLogin,

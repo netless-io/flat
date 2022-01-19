@@ -1,10 +1,10 @@
+import React, { useCallback, useState } from "react";
 import {
     CloseRoomConfirmModal,
     ExitRoomConfirmModal,
     StopClassConfirmModal,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useState } from "react";
 import { RoomStatus } from "../api-middleware/flatServer/constants";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../utils/routes";

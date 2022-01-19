@@ -1,16 +1,16 @@
 import { updateRecordEndTime } from "./flatServer";
 import {
-    cloudRecordAcquire,
-    CloudRecordStopResult,
-    cloudRecordStop,
     CloudRecordAcquirePayload,
-    CloudRecordStartPayload,
-    cloudRecordStart,
     CloudRecordQueryResult,
-    cloudRecordQuery,
-    cloudRecordUpdateLayout,
+    CloudRecordStartPayload,
+    CloudRecordStopResult,
     CloudRecordUpdateLayoutPayload,
     CloudRecordUpdateLayoutResult,
+    cloudRecordAcquire,
+    cloudRecordQuery,
+    cloudRecordStart,
+    cloudRecordStop,
+    cloudRecordUpdateLayout,
 } from "./flatServer/agora";
 
 /**

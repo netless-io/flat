@@ -1,10 +1,9 @@
-import "./style.less";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { TopBarRoundBtn } from "../";
 import recordingStartSVG from "./icons/recording-start.svg";
 import recordingStopSVG from "./icons/recording-stop.svg";
-
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
-import { TopBarRoundBtn } from "../";
-import { useTranslation } from "react-i18next";
+import "./style.less";
 
 export interface RecordButtonProps {
     isRecording: boolean;

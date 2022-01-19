@@ -1,5 +1,5 @@
-import { copy, ensureDir, remove, pathExists } from "fs-extra";
 import path from "path";
+import { copy, ensureDir, pathExists, remove } from "fs-extra";
 import { DownloaderHelper } from "node-downloader-helper";
 import { runtime } from "./runtime";
 import { extractZIP } from "./unzip";

@@ -1,6 +1,5 @@
-import { ipc } from "flat-types";
 import { ipcRenderer } from "electron";
-import { constants } from "flat-types";
+import { constants, ipc } from "flat-types";
 
 export const ipcAsyncByMainWindow = <
     T extends keyof ipc.WindowActionAsync,

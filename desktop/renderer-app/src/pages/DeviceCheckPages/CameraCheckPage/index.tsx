@@ -1,15 +1,14 @@
-import "./index.less";
-
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "antd";
+import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
 import { DeviceSelect } from "../../../components/DeviceSelect";
+import { routeConfig } from "../../../route-config";
 import { Device } from "../../../types/device";
 import { useRTCEngine } from "../../../utils/hooks/use-rtc-engine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
-import { routeConfig } from "../../../route-config";
 import { DeviceCheckResults } from "../utils";
-import { useTranslation } from "react-i18next";
+import "./index.less";
 
 export const CameraCheckPage = (): React.ReactElement => {
     const { t } = useTranslation();

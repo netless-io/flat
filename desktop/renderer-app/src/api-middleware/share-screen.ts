@@ -1,7 +1,7 @@
-import { globalStore } from "../stores/global-store";
-import { AGORA } from "../constants/process";
-import type AgoraSDK from "agora-electron-sdk";
+import AgoraSDK from "agora-electron-sdk";
 import { ScreenSymbol } from "agora-electron-sdk/types/Api/native_type";
+import { AGORA } from "../constants/process";
+import { globalStore } from "../stores/global-store";
 
 export class RTCShareScreen {
     public constructor(

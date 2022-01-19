@@ -1,6 +1,6 @@
+import React, { FC } from "react";
 import { Select } from "antd";
 import { SelectProps } from "antd/lib/select";
-import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { PeriodicEndType } from "../../../types/room";
 

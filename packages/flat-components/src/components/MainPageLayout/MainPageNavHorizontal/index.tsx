@@ -1,10 +1,10 @@
-import "./style.less";
 import React from "react";
-import classNames from "classnames";
-import { MainPageLayoutItem } from "../types";
-import { MainPageNavAvatar, MainPageNavAvatarProps } from "../MainPageNavAvatar";
 import { Tabs } from "antd";
+import classNames from "classnames";
 import { MainPageHeader, MainPageHeaderProps } from "../MainPageHeader";
+import { MainPageNavAvatar, MainPageNavAvatarProps } from "../MainPageNavAvatar";
+import { MainPageLayoutItem } from "../types";
+import "./style.less";
 
 export interface MainPageNavHorizontalProps extends MainPageNavAvatarProps, MainPageHeaderProps {
     /** when an item is clicked */

@@ -1,14 +1,14 @@
-import loadable from "@loadable/component";
 import React, { ComponentType, useContext, useEffect } from "react";
+import loadable from "@loadable/component";
+import { FlatThemeBodyProvider, LoadingPage } from "flat-components";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
 import { useIsomorphicLayoutEffect } from "react-use";
-import { FlatThemeBodyProvider, LoadingPage } from "flat-components";
 import { ConfigStoreContext, PageStoreContext } from "../components/StoreProvider";
 import { RouteNameType } from "../route-config";
 import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
 import { routePages } from "./route-pages";
-import { observer } from "mobx-react-lite";
 
 export interface AppRouteContainerProps {
     name: RouteNameType;

@@ -1,8 +1,8 @@
-import runtime from "../utils/runtime";
 import { app } from "electron";
-import closeAPP from "../utils/close-app";
-import { windowManager } from "../window-manager";
 import { constants } from "flat-types";
+import closeAPP from "../utils/close-app";
+import runtime from "../utils/runtime";
+import { windowManager } from "../window-manager";
 import { CustomWindow } from "../window-manager/abstract";
 
 export default async (): Promise<void> => {

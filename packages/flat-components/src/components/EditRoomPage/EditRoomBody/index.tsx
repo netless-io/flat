@@ -1,21 +1,20 @@
-import "./style.less";
-import cnSVG from "./icons/cn.svg";
-import inSVG from "./icons/in.svg";
-import gbSVG from "./icons/gb.svg";
-import usSVG from "./icons/us.svg";
-import sgSVG from "./icons/sg.svg";
-
+import React, { useMemo, useRef, useState } from "react";
 import { Button, Checkbox, Dropdown, Form, Input, Menu, Modal } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { addWeeks, endOfDay, getDay } from "date-fns";
-import React, { useMemo, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import { PeriodicEndType, RoomType, Week } from "../../../types/room";
+import { ClassPicker } from "../../HomePage/ClassPicker";
+import cnSVG from "./icons/cn.svg";
+import gbSVG from "./icons/gb.svg";
+import inSVG from "./icons/in.svg";
+import sgSVG from "./icons/sg.svg";
+import usSVG from "./icons/us.svg";
 import { renderBeginTimePicker } from "./renderBeginTimePicker";
 import { renderEndTimePicker } from "./renderEndTimePicker";
 import { renderPeriodicForm } from "./renderPeriodicForm";
-import { ClassPicker } from "../../HomePage/ClassPicker";
+import "./style.less";
 
 export enum Region {
     CN_HZ = "cn-hz",

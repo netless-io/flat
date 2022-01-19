@@ -1,7 +1,6 @@
-import "./style.less";
-
 import React, { FC, useMemo } from "react";
 import classNames from "classnames";
+import "./style.less";
 
 export interface ChatTabTitleProps {
     unreadCount?: number | null;

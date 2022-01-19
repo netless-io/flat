@@ -1,12 +1,11 @@
-import "./style.less";
+import React, { useMemo } from "react";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import signal0SVG from "./icons/signal-0.svg";
 import signal1SVG from "./icons/signal-1.svg";
 import signal2SVG from "./icons/signal-2.svg";
 import signal3SVG from "./icons/signal-3.svg";
-
-import React, { useMemo } from "react";
-import { observer } from "mobx-react-lite";
-import { useTranslation } from "react-i18next";
+import "./style.less";
 
 interface NetworkQuality {
     delay: number;

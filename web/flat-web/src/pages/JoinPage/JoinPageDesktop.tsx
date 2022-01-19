@@ -1,14 +1,12 @@
 /* eslint react/jsx-no-target-blank: off */
-import logoSVG from "./icons/logo.svg";
-import downloadSVG from "./icons/download.svg";
-import joinSVG from "./icons/join.svg";
-
 import React, { useMemo } from "react";
 import { Avatar, Button } from "antd";
 import { useTranslation } from "react-i18next";
-
-import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { FLAT_DOWNLOAD_URL } from "../../constants/process";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
+import downloadSVG from "./icons/download.svg";
+import joinSVG from "./icons/join.svg";
+import logoSVG from "./icons/logo.svg";
 
 export interface JoinPageDesktopProps {
     isLogin: boolean;

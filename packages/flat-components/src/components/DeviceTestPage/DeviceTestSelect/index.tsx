@@ -1,10 +1,9 @@
-import disabledSVG from "../icons/disabled.svg";
-import "./style.less";
-
 import React from "react";
 import { Button, Select } from "antd";
-import { Device } from "../constants";
 import { useTranslation } from "react-i18next";
+import { Device } from "../constants";
+import disabledSVG from "../icons/disabled.svg";
+import "./style.less";
 
 export interface DeviceTestSelectProps {
     devices?: Device[];

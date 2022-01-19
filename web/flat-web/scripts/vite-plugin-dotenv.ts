@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import dotenvReal from "dotenv";
 import dotenvExpand from "dotenv-expand";
-import type { Plugin } from "vite";
+import { Plugin } from "vite";
 
 // based on https://github.com/IndexXuan/vite-plugin-env-compatible
 export function dotenv(envDir: string): Plugin {

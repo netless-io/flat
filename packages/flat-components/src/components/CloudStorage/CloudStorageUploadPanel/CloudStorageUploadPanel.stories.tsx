@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Story, Meta } from "@storybook/react";
+import { Meta, Story } from "@storybook/react";
 import Chance from "chance";
 import faker from "faker";
-
-import { CloudStorageUploadPanel, CloudStorageUploadPanelProps } from "./index";
-import { CloudStorageUploadTask } from "../types";
 import CloudStorageUploadItem from "../CloudStorageUploadItem";
+import { CloudStorageUploadTask } from "../types";
+import { CloudStorageUploadPanel, CloudStorageUploadPanelProps } from "./index";
 
 const chance = new Chance();
 

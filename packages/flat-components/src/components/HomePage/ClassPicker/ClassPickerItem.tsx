@@ -1,10 +1,9 @@
-import bigClassSVG from "./icons/big-class.svg";
-import oneToOneSVG from "./icons/one-to-one.svg";
-import smallClassSVG from "./icons/small-class.svg";
-
 import React from "react";
 import { Radio } from "antd";
 import { useTranslation } from "react-i18next";
+import bigClassSVG from "./icons/big-class.svg";
+import oneToOneSVG from "./icons/one-to-one.svg";
+import smallClassSVG from "./icons/small-class.svg";
 
 export type ClassPickerItemType = "OneToOne" | "BigClass" | "SmallClass";
 

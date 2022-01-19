@@ -1,18 +1,17 @@
-import "./style.less";
-import emptyFileSVG from "./icons/empty-file.svg";
-
 import React, { useCallback, useMemo, useRef } from "react";
 import { Table } from "antd";
-import prettyBytes from "pretty-bytes";
-import { format } from "date-fns";
 import { ColumnsType } from "antd/lib/table";
-import { CloudStorageFile } from "../types";
+import { format } from "date-fns";
+import prettyBytes from "pretty-bytes";
+import { useTranslation } from "react-i18next";
 import { CloudStorageFileListHeadTip } from "../CloudStorageFileListHeadTip";
+import { CloudStorageFile } from "../types";
 import {
     CloudStorageFileListFileName,
     CloudStorageFileListFileNameProps,
 } from "./CloudStorageFileListFileName";
-import { useTranslation } from "react-i18next";
+import emptyFileSVG from "./icons/empty-file.svg";
+import "./style.less";
 
 export interface CloudStorageFileListProps
     extends Pick<

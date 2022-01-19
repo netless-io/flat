@@ -1,7 +1,7 @@
-import { Meta, Story } from "@storybook/react";
-import faker from "faker";
-import { Chance } from "chance";
 import React from "react";
+import { Meta, Story } from "@storybook/react";
+import { Chance } from "chance";
+import faker from "faker";
 import { RoomList, RoomListDate, RoomListItem, RoomListProps } from ".";
 
 const chance = new Chance();

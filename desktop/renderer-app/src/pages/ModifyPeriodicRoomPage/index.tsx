@@ -1,20 +1,20 @@
-import { message } from "antd";
 import React, { useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
-import { useHistory, useParams } from "react-router-dom";
+import { message } from "antd";
 import {
     EditRoomFormInitialValues,
     EditRoomFormValues,
+    LoadingPage,
     getEndTimeFromRate,
     getRateFromEndTime,
-    LoadingPage,
 } from "flat-components";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
-import EditRoomPage from "../../components/EditRoomPage";
-import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
+import { observer } from "mobx-react-lite";
+import { useHistory, useParams } from "react-router-dom";
 import { periodicRoomInfo, updatePeriodicRoom } from "../../api-middleware/flatServer";
+import EditRoomPage from "../../components/EditRoomPage";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
+import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 
 type ModifyPeriodicRoomPageProps = {
     periodicUUID: string;

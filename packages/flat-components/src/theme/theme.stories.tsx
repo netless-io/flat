@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import type { Story, Meta } from "@storybook/react";
-import "./colors.less";
+import { Meta, Story } from "@storybook/react";
 import { useIsomorphicLayoutEffect } from "react-use";
+import "./colors.less";
 
 const storyMeta: Meta = {
     title: "Theme/Colors",

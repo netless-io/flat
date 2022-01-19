@@ -1,5 +1,5 @@
-import { observer } from "mobx-react-lite";
 import React from "react";
+import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { OrdinaryRoomForm } from "./OrdinaryRoomForm";

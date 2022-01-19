@@ -1,9 +1,7 @@
-import "video.js/dist/video-js.css";
-
-import type { Attributes as SlideAttributes } from "@netless/app-slide";
+import { Attributes as SlideAttributes } from "@netless/app-slide";
 import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manager";
 import { message } from "antd";
-import type { i18n } from "i18next";
+import { i18n } from "i18next";
 import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { isMobile, isWindows } from "react-device-detect";
@@ -28,6 +26,7 @@ import { coursewarePreloader } from "../utils/courseware-preloader";
 import { ServerRequestError } from "../utils/error/server-request-error";
 import { getFileExt, isPPTX } from "../utils/file";
 import { globalStore } from "./GlobalStore";
+import "video.js/dist/video-js.css";
 
 export class WhiteboardStore {
     public room: Room | null = null;

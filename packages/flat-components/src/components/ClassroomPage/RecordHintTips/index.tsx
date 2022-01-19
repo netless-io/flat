@@ -1,9 +1,8 @@
-import "./style.less";
-
 import React, { FC } from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
+import "./style.less";
 
 export interface RecordHintTipsProps {
     visible: boolean;

@@ -1,7 +1,7 @@
-import { Meta, Story } from "@storybook/react";
 import React from "react";
-import { RoomStoppedModal, RoomStoppedModalProps } from ".";
+import { Meta, Story } from "@storybook/react";
 import { RoomStatus } from "../../../types/room";
+import { RoomStoppedModal, RoomStoppedModalProps } from ".";
 
 const storyMeta: Meta = {
     title: "ClassroomPage/RoomStoppedModal",

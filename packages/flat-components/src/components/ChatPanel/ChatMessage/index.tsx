@@ -1,9 +1,8 @@
-import "./style.less";
-
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { ChatMsg, ChatMsgType } from "../types";
 import { useTranslation } from "react-i18next";
+import { ChatMsg, ChatMsgType } from "../types";
+import "./style.less";
 
 export interface ChatMessageProps {
     /** current user uuid */

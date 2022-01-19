@@ -1,12 +1,11 @@
-import "./style.less";
-import sendSVG from "./icons/send.svg";
-import banChatSVG from "./icons/ban-chat.svg";
-import banChatActiveSVG from "./icons/ban-chat-active.svg";
-
 import React, { useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { useSafePromise } from "../../../utils/hooks";
 import { useTranslation } from "react-i18next";
+import { useSafePromise } from "../../../utils/hooks";
+import banChatActiveSVG from "./icons/ban-chat-active.svg";
+import banChatSVG from "./icons/ban-chat.svg";
+import sendSVG from "./icons/send.svg";
+import "./style.less";
 
 export interface ChatTypeBoxProps {
     /** Only room owner can ban chatting. */

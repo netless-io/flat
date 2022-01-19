@@ -1,6 +1,5 @@
-import { message } from "antd";
 import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
+import { message } from "antd";
 import { isSameDay } from "date-fns";
 import {
     InviteModal,
@@ -14,16 +13,17 @@ import {
     RoomListSkeletons,
     RoomStatusType,
 } from "flat-components";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import { ListRoomsType } from "../../../api-middleware/flatServer";
 import { RoomStatus, RoomType } from "../../../api-middleware/flatServer/constants";
 import { GlobalStoreContext, RoomStoreContext } from "../../../components/StoreProvider";
 import { errorTips } from "../../../components/Tips/ErrorTips";
+import { FLAT_WEB_BASE_URL } from "../../../constants/process";
 import { RoomItem } from "../../../stores/room-store";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
 import { joinRoomHandler } from "../../utils/join-room-handler";
-import { FLAT_WEB_BASE_URL } from "../../../constants/process";
-import { useTranslation } from "react-i18next";
 
 export interface MainRoomListProps {
     listRoomsType: ListRoomsType;

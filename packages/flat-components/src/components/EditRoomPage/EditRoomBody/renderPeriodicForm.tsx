@@ -1,14 +1,14 @@
+import React from "react";
 import { Col, Form, InputNumber, Row } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
 import { endOfDay, getDay, isBefore, startOfDay } from "date-fns";
-import React from "react";
 import { TFunction } from "react-i18next";
-import { EditRoomFormValues } from ".";
 import { Week } from "../../../types/room";
 import { formatISODayWeekiii, getWeekNames, syncPeriodicEndAmount } from "../../../utils/room";
 import { DatePicker } from "../FullTimePicker";
 import { PeriodicEndTypeSelector } from "../PeriodicEndTypeSelector";
 import { WeekRateSelector } from "../WeekRateSelector";
+import { EditRoomFormValues } from ".";
 
 export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
     function renderPeriodicForm(form: FormInstance<EditRoomFormValues>) {

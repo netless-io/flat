@@ -1,13 +1,12 @@
 /* eslint react/display-name: off */
-import generalSVG from "./icons/general.svg";
+import React, { useContext, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { PageStoreContext } from "../../components/StoreProvider";
+import { RouteNameType, routeConfig } from "../../route-config";
 import aboutSVG from "./icons/about.svg";
+import generalSVG from "./icons/general.svg";
 import hotkeySVG from "./icons/hotkey.svg";
 import "./UserSettingLayoutContainer.less";
-
-import React, { useContext, useEffect } from "react";
-import { routeConfig, RouteNameType } from "../../route-config";
-import { PageStoreContext } from "../../components/StoreProvider";
-import { useTranslation } from "react-i18next";
 
 export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactElement => {
     const { t } = useTranslation();

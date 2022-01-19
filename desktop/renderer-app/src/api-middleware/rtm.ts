@@ -1,11 +1,11 @@
+import { EventEmitter } from "events";
 import AgoraRTM, { RtmChannel, RtmClient } from "agora-rtm-sdk";
 import polly from "polly-js";
 import { v4 as uuidv4 } from "uuid";
 import { AGORA, NODE_ENV } from "../constants/process";
-import { EventEmitter } from "events";
-import { RoomStatus } from "./flatServer/constants";
-import { generateRTMToken } from "./flatServer/agora";
 import { globalStore } from "../stores/global-store";
+import { generateRTMToken } from "./flatServer/agora";
+import { RoomStatus } from "./flatServer/constants";
 
 export interface RtmRESTfulQueryPayload {
     filter: {

@@ -1,7 +1,7 @@
 import { builtinModules } from "module";
 import { Plugin as VitePlugin } from "vite";
-import { cjs2esm } from "./utils";
 import { options } from "./template/options";
+import { cjs2esm } from "./utils";
 
 // based on https://github.com/caoxiemeihao/vite-plugins/blob/main/packages/electron/src/index.ts
 

@@ -1,10 +1,9 @@
-import "./AvatarCanvas.less";
-
 import React, { useEffect, useRef } from "react";
-import type AgoraSDK from "agora-electron-sdk";
+import AgoraSDK from "agora-electron-sdk";
 import { observer } from "mobx-react-lite";
 import { useUpdateEffect } from "react-use";
 import { User } from "../stores/class-room-store";
+import "./AvatarCanvas.less";
 
 export interface AvatarCanvasProps {
     isCreator: boolean;

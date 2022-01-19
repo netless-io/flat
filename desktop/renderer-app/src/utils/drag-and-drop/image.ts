@@ -1,6 +1,6 @@
 import { message } from "antd";
 import { v4 as v4uuid } from "uuid";
-import type { Room, Size } from "white-web-sdk";
+import { Room, Size } from "white-web-sdk";
 import { listFiles } from "../../api-middleware/flatServer/storage";
 import { i18n } from "../i18n";
 import { UploadTask } from "../upload-task-manager/upload-task";

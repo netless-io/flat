@@ -1,11 +1,10 @@
-import moreMenuSVG from "./icons/more-menu.svg";
-
 import React, { useState } from "react";
 import { Dropdown, Menu, message } from "antd";
+import { useTranslation } from "react-i18next";
 import { RoomInfo } from "../../types/room";
 import { InviteModal } from "../InviteModal";
 import { CancelSubPeriodicRoomModal } from "./CancelSubPeriodicRoomModal";
-import { useTranslation } from "react-i18next";
+import moreMenuSVG from "./icons/more-menu.svg";
 
 export interface MoreMenuProps {
     room: RoomInfo;

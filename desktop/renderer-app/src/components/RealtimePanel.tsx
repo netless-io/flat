@@ -1,6 +1,5 @@
 import React from "react";
 import classNames from "classnames";
-
 import "./RealtimePanel.less";
 
 export type RealtimePanelProps = {

@@ -1,12 +1,10 @@
-import "./style.less";
-
-import React, { useEffect } from "react";
-import { observer } from "mobx-react-lite";
+import React, { useContext, useEffect } from "react";
 import { EditRoomBody, EditRoomBodyProps } from "flat-components";
-import { useHistory } from "react-router";
-import { useContext } from "react";
-import { PageStoreContext } from "../StoreProvider";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router";
+import { PageStoreContext } from "../StoreProvider";
+import "./style.less";
 
 export type EditRoomPageProps = EditRoomBodyProps;
 

@@ -1,6 +1,6 @@
 import { app } from "electron";
-import { windowManager } from "../window-manager";
 import { constants } from "flat-types";
+import { windowManager } from "../window-manager";
 
 export default (): void => {
     app.allowRendererProcessReuse = false;

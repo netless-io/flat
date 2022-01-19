@@ -1,11 +1,11 @@
-import "./style.less";
 import React from "react";
-import { MainPageLayoutItem } from "../MainPageLayout/types";
 import {
     MainPageNavHorizontal,
     MainPageNavHorizontalProps,
 } from "../MainPageLayout/MainPageNavHorizontal";
 import { MainPageSubMenu, MainPageSubMenuProps } from "../MainPageLayout/MainPageSubMenu";
+import { MainPageLayoutItem } from "../MainPageLayout/types";
+import "./style.less";
 
 export interface MainPageLayoutHorizontalProps
     extends MainPageNavHorizontalProps,

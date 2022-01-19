@@ -1,14 +1,13 @@
-import "./style.less";
-import checkSVG from "./icons/check.svg";
-import trashBinSVG from "./icons/trash-bin.svg";
-import retrySVG from "./icons/retry.svg";
-
 import React from "react";
 import { Button } from "antd";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 import { CloudStorageFileTitle } from "../CloudStorageFileTitle";
 import { CloudStorageUploadTask } from "../types";
-import { useTranslation } from "react-i18next";
+import checkSVG from "./icons/check.svg";
+import retrySVG from "./icons/retry.svg";
+import trashBinSVG from "./icons/trash-bin.svg";
+import "./style.less";
 
 export interface CloudStorageUploadItemProps
     extends Pick<CloudStorageUploadTask, "uploadID" | "fileName" | "percent" | "status"> {

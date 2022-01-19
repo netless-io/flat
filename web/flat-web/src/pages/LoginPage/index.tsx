@@ -1,16 +1,15 @@
-import "./style.less";
-
 import React, { useContext, useEffect, useRef } from "react";
-import { observer } from "mobx-react-lite";
 import { LoginChannelType, LoginPanel } from "flat-components";
-import { LoginDisposer } from "./utils";
-import { githubLogin } from "./githubLogin";
-import { RouteNameType, usePushHistory } from "../../utils/routes";
-import { GlobalStoreContext } from "../../components/StoreProvider";
-import { WeChatLogin } from "./WeChatLogin";
-import { joinRoomHandler } from "../utils/join-room-handler";
-import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
+import { GlobalStoreContext } from "../../components/StoreProvider";
+import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
+import { joinRoomHandler } from "../utils/join-room-handler";
+import { githubLogin } from "./githubLogin";
+import { LoginDisposer } from "./utils";
+import { WeChatLogin } from "./WeChatLogin";
+import "./style.less";
 
 export const LoginPage = observer(function LoginPage() {
     const { i18n } = useTranslation();

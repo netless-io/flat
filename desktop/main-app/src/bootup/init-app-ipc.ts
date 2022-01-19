@@ -1,6 +1,6 @@
-import { appActionAsync, appActionSync } from "../utils/ipc-actions";
-import { ipc } from "flat-types";
 import { ipcMain } from "electron";
+import { ipc } from "flat-types";
+import { appActionAsync, appActionSync } from "../utils/ipc-actions";
 
 export default (): void => {
     const appActionAsyncKeys = Object.keys(appActionAsync) as Array<keyof ipc.AppActionAsync>;

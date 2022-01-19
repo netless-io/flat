@@ -1,16 +1,16 @@
+import Axios, { CancelTokenSource } from "axios";
 import { makeAutoObservable, observable } from "mobx";
 import { v4 as v4uuid } from "uuid";
-import Axios, { CancelTokenSource } from "axios";
 import {
+    UploadStartResult,
     cancelUpload,
     uploadFinish,
     uploadStart,
-    UploadStartResult,
 } from "../../api-middleware/flatServer/storage";
-import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/process";
-import { ServerRequestError } from "../error/server-request-error";
 import { RequestErrorCode } from "../../constants/error-code";
+import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/process";
 import { configStore } from "../../stores/config-store";
+import { ServerRequestError } from "../error/server-request-error";
 
 export enum UploadStatusType {
     Pending = 1,

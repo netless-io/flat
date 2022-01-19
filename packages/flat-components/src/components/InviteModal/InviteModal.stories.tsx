@@ -1,8 +1,8 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
-import { InviteModal, InviteModalProps } from ".";
-import { RoomStatus, RoomType } from "../../types/room";
 import { message } from "antd";
+import { RoomStatus, RoomType } from "../../types/room";
+import { InviteModal, InviteModalProps } from ".";
 
 const storyMeta: Meta = {
     title: "Components/InviteModal",

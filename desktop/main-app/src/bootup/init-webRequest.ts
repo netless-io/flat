@@ -1,6 +1,6 @@
+import path from "path";
 import { protocol, session } from "electron";
 import fs from "fs-extra";
-import path from "path";
 import runtime from "../utils/runtime";
 
 export default (): void => {

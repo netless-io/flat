@@ -1,5 +1,5 @@
-import { observer } from "mobx-react-lite";
 import React from "react";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import { LastLocationProvider } from "react-router-last-location";

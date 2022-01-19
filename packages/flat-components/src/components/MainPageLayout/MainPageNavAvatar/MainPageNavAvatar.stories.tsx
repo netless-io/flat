@@ -1,8 +1,8 @@
 /* eslint react/display-name: off */
-import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
-import { MainPageNavAvatar, MainPageNavAvatarProps } from ".";
 import { CloudOutlined } from "@ant-design/icons";
+import { Meta, Story } from "@storybook/react";
+import { MainPageNavAvatar, MainPageNavAvatarProps } from ".";
 
 const storyMeta: Meta = {
     title: "MainPageLayout/MainPageNavAvatar",

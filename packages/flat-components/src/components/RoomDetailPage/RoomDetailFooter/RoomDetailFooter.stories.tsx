@@ -1,8 +1,8 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
-import { RoomDetailFooter, RoomDetailFooterProps } from ".";
-import { RoomStatus, RoomType, Week } from "../../../types/room";
 import { BrowserRouter as Router } from "react-router-dom";
+import { RoomStatus, RoomType, Week } from "../../../types/room";
+import { RoomDetailFooter, RoomDetailFooterProps } from ".";
 
 const storyMeta: Meta = {
     title: "RoomDetailPage/RoomDetailFooter",

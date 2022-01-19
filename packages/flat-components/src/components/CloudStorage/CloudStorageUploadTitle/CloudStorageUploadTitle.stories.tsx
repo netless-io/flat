@@ -1,9 +1,8 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react";
-import faker from "faker";
-
-import { CloudStorageUploadTitle, CloudStorageUploadTitleProps } from "./index";
+import { Meta, Story } from "@storybook/react";
 import { Chance } from "chance";
+import faker from "faker";
+import { CloudStorageUploadTitle, CloudStorageUploadTitleProps } from "./index";
 
 const chance = new Chance();
 

@@ -1,20 +1,19 @@
-import "./WeChatLogin.less";
-
 import React, { useContext, useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
 import { LoadingOutlined } from "@ant-design/icons";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
-import { UserInfo } from "../../stores/GlobalStore";
 import { loginProcess, setAuthUUID } from "../../api-middleware/flatServer";
 import { FLAT_SERVER_LOGIN } from "../../api-middleware/flatServer/constants";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { WECHAT } from "../../constants/process";
 import { RouteNameType } from "../../route-config";
+import { UserInfo } from "../../stores/GlobalStore";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
-import { useTranslation } from "react-i18next";
+import "./WeChatLogin.less";
 
 export const WeChatLogin = observer(function WeChatLogin() {
     const globalStore = useContext(GlobalStoreContext);

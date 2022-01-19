@@ -1,22 +1,18 @@
-import "flat-components/theme/index.less";
-import "../theme.less";
-
+import React, { useEffect, useMemo } from "react";
 import { ConfigProvider } from "antd";
 import enUS from "antd/lib/locale/en_US";
 import zhCN from "antd/lib/locale/zh_CN";
-
-import React, { useEffect, useMemo } from "react";
+import { configure } from "mobx";
 import ReactDOM from "react-dom";
-
 import { I18nextProvider } from "react-i18next";
 import { useUpdate } from "react-use";
-
-import { i18n } from "../utils/i18n";
 import { AppRoutes } from "../AppRoutes";
 import { StoreProvider } from "../components/StoreProvider";
+import { i18n } from "../utils/i18n";
+import "flat-components/theme/index.less";
+// eslint-disable-next-line import/order
+import "../theme.less";
 
-/** configure right after import */
-import { configure } from "mobx";
 configure({
     isolateGlobalState: true,
 });

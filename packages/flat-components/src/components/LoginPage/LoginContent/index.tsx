@@ -1,12 +1,11 @@
 /* eslint react/jsx-no-target-blank: off */
+import React, { useState } from "react";
+import { Checkbox, message } from "antd";
+import { useTranslation } from "react-i18next";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
+import { LoginChannel, LoginChannelType } from "../LoginChannel";
 import logoSVG from "./icons/logo.svg";
 import "./index.less";
-
-import React, { useState } from "react";
-import { LoginChannel, LoginChannelType } from "../LoginChannel";
-import { CSSTransition, SwitchTransition } from "react-transition-group";
-import { message, Checkbox } from "antd";
-import { useTranslation } from "react-i18next";
 
 export interface LoginContentProps {
     onLogin: (loginChannel: LoginChannelType) => React.ReactElement | undefined;

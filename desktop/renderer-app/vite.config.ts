@@ -1,21 +1,20 @@
+import path from "path";
 import refresh from "@vitejs/plugin-react-refresh";
+import copy from "rollup-plugin-copy";
+import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import eslintPlugin from "vite-plugin-eslint";
-import { visualizer } from "rollup-plugin-visualizer";
-import copy from "rollup-plugin-copy";
-import path from "path";
-
 // TODO: find new place to store vite-plugin-dotenv
+import {
+    componentsEntryPath,
+    configPath,
+    i18nEntryPath,
+    rendererPath,
+    rootNodeModules,
+    typesEntryPath,
+} from "../../scripts/constants";
 import { dotenv } from "../../web/flat-web/scripts/vite-plugin-dotenv";
 import { electron } from "./scripts/vite-plugin-electron";
-import {
-    configPath,
-    typesEntryPath,
-    i18nEntryPath,
-    componentsEntryPath,
-    rootNodeModules,
-    rendererPath,
-} from "../../scripts/constants";
 
 export default defineConfig(() => {
     const plugins = [

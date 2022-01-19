@@ -1,21 +1,10 @@
 import { useEffect, useState } from "react";
+import { AgoraNetworkQuality, RtcStats } from "agora-electron-sdk/types/Api/native_type";
+import dateSub from "date-fns/sub";
+import { i18n } from "i18next";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
-import dateSub from "date-fns/sub";
-import { Rtc as RTCAPI, RtcChannelType } from "../api-middleware/rtc";
-import {
-    ClassModeType,
-    NonDefaultUserProp,
-    Rtm as RTMAPI,
-    RTMessage,
-    RTMessageType,
-    RTMEvents,
-} from "../api-middleware/rtm";
 import { CloudRecording } from "../api-middleware/cloud-recording";
-import {
-    CloudRecordStartPayload,
-    CloudRecordUpdateLayoutPayload,
-} from "../api-middleware/flatServer/agora";
 import {
     pauseClass,
     startClass,
@@ -23,20 +12,31 @@ import {
     stopClass,
     stopRecordRoom,
 } from "../api-middleware/flatServer";
+import {
+    CloudRecordStartPayload,
+    CloudRecordUpdateLayoutPayload,
+} from "../api-middleware/flatServer/agora";
 import { RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
-import { RoomItem, roomStore } from "./room-store";
-import { globalStore } from "./global-store";
-import { NODE_ENV } from "../constants/process";
-import { useAutoRun } from "../utils/mobx";
-import { User, UserStore } from "./user-store";
-import { ipcAsyncByMainWindow } from "../utils/ipc";
-import type { AgoraNetworkQuality, RtcStats } from "agora-electron-sdk/types/Api/native_type";
+import { Rtc as RTCAPI, RtcChannelType } from "../api-middleware/rtc";
+import {
+    ClassModeType,
+    NonDefaultUserProp,
+    Rtm as RTMAPI,
+    RTMEvents,
+    RTMessage,
+    RTMessageType,
+} from "../api-middleware/rtm";
 import { errorTips } from "../components/Tips/ErrorTips";
-import { WhiteboardStore } from "./whiteboard-store";
-import { RouteNameType, usePushHistory } from "../utils/routes";
+import { NODE_ENV } from "../constants/process";
 import { useSafePromise } from "../utils/hooks/lifecycle";
+import { ipcAsyncByMainWindow } from "../utils/ipc";
+import { useAutoRun } from "../utils/mobx";
+import { RouteNameType, usePushHistory } from "../utils/routes";
+import { globalStore } from "./global-store";
+import { RoomItem, roomStore } from "./room-store";
 import { ShareScreenStore } from "./share-screen-store";
-import { i18n } from "i18next";
+import { User, UserStore } from "./user-store";
+import { WhiteboardStore } from "./whiteboard-store";
 
 export type { User } from "./user-store";
 

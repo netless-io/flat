@@ -1,8 +1,8 @@
 import Axios, { AxiosRequestConfig } from "axios";
-import { globalStore } from "../../stores/GlobalStore";
-import { FLAT_SERVER_VERSIONS, Status } from "./constants";
-import { ServerRequestError } from "../../utils/error/server-request-error";
 import { RequestErrorCode } from "../../constants/error-code";
+import { globalStore } from "../../stores/GlobalStore";
+import { ServerRequestError } from "../../utils/error/server-request-error";
+import { FLAT_SERVER_VERSIONS, Status } from "./constants";
 
 export type FlatServerResponse<T> =
     | {

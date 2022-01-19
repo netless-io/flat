@@ -1,12 +1,11 @@
-import "./style.less";
-
-import { Button, Checkbox } from "antd";
 import React from "react";
+import { Button, Checkbox } from "antd";
+import { useTranslation } from "react-i18next";
 import { CameraTest } from "./CameraTest";
 import { Device } from "./constants";
 import { MicrophoneTest } from "./MicrophoneTest";
 import { SpeakerTest } from "./SpeakerTest";
-import { useTranslation } from "react-i18next";
+import "./style.less";
 
 export type { Device };
 

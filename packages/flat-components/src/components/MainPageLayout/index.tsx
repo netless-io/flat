@@ -1,8 +1,8 @@
-import "./style.less";
 import React from "react";
-import { MainPageLayoutItem } from "./types";
 import { MainPageNav, MainPageNavProps } from "./MainPageNav";
 import { MainPageSubMenu, MainPageSubMenuProps } from "./MainPageSubMenu";
+import { MainPageLayoutItem } from "./types";
+import "./style.less";
 
 export * from "./MainPageHeader";
 export type { MainPageLayoutItem } from "./types";

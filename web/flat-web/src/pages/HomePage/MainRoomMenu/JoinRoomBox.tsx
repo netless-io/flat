@@ -1,13 +1,12 @@
-import joinSVG from "../../../assets/image/join.svg";
-import "./JoinRoomBox.less";
-
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { Button, Checkbox, Form, Input, Modal } from "antd";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form } from "antd";
+import { useTranslation } from "react-i18next";
 import { validate, version } from "uuid";
+import joinSVG from "../../../assets/image/join.svg";
 import { ConfigStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { useTranslation } from "react-i18next";
+import "./JoinRoomBox.less";
 
 interface JoinRoomFormValues {
     roomUUID: string;

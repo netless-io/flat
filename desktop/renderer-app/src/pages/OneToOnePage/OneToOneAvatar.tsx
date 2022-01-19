@@ -1,5 +1,5 @@
 import React from "react";
-import type AgoraSDK from "agora-electron-sdk";
+import AgoraSDK from "agora-electron-sdk";
 import { OneToOneVideoAvatar, OneToOneVideoAvatarProps } from "flat-components";
 import { AvatarCanvas } from "../../components/AvatarCanvas";
 import { User } from "../../stores/user-store";

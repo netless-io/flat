@@ -1,4 +1,4 @@
-import type AgoraRtcEngine from "agora-electron-sdk";
+import AgoraRtcSDK from "agora-electron-sdk";
 const { ipcRenderer } = require("electron");
 
 /**
@@ -15,9 +15,7 @@ ipcRenderer.once("inject-agora-electron-sdk-addon", () => {
         throw new Error("Agora App Id not set.");
     }
 
-    const AgoraRtcSDK = require("agora-electron-sdk").default;
-
-    const rtcEngine: AgoraRtcEngine = new AgoraRtcSDK();
+    const rtcEngine = new AgoraRtcSDK();
     window.rtcEngine = rtcEngine;
 
     if (rtcEngine.initialize(process.env.AGORA_APP_ID) < 0) {

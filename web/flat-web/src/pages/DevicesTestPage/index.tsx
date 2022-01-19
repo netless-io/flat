@@ -1,15 +1,13 @@
-import "./style.less";
-
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { DeviceTestPanel } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-
-import { DeviceTest } from "../../api-middleware/rtc/device-test";
 import { useParams } from "react-router-dom";
-import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
-import { joinRoomHandler } from "../utils/join-room-handler";
+import { DeviceTest } from "../../api-middleware/rtc/device-test";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { configStore } from "../../stores/config-store";
+import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
+import { joinRoomHandler } from "../utils/join-room-handler";
+import "./style.less";
 
 export const DevicesTestPage = observer(function DeviceTestPage() {
     const pushHistory = usePushHistory();

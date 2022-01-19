@@ -1,11 +1,10 @@
-import "./antd.mod.stories.less";
-
 import React from "react";
-import { Story, Meta } from "@storybook/react";
-import { Input, Radio, Checkbox, Button, ButtonProps } from "antd";
 import { MessageOutlined } from "@ant-design/icons";
 import { useRef } from "@storybook/client-api";
+import { Meta, Story } from "@storybook/react";
+import { Button, ButtonProps, Checkbox, Input, Radio } from "antd";
 import faker from "faker";
+import "./antd.mod.stories.less";
 
 const storyMeta: Meta = {
     title: "Theme/AntdMod",
@@ -27,15 +26,15 @@ export const Buttons: Story = () => {
             <ButtonRow type="dashed">Dashed</ButtonRow>
             <ButtonRow type="text">Text</ButtonRow>
             <ButtonRow type="link">Link</ButtonRow>
-            <ButtonRow type="text" danger>
+            <ButtonRow danger type="text">
                 Danger
             </ButtonRow>
-            <ButtonRow type="default" danger>
+            <ButtonRow danger type="default">
                 Danger
             </ButtonRow>
-            <ButtonRow type="primary" shape="circle" icon={<MessageOutlined />}></ButtonRow>
-            <ButtonRow type="default" shape="circle" icon={<MessageOutlined />}></ButtonRow>
-            <ButtonRow type="dashed" shape="circle" icon={<MessageOutlined />}></ButtonRow>
+            <ButtonRow icon={<MessageOutlined />} shape="circle" type="primary"></ButtonRow>
+            <ButtonRow icon={<MessageOutlined />} shape="circle" type="default"></ButtonRow>
+            <ButtonRow icon={<MessageOutlined />} shape="circle" type="dashed"></ButtonRow>
             <div style={{ backgroundColor: "var(--grey-12)" }}>
                 <ButtonRow type="ghost">Ghost</ButtonRow>
             </div>

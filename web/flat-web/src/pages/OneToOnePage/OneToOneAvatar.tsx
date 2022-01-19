@@ -1,8 +1,8 @@
 import React from "react";
 import { OneToOneVideoAvatar, OneToOneVideoAvatarProps } from "flat-components";
+import { RtcRoom } from "../../api-middleware/rtc/room";
 import { AvatarCanvas } from "../../components/AvatarCanvas";
 import { User } from "../../stores/user-store";
-import { RtcRoom } from "../../api-middleware/rtc/room";
 
 export interface OneToOneAvatarProps extends Omit<OneToOneVideoAvatarProps, "avatarUser"> {
     rtc: RtcRoom;

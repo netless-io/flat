@@ -1,9 +1,8 @@
-import logoSVG from "./icons/logo-sm.svg";
-import openInBrowserSVG from "./icons/open-in-browser.svg";
-
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { FLAT_DOWNLOAD_URL } from "../../constants/process";
+import logoSVG from "./icons/logo-sm.svg";
+import openInBrowserSVG from "./icons/open-in-browser.svg";
 
 export interface JoinPageMobileProps {
     roomUUID: string;

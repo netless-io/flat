@@ -1,6 +1,6 @@
-import { ipcEmit } from "./ipc-emit";
 import { autoUpdater } from "electron-updater";
 import { CustomWindow } from "../window-manager/abstract";
+import { ipcEmit } from "./ipc-emit";
 
 export const windowHookClose = (customWindow: CustomWindow): void => {
     customWindow.window.on("close", e => {

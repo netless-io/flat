@@ -1,10 +1,10 @@
-import "./style.less";
-import joinSVG from "./icons/join.svg";
-import createSVG from "./icons/create.svg";
-import scheduleSVG from "./icons/schedule.svg";
 import React from "react";
 import { Button } from "antd";
 import { useTranslation } from "react-i18next";
+import createSVG from "./icons/create.svg";
+import joinSVG from "./icons/join.svg";
+import scheduleSVG from "./icons/schedule.svg";
+import "./style.less";
 
 type HomePageHeroButtonType = "join" | "create" | "schedule";
 

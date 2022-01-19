@@ -1,8 +1,7 @@
-import "./style.less";
-
 import React from "react";
 import classNames from "classnames";
 import { MainPageLayoutItem } from "../types";
+import "./style.less";
 
 export interface MainPageSubMenuProps {
     /** when an item is clicked */

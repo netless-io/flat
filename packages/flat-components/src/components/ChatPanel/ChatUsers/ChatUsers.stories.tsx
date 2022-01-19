@@ -1,9 +1,9 @@
-import { Meta, Story } from "@storybook/react";
-import faker from "faker";
-import Chance from "chance";
 import React from "react";
-import { ChatUsers, ChatUsersProps } from ".";
+import { Meta, Story } from "@storybook/react";
+import Chance from "chance";
+import faker from "faker";
 import { User } from "../../../types/user";
+import { ChatUsers, ChatUsersProps } from ".";
 
 const chance = new Chance();
 

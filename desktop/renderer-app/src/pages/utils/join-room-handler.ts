@@ -1,8 +1,8 @@
-import { RouteNameType, usePushHistory } from "../../utils/routes";
-import { roomStore } from "../../stores/room-store";
 import { RoomType } from "../../api-middleware/flatServer/constants";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { globalStore } from "../../stores/global-store";
+import { roomStore } from "../../stores/room-store";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 export const joinRoomHandler = async (
     roomUUID: string,

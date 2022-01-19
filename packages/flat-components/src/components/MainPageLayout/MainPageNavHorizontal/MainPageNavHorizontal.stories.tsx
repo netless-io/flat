@@ -1,15 +1,15 @@
 /* eslint react/display-name: off */
-import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
-import { MainPageNavHorizontal, MainPageNavHorizontalProps } from ".";
 import {
     CloudFilled,
     CloudOutlined,
+    DownloadOutlined,
     HomeFilled,
     HomeOutlined,
-    DownloadOutlined,
     SettingOutlined,
 } from "@ant-design/icons";
+import { Meta, Story } from "@storybook/react";
+import { MainPageNavHorizontal, MainPageNavHorizontalProps } from ".";
 
 const storyMeta: Meta = {
     title: "MainPageLayout/MainPageNavHorizontal",

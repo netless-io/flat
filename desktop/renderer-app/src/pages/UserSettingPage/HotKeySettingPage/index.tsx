@@ -1,9 +1,8 @@
-import "./style.less";
-
-import { Table } from "antd";
 import React from "react";
-import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
+import { Table } from "antd";
 import { useTranslation } from "react-i18next";
+import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
+import "./style.less";
 
 interface HotKeyTable {
     name: string;

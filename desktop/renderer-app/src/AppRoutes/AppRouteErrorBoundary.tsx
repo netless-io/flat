@@ -1,6 +1,6 @@
 import React, { ComponentType } from "react";
-import { RouteComponentProps } from "react-router-dom";
 import { ErrorPage } from "flat-components";
+import { RouteComponentProps } from "react-router-dom";
 
 export interface AppRouteErrorBoundaryProps {
     Comp: ComponentType<any>;

@@ -1,6 +1,6 @@
-import { ipcReceive } from "../utils/ipc";
 import { configure } from "mobx";
 import { urlProtocolStore } from "../stores/url-protocol-store";
+import { ipcReceive } from "../utils/ipc";
 
 configure({
     isolateGlobalState: true,

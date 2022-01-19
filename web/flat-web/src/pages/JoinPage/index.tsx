@@ -1,18 +1,16 @@
-import "./style.less";
-
 import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 import { useWindowSize } from "react-use";
-
-import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
-import { GlobalStoreContext, PageStoreContext } from "../../components/StoreProvider";
 import { loginCheck } from "../../api-middleware/flatServer";
-import { joinRoomHandler } from "../utils/join-room-handler";
+import { GlobalStoreContext, PageStoreContext } from "../../components/StoreProvider";
 import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
+import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
+import { joinRoomHandler } from "../utils/join-room-handler";
 import JoinPageDesktop from "./JoinPageDesktop";
 import JoinPageMobile from "./JoinPageMobile";
+import "./style.less";
 
 export const JoinPage = observer(function JoinPage() {
     const { i18n } = useTranslation();

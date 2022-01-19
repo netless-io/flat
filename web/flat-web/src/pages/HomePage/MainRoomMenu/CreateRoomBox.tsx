@@ -1,14 +1,13 @@
-import createSVG from "../../../assets/image/creat.svg";
-import "./CreateRoomBox.less";
-
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { Button, Checkbox, Dropdown, Form, Input, Menu, Modal } from "antd";
+import { ClassPicker, Region, RegionSVG, regions } from "flat-components";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form, Dropdown, Menu } from "antd";
+import { useTranslation } from "react-i18next";
 import { RoomType } from "../../../api-middleware/flatServer/constants";
+import createSVG from "../../../assets/image/creat.svg";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { ClassPicker, Region, regions, RegionSVG } from "flat-components";
-import { useTranslation } from "react-i18next";
+import "./CreateRoomBox.less";
 
 interface CreateRoomFormValues {
     roomTitle: string;

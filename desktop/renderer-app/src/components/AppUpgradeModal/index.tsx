@@ -1,10 +1,10 @@
-import "./index.less";
-import { Button, Modal } from "antd";
-import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { ipcAsyncByApp, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
-import { useTranslation } from "react-i18next";
+import { Button, Modal } from "antd";
 import { update } from "flat-types";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
+import { ipcAsyncByApp, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
+import "./index.less";
 
 export interface AppUpgradeModalProps {
     updateInfo:

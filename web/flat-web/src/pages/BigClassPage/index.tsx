@@ -1,24 +1,23 @@
-import "./BigClassPage.less";
-
+import React, { useEffect, useRef, useState } from "react";
 import { message } from "antd";
 import classNames from "classnames";
 import {
     CloudRecordBtn,
-    Timer,
     LoadingPage,
     NetworkStatus,
     RoomInfo,
+    Timer,
     TopBar,
     TopBarDivider,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { RoomPhase } from "white-web-sdk";
-import { useTranslation } from "react-i18next";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
 import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RtcChannelType } from "../../api-middleware/rtc/room";
+import { AppStoreButton } from "../../components/AppStoreButton";
 import { ChatPanel } from "../../components/ChatPanel";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
@@ -29,16 +28,16 @@ import {
 } from "../../components/ExitRoomConfirm";
 import InviteButton from "../../components/InviteButton";
 import { RealtimePanel } from "../../components/RealtimePanel";
+import { ShareScreen } from "../../components/ShareScreen";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { Whiteboard } from "../../components/Whiteboard";
-import { RecordingConfig, useClassRoomStore, User } from "../../stores/class-room-store";
+import { RecordingConfig, User, useClassRoomStore } from "../../stores/class-room-store";
+import { generateAvatar } from "../../utils/generate-avatar";
 import { useAutoRun, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { runtime } from "../../utils/runtime";
 import { BigClassAvatar } from "./BigClassAvatar";
-import { ShareScreen } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
-import { AppStoreButton } from "../../components/AppStoreButton";
+import "./BigClassPage.less";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,

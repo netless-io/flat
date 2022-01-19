@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Story, Meta, ArgTypes } from "@storybook/react";
+import { ArgTypes, Meta, Story } from "@storybook/react";
+import { Modal } from "antd";
 import Chance from "chance";
 import faker from "faker";
-import { action, AnnotationsMap, makeObservable } from "mobx";
-import { Modal } from "antd";
-import { CloudStorageContainer, CloudStorageStore } from "./index";
+import { AnnotationsMap, action, makeObservable } from "mobx";
 import { CloudStorageUploadTask } from "../../components/CloudStorage/types";
+import { CloudStorageContainer, CloudStorageStore } from "./index";
 
 const chance = new Chance();
 

@@ -1,20 +1,20 @@
 /* eslint react/display-name: off */
 // import deviceSVG from "./icons/device.svg";
 // import deviceActiveSVG from "./icons/device-active.svg";
-import downloadSVG from "./icons/download.svg";
-import settingSVG from "./icons/setting.svg";
-import gitHubSVG from "./icons/github.svg";
-import feedbackSVG from "./icons/feedback.svg";
-import logoutSVG from "./icons/logout.svg";
 
 import React, { useContext } from "react";
-import { useHistory, useLocation } from "react-router-dom";
 import { MainPageLayoutHorizontal, MainPageLayoutItem, MainPageLayoutProps } from "flat-components";
 import { useTranslation } from "react-i18next";
-import { routeConfig, RouteNameType } from "../../route-config";
-import { GlobalStoreContext } from "../StoreProvider";
-import { generateAvatar } from "../../utils/generate-avatar";
+import { useHistory, useLocation } from "react-router-dom";
 import { FLAT_DOWNLOAD_URL } from "../../constants/process";
+import { RouteNameType, routeConfig } from "../../route-config";
+import { generateAvatar } from "../../utils/generate-avatar";
+import { GlobalStoreContext } from "../StoreProvider";
+import downloadSVG from "./icons/download.svg";
+import feedbackSVG from "./icons/feedback.svg";
+import gitHubSVG from "./icons/github.svg";
+import logoutSVG from "./icons/logout.svg";
+import settingSVG from "./icons/setting.svg";
 
 export interface MainPageLayoutHorizontalContainerProps {
     subMenu?: MainPageLayoutItem[];

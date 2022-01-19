@@ -1,11 +1,10 @@
-import coverSVG from "./icons/cover.svg";
-import bgTopLeftSVG from "./icons/bg-top-left.svg";
-import bgBottomRightSVG from "./icons/bg-bottom-right.svg";
-import bgBottomLeftSVG from "./icons/bg-bottom-left.svg";
-import "./index.less";
-
 import React from "react";
+import bgBottomLeftSVG from "./icons/bg-bottom-left.svg";
+import bgBottomRightSVG from "./icons/bg-bottom-right.svg";
+import bgTopLeftSVG from "./icons/bg-top-left.svg";
+import coverSVG from "./icons/cover.svg";
 import { LoginContent, LoginContentProps } from "./LoginContent";
+import "./index.less";
 
 export type { LoginChannelType } from "./LoginChannel";
 

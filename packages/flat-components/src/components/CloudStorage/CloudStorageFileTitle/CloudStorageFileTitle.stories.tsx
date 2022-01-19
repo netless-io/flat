@@ -1,7 +1,6 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react";
+import { Meta, Story } from "@storybook/react";
 import faker from "faker";
-
 import { CloudStorageFileTitle, CloudStorageFileTitleProps } from "./index";
 
 const storyMeta: Meta = {

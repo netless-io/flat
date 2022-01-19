@@ -1,4 +1,4 @@
-import type {
+import AgoraRTC, {
     IAgoraRTCClient,
     IAgoraRTCRemoteUser,
     ICameraVideoTrack,
@@ -6,15 +6,12 @@ import type {
     ILocalVideoTrack,
     IMicrophoneAudioTrack,
 } from "agora-rtc-sdk-ng";
-import type { RtcAvatar } from "./avatar";
-import type { Disposer } from "./hot-plug";
-
-import AgoraRTC from "agora-rtc-sdk-ng";
 import { AGORA } from "../../constants/process";
+import { configStore } from "../../stores/config-store";
 import { globalStore } from "../../stores/GlobalStore";
 import { generateRTCToken } from "../flatServer/agora";
-import { setCameraTrack, setMicrophoneTrack, hotPlug } from "./hot-plug";
-import { configStore } from "../../stores/config-store";
+import { RtcAvatar } from "./avatar";
+import { Disposer, hotPlug, setCameraTrack, setMicrophoneTrack } from "./hot-plug";
 
 AgoraRTC.enableLogUpload();
 

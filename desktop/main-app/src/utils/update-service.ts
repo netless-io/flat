@@ -1,8 +1,8 @@
-import { autoUpdater, UpdateCheckResult } from "electron-updater";
-import runtime from "./runtime";
+import { UpdateCheckResult, autoUpdater } from "electron-updater";
 import { ProgressInfo } from "electron-updater/out/differentialDownloader/ProgressDifferentialDownloadCallbackTransform";
-import { ipcEmitByMain } from "./ipc-emit";
 import { update } from "flat-types";
+import { ipcEmitByMain } from "./ipc-emit";
+import runtime from "./runtime";
 
 class UpdateService {
     private cancellationToken: UpdateCheckResult["cancellationToken"];

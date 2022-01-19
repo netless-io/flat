@@ -1,20 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RouteComponentProps, useParams, useHistory } from "react-router-dom";
-import { ErrorPage, LoadingPage } from "flat-components";
 import PlayerController from "@netless/player-controller";
-import { RealtimePanel } from "../../components/RealtimePanel";
-import { ChatPanelReplay } from "../../components/ChatPanelReplay";
+import { ErrorPage, LoadingPage } from "flat-components";
+import { observer } from "mobx-react-lite";
+import { RouteComponentProps, useHistory, useParams } from "react-router-dom";
 import { OrdinaryRoomInfo } from "../../api-middleware/flatServer";
 import { RoomType } from "../../api-middleware/flatServer/constants";
-import { observer } from "mobx-react-lite";
+import videoPlaySVG from "../../assets/image/video-play.svg";
+import { ChatPanelReplay } from "../../components/ChatPanelReplay";
+import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
+import { RealtimePanel } from "../../components/RealtimePanel";
+import { errorTips } from "../../components/Tips/ErrorTips";
 import { useClassRoomReplayStore } from "../../stores/class-room-replay-store";
 import { RouteNameType, RouteParams } from "../../utils/routes";
-
-import videoPlaySVG from "../../assets/image/video-play.svg";
 import "video.js/dist/video-js.min.css";
+// eslint-disable-next-line import/order
 import "./ReplayPage.less";
-import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
-import { errorTips } from "../../components/Tips/ErrorTips";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;

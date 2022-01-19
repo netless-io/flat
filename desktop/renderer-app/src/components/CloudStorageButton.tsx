@@ -1,14 +1,13 @@
 // TODO: remove this component when multi sub window is Done
-import "./CloudStorageButton.less";
-
-import { Modal } from "antd";
-import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
+import { Modal } from "antd";
 import { TopBarRightBtn } from "flat-components";
-import { ClassRoomStore } from "../stores/class-room-store";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import cloudStorageSVG from "../assets/image/cloud-storage.svg";
+import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
+import { ClassRoomStore } from "../stores/class-room-store";
+import "./CloudStorageButton.less";
 
 interface CloudStorageButtonProps {
     classroom: ClassRoomStore;

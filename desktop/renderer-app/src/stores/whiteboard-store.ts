@@ -1,13 +1,11 @@
-import "video.js/dist/video-js.css";
-
-import type { Attributes as SlideAttributes } from "@netless/app-slide";
+import { Attributes as SlideAttributes } from "@netless/app-slide";
 import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manager";
 import { message } from "antd";
 import { i18n } from "i18next";
-import { v4 as v4uuid } from "uuid";
 import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { isMobile, isWindows } from "react-device-detect";
+import { v4 as v4uuid } from "uuid";
 import {
     DefaultHotKeys,
     DeviceType,
@@ -19,15 +17,16 @@ import {
     WhiteWebSdk,
 } from "white-web-sdk";
 import { RoomType } from "../../../../packages/flat-components/src/types/room";
+import { queryConvertingTaskStatus } from "../api-middleware/courseware-converting";
+import { convertFinish } from "../api-middleware/flatServer/storage";
+import { RequestErrorCode } from "../constants/error-code";
 import { CLOUD_STORAGE_DOMAIN, NETLESS, NODE_ENV } from "../constants/process";
 import { CloudStorageFile, CloudStorageStore } from "../pages/CloudStoragePage/store";
 import { getCoursewarePreloader } from "../utils/courseware-preloader";
-import { globalStore } from "./global-store";
-import { getFileExt, isPPTX } from "../utils/file";
-import { queryConvertingTaskStatus } from "../api-middleware/courseware-converting";
-import { convertFinish } from "../api-middleware/flatServer/storage";
 import { ServerRequestError } from "../utils/error/server-request-error";
-import { RequestErrorCode } from "../constants/error-code";
+import { getFileExt, isPPTX } from "../utils/file";
+import { globalStore } from "./global-store";
+import "video.js/dist/video-js.css";
 
 export class WhiteboardStore {
     public room: Room | null = null;

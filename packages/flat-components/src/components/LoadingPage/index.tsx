@@ -1,10 +1,9 @@
-import "./style.less";
-import loadingGIF from "./icons/loading.gif";
-
 import React, { FC, useCallback, useEffect, useState } from "react";
-import classNames from "classnames";
 import { Button } from "antd";
+import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import loadingGIF from "./icons/loading.gif";
+import "./style.less";
 
 export interface LoadingPageProps {
     text?: string;

@@ -1,5 +1,5 @@
-import { Subject } from "rxjs";
 import { IpcMainEvent } from "electron";
+import { Subject } from "rxjs";
 
 export class RxSubject {
     public constructor(

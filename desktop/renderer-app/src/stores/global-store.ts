@@ -1,6 +1,6 @@
 import { Region } from "flat-components";
-import { autoPersistStore } from "./utils";
 import { LoginProcessResult } from "../api-middleware/flatServer";
+import { autoPersistStore } from "./utils";
 
 // clear storage if not match
 const LS_VERSION = 1;

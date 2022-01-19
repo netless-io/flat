@@ -1,8 +1,7 @@
-import "./style.less";
-
 import React from "react";
-import { VideoAvatar, VideoAvatarProps } from "../VideoAvatar";
 import classNames from "classnames";
+import { VideoAvatar, VideoAvatarProps } from "../VideoAvatar";
+import "./style.less";
 
 export type OneToOneVideoAvatarProps = VideoAvatarProps;
 

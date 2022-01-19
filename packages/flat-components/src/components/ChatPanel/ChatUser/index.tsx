@@ -1,9 +1,8 @@
-import "./style.less";
-
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { User } from "../../../types/user";
 import { useTranslation } from "react-i18next";
+import { User } from "../../../types/user";
+import "./style.less";
 
 export interface ChatUserProps {
     /** room owner uuid */

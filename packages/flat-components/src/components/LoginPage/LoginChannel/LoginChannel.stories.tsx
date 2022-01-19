@@ -1,5 +1,5 @@
-import { Meta, Story } from "@storybook/react";
 import React from "react";
+import { Meta, Story } from "@storybook/react";
 import { LoginChannel, LoginChannelProps } from "../LoginChannel";
 
 const storyMeta: Meta = {

@@ -1,5 +1,5 @@
-import { Meta, Story } from "@storybook/react";
 import React, { useState } from "react";
+import { Meta, Story } from "@storybook/react";
 import { ClassPicker, ClassPickerItemType, ClassPickerProps } from ".";
 
 const storyMeta: Meta = {

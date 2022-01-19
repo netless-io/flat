@@ -1,9 +1,9 @@
-import { Select } from "antd";
-import { addDays, format, startOfWeek } from "date-fns";
 import React, { FC } from "react";
+import { Select } from "antd";
+import { SelectProps } from "antd/lib/select";
+import { addDays, format, startOfWeek } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { Week } from "../api-middleware/flatServer/constants";
-import { SelectProps } from "antd/lib/select";
 
 export type WeekRateSelectorProps = SelectProps<Week[]>;
 

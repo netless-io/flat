@@ -1,9 +1,9 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
-import { PeriodicRoomPanel, PeriodicRoomPanelProps } from ".";
-import { RoomStatus, RoomType, Week } from "../../types/room";
-import faker from "faker";
 import Chance from "chance";
+import faker from "faker";
+import { RoomStatus, RoomType, Week } from "../../types/room";
+import { PeriodicRoomPanel, PeriodicRoomPanelProps } from ".";
 
 const chance = new Chance();
 

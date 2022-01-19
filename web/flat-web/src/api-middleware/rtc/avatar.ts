@@ -1,4 +1,4 @@
-import type {
+import {
     IAgoraRTCClient,
     IAgoraRTCRemoteUser,
     ICameraVideoTrack,
@@ -8,8 +8,8 @@ import type {
     ITrack,
 } from "agora-rtc-sdk-ng";
 import { EventEmitter } from "eventemitter3";
-import type { User } from "../../stores/user-store";
-import type { RtcRoom } from "./room";
+import { User } from "../../stores/user-store";
+import { RtcRoom } from "./room";
 
 export interface RtcAvatarParams {
     rtc: RtcRoom;

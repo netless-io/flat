@@ -1,12 +1,12 @@
+import React from "react";
 import { Form } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
 import { addMinutes, isAfter, isBefore, setHours } from "date-fns";
-import React from "react";
 import { TFunction } from "react-i18next";
-import type { EditRoomFormValues } from ".";
 import { compareDay, compareHour, excludeRange } from "../../../utils/room";
 import { FullTimePicker } from "../FullTimePicker";
 import { MIN_CLASS_DURATION } from "./constants";
+import { EditRoomFormValues } from ".";
 
 export function renderEndTimePicker(
     t: TFunction<string>,

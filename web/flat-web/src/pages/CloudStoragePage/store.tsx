@@ -1,8 +1,9 @@
+import React, { ReactNode } from "react";
 import { Modal } from "antd";
 import {
     CloudStorageConvertStatusType,
-    CloudStorageFile as CloudStorageFileUI,
     CloudStorageFileName,
+    CloudStorageFile as CloudStorageFileUI,
     CloudStorageStore as CloudStorageStoreBase,
     CloudStorageUploadStatusType,
     CloudStorageUploadTask,
@@ -11,28 +12,27 @@ import {
 } from "flat-components";
 import { i18n } from "i18next";
 import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
-import React, { ReactNode } from "react";
-import { queryH5ConvertingStatus } from "../../api-middleware/h5-converting";
-import { getFileExt, isPPTX } from "../../utils/file";
 import {
     ConvertingTaskStatus,
     queryConvertingTaskStatus,
 } from "../../api-middleware/courseware-converting";
 import { FileConvertStep } from "../../api-middleware/flatServer/constants";
 import {
-    addExternalFile,
     CloudFile,
+    addExternalFile,
     convertFinish,
     convertStart,
     listFiles,
-    removeFiles,
     removeExternalFiles,
-    renameFile,
+    removeFiles,
     renameExternalFile,
+    renameFile,
 } from "../../api-middleware/flatServer/storage";
+import { queryH5ConvertingStatus } from "../../api-middleware/h5-converting";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
 import { coursewarePreloader } from "../../utils/courseware-preloader";
+import { getFileExt, isPPTX } from "../../utils/file";
 import { getUploadTaskManager } from "../../utils/upload-task-manager";
 import { UploadStatusType, UploadTask } from "../../utils/upload-task-manager/upload-task";
 import { ConvertStatusManager } from "./ConvertStatusManager";

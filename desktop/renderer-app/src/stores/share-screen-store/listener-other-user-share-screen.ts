@@ -1,4 +1,4 @@
-import type AgoraSDK from "agora-electron-sdk";
+import AgoraSDK from "agora-electron-sdk";
 import { globalStore } from "../global-store";
 
 export class ListenerOtherUserShareScreen {

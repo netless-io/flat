@@ -1,13 +1,11 @@
-import "./AvatarCanvas.less";
-
 import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
-
 import { RtcAvatar, RtcEvents } from "../api-middleware/rtc/avatar";
 import { RtcRoom } from "../api-middleware/rtc/room";
 import { User } from "../stores/class-room-store";
+import "./AvatarCanvas.less";
 
 export interface AvatarCanvasProps {
     isCreator: boolean;

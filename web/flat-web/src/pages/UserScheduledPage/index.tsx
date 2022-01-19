@@ -1,18 +1,18 @@
 import React, { useContext, useState } from "react";
+import { addMinutes, addWeeks, getDay, isBefore, roundToNearestMinutes } from "date-fns";
+import { EditRoomFormValues } from "flat-components";
 import { observer } from "mobx-react-lite";
-import { isBefore, addMinutes, roundToNearestMinutes, getDay, addWeeks } from "date-fns";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import { RoomType } from "../../api-middleware/flatServer/constants";
+import EditRoomPage from "../../components/EditRoomPage";
 import {
     ConfigStoreContext,
     GlobalStoreContext,
     RoomStoreContext,
 } from "../../components/StoreProvider";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
-import EditRoomPage from "../../components/EditRoomPage";
-import { useHistory } from "react-router-dom";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { EditRoomFormValues } from "flat-components";
-import { useTranslation } from "react-i18next";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 const getInitialBeginTime = (): Date => {
     const now = new Date();

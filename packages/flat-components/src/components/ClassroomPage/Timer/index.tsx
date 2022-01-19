@@ -1,10 +1,9 @@
-import "./style.less";
-
-import React, { useState, useEffect, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { useIsUnMounted } from "../../../utils/hooks";
-import { RoomStatus } from "../../../types/room";
+import React, { useEffect, useMemo, useState } from "react";
 import { intervalToDuration } from "date-fns/fp";
+import { useTranslation } from "react-i18next";
+import { RoomStatus } from "../../../types/room";
+import { useIsUnMounted } from "../../../utils/hooks";
+import "./style.less";
 
 export type TimerProps = {
     roomStatus: RoomStatus;

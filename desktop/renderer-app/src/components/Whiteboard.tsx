@@ -1,20 +1,20 @@
-import "@netless/window-manager/dist/style.css";
-import "./Whiteboard.less";
-
+import React, { useCallback, useEffect, useState } from "react";
 import RedoUndo from "@netless/redo-undo";
 import ToolBox from "@netless/tool-box";
 import { WindowManager } from "@netless/window-manager";
+import { message } from "antd";
 import classNames from "classnames";
 import { RaiseHand, ScenesController } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useEffect, useState } from "react";
-import { message } from "antd";
 import { useTranslation } from "react-i18next";
 import { RoomPhase } from "white-web-sdk";
+import { ClassRoomStore } from "../stores/class-room-store";
 import { WhiteboardStore } from "../stores/whiteboard-store";
 import { isSupportedFileExt } from "../utils/drag-and-drop";
 import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image";
-import { ClassRoomStore } from "../stores/class-room-store";
+import "@netless/window-manager/dist/style.css";
+// eslint-disable-next-line import/order
+import "./Whiteboard.less";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;

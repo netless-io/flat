@@ -1,24 +1,23 @@
-import "video.js/dist/video-js.css";
-
+import { EventEmitter } from "events";
 import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netless/combine-player";
 import {
+    PluginContext as VideoJsPluginContext,
     PluginId as VideoJsPluginId,
     videoJsPlugin,
-    PluginContext as VideoJsPluginContext,
 } from "@netless/video-js-plugin";
-import { EventEmitter } from "events";
+import { WindowManager } from "@netless/window-manager";
+import { Region } from "flat-components";
 import polly from "polly-js";
 import {
-    createPlugins,
     PlayableCheckingParams,
     Player,
     PlayerPhase,
     ReplayRoomParams,
     WhiteWebSdk,
+    createPlugins,
 } from "white-web-sdk";
-import { Region } from "flat-components";
 import { NETLESS, NODE_ENV } from "../constants/process";
-import { WindowManager } from "@netless/window-manager";
+import "video.js/dist/video-js.css";
 
 export enum SmartPlayerEventType {
     Ready = "Ready",

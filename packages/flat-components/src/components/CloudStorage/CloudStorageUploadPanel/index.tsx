@@ -1,12 +1,11 @@
-import "./style.less";
-import arrowSVG from "./icons/panel-arrow.svg";
-import closeSVG from "./icons/panel-close.svg";
-
 import React, { FC } from "react";
 import { Button } from "antd";
 import classNames from "classnames";
 import { useResizeDetector } from "react-resize-detector";
 import { CloudStorageUploadTitle } from "../CloudStorageUploadTitle";
+import arrowSVG from "./icons/panel-arrow.svg";
+import closeSVG from "./icons/panel-close.svg";
+import "./style.less";
 
 export interface CloudStorageUploadPanelProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {

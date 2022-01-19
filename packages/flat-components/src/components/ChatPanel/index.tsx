@@ -1,12 +1,11 @@
-import "./style.less";
-
 import React, { useState } from "react";
 import { Tabs } from "antd";
 import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import { ChatMessages, ChatMessagesProps } from "./ChatMessages";
 import { ChatTabTitle, ChatTabTitleProps } from "./ChatTabTitle";
 import { ChatUsers, ChatUsersProps } from "./ChatUsers";
-import { useTranslation } from "react-i18next";
+import "./style.less";
 
 export type ChatPanelProps = ChatTabTitleProps &
     Omit<ChatMessagesProps, "visible"> &

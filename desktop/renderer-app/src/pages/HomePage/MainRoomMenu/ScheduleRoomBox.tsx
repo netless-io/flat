@@ -1,9 +1,8 @@
-import bookSVG from "../../../assets/image/book.svg";
-
 import React from "react";
 import { Button } from "antd";
-import { RouteNameType, usePushHistory } from "../../../utils/routes";
 import { useTranslation } from "react-i18next";
+import bookSVG from "../../../assets/image/book.svg";
+import { RouteNameType, usePushHistory } from "../../../utils/routes";
 
 export const ScheduleRoomBox = React.memo<{}>(function ScheduleRoomBox() {
     const { t } = useTranslation();

@@ -1,8 +1,8 @@
-import "./style.less";
 import React from "react";
 import classNames from "classnames";
-import { MainPageLayoutItem } from "../types";
 import { MainPageNavAvatar, MainPageNavAvatarProps } from "../MainPageNavAvatar";
+import { MainPageLayoutItem } from "../types";
+import "./style.less";
 
 export interface MainPageNavProps extends MainPageNavAvatarProps {
     /** when an item is clicked */
@@ -16,11 +16,11 @@ export interface MainPageNavProps extends MainPageNavAvatarProps {
     /** function to generate placeholder avatar */
     generateAvatar: (uid: string) => string;
 }
-
 export const MainPageNav: React.FC<MainPageNavProps> = ({
     avatarSrc,
     userName,
     onClick,
+
     activeKeys,
     sideMenu,
     sideMenuFooter,

@@ -1,8 +1,8 @@
+import React from "react";
 import { Meta, Story } from "@storybook/react";
 import faker from "faker";
-import React from "react";
-import { EditRoomBody, EditRoomBodyProps, Region } from ".";
 import { RoomType } from "../../../types/room";
+import { EditRoomBody, EditRoomBodyProps, Region } from ".";
 
 const storyMeta: Meta = {
     title: "EditRoomPage/EditRoomBody",

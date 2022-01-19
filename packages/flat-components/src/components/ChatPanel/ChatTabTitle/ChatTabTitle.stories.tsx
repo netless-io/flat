@@ -1,6 +1,6 @@
+import React from "react";
 import { Meta, Story } from "@storybook/react";
 import faker from "faker";
-import React from "react";
 import { ChatTabTitle, ChatTabTitleProps } from ".";
 
 const storyMeta: Meta = {

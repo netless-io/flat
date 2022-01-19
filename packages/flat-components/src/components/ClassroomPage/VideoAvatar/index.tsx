@@ -1,15 +1,14 @@
-import "./style.less";
-import cameraSVG from "./icons/camera.svg";
-import cameraDisabledSVG from "./icons/camera-disabled.svg";
-import microphoneSVG from "./icons/microphone.svg";
-import microphoneDisabledSVG from "./icons/microphone-disabled.svg";
-import videoExpandSVG from "./icons/video-expand.svg";
-import placeholderSVG from "./icons/placeholder.svg";
-
 import React, { useState } from "react";
-import { observer } from "mobx-react-lite";
 import classNames from "classnames";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
+import cameraDisabledSVG from "./icons/camera-disabled.svg";
+import cameraSVG from "./icons/camera.svg";
+import microphoneDisabledSVG from "./icons/microphone-disabled.svg";
+import microphoneSVG from "./icons/microphone.svg";
+import placeholderSVG from "./icons/placeholder.svg";
+import videoExpandSVG from "./icons/video-expand.svg";
+import "./style.less";
 
 export interface AvatarUser {
     name: string;

@@ -1,18 +1,17 @@
-import infoSVG from "../../../assets/image/info.svg";
-import successSVG from "../../../assets/image/success.svg";
-import "./index.less";
-
 import React, { useEffect, useState } from "react";
 import { Button, Modal } from "antd";
 import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
+import { useHistory, useLocation } from "react-router-dom";
+import infoSVG from "../../../assets/image/info.svg";
+import successSVG from "../../../assets/image/success.svg";
 import { DeviceSelect } from "../../../components/DeviceSelect";
+import { routeConfig } from "../../../route-config";
 import { Device } from "../../../types/device";
 import { useRTCEngine } from "../../../utils/hooks/use-rtc-engine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
-import { useHistory, useLocation } from "react-router-dom";
 import { DeviceCheckResults, DeviceCheckState } from "../utils";
-import { routeConfig } from "../../../route-config";
-import { useTranslation } from "react-i18next";
+import "./index.less";
 
 interface SpeakerVolumeProps {
     percent: number;

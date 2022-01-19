@@ -1,5 +1,5 @@
-import { AbstractWindow, CustomWindow } from "../abstract";
 import { constants } from "flat-types";
+import { AbstractWindow, CustomWindow } from "../abstract";
 
 export class WindowPreviewFile extends AbstractWindow<true> {
     public constructor() {

@@ -1,11 +1,11 @@
 import React from "react";
+import { ErrorPage, Region } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { DynamicPreview } from "./DynamicPreview";
 import { MediaPreview } from "./MediaPreview";
 import { StaticPreview } from "./StaticPreview";
-import { ErrorPage, Region } from "flat-components";
 import { getFileSuffix } from "./utils";
 
 export interface ResourcePreviewPagePageProps {}

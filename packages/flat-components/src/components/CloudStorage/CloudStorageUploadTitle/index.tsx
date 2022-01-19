@@ -1,9 +1,8 @@
-import "./style.less";
-
+import React from "react";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { Progress } from "antd";
-import React from "react";
 import { useTranslation } from "react-i18next";
+import "./style.less";
 
 export interface CloudStorageUploadTitleProps {
     finishWithError?: boolean;

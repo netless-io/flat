@@ -1,25 +1,24 @@
-import "./index.less";
-
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { LoginChannelType, LoginPanel } from "flat-components";
 import { constants } from "flat-types";
 import { observer } from "mobx-react-lite";
-import { ipcAsyncByMainWindow, ipcSyncByApp } from "../../utils/ipc";
-import { LoginChannelType, LoginPanel } from "flat-components";
-import { LoginDisposer } from "./utils";
-import { githubLogin } from "./githubLogin";
-import { RouteNameType, usePushHistory } from "../../utils/routes";
-import { GlobalStoreContext } from "../../components/StoreProvider";
-import { AppUpgradeModal, AppUpgradeModalProps } from "../../components/AppUpgradeModal";
-import { runtime } from "../../utils/runtime";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
-import { WeChatLogin } from "./WeChatLogin";
 import { useTranslation } from "react-i18next";
+import { AppUpgradeModal, AppUpgradeModalProps } from "../../components/AppUpgradeModal";
+import { GlobalStoreContext } from "../../components/StoreProvider";
 import {
-    PRIVACY_URL_EN,
     PRIVACY_URL_CN,
-    SERVICE_URL_EN,
+    PRIVACY_URL_EN,
     SERVICE_URL_CN,
+    SERVICE_URL_EN,
 } from "../../constants/process";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { ipcAsyncByMainWindow, ipcSyncByApp } from "../../utils/ipc";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
+import { runtime } from "../../utils/runtime";
+import { githubLogin } from "./githubLogin";
+import { LoginDisposer } from "./utils";
+import { WeChatLogin } from "./WeChatLogin";
+import "./index.less";
 
 export const LoginPage = observer(function LoginPage() {
     const { i18n } = useTranslation();

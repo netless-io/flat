@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
 import { observer } from "mobx-react-lite";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
-import { LoadingOutlined } from "@ant-design/icons";
 
 export interface AppButtonProps {
     kind: string;

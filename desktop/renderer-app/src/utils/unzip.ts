@@ -1,5 +1,5 @@
-import extract from "extract-zip";
 import path from "path";
+import extract from "extract-zip";
 
 /**
  * unzip zip file

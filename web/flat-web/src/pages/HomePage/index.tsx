@@ -1,14 +1,13 @@
-import "./style.less";
-
 import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { MainRoomMenu } from "./MainRoomMenu";
-import { MainRoomListPanel } from "./MainRoomListPanel";
-import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
-import { RouteNameType, useReplaceHistory } from "../../utils/routes";
-import { GlobalStoreContext, PageStoreContext } from "../../components/StoreProvider";
 import { loginCheck } from "../../api-middleware/flatServer";
+import { GlobalStoreContext, PageStoreContext } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { RouteNameType, useReplaceHistory } from "../../utils/routes";
+import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
+import { MainRoomListPanel } from "./MainRoomListPanel";
+import { MainRoomMenu } from "./MainRoomMenu";
+import "./style.less";
 
 export const HomePage = observer(function HomePage() {
     const replaceHistory = useReplaceHistory();

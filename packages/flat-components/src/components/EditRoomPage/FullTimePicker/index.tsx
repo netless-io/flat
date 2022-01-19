@@ -1,12 +1,10 @@
 // https://ant.design/docs/react/replace-moment
-
-import "./style.less";
-
 import React, { FC, useContext } from "react";
 import { Col, Row } from "antd";
-import dateFnsGenerateConfig from "rc-picker/lib/generate/dateFns";
-import generatePicker, { PickerTimeProps, PickerProps } from "antd/es/date-picker/generatePicker";
+import generatePicker, { PickerProps, PickerTimeProps } from "antd/es/date-picker/generatePicker";
 import { ConfigContext } from "antd/lib/config-provider";
+import dateFnsGenerateConfig from "rc-picker/lib/generate/dateFns";
+import "./style.less";
 
 export type DatePickerProps = PickerProps<Date>;
 

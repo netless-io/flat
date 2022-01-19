@@ -1,25 +1,25 @@
 import { ComponentType } from "react";
-import SplashPage from "./pages/SplashPage";
-import LoginPage from "./pages/LoginPage";
-import BigClassPage from "./pages/BigClassPage";
-import SmallClassPage from "./pages/SmallClassPage";
-import OneToOnePage from "./pages/OneToOnePage";
-import ReplayPage from "./pages/ReplayPage";
-import RoomDetailPage from "./pages/RoomDetailPage";
-import HomePage from "./pages/HomePage";
-import UserScheduledPage from "./pages/UserScheduledPage";
-import { ModifyOrdinaryRoomPage } from "./pages/ModifyOrdinaryRoomPage";
-import { ModifyPeriodicRoomPage } from "./pages/ModifyPeriodicRoomPage";
 import { RoomType } from "./api-middleware/flatServer/constants";
+import BigClassPage from "./pages/BigClassPage";
 import { CloudStoragePage } from "./pages/CloudStoragePage";
 import { CameraCheckPage } from "./pages/DeviceCheckPages/CameraCheckPage";
 import { MicrophoneCheckPage } from "./pages/DeviceCheckPages/MicrophoneCheckPage";
 import { SpeakerCheckPage } from "./pages/DeviceCheckPages/SpeakerCheckPage";
 import { SystemCheckPage } from "./pages/DeviceCheckPages/SystemCheckPage";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import { ModifyOrdinaryRoomPage } from "./pages/ModifyOrdinaryRoomPage";
+import { ModifyPeriodicRoomPage } from "./pages/ModifyPeriodicRoomPage";
+import OneToOnePage from "./pages/OneToOnePage";
+import { PeriodicRoomDetailPage } from "./pages/PeriodicRoomDetailPage";
+import ReplayPage from "./pages/ReplayPage";
+import RoomDetailPage from "./pages/RoomDetailPage";
+import SmallClassPage from "./pages/SmallClassPage";
+import SplashPage from "./pages/SplashPage";
+import UserScheduledPage from "./pages/UserScheduledPage";
+import { AboutPage } from "./pages/UserSettingPage/AboutPage";
 import { GeneralSettingPage } from "./pages/UserSettingPage/GeneralSettingPage";
 import { HotKeySettingPage } from "./pages/UserSettingPage/HotKeySettingPage";
-import { AboutPage } from "./pages/UserSettingPage/AboutPage";
-import { PeriodicRoomDetailPage } from "./pages/PeriodicRoomDetailPage";
 
 export enum RouteNameType {
     SplashPage = "SplashPage",

@@ -1,15 +1,14 @@
-import "./style.less";
-
+import React, { useEffect, useState } from "react";
 import { CloudStorageContainer } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
-import { CloudStorageStore } from "./store";
 import { loginCheck } from "../../api-middleware/flatServer";
-import { ServerRequestError } from "../../utils/error/server-request-error";
+import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { RequestErrorCode } from "../../constants/error-code";
+import { ServerRequestError } from "../../utils/error/server-request-error";
 import { RouteNameType, useReplaceHistory } from "../../utils/routes";
+import { CloudStorageStore } from "./store";
+import "./style.less";
 
 export interface CloudStoragePageProps {}
 

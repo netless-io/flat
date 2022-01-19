@@ -1,5 +1,5 @@
 import fs from "fs";
-import type { Plugin } from "vite";
+import { Plugin } from "vite";
 
 export function version(pkgPath: string): Plugin {
     return {

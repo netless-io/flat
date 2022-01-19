@@ -1,15 +1,14 @@
+import React, { useMemo } from "react";
+import { formatDistanceStrict } from "date-fns";
+import { enUS, zhCN } from "date-fns/locale";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
+import { RoomInfo, RoomType } from "../../../types/room";
+import { formatInviteCode, formatTime } from "../../../utils/room";
+import { RoomStatusElement } from "../../RoomStatusElement";
 import homeIconGraySVG from "./icons/home-icon-gray.svg";
 import roomTypeSVG from "./icons/room-type.svg";
 import "./index.less";
-
-import React, { useMemo } from "react";
-import { formatInviteCode, formatTime } from "../../../utils/room";
-import { formatDistanceStrict } from "date-fns";
-import { zhCN, enUS } from "date-fns/locale";
-import { RoomInfo, RoomType } from "../../../types/room";
-import { RoomStatusElement } from "../../RoomStatusElement";
-import { useTranslation } from "react-i18next";
-import { observer } from "mobx-react-lite";
 
 export interface RoomDetailBodyProps {
     roomInfo: RoomInfo;

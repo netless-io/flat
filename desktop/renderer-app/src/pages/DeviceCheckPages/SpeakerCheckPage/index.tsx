@@ -1,23 +1,22 @@
+import React, { useEffect, useState } from "react";
+import path from "path";
+import { Button, Slider } from "antd";
+import { useTranslation } from "react-i18next";
+import { useHistory, useLocation } from "react-router-dom";
+import muteSVG from "../../../assets/image/mute.svg";
 import playSVG from "../../../assets/image/play.svg";
 import stopSVG from "../../../assets/image/stop.svg";
-import muteSVG from "../../../assets/image/mute.svg";
 import volumeSVG from "../../../assets/image/volume.svg";
-import "./index.less";
-
-import React, { useEffect, useState } from "react";
-import { Slider, Button } from "antd";
-import { useHistory, useLocation } from "react-router-dom";
-// let webpack recognize
-import "../../../assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
 import { DeviceSelect } from "../../../components/DeviceSelect";
+import { routeConfig } from "../../../route-config";
 import { Device } from "../../../types/device";
 import { useRTCEngine } from "../../../utils/hooks/use-rtc-engine";
-import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { runtime } from "../../../utils/runtime";
-import { routeConfig } from "../../../route-config";
+import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
+// let webpack recognize
 import { DeviceCheckResults } from "../utils";
-import { useTranslation } from "react-i18next";
-import path from "path";
+import "../../../assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
+import "./index.less";
 
 export const SpeakerCheckPage = (): React.ReactElement => {
     const { t } = useTranslation();

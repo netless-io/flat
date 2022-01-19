@@ -1,44 +1,42 @@
-import "./OneToOnePage.less";
-
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import { observer } from "mobx-react-lite";
 import { message } from "antd";
-import { RoomPhase } from "white-web-sdk";
 import {
+    CloudRecordBtn,
+    LoadingPage,
     NetworkStatus,
     RoomInfo,
+    Timer,
     TopBar,
     TopBarDivider,
-    LoadingPage,
-    Timer,
-    CloudRecordBtn,
 } from "flat-components";
-
-import InviteButton from "../../components/InviteButton";
-import { TopBarRightBtn } from "../../components/TopBarRightBtn";
-import { RealtimePanel } from "../../components/RealtimePanel";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
+import { RoomPhase } from "white-web-sdk";
+import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
+import { RtcChannelType } from "../../api-middleware/rtc/room";
+import { AppStoreButton } from "../../components/AppStoreButton";
 import { ChatPanel } from "../../components/ChatPanel";
-import { OneToOneAvatar } from "./OneToOneAvatar";
+import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
+import { CloudStorageButton } from "../../components/CloudStorageButton";
 import {
     ExitRoomConfirm,
     ExitRoomConfirmType,
     useExitRoomConfirmModal,
 } from "../../components/ExitRoomConfirm";
+import InviteButton from "../../components/InviteButton";
+import { RealtimePanel } from "../../components/RealtimePanel";
+import { ShareScreen } from "../../components/ShareScreen";
+import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { Whiteboard } from "../../components/Whiteboard";
-import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RecordingConfig, useClassRoomStore } from "../../stores/class-room-store";
-import { RtcChannelType } from "../../api-middleware/rtc/room";
+import { generateAvatar } from "../../utils/generate-avatar";
 import { useComputed } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
-import { CloudStorageButton } from "../../components/CloudStorageButton";
-import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
 import { runtime } from "../../utils/runtime";
-import { useTranslation } from "react-i18next";
-import { ShareScreen } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
-import { AppStoreButton } from "../../components/AppStoreButton";
+import { OneToOneAvatar } from "./OneToOneAvatar";
+import "./OneToOnePage.less";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,

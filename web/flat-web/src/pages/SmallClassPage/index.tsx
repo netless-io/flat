@@ -1,50 +1,47 @@
 import React, { useEffect, useRef, useState } from "react";
 import { message } from "antd";
-import { RoomPhase } from "white-web-sdk";
-import { observer } from "mobx-react-lite";
-import { useParams } from "react-router-dom";
 import {
+    CloudRecordBtn,
+    LoadingPage,
     NetworkStatus,
     RoomInfo,
+    Timer,
     TopBar,
     TopBarDivider,
-    LoadingPage,
-    Timer,
-    CloudRecordBtn,
     TopBarRoundBtn,
 } from "flat-components";
-
-import InviteButton from "../../components/InviteButton";
-import { TopBarRightBtn } from "../../components/TopBarRightBtn";
-import { RealtimePanel } from "../../components/RealtimePanel";
-import { ChatPanel } from "../../components/ChatPanel";
-import { SmallClassAvatar } from "./SmallClassAvatar";
-import { Whiteboard } from "../../components/Whiteboard";
-import ExitRoomConfirm, {
-    ExitRoomConfirmType,
-    useExitRoomConfirmModal,
-} from "../../components/ExitRoomConfirm";
-import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-
-import { ClassModeType } from "../../api-middleware/Rtm";
-import { RoomStatus } from "../../api-middleware/flatServer/constants";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
+import { RoomPhase } from "white-web-sdk";
 import {
     AgoraCloudRecordBackgroundConfigItem,
     AgoraCloudRecordLayoutConfigItem,
 } from "../../api-middleware/flatServer/agora";
-import { RecordingConfig, useClassRoomStore, User } from "../../stores/class-room-store";
-import { RouteNameType, RouteParams } from "../../utils/routes";
-
-import "./SmallClassPage.less";
-import { CloudStorageButton } from "../../components/CloudStorageButton";
-import { runtime } from "../../utils/runtime";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RtcChannelType } from "../../api-middleware/rtc/room";
-import { useTranslation } from "react-i18next";
-import { ShareScreen } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
-import { AppStoreButton } from "../../components/AppStoreButton";
+import { ClassModeType } from "../../api-middleware/Rtm";
 import classInteractionSVG from "../../assets/image/class-interaction.svg";
 import classLectureSVG from "../../assets/image/class-lecture.svg";
+import { AppStoreButton } from "../../components/AppStoreButton";
+import { ChatPanel } from "../../components/ChatPanel";
+import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
+import { CloudStorageButton } from "../../components/CloudStorageButton";
+import ExitRoomConfirm, {
+    ExitRoomConfirmType,
+    useExitRoomConfirmModal,
+} from "../../components/ExitRoomConfirm";
+import InviteButton from "../../components/InviteButton";
+import { RealtimePanel } from "../../components/RealtimePanel";
+import { ShareScreen } from "../../components/ShareScreen";
+import { TopBarRightBtn } from "../../components/TopBarRightBtn";
+import { Whiteboard } from "../../components/Whiteboard";
+import { RecordingConfig, User, useClassRoomStore } from "../../stores/class-room-store";
+import { generateAvatar } from "../../utils/generate-avatar";
+import { RouteNameType, RouteParams } from "../../utils/routes";
+import { runtime } from "../../utils/runtime";
+import { SmallClassAvatar } from "./SmallClassAvatar";
+import "./SmallClassPage.less";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;

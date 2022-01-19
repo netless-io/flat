@@ -1,9 +1,8 @@
-import backSVG from "./icons/back.svg";
-import "./index.less";
-
 import React from "react";
 import { Divider } from "antd";
 import { useTranslation } from "react-i18next";
+import backSVG from "./icons/back.svg";
+import "./index.less";
 
 export interface MainPageHeaderProps {
     onBackPreviousPage?: () => void;

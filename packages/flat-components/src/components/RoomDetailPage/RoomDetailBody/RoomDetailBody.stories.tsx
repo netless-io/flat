@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
-import { RoomDetailBody, RoomDetailBodyProps } from ".";
 import { RoomStatus, RoomType } from "../../../types/room";
+import { RoomDetailBody, RoomDetailBodyProps } from ".";
 
 const storyMeta: Meta = {
     title: "RoomDetailPage/RoomDetailBody",

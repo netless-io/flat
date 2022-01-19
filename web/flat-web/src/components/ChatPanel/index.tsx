@@ -1,6 +1,6 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
 import { ChatPanel as ChatPanelImpl, useComputed } from "flat-components";
+import { observer } from "mobx-react-lite";
 import { ClassRoomStore } from "../../stores/class-room-store";
 import { generateAvatar } from "../../utils/generate-avatar";
 

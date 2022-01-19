@@ -1,18 +1,18 @@
 /* eslint react/display-name: off */
-import systemSVG from "./icons/system.svg";
-import cameraSVG from "./icons/camera.svg";
-import speakerSVG from "./icons/speaker.svg";
-import microphoneSVG from "./icons/microphone.svg";
-import "./DeviceCheckLayoutContainer.less";
 
 import React from "react";
-import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
-import { useWindowSize } from "../../utils/hooks/use-window-size";
-import { routeConfig, RouteNameType } from "../../route-config";
-import { useHistory, useLocation } from "react-router-dom";
-import { DeviceCheckState } from "./utils";
 import { MainPageLayoutItem } from "flat-components";
 import { useTranslation } from "react-i18next";
+import { useHistory, useLocation } from "react-router-dom";
+import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
+import { RouteNameType, routeConfig } from "../../route-config";
+import { useWindowSize } from "../../utils/hooks/use-window-size";
+import cameraSVG from "./icons/camera.svg";
+import microphoneSVG from "./icons/microphone.svg";
+import speakerSVG from "./icons/speaker.svg";
+import systemSVG from "./icons/system.svg";
+import { DeviceCheckState } from "./utils";
+import "./DeviceCheckLayoutContainer.less";
 
 export const DeviceCheckLayoutContainer: React.FC = ({ children }): React.ReactElement => {
     useWindowSize("Main");

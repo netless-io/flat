@@ -1,12 +1,12 @@
-import { message } from "antd";
 import React, { useEffect, useState } from "react";
+import { message } from "antd";
+import { EditRoomFormInitialValues, EditRoomFormValues, LoadingPage } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { useHistory } from "react-router-dom";
-import { EditRoomFormInitialValues, EditRoomFormValues, LoadingPage } from "flat-components";
 import { periodicSubRoomInfo, updatePeriodicSubRoom } from "../../api-middleware/flatServer";
 import EditRoomPage from "../../components/EditRoomPage";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 /**
  * TODO: we forget set i18n in current file!!!

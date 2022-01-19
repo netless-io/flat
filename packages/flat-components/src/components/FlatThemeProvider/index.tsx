@@ -1,8 +1,8 @@
-import "../../theme/index.less";
 import React, { FC } from "react";
 import classNames from "classnames";
-import { useDarkMode, FlatPrefersColorScheme } from "./useDarkMode";
 import { useIsomorphicLayoutEffect } from "react-use";
+import { FlatPrefersColorScheme, useDarkMode } from "./useDarkMode";
+import "../../theme/index.less";
 
 export * from "./useDarkMode";
 

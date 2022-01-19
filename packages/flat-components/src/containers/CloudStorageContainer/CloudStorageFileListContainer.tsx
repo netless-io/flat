@@ -1,8 +1,8 @@
 import React from "react";
 import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
-import { CloudStorageStore } from "./store";
 import { CloudStorageFileList } from "../../components/CloudStorage";
+import { CloudStorageStore } from "./store";
 
 export interface CloudStorageFileListContainerProps {
     store: CloudStorageStore;

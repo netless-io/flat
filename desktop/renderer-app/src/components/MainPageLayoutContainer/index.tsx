@@ -1,24 +1,24 @@
 /* eslint react/display-name: off */
-import homeSVG from "./icons/home.svg";
-import homeActiveSVG from "./icons/home-active.svg";
-import diskSVG from "./icons/disk.svg";
-import diskActiveSVG from "./icons/disk-active.svg";
-import deviceSVG from "./icons/device.svg";
-import deviceActiveSVG from "./icons/device-active.svg";
-import settingSVG from "./icons/setting.svg";
-import gitHubSVG from "./icons/github.svg";
-import feedbackSVG from "./icons/feedback.svg";
-import logoutSVG from "./icons/logout.svg";
-import "./index.less";
 
 import React, { useContext } from "react";
 import { shell } from "electron";
-import { useHistory, useLocation } from "react-router-dom";
 import { MainPageLayout, MainPageLayoutItem, MainPageLayoutProps } from "flat-components";
 import { useTranslation } from "react-i18next";
-import { routeConfig, RouteNameType } from "../../route-config";
-import { GlobalStoreContext } from "../StoreProvider";
+import { useHistory, useLocation } from "react-router-dom";
+import { RouteNameType, routeConfig } from "../../route-config";
 import { generateAvatar } from "../../utils/generate-avatar";
+import { GlobalStoreContext } from "../StoreProvider";
+import deviceActiveSVG from "./icons/device-active.svg";
+import deviceSVG from "./icons/device.svg";
+import diskActiveSVG from "./icons/disk-active.svg";
+import diskSVG from "./icons/disk.svg";
+import feedbackSVG from "./icons/feedback.svg";
+import gitHubSVG from "./icons/github.svg";
+import homeActiveSVG from "./icons/home-active.svg";
+import homeSVG from "./icons/home.svg";
+import logoutSVG from "./icons/logout.svg";
+import settingSVG from "./icons/setting.svg";
+import "./index.less";
 
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];

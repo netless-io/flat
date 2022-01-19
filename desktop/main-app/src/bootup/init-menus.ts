@@ -1,4 +1,4 @@
-import { app, Menu, MenuItemConstructorOptions } from "electron";
+import { Menu, MenuItemConstructorOptions, app } from "electron";
 import runtime from "../utils/runtime";
 
 export default (): void => {

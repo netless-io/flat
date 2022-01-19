@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
-import { MainPageHeader, MainPageHeaderProps } from ".";
 import { BrowserRouter as Router } from "react-router-dom";
+import { MainPageHeader, MainPageHeaderProps } from ".";
 
 const storyMeta: Meta = {
     title: "MainPageLayout/MainPageHeader",

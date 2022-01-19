@@ -1,8 +1,7 @@
-import "./style.less";
-
-import { Button, Checkbox, Modal } from "antd";
 import React, { useState } from "react";
+import { Button, Checkbox, Modal } from "antd";
 import { useTranslation } from "react-i18next";
+import "./style.less";
 
 export interface RemoveRoomModalProps {
     cancelModalVisible: boolean;

@@ -1,8 +1,7 @@
-import "./index.less";
-
 import React from "react";
 import { RoomDetailBody, RoomDetailBodyProps } from "./RoomDetailBody";
 import { RoomDetailFooter, RoomDetailFooterProps } from "./RoomDetailFooter";
+import "./index.less";
 
 export type RoomDetailPanelProps = RoomDetailBodyProps & RoomDetailFooterProps;
 

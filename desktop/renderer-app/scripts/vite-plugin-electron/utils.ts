@@ -1,6 +1,6 @@
-import { build, OutputFile } from "esbuild";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { OutputFile, build } from "esbuild";
 
 // e.g:
 // flat/node_modules/electron/index.js?v=19cea64f => flat/node_modules/electron/index.js

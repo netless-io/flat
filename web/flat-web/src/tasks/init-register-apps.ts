@@ -1,5 +1,5 @@
-import { WindowManager } from "@netless/window-manager";
 import { addHooks as addHooksSlide } from "@netless/app-slide";
+import { WindowManager } from "@netless/window-manager";
 
 const registerApps = (): void => {
     void WindowManager.register({

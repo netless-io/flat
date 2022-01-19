@@ -1,6 +1,6 @@
 import { Display, screen } from "electron";
-import { windowManager } from "../index";
 import { constants } from "flat-types";
+import { windowManager } from "../index";
 
 export const getDisplayByMainWindow = (): Display => {
     const mainBounds = windowManager

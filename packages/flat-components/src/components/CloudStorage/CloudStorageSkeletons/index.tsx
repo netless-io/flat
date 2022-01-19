@@ -1,8 +1,7 @@
-import "./style.less";
-
 import React from "react";
 import { Skeleton } from "antd";
 import classNames from "classnames";
+import "./style.less";
 
 export interface CloudStorageSkeletonsProps {
     isCompactMode: boolean;

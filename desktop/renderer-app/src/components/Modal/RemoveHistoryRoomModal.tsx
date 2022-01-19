@@ -1,6 +1,6 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
 import { Button, Modal } from "antd";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 
 interface RemoveHistoryRoomModalProps {

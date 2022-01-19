@@ -1,12 +1,11 @@
-import "./index.less";
-
 import React, { useState } from "react";
 import { Button, message } from "antd";
 import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import { RoomInfo, RoomStatus, Week } from "../../../types/room";
 import { InviteModal } from "../../InviteModal";
 import { RemoveRoomModal } from "../../RemoveRoomModal";
-import { useTranslation } from "react-i18next";
+import "./index.less";
 
 export interface RoomDetailFooterProps {
     room: RoomInfo;

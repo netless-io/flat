@@ -1,8 +1,7 @@
-import { ipc } from "flat-types";
+import { constants, ipc } from "flat-types";
 import { windowManager } from "../window-manager";
-import runtime from "./runtime";
-import { constants } from "flat-types";
 import { CustomWindow, IsMultiInstance } from "../window-manager/abstract";
+import runtime from "./runtime";
 
 const sendIPC = (customWindow: CustomWindow | null, eventName: string, args: any): void => {
     if (customWindow) {

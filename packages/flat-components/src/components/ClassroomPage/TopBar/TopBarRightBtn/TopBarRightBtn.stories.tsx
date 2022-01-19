@@ -1,8 +1,8 @@
-import { Meta, Story } from "@storybook/react";
 import React from "react";
-import { TopBarRightBtn, TopBarRightBtnProps } from ".";
-import faker from "faker";
 import { UserAddOutlined } from "@ant-design/icons";
+import { Meta, Story } from "@storybook/react";
+import faker from "faker";
+import { TopBarRightBtn, TopBarRightBtnProps } from ".";
 
 const storyMeta: Meta = {
     title: "ClassroomPage/TopBarRightBtn",

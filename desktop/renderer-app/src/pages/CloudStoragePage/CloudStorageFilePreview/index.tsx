@@ -1,15 +1,14 @@
-import "./style.less";
-
+import React, { useRef } from "react";
 import { Region } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useRef } from "react";
+import ReactDOM from "react-dom";
+import { ipcAsyncByPreviewFileWindow } from "../../../utils/ipc";
+import { portalWindowManager } from "../../../utils/portal-window-manager";
 import { DynamicPreview } from "./DynamicPreview";
 import { MediaPreview } from "./MediaPreview";
 import { StaticPreview } from "./StaticPreview";
 import { getFileSuffix } from "./utils";
-import ReactDOM from "react-dom";
-import { portalWindowManager } from "../../../utils/portal-window-manager";
-import { ipcAsyncByPreviewFileWindow } from "../../../utils/ipc";
+import "./style.less";
 
 export type FileInfo = {
     fileURL: string;

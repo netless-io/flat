@@ -1,20 +1,19 @@
-import "./index.less";
-
 import React, { useContext, useEffect } from "react";
+import { message } from "antd";
 import { clipboard } from "electron";
 import { LoadingPage, MainPageHeader, RoomDetailPanel } from "flat-components";
 import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import { useHistory, useParams } from "react-router-dom";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { FLAT_WEB_BASE_URL } from "../../constants/process";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
-import { RoomStatus } from "../../api-middleware/flatServer/constants";
-import { message } from "antd";
-import { FLAT_WEB_BASE_URL } from "../../constants/process";
-import { useTranslation } from "react-i18next";
+import "./index.less";
 
 export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
     useWindowSize("Main");

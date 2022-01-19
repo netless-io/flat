@@ -1,10 +1,10 @@
 import { useContext } from "react";
+import { matchPath, useLocation } from "react-router-dom";
 import { GlobalStoreContext, URLProtocolStoreContext } from "../../components/StoreProvider";
 import { joinRoomHandler } from "../../pages/utils/join-room-handler";
-import { useAutoRun } from "../mobx";
-import { usePushHistory, RouteNameType, RouteParams } from "../routes";
-import { matchPath, useLocation } from "react-router-dom";
 import { ClassRouteName, routeConfig } from "../../route-config";
+import { useAutoRun } from "../mobx";
+import { RouteNameType, RouteParams, usePushHistory } from "../routes";
 
 /**
  * Listen to UrlProtocolStore toJoinRoomUUID value that to join room.

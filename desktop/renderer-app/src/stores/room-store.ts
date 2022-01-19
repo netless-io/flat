@@ -1,28 +1,28 @@
 /* eslint no-redeclare: off */
-import { makeAutoObservable, observable, runInAction } from "mobx";
 import { Region } from "flat-components";
+import { makeAutoObservable, observable, runInAction } from "mobx";
 import {
-    cancelRoom,
     CancelRoomPayload,
-    createOrdinaryRoom,
     CreateOrdinaryRoomPayload,
-    createPeriodicRoom,
     CreatePeriodicRoomPayload,
-    joinRoom,
     JoinRoomResult,
-    listRooms,
     ListRoomsPayload,
     ListRoomsType,
+    PeriodicRoomInfoResult,
+    PeriodicSubRoomInfoPayload,
+    cancelRoom,
+    createOrdinaryRoom,
+    createPeriodicRoom,
+    joinRoom,
+    listRooms,
     ordinaryRoomInfo,
     periodicRoomInfo,
-    PeriodicRoomInfoResult,
     periodicSubRoomInfo,
-    PeriodicSubRoomInfoPayload,
     recordInfo,
 } from "../api-middleware/flatServer";
 import { RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
-import { globalStore } from "./global-store";
 import { configStore } from "./config-store";
+import { globalStore } from "./global-store";
 
 // Sometime we may only have pieces of the room info
 /** Ordinary room + periodic sub-room */

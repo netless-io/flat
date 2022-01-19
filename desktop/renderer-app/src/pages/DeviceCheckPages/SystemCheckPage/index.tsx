@@ -1,13 +1,13 @@
-import "./index.less";
 import React, { useEffect, useState } from "react";
-import { Button } from "antd";
-import { useHistory, useLocation } from "react-router-dom";
 import os from "os";
+import { Button } from "antd";
+import { useTranslation } from "react-i18next";
+import { useHistory, useLocation } from "react-router-dom";
 import { routeConfig } from "../../../route-config";
 import { useRTCEngine } from "../../../utils/hooks/use-rtc-engine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { DeviceCheckResults, DeviceCheckState } from "../utils";
-import { useTranslation } from "react-i18next";
+import "./index.less";
 
 export const SystemCheckPage = (): React.ReactElement => {
     const { t } = useTranslation();

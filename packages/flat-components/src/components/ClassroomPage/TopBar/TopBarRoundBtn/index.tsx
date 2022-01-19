@@ -1,7 +1,6 @@
-import "./style.less";
-
 import React, { FC, HTMLAttributes, ReactElement } from "react";
 import classNames from "classnames";
+import "./style.less";
 
 export interface TopBarRoundBtnProps extends HTMLAttributes<HTMLButtonElement> {
     dark?: boolean;

@@ -1,21 +1,20 @@
-import "./style.less";
-import defaultSVG from "./icons/default.svg";
+import React, { useMemo } from "react";
+import classNames from "classnames";
+import { useTranslation } from "react-i18next";
+import { CloudStorageConvertStatusType, CloudStorageFileName } from "../types";
+import { CloudStorageFileTitleRename } from "./CloudStorageFileTitleRename";
 import audioSVG from "./icons/audio.svg";
+import convertErrorSVG from "./icons/convert-error.svg";
+import convertingSVG from "./icons/converting.svg";
+import defaultSVG from "./icons/default.svg";
+import iceSVG from "./icons/ice.svg";
 import imgSVG from "./icons/img.svg";
 import pdfSVG from "./icons/pdf.svg";
 import pptSVG from "./icons/ppt.svg";
+import vfSVG from "./icons/vf.svg";
 import videoSVG from "./icons/video.svg";
 import wordSVG from "./icons/word.svg";
-import convertingSVG from "./icons/converting.svg";
-import convertErrorSVG from "./icons/convert-error.svg";
-import vfSVG from "./icons/vf.svg";
-import iceSVG from "./icons/ice.svg";
-
-import React, { useMemo } from "react";
-import classNames from "classnames";
-import { CloudStorageConvertStatusType, CloudStorageFileName } from "../types";
-import { CloudStorageFileTitleRename } from "./CloudStorageFileTitleRename";
-import { useTranslation } from "react-i18next";
+import "./style.less";
 
 export interface CloudStorageFileTitleProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {

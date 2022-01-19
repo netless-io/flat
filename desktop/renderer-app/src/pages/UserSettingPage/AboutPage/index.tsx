@@ -1,15 +1,14 @@
-import logoSVG from "../icons/logo.svg";
-import updateSVG from "../icons/update.svg";
-import "./style.less";
-
 import React, { useState } from "react";
-import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { Button, message } from "antd";
-import { runtime } from "../../../utils/runtime";
-import { ipcSyncByApp } from "../../../utils/ipc";
+import { useTranslation } from "react-i18next";
 import { AppUpgradeModal, AppUpgradeModalProps } from "../../../components/AppUpgradeModal";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { useTranslation } from "react-i18next";
+import { ipcSyncByApp } from "../../../utils/ipc";
+import { runtime } from "../../../utils/runtime";
+import logoSVG from "../icons/logo.svg";
+import updateSVG from "../icons/update.svg";
+import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
+import "./style.less";
 
 export const AboutPage = (): React.ReactElement => {
     const { t } = useTranslation();

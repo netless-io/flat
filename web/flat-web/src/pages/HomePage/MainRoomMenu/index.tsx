@@ -1,15 +1,14 @@
-import "./MainRoomMenu.less";
-
 import React, { FC, useContext } from "react";
 import { Region } from "flat-components";
 import { RoomType } from "../../../api-middleware/flatServer/constants";
 import { GlobalStoreContext, RoomStoreContext } from "../../../components/StoreProvider";
+import { errorTips } from "../../../components/Tips/ErrorTips";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
+import { joinRoomHandler } from "../../utils/join-room-handler";
 import { CreateRoomBox } from "./CreateRoomBox";
 import { JoinRoomBox } from "./JoinRoomBox";
 import { ScheduleRoomBox } from "./ScheduleRoomBox";
-import { joinRoomHandler } from "../../utils/join-room-handler";
-import { errorTips } from "../../../components/Tips/ErrorTips";
+import "./MainRoomMenu.less";
 
 export const MainRoomMenu: FC = () => {
     const roomStore = useContext(RoomStoreContext);

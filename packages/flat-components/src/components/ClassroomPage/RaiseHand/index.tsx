@@ -1,9 +1,8 @@
-import raiseHandSVG from "./icons/raise-hand.svg";
-import raiseHandActiveSVG from "./icons/raise-hand-active.svg";
-import "./style.less";
-
 import React from "react";
 import { useTranslation } from "react-i18next";
+import raiseHandActiveSVG from "./icons/raise-hand-active.svg";
+import raiseHandSVG from "./icons/raise-hand.svg";
+import "./style.less";
 
 export interface RaiseHandProps {
     isRaiseHand?: boolean;

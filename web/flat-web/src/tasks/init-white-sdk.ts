@@ -1,4 +1,4 @@
-import { injectCustomStyle, CursorNames } from "white-web-sdk";
+import { CursorNames, injectCustomStyle } from "white-web-sdk";
 
 // https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
 // https://yoksel.github.io/url-encoder

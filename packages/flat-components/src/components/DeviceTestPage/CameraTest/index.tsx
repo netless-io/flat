@@ -1,11 +1,10 @@
-import "./style.less";
-import cameraDisabledSVG from "../icons/camera-disabled.svg";
-
 import React from "react";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 import { Device } from "../constants";
 import { DeviceTestSelect } from "../DeviceTestSelect";
-import { useTranslation } from "react-i18next";
+import cameraDisabledSVG from "../icons/camera-disabled.svg";
+import "./style.less";
 
 export interface CameraTestProps {
     cameraDevices?: Device[];

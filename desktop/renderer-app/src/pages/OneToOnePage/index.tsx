@@ -1,51 +1,49 @@
-import "./OneToOnePage.less";
-
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import { observer } from "mobx-react-lite";
 import { message } from "antd";
-import { RoomPhase } from "white-web-sdk";
 import {
+    CloudRecordBtn,
+    LoadingPage,
     NetworkStatus,
     RoomInfo,
+    Timer,
     TopBar,
     TopBarDivider,
-    LoadingPage,
-    CloudRecordBtn,
-    Timer,
+    TopBarRightBtn,
 } from "flat-components";
-
-import InviteButton from "../../components/InviteButton";
-import { TopBarRightBtn } from "flat-components";
-import { RealtimePanel } from "../../components/RealtimePanel";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
+import { RoomPhase } from "white-web-sdk";
+import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
+import { RtcChannelType } from "../../api-middleware/rtc";
+import exitSVG from "../../assets/image/exit.svg";
+import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
+import hideSideSVG from "../../assets/image/hide-side.svg";
+import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
+import shareScreenSVG from "../../assets/image/share-screen.svg";
+import { AppStoreButton } from "../../components/AppStoreButton";
 import { ChatPanel } from "../../components/ChatPanel";
-import { OneToOneAvatar } from "./OneToOneAvatar";
+import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
+import { CloudStorageButton } from "../../components/CloudStorageButton";
 import {
     ExitRoomConfirm,
     ExitRoomConfirmType,
     useExitRoomConfirmModal,
 } from "../../components/ExitRoomConfirm";
+import InviteButton from "../../components/InviteButton";
+import { RealtimePanel } from "../../components/RealtimePanel";
+import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
 import { Whiteboard } from "../../components/Whiteboard";
-import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RecordingConfig, useClassRoomStore } from "../../stores/class-room-store";
-import { RtcChannelType } from "../../api-middleware/rtc";
-import { useComputed } from "../../utils/mobx";
-import { RouteNameType, RouteParams } from "../../utils/routes";
+import { generateAvatar } from "../../utils/generate-avatar";
 import { usePowerSaveBlocker } from "../../utils/hooks/use-power-save-blocker";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
-import { CloudStorageButton } from "../../components/CloudStorageButton";
-import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
+import { useComputed } from "../../utils/mobx";
+import { RouteNameType, RouteParams } from "../../utils/routes";
 import { runtime } from "../../utils/runtime";
-import { useTranslation } from "react-i18next";
-import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
-import { AppStoreButton } from "../../components/AppStoreButton";
-import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
-import shareScreenSVG from "../../assets/image/share-screen.svg";
-import exitSVG from "../../assets/image/exit.svg";
-import hideSideSVG from "../../assets/image/hide-side.svg";
-import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
+import { OneToOneAvatar } from "./OneToOneAvatar";
+import "./OneToOnePage.less";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,

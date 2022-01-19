@@ -1,9 +1,8 @@
-import "./style.less";
-
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Device } from "../constants";
 import { DeviceTestSelect } from "../DeviceTestSelect";
-import { useTranslation } from "react-i18next";
+import "./style.less";
 
 export interface MicrophoneTestProps {
     microphoneDevices?: Device[];

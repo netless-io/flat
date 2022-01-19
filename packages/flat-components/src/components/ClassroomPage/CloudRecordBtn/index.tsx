@@ -1,9 +1,9 @@
-import { TopBarRightBtn } from "../";
-import { observer } from "mobx-react-lite";
 import React from "react";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
+import { TopBarRightBtn } from "../";
 import RecordIdleSVG from "./icons/record-idle.svg";
 import RecordStartedSVG from "./icons/record-started.svg";
-import { useTranslation } from "react-i18next";
 
 export type CloudRecordBtnProps = {
     isRecording: boolean;

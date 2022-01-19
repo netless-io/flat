@@ -1,12 +1,12 @@
-import "./style.less";
 import React, { useCallback, useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
-import { ScreenInfo, ShareSymbol } from "../../../../api-middleware/share-screen";
-import { getScreenInfo, uint8ArrayToImageURL } from "./Utils";
-import classNames from "classnames";
-import { ShareScreenStore } from "../../../../stores/share-screen-store";
 import { message } from "antd";
+import classNames from "classnames";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
+import { ScreenInfo, ShareSymbol } from "../../../../api-middleware/share-screen";
+import { ShareScreenStore } from "../../../../stores/share-screen-store";
+import { getScreenInfo, uint8ArrayToImageURL } from "./Utils";
+import "./style.less";
 
 interface ScreenListProps {
     screenInfo: ScreenInfo;

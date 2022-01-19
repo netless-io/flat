@@ -1,11 +1,10 @@
-import { windowManager } from "../window-manager";
-import { ipc } from "flat-types";
 import { app, ipcMain, powerSaveBlocker } from "electron";
+import { ipc, update } from "flat-types";
+import { gt } from "semver";
+import { windowManager } from "../window-manager";
+import { CustomWindow } from "../window-manager/abstract";
 import runtime from "./runtime";
 import { updateService } from "./update-service";
-import { update } from "flat-types";
-import { gt } from "semver";
-import { CustomWindow } from "../window-manager/abstract";
 
 const windowActionAsync = (customWindow: CustomWindow): ipc.WindowActionAsync => {
     const { window, options } = customWindow;

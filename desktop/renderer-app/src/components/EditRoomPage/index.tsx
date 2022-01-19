@@ -1,11 +1,10 @@
-import "./style.less";
-
 import React from "react";
-import { observer } from "mobx-react-lite";
 import { EditRoomBody, EditRoomBodyProps, MainPageHeader } from "flat-components";
-import { MainPageLayoutContainer } from "../MainPageLayoutContainer";
-import { useHistory } from "react-router";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router";
+import { MainPageLayoutContainer } from "../MainPageLayoutContainer";
+import "./style.less";
 
 export type EditRoomPageProps = EditRoomBodyProps;
 

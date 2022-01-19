@@ -1,15 +1,14 @@
-import React from "react";
-import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-import "./style.less";
-import { portalWindowManager } from "../../../utils/portal-window-manager";
-import { ipcAsyncByShareScreenTipWindow } from "../../../utils/ipc";
-import dragSVG from "../../../assets/image/drag.svg";
+import React, { useEffect, useState } from "react";
 import { Button } from "antd";
-import { ShareScreenStore } from "../../../stores/share-screen-store";
+import { observer } from "mobx-react-lite";
+import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
+import dragSVG from "../../../assets/image/drag.svg";
+import { ShareScreenStore } from "../../../stores/share-screen-store";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
+import { ipcAsyncByShareScreenTipWindow } from "../../../utils/ipc";
+import { portalWindowManager } from "../../../utils/portal-window-manager";
+import "./style.less";
 
 interface ShareScreenTipProps {
     shareScreenStore: ShareScreenStore;

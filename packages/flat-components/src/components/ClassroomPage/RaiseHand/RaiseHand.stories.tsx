@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
-import { RaiseHand, RaiseHandProps } from ".";
 import faker from "faker";
+import { RaiseHand, RaiseHandProps } from ".";
 
 const storyMeta: Meta = {
     title: "ClassroomPage/RaiseHand",

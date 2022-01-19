@@ -1,8 +1,8 @@
+import React from "react";
 import { Meta, Story } from "@storybook/react";
 import faker from "faker";
-import React from "react";
-import { ChatUser, ChatUserProps } from ".";
 import { User } from "../../../types/user";
+import { ChatUser, ChatUserProps } from ".";
 
 const storyMeta: Meta = {
     title: "ChatPanel/ChatUser",

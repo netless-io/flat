@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
 import classNames from "classnames";
+import { observer } from "mobx-react-lite";
+import { useTranslation } from "react-i18next";
 import { loginCheck } from "../../api-middleware/flatServer";
-import { GlobalStoreContext } from "../../components/StoreProvider";
-import { RouteNameType, usePushHistory } from "../../utils/routes";
-
 import logoSVG from "../../assets/image/logo.svg";
-import "./SplashPage.less";
+import { GlobalStoreContext } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
-import { useTranslation } from "react-i18next";
+import { RouteNameType, usePushHistory } from "../../utils/routes";
+import "./SplashPage.less";
 
 enum LoginStatusType {
     Idle = "Idle",

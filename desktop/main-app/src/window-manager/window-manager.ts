@@ -1,8 +1,8 @@
-import { constants, portal } from "flat-types";
 import { BrowserWindowConstructorOptions } from "electron";
-import { WindowStore } from "./window-store";
-import { CustomWindow, AbstractWindows } from "./abstract";
+import { constants, portal } from "flat-types";
 import { injectionWindowIPCAction } from "../utils/ipc-actions";
+import { AbstractWindows, CustomWindow } from "./abstract";
+import { WindowStore } from "./window-store";
 
 export class WindowManager<
     ABSTRACT_WINDOWS extends AbstractWindows,

@@ -1,5 +1,5 @@
-import { AbstractWindow, CustomWindow } from "../abstract";
 import { constants } from "flat-types";
+import { AbstractWindow, CustomWindow } from "../abstract";
 import { getDisplayByMainWindow, getXCenterPoint } from "./utils";
 
 export class WindowShareScreenTip extends AbstractWindow<false> {

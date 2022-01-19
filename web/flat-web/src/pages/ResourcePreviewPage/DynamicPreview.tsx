@@ -1,11 +1,10 @@
-import "./DynamicPreview.less";
-
 import React, { useEffect, useRef } from "react";
-import { observer } from "mobx-react-lite";
+import { SlidePreviewer, previewSlide } from "@netless/app-slide";
 import { Region } from "flat-components";
-import { previewSlide, SlidePreviewer } from "@netless/app-slide";
+import { observer } from "mobx-react-lite";
 import { queryConvertingTaskStatus } from "../../api-middleware/courseware-converting";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import "./DynamicPreview.less";
 
 export interface DynamicPreviewProps {
     taskUUID: string;

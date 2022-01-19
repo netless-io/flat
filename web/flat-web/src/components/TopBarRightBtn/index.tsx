@@ -1,13 +1,12 @@
-import { TopBarRightBtn as TopBarRightBtnImpl } from "flat-components";
 import React, { ReactElement } from "react";
-
+import { TopBarRightBtn as TopBarRightBtnImpl } from "flat-components";
 import exitSVG from "./icons/exit.svg";
 import followActiveSVG from "./icons/follow-active.svg";
 import followSVG from "./icons/follow.svg";
 import hideSideActiveSVG from "./icons/hide-side-active.svg";
 import hideSideSVG from "./icons/hide-side.svg";
-import shareScreenSVG from "./icons/share-screen.svg";
 import shareScreenActiveSVG from "./icons/share-screen-active.svg";
+import shareScreenSVG from "./icons/share-screen.svg";
 
 const Icons = {
     exit: exitSVG,

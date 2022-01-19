@@ -1,10 +1,9 @@
-import "./style.less";
-
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { ChatTypeBox, ChatTypeBoxProps } from "../ChatTypeBox";
-import { ChatMessageList, ChatMessageListProps } from "../ChatMessageList";
 import { useTranslation } from "react-i18next";
+import { ChatMessageList, ChatMessageListProps } from "../ChatMessageList";
+import { ChatTypeBox, ChatTypeBoxProps } from "../ChatTypeBox";
+import "./style.less";
 
 export type ChatMessagesProps = ChatTypeBoxProps & ChatMessageListProps;
 

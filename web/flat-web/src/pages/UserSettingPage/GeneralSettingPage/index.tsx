@@ -1,11 +1,10 @@
-import "./index.less";
-
-import { Checkbox, Radio } from "antd";
 import React, { useContext } from "react";
-import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
+import { Checkbox, Radio } from "antd";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { useTranslation } from "react-i18next";
-import type { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { GlobalStoreContext } from "../../../components/StoreProvider";
+import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
+import "./index.less";
 
 enum SelectLanguage {
     Chinese,

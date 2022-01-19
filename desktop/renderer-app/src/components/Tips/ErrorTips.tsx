@@ -1,6 +1,6 @@
 import { message } from "antd";
-import { ServerRequestError } from "../../utils/error/server-request-error";
 import { NODE_ENV } from "../../constants/process";
+import { ServerRequestError } from "../../utils/error/server-request-error";
 import { i18n } from "../../utils/i18n";
 
 export const errorTips = (e: unknown): void => {

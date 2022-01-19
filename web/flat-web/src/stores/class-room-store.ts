@@ -1,10 +1,9 @@
+import { useEffect, useState } from "react";
 import { NetworkQuality } from "agora-rtc-sdk-ng";
 import { message } from "antd";
 import dateSub from "date-fns/sub";
-import type { i18n } from "i18next";
+import { i18n } from "i18next";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
-import { useEffect, useState } from "react";
-import { i18n as i18next } from "../utils/i18n";
 import { v4 as uuidv4 } from "uuid";
 import { CloudRecording } from "../api-middleware/CloudRecording";
 import {
@@ -19,18 +18,19 @@ import {
     CloudRecordUpdateLayoutPayload,
 } from "../api-middleware/flatServer/agora";
 import { RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
-import { RtcChannelType, RtcRoom as RTCAPI } from "../api-middleware/rtc/room";
+import { RtcRoom as RTCAPI, RtcChannelType } from "../api-middleware/rtc/room";
 import {
     ClassModeType,
     NonDefaultUserProp,
     Rtm as RTMAPI,
+    RTMEvents,
     RTMessage,
     RTMessageType,
-    RTMEvents,
 } from "../api-middleware/Rtm";
 import { errorTips } from "../components/Tips/ErrorTips";
 import { NODE_ENV } from "../constants/process";
 import { useSafePromise } from "../utils/hooks/lifecycle";
+import { i18n as i18next } from "../utils/i18n";
 import { useAutoRun } from "../utils/mobx";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { globalStore } from "./GlobalStore";

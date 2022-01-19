@@ -1,11 +1,10 @@
-import "./style.less";
-
-import { Checkbox, Radio } from "antd";
-import type { CheckboxChangeEvent } from "antd/lib/checkbox";
 import React, { useEffect, useState } from "react";
-import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
-import { ipcSyncByApp, ipcAsyncByApp } from "../../../utils/ipc";
+import { Checkbox, Radio } from "antd";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { useTranslation } from "react-i18next";
+import { ipcAsyncByApp, ipcSyncByApp } from "../../../utils/ipc";
+import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
+import "./style.less";
 
 enum SelectLanguage {
     Chinese,

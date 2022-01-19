@@ -1,12 +1,11 @@
-import "./style.less";
-
 import React, { useEffect, useMemo, useRef } from "react";
-import { observer } from "mobx-react-lite";
-import classNames from "classnames";
-import type { ShareScreenStore } from "../../stores/share-screen-store";
 import { message } from "antd";
-import { shareScreenEvents } from "../../api-middleware/rtc/share-screen";
+import classNames from "classnames";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
+import { shareScreenEvents } from "../../api-middleware/rtc/share-screen";
+import { ShareScreenStore } from "../../stores/share-screen-store";
+import "./style.less";
 
 interface ShareScreenProps {
     shareScreenStore: ShareScreenStore;

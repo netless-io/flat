@@ -1,10 +1,9 @@
 import React, { useMemo, useState } from "react";
-import { Story, Meta } from "@storybook/react";
+import { Meta, Story } from "@storybook/react";
 import Chance from "chance";
 import faker from "faker";
-
-import { CloudStorageFileList, CloudStorageFileListProps } from "./index";
 import { CloudStorageFile } from "../types";
+import { CloudStorageFileList, CloudStorageFileListProps } from "./index";
 
 const chance = new Chance();
 

@@ -1,7 +1,7 @@
-import { Meta, Story } from "@storybook/react";
 import React from "react";
-import { NetworkStatus, NetworkStatusProps } from ".";
+import { Meta, Story } from "@storybook/react";
 import faker from "faker";
+import { NetworkStatus, NetworkStatusProps } from ".";
 
 const storyMeta: Meta = {
     title: "ClassroomPage/NetworkStatus",

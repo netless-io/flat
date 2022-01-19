@@ -1,5 +1,5 @@
-import { routeConfig } from "../../route-config";
 import { matchPath } from "react-router-dom";
+import { routeConfig } from "../../route-config";
 
 export const shouldWindowCenter = (pathname?: string): boolean => {
     if (!pathname) {

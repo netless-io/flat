@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useUpdate } from "react-use";
 import { Observer, observer } from "mobx-react-lite";
+import { useUpdate } from "react-use";
 import {
     AutoSizer,
     CellMeasurer,

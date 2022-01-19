@@ -1,4 +1,4 @@
-import React, { createContext, FC } from "react";
+import React, { FC, createContext } from "react";
 import { configStore } from "../stores/config-store";
 import { globalStore } from "../stores/GlobalStore";
 import { pageStore } from "../stores/page-store";

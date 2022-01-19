@@ -1,23 +1,22 @@
-import "./HomePage.less";
-
 import React, { useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
-import { ipcAsyncByMainWindow, ipcSyncByApp } from "../../utils/ipc";
-import { MainRoomMenu } from "./MainRoomMenu";
-import { MainRoomListPanel } from "./MainRoomListPanel";
-import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
-import { useLastLocation } from "react-router-last-location";
-import { shouldWindowCenter } from "./utils";
-import { constants } from "flat-types";
-import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
-import { AppUpgradeModal, AppUpgradeModalProps } from "../../components/AppUpgradeModal";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
-import { runtime } from "../../utils/runtime";
-import { globalStore } from "../../stores/global-store";
 import { differenceInHours } from "date-fns";
-import { errorTips } from "../../components/Tips/ErrorTips";
+import { constants } from "flat-types";
+import { observer } from "mobx-react-lite";
+import { useLastLocation } from "react-router-last-location";
 import { loginCheck } from "../../api-middleware/flatServer";
+import { AppUpgradeModal, AppUpgradeModalProps } from "../../components/AppUpgradeModal";
+import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
+import { errorTips } from "../../components/Tips/ErrorTips";
+import { globalStore } from "../../stores/global-store";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { ipcAsyncByMainWindow, ipcSyncByApp } from "../../utils/ipc";
 import { RouteNameType, useReplaceHistory } from "../../utils/routes";
+import { runtime } from "../../utils/runtime";
+import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
+import { MainRoomListPanel } from "./MainRoomListPanel";
+import { MainRoomMenu } from "./MainRoomMenu";
+import { shouldWindowCenter } from "./utils";
+import "./HomePage.less";
 
 export type HomePageProps = {};
 

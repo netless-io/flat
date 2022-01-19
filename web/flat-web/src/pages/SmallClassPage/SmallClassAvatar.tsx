@@ -1,8 +1,8 @@
 import React from "react";
 import { SmallVideoAvatar, SmallVideoAvatarProps } from "flat-components";
-import { User } from "../../stores/user-store";
-import { AvatarCanvas } from "../../components/AvatarCanvas";
 import { RtcRoom } from "../../api-middleware/rtc/room";
+import { AvatarCanvas } from "../../components/AvatarCanvas";
+import { User } from "../../stores/user-store";
 
 interface SmallClassAvatarProps extends Omit<SmallVideoAvatarProps, "avatarUser"> {
     rtc: RtcRoom;
