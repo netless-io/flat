@@ -64,7 +64,7 @@ export const AppStoreButton = observer<AppStoreButtonProps>(function AppStoreBut
         <>
             <TopBarRightBtn
                 icon={<img src={appStoreSVG} />}
-                title="Open App Store"
+                title={t("app-store")}
                 onClick={() => setAppStoreIsVisible(true)}
             />
             <Modal

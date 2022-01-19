@@ -49,7 +49,7 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
                             </>
                         )}
                         <Menu.Item onClick={() => setInviteRoomVisible(true)}>
-                            {t("copy-invitation")}
+                            {t("invitation")}
                         </Menu.Item>
                         <CancelSubPeriodicRoomModal
                             isCreator={isCreator}

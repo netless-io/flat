@@ -263,7 +263,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                                 ? "share-screen-active"
                                 : "share-screen"
                         }
-                        title="Share Screen"
+                        title={t("share-screen.self")}
                         onClick={handleShareScreen}
                     />
                 )}
@@ -284,13 +284,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
                     icon="exit"
-                    title="Exit"
+                    title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
                     icon={isRealtimeSideOpen ? "hide-side" : "hide-side-active"}
-                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
+                    title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={() => {
                         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
                         whiteboardStore.setRightSideClose(isRealtimeSideOpen);

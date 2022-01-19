@@ -191,7 +191,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                                 ? "share-screen-active"
                                 : "share-screen"
                         }
-                        title="Share Screen"
+                        title={t("share-screen.self")}
                         onClick={handleShareScreen}
                     />
                 )}
@@ -213,13 +213,13 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
                     icon="exit"
-                    title="Exit"
+                    title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
                     icon={isRealtimeSideOpen ? "hide-side" : "hide-side-active"}
-                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
+                    title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={handleSideOpenerSwitch}
                 />
             </>

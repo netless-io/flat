@@ -352,7 +352,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                 });
             }
             if (room.roomUUID) {
-                result.push({ key: "invite", text: t("copy-invitation") });
+                result.push({ key: "invite", text: t("invitation") });
             }
         }
         return result as SubActions;

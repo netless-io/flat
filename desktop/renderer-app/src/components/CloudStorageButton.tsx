@@ -29,7 +29,7 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
         <>
             <TopBarRightBtn
                 icon={<img src={cloudStorageSVG} />}
-                title="Open Cloud Storage"
+                title={t("cloud-storage")}
                 onClick={showModal}
             />
             <Modal
