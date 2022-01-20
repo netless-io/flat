@@ -1,4 +1,4 @@
-import { Region } from "flat-components";
+import { FlatPrefersColorScheme, Region } from "flat-components";
 import { i18n } from "../utils/i18n";
 import { autoPersistStore } from "./utils";
 
@@ -15,6 +15,8 @@ export class ConfigStore {
     public autoMicOn = true;
     /** Region, default by language */
     public region: Region | null = null;
+
+    public prefersColorScheme: FlatPrefersColorScheme = "light";
 
     public constructor() {
         autoPersistStore({ storeLSName: "ConfigStore", store: this, version: LS_VERSION });
@@ -34,6 +36,10 @@ export class ConfigStore {
 
     public getRegion = (): Region => {
         return this.region || (i18n.language.startsWith("zh") ? Region.CN_HZ : Region.US_SV);
+    };
+
+    public updatePrefersColorScheme = (prefersColorScheme: FlatPrefersColorScheme): void => {
+        this.prefersColorScheme = prefersColorScheme;
     };
 }
 
