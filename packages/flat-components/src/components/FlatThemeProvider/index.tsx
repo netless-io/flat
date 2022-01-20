@@ -2,6 +2,7 @@ import "../../theme/index.less";
 import React, { FC } from "react";
 import classNames from "classnames";
 import { useDarkMode, FlatPrefersColorScheme } from "./useDarkMode";
+import { useIsomorphicLayoutEffect } from "react-use";
 
 export * from "./useDarkMode";
 
@@ -26,4 +27,20 @@ export const FlatThemeProvider: FC<FlatThemeProviderProps> = ({
             )}
         />
     );
+};
+
+export interface FlatThemeBodyProviderProps {
+    prefersColorScheme?: FlatPrefersColorScheme;
+}
+
+export const FlatThemeBodyProvider: FC<FlatThemeBodyProviderProps> = ({
+    prefersColorScheme = "light",
+    children,
+}) => {
+    const darkMode = useDarkMode(prefersColorScheme);
+    useIsomorphicLayoutEffect(() => {
+        document.body.classList.add("flat-theme-root");
+        document.body.classList.toggle("flat-color-scheme-dark", darkMode);
+    }, [darkMode]);
+    return <>{children}</>;
 };
