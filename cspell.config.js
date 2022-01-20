@@ -97,6 +97,9 @@ module.exports = {
         "unpublish", // agora-rtc-sdk-ng
         "multipass", // svgo
 
+        // less
+        "isstring",
+
         // misc
         "npmrc",
         "yarnrc",
