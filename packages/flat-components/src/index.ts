@@ -6,6 +6,7 @@ export * from "./components/ClassroomPage";
 export * from "./components/CloudStorage";
 export * from "./components/EditRoomPage";
 export * from "./components/ErrorPage";
+export * from "./components/FlatThemeProvider";
 export * from "./components/HomePage";
 export * from "./components/InviteModal";
 export * from "./components/LoadingPage";
