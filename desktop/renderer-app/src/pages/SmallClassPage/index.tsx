@@ -17,8 +17,7 @@ import {
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
-import { TopBarRoundBtn } from "../../components/TopBarRoundBtn";
-import { TopBarRightBtn } from "flat-components";
+import { TopBarRightBtn, TopBarRoundBtn } from "flat-components";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { SmallClassAvatar } from "./SmallClassAvatar";
@@ -52,6 +51,8 @@ import shareScreenSVG from "../../assets/image/share-screen.svg";
 import exitSVG from "../../assets/image/exit.svg";
 import hideSideSVG from "../../assets/image/hide-side.svg";
 import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
+import classInteractionSVG from "../../assets/image/class-interaction.svg";
+import classLectureSVG from "../../assets/image/class-lecture.svg";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -245,7 +246,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         return classRoomStore.classMode === ClassModeType.Lecture ? (
             <TopBarRoundBtn
                 dark
-                iconName="class-interaction"
+                icon={<img src={classInteractionSVG} />}
                 title={t("lecture-mode")}
                 onClick={classRoomStore.toggleClassMode}
             >
@@ -254,7 +255,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         ) : (
             <TopBarRoundBtn
                 dark
-                iconName="class-lecture"
+                icon={<img src={classLectureSVG} />}
                 title={t("interactive-mode")}
                 onClick={classRoomStore.toggleClassMode}
             >
