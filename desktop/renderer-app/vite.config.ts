@@ -99,10 +99,6 @@ export default defineConfig(() => {
             preprocessorOptions: {
                 less: {
                     javascriptEnabled: true,
-                    modifyVars: {
-                        "primary-color": "#3381FF",
-                        "link-color": "#3381FF",
-                    },
                 },
             },
             postcss: {
