@@ -46,7 +46,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     useEffect(() => {
         const mountWindowManager = async (): Promise<void> => {
             if (whiteboardEl && collectorEl && room) {
-                await WindowManager.mount({
+                const windowManager = await WindowManager.mount({
                     room,
                     container: whiteboardEl,
                     cursor: true,
@@ -61,7 +61,9 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     chessboard: false,
                 });
 
-                whiteboardStore.onMainViewModeChange();
+                whiteboardStore.updateWindowManager(windowManager);
+                whiteboardStore.onMainViewSceneChange();
+                whiteboardStore.onMainViewRedoUndoStepsChange();
                 whiteboardStore.onWindowManagerBoxStateChange(
                     whiteboardStore.windowManager?.boxState,
                 );
@@ -225,7 +227,11 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                             "is-disabled": whiteboardStore.isWindowMaximization,
                         })}
                     >
-                        <RedoUndo room={room} />
+                        <RedoUndo
+                            redoSteps={whiteboardStore.redoSteps}
+                            room={room}
+                            undoSteps={whiteboardStore.undoSteps}
+                        />
                     </div>
                     <div
                         className={classNames("page-controller-box", {
@@ -235,7 +241,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                         <ScenesController
                             addScene={whiteboardStore.addMainViewScene}
                             currentSceneIndex={whiteboardStore.currentSceneIndex}
-                            disabled={whiteboardStore.isFocusWindow}
+                            disabled={false}
                             nextScene={whiteboardStore.nextMainViewScene}
                             preScene={whiteboardStore.preMainViewScene}
                             scenesCount={whiteboardStore.scenesCount}
