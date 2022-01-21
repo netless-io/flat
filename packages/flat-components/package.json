@@ -26,7 +26,7 @@
   "scripts": {
     "lint": "lint-staged",
     "start": "start-storybook -p 6006 -s public --no-version-updates",
-    "build": "build-storybook -s public --no-version-updates"
+    "build": "build-storybook -s public"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
