@@ -20,7 +20,10 @@ export function inlineAssets(): Plugin {
                     : `data:${mime.getType(filePath)};base64,${imageFileContent.toString(
                           "base64",
                       )}`;
-                return `const content = "${url}";export default content;`;
+                return {
+                    code: `const content = "${url}";export default content;`,
+                    map: null,
+                };
             }
             return null;
         },
