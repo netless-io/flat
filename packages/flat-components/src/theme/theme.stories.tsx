@@ -66,7 +66,7 @@ export const Brand: Story = (_, config) => {
     }, [config.globals.prefersColorScheme]);
 
     return (
-        <div className="flat-theme-root center mw8" ref={rootRef}>
+        <div ref={rootRef} className="flat-theme-root center mw8">
             {types.map(type => (
                 <div key={type} className="ph3-ns">
                     <div className="cf ph2-ns">
