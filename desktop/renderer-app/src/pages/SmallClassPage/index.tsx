@@ -204,7 +204,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     function renderAvatars(): React.ReactNode {
         return (
-            <div className="realtime-avatars-wrap">
+            <div
+                className="realtime-avatars-wrap"
+                style={{ maxWidth: `${whiteboardStore.smallClassAvatarWrapMaxWidth}px` }}
+            >
                 <div className="realtime-avatars">
                     <SmallClassAvatar
                         avatarUser={classRoomStore.users.creator}
@@ -320,7 +323,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         )
                     }
                     title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
-                    onClick={() => openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen)}
+                    onClick={() => {
+                        openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
+                        whiteboardStore.setRightSideClose(isRealtimeSideOpen);
+                    }}
                 />
             </>
         );

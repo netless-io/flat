@@ -80,12 +80,15 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         if (whiteboardEl) {
             const whiteboardRatio = whiteboardStore.getWhiteboardRatio();
 
-            const classRoomRightSideWidth = 304;
+            const isSmallClass = whiteboardStore.smallClassRatio === whiteboardRatio;
+            const classRoomRightSideWidth = whiteboardStore.isRightSideClose ? 0 : 304;
+
             let classRoomTopBarHeight: number;
             let classRoomMinWidth: number;
             let classRoomMinHeight: number;
+            let smallClassAvatarWrapMaxWidth: number;
 
-            if (whiteboardStore.smallClassRatio === whiteboardRatio) {
+            if (isSmallClass) {
                 classRoomTopBarHeight = 182;
                 classRoomMinWidth = 1130;
                 classRoomMinHeight = 610;
@@ -110,6 +113,21 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                 whiteboardEl.style.minWidth = `${whiteboardMinWidth}px`;
                 whiteboardEl.style.minHeight = `${whiteboardMinWidth * whiteboardRatio}px`;
             }
+
+            const classRoomWidth = whiteboardWidth + classRoomRightSideWidth;
+            const classRoomWithoutRightSideWidth = classRoomMinWidth - classRoomRightSideWidth;
+
+            if (whiteboardStore.isRightSideClose) {
+                smallClassAvatarWrapMaxWidth =
+                    classRoomWidth < classRoomWithoutRightSideWidth
+                        ? classRoomWithoutRightSideWidth
+                        : classRoomWidth;
+            } else {
+                smallClassAvatarWrapMaxWidth =
+                    classRoomWidth < classRoomMinWidth ? classRoomMinWidth : classRoomWidth;
+            }
+
+            whiteboardStore.updateSmallClassAvatarWrapMaxWidth(smallClassAvatarWrapMaxWidth);
         }
     }, [whiteboardEl, whiteboardStore]);
 
@@ -122,6 +140,11 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
             window.removeEventListener("resize", whiteboardOnResize);
         };
     }, [whiteboardEl, whiteboardOnResize]);
+
+    useEffect(() => {
+        whiteboardOnResize();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [whiteboardStore.isRightSideClose]);
 
     const bindWhiteboard = useCallback((ref: HTMLDivElement | null) => {
         if (ref) {

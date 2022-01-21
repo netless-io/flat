@@ -252,7 +252,10 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                         )
                     }
                     title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
-                    onClick={handleSideOpenerSwitch}
+                    onClick={() => {
+                        openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
+                        whiteboardStore.setRightSideClose(isRealtimeSideOpen);
+                    }}
                 />
             </>
         );
@@ -294,10 +297,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 }
             />
         );
-    }
-
-    function handleSideOpenerSwitch(): void {
-        openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
     }
 
     function updateCloudRecordLayout(): void {
