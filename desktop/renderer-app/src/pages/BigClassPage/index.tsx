@@ -294,7 +294,10 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                         )
                     }
                     title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
-                    onClick={handleSideOpenerSwitch}
+                    onClick={() => {
+                        openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
+                        whiteboardStore.setRightSideClose(isRealtimeSideOpen);
+                    }}
                 />
             </>
         );
@@ -361,10 +364,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 }
             />
         );
-    }
-
-    function handleSideOpenerSwitch(): void {
-        openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
     }
 
     function onVideoAvatarExpand(): void {

@@ -41,10 +41,12 @@ export class WhiteboardStore {
     public isKicked = false;
     public isFocusWindow = false;
     public isWindowMaximization = false;
+    public isRightSideClose = false;
     public currentSceneIndex = 0;
     public scenesCount = 0;
     public smallClassRatio = 8.3 / 16;
     public otherClassRatio = 10.46 / 16;
+    public smallClassAvatarWrapMaxWidth = 0;
 
     /** is room Creator */
     public readonly isCreator: boolean;
@@ -124,6 +126,10 @@ export class WhiteboardStore {
         this.isFocusWindow = isFocus;
     };
 
+    public updateSmallClassAvatarWrapMaxWidth = (smallClassAvatarWrapMaxWidth: number): void => {
+        this.smallClassAvatarWrapMaxWidth = smallClassAvatarWrapMaxWidth;
+    };
+
     public getWhiteboardRatio = (): number => {
         // the Ratio of whiteboard compute method is height / width.
         if (this.getRoomType() === RoomType.SmallClass) {
@@ -146,6 +152,10 @@ export class WhiteboardStore {
 
     public setPreviewPanel = (show: boolean): void => {
         this.isShowPreviewPanel = show;
+    };
+
+    public setRightSideClose = (close: boolean): void => {
+        this.isRightSideClose = close;
     };
 
     public switchMainViewToWriter = async (): Promise<void> => {
