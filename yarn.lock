@@ -1946,10 +1946,10 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@0.4.0-canary.22":
-  version "0.4.0-canary.22"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.4.0-canary.22.tgz#d19d54846df483bd54035ecf7e8f3581c88724e5"
-  integrity sha512-jbONZs452VzJUQN+tu/zpEF8OoghHMcR+yk27dlyylA0rVANu2sLJtA8zTm6gGPJ89Zu43YYfgPYKB+i5mPIFA==
+"@netless/window-manager@0.4.0-canary.23":
+  version "0.4.0-canary.23"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.4.0-canary.23.tgz#2e9d6ea7b756bc4c4a1fd48734eed4218d423325"
+  integrity sha512-EvwB7sAZZWMyQLAk8/yCsPV80PiDGgP3VRNYWeOQFMqdVZC2+JQrUtgVS5OIkhYdIGMdeCuJWzFDCPHbmov5vQ==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     emittery "^0.9.2"
