@@ -67,7 +67,7 @@ export const Timer: React.FC<TimerProps> = ({ roomStatus = RoomStatus.Paused, be
     return (
         <span className="timer-bar">
             <span className={`timer-${roomStatus}`}>{t("room-started")}</span>
-            <span>{timing}</span>
+            <span className="timer-text">{timing}</span>
         </span>
     );
 };
