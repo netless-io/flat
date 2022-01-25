@@ -81,7 +81,7 @@
     "react-virtualized": "^9.22.2",
     "uuid": "^8.3.2",
     "video.js": "7.10.2",
-    "white-web-sdk": "2.16.1"
+    "white-web-sdk": "2.16.3"
   },
   "scripts": {
     "postinstall": "esbuild-dev ./scripts/post-install.ts",
