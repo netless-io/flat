@@ -270,8 +270,13 @@ export class WhiteboardStore {
         this.windowManager?.emitter.on("mainViewSceneIndexChange", scene => {
             if (this.room) {
                 this.updateCurrentSceneIndex(scene);
-                this.updateScenesCount(this.room.entireScenes()["/"].length);
             }
+        });
+    };
+
+    public onMainViewSceneLengthChange = (): void => {
+        this.windowManager?.emitter.on("mainViewScenesLengthChange", length => {
+            this.updateScenesCount(length);
         });
     };
 
