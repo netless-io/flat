@@ -33,13 +33,19 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
 
     useEffect(() => {
         if (cameraDevices.length > 0 && !cameraDeviceId) {
-            setCameraDeviceId(cameraDevices[0].deviceId);
+            const lastCameraId = configStore.cameraId;
+            lastCameraId
+                ? setCameraDeviceId(lastCameraId)
+                : setCameraDeviceId(cameraDevices[0].deviceId);
         }
     }, [cameraDeviceId, cameraDevices]);
 
     useEffect(() => {
         if (microphoneDevices.length > 0 && !microphoneDeviceId) {
-            setMicrophoneDeviceId(microphoneDevices[0].deviceId);
+            const lastMicrophoneId = configStore.microphoneId;
+            lastMicrophoneId
+                ? setMicrophoneDeviceId(lastMicrophoneId)
+                : setMicrophoneDeviceId(microphoneDevices[0].deviceId);
         }
     }, [microphoneDeviceId, microphoneDevices]);
 
