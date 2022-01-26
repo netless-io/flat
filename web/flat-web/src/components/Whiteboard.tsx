@@ -63,6 +63,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
 
                 whiteboardStore.updateWindowManager(windowManager);
                 whiteboardStore.onMainViewSceneChange();
+                whiteboardStore.onMainViewSceneLengthChange();
                 whiteboardStore.onMainViewRedoUndoStepsChange();
                 whiteboardStore.onWindowManagerBoxStateChange(
                     whiteboardStore.windowManager?.boxState,
