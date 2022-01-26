@@ -22,7 +22,7 @@
     <h1>Agora Flat</h1>
     <p>Project flat is the Web, Windows and macOS client of <a href="https://flat.whiteboard.agora.io/en/">Agora Flat</a> open source classroom.</p>
     <p><a href="./docs/readme/README-zh.md">中文</a></p>
-    <img src="./assets/flat-showcase-en.png">
+    <img src="https://flat-storage-cn-hz.whiteboard.agora.io/flat-resources/preview/preview.gif">
 </div>
 
 ## Features
