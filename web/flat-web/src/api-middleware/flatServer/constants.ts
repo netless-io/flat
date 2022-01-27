@@ -7,6 +7,7 @@ export const FLAT_SERVER_VERSIONS = {
 } as const;
 
 export const FLAT_SERVER_LOGIN = {
+    AGORA_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/login/agora/callback`,
     GITHUB_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/login/github/callback?platform=web`,
     WECHAT_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/login/weChat/web/callback`,
 } as const;

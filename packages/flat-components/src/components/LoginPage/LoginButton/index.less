@@ -1,23 +1,16 @@
-.login-channel-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.login-channel-agora {
+    &.ant-btn {
+        background: #089CFD;
 
-    > .ant-btn {
-        width: 272px;
-        height: 44px;
-        color: #fff;
-        border: none;
-
-        span {
-            vertical-align: middle;
+        &:hover {
+            background: #45B4FD;
+        }
+        &:active {
+            background: #0675BE;
         }
     }
-
-    img {
-        margin-right: 3px;
-    }
 }
+
 .login-channel-wechat {
     margin-bottom: 12px;
 
@@ -34,6 +27,8 @@
 }
 
 .login-channel-github {
+    margin-bottom: 12px;
+    
     &.ant-btn {
         background: #24292e;
 
