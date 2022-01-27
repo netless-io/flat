@@ -22,7 +22,9 @@ export default defineConfig(() => {
         refresh(),
         dotenv(configPath),
         electron(),
-        eslintPlugin(),
+        eslintPlugin({
+            cache: false,
+        }),
         copy({
             targets: [
                 /**
