@@ -42,7 +42,7 @@ export const Overview: Story<LoginContentProps> = () => {
         <div className="vh-75">
             <LoginContent
                 agreementChecked={agreement}
-                handleClickAgreement={handleClickAgreement}
+                handleClickAgreement={() => updateAgreement(!agreement)}
                 handleHideQRCode={handleHideQRCode}
                 renderButtonList={renderButtonList}
                 showQRCode={showQRCode}
