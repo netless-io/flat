@@ -36,62 +36,60 @@ export const LoginPage = observer(function LoginPage() {
         };
     }, []);
 
-    const doLogin = (loginChannel: LoginButtonProviderType): void => {
-        switch (loginChannel) {
-            case "agora": {
-                loginDisposer.current = agoraLogin(async authData => {
-                    globalStore.updateUserInfo(authData);
-                    if (roomUUID) {
-                        if (globalStore.isTurnOffDeviceTest) {
-                            await joinRoomHandler(roomUUID, pushHistory);
-                        } else {
-                            pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
-                        }
-                    } else {
-                        pushHistory(RouteNameType.HomePage);
-                    }
-                });
-                return;
-            }
-            case "github": {
-                loginDisposer.current = githubLogin(async authData => {
-                    globalStore.updateUserInfo(authData);
-                    if (roomUUID) {
-                        if (globalStore.isTurnOffDeviceTest) {
-                            await joinRoomHandler(roomUUID, pushHistory);
-                        } else {
-                            pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
-                        }
-                    } else {
-                        pushHistory(RouteNameType.HomePage);
-                    }
-                });
-                return;
-            }
-            case "wechat": {
-                setWeChatLogin(true);
-                return;
-            }
-            default: {
-                return;
-            }
-        }
-    };
-
     const handleLogin = useCallback(
         (loginChannel: LoginButtonProviderType) => {
             if (loginDisposer.current) {
                 loginDisposer.current();
                 loginDisposer.current = void 0;
             }
+            const doLogin = (loginChannel: LoginButtonProviderType): void => {
+                switch (loginChannel) {
+                    case "agora": {
+                        loginDisposer.current = agoraLogin(async authData => {
+                            globalStore.updateUserInfo(authData);
+                            if (roomUUID) {
+                                if (globalStore.isTurnOffDeviceTest) {
+                                    await joinRoomHandler(roomUUID, pushHistory);
+                                } else {
+                                    pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
+                                }
+                            } else {
+                                pushHistory(RouteNameType.HomePage);
+                            }
+                        });
+                        return;
+                    }
+                    case "github": {
+                        loginDisposer.current = githubLogin(async authData => {
+                            globalStore.updateUserInfo(authData);
+                            if (roomUUID) {
+                                if (globalStore.isTurnOffDeviceTest) {
+                                    await joinRoomHandler(roomUUID, pushHistory);
+                                } else {
+                                    pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
+                                }
+                            } else {
+                                pushHistory(RouteNameType.HomePage);
+                            }
+                        });
+                        return;
+                    }
+                    case "wechat": {
+                        setWeChatLogin(true);
+                        return;
+                    }
+                    default: {
+                        return;
+                    }
+                }
+            };
             if (agreement) {
                 doLogin(loginChannel);
             } else {
                 void message.info(i18n.t("agree-terms"));
             }
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [agreement],
+        [agreement, globalStore, i18n, pushHistory, roomUUID],
     );
 
     const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
@@ -101,16 +99,6 @@ export const LoginPage = observer(function LoginPage() {
         if (utm_source === "agora") {
             return (
                 <>
-                    <LoginButton
-                        provider="wechat"
-                        text={i18n.t("login-wechat")}
-                        onLogin={handleLogin}
-                    />
-                    <LoginButton
-                        provider="github"
-                        text={i18n.t("login-github")}
-                        onLogin={handleLogin}
-                    />
                     <LoginButton
                         provider="agora"
                         text={i18n.t("login-agora")}

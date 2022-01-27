@@ -7,7 +7,7 @@ import "./index.less";
 
 export type LoginButtonProviderType = "wechat" | "github" | "agora";
 
-type LoginButtonProps = {
+export type LoginButtonProps = {
     provider: LoginButtonProviderType;
     onLogin: (type: LoginButtonProviderType) => void;
     text: string;
@@ -21,7 +21,10 @@ const svgDict: Record<LoginButtonProviderType, string> = {
 
 export const LoginButton: React.FC<LoginButtonProps> = ({ provider, onLogin, text }) => {
     return (
-        <Button className={`login-channel-${provider}`} onClick={() => onLogin(provider)}>
+        <Button
+            className={`login-channel-lg login-channel-${provider}`}
+            onClick={() => onLogin(provider)}
+        >
             <img src={svgDict[provider]} />
             {text}
         </Button>

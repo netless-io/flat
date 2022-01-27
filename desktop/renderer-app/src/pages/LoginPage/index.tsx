@@ -65,39 +65,38 @@ export const LoginPage = observer(function LoginPage() {
             });
     }, [sp]);
 
-    const doLogin = (loginChannel: LoginButtonProviderType): void => {
-        switch (loginChannel) {
-            case "github": {
-                loginDisposer.current = githubLogin(authData => {
-                    globalStore.updateUserInfo(authData);
-                    pushHistory(RouteNameType.HomePage);
-                });
-                return;
-            }
-            case "wechat": {
-                setWeChatLogin(true);
-                return;
-            }
-            default: {
-                return;
-            }
-        }
-    };
-
     const handleLogin = useCallback(
         (loginChannel: LoginButtonProviderType) => {
             if (loginDisposer.current) {
                 loginDisposer.current();
                 loginDisposer.current = void 0;
             }
+
+            const doLogin = (loginChannel: LoginButtonProviderType): void => {
+                switch (loginChannel) {
+                    case "github": {
+                        loginDisposer.current = githubLogin(authData => {
+                            globalStore.updateUserInfo(authData);
+                            pushHistory(RouteNameType.HomePage);
+                        });
+                        return;
+                    }
+                    case "wechat": {
+                        setWeChatLogin(true);
+                        return;
+                    }
+                    default: {
+                        return;
+                    }
+                }
+            };
             if (agreementChecked) {
                 doLogin(loginChannel);
             } else {
                 void message.info(i18n.t("agree-terms"));
             }
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [agreementChecked],
+        [agreementChecked, globalStore, i18n, pushHistory],
     );
 
     const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL_EN;

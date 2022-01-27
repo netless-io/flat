@@ -56,9 +56,7 @@ export const LoginContent: React.FC<LoginContentProps> = ({
                                     {t("online-interaction-to-synchronize-ideas")}
                                 </span>
                             </div>
-                            <div className="login-content-channel">
-                                <div className="login-channel-container">{renderButtonList()}</div>
-                            </div>
+                            <div className="login-content-channel">{renderButtonList()}</div>
                             <div className="login-content-agreement">
                                 <Checkbox
                                     defaultChecked={agreementChecked}
