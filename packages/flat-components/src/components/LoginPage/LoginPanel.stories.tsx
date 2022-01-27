@@ -43,22 +43,23 @@ export const PlayableExample: Story<LoginPanelProps> = () => {
 
     function renderButtonList(): React.ReactNode {
         const handleLogin = (loginChannel: LoginButtonProviderType): void => {
-            if (agreement) {
-                switch (loginChannel) {
-                    case "wechat": {
-                        setWeChatLogin(true);
-                        return;
-                    }
-                    case "github": {
-                        Modal.info({ content: "This is Github Login" });
-                        return;
-                    }
-                    default: {
-                        return;
-                    }
-                }
-            } else {
+            if (!agreement) {
                 void message.info(i18n.t("agree-terms"));
+                return;
+            }
+            
+            switch (loginChannel) {
+                case "wechat": {
+                    setWeChatLogin(true);
+                    break;
+                }
+                case "github": {
+                    Modal.info("need i18n");
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
         };
 
