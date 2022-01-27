@@ -26,9 +26,6 @@ export const Overview: Story<LoginContentProps> = () => {
         agreement === false && void message.info(i18n.t("agree-terms"));
     }, [agreement, i18n]);
 
-    const handleHideQRCode = (): void => {
-        updateShowQRCode(!showQRCode);
-    };
 
     const { t } = useTranslation();
 
