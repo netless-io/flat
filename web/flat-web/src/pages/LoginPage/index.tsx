@@ -47,14 +47,14 @@ export const LoginPage = observer(function LoginPage() {
                     case "agora": {
                         loginDisposer.current = agoraLogin(async authData => {
                             globalStore.updateUserInfo(authData);
-                            if (roomUUID) {
-                                if (globalStore.isTurnOffDeviceTest) {
-                                    await joinRoomHandler(roomUUID, pushHistory);
-                                } else {
-                                    pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
-                                }
-                            } else {
+                            if (!roomUUID) {
                                 pushHistory(RouteNameType.HomePage);
+                                return;
+                            }
+                            if (globalStore.isTurnOffDeviceTest) {
+                                await joinRoomHandler(roomUUID, pushHistory);
+                            } else {
+                                pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
                             }
                         });
                         return;
@@ -62,14 +62,14 @@ export const LoginPage = observer(function LoginPage() {
                     case "github": {
                         loginDisposer.current = githubLogin(async authData => {
                             globalStore.updateUserInfo(authData);
-                            if (roomUUID) {
-                                if (globalStore.isTurnOffDeviceTest) {
-                                    await joinRoomHandler(roomUUID, pushHistory);
-                                } else {
-                                    pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
-                                }
-                            } else {
+                            if (!roomUUID) {
                                 pushHistory(RouteNameType.HomePage);
+                                return;
+                            }
+                            if (globalStore.isTurnOffDeviceTest) {
+                                await joinRoomHandler(roomUUID, pushHistory);
+                            } else {
+                                pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
                             }
                         });
                         return;
