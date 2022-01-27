@@ -81,11 +81,11 @@ export function useReplaceHistory(): <T extends RouteNameType>(
 /**
  * get url parameters
  */
-export function useURLParams(): Record<string, any> {
-    const urlSearchParams: Record<string, any> = new URLSearchParams(window.location.search);
+export function useURLParams(): Record<string, string> {
+    const urlSearchParams = new URLSearchParams(window.location.search);
 
     const params = useMemo(() => {
-        const res: Record<string, any> = {};
+        const res: Record<string, string> = {};
         for (const [key, value] of urlSearchParams.entries()) {
             res[key] = value;
         }
