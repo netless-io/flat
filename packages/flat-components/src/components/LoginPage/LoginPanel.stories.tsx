@@ -47,14 +47,16 @@ export const PlayableExample: Story<LoginPanelProps> = () => {
                 void message.info(i18n.t("agree-terms"));
                 return;
             }
-            
+
             switch (loginChannel) {
                 case "wechat": {
                     setWeChatLogin(true);
                     break;
                 }
                 case "github": {
-                    Modal.info("need i18n");
+                    Modal.info({
+                        content: "need i18n",
+                    });
                     break;
                 }
                 default: {
