@@ -1,6 +1,6 @@
 import { routeConfig, RouteConfig, RouteNameType, ExtraRouteConfig } from "../route-config";
 import { generatePath, useHistory } from "react-router-dom";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 export { RouteNameType } from "../route-config";
 
@@ -76,4 +76,22 @@ export function useReplaceHistory(): <T extends RouteNameType>(
     );
 
     return pushHistory;
+}
+
+/**
+ * Get url parameters
+ * This facility not involves react-router, so you can use it simply.
+ */
+export function useURLParams(): Record<string, string> {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    const params = useMemo(() => {
+        const res: Record<string, string> = {};
+        for (const [key, value] of urlSearchParams.entries()) {
+            res[key] = value;
+        }
+        return res;
+    }, [urlSearchParams]);
+
+    return params;
 }

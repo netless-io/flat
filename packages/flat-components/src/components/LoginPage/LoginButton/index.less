@@ -1,9 +1,11 @@
-.login-channel-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.login-channel-lg {
 
-    > .ant-btn {
+
+    &.ant-btn {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
         width: 272px;
         height: 44px;
         color: #fff;
@@ -18,6 +20,21 @@
         margin-right: 3px;
     }
 }
+
+
+.login-channel-agora {
+    &.ant-btn {
+        background: #089CFD;
+
+        &:hover {
+            background: #45B4FD;
+        }
+        &:active {
+            background: #0675BE;
+        }
+    }
+}
+
 .login-channel-wechat {
     margin-bottom: 12px;
 
@@ -34,6 +51,8 @@
 }
 
 .login-channel-github {
+    margin-bottom: 12px;
+    
     &.ant-btn {
         background: #24292e;
 

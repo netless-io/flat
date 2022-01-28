@@ -5,15 +5,11 @@ import bgBottomLeftSVG from "./icons/bg-bottom-left.svg";
 import "./index.less";
 
 import React from "react";
-import { LoginContent, LoginContentProps } from "./LoginContent";
+import { LoginContent, LoginContentProps } from "./LoginContent/index";
 
-export type { LoginChannelType } from "./LoginChannel";
+export * from "./LoginButton";
 
-export interface LoginPanelProps {
-    onLogin: LoginContentProps["onLogin"];
-    privacyURL?: string;
-    serviceURL?: string;
-}
+export interface LoginPanelProps extends LoginContentProps {}
 
 export const LoginPanel: React.FC<LoginPanelProps> = props => {
     return (
