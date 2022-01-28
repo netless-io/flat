@@ -55,7 +55,7 @@ export const PlayableExample: Story<LoginPanelProps> = () => {
                 }
                 case "github": {
                     Modal.info({
-                        content: "need i18n",
+                        content: i18n.t("login-github"),
                     });
                     break;
                 }
