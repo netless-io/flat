@@ -79,7 +79,8 @@ export function useReplaceHistory(): <T extends RouteNameType>(
 }
 
 /**
- * get url parameters
+ * Get url parameters
+ * This facility not involves react-router, so you can use it simply.
  */
 export function useURLParams(): Record<string, string> {
     const urlSearchParams = new URLSearchParams(window.location.search);
