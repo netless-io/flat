@@ -18,14 +18,9 @@ export const Overview: Story<LoginContentProps> = () => {
 
     const [agreement, updateAgreement] = useState<boolean>(false);
 
-    const handleClickAgreement = (): void => {
-        updateAgreement(!agreement);
-    };
-
     const handleLogin = useCallback(() => {
         agreement === false && void message.info(i18n.t("agree-terms"));
     }, [agreement, i18n]);
-
 
     const { t } = useTranslation();
 
@@ -43,7 +38,7 @@ export const Overview: Story<LoginContentProps> = () => {
             <LoginContent
                 agreementChecked={agreement}
                 handleClickAgreement={() => updateAgreement(!agreement)}
-                handleHideQRCode={handleHideQRCode}
+                handleHideQRCode={() => updateShowQRCode(false)}
                 renderButtonList={renderButtonList}
                 showQRCode={showQRCode}
             />
