@@ -109,6 +109,10 @@ Thank you to all the people who already contributed to Flat!
 
 <a href="https://github.com/netless-io/flat/graphs/contributors"><img src="https://opencollective.com/agora-flat/contributors.svg?width=890&button=false"/></a>
 
+## Disclaimers
+
+You may use Flat for commercial purposes but please note that we do not accept customizational commercial requirements and deployment supports. Nor do we offer customer supports for commercial usage. Please head to Flexible Classroom for such requirements.
+
 ## License
 
 Copyright © Agora Corporation. All rights reserved.
