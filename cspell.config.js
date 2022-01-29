@@ -131,6 +131,9 @@ module.exports = {
         "Kube",
         "agoraflat",
         "applinks",
+
+        // readme
+        "customizational",
     ],
     flagWords: ["fuck", "bitch", "asshole", "bullshit", "crap", "suck", "wtf"],
     dictionaries: [
