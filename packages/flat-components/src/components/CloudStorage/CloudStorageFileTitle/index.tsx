@@ -70,34 +70,34 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
             >
                 <span className="cloud-storage-file-title-icon-wrap">
                     <img
+                        aria-hidden
                         className="cloud-storage-file-title-icon"
+                        height={22}
                         src={fileIcon}
                         width={22}
-                        height={22}
-                        aria-hidden
                     />
                     {isConverting ? (
                         <img
+                            aria-hidden
                             className="cloud-storage-file-title-converting"
+                            height={11}
                             src={convertingSVG}
                             width={11}
-                            height={11}
-                            aria-hidden
                         />
                     ) : isConvertError ? (
                         <img
+                            aria-hidden
                             className="cloud-storage-file-title-convert-error"
+                            height={11}
                             src={convertErrorSVG}
                             width={11}
-                            height={11}
-                            aria-hidden
                         />
                     ) : null}
                 </span>
                 {renamingFileUUID === fileUUID ? (
                     <CloudStorageFileTitleRename
-                        fileUUID={fileUUID}
                         fileName={fileName}
+                        fileUUID={fileUUID}
                         onRename={onRename}
                     />
                 ) : titleClickable ? (

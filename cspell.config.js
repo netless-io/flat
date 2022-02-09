@@ -16,6 +16,7 @@ module.exports = {
         "typebox",
         "downloaders",
         "Magix",
+        "quickstart",
 
         // wechat
         "wechat",
@@ -94,6 +95,10 @@ module.exports = {
         "geogebra", // @netless/app-geogebra
         "commitlintrc", // @commitlint/cli
         "unpublish", // agora-rtc-sdk-ng
+        "multipass", // svgo
+
+        // less
+        "isstring",
 
         // misc
         "npmrc",
@@ -114,6 +119,8 @@ module.exports = {
         "webstorm",
         "Frameless",
         "micromessenger",
+        "bokeh",
+        "lintstagedrc",
 
         // CNCF
         "nindent",
@@ -124,6 +131,9 @@ module.exports = {
         "Kube",
         "agoraflat",
         "applinks",
+
+        // readme
+        "customizational",
     ],
     flagWords: ["fuck", "bitch", "asshole", "bullshit", "crap", "suck", "wtf"],
     dictionaries: [

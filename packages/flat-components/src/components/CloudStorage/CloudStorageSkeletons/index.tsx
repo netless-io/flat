@@ -14,22 +14,22 @@ export const CloudStorageSkeletons: React.FC<CloudStorageSkeletonsProps> = ({ is
             {Array(10)
                 .fill(0)
                 .map((_, i) => (
-                    <div className="cloud-storage-skeletons-item" key={i}>
+                    <div key={i} className="cloud-storage-skeletons-item">
                         <div className="cloud-storage-skeletons-item-icon">
-                            <Skeleton active title={false} paragraph={{ rows: 1, width: "100%" }} />
+                            <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} />
                         </div>
                         <div
                             className={classNames("cloud-storage-skeletons-item-file", {
                                 "cloud-storage-skeletons-item-file-compact": isCompactMode,
                             })}
                         >
-                            <Skeleton active title={false} paragraph={{ rows: 1, width: "100%" }} />
+                            <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} />
                         </div>
                         <div className="cloud-storage-skeletons-item-file-size">
-                            <Skeleton active title={false} paragraph={{ rows: 1, width: "100%" }} />
+                            <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} />
                         </div>
                         <div className="cloud-storage-skeletons-item-file-date">
-                            <Skeleton active title={false} paragraph={{ rows: 1, width: "100%" }} />
+                            <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} />
                         </div>
                     </div>
                 ))}

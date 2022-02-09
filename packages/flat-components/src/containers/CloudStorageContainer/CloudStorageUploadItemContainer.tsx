@@ -12,10 +12,10 @@ export const CloudStorageUploadItemContainer = observer<CloudStorageUploadItemCo
     function CloudStorageUploadItemContainer({ task, onCancel, onRetry }) {
         return (
             <CloudStorageUploadItem
-                uploadID={task.uploadID}
                 fileName={task.fileName}
                 percent={task.percent}
                 status={task.status}
+                uploadID={task.uploadID}
                 onCancel={onCancel}
                 onRetry={onRetry}
             />

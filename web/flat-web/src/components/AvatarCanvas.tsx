@@ -53,10 +53,10 @@ export const AvatarCanvas = observer<AvatarCanvasProps>(function AvatarCanvas({
 
     const canvas = (
         <div
-            className="video-avatar-canvas"
             ref={el => {
                 rtcAvatar.element = el ?? void 0;
             }}
+            className="video-avatar-canvas"
         />
     );
 

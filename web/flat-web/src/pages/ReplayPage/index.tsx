@@ -82,8 +82,8 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
             {renderOverlay()}
             <ExitReplayConfirmModal
                 visible={showExitReplayModal}
-                onConfirm={exitConfirm}
                 onCancel={() => setShowExitReplayModal(false)}
+                onConfirm={exitConfirm}
             />
         </div>
     );
@@ -91,7 +91,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     function renderSmallClassAvatars(): React.ReactElement {
         return (
             <div className="replay-small-class-avatars">
-                <video className="replay-small-class-avatars-video" ref={videoElRef} />
+                <video ref={videoElRef} className="replay-small-class-avatars-video" />
             </div>
         );
     }
@@ -100,8 +100,8 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         return (
             <div className="replay-whiteboard-wrap">
                 <div
-                    className="replay-whiteboard"
                     ref={whiteboardElRef}
+                    className="replay-whiteboard"
                     onMouseMove={handleMouseMove}
                 />
                 {!classRoomReplayStore.isPlaying && (
@@ -110,7 +110,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
                         onClick={classRoomReplayStore.togglePlayPause}
                     >
                         <button className="replay-play-icon">
-                            <img src={videoPlaySVG} alt="play" />
+                            <img alt="play" src={videoPlaySVG} />
                         </button>
                     </div>
                 )}
@@ -118,8 +118,8 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
                     classRoomReplayStore.isReady &&
                     classRoomReplayStore.smartPlayer.whiteboardPlayer && (
                         <PlayerController
-                            player={classRoomReplayStore.smartPlayer.whiteboardPlayer}
                             combinePlayer={classRoomReplayStore.smartPlayer.combinePlayer}
+                            player={classRoomReplayStore.smartPlayer.whiteboardPlayer}
                         />
                     )}
             </div>
@@ -129,19 +129,19 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     function renderRealtimePanel(): React.ReactElement {
         return (
             <RealtimePanel
+                chatSlot={
+                    classRoomReplayStore.smartPlayer.whiteboardPlayer && (
+                        <ChatPanelReplay classRoomReplayStore={classRoomReplayStore} />
+                    )
+                }
+                isShow={true}
                 isVideoOn={
                     classRoomReplayStore.roomType !== RoomType.SmallClass &&
                     classRoomReplayStore.withRTCVideo
                 }
-                isShow={true}
                 videoSlot={
                     classRoomReplayStore.roomType !== RoomType.SmallClass && (
-                        <video className="replay-big-class-video" ref={videoElRef} />
-                    )
-                }
-                chatSlot={
-                    classRoomReplayStore.smartPlayer.whiteboardPlayer && (
-                        <ChatPanelReplay classRoomReplayStore={classRoomReplayStore} />
+                        <video ref={videoElRef} className="replay-big-class-video" />
                     )
                 }
             />

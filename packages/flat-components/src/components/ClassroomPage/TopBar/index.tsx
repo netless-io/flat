@@ -11,9 +11,9 @@ export const TopBarDivider: FC = () => {
 };
 
 export interface TopBarProps {
-    left: ReactNode;
-    center: ReactNode;
-    right: ReactNode;
+    left?: ReactNode;
+    center?: ReactNode;
+    right?: ReactNode;
     isMac?: boolean;
 }
 

@@ -82,6 +82,10 @@ export class DeviceTest {
         } else {
             this.microphoneAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
                 microphoneId: deviceId,
+                // AEC: acoustic echo cancellation
+                AEC: true,
+                // ANS: automatic noise suppression
+                ANS: true,
             });
         }
     }

@@ -9,7 +9,7 @@ export type WeekRateSelectorProps = SelectProps<Week[]>;
 
 export const WeekRateSelector: FC<WeekRateSelectorProps> = props => {
     return (
-        <Select mode="multiple" allowClear {...props}>
+        <Select allowClear mode="multiple" {...props}>
             {[
                 Week.Sunday,
                 Week.Monday,
@@ -21,7 +21,7 @@ export const WeekRateSelector: FC<WeekRateSelectorProps> = props => {
             ].map(week => {
                 const weekName = getWeekName(week);
                 return (
-                    <Select.Option key={week} value={week} label={weekName}>
+                    <Select.Option key={week} label={weekName} value={week}>
                         {weekName}
                     </Select.Option>
                 );

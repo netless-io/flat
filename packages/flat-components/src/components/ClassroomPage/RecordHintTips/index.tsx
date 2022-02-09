@@ -15,22 +15,22 @@ export const RecordHintTips: FC<RecordHintTipsProps> = ({ visible, onClose, chil
 
     return (
         <Tooltip
+            color="rgba(68, 78, 96, 0.72)"
             overlayClassName="record-hint-tips"
             placement="bottom"
-            color="rgba(68, 78, 96, 0.72)"
-            visible={visible}
             title={
                 <div>
                     {t("start-class-tips")}
                     <Button
                         className="record-hint-tips-close"
+                        icon={<CloseOutlined />}
                         size="small"
                         type="text"
-                        icon={<CloseOutlined />}
                         onClick={onClose}
                     />
                 </div>
             }
+            visible={visible}
         >
             {children}
         </Tooltip>

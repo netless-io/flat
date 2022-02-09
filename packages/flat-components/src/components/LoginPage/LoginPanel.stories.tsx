@@ -1,9 +1,8 @@
-import QRCodeSVG from "./icons/qr-code.svg";
-
 import { Meta, Story } from "@storybook/react";
-import { Modal } from "antd";
-import React from "react";
-import { LoginChannelType, LoginPanel, LoginPanelProps } from ".";
+import { message, Modal } from "antd";
+import React, { useState } from "react";
+import { LoginButton, LoginButtonProviderType, LoginPanel, LoginPanelProps } from ".";
+import { useTranslation } from "react-i18next";
 
 const storyMeta: Meta = {
     title: "LoginPage/LoginPanel",
@@ -31,26 +30,66 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
-const handleLogin = (loginChannel: LoginChannelType): React.ReactElement | undefined => {
-    switch (loginChannel) {
-        case "wechat": {
-            return <img src={QRCodeSVG} />;
-        }
-        case "github": {
-            Modal.info({ content: "This is Github Login" });
-            return;
-        }
-        default: {
-            return;
-        }
-    }
-};
+export const PlayableExample: Story<LoginPanelProps> = () => {
+    const [isWeChatLogin, setWeChatLogin] = useState<boolean>(false);
 
-export const PlayableExample: Story<LoginPanelProps> = args => (
-    <div className="vh-100">
-        <LoginPanel {...args} />
-    </div>
-);
-PlayableExample.args = {
-    onLogin: handleLogin,
+    const handleHideQRCode = (): void => {
+        setWeChatLogin(!isWeChatLogin);
+    };
+
+    const [agreement, setAgreement] = useState<boolean>(false);
+
+    const { i18n } = useTranslation();
+
+    function renderButtonList(): React.ReactNode {
+        const handleLogin = (loginChannel: LoginButtonProviderType): void => {
+            if (!agreement) {
+                void message.info(i18n.t("agree-terms"));
+                return;
+            }
+
+            switch (loginChannel) {
+                case "wechat": {
+                    setWeChatLogin(true);
+                    break;
+                }
+                case "github": {
+                    Modal.info({
+                        content: i18n.t("login-github"),
+                    });
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        };
+
+        return (
+            <>
+                <LoginButton
+                    provider={"wechat"}
+                    text={i18n.t("login-wechat")}
+                    onLogin={handleLogin}
+                />
+                <LoginButton
+                    provider={"github"}
+                    text={i18n.t("login-github")}
+                    onLogin={handleLogin}
+                />
+            </>
+        );
+    }
+
+    return (
+        <div className="vh-100">
+            <LoginPanel
+                agreementChecked={agreement}
+                handleClickAgreement={() => setAgreement(!agreement)}
+                handleHideQRCode={handleHideQRCode}
+                renderButtonList={renderButtonList}
+                showQRCode={isWeChatLogin}
+            />
+        </div>
+    );
 };

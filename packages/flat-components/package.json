@@ -25,7 +25,7 @@
   },
   "scripts": {
     "lint": "lint-staged",
-    "start": "start-storybook -p 6006 -s public",
+    "start": "start-storybook -p 6006 -s public --no-version-updates",
     "build": "build-storybook -s public",
     "build:dist": "vite build"
   },

@@ -78,10 +78,6 @@ export const RemoveRoomModal: React.FC<RemoveRoomModalProps> = ({
 
     return (
         <Modal
-            wrapClassName="remove-room-modal-container"
-            visible={cancelModalVisible}
-            title={title}
-            onCancel={onCancel}
             footer={[
                 <Button key="Cancel" onClick={onCancel}>
                     {isCreator ? t("think-again") : t("cancel")}
@@ -94,6 +90,10 @@ export const RemoveRoomModal: React.FC<RemoveRoomModalProps> = ({
                     {t("confirm")}
                 </Button>,
             ]}
+            title={title}
+            visible={cancelModalVisible}
+            wrapClassName="remove-room-modal-container"
+            onCancel={onCancel}
         >
             {content()}
         </Modal>

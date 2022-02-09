@@ -38,18 +38,18 @@ export const MainPageNavAvatar: React.FC<MainPageNavAvatarProps> = ({
 
     return (
         <Popover
-            trigger="click"
-            placement="bottomRight"
+            content={renderPopMenuInner}
             overlayClassName="main-page-nav-popover"
+            placement="bottomRight"
             title={renderPopMenuTitle}
+            trigger="click"
             visible={popMenuVisible}
             onVisibleChange={togglePopMenuVisible}
-            content={renderPopMenuInner}
         >
             <Avatar
                 className="main-page-nav-avatar"
-                size={32}
                 icon={<img src={avatar} onError={() => setAvatarLoadFailed(true)} />}
+                size={32}
             />
         </Popover>
     );

@@ -46,7 +46,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     useEffect(() => {
         const mountWindowManager = async (): Promise<void> => {
             if (whiteboardEl && collectorEl && room) {
-                await WindowManager.mount({
+                const windowManager = await WindowManager.mount({
                     room,
                     container: whiteboardEl,
                     collectorContainer: collectorEl,
@@ -61,7 +61,10 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     chessboard: false,
                 });
 
-                whiteboardStore.onMainViewModeChange();
+                whiteboardStore.updateWindowManager(windowManager);
+                whiteboardStore.onMainViewSceneChange();
+                whiteboardStore.onMainViewSceneLengthChange();
+                whiteboardStore.onMainViewRedoUndoStepsChange();
                 whiteboardStore.onWindowManagerBoxStateChange(
                     whiteboardStore.windowManager?.boxState,
                 );
@@ -80,12 +83,15 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         if (whiteboardEl) {
             const whiteboardRatio = whiteboardStore.getWhiteboardRatio();
 
-            const classRoomRightSideWidth = 304;
+            const isSmallClass = whiteboardStore.smallClassRatio === whiteboardRatio;
+            const classRoomRightSideWidth = whiteboardStore.isRightSideClose ? 0 : 304;
+
             let classRoomTopBarHeight: number;
             let classRoomMinWidth: number;
             let classRoomMinHeight: number;
+            let smallClassAvatarWrapMaxWidth: number;
 
-            if (whiteboardStore.smallClassRatio === whiteboardRatio) {
+            if (isSmallClass) {
                 classRoomTopBarHeight = 182;
                 classRoomMinWidth = 1130;
                 classRoomMinHeight = 610;
@@ -110,6 +116,21 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                 whiteboardEl.style.minWidth = `${whiteboardMinWidth}px`;
                 whiteboardEl.style.minHeight = `${whiteboardMinWidth * whiteboardRatio}px`;
             }
+
+            const classRoomWidth = whiteboardWidth + classRoomRightSideWidth;
+            const classRoomWithoutRightSideWidth = classRoomMinWidth - classRoomRightSideWidth;
+
+            if (whiteboardStore.isRightSideClose) {
+                smallClassAvatarWrapMaxWidth =
+                    classRoomWidth < classRoomWithoutRightSideWidth
+                        ? classRoomWithoutRightSideWidth
+                        : classRoomWidth;
+            } else {
+                smallClassAvatarWrapMaxWidth =
+                    classRoomWidth < classRoomMinWidth ? classRoomMinWidth : classRoomWidth;
+            }
+
+            whiteboardStore.updateSmallClassAvatarWrapMaxWidth(smallClassAvatarWrapMaxWidth);
         }
     }, [whiteboardEl, whiteboardStore]);
 
@@ -122,6 +143,11 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
             window.removeEventListener("resize", whiteboardOnResize);
         };
     }, [whiteboardEl, whiteboardOnResize]);
+
+    useEffect(() => {
+        whiteboardOnResize();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [whiteboardStore.isRightSideClose]);
 
     const bindWhiteboard = useCallback((ref: HTMLDivElement | null) => {
         if (ref) {
@@ -177,8 +203,6 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                 <div className="whiteboard-writable-area">
                     <div className="tool-box-out">
                         <ToolBox
-                            room={room}
-                            i18nLanguage={i18n.language}
                             hotkeys={{
                                 arrow: "A",
                                 clear: "",
@@ -194,6 +218,8 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                                 straight: "L",
                                 text: "T",
                             }}
+                            i18nLanguage={i18n.language}
+                            room={room}
                         />
                     </div>
                     <div
@@ -201,7 +227,11 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                             "is-disabled": whiteboardStore.isWindowMaximization,
                         })}
                     >
-                        <RedoUndo room={room} />
+                        <RedoUndo
+                            redoSteps={whiteboardStore.redoSteps}
+                            room={room}
+                            undoSteps={whiteboardStore.undoSteps}
+                        />
                     </div>
                     <div
                         className={classNames("page-controller-box", {
@@ -210,19 +240,19 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     >
                         <ScenesController
                             addScene={whiteboardStore.addMainViewScene}
-                            preScene={whiteboardStore.preMainViewScene}
-                            nextScene={whiteboardStore.nextMainViewScene}
                             currentSceneIndex={whiteboardStore.currentSceneIndex}
+                            disabled={false}
+                            nextScene={whiteboardStore.nextMainViewScene}
+                            preScene={whiteboardStore.preMainViewScene}
                             scenesCount={whiteboardStore.scenesCount}
-                            disabled={whiteboardStore.isFocusWindow}
                         />
                     </div>
                 </div>
                 {!whiteboardStore.isCreator && !whiteboardStore.isWritable && (
                     <div className="raise-hand-container">
                         <RaiseHand
-                            isRaiseHand={classRoomStore.users.currentUser?.isRaiseHand}
                             disableHandRaising={disableHandRaising}
+                            isRaiseHand={classRoomStore.users.currentUser?.isRaiseHand}
                             onRaiseHandChange={classRoomStore.onToggleHandRaising}
                         />
                     </div>

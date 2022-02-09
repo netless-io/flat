@@ -22,11 +22,11 @@ export const StopClassConfirmModal: FC<StopClassConfirmModalProps> = ({
     const { t } = useTranslation();
     return (
         <Modal
-            visible={visible}
-            title={t("confirmation-of-the-end-of-classes")}
             okButtonProps={{ loading }}
-            onOk={onStop}
+            title={t("confirmation-of-the-end-of-classes")}
+            visible={visible}
             onCancel={onCancel}
+            onOk={onStop}
         >
             <p>{t("end-of-class-tips")}</p>
         </Modal>
@@ -57,10 +57,6 @@ export const CloseRoomConfirmModal: FC<CloseRoomConfirmModalProps> = ({
     const { t } = useTranslation();
     return (
         <Modal
-            visible={visible}
-            title={t("close-option")}
-            onOk={onCancel}
-            onCancel={onCancel}
             footer={[
                 <Button key="Cancel" onClick={onCancel}>
                     {t("cancel")}
@@ -68,10 +64,14 @@ export const CloseRoomConfirmModal: FC<CloseRoomConfirmModalProps> = ({
                 <Button key="ReturnMain" loading={hangLoading} onClick={onHang}>
                     {t("hang-up-the-room")}
                 </Button>,
-                <Button key="StopClass" type="primary" loading={stopLoading} onClick={onStop}>
+                <Button key="StopClass" loading={stopLoading} type="primary" onClick={onStop}>
                     {t("end-the-class")}
                 </Button>,
             ]}
+            title={t("close-option")}
+            visible={visible}
+            onCancel={onCancel}
+            onOk={onCancel}
         >
             <p>{t("exit-room-tips")}</p>
         </Modal>
@@ -96,10 +96,10 @@ export const ExitRoomConfirmModal: FC<ExitRoomConfirmModalProps> = ({
     const { t } = useTranslation();
     return (
         <Modal
-            visible={visible}
             title={t("student-sure-to-exit-the-room")}
-            onOk={onExit}
+            visible={visible}
             onCancel={onCancel}
+            onOk={onExit}
         >
             <p>{t("student-exit-room-tip")}</p>
         </Modal>

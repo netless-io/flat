@@ -52,10 +52,10 @@ export const UploadList: Story<CloudStorageUploadItemProps> = ({ onCancel, onRet
     ): React.ReactElement {
         return (
             <CloudStorageUploadItem
-                uploadID={faker.datatype.uuid()}
                 fileName={faker.random.word() + "." + faker.system.commonFileExt()}
                 percent={percent}
                 status={status}
+                uploadID={faker.datatype.uuid()}
                 onCancel={onCancel}
                 onRetry={onRetry}
             />

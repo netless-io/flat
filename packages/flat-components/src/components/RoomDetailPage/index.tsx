@@ -16,8 +16,8 @@ export const RoomDetailPanel: React.FC<RoomDetailPanelProps> = ({
         <div className="room-detail-panel-container">
             <div className="room-detail-panel-body">
                 <RoomDetailBody
-                    roomInfo={roomInfo}
                     jumpToPeriodicRoomDetailPage={jumpToPeriodicRoomDetailPage}
+                    roomInfo={roomInfo}
                     showRoomCountVisible={showRoomCountVisible}
                 />
             </div>

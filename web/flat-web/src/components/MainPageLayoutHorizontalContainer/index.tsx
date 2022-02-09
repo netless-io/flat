@@ -102,17 +102,17 @@ export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizonta
 
         return (
             <MainPageLayoutHorizontal
-                title={title}
-                onBackPreviousPage={onBackPreviousPage}
-                leftMenu={leftMenu}
-                rightMenu={rightMenu}
-                popMenu={popMenu}
-                subMenu={subMenu}
-                onClick={onMenuItemClick}
                 activeKeys={activeKeys}
                 avatarSrc={globalStore.userInfo?.avatar ?? ""}
-                userName={globalStore.userInfo?.name ?? ""}
                 generateAvatar={generateAvatar}
+                leftMenu={leftMenu}
+                popMenu={popMenu}
+                rightMenu={rightMenu}
+                subMenu={subMenu}
+                title={title}
+                userName={globalStore.userInfo?.name ?? ""}
+                onBackPreviousPage={onBackPreviousPage}
+                onClick={onMenuItemClick}
             >
                 {children}
             </MainPageLayoutHorizontal>

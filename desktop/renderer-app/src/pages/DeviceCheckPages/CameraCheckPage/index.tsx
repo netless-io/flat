@@ -66,14 +66,14 @@ export const CameraCheckPage = (): React.ReactElement => {
             <div className="camera-check-container">
                 <p>{t("camera")}</p>
                 <DeviceSelect
-                    devices={devices}
                     currentDeviceID={currentDeviceID}
+                    devices={devices}
                     onChange={setCurrentDeviceID}
                 />
-                <div className="camera-check-info" ref={cameraStream} />
+                <div ref={cameraStream} className="camera-check-info" />
                 <div className="camera-check-btn">
                     <Button onClick={checkFail}>{t("unable-to-see")}</Button>
-                    <Button onClick={checkSuccess} type="primary">
+                    <Button type="primary" onClick={checkSuccess}>
                         {t("able-to-see")}
                     </Button>
                 </div>

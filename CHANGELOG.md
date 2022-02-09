@@ -1,3 +1,76 @@
+# [1.6.0](https://github.com/netless-io/flat/compare/v1.5.3...v1.6.0) (2022-02-09)
+
+
+### Bug Fixes
+
+* **ci:** storybook lint failed ([#1344](https://github.com/netless-io/flat/issues/1344)) ([a0c49c9](https://github.com/netless-io/flat/commit/a0c49c930ea83d6b4afbb06f39c7014f2c20ac83))
+* **classroom:** language will be reset upon enter classroom ([#1314](https://github.com/netless-io/flat/issues/1314)) ([3756edd](https://github.com/netless-io/flat/commit/3756edd65674bad22cfb7e73c2ea5e0f352553bb))
+* **classroom:** not support require.context ([#1317](https://github.com/netless-io/flat/issues/1317)) ([dda53be](https://github.com/netless-io/flat/commit/dda53be7f0c567a5ea7ec6b4385342fdea0cf513))
+* **component:** timing ui tremble ([#1334](https://github.com/netless-io/flat/issues/1334)) ([b252d3f](https://github.com/netless-io/flat/commit/b252d3f15607ad161616e441f1503935bd549036))
+* **flat-components:** fix i18n ([#1345](https://github.com/netless-io/flat/issues/1345)) ([dc53c45](https://github.com/netless-io/flat/commit/dc53c452a8bf429c67bf3c875e38aa6962269724))
+* **i18n:** i18n fixes ([#1312](https://github.com/netless-io/flat/issues/1312)) ([198e065](https://github.com/netless-io/flat/commit/198e0650440329adbb880575b49f895c73c2c5e2)), closes [#1314](https://github.com/netless-io/flat/issues/1314)
+* **i18n:** optimize room started text ([#1313](https://github.com/netless-io/flat/issues/1313)) ([27e2ebd](https://github.com/netless-io/flat/commit/27e2ebd8722e25c78321031bd86db86dedcc86fb))
+* **renderer-app,web:** pan list result incorrect when file number more then 50 ([#1299](https://github.com/netless-io/flat/issues/1299)) ([f3a38c3](https://github.com/netless-io/flat/commit/f3a38c30c682ff483ffeb1a7ae5369769a057cab))
+* **renderer-app:** error of whiteboard resize ([#1323](https://github.com/netless-io/flat/issues/1323)) ([dfefbac](https://github.com/netless-io/flat/commit/dfefbac9df676ac4efc463c61ff655c70e4225b5))
+* **renderer-app:** monaco app cannot be opened after a build ([#1307](https://github.com/netless-io/flat/issues/1307)) ([1153c7c](https://github.com/netless-io/flat/commit/1153c7cfe2cd9af9fa7769408320045049e006c5))
+* **renderer-app:** preview file style loading failed ([#1298](https://github.com/netless-io/flat/issues/1298)) ([6cad8cf](https://github.com/netless-io/flat/commit/6cad8cf77b645b95298ee93ac439ec36ada57c61))
+* **web:** bundle sourcemap incorrect ([#1320](https://github.com/netless-io/flat/issues/1320)) ([c7e3e17](https://github.com/netless-io/flat/commit/c7e3e17bccbd52cfb79b832527cbf6a7b48ccbf5))
+
+
+### Features
+
+* **renderer-app:** change render app bundler to vite ([#1265](https://github.com/netless-io/flat/issues/1265)) ([ad71ae8](https://github.com/netless-io/flat/commit/ad71ae8f6c07eb39297b1e8e7353d803b8fd3d6a))
+* **ui:** add ClassRoom Timer ([#1288](https://github.com/netless-io/flat/issues/1288)) ([dbd49e9](https://github.com/netless-io/flat/commit/dbd49e9f1f2240464cf985ec0f2872805360caa9))
+* **web,renderer-app,flat-component:** support agora sso ([#1341](https://github.com/netless-io/flat/issues/1341)) ([049dd1f](https://github.com/netless-io/flat/commit/049dd1f4017a668446b6d3133dba39682ebc9e7d))
+* **web:** enable acoustic echo cancellation and noise suppression ([#1308](https://github.com/netless-io/flat/issues/1308)) ([1c5832d](https://github.com/netless-io/flat/commit/1c5832d4943c3481966614ab874721f5949c6aca))
+* **web:** remember last device id ([#1336](https://github.com/netless-io/flat/issues/1336)) ([fd5d93c](https://github.com/netless-io/flat/commit/fd5d93cdd463ead7b216a2c952e1507ff2545b4c))
+
+
+
+## [1.5.3](https://github.com/netless-io/flat/compare/v1.5.2...v1.5.3) (2022-01-13)
+
+
+### Bug Fixes
+
+* **desktop:** temp solution to the inability to screen share and preview files ([#1295](https://github.com/netless-io/flat/issues/1295)) ([00d5a6a](https://github.com/netless-io/flat/commit/00d5a6ab2c0d93bd7212ae5b47134c9f27e507bd))
+
+
+
+## [1.5.2](https://github.com/netless-io/flat/compare/v1.5.1...v1.5.2) (2022-01-13)
+
+
+### Bug Fixes
+
+* **desktop:** online courseware remote execution vulnerability ([#1290](https://github.com/netless-io/flat/issues/1290)) ([81c18a6](https://github.com/netless-io/flat/commit/81c18a6764a6bc4b7d6f149437a1f13d8e917223))
+
+
+
+## [1.5.1](https://github.com/netless-io/flat/compare/v1.5.0...v1.5.1) (2022-01-11)
+
+
+### Bug Fixes
+
+* **electron:** ui display error when upgrading flat ([#1284](https://github.com/netless-io/flat/issues/1284)) ([9469f6a](https://github.com/netless-io/flat/commit/9469f6a5cbc9bd28a3b75a3793efc08b09eff22d))
+
+
+
+# [1.5.0](https://github.com/netless-io/flat/compare/v1.4.0...v1.5.0) (2022-01-11)
+
+
+### Bug Fixes
+
+* **library:** sync camera on insert image ([#1281](https://github.com/netless-io/flat/issues/1281)) ([3b4e7d8](https://github.com/netless-io/flat/commit/3b4e7d895b858c461722f568d7655a15e01b4521))
+* **project:** refresh channel info on reconnect ([#1274](https://github.com/netless-io/flat/issues/1274)) ([8fa0c1f](https://github.com/netless-io/flat/commit/8fa0c1f43b971a864265eef972d7c623106fe7c5))
+* **renderer-app:** hot keys invalid in preview file window ([#1264](https://github.com/netless-io/flat/issues/1264)) ([f3f2bef](https://github.com/netless-io/flat/commit/f3f2bef138fa0c8b13027a6b28d7ad310399ca31))
+
+
+### Features
+
+* **desktop:** support macOS localized ([#1260](https://github.com/netless-io/flat/issues/1260)) ([d6c668a](https://github.com/netless-io/flat/commit/d6c668ab4fdd81b0662beee5b668d0a39604d058))
+* **web:** add "open in browser" tip in wechat browser ([#1268](https://github.com/netless-io/flat/issues/1268)) ([76e87c8](https://github.com/netless-io/flat/commit/76e87c8678e34604e922808bbd64b693d865e2e6))
+
+
+
 # [1.4.0](https://github.com/netless-io/flat/compare/v1.3.0...v1.4.0) (2021-12-30)
 
 

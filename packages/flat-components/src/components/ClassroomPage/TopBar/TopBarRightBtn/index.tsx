@@ -17,9 +17,9 @@ export const TopBarRightBtn: FC<TopBarRightBtnProps> = ({
 }) => (
     <button
         {...restProps}
-        title={title}
-        disabled={disabled}
         className={classNames("topbar-right-btn", className)}
+        disabled={disabled}
+        title={title}
     >
         {icon}
     </button>

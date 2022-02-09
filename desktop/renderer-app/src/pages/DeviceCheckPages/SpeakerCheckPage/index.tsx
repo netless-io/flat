@@ -81,8 +81,8 @@ export const SpeakerCheckPage = (): React.ReactElement => {
                 <div className="speaker-check-inner">
                     <p>{t("headphone")}</p>
                     <DeviceSelect
-                        devices={devices}
                         currentDeviceID={currentDeviceID}
+                        devices={devices}
                         onChange={setCurrentDeviceID}
                     />
                     <p>{t("audition-sound")}</p>
@@ -100,7 +100,7 @@ export const SpeakerCheckPage = (): React.ReactElement => {
                 </div>
                 <div className="speaker-btn-container">
                     <Button onClick={checkFail}>{t("unable-to-hear")}</Button>
-                    <Button onClick={checkSuccess} type="primary">
+                    <Button type="primary" onClick={checkSuccess}>
                         {t("able-to-hear")}
                     </Button>
                 </div>

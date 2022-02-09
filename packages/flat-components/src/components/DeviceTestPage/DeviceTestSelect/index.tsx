@@ -28,7 +28,7 @@ export const DeviceTestSelect: React.FC<DeviceTestSelectProps> = ({
                     <Select value={currentDeviceID} onChange={onChange}>
                         {devices?.map(({ deviceId, label }) => {
                             return (
-                                <Select.Option value={deviceId} key={deviceId}>
+                                <Select.Option key={deviceId} value={deviceId}>
                                     {label}
                                 </Select.Option>
                             );

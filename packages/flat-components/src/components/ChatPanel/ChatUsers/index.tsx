@@ -39,12 +39,12 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
         return (
             <List
                 className="fancy-scrollbar"
+                data={users}
                 height={height}
-                width={width}
                 rowCount={users.length}
                 rowHeight={40}
                 rowRenderer={rowRenderer}
-                data={users}
+                width={width}
             />
         );
     };
@@ -56,7 +56,7 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
             {isShowCancelAllHandRaising && (
                 <div className="chat-users-cancel-hands-wrap">
                     <button className="chat-users-cancel-hands" onClick={onCancelAllHandRaising}>
-                        <img src={noHandSVG} alt="cancel hand raising" />
+                        <img alt="cancel hand raising" src={noHandSVG} />
                         {t("cancel-hand-raising")}
                     </button>
                 </div>

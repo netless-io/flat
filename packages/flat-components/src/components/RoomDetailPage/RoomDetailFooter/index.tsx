@@ -46,8 +46,8 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
             <div className="room-detail-footer-btn-container">
                 <Button
                     className="room-detail-footer-btn"
-                    onClick={onReplayRoom}
                     disabled={!room.hasRecord}
+                    onClick={onReplayRoom}
                 >
                     {t("view-replay")}
                 </Button>
@@ -61,48 +61,48 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
     return (
         <div className="room-detail-footer-btn-container">
             <Button
-                className="room-detail-footer-btn"
                 danger
-                onClick={() => setCancelModalVisible(true)}
+                className="room-detail-footer-btn"
                 disabled={!disabled}
+                onClick={() => setCancelModalVisible(true)}
             >
                 {title}
             </Button>
             {isCreator && (
                 <Button
                     className="room-detail-footer-btn"
-                    onClick={onModifyRoom}
                     disabled={!disabled}
+                    onClick={onModifyRoom}
                 >
                     {t("modify-room")}
                 </Button>
             )}
             <Button className="room-detail-footer-btn" onClick={() => setIsShowInviteModal(true)}>
-                {t("copy-invitation")}
+                {t("invitation")}
             </Button>
             <Button className="room-detail-footer-btn" type="primary" onClick={onJoinRoom}>
                 {isCreator && room.roomStatus === RoomStatus.Idle ? t("begin") : t("join-room")}
             </Button>
             <InviteModal
-                visible={isShowInviteModal}
-                room={room}
                 baseUrl={inviteBaseUrl}
                 periodicWeeks={periodicWeeks}
+                room={room}
                 userName={userName}
+                visible={isShowInviteModal}
+                onCancel={hideInviteModal}
                 onCopy={text => {
                     onCopyInvitation(text);
                     void message.success(t("copy-success"));
                     hideInviteModal();
                 }}
-                onCancel={hideInviteModal}
             />
             <RemoveRoomModal
                 cancelModalVisible={cancelModalVisible}
-                onCancel={() => setCancelModalVisible(false)}
                 isCreator={isCreator}
-                roomUUID={room?.roomUUID}
-                periodicUUID={room?.periodicUUID}
                 isPeriodicDetailsPage={isPeriodicDetailsPage}
+                periodicUUID={room?.periodicUUID}
+                roomUUID={room?.roomUUID}
+                onCancel={() => setCancelModalVisible(false)}
                 onCancelRoom={onCancelRoom}
             />
         </div>

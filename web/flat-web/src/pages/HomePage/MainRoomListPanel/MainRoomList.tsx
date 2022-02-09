@@ -163,12 +163,12 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                         <Fragment key={room.roomUUID}>
                             {shouldShowDate && beginTime && <RoomListDate date={beginTime} />}
                             <RoomListItem
-                                title={room.title!}
                                 beginTime={beginTime}
-                                endTime={endTime}
-                                status={getRoomStatus(room.roomStatus)}
-                                isPeriodic={!!room.periodicUUID}
                                 buttons={[getSubActions(room), primaryAction(room.roomStatus)]}
+                                endTime={endTime}
+                                isPeriodic={!!room.periodicUUID}
+                                status={getRoomStatus(room.roomStatus)}
+                                title={room.title!}
                                 onClickMenu={key => {
                                     switch (key) {
                                         case "details": {
@@ -225,31 +225,31 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
             {currentRoom && (
                 <RemoveRoomModal
                     cancelModalVisible={cancelModalVisible}
-                    onCancel={hideCancelModal}
                     isCreator={currentRoom.ownerUUID === globalStore.userUUID}
-                    onCancelRoom={removeRoomHandler}
-                    roomUUID={currentRoom.roomUUID}
-                    periodicUUID={currentRoom.periodicUUID}
                     isPeriodicDetailsPage={false}
+                    periodicUUID={currentRoom.periodicUUID}
+                    roomUUID={currentRoom.roomUUID}
+                    onCancel={hideCancelModal}
+                    onCancelRoom={removeRoomHandler}
                 />
             )}
             {currentRoom && (
                 <InviteModal
                     baseUrl={FLAT_WEB_BASE_URL}
-                    visible={inviteModalVisible}
+                    periodicWeeks={periodicInfo?.periodic.weeks}
                     room={currentRoom}
                     userName={globalStore.userName ?? ""}
-                    periodicWeeks={periodicInfo?.periodic.weeks}
-                    onCopy={onCopy}
+                    visible={inviteModalVisible}
                     onCancel={hideInviteModal}
+                    onCopy={onCopy}
                 />
             )}
             {currentRoom && (
                 <RemoveHistoryRoomModal
-                    visible={removeHistoryVisible}
-                    onConfirm={removeConfirm}
-                    onCancel={hideRemoveHistoryModal}
                     loading={removeHistoryLoading}
+                    visible={removeHistoryVisible}
+                    onCancel={hideRemoveHistoryModal}
+                    onConfirm={removeConfirm}
                 />
             )}
         </>
@@ -365,7 +365,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                 });
             }
             if (room.roomUUID) {
-                result.push({ key: "invite", text: t("copy-invitation") });
+                result.push({ key: "invite", text: t("invitation") });
             }
         }
         return result as SubActions;

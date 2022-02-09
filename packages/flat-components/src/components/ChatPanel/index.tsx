@@ -20,15 +20,15 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel(props) {
         <div className="chat-panel">
             <Tabs
                 activeKey={activeTab}
-                onChange={setActiveTab as (key: string) => void}
                 tabBarGutter={0}
+                onChange={setActiveTab as (key: string) => void}
             >
-                <Tabs.TabPane tab={<ChatTabTitle>{t("messages")}</ChatTabTitle>} key="messages">
+                <Tabs.TabPane key="messages" tab={<ChatTabTitle>{t("messages")}</ChatTabTitle>}>
                     <ChatMessages {...props} visible={activeTab === "messages"} />
                 </Tabs.TabPane>
                 <Tabs.TabPane
-                    tab={<ChatTabTitle {...props}>{t("users")}</ChatTabTitle>}
                     key="users"
+                    tab={<ChatTabTitle {...props}>{t("users")}</ChatTabTitle>}
                 >
                     <ChatUsers {...props} />
                 </Tabs.TabPane>

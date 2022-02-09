@@ -3,9 +3,10 @@ import "./BigClassPage.less";
 import { message } from "antd";
 import classNames from "classnames";
 import {
+    CloudRecordBtn,
+    Timer,
     LoadingPage,
     NetworkStatus,
-    RecordButton,
     RoomInfo,
     TopBar,
     TopBarDivider,
@@ -16,7 +17,7 @@ import { useParams } from "react-router-dom";
 import { RoomPhase } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
-import { RoomStatus, RoomType } from "../../api-middleware/flatServer/constants";
+import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RtcChannelType } from "../../api-middleware/rtc/room";
 import { ChatPanel } from "../../components/ChatPanel";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
@@ -175,15 +176,14 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 <TopBar
                     isMac={runtime.isMac}
                     left={renderTopBarLeft()}
-                    center={renderTopBarCenter()}
                     right={renderTopBarRight()}
                 />
                 <div className="realtime-content">
                     <div className="container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
                         <Whiteboard
-                            whiteboardStore={whiteboardStore}
                             classRoomStore={classRoomStore}
+                            whiteboardStore={whiteboardStore}
                         />
                     </div>
                     {renderRealtimePanel()}
@@ -202,29 +202,17 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         return (
             <>
                 <NetworkStatus networkQuality={classRoomStore.networkQuality} />
-                {!classRoomStore.isCreator && (
-                    <RoomInfo roomStatus={classRoomStore.roomStatus} roomType={RoomType.BigClass} />
-                )}
-            </>
-        );
-    }
-
-    function renderTopBarCenter(): React.ReactNode {
-        if (!classRoomStore.isCreator) {
-            return null;
-        }
-        return (
-            <>
-                {classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Started && (
-                    <RecordButton
-                        isRecording={classRoomStore.isRecording}
-                        onClick={() =>
-                            classRoomStore.toggleRecording({
-                                onStop() {
-                                    void message.success(t("recording-completed-tips"));
-                                },
-                            })
-                        }
+                {classRoomStore.isCreator ? (
+                    classRoomStore.roomInfo?.beginTime && (
+                        <Timer
+                            beginTime={classRoomStore.roomInfo.beginTime}
+                            roomStatus={classRoomStore.roomStatus}
+                        />
+                    )
+                ) : (
+                    <RoomInfo
+                        roomStatus={classRoomStore.roomStatus}
+                        roomType={classRoomStore.roomInfo?.roomType}
                     />
                 )}
             </>
@@ -238,28 +226,40 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
                     <TopBarRightBtn
-                        title="Share Screen"
                         icon={
                             shareScreenStore.enableShareScreenStatus
                                 ? "share-screen-active"
                                 : "share-screen"
                         }
+                        title={t("share-screen.self")}
                         onClick={handleShareScreen}
                     />
                 )}
 
+                {classRoomStore.isCreator && (
+                    <CloudRecordBtn
+                        isRecording={classRoomStore.isRecording}
+                        onClick={() => {
+                            void classRoomStore.toggleRecording({
+                                onStop() {
+                                    void message.success(t("recording-completed-tips"));
+                                },
+                            });
+                        }}
+                    />
+                )}
                 {/* TODO: open cloud-storage sub window */}
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    title="Exit"
                     icon="exit"
+                    title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    title={isRealtimeSideOpen ? "hide side panel" : "show side panel"}
                     icon={isRealtimeSideOpen ? "hide-side" : "hide-side-active"}
+                    title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={handleSideOpenerSwitch}
                 />
             </>
@@ -275,6 +275,12 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
         return (
             <RealtimePanel
+                chatSlot={
+                    <ChatPanel
+                        classRoomStore={classRoomStore}
+                        disableMultipleSpeakers={true}
+                    ></ChatPanel>
+                }
                 isShow={isRealtimeSideOpen}
                 isVideoOn={true}
                 videoSlot={
@@ -285,15 +291,15 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                             })}
                         >
                             <BigClassAvatar
-                                isCreator={classRoomStore.isCreator}
-                                userUUID={classRoomStore.userUUID}
                                 avatarUser={creator}
+                                generateAvatar={generateAvatar}
                                 isAvatarUserCreator={true}
+                                isCreator={classRoomStore.isCreator}
+                                mini={isCreatorMini}
                                 rtc={classRoomStore.rtc}
                                 updateDeviceState={classRoomStore.updateDeviceState}
-                                mini={isCreatorMini}
+                                userUUID={classRoomStore.userUUID}
                                 onExpand={onVideoAvatarExpand}
-                                generateAvatar={generateAvatar}
                             />
                         </div>
 
@@ -304,24 +310,18 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                                 })}
                             >
                                 <BigClassAvatar
-                                    isCreator={classRoomStore.isCreator}
                                     avatarUser={speakingJoiner}
-                                    userUUID={classRoomStore.userUUID}
+                                    generateAvatar={generateAvatar}
+                                    isCreator={classRoomStore.isCreator}
+                                    mini={mainSpeaker !== speakingJoiner}
                                     rtc={classRoomStore.rtc}
                                     updateDeviceState={classRoomStore.updateDeviceState}
-                                    mini={mainSpeaker !== speakingJoiner}
+                                    userUUID={classRoomStore.userUUID}
                                     onExpand={onVideoAvatarExpand}
-                                    generateAvatar={generateAvatar}
                                 />
                             </div>
                         )}
                     </div>
-                }
-                chatSlot={
-                    <ChatPanel
-                        classRoomStore={classRoomStore}
-                        disableMultipleSpeakers={true}
-                    ></ChatPanel>
                 }
             />
         );

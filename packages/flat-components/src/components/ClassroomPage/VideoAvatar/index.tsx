@@ -92,10 +92,10 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
                         }}
                     />
                     <img
+                        alt="no camera"
                         className="video-avatar-background-avatar"
                         src={avatar}
                         onError={() => setAvatarLoadFailed(true)}
-                        alt="no camera"
                     />
                 </div>
             )}
@@ -106,13 +106,14 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
             >
                 {mini ? (
                     <button className="video-avatar-expand" onClick={onExpand}>
-                        <img src={videoExpandSVG} alt="expand" />
+                        <img alt="expand" src={videoExpandSVG} />
                     </button>
                 ) : (
                     <div className="video-avatar-ctrl-content">
                         <h1 className="video-avatar-user-name">{avatarUser.name}</h1>
                         <div className="video-avatar-ctrl-btns">
                             <button
+                                disabled={isCameraCtrlDisable}
                                 onClick={() => {
                                     if (isCreator || userUUID === avatarUser.userUUID) {
                                         updateDeviceState(
@@ -122,16 +123,16 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
                                         );
                                     }
                                 }}
-                                disabled={isCameraCtrlDisable}
                             >
                                 <img
-                                    src={avatarUser.camera ? cameraSVG : cameraDisabledSVG}
                                     alt="camera"
-                                    width="22"
                                     height="22"
+                                    src={avatarUser.camera ? cameraSVG : cameraDisabledSVG}
+                                    width="22"
                                 />
                             </button>
                             <button
+                                disabled={isMicCtrlDisable}
                                 onClick={() => {
                                     if (isCreator || userUUID === avatarUser.userUUID) {
                                         updateDeviceState(
@@ -141,13 +142,12 @@ export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
                                         );
                                     }
                                 }}
-                                disabled={isMicCtrlDisable}
                             >
                                 <img
-                                    src={avatarUser.mic ? microphoneSVG : microphoneDisabledSVG}
                                     alt="microphone"
-                                    width="22"
                                     height="22"
+                                    src={avatarUser.mic ? microphoneSVG : microphoneDisabledSVG}
+                                    width="22"
                                 />
                             </button>
                         </div>

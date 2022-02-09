@@ -47,11 +47,11 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
 
                 return (
                     <ScreenItem
-                        info={info}
-                        handleClick={isActive ? cancelSelected : onClick}
-                        active={isActive}
                         key={key}
+                        active={isActive}
                         activeKey={key}
+                        handleClick={isActive ? cancelSelected : onClick}
+                        info={info}
                     />
                 );
             })}
@@ -61,11 +61,11 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
 
                 return (
                     <ScreenItem
-                        info={info}
-                        handleClick={isActive ? cancelSelected : onClick}
-                        active={activeInfo === key}
                         key={key}
+                        active={activeInfo === key}
                         activeKey={key}
+                        handleClick={isActive ? cancelSelected : onClick}
+                        info={info}
                     />
                 );
             })}
@@ -97,7 +97,7 @@ const ScreenItem = observer<ScreenItemProps>(function ScreenItem({
                     })}
                     onClick={() => handleClick(screenInfo, activeKey)}
                 >
-                    <img src={uint8ArrayToImageURL(info.image)} alt="screenshots" />
+                    <img alt="screenshots" src={uint8ArrayToImageURL(info.image)} />
                 </div>
                 <span>{screenInfo.name}</span>
             </div>

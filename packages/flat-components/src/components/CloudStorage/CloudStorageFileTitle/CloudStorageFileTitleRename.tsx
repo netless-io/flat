@@ -44,29 +44,29 @@ export const CloudStorageFileTitleRename = React.memo<CloudStorageFileTitleRenam
             <>
                 <Input
                     ref={inputRef}
-                    size="small"
                     className="cloud-storage-file-title-rename-input"
+                    size="small"
                     value={name}
                     onChange={e => setText(e.currentTarget.value)}
                     onPressEnter={onConfirm}
                 />
                 <Button
-                    type="text"
+                    className="cloud-storage-file-title-rename-btn"
                     shape="circle"
                     size="small"
-                    className="cloud-storage-file-title-rename-btn"
+                    type="text"
                     onClick={onConfirm}
                 >
-                    <img src={checkSVG} width={22} height={22} alt="confirm" />
+                    <img alt="confirm" height={22} src={checkSVG} width={22} />
                 </Button>
                 <Button
-                    type="text"
+                    className="cloud-storage-file-title-rename-btn"
                     shape="circle"
                     size="small"
-                    className="cloud-storage-file-title-rename-btn"
+                    type="text"
                     onClick={onCancel}
                 >
-                    <img src={crossSVG} width={22} height={22} alt="cancel" />
+                    <img alt="cancel" height={22} src={crossSVG} width={22} />
                 </Button>
             </>
         );

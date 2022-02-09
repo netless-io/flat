@@ -53,14 +53,14 @@ export const LoadingPage: FC<LoadingPageProps> = ({
                 })}
             />
             <div className="loading-page-content">
-                <img className="loading-page-image" src={loadingGIF} alt="loading" />
+                <img alt="loading" className="loading-page-image" src={loadingGIF} />
                 {text && <span>{text}</span>}
             </div>
             <Button
-                size="large"
                 className={classNames("loading-page-return-btn", {
                     "is-show": isShowReturnHomePage,
                 })}
+                size="large"
                 onClick={typeof onTimeout === "string" ? timeoutBehavior(onTimeout) : onTimeout}
             >
                 {timeoutText}
