@@ -111,7 +111,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
             <div style={{ padding: "4px 12px 0 14px", color: "gray" }}>{t("servers")}</div>
             {regions.map(region => (
                 <Menu.Item key={region}>
-                    <img src={RegionSVG[region]} alt={region} style={{ width: 22 }} />
+                    <img alt={region} src={RegionSVG[region]} style={{ width: 22 }} />
                     <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
                 </Menu.Item>
             ))}
@@ -123,11 +123,11 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
             <div className="edit-room-body fancy-scrollbar">
                 <div className="edit-room-mid">
                     <Form
+                        className="edit-room-form"
                         form={form}
+                        initialValues={defaultValues}
                         layout="vertical"
                         name="createRoom"
-                        initialValues={defaultValues}
-                        className="edit-room-form"
                         onFieldsChange={formValidateStatus}
                     >
                         <Form.Item
@@ -140,8 +140,6 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                             ]}
                         >
                             <Input
-                                placeholder={t("enter-room-theme")}
-                                disabled={type === "periodicSub"}
                                 ref={input => {
                                     if (!input) {
                                         return;
@@ -159,15 +157,17 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                                         }
                                     }, 0);
                                 }}
+                                disabled={type === "periodicSub"}
+                                placeholder={t("enter-room-theme")}
                                 suffix={
                                     <Dropdown
-                                        trigger={["click"]}
                                         overlay={regionMenu}
                                         placement="bottomRight"
+                                        trigger={["click"]}
                                     >
                                         <img
-                                            src={RegionSVG[region]}
                                             alt={region}
+                                            src={RegionSVG[region]}
                                             style={{ cursor: "pointer", width: 22 }}
                                         />
                                     </Dropdown>
@@ -175,7 +175,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                             />
                         </Form.Item>
                         <Form.Item label={t("type")} name="type">
-                            <ClassPicker large={true} disabled={type === "periodicSub"} />
+                            <ClassPicker disabled={type === "periodicSub"} large={true} />
                         </Form.Item>
                         {renderBeginTimePicker(
                             t,
@@ -212,6 +212,8 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                         </Button>
                         <Button
                             className="edit-room-ok"
+                            disabled={!loading && !isFormVetted}
+                            loading={loading}
                             onClick={async () => {
                                 if (!form.isFieldsTouched() && type !== "schedule") {
                                     history.goBack();
@@ -226,8 +228,6 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                                     }
                                 }
                             }}
-                            loading={loading}
-                            disabled={!loading && !isFormVetted}
                         >
                             {type === "schedule" ? t("schedule") : t("modify")}
                         </Button>
@@ -236,24 +236,24 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
             </div>
             {type !== "schedule" && (
                 <Modal
-                    visible={isShowEditSubmitConfirm}
-                    title={renderModalTitle(type)}
-                    onCancel={hideEditSubmitConfirm}
-                    onOk={onSubmitForm}
                     footer={[
                         <Button key="Cancel" onClick={hideEditSubmitConfirm}>
                             {t("cancel")}
                         </Button>,
                         <Button
                             key="Ok"
-                            type="primary"
-                            loading={loading}
                             disabled={!loading && !isFormVetted}
+                            loading={loading}
+                            type="primary"
                             onClick={onSubmitForm}
                         >
                             {t("confirm")}
                         </Button>,
                     ]}
+                    title={renderModalTitle(type)}
+                    visible={isShowEditSubmitConfirm}
+                    onCancel={hideEditSubmitConfirm}
+                    onOk={onSubmitForm}
                 >
                     {renderModalContent(type)}
                 </Modal>

@@ -34,9 +34,6 @@ export const CancelPeriodicRoomModal: React.FC<CancelPeriodicRoomModalProps> = (
 
     return (
         <Modal
-            visible={visible}
-            title={title}
-            onCancel={onCancel}
             footer={[
                 <Button key="Cancel" onClick={onCancel}>
                     {isCreator ? t("think-again") : t("cancel")}
@@ -45,6 +42,9 @@ export const CancelPeriodicRoomModal: React.FC<CancelPeriodicRoomModalProps> = (
                     {t("confirm")}
                 </Button>,
             ]}
+            title={title}
+            visible={visible}
+            onCancel={onCancel}
         >
             {content()}
         </Modal>

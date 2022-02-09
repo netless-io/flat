@@ -24,10 +24,10 @@ export const Overview: Story<RoomListProps<string>> = args => (
             .fill(0)
             .map(() => (
                 <RoomListItem
-                    title={faker.random.words()}
-                    status={chance.pickone(["upcoming", "running", "stopped"])}
-                    isPeriodic={chance.bool()}
                     beginTime={chance.date()}
+                    isPeriodic={chance.bool()}
+                    status={chance.pickone(["upcoming", "running", "stopped"])}
+                    title={faker.random.words()}
                 />
             ))}
     </RoomList>

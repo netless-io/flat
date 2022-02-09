@@ -130,21 +130,21 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
             <div className="room-detail-page-panel-container">
                 <RoomDetailPanel
                     inviteBaseUrl={FLAT_WEB_BASE_URL}
+                    isCreator={isCreator}
+                    isPeriodicDetailsPage={false}
+                    jumpToPeriodicRoomDetailPage={jumpToPeriodicRoomDetailPage}
+                    periodicWeeks={periodicInfo?.periodic.weeks}
+                    room={roomInfo}
+                    roomInfo={roomInfo}
                     showRoomCountVisible={
                         periodicUUID ? roomInfo.roomStatus !== RoomStatus.Stopped : false
                     }
-                    jumpToPeriodicRoomDetailPage={jumpToPeriodicRoomDetailPage}
-                    roomInfo={roomInfo}
-                    room={roomInfo}
                     userName={roomInfo.ownerUserName || ""}
-                    isCreator={isCreator}
-                    isPeriodicDetailsPage={false}
-                    periodicWeeks={periodicInfo?.periodic.weeks}
+                    onCancelRoom={onCancelRoom}
+                    onCopyInvitation={text => navigator.clipboard.writeText(text)}
                     onJoinRoom={joinRoom}
                     onModifyRoom={jumpToModifyRoom}
                     onReplayRoom={jumpToReplayPage}
-                    onCancelRoom={onCancelRoom}
-                    onCopyInvitation={text => navigator.clipboard.writeText(text)}
                 />
             </div>
         </div>

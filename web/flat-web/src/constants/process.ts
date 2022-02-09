@@ -16,6 +16,10 @@ export const AGORA = Object.freeze({
     APP_ID: process.env.AGORA_APP_ID,
 });
 
+export const AGORA_OAUTH = Object.freeze({
+    CLIENT_ID: process.env.AGORA_OAUTH_CLIENT_ID,
+});
+
 export const WECHAT = Object.freeze({
     APP_ID: process.env.WECHAT_APP_ID,
 });

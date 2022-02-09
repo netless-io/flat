@@ -33,9 +33,9 @@ export function TopBarRightBtn({
     return (
         <TopBarRightBtnImpl
             {...restProps}
-            title={title}
             disabled={disabled}
-            icon={<img src={Icons[icon]} alt={title} />}
+            icon={<img alt={title} src={Icons[icon]} />}
+            title={title}
         />
     );
 }

@@ -16,7 +16,6 @@ import {
     RoomState,
     SceneDefinition,
     ViewMode,
-    ViewVisionMode,
     WhiteWebSdk,
 } from "white-web-sdk";
 import { RoomType } from "../../../../packages/flat-components/src/types/room";
@@ -39,12 +38,15 @@ export class WhiteboardStore {
     public isShowPreviewPanel = false;
     public isFileOpen = false;
     public isKicked = false;
-    public isFocusWindow = false;
     public isWindowMaximization = false;
+    public isRightSideClose = false;
     public currentSceneIndex = 0;
     public scenesCount = 0;
     public smallClassRatio = 8.3 / 16;
     public otherClassRatio = 10.46 / 16;
+    public smallClassAvatarWrapMaxWidth = 0;
+    public redoSteps = 0;
+    public undoSteps = 0;
 
     /** is room Creator */
     public readonly isCreator: boolean;
@@ -69,6 +71,10 @@ export class WhiteboardStore {
         makeAutoObservable<this, "preloadPPTResource">(this, {
             room: observable.ref,
             preloadPPTResource: false,
+            addMainViewScene: false,
+            nextMainViewScene: false,
+            preMainViewScene: false,
+            windowManager: false,
         });
 
         this.cloudStorageStore = new CloudStorageStore({
@@ -105,6 +111,12 @@ export class WhiteboardStore {
     };
 
     public updateWindowManager = (windowManager: WindowManager): void => {
+        if (process.env.DEV) {
+            (window as any).manager = windowManager;
+        }
+        this.windowManager = windowManager;
+
+        this.updateCurrentSceneIndex(windowManager.mainViewSceneIndex);
         this.windowManager = windowManager;
     };
 
@@ -120,8 +132,16 @@ export class WhiteboardStore {
         this.isWindowMaximization = isMaximization;
     };
 
-    public updateFocusWindowManager = (isFocus: boolean): void => {
-        this.isFocusWindow = isFocus;
+    public updateRedoSteps = (steps: number): void => {
+        this.redoSteps = steps;
+    };
+
+    public updateUndoSteps = (steps: number): void => {
+        this.undoSteps = steps;
+    };
+
+    public updateSmallClassAvatarWrapMaxWidth = (smallClassAvatarWrapMaxWidth: number): void => {
+        this.smallClassAvatarWrapMaxWidth = smallClassAvatarWrapMaxWidth;
     };
 
     public getWhiteboardRatio = (): number => {
@@ -148,10 +168,8 @@ export class WhiteboardStore {
         this.isShowPreviewPanel = show;
     };
 
-    public switchMainViewToWriter = async (): Promise<void> => {
-        if (this.windowManager && this.isFocusWindow) {
-            await this.windowManager.switchMainViewToWriter();
-        }
+    public setRightSideClose = (close: boolean): void => {
+        this.isRightSideClose = close;
     };
 
     public addMainViewScene = async (): Promise<void> => {
@@ -237,17 +255,6 @@ export class WhiteboardStore {
         await this.windowManager?.addApp(config);
     };
 
-    public onMainViewModeChange = (): void => {
-        this.windowManager?.emitter.on("mainViewModeChange", mode => {
-            const isWindow = mode !== ViewVisionMode.Writable;
-            this.updateFocusWindowManager(isWindow);
-            if (!isWindow && this.room) {
-                this.updateCurrentSceneIndex(this.room.state.sceneState.index);
-                this.updateScenesCount(this.room.state.sceneState.scenes.length);
-            }
-        });
-    };
-
     public onWindowManagerBoxStateChange = (
         initialBoxState?: "normal" | "minimized" | "maximized",
     ): void => {
@@ -259,7 +266,28 @@ export class WhiteboardStore {
         });
     };
 
+    public onMainViewSceneChange = (): void => {
+        this.windowManager?.emitter.on("mainViewSceneIndexChange", scene => {
+            if (this.room) {
+                this.updateCurrentSceneIndex(scene);
+            }
+        });
+    };
+
+    public onMainViewSceneLengthChange = (): void => {
+        this.windowManager?.emitter.on("mainViewScenesLengthChange", length => {
+            this.updateScenesCount(length);
+        });
+    };
+
+    public onMainViewRedoUndoStepsChange = (): void => {
+        this.windowManager?.mainView.callbacks.on("onCanUndoStepsUpdate", this.updateUndoSteps);
+        this.windowManager?.mainView.callbacks.on("onCanRedoStepsUpdate", this.updateRedoSteps);
+    };
+
     public destroyWindowManager = (): void => {
+        this.windowManager?.mainView.callbacks.off("onCanUndoStepsUpdate", this.updateUndoSteps);
+        this.windowManager?.mainView.callbacks.off("onCanRedoStepsUpdate", this.updateRedoSteps);
         this.windowManager?.destroy();
         this.windowManager = null;
     };
@@ -350,14 +378,6 @@ export class WhiteboardStore {
                     } catch (err) {
                         console.log(err);
                     }
-
-                    if (
-                        this.room &&
-                        this.windowManager?.mainView.mode === ViewVisionMode.Writable
-                    ) {
-                        this.updateCurrentSceneIndex(this.room.state.sceneState.index);
-                        this.updateScenesCount(this.room.state.sceneState.scenes.length);
-                    }
                 },
                 onDisconnectWithError: error => {
                     void message.error(this.i18n.t("on-disconnect-with-error"));
@@ -393,14 +413,7 @@ export class WhiteboardStore {
 
         this.updateRoom(room);
 
-        this.updateCurrentSceneIndex(room.state.sceneState.index);
-
         this.updateScenesCount(room.state.sceneState.scenes.length);
-
-        if (this.room) {
-            const windowManager = this.room.getInvisiblePlugin(WindowManager.kind) as WindowManager;
-            this.updateWindowManager(windowManager);
-        }
 
         if (NODE_ENV === "development") {
             (window as any).room = room;
@@ -507,8 +520,6 @@ export class WhiteboardStore {
     };
 
     public insertImage = async (file: CloudStorageFile): Promise<void> => {
-        await this.switchMainViewToWriter();
-
         const room = this.room;
         if (!room) {
             return;
@@ -541,7 +552,7 @@ export class WhiteboardStore {
         const { centerX, centerY } = room.state.cameraState;
         width *= scale;
         height *= scale;
-        room.insertImage({
+        this.windowManager?.mainView.insertImage({
             uuid,
             centerX,
             centerY,
@@ -549,12 +560,12 @@ export class WhiteboardStore {
             height: Math.floor(height),
             locked: false,
         });
-        room.completeImageUpload(uuid, file.fileURL);
+        this.windowManager?.mainView.completeImageUpload(uuid, file.fileURL);
 
         // 2. move camera to fit image height
         width /= 0.8;
         height /= 0.8;
-        room.moveCameraToContain({
+        this.windowManager?.moveCameraToContain({
             originX: centerX - width / 2,
             originY: centerY - height / 2,
             width: width,

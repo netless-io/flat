@@ -19,7 +19,7 @@ export const RoomListDate: React.FC<RoomListDateProps> = ({ date }) => {
     const lang = i18n.language;
     return (
         <div className="room-list-date">
-            <img src={calendarSVG} alt="" />
+            <img alt="" src={calendarSVG} />
             <time dateTime={date.toUTCString()}>
                 {format(date, "MMM do", { locale: lang?.startsWith("zh") ? zhCN : enUS })}
                 {" · "}
@@ -107,9 +107,9 @@ function renderButtons<T extends string>(
             result.push(
                 <Button
                     key={key}
+                    disabled={disabled}
                     type="primary"
                     onClick={() => onClickMenu?.(key)}
-                    disabled={disabled}
                 >
                     {text}
                 </Button>,
@@ -136,8 +136,8 @@ function renderSubMenu<T extends string>(
                     ))}
                 </Menu>
             }
-            trigger={["click"]}
             overlayClassName={overlayClassName}
+            trigger={["click"]}
         >
             <Button className="room-list-item-more">...</Button>
         </Dropdown>
@@ -158,7 +158,7 @@ export function RoomListEmpty({ isHistory }: RoomListEmptyProps): ReactElement {
     const { t } = useTranslation();
     return (
         <div className="room-empty-box">
-            <img src={isHistory ? emptyHistorySVG : emptyRoomSVG} alt="empty" />
+            <img alt="empty" src={isHistory ? emptyHistorySVG : emptyRoomSVG} />
             <span>{isHistory ? t("no-record") : t("no-room")}</span>
         </div>
     );
@@ -173,8 +173,8 @@ export function RoomListSkeletons(): ReactElement {
                     <Skeleton
                         key={i}
                         active
-                        title={false}
                         paragraph={{ rows: 4, width: ["13%", "50%", "13%", "13%"] }}
+                        title={false}
                     />
                 ))}
         </div>

@@ -16,7 +16,7 @@ export const ChatPanelReplay = observer<ChatPanelReplayProps>(function ChatPanel
     return (
         <div className="chat-panel">
             <Tabs defaultActiveKey="messages" tabBarGutter={0}>
-                <Tabs.TabPane tab={t("messages")} key="messages">
+                <Tabs.TabPane key="messages" tab={t("messages")}>
                     <ChatMessagesReplay classRoomReplayStore={classRoomReplayStore} />
                 </Tabs.TabPane>
             </Tabs>

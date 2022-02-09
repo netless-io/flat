@@ -14,9 +14,6 @@ export const ExitReplayConfirmModal = observer<ExitReplayConfirmModalProps>(
         const { t } = useTranslation();
         return (
             <Modal
-                title={t("exit-replay")}
-                visible={visible}
-                onCancel={onCancel}
                 footer={[
                     <Button key="exit-cancel" onClick={onCancel}>
                         {t("cancel")}
@@ -25,6 +22,9 @@ export const ExitReplayConfirmModal = observer<ExitReplayConfirmModalProps>(
                         {t("confirm")}
                     </Button>,
                 ]}
+                title={t("exit-replay")}
+                visible={visible}
+                onCancel={onCancel}
             >
                 {t("exit-reply-tips")}
             </Modal>

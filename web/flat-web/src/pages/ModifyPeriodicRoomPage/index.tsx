@@ -82,9 +82,9 @@ export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
 
         return (
             <EditRoomPage
-                type="periodic"
                 initialValues={initialValues}
                 loading={isLoading}
+                type="periodic"
                 onSubmit={editPeriodicRoom}
             />
         );

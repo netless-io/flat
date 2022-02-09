@@ -69,17 +69,17 @@ export const JoinPage = observer(function JoinPage() {
         <div>
             {isMobile ? (
                 <JoinPageMobile
-                    roomUUID={roomUUID}
                     privacyURL={privacyURL}
+                    roomUUID={roomUUID}
                     serviceURL={serviceURL}
                 />
             ) : (
                 <JoinPageDesktop
-                    isLogin={isLogin}
                     avatar={globalStore.userInfo?.avatar ?? ""}
-                    roomUUID={roomUUID}
+                    isLogin={isLogin}
                     joinRoom={joinRoom}
                     privacyURL={privacyURL}
+                    roomUUID={roomUUID}
                     serviceURL={serviceURL}
                 />
             )}

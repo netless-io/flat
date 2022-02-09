@@ -23,11 +23,11 @@ export const CloudStorageUploadTitle = React.memo<CloudStorageUploadTitleProps>(
                     <ExclamationCircleOutlined className="cloud-storage-upload-title-error" />
                 ) : (
                     <Progress
-                        type="circle"
                         percent={percent}
-                        width={20}
-                        strokeWidth={isFinish ? 8 : 10}
                         showInfo={isFinish}
+                        strokeWidth={isFinish ? 8 : 10}
+                        type="circle"
+                        width={20}
                     />
                 )}
                 <h1 className="cloud-storage-upload-title-content">

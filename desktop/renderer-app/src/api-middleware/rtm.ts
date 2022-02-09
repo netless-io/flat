@@ -352,7 +352,18 @@ export class Rtm extends EventEmitter {
             return;
         }
 
-        if (peerId !== undefined) {
+        if (peerId === undefined) {
+            await this.commands.sendMessage(
+                {
+                    messageType: AgoraRTM.MessageType.TEXT,
+                    text: JSON.stringify({ t: type, v: value }),
+                },
+                { enableHistoricalMessaging: keepHistory },
+            );
+            if (NODE_ENV === "development") {
+                console.log("[RTM] send group command: ", type, value);
+            }
+        } else {
             await polly()
                 .waitAndRetry(retry)
                 .executeForPromise(async (): Promise<void> => {
@@ -371,17 +382,6 @@ export class Rtm extends EventEmitter {
                         return Promise.reject("peer not received");
                     }
                 });
-        } else {
-            await this.commands.sendMessage(
-                {
-                    messageType: AgoraRTM.MessageType.TEXT,
-                    text: JSON.stringify({ t: type, v: value }),
-                },
-                { enableHistoricalMessaging: keepHistory },
-            );
-            if (NODE_ENV === "development") {
-                console.log("[RTM] send group command: ", type, value);
-            }
         }
     }
 

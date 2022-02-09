@@ -22,7 +22,7 @@ export const DeviceSelect = observer<DeviceSelectProps>(function DeviceSelect({
         <Select value={currentDeviceID} onChange={onChange}>
             {devices.map(({ deviceid, devicename }) => {
                 return (
-                    <Select.Option value={deviceid} key={deviceid}>
+                    <Select.Option key={deviceid} value={deviceid}>
                         {devicename}
                     </Select.Option>
                 );

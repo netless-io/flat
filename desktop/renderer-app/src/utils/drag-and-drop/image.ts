@@ -33,7 +33,10 @@ export async function onDropImage(file: File, x: number, y: number, room: Room):
     const getSize = getImageSize(file);
     const task = new UploadTask(file);
     await task.upload();
-    const { files } = await listFiles({ page: 1 });
+    const { files } = await listFiles({
+        page: 1,
+        order: "DESC",
+    });
     const cloudFile = files.find(f => f.fileUUID === task.fileUUID);
 
     hideLoading();

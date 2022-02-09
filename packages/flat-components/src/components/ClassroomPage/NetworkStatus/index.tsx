@@ -63,7 +63,7 @@ export const NetworkStatus = observer<NetworkStatusProps>(function NetworkStatus
             </span>
             <span className="network-status-signal" title={signalText}>
                 {t("network")}
-                <img src={signalIcon} alt={signalText} />
+                <img alt={signalText} src={signalIcon} />
             </span>
         </div>
     );

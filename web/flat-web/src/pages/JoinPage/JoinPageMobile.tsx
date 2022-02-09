@@ -36,11 +36,11 @@ export default function JoinPageMobile({
 
     return (
         <div className="join-page-mobile-container">
-            <iframe width="0" height="0" title="join flat" style={{ display: "none" }} src={url} />
+            <iframe height="0" src={url} style={{ display: "none" }} title="join flat" width="0" />
             <div className="join-page-mobile-effect"></div>
             <div className="join-page-mobile-header">
                 <div className="join-page-mobile-app-icon">
-                    <img src={logoSVG} alt="flat-logo" />
+                    <img alt="flat-logo" src={logoSVG} />
                 </div>
             </div>
             <div className="join-page-mobile-big-btns">
@@ -52,17 +52,17 @@ export default function JoinPageMobile({
                 </button>
             </div>
             <div className="join-page-mobile-footer">
-                <a href={privacyURL} target="_blank" rel="noreferrer">
+                <a href={privacyURL} rel="noreferrer" target="_blank">
                     {t("privacy-agreement")}
                 </a>
                 <span>｜</span>
-                <a href={serviceURL} target="_blank" rel="noreferrer">
+                <a href={serviceURL} rel="noreferrer" target="_blank">
                     {t("service-policy")}
                 </a>
             </div>
             {isWeChatBrowser && (
                 <div className="join-page-mobile-wechat-overlay">
-                    <img src={openInBrowserSVG} alt="[open-in-browser]" />
+                    <img alt="[open-in-browser]" src={openInBrowserSVG} />
                     <strong>{t("open-in-browser")}</strong>
                 </div>
             )}

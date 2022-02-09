@@ -8,8 +8,9 @@ export const AboutPage = (): React.ReactElement => {
         <UserSettingLayoutContainer>
             <div className="about-page-container">
                 <div className="about-page-middle-container">
-                    <img src={logoSVG} alt="flat logo" />
+                    <img alt="flat logo" src={logoSVG} />
                     <div className="flat-name">Flat</div>
+                    <div className="flat-version">Version {process.env.VERSION}</div>
                 </div>
             </div>
         </UserSettingLayoutContainer>

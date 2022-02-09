@@ -67,7 +67,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
             <div style={{ padding: "4px 12px 0 14px", color: "gray" }}>{t("servers")}</div>
             {regions.map(region => (
                 <Menu.Item key={region}>
-                    <img src={RegionSVG[region]} alt={region} style={{ width: 22 }} />
+                    <img alt={region} src={RegionSVG[region]} style={{ width: 22 }} />
                     <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
                 </Menu.Item>
             ))}
@@ -83,71 +83,71 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                     formValidateStatus();
                 }}
             >
-                <img src={createSVG} alt="create room" />
+                <img alt="create room" src={createSVG} />
                 <span className="label">{t("home-page-hero-button-type.begin")}</span>
             </Button>
             <Modal
-                wrapClassName="create-room-box-container"
-                title={t("home-page-hero-button-type.begin")}
-                width={400}
-                visible={isShowModal}
                 destroyOnClose
-                onOk={handleOk}
-                onCancel={handleCancel}
                 footer={[
                     <Button key="cancel" onClick={handleCancel}>
                         {t("cancel")}
                     </Button>,
                     <Button
                         key="submit"
-                        type="primary"
-                        loading={isLoading}
-                        onClick={handleOk}
                         disabled={!isFormValidated}
+                        loading={isLoading}
+                        type="primary"
+                        onClick={handleOk}
                     >
                         {t("begin")}
                     </Button>,
                 ]}
+                title={t("home-page-hero-button-type.begin")}
+                visible={isShowModal}
+                width={400}
+                wrapClassName="create-room-box-container"
+                onCancel={handleCancel}
+                onOk={handleOk}
             >
                 <Form
+                    className="main-room-menu-form"
                     form={form}
+                    initialValues={defaultValues}
                     layout="vertical"
                     name="createRoom"
-                    className="main-room-menu-form"
-                    initialValues={defaultValues}
                     onFieldsChange={formValidateStatus}
                 >
                     <Form.Item
-                        name="roomTitle"
                         label={t("theme")}
+                        name="roomTitle"
                         rules={[
                             { required: true, message: t("enter-room-theme") },
                             { max: 50, message: t("theme-can-be-up-to-50-characters") },
                         ]}
                     >
                         <Input
-                            placeholder={t("enter-room-theme")}
                             ref={roomTitleInputRef}
+                            placeholder={t("enter-room-theme")}
                             suffix={
                                 <Dropdown
-                                    trigger={["click"]}
                                     overlay={regionMenu}
                                     placement="bottomRight"
+                                    trigger={["click"]}
                                 >
                                     <img
-                                        src={RegionSVG[roomRegion]}
                                         alt={roomRegion}
+                                        src={RegionSVG[roomRegion]}
                                         style={{ cursor: "pointer", width: 22 }}
                                     />
                                 </Dropdown>
                             }
                         />
                     </Form.Item>
-                    <Form.Item name="roomType" label={t("type")} valuePropName="type">
+                    <Form.Item label={t("type")} name="roomType" valuePropName="type">
                         <ClassPicker value={classType} onChange={e => setClassType(RoomType[e])} />
                     </Form.Item>
                     <Form.Item label={t("join-options")}>
-                        <Form.Item name="autoCameraOn" noStyle valuePropName="checked">
+                        <Form.Item noStyle name="autoCameraOn" valuePropName="checked">
                             <Checkbox>{t("turn-on-the-camera")}</Checkbox>
                         </Form.Item>
                     </Form.Item>

@@ -9,11 +9,11 @@ export const MainPageLayout = observer(function MainPageLayout({ children }) {
     const hasHeader = pageStore.name && routePages[pageStore.name].hasHeader;
     return hasHeader ? (
         <MainPageLayoutHorizontalContainer
-            title={pageStore.title}
-            subMenu={pageStore.subMenu}
             activeKeys={pageStore.activeKeys}
-            onRouteChange={pageStore.onRouteChange}
+            subMenu={pageStore.subMenu}
+            title={pageStore.title}
             onBackPreviousPage={pageStore.onBackPreviousPage}
+            onRouteChange={pageStore.onRouteChange}
         >
             {children}
         </MainPageLayoutHorizontalContainer>

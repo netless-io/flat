@@ -33,13 +33,19 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
 
     useEffect(() => {
         if (cameraDevices.length > 0 && !cameraDeviceId) {
-            setCameraDeviceId(cameraDevices[0].deviceId);
+            const lastCameraId = configStore.cameraId;
+            lastCameraId
+                ? setCameraDeviceId(lastCameraId)
+                : setCameraDeviceId(cameraDevices[0].deviceId);
         }
     }, [cameraDeviceId, cameraDevices]);
 
     useEffect(() => {
         if (microphoneDevices.length > 0 && !microphoneDeviceId) {
-            setMicrophoneDeviceId(microphoneDevices[0].deviceId);
+            const lastMicrophoneId = configStore.microphoneId;
+            lastMicrophoneId
+                ? setMicrophoneDeviceId(lastMicrophoneId)
+                : setMicrophoneDeviceId(microphoneDevices[0].deviceId);
         }
     }, [microphoneDeviceId, microphoneDevices]);
 
@@ -129,22 +135,22 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
             <div className="device-test-panel-box">
                 <DeviceTestPanel
                     cameraDevices={cameraDevices}
-                    microphoneDevices={microphoneDevices}
-                    speakerTestFileName={"Music"}
-                    microphoneVolume={volume}
+                    cameraVideoStreamRef={cameraVideoStreamRef}
                     currentCameraDeviceID={cameraDeviceId}
-                    currentSpeakerDeviceID={"default browser"}
                     currentMicrophoneDeviceID={microphoneDeviceId}
+                    currentSpeakerDeviceID={"default browser"}
                     isCameraAccessible={isCameraAccessible}
                     isMicrophoneAccessible={isMicrophoneAccessible}
                     isSpeakerAccessible={true}
-                    cameraVideoStreamRef={cameraVideoStreamRef}
+                    joinRoom={joinRoom}
+                    microphoneDevices={microphoneDevices}
+                    microphoneVolume={volume}
                     setCameraDevice={setCameraDeviceId}
                     // Currently, the browser does not support switch speaker devices
-                    setSpeakerDevice={() => null}
                     setMicrophoneDevice={setMicrophoneDeviceId}
+                    setSpeakerDevice={() => null}
+                    speakerTestFileName={"Music"}
                     toggleDeviceTest={() => globalStore.toggleDeviceTest()}
-                    joinRoom={joinRoom}
                 />
             </div>
         </div>

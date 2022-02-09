@@ -29,7 +29,7 @@ export const MediaPreview = observer<MediaPreviewProps>(function PPTPreview({ fi
             case ".png": {
                 return (
                     <div className="img-container">
-                        <img src={mediaFileURL} alt="img resource" />
+                        <img alt="img resource" src={mediaFileURL} />
                     </div>
                 );
             }

@@ -32,12 +32,12 @@ export const MainRoomListPanel = observer<{ isLogin: boolean }>(function MainRoo
 
     return (
         <RoomList
-            title={t("room-list")}
-            filters={filters}
             activeTab={activeTab}
+            filters={filters}
+            title={t("room-list")}
             onTabActive={setActiveTab}
         >
-            <MainRoomList listRoomsType={activeTab as ListRoomsType} isLogin={isLogin} />
+            <MainRoomList isLogin={isLogin} listRoomsType={activeTab as ListRoomsType} />
         </RoomList>
     );
 });

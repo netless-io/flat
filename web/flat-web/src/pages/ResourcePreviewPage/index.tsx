@@ -27,9 +27,9 @@ export const ResourcePreviewPage = observer<ResourcePreviewPagePageProps>(
                     if (taskUUID && taskToken) {
                         return (
                             <DynamicPreview
-                                taskUUID={taskUUID}
-                                taskToken={taskToken}
                                 region={region as Region}
+                                taskToken={taskToken}
+                                taskUUID={taskUUID}
                             />
                         );
                     }
@@ -42,9 +42,9 @@ export const ResourcePreviewPage = observer<ResourcePreviewPagePageProps>(
                     if (taskUUID && taskToken) {
                         return (
                             <StaticPreview
-                                taskUUID={taskUUID}
-                                taskToken={taskToken}
                                 region={region as Region}
+                                taskToken={taskToken}
+                                taskUUID={taskUUID}
                             />
                         );
                     }

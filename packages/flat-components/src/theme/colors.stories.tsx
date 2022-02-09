@@ -43,7 +43,7 @@ export const Overview: Story = () => {
     }, []);
 
     return (
-        <div className="flat-theme-root center mw8" ref={rootRef}>
+        <div ref={rootRef} className="flat-theme-root center mw8">
             {colorNum.map(i => (
                 <div key={i} className="ph3-ns">
                     <div className="cf ph2-ns">

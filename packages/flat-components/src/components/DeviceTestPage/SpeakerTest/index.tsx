@@ -40,17 +40,17 @@ export const SpeakerTest: React.FC<SpeakerTestProps> = ({
             <div className="speaker-test-text">{t("speaker")}</div>
             <div className="speaker-text-select-box">
                 <DeviceTestSelect
+                    currentDeviceID={currentSpeakerDeviceID}
                     devices={speakerDevices}
                     isDeviceAccessible={isSpeakerAccessible}
-                    currentDeviceID={currentSpeakerDeviceID}
                     onChange={setSpeakerDevice}
                 />
             </div>
             <div className="speaker-test-output-box">
                 <audio
                     ref={audioRef}
-                    src={audioResourceSrc ? audioResourceSrc : audioLocalResourceMP3}
                     loop
+                    src={audioResourceSrc ? audioResourceSrc : audioLocalResourceMP3}
                 ></audio>
                 <Button icon={<img src={isPlaying ? stopSVG : playSVG} />} onClick={togglePlay}>
                     {speakerTestFileName}

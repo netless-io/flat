@@ -62,12 +62,12 @@ export const PeriodicSubRoomForm = observer<PeriodicSubRoomFormProps>(function R
 
     return (
         <EditRoomPage
-            type="periodicSub"
             initialValues={initialValues}
             loading={isLoading}
-            onSubmit={editPeriodicSubRoom}
-            previousPeriodicRoomBeginTime={previousPeriodicRoomBeginTime}
             nextPeriodicRoomEndTime={nextPeriodicRoomEndTime}
+            previousPeriodicRoomBeginTime={previousPeriodicRoomBeginTime}
+            type="periodicSub"
+            onSubmit={editPeriodicSubRoom}
         />
     );
 

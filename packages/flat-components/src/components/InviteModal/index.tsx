@@ -41,9 +41,9 @@ export const InviteModal: React.FC<InviteModalProps> = ({
 
         const formatBeginTime = completeTimeFormat(beginTime);
         const formatEndTime =
-            differenceInCalendarDays(beginTime, endTime) !== 0
-                ? completeTimeFormat(endTime)
-                : onlySuffixTimeFormat(endTime);
+            differenceInCalendarDays(beginTime, endTime) === 0
+                ? onlySuffixTimeFormat(endTime)
+                : completeTimeFormat(endTime);
 
         return `${formatBeginTime}~${formatEndTime}`;
     }, [beginTime, endTime]);
@@ -73,13 +73,13 @@ export const InviteModal: React.FC<InviteModalProps> = ({
 
     return (
         <Modal
-            width={460}
-            visible={visible}
-            onOk={onCopyClicked}
-            onCancel={onCancel}
-            okText={t("copy")}
             cancelText={t("cancel")}
             className="invite-modal"
+            okText={t("copy")}
+            visible={visible}
+            width={460}
+            onCancel={onCancel}
+            onOk={onCopyClicked}
         >
             <div className="invite-modal-header">
                 <span>{t("invite-title", { userName })}</span>

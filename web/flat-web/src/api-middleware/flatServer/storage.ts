@@ -4,6 +4,7 @@ import { post } from "./utils";
 
 export interface ListFilesPayload {
     page: number;
+    order: "ASC" | "DESC";
 }
 interface ListFilesResponse {
     totalUsage: number;

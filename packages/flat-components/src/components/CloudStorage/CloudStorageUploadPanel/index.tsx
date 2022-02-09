@@ -62,8 +62,8 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
             >
                 <CloudStorageUploadTitle
                     finishWithError={finishWithError}
-                    total={total}
                     finished={finished}
+                    total={total}
                 />
                 <div className="cloud-storage-upload-panel-head-btns">
                     <Button
@@ -72,11 +72,11 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
                         size="small"
                         onClick={() => onExpandChange && onExpandChange(!expand)}
                     >
-                        <img src={arrowSVG} width={22} height={22} />
+                        <img height={22} src={arrowSVG} width={22} />
                     </Button>
                     {!compact && (
                         <Button shape="circle" size="small" onClick={onClose}>
-                            <img src={closeSVG} width={22} height={22} />
+                            <img height={22} src={closeSVG} width={22} />
                         </Button>
                     )}
                 </div>
@@ -88,7 +88,7 @@ export const CloudStorageUploadPanel: FC<CloudStorageUploadPanelProps> = ({
                     height: expand ? (contentHeight < maxHeight ? contentHeight : maxHeight) : 0,
                 }}
             >
-                <div className="cloud-storage-upload-panel-content-sizer" ref={resizeRef}>
+                <div ref={resizeRef} className="cloud-storage-upload-panel-content-sizer">
                     <div className="cloud-storage-upload-panel-status-list">{children}</div>
                 </div>
             </div>

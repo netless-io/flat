@@ -55,7 +55,7 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <div className="dynamic-preview-container" ref={DynamicPreviewRef}></div>;
+    return <div ref={DynamicPreviewRef} className="dynamic-preview-container"></div>;
 });
 
 function extractSlideUrlPrefix(fullUrl?: string): string | undefined {

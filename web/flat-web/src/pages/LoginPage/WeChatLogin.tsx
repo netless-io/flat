@@ -78,10 +78,10 @@ export const WeChatLogin = observer(function WeChatLogin() {
         <div className="wechat-login-container">
             <iframe
                 className="wechat-login-iframe"
-                title="wechat"
-                src={qrCodeURL}
-                scrolling="no"
                 frameBorder="0"
+                scrolling="no"
+                src={qrCodeURL}
+                title="wechat"
             />
             <div className="wechat-login-spin">
                 <LoadingOutlined spin />

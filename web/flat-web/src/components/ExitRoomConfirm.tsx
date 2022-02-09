@@ -111,10 +111,10 @@ export const ExitRoomConfirm = observer<Omit<ExitRoomConfirmProps, "confirm">>(
             confirmType === ExitRoomConfirmType.ExitButton ? (
                 <CloseRoomConfirmModal
                     {...restProps}
-                    stopLoading={isStopLoading}
                     hangLoading={isReturnLoading}
-                    onStop={onStopClass}
+                    stopLoading={isStopLoading}
                     onHang={onReturnMain}
+                    onStop={onStopClass}
                 />
             ) : (
                 <StopClassConfirmModal

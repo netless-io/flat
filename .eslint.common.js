@@ -64,6 +64,7 @@ const eslintCommon = {
             curly: "error",
             "no-multi-str": "warn",
             "no-native-reassign": "warn",
+            "no-negated-condition": "error",
             "no-negated-in-lhs": "warn",
             "no-new-func": "warn",
             "no-new-object": "warn",
@@ -236,6 +237,14 @@ const eslintCommon = {
                 {
                     allowAllCaps: true,
                     ignore: [],
+                },
+            ],
+            'react/jsx-sort-props': [
+                'error',
+                {
+                    callbacksLast: true,
+                    shorthandFirst: true,
+                    reservedFirst: true,
                 },
             ],
             "react-hooks/exhaustive-deps": "warn",

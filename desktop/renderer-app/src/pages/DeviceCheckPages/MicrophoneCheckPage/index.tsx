@@ -95,8 +95,8 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
             <div className="speaker-check-container">
                 <p>{t("microphone")}</p>
                 <DeviceSelect
-                    devices={devices}
                     currentDeviceID={currentDeviceID}
+                    devices={devices}
                     onChange={setCurrentDeviceID}
                 />
                 <p>{t("audition-sound")}</p>
@@ -121,14 +121,14 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
                     </Button>
                 </div>
                 <Modal
-                    width={368}
-                    className="check-result-modal"
-                    visible={resultModalVisible}
                     destroyOnClose
-                    title={renderTitle()}
+                    className="check-result-modal"
                     footer={renderFooter()}
-                    onOk={() => showResultModal(false)}
+                    title={renderTitle()}
+                    visible={resultModalVisible}
+                    width={368}
                     onCancel={() => showResultModal(false)}
+                    onOk={() => showResultModal(false)}
                 >
                     <div className="table">
                         <div className="left">{t("system-testing")}</div>{" "}
@@ -157,14 +157,14 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
         if (isSuccess) {
             return (
                 <div className="device-check-modal-title">
-                    <img src={successSVG} alt="success" />
+                    <img alt="success" src={successSVG} />
                     {t("device-condition-is-normal")}
                 </div>
             );
         } else {
             return (
                 <div className="device-check-modal-title">
-                    <img src={infoSVG} alt="info" />
+                    <img alt="info" src={infoSVG} />
                     {t("device-condition-is-abnormal")}
                 </div>
             );
@@ -172,20 +172,20 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
     }
 
     function renderFooter(): React.ReactNode {
-        if (!isSuccess) {
+        if (isSuccess) {
             return (
-                <Button type="primary" onClick={resetCheck} className="device-check-modal-btn">
-                    {t("test-again")}
+                <Button
+                    className="device-check-modal-btn"
+                    type="primary"
+                    onClick={() => showResultModal(false)}
+                >
+                    {t("ok")}
                 </Button>
             );
         } else {
             return (
-                <Button
-                    type="primary"
-                    onClick={() => showResultModal(false)}
-                    className="device-check-modal-btn"
-                >
-                    {t("ok")}
+                <Button className="device-check-modal-btn" type="primary" onClick={resetCheck}>
+                    {t("test-again")}
                 </Button>
             );
         }

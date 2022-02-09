@@ -7,6 +7,7 @@ declare namespace NodeJS {
         NODE_ENV: "development" | "production";
         DEV: boolean;
         PROD: boolean;
+        VERSION: string;
 
         NETLESS_APP_IDENTIFIER: string;
 
@@ -17,6 +18,8 @@ declare namespace NodeJS {
         CLOUD_STORAGE_DOMAIN: string;
 
         AGORA_APP_ID: string;
+
+        AGORA_OAUTH_CLIENT_ID: string;
 
         GITHUB_CLIENT_ID: string;
 

@@ -15,9 +15,7 @@ export const RemoveHistoryRoomModal = observer<RemoveHistoryRoomModalProps>(
         const { t } = useTranslation();
         return (
             <Modal
-                title={t("delete-room-records")}
-                visible={visible}
-                onCancel={onCancel}
+                destroyOnClose
                 footer={[
                     <Button key="exit-cancel" onClick={onCancel}>
                         {t("cancel")}
@@ -26,7 +24,9 @@ export const RemoveHistoryRoomModal = observer<RemoveHistoryRoomModalProps>(
                         {t("confirm")}
                     </Button>,
                 ]}
-                destroyOnClose
+                title={t("delete-room-records")}
+                visible={visible}
+                onCancel={onCancel}
             >
                 {t("delete-room-records-tips")}
             </Modal>

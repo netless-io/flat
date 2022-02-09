@@ -28,18 +28,18 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
     return (
         <>
             <TopBarRightBtn
-                title="Open Cloud Storage"
                 icon={<img src={cloudStorageSVG} />}
+                title={t("cloud-storage")}
                 onClick={showModal}
             />
             <Modal
-                title={t("my-cloud ")}
-                onCancel={hideModal}
-                destroyOnClose
-                footer={[]}
-                visible={classroom.isCloudStoragePanelVisible}
-                className="cloud-storage-button-modal"
                 centered
+                destroyOnClose
+                className="cloud-storage-button-modal"
+                footer={[]}
+                title={t("my-cloud ")}
+                visible={classroom.isCloudStoragePanelVisible}
+                onCancel={hideModal}
             >
                 <CloudStoragePanel
                     cloudStorage={classroom.whiteboardStore.cloudStorageStore}

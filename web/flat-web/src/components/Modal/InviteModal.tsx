@@ -49,12 +49,12 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
     return (
         <InviteModalImpl
             baseUrl={FLAT_WEB_BASE_URL}
-            visible={visible}
+            periodicWeeks={periodicInfo?.periodic.weeks}
             room={room}
             userName={globalStore.userName ?? ""}
-            periodicWeeks={periodicInfo?.periodic.weeks}
-            onCopy={onCopy}
+            visible={visible}
             onCancel={onCancel}
+            onCopy={onCopy}
         />
     );
 });

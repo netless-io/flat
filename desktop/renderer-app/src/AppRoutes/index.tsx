@@ -1,11 +1,12 @@
-import React, { FC } from "react";
+import { observer } from "mobx-react-lite";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import { LastLocationProvider } from "react-router-last-location";
 import { RouteConfig, routeConfig } from "../route-config";
 import { AppRouteContainer } from "./AppRouteContainer";
 
-export const AppRoutes: FC = () => {
+export const AppRoutes = observer(function AppRoutes() {
     const { t } = useTranslation();
 
     return (
@@ -23,8 +24,8 @@ export const AppRoutes: FC = () => {
                                     <AppRouteContainer
                                         key={routeProps.location.pathname}
                                         Comp={component}
-                                        title={t("title-" + title)}
                                         routeProps={routeProps}
+                                        title={t("title-" + title)}
                                     />
                                 )}
                             />
@@ -34,4 +35,4 @@ export const AppRoutes: FC = () => {
             </LastLocationProvider>
         </HashRouter>
     );
-};
+});

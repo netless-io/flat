@@ -22,19 +22,19 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
 
     return (
         <ChatPanelImpl
-            isCreator={classRoomStore.isCreator}
-            isBan={classRoomStore.isBan}
-            onBanChange={classRoomStore.onToggleBan}
-            onMessageSend={classRoomStore.onMessageSend}
-            userUUID={classRoomStore.userUUID}
-            messages={classRoomStore.messages}
+            generateAvatar={generateAvatar}
             getUserByUUID={(userUUID: string) => classRoomStore.users.cachedUsers.get(userUUID)}
-            loadMoreRows={classRoomStore.updateHistory}
             hasHandRaising={classRoomStore.users.handRaisingJoiners.length > 0}
             hasSpeaking={classRoomStore.users.speakingJoiners.length > 0}
-            users={users}
-            onCancelAllHandRaising={classRoomStore.onCancelAllHandRaising}
+            isBan={classRoomStore.isBan}
+            isCreator={classRoomStore.isCreator}
+            loadMoreRows={classRoomStore.updateHistory}
+            messages={classRoomStore.messages}
+            openCloudStorage={() => classRoomStore.toggleCloudStoragePanel(true)}
             ownerUUID={classRoomStore.ownerUUID}
+            unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
+            userUUID={classRoomStore.userUUID}
+            users={users}
             onAcceptRaiseHand={(userUUID: string) => {
                 if (classRoomStore.users.speakingJoiners.length > 0 && disableMultipleSpeakers) {
                     // only one speaker is allowed
@@ -42,12 +42,12 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                 }
                 classRoomStore.acceptRaiseHand(userUUID);
             }}
+            onBanChange={classRoomStore.onToggleBan}
+            onCancelAllHandRaising={classRoomStore.onCancelAllHandRaising}
             onEndSpeaking={userUUID => {
                 void classRoomStore.onSpeak([{ userUUID, speak: false }]);
             }}
-            generateAvatar={generateAvatar}
-            unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
-            openCloudStorage={() => classRoomStore.toggleCloudStoragePanel(true)}
+            onMessageSend={classRoomStore.onMessageSend}
         />
     );
 });

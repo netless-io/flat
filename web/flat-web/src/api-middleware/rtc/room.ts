@@ -136,6 +136,10 @@ export class RtcRoom {
             await this.joined;
             this._localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
                 microphoneId: configStore.microphoneId,
+                // AEC: acoustic echo cancellation
+                AEC: true,
+                // ANS: automatic noise suppression
+                ANS: true,
             });
             setMicrophoneTrack(this._localAudioTrack as IMicrophoneAudioTrack);
             this._localAudioTrack.once("track-ended", () => {

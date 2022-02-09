@@ -33,7 +33,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
     const { t } = useTranslation();
     return (
         <div className="cloud-storage-upload-item">
-            <CloudStorageFileTitle fileUUID={uploadID} fileName={fileName} />
+            <CloudStorageFileTitle fileName={fileName} fileUUID={uploadID} />
             {renderUploadBody()}
             <div
                 className={classNames("cloud-storage-upload-item-progress-bar", {
@@ -56,7 +56,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                             size="small"
                             onClick={() => onCancel(uploadID)}
                         >
-                            <img width={22} height={22} src={trashBinSVG} aria-hidden />
+                            <img aria-hidden height={22} src={trashBinSVG} width={22} />
                         </Button>
                     </>
                 );
@@ -73,7 +73,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                             size="small"
                             onClick={() => onRetry(uploadID)}
                         >
-                            <img width={22} height={22} src={retrySVG} aria-hidden />
+                            <img aria-hidden height={22} src={retrySVG} width={22} />
                         </Button>
                     </>
                 );
@@ -85,7 +85,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                             {t("upload-success")}
                         </span>
                         <div className="cloud-storage-upload-status-btn">
-                            <img width={22} height={22} src={checkSVG} aria-hidden />
+                            <img aria-hidden height={22} src={checkSVG} width={22} />
                         </div>
                     </>
                 );
@@ -100,7 +100,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
                             size="small"
                             onClick={() => onCancel(uploadID)}
                         >
-                            <img width={22} height={22} src={trashBinSVG} aria-hidden />
+                            <img aria-hidden height={22} src={trashBinSVG} width={22} />
                         </Button>
                     </>
                 );

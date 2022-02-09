@@ -42,7 +42,7 @@ export const GeneralSettingPage = (): React.ReactElement => {
         <UserSettingLayoutContainer>
             <div className="general-setting-container">
                 <div className="general-setting-checkbox">
-                    <Checkbox onClick={toggleOpenAtLogin} checked={openAtLogin}>
+                    <Checkbox checked={openAtLogin} onClick={toggleOpenAtLogin}>
                         {t("boot-up-and-run-automatically")}
                     </Checkbox>
                 </div>
