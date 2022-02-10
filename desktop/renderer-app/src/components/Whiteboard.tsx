@@ -30,7 +30,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     disableHandRaising,
 }) {
     const { i18n, t } = useTranslation();
-    const { room, phase, fastboardApp } = whiteboardStore;
+    const { room, phase, fastboardAPP } = whiteboardStore;
 
     const [whiteboardEl, setWhiteboardEl] = useState<HTMLElement | null>(null);
     const [collectorEl, setCollectorEl] = useState<HTMLElement | null>(null);
@@ -42,10 +42,10 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     }, [isReconnecting, t]);
 
     useEffect(() => {
-        if (fastboardApp && collectorEl) {
-            fastboardApp.bindCollector(collectorEl);
+        if (fastboardAPP && collectorEl) {
+            fastboardAPP.bindCollector(collectorEl);
         }
-    }, [collectorEl, fastboardApp]);
+    }, [collectorEl, fastboardAPP]);
 
     const whiteboardOnResize = useCallback(() => {
         if (whiteboardEl) {
@@ -180,7 +180,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                 <div ref={bindCollector} />
                 <Fastboard
                     ref={bindWhiteboard}
-                    app={fastboardApp}
+                    app={fastboardAPP}
                     language={i18n.language as Language}
                     theme="light"
                 />

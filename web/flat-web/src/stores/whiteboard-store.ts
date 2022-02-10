@@ -22,7 +22,7 @@ import { getFileExt, isPPTX } from "../utils/file";
 import { globalStore } from "./GlobalStore";
 
 export class WhiteboardStore {
-    public fastboardApp: FastboardApp | null = null;
+    public fastboardAPP: FastboardApp | null = null;
     public room: Room | null = null;
     public phase: RoomPhase = RoomPhase.Connecting;
     public viewMode: ViewMode | null = null;
@@ -62,7 +62,7 @@ export class WhiteboardStore {
         makeAutoObservable<this, "preloadPPTResource">(this, {
             room: observable.ref,
             preloadPPTResource: false,
-            fastboardApp: false,
+            fastboardAPP: false,
         });
 
         this.cloudStorageStore = new CloudStorageStore({
@@ -72,8 +72,8 @@ export class WhiteboardStore {
         });
     }
 
-    public updateFastboardApp = (whiteboardApp: FastboardApp): void => {
-        this.fastboardApp = whiteboardApp;
+    public updateFastboardAPP = (whiteboardApp: FastboardApp): void => {
+        this.fastboardAPP = whiteboardApp;
     };
 
     public updateRoom = (room: Room): void => {
@@ -223,7 +223,7 @@ export class WhiteboardStore {
 
         const cursorName = globalStore.userInfo?.name;
 
-        const fastboardApp = await createFastboard({
+        const fastboardAPP = await createFastboard({
             sdkConfig: {
                 appIdentifier: NETLESS.APP_IDENTIFIER,
                 deviceType: deviceType,
@@ -299,9 +299,9 @@ export class WhiteboardStore {
             },
         });
 
-        this.updateFastboardApp(fastboardApp);
+        this.updateFastboardAPP(fastboardAPP);
 
-        const { room, manager } = fastboardApp;
+        const { room, manager } = fastboardAPP;
 
         this.updateRoom(room);
 
@@ -321,7 +321,7 @@ export class WhiteboardStore {
 
     public async destroy(): Promise<void> {
         this.preloadPPTResource.cancel();
-        await this.fastboardApp?.destroy();
+        await this.fastboardAPP?.destroy();
 
         if (process.env.DEV) {
             (window as any).room = null;
