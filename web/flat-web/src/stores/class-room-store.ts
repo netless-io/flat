@@ -596,7 +596,7 @@ export class ClassRoomStore {
 
         promises.push(this.rtc.destroy());
 
-        this.whiteboardStore.destroy();
+        promises.push(this.whiteboardStore.destroy());
 
         this.leaveRTC();
 

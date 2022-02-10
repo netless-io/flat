@@ -50,6 +50,7 @@ module.exports = {
         // whiteboard
         "unban",
         "convertcdn",
+        "fastboard",
 
         // date-fns
         "Weekiii",

@@ -38,7 +38,6 @@ import { runtime } from "../../utils/runtime";
 import { BigClassAvatar } from "./BigClassAvatar";
 import { ShareScreen } from "../../components/ShareScreen";
 import { generateAvatar } from "../../utils/generate-avatar";
-import { AppStoreButton } from "../../components/AppStoreButton";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -222,8 +221,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     function renderTopBarRight(): React.ReactNode {
         return (
             <>
-                {whiteboardStore.isWritable && <AppStoreButton addApp={whiteboardStore.addApp} />}
-
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
                     <TopBarRightBtn
                         icon={
