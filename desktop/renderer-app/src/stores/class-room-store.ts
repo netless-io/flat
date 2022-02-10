@@ -36,7 +36,8 @@ import { WhiteboardStore } from "./whiteboard-store";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { ShareScreenStore } from "./share-screen-store";
-import { i18n } from "i18next";
+import i18next, { i18n } from "i18next";
+import { message } from "antd";
 
 export type { User } from "./user-store";
 
@@ -183,6 +184,15 @@ export class ClassRoomStore {
             },
             {
                 fireImmediately: true,
+            },
+        );
+
+        reaction(
+            () => this.isRecording,
+            (isRecording: boolean) => {
+                if (isRecording) {
+                    void message.success(i18next.t("start-recording"));
+                }
             },
         );
 
