@@ -40,7 +40,6 @@ import { BigClassAvatar } from "./BigClassAvatar";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
 import { generateAvatar } from "../../utils/generate-avatar";
-import { AppStoreButton } from "../../components/AppStoreButton";
 import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
 import shareScreenSVG from "../../assets/image/share-screen.svg";
 import exitSVG from "../../assets/image/exit.svg";
@@ -248,8 +247,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     function renderTopBarRight(): React.ReactNode {
         return (
             <>
-                {whiteboardStore.isWritable && <AppStoreButton addApp={whiteboardStore.addApp} />}
-
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
                     <TopBarRightBtn
                         icon={
