@@ -50,3 +50,20 @@
 .cloud-storage-skeletons-item-file-date {
     width: 40%;
 }
+
+.flat-color-scheme-dark {
+    .cloud-storage-skeletons {
+        > * {
+            border-bottom-color: var(--grey-8);
+        }
+        .ant-skeleton.ant-skeleton-active .ant-skeleton-content .ant-skeleton-title,
+        .ant-skeleton.ant-skeleton-active .ant-skeleton-content .ant-skeleton-paragraph > li {
+            background: linear-gradient(
+                90deg,
+                hsla(210, 33%, 10%, 1) 25%,
+                hsla(210, 33%, 10%, 1) 37%,
+                hsla(210, 33%, 10%, 1) 63%
+            );
+        }
+    }
+}
