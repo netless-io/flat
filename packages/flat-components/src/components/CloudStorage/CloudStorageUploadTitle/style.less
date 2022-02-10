@@ -8,7 +8,7 @@
 }
 
 .cloud-storage-upload-title-error {
-    color: #f45454;
+    color: var(--danger);
     font-size: 20px;
 }
 
@@ -18,11 +18,19 @@
     font-size: 16px;
     font-weight: 500;
     line-height: 1;
-    color: #444e60;
+    color: var(--text);
 }
 
 .cloud-storage-upload-title-count {
     font-size: 14px;
-    color: #7a7b7c;
+    color: var(--text);
     line-height: 1;
+}
+
+.flat-color-scheme-dark {
+    .cloud-storage-upload-title {
+        .ant-progress-circle-trail {
+            stroke: var(--grey-8);
+        }
+    }
 }

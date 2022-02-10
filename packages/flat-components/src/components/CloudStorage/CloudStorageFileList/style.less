@@ -5,13 +5,28 @@
     height: 100%;
 
     .ant-table {
-        color: #7a7b7c;
+        color: var(--text);
+        background-color: #fff;
     }
 
     .ant-table-thead > tr > th {
-        color: #7a7b7c;
+        color: var(--text);
         background: transparent;
         user-select: none;
+    }
+
+    .ant-table-thead
+        > tr
+        > th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
+        background-color: transparent;
+    }
+
+    .ant-table-tbody > tr > td {
+        border-bottom-color: var(--grey-1);
+    }
+
+    .ant-table-tbody > tr.ant-table-row-selected > td {
+        background-color: var(--blue-2);
     }
 
     .ant-table-tbody > tr.ant-table-row:hover {
@@ -21,7 +36,7 @@
     }
 
     .ant-table-tbody > tr.ant-table-row:hover > td {
-        background-color: rgba(51, 129, 255, 0.06);
+        background-color: var(--blue-1);
     }
 
     td.ant-table-column-sort,
@@ -79,20 +94,25 @@
     }
 
     .ant-dropdown-menu-item {
+        color: var(--text);
         padding: 9px 16px;
         min-width: 164px;
     }
 }
 
+.cloud-storage-file-list-title-span {
+    display: inline-flex;
+    align-items: center;
+}
+
 .cloud-storage-file-list-title {
-    width: 56px;
-    height: 22px;
     font-size: 14px;
     font-weight: 400;
     line-height: 22px;
-    color: #7a7b7c;
-    padding-right: 4px;
+    color: var(--text);
+    padding-right: 8px;
 }
+
 .cloud-storage-file-list-empty {
     flex: 1;
     margin-top: -2px;
@@ -110,5 +130,36 @@
 
 .cloud-storage-file-list-empty-text {
     margin-left: -0.75em;
-    color: #7a7b7c;
+    color: var(--text);
+}
+
+.flat-color-scheme-dark {
+    .cloud-storage-file-list-table {
+        .ant-table {
+            background-color: var(--grey-10);
+        }
+        .ant-table-thead > tr > th,
+        .ant-table-tbody > tr > td {
+            border-bottom-color: var(--grey-8);
+        }
+        .ant-table-tbody > tr.ant-table-row:hover > td {
+            background-color: var(--grey-11);
+        }
+        .ant-table-tbody > tr.ant-table-row-selected > td {
+            background-color: var(--grey-11);
+        }
+    }
+    .cloud-storage-file-list-empty {
+        background-color: var(--grey-10);
+    }
+    .cloud-storage-file-list-menu {
+        & > .ant-dropdown-menu {
+            border-radius: 8px;
+            background-color: var(--grey-10);
+            box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.25);
+        }
+        .ant-dropdown-menu-item:hover {
+            background-color: var(--grey-11);
+        }
+    }
 }

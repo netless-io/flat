@@ -74,7 +74,7 @@
     }
 }
 
-.ant-checkbox-wrapper.is-hover .ant-checkbox-inner,
+.ant-checkbox-hovered .ant-checkbox-inner,
 .ant-radio-wrapper.is-hover .ant-radio-inner {
     border-color: @primary-color;
 }
@@ -371,4 +371,64 @@
 
 .ant-btn-circle {
     border-radius: 50%;
+}
+
+/* ------------------------ *\
+ * Checkbox
+\* ------------------------ */
+.flat-color-scheme-dark {
+    .ant-checkbox-inner {
+        background-color: transparent;
+        border-color: var(--grey-6);
+    }
+    .ant-checkbox-hovered .ant-checkbox-inner {
+        border-color: var(--primary-strong);
+    }
+    .ant-checkbox-checked .ant-checkbox-inner {
+        background-color: var(--primary-strong);
+        border-color: var(--primary-strong);
+    }
+    .ant-checkbox-disabled .ant-checkbox-inner {
+        background-color: rgba(255, 255, 255, 0.08);
+        border-color: var(--grey-7) !important;
+    }
+    .ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner::after {
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+    .ant-checkbox-disabled + span {
+        color: var(--text-weak);
+    }
+}
+
+/* ------------------------ *\
+ * Input
+\* ------------------------ */
+.flat-color-scheme-dark {
+    .ant-input {
+        color: var(--text-stronger);
+        background-color: transparent;
+        border-color: var(--grey-6);
+
+        &::placeholder {
+            color: var(--text-weak);
+        }
+
+        &::selection {
+            background-color: var(--grey-6);
+        }
+    }
+    .ant-input-focused,
+    .ant-input:focus {
+        border-color: var(--primary-strong);
+    }
+    .ant-input[disabled]:hover {
+        border-color: var(--grey-5);
+    }
+    .ant-input[disabled],
+    .ant-input[disabled]::placeholder {
+        color: var(--text-weak);
+    }
+    .ant-input-disabled + span {
+        color: var(--text-weak);
+    }
 }

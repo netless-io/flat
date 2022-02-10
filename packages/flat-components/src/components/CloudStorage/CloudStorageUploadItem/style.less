@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     font-size: 14px;
-    color: #444e60;
+    color: var(--text);
     border-bottom: 1px #dbe1ea solid;
     user-select: none;
 }
@@ -25,11 +25,11 @@
     color: #7a7b7c;
 
     &.is-success {
-        color: #7ec452;
+        color: var(--success);
     }
 
     &.is-error {
-        color: #f45454;
+        color: var(--danger);
     }
 }
 
@@ -44,9 +44,15 @@
     left: 0;
     bottom: -1px;
     height: 1px;
-    background: #3381ff;
+    background: var(--primary);
 
     &.is-error {
-        background: #f45454;
+        background: var(--danger);
+    }
+}
+
+.flat-color-scheme-dark {
+    .cloud-storage-upload-item {
+        border-bottom-color: var(--grey-8);
     }
 }

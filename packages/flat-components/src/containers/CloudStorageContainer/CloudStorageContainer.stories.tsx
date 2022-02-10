@@ -168,7 +168,7 @@ function fakeStoreArgTypes(): ArgTypes {
 export const Overview: Story<FakeStoreConfig> = config => {
     const [store] = useState(() => new FakeStore(config));
     return (
-        <div className="ba br3 b--light-gray" style={{ height: 600, maxHeight: "80vh" }}>
+        <div className="ba br3 b--gray" style={{ height: 600, maxHeight: "80vh" }}>
             <CloudStorageContainer store={store} />
         </div>
     );
@@ -182,7 +182,7 @@ export const CompactMode: Story<FakeStoreConfig> = config => {
         return store;
     });
     return (
-        <div className="ba br3 b--light-gray" style={{ height: "400px" }}>
+        <div className="ba br3 b--gray" style={{ height: "400px" }}>
             <CloudStorageContainer store={store} />
         </div>
     );
