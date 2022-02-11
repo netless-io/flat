@@ -1906,17 +1906,17 @@
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.20.0"
 
-"@netless/fastboard-core@0.2.4":
-  version "0.2.4"
-  resolved "https://registry.npmjs.org/@netless/fastboard-core/-/fastboard-core-0.2.4.tgz#66242a2bdaec90bd42f29e92b788ec778371cde4"
-  integrity sha512-nvC9ovDq85zH5tRH81ysHH25hwcYBFzq3gRTqxuHz4gPop7MLf24o7gbIzerCALzT9OoPNHD2GqP02qUwog2/w==
+"@netless/fastboard-core@0.2.6":
+  version "0.2.6"
+  resolved "https://registry.npmjs.org/@netless/fastboard-core/-/fastboard-core-0.2.6.tgz#053a3367a94c4e9a1ffbf8ee8efcd663c726e870"
+  integrity sha512-d1LGPz1/QMISFSFnh6fZaHtahfyYj1qy45KxK/qC8Y9/EfvHzZaTOesxGUhzyQrxMQbMGm0txygpqhl4lrBa7A==
   dependencies:
     "@netless/app-slide" "^0.0.56"
 
-"@netless/fastboard-react@0.2.4", "@netless/fastboard-react@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.npmjs.org/@netless/fastboard-react/-/fastboard-react-0.2.4.tgz#79491f3f28766fa78b21413f50760b5a195a9ee3"
-  integrity sha512-hn5+SfQqDMIq4IgOta+buhTC2ij6EXPY2K7UDweLG0aW8fSJDQn9FNjI7oS2dNEFrGC6ek5Qsvm21NeiVJcteQ==
+"@netless/fastboard-react@0.2.6", "@netless/fastboard-react@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.npmjs.org/@netless/fastboard-react/-/fastboard-react-0.2.6.tgz#3140327f30a378186bdcad0308f7cdfae8563489"
+  integrity sha512-CLNt47PwJ1Nz/tFcZOri07JIPJ5HZ0/BYPkVypfHaXZkfbHD6Ou79hKd+rkST/xFk3vUP4bRC7e4uVXVFhzOgQ==
   dependencies:
     "@tippyjs/react" "^4.2.6"
     clsx "^1.1.1"
@@ -1924,13 +1924,13 @@
     i18next "^21.6.9"
     rc-slider "^9.7.5"
 
-"@netless/fastboard@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.npmjs.org/@netless/fastboard/-/fastboard-0.2.4.tgz#624a273f18afc8d352fef1bc86c67efb7dbccb67"
-  integrity sha512-AlEdoX6d9InS4UWB+acgyGx8MN8xrIbHHwyoEJB1IWm5gDfCaqWUfQDsG8JKwhp9PpXZgJ8gqYSuORQm9BloUQ==
+"@netless/fastboard@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.npmjs.org/@netless/fastboard/-/fastboard-0.2.6.tgz#839dcaf2ccdf3ef083e699e90d22c7181381dda4"
+  integrity sha512-FOQ8voZVIFUBxqqOT3NghSu0/qzCyt/vfQomefMCvB30uJyCNzsi+rBXHFcAOFTmahlwBPx/KtQB5IT1KAcBtg==
   dependencies:
-    "@netless/fastboard-core" "0.2.4"
-    "@netless/fastboard-react" "0.2.4"
+    "@netless/fastboard-core" "0.2.6"
+    "@netless/fastboard-react" "0.2.6"
 
 "@netless/fetch-middleware@^1.0.7":
   version "1.0.7"
@@ -1957,10 +1957,10 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@0.4.0-canary.33":
-  version "0.4.0-canary.33"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.4.0-canary.33.tgz#35a6b1a40e70e532e2bb6d5200d4ae24045b127c"
-  integrity sha512-2wmpjVVS61ABNiEWC6QWQ5siWwKNEfkCsf72qra55DK23hVwYaBOxRFIe7hyqH/iJ558bJrFBmWRsuPQqc1s0w==
+"@netless/window-manager@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.4.0.tgz#9e8a04220135afcafaa058dfefdc032c18738d6c"
+  integrity sha512-NIuCSr9fDA79fRmC8ym77uvQ/U8zlZ84qh+8j5MlxFz7UjdM5LQvLXnXYAJOlCyjR0uhnqVhBHLFc9lYTbH/qA==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     emittery "^0.9.2"
@@ -17003,10 +17003,10 @@ which@^2.0.1, which@^2.0.2:
   dependencies:
     isexe "^2.0.0"
 
-white-web-sdk@2.16.3:
-  version "2.16.3"
-  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.16.3.tgz#28679957980e9260a361ff3c6a3c886de37ddaa4"
-  integrity sha512-K6FsRsxiwOsIUbNPUzg73uWMUoMb3BH0h60b8FIDDAu8P75tKF3wssmClyp90Mc5dvrQJrGDJbPAUhDfgqpk3w==
+white-web-sdk@2.16.6:
+  version "2.16.6"
+  resolved "https://registry.npmjs.org/white-web-sdk/-/white-web-sdk-2.16.6.tgz#0a1688cafb1b166ad6a8b08c3a613e654c48e3d6"
+  integrity sha512-N2Hmj5kCVcfpa006ItdYB4ckhARulptLFG0qIBG2xwvf0SizVHkzzjNu5Lpe7SQzjOSmhjE2q3HJZw1LMZH2JA==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/canvas-polyfill" "^0.0.4"
