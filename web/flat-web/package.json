@@ -45,11 +45,11 @@
     "@netless/app-monaco": "^0.1.12",
     "@netless/app-slide": "0.0.56",
     "@netless/combine-player": "^1.1.6",
-    "@netless/fastboard": "^0.2.4",
-    "@netless/fastboard-react": "^0.2.4",
+    "@netless/fastboard": "^0.2.6",
+    "@netless/fastboard-react": "^0.2.6",
     "@netless/player-controller": "^0.0.9",
     "@netless/video-js-plugin": "^0.3.6",
-    "@netless/window-manager": "0.4.0-canary.33",
+    "@netless/window-manager": "0.4.0",
     "@videojs/vhs-utils": "^2.3.0",
     "@zip.js/zip.js": "^2.3.7",
     "agora-rtc-sdk-ng": "^4.5.0",
@@ -80,7 +80,7 @@
     "react-virtualized": "^9.22.2",
     "uuid": "^8.3.2",
     "video.js": "7.10.2",
-    "white-web-sdk": "2.16.3"
+    "white-web-sdk": "2.16.6"
   },
   "scripts": {
     "postinstall": "esbuild-dev ./scripts/post-install.ts",
