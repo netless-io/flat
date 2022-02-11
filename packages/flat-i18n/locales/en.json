@@ -394,7 +394,7 @@
   "stop-recording": "Stop recording",
   "recording": "Recording",
   "open-in-browser": "Open in Browser",
-  "room-started": "Started:",
+  "room-started": "Started: ",
   "exit": "Exit",
   "side-panel": {
     "hide": "Hide",
