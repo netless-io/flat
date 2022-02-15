@@ -1969,10 +1969,10 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@0.4.3":
-  version "0.4.3"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.4.3.tgz#3a9ac3e00f5020244a81f6ee1810049ec735ae50"
-  integrity sha512-6iR1/9KUvuGX8w9SK64i3UHqkn09Epo4eoSzVFBh6ONR96o0j02eJAnt458fZzwhZlriabhRZNDgyQSXrhSHuw==
+"@netless/window-manager@0.4.4":
+  version "0.4.4"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.4.4.tgz#d0aff7307a0515ceff4e9ee4f8e51b8c181e9c22"
+  integrity sha512-v7AXNJjpuQODvGXEFzysFghD3teOBzSQ9Z9VImHcSI7TDwQ1uffPicFOcp7naQRPxFUtidWrinhIHLdex2exEQ==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@netless/telebox-insider" "0.2.22"
