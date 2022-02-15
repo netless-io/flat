@@ -1,3 +1,19 @@
+## [1.6.1](https://github.com/netless-io/flat/compare/v1.6.0...v1.6.1) (2022-02-15)
+
+
+### Bug Fixes
+
+* **i18n:** pad space ([#1359](https://github.com/netless-io/flat/issues/1359)) ([d13baf7](https://github.com/netless-io/flat/commit/d13baf78632de724a7c70bce135a15b0f5a7ac4b))
+* **renderer-app:** add record tips ([#1358](https://github.com/netless-io/flat/issues/1358)) ([1d88d8a](https://github.com/netless-io/flat/commit/1d88d8a25549da613e040a9d4350008c7336be36))
+* **web,renderer-app:** correctly destroy window-manager on exit ([#1352](https://github.com/netless-io/flat/issues/1352)) ([baf8c74](https://github.com/netless-io/flat/commit/baf8c74f66f55db561a48c6bd72f0446fde27578))
+
+
+### Features
+
+* **whiteboard:** use fastboard ([#1356](https://github.com/netless-io/flat/issues/1356)) ([30cc4dd](https://github.com/netless-io/flat/commit/30cc4dd905d236c9acbb2f043c12abcc609b5783))
+
+
+
 # [1.6.0](https://github.com/netless-io/flat/compare/v1.5.3...v1.6.0) (2022-02-09)
 
 
