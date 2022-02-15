@@ -49,7 +49,7 @@
     "@netless/fastboard-react": "^0.2.6",
     "@netless/player-controller": "^0.0.9",
     "@netless/video-js-plugin": "^0.3.6",
-    "@netless/window-manager": "0.4.0",
+    "@netless/window-manager": "0.4.3",
     "@videojs/vhs-utils": "^2.3.0",
     "@zip.js/zip.js": "^2.3.7",
     "agora-rtc-sdk-ng": "^4.5.0",
