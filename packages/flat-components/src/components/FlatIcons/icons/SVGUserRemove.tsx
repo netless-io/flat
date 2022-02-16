@@ -2,7 +2,14 @@ import "../style.less";
 import React from "react";
 
 export const SVGUserRemove: React.FC<React.SVGProps<SVGSVGElement>> = props => (
-    <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+        fill="none"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+        {...props}
+    >
         <path
             className="flat-icon-stroke"
             d="m19.828 19.828-5.656-5.656m0 5.656 5.656-5.656"

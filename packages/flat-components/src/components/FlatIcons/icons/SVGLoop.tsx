@@ -2,7 +2,14 @@ import "../style.less";
 import React from "react";
 
 export const SVGLoop: React.FC<React.SVGProps<SVGSVGElement>> = props => (
-    <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+        fill="none"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+        {...props}
+    >
         <path
             className="flat-icon-stroke"
             d="M6.173 13.83A4 4 0 0 1 9 7h6l-2-2m4.827 5.17A4 4 0 0 1 15 17H9l2 2"
