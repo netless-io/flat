@@ -2,7 +2,14 @@ import "../style.less";
 import React from "react";
 
 export const SVGDoubleUp: React.FC<React.SVGProps<SVGSVGElement>> = props => (
-    <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+        fill="none"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+        {...props}
+    >
         <path
             className="flat-icon-stroke"
             d="m16 11-2-2-2-2-2 2-2 2m8 6-2-2-2-2-2 2-2 2"
