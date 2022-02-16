@@ -1,7 +1,5 @@
 import "./style.less";
-import sendSVG from "./icons/send.svg";
-import banChatSVG from "./icons/ban-chat.svg";
-import banChatActiveSVG from "./icons/ban-chat-active.svg";
+import { SVGSend, SVGChatBanning } from "../../FlatIcons";
 
 import React, { useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
@@ -52,7 +50,7 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
         <div className="chat-typebox">
             {isCreator && (
                 <button className="chat-typebox-icon" title={t("ban")} onClick={onBanChange}>
-                    <img src={isBan ? banChatActiveSVG : banChatSVG} />
+                    <SVGChatBanning active={isBan} />
                 </button>
             )}
             {!isCreator && isBan ? (
@@ -80,7 +78,7 @@ export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
                 title={t("send")}
                 onClick={sendMessage}
             >
-                <img src={sendSVG} />
+                <SVGSend />
             </button>
         </div>
     );
