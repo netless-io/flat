@@ -12,11 +12,6 @@ const storyMeta: Meta = {
     args: {
         active: false,
     },
-    argTypes: {
-        active: {
-            control: { type: "boolean" },
-        },
-    },
 };
 
 export default storyMeta;
