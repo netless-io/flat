@@ -1,3 +1,5 @@
+export * from "./types";
+
 export * from "./icons/SVGApps";
 export * from "./icons/SVGAppsAdd";
 export * from "./icons/SVGArrowDown";
