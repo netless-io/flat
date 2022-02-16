@@ -22,6 +22,10 @@ export const parameters = {
     backgrounds: {
         values: [
             {
+                name: "White",
+                value: "#fff",
+            },
+            {
                 name: "Homepage Background",
                 value: "var(--grey-0)",
             },

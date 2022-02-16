@@ -3,7 +3,7 @@ import "./antd.mod.stories.less";
 import React from "react";
 import { Story, Meta } from "@storybook/react";
 import { Input, Radio, Checkbox, Button, ButtonProps } from "antd";
-import { MessageOutlined } from "@ant-design/icons";
+import { SVGChat } from "../components/FlatIcons";
 import { useRef } from "@storybook/client-api";
 import faker from "faker";
 
@@ -33,9 +33,9 @@ export const Buttons: Story = () => {
             <ButtonRow danger type="default">
                 Danger
             </ButtonRow>
-            <ButtonRow icon={<MessageOutlined />} shape="circle" type="primary"></ButtonRow>
-            <ButtonRow icon={<MessageOutlined />} shape="circle" type="default"></ButtonRow>
-            <ButtonRow icon={<MessageOutlined />} shape="circle" type="dashed"></ButtonRow>
+            <ButtonRow icon={<SVGChat />} shape="circle" type="primary"></ButtonRow>
+            <ButtonRow icon={<SVGChat />} shape="circle" type="default"></ButtonRow>
+            <ButtonRow icon={<SVGChat />} shape="circle" type="dashed"></ButtonRow>
             <div style={{ backgroundColor: "var(--grey-12)" }}>
                 <ButtonRow type="ghost">Ghost</ButtonRow>
             </div>

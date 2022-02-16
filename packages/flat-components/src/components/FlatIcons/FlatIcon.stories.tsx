@@ -9,46 +9,66 @@ const storyMeta: Meta = {
             default: "Homepage Background",
         },
     },
+    args: {
+        active: false,
+    },
+    argTypes: {
+        active: {
+            control: { type: "boolean" },
+        },
+    },
 };
 
 export default storyMeta;
 
-const FIconTable: React.FC<{ icons: string[]; column: number; title: string }> = props => {
-    const rows = chunk(props.icons, props.column);
+const FIconTable: React.FC<{ active: boolean; icons: string[]; column: number; title: string }> =
+    props => {
+        const rows = chunk(props.icons, props.column);
 
-    return (
-        <div className="box center" style={{ maxWidth: props.column * 200 }}>
-            <h1 className="title tc">{props.title}</h1>
-            <div
-                className="mw8 center"
-                style={{ fontSize: 12, color: "var(--grey-3)", wordBreak: "break-all" }}
-            >
-                {rows.map((row, i) => (
-                    <div key={i} className="ph3-ns">
-                        <div className="cf ph2-ns">
-                            {row.map(name => (
-                                <div className={`fl w-100 w-${Math.floor(100 / props.column)}-ns`}>
-                                    <div className="tc pv3 ph1">
-                                        {React.createElement(
-                                            require(`./icons/SVG${name}`).default,
-                                            {
-                                                style: { width: 24, height: 24 },
-                                            },
-                                        )}
-                                        <div className="tc">SVG{name}</div>
+        return (
+            <div className="box center" style={{ maxWidth: props.column * 200 }}>
+                <h1 className="title tc">{props.title}</h1>
+                <div
+                    className="mw8 center"
+                    style={{
+                        fontSize: 12,
+                        color: "var(--grey-3)",
+                        wordBreak: "break-all",
+                    }}
+                >
+                    {rows.map((row, i) => (
+                        <div key={i} className="ph3-ns">
+                            <div className="cf ph2-ns">
+                                {row.map(name => (
+                                    <div
+                                        key={name}
+                                        className={`fl w-100 w-${Math.floor(
+                                            100 / props.column,
+                                        )}-ns`}
+                                    >
+                                        <div className="tc pv3 ph1">
+                                            {React.createElement(
+                                                require(`./icons/SVG${name}`).default,
+                                                {
+                                                    active: props.active,
+                                                    style: { width: 24, height: 24 },
+                                                },
+                                            )}
+                                            <div className="tc">SVG{name}</div>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    };
 
-export const DirectionalIcons: Story = () => (
+export const DirectionalIcons: Story = ({ active }) => (
     <FIconTable
+        active={active}
         column={5}
         icons={[
             "Up",
@@ -86,8 +106,9 @@ export const DirectionalIcons: Story = () => (
     />
 );
 
-export const SuggestedIcons: Story = () => (
+export const SuggestedIcons: Story = ({ active }) => (
     <FIconTable
+        active={active}
         column={3}
         icons={[
             "Plus",
@@ -117,8 +138,9 @@ export const SuggestedIcons: Story = () => (
     />
 );
 
-export const MediaIcons: Story = () => (
+export const MediaIcons: Story = ({ active }) => (
     <FIconTable
+        active={active}
         column={4}
         icons={[
             "Camera",
@@ -154,8 +176,9 @@ export const MediaIcons: Story = () => (
     />
 );
 
-export const InteractiveIcons: Story = () => (
+export const InteractiveIcons: Story = ({ active }) => (
     <FIconTable
+        active={active}
         column={4}
         icons={[
             "More",

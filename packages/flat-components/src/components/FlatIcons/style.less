@@ -1,17 +1,44 @@
-.flat-icon-fill {
+.flat-icon-fill-color {
     fill: var(--grey-6);
 }
 
-.flat-icon-stroke {
+.flat-icon-stroke-color {
     stroke: var(--grey-6);
 }
 
 .flat-color-scheme-dark {
-    .flat-icon-fill {
+    .flat-icon-fill-color {
         fill: var(--grey-4);
     }
 
-    .flat-icon-stroke {
+    .flat-icon-stroke-color {
         stroke: var(--grey-4);
+    }
+}
+
+.flat-icon {
+    &.is-active {
+        .flat-icon-fill-color {
+            fill: var(--primary);
+        }
+
+        .flat-icon-stroke-color {
+            stroke: var(--primary);
+        }
+    }
+}
+
+button .flat-icon {
+    &:first-child:last-child {
+        display: block;
+        margin: auto;
+    }
+
+    .flat-icon-fill-color {
+        fill: currentColor;
+    }
+
+    .flat-icon-stroke-color {
+        stroke: currentColor;
     }
 }
