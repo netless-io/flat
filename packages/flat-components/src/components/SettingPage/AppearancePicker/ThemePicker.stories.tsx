@@ -1,19 +1,19 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ThemePicker, ThemePickerProps } from ".";
+import { AppearancePicker, AppearancePickerProps } from ".";
 
 const storyMeta: Meta = {
-    title: "SettingPage/ThemePicker",
-    component: ThemePicker,
+    title: "SettingPage/AppearancePicker",
+    component: AppearancePicker,
 };
 
 export default storyMeta;
 
-export const Overview: Story<ThemePickerProps> = args => (
+export const Overview: Story<AppearancePickerProps> = args => (
     <Router>
         <div className="vh-75 mw8-ns">
-            <ThemePicker {...args} />
+            <AppearancePicker {...args} />
         </div>
     </Router>
 );

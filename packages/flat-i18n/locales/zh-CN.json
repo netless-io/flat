@@ -400,7 +400,8 @@
     "hide": "折叠",
     "show": "展开"
   },
-  "flat-theme-light": "浅色",
-  "flat-theme-dark": "深色",
-  "flat-theme-auto": "自动"
+  "flat-appearance-light": "浅色",
+  "flat-appearance-dark": "深色",
+  "flat-appearance-auto": "自动",
+  "flat-appearance-setting": "外观"
 }

@@ -1,6 +1,6 @@
 import "./index.less";
 
-import { FlatPrefersColorScheme, ThemePicker } from "flat-components";
+import { FlatPrefersColorScheme, AppearancePicker } from "flat-components";
 import { Checkbox, Radio } from "antd";
 import React, { useContext } from "react";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
@@ -24,7 +24,7 @@ export const GeneralSettingPage = (): React.ReactElement => {
         void i18n.changeLanguage(language === SelectLanguage.Chinese ? "zh-CN" : "en");
     }
 
-    const changePrefersColorScheme = (event: CheckboxChangeEvent): void => {
+    const changeAppearance = (event: CheckboxChangeEvent): void => {
         const prefersColorScheme: FlatPrefersColorScheme = event.target.value;
         configStore.updatePrefersColorScheme(prefersColorScheme);
     };
@@ -46,10 +46,10 @@ export const GeneralSettingPage = (): React.ReactElement => {
                         <Radio value={SelectLanguage.English}>English</Radio>
                     </Radio.Group>
                 </div>
-                <div className="general-setting-select-theme-picker">
-                    <span>主题设置</span>
-                    <ThemePicker
-                        changePrefersColorScheme={changePrefersColorScheme}
+                <div className="general-setting-appearance-picker-container">
+                    <span>{t("flat-appearance-setting")}</span>
+                    <AppearancePicker
+                        changeAppearance={changeAppearance}
                         defaultValue={configStore.prefersColorScheme}
                     />
                 </div>

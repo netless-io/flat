@@ -400,7 +400,8 @@
     "hide": "Hide",
     "show": "Show"
   },
-  "flat-theme-light": "Light",
-  "flat-theme-dark": "Dark",
-  "flat-theme-auto": "Auto"
+  "flat-appearance-light": "Light",
+  "flat-appearance-dark": "Dark",
+  "flat-appearance-auto": "Auto",
+  "flat-appearance-setting": "Appearance"
 }
