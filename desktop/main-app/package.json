@@ -52,7 +52,7 @@
     "file-loader": "^6.2.0",
     "fork-ts-checker-webpack-plugin": "^6.3.2",
     "js-yaml": "^4.1.0",
-    "lint-staged": "^11.0.0",
+    "lint-staged": "^12.1.7",
     "move-cli": "^1.2.1",
     "nodemon": "^2.0.7",
     "prettier": "^2.3.0",
