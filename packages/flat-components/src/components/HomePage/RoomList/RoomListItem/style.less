@@ -1,0 +1,119 @@
+.room-list-item {
+    position: relative;
+    padding: 1px 8px 2px;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 0;
+        border-bottom: 1px solid var(--grey-1);
+    }
+
+    &.pointer {
+        cursor: pointer;
+    }
+
+    &:hover {
+        .room-list-item-content {
+            background-color: var(--blue-1)
+        }
+
+        .room-list-item-right > * {
+            opacity: 1;
+        }
+    }
+}
+
+.room-list-item-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 8px;
+    border-radius: 6px;
+    background-color: transparent;
+    transition: background-color 0.4s;
+}
+
+.room-list-item-left {
+    flex: 1;
+    margin-right: 16px;
+}
+
+.room-list-item-title-wrap {
+    margin-bottom: 16px;
+}
+
+.room-list-item-title {
+    display: inline;
+    margin: 0 8px 0 0;
+    font-size: 16px;
+    font-weight: 600;
+    word-break: break-all;
+    color: var(--text-stronger);
+
+    @media screen and (max-width: 660px) {
+        font-size: 14px;
+    }
+}
+
+.room-list-item-info {
+    & > * {
+        margin-right: 8px;
+    }
+}
+
+.room-list-item-right {
+    display: inline-flex;
+    align-items: center;
+
+    .ant-btn {
+        line-height: 1;
+        padding: 4px 7px;
+        height: 28px;
+
+        &:not(:first-of-type) {
+            margin-left: 8px;
+        }
+    }
+
+    .ant-btn-primary {
+        padding: 4px 15px;
+    }
+
+    & > * {
+        opacity: 0;
+        transition: opacity 0.4s;
+    }
+}
+
+.room-list-item-more {
+    display: inline-flex;
+    justify-content: center;
+}
+
+.room-list-item-sub-menu {
+    .ant-dropdown-menu {
+        border-radius: 8px;
+    }
+}
+
+.flat-color-scheme-dark {
+    .room-list-item {
+        &::before {
+            background: var(--grey-9);
+        }
+
+        &::after {
+            border-bottom-color: var(--grey-8);
+        }
+
+        &:hover {
+            .room-list-item-content {
+                background-color: var(--grey-11);
+            }
+        }
+    }
+}

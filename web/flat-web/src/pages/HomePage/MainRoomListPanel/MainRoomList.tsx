@@ -5,7 +5,7 @@ import {
     InviteModal,
     RemoveHistoryRoomModal,
     RemoveRoomModal,
-    RoomListAlreadyLoaded,
+    RoomListAllLoaded,
     RoomListEmpty,
     RoomListItem,
     RoomListItemButton,
@@ -206,7 +206,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                     </Fragment>
                 );
             })}
-            <RoomListAlreadyLoaded />
+            <RoomListAllLoaded />
             {currentRoom && (
                 <RemoveRoomModal
                     cancelModalVisible={cancelModalVisible}

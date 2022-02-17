@@ -1,0 +1,30 @@
+.room-list-all-loaded {
+    display: flex;
+    align-items: center;
+    margin: 12px 16px;
+    font-size: 12px;
+    user-select: none;
+    color: var(--grey-3);
+
+    &::before, &::after {
+        flex: 1;
+        content: "";
+        display: block;
+        border-bottom: 1px dashed var(--grey-1);
+    }
+}
+
+.room-list-all-loaded-content {
+    margin: 0 16px;
+}
+
+.flat-color-scheme-dark {
+    .room-list-all-loaded {
+        color: var(--grey-7);
+
+        &::before, &::after {
+            border-bottom-color: var(--grey-8);
+        }
+    }
+
+}

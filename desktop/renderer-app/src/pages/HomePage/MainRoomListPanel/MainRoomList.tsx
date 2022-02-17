@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import {
     InviteModal,
     RemoveRoomModal,
-    RoomListAlreadyLoaded,
+    RoomListAllLoaded,
     RoomListEmpty,
     RoomListItem,
     RoomListItemButton,
@@ -200,7 +200,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                     </Fragment>
                 );
             })}
-            <RoomListAlreadyLoaded />
+            <RoomListAllLoaded />
             {currentRoom && (
                 <RemoveRoomModal
                     cancelModalVisible={cancelModalVisible}
