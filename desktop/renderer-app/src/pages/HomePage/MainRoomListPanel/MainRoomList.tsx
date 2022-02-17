@@ -2,12 +2,10 @@ import { clipboard } from "electron";
 import { message } from "antd";
 import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { isSameDay } from "date-fns";
 import {
     InviteModal,
     RemoveRoomModal,
     RoomListAlreadyLoaded,
-    RoomListDate,
     RoomListEmpty,
     RoomListItem,
     RoomListItemButton,
@@ -89,139 +87,119 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
 
     return (
         <>
-            {customSort(roomUUIDs.map(roomUUID => roomStore.rooms.get(roomUUID))).map(
-                (room, index, rooms) => {
-                    if (!room) {
-                        return null;
-                    }
+            {customSort(roomUUIDs.map(roomUUID => roomStore.rooms.get(roomUUID))).map(room => {
+                if (!room) {
+                    return null;
+                }
 
-                    const lastRoom = index > 0 ? rooms[index - 1] : void 0;
-                    // const nextRoom = index < rooms.length - 1 ? rooms[index + 1] : void 0;
+                const beginTime = room.beginTime ? new Date(room.beginTime) : void 0;
+                const endTime = room.endTime ? new Date(room.endTime) : void 0;
 
-                    // show date title when two adjacent rooms are not the same day
-                    const shouldShowDate = !(
-                        room.beginTime &&
-                        lastRoom?.beginTime &&
-                        isSameDay(room.beginTime, lastRoom.beginTime)
-                    );
-
-                    // show divider when two adjacent rooms are not the same day
-                    // const shouldShowDivider = !(
-                    //     room.beginTime &&
-                    //     nextRoom?.beginTime &&
-                    //     isSameDay(room.beginTime, nextRoom.beginTime)
-                    // );
-
-                    const beginTime = room.beginTime ? new Date(room.beginTime) : void 0;
-                    const endTime = room.endTime ? new Date(room.endTime) : void 0;
-
-                    const primaryAction = (
-                        roomStatus?: RoomStatus,
-                    ): RoomListItemButton<"replay" | "join" | "begin"> => {
-                        let primaryAction: RoomListItemButton<"replay" | "join" | "begin">;
-                        switch (roomStatus) {
-                            case RoomStatus.Idle: {
-                                const isCreator = room.ownerUUID === globalStore.userUUID;
-                                primaryAction = isCreator
-                                    ? {
-                                          key: "begin",
-                                          text: t("begin"),
-                                      }
-                                    : {
-                                          key: "join",
-                                          text: t("join"),
-                                      };
-                                break;
-                            }
-                            case RoomStatus.Started:
-                            case RoomStatus.Paused: {
-                                primaryAction = {
-                                    key: "join",
-                                    text: t("join"),
-                                };
-                                break;
-                            }
-                            case RoomStatus.Stopped: {
-                                primaryAction = {
-                                    key: "replay",
-                                    text: t("replay"),
-                                    disabled: !room.hasRecord,
-                                };
-                                break;
-                            }
-                            default: {
-                                primaryAction = {
-                                    key: "begin",
-                                    text: t("begin"),
-                                };
-                                break;
-                            }
+                const primaryAction = (
+                    roomStatus?: RoomStatus,
+                ): RoomListItemButton<"replay" | "join" | "begin"> => {
+                    let primaryAction: RoomListItemButton<"replay" | "join" | "begin">;
+                    switch (roomStatus) {
+                        case RoomStatus.Idle: {
+                            const isCreator = room.ownerUUID === globalStore.userUUID;
+                            primaryAction = isCreator
+                                ? {
+                                      key: "begin",
+                                      text: t("begin"),
+                                  }
+                                : {
+                                      key: "join",
+                                      text: t("join"),
+                                  };
+                            break;
                         }
-                        return primaryAction;
-                    };
+                        case RoomStatus.Started:
+                        case RoomStatus.Paused: {
+                            primaryAction = {
+                                key: "join",
+                                text: t("join"),
+                            };
+                            break;
+                        }
+                        case RoomStatus.Stopped: {
+                            primaryAction = {
+                                key: "replay",
+                                text: t("replay"),
+                                disabled: !room.hasRecord,
+                            };
+                            break;
+                        }
+                        default: {
+                            primaryAction = {
+                                key: "begin",
+                                text: t("begin"),
+                            };
+                            break;
+                        }
+                    }
+                    return primaryAction;
+                };
 
-                    return (
-                        <Fragment key={room.roomUUID}>
-                            {shouldShowDate && beginTime && <RoomListDate date={beginTime} />}
-                            <RoomListItem
-                                beginTime={beginTime}
-                                buttons={[getSubActions(room), primaryAction(room.roomStatus)]}
-                                endTime={endTime}
-                                isPeriodic={!!room.periodicUUID}
-                                status={getRoomStatus(room.roomStatus)}
-                                title={room.title!}
-                                onClickMenu={key => {
-                                    switch (key) {
-                                        case "details": {
-                                            pushHistory(RouteNameType.RoomDetailPage, {
-                                                roomUUID: room.roomUUID,
-                                                periodicUUID: room.periodicUUID,
-                                            });
-                                            break;
-                                        }
-                                        case "modify": {
-                                            pushHistory(RouteNameType.ModifyOrdinaryRoomPage, {
-                                                roomUUID: room.roomUUID,
-                                                periodicUUID: room.periodicUUID,
-                                            });
-                                            break;
-                                        }
-                                        case "cancel": {
-                                            setCurrentRoom(room);
-                                            setCancelModalVisible(true);
-                                            break;
-                                        }
-                                        case "invite": {
-                                            setCurrentRoom(room);
-                                            setInviteModalVisible(true);
-                                            break;
-                                        }
-                                        case "delete-history": {
-                                            setCurrentRoom(room);
-                                            setRemoveHistoryVisible(true);
-                                            break;
-                                        }
-                                        case "replay": {
-                                            replayRoom({
-                                                ownerUUID: room.ownerUUID,
-                                                roomUUID: room.roomUUID,
-                                                roomType: room.roomType || RoomType.OneToOne,
-                                            });
-                                            break;
-                                        }
-                                        case "join":
-                                        case "begin": {
-                                            void joinRoomHandler(room.roomUUID, pushHistory);
-                                            break;
-                                        }
-                                        default:
+                return (
+                    <Fragment key={room.roomUUID}>
+                        <RoomListItem
+                            beginTime={beginTime}
+                            buttons={[getSubActions(room), primaryAction(room.roomStatus)]}
+                            endTime={endTime}
+                            isPeriodic={!!room.periodicUUID}
+                            status={getRoomStatus(room.roomStatus)}
+                            title={room.title!}
+                            onClickMenu={key => {
+                                switch (key) {
+                                    case "details": {
+                                        pushHistory(RouteNameType.RoomDetailPage, {
+                                            roomUUID: room.roomUUID,
+                                            periodicUUID: room.periodicUUID,
+                                        });
+                                        break;
                                     }
-                                }}
-                            />
-                        </Fragment>
-                    );
-                },
-            )}
+                                    case "modify": {
+                                        pushHistory(RouteNameType.ModifyOrdinaryRoomPage, {
+                                            roomUUID: room.roomUUID,
+                                            periodicUUID: room.periodicUUID,
+                                        });
+                                        break;
+                                    }
+                                    case "cancel": {
+                                        setCurrentRoom(room);
+                                        setCancelModalVisible(true);
+                                        break;
+                                    }
+                                    case "invite": {
+                                        setCurrentRoom(room);
+                                        setInviteModalVisible(true);
+                                        break;
+                                    }
+                                    case "delete-history": {
+                                        setCurrentRoom(room);
+                                        setRemoveHistoryVisible(true);
+                                        break;
+                                    }
+                                    case "replay": {
+                                        replayRoom({
+                                            ownerUUID: room.ownerUUID,
+                                            roomUUID: room.roomUUID,
+                                            roomType: room.roomType || RoomType.OneToOne,
+                                        });
+                                        break;
+                                    }
+                                    case "join":
+                                    case "begin": {
+                                        void joinRoomHandler(room.roomUUID, pushHistory);
+                                        break;
+                                    }
+                                    default:
+                                }
+                            }}
+                        />
+                    </Fragment>
+                );
+            })}
             <RoomListAlreadyLoaded />
             {currentRoom && (
                 <RemoveRoomModal

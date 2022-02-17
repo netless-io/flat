@@ -1,35 +1,39 @@
 import { Meta, Story } from "@storybook/react";
+import { Col, Row } from "antd";
 import React from "react";
-import { HomePageHeroButtons, HomePageHeroButtonsProps } from ".";
+import { HomePageHeroButton } from ".";
 
 const storyMeta: Meta = {
     title: "HomePage/HomePageHeroButtons",
-    component: HomePageHeroButtons,
+    component: HomePageHeroButton,
     parameters: {
         backgrounds: {
             default: "Homepage Background",
+        },
+        viewport: {
+            defaultViewport: "flatDesktop",
         },
     },
 };
 
 export default storyMeta;
 
-export const Overview: Story<HomePageHeroButtonsProps> = args => <HomePageHeroButtons {...args} />;
+interface HomePageHeroButtonsProps {
+    onJoin?: () => void;
+    onCreate?: () => void;
+    onSchedule?: () => void;
+}
 
-export const TabletScreen: Story<HomePageHeroButtonsProps> = args => (
-    <HomePageHeroButtons {...args} />
+export const Overview: Story<HomePageHeroButtonsProps> = args => (
+    <Row gutter={16}>
+        <Col span={6}>
+            <HomePageHeroButton type="join" onClick={args.onJoin} />
+        </Col>
+        <Col span={6}>
+            <HomePageHeroButton type="begin" onClick={args.onCreate} />
+        </Col>
+        <Col span={6}>
+            <HomePageHeroButton type="schedule" onClick={args.onSchedule} />
+        </Col>
+    </Row>
 );
-TabletScreen.parameters = {
-    viewport: {
-        defaultViewport: "tablet2",
-    },
-};
-
-export const SmallScreen: Story<HomePageHeroButtonsProps> = args => (
-    <HomePageHeroButtons {...args} />
-);
-SmallScreen.parameters = {
-    viewport: {
-        defaultViewport: "mobile1",
-    },
-};

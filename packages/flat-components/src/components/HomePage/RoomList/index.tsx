@@ -1,37 +1,14 @@
 import "./style.less";
-import calendarSVG from "./icons/calendar.svg";
-import emptyHistorySVG from "./icons/empty-history.svg";
-import emptyRoomSVG from "./icons/empty-room.svg";
 
-import React, { PropsWithChildren, ReactElement } from "react";
-import { format, isToday, isTomorrow } from "date-fns";
-import { zhCN, enUS } from "date-fns/locale";
+import React, { PropsWithChildren, ReactElement, useMemo } from "react";
+import { format } from "date-fns";
 import classNames from "classnames";
 import { Button, Dropdown, Menu, Skeleton } from "antd";
 import { useTranslation } from "react-i18next";
+import { RoomListLabel } from "./RoomListLabel";
+import { SVGDown } from "../../FlatIcons";
 
-export interface RoomListDateProps {
-    date: Date;
-}
-
-export const RoomListDate: React.FC<RoomListDateProps> = ({ date }) => {
-    const { t, i18n } = useTranslation();
-    const lang = i18n.language;
-    return (
-        <div className="room-list-date">
-            <img alt="" src={calendarSVG} />
-            <time dateTime={date.toUTCString()}>
-                {format(date, "MMM do", { locale: lang?.startsWith("zh") ? zhCN : enUS })}
-                {" · "}
-                {isToday(date)
-                    ? t("today")
-                    : isTomorrow(date)
-                    ? t("tomorrow")
-                    : format(date, "E", { locale: lang?.startsWith("zh") ? zhCN : enUS })}
-            </time>
-        </div>
-    );
-};
+export * from "./RoomListEmpty";
 
 export type RoomStatusType = "upcoming" | "running" | "paused" | "stopped";
 
@@ -68,27 +45,46 @@ export function RoomListItem<T extends string = string>({
     const { t } = useTranslation();
     return (
         <div className="room-list-item">
-            <div
-                className={classNames("room-list-item-left", { pointer: !!onClick })}
-                onClick={onClick}
-            >
-                <div className="room-list-item-title">{title}</div>
-                <div className="room-list-item-info">
-                    {(beginTime || endTime) && (
-                        <div className="room-list-item-duration">
-                            {beginTime && format(beginTime, "HH:mm")}
-                            {" ~ "}
-                            {endTime && format(endTime, "HH:mm")}
-                        </div>
-                    )}
-                    <div className="room-list-item-status">
-                        <span className={status}>{t(`room-status.${status}`)}</span>
-                        {isPeriodic && <span className="periodic">{t("periodic")}</span>}
+            <div className="room-list-item-content">
+                <div
+                    className={classNames("room-list-item-left", { pointer: !!onClick })}
+                    onClick={onClick}
+                >
+                    <div className="room-list-item-title-wrap">
+                        <h1 className="room-list-item-title">{title}</h1>
+                        {isPeriodic && (
+                            <RoomListLabel type="primary">{t("periodic")}</RoomListLabel>
+                        )}
+                    </div>
+                    <div className="room-list-item-info">
+                        {beginTime && (
+                            <RoomListLabel>
+                                {beginTime && format(beginTime, "yyyy/MM/dd")}
+                            </RoomListLabel>
+                        )}
+                        {(beginTime || endTime) && (
+                            <RoomListLabel>
+                                {beginTime && format(beginTime, "HH:mm")}
+                                {" ~ "}
+                                {endTime && format(endTime, "HH:mm")}
+                            </RoomListLabel>
+                        )}
+                        <RoomListLabel
+                            type={
+                                status === "upcoming"
+                                    ? "warning"
+                                    : status === "running"
+                                    ? "success"
+                                    : undefined
+                            }
+                        >
+                            {t(`room-status.${status}`)}
+                        </RoomListLabel>
                     </div>
                 </div>
-            </div>
-            <div className="room-list-item-right">
-                {buttons && renderButtons(buttons, onClickMenu)}
+                <div className="room-list-item-right">
+                    {buttons && renderButtons(buttons, onClickMenu)}
+                </div>
             </div>
         </div>
     );
@@ -98,13 +94,12 @@ function renderButtons<T extends string>(
     buttons: RoomListItemButtons<T>,
     onClickMenu?: (key: T) => void,
 ): React.ReactNode {
-    const result: React.ReactNode[] = [];
-    for (const buttonConfig of buttons) {
+    return buttons.map(buttonConfig => {
         if (Array.isArray(buttonConfig)) {
-            result.push(renderSubMenu(buttonConfig, "room-list-item-sub-menu", onClickMenu));
+            return renderSubMenu(buttonConfig, "room-list-item-sub-menu", onClickMenu);
         } else {
             const { key, text, disabled } = buttonConfig;
-            result.push(
+            return (
                 <Button
                     key={key}
                     disabled={disabled}
@@ -112,11 +107,10 @@ function renderButtons<T extends string>(
                     onClick={() => onClickMenu?.(key)}
                 >
                     {text}
-                </Button>,
+                </Button>
             );
         }
-    }
-    return result;
+    });
 }
 
 function renderSubMenu<T extends string>(
@@ -126,7 +120,7 @@ function renderSubMenu<T extends string>(
 ): React.ReactNode {
     return (
         <Dropdown
-            key={Math.random()}
+            key={buttons.map(button => button.key).join("-")}
             overlay={
                 <Menu>
                     {buttons.map(button => (
@@ -148,20 +142,6 @@ export function RoomListAlreadyLoaded(): ReactElement {
     const { t } = useTranslation();
 
     return <div className="room-list-footer">{t("loaded-all")}</div>;
-}
-
-export interface RoomListEmptyProps {
-    isHistory: boolean;
-}
-
-export function RoomListEmpty({ isHistory }: RoomListEmptyProps): ReactElement {
-    const { t } = useTranslation();
-    return (
-        <div className="room-empty-box">
-            <img alt="empty" src={isHistory ? emptyHistorySVG : emptyRoomSVG} />
-            <span>{isHistory ? t("no-record") : t("no-room")}</span>
-        </div>
-    );
 }
 
 export function RoomListSkeletons(): ReactElement {
@@ -202,24 +182,32 @@ export function RoomList<T extends string>({
     children,
     style,
 }: PropsWithChildren<RoomListProps<T>>): ReactElement {
+    const activeTabTitle = useMemo(
+        () => filters?.find(tab => tab.key === activeTab)?.title,
+        [filters, activeTab],
+    );
+
     return (
         <div className="room-list" style={style}>
             <div className="room-list-header">
                 <div className="room-list-title">{title}</div>
-                <div className="room-list-filters">
-                    {filters?.map(({ title, key }) => (
-                        <span
-                            key={key}
-                            className={classNames("tab", {
-                                active: activeTab === key,
-                                pointer: activeTab !== key,
-                            })}
-                            onClick={() => onTabActive?.(key)}
-                        >
-                            {title}
+                {filters && (
+                    <Dropdown
+                        overlay={
+                            <Menu>
+                                {filters.map(({ title, key }) => (
+                                    <Menu.Item key={key} onClick={() => onTabActive?.(key)}>
+                                        {title}
+                                    </Menu.Item>
+                                ))}
+                            </Menu>
+                        }
+                    >
+                        <span className="room-list-filters">
+                            {activeTabTitle} <SVGDown height={24} width={24} />
                         </span>
-                    ))}
-                </div>
+                    </Dropdown>
+                )}
             </div>
             <div className="room-list-body fancy-scrollbar">{children}</div>
         </div>
