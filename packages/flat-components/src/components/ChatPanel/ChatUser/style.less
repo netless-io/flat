@@ -2,23 +2,22 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
+    gap: 8px;
     width: 100%;
     overflow: hidden;
-    height: 40px;
-    padding: 0 16px;
-    line-height: 40px;
-    color: #444e60;
+    padding: 12px 0;
+    color: var(--text);
     font-size: 14px;
     word-break: keep-all;
     white-space: nowrap;
     user-select: none;
+    border-bottom: 1px solid var(--grey-1);
 }
 
 .chat-user-avatar {
-    flex-shrink: 0;
-    width: 22px;
-    height: 22px;
-    margin-right: 8px;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
 }
 
@@ -31,35 +30,44 @@
 
 .chat-user-status {
     flex-shrink: 0;
-    margin-left: 5px;
 
     &.is-teacher {
-        color: #7a7b7c;
+        color: var(--text-weak);
     }
 
     &.is-speaking {
-        color: #7ec452;
+        color: var(--success);
     }
 
     &.is-hand-raising {
-        color: #3381ff;
+        color: var(--primary);
     }
 }
 
 .chat-user-ctl-btn {
     flex-shrink: 0;
     margin: 0 0 0 auto;
-    padding: 0 0 0 16px;
-    border: none;
+    padding: 0 16px;
+    border-radius: 4px;
+    height: 24px;
     outline: none;
     background: transparent;
     cursor: pointer;
 
     &.is-speaking {
-        color: #f45454;
+        color: var(--danger);
+        border: 1px solid var(--danger);
     }
 
     &.is-hand-raising {
-        color: #3381ff;
+        color: var(--grey-0);
+        background: var(--primary);
+        border: 1px solid var(--blue-7);
+    }
+}
+
+.flat-color-scheme-dark {
+    .chat-user {
+        border-bottom-color: var(--grey-8);
     }
 }

@@ -1,13 +1,12 @@
 import "./style.less";
-import noHandSVG from "./icons/no-hand.svg";
 
 import React from "react";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import { AutoSizer, List, ListRowRenderer, Size } from "react-virtualized";
+import { useTranslation } from "react-i18next";
 import { ChatUser, ChatUserProps } from "../ChatUser";
 import { User } from "../../../types/user";
-import { useTranslation } from "react-i18next";
 
 export type ChatUsersProps = {
     isCreator: boolean;
@@ -42,7 +41,7 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
                 data={users}
                 height={height}
                 rowCount={users.length}
-                rowHeight={40}
+                rowHeight={48}
                 rowRenderer={rowRenderer}
                 width={width}
             />
@@ -56,7 +55,6 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
             {isShowCancelAllHandRaising && (
                 <div className="chat-users-cancel-hands-wrap">
                     <button className="chat-users-cancel-hands" onClick={onCancelAllHandRaising}>
-                        <img alt="cancel hand raising" src={noHandSVG} />
                         {t("cancel-hand-raising")}
                     </button>
                 </div>
