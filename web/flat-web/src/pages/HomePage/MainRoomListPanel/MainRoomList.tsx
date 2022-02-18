@@ -91,13 +91,6 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                     return null;
                 }
 
-                // show divider when two adjacent rooms are not the same day
-                // const shouldShowDivider = !(
-                //     room.beginTime &&
-                //     nextRoom?.beginTime &&
-                //     isSameDay(room.beginTime, nextRoom.beginTime)
-                // );
-
                 const beginTime = room.beginTime ? new Date(room.beginTime) : void 0;
                 const endTime = room.endTime ? new Date(room.endTime) : void 0;
 
