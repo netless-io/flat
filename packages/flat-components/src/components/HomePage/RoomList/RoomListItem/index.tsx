@@ -43,7 +43,7 @@ export function RoomListItem<T extends string = string>({
             <div className="room-list-item-content">
                 {ownerAvatar && (
                     <div className="room-list-item-left">
-                        <figure className="room-list-item-owner-avatar">
+                        <figure className="room-list-item-owner-avatar" title={ownerName}>
                             <img alt={ownerName} src={ownerAvatar} />
                         </figure>
                     </div>
