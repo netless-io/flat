@@ -4,84 +4,89 @@ import React, { PropsWithChildren, ReactElement } from "react";
 import { format } from "date-fns";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import { RoomListLabel } from "../RoomListLabel";
-import { RoomListItemButtonList } from "./RoomListItemButtonList";
+import { Button } from "antd";
+import { RoomListItemMenus } from "./RoomListItemMenus";
+import { RoomListItemAction, RoomListItemPrimaryAction, RoomStatusType } from "./types";
 
-export type RoomStatusType = "upcoming" | "running" | "paused" | "stopped";
-
-export interface RoomListItemButton<T extends string> {
-    key: T;
-    text: string;
-    disabled?: boolean;
-}
-export type RoomListItemButtons<T extends string> = Array<
-    RoomListItemButton<T> | Array<RoomListItemButton<T>>
->;
+export * from "./types";
 
 export interface RoomListItemProps<T extends string> {
     title: string;
     beginTime?: Date;
     endTime?: Date;
+    ownerName?: string;
+    ownerAvatar?: string;
     status: RoomStatusType;
     isPeriodic?: boolean;
-    buttons?: RoomListItemButtons<T>;
+    menuActions?: Array<RoomListItemAction<T>> | null;
+    primaryAction?: RoomListItemPrimaryAction<T> | null;
+    onAction: (key: T) => void;
     onClick?: () => void;
-    onClickMenu?: (key: T) => void;
 }
 
 export function RoomListItem<T extends string = string>({
     title,
     beginTime,
     endTime,
+    ownerName,
+    ownerAvatar,
     status,
     isPeriodic,
-    buttons,
+    menuActions,
+    primaryAction,
     onClick,
-    onClickMenu,
+    onAction,
 }: PropsWithChildren<RoomListItemProps<T>>): ReactElement {
     const { t } = useTranslation();
     return (
-        <div className="room-list-item">
+        <div className={classNames("room-list-item", { pointer: !!onClick })}>
             <div className="room-list-item-content">
-                <div
-                    className={classNames("room-list-item-left", { pointer: !!onClick })}
-                    onClick={onClick}
-                >
-                    <div className="room-list-item-title-wrap">
-                        <h1 className="room-list-item-title">{title}</h1>
-                        {isPeriodic && (
-                            <RoomListLabel type="primary">{t("periodic")}</RoomListLabel>
-                        )}
+                {ownerAvatar && (
+                    <div className="room-list-item-left">
+                        <figure className="room-list-item-owner-avatar">
+                            <img alt={ownerName} src={ownerAvatar} />
+                        </figure>
                     </div>
-                    <div className="room-list-item-info">
-                        {beginTime && (
-                            <RoomListLabel>
-                                {beginTime && format(beginTime, "yyyy/MM/dd")}
-                            </RoomListLabel>
-                        )}
-                        {(beginTime || endTime) && (
-                            <RoomListLabel>
-                                {beginTime && format(beginTime, "HH:mm")}
-                                {" ~ "}
-                                {endTime && format(endTime, "HH:mm")}
-                            </RoomListLabel>
-                        )}
-                        <RoomListLabel
-                            type={
+                )}
+                <div className="room-list-item-middle" onClick={onClick}>
+                    <h1 className="room-list-item-title">{title}</h1>
+                    <div className="room-list-item-time-date">
+                        <span className="room-list-item-time">
+                            {beginTime && format(beginTime, "HH:mm")}
+                            {" ~ "}
+                            {endTime && format(endTime, "HH:mm")}
+                        </span>
+                        <span className="room-list-item-date">
+                            {beginTime && format(beginTime, "yyyy/MM/dd")}
+                        </span>
+                        <span>{isPeriodic && `(${t("periodic")})`}</span>
+                    </div>
+                    <div>
+                        <span
+                            className={`room-list-item-status-${
                                 status === "upcoming"
                                     ? "warning"
                                     : status === "running"
                                     ? "success"
-                                    : undefined
-                            }
+                                    : "default"
+                            }`}
                         >
                             {t(`room-status.${status}`)}
-                        </RoomListLabel>
+                        </span>
                     </div>
                 </div>
                 <div className="room-list-item-right">
-                    {buttons && (
-                        <RoomListItemButtonList buttons={buttons} onClickMenu={onClickMenu} />
+                    {menuActions && <RoomListItemMenus actions={menuActions} onAction={onAction} />}
+                    {primaryAction && (
+                        <Button
+                            key={primaryAction.key}
+                            className="room-list-item-primary-action"
+                            disabled={primaryAction.disabled}
+                            type={primaryAction.type}
+                            onClick={() => onAction(primaryAction.key)}
+                        >
+                            {primaryAction.text}
+                        </Button>
                     )}
                 </div>
             </div>

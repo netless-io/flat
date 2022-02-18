@@ -8,7 +8,7 @@ import {
     RoomListAllLoaded,
     RoomListEmpty,
     RoomListItem,
-    RoomListItemButton,
+    RoomListItemPrimaryAction,
     RoomListSkeletons,
     RoomStatusType,
 } from "flat-components";
@@ -103,8 +103,10 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
 
                 const primaryAction = (
                     roomStatus?: RoomStatus,
-                ): RoomListItemButton<"replay" | "join" | "begin"> => {
-                    let primaryAction: RoomListItemButton<"replay" | "join" | "begin">;
+                ): RoomListItemPrimaryAction<"replay" | "join" | "begin"> | null => {
+                    let primaryAction: RoomListItemPrimaryAction<
+                        "replay" | "join" | "begin"
+                    > | null;
                     switch (roomStatus) {
                         case RoomStatus.Idle: {
                             const isCreator = room.ownerUUID === globalStore.userUUID;
@@ -112,10 +114,12 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                                 ? {
                                       key: "begin",
                                       text: t("begin"),
+                                      type: "primary",
                                   }
                                 : {
                                       key: "join",
                                       text: t("join"),
+                                      type: "primary",
                                   };
                             break;
                         }
@@ -124,21 +128,24 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                             primaryAction = {
                                 key: "join",
                                 text: t("join"),
+                                type: "primary",
                             };
                             break;
                         }
                         case RoomStatus.Stopped: {
-                            primaryAction = {
-                                key: "replay",
-                                text: t("replay"),
-                                disabled: !room.hasRecord,
-                            };
+                            primaryAction = room.hasRecord
+                                ? {
+                                      key: "replay",
+                                      text: t("replay"),
+                                  }
+                                : null;
                             break;
                         }
                         default: {
                             primaryAction = {
                                 key: "begin",
                                 text: t("begin"),
+                                type: "primary",
                             };
                             break;
                         }
@@ -150,12 +157,15 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                     <Fragment key={room.roomUUID}>
                         <RoomListItem
                             beginTime={beginTime}
-                            buttons={[getSubActions(room), primaryAction(room.roomStatus)]}
                             endTime={endTime}
                             isPeriodic={!!room.periodicUUID}
+                            menuActions={getSubActions(room)}
+                            ownerAvatar={room.ownerAvatarURL}
+                            ownerName={room.ownerName}
+                            primaryAction={primaryAction(room.roomStatus)}
                             status={getRoomStatus(room.roomStatus)}
                             title={room.title!}
-                            onClickMenu={key => {
+                            onAction={key => {
                                 switch (key) {
                                     case "details": {
                                         pushHistory(RouteNameType.RoomDetailPage, {

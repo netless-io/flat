@@ -38,7 +38,7 @@ export function RoomList<T extends string>({
     return (
         <div className="room-list" style={style}>
             <div className="room-list-header">
-                <div className="room-list-title">{title}</div>
+                <h1 className="room-list-title">{title}</h1>
                 {filters && (
                     <Dropdown
                         overlay={

@@ -222,6 +222,7 @@
   "delete-records": "Delete",
   "join": "Join",
   "replay": "Replay",
+  "no-replay": "No Replay",
   "room-detail": "Details",
   "the-room-has-been-cancelled": "The room has been cancelled",
   "the-room-has-been-removed": "The room has been removed",

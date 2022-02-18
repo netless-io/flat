@@ -7,6 +7,7 @@ import { UPDATE_GLOBALS } from "@storybook/core-events";
 import { FlatThemeProvider, useDarkMode } from "../src/components/FlatThemeProvider";
 import { i18n } from "./i18next.js";
 import { useEffect } from "react";
+import { get } from "lodash-es";
 
 document.body.classList.add("flat-colors-root");
 
@@ -69,9 +70,11 @@ export const decorators = [
         useEffect(() => {
             channel.emit(UPDATE_GLOBALS, {
                 globals: {
-                    backgrounds: darkMode
-                        ? { value: "var(--grey-12)" }
-                        : { value: "var(--grey-0)" },
+                    backgrounds: {
+                        value: darkMode
+                            ? "var(--grey-12)"
+                            : get(context, ["parameters", "backgrounds", "default"], "#fff"),
+                    },
                 },
             });
         }, [darkMode]);

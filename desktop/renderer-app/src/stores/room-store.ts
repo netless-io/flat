@@ -32,7 +32,8 @@ export interface RoomItem {
     inviteCode?: string;
     roomType?: RoomType;
     periodicUUID?: string;
-    ownerUserName?: string;
+    ownerName?: string;
+    ownerAvatarURL?: string;
     title?: string;
     roomStatus?: RoomStatus;
     region?: Region;
@@ -198,6 +199,7 @@ export class RoomStore {
                 title: roomInfo.periodic.title,
                 roomType: roomInfo.periodic.roomType,
                 periodicUUID: periodicUUID,
+                ownerName: roomInfo.periodic.ownerName,
             });
         });
         this.periodicRooms.set(periodicUUID, {
