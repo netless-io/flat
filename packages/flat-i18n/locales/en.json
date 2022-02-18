@@ -238,7 +238,7 @@
   "repeat-frequency": "Every {{week}}",
   "schedule-room-detail": "Ends at {{time}} with {{length}} rooms",
   "schedule-room-type": "Room type: {{type}}",
-  "view-all-rooms-in-periodic-rooms": "View all {{count}} rooms",
+  "view-all-rooms-in-periodic-rooms": "View all ({{count}}) rooms",
   "ending": "Ending...",
   "follow-your-perspective-tips": "Other users will follow your perspective",
   "interactive-mode": "Currently in interactive mode",
@@ -398,6 +398,10 @@
   "exit": "Exit",
   "side-panel": {
     "hide": "Hide",
-    "show":  "Show"
-  }
+    "show": "Show"
+  },
+  "flat-appearance-light": "Light",
+  "flat-appearance-dark": "Dark",
+  "flat-appearance-auto": "Auto",
+  "flat-appearance-setting": "Appearance"
 }
