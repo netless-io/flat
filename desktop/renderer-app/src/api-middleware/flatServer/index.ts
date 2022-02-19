@@ -63,7 +63,8 @@ export interface FlatServerRoom {
     ownerUUID: string;
     inviteCode: string;
     roomType: RoomType;
-    ownerUserName: string;
+    ownerName: string;
+    ownerAvatarURL: string;
     title: string;
     beginTime: number;
     endTime: number;
@@ -132,7 +133,7 @@ export interface OrdinaryRoomInfo {
     roomType: RoomType;
     roomStatus: RoomStatus;
     ownerUUID: string;
-    ownerUserName: string;
+    ownerName: string;
     region: Region;
 }
 
@@ -164,7 +165,6 @@ export interface PeriodicSubRoomInfo {
     roomType: RoomType;
     roomStatus: RoomStatus;
     ownerUUID: string;
-    ownerUserName: string;
     region: Region;
 }
 
@@ -191,7 +191,7 @@ export interface PeriodicRoomInfoPayload {
 export type PeriodicRoomInfoResult = {
     periodic: {
         ownerUUID: string;
-        ownerUserName: string;
+        ownerName: string;
         inviteCode: string;
         endTime: number;
         rate: number | null;

@@ -45,7 +45,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
         return <LoadingPage timeMS={3 * 1000} />;
     }
 
-    const { title, ownerUUID, ownerUserName } = periodicInfo.periodic;
+    const { title, ownerUUID, ownerName } = periodicInfo.periodic;
 
     const isCreator = globalStore.userUUID === ownerUUID;
 
@@ -150,7 +150,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
                         jumpToRoomDetailPage={jumpToRoomDetailPage}
                         periodicInfo={periodicInfo.periodic}
                         rooms={rooms}
-                        userName={ownerUserName}
+                        userName={ownerName}
                         onCancelPeriodicRoom={onCancelPeriodicRoom}
                         onCancelSubPeriodicRoom={onCancelSubPeriodicRoom}
                         onCopyInvitation={text => clipboard.writeText(text)}

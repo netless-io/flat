@@ -6,6 +6,8 @@ import { useIsomorphicLayoutEffect } from "react-use";
 
 export * from "./useDarkMode";
 
+export const DarkModeContext = React.createContext(false);
+
 export interface FlatThemeProviderProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     prefersColorScheme?: FlatPrefersColorScheme;
@@ -18,14 +20,16 @@ export const FlatThemeProvider: FC<FlatThemeProviderProps> = ({
 }) => {
     const darkMode = useDarkMode(prefersColorScheme);
     return (
-        <div
-            {...restProps}
-            className={classNames(
-                "flat-theme-root",
-                { "flat-color-scheme-dark": darkMode },
-                className,
-            )}
-        />
+        <DarkModeContext.Provider value={darkMode}>
+            <div
+                {...restProps}
+                className={classNames(
+                    "flat-theme-root",
+                    { "flat-color-scheme-dark": darkMode },
+                    className,
+                )}
+            />
+        </DarkModeContext.Provider>
     );
 };
 
@@ -42,5 +46,5 @@ export const FlatThemeBodyProvider: FC<FlatThemeBodyProviderProps> = ({
         document.body.classList.add("flat-theme-root");
         document.body.classList.toggle("flat-color-scheme-dark", darkMode);
     }, [darkMode]);
-    return <>{children}</>;
+    return <DarkModeContext.Provider value={darkMode}>{children}</DarkModeContext.Provider>;
 };

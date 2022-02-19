@@ -46,6 +46,8 @@ module.exports = {
         "tabpane",
         "anticon",
         "nums",
+        "Avenir",
+        "Semibold",
 
         // whiteboard
         "unban",

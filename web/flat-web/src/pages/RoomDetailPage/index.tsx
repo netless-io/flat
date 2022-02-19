@@ -139,7 +139,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
                     showRoomCountVisible={
                         periodicUUID ? roomInfo.roomStatus !== RoomStatus.Stopped : false
                     }
-                    userName={roomInfo.ownerUserName || ""}
+                    userName={roomInfo.ownerName || ""}
                     onCancelRoom={onCancelRoom}
                     onCopyInvitation={text => navigator.clipboard.writeText(text)}
                     onJoinRoom={joinRoom}

@@ -1,0 +1,52 @@
+.room-list-skeletons {
+    padding: 0 16px;
+
+    > * {
+        padding-top: 16px;
+        border-bottom: 1px solid #dbe1ea;
+
+        &:last-of-type {
+            border-bottom: none;
+        }
+    }
+
+    .ant-skeleton.ant-skeleton-active .ant-skeleton-content .ant-skeleton-title,
+    .ant-skeleton.ant-skeleton-active .ant-skeleton-content .ant-skeleton-paragraph > li {
+        background: linear-gradient(
+            90deg,
+            hsla(210, 33%, 96%, 1) 25%,
+            hsla(210, 33%, 92%, 1) 37%,
+            hsla(210, 33%, 96%, 1) 63%
+        );
+        background-size: 400% 100%;
+        animation: ant-skeleton-loading 1.4s ease infinite;
+    }
+}
+
+@keyframes ant-skeleton-loading {
+    0% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+
+.flat-color-scheme-dark {
+    .room-list-skeletons {
+        > * {
+            border-bottom-color: var(--grey-8);
+        }
+
+        .ant-skeleton.ant-skeleton-active .ant-skeleton-content .ant-skeleton-title,
+        .ant-skeleton.ant-skeleton-active .ant-skeleton-content .ant-skeleton-paragraph > li {
+            background-image: linear-gradient(
+                90deg,
+                rgba(190, 190, 190, 0.2) 25%,
+                rgba(255, 255, 255, 0.16) 37%,
+                rgba(190, 190, 190, 0.2) 63%
+            );
+        }
+    }
+}

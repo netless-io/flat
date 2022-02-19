@@ -1,6 +1,7 @@
 import "./MainRoomMenu.less";
 
 import React, { FC, useContext } from "react";
+import { Col, Row } from "antd";
 import { Region } from "flat-components";
 import { RoomType } from "../../../api-middleware/flatServer/constants";
 import { GlobalStoreContext, RoomStoreContext } from "../../../components/StoreProvider";
@@ -26,9 +27,17 @@ export const MainRoomMenu: FC = () => {
 
     return (
         <div className="main-room-menu-container">
-            <JoinRoomBox onJoinRoom={onJoinRoom} />
-            <CreateRoomBox onCreateRoom={createOrdinaryRoom} />
-            <ScheduleRoomBox />
+            <Row gutter={16}>
+                <Col span={6}>
+                    <JoinRoomBox onJoinRoom={onJoinRoom} />
+                </Col>
+                <Col span={6}>
+                    <CreateRoomBox onCreateRoom={createOrdinaryRoom} />
+                </Col>
+                <Col span={6}>
+                    <ScheduleRoomBox />
+                </Col>
+            </Row>
         </div>
     );
 

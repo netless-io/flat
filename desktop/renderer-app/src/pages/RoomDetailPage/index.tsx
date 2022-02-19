@@ -145,7 +145,7 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
                     periodicWeeks={periodicInfo?.periodic.weeks}
                     room={roomInfo}
                     roomInfo={roomInfo}
-                    userName={roomInfo.ownerUserName || ""}
+                    userName={roomInfo.ownerName || ""}
                     onCancelRoom={onCancelRoom}
                     onCopyInvitation={text => clipboard.writeText(text)}
                     onJoinRoom={joinRoom}
