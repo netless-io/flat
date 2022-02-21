@@ -33,6 +33,7 @@ const fakeStoreImplProps = [
     "onItemTitleClick",
     "onNewFileName",
     "addExternalFile",
+    "onDropFile",
 ] as const;
 
 type FakeStoreImplProps = typeof fakeStoreImplProps[number];
@@ -49,6 +50,7 @@ class FakeStore extends CloudStorageStore {
     public onItemTitleClick;
     public onNewFileName: FakeStoreConfig["onNewFileName"];
     public addExternalFile;
+    public onDropFile: FakeStoreConfig["onDropFile"];
 
     public pendingUploadTasks: CloudStorageStore["pendingUploadTasks"] = [];
     public uploadingUploadTasks: CloudStorageStore["uploadingUploadTasks"] = [];
@@ -140,6 +142,17 @@ class FakeStore extends CloudStorageStore {
                 file.fileName = fileName.fullName;
             }
             config.onNewFileName(fileUUID, fileName);
+        };
+        this.onDropFile = files => {
+            for (const file of files) {
+                this.files.push({
+                    fileUUID: faker.datatype.uuid(),
+                    fileName: file.name,
+                    fileSize: file.size,
+                    convert: "idle",
+                    createAt: faker.date.past(),
+                });
+            }
         };
 
         makeObservable(
