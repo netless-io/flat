@@ -273,6 +273,11 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         return addExternalFile({ fileName, url: fileURL });
     };
 
+    public onDropFile(files: FileList): void {
+        this.setPanelExpand(true);
+        this.uploadTaskManager.addTasks(Array.from(files));
+    }
+
     public initialize({
         onCoursewareInserted,
     }: { onCoursewareInserted?: () => void } = {}): () => void {

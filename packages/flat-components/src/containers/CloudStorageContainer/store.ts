@@ -154,4 +154,7 @@ export abstract class CloudStorageStore {
 
     /** Add Online HTML5 Courseware to Cloud Storage */
     abstract addExternalFile(fileName: string, fileURL: string): Promise<void>;
+
+    /** When file(s) are dropped in the container. */
+    abstract onDropFile(files: FileList): void;
 }

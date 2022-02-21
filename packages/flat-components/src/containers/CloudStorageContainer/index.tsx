@@ -20,6 +20,37 @@ export interface CloudStorageContainerProps {
     store: CloudStorageStore;
 }
 
+const SupportedFileExts = [
+    ".ppt",
+    ".pptx",
+    ".doc",
+    ".docx",
+    ".pdf",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".mp3",
+    ".mp4",
+    ".ice",
+    ".vf",
+];
+
+const isSupportedFile = (file: File): boolean => {
+    return SupportedFileExts.some(ext => file.name.endsWith(ext));
+};
+
+const areAllSupportedFiles = (files: FileList): boolean => {
+    return Array.from(files).every(file => isSupportedFile(file));
+};
+
+const onDragOver = (event: React.DragEvent<HTMLDivElement>): void => {
+    event.preventDefault();
+    if (areAllSupportedFiles(event.dataTransfer.files)) {
+        event.dataTransfer.dropEffect = "copy";
+    }
+};
+
 /** CloudStorage page with MobX Store */
 export const CloudStorageContainer = observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store }) {
@@ -32,6 +63,16 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                 setH5PanelVisible(true);
             }
         }, []);
+
+        const onDrop = useCallback(
+            (event: React.DragEvent<HTMLDivElement>): void => {
+                event.preventDefault();
+                if (areAllSupportedFiles(event.dataTransfer.files)) {
+                    store.onDropFile(event.dataTransfer.files);
+                }
+            },
+            [store],
+        );
 
         const containerBtns = (
             <div className="cloud-storage-container-btns">
@@ -59,7 +100,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
         );
 
         return (
-            <div className="cloud-storage-container">
+            <div className="cloud-storage-container" onDragOver={onDragOver} onDrop={onDrop}>
                 {!store.compact && (
                     <div className="cloud-storage-container-head">
                         <div>
