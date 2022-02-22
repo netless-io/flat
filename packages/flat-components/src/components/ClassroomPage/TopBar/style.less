@@ -13,7 +13,7 @@
     height: 50px;
     padding: 0 8px;
     font-size: 16px;
-    border-top: 0.5px #dbe1ea solid;
+    border-bottom: 0.5px #dbe1ea solid;
     user-select: none;
     &.isMac {
         border-top: none;
@@ -30,9 +30,18 @@
     flex: 1;
     justify-content: center;
     font-size: 14px;
-    color: #7a7b7c;
+    color: var(--text);
 }
 
 .topbar-content-right:extend(.topbar-content-left) {
     margin: 0 (@topbar-content-right-cell-gap / 2) 0 auto;
+}
+
+.flat-color-scheme-dark {
+    .topbar-box {
+        border-color: var(--grey-8);
+    }
+    .topbar-divider {
+        background-color: var(--grey-8);
+    }
 }
