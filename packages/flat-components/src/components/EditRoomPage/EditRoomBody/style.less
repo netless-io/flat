@@ -3,7 +3,7 @@
     input,
     .ant-select,
     .ant-picker-input > input {
-        color: #444e60;
+        color: var(--text);
     }
 
     .ant-picker {
@@ -12,7 +12,7 @@
 
     .edit-room-form-label,
     .ant-form-item-label > label {
-        color: #7a7b7c;
+        color: var(--text-strong);
     }
 
     .ant-picker,
@@ -46,7 +46,7 @@
 .edit-room-title {
     font-size: 16px;
     font-weight: 500;
-    color: #444e60;
+    color: var(--text);
     line-height: 1;
     margin: 0;
 }
@@ -81,6 +81,7 @@
 
 .edit-room-body {
     overflow: visible;
+    background-color: #fff;
     .ant-row {
         margin-left: 0 !important;
         margin-right: 0 !important;
@@ -114,7 +115,7 @@
 }
 
 .edit-room-tips {
-    background-color: #f3f6f9;
+    background-color: var(--grey-0);
     border-radius: 8px;
     padding: 12px;
 }
@@ -161,4 +162,14 @@
 .edit-room-body-menu-item {
     margin-top: 2px;
     margin-right: -11px;
+}
+
+.flat-color-scheme-dark {
+    .edit-room-body {
+        background-color: var(--grey-10);
+    }
+
+    .edit-room-tips {
+        background-color: var(--grey-9);
+    }
 }

@@ -39,5 +39,7 @@ export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactE
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <div className="user-setting-layout-container">{children}</div>;
+    return (
+        <div className="user-setting-layout-container flat-theme-background-color">{children}</div>
+    );
 };
