@@ -3,9 +3,9 @@ import "./Whiteboard.less";
 
 import { Fastboard, Language } from "@netless/fastboard-react";
 import classNames from "classnames";
-import { RaiseHand } from "flat-components";
+import { DarkModeContext, RaiseHand } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
 import { RoomPhase } from "white-web-sdk";
@@ -31,6 +31,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
 }) {
     const { i18n, t } = useTranslation();
     const { room, phase, fastboardAPP } = whiteboardStore;
+    const isDark = useContext(DarkModeContext);
 
     const [whiteboardEl, setWhiteboardEl] = useState<HTMLElement | null>(null);
     const [collectorEl, setCollectorEl] = useState<HTMLElement | null>(null);
@@ -182,7 +183,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     ref={bindWhiteboard}
                     app={fastboardAPP}
                     language={i18n.language as Language}
-                    theme="light"
+                    theme={isDark ? "dark" : "light"}
                 />
             </div>
         )

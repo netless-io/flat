@@ -28,7 +28,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel(props) {
                     key="messages"
                     tab={
                         <ChatTabTitle>
-                            <SVGChat active={activeTab === "messages"} />
+                            <SVGChat />
                             <span>{t("messages")}</span>
                         </ChatTabTitle>
                     }
@@ -39,7 +39,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel(props) {
                     key="users"
                     tab={
                         <ChatTabTitle {...props}>
-                            <SVGUserGroup active={activeTab === "users"} />
+                            <SVGUserGroup />
                             <span>{t("users")}</span>
                         </ChatTabTitle>
                     }

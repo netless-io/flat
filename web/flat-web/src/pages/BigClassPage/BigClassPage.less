@@ -33,7 +33,6 @@
 .whiteboard-rtc-avatar {
     position: relative;
     overflow: hidden;
-    border: 1px rgba(225, 225, 225, 0.32) solid;
 
     &.is-mini {
         position: absolute;
@@ -98,4 +97,16 @@
     z-index: 100;
     left: 24px;
     top: 24px;
+}
+
+.flat-color-scheme-dark {
+    .realtime-container,
+    .realtime-box {
+        color: var(--text);
+        background-color: var(--grey-10);
+        border: 1px solid var(--grey-8);
+    }
+    .title-cut-line {
+        background-color: var(--grey-10);
+    }
 }
