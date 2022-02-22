@@ -2,6 +2,7 @@
     width: 100%;
     height: 100%;
     overflow-y: auto;
+    background-color: #fff;
 }
 
 .periodic-room-panel-body {
@@ -25,13 +26,13 @@
 .periodic-room-panel-title {
     font-size: 16px;
     font-weight: 500;
-    color: #444e60;
+    color: var(--text);
     line-height: 1;
     margin: 0;
 }
 
 .periodic-room-panel-tips {
-    background-color: #f3f6f9;
+    background-color: var(--grey-0);
     border-radius: 8px;
     padding: 12px;
     margin-bottom: 24px;
@@ -42,13 +43,13 @@
 }
 
 .periodic-room-panel-tips-type {
-    color: #7a7b7c;
+    color: var(--text);
     margin-top: 8px;
     margin-bottom: 8px;
 }
 
 .periodic-room-panel-tips-inner {
-    color: #7a7b7c;
+    color: var(--text);
 }
 
 .periodic-room-panel-table-line {
@@ -59,15 +60,27 @@
 
 .periodic-room-panel-table-container {
     .ant-table-tbody > tr > td {
-        color: #7a7b7c;
+        color: var(--text);
         border-bottom: 1px solid transparent;
     }
 }
 
 .periodic-room-panel-month-value {
-    color: #444e60;
+    color: var(--text);
     font-size: 16px;
     line-height: 24px;
     font-weight: 500;
     margin-top: 16px;
+}
+
+.flat-color-scheme-dark {
+    .periodic-room-panel-tips {
+        background-color: var(--grey-9);
+    }
+    .periodic-room-panel-container {
+        background-color: var(--grey-10);
+    }
+    .periodic-room-panel-body {
+        background-color: var(--grey-10);
+    }
 }

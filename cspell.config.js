@@ -102,6 +102,7 @@ module.exports = {
 
         // less
         "isstring",
+        "borderless",
 
         // misc
         "npmrc",

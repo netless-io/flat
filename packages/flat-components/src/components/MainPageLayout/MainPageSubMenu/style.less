@@ -20,16 +20,36 @@
     padding: 9px 0px 9px 16px;
     transition: background-color 0.4s;
     align-items: center;
-    color: #444e60;
+    color: var(--text);
 
     &:hover,
     &:active {
-        color: #444e60;
+        color: var(--text);
         background-color: rgba(243, 246, 249, 1);
     }
 
     &.is-active {
-        color: #444e60;
+        color: var(--text);
         background-color: rgba(51, 129, 255, 0.06);
+    }
+}
+
+.flat-color-scheme-dark {
+    .main-layout-sub-menu-container {
+        background-color: var(--grey-10);
+        border-right: solid 1px var(--grey-7);
+    }
+
+    .main-layout-sub-menu-item {
+        &:hover,
+        &:active {
+            color: var(--text);
+            background-color: var(--grey-8);
+        }
+
+        &.is-active {
+            color: var(--text);
+            background-color: rgba(141, 136, 136, 0.3);
+        }
     }
 }

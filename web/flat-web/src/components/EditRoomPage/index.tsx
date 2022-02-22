@@ -31,7 +31,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(pr
 
     return (
         <div className="edit-room-page">
-            <div className="edit-room-page-body">
+            <div className="edit-room-page-body flat-theme-background-color">
                 <div className="edit-room-page-body-content">
                     <EditRoomBody {...props} />
                 </div>

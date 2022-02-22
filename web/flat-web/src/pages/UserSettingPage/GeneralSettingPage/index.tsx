@@ -42,8 +42,12 @@ export const GeneralSettingPage = (): React.ReactElement => {
                         }
                         onChange={changeLanguage}
                     >
-                        <Radio value={SelectLanguage.Chinese}>{t("chinese")}</Radio>
-                        <Radio value={SelectLanguage.English}>English</Radio>
+                        <Radio value={SelectLanguage.Chinese}>
+                            <span className="radio-item-inner">{t("chinese")}</span>
+                        </Radio>
+                        <Radio value={SelectLanguage.English}>
+                            <span className="radio-item-inner">English</span>
+                        </Radio>
                     </Radio.Group>
                 </div>
                 <div className="general-setting-appearance-picker-container">
@@ -61,7 +65,7 @@ export const GeneralSettingPage = (): React.ReactElement => {
                             globalStore.toggleDeviceTest();
                         }}
                     >
-                        {t("turn-on-device-test")}
+                        <span className="checkbox-item-inner">{t("turn-on-device-test")}</span>
                     </Checkbox>
                 </div>
             </div>

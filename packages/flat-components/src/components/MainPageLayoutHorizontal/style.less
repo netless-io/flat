@@ -5,7 +5,7 @@
 .main-horizontal-layout-content-background {
     height: calc(100vh - 50px);
     padding-top: 16px;
-    background-color: #f3f6f9;
+    background-color: var(--grey-0);
 }
 
 .main-horizontal-layout-content-container {
@@ -19,4 +19,10 @@
 .main-horizontal-layout-content {
     flex: 1;
     height: 100%;
+}
+
+.flat-color-scheme-dark {
+    .main-horizontal-layout-content-background {
+        background-color: var(--grey-12);
+    }
 }
