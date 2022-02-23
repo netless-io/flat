@@ -5,9 +5,11 @@ import { MINIMAL_VIEWPORTS } from "@storybook/addon-viewport";
 import { addons } from "@storybook/addons";
 import { UPDATE_GLOBALS } from "@storybook/core-events";
 import { FlatThemeProvider, useDarkMode } from "../src/components/FlatThemeProvider";
+import { AntdProvider } from "../src/theme/antd.mod";
 import { i18n } from "./i18next.js";
 import { useEffect } from "react";
 import { get } from "lodash-es";
+import { useTranslation } from "react-i18next";
 
 document.body.classList.add("flat-colors-root");
 
@@ -64,6 +66,10 @@ export const parameters = {
 };
 
 export const decorators = [
+    (Story, context) => {
+        const { i18n } = useTranslation();
+        return <AntdProvider lang={i18n.language}>{Story(context)}</AntdProvider>;
+    },
     (Story, context) => {
         const channel = addons.getChannel();
         const darkMode = useDarkMode(context.globals.prefersColorScheme);
