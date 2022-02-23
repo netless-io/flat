@@ -1,5 +1,3 @@
-import "./style.less";
-
 import React, { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { RoomList } from "flat-components";
