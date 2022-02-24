@@ -11,7 +11,7 @@ export const agoraLogin: LoginExecutor = onSuccess => {
 
     function getAgoraURL(authUUID: string): string {
         const redirectURL = encodeURIComponent(FLAT_SERVER_LOGIN.AGORA_CALLBACK);
-        return `http://sso2.agora.io/api/v0/oauth/authorize?response_type=code&client_id=${AGORA_OAUTH.CLIENT_ID}&redirect_uri=${redirectURL}&scope=basic_info&state=${authUUID}`;
+        return `https://sso2.agora.io/api/v0/oauth/authorize?response_type=code&client_id=${AGORA_OAUTH.CLIENT_ID}&redirect_uri=${redirectURL}&scope=basic_info&state=${authUUID}&toPage=signup`;
     }
 
     void (async () => {
