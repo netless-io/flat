@@ -11,6 +11,7 @@ export const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
     show: false,
     fullscreenable: false,
     maximizable: false,
+    autoHideMenuBar: true,
     webPreferences: {
         autoplayPolicy: "no-user-gesture-required",
         // TODO: set nodeIntegration: false
