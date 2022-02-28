@@ -13,7 +13,7 @@
     flex: 1;
     width: 960px;
     margin: 0 auto;
-    border-radius: 8px 8px 0px 0px;
+    border-radius: 6px;
     background-color: #fff;
 }
 
@@ -21,7 +21,7 @@
     margin: 0;
     font-size: 16px;
     font-weight: 500;
-    color: #444e60;
+    color: var(--text-strong);
 }
 
 .room-detail-page-header-sign {
@@ -40,4 +40,10 @@
     margin-left: auto;
     cursor: pointer;
     color: #3381ff;
+}
+
+.flat-color-scheme-dark {
+    .room-detail-page-panel-container {
+        background-color: var(--grey-10);
+    }
 }
