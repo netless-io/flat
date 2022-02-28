@@ -404,5 +404,7 @@
   "flat-appearance-light": "Light",
   "flat-appearance-dark": "Dark",
   "flat-appearance-auto": "Auto",
-  "flat-appearance-setting": "Appearance"
+  "flat-appearance-setting": "Appearance",
+  "status": "Status",
+  "time": "Time"
 }

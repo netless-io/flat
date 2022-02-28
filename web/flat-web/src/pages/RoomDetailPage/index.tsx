@@ -127,7 +127,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
 
     return (
         <div className="room-detail-page-container">
-            <div className="room-detail-page-panel-container flat-theme-background-color">
+            <div className="room-detail-page-panel-container">
                 <RoomDetailPanel
                     inviteBaseUrl={FLAT_WEB_BASE_URL}
                     isCreator={isCreator}

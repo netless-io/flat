@@ -50,7 +50,9 @@ export const GeneralSettingPage = (): React.ReactElement => {
             <div className="general-setting-container">
                 <div className="general-setting-checkbox">
                     <Checkbox checked={openAtLogin} onClick={toggleOpenAtLogin}>
-                        {t("boot-up-and-run-automatically")}
+                        <span className="checkbox-item-inner">
+                            {t("boot-up-and-run-automatically")}
+                        </span>
                     </Checkbox>
                 </div>
                 <div className="general-setting-select-language">
@@ -63,8 +65,12 @@ export const GeneralSettingPage = (): React.ReactElement => {
                         }
                         onChange={changeLanguage}
                     >
-                        <Radio value={SelectLanguage.Chinese}>{t("chinese")}</Radio>
-                        <Radio value={SelectLanguage.English}>English</Radio>
+                        <Radio value={SelectLanguage.Chinese}>
+                            <span className="radio-item-inner">{t("chinese")}</span>
+                        </Radio>
+                        <Radio value={SelectLanguage.English}>
+                            <span className="radio-item-inner">English</span>
+                        </Radio>
                     </Radio.Group>
                 </div>
                 <div className="general-setting-appearance-picker-container">

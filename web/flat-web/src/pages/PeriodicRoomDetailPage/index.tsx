@@ -136,7 +136,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
 
     return (
         <div className="periodic-room-detail-page-container">
-            <div className="periodic-room-detail-page-panel-container">
+            <div className="periodic-room-detail-page-panel-container fancy-scrollbar">
                 <PeriodicRoomPanel
                     inviteBaseUrl={FLAT_WEB_BASE_URL}
                     isCreator={isCreator}

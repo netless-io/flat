@@ -21,13 +21,13 @@
 
         &:first-of-type {
             margin-bottom: 8px;
-            color: #444e60;
+            color: var(--text-strong);
             font-weight: 500;
             font-size: 16px;
         }
 
         &:last-of-type {
-            color: #7a7b7c;
+            color: var(--text);
             padding-bottom: 16px;
             border-bottom: 1px solid #dbe1ea;
         }
@@ -41,13 +41,13 @@
 .invite-modal-content-item {
     display: flex;
 
-    span {
+    > span {
         display: inline-block;
-
+        color: var(--text);
         &:first-of-type {
             flex: 1;
             min-width: 25%;
-            color: #7a7b7c;
+            color: var(--text);
         }
 
         &:last-of-type {
@@ -66,4 +66,16 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     word-break: keep-all;
+}
+
+.flat-color-scheme-dark {
+    .invite-modal-header {
+        > span {
+            &:last-of-type {
+                color: var(--text);
+                padding-bottom: 16px;
+                border-bottom: 1px solid var(--grey-8);
+            }
+        }
+    }
 }

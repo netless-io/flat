@@ -156,7 +156,7 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
     };
 
     return (
-        <div className="periodic-room-panel-container">
+        <div className="periodic-room-panel-container fancy-scrollbar">
             <div className="periodic-room-panel-body">
                 <div className="periodic-room-panel-tips">
                     <div className="periodic-room-panel-tips-title">

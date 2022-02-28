@@ -1,0 +1,44 @@
+.room-detail-body {
+    min-width: 560px;
+    max-width: 928px;
+    margin: 0 auto;
+}
+
+.room-detail-body-content {
+    border: 1px solid var(--grey-1);
+    border-radius: 6px;
+    padding-top: 16px;
+}
+
+.room-detail-body-content-left {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 360px 16px 16px;
+
+    > span {
+        color: var(--grey-16);
+        padding-left: 12px;
+    }
+}
+
+.room-detail-body-content-left-dark {
+    > span {
+        color: var(--grey-4);
+    }
+}
+
+.room-detail-body-content-right {
+    padding-bottom: 16px;
+}
+
+.flat-color-scheme-dark {
+    .room-detail-body-content-left {
+        > span {
+            color: var(--grey-4);
+        }
+    }
+
+    .room-detail-body-content {
+        border: 1px solid var(--grey-8);
+    }
+}

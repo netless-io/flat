@@ -32,3 +32,26 @@
         background-color: #fff !important;
     }
 }
+
+.flat-color-scheme-dark {
+    .ant-table-header tr > th {
+        border: none;
+        padding: 10px;
+        background: var(--grey-10);
+        color: var(--text-strong);
+    }
+
+    .ant-table-body {
+        border: 1px solid var(--grey-7);
+
+        tr.ant-table-expanded-row > td {
+            background-color: var(--grey-10) !important;
+        }
+    }
+
+    .ant-table-tbody > tr > td {
+        color: var(--text-strong);
+        border-top: 1px solid var(--grey-7);
+        border-bottom: 1px solid var(--grey-7);
+    }
+}

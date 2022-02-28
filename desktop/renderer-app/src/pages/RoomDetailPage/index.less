@@ -1,18 +1,17 @@
-.room-detail-page-header-container {
-    margin-top: 24px;
-    margin-left: 24px;
-}
-
 .room-detail-page-container {
-    width: 560px;
+    height: 100%;
     margin: 0 auto;
+    padding: 16px;
+    border-radius: 6px;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15);
+    background-color: #fff;
 }
 
 .room-detail-page-header-title {
     margin: 0;
     font-size: 16px;
     font-weight: 500;
-    color: #444e60;
+    color: var(--text-strong);
     line-height: 1;
 }
 
@@ -33,4 +32,11 @@
     margin-right: 24px;
     cursor: pointer;
     color: #3381ff;
+}
+
+.flat-color-scheme-dark {
+    .room-detail-page-container {
+        box-shadow: 0px 1px 1px rgba(15, 18, 25, 0.15);
+        background-color: var(--grey-10);
+    }
 }

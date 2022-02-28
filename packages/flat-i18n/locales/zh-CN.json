@@ -404,5 +404,7 @@
   "flat-appearance-light": "浅色",
   "flat-appearance-dark": "深色",
   "flat-appearance-auto": "自动",
-  "flat-appearance-setting": "外观"
+  "flat-appearance-setting": "外观",
+  "status": "状态",
+  "time": "时间"
 }
