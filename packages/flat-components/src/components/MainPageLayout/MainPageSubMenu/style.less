@@ -2,7 +2,7 @@
     width: 240px;
     padding-top: 24px;
     border-right: solid 1px #dbe1ea;
-    border-radius: 8px 0px;
+    border-radius: 6px 0 0 6px;
     background-color: #fff;
 
     > ul {
@@ -37,19 +37,23 @@
 .flat-color-scheme-dark {
     .main-layout-sub-menu-container {
         background-color: var(--grey-10);
-        border-right: solid 1px var(--grey-7);
+        border-right: solid 1px var(--grey-8);
     }
 
     .main-layout-sub-menu-item {
-        &:hover,
+        color: var(--text);
+
+        &:hover {
+            background-color: var(--grey-9);
+        }
+
         &:active {
-            color: var(--text);
-            background-color: var(--grey-8);
+            background-color: var(--grey-11);
         }
 
         &.is-active {
-            color: var(--text);
-            background-color: rgba(141, 136, 136, 0.3);
+            color: var(--blue-7);
+            background-color: var(--grey-11);
         }
     }
 }
