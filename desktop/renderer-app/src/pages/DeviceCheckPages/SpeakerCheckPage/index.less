@@ -3,7 +3,7 @@
 
     p {
         margin-bottom: 8px;
-        color: #7a7b7c;
+        color: var(--text-strong);
     }
 
     .ant-select {
@@ -18,6 +18,10 @@
         min-width: 360px;
         height: 36px;
         text-align: start;
+    }
+
+    > p {
+        color: var(--text-strong);
     }
 }
 
@@ -45,5 +49,13 @@
 .speaker-btn-container {
     .ant-btn {
         margin-right: 8px;
+    }
+}
+
+.flat-color-scheme-dark {
+    .speaker-audio-check-inner {
+        .ant-slider-rail {
+            background-color: var(--grey-9);
+        }
     }
 }

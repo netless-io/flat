@@ -61,7 +61,7 @@
         gap: 8px 24px;
 
         .left {
-            color: #7a7b7c;
+            color: var(--text-strong);
             font-size: 14px;
             line-height: 22px;
         }
@@ -84,5 +84,25 @@
         display: inline-block;
         width: 28px;
         border-bottom: 2px solid #7ec452;
+    }
+}
+
+.flat-color-scheme-dark {
+    .speaker-audio-wrapper {
+        background-color: var(--grey-9);
+    }
+
+    .speaker-audio-volume {
+        background-color: var(--green-7);
+    }
+
+    .speaker-audio-mask {
+        background: repeating-linear-gradient(
+            to right,
+            transparent,
+            transparent 29px,
+            var(--grey-10) 1px,
+            var(--grey-10) 30px
+        );
     }
 }
