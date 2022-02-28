@@ -37,7 +37,9 @@ export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactE
 
     return (
         <MainPageLayoutContainer subMenu={subMenu}>
-            <div className="user-setting-layout-container">{children}</div>
+            <div className="user-setting-layout-container flat-theme-background-color">
+                {children}
+            </div>
         </MainPageLayoutContainer>
     );
 };
