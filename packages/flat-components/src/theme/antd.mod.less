@@ -153,7 +153,25 @@
 
     .ant-modal-header {
         background-color: var(--grey-10);
-        border-bottom: 1px solid var(--grey-8);
+        border-bottom: none;
+
+        span {
+            display: block;
+            font-size: 14px;
+
+            &:first-of-type {
+                margin-bottom: 8px;
+                color: var(--grey-0);
+                font-weight: 500;
+                font-size: 16px;
+            }
+
+            &:last-of-type {
+                color: var(--text);
+                padding-bottom: 16px;
+                border-bottom: 1px solid var(--grey-8);
+            }
+        }
     }
 
     .ant-modal-body {
@@ -170,6 +188,10 @@
 
     .ant-modal-footer {
         border-top: 1px solid var(--grey-8);
+    }
+
+    .ant-modal-close {
+        color: var(--text-weak);
     }
 }
 
@@ -509,6 +531,11 @@
         .ant-input-affix-wrapper {
             color: var(--text);
             background: var(--grey-10);
+            border: 1px solid var(--grey-8);
+        }
+
+        .ant-input-group-addon {
+            background-color: var(--grey-10);
             border: 1px solid var(--grey-8);
         }
     }
