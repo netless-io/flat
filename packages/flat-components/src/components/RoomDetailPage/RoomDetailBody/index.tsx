@@ -36,7 +36,7 @@ export const RoomDetailBody = observer<RoomDetailBodyProps>(function RoomDetailB
                         <tr>
                             <td className="room-detail-body-content-left">
                                 <SVGCircleInfoOutlined />
-                                <span>房间状态</span>
+                                <span>{t("status")}</span>
                             </td>
                             <td className="room-detail-body-content-right">
                                 <RoomStatusElement room={roomInfo} />
@@ -45,7 +45,7 @@ export const RoomDetailBody = observer<RoomDetailBodyProps>(function RoomDetailB
                         <tr>
                             <td className="room-detail-body-content-left">
                                 <SVGTime />
-                                <span>时间</span>
+                                <span>{t("time")}</span>
                             </td>
                             <td className="room-detail-body-content-right">
                                 <span>

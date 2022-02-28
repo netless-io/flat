@@ -57,7 +57,7 @@ export const RoomDetailHeader = observer<RoomDetailBodyProps>(function RoomDetai
                                 ")"}
                         </span>
                     )}
-                    <div className="room-detail-header-content-tag">周期性</div>
+                    <div className="room-detail-header-content-tag">({t("periodic")})</div>
                 </div>
                 <div className="room-detail-header-content-right">
                     {showRoomCountVisible && (
