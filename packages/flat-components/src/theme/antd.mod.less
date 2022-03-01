@@ -96,9 +96,11 @@
     }
 
     .@{className}:disabled {
-        color: var(~"@{prefix}-text-disabled");
-        border-color: var(~"@{prefix}-border-disabled");
-        background-color: var(~"@{prefix}-bg-disabled");
+        color: var(~"@{prefix}-text-disabled") !important;
+        border-color: var(~"@{prefix}-border-disabled") !important;
+        background-color: var(~"@{prefix}-bg-disabled") !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
     }
 }
 
@@ -356,6 +358,7 @@
 .ant-btn {
     border-radius: 4px;
     box-shadow: none;
+    backdrop-filter: none !important;
 
     &:hover,
     &.is-hover {
