@@ -1,5 +1,3 @@
-import "./InviteModal.less";
-
 import React, { useCallback, useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
