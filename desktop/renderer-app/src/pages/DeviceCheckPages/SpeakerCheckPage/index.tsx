@@ -56,7 +56,6 @@ export const SpeakerCheckPage = (): React.ReactElement => {
             rtcEngine.startAudioPlaybackDeviceTest(
                 path.join(
                     runtime.assetsPath,
-                    "media",
                     "Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3",
                 ),
             );

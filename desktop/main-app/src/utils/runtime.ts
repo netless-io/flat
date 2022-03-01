@@ -10,7 +10,7 @@ const isProduction = process.env.NODE_ENV === "production";
 const isDebug = process.env.FLAT_DEBUG === "debug";
 
 const assetsPath = isProduction
-    ? path.resolve(__dirname, "..", "static", "render", "static", "assets")
+    ? path.resolve(__dirname, "..", "static", "render")
     : path.resolve(__dirname, "..", "..", "..", "renderer-app", "src", "assets");
 
 const startURL = isProduction
