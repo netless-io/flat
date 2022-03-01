@@ -118,9 +118,6 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
                                 <h1 className="room-detail-page-header-title">{roomInfo.title}</h1>
                                 {periodicUUID && (
                                     <>
-                                        <span className="room-detail-page-header-sign">
-                                            {t("periodic")}
-                                        </span>
                                         {roomInfo.roomStatus !== RoomStatus.Stopped && (
                                             <div
                                                 className="room-detail-page-header-right"
