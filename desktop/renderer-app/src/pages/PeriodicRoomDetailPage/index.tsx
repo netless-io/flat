@@ -141,7 +141,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
                         onBackPreviousPage={backPreviousPage}
                     />
                 </div>
-                <div className="periodic-room-detail-page-panel-container fancy-scrollbar">
+                <div className="periodic-room-detail-page-panel-container">
                     <PeriodicRoomPanel
                         inviteBaseUrl={FLAT_WEB_BASE_URL}
                         isCreator={isCreator}
