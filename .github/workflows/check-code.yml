@@ -73,7 +73,7 @@ jobs:
         if: steps.filter.outputs.renderer == 'true'
 
       - name: Build main
-        run: yarn workspace flat build:main
+        run: yarn workspace flat build
         if: steps.filter.outputs.main == 'true'
 
       - name: Build flat-web

@@ -13,8 +13,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js",
-    "build:main": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
-    "build": "yarn _copy:render-build-code && yarn build:main",
+    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "build:debug": "cross-env FLAT_DEBUG=debug webpack --config webpack/webpack.debug.js",
     "pack:win": "node ./scripts/pack win",
     "pack:mac": "node ./scripts/pack mac",
@@ -23,11 +22,7 @@
     "ship:mac": "yarn build && yarn pack:mac",
     "postinstall": "yarn _download:agora-addon",
     "lint": "lint-staged",
-    "_copy:render-build-code": "node ./scripts/build/copy-render-build-code.js",
-    "_move:agora-addon": "node ./scripts/agora/mv-addon.js",
-    "_download:agora-addon": "node ./scripts/agora/download-addon.js && yarn _move:agora-addon",
-    "_download:agora-addon:mac": "node ./scripts/agora/download-addon.js --arch=x64 --platform=darwin && yarn _move:agora-addon",
-    "_download:agora-addon:win": "node ./scripts/agora/download-addon.js --arch=x86 --platform=win32 && yarn _move:agora-addon",
+    "_download:agora-addon": "node scripts/download-agora-addon/cli.js",
     "_launch:electron": "node --trace-uncaught ./scripts/launch/electron.js"
   },
   "devDependencies": {
