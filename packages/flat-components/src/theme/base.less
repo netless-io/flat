@@ -12,9 +12,6 @@ textarea {
 
 a {
     color: var(--link);
-    &:visited {
-        color: var(--link-visited);
-    }
     &:focus {
         color: var(--link-focus);
     }
@@ -34,4 +31,9 @@ textarea {
     outline: none;
     -webkit-appearance: none;
     resize: none;
+}
+
+// reduce specificity
+:where(a):visited {
+    color: var(--link-visited);
 }
