@@ -21,7 +21,7 @@
 
         &:first-of-type {
             margin-bottom: 8px;
-            color: var(--grey-0);
+            color: var(--blue-12);
             font-weight: 500;
             font-size: 16px;
         }
@@ -29,7 +29,7 @@
         &:last-of-type {
             color: var(--text);
             padding-bottom: 16px;
-            border-bottom: 1px solid var(--grey-8);
+            border-bottom: 1px solid var(--grey-1);
         }
     }
 }
@@ -67,4 +67,23 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     word-break: keep-all;
+}
+
+.flat-color-scheme-dark {
+    .invite-modal-header {
+        > span {
+            &:first-of-type {
+                margin-bottom: 8px;
+                color: var(--grey-0);
+                font-weight: 500;
+                font-size: 16px;
+            }
+
+            &:last-of-type {
+                color: var(--text);
+                padding-bottom: 16px;
+                border-bottom: 1px solid var(--grey-8);
+            }
+        }
+    }
 }
