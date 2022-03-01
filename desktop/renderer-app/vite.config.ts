@@ -89,6 +89,12 @@ export default defineConfig(() => {
             rollupOptions: {
                 output: {
                     format: "cjs",
+                    assetFileNames: assetInfo => {
+                        if (assetInfo.name?.endsWith("mp3")) {
+                            return "[name][extname]";
+                        }
+                        return "[name]-[hash][extname]";
+                    },
                 },
                 external: [...electron.externals],
             },
