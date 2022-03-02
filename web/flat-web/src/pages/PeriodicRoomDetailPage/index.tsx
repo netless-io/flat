@@ -136,21 +136,19 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
 
     return (
         <div className="periodic-room-detail-page-container">
-            <div className="periodic-room-detail-page-panel-container fancy-scrollbar">
-                <PeriodicRoomPanel
-                    inviteBaseUrl={FLAT_WEB_BASE_URL}
-                    isCreator={isCreator}
-                    jumpToModifyOrdinaryRoomPage={jumpToModifyOrdinaryRoomPage}
-                    jumpToModifyPeriodicRoomPage={jumpToModifyPeriodicRoomPage}
-                    jumpToRoomDetailPage={jumpToRoomDetailPage}
-                    periodicInfo={periodicInfo.periodic}
-                    rooms={rooms}
-                    userName={ownerName}
-                    onCancelPeriodicRoom={onCancelPeriodicRoom}
-                    onCancelSubPeriodicRoom={onCancelSubPeriodicRoom}
-                    onCopyInvitation={text => navigator.clipboard.writeText(text)}
-                />
-            </div>
+            <PeriodicRoomPanel
+                inviteBaseUrl={FLAT_WEB_BASE_URL}
+                isCreator={isCreator}
+                jumpToModifyOrdinaryRoomPage={jumpToModifyOrdinaryRoomPage}
+                jumpToModifyPeriodicRoomPage={jumpToModifyPeriodicRoomPage}
+                jumpToRoomDetailPage={jumpToRoomDetailPage}
+                periodicInfo={periodicInfo.periodic}
+                rooms={rooms}
+                userName={ownerName}
+                onCancelPeriodicRoom={onCancelPeriodicRoom}
+                onCancelSubPeriodicRoom={onCancelSubPeriodicRoom}
+                onCopyInvitation={text => navigator.clipboard.writeText(text)}
+            />
         </div>
     );
 });

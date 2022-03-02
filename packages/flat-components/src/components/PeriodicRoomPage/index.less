@@ -1,14 +1,14 @@
-.periodic-room-panel-container {
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-}
+@import "../../theme/fancy-scrollbar.less";
 
-.periodic-room-panel-body {
-    max-width: 840px;
+.periodic-room-panel-container {
+    height: 100%;
     min-width: 540px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0 48px;
     padding-top: 24px;
+    border-radius: 6px;
+    background-color: #fff;
 }
 
 .periodic-room-panel-btn-list {
@@ -58,6 +58,9 @@
 }
 
 .periodic-room-panel-table-container {
+    .fancy-scrollbar-mixin();
+    flex: 1;
+
     .ant-table-tbody > tr > td {
         color: var(--text);
         border-bottom: 1px solid transparent;
@@ -81,7 +84,7 @@
         background-color: var(--grey-10);
     }
 
-    .periodic-room-panel-body {
+    .periodic-room-panel-container {
         background-color: var(--grey-10);
     }
 }
