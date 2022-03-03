@@ -111,17 +111,10 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
 
     function jumpToModifyRoom(): void {
         if (roomInfo) {
-            if (roomInfo.roomUUID) {
-                pushHistory(RouteNameType.ModifyOrdinaryRoomPage, {
-                    roomUUID: roomInfo.roomUUID,
-                    periodicUUID: roomInfo.periodicUUID,
-                });
-            }
-            if (roomInfo.periodicUUID) {
-                pushHistory(RouteNameType.ModifyPeriodicRoomPage, {
-                    periodicUUID: roomInfo.periodicUUID,
-                });
-            }
+            pushHistory(RouteNameType.ModifyOrdinaryRoomPage, {
+                roomUUID: roomInfo.roomUUID,
+                periodicUUID: roomInfo.periodicUUID,
+            });
         }
     }
 
