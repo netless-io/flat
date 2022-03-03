@@ -100,11 +100,6 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
                     periodicUUID: roomInfo.periodicUUID,
                 });
             }
-            if (roomInfo.periodicUUID) {
-                pushHistory(RouteNameType.ModifyPeriodicRoomPage, {
-                    periodicUUID: roomInfo.periodicUUID,
-                });
-            }
         }
     }
 
