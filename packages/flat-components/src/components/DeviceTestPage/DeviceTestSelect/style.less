@@ -22,8 +22,8 @@
         text-align: left;
         height: 36px;
         cursor: not-allowed;
-        color: rgba(68, 78, 96, 0.5);
-        background-color: #f3f6f9;
+        color: var(--text);
+        background-color: var(--grey-0);
 
         > img {
             padding-right: 10px;
@@ -31,6 +31,18 @@
     }
 
     > .ant-btn:hover {
-        border-color: #d9d9d9;
+        border-color: var(--grey-0);
+    }
+}
+
+.flat-color-scheme-dark {
+    .device-test-select-disabled-btn {
+        > .ant-btn {
+            background-color: var(--grey-9);
+        }
+
+        > .ant-btn:hover {
+            border-color: var(--grey-7);
+        }
     }
 }

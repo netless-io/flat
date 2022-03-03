@@ -7,6 +7,7 @@
     height: 240px;
     width: 100%;
     position: relative;
+    border-radius: 6px;
     background-color: #000;
 }
 
@@ -16,6 +17,12 @@
     left: 0;
     right: 0;
     bottom: 0;
+    > div {
+        background-color: #fff !important;
+        > video {
+            border-radius: 6px;
+        }
+    }
 }
 
 .camera-test-select-box {
@@ -33,8 +40,8 @@
     align-items: center;
     justify-content: center;
     height: 240px;
-    border-radius: 4px;
-    background: #1a1e21;
+    border-radius: 6px;
+    background: var(--grey-11);
     z-index: 1;
 
     > span {
@@ -43,5 +50,13 @@
 
     &.visible {
         display: flex;
+    }
+}
+
+.flat-color-scheme-dark {
+    .camera-box {
+        > div {
+            background-color: var(--grey-10) !important;
+        }
     }
 }
