@@ -535,6 +535,11 @@
         .ant-form-item-has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input {
             background-color: var(--grey-9);
         }
+
+        .ant-form-item-has-error .ant-input-number:not([disabled]):hover,
+        .ant-form-item-has-error .ant-picker:not([disabled]):hover {
+            background-color: var(--grey-10);
+        }
     }
 
     .ant-form-item-control-input {
@@ -827,6 +832,10 @@
             &.ant-select-item-option-selected {
                 background-color: var(--blue-1);
             }
+        }
+
+        .ant-empty-description {
+            color: var(--text);
         }
     }
 }
