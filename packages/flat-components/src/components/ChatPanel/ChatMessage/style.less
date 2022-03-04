@@ -22,10 +22,14 @@
 
 .chat-message-user-time {
     color: var(--text-weaker);
+    flex-shrink: 0;
 }
 
 .chat-message-user-name {
     color: var(--text);
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
 }
 
 .chat-message-user-avatar {
@@ -34,6 +38,7 @@
     height: 24px;
     border-radius: 50%;
     overflow: hidden;
+    flex-shrink: 0;
 
     & > img {
         max-width: 100%;
