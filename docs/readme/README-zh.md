@@ -47,8 +47,8 @@
 
 你可以在没有服务端的情况下构建并运行 Flat 客户端。此仓库包含以下项目：
 
--   [Flat Electron 客户端](./desktop)
--   [Flat Web 客户端](./web)
+-   [Flat Electron 客户端](/desktop)
+-   [Flat Web 客户端](/web)
 
 ### 构建并运行 Flat Electron 客户端
 
