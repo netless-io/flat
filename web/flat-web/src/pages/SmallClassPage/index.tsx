@@ -18,7 +18,7 @@ import InviteButton from "../../components/InviteButton";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
-import { SmallClassAvatar } from "./SmallClassAvatar";
+import { RTCAvatar } from "../../components/RTCAvatar";
 import { Whiteboard } from "../../components/Whiteboard";
 import ExitRoomConfirm, {
     ExitRoomConfirmType,
@@ -41,7 +41,6 @@ import { runtime } from "../../utils/runtime";
 import { RtcChannelType } from "../../api-middleware/rtc/room";
 import { useTranslation } from "react-i18next";
 import { ShareScreen } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
 import classInteractionSVG from "../../assets/image/class-interaction.svg";
 import classLectureSVG from "../../assets/image/class-lecture.svg";
 
@@ -147,9 +146,9 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     }
 
     return (
-        <div className="realtime-container">
+        <div className="small-class-realtime-container">
             {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
-            <div className="realtime-box">
+            <div className="small-class-realtime-box">
                 <TopBar
                     center={renderTopBarCenter()}
                     isMac={runtime.isMac}
@@ -157,8 +156,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     right={renderTopBarRight()}
                 />
                 {renderAvatars()}
-                <div className="realtime-content">
-                    <div className="container">
+                <div className="small-class-realtime-content">
+                    <div className="small-class-realtime-content-container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
                         <Whiteboard
                             classRoomStore={classRoomStore}
@@ -183,16 +182,16 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     function renderAvatars(): React.ReactNode {
         return (
             <div
-                className="realtime-avatars-wrap"
+                className="small-class-realtime-avatars-wrap"
                 style={{ maxWidth: `${whiteboardStore.smallClassAvatarWrapMaxWidth}px` }}
             >
-                <div className="realtime-avatars">
-                    <SmallClassAvatar
+                <div className="small-class-realtime-avatars">
+                    <RTCAvatar
                         avatarUser={classRoomStore.users.creator}
-                        generateAvatar={generateAvatar}
                         isAvatarUserCreator={true}
                         isCreator={true}
-                        rtc={classRoomStore.rtc}
+                        rtcRoom={classRoomStore.rtc}
+                        small={true}
                         updateDeviceState={classRoomStore.updateDeviceState}
                         userUUID={classRoomStore.userUUID}
                     />
@@ -312,12 +311,12 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     function renderAvatar(user: User): React.ReactNode {
         return (
-            <SmallClassAvatar
+            <RTCAvatar
                 key={user.userUUID}
                 avatarUser={user}
-                generateAvatar={generateAvatar}
+                isAvatarUserCreator={false}
                 isCreator={classRoomStore.isCreator}
-                rtc={classRoomStore.rtc}
+                rtcRoom={classRoomStore.rtc}
                 updateDeviceState={classRoomStore.updateDeviceState}
                 userUUID={classRoomStore.userUUID}
             />

@@ -19,7 +19,7 @@ import InviteButton from "../../components/InviteButton";
 import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
-import { OneToOneAvatar } from "./OneToOneAvatar";
+import { RTCAvatar } from "../../components/RTCAvatar";
 import {
     ExitRoomConfirm,
     ExitRoomConfirmType,
@@ -37,7 +37,6 @@ import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatS
 import { runtime } from "../../utils/runtime";
 import { useTranslation } from "react-i18next";
 import { ShareScreen } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -133,7 +132,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     right={renderTopBarRight()}
                 />
                 <div className="one-to-one-realtime-content">
-                    <div className="container">
+                    <div className="one-to-one-realtime-content-container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
                         <Whiteboard
                             classRoomStore={classRoomStore}
@@ -236,20 +235,19 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 isVideoOn={true}
                 videoSlot={
                     <div className="one-to-one-rtc-avatar-container">
-                        <OneToOneAvatar
+                        <RTCAvatar
                             avatarUser={classRoomStore.users.creator}
-                            generateAvatar={generateAvatar}
                             isAvatarUserCreator={true}
                             isCreator={classRoomStore.isCreator}
-                            rtc={classRoomStore.rtc}
+                            rtcRoom={classRoomStore.rtc}
                             updateDeviceState={classRoomStore.updateDeviceState}
                             userUUID={classRoomStore.userUUID}
                         />
-                        <OneToOneAvatar
+                        <RTCAvatar
                             avatarUser={joiner}
-                            generateAvatar={generateAvatar}
+                            isAvatarUserCreator={false}
                             isCreator={classRoomStore.isCreator}
-                            rtc={classRoomStore.rtc}
+                            rtcRoom={classRoomStore.rtc}
                             updateDeviceState={classRoomStore.updateDeviceState}
                             userUUID={classRoomStore.userUUID}
                         />
