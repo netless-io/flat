@@ -1941,31 +1941,31 @@
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.20.0"
 
-"@netless/fastboard-core@0.2.6":
-  version "0.2.6"
-  resolved "https://registry.npmjs.org/@netless/fastboard-core/-/fastboard-core-0.2.6.tgz#053a3367a94c4e9a1ffbf8ee8efcd663c726e870"
-  integrity sha512-d1LGPz1/QMISFSFnh6fZaHtahfyYj1qy45KxK/qC8Y9/EfvHzZaTOesxGUhzyQrxMQbMGm0txygpqhl4lrBa7A==
+"@netless/fastboard-core@0.2.10":
+  version "0.2.10"
+  resolved "https://registry.npmjs.org/@netless/fastboard-core/-/fastboard-core-0.2.10.tgz#46c0981ec044b84385a438425fe0d52842b32106"
+  integrity sha512-PdzPnFl4zyBzB71+1CpYuXvtFR5jTVBkdVWePYStmWemZ5KBsAZgMydnNgNPtAFsJLk7zbyovkKigzjmDRRHQw==
   dependencies:
     "@netless/app-slide" "^0.0.56"
 
-"@netless/fastboard-react@0.2.6", "@netless/fastboard-react@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.npmjs.org/@netless/fastboard-react/-/fastboard-react-0.2.6.tgz#3140327f30a378186bdcad0308f7cdfae8563489"
-  integrity sha512-CLNt47PwJ1Nz/tFcZOri07JIPJ5HZ0/BYPkVypfHaXZkfbHD6Ou79hKd+rkST/xFk3vUP4bRC7e4uVXVFhzOgQ==
+"@netless/fastboard-react@0.2.10", "@netless/fastboard-react@^0.2.10":
+  version "0.2.10"
+  resolved "https://registry.npmjs.org/@netless/fastboard-react/-/fastboard-react-0.2.10.tgz#1b7e2a5e7e8a701ebe6a23eb99bf30de31a3933e"
+  integrity sha512-tZt81TIqKw6gVvn8AkWKNmSW0NrK1I9TCk+fqJTS4kp2hP2bmH/oD5DroOKMWwA1tisSgCCbitlnqaJzK6/nNA==
   dependencies:
     "@tippyjs/react" "^4.2.6"
     clsx "^1.1.1"
-    framer-motion "^6.2.3"
-    i18next "^21.6.9"
+    framer-motion "^6.2.8"
+    i18next "^21.6.13"
     rc-slider "^9.7.5"
 
-"@netless/fastboard@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.npmjs.org/@netless/fastboard/-/fastboard-0.2.6.tgz#839dcaf2ccdf3ef083e699e90d22c7181381dda4"
-  integrity sha512-FOQ8voZVIFUBxqqOT3NghSu0/qzCyt/vfQomefMCvB30uJyCNzsi+rBXHFcAOFTmahlwBPx/KtQB5IT1KAcBtg==
+"@netless/fastboard@^0.2.10":
+  version "0.2.10"
+  resolved "https://registry.npmjs.org/@netless/fastboard/-/fastboard-0.2.10.tgz#6f00763f7b4636393c3d41e2b1c483c96bb23bd8"
+  integrity sha512-HvIXlZXcj6JJgjbgwHk9U+u9jaPNYWIc9Y4dzLC7BpfHuRRclTMmlDkAlUmKDhBROEgQkiL/Bab6dFLU2hGYCQ==
   dependencies:
-    "@netless/fastboard-core" "0.2.6"
-    "@netless/fastboard-react" "0.2.6"
+    "@netless/fastboard-core" "0.2.10"
+    "@netless/fastboard-react" "0.2.10"
 
 "@netless/fetch-middleware@^1.0.7":
   version "1.0.7"
@@ -1987,10 +1987,10 @@
     "@ant-design/icons" "^4.5.0"
     "@netless/combine-player" "^1.1.3"
 
-"@netless/telebox-insider@0.2.23":
-  version "0.2.23"
-  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.23.tgz#b31d3ba8be86f218554c22e7cd35ead41fb22b3e"
-  integrity sha512-ynNC4TFEqa2Nrjyo3o6MPqHch3eJ8tAl8xHFq83JvN4Y8bRk+Ua8pyFftmg/5vcc3+1gjDR31PgkChJiU2s3QA==
+"@netless/telebox-insider@0.2.25":
+  version "0.2.25"
+  resolved "https://registry.npmjs.org/@netless/telebox-insider/-/telebox-insider-0.2.25.tgz#9ba9f45123ffd9ad85faa03de87070bdd0de169b"
+  integrity sha512-gY7EM4E7mrgnmtLyQR+XsIZi6oUAnUNmdUZFdYasifMn3dixjQ7ZWImNmIsMhedFPdJknxv8IJErF9V4gjokaw==
   dependencies:
     "@types/shallowequal" "^1.1.1"
     eventemitter3 "^4.0.7"
@@ -2004,13 +2004,13 @@
   resolved "https://registry.yarnpkg.com/@netless/video-js-plugin/-/video-js-plugin-0.3.7.tgz#6c1f174f20e8a93634e1770e7e535c1302bdf22b"
   integrity sha512-UG1t9464w1bZT9kzdhxj/K7R6jqI9sqYfqfUQJ2w9JRWsNibL6O16OC81iwBJT6nkGXEVN7z2pqHvNg1OhKppw==
 
-"@netless/window-manager@0.4.5":
-  version "0.4.5"
-  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.4.5.tgz#3f13e186ea20815ffe8b95e1731499927785eeef"
-  integrity sha512-SgxmWMfgXsCkC2RtAvcgkWthzluY4ubm/Zig4gTYmNY0SFyEtGQJWZ4Xje9xjlSp0mSwowat9DhqwGe5Rb4kyg==
+"@netless/window-manager@0.4.11-canary.0":
+  version "0.4.11-canary.0"
+  resolved "https://registry.npmjs.org/@netless/window-manager/-/window-manager-0.4.11-canary.0.tgz#9b071cba1ab930c8c20b78cd17eb9635fd332578"
+  integrity sha512-gaZggtVFuM8buuUvuj9kOZ6eBW3h5hzjpTnicyaWVsl8UGBin8lAPYj+nzwmetcH/e6nMJHTjf9pInrbpT3QmQ==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
-    "@netless/telebox-insider" "0.2.23"
+    "@netless/telebox-insider" "0.2.25"
     emittery "^0.9.2"
     lodash "^4.17.21"
     p-retry "^4.6.1"
@@ -8491,10 +8491,10 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framer-motion@^6.2.3:
-  version "6.2.4"
-  resolved "https://registry.npmjs.org/framer-motion/-/framer-motion-6.2.4.tgz#3d9c61be3fb8381a770efccdb56cc421de662979"
-  integrity sha512-1UfnSG4c4CefKft6QMYGx8AWt3TtaFoR/Ax4dkuDDD5BDDeIuUm7gesmJrF8GzxeX/i6fMm8+MEdPngUyPVdLA==
+framer-motion@^6.2.8:
+  version "6.2.8"
+  resolved "https://registry.npmjs.org/framer-motion/-/framer-motion-6.2.8.tgz#02abb529191af7e2df444185fe27e932215b715d"
+  integrity sha512-4PtBWFJ6NqR350zYVt9AsFDtISTqsdqna79FvSYPfYDXuuqFmiKtZdkTnYPslnsOMedTW0pEvaQ7eqjD+sA+HA==
   dependencies:
     framesync "6.0.1"
     hey-listen "^1.0.8"
@@ -9513,10 +9513,10 @@ i18next@^20.3.1:
   dependencies:
     "@babel/runtime" "^7.12.0"
 
-i18next@^21.6.9:
-  version "21.6.11"
-  resolved "https://registry.npmjs.org/i18next/-/i18next-21.6.11.tgz#de6d649221e02474cc701d152606bf3e61e37bcd"
-  integrity sha512-tJ2+o0lVO+fhi8bPkCpBAeY1SgkqmQm5NzgPWCQssBrywJw98/o+Kombhty5nxQOpHtvMmsxcOopczUiH6bJxQ==
+i18next@^21.6.13:
+  version "21.6.13"
+  resolved "https://registry.npmjs.org/i18next/-/i18next-21.6.13.tgz#e881b05f156ac06997e9b63379d8b2674bb4a4f2"
+  integrity sha512-MVjNttw+5mIuu2/fwTpSU0EeI7iU/6pnDvGQboCzkILiv0/gD+FLZaF7qSHmUHO4ZkE6xJQ9SlBgGvMHxhC82Q==
   dependencies:
     "@babel/runtime" "^7.12.0"
 
@@ -16208,10 +16208,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^4.2.4:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
-  integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
+typescript@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-4.6.2.tgz#fe12d2727b708f4eef40f51598b3398baa9611d4"
+  integrity sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==
 
 ua-parser-js@^0.7.24:
   version "0.7.28"

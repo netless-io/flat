@@ -259,6 +259,7 @@ export class WhiteboardStore {
             sdkConfig: {
                 appIdentifier: NETLESS.APP_IDENTIFIER,
                 deviceType: deviceType,
+                region: globalStore.region ?? "cn-hz",
                 pptParams: {
                     useServerWrap: true,
                 },
