@@ -212,6 +212,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         isAvatarUserCreator={true}
                         isCreator={true}
                         rtc={classRoomStore.rtc}
+                        small={true}
                         updateDeviceState={classRoomStore.updateDeviceState}
                         userUUID={classRoomStore.userUUID}
                     />
@@ -346,6 +347,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 isAvatarUserCreator={false}
                 isCreator={classRoomStore.isCreator}
                 rtc={classRoomStore.rtc}
+                small={true}
                 updateDeviceState={classRoomStore.updateDeviceState}
                 userUUID={classRoomStore.userUUID}
             />
