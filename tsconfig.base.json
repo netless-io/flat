@@ -22,6 +22,7 @@
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
+    "useUnknownInCatchVariables": false,
 
     "noEmit": true,
     "removeComments": true,
