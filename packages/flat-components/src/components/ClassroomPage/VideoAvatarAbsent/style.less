@@ -1,0 +1,40 @@
+.video-avatar-absent {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    background: var(--grey-0);
+    user-select: none;
+
+    &.is-small {
+        font-size: 12px;
+
+        .video-avatar-absent-img {
+            margin-bottom: 8px;
+        }
+    }
+}
+
+.video-avatar-absent-img {
+    width: 100%;
+    max-width: 75%;
+    max-height: 60%;
+    margin-bottom: 16px;
+}
+
+.video-avatar-absent-content {
+    text-align: center;
+    padding: 0 16px;
+    color: var(--text);
+    user-select: none;
+}
+
+.flat-color-scheme-dark {
+    .video-avatar-absent {
+        background: var(--grey-2);
+    }
+}
