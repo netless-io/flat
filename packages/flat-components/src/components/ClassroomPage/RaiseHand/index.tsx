@@ -1,9 +1,8 @@
-import raiseHandSVG from "./icons/raise-hand.svg";
-import raiseHandActiveSVG from "./icons/raise-hand-active.svg";
 import "./style.less";
 
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { SVGHandUp } from "../../FlatIcons";
 
 export interface RaiseHandProps {
     isRaiseHand?: boolean;
@@ -20,7 +19,7 @@ export const RaiseHand: React.FC<RaiseHandProps> = ({
 
     return disableHandRaising ? null : (
         <button className="raise-hand-btn" title={t("raise-your-hand")} onClick={onRaiseHandChange}>
-            <img src={isRaiseHand ? raiseHandActiveSVG : raiseHandSVG} />
+            <SVGHandUp active={isRaiseHand} />
         </button>
     );
 };
