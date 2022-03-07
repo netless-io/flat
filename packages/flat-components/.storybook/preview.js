@@ -74,12 +74,18 @@ export const decorators = [
         const channel = addons.getChannel();
         const darkMode = useDarkMode(context.globals.prefersColorScheme);
         useEffect(() => {
+            const bgColor = darkMode
+                ? "var(--grey-12)"
+                : get(context, ["parameters", "backgrounds", "default"], "#fff");
+
+            document.querySelectorAll(".flat-theme-root").forEach(el => {
+                el.style.backgroundColor = bgColor;
+            });
+
             channel.emit(UPDATE_GLOBALS, {
                 globals: {
                     backgrounds: {
-                        value: darkMode
-                            ? "var(--grey-12)"
-                            : get(context, ["parameters", "backgrounds", "default"], "#fff"),
+                        value: bgColor,
                     },
                 },
             });

@@ -5,7 +5,8 @@ import type {
     ILocalAudioTrack,
     IMicrophoneAudioTrack,
     IRemoteAudioTrack,
-    ITrack,
+    ILocalVideoTrack,
+    IRemoteVideoTrack,
 } from "agora-rtc-sdk-ng";
 import { EventEmitter } from "eventemitter3";
 import type { User } from "../../stores/user-store";
@@ -35,10 +36,10 @@ export class RtcAvatar extends EventEmitter {
 
     public readonly userUUID: string;
     public readonly avatarUser: User;
-    public audioTrack?: ITrack;
-    public videoTrack?: ITrack;
+    public audioTrack?: ILocalAudioTrack | IRemoteAudioTrack;
+    public videoTrack?: ILocalVideoTrack | IRemoteVideoTrack;
 
-    private _element?: HTMLElement;
+    private _element?: HTMLElement | null;
     private readonly rtc: RtcRoom;
     private readonly isLocal: boolean;
     private remoteUser?: IAgoraRTCRemoteUser;
@@ -66,13 +67,15 @@ export class RtcAvatar extends EventEmitter {
         return this.rtc.client;
     }
 
-    public get element(): HTMLElement | undefined {
+    public get element(): HTMLElement | null | undefined {
         return this._element;
     }
 
-    public set element(el: HTMLElement | undefined) {
-        this._element = el;
-        !this.isLocal && this.refreshRemoteTracks();
+    public set element(el: HTMLElement | null | undefined) {
+        if (el !== this._element) {
+            this._element = el;
+            !this.isLocal && this.refreshRemoteTracks();
+        }
     }
 
     public refreshRemoteTracks(): void {
@@ -188,7 +191,7 @@ export class RtcAvatar extends EventEmitter {
 
     private checkVolume = (): void => {
         if (this.isLocal && this.mic && this.audioTrack) {
-            const track = this.audioTrack as ILocalAudioTrack | IRemoteAudioTrack;
+            const track = this.audioTrack;
             const volume = track.getVolumeLevel();
             if (volume <= RtcAvatar.LowVolume) {
                 this.observeVolumeCounter += 1;
