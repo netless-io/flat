@@ -20,7 +20,7 @@ import InviteButton from "../../components/InviteButton";
 import { TopBarRightBtn, TopBarRoundBtn } from "flat-components";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
-import { SmallClassAvatar } from "./SmallClassAvatar";
+import { RTCAvatar } from "../../components/RTCAvatar";
 import { Whiteboard } from "../../components/Whiteboard";
 import ExitRoomConfirm, {
     ExitRoomConfirmType,
@@ -43,7 +43,6 @@ import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
 
 import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
 import shareScreenSVG from "../../assets/image/share-screen.svg";
@@ -162,9 +161,9 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     }
 
     return (
-        <div className="realtime-container">
+        <div className="small-class-realtime-container">
             {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
-            <div className="realtime-box">
+            <div className="small-class-realtime-box">
                 <TopBar
                     center={renderTopBarCenter()}
                     isMac={runtime.isMac}
@@ -172,8 +171,8 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     right={renderTopBarRight()}
                 />
                 {classRoomStore.isRTCJoined && renderAvatars()}
-                <div className="realtime-content">
-                    <div className="container">
+                <div className="small-class-realtime-content">
+                    <div className="small-class-realtime-content-container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
                         <ShareScreenPicker
                             handleOk={() => {
@@ -204,16 +203,15 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
     function renderAvatars(): React.ReactNode {
         return (
             <div
-                className="realtime-avatars-wrap"
+                className="small-class-realtime-avatars-wrap"
                 style={{ maxWidth: `${whiteboardStore.smallClassAvatarWrapMaxWidth}px` }}
             >
-                <div className="realtime-avatars">
-                    <SmallClassAvatar
+                <div className="small-class-realtime-avatars">
+                    <RTCAvatar
                         avatarUser={classRoomStore.users.creator}
-                        generateAvatar={generateAvatar}
                         isAvatarUserCreator={true}
                         isCreator={true}
-                        rtcEngine={classRoomStore.rtc.rtcEngine}
+                        rtc={classRoomStore.rtc}
                         updateDeviceState={classRoomStore.updateDeviceState}
                         userUUID={classRoomStore.userUUID}
                     />
@@ -342,12 +340,12 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     function renderAvatar(user: User): React.ReactNode {
         return (
-            <SmallClassAvatar
+            <RTCAvatar
                 key={user.userUUID}
                 avatarUser={user}
-                generateAvatar={generateAvatar}
+                isAvatarUserCreator={false}
                 isCreator={classRoomStore.isCreator}
-                rtcEngine={classRoomStore.rtc.rtcEngine}
+                rtc={classRoomStore.rtc}
                 updateDeviceState={classRoomStore.updateDeviceState}
                 userUUID={classRoomStore.userUUID}
             />

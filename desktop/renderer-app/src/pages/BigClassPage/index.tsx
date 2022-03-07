@@ -1,7 +1,6 @@
 import "./BigClassPage.less";
 
 import { message } from "antd";
-import classNames from "classnames";
 import {
     NetworkStatus,
     RoomInfo,
@@ -36,10 +35,9 @@ import { usePowerSaveBlocker } from "../../utils/hooks/use-power-save-blocker";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { useAutoRun, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
-import { BigClassAvatar } from "./BigClassAvatar";
+import { RTCAvatar } from "../../components/RTCAvatar";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
 import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
 import shareScreenSVG from "../../assets/image/share-screen.svg";
 import exitSVG from "../../assets/image/exit.svg";
@@ -189,16 +187,16 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     }
 
     return (
-        <div className="realtime-container">
+        <div className="big-class-realtime-container">
             {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
-            <div className="realtime-box">
+            <div className="big-class-realtime-box">
                 <TopBar
                     isMac={runtime.isMac}
                     left={renderTopBarLeft()}
                     right={renderTopBarRight()}
                 />
-                <div className="realtime-content">
-                    <div className="container">
+                <div className="big-class-realtime-content">
+                    <div className="big-class-realtime-content-container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
                         <ShareScreenPicker
                             handleOk={() => {
@@ -303,10 +301,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     function renderRealtimePanel(): React.ReactNode {
         const { creator } = classRoomStore.users;
 
-        const isCreatorMini = Boolean(
-            mainSpeaker && creator && mainSpeaker.userUUID !== creator.userUUID,
-        );
-
         return (
             <RealtimePanel
                 chatSlot={
@@ -319,55 +313,29 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 isVideoOn={classRoomStore.isRTCJoined}
                 videoSlot={
                     classRoomStore.isRTCJoined && (
-                        <div className="whiteboard-rtc-box">
-                            <div
-                                className={classNames("whiteboard-rtc-avatar", {
-                                    "is-mini": isCreatorMini,
-                                })}
-                            >
-                                <BigClassAvatar
-                                    avatarUser={creator}
-                                    generateAvatar={generateAvatar}
-                                    isAvatarUserCreator={true}
+                        <div className="big-class-realtime-rtc-box">
+                            <RTCAvatar
+                                avatarUser={creator}
+                                isAvatarUserCreator={true}
+                                isCreator={classRoomStore.isCreator}
+                                rtc={classRoomStore.rtc}
+                                updateDeviceState={classRoomStore.updateDeviceState}
+                                userUUID={classRoomStore.userUUID}
+                            />
+                            {speakingJoiner && (
+                                <RTCAvatar
+                                    avatarUser={speakingJoiner}
+                                    isAvatarUserCreator={false}
                                     isCreator={classRoomStore.isCreator}
-                                    mini={isCreatorMini}
-                                    rtcEngine={classRoomStore.rtc.rtcEngine}
+                                    rtc={classRoomStore.rtc}
                                     updateDeviceState={classRoomStore.updateDeviceState}
                                     userUUID={classRoomStore.userUUID}
-                                    onExpand={onVideoAvatarExpand}
                                 />
-                            </div>
-
-                            {speakingJoiner && (
-                                <div
-                                    className={classNames("whiteboard-rtc-avatar", {
-                                        "is-mini": mainSpeaker !== speakingJoiner,
-                                    })}
-                                >
-                                    <BigClassAvatar
-                                        avatarUser={speakingJoiner}
-                                        generateAvatar={generateAvatar}
-                                        isCreator={classRoomStore.isCreator}
-                                        mini={mainSpeaker !== speakingJoiner}
-                                        rtcEngine={classRoomStore.rtc.rtcEngine}
-                                        updateDeviceState={classRoomStore.updateDeviceState}
-                                        userUUID={classRoomStore.userUUID}
-                                        onExpand={onVideoAvatarExpand}
-                                    />
-                                </div>
                             )}
                         </div>
                     )
                 }
             />
-        );
-    }
-
-    function onVideoAvatarExpand(): void {
-        setMainSpeaker(mainSpeaker =>
-            mainSpeaker?.userUUID === classRoomStore.users.creator?.userUUID
-                ? speakingJoiner
-                : classRoomStore.users.creator ?? void 0,
         );
     }
 
