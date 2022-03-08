@@ -1,11 +1,9 @@
-import inviteSVG from "../assets/image/invite.svg";
-
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
+import { SVGUserInvite, TopBarRightBtn } from "flat-components";
+import { useTranslation } from "react-i18next";
 import { RoomItem } from "../stores/room-store";
 import { InviteModal } from "./Modal/InviteModal";
-import { TopBarRightBtn } from "flat-components";
-import { useTranslation } from "react-i18next";
 
 export interface InviteButtonProps {
     roomInfo?: RoomItem;
@@ -18,7 +16,7 @@ export const InviteButton = observer<InviteButtonProps>(function InviteButton({ 
     return (
         <div>
             <TopBarRightBtn
-                icon={<img src={inviteSVG} />}
+                icon={<SVGUserInvite />}
                 title={t("invitation")}
                 onClick={() => showInviteModal(true)}
             />

@@ -1,8 +1,6 @@
 // TODO: remove this component when multi sub window is Done
-import cloudStorageSVG from "../assets/image/cloud-storage.svg";
-
 import { Modal } from "antd";
-import { TopBarRightBtn } from "flat-components";
+import { SVGCloudOutlined, TopBarRightBtn } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
 import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
@@ -28,7 +26,7 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
     return (
         <>
             <TopBarRightBtn
-                icon={<img src={cloudStorageSVG} />}
+                icon={<SVGCloudOutlined />}
                 title={t("cloud-storage")}
                 onClick={showModal}
             />

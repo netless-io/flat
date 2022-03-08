@@ -9,14 +9,18 @@ import {
     NetworkStatus,
     RoomInfo,
     TopBar,
+    TopBarRightBtn,
     TopBarDivider,
     LoadingPage,
     Timer,
     CloudRecordBtn,
+    SVGScreenSharing,
+    SVGExit,
+    SVGMenuFold,
+    SVGMenuUnfold,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
-import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { RTCAvatar } from "../../components/RTCAvatar";
@@ -183,9 +187,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
                     <TopBarRightBtn
                         icon={
-                            shareScreenStore.enableShareScreenStatus
-                                ? "share-screen-active"
-                                : "share-screen"
+                            <SVGScreenSharing active={shareScreenStore.enableShareScreenStatus} />
                         }
                         title={t("share-screen.self")}
                         onClick={handleShareScreen}
@@ -208,13 +210,13 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    icon="exit"
+                    icon={<SVGExit />}
                     title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    icon={isRealtimeSideOpen ? "hide-side" : "hide-side-active"}
+                    icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                     title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={handleSideOpenerSwitch}
                 />

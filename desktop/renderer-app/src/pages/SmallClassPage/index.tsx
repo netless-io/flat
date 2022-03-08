@@ -13,11 +13,18 @@ import {
     TopBarDivider,
     LoadingPage,
     CloudRecordBtn,
+    TopBarRightBtn,
+    TopBarRoundBtn,
     Timer,
+    SVGScreenSharing,
+    SVGExit,
+    SVGMenuFold,
+    SVGMenuUnfold,
+    SVGModeLecture,
+    SVGModeInteractive,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
-import { TopBarRightBtn, TopBarRoundBtn } from "flat-components";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { RTCAvatar } from "../../components/RTCAvatar";
@@ -43,14 +50,6 @@ import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
-
-import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
-import shareScreenSVG from "../../assets/image/share-screen.svg";
-import exitSVG from "../../assets/image/exit.svg";
-import hideSideSVG from "../../assets/image/hide-side.svg";
-import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
-import classInteractionSVG from "../../assets/image/class-interaction.svg";
-import classLectureSVG from "../../assets/image/class-lecture.svg";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -247,7 +246,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         return classRoomStore.classMode === ClassModeType.Lecture ? (
             <TopBarRoundBtn
                 dark
-                icon={<img src={classInteractionSVG} />}
+                icon={<SVGModeInteractive />}
                 title={t("lecture-mode")}
                 onClick={classRoomStore.toggleClassMode}
             >
@@ -256,7 +255,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         ) : (
             <TopBarRoundBtn
                 dark
-                icon={<img src={classLectureSVG} />}
+                icon={<SVGModeLecture />}
                 title={t("interactive-mode")}
                 onClick={classRoomStore.toggleClassMode}
             >
@@ -278,11 +277,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
                     <TopBarRightBtn
                         icon={
-                            shareScreenStore.enableShareScreenStatus ? (
-                                <img src={shareScreenActiveSVG} />
-                            ) : (
-                                <img src={shareScreenSVG} />
-                            )
+                            <SVGScreenSharing active={shareScreenStore.enableShareScreenStatus} />
                         }
                         title={t("share-screen.self")}
                         onClick={handleShareScreen}
@@ -305,19 +300,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    icon={<img src={exitSVG} />}
+                    icon={<SVGExit />}
                     title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    icon={
-                        isRealtimeSideOpen ? (
-                            <img src={hideSideActiveSVG} />
-                        ) : (
-                            <img src={hideSideSVG} />
-                        )
-                    }
+                    icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                     title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={() => {
                         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);

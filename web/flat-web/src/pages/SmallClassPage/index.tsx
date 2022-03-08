@@ -12,10 +12,16 @@ import {
     Timer,
     CloudRecordBtn,
     TopBarRoundBtn,
+    TopBarRightBtn,
+    SVGScreenSharing,
+    SVGExit,
+    SVGMenuFold,
+    SVGMenuUnfold,
+    SVGModeInteractive,
+    SVGModeLecture,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
-import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
 import { RTCAvatar } from "../../components/RTCAvatar";
@@ -41,8 +47,6 @@ import { runtime } from "../../utils/runtime";
 import { RtcChannelType } from "../../api-middleware/rtc/room";
 import { useTranslation } from "react-i18next";
 import { ShareScreen } from "../../components/ShareScreen";
-import classInteractionSVG from "../../assets/image/class-interaction.svg";
-import classLectureSVG from "../../assets/image/class-lecture.svg";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -226,7 +230,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         return classRoomStore.classMode === ClassModeType.Lecture ? (
             <TopBarRoundBtn
                 dark
-                icon={<img src={classInteractionSVG} />}
+                icon={<SVGModeInteractive />}
                 title={t("lecture-mode")}
                 onClick={classRoomStore.toggleClassMode}
             >
@@ -235,7 +239,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         ) : (
             <TopBarRoundBtn
                 dark
-                icon={<img src={classLectureSVG} />}
+                icon={<SVGModeLecture />}
                 title={t("interactive-mode")}
                 onClick={classRoomStore.toggleClassMode}
             >
@@ -257,9 +261,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
                     <TopBarRightBtn
                         icon={
-                            shareScreenStore.enableShareScreenStatus
-                                ? "share-screen-active"
-                                : "share-screen"
+                            <SVGScreenSharing active={shareScreenStore.enableShareScreenStatus} />
                         }
                         title={t("share-screen.self")}
                         onClick={handleShareScreen}
@@ -281,13 +283,13 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    icon="exit"
+                    icon={<SVGExit />}
                     title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    icon={isRealtimeSideOpen ? "hide-side" : "hide-side-active"}
+                    icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                     title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={() => {
                         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);

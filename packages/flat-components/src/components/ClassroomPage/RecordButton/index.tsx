@@ -1,10 +1,9 @@
 import "./style.less";
-import recordingStartSVG from "./icons/recording-start.svg";
-import recordingStopSVG from "./icons/recording-stop.svg";
 
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
-import { TopBarRoundBtn } from "../";
 import { useTranslation } from "react-i18next";
+import { TopBarRoundBtn } from "../TopBar";
+import { SVGRecord, SVGRecordStop } from "../../FlatIcons";
 
 export interface RecordButtonProps {
     isRecording: boolean;
@@ -67,7 +66,7 @@ export const RecordButton: FC<RecordButtonProps> = ({ isRecording, onClick }) =>
     return (
         <div className="record-button-container">
             <TopBarRoundBtn
-                icon={<img src={isRecording ? recordingStopSVG : recordingStartSVG} />}
+                icon={isRecording ? <SVGRecordStop /> : <SVGRecord />}
                 onClick={onClick}
             >
                 {isRecording ? (

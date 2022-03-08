@@ -9,6 +9,11 @@ import {
     LoadingPage,
     CloudRecordBtn,
     Timer,
+    TopBarRightBtn,
+    SVGExit,
+    SVGMenuUnfold,
+    SVGMenuFold,
+    SVGScreenSharing,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
@@ -28,7 +33,6 @@ import {
 } from "../../components/ExitRoomConfirm";
 import InviteButton from "../../components/InviteButton";
 import { RealtimePanel } from "../../components/RealtimePanel";
-import { TopBarRightBtn } from "flat-components";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RecordingConfig, useClassRoomStore, User } from "../../stores/class-room-store";
 import { usePowerSaveBlocker } from "../../utils/hooks/use-power-save-blocker";
@@ -38,11 +42,6 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { RTCAvatar } from "../../components/RTCAvatar";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
-import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
-import shareScreenSVG from "../../assets/image/share-screen.svg";
-import exitSVG from "../../assets/image/exit.svg";
-import hideSideSVG from "../../assets/image/hide-side.svg";
-import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -248,11 +247,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
                     <TopBarRightBtn
                         icon={
-                            shareScreenStore.enableShareScreenStatus ? (
-                                <img src={shareScreenActiveSVG} />
-                            ) : (
-                                <img src={shareScreenSVG} />
-                            )
+                            <SVGScreenSharing active={shareScreenStore.enableShareScreenStatus} />
                         }
                         title={t("share-screen.self")}
                         onClick={handleShareScreen}
@@ -275,19 +270,13 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    icon={<img src={exitSVG} />}
+                    icon={<SVGExit />}
                     title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    icon={
-                        isRealtimeSideOpen ? (
-                            <img src={hideSideActiveSVG} />
-                        ) : (
-                            <img src={hideSideSVG} />
-                        )
-                    }
+                    icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                     title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={() => {
                         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
