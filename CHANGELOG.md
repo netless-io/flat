@@ -1,3 +1,31 @@
+# [1.7.0](https://github.com/netless-io/flat/compare/v1.6.1...v1.7.0) (2022-03-08)
+
+
+### Bug Fixes
+
+* **component:** update small class video avatar styles ([#1413](https://github.com/netless-io/flat/issues/1413)) ([a1f9ea8](https://github.com/netless-io/flat/commit/a1f9ea86fe145028137d303c3c3a2d8b132f31b3))
+* **desktop:** device check speaker invalid ([#1395](https://github.com/netless-io/flat/issues/1395)) ([4f75b16](https://github.com/netless-io/flat/commit/4f75b1629c03140539f89499bebf89325d555a78))
+* **doc:** link error in README-zh ([0b18d37](https://github.com/netless-io/flat/commit/0b18d37271405978834b3b97dd50ffa2fcc191cf))
+* **flat-components:** chat message color & cancel-hands button position ([#1410](https://github.com/netless-io/flat/issues/1410)) ([27aeab6](https://github.com/netless-io/flat/commit/27aeab64c01c170a8487e21660e0e37c4fabff5e))
+* **flat-components:** cloud storage file title color ([#1384](https://github.com/netless-io/flat/issues/1384)) ([23d0853](https://github.com/netless-io/flat/commit/23d08538f918d0e1629d8fa988b47b68bdcc86ba))
+* **flat-components:** fix the more btn show bug in home page room list ([#1400](https://github.com/netless-io/flat/issues/1400)) ([9b43035](https://github.com/netless-io/flat/commit/9b43035914555efe7f4f5d5b5b1942e7736ee67e))
+* **flat-components:** handle very long user name ([#1408](https://github.com/netless-io/flat/issues/1408)) ([5f421c3](https://github.com/netless-io/flat/commit/5f421c3691ff8744fc1e9db3919c42af884b8957))
+* **flat-components:** incorrect chat type box color (was inherit) ([#1403](https://github.com/netless-io/flat/issues/1403)) ([b276207](https://github.com/netless-io/flat/commit/b276207ccded2934e8ea5e71b85f10b3926b00be))
+* **flat-components:** incorrect teacher's chat avatar position ([#1407](https://github.com/netless-io/flat/issues/1407)) ([51cba1b](https://github.com/netless-io/flat/commit/51cba1bae2c8307ccb6209747b52b57379f00e1d))
+* **flat-components:** periodic room detail page overflow ([#1404](https://github.com/netless-io/flat/issues/1404)) ([f7121ff](https://github.com/netless-io/flat/commit/f7121ff8d46c76e6370387be75641e29d465de37))
+* **project:** jump to modify room page rather than modify periodic room page ([#1406](https://github.com/netless-io/flat/issues/1406)) ([c251991](https://github.com/netless-io/flat/commit/c251991d27a601cc2faae041754eb520a0cd7a5c))
+* **project:** telebox position error ([#1416](https://github.com/netless-io/flat/issues/1416)) ([41b7c15](https://github.com/netless-io/flat/commit/41b7c1528d295cd04088ced63b2f129380a841a7))
+* **renderer-app:** room detailed page overflow ([#1398](https://github.com/netless-io/flat/issues/1398)) ([e11d1a1](https://github.com/netless-io/flat/commit/e11d1a151adfbd2864f3a5a79ed5c2877b6afc87))
+
+
+### Features
+
+* **flat-components:** add appearance picker component ([#1373](https://github.com/netless-io/flat/issues/1373)) ([91c4827](https://github.com/netless-io/flat/commit/91c48275d000a8dad7d91aca34ca015d56834eb7))
+* **flat-components:** add flat icons ([#1368](https://github.com/netless-io/flat/issues/1368)) ([cf4c9d7](https://github.com/netless-io/flat/commit/cf4c9d7c1fe12653686285d330f2958f0e3ea54f))
+* **project:** support drag-and-drop files to cloud storage ([#1376](https://github.com/netless-io/flat/issues/1376)) ([c894261](https://github.com/netless-io/flat/commit/c8942610987d35b73a60c1dd2ab78d82701e1b9e))
+
+
+
 ## [1.6.1](https://github.com/netless-io/flat/compare/v1.6.0...v1.6.1) (2022-02-15)
 
 
