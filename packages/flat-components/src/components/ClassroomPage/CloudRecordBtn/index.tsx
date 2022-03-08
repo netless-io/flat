@@ -1,9 +1,8 @@
-import { TopBarRightBtn } from "../";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import RecordIdleSVG from "./icons/record-idle.svg";
-import RecordStartedSVG from "./icons/record-started.svg";
 import { useTranslation } from "react-i18next";
+import { TopBarRightBtn } from "../TopBar";
+import { SVGRecord, SVGRecordStop } from "../../FlatIcons";
 
 export type CloudRecordBtnProps = {
     isRecording: boolean;
@@ -16,7 +15,7 @@ export const CloudRecordBtn: React.FC<CloudRecordBtnProps> = observer(
 
         return (
             <TopBarRightBtn
-                icon={<img src={isRecording ? RecordStartedSVG : RecordIdleSVG} />}
+                icon={isRecording ? <SVGRecordStop active /> : <SVGRecord />}
                 title={t("recording")}
                 onClick={onClick}
             />

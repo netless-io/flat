@@ -9,6 +9,11 @@ import {
     RoomInfo,
     TopBar,
     TopBarDivider,
+    TopBarRightBtn,
+    SVGExit,
+    SVGMenuUnfold,
+    SVGMenuFold,
+    SVGScreenSharing,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
@@ -28,7 +33,6 @@ import {
 } from "../../components/ExitRoomConfirm";
 import InviteButton from "../../components/InviteButton";
 import { RealtimePanel } from "../../components/RealtimePanel";
-import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RecordingConfig, useClassRoomStore, User } from "../../stores/class-room-store";
 import { useAutoRun, useReaction } from "../../utils/mobx";
@@ -222,9 +226,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
                     <TopBarRightBtn
                         icon={
-                            shareScreenStore.enableShareScreenStatus
-                                ? "share-screen-active"
-                                : "share-screen"
+                            <SVGScreenSharing active={shareScreenStore.enableShareScreenStatus} />
                         }
                         title={t("share-screen.self")}
                         onClick={handleShareScreen}
@@ -247,13 +249,13 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    icon="exit"
+                    icon={<SVGExit />}
                     title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    icon={isRealtimeSideOpen ? "hide-side" : "hide-side-active"}
+                    icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                     title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={handleSideOpenerSwitch}
                 />
