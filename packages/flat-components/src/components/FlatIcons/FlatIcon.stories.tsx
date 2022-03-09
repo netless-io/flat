@@ -224,3 +224,40 @@ export const InteractiveIcons: Story = ({ active }) => (
         title="Interactive Icons"
     />
 );
+
+export const Tools: Story = ({ active }) => (
+    <FIconTable
+        active={active}
+        column={4}
+        icons={[
+            "Click",
+            "ClickFilled",
+            "Selector",
+            "SelectorFilled",
+            "Pencil",
+            "PencilFilled",
+            "Text",
+            "TextFilled",
+            "Eraser",
+            "EraserFilled",
+            "Rectangle",
+            "RectangleBolded",
+            "Circle",
+            "CircleBolded",
+            "Rhombus",
+            "RhombusBolded",
+            "Triangle",
+            "TriangleBolded",
+            "Balloon",
+            "BalloonBolded",
+            "Line",
+            "LineBolded",
+            "Arrow",
+            "ArrowBolded",
+            "Clear",
+            "Star",
+            "StarBolded",
+        ]}
+        title="Tools Icons"
+    />
+);
