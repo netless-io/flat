@@ -80,6 +80,7 @@ export default defineConfig(() => {
         },
         build: {
             sourcemap: true,
+            emptyOutDir: true,
             /**
              * Vite will generate resources in assets folder after build，
              * but index.html with './' relative path load module,
