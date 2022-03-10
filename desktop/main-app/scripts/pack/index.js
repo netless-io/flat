@@ -13,6 +13,7 @@ const { mainPath, version, configPath, rendererPath } = require("../../../../scr
 const { releaseTag } = require("../constant");
 const { build, Platform } = require("electron-builder");
 const dotenvFlow = require("dotenv-flow");
+const rimraf = require("rimraf");
 const { downloadAddon } = require("../download-agora-addon/core");
 
 dotenvFlow.config({
@@ -39,6 +40,8 @@ const buildElectron = async () => {
     config.directories.buildResources = path.join("resources", releaseTag);
 
     config.directories.output = path.join("release", buildType);
+
+    rimraf.sync(path.join(mainPath, config.directories.output));
 
     if (!version.includes("alpha")) {
         config.releaseInfo.releaseNotes = generateReleaseNote();

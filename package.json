@@ -8,7 +8,6 @@
     "check-spelling": "cspell --no-progress \"**/*.{md,ts,tsx,js,css,less,json,yml,yaml,html,sh}\"",
     "storybook": "yarn workspace flat-components start",
     "start": "node scripts/launch/index.js",
-    "preship": "rimraf desktop/renderer-app/dist desktop/main-app/dist desktop/main-app/release desktop/main-app/static",
     "ship": "yarn workspace renderer-app build && yarn workspace flat ship",
     "ship:mac": "yarn workspace renderer-app build && yarn workspace flat ship:mac",
     "ship:win": "yarn workspace renderer-app build && yarn workspace flat ship:win",
@@ -32,7 +31,6 @@
     "dotenv-flow": "^3.2.0",
     "husky": "^5.0.9",
     "lint-staged": "^12.1.7",
-    "rimraf": "^3.0.2",
     "svgo": "^2.8.0"
   }
 }
