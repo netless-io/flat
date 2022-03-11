@@ -154,6 +154,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                             endTime={endTime}
                             isPeriodic={!!room.periodicUUID}
                             menuActions={getSubActions(room)}
+                            ownerAvatar={room.ownerAvatarURL}
                             primaryAction={primaryAction(room.roomStatus)}
                             status={getRoomStatus(room.roomStatus)}
                             title={room.title!}
