@@ -630,12 +630,19 @@
 .flat-color-scheme-dark {
     .ant-table {
         background: var(--grey-10);
+
         .ant-table-row {
             background: var(--grey-10);
         }
 
         .ant-table-tbody > tr.ant-table-row:hover > td {
             background: var(--grey-9);
+        }
+
+        .ant-table-placeholder {
+            &:hover > td {
+                background: var(--grey-10);
+            }
         }
     }
 }
