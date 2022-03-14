@@ -1643,7 +1643,7 @@
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
   integrity sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==
 
-"@emotion/is-prop-valid@0.8.8", "@emotion/is-prop-valid@^0.8.2", "@emotion/is-prop-valid@^0.8.6":
+"@emotion/is-prop-valid@0.8.8", "@emotion/is-prop-valid@^0.8.6":
   version "0.8.8"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"
   integrity sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==
@@ -1941,31 +1941,27 @@
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.20.0"
 
-"@netless/fastboard-core@0.2.11":
-  version "0.2.11"
-  resolved "https://registry.npmjs.org/@netless/fastboard-core/-/fastboard-core-0.2.11.tgz#ae57f0cf1fbb2a2f47d3ce97a616a3fec4bf4d3a"
-  integrity sha512-G+YPBSPVw33urmeKL5uRp3Em90qWup2POIwdKhOCxakg7JZw5CtQVzelFzl3rY7M+a5owpVjVNRhP/8FsC6QLA==
+"@netless/fastboard-core@0.3.0-canary.4":
+  version "0.3.0-canary.4"
+  resolved "https://registry.npmjs.org/@netless/fastboard-core/-/fastboard-core-0.3.0-canary.4.tgz#99f3e0645408213c9c5ae9597a9e216c0ee22e29"
+  integrity sha512-982/t+A/0lALxgotmn2sqFd596LYVQi6brMu2z/yAGDtWkGHrPBHI7RtwGhDVIis7KY6qu7OitCv6rIsN2MQPQ==
   dependencies:
     "@netless/app-slide" "^0.0.56"
 
-"@netless/fastboard-react@0.2.11", "@netless/fastboard-react@^0.2.11":
-  version "0.2.11"
-  resolved "https://registry.npmjs.org/@netless/fastboard-react/-/fastboard-react-0.2.11.tgz#40547c8f248894e82a5fd2a084c653f42b4a84bb"
-  integrity sha512-ScbDAcY0sAIQzv4UqZOWGSke31jy1wKI0SWbTtVWZuQkwSqX4t03NhVMV/I1e6M9TYp6YPJ82Gxq5V2hzY38Yw==
+"@netless/fastboard-react@^0.3.0-canary.4":
+  version "0.3.0-canary.4"
+  resolved "https://registry.npmjs.org/@netless/fastboard-react/-/fastboard-react-0.3.0-canary.4.tgz#3187b72d31f9817561ce05fb6a5f40e4647394d3"
+  integrity sha512-2FWAOh7m9jBZbGvDwUszx+7sHPZnSJNf4ToEGdYpBkwkGYYz+cBk15ATtpB0dmoyGUi0TOi18sjF0tiy943L7w==
   dependencies:
-    "@tippyjs/react" "^4.2.6"
-    clsx "^1.1.1"
-    framer-motion "^6.2.8"
-    i18next "^21.6.13"
-    rc-slider "^9.7.5"
+    "@netless/fastboard-core" "0.3.0-canary.4"
+    "@netless/fastboard-ui" "0.3.0-canary.4"
 
-"@netless/fastboard@^0.2.11":
-  version "0.2.11"
-  resolved "https://registry.npmjs.org/@netless/fastboard/-/fastboard-0.2.11.tgz#7075bb477693c49d78655c9da1f049829fe436bf"
-  integrity sha512-qMDreJjocw4YrMsjt40ugkGURWVY3ixfmdwh2n55AEJZ80S526ATKLrYFVRaE+0f2G4PNgFzIEASperYVCHPlA==
+"@netless/fastboard-ui@0.3.0-canary.4":
+  version "0.3.0-canary.4"
+  resolved "https://registry.npmjs.org/@netless/fastboard-ui/-/fastboard-ui-0.3.0-canary.4.tgz#88e2c8be184bb576fb879b1710383097bfbe8b62"
+  integrity sha512-/t6YhR2pJsiwbbAXPjI+g4AD3mwXCEFvkWMij0jkLGUYObbifV+YhPOL+NRiwzzWkDYzrh7lKJxbNVgRl0REdg==
   dependencies:
-    "@netless/fastboard-core" "0.2.11"
-    "@netless/fastboard-react" "0.2.11"
+    tippy.js "^6.3.7"
 
 "@netless/fetch-middleware@^1.0.7":
   version "1.0.7"
@@ -3039,13 +3035,6 @@
   integrity sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==
   dependencies:
     defer-to-connect "^1.0.1"
-
-"@tippyjs/react@^4.2.6":
-  version "4.2.6"
-  resolved "https://registry.npmjs.org/@tippyjs/react/-/react-4.2.6.tgz#971677a599bf663f20bb1c60a62b9555b749cc71"
-  integrity sha512-91RicDR+H7oDSyPycI13q3b7o4O60wa2oRbjlz2fyRLmHImc4vyDwuUP8NtZaN0VARJY5hybvDYrFzhY9+Lbyw==
-  dependencies:
-    tippy.js "^6.3.1"
 
 "@tootallnate/once@1":
   version "1.1.2"
@@ -5843,7 +5832,7 @@ clone-response@1.0.2, clone-response@^1.0.2:
   dependencies:
     mimic-response "^1.0.0"
 
-clsx@^1.0.4, clsx@^1.1.1:
+clsx@^1.0.4:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
@@ -8491,26 +8480,6 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framer-motion@^6.2.8:
-  version "6.2.8"
-  resolved "https://registry.npmjs.org/framer-motion/-/framer-motion-6.2.8.tgz#02abb529191af7e2df444185fe27e932215b715d"
-  integrity sha512-4PtBWFJ6NqR350zYVt9AsFDtISTqsdqna79FvSYPfYDXuuqFmiKtZdkTnYPslnsOMedTW0pEvaQ7eqjD+sA+HA==
-  dependencies:
-    framesync "6.0.1"
-    hey-listen "^1.0.8"
-    popmotion "11.0.3"
-    style-value-types "5.0.0"
-    tslib "^2.1.0"
-  optionalDependencies:
-    "@emotion/is-prop-valid" "^0.8.2"
-
-framesync@6.0.1:
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/framesync/-/framesync-6.0.1.tgz#5e32fc01f1c42b39c654c35b16440e07a25d6f20"
-  integrity sha512-fUY88kXvGiIItgNC7wcTOl0SNRCVXMKSWW2Yzfmn7EKNc+MpCzcz9DhdHcdjbrtN3c6R4H5dTY2jiCpPdysEjA==
-  dependencies:
-    tslib "^2.1.0"
-
 framesync@^4.0.0, framesync@^4.0.1:
   version "4.1.0"
   resolved "https://registry.npmjs.org/framesync/-/framesync-4.1.0.tgz#69a8db3ca432dc70d6a76ba882684a1497ef068a"
@@ -9510,13 +9479,6 @@ i18next@^20.3.1:
   version "20.4.0"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-20.4.0.tgz#6897229a7898e23f3c4885f10315c978b594d3b9"
   integrity sha512-89iWWJudmaHJwzIdJ/1eu98GtsJnwBhOUWwlAre70itPMuTE/NTPtgVeaS1CGaB8Q3XrYBGpEqlq4jsScDx9kg==
-  dependencies:
-    "@babel/runtime" "^7.12.0"
-
-i18next@^21.6.13:
-  version "21.6.13"
-  resolved "https://registry.npmjs.org/i18next/-/i18next-21.6.13.tgz#e881b05f156ac06997e9b63379d8b2674bb4a4f2"
-  integrity sha512-MVjNttw+5mIuu2/fwTpSU0EeI7iU/6pnDvGQboCzkILiv0/gD+FLZaF7qSHmUHO4ZkE6xJQ9SlBgGvMHxhC82Q==
   dependencies:
     "@babel/runtime" "^7.12.0"
 
@@ -12688,16 +12650,6 @@ polly-js@^1.8.2:
   resolved "https://registry.yarnpkg.com/polly-js/-/polly-js-1.8.2.tgz#6643376f4ec3feb91300ade628d14f11231b9d49"
   integrity sha512-xLP03RU7rnczJgul5YtCbk9SRtuvE/f0hMntAoH4mMmqRoLaHBO9SXPG2UFZRBjqv0ResUCmXhQPwQXkYhBxsg==
 
-popmotion@11.0.3:
-  version "11.0.3"
-  resolved "https://registry.npmjs.org/popmotion/-/popmotion-11.0.3.tgz#565c5f6590bbcddab7a33a074bb2ba97e24b0cc9"
-  integrity sha512-Y55FLdj3UxkR7Vl3s7Qr4e9m0onSnP8W7d/xQLsoJM40vs6UKHFdygs6SWryasTZYqugMjm3BepCF4CWXDiHgA==
-  dependencies:
-    framesync "6.0.1"
-    hey-listen "^1.0.8"
-    style-value-types "5.0.0"
-    tslib "^2.1.0"
-
 posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
@@ -13422,17 +13374,6 @@ rc-select@^12.0.0, rc-select@~12.1.6:
     rc-util "^5.9.8"
     rc-virtual-list "^3.2.0"
 
-rc-slider@^9.7.5:
-  version "9.7.5"
-  resolved "https://registry.npmjs.org/rc-slider/-/rc-slider-9.7.5.tgz#193141c68e99b1dc3b746daeb6bf852946f5b7f4"
-  integrity sha512-LV/MWcXFjco1epPbdw1JlLXlTgmWpB9/Y/P2yinf8Pg3wElHxA9uajN21lJiWtZjf5SCUekfSP6QMJfDo4t1hg==
-  dependencies:
-    "@babel/runtime" "^7.10.1"
-    classnames "^2.2.5"
-    rc-tooltip "^5.0.1"
-    rc-util "^5.16.1"
-    shallowequal "^1.1.0"
-
 rc-slider@~9.7.1:
   version "9.7.2"
   resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-9.7.2.tgz#282f571f7582752ebaa33964e441184f4e79ad74"
@@ -13549,15 +13490,6 @@ rc-util@^5.0.0, rc-util@^5.0.1, rc-util@^5.0.5, rc-util@^5.0.6, rc-util@^5.0.7, 
   version "5.13.2"
   resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-5.13.2.tgz#a8a0bb77743351841ba8bed6393e03b8d2f685c8"
   integrity sha512-eYc71XXGlp96RMzg01Mhq/T3BL6OOVTDSS0urFEuvpi+e7slhJRhaHGCKy2hqJm18m9ff7VoRoptplKu60dYog==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    react-is "^16.12.0"
-    shallowequal "^1.1.0"
-
-rc-util@^5.16.1:
-  version "5.17.0"
-  resolved "https://registry.npmjs.org/rc-util/-/rc-util-5.17.0.tgz#6b0788038075c3d5c215541539573a4a03827070"
-  integrity sha512-HWuTIKzBeZQQ7IBqdokE0wMp/xx39/KfUJ0gcquBigoldDCrf3YBcWFHrrQlJG7sI82Wg8mwp1uAKV3zMGfAgg==
   dependencies:
     "@babel/runtime" "^7.12.5"
     react-is "^16.12.0"
@@ -15560,14 +15492,6 @@ style-to-object@0.3.0, style-to-object@^0.3.0:
   dependencies:
     inline-style-parser "0.1.1"
 
-style-value-types@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/style-value-types/-/style-value-types-5.0.0.tgz#76c35f0e579843d523187989da866729411fc8ad"
-  integrity sha512-08yq36Ikn4kx4YU6RD7jWEv27v4V+PUsOGa4n/as8Et3CuODMJQ00ENeAVXAeydX4Z2j1XHZF1K2sX4mGl18fA==
-  dependencies:
-    hey-listen "^1.0.8"
-    tslib "^2.1.0"
-
 style-value-types@^3.1.7:
   version "3.2.0"
   resolved "https://registry.npmjs.org/style-value-types/-/style-value-types-3.2.0.tgz#eb89cab1340823fa7876f3e289d29d99c92111bb"
@@ -15899,7 +15823,7 @@ tiny-warning@^1.0.0, tiny-warning@^1.0.3:
   resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
 
-tippy.js@^6.3.1:
+tippy.js@^6.3.7:
   version "6.3.7"
   resolved "https://registry.npmjs.org/tippy.js/-/tippy.js-6.3.7.tgz#8ccfb651d642010ed9a32ff29b0e9e19c5b8c61c"
   integrity sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==

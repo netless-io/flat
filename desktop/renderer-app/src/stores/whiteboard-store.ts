@@ -1,6 +1,6 @@
 import "video.js/dist/video-js.css";
 
-import { FastboardApp, createFastboard } from "@netless/fastboard";
+import { FastboardApp, createFastboard } from "@netless/fastboard-react";
 import type { Attributes as SlideAttributes } from "@netless/app-slide";
 import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manager";
 import { message } from "antd";

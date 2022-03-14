@@ -181,8 +181,8 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                 )}
                 <div ref={bindCollector} />
                 <Fastboard
-                    ref={bindWhiteboard}
                     app={fastboardAPP}
+                    containerRef={bindWhiteboard}
                     language={i18n.language as Language}
                     theme={isDark ? "dark" : "light"}
                 />
