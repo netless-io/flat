@@ -636,6 +636,12 @@ export class ClassRoomStore {
                 case RoomStatus.Started: {
                     this.updateRoomStatusLoading(RoomStatusLoadingType.Starting);
                     await startClass(this.roomUUID);
+                    await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
+                    const roomUUID = this.roomUUID;
+                    const periodicUUID = globalStore.periodicUUID;
+                    if (periodicUUID) {
+                        await roomStore.syncPeriodicSubRoomInfo({ periodicUUID, roomUUID });
+                    }
                     if (this.isCreator && this._userDeviceStatePrePause) {
                         const user = this.users.currentUser;
                         if (user) {
