@@ -22,6 +22,7 @@ export const SplashPage = observer<{}>(function SplashPage() {
     useWindowSize("Splash");
 
     const { t } = useTranslation();
+    const [logoLoaded, setLogoLoaded] = useState(false);
     const [loginStatus, updateLoginStatus] = useState(LoginStatusType.Idle);
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
@@ -79,9 +80,16 @@ export const SplashPage = observer<{}>(function SplashPage() {
                 className={classNames("splash-content", {
                     // @TODO add loading status
                     "is-success": loginStatus === LoginStatusType.Success,
+                    "is-logo-loaded": logoLoaded,
                 })}
             >
-                <img alt="flat logo" src={logoSVG} />
+                <img
+                    alt="flat logo"
+                    height={64}
+                    src={logoSVG}
+                    width={64}
+                    onLoad={() => setLogoLoaded(true)}
+                />
                 <span>{t("online-interaction-to-synchronize-ideas")}</span>
             </div>
         </div>
