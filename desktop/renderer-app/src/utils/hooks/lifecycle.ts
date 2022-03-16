@@ -52,7 +52,7 @@ export function useSafePromise(): <T, E = unknown>(
                 if (!isUnMountRef.current) {
                     reject(error);
                 } else if (onUnmountedError) {
-                    onUnmountedError(error);
+                    onUnmountedError(error as E);
                 } else {
                     if (NODE_ENV === "development") {
                         console.error(
@@ -65,7 +65,7 @@ export function useSafePromise(): <T, E = unknown>(
         });
     }
 
-    return useCallback(safePromise, []);
+    return useCallback(safePromise, [isUnMountRef]);
 }
 
 export function useAPI<P, R>(

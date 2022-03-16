@@ -290,7 +290,7 @@ export class SmartPlayer extends EventEmitter {
     }
 
     public destroy(): void {
-        this.windowManagerPromise?.then(manager => {
+        void this.windowManagerPromise?.then(manager => {
             manager.destroy();
         });
         this.whiteWebSdk = undefined;

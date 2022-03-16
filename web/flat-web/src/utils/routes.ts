@@ -83,7 +83,11 @@ export function useReplaceHistory(): <T extends RouteNameType>(
  * This facility not involves react-router, so you can use it simply.
  */
 export function useURLParams(): Record<string, string> {
-    const urlSearchParams = new URLSearchParams(window.location.search);
+    const urlSearchParams = useMemo(
+        () => new URLSearchParams(window.location.search),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [window.location.search],
+    );
 
     const params = useMemo(() => {
         const res: Record<string, string> = {};

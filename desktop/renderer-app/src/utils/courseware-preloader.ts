@@ -1,6 +1,6 @@
 import { copy, ensureDir, remove, pathExists } from "fs-extra";
 import path from "path";
-import { DownloaderHelper } from "node-downloader-helper";
+import { DownloaderHelper, DownloadEvents } from "node-downloader-helper";
 import { runtime } from "./runtime";
 import { extractZIP } from "./unzip";
 
@@ -64,7 +64,7 @@ class CoursewarePreloader {
             this.downloaders.delete(taskUUID);
         });
 
-        downloader.once("end", async info => {
+        downloader.once("end", async (info: Parameters<DownloadEvents["end"]>[0]) => {
             try {
                 await extractZIP(info.filePath, coursewareDir);
                 // TODO: the convert service may fail in some cases, which

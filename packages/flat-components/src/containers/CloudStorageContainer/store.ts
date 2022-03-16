@@ -111,50 +111,50 @@ export abstract class CloudStorageStore {
         }
     };
 
-    abstract pendingUploadTasks: CloudStorageUploadTask[];
+    public abstract pendingUploadTasks: CloudStorageUploadTask[];
 
-    abstract uploadingUploadTasks: CloudStorageUploadTask[];
+    public abstract uploadingUploadTasks: CloudStorageUploadTask[];
 
-    abstract successUploadTasks: CloudStorageUploadTask[];
+    public abstract successUploadTasks: CloudStorageUploadTask[];
 
-    abstract failedUploadTasks: CloudStorageUploadTask[];
+    public abstract failedUploadTasks: CloudStorageUploadTask[];
 
     /** User cloud storage files */
-    abstract files: CloudStorageFile[];
+    public abstract files: CloudStorageFile[];
 
     /** Render file menus item base on fileUUID */
-    abstract fileMenus: (
+    public abstract fileMenus: (
         file: CloudStorageFile,
         index: number,
     ) => Array<{ key: React.Key; name: React.ReactNode }> | void | undefined | null;
 
     /** When a file menus item is clicked */
-    abstract onItemMenuClick: (fileUUID: FileUUID, menuKey: React.Key) => void;
+    public abstract onItemMenuClick: (fileUUID: FileUUID, menuKey: React.Key) => void;
 
     /** When file title click */
-    abstract onItemTitleClick: (fileUUID: FileUUID) => void;
+    public abstract onItemTitleClick: (fileUUID: FileUUID) => void;
 
     /** When page delete button is pressed */
-    abstract onBatchDelete(): void;
+    public abstract onBatchDelete(): void;
 
     /** When upload button is pressed */
-    abstract onUpload(): void;
+    public abstract onUpload(): void;
 
     /** When upload panel close button is pressed */
-    abstract onUploadPanelClose(): void;
+    public abstract onUploadPanelClose(): void;
 
     /** Restart uploading a file */
-    abstract onUploadRetry(fileUUID: FileUUID): void;
+    public abstract onUploadRetry(fileUUID: FileUUID): void;
 
     /** Stop uploading a file */
-    abstract onUploadCancel(fileUUID: FileUUID): void;
+    public abstract onUploadCancel(fileUUID: FileUUID): void;
 
     /** When a filename is changed to a meaningful new name */
-    abstract onNewFileName(fileUUID: FileUUID, fileName: CloudStorageFileName): void;
+    public abstract onNewFileName(fileUUID: FileUUID, fileName: CloudStorageFileName): void;
 
     /** Add Online HTML5 Courseware to Cloud Storage */
-    abstract addExternalFile(fileName: string, fileURL: string): Promise<void>;
+    public abstract addExternalFile(fileName: string, fileURL: string): Promise<void>;
 
     /** When file(s) are dropped in the container. */
-    abstract onDropFile(files: FileList): void;
+    public abstract onDropFile(files: FileList): void;
 }

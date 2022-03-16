@@ -53,7 +53,7 @@ export class WindowMain extends AbstractWindow<false> {
         const { REACT_DEVELOPER_TOOLS } = require("electron-devtools-vendor");
 
         win.window.webContents.session
-            .loadExtension(REACT_DEVELOPER_TOOLS, {
+            .loadExtension(REACT_DEVELOPER_TOOLS as string, {
                 allowFileAccess: true,
             })
             .catch(error => {

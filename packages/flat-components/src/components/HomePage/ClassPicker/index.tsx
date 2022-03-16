@@ -22,7 +22,9 @@ export const ClassPicker: React.FC<ClassPickerProps> = ({ value, onChange, large
             })}
             disabled={disabled}
             value={value}
-            onChange={e => onChange && e.target.value && onChange(e.target.value)}
+            onChange={e =>
+                onChange && e.target.value && onChange(e.target.value as ClassPickerItemType)
+            }
         >
             <ClassPickerItem large={large} value="BigClass" />
             <ClassPickerItem large={large} value="SmallClass" />

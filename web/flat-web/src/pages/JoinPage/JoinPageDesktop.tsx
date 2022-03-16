@@ -34,7 +34,7 @@ export default function JoinPageDesktop({
 
     return (
         <div className="join-page-container">
-            <iframe height="0" src={url} style={{ display: "none" }} width="0" />
+            <iframe height="0" src={url} style={{ display: "none" }} title="[hidden]" width="0" />
             <div className="join-page-header-container">
                 <img alt="flat-logo" src={logoSVG} />
                 {isLogin ? (
