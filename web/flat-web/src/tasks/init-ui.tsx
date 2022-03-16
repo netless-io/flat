@@ -7,8 +7,8 @@ import ReactDOM from "react-dom";
 import { useUpdate } from "react-use";
 
 import { ConfigProvider } from "antd";
-import zhCN from "antd/lib/locale/zh_CN";
-import enUS from "antd/lib/locale/en_US";
+import zhCN from "antd/es/locale/zh_CN";
+import enUS from "antd/es/locale/en_US";
 
 import { I18nextProvider } from "react-i18next";
 import { i18n } from "../utils/i18n";

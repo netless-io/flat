@@ -1,10 +1,11 @@
-import legacy from "@vitejs/plugin-legacy";
-import refresh from "@vitejs/plugin-react-refresh";
+import react from "@vitejs/plugin-react";
+// import legacy from "@vitejs/plugin-legacy";
 import { defineConfig } from "vite";
 import { dotenv } from "./scripts/vite-plugin-dotenv";
 import { injectHtmlHash } from "./scripts/vite-plugin-html-hash";
 import { version } from "./scripts/vite-plugin-version";
 import { inlineAssets } from "./scripts/vite-plugin-inline-assets";
+import { reactVirtualized } from "./scripts/vite-plugin-react-virtualized";
 import {
     configPath,
     typesEntryPath,
@@ -15,12 +16,13 @@ import {
 
 export default defineConfig({
     plugins: [
-        refresh(),
-        legacy(),
+        react(),
+        // legacy(),
         dotenv(configPath),
         injectHtmlHash(),
         version(mainPackageJSONPath),
         inlineAssets(),
+        reactVirtualized(),
     ],
     resolve: {
         alias: [
@@ -42,6 +44,7 @@ export default defineConfig({
     },
     build: {
         sourcemap: true,
+        minify: false,
     },
     css: {
         preprocessorOptions: {

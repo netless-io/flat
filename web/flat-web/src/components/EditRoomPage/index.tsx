@@ -3,7 +3,7 @@ import "./style.less";
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { EditRoomBody, EditRoomBodyProps } from "flat-components";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { useContext } from "react";
 import { PageStoreContext } from "../StoreProvider";
 import { useTranslation } from "react-i18next";

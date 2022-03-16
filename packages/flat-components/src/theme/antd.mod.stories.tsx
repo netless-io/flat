@@ -2,7 +2,7 @@ import "./antd.mod.stories.less";
 
 import React from "react";
 import { Story, Meta } from "@storybook/react";
-import { Input, Radio, Checkbox, Button, ButtonProps } from "antd";
+import { Input, Radio, Checkbox, Button, ButtonProps, InputRef } from "antd";
 import { SVGChat } from "../components/FlatIcons";
 import { useRef } from "@storybook/client-api";
 import faker from "faker";
@@ -44,7 +44,7 @@ export const Buttons: Story = () => {
 };
 
 export const Overview: Story = () => {
-    const selectAllRef = useRef<Input | null>(null);
+    const selectAllRef = useRef<InputRef | null>(null);
 
     const inputExample = (
         <div>

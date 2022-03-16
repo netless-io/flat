@@ -2,7 +2,7 @@ import "./CreateRoomBox.less";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form, Dropdown, Menu } from "antd";
+import { Button, Input, Modal, Checkbox, Form, Dropdown, Menu, InputRef } from "antd";
 import { RoomType } from "../../../api-middleware/flatServer/constants";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
@@ -31,7 +31,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const [isFormValidated, setIsFormValidated] = useState(false);
     const [roomRegion, setRoomRegion] = useState<Region>(configStore.getRegion());
     const [classType, setClassType] = useState<RoomType>(RoomType.BigClass);
-    const roomTitleInputRef = useRef<Input>(null);
+    const roomTitleInputRef = useRef<InputRef>(null);
 
     const defaultValues: CreateRoomFormValues = {
         roomTitle: globalStore.userInfo?.name
@@ -134,7 +134,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                                     <img
                                         alt={roomRegion}
                                         src={RegionSVG[roomRegion]}
-                                        style={{ cursor: "pointer", width: 22 }}
+                                        style={{ cursor: "pointer", width: 22, marginRight: 0 }}
                                     />
                                 </Dropdown>
                             }

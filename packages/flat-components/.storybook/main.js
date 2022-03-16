@@ -15,10 +15,10 @@ module.exports = {
     },
     webpackFinal: config => {
         config.plugins.push(
-            new ESLintPlugin({
-                fix: true,
-                extensions: ["ts", "tsx"],
-            }),
+            // new ESLintPlugin({
+            //     fix: true,
+            //     extensions: ["ts", "tsx"],
+            // }),
             new ForkTsCheckerWebpackPlugin({
                 typescript: {
                     configFile: path.resolve(__dirname, "..", "tsconfig.json"),

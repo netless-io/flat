@@ -1,4 +1,4 @@
-import refresh from "@vitejs/plugin-react-refresh";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import eslintPlugin from "vite-plugin-eslint";
 import { visualizer } from "rollup-plugin-visualizer";
@@ -19,7 +19,7 @@ import {
 
 export default defineConfig(() => {
     const plugins = [
-        refresh(),
+        react(),
         dotenv(configPath),
         electron(),
         eslintPlugin({

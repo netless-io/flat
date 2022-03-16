@@ -62,7 +62,7 @@ export function useSafePromise(): <T, E = unknown>(
                 if (!isUnMountRef.current) {
                     reject(error);
                 } else if (onUnmountedError) {
-                    onUnmountedError(error);
+                    onUnmountedError(error as E);
                 } else {
                     if (process.env.NODE_ENV === "development") {
                         console.error(
@@ -75,7 +75,7 @@ export function useSafePromise(): <T, E = unknown>(
         });
     }
 
-    return useCallback(safePromise, []);
+    return useCallback(safePromise, [isUnMountRef]);
 }
 
 /**
@@ -90,7 +90,7 @@ export function useReaction<T>(
     expression: (reaction: IReactionPublic) => T,
     effect: (value: T, previousValue: T, reaction: IReactionPublic) => void,
     extraDeps: DependencyList = [],
-    opts?: IReactionOptions,
+    opts?: IReactionOptions<{ result: T; deps: DependencyList }, false>,
 ): void {
     // always keeps the latest callback
     // so that no stale values

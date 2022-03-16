@@ -22,3 +22,8 @@ declare module "*.json" {
     const content: any;
     export = content;
 }
+
+declare module "*.mp3" {
+    const audioLocalResourceMP3: string;
+    export default audioLocalResourceMP3;
+}

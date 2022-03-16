@@ -2,7 +2,7 @@ import "./JoinRoomBox.less";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form } from "antd";
+import { Button, Input, Modal, Checkbox, Form, InputRef } from "antd";
 import { validate, version } from "uuid";
 import { ConfigStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
@@ -31,7 +31,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
     const [isLoading, setLoading] = useState(false);
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
-    const roomTitleInputRef = useRef<Input>(null);
+    const roomTitleInputRef = useRef<InputRef>(null);
 
     useEffect(() => {
         let ticket = NaN;
