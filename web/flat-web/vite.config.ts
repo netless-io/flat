@@ -1,5 +1,5 @@
 import react from "@vitejs/plugin-react";
-// import legacy from "@vitejs/plugin-legacy";
+import legacy from "@vitejs/plugin-legacy";
 import { defineConfig } from "vite";
 import { dotenv } from "./scripts/vite-plugin-dotenv";
 import { injectHtmlHash } from "./scripts/vite-plugin-html-hash";
@@ -17,7 +17,7 @@ import {
 export default defineConfig({
     plugins: [
         react(),
-        // legacy(),
+        legacy(),
         dotenv(configPath),
         injectHtmlHash(),
         version(mainPackageJSONPath),
