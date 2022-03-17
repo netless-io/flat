@@ -171,6 +171,7 @@ export const injectionWindowIPCAction = (customWindow: CustomWindow): void => {
                 .getWin(args.browserWindowID);
 
             if (realCustomWindow) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 windowActionAsync(realCustomWindow)[args.actions](args.args);
             }
         },

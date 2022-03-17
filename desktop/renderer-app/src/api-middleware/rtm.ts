@@ -189,7 +189,7 @@ export class Rtm extends EventEmitter {
                 try {
                     const { r, t, v } = JSON.parse(msg.text);
                     if (r === this.commandsID && t) {
-                        this.emit(t, v, senderId);
+                        this.emit(t as string, v, senderId);
                         if (NODE_ENV === "development") {
                             console.log(`[RTM] Received p2p command from ${senderId}: `, t, v);
                         }
@@ -239,7 +239,7 @@ export class Rtm extends EventEmitter {
                     try {
                         const { t, v } = JSON.parse(msg.text);
                         if (t) {
-                            this.emit(t, v, senderId);
+                            this.emit(t as string, v, senderId);
                             if (NODE_ENV === "development") {
                                 console.log(`[RTM] Received command from ${senderId}: `, t, v);
                             }
@@ -454,7 +454,7 @@ export class Rtm extends EventEmitter {
     private async request<P = any, R = any>(
         action: string,
         payload?: P,
-        config: any = {},
+        config: RequestInit = {},
     ): Promise<R> {
         if (!this.token) {
             this.token = await generateRTMToken();
@@ -466,7 +466,7 @@ export class Rtm extends EventEmitter {
                 method: "POST",
                 headers: {
                     "x-agora-token": this.token,
-                    "x-agora-uid": globalStore.userUUID,
+                    "x-agora-uid": globalStore.userUUID || "",
                     "Content-Type": "application/json",
                     ...(config.headers || {}),
                 },

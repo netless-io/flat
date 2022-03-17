@@ -1,7 +1,7 @@
 import checkSVG from "./icons/check.svg";
 import crossSVG from "./icons/cross.svg";
 
-import { Button, Input } from "antd";
+import { Button, Input, InputRef } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { CloudStorageFileName } from "../types";
 
@@ -33,7 +33,7 @@ export const CloudStorageFileTitleRename = React.memo<CloudStorageFileTitleRenam
             });
 
         useEffect(() => {
-            const input: Input = inputRef.current;
+            const input: InputRef = inputRef.current;
             if (input) {
                 input.focus();
                 input.select();

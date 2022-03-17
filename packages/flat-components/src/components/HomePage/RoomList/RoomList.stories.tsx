@@ -23,42 +23,41 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
-export const Overview: Story<RoomListProps<string> & Pick<RoomListItemProps<string>, "onAction">> =
-    args => {
-        const beginTime = chance.date();
-        const { t } = useTranslation();
+export const Overview: Story<
+    RoomListProps<string> & Pick<RoomListItemProps<string>, "onAction">
+> = args => {
+    const beginTime = chance.date();
+    const { t } = useTranslation();
 
-        return (
-            <RoomList
-                {...args}
-                filters={
-                    args.filters && args.filters.map(item => ({ ...item, title: t(item.title) }))
-                }
-                title={args.title && t(args.title)}
-            >
-                {Array(20)
-                    .fill(0)
-                    .map((_, i) => (
-                        <RoomListItem
-                            key={i}
-                            beginTime={beginTime}
-                            endTime={addHours(beginTime, 1)}
-                            isPeriodic={chance.bool()}
-                            menuActions={[
-                                { key: "modify", text: t("modify") },
-                                { key: "cancel", text: t("cancel") },
-                            ]}
-                            ownerAvatar="http://placekitten.com/g/100/100"
-                            ownerName={faker.name.firstName()}
-                            primaryAction={{ key: "enter", text: t("begin"), type: "primary" }}
-                            status={chance.pickone(["upcoming", "running", "stopped"])}
-                            title={faker.random.words()}
-                            onAction={args.onAction}
-                        />
-                    ))}
-            </RoomList>
-        );
-    };
+    return (
+        <RoomList
+            {...args}
+            filters={args.filters && args.filters.map(item => ({ ...item, title: t(item.title) }))}
+            title={args.title && t(args.title)}
+        >
+            {Array(20)
+                .fill(0)
+                .map((_, i) => (
+                    <RoomListItem
+                        key={i}
+                        beginTime={beginTime}
+                        endTime={addHours(beginTime, 1)}
+                        isPeriodic={chance.bool()}
+                        menuActions={[
+                            { key: "modify", text: t("modify") },
+                            { key: "cancel", text: t("cancel") },
+                        ]}
+                        ownerAvatar="http://placekitten.com/g/100/100"
+                        ownerName={faker.name.firstName()}
+                        primaryAction={{ key: "enter", text: t("begin"), type: "primary" }}
+                        status={chance.pickone(["upcoming", "running", "stopped"])}
+                        title={faker.random.words()}
+                        onAction={args.onAction}
+                    />
+                ))}
+        </RoomList>
+    );
+};
 Overview.args = {
     title: "room-list",
     filters: [

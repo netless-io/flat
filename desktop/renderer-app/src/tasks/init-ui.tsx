@@ -2,8 +2,8 @@ import "flat-components/theme/index.less";
 import "../theme.less";
 
 import { ConfigProvider } from "antd";
-import enUS from "antd/lib/locale/en_US";
-import zhCN from "antd/lib/locale/zh_CN";
+import enUS from "antd/es/locale/en_US";
+import zhCN from "antd/es/locale/zh_CN";
 
 import React, { useEffect, useMemo } from "react";
 import ReactDOM from "react-dom";

@@ -119,7 +119,7 @@ export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
         }
 
         function onWeekSelected(w: Week[]): Week[] {
-            const week = getDay(form.getFieldValue("beginTime"));
+            const week = getDay(form.getFieldValue("beginTime") as EditRoomFormValues["beginTime"]);
             if (!w.includes(week)) {
                 w.push(week);
             }

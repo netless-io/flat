@@ -125,7 +125,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
         // is current user speaking
         if (classRoomStore.userUUID === user.userUUID) {
-            classRoomStore.rtc.client?.setClientRole(user.isSpeak ? "host" : "audience");
+            void classRoomStore.rtc.client?.setClientRole(user.isSpeak ? "host" : "audience");
         }
     });
 

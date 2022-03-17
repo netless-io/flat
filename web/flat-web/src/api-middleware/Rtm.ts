@@ -454,7 +454,7 @@ export class Rtm extends EventEmitter<keyof RTMEvents> {
     private async request<P = any, R = any>(
         action: string,
         payload?: P,
-        config: any = {},
+        config: RequestInit = {},
     ): Promise<R> {
         if (!this.token) {
             this.token = await generateRTMToken();
@@ -466,7 +466,7 @@ export class Rtm extends EventEmitter<keyof RTMEvents> {
                 method: "POST",
                 headers: {
                     "x-agora-token": this.token,
-                    "x-agora-uid": globalStore.userUUID,
+                    "x-agora-uid": globalStore.userUUID || "",
                     "Content-Type": "application/json",
                     ...(config.headers || {}),
                 },

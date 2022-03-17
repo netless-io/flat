@@ -9,21 +9,16 @@ const cleanUrl = (url: string): string => url.replace(/[?#].*$/, "");
 
 export function inlineAssets(): Plugin {
     return {
-        name: "inline:assets",
+        name: "flat:inline-assets",
         enforce: "pre",
-        async transform(_, id: string) {
-            const filePath = cleanUrl(id);
-            if (/\.(svg|jpg|jpeg|png|gif)$/i.test(filePath)) {
-                const imageFileContent = await fsp.readFile(filePath);
-                const url = filePath.endsWith(".svg")
-                    ? svgToTinyDataUri(imageFileContent.toString("utf-8"), "utf8")
-                    : `data:${mime.getType(filePath)};base64,${imageFileContent.toString(
-                          "base64",
-                      )}`;
-                return {
-                    code: `const content = "${url}";export default content;`,
-                    map: null,
-                };
+        async load(id) {
+            id = cleanUrl(id);
+            if (/\.(svg|jpg|jpeg|png|gif)$/i.test(id)) {
+                const content = await fsp.readFile(id);
+                const url = id.endsWith(".svg")
+                    ? svgToTinyDataUri(content.toString("utf-8"), "utf8")
+                    : `data:${mime.getType(id)};base64,${content.toString("base64")}`;
+                return `export default ${JSON.stringify(url)};`;
             }
             return null;
         },

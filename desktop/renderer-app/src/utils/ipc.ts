@@ -70,7 +70,7 @@ export const ipcReceive = <T extends keyof ipc.EmitEvents, U extends ipc.EmitEve
     callback: (args: U) => void,
 ): void => {
     ipcRenderer.on(action, (_event, args) => {
-        callback(args);
+        callback(args as U);
     });
 };
 

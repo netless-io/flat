@@ -4,7 +4,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { EditRoomBody, EditRoomBodyProps, MainPageHeader } from "flat-components";
 import { MainPageLayoutContainer } from "../MainPageLayoutContainer";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export type EditRoomPageProps = EditRoomBodyProps;

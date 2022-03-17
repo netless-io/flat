@@ -4,9 +4,9 @@ import "./style.less";
 
 import React, { FC, useContext } from "react";
 import { Col, Row } from "antd";
-import dateFnsGenerateConfig from "rc-picker/lib/generate/dateFns";
+import dateFnsGenerateConfig from "rc-picker/es/generate/dateFns";
 import generatePicker, { PickerTimeProps, PickerProps } from "antd/es/date-picker/generatePicker";
-import { ConfigContext } from "antd/lib/config-provider";
+import { ConfigContext } from "antd/es/config-provider";
 
 export type DatePickerProps = PickerProps<Date>;
 

@@ -1,3 +1,4 @@
+import type AgoraRtcEngine from "agora-electron-sdk";
 import { autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { RTCShareScreen, ScreenInfo, ShareSymbol } from "../../api-middleware/share-screen";
 import { ListenerOtherUserShareScreen } from "./listener-other-user-share-screen";
@@ -22,7 +23,7 @@ export class ShareScreenStore {
             listenerOtherUserShareScreen: observable.ref,
         });
 
-        const roomClient = window.rtcEngine;
+        const roomClient = window.rtcEngine as AgoraRtcEngine;
 
         this.listenerOtherUserShareScreen = new ListenerOtherUserShareScreen(
             roomClient,

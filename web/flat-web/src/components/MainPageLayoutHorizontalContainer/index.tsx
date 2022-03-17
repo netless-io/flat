@@ -24,97 +24,98 @@ export interface MainPageLayoutHorizontalContainerProps {
     onBackPreviousPage?: () => void;
 }
 
-export const MainPageLayoutHorizontalContainer: React.FC<MainPageLayoutHorizontalContainerProps> =
-    ({ subMenu, children, activeKeys, onRouteChange, title, onBackPreviousPage }) => {
-        const { t } = useTranslation();
-        const leftMenu = [
-            {
-                key: routeConfig[RouteNameType.HomePage].path,
-                icon: (): React.ReactNode => <></>,
-                title: t("home"),
-                route: routeConfig[RouteNameType.HomePage].path,
-            },
-            {
-                key: routeConfig[RouteNameType.CloudStoragePage].path,
-                icon: (): React.ReactNode => <></>,
-                title: t("cloud-storage"),
-                route: routeConfig[RouteNameType.CloudStoragePage].path,
-            },
-        ];
+export const MainPageLayoutHorizontalContainer: React.FC<
+    MainPageLayoutHorizontalContainerProps
+> = ({ subMenu, children, activeKeys, onRouteChange, title, onBackPreviousPage }) => {
+    const { t } = useTranslation();
+    const leftMenu = [
+        {
+            key: routeConfig[RouteNameType.HomePage].path,
+            icon: (): React.ReactNode => <></>,
+            title: t("home"),
+            route: routeConfig[RouteNameType.HomePage].path,
+        },
+        {
+            key: routeConfig[RouteNameType.CloudStoragePage].path,
+            icon: (): React.ReactNode => <></>,
+            title: t("cloud-storage"),
+            route: routeConfig[RouteNameType.CloudStoragePage].path,
+        },
+    ];
 
-        const rightMenu: MainPageLayoutItem[] = [
-            {
-                key: "download",
-                icon: (): React.ReactNode => <img src={downloadSVG} />,
-                title: t("nav-download"),
-                route: FLAT_DOWNLOAD_URL,
-            },
-            {
-                key: "getGitHubCode",
-                icon: (): React.ReactNode => <img src={gitHubSVG} />,
-                title: t("nav-source-code"),
-                route: "https://github.com/netless-io/flat/",
-            },
-            {
-                key: routeConfig[RouteNameType.GeneralSettingPage].path,
-                icon: (): React.ReactNode => <img src={settingSVG} />,
-                title: t("nav-settings"),
-                route: routeConfig[RouteNameType.GeneralSettingPage].path,
-            },
-        ];
+    const rightMenu: MainPageLayoutItem[] = [
+        {
+            key: "download",
+            icon: (): React.ReactNode => <img src={downloadSVG} />,
+            title: t("nav-download"),
+            route: FLAT_DOWNLOAD_URL,
+        },
+        {
+            key: "getGitHubCode",
+            icon: (): React.ReactNode => <img src={gitHubSVG} />,
+            title: t("nav-source-code"),
+            route: "https://github.com/netless-io/flat/",
+        },
+        {
+            key: routeConfig[RouteNameType.GeneralSettingPage].path,
+            icon: (): React.ReactNode => <img src={settingSVG} />,
+            title: t("nav-settings"),
+            route: routeConfig[RouteNameType.GeneralSettingPage].path,
+        },
+    ];
 
-        const popMenu = [
-            {
-                key: "feedback",
-                icon: (): React.ReactNode => <img src={feedbackSVG} />,
-                title: t("feedback"),
-                route: "https://github.com/netless-io/flat/issues",
-            },
-            {
-                key: "logout",
-                icon: (): React.ReactNode => <img src={logoutSVG} />,
-                title: <span className="logout-title">{t("logout")}</span>,
-                route: routeConfig[RouteNameType.LoginPage].path,
-            },
-        ];
+    const popMenu = [
+        {
+            key: "feedback",
+            icon: (): React.ReactNode => <img src={feedbackSVG} />,
+            title: t("feedback"),
+            route: "https://github.com/netless-io/flat/issues",
+        },
+        {
+            key: "logout",
+            icon: (): React.ReactNode => <img src={logoutSVG} />,
+            title: <span className="logout-title">{t("logout")}</span>,
+            route: routeConfig[RouteNameType.LoginPage].path,
+        },
+    ];
 
-        const location = useLocation();
+    const location = useLocation();
 
-        activeKeys ??= [location.pathname];
+    activeKeys ??= [location.pathname];
 
-        const history = useHistory();
+    const history = useHistory();
 
-        const globalStore = useContext(GlobalStoreContext);
+    const globalStore = useContext(GlobalStoreContext);
 
-        const onMenuItemClick = (mainPageLayoutItem: MainPageLayoutItem): void => {
-            if (mainPageLayoutItem.key === "logout") {
-                globalStore.logout();
-            }
+    const onMenuItemClick = (mainPageLayoutItem: MainPageLayoutItem): void => {
+        if (mainPageLayoutItem.key === "logout") {
+            globalStore.logout();
+        }
 
-            if (mainPageLayoutItem.route.startsWith("/")) {
-                onRouteChange
-                    ? onRouteChange(mainPageLayoutItem)
-                    : history.push(mainPageLayoutItem.route);
-            } else {
-                void window.open(mainPageLayoutItem.route);
-            }
-        };
-
-        return (
-            <MainPageLayoutHorizontal
-                activeKeys={activeKeys}
-                avatarSrc={globalStore.userInfo?.avatar ?? ""}
-                generateAvatar={generateAvatar}
-                leftMenu={leftMenu}
-                popMenu={popMenu}
-                rightMenu={rightMenu}
-                subMenu={subMenu}
-                title={title}
-                userName={globalStore.userInfo?.name ?? ""}
-                onBackPreviousPage={onBackPreviousPage}
-                onClick={onMenuItemClick}
-            >
-                {children}
-            </MainPageLayoutHorizontal>
-        );
+        if (mainPageLayoutItem.route.startsWith("/")) {
+            onRouteChange
+                ? onRouteChange(mainPageLayoutItem)
+                : history.push(mainPageLayoutItem.route);
+        } else {
+            void window.open(mainPageLayoutItem.route);
+        }
     };
+
+    return (
+        <MainPageLayoutHorizontal
+            activeKeys={activeKeys}
+            avatarSrc={globalStore.userInfo?.avatar ?? ""}
+            generateAvatar={generateAvatar}
+            leftMenu={leftMenu}
+            popMenu={popMenu}
+            rightMenu={rightMenu}
+            subMenu={subMenu}
+            title={title}
+            userName={globalStore.userInfo?.name ?? ""}
+            onBackPreviousPage={onBackPreviousPage}
+            onClick={onMenuItemClick}
+        >
+            {children}
+        </MainPageLayoutHorizontal>
+    );
+};

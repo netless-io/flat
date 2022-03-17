@@ -44,7 +44,7 @@ export function useReaction<T>(
     expression: (reaction: IReactionPublic) => T,
     effect: (value: T, previousValue: T, reaction: IReactionPublic) => void,
     extraDeps: DependencyList = [],
-    opts?: IReactionOptions,
+    opts?: IReactionOptions<{ result: T; deps: DependencyList }, false>,
 ): void {
     // always keeps the latest callback
     // so that no stale values

@@ -65,7 +65,7 @@ export function useSafePromise(): <T, E = unknown>(
         });
     }
 
-    return useCallback(safePromise, []);
+    return useCallback(safePromise, [isUnMountRef]);
 }
 
 export function useAPI<P, R>(
