@@ -1,17 +1,11 @@
 import "./style.less";
-import cameraSVG from "./icons/camera.svg";
-import cameraDisabledSVG from "./icons/camera-disabled.svg";
-import microphoneSVG from "./icons/microphone.svg";
-import microphoneDisabledSVG from "./icons/microphone-disabled.svg";
-import videoExpandSVG from "./icons/video-expand.svg";
-import placeholderSVG from "./icons/placeholder.svg";
 
-import React, { useState } from "react";
-import { observer } from "mobx-react-lite";
-import classNames from "classnames";
-import { useTranslation } from "react-i18next";
+import React from "react";
+import classnames from "classnames";
+import { IconMic } from "./IconMic";
+import { SVGCamera, SVGCameraMute, SVGMicrophoneMute } from "../../FlatIcons";
 
-export interface AvatarUser {
+export interface VideoAvatarUser {
     name: string;
     userUUID: string;
     camera: boolean;
@@ -19,141 +13,94 @@ export interface AvatarUser {
     avatar: string;
 }
 
-export interface VideoAvatarProps
-    extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+export interface VideoAvatarProps {
+    small?: boolean;
+    /** Avatar user UUID */
+    avatarUser: VideoAvatarUser;
     /** Is current user room creator */
     isCreator: boolean;
-    /** Current user uuid */
+    /** Current user UUID */
     userUUID: string;
-    /** Avatar user uuid */
-    avatarUser?: AvatarUser | null;
-    /** For placeholder */
-    isAvatarUserCreator?: boolean;
     updateDeviceState(id: string, camera: boolean, mic: boolean): void;
-    /** Mini avatar */
-    mini?: boolean;
-    /** When the expand button of mini avatar is clicked */
-    onExpand?: () => void;
-    /** function to generate placeholder avatar */
-    generateAvatar: (uid: string) => string;
+    getVolumeLevel?: () => number;
 }
 
-export const VideoAvatar = observer<VideoAvatarProps>(function VideoAvatar({
+export const VideoAvatar: React.FC<VideoAvatarProps> = ({
+    small,
+    avatarUser,
     isCreator,
     userUUID,
-    avatarUser,
-    isAvatarUserCreator,
-    children: canvas,
     updateDeviceState,
-    mini,
-    onExpand,
-    className,
-    generateAvatar,
-    ...restProps
-}) {
-    const { t } = useTranslation();
-    const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
-
-    if (!avatarUser) {
-        return (
-            <div
-                {...restProps}
-                className={classNames(className, "video-avatar-wrap", "video-avatar-placeholder", {
-                    "is-mini": mini,
-                })}
-            >
-                <img className="video-avatar-placeholder-img" src={placeholderSVG} />
-                <span className="video-avatar-placeholder-content">
-                    {t(`${isAvatarUserCreator ? "teacher" : "student"}-left-temporarily`)}
-                </span>
-            </div>
-        );
-    }
-
-    const avatar = isAvatarLoadFailed ? generateAvatar(avatarUser.userUUID) : avatarUser.avatar;
-
+    getVolumeLevel,
+    children,
+}) => {
     const isCameraCtrlDisable =
         avatarUser.userUUID !== userUUID && (!isCreator || !avatarUser.camera);
 
     const isMicCtrlDisable = avatarUser.userUUID !== userUUID && (!isCreator || !avatarUser.mic);
 
     return (
-        <div
-            {...restProps}
-            className={classNames(className, "video-avatar-wrap", { "is-mini": mini })}
-        >
-            {canvas}
-            {!avatarUser.camera && (
-                <div className="video-avatar-background">
+        <div className={classnames("video-avatar", { "is-small": small })}>
+            <div className="video-avatar-video">{children}</div>
+            {(!children || !avatarUser.camera) && (
+                <div className="video-avatar-image-container">
                     <div
-                        className="video-avatar-background-blur"
-                        style={{
-                            backgroundImage: `url(${avatar})`,
-                        }}
+                        className="video-avatar-image-blur-bg"
+                        style={{ backgroundImage: `url(${avatarUser.avatar})` }}
                     />
                     <img
-                        alt="no camera"
-                        className="video-avatar-background-avatar"
-                        src={avatar}
-                        onError={() => setAvatarLoadFailed(true)}
+                        alt={avatarUser.name}
+                        className="video-avatar-image"
+                        draggable={false}
+                        src={avatarUser.avatar}
                     />
                 </div>
             )}
-            <div
-                className={classNames("video-avatar-ctrl-layer", {
-                    "with-video": avatarUser.camera,
-                })}
-            >
-                {mini ? (
-                    <button className="video-avatar-expand" onClick={onExpand}>
-                        <img alt="expand" src={videoExpandSVG} />
+            <div className="video-avatar-bottom">
+                <h1 className="video-avatar-user-name" title={avatarUser.name}>
+                    {avatarUser.name}
+                </h1>
+                <div className="video-avatar-media-ctrl">
+                    <button
+                        className={classnames("video-avatar-media-ctrl-btn", {
+                            "is-muted": !avatarUser.camera,
+                        })}
+                        disabled={isCameraCtrlDisable}
+                        onClick={() => {
+                            if (isCreator || userUUID === avatarUser.userUUID) {
+                                updateDeviceState(
+                                    avatarUser.userUUID,
+                                    !avatarUser.camera,
+                                    avatarUser.mic,
+                                );
+                            }
+                        }}
+                    >
+                        {avatarUser.camera ? <SVGCamera /> : <SVGCameraMute />}
                     </button>
-                ) : (
-                    <div className="video-avatar-ctrl-content">
-                        <h1 className="video-avatar-user-name">{avatarUser.name}</h1>
-                        <div className="video-avatar-ctrl-btns">
-                            <button
-                                disabled={isCameraCtrlDisable}
-                                onClick={() => {
-                                    if (isCreator || userUUID === avatarUser.userUUID) {
-                                        updateDeviceState(
-                                            avatarUser.userUUID,
-                                            !avatarUser.camera,
-                                            avatarUser.mic,
-                                        );
-                                    }
-                                }}
-                            >
-                                <img
-                                    alt="camera"
-                                    height="22"
-                                    src={avatarUser.camera ? cameraSVG : cameraDisabledSVG}
-                                    width="22"
-                                />
-                            </button>
-                            <button
-                                disabled={isMicCtrlDisable}
-                                onClick={() => {
-                                    if (isCreator || userUUID === avatarUser.userUUID) {
-                                        updateDeviceState(
-                                            avatarUser.userUUID,
-                                            avatarUser.camera,
-                                            !avatarUser.mic,
-                                        );
-                                    }
-                                }}
-                            >
-                                <img
-                                    alt="microphone"
-                                    height="22"
-                                    src={avatarUser.mic ? microphoneSVG : microphoneDisabledSVG}
-                                    width="22"
-                                />
-                            </button>
-                        </div>
-                    </div>
-                )}
+                    <button
+                        className={classnames("video-avatar-media-ctrl-btn", {
+                            "is-muted": !avatarUser.mic,
+                        })}
+                        disabled={isMicCtrlDisable}
+                        onClick={() => {
+                            if (isCreator || userUUID === avatarUser.userUUID) {
+                                updateDeviceState(
+                                    avatarUser.userUUID,
+                                    avatarUser.camera,
+                                    !avatarUser.mic,
+                                );
+                            }
+                        }}
+                    >
+                        {avatarUser.mic ? (
+                            <IconMic getVolumeLevel={getVolumeLevel} />
+                        ) : (
+                            <SVGMicrophoneMute />
+                        )}
+                    </button>
+                </div>
             </div>
         </div>
     );
-});
+};

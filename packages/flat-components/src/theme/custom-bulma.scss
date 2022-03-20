@@ -12,3 +12,13 @@
 @import "~bulma/sass/components/modal.sass";
 @import "~bulma/sass/components/panel.sass";
 @import "~bulma/sass/helpers/_all.sass";
+
+.box .title {
+    color: var(--text-strong);
+}
+
+.flat-color-scheme-dark {
+    .box {
+        background-color: var(--grey-10);
+    }
+}

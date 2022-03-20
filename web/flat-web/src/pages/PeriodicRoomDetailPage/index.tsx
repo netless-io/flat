@@ -12,12 +12,11 @@ import { globalStore } from "../../stores/GlobalStore";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { cancelPeriodicRoom, cancelPeriodicSubRoom } from "../../api-middleware/flatServer";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
-
-/**
- * TODO: we forget set i18n in current file!!!
- */
+import { useTranslation } from "react-i18next";
 
 export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPage() {
+    const { t } = useTranslation();
+
     const params = useParams<RouteParams<RouteNameType.PeriodicRoomDetailPage>>();
     const roomStore = useContext(RoomStoreContext);
     const [cancelRoomUUIDList, setCancelRoomUUIDList] = useState<string[]>([]);
@@ -68,7 +67,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
         return <LoadingPage timeMS={3 * 1000} />;
     }
 
-    const { ownerUUID, ownerUserName } = periodicInfo.periodic;
+    const { ownerUUID, ownerName } = periodicInfo.periodic;
 
     const isCreator = globalStore.userUUID === ownerUUID;
 
@@ -85,7 +84,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
                     return room && !nextList.includes(room.roomUUID);
                 });
 
-                void message.success("已取消该房间");
+                void message.success(t("the-room-has-been-cancelled"));
 
                 if (nextRooms.length === 0) {
                     pushHistory(RouteNameType.HomePage);
@@ -109,7 +108,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
         }
 
         pushHistory(RouteNameType.HomePage);
-        await message.success("已取消该房间");
+        await message.success(t("the-room-has-been-cancelled"));
     }
 
     function jumpToRoomDetailPage(roomUUID: string, periodicUUID: string): void {
@@ -136,21 +135,19 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
 
     return (
         <div className="periodic-room-detail-page-container">
-            <div className="periodic-room-detail-page-panel-container">
-                <PeriodicRoomPanel
-                    inviteBaseUrl={FLAT_WEB_BASE_URL}
-                    isCreator={isCreator}
-                    jumpToModifyOrdinaryRoomPage={jumpToModifyOrdinaryRoomPage}
-                    jumpToModifyPeriodicRoomPage={jumpToModifyPeriodicRoomPage}
-                    jumpToRoomDetailPage={jumpToRoomDetailPage}
-                    periodicInfo={periodicInfo.periodic}
-                    rooms={rooms}
-                    userName={ownerUserName}
-                    onCancelPeriodicRoom={onCancelPeriodicRoom}
-                    onCancelSubPeriodicRoom={onCancelSubPeriodicRoom}
-                    onCopyInvitation={text => navigator.clipboard.writeText(text)}
-                />
-            </div>
+            <PeriodicRoomPanel
+                inviteBaseUrl={FLAT_WEB_BASE_URL}
+                isCreator={isCreator}
+                jumpToModifyOrdinaryRoomPage={jumpToModifyOrdinaryRoomPage}
+                jumpToModifyPeriodicRoomPage={jumpToModifyPeriodicRoomPage}
+                jumpToRoomDetailPage={jumpToRoomDetailPage}
+                periodicInfo={periodicInfo.periodic}
+                rooms={rooms}
+                userName={ownerName}
+                onCancelPeriodicRoom={onCancelPeriodicRoom}
+                onCancelSubPeriodicRoom={onCancelSubPeriodicRoom}
+                onCopyInvitation={text => navigator.clipboard.writeText(text)}
+            />
         </div>
     );
 });

@@ -19,10 +19,29 @@
     }
 }
 
+.general-setting-appearance-picker-container {
+    > span {
+        display: block;
+        padding-top: 8px;
+        padding-bottom: 3px;
+    }
+}
+
 .general-setting-device-test-box {
     padding-top: 12px;
 }
 
 .general-setting-checkbox-title {
     padding-bottom: 3px;
+}
+
+.flat-color-scheme-dark {
+    .general-setting-container {
+        color: var(--text-stronger);
+    }
+
+    .radio-item-inner,
+    .checkbox-item-inner {
+        color: var(--text);
+    }
 }

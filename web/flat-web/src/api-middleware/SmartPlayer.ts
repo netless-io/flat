@@ -52,6 +52,7 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
     public whiteboardPlayer: Player | undefined;
     public combinePlayer: CombinePlayer | undefined;
     public whiteWebSdk: WhiteWebSdk | undefined;
+    public windowManagerPromise: Promise<WindowManager> | undefined;
 
     public get isPlaying(): boolean {
         return this._isPlaying;
@@ -89,7 +90,6 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
         this._isPlaying = false;
         this._isReady = false;
         this._isEnded = false;
-        this.destroy();
 
         const plugins = createPlugins({ [VideoJsPluginId]: videoJsPlugin() });
         const videoJsPluginContext: Partial<VideoJsPluginContext> = { verbose: true };
@@ -180,7 +180,7 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
             },
         });
 
-        void WindowManager.mount({
+        this.windowManagerPromise = WindowManager.mount({
             room: player as any,
             container: whiteboardEl,
             cursor: true,
@@ -290,6 +290,9 @@ export class SmartPlayer extends EventEmitter<SmartPlayerEventType> {
     }
 
     public destroy(): void {
+        void this.windowManagerPromise?.then(manager => {
+            manager.destroy();
+        });
         this.whiteWebSdk = undefined;
         if (this._isPlaying) {
             this.whiteboardPlayer?.stop();

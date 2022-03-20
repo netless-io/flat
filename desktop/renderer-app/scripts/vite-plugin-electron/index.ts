@@ -44,7 +44,7 @@ export function electron(): VitePlugin[] {
 
             // require all project import `nodeModule`
             const nodeModule = require(moduleName);
-            const exportKeys = Object.keys(nodeModule);
+            const exportKeys = Object.keys(nodeModule as {});
             const requireTpl = `const __nodeModule = require("${moduleName}");`;
             const declaresTpl = exportKeys
                 .map(key => `const ${key} = __nodeModule.${key};`)

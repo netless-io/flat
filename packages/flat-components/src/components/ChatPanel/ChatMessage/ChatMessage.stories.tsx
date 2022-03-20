@@ -18,7 +18,10 @@ export const Overview: Story<ChatMessageProps> = args => <ChatMessage {...args} 
 const userUUID = faker.datatype.uuid();
 Overview.args = {
     userUUID,
-    messageUser: { name: faker.name.lastName() },
+    messageUser: {
+        name: faker.name.lastName(),
+        avatar: "http://placekitten.com/64/64",
+    },
     message: {
         timestamp: +faker.date.past(),
         type: ChatMsgType.ChannelMessage,

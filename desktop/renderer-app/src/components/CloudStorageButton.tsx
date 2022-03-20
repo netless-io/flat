@@ -5,10 +5,9 @@ import { Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { SVGCloudOutlined, TopBarRightBtn } from "flat-components";
 import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
-import { TopBarRightBtn } from "flat-components";
 import { ClassRoomStore } from "../stores/class-room-store";
-import cloudStorageSVG from "../assets/image/cloud-storage.svg";
 
 interface CloudStorageButtonProps {
     classroom: ClassRoomStore;
@@ -28,7 +27,7 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
     return (
         <>
             <TopBarRightBtn
-                icon={<img src={cloudStorageSVG} />}
+                icon={<SVGCloudOutlined />}
                 title={t("cloud-storage")}
                 onClick={showModal}
             />

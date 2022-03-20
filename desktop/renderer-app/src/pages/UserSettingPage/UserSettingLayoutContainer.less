@@ -1,6 +1,17 @@
+@import "flat-components/theme/fancy-scrollbar.less";
+
 .user-setting-layout-container {
+    .fancy-scrollbar-mixin();
     height: 100%;
     padding: 24px;
+    border-radius: 6px;
     background-color: #fff;
-    border-radius: 8px 8px 0px 0px;
+    box-shadow: 0px 1px 1px rgb(0 0 0 / 15%);
+}
+
+.flat-color-scheme-dark {
+    .user-setting-layout-container {
+        background-color: var(--grey-10);
+        box-shadow: 0px 1px 1px rgb(15 18 25 / 15%);
+    }
 }

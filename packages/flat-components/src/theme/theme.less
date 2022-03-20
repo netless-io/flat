@@ -39,27 +39,11 @@
     --link-focus: var(--blue-5);
     --link-visited: var(--blue-3);
 
-    --font-family: "PingFang SC", "Source Han Sans SC", "Microsoft YaHei", "Helvetica Neue",
+    --font-family: "Avenir", "PingFang SC", "Source Han Sans SC", "Microsoft YaHei", "Helvetica Neue",
         "Noto Sans CJK SC", "WenQuanYi Micro Hei", sans-serif;
 
     font-family: var(--font-family);
     color: var(--text);
-
-    a {
-        color: var(--link);
-        &:visited {
-            color: var(--link-visited);
-        }
-        &:focus {
-            color: var(--link-focus);
-        }
-        &:hover {
-            color: var(--link-hover);
-        }
-        &:active {
-            color: var(--link-active);
-        }
-    }
 }
 
 .flat-color-scheme-dark .flat-theme-root,
@@ -94,4 +78,15 @@
     --text-stronger: var(--grey-0);
     --text-weak: var(--grey-7);
     --text-weaker: var(--grey-8);
+}
+
+.flat-theme-root {
+    background-color: var(--grey-0);
+}
+
+.flat-color-scheme-dark {
+    & .flat-theme-root,
+    &.flat-theme-root {
+        background-color: var(--grey-12);
+    }
 }

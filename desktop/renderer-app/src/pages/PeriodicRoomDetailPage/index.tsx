@@ -45,7 +45,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
         return <LoadingPage timeMS={3 * 1000} />;
     }
 
-    const { title, ownerUUID, ownerUserName } = periodicInfo.periodic;
+    const { title, ownerUUID, ownerName } = periodicInfo.periodic;
 
     const isCreator = globalStore.userUUID === ownerUUID;
 
@@ -141,7 +141,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
                         onBackPreviousPage={backPreviousPage}
                     />
                 </div>
-                <div className="periodic-room-detail-page-panel-container fancy-scrollbar">
+                <div className="periodic-room-detail-page-panel-container">
                     <PeriodicRoomPanel
                         inviteBaseUrl={FLAT_WEB_BASE_URL}
                         isCreator={isCreator}
@@ -150,7 +150,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
                         jumpToRoomDetailPage={jumpToRoomDetailPage}
                         periodicInfo={periodicInfo.periodic}
                         rooms={rooms}
-                        userName={ownerUserName}
+                        userName={ownerName}
                         onCancelPeriodicRoom={onCancelPeriodicRoom}
                         onCancelSubPeriodicRoom={onCancelSubPeriodicRoom}
                         onCopyInvitation={text => clipboard.writeText(text)}

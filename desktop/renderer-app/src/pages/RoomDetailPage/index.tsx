@@ -100,58 +100,52 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
                     periodicUUID: roomInfo.periodicUUID,
                 });
             }
-            if (roomInfo.periodicUUID) {
-                pushHistory(RouteNameType.ModifyPeriodicRoomPage, {
-                    periodicUUID: roomInfo.periodicUUID,
-                });
-            }
         }
     }
 
     return (
         <MainPageLayoutContainer>
-            <div className="room-detail-page-header-container">
-                <MainPageHeader
-                    title={
-                        <>
-                            <h1 className="room-detail-page-header-title">{roomInfo.title}</h1>
-                            {periodicUUID && (
-                                <>
-                                    <span className="room-detail-page-header-sign">
-                                        {t("periodic")}
-                                    </span>
-                                    {roomInfo.roomStatus !== RoomStatus.Stopped && (
-                                        <div
-                                            className="room-detail-page-header-right"
-                                            onClick={jumpToPeriodicRoomDetailPage}
-                                        >
-                                            {t("view-all-rooms-in-periodic-rooms", {
-                                                count: roomInfo.count,
-                                            })}
-                                        </div>
-                                    )}
-                                </>
-                            )}
-                        </>
-                    }
-                    onBackPreviousPage={() => history.goBack()}
-                />
-            </div>
             <div className="room-detail-page-container">
-                <RoomDetailPanel
-                    inviteBaseUrl={FLAT_WEB_BASE_URL}
-                    isCreator={isCreator}
-                    isPeriodicDetailsPage={false}
-                    periodicWeeks={periodicInfo?.periodic.weeks}
-                    room={roomInfo}
-                    roomInfo={roomInfo}
-                    userName={roomInfo.ownerUserName || ""}
-                    onCancelRoom={onCancelRoom}
-                    onCopyInvitation={text => clipboard.writeText(text)}
-                    onJoinRoom={joinRoom}
-                    onModifyRoom={jumpToModifyRoom}
-                    onReplayRoom={jumpToReplayPage}
-                />
+                <div className="room-detail-page-header">
+                    <MainPageHeader
+                        title={
+                            <>
+                                <h1 className="room-detail-page-header-title">{roomInfo.title}</h1>
+                                {periodicUUID && (
+                                    <>
+                                        {roomInfo.roomStatus !== RoomStatus.Stopped && (
+                                            <div
+                                                className="room-detail-page-header-right"
+                                                onClick={jumpToPeriodicRoomDetailPage}
+                                            >
+                                                {t("view-all-rooms-in-periodic-rooms", {
+                                                    count: roomInfo.count,
+                                                })}
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </>
+                        }
+                        onBackPreviousPage={() => history.goBack()}
+                    />
+                </div>
+                <div className="room-detail-page-content">
+                    <RoomDetailPanel
+                        inviteBaseUrl={FLAT_WEB_BASE_URL}
+                        isCreator={isCreator}
+                        isPeriodicDetailsPage={false}
+                        periodicWeeks={periodicInfo?.periodic.weeks}
+                        room={roomInfo}
+                        roomInfo={roomInfo}
+                        userName={roomInfo.ownerName || ""}
+                        onCancelRoom={onCancelRoom}
+                        onCopyInvitation={text => clipboard.writeText(text)}
+                        onJoinRoom={joinRoom}
+                        onModifyRoom={jumpToModifyRoom}
+                        onReplayRoom={jumpToReplayPage}
+                    />
+                </div>
             </div>
         </MainPageLayoutContainer>
     );

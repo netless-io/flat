@@ -168,7 +168,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                                         <img
                                             alt={region}
                                             src={RegionSVG[region]}
-                                            style={{ cursor: "pointer", width: 22 }}
+                                            style={{ cursor: "pointer", width: 22, marginRight: 0 }}
                                         />
                                     </Dropdown>
                                 }
@@ -310,7 +310,7 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
 
     function onSubmitForm(): void {
         if (!loading && isFormVetted) {
-            onSubmit({ ...form.getFieldsValue(true), region });
+            onSubmit({ ...(form.getFieldsValue(true) as EditRoomFormValues), region });
         }
     }
 

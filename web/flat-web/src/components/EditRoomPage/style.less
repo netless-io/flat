@@ -12,18 +12,24 @@
 .edit-room-page-header-title {
     font-size: 16px;
     font-weight: 500;
-    color: #444e60;
+    color: var(--text);
 }
 
 .edit-room-page-body {
     flex: 1;
     width: 960px;
     margin: 0 auto;
-    border-radius: 8px 8px 0px 0px;
+    border-radius: 6px;
     background-color: #fff;
 }
 
 .edit-room-page-body-content {
     width: 560px;
     margin: 0 auto;
+}
+
+.flat-color-scheme-dark {
+    .edit-room-page-body {
+        background-color: var(--grey-10);
+    }
 }

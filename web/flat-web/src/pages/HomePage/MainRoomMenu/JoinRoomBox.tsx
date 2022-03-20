@@ -1,13 +1,13 @@
-import joinSVG from "../../../assets/image/join.svg";
 import "./JoinRoomBox.less";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form } from "antd";
+import { Button, Input, Modal, Checkbox, Form, InputRef } from "antd";
 import { validate, version } from "uuid";
 import { ConfigStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { useTranslation } from "react-i18next";
+import { HomePageHeroButton } from "flat-components";
 
 interface JoinRoomFormValues {
     roomUUID: string;
@@ -31,7 +31,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
     const [isLoading, setLoading] = useState(false);
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
-    const roomTitleInputRef = useRef<Input>(null);
+    const roomTitleInputRef = useRef<InputRef>(null);
 
     useEffect(() => {
         let ticket = NaN;
@@ -57,10 +57,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
 
     return (
         <>
-            <Button onClick={handleShowModal}>
-                <img alt="join room" src={joinSVG} />
-                <span className="label">{t("home-page-hero-button-type.join")}</span>
-            </Button>
+            <HomePageHeroButton type="join" onClick={handleShowModal} />
             <Modal
                 cancelText={t("cancel")}
                 footer={[

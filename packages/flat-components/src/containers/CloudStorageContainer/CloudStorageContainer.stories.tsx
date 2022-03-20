@@ -33,6 +33,7 @@ const fakeStoreImplProps = [
     "onItemTitleClick",
     "onNewFileName",
     "addExternalFile",
+    "onDropFile",
 ] as const;
 
 type FakeStoreImplProps = typeof fakeStoreImplProps[number];
@@ -49,6 +50,7 @@ class FakeStore extends CloudStorageStore {
     public onItemTitleClick;
     public onNewFileName: FakeStoreConfig["onNewFileName"];
     public addExternalFile;
+    public onDropFile: FakeStoreConfig["onDropFile"];
 
     public pendingUploadTasks: CloudStorageStore["pendingUploadTasks"] = [];
     public uploadingUploadTasks: CloudStorageStore["uploadingUploadTasks"] = [];
@@ -141,6 +143,17 @@ class FakeStore extends CloudStorageStore {
             }
             config.onNewFileName(fileUUID, fileName);
         };
+        this.onDropFile = files => {
+            for (const file of files) {
+                this.files.push({
+                    fileUUID: faker.datatype.uuid(),
+                    fileName: file.name,
+                    fileSize: file.size,
+                    convert: "idle",
+                    createAt: faker.date.past(),
+                });
+            }
+        };
 
         makeObservable(
             this,
@@ -168,7 +181,7 @@ function fakeStoreArgTypes(): ArgTypes {
 export const Overview: Story<FakeStoreConfig> = config => {
     const [store] = useState(() => new FakeStore(config));
     return (
-        <div className="ba br3 b--light-gray" style={{ height: 600, maxHeight: "80vh" }}>
+        <div className="ba br3 b--gray overflow-hidden" style={{ height: 600, maxHeight: "80vh" }}>
             <CloudStorageContainer store={store} />
         </div>
     );
@@ -182,7 +195,7 @@ export const CompactMode: Story<FakeStoreConfig> = config => {
         return store;
     });
     return (
-        <div className="ba br3 b--light-gray" style={{ height: "400px" }}>
+        <div className="ba br3 b--gray overflow-hidden" style={{ height: "400px" }}>
             <CloudStorageContainer store={store} />
         </div>
     );

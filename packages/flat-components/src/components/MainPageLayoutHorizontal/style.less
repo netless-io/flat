@@ -1,22 +1,25 @@
 .main-horizontal-layout-container {
     height: 100vh;
-}
-
-.main-horizontal-layout-content-background {
-    height: calc(100vh - 50px);
-    padding-top: 16px;
-    background-color: #f3f6f9;
+    display: flex;
+    flex-direction: column;
 }
 
 .main-horizontal-layout-content-container {
+    flex: 1;
     display: flex;
     width: 960px;
-    height: 100%;
     margin: 0 auto;
-    border-radius: 8px 8px 0px 0px;
+    padding: 16px 0;
+    border-radius: 6px;
+    background-color: var(--grey-0);
 }
 
 .main-horizontal-layout-content {
     flex: 1;
-    height: 100%;
+}
+
+.flat-color-scheme-dark {
+    .main-horizontal-layout-content-container {
+        background-color: var(--grey-12);
+    }
 }

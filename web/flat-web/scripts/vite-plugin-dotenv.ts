@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import dotenvReal from "dotenv";
-import dotenvExpand from "dotenv-expand";
+import { expand } from "dotenv-expand";
 import type { Plugin } from "vite";
 
 // based on https://github.com/IndexXuan/vite-plugin-env-compatible
@@ -14,7 +14,7 @@ export function dotenv(envDir: string): Plugin {
 
             if (envConfigContent) {
                 const parsed = dotenvReal.parse(envConfigContent);
-                dotenvExpand({ parsed });
+                expand({ parsed });
                 const env = { ...parsed };
                 const define: Record<string, string | {}> = {};
 

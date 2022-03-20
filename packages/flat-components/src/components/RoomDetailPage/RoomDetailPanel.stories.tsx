@@ -19,6 +19,7 @@ const roomInfo: RoomInfo = {
     roomStatus: RoomStatus.Idle,
     beginTime: 1619771930756,
     endTime: 1619775530756,
+    count: 7,
 };
 
 export const Overview: Story<RoomDetailPanelProps> = args => (
@@ -36,4 +37,5 @@ Overview.args = {
     periodicWeeks: [Week.Friday, Week.Sunday, Week.Wednesday],
     isCreator: true,
     isPeriodicDetailsPage: false,
+    showRoomCountVisible: true,
 };

@@ -14,6 +14,14 @@
         justify-content: center;
     }
 
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: var(--primary);
+    }
+
+    .ant-tabs-top > .ant-tabs-nav::before {
+        border-bottom-color: var(--grey-1);
+    }
+
     .ant-tabs-nav {
         margin-bottom: 0 !important;
     }
@@ -23,7 +31,33 @@
         height: 100%;
     }
 
+    .ant-tabs-nav-operations {
+        position: absolute !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
     .ReactVirtualized__List {
         outline: none;
+    }
+}
+
+.flat-color-scheme-dark {
+    .chat-panel {
+        .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+            color: var(--grey-0);
+        }
+        .ant-tabs-ink-bar {
+            background: var(--grey-0);
+        }
+        .ant-tabs-top > .ant-tabs-nav::before {
+            border-bottom-color: var(--grey-8);
+        }
+        .ant-tabs-tab:hover {
+            color: var(--grey-4);
+        }
+        .ant-tabs-tab-btn:focus {
+            color: var(--grey-0);
+        }
     }
 }

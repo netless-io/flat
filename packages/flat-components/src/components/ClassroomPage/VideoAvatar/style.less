@@ -1,86 +1,71 @@
-.video-avatar-wrap {
-    overflow: hidden;
-    position: relative;
-    width: 288px;
-    height: 216px;
-    background: #000;
-
-    &.is-mini {
-        width: 96px;
-        height: 72px;
-
-        .video-avatar-background-avatar {
-            width: 22px;
-            height: 22px;
-        }
-    }
-
-    &:hover {
-        .video-avatar-ctrl-layer {
-            opacity: 1 !important;
-        }
-    }
-}
-
-.video-avatar-background {
-    position: absolute;
-    top: 0;
-    left: 0;
+.video-avatar {
     width: 100%;
     height: 100%;
-    background: #000;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        transition: opacity 0.4s;
+    }
+
+    &:hover::after {
+        opacity: 1;
+    }
 }
 
-.video-avatar-background-blur {
+.video-avatar-video {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.video-avatar-image-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #1a1e21;
+}
+
+.video-avatar-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.video-avatar-image-blur-bg {
     width: 100%;
     height: 100%;
     background-color: #1a1e21;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    filter: blur(16px) brightness(0.4);
+    filter: blur(16px) brightness(.4);
 }
 
-.video-avatar-background-avatar {
+.video-avatar-bottom {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 1px solid white;
-}
-
-.video-avatar-ctrl-layer {
-    position: absolute;
-    z-index: 20;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 1;
-    transition: opacity 0.4s;
+    z-index: 10;
+    left: 8px;
+    right: 4px;
+    bottom: 4px;
     display: flex;
     align-items: flex-end;
-    flex-wrap: nowrap;
-
-    &.with-video {
-        opacity: 0;
-        background: rgba(0, 0, 0, 0.4);
-    }
-}
-
-.video-avatar-ctrl-content {
-    width: 100%;
-    display: flex;
-    padding: 0 4px 4px 8px;
-
-    &:hover {
-        & > .video-avatar-user-name {
-            opacity: 1;
-        }
-    }
 }
 
 .video-avatar-user-name {
@@ -92,71 +77,51 @@
     padding: 0;
     font-size: 14px;
     font-weight: normal;
+    line-height: 1;
     color: #fff;
-    opacity: 0.64;
-    transition: opacity 0.2s;
     user-select: none;
 }
 
-.video-avatar-ctrl-btns {
-    flex-shrink: 0;
+.video-avatar-media-ctrl {
     margin-left: auto;
     display: flex;
-
-    & > button {
-        margin: 0 0 0 4px;
-        padding: 0;
-        border: none;
-        outline: none;
-        background: transparent;
-        cursor: pointer;
-        opacity: 0.64;
-        transition: opacity 0.2s;
-
-        &:hover {
-            opacity: 1;
-        }
-
-        &:disabled {
-            cursor: no-drop;
-        }
-    }
 }
 
-.video-avatar-expand {
-    position: absolute;
-    top: 4px;
-    right: 4px;
+.video-avatar-media-ctrl-btn {
+    display: inline-flex;
+    overflow: hidden;
+    width: 24px;
+    height: 24px;
+    margin: 0 0 0 8px;
     padding: 0;
     border: none;
     outline: none;
-    background: transparent;
+    border-radius: 50%;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
     cursor: pointer;
 
-    & > img {
-        width: 22px;
-        height: 22px;
+    &.is-muted {
+        color: rgba(255, 255, 255, 0.35);
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+
+    &.is-muted:disabled {
+        color: var(--danger);
     }
 }
 
-.video-avatar-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    background: #f3f6f9;
-    user-select: none;
-}
+.video-avatar.is-small {
+    .video-avatar-image {
+        width: 48px;
+        height: 48px;
+        top: 40%;
+    }
 
-.video-avatar-placeholder-img {
-    width: 100%;
-}
-
-.video-avatar-placeholder-content {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    padding: 0 16px;
-    color: #bcbfc2;
+    .video-avatar-user-name {
+        font-size: 12px;
+    }
 }

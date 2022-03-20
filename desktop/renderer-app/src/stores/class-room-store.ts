@@ -36,7 +36,8 @@ import { WhiteboardStore } from "./whiteboard-store";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { ShareScreenStore } from "./share-screen-store";
-import { i18n } from "i18next";
+import i18next, { i18n } from "i18next";
+import { message } from "antd";
 
 export type { User } from "./user-store";
 
@@ -183,6 +184,15 @@ export class ClassRoomStore {
             },
             {
                 fireImmediately: true,
+            },
+        );
+
+        reaction(
+            () => this.isRecording,
+            (isRecording: boolean) => {
+                if (isRecording) {
+                    void message.success(i18next.t("start-recording"));
+                }
             },
         );
 
@@ -596,9 +606,9 @@ export class ClassRoomStore {
 
         promises.push(this.shareScreenStore.destroy());
 
-        this.leaveRTC();
+        promises.push(this.whiteboardStore.destroy());
 
-        this.whiteboardStore.destroy();
+        this.leaveRTC();
 
         this.offRTCEvents();
         this.rtc.destroy();
@@ -626,6 +636,12 @@ export class ClassRoomStore {
                 case RoomStatus.Started: {
                     this.updateRoomStatusLoading(RoomStatusLoadingType.Starting);
                     await startClass(this.roomUUID);
+                    await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
+                    const roomUUID = this.roomUUID;
+                    const periodicUUID = globalStore.periodicUUID;
+                    if (periodicUUID) {
+                        await roomStore.syncPeriodicSubRoomInfo({ periodicUUID, roomUUID });
+                    }
                     if (this.isCreator && this._userDeviceStatePrePause) {
                         const user = this.users.currentUser;
                         if (user) {

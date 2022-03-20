@@ -1,0 +1,131 @@
+.room-list-item {
+    position: relative;
+    border: 1px solid var(--grey-1);
+    border-radius: 8px;
+    margin-bottom: 12px;
+
+    &.pointer {
+        cursor: pointer;
+    }
+
+    &:hover {
+        .room-list-item-content {
+            background-color: var(--blue-0)
+        }
+    }
+}
+
+.room-list-item-content {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: transparent;
+    transition: background-color 0.4s;
+}
+
+.room-list-item-left {
+    padding: 8px 4px;
+}
+
+.room-list-item-owner-avatar {
+    overflow: hidden;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+
+    > img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.room-list-item-middle {
+    flex: 1;
+    padding: 4px 8px;
+}
+
+.room-list-item-title {
+    display: inline;
+    margin: 0 8px 4px 0;
+    font-size: 16px;
+    font-weight: 600;
+    word-break: break-all;
+    color: var(--text-stronger);
+
+    @media screen and (max-width: 660px) {
+        font-size: 14px;
+    }
+}
+
+.room-list-item-info {
+    & > * {
+        margin-right: 8px;
+    }
+}
+
+.room-list-item-time-date {
+    margin-bottom: 4px;
+    white-space: wrap;
+    word-break: break-all;
+
+    > * {
+        white-space: nowrap;
+        word-break: keep-all;
+    }
+}
+
+.room-list-item-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.room-list-item-more {
+    margin: 0;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+}
+
+.room-list-item-sub-menu {
+    .ant-dropdown-menu {
+        border-radius: 8px;
+    }
+}
+
+.room-list-item-time,
+.room-list-item-date {
+    margin-right: 0.5em;
+}
+
+.room-list-item-primary-action {
+    padding: 4px 16px 2px;
+    margin: 4px;
+}
+
+.room-list-item-status-success {
+    color: var(--success);
+}
+
+.room-list-item-status-warning {
+    color: var(--warning);
+}
+
+.flat-color-scheme-dark {
+    .room-list-item {
+        border-color: var(--grey-8);
+
+        &::before {
+            background: var(--grey-9);
+        }
+
+        &:hover {
+            .room-list-item-content {
+                background-color: var(--grey-11);
+            }
+        }
+    }
+}

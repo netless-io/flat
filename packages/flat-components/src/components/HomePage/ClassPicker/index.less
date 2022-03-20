@@ -37,19 +37,19 @@
 .class-picker-item-title {
     margin-top: 12px;
     font-size: 16px;
-    color: #444e60;
+    color: var(--text-strong);
 }
 
 .class-large-picker-item-title {
     font-size: 14px;
     text-align: left;
-    color: #444e60;
+    color: var(--text-strong);
 }
 
 .class-picker-item-content {
     width: 100%;
     margin-top: 2px;
-    color: #7a7b7c;
+    color: var(--text);
 }
 
 .class-large-picker-item-content {
@@ -57,7 +57,7 @@
     font-size: 12px;
     word-break: break-all;
     text-align: left;
-    color: #7a7b7c;
+    color: var(--text);
 }
 
 .class-picker-container {
@@ -116,7 +116,7 @@
         flex-direction: row-reverse;
         align-items: flex-end;
         margin-right: 0;
-        border-radius: 4px;
+        border-radius: 6px;
         padding: 12px;
 
         > .ant-radio {
@@ -141,7 +141,7 @@
             height: 100%;
             position: absolute;
             border: 1px solid #dbe1ea;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: border-color 0.4s;
         }
 
@@ -191,6 +191,24 @@
         &:active {
             &::after {
                 border: 1px solid #dbe1ea;
+            }
+        }
+    }
+}
+
+.flat-color-scheme-dark {
+    .class-picker-container {
+        > .ant-radio-wrapper {
+            &::after {
+                border: 1px solid var(--grey-8);
+            }
+
+            &.ant-radio-wrapper-checked,
+            &:hover,
+            &:active {
+                &::after {
+                    border: 2px solid var(--primary);
+                }
             }
         }
     }

@@ -1,7 +1,7 @@
 .main-page-nav-container {
     width: 72px;
     height: 100%;
-    background-color: rgb(19, 20, 21);
+    background-color: var(--blue-10);
 
     &,
     & > * {
@@ -29,5 +29,11 @@
 
     & > a {
         color: #fff;
+    }
+}
+
+.flat-color-scheme-dark {
+    .main-page-nav-container {
+        background-color: var(--grey-10);
     }
 }

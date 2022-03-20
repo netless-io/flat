@@ -10,11 +10,11 @@ const isProduction = process.env.NODE_ENV === "production";
 const isDebug = process.env.FLAT_DEBUG === "debug";
 
 const assetsPath = isProduction
-    ? path.resolve(__dirname, "..", "static", "render", "static", "assets")
+    ? path.resolve(__dirname, "..", "static")
     : path.resolve(__dirname, "..", "..", "..", "renderer-app", "src", "assets");
 
 const startURL = isProduction
-    ? `file://${path.resolve(__dirname, "..", "static", "render", "index.html")}`
+    ? `file://${path.resolve(__dirname, "..", "static", "index.html")}`
     : "http://localhost:3000";
 
 const isMac = platform() === "darwin";

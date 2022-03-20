@@ -94,7 +94,7 @@
   "today": "今天",
   "tomorrow": "明天",
   "periodic": "周期",
-  "loaded-all": "已加载全部",
+  "all-loaded": "已全部加载",
   "no-record": "暂无记录",
   "no-room": "暂无房间",
   "invite-prefix": "{{userName}} 邀请你加入 Flat 房间\n房间主题：{{title}}\n",
@@ -220,6 +220,7 @@
   "all": "全部",
   "room-list": "房间列表",
   "replay": "回放",
+  "no-replay": "无回放",
   "join": "加入",
   "the-room-has-been-cancelled": "已取消该房间",
   "the-room-has-been-removed": "已移除该房间",
@@ -235,7 +236,7 @@
   "schedule-room-default-title": "{{name}} 预定的房间",
   "delete-room-records": "删除房间记录",
   "delete-room-records-tips": "确定删除当前房间记录？",
-  "view-all-rooms-in-periodic-rooms": "查看全部 {{count}} 场房间",
+  "view-all-rooms-in-periodic-rooms": "查看全部 ({{count}}) 场房间",
   "repeat-frequency": "每{{week}}",
   "schedule-room-type": "房间类型：{{type}}",
   "schedule-room-detail": "结束于 {{time}} ，共 {{length}} 个房间",
@@ -248,9 +249,9 @@
   "start": "开始上课",
   "follow-your-perspective-tips": "其他用户将跟随您的视角",
   "lecture-mode": "当前为讲课模式",
-  "switch-to-interactive-mode": "切换至互动模式",
+  "switch-to-interactive-mode": "互动模式",
   "interactive-mode": "当前为互动模式",
-  "switch-to-lecture-mode": "切换至讲课模式",
+  "switch-to-lecture-mode": "讲课模式",
   "recording-completed-tips": "录制完成，可到历史记录查看",
   "general-settings": "常规设置",
   "shortcut-settings": "热键设置",
@@ -398,6 +399,12 @@
   "exit": "退出",
   "side-panel": {
     "hide": "折叠",
-    "show":  "展开"
-  }
+    "show": "展开"
+  },
+  "flat-appearance-light": "浅色",
+  "flat-appearance-dark": "深色",
+  "flat-appearance-auto": "自动",
+  "flat-appearance-setting": "外观",
+  "status": "状态",
+  "time": "时间"
 }

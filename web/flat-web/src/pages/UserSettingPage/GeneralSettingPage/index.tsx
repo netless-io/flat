@@ -1,11 +1,12 @@
 import "./index.less";
 
+import { FlatPrefersColorScheme, AppearancePicker } from "flat-components";
 import { Checkbox, Radio } from "antd";
 import React, { useContext } from "react";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { useTranslation } from "react-i18next";
 import type { CheckboxChangeEvent } from "antd/lib/checkbox";
-import { GlobalStoreContext } from "../../../components/StoreProvider";
+import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 
 enum SelectLanguage {
     Chinese,
@@ -14,6 +15,7 @@ enum SelectLanguage {
 
 export const GeneralSettingPage = (): React.ReactElement => {
     const globalStore = useContext(GlobalStoreContext);
+    const configStore = useContext(ConfigStoreContext);
 
     const { t, i18n } = useTranslation();
 
@@ -21,6 +23,11 @@ export const GeneralSettingPage = (): React.ReactElement => {
         const language: SelectLanguage = event.target.value;
         void i18n.changeLanguage(language === SelectLanguage.Chinese ? "zh-CN" : "en");
     }
+
+    const changeAppearance = (event: CheckboxChangeEvent): void => {
+        const prefersColorScheme: FlatPrefersColorScheme = event.target.value;
+        configStore.updatePrefersColorScheme(prefersColorScheme);
+    };
 
     return (
         <UserSettingLayoutContainer>
@@ -35,9 +42,20 @@ export const GeneralSettingPage = (): React.ReactElement => {
                         }
                         onChange={changeLanguage}
                     >
-                        <Radio value={SelectLanguage.Chinese}>{t("chinese")}</Radio>
-                        <Radio value={SelectLanguage.English}>English</Radio>
+                        <Radio value={SelectLanguage.Chinese}>
+                            <span className="radio-item-inner">{t("chinese")}</span>
+                        </Radio>
+                        <Radio value={SelectLanguage.English}>
+                            <span className="radio-item-inner">English</span>
+                        </Radio>
                     </Radio.Group>
+                </div>
+                <div className="general-setting-appearance-picker-container">
+                    <span>{t("flat-appearance-setting")}</span>
+                    <AppearancePicker
+                        changeAppearance={changeAppearance}
+                        defaultValue={configStore.prefersColorScheme}
+                    />
                 </div>
                 <div className="general-setting-device-test-box">
                     <div className="general-setting-checkbox-title">{t("device-test-option")}</div>
@@ -47,7 +65,7 @@ export const GeneralSettingPage = (): React.ReactElement => {
                             globalStore.toggleDeviceTest();
                         }}
                     >
-                        {t("turn-on-device-test")}
+                        <span className="checkbox-item-inner">{t("turn-on-device-test")}</span>
                     </Checkbox>
                 </div>
             </div>

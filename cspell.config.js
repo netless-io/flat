@@ -46,10 +46,13 @@ module.exports = {
         "tabpane",
         "anticon",
         "nums",
+        "Avenir",
+        "Semibold",
 
         // whiteboard
         "unban",
         "convertcdn",
+        "fastboard",
 
         // date-fns
         "Weekiii",
@@ -99,6 +102,7 @@ module.exports = {
 
         // less
         "isstring",
+        "borderless",
 
         // misc
         "npmrc",

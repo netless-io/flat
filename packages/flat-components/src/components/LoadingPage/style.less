@@ -30,13 +30,16 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    color: #7a7b7c;
-    background-color: white;
+    color: var(--text-weak);
+    background-color: #fff;
 }
 
 .loading-page-image {
-    width: 200px;
-    height: 200px;
+    width: 144px;
+    height: 96px;
+    background-image: url("./icons/loading.gif");
+    background-repeat: no-repeat;
+    background-size: auto;
 }
 
 .loading-page-return-btn {
@@ -48,5 +51,27 @@
 
     &.is-show {
         opacity: 1;
+    }
+}
+
+.flat-color-scheme-dark {
+    .loading-page-mask {
+        background-color: var(--grey-10);
+
+        &.is-transparent {
+            background-color: transparent;
+        }
+    }
+
+    .loading-page-content {
+        background-color: var(--grey-10);
+    }
+
+    .loading-page-image {
+        width: 144px;
+        height: 96px;
+        background-image: url("./icons/loading-dark.gif");
+        background-repeat: no-repeat;
+        background-size: auto;
     }
 }

@@ -91,7 +91,7 @@
   "error-page-description": "Please try again",
   "error-page-title": "Sorry, we have an unknown error",
   "error-page-return-home": "({{countdown}}) Go Back",
-  "loaded-all": "Loaded all",
+  "all-loaded": "All Loaded",
   "no-record": "No records",
   "no-room": "No rooms",
   "periodic": "Periodic",
@@ -222,6 +222,7 @@
   "delete-records": "Delete",
   "join": "Join",
   "replay": "Replay",
+  "no-replay": "No Replay",
   "room-detail": "Details",
   "the-room-has-been-cancelled": "The room has been cancelled",
   "the-room-has-been-removed": "The room has been removed",
@@ -238,7 +239,7 @@
   "repeat-frequency": "Every {{week}}",
   "schedule-room-detail": "Ends at {{time}} with {{length}} rooms",
   "schedule-room-type": "Room type: {{type}}",
-  "view-all-rooms-in-periodic-rooms": "View all {{count}} rooms",
+  "view-all-rooms-in-periodic-rooms": "View all ({{count}}) rooms",
   "ending": "Ending...",
   "follow-your-perspective-tips": "Other users will follow your perspective",
   "interactive-mode": "Currently in interactive mode",
@@ -394,10 +395,16 @@
   "stop-recording": "Stop recording",
   "recording": "Recording",
   "open-in-browser": "Open in Browser",
-  "room-started": "Started:",
+  "room-started": "Started: ",
   "exit": "Exit",
   "side-panel": {
     "hide": "Hide",
-    "show":  "Show"
-  }
+    "show": "Show"
+  },
+  "flat-appearance-light": "Light",
+  "flat-appearance-dark": "Dark",
+  "flat-appearance-auto": "Auto",
+  "flat-appearance-setting": "Appearance",
+  "status": "Status",
+  "time": "Time"
 }

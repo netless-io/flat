@@ -3,14 +3,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f3f6f9;
 }
 
 .device-test-panel-box {
     width: 776px;
     height: 473px;
     padding: 16px;
-    box-shadow: 0px 16px 32px 0px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
     background-color: #fff;
+}
+
+.flat-color-scheme-dark {
+    .device-test-panel-box {
+        box-shadow: 0px 1px 1px rgba(15, 18, 25, 0.15);
+        background-color: var(--grey-10);
+    }
 }

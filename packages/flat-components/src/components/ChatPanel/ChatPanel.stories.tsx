@@ -29,7 +29,7 @@ const makeUser = (): User => ({
 });
 const currentUser = makeUser();
 const users = (() => {
-    const users = Array(20).fill(0).map(makeUser);
+    const users = Array(3).fill(0).map(makeUser);
     users.push(currentUser);
     return chance.shuffle(users);
 })();

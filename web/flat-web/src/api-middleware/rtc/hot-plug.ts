@@ -42,7 +42,7 @@ export function removeEventListener(type: DeviceType, callback: DeviceChangedCal
 export const HotPlugMicrophone: DeviceChangedCallback = async changedDevice => {
     if (changedDevice.state === "ACTIVE") {
         console.log("[rtc] microphone new device: %s", changedDevice.device.deviceId);
-        microphoneTrack?.setDevice(changedDevice.device.deviceId);
+        await microphoneTrack?.setDevice(changedDevice.device.deviceId);
     } else if (changedDevice.device.label === microphoneTrack?.getTrackLabel()) {
         console.log("[rtc] microphone pull out");
         const [microphone] = await AgoraRTC.getMicrophones();
@@ -54,7 +54,7 @@ export const HotPlugMicrophone: DeviceChangedCallback = async changedDevice => {
 export const HotPlugCamera: DeviceChangedCallback = async changedDevice => {
     if (changedDevice.state === "ACTIVE") {
         console.log("[rtc] camera new device: %s", changedDevice.device.deviceId);
-        cameraTrack?.setDevice(changedDevice.device.deviceId);
+        await cameraTrack?.setDevice(changedDevice.device.deviceId);
     } else if (changedDevice.device.label === cameraTrack?.getTrackLabel()) {
         console.log("[rtc] camera pull out");
         const [camera] = await AgoraRTC.getMicrophones();

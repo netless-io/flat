@@ -1,7 +1,6 @@
 import "./BigClassPage.less";
 
 import { message } from "antd";
-import classNames from "classnames";
 import {
     CloudRecordBtn,
     Timer,
@@ -10,6 +9,11 @@ import {
     RoomInfo,
     TopBar,
     TopBarDivider,
+    TopBarRightBtn,
+    SVGExit,
+    SVGMenuUnfold,
+    SVGMenuFold,
+    SVGScreenSharing,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef, useState } from "react";
@@ -29,16 +33,13 @@ import {
 } from "../../components/ExitRoomConfirm";
 import InviteButton from "../../components/InviteButton";
 import { RealtimePanel } from "../../components/RealtimePanel";
-import { TopBarRightBtn } from "../../components/TopBarRightBtn";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RecordingConfig, useClassRoomStore, User } from "../../stores/class-room-store";
 import { useAutoRun, useReaction } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { runtime } from "../../utils/runtime";
-import { BigClassAvatar } from "./BigClassAvatar";
+import { RTCAvatar } from "../../components/RTCAvatar";
 import { ShareScreen } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
-import { AppStoreButton } from "../../components/AppStoreButton";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -124,7 +125,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
         // is current user speaking
         if (classRoomStore.userUUID === user.userUUID) {
-            classRoomStore.rtc.client?.setClientRole(user.isSpeak ? "host" : "audience");
+            void classRoomStore.rtc.client?.setClientRole(user.isSpeak ? "host" : "audience");
         }
     });
 
@@ -170,16 +171,16 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     }
 
     return (
-        <div className="realtime-container">
+        <div className="big-class-realtime-container">
             {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
-            <div className="realtime-box">
+            <div className="big-class-realtime-box">
                 <TopBar
                     isMac={runtime.isMac}
                     left={renderTopBarLeft()}
                     right={renderTopBarRight()}
                 />
-                <div className="realtime-content">
-                    <div className="container">
+                <div className="big-class-realtime-content">
+                    <div className="big-class-realtime-content-container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
                         <Whiteboard
                             classRoomStore={classRoomStore}
@@ -222,14 +223,10 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     function renderTopBarRight(): React.ReactNode {
         return (
             <>
-                {whiteboardStore.isWritable && <AppStoreButton addApp={whiteboardStore.addApp} />}
-
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
                     <TopBarRightBtn
                         icon={
-                            shareScreenStore.enableShareScreenStatus
-                                ? "share-screen-active"
-                                : "share-screen"
+                            <SVGScreenSharing active={shareScreenStore.enableShareScreenStatus} />
                         }
                         title={t("share-screen.self")}
                         onClick={handleShareScreen}
@@ -252,13 +249,13 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    icon="exit"
+                    icon={<SVGExit />}
                     title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    icon={isRealtimeSideOpen ? "hide-side" : "hide-side-active"}
+                    icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                     title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={handleSideOpenerSwitch}
                 />
@@ -268,10 +265,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     function renderRealtimePanel(): React.ReactNode {
         const { creator } = classRoomStore.users;
-
-        const isCreatorMini = Boolean(
-            mainSpeaker && creator && mainSpeaker.userUUID !== creator.userUUID,
-        );
 
         return (
             <RealtimePanel
@@ -284,42 +277,24 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 isShow={isRealtimeSideOpen}
                 isVideoOn={true}
                 videoSlot={
-                    <div className="whiteboard-rtc-box">
-                        <div
-                            className={classNames("whiteboard-rtc-avatar", {
-                                "is-mini": isCreatorMini,
-                            })}
-                        >
-                            <BigClassAvatar
-                                avatarUser={creator}
-                                generateAvatar={generateAvatar}
-                                isAvatarUserCreator={true}
+                    <div className="big-class-realtime-rtc-box">
+                        <RTCAvatar
+                            avatarUser={creator}
+                            isAvatarUserCreator={true}
+                            isCreator={classRoomStore.isCreator}
+                            rtcRoom={classRoomStore.rtc}
+                            updateDeviceState={classRoomStore.updateDeviceState}
+                            userUUID={classRoomStore.userUUID}
+                        />
+                        {speakingJoiner && (
+                            <RTCAvatar
+                                avatarUser={speakingJoiner}
+                                isAvatarUserCreator={false}
                                 isCreator={classRoomStore.isCreator}
-                                mini={isCreatorMini}
-                                rtc={classRoomStore.rtc}
+                                rtcRoom={classRoomStore.rtc}
                                 updateDeviceState={classRoomStore.updateDeviceState}
                                 userUUID={classRoomStore.userUUID}
-                                onExpand={onVideoAvatarExpand}
                             />
-                        </div>
-
-                        {speakingJoiner && (
-                            <div
-                                className={classNames("whiteboard-rtc-avatar", {
-                                    "is-mini": mainSpeaker !== speakingJoiner,
-                                })}
-                            >
-                                <BigClassAvatar
-                                    avatarUser={speakingJoiner}
-                                    generateAvatar={generateAvatar}
-                                    isCreator={classRoomStore.isCreator}
-                                    mini={mainSpeaker !== speakingJoiner}
-                                    rtc={classRoomStore.rtc}
-                                    updateDeviceState={classRoomStore.updateDeviceState}
-                                    userUUID={classRoomStore.userUUID}
-                                    onExpand={onVideoAvatarExpand}
-                                />
-                            </div>
                         )}
                     </div>
                 }
@@ -334,14 +309,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     function handleSideOpenerSwitch(): void {
         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
         whiteboardStore.setRightSideClose(isRealtimeSideOpen);
-    }
-
-    function onVideoAvatarExpand(): void {
-        setMainSpeaker(mainSpeaker =>
-            mainSpeaker?.userUUID === classRoomStore.users.creator?.userUUID
-                ? speakingJoiner
-                : classRoomStore.users.creator ?? void 0,
-        );
     }
 
     function updateCloudRecordLayout(): void {

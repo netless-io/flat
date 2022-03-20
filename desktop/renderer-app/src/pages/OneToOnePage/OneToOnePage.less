@@ -11,10 +11,10 @@
     display: flex;
     flex-direction: column;
     background-color: #fff;
+}
 
-    .container {
-        position: relative;
-    }
+.one-to-one-realtime-content-container {
+    position: relative;
 }
 
 .one-to-one-realtime-content {
@@ -27,4 +27,13 @@
     height: 216px;
     overflow: hidden;
     display: flex;
+}
+
+.flat-color-scheme-dark {
+    .one-to-one-realtime-container,
+    .one-to-one-realtime-box {
+        color: var(--text);
+        background-color: var(--grey-10);
+        border: 1px solid var(--grey-8);
+    }
 }

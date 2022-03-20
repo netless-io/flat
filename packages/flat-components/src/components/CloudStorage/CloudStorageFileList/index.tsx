@@ -54,14 +54,14 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
         () => [
             {
                 title: (
-                    <>
+                    <span className="cloud-storage-file-list-title-span">
                         <span className="cloud-storage-file-list-title">{t("file-name")}</span>
                         <CloudStorageFileListHeadTip
                             getPopupContainer={getPopupContainer}
                             placement="right"
                             title={t("supported-file-types")}
                         />
-                    </>
+                    </span>
                 ),
                 dataIndex: "fileName",
                 ellipsis: true,

@@ -1,4 +1,4 @@
-import refresh from "@vitejs/plugin-react-refresh";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import eslintPlugin from "vite-plugin-eslint";
 import { visualizer } from "rollup-plugin-visualizer";
@@ -19,7 +19,7 @@ import {
 
 export default defineConfig(() => {
     const plugins = [
-        refresh(),
+        react(),
         dotenv(configPath),
         electron(),
         eslintPlugin({
@@ -80,6 +80,7 @@ export default defineConfig(() => {
         },
         build: {
             sourcemap: true,
+            emptyOutDir: true,
             /**
              * Vite will generate resources in assets folder after build，
              * but index.html with './' relative path load module,
@@ -89,6 +90,12 @@ export default defineConfig(() => {
             rollupOptions: {
                 output: {
                     format: "cjs",
+                    assetFileNames: assetInfo => {
+                        if (assetInfo.name?.endsWith("mp3")) {
+                            return "[name][extname]";
+                        }
+                        return "[name]-[hash][extname]";
+                    },
                 },
                 external: [...electron.externals],
             },

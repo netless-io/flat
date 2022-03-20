@@ -1,23 +1,40 @@
+@import "flat-components/theme/fancy-scrollbar.less";
+
+.periodic-room-detail-page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    background-color: #fff;
+}
+
 .periodic-room-detail-page-header-container {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1;
-    margin: 0 24px;
-    padding: 24px 0;
-    background: #fff;
+    border-radius: 6px;
+    padding: 16px 24px;
 }
 
 .periodic-room-detail-page-header-title {
     margin: 0;
     font-size: 16px;
     font-weight: 500;
-    color: #444e60;
+    color: var(--text-strong);
     line-height: 1;
 }
 
 .periodic-room-detail-page-panel-container {
-    width: 560px;
-    margin: 0 auto;
-    margin-top: 65px;
+    .fancy-scrollbar-mixin();
+    flex: 1;
+    padding: 0 148px;
+}
+
+.flat-color-scheme-dark {
+    .periodic-room-detail-page-container {
+        box-shadow: 0px 1px 1px rgba(15, 18, 25, 0.15);
+        background-color: var(--grey-10);
+    }
+
+    .periodic-room-detail-page-header-container {
+        background-color: var(--grey-10);
+    }
 }

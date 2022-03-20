@@ -20,6 +20,9 @@ export class Rtc {
     private appID: string = AGORA.APP_ID || "";
     // User can only join one RTC channel at a time.
     private roomUUID: string | null = null;
+    private rtcUID?: number;
+
+    private volumeLevels = new Map<number, number>();
 
     public constructor() {
         if (!this.appID) {
@@ -29,6 +32,9 @@ export class Rtc {
         this.rtcEngine = window.rtcEngine;
 
         this.rtcEngine.on("tokenPrivilegeWillExpire", this.renewToken);
+        this.rtcEngine.on("groupAudioVolumeIndication", this.updateVolumeLevel);
+        this.rtcEngine.on("userOffline", this.deleteVolumeLevel);
+        this.rtcEngine.on("userMuteAudio", this.deleteVolumeLevel);
     }
 
     public async join({
@@ -78,7 +84,10 @@ export class Rtc {
             throw new Error("[RTC]: join channel failed");
         }
 
+        this.rtcEngine.enableAudioVolumeIndication(500, 3);
+
         this.roomUUID = roomUUID;
+        this.rtcUID = rtcUID;
     }
 
     public leave(): void {
@@ -91,8 +100,15 @@ export class Rtc {
 
     public destroy(): void {
         this.leave();
-        this.rtcEngine.removeAllListeners("tokenPrivilegeWillExpire");
+        this.rtcEngine.off("tokenPrivilegeWillExpire", this.renewToken);
+        this.rtcEngine.off("groupAudioVolumeIndication", this.updateVolumeLevel);
+        this.rtcEngine.off("userOffline", this.deleteVolumeLevel);
+        this.rtcEngine.off("userMuteAudio", this.deleteVolumeLevel);
         this.rtcEngine.enableVideo();
+    }
+
+    public getVolumeLevel(uid: number): number {
+        return this.volumeLevels.get(uid) || 0;
     }
 
     private renewToken = async (): Promise<void> => {
@@ -100,5 +116,19 @@ export class Rtc {
             const token = await generateRTCToken(this.roomUUID);
             this.rtcEngine.renewToken(token);
         }
+    };
+
+    private updateVolumeLevel = (speakers: Array<{ uid: number; volume: number }>): void => {
+        speakers.forEach(({ uid, volume }) => {
+            if (uid === 0 && this.rtcUID) {
+                this.volumeLevels.set(this.rtcUID, volume / 255);
+            } else {
+                this.volumeLevels.set(uid, volume / 255);
+            }
+        });
+    };
+
+    private deleteVolumeLevel = (uid: number): void => {
+        this.volumeLevels.delete(uid);
     };
 }

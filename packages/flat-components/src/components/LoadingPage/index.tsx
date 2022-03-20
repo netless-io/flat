@@ -1,5 +1,4 @@
 import "./style.less";
-import loadingGIF from "./icons/loading.gif";
 
 import React, { FC, useCallback, useEffect, useState } from "react";
 import classNames from "classnames";
@@ -53,7 +52,7 @@ export const LoadingPage: FC<LoadingPageProps> = ({
                 })}
             />
             <div className="loading-page-content">
-                <img alt="loading" className="loading-page-image" src={loadingGIF} />
+                <div className="loading-page-image" />
                 {text && <span>{text}</span>}
             </div>
             <Button

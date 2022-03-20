@@ -47,17 +47,17 @@
     width: 100%;
     height: 40px;
     line-height: 40px;
-    color: #444e60;
+    color: var(--text);
     transition: background-color 0.4s;
 
     &:hover,
     &:active {
-        color: #444e60;
+        color: var(--text);
         background-color: rgba(243, 246, 249, 1);
     }
 
     &.is-active {
-        color: #444e60;
+        color: var(--text);
         background-color: rgba(51, 129, 255, 0.06);
     }
 }
@@ -83,5 +83,40 @@
 
     .main-page-nav-content {
         flex-direction: row;
+    }
+}
+
+.flat-color-scheme-dark {
+    .main-page-pop-menu {
+        .ant-divider {
+            border-top: 1px solid var(--grey-8);
+        }
+    }
+
+    .main-page-pop-menu-item {
+        &:hover,
+        &:active {
+            color: var(--text);
+            background-color: var(--grey-12);
+        }
+
+        &.is-active {
+            color: var(--text);
+            background-color: var(--grey-10);
+        }
+    }
+
+    .main-page-nav-popover {
+        .ant-popover-title {
+            color: var(--blue-0);
+        }
+
+        .ant-popover-inner {
+            background-color: var(--grey-10);
+        }
+
+        .ant-popover-arrow-content {
+            background-color: var(--grey-10);
+        }
     }
 }

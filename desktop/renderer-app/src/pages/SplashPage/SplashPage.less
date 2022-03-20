@@ -7,8 +7,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 80px;
-    animation: flat-fly 0.6s;
+    margin-top: 290px;
+    opacity: 0.3;
+
+    &.is-logo-loaded {
+        animation: flat-fly 1s forwards;
+    }
 
     img {
         margin-bottom: 24px;
@@ -25,11 +29,18 @@
         opacity: 0.3;
         transition-timing-function: ease-in;
         transition-timing-function: cubic-bezier(0.42, 0, 1, 1);
-        transform: translateY(210px);
+        transform: translateY(0);
+    }
+    20% {
+        opacity: 0.7;
+        transition-timing-function: ease-in;
+        transition-timing-function: cubic-bezier(0.42, 0, 1, 1);
+        transform: translateY(0);
     }
     100% {
+        opacity: 1;
         transition-timing-function: ease-out;
         transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
-        transform: translateY(0);
+        transform: translateY(-210px);
     }
 }

@@ -14,11 +14,11 @@
         .screen-image-box {
             padding: 12px 20px;
             border-radius: 8px;
-            border: 1px solid #DBE1EA;
+            border: 1px solid var(--grey-1);
             cursor: pointer;
 
             &.active {
-                border: 2px solid #3381FF;
+                border: 2px solid var(--blue-6);
                 padding: 11px 19px;
             }
 
@@ -34,10 +34,18 @@
             padding: 0 4px;
             font-size: 14px;
             text-align: center;
-            color: #7A7B7C;
+            color: var(--text);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+    }
+}
+
+.flat-color-scheme-dark {
+    .screen-item {
+        .screen-image-box {
+            border: 1px solid var(--grey-8);
         }
     }
 }

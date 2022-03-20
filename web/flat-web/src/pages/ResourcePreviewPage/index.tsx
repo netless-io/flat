@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { DynamicPreview } from "./DynamicPreview";
 import { MediaPreview } from "./MediaPreview";

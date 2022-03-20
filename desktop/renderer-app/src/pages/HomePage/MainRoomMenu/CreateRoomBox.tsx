@@ -1,13 +1,12 @@
-import createSVG from "../../../assets/image/creat.svg";
 import "./CreateRoomBox.less";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form, Menu, Dropdown } from "antd";
+import { Button, Input, Modal, Checkbox, Form, Menu, Dropdown, InputRef } from "antd";
 import { RoomType } from "../../../api-middleware/flatServer/constants";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { ClassPicker, Region, regions, RegionSVG } from "flat-components";
+import { ClassPicker, HomePageHeroButton, Region, regions, RegionSVG } from "flat-components";
 import { useTranslation } from "react-i18next";
 
 interface CreateRoomFormValues {
@@ -32,7 +31,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const [isFormValidated, setIsFormValidated] = useState(false);
     const [classType, setClassType] = useState<RoomType>(RoomType.BigClass);
     const [roomRegion, setRoomRegion] = useState<Region>(configStore.getRegion());
-    const roomTitleInputRef = useRef<Input>(null);
+    const roomTitleInputRef = useRef<InputRef>(null);
 
     const defaultValues: CreateRoomFormValues = {
         roomTitle: globalStore.userInfo?.name
@@ -76,16 +75,14 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
 
     return (
         <>
-            <Button
+            <HomePageHeroButton
+                type="begin"
                 onClick={() => {
                     form.setFieldsValue(defaultValues);
                     showModal(true);
                     formValidateStatus();
                 }}
-            >
-                <img alt="create room" src={createSVG} />
-                <span className="label">{t("home-page-hero-button-type.begin")}</span>
-            </Button>
+            />
             <Modal
                 destroyOnClose
                 footer={[
@@ -137,7 +134,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                                     <img
                                         alt={roomRegion}
                                         src={RegionSVG[roomRegion]}
-                                        style={{ cursor: "pointer", width: 22 }}
+                                        style={{ cursor: "pointer", width: 22, marginRight: 0 }}
                                     />
                                 </Dropdown>
                             }

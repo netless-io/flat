@@ -10,16 +10,20 @@ import {
     RoomInfo,
     TopBar,
     TopBarDivider,
+    TopBarRightBtn,
     LoadingPage,
     CloudRecordBtn,
     Timer,
+    SVGScreenSharing,
+    SVGExit,
+    SVGMenuFold,
+    SVGMenuUnfold,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
-import { TopBarRightBtn } from "flat-components";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanel } from "../../components/ChatPanel";
-import { OneToOneAvatar } from "./OneToOneAvatar";
+import { RTCAvatar } from "../../components/RTCAvatar";
 import {
     ExitRoomConfirm,
     ExitRoomConfirmType,
@@ -39,13 +43,6 @@ import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatS
 import { runtime } from "../../utils/runtime";
 import { useTranslation } from "react-i18next";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
-import { generateAvatar } from "../../utils/generate-avatar";
-import { AppStoreButton } from "../../components/AppStoreButton";
-import shareScreenActiveSVG from "../../assets/image/share-screen-active.svg";
-import shareScreenSVG from "../../assets/image/share-screen.svg";
-import exitSVG from "../../assets/image/exit.svg";
-import hideSideSVG from "../../assets/image/hide-side.svg";
-import hideSideActiveSVG from "../../assets/image/hide-side-active.svg";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -156,7 +153,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     right={renderTopBarRight()}
                 />
                 <div className="one-to-one-realtime-content">
-                    <div className="container">
+                    <div className="one-to-one-realtime-content-container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
                         <ShareScreenPicker
                             handleOk={() => {
@@ -206,16 +203,10 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     function renderTopBarRight(): React.ReactNode {
         return (
             <>
-                {whiteboardStore.isWritable && <AppStoreButton addApp={whiteboardStore.addApp} />}
-
                 {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
                     <TopBarRightBtn
                         icon={
-                            shareScreenStore.enableShareScreenStatus ? (
-                                <img src={shareScreenActiveSVG} />
-                            ) : (
-                                <img src={shareScreenSVG} />
-                            )
+                            <SVGScreenSharing active={shareScreenStore.enableShareScreenStatus} />
                         }
                         title={t("share-screen.self")}
                         onClick={handleShareScreen}
@@ -238,19 +229,13 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
                 <TopBarRightBtn
-                    icon={<img src={exitSVG} />}
+                    icon={<SVGExit />}
                     title={t("exit")}
                     onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                 />
                 <TopBarDivider />
                 <TopBarRightBtn
-                    icon={
-                        isRealtimeSideOpen ? (
-                            <img src={hideSideActiveSVG} />
-                        ) : (
-                            <img src={hideSideSVG} />
-                        )
-                    }
+                    icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                     title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                     onClick={() => {
                         openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
@@ -275,20 +260,19 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 videoSlot={
                     classRoomStore.isRTCJoined && (
                         <div className="one-to-one-rtc-avatar-container">
-                            <OneToOneAvatar
+                            <RTCAvatar
                                 avatarUser={classRoomStore.users.creator}
-                                generateAvatar={generateAvatar}
                                 isAvatarUserCreator={true}
                                 isCreator={classRoomStore.isCreator}
-                                rtcEngine={classRoomStore.rtc.rtcEngine}
+                                rtc={classRoomStore.rtc}
                                 updateDeviceState={classRoomStore.updateDeviceState}
                                 userUUID={classRoomStore.userUUID}
                             />
-                            <OneToOneAvatar
+                            <RTCAvatar
                                 avatarUser={joiner}
-                                generateAvatar={generateAvatar}
+                                isAvatarUserCreator={false}
                                 isCreator={classRoomStore.isCreator}
-                                rtcEngine={classRoomStore.rtc.rtcEngine}
+                                rtc={classRoomStore.rtc}
                                 updateDeviceState={classRoomStore.updateDeviceState}
                                 userUUID={classRoomStore.userUUID}
                             />

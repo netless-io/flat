@@ -4,6 +4,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: #fff;
 }
 
 .cloud-storage-container-head {
@@ -17,13 +18,13 @@
     font-size: 16px;
     line-height: 1.5;
     margin: 0 0 5px;
-    color: #444e60;
+    color: var(--text-stronger);
 }
 
 .cloud-storage-container-subtitle {
     font-size: 12px;
     line-height: 1.5;
-    color: #7a7b7c;
+    color: var(--text);
 
     &.is-hide {
         opacity: 0;
@@ -86,7 +87,7 @@
     display: flex;
     align-items: center;
     padding: 0 24px 0 32px;
-    border-top: 1px solid #dbe1ea;
+    border-top: 1px solid var(--grey-1);
     user-select: none;
 }
 
@@ -113,4 +114,14 @@
 .cloud-storage-container-mask-exit-active {
     opacity: 0;
     transition: opacity 0.4s;
+}
+
+.flat-color-scheme-dark {
+    .cloud-storage-container-footer {
+        border-top-color: var(--grey-8);
+    }
+
+    .cloud-storage-container {
+        background-color: var(--grey-10);
+    }
 }

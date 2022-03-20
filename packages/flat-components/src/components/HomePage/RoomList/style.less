@@ -1,259 +1,59 @@
-.room-list-date {
-    display: flex;
-    align-items: center;
-    margin-top: 16px;
-    padding: 0 16px;
-
-    time {
-        font-weight: 500;
-        color: #444e60;
-        margin-left: 4px;
-    }
-}
-
-.room-list-item {
-    padding: 12px 16px;
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-
-    &::after {
-        content: "";
-        position: absolute;
-        left: 16px;
-        right: 16px;
-        bottom: 0;
-        border-bottom: 1px solid #dbe1ea;
-    }
-
-    &.pointer {
-        cursor: pointer;
-    }
-
-    .room-list-item-left {
-        flex: 1;
-
-        .room-list-item-title {
-            margin: 0 8px 12px 0;
-            font-size: 16px;
-            font-weight: 500;
-            word-break: break-all;
-            color: #444e60;
-
-            @media screen and (max-width: 660px) {
-                font-size: 14px;
-            }
-        }
-
-        @media screen and (max-width: 660px) {
-            .room-list-item-info {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-        }
-
-        .room-list-item-duration {
-            display: flex;
-            align-items: center;
-            font-size: 12px;
-            color: #7a7b7c;
-        }
-
-        .room-list-item-status {
-            margin-top: 8px;
-            font-size: 12px;
-
-            @media screen and (max-width: 660px) {
-                margin-top: 0;
-            }
-
-            .upcoming {
-                color: #e99434;
-            }
-            .running {
-                color: #7ec452;
-            }
-            .stopped {
-                color: #7a7b7c;
-            }
-
-            .periodic {
-                color: #444e60;
-
-                &::before {
-                    content: " · ";
-                }
-            }
-        }
-    }
-
-    .room-list-item-right {
-        display: inline-flex;
-        align-items: center;
-
-        .ant-btn {
-            line-height: 1;
-            padding: 4px 7px;
-            height: 28px;
-
-            &:not(:first-of-type) {
-                margin-left: 8px;
-            }
-        }
-
-        .ant-btn-primary {
-            padding: 4px 15px;
-        }
-
-        .room-list-item-more {
-            display: inline-flex;
-            justify-content: center;
-        }
-    }
-}
-
 .room-list {
     display: flex;
     flex-flow: column nowrap;
     position: relative;
     overflow: hidden;
+    border-radius: 6px;
     background-color: white;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15);
 
     @media screen and (max-width: 660px) {
         padding: 0;
     }
-
-    .room-list-header {
-        position: relative;
-        padding: 0 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        &::after {
-            content: "";
-            position: absolute;
-            left: 16px;
-            right: 16px;
-            bottom: 0;
-            border-bottom: 1px solid #dbe1ea;
-
-            @media screen and (max-width: 660px) {
-                border-bottom-width: 0;
-            }
-        }
-    }
-
-    .room-list-title {
-        font-size: 16px;
-        font-weight: 500;
-        color: #444e60;
-        padding: 16px 0;
-
-        @media screen and (max-width: 660px) {
-            display: none;
-        }
-    }
-
-    .room-list-filters {
-        @media screen and (max-width: 660px) {
-            flex: 1;
-            display: flex;
-        }
-
-        .tab {
-            font-size: 14px;
-            margin-left: 24px;
-            color: #7a7b7c;
-            &:hover {
-                cursor: pointer;
-            }
-            &.active {
-                color: #3381ff;
-            }
-
-            @media screen and (max-width: 660px) {
-                flex: 1;
-                margin-left: 0;
-                text-align: center;
-                padding: 16px 0;
-                border-bottom: 2px solid transparent;
-                &.active {
-                    border-bottom: 2px solid #3381ff;
-                }
-            }
-        }
-    }
-
-    .room-list-body {
-        flex: 1;
-        padding-bottom: 16px;
-    }
-
-    .room-list-footer {
-        margin: 16px auto;
-        font-size: 12px;
-        color: #7a7b7c;
-        text-align: center;
-    }
 }
 
-.room-list-item-sub-menu {
-    .ant-dropdown-menu {
-        border-radius: 8px;
-    }
-}
-
-.room-empty-box {
-    width: 100%;
-    height: 100%;
+.room-list-header {
+    height: 3.75em;
+    position: relative;
+    padding: 12px 16px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    img {
-        width: 124px;
-        height: 124px;
-    }
-    span {
-        font-size: 14px;
-        font-weight: 400;
-        color: #7a7b7c;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--grey-1);
+}
+
+.room-list-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    color: var(--text-stronger);
+}
+
+.room-list-filters {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+
+    > svg {
+        margin: 0 0 2px 4px;
     }
 }
 
-.room-list-skeletons {
-    padding: 0 16px;
-
-    > * {
-        padding-top: 16px;
-        border-bottom: 1px solid #dbe1ea;
-
-        &:last-of-type {
-            border-bottom: none;
-        }
-    }
-
-    .ant-skeleton.ant-skeleton-active .ant-skeleton-content .ant-skeleton-title,
-    .ant-skeleton.ant-skeleton-active .ant-skeleton-content .ant-skeleton-paragraph > li {
-        background: linear-gradient(
-            90deg,
-            hsla(210, 33%, 96%, 1) 25%,
-            hsla(210, 33%, 92%, 1) 37%,
-            hsla(210, 33%, 96%, 1) 63%
-        );
-        background-size: 400% 100%;
-        animation: ant-skeleton-loading 1.4s ease infinite;
-    }
+.room-list-body {
+    flex: 1;
+    padding: 12px 16px;
 }
 
-@keyframes ant-skeleton-loading {
-    0% {
-        background-position: 100% 50%;
+.flat-color-scheme-dark {
+    .room-list {
+        background-color: var(--grey-10);
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15);
     }
-    100% {
-        background-position: 0 50%;
+
+    .room-list-header {
+        border-bottom-color: var(--grey-8);
     }
 }

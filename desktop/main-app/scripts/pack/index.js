@@ -6,14 +6,15 @@ const {
     getBuildType,
 } = require("./utils");
 
-const { downloadAgoraElectronAddon } = require("../utils");
 const yaml = require("js-yaml");
 const fs = require("fs-extra");
 const path = require("path");
-const { mainPath, version, configPath } = require("../../../../scripts/constants");
+const { mainPath, version, configPath, rendererPath } = require("../../../../scripts/constants");
 const { releaseTag } = require("../constant");
 const { build, Platform } = require("electron-builder");
 const dotenvFlow = require("dotenv-flow");
+const rimraf = require("rimraf");
+const { downloadAddon } = require("../download-agora-addon/core");
 
 dotenvFlow.config({
     path: configPath,
@@ -28,7 +29,6 @@ const buildType = getBuildType();
 
 /**
  * build electron app
- * @param {"win" | "mac"} buildType - build platform
  */
 const buildElectron = async () => {
     const config = yaml.load(
@@ -40,6 +40,8 @@ const buildElectron = async () => {
     config.directories.buildResources = path.join("resources", releaseTag);
 
     config.directories.output = path.join("release", buildType);
+
+    rimraf.sync(path.join(mainPath, config.directories.output));
 
     if (!version.includes("alpha")) {
         config.releaseInfo.releaseNotes = generateReleaseNote();
@@ -65,7 +67,7 @@ const buildElectron = async () => {
 
     config.extraResources = [
         {
-            from: "static",
+            from: path.join(rendererPath, "dist"),
             to: "static",
         },
     ];
@@ -99,13 +101,13 @@ const buildElectron = async () => {
         return buildElectron(buildType);
     }
 
-    downloadAgoraElectronAddon(buildType);
+    downloadAddon(buildType);
 
     await buildElectron(buildType);
 
     // when the build is complete, we need to restore agora addon, otherwise there will be problems if we continue development after the build is complete
     const systemType = process.platform === "darwin" ? "mac" : "win";
     if (systemType !== getAgoraReleaseType()) {
-        return downloadAgoraElectronAddon(systemType);
+        return downloadAddon(buildType);
     }
 })();

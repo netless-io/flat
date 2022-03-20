@@ -2,7 +2,7 @@
     width: 240px;
     padding-top: 24px;
     border-right: solid 1px #dbe1ea;
-    border-radius: 8px 0px;
+    border-radius: 6px 0 0 6px;
     background-color: #fff;
 
     > ul {
@@ -20,16 +20,40 @@
     padding: 9px 0px 9px 16px;
     transition: background-color 0.4s;
     align-items: center;
-    color: #444e60;
+    color: var(--text);
 
     &:hover,
     &:active {
-        color: #444e60;
+        color: var(--text);
         background-color: rgba(243, 246, 249, 1);
     }
 
     &.is-active {
-        color: #444e60;
+        color: var(--text);
         background-color: rgba(51, 129, 255, 0.06);
+    }
+}
+
+.flat-color-scheme-dark {
+    .main-layout-sub-menu-container {
+        background-color: var(--grey-10);
+        border-right: solid 1px var(--grey-8);
+    }
+
+    .main-layout-sub-menu-item {
+        color: var(--text);
+
+        &:hover {
+            background-color: var(--grey-9);
+        }
+
+        &:active {
+            background-color: var(--grey-11);
+        }
+
+        &.is-active {
+            color: var(--blue-7);
+            background-color: var(--grey-11);
+        }
     }
 }

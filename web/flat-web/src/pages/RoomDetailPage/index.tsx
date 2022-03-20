@@ -111,17 +111,10 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
 
     function jumpToModifyRoom(): void {
         if (roomInfo) {
-            if (roomInfo.roomUUID) {
-                pushHistory(RouteNameType.ModifyOrdinaryRoomPage, {
-                    roomUUID: roomInfo.roomUUID,
-                    periodicUUID: roomInfo.periodicUUID,
-                });
-            }
-            if (roomInfo.periodicUUID) {
-                pushHistory(RouteNameType.ModifyPeriodicRoomPage, {
-                    periodicUUID: roomInfo.periodicUUID,
-                });
-            }
+            pushHistory(RouteNameType.ModifyOrdinaryRoomPage, {
+                roomUUID: roomInfo.roomUUID,
+                periodicUUID: roomInfo.periodicUUID,
+            });
         }
     }
 
@@ -139,7 +132,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
                     showRoomCountVisible={
                         periodicUUID ? roomInfo.roomStatus !== RoomStatus.Stopped : false
                     }
-                    userName={roomInfo.ownerUserName || ""}
+                    userName={roomInfo.ownerName || ""}
                     onCancelRoom={onCancelRoom}
                     onCopyInvitation={text => navigator.clipboard.writeText(text)}
                     onJoinRoom={joinRoom}

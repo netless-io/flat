@@ -2,12 +2,38 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  font-family: "PingFang SC", "Source Han Sans SC", "Microsoft YaHei",
-    "Helvetica Neue", "Noto Sans CJK SC", "WenQuanYi Micro Hei", sans-serif;
 }
 
 @import "./fancy-scrollbar.less";
 body,
 textarea {
   .fancy-scrollbar-mixin();
+}
+
+a {
+    color: var(--link);
+    &:focus {
+        color: var(--link-focus);
+    }
+    &:hover {
+        color: var(--link-hover);
+    }
+    &:active {
+        color: var(--link-active);
+    }
+}
+
+select {
+    outline: none;
+}
+
+textarea {
+    outline: none;
+    -webkit-appearance: none;
+    resize: none;
+}
+
+// reduce specificity
+:where(a):visited {
+    color: var(--link-visited);
 }

@@ -7,7 +7,7 @@
     word-break: keep-all;
     overflow: hidden;
     white-space: nowrap;
-    color: #444e60;
+    color: var(--text);
 
     &.is-convert-ready {
         & > .cloud-storage-file-title-content {
@@ -66,5 +66,13 @@
 @keyframes cloud-storage-file-title-sub-icon-spin {
     to {
         transform: rotate(360deg);
+    }
+}
+
+.flat-color-scheme-dark {
+    .cloud-storage-file-title-converting,
+    .cloud-storage-file-title-convert-error {
+        background-color: var(--grey-11);
+        border-color: var(--grey-11);
     }
 }

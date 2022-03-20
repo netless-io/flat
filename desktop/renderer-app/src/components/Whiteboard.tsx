@@ -1,13 +1,11 @@
 import "@netless/window-manager/dist/style.css";
 import "./Whiteboard.less";
 
-import RedoUndo from "@netless/redo-undo";
-import ToolBox from "@netless/tool-box";
-import { WindowManager } from "@netless/window-manager";
+import { Fastboard, Language } from "@netless/fastboard-react";
 import classNames from "classnames";
-import { RaiseHand, ScenesController } from "flat-components";
+import { DarkModeContext, RaiseHand } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
 import { RoomPhase } from "white-web-sdk";
@@ -32,7 +30,8 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     disableHandRaising,
 }) {
     const { i18n, t } = useTranslation();
-    const { room, phase } = whiteboardStore;
+    const { room, phase, fastboardAPP } = whiteboardStore;
+    const isDark = useContext(DarkModeContext);
 
     const [whiteboardEl, setWhiteboardEl] = useState<HTMLElement | null>(null);
     const [collectorEl, setCollectorEl] = useState<HTMLElement | null>(null);
@@ -44,40 +43,10 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     }, [isReconnecting, t]);
 
     useEffect(() => {
-        const mountWindowManager = async (): Promise<void> => {
-            if (whiteboardEl && collectorEl && room) {
-                const windowManager = await WindowManager.mount({
-                    room,
-                    container: whiteboardEl,
-                    collectorContainer: collectorEl,
-                    cursor: true,
-                    /* the containerSizeRatio config limit width and height ratio of windowManager
-                     for make sure windowManager sync in whiteboard. */
-                    containerSizeRatio: whiteboardStore.getWhiteboardRatio(),
-                    collectorStyles: {
-                        position: "absolute",
-                        bottom: "8px",
-                    },
-                    chessboard: false,
-                });
-
-                whiteboardStore.updateWindowManager(windowManager);
-                whiteboardStore.onMainViewSceneChange();
-                whiteboardStore.onMainViewSceneLengthChange();
-                whiteboardStore.onMainViewRedoUndoStepsChange();
-                whiteboardStore.onWindowManagerBoxStateChange(
-                    whiteboardStore.windowManager?.boxState,
-                );
-            }
-        };
-
-        void mountWindowManager();
-
-        return () => {
-            whiteboardStore.destroyWindowManager();
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [whiteboardEl, collectorEl, room]);
+        if (fastboardAPP && collectorEl) {
+            fastboardAPP.bindCollector(collectorEl);
+        }
+    }, [collectorEl, fastboardAPP]);
 
     const whiteboardOnResize = useCallback(() => {
         if (whiteboardEl) {
@@ -200,54 +169,6 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                 onDragOver={onDragOver}
                 onDrop={onDrop}
             >
-                <div className="whiteboard-writable-area">
-                    <div className="tool-box-out">
-                        <ToolBox
-                            hotkeys={{
-                                arrow: "A",
-                                clear: "",
-                                clicker: "",
-                                ellipse: "C",
-                                eraser: "E",
-                                hand: "H",
-                                laserPointer: "Z",
-                                pencil: "P",
-                                rectangle: "R",
-                                selector: "S",
-                                shape: "",
-                                straight: "L",
-                                text: "T",
-                            }}
-                            i18nLanguage={i18n.language}
-                            room={room}
-                        />
-                    </div>
-                    <div
-                        className={classNames("redo-undo-box", {
-                            "is-disabled": whiteboardStore.isWindowMaximization,
-                        })}
-                    >
-                        <RedoUndo
-                            redoSteps={whiteboardStore.redoSteps}
-                            room={room}
-                            undoSteps={whiteboardStore.undoSteps}
-                        />
-                    </div>
-                    <div
-                        className={classNames("page-controller-box", {
-                            "is-disabled": whiteboardStore.isWindowMaximization,
-                        })}
-                    >
-                        <ScenesController
-                            addScene={whiteboardStore.addMainViewScene}
-                            currentSceneIndex={whiteboardStore.currentSceneIndex}
-                            disabled={false}
-                            nextScene={whiteboardStore.nextMainViewScene}
-                            preScene={whiteboardStore.preMainViewScene}
-                            scenesCount={whiteboardStore.scenesCount}
-                        />
-                    </div>
-                </div>
                 {!whiteboardStore.isCreator && !whiteboardStore.isWritable && (
                     <div className="raise-hand-container">
                         <RaiseHand
@@ -257,14 +178,13 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                         />
                     </div>
                 )}
-                <div
-                    ref={bindCollector}
-                    className={classNames("collector-container", {
-                        "collector-container-not-writable": !whiteboardStore.isWritable,
-                    })}
+                <div ref={bindCollector} />
+                <Fastboard
+                    app={fastboardAPP}
+                    containerRef={bindWhiteboard}
+                    language={i18n.language as Language}
+                    theme={isDark ? "dark" : "light"}
                 />
-
-                <div ref={bindWhiteboard} className="whiteboard-box" />
             </div>
         )
     );

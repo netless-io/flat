@@ -3,7 +3,7 @@ import "./style.less";
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { EditRoomBody, EditRoomBodyProps } from "flat-components";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { useContext } from "react";
 import { PageStoreContext } from "../StoreProvider";
 import { useTranslation } from "react-i18next";
@@ -31,7 +31,7 @@ export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(pr
 
     return (
         <div className="edit-room-page">
-            <div className="edit-room-page-body">
+            <div className="edit-room-page-body fancy-scrollbar">
                 <div className="edit-room-page-body-content">
                     <EditRoomBody {...props} />
                 </div>

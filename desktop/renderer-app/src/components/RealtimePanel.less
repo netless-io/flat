@@ -34,9 +34,14 @@
     width: 0;
     transition: width 0.4s;
     overflow: hidden;
-    background-color: #fff;
 
     &.isActive {
         width: @panel-width;
+    }
+}
+
+.flat-color-scheme-dark {
+    .realtime-panel {
+        border-left: 1px solid var(--grey-8);
     }
 }
