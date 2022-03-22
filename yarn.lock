@@ -2005,10 +2005,10 @@
   resolved "https://registry.npmjs.org/@netless/app-monaco/-/app-monaco-0.1.12.tgz#bd289d088cd9f6db664220becc80a2db02313c2b"
   integrity sha512-f8LLS5jVcBXn5Ua1HfWNHUq7wa/yax81+XTfjXJ8B2ztOGTHB1uHDveD/hjcWCTCEeZP/sv8c8HTXwqb0fLUcg==
 
-"@netless/app-slide@^0.0.57":
-  version "0.0.57"
-  resolved "https://registry.npmjs.org/@netless/app-slide/-/app-slide-0.0.57.tgz#fd5d3d04347a73f8d8299b4f4a41dbc86c6f016d"
-  integrity sha512-kUEY9KOqoF6NCkOz0kxOyfPPYJYms/MCwOpEbq5z/8bgNMAC0SGeghEhvJiZz1Y2ZMJPCu6IJzNl53CpElvX1A==
+"@netless/app-slide@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/@netless/app-slide/-/app-slide-0.1.0.tgz#eb8f6b1ecc8d0e0335f2f5fb14037df34ed2acbd"
+  integrity sha512-tivMMmd4vKr98AJixyxhHQkgheR8zOWV4mvq/yB2PCdkVpxfUtW4er9+mZ+CoOP6P/9X5kegL/vD49Gn8jYVeA==
 
 "@netless/canvas-polyfill@^0.0.4":
   version "0.0.4"
@@ -2030,25 +2030,25 @@
     "@typescript-eslint/experimental-utils" "^4.20.0"
     typescript "^4.3.5"
 
-"@netless/fastboard-core@0.3.1":
-  version "0.3.1"
-  resolved "https://registry.npmjs.org/@netless/fastboard-core/-/fastboard-core-0.3.1.tgz#f97e308c5a5cec2764e6e10f77b1b4ffc722419b"
-  integrity sha512-29pAuim0Clv92duKVGji07aUUvyZcGcE3eAhxNYk9zXXkAqCHtWkIlzEDathA/olimtAt/17HZNvzSLxBTVQpg==
+"@netless/fastboard-core@0.3.2-canary.0":
+  version "0.3.2-canary.0"
+  resolved "https://registry.npmjs.org/@netless/fastboard-core/-/fastboard-core-0.3.2-canary.0.tgz#62e0ff83adbff4370fa06d884f9c619c39ad82dd"
+  integrity sha512-WCcK3kQFxlPYVezMGmw5VdbMO+I5BVGpaXTJoEnt3l0fe3h1DjDeIFOxKUZzFKrM/l1Fa146ndptfZIodlVHCg==
   dependencies:
-    "@netless/app-slide" "^0.0.57"
+    "@netless/app-slide" "^0.1.0"
 
-"@netless/fastboard-react@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.npmjs.org/@netless/fastboard-react/-/fastboard-react-0.3.1.tgz#1a8f1a0acb9f0f33a75050b7211a5b3835d7c052"
-  integrity sha512-+AtsD/VIsJqtUydNzeWxl5ch+63yAiIaeP9DS+rV89V2kfR+4qYkdtYVVusN5Xm+5GGopSzqUI7AxoPctOgtuw==
+"@netless/fastboard-react@^0.3.2-canary.0":
+  version "0.3.2-canary.0"
+  resolved "https://registry.npmjs.org/@netless/fastboard-react/-/fastboard-react-0.3.2-canary.0.tgz#7dd4f414327fed8bb19005bd61286c8fbac5a498"
+  integrity sha512-pbzy+js3xIJi83IV5zjbkYsIM3SyVBw+jE7U3HP7R8tzuEZfFB4slD0ziVQPEAvn2z/WSYiPwu47xzGyXrPV0A==
   dependencies:
-    "@netless/fastboard-core" "0.3.1"
-    "@netless/fastboard-ui" "0.3.1"
+    "@netless/fastboard-core" "0.3.2-canary.0"
+    "@netless/fastboard-ui" "0.3.2-canary.0"
 
-"@netless/fastboard-ui@0.3.1":
-  version "0.3.1"
-  resolved "https://registry.npmjs.org/@netless/fastboard-ui/-/fastboard-ui-0.3.1.tgz#dd5a082f94c3f7c5c544e1851ebe4613e58d80f8"
-  integrity sha512-fm5ia+WZJ6JMxSL5LHyHeOFr3iE4ERkea/Vo4yYdv3JcD0AUGHyNiiJygDPVGbTCWV6fp5MBq5LigqTWOHWVmw==
+"@netless/fastboard-ui@0.3.2-canary.0":
+  version "0.3.2-canary.0"
+  resolved "https://registry.npmjs.org/@netless/fastboard-ui/-/fastboard-ui-0.3.2-canary.0.tgz#63dbaca8109aac2340d85a442219a1eb0d2f174c"
+  integrity sha512-wca9/99TCUi1ctkVQiSoUVajDZ4oDVhcTYGFNq9XLRlmr9vyMlvXCXMshzUHDFgSIvFaXvkxXL7mD4GXzyKC8A==
   dependencies:
     tippy.js "^6.3.7"
 
