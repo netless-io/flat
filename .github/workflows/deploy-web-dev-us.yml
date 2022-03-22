@@ -1,4 +1,4 @@
-name: Deploy Flat Web Dev
+name: Deploy US Flat Web Dev
 on:
   push:
     branches:

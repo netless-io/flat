@@ -1,4 +1,4 @@
-name: Deploy Flat Web Prod
+name: Deploy US Flat Web Prod
 on:
   push:
     branches:
