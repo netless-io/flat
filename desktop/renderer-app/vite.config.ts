@@ -5,8 +5,9 @@ import { visualizer } from "rollup-plugin-visualizer";
 import copy from "rollup-plugin-copy";
 import path from "path";
 
-// TODO: find new place to store vite-plugin-dotenv
+// TODO: find new place to store vite-plugin-dotenv, vite-plugin-react-virtualized
 import { dotenv } from "../../web/flat-web/scripts/vite-plugin-dotenv";
+import { reactVirtualized } from "../../web/flat-web/scripts/vite-plugin-react-virtualized";
 import { electron } from "./scripts/vite-plugin-electron";
 import {
     typesEntryPath,
@@ -21,6 +22,7 @@ export default defineConfig(() => {
     const plugins = [
         react(),
         dotenv(autoChooseConfig()),
+        reactVirtualized(),
         electron(),
         eslintPlugin({
             cache: false,
