@@ -11,7 +11,7 @@
     "@netless/app-monaco": "^0.1.12",
     "@netless/app-slide": "^0.0.57",
     "@netless/combine-player": "^1.1.6",
-    "@netless/fastboard-react": "^0.3.0",
+    "@netless/fastboard-react": "^0.3.1",
     "@netless/player-controller": "^0.0.9",
     "@netless/video-js-plugin": "^0.3.8",
     "@netless/window-manager": "0.4.12",
