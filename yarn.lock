@@ -2030,25 +2030,25 @@
     "@typescript-eslint/experimental-utils" "^4.20.0"
     typescript "^4.3.5"
 
-"@netless/fastboard-core@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@netless/fastboard-core/-/fastboard-core-0.3.0.tgz#7a8cf54fa73aefa381b057775bfd708218518de6"
-  integrity sha512-GsPnXX61yoSslJ4dAFpVhyYzZXKHE1A9s3n8X/EX4IbpetE0X9iCM9N7+ifDcJ/nF3JXstChbbbNM0TBgBffLw==
+"@netless/fastboard-core@0.3.1":
+  version "0.3.1"
+  resolved "https://registry.npmjs.org/@netless/fastboard-core/-/fastboard-core-0.3.1.tgz#f97e308c5a5cec2764e6e10f77b1b4ffc722419b"
+  integrity sha512-29pAuim0Clv92duKVGji07aUUvyZcGcE3eAhxNYk9zXXkAqCHtWkIlzEDathA/olimtAt/17HZNvzSLxBTVQpg==
   dependencies:
     "@netless/app-slide" "^0.0.57"
 
-"@netless/fastboard-react@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@netless/fastboard-react/-/fastboard-react-0.3.0.tgz#4577efd89bfb6041be20719bd102fb54a9365a60"
-  integrity sha512-J/HMtNph2e6VF1Macjv0sthAOnFvwjNXcO3ZSX+Tbvi/VsSbEZ6sJ2j1XwOYGRQJWk3J4u4frMlZ5EGjXU8mYg==
+"@netless/fastboard-react@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.npmjs.org/@netless/fastboard-react/-/fastboard-react-0.3.1.tgz#1a8f1a0acb9f0f33a75050b7211a5b3835d7c052"
+  integrity sha512-+AtsD/VIsJqtUydNzeWxl5ch+63yAiIaeP9DS+rV89V2kfR+4qYkdtYVVusN5Xm+5GGopSzqUI7AxoPctOgtuw==
   dependencies:
-    "@netless/fastboard-core" "0.3.0"
-    "@netless/fastboard-ui" "0.3.0"
+    "@netless/fastboard-core" "0.3.1"
+    "@netless/fastboard-ui" "0.3.1"
 
-"@netless/fastboard-ui@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@netless/fastboard-ui/-/fastboard-ui-0.3.0.tgz#e8ccd495ddce64ffe299008b1f91766386abd6d4"
-  integrity sha512-fM6NGRYwmR16yLmERKOcrL6Z304S7XwM8qeNDWMkMs013vK1qFyYuugigy/K5cMPsWvJwu1hgMXfjZPy6HFCgQ==
+"@netless/fastboard-ui@0.3.1":
+  version "0.3.1"
+  resolved "https://registry.npmjs.org/@netless/fastboard-ui/-/fastboard-ui-0.3.1.tgz#dd5a082f94c3f7c5c544e1851ebe4613e58d80f8"
+  integrity sha512-fm5ia+WZJ6JMxSL5LHyHeOFr3iE4ERkea/Vo4yYdv3JcD0AUGHyNiiJygDPVGbTCWV6fp5MBq5LigqTWOHWVmw==
   dependencies:
     tippy.js "^6.3.7"
 
