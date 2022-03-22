@@ -9,5 +9,4 @@ module.exports = {
     entryFile: resolvePath("src", "index.ts"),
     preloadPath: resolvePath("src", "preload.ts"),
     tsConfig: resolvePath("tsconfig.json"),
-    envConfig: resolvePath("..", "..", "config"),
 };

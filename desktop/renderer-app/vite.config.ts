@@ -9,18 +9,18 @@ import path from "path";
 import { dotenv } from "../../web/flat-web/scripts/vite-plugin-dotenv";
 import { electron } from "./scripts/vite-plugin-electron";
 import {
-    configPath,
     typesEntryPath,
     i18nEntryPath,
     componentsEntryPath,
     rootNodeModules,
     rendererPath,
 } from "../../scripts/constants";
+import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 
 export default defineConfig(() => {
     const plugins = [
         react(),
-        dotenv(configPath),
+        dotenv(autoChooseConfig()),
         electron(),
         eslintPlugin({
             cache: false,

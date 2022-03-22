@@ -1,9 +1,9 @@
 const dotenvFlow = require("dotenv-flow");
 const { notarize } = require("electron-notarize");
-const { configPath } = require("../../../../scripts/constants");
+const { autoChooseConfig } = require("../../../../scripts/utils/auto-choose-config");
 
 dotenvFlow.config({
-    path: configPath,
+    path: autoChooseConfig(),
     default_node_env: "production",
     silent: true,
 });

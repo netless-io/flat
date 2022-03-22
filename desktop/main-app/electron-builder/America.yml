@@ -1,0 +1,62 @@
+appId: io.agora.flint
+productName: Flint
+artifactName: Flint-${version}.${ext}
+asar: true
+
+extraMetadata:
+  main: main.js
+
+files:
+  - filter:
+    - package.json
+  - from: ./dist
+
+mac:
+  category: public.app-category.productivity
+  hardenedRuntime: true
+  entitlements: entitlements.mac.plist
+  entitlementsInherit: entitlements.mac.plist
+  gatekeeperAssess: false
+  extendInfo:
+    LSHasLocalizedDisplayName: true
+    CFBundleURLTypes:
+      - CFBundleURLName: x-agora-flat-client
+        CFBundleURLSchemes:
+          - x-agora-flat-client
+    NSPrincipalClass: AtomApplication
+  target:
+    - dmg
+    - zip
+
+dmg:
+  contents:
+    - { x: 130, y: 220 }
+    - { x: 410, y: 220, type: link, path: /Applications }
+
+win:
+  target:
+    - target: zip
+    - target: nsis
+      arch:
+        - ia32
+
+protocols:
+  - name: Agora Flat Client
+    schemes:
+      - x-agora-flat-client
+
+nsis:
+  oneClick: false
+  perMachine: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  allowToChangeInstallationDirectory: true
+  installerIcon: resources/install.ico
+  shortcutName: Flint
+  artifactName: Flint-${version}.${ext}
+
+directories:
+  buildResources:
+
+releaseInfo:
+  releaseNotes:

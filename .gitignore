@@ -122,9 +122,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Icon must end with two \r
-Icon
-
 # Thumbnails
 ._*
 

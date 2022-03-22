@@ -26,6 +26,10 @@ const {
 const getFilesAndSizeInDir = p => {
     const result = [];
 
+    if (!fs.existsSync(p)) {
+        return result;
+    }
+
     fs.readdirSync(p).forEach(name => {
         const stat = fs.lstatSync(path.join(p, name));
 
@@ -61,13 +65,13 @@ const getArtifactsFiles = (regex, fileList) => {
 
 module.exports.winArtifactsFiles = getArtifactsFiles(
     winArtifactsRegExp,
-    getFilesAndSizeInDir(winBuildPath),
-);
+    getFilesAndSizeInDir(winBuildPath("China")),
+).concat(getArtifactsFiles(winArtifactsRegExp, getFilesAndSizeInDir(winBuildPath("America"))));
 
 module.exports.macArtifactsFiles = getArtifactsFiles(
     macArtifactsRegExp,
-    getFilesAndSizeInDir(macBuildPath),
-);
+    getFilesAndSizeInDir(macBuildPath("China")),
+).concat(getArtifactsFiles(macArtifactsRegExp, getFilesAndSizeInDir(macBuildPath("America"))));
 
 /**
  * set up different directories according to different files and platforms
