@@ -1,11 +1,11 @@
 const os = require("os");
 const OSS = require("ali-oss");
-const { configPath } = require("../constants");
 const { winArtifactsFiles, macArtifactsFiles, uploadRule, arrayChunks } = require("./utils");
+const { autoChooseConfig } = require("../utils/auto-choose-config");
 
 require("dotenv-flow").config({
     node_env: "production",
-    path: configPath,
+    path: autoChooseConfig(),
     silent: true,
 });
 

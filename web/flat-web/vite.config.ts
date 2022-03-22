@@ -7,18 +7,18 @@ import { version } from "./scripts/vite-plugin-version";
 import { inlineAssets } from "./scripts/vite-plugin-inline-assets";
 import { reactVirtualized } from "./scripts/vite-plugin-react-virtualized";
 import {
-    configPath,
     typesEntryPath,
     i18nEntryPath,
     componentsEntryPath,
     mainPackageJSONPath,
 } from "../../scripts/constants";
+import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 
 export default defineConfig({
     plugins: [
         react(),
         legacy(),
-        dotenv(configPath),
+        dotenv(autoChooseConfig()),
         injectHtmlHash(),
         version(mainPackageJSONPath),
         inlineAssets(),

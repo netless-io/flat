@@ -1,5 +1,6 @@
 {
   "name": "flat",
+  "productName": "Flat",
   "version": "1.7.0",
   "private": true,
   "description": "",
@@ -13,7 +14,11 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js",
+    "start:cn": "cross-env FLAT_REGION=China yarn start",
+    "start:us": "cross-env FLAT_REGION=America yarn start",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
+    "build:cn": "cross-env FLAT_REGION=China yarn build",
+    "build:us": "cross-env FLAT_REGION=America yarn build",
     "build:debug": "cross-env FLAT_DEBUG=debug webpack --config webpack/webpack.debug.js",
     "pack:win": "node ./scripts/pack win",
     "pack:mac": "node ./scripts/pack mac",

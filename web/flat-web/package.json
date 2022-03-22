@@ -78,7 +78,11 @@
   },
   "scripts": {
     "start": "vite --open",
+    "start:cn": "cross-env FLAT_REGION=China yarn start",
+    "start:us": "cross-env FLAT_REGION=America yarn start",
     "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" vite build",
+    "build:cn": "cross-env FLAT_REGION=China yarn build",
+    "build:us": "cross-env FLAT_REGION=America yarn build",
     "serve": "vite preview",
     "lint": "lint-staged"
   },
