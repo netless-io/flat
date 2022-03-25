@@ -9,6 +9,5 @@
     "lint": "lint-staged"
   },
   "devDependencies": {
-    "lint-staged": "^12.3.5"
   }
 }

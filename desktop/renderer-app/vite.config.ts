@@ -1,6 +1,5 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import eslintPlugin from "vite-plugin-eslint";
 import { visualizer } from "rollup-plugin-visualizer";
 import copy from "rollup-plugin-copy";
 import path from "path";
@@ -24,9 +23,6 @@ export default defineConfig(() => {
         dotenv(autoChooseConfig()),
         reactVirtualized(),
         electron(),
-        eslintPlugin({
-            cache: false,
-        }),
         copy({
             targets: [
                 /**

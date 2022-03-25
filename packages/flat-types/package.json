@@ -10,8 +10,5 @@
     "lint": "lint-staged"
   },
   "devDependencies": {
-    "lint-staged": "^12.3.5",
-    "prettier": "^2.5.1",
-    "typescript": "^4.6.2"
   }
 }

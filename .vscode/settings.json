@@ -31,5 +31,6 @@
       "directory": "packages/flat-types",
       "changeProcessCWD": true
     }
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

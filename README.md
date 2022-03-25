@@ -56,30 +56,30 @@ You can build and run the Flat client without a server. This repository includes
 Run the following commands at the root of the repository to build and run Flat Electron client.
 
 ```shell
-yarn run bootstrap
-yarn run start
+pnpm bootstrap
+pnpm start
 ```
 
 You can use one of the following methods to package your executable:
 
--   Run `yarn ship` at project root to package based on current system.
--   Alternatively, run `yarn ship:mac` or `yarn ship:win` at project root to package for a specified system.
+-   Run `pnpm ship` at project root to package based on current system.
+-   Alternatively, run `pnpm ship:mac` or `pnpm ship:win` at project root to package for a specified system.
 
 ### Build and run Flat Web client
 
 Run the following command at the root of the repository to build and run Flat web client.
 
 ```shell
-yarn workspace flat-web start
+pnpm --filter flat-web start
 ```
 
 Alternatively, run the following command:
 
 ```shell
-cd ./web/flat-web/ && yarn run start
+cd ./web/flat-web/ && pnpm start
 ```
 
-UI and business logic are separated in Flat. You can view and develop Flat components UI via Storybook. You can either visit the ([Online address][flat-storybook]) or run `yarn run storybook` at the root of the repository to run Storybook locally.
+UI and business logic are separated in Flat. You can view and develop Flat components UI via Storybook. You can either visit the ([Online address][flat-storybook]) or run `pnpm storybook` at the root of the repository to run Storybook locally.
 
 ## References
 

@@ -125,6 +125,7 @@ module.exports = {
         "micromessenger",
         "bokeh",
         "lintstagedrc",
+        "pnpm",
 
         // CNCF
         "nindent",
@@ -162,6 +163,7 @@ module.exports = {
         "desktop/main-app/static/**",
         "cspell.config.js",
         "yarn.lock",
+        "pnpm-lock.yaml",
         "CHANGELOG.md",
     ],
 };

@@ -38,6 +38,9 @@ async function readNpmrc(npmrcPath) {
     } catch (e) {
         // empty file
     }
+    // @TODO: move to a separate file
+    // @see https://github.com/storybookjs/storybook/issues/13428#issuecomment-1008272060
+    // npmrcOptions["node-linker"] = "hoisted";
     return npmrcOptions;
 }
 
