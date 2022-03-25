@@ -13,6 +13,7 @@ import {
     CloudStorageFileListFileNameProps,
 } from "./CloudStorageFileListFileName";
 import { useTranslation } from "react-i18next";
+import { SVGListLoading } from "../../FlatIcons";
 
 export interface CloudStorageFileListProps
     extends Pick<
@@ -28,6 +29,7 @@ export interface CloudStorageFileListProps
     files: CloudStorageFile[];
     /** User selected file UUIDs */
     selectedFileUUIDs: string[];
+    isLoadingData: Boolean;
     /** Fires when user select or deselect files */
     onSelectionChange: (fileUUID: string[]) => void;
 }
@@ -44,6 +46,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
     titleClickable = false,
     onItemTitleClick,
     renamingFileUUID,
+    isLoadingData,
     onRename,
 }) => {
     const { t } = useTranslation();
@@ -138,6 +141,11 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 }}
                 size="small"
             />
+            {isLoadingData && (
+                <div className="cloud-storage-pull-up-loading">
+                    <SVGListLoading />
+                </div>
+            )}
             {files.length <= 0 && (
                 <div className="cloud-storage-file-list-empty">
                     <div className="cloud-storage-file-list-empty-content">
