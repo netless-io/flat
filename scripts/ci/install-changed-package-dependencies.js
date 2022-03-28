@@ -1,9 +1,10 @@
 if (!process.env.CI) {
-    return;
+    process.exit();
 }
 
 const fs = require("fs");
-const { rootPackageJSONPath } = require("../constants");
+const yaml = require("yaml");
+const { workspacePath } = require("../constants");
 
 const { components, types, renderer, main, flatWeb } = process.env;
 
@@ -51,12 +52,10 @@ if (workspaces.length === 0) {
 
 console.log(`will install dependencies in: ${workspaces.join(", ")}`);
 
-const packageJSONFileContent = require(rootPackageJSONPath);
+const content = yaml.parse(fs.readFileSync(workspacePath, "utf8"));
 
-packageJSONFileContent.workspaces.packages = workspaces;
+content.workspaces = workspaces;
 
-const newFileContent = JSON.stringify(packageJSONFileContent, null, 2);
-
-fs.writeFileSync(rootPackageJSONPath, newFileContent, {
+fs.writeFileSync(workspacePath, yaml.stringify(content), {
     encoding: "utf-8",
 });
