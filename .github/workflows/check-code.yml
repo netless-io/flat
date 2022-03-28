@@ -51,7 +51,7 @@ jobs:
               - 'web/flat-web/**/*.(ts|tsx)'
 
       - name: Install PNPM
-      - uses: pnpm/action-setup@v2.0.1
+        uses: pnpm/action-setup@v2.0.1
         with:
           version: latest
           run_install: true
