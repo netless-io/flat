@@ -162,7 +162,6 @@ module.exports = {
         "desktop/main-app/release/**",
         "desktop/main-app/static/**",
         "cspell.config.js",
-        "yarn.lock",
         "pnpm-lock.yaml",
         "CHANGELOG.md",
     ],
