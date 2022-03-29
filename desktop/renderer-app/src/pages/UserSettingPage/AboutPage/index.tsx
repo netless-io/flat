@@ -30,8 +30,8 @@ export const AboutPage = (): React.ReactElement => {
         <UserSettingLayoutContainer>
             <div className="about-page-container">
                 <div className="about-page-middle-container">
-                    <img alt="flat logo" src={logoSVG} />
-                    <div className="flat-name">Flat</div>
+                    <img alt="app logo" src={logoSVG} />
+                    <div className="flat-name">{t("app-name")}</div>
                     <div className="flat-version">Version {runtime.appVersion}</div>
                     <Button type="primary" onClick={checkUpgradeVersion}>
                         <img src={updateSVG} />

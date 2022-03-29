@@ -12,7 +12,7 @@ const i18nPath = join(packagesPath, "flat-i18n");
 const componentsPath = join(packagesPath, "flat-components");
 
 const typesEntryPath = join(packagesPath, "flat-types", "src");
-const i18nEntryPath = join(packagesPath, "flat-i18n", "locales");
+const i18nEntryPath = join(packagesPath, "flat-i18n");
 const componentsEntryPath = join(packagesPath, "flat-components", "src");
 
 const rootPackageJSONPath = join(rootPath, "package.json");

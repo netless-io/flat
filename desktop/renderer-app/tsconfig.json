@@ -7,11 +7,11 @@
     "baseUrl": ".",
     "paths": {
       "flat-types": ["../../packages/flat-types/src"],
-      "flat-i18n": ["../../packages/flat-i18n/locales"],
+      "flat-i18n": ["../../packages/flat-i18n"],
       "flat-components": ["../../packages/flat-components/src"]
     },
     "types": ["vite/client"]
   },
   "exclude": ["node_modules", "dist", "public"],
-  "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts", "vite.config.ts","scripts/**/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts", "vite.config.ts", "scripts/**/*.ts"]
 }

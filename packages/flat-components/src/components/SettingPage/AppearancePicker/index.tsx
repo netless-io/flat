@@ -24,19 +24,19 @@ export const AppearancePicker: React.FC<AppearancePickerProps> = ({
                 <Radio value={"light"}>
                     <div className="appearance-picker-option">
                         <img src={lightSVG} />
-                        <span>{t("flat-appearance-light")}</span>
+                        <span>{t("app-appearance-light")}</span>
                     </div>
                 </Radio>
                 <Radio value={"dark"}>
                     <div className="appearance-picker-option">
                         <img src={darkSVG} />
-                        <span>{t("flat-appearance-dark")}</span>
+                        <span>{t("app-appearance-dark")}</span>
                     </div>
                 </Radio>
                 <Radio value={"auto"}>
                     <div className="appearance-picker-option">
                         <img src={autoSVG} />
-                        <span>{t("flat-appearance-auto")}</span>
+                        <span>{t("app-appearance-auto")}</span>
                     </div>
                 </Radio>
             </Radio.Group>

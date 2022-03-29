@@ -74,7 +74,7 @@ export const GeneralSettingPage = (): React.ReactElement => {
                     </Radio.Group>
                 </div>
                 <div className="general-setting-appearance-picker-container">
-                    <span>{t("flat-appearance-setting")}</span>
+                    <span>{t("app-appearance-setting")}</span>
                     <AppearancePicker
                         changeAppearance={changeAppearance}
                         defaultValue={configStore.prefersColorScheme}
