@@ -47,3 +47,8 @@ export const languages = ["en", "zh-CN"] as const;
  * NOTE: to use this library, also install https://github.com/antfu/i18n-ally
  * to edit translations. open a new vscode window at <path to renderer-app>.
  */
+
+const changeLang = (lang: string): void =>
+    document.querySelector("html")?.setAttribute("lang", lang);
+changeLang(i18next.language);
+i18next.on("languageChanged", changeLang);
