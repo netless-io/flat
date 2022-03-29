@@ -18,12 +18,13 @@ export async function post<Payload, Result>(
     action: string,
     payload: Payload,
     params?: AxiosRequestConfig["params"],
+    token?: string,
 ): Promise<Result> {
     const config: AxiosRequestConfig = {
         params,
     };
 
-    const Authorization = globalStore.userInfo?.token;
+    const Authorization = token || globalStore.userInfo?.token;
     if (!Authorization) {
         throw new ServerRequestError(RequestErrorCode.NeedLoginAgain);
     }

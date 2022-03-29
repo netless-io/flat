@@ -1,5 +1,5 @@
 import { Region } from "flat-components";
-import { RoomStatus, RoomType, Sex, Week } from "./constants";
+import { RoomStatus, RoomType, Week } from "./constants";
 import { post, postNotAuth } from "./utils";
 
 export interface CreateOrdinaryRoomPayload {
@@ -451,21 +451,17 @@ export async function updatePeriodicSubRoom(payload: UpdatePeriodicSubRoomPayloa
     );
 }
 
-export interface LoginCheckPayload {
-    type: "web" | "mobile";
-}
+export interface LoginCheckPayload {}
 
 export interface LoginCheckResult {
     name: string;
-    sex: Sex;
     avatar: string;
+    token: string;
     userUUID: string;
 }
 
-export async function loginCheck(): Promise<LoginCheckResult> {
-    return await post<LoginCheckPayload, LoginCheckResult>("login", {
-        type: "web",
-    });
+export async function loginCheck(token?: string): Promise<LoginCheckResult> {
+    return await post<LoginCheckPayload, LoginCheckResult>("login", {}, {}, token);
 }
 
 export interface setAuthUUIDPayload {
@@ -488,14 +484,32 @@ export interface LoginProcessPayload {
 
 export interface LoginProcessResult {
     name: string;
-    sex: Sex;
     avatar: string;
     userUUID: string;
     token: string;
+    agoraSSOLoginID?: string;
 }
 
 export async function loginProcess(authUUID: string): Promise<LoginProcessResult> {
     return await postNotAuth<LoginProcessPayload, LoginProcessResult>("login/process", {
         authUUID,
     });
+}
+
+export interface AgoraSSOLoginCheckPayload {
+    loginID: string;
+}
+
+export interface AgoraSSOLoginCheckResult {
+    jwtToken: string;
+}
+
+// Only Web
+export async function agoraSSOLoginCheck(loginID: string): Promise<AgoraSSOLoginCheckResult> {
+    return await postNotAuth<AgoraSSOLoginCheckPayload, AgoraSSOLoginCheckResult>(
+        "login/agora/check",
+        {
+            loginID,
+        },
+    );
 }
