@@ -13,6 +13,8 @@ import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../
 import { useTranslation } from "react-i18next";
 import { agoraLogin } from "./agoraLogin";
 import { message } from "antd";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { agoraSSOLoginCheck, loginCheck } from "../../api-middleware/flatServer";
 
 export const LoginPage = observer(function LoginPage() {
     const { i18n } = useTranslation();
@@ -24,6 +26,7 @@ export const LoginPage = observer(function LoginPage() {
     const [agreement, setAgreement] = useState<boolean>(false);
     const roomUUID = sessionStorage.getItem("roomUUID");
 
+    const sp = useSafePromise();
     const urlParams = useURLParams();
 
     useEffect(() => {
@@ -35,6 +38,25 @@ export const LoginPage = observer(function LoginPage() {
             sessionStorage.clear();
         };
     }, []);
+
+    useEffect(() => {
+        if (urlParams.utm_source === "agora" && !globalStore.agoraSSOLoginID) {
+            return;
+        }
+
+        const effect = async (): Promise<void> => {
+            const { jwtToken } = await sp(agoraSSOLoginCheck(globalStore.agoraSSOLoginID!));
+            const userInfo = await sp(loginCheck(jwtToken));
+
+            globalStore.updateUserInfo(userInfo);
+            pushHistory(RouteNameType.HomePage);
+        };
+
+        effect().catch(error => {
+            // no handling required
+            console.warn(error);
+        });
+    });
 
     const handleLogin = useCallback(
         (loginChannel: LoginButtonProviderType) => {

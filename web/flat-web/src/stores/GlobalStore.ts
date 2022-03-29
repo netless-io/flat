@@ -45,6 +45,10 @@ export class GlobalStore {
         return this.userInfo?.name;
     }
 
+    public get agoraSSOLoginID(): string | undefined {
+        return this.userInfo?.agoraSSOLoginID;
+    }
+
     public constructor() {
         autoPersistStore({ storeLSName: "GlobalStore", store: this, version: LS_VERSION });
     }
