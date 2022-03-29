@@ -495,7 +495,13 @@ export interface LoginProcessResult {
 }
 
 export async function loginProcess(authUUID: string): Promise<LoginProcessResult> {
-    return await postNotAuth<LoginProcessPayload, LoginProcessResult>("login/process", {
-        authUUID,
-    });
+    return await postNotAuth<LoginProcessPayload, LoginProcessResult>(
+        "login/process",
+        {
+            authUUID,
+        },
+        {
+            withCredentials: true,
+        },
+    );
 }

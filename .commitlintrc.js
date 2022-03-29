@@ -57,7 +57,8 @@ module.exports = {
                 "style",
                 "room",
                 "classroom",
-                "assets"
+                "assets",
+                "api",
             ],
         ],
         "scope-case": [2, "always", ["lower-case", "kebab-case"]],
