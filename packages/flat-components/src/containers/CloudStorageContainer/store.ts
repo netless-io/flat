@@ -122,6 +122,9 @@ export abstract class CloudStorageStore {
     /** User cloud storage files */
     public abstract files: CloudStorageFile[];
 
+    /** get fetch data pagination value of cloudStorage. */
+    public abstract cloudStorageDataPagination: number;
+
     /** Render file menus item base on fileUUID */
     public abstract fileMenus: (
         file: CloudStorageFile,
@@ -157,4 +160,16 @@ export abstract class CloudStorageStore {
 
     /** When file(s) are dropped in the container. */
     public abstract onDropFile(files: FileList): void;
+
+    /** When file(s) are dropped in the container. */
+    public abstract onDropFile(files: FileList): void;
+
+    /** In order to avoid multiple calls the fetchMoreCloudStorageData when fetching data */
+    public abstract isFetchingFiles: boolean;
+
+    /** Cloud storage single page data returned by the server */
+    public abstract cloudStorageSinglePageFiles: number;
+
+    /** When cloudStorage files is 50 or more, pull up to bottom that loading will fetch more pagination Data of the cloudStorage. */
+    public abstract fetchMoreCloudStorageData: (page: number) => Promise<void>;
 }

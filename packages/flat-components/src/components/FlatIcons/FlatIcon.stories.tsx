@@ -130,6 +130,7 @@ export const SuggestedIcons: Story = ({ active }) => (
             "CircleInfoOutlined",
             "CircleInfoFilled",
             "Load",
+            "ListLoading",
         ]}
         title="Suggested Icons"
     />

@@ -6,15 +6,17 @@ import { CloudStorageFileList } from "../../components/CloudStorage";
 
 export interface CloudStorageFileListContainerProps {
     store: CloudStorageStore;
+    isLoadingData: Boolean;
 }
 
 export const CloudStorageFileListContainer = observer<CloudStorageFileListContainerProps>(
-    function CloudStorageFileListContainer({ store }) {
+    function CloudStorageFileListContainer({ store, isLoadingData }) {
         return (
             <CloudStorageFileList
                 titleClickable
                 fileMenus={store.fileMenus}
                 files={toJS(store.files)}
+                isLoadingData={isLoadingData}
                 renamingFileUUID={store.renamingFileUUID}
                 selectedFileUUIDs={toJS(store.selectedFileUUIDs)}
                 onItemMenuClick={store.onItemMenuClick}

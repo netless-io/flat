@@ -51,6 +51,13 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     public insertCourseware: (file: CloudStorageFile) => void;
     public onCoursewareInserted?: () => void;
 
+    public cloudStorageSinglePageFiles = 50;
+
+    /** In order to avoid multiple calls the fetchMoreCloudStorageData
+     * when request fetchMoreCloudStorageData after files length is 0  */
+    public hasMoreFile = true;
+    public isFetchingFiles = false;
+
     // a set of taskUUIDs representing querying tasks
     private convertStatusManager = new ConvertStatusManager();
 
@@ -73,12 +80,15 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
         makeObservable(this, {
             filesMap: observable,
+            isFetchingFiles: observable,
 
             pendingUploadTasks: computed,
             uploadingUploadTasks: computed,
             successUploadTasks: computed,
             failedUploadTasks: computed,
             files: computed,
+            currentFilesLength: computed,
+            cloudStorageDataPagination: computed,
 
             fileMenus: action,
             onItemMenuClick: action,
@@ -111,6 +121,14 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     /** User cloud storage files */
     public get files(): CloudStorageFileUI[] {
         return observable.array([...this.filesMap.values()]);
+    }
+
+    public get currentFilesLength(): number {
+        return this.filesMap.size;
+    }
+
+    public get cloudStorageDataPagination(): number {
+        return Math.ceil(this.currentFilesLength / this.cloudStorageSinglePageFiles);
     }
 
     /** Render file menus item base on fileUUID */
@@ -278,6 +296,58 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         this.uploadTaskManager.addTasks(Array.from(files));
     }
 
+    public fetchMoreCloudStorageData = async (page: number): Promise<void> => {
+        if (this.isFetchingFiles) {
+            return;
+        }
+
+        const cloudStorageTotalPagesFilesCount =
+            this.cloudStorageDataPagination * this.cloudStorageSinglePageFiles;
+
+        if (this.currentFilesLength >= cloudStorageTotalPagesFilesCount && this.hasMoreFile) {
+            this.isFetchingFiles = true;
+
+            try {
+                const { files: cloudFiles } = await listFiles({
+                    page,
+                    order: "DESC",
+                });
+
+                this.isFetchingFiles = false;
+
+                this.hasMoreFile = cloudFiles.length === 0;
+
+                for (const cloudFile of cloudFiles) {
+                    const file = this.filesMap.get(cloudFile.fileUUID);
+
+                    runInAction(() => {
+                        if (file) {
+                            file.fileName = cloudFile.fileName;
+                            file.createAt = cloudFile.createAt;
+                            file.fileSize = cloudFile.fileSize;
+                            file.convert = CloudStorageStore.mapConvertStep(cloudFile.convertStep);
+                            file.taskToken = cloudFile.taskToken;
+                            file.taskUUID = cloudFile.taskUUID;
+                            file.external = cloudFile.external;
+                        } else {
+                            this.filesMap.set(
+                                cloudFile.fileUUID,
+                                observable.object({
+                                    ...cloudFile,
+                                    convert: CloudStorageStore.mapConvertStep(
+                                        cloudFile.convertStep,
+                                    ),
+                                }),
+                            );
+                        }
+                    });
+                }
+            } catch {
+                this.isFetchingFiles = false;
+            }
+        }
+    };
+
     public initialize({
         onCoursewareInserted,
     }: { onCoursewareInserted?: () => void } = {}): () => void {
@@ -297,6 +367,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             (currLen, prevLen) => {
                 if (currLen < prevLen) {
                     this.refreshFilesNowDebounced();
+                    this.hasMoreFile = true;
                 }
             },
         );
