@@ -48,12 +48,8 @@ export async function post<Payload, Result>(
 export async function postNotAuth<Payload, Result>(
     action: string,
     payload: Payload,
-    params?: AxiosRequestConfig["params"],
+    config?: AxiosRequestConfig,
 ): Promise<Result> {
-    const config: AxiosRequestConfig = {
-        params,
-    };
-
     const { data: res } = await Axios.post<FlatServerResponse<Result>>(
         `${FLAT_SERVER_VERSIONS.V1}/${action}`,
         payload,
