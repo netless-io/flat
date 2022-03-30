@@ -54,6 +54,10 @@ export class GlobalStore {
         this.userInfo = userInfo;
     };
 
+    public updateAgoraSSOLoginID = (val: string | undefined | null): void => {
+        this.agoraSSOLoginID = val ?? null;
+    };
+
     public updateToken = (
         config: Partial<
             Pick<

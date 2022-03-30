@@ -68,7 +68,7 @@ export const LoginPage = observer(function LoginPage() {
                 switch (loginChannel) {
                     case "agora": {
                         loginDisposer.current = agoraLogin(async ({ agoraSSOLoginID, ...rest }) => {
-                            globalStore.agoraSSOLoginID = agoraSSOLoginID ?? null;
+                            globalStore.updateAgoraSSOLoginID(agoraSSOLoginID);
 
                             globalStore.updateUserInfo(rest);
                             if (!roomUUID) {
