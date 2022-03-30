@@ -36,7 +36,13 @@ export default function JoinPageMobile({
 
     return (
         <div className="join-page-mobile-container">
-            <iframe height="0" src={url} style={{ display: "none" }} title="join flat" width="0" />
+            <iframe
+                height="0"
+                src={url}
+                style={{ display: "none" }}
+                title={`join ${t("app-name")}`}
+                width="0"
+            />
             <div className="join-page-mobile-effect"></div>
             <div className="join-page-mobile-header">
                 <div className="join-page-mobile-app-icon">
@@ -45,10 +51,10 @@ export default function JoinPageMobile({
             </div>
             <div className="join-page-mobile-big-btns">
                 <button className="join-page-mobile-big-btn" onClick={openApp}>
-                    {t("open")} Flat
+                    {t("open")} {t("app-name")}
                 </button>
                 <button className="join-page-mobile-big-btn secondary" onClick={download}>
-                    {t("download")} Flat
+                    {t("download")} {t("app-name")}
                 </button>
             </div>
             <div className="join-page-mobile-footer">

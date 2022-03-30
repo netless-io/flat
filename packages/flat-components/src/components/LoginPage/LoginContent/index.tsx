@@ -51,7 +51,7 @@ export const LoginContent: React.FC<LoginContentProps> = ({
                         <>
                             <div className="login-content-logo">
                                 <img src={logoSVG} />
-                                <span className="login-content-title">{t("welcome-to-Flat")}</span>
+                                <span className="login-content-title">{t("app-welcome")}</span>
                                 <span className="login-content-text">
                                     {t("online-interaction-to-synchronize-ideas")}
                                 </span>

@@ -3,6 +3,7 @@ import path from "path";
 import dotenvReal from "dotenv";
 import { expand } from "dotenv-expand";
 import type { Plugin } from "vite";
+import { configRegion } from "../../../scripts/utils/auto-choose-config";
 
 // based on https://github.com/IndexXuan/vite-plugin-env-compatible
 export function dotenv(envDir: string): Plugin {
@@ -25,6 +26,7 @@ export function dotenv(envDir: string): Plugin {
                 define["process.env.PROD"] = mode === "production";
                 define["process.env.DEV"] = mode === "development";
                 define["process.env.NODE_DEV"] = JSON.stringify(mode);
+                define["process.env.FLAT_REGION"] = JSON.stringify(configRegion());
 
                 config.define = { ...config.define, ...define };
             }

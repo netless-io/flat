@@ -84,7 +84,7 @@ export const SplashPage = observer<{}>(function SplashPage() {
                 })}
             >
                 <img
-                    alt="flat logo"
+                    alt="app logo"
                     height={64}
                     src={logoSVG}
                     width={64}

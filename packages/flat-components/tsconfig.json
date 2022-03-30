@@ -8,7 +8,7 @@
     "baseUrl": ".",
     "paths": {
       "flat-types": ["../flat-types/src"],
-      "flat-i18n": ["../flat-i18n/locales"]
+      "flat-i18n": ["../flat-i18n"]
     }
   },
   "exclude": ["node_modules", "storybook-static", "public", ".storybook"],
