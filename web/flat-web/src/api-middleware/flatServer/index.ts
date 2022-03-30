@@ -487,7 +487,6 @@ export interface LoginProcessResult {
     avatar: string;
     userUUID: string;
     token: string;
-    agoraSSOLoginID?: string;
 }
 
 export async function loginProcess(authUUID: string): Promise<LoginProcessResult> {
