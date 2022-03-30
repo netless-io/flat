@@ -31,6 +31,7 @@ export class GlobalStore {
     } | null = null;
     public rtmToken: string | null = null;
     public lastLoginCheck: number | null = null;
+    public agoraSSOLoginID: string | null = null;
     /**
      * To sync update the roomStore's room information data after call the begin of the class in the classRoomStore,
      * that for sure roomStore's begin time value of roomInfo is correct so that the classroom page's Timer component display correctly.
@@ -43,10 +44,6 @@ export class GlobalStore {
 
     public get userName(): string | undefined {
         return this.userInfo?.name;
-    }
-
-    public get agoraSSOLoginID(): string | undefined {
-        return this.userInfo?.agoraSSOLoginID;
     }
 
     public constructor() {
