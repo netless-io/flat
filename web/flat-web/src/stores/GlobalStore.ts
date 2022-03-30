@@ -6,7 +6,7 @@ import type { UID } from "agora-rtc-sdk-ng";
 // clear storage if not match
 const LS_VERSION = 1;
 
-export type UserInfo = LoginProcessResult;
+export type UserInfo = Omit<LoginProcessResult, "agoraSSOLoginID">;
 
 /**
  * Properties in Global Store are persisted and shared globally.
@@ -51,7 +51,13 @@ export class GlobalStore {
     }
 
     public updateUserInfo = (userInfo: UserInfo): void => {
-        this.userInfo = userInfo;
+        const { token, userUUID, avatar, name } = userInfo;
+        this.userInfo = {
+            token,
+            userUUID,
+            avatar,
+            name,
+        };
     };
 
     public updateAgoraSSOLoginID = (val: string | undefined | null): void => {
