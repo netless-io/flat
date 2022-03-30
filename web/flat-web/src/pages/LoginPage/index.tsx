@@ -67,8 +67,10 @@ export const LoginPage = observer(function LoginPage() {
             const doLogin = (loginChannel: LoginButtonProviderType): void => {
                 switch (loginChannel) {
                     case "agora": {
-                        loginDisposer.current = agoraLogin(async authData => {
-                            globalStore.updateUserInfo(authData);
+                        loginDisposer.current = agoraLogin(async ({ agoraSSOLoginID, ...rest }) => {
+                            globalStore.agoraSSOLoginID = agoraSSOLoginID ?? null;
+
+                            globalStore.updateUserInfo(rest);
                             if (!roomUUID) {
                                 pushHistory(RouteNameType.HomePage);
                                 return;
