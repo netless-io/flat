@@ -188,8 +188,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-.npmrc
-
 build/
 !desktop/main-app/scripts/build
 
