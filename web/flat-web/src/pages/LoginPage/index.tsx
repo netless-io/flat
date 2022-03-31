@@ -40,22 +40,23 @@ export const LoginPage = observer(function LoginPage() {
     }, []);
 
     useEffect(() => {
-        if (urlParams.utm_source === "agora" && !globalStore.agoraSSOLoginID) {
-            return;
-        }
-
-        const effect = async (): Promise<void> => {
-            const { jwtToken } = await sp(agoraSSOLoginCheck(globalStore.agoraSSOLoginID!));
+        const effect = async (agoraSSOLoginID: string): Promise<void> => {
+            const { jwtToken } = await sp(agoraSSOLoginCheck(agoraSSOLoginID));
             const userInfo = await sp(loginCheck(jwtToken));
 
             globalStore.updateUserInfo(userInfo);
             pushHistory(RouteNameType.HomePage);
         };
 
-        effect().catch(error => {
-            // no handling required
-            console.warn(error);
-        });
+        if (urlParams.utm_source === "agora") {
+            const agoraSSOLoginID = urlParams.loginID || globalStore.agoraSSOLoginID;
+            if (agoraSSOLoginID) {
+                effect(agoraSSOLoginID).catch(error => {
+                    // no handling required
+                    console.warn(error);
+                });
+            }
+        }
     });
 
     const handleLogin = useCallback(
