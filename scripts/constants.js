@@ -1,5 +1,4 @@
 const { join } = require("path");
-const findUp = require("find-up");
 
 const rootPath = join(__dirname, "..");
 const configPath = join(rootPath, "config");
@@ -16,7 +15,7 @@ const typesEntryPath = join(packagesPath, "flat-types", "src");
 const i18nEntryPath = join(packagesPath, "flat-i18n");
 const componentsEntryPath = join(packagesPath, "flat-components", "src");
 
-const workspacePath = findUp.sync("pnpm-workspace.yaml");
+const workspacePath = join(rootPath, "pnpm-workspace.yaml");
 const rootPackageJSONPath = join(rootPath, "package.json");
 const mainPackageJSONPath = join(mainPath, "package.json");
 
