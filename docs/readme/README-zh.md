@@ -55,18 +55,18 @@
 在仓库根目录运行以下命令：
 
 ```shell
-yarn run start
+pnpm start
 ```
 
 你可以运行以下命令将项目打包成可执行文件：
 
--   项目根目录执行 `yarn ship` 将根据当前系统打包。
--   或者项目根目录执行 `yarn ship:mac` 或 `yarn ship:win` 可针对指定的系统打包。
+-   项目根目录执行 `pnpm ship` 将根据当前系统打包。
+-   或者项目根目录执行 `pnpm ship:mac` 或 `pnpm ship:win` 可针对指定的系统打包。
 
-> 如果你因为网络问题导致无法下载 `electron`，可在项目目录新建: `.yarnrc` 文件，并写入 `electron_mirror "https://npmmirror.com/mirrors/electron/"` 内容。重新执行 `yarn run bootstrap` 即可。
+> 如果你因为网络问题导致无法下载 `electron`，可在项目目录新建: `.npmrc` 文件，并写入 `ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"` 内容。重新执行 `pnpm bootstrap` 即可。
 
 ```shell
-yarn run bootstrap
+pnpm bootstrap
 ```
 
 ### 构建并运行 Flat Web 客户端
@@ -74,14 +74,14 @@ yarn run bootstrap
 在仓库根目录运行以下任意一个命令：
 
 ```shell
-yarn workspace flat-web start
+pnpm --filter flat-web start
 ```
 
 ```shell
-cd ./web/flat-web/ && yarn run start
+cd ./web/flat-web/ && pnpm start
 ```
 
-在 Flat 中 UI 逻辑与业务逻辑分开开发。可以通过 [Storybook](#storybook) 快速查看与开发部分 UI。参考（[线上地址][flat-storybook]）或在项目根目录执行 `yarn run storybook` 在本地运行 Storybook。
+在 Flat 中 UI 逻辑与业务逻辑分开开发。可以通过 [Storybook](#storybook) 快速查看与开发部分 UI。参考（[线上地址][flat-storybook]）或在项目根目录执行 `pnpm storybook` 在本地运行 Storybook。
 
 ## 相关项目
 

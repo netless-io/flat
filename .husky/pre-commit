@@ -1,5 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn run check-spelling
-yarn run lint
+pnpm check-spelling
+pnpm lint

@@ -21,15 +21,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install PNPM
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: latest
+          run_install: true
+
       - name: Install dependencies
         run: |
           node ./scripts/ci/remove-workspace-packages.js web
           node ./scripts/ci/remove-package-scripts-hooks.js
           # failure automatically retries 3 times
-          yarn run bootstrap || yarn run bootstrap || yarn run bootstrap
+          pnpm bootstrap || pnpm bootstrap || pnpm bootstrap
 
       - name: Build flat web development
-        run: yarn workspace flat-web build:cn -m development
+        run: pnpm --filter flat-web build:cn -m development
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1

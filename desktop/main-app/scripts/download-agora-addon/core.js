@@ -17,5 +17,8 @@ module.exports.downloadAddon = platform => {
         encoding: "utf-8",
     });
 
-    fs.moveSync(path.join(mainPath, "build"), path.join(agoraElectronSdkPath, "build"), {});
+    const downloaded = path.join(mainPath, "build");
+    if (fs.existsSync(downloaded)) {
+        fs.moveSync(downloaded, path.join(agoraElectronSdkPath, "build"), {});
+    }
 };

@@ -19,7 +19,7 @@ jobs:
           node-version: "16"
 
       - name: Install cspell
-        run:  yarn global add cspell
+        run:  npm i -g cspell
 
       - name: Check cspell
-        run: yarn run check-spelling
+        run: npm run check-spelling

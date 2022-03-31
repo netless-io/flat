@@ -50,16 +50,17 @@ jobs:
             flat-web:
               - 'web/flat-web/**/*.(ts|tsx)'
 
-      - name: Install NodeJS
-        uses: actions/setup-node@v2
+      - name: Install PNPM
+        uses: pnpm/action-setup@v2.0.1
         with:
-          node-version: "16"
+          version: latest
+          run_install: true
 
       - name: Install changed package dependencies and build packages
         run: |-
           if node ./scripts/ci/install-changed-package-dependencies.js; then
             # failure automatically retries 3 times
-            yarn run bootstrap || yarn run bootstrap || yarn run bootstrap
+            pnpm bootstrap || pnpm bootstrap || pnpm bootstrap
           fi
         env:
           components: ${{ steps.filter.outputs.components }}
@@ -69,15 +70,15 @@ jobs:
           flatWeb: ${{ steps.filter.outputs.flat-web }}
 
       - name: Build renderer
-        run: yarn workspace renderer-app build
+        run: pnpm --filter renderer-app build
         if: steps.filter.outputs.renderer == 'true'
 
       - name: Build main
-        run: yarn workspace flat build
+        run: pnpm --filter flat build
         if: steps.filter.outputs.main == 'true'
 
       - name: Build flat-web
-        run: yarn workspace flat-web build
+        run: pnpm --filter flat-web build
         if: steps.filter.outputs.flat-web == 'true'
 
       - name: Check i18n
