@@ -51,12 +51,9 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     public insertCourseware: (file: CloudStorageFile) => void;
     public onCoursewareInserted?: () => void;
 
-    public cloudStorageSinglePageFiles = 50;
-
     /** In order to avoid multiple calls the fetchMoreCloudStorageData
      * when request fetchMoreCloudStorageData after files length is 0  */
-    public hasMoreFile = false;
-    public isFetchingFiles = false;
+    public hasMoreFile = true;
 
     // a set of taskUUIDs representing querying tasks
     private convertStatusManager = new ConvertStatusManager();
@@ -80,15 +77,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
         makeObservable(this, {
             filesMap: observable,
-            isFetchingFiles: observable,
 
             pendingUploadTasks: computed,
             uploadingUploadTasks: computed,
             successUploadTasks: computed,
             failedUploadTasks: computed,
             files: computed,
-            currentFilesLength: computed,
-            cloudStorageDataPagination: computed,
 
             fileMenus: action,
             onItemMenuClick: action,
@@ -121,14 +115,6 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     /** User cloud storage files */
     public get files(): CloudStorageFileUI[] {
         return observable.array([...this.filesMap.values()]);
-    }
-
-    public get currentFilesLength(): number {
-        return this.filesMap.size;
-    }
-
-    public get cloudStorageDataPagination(): number {
-        return Math.ceil(this.currentFilesLength / this.cloudStorageSinglePageFiles);
     }
 
     /** Render file menus item base on fileUUID */
@@ -308,7 +294,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         const cloudStorageTotalPagesFilesCount =
             this.cloudStorageDataPagination * this.cloudStorageSinglePageFiles;
 
-        if (this.currentFilesLength >= cloudStorageTotalPagesFilesCount && this.hasMoreFile) {
+        if (this.filesMap.size >= cloudStorageTotalPagesFilesCount && this.hasMoreFile) {
             this.isFetchingFiles = true;
 
             try {

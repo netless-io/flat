@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Story, Meta, ArgTypes } from "@storybook/react";
 import Chance from "chance";
 import faker from "faker";
-import { action, AnnotationsMap, makeObservable } from "mobx";
+import { action, AnnotationsMap, makeObservable, observable } from "mobx";
 import { Modal } from "antd";
 import { CloudStorageContainer, CloudStorageStore } from "./index";
 import { CloudStorageUploadTask } from "../../components/CloudStorage/types";
@@ -34,6 +34,7 @@ const fakeStoreImplProps = [
     "onNewFileName",
     "addExternalFile",
     "onDropFile",
+    "fetchMoreCloudStorageData",
 ] as const;
 
 type FakeStoreImplProps = typeof fakeStoreImplProps[number];
@@ -51,6 +52,7 @@ class FakeStore extends CloudStorageStore {
     public onNewFileName: FakeStoreConfig["onNewFileName"];
     public addExternalFile;
     public onDropFile: FakeStoreConfig["onDropFile"];
+    public fetchMoreCloudStorageData;
 
     public pendingUploadTasks: CloudStorageStore["pendingUploadTasks"] = [];
     public uploadingUploadTasks: CloudStorageStore["uploadingUploadTasks"] = [];
@@ -61,7 +63,7 @@ class FakeStore extends CloudStorageStore {
     public constructor(config: FakeStoreConfig) {
         super();
 
-        this.files = Array(25)
+        this.files = Array(this.cloudStorageSinglePageFiles)
             .fill(0)
             .map(() => ({
                 fileUUID: faker.datatype.uuid(),
@@ -154,13 +156,53 @@ class FakeStore extends CloudStorageStore {
                 });
             }
         };
+        this.fetchMoreCloudStorageData = async (page: number): Promise<void> => {
+            if (this.isFetchingFiles || this.files.length > 300) {
+                console.warn("the cloud storage files is enough");
+                return Promise.resolve();
+            }
+
+            const cloudStorageTotalPagesFilesCount =
+                this.cloudStorageDataPagination * this.cloudStorageSinglePageFiles;
+
+            if (this.files.length >= cloudStorageTotalPagesFilesCount) {
+                this.isFetchingFiles = true;
+
+                const newFilesData = Array(this.cloudStorageSinglePageFiles * page)
+                    .fill(0)
+                    .map(() => ({
+                        fileUUID: faker.datatype.uuid(),
+                        fileName: faker.random.words() + "." + faker.system.commonFileExt(),
+                        fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
+                        convert: chance.pickone(["idle", "error", "success", "converting"]),
+                        createAt: faker.date.past(),
+                    }));
+
+                for (const { fileName, fileSize } of newFilesData) {
+                    this.files.push({
+                        fileUUID: faker.datatype.uuid(),
+                        fileName: fileName,
+                        fileSize: fileSize,
+                        convert: "idle",
+                        createAt: faker.date.past(),
+                    });
+                }
+
+                this.isFetchingFiles = false;
+            }
+        };
 
         makeObservable(
             this,
-            fakeStoreImplProps.reduce((o, k) => {
-                o[k] = action;
-                return o;
-            }, {} as AnnotationsMap<this, never>),
+            fakeStoreImplProps.reduce(
+                (o, k) => {
+                    o[k] = action;
+                    return o;
+                },
+                {
+                    files: observable,
+                } as AnnotationsMap<this, never>,
+            ),
         );
     }
 
