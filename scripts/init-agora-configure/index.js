@@ -1,1 +1,0 @@
-require("./configure-agora-sdk");

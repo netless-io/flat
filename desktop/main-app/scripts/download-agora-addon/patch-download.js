@@ -9,8 +9,7 @@ if (fs.existsSync(nativeExtPath) && !("FORCE_REBUILD_AGORA_NODE_EXT" in process.
     process.exit(0);
 }
 
-const electronVersion =
-    require("../../../../scripts/init-agora-configure/agora-electron-options").electron_version;
+const electronVersion = "12.0.0";
 const agoraVersion = require(path.join(agoraElectronSdkPath, "package.json")).version;
 
 fs.removeSync(path.join(agoraElectronSdkPath, "build"));
