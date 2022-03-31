@@ -32,7 +32,7 @@ jobs:
           node ./scripts/ci/remove-workspace-packages.js web
           node ./scripts/ci/remove-package-scripts-hooks.js
           # failure automatically retries 3 times
-          pnpm bootstrap || pnpm bootstrap || pnpm bootstrap
+          pnpm install || pnpm install || pnpm install
 
       - name: Build flat web development
         run: pnpm --filter flat-web build:cn -- -- -m development
@@ -82,4 +82,4 @@ jobs:
         uses: WyriHaximus/github-action-helm3@v2
         with:
           exec: helm upgrade flat-web ./web/flat-web/helm --install --wait --atomic --namespace=default
-          kubeconfig: '${{ secrets.KUBECONFIG }}'
+          kubeconfig: "${{ secrets.KUBECONFIG }}"

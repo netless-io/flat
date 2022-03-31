@@ -51,12 +51,25 @@ You can build and run the Flat client without a server. This repository includes
 -   [Flat Electron client](./desktop) is an Electron implementation of Flat client.
 -   [Flat Web client](./web) is a web implementation of Flat client.
 
+### Installation
+
+> If you don't have pnpm installed:
+>
+> ```bash
+> npm i -g pnpm
+> ```
+
+Clone or fork this project, at project root run:
+
+```bash
+pnpm install
+```
+
 ### Build and run Flat Electron client
 
 Run the following commands at the root of the repository to build and run Flat Electron client.
 
 ```shell
-pnpm bootstrap
 pnpm start
 ```
 
@@ -70,7 +83,7 @@ You can use one of the following methods to package your executable:
 Run the following command at the root of the repository to build and run Flat web client.
 
 ```shell
-pnpm --filter flat-web start
+pnpm start:web
 ```
 
 Alternatively, run the following command:

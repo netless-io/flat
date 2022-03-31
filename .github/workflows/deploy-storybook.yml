@@ -32,7 +32,7 @@ jobs:
         run: |-
           if node ./scripts/ci/install-changed-package-dependencies.js; then
             # failure automatically retries 3 times
-            pnpm bootstrap || pnpm bootstrap || pnpm bootstrap
+            pnpm install || pnpm install || pnpm install
           fi
         env:
           components: true
