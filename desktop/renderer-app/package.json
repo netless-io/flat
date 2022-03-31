@@ -49,6 +49,7 @@
     "@types/node-downloader-helper": "^1.0.16",
     "@types/react-router": "^5.1.18",
     "agora-electron-sdk": "3.5.0-rc.4-build.1105",
+    "electron": "12.0.15",
     "esbuild": "^0.14.27",
     "monaco-editor": "^0.27.0",
     "rc-picker": "^2.6.4",
