@@ -5,7 +5,7 @@ module.exports = defineConfig({
     root: true,
     parser: "@typescript-eslint/parser",
     parserOptions: {
-        project: "{desktop,web,packages}/*/tsconfig.json",
+        project: "tsconfig.lint.json",
         sourceType: "module",
     },
     ignorePatterns: [".eslintrc.js"],
