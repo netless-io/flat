@@ -12,7 +12,7 @@ import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 export default defineConfig({
     plugins: [
         react(),
-        legacy(),
+        !process.env.noLegacy && legacy(),
         dotenv(autoChooseConfig()),
         injectHtmlHash(),
         version(mainPackageJSONPath),

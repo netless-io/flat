@@ -94,6 +94,8 @@ jobs:
 
       - name: Build flat-web
         run: pnpm --filter flat-web build
+        env:
+            noLegacy: true
         if: steps.filter.outputs.flat-web == 'true'
 
       - name: Check i18n
