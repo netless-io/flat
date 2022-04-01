@@ -1,15 +1,11 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "jsx": "react",
-    "noUnusedLocals": false,
-    "baseUrl": ".",
-    "paths": {
-      "flat-types": ["../flat-types/src"],
-      "flat-i18n": ["../flat-i18n"]
-    }
+    "noUnusedLocals": false
   },
   "exclude": ["node_modules", "storybook-static", "public", ".storybook"],
   "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.ts"]

@@ -4,8 +4,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "husky install",
-    "//": "lint-staged calls git under the hood, which forbids pnpm to use concurrent mode",
-    "lint": "lint-staged && pnpm -r --workspace-concurrency 1 lint",
+    "lint": "lint-staged",
     "check-spelling": "cspell --no-progress \"**/*.{md,ts,tsx,js,css,less,json,yml,yaml,html,sh}\"",
     "storybook": "pnpm --filter flat-components start",
     "start": "node scripts/launch/index.js",
@@ -42,6 +41,7 @@
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.0",
+    "eslint-define-config": "^1.3.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^4.0.0",

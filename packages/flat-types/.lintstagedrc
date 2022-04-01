@@ -1,6 +1,6 @@
 {
-  "*.ts": [
-    "tsc --noEmit",
-    "prettier --write"
-  ]
+    "*.ts": [
+        "tsc --noEmit",
+        "prettier --write"
+    ]
 }

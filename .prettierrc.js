@@ -6,6 +6,7 @@ module.exports = {
     arrowParens: "avoid",
     trailingComma: "all",
     bracketSpacing: true,
+    endOfLine: "auto",
     overrides: [
         {
             files: ["*.json", "*.yaml", "*.yml"],

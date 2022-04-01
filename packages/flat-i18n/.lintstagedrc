@@ -1,5 +1,5 @@
 {
-  "*.json": [
-    "node ./scripts/check.js"
-  ]
+    "*.json": [
+        "node ./scripts/check.js"
+    ]
 }

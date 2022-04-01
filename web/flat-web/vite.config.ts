@@ -6,12 +6,7 @@ import { injectHtmlHash } from "./scripts/vite-plugin-html-hash";
 import { version } from "./scripts/vite-plugin-version";
 import { inlineAssets } from "./scripts/vite-plugin-inline-assets";
 import { reactVirtualized } from "./scripts/vite-plugin-react-virtualized";
-import {
-    typesEntryPath,
-    i18nEntryPath,
-    componentsEntryPath,
-    mainPackageJSONPath,
-} from "../../scripts/constants";
+import { mainPackageJSONPath } from "../../scripts/constants";
 import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 
 export default defineConfig({
@@ -28,18 +23,6 @@ export default defineConfig({
         alias: [
             // replace webpack alias
             { find: /^~/, replacement: "" },
-            {
-                find: "flat-types",
-                replacement: typesEntryPath,
-            },
-            {
-                find: "flat-i18n",
-                replacement: i18nEntryPath,
-            },
-            {
-                find: "flat-components",
-                replacement: componentsEntryPath,
-            },
         ],
     },
     build: {

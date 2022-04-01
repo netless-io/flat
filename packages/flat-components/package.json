@@ -1,9 +1,14 @@
 {
   "name": "flat-components",
   "version": "0.1.0",
-  "private": false,
+  "main": "./src/index.ts",
+  "private": true,
   "license": "MIT",
   "homepage": "https://github.com/netless-io/flat",
+  "scripts": {
+    "start": "start-storybook -p 6006 -s public --no-version-updates",
+    "build": "build-storybook -s public"
+  },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "antd": "^4.19.2",
@@ -23,11 +28,6 @@
     "react-transition-group": "^4.4.2",
     "react-use": "^17.3.2",
     "react-virtualized": "^9.22.3"
-  },
-  "scripts": {
-    "lint": "lint-staged",
-    "start": "start-storybook -p 6006 -s public --no-version-updates",
-    "build": "build-storybook -s public"
   },
   "devDependencies": {
     "@babel/core": "^7.17.7",
