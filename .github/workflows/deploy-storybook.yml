@@ -14,12 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v2.0.1
-        with:
-          version: latest
-          run_install: false
-
       - uses: actions/cache@v2
         id: pnpm-cache
         with:
@@ -30,6 +24,12 @@ jobs:
             ~/.pnpm-store
             ./node_modules
             ./packages/**/node_modules
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: latest
+          run_install: false
 
       - name: Install dependencies
         run: |-
