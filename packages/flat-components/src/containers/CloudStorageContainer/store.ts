@@ -21,6 +21,10 @@ export abstract class CloudStorageStore {
     public isUploadPanelExpand = false;
     /** UUID of file that is under renaming */
     public renamingFileUUID?: FileUUID = "";
+    /** Cloud storage single page data returned by the server */
+    public cloudStorageSinglePageFiles = 50;
+    /** In order to avoid multiple calls the fetchMoreCloudStorageData when fetching data */
+    public isFetchingFiles = false;
 
     /** Display upload panel */
     public get isUploadPanelVisible(): boolean {
@@ -30,6 +34,11 @@ export abstract class CloudStorageStore {
     /** Human readable user total cloud storage usage */
     public get totalUsageHR(): string {
         return Number.isNaN(this.totalUsage) ? "" : prettyBytes(this.totalUsage);
+    }
+
+    /** get fetch data pagination value of cloudStorage. */
+    public get cloudStorageDataPagination(): number {
+        return Math.ceil(this.files.length / this.cloudStorageSinglePageFiles);
     }
 
     /** Uploading -> Error -> Idle -> Success */
@@ -68,6 +77,7 @@ export abstract class CloudStorageStore {
             selectedFileUUIDs: observable,
             isUploadPanelExpand: observable,
             renamingFileUUID: observable,
+            isFetchingFiles: observable,
 
             isUploadPanelVisible: computed,
             totalUsageHR: computed,
@@ -122,9 +132,6 @@ export abstract class CloudStorageStore {
     /** User cloud storage files */
     public abstract files: CloudStorageFile[];
 
-    /** get fetch data pagination value of cloudStorage. */
-    public abstract cloudStorageDataPagination: number;
-
     /** Render file menus item base on fileUUID */
     public abstract fileMenus: (
         file: CloudStorageFile,
@@ -163,12 +170,6 @@ export abstract class CloudStorageStore {
 
     /** When file(s) are dropped in the container. */
     public abstract onDropFile(files: FileList): void;
-
-    /** In order to avoid multiple calls the fetchMoreCloudStorageData when fetching data */
-    public abstract isFetchingFiles: boolean;
-
-    /** Cloud storage single page data returned by the server */
-    public abstract cloudStorageSinglePageFiles: number;
 
     /** When cloudStorage files is 50 or more, pull up to bottom that loading will fetch more pagination Data of the cloudStorage. */
     public abstract fetchMoreCloudStorageData: (page: number) => Promise<void>;
