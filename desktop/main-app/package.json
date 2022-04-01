@@ -26,7 +26,6 @@
     "ship:win": "pnpm build && pnpm pack:win",
     "ship:mac": "pnpm build && pnpm pack:mac",
     "postinstall": "pnpm _download:agora-addon",
-    "lint": "lint-staged",
     "_download:agora-addon": "node scripts/download-agora-addon/cli.js",
     "_launch:electron": "node --trace-uncaught ./scripts/launch/electron.js"
   },
@@ -38,6 +37,7 @@
     "electron-devtools-vendor": "^1.0.5",
     "electron-notarize": "^1.1.1",
     "file-loader": "^6.2.0",
+    "flat-types": "workspace:*",
     "js-yaml": "^4.1.0",
     "move-cli": "^2.0.0",
     "nodemon": "^2.0.15",

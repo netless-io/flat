@@ -1,13 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "es2017",
     "module": "CommonJS",
-    "lib": ["es2017", "DOM"],
-    "baseUrl": ".",
-    "paths": {
-      "flat-types": ["../../packages/flat-types/src"]
-    }
+    "lib": ["es2017", "DOM"]
   },
   "include": ["src/**/*.ts", "typings/*.ts"]
 }

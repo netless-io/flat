@@ -1,15 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "lib": ["dom", "es2017"],
     "module": "ESNext",
     "jsx": "react",
-    "baseUrl": ".",
-    "paths": {
-      "flat-types": ["../../packages/flat-types/src"],
-      "flat-i18n": ["../../packages/flat-i18n"],
-      "flat-components": ["../../packages/flat-components/src"]
-    },
     "types": ["vite/client"]
   },
   "exclude": ["node_modules", "dist", "public"],

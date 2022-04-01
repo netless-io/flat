@@ -3,7 +3,6 @@ if (!process.env.CI) {
 }
 
 const fs = require("fs");
-const yaml = require("yaml");
 const { workspacePath } = require("../constants");
 
 const { components, types, renderer, main, flatWeb } = process.env;
@@ -52,10 +51,10 @@ if (workspaces.length === 0) {
 
 console.log(`will install dependencies in: ${workspaces.join(", ")}`);
 
-const content = yaml.parse(fs.readFileSync(workspacePath, "utf8"));
+const content = { workspaces };
 
-content.workspaces = workspaces;
+const text = `workspaces:\n  - ${content.workspaces.join("\n  - ")}`;
 
-fs.writeFileSync(workspacePath, yaml.stringify(content), {
+fs.writeFileSync(workspacePath, text, {
     encoding: "utf-8",
 });

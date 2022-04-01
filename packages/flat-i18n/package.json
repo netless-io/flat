@@ -2,12 +2,7 @@
   "name": "flat-i18n",
   "description": "Locales for the Flat app.",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "license": "MIT",
-  "homepage": "https://github.com/netless-io/flat",
-  "scripts": {
-    "lint": "lint-staged"
-  },
-  "devDependencies": {
-  }
+  "homepage": "https://github.com/netless-io/flat"
 }

@@ -8,13 +8,7 @@ import path from "path";
 import { dotenv } from "../../web/flat-web/scripts/vite-plugin-dotenv";
 import { reactVirtualized } from "../../web/flat-web/scripts/vite-plugin-react-virtualized";
 import { electron } from "./scripts/vite-plugin-electron";
-import {
-    typesEntryPath,
-    i18nEntryPath,
-    componentsEntryPath,
-    rootNodeModules,
-    rendererPath,
-} from "../../scripts/constants";
+import { rootNodeModules, rendererPath } from "../../scripts/constants";
 import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 
 export default defineConfig(() => {
@@ -58,22 +52,7 @@ export default defineConfig(() => {
         resolve: {
             alias: [
                 // replace webpack alias
-                {
-                    find: /^~/,
-                    replacement: "",
-                },
-                {
-                    find: "flat-types",
-                    replacement: typesEntryPath,
-                },
-                {
-                    find: "flat-i18n",
-                    replacement: i18nEntryPath,
-                },
-                {
-                    find: "flat-components",
-                    replacement: componentsEntryPath,
-                },
+                { find: /^~/, replacement: "" },
             ],
         },
         build: {
