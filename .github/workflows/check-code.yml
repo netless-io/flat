@@ -14,6 +14,10 @@ jobs:
   check-code:
     runs-on: macos-10.15
 
+    concurrency:
+      group: ci-${{ github.ref }}
+      cancel-in-progress: true
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -54,7 +58,18 @@ jobs:
         uses: pnpm/action-setup@v2.0.1
         with:
           version: latest
-          run_install: true
+          run_install: false
+
+      - uses: actions/cache@v2
+        id: pnpm-cache
+        with:
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+          path: |
+            ~/.pnpm-store
+            ./node_modules
+            ./packages/**/node_modules
 
       - name: Install changed package dependencies and build packages
         run: |-
