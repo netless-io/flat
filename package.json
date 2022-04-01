@@ -4,7 +4,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "postinstall": "husky install",
-    "lint": "lint-staged",
+    "lint": "lint-staged --cwd .",
     "check-spelling": "cspell --no-progress \"**/*.{md,ts,tsx,js,css,less,json,yml,yaml,html,sh}\"",
     "storybook": "pnpm --filter flat-components start",
     "start": "node scripts/launch/index.js",
