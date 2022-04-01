@@ -5,10 +5,8 @@ module.exports = defineConfig({
     root: true,
     parser: "@typescript-eslint/parser",
     parserOptions: {
-        project: "tsconfig.lint.json",
         sourceType: "module",
     },
-    ignorePatterns: [".eslintrc.js"],
     extends: [
         "react-app",
         "eslint:recommended",
@@ -16,12 +14,12 @@ module.exports = defineConfig({
         "plugin:jsx-a11y/recommended",
         "plugin:@netless/recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:prettier/recommended",
         "plugin:eslint-comments/recommended",
     ],
-    plugins: ["@netless", "prettier", "@typescript-eslint", "eslint-comments", "jsx-a11y", "react"],
+    plugins: ["@netless", "@typescript-eslint", "eslint-comments", "jsx-a11y", "react"],
     rules: {
+        "@netless/consistent-type-exports": "off",
         "array-callback-return": "warn",
         "default-case": "off",
         "dot-location": ["warn", "property"],

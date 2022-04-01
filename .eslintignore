@@ -1,1 +1,6 @@
-scripts/*
+scripts/
+node_modules/
+dist/
+public/
+storybook-static/
+.eslintrc.js
