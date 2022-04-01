@@ -380,6 +380,7 @@ importers:
       eslint-loader: ^4.0.2
       eventemitter3: ^4.0.7
       flat-components: workspace:*
+      flat-i18n: workspace:*
       i18next: ^21.6.14
       i18next-browser-languagedetector: ^6.1.3
       lodash-es: ^4.17.21
@@ -421,6 +422,7 @@ importers:
       date-fns: 2.28.0
       eventemitter3: 4.0.7
       flat-components: link:../../packages/flat-components
+      flat-i18n: link:../../packages/flat-i18n
       i18next: 21.6.14
       i18next-browser-languagedetector: 6.1.4
       lodash-es: 4.17.21
@@ -3524,8 +3526,8 @@ packages:
   /@storybook/builder-webpack4/6.3.13_bef8a203ad644ce5c511754331fbee31:
     resolution: {integrity: sha512-dpBMIQVH2eWSY6+aRFg74AXgZ39TYwtNAo6vSX8cTapW14adoaqZf4jRM9hPsTUxlYIMuxeh4kulyE0D/Bx32Q==}
     peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^17
-      react-dom: ^16.8.0 || ^17.0.0 || ^17
+      react: ^16.8.0 || ^17.0.0 || ^17 || ^17
+      react-dom: ^16.8.0 || ^17.0.0 || ^17 || ^17
       typescript: '*'
     peerDependenciesMeta:
       typescript:
@@ -3752,8 +3754,8 @@ packages:
   /@storybook/components/6.3.13_b5d7bf22a7b46dd4876f0e926ab0c987:
     resolution: {integrity: sha512-nLTVxqbjeZJU9UBnYYHyBygSUt/E7Rsjgn5zHX2TlXpBHsSHdLT+1WCknu4EFwIAGOfq6wstnkpHXVSjoX1uWw==}
     peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^17 || ^17 || ^17
-      react-dom: ^16.8.0 || ^17.0.0 || ^17 || ^17 || ^17
+      react: ^16.8.0 || ^17.0.0 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17
+      react-dom: ^16.8.0 || ^17.0.0 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17
     dependencies:
       '@popperjs/core': 2.11.4
       '@storybook/client-logger': 6.3.13
@@ -4002,8 +4004,8 @@ packages:
     resolution: {integrity: sha512-rzHMFcmbb3LjtqXLLFjf1riI9e0jJenZ3RahOAuffRWC9wOtaFctPtPpimbxepGyjlyvmaBQIX26b6d106PxkA==}
     peerDependencies:
       '@storybook/builder-webpack5': 6.3.13
-      react: ^16.8.0 || ^17.0.0 || ^17 || ^17
-      react-dom: ^16.8.0 || ^17.0.0 || ^17 || ^17
+      react: ^16.8.0 || ^17.0.0 || ^17
+      react-dom: ^16.8.0 || ^17.0.0 || ^17
       typescript: '*'
     peerDependenciesMeta:
       '@storybook/builder-webpack5':
@@ -4034,8 +4036,8 @@ packages:
     resolution: {integrity: sha512-rzHMFcmbb3LjtqXLLFjf1riI9e0jJenZ3RahOAuffRWC9wOtaFctPtPpimbxepGyjlyvmaBQIX26b6d106PxkA==}
     peerDependencies:
       '@storybook/builder-webpack5': 6.3.13
-      react: ^16.8.0 || ^17.0.0 || ^17 || ^17
-      react-dom: ^16.8.0 || ^17.0.0 || ^17 || ^17
+      react: ^16.8.0 || ^17.0.0 || ^17
+      react-dom: ^16.8.0 || ^17.0.0 || ^17
       typescript: '*'
     peerDependenciesMeta:
       '@storybook/builder-webpack5':
@@ -4342,8 +4344,8 @@ packages:
   /@storybook/router/6.3.13_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-Il62M6EFiQj1o9/LEgV9vQRtQaCoiCgPbN+5z89VPxmVRQip5ODPC3I7WjNa442fjOrro9RiouYru0L2+MU2rQ==}
     peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^17 || ^17 || ^17 || ^17
-      react-dom: ^16.8.0 || ^17.0.0 || ^17 || ^17 || ^17 || ^17
+      react: ^16.8.0 || ^17.0.0 || ^17 || ^17
+      react-dom: ^16.8.0 || ^17.0.0 || ^17 || ^17
     dependencies:
       '@reach/router': 1.3.4_react-dom@17.0.2+react@17.0.2
       '@storybook/client-logger': 6.3.13
@@ -7710,7 +7712,7 @@ packages:
     resolution: {integrity: sha512-M5lSukoWi1If8dhQAUCvj4H8vUt3vOnwbQBH9DdTm/s4Ym2B/3dPMtYZeJmq7Q3S3Pa+I94DcZ7pc9bP14cWIQ==}
     engines: {node: '>= 8.9.0'}
     peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0 || ^5
+      webpack: ^4.0.0 || ^5.0.0 || ^5 || ^5
     dependencies:
       camelcase: 5.3.1
       cssesc: 3.0.0
@@ -8321,7 +8323,7 @@ packages:
   /dotenv-webpack/1.8.0_webpack@4.46.0:
     resolution: {integrity: sha512-o8pq6NLBehtrqA8Jv8jFQNtG9nhRtVqmoD4yWbgUyoU3+9WBlPe+c2EAiaJok9RB28QvrWvdWLZGeTT5aATDMg==}
     peerDependencies:
-      webpack: ^1 || ^2 || ^3 || ^4 || ^5
+      webpack: ^1 || ^2 || ^3 || ^4 || ^5 || ^5
     dependencies:
       dotenv-defaults: 1.1.1
       webpack: 4.46.0
@@ -10890,7 +10892,7 @@ packages:
     resolution: {integrity: sha512-q5oYdzjKUIPQVjOosjgvCHQOv9Ett9CYYHlgvJeXG0qQvdSojnBq4vAdQBwn1+yGveAwHCoe/rMR86ozX3+c2A==}
     engines: {node: '>=6.9'}
     peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0 || ^5
+      webpack: ^4.0.0 || ^5.0.0 || ^5 || ^5
     dependencies:
       '@types/html-minifier-terser': 5.1.2
       '@types/tapable': 1.0.8
@@ -16952,7 +16954,7 @@ packages:
     resolution: {integrity: sha512-V7TCORko8rs9rIqkSrlMfkqA63DfoGBBJmK1kKGCcSi+BWb4cqz0SRsnp4l6rU5iwOEd0/2ePv68SV22VXon4Q==}
     engines: {node: '>= 8.9.0'}
     peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0 || ^5
+      webpack: ^4.0.0 || ^5.0.0 || ^5 || ^5
     dependencies:
       loader-utils: 2.0.2
       schema-utils: 2.7.1
@@ -17156,7 +17158,7 @@ packages:
     resolution: {integrity: sha512-jTgXh40RnvOrLQNgIkwEKnQ8rmHjHK4u+6UBEi+W+FPmvb+uo+chJXntKe7/3lW5mNysgSWD60KyesnhW8D6MQ==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0 || ^5
+      webpack: ^4.0.0 || ^5.0.0 || ^5 || ^5
     dependencies:
       cacache: 15.3.0
       find-cache-dir: 3.3.2
@@ -18282,7 +18284,7 @@ packages:
     resolution: {integrity: sha512-djelc/zGiz9nZj/U7PTBi2ViorGJXEWo/3ltkPbDyxCXhhEXkW0ce99falaok4TPj+AsxLiXJR0EBOb0zh9fKQ==}
     engines: {node: '>= 6'}
     peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0 || ^5
+      webpack: ^4.0.0 || ^5.0.0 || ^5 || ^5
     dependencies:
       memory-fs: 0.4.1
       mime: 2.6.0
