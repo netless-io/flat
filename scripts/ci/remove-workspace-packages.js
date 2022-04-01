@@ -1,8 +1,7 @@
 const fs = require("fs");
-const yaml = require("yaml");
 const { workspacePath } = require("../constants");
 
-const content = yaml.parse(fs.readFileSync(workspacePath, "utf8"));
+const content = {};
 
 const retentionPackageName = process.argv[2];
 
@@ -20,6 +19,8 @@ switch (retentionPackageName) {
     }
 }
 
-fs.writeFileSync(workspacePath, yaml.stringify(content), {
+const text = `workspaces:\n  - ${content.workspaces.join("\n  - ")}`;
+
+fs.writeFileSync(workspacePath, text, {
     encoding: "utf-8",
 });
