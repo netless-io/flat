@@ -2,6 +2,11 @@
   "name": "flat-components",
   "version": "0.1.0",
   "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./theme/index.less": "./src/theme/index.less",
+    "./theme/fancy-scrollbar.less": "./src/theme/fancy-scrollbar.less"
+  },
   "private": true,
   "license": "MIT",
   "homepage": "https://github.com/netless-io/flat",
