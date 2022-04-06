@@ -76,10 +76,10 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
 
             try {
                 await loginCheck();
-                globalStore.lastLoginCheck = Date.now();
+                globalStore.updateLastLoginCheck(Date.now());
                 return true;
             } catch (e) {
-                globalStore.lastLoginCheck = null;
+                globalStore.updateLastLoginCheck(null);
                 console.error(e);
                 errorTips(e as Error);
             }

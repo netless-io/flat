@@ -24,6 +24,10 @@ export const GITHUB = Object.freeze({
     CLIENT_ID: process.env.GITHUB_CLIENT_ID,
 });
 
+export const GOOGLE = Object.freeze({
+    CLIENT_ID: process.env.GOOGLE_OAUTH_CLIENT_ID,
+});
+
 export const FLAT_SERVER_DOMAIN = process.env.FLAT_SERVER_DOMAIN;
 export const FLAT_WEB_DOMAIN = process.env.FLAT_WEB_DOMAIN;
 

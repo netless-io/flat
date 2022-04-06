@@ -64,8 +64,8 @@ export class GlobalStore {
         this.agoraSSOLoginID = val ?? null;
     };
 
-    public updateLastLoginCheck = (val: number | undefined | null): void => {
-        this.lastLoginCheck = val ?? null;
+    public updateLastLoginCheck = (val: number | null): void => {
+        this.lastLoginCheck = val;
     };
 
     public updateToken = (
