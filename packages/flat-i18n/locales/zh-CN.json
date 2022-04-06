@@ -112,6 +112,7 @@
   "copy": "复制",
   "login-wechat": "微信登录",
   "login-github": "GitHub 登录",
+  "login-google": "Google 登录",
   "login-agora": "声网登录",
   "app-welcome": "欢迎使用 {{appName}}",
   "online-interaction-to-synchronize-ideas": "在线互动，让想法同步",

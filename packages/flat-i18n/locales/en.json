@@ -110,6 +110,7 @@
   "join-and-book-by-room-uuid": "Can join and book by room ID",
   "copy": "Copy",
   "login-github": "Sign In with GitHub",
+  "login-google": "Sign In with Google",
   "login-wechat": "Sign In with WeChat",
   "login-agora": "Sign In with Agora",
   "agree-terms": "Please agree to the terms of service first",
