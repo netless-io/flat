@@ -126,7 +126,6 @@ module.exports = {
         "bokeh",
         "lintstagedrc",
         "pnpm",
-        "gapi",
 
         // CNCF
         "nindent",
