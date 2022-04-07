@@ -99,6 +99,7 @@ module.exports = {
         "commitlintrc", // @commitlint/cli
         "unpublish", // agora-rtc-sdk-ng
         "multipass", // svgo
+        "allowlist", // webpack-node-externals
 
         // less
         "isstring",
