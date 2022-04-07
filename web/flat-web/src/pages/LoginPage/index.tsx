@@ -1,18 +1,19 @@
 import "./style.less";
 
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
+import { message } from "antd";
 import { LoginButton, LoginButtonProviderType, LoginPanel } from "flat-components";
 import { LoginDisposer } from "./utils";
 import { githubLogin } from "./githubLogin";
+import { WeChatLogin } from "./WeChatLogin";
+import { agoraLogin } from "./agoraLogin";
+import { googleLogin } from "./googleLogin";
 import { RouteNameType, usePushHistory, useURLParams } from "../../utils/routes";
 import { GlobalStoreContext } from "../../components/StoreProvider";
-import { WeChatLogin } from "./WeChatLogin";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
-import { useTranslation } from "react-i18next";
-import { agoraLogin } from "./agoraLogin";
-import { message } from "antd";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { agoraSSOLoginCheck, loginCheck } from "../../api-middleware/flatServer";
 
@@ -96,6 +97,21 @@ export const LoginPage = observer(function LoginPage() {
                         });
                         return;
                     }
+                    case "google": {
+                        loginDisposer.current = googleLogin(async authData => {
+                            globalStore.updateUserInfo(authData);
+                            if (!roomUUID) {
+                                pushHistory(RouteNameType.HomePage);
+                                return;
+                            }
+                            if (globalStore.isTurnOffDeviceTest) {
+                                await joinRoomHandler(roomUUID, pushHistory);
+                            } else {
+                                pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
+                            }
+                        });
+                        return;
+                    }
                     case "wechat": {
                         setWeChatLogin(true);
                         return;
@@ -131,11 +147,19 @@ export const LoginPage = observer(function LoginPage() {
         } else {
             return (
                 <>
-                    <LoginButton
-                        provider="wechat"
-                        text={i18n.t("login-wechat")}
-                        onLogin={handleLogin}
-                    />
+                    {process.env.FLAT_REGION === "America" ? (
+                        <LoginButton
+                            provider="google"
+                            text={i18n.t("login-google")}
+                            onLogin={handleLogin}
+                        />
+                    ) : (
+                        <LoginButton
+                            provider="wechat"
+                            text={i18n.t("login-wechat")}
+                            onLogin={handleLogin}
+                        />
+                    )}
                     <LoginButton
                         provider="github"
                         text={i18n.t("login-github")}

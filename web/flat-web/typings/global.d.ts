@@ -22,6 +22,7 @@ declare namespace NodeJS {
         AGORA_OAUTH_CLIENT_ID: string;
 
         GITHUB_CLIENT_ID: string;
+        GOOGLE_OAUTH_CLIENT_ID: string;
 
         WECHAT_APP_ID: string;
         FLAT_SERVER_DOMAIN: string;

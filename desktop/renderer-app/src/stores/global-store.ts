@@ -52,6 +52,10 @@ export class GlobalStore {
         this.userInfo = userInfo;
     };
 
+    public updateLastLoginCheck = (val: number | null): void => {
+        this.lastLoginCheck = val;
+    };
+
     public updateToken = (
         config: Partial<
             Pick<

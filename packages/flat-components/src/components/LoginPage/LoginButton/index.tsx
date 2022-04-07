@@ -3,9 +3,10 @@ import React from "react";
 import wechatSVG from "./icons/wechat.svg";
 import agoraSVG from "./icons/agora.svg";
 import githubSVG from "./icons/github.svg";
+import googleSVG from "./icons/google.svg";
 import "./index.less";
 
-export type LoginButtonProviderType = "wechat" | "github" | "agora";
+export type LoginButtonProviderType = "wechat" | "github" | "agora" | "google";
 
 export type LoginButtonProps = {
     provider: LoginButtonProviderType;
@@ -17,6 +18,7 @@ const svgDict: Record<LoginButtonProviderType, string> = {
     wechat: wechatSVG,
     agora: agoraSVG,
     github: githubSVG,
+    google: googleSVG,
 };
 
 export const LoginButton: React.FC<LoginButtonProps> = ({ provider, onLogin, text }) => {
