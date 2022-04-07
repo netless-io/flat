@@ -6,7 +6,7 @@ import { errorTips } from "../../components/Tips/ErrorTips";
 import { FLAT_SERVER_LOGIN } from "../../api-middleware/flatServer/constants";
 import { GOOGLE } from "../../constants/process";
 
-// @TODO: migrate to new google login api before 2023
+// @TODO: migrate to new google login api before 2023. @hyrious 
 //        https://developers.google.com/identity/gsi/web
 export const googleLogin: LoginExecutor = onSuccess => {
     let timer = NaN;
