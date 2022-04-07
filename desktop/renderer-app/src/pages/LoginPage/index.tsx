@@ -111,37 +111,28 @@ export const LoginPage = observer(function LoginPage() {
     const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL_EN;
 
     function renderButtonList(): React.ReactNode {
-        if (process.env.FLAT_REGION === "America") {
-            return (
-                <>
+        return (
+            <>
+                {process.env.FLAT_REGION === "America" ? (
                     <LoginButton
                         provider="google"
                         text={i18n.t("login-google")}
                         onLogin={handleLogin}
                     />
-                    <LoginButton
-                        provider="github"
-                        text={i18n.t("login-github")}
-                        onLogin={handleLogin}
-                    />
-                </>
-            );
-        } else {
-            return (
-                <>
+                ) : (
                     <LoginButton
                         provider="wechat"
                         text={i18n.t("login-wechat")}
                         onLogin={handleLogin}
                     />
-                    <LoginButton
-                        provider="github"
-                        text={i18n.t("login-github")}
-                        onLogin={handleLogin}
-                    />
-                </>
-            );
-        }
+                )}
+                <LoginButton
+                    provider="github"
+                    text={i18n.t("login-github")}
+                    onLogin={handleLogin}
+                />
+            </>
+        );
     }
 
     function renderQRCode(): React.ReactNode {

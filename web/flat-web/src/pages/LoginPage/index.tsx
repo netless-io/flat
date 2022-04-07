@@ -144,29 +144,22 @@ export const LoginPage = observer(function LoginPage() {
                     />
                 </>
             );
-        } else if (process.env.FLAT_REGION === "America") {
-            return (
-                <>
-                    <LoginButton
-                        provider="google"
-                        text={i18n.t("login-google")}
-                        onLogin={handleLogin}
-                    />
-                    <LoginButton
-                        provider="github"
-                        text={i18n.t("login-github")}
-                        onLogin={handleLogin}
-                    />
-                </>
-            );
         } else {
             return (
                 <>
-                    <LoginButton
-                        provider="wechat"
-                        text={i18n.t("login-wechat")}
-                        onLogin={handleLogin}
-                    />
+                    {process.env.FLAT_REGION === "America" ? (
+                        <LoginButton
+                            provider="google"
+                            text={i18n.t("login-google")}
+                            onLogin={handleLogin}
+                        />
+                    ) : (
+                        <LoginButton
+                            provider="wechat"
+                            text={i18n.t("login-wechat")}
+                            onLogin={handleLogin}
+                        />
+                    )}
                     <LoginButton
                         provider="github"
                         text={i18n.t("login-github")}
