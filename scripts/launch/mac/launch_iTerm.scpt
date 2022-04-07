@@ -6,6 +6,6 @@ tell application "iTerm"
     end tell
     set T to W's current tab
     set ProjectRoot to "$(dirname $(dirname $(dirname $(dirname " & (POSIX path of (path to me)) & "))))"
-    write T's session 1 text "pnpm --filter renderer-app start"
-    write T's session 2 text "pnpm --filter flat start"
+    write T's session 1 text "pnpm --filter renderer-app -C \"" & ProjectRoot & "\" start"
+    write T's session 2 text "pnpm --filter flat -C \"" & ProjectRoot & "\" start"
 end tell
