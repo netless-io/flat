@@ -70,6 +70,7 @@ module.exports = {
     externals: [
         nodeExternals({
             modulesFromFile: true,
+            allowlist: ["flat-types"],
         }),
     ],
 
