@@ -2,8 +2,8 @@
 import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
 import { MainPageTopBar, MainPageTopBarProps } from ".";
-import { CloudOutlined } from "@ant-design/icons";
-import { SVGGithub } from "../../FlatIcons";
+
+import { SVGGithub, SVGHomeOutlined, SVGSetting } from "../../FlatIcons";
 
 const storyMeta: Meta = {
     title: "MainPageLayout/MainPageTopBar",
@@ -28,29 +28,28 @@ Overview.args = {
     popMenu: [
         {
             key: "userConfig",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGSetting />,
             title: "个人设置",
             route: "/config",
         },
         {
             key: "getGitHubCode",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGGithub />,
             title: "获取源码",
             route: "/github",
         },
         {
             key: "logout",
-            icon: () => <CloudOutlined className="red" />,
+            icon: () => <SVGGithub className="red" />,
             title: <span className="red">退出登录</span>,
             route: "/logout",
         },
     ],
-    children: <CloudOutlined />,
+    children: <SVGGithub />,
     topBarMenu: [
         { key: "github", icon: <SVGGithub />, route: "/github" },
-        { key: "home", icon: <CloudOutlined />, route: "/home" },
+        { key: "home", icon: <SVGHomeOutlined />, route: "/home" },
     ],
-    // topBarMenu: [<CloudOutlined />, <CloudOutlined />],
     activeKeys: ["home"],
     avatarSrc: "http://placekitten.com/200/200",
     userName: "Test ultra long user name",

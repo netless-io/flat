@@ -2,14 +2,16 @@
 import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
 import { MainPageNavHorizontal, MainPageNavHorizontalProps } from ".";
+
 import {
-    CloudFilled,
-    CloudOutlined,
-    HomeFilled,
-    HomeOutlined,
-    DownloadOutlined,
-    SettingOutlined,
-} from "@ant-design/icons";
+    SVGCloudFilled,
+    SVGCloudOutlined,
+    SVGDownload,
+    SVGGithub,
+    SVGHomeFilled,
+    SVGHomeOutlined,
+    SVGSetting,
+} from "../../FlatIcons";
 
 const storyMeta: Meta = {
     title: "MainPageLayout/MainPageNavHorizontal",
@@ -39,9 +41,9 @@ Overview.args = {
             key: "home",
             icon: active =>
                 active ? (
-                    <HomeFilled style={sideMenuStyles} />
+                    <SVGHomeFilled style={sideMenuStyles} />
                 ) : (
-                    <HomeOutlined style={sideMenuStyles} />
+                    <SVGHomeOutlined style={sideMenuStyles} />
                 ),
             title: "首页",
             route: "/home",
@@ -50,9 +52,9 @@ Overview.args = {
             key: "cloudStorage",
             icon: active =>
                 active ? (
-                    <CloudFilled style={sideMenuStyles} />
+                    <SVGCloudFilled style={sideMenuStyles} />
                 ) : (
-                    <CloudOutlined style={sideMenuStyles} />
+                    <SVGCloudOutlined style={sideMenuStyles} />
                 ),
             title: "云盘",
             route: "/cloudStorage",
@@ -61,19 +63,19 @@ Overview.args = {
     rightMenu: [
         {
             key: "download",
-            icon: () => <DownloadOutlined style={rightMenuStyles} />,
+            icon: () => <SVGDownload style={rightMenuStyles} />,
             title: "下载",
             route: "/download",
         },
         {
             key: "source-code",
-            icon: () => <CloudOutlined style={rightMenuStyles} />,
+            icon: () => <SVGGithub style={rightMenuStyles} />,
             title: "源码",
             route: "/github",
         },
         {
             key: "userConfig",
-            icon: () => <SettingOutlined style={rightMenuStyles} />,
+            icon: () => <SVGSetting style={rightMenuStyles} />,
             title: "设置",
             route: "/config",
         },
@@ -81,7 +83,7 @@ Overview.args = {
     popMenu: [
         {
             key: "logout",
-            icon: () => <CloudOutlined className="red" />,
+            icon: () => <SVGGithub className="red" />,
             title: <span className="red">退出登录</span>,
             route: "/logout",
         },

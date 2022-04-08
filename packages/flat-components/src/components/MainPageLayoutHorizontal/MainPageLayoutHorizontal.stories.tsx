@@ -2,14 +2,20 @@
 import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
 import { MainPageLayoutHorizontal, MainPageLayoutHorizontalProps } from ".";
-import {
-    CloudFilled,
-    CloudOutlined,
-    HomeFilled,
-    HomeOutlined,
-    ToolOutlined,
-} from "@ant-design/icons";
 import faker from "faker";
+
+import {
+    SVGCamera,
+    SVGCloudFilled,
+    SVGCloudOutlined,
+    SVGGithub,
+    SVGHomeFilled,
+    SVGHomeOutlined,
+    SVGMicrophone,
+    SVGSetting,
+    SVGSound,
+    SVGSystem,
+} from "../FlatIcons";
 
 const storyMeta: Meta = {
     title: "MainPageLayout/MainPageLayoutHorizontal",
@@ -17,8 +23,6 @@ const storyMeta: Meta = {
 };
 
 export default storyMeta;
-
-const sideMenuStyles: React.CSSProperties = { fontSize: 25 };
 
 /**
  * TODO: we forget set i18n in current file!!!
@@ -33,23 +37,13 @@ Overview.args = {
     leftMenu: [
         {
             key: "home",
-            icon: active =>
-                active ? (
-                    <HomeFilled style={sideMenuStyles} />
-                ) : (
-                    <HomeOutlined style={sideMenuStyles} />
-                ),
+            icon: active => (active ? <SVGHomeFilled /> : <SVGHomeOutlined />),
             title: "home",
             route: "/home",
         },
         {
             key: "cloudStorage",
-            icon: active =>
-                active ? (
-                    <CloudFilled style={sideMenuStyles} />
-                ) : (
-                    <CloudOutlined style={sideMenuStyles} />
-                ),
+            icon: active => (active ? <SVGCloudFilled /> : <SVGCloudOutlined />),
             title: "cloudStorage",
             route: "/cloudStorage",
         },
@@ -57,13 +51,13 @@ Overview.args = {
     rightMenu: [
         {
             key: "userConfig",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGSetting />,
             title: "个人设置",
             route: "/config",
         },
         {
             key: "getGitHubCode",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGGithub />,
             title: "获取源码",
             route: "/github",
         },
@@ -71,7 +65,7 @@ Overview.args = {
     popMenu: [
         {
             key: "logout",
-            icon: () => <CloudOutlined className="red" />,
+            icon: () => <SVGGithub className="red" />,
             title: <span className="red">退出登录</span>,
             route: "/logout",
         },
@@ -100,25 +94,25 @@ WithSubMenu.args = {
     subMenu: [
         {
             key: "systemTesting",
-            icon: () => <ToolOutlined />,
+            icon: () => <SVGSystem />,
             title: "系统检测",
             route: "/device/system",
         },
         {
             key: "cameraTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGCamera />,
             title: "摄像头检测",
             route: "/device/camera",
         },
         {
             key: "speakerTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGSound />,
             title: "扬声器检测",
             route: "/device/speaker",
         },
         {
             key: "microphoneTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGMicrophone />,
             title: "麦克风检测",
             route: "/device/microphone",
         },
@@ -142,25 +136,25 @@ LongContent.args = {
     subMenu: [
         {
             key: "systemTesting",
-            icon: () => <ToolOutlined />,
+            icon: () => <SVGSystem />,
             title: "系统检测",
             route: "/device/system",
         },
         {
             key: "cameraTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGCamera />,
             title: "摄像头检测",
             route: "/device/camera",
         },
         {
             key: "speakerTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGSound />,
             title: "扬声器检测",
             route: "/device/speaker",
         },
         {
             key: "microphoneTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGMicrophone />,
             title: "麦克风检测",
             route: "/device/microphone",
         },

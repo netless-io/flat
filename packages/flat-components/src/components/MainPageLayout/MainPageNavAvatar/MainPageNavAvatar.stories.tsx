@@ -2,7 +2,8 @@
 import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
 import { MainPageNavAvatar, MainPageNavAvatarProps } from ".";
-import { CloudOutlined } from "@ant-design/icons";
+
+import { SVGGithub, SVGSetting } from "../../FlatIcons";
 
 const storyMeta: Meta = {
     title: "MainPageLayout/MainPageNavAvatar",
@@ -27,19 +28,19 @@ Overview.args = {
     popMenu: [
         {
             key: "userConfig",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGSetting />,
             title: "个人设置",
             route: "/config",
         },
         {
             key: "getGitHubCode",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGGithub />,
             title: "获取源码",
             route: "/github",
         },
         {
             key: "logout",
-            icon: () => <CloudOutlined className="red" />,
+            icon: () => <SVGGithub className="red" />,
             title: <span className="red">退出登录</span>,
             route: "/logout",
         },

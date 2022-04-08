@@ -2,14 +2,15 @@
 import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
 import { MainPageNav, MainPageNavProps } from ".";
+
 import {
-    CloudFilled,
-    CloudOutlined,
-    HomeFilled,
-    HomeOutlined,
-    ToolFilled,
-    ToolOutlined,
-} from "@ant-design/icons";
+    SVGCloudFilled,
+    SVGCloudOutlined,
+    SVGHomeFilled,
+    SVGHomeOutlined,
+    SVGTest,
+    SVGTestFilled,
+} from "../../FlatIcons";
 
 const storyMeta: Meta = {
     title: "MainPageLayout/MainPageNav",
@@ -21,12 +22,6 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
-/**
- * TODO: we forget set i18n in current file!!!
- */
-
-const sideMenuStyles: React.CSSProperties = { fontSize: 25 };
-
 export const Overview: Story<PropsWithChildren<MainPageNavProps>> = args => (
     <div className="vh-100 pa3">
         <MainPageNav {...args} />
@@ -36,63 +31,32 @@ Overview.args = {
     sideMenu: [
         {
             key: "home",
-            icon: active =>
-                active ? (
-                    <HomeFilled style={sideMenuStyles} />
-                ) : (
-                    <HomeOutlined style={sideMenuStyles} />
-                ),
             title: "home",
             route: "/home",
+            icon: (active: boolean): React.ReactNode => {
+                return active ? <SVGHomeFilled /> : <SVGHomeOutlined />;
+            },
         },
         {
             key: "cloudStorage",
-            icon: active =>
-                active ? (
-                    <CloudFilled style={sideMenuStyles} />
-                ) : (
-                    <CloudOutlined style={sideMenuStyles} />
-                ),
             title: "cloudStorage",
             route: "/cloudStorage",
+            icon: (active: boolean): React.ReactNode => {
+                return active ? <SVGCloudFilled /> : <SVGCloudOutlined />;
+            },
         },
     ],
     sideMenuFooter: [
         {
             key: "deviceCheck",
-            icon: active =>
-                active ? (
-                    <ToolFilled style={sideMenuStyles} />
-                ) : (
-                    <ToolOutlined style={sideMenuStyles} />
-                ),
             title: "deviceCheck",
             route: "/deviceCheck",
-        },
-    ],
-    popMenu: [
-        {
-            key: "userConfig",
-            icon: () => <CloudOutlined />,
-            title: "个人设置",
-            route: "/config",
-        },
-        {
-            key: "getGitHubCode",
-            icon: () => <CloudOutlined />,
-            title: "获取源码",
-            route: "/github",
-        },
-        {
-            key: "logout",
-            icon: () => <CloudOutlined className="red" />,
-            title: <span className="red">退出登录</span>,
-            route: "/logout",
+            icon: (active: boolean): React.ReactNode => {
+                return active ? <SVGTestFilled /> : <SVGTest />;
+            },
         },
     ],
     activeKeys: ["home"],
-    avatarSrc: "http://placekitten.com/200/200",
-    userName: "Flat Name",
 };
 Overview.argTypes = {
     activeKeys: {
