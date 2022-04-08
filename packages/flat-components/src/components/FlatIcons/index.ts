@@ -108,6 +108,7 @@ export * from "./icons/SVGSoundMute";
 export * from "./icons/SVGSoundSilent";
 export * from "./icons/SVGSystem";
 export * from "./icons/SVGTest";
+export * from "./icons/SVGTestFilled";
 export * from "./icons/SVGTime";
 export * from "./icons/SVGToDown";
 export * from "./icons/SVGToLeft";
