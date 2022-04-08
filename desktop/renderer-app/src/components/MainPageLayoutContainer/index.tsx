@@ -1,20 +1,25 @@
 /* eslint react/display-name: off */
-import homeSVG from "./icons/home.svg";
-import homeActiveSVG from "./icons/home-active.svg";
-import diskSVG from "./icons/disk.svg";
-import diskActiveSVG from "./icons/disk-active.svg";
-import deviceSVG from "./icons/device.svg";
-import deviceActiveSVG from "./icons/device-active.svg";
-import settingSVG from "./icons/setting.svg";
-import gitHubSVG from "./icons/github.svg";
-import feedbackSVG from "./icons/feedback.svg";
-import logoutSVG from "./icons/logout.svg";
 import "./index.less";
 
 import React, { useContext } from "react";
 import { shell } from "electron";
 import { useHistory, useLocation } from "react-router-dom";
-import { MainPageLayout, MainPageLayoutItem, MainPageLayoutProps } from "flat-components";
+import {
+    MainPageLayout,
+    MainPageLayoutItem,
+    MainPageTopBarMenuItem,
+    MainPageLayoutProps,
+    SVGGithub,
+    SVGHomeFilled,
+    SVGHomeOutlined,
+    SVGCloudFilled,
+    SVGCloudOutlined,
+    SVGTest,
+    SVGTestFilled,
+    SVGSetting,
+    SVGFeedback,
+    SVGLogout,
+} from "flat-components";
 import { useTranslation } from "react-i18next";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
@@ -66,25 +71,19 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
     const popMenu = [
         {
             key: routeConfig[RouteNameType.GeneralSettingPage].path,
-            icon: (): React.ReactNode => <img src={settingSVG} />,
+            icon: (): React.ReactNode => <SVGSetting />,
             title: t("settings"),
             route: routeConfig[RouteNameType.GeneralSettingPage].path,
         },
         {
-            key: "getGitHubCode",
-            icon: (): React.ReactNode => <img src={gitHubSVG} />,
-            title: t("source-code"),
-            route: "https://github.com/netless-io/flat/",
-        },
-        {
             key: "feedback",
-            icon: (): React.ReactNode => <img src={feedbackSVG} />,
+            icon: (): React.ReactNode => <SVGFeedback />,
             title: t("feedback"),
             route: "https://github.com/netless-io/flat/issues",
         },
         {
             key: "logout",
-            icon: (): React.ReactNode => <img src={logoutSVG} />,
+            icon: (): React.ReactNode => <SVGLogout />,
             title: <span className="logout-title">{t("logout")}</span>,
             route: routeConfig[RouteNameType.LoginPage].path,
         },
