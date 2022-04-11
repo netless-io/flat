@@ -13,8 +13,8 @@
     "ship:mac": "pnpm --filter renderer-app build && pnpm --filter flat ship:mac",
     "ship:win": "pnpm --filter renderer-app build && pnpm --filter flat ship:win",
     "ship:all": "pnpm --filter renderer-app build && pnpm --filter flat ship:win && pnpm --filter flat pack:mac",
-    "ship:cn:all": "cross-env FLAT_REGION=China pnpm ship:all",
-    "ship:us:all": "cross-env FLAT_REGION=America pnpm ship:all"
+    "ship:cn:all": "cross-env FLAT_REGION=CN pnpm ship:all",
+    "ship:us:all": "cross-env FLAT_REGION=US pnpm ship:all"
   },
   "license": "MIT",
   "devDependencies": {

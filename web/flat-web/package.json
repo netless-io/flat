@@ -4,11 +4,11 @@
   "license": "MIT",
   "scripts": {
     "start": "vite --open",
-    "start:cn": "cross-env FLAT_REGION=China pnpm start",
-    "start:us": "cross-env FLAT_REGION=America pnpm start",
+    "start:cn": "cross-env FLAT_REGION=CN pnpm start",
+    "start:us": "cross-env FLAT_REGION=US pnpm start",
     "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" vite build",
-    "build:cn": "cross-env FLAT_REGION=China pnpm build",
-    "build:us": "cross-env FLAT_REGION=America pnpm build",
+    "build:cn": "cross-env FLAT_REGION=CN pnpm build",
+    "build:us": "cross-env FLAT_REGION=US pnpm build",
     "serve": "vite preview"
   },
   "dependencies": {
