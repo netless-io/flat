@@ -15,7 +15,7 @@ const messages: Resource = {
     "zh-CN": { translation: zhCN },
 };
 
-const defaultVars: Record<string, Record<string, string>> = process.env.FLAT_REGION === "America"
+const defaultVars: Record<string, Record<string, string>> = process.env.FLAT_REGION === "US"
     ? { en: varsUSen, "zh-CN": varsUSzhCN }
     : { en: varsCNen, "zh-CN": varsCNzhCN };
 

@@ -3,7 +3,7 @@ const path = require("path");
 
 const configRegion = () => {
     const DEFAULT =
-        Intl.DateTimeFormat().resolvedOptions().locale.indexOf("zh") !== -1 ? "China" : "America";
+        Intl.DateTimeFormat().resolvedOptions().locale.indexOf("zh") !== -1 ? "CN" : "US";
 
     return process.env.FLAT_REGION || DEFAULT;
 };

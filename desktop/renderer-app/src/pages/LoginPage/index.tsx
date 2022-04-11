@@ -113,7 +113,7 @@ export const LoginPage = observer(function LoginPage() {
     function renderButtonList(): React.ReactNode {
         return (
             <>
-                {process.env.FLAT_REGION === "America" ? (
+                {process.env.FLAT_REGION === "US" ? (
                     <LoginButton
                         provider="google"
                         text={i18n.t("login-google")}

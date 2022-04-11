@@ -147,7 +147,7 @@ export const LoginPage = observer(function LoginPage() {
         } else {
             return (
                 <>
-                    {process.env.FLAT_REGION === "America" ? (
+                    {process.env.FLAT_REGION === "US" ? (
                         <LoginButton
                             provider="google"
                             text={i18n.t("login-google")}

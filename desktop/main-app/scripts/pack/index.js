@@ -93,7 +93,7 @@ const buildElectron = async () => {
 
     writePackageName({
         ...JSON.parse(packageJSON),
-        productName: configRegion() === "America" ? "Flint" : "Flat",
+        productName: configRegion() === "US" ? "Flint" : "Flat",
     });
 
     config.afterPack = () => {
