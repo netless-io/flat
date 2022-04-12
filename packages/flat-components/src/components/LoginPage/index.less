@@ -1,49 +1,51 @@
 .login-panel-container {
-    height: 100%;
+    width: 960px;
+    height: 640px;
     display: flex;
-    flex-direction: row;
 }
 
-.login-panel-cover {
-    height: 100%;
-    width: 50%;
-    overflow: hidden;
-}
-
+.login-panel-cover,
 .login-panel-inner {
-    height: 100%;
-    width: 50%;
-    position: relative;
-    background: #fff;
+    flex: 1;
     overflow: hidden;
 }
 
-.login-panel-inner-bg-top-left {
-    position: absolute;
-    top: 0;
-    left: 0;
+.login-width-limiter {
+    width: 320px;
+    margin: 0 auto 48px;
 }
 
-.login-panel-inner-bg-bottom-left {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-}
-
-.login-panel-inner-bg-bottom-right {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-
-.login-panel-inner-bottom-text {
+.login-big-button {
     width: 100%;
-    position: absolute;
-    bottom: 24px;
-    text-align: center;
-    color: #7a7b7c;
 }
 
-.login-panel-inner-content-container {
-    margin-top: 178px;
+.login-splitter {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+
+    &::before,
+    &::after {
+        flex: 1;
+        content: "";
+        border-top: 1px dashed var(--grey-1);
+        margin: 0 16px;
+    }
+}
+
+.login-btn-back {
+    width: 100%;
+    z-index: 1;
+}
+
+.flat-color-scheme-dark {
+    .login-splitter::before,
+    .login-splitter::after {
+        border-color: var(--grey-8);
+    }
+    .ant-input-affix-wrapper {
+        .ant-btn::before {
+            background: var(--grey-10);
+        }
+    }
 }

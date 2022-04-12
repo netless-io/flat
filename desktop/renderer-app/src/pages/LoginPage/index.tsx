@@ -4,8 +4,7 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from "rea
 import { constants } from "flat-types";
 import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
-import { message } from "antd";
-import { LoginPanel, LoginButton, LoginButtonProviderType } from "flat-components";
+import { LoginPanel, LoginButtonProviderType, LoginWithPhone } from "flat-components";
 import { githubLogin } from "./githubLogin";
 import WeChatLogin from "./WeChatLogin";
 import { googleLogin } from "./googleLogin";
@@ -22,6 +21,11 @@ import {
     SERVICE_URL_EN,
     SERVICE_URL_CN,
 } from "../../constants/process";
+import {
+    loginPhone,
+    loginPhoneSendCode,
+    LoginProcessResult,
+} from "../../api-middleware/flatServer";
 
 export const LoginPage = observer(function LoginPage() {
     const { i18n } = useTranslation();
@@ -29,8 +33,6 @@ export const LoginPage = observer(function LoginPage() {
     const globalStore = useContext(GlobalStoreContext);
     const loginDisposer = useRef<LoginDisposer>();
     const [updateInfo, setUpdateInfo] = useState<AppUpgradeModalProps["updateInfo"]>(null);
-    const [isWeChatLogin, setWeChatLogin] = useState<boolean>(false);
-    const [agreementChecked, setAgreementChecked] = useState<boolean>(false);
 
     const sp = useSafePromise();
 
@@ -66,6 +68,14 @@ export const LoginPage = observer(function LoginPage() {
             });
     }, [sp]);
 
+    const onLoginResult = useCallback(
+        (authData: LoginProcessResult) => {
+            globalStore.updateUserInfo(authData);
+            pushHistory(RouteNameType.HomePage);
+        },
+        [globalStore, pushHistory],
+    );
+
     const handleLogin = useCallback(
         (loginChannel: LoginButtonProviderType) => {
             if (loginDisposer.current) {
@@ -73,84 +83,54 @@ export const LoginPage = observer(function LoginPage() {
                 loginDisposer.current = void 0;
             }
 
-            const doLogin = (loginChannel: LoginButtonProviderType): void => {
-                switch (loginChannel) {
-                    case "github": {
-                        loginDisposer.current = githubLogin(authData => {
-                            globalStore.updateUserInfo(authData);
-                            pushHistory(RouteNameType.HomePage);
-                        });
-                        return;
-                    }
-                    case "google": {
-                        loginDisposer.current = googleLogin(async authData => {
-                            globalStore.updateUserInfo(authData);
-                            pushHistory(RouteNameType.HomePage);
-                        });
-                        return;
-                    }
-                    case "wechat": {
-                        setWeChatLogin(true);
-                        return;
-                    }
-                    default: {
-                        return;
-                    }
+            switch (loginChannel) {
+                case "github": {
+                    loginDisposer.current = githubLogin(onLoginResult);
+                    return;
                 }
-            };
-            if (agreementChecked) {
-                doLogin(loginChannel);
-            } else {
-                void message.info(i18n.t("agree-terms"));
+                case "google": {
+                    loginDisposer.current = googleLogin(onLoginResult);
+                    return;
+                }
+                default: {
+                    return;
+                }
             }
         },
-        [agreementChecked, globalStore, i18n, pushHistory],
+        [onLoginResult],
     );
 
     const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL_EN;
     const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL_EN;
 
-    function renderButtonList(): React.ReactNode {
-        return (
-            <>
-                {process.env.FLAT_REGION === "US" ? (
-                    <LoginButton
-                        provider="google"
-                        text={i18n.t("login-google")}
-                        onLogin={handleLogin}
-                    />
-                ) : (
-                    <LoginButton
-                        provider="wechat"
-                        text={i18n.t("login-wechat")}
-                        onLogin={handleLogin}
-                    />
-                )}
-                <LoginButton
-                    provider="github"
-                    text={i18n.t("login-github")}
-                    onLogin={handleLogin}
-                />
-            </>
-        );
-    }
-
-    function renderQRCode(): React.ReactNode {
-        return <WeChatLogin />;
-    }
-
+    // @TODO: Login with email.
     return (
         <div className="login-page-container">
-            <LoginPanel
-                agreementChecked={agreementChecked}
-                handleClickAgreement={() => setAgreementChecked(!agreementChecked)}
-                handleHideQRCode={() => setWeChatLogin(false)}
-                privacyURL={privacyURL}
-                renderButtonList={renderButtonList}
-                renderQRCode={renderQRCode}
-                serviceURL={serviceURL}
-                showQRCode={isWeChatLogin}
-            />
+            <LoginPanel>
+                <LoginWithPhone
+                    buttons={[process.env.FLAT_REGION === "US" ? "google" : "wechat", "github"]}
+                    loginOrRegister={async (countryCode, phone, code) => {
+                        try {
+                            await loginPhone(countryCode + phone, Number(code)).then(onLoginResult);
+                            return true;
+                        } catch {
+                            return false;
+                        }
+                    }}
+                    privacyURL={privacyURL}
+                    renderQRCode={() => <WeChatLogin />}
+                    sendVerificationCode={async (countryCode, phone) => {
+                        try {
+                            await loginPhoneSendCode(countryCode + phone);
+                            return true;
+                        } catch {
+                            return false;
+                        }
+                    }}
+                    serviceURL={serviceURL}
+                    onClickButton={handleLogin}
+                />
+            </LoginPanel>
             <AppUpgradeModal updateInfo={updateInfo} onClose={() => setUpdateInfo(null)} />
         </div>
     );

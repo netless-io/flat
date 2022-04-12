@@ -545,17 +545,21 @@
         }
     }
 
-    .ant-form-item-control-input {
-        .ant-input-affix-wrapper {
-            color: var(--text);
-            background: var(--grey-10);
-            border: 1px solid var(--grey-8);
-        }
+    .ant-input-affix-wrapper {
+        color: var(--text);
+        background: var(--grey-10);
+        border: 1px solid var(--grey-8);
+    }
 
-        .ant-input-group-addon {
-            background-color: var(--grey-10);
-            border: 1px solid var(--grey-8);
-        }
+    .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+    .ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover {
+        background: var(--grey-10);
+        border-color: var(--danger);
+    }
+
+    .ant-input-group-addon {
+        background-color: var(--grey-10);
+        border: 1px solid var(--grey-8);
     }
 }
 
