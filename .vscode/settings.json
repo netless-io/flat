@@ -10,5 +10,6 @@
   "i18n-ally.sourceLanguage": "zh-CN",
   "i18n-ally.displayLanguage": "zh-CN",
   "eslint.enable": true,
+  "eslint.format.enable": true,
   "typescript.tsdk": "node_modules/typescript/lib"
 }
