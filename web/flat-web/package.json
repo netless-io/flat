@@ -20,7 +20,7 @@
     "@netless/app-monaco": "^0.1.13-beta.0",
     "@netless/app-slide": "^0.1.1",
     "@netless/combine-player": "^1.1.6",
-    "@netless/fastboard-react": "^0.3.2-canary.4",
+    "@netless/fastboard-react": "^0.3.2-canary.6",
     "@netless/player-controller": "^0.0.9",
     "@netless/video-js-plugin": "^0.3.8",
     "@netless/window-manager": "^0.4.20",
