@@ -140,6 +140,10 @@ module.exports = {
 
         // readme
         "customizational",
+
+        // vscode
+        "dbaeumer",
+        "keystyle",
     ],
     flagWords: ["fuck", "bitch", "asshole", "bullshit", "crap", "suck", "wtf"],
     dictionaries: [
