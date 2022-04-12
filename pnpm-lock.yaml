@@ -145,7 +145,7 @@ importers:
       '@netless/app-monaco': ^0.1.13-beta.0
       '@netless/app-slide': ^0.1.1
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.2-canary.4
+      '@netless/fastboard-react': ^0.3.2-canary.6
       '@netless/player-controller': ^0.0.9
       '@netless/video-js-plugin': ^0.3.8
       '@netless/window-manager': ^0.4.20
@@ -198,7 +198,7 @@ importers:
       '@netless/app-monaco': 0.1.13-beta.0
       '@netless/app-slide': 0.1.1
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.2-canary.4_89ffd4cbb37276b8759bb8e3be855c24
+      '@netless/fastboard-react': 0.3.2-canary.6_89ffd4cbb37276b8759bb8e3be855c24
       '@netless/player-controller': 0.0.9_b3e76ef974e304d0b2b66e344236883d
       '@netless/video-js-plugin': 0.3.8_628d018e44e8dfa87e93166edcc6caa6
       '@netless/window-manager': 0.4.20_white-web-sdk@2.16.10
@@ -359,7 +359,7 @@ importers:
       '@netless/app-monaco': ^0.1.13-beta.0
       '@netless/app-slide': ^0.1.1
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.2-canary.4
+      '@netless/fastboard-react': ^0.3.2-canary.6
       '@netless/mini-svg-data-uri': 0.0.1
       '@netless/player-controller': ^0.0.9
       '@netless/video-js-plugin': ^0.3.8
@@ -408,7 +408,7 @@ importers:
       '@netless/app-monaco': 0.1.13-beta.0
       '@netless/app-slide': 0.1.1
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.2-canary.4_89ffd4cbb37276b8759bb8e3be855c24
+      '@netless/fastboard-react': 0.3.2-canary.6_89ffd4cbb37276b8759bb8e3be855c24
       '@netless/player-controller': 0.0.9_b3e76ef974e304d0b2b66e344236883d
       '@netless/video-js-plugin': 0.3.8_628d018e44e8dfa87e93166edcc6caa6
       '@netless/window-manager': 0.4.20_white-web-sdk@2.16.10
@@ -2449,7 +2449,7 @@ packages:
   /@emotion/core/10.3.1_react@17.0.2:
     resolution: {integrity: sha512-447aUEjPIm0MnE6QYIaFz9VQOHSXf4Iu6EWOIqq11EAPqinkSZmfymPTmlOE3QjLv846lH4JVZBUOtwGbuQoww==}
     peerDependencies:
-      react: '>=16.3.0 || ^17 || ^17'
+      react: '>=16.3.0 || ^17'
     dependencies:
       '@babel/runtime': 7.17.8
       '@emotion/cache': 10.0.29
@@ -2797,8 +2797,8 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/0.3.2-canary.4_79d436dbb78f6bf75f90f1dec9b34c81:
-    resolution: {integrity: sha512-cXnu9ronIYrJeb4UoHNGG3bSJUGIRIsk8+ko/QtA2ZE/h+paFD875OLPcae/LCihIfNEvbF3uzri3RMMYNqBtA==}
+  /@netless/fastboard-core/0.3.2-canary.6_79d436dbb78f6bf75f90f1dec9b34c81:
+    resolution: {integrity: sha512-dtvL+gA8SrmSHyNykukz7t6VpBWPkhcPYLoMtW7anflHbk58kj4XnNsDznC0otEDjAxYefFemBf7+8D7S5VnKA==}
     peerDependencies:
       '@netless/window-manager': '>=0.4.0'
       white-web-sdk: '>=2.16.0'
@@ -2808,25 +2808,25 @@ packages:
       white-web-sdk: 2.16.10
     dev: false
 
-  /@netless/fastboard-react/0.3.2-canary.4_89ffd4cbb37276b8759bb8e3be855c24:
-    resolution: {integrity: sha512-U1iLfwq2mOVR4Y6gLQRgMpaG1ndbKpXmEbb74re/qfVupJbqPkw5/rt0Nhh3QJQ+QJGVsAvY1PMoPvnjSNJwyw==}
+  /@netless/fastboard-react/0.3.2-canary.6_89ffd4cbb37276b8759bb8e3be855c24:
+    resolution: {integrity: sha512-5SP0EDgGsLeoJkjyR2vT117jrX7J5MkIm9WsGum3ZqERNHltVgbqf2UA8jZUMXT2pByFqW155IuhjOHrWIZ+6Q==}
     peerDependencies:
       react: '*'
     dependencies:
-      '@netless/fastboard-core': 0.3.2-canary.4_79d436dbb78f6bf75f90f1dec9b34c81
-      '@netless/fastboard-ui': 0.3.2-canary.4_7df7e016b67615110ad33b57daee0d95
+      '@netless/fastboard-core': 0.3.2-canary.6_79d436dbb78f6bf75f90f1dec9b34c81
+      '@netless/fastboard-ui': 0.3.2-canary.6_f0eae2fb79c20cb0fc4174a8276c4e34
       react: 17.0.2
     transitivePeerDependencies:
       - '@netless/window-manager'
       - white-web-sdk
     dev: false
 
-  /@netless/fastboard-ui/0.3.2-canary.4_7df7e016b67615110ad33b57daee0d95:
-    resolution: {integrity: sha512-k9q7jnDBzGdXmkmXMyIjmjfDKTM8IZyZ/KmV3zHjnqfXuhXJ94Mu+45+WwL97lpV9kHkTM4LK+lIYJwYgLRZtg==}
+  /@netless/fastboard-ui/0.3.2-canary.6_f0eae2fb79c20cb0fc4174a8276c4e34:
+    resolution: {integrity: sha512-37l/ev6NjSkg7mEx2dsr9z4RkapH9F70ZUhDrXUd+G8umShhhVh99zxcjq/wNyBalMCnfu5mu9URlreuLFGTmQ==}
     peerDependencies:
-      '@netless/fastboard-core': 0.3.2-canary.4
+      '@netless/fastboard-core': 0.3.2-canary.6
     dependencies:
-      '@netless/fastboard-core': 0.3.2-canary.4_79d436dbb78f6bf75f90f1dec9b34c81
+      '@netless/fastboard-core': 0.3.2-canary.6_79d436dbb78f6bf75f90f1dec9b34c81
       tippy.js: 6.3.7
     dev: false
 
@@ -3526,8 +3526,8 @@ packages:
   /@storybook/builder-webpack4/6.3.13_bef8a203ad644ce5c511754331fbee31:
     resolution: {integrity: sha512-dpBMIQVH2eWSY6+aRFg74AXgZ39TYwtNAo6vSX8cTapW14adoaqZf4jRM9hPsTUxlYIMuxeh4kulyE0D/Bx32Q==}
     peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^17 || ^17
-      react-dom: ^16.8.0 || ^17.0.0 || ^17 || ^17
+      react: ^16.8.0 || ^17.0.0 || ^17
+      react-dom: ^16.8.0 || ^17.0.0 || ^17
       typescript: '*'
     peerDependenciesMeta:
       typescript:
@@ -3754,8 +3754,8 @@ packages:
   /@storybook/components/6.3.13_b5d7bf22a7b46dd4876f0e926ab0c987:
     resolution: {integrity: sha512-nLTVxqbjeZJU9UBnYYHyBygSUt/E7Rsjgn5zHX2TlXpBHsSHdLT+1WCknu4EFwIAGOfq6wstnkpHXVSjoX1uWw==}
     peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17
-      react-dom: ^16.8.0 || ^17.0.0 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17 || ^17
+      react: ^16.8.0 || ^17.0.0 || ^17 || ^17 || ^17
+      react-dom: ^16.8.0 || ^17.0.0 || ^17 || ^17 || ^17
     dependencies:
       '@popperjs/core': 2.11.4
       '@storybook/client-logger': 6.3.13
@@ -7712,7 +7712,7 @@ packages:
     resolution: {integrity: sha512-M5lSukoWi1If8dhQAUCvj4H8vUt3vOnwbQBH9DdTm/s4Ym2B/3dPMtYZeJmq7Q3S3Pa+I94DcZ7pc9bP14cWIQ==}
     engines: {node: '>= 8.9.0'}
     peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0 || ^5 || ^5
+      webpack: ^4.0.0 || ^5.0.0 || ^5
     dependencies:
       camelcase: 5.3.1
       cssesc: 3.0.0
@@ -8323,7 +8323,7 @@ packages:
   /dotenv-webpack/1.8.0_webpack@4.46.0:
     resolution: {integrity: sha512-o8pq6NLBehtrqA8Jv8jFQNtG9nhRtVqmoD4yWbgUyoU3+9WBlPe+c2EAiaJok9RB28QvrWvdWLZGeTT5aATDMg==}
     peerDependencies:
-      webpack: ^1 || ^2 || ^3 || ^4 || ^5 || ^5
+      webpack: ^1 || ^2 || ^3 || ^4 || ^5
     dependencies:
       dotenv-defaults: 1.1.1
       webpack: 4.46.0
@@ -8561,7 +8561,7 @@ packages:
     resolution: {integrity: sha512-mXiD2Oj7N9b6+h/dC6oLf9hwxbtKHQjoIqtodEyL8CpkN4F3V4IK/BT4D0C7zSs4BBFOu4UlPJbvvBLa88SGEA==}
     peerDependencies:
       '@emotion/core': ^10.0.27
-      react: '>=16.3.0 || ^17 || ^17'
+      react: '>=16.3.0 || ^17'
     dependencies:
       '@babel/runtime': 7.17.8
       '@emotion/core': 10.3.1_react@17.0.2
@@ -10892,7 +10892,7 @@ packages:
     resolution: {integrity: sha512-q5oYdzjKUIPQVjOosjgvCHQOv9Ett9CYYHlgvJeXG0qQvdSojnBq4vAdQBwn1+yGveAwHCoe/rMR86ozX3+c2A==}
     engines: {node: '>=6.9'}
     peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0 || ^5 || ^5
+      webpack: ^4.0.0 || ^5.0.0 || ^5
     dependencies:
       '@types/html-minifier-terser': 5.1.2
       '@types/tapable': 1.0.8
@@ -16954,7 +16954,7 @@ packages:
     resolution: {integrity: sha512-V7TCORko8rs9rIqkSrlMfkqA63DfoGBBJmK1kKGCcSi+BWb4cqz0SRsnp4l6rU5iwOEd0/2ePv68SV22VXon4Q==}
     engines: {node: '>= 8.9.0'}
     peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0 || ^5 || ^5
+      webpack: ^4.0.0 || ^5.0.0 || ^5
     dependencies:
       loader-utils: 2.0.2
       schema-utils: 2.7.1
@@ -17158,7 +17158,7 @@ packages:
     resolution: {integrity: sha512-jTgXh40RnvOrLQNgIkwEKnQ8rmHjHK4u+6UBEi+W+FPmvb+uo+chJXntKe7/3lW5mNysgSWD60KyesnhW8D6MQ==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0 || ^5 || ^5
+      webpack: ^4.0.0 || ^5.0.0 || ^5
     dependencies:
       cacache: 15.3.0
       find-cache-dir: 3.3.2
@@ -17179,7 +17179,7 @@ packages:
       '@swc/core': '*'
       esbuild: '*'
       uglify-js: '*'
-      webpack: ^5.1.0 || ^5 || ^5 || ^5
+      webpack: ^5.1.0 || ^5
     peerDependenciesMeta:
       '@swc/core':
         optional: true
@@ -18284,7 +18284,7 @@ packages:
     resolution: {integrity: sha512-djelc/zGiz9nZj/U7PTBi2ViorGJXEWo/3ltkPbDyxCXhhEXkW0ce99falaok4TPj+AsxLiXJR0EBOb0zh9fKQ==}
     engines: {node: '>= 6'}
     peerDependencies:
-      webpack: ^4.0.0 || ^5.0.0 || ^5 || ^5
+      webpack: ^4.0.0 || ^5.0.0 || ^5
     dependencies:
       memory-fs: 0.4.1
       mime: 2.6.0
