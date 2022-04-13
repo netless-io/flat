@@ -3,10 +3,12 @@ import AgoraRTC, {
     IAgoraRTCRemoteUser,
     ICameraVideoTrack,
     IMicrophoneAudioTrack,
+    NetworkQuality,
 } from "agora-rtc-sdk-ng";
-import { FlatRTC, FlatRTCAvatar } from "@netless/flat-rtc";
+import { FlatRTC, FlatRTCAvatar, FlatRTCEventData, FlatRTCEventNames } from "@netless/flat-rtc";
 import { SideEffectManager } from "side-effect-manager";
 import { Val } from "value-enhancer";
+import Emittery from "emittery";
 import { RTCRemoteAvatar } from "./rtc-remote-avatar";
 import { RTCLocalAvatar } from "./rtc-local-avatar";
 import { FlatRTCAgoraWebJoinRoomConfig, FlatRTCAgoraWebUIDType } from "./types";
@@ -55,6 +57,8 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
     public get localAvatar(): FlatRTCAvatar {
         return (this._localAvatar ??= new RTCLocalAvatar({ rtc: this }));
     }
+
+    public readonly events = new Emittery<FlatRTCEventData, FlatRTCEventData>();
 
     public constructor(config: FlatRTCAgoraWebConfig) {
         this.APP_ID = config.APP_ID;
@@ -259,14 +263,31 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
             return () => client.off("user-unpublished", handler);
         });
 
-        await this.client.join(this.APP_ID, roomUUID, token || (await refreshToken(roomUUID)), uid);
+        this._roomSideEffect.addDisposer(
+            beforeAddListener(this.events, "network", () => {
+                const handler = ({
+                    uplinkNetworkQuality,
+                    downlinkNetworkQuality,
+                }: NetworkQuality): void => {
+                    this.events.emit("network", {
+                        uplink: uplinkNetworkQuality,
+                        downlink: downlinkNetworkQuality,
+                        delay: client.getRTCStats().RTT ?? NaN,
+                    });
+                };
+                client.on("network-quality", handler);
+                return () => client.off("network-quality", handler);
+            }),
+        );
+
+        await client.join(this.APP_ID, roomUUID, token || (await refreshToken(roomUUID)), uid);
 
         // publish existing tracks after joining channel
         if (this.localCameraTrack) {
-            await this.client.publish(this.localCameraTrack);
+            await client.publish(this.localCameraTrack);
         }
         if (this.localMicTrack) {
-            await this.client.publish(this.localMicTrack);
+            await client.publish(this.localMicTrack);
         }
 
         this.uid = uid;
@@ -325,4 +346,39 @@ function singleRun<TFn extends (...args: any[]) => Promise<any>>(fn: TFn): TFn {
         return p;
     }) as TFn;
     return run;
+}
+
+/**
+ * @param eventName Event name to listen
+ * @param init Runs before adding the first listener of the `eventName`.
+ *             Returns a disposer function that runs when the last listener is removed.
+ * @returns a disposer function that removes the `listenerAdded` listener.
+ */
+function beforeAddListener(
+    events: Emittery<FlatRTCEventData, FlatRTCEventData>,
+    eventName: FlatRTCEventNames,
+    init: () => (() => void) | undefined | void,
+): () => void {
+    let lastCount = events.listenerCount(eventName) || 0;
+    let disposer: (() => void) | undefined | void;
+
+    if (lastCount > 0) {
+        disposer = init();
+    }
+
+    return (events as Emittery<FlatRTCEventData>).on(
+        [Emittery.listenerAdded, Emittery.listenerRemoved],
+        data => {
+            if (data.eventName === eventName) {
+                const count = events.listenerCount(eventName) || 0;
+                // https://github.com/sindresorhus/emittery/issues/63
+                if (lastCount === 0 && count > 0) {
+                    disposer = init();
+                } else if (lastCount > 0 && count === 0) {
+                    disposer?.();
+                }
+                lastCount = count;
+            }
+        },
+    );
 }

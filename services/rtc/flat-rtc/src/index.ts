@@ -1,9 +1,18 @@
+import Emittery from "emittery";
+
 export interface FlatRTCDevice {
     deviceid: string;
     devicename: string;
 }
+export interface FlatRTCEventData {
+    network: {
+        delay: number;
+        uplink: number;
+        downlink: number;
+    };
+}
 
-export interface FlatRTCEventPayloads {}
+export type FlatRTCEventNames = keyof FlatRTCEventData;
 
 export interface FlatRTCJoinRoomConfigBase<TUid = number> {
     roomUUID: string;
@@ -14,6 +23,8 @@ export interface FlatRTC<
     TUid = number,
     TJoinRoomConfig extends FlatRTCJoinRoomConfigBase<TUid> = FlatRTCJoinRoomConfigBase<TUid>,
 > {
+    events: Emittery<FlatRTCEventData, FlatRTCEventData>;
+
     destroy(): Promise<void>;
 
     joinRoom(config: TJoinRoomConfig): Promise<void>;
