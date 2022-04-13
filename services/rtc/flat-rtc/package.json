@@ -1,0 +1,15 @@
+{
+  "name": "@netless/flat-rtc",
+  "version": "0.1.0",
+  "description": "Flat RTC interface",
+  "main": "src/index.ts",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "typescript": "^4.6.2"
+  }
+}
