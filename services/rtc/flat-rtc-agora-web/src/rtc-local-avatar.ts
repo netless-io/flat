@@ -43,7 +43,6 @@ export class RTCLocalAvatar implements FlatRTCAvatar {
                     let localMicTrack = this._rtc.localMicTrack;
                     if (shouldMic && !localMicTrack) {
                         localMicTrack = await this._rtc.createLocalMicTrack();
-                        localMicTrack.play();
                     } else if (localMicTrack) {
                         await localMicTrack.setEnabled(shouldMic);
                     }
