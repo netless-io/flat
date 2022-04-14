@@ -10,6 +10,9 @@ export interface FlatRTCEventData {
         uplink: number;
         downlink: number;
     };
+    "err-set-camera": Error;
+    "err-set-mic": Error;
+    "err-low-volume": undefined;
 }
 
 export type FlatRTCEventNames = keyof FlatRTCEventData;

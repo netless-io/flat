@@ -9,11 +9,15 @@ export interface RTCAvatarConfig {
 }
 
 export class RTCLocalAvatar implements FlatRTCAvatar {
+    private static LOW_VOLUME_LEVEL_THRESHOLD = 0.00001;
+
     private readonly _rtc: FlatRTCAgoraWeb;
     private readonly _sideEffect = new SideEffectManager();
 
     private readonly _shouldCamera$ = new Val(false);
     private readonly _shouldMic$ = new Val(false);
+
+    private _volumeLevel = 0;
 
     private readonly _el$: Val<HTMLElement | undefined | null>;
 
@@ -30,7 +34,7 @@ export class RTCLocalAvatar implements FlatRTCAvatar {
     }
 
     public getVolumeLevel(): number {
-        return this._rtc.localMicTrack?.getVolumeLevel() || 0;
+        return this._volumeLevel;
     }
 
     public constructor(config: RTCAvatarConfig) {
@@ -39,6 +43,8 @@ export class RTCLocalAvatar implements FlatRTCAvatar {
 
         this._sideEffect.addDisposer(
             this._shouldMic$.subscribe(async shouldMic => {
+                this._volumeLevel = 0;
+
                 try {
                     let localMicTrack = this._rtc.localMicTrack;
                     if (shouldMic && !localMicTrack) {
@@ -46,8 +52,40 @@ export class RTCLocalAvatar implements FlatRTCAvatar {
                     } else if (localMicTrack) {
                         await localMicTrack.setEnabled(shouldMic);
                     }
+
+                    const lowVolumeLevelDisposerID = "local-mic-volume-level";
+                    if (shouldMic) {
+                        let lowVolumeLevelCount = 0;
+                        this._sideEffect.setInterval(
+                            () => {
+                                if (this._rtc.localMicTrack) {
+                                    try {
+                                        this._volumeLevel =
+                                            this._rtc.localMicTrack.getVolumeLevel() || 0;
+                                        if (
+                                            this._volumeLevel <=
+                                            RTCLocalAvatar.LOW_VOLUME_LEVEL_THRESHOLD
+                                        ) {
+                                            if (++lowVolumeLevelCount >= 10) {
+                                                this._rtc.events.emit("err-low-volume");
+                                                this._sideEffect.flush(lowVolumeLevelDisposerID);
+                                                return;
+                                            }
+                                        }
+                                    } catch (e) {
+                                        console.error(e);
+                                    }
+                                }
+                                lowVolumeLevelCount = 0;
+                            },
+                            500,
+                            lowVolumeLevelDisposerID,
+                        );
+                    } else {
+                        this._sideEffect.flush(lowVolumeLevelDisposerID);
+                    }
                 } catch (e) {
-                    console.error(e);
+                    this._rtc.events.emit("err-set-mic", e);
                 }
             }),
         );
@@ -65,7 +103,7 @@ export class RTCLocalAvatar implements FlatRTCAvatar {
                         await localCameraTrack.setEnabled(shouldCamera);
                     }
                 } catch (e) {
-                    console.error(e);
+                    this._rtc.events.emit("err-set-camera", e);
                 }
             }),
         );
