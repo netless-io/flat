@@ -1,9 +1,14 @@
-import { NetworkQuality } from "agora-rtc-sdk-ng";
 import { message } from "antd";
 import dateSub from "date-fns/sub";
 import type { i18n } from "i18next";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { useEffect, useState } from "react";
+import { SideEffectManager } from "side-effect-manager";
+import {
+    FlatRTCAgoraWeb,
+    FlatRTCAgoraWebMode,
+    FlatRTCAgoraWebRole,
+} from "@netless/flat-rtc-agora-web";
 import { i18n as i18next } from "../utils/i18n";
 import { v4 as uuidv4 } from "uuid";
 import { CloudRecording } from "../api-middleware/CloudRecording";
@@ -17,9 +22,10 @@ import {
 import {
     CloudRecordStartPayload,
     CloudRecordUpdateLayoutPayload,
+    generateRTCToken,
 } from "../api-middleware/flatServer/agora";
 import { RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
-import { RtcChannelType, RtcRoom as RTCAPI } from "../api-middleware/rtc/room";
+import { RtcChannelType } from "../api-middleware/rtc/room";
 import {
     ClassModeType,
     NonDefaultUserProp,
@@ -29,7 +35,7 @@ import {
     RTMEvents,
 } from "../api-middleware/Rtm";
 import { errorTips } from "../components/Tips/ErrorTips";
-import { NODE_ENV } from "../constants/process";
+import { AGORA, NODE_ENV } from "../constants/process";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { useAutoRun } from "../utils/mobx";
 import { RouteNameType, usePushHistory } from "../utils/routes";
@@ -60,6 +66,8 @@ export enum RoomStatusLoadingType {
 }
 
 export class ClassRoomStore {
+    private sideEffect = new SideEffectManager();
+
     public readonly roomUUID: string;
     /** User uuid of the current user */
     public readonly userUUID: string;
@@ -88,9 +96,7 @@ export class ClassRoomStore {
 
     public readonly users: UserStore;
 
-    public readonly rtcChannelType: RtcChannelType;
-
-    public readonly rtc: RTCAPI;
+    public readonly rtc: FlatRTCAgoraWeb;
     public readonly rtm: RTMAPI;
     public readonly cloudRecording: CloudRecording;
 
@@ -133,9 +139,7 @@ export class ClassRoomStore {
         this.userUUID = globalStore.userUUID;
         this.recordingConfig = config.recordingConfig;
         this.classMode = config.classMode ?? ClassModeType.Lecture;
-        this.rtcChannelType = config.recordingConfig.channelType ?? RtcChannelType.Communication;
-
-        this.rtc = new RTCAPI();
+        this.rtc = FlatRTCAgoraWeb.getInstance(AGORA.APP_ID);
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
 
@@ -261,13 +265,21 @@ export class ClassRoomStore {
         this.updateCalling(true);
 
         try {
-            const roomClient = await this.rtc.join({
+            await this.rtc.joinRoom({
                 roomUUID: this.roomUUID,
-                isCreator: this.isCreator,
-                rtcUID: globalStore.rtcUID,
-                channelType: this.rtcChannelType,
+                uid: globalStore.rtcUID,
+                role: this.isCreator ? FlatRTCAgoraWebRole.Host : FlatRTCAgoraWebRole.Audience,
+                token: globalStore.rtcToken,
+                mode:
+                    this.recordingConfig.channelType === RtcChannelType.Broadcast
+                        ? FlatRTCAgoraWebMode.Broadcast
+                        : FlatRTCAgoraWebMode.Communication,
+                refreshToken: generateRTCToken,
+                isLocalUID: uid => globalStore.isShareScreenUID(uid),
             });
-            this.shareScreenStore.updateRoomClient(roomClient);
+            if (this.rtc.client) {
+                this.shareScreenStore.updateRoomClient(this.rtc.client);
+            }
         } catch (e) {
             console.error(e);
             this.updateCalling(false);
@@ -574,18 +586,19 @@ export class ClassRoomStore {
         // });
         channel.on("MemberLeft", this.users.removeUser);
 
-        this.onRTCEvents();
-    }
-
-    public onRTCEvents(): void {
-        this.rtc.client?.on("network-quality", this.checkNetworkQuality);
-    }
-
-    public offRTCEvents(): void {
-        this.rtc.client?.off("network-quality", this.checkNetworkQuality);
+        this.sideEffect.addDisposer(
+            this.rtc.events.on(
+                "network",
+                action("checkNetworkQuality", networkQuality => {
+                    this.networkQuality = networkQuality;
+                }),
+            ),
+        );
     }
 
     public async destroy(): Promise<void> {
+        this.sideEffect.flushAll();
+
         const promises: Array<Promise<any>> = [];
 
         promises.push(this.rtm.destroy());
@@ -599,8 +612,6 @@ export class ClassRoomStore {
         promises.push(this.whiteboardStore.destroy());
 
         this.leaveRTC();
-
-        this.offRTCEvents();
 
         window.clearTimeout(this._collectChannelStatusTimeout);
 
@@ -1058,14 +1069,6 @@ export class ClassRoomStore {
         this.tempChannelStatus.clear();
         window.clearTimeout(this._collectChannelStatusTimeout);
     }
-
-    private checkNetworkQuality = action(
-        ({ uplinkNetworkQuality, downlinkNetworkQuality }: NetworkQuality): void => {
-            this.networkQuality.uplink = uplinkNetworkQuality;
-            this.networkQuality.downlink = downlinkNetworkQuality;
-            this.networkQuality.delay = this.rtc.getLatency();
-        },
-    );
 }
 
 export interface ClassRoomStoreConfig {

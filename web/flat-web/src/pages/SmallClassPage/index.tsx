@@ -194,7 +194,9 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         avatarUser={classRoomStore.users.creator}
                         isAvatarUserCreator={true}
                         isCreator={true}
-                        rtcRoom={classRoomStore.rtc}
+                        rtcAvatar={classRoomStore.rtc.getAvatar(
+                            classRoomStore.users.creator?.rtcUID,
+                        )}
                         small={true}
                         updateDeviceState={classRoomStore.updateDeviceState}
                         userUUID={classRoomStore.userUUID}
@@ -318,7 +320,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 avatarUser={user}
                 isAvatarUserCreator={false}
                 isCreator={classRoomStore.isCreator}
-                rtcRoom={classRoomStore.rtc}
+                rtcAvatar={classRoomStore.rtc.getAvatar(user.rtcUID)}
                 small={true}
                 updateDeviceState={classRoomStore.updateDeviceState}
                 userUUID={classRoomStore.userUUID}

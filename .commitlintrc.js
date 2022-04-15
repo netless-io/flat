@@ -60,6 +60,7 @@ module.exports = {
                 "assets",
                 "login",
                 "config",
+                "flat-rtc",
             ],
         ],
         "scope-case": [2, "always", ["lower-case", "kebab-case"]],
