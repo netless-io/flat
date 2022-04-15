@@ -246,7 +246,7 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
         uid,
         token,
         mode,
-        screenShare,
+        isLocalUID,
         refreshToken,
         role,
         roomUUID,
@@ -283,12 +283,8 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
                 user: IAgoraRTCRemoteUser,
                 mediaType: "audio" | "video",
             ): Promise<void> => {
-                // @TODO screen share
-                if (screenShare) {
-                    if (user.uid === screenShare.uid) {
-                        // skip screen sharing ui
-                        return;
-                    }
+                if (isLocalUID?.(user.uid as FlatRTCAgoraWebUIDType)) {
+                    return;
                 }
 
                 try {
@@ -316,12 +312,8 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
                 user: IAgoraRTCRemoteUser,
                 mediaType: "audio" | "video",
             ): Promise<void> => {
-                // @TODO screen share
-                if (screenShare) {
-                    if (user.uid === screenShare.uid) {
-                        // skip screen sharing ui
-                        return;
-                    }
+                if (isLocalUID?.(user.uid as FlatRTCAgoraWebUIDType)) {
+                    return;
                 }
 
                 try {

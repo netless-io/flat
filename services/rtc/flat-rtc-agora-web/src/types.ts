@@ -13,10 +13,8 @@ export interface FlatRTCAgoraWebJoinRoomConfig
     extends FlatRTCJoinRoomConfigBase<FlatRTCAgoraWebUIDType> {
     token?: string | null;
     mode: `${FlatRTCAgoraWebModeType}`;
-    refreshToken: FlatRTCAgoraWebGetToken;
     role?: `${FlatRTCAgoraWebRole}`;
-    screenShare?: {
-        uid: FlatRTCAgoraWebUIDType;
-        token: string;
-    };
+    refreshToken: FlatRTCAgoraWebGetToken;
+    /** Skip subscribing local uids */
+    isLocalUID?: (uid: FlatRTCAgoraWebUIDType) => boolean;
 }
