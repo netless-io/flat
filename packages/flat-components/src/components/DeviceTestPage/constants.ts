@@ -1,6 +1,3 @@
-export interface Device {
-    deviceId: string;
-    groupId: string;
-    kind: "audioinput" | "audiooutput" | "videoinput";
-    label: string;
-}
+import { FlatRTCDevice } from "@netless/flat-rtc";
+
+export type Device = FlatRTCDevice;

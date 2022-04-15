@@ -2,7 +2,8 @@ import "./style.less";
 
 import { DeviceTestPanel } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { FlatRTCDevice } from "@netless/flat-rtc";
 
 import { DeviceTest } from "../../api-middleware/rtc/device-test";
 import { useParams } from "react-router-dom";
@@ -10,18 +11,21 @@ import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { configStore } from "../../stores/config-store";
+import { FlatRTCContext } from "../../components/FlatRTCContext";
+import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 export const DevicesTestPage = observer(function DeviceTestPage() {
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
+    const rtc = useContext(FlatRTCContext);
+    const sp = useSafePromise();
+
     const { roomUUID } = useParams<RouteParams<RouteNameType.JoinPage>>();
 
     const cameraVideoStreamRef = useRef<HTMLDivElement>(null);
 
-    const [deviceTest] = useState(() => new DeviceTest());
-
-    const [cameraDevices, setCameraDevices] = useState<MediaDeviceInfo[]>([]);
-    const [microphoneDevices, setMicrophoneDevices] = useState<MediaDeviceInfo[]>([]);
+    const [cameraDevices, setCameraDevices] = useState<FlatRTCDevice[]>([]);
+    const [microphoneDevices, setMicrophoneDevices] = useState<FlatRTCDevice[]>([]);
 
     const [cameraDeviceId, setCameraDeviceId] = useState<string>("");
     const [microphoneDeviceId, setMicrophoneDeviceId] = useState<string>("");
@@ -32,6 +36,87 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     const [volume, setVolume] = useState(0);
 
     useEffect(() => {
+        // @FIXME only run once
+        const avatar = rtc.getAvatar();
+        if (avatar) {
+            avatar.enableCamera(true);
+            avatar.enableMic(true);
+            avatar.setElement(cameraVideoStreamRef.current);
+
+            const ticket = window.setInterval(() => {
+                // add noise
+                setVolume(Math.min(avatar.getVolumeLevel() + Math.random() * 0.05, 1));
+            }, 50);
+
+            return () => {
+                window.clearInterval(ticket);
+                avatar.destroy();
+            };
+        }
+        return;
+    }, [rtc, cameraVideoStreamRef]);
+
+    useEffect(() => {
+        const handlerDeviceError = (error: any): void => {
+            if (DeviceTest.isPermissionError(error)) {
+                setIsCameraAccessible(false);
+            }
+        };
+
+        const refreshCameraDevices = (): void => {
+            sp(rtc.getCameraDevices())
+                .then(devices => {
+                    const cameraDevices = devices.filter(device => device.deviceId);
+                    setCameraDevices(cameraDevices);
+                    setIsCameraAccessible(cameraDevices.length > 0);
+                })
+                .catch(handlerDeviceError);
+        };
+
+        const refreshMicDevices = (): void => {
+            sp(rtc.getMicDevices())
+                .then(devices => {
+                    const microphoneDevices = devices.filter(device => device.deviceId);
+                    setMicrophoneDevices(microphoneDevices);
+                    setIsMicrophoneAccessible(microphoneDevices.length > 0);
+                })
+                .catch(handlerDeviceError);
+        };
+
+        const cameraChangeDisposer = rtc.events.on("camera-changed", refreshCameraDevices);
+        const micChangedDisposer = rtc.events.on("mic-changed", refreshMicDevices);
+
+        refreshCameraDevices();
+        refreshMicDevices();
+
+        return () => {
+            cameraChangeDisposer();
+            micChangedDisposer();
+        };
+    }, [rtc, sp]);
+
+    useEffect(() => {
+        if (cameraDeviceId) {
+            void rtc.setCameraID(cameraDeviceId).catch((error: any) => {
+                if (DeviceTest.isPermissionError(error)) {
+                    setIsCameraAccessible(false);
+                }
+            });
+        }
+    }, [rtc, cameraDeviceId]);
+
+    useEffect(() => {
+        if (microphoneDeviceId) {
+            void rtc.setMicID(microphoneDeviceId).catch((error: any) => {
+                if (DeviceTest.isPermissionError(error)) {
+                    setIsMicrophoneAccessible(false);
+                }
+            });
+        }
+    }, [rtc, microphoneDeviceId]);
+
+    useEffect(() => {
+        // check device id on changes
         if (cameraDevices.length > 0 && !cameraDeviceId) {
             const lastCameraId = configStore.cameraId;
             lastCameraId
@@ -41,6 +126,7 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     }, [cameraDeviceId, cameraDevices]);
 
     useEffect(() => {
+        // check device id on changes
         if (microphoneDevices.length > 0 && !microphoneDeviceId) {
             const lastMicrophoneId = configStore.microphoneId;
             lastMicrophoneId
@@ -48,81 +134,6 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
                 : setMicrophoneDeviceId(microphoneDevices[0].deviceId);
         }
     }, [microphoneDeviceId, microphoneDevices]);
-
-    const setCameraElement = useCallback(
-        (cameraElement: HTMLDivElement | null): void => {
-            deviceTest.setCameraElement(cameraElement);
-        },
-        [deviceTest],
-    );
-
-    useEffect(() => {
-        setCameraElement(cameraVideoStreamRef.current);
-    }, [cameraVideoStreamRef, setCameraElement]);
-
-    const onCameraDevicesChanged = useCallback((devices: MediaDeviceInfo[]) => {
-        const cameraDevices: MediaDeviceInfo[] = [];
-        for (const cameraDevice of devices) {
-            if (!cameraDevice.deviceId) {
-                continue;
-            }
-            cameraDevices.push(cameraDevice);
-            setCameraDevices(cameraDevices);
-            setIsCameraAccessible(cameraDevices.length > 0);
-        }
-    }, []);
-
-    const onMicrophoneDevicesChanged = useCallback((devices: MediaDeviceInfo[]) => {
-        const microphoneDevices: MediaDeviceInfo[] = [];
-        for (const microphoneDevice of devices) {
-            if (!microphoneDevice.deviceId) {
-                continue;
-            }
-            microphoneDevices.push(microphoneDevice);
-            setMicrophoneDevices(microphoneDevices);
-            setIsMicrophoneAccessible(microphoneDevices.length > 0);
-        }
-    }, []);
-
-    useEffect(() => {
-        deviceTest.onVolumeChanged = setVolume;
-        deviceTest.onCameraDevicesChanged = onCameraDevicesChanged;
-        deviceTest.onMicrophoneDevicesChanged = onMicrophoneDevicesChanged;
-
-        deviceTest.initializeCameraDevices().catch((error: any) => {
-            if (DeviceTest.isPermissionError(error)) {
-                setIsCameraAccessible(false);
-            }
-        });
-
-        deviceTest.initializeMicrophoneDevices().catch((error: any) => {
-            if (DeviceTest.isPermissionError(error)) {
-                setIsMicrophoneAccessible(false);
-            }
-        });
-
-        return deviceTest.destroy.bind(deviceTest);
-    }, [deviceTest, onCameraDevicesChanged, onMicrophoneDevicesChanged]);
-
-    useEffect(() => {
-        if (cameraDeviceId) {
-            void deviceTest.setCamera(cameraDeviceId).catch((error: any) => {
-                if (DeviceTest.isPermissionError(error)) {
-                    setIsCameraAccessible(false);
-                }
-            });
-        }
-    }, [cameraDeviceId, deviceTest]);
-
-    useEffect(() => {
-        if (microphoneDeviceId) {
-            void deviceTest.setMicrophone(microphoneDeviceId).catch((error: any) => {
-                if (DeviceTest.isPermissionError(error)) {
-                    setIsMicrophoneAccessible(false);
-                }
-            });
-        }
-    }, [microphoneDeviceId, deviceTest]);
 
     const joinRoom = async (): Promise<void> => {
         configStore.updateCameraId(cameraDeviceId);
