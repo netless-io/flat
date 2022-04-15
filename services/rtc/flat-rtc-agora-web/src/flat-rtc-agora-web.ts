@@ -5,9 +5,14 @@ import AgoraRTC, {
     IMicrophoneAudioTrack,
     NetworkQuality,
 } from "agora-rtc-sdk-ng";
-import { FlatRTC, FlatRTCAvatar, FlatRTCEventData, FlatRTCEventNames } from "@netless/flat-rtc";
+import type {
+    FlatRTC,
+    FlatRTCAvatar,
+    FlatRTCDevice,
+    FlatRTCEventData,
+    FlatRTCEventNames,
+} from "@netless/flat-rtc";
 import { SideEffectManager } from "side-effect-manager";
-import { Val } from "value-enhancer";
 import Emittery from "emittery";
 import { RTCRemoteAvatar } from "./rtc-remote-avatar";
 import { RTCLocalAvatar } from "./rtc-local-avatar";
@@ -31,7 +36,16 @@ export interface FlatRTCAgoraWebConfig {
 export type IFlatRTCAgoraWeb = FlatRTC<FlatRTCAgoraWebUIDType, FlatRTCAgoraWebJoinRoomConfig>;
 
 export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
-    private readonly APP_ID: string;
+    public static APP_ID: string;
+
+    private static _instance?: FlatRTCAgoraWeb;
+
+    public static getInstance(APP_ID?: string): FlatRTCAgoraWeb {
+        if (APP_ID) {
+            FlatRTCAgoraWeb.APP_ID = APP_ID;
+        }
+        return (FlatRTCAgoraWeb._instance ??= new FlatRTCAgoraWeb());
+    }
 
     private readonly _sideEffect = new SideEffectManager();
     private readonly _roomSideEffect = new SideEffectManager();
@@ -41,8 +55,9 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
 
     public client?: IAgoraRTCClient;
 
-    public readonly cameraID$ = new Val<string | undefined>(undefined);
-    public readonly micID$ = new Val<string | undefined>(undefined);
+    private _cameraID?: string;
+    private _micID?: string;
+    private _speakerID?: string;
 
     private uid?: FlatRTCAgoraWebUIDType;
     private roomUUID?: string;
@@ -60,23 +75,27 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
 
     public readonly events = new Emittery<FlatRTCEventData, FlatRTCEventData>();
 
-    public constructor(config: FlatRTCAgoraWebConfig) {
-        this.APP_ID = config.APP_ID;
+    private constructor() {
+        if (!FlatRTCAgoraWeb.APP_ID) {
+            throw new Error("APP_ID is not set");
+        }
 
-        this._sideEffect.addDisposer(
-            this.cameraID$.reaction(cameraID => {
-                if (cameraID && this.localCameraTrack) {
-                    this.localCameraTrack.setDevice(cameraID);
-                }
-            }),
-        );
-        this._sideEffect.addDisposer(
-            this.micID$.reaction(micID => {
-                if (micID && this.localMicTrack) {
-                    this.localMicTrack.setDevice(micID);
-                }
-            }),
-        );
+        this._sideEffect.add(() => {
+            AgoraRTC.onCameraChanged = deviceInfo => {
+                this.setCameraID(deviceInfo.device.deviceId);
+            };
+            AgoraRTC.onMicrophoneChanged = deviceInfo => {
+                this.setMicID(deviceInfo.device.deviceId);
+            };
+            AgoraRTC.onPlaybackDeviceChanged = deviceInfo => {
+                this.setSpeakerID(deviceInfo.device.deviceId);
+            };
+            return () => {
+                AgoraRTC.onCameraChanged = undefined;
+                AgoraRTC.onMicrophoneChanged = undefined;
+                AgoraRTC.onPlaybackDeviceChanged = undefined;
+            };
+        });
     }
 
     public async destroy(): Promise<void> {
@@ -151,9 +170,7 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
     }
 
     public getAvatar(uid?: FlatRTCAgoraWebUIDType | null): FlatRTCAvatar | null {
-        return (
-            (uid && (this.uid === uid ? this.localAvatar : this._remoteAvatars.get(uid))) || null
-        );
+        return (!uid || this.uid === uid ? this.localAvatar : this._remoteAvatars.get(uid)) || null;
     }
 
     public getVolumeLevel(uid: FlatRTCAgoraWebUIDType): number {
@@ -162,6 +179,67 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
         }
         // @TODO screen share
         return this._remoteAvatars.get(uid)?.getVolumeLevel() ?? 0;
+    }
+
+    public getCameraID(): string | undefined {
+        return this._cameraID;
+    }
+
+    public async setCameraID(deviceId: string): Promise<void> {
+        if (this._cameraID !== deviceId) {
+            if (this.localCameraTrack) {
+                await this.localCameraTrack.setDevice(deviceId);
+            }
+            this._cameraID = deviceId;
+            this.events.emit("camera-changed", deviceId);
+        }
+    }
+
+    public async getCameraDevices(): Promise<FlatRTCDevice[]> {
+        return (await AgoraRTC.getCameras()).map(device => ({
+            deviceId: device.deviceId,
+            label: device.label,
+        }));
+    }
+
+    public getMicID(): string | undefined {
+        return this._micID;
+    }
+
+    public async setMicID(deviceId: string): Promise<void> {
+        if (this._micID !== deviceId) {
+            if (this.localMicTrack) {
+                await this.localMicTrack.setDevice(deviceId);
+            }
+            this._micID = deviceId;
+            this.events.emit("mic-changed", deviceId);
+        }
+    }
+
+    public async getMicDevices(): Promise<FlatRTCDevice[]> {
+        return (await AgoraRTC.getMicrophones()).map(device => ({
+            deviceId: device.deviceId,
+            label: device.label,
+        }));
+    }
+
+    /** Does not support  */
+    public getSpeakerID(): string | undefined {
+        return this._speakerID;
+    }
+
+    public async setSpeakerID(deviceId: string): Promise<void> {
+        if (this._speakerID !== deviceId) {
+            this._speakerID = deviceId;
+            this.events.emit("speaker-changed", deviceId);
+        }
+    }
+
+    public async getSpeakerDevices(): Promise<FlatRTCDevice[]> {
+        return (await AgoraRTC.getPlaybackDevices()).map(device => ({
+            deviceId: device.deviceId,
+            label: device.label,
+        }));
     }
 
     private async _createRTCClient({
@@ -280,7 +358,12 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
             }),
         );
 
-        await client.join(this.APP_ID, roomUUID, token || (await refreshToken(roomUUID)), uid);
+        await client.join(
+            FlatRTCAgoraWeb.APP_ID,
+            roomUUID,
+            token || (await refreshToken(roomUUID)),
+            uid,
+        );
 
         // publish existing tracks after joining channel
         if (this.localCameraTrack) {
@@ -299,7 +382,7 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
         if (!this.localCameraTrack) {
             this.localCameraTrack = await AgoraRTC.createCameraVideoTrack({
                 encoderConfig: { width: 288, height: 216 },
-                cameraId: this.cameraID$.value,
+                cameraId: this._cameraID,
             });
 
             if (this._pJoiningRoom) {
@@ -317,7 +400,7 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
     public createLocalMicTrack = singleRun(async (): Promise<IMicrophoneAudioTrack> => {
         if (!this.localMicTrack) {
             this.localMicTrack = await AgoraRTC.createMicrophoneAudioTrack({
-                microphoneId: this.micID$.value,
+                microphoneId: this._micID,
                 // AEC: acoustic echo cancellation
                 AEC: true,
                 // ANS: automatic noise suppression

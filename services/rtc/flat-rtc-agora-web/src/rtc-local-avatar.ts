@@ -60,11 +60,17 @@ export class RTCLocalAvatar implements FlatRTCAvatar {
                             () => {
                                 if (this._rtc.localMicTrack) {
                                     try {
-                                        this._volumeLevel =
+                                        const volumeLevel =
                                             this._rtc.localMicTrack.getVolumeLevel() || 0;
+                                        if (Math.abs(this._volumeLevel - volumeLevel) > 0.00001) {
+                                            this._volumeLevel = volumeLevel;
+                                            this._rtc.events.emit(
+                                                "volume-level-changed",
+                                                volumeLevel,
+                                            );
+                                        }
                                         if (
-                                            this._volumeLevel <=
-                                            RTCLocalAvatar.LOW_VOLUME_LEVEL_THRESHOLD
+                                            volumeLevel <= RTCLocalAvatar.LOW_VOLUME_LEVEL_THRESHOLD
                                         ) {
                                             if (++lowVolumeLevelCount >= 10) {
                                                 this._rtc.events.emit("err-low-volume");
