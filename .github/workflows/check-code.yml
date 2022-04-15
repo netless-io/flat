@@ -73,10 +73,8 @@ jobs:
 
       - name: Install changed package dependencies and build packages
         run: |-
-          if node ./scripts/ci/install-changed-package-dependencies.js; then
             # failure automatically retries 3 times
-            pnpm install || pnpm install || pnpm install
-          fi
+            pnpm install  || pnpm install || pnpm install
         env:
           components: ${{ steps.filter.outputs.components }}
           types: ${{ steps.filter.outputs.types }}
