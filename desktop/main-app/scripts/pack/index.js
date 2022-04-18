@@ -125,6 +125,6 @@ const buildElectron = async () => {
     // when the build is complete, we need to restore agora addon, otherwise there will be problems if we continue development after the build is complete
     const systemType = process.platform === "darwin" ? "mac" : "win";
     if (systemType !== getAgoraReleaseType()) {
-        return downloadAddon(buildType);
+        return downloadAddon(systemType);
     }
 })();
