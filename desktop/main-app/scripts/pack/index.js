@@ -118,10 +118,6 @@ const buildElectron = async () => {
 };
 
 (async () => {
-    if (buildType === getAgoraReleaseType()) {
-        return buildElectron(buildType);
-    }
-
     downloadAddon(buildType);
 
     await buildElectron(buildType);
