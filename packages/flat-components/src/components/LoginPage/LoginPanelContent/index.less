@@ -1,0 +1,33 @@
+.login-panel-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    > * {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transition: opacity 0.3s, transform 0.3s;
+    }
+}
+
+.slider-in-exit {
+    opacity: 1;
+    transform: translateX(-15px);
+}
+
+.slider-in-exit-active {
+    opacity: 0;
+}
+
+.slider-in-enter {
+    opacity: 0;
+    transform: translateX(15px);
+}
+
+.slider-in-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+}

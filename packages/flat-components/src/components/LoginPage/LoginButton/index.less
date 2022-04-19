@@ -1,44 +1,39 @@
-.login-channel-lg {
+.login-button-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-
-    &.ant-btn {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        width: 272px;
-        height: 44px;
-        color: #fff;
-        border: none;
-
-        span {
-            vertical-align: middle;
-        }
-    }
+.login-button {
+    margin-bottom: 8px;
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1.25px solid rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+    font-size: 0;
+    cursor: pointer;
 
     img {
-        margin-right: 3px;
+        width: 32px;
+        pointer-events: none;
     }
-}
 
-
-.login-channel-agora {
-    &.ant-btn {
-        background: #089CFD;
+    &-agora {
+        background: #089cfd;
 
         &:hover {
-            background: #45B4FD;
+            background: #45b4fd;
         }
         &:active {
-            background: #0675BE;
+            background: #0675be;
         }
     }
-}
 
-.login-channel-wechat {
-    margin-bottom: 12px;
-
-    &.ant-btn {
+    &-wechat {
         background: #1aad19;
 
         &:hover {
@@ -48,12 +43,8 @@
             background: #138212;
         }
     }
-}
 
-.login-channel-github {
-    margin-bottom: 12px;
-
-    &.ant-btn {
+    &-github {
         background: #24292e;
 
         &:hover {
@@ -63,21 +54,16 @@
             background: #1b1f22;
         }
     }
-}
 
-.login-channel-google {
-    margin-bottom: 12px;
-
-    &.ant-btn {
+    &-google {
         background: #fff;
-        color: #1b1f22;
-        border: 1px solid #595d60;
+        border: 1px solid rgba(0, 0, 0, 0.15);
 
         &:hover {
-            border: 1px solid #1b1f22;
+            border: 1px solid rgba(0, 0, 0, 0.5);
         }
         &:active {
-            border: 1px solid #1b1f22;
+            border: 1px solid rgba(0, 0, 0, 0.75);
         }
     }
 }

@@ -17,6 +17,7 @@ module.exports = {
         "downloaders",
         "Magix",
         "quickstart",
+        "signup",
 
         // wechat
         "wechat",

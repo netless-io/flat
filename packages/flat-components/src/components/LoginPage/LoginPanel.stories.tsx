@@ -1,8 +1,11 @@
+import React from "react";
 import { Meta, Story } from "@storybook/react";
-import { message, Modal } from "antd";
-import React, { useState } from "react";
-import { LoginButton, LoginButtonProviderType, LoginPanel, LoginPanelProps } from ".";
-import { useTranslation } from "react-i18next";
+import { LoginPanel } from ".";
+import { Overview as StoryLoginWithPhone } from "./LoginWithPhone/LoginWithPhone.stories";
+import { Overview as StoryLoginWithEmail } from "./LoginWithEmail/LoginWithEmail.stories";
+
+import { LoginWithPhone } from "./LoginWithPhone";
+import { LoginWithEmail } from "./LoginWithEmail";
 
 const storyMeta: Meta = {
     title: "LoginPage/LoginPanel",
@@ -30,66 +33,23 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
-export const PlayableExample: Story<LoginPanelProps> = () => {
-    const [isWeChatLogin, setWeChatLogin] = useState<boolean>(false);
-
-    const handleHideQRCode = (): void => {
-        setWeChatLogin(!isWeChatLogin);
-    };
-
-    const [agreement, setAgreement] = useState<boolean>(false);
-
-    const { i18n } = useTranslation();
-
-    function renderButtonList(): React.ReactNode {
-        const handleLogin = (loginChannel: LoginButtonProviderType): void => {
-            if (!agreement) {
-                void message.info(i18n.t("agree-terms"));
-                return;
-            }
-
-            switch (loginChannel) {
-                case "wechat": {
-                    setWeChatLogin(true);
-                    break;
-                }
-                case "github": {
-                    Modal.info({
-                        content: i18n.t("login-github"),
-                    });
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-        };
-
-        return (
-            <>
-                <LoginButton
-                    provider={"wechat"}
-                    text={i18n.t("login-wechat")}
-                    onLogin={handleLogin}
-                />
-                <LoginButton
-                    provider={"github"}
-                    text={i18n.t("login-github")}
-                    onLogin={handleLogin}
-                />
-            </>
-        );
-    }
-
+export const PlayableExample: Story<{ region: "CN" | "US" }> = ({ region }) => {
     return (
-        <div className="vh-100">
-            <LoginPanel
-                agreementChecked={agreement}
-                handleClickAgreement={() => setAgreement(!agreement)}
-                handleHideQRCode={handleHideQRCode}
-                renderButtonList={renderButtonList}
-                showQRCode={isWeChatLogin}
-            />
-        </div>
+        <LoginPanel>
+            {region === "CN" && <LoginWithPhone {...(StoryLoginWithPhone.args as any)} />}
+            {region === "US" && <LoginWithEmail {...(StoryLoginWithEmail.args as any)} />}
+        </LoginPanel>
     );
+};
+
+PlayableExample.args = {
+    region: "CN",
+};
+PlayableExample.argTypes = {
+    region: {
+        control: {
+            type: "radio",
+            options: ["CN", "US"],
+        },
+    },
 };

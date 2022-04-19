@@ -499,3 +499,30 @@ export async function loginProcess(authUUID: string): Promise<LoginProcessResult
         authUUID,
     });
 }
+
+export interface LoginPhoneSendCodePayload {
+    phone: string; // +8612345678901
+}
+
+export type LoginPhoneSendCodeResult = {};
+
+export async function loginPhoneSendCode(phone: string): Promise<LoginPhoneSendCodeResult> {
+    return await postNotAuth<LoginPhoneSendCodePayload, LoginPhoneSendCodeResult>(
+        "login/phone/sendMessage",
+        {
+            phone,
+        },
+    );
+}
+
+export interface LoginPhonePayload {
+    phone: string; // +8612345678901
+    code: number; // 123456
+}
+
+export async function loginPhone(phone: string, code: number): Promise<LoginProcessResult> {
+    return await postNotAuth<LoginPhonePayload, LoginProcessResult>("login/phone", {
+        phone,
+        code,
+    });
+}
