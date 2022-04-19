@@ -1,8 +1,7 @@
 import { SideEffectManager } from "side-effect-manager";
 import { combine, Val } from "value-enhancer";
 import type { FlatRTCAvatar } from "@netless/flat-rtc";
-import type { FlatRTCAgoraElectronUIDType } from "./types";
-import type { FlatRTCAgoraElectron } from "./flat-rtc-agora-electron";
+import type { FlatRTCAgoraElectron, FlatRTCAgoraElectronUIDType } from "./flat-rtc-agora-electron";
 
 export interface RTCRemoteAvatarConfig {
     rtc: FlatRTCAgoraElectron;
