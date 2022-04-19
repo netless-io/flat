@@ -14,6 +14,8 @@ import { useUpdate } from "react-use";
 import { i18n } from "../utils/i18n";
 import { AppRoutes } from "../AppRoutes";
 import { StoreProvider } from "../components/StoreProvider";
+import { FlatRTCContext } from "../components/FlatRTCContext";
+import { getFlatRTC } from "../services/flat-rtc";
 
 /** configure right after import */
 import { configure } from "mobx";
@@ -52,7 +54,9 @@ const App: React.FC = () => {
                 locale={antdLocale}
             >
                 <StoreProvider>
-                    <AppRoutes />
+                    <FlatRTCContext.Provider value={getFlatRTC()}>
+                        <AppRoutes />
+                    </FlatRTCContext.Provider>
                 </StoreProvider>
             </ConfigProvider>
         </I18nextProvider>

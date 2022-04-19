@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
-import { Rtc as RTCAPI, RtcChannelType } from "../api-middleware/rtc";
+import { RtcChannelType } from "../api-middleware/rtc";
 import {
     ClassModeType,
     NonDefaultUserProp,
@@ -15,6 +15,7 @@ import { CloudRecording } from "../api-middleware/cloud-recording";
 import {
     CloudRecordStartPayload,
     CloudRecordUpdateLayoutPayload,
+    generateRTCToken,
 } from "../api-middleware/flatServer/agora";
 import {
     pauseClass,
@@ -38,6 +39,12 @@ import { useSafePromise } from "../utils/hooks/lifecycle";
 import { ShareScreenStore } from "./share-screen-store";
 import i18next, { i18n } from "i18next";
 import { message } from "antd";
+import {
+    FlatRTCAgoraElectron,
+    FlatRTCAgoraElectronMode,
+    FlatRTCAgoraElectronRole,
+    FlatRTCAgoraElectronUIDType,
+} from "@netless/flat-rtc-agora-electron";
 
 export type { User } from "./user-store";
 
@@ -90,9 +97,7 @@ export class ClassRoomStore {
 
     public readonly users: UserStore;
 
-    public readonly rtcChannelType: RtcChannelType;
-
-    public readonly rtc: RTCAPI;
+    public readonly rtc: FlatRTCAgoraElectron;
     public readonly rtm: RTMAPI;
     public readonly cloudRecording: CloudRecording;
 
@@ -135,9 +140,8 @@ export class ClassRoomStore {
         this.userUUID = globalStore.userUUID;
         this.recordingConfig = config.recordingConfig;
         this.classMode = config.classMode ?? ClassModeType.Lecture;
-        this.rtcChannelType = config.recordingConfig.channelType ?? RtcChannelType.Communication;
 
-        this.rtc = new RTCAPI();
+        this.rtc = FlatRTCAgoraElectron.getInstance();
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
 
@@ -262,11 +266,21 @@ export class ClassRoomStore {
         this.updateCalling(true);
 
         try {
-            await this.rtc.join({
+            await this.rtc.joinRoom({
                 roomUUID: this.roomUUID,
-                isCreator: this.isCreator,
-                rtcUID: globalStore.rtcUID,
-                channelType: this.rtcChannelType,
+                uid: globalStore.rtcUID,
+                token: globalStore.rtcToken,
+                mode:
+                    this.recordingConfig.channelType === RtcChannelType.Broadcast
+                        ? FlatRTCAgoraElectronMode.Broadcast
+                        : FlatRTCAgoraElectronMode.Communication,
+                role: this.isCreator
+                    ? FlatRTCAgoraElectronRole.Host
+                    : FlatRTCAgoraElectronRole.Audience,
+                refreshToken: generateRTCToken,
+                /** Skip subscribing local uids */
+                isLocalUID: (uid: FlatRTCAgoraElectronUIDType) =>
+                    globalStore.rtcShareScreen?.uid === uid,
             });
         } catch (e) {
             console.error(e);
@@ -297,7 +311,7 @@ export class ClassRoomStore {
         this.updateCalling(false);
 
         try {
-            this.rtc.leave();
+            this.rtc.leaveRoom();
         } catch (e) {
             console.error(e);
             this.updateCalling(true);

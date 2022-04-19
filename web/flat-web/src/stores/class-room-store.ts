@@ -4,11 +4,7 @@ import type { i18n } from "i18next";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { useEffect, useState } from "react";
 import { SideEffectManager } from "side-effect-manager";
-import {
-    FlatRTCAgoraWeb,
-    FlatRTCAgoraWebMode,
-    FlatRTCAgoraWebRole,
-} from "@netless/flat-rtc-agora-web";
+import { FlatRTC, FlatRTCMode, FlatRTCRole } from "@netless/flat-rtc";
 import { i18n as i18next } from "../utils/i18n";
 import { v4 as uuidv4 } from "uuid";
 import { CloudRecording } from "../api-middleware/CloudRecording";
@@ -35,7 +31,7 @@ import {
     RTMEvents,
 } from "../api-middleware/Rtm";
 import { errorTips } from "../components/Tips/ErrorTips";
-import { AGORA, NODE_ENV } from "../constants/process";
+import { NODE_ENV } from "../constants/process";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { useAutoRun } from "../utils/mobx";
 import { RouteNameType, usePushHistory } from "../utils/routes";
@@ -44,6 +40,7 @@ import { RoomItem, roomStore } from "./room-store";
 import { ShareScreenStore } from "./share-screen-store";
 import { User, UserStore } from "./user-store";
 import { WhiteboardStore } from "./whiteboard-store";
+import { getFlatRTC } from "../services/flat-rtc";
 
 export type { User } from "./user-store";
 
@@ -96,7 +93,7 @@ export class ClassRoomStore {
 
     public readonly users: UserStore;
 
-    public readonly rtc: FlatRTCAgoraWeb;
+    public readonly rtc: FlatRTC;
     public readonly rtm: RTMAPI;
     public readonly cloudRecording: CloudRecording;
 
@@ -139,7 +136,7 @@ export class ClassRoomStore {
         this.userUUID = globalStore.userUUID;
         this.recordingConfig = config.recordingConfig;
         this.classMode = config.classMode ?? ClassModeType.Lecture;
-        this.rtc = FlatRTCAgoraWeb.getInstance(AGORA.APP_ID);
+        this.rtc = getFlatRTC();
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
 
@@ -268,17 +265,18 @@ export class ClassRoomStore {
             await this.rtc.joinRoom({
                 roomUUID: this.roomUUID,
                 uid: globalStore.rtcUID,
-                role: this.isCreator ? FlatRTCAgoraWebRole.Host : FlatRTCAgoraWebRole.Audience,
+                role: this.isCreator ? FlatRTCRole.Host : FlatRTCRole.Audience,
                 token: globalStore.rtcToken,
                 mode:
                     this.recordingConfig.channelType === RtcChannelType.Broadcast
-                        ? FlatRTCAgoraWebMode.Broadcast
-                        : FlatRTCAgoraWebMode.Communication,
+                        ? FlatRTCMode.Broadcast
+                        : FlatRTCMode.Communication,
                 refreshToken: generateRTCToken,
                 isLocalUID: uid => globalStore.isShareScreenUID(uid),
             });
-            if (this.rtc.client) {
-                this.shareScreenStore.updateRoomClient(this.rtc.client);
+            // @TODO refactor share screen
+            if ((this.rtc as any).client) {
+                this.shareScreenStore.updateRoomClient((this.rtc as any).client);
             }
         } catch (e) {
             console.error(e);

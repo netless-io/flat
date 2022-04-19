@@ -5,19 +5,20 @@ import AgoraRTC, {
     IMicrophoneAudioTrack,
     NetworkQuality,
 } from "agora-rtc-sdk-ng";
-import type {
+import {
     FlatRTC,
     FlatRTCAvatar,
     FlatRTCDevice,
     FlatRTCEventData,
     FlatRTCEventNames,
+    FlatRTCJoinRoomConfigBase,
+    FlatRTCMode,
+    FlatRTCRole,
 } from "@netless/flat-rtc";
 import { SideEffectManager } from "side-effect-manager";
 import Emittery from "emittery";
 import { RTCRemoteAvatar } from "./rtc-remote-avatar";
 import { RTCLocalAvatar } from "./rtc-local-avatar";
-import { FlatRTCAgoraWebJoinRoomConfig, FlatRTCAgoraWebUIDType } from "./types";
-import { FlatRTCAgoraWebMode } from "./constants";
 
 AgoraRTC.enableLogUpload();
 
@@ -29,21 +30,22 @@ if (process.env.DEV) {
     (window as any).AgoraRTC = AgoraRTC;
 }
 
+export type FlatRTCAgoraWebUIDType = number;
+
+export type FlatRTCAgoraWebJoinRoomConfig = FlatRTCJoinRoomConfigBase<FlatRTCAgoraWebUIDType>;
+
 export interface FlatRTCAgoraWebConfig {
     APP_ID: string;
 }
 
 export type IFlatRTCAgoraWeb = FlatRTC<FlatRTCAgoraWebUIDType, FlatRTCAgoraWebJoinRoomConfig>;
 
-export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
+export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
     public static APP_ID: string;
 
     private static _instance?: FlatRTCAgoraWeb;
 
-    public static getInstance(APP_ID?: string): FlatRTCAgoraWeb {
-        if (APP_ID) {
-            FlatRTCAgoraWeb.APP_ID = APP_ID;
-        }
+    public static getInstance(): FlatRTCAgoraWeb {
         return (FlatRTCAgoraWeb._instance ??= new FlatRTCAgoraWeb());
     }
 
@@ -76,10 +78,6 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
     public readonly events = new Emittery<FlatRTCEventData, FlatRTCEventData>();
 
     private constructor() {
-        if (!FlatRTCAgoraWeb.APP_ID) {
-            throw new Error("APP_ID is not set");
-        }
-
         this._sideEffect.add(() => {
             AgoraRTC.onCameraChanged = deviceInfo => {
                 this.setCameraID(deviceInfo.device.deviceId);
@@ -105,6 +103,10 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
     }
 
     public async joinRoom(config: FlatRTCAgoraWebJoinRoomConfig): Promise<void> {
+        if (!FlatRTCAgoraWeb.APP_ID) {
+            throw new Error("APP_ID is not set");
+        }
+
         if (this._pJoiningRoom) {
             await this._pJoiningRoom;
         }
@@ -169,15 +171,22 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
         this.roomUUID = undefined;
     }
 
-    public getAvatar(uid?: FlatRTCAgoraWebUIDType | null): FlatRTCAvatar | null {
-        return (!uid || this.uid === uid ? this.localAvatar : this._remoteAvatars.get(uid)) || null;
+    public getAvatar(uid?: FlatRTCAgoraWebUIDType | null): FlatRTCAvatar {
+        if (!uid || this.uid === uid) {
+            return this.localAvatar;
+        }
+        let remoteAvatar = this._remoteAvatars.get(uid);
+        if (!remoteAvatar) {
+            remoteAvatar = new RTCRemoteAvatar();
+            this._remoteAvatars.set(uid, remoteAvatar);
+        }
+        return remoteAvatar;
     }
 
-    public getVolumeLevel(uid: FlatRTCAgoraWebUIDType): number {
-        if (this.uid === uid) {
+    public getVolumeLevel(uid?: FlatRTCAgoraWebUIDType): number {
+        if (!uid || this.uid === uid) {
             return this._localAvatar?.getVolumeLevel() ?? 0;
         }
-        // @TODO screen share
         return this._remoteAvatars.get(uid)?.getVolumeLevel() ?? 0;
     }
 
@@ -251,24 +260,29 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
         role,
         roomUUID,
     }: FlatRTCAgoraWebJoinRoomConfig): Promise<void> {
-        const client = AgoraRTC.createClient({ mode, codec: "vp8" });
+        const client = AgoraRTC.createClient({
+            mode: mode === FlatRTCMode.Broadcast ? "live" : "rtc",
+            codec: "vp8",
+        });
         this.client = client;
         if (process.env.DEV) {
             (window as any).rtc_client = client;
         }
 
-        if (mode === FlatRTCAgoraWebMode.Broadcast) {
-            await client.setClientRole(role || "audience");
+        if (mode === FlatRTCMode.Broadcast) {
+            await client.setClientRole(role === FlatRTCRole.Host ? "host" : "audience");
         }
 
-        this._roomSideEffect.add(() => {
-            const handler = async (): Promise<void> => {
-                const token = await refreshToken(roomUUID);
-                await client.renewToken(token);
-            };
-            client.on("token-privilege-will-expire", handler);
-            return () => client.off("token-privilege-will-expire", handler);
-        });
+        if (refreshToken) {
+            this._roomSideEffect.add(() => {
+                const handler = async (): Promise<void> => {
+                    const token = await refreshToken(roomUUID);
+                    await client.renewToken(token);
+                };
+                client.on("token-privilege-will-expire", handler);
+                return () => client.off("token-privilege-will-expire", handler);
+            });
+        }
 
         this._roomSideEffect.add(() => {
             const handler = (error: any): void => {
@@ -295,11 +309,11 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
 
                 const uid = user.uid as FlatRTCAgoraWebUIDType;
                 let avatar = this._remoteAvatars.get(uid);
-                if (!avatar) {
+                if (avatar) {
+                    avatar.updateUser(user);
+                } else {
                     avatar = new RTCRemoteAvatar({ rtcRemoteUser: user });
                     this._remoteAvatars.set(uid, avatar);
-                } else if (avatar instanceof RTCRemoteAvatar) {
-                    avatar.updateUser(user);
                 }
             };
 
@@ -353,7 +367,7 @@ export class FlatRTCAgoraWeb implements IFlatRTCAgoraWeb {
         await client.join(
             FlatRTCAgoraWeb.APP_ID,
             roomUUID,
-            token || (await refreshToken(roomUUID)),
+            token || (await refreshToken?.(roomUUID)) || null,
             uid,
         );
 

@@ -4,7 +4,7 @@ import type { FlatRTCAvatar } from "@netless/flat-rtc";
 import type { IAgoraRTCRemoteUser } from "agora-rtc-sdk-ng";
 
 export interface RTCRemoteAvatarConfig {
-    rtcRemoteUser: IAgoraRTCRemoteUser;
+    rtcRemoteUser?: IAgoraRTCRemoteUser;
     element?: HTMLElement | null;
 }
 
@@ -15,7 +15,7 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
     private readonly _shouldMic$ = new Val(false);
 
     private readonly _el$: Val<HTMLElement | undefined | null>;
-    private readonly _user$: Val<IAgoraRTCRemoteUser>;
+    private readonly _user$: Val<IAgoraRTCRemoteUser | undefined>;
 
     public enableCamera(enabled: boolean): void {
         this._shouldCamera$.setValue(enabled);
@@ -34,16 +34,16 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
     }
 
     public getVolumeLevel(): number {
-        return this._user$.value.audioTrack?.getVolumeLevel() || 0;
+        return this._user$.value?.audioTrack?.getVolumeLevel() || 0;
     }
 
-    public constructor(config: RTCRemoteAvatarConfig) {
+    public constructor(config: RTCRemoteAvatarConfig = {}) {
         this._el$ = new Val(config.element);
         this._user$ = new Val(config.rtcRemoteUser);
 
         this._sideEffect.addDisposer(
             combine([this._user$, this._shouldMic$]).subscribe(([user, shouldMic]) => {
-                if (user.audioTrack) {
+                if (user && user.audioTrack) {
                     try {
                         if (shouldMic) {
                             user.audioTrack.play();
@@ -60,7 +60,7 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
         this._sideEffect.addDisposer(
             combine([this._el$, this._user$, this._shouldCamera$]).subscribe(
                 ([el, user, shouldCamera]) => {
-                    if (el && user.videoTrack) {
+                    if (el && user && user.videoTrack) {
                         try {
                             if (shouldCamera) {
                                 user.videoTrack.play(el);
@@ -76,10 +76,9 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
         );
 
         this._sideEffect.addDisposer(() => {
-            const { videoTrack, audioTrack } = this._user$.value;
             try {
-                videoTrack?.stop();
-                audioTrack?.stop();
+                this._user$.value?.videoTrack?.stop();
+                this._user$.value?.audioTrack?.stop();
             } catch (e) {
                 console.error(e);
             }
