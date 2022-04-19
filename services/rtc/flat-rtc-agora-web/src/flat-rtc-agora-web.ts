@@ -171,7 +171,7 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
         this.roomUUID = undefined;
     }
 
-    public getAvatar(uid?: FlatRTCAgoraWebUIDType | null): FlatRTCAvatar {
+    public getAvatar(uid?: FlatRTCAgoraWebUIDType): FlatRTCAvatar {
         if (!uid || this.uid === uid) {
             return this.localAvatar;
         }
@@ -188,6 +188,12 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
             return this._localAvatar?.getVolumeLevel() ?? 0;
         }
         return this._remoteAvatars.get(uid)?.getVolumeLevel() ?? 0;
+    }
+
+    public setRole(role: FlatRTCRole): void {
+        if (this.client) {
+            this.client.setClientRole(role === FlatRTCRole.Host ? "host" : "audience");
+        }
     }
 
     public getCameraID(): string | undefined {

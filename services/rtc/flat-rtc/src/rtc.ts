@@ -25,6 +25,8 @@ export interface FlatRTC<
     joinRoom(config: TJoinRoomConfig): Promise<void>;
     leaveRoom(): Promise<void>;
 
+    setRole(role: FlatRTCRole): void;
+
     /** @returns local avatar if uid is not provided */
     getAvatar(uid?: TUid): FlatRTCAvatar;
     getVolumeLevel(uid?: TUid): number;

@@ -256,28 +256,29 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     ></ChatPanel>
                 }
                 isShow={isRealtimeSideOpen}
-                isVideoOn={classRoomStore.isRTCJoined}
+                isVideoOn={true}
                 videoSlot={
-                    classRoomStore.isRTCJoined && (
-                        <div className="one-to-one-rtc-avatar-container">
-                            <RTCAvatar
-                                avatarUser={classRoomStore.users.creator}
-                                isAvatarUserCreator={true}
-                                isCreator={classRoomStore.isCreator}
-                                rtc={classRoomStore.rtc}
-                                updateDeviceState={classRoomStore.updateDeviceState}
-                                userUUID={classRoomStore.userUUID}
-                            />
-                            <RTCAvatar
-                                avatarUser={joiner}
-                                isAvatarUserCreator={false}
-                                isCreator={classRoomStore.isCreator}
-                                rtc={classRoomStore.rtc}
-                                updateDeviceState={classRoomStore.updateDeviceState}
-                                userUUID={classRoomStore.userUUID}
-                            />
-                        </div>
-                    )
+                    <div className="one-to-one-rtc-avatar-container">
+                        <RTCAvatar
+                            avatarUser={classRoomStore.users.creator}
+                            isAvatarUserCreator={true}
+                            isCreator={classRoomStore.isCreator}
+                            rtcAvatar={
+                                classRoomStore.users.creator &&
+                                classRoomStore.rtc.getAvatar(classRoomStore.users.creator.rtcUID)
+                            }
+                            updateDeviceState={classRoomStore.updateDeviceState}
+                            userUUID={classRoomStore.userUUID}
+                        />
+                        <RTCAvatar
+                            avatarUser={joiner}
+                            isAvatarUserCreator={false}
+                            isCreator={classRoomStore.isCreator}
+                            rtcAvatar={joiner && classRoomStore.rtc.getAvatar(joiner.rtcUID)}
+                            updateDeviceState={classRoomStore.updateDeviceState}
+                            userUUID={classRoomStore.userUUID}
+                        />
+                    </div>
                 }
             />
         );

@@ -40,6 +40,7 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { runtime } from "../../utils/runtime";
 import { RTCAvatar } from "../../components/RTCAvatar";
 import { ShareScreen } from "../../components/ShareScreen";
+import { FlatRTCRole } from "@netless/flat-rtc";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -125,7 +126,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
         // is current user speaking
         if (classRoomStore.userUUID === user.userUUID) {
-            void classRoomStore.rtc.client?.setClientRole(user.isSpeak ? "host" : "audience");
+            void classRoomStore.rtc.setRole(user.isSpeak ? FlatRTCRole.Host : FlatRTCRole.Audience);
         }
     });
 
@@ -282,7 +283,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                             avatarUser={creator}
                             isAvatarUserCreator={true}
                             isCreator={classRoomStore.isCreator}
-                            rtcAvatar={classRoomStore.rtc.getAvatar(creator?.rtcUID)}
+                            rtcAvatar={creator && classRoomStore.rtc.getAvatar(creator.rtcUID)}
                             updateDeviceState={classRoomStore.updateDeviceState}
                             userUUID={classRoomStore.userUUID}
                         />
