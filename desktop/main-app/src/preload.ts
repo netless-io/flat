@@ -41,6 +41,8 @@ ipcRenderer.once("inject-agora-electron-sdk-addon", () => {
             console.error("[RTC] onerror----", err, msg);
         });
     }
+
+    window.dispatchEvent(new Event("agora-sdk"));
 });
 
 // delay sending event. prevent the main process from being too late listen for this event
