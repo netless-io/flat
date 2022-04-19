@@ -1,8 +1,8 @@
 const path = require("path");
 const fs = require("fs-extra");
-const { agoraElectronSdkPath } = require("../constant");
+const { agoraElectronSdkPath } = require("./constants");
 const download = require(path.join(agoraElectronSdkPath, "scripts", "download"));
-const { getAgoraReleaseType } = require("../pack/utils");
+const { getAgoraReleaseType } = require("./utils");
 
 const platform = process.argv[2];
 

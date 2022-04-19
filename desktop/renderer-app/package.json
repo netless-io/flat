@@ -55,7 +55,7 @@
     "react-virtualized": "^9.22.3",
     "side-effect-manager": "^0.1.5",
     "uuid": "^8.3.2",
-    "value-enhancer": "^1.0.2",
+    "value-enhancer": "^1.0.3",
     "video.js": "7.10.2",
     "white-web-sdk": "2.16.10"
   },
@@ -64,7 +64,6 @@
     "@types/lodash": "^4.14.180",
     "@types/node-downloader-helper": "^1.0.16",
     "@types/react-router": "^5.1.18",
-    "agora-electron-sdk": "3.5.0-rc.4-build.1105",
     "electron": "12.0.15",
     "esbuild": "^0.14.27",
     "flat-types": "workspace:*",
