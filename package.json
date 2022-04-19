@@ -8,6 +8,8 @@
     "check-spelling": "cspell --no-progress \"**/*.{md,ts,tsx,js,css,less,json,yml,yaml,html,sh}\"",
     "storybook": "pnpm --filter flat-components start",
     "start": "node scripts/launch/index.js",
+    "start:cn": "cross-env FLAT_REGION=CN node scripts/launch/index.js",
+    "start:us": "cross-env FLAT_REGION=US node scripts/launch/index.js",
     "start:web": "pnpm --filter flat-web start",
     "ship": "pnpm --filter renderer-app build && pnpm --filter flat ship",
     "ship:mac": "pnpm --filter renderer-app build && pnpm --filter flat ship:mac",
