@@ -19,14 +19,10 @@ PlayableExample.args = {
         {
             label: "default(MacBook Pro speaker)",
             deviceId: "1",
-            groupId: "1",
-            kind: "audioinput",
         },
         {
             label: "other speaker",
             deviceId: "2",
-            groupId: "2",
-            kind: "audioinput",
         },
     ],
     currentSpeakerDeviceID: "speaker",

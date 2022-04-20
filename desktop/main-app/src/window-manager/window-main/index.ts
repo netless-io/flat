@@ -1,18 +1,14 @@
 import { constants } from "flat-types";
 import { AbstractWindow, CustomWindow } from "../abstract";
 import runtime from "../../utils/runtime";
-import { RxSubject } from "./rx-subject";
-import { ipcMain } from "electron";
-import { zip } from "rxjs";
-import { ignoreElements, mergeMap } from "rxjs/operators";
+import { Val, combine } from "value-enhancer";
+import { ipcMain, IpcMainEvent } from "electron";
 
 export class WindowMain extends AbstractWindow<false> {
-    private readonly subject: RxSubject;
+    private readonly _mainWindowCreated$ = new Val(false);
 
     public constructor() {
         super(false, constants.WindowsName.Main);
-
-        this.subject = new RxSubject();
     }
 
     public create(): CustomWindow {
@@ -32,9 +28,9 @@ export class WindowMain extends AbstractWindow<false> {
             },
         );
 
-        this.subject.mainWindowCreated.complete();
+        this._mainWindowCreated$.setValue(true);
 
-        this.injectAgoraSDKAddon(customWindow);
+        this.setupDOMReady(customWindow);
 
         if (process.env.NODE_ENV === "development") {
             WindowMain.loadExtensions(customWindow, "react-devtools");
@@ -44,8 +40,17 @@ export class WindowMain extends AbstractWindow<false> {
     }
 
     public async assertWindow(): Promise<CustomWindow> {
-        return this.subject.mainWindowCreated.toPromise().then(() => {
-            return this.wins[0]!;
+        if (this._mainWindowCreated$.value) {
+            return this.wins[0];
+        }
+        return new Promise(resolve => {
+            const onMainWindowCreated = (created: boolean): void => {
+                if (created) {
+                    resolve(this.wins[0]);
+                    this._mainWindowCreated$.unsubscribe(onMainWindowCreated);
+                }
+            };
+            this._mainWindowCreated$.subscribe(onMainWindowCreated);
         });
     }
 
@@ -63,33 +68,32 @@ export class WindowMain extends AbstractWindow<false> {
             });
     }
 
-    private injectAgoraSDKAddon(win: CustomWindow): void {
-        win.window.webContents.on("dom-ready", () => {
-            this.subject.domReady.next("");
+    private setupDOMReady(win: CustomWindow): void {
+        const domReady$ = new Val(false);
+        const preloaded$ = new Val<IpcMainEvent | null>(null);
+
+        win.window.webContents.once("dom-ready", () => {
+            domReady$.setValue(true);
         });
 
-        ipcMain.on("preload-load", event => {
+        const onPreloadLoad = (event: IpcMainEvent): void => {
             // preload-load is global event, any window create will trigger,
             // but we only need Main window event
             if (event.sender.id === win.window.webContents.id) {
-                this.subject.preloadLoad.next(event);
+                preloaded$.setValue(event);
+                ipcMain.off("preload-load", onPreloadLoad);
+            }
+        };
+
+        ipcMain.on("preload-load", onPreloadLoad);
+
+        const disposer = combine([domReady$, preloaded$]).subscribe(([domReady, event]) => {
+            if (domReady && event) {
+                if (!event.sender.isDestroyed()) {
+                    event.sender.send("preload-dom-ready");
+                    disposer();
+                }
             }
         });
-
-        // wait until the dom element is ready and the preload is ready, then inject agora-electron-sdk
-        // otherwise the window in the preload may not be ready
-        // don’t worry about sending multiple times, because once is used in preload.ts
-        // link: https://www.learnrxjs.io/learn-rxjs/operators/combination/zip
-        zip(this.subject.domReady, this.subject.preloadLoad)
-            .pipe(
-                mergeMap(([, event]) => {
-                    if (!event.sender.isDestroyed()) {
-                        event.sender.send("inject-agora-electron-sdk-addon");
-                    }
-                    return [];
-                }),
-                ignoreElements(),
-            )
-            .subscribe();
     }
 }

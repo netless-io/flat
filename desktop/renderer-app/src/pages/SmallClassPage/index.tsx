@@ -169,7 +169,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                     left={renderTopBarLeft()}
                     right={renderTopBarRight()}
                 />
-                {classRoomStore.isRTCJoined && renderAvatars()}
+                {renderAvatars()}
                 <div className="small-class-realtime-content">
                     <div className="small-class-realtime-content-container">
                         <ShareScreen shareScreenStore={shareScreenStore} />
@@ -210,7 +210,10 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         avatarUser={classRoomStore.users.creator}
                         isAvatarUserCreator={true}
                         isCreator={true}
-                        rtc={classRoomStore.rtc}
+                        rtcAvatar={
+                            classRoomStore.users.creator &&
+                            classRoomStore.rtc.getAvatar(classRoomStore.users.creator.rtcUID)
+                        }
                         small={true}
                         updateDeviceState={classRoomStore.updateDeviceState}
                         userUUID={classRoomStore.userUUID}
@@ -335,7 +338,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 avatarUser={user}
                 isAvatarUserCreator={false}
                 isCreator={classRoomStore.isCreator}
-                rtc={classRoomStore.rtc}
+                rtcAvatar={classRoomStore.rtc.getAvatar(user.rtcUID)}
                 small={true}
                 updateDeviceState={classRoomStore.updateDeviceState}
                 userUUID={classRoomStore.userUUID}

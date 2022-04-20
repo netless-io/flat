@@ -42,6 +42,7 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { RTCAvatar } from "../../components/RTCAvatar";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
+import { FlatRTCRole } from "@netless/flat-rtc";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -132,7 +133,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
         // is current user speaking
         if (classRoomStore.userUUID === user.userUUID) {
-            classRoomStore.rtc.rtcEngine.setClientRole(user.isSpeak ? 1 : 2);
+            classRoomStore.rtc.setRole(user.isSpeak ? FlatRTCRole.Host : FlatRTCRole.Audience);
         }
     });
 
@@ -299,30 +300,28 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     ></ChatPanel>
                 }
                 isShow={isRealtimeSideOpen}
-                isVideoOn={classRoomStore.isRTCJoined}
+                isVideoOn={true}
                 videoSlot={
-                    classRoomStore.isRTCJoined && (
-                        <div className="big-class-realtime-rtc-box">
+                    <div className="big-class-realtime-rtc-box">
+                        <RTCAvatar
+                            avatarUser={creator}
+                            isAvatarUserCreator={true}
+                            isCreator={classRoomStore.isCreator}
+                            rtcAvatar={creator && classRoomStore.rtc.getAvatar(creator.rtcUID)}
+                            updateDeviceState={classRoomStore.updateDeviceState}
+                            userUUID={classRoomStore.userUUID}
+                        />
+                        {speakingJoiner && (
                             <RTCAvatar
-                                avatarUser={creator}
-                                isAvatarUserCreator={true}
+                                avatarUser={speakingJoiner}
+                                isAvatarUserCreator={false}
                                 isCreator={classRoomStore.isCreator}
-                                rtc={classRoomStore.rtc}
+                                rtcAvatar={classRoomStore.rtc.getAvatar(speakingJoiner.rtcUID)}
                                 updateDeviceState={classRoomStore.updateDeviceState}
                                 userUUID={classRoomStore.userUUID}
                             />
-                            {speakingJoiner && (
-                                <RTCAvatar
-                                    avatarUser={speakingJoiner}
-                                    isAvatarUserCreator={false}
-                                    isCreator={classRoomStore.isCreator}
-                                    rtc={classRoomStore.rtc}
-                                    updateDeviceState={classRoomStore.updateDeviceState}
-                                    userUUID={classRoomStore.userUUID}
-                                />
-                            )}
-                        </div>
-                    )
+                        )}
+                    </div>
                 }
             />
         );

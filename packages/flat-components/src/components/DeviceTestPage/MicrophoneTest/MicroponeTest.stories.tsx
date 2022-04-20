@@ -19,14 +19,10 @@ PlayableExample.args = {
         {
             label: "default(MacBook Pro Microphone)",
             deviceId: "1",
-            groupId: "1",
-            kind: "audioinput",
         },
         {
             label: "other Microphone",
             deviceId: "2",
-            groupId: "2",
-            kind: "audioinput",
         },
     ],
     currentMicrophoneDeviceID: "Microphone",

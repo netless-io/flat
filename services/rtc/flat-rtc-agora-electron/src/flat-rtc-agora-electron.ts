@@ -148,6 +148,40 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
                 rtcEngine.off("videoDeviceStateChanged", onVideoDeviceStateChanged);
             };
         }, "init");
+
+        if (process.env.NODE_ENV === "development") {
+            this._sideEffect.add(() => {
+                const rtcEngine = this.rtcEngine;
+
+                const onJoinedChannel = (channel: string, uid: number): void => {
+                    console.log(`[RTC] ${uid} join channel ${channel}`);
+                };
+
+                const onUserJoined = (uid: string): void => {
+                    console.log("[RTC] userJoined", uid);
+                };
+
+                const onLeavechannel = (): void => {
+                    console.log("[RTC] onleaveChannel");
+                };
+
+                const onError = (err: number, msg: string): void => {
+                    console.error("[RTC] onerror----", err, msg);
+                };
+
+                rtcEngine.on("joinedChannel", onJoinedChannel);
+                rtcEngine.on("userJoined", onUserJoined);
+                rtcEngine.on("leavechannel", onLeavechannel);
+                rtcEngine.on("error", onError);
+
+                return () => {
+                    rtcEngine.off("joinedChannel", onJoinedChannel);
+                    rtcEngine.off("userJoined", onUserJoined);
+                    rtcEngine.off("leavechannel", onLeavechannel);
+                    rtcEngine.off("error", onError);
+                };
+            }, "dev-log");
+        }
     }
 
     public async destroy(): Promise<void> {
@@ -180,7 +214,7 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
         this.roomUUID = undefined;
     }
 
-    public getAvatar(uid?: FlatRTCAgoraElectronUIDType | null): FlatRTCAvatar {
+    public getAvatar(uid?: FlatRTCAgoraElectronUIDType): FlatRTCAvatar {
         if (!uid || this.uid === uid) {
             return this.localAvatar;
         }
@@ -194,6 +228,12 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
 
     public getVolumeLevel(uid?: FlatRTCAgoraElectronUIDType): number {
         return this._volumeLevels.get(uid || 0) || 0;
+    }
+
+    public setRole(role: FlatRTCRole): void {
+        if (this.rtcEngine) {
+            this.rtcEngine.setClientRole(role === FlatRTCRole.Host ? 1 : 2);
+        }
     }
 
     public getCameraID(): string | undefined {

@@ -9,7 +9,7 @@ import { User } from "../../stores/class-room-store";
 export interface AvatarCanvasProps {
     /** the user of this avatar */
     avatarUser?: User | null;
-    rtcAvatar: FlatRTCAvatar | null;
+    rtcAvatar?: FlatRTCAvatar | null;
 }
 
 export const AvatarCanvas = observer<

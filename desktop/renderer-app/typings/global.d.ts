@@ -35,10 +35,6 @@ declare namespace NodeJS {
     }
 }
 
-interface Window {
-    rtcEngine: any;
-}
-
 interface PortalWindow extends Window {
     browserWindowID: string;
 }

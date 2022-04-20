@@ -1,10 +1,10 @@
 const {
-    getAgoraReleaseType,
     generateReleaseNote,
     assertSystemCorrect,
     assertBuildTypeCorrect,
     getBuildType,
 } = require("./utils");
+const { getAgoraReleaseType } = require("@netless/flat-rtc-agora-electron/scripts/download-agora-addon/utils");
 
 const yaml = require("js-yaml");
 const fs = require("fs-extra");
@@ -13,7 +13,7 @@ const { mainPath, rendererPath } = require("../../../../scripts/constants");
 const { build, Platform } = require("electron-builder");
 const dotenvFlow = require("dotenv-flow");
 const rimraf = require("rimraf");
-const { downloadAddon } = require("../download-agora-addon/core");
+const { downloadAddon } = require("@netless/flat-rtc-agora-electron/scripts/download-agora-addon/core");
 const { autoChooseConfig, configRegion } = require("../../../../scripts/utils/auto-choose-config");
 
 dotenvFlow.config({

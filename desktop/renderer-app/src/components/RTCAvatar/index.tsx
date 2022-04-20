@@ -17,14 +17,14 @@ export type RTCAvatarProps = Omit<VideoAvatarProps, "getVolumeLevel" | "avatarUs
 export const RTCAvatar: FC<RTCAvatarProps> = ({
     userUUID,
     avatarUser,
-    rtc,
+    rtcAvatar,
     isAvatarUserCreator,
     small,
     isCreator,
     updateDeviceState,
 }) => {
     return avatarUser ? (
-        <AvatarCanvas avatarUser={avatarUser} rtc={rtc} userUUID={userUUID}>
+        <AvatarCanvas avatarUser={avatarUser} rtcAvatar={rtcAvatar}>
             {(getVolumeLevel, canvas) => (
                 <VideoAvatar
                     avatarUser={avatarUser}

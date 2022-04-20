@@ -19,14 +19,10 @@ PlayableExample.args = {
         {
             label: "FaceTime HD Camera",
             deviceId: "1",
-            groupId: "1",
-            kind: "audioinput",
         },
         {
             label: "other camera",
             deviceId: "2",
-            groupId: "2",
-            kind: "audioinput",
         },
     ],
     isCameraAccessible: false,
