@@ -1,32 +1,34 @@
 import "./index.less";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
 import os from "os";
 import { routeConfig } from "../../../route-config";
-import { useRTCEngine } from "../../../utils/hooks/use-rtc-engine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { DeviceCheckResults, DeviceCheckState } from "../utils";
 import { useTranslation } from "react-i18next";
+import { FlatRTCContext } from "../../../components/FlatRTCContext";
+import { FlatRTCNetworkQualityType } from "@netless/flat-rtc";
+
+const networkDescription = [
+    "network-quality-unknown",
+    "network-quality-excellent",
+    "network-quality-good",
+    "network-quality-average",
+    "network-quality-poor",
+    "network-quality-very-poor",
+    "network-connection-disconnected",
+    "network-connection-errored",
+    "testing",
+];
 
 export const SystemCheckPage = (): React.ReactElement => {
     const { t } = useTranslation();
-    const [networkSituation, setNetworkSituation] = useState(0);
-    const rtcEngine = useRTCEngine();
+    const [networkSituation, setNetworkSituation] = useState<FlatRTCNetworkQualityType>(8);
+    const rtc = useContext(FlatRTCContext);
     const resultRef = React.useRef<DeviceCheckState>();
     const history = useHistory<DeviceCheckResults>();
     const location = useLocation<DeviceCheckResults | undefined>();
-
-    const networkDescription = [
-        t("network-status.testing"),
-        t("network-status.network-quality-unknown"),
-        t("network-status.network-quality-excellent"),
-        t("network-status.network-quality-good"),
-        t("network-status.network-quality-average"),
-        t("network-status.network-quality-poor"), // 5
-        t("network-status.network-quality-very-poor"), // 6
-        t("network-status.network-connection-disconnected"), // 7
-    ];
 
     const cpuModel = os.cpus()[0].model;
     const freeMemory = (os.freemem() / 1024 / 1024).toFixed(2);
@@ -37,37 +39,28 @@ export const SystemCheckPage = (): React.ReactElement => {
             resultRef.current = { content: t("testing-failed"), hasError: true };
         };
 
-        // see: https://docs.agora.io/en/Voice/API%20Reference/electron/globals.html#agoranetworkquality
-        const onLastMileQuality = (quality: number): void => {
-            setNetworkSituation(quality + 1);
-        };
+        rtc.events.on("error", onError);
+        rtc.events.on("network-test", setNetworkSituation);
 
-        rtcEngine.on("error", onError);
-        rtcEngine.on("lastMileQuality", onLastMileQuality);
-
-        rtcEngine.startLastmileProbeTest({
-            expectedDownlinkBitrate: 100000,
-            expectedUplinkBitrate: 100000,
-            probeDownlink: true,
-            probeUplink: true,
-        });
+        rtc.startNetworkTest();
 
         return () => {
-            rtcEngine.off("error", onError);
-            rtcEngine.off("lastMileQuality", onLastMileQuality);
-            rtcEngine.stopLastmileProbeTest();
+            rtc.events.off("error", onError);
+            rtc.events.off("network-test", setNetworkSituation);
+            rtc.stopNetworkTest();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [rtc, t]);
 
     useEffect(() => {
-        if (networkSituation >= 5) {
-            resultRef.current = { content: networkDescription[networkSituation], hasError: true };
+        if (networkSituation >= 5 && networkSituation <= 7) {
+            resultRef.current = {
+                content: t(`network-status.${networkDescription[networkSituation]}`),
+                hasError: true,
+            };
         } else {
             resultRef.current = { content: "", hasError: false };
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [networkSituation]);
+    }, [networkSituation, t]);
 
     function historyPush(): void {
         history.push({
@@ -94,7 +87,7 @@ export const SystemCheckPage = (): React.ReactElement => {
                 </div>
                 <div className="system-check-item">
                     <span className="system-check-item-name">{t("network-quality-situation")}</span>
-                    <span>{networkDescription[networkSituation]}</span>
+                    <span>{t(`network-status.${networkDescription[networkSituation]}`)}</span>
                 </div>
             </div>
             <Button type="primary" onClick={historyPush}>

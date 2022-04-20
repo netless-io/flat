@@ -21,6 +21,7 @@ export interface FlatRTCEventData {
         uplink: FlatRTCNetworkQualityType;
         downlink: FlatRTCNetworkQualityType;
     };
+    "network-test": FlatRTCNetworkQualityType;
     "volume-level-changed": number;
     /** When a video capture device is added or removed */
     "camera-changed": string;
@@ -31,6 +32,7 @@ export interface FlatRTCEventData {
     "err-set-camera": Error;
     "err-set-mic": Error;
     "err-low-volume": undefined;
+    error: Error;
 }
 
 export type FlatRTCEventNames = keyof FlatRTCEventData;

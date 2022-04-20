@@ -16,11 +16,6 @@ ipcRenderer.once("preload-dom-ready", () => {
     flatRTCAgoraElectronPreload(process.env.AGORA_APP_ID);
 });
 
-// delay sending event. prevent the main process from being too late listen for this event
-setTimeout(() => {
-    ipcRenderer.send("preload-load");
-}, 0);
-
 // because DOMContentLoaded and DOMNodeInserted cannot be used, a new method is adopted to solve the problem of jQuery import failure
 Object.defineProperties(window, {
     $: {
@@ -34,3 +29,5 @@ Object.defineProperties(window, {
         },
     },
 });
+
+ipcRenderer.send("preload-loaded");

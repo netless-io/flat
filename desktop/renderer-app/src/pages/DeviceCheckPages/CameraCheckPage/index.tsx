@@ -1,65 +1,53 @@
 import "./index.less";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Button } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
+import { useSafePromise } from "flat-components";
 import { DeviceSelect } from "../../../components/DeviceSelect";
 import { Device } from "../../../types/device";
-import { useRTCEngine } from "../../../utils/hooks/use-rtc-engine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckResults } from "../utils";
 import { useTranslation } from "react-i18next";
+import { FlatRTCContext } from "../../../components/FlatRTCContext";
 
 export const CameraCheckPage = (): React.ReactElement => {
     const { t } = useTranslation();
-    const rtcEngine = useRTCEngine();
+    const rtc = useContext(FlatRTCContext);
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
     const cameraStream = useRef<HTMLDivElement>(null);
     const history = useHistory<DeviceCheckResults>();
     const location = useLocation<DeviceCheckResults | undefined>();
+    const sp = useSafePromise();
+
+    const onCameraChanged = useCallback(
+        (deviceID: string): void => {
+            rtc.setCameraID(deviceID);
+        },
+        [rtc],
+    );
 
     useEffect(() => {
-        const onVideoDeviceStateChanged = (): void => {
-            setDevices(rtcEngine.getVideoDevices() as Device[]);
+        const updateCameraDevices = async (deviceID?: string): Promise<void> => {
+            const devices = await sp(rtc.getCameraDevices());
+            setDevices(devices);
+            setCurrentDeviceID(deviceID || devices[0]?.deviceId || null);
         };
-
-        setDevices(rtcEngine.getVideoDevices() as Device[]);
-
-        rtcEngine.on("videoDeviceStateChanged", onVideoDeviceStateChanged);
-
-        return () => {
-            rtcEngine.off("videoDeviceStateChanged", onVideoDeviceStateChanged);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rtcEngine]);
-
-    useEffect(() => {
-        if (devices.length !== 0) {
-            setCurrentDeviceID(devices[0].deviceid);
-        }
-    }, [devices]);
+        updateCameraDevices();
+        return rtc.events.on("camera-changed", updateCameraDevices);
+    }, [rtc, sp]);
 
     useEffect(() => {
         if (currentDeviceID && cameraStream.current) {
-            rtcEngine.setVideoDevice(currentDeviceID);
-            // @ts-ignore agora type error
-            rtcEngine.setVideoEncoderConfiguration({
-                width: 320,
-                height: 240,
-            });
-            rtcEngine.enableVideo();
-            rtcEngine.setupLocalVideo(cameraStream.current);
-            rtcEngine.enableLocalVideo(true);
-            rtcEngine.startPreview();
+            rtc.startCameraTest(cameraStream.current);
+            return () => {
+                rtc.stopCameraTest();
+            };
         }
-
-        return () => {
-            rtcEngine.disableVideo();
-            rtcEngine.stopPreview();
-        };
-    }, [currentDeviceID, cameraStream, rtcEngine]);
+        return;
+    }, [currentDeviceID, rtc]);
 
     return (
         <DeviceCheckLayoutContainer>
@@ -68,7 +56,7 @@ export const CameraCheckPage = (): React.ReactElement => {
                 <DeviceSelect
                     currentDeviceID={currentDeviceID}
                     devices={devices}
-                    onChange={setCurrentDeviceID}
+                    onChange={onCameraChanged}
                 />
                 <div ref={cameraStream} className="camera-check-info" />
                 <div className="camera-check-btn">

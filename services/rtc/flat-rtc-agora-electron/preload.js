@@ -7,6 +7,10 @@ window.agoraRtcSDK$ = agoraRtcSDK$;
  * @param {string} [AGORA_APP_ID]
  */
 module.exports.flatRTCAgoraElectronPreload = AGORA_APP_ID => {
+    if (agoraRtcSDK$.value) {
+        return;
+    }
+
     if (!AGORA_APP_ID) {
         throw new Error("Agora App Id not set.");
     }

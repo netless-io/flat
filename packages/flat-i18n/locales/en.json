@@ -335,6 +335,7 @@
     "network-quality-poor": "Poor network quality",
     "network-quality-unknown": "Unknown network quality",
     "network-quality-very-poor": "Network quality is very poor",
+    "network-connection-errored": "Cannot detect Network Quality",
     "testing": "Testing..."
   },
   "next-step": "Next step",

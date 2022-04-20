@@ -20,10 +20,10 @@ export const DeviceSelect = observer<DeviceSelectProps>(function DeviceSelect({
 
     return (
         <Select value={currentDeviceID} onChange={onChange}>
-            {devices.map(({ deviceid, devicename }) => {
+            {devices.map(({ deviceId, label }) => {
                 return (
-                    <Select.Option key={deviceid} value={deviceid}>
-                        {devicename}
+                    <Select.Option key={deviceId} value={deviceId}>
+                        {label}
                     </Select.Option>
                 );
             })}
