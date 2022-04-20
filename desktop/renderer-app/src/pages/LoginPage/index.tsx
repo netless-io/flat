@@ -16,6 +16,7 @@ import { AppUpgradeModal, AppUpgradeModalProps } from "../../components/AppUpgra
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { runtime } from "../../utils/runtime";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { NEED_BINDING_PHONE } from "../../constants/config";
 import {
     PRIVACY_URL_EN,
     PRIVACY_URL_CN,
@@ -75,10 +76,10 @@ export const LoginPage = observer(function LoginPage() {
     const onLoginResult = useCallback(
         (authData: LoginProcessResult) => {
             globalStore.updateUserInfo(authData);
-            if (authData.hasPhone) {
-                pushHistory(RouteNameType.HomePage);
-            } else {
+            if (NEED_BINDING_PHONE && !authData.hasPhone) {
                 setLoginResult(authData);
+            } else {
+                pushHistory(RouteNameType.HomePage);
             }
         },
         [globalStore, pushHistory],
@@ -126,7 +127,9 @@ export const LoginPage = observer(function LoginPage() {
                         wrap(bindingPhone(countryCode + phone, Number(code)).then(onBoundPhone))
                     }
                     buttons={[process.env.FLAT_REGION === "US" ? "google" : "wechat", "github"]}
-                    isBindingPhone={loginResult ? !loginResult.hasPhone : false}
+                    isBindingPhone={
+                        NEED_BINDING_PHONE && (loginResult ? !loginResult.hasPhone : false)
+                    }
                     loginOrRegister={async (countryCode, phone, code) =>
                         wrap(loginPhone(countryCode + phone, Number(code)).then(onLoginResult))
                     }

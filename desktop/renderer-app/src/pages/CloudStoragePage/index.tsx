@@ -10,6 +10,7 @@ import { loginCheck } from "../../api-middleware/flatServer";
 import { ServerRequestError } from "../../utils/error/server-request-error";
 import { RequestErrorCode } from "../../constants/error-code";
 import { RouteNameType, useReplaceHistory } from "../../utils/routes";
+import { NEED_BINDING_PHONE } from "../../constants/config";
 
 export interface CloudStoragePageProps {}
 
@@ -24,7 +25,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
     useEffect(() => {
         loginCheck()
             .then(result => {
-                if (!result.hasPhone) {
+                if (NEED_BINDING_PHONE && !result.hasPhone) {
                     replaceHistory(RouteNameType.LoginPage);
                 }
             })

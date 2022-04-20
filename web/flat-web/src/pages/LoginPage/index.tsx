@@ -15,6 +15,7 @@ import { errorTips } from "../../components/Tips/ErrorTips";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { NEED_BINDING_PHONE } from "../../constants/config";
 import {
     agoraSSOLoginCheck,
     bindingPhone,
@@ -71,7 +72,7 @@ export const LoginPage = observer(function LoginPage() {
                 globalStore.updateAgoraSSOLoginID(authData.agoraSSOLoginID);
             }
             globalStore.updateUserInfo(authData);
-            if (!authData.hasPhone) {
+            if (NEED_BINDING_PHONE && !authData.hasPhone) {
                 setLoginResult(authData);
                 return;
             }
@@ -137,7 +138,9 @@ export const LoginPage = observer(function LoginPage() {
                             ? ["agora"]
                             : [process.env.FLAT_REGION === "US" ? "google" : "wechat", "github"]
                     }
-                    isBindingPhone={loginResult ? !loginResult.hasPhone : false}
+                    isBindingPhone={
+                        NEED_BINDING_PHONE && (loginResult ? !loginResult.hasPhone : false)
+                    }
                     loginOrRegister={async (countryCode, phone, code) =>
                         wrap(loginPhone(countryCode + phone, Number(code)).then(onLoginResult))
                     }
