@@ -366,6 +366,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             disposer();
             window.clearTimeout(this._refreshFilesTimeout);
             this._refreshFilesTimeout = NaN;
+            this.clearRefreshFilesNowTimeout();
             this.convertStatusManager.cancelAllTasks();
             this.onCoursewareInserted = undefined;
         };
@@ -436,18 +437,13 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     private refreshFilesDebounced(timeout = 500): void {
         window.clearTimeout(this._refreshFilesTimeout);
-        this._refreshFilesTimeout = window.setTimeout(() => {
-            void this.refreshFiles();
-        }, timeout);
+        this._refreshFilesTimeout = window.setTimeout(this.refreshFiles.bind(this), timeout);
     }
 
     private refreshFilesNowDebounced(timeout = 800): void {
         this.clearRefreshFilesNowTimeout();
         console.log("[cloud storage]: start now refresh");
-        this._refreshFilesNowTimeout = window.setTimeout(() => {
-            console.log("[cloud storage]: start now refresh!!!!!!!!!");
-            void this.refreshFiles();
-        }, timeout);
+        this._refreshFilesNowTimeout = window.setTimeout(this.refreshFiles.bind(this), timeout);
     }
 
     private previewCourseware(file: CloudStorageFile): void {
