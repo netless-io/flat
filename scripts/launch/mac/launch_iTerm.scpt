@@ -1,5 +1,9 @@
 on run argv
-    set REGION to item 1 of argv
+    if not (count of argv) = 0
+        set REGION to item 1 of argv
+    else
+        set REGION to ""
+    end if
     tell application "iTerm"
         activate
         set W to create window with default profile
