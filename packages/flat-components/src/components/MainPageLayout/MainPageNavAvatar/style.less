@@ -117,6 +117,10 @@
 
         .ant-popover-arrow-content {
             background-color: var(--grey-10);
+            &::before {
+                background: linear-gradient(to left, var(--grey-10) 50%, var(--grey-10) 50%)
+                    no-repeat -10px -10px;
+            }
         }
     }
 }
