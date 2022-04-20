@@ -1,6 +1,7 @@
 import { Meta, Story } from "@storybook/react";
 import React from "react";
 import { LoginTitle } from ".";
+import { LoginPanelProps } from "..";
 
 const storyMeta: Meta = {
     title: "LoginPage/LoginTitle",
@@ -9,4 +10,4 @@ const storyMeta: Meta = {
 
 export default storyMeta;
 
-export const Overview: Story = () => <LoginTitle />;
+export const Overview: Story<LoginPanelProps> = props => <LoginTitle {...props} />;

@@ -458,6 +458,7 @@ export interface LoginCheckResult {
     avatar: string;
     token: string;
     userUUID: string;
+    hasPhone: boolean;
 }
 
 export async function loginCheck(token?: string): Promise<LoginCheckResult> {
@@ -487,6 +488,7 @@ export interface LoginProcessResult {
     avatar: string;
     userUUID: string;
     token: string;
+    hasPhone: boolean;
     agoraSSOLoginID?: string;
 }
 

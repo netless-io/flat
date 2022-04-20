@@ -460,6 +460,7 @@ export interface LoginCheckResult {
     sex: Sex;
     avatar: string;
     userUUID: string;
+    hasPhone: boolean;
 }
 
 export async function loginCheck(): Promise<LoginCheckResult> {
@@ -492,6 +493,7 @@ export interface LoginProcessResult {
     avatar: string;
     userUUID: string;
     token: string;
+    hasPhone: boolean;
 }
 
 export async function loginProcess(authUUID: string): Promise<LoginProcessResult> {

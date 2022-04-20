@@ -31,6 +31,9 @@ export interface LoginWithPhoneProps {
     onClickButton: LoginButtonsProps["onClick"];
     sendVerificationCode: (countryCode: string, phone: string) => Promise<boolean>;
     loginOrRegister: (countryCode: string, phone: string, code: string) => Promise<boolean>;
+    isBindingPhone?: boolean;
+    sendBindingPhoneCode: (countryCode: string, phone: string) => Promise<boolean>;
+    bindingPhone: (countryCode: string, phone: string, code: string) => Promise<boolean>;
     renderQRCode: () => React.ReactNode;
 }
 
@@ -38,6 +41,9 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
     buttons: userButtons,
     privacyURL,
     serviceURL,
+    isBindingPhone,
+    sendBindingPhoneCode,
+    bindingPhone,
     onClickButton,
     sendVerificationCode,
     loginOrRegister,
@@ -63,10 +69,14 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
     const [code, setCode] = useState("");
     const [agreed, setAgreed] = useState(false);
     const [sendingCode, setSendingCode] = useState(false);
+    const [bindingPhoneCode, setBindingPhoneCode] = useState("");
     const [countdown, setCountdown] = useState(0);
     const [clickedLogin, setClickedLogin] = useState(false);
+    const [clickedBinding, setClickedBinding] = useState(false);
 
     const canLogin = !clickedLogin && validatePhone(phone) && validateCode(code) && agreed;
+    const canBinding =
+        !clickedBinding && validatePhone(phone) && validateCode(bindingPhoneCode) && agreed;
 
     const sendCode = useCallback(async () => {
         if (validatePhone(phone)) {
@@ -116,6 +126,40 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
         },
         [agreed, onClickButton, t],
     );
+
+    const sendBindingCode = useCallback(async () => {
+        if (validatePhone(phone)) {
+            setSendingCode(true);
+            const sent = await sp(sendBindingPhoneCode(countryCode, phone));
+            setSendingCode(false);
+            if (sent) {
+                void message.info(t("sent-verify-code-to-phone"));
+                let count = 60;
+                setCountdown(count);
+                const timer = setInterval(() => {
+                    setCountdown(--count);
+                    if (count === 0) {
+                        clearInterval(timer);
+                    }
+                }, 1000);
+            } else {
+                message.error(t("send-verify-code-failed"));
+            }
+        }
+    }, [countryCode, phone, sendBindingPhoneCode, sp, t]);
+
+    const bindPhone = useCallback(async () => {
+        if (canBinding) {
+            setClickedBinding(true);
+            const success = await sp(bindingPhone(countryCode, phone, bindingPhoneCode));
+            if (success) {
+                await sp(new Promise(resolve => setTimeout(resolve, 60000)));
+            } else {
+                message.error("绑定手机号失败");
+            }
+            setClickedBinding(false);
+        }
+    }, [bindingPhone, bindingPhoneCode, canBinding, countryCode, phone, sp]);
 
     function renderQRCodePage(): React.ReactNode {
         return (
@@ -204,9 +248,79 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
         );
     }
 
+    function renderBindPhonePage(): React.ReactNode {
+        return (
+            <div className="login-with-phone binding">
+                <div className="login-width-limiter">
+                    <LoginTitle subtitle="根据相关政策法规，需要绑定手机号" title="绑定手机号" />
+                    <Input
+                        placeholder={t("enter-phone")}
+                        prefix={
+                            <Select bordered={false} defaultValue="+86" onChange={setCountryCode}>
+                                {COUNTRY_CODES.map(code => (
+                                    <Select.Option
+                                        key={code}
+                                        value={`+${code}`}
+                                    >{`+${code}`}</Select.Option>
+                                ))}
+                            </Select>
+                        }
+                        size="small"
+                        status={!phone || validatePhone(phone) ? undefined : "error"}
+                        value={phone}
+                        onChange={ev => setPhone(ev.currentTarget.value)}
+                    />
+                    <Input
+                        placeholder={t("enter-code")}
+                        prefix={<img alt="checked" draggable={false} src={checkedSVG} />}
+                        status={
+                            !bindingPhoneCode || validateCode(bindingPhoneCode)
+                                ? undefined
+                                : "error"
+                        }
+                        suffix={
+                            countdown > 0 ? (
+                                <span className="login-countdown">
+                                    {t("seconds-to-resend", { seconds: countdown })}
+                                </span>
+                            ) : (
+                                <Button
+                                    disabled={sendingCode || !validatePhone(phone)}
+                                    loading={sendingCode}
+                                    size="small"
+                                    type="link"
+                                    onClick={sendBindingCode}
+                                >
+                                    {t("send-verify-code")}
+                                </Button>
+                            )
+                        }
+                        value={bindingPhoneCode}
+                        onChange={ev => setBindingPhoneCode(ev.currentTarget.value)}
+                    />
+                    <Button
+                        className="login-big-button"
+                        disabled={!canBinding}
+                        loading={clickedBinding}
+                        type="primary"
+                        onClick={bindPhone}
+                    >
+                        绑定手机
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
+    const key = isBindingPhone ? "bind-phone" : showQRCode ? "qrcode" : "login";
+
     return (
-        <LoginPanelContent transitionKey={Number(showQRCode)}>
-            {showQRCode ? renderQRCodePage() : renderLoginPage()}
+        <LoginPanelContent transitionKey={key}>
+            {isBindingPhone
+                ? renderBindPhonePage()
+                : showQRCode
+                ? renderQRCodePage()
+                : renderLoginPage()}
         </LoginPanelContent>
     );
 };
