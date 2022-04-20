@@ -15,7 +15,7 @@ module.exports.flatRTCAgoraElectronPreload = AGORA_APP_ID => {
 
     const rtcEngine = new AgoraRtcSDK();
 
-    if (rtcEngine.initialize(process.env.AGORA_APP_ID) < 0) {
+    if (rtcEngine.initialize(AGORA_APP_ID) < 0) {
         throw new Error("[RTC] The app ID is invalid. Check if it is in the correct format.");
     }
 
