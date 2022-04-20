@@ -106,11 +106,11 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
     }, [email, password, register, sp, t]);
 
     const forgotPassword = useCallback(() => {
-        if (agreed) {
-            setPage("verify-email");
-        } else {
+        if (!agreed) {
             message.info(t("agree-terms"));
+            return;
         }
+        setPage("verify-email");
     }, [agreed, t]);
 
     const sendCode = useCallback(async () => {
@@ -153,6 +153,17 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
             setSettingPassword(false);
         }
     }, [code, email, login, password, resetPassword, sp, t, verifiedCode]);
+
+    const onClick = useCallback(
+        (provider: LoginButtonProviderType) => {
+            if (!agreed) {
+                message.info(t("agree-terms"));
+                return;
+            }
+            onClickButton(provider);
+        },
+        [agreed, onClickButton, t],
+    );
 
     function renderLoginPage(): React.ReactNode {
         return (
@@ -211,7 +222,7 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
                 <div className="login-splitter">
                     <span className="login-splitter-text">{t("also-login-with")}</span>
                 </div>
-                <LoginButtons buttons={buttons} onClick={onClickButton} />
+                <LoginButtons buttons={buttons} onClick={onClick} />
             </div>
         );
     }

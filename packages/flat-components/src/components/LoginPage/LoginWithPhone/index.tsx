@@ -104,13 +104,17 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
 
     const onClick = useCallback(
         (provider: LoginButtonProviderType) => {
+            if (!agreed) {
+                message.info(t("agree-terms"));
+                return;
+            }
             if (provider === "wechat") {
                 setShowQRCode(true);
             } else {
                 onClickButton(provider);
             }
         },
-        [onClickButton],
+        [agreed, onClickButton, t],
     );
 
     function renderQRCodePage(): React.ReactNode {
