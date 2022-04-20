@@ -39,9 +39,7 @@ export const WeChatLogin = observer(function WeChatLogin({ setLoginResult }: WeC
         };
 
         sp(setAuthUUID(authUUID))
-            .then(() => {
-                loginProcessRequest(ticket, authUUID);
-            })
+            .then(loginProcessRequest.bind(null, ticket, authUUID))
             .catch(errorTips);
 
         return () => {

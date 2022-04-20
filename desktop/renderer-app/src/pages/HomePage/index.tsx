@@ -75,9 +75,9 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
             }
 
             try {
-                await loginCheck();
+                const result = await loginCheck();
                 globalStore.updateLastLoginCheck(Date.now());
-                return true;
+                return result.hasPhone;
             } catch (e) {
                 globalStore.updateLastLoginCheck(null);
                 console.error(e);

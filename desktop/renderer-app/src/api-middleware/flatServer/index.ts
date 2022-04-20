@@ -528,3 +528,32 @@ export async function loginPhone(phone: string, code: number): Promise<LoginProc
         code,
     });
 }
+
+export interface BindingPhoneSendCodePayload {
+    phone: string; // +8612345678901
+}
+
+export type BindingPhoneSendCodeResult = {};
+
+export async function bindingPhoneSendCode(phone: string): Promise<BindingPhoneSendCodeResult> {
+    return await post<BindingPhoneSendCodePayload, BindingPhoneSendCodeResult>(
+        "user/bindingPhone/sendMessage",
+        {
+            phone,
+        },
+    );
+}
+
+export interface BindingPhonePayload {
+    phone: string; // +8612345678901
+    code: number; // 123456
+}
+
+export type BindingPhoneResult = {};
+
+export async function bindingPhone(phone: string, code: number): Promise<BindingPhoneResult> {
+    return await postNotAuth<BindingPhonePayload, BindingPhoneResult>("user/bindingPhone", {
+        phone,
+        code,
+    });
+}

@@ -22,17 +22,23 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
     );
 
     useEffect(() => {
-        loginCheck().catch(error => {
-            if (error instanceof ServerRequestError) {
-                if (
-                    [RequestErrorCode.JWTSignFailed, RequestErrorCode.NeedLoginAgain].includes(
-                        error.errorCode,
-                    )
-                ) {
+        loginCheck()
+            .then(result => {
+                if (!result.hasPhone) {
                     replaceHistory(RouteNameType.LoginPage);
                 }
-            }
-        });
+            })
+            .catch(error => {
+                if (error instanceof ServerRequestError) {
+                    if (
+                        [RequestErrorCode.JWTSignFailed, RequestErrorCode.NeedLoginAgain].includes(
+                            error.errorCode,
+                        )
+                    ) {
+                        replaceHistory(RouteNameType.LoginPage);
+                    }
+                }
+            });
     }, [replaceHistory]);
 
     useEffect(() => store.initialize(), [store]);

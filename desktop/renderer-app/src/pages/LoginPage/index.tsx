@@ -13,6 +13,7 @@ import { LoginDisposer } from "./utils";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { AppUpgradeModal, AppUpgradeModalProps } from "../../components/AppUpgradeModal";
+import { errorTips } from "../../components/Tips/ErrorTips";
 import { runtime } from "../../utils/runtime";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import {
@@ -22,6 +23,8 @@ import {
     SERVICE_URL_CN,
 } from "../../constants/process";
 import {
+    bindingPhone,
+    bindingPhoneSendCode,
     loginPhone,
     loginPhoneSendCode,
     LoginProcessResult,
@@ -33,6 +36,7 @@ export const LoginPage = observer(function LoginPage() {
     const globalStore = useContext(GlobalStoreContext);
     const loginDisposer = useRef<LoginDisposer>();
     const [updateInfo, setUpdateInfo] = useState<AppUpgradeModalProps["updateInfo"]>(null);
+    const [loginResult, setLoginResult] = useState<LoginProcessResult | null>(null);
 
     const sp = useSafePromise();
 
@@ -71,10 +75,20 @@ export const LoginPage = observer(function LoginPage() {
     const onLoginResult = useCallback(
         (authData: LoginProcessResult) => {
             globalStore.updateUserInfo(authData);
-            pushHistory(RouteNameType.HomePage);
+            if (authData.hasPhone) {
+                pushHistory(RouteNameType.HomePage);
+            } else {
+                setLoginResult(authData);
+            }
         },
         [globalStore, pushHistory],
     );
+
+    const onBoundPhone = useCallback(() => {
+        if (loginResult) {
+            onLoginResult({ ...loginResult, hasPhone: true });
+        }
+    }, [loginResult, onLoginResult]);
 
     const handleLogin = useCallback(
         (loginChannel: LoginButtonProviderType) => {
@@ -108,25 +122,22 @@ export const LoginPage = observer(function LoginPage() {
         <div className="login-page-container">
             <LoginPanel>
                 <LoginWithPhone
+                    bindingPhone={async (countryCode, phone, code) =>
+                        wrap(bindingPhone(countryCode + phone, Number(code)).then(onBoundPhone))
+                    }
                     buttons={[process.env.FLAT_REGION === "US" ? "google" : "wechat", "github"]}
-                    loginOrRegister={async (countryCode, phone, code) => {
-                        try {
-                            await loginPhone(countryCode + phone, Number(code)).then(onLoginResult);
-                            return true;
-                        } catch {
-                            return false;
-                        }
-                    }}
+                    isBindingPhone={loginResult ? !loginResult.hasPhone : false}
+                    loginOrRegister={async (countryCode, phone, code) =>
+                        wrap(loginPhone(countryCode + phone, Number(code)).then(onLoginResult))
+                    }
                     privacyURL={privacyURL}
-                    renderQRCode={() => <WeChatLogin />}
-                    sendVerificationCode={async (countryCode, phone) => {
-                        try {
-                            await loginPhoneSendCode(countryCode + phone);
-                            return true;
-                        } catch {
-                            return false;
-                        }
-                    }}
+                    renderQRCode={() => <WeChatLogin setLoginResult={setLoginResult} />}
+                    sendBindingPhoneCode={async (countryCode, phone) =>
+                        wrap(bindingPhoneSendCode(countryCode + phone))
+                    }
+                    sendVerificationCode={async (countryCode, phone) =>
+                        wrap(loginPhoneSendCode(countryCode + phone))
+                    }
                     serviceURL={serviceURL}
                     onClickButton={handleLogin}
                 />
@@ -135,5 +146,14 @@ export const LoginPage = observer(function LoginPage() {
         </div>
     );
 });
+
+function wrap(promise: Promise<unknown>): Promise<boolean> {
+    return promise
+        .then(() => true)
+        .catch(err => {
+            errorTips(err);
+            return false;
+        });
+}
 
 export default LoginPage;
