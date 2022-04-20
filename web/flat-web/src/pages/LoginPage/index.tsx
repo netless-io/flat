@@ -53,7 +53,7 @@ export const LoginPage = observer(function LoginPage() {
             const { jwtToken } = await sp(agoraSSOLoginCheck(globalStore.agoraSSOLoginID!));
             const userInfo = await sp(loginCheck(jwtToken));
             globalStore.updateUserInfo(userInfo);
-            if (userInfo.hasPhone) {
+            if (NEED_BINDING_PHONE ? userInfo.hasPhone : true) {
                 pushHistory(RouteNameType.HomePage);
             }
         };
