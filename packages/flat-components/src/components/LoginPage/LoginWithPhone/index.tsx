@@ -4,7 +4,7 @@ import "./index.less";
 import React, { useCallback, useMemo, useState } from "react";
 import { Button, Input, message, Select } from "antd";
 
-import { useSafePromise } from "../../../utils/hooks";
+import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
 import { LoginTitle } from "../LoginTitle";
 import { LoginAgreement, LoginAgreementProps } from "../LoginAgreement";
 import { LoginButtons, LoginButtonsDescription, LoginButtonsProps } from "../LoginButtons";
@@ -63,6 +63,7 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
         [t, userButtons],
     );
 
+    const isUnMountRef = useIsUnMounted();
     const [showQRCode, setShowQRCode] = useState(false);
     const [countryCode, setCountryCode] = useState("+86");
     const [phone, setPhone] = useState("");
@@ -88,6 +89,10 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
                 let count = 60;
                 setCountdown(count);
                 const timer = setInterval(() => {
+                    if (isUnMountRef.current) {
+                        clearInterval(timer);
+                        return;
+                    }
                     setCountdown(--count);
                     if (count === 0) {
                         clearInterval(timer);
@@ -97,7 +102,7 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
                 message.error(t("send-verify-code-failed"));
             }
         }
-    }, [countryCode, phone, sendVerificationCode, sp, t]);
+    }, [countryCode, isUnMountRef, phone, sendVerificationCode, sp, t]);
 
     const login = useCallback(async () => {
         if (canLogin) {
@@ -137,6 +142,10 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
                 let count = 60;
                 setCountdown(count);
                 const timer = setInterval(() => {
+                    if (isUnMountRef.current) {
+                        clearInterval(timer);
+                        return;
+                    }
                     setCountdown(--count);
                     if (count === 0) {
                         clearInterval(timer);
@@ -146,7 +155,7 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
                 message.error(t("send-verify-code-failed"));
             }
         }
-    }, [countryCode, phone, sendBindingPhoneCode, sp, t]);
+    }, [countryCode, isUnMountRef, phone, sendBindingPhoneCode, sp, t]);
 
     const bindPhone = useCallback(async () => {
         if (canBinding) {
@@ -155,11 +164,11 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
             if (success) {
                 await sp(new Promise(resolve => setTimeout(resolve, 60000)));
             } else {
-                message.error("绑定手机号失败");
+                message.error(t("bind-phone-failed"));
             }
             setClickedBinding(false);
         }
-    }, [bindingPhone, bindingPhoneCode, canBinding, countryCode, phone, sp]);
+    }, [bindingPhone, bindingPhoneCode, canBinding, countryCode, phone, sp, t]);
 
     function renderQRCodePage(): React.ReactNode {
         return (
@@ -252,7 +261,7 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
         return (
             <div className="login-with-phone binding">
                 <div className="login-width-limiter">
-                    <LoginTitle subtitle="根据相关政策法规，需要绑定手机号" title="绑定手机号" />
+                    <LoginTitle subtitle={t("need-bind-phone")} title={t("bind-phone")} />
                     <Input
                         placeholder={t("enter-phone")}
                         prefix={
@@ -305,7 +314,7 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
                         type="primary"
                         onClick={bindPhone}
                     >
-                        绑定手机
+                        {t("confirm")}
                     </Button>
                 </div>
             </div>

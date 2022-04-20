@@ -33,8 +33,8 @@ export const JoinPage = observer(function JoinPage() {
             const token = globalStore.userInfo?.token;
             if (token) {
                 try {
-                    await loginCheck();
-                    setIsLogin(true);
+                    const result = await loginCheck();
+                    setIsLogin(result.hasPhone);
                 } catch (e) {
                     console.error(e);
                 }
