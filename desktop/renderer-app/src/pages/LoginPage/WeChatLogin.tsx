@@ -1,25 +1,24 @@
 import "./WeChatLogin.less";
 
 import React, { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
 import { LoadingOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
-import { UserInfo } from "../../stores/global-store";
-import { loginProcess, setAuthUUID } from "../../api-middleware/flatServer";
+import { loginProcess, LoginProcessResult, setAuthUUID } from "../../api-middleware/flatServer";
 import { FLAT_SERVER_LOGIN } from "../../api-middleware/flatServer/constants";
-import { GlobalStoreContext } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { WECHAT } from "../../constants/process";
-import { RouteNameType } from "../../route-config";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
-import { usePushHistory } from "../../utils/routes";
-import { useTranslation } from "react-i18next";
+import { GlobalStoreContext } from "../../components/StoreProvider";
 
-export const WeChatLogin = observer(function WeChatLogin() {
+export interface WeChatLoginProps {
+    setLoginResult: (result: LoginProcessResult) => void;
+}
+
+export const WeChatLogin = observer(function WeChatLogin({ setLoginResult }: WeChatLoginProps) {
     const globalStore = useContext(GlobalStoreContext);
     const [qrCodeURL, setQRCodeURL] = useState("");
-    const [authData, setAuthData] = useState<UserInfo | null>(null);
-    const pushHistory = usePushHistory();
     const sp = useSafePromise();
 
     const { t } = useTranslation();
@@ -36,15 +35,14 @@ export const WeChatLogin = observer(function WeChatLogin() {
                 if (data.userUUID === "") {
                     loginProcessRequest(ticket, authUUID);
                 } else {
-                    setAuthData(data);
+                    globalStore.updateUserInfo(data);
+                    setLoginResult(data);
                 }
             }, 2000);
         };
 
         sp(setAuthUUID(authUUID))
-            .then(() => {
-                loginProcessRequest(ticket, authUUID);
-            })
+            .then(loginProcessRequest.bind(null, ticket, authUUID))
             .catch(errorTips);
 
         return () => {
@@ -52,14 +50,6 @@ export const WeChatLogin = observer(function WeChatLogin() {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    useEffect(() => {
-        if (authData) {
-            globalStore.updateUserInfo(authData);
-            pushHistory(RouteNameType.HomePage);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [authData, globalStore, pushHistory]);
 
     return (
         <div className="wechat-login-container">

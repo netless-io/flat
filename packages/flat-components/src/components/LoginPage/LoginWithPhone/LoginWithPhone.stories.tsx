@@ -21,11 +21,19 @@ Overview.args = {
     },
     sendVerificationCode: (country, phone) => {
         message.info("sendVerificationCode " + country + " " + phone);
-        return new Promise(resolve => setTimeout(resolve, 1000));
+        return new Promise(resolve => setTimeout(() => resolve(phone === "123456"), 1000));
     },
     loginOrRegister: (country, phone, code) => {
         message.info("login " + country + " " + phone + " " + code);
         return new Promise(resolve => setTimeout(() => resolve(code === "123456"), 1000));
     },
     renderQRCode: () => <img alt="qrcode" src={qrcodeSVG} />,
+    bindingPhone: (country, phone, code) => {
+        message.info("bindingPhone " + country + " " + phone + " " + code);
+        return new Promise(resolve => setTimeout(() => resolve(code === "123456"), 1000));
+    },
+    sendBindingPhoneCode: (country, phone) => {
+        message.info("sendVerificationCode " + country + " " + phone);
+        return new Promise(resolve => setTimeout(() => resolve(phone === "123456"), 1000));
+    },
 };

@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { useCallback, useContext, useEffect, useRef } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
 import { LoginPanel, LoginButtonProviderType, LoginWithPhone } from "flat-components";
@@ -11,11 +11,15 @@ import { agoraLogin } from "./agoraLogin";
 import { googleLogin } from "./googleLogin";
 import { RouteNameType, usePushHistory, useURLParams } from "../../utils/routes";
 import { GlobalStoreContext } from "../../components/StoreProvider";
+import { errorTips } from "../../components/Tips/ErrorTips";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { NEED_BINDING_PHONE } from "../../constants/config";
 import {
     agoraSSOLoginCheck,
+    bindingPhone,
+    bindingPhoneSendCode,
     loginCheck,
     loginPhone,
     loginPhoneSendCode,
@@ -32,6 +36,7 @@ export const LoginPage = observer(function LoginPage() {
 
     const sp = useSafePromise();
     const urlParams = useURLParams();
+    const [loginResult, setLoginResult] = useState<LoginProcessResult | null>(null);
 
     useEffect(() => {
         return () => {
@@ -47,9 +52,10 @@ export const LoginPage = observer(function LoginPage() {
         const effect = async (): Promise<void> => {
             const { jwtToken } = await sp(agoraSSOLoginCheck(globalStore.agoraSSOLoginID!));
             const userInfo = await sp(loginCheck(jwtToken));
-
             globalStore.updateUserInfo(userInfo);
-            pushHistory(RouteNameType.HomePage);
+            if (NEED_BINDING_PHONE ? userInfo.hasPhone : true) {
+                pushHistory(RouteNameType.HomePage);
+            }
         };
 
         if (urlParams.utm_source === "agora" && globalStore.agoraSSOLoginID) {
@@ -66,6 +72,10 @@ export const LoginPage = observer(function LoginPage() {
                 globalStore.updateAgoraSSOLoginID(authData.agoraSSOLoginID);
             }
             globalStore.updateUserInfo(authData);
+            if (NEED_BINDING_PHONE && !authData.hasPhone) {
+                setLoginResult(authData);
+                return;
+            }
             if (!roomUUID) {
                 pushHistory(RouteNameType.HomePage);
                 return;
@@ -78,6 +88,12 @@ export const LoginPage = observer(function LoginPage() {
         },
         [globalStore, pushHistory, roomUUID],
     );
+
+    const onBoundPhone = useCallback(() => {
+        if (loginResult) {
+            onLoginResult({ ...loginResult, hasPhone: true });
+        }
+    }, [loginResult, onLoginResult]);
 
     const handleLogin = useCallback(
         (loginChannel: LoginButtonProviderType) => {
@@ -114,29 +130,28 @@ export const LoginPage = observer(function LoginPage() {
         <div className="login-page-container">
             <LoginPanel>
                 <LoginWithPhone
+                    bindingPhone={async (countryCode, phone, code) =>
+                        wrap(bindingPhone(countryCode + phone, Number(code)).then(onBoundPhone))
+                    }
                     buttons={
                         urlParams.utm_source === "agora"
                             ? ["agora"]
                             : [process.env.FLAT_REGION === "US" ? "google" : "wechat", "github"]
                     }
-                    loginOrRegister={async (countryCode, phone, code) => {
-                        try {
-                            await loginPhone(countryCode + phone, Number(code)).then(onLoginResult);
-                            return true;
-                        } catch {
-                            return false;
-                        }
-                    }}
+                    isBindingPhone={
+                        NEED_BINDING_PHONE && (loginResult ? !loginResult.hasPhone : false)
+                    }
+                    loginOrRegister={async (countryCode, phone, code) =>
+                        wrap(loginPhone(countryCode + phone, Number(code)).then(onLoginResult))
+                    }
                     privacyURL={privacyURL}
-                    renderQRCode={() => <WeChatLogin />}
-                    sendVerificationCode={async (countryCode, phone) => {
-                        try {
-                            await loginPhoneSendCode(countryCode + phone);
-                            return true;
-                        } catch {
-                            return false;
-                        }
-                    }}
+                    renderQRCode={() => <WeChatLogin setLoginResult={setLoginResult} />}
+                    sendBindingPhoneCode={async (countryCode, phone) =>
+                        wrap(bindingPhoneSendCode(countryCode + phone))
+                    }
+                    sendVerificationCode={async (countryCode, phone) =>
+                        wrap(loginPhoneSendCode(countryCode + phone))
+                    }
                     serviceURL={serviceURL}
                     onClickButton={handleLogin}
                 />
@@ -144,5 +159,14 @@ export const LoginPage = observer(function LoginPage() {
         </div>
     );
 });
+
+function wrap(promise: Promise<unknown>): Promise<boolean> {
+    return promise
+        .then(() => true)
+        .catch(err => {
+            errorTips(err);
+            return false;
+        });
+}
 
 export default LoginPage;

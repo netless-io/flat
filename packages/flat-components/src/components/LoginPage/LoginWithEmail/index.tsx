@@ -7,7 +7,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Input, message } from "antd";
 
-import { useSafePromise } from "../../../utils/hooks";
+import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
 import { LoginTitle } from "../LoginTitle";
 import { LoginAgreement, LoginAgreementProps } from "../LoginAgreement";
 import {
@@ -17,7 +17,7 @@ import {
     LoginButtonsProps,
 } from "../LoginButtons";
 import { LoginPanelContent } from "../LoginPanelContent";
-import { validateCode } from "../LoginWithPhone";
+import { renderBindPhonePage, validateCode, validatePhone } from "../LoginWithPhone";
 
 export * from "../LoginButtons";
 
@@ -41,6 +41,9 @@ export interface LoginWithEmailProps {
     resetPassword: (email: string, code: string, password: string) => Promise<boolean>;
     login: (email: string, password: string) => Promise<boolean>;
     register: (email: string, password: string) => Promise<boolean>;
+    isBindingPhone?: boolean;
+    sendBindingPhoneCode?: (countryCode: string, phone: string) => Promise<boolean>;
+    bindingPhone?: (countryCode: string, phone: string, code: string) => Promise<boolean>;
 }
 
 export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
@@ -53,6 +56,9 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
     resetPassword,
     login,
     register,
+    isBindingPhone,
+    sendBindingPhoneCode,
+    bindingPhone,
 }) => {
     const { t } = useTranslation();
     const sp = useSafePromise();
@@ -80,12 +86,22 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
     const [isSettingPassword, setSettingPassword] = useState(false);
     const [verifiedCode, setVerifiedCode] = useState(false);
 
+    const isUnMountRef = useIsUnMounted();
+    const [countryCode, setCountryCode] = useState("+86");
+    const [phone, setPhone] = useState("");
+    const [bindingPhoneCode, setBindingPhoneCode] = useState("");
+    const [countdown, setCountdown] = useState(0);
+    const [clickedBinding, setClickedBinding] = useState(false);
+
     const canLogin =
         !clickedLogin &&
         !clickedRegister &&
         validateEmail(email) &&
         validatePassword(password) &&
         agreed;
+
+    const canBinding =
+        !clickedBinding && validatePhone(phone) && validateCode(bindingPhoneCode) && agreed;
 
     const doLogin = useCallback(async () => {
         setClickedLogin(true);
@@ -164,6 +180,44 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
         },
         [agreed, onClickButton, t],
     );
+
+    const sendBindingCode = useCallback(async () => {
+        if (validatePhone(phone) && sendBindingPhoneCode) {
+            setSendingCode(true);
+            const sent = await sp(sendBindingPhoneCode(countryCode, phone));
+            setSendingCode(false);
+            if (sent) {
+                void message.info(t("sent-verify-code-to-phone"));
+                let count = 60;
+                setCountdown(count);
+                const timer = setInterval(() => {
+                    if (isUnMountRef.current) {
+                        clearInterval(timer);
+                        return;
+                    }
+                    setCountdown(--count);
+                    if (count === 0) {
+                        clearInterval(timer);
+                    }
+                }, 1000);
+            } else {
+                message.error(t("send-verify-code-failed"));
+            }
+        }
+    }, [countryCode, isUnMountRef, phone, sendBindingPhoneCode, sp, t]);
+
+    const bindPhone = useCallback(async () => {
+        if (canBinding && bindingPhone) {
+            setClickedBinding(true);
+            const success = await sp(bindingPhone(countryCode, phone, bindingPhoneCode));
+            if (success) {
+                await sp(new Promise(resolve => setTimeout(resolve, 60000)));
+            } else {
+                message.error(t("bind-phone-failed"));
+            }
+            setClickedBinding(false);
+        }
+    }, [bindingPhone, bindingPhoneCode, canBinding, countryCode, phone, sp, t]);
 
     function renderLoginPage(): React.ReactNode {
         return (
@@ -325,9 +379,26 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
         );
     }
 
+    const key = isBindingPhone ? "bind-phone" : page;
+
     return (
-        <LoginPanelContent transitionKey={page}>
-            {page === "login"
+        <LoginPanelContent transitionKey={key}>
+            {isBindingPhone
+                ? renderBindPhonePage({
+                      t,
+                      setCountryCode,
+                      phone,
+                      setPhone,
+                      bindingPhoneCode,
+                      countdown,
+                      sendingCode,
+                      sendBindingCode,
+                      setBindingPhoneCode,
+                      canBinding,
+                      clickedBinding,
+                      bindPhone,
+                  })
+                : page === "login"
                 ? renderLoginPage()
                 : page === "verify-email"
                 ? renderVerifyEmailPage()

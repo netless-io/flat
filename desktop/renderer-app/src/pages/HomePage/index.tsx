@@ -18,6 +18,7 @@ import { differenceInHours } from "date-fns";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { loginCheck } from "../../api-middleware/flatServer";
 import { RouteNameType, useReplaceHistory } from "../../utils/routes";
+import { NEED_BINDING_PHONE } from "../../constants/config";
 
 export type HomePageProps = {};
 
@@ -75,9 +76,9 @@ export const HomePage = observer<HomePageProps>(function HomePage() {
             }
 
             try {
-                await loginCheck();
+                const result = await loginCheck();
                 globalStore.updateLastLoginCheck(Date.now());
-                return true;
+                return NEED_BINDING_PHONE ? result.hasPhone : true;
             } catch (e) {
                 globalStore.updateLastLoginCheck(null);
                 console.error(e);

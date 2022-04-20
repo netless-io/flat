@@ -13,6 +13,7 @@ import { joinRoomHandler } from "../utils/join-room-handler";
 import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
 import JoinPageDesktop from "./JoinPageDesktop";
 import JoinPageMobile from "./JoinPageMobile";
+import { NEED_BINDING_PHONE } from "../../constants/config";
 
 export const JoinPage = observer(function JoinPage() {
     const { i18n } = useTranslation();
@@ -33,8 +34,8 @@ export const JoinPage = observer(function JoinPage() {
             const token = globalStore.userInfo?.token;
             if (token) {
                 try {
-                    await loginCheck();
-                    setIsLogin(true);
+                    const result = await loginCheck();
+                    setIsLogin(NEED_BINDING_PHONE ? result.hasPhone : true);
                 } catch (e) {
                     console.error(e);
                 }

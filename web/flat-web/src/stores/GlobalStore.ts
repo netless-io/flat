@@ -51,12 +51,13 @@ export class GlobalStore {
     }
 
     public updateUserInfo = (userInfo: UserInfo): void => {
-        const { token, userUUID, avatar, name } = userInfo;
+        const { token, userUUID, avatar, name, hasPhone } = userInfo;
         this.userInfo = {
             token,
             userUUID,
             avatar,
             name,
+            hasPhone,
         };
     };
 

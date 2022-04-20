@@ -1,28 +1,23 @@
 import "./WeChatLogin.less";
 
-import React, { useContext, useEffect, useState } from "react";
-import { observer } from "mobx-react-lite";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { LoadingOutlined } from "@ant-design/icons";
+import { observer } from "mobx-react-lite";
 import { v4 as uuidv4 } from "uuid";
-import { UserInfo } from "../../stores/GlobalStore";
-import { loginProcess, setAuthUUID } from "../../api-middleware/flatServer";
+import { loginProcess, LoginProcessResult, setAuthUUID } from "../../api-middleware/flatServer";
 import { FLAT_SERVER_LOGIN } from "../../api-middleware/flatServer/constants";
-import { GlobalStoreContext } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { WECHAT } from "../../constants/process";
-import { RouteNameType } from "../../route-config";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
-import { usePushHistory } from "../../utils/routes";
-import { joinRoomHandler } from "../utils/join-room-handler";
-import { useTranslation } from "react-i18next";
 
-export const WeChatLogin = observer(function WeChatLogin() {
-    const globalStore = useContext(GlobalStoreContext);
+export interface WeChatLoginProps {
+    setLoginResult: (result: LoginProcessResult) => void;
+}
+
+export const WeChatLogin = observer(function WeChatLogin({ setLoginResult }: WeChatLoginProps) {
     const [qrCodeURL, setQRCodeURL] = useState("");
-    const [authData, setAuthData] = useState<UserInfo | null>(null);
-    const pushHistory = usePushHistory();
     const sp = useSafePromise();
-    const roomUUID = sessionStorage.getItem("roomUUID");
 
     const { t } = useTranslation();
 
@@ -38,15 +33,13 @@ export const WeChatLogin = observer(function WeChatLogin() {
                 if (data.userUUID === "") {
                     loginProcessRequest(ticket, authUUID);
                 } else {
-                    setAuthData(data);
+                    setLoginResult(data);
                 }
             }, 2000);
         };
 
         sp(setAuthUUID(authUUID))
-            .then(() => {
-                loginProcessRequest(ticket, authUUID);
-            })
+            .then(loginProcessRequest.bind(null, ticket, authUUID))
             .catch(errorTips);
 
         return () => {
@@ -54,25 +47,6 @@ export const WeChatLogin = observer(function WeChatLogin() {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    useEffect(() => {
-        const loginJump = async (): Promise<void> => {
-            if (authData) {
-                globalStore.updateUserInfo(authData);
-                if (roomUUID) {
-                    if (globalStore.isTurnOffDeviceTest) {
-                        await joinRoomHandler(roomUUID, pushHistory);
-                    } else {
-                        pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
-                    }
-                } else {
-                    pushHistory(RouteNameType.HomePage);
-                }
-            }
-        };
-
-        void loginJump();
-    }, [authData, globalStore, pushHistory, roomUUID]);
 
     return (
         <div className="wechat-login-container">

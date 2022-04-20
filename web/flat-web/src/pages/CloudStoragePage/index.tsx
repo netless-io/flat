@@ -10,6 +10,7 @@ import { ServerRequestError } from "../../utils/error/server-request-error";
 import { RequestErrorCode } from "../../constants/error-code";
 import { RouteNameType } from "../../route-config";
 import { useReplaceHistory } from "../../utils/routes";
+import { NEED_BINDING_PHONE } from "../../constants/config";
 
 export interface CloudStoragePageProps {}
 
@@ -23,17 +24,23 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
     useEffect(() => store.initialize(), [store]);
 
     useEffect(() => {
-        loginCheck().catch(error => {
-            if (error instanceof ServerRequestError) {
-                if (
-                    [RequestErrorCode.JWTSignFailed, RequestErrorCode.NeedLoginAgain].includes(
-                        error.errorCode,
-                    )
-                ) {
+        loginCheck()
+            .then(result => {
+                if (NEED_BINDING_PHONE && !result.hasPhone) {
                     replaceHistory(RouteNameType.LoginPage);
                 }
-            }
-        });
+            })
+            .catch(error => {
+                if (error instanceof ServerRequestError) {
+                    if (
+                        [RequestErrorCode.JWTSignFailed, RequestErrorCode.NeedLoginAgain].includes(
+                            error.errorCode,
+                        )
+                    ) {
+                        replaceHistory(RouteNameType.LoginPage);
+                    }
+                }
+            });
     }, [replaceHistory]);
 
     const pageStore = useContext(PageStoreContext);

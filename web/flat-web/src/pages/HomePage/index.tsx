@@ -9,6 +9,7 @@ import { RouteNameType, useReplaceHistory } from "../../utils/routes";
 import { GlobalStoreContext, PageStoreContext } from "../../components/StoreProvider";
 import { loginCheck } from "../../api-middleware/flatServer";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { NEED_BINDING_PHONE } from "../../constants/config";
 
 export const HomePage = observer(function HomePage() {
     const replaceHistory = useReplaceHistory();
@@ -34,9 +35,9 @@ export const HomePage = observer(function HomePage() {
             }
 
             try {
-                await loginCheck();
+                const result = await loginCheck();
                 globalStore.updateLastLoginCheck(Date.now());
-                return true;
+                return NEED_BINDING_PHONE ? result.hasPhone : true;
             } catch (e) {
                 globalStore.updateLastLoginCheck(null);
                 console.error(e);

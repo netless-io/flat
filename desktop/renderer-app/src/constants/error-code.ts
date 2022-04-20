@@ -83,6 +83,7 @@ export const RequestErrorMessage = {
 
     [RequestErrorCode.SMSVerificationCodeInvalid]: "login-phone-verification-code-invalid",
     [RequestErrorCode.SMSAlreadyExist]: "login-phone-already-exist",
+    [RequestErrorCode.SMSAlreadyBinding]: "phone-already-binding",
 
     // TODO: translate messages below
     [RequestErrorCode.UploadConcurrentLimit]: "upload-concurrent-limit",
@@ -99,6 +100,4 @@ export const RequestErrorMessage = {
     [RequestErrorCode.LoginGithubSuspended]: "login-github-suspended",
     [RequestErrorCode.LoginGithubURLMismatch]: "login-github-url-is-wrong",
     [RequestErrorCode.LoginGithubAccessDenied]: "login-github-access-denied",
-
-    [RequestErrorCode.SMSAlreadyBinding]: "phone-already-binding",
 };
