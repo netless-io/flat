@@ -225,6 +225,7 @@ export const InteractiveIcons: Story = ({ active }) => (
             "Download",
             "ModeInteractive",
             "Logout",
+            "Maximize",
         ]}
         title="Interactive Icons"
     />

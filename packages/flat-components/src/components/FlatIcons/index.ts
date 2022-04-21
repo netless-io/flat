@@ -79,6 +79,7 @@ export * from "./icons/SVGListLoading";
 export * from "./icons/SVGLoad";
 export * from "./icons/SVGLogout";
 export * from "./icons/SVGLoop";
+export * from "./icons/SVGMaximize";
 export * from "./icons/SVGMenuFold";
 export * from "./icons/SVGMenuUnfold";
 export * from "./icons/SVGMicrophone";
