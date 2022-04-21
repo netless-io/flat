@@ -4,7 +4,13 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from "rea
 import { constants } from "flat-types";
 import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
-import { LoginPanel, LoginButtonProviderType, LoginWithPhone } from "flat-components";
+import {
+    LoginPanel,
+    LoginButtonProviderType,
+    LoginWithPhone,
+    TopBar,
+    WindowsSystemBtnItem,
+} from "flat-components";
 import { githubLogin } from "./githubLogin";
 import WeChatLogin from "./WeChatLogin";
 import { googleLogin } from "./googleLogin";
@@ -103,9 +109,22 @@ export const LoginPage = observer(function LoginPage() {
     const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL_EN;
     const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL_EN;
 
+    const onClickWindowsSystemBtn = (winSystemBtn: WindowsSystemBtnItem): void => {
+        ipcAsyncByMainWindow("set-win-status", { windowStatus: winSystemBtn });
+    };
+
     // @TODO: Login with email.
     return (
         <div className="login-page-container">
+            <div className="login-page-top-bar">
+                {!runtime.isMac && (
+                    <TopBar
+                        hiddenMaximizeBtn={true}
+                        isMac={runtime.isMac}
+                        onClickWindowsSystemBtn={onClickWindowsSystemBtn}
+                    />
+                )}
+            </div>
             <LoginPanel>
                 <LoginWithPhone
                     buttons={[process.env.FLAT_REGION === "US" ? "google" : "wechat", "github"]}
