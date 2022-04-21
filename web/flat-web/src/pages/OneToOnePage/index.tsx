@@ -2,6 +2,7 @@ import "./OneToOnePage.less";
 
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import { RoomPhase } from "white-web-sdk";
@@ -39,8 +40,8 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
 import { runtime } from "../../utils/runtime";
-import { useTranslation } from "react-i18next";
 import { ShareScreen } from "../../components/ShareScreen";
+import { useLoginCheck } from "../utils/use-login-check";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Communication,
@@ -61,6 +62,8 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type OneToOnePageProps = {};
 
 export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() {
+    useLoginCheck();
+
     const { i18n, t } = useTranslation();
     const params = useParams<RouteParams<RouteNameType.OneToOnePage>>();
 

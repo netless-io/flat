@@ -3,6 +3,7 @@ import { message } from "antd";
 import { RoomPhase } from "white-web-sdk";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
     NetworkStatus,
     RoomInfo,
@@ -45,8 +46,8 @@ import "./SmallClassPage.less";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { runtime } from "../../utils/runtime";
 import { RtcChannelType } from "../../api-middleware/rtc/room";
-import { useTranslation } from "react-i18next";
 import { ShareScreen } from "../../components/ShareScreen";
+import { useLoginCheck } from "../utils/use-login-check";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -83,6 +84,7 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type SmallClassPageProps = {};
 
 export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassPage() {
+    useLoginCheck();
     const { i18n, t } = useTranslation();
     const params = useParams<RouteParams<RouteNameType.SmallClassPage>>();
 

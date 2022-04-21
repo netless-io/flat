@@ -14,6 +14,7 @@ import EditRoomPage from "../../components/EditRoomPage";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { periodicRoomInfo, updatePeriodicRoom } from "../../api-middleware/flatServer";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { useLoginCheck } from "../utils/use-login-check";
 
 /**
  * TODO: we forget set i18n in current file!!!
@@ -25,6 +26,8 @@ type ModifyPeriodicRoomPageProps = {
 
 export const ModifyPeriodicRoomPage = observer<ModifyPeriodicRoomPageProps>(
     function ModifyPeriodicRoomPage() {
+        useLoginCheck();
+
         const { periodicUUID } = useParams<RouteParams<RouteNameType.ModifyPeriodicRoomPage>>();
         const history = useHistory();
         const pushHistory = usePushHistory();

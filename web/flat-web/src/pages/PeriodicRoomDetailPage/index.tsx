@@ -6,15 +6,17 @@ import { useHistory, useParams } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 import { useLastLocation } from "react-router-last-location";
 import { LoadingPage, PeriodicRoomPanel } from "flat-components";
+import { useTranslation } from "react-i18next";
 import { PageStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { globalStore } from "../../stores/GlobalStore";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { cancelPeriodicRoom, cancelPeriodicSubRoom } from "../../api-middleware/flatServer";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
-import { useTranslation } from "react-i18next";
+import { useLoginCheck } from "../utils/use-login-check";
 
 export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPage() {
+    useLoginCheck();
     const { t } = useTranslation();
 
     const params = useParams<RouteParams<RouteNameType.PeriodicRoomDetailPage>>();

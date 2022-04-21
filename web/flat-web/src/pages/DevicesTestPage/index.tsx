@@ -13,12 +13,15 @@ import { GlobalStoreContext } from "../../components/StoreProvider";
 import { configStore } from "../../stores/config-store";
 import { FlatRTCContext } from "../../components/FlatRTCContext";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { useLoginCheck } from "../utils/use-login-check";
 
 export const DevicesTestPage = observer(function DeviceTestPage() {
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const rtc = useContext(FlatRTCContext);
     const sp = useSafePromise();
+
+    useLoginCheck();
 
     const { roomUUID } = useParams<RouteParams<RouteNameType.JoinPage>>();
 

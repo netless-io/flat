@@ -1,0 +1,58 @@
+import { useContext, useEffect, useState } from "react";
+import { RouteNameType, useReplaceHistory } from "../../utils/routes";
+import { GlobalStoreContext } from "../../components/StoreProvider";
+import { loginCheck } from "../../api-middleware/flatServer";
+import { errorTips } from "../../components/Tips/ErrorTips";
+import { NEED_BINDING_PHONE } from "../../constants/config";
+
+export function useLoginCheck(): boolean {
+    const replaceHistory = useReplaceHistory();
+    const globalStore = useContext(GlobalStoreContext);
+    const [isLogin, setIsLogin] = useState(false);
+
+    useEffect(() => {
+        let isUnMount = false;
+
+        async function checkLogin(): Promise<boolean> {
+            if (!globalStore.userInfo?.token) {
+                return false;
+            }
+
+            if (globalStore.lastLoginCheck) {
+                if (Date.now() - globalStore.lastLoginCheck < 2 * 60 * 60 * 1000) {
+                    return true;
+                }
+            }
+
+            try {
+                const result = await loginCheck();
+                globalStore.updateLastLoginCheck(Date.now());
+                return NEED_BINDING_PHONE ? result.hasPhone : true;
+            } catch (e) {
+                globalStore.updateLastLoginCheck(null);
+                console.error(e);
+                errorTips(e as Error);
+            }
+
+            return false;
+        }
+
+        void checkLogin().then(isLoggedIn => {
+            if (!isUnMount) {
+                if (isLoggedIn) {
+                    setIsLogin(true);
+                } else {
+                    replaceHistory(RouteNameType.LoginPage);
+                }
+            }
+        });
+
+        return () => {
+            isUnMount = true;
+        };
+        // Only check login once on start
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return isLogin;
+}

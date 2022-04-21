@@ -1,6 +1,10 @@
 import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { isBefore, addMinutes, roundToNearestMinutes, getDay, addWeeks } from "date-fns";
+import { EditRoomFormValues } from "flat-components";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+
 import { RoomType } from "../../api-middleware/flatServer/constants";
 import {
     ConfigStoreContext,
@@ -9,10 +13,8 @@ import {
 } from "../../components/StoreProvider";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import EditRoomPage from "../../components/EditRoomPage";
-import { useHistory } from "react-router-dom";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { EditRoomFormValues } from "flat-components";
-import { useTranslation } from "react-i18next";
+import { useLoginCheck } from "../utils/use-login-check";
 
 const getInitialBeginTime = (): Date => {
     const now = new Date();
@@ -26,6 +28,7 @@ const getInitialBeginTime = (): Date => {
 };
 
 export const UserScheduledPage = observer(function UserScheduledPage() {
+    useLoginCheck();
     const { t } = useTranslation();
     const history = useHistory();
     const sp = useSafePromise();
