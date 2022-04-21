@@ -28,7 +28,7 @@ export class WindowShareScreenTip extends AbstractWindow<false> {
                 ...constants.PageSize.ShareScreenTip,
                 frame: false,
                 // in order to hidden macOS window button, here need to override the titleBarStyle.
-                // cc: https://www.electronjs.org/docs/latest/tutorial/window-customization#show-and-hide-the-traffic-lights-programmatically-macos
+                // see: https://www.electronjs.org/docs/latest/tutorial/window-customization#show-and-hide-the-traffic-lights-programmatically-macos
                 titleBarStyle: "default",
             },
         );

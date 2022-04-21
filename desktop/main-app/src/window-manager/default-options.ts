@@ -13,7 +13,9 @@ export const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
     fullscreenable: false,
     maximizable: false,
     autoHideMenuBar: true,
-    // remove frame options after upgrade new version of the Electron.
+    // hidden title bar feature in low version of the Electron not work when the titleBarStyle attributes value is hidden,
+    // but this bug was fixed in new version.
+    // @TODO: remove frame options after upgrade new version of the Electron.
     frame: runtime.isMac,
     titleBarStyle: "hidden",
     webPreferences: {
