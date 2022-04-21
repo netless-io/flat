@@ -6,6 +6,18 @@
     flex-direction: column;
 }
 
+.replay-top-bar {
+    -webkit-app-region: drag;
+
+    position: absolute;
+    height: 40px;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 2;
+    background-color: #fff;
+}
+
 .replay-content {
     flex: 1;
     display: flex;
@@ -140,5 +152,8 @@
     .ui-video-seek-slider .track .main .connect,
     .ui-video-seek-slider .thumb .handler {
         background-color: var(--primary);
+    }
+    .replay-top-bar {
+        background-color: var(--grey-10);
     }
 }
