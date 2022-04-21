@@ -1,17 +1,36 @@
-.main-layout-container {
+.main-page-layout {
     width: 100%;
     height: 100%;
-    display: flex;
 }
 
-.main-layout-container-content {
+.main-page-layout-main {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-page-layout-content {
+    flex: 1;
+}
+
+.main-page-layout-inner {
     flex: 1;
     padding: 16px;
     background-color: var(--grey-0);
 }
 
+.main-page-layout--spilt {
+    display: flex;
+    > *:nth-child(2) {
+       flex: 1;
+    }
+}
+
 .flat-color-scheme-dark {
     .main-layout-container-content {
+        background-color: var(--grey-12);
+    }
+
+    .main-page-layout-inner {
         background-color: var(--grey-12);
     }
 }

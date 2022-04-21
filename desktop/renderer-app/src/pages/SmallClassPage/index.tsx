@@ -22,6 +22,7 @@ import {
     SVGMenuUnfold,
     SVGModeLecture,
     SVGModeInteractive,
+    WindowsSystemBtnItem,
 } from "flat-components";
 
 import InviteButton from "../../components/InviteButton";
@@ -50,6 +51,7 @@ import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
+import { ipcAsyncByMainWindow } from "../../utils/ipc";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -159,42 +161,52 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         }
     }
 
+    const onClickWindowsSystemBtn = (winSystemBtn: WindowsSystemBtnItem): void => {
+        ipcAsyncByMainWindow("set-win-status", { windowStatus: winSystemBtn });
+    };
+
     return (
-        <div className="small-class-realtime-container">
-            {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
-            <div className="small-class-realtime-box">
-                <TopBar
-                    center={renderTopBarCenter()}
-                    isMac={runtime.isMac}
-                    left={renderTopBarLeft()}
-                    right={renderTopBarRight()}
-                />
-                {renderAvatars()}
-                <div className="small-class-realtime-content">
-                    <div className="small-class-realtime-content-container">
-                        <ShareScreen shareScreenStore={shareScreenStore} />
-                        <ShareScreenPicker
-                            handleOk={() => {
-                                shareScreenStore.enable();
-                            }}
-                            shareScreenStore={shareScreenStore}
-                        />
-                        <Whiteboard
-                            classRoomStore={classRoomStore}
-                            disableHandRaising={
-                                classRoomStore.classMode === ClassModeType.Interaction
-                            }
-                            whiteboardStore={whiteboardStore}
-                        />
+        <div className="small-class-page-container">
+            <div className="small-class-realtime-container">
+                {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
+                <div className="small-class-realtime-box">
+                    <TopBar
+                        center={renderTopBarCenter()}
+                        isMac={runtime.isMac}
+                        left={renderTopBarLeft()}
+                        right={renderTopBarRight()}
+                        onClickWindowsSystemBtn={onClickWindowsSystemBtn}
+                    />
+                    {renderAvatars()}
+                    <div className="small-class-realtime-content">
+                        <div className="small-class-realtime-content-container">
+                            <ShareScreen shareScreenStore={shareScreenStore} />
+                            <ShareScreenPicker
+                                handleOk={() => {
+                                    shareScreenStore.enable();
+                                }}
+                                shareScreenStore={shareScreenStore}
+                            />
+                            <Whiteboard
+                                classRoomStore={classRoomStore}
+                                disableHandRaising={
+                                    classRoomStore.classMode === ClassModeType.Interaction
+                                }
+                                whiteboardStore={whiteboardStore}
+                            />
+                        </div>
+                        {renderRealtimePanel()}
                     </div>
-                    {renderRealtimePanel()}
+                    <ExitRoomConfirm
+                        isCreator={classRoomStore.isCreator}
+                        {...exitConfirmModalProps}
+                    />
+                    <RoomStatusStoppedModal
+                        isCreator={classRoomStore.isCreator}
+                        isRemoteLogin={classRoomStore.isRemoteLogin}
+                        roomStatus={classRoomStore.roomStatus}
+                    />
                 </div>
-                <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
-                <RoomStatusStoppedModal
-                    isCreator={classRoomStore.isCreator}
-                    isRemoteLogin={classRoomStore.isRemoteLogin}
-                    roomStatus={classRoomStore.roomStatus}
-                />
             </div>
         </div>
     );
@@ -302,12 +314,14 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 {/* TODO: open cloud-storage sub window */}
                 <CloudStorageButton classroom={classRoomStore} />
                 <InviteButton roomInfo={classRoomStore.roomInfo} />
-                <TopBarRightBtn
-                    icon={<SVGExit />}
-                    title={t("exit")}
-                    onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
-                />
-                <TopBarDivider />
+                {runtime.isMac && (
+                    <TopBarRightBtn
+                        icon={<SVGExit />}
+                        title={t("exit")}
+                        onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
+                    />
+                )}
+                {runtime.isMac && <TopBarDivider />}
                 <TopBarRightBtn
                     icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                     title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
@@ -316,6 +330,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         whiteboardStore.setRightSideClose(isRealtimeSideOpen);
                     }}
                 />
+                {runtime.isMac && <TopBarDivider />}
             </>
         );
     }

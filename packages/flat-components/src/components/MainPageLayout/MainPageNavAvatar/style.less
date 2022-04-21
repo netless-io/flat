@@ -4,6 +4,19 @@
 }
 
 .main-page-nav-popover {
+
+    &.ant-popover{
+        top: 41px !important;
+    }
+
+    &.ant-popover-placement-bottomLeft {
+        padding-top: 0;
+    }
+
+    &.ant-popover-placement-bottomRight {
+        padding-top: 0;
+    }
+    
     .ant-popover-title {
         min-width: 164px;
         border-bottom: none;
@@ -13,16 +26,9 @@
         border-radius: 8px;
     }
 
-    &.ant-popover-placement-bottomLeft {
-        padding-top: 0;
-    }
 
     .ant-popover-arrow {
-        border-top-color: transparent !important;
-        border-right-color: transparent !important;
-        border-bottom-color: transparent !important;
-        border-left-color: transparent !important;
-        box-shadow: none !important;
+        display: none;
     }
 }
 
@@ -63,6 +69,7 @@
 }
 
 .main-page-pop-menu-item-icon {
+    display: flex;
     margin-right: 8px;
 }
 

@@ -18,7 +18,7 @@ export const SVGHomeFilled: React.FC<FlatIconProps> = ({
             {...restProps}
         >
             <path
-                className="flat-icon-stroke-color"
+                className="flat-icon-stroke-color flat-icon-fill-color"
                 clipRule="evenodd"
                 d="m4 9 8-5 8 5h-2v11h-4v-6h-4v6H6V9H4Z"
                 fill="#5D6066"

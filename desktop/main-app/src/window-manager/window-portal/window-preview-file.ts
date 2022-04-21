@@ -21,6 +21,10 @@ export class WindowPreviewFile extends AbstractWindow<true> {
                 resizable: true,
                 // @ts-ignore
                 webContents: options.webContents,
+                // Multi-Window feature methods is too hack that not support communication events between Renderer and Main
+                // so that using default title bar style in here.
+                frame: true,
+                titleBarStyle: "default",
             },
         );
     }

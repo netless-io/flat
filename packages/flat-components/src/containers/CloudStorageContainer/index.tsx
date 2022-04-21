@@ -113,7 +113,7 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                 const scrollViewContentHeight = cloudStorageContainerRef.current.scrollHeight;
 
                 setIsAtTheBottom(
-                    scrollViewOffsetY + scrollViewFrameHeight >= scrollViewContentHeight,
+                    Math.ceil(scrollViewOffsetY + scrollViewFrameHeight) >= scrollViewContentHeight,
                 );
             }
         };

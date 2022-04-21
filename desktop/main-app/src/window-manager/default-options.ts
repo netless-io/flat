@@ -1,5 +1,6 @@
 import { BrowserWindowConstructorOptions } from "electron";
 import { constants } from "flat-types";
+import runtime from "../utils/runtime";
 
 export const defaultWindowOptions: Pick<WindowOptions, "disableClose" | "isOpenDevTools"> = {
     disableClose: false,
@@ -12,6 +13,11 @@ export const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
     fullscreenable: false,
     maximizable: false,
     autoHideMenuBar: true,
+    // hidden title bar feature in low version of the Electron not work when the titleBarStyle attributes value is hidden,
+    // but this bug was fixed in new version.
+    // @TODO: remove frame options after upgrade new version of the Electron.
+    frame: runtime.isMac,
+    titleBarStyle: "hidden",
     webPreferences: {
         autoplayPolicy: "no-user-gesture-required",
         // TODO: set nodeIntegration: false

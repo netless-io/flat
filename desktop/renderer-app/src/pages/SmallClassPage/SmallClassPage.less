@@ -1,12 +1,26 @@
+.small-class-page-container {
+    // PATCH: low version Electron bug
+    // if a element location on the window edge that has drag attributes and the frames of BrowserWindow options is false,
+    // then this window can't to resize size of window.
+    // so that wrap draggable elements and add padding property to achieve resize feature.
+    // TODO: upgrade new version of the Electron after remove the PATCH.
+    height: 100%;
+    padding: 0.5px;
+}
+
 .small-class-realtime-container {
+    -webkit-app-region: drag;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100%;
     background: #edeff2;
 }
 
 .small-class-realtime-box {
+    -webkit-app-region: no-drag;
+
     display: flex;
     overflow: hidden;
     flex-direction: column;

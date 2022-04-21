@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps, useParams, useHistory } from "react-router-dom";
-import { ErrorPage, LoadingPage } from "flat-components";
+import { ErrorPage, LoadingPage, TopBar, WindowsSystemBtnItem } from "flat-components";
 import PlayerController from "@netless/player-controller";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
 import { RealtimePanel } from "../../components/RealtimePanel";
@@ -18,6 +18,8 @@ import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
+import { runtime } from "../../utils/runtime";
+import { roomStore } from "../../stores/room-store";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;
@@ -51,6 +53,8 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         params.ownerUUID,
         params.roomType,
     );
+
+    const roomInfo = roomStore.rooms.get(params.roomUUID);
 
     const [isShowController, setShowController] = useState(false);
     const hideControllerTimeoutRef = useRef<number>();
@@ -96,8 +100,25 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         history.goBack();
     };
 
+    const onClickWindowsSystemBtn = (winSystemBtn: WindowsSystemBtnItem): void => {
+        ipcAsyncByMainWindow("set-win-status", { windowStatus: winSystemBtn });
+    };
+
+    function renderTopBarLeft(): React.ReactNode {
+        return <div className="replay-top-bar-title">{roomInfo?.title}</div>;
+    }
+
     return (
         <div className="replay-container">
+            <div className="replay-top-bar">
+                {!runtime.isMac && (
+                    <TopBar
+                        isMac={runtime.isMac}
+                        left={renderTopBarLeft()}
+                        onClickWindowsSystemBtn={onClickWindowsSystemBtn}
+                    />
+                )}
+            </div>
             {classRoomReplayStore.roomType === RoomType.SmallClass && renderSmallClassAvatars()}
             <div className="replay-content">
                 {renderWhiteboard()}

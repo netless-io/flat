@@ -2,9 +2,8 @@ import "./style.less";
 import React from "react";
 import classNames from "classnames";
 import { MainPageLayoutItem } from "../types";
-import { MainPageNavAvatar, MainPageNavAvatarProps } from "../MainPageNavAvatar";
 
-export interface MainPageNavProps extends MainPageNavAvatarProps {
+export interface MainPageNavProps {
     /** when an item is clicked */
     onClick: (mainPageLayoutItem: MainPageLayoutItem) => void;
     /** a list of keys to highlight the items */
@@ -13,32 +12,16 @@ export interface MainPageNavProps extends MainPageNavAvatarProps {
     sideMenu: MainPageLayoutItem[];
     /** outside footer menu in MainPageLayout */
     sideMenuFooter: MainPageLayoutItem[];
-    /** function to generate placeholder avatar */
-    generateAvatar: (uid: string) => string;
 }
 
 export const MainPageNav: React.FC<MainPageNavProps> = ({
-    avatarSrc,
-    userName,
     onClick,
     activeKeys,
     sideMenu,
     sideMenuFooter,
-    generateAvatar,
-    popMenu,
 }) => {
     return (
         <div className="main-page-nav-container">
-            <div className="main-page-nav-header">
-                <MainPageNavAvatar
-                    activeKeys={activeKeys}
-                    avatarSrc={avatarSrc}
-                    generateAvatar={generateAvatar}
-                    popMenu={popMenu}
-                    userName={userName}
-                    onClick={onClick}
-                />
-            </div>
             <div className="main-page-nav-content">
                 {sideMenu.map(menuItem => {
                     return (

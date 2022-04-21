@@ -1,24 +1,32 @@
 /* eslint react/display-name: off */
-import homeSVG from "./icons/home.svg";
-import homeActiveSVG from "./icons/home-active.svg";
-import diskSVG from "./icons/disk.svg";
-import diskActiveSVG from "./icons/disk-active.svg";
-import deviceSVG from "./icons/device.svg";
-import deviceActiveSVG from "./icons/device-active.svg";
-import settingSVG from "./icons/setting.svg";
-import gitHubSVG from "./icons/github.svg";
-import feedbackSVG from "./icons/feedback.svg";
-import logoutSVG from "./icons/logout.svg";
 import "./index.less";
 
 import React, { useContext } from "react";
 import { shell } from "electron";
 import { useHistory, useLocation } from "react-router-dom";
-import { MainPageLayout, MainPageLayoutItem, MainPageLayoutProps } from "flat-components";
+import {
+    MainPageLayout,
+    MainPageLayoutItem,
+    MainPageTopBarMenuItem,
+    MainPageLayoutProps,
+    SVGGithub,
+    SVGHomeFilled,
+    SVGHomeOutlined,
+    SVGCloudFilled,
+    SVGCloudOutlined,
+    SVGTest,
+    SVGTestFilled,
+    SVGSetting,
+    SVGFeedback,
+    SVGLogout,
+    WindowsSystemBtnItem,
+} from "flat-components";
 import { useTranslation } from "react-i18next";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
 import { generateAvatar } from "../../utils/generate-avatar";
+import { ipcAsyncByMainWindow } from "../../utils/ipc";
+import { runtime } from "../../utils/runtime";
 
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];
@@ -36,55 +44,49 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
     const sideMenu = [
         {
             key: routeConfig[RouteNameType.HomePage].path,
-            icon: (active: boolean): React.ReactNode => (
-                <img src={active ? homeActiveSVG : homeSVG} />
-            ),
             title: "home",
             route: routeConfig[RouteNameType.HomePage].path,
+            icon: (active: boolean): React.ReactNode => {
+                return active ? <SVGHomeFilled /> : <SVGHomeOutlined />;
+            },
         },
         {
             key: routeConfig[RouteNameType.CloudStoragePage].path,
-            icon: (active: boolean): React.ReactNode => (
-                <img src={active ? diskActiveSVG : diskSVG} />
-            ),
             title: "cloudStorage",
             route: routeConfig[RouteNameType.CloudStoragePage].path,
+            icon: (active: boolean): React.ReactNode => {
+                return active ? <SVGCloudFilled /> : <SVGCloudOutlined />;
+            },
         },
     ];
 
     const sideMenuFooter = [
         {
             key: "deviceCheck",
-            icon: (active: boolean): React.ReactNode => (
-                <img src={active ? deviceActiveSVG : deviceSVG} />
-            ),
             title: "deviceCheck",
             route: routeConfig[RouteNameType.SystemCheckPage].path,
+            icon: (active: boolean): React.ReactNode => {
+                return active ? <SVGTestFilled /> : <SVGTest />;
+            },
         },
     ];
 
     const popMenu = [
         {
             key: routeConfig[RouteNameType.GeneralSettingPage].path,
-            icon: (): React.ReactNode => <img src={settingSVG} />,
+            icon: (): React.ReactNode => <SVGSetting />,
             title: t("settings"),
             route: routeConfig[RouteNameType.GeneralSettingPage].path,
         },
         {
-            key: "getGitHubCode",
-            icon: (): React.ReactNode => <img src={gitHubSVG} />,
-            title: t("source-code"),
-            route: "https://github.com/netless-io/flat/",
-        },
-        {
             key: "feedback",
-            icon: (): React.ReactNode => <img src={feedbackSVG} />,
+            icon: (): React.ReactNode => <SVGFeedback />,
             title: t("feedback"),
             route: "https://github.com/netless-io/flat/issues",
         },
         {
             key: "logout",
-            icon: (): React.ReactNode => <img src={logoutSVG} />,
+            icon: (): React.ReactNode => <SVGLogout />,
             title: <span className="logout-title">{t("logout")}</span>,
             route: routeConfig[RouteNameType.LoginPage].path,
         },
@@ -112,17 +114,37 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
         }
     };
 
+    const topBarMenu = [
+        {
+            key: "github",
+            icon: <SVGGithub />,
+            route: "https://github.com/netless-io/flat/",
+        },
+    ];
+
+    const onClickTopBarMenu = (mainPageTopBarMenuItem: MainPageTopBarMenuItem): void => {
+        void shell.openExternal(mainPageTopBarMenuItem.route);
+    };
+
+    const onClickWindowsSystemBtn = (winSystemBtn: WindowsSystemBtnItem): void => {
+        ipcAsyncByMainWindow("set-win-status", { windowStatus: winSystemBtn });
+    };
+
     return (
         <MainPageLayout
             activeKeys={activeKeys}
             avatarSrc={globalStore.userInfo?.avatar ?? ""}
             generateAvatar={generateAvatar}
+            isWin={runtime.isWin}
             popMenu={popMenu}
             sideMenu={sideMenu}
             sideMenuFooter={sideMenuFooter}
             subMenu={subMenu}
+            topBarMenu={topBarMenu}
             userName={globalStore.userInfo?.name ?? ""}
             onClick={onMenuItemClick}
+            onClickTopBarMenu={onClickTopBarMenu}
+            onClickWindowsSystemBtn={onClickWindowsSystemBtn}
         >
             {children}
         </MainPageLayout>

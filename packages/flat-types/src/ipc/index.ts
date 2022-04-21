@@ -1,6 +1,6 @@
 import type { Type as RuntimeType } from "../runtime";
 import type { UpdateCheckInfo, PrereleaseTag } from "../update";
-import { WindowsName } from "../constants";
+import { WindowsName, WindowStatus } from "../constants";
 
 export type WindowActionAsync = {
     "set-win-size": (args: {
@@ -21,6 +21,7 @@ export type WindowActionAsync = {
     "set-title": (args: { title: string }) => void;
     "force-close-window": (args: {}) => void;
     "set-visual-zoom-level": (args: { minimumLevel: number; maximumLevel: number }) => void;
+    "set-win-status": (args: { windowStatus: WindowStatus }) => void;
 };
 
 export type AppActionAsync = {

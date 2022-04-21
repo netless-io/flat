@@ -1,0 +1,29 @@
+.windows-system-btn {
+    display: flex;
+    align-items: center;
+}
+
+.windows-system-btn-item {
+    -webkit-app-region: no-drag;
+
+    display: flex;
+    margin-right: 5px;
+    padding: 4px;
+    border-radius: 8px;
+    cursor: unset;
+
+    &:hover {
+        background-color: var(--blue-1);
+    }
+}
+
+.flat-color-scheme-dark {
+    .windows-system-btn {
+        background-color: var(--grey-10);
+    }
+
+  .windows-system-btn-item:hover {
+        background-color: var(--grey-11);
+  }  
+}
+

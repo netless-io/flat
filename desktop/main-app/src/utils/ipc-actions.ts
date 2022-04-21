@@ -83,6 +83,29 @@ const windowActionAsync = (customWindow: CustomWindow): ipc.WindowActionAsync =>
                 .setVisualZoomLevelLimits(args.minimumLevel, args.maximumLevel)
                 .catch(console.error);
         },
+        "set-win-status": args => {
+            switch (args.windowStatus) {
+                case "minimize": {
+                    window.minimize();
+                    break;
+                }
+                case "maximize": {
+                    if (window.isMaximized()) {
+                        window.unmaximize();
+                    } else {
+                        window.maximize();
+                    }
+                    break;
+                }
+                case "close": {
+                    window.close();
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        },
     };
 };
 

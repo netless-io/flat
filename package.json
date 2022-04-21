@@ -87,6 +87,9 @@
         "react-dom": "^17",
         "webpack": "^5"
       }
+    },
+    "overrides": {
+      "@types/eslint": "^8"
     }
   }
 }

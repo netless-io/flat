@@ -2,15 +2,23 @@
 import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
 import { MainPageLayout, MainPageLayoutProps } from ".";
-import {
-    CloudFilled,
-    CloudOutlined,
-    HomeFilled,
-    HomeOutlined,
-    ToolFilled,
-    ToolOutlined,
-} from "@ant-design/icons";
+
 import faker from "faker";
+
+import {
+    SVGCamera,
+    SVGCloudFilled,
+    SVGCloudOutlined,
+    SVGGithub,
+    SVGHomeFilled,
+    SVGHomeOutlined,
+    SVGMicrophone,
+    SVGSetting,
+    SVGSound,
+    SVGSystem,
+    SVGTest,
+    SVGTestFilled,
+} from "../FlatIcons";
 
 const storyMeta: Meta = {
     title: "MainPageLayout/MainPageLayout",
@@ -18,8 +26,6 @@ const storyMeta: Meta = {
 };
 
 export default storyMeta;
-
-const sideMenuStyles: React.CSSProperties = { fontSize: 25 };
 
 /**
  * TODO: we forget set i18n in current file!!!
@@ -34,23 +40,13 @@ Overview.args = {
     sideMenu: [
         {
             key: "home",
-            icon: active =>
-                active ? (
-                    <HomeFilled style={sideMenuStyles} />
-                ) : (
-                    <HomeOutlined style={sideMenuStyles} />
-                ),
+            icon: active => (active ? <SVGHomeFilled /> : <SVGHomeOutlined />),
             title: "home",
             route: "/home",
         },
         {
             key: "cloudStorage",
-            icon: active =>
-                active ? (
-                    <CloudFilled style={sideMenuStyles} />
-                ) : (
-                    <CloudOutlined style={sideMenuStyles} />
-                ),
+            icon: active => (active ? <SVGCloudFilled /> : <SVGCloudOutlined />),
             title: "cloudStorage",
             route: "/cloudStorage",
         },
@@ -58,12 +54,7 @@ Overview.args = {
     sideMenuFooter: [
         {
             key: "deviceCheck",
-            icon: active =>
-                active ? (
-                    <ToolFilled style={sideMenuStyles} />
-                ) : (
-                    <ToolOutlined style={sideMenuStyles} />
-                ),
+            icon: active => (active ? <SVGTestFilled /> : <SVGTest />),
             title: "deviceCheck",
             route: "/deviceCheck",
         },
@@ -71,19 +62,19 @@ Overview.args = {
     popMenu: [
         {
             key: "userConfig",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGSetting />,
             title: "个人设置",
             route: "/config",
         },
         {
             key: "getGitHubCode",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGGithub />,
             title: "获取源码",
             route: "/github",
         },
         {
             key: "logout",
-            icon: () => <CloudOutlined className="red" />,
+            icon: () => <SVGGithub className="red" />,
             title: <span className="red">退出登录</span>,
             route: "/logout",
         },
@@ -92,6 +83,10 @@ Overview.args = {
     avatarSrc: "http://placekitten.com/200/200",
     children: <div>content</div>,
     userName: "Flat Name",
+    topBarMenu: [
+        { key: "github", icon: <SVGGithub />, route: "/github" },
+        { key: "home", icon: <SVGHomeOutlined />, route: "/home" },
+    ],
 };
 Overview.argTypes = {
     activeKeys: {
@@ -112,25 +107,25 @@ WithSubMenu.args = {
     subMenu: [
         {
             key: "systemTesting",
-            icon: () => <ToolOutlined />,
+            icon: () => <SVGSystem />,
             title: "系统检测",
             route: "/device/system",
         },
         {
             key: "cameraTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGCamera />,
             title: "摄像头检测",
             route: "/device/camera",
         },
         {
             key: "speakerTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGSound />,
             title: "扬声器检测",
             route: "/device/speaker",
         },
         {
             key: "microphoneTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGMicrophone />,
             title: "麦克风检测",
             route: "/device/microphone",
         },
@@ -154,25 +149,25 @@ LongContent.args = {
     subMenu: [
         {
             key: "systemTesting",
-            icon: () => <ToolOutlined />,
+            icon: () => <SVGSystem />,
             title: "系统检测",
             route: "/device/system",
         },
         {
             key: "cameraTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGCamera />,
             title: "摄像头检测",
             route: "/device/camera",
         },
         {
             key: "speakerTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGSound />,
             title: "扬声器检测",
             route: "/device/speaker",
         },
         {
             key: "microphoneTesting",
-            icon: () => <CloudOutlined />,
+            icon: () => <SVGMicrophone />,
             title: "麦克风检测",
             route: "/device/microphone",
         },

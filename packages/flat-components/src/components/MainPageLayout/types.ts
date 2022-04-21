@@ -6,3 +6,11 @@ export interface MainPageLayoutItem {
     title: React.ReactNode;
     route: string;
 }
+
+export interface MainPageTopBarMenuItem {
+    key: string;
+    route: string;
+    icon: React.ReactNode;
+}
+
+export type WindowsSystemBtnItem = "minimize" | "maximize" | "close";

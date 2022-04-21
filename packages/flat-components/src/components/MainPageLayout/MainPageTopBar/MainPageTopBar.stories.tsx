@@ -1,13 +1,13 @@
 /* eslint react/display-name: off */
 import { Meta, Story } from "@storybook/react";
 import React, { PropsWithChildren } from "react";
-import { MainPageNavAvatar, MainPageNavAvatarProps } from ".";
+import { MainPageTopBar, MainPageTopBarProps } from ".";
 
-import { SVGGithub, SVGSetting } from "../../FlatIcons";
+import { SVGGithub, SVGHomeOutlined, SVGSetting } from "../../FlatIcons";
 
 const storyMeta: Meta = {
-    title: "MainPageLayout/MainPageNavAvatar",
-    component: MainPageNavAvatar,
+    title: "MainPageLayout/MainPageTopBar",
+    component: MainPageTopBar,
     parameters: {
         layout: "fullscreen",
     },
@@ -19,9 +19,9 @@ export default storyMeta;
  * TODO: we forget set i18n in current file!!!
  */
 
-export const Overview: Story<PropsWithChildren<MainPageNavAvatarProps>> = args => (
+export const Overview: Story<PropsWithChildren<MainPageTopBarProps>> = args => (
     <div className="vh-100 pa3">
-        <MainPageNavAvatar {...args} />
+        <MainPageTopBar {...args} />
     </div>
 );
 Overview.args = {
@@ -45,10 +45,14 @@ Overview.args = {
             route: "/logout",
         },
     ],
+    children: <SVGGithub />,
+    topBarMenu: [
+        { key: "github", icon: <SVGGithub />, route: "/github" },
+        { key: "home", icon: <SVGHomeOutlined />, route: "/home" },
+    ],
     activeKeys: ["home"],
     avatarSrc: "http://placekitten.com/200/200",
-    userName: "Flat Name",
-    generateAvatar: () => "http://placekitten.com/64/64",
+    userName: "Test ultra long user name",
 };
 Overview.argTypes = {
     activeKeys: {

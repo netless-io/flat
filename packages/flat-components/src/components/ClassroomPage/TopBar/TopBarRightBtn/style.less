@@ -1,8 +1,10 @@
-@topbar-icon-width: 22px;
+@topbar-icon-width: 24px;
 @topbar-right-btn-width: 32px;
 @topbar-right-btn-gap: 16px;
 
 .topbar-right-btn {
+    -webkit-app-region: no-drag;
+
     display: block;
     width: @topbar-right-btn-width;
     height: @topbar-right-btn-width;
@@ -16,15 +18,15 @@
                         (@topbar-right-btn-width - @topbar-icon-width)
                 ) / 2
         );
-    padding: 0;
+    padding: 4px;
     cursor: pointer;
     background-color: white;
     border: none;
     outline: none;
-    border-radius: 2px;
+    border-radius: 8px;
 
     &:hover {
-        background: rgba(33, 35, 36, 0.1);
+        background-color: var(--blue-1);
     }
 }
 
@@ -33,7 +35,7 @@
         background-color: var(--grey-10);
 
         &:hover {
-            background-color: var(--grey-8);
+            background-color: var(--grey-11);
         }
 
         &:active {

@@ -19,7 +19,7 @@ export const MainPageSubMenu: React.FC<MainPageSubMenuProps> = ({
     activeKeys,
 }) => {
     return (
-        <div className="main-layout-sub-menu-container">
+        <div className="main-layout-sub-menu">
             <ul>
                 {subMenu.map(menuItem => {
                     return (
