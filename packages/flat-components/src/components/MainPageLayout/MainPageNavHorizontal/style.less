@@ -6,15 +6,16 @@
 .main-page-nav-horizontal-content {
     display: flex;
     justify-content: space-between;
-    height: 50px;
+    height: 40px;
     max-width: 960px;
     margin: 0 auto;
 }
 
 .main-page-nav-horizontal-left {
     .ant-tabs-tab {
-        font-size: 16px;
+        font-size: 14px;
         color: var(--text);
+        padding: 8px 0;
     }
 
     .ant-tabs-nav::before {
@@ -26,6 +27,16 @@
         visibility: hidden !important;
         pointer-events: none !important;
     }
+}
+
+.main-page-nav-horizontal-left-menu-item {
+    display: flex;
+    align-items: center;
+}
+
+.main-page-nav-horizontal-left-menu-item-icon {
+    display: flex;
+    padding-right: 6px;
 }
 
 .main-page-nav-horizontal-right {

@@ -10,6 +10,8 @@
 }
 
 .main-page-top-bar-left {
+    -webkit-app-region: no-drag;
+
     display: flex;
     align-items: center;
 }
@@ -36,6 +38,8 @@
 }
 
 .main-page-top-bar-menu {
+    -webkit-app-region: no-drag;
+
     display: flex;
     margin-right: 5px;
     padding: 4px;
@@ -46,6 +50,15 @@
         background-color: var(--blue-1);
     }
 }
+
+.main-page-top-bar-divider {
+    width: 1px;
+    height: 20px;
+    margin-left: 11px;
+    margin-right: 16px;
+    background-color: var(--grey-1);
+}
+
 
 .flat-color-scheme-dark {
     .main-page-top-bar-container {
@@ -59,5 +72,9 @@
 
     .main-page-top-bar-menu:hover {
         background-color: var(--grey-11);
+    }
+
+    .main-page-top-bar-divider {
+        background-color: var(--grey-8);
     }
 }

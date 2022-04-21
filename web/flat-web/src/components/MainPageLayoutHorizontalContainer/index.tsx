@@ -36,13 +36,17 @@ export const MainPageLayoutHorizontalContainer: React.FC<
     const leftMenu = [
         {
             key: routeConfig[RouteNameType.HomePage].path,
-            icon: (): React.ReactNode => <></>,
+            icon: (active: boolean): React.ReactNode => {
+                return active ? <SVGHomeFilled active={active} /> : <SVGHomeOutlined />;
+            },
             title: t("home"),
             route: routeConfig[RouteNameType.HomePage].path,
         },
         {
             key: routeConfig[RouteNameType.CloudStoragePage].path,
-            icon: (): React.ReactNode => <></>,
+            icon: (active: boolean): React.ReactNode => {
+                return active ? <SVGCloudFilled active={active} /> : <SVGCloudOutlined />;
+            },
             title: t("cloud-storage"),
             route: routeConfig[RouteNameType.CloudStoragePage].path,
         },
@@ -51,17 +55,20 @@ export const MainPageLayoutHorizontalContainer: React.FC<
     const rightMenu: MainPageLayoutItem[] = [
         {
             key: "download",
-
+            icon: (): React.ReactNode => <SVGDownload />,
+            title: <></>,
             route: FLAT_DOWNLOAD_URL,
         },
         {
             key: "getGitHubCode",
-
+            icon: (): React.ReactNode => <SVGGithub />,
+            title: <></>,
             route: "https://github.com/netless-io/flat/",
         },
         {
             key: routeConfig[RouteNameType.GeneralSettingPage].path,
-
+            icon: (): React.ReactNode => <SVGSetting />,
+            title: <></>,
             route: routeConfig[RouteNameType.GeneralSettingPage].path,
         },
     ];

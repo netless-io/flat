@@ -60,7 +60,23 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
                             }}
                         >
                             {leftMenu.map(menuItem => {
-                                return <TabPane key={menuItem.key} tab={menuItem.title}></TabPane>;
+                                return (
+                                    <TabPane
+                                        key={menuItem.key}
+                                        tab={
+                                            <div className="main-page-nav-horizontal-left-menu-item">
+                                                <div className="main-page-nav-horizontal-left-menu-item-icon">
+                                                    {menuItem.icon(
+                                                        activeKeys.includes(menuItem.key),
+                                                    )}
+                                                </div>
+                                                {menuItem.title}
+                                            </div>
+                                        }
+                                    >
+                                        1
+                                    </TabPane>
+                                );
                             })}
                         </Tabs>
                     )}

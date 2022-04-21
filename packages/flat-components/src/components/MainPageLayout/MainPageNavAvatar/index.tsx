@@ -49,7 +49,7 @@ export const MainPageNavAvatar: React.FC<MainPageNavAvatarProps> = ({
             <Avatar
                 className="main-page-nav-avatar"
                 icon={<img src={avatar} onError={() => setAvatarLoadFailed(true)} />}
-                size={32}
+                size={24}
             />
         </Popover>
     );

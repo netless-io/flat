@@ -19,11 +19,14 @@ import {
     SVGSetting,
     SVGFeedback,
     SVGLogout,
+    WindowsSystemBtnItem,
 } from "flat-components";
 import { useTranslation } from "react-i18next";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
 import { generateAvatar } from "../../utils/generate-avatar";
+import { ipcAsyncByMainWindow } from "../../utils/ipc";
+import { runtime } from "../../utils/runtime";
 
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];
@@ -41,30 +44,30 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
     const sideMenu = [
         {
             key: routeConfig[RouteNameType.HomePage].path,
-            icon: (active: boolean): React.ReactNode => (
-                <img src={active ? homeActiveSVG : homeSVG} />
-            ),
             title: "home",
             route: routeConfig[RouteNameType.HomePage].path,
+            icon: (active: boolean): React.ReactNode => {
+                return active ? <SVGHomeFilled /> : <SVGHomeOutlined />;
+            },
         },
         {
             key: routeConfig[RouteNameType.CloudStoragePage].path,
-            icon: (active: boolean): React.ReactNode => (
-                <img src={active ? diskActiveSVG : diskSVG} />
-            ),
             title: "cloudStorage",
             route: routeConfig[RouteNameType.CloudStoragePage].path,
+            icon: (active: boolean): React.ReactNode => {
+                return active ? <SVGCloudFilled /> : <SVGCloudOutlined />;
+            },
         },
     ];
 
     const sideMenuFooter = [
         {
             key: "deviceCheck",
-            icon: (active: boolean): React.ReactNode => (
-                <img src={active ? deviceActiveSVG : deviceSVG} />
-            ),
             title: "deviceCheck",
             route: routeConfig[RouteNameType.SystemCheckPage].path,
+            icon: (active: boolean): React.ReactNode => {
+                return active ? <SVGTestFilled /> : <SVGTest />;
+            },
         },
     ];
 
@@ -111,17 +114,37 @@ export const MainPageLayoutContainer: React.FC<MainPageLayoutContainerProps> = (
         }
     };
 
+    const topBarMenu = [
+        {
+            key: "github",
+            icon: <SVGGithub />,
+            route: "https://github.com/netless-io/flat/",
+        },
+    ];
+
+    const onClickTopBarMenu = (mainPageTopBarMenuItem: MainPageTopBarMenuItem): void => {
+        void shell.openExternal(mainPageTopBarMenuItem.route);
+    };
+
+    const onClickWindowsSystemBtn = (winSystemBtn: WindowsSystemBtnItem): void => {
+        ipcAsyncByMainWindow("set-win-status", { windowStatus: winSystemBtn });
+    };
+
     return (
         <MainPageLayout
             activeKeys={activeKeys}
             avatarSrc={globalStore.userInfo?.avatar ?? ""}
             generateAvatar={generateAvatar}
+            isWin={runtime.isWin}
             popMenu={popMenu}
             sideMenu={sideMenu}
             sideMenuFooter={sideMenuFooter}
             subMenu={subMenu}
+            topBarMenu={topBarMenu}
             userName={globalStore.userInfo?.name ?? ""}
             onClick={onMenuItemClick}
+            onClickTopBarMenu={onClickTopBarMenu}
+            onClickWindowsSystemBtn={onClickWindowsSystemBtn}
         >
             {children}
         </MainPageLayout>

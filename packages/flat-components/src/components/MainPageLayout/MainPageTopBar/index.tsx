@@ -2,27 +2,29 @@ import "./style.less";
 
 import React from "react";
 import { MainPageNavAvatar, MainPageNavAvatarProps } from "../MainPageNavAvatar";
-
-export interface MainPageTopBarMenuItem {
-    key: string;
-    route: string;
-    icon: React.ReactNode;
-}
+import { MainPageTopBarMenuItem, WindowsSystemBtnItem } from "../types";
+import { WindowsSystemBtn } from "./WindowsSystemBtn";
 
 export interface MainPageTopBarProps extends MainPageNavAvatarProps {
     topBarMenu: MainPageTopBarMenuItem[];
+    isWin?: boolean;
+    onMinimizeClick?: () => void;
+    onCloseClick?: () => void;
     onClickTopBarMenu: (menuItem: MainPageTopBarMenuItem) => void;
+    onClickWindowsSystemBtn: (winSystemBtn: WindowsSystemBtnItem) => void;
 }
 
 export const MainPageTopBar: React.FC<MainPageTopBarProps> = ({
     activeKeys,
     avatarSrc,
-    generateAvatar,
     popMenu,
     topBarMenu,
     userName,
+    isWin,
+    generateAvatar,
     onClick,
     onClickTopBarMenu,
+    onClickWindowsSystemBtn,
 }) => {
     return (
         <div className="main-page-top-bar-container">
@@ -51,6 +53,15 @@ export const MainPageTopBar: React.FC<MainPageTopBarProps> = ({
                         </a>
                     );
                 })}
+                {isWin && (
+                    <>
+                        <div className="main-page-top-bar-divider" />
+                        <WindowsSystemBtn
+                            hiddenMaximizeBtn={true}
+                            onClickWindowsSystemBtn={onClickWindowsSystemBtn}
+                        />
+                    </>
+                )}
             </div>
         </div>
     );
