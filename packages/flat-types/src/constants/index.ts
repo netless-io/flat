@@ -36,4 +36,6 @@ export const PageSize = {
     },
 } as const;
 
+export type WindowStatus = "minimize" | "maximize" | "close";
+
 export const Portal = "portal;";

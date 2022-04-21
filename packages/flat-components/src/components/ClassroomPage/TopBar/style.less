@@ -1,16 +1,20 @@
 @topbar-content-right-cell-gap: 16px;
 
 .topbar-divider {
-    width: 0.5px;
-    height: 20px;
-    background: #dbe1ea;
+    width: 1px;
+    height: 24px;
+    margin: 0 8px;
+    background-color: var(--grey-1);
 }
+
 .topbar-box {
+    -webkit-app-region: drag;
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    height: 50px;
+    height: 40px;
     padding: 0 8px;
     font-size: 16px;
     border-bottom: 0.5px #dbe1ea solid;
@@ -18,7 +22,10 @@
     &.isMac {
         border-top: none;
     }
-    -webkit-app-region: drag;
+    
+    &.isWin {
+        border-bottom: none;
+    }
 }
 
 .topbar-content-left {
@@ -35,14 +42,25 @@
 }
 
 .topbar-content-right:extend(.topbar-content-left) {
+    -webkit-app-region: no-drag;
+    
     margin: 0 (@topbar-content-right-cell-gap / 2) 0 auto;
 }
+
+// .topbar-content-divider {
+//     width: 1px;
+//     height: 20px;
+//     margin-left: 16px;
+//     margin-right: 16px;
+//     background-color: var(--grey-1);
+// }
 
 .flat-color-scheme-dark {
     .topbar-box {
         border-color: var(--grey-8);
     }
-    .topbar-divider {
+    
+    .topbar-divider, .topbar-content-divider{
         background-color: var(--grey-8);
     }
 }
