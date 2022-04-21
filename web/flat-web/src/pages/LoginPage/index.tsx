@@ -36,7 +36,7 @@ export const LoginPage = observer(function LoginPage() {
 
     const sp = useSafePromise();
     const urlParams = useURLParams();
-    const [loginResult, setLoginResult] = useState<LoginProcessResult | null>(null);
+    const [loginResult, setLoginResult_] = useState<LoginProcessResult | null>(null);
 
     useEffect(() => {
         return () => {
@@ -66,6 +66,15 @@ export const LoginPage = observer(function LoginPage() {
         }
     });
 
+    const setLoginResult = useCallback(
+        (userInfo: LoginProcessResult) => {
+            globalStore.updateUserInfo(userInfo);
+            setLoginResult_(userInfo);
+            pushHistory(RouteNameType.HomePage);
+        },
+        [globalStore, pushHistory],
+    );
+
     const onLoginResult = useCallback(
         async (authData: LoginProcessResult) => {
             if (authData.agoraSSOLoginID) {
@@ -86,7 +95,7 @@ export const LoginPage = observer(function LoginPage() {
                 pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
             }
         },
-        [globalStore, pushHistory, roomUUID],
+        [globalStore, pushHistory, roomUUID, setLoginResult],
     );
 
     const onBoundPhone = useCallback(() => {

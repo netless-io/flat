@@ -566,7 +566,7 @@ export interface BindingPhonePayload {
 export type BindingPhoneResult = {};
 
 export async function bindingPhone(phone: string, code: number): Promise<BindingPhoneResult> {
-    return await postNotAuth<BindingPhonePayload, BindingPhoneResult>("user/bindingPhone", {
+    return await post<BindingPhonePayload, BindingPhoneResult>("user/bindingPhone", {
         phone,
         code,
     });

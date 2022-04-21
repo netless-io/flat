@@ -37,7 +37,7 @@ export const LoginPage = observer(function LoginPage() {
     const globalStore = useContext(GlobalStoreContext);
     const loginDisposer = useRef<LoginDisposer>();
     const [updateInfo, setUpdateInfo] = useState<AppUpgradeModalProps["updateInfo"]>(null);
-    const [loginResult, setLoginResult] = useState<LoginProcessResult | null>(null);
+    const [loginResult, setLoginResult_] = useState<LoginProcessResult | null>(null);
 
     const sp = useSafePromise();
 
@@ -73,6 +73,15 @@ export const LoginPage = observer(function LoginPage() {
             });
     }, [sp]);
 
+    const setLoginResult = useCallback(
+        (userInfo: LoginProcessResult) => {
+            globalStore.updateUserInfo(userInfo);
+            setLoginResult_(userInfo);
+            pushHistory(RouteNameType.HomePage);
+        },
+        [globalStore, pushHistory],
+    );
+
     const onLoginResult = useCallback(
         (authData: LoginProcessResult) => {
             globalStore.updateUserInfo(authData);
@@ -82,7 +91,7 @@ export const LoginPage = observer(function LoginPage() {
                 pushHistory(RouteNameType.HomePage);
             }
         },
-        [globalStore, pushHistory],
+        [globalStore, pushHistory, setLoginResult],
     );
 
     const onBoundPhone = useCallback(() => {
