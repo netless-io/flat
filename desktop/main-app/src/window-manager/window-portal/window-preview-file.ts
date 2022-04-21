@@ -21,6 +21,9 @@ export class WindowPreviewFile extends AbstractWindow<true> {
                 resizable: true,
                 // @ts-ignore
                 webContents: options.webContents,
+                // current electron version not support the frameless
+                frame: true,
+                titleBarStyle: "default",
             },
         );
     }

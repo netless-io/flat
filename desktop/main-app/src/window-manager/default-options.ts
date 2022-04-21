@@ -1,5 +1,6 @@
 import { BrowserWindowConstructorOptions } from "electron";
 import { constants } from "flat-types";
+import runtime from "../utils/runtime";
 
 export const defaultWindowOptions: Pick<WindowOptions, "disableClose" | "isOpenDevTools"> = {
     disableClose: false,
@@ -12,6 +13,8 @@ export const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
     fullscreenable: false,
     maximizable: false,
     autoHideMenuBar: true,
+    // remove frame options after upgrade new version of the Electron.
+    frame: runtime.isMac,
     titleBarStyle: "hidden",
     webPreferences: {
         autoplayPolicy: "no-user-gesture-required",
