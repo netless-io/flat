@@ -81,6 +81,7 @@ export class RTCLocalAvatar implements FlatRTCAvatar {
         this._sideEffect.addDisposer(() => {
             this._rtc.rtcEngine.enableLocalVideo(false);
             this._rtc.rtcEngine.enableLocalAudio(false);
+            this._el$.setValue(null);
         });
     }
 

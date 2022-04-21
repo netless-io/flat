@@ -257,6 +257,46 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
         }));
     }
 
+    public getSpeakerVolume(): number {
+        return this.getVolumeLevel();
+    }
+
+    public async setSpeakerVolume(): Promise<void> {
+        throw doesNotSupportError("setting speaker volume");
+    }
+
+    public startNetworkTest(): void {
+        throw doesNotSupportError("network probe test");
+    }
+
+    public stopNetworkTest(): void {
+        throw doesNotSupportError("network probe test");
+    }
+
+    public startCameraTest(): void {
+        throw doesNotSupportError("camera test");
+    }
+
+    public stopCameraTest(): void {
+        throw doesNotSupportError("camera test");
+    }
+
+    public startMicTest(): void {
+        throw doesNotSupportError("microphone test");
+    }
+
+    public stopMicTest(): void {
+        throw doesNotSupportError("microphone test");
+    }
+
+    public startSpeakerTest(): void {
+        throw doesNotSupportError("speaker test");
+    }
+
+    public stopSpeakerTest(): void {
+        throw doesNotSupportError("speaker test");
+    }
+
     private async _createRTCClient({
         uid,
         token,
@@ -291,8 +331,11 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
         }
 
         this._roomSideEffect.add(() => {
-            const handler = (error: any): void => {
-                console.error("RTC Exception:", error);
+            const handler = (error: Error): void => {
+                this.events.emit("error", error);
+                if (process.env.NODE_ENV === "development") {
+                    console.error(error);
+                }
             };
             client.on("exception", handler);
             return () => client.off("exception", handler);
@@ -476,4 +519,8 @@ function beforeAddListener(
             }
         },
     );
+}
+
+function doesNotSupportError(type: string): Error {
+    return new Error(`Agora RTC Web does not support ${type}`);
 }

@@ -5,13 +5,15 @@ import { Val, combine } from "value-enhancer";
 import { ipcMain, IpcMainEvent } from "electron";
 
 export class WindowMain extends AbstractWindow<false> {
-    private readonly _mainWindowCreated$ = new Val(false);
+    private readonly _mainWindow$ = new Val<CustomWindow | null>(null);
 
     public constructor() {
         super(false, constants.WindowsName.Main);
     }
 
     public create(): CustomWindow {
+        this.setupDOMReady();
+
         const customWindow = this.createWindow(
             {
                 url: runtime.startURL,
@@ -28,9 +30,7 @@ export class WindowMain extends AbstractWindow<false> {
             },
         );
 
-        this._mainWindowCreated$.setValue(true);
-
-        this.setupDOMReady(customWindow);
+        this._mainWindow$.setValue(customWindow);
 
         if (process.env.NODE_ENV === "development") {
             WindowMain.loadExtensions(customWindow, "react-devtools");
@@ -40,18 +40,17 @@ export class WindowMain extends AbstractWindow<false> {
     }
 
     public async assertWindow(): Promise<CustomWindow> {
-        if (this._mainWindowCreated$.value) {
-            return this.wins[0];
-        }
-        return new Promise(resolve => {
-            const onMainWindowCreated = (created: boolean): void => {
-                if (created) {
-                    resolve(this.wins[0]);
-                    this._mainWindowCreated$.unsubscribe(onMainWindowCreated);
-                }
-            };
-            this._mainWindowCreated$.subscribe(onMainWindowCreated);
-        });
+        return (
+            this._mainWindow$.value ??
+            new Promise<CustomWindow>(resolve => {
+                const disposer = this._mainWindow$.subscribe(win => {
+                    if (win) {
+                        resolve(win);
+                        disposer();
+                    }
+                });
+            })
+        );
     }
 
     private static loadExtensions(win: CustomWindow, extensionName: "react-devtools"): void {
@@ -68,31 +67,32 @@ export class WindowMain extends AbstractWindow<false> {
             });
     }
 
-    private setupDOMReady(win: CustomWindow): void {
-        const domReady$ = new Val(false);
+    private setupDOMReady(): void {
+        const domReady$ = new Val<Electron.Event | null>(null);
         const preloaded$ = new Val<IpcMainEvent | null>(null);
 
-        win.window.webContents.once("dom-ready", () => {
-            domReady$.setValue(true);
-        });
-
-        const onPreloadLoad = (event: IpcMainEvent): void => {
-            // preload-load is global event, any window create will trigger,
-            // but we only need Main window event
-            if (event.sender.id === win.window.webContents.id) {
-                preloaded$.setValue(event);
-                ipcMain.off("preload-load", onPreloadLoad);
-            }
-        };
-
-        ipcMain.on("preload-load", onPreloadLoad);
-
-        const disposer = combine([domReady$, preloaded$]).subscribe(([domReady, event]) => {
+        combine([domReady$, preloaded$]).subscribe(([domReady, event]) => {
             if (domReady && event) {
                 if (!event.sender.isDestroyed()) {
                     event.sender.send("preload-dom-ready");
-                    disposer();
                 }
+            }
+        });
+
+        this._mainWindow$.subscribe(win => {
+            if (win) {
+                win.window.webContents.on("dom-ready", event => {
+                    domReady$.setValue(event);
+                });
+            }
+        });
+
+        ipcMain.on("preload-loaded", (event: IpcMainEvent): void => {
+            const win = this._mainWindow$.value;
+            // preload-load is global event, any window create will trigger,
+            // but we only need Main window event
+            if (win && event.sender.id === win.window.webContents.id) {
+                preloaded$.setValue(event);
             }
         });
     }

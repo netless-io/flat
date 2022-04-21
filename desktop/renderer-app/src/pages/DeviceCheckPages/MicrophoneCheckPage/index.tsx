@@ -2,17 +2,18 @@ import infoSVG from "../../../assets/image/info.svg";
 import successSVG from "../../../assets/image/success.svg";
 import "./index.less";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Button, Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import { DeviceSelect } from "../../../components/DeviceSelect";
 import { Device } from "../../../types/device";
-import { useRTCEngine } from "../../../utils/hooks/use-rtc-engine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { useHistory, useLocation } from "react-router-dom";
 import { DeviceCheckResults, DeviceCheckState } from "../utils";
 import { routeConfig } from "../../../route-config";
 import { useTranslation } from "react-i18next";
+import { FlatRTCContext } from "../../../components/FlatRTCContext";
+import { useSafePromise } from "flat-components";
 
 interface SpeakerVolumeProps {
     percent: number;
@@ -29,7 +30,7 @@ const SpeakerVolume = observer<SpeakerVolumeProps>(function SpeakerVolume({ perc
 
 export const MicrophoneCheckPage = (): React.ReactElement => {
     const { t } = useTranslation();
-    const rtcEngine = useRTCEngine();
+    const rtc = useContext(FlatRTCContext);
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
     const [currentVolume, setCurrentVolume] = useState(0);
@@ -37,6 +38,7 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
     const [micCheckState, setMicCheckState] = useState<DeviceCheckState>();
     const location = useLocation<DeviceCheckResults | undefined>();
     const history = useHistory<DeviceCheckResults>();
+    const sp = useSafePromise();
 
     const { systemCheck, cameraCheck, speakerCheck } = location.state || {};
 
@@ -47,48 +49,38 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
         speakerCheck?.hasError === false &&
         micCheckState?.hasError === false;
 
-    useEffect(() => {
-        setDevices(rtcEngine.getAudioRecordingDevices() as Device[]);
-
-        const onAudioDeviceStateChanged = (): void => {
-            setDevices(rtcEngine.getVideoDevices() as Device[]);
-        };
-
-        rtcEngine.on("audioDeviceStateChanged", onAudioDeviceStateChanged);
-
-        return () => {
-            rtcEngine.off("audioDeviceStateChanged", onAudioDeviceStateChanged);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rtcEngine]);
+    const onMicChanged = useCallback(
+        (deviceID: string): void => {
+            rtc.setMicID(deviceID);
+        },
+        [rtc],
+    );
 
     useEffect(() => {
-        if (devices.length !== 0) {
-            setCurrentDeviceID(devices[0].deviceid);
-        }
-    }, [devices]);
+        const updateMicDevices = async (deviceID?: string): Promise<void> => {
+            const devices = await sp(rtc.getMicDevices());
+            setDevices(devices);
+            setCurrentDeviceID(deviceID || devices[0]?.deviceId || null);
+        };
+        updateMicDevices();
+        return rtc.events.on("mic-changed", updateMicDevices);
+    }, [rtc, sp]);
 
     useEffect(() => {
-        const groupAudioVolumeIndication = (
-            _speakers: any,
-            _speakerNumber: any,
-            totalVolume: number,
-        ): void => {
-            // totalVolume value max 255
-            setCurrentVolume(Math.ceil((totalVolume / 255) * 100));
-        };
+        return rtc.events.on("volume-level-changed", volume => {
+            setCurrentVolume(volume * 100);
+        });
+    }, [currentDeviceID, rtc]);
 
+    useEffect(() => {
         if (currentDeviceID) {
-            rtcEngine.setAudioRecordingDevice(currentDeviceID);
-            rtcEngine.on("groupAudioVolumeIndication", groupAudioVolumeIndication);
-            rtcEngine.startAudioRecordingDeviceTest(300);
+            rtc.startMicTest();
+            return () => {
+                rtc.stopMicTest();
+            };
         }
-
-        return () => {
-            rtcEngine.removeListener("groupAudioVolumeIndication", groupAudioVolumeIndication);
-            rtcEngine.stopAudioRecordingDeviceTest();
-        };
-    }, [currentDeviceID, rtcEngine]);
+        return;
+    }, [currentDeviceID, rtc]);
 
     return (
         <DeviceCheckLayoutContainer>
@@ -97,7 +89,7 @@ export const MicrophoneCheckPage = (): React.ReactElement => {
                 <DeviceSelect
                     currentDeviceID={currentDeviceID}
                     devices={devices}
-                    onChange={setCurrentDeviceID}
+                    onChange={onMicChanged}
                 />
                 <p>{t("audition-sound")}</p>
                 <SpeakerVolume percent={currentVolume} />

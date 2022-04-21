@@ -335,14 +335,15 @@
   "network-quality-situation": "网络质量情况",
   "next-step": "下一步",
   "network-status": {
-    "testing": "正在检测...",
     "network-quality-unknown": "网络质量未知",
     "network-quality-excellent": "网络质量极好",
     "network-quality-good": "网络质量优秀",
     "network-quality-average": "网络质量一般",
     "network-quality-poor": "网络质量较差",
     "network-quality-very-poor": "网络质量非常差",
-    "network-connection-disconnected": "网络连接已断开"
+    "network-connection-disconnected": "网络连接已断开",
+    "network-connection-errored": "无法检测网络质量",
+    "testing": "正在检测..."
   },
   "login": "登录",
   "confirm-and-login": "确认并登录",

@@ -43,4 +43,21 @@ export interface FlatRTC<
     getCameraDevices(): Promise<FlatRTCDevice[]>;
     getMicDevices(): Promise<FlatRTCDevice[]>;
     getSpeakerDevices(): Promise<FlatRTCDevice[]>;
+
+    /** @returns volume 0~1 */
+    getSpeakerVolume(): number;
+    /** @param volume 0~1 */
+    setSpeakerVolume(volume: number): Promise<void>;
+
+    startNetworkTest(): void;
+    stopNetworkTest(): void;
+
+    startCameraTest(el: HTMLElement): void;
+    stopCameraTest(): void;
+
+    startMicTest(): void;
+    stopMicTest(): void;
+
+    startSpeakerTest(filePath: string): void;
+    stopSpeakerTest(): void;
 }

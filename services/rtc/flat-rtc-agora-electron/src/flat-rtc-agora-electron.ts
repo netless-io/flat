@@ -149,6 +149,15 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
             };
         }, "init");
 
+        this._sideEffect.add(() => {
+            const rtcEngine = this.rtcEngine;
+            const onError = (_err: number, msg: string): void => {
+                this.events.emit("error", new Error(msg));
+            };
+            rtcEngine.on("error", onError);
+            return () => rtcEngine.off("error", onError);
+        });
+
         if (process.env.NODE_ENV === "development") {
             this._sideEffect.add(() => {
                 const rtcEngine = this.rtcEngine;
@@ -298,6 +307,93 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
         );
     }
 
+    public getSpeakerVolume(): number {
+        return this.rtcEngine.getAudioPlaybackVolume() / 255 || 0;
+    }
+
+    public async setSpeakerVolume(volume: number): Promise<void> {
+        volume = Math.max(0, Math.min(volume, 1));
+        this.rtcEngine.setAudioPlaybackVolume(Math.ceil(volume * 255));
+    }
+
+    public startNetworkTest(): void {
+        this._sideEffect.add(() => {
+            const rtcEngine = this.rtcEngine;
+            const handler = (quality: AgoraNetworkQuality): void => {
+                this.events.emit("network-test", quality);
+            };
+            rtcEngine.on("lastMileQuality", handler);
+            return () => rtcEngine.off("lastMileQuality", handler);
+        }, "network-test");
+
+        this.rtcEngine.startLastmileProbeTest({
+            expectedDownlinkBitrate: 100000,
+            expectedUplinkBitrate: 100000,
+            probeDownlink: true,
+            probeUplink: true,
+        });
+    }
+
+    public stopNetworkTest(): void {
+        this.rtcEngine.stopLastmileProbeTest();
+        this._sideEffect.flush("network-test");
+    }
+
+    public startCameraTest(el: HTMLElement): void {
+        this.rtcEngine.enableVideo();
+
+        const avatar = this.localAvatar;
+        avatar.setElement(el);
+        avatar.enableCamera(true);
+        avatar.enableMic(true);
+
+        this.rtcEngine.startPreview();
+    }
+
+    public stopCameraTest(): void {
+        const avatar = this.localAvatar;
+        avatar.setElement(null);
+        avatar.enableCamera(false);
+        avatar.enableMic(false);
+
+        this.rtcEngine.stopPreview();
+        this.rtcEngine.disableVideo();
+    }
+
+    public startMicTest(): void {
+        this.rtcEngine.startAudioRecordingDeviceTest(300);
+
+        this._sideEffect.add(() => {
+            const rtcEngine = this.rtcEngine;
+            const handler = (
+                _speakers: unknown,
+                _speakerNumber: unknown,
+                totalVolume: number,
+            ): void => {
+                this.events.emit("volume-level-changed", totalVolume / 255);
+            };
+            rtcEngine.on("groupAudioVolumeIndication", handler);
+            return () => rtcEngine.off("groupAudioVolumeIndication", handler);
+        }, "mic-test");
+    }
+
+    public stopMicTest(): void {
+        this.rtcEngine.stopAudioRecordingDeviceTest();
+        this._sideEffect.flush("mic-test");
+    }
+
+    public startSpeakerTest(filePath: string): void {
+        this.rtcEngine.enableAudio();
+        this.rtcEngine.enableLocalAudio(true);
+        this.rtcEngine.startAudioPlaybackDeviceTest(filePath);
+    }
+
+    public stopSpeakerTest(): void {
+        this.rtcEngine.stopAudioPlaybackDeviceTest();
+        this.rtcEngine.enableLocalAudio(false);
+        this.rtcEngine.disableAudio();
+    }
+
     private async _join({
         uid,
         token,
@@ -327,8 +423,10 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
         }
 
         this.rtcEngine.enableVideo();
+        this.rtcEngine.enableAudio();
         // prevent camera being turned on temporarily right after joining room
         this.rtcEngine.enableLocalVideo(false);
+        this.rtcEngine.enableLocalAudio(false);
 
         if (refreshToken) {
             this._roomSideEffect.add(() => {
@@ -426,12 +524,15 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
                 let delay = NaN;
 
                 const onNetworkQuality = (
+                    uid: FlatRTCAgoraElectronUIDType,
                     uplinkQuality: AgoraNetworkQuality,
                     downlinkQuality: AgoraNetworkQuality,
                 ): void => {
-                    uplink = uplinkQuality;
-                    downlink = downlinkQuality;
-                    this.events.emit("network", { uplink, downlink, delay });
+                    if (!uid || uid === this.uid) {
+                        uplink = uplinkQuality;
+                        downlink = downlinkQuality;
+                        this.events.emit("network", { uplink, downlink, delay });
+                    }
                 };
 
                 const checkDelay = (stats: RtcStats): void => {

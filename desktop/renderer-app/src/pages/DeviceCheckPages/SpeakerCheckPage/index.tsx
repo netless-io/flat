@@ -4,71 +4,70 @@ import muteSVG from "../../../assets/image/mute.svg";
 import volumeSVG from "../../../assets/image/volume.svg";
 import "./index.less";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Slider, Button } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
 // let webpack recognize
 import "../../../assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
 import { DeviceSelect } from "../../../components/DeviceSelect";
 import { Device } from "../../../types/device";
-import { useRTCEngine } from "../../../utils/hooks/use-rtc-engine";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { runtime } from "../../../utils/runtime";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckResults } from "../utils";
 import { useTranslation } from "react-i18next";
 import path from "path";
+import { FlatRTCContext } from "../../../components/FlatRTCContext";
+import { useSafePromise } from "flat-components";
 
 export const SpeakerCheckPage = (): React.ReactElement => {
     const { t } = useTranslation();
-    const rtcEngine = useRTCEngine();
+    const rtc = useContext(FlatRTCContext);
     const [devices, setDevices] = useState<Device[]>([]);
     const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
-    const [currentVolume, setCurrentVolume] = useState(30);
+    const [currentVolume, setCurrentVolume] = useState(() => rtc.getSpeakerVolume());
     const [isPlaying, setIsPlaying] = useState(false);
     const history = useHistory<DeviceCheckResults>();
     const location = useLocation<DeviceCheckResults | undefined>();
+    const sp = useSafePromise();
+
+    const onDeviceIDChanged = useCallback(
+        (deviceID: string): void => {
+            console.log("set device", deviceID);
+            rtc.setSpeakerID(deviceID);
+        },
+        [rtc],
+    );
 
     useEffect(() => {
-        setDevices(rtcEngine.getAudioPlaybackDevices() as Device[]);
-
-        const onAudioDeviceStateChanged = (): void => {
-            setDevices(rtcEngine.getAudioPlaybackDevices() as Device[]);
+        const updateSpeakerDevices = async (deviceID?: string): Promise<void> => {
+            const devices = await sp(rtc.getSpeakerDevices());
+            setDevices(devices);
+            setCurrentDeviceID(deviceID || devices[0]?.deviceId || null);
         };
-
-        rtcEngine.on("audioDeviceStateChanged", onAudioDeviceStateChanged);
-
-        return () => {
-            rtcEngine.off("audioDeviceStateChanged", onAudioDeviceStateChanged);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rtcEngine]);
-
-    useEffect(() => {
-        if (devices.length !== 0) {
-            setCurrentDeviceID(devices[0].deviceid);
-        }
-    }, [devices]);
+        updateSpeakerDevices(rtc.getSpeakerID());
+        return rtc.events.on("speaker-changed", updateSpeakerDevices);
+    }, [rtc, sp]);
 
     useEffect(() => {
         if (currentDeviceID && isPlaying) {
-            rtcEngine.setAudioPlaybackDevice(currentDeviceID);
-            rtcEngine.startAudioPlaybackDeviceTest(
+            rtc.startSpeakerTest(
                 path.join(
                     runtime.assetsPath,
+                    "media",
                     "Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3",
                 ),
             );
+            return () => {
+                rtc.stopSpeakerTest();
+            };
         }
-
-        return () => {
-            rtcEngine.stopAudioPlaybackDeviceTest();
-        };
-    }, [currentDeviceID, isPlaying, rtcEngine]);
+        return;
+    }, [currentDeviceID, isPlaying, rtc, sp]);
 
     useEffect(() => {
-        rtcEngine.setAudioPlaybackVolume(Math.ceil((currentVolume / 100) * 255));
-    }, [currentVolume, currentDeviceID, rtcEngine]);
+        rtc.setSpeakerVolume(currentVolume);
+    }, [currentVolume, rtc]);
 
     const togglePlay = (): void => {
         setIsPlaying(!isPlaying);
@@ -82,7 +81,7 @@ export const SpeakerCheckPage = (): React.ReactElement => {
                     <DeviceSelect
                         currentDeviceID={currentDeviceID}
                         devices={devices}
-                        onChange={setCurrentDeviceID}
+                        onChange={onDeviceIDChanged}
                     />
                     <p>{t("audition-sound")}</p>
                     <Button icon={<img src={isPlaying ? stopSVG : playSVG} />} onClick={togglePlay}>
@@ -93,7 +92,13 @@ export const SpeakerCheckPage = (): React.ReactElement => {
                     <p>{t("volume")}</p>
                     <div className="speaker-audio-check-inner">
                         <img src={muteSVG} />
-                        <Slider value={currentVolume} onChange={setCurrentVolume} />
+                        <Slider
+                            max={1}
+                            min={0}
+                            step={0.01}
+                            value={currentVolume}
+                            onChange={setCurrentVolume}
+                        />
                         <img src={volumeSVG} />
                     </div>
                 </div>
