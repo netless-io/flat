@@ -32,7 +32,7 @@ export const LoginPage = observer(function LoginPage() {
     const globalStore = useContext(GlobalStoreContext);
     const loginDisposer = useRef<LoginDisposer>();
 
-    const roomUUID = sessionStorage.getItem("roomUUID");
+    const [roomUUID] = useState(() => sessionStorage.getItem("roomUUID"));
 
     const sp = useSafePromise();
     const urlParams = useURLParams();

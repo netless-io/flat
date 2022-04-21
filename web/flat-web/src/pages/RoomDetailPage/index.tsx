@@ -5,6 +5,8 @@ import React, { useContext, useEffect } from "react";
 import { LoadingPage, RoomDetailPanel } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { useHistory, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { message } from "antd";
 import {
     GlobalStoreContext,
     PageStoreContext,
@@ -14,11 +16,11 @@ import { errorTips } from "../../components/Tips/ErrorTips";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { RoomStatus } from "../../api-middleware/flatServer/constants";
-import { message } from "antd";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
-import { useTranslation } from "react-i18next";
+import { useLoginCheck } from "../utils/use-login-check";
 
 export const RoomDetailPage = observer(function RoomDetailPage() {
+    useLoginCheck();
     const { t } = useTranslation();
 
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();

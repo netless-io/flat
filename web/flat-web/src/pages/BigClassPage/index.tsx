@@ -20,6 +20,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RoomPhase } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
+import { FlatRTCRole } from "@netless/flat-rtc";
 import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
 import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { RtcChannelType } from "../../api-middleware/rtc/room";
@@ -40,7 +41,7 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { runtime } from "../../utils/runtime";
 import { RTCAvatar } from "../../components/RTCAvatar";
 import { ShareScreen } from "../../components/ShareScreen";
-import { FlatRTCRole } from "@netless/flat-rtc";
+import { useLoginCheck } from "../utils/use-login-check";
 
 const recordingConfig: RecordingConfig = Object.freeze({
     channelType: RtcChannelType.Broadcast,
@@ -79,6 +80,8 @@ const recordingConfig: RecordingConfig = Object.freeze({
 export type BigClassPageProps = {};
 
 export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
+    useLoginCheck();
+
     const { i18n, t } = useTranslation();
     const params = useParams<RouteParams<RouteNameType.BigClassPage>>();
 

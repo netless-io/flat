@@ -15,6 +15,7 @@ import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
 import { errorTips } from "../../components/Tips/ErrorTips";
+import { useLoginCheck } from "../utils/use-login-check";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;
@@ -35,6 +36,8 @@ export type ReplayPageState = {
 };
 
 export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
+    useLoginCheck();
+
     const whiteboardElRef = useRef<HTMLDivElement>(null);
     const videoElRef = useRef<HTMLVideoElement>(null);
     const [showExitReplayModal, setShowExitReplayModal] = useState(false);

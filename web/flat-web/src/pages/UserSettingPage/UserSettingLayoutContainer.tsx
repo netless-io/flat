@@ -5,11 +5,13 @@ import hotkeySVG from "./icons/hotkey.svg";
 import "./UserSettingLayoutContainer.less";
 
 import React, { useContext, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { PageStoreContext } from "../../components/StoreProvider";
-import { useTranslation } from "react-i18next";
+import { useLoginCheck } from "../utils/use-login-check";
 
 export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactElement => {
+    useLoginCheck();
     const { t } = useTranslation();
     const pageStore = useContext(PageStoreContext);
 
