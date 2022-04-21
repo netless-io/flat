@@ -7,8 +7,7 @@ import "./index.less";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Slider, Button } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
-// let webpack recognize
-import "../../../assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
+import audioTestMP3 from "../../../assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
 import { DeviceSelect } from "../../../components/DeviceSelect";
 import { Device } from "../../../types/device";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
@@ -51,13 +50,7 @@ export const SpeakerCheckPage = (): React.ReactElement => {
 
     useEffect(() => {
         if (currentDeviceID && isPlaying) {
-            rtc.startSpeakerTest(
-                path.join(
-                    runtime.assetsPath,
-                    "media",
-                    "Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3",
-                ),
-            );
+            rtc.startSpeakerTest(path.join(runtime.assetsPath, audioTestMP3));
             return () => {
                 rtc.stopSpeakerTest();
             };

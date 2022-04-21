@@ -11,7 +11,7 @@ const isDebug = process.env.FLAT_DEBUG === "debug";
 
 const assetsPath = isProduction
     ? path.resolve(__dirname, "..", "static")
-    : path.resolve(__dirname, "..", "..", "..", "renderer-app", "src", "assets");
+    : path.resolve(__dirname, "..", "..", "..", "renderer-app");
 
 const startURL = isProduction
     ? `file://${path.resolve(__dirname, "..", "static", "index.html")}`
