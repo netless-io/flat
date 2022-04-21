@@ -9,7 +9,7 @@ export const SVGListLoading: React.FC<FlatIconProps> = ({
 }) => {
     return (
         <svg
-            className={`${className} flat-icon ${active ? "is-active" : ""}`}
+            className={`${className} flat-icon ${active && "is-active"}`}
             fill="none"
             height="50"
             viewBox="0 0 50 50"

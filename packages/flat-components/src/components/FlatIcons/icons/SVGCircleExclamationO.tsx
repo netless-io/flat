@@ -9,7 +9,7 @@ export const SVGCircleExclamationO: React.FC<FlatIconProps> = ({
 }) => {
     return (
         <svg
-            className={`${className} flat-icon ${active ? "is-active" : ""}`}
+            className={`${className} flat-icon ${active && "is-active"}`}
             fill="none"
             height="24"
             viewBox="0 0 24 24"
