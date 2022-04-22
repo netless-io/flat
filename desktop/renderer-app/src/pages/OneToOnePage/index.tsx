@@ -85,6 +85,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     const updateLayoutTimeoutRef = useRef(NaN);
     const loadingPageRef = useRef(false);
+    const topBarRef = useRef<HTMLDivElement>(null);
 
     const joiner = useComputed(() => {
         if (classRoomStore.isCreator) {
@@ -124,6 +125,22 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [classRoomStore.users.creator, joiner, classRoomStore.isRecording]);
 
+    useEffect(() => {
+        const handleMaximize = (): void => {
+            ipcAsyncByMainWindow("set-win-status", { windowStatus: "maximize" });
+        };
+
+        const topBarEl = topBarRef.current;
+        if (topBarEl) {
+            topBarEl.addEventListener("dblclick", handleMaximize);
+            return () => {
+                topBarEl.removeEventListener("dblclick", handleMaximize);
+            };
+        }
+
+        return;
+    }, []);
+
     if (
         !whiteboardStore.room ||
         whiteboardStore.phase === RoomPhase.Connecting ||
@@ -158,6 +175,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                         isMac={runtime.isMac}
                         left={renderTopBarLeft()}
                         right={renderTopBarRight()}
+                        topBarRef={topBarRef}
                         onClickWindowsSystemBtn={onClickWindowsSystemBtn}
                     />
                     <div className="one-to-one-realtime-content">
