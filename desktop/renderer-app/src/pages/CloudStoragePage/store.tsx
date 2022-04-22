@@ -36,6 +36,7 @@ import { createResourcePreview, FileInfo } from "./CloudStorageFilePreview";
 import { getFileExt, isPPTX } from "../../utils/file";
 import { ConvertStatusManager } from "./ConvertStatusManager";
 import { queryH5ConvertingStatus } from "../../api-middleware/h5-converting";
+import { Scheduler } from "./scheduler";
 
 export type CloudStorageFile = CloudStorageFileUI &
     Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region" | "external">;
@@ -60,6 +61,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     private i18n: i18n;
 
+    private scheduler: Scheduler;
+
     public constructor({
         compact,
         insertCourseware,
@@ -74,6 +77,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         this.insertCourseware = insertCourseware;
         this.compact = compact;
         this.i18n = i18n;
+        this.scheduler = new Scheduler(this.refreshFiles, 10 * 1000);
 
         makeObservable(this, {
             filesMap: observable,
@@ -343,7 +347,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }: { onCoursewareInserted?: () => void } = {}): () => void {
         this.onCoursewareInserted = onCoursewareInserted;
 
-        void this.refreshFiles();
+        this.scheduler.start();
 
         if (
             this.uploadTaskManager.pending.length <= 0 &&
@@ -356,7 +360,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             () => this.uploadTaskManager.uploading.length,
             (currLen, prevLen) => {
                 if (currLen < prevLen) {
-                    this.refreshFilesNowDebounced();
+                    console.log("[cloud storage]: start now refresh");
+                    this.scheduler.invoke();
                     this.hasMoreFile = true;
                 }
             },
@@ -364,26 +369,13 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
         return () => {
             disposer();
-            window.clearTimeout(this._refreshFilesTimeout);
-            this._refreshFilesTimeout = NaN;
-            this.clearRefreshFilesNowTimeout();
+            this.scheduler.stop();
             this.convertStatusManager.cancelAllTasks();
             this.onCoursewareInserted = undefined;
         };
     }
 
-    private _refreshFilesTimeout = NaN;
-    private _refreshFilesNowTimeout = NaN;
-
-    private clearRefreshFilesNowTimeout(): void {
-        window.clearTimeout(this._refreshFilesNowTimeout);
-        this._refreshFilesNowTimeout = NaN;
-    }
-
-    private async refreshFiles(): Promise<void> {
-        window.clearTimeout(this._refreshFilesTimeout);
-        this.clearRefreshFilesNowTimeout();
-
+    private refreshFiles = async (): Promise<void> => {
         try {
             const { totalUsage, files: cloudFiles } = await listFiles({
                 page: 1,
@@ -429,22 +421,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         } catch (e) {
             errorTips(e);
         }
-
-        if (!this._refreshFilesNowTimeout) {
-            this.refreshFilesDebounced(10 * 1000);
-        }
-    }
-
-    private refreshFilesDebounced(timeout = 500): void {
-        window.clearTimeout(this._refreshFilesTimeout);
-        this._refreshFilesTimeout = window.setTimeout(this.refreshFiles.bind(this), timeout);
-    }
-
-    private refreshFilesNowDebounced(timeout = 800): void {
-        this.clearRefreshFilesNowTimeout();
-        console.log("[cloud storage]: start now refresh");
-        this._refreshFilesNowTimeout = window.setTimeout(this.refreshFiles.bind(this), timeout);
-    }
+    };
 
     private previewCourseware(file: CloudStorageFile): void {
         const fileInfo: FileInfo = {

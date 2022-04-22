@@ -83,7 +83,9 @@ export const LoginPage = observer(function LoginPage() {
         (userInfo: LoginProcessResult) => {
             globalStore.updateUserInfo(userInfo);
             setLoginResult_(userInfo);
-            pushHistory(RouteNameType.HomePage);
+            if (NEED_BINDING_PHONE ? userInfo.hasPhone : true) {
+                pushHistory(RouteNameType.HomePage);
+            }
         },
         [globalStore, pushHistory],
     );
