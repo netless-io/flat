@@ -90,6 +90,7 @@ export class GlobalStore {
 
     public logout = (): void => {
         this.userInfo = null;
+        this.lastLoginCheck = null;
     };
 
     public updateCheckNewVersionDate = (): void => {
