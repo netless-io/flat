@@ -5,7 +5,7 @@ import "./index.less";
 
 import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Input, message, Modal } from "antd";
+import { Button, Input, message } from "antd";
 
 import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
 import { LoginTitle } from "../LoginTitle";
@@ -17,7 +17,12 @@ import {
     LoginButtonsProps,
 } from "../LoginButtons";
 import { LoginPanelContent } from "../LoginPanelContent";
-import { renderBindPhonePage, validateCode, validatePhone } from "../LoginWithPhone";
+import {
+    renderBindPhonePage,
+    requestAgreement,
+    validateCode,
+    validatePhone,
+} from "../LoginWithPhone";
 
 export * from "../LoginButtons";
 
@@ -96,16 +101,17 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
     const [clickedBinding, setClickedBinding] = useState(false);
 
     const canLogin =
-        !clickedLogin &&
-        !clickedRegister &&
-        validateEmail(email) &&
-        validatePassword(password) &&
-        agreed;
+        !clickedLogin && !clickedRegister && validateEmail(email) && validatePassword(password);
 
-    const canBinding =
-        !clickedBinding && validatePhone(phone) && validateCode(bindingPhoneCode) && agreed;
+    const canBinding = !clickedBinding && validatePhone(phone) && validateCode(bindingPhoneCode);
 
     const doLogin = useCallback(async () => {
+        if (!agreed) {
+            if (!(await requestAgreement({ t, privacyURL, serviceURL }))) {
+                return;
+            }
+            setAgreed(true);
+        }
         setClickedLogin(true);
         if (await sp(login(email, password))) {
             await new Promise(resolve => setTimeout(resolve, 60000));
@@ -113,23 +119,31 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
             message.info(t("login-failed"));
         }
         setClickedLogin(false);
-    }, [email, login, password, sp, t]);
+    }, [agreed, email, login, password, privacyURL, serviceURL, sp, t]);
 
     const doRegister = useCallback(async () => {
+        if (!agreed) {
+            if (!(await requestAgreement({ t, privacyURL, serviceURL }))) {
+                return;
+            }
+            setAgreed(true);
+        }
         setClickedRegister(true);
         if (!(await sp(register(email, password)))) {
             message.info(t("register-failed"));
         }
         setClickedRegister(false);
-    }, [email, password, register, sp, t]);
+    }, [agreed, email, password, privacyURL, register, serviceURL, sp, t]);
 
-    const forgotPassword = useCallback(() => {
+    const forgotPassword = useCallback(async () => {
         if (!agreed) {
-            message.info(t("agree-terms"));
-            return;
+            if (!(await requestAgreement({ t, privacyURL, serviceURL }))) {
+                return;
+            }
+            setAgreed(true);
         }
         setPage("verify-email");
-    }, [agreed, t]);
+    }, [agreed, privacyURL, serviceURL, t]);
 
     const sendCode = useCallback(async () => {
         if (validateEmail(email)) {
@@ -173,27 +187,12 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
     }, [code, email, login, password, resetPassword, sp, t, verifiedCode]);
 
     const onClick = useCallback(
-        (provider: LoginButtonProviderType) => {
+        async (provider: LoginButtonProviderType) => {
             if (!agreed) {
-                Modal.confirm({
-                    content: (
-                        <div>
-                            {t("have-read-and-agree")}{" "}
-                            <a href={privacyURL} rel="noreferrer" target="_blank">
-                                {t("privacy-agreement")}
-                            </a>{" "}
-                            {t("and")}{" "}
-                            <a href={serviceURL} rel="noreferrer" target="_blank">
-                                {t("service-policy")}
-                            </a>
-                        </div>
-                    ),
-                    onOk: () => {
-                        setAgreed(true);
-                        onClickButton(provider);
-                    },
-                });
-                return;
+                if (!(await requestAgreement({ t, privacyURL, serviceURL }))) {
+                    return;
+                }
+                setAgreed(true);
             }
             onClickButton(provider);
         },
@@ -226,6 +225,12 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
     }, [countryCode, isUnMountRef, phone, sendBindingPhoneCode, sp, t]);
 
     const bindPhone = useCallback(async () => {
+        if (!agreed) {
+            if (!(await requestAgreement({ t, privacyURL, serviceURL }))) {
+                return;
+            }
+            setAgreed(true);
+        }
         if (canBinding && bindingPhone) {
             setClickedBinding(true);
             const success = await sp(bindingPhone(countryCode, phone, bindingPhoneCode));
@@ -236,7 +241,18 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
             }
             setClickedBinding(false);
         }
-    }, [bindingPhone, bindingPhoneCode, canBinding, countryCode, phone, sp, t]);
+    }, [
+        agreed,
+        bindingPhone,
+        bindingPhoneCode,
+        canBinding,
+        countryCode,
+        phone,
+        privacyURL,
+        serviceURL,
+        sp,
+        t,
+    ]);
 
     function renderLoginPage(): React.ReactNode {
         return (
