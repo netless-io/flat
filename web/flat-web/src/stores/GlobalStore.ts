@@ -50,15 +50,8 @@ export class GlobalStore {
         autoPersistStore({ storeLSName: "GlobalStore", store: this, version: LS_VERSION });
     }
 
-    public updateUserInfo = (userInfo: UserInfo): void => {
-        const { token, userUUID, avatar, name, hasPhone } = userInfo;
-        this.userInfo = {
-            token,
-            userUUID,
-            avatar,
-            name,
-            hasPhone,
-        };
+    public updateUserInfo = (userInfo: UserInfo | null): void => {
+        this.userInfo = userInfo;
     };
 
     public updateAgoraSSOLoginID = (val: string | undefined | null): void => {

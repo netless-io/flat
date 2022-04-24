@@ -5,7 +5,7 @@ import "./index.less";
 
 import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Input, message } from "antd";
+import { Button, Input, message, Modal } from "antd";
 
 import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
 import { LoginTitle } from "../LoginTitle";
@@ -44,6 +44,7 @@ export interface LoginWithEmailProps {
     isBindingPhone?: boolean;
     sendBindingPhoneCode?: (countryCode: string, phone: string) => Promise<boolean>;
     bindingPhone?: (countryCode: string, phone: string, code: string) => Promise<boolean>;
+    cancelBindingPhone?: () => void;
 }
 
 export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
@@ -59,6 +60,7 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
     isBindingPhone,
     sendBindingPhoneCode,
     bindingPhone,
+    cancelBindingPhone,
 }) => {
     const { t } = useTranslation();
     const sp = useSafePromise();
@@ -173,12 +175,29 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
     const onClick = useCallback(
         (provider: LoginButtonProviderType) => {
             if (!agreed) {
-                message.info(t("agree-terms"));
+                Modal.confirm({
+                    content: (
+                        <div>
+                            {t("have-read-and-agree")}{" "}
+                            <a href={privacyURL} rel="noreferrer" target="_blank">
+                                {t("privacy-agreement")}
+                            </a>{" "}
+                            {t("and")}{" "}
+                            <a href={serviceURL} rel="noreferrer" target="_blank">
+                                {t("service-policy")}
+                            </a>
+                        </div>
+                    ),
+                    onOk: () => {
+                        setAgreed(true);
+                        onClickButton(provider);
+                    },
+                });
                 return;
             }
             onClickButton(provider);
         },
-        [agreed, onClickButton, t],
+        [agreed, onClickButton, privacyURL, serviceURL, t],
     );
 
     const sendBindingCode = useCallback(async () => {
@@ -397,6 +416,7 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
                       canBinding,
                       clickedBinding,
                       bindPhone,
+                      cancelBindingPhone: () => cancelBindingPhone?.(),
                   })
                 : page === "login"
                 ? renderLoginPage()
