@@ -63,11 +63,7 @@ export const LoginPage = observer(function LoginPage() {
         const effect = async (): Promise<void> => {
             const { jwtToken } = await sp(agoraSSOLoginCheck(globalStore.agoraSSOLoginID!));
             const userInfo = await sp(loginCheck(jwtToken));
-            globalStore.updateUserInfo(userInfo);
             setLoginResult(userInfo);
-            if (NEED_BINDING_PHONE ? userInfo.hasPhone : true) {
-                pushHistory(RouteNameType.HomePage);
-            }
         };
 
         if (urlParams.utm_source === "agora" && globalStore.agoraSSOLoginID) {
@@ -81,6 +77,7 @@ export const LoginPage = observer(function LoginPage() {
     useEffect(() => {
         const fromAgora = urlParams.utm_source === "agora";
         const isAgoraLoggedIn = globalStore.agoraSSOLoginID;
+        // TODO: Should checkLogin() again
         if (!fromAgora || (fromAgora && isAgoraLoggedIn)) {
             setLoginResult(globalStore.userInfo);
         }
