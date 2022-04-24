@@ -81,9 +81,7 @@ export const LoginPage = observer(function LoginPage() {
         if (!fromAgora || (fromAgora && isAgoraLoggedIn)) {
             setLoginResult(globalStore.userInfo);
         }
-        // set once on login page
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [globalStore, setLoginResult, urlParams.utm_source]);
 
     const onLoginResult = useCallback(
         async (authData: LoginProcessResult) => {
