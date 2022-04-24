@@ -111,6 +111,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     const updateLayoutTimeoutRef = useRef(NaN);
     const loadingPageRef = useRef(false);
+    const topBarRef = useRef<HTMLDivElement>(null);
 
     // control whiteboard writable
     useEffect(() => {
@@ -144,6 +145,22 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [classRoomStore.users.totalUserCount, classRoomStore.isRecording]);
 
+    useEffect(() => {
+        const handleMaximize = (): void => {
+            ipcAsyncByMainWindow("set-win-status", { windowStatus: "maximize" });
+        };
+
+        const topBarEl = topBarRef.current;
+        if (topBarEl) {
+            topBarEl.addEventListener("dblclick", handleMaximize);
+            return () => {
+                topBarEl.removeEventListener("dblclick", handleMaximize);
+            };
+        }
+
+        return;
+    }, []);
+
     if (!room || phase === RoomPhase.Connecting || phase === RoomPhase.Disconnecting) {
         loadingPageRef.current = true;
     } else {
@@ -175,6 +192,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                         isMac={runtime.isMac}
                         left={renderTopBarLeft()}
                         right={renderTopBarRight()}
+                        topBarRef={topBarRef}
                         onClickWindowsSystemBtn={onClickWindowsSystemBtn}
                     />
                     {renderAvatars()}

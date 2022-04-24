@@ -108,6 +108,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     const updateLayoutTimeoutRef = useRef(NaN);
     const loadingPageRef = useRef(false);
+    const topBarRef = useRef<HTMLDivElement>(null);
 
     // control whiteboard writable
     useEffect(() => {
@@ -167,6 +168,22 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [speakingJoiner, mainSpeaker, classRoomStore.isRecording]);
 
+    useEffect(() => {
+        const handleMaximize = (): void => {
+            ipcAsyncByMainWindow("set-win-status", { windowStatus: "maximize" });
+        };
+
+        const topBarEl = topBarRef.current;
+        if (topBarEl) {
+            topBarEl.addEventListener("dblclick", handleMaximize);
+            return () => {
+                topBarEl.removeEventListener("dblclick", handleMaximize);
+            };
+        }
+
+        return;
+    }, []);
+
     if (
         !whiteboardStore.room ||
         whiteboardStore.phase === RoomPhase.Connecting ||
@@ -201,6 +218,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                         isMac={runtime.isMac}
                         left={renderTopBarLeft()}
                         right={renderTopBarRight()}
+                        topBarRef={topBarRef}
                         onClickWindowsSystemBtn={onClickWindowsSystemBtn}
                     />
                     <div className="big-class-realtime-content">
