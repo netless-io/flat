@@ -48,24 +48,6 @@ export const LoginPage = observer(function LoginPage() {
         };
     }, []);
 
-    useEffect(() => {
-        const effect = async (): Promise<void> => {
-            const { jwtToken } = await sp(agoraSSOLoginCheck(globalStore.agoraSSOLoginID!));
-            const userInfo = await sp(loginCheck(jwtToken));
-            globalStore.updateUserInfo(userInfo);
-            if (NEED_BINDING_PHONE ? userInfo.hasPhone : true) {
-                pushHistory(RouteNameType.HomePage);
-            }
-        };
-
-        if (urlParams.utm_source === "agora" && globalStore.agoraSSOLoginID) {
-            effect().catch(error => {
-                // no handling required
-                console.warn(error);
-            });
-        }
-    });
-
     const setLoginResult = useCallback(
         (userInfo: LoginProcessResult | null) => {
             globalStore.updateUserInfo(userInfo);
@@ -76,6 +58,30 @@ export const LoginPage = observer(function LoginPage() {
         },
         [globalStore, pushHistory],
     );
+
+    useEffect(() => {
+        const effect = async (): Promise<void> => {
+            const { jwtToken } = await sp(agoraSSOLoginCheck(globalStore.agoraSSOLoginID!));
+            const userInfo = await sp(loginCheck(jwtToken));
+            setLoginResult(userInfo);
+        };
+
+        if (urlParams.utm_source === "agora" && globalStore.agoraSSOLoginID) {
+            effect().catch(error => {
+                // no handling required
+                console.warn(error);
+            });
+        }
+    });
+
+    useEffect(() => {
+        const fromAgora = urlParams.utm_source === "agora";
+        const isAgoraLoggedIn = globalStore.agoraSSOLoginID;
+        // TODO: Should checkLogin() again
+        if (!fromAgora || (fromAgora && isAgoraLoggedIn)) {
+            setLoginResult(globalStore.userInfo);
+        }
+    }, [globalStore, setLoginResult, urlParams.utm_source]);
 
     const onLoginResult = useCallback(
         async (authData: LoginProcessResult) => {
