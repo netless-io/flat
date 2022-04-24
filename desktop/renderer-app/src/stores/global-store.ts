@@ -48,7 +48,7 @@ export class GlobalStore {
         autoPersistStore({ storeLSName: "GlobalStore", store: this, version: LS_VERSION });
     }
 
-    public updateUserInfo = (userInfo: UserInfo): void => {
+    public updateUserInfo = (userInfo: UserInfo | null): void => {
         this.userInfo = userInfo;
     };
 

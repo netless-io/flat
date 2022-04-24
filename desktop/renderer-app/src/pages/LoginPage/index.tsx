@@ -80,10 +80,10 @@ export const LoginPage = observer(function LoginPage() {
     }, [sp]);
 
     const setLoginResult = useCallback(
-        (userInfo: LoginProcessResult) => {
+        (userInfo: LoginProcessResult | null) => {
             globalStore.updateUserInfo(userInfo);
             setLoginResult_(userInfo);
-            if (NEED_BINDING_PHONE ? userInfo.hasPhone : true) {
+            if (userInfo && (NEED_BINDING_PHONE ? userInfo.hasPhone : true)) {
                 pushHistory(RouteNameType.HomePage);
             }
         },
@@ -157,6 +157,7 @@ export const LoginPage = observer(function LoginPage() {
                         wrap(bindingPhone(countryCode + phone, Number(code)).then(onBoundPhone))
                     }
                     buttons={[process.env.FLAT_REGION === "US" ? "google" : "wechat", "github"]}
+                    cancelBindingPhone={() => setLoginResult(null)}
                     isBindingPhone={
                         NEED_BINDING_PHONE && (loginResult ? !loginResult.hasPhone : false)
                     }

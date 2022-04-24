@@ -2,7 +2,7 @@ import checkedSVG from "./icons/checked.svg";
 import "./index.less";
 
 import React, { useCallback, useMemo, useState } from "react";
-import { Button, Input, message, Select } from "antd";
+import { Button, Input, message, Modal, Select } from "antd";
 import { TFunction } from "i18next";
 
 import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
@@ -33,6 +33,7 @@ export interface LoginWithPhoneProps {
     sendVerificationCode: (countryCode: string, phone: string) => Promise<boolean>;
     loginOrRegister: (countryCode: string, phone: string, code: string) => Promise<boolean>;
     isBindingPhone?: boolean;
+    cancelBindingPhone?: () => void;
     sendBindingPhoneCode?: (countryCode: string, phone: string) => Promise<boolean>;
     bindingPhone?: (countryCode: string, phone: string, code: string) => Promise<boolean>;
     renderQRCode: () => React.ReactNode;
@@ -43,6 +44,7 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
     privacyURL,
     serviceURL,
     isBindingPhone,
+    cancelBindingPhone,
     sendBindingPhoneCode,
     bindingPhone,
     onClickButton,
@@ -121,7 +123,28 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
     const onClick = useCallback(
         (provider: LoginButtonProviderType) => {
             if (!agreed) {
-                message.info(t("agree-terms"));
+                Modal.confirm({
+                    content: (
+                        <div>
+                            {t("have-read-and-agree")}{" "}
+                            <a href={privacyURL} rel="noreferrer" target="_blank">
+                                {t("privacy-agreement")}
+                            </a>{" "}
+                            {t("and")}{" "}
+                            <a href={serviceURL} rel="noreferrer" target="_blank">
+                                {t("service-policy")}
+                            </a>
+                        </div>
+                    ),
+                    onOk: () => {
+                        setAgreed(true);
+                        if (provider === "wechat") {
+                            setShowQRCode(true);
+                        } else {
+                            onClickButton(provider);
+                        }
+                    },
+                });
                 return;
             }
             if (provider === "wechat") {
@@ -130,7 +153,7 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
                 onClickButton(provider);
             }
         },
-        [agreed, onClickButton, t],
+        [agreed, onClickButton, privacyURL, serviceURL, t],
     );
 
     const sendBindingCode = useCallback(async () => {
@@ -276,6 +299,7 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
                       canBinding,
                       clickedBinding,
                       bindPhone,
+                      cancelBindingPhone: () => cancelBindingPhone?.(),
                   })
                 : showQRCode
                 ? renderQRCodePage()
@@ -297,6 +321,7 @@ export interface BindingPhonePageProps {
     canBinding: boolean;
     clickedBinding: boolean;
     bindPhone: () => Promise<void>;
+    cancelBindingPhone: () => void;
 }
 
 export function renderBindPhonePage({
@@ -312,6 +337,7 @@ export function renderBindPhonePage({
     canBinding,
     clickedBinding,
     bindPhone,
+    cancelBindingPhone,
 }: BindingPhonePageProps): React.ReactNode {
     return (
         <div className="login-with-phone binding">
@@ -368,6 +394,9 @@ export function renderBindPhonePage({
                     onClick={bindPhone}
                 >
                     {t("confirm")}
+                </Button>
+                <Button className="login-btn-back" type="link" onClick={cancelBindingPhone}>
+                    {t("back")}
                 </Button>
             </div>
         </div>
