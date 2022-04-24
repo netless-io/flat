@@ -38,4 +38,12 @@ Overview.args = {
     onClickButton: (provider: string) => {
         message.info("login with " + provider);
     },
+    bindingPhone: (country, phone, code) => {
+        message.info("bindingPhone " + country + " " + phone + " " + code);
+        return new Promise(resolve => setTimeout(() => resolve(code === "123456"), 1000));
+    },
+    sendBindingPhoneCode: (country, phone) => {
+        message.info("sendVerificationCode " + country + " " + phone);
+        return new Promise(resolve => setTimeout(() => resolve(phone === "123456"), 1000));
+    },
 };

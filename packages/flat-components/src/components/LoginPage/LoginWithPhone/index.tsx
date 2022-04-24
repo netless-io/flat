@@ -78,9 +78,8 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
     const [clickedLogin, setClickedLogin] = useState(false);
     const [clickedBinding, setClickedBinding] = useState(false);
 
-    const canLogin = !clickedLogin && validatePhone(phone) && validateCode(code) && agreed;
-    const canBinding =
-        !clickedBinding && validatePhone(phone) && validateCode(bindingPhoneCode) && agreed;
+    const canLogin = !clickedLogin && validatePhone(phone) && validateCode(code);
+    const canBinding = !clickedBinding && validatePhone(phone) && validateCode(bindingPhoneCode);
 
     const sendCode = useCallback(async () => {
         if (validatePhone(phone)) {
@@ -108,6 +107,12 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
     }, [countryCode, isUnMountRef, phone, sendVerificationCode, sp, t]);
 
     const login = useCallback(async () => {
+        if (!agreed) {
+            if (!(await requestAgreement({ t, privacyURL, serviceURL }))) {
+                return;
+            }
+            setAgreed(true);
+        }
         if (canLogin) {
             setClickedLogin(true);
             const success = await sp(loginOrRegister(countryCode, phone, code));
@@ -118,34 +123,26 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
             }
             setClickedLogin(false);
         }
-    }, [canLogin, sp, loginOrRegister, countryCode, phone, code, t]);
+    }, [
+        agreed,
+        canLogin,
+        t,
+        privacyURL,
+        serviceURL,
+        sp,
+        loginOrRegister,
+        countryCode,
+        phone,
+        code,
+    ]);
 
     const onClick = useCallback(
-        (provider: LoginButtonProviderType) => {
+        async (provider: LoginButtonProviderType) => {
             if (!agreed) {
-                Modal.confirm({
-                    content: (
-                        <div>
-                            {t("have-read-and-agree")}{" "}
-                            <a href={privacyURL} rel="noreferrer" target="_blank">
-                                {t("privacy-agreement")}
-                            </a>{" "}
-                            {t("and")}{" "}
-                            <a href={serviceURL} rel="noreferrer" target="_blank">
-                                {t("service-policy")}
-                            </a>
-                        </div>
-                    ),
-                    onOk: () => {
-                        setAgreed(true);
-                        if (provider === "wechat") {
-                            setShowQRCode(true);
-                        } else {
-                            onClickButton(provider);
-                        }
-                    },
-                });
-                return;
+                if (!(await requestAgreement({ t, privacyURL, serviceURL }))) {
+                    return;
+                }
+                setAgreed(true);
             }
             if (provider === "wechat") {
                 setShowQRCode(true);
@@ -182,6 +179,12 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
     }, [countryCode, isUnMountRef, phone, sendBindingPhoneCode, sp, t]);
 
     const bindPhone = useCallback(async () => {
+        if (!agreed) {
+            if (!(await requestAgreement({ t, privacyURL, serviceURL }))) {
+                return;
+            }
+            setAgreed(true);
+        }
         if (canBinding && bindingPhone) {
             setClickedBinding(true);
             const success = await sp(bindingPhone(countryCode, phone, bindingPhoneCode));
@@ -192,7 +195,18 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
             }
             setClickedBinding(false);
         }
-    }, [bindingPhone, bindingPhoneCode, canBinding, countryCode, phone, sp, t]);
+    }, [
+        agreed,
+        bindingPhone,
+        bindingPhoneCode,
+        canBinding,
+        countryCode,
+        phone,
+        privacyURL,
+        serviceURL,
+        sp,
+        t,
+    ]);
 
     function renderQRCodePage(): React.ReactNode {
         return (
@@ -322,6 +336,37 @@ export interface BindingPhonePageProps {
     clickedBinding: boolean;
     bindPhone: () => Promise<void>;
     cancelBindingPhone: () => void;
+}
+
+export interface RequestAgreementParams {
+    privacyURL?: string;
+    serviceURL?: string;
+    t: TFunction;
+}
+
+export function requestAgreement({
+    t,
+    privacyURL,
+    serviceURL,
+}: RequestAgreementParams): Promise<boolean> {
+    return new Promise<boolean>(resolve =>
+        Modal.confirm({
+            content: (
+                <div>
+                    {t("have-read-and-agree")}{" "}
+                    <a href={privacyURL} rel="noreferrer" target="_blank">
+                        {t("privacy-agreement")}
+                    </a>{" "}
+                    {t("and")}{" "}
+                    <a href={serviceURL} rel="noreferrer" target="_blank">
+                        {t("service-policy")}
+                    </a>
+                </div>
+            ),
+            onOk: () => resolve(true),
+            onCancel: () => resolve(false),
+        }),
+    );
 }
 
 export function renderBindPhonePage({
