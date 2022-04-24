@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
+import { SideEffectManager } from "side-effect-manager";
 import { RtcChannelType } from "../api-middleware/rtc";
 import {
     ClassModeType,
@@ -62,6 +63,8 @@ export enum RoomStatusLoadingType {
 }
 
 export class ClassRoomStore {
+    private sideEffect = new SideEffectManager();
+
     public readonly roomUUID: string;
     /** User uuid of the current user */
     public readonly userUUID: string;
@@ -140,7 +143,10 @@ export class ClassRoomStore {
 
         makeAutoObservable<
             this,
-            "_noMoreRemoteMessages" | "_collectChannelStatusTimeout" | "_userDeviceStatePrePause"
+            | "_noMoreRemoteMessages"
+            | "_collectChannelStatusTimeout"
+            | "_userDeviceStatePrePause"
+            | "sideEffect"
         >(this, {
             rtc: observable.ref,
             rtm: observable.ref,
@@ -148,6 +154,7 @@ export class ClassRoomStore {
             _noMoreRemoteMessages: false,
             _collectChannelStatusTimeout: false,
             _userDeviceStatePrePause: false,
+            sideEffect: false,
         });
 
         this.users = new UserStore({
@@ -202,6 +209,15 @@ export class ClassRoomStore {
         this.rtm.on(RTMessageType.CONNECTED, () => {
             return this.updateInitialRoomState();
         });
+
+        this.sideEffect.addDisposer(
+            this.rtc.events.on(
+                "network",
+                action("checkNetworkQuality", networkQuality => {
+                    this.networkQuality = networkQuality;
+                }),
+            ),
+        );
     }
 
     public get ownerUUID(): string {
@@ -587,6 +603,8 @@ export class ClassRoomStore {
     }
 
     public async destroy(): Promise<void> {
+        this.sideEffect.flushAll();
+
         const promises: Array<Promise<any>> = [];
 
         promises.push(this.rtm.destroy());
