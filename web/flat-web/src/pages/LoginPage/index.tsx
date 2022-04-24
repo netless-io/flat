@@ -48,11 +48,23 @@ export const LoginPage = observer(function LoginPage() {
         };
     }, []);
 
+    const setLoginResult = useCallback(
+        (userInfo: LoginProcessResult | null) => {
+            globalStore.updateUserInfo(userInfo);
+            setLoginResult_(userInfo);
+            if (userInfo && (NEED_BINDING_PHONE ? userInfo.hasPhone : true)) {
+                pushHistory(RouteNameType.HomePage);
+            }
+        },
+        [globalStore, pushHistory],
+    );
+
     useEffect(() => {
         const effect = async (): Promise<void> => {
             const { jwtToken } = await sp(agoraSSOLoginCheck(globalStore.agoraSSOLoginID!));
             const userInfo = await sp(loginCheck(jwtToken));
             globalStore.updateUserInfo(userInfo);
+            setLoginResult(userInfo);
             if (NEED_BINDING_PHONE ? userInfo.hasPhone : true) {
                 pushHistory(RouteNameType.HomePage);
             }
@@ -66,16 +78,15 @@ export const LoginPage = observer(function LoginPage() {
         }
     });
 
-    const setLoginResult = useCallback(
-        (userInfo: LoginProcessResult | null) => {
-            globalStore.updateUserInfo(userInfo);
-            setLoginResult_(userInfo);
-            if (userInfo && (NEED_BINDING_PHONE ? userInfo.hasPhone : true)) {
-                pushHistory(RouteNameType.HomePage);
-            }
-        },
-        [globalStore, pushHistory],
-    );
+    useEffect(() => {
+        const fromAgora = urlParams.utm_source === "agora";
+        const isAgoraLoggedIn = globalStore.agoraSSOLoginID;
+        if (!fromAgora || (fromAgora && isAgoraLoggedIn)) {
+            setLoginResult(globalStore.userInfo);
+        }
+        // set once on login page
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const onLoginResult = useCallback(
         async (authData: LoginProcessResult) => {

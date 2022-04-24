@@ -26,6 +26,7 @@ export function useLoginCheck(): boolean {
 
             try {
                 const result = await loginCheck();
+                globalStore.updateUserInfo(result);
                 globalStore.updateLastLoginCheck(Date.now());
                 return NEED_BINDING_PHONE ? result.hasPhone : true;
             } catch (e) {
