@@ -72,7 +72,7 @@ export const LoginPage = observer(function LoginPage() {
                 console.warn(error);
             });
         }
-    });
+    }, [globalStore, setLoginResult, sp, urlParams.utm_source]);
 
     useEffect(() => {
         const fromAgora = urlParams.utm_source === "agora";
