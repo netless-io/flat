@@ -8,12 +8,12 @@ import {
     getEndTimeFromRate,
     getRateFromEndTime,
     LoadingPage,
+    errorTips,
 } from "flat-components";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import EditRoomPage from "../../components/EditRoomPage";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
-import { periodicRoomInfo, updatePeriodicRoom } from "../../api-middleware/flatServer";
-import { errorTips } from "../../components/Tips/ErrorTips";
+import { periodicRoomInfo, updatePeriodicRoom } from "@netless/flat-server-api";
 import { useLoginCheck } from "../utils/use-login-check";
 
 /**

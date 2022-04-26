@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { Region } from "flat-components";
 import { previewSlide, SlidePreviewer } from "@netless/app-slide";
-import { queryConvertingTaskStatus } from "../../api-middleware/courseware-converting";
+import { queryConvertingTaskStatus } from "@netless/flat-stores";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 export interface DynamicPreviewProps {

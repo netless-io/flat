@@ -1,21 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps, useParams, useHistory } from "react-router-dom";
-import { ErrorPage, LoadingPage } from "flat-components";
-import PlayerController from "@netless/player-controller";
+import { ErrorPage, LoadingPage, errorTips } from "flat-components";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanelReplay } from "../../components/ChatPanelReplay";
-import { OrdinaryRoomInfo } from "../../api-middleware/flatServer";
-import { RoomType } from "../../api-middleware/flatServer/constants";
+import { OrdinaryRoomInfo, RoomType } from "@netless/flat-server-api";
 import { observer } from "mobx-react-lite";
-import { useClassRoomReplayStore } from "../../stores/class-room-replay-store";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import videoPlaySVG from "../../assets/image/video-play.svg";
 import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
-import { errorTips } from "../../components/Tips/ErrorTips";
 import { useLoginCheck } from "../utils/use-login-check";
+import { useClassroomReplayStore } from "../../stores/use-classroom-replay-store";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;
@@ -44,18 +41,14 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     const history = useHistory();
 
     const params = useParams<RouteParams<RouteNameType.ReplayPage>>();
-    const classRoomReplayStore = useClassRoomReplayStore(
-        params.roomUUID,
-        params.ownerUUID,
-        params.roomType as RoomType,
-    );
+    const classRoomReplayStore = useClassroomReplayStore(params);
 
     const [isShowController, setShowController] = useState(false);
     const hideControllerTimeoutRef = useRef<number>();
     const lastMouseRef = useRef({ lastMouseX: -100, lastMouseY: -100 });
 
     useEffect(() => {
-        classRoomReplayStore.init(whiteboardElRef.current!, videoElRef.current!).catch(errorTips);
+        classRoomReplayStore.init().catch(errorTips);
 
         const handleSpaceKey = (evt: KeyboardEvent): void => {
             if (evt.key === "Space") {
@@ -77,7 +70,8 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
 
     return (
         <div className="replay-container">
-            {classRoomReplayStore.roomType === RoomType.SmallClass && renderSmallClassAvatars()}
+            {classRoomReplayStore.roomInfo?.roomType === RoomType.SmallClass &&
+                renderSmallClassAvatars()}
             <div className="replay-content">
                 {renderWhiteboard()}
                 {renderRealtimePanel()}
@@ -119,12 +113,12 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
                 )}
                 {isShowController &&
                     classRoomReplayStore.isReady &&
-                    classRoomReplayStore.smartPlayer.whiteboardPlayer && (
-                        <PlayerController
-                            combinePlayer={classRoomReplayStore.smartPlayer.combinePlayer}
-                            player={classRoomReplayStore.smartPlayer.whiteboardPlayer}
-                        />
-                    )}
+                    classRoomReplayStore.fastboard &&
+                    // <PlayerController
+                    //     combinePlayer={classRoomReplayStore.smartPlayer.combinePlayer}
+                    //     player={classRoomReplayStore.smartPlayer.whiteboardPlayer}
+                    // />
+                    null}
             </div>
         );
     }
@@ -133,17 +127,17 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         return (
             <RealtimePanel
                 chatSlot={
-                    classRoomReplayStore.smartPlayer.whiteboardPlayer && (
+                    classRoomReplayStore.fastboard && (
                         <ChatPanelReplay classRoomReplayStore={classRoomReplayStore} />
                     )
                 }
                 isShow={true}
                 isVideoOn={
-                    classRoomReplayStore.roomType !== RoomType.SmallClass &&
+                    classRoomReplayStore.roomInfo?.roomType !== RoomType.SmallClass &&
                     classRoomReplayStore.withRTCVideo
                 }
                 videoSlot={
-                    classRoomReplayStore.roomType !== RoomType.SmallClass && (
+                    classRoomReplayStore.roomInfo?.roomType !== RoomType.SmallClass && (
                         <video ref={videoElRef} className="replay-big-class-video" />
                     )
                 }

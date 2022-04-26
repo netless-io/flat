@@ -5,13 +5,12 @@ import { observer } from "mobx-react-lite";
 import { useHistory, useParams } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 import { useLastLocation } from "react-router-last-location";
-import { LoadingPage, PeriodicRoomPanel } from "flat-components";
+import { LoadingPage, PeriodicRoomPanel, errorTips } from "flat-components";
 import { useTranslation } from "react-i18next";
 import { PageStoreContext, RoomStoreContext } from "../../components/StoreProvider";
-import { errorTips } from "../../components/Tips/ErrorTips";
-import { globalStore } from "../../stores/GlobalStore";
+import { globalStore } from "@netless/flat-stores";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
-import { cancelPeriodicRoom, cancelPeriodicSubRoom } from "../../api-middleware/flatServer";
+import { cancelPeriodicRoom, cancelPeriodicSubRoom } from "@netless/flat-server-api";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
 import { useLoginCheck } from "../utils/use-login-check";
 

@@ -1,7 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "lib": ["dom", "es2017"],
     "module": "ESNext",
     "jsx": "react",

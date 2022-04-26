@@ -2,11 +2,11 @@ import React from "react";
 import { Tabs } from "antd";
 import { observer } from "mobx-react-lite";
 import { ChatMessagesReplay } from "./ChatMessagesReplay";
-import { ClassRoomReplayStore } from "../../stores/class-room-replay-store";
+import type { ClassroomReplayStore } from "@netless/flat-stores";
 import { useTranslation } from "react-i18next";
 
 export interface ChatPanelReplayProps {
-    classRoomReplayStore: ClassRoomReplayStore;
+    classRoomReplayStore: ClassroomReplayStore;
 }
 
 export const ChatPanelReplay = observer<ChatPanelReplayProps>(function ChatPanelReplay({

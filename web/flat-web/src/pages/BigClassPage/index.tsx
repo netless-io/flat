@@ -21,9 +21,7 @@ import { useParams } from "react-router-dom";
 import { RoomPhase } from "white-web-sdk";
 import { useTranslation } from "react-i18next";
 import { FlatRTCRole } from "@netless/flat-rtc";
-import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
-import { RoomStatus } from "../../api-middleware/flatServer/constants";
-import { RtcChannelType } from "../../api-middleware/rtc/room";
+import { AgoraCloudRecordBackgroundConfigItem, RoomStatus } from "@netless/flat-server-api";
 import { ChatPanel } from "../../components/ChatPanel";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
@@ -35,57 +33,24 @@ import {
 import InviteButton from "../../components/InviteButton";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { Whiteboard } from "../../components/Whiteboard";
-import { RecordingConfig, useClassRoomStore, User } from "../../stores/class-room-store";
-import { useAutoRun, useReaction } from "../../utils/mobx";
+import { User } from "@netless/flat-stores";
+import { useAutoRun } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { runtime } from "../../utils/runtime";
 import { RTCAvatar } from "../../components/RTCAvatar";
 import { ShareScreen } from "../../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
-
-const recordingConfig: RecordingConfig = Object.freeze({
-    channelType: RtcChannelType.Broadcast,
-    transcodingConfig: {
-        width: 288,
-        height: 216,
-        // https://docs.agora.io/cn/cloud-recording/recording_video_profile
-        fps: 15,
-        bitrate: 280,
-        mixedVideoLayout: 3,
-        backgroundColor: "#000000",
-        defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
-        layoutConfig: [
-            {
-                x_axis: 0,
-                y_axis: 0,
-                width: 1,
-                height: 1,
-                alpha: 1.0,
-                render_mode: 1,
-            },
-            {
-                x_axis: 0.0,
-                y_axis: 0.67,
-                width: 0.33,
-                height: 0.33,
-                alpha: 1.0,
-                render_mode: 1,
-            },
-        ],
-    },
-    maxIdleTime: 60,
-    subscribeUidGroup: 0,
-});
+import { useClassroomStore } from "../../stores/use-classroom-store";
 
 export type BigClassPageProps = {};
 
 export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() {
     useLoginCheck();
 
-    const { i18n, t } = useTranslation();
+    const { t } = useTranslation();
     const params = useParams<RouteParams<RouteNameType.BigClassPage>>();
 
-    const classRoomStore = useClassRoomStore({ ...params, recordingConfig, i18n });
+    const classRoomStore = useClassroomStore(params);
 
     const whiteboardStore = classRoomStore.whiteboardStore;
 
@@ -101,15 +66,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
     const updateLayoutTimeoutRef = useRef(NaN);
     const loadingPageRef = useRef(false);
-
-    // control whiteboard writable
-    useEffect(() => {
-        if (!classRoomStore.isCreator && classRoomStore.users.currentUser) {
-            void whiteboardStore.updateWritable(classRoomStore.users.currentUser.isSpeak);
-        }
-        // dumb exhaustive-deps
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [classRoomStore.users.currentUser?.isSpeak]);
 
     useAutoRun(() => {
         if (classRoomStore.users.speakingJoiners.length <= 0) {
@@ -131,15 +87,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
             void classRoomStore.rtc.setRole(user.isSpeak ? FlatRTCRole.Host : FlatRTCRole.Audience);
         }
     });
-
-    useReaction(
-        () => classRoomStore.isCalling,
-        (prevCalling, currCalling) => {
-            if (!prevCalling && currCalling) {
-                openRealtimeSide(true);
-            }
-        },
-    );
 
     useEffect(() => {
         if (classRoomStore.isRecording) {
@@ -325,31 +272,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 image_url: speakingJoiner.avatar,
             });
         }
-
-        classRoomStore.updateRecordingLayout({
-            mixedVideoLayout: 3,
-            backgroundColor: "#000000",
-            defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
-            backgroundConfig,
-            layoutConfig: [
-                {
-                    x_axis: 0,
-                    y_axis: 0,
-                    width: 1,
-                    height: 1,
-                    alpha: 1.0,
-                    render_mode: 1,
-                },
-                {
-                    x_axis: 0.0,
-                    y_axis: 0.67,
-                    width: 0.33,
-                    height: 0.33,
-                    alpha: 1.0,
-                    render_mode: 1,
-                },
-            ],
-        });
     }
 });
 

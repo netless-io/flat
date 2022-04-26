@@ -2,13 +2,13 @@ import {
     CloseRoomConfirmModal,
     ExitRoomConfirmModal,
     StopClassConfirmModal,
+    errorTips,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useState } from "react";
-import { RoomStatus } from "../api-middleware/flatServer/constants";
+import { RoomStatus } from "@netless/flat-server-api";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../utils/routes";
-import { errorTips } from "./Tips/ErrorTips";
 
 export enum ExitRoomConfirmType {
     StopClassButton,

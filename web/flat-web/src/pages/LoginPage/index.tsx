@@ -3,7 +3,7 @@ import "./style.less";
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
-import { LoginPanel, LoginButtonProviderType, LoginWithPhone } from "flat-components";
+import { LoginPanel, LoginButtonProviderType, LoginWithPhone, errorTips } from "flat-components";
 import { LoginDisposer } from "./utils";
 import { githubLogin } from "./githubLogin";
 import { WeChatLogin } from "./WeChatLogin";
@@ -11,7 +11,6 @@ import { agoraLogin } from "./agoraLogin";
 import { googleLogin } from "./googleLogin";
 import { RouteNameType, usePushHistory, useURLParams } from "../../utils/routes";
 import { GlobalStoreContext } from "../../components/StoreProvider";
-import { errorTips } from "../../components/Tips/ErrorTips";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
@@ -23,7 +22,7 @@ import {
     loginPhone,
     loginPhoneSendCode,
     LoginProcessResult,
-} from "../../api-middleware/flatServer";
+} from "@netless/flat-server-api";
 
 export const LoginPage = observer(function LoginPage() {
     const { i18n } = useTranslation();

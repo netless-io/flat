@@ -1,0 +1,19 @@
+import { message } from "antd";
+import { ServerRequestError } from "@netless/flat-server-api";
+import { i18n } from "flat-i18n";
+
+export const errorTips = (e: unknown): void => {
+    if (process.env.NODE_ENV === "development") {
+        console.error(e);
+    }
+
+    if (e instanceof ServerRequestError) {
+        void message.error({
+            content: i18n.t(e.errorMessage),
+            key: e.errorMessage,
+        });
+    } else {
+        const { message: content, message: key } = e as Error;
+        void message.error({ content, key });
+    }
+};
