@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { RoomList } from "flat-components";
 import { MainRoomList } from "./MainRoomList";
-import { ListRoomsType } from "../../../api-middleware/flatServer";
+import { ListRoomsType } from "@netless/flat-server-api";
 import { useTranslation } from "react-i18next";
 
 export const MainRoomListPanel = observer<{ isLogin: boolean }>(function MainRoomListPanel({

@@ -126,7 +126,7 @@ export const ChatMessageList = observer<ChatMessageListProps>(function ChatMessa
                             {() => (
                                 <ChatMessage
                                     message={messages[index]}
-                                    messageUser={getUserByUUID(messages[index].userUUID)}
+                                    messageUser={getUserByUUID(messages[index].senderID)}
                                     openCloudStorage={openCloudStorage}
                                     userUUID={userUUID}
                                     onMount={measure}

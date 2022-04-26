@@ -1,9 +1,9 @@
 import { message } from "antd";
 import { v4 as v4uuid } from "uuid";
 import type { Room, Size } from "white-web-sdk";
-import { listFiles } from "../../api-middleware/flatServer/storage";
+import { listFiles } from "@netless/flat-server-api";
 import { i18n } from "../i18n";
-import { UploadTask } from "../upload-task-manager/upload-task";
+import { UploadTask } from "@netless/flat-stores";
 
 const ImageFileTypes = [
     "image/png",

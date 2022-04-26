@@ -1,7 +1,7 @@
 import { RoomStoppedModal } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
-import { RoomStatus } from "../../api-middleware/flatServer/constants";
+import { RoomStatus } from "@netless/flat-server-api";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 export interface RoomStatusStoppedModalProps {

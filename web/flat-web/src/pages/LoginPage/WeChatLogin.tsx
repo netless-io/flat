@@ -5,9 +5,9 @@ import { useTranslation } from "react-i18next";
 import { LoadingOutlined } from "@ant-design/icons";
 import { observer } from "mobx-react-lite";
 import { v4 as uuidv4 } from "uuid";
-import { loginProcess, LoginProcessResult, setAuthUUID } from "../../api-middleware/flatServer";
-import { FLAT_SERVER_LOGIN } from "../../api-middleware/flatServer/constants";
-import { errorTips } from "../../components/Tips/ErrorTips";
+import { loginProcess, LoginProcessResult, setAuthUUID } from "@netless/flat-server-api";
+import { FLAT_SERVER_LOGIN } from "@netless/flat-server-api";
+import { errorTips } from "flat-components";
 import { WECHAT } from "../../constants/process";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 

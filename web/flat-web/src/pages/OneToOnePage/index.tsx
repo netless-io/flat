@@ -32,42 +32,25 @@ import {
 } from "../../components/ExitRoomConfirm";
 import { Whiteboard } from "../../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import { RoomStatus } from "../../api-middleware/flatServer/constants";
-import { RecordingConfig, useClassRoomStore } from "../../stores/class-room-store";
-import { RtcChannelType } from "../../api-middleware/rtc/room";
+import { RoomStatus } from "@netless/flat-server-api";
 import { useComputed } from "../../utils/mobx";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
-import { AgoraCloudRecordBackgroundConfigItem } from "../../api-middleware/flatServer/agora";
+import { AgoraCloudRecordBackgroundConfigItem } from "@netless/flat-server-api";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen } from "../../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
-
-const recordingConfig: RecordingConfig = Object.freeze({
-    channelType: RtcChannelType.Communication,
-    transcodingConfig: {
-        width: 288,
-        height: 216,
-        // https://docs.agora.io/cn/cloud-recording/recording_video_profile
-        fps: 15,
-        bitrate: 140,
-        mixedVideoLayout: 1,
-        backgroundColor: "#000000",
-        defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
-    },
-    maxIdleTime: 60,
-    subscribeUidGroup: 0,
-});
+import { useClassroomStore } from "../../stores/use-classroom-store";
 
 export type OneToOnePageProps = {};
 
 export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() {
     useLoginCheck();
 
-    const { i18n, t } = useTranslation();
+    const { t } = useTranslation();
     const params = useParams<RouteParams<RouteNameType.OneToOnePage>>();
 
-    const classRoomStore = useClassRoomStore({ ...params, recordingConfig, i18n });
+    const classRoomStore = useClassroomStore(params);
     const whiteboardStore = classRoomStore.whiteboardStore;
 
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
@@ -90,11 +73,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
         return classRoomStore.users.currentUser;
     }).get();
-
-    useEffect(() => {
-        void whiteboardStore.updateWritable(true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     useEffect(() => {
         if (classRoomStore.isRecording) {
@@ -280,13 +258,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 image_url: joiner.avatar,
             });
         }
-
-        classRoomStore.updateRecordingLayout({
-            mixedVideoLayout: 1,
-            backgroundColor: "#000000",
-            defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
-            backgroundConfig,
-        });
     }
 });
 

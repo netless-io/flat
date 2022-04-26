@@ -5,10 +5,10 @@ import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
-import { ClassRoomStore } from "../../stores/class-room-store";
+import { ClassroomStore } from "@netless/flat-stores";
 
 interface ShareScreenProps {
-    classRoomStore: ClassRoomStore;
+    classRoomStore: ClassroomStore;
 }
 
 export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ classRoomStore }) {

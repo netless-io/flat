@@ -3,14 +3,14 @@ import "./MainRoomMenu.less";
 import React, { FC, useContext } from "react";
 import { Col, Row } from "antd";
 import { Region } from "flat-components";
-import { RoomType } from "../../../api-middleware/flatServer/constants";
+import { RoomType } from "@netless/flat-server-api";
 import { GlobalStoreContext, RoomStoreContext } from "../../../components/StoreProvider";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
 import { CreateRoomBox } from "./CreateRoomBox";
 import { JoinRoomBox } from "./JoinRoomBox";
 import { ScheduleRoomBox } from "./ScheduleRoomBox";
 import { joinRoomHandler } from "../../utils/join-room-handler";
-import { errorTips } from "../../../components/Tips/ErrorTips";
+import { errorTips } from "flat-components";
 
 export const MainRoomMenu: FC = () => {
     const roomStore = useContext(RoomStoreContext);

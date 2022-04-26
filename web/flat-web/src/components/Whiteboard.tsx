@@ -15,11 +15,9 @@ import {
 import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
-
-import { WhiteboardStore } from "../stores/whiteboard-store";
+import { WhiteboardStore, ClassroomStore } from "@netless/flat-stores";
 import { isSupportedFileExt } from "../utils/drag-and-drop";
 import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image";
-import { ClassRoomStore } from "../stores/class-room-store";
 import { refreshApps } from "../utils/toolbar-apps";
 import { PRESETS } from "../constants/presets";
 import { mousewheelToScroll } from "../utils/mousewheel-to-scroll";
@@ -28,7 +26,7 @@ import { injectCursor } from "../utils/inject-cursor";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
-    classRoomStore: ClassRoomStore;
+    classRoomStore: ClassroomStore;
     disableHandRaising?: boolean;
 }
 

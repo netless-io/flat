@@ -14,6 +14,11 @@
     "start": "start-storybook -p 6006 -s public --no-version-updates",
     "build": "build-storybook -s public"
   },
+  "peerDependencies": {
+    "@netless/flat-rtm": "workspace:*",
+    "@netless/flat-server-api": "workspace:*",
+    "flat-i18n": "workspace:*"
+  },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@netless/flat-rtc": "workspace:*",
@@ -38,6 +43,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.7",
+    "@netless/flat-rtm": "workspace:*",
+    "@netless/flat-server-api": "workspace:*",
     "@storybook/addon-actions": "~6.3.7",
     "@storybook/addon-essentials": "~6.3.7",
     "@storybook/addon-links": "~6.3.7",
@@ -58,6 +65,7 @@
     "chance": "^1.1.8",
     "css-loader": "^6.7.1",
     "faker": "^5.5.3",
+    "flat-i18n": "workspace:*",
     "less-loader": "^10.2.0",
     "lodash-es": "^4.17.21",
     "sass": "^1.49.9",

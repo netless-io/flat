@@ -5,12 +5,11 @@ import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { FlatRTCDevice } from "@netless/flat-rtc";
 
-import { DeviceTest } from "../../api-middleware/rtc/device-test";
 import { useParams } from "react-router-dom";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { GlobalStoreContext } from "../../components/StoreProvider";
-import { configStore } from "../../stores/config-store";
+import { configStore } from "@netless/flat-stores";
 import { FlatRTCContext } from "../../components/FlatRTCContext";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { useLoginCheck } from "../utils/use-login-check";
@@ -60,10 +59,8 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     }, [rtc, cameraVideoStreamRef]);
 
     useEffect(() => {
-        const handlerDeviceError = (error: any): void => {
-            if (DeviceTest.isPermissionError(error)) {
-                setIsCameraAccessible(false);
-            }
+        const handlerDeviceError = (): void => {
+            setIsCameraAccessible(false);
         };
 
         const refreshCameraDevices = (): void => {
@@ -100,20 +97,16 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
 
     useEffect(() => {
         if (cameraDeviceId) {
-            void rtc.setCameraID(cameraDeviceId).catch((error: any) => {
-                if (DeviceTest.isPermissionError(error)) {
-                    setIsCameraAccessible(false);
-                }
+            void rtc.setCameraID(cameraDeviceId).catch(() => {
+                setIsCameraAccessible(false);
             });
         }
     }, [rtc, cameraDeviceId]);
 
     useEffect(() => {
         if (microphoneDeviceId) {
-            void rtc.setMicID(microphoneDeviceId).catch((error: any) => {
-                if (DeviceTest.isPermissionError(error)) {
-                    setIsMicrophoneAccessible(false);
-                }
+            void rtc.setMicID(microphoneDeviceId).catch(() => {
+                setIsMicrophoneAccessible(false);
             });
         }
     }, [rtc, microphoneDeviceId]);
