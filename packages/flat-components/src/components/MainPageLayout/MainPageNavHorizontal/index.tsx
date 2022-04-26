@@ -73,9 +73,7 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
                                                 {menuItem.title}
                                             </div>
                                         }
-                                    >
-                                        1
-                                    </TabPane>
+                                    />
                                 );
                             })}
                         </Tabs>
