@@ -1,0 +1,39 @@
+{
+  "name": "@netless/flat-stores",
+  "version": "0.1.0",
+  "description": "Flat Stores",
+  "main": "src/index.ts",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "@netless/flat-rtc": "workspace:*",
+    "@netless/flat-rtm": "workspace:*",
+    "@netless/flat-server-api": "workspace:*",
+    "@netless/synced-store": "1.x",
+    "emittery": "0.x",
+    "flat-components": "workspace:*",
+    "flat-i18n": "workspace:*",
+    "mobx": "6.x",
+    "side-effect-manager": "^0.1.5",
+    "uuid": "8.x",
+    "white-web-sdk": ">= 2.16"
+  },
+  "devDependencies": {
+    "@netless/flat-rtc": "workspace:*",
+    "@netless/flat-rtm": "workspace:*",
+    "@netless/flat-server-api": "workspace:*",
+    "@netless/synced-store": "^1.1.1",
+    "emittery": "^0.10.2",
+    "flat-components": "workspace:*",
+    "flat-i18n": "workspace:*",
+    "mobx": "^6.4.2",
+    "prettier": "^2.3.0",
+    "side-effect-manager": "^0.1.5",
+    "typescript": "^4.6.2",
+    "uuid": "^8.3.2",
+    "white-web-sdk": "2.16.20"
+  }
+}

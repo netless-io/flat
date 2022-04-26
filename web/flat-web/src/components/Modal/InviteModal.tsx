@@ -1,11 +1,10 @@
 import React, { useCallback, useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
-import { InviteModal as InviteModalImpl } from "flat-components";
+import { InviteModal as InviteModalImpl, errorTips } from "flat-components";
 import { useTranslation } from "react-i18next";
-import { RoomItem } from "../../stores/room-store";
+import { RoomItem } from "@netless/flat-stores";
 import { GlobalStoreContext, RoomStoreContext } from "../StoreProvider";
-import { errorTips } from "../Tips/ErrorTips";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
 
 export interface InviteModalProps {

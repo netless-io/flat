@@ -1,13 +1,15 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { ChatPanel as ChatPanelImpl, useComputed } from "flat-components";
-import { ClassRoomStore } from "../../stores/class-room-store";
+import { ClassroomStore } from "@netless/flat-stores";
 import { generateAvatar } from "../../utils/generate-avatar";
 
 export interface ChatPanelProps {
-    classRoomStore: ClassRoomStore;
+    classRoomStore: ClassroomStore;
     disableMultipleSpeakers?: boolean;
 }
+
+const noop = async (): Promise<void> => void 0;
 
 export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     classRoomStore,
@@ -28,8 +30,8 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             hasSpeaking={classRoomStore.users.speakingJoiners.length > 0}
             isBan={classRoomStore.isBan}
             isCreator={classRoomStore.isCreator}
-            loadMoreRows={classRoomStore.updateHistory}
-            messages={classRoomStore.messages}
+            loadMoreRows={noop}
+            messages={classRoomStore.chatStore.messages}
             openCloudStorage={() => classRoomStore.toggleCloudStoragePanel(true)}
             ownerUUID={classRoomStore.ownerUUID}
             unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
@@ -45,7 +47,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             onBanChange={classRoomStore.onToggleBan}
             onCancelAllHandRaising={classRoomStore.onCancelAllHandRaising}
             onEndSpeaking={userUUID => {
-                void classRoomStore.onSpeak([{ userUUID, speak: false }]);
+                void classRoomStore.onStaging(userUUID, false);
             }}
             onMessageSend={classRoomStore.onMessageSend}
         />

@@ -4,12 +4,12 @@ import { SVGCloudOutlined, TopBarRightBtn } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
 import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
-import { ClassRoomStore } from "../stores/class-room-store";
+import { ClassroomStore } from "@netless/flat-stores";
 import "./CloudStorageButton.less";
 import { useTranslation } from "react-i18next";
 
 interface CloudStorageButtonProps {
-    classroom: ClassRoomStore;
+    classroom: ClassroomStore;
 }
 
 export const CloudStorageButton = observer<CloudStorageButtonProps>(function CloudStorageButton({

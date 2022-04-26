@@ -1,7 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "target": "es2017",
     "module": "CommonJS",
     "lib": ["es2017", "DOM"]

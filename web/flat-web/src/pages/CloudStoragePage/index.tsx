@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 import { CloudStorageContainer } from "flat-components";
 import { PageStoreContext } from "../../components/StoreProvider";
-import { CloudStorageStore } from "./store";
+import { CloudStorageStore } from "@netless/flat-stores";
 import { useLoginCheck } from "../utils/use-login-check";
 
 export interface CloudStoragePageProps {}

@@ -11,12 +11,11 @@ import {
     RoomListItemPrimaryAction,
     RoomListSkeletons,
     RoomStatusType,
+    errorTips,
 } from "flat-components";
-import { ListRoomsType } from "../../../api-middleware/flatServer";
-import { RoomStatus, RoomType } from "../../../api-middleware/flatServer/constants";
+import { ListRoomsType, RoomStatus, RoomType } from "@netless/flat-server-api";
 import { GlobalStoreContext, RoomStoreContext } from "../../../components/StoreProvider";
-import { errorTips } from "../../../components/Tips/ErrorTips";
-import { RoomItem } from "../../../stores/room-store";
+import { RoomItem } from "@netless/flat-stores";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
 import { joinRoomHandler } from "../../utils/join-room-handler";

@@ -1,14 +1,19 @@
-export enum ChatMsgType {
-    Notice = "Notice",
-    BanText = "BanText",
-    ChannelMessage = "ChannelMessage",
-    UserGuide = "UserGuide",
-}
+import type { FlatRTMEventData } from "@netless/flat-rtm";
 
-export type ChatMsg = {
+export type ChatMsgType = "notice" | "ban" | "room-message" | "user-guide";
+
+export type ChatMsgRoomMessage = { type: "room-message" } & FlatRTMEventData["room-message"];
+
+export type ChatMsgNotice = { type: "notice" } & FlatRTMEventData["notice"];
+
+export type ChatMsgBan = { type: "ban" } & FlatRTMEventData["ban"];
+
+export type ChatMsgUserGuide = {
+    type: "user-guide";
+    roomUUID: string;
     uuid: string;
-    type: string;
-    value: string | boolean;
-    userUUID: string;
     timestamp: number;
+    senderID: string;
 };
+
+export type ChatMsg = ChatMsgRoomMessage | ChatMsgNotice | ChatMsgBan | ChatMsgUserGuide;

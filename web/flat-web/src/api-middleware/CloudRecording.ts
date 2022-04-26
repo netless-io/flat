@@ -1,5 +1,5 @@
-import { updateRecordEndTime } from "./flatServer";
 import {
+    updateRecordEndTime,
     cloudRecordAcquire,
     CloudRecordStopResult,
     cloudRecordStop,
@@ -11,7 +11,7 @@ import {
     cloudRecordUpdateLayout,
     CloudRecordUpdateLayoutPayload,
     CloudRecordUpdateLayoutResult,
-} from "./flatServer/agora";
+} from "@netless/flat-server-api";
 
 /**
  * Agora Cloud Recording

@@ -3,7 +3,7 @@ import "./style.less";
 import { CloudStorageContainer } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
-import { CloudStorageStore } from "./store";
+import { CloudStorageStore } from "@netless/flat-stores";
 
 export interface CloudStoragePanelProps {
     cloudStorage: CloudStorageStore;

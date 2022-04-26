@@ -15,7 +15,11 @@ export interface CloudStorageFileListFileNameProps {
     fileMenus?: (
         file: CloudStorageFile,
         index: number,
-    ) => Array<{ key: React.Key; name: React.ReactNode }> | void | undefined | null;
+    ) =>
+        | Array<{ key: React.Key; name: React.ReactNode; className?: string }>
+        | void
+        | undefined
+        | null;
     /** When file menu item clicked */
     onItemMenuClick?: (fileUUID: string, menuKey: React.Key) => void;
     /** When title is clicked */
@@ -62,8 +66,10 @@ export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileN
                                         onItemMenuClick && onItemMenuClick(file.fileUUID, key)
                                     }
                                 >
-                                    {menuItems.map(({ key, name }) => (
-                                        <Menu.Item key={key}>{name}</Menu.Item>
+                                    {menuItems.map(({ key, name, className = "" }) => (
+                                        <Menu.Item key={key} className={className}>
+                                            {name}
+                                        </Menu.Item>
                                     ))}
                                 </Menu>
                             }
