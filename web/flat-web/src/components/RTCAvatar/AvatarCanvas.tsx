@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { FlatRTCAvatar } from "@netless/flat-rtc";
 
-import { User } from "../../stores/class-room-store";
+import { User } from "@netless/flat-stores";
 
 export interface AvatarCanvasProps {
     /** the user of this avatar */

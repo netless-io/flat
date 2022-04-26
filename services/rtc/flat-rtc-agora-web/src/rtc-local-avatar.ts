@@ -127,9 +127,13 @@ export class RTCLocalAvatar implements FlatRTCAvatar {
             }),
         );
 
-        this._sideEffect.addDisposer(() => {
-            this._rtc.localCameraTrack?.setEnabled(false);
-            this._rtc.localMicTrack?.setEnabled(false);
+        this._sideEffect.addDisposer(async () => {
+            try {
+                await this._rtc.localCameraTrack?.setEnabled(false);
+                await this._rtc.localMicTrack?.setEnabled(false);
+            } catch {
+                // do nothing
+            }
         });
     }
 

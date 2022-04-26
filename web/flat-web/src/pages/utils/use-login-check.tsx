@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { RouteNameType, useReplaceHistory } from "../../utils/routes";
 import { GlobalStoreContext } from "../../components/StoreProvider";
-import { loginCheck } from "../../api-middleware/flatServer";
-import { errorTips } from "../../components/Tips/ErrorTips";
+import { loginCheck } from "@netless/flat-server-api";
+import { errorTips } from "flat-components";
 import { NEED_BINDING_PHONE } from "../../constants/config";
 
 export function useLoginCheck(): boolean {

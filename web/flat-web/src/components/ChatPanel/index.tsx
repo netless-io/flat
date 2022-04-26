@@ -1,7 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { ChatPanel as ChatPanelImpl, useComputed } from "flat-components";
-import { ClassRoomStore } from "../../stores/class-room-store";
+import { ClassroomStore } from "@netless/flat-stores";
 import { generateAvatar } from "../../utils/generate-avatar";
 
 export interface ChatPanelProps {
@@ -48,7 +48,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             onAllOffStage={classRoomStore.onAllOffStage}
             onBanChange={classRoomStore.onToggleBan}
             onEndSpeaking={userUUID => {
-                void classRoomStore.onSpeak([{ userUUID, speak: false }]);
+                void classRoomStore.onStaging(userUUID, false);
             }}
             onMessageSend={classRoomStore.onMessageSend}
         />

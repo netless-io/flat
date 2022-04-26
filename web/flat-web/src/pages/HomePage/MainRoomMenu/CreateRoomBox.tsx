@@ -3,7 +3,7 @@ import "./CreateRoomBox.less";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form, Dropdown, Menu, InputRef } from "antd";
-import { RoomType } from "../../../api-middleware/flatServer/constants";
+import { RoomType } from "@netless/flat-server-api";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { ClassPicker, HomePageHeroButton, Region, regions, RegionSVG } from "flat-components";

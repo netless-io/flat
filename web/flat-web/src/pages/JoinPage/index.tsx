@@ -8,7 +8,7 @@ import { useWindowSize } from "react-use";
 
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { GlobalStoreContext, PageStoreContext } from "../../components/StoreProvider";
-import { loginCheck } from "../../api-middleware/flatServer";
+import { loginCheck } from "@netless/flat-server-api";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../constants/process";
 import JoinPageDesktop from "./JoinPageDesktop";

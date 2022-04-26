@@ -1,8 +1,7 @@
-import { setAuthUUID, loginProcess } from "../../api-middleware/flatServer";
 import { v4 as uuidv4 } from "uuid";
 import { LoginExecutor } from "./utils";
-import { errorTips } from "../../components/Tips/ErrorTips";
-import { FLAT_SERVER_LOGIN } from "../../api-middleware/flatServer/constants";
+import { errorTips } from "flat-components";
+import { FLAT_SERVER_LOGIN, setAuthUUID, loginProcess } from "@netless/flat-server-api";
 import { GOOGLE } from "../../constants/process";
 
 // @TODO: migrate to new google login api before 2023

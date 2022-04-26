@@ -33,67 +33,37 @@ import ExitRoomConfirm, {
 } from "../../components/ExitRoomConfirm";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 
-import { ClassModeType } from "../../api-middleware/Rtm";
-import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import {
+    RoomStatus,
     AgoraCloudRecordBackgroundConfigItem,
     AgoraCloudRecordLayoutConfigItem,
-} from "../../api-middleware/flatServer/agora";
-import { RecordingConfig, useClassRoomStore, User } from "../../stores/class-room-store";
+} from "@netless/flat-server-api";
+import { ClassModeType, User } from "@netless/flat-stores";
 import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import "./SmallClassPage.less";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { runtime } from "../../utils/runtime";
-import { RtcChannelType } from "../../api-middleware/rtc/room";
 import { ShareScreen } from "../../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
+import { useClassroomStore } from "../../stores/use-classroom-store";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
 const AVATAR_WIDTH = 144;
-const AVATAR_HEIGHT = 108;
+// const AVATAR_HEIGHT = 108;
 const MAX_AVATAR_COUNT = 17;
 const AVATAR_BAR_GAP = 4;
 const AVATAR_BAR_WIDTH = (AVATAR_WIDTH + AVATAR_BAR_GAP) * MAX_AVATAR_COUNT - AVATAR_BAR_GAP;
-
-const recordingConfig: RecordingConfig = Object.freeze({
-    channelType: RtcChannelType.Communication,
-    transcodingConfig: {
-        width: AVATAR_BAR_WIDTH,
-        height: AVATAR_HEIGHT,
-        // https://docs.agora.io/cn/cloud-recording/recording_video_profile
-        fps: 15,
-        bitrate: 500,
-        mixedVideoLayout: 3,
-        backgroundColor: "#F3F6F9",
-        defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
-        layoutConfig: [
-            {
-                x_axis: (AVATAR_AREA_WIDTH - AVATAR_WIDTH) / 2 / AVATAR_BAR_WIDTH,
-                y_axis: 0,
-                width: AVATAR_WIDTH / AVATAR_BAR_WIDTH,
-                height: 1,
-            },
-        ],
-    },
-    maxIdleTime: 60,
-    subscribeUidGroup: 3,
-});
 
 export type SmallClassPageProps = {};
 
 export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassPage() {
     useLoginCheck();
-    const { i18n, t } = useTranslation();
+    const { t } = useTranslation();
     const params = useParams<RouteParams<RouteNameType.SmallClassPage>>();
 
-    const classRoomStore = useClassRoomStore({
-        ...params,
-        recordingConfig,
-        classMode: ClassModeType.Interaction,
-        i18n,
-    });
+    const classRoomStore = useClassroomStore(params);
     const whiteboardStore = classRoomStore.whiteboardStore;
 
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
@@ -104,29 +74,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     const updateLayoutTimeoutRef = useRef(NaN);
     const loadingPageRef = useRef(false);
-
-    // control whiteboard writable
-    useEffect(() => {
-        if (!classRoomStore.isCreator && whiteboardStore.room) {
-            if (classRoomStore.classMode === ClassModeType.Interaction) {
-                void whiteboardStore.updateWritable(true);
-            } else if (classRoomStore.users.currentUser) {
-                void whiteboardStore.updateWritable(classRoomStore.users.currentUser.isSpeak);
-            }
-        }
-        // dumb exhaustive-deps
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [classRoomStore.classMode, whiteboardStore.room, classRoomStore.users.currentUser?.isSpeak]);
-
-    // Turn off the microphone automatically when it becomes lecture mode.
-    useEffect(() => {
-        if (!classRoomStore.isCreator && whiteboardStore.room) {
-            const currentUser = classRoomStore.users.currentUser;
-            if (classRoomStore.classMode === ClassModeType.Lecture && currentUser) {
-                classRoomStore.updateDeviceState(currentUser.userUUID, currentUser.camera, false);
-            }
-        }
-    }, [classRoomStore, classRoomStore.classMode, whiteboardStore.room]);
 
     useEffect(() => {
         if (classRoomStore.isRecording) {
@@ -381,14 +328,6 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 image_url: allUsers[i].avatar,
             });
         }
-
-        classRoomStore.updateRecordingLayout({
-            mixedVideoLayout: 3,
-            backgroundColor: "#F3F6F9",
-            defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
-            layoutConfig,
-            backgroundConfig,
-        });
     }
 });
 

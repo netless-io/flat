@@ -5,7 +5,7 @@ import { EditRoomFormValues } from "flat-components";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
-import { RoomType } from "../../api-middleware/flatServer/constants";
+import { RoomType } from "@netless/flat-server-api";
 import {
     ConfigStoreContext,
     GlobalStoreContext,
@@ -13,7 +13,7 @@ import {
 } from "../../components/StoreProvider";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import EditRoomPage from "../../components/EditRoomPage";
-import { errorTips } from "../../components/Tips/ErrorTips";
+import { errorTips } from "flat-components";
 import { useLoginCheck } from "../utils/use-login-check";
 
 const getInitialBeginTime = (): Date => {

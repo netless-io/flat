@@ -8,10 +8,10 @@ import {
     List,
     ListRowRenderer,
 } from "react-virtualized";
-import { ClassRoomReplayStore } from "../../stores/class-room-replay-store";
+import type { ClassroomReplayStore } from "@netless/flat-stores";
 
 export interface ChatMessageListReplayProps {
-    classRoomReplayStore: ClassRoomReplayStore;
+    classRoomReplayStore: ClassroomReplayStore;
 }
 
 export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
@@ -42,7 +42,7 @@ export const ChatMessageListReplay = observer<ChatMessageListReplayProps>(
                                         <ChatMessage
                                             message={classRoomReplayStore.messages[index]}
                                             messageUser={classRoomReplayStore.users.cachedUsers.get(
-                                                classRoomReplayStore.messages[index].userUUID,
+                                                classRoomReplayStore.messages[index].senderID,
                                             )}
                                             userUUID={classRoomReplayStore.userUUID}
                                             onMount={measure}

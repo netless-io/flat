@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2017",
+    "jsx": "react",
 
     "allowJs": true,
 

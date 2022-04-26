@@ -1,4 +1,4 @@
-import { LoginProcessResult } from "../../api-middleware/flatServer";
+import { LoginProcessResult } from "@netless/flat-server-api";
 
 export type LoginDisposer = () => void;
 
