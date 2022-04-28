@@ -94,7 +94,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
         i18n,
     });
     const whiteboardStore = classRoomStore.whiteboardStore;
-    const shareScreenStore = classRoomStore.shareScreenStore;
 
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
 
@@ -198,10 +197,10 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     }
 
     function handleShareScreen(): void {
-        if (shareScreenStore.enableShareScreenStatus) {
-            shareScreenStore.close().catch(console.error);
+        if (classRoomStore.isScreenSharing) {
+            classRoomStore.rtc.shareScreen.enable(false);
         } else {
-            shareScreenStore.updateShowShareScreenPicker(true);
+            classRoomStore.updateShowShareScreenPicker(true);
         }
     }
 
@@ -223,12 +222,12 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     />
                     <div className="big-class-realtime-content">
                         <div className="big-class-realtime-content-container">
-                            <ShareScreen shareScreenStore={shareScreenStore} />
+                            <ShareScreen classRoomStore={classRoomStore} />
                             <ShareScreenPicker
+                                classRoomStore={classRoomStore}
                                 handleOk={() => {
-                                    shareScreenStore.enable();
+                                    classRoomStore.rtc.shareScreen.enable(true);
                                 }}
-                                shareScreenStore={shareScreenStore}
                             />
                             <Whiteboard
                                 classRoomStore={classRoomStore}
@@ -275,11 +274,9 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     function renderTopBarRight(): React.ReactNode {
         return (
             <>
-                {whiteboardStore.isWritable && !shareScreenStore.existOtherShareScreen && (
+                {whiteboardStore.isWritable && !classRoomStore.isRemoteScreenSharing && (
                     <TopBarRightBtn
-                        icon={
-                            <SVGScreenSharing active={shareScreenStore.enableShareScreenStatus} />
-                        }
+                        icon={<SVGScreenSharing active={classRoomStore.isScreenSharing} />}
                         title={t("share-screen.self")}
                         onClick={handleShareScreen}
                     />

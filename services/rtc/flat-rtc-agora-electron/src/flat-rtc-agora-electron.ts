@@ -15,8 +15,13 @@ import { SideEffectManager } from "side-effect-manager";
 import Emittery from "emittery";
 import { RTCRemoteAvatar } from "./rtc-remote-avatar";
 import { RTCLocalAvatar } from "./rtc-local-avatar";
+import { RTCShareScreen } from "./rtc-share-screen";
 
 export type FlatRTCAgoraElectronUIDType = number;
+
+export interface FlatRTCAgoraElectronConfig {
+    APP_ID: string;
+}
 
 export type FlatRTCAgoraElectronJoinRoomConfig =
     FlatRTCJoinRoomConfigBase<FlatRTCAgoraElectronUIDType>;
@@ -26,12 +31,12 @@ export interface FlatRTCAgoraElectronDevice {
     deviceid: string;
 }
 
-export type IFlatRTCAgoraElectron = FlatRTC<
+export class FlatRTCAgoraElectron extends FlatRTC<
     FlatRTCAgoraElectronUIDType,
     FlatRTCAgoraElectronJoinRoomConfig
->;
+> {
+    public static APP_ID: string;
 
-export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
     private static LOW_VOLUME_LEVEL_THRESHOLD = 0.00001;
 
     private static rtcEngine: AgoraSdk;
@@ -49,6 +54,8 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
         }
     }
 
+    public readonly shareScreen = new RTCShareScreen({ rtc: this });
+
     public get rtcEngine(): AgoraSdk {
         return FlatRTCAgoraElectron.rtcEngine;
     }
@@ -62,6 +69,8 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
 
     private uid?: FlatRTCAgoraElectronUIDType;
     private roomUUID?: string;
+
+    public shareScreenUID?: FlatRTCAgoraElectronUIDType;
 
     private _volumeLevels = new Map<FlatRTCAgoraElectronUIDType, number>();
 
@@ -78,7 +87,12 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
 
     public readonly events = new Emittery<FlatRTCEventData, FlatRTCEventData>();
 
+    public get isJoinedRoom(): boolean {
+        return Boolean(this.roomUUID);
+    }
+
     private constructor() {
+        super();
         if (FlatRTCAgoraElectron.rtcEngine) {
             this._init();
         }
@@ -221,11 +235,16 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
 
         this.uid = undefined;
         this.roomUUID = undefined;
+        this.shareScreenUID = undefined;
+        this.shareScreen.setParams(null);
     }
 
     public getAvatar(uid?: FlatRTCAgoraElectronUIDType): FlatRTCAvatar {
         if (!uid || this.uid === uid) {
             return this.localAvatar;
+        }
+        if (this.shareScreenUID === uid) {
+            throw new Error("getAvatar(shareScreenUID) is not supported.");
         }
         let remoteAvatar = this._remoteAvatars.get(uid);
         if (!remoteAvatar) {
@@ -398,11 +417,14 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
         uid,
         token,
         mode,
-        isLocalUID,
         refreshToken,
         role,
         roomUUID,
+        shareScreenUID,
+        shareScreenToken,
     }: FlatRTCAgoraElectronJoinRoomConfig): Promise<void> {
+        this.shareScreenUID = shareScreenUID;
+
         const channelProfile = mode === FlatRTCMode.Broadcast ? 1 : 0;
         this.rtcEngine.setChannelProfile(channelProfile);
         this.rtcEngine.videoSourceSetChannelProfile(channelProfile);
@@ -484,10 +506,10 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
 
         this._roomSideEffect.add(() => {
             const handler = (uid: FlatRTCAgoraElectronUIDType): void => {
-                if (isLocalUID(uid)) {
+                if (this.shareScreenUID === uid && this.shareScreen.shouldSubscribeRemoteTrack()) {
+                    this.shareScreen.setActive(true);
                     return;
                 }
-
                 let avatar = this._remoteAvatars.get(uid);
                 if (avatar) {
                     avatar.setActive(true);
@@ -503,10 +525,10 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
 
         this._roomSideEffect.add(() => {
             const handler = (uid: FlatRTCAgoraElectronUIDType): void => {
-                if (isLocalUID(uid)) {
+                if (this.shareScreenUID === uid) {
+                    this.shareScreen.setActive(false);
                     return;
                 }
-
                 const avatar = this._remoteAvatars.get(uid);
                 if (avatar) {
                     avatar.destroy();
@@ -562,6 +584,12 @@ export class FlatRTCAgoraElectron implements IFlatRTCAgoraElectron {
 
         this.uid = uid;
         this.roomUUID = roomUUID;
+        this.shareScreenUID = shareScreenUID;
+        this.shareScreen.setParams({
+            roomUUID,
+            token: shareScreenToken,
+            uid: shareScreenUID,
+        });
     }
 }
 

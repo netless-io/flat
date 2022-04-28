@@ -3,6 +3,9 @@ import { action, autorun, makeAutoObservable, observable, reaction, runInAction 
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import { SideEffectManager } from "side-effect-manager";
+import i18next, { i18n } from "i18next";
+import { message } from "antd";
+import { FlatRTC, FlatRTCMode, FlatRTCRole, FlatRTCShareScreenInfo } from "@netless/flat-rtc";
 import { RtcChannelType } from "../api-middleware/rtc";
 import {
     ClassModeType,
@@ -36,10 +39,6 @@ import { errorTips } from "../components/Tips/ErrorTips";
 import { WhiteboardStore } from "./whiteboard-store";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
-import { ShareScreenStore } from "./share-screen-store";
-import i18next, { i18n } from "i18next";
-import { message } from "antd";
-import { FlatRTC, FlatRTCMode, FlatRTCRole } from "@netless/flat-rtc";
 import { getFlatRTC } from "../services/flat-rtc";
 
 export type { User } from "./user-store";
@@ -83,6 +82,17 @@ export class ClassRoomStore {
 
     public isCloudStoragePanelVisible = false;
 
+    /** is current user sharing screen */
+    public isScreenSharing = false;
+    /** is other users sharing screen */
+    public isRemoteScreenSharing = false;
+
+    public shareScreenInfo: FlatRTCShareScreenInfo[] = [];
+
+    public showShareScreenPicker = false;
+
+    public selectedScreenInfo: FlatRTCShareScreenInfo | null = null;
+
     public roomStatusLoading = RoomStatusLoadingType.Null;
 
     public networkQuality = {
@@ -98,8 +108,6 @@ export class ClassRoomStore {
     public readonly cloudRecording: CloudRecording;
 
     public readonly whiteboardStore: WhiteboardStore;
-
-    public readonly shareScreenStore: ShareScreenStore;
 
     /** This ownerUUID is from url params matching which cannot be trusted */
     private readonly ownerUUIDFromParams: string;
@@ -170,8 +178,6 @@ export class ClassRoomStore {
             onDrop: this.onDrop,
         });
 
-        this.shareScreenStore = new ShareScreenStore(this.roomUUID);
-
         autorun(reaction => {
             if (this.whiteboardStore.isKicked) {
                 reaction.dispose();
@@ -180,16 +186,6 @@ export class ClassRoomStore {
                 });
             }
         });
-
-        reaction(
-            () => this.whiteboardStore.isWritable,
-            () => {
-                this.shareScreenStore.updateIsWritable(this.whiteboardStore.isWritable);
-            },
-            {
-                fireImmediately: true,
-            },
-        );
 
         reaction(
             () => this.isRecording,
@@ -215,6 +211,24 @@ export class ClassRoomStore {
                 "network",
                 action("checkNetworkQuality", networkQuality => {
                     this.networkQuality = networkQuality;
+                }),
+            ),
+        );
+
+        this.sideEffect.addDisposer(
+            this.rtc.shareScreen.events.on(
+                "local-changed",
+                action("localShareScreen", enabled => {
+                    this.isScreenSharing = enabled;
+                }),
+            ),
+        );
+
+        this.sideEffect.addDisposer(
+            this.rtc.shareScreen.events.on(
+                "remote-changed",
+                action("remoteShareScreen", enabled => {
+                    this.isRemoteScreenSharing = enabled;
                 }),
             ),
         );
@@ -285,8 +299,8 @@ export class ClassRoomStore {
                         : FlatRTCMode.Communication,
                 role: this.isCreator ? FlatRTCRole.Host : FlatRTCRole.Audience,
                 refreshToken: generateRTCToken,
-                /** Skip subscribing local uids */
-                isLocalUID: uid => globalStore.rtcShareScreen?.uid === uid,
+                shareScreenUID: globalStore.rtcShareScreen?.uid || -1,
+                shareScreenToken: globalStore.rtcShareScreen?.token || "",
             });
         } catch (e) {
             console.error(e);
@@ -365,6 +379,30 @@ export class ClassRoomStore {
         if (this.roomInfo) {
             this.roomInfo.roomStatus = roomStatus;
         }
+    };
+
+    public refreshShareScreenInfo = async (): Promise<void> => {
+        this.updateSelectedScreenInfo(null);
+        this.shareScreenInfo = [];
+        this.shareScreenInfo = await this.rtc.shareScreen.getScreenInfo();
+    };
+
+    public updateShowShareScreenPicker = (show: boolean): void => {
+        this.showShareScreenPicker = show;
+    };
+
+    public updateSelectedScreenInfo = (info: FlatRTCShareScreenInfo | null): void => {
+        this.selectedScreenInfo = info;
+        this.rtc.shareScreen.setScreenInfo(info);
+    };
+
+    public updateShareScreen = (local: boolean, remote: boolean): void => {
+        this.isScreenSharing = local;
+        this.isRemoteScreenSharing = remote;
+    };
+
+    public toggleShareScreen = (): void => {
+        this.rtc.shareScreen.enable(!this.isScreenSharing);
     };
 
     public updateHistory = async (): Promise<void> => {
@@ -610,8 +648,6 @@ export class ClassRoomStore {
         promises.push(this.rtm.destroy());
 
         promises.push(this.stopRecording());
-
-        promises.push(this.shareScreenStore.destroy());
 
         promises.push(this.whiteboardStore.destroy());
 

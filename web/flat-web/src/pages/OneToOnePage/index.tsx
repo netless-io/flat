@@ -68,7 +68,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     const params = useParams<RouteParams<RouteNameType.OneToOnePage>>();
 
     const classRoomStore = useClassRoomStore({ ...params, recordingConfig, i18n });
-    const shareScreenStore = classRoomStore.shareScreenStore;
     const whiteboardStore = classRoomStore.whiteboardStore;
 
     const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
@@ -140,7 +139,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                 />
                 <div className="one-to-one-realtime-content">
                     <div className="one-to-one-realtime-content-container">
-                        <ShareScreen shareScreenStore={shareScreenStore} />
+                        <ShareScreen classRoomStore={classRoomStore} />
                         <Whiteboard
                             classRoomStore={classRoomStore}
                             disableHandRaising={true}
@@ -158,10 +157,6 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
             </div>
         </div>
     );
-
-    function handleShareScreen(): void {
-        void shareScreenStore.toggle();
-    }
 
     function renderTopBarLeft(): React.ReactNode {
         return (
@@ -187,13 +182,11 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
     function renderTopBarRight(): React.ReactNode {
         return (
             <>
-                {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
+                {whiteboardStore.isWritable && !classRoomStore.isRemoteScreenSharing && (
                     <TopBarRightBtn
-                        icon={
-                            <SVGScreenSharing active={shareScreenStore.enableShareScreenStatus} />
-                        }
+                        icon={<SVGScreenSharing active={classRoomStore.isScreenSharing} />}
                         title={t("share-screen.self")}
-                        onClick={handleShareScreen}
+                        onClick={classRoomStore.toggleShareScreen}
                     />
                 )}
 

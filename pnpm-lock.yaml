@@ -447,6 +447,7 @@ importers:
       eventemitter3: ^4.0.7
       flat-components: workspace:*
       flat-i18n: workspace:*
+      flat-types: workspace:*
       i18next: ^21.6.14
       i18next-browser-languagedetector: ^6.1.3
       lodash-es: ^4.17.21
@@ -494,6 +495,7 @@ importers:
       eventemitter3: 4.0.7
       flat-components: link:../../packages/flat-components
       flat-i18n: link:../../packages/flat-i18n
+      flat-types: link:../../packages/flat-types
       i18next: 21.6.14
       i18next-browser-languagedetector: 6.1.4
       lodash-es: 4.17.21
@@ -4837,6 +4839,7 @@ packages:
 
   /@types/plist/3.0.2:
     resolution: {integrity: sha512-ULqvZNGMv0zRFvqn8/4LSPtnmN4MfhlPNtJCTpKuIIxGVGZ2rYWzFXrvEBoh9CVyqSE7D6YFRJ1hydLHI6kbWw==}
+    requiresBuild: true
     dependencies:
       '@types/node': 17.0.23
       xmlbuilder: 15.1.1
@@ -4953,6 +4956,7 @@ packages:
 
   /@types/verror/1.10.5:
     resolution: {integrity: sha512-9UjMCHK5GPgQRoNbqdLIAvAy0EInuiqbW0PBMtVP6B5B2HQJlvoJHM+KodPZMEjOa5VkSc+5LH7xy+cUzQdmHw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -6522,6 +6526,7 @@ packages:
 
   /bindings/1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+    requiresBuild: true
     dependencies:
       file-uri-to-path: 1.0.0
     dev: true
@@ -7624,6 +7629,7 @@ packages:
 
   /crc/3.8.0:
     resolution: {integrity: sha512-iX3mfgcTMIq3ZKLIsVFAbv7+Mc10kxabAGQb8HvjA1o3T1PIYprbakQ65d3I+2HGHt6nSKkM9PYjgoJO2KcFBQ==}
+    requiresBuild: true
     dependencies:
       buffer: 5.7.1
     dev: true
@@ -9863,6 +9869,7 @@ packages:
 
   /file-uri-to-path/1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -11185,6 +11192,7 @@ packages:
     resolution: {integrity: sha512-T10qvkw0zz4wnm560lOEg0PovVqUXuOFhhHAkixw8/sycy7TJt7v/RrkEKEQnAw2viPSJu6iAkErxnzR0g8PpQ==}
     engines: {node: ^8.11.2 || >=10}
     os: [darwin]
+    requiresBuild: true
     dependencies:
       cli-truncate: 2.1.0
       node-addon-api: 1.7.2
@@ -13225,6 +13233,7 @@ packages:
 
   /node-addon-api/1.7.2:
     resolution: {integrity: sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -18288,6 +18297,7 @@ packages:
   /verror/1.10.1:
     resolution: {integrity: sha512-veufcmxri4e3XSrT0xwfUR7kguIkaxBeosDg00yDWhk49wdwkSUrvvsm7nc75e1PUyvIeZj6nS8VQRYz2/S4Xg==}
     engines: {node: '>=0.6.0'}
+    requiresBuild: true
     dependencies:
       assert-plus: 1.0.0
       core-util-is: 1.0.2
@@ -18803,12 +18813,14 @@ packages:
   /xmlbuilder/15.1.1:
     resolution: {integrity: sha512-yMqGBqtXyeN1e3TGYvgNgDVZ3j84W4cwkOXQswghol6APgZWaff9lnbvN7MHYJOiXsvGPXtjTYJEiC9J2wv9Eg==}
     engines: {node: '>=8.0'}
+    requiresBuild: true
     dev: true
     optional: true
 
   /xmlbuilder/9.0.7:
     resolution: {integrity: sha1-Ey7mPS7FVlxVfiD0wi35rKaGsQ0=}
     engines: {node: '>=4.0'}
+    requiresBuild: true
     dev: true
 
   /xmldom/0.1.31:

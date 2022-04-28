@@ -3,42 +3,51 @@ import "./style.less";
 import React, { useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
-import type { ShareScreenStore } from "../../stores/share-screen-store";
 import { message } from "antd";
-import { shareScreenEvents } from "../../api-middleware/rtc/share-screen";
 import { useTranslation } from "react-i18next";
+import { ClassRoomStore } from "../../stores/class-room-store";
 
 interface ShareScreenProps {
-    shareScreenStore: ShareScreenStore;
+    classRoomStore: ClassRoomStore;
 }
 
-export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ shareScreenStore }) {
+export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ classRoomStore }) {
     const ref = useRef<HTMLDivElement>(null);
     const { t } = useTranslation();
 
     useEffect(() => {
         if (ref.current) {
-            shareScreenStore.updateElement(ref.current);
+            classRoomStore.rtc.shareScreen.setElement(ref.current);
         }
-    }, [shareScreenStore]);
+    }, [classRoomStore]);
 
     useEffect(() => {
-        const onBrowserNotPermission = (): void => {
-            void message.error(t("share-screen.browser-not-permission"));
+        const onBrowserNotPermission = (error: Error): void => {
+            if (isAgoraRTCPermissionError(error) && browserNotPermission(error.message)) {
+                void message.error(t("share-screen.browser-not-permission"));
+            }
         };
 
-        shareScreenEvents.on("browserNotPermission", onBrowserNotPermission);
+        classRoomStore.rtc.shareScreen.events.on("err-enable", onBrowserNotPermission);
 
         return () => {
-            shareScreenEvents.off("browserNotPermission", onBrowserNotPermission);
+            classRoomStore.rtc.shareScreen.events.off("err-enable", onBrowserNotPermission);
         };
-    }, [t]);
+    }, [classRoomStore.rtc.shareScreen.events, t]);
 
     const classNameList = useMemo(() => {
         return classNames("share-screen", {
-            active: shareScreenStore.existOtherUserStream,
+            active: classRoomStore.isRemoteScreenSharing,
         });
-    }, [shareScreenStore.existOtherUserStream]);
+    }, [classRoomStore.isRemoteScreenSharing]);
 
     return <div ref={ref} className={classNameList} />;
 });
+
+function isAgoraRTCPermissionError(error: any): error is Error {
+    return "code" in error && "message" in error && error.code === "PERMISSION_DENIED";
+}
+
+function browserNotPermission(message: string): boolean {
+    return message.indexOf("by system") !== -1;
+}
