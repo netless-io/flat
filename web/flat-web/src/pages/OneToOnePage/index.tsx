@@ -186,7 +186,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     <TopBarRightBtn
                         icon={<SVGScreenSharing active={classRoomStore.isScreenSharing} />}
                         title={t("share-screen.self")}
-                        onClick={classRoomStore.toggleShareScreen}
+                        onClick={() => classRoomStore.toggleShareScreen()}
                     />
                 )}
 

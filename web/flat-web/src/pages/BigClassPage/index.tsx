@@ -230,7 +230,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     <TopBarRightBtn
                         icon={<SVGScreenSharing active={classRoomStore.isScreenSharing} />}
                         title={t("share-screen.self")}
-                        onClick={classRoomStore.toggleShareScreen}
+                        onClick={() => classRoomStore.toggleShareScreen()}
                     />
                 )}
 
