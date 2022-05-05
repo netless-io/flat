@@ -35,7 +35,7 @@ jobs:
           pnpm install || pnpm install || pnpm install
 
       - name: Build flat web development
-        run: pnpm --filter flat-web build:us -- -- -m development
+        run: pnpm --filter flat-web build:us -m development
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
