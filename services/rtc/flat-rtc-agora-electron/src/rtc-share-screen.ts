@@ -52,6 +52,10 @@ export class RTCShareScreen extends FlatRTCShareScreen {
                     const { uid } = this._params$.value;
                     try {
                         if (active) {
+                            // this is a bug in agora SDK, when the `desktop` screen sharing is done,
+                            // and then the `web` side does the screen sharing,
+                            // the `desktop` will have a black screen.
+                            // this is because the SDK has `mute` the remote screen sharing stream
                             this.client.muteRemoteVideoStream(uid, false);
                             this.client.setupRemoteVideo(uid, this._el$.value);
                             this.client.setupViewContentMode(uid, 1, undefined);
