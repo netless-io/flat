@@ -3,34 +3,33 @@ import "./style.less";
 import React, { useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
-import type { ShareScreenStore } from "../../../stores/share-screen-store";
+
+import { ClassRoomStore } from "../../../stores/class-room-store";
 import { ShareScreenTip } from "../ShareScreenTip";
 
 interface ShareScreenProps {
-    shareScreenStore: ShareScreenStore;
+    classRoomStore: ClassRoomStore;
 }
 
-export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ shareScreenStore }) {
+export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ classRoomStore }) {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (ref.current) {
-            shareScreenStore.updateElement(ref.current);
+            classRoomStore.rtc.shareScreen.setElement(ref.current);
         }
-    }, [shareScreenStore]);
+    }, [classRoomStore]);
 
     const classNameList = useMemo(() => {
         return classNames("share-screen", {
-            active: shareScreenStore.existOtherShareScreen,
+            active: classRoomStore.isRemoteScreenSharing,
         });
-    }, [shareScreenStore.existOtherShareScreen]);
+    }, [classRoomStore.isRemoteScreenSharing]);
 
     return (
         <>
             <div ref={ref} className={classNameList} />
-            {shareScreenStore.enableShareScreenStatus && (
-                <ShareScreenTip shareScreenStore={shareScreenStore} />
-            )}
+            {classRoomStore.isScreenSharing && <ShareScreenTip classRoomStore={classRoomStore} />}
         </>
     );
 });

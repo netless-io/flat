@@ -10,6 +10,7 @@ export function initFlatRTC(): Promise<void> {
     return new Promise(resolve => {
         agoraRtcSDK$.subscribe((rtcEngine: any) => {
             if (rtcEngine) {
+                FlatRTCAgoraElectron.APP_ID = process.env.AGORA_APP_ID;
                 FlatRTCAgoraElectron.setRtcEngine(rtcEngine);
                 resolve();
             }

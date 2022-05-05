@@ -1,48 +1,50 @@
 import "./style.less";
+
+import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { ScreenInfo, ShareSymbol } from "../../../../api-middleware/share-screen";
-import { getScreenInfo, uint8ArrayToImageURL } from "./Utils";
-import classNames from "classnames";
-import { ShareScreenStore } from "../../../../stores/share-screen-store";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
+import { FlatRTCShareScreenInfo } from "@netless/flat-rtc";
+
+import { uint8ArrayToImageURL } from "./Utils";
+import { ClassRoomStore } from "../../../../stores/class-room-store";
 
 interface ScreenListProps {
-    screenInfo: ScreenInfo;
-    shareScreenStore: ShareScreenStore;
+    screenInfo: FlatRTCShareScreenInfo[];
+    classRoomStore: ClassRoomStore;
 }
 
 export const ScreenList = observer<ScreenListProps>(function ShareScreen({
     screenInfo,
-    shareScreenStore,
+    classRoomStore,
 }) {
     const [activeInfo, setActiveInfo] = useState("");
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (screenInfo.windowList.length === 0) {
+        if (screenInfo.length === 0) {
             void message.error(t("share-screen.desktop-not-permission"));
         }
-    }, [screenInfo.windowList, t]);
+    }, [screenInfo, t]);
 
     const onClick = useCallback(
-        (screenInfo: ShareSymbol, activeKey: string) => {
+        (screenInfo: FlatRTCShareScreenInfo, activeKey: string) => {
             setActiveInfo(activeKey);
-            shareScreenStore.updateShareSymbolInfo(screenInfo);
+            classRoomStore.updateSelectedScreenInfo(screenInfo);
         },
-        [shareScreenStore],
+        [classRoomStore],
     );
 
     const cancelSelected = useCallback(() => {
         setActiveInfo("");
-        shareScreenStore.updateShareSymbolInfo(null);
-    }, [shareScreenStore]);
+        classRoomStore.updateSelectedScreenInfo(null);
+    }, [classRoomStore]);
 
     return (
         <div className="screen-list">
-            {screenInfo.displayList.map((info, index) => {
-                const key = `display-${index}`;
+            {screenInfo.map(info => {
+                const key = `${info.type}-${info.screenId}`;
                 const isActive = activeInfo === key;
 
                 return (
@@ -55,27 +57,13 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
                     />
                 );
             })}
-            {screenInfo.windowList.map(info => {
-                const key = `window-${info.windowId}`;
-                const isActive = activeInfo === key;
-
-                return (
-                    <ScreenItem
-                        key={key}
-                        active={activeInfo === key}
-                        activeKey={key}
-                        handleClick={isActive ? cancelSelected : onClick}
-                        info={info}
-                    />
-                );
-            })}
         </div>
     );
 });
 
 interface ScreenItemProps {
-    info: ScreenInfo["windowList"][0] | ScreenInfo["displayList"][0];
-    handleClick: (screenInfo: ShareSymbol, key: string) => void;
+    info: FlatRTCShareScreenInfo;
+    handleClick: (screenInfo: FlatRTCShareScreenInfo, key: string) => void;
     active: boolean;
     activeKey: string;
 }
@@ -86,8 +74,6 @@ const ScreenItem = observer<ScreenItemProps>(function ScreenItem({
     active,
     activeKey,
 }) {
-    const screenInfo = getScreenInfo(info);
-
     return (
         <>
             <div className="screen-item">
@@ -95,11 +81,11 @@ const ScreenItem = observer<ScreenItemProps>(function ScreenItem({
                     className={classNames("screen-image-box", {
                         active,
                     })}
-                    onClick={() => handleClick(screenInfo, activeKey)}
+                    onClick={() => handleClick(info, activeKey)}
                 >
                     <img alt="screenshots" src={uint8ArrayToImageURL(info.image)} />
                 </div>
-                <span>{screenInfo.name}</span>
+                <span>{info.name}</span>
             </div>
         </>
     );

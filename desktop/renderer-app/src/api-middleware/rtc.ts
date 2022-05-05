@@ -29,7 +29,7 @@ export class Rtc {
             throw new Error("Agora App Id not set.");
         }
 
-        this.rtcEngine = window.rtcEngine;
+        this.rtcEngine = (window as any).agoraRtcSDK$.value;
 
         this.rtcEngine.on("tokenPrivilegeWillExpire", this.renewToken);
         this.rtcEngine.on("groupAudioVolumeIndication", this.updateVolumeLevel);

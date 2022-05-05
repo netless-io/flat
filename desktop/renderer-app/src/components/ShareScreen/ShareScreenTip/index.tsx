@@ -1,22 +1,23 @@
-import React from "react";
-import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
 import "./style.less";
-import { portalWindowManager } from "../../../utils/portal-window-manager";
-import { ipcAsyncByShareScreenTipWindow } from "../../../utils/ipc";
 import dragSVG from "../../../assets/image/drag.svg";
-import { Button } from "antd";
-import { ShareScreenStore } from "../../../stores/share-screen-store";
+
+import React, { useCallback, useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
+import { Button } from "antd";
+
+import { ClassRoomStore } from "../../../stores/class-room-store";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
+import { ipcAsyncByShareScreenTipWindow } from "../../../utils/ipc";
+import { portalWindowManager } from "../../../utils/portal-window-manager";
 
 interface ShareScreenTipProps {
-    shareScreenStore: ShareScreenStore;
+    classRoomStore: ClassRoomStore;
 }
 
 export const ShareScreenTip = observer<ShareScreenTipProps>(function ShareScreenTip({
-    shareScreenStore,
+    classRoomStore,
 }) {
     const sp = useSafePromise();
     const { t } = useTranslation();
@@ -35,9 +36,10 @@ export const ShareScreenTip = observer<ShareScreenTipProps>(function ShareScreen
         };
     }, [containerEl, sp, t]);
 
-    const stopShareScreen = (): void => {
-        shareScreenStore.close().catch(console.error);
-    };
+    const stopShareScreen = useCallback(
+        () => classRoomStore.toggleShareScreen(false),
+        [classRoomStore],
+    );
 
     return ReactDOM.createPortal(
         <div className={"share-screen-tip"}>

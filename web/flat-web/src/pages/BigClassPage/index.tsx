@@ -86,7 +86,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     const params = useParams<RouteParams<RouteNameType.BigClassPage>>();
 
     const classRoomStore = useClassRoomStore({ ...params, recordingConfig, i18n });
-    const shareScreenStore = classRoomStore.shareScreenStore;
 
     const whiteboardStore = classRoomStore.whiteboardStore;
 
@@ -185,7 +184,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 />
                 <div className="big-class-realtime-content">
                     <div className="big-class-realtime-content-container">
-                        <ShareScreen shareScreenStore={shareScreenStore} />
+                        <ShareScreen classRoomStore={classRoomStore} />
                         <Whiteboard
                             classRoomStore={classRoomStore}
                             whiteboardStore={whiteboardStore}
@@ -227,13 +226,11 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
     function renderTopBarRight(): React.ReactNode {
         return (
             <>
-                {whiteboardStore.isWritable && !shareScreenStore.existOtherUserStream && (
+                {whiteboardStore.isWritable && !classRoomStore.isRemoteScreenSharing && (
                     <TopBarRightBtn
-                        icon={
-                            <SVGScreenSharing active={shareScreenStore.enableShareScreenStatus} />
-                        }
+                        icon={<SVGScreenSharing active={classRoomStore.isScreenSharing} />}
                         title={t("share-screen.self")}
-                        onClick={handleShareScreen}
+                        onClick={() => classRoomStore.toggleShareScreen()}
                     />
                 )}
 
@@ -304,10 +301,6 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 }
             />
         );
-    }
-
-    function handleShareScreen(): void {
-        void shareScreenStore.toggle();
     }
 
     function handleSideOpenerSwitch(): void {

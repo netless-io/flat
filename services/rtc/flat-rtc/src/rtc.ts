@@ -1,7 +1,9 @@
+import Emittery from "emittery";
 import type { FlatRTCAvatar } from "./avatar";
 import type { FlatRTCMode, FlatRTCRole } from "./constants";
 import type { FlatRTCDevice } from "./device";
-import type { FlatRTCEvents } from "./events";
+import type { FlatRTCEventData } from "./events";
+import type { FlatRTCShareScreen } from "./share-screen";
 
 export interface FlatRTCJoinRoomConfigBase<TUid = number> {
     roomUUID: string;
@@ -10,54 +12,84 @@ export interface FlatRTCJoinRoomConfigBase<TUid = number> {
     role?: FlatRTCRole;
     token?: string | null;
     refreshToken?: (roomUUID: string) => Promise<string>;
-    /** Skip subscribing local uids */
-    isLocalUID: (uid: TUid) => boolean;
+    shareScreenUID: TUid;
+    shareScreenToken: string;
 }
 
-export interface FlatRTC<
+export abstract class FlatRTC<
     TUid = number,
     TJoinRoomConfig extends FlatRTCJoinRoomConfigBase<TUid> = FlatRTCJoinRoomConfigBase<TUid>,
 > {
-    events: FlatRTCEvents;
+    public readonly events = new Emittery<FlatRTCEventData, FlatRTCEventData>();
 
-    destroy(): Promise<void>;
+    public abstract readonly isJoinedRoom: boolean;
 
-    joinRoom(config: TJoinRoomConfig): Promise<void>;
-    leaveRoom(): Promise<void>;
+    public abstract readonly shareScreen: FlatRTCShareScreen;
 
-    setRole(role: FlatRTCRole): void;
+    public abstract destroy(): Promise<void>;
 
-    /** @returns local avatar if uid is not provided */
-    getAvatar(uid?: TUid): FlatRTCAvatar;
-    getVolumeLevel(uid?: TUid): number;
+    public abstract joinRoom(config: TJoinRoomConfig): Promise<void>;
+    public abstract leaveRoom(): Promise<void>;
 
-    setCameraID(deviceId: string): Promise<void>;
-    getCameraID(): string | undefined;
+    public abstract setRole(role: FlatRTCRole): void;
 
-    setMicID(deviceId: string): Promise<void>;
-    getMicID(): string | undefined;
+    /** @returns local avatar if uid is not provided, throws error if uid == shareScreenUID */
+    public abstract getAvatar(uid?: TUid): FlatRTCAvatar;
+    public abstract getVolumeLevel(uid?: TUid): number;
 
-    setSpeakerID(deviceId: string): Promise<void>;
-    getSpeakerID(): string | undefined;
+    public abstract setCameraID(deviceId: string): Promise<void>;
+    public abstract getCameraID(): string | undefined;
 
-    getCameraDevices(): Promise<FlatRTCDevice[]>;
-    getMicDevices(): Promise<FlatRTCDevice[]>;
-    getSpeakerDevices(): Promise<FlatRTCDevice[]>;
+    public abstract setMicID(deviceId: string): Promise<void>;
+    public abstract getMicID(): string | undefined;
+
+    public abstract setSpeakerID(deviceId: string): Promise<void>;
+    public abstract getSpeakerID(): string | undefined;
+
+    public abstract getCameraDevices(): Promise<FlatRTCDevice[]>;
+    public abstract getMicDevices(): Promise<FlatRTCDevice[]>;
+    public abstract getSpeakerDevices(): Promise<FlatRTCDevice[]>;
 
     /** @returns volume 0~1 */
-    getSpeakerVolume(): number;
-    /** @param volume 0~1 */
-    setSpeakerVolume(volume: number): Promise<void>;
+    public abstract getSpeakerVolume(): number;
 
-    startNetworkTest(): void;
-    stopNetworkTest(): void;
+    public async setSpeakerVolume(_volume: number): Promise<void> {
+        throw doesNotSupportError("setting speaker volume");
+    }
 
-    startCameraTest(el: HTMLElement): void;
-    stopCameraTest(): void;
+    public startNetworkTest(): void {
+        throw doesNotSupportError("network probe test");
+    }
 
-    startMicTest(): void;
-    stopMicTest(): void;
+    public stopNetworkTest(): void {
+        throw doesNotSupportError("network probe test");
+    }
 
-    startSpeakerTest(filePath: string): void;
-    stopSpeakerTest(): void;
+    public startCameraTest(_el: HTMLElement): void {
+        throw doesNotSupportError("camera test");
+    }
+
+    public stopCameraTest(): void {
+        throw doesNotSupportError("camera test");
+    }
+
+    public startMicTest(): void {
+        throw doesNotSupportError("microphone test");
+    }
+
+    public stopMicTest(): void {
+        throw doesNotSupportError("microphone test");
+    }
+
+    public startSpeakerTest(_filePath: string): void {
+        throw doesNotSupportError("speaker test");
+    }
+
+    public stopSpeakerTest(): void {
+        throw doesNotSupportError("speaker test");
+    }
+}
+
+export function doesNotSupportError(type: string): Error {
+    return new Error(`Does not support ${type}`);
 }

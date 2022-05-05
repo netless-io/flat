@@ -19,6 +19,7 @@ import { SideEffectManager } from "side-effect-manager";
 import Emittery from "emittery";
 import { RTCRemoteAvatar } from "./rtc-remote-avatar";
 import { RTCLocalAvatar } from "./rtc-local-avatar";
+import { RTCShareScreen } from "./rtc-share-screen";
 
 AgoraRTC.enableLogUpload();
 
@@ -40,7 +41,7 @@ export interface FlatRTCAgoraWebConfig {
 
 export type IFlatRTCAgoraWeb = FlatRTC<FlatRTCAgoraWebUIDType, FlatRTCAgoraWebJoinRoomConfig>;
 
-export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
+export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
     public static APP_ID: string;
 
     private static _instance?: FlatRTCAgoraWeb;
@@ -48,6 +49,8 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
     public static getInstance(): FlatRTCAgoraWeb {
         return (FlatRTCAgoraWeb._instance ??= new FlatRTCAgoraWeb());
     }
+
+    public readonly shareScreen = new RTCShareScreen();
 
     private readonly _sideEffect = new SideEffectManager();
     private readonly _roomSideEffect = new SideEffectManager();
@@ -63,9 +66,9 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
 
     private uid?: FlatRTCAgoraWebUIDType;
     private roomUUID?: string;
+    private shareScreenUID?: FlatRTCAgoraWebUIDType;
 
     private _remoteAvatars = new Map<FlatRTCAgoraWebUIDType, RTCRemoteAvatar>();
-
     public get remoteAvatars(): FlatRTCAvatar[] {
         return [...this._remoteAvatars.values()];
     }
@@ -75,9 +78,12 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
         return (this._localAvatar ??= new RTCLocalAvatar({ rtc: this }));
     }
 
-    public readonly events = new Emittery<FlatRTCEventData, FlatRTCEventData>();
+    public get isJoinedRoom(): boolean {
+        return Boolean(this.roomUUID);
+    }
 
     private constructor() {
+        super();
         this._sideEffect.add(() => {
             AgoraRTC.onCameraChanged = deviceInfo => {
                 this.setCameraID(deviceInfo.device.deviceId);
@@ -169,11 +175,15 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
 
         this.uid = undefined;
         this.roomUUID = undefined;
+        this.shareScreen.setParams(null);
     }
 
     public getAvatar(uid?: FlatRTCAgoraWebUIDType): FlatRTCAvatar {
         if (!uid || this.uid === uid) {
             return this.localAvatar;
+        }
+        if (this.shareScreenUID === uid) {
+            throw new Error("getAvatar(shareScreenUID) is not supported.");
         }
         let remoteAvatar = this._remoteAvatars.get(uid);
         if (!remoteAvatar) {
@@ -261,50 +271,15 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
         return this.getVolumeLevel();
     }
 
-    public async setSpeakerVolume(): Promise<void> {
-        throw doesNotSupportError("setting speaker volume");
-    }
-
-    public startNetworkTest(): void {
-        throw doesNotSupportError("network probe test");
-    }
-
-    public stopNetworkTest(): void {
-        throw doesNotSupportError("network probe test");
-    }
-
-    public startCameraTest(): void {
-        throw doesNotSupportError("camera test");
-    }
-
-    public stopCameraTest(): void {
-        throw doesNotSupportError("camera test");
-    }
-
-    public startMicTest(): void {
-        throw doesNotSupportError("microphone test");
-    }
-
-    public stopMicTest(): void {
-        throw doesNotSupportError("microphone test");
-    }
-
-    public startSpeakerTest(): void {
-        throw doesNotSupportError("speaker test");
-    }
-
-    public stopSpeakerTest(): void {
-        throw doesNotSupportError("speaker test");
-    }
-
     private async _createRTCClient({
         uid,
         token,
         mode,
-        isLocalUID,
         refreshToken,
         role,
         roomUUID,
+        shareScreenUID,
+        shareScreenToken,
     }: FlatRTCAgoraWebJoinRoomConfig): Promise<void> {
         const client = AgoraRTC.createClient({
             mode: mode === FlatRTCMode.Broadcast ? "live" : "rtc",
@@ -346,7 +321,8 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
                 user: IAgoraRTCRemoteUser,
                 mediaType: "audio" | "video",
             ): Promise<void> => {
-                if (isLocalUID?.(user.uid as FlatRTCAgoraWebUIDType)) {
+                const uid = user.uid as FlatRTCAgoraWebUIDType;
+                if (this.shareScreenUID === uid && !this.shareScreen.shouldSubscribeRemoteTrack()) {
                     return;
                 }
 
@@ -356,7 +332,11 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
                     console.error(e);
                 }
 
-                const uid = user.uid as FlatRTCAgoraWebUIDType;
+                if (this.shareScreenUID === uid) {
+                    this.shareScreen.setRemoteUser(user);
+                    return;
+                }
+
                 let avatar = this._remoteAvatars.get(uid);
                 if (avatar) {
                     avatar.updateUser(user);
@@ -375,17 +355,18 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
                 user: IAgoraRTCRemoteUser,
                 mediaType: "audio" | "video",
             ): Promise<void> => {
-                if (isLocalUID?.(user.uid as FlatRTCAgoraWebUIDType)) {
-                    return;
-                }
-
                 try {
-                    await this.client?.unsubscribe(user, mediaType);
+                    await client.unsubscribe(user, mediaType);
                 } catch (e) {
                     console.error(e);
                 }
 
                 const uid = user.uid as FlatRTCAgoraWebUIDType;
+                if (uid === this.shareScreenUID) {
+                    this.shareScreen.setRemoteUser(null);
+                    return;
+                }
+
                 const avatar = this._remoteAvatars.get(uid);
                 if (avatar) {
                     avatar.destroy();
@@ -430,6 +411,12 @@ export class FlatRTCAgoraWeb implements FlatRTC<FlatRTCAgoraWebUIDType> {
 
         this.uid = uid;
         this.roomUUID = roomUUID;
+        this.shareScreenUID = shareScreenUID;
+        this.shareScreen.setParams({
+            roomUUID,
+            token: shareScreenToken,
+            uid: shareScreenUID,
+        });
     }
 
     public localCameraTrack?: ICameraVideoTrack;
@@ -519,8 +506,4 @@ function beforeAddListener(
             }
         },
     );
-}
-
-function doesNotSupportError(type: string): Error {
-    return new Error(`Agora RTC Web does not support ${type}`);
 }

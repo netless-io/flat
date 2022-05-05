@@ -91,5 +91,6 @@
     "overrides": {
       "@types/eslint": "^8"
     }
-  }
+  },
+  "packageManager": "pnpm@6.32.11"
 }
