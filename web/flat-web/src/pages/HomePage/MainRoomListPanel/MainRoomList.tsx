@@ -34,6 +34,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
 }) {
     const { t } = useTranslation();
     const roomStore = useContext(RoomStoreContext);
+    const [skeletonsVisible, setSkeletonsVisible] = useState(false);
     const [roomUUIDs, setRoomUUIDs] = useState<string[]>();
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
     const [inviteModalVisible, setInviteModalVisible] = useState(false);
@@ -44,6 +45,12 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     const sp = useSafePromise();
     const globalStore = useContext(GlobalStoreContext);
     const isHistoryList = listRoomsType === ListRoomsType.History;
+
+    // Wait 200ms before showing skeletons to reduce flashing.
+    useEffect(() => {
+        const ticket = window.setTimeout(() => setSkeletonsVisible(true), 200);
+        return () => window.clearTimeout(ticket);
+    }, []);
 
     const refreshRooms = useCallback(
         async function refreshRooms(): Promise<void> {
@@ -73,7 +80,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     }, [refreshRooms, isLogin]);
 
     if (!roomUUIDs) {
-        return <RoomListSkeletons />;
+        return skeletonsVisible ? <RoomListSkeletons /> : null;
     }
 
     if (roomUUIDs.length <= 0) {
