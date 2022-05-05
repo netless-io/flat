@@ -342,8 +342,8 @@ export class ClassRoomStore {
         this.isRemoteScreenSharing = remote;
     };
 
-    public toggleShareScreen = (): void => {
-        this.rtc.shareScreen.enable(!this.isScreenSharing);
+    public toggleShareScreen = (force = !this.isScreenSharing): void => {
+        this.rtc.shareScreen.enable(force);
     };
 
     public updateHistory = async (): Promise<void> => {

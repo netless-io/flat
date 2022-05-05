@@ -37,8 +37,8 @@ export const ShareScreenTip = observer<ShareScreenTipProps>(function ShareScreen
     }, [containerEl, sp, t]);
 
     const stopShareScreen = useCallback(
-        () => classRoomStore.rtc.shareScreen.enable(false),
-        [classRoomStore.rtc.shareScreen],
+        () => classRoomStore.toggleShareScreen(false),
+        [classRoomStore],
     );
 
     return ReactDOM.createPortal(

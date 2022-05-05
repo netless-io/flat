@@ -155,6 +155,8 @@ export class ClassRoomStore {
             | "_collectChannelStatusTimeout"
             | "_userDeviceStatePrePause"
             | "sideEffect"
+            | "shareScreenInfo"
+            | "selectedScreenInfo"
         >(this, {
             rtc: observable.ref,
             rtm: observable.ref,
@@ -163,6 +165,8 @@ export class ClassRoomStore {
             _collectChannelStatusTimeout: false,
             _userDeviceStatePrePause: false,
             sideEffect: false,
+            shareScreenInfo: observable.ref,
+            selectedScreenInfo: observable.ref,
         });
 
         this.users = new UserStore({
@@ -219,6 +223,7 @@ export class ClassRoomStore {
             this.rtc.shareScreen.events.on(
                 "local-changed",
                 action("localShareScreen", enabled => {
+                    console.log("local =", enabled);
                     this.isScreenSharing = enabled;
                 }),
             ),
@@ -228,6 +233,7 @@ export class ClassRoomStore {
             this.rtc.shareScreen.events.on(
                 "remote-changed",
                 action("remoteShareScreen", enabled => {
+                    console.log("remote =", enabled);
                     this.isRemoteScreenSharing = enabled;
                 }),
             ),
@@ -401,8 +407,9 @@ export class ClassRoomStore {
         this.isRemoteScreenSharing = remote;
     };
 
-    public toggleShareScreen = (): void => {
-        this.rtc.shareScreen.enable(!this.isScreenSharing);
+    public toggleShareScreen = (force = !this.isScreenSharing): void => {
+        this.rtc.shareScreen.enable(force);
+        this.updateShowShareScreenPicker(false);
     };
 
     public updateHistory = async (): Promise<void> => {

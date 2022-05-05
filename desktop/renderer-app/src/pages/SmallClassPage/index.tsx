@@ -171,7 +171,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
 
     function handleShareScreen(): void {
         if (classRoomStore.isScreenSharing) {
-            classRoomStore.rtc.shareScreen.enable(false);
+            classRoomStore.toggleShareScreen(false);
         } else {
             classRoomStore.updateShowShareScreenPicker(true);
         }
@@ -201,7 +201,7 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                             <ShareScreenPicker
                                 classRoomStore={classRoomStore}
                                 handleOk={() => {
-                                    classRoomStore.rtc.shareScreen.enable(true);
+                                    classRoomStore.toggleShareScreen(true);
                                 }}
                             />
                             <Whiteboard

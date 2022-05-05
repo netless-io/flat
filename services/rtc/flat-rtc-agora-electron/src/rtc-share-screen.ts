@@ -71,17 +71,15 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         this._sideEffect.addDisposer(
             combine([this._screenInfo$, this._enabled$]).subscribe(
                 async ([screenInfo, enabled]) => {
-                    if (screenInfo) {
-                        try {
-                            if (enabled) {
-                                await this.enableShareScreen(screenInfo);
-                            } else if (screenInfo) {
-                                await this.disableShareScreen();
-                            }
-                            this.events.emit("local-changed", enabled);
-                        } catch (e) {
-                            this.events.emit("err-enable", e);
+                    try {
+                        if (screenInfo && enabled) {
+                            await this.enableShareScreen(screenInfo);
+                        } else {
+                            await this.disableShareScreen();
                         }
+                        this.events.emit("local-changed", enabled);
+                    } catch (e) {
+                        this.events.emit("err-enable", e);
                     }
                 },
             ),
@@ -151,11 +149,17 @@ export class RTCShareScreen extends FlatRTCShareScreen {
     }
 
     private _pTogglingShareScreen?: Promise<unknown>;
+    private _lastEnabled = false;
 
     public async enableShareScreen(screenInfo: FlatRTCShareScreenInfo): Promise<void> {
         if (!this._params$.value) {
             throw new Error("Should call joinRoom() before share screen.");
         }
+
+        if (this._lastEnabled === true) {
+            return;
+        }
+        this._lastEnabled = true;
 
         if (this._pTogglingShareScreen) {
             await this._pTogglingShareScreen;
@@ -193,6 +197,11 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         if (this._pTogglingShareScreen) {
             await this._pTogglingShareScreen;
         }
+
+        if (this._lastEnabled === false) {
+            return;
+        }
+        this._lastEnabled = false;
 
         this._pTogglingShareScreen = new Promise<void>(resolve => {
             this.client.once("videoSourceLeaveChannel", () => {

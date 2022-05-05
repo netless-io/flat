@@ -155,7 +155,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
 
     function handleShareScreen(): void {
         if (classRoomStore.isScreenSharing) {
-            classRoomStore.rtc.shareScreen.enable(false);
+            classRoomStore.toggleShareScreen(false);
         } else {
             classRoomStore.updateShowShareScreenPicker(true);
         }
@@ -183,7 +183,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                             <ShareScreenPicker
                                 classRoomStore={classRoomStore}
                                 handleOk={() => {
-                                    classRoomStore.rtc.shareScreen.enable(true);
+                                    classRoomStore.toggleShareScreen(true);
                                 }}
                             />
                             <Whiteboard
