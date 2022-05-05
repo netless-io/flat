@@ -60,28 +60,34 @@ export const LoginPage = observer(function LoginPage() {
     );
 
     useEffect(() => {
-        const effect = async (): Promise<void> => {
+        // Get login info through loginCheck().
+        // But we don't want to goto home page if already logged in.
+        // Instead, if we have `hasPhone: false`, we should show the binding phone page.
+        const checkNormalLogin = async (): Promise<void> => {
+            const userInfo = await sp(loginCheck());
+            if (NEED_BINDING_PHONE && !userInfo.hasPhone) {
+                setLoginResult(userInfo);
+            }
+        };
+
+        const checkAgoraLogin = async (): Promise<void> => {
             const { jwtToken } = await sp(agoraSSOLoginCheck(globalStore.agoraSSOLoginID!));
             const userInfo = await sp(loginCheck(jwtToken));
             setLoginResult(userInfo);
         };
 
+        let checkLogin: Promise<unknown>;
         if (urlParams.utm_source === "agora" && globalStore.agoraSSOLoginID) {
-            effect().catch(error => {
-                // no handling required
-                console.warn(error);
-            });
+            checkLogin = checkAgoraLogin();
+        } else {
+            checkLogin = checkNormalLogin();
         }
-    }, [globalStore, setLoginResult, sp, urlParams.utm_source]);
 
-    useEffect(() => {
-        const fromAgora = urlParams.utm_source === "agora";
-        const isAgoraLoggedIn = globalStore.agoraSSOLoginID;
-        // TODO: Should checkLogin() again
-        if (!fromAgora || (fromAgora && isAgoraLoggedIn)) {
-            setLoginResult(globalStore.userInfo);
-        }
-    }, [globalStore, setLoginResult, urlParams.utm_source]);
+        checkLogin.catch(error => {
+            // no handling required
+            console.warn(error);
+        });
+    }, [globalStore, setLoginResult, sp, urlParams.utm_source]);
 
     const onLoginResult = useCallback(
         async (authData: LoginProcessResult) => {
