@@ -1,4 +1,5 @@
 import "./style.less";
+import downloadSVG from "./icons/download.svg";
 
 import pLimit from "p-limit";
 import classNames from "classnames";
@@ -111,11 +112,13 @@ const Annotation = React.memo(function Annotation({
             className={classNames("save-annotation", {
                 "is-loading": !canvas,
             })}
+            title={t("save")}
             onClick={downloadImage}
         >
             <div ref={ref} className="save-annotation-image" />
+            <div className="save-annotation-mask" />
             <div className="save-annotation-actions">
-                <span className="save-annotation-text">{t("save")}</span>
+                <img alt="download" src={downloadSVG} title={t("save")} />
             </div>
             <div className="save-annotation-footer">{footerText}</div>
         </div>

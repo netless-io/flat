@@ -42,6 +42,18 @@
     }
 }
 
+.save-annotation-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--grey-12);
+    transition: opacity 0.2s ease;
+    opacity: 0;
+    z-index: 9;
+}
+
 .save-annotation-actions {
     position: absolute;
     top: 0;
@@ -51,14 +63,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255, 255, 255, 0.75);
     transition: opacity 0.2s ease;
     opacity: 0;
     z-index: 10;
+
+    img {
+        width: 40px;
+        height: 40px;
+    }
 }
 
 .save-annotation-text {
-    color: var(--grey-11);
+    color: var(--grey-0);
     font-size: 22px;
     font-weight: bold;
 }
@@ -76,7 +92,7 @@
     .save-annotation {
         border-color: var(--grey-8);
     }
-    .save-annotation-actions {
+    .save-annotation-mask {
         background-color: rgba(0, 0, 0, 0.5);
     }
     .save-annotation-text {
@@ -86,6 +102,9 @@
 
 .save-annotation:hover {
     border-color: var(--primary);
+    .save-annotation-mask {
+        opacity: 0.5;
+    }
     .save-annotation-actions {
         opacity: 0.8;
     }
@@ -93,6 +112,10 @@
 
 .save-annotation:active {
     border-color: var(--primary-strong);
+    .save-annotation-mask {
+        opacity: 0.6;
+        transition: none;
+    }
     .save-annotation-actions {
         opacity: 1;
         transition: none;
