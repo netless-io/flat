@@ -9,7 +9,7 @@ import { noop } from "lodash-es";
 import { i18n } from "./i18n";
 
 export interface RefreshAppsParams {
-    t?: TFunction;
+    t: TFunction;
     onSaveAnnotation?: (app: FastboardApp) => void;
 }
 

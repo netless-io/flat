@@ -6,6 +6,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { Modal, message } from "antd";
 
+import { useSafePromise } from "../../utils/hooks";
+
 function download(
     canvas: HTMLCanvasElement,
     filename = "annotation.png",
@@ -45,7 +47,7 @@ export const SaveAnnotationModal: React.FC<SaveAnnotationModalProps> = ({
             closable
             destroyOnClose
             footer={null}
-            title={t("save-annotation")}
+            title={t("annotation.save-action")}
             visible={visible}
             width={640}
             wrapClassName="save-annotation-modal-container"
@@ -54,7 +56,7 @@ export const SaveAnnotationModal: React.FC<SaveAnnotationModalProps> = ({
             {params.map((image, index) => (
                 <Annotation
                     key={index}
-                    failText={t("save-annotation-failed")}
+                    failText={t("annotation.save-failed")}
                     filename={`annotation-${index + 1}.png`}
                     footerText={String(index + 1)}
                     image={image}
@@ -77,27 +79,23 @@ const Annotation = React.memo(function Annotation({
     footerText,
     failText = "Save image failed",
 }: AnnotationProps) {
+    const sp = useSafePromise();
     const { t } = useTranslation();
     const ref = useRef<HTMLDivElement>(null);
     const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
-        let isMounted = true;
-
-        image.then(canvas => {
-            isMounted && setCanvas(canvas);
-        });
-
-        return () => {
-            isMounted = false;
-        };
-    }, [image]);
+        sp(image).then(setCanvas);
+    }, [image, sp]);
 
     useEffect(() => {
         const div = ref.current;
-        if (div && canvas) {
+        if (!div) {
+            return;
+        }
+        if (canvas) {
             div.appendChild(canvas);
-        } else if (div && div.firstChild) {
+        } else if (div.firstChild) {
             div.removeChild(div.firstChild);
         }
     }, [canvas]);

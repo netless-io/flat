@@ -437,12 +437,14 @@
   "status": "Status",
   "time": "Time",
   "save": "Save",
-  "save-annotation": "Save Annotation",
   "tool": {
     "monaco": "Code Editor",
     "geogebra": "GeoGebra",
     "countdown": "Countdown",
     "save": "Save Annotation"
   },
-  "save-annotation-failed": "Save annotation failed"
+  "annotation": {
+    "save-action": "Save Annotation",
+    "save-failed": "Save annotation failed"
+  }
 }

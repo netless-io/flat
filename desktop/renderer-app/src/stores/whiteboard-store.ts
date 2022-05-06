@@ -630,8 +630,7 @@ export class WhiteboardStore {
                 return () =>
                     snapshot(room, {
                         scenePath: dir + scene.name,
-                        // TODO: configure CDN to support saving images
-                        // crossorigin: true,
+                        crossorigin: true,
                     });
             });
         } else {
