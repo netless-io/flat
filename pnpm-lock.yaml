@@ -51,18 +51,11 @@ importers:
       webpack: ^5.70.0
       yaml: ^1.10.2
     devDependencies:
-<<<<<<< HEAD
-      '@commitlint/cli': 16.2.3
-      '@commitlint/config-angular': 16.2.3
-      '@hyrious/esbuild-dev': 0.7.5_esbuild@0.14.27
-      '@netless/eslint-plugin': 2.0.0_eslint@8.11.0
-      '@netless/white-snapshot': 0.3.0
-=======
       '@commitlint/cli': 16.2.4
       '@commitlint/config-angular': 16.2.4
       '@hyrious/esbuild-dev': 0.7.5_esbuild@0.14.38
       '@netless/eslint-plugin': 2.0.0_eslint@8.14.0
->>>>>>> 5d618e16 (chore(pnpm): migrate to pnpm v7🎉)
+      '@netless/white-snapshot': 0.3.0
       '@types/fs-extra': 9.0.13
       '@types/lodash-es': 4.17.6
       '@types/node': 17.0.31
@@ -232,7 +225,7 @@ importers:
       flat-components: link:../../packages/flat-components
       flat-i18n: link:../../packages/flat-i18n
       fs-extra: 10.1.0
-      i18next: 21.6.16
+      i18next: 21.7.0
       i18next-browser-languagedetector: 6.1.4
       lodash-es: 4.17.21
       mobx: 6.5.0
@@ -242,7 +235,7 @@ importers:
       react: 17.0.2
       react-device-detect: 2.2.2_sfoxds7t5ydpegc3knd667wn6m
       react-dom: 17.0.2_react@17.0.2
-      react-i18next: 11.16.8_zwecmpihis27vgqyxlvaybk5pu
+      react-i18next: 11.16.8_s5xlurqjcuaytjp3g3qvtz7qve
       react-router-dom: 5.3.1_react@17.0.2
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
@@ -321,20 +314,16 @@ importers:
       antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
       classnames: 2.3.1
       date-fns: 2.28.0
-      i18next: 21.6.16
+      i18next: 21.7.0
       i18next-browser-languagedetector: 6.1.4
       mobx: 6.5.0
-<<<<<<< HEAD
-      mobx-react-lite: 3.3.0_3b110ddd052df537d55bc762cdd4d0b8
-      p-limit: 4.0.0
-=======
       mobx-react-lite: 3.3.0_hmiq3xiffx2tpvk3y5rm3vgqxa
->>>>>>> 5d618e16 (chore(pnpm): migrate to pnpm v7🎉)
+      p-limit: 4.0.0
       pretty-bytes: 6.0.0
       rc-picker: 2.6.8_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-i18next: 11.16.8_zwecmpihis27vgqyxlvaybk5pu
+      react-i18next: 11.16.8_s5xlurqjcuaytjp3g3qvtz7qve
       react-resize-detector: 7.0.0_sfoxds7t5ydpegc3knd667wn6m
       react-router-dom: 5.3.1_react@17.0.2
       react-transition-group: 4.4.2_sfoxds7t5ydpegc3knd667wn6m
@@ -366,7 +355,7 @@ importers:
       lodash-es: 4.17.21
       sass: 1.51.0
       sass-loader: 12.6.0_sass@1.51.0
-      storybook-react-i18next: 1.0.13_rbqvl2ass3alzof5kex2xuxhci
+      storybook-react-i18next: 1.0.13_jyx3ddg2cgsldgq5nz4wjgiz44
       style-loader: 3.3.1
       tachyons: 4.12.0
 
@@ -511,7 +500,7 @@ importers:
       flat-components: link:../../packages/flat-components
       flat-i18n: link:../../packages/flat-i18n
       flat-types: link:../../packages/flat-types
-      i18next: 21.6.16
+      i18next: 21.7.0
       i18next-browser-languagedetector: 6.1.4
       lodash-es: 4.17.21
       mobx: 6.5.0
@@ -520,7 +509,7 @@ importers:
       react: 17.0.2
       react-device-detect: 2.2.2_sfoxds7t5ydpegc3knd667wn6m
       react-dom: 17.0.2_react@17.0.2
-      react-i18next: 11.16.8_zwecmpihis27vgqyxlvaybk5pu
+      react-i18next: 11.16.8_s5xlurqjcuaytjp3g3qvtz7qve
       react-router-dom: 5.3.1_react@17.0.2
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
@@ -2280,7 +2269,7 @@ packages:
       '@cspell/dict-django': 2.0.0
       '@cspell/dict-dotnet': 2.0.1
       '@cspell/dict-elixir': 2.0.1
-      '@cspell/dict-en_us': 2.2.3
+      '@cspell/dict-en_us': 2.2.4
       '@cspell/dict-en-gb': 1.1.33
       '@cspell/dict-filetypes': 2.0.1
       '@cspell/dict-fonts': 2.0.0
@@ -2372,8 +2361,8 @@ packages:
     resolution: {integrity: sha512-tKSSUf9BJEV+GJQAYGw5e+ouhEe2ZXE620S7BLKe3ZmpnjlNG9JqlnaBhkIMxKnNFkLY2BP/EARzw31AZnOv4g==}
     dev: true
 
-  /@cspell/dict-en_us/2.2.3:
-    resolution: {integrity: sha512-JV+aD4mzTcF0T3sZB/PC91ByLqtKIxz21xLQNq0ZGM+cK+EbMLqfKTYjB72WkLZtqkjsPhQ2Bv5JtIlLCCXDIw==}
+  /@cspell/dict-en_us/2.2.4:
+    resolution: {integrity: sha512-gblsvIPLNAK+pRR/Mn2m2kRQLVFeoORQJeaZKlGHWckA3s0iuTN49hSSTbK66k3aWlzhirtSoux7IdvT2RpgnQ==}
     dev: true
 
   /@cspell/dict-filetypes/2.0.1:
@@ -2996,17 +2985,12 @@ packages:
       white-web-sdk: 2.16.20
     dev: false
 
-<<<<<<< HEAD
   /@netless/white-snapshot/0.3.0:
     resolution: {integrity: sha512-4QlySzaZ3N+VLxRJmda3L4DJjkbk7nJE/q9TnhMceJUmke0M9wrniQvHFtDxyPYNQQ+9uIQXA4UM/8K+hfd0tg==}
     dev: true
 
-  /@netless/window-manager/0.4.20_white-web-sdk@2.16.20:
-    resolution: {integrity: sha512-gJp9EGtWA89AJB8O+6vNKmcqT7M+lh0eNJKVAa/BhW816Lap2NUcXqHBa8neEs6nnY5xUvXL9n7KxM+nv5x9Ow==}
-=======
   /@netless/window-manager/0.4.24_white-web-sdk@2.16.20:
     resolution: {integrity: sha512-KH4Zrw6MkJ6zjfr/QQHnQovzM6EjHQE7NUF8kuVc3FtcXDEqC4Ju+1dL5N3d4E5dR5jzoy35Tl0KgqQkr8he7Q==}
->>>>>>> 5d618e16 (chore(pnpm): migrate to pnpm v7🎉)
     peerDependencies:
       white-web-sdk: ^2.16.0
     dependencies:
@@ -11410,8 +11394,8 @@ packages:
       '@babel/runtime': 7.17.9
     dev: false
 
-  /i18next/21.6.16:
-    resolution: {integrity: sha512-xJlzrVxG9CyAGsbMP1aKuiNr1Ed2m36KiTB7hjGMG2Zo4idfw3p9THUEu+GjBwIgEZ7F11ZbCzJcfv4uyfKNuw==}
+  /i18next/21.7.0:
+    resolution: {integrity: sha512-x8CFS5i2ev/RnVIh1kscxTk4kjIQbyltGSIfGI02Y2g7aaqIK2YSDgI7eZ8DbIOvMAbBU3CJtA3Av0N0Hy54nw==}
     dependencies:
       '@babel/runtime': 7.17.9
     dev: false
@@ -12218,7 +12202,7 @@ packages:
     resolution: {integrity: sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 14.18.16
+      '@types/node': 17.0.31
       merge-stream: 2.0.0
       supports-color: 7.2.0
     dev: true
@@ -15594,7 +15578,7 @@ packages:
       shallowequal: 1.1.0
     dev: true
 
-  /react-i18next/11.16.8_zwecmpihis27vgqyxlvaybk5pu:
+  /react-i18next/11.16.8_s5xlurqjcuaytjp3g3qvtz7qve:
     resolution: {integrity: sha512-uuhSuwY0iMOPV9HUsN1OC4cGCrATPvzZ1O8UfvLR+imz/XjPmfDgZM1e4dPS0Suc2+aCQqJ0FmWP891lUkB2Cg==}
     peerDependencies:
       i18next: '>= 19.0.0'
@@ -15610,7 +15594,7 @@ packages:
       '@babel/runtime': 7.17.9
       html-escaper: 2.0.2
       html-parse-stringify: 3.0.1
-      i18next: 21.6.16
+      i18next: 21.7.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     dev: false
@@ -17109,7 +17093,7 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: true
 
-  /storybook-react-i18next/1.0.13_rbqvl2ass3alzof5kex2xuxhci:
+  /storybook-react-i18next/1.0.13_jyx3ddg2cgsldgq5nz4wjgiz44:
     resolution: {integrity: sha512-9UVPrX8xJF/IAEvZnftZCK5UEX/UZgxCjZ9XrZF6cBBrkyP73TtFRq+H7F1UssiCgWgwJEKCvLUG1D7I8fXUBQ==}
     peerDependencies:
       '@storybook/addons': ^6.3.8
@@ -17140,11 +17124,11 @@ packages:
         optional: true
     dependencies:
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      i18next: 21.6.16
+      i18next: 21.7.0
       i18next-browser-languagedetector: 6.1.4
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-i18next: 11.16.8_zwecmpihis27vgqyxlvaybk5pu
+      react-i18next: 11.16.8_s5xlurqjcuaytjp3g3qvtz7qve
       storybook-i18n: 1.0.11_xcyx36dtd6hcocm3xpyctdigfm
     dev: true
 

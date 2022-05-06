@@ -26,9 +26,9 @@ jobs:
             ./packages/**/node_modules
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v2.2.1
+        uses: pnpm/action-setup@v2
         with:
-          version: 7.0.0
+          version: 7
 
       - name: Install dependencies
         run: |-
