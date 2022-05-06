@@ -101,6 +101,10 @@ module.exports = {
         "unpublish", // agora-rtc-sdk-ng
         "multipass", // svgo
         "allowlist", // webpack-node-externals
+        "Wyri", // WyriHaximus/github-action-helm3@v2
+        "Haximus", // WyriHaximus/github-action-helm3@v2
+        "dorny", // dorny/paths-filter@v2
+        "peaceiris", // peaceiris/actions-gh-pages@v3
 
         // less
         "isstring",
@@ -129,6 +133,8 @@ module.exports = {
         "lintstagedrc",
         "pnpm",
         "emittery",
+        "APPVERSION",
+        "eslintignore",
 
         // CNCF
         "nindent",
@@ -139,6 +145,9 @@ module.exports = {
         "Kube",
         "agoraflat",
         "applinks",
+        "dockerignore",
+        "DOCKERHUB",
+        "kubeconfig",
 
         // readme
         "customizational",

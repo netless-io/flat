@@ -66,15 +66,14 @@ jobs:
             ./packages/**/node_modules
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v2.0.1
+        uses: pnpm/action-setup@v2
         with:
-          version: latest
-          run_install: false
+          version: 7
 
       - name: Install changed package dependencies and build packages
         run: |-
             # failure automatically retries 3 times
-            pnpm install  || pnpm install || pnpm install
+            pnpm i  || pnpm i || pnpm i
         env:
           components: ${{ steps.filter.outputs.components }}
           types: ${{ steps.filter.outputs.types }}
@@ -83,15 +82,15 @@ jobs:
           flatWeb: ${{ steps.filter.outputs.flat-web }}
 
       - name: Build renderer
-        run: pnpm --filter renderer-app build
+        run: pnpm -F renderer-app build
         if: steps.filter.outputs.renderer == 'true'
 
       - name: Build main
-        run: pnpm --filter flat build
+        run: pnpm -F flat build
         if: steps.filter.outputs.main == 'true'
 
       - name: Build flat-web
-        run: pnpm --filter flat-web build
+        run: pnpm -F flat-web build
         env:
             noLegacy: true
         if: steps.filter.outputs.flat-web == 'true'

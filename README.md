@@ -62,7 +62,7 @@ You can build and run the Flat client without a server. This repository includes
 Clone or fork this project, at project root run:
 
 ```bash
-pnpm install
+pnpm i
 ```
 
 ### Build and run Flat Electron client
