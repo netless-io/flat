@@ -19,25 +19,25 @@ export const refreshApps = ({ t, onSaveAnnotation }: RefreshAppsParams): void =>
         {
             kind: "Monaco",
             icon: monacoSVG,
-            label: t?.("tool.monaco") || "Code Editor",
+            label: t("tool.monaco"),
             onClick: app => app.insertCodeEditor(),
         },
         {
             kind: "GeoGebra",
             icon: geogebraSVG,
-            label: t?.("tool.geogebra") || "GeoGebra",
+            label: t("tool.geogebra"),
             onClick: app => app.insertGeoGebra(),
         },
         {
             kind: "Countdown",
             icon: countdownSVG,
-            label: t?.("tool.countdown") || "Countdown",
+            label: t("tool.countdown"),
             onClick: app => app.insertCountdown(),
         },
         {
             kind: "Save",
             icon: saveSVG,
-            label: t?.("tool.save") || "Save Annotation",
+            label: t("tool.save"),
             onClick: onSaveAnnotation || noop,
         },
     );
