@@ -6,15 +6,15 @@
     "postinstall": "husky install",
     "lint": "lint-staged --cwd .",
     "check-spelling": "cspell --no-progress \"**/*.{md,ts,tsx,js,css,less,json,yml,yaml,html,sh}\"",
-    "storybook": "pnpm --filter flat-components start",
+    "storybook": "pnpm -F flat-components start",
     "start": "node scripts/launch/index.js",
     "start:cn": "cross-env FLAT_REGION=CN node scripts/launch/index.js",
     "start:us": "cross-env FLAT_REGION=US node scripts/launch/index.js",
-    "start:web": "pnpm --filter flat-web start",
-    "ship": "pnpm --filter renderer-app build && pnpm --filter flat ship",
-    "ship:mac": "pnpm --filter renderer-app build && pnpm --filter flat ship:mac",
-    "ship:win": "pnpm --filter renderer-app build && pnpm --filter flat ship:win",
-    "ship:all": "pnpm --filter renderer-app build && pnpm --filter flat ship:win && pnpm --filter flat pack:mac",
+    "start:web": "pnpm -F flat-web start",
+    "ship": "pnpm -F renderer-app build && pnpm -F flat ship",
+    "ship:mac": "pnpm -F renderer-app build && pnpm -F flat ship:mac",
+    "ship:win": "pnpm -F renderer-app build && pnpm -F flat ship:win",
+    "ship:all": "pnpm -F renderer-app build && pnpm -F flat ship:win && pnpm -F flat pack:mac",
     "ship:cn:all": "cross-env FLAT_REGION=CN pnpm ship:all",
     "ship:us:all": "cross-env FLAT_REGION=US pnpm ship:all"
   },
@@ -62,7 +62,7 @@
     "yaml": "^1.10.2"
   },
   "pnpm": {
-    "//": "don't worry, we will download it in the main-app/postinstall script.",
+    "//": "don't worry, we will download it in the @netless/flat-rtc-agora-electron -> postinstall script.",
     "neverBuiltDependencies": [
       "agora-electron-sdk"
     ],
@@ -78,7 +78,12 @@
         "rollup",
         "prop-types",
         "react-refresh",
-        "react-scripts"
+        "react-scripts",
+        "webpack",
+        "vite",
+        "less",
+        "typescript",
+        "eslint"
       ],
       "allowedVersions": {
         "@storybook/theming": "~6.3.7",
@@ -93,5 +98,5 @@
       "@types/eslint": "^8"
     }
   },
-  "packageManager": "pnpm@6.32.11"
+  "packageManager": "pnpm@7.0.0"
 }

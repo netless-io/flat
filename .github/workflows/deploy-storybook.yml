@@ -26,26 +26,26 @@ jobs:
             ./packages/**/node_modules
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v2.0.1
+        uses: pnpm/action-setup@v2.2.1
         with:
-          version: latest
-          run_install: false
+          version: 7.0.0
+          run_install: null
 
       - name: Install dependencies
         run: |-
             # failure automatically retries 3 times
-            pnpm install || pnpm install || pnpm install
+            pnpm i || pnpm i || pnpm i
         env:
           components: true
         if: steps.pnpm-cache.outputs.cache-hit != 'true'
 
       - name: Build Types
         # it must be added here, otherwise when the cache matches, there will be flat-types not found
-        run: pnpm --filter flat-types build
+        run: pnpm -F flat-types build
         if: steps.pnpm-cache.outputs.cache-hit == 'true'
 
       - name: Build Storybook
-        run: pnpm --filter flat-components build
+        run: pnpm -F flat-components build
 
       - name: Deploy Storybook
         uses: peaceiris/actions-gh-pages@v3

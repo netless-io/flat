@@ -61,7 +61,7 @@
 Clone 或者 fork 这个项目，在根目录执行：
 
 ```bash
-pnpm install
+pnpm i
 ```
 
 ### 构建并运行 Flat Electron 客户端
@@ -77,10 +77,10 @@ pnpm start
 -   项目根目录执行 `pnpm ship` 将根据当前系统打包。
 -   或者项目根目录执行 `pnpm ship:mac` 或 `pnpm ship:win` 可针对指定的系统打包。
 
-> 如果你因为网络问题导致无法下载 `electron`，可在项目目录新建: `.npmrc` 文件，并写入 `ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"` 内容。重新执行 `pnpm install` 即可。
+> 如果你因为网络问题导致无法下载 `electron`，可在项目目录新建: `.npmrc` 文件，并写入 `ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"` 内容。重新执行 `pnpm i` 即可。
 
 ```shell
-pnpm install
+pnpm i
 ```
 
 ### 构建并运行 Flat Web 客户端
