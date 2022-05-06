@@ -1,0 +1,123 @@
+.save-annotation-modal-container {
+    .ant-modal-title {
+        text-align: center;
+    }
+    .ant-modal-body {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-items: center;
+        gap: 54px 48px;
+        padding: 16px 54px 48px;
+        height: 480px - 54px;
+        overflow-y: auto;
+    }
+}
+
+.save-annotation {
+    position: relative;
+    width: 240px;
+    height: 150px;
+    border: 1px solid var(--grey-3);
+    border-radius: 4px;
+    transition: border 0.1s linear;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+
+    &.is-loading {
+        cursor: wait;
+    }
+}
+
+.save-annotation-image {
+    width: 100%;
+    height: 100%;
+
+    canvas {
+        // The generated canvas contains width and height attribute,
+        // which has higher priority than the CSS. So we need !important.
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain;
+    }
+}
+
+.save-annotation-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--grey-12);
+    transition: opacity 0.2s ease;
+    opacity: 0;
+    z-index: 9;
+}
+
+.save-annotation-actions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+    opacity: 0;
+    z-index: 10;
+
+    img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.save-annotation-text {
+    color: var(--grey-0);
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.save-annotation-footer {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: var(--text);
+}
+
+.flat-color-scheme-dark {
+    .save-annotation {
+        border-color: var(--grey-8);
+    }
+    .save-annotation-mask {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .save-annotation-text {
+        color: var(--grey-0);
+    }
+}
+
+.save-annotation:hover {
+    border-color: var(--primary);
+    .save-annotation-mask {
+        opacity: 0.5;
+    }
+    .save-annotation-actions {
+        opacity: 0.8;
+    }
+}
+
+.save-annotation:active {
+    border-color: var(--primary-strong);
+    .save-annotation-mask {
+        opacity: 0.6;
+        transition: none;
+    }
+    .save-annotation-actions {
+        opacity: 1;
+        transition: none;
+    }
+}

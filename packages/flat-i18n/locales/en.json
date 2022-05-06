@@ -435,5 +435,16 @@
   "app-appearance-auto": "Auto",
   "app-appearance-setting": "Appearance",
   "status": "Status",
-  "time": "Time"
+  "time": "Time",
+  "save": "Save",
+  "tool": {
+    "monaco": "Code Editor",
+    "geogebra": "GeoGebra",
+    "countdown": "Countdown",
+    "save": "Save Annotation"
+  },
+  "annotation": {
+    "save-action": "Save Annotation",
+    "save-failed": "Save annotation failed"
+  }
 }

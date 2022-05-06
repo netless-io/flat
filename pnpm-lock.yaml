@@ -14,6 +14,7 @@ importers:
       '@commitlint/config-angular': ^16.2.1
       '@hyrious/esbuild-dev': ^0.7.4
       '@netless/eslint-plugin': ^2.0.0
+      '@netless/white-snapshot': ^0.3.0
       '@types/fs-extra': ^9.0.13
       '@types/lodash-es': ^4.17.6
       '@types/node': ^17.0.21
@@ -54,6 +55,7 @@ importers:
       '@commitlint/config-angular': 16.2.3
       '@hyrious/esbuild-dev': 0.7.5_esbuild@0.14.27
       '@netless/eslint-plugin': 2.0.0_eslint@8.11.0
+      '@netless/white-snapshot': 0.3.0
       '@types/fs-extra': 9.0.13
       '@types/lodash-es': 4.17.6
       '@types/node': 17.0.23
@@ -290,6 +292,7 @@ importers:
       lodash-es: ^4.17.21
       mobx: ^6.4.2
       mobx-react-lite: ^3.3.0
+      p-limit: ^4.0.0
       pretty-bytes: ^6.0.0
       rc-picker: ^2.6.4
       react: ^17.0.2
@@ -315,6 +318,7 @@ importers:
       i18next-browser-languagedetector: 6.1.4
       mobx: 6.5.0
       mobx-react-lite: 3.3.0_3b110ddd052df537d55bc762cdd4d0b8
+      p-limit: 4.0.0
       pretty-bytes: 6.0.0
       rc-picker: 2.6.5_react-dom@17.0.2+react@17.0.2
       react: 17.0.2
@@ -2960,6 +2964,10 @@ packages:
       video.js: 7.10.2
       white-web-sdk: 2.16.20
     dev: false
+
+  /@netless/white-snapshot/0.3.0:
+    resolution: {integrity: sha512-4QlySzaZ3N+VLxRJmda3L4DJjkbk7nJE/q9TnhMceJUmke0M9wrniQvHFtDxyPYNQQ+9uIQXA4UM/8K+hfd0tg==}
+    dev: true
 
   /@netless/window-manager/0.4.20_white-web-sdk@2.16.20:
     resolution: {integrity: sha512-gJp9EGtWA89AJB8O+6vNKmcqT7M+lh0eNJKVAa/BhW816Lap2NUcXqHBa8neEs6nnY5xUvXL9n7KxM+nv5x9Ow==}
@@ -13745,6 +13753,13 @@ packages:
       yocto-queue: 0.1.0
     dev: true
 
+  /p-limit/4.0.0:
+    resolution: {integrity: sha512-5b0R4txpzjPWVw/cXXUResoD4hb6U/x9BH08L7nw+GN1sezDzPdxeRvpc9c433fZhBan/wusjbCsqwqm4EIBIQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      yocto-queue: 1.0.0
+    dev: false
+
   /p-locate/2.0.0:
     resolution: {integrity: sha1-IKAQOyIqcMj9OcwuWAaA893l7EM=}
     engines: {node: '>=4'}
@@ -18940,6 +18955,11 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /yocto-queue/1.0.0:
+    resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
+    engines: {node: '>=12.20'}
+    dev: false
 
   /yuv-buffer/1.0.0:
     resolution: {integrity: sha1-CaRUhY103yvDHNWI7dcP/Lhr/Jo=}
