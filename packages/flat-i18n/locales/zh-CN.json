@@ -435,5 +435,14 @@
   "app-appearance-auto": "自动",
   "app-appearance-setting": "外观",
   "status": "状态",
-  "time": "时间"
+  "time": "时间",
+  "save": "保存",
+  "save-annotation": "保存板书",
+  "tool": {
+    "monaco": "编辑器",
+    "geogebra": "几何代数",
+    "countdown": "计时器",
+    "save": "保存板书"
+  },
+  "save-annotation-failed": "板书保存失败"
 }

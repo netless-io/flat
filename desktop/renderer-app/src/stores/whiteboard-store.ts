@@ -1,7 +1,6 @@
 import "video.js/dist/video-js.css";
 
 import { FastboardApp, createFastboard } from "@netless/fastboard-react";
-import type { Attributes as SlideAttributes } from "@netless/app-slide";
 import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manager";
 import { message } from "antd";
 import { i18n } from "i18next";
@@ -10,6 +9,8 @@ import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { isMobile, isWindows } from "react-device-detect";
 import { DeviceType, Room, RoomPhase, RoomState, SceneDefinition, ViewMode } from "white-web-sdk";
+import { snapshot } from "@netless/white-snapshot";
+
 import { RoomType } from "../../../../packages/flat-components/src/types/room";
 import { CLOUD_STORAGE_DOMAIN, NETLESS, NODE_ENV } from "../constants/process";
 import { CloudStorageFile, CloudStorageStore } from "../pages/CloudStoragePage/store";
@@ -196,7 +197,7 @@ export class WhiteboardStore {
                         attributes: {
                             taskId,
                             url,
-                        } as SlideAttributes,
+                        },
                     });
                 } else {
                     await this.windowManager.addApp({
@@ -615,4 +616,26 @@ export class WhiteboardStore {
             void message.error(this.i18n.t("unable-to-insert-courseware"));
         }
     };
+
+    public getSaveAnnotationImages(): Array<() => Promise<HTMLCanvasElement | null>> {
+        if (this.fastboardAPP) {
+            const { manager } = this.fastboardAPP;
+            return manager.sceneState.scenes.map(scene => {
+                const dir = manager.mainViewSceneDir;
+                // Because manager hacks room.fillSceneSnapshot, we need to hack it back.
+                const room = {
+                    state: manager,
+                    fillSceneSnapshot: manager.mainView.fillSceneSnapshot.bind(manager.mainView),
+                } as any;
+                return () =>
+                    snapshot(room, {
+                        scenePath: dir + scene.name,
+                        // TODO: configure CDN to support saving images
+                        // crossorigin: true,
+                    });
+            });
+        } else {
+            return [];
+        }
+    }
 }

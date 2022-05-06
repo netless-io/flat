@@ -14,6 +14,7 @@ importers:
       '@commitlint/config-angular': ^16.2.1
       '@hyrious/esbuild-dev': ^0.7.4
       '@netless/eslint-plugin': ^2.0.0
+      '@netless/white-snapshot': ^0.2.2
       '@types/fs-extra': ^9.0.13
       '@types/lodash-es': ^4.17.6
       '@types/node': ^17.0.21
@@ -40,6 +41,7 @@ importers:
       eslint-plugin-react: ^7.29.4
       eslint-webpack-plugin: ^3.1.1
       fork-ts-checker-webpack-plugin: ^7.2.1
+      html2canvas: ^1.4.1
       husky: ^7.0.4
       less: ^4.1.2
       lint-staged: ^12.3.5
@@ -54,6 +56,7 @@ importers:
       '@commitlint/config-angular': 16.2.3
       '@hyrious/esbuild-dev': 0.7.5_esbuild@0.14.27
       '@netless/eslint-plugin': 2.0.0_eslint@8.11.0
+      '@netless/white-snapshot': 0.2.2_html2canvas@1.4.1
       '@types/fs-extra': 9.0.13
       '@types/lodash-es': 4.17.6
       '@types/node': 17.0.23
@@ -80,6 +83,7 @@ importers:
       eslint-plugin-react: 7.29.4_eslint@8.11.0
       eslint-webpack-plugin: 3.1.1_eslint@8.11.0+webpack@5.70.0
       fork-ts-checker-webpack-plugin: 7.2.1_typescript@4.6.3+webpack@5.70.0
+      html2canvas: 1.4.1
       husky: 7.0.4
       less: 4.1.2
       lint-staged: 12.3.7
@@ -290,6 +294,7 @@ importers:
       lodash-es: ^4.17.21
       mobx: ^6.4.2
       mobx-react-lite: ^3.3.0
+      p-limit: ^4.0.0
       pretty-bytes: ^6.0.0
       rc-picker: ^2.6.4
       react: ^17.0.2
@@ -315,6 +320,7 @@ importers:
       i18next-browser-languagedetector: 6.1.4
       mobx: 6.5.0
       mobx-react-lite: 3.3.0_3b110ddd052df537d55bc762cdd4d0b8
+      p-limit: 4.0.0
       pretty-bytes: 6.0.0
       rc-picker: 2.6.5_react-dom@17.0.2+react@17.0.2
       react: 17.0.2
@@ -2960,6 +2966,17 @@ packages:
       video.js: 7.10.2
       white-web-sdk: 2.16.20
     dev: false
+
+  /@netless/white-snapshot/0.2.2_html2canvas@1.4.1:
+    resolution: {integrity: sha512-7WQ2sPEx2LmeIodUiWq7/PtREtNiSXXpXaNYhzoNDPw9kGfH8fh+8iiHgC7LGxlxwyY7vE7Yr0TQ27kB/m4Rrg==}
+    peerDependencies:
+      html2canvas: '*'
+    peerDependenciesMeta:
+      html2canvas:
+        optional: true
+    dependencies:
+      html2canvas: 1.4.1
+    dev: true
 
   /@netless/window-manager/0.4.20_white-web-sdk@2.16.20:
     resolution: {integrity: sha512-gJp9EGtWA89AJB8O+6vNKmcqT7M+lh0eNJKVAa/BhW816Lap2NUcXqHBa8neEs6nnY5xUvXL9n7KxM+nv5x9Ow==}
@@ -6485,6 +6502,11 @@ packages:
       pascalcase: 0.1.1
     dev: true
 
+  /base64-arraybuffer/1.0.2:
+    resolution: {integrity: sha512-I3yl4r9QB5ZRY3XuJVEPfc2XhZO6YweFPI+UovAzn+8/hb3oJ6lnysaFcjVpkCPfVWFUDvoZ8kmVDP7WyRtYtQ==}
+    engines: {node: '>= 0.6.0'}
+    dev: true
+
   /base64-js/1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
@@ -7814,6 +7836,12 @@ packages:
       hyphenate-style-name: 1.0.4
       isobject: 3.0.1
     dev: false
+
+  /css-line-break/2.1.0:
+    resolution: {integrity: sha512-FHcKFCZcAha3LwfVBhCQbW2nCNbkZXn7KVUJcsT5/P8YmfsVja0FMPJr0B903j/E69HUphKiV9iQArX8SDYA4w==}
+    dependencies:
+      utrie: 1.0.2
+    dev: true
 
   /css-loader/3.6.0_webpack@4.46.0:
     resolution: {integrity: sha512-M5lSukoWi1If8dhQAUCvj4H8vUt3vOnwbQBH9DdTm/s4Ym2B/3dPMtYZeJmq7Q3S3Pa+I94DcZ7pc9bP14cWIQ==}
@@ -11071,6 +11099,14 @@ packages:
       webpack: 5.70.0_esbuild@0.14.27
     dev: true
 
+  /html2canvas/1.4.1:
+    resolution: {integrity: sha512-fPU6BHNpsyIhr8yyMpTLLxAbkaK8ArIBcmZIRiBLiDhjeqvXolaEmDGmELFuX9I4xDcaKKcJl+TKZLqruBbmWA==}
+    engines: {node: '>=8.0.0'}
+    dependencies:
+      css-line-break: 2.1.0
+      text-segmentation: 1.0.3
+    dev: true
+
   /htmlparser2/6.1.0:
     resolution: {integrity: sha512-gyyPk6rgonLFEDGoeRgQNaEUvdJ4ktTmmUh/h2t7s+M8oPpIPxgNACWa+6ESR57kXstwqPiCut0V8NRpcwgU7A==}
     dependencies:
@@ -13744,6 +13780,13 @@ packages:
     dependencies:
       yocto-queue: 0.1.0
     dev: true
+
+  /p-limit/4.0.0:
+    resolution: {integrity: sha512-5b0R4txpzjPWVw/cXXUResoD4hb6U/x9BH08L7nw+GN1sezDzPdxeRvpc9c433fZhBan/wusjbCsqwqm4EIBIQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      yocto-queue: 1.0.0
+    dev: false
 
   /p-locate/2.0.0:
     resolution: {integrity: sha1-IKAQOyIqcMj9OcwuWAaA893l7EM=}
@@ -17412,6 +17455,12 @@ packages:
     engines: {node: '>=0.10'}
     dev: true
 
+  /text-segmentation/1.0.3:
+    resolution: {integrity: sha512-iOiPUo/BGnZ6+54OsWxZidGCsdU8YbE4PSpdPinp7DeMtUJNJBoJ/ouUSTJjHkh1KntHaltHl/gDs2FC4i5+Nw==}
+    dependencies:
+      utrie: 1.0.2
+    dev: true
+
   /text-table/0.2.0:
     resolution: {integrity: sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=}
     dev: true
@@ -18218,6 +18267,12 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: true
 
+  /utrie/1.0.2:
+    resolution: {integrity: sha512-1MLa5ouZiOmQzUbjbu9VmjLzn1QLXBhwpUa7kdLUQK+KQ5KA9I1vk5U4YHe/X2Ch7PYnJfWuWT+VbuxbGwljhw==}
+    dependencies:
+      base64-arraybuffer: 1.0.2
+    dev: true
+
   /uuid-browser/3.1.0:
     resolution: {integrity: sha1-DwWkCu90+eWVHiDvv0SxGHHlZBA=}
     dev: true
@@ -18940,6 +18995,11 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /yocto-queue/1.0.0:
+    resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
+    engines: {node: '>=12.20'}
+    dev: false
 
   /yuv-buffer/1.0.0:
     resolution: {integrity: sha1-CaRUhY103yvDHNWI7dcP/Lhr/Jo=}
