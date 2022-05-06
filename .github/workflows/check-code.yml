@@ -69,7 +69,6 @@ jobs:
         uses: pnpm/action-setup@v2.2.1
         with:
           version: 7.0.0
-          run_install: null
 
       - name: Install changed package dependencies and build packages
         run: |-
