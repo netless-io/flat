@@ -68,7 +68,7 @@ jobs:
       - name: Install PNPM
         uses: pnpm/action-setup@v2.2.1
         with:
-          version: 7.0.0
+          version: 7
 
       - name: Install changed package dependencies and build packages
         run: |-
