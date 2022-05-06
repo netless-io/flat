@@ -15,10 +15,7 @@ function download(
         const a = document.createElement("a");
         a.download = filename;
         a.href = canvas.toDataURL();
-        a.style.display = "none";
-        document.body.appendChild(a);
         a.click();
-        document.body.removeChild(a);
     } catch (err) {
         console.error(err);
         message.error(failText);
