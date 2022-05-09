@@ -17,6 +17,19 @@ export interface AppRouteContainerProps {
     routeProps: RouteComponentProps;
 }
 
+const componentCache = new Map<RouteNameType, ComponentType<any>>();
+// Preload components every 2 seconds.
+const preloadComponents = async (): Promise<void> => {
+    for (const name of Object.keys(routePages) as RouteNameType[]) {
+        if (!componentCache.has(name)) {
+            const { default: Component } = await routePages[name].component();
+            componentCache.set(name, Component);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+    }
+};
+window.setTimeout(preloadComponents, 5000);
+
 export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRouteContainer({
     name,
     Comp,
@@ -38,14 +51,25 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
         window.getSelection()?.removeAllRanges();
     }, [t, title]);
 
+    useEffect(() => {
+        if (!componentCache.has(name)) {
+            Comp().then(({ default: Component }) => {
+                componentCache.set(name, Component);
+            });
+        }
+    }, [Comp, name]);
+
     const hasHeader = pageStore.name && routePages[pageStore.name].hasHeader;
 
     return (
         <FlatThemeBodyProvider prefersColorScheme={configStore.prefersColorScheme}>
             <AppRouteErrorBoundary
-                Comp={loadable(Comp, {
-                    fallback: <LoadingPage hasHeader={hasHeader} />,
-                })}
+                Comp={
+                    componentCache.get(name) ||
+                    loadable(Comp, {
+                        fallback: <LoadingPage hasHeader={hasHeader} />,
+                    })
+                }
                 {...{ title, routeProps }}
             />
         </FlatThemeBodyProvider>

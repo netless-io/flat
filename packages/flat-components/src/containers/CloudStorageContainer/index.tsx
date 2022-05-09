@@ -56,8 +56,15 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store }) {
         const { t } = useTranslation();
         const cloudStorageContainerRef = useRef<HTMLDivElement>(null);
+        const [skeletonsVisible, setSkeletonsVisible] = useState(false);
         const [isH5PanelVisible, setH5PanelVisible] = useState(false);
         const [isAtTheBottom, setIsAtTheBottom] = useState(false);
+
+        // Wait 200ms before showing skeletons to reduce flashing.
+        useEffect(() => {
+            const ticket = window.setTimeout(() => setSkeletonsVisible(true), 200);
+            return () => window.clearTimeout(ticket);
+        }, []);
 
         useEffect(() => {
             if (isAtTheBottom) {
@@ -147,9 +154,9 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                             isLoadingData={store.isFetchingFiles}
                             store={store}
                         />
-                    ) : (
+                    ) : skeletonsVisible ? (
                         <CloudStorageSkeletons isCompactMode={store.compact} />
-                    )}
+                    ) : null}
                 </div>
                 <CSSTransition
                     mountOnEnter
