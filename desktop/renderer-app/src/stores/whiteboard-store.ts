@@ -71,6 +71,11 @@ export class WhiteboardStore {
             i18n: this.i18n,
             insertCourseware: this.insertCourseware,
         });
+
+        // Whiteboard debugging
+        const flatUA =
+            process.env.FLAT_UA || (this.i18n.t("app-name") || "").replace(/s+/g, "_").slice(0, 50);
+        window.__netlessUA = (window.__netlessUA || "") + ` FLAT/${flatUA}@${process.env.VERSION} `;
     }
 
     public updateFastboardAPP = (whiteboardApp: FastboardApp): void => {

@@ -1,5 +1,5 @@
 interface Window {
-    rtcEngine: any;
+    __netlessUA?: string;
 }
 
 declare namespace NodeJS {
