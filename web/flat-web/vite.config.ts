@@ -1,5 +1,4 @@
 import react from "@vitejs/plugin-react";
-import legacy from "@vitejs/plugin-legacy";
 import { defineConfig } from "vite";
 import { dotenv } from "./scripts/vite-plugin-dotenv";
 import { injectHtmlHash } from "./scripts/vite-plugin-html-hash";
@@ -12,7 +11,6 @@ import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 export default defineConfig({
     plugins: [
         react(),
-        !process.env.noLegacy && legacy(),
         dotenv(autoChooseConfig()),
         injectHtmlHash(),
         version(mainPackageJSONPath),

@@ -99,5 +99,5 @@
       "@types/react": "^17"
     }
   },
-  "packageManager": "pnpm@7.0.0"
+  "packageManager": "pnpm@7.0.1"
 }
