@@ -72,8 +72,8 @@ jobs:
 
       - name: Install changed package dependencies and build packages
         run: |-
-            # failure automatically retries 3 times
-            pnpm i  || pnpm i || pnpm i
+          # failure automatically retries 3 times
+          pnpm i  || pnpm i || pnpm i
         env:
           components: ${{ steps.filter.outputs.components }}
           types: ${{ steps.filter.outputs.types }}
@@ -91,8 +91,6 @@ jobs:
 
       - name: Build flat-web
         run: pnpm -F flat-web build
-        env:
-            noLegacy: true
         if: steps.filter.outputs.flat-web == 'true'
 
       - name: Check i18n
