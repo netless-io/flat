@@ -22,7 +22,11 @@ export function injectHtmlHash(): Plugin {
 // ensure that the commit hash is time-sensitive
 // so using the function
 const gitHash = (): string => {
-    return execSync("git rev-parse HEAD", {
-        encoding: "utf-8",
-    }).trim();
+    try {
+        return execSync("git rev-parse HEAD", {
+            encoding: "utf-8",
+        }).trim();
+    } catch {
+        return "NOT_A_GIT_REPO";
+    }
 };
