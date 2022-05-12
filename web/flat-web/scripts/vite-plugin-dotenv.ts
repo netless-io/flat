@@ -12,12 +12,16 @@ export function dotenv(envDir: string): Plugin {
         enforce: "pre",
         config(config, { mode }) {
             const envConfigContent = getEnvConfigContent(envDir, mode);
+            const define: Record<string, string | {}> = {};
+
+            if (process.env["FLAT_UA"] !== undefined && process.env["FLAT_UA"] !== "undefined") {
+                define["process.env.FLAT_UA"] = JSON.stringify(process.env["FLAT_UA"]);
+            }
 
             if (envConfigContent) {
                 const parsed = dotenvReal.parse(envConfigContent);
                 expand({ parsed });
                 const env = { ...parsed };
-                const define: Record<string, string | {}> = {};
 
                 for (const [key, value] of Object.entries(env)) {
                     define[`process.env.${key}`] = JSON.stringify(value);
@@ -27,9 +31,9 @@ export function dotenv(envDir: string): Plugin {
                 define["process.env.DEV"] = mode === "development";
                 define["process.env.NODE_DEV"] = JSON.stringify(mode);
                 define["process.env.FLAT_REGION"] = JSON.stringify(configRegion());
-
-                config.define = { ...config.define, ...define };
             }
+
+            config.define = { ...config.define, ...define };
         },
     };
 }
