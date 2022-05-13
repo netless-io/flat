@@ -35,8 +35,6 @@ jobs:
 
       - name: Build flat web development
         run: pnpm -F flat-web build:cn -m development
-        env:
-          FLAT_UA: ${{ secrets.FLAT_UA_CN }}
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1

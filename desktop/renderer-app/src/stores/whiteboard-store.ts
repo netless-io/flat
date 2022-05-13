@@ -75,7 +75,9 @@ export class WhiteboardStore {
         // Whiteboard debugging
         const flatUA =
             process.env.FLAT_UA || (this.i18n.t("app-name") || "").replace(/s+/g, "_").slice(0, 50);
-        window.__netlessUA = (window.__netlessUA || "") + ` FLAT/${flatUA}@${process.env.VERSION} `;
+        window.__netlessUA =
+            (window.__netlessUA || "") +
+            ` FLAT/${flatUA}_${process.env.FLAT_REGION}@${process.env.VERSION} `;
     }
 
     public updateFastboardAPP = (whiteboardApp: FastboardApp): void => {
