@@ -441,10 +441,17 @@
     "monaco": "Code Editor",
     "geogebra": "GeoGebra",
     "countdown": "Countdown",
-    "save": "Save Annotation"
+    "save": "Save Annotation",
+    "presets": "Presets"
   },
   "annotation": {
     "save-action": "Save Annotation",
     "save-failed": "Save annotation failed"
+  },
+  "presets": {
+    "title": "Presets",
+    "math_1": "Coordinate Axis",
+    "english_1": "Four Lines and Three Grids",
+    "chinese_1": "Tin Word Format"
   }
 }

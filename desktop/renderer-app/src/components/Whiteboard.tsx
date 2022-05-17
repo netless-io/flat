@@ -6,6 +6,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Fastboard, Language } from "@netless/fastboard-react";
 import {
     DarkModeContext,
+    PresetsModal,
     RaiseHand,
     SaveAnnotationModal,
     SaveAnnotationModalProps,
@@ -20,6 +21,7 @@ import { isSupportedFileExt } from "../utils/drag-and-drop";
 import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image";
 import { ClassRoomStore } from "../stores/class-room-store";
 import { refreshApps } from "../utils/toolbar-apps";
+import { PRESETS } from "../constants/presets";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -46,6 +48,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     const [saveAnnotationImages, setSaveAnnotationImages] = useState<
         SaveAnnotationModalProps["images"]
     >([]);
+    const [presetsVisible, showPresets] = useState(false);
 
     const isReconnecting = phase === RoomPhase.Reconnecting;
 
@@ -135,6 +138,9 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
             onSaveAnnotation: () => {
                 showSaveAnnotation(true);
             },
+            onPresets: () => {
+                showPresets(true);
+            },
         });
     }, [t]);
 
@@ -155,6 +161,14 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
             setCollectorEl(ref);
         }
     }, []);
+
+    const insertPresetImage = useCallback(
+        (fileURL: string) => {
+            whiteboardStore.insertImage({ fileURL });
+            showPresets(false);
+        },
+        [whiteboardStore],
+    );
 
     const onDragOver = useCallback(
         (event: React.DragEvent<HTMLDivElement>) => {
@@ -218,6 +232,12 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                 images={saveAnnotationImages}
                 visible={saveAnnotationVisible}
                 onClose={() => showSaveAnnotation(false)}
+            />
+            <PresetsModal
+                images={PRESETS}
+                visible={presetsVisible}
+                onClick={insertPresetImage}
+                onClose={() => showPresets(false)}
             />
         </>
     );
