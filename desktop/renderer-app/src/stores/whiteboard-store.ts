@@ -457,7 +457,7 @@ export class WhiteboardStore {
         }
     };
 
-    public insertImage = async (file: CloudStorageFile): Promise<void> => {
+    public insertImage = async (file: Pick<CloudStorageFile, "fileURL">): Promise<void> => {
         const room = this.room;
         if (!room) {
             return;

@@ -441,10 +441,17 @@
     "monaco": "编辑器",
     "geogebra": "几何代数",
     "countdown": "计时器",
-    "save": "保存板书"
+    "save": "保存板书",
+    "presets": "素材库"
   },
   "annotation": {
     "save-action": "保存板书",
     "save-failed": "板书保存失败"
+  },
+  "presets": {
+    "title": "资源素材库",
+    "math_1": "坐标系",
+    "english_1": "四线三格",
+    "chinese_1": "田字格"
   }
 }
