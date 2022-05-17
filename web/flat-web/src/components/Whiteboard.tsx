@@ -145,13 +145,13 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
             let smallClassAvatarWrapMaxWidth: number;
 
             if (isSmallClass) {
+                classRoomTopBarHeight = 150;
                 classRoomMinWidth = whiteboardStore.isRightSideClose ? 826 : 1130;
                 classRoomMinHeight = 610;
-                classRoomTopBarHeight = 182;
             } else {
+                classRoomTopBarHeight = 40;
                 classRoomMinWidth = whiteboardStore.isRightSideClose ? 716 : 1020;
                 classRoomMinHeight = 522;
-                classRoomTopBarHeight = 50;
             }
 
             const whiteboardWidth = Math.min(

@@ -72,11 +72,11 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
             let smallClassAvatarWrapMaxWidth: number;
 
             if (isSmallClass) {
-                classRoomTopBarHeight = 182;
+                classRoomTopBarHeight = 150;
                 classRoomMinWidth = 1130;
                 classRoomMinHeight = 610;
             } else {
-                classRoomTopBarHeight = 50;
+                classRoomTopBarHeight = 40;
                 classRoomMinWidth = 1020;
                 classRoomMinHeight = 522;
             }
