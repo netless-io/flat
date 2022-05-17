@@ -135,6 +135,7 @@ module.exports = {
         "emittery",
         "APPVERSION",
         "eslintignore",
+        "corepack",
 
         // CNCF
         "nindent",
