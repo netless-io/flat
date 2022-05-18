@@ -15,7 +15,7 @@ importers:
       '@commitlint/config-angular': ^16.2.1
       '@hyrious/esbuild-dev': ^0.7.4
       '@netless/eslint-plugin': ^2.0.0
-      '@netless/white-snapshot': ^0.3.0
+      '@netless/white-snapshot': ^0.3.1
       '@types/fs-extra': ^9.0.13
       '@types/lodash-es': ^4.17.6
       '@types/node': ^17.0.21
@@ -48,7 +48,7 @@ importers:
       prettier: ^2.6.1
       svgo: ^2.8.0
       typescript: ^4.6.2
-      vite: ^2.8.6
+      vite: ^2.9.9
       webpack: ^5.70.0
       yaml: ^1.10.2
     devDependencies:
@@ -56,7 +56,7 @@ importers:
       '@commitlint/config-angular': 16.2.4
       '@hyrious/esbuild-dev': 0.7.5_esbuild@0.14.38
       '@netless/eslint-plugin': 2.0.0_eslint@8.14.0
-      '@netless/white-snapshot': 0.3.0
+      '@netless/white-snapshot': 0.3.1
       '@types/fs-extra': 9.0.13
       '@types/lodash-es': 4.17.6
       '@types/node': 17.0.31
@@ -89,7 +89,7 @@ importers:
       prettier: 2.6.2
       svgo: 2.8.0
       typescript: 4.6.4
-      vite: 2.9.8_less@4.1.2
+      vite: 2.9.9_less@4.1.2
       webpack: 5.72.0_esbuild@0.14.38
       yaml: 1.10.2
 
@@ -149,14 +149,14 @@ importers:
       '@netless/app-geogebra': ^0.0.4
       '@netless/app-iframe-bridge': ^0.0.2
       '@netless/app-monaco': ^0.1.13-beta.0
-      '@netless/app-slide': ^0.1.3
+      '@netless/app-slide': ^0.2.0
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.2-canary.6
+      '@netless/fastboard-react': ^0.3.3
       '@netless/flat-rtc': workspace:*
       '@netless/flat-rtc-agora-electron': workspace:*
       '@netless/player-controller': ^0.0.9
       '@netless/video-js-plugin': ^0.3.8
-      '@netless/window-manager': ^0.4.20
+      '@netless/window-manager': ^0.4.25
       '@types/classnames': ^2.3.0
       '@types/lodash': ^4.14.180
       '@types/node-downloader-helper': ^1.0.16
@@ -199,21 +199,21 @@ importers:
       uuid: ^8.3.2
       value-enhancer: ^1.0.3
       video.js: 7.10.2
-      white-web-sdk: 2.16.20
+      white-web-sdk: 2.16.21
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@netless/app-countdown': 0.0.2
       '@netless/app-geogebra': 0.0.4
       '@netless/app-iframe-bridge': 0.0.2
       '@netless/app-monaco': 0.1.13-beta.0
-      '@netless/app-slide': 0.1.6
+      '@netless/app-slide': 0.2.0
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.2_bnzs3v24gp7gfi2jyjd5peywwa
+      '@netless/fastboard-react': 0.3.3_rnnxn3pchcsbkwbomkp7yrk3du
       '@netless/flat-rtc': link:../../services/rtc/flat-rtc
       '@netless/flat-rtc-agora-electron': link:../../services/rtc/flat-rtc-agora-electron
-      '@netless/player-controller': 0.0.9_bqej3ufbhwtrstxvkcabt25qq4
-      '@netless/video-js-plugin': 0.3.8_p2nmfvk6vs22og6ulfdhczixsu
-      '@netless/window-manager': 0.4.24_white-web-sdk@2.16.20
+      '@netless/player-controller': 0.0.9_zsg5zubbw333nd3huiyxlfkssa
+      '@netless/video-js-plugin': 0.3.8_kcbubqpzr2jhwd7dwibcnybc2i
+      '@netless/window-manager': 0.4.25_white-web-sdk@2.16.21
       '@videojs/vhs-utils': 2.3.0
       agora-rtm-sdk: 1.4.4
       antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
@@ -245,7 +245,7 @@ importers:
       uuid: 8.3.2
       value-enhancer: 1.0.3
       video.js: 7.10.2
-      white-web-sdk: 2.16.20
+      white-web-sdk: 2.16.21
     devDependencies:
       '@types/classnames': 2.3.1
       '@types/lodash': 4.14.182
@@ -425,15 +425,15 @@ importers:
       '@netless/app-geogebra': ^0.0.4
       '@netless/app-iframe-bridge': ^0.0.2
       '@netless/app-monaco': ^0.1.13-beta.0
-      '@netless/app-slide': ^0.1.3
+      '@netless/app-slide': ^0.2.0
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.2-canary.6
+      '@netless/fastboard-react': ^0.3.3
       '@netless/flat-rtc': workspace:*
       '@netless/flat-rtc-agora-web': workspace:*
       '@netless/mini-svg-data-uri': 0.0.1
       '@netless/player-controller': ^0.0.9
       '@netless/video-js-plugin': ^0.3.8
-      '@netless/window-manager': ^0.4.20
+      '@netless/window-manager': ^0.4.25
       '@types/loadable__component': ^5.13.4
       '@types/mime': ^2.0.3
       '@videojs/vhs-utils': ^2.3.0
@@ -471,7 +471,7 @@ importers:
       uuid: ^8.3.2
       value-enhancer: ^1.0.3
       video.js: 7.10.2
-      white-web-sdk: 2.16.20
+      white-web-sdk: 2.16.21
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@loadable/component': 5.15.2_react@17.0.2
@@ -479,14 +479,14 @@ importers:
       '@netless/app-geogebra': 0.0.4
       '@netless/app-iframe-bridge': 0.0.2
       '@netless/app-monaco': 0.1.13-beta.0
-      '@netless/app-slide': 0.1.6
+      '@netless/app-slide': 0.2.0
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.2_bnzs3v24gp7gfi2jyjd5peywwa
+      '@netless/fastboard-react': 0.3.3_rnnxn3pchcsbkwbomkp7yrk3du
       '@netless/flat-rtc': link:../../services/rtc/flat-rtc
       '@netless/flat-rtc-agora-web': link:../../services/rtc/flat-rtc-agora-web
-      '@netless/player-controller': 0.0.9_bqej3ufbhwtrstxvkcabt25qq4
-      '@netless/video-js-plugin': 0.3.8_p2nmfvk6vs22og6ulfdhczixsu
-      '@netless/window-manager': 0.4.24_white-web-sdk@2.16.20
+      '@netless/player-controller': 0.0.9_zsg5zubbw333nd3huiyxlfkssa
+      '@netless/video-js-plugin': 0.3.8_kcbubqpzr2jhwd7dwibcnybc2i
+      '@netless/window-manager': 0.4.25_white-web-sdk@2.16.21
       '@videojs/vhs-utils': 2.3.0
       '@zip.js/zip.js': 2.4.10
       agora-rtc-sdk-ng: 4.11.0
@@ -518,7 +518,7 @@ importers:
       uuid: 8.3.2
       value-enhancer: 1.0.3
       video.js: 7.10.2
-      white-web-sdk: 2.16.20
+      white-web-sdk: 2.16.21
     devDependencies:
       '@babel/standalone': 7.17.8
       '@netless/mini-svg-data-uri': 0.0.1
@@ -2878,8 +2878,8 @@ packages:
     resolution: {integrity: sha512-ir6GrodgiuBK0JBOmdt7xwSAufehcbV88fLh9ZJjGzJbwmKglxjFy6UPWr8Hx75FOmHWBl44JjEEGZotMI6+bg==}
     dev: false
 
-  /@netless/app-slide/0.1.6:
-    resolution: {integrity: sha512-PL0U303ng84ccvaRMY1UGtIOtjY4Wfwub+gFpmc3Bz0yT+WHWpLrXpN2i22p4Y+TXNmQWXDm/XFZd9X2LVswUg==}
+  /@netless/app-slide/0.2.0:
+    resolution: {integrity: sha512-kKJyTVLE4pWLzhjllw7tNEZ42ghBgBiSMA1HtsUbzTBRHb2869oD/Jd+nLW9i59411yyg9TCF9hJckamozHbew==}
     dev: false
 
   /@netless/canvas-polyfill/0.0.4:
@@ -2902,36 +2902,36 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/0.3.2_3u552u633qnrvaxmkd7652fvfy:
-    resolution: {integrity: sha512-L/xoBi2nm/ZDhCAiCTeW2iQ2dcfLMgx8vIbhSSg/OVCRyCgb8J1O8ojLsORYGY/ZLeTZxQHKzeCSX+J8fUWzEA==}
+  /@netless/fastboard-core/0.3.3_t5kp6kxigevktvq2yb4wuhnt7e:
+    resolution: {integrity: sha512-Iayvp0K+9NHp/mfCLNbgIqUSetOmMq4D1hUQwNp/r5MIIV8yX/i8JBL+DzxAueD8zsyLV1itTbf6I9rAzRcqug==}
     peerDependencies:
       '@netless/window-manager': '>=0.4.0'
       white-web-sdk: '>=2.16.0'
     dependencies:
-      '@netless/app-slide': 0.1.6
-      '@netless/window-manager': 0.4.24_white-web-sdk@2.16.20
-      white-web-sdk: 2.16.20
+      '@netless/app-slide': 0.2.0
+      '@netless/window-manager': 0.4.25_white-web-sdk@2.16.21
+      white-web-sdk: 2.16.21
     dev: false
 
-  /@netless/fastboard-react/0.3.2_bnzs3v24gp7gfi2jyjd5peywwa:
-    resolution: {integrity: sha512-Xi2UfuBWjXUzHTwPYj/tzqVZTaFgG0ALICUJKlVVFLNos33bqwljwh1ldTWV5mvJNbgbF9GraEANSCA2WI8wJg==}
+  /@netless/fastboard-react/0.3.3_rnnxn3pchcsbkwbomkp7yrk3du:
+    resolution: {integrity: sha512-enlVUX9F2nWWDeJvT2S2ggmj+H8vlvWWM4GfAVh7wPMAEmIHtXtIkJBmv8dTTQ5uNCODPvup1rt8fba6y5odDA==}
     peerDependencies:
       react: '*'
     dependencies:
-      '@netless/fastboard-core': 0.3.2_3u552u633qnrvaxmkd7652fvfy
-      '@netless/fastboard-ui': 0.3.2_yoprbdrhcsb76fumlz77wb3atq
+      '@netless/fastboard-core': 0.3.3_t5kp6kxigevktvq2yb4wuhnt7e
+      '@netless/fastboard-ui': 0.3.3_cwdgvhe2rjhzeo33ldxoblopem
       react: 17.0.2
     transitivePeerDependencies:
       - '@netless/window-manager'
       - white-web-sdk
     dev: false
 
-  /@netless/fastboard-ui/0.3.2_yoprbdrhcsb76fumlz77wb3atq:
-    resolution: {integrity: sha512-cSjAYYspjOEKzN6EctD+4lR0ms2ZyjZRIlTklm/wKjBOfrA2zLuFGHHuLUPBTsHF8zuRN0ZVHNtjwX4zA9GolA==}
+  /@netless/fastboard-ui/0.3.3_cwdgvhe2rjhzeo33ldxoblopem:
+    resolution: {integrity: sha512-JgMVHz0mOG/nfKA8Lhur4B43FTj24qVqNqeIKb5T24C0XES+wONTKIjK1pGCtiLhJFMU4ikxPBV8HnHiX1XG0Q==}
     peerDependencies:
-      '@netless/fastboard-core': 0.3.2
+      '@netless/fastboard-core': 0.3.3
     dependencies:
-      '@netless/fastboard-core': 0.3.2_3u552u633qnrvaxmkd7652fvfy
+      '@netless/fastboard-core': 0.3.3_t5kp6kxigevktvq2yb4wuhnt7e
       tippy.js: 6.3.7
     dev: false
 
@@ -2940,7 +2940,7 @@ packages:
     hasBin: true
     dev: true
 
-  /@netless/player-controller/0.0.9_bqej3ufbhwtrstxvkcabt25qq4:
+  /@netless/player-controller/0.0.9_zsg5zubbw333nd3huiyxlfkssa:
     resolution: {integrity: sha512-n+30ug/DMYsGI6awfe0JP8JxgQto3FN20V5IPkDZjXfo2vXfeySkGTE9/36r67p9UV4e19uiF5wq8BsG73Ra3A==}
     peerDependencies:
       antd: 4.x
@@ -2953,7 +2953,7 @@ packages:
       antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      white-web-sdk: 2.16.20
+      white-web-sdk: 2.16.21
     dev: false
 
   /@netless/telebox-insider/0.2.26:
@@ -2967,7 +2967,7 @@ packages:
       value-enhancer: 0.0.8
     dev: false
 
-  /@netless/video-js-plugin/0.3.8_p2nmfvk6vs22og6ulfdhczixsu:
+  /@netless/video-js-plugin/0.3.8_kcbubqpzr2jhwd7dwibcnybc2i:
     resolution: {integrity: sha512-xCLfL8ISjPD5XQbeGWT/pwKdWXqYXmaEXiP4jcX8oaR83+vJo463znIg2JW8EXHkTq7KRrYnZqqlQdI6It4L+A==}
     peerDependencies:
       react: '>=16 || ^17'
@@ -2978,15 +2978,15 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       video.js: 7.10.2
-      white-web-sdk: 2.16.20
+      white-web-sdk: 2.16.21
     dev: false
 
-  /@netless/white-snapshot/0.3.0:
-    resolution: {integrity: sha512-4QlySzaZ3N+VLxRJmda3L4DJjkbk7nJE/q9TnhMceJUmke0M9wrniQvHFtDxyPYNQQ+9uIQXA4UM/8K+hfd0tg==}
+  /@netless/white-snapshot/0.3.1:
+    resolution: {integrity: sha512-Ztm9NeHtjz4r0krZxhWWbEJg43c2elcii9rV7ZF+J12FZKUY3J9dUuKa0BpQVgnFYojsa8X0zPaLyrVtS5rHSA==}
     dev: true
 
-  /@netless/window-manager/0.4.24_white-web-sdk@2.16.20:
-    resolution: {integrity: sha512-KH4Zrw6MkJ6zjfr/QQHnQovzM6EjHQE7NUF8kuVc3FtcXDEqC4Ju+1dL5N3d4E5dR5jzoy35Tl0KgqQkr8he7Q==}
+  /@netless/window-manager/0.4.25_white-web-sdk@2.16.21:
+    resolution: {integrity: sha512-sQpGFmhNscOmL2JVckKwIfEOmsj/dhfH12w5H6e0yRPuuRkZ1KjypX6+6F5NGVzRpeoKkIFs7QOa5ifpgMVNRA==}
     peerDependencies:
       white-web-sdk: ^2.16.0
     dependencies:
@@ -2998,7 +2998,7 @@ packages:
       side-effect-manager: 0.1.5
       uuid: 7.0.3
       video.js: 7.10.2
-      white-web-sdk: 2.16.20
+      white-web-sdk: 2.16.21
     dev: false
 
   /@netless/xml-js/1.6.15:
@@ -3144,7 +3144,7 @@ packages:
     resolution: {integrity: sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==}
 
   /@protobufjs/aspromise/1.1.2:
-    resolution: {integrity: sha1-m4sMxmPWaafY9vXQiToU00jzD78=}
+    resolution: {integrity: sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ==}
     dev: false
 
   /@protobufjs/base64/1.1.2:
@@ -3156,34 +3156,34 @@ packages:
     dev: false
 
   /@protobufjs/eventemitter/1.1.0:
-    resolution: {integrity: sha1-NVy8mLr61ZePntCV85diHx0Ga3A=}
+    resolution: {integrity: sha512-j9ednRT81vYJ9OfVuXG6ERSTdEL1xVsNgqpkxMsbIabzSo3goCjDIveeGv5d03om39ML71RdmrGNjG5SReBP/Q==}
     dev: false
 
   /@protobufjs/fetch/1.1.0:
-    resolution: {integrity: sha1-upn7WYYUr2VwDBYZ/wbUVLDYTEU=}
+    resolution: {integrity: sha512-lljVXpqXebpsijW71PZaCYeIcE5on1w5DlQy5WH6GLbFryLUrBD4932W/E2BSpfRJWseIL4v/KPgBFxDOIdKpQ==}
     dependencies:
       '@protobufjs/aspromise': 1.1.2
       '@protobufjs/inquire': 1.1.0
     dev: false
 
   /@protobufjs/float/1.0.2:
-    resolution: {integrity: sha1-Xp4avctz/Ap8uLKR33jIy9l7h9E=}
+    resolution: {integrity: sha512-Ddb+kVXlXst9d+R9PfTIxh1EdNkgoRe5tOX6t01f1lYWOvJnSPDBlG241QLzcyPdoNTsblLUdujGSE4RzrTZGQ==}
     dev: false
 
   /@protobufjs/inquire/1.1.0:
-    resolution: {integrity: sha1-/yAOPnzyQp4tyvwRQIKOjMY48Ik=}
+    resolution: {integrity: sha512-kdSefcPdruJiFMVSbn801t4vFK7KB/5gd2fYvrxhuJYg8ILrmn9SKSX2tZdV6V+ksulWqS7aXjBcRXl3wHoD9Q==}
     dev: false
 
   /@protobufjs/path/1.1.2:
-    resolution: {integrity: sha1-bMKyDFya1q0NzP0hynZz2Nf79o0=}
+    resolution: {integrity: sha512-6JOcJ5Tm08dOHAbdR3GrvP+yUUfkjG5ePsHYczMFLq3ZmMkAD98cDgcT2iA1lJ9NVwFd4tH/iSSoe44YWkltEA==}
     dev: false
 
   /@protobufjs/pool/1.1.0:
-    resolution: {integrity: sha1-Cf0V8tbTq/qbZbw2ZQbWrXhG/1Q=}
+    resolution: {integrity: sha512-0kELaGSIDBKvcgS4zkjz1PeddatrjYcmMWOlAuAPwAeccUrPHdUqo/J6LiymHHEiJT5NrF1UVwxY14f+fy4WQw==}
     dev: false
 
   /@protobufjs/utf8/1.1.0:
-    resolution: {integrity: sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=}
+    resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
     dev: false
 
   /@reach/router/1.3.4_sfoxds7t5ydpegc3knd667wn6m:
@@ -4860,10 +4860,6 @@ packages:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
     dev: true
 
-  /@types/mocha/9.1.1:
-    resolution: {integrity: sha512-Z61JK7DKDtdKTWwLeElSEBcWGRLY8g95ic5FoQqI9CMx0ns/Ghep3B4DfcEimiKMvtamNVULVNKEsiwV3aQmXw==}
-    dev: false
-
   /@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
@@ -4892,6 +4888,10 @@ packages:
 
   /@types/node/17.0.31:
     resolution: {integrity: sha512-AR0x5HbXGqkEx9CadRH3EBYx/VkiUgZIhP4wvPn/+5KIsgpNoyFaRlVe0Zlx9gRtg8fA06a9tskE2MSN7TcG4Q==}
+
+  /@types/node/17.0.34:
+    resolution: {integrity: sha512-XImEz7XwTvDBtzlTnm8YvMqGW/ErMWBsKZ+hMTvnDIjGCKxwK5Xpc+c/oQjOauwq8M4OS11hEkpjX8rrI/eEgA==}
+    dev: false
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -7673,6 +7673,12 @@ packages:
   /core-js/3.22.4:
     resolution: {integrity: sha512-1uLykR+iOfYja+6Jn/57743gc9n73EWiOnSJJ4ba3B4fOEYDBv25MagmEZBxTp5cWq4b/KPx/l77zgsp28ju4w==}
     requiresBuild: true
+    dev: true
+
+  /core-js/3.22.5:
+    resolution: {integrity: sha512-VP/xYuvJ0MJWRAobcmQ8F2H6Bsn+s7zqAAjFaHGBMc5AQm7zaelhD1LGduFn2EehEcQcU+br6t+fwbpQ5d1ZWA==}
+    requiresBuild: true
+    dev: false
 
   /core-util-is/1.0.2:
     resolution: {integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=}
@@ -9918,6 +9924,8 @@ packages:
       debug: 2.6.9
       mkdirp: 0.5.6
       yauzl: 2.10.0
+    transitivePeerDependencies:
+      - supports-color
 
   /extract-zip/2.0.1:
     resolution: {integrity: sha512-GDhU9ntwuKyGXdZBUgTIe+vXnWj0fppUEtMDL0+idd5Sta8TGpHssn/eusA9mrPr9qNDym6SxAYZjNvCn/9RBg==}
@@ -12636,6 +12644,8 @@ packages:
       mime: 1.6.0
       needle: 2.9.1
       source-map: 0.6.1
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /levn/0.3.0:
@@ -12975,13 +12985,12 @@ packages:
     dev: true
     optional: true
 
-  /mathjs/10.5.1:
-    resolution: {integrity: sha512-xfVDhVB53HqogiSG+4NWAWW9Y3jiItuJv4G/8DC0sU8Qy31P+Pgr8yCzS074i2ZnEd3ekwzn30mdj1GOmNHHaw==}
-    engines: {node: '>= 12'}
+  /mathjs/10.5.3:
+    resolution: {integrity: sha512-RtF+F7SdRIf2E2+btyGDhuB6wmPjOH9KeNglfclaaaI6eK7ZNfsQS6IRAKvGyNsr8sFc6Pyb3JBLqEhYBuknVQ==}
+    engines: {node: '>= 14'}
     hasBin: true
     dependencies:
       '@babel/runtime': 7.17.9
-      '@types/mocha': 9.1.1
       complex.js: 2.1.1
       decimal.js: 10.3.1
       escape-latex: 1.2.0
@@ -13530,6 +13539,8 @@ packages:
       debug: 3.2.7
       iconv-lite: 0.4.24
       sax: 1.2.4
+    transitivePeerDependencies:
+      - supports-color
     dev: true
     optional: true
 
@@ -14798,7 +14809,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 17.0.31
+      '@types/node': 17.0.34
       long: 4.0.0
     dev: false
 
@@ -16490,8 +16501,8 @@ packages:
       yargs: 17.4.1
     dev: true
 
-  /rollup/2.72.0:
-    resolution: {integrity: sha512-KqtR2YcO35/KKijg4nx4STO3569aqCUeGRkKWnJ6r+AvBBrVY9L4pmf4NHVrQr4mTOq6msbohflxr2kpihhaOA==}
+  /rollup/2.73.0:
+    resolution: {integrity: sha512-h/UngC3S4Zt28mB3g0+2YCMegT5yoftnQplwzPqGZcKvlld5e+kT/QRmJiL+qxGyZKOYpgirWGdLyEO1b0dpLQ==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
@@ -18823,8 +18834,8 @@ packages:
       global: 4.4.0
     dev: false
 
-  /vite/2.9.8_less@4.1.2:
-    resolution: {integrity: sha512-zsBGwn5UT3YS0NLSJ7hnR54+vUKfgzMUh/Z9CxF1YKEBVIe213+63jrFLmZphgGI5zXwQCSmqIdbPuE8NJywPw==}
+  /vite/2.9.9_less@4.1.2:
+    resolution: {integrity: sha512-ffaam+NgHfbEmfw/Vuh6BHKKlI/XIAhxE5QSS7gFLIngxg171mg1P3a4LSRME0z2ZU1ScxoKzphkipcYwSD5Ew==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
@@ -18843,7 +18854,7 @@ packages:
       less: 4.1.2
       postcss: 8.4.13
       resolve: 1.22.0
-      rollup: 2.72.0
+      rollup: 2.73.0
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
@@ -19235,8 +19246,8 @@ packages:
     dependencies:
       isexe: 2.0.0
 
-  /white-web-sdk/2.16.20:
-    resolution: {integrity: sha512-MIUZHObnzDLVa3TdKiVWGQ8aBm2cKNH37sxH5gMOaMuVJ5+icpHwYWWiykeeNzSr6maUgxVxMqbWFh6+leptWg==}
+  /white-web-sdk/2.16.21:
+    resolution: {integrity: sha512-19xdaZu7/qXrc2bhN4Y976VCooymkhXnUrLi2a7UQbHfTPOxaLh4LgNPNzgbjpjkX600LnsV3SlWwzwd9+Dmqw==}
     dependencies:
       '@juggle/resize-observer': 3.3.1
       '@netless/canvas-polyfill': 0.0.4
@@ -19244,10 +19255,10 @@ packages:
       atob: 2.1.2
       bezier-js: 2.6.1
       color: 3.2.1
-      core-js: 3.22.4
+      core-js: 3.22.5
       detect-it: 3.0.7
       eventemitter3: 4.0.7
-      mathjs: 10.5.1
+      mathjs: 10.5.3
       mobx: 6.5.0
       protobufjs: 6.11.2
       query-string: 5.1.1
