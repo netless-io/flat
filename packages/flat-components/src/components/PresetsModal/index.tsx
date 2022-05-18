@@ -38,9 +38,8 @@ export const PresetsModal: React.FC<PresetsModalProps> = ({
             onCancel={onClose}
         >
             {images.map(({ src, i18nKey }) => (
-                <div className="presets-modal-item">
+                <div key={i18nKey} className="presets-modal-item">
                     <button
-                        key={i18nKey}
                         className="presets-modal-btn"
                         title={t(i18nKey)}
                         onClick={() => onClick(src)}
