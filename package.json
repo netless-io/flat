@@ -20,8 +20,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@commitlint/cli": "^16.2.1",
-    "@commitlint/config-angular": "^16.2.1",
+    "@commitlint/cli": "^17.0.0",
+    "@commitlint/config-angular": "^17.0.0",
     "@hyrious/esbuild-dev": "^0.7.4",
     "@netless/eslint-plugin": "^2.0.0",
     "@netless/white-snapshot": "^0.3.1",
