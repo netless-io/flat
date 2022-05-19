@@ -6,7 +6,7 @@
 
 ```shell
 # open dev server
-pnpm dev
+pnpm start
 # build to ./dist
 pnpm build
 # preview ./dist
