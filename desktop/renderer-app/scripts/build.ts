@@ -1,6 +1,7 @@
 import esbuild from "esbuild";
 import fs from "fs";
 import path from "path";
+
 import { rendererPath, rootNodeModules } from "../../../scripts/constants";
 import { autoChooseConfig } from "../../../scripts/utils/auto-choose-config";
 import { dotenv } from "../../../web/flat-web/scripts/vite-plugin-dotenv";
@@ -10,7 +11,6 @@ import { externals } from "./vite-plugin-electron";
 
 const mode = process.env.NODE_ENV || "production";
 
-// TODO: find new place to store vite-plugin-dotenv
 const configShim: { define: Record<string, string> } = { define: {} };
 (dotenv(autoChooseConfig()) as any).config(configShim, { mode });
 
