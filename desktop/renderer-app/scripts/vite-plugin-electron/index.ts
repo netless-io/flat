@@ -9,7 +9,7 @@ import { options } from "./template/options";
  * The externals will be work on 'viteConfig.build.rollupOptions.external', 'viteConfig.optimizeDeps.exclude' option.
  * and we should external ['electron', ...require('module').builtinModules]
  */
-const externals = ["electron", ...builtinModules];
+export const externals = ["electron", ...builtinModules];
 
 export function electron(): VitePlugin[] {
     const nodeModelResolve: VitePlugin = {

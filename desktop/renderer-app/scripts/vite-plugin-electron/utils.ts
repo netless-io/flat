@@ -50,5 +50,5 @@ export const cjs2esm = async (
 };
 
 export function getTemplate(path: string): string {
-    return readFileSync(join(__dirname, path), "utf8");
+    return readFileSync(join("./scripts/vite-plugin-electron", path), "utf8");
 }
