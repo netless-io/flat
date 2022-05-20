@@ -1,45 +1,18 @@
+import esbuild from "esbuild";
 import fs from "fs";
-import esbuild, { Plugin } from "esbuild";
-
+import path from "path";
+import { rendererPath, rootNodeModules } from "../../../scripts/constants";
+import { autoChooseConfig } from "../../../scripts/utils/auto-choose-config";
+import { dotenv } from "../../../web/flat-web/scripts/vite-plugin-dotenv";
+import copy from "./esbuild-plugin-copy";
 import less from "./esbuild-plugin-less";
 import { externals } from "./vite-plugin-electron";
 
 const mode = process.env.NODE_ENV || "production";
 
 // TODO: find new place to store vite-plugin-dotenv
-import { dotenv } from "../../../web/flat-web/scripts/vite-plugin-dotenv";
-import { autoChooseConfig } from "../../../scripts/utils/auto-choose-config";
 const configShim: { define: Record<string, string> } = { define: {} };
 (dotenv(autoChooseConfig()) as any).config(configShim, { mode });
-
-import copy from "rollup-plugin-copy";
-import path from "path";
-import { rootNodeModules, rendererPath } from "../../../scripts/constants";
-const rawCopyPlugin = copy({
-    targets: [
-        /**
-         * e.g:
-         * /Users/black-hole/Code/Job/Agora/flat/node_modules/monaco-editor/min/vs
-         * to
-         * /Users/black-hole/Code/Job/Agora/flat/desktop/renderer-app/dist/monaco-editor/min/vs
-         */
-        {
-            src: path.join(rootNodeModules, "monaco-editor", "min", "vs"),
-            // don't write "vs". because dist path will is: dist/monaco-editor/min/vs/vs
-            dest: path.join(rendererPath, "dist", "monaco-editor", "min"),
-        },
-        {
-            src: path.join(rootNodeModules, "monaco-editor", "min-maps", "vs"),
-            dest: path.join(rendererPath, "dist", "monaco-editor", "min-maps"),
-        },
-    ],
-}) as { buildEnd: () => Promise<void> };
-const copyPlugin: Plugin = {
-    name: "copy",
-    setup({ onEnd }) {
-        onEnd(() => rawCopyPlugin.buildEnd());
-    },
-};
 
 fs.rmSync("dist", { maxRetries: 3, recursive: true });
 
@@ -48,7 +21,28 @@ let task = esbuild.build({
     bundle: true,
     format: "cjs",
     outdir: "dist",
-    plugins: [less(), copyPlugin],
+    plugins: [
+        less(),
+        copy({
+            targets: [
+                /**
+                 * e.g:
+                 * /Users/black-hole/Code/Job/Agora/flat/node_modules/monaco-editor/min/vs
+                 * to
+                 * /Users/black-hole/Code/Job/Agora/flat/desktop/renderer-app/dist/monaco-editor/min/vs
+                 */
+                {
+                    src: path.join(rootNodeModules, "monaco-editor", "min", "vs"),
+                    // don't write "vs". because dist path will is: dist/monaco-editor/min/vs/vs
+                    dest: path.join(rendererPath, "dist", "monaco-editor", "min"),
+                },
+                {
+                    src: path.join(rootNodeModules, "monaco-editor", "min-maps", "vs"),
+                    dest: path.join(rendererPath, "dist", "monaco-editor", "min-maps"),
+                },
+            ],
+        }),
+    ],
     target: ["es2019", "edge88", "firefox78", "chrome87", "safari13.1"],
     minify: mode === "production",
     sourcemap: true,
