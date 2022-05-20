@@ -48,11 +48,12 @@ let task = esbuild.build({
     sourcemap: true,
     define: configShim.define,
     loader: {
-        ".svg": "file",
+        ".svg": "dataurl",
         ".png": "file",
         ".mp3": "file",
         ".gif": "file",
     },
+    assetNames: "[name]",
     external: externals,
     logLimit: 3,
     logLevel: "info",
