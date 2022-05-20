@@ -4,10 +4,11 @@ import esbuild, { Plugin } from "esbuild";
 import less from "./esbuild-plugin-less";
 import { externals } from "./vite-plugin-electron";
 
+const mode = process.env.NODE_ENV || "production";
+
 // TODO: find new place to store vite-plugin-dotenv
 import { dotenv } from "../../../web/flat-web/scripts/vite-plugin-dotenv";
 import { autoChooseConfig } from "../../../scripts/utils/auto-choose-config";
-const mode = process.argv.includes("development") ? "development" : "production";
 const configShim: { define: Record<string, string> } = { define: {} };
 (dotenv(autoChooseConfig()) as any).config(configShim, { mode });
 
