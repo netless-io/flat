@@ -9,6 +9,7 @@ export interface ConvertingTaskStatus {
     errorMessage?: string;
     convertedPercentage?: number;
     prefix?: string;
+    // TODO: `progress` is for static resources and will be changed in the future.
     progress?: ConvertingTaskStatusLegacy["progress"];
 }
 
