@@ -14,7 +14,9 @@ const mode = process.env.NODE_ENV || "production";
 const configShim: { define: Record<string, string> } = { define: {} };
 (dotenv(autoChooseConfig()) as any).config(configShim, { mode });
 
-fs.rmSync("dist", { maxRetries: 3, recursive: true });
+try {
+    fs.rmSync("dist", { maxRetries: 3, recursive: true });
+} catch {}
 
 let task = esbuild.build({
     entryPoints: ["src/index.ts"],
