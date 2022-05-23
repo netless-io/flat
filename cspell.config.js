@@ -89,6 +89,7 @@ module.exports = {
         "esbuild",
         "outfile", // esbuild
         "outdir", // esbuild
+        "dataurl", // esbuild
         "pluginutils", // rollup-pluginutils
         "pmmmwh", // @pmmmwh/react-refresh-webpack-plugin
         "pickone", // chance
