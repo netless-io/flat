@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=development vite",
     "start:cn": "cross-env FLAT_REGION=CN pnpm start",
     "start:us": "cross-env FLAT_REGION=US pnpm start",
-    "build": "cross-env NODE_ENV=production esbuild-dev --cjs -p:./scripts/replace-import-meta.ts scripts/build.ts",
+    "build": "cross-env NODE_ENV=production esbuild-dev --cjs --shims scripts/build.ts",
     "build:cn": "cross-env FLAT_REGION=CN pnpm build",
     "build:us": "cross-env FLAT_REGION=US pnpm build",
     "build:analyzer": "cross-env NODE_ENV=production ANALYZER=true vite build"

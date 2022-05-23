@@ -13,7 +13,7 @@ importers:
     specifiers:
       '@commitlint/cli': ^17.0.0
       '@commitlint/config-angular': ^17.0.0
-      '@hyrious/esbuild-dev': ^0.7.5
+      '@hyrious/esbuild-dev': ^0.7.6
       '@netless/eslint-plugin': ^2.0.0
       '@netless/white-snapshot': ^0.3.1
       '@types/fs-extra': ^9.0.13
@@ -55,7 +55,7 @@ importers:
     devDependencies:
       '@commitlint/cli': 17.0.0
       '@commitlint/config-angular': 17.0.0
-      '@hyrious/esbuild-dev': 0.7.5_esbuild@0.14.38
+      '@hyrious/esbuild-dev': 0.7.6_esbuild@0.14.38
       '@netless/eslint-plugin': 2.0.0_eslint@8.14.0
       '@netless/white-snapshot': 0.3.1
       '@types/fs-extra': 9.0.13
@@ -2665,8 +2665,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@hyrious/esbuild-dev/0.7.5_esbuild@0.14.38:
-    resolution: {integrity: sha512-VL883TyGJd5FiQpCnk/N4VkY5sUZuhid341+YRQUyisq5uiAavpygNSNO80e5zWrssNMrrSR0SMoFHy++RAnkg==}
+  /@hyrious/esbuild-dev/0.7.6_esbuild@0.14.38:
+    resolution: {integrity: sha512-ULrwpkaXG7RLg8u7Zd3y8feJqyL9lpy5hv848/33Swa9EXT02uvABrPPdNczyLln3DAlKnwy2Up9K8B/ZcphWw==}
     engines: {node: '>=16.13.0'}
     hasBin: true
     peerDependencies:
