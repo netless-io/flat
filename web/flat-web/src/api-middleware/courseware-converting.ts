@@ -54,7 +54,7 @@ export async function queryConvertingTaskStatus(
             { headers: { token: taskToken, region } },
         );
         const prefix = data.progress?.convertedFileList?.[0]?.conversionFileUrl || "";
-        const index = prefix.lastIndexOf("/staticConvert") + "/staticConvert".length;
+        const index = prefix.lastIndexOf("/staticConvert") + 1;
         const transformed: ConvertingTaskStatus = {
             uuid: data.uuid,
             type: data.type,
