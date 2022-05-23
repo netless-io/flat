@@ -10,7 +10,8 @@
     "build": "cross-env NODE_ENV=production esbuild-dev --cjs --shims scripts/build.ts",
     "build:cn": "cross-env FLAT_REGION=CN pnpm build",
     "build:us": "cross-env FLAT_REGION=US pnpm build",
-    "build:analyzer": "cross-env NODE_ENV=production ANALYZER=true vite build"
+    "build:analyzer": "cross-env NODE_ENV=production ANALYZER=true vite build",
+    "check": "tsc --noEmit"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",

@@ -82,7 +82,7 @@ jobs:
           flatWeb: ${{ steps.filter.outputs.flat-web }}
 
       - name: Build renderer
-        run: pnpm -F renderer-app build
+        run: pnpm -F renderer-app check && pnpm -F renderer-app build
         if: steps.filter.outputs.renderer == 'true'
 
       - name: Build main
