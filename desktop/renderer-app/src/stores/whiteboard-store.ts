@@ -548,7 +548,7 @@ export class WhiteboardStore {
                 if (convertingStatus.status === "Fail") {
                     void message.error(
                         this.i18n.t("transcoding-failure-reason", {
-                            reason: convertingStatus.failedReason,
+                            reason: convertingStatus.errorMessage,
                         }),
                     );
                 }
@@ -572,6 +572,14 @@ export class WhiteboardStore {
             const uuid = v4uuid();
             const scenesPath = `/${taskUUID}/${uuid}`;
             await this.openDocsFileInWindowManager(scenesPath, file.fileName, scenes);
+        } else if (convertingStatus.status === "Finished" && convertingStatus.prefix) {
+            await this.fastboardAPP?.insertDocs({
+                fileType: "pptx",
+                title: file.fileName,
+                scenePath: `/${taskUUID}/${v4uuid()}`,
+                taskId: taskUUID,
+                url: convertingStatus.prefix + "dynamicConvert",
+            });
         } else {
             void message.error(this.i18n.t("unable-to-insert-courseware"));
         }

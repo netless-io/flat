@@ -650,22 +650,24 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             return true;
         }
 
-        let status: ConvertingTaskStatus["status"];
-        let progress: ConvertingTaskStatus["progress"];
+        const dynamic = isPPTX(file.fileName);
+        let status: ConvertingTaskStatus;
 
         try {
-            ({ status, progress } = await queryConvertingTaskStatus({
+            status = await queryConvertingTaskStatus({
                 taskToken: file.taskToken,
                 taskUUID: file.taskUUID,
-                dynamic: isPPTX(file.fileName),
+                dynamic,
                 region: file.region,
-            }));
+            });
         } catch (e) {
             console.error(e);
             return false;
         }
 
-        if (status === "Fail" || status === "Finished") {
+        const statusText = status.status;
+
+        if (statusText === "Fail" || statusText === "Finished") {
             if (process.env.NODE_ENV === "development") {
                 console.log("[cloud storage]: convert finish", file.fileName);
             }
@@ -678,15 +680,13 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             }
 
             runInAction(() => {
-                file.convert = status === "Fail" ? "error" : "success";
+                file.convert = statusText === "Fail" ? "error" : "success";
             });
 
-            if (status === "Finished") {
-                const src = progress?.convertedFileList?.[0].conversionFileUrl;
+            if (statusText === "Finished" && status.prefix) {
+                const src = status.prefix + "dynamicConvert/" + status.uuid + dynamic + "/1..png";
                 if (src) {
-                    void getCoursewarePreloader()
-                        .preload(src)
-                        .catch(error => console.warn(error));
+                    void getCoursewarePreloader().preload(src).catch(console.warn);
                 }
             }
 
