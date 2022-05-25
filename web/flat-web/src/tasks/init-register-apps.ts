@@ -4,6 +4,13 @@ import { register } from "@netless/fastboard-react";
 const registerApps = (): void => {
     void register({
         kind: "Monaco",
+        appOptions: {
+            loader: {
+                paths: {
+                    vs: "https://flat-storage.oss-cn-hangzhou.aliyuncs.com/flat-resources/library/monaco-editor@0.27.0/min/vs",
+                },
+            },
+        },
         src: async () => {
             const app = await import("@netless/app-monaco");
             return app.default ?? app;
