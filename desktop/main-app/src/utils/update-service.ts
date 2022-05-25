@@ -1,6 +1,6 @@
 import { autoUpdater, UpdateCheckResult } from "electron-updater";
 import runtime from "./runtime";
-import { ProgressInfo } from "electron-updater/out/differentialDownloader/ProgressDifferentialDownloadCallbackTransform";
+import { ProgressInfo } from "electron-updater";
 import { ipcEmitByMain } from "./ipc-emit";
 import { update } from "flat-types";
 
@@ -114,7 +114,7 @@ class UpdateService {
         void autoUpdater
             .checkForUpdates()
             .then(d => {
-                this.cancellationToken = d.cancellationToken;
+                this.cancellationToken = d?.cancellationToken;
             })
             .catch(error);
     }
