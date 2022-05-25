@@ -8,7 +8,6 @@ const registerApps = (): void => {
         appOptions: {
             loader: {
                 paths: {
-                    // Should we change this to cdn? It seems to be not working now.
                     vs: getVSPath(),
                 },
             },
