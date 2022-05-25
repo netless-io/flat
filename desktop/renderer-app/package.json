@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=development vite",
     "start:cn": "cross-env FLAT_REGION=CN pnpm start",
     "start:us": "cross-env FLAT_REGION=US pnpm start",
-    "build": "cross-env NODE_ENV=production NODE_OPTIONS=\"--max-old-space-size=6144\" vite build",
+    "build": "cross-env NODE_ENV=production NODE_OPTIONS=\"--max-old-space-size=8192\" vite build",
     "build:cn": "cross-env FLAT_REGION=CN pnpm build",
     "build:us": "cross-env FLAT_REGION=US pnpm build",
     "build:analyzer": "cross-env NODE_ENV=production ANALYZER=true NODE_OPTIONS=\"--max-old-space-size=6144\" vite build"
