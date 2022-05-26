@@ -156,6 +156,9 @@ module.exports = {
         // vscode
         "dbaeumer",
         "keystyle",
+
+        // esbuild config
+        "metafile",
     ],
     flagWords: ["fuck", "bitch", "asshole", "bullshit", "crap", "suck", "wtf"],
     dictionaries: [

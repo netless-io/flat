@@ -4,7 +4,7 @@
     "baseUrl": ".",
     "target": "es2017",
     "module": "CommonJS",
-    "lib": ["es2017", "DOM"]
+    "lib": ["es2017", "DOM"],
   },
-  "include": ["src/**/*.ts", "typings/*.ts"]
+  "include": ["src/**/*.ts", "typings/*.ts","scripts/**/*.ts"]
 }
