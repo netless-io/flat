@@ -148,7 +148,7 @@ importers:
       '@netless/app-countdown': ^0.0.2
       '@netless/app-geogebra': ^0.0.4
       '@netless/app-iframe-bridge': ^0.0.2
-      '@netless/app-monaco': ^0.1.13-beta.0
+      '@netless/app-monaco': ^0.1.14-beta.1
       '@netless/app-slide': ^0.2.0
       '@netless/combine-player': ^1.1.6
       '@netless/fastboard-react': ^0.3.3
@@ -205,7 +205,7 @@ importers:
       '@netless/app-countdown': 0.0.2
       '@netless/app-geogebra': 0.0.4
       '@netless/app-iframe-bridge': 0.0.2
-      '@netless/app-monaco': 0.1.13-beta.0
+      '@netless/app-monaco': 0.1.14-beta.1
       '@netless/app-slide': 0.2.0
       '@netless/combine-player': 1.1.6
       '@netless/fastboard-react': 0.3.3_rnnxn3pchcsbkwbomkp7yrk3du
@@ -424,7 +424,7 @@ importers:
       '@netless/app-countdown': ^0.0.2
       '@netless/app-geogebra': ^0.0.4
       '@netless/app-iframe-bridge': ^0.0.2
-      '@netless/app-monaco': ^0.1.13-beta.0
+      '@netless/app-monaco': ^0.1.14-beta.1
       '@netless/app-slide': ^0.2.0
       '@netless/combine-player': ^1.1.6
       '@netless/fastboard-react': ^0.3.3
@@ -478,7 +478,7 @@ importers:
       '@netless/app-countdown': 0.0.2
       '@netless/app-geogebra': 0.0.4
       '@netless/app-iframe-bridge': 0.0.2
-      '@netless/app-monaco': 0.1.13-beta.0
+      '@netless/app-monaco': 0.1.14-beta.1
       '@netless/app-slide': 0.2.0
       '@netless/combine-player': 1.1.6
       '@netless/fastboard-react': 0.3.3_rnnxn3pchcsbkwbomkp7yrk3du
@@ -2876,8 +2876,8 @@ packages:
     resolution: {integrity: sha512-G7wZoX0CjqVBGeP0eYp8e7OYxRIN+vNwZJPxO45Gv4e8Nb/i3hF82F8FALaiLgWC89HG74XGNa98DJ3R+wSz2g==}
     dev: false
 
-  /@netless/app-monaco/0.1.13-beta.0:
-    resolution: {integrity: sha512-ir6GrodgiuBK0JBOmdt7xwSAufehcbV88fLh9ZJjGzJbwmKglxjFy6UPWr8Hx75FOmHWBl44JjEEGZotMI6+bg==}
+  /@netless/app-monaco/0.1.14-beta.1:
+    resolution: {integrity: sha512-Rlig/UX4dZosv/VWslJRCxm7H9ufZ0TeEZK4krMEVCf+SnEHZsn1HUbbpoTQeead78k3scoaF5fC9wE/chORyQ==}
     dev: false
 
   /@netless/app-slide/0.2.0:
@@ -6680,8 +6680,6 @@ packages:
       raw-body: 2.5.1
       type-is: 1.6.18
       unpipe: 1.0.0
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /boolbase/1.0.0:
@@ -6751,8 +6749,6 @@ packages:
       snapdragon-node: 2.1.1
       split-string: 3.1.0
       to-regex: 3.0.2
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /braces/3.0.2:
@@ -7530,8 +7526,6 @@ packages:
       on-headers: 1.0.2
       safe-buffer: 5.1.2
       vary: 1.1.2
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /compute-scroll-into-view/1.0.17:
@@ -8095,11 +8089,21 @@ packages:
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
     dependencies:
       ms: 2.0.0
 
   /debug/3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
     dependencies:
       ms: 2.1.3
     dev: true
@@ -8353,8 +8357,6 @@ packages:
     dependencies:
       address: 1.2.0
       debug: 2.6.9
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /detect-port/1.3.0:
@@ -8364,8 +8366,6 @@ packages:
     dependencies:
       address: 1.2.0
       debug: 2.6.9
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /detect-touch-events/2.0.2:
@@ -9340,8 +9340,6 @@ packages:
     dependencies:
       debug: 3.2.7
       resolve: 1.22.0
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /eslint-loader/4.0.2:
@@ -10181,8 +10179,6 @@ packages:
       parseurl: 1.3.3
       statuses: 2.0.1
       unpipe: 1.0.0
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /find-cache-dir/2.1.0:
@@ -11357,7 +11353,6 @@ packages:
     resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
     dependencies:
       void-elements: 3.1.0
-    dev: false
 
   /html-tags/3.2.0:
     resolution: {integrity: sha512-vy7ClnArOZwCnqZgvv+ddgHgJiAFXe3Ge9ML5/mBctVJoUoYPCdxVucOywjDARn6CVoh3dRSFdPHy2sX80L0Wg==}
@@ -11504,13 +11499,11 @@ packages:
     resolution: {integrity: sha512-wukWnFeU7rKIWT66VU5i8I+3Zc4wReGcuDK2+kuFhtoxBRGWGdvYI9UQmqNL/yQH1KogWwh+xGEaIPH8V/i2Zg==}
     dependencies:
       '@babel/runtime': 7.17.9
-    dev: false
 
   /i18next/21.7.1:
     resolution: {integrity: sha512-uNt0BM+HV7wgWrrTE+Z4qinQFTONB21hK3I5V/LayhquPv78WchnO4hjF2PWY/OZocahHBDbzbe0/o1rp/RcWQ==}
     dependencies:
       '@babel/runtime': 7.17.9
-    dev: false
 
   /iconv-corefoundation/1.1.7:
     resolution: {integrity: sha512-T10qvkw0zz4wnm560lOEg0PovVqUXuOFhhHAkixw8/sycy7TJt7v/RrkEKEQnAw2viPSJu6iAkErxnzR0g8PpQ==}
@@ -12635,8 +12628,6 @@ packages:
       mime: 1.6.0
       needle: 2.9.1
       source-map: 0.6.1
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /levn/0.3.0:
@@ -13504,8 +13495,6 @@ packages:
       regex-not: 1.0.2
       snapdragon: 0.8.2
       to-regex: 3.0.2
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /native-url/0.2.6:
@@ -13532,8 +13521,6 @@ packages:
       debug: 3.2.7
       iconv-lite: 0.4.24
       sax: 1.2.4
-    transitivePeerDependencies:
-      - supports-color
     dev: true
     optional: true
 
@@ -15701,7 +15688,6 @@ packages:
       object-assign: 4.1.1
       react: 17.0.2
       scheduler: 0.20.2
-    dev: false
 
   /react-draggable/4.4.5_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-OMHzJdyJbYTZo4uQE393fHcqqPYsEtkjfMgvCHr6rejT+Ezn4OZbNyGH50vv+SunC1RMvwOTSWkEODQLzw1M9g==}
@@ -15770,7 +15756,6 @@ packages:
       i18next: 21.7.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-    dev: false
 
   /react-inspector/5.1.1_react@17.0.2:
     resolution: {integrity: sha512-GURDaYzoLbW8pMGXwYPDBIv6nqei4kK7LPRZ9q9HCZF54wqXz/dnylBp/kfE9XmekBhHvLDdcYeyIwSrvtOiWg==}
@@ -16006,7 +15991,6 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-    dev: false
 
   /read-config-file/6.2.0:
     resolution: {integrity: sha512-gx7Pgr5I56JtYz+WuqEbQHj/xWo+5Vwua2jhb1VwM4Wid5PqYmZ4i00ZB0YEGIfkVBsCv9UrjgyqCiQfS/Oosg==}
@@ -16638,7 +16622,6 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-    dev: false
 
   /schema-utils/1.0.0:
     resolution: {integrity: sha512-i27Mic4KovM/lnGsy8whRCHhc7VicJajAjTrYg11K9zfZXnYIt4k5F+kZkwjnrhKzLic/HLU4j11mjsz2G/75g==}
@@ -16759,8 +16742,6 @@ packages:
       on-finished: 2.4.1
       range-parser: 1.2.1
       statuses: 2.0.1
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /serialize-error/7.0.1:
@@ -16808,8 +16789,6 @@ packages:
       escape-html: 1.0.3
       parseurl: 1.3.3
       send: 0.18.0
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /set-blocking/2.0.0:
@@ -16985,8 +16964,6 @@ packages:
       source-map: 0.5.7
       source-map-resolve: 0.5.3
       use: 3.1.1
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /socks-proxy-agent/5.0.1:
@@ -18868,7 +18845,6 @@ packages:
   /void-elements/3.1.0:
     resolution: {integrity: sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=}
     engines: {node: '>=0.10.0'}
-    dev: false
 
   /vscode-languageserver-textdocument/1.0.4:
     resolution: {integrity: sha512-/xhqXP/2A2RSs+J8JNXpiiNVvvNM0oTosNVmQnunlKvq9o4mupHOBAnnzH0lwIPKazXKvAKsVp1kr+H/K4lgoQ==}
@@ -19069,8 +19045,6 @@ packages:
     resolution: {integrity: sha512-kDUmfm3BZrei0y+1NTHJInejzxfhtU8eDj2M7OKb2IWrPFAeO1SOH2KuQ68MSZu9IGEHcxbkKKR1v18FrUSOmA==}
     dependencies:
       debug: 3.2.7
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /webpack-virtual-modules/0.4.3:
