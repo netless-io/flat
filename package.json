@@ -22,7 +22,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.0",
     "@commitlint/config-angular": "^17.0.0",
-    "@hyrious/esbuild-dev": "^0.7.6",
+    "@hyrious/esbuild-dev": "^0.8.3",
     "@netless/eslint-plugin": "^2.0.0",
     "@types/fs-extra": "^9.0.13",
     "@types/lodash-es": "^4.17.6",

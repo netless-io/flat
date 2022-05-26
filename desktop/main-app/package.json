@@ -13,12 +13,16 @@
     "url": "https://github.com/netless-io/flat"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js",
+    "_start": "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js",
     "start:cn": "cross-env FLAT_REGION=CN pnpm start",
     "start:us": "cross-env FLAT_REGION=US pnpm start",
-    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
+    "_start:esbuild": "esbuild-dev --cjs scripts/esbuild/esbuild.dev.ts",
+    "start": "cross-env NODE_ENV=development pnpm run _start:esbuild",
+    "_build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "build:cn": "cross-env FLAT_REGION=CN pnpm build",
     "build:us": "cross-env FLAT_REGION=US pnpm build",
+    "_build:esbuild": "esbuild-dev --cjs scripts/esbuild/esbuild.prod.ts",
+    "build": "cross-env NODE_ENV=production pnpm run _build:esbuild",
     "build:debug": "cross-env FLAT_DEBUG=debug webpack --config webpack/webpack.debug.js",
     "pack:win": "node ./scripts/pack win",
     "pack:mac": "node ./scripts/pack mac",
@@ -28,7 +32,9 @@
     "_launch:electron": "node --trace-uncaught ./scripts/launch/electron.js"
   },
   "devDependencies": {
+    "@types/dotenv-flow": "^3.2.0",
     "@types/webpack-env": "^1.16.3",
+    "dotenv-flow": "^3.2.0",
     "dotenv-flow-webpack": "^1.1.0",
     "electron": "12.0.15",
     "electron-builder": "^23.0.3",
