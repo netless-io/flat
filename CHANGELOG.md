@@ -14,6 +14,7 @@
 * **electron:** correct assets root ([#1493](https://github.com/netless-io/flat/issues/1493)) ([290728e](https://github.com/netless-io/flat/commit/290728e5389840688e112f8c9baeeb642da64aa5))
 * **electron:** cross pack failed ([#1478](https://github.com/netless-io/flat/issues/1478)) ([2ea4e47](https://github.com/netless-io/flat/commit/2ea4e471970d58c50f9fd8afda6083a0d847c978))
 * **flat-rtc:** remove global env ([#1489](https://github.com/netless-io/flat/issues/1489)) ([f743817](https://github.com/netless-io/flat/commit/f74381746f6cf1da26ecf4f2168b512ba99c603f))
+* **flat-rtc:** track web rtc delayed remote video track ([#1540](https://github.com/netless-io/flat/issues/1540)) ([650a4e1](https://github.com/netless-io/flat/commit/650a4e13761092e6d71d9b7da1f87b52b57dbdaf))
 * **lint:** git commit failed after change pnpm-lock.yaml file ([#1475](https://github.com/netless-io/flat/issues/1475)) ([a83ad8b](https://github.com/netless-io/flat/commit/a83ad8bd403d68458f63035a5624ee9e1efaa9fe))
 * **main-app:** cannot find electron-builder config file ([#1472](https://github.com/netless-io/flat/issues/1472)) ([9add9d0](https://github.com/netless-io/flat/commit/9add9d06fbc5bc41d56ac5a1dfc54de26cd45b28))
 * **main-app:** launch electron failed ([#1466](https://github.com/netless-io/flat/issues/1466)) ([1fa6a44](https://github.com/netless-io/flat/commit/1fa6a44316b60d9ffde1962dac8f2cdf4aa7398f))
