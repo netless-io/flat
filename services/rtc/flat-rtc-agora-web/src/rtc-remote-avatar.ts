@@ -1,7 +1,7 @@
 import { SideEffectManager } from "side-effect-manager";
 import { combine, Val } from "value-enhancer";
 import type { FlatRTCAvatar } from "@netless/flat-rtc";
-import type { IAgoraRTCRemoteUser } from "agora-rtc-sdk-ng";
+import type { IAgoraRTCRemoteUser, IRemoteAudioTrack, IRemoteVideoTrack } from "agora-rtc-sdk-ng";
 
 export interface RTCRemoteAvatarConfig {
     rtcRemoteUser?: IAgoraRTCRemoteUser;
@@ -15,7 +15,8 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
     private readonly _shouldMic$ = new Val(false);
 
     private readonly _el$: Val<HTMLElement | undefined | null>;
-    private readonly _user$: Val<IAgoraRTCRemoteUser | undefined>;
+    private readonly _videoTrack$: Val<IRemoteVideoTrack | undefined>;
+    private readonly _audioTrack$: Val<IRemoteAudioTrack | undefined>;
 
     public enableCamera(enabled: boolean): void {
         this._shouldCamera$.setValue(enabled);
@@ -30,25 +31,27 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
     }
 
     public updateUser(rtcRemoteUser: IAgoraRTCRemoteUser): void {
-        this._user$.setValue(rtcRemoteUser);
+        this._videoTrack$.setValue(rtcRemoteUser.videoTrack);
+        this._audioTrack$.setValue(rtcRemoteUser.audioTrack);
     }
 
     public getVolumeLevel(): number {
-        return this._user$.value?.audioTrack?.getVolumeLevel() || 0;
+        return this._audioTrack$.value?.getVolumeLevel() || 0;
     }
 
     public constructor(config: RTCRemoteAvatarConfig = {}) {
         this._el$ = new Val(config.element);
-        this._user$ = new Val(config.rtcRemoteUser);
+        this._videoTrack$ = new Val(config.rtcRemoteUser?.videoTrack);
+        this._audioTrack$ = new Val(config.rtcRemoteUser?.audioTrack);
 
         this._sideEffect.addDisposer(
-            combine([this._user$, this._shouldMic$]).subscribe(([user, shouldMic]) => {
-                if (user && user.audioTrack) {
+            combine([this._audioTrack$, this._shouldMic$]).subscribe(([audioTrack, shouldMic]) => {
+                if (audioTrack) {
                     try {
                         if (shouldMic) {
-                            user.audioTrack.play();
+                            audioTrack.play();
                         } else {
-                            user.audioTrack.stop();
+                            audioTrack.stop();
                         }
                     } catch (e) {
                         console.error(e);
@@ -58,14 +61,14 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
         );
 
         this._sideEffect.addDisposer(
-            combine([this._el$, this._user$, this._shouldCamera$]).subscribe(
-                ([el, user, shouldCamera]) => {
-                    if (el && user && user.videoTrack) {
+            combine([this._el$, this._videoTrack$, this._shouldCamera$]).subscribe(
+                ([el, videoTrack, shouldCamera]) => {
+                    if (el && videoTrack) {
                         try {
                             if (shouldCamera) {
-                                user.videoTrack.play(el);
+                                videoTrack.play(el);
                             } else {
-                                user.videoTrack.stop();
+                                videoTrack.stop();
                             }
                         } catch (e) {
                             console.error(e);
@@ -74,18 +77,19 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
                 },
             ),
         );
-
-        this._sideEffect.addDisposer(() => {
-            try {
-                this._user$.value?.videoTrack?.stop();
-                this._user$.value?.audioTrack?.stop();
-            } catch (e) {
-                console.error(e);
-            }
-        });
     }
 
     public destroy(): void {
         this._sideEffect.flushAll();
+
+        try {
+            this._videoTrack$.value?.stop();
+            this._audioTrack$.value?.stop();
+        } catch (e) {
+            console.error(e);
+        }
+
+        this._videoTrack$.setValue(undefined);
+        this._audioTrack$.setValue(undefined);
     }
 }

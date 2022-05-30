@@ -141,15 +141,15 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         }
 
         if (this.client) {
-            this._remoteAvatars.forEach(avatar => avatar.destroy());
-            this._remoteAvatars.clear();
-
-            if (this._localAvatar) {
-                this._localAvatar.destroy();
-                this._localAvatar = undefined;
-            }
-
             try {
+                this._remoteAvatars.forEach(avatar => avatar.destroy());
+                this._remoteAvatars.clear();
+
+                if (this._localAvatar) {
+                    this._localAvatar.destroy();
+                    this._localAvatar = undefined;
+                }
+
                 if (this.localCameraTrack) {
                     this.localCameraTrack.stop();
                     this.localCameraTrack.close();
@@ -160,11 +160,11 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
                     this.localMicTrack.close();
                     this.localMicTrack = undefined;
                 }
-            } catch (e) {
-                console.error(e);
-            }
 
-            this._roomSideEffect.flushAll();
+                this._roomSideEffect.flushAll();
+            } catch (e) {
+                // ignored
+            }
 
             this._pLeavingRoom = this.client.leave();
             await this._pLeavingRoom;
