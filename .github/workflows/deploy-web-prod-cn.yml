@@ -10,6 +10,8 @@ on:
       - "packages/flat-components/src/**"
       - "packages/flat-i18n/locales/**"
       - "packages/flat-types/src/**"
+      - "services/rtc/flat-rtc/src/**"
+      - "services/rtc/flat-rtc-agora-web/src/**"
       - ".github/workflows/deploy-web-prod-cn.yml"
 
 jobs:
