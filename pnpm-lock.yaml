@@ -111,7 +111,6 @@ importers:
       fs-extra: ^10.0.1
       jquery: ^3.6.0
       js-yaml: ^4.1.0
-      minimatch: ^5.1.0
       move-cli: ^2.0.0
       nodemon: ^2.0.15
       rimraf: ^3.0.2
@@ -141,7 +140,6 @@ importers:
       file-loader: 6.2.0
       flat-types: link:../../packages/flat-types
       js-yaml: 4.1.0
-      minimatch: 5.1.0
       move-cli: 2.0.0
       nodemon: 2.0.16
       rimraf: 3.0.2
