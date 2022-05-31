@@ -1,12 +1,14 @@
 import "./index.less";
 
 import { FlatPrefersColorScheme, AppearancePicker } from "flat-components";
-import { Checkbox, Radio } from "antd";
-import React, { useContext } from "react";
+import { Button, Checkbox, Input, Radio } from "antd";
+import React, { useContext, useState } from "react";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { useTranslation } from "react-i18next";
 import type { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
+import { useSafePromise } from "../../../utils/hooks/lifecycle";
+import { loginCheck, rename } from "../../../api-middleware/flatServer";
 
 enum SelectLanguage {
     Chinese,
@@ -17,7 +19,23 @@ export const GeneralSettingPage = (): React.ReactElement => {
     const globalStore = useContext(GlobalStoreContext);
     const configStore = useContext(ConfigStoreContext);
 
+    const sp = useSafePromise();
     const { t, i18n } = useTranslation();
+
+    const [name, setName] = useState(globalStore.userName || "");
+    const [isRenaming, setRenaming] = useState(false);
+
+    async function changeUserName(): Promise<void> {
+        if (name !== globalStore.userName) {
+            setRenaming(true);
+            await sp(rename(name));
+            setRenaming(false);
+            // Refresh user info in global store.
+            const result = await sp(loginCheck());
+            globalStore.updateUserInfo(result);
+            globalStore.updateLastLoginCheck(Date.now());
+        }
+    }
 
     function changeLanguage(event: CheckboxChangeEvent): void {
         const language: SelectLanguage = event.target.value;
@@ -32,6 +50,24 @@ export const GeneralSettingPage = (): React.ReactElement => {
     return (
         <UserSettingLayoutContainer>
             <div className="general-setting-container">
+                <div className="general-setting-user-profile">
+                    <span>{t("user-profile")}</span>
+                    <label htmlFor="username">{t("username")}</label>
+                    <Input
+                        disabled={isRenaming}
+                        id="username"
+                        value={name}
+                        onChange={ev => setName(ev.currentTarget.value)}
+                    />
+                    <Button
+                        disabled={isRenaming}
+                        loading={isRenaming}
+                        type="link"
+                        onClick={changeUserName}
+                    >
+                        修改
+                    </Button>
+                </div>
                 <div className="general-setting-select-language">
                     <span>{t("language-settings")}</span>
                     <Radio.Group

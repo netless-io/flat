@@ -43,11 +43,6 @@ export enum Status {
     AuthFailed,
 }
 
-export enum Sex {
-    Man = "Man",
-    Woman = "Woman",
-}
-
 export enum FileConvertStep {
     None = "None",
     Converting = "Converting",
