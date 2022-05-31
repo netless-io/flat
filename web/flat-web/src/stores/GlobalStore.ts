@@ -120,5 +120,3 @@ export class GlobalStore {
 }
 
 export const globalStore = new GlobalStore();
-
-(window as any).globalStore = globalStore;
