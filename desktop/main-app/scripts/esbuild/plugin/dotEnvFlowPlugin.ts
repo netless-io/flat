@@ -1,59 +1,61 @@
-import path from "path";
-import fs from "fs";
 import { Plugin, PluginBuild } from "esbuild";
+import dotenvFlow, { DotenvConfigOptions } from "dotenv-flow";
 
-// This plugin refer https://github.com/rw3iss/esbuild-envfile-plugin/blob/master/index.js, but has change to fit for dotEnvFlow
-
-function findEnvFile(dir: string): string | boolean {
-    if (!fs.existsSync(dir)) {
-        return false;
-    }
-    const filePath = `${dir}/.env`;
-    if (fs.existsSync(filePath)) {
-        return filePath;
-    } else {
-        return findEnvFile(path.resolve(dir, "../"));
-    }
+function parseWithEnvObject(orgEnv: Record<string, string | undefined>): Record<string, string> {
+    return Reflect.ownKeys(orgEnv)
+        ?.map(item => {
+            if (typeof item === "string") {
+                const tmp: Record<string, any> = {};
+                tmp[`process.env.${item}`] = `"${orgEnv?.[item]}"`;
+                return tmp;
+            }
+            return {};
+        })
+        ?.reduce((prev, cur) => {
+            return {
+                ...prev,
+                ...cur,
+            };
+        }, {});
 }
 
 // Configuration define refer to https://github.com/kerimdzhanov/dotenv-flow-webpack
-type DotEnvPluginOptionsType = {
-    // Default: process.env.NODE_ENV
-    node_env?: string;
-    // Default: undefined
-    default_node_env?: string | undefined;
-    // Default: process.cwd() (current working directory)
-    path?: string;
-    // Default: false
+type DotEnvPluginOptionsType = Omit<DotenvConfigOptions, "purge_dotenv" | "silent"> & {
     system_vars?: boolean;
 };
 
 type DotEnvPluginType = (options: DotEnvPluginOptionsType) => Plugin;
 
-const dotEnvFlowPlugin: DotEnvPluginType = () => {
+const dotEnvFlowPlugin: DotEnvPluginType = options => {
     return {
-        name: "DotEnv",
+        name: "DotEnvFlow",
         setup(build: PluginBuild) {
-            build.onResolve({ filter: /^env$/ }, args => {
-                // find a .env file in current directory or any parent:
-                return {
-                    path: findEnvFile(args.resolveDir) as string,
-                    namespace: "env-ns",
-                };
-            });
+            let sysEnvList = {};
 
-            build.onLoad({ filter: /.*/, namespace: "env-ns" }, async args => {
-                // read in .env file contents and combine with regular .env:
-                const data = await fs.promises.readFile(args.path, "utf8");
-                const buf = Buffer.from(data);
-                const config = require("dotenv").parse(buf);
+            const esbuildOptions = build.initialOptions;
 
-                return {
-                    contents: JSON.stringify({ ...process.env, ...config }),
-                    loader: "json",
-                };
-            });
+            const result = dotenvFlow.config(options);
+
+            if (result.error) {
+                console.warn("esbuild dotenvFlow throw error:", result.error);
+                return;
+            }
+
+            if (options?.system_vars) {
+                sysEnvList = parseWithEnvObject(process.env);
+            }
+
+            const configEnvList = parseWithEnvObject(result?.parsed || {});
+
+            esbuildOptions.define = {
+                ...(esbuildOptions?.define || {}),
+                ...sysEnvList,
+                ...configEnvList,
+            };
+
+            console.log(build.initialOptions);
         },
     };
 };
+
 export default dotEnvFlowPlugin;

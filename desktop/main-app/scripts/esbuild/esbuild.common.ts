@@ -1,8 +1,8 @@
 import { BuildOptions } from "esbuild";
 import * as paths from "./paths";
+import dotEnvFlowPlugin from "./plugin/dotEnvFlowPlugin";
 import pkg from "../../package.json";
-
-const isDevelopment = process.env.NODE_ENV === "development";
+import { autoChooseConfig } from "../../../../scripts/utils/auto-choose-config";
 
 const external = Object.keys(pkg.dependencies);
 
@@ -12,14 +12,16 @@ export const esbuildOption: BuildOptions & { incremental: true } = {
     platform: "node",
     target: "node14",
     external: [...external, "electron"],
-    define: {
-        "process.env.NODE_ENV": isDevelopment ? "'development'" : "'production'",
-    },
     sourcemap: true,
     incremental: true,
     outfile: paths.dist,
     watch: true,
     allowOverwrite: true,
+    plugins: [
+        dotEnvFlowPlugin({
+            path: autoChooseConfig(),
+            system_vars: true,
+            default_node_env: "development",
+        }),
+    ],
 };
-//
-// main().catch(console.error.bind(console));

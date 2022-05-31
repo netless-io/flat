@@ -96,7 +96,9 @@ importers:
   desktop/main-app:
     specifiers:
       '@netless/flat-rtc-agora-electron': workspace:*
+      '@types/dotenv-flow': ^3.2.0
       '@types/webpack-env': ^1.16.3
+      dotenv-flow: ^3.2.0
       dotenv-flow-webpack: ^1.1.0
       electron: 12.0.15
       electron-builder: ^23.0.3
@@ -109,6 +111,7 @@ importers:
       fs-extra: ^10.0.1
       jquery: ^3.6.0
       js-yaml: ^4.1.0
+      minimatch: ^5.1.0
       move-cli: ^2.0.0
       nodemon: ^2.0.15
       rimraf: ^3.0.2
@@ -127,7 +130,9 @@ importers:
       semver: 7.3.7
       value-enhancer: 1.0.3
     devDependencies:
+      '@types/dotenv-flow': 3.2.0
       '@types/webpack-env': 1.16.4
+      dotenv-flow: 3.2.0
       dotenv-flow-webpack: 1.1.0
       electron: 12.0.15
       electron-builder: 23.0.3
@@ -136,6 +141,7 @@ importers:
       file-loader: 6.2.0
       flat-types: link:../../packages/flat-types
       js-yaml: 4.1.0
+      minimatch: 5.1.0
       move-cli: 2.0.0
       nodemon: 2.0.16
       rimraf: 3.0.2
@@ -4841,6 +4847,10 @@ packages:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
     dependencies:
       '@types/ms': 0.7.31
+    dev: true
+
+  /@types/dotenv-flow/3.2.0:
+    resolution: {integrity: sha512-A79hbPwocbYkcTwGcDOFbKDuqyVo5mLAz/6Iq465YZ7R7Go5bT1PIM8I2jlPQkaD9u9fbotGVLkUPhX+9XUHfw==}
     dev: true
 
   /@types/eslint-scope/3.7.3:
@@ -10459,7 +10469,7 @@ packages:
   /filelist/1.0.3:
     resolution: {integrity: sha512-LwjCsruLWQULGYKy7TX0OPtrL9kLpojOFKc5VCTxdFTV7w5zbsgqVKfnkKG7Qgjtq50gKfO56hJv88OfcGb70Q==}
     dependencies:
-      minimatch: 5.0.1
+      minimatch: 5.1.0
     dev: true
 
   /filename-reserved-regex/2.0.0:
@@ -10919,7 +10929,7 @@ packages:
     dev: true
 
   /fs.realpath/1.0.0:
-    resolution: {integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=}
+    resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
   /fsevents/1.2.13:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
@@ -11165,7 +11175,7 @@ packages:
     dev: true
 
   /glob/6.0.4:
-    resolution: {integrity: sha1-DwiGD2oVUSey+t1PnOJLGqtuTSI=}
+    resolution: {integrity: sha512-MKZeRNyYZAVVVG1oZeLaWie1uweH40m9AZwIwxyPbTSX4hHrVYSzLg0Ro5Z5R7XKkIX+Cc6oD1rqeDJnwsB8/A==}
     dependencies:
       inflight: 1.0.6
       inherits: 2.0.4
@@ -13590,6 +13600,13 @@ packages:
 
   /minimatch/5.0.1:
     resolution: {integrity: sha512-nLDxIFRyhDblz3qMuq+SoRZED4+miJ/G+tdDrjkkkRnjAsBexeGpgjLEQ0blJy7rHhR2b93rhQY4SvyWu9v03g==}
+    engines: {node: '>=10'}
+    dependencies:
+      brace-expansion: 2.0.1
+    dev: true
+
+  /minimatch/5.1.0:
+    resolution: {integrity: sha512-9TPBGGak4nHfGZsPBohm9AWg6NoT7QTCehS3BIJABslyZbzxfV78QM2Y6+i741OPZIafFAaiiEMh5OyIrJPgtg==}
     engines: {node: '>=10'}
     dependencies:
       brace-expansion: 2.0.1
