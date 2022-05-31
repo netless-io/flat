@@ -1,12 +1,15 @@
 import "./style.less";
 
-import { Checkbox, Radio, RadioChangeEvent } from "antd";
 import React, { useContext, useEffect, useState } from "react";
+import { Checkbox, Input, Radio, RadioChangeEvent } from "antd";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { ipcSyncByApp, ipcAsyncByApp } from "../../../utils/ipc";
 import { useTranslation } from "react-i18next";
 import { AppearancePicker, FlatPrefersColorScheme } from "flat-components";
-import { ConfigStoreContext } from "../../../components/StoreProvider";
+import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
+import { useSafePromise } from "../../../utils/hooks/lifecycle";
+import { loginCheck, rename } from "../../../api-middleware/flatServer";
+import { ConfirmButtons } from "./ConfirmButtons";
 
 enum SelectLanguage {
     Chinese,
@@ -14,9 +17,26 @@ enum SelectLanguage {
 }
 
 export const GeneralSettingPage = (): React.ReactElement => {
+    const sp = useSafePromise();
     const { t, i18n } = useTranslation();
     const [openAtLogin, setOpenAtLogin] = useState(false);
     const configStore = useContext(ConfigStoreContext);
+    const globalStore = useContext(GlobalStoreContext);
+
+    const [name, setName] = useState(globalStore.userName || "");
+    const [isRenaming, setRenaming] = useState(false);
+
+    async function changeUserName(): Promise<void> {
+        if (name !== globalStore.userName) {
+            setRenaming(true);
+            await sp(rename(name));
+            setRenaming(false);
+            // Refresh user info in global store.
+            const result = await sp(loginCheck());
+            globalStore.updateUserInfo(result);
+            globalStore.updateLastLoginCheck(Date.now());
+        }
+    }
 
     useEffect(() => {
         ipcSyncByApp("get-open-at-login")
@@ -54,6 +74,17 @@ export const GeneralSettingPage = (): React.ReactElement => {
                             {t("boot-up-and-run-automatically")}
                         </span>
                     </Checkbox>
+                </div>
+                <div className="general-setting-user-profile">
+                    <span>{t("user-profile")}</span>
+                    <Input
+                        disabled={isRenaming}
+                        id="username"
+                        spellCheck={false}
+                        value={name}
+                        onChange={ev => setName(ev.currentTarget.value)}
+                    />
+                    <ConfirmButtons onConfirm={changeUserName} />
                 </div>
                 <div className="general-setting-select-language">
                     <span>{t("language-settings")}</span>

@@ -1,5 +1,5 @@
 import { Region } from "flat-components";
-import { RoomStatus, RoomType, Sex, Week } from "./constants";
+import { RoomStatus, RoomType, Week } from "./constants";
 import { post, postNotAuth } from "./utils";
 
 export interface CreateOrdinaryRoomPayload {
@@ -451,22 +451,18 @@ export async function updatePeriodicSubRoom(payload: UpdatePeriodicSubRoomPayloa
     );
 }
 
-export interface LoginCheckPayload {
-    type: "web" | "mobile";
-}
+export interface LoginCheckPayload {}
 
 export interface LoginCheckResult {
     name: string;
-    sex: Sex;
     avatar: string;
+    token: string;
     userUUID: string;
     hasPhone: boolean;
 }
 
 export async function loginCheck(): Promise<LoginCheckResult> {
-    return await post<LoginCheckPayload, LoginCheckResult>("login", {
-        type: "web",
-    });
+    return await post<LoginCheckPayload, LoginCheckResult>("login", {});
 }
 
 export interface setAuthUUIDPayload {
@@ -489,7 +485,6 @@ export interface LoginProcessPayload {
 
 export interface LoginProcessResult {
     name: string;
-    sex: Sex;
     avatar: string;
     userUUID: string;
     token: string;
@@ -555,5 +550,17 @@ export async function bindingPhone(phone: string, code: number): Promise<Binding
     return await post<BindingPhonePayload, BindingPhoneResult>("user/bindingPhone", {
         phone,
         code,
+    });
+}
+
+export interface RenamePayload {
+    name: string;
+}
+
+export type RenameResult = {};
+
+export async function rename(name: string): Promise<RenameResult> {
+    return await post<RenamePayload, RenameResult>("user/rename", {
+        name,
     });
 }

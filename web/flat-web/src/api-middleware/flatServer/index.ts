@@ -571,3 +571,15 @@ export async function bindingPhone(phone: string, code: number): Promise<Binding
         code,
     });
 }
+
+export interface RenamePayload {
+    name: string;
+}
+
+export type RenameResult = {};
+
+export async function rename(name: string): Promise<RenameResult> {
+    return await post<RenamePayload, RenameResult>("user/rename", {
+        name,
+    });
+}
