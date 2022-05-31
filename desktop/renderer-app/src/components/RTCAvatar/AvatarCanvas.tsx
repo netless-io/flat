@@ -2,7 +2,6 @@ import "./AvatarCanvas.less";
 
 import React, { useCallback, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { useUpdateEffect } from "react-use";
 import { FlatRTCAvatar } from "@netless/flat-rtc";
 import { User } from "../../stores/class-room-store";
 
@@ -24,11 +23,11 @@ export const AvatarCanvas = observer<
         return rtcAvatar?.getVolumeLevel() || 0;
     }, [rtcAvatar]);
 
-    useUpdateEffect(() => {
+    useEffect(() => {
         rtcAvatar?.enableCamera(avatarUser.camera);
     }, [rtcAvatar, avatarUser.camera]);
 
-    useUpdateEffect(() => {
+    useEffect(() => {
         rtcAvatar?.enableMic(avatarUser.mic);
     }, [rtcAvatar, avatarUser.mic]);
 
