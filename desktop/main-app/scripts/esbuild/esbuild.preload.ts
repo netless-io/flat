@@ -1,10 +1,10 @@
-import esbuild, { BuildIncremental, Metafile } from "esbuild";
+import esbuild, { BuildIncremental } from "esbuild";
 import { esbuildOption } from "./esbuild.common";
 import * as paths from "./paths";
 
-type BuildPreLoadDevType = () => Promise<BuildIncremental>;
+type BuildPreLoadType = () => Promise<BuildIncremental>;
 
-export const buildPreLoadDev: BuildPreLoadDevType = () =>
+export const buildPreLoadDev: BuildPreLoadType = () =>
     esbuild.build({
         ...esbuildOption,
         entryPoints: [paths.preloadPath],
@@ -12,9 +12,7 @@ export const buildPreLoadDev: BuildPreLoadDevType = () =>
         outfile: paths.preloadDist,
     });
 
-type BuildPreLoadProdType = () => Promise<BuildIncremental & { metafile: Metafile }>;
-
-export const buildPreLoadProd: BuildPreLoadProdType = () => {
+export const buildPreLoadProd: BuildPreLoadType = () => {
     return esbuild.build({
         ...esbuildOption,
         entryPoints: [paths.preloadPath],

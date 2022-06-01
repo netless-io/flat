@@ -4,12 +4,11 @@ import dotenvFlow, { DotenvConfigOptions } from "dotenv-flow";
 function parseWithEnvObject(orgEnv: Record<string, string | undefined>): Record<string, string> {
     return Reflect.ownKeys(orgEnv)
         ?.map(item => {
-            if (typeof item === "string") {
-                const tmp: Record<string, any> = {};
-                tmp[`process.env.${item}`] = `"${orgEnv?.[item]}"`;
-                return tmp;
+            const result: Record<string, any> = {};
+            if (typeof item === "string" && orgEnv?.[item]) {
+                result[`process.env.${item}`] = JSON.stringify(orgEnv?.[item]);
             }
-            return {};
+            return result;
         })
         ?.reduce((prev, cur) => {
             return {
@@ -20,7 +19,7 @@ function parseWithEnvObject(orgEnv: Record<string, string | undefined>): Record<
 }
 
 // Configuration define refer to https://github.com/kerimdzhanov/dotenv-flow-webpack
-type DotEnvPluginOptionsType = Omit<DotenvConfigOptions, "purge_dotenv" | "silent"> & {
+type DotEnvPluginOptionsType = Omit<DotenvConfigOptions, "purge_dotenv"> & {
     system_vars?: boolean;
 };
 
@@ -48,14 +47,10 @@ const dotEnvFlowPlugin: DotEnvPluginType = options => {
             const configEnvList = parseWithEnvObject(result?.parsed || {});
 
             esbuildOptions.define = {
-                ...(esbuildOptions?.define || {}),
+                ...esbuildOptions?.define,
                 ...sysEnvList,
                 ...configEnvList,
             };
-
-            if (process.env.DEBUG) {
-                console.log(build.initialOptions);
-            }
         },
     };
 };

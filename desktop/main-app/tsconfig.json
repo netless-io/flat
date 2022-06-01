@@ -6,5 +6,5 @@
     "module": "CommonJS",
     "lib": ["es2017", "DOM"],
   },
-  "include": ["src/**/*.ts", "typings/*.ts","scripts/**/*.ts"]
+  "include": ["src/**/*.ts", "typings/*.ts", "scripts/**/*.ts"]
 }
