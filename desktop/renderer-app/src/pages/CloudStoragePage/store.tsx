@@ -39,7 +39,7 @@ import { queryH5ConvertingStatus } from "../../api-middleware/h5-converting";
 import { Scheduler } from "./scheduler";
 
 export type CloudStorageFile = CloudStorageFileUI &
-    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region" | "external" | "affiliation">;
+    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region" | "external" | "resourceType">;
 
 export type FileMenusKey = "open" | "download" | "rename" | "delete";
 
@@ -323,7 +323,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                             file.taskToken = cloudFile.taskToken;
                             file.taskUUID = cloudFile.taskUUID;
                             file.external = cloudFile.external;
-                            file.affiliation = cloudFile.affiliation;
+                            file.resourceType = cloudFile.resourceType;
                         } else {
                             this.filesMap.set(
                                 cloudFile.fileUUID,
@@ -399,7 +399,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         file.taskToken = cloudFile.taskToken;
                         file.taskUUID = cloudFile.taskUUID;
                         file.external = cloudFile.external;
-                        file.affiliation = cloudFile.affiliation;
+                        file.resourceType = cloudFile.resourceType;
                     } else {
                         this.filesMap.set(
                             cloudFile.fileUUID,
@@ -432,7 +432,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             taskToken: file.taskToken,
             region: file.region,
             fileName: file.fileName,
-            projector: file.affiliation === "WhiteboardProjector",
+            projector: file.resourceType === "WhiteboardProjector",
         };
 
         switch (file.convert) {
@@ -663,7 +663,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 taskUUID: file.taskUUID,
                 dynamic,
                 region: file.region,
-                projector: file.affiliation === "WhiteboardProjector",
+                projector: file.resourceType === "WhiteboardProjector",
             });
         } catch (e) {
             console.error(e);

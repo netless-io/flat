@@ -39,7 +39,7 @@ import { ConvertStatusManager } from "./ConvertStatusManager";
 import { Scheduler } from "./scheduler";
 
 export type CloudStorageFile = CloudStorageFileUI &
-    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region" | "external" | "affiliation">;
+    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region" | "external" | "resourceType">;
 
 export type FileMenusKey = "open" | "download" | "rename" | "delete";
 
@@ -319,7 +319,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                             file.taskToken = cloudFile.taskToken;
                             file.taskUUID = cloudFile.taskUUID;
                             file.external = cloudFile.external;
-                            file.affiliation = cloudFile.affiliation;
+                            file.resourceType = cloudFile.resourceType;
                         } else {
                             this.filesMap.set(
                                 cloudFile.fileUUID,
@@ -395,7 +395,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         file.taskToken = cloudFile.taskToken;
                         file.taskUUID = cloudFile.taskUUID;
                         file.external = cloudFile.external;
-                        file.affiliation = cloudFile.affiliation;
+                        file.resourceType = cloudFile.resourceType;
                     } else {
                         this.filesMap.set(
                             cloudFile.fileUUID,
@@ -422,7 +422,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     private previewCourseware(file: CloudStorageFile): void {
-        const { fileURL, taskToken, taskUUID, region, affiliation } = file;
+        const { fileURL, taskToken, taskUUID, region, resourceType } = file;
 
         const convertFileTypeList = [".pptx", ".ppt", ".pdf", ".doc", ".docx"];
 
@@ -430,7 +430,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
         const encodeFileURL = encodeURIComponent(fileURL);
 
-        const projector = affiliation === "WhiteboardProjector" ? "projector" : "legacy";
+        const projector = resourceType === "WhiteboardProjector" ? "projector" : "legacy";
 
         const resourcePreviewURL = isConvertFileType
             ? `${FLAT_WEB_BASE_URL}/preview/${encodeFileURL}/${taskToken}/${taskUUID}/${region}/${projector}/`
@@ -664,7 +664,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 taskUUID: file.taskUUID,
                 dynamic,
                 region: file.region,
-                projector: file.affiliation === "WhiteboardProjector",
+                projector: file.resourceType === "WhiteboardProjector",
             });
         } catch (e) {
             console.error(e);

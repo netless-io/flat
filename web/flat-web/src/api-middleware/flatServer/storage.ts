@@ -11,7 +11,7 @@ interface ListFilesResponse {
     files: Array<Omit<CloudFile, "createAt"> & { createAt: number }>;
 }
 
-enum FileAffiliation {
+enum FileResourceType {
     WhiteboardConvert = "WhiteboardConvert",
     LocalCourseware = "LocalCourseware",
     OnlineCourseware = "OnlineCourseware",
@@ -19,7 +19,7 @@ enum FileAffiliation {
     WhiteboardProjector = "WhiteboardProjector",
 }
 
-export type Affiliation = `${FileAffiliation}`;
+export type ResourceType = `${FileResourceType}`;
 
 export interface CloudFile {
     fileUUID: string;
@@ -35,8 +35,7 @@ export interface CloudFile {
     region: Region;
     /** online courseware */
     external: boolean;
-    /** file type */
-    affiliation: Affiliation;
+    resourceType: ResourceType;
 }
 
 export interface ListFilesResult {

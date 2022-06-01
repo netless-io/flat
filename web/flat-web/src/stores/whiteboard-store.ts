@@ -490,13 +490,13 @@ export class WhiteboardStore {
             return;
         }
 
-        const { taskUUID, taskToken, region, affiliation } = file;
+        const { taskUUID, taskToken, region, resourceType } = file;
         const convertingStatus = await queryConvertingTaskStatus({
             taskUUID,
             taskToken,
             dynamic: isPPTX(file.fileName),
             region,
-            projector: affiliation === "WhiteboardProjector",
+            projector: resourceType === "WhiteboardProjector",
         });
 
         if (file.convert !== "success") {
