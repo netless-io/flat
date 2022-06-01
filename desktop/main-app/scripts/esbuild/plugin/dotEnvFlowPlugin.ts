@@ -53,7 +53,9 @@ const dotEnvFlowPlugin: DotEnvPluginType = options => {
                 ...configEnvList,
             };
 
-            console.log(build.initialOptions);
+            if (process.env.DEBUG) {
+                console.log(build.initialOptions);
+            }
         },
     };
 };
