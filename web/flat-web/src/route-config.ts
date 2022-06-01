@@ -85,7 +85,7 @@ export const routeConfig = {
         path: "/join/:roomUUID/",
     },
     [RouteNameType.ResourcePreviewPage]: {
-        path: "/preview/:fileURL/:taskToken?/:taskUUID?/:region?/",
+        path: "/preview/:fileURL/:taskToken?/:taskUUID?/:region?/:projector?/",
     },
     [RouteNameType.DevicesTestPage]: {
         path: "/devices-test/:roomUUID/",

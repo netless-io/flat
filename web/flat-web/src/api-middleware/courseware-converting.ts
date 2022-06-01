@@ -37,13 +37,14 @@ export interface QueryConvertingParams {
     taskToken: string;
     region: Region;
     dynamic: boolean;
+    projector: boolean;
 }
 
 export async function queryConvertingTaskStatus(
     params: QueryConvertingParams,
 ): Promise<ConvertingTaskStatus> {
-    const { taskUUID, taskToken, dynamic, region } = params;
-    if (dynamic) {
+    const { taskUUID, taskToken, dynamic, region, projector } = params;
+    if (projector) {
         const { data } = await Axios.get<ConvertingTaskStatus>(
             `https://api.netless.link/v5/projector/tasks/${taskUUID}`,
             { headers: { token: taskToken, region } },
@@ -51,7 +52,9 @@ export async function queryConvertingTaskStatus(
         return data;
     } else {
         const { data } = await Axios.get<ConvertingTaskStatusLegacy>(
-            `https://api.netless.link/v5/services/conversion/tasks/${taskUUID}?type=static`,
+            `https://api.netless.link/v5/services/conversion/tasks/${taskUUID}?type=${
+                dynamic ? "dynamic" : "static"
+            }`,
             { headers: { token: taskToken, region } },
         );
         const prefix = data.progress?.convertedFileList?.[0]?.conversionFileUrl || "";

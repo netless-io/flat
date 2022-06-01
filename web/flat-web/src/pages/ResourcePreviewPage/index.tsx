@@ -12,7 +12,7 @@ export interface ResourcePreviewPagePageProps {}
 
 export const ResourcePreviewPage = observer<ResourcePreviewPagePageProps>(
     function ResourcePreviewPage() {
-        const { fileURL, taskToken, taskUUID, region } =
+        const { fileURL, taskToken, taskUUID, region, projector } =
             useParams<RouteParams<RouteNameType.ResourcePreviewPage>>();
 
         const decodeFileName = decodeURIComponent(fileURL);
@@ -27,6 +27,7 @@ export const ResourcePreviewPage = observer<ResourcePreviewPagePageProps>(
                     if (taskUUID && taskToken) {
                         return (
                             <DynamicPreview
+                                projector={projector === "projector"}
                                 region={region as Region}
                                 taskToken={taskToken}
                                 taskUUID={taskUUID}

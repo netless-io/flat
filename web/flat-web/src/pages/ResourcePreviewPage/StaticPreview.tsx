@@ -37,6 +37,7 @@ export const StaticPreview = observer<StaticPreviewProps>(function DocumentPrevi
                     taskToken,
                     dynamic: false,
                     region,
+                    projector: false,
                 }),
             );
 
