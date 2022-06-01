@@ -11,6 +11,7 @@ export interface DynamicPreviewProps {
     taskUUID: string;
     taskToken: string;
     region: Region;
+    projector: boolean;
     windowInstance?: Window | PortalWindow;
 }
 
@@ -18,6 +19,7 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
     taskUUID,
     taskToken,
     region,
+    projector,
     windowInstance,
 }) {
     const previewer = useRef<SlidePreviewer | null>(null);
@@ -32,6 +34,7 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
                     taskToken,
                     dynamic: true,
                     region,
+                    projector,
                 }),
             );
 

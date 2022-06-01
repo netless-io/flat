@@ -17,6 +17,7 @@ export type FileInfo = {
     taskToken: string;
     region: Region;
     fileName: string;
+    projector: boolean;
 };
 
 export interface ResourcePreviewProps {
@@ -42,6 +43,7 @@ export const ResourcePreview = observer<ResourcePreviewProps>(function PPTPrevie
                 }
                 return (
                     <DynamicPreview
+                        projector={fileInfo.projector}
                         region={region}
                         taskToken={taskToken}
                         taskUUID={taskUUID}
