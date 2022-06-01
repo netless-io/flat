@@ -22,6 +22,7 @@ export const esbuildOption: BuildOptions & { incremental: true } = {
             path: autoChooseConfig(),
             system_vars: true,
             default_node_env: "development",
+            silent: true,
         }),
     ],
 };
