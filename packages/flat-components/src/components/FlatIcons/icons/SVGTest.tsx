@@ -15,19 +15,26 @@ export const SVGTest: React.FC<FlatIconProps> = ({ active, className = "", ...re
         >
             <path
                 className="flat-icon-stroke-color"
-                d="M11 16v3m-3 0h6"
+                d="M12 16V19"
                 stroke="#5D6066"
                 strokeLinejoin="round"
                 strokeWidth="1.25"
-            ></path>
+            />
+            <path
+                className="flat-icon-stroke-color"
+                d="M9 19H15"
+                stroke="#5D6066"
+                strokeLinejoin="round"
+                strokeWidth="1.25"
+            />
             <path
                 className="flat-icon-fill-color"
-                d="M17.375 13v1h1.25v-1h-1.25ZM16 15.375H6v1.25h10v-1.25ZM4.625 14V7h-1.25v7h1.25ZM6 5.625h5v-1.25H6v1.25ZM4.625 7c0-.76.616-1.375 1.375-1.375v-1.25A2.625 2.625 0 0 0 3.375 7h1.25ZM6 15.375c-.76 0-1.375-.616-1.375-1.375h-1.25A2.625 2.625 0 0 0 6 16.625v-1.25ZM17.375 14c0 .76-.616 1.375-1.375 1.375v1.25A2.625 2.625 0 0 0 18.625 14h-1.25Z"
+                d="M18.375 13V14H19.625V13H18.375ZM17 15.375H7V16.625H17V15.375ZM5.625 14V7H4.375V14H5.625ZM7 5.625H12V4.375H7V5.625ZM5.625 7C5.625 6.24061 6.24061 5.625 7 5.625V4.375C5.55025 4.375 4.375 5.55025 4.375 7H5.625ZM7 15.375C6.24061 15.375 5.625 14.7594 5.625 14H4.375C4.375 15.4497 5.55025 16.625 7 16.625V15.375ZM18.375 14C18.375 14.7594 17.7594 15.375 17 15.375V16.625C18.4497 16.625 19.625 15.4497 19.625 14H18.375Z"
                 fill="#5D6066"
             ></path>
             <path
                 className="flat-icon-stroke-color"
-                d="M11 8h3l1-3 2 6 1-3h2"
+                d="M12 8H15L16 5L18 11L19 8H21"
                 stroke="#5D6066"
                 strokeLinejoin="round"
                 strokeWidth="1.25"
