@@ -11,12 +11,14 @@ export interface DynamicPreviewProps {
     taskUUID: string;
     taskToken: string;
     region: Region;
+    projector: boolean;
 }
 
 export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview({
     taskUUID,
     taskToken,
     region,
+    projector,
 }) {
     const previewer = useRef<SlidePreviewer | null>(null);
     const DynamicPreviewRef = useRef<HTMLDivElement>(null);
@@ -30,6 +32,7 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
                     taskToken,
                     dynamic: true,
                     region,
+                    projector,
                 }),
             );
 
@@ -37,9 +40,11 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
                 previewer.current = previewSlide({
                     container: DynamicPreviewRef.current,
                     taskId: convertState.uuid,
-                    url: extractSlideUrlPrefix(
-                        convertState.progress?.convertedFileList[0].conversionFileUrl,
-                    ),
+                    url:
+                        convertState.prefix + "dynamicConvert" ||
+                        extractSlideUrlPrefix(
+                            convertState.progress?.convertedFileList[0].conversionFileUrl,
+                        ),
                 });
             }
         }

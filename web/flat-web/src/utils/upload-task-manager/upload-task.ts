@@ -11,6 +11,7 @@ import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/process";
 import { ServerRequestError } from "../error/server-request-error";
 import { configStore } from "../../stores/config-store";
 import { RequestErrorCode } from "../../constants/error-code";
+import { isPPTX } from "../file";
 
 export enum UploadStatusType {
     Pending = 1,
@@ -144,6 +145,7 @@ export class UploadTask {
             try {
                 await uploadFinish({
                     fileUUID: this.fileUUID,
+                    isWhiteboardProjector: isPPTX(this.file.name),
                 });
             } catch (e) {
                 console.error(e);

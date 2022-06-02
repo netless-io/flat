@@ -39,7 +39,7 @@ import { queryH5ConvertingStatus } from "../../api-middleware/h5-converting";
 import { Scheduler } from "./scheduler";
 
 export type CloudStorageFile = CloudStorageFileUI &
-    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region" | "external">;
+    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region" | "external" | "resourceType">;
 
 export type FileMenusKey = "open" | "download" | "rename" | "delete";
 
@@ -323,6 +323,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                             file.taskToken = cloudFile.taskToken;
                             file.taskUUID = cloudFile.taskUUID;
                             file.external = cloudFile.external;
+                            file.resourceType = cloudFile.resourceType;
                         } else {
                             this.filesMap.set(
                                 cloudFile.fileUUID,
@@ -398,6 +399,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         file.taskToken = cloudFile.taskToken;
                         file.taskUUID = cloudFile.taskUUID;
                         file.external = cloudFile.external;
+                        file.resourceType = cloudFile.resourceType;
                     } else {
                         this.filesMap.set(
                             cloudFile.fileUUID,
@@ -430,6 +432,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             taskToken: file.taskToken,
             region: file.region,
             fileName: file.fileName,
+            projector: file.resourceType === "WhiteboardProjector",
         };
 
         switch (file.convert) {
@@ -580,6 +583,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         }
                         const { taskToken, taskUUID } = await convertStart({
                             fileUUID: file.fileUUID,
+                            isWhiteboardProjector: isPPTX(file.fileName),
                         });
                         runInAction(() => {
                             file.convert = "converting";
@@ -650,22 +654,25 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             return true;
         }
 
-        let status: ConvertingTaskStatus["status"];
-        let progress: ConvertingTaskStatus["progress"];
+        const dynamic = isPPTX(file.fileName);
+        let status: ConvertingTaskStatus;
 
         try {
-            ({ status, progress } = await queryConvertingTaskStatus({
+            status = await queryConvertingTaskStatus({
                 taskToken: file.taskToken,
                 taskUUID: file.taskUUID,
-                dynamic: isPPTX(file.fileName),
+                dynamic,
                 region: file.region,
-            }));
+                projector: file.resourceType === "WhiteboardProjector",
+            });
         } catch (e) {
             console.error(e);
             return false;
         }
 
-        if (status === "Fail" || status === "Finished") {
+        const statusText = status.status;
+
+        if (statusText === "Fail" || statusText === "Finished") {
             if (process.env.NODE_ENV === "development") {
                 console.log("[cloud storage]: convert finish", file.fileName);
             }
@@ -678,15 +685,13 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             }
 
             runInAction(() => {
-                file.convert = status === "Fail" ? "error" : "success";
+                file.convert = statusText === "Fail" ? "error" : "success";
             });
 
-            if (status === "Finished") {
-                const src = progress?.convertedFileList?.[0].conversionFileUrl;
+            if (statusText === "Finished" && status.prefix) {
+                const src = status.prefix + "dynamicConvert/" + status.uuid + dynamic + "/1.png";
                 if (src) {
-                    void getCoursewarePreloader()
-                        .preload(src)
-                        .catch(error => console.warn(error));
+                    void getCoursewarePreloader().preload(src).catch(console.warn);
                 }
             }
 

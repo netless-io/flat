@@ -11,6 +11,16 @@ interface ListFilesResponse {
     files: Array<Omit<CloudFile, "createAt"> & { createAt: number }>;
 }
 
+enum FileResourceType {
+    WhiteboardConvert = "WhiteboardConvert",
+    LocalCourseware = "LocalCourseware",
+    OnlineCourseware = "OnlineCourseware",
+    NormalResources = "NormalResources",
+    WhiteboardProjector = "WhiteboardProjector",
+}
+
+export type ResourceType = `${FileResourceType}`;
+
 export interface CloudFile {
     fileUUID: string;
     fileName: string;
@@ -25,6 +35,7 @@ export interface CloudFile {
     region: Region;
     /** online courseware */
     external: boolean;
+    resourceType: ResourceType;
 }
 
 export interface ListFilesResult {
@@ -63,6 +74,8 @@ export async function uploadStart(payload: UploadStartPayload): Promise<UploadSt
 }
 interface UploadFinishPayload {
     fileUUID: string;
+    /** Use the new backend "projector" to convert file. */
+    isWhiteboardProjector?: boolean;
 }
 
 export async function uploadFinish(payload: UploadFinishPayload): Promise<void> {
@@ -90,6 +103,8 @@ export async function removeFiles(payload: RemoveFilesPayload): Promise<void> {
 
 export interface ConvertStartPayload {
     fileUUID: string;
+    /** Use the new backend "projector" to convert file. */
+    isWhiteboardProjector?: boolean;
 }
 
 export interface ConvertStartResult {
