@@ -294,6 +294,7 @@ export class WhiteboardStore {
                     cursorName,
                 },
                 floatBar: true,
+                disableEraseImage: true,
                 isWritable: this.isWritable,
                 invisiblePlugins: [WindowManager],
                 uid: globalStore.userUUID,
