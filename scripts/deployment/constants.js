@@ -14,6 +14,7 @@ const macArtifactsRegExp = [
     /latest-mac\.yml$/,
     /^(Flat|Flint)-.+\.dmg$/,
     /^(Flat|Flint)-.+\.dmg\.blockmap$/,
+    /^(Flat|Flint)-.+\.zip\.blockmap$/,
     /^(Flat|Flint)-.+\.zip$/,
 ];
 
