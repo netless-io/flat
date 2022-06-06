@@ -43,7 +43,7 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
                     container: DynamicPreviewRef.current,
                     taskId: convertState.uuid,
                     url:
-                        convertState.prefix + "dynamicConvert" ||
+                        convertState.prefix ||
                         extractSlideUrlPrefix(
                             convertState.progress?.convertedFileList[0].conversionFileUrl,
                         ),

@@ -699,7 +699,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             });
 
             if (statusText === "Finished" && status.prefix) {
-                const src = status.prefix + "dynamicConvert/" + status.uuid + "/1.png";
+                const src = status.prefix + "/" + status.uuid + "/1.png";
                 void coursewarePreloader.preload(src).catch(error => console.warn(error));
             }
 

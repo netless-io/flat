@@ -550,7 +550,7 @@ export class WhiteboardStore {
                 title: file.fileName,
                 scenePath: `/${taskUUID}/${v4uuid()}`,
                 taskId: taskUUID,
-                url: convertingStatus.prefix + "dynamicConvert",
+                url: convertingStatus.prefix,
             });
         } else {
             void message.error(this.i18n.t("unable-to-insert-courseware"));
