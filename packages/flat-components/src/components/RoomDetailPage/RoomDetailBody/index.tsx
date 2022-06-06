@@ -59,7 +59,7 @@ export const RoomDetailBody = observer<RoomDetailBodyProps>(function RoomDetailB
                                 <SVGModeLecture />
                                 <span>{t("room-uuid")}</span>
                             </td>
-                            <td className="room-detail-body-content-right">
+                            <td className="room-detail-body-content-right room-detail-body-selectable">
                                 {formatInviteCode(uuid, inviteCode)}
                             </td>
                         </tr>
