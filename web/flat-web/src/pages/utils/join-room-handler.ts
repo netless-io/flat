@@ -11,7 +11,8 @@ export const joinRoomHandler = async (
     try {
         const formatRoomUUID = roomUUID.replace(/\s+/g, "");
         const roomInfo = roomStore.rooms.get(formatRoomUUID);
-        const data = await roomStore.joinRoom(formatRoomUUID);
+        const periodicUUID = roomInfo?.periodicUUID;
+        const data = await roomStore.joinRoom(periodicUUID || formatRoomUUID);
         globalStore.updateShowGuide(data.showGuide);
         globalStore.updatePeriodicUUID(roomInfo?.periodicUUID);
         // try to work around chrome does not show permission popup after
