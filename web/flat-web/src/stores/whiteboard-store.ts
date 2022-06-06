@@ -309,6 +309,17 @@ export class WhiteboardStore {
             },
         });
 
+        // Disable scale, fix height.
+        fastboardAPP.manager.mainView.setCameraBound({
+            damping: 0,
+            centerX: 0,
+            centerY: 0,
+            minContentMode: () => 1,
+            maxContentMode: () => 1,
+            width: 0,
+            height: 2400,
+        });
+
         this.updateFastboardAPP(fastboardAPP);
 
         const { room, manager } = fastboardAPP;
@@ -470,15 +481,16 @@ export class WhiteboardStore {
 
         this.windowManager?.mainView.completeImageUpload(uuid, file.fileURL);
 
-        // 2. move camera to fit image height
-        width /= 0.8;
-        height /= 0.8;
-        this.windowManager?.moveCameraToContain({
-            originX: centerX - width / 2,
-            originY: centerY - height / 2,
-            width: width,
-            height: height,
-        });
+        // Prevent scale.
+        // // 2. move camera to fit image height
+        // width /= 0.8;
+        // height /= 0.8;
+        // this.windowManager?.moveCameraToContain({
+        //     originX: centerX - width / 2,
+        //     originY: centerY - height / 2,
+        //     width: width,
+        //     height: height,
+        // });
     };
 
     public insertMediaFile = async (file: CloudStorageFile): Promise<void> => {
