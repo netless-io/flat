@@ -26,6 +26,7 @@ module.exports = {
             "always",
             [
                 "ci",
+                "cloud-storage",
                 "desktop",
                 "deployment",
                 "electron",
