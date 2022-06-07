@@ -309,7 +309,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
                 this.isFetchingFiles = false;
 
-                this.hasMoreFile = cloudFiles.length === 0;
+                this.hasMoreFile = cloudFiles.length > 0;
 
                 for (const cloudFile of cloudFiles) {
                     const file = this.filesMap.get(cloudFile.fileUUID);
