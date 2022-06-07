@@ -454,5 +454,7 @@
     "english_1": "四线三格",
     "chinese_1": "田字格"
   },
-  "user-profile": "用户资料"
+  "user-profile": "用户资料",
+  "upload-avatar": "上传头像",
+  "upload-avatar-failed": "上传头像失败"
 }

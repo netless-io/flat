@@ -15,7 +15,7 @@ export const ConfirmButtons: React.FC<ConfirmButtonsProps> = ({ onConfirm }) => 
 
     const confirm = useCallback(async () => {
         setLoading(true);
-        await sp(onConfirm());
+        await sp(onConfirm().catch(console.error));
         setLoading(false);
         setPhase("idle");
     }, [onConfirm, sp]);

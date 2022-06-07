@@ -454,5 +454,7 @@
     "english_1": "Four Lines and Three Grids",
     "chinese_1": "Tin Word Format"
   },
-  "user-profile": "User Profile"
+  "user-profile": "User Profile",
+  "upload-avatar": "Upload Avatar",
+  "upload-avatar-failed": "Upload avatar failed"
 }

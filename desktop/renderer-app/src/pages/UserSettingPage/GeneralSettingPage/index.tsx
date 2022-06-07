@@ -1,7 +1,7 @@
 import "./style.less";
 
 import React, { useContext, useEffect, useState } from "react";
-import { Checkbox, Input, Radio, RadioChangeEvent } from "antd";
+import { Checkbox, Input, message, Radio, RadioChangeEvent } from "antd";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { ipcSyncByApp, ipcAsyncByApp } from "../../../utils/ipc";
 import { useTranslation } from "react-i18next";
@@ -10,6 +10,7 @@ import { ConfigStoreContext, GlobalStoreContext } from "../../../components/Stor
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { loginCheck, rename } from "../../../api-middleware/flatServer";
 import { ConfirmButtons } from "./ConfirmButtons";
+import { UploadAvatar, uploadAvatar, useFileRef } from "./UploadAvatar";
 
 enum SelectLanguage {
     Chinese,
@@ -25,6 +26,7 @@ export const GeneralSettingPage = (): React.ReactElement => {
 
     const [name, setName] = useState(globalStore.userName || "");
     const [isRenaming, setRenaming] = useState(false);
+    const fileRef = useFileRef();
 
     async function changeUserName(): Promise<void> {
         if (name !== globalStore.userName) {
@@ -35,6 +37,19 @@ export const GeneralSettingPage = (): React.ReactElement => {
             const result = await sp(loginCheck());
             globalStore.updateUserInfo(result);
             globalStore.updateLastLoginCheck(Date.now());
+        }
+    }
+
+    async function changeAvatar(): Promise<void> {
+        if (fileRef.current) {
+            try {
+                await uploadAvatar(fileRef.current);
+            } catch (error) {
+                console.error(error);
+                message.info(t("upload-avatar-failed"));
+            } finally {
+                fileRef.current = undefined;
+            }
         }
     }
 
@@ -76,15 +91,21 @@ export const GeneralSettingPage = (): React.ReactElement => {
                     </Checkbox>
                 </div>
                 <div className="general-setting-user-profile">
-                    <span>{t("user-profile")}</span>
-                    <Input
-                        disabled={isRenaming}
-                        id="username"
-                        spellCheck={false}
-                        value={name}
-                        onChange={ev => setName(ev.currentTarget.value)}
-                    />
-                    <ConfirmButtons onConfirm={changeUserName} />
+                    <span className="general-setting-title">{t("user-profile")}</span>
+                    <div className="general-setting-user-avatar-wrapper">
+                        <UploadAvatar fileRef={fileRef} />
+                        <ConfirmButtons onConfirm={changeAvatar} />
+                    </div>
+                    <div>
+                        <Input
+                            disabled={isRenaming}
+                            id="username"
+                            spellCheck={false}
+                            value={name}
+                            onChange={ev => setName(ev.currentTarget.value)}
+                        />
+                        <ConfirmButtons onConfirm={changeUserName} />
+                    </div>
                 </div>
                 <div className="general-setting-select-language">
                     <span>{t("language-settings")}</span>
