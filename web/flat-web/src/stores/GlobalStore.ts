@@ -6,7 +6,7 @@ import type { UID } from "agora-rtc-sdk-ng";
 // clear storage if not match
 const LS_VERSION = 1;
 
-export type UserInfo = Omit<LoginProcessResult, "agoraSSOLoginID">;
+export type UserInfo = LoginProcessResult;
 
 /**
  * Properties in Global Store are persisted and shared globally.
@@ -31,7 +31,6 @@ export class GlobalStore {
     } | null = null;
     public rtmToken: string | null = null;
     public lastLoginCheck: number | null = null;
-    public agoraSSOLoginID: string | null = null;
     /**
      * To sync update the roomStore's room information data after call the begin of the class in the classRoomStore,
      * that for sure roomStore's begin time value of roomInfo is correct so that the classroom page's Timer component display correctly.
@@ -52,10 +51,6 @@ export class GlobalStore {
 
     public updateUserInfo = (userInfo: UserInfo | null): void => {
         this.userInfo = userInfo;
-    };
-
-    public updateAgoraSSOLoginID = (val: string | undefined | null): void => {
-        this.agoraSSOLoginID = val ?? null;
     };
 
     public updateLastLoginCheck = (val: number | null): void => {
