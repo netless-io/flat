@@ -17,7 +17,6 @@ import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../../
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { NEED_BINDING_PHONE } from "../../constants/config";
 import {
-    agoraSSOLoginCheck,
     bindingPhone,
     bindingPhoneSendCode,
     loginCheck,
@@ -60,40 +59,30 @@ export const LoginPage = observer(function LoginPage() {
     );
 
     useEffect(() => {
+        if (urlParams.utm_source === "agora") {
+            handleLogin("agora");
+        }
+    }, [urlParams.utm_source]);
+
+    useEffect(() => {
         // Get login info through loginCheck().
         // But we don't want to goto home page if already logged in.
         // Instead, if we have `hasPhone: false`, we should show the binding phone page.
         const checkNormalLogin = async (): Promise<void> => {
-            const userInfo = await sp(loginCheck());
+            const userInfo = await sp(loginCheck(urlParams.token));
             if (NEED_BINDING_PHONE && !userInfo.hasPhone) {
                 setLoginResult(userInfo);
             }
         };
 
-        const checkAgoraLogin = async (): Promise<void> => {
-            const { jwtToken } = await sp(agoraSSOLoginCheck(globalStore.agoraSSOLoginID!));
-            const userInfo = await sp(loginCheck(jwtToken));
-            setLoginResult(userInfo);
-        };
-
-        let checkLogin: Promise<unknown>;
-        if (urlParams.utm_source === "agora" && globalStore.agoraSSOLoginID) {
-            checkLogin = checkAgoraLogin();
-        } else {
-            checkLogin = checkNormalLogin();
-        }
-
-        checkLogin.catch(error => {
+        checkNormalLogin().catch(error => {
             // no handling required
             console.warn(error);
         });
-    }, [globalStore, setLoginResult, sp, urlParams.utm_source]);
+    }, [globalStore, setLoginResult, sp, urlParams.token]);
 
     const onLoginResult = useCallback(
         async (authData: LoginProcessResult) => {
-            if (authData.agoraSSOLoginID) {
-                globalStore.updateAgoraSSOLoginID(authData.agoraSSOLoginID);
-            }
             globalStore.updateUserInfo(authData);
             if (NEED_BINDING_PHONE && !authData.hasPhone) {
                 setLoginResult(authData);
@@ -126,7 +115,7 @@ export const LoginPage = observer(function LoginPage() {
             }
             switch (loginChannel) {
                 case "agora": {
-                    loginDisposer.current = agoraLogin(onLoginResult);
+                    agoraLogin(onLoginResult);
                     return;
                 }
                 case "github": {
@@ -156,11 +145,7 @@ export const LoginPage = observer(function LoginPage() {
                     bindingPhone={async (countryCode, phone, code) =>
                         wrap(bindingPhone(countryCode + phone, Number(code)).then(onBoundPhone))
                     }
-                    buttons={
-                        urlParams.utm_source === "agora"
-                            ? ["agora"]
-                            : [process.env.FLAT_REGION === "US" ? "google" : "wechat", "github"]
-                    }
+                    buttons={[process.env.FLAT_REGION === "US" ? "google" : "wechat", "github"]}
                     cancelBindingPhone={() => setLoginResult(null)}
                     isBindingPhone={
                         NEED_BINDING_PHONE && (loginResult ? !loginResult.hasPhone : false)
