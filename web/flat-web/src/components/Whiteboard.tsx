@@ -3,7 +3,7 @@ import "./Whiteboard.less";
 
 import classNames from "classnames";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Fastboard, Language } from "@netless/fastboard-react";
+import { Fastboard, FastboardUIConfig, Language } from "@netless/fastboard-react";
 import { RoomPhase } from "white-web-sdk";
 import {
     DarkModeContext,
@@ -22,6 +22,7 @@ import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image"
 import { ClassRoomStore } from "../stores/class-room-store";
 import { refreshApps } from "../utils/toolbar-apps";
 import { PRESETS } from "../constants/presets";
+import { mousewheelToScroll } from "../utils/mousewheel-to-scroll";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -31,6 +32,12 @@ export interface WhiteboardProps {
 
 const noop = (): void => {
     // noop
+};
+
+// Hide zoom control.
+const config: FastboardUIConfig = {
+    zoom_control: { enable: false },
+    toolbar: { apps: { enable: true } },
 };
 
 export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
@@ -72,6 +79,13 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [whiteboardEl]);
+
+    useEffect(() => {
+        if (whiteboardEl && fastboardAPP) {
+            return mousewheelToScroll(whiteboardEl, fastboardAPP.manager);
+        }
+        return;
+    }, [whiteboardEl, fastboardAPP]);
 
     useEffect(() => {
         refreshApps({
@@ -223,6 +237,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     <div ref={bindCollector} />
                     <Fastboard
                         app={fastboardAPP}
+                        config={config}
                         containerRef={bindWhiteboard}
                         language={i18n.language as Language}
                         theme={isDark ? "dark" : "light"}
