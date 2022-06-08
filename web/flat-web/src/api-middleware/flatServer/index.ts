@@ -564,3 +564,46 @@ export async function rename(name: string): Promise<RenameResult> {
         name,
     });
 }
+
+export interface UploadAvatarStartPayload {
+    fileName: string;
+    fileSize: number;
+    region: Region;
+}
+
+export interface UploadAvatarResult {
+    fileUUID: string;
+    filePath: string;
+    policy: string;
+    policyURL: string;
+    signature: string;
+}
+
+export async function uploadAvatarStart(
+    fileName: string,
+    fileSize: number,
+    region: Region,
+): Promise<UploadAvatarResult> {
+    return await post<UploadAvatarStartPayload, UploadAvatarResult>("user/upload-avatar/start", {
+        fileName,
+        fileSize,
+        region,
+    });
+}
+
+export interface UploadAvatarFinishPayload {
+    fileUUID: string;
+}
+
+export interface UploadAvatarFinishResult {
+    avatarURL: string;
+}
+
+export async function uploadAvatarFinish(fileUUID: string): Promise<UploadAvatarFinishResult> {
+    return await post<UploadAvatarFinishPayload, UploadAvatarFinishResult>(
+        "user/upload-avatar/finish",
+        {
+            fileUUID,
+        },
+    );
+}

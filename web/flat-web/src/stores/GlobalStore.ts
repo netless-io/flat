@@ -53,6 +53,12 @@ export class GlobalStore {
         this.userInfo = userInfo;
     };
 
+    public updateUserAvatar = (avatarURL: string): void => {
+        if (this.userInfo) {
+            this.userInfo.avatar = avatarURL;
+        }
+    };
+
     public updateLastLoginCheck = (val: number | null): void => {
         this.lastLoginCheck = val;
     };
