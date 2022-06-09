@@ -343,7 +343,7 @@ export class WhiteboardStore {
 
         // Disable scale, fix height.
         fastboardAPP.manager.mainView.setCameraBound({
-            damping: 0,
+            damping: 1,
             centerX: 0,
             centerY: 0,
             minContentMode: () => 1,
