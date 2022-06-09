@@ -25,7 +25,7 @@
     "@netless/flat-rtc-agora-web": "workspace:*",
     "@netless/player-controller": "^0.0.9",
     "@netless/video-js-plugin": "^0.3.8",
-    "@netless/window-manager": "^0.4.27-canary.0",
+    "@netless/window-manager": "^0.4.31",
     "@videojs/vhs-utils": "^2.3.0",
     "@zip.js/zip.js": "^2.4.6",
     "agora-rtc-sdk-ng": "^4.9.4",
