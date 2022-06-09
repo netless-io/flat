@@ -8,7 +8,15 @@ import { v4 as v4uuid } from "uuid";
 import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { isMobile, isWindows } from "react-device-detect";
-import { DeviceType, Room, RoomPhase, RoomState, SceneDefinition, ViewMode } from "white-web-sdk";
+import {
+    AnimationMode,
+    DeviceType,
+    Room,
+    RoomPhase,
+    RoomState,
+    SceneDefinition,
+    ViewMode,
+} from "white-web-sdk";
 import { snapshot } from "@netless/white-snapshot";
 
 import { RoomType } from "../../../../packages/flat-components/src/types/room";
@@ -366,9 +374,22 @@ export class WhiteboardStore {
             this.updateViewMode(room.state.broadcastState.mode);
         }
 
+        this.scrollToTopOnce();
+
         if (NODE_ENV === "development") {
             (window as any).room = room;
             (window as any).manager = this.windowManager;
+        }
+    }
+
+    private scrollToTopOnce(): void {
+        const { room, windowManager } = this;
+        if (!room || !windowManager) {
+            return;
+        }
+        if (!room.state.globalState || !(room.state.globalState as any).scrollToTop) {
+            room.setGlobalState({ scrollToTop: true });
+            windowManager.moveCamera({ centerY: -950, animationMode: AnimationMode.Immediately });
         }
     }
 
@@ -470,13 +491,13 @@ export class WhiteboardStore {
     };
 
     public insertImage = async (file: Pick<CloudStorageFile, "fileURL">): Promise<void> => {
-        const room = this.room;
-        if (!room) {
+        const windowManager = this.windowManager;
+        if (!windowManager) {
             return;
         }
 
         // 1. shrink the image a little to fit the screen
-        const maxWidth = window.innerWidth * 0.8;
+        const maxWidth = window.innerWidth * 0.6;
 
         let width: number;
         let height: number;
@@ -499,10 +520,10 @@ export class WhiteboardStore {
         }
 
         const uuid = v4uuid();
-        const { centerX, centerY } = room.state.cameraState;
+        const { centerX, centerY } = windowManager.cameraState;
         width *= scale;
         height *= scale;
-        this.windowManager?.mainView.insertImage({
+        windowManager.mainView.insertImage({
             uuid,
             centerX,
             centerY,
@@ -510,13 +531,13 @@ export class WhiteboardStore {
             height: Math.floor(height),
             locked: false,
         });
-        this.windowManager?.mainView.completeImageUpload(uuid, file.fileURL);
+        windowManager.mainView.completeImageUpload(uuid, file.fileURL);
 
         // Prevent scale.
         // // 2. move camera to fit image height
         // width /= 0.8;
         // height /= 0.8;
-        // this.windowManager?.moveCameraToContain({
+        // windowManager.moveCameraToContain({
         //     originX: centerX - width / 2,
         //     originY: centerY - height / 2,
         //     width: width,
