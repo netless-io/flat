@@ -455,6 +455,8 @@
     "chinese_1": "田字格"
   },
   "user-profile": "用户资料",
+  "username": "昵称",
+  "avatar": "头像",
   "upload-avatar": "上传头像",
   "upload-avatar-failed": "上传头像失败"
 }

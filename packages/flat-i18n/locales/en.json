@@ -455,6 +455,8 @@
     "chinese_1": "Tin Word Format"
   },
   "user-profile": "User Profile",
+  "username": "Name",
+  "avatar": "Avatar",
   "upload-avatar": "Upload Avatar",
   "upload-avatar-failed": "Upload avatar failed"
 }

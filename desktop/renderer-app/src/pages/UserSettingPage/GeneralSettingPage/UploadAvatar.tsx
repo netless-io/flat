@@ -1,5 +1,5 @@
 import Axios from "axios";
-import React, { ChangeEvent, useContext, useRef, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import classNames from "classnames";
 import { Region } from "flat-components";
 import { observer } from "mobx-react-lite";
@@ -12,14 +12,10 @@ import { uploadAvatarFinish, uploadAvatarStart } from "../../../api-middleware/f
 import { globalStore } from "../../../stores/global-store";
 
 export interface UploadAvatarProps {
-    fileRef?: React.MutableRefObject<File | undefined>;
+    onUpload?: (file: File) => Promise<void>;
 }
 
-export function useFileRef(): React.MutableRefObject<File | undefined> {
-    return useRef<File>();
-}
-
-export const UploadAvatar = observer<UploadAvatarProps>(function UploadAvatar({ fileRef }) {
+export const UploadAvatar = observer<UploadAvatarProps>(function UploadAvatar({ onUpload }) {
     const globalStore = useContext(GlobalStoreContext);
     const sp = useSafePromise();
     const { t } = useTranslation();
@@ -27,17 +23,21 @@ export const UploadAvatar = observer<UploadAvatarProps>(function UploadAvatar({ 
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState(globalStore.userInfo?.avatar || "");
 
-    const updateInput = (event: ChangeEvent<HTMLInputElement>): void => {
-        const file: File | undefined = (event.target.files || [])[0];
-        if (fileRef) {
-            fileRef.current = file;
+    useEffect(() => {
+        if (globalStore.userInfo?.avatar) {
+            setImageUrl(globalStore.userInfo.avatar);
         }
+    }, [globalStore.userInfo?.avatar]);
+
+    const updateInput = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
+        const file: File | undefined = (event.target.files || [])[0];
         if (file) {
             setLoading(true);
-            sp(fileToDataUrl(file)).then(url => {
-                setLoading(false);
-                setImageUrl(url);
-            });
+            sp(fileToDataUrl(file)).then(setImageUrl);
+            if (onUpload) {
+                await sp(onUpload(file).catch(console.error));
+            }
+            setLoading(false);
         } else {
             setImageUrl(globalStore.userInfo?.avatar || "");
         }

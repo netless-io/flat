@@ -11,7 +11,7 @@ import { ConfigStoreContext, GlobalStoreContext } from "../../../components/Stor
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { loginCheck, rename } from "../../../api-middleware/flatServer";
 import { ConfirmButtons } from "./ConfirmButtons";
-import { uploadAvatar, UploadAvatar, useFileRef } from "./UploadAvatar";
+import { uploadAvatar, UploadAvatar } from "./UploadAvatar";
 
 enum SelectLanguage {
     Chinese,
@@ -27,7 +27,6 @@ export const GeneralSettingPage = (): React.ReactElement => {
 
     const [name, setName] = useState(globalStore.userName || "");
     const [isRenaming, setRenaming] = useState(false);
-    const fileRef = useFileRef();
 
     async function changeUserName(): Promise<void> {
         if (name !== globalStore.userName) {
@@ -41,16 +40,12 @@ export const GeneralSettingPage = (): React.ReactElement => {
         }
     }
 
-    async function changeAvatar(): Promise<void> {
-        if (fileRef.current) {
-            try {
-                await uploadAvatar(fileRef.current);
-            } catch (error) {
-                console.error(error);
-                message.info(t("upload-avatar-failed"));
-            } finally {
-                fileRef.current = undefined;
-            }
+    async function onUpload(file: File): Promise<void> {
+        try {
+            await uploadAvatar(file);
+        } catch (error) {
+            message.info(t("upload-avatar-failed"));
+            throw error;
         }
     }
 
@@ -70,10 +65,11 @@ export const GeneralSettingPage = (): React.ReactElement => {
                 <div className="general-setting-user-profile">
                     <span className="general-setting-title">{t("user-profile")}</span>
                     <div className="general-setting-user-avatar-wrapper">
-                        <UploadAvatar fileRef={fileRef} />
-                        <ConfirmButtons onConfirm={changeAvatar} />
+                        <span className="general-setting-subtitle">{t("avatar")}</span>
+                        <UploadAvatar onUpload={onUpload} />
                     </div>
                     <div>
+                        <span className="general-setting-subtitle">{t("username")}</span>
                         <Input
                             disabled={isRenaming}
                             id="username"
