@@ -24,6 +24,11 @@
     }
 }
 
+.general-setting-subtitle {
+    color: var(--text-strong);
+    padding-right: 16px;
+}
+
 .general-setting-user-avatar-wrapper {
     display: flex;
     align-items: center;
@@ -36,17 +41,13 @@
     height: 96px;
     margin-right: 16px;
     border-radius: 50%;
-    border: 1px solid var(--grey-6);
+    border: 1px solid #dbe1ea;
     overflow: hidden;
     position: relative;
     transition: all 0.2s ease-in-out;
 
     &.is-loading {
         opacity: 0.5;
-    }
-
-    &:hover {
-        border-color: var(--primary);
     }
 
     .user-avatar-input {
@@ -73,6 +74,12 @@
         align-items: center;
         justify-content: center;
     }
+}
+.flat-color-scheme-dark .general-setting-user-avatar {
+    border-color: var(--grey-6);
+}
+.general-setting-user-avatar:hover {
+    border-color: var(--primary);
 }
 
 .general-setting-select-language {
