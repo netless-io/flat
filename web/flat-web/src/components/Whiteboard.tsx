@@ -82,7 +82,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
 
     useEffect(() => {
         if (whiteboardEl && fastboardAPP) {
-            return mousewheelToScroll(whiteboardEl, fastboardAPP.manager);
+            return mousewheelToScroll(whiteboardEl, fastboardAPP);
         }
         return;
     }, [whiteboardEl, fastboardAPP]);

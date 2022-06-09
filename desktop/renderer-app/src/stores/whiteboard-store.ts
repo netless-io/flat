@@ -357,7 +357,7 @@ export class WhiteboardStore {
             minContentMode: () => 1,
             maxContentMode: () => 1,
             width: 0,
-            height: 2400,
+            height: 9999,
         });
 
         this.updateFastboardAPP(fastboardAPP);
