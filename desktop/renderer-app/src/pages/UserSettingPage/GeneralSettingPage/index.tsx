@@ -78,13 +78,6 @@ export const GeneralSettingPage = (): React.ReactElement => {
     return (
         <UserSettingLayoutContainer>
             <div className="general-setting-container">
-                <div className="general-setting-checkbox">
-                    <Checkbox checked={openAtLogin} onClick={toggleOpenAtLogin}>
-                        <span className="checkbox-item-inner">
-                            {t("boot-up-and-run-automatically")}
-                        </span>
-                    </Checkbox>
-                </div>
                 <div className="general-setting-user-profile">
                     <span className="general-setting-title">{t("user-profile")}</span>
                     <div className="general-setting-user-avatar-wrapper">
@@ -102,6 +95,13 @@ export const GeneralSettingPage = (): React.ReactElement => {
                         />
                         <ConfirmButtons onConfirm={changeUserName} />
                     </div>
+                </div>
+                <div className="general-setting-checkbox">
+                    <Checkbox checked={openAtLogin} onClick={toggleOpenAtLogin}>
+                        <span className="checkbox-item-inner">
+                            {t("boot-up-and-run-automatically")}
+                        </span>
+                    </Checkbox>
                 </div>
                 <div className="general-setting-select-language">
                     <span>{t("language-settings")}</span>
