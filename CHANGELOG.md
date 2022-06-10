@@ -1,3 +1,22 @@
+## [1.8.1](https://github.com/netless-io/flat/compare/v1.8.0...v1.8.1) (2022-06-10)
+
+
+### Bug Fixes
+
+* **classroom:** force using periodic uuid when exist ([#1551](https://github.com/netless-io/flat/issues/1551)) ([1817304](https://github.com/netless-io/flat/commit/181730494896efeef8b56e59add1ca60df0ae8a5))
+* **cloud-storage:** fetch more cloud files fail ([#1558](https://github.com/netless-io/flat/issues/1558)) ([b45e14d](https://github.com/netless-io/flat/commit/b45e14d9178d77bbe96bcfe44d23b9f0664b953d))
+* **renderer-app:** fix rtc avatar missing init state ([#1544](https://github.com/netless-io/flat/issues/1544)) ([f0e620d](https://github.com/netless-io/flat/commit/f0e620ddbf6c9de8888de458761102c2ff29efef))
+* **whiteboard:** scroll bug on the edge ([#1561](https://github.com/netless-io/flat/issues/1561)) ([b5ee57c](https://github.com/netless-io/flat/commit/b5ee57c6492e35b2f95abd5e2d9aa9db6a0b5941))
+* **whiteboard:** upgrade fastboard to 0.3.4-canary.2 ([#1563](https://github.com/netless-io/flat/issues/1563)) ([dbabeff](https://github.com/netless-io/flat/commit/dbabeffad11d5fcb8a18acda9122ae7cb4cb95db))
+
+
+### Features
+
+* **project:** add rename settings ([#1545](https://github.com/netless-io/flat/issues/1545)) ([bf5f7c6](https://github.com/netless-io/flat/commit/bf5f7c6b3b33e0960a85d658b1403ff37264cbad))
+* **project:** support upload avatar ([#1559](https://github.com/netless-io/flat/issues/1559)) ([013dfd5](https://github.com/netless-io/flat/commit/013dfd56cd7a0c3df3db50fa416caeaee7c072a0))
+
+
+
 # [1.8.0](https://github.com/netless-io/flat/compare/v1.7.0...v1.8.0) (2022-05-30)
 
 
