@@ -151,7 +151,7 @@ importers:
       '@netless/app-monaco': ^0.1.14-beta.1
       '@netless/app-slide': ^0.2.1
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.4-canary.1
+      '@netless/fastboard-react': ^0.3.4-canary.2
       '@netless/flat-rtc': workspace:*
       '@netless/flat-rtc-agora-electron': workspace:*
       '@netless/player-controller': ^0.0.9
@@ -208,7 +208,7 @@ importers:
       '@netless/app-monaco': 0.1.14-beta.1
       '@netless/app-slide': 0.2.1
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.4-canary.1_d4ol25o3uqhbfyaeabm6oplj2e
+      '@netless/fastboard-react': 0.3.4-canary.2_d4ol25o3uqhbfyaeabm6oplj2e
       '@netless/flat-rtc': link:../../services/rtc/flat-rtc
       '@netless/flat-rtc-agora-electron': link:../../services/rtc/flat-rtc-agora-electron
       '@netless/player-controller': 0.0.9_o7vtczmbhhex2z4p6q24qgrliu
@@ -427,7 +427,7 @@ importers:
       '@netless/app-monaco': ^0.1.14-beta.1
       '@netless/app-slide': ^0.2.1
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.4-canary.1
+      '@netless/fastboard-react': ^0.3.4-canary.2
       '@netless/flat-rtc': workspace:*
       '@netless/flat-rtc-agora-web': workspace:*
       '@netless/mini-svg-data-uri': 0.0.1
@@ -481,7 +481,7 @@ importers:
       '@netless/app-monaco': 0.1.14-beta.1
       '@netless/app-slide': 0.2.1
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.4-canary.1_d4ol25o3uqhbfyaeabm6oplj2e
+      '@netless/fastboard-react': 0.3.4-canary.2_d4ol25o3uqhbfyaeabm6oplj2e
       '@netless/flat-rtc': link:../../services/rtc/flat-rtc
       '@netless/flat-rtc-agora-web': link:../../services/rtc/flat-rtc-agora-web
       '@netless/player-controller': 0.0.9_o7vtczmbhhex2z4p6q24qgrliu
@@ -2911,8 +2911,8 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/0.3.4-canary.1_63i3y4xgmumic4xjnlnuljgtb4:
-    resolution: {integrity: sha512-x0iUzMojwDcQKwsMosWIXQzjarMyvqSVu31iHl4PzGMhoa1MIhXflDhN+S/PVy3a1YluLTStHC8mmb2Fo8FZiQ==}
+  /@netless/fastboard-core/0.3.4-canary.2_63i3y4xgmumic4xjnlnuljgtb4:
+    resolution: {integrity: sha512-fZZ+xkHrjr/OUmMOH0qAWX2zt1WSCrKoToXgBuY1vltoqA51QJysRlTyXoLWZ0OmH0ILByjT67F3rsoK0qBC+A==}
     peerDependencies:
       '@netless/window-manager': '>=0.4.0'
       white-web-sdk: '>=2.16.0'
@@ -2922,25 +2922,25 @@ packages:
       white-web-sdk: 2.16.24
     dev: false
 
-  /@netless/fastboard-react/0.3.4-canary.1_d4ol25o3uqhbfyaeabm6oplj2e:
-    resolution: {integrity: sha512-5StotjWxEFZvusNTJY3kBhO7UVcLbP27kNX715pUtl1aZXP0Wf6RhImGMkrtOHxjSBM8z5DxOuQ9jlna4JJa8Q==}
+  /@netless/fastboard-react/0.3.4-canary.2_d4ol25o3uqhbfyaeabm6oplj2e:
+    resolution: {integrity: sha512-zquA9nzeFmGNsEFlUdJVO60mp1hAn7348RmfLfsDmrznUaRGrwXDQbpt4keidAv1d7Sh3iqAoDHbw/1Ei3rr7A==}
     peerDependencies:
       react: '*'
     dependencies:
-      '@netless/fastboard-core': 0.3.4-canary.1_63i3y4xgmumic4xjnlnuljgtb4
-      '@netless/fastboard-ui': 0.3.4-canary.1_j6ftqatmwo6ju5monbs5igwake
+      '@netless/fastboard-core': 0.3.4-canary.2_63i3y4xgmumic4xjnlnuljgtb4
+      '@netless/fastboard-ui': 0.3.4-canary.2_a3w7b6vntqr4ozers6gdosdyye
       react: 17.0.2
     transitivePeerDependencies:
       - '@netless/window-manager'
       - white-web-sdk
     dev: false
 
-  /@netless/fastboard-ui/0.3.4-canary.1_j6ftqatmwo6ju5monbs5igwake:
-    resolution: {integrity: sha512-oKU4KhFl88loJJXThPW3xQeS7ZVFLBWbXSiSnjZTOFETNY3qqM5dWbtvAp5XVzlxazDCKNHQCSf5YJPIWpxPXQ==}
+  /@netless/fastboard-ui/0.3.4-canary.2_a3w7b6vntqr4ozers6gdosdyye:
+    resolution: {integrity: sha512-ujkGIXxwTsxqE9cAzP7OsEADXlor0jwPkPWSu5n3btEn3TiePwYxBgtpjJhQxqrsEJNPBL3af8Bon4SL3g+tFA==}
     peerDependencies:
-      '@netless/fastboard-core': 0.3.4-canary.1
+      '@netless/fastboard-core': 0.3.4-canary.2
     dependencies:
-      '@netless/fastboard-core': 0.3.4-canary.1_63i3y4xgmumic4xjnlnuljgtb4
+      '@netless/fastboard-core': 0.3.4-canary.2_63i3y4xgmumic4xjnlnuljgtb4
       tippy.js: 6.3.7
     dev: false
 
