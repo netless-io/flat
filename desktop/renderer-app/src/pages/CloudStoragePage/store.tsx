@@ -311,13 +311,17 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
                 this.hasMoreFile = cloudFiles.length > 0;
 
+                const newFiles: Record<string, CloudStorageFile> = {};
+
                 for (const cloudFile of cloudFiles) {
                     const file = this.filesMap.get(cloudFile.fileUUID);
 
                     runInAction(() => {
                         if (file) {
+                            if (file.createAt.valueOf() !== cloudFile.createAt.valueOf()) {
+                                file.createAt = cloudFile.createAt;
+                            }
                             file.fileName = cloudFile.fileName;
-                            file.createAt = cloudFile.createAt;
                             file.fileSize = cloudFile.fileSize;
                             file.convert = CloudStorageStore.mapConvertStep(cloudFile.convertStep);
                             file.taskToken = cloudFile.taskToken;
@@ -325,18 +329,17 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                             file.external = cloudFile.external;
                             file.resourceType = cloudFile.resourceType;
                         } else {
-                            this.filesMap.set(
-                                cloudFile.fileUUID,
-                                observable.object({
-                                    ...cloudFile,
-                                    convert: CloudStorageStore.mapConvertStep(
-                                        cloudFile.convertStep,
-                                    ),
-                                }),
-                            );
+                            newFiles[cloudFile.fileUUID] = observable.object({
+                                ...cloudFile,
+                                convert: CloudStorageStore.mapConvertStep(cloudFile.convertStep),
+                            });
                         }
                     });
                 }
+
+                runInAction(() => {
+                    this.filesMap.merge(newFiles);
+                });
             } catch {
                 this.isFetchingFiles = false;
             }
@@ -387,13 +390,17 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 this.totalUsage = totalUsage;
             });
 
+            const newFiles: Record<string, CloudStorageFile> = {};
+
             for (const cloudFile of cloudFiles) {
                 const file = this.filesMap.get(cloudFile.fileUUID);
 
                 runInAction(() => {
                     if (file) {
+                        if (file.createAt.valueOf() !== cloudFile.createAt.valueOf()) {
+                            file.createAt = cloudFile.createAt;
+                        }
                         file.fileName = cloudFile.fileName;
-                        file.createAt = cloudFile.createAt;
                         file.fileSize = cloudFile.fileSize;
                         file.convert = CloudStorageStore.mapConvertStep(cloudFile.convertStep);
                         file.taskToken = cloudFile.taskToken;
@@ -401,13 +408,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         file.external = cloudFile.external;
                         file.resourceType = cloudFile.resourceType;
                     } else {
-                        this.filesMap.set(
-                            cloudFile.fileUUID,
-                            observable.object({
-                                ...cloudFile,
-                                convert: CloudStorageStore.mapConvertStep(cloudFile.convertStep),
-                            }),
-                        );
+                        newFiles[cloudFile.fileUUID] = observable.object({
+                            ...cloudFile,
+                            convert: CloudStorageStore.mapConvertStep(cloudFile.convertStep),
+                        });
                     }
                 });
 
@@ -420,6 +424,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                     await this.queryConvertStatus(cloudFile.fileUUID);
                 }
             }
+
+            runInAction(() => {
+                this.filesMap.merge(newFiles);
+            });
         } catch (e) {
             errorTips(e);
         }
