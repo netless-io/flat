@@ -113,10 +113,14 @@ export class WhiteboardStore {
 
         this.isWritable = isWritable;
         if (oldWritable !== isWritable && this.room) {
-            await this.room.setWritable(isWritable);
-            this.room.disableDeviceInputs = !isWritable;
-            if (isWritable) {
-                this.room.disableSerialization = false;
+            try {
+                await this.room.setWritable(isWritable);
+                this.room.disableDeviceInputs = !isWritable;
+                if (isWritable) {
+                    this.room.disableSerialization = false;
+                }
+            } catch {
+                /* ignored */
             }
         }
     };

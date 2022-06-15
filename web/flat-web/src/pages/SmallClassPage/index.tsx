@@ -118,6 +118,16 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [classRoomStore.classMode, whiteboardStore.room, classRoomStore.users.currentUser?.isSpeak]);
 
+    // Turn off the microphone automatically when it becomes lecture mode.
+    useEffect(() => {
+        if (!classRoomStore.isCreator && whiteboardStore.room) {
+            const currentUser = classRoomStore.users.currentUser;
+            if (classRoomStore.classMode === ClassModeType.Lecture && currentUser) {
+                classRoomStore.updateDeviceState(currentUser.userUUID, currentUser.camera, false);
+            }
+        }
+    }, [classRoomStore, classRoomStore.classMode, whiteboardStore.room]);
+
     useEffect(() => {
         if (classRoomStore.isRecording) {
             window.clearTimeout(updateLayoutTimeoutRef.current);
@@ -230,20 +240,20 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
         return classRoomStore.classMode === ClassModeType.Lecture ? (
             <TopBarRoundBtn
                 dark
-                icon={<SVGModeInteractive />}
-                title={t("lecture-mode")}
+                icon={<SVGModeLecture />}
+                title={t("switch-to-interactive-mode")}
                 onClick={classRoomStore.toggleClassMode}
             >
-                {t("switch-to-interactive-mode")}
+                {t("lecture-mode")}
             </TopBarRoundBtn>
         ) : (
             <TopBarRoundBtn
                 dark
-                icon={<SVGModeLecture />}
-                title={t("interactive-mode")}
+                icon={<SVGModeInteractive />}
+                title={t("switch-to-lecture-mode")}
                 onClick={classRoomStore.toggleClassMode}
             >
-                {t("switch-to-lecture-mode")}
+                {t("interactive-mode")}
             </TopBarRoundBtn>
         );
     }
@@ -318,7 +328,17 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 isCreator={classRoomStore.isCreator}
                 rtcAvatar={classRoomStore.rtc.getAvatar(user.rtcUID)}
                 small={true}
-                updateDeviceState={classRoomStore.updateDeviceState}
+                updateDeviceState={(uid, camera, mic) => {
+                    // Disallow toggling mic when not speak.
+                    const _mic =
+                        whiteboardStore.isWritable ||
+                        user.userUUID === classRoomStore.ownerUUID ||
+                        user.userUUID !== classRoomStore.users.currentUser?.userUUID ||
+                        classRoomStore.classMode !== ClassModeType.Lecture
+                            ? mic
+                            : user.mic;
+                    classRoomStore.updateDeviceState(uid, camera, _mic);
+                }}
                 userUUID={classRoomStore.userUUID}
             />
         );
