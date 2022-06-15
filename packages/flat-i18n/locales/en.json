@@ -458,5 +458,10 @@
   "username": "Name",
   "avatar": "Avatar",
   "upload-avatar": "Upload Avatar",
-  "upload-avatar-failed": "Upload avatar failed"
+  "upload-avatar-failed": "Upload avatar failed",
+  "bind-wechat": "Bind WeChat",
+  "bind-wechat-failed": "Failed to bind WeChat",
+  "bind-wechat-not-support-unbind": "Not support unbind WeChat",
+  "is-bind": "is bind",
+  "not-bind": "not bind"
 }

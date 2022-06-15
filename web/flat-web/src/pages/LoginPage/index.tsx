@@ -58,29 +58,6 @@ export const LoginPage = observer(function LoginPage() {
         [globalStore, pushHistory],
     );
 
-    useEffect(() => {
-        if (urlParams.utm_source === "agora") {
-            handleLogin("agora");
-        }
-    }, [urlParams.utm_source]);
-
-    useEffect(() => {
-        // Get login info through loginCheck().
-        // But we don't want to goto home page if already logged in.
-        // Instead, if we have `hasPhone: false`, we should show the binding phone page.
-        const checkNormalLogin = async (): Promise<void> => {
-            const userInfo = await sp(loginCheck(urlParams.token));
-            if (NEED_BINDING_PHONE && !userInfo.hasPhone) {
-                setLoginResult(userInfo);
-            }
-        };
-
-        checkNormalLogin().catch(error => {
-            // no handling required
-            console.warn(error);
-        });
-    }, [globalStore, setLoginResult, sp, urlParams.token]);
-
     const onLoginResult = useCallback(
         async (authData: LoginProcessResult) => {
             globalStore.updateUserInfo(authData);
@@ -133,6 +110,29 @@ export const LoginPage = observer(function LoginPage() {
         },
         [onLoginResult],
     );
+
+    useEffect(() => {
+        if (urlParams.utm_source === "agora") {
+            handleLogin("agora");
+        }
+    }, [handleLogin, urlParams.utm_source]);
+
+    useEffect(() => {
+        // Get login info through loginCheck().
+        // But we don't want to goto home page if already logged in.
+        // Instead, if we have `hasPhone: false`, we should show the binding phone page.
+        const checkNormalLogin = async (): Promise<void> => {
+            const userInfo = await sp(loginCheck(urlParams.token));
+            if (NEED_BINDING_PHONE && !userInfo.hasPhone) {
+                setLoginResult(userInfo);
+            }
+        };
+
+        checkNormalLogin().catch(error => {
+            // no handling required
+            console.warn(error);
+        });
+    }, [globalStore, setLoginResult, sp, urlParams.token]);
 
     const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
     const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
