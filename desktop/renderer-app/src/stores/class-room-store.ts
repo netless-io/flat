@@ -842,6 +842,10 @@ export class ClassRoomStore {
                     }
                     return true;
                 });
+                // Turn on the microphone automatically.
+                if (accept && userUUID === this.userUUID && this.users.currentUser) {
+                    this.updateDeviceState(userUUID, this.users.currentUser.camera, true);
+                }
             }
         });
 
