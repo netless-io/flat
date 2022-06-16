@@ -12,6 +12,8 @@ import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { loginCheck, rename } from "../../../api-middleware/flatServer";
 import { ConfirmButtons } from "./ConfirmButtons";
 import { uploadAvatar, UploadAvatar } from "./UploadAvatar";
+import { BindingWeChat } from "./binding/WeChat";
+import { useBindingList } from "./binding";
 
 enum SelectLanguage {
     Chinese,
@@ -27,6 +29,7 @@ export const GeneralSettingPage = (): React.ReactElement => {
 
     const [name, setName] = useState(globalStore.userName || "");
     const [isRenaming, setRenaming] = useState(false);
+    const { bindings, refresh: refreshBindings } = useBindingList();
 
     async function changeUserName(): Promise<void> {
         if (name !== globalStore.userName) {
@@ -78,6 +81,9 @@ export const GeneralSettingPage = (): React.ReactElement => {
                             onChange={ev => setName(ev.currentTarget.value)}
                         />
                         <ConfirmButtons onConfirm={changeUserName} />
+                    </div>
+                    <div className="general-setting-binding-methods">
+                        <BindingWeChat isBind={bindings.wechat} onRefresh={refreshBindings} />
                     </div>
                 </div>
                 <div className="general-setting-select-language">

@@ -108,6 +108,39 @@
     }
 }
 
+.general-setting-binding-profile {
+    padding-top: 12px;
+}
+
+.general-setting-binding-methods {
+    line-height: 40px;
+}
+
+.binding-wechat {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--grey-6);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &.is-bind {
+        background-color: var(--green-6);
+    }
+}
+
+.binding-wechat-modal {
+    .ant-modal-body {
+        text-align: center;
+    }
+}
+
+.binding-wechat-iframe {
+    height: 268px;
+}
+
 .flat-color-scheme-dark {
     .general-setting-container {
         color: var(--text-stronger);

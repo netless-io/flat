@@ -67,8 +67,11 @@ export const WeChatLogin = observer(function WeChatLogin({ setLoginResult }: WeC
 
 export default WeChatLogin;
 
-function getQRCodeURL(authUUID: string): string {
-    const redirectURL = encodeURIComponent(`${FLAT_SERVER_LOGIN.WECHAT_CALLBACK}`);
+export function getQRCodeURL(
+    authUUID: string,
+    redirect_uri: string = FLAT_SERVER_LOGIN.WECHAT_CALLBACK,
+): string {
+    const redirectURL = encodeURIComponent(`${redirect_uri}`);
     const qrCodeStyle = `
         .impowerBox .qrcode {
             width: 238px;

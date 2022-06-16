@@ -458,5 +458,10 @@
   "username": "昵称",
   "avatar": "头像",
   "upload-avatar": "上传头像",
-  "upload-avatar-failed": "上传头像失败"
+  "upload-avatar-failed": "上传头像失败",
+  "bind-wechat": "绑定微信",
+  "bind-wechat-failed": "绑定失败",
+  "bind-wechat-not-support-unbind": "暂未支持解绑",
+  "is-bind": "已绑定",
+  "not-bind": "未绑定"
 }

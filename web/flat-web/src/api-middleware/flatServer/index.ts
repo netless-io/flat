@@ -1,6 +1,6 @@
 import { Region } from "flat-components";
 import { RoomStatus, RoomType, Week } from "./constants";
-import { post, postNotAuth } from "./utils";
+import { post, post2, postNotAuth, PROCESSING } from "./utils";
 
 export interface CreateOrdinaryRoomPayload {
     title: string;
@@ -465,16 +465,16 @@ export async function loginCheck(token?: string): Promise<LoginCheckResult> {
     return await post<LoginCheckPayload, LoginCheckResult>("login", {}, {}, token);
 }
 
-export interface setAuthUUIDPayload {
+export interface SetAuthUUIDPayload {
     authUUID: string;
 }
 
-export interface setAuthUUIDResult {
+export interface SetAuthUUIDResult {
     authUUID: string;
 }
 
-export async function setAuthUUID(authUUID: string): Promise<setAuthUUIDResult> {
-    return await postNotAuth<setAuthUUIDPayload, setAuthUUIDResult>("login/set-auth-uuid", {
+export async function setAuthUUID(authUUID: string): Promise<SetAuthUUIDResult> {
+    return await postNotAuth<SetAuthUUIDPayload, SetAuthUUIDResult>("login/set-auth-uuid", {
         authUUID,
     });
 }
@@ -606,4 +606,55 @@ export async function uploadAvatarFinish(fileUUID: string): Promise<UploadAvatar
             fileUUID,
         },
     );
+}
+
+export interface ListBindingsPayload {}
+
+export interface ListBindingsResult {
+    wechat: boolean;
+    phone: boolean;
+    agora: boolean;
+    apple: boolean;
+    github: boolean;
+    google: boolean;
+}
+
+export async function listBindings(): Promise<ListBindingsResult> {
+    return await post<ListBindingsPayload, ListBindingsResult>("user/binding/list", {});
+}
+
+export interface SetBindingAuthUUIDResult {}
+
+export async function setBindingAuthUUID(authUUID: string): Promise<void> {
+    await post<SetAuthUUIDPayload, SetBindingAuthUUIDResult>("user/binding/set-auth-uuid", {
+        authUUID,
+    });
+}
+
+export interface BindingProcessResult {
+    processing: boolean;
+    status: boolean;
+}
+
+export async function bindingProcess(authUUID: string): Promise<BindingProcessResult> {
+    try {
+        const ret = await post2<SetAuthUUIDPayload, {}>("user/binding/process", {
+            authUUID,
+        });
+        if (ret === PROCESSING) {
+            return {
+                processing: true,
+                status: false,
+            };
+        }
+        return {
+            processing: false,
+            status: true,
+        };
+    } catch {
+        return {
+            processing: false,
+            status: false,
+        };
+    }
 }
