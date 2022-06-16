@@ -6,16 +6,24 @@ import { message, Modal } from "antd";
 import { WechatFilled } from "@ant-design/icons";
 
 import { getQRCodeURL } from "../../../LoginPage/WeChatLogin";
-import { setBindingAuthUUID, bindingProcess } from "../../../../api-middleware/flatServer";
+import {
+    setBindingAuthUUID,
+    bindingProcess,
+    removeBinding,
+    LoginPlatform,
+} from "../../../../api-middleware/flatServer";
 import { FLAT_SERVER_USER_BINDING } from "../../../../api-middleware/flatServer/constants";
 import { useSafePromise } from "../../../../utils/hooks/lifecycle";
+import { GlobalStore } from "../../../../stores/global-store";
+import { errorTips } from "../../../../components/Tips/ErrorTips";
 
 export interface BindingWeChatProps {
     isBind: boolean;
     onRefresh: () => void;
+    globalStore: GlobalStore;
 }
 
-export const BindingWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh }) => {
+export const BindingWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh, globalStore }) => {
     const sp = useSafePromise();
     const { t } = useTranslation();
     const [authUUID, setAuthUUID] = useState("");
@@ -57,7 +65,19 @@ export const BindingWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh 
     };
 
     const unbind = (): void => {
-        message.info(t("bind-wechat-not-support-unbind"));
+        Modal.confirm({
+            content: t("unbind-confirm"),
+            onOk: async () => {
+                try {
+                    const { token } = await sp(removeBinding(LoginPlatform.WeChat));
+                    globalStore.updateUserToken(token);
+                    onRefresh();
+                    message.info(t("unbind-success"));
+                } catch (err) {
+                    errorTips(err);
+                }
+            },
+        });
     };
 
     return (

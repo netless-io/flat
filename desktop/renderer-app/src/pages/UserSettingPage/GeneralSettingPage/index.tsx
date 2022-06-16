@@ -2,10 +2,12 @@ import "./style.less";
 
 import React, { useContext, useEffect, useState } from "react";
 import { Checkbox, Input, message, Radio, RadioChangeEvent } from "antd";
-import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
-import { ipcSyncByApp, ipcAsyncByApp } from "../../../utils/ipc";
+import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 import { AppearancePicker, FlatPrefersColorScheme } from "flat-components";
+
+import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
+import { ipcSyncByApp, ipcAsyncByApp } from "../../../utils/ipc";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { loginCheck, rename } from "../../../api-middleware/flatServer";
@@ -19,7 +21,7 @@ enum SelectLanguage {
     English,
 }
 
-export const GeneralSettingPage = (): React.ReactElement => {
+export const GeneralSettingPage = observer(function GeneralSettingPage() {
     const sp = useSafePromise();
     const { t, i18n } = useTranslation();
     const [openAtLogin, setOpenAtLogin] = useState(false);
@@ -99,7 +101,11 @@ export const GeneralSettingPage = (): React.ReactElement => {
                         <ConfirmButtons onConfirm={changeUserName} />
                     </div>
                     <div className="general-setting-binding-methods">
-                        <BindingWeChat isBind={bindings.wechat} onRefresh={refreshBindings} />
+                        <BindingWeChat
+                            globalStore={globalStore}
+                            isBind={bindings.wechat}
+                            onRefresh={refreshBindings}
+                        />
                     </div>
                 </div>
                 <div className="general-setting-checkbox">
@@ -137,4 +143,4 @@ export const GeneralSettingPage = (): React.ReactElement => {
             </div>
         </UserSettingLayoutContainer>
     );
-};
+});

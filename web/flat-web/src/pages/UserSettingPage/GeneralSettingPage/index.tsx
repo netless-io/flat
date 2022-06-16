@@ -3,10 +3,12 @@ import type { CheckboxChangeEvent } from "antd/lib/checkbox";
 import "./index.less";
 
 import React, { useContext, useState } from "react";
+import { observer } from "mobx-react-lite";
 import { Checkbox, Input, message, Radio } from "antd";
 import { FlatPrefersColorScheme, AppearancePicker } from "flat-components";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { useTranslation } from "react-i18next";
+
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { loginCheck, rename } from "../../../api-middleware/flatServer";
@@ -20,7 +22,7 @@ enum SelectLanguage {
     English,
 }
 
-export const GeneralSettingPage = (): React.ReactElement => {
+export const GeneralSettingPage = observer(function GeneralSettingPage() {
     const globalStore = useContext(GlobalStoreContext);
     const configStore = useContext(ConfigStoreContext);
 
@@ -83,7 +85,11 @@ export const GeneralSettingPage = (): React.ReactElement => {
                         <ConfirmButtons onConfirm={changeUserName} />
                     </div>
                     <div className="general-setting-binding-methods">
-                        <BindingWeChat isBind={bindings.wechat} onRefresh={refreshBindings} />
+                        <BindingWeChat
+                            globalStore={globalStore}
+                            isBind={bindings.wechat}
+                            onRefresh={refreshBindings}
+                        />
                     </div>
                 </div>
                 <div className="general-setting-select-language">
@@ -125,6 +131,6 @@ export const GeneralSettingPage = (): React.ReactElement => {
             </div>
         </UserSettingLayoutContainer>
     );
-};
+});
 
 export default GeneralSettingPage;

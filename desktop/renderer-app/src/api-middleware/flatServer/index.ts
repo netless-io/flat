@@ -658,3 +658,26 @@ export async function bindingProcess(authUUID: string): Promise<BindingProcessRe
         };
     }
 }
+
+export enum LoginPlatform {
+    WeChat = "WeChat",
+    Github = "Github",
+    Apple = "Apple",
+    Agora = "Agora",
+    Google = "Google",
+    Phone = "Phone",
+}
+
+export interface RemoveBindingPayload {
+    target: LoginPlatform;
+}
+
+export interface RemoveBindingResult {
+    token: string;
+}
+
+export async function removeBinding(target: LoginPlatform): Promise<RemoveBindingResult> {
+    return await post<RemoveBindingPayload, RemoveBindingResult>("user/binding/remove", {
+        target,
+    });
+}
