@@ -463,5 +463,7 @@
   "bind-wechat-failed": "绑定失败",
   "bind-wechat-not-support-unbind": "暂未支持解绑",
   "is-bind": "已绑定",
-  "not-bind": "未绑定"
+  "not-bind": "未绑定",
+  "unbind-confirm": "确定解除绑定吗？",
+  "unbind-success": "解绑成功"
 }

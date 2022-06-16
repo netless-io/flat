@@ -59,6 +59,12 @@ export class GlobalStore {
         }
     };
 
+    public updateUserToken = (token: string): void => {
+        if (this.userInfo) {
+            this.userInfo.token = token;
+        }
+    };
+
     public updateLastLoginCheck = (val: number | null): void => {
         this.lastLoginCheck = val;
     };
