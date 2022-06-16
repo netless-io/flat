@@ -532,7 +532,7 @@ export type BindingPhoneSendCodeResult = {};
 
 export async function bindingPhoneSendCode(phone: string): Promise<BindingPhoneSendCodeResult> {
     return await post<BindingPhoneSendCodePayload, BindingPhoneSendCodeResult>(
-        "user/bindingPhone/sendMessage",
+        "user/binding/platform/phone/sendMessage ",
         {
             phone,
         },
@@ -547,7 +547,7 @@ export interface BindingPhonePayload {
 export type BindingPhoneResult = {};
 
 export async function bindingPhone(phone: string, code: number): Promise<BindingPhoneResult> {
-    return await post<BindingPhonePayload, BindingPhoneResult>("user/bindingPhone", {
+    return await post<BindingPhonePayload, BindingPhoneResult>("user/binding/platform/phone", {
         phone,
         code,
     });

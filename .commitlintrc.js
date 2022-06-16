@@ -63,6 +63,7 @@ module.exports = {
                 "config",
                 "flat-rtc",
                 "pnpm",
+                "server",
             ],
         ],
         "scope-case": [2, "always", ["lower-case", "kebab-case"]],
