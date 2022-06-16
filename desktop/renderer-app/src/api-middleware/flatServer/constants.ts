@@ -13,7 +13,7 @@ export const FLAT_SERVER_LOGIN = {
 } as const;
 
 export const FLAT_SERVER_USER_BINDING = {
-    WECHAT_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/user/bindingWechat/binding/web`,
+    WECHAT_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/user/binding/platform/wechat/web`,
 } as const;
 
 export enum RoomType {
