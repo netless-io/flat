@@ -128,10 +128,17 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
+    margin-right: 8px;
     cursor: pointer;
 
     &.is-bind {
         background-color: var(--green-6);
+    }
+}
+
+.binding-github:extend(.binding-wechat) {
+    &.is-bind {
+        background-color: var(--grey-11);
     }
 }
 

@@ -23,7 +23,7 @@ export interface BindingWeChatProps {
     globalStore: GlobalStore;
 }
 
-export const BindingWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh, globalStore }) => {
+export const BindWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh, globalStore }) => {
     const sp = useSafePromise();
     const { t } = useTranslation();
     const [authUUID, setAuthUUID] = useState("");

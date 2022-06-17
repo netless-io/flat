@@ -13,6 +13,7 @@ export const FLAT_SERVER_LOGIN = {
 } as const;
 
 export const FLAT_SERVER_USER_BINDING = {
+    GITHUB_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/login/github/callback/binding`,
     WECHAT_CALLBACK: `${FLAT_SERVER_VERSIONS.V1}/user/binding/platform/wechat/web`,
 } as const;
 
