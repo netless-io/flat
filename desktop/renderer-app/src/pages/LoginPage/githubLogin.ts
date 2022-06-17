@@ -10,11 +10,6 @@ export const githubLogin: LoginExecutor = onSuccess => {
     let timer = NaN;
     const authUUID = uuidv4();
 
-    function getGithubURL(authUUID: string): string {
-        const redirectURL = FLAT_SERVER_LOGIN.GITHUB_CALLBACK;
-        return `https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}&redirect_uri=${redirectURL}&state=${authUUID}`;
-    }
-
     void (async () => {
         try {
             await setAuthUUID(authUUID);
@@ -22,7 +17,7 @@ export const githubLogin: LoginExecutor = onSuccess => {
             errorTips(err);
         }
 
-        void shell.openExternal(getGithubURL(authUUID));
+        void shell.openExternal(getGithubURL(authUUID, FLAT_SERVER_LOGIN.GITHUB_CALLBACK));
 
         const githubLoginProcessRequest = async (): Promise<void> => {
             try {
@@ -46,3 +41,8 @@ export const githubLogin: LoginExecutor = onSuccess => {
         window.clearTimeout(timer);
     };
 };
+
+export function getGithubURL(authUUID: string, redirect_uri: string): string {
+    const redirectURL = encodeURIComponent(redirect_uri);
+    return `https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}&redirect_uri=${redirectURL}&state=${authUUID}`;
+}

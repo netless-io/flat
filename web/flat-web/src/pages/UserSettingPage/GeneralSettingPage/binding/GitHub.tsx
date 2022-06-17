@@ -1,37 +1,35 @@
-import classNames from "classnames";
 import { v4 } from "uuid";
+import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { message, Modal } from "antd";
-import { WechatFilled } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
+import { GithubFilled } from "@ant-design/icons";
 
-import { getQRCodeURL } from "../../../LoginPage/WeChatLogin";
+import { GlobalStore } from "../../../../stores/GlobalStore";
+import { useSafePromise } from "../../../../utils/hooks/lifecycle";
 import {
-    setBindingAuthUUID,
     bindingProcess,
-    removeBinding,
     LoginPlatform,
+    removeBinding,
+    setBindingAuthUUID,
 } from "../../../../api-middleware/flatServer";
 import { FLAT_SERVER_USER_BINDING } from "../../../../api-middleware/flatServer/constants";
-import { useSafePromise } from "../../../../utils/hooks/lifecycle";
+import { getGithubURL } from "../../../LoginPage/githubLogin";
 import { errorTips } from "../../../../components/Tips/ErrorTips";
-import { GlobalStore } from "../../../../stores/GlobalStore";
 
-export interface BindingWeChatProps {
+export interface BindGitHubProps {
     isBind: boolean;
     onRefresh: () => void;
     globalStore: GlobalStore;
 }
 
-export const BindWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh, globalStore }) => {
+export const BindGitHub: React.FC<BindGitHubProps> = ({ isBind, onRefresh, globalStore }) => {
     const sp = useSafePromise();
     const { t } = useTranslation();
     const [authUUID, setAuthUUID] = useState("");
-    const [qrCodeURL, setQRCodeURL] = useState("");
 
     const cancel = useCallback((): void => {
         setAuthUUID("");
-        setQRCodeURL("");
         onRefresh();
     }, [onRefresh]);
 
@@ -48,20 +46,20 @@ export const BindWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh, gl
                 cancel();
             }
         }
-        if (qrCodeURL && authUUID) {
+        if (authUUID) {
             waitUntilBindFinish();
             return () => {
                 Number.isNaN(timer) || window.clearTimeout(timer);
             };
         }
         return;
-    }, [authUUID, cancel, onRefresh, qrCodeURL, sp, t]);
+    }, [authUUID, cancel, onRefresh, sp, t]);
 
-    const bindWeChat = async (): Promise<void> => {
+    const bindGitHub = async (): Promise<void> => {
         const authUUID = v4();
         setAuthUUID(authUUID);
         await sp(setBindingAuthUUID(authUUID));
-        setQRCodeURL(getQRCodeURL(authUUID, FLAT_SERVER_USER_BINDING.WECHAT_CALLBACK));
+        void window.open(getGithubURL(authUUID, FLAT_SERVER_USER_BINDING.GITHUB_CALLBACK));
     };
 
     const unbind = (): void => {
@@ -69,7 +67,7 @@ export const BindWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh, gl
             content: t("unbind-confirm"),
             onOk: async () => {
                 try {
-                    const { token } = await sp(removeBinding(LoginPlatform.WeChat));
+                    const { token } = await sp(removeBinding(LoginPlatform.Github));
                     globalStore.updateUserToken(token);
                     onRefresh();
                     message.info(t("unbind-success"));
@@ -81,33 +79,14 @@ export const BindWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh, gl
     };
 
     return (
-        <>
-            <span
-                className={classNames("binding-wechat", {
-                    "is-bind": isBind,
-                })}
-                title={isBind ? t("is-bind") : t("not-bind")}
-                onClick={isBind ? unbind : bindWeChat}
-            >
-                <WechatFilled style={{ color: "#fff" }} />
-            </span>
-            <Modal
-                centered
-                destroyOnClose
-                className="binding-wechat-modal"
-                footer={null}
-                title={t("bind-wechat")}
-                visible={!!qrCodeURL}
-                onCancel={cancel}
-            >
-                <iframe
-                    className="binding-wechat-iframe"
-                    frameBorder="0"
-                    scrolling="no"
-                    src={qrCodeURL}
-                    title="wechat"
-                />
-            </Modal>
-        </>
+        <span
+            className={classNames("binding-github", {
+                "is-bind": isBind,
+            })}
+            title={isBind ? t("is-bind") : t("not-bind")}
+            onClick={isBind ? unbind : bindGitHub}
+        >
+            <GithubFilled style={{ color: "#fff" }} />
+        </span>
     );
 };

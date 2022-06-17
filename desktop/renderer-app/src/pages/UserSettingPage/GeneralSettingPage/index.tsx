@@ -14,7 +14,8 @@ import { loginCheck, rename } from "../../../api-middleware/flatServer";
 import { ConfirmButtons } from "./ConfirmButtons";
 import { UploadAvatar, uploadAvatar } from "./UploadAvatar";
 import { useBindingList } from "./binding";
-import { BindingWeChat } from "./binding/WeChat";
+import { BindWeChat } from "./binding/WeChat";
+import { BindGitHub } from "./binding/GitHub";
 
 enum SelectLanguage {
     Chinese,
@@ -101,9 +102,14 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                         <ConfirmButtons onConfirm={changeUserName} />
                     </div>
                     <div className="general-setting-binding-methods">
-                        <BindingWeChat
+                        <BindWeChat
                             globalStore={globalStore}
                             isBind={bindings.wechat}
+                            onRefresh={refreshBindings}
+                        />
+                        <BindGitHub
+                            globalStore={globalStore}
+                            isBind={bindings.github}
                             onRefresh={refreshBindings}
                         />
                     </div>
