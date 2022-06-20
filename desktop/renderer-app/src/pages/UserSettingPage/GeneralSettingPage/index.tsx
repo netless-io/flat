@@ -10,7 +10,12 @@ import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { ipcSyncByApp, ipcAsyncByApp } from "../../../utils/ipc";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { deleteAccount, loginCheck, rename } from "../../../api-middleware/flatServer";
+import {
+    deleteAccount,
+    deleteAccountValidate,
+    loginCheck,
+    rename,
+} from "../../../api-middleware/flatServer";
 import { ConfirmButtons } from "./ConfirmButtons";
 import { UploadAvatar, uploadAvatar } from "./UploadAvatar";
 import { useBindingList } from "./binding";
@@ -84,7 +89,12 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
         configStore.updatePrefersColorScheme(prefersColorScheme);
     };
 
-    function removeAccount(): void {
+    async function removeAccount(): Promise<void> {
+        const { alreadyJoinedRoomCount } = await sp(deleteAccountValidate());
+        if (alreadyJoinedRoomCount > 0) {
+            message.error(t("quit-all-rooms-before-delete-account"));
+            return;
+        }
         Modal.confirm({
             content: t("confirm-delete-account"),
             onOk: async () => {

@@ -467,5 +467,6 @@
   "unbind-confirm": "Are you sure to unbind?",
   "unbind-success": "Unbind success",
   "delete-account": "Delete Account",
-  "confirm-delete-account": "Are you sure to delete your account?"
+  "confirm-delete-account": "Are you sure to delete your account?",
+  "quit-all-rooms-before-delete-account": "Please quit all rooms before deleting account."
 }
