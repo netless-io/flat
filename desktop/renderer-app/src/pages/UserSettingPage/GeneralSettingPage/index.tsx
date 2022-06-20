@@ -1,7 +1,7 @@
 import "./style.less";
 
 import React, { useContext, useEffect, useState } from "react";
-import { Checkbox, Input, message, Radio, RadioChangeEvent } from "antd";
+import { Button, Checkbox, Input, message, Modal, Radio, RadioChangeEvent } from "antd";
 import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 import { AppearancePicker, FlatPrefersColorScheme } from "flat-components";
@@ -10,12 +10,14 @@ import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { ipcSyncByApp, ipcAsyncByApp } from "../../../utils/ipc";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { loginCheck, rename } from "../../../api-middleware/flatServer";
+import { deleteAccount, loginCheck, rename } from "../../../api-middleware/flatServer";
 import { ConfirmButtons } from "./ConfirmButtons";
 import { UploadAvatar, uploadAvatar } from "./UploadAvatar";
 import { useBindingList } from "./binding";
 import { BindWeChat } from "./binding/WeChat";
 import { BindGitHub } from "./binding/GitHub";
+import { RouteNameType, usePushHistory } from "../../../utils/routes";
+import { errorTips } from "../../../components/Tips/ErrorTips";
 
 enum SelectLanguage {
     Chinese,
@@ -24,6 +26,7 @@ enum SelectLanguage {
 
 export const GeneralSettingPage = observer(function GeneralSettingPage() {
     const sp = useSafePromise();
+    const pushHistory = usePushHistory();
     const { t, i18n } = useTranslation();
     const [openAtLogin, setOpenAtLogin] = useState(false);
     const configStore = useContext(ConfigStoreContext);
@@ -80,6 +83,21 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
         const prefersColorScheme: FlatPrefersColorScheme = event.target.value;
         configStore.updatePrefersColorScheme(prefersColorScheme);
     };
+
+    function removeAccount(): void {
+        Modal.confirm({
+            content: t("confirm-delete-account"),
+            onOk: async () => {
+                try {
+                    await sp(deleteAccount());
+                    globalStore.updateUserInfo(null);
+                    pushHistory(RouteNameType.LoginPage);
+                } catch (err) {
+                    errorTips(err);
+                }
+            },
+        });
+    }
 
     return (
         <UserSettingLayoutContainer>
@@ -145,6 +163,14 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                         changeAppearance={changeAppearance}
                         defaultValue={configStore.prefersColorScheme}
                     />
+                </div>
+                <div className="general-setting-user-account">
+                    <span className="general-setting-title">{t("delete-account")}</span>
+                    <div>
+                        <Button danger onClick={removeAccount}>
+                            {t("delete-account")}
+                        </Button>
+                    </div>
                 </div>
             </div>
         </UserSettingLayoutContainer>

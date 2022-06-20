@@ -465,5 +465,7 @@
   "is-bind": "is bind",
   "not-bind": "not bind",
   "unbind-confirm": "Are you sure to unbind?",
-  "unbind-success": "Unbind success"
+  "unbind-success": "Unbind success",
+  "delete-account": "Delete Account",
+  "confirm-delete-account": "Are you sure to delete your account?"
 }

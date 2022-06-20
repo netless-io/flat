@@ -681,3 +681,7 @@ export async function removeBinding(target: LoginPlatform): Promise<RemoveBindin
         target,
     });
 }
+
+export async function deleteAccount(): Promise<void> {
+    await post<{}, {}>("user/deleteAccount", {});
+}
