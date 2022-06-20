@@ -465,5 +465,8 @@
   "is-bind": "已绑定",
   "not-bind": "未绑定",
   "unbind-confirm": "确定解除绑定吗？",
-  "unbind-success": "解绑成功"
+  "unbind-success": "解绑成功",
+  "delete-account": "账号注销",
+  "confirm-delete-account": "确定注销账号吗？",
+  "quit-all-rooms-before-delete-account": "请先退出所有房间"
 }

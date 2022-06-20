@@ -681,3 +681,15 @@ export async function removeBinding(target: LoginPlatform): Promise<RemoveBindin
         target,
     });
 }
+
+export interface DeleteAccountValidateResult {
+    alreadyJoinedRoomCount: number;
+}
+
+export async function deleteAccountValidate(): Promise<DeleteAccountValidateResult> {
+    return await post<{}, DeleteAccountValidateResult>("user/deleteAccount/validate", {});
+}
+
+export async function deleteAccount(): Promise<void> {
+    await post<{}, {}>("user/deleteAccount", {});
+}
