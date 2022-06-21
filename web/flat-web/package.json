@@ -57,7 +57,7 @@
     "uuid": "^8.3.2",
     "value-enhancer": "^1.0.3",
     "video.js": "7.10.2",
-    "white-web-sdk": "2.16.24"
+    "white-web-sdk": "npm:white-web-sdk-esm@2.16.24"
   },
   "devDependencies": {
     "@babel/standalone": "7.17.8",
