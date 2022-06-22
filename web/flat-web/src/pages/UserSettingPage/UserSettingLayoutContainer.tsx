@@ -38,8 +38,7 @@ export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactE
                 },
             ],
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [pageStore, t]);
 
     return <div className="user-setting-layout-container">{children}</div>;
 };
