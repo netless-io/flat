@@ -30,9 +30,12 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
         this._el$.setValue(el);
     }
 
-    public updateUser(rtcRemoteUser: IAgoraRTCRemoteUser): void {
-        this._videoTrack$.setValue(rtcRemoteUser.videoTrack);
-        this._audioTrack$.setValue(rtcRemoteUser.audioTrack);
+    public setVideoTrack(videoTrack?: IRemoteVideoTrack): void {
+        this._videoTrack$.setValue(videoTrack);
+    }
+
+    public setAudioTrack(audioTrack?: IRemoteAudioTrack): void {
+        this._audioTrack$.setValue(audioTrack);
     }
 
     public getVolumeLevel(): number {
@@ -46,34 +49,54 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
 
         this._sideEffect.addDisposer(
             combine([this._audioTrack$, this._shouldMic$]).subscribe(([audioTrack, shouldMic]) => {
-                if (audioTrack) {
-                    try {
-                        if (shouldMic) {
-                            audioTrack.play();
-                        } else {
-                            audioTrack.stop();
+                this._sideEffect.add(() => {
+                    let disposer = (): void => void 0;
+                    if (audioTrack) {
+                        try {
+                            if (shouldMic) {
+                                if (!audioTrack.isPlaying) {
+                                    audioTrack.play();
+                                    // dispose this track on next track update
+                                    disposer = () => audioTrack.stop();
+                                }
+                            } else {
+                                if (audioTrack.isPlaying) {
+                                    audioTrack.stop();
+                                }
+                            }
+                        } catch (e) {
+                            console.error(e);
                         }
-                    } catch (e) {
-                        console.error(e);
                     }
-                }
+                    return disposer;
+                }, "audio-track");
             }),
         );
 
         this._sideEffect.addDisposer(
             combine([this._el$, this._videoTrack$, this._shouldCamera$]).subscribe(
                 ([el, videoTrack, shouldCamera]) => {
-                    if (el && videoTrack) {
-                        try {
-                            if (shouldCamera) {
-                                videoTrack.play(el);
-                            } else {
-                                videoTrack.stop();
+                    this._sideEffect.add(() => {
+                        let disposer = (): void => void 0;
+                        if (el && videoTrack) {
+                            try {
+                                if (shouldCamera) {
+                                    if (!videoTrack.isPlaying) {
+                                        videoTrack.play(el);
+                                        // dispose this track on next track update
+                                        disposer = () => videoTrack.stop();
+                                    }
+                                } else {
+                                    if (videoTrack.isPlaying) {
+                                        videoTrack.stop();
+                                    }
+                                }
+                            } catch (e) {
+                                console.error(e);
                             }
-                        } catch (e) {
-                            console.error(e);
                         }
-                    }
+                        return disposer;
+                    }, "video-track");
                 },
             ),
         );

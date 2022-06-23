@@ -36,7 +36,6 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
 }) => {
     const isCameraCtrlDisable =
         avatarUser.userUUID !== userUUID && (!isCreator || !avatarUser.camera);
-    console.log(avatarUser.userUUID, userUUID, isCreator, avatarUser.camera);
 
     const isMicCtrlDisable = avatarUser.userUUID !== userUUID && (!isCreator || !avatarUser.mic);
 

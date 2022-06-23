@@ -326,27 +326,33 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
                 mediaType: "audio" | "video",
             ): Promise<void> => {
                 const uid = user.uid as FlatRTCAgoraWebUIDType;
-                if (this.shareScreenUID === uid && !this.shareScreen.shouldSubscribeRemoteTrack()) {
+                if (this.shareScreenUID === uid) {
+                    if (mediaType === "video" && this.shareScreen.shouldSubscribeRemoteTrack()) {
+                        try {
+                            await client.subscribe(user, mediaType);
+                            this.shareScreen.setRemoteVideoTrack(user.videoTrack || null);
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }
                     return;
                 }
 
                 try {
                     await client.subscribe(user, mediaType);
+                    let avatar = this._remoteAvatars.get(uid);
+                    if (avatar) {
+                        if (mediaType === "audio") {
+                            avatar.setAudioTrack(user.audioTrack);
+                        } else if (mediaType === "video") {
+                            avatar.setVideoTrack(user.videoTrack);
+                        }
+                    } else {
+                        avatar = new RTCRemoteAvatar({ rtcRemoteUser: user });
+                        this._remoteAvatars.set(uid, avatar);
+                    }
                 } catch (e) {
                     console.error(e);
-                }
-
-                if (this.shareScreenUID === uid) {
-                    this.shareScreen.setRemoteUser(user);
-                    return;
-                }
-
-                let avatar = this._remoteAvatars.get(uid);
-                if (avatar) {
-                    avatar.updateUser(user);
-                } else {
-                    avatar = new RTCRemoteAvatar({ rtcRemoteUser: user });
-                    this._remoteAvatars.set(uid, avatar);
                 }
             };
 
@@ -359,19 +365,35 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
                 user: IAgoraRTCRemoteUser,
                 mediaType: "audio" | "video",
             ): Promise<void> => {
+                const uid = user.uid as FlatRTCAgoraWebUIDType;
+                if (uid === this.shareScreenUID) {
+                    if (mediaType === "video") {
+                        try {
+                            await client.unsubscribe(user, mediaType);
+                            this.shareScreen.setRemoteVideoTrack(null);
+                        } catch (e) {
+                            console.error(e);
+                        }
+                        this.shareScreen.destroy();
+                    }
+                    return;
+                }
+
                 try {
                     await client.unsubscribe(user, mediaType);
+                    const avatar = this._remoteAvatars.get(uid);
+                    if (avatar) {
+                        if (mediaType === "audio") {
+                            avatar.setAudioTrack(undefined);
+                        } else if (mediaType === "video") {
+                            avatar.setVideoTrack(undefined);
+                        }
+                    }
                 } catch (e) {
                     console.error(e);
                 }
 
                 if (!user.videoTrack && !user.audioTrack) {
-                    const uid = user.uid as FlatRTCAgoraWebUIDType;
-                    if (uid === this.shareScreenUID) {
-                        this.shareScreen.setRemoteUser(null);
-                        return;
-                    }
-
                     const avatar = this._remoteAvatars.get(uid);
                     if (avatar) {
                         avatar.destroy();
