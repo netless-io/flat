@@ -514,12 +514,11 @@ export class FlatRTCAgoraElectron extends FlatRTC<
                     return;
                 }
                 let avatar = this._remoteAvatars.get(uid);
-                if (avatar) {
-                    avatar.setActive(true);
-                } else {
+                if (!avatar) {
                     avatar = new RTCRemoteAvatar({ rtc: this, uid });
                     this._remoteAvatars.set(uid, avatar);
                 }
+                avatar.setActive(true);
             };
 
             this.rtcEngine.on("userJoined", handler);
