@@ -330,7 +330,7 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                     ></ChatPanel>
                 }
                 isShow={isRealtimeSideOpen}
-                isVideoOn={true}
+                isVideoOn={classRoomStore.isJoinedRTC}
                 videoSlot={
                     <div className="big-class-realtime-rtc-box">
                         <RTCAvatar

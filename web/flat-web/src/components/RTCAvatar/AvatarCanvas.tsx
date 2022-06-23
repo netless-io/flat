@@ -25,8 +25,6 @@ export const AvatarCanvas = observer<
 
     const [canvasEl, setCanvasEl] = useState<HTMLDivElement | null>(null);
 
-    useEffect(() => () => rtcAvatar?.destroy(), [rtcAvatar]);
-
     const getVolumeLevel = useCallback((): number => {
         return rtcAvatar?.getVolumeLevel() || 0;
     }, [rtcAvatar]);

@@ -244,21 +244,23 @@ export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassP
                 className="small-class-realtime-avatars-wrap"
                 style={{ maxWidth: `${whiteboardStore.smallClassAvatarWrapMaxWidth}px` }}
             >
-                <div className="small-class-realtime-avatars">
-                    <RTCAvatar
-                        avatarUser={classRoomStore.users.creator}
-                        isAvatarUserCreator={true}
-                        isCreator={true}
-                        rtcAvatar={
-                            classRoomStore.users.creator &&
-                            classRoomStore.rtc.getAvatar(classRoomStore.users.creator.rtcUID)
-                        }
-                        small={true}
-                        updateDeviceState={classRoomStore.updateDeviceState}
-                        userUUID={classRoomStore.userUUID}
-                    />
-                    {classRoomStore.users.joiners.map(renderAvatar)}
-                </div>
+                {classRoomStore.isJoinedRTC && (
+                    <div className="small-class-realtime-avatars">
+                        <RTCAvatar
+                            avatarUser={classRoomStore.users.creator}
+                            isAvatarUserCreator={true}
+                            isCreator={classRoomStore.isCreator}
+                            rtcAvatar={
+                                classRoomStore.users.creator &&
+                                classRoomStore.rtc.getAvatar(classRoomStore.users.creator.rtcUID)
+                            }
+                            small={true}
+                            updateDeviceState={classRoomStore.updateDeviceState}
+                            userUUID={classRoomStore.userUUID}
+                        />
+                        {classRoomStore.users.joiners.map(renderAvatar)}
+                    </div>
+                )}
             </div>
         );
     }
