@@ -1,9 +1,4 @@
-import type {
-    IAgoraRTCClient,
-    IAgoraRTCRemoteUser,
-    ILocalVideoTrack,
-    IRemoteVideoTrack,
-} from "agora-rtc-sdk-ng";
+import type { IAgoraRTCClient, ILocalVideoTrack, IRemoteVideoTrack } from "agora-rtc-sdk-ng";
 import { SideEffectManager } from "side-effect-manager";
 import { Val } from "value-enhancer";
 import { FlatRTCShareScreen, FlatRTCShareScreenParams } from "@netless/flat-rtc";
@@ -23,7 +18,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
     private readonly _params$ = new Val<RTCShareScreenParams | null>(null);
     private readonly _enabled$ = new Val(false);
 
-    private readonly _remoteUser$ = new Val<IAgoraRTCRemoteUser | null>(null);
+    private readonly _remoteVideoTrack$ = new Val<IRemoteVideoTrack | null>(null);
     private readonly _el$: Val<HTMLElement | null>;
 
     public readonly client: IAgoraRTCClient;
@@ -38,9 +33,12 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         this._el$ = new Val(config.element ?? null);
 
         this._sideEffect.addDisposer(
-            this._remoteUser$.subscribe(user => {
-                if (user && user.videoTrack) {
-                    this.remoteVideoTrack = user.videoTrack;
+            this._remoteVideoTrack$.subscribe(remoteVideoTrack => {
+                if (remoteVideoTrack) {
+                    if (this.remoteVideoTrack) {
+                        this.remoteVideoTrack.stop();
+                    }
+                    this.remoteVideoTrack = remoteVideoTrack;
                     if (this._el$.value && !this.localVideoTrack) {
                         this.remoteVideoTrack.play(this._el$.value);
                     }
@@ -63,7 +61,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
 
         this._sideEffect.addDisposer(
             this._enabled$.subscribe(async enabled => {
-                if (enabled && this._remoteUser$.value) {
+                if (enabled && this._remoteVideoTrack$.value) {
                     this.events.emit(
                         "err-enable",
                         new Error("There already exists remote screen track."),
@@ -88,8 +86,8 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         return !this._enabled$.value;
     }
 
-    public setRemoteUser(remoteUser: IAgoraRTCRemoteUser | null): void {
-        this._remoteUser$.setValue(remoteUser);
+    public setRemoteVideoTrack(remoteVideoTrack: IRemoteVideoTrack | null): void {
+        this._remoteVideoTrack$.setValue(remoteVideoTrack);
     }
 
     public setParams(params: RTCShareScreenParams | null): void {
@@ -97,7 +95,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
     }
 
     public enable(enabled: boolean): void {
-        if (enabled && this._remoteUser$.value) {
+        if (enabled && this._remoteVideoTrack$.value) {
             throw new Error("There already exists remote screen track.");
         }
         this._enabled$.setValue(enabled);
