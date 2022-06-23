@@ -239,7 +239,10 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         this.shareScreen.setParams(null);
     }
 
-    public getAvatar(uid?: FlatRTCAgoraElectronUIDType): FlatRTCAvatar {
+    public getAvatar(uid?: FlatRTCAgoraElectronUIDType): FlatRTCAvatar | undefined {
+        if (!this.isJoinedRoom) {
+            return;
+        }
         if (!uid || this.uid === uid) {
             return this.localAvatar;
         }

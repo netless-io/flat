@@ -178,7 +178,10 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         this.shareScreen.setParams(null);
     }
 
-    public getAvatar(uid?: FlatRTCAgoraWebUIDType): FlatRTCAvatar {
+    public getAvatar(uid?: FlatRTCAgoraWebUIDType): FlatRTCAvatar | undefined {
+        if (!this.isJoinedRoom) {
+            return;
+        }
         if (!uid || this.uid === uid) {
             return this.localAvatar;
         }
@@ -187,7 +190,8 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         }
         let remoteAvatar = this._remoteAvatars.get(uid);
         if (!remoteAvatar) {
-            remoteAvatar = new RTCRemoteAvatar();
+            const rtcRemoteUser = this.client?.remoteUsers.find(user => user.uid === uid);
+            remoteAvatar = new RTCRemoteAvatar({ rtcRemoteUser });
             this._remoteAvatars.set(uid, remoteAvatar);
         }
         return remoteAvatar;
@@ -361,16 +365,18 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
                     console.error(e);
                 }
 
-                const uid = user.uid as FlatRTCAgoraWebUIDType;
-                if (uid === this.shareScreenUID) {
-                    this.shareScreen.setRemoteUser(null);
-                    return;
-                }
+                if (!user.videoTrack && !user.audioTrack) {
+                    const uid = user.uid as FlatRTCAgoraWebUIDType;
+                    if (uid === this.shareScreenUID) {
+                        this.shareScreen.setRemoteUser(null);
+                        return;
+                    }
 
-                const avatar = this._remoteAvatars.get(uid);
-                if (avatar) {
-                    avatar.destroy();
-                    this._remoteAvatars.delete(uid);
+                    const avatar = this._remoteAvatars.get(uid);
+                    if (avatar) {
+                        avatar.destroy();
+                        this._remoteAvatars.delete(uid);
+                    }
                 }
             };
             client.on("user-unpublished", handler);

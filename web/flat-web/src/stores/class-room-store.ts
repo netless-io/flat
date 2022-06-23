@@ -75,8 +75,10 @@ export class ClassRoomStore {
     public isBan = false;
     /** is Cloud Recording on */
     public isRecording = false;
-    /** is RTC on */
+    /** is RTC UI on */
     public isCalling = false;
+    /** is RTC joined room */
+    public isJoinedRTC = false;
     /** is user login on other device */
     public isRemoteLogin = false;
 
@@ -265,6 +267,7 @@ export class ClassRoomStore {
                 shareScreenUID: globalStore.rtcShareScreen?.uid || -1,
                 shareScreenToken: globalStore.rtcShareScreen?.token || "",
             });
+            this.updateIsJoinedRTC(true);
         } catch (e) {
             console.error(e);
             this.updateCalling(false);
@@ -281,6 +284,7 @@ export class ClassRoomStore {
         }
 
         this.updateCalling(false);
+        this.updateIsJoinedRTC(false);
     };
 
     public toggleCloudStoragePanel = (visible: boolean): void => {
@@ -1027,6 +1031,10 @@ export class ClassRoomStore {
     // makeAutoObservable some how doesn't work in autorun
     private updateCalling = action("updateCalling", (isCalling: boolean): void => {
         this.isCalling = isCalling;
+    });
+
+    private updateIsJoinedRTC = action("updateIsJoinedRTC", (isJoinedRTC: boolean): void => {
+        this.isJoinedRTC = isJoinedRTC;
     });
 
     private updateBanStatus = (isBan: boolean): void => {

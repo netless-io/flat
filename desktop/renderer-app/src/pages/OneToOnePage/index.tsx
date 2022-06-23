@@ -286,7 +286,7 @@ export const OneToOnePage = observer<OneToOnePageProps>(function OneToOnePage() 
                     ></ChatPanel>
                 }
                 isShow={isRealtimeSideOpen}
-                isVideoOn={true}
+                isVideoOn={classRoomStore.isJoinedRTC}
                 videoSlot={
                     <div className="one-to-one-rtc-avatar-container">
                         <RTCAvatar

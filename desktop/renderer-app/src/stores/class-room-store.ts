@@ -77,6 +77,7 @@ export class ClassRoomStore {
     public isRecording = false;
     /** is RTC on, for UI */
     public isCalling = false;
+    public isJoinedRTC = false;
     /** is user login on other device */
     public isRemoteLogin = false;
 
@@ -308,6 +309,7 @@ export class ClassRoomStore {
                 shareScreenUID: globalStore.rtcShareScreen?.uid || -1,
                 shareScreenToken: globalStore.rtcShareScreen?.token || "",
             });
+            this.updateIsJoinedRTC(true);
         } catch (e) {
             console.error(e);
             this.updateCalling(false);
@@ -338,6 +340,7 @@ export class ClassRoomStore {
 
         try {
             this.rtc.leaveRoom();
+            this.updateIsJoinedRTC(false);
         } catch (e) {
             console.error(e);
             this.updateCalling(true);
@@ -1066,6 +1069,10 @@ export class ClassRoomStore {
     // makeAutoObservable some how doesn't work in autorun
     private updateCalling = action("updateCalling", (isCalling: boolean): void => {
         this.isCalling = isCalling;
+    });
+
+    private updateIsJoinedRTC = action("updateIsJoinedRTC", (isJoinedRTC: boolean): void => {
+        this.isJoinedRTC = isJoinedRTC;
     });
 
     private updateBanStatus = (isBan: boolean): void => {
