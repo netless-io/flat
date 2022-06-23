@@ -1,3 +1,25 @@
+## [1.8.2](https://github.com/netless-io/flat/compare/v1.8.1...v1.8.2) (2022-06-23)
+
+
+### Bug Fixes
+
+* **electron:** fix rtc avatar init without setting active ([#1583](https://github.com/netless-io/flat/issues/1583)) ([797186b](https://github.com/netless-io/flat/commit/797186b6f5ee8c33f4c3b4f4e88635b0fc04c42f))
+* **flat-components:** click TopBarRoundBtn component fail ([#1568](https://github.com/netless-io/flat/issues/1568)) ([b404c3f](https://github.com/netless-io/flat/commit/b404c3fd8b464be5e6540061f8b5457a5b01a1ae))
+* **flat-components:** loginTitle stories props `LoginPanelProps` to `LoginTitleProps` ([#1584](https://github.com/netless-io/flat/issues/1584)) ([1eeb652](https://github.com/netless-io/flat/commit/1eeb65224e18dcfd9d16aab7367525f925320720))
+* **flat-rtc:** fix rtc avatar black-screened due to partial IAgoraRTCRemoteUser callback ([#1582](https://github.com/netless-io/flat/issues/1582)) ([8cf4c43](https://github.com/netless-io/flat/commit/8cf4c432ee70085e5b01ed38a5cb93fa2bf100cb))
+* **flat-rtc:** fix rtc avatar destroyed unexpectedly ([#1581](https://github.com/netless-io/flat/issues/1581)) ([5d81121](https://github.com/netless-io/flat/commit/5d81121550953a7ad9ad5a99d6a731abd54b000a))
+* **web:** text of the subMenu component no refreshed when language is changed ([#1580](https://github.com/netless-io/flat/issues/1580)) ([4463a53](https://github.com/netless-io/flat/commit/4463a5356c0865da3b9337f6fa3b220eda005e1b))
+
+
+### Features
+
+* **project:** support bind github ([#1576](https://github.com/netless-io/flat/issues/1576)) ([bdf8eed](https://github.com/netless-io/flat/commit/bdf8eed91c18c39df7a7ceb822ab9cac763709dd))
+* **project:** support bind wechat ([#1572](https://github.com/netless-io/flat/issues/1572)) ([8439088](https://github.com/netless-io/flat/commit/84390888f4037679f02e2c409d7f236fb4088413))
+* **project:** support delete account ([#1577](https://github.com/netless-io/flat/issues/1577)) ([76d93b0](https://github.com/netless-io/flat/commit/76d93b0e9cdcf3c300ebcc5afdefd3324b41a4f6))
+* **project:** support unbind wechat ([#1573](https://github.com/netless-io/flat/issues/1573)) ([cd30465](https://github.com/netless-io/flat/commit/cd30465023821892b45d4aace03034e0cf62fe5f))
+
+
+
 ## [1.8.1](https://github.com/netless-io/flat/compare/v1.8.0...v1.8.1) (2022-06-10)
 
 
