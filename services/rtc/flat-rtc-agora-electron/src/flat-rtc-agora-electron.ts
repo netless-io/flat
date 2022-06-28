@@ -236,6 +236,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         this.uid = undefined;
         this.roomUUID = undefined;
         this.shareScreenUID = undefined;
+        this.shareScreen.setActive(false);
         this.shareScreen.setParams(null);
     }
 
