@@ -253,6 +253,26 @@ export class ClassRoomStore {
 
         this.updateCalling(true);
 
+        this.sideEffect.addDisposer(
+            this.rtc.shareScreen.events.on(
+                "local-changed",
+                action("localShareScreen", enabled => {
+                    this.isScreenSharing = enabled;
+                }),
+            ),
+            "share-screen-local-changed",
+        );
+
+        this.sideEffect.addDisposer(
+            this.rtc.shareScreen.events.on(
+                "remote-changed",
+                action("remoteShareScreen", enabled => {
+                    this.isRemoteScreenSharing = enabled;
+                }),
+            ),
+            "share-screen-remote-changed",
+        );
+
         try {
             await this.rtc.joinRoom({
                 roomUUID: this.roomUUID,
@@ -589,24 +609,6 @@ export class ClassRoomStore {
                 "network",
                 action("checkNetworkQuality", networkQuality => {
                     this.networkQuality = networkQuality;
-                }),
-            ),
-        );
-
-        this.sideEffect.addDisposer(
-            this.rtc.shareScreen.events.on(
-                "local-changed",
-                action("localShareScreen", enabled => {
-                    this.isScreenSharing = enabled;
-                }),
-            ),
-        );
-
-        this.sideEffect.addDisposer(
-            this.rtc.shareScreen.events.on(
-                "remote-changed",
-                action("remoteShareScreen", enabled => {
-                    this.isRemoteScreenSharing = enabled;
                 }),
             ),
         );
