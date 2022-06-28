@@ -663,7 +663,7 @@ export class ClassRoomStore {
 
         this.leaveRTC();
 
-        this.rtc.destroy();
+        this.rtc.leaveRoom();
 
         window.clearTimeout(this._collectChannelStatusTimeout);
 

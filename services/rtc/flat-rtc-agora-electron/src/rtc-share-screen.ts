@@ -47,9 +47,9 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         this._el$ = new Val(config.element ?? null);
 
         this._sideEffect.addDisposer(
-            this._active$.subscribe(active => {
-                if (this._el$.value && this._params$.value) {
-                    const { uid } = this._params$.value;
+            combine([this._active$, this._params$]).subscribe(([active, params]) => {
+                if (this._el$.value && params) {
+                    const { uid } = params;
                     try {
                         if (active) {
                             // this is a bug in agora SDK, when the `desktop` screen sharing is done,
