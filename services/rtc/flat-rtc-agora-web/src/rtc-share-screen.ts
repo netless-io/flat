@@ -127,6 +127,12 @@ export class RTCShareScreen extends FlatRTCShareScreen {
             });
 
             this.localVideoTrack = await AgoraRTC.createScreenVideoTrack({}, "disable");
+            this.localVideoTrack.once("track-ended", () => {
+                this.localVideoTrack = null;
+                resolve_EnablingShareScreen();
+                this._pTogglingShareScreen = undefined;
+                this.enable(false);
+            });
 
             if (this._params$.value) {
                 const { roomUUID, token, uid } = this._params$.value;
