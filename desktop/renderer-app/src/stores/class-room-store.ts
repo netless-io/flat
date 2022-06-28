@@ -219,26 +219,6 @@ export class ClassRoomStore {
                 }),
             ),
         );
-
-        this.sideEffect.addDisposer(
-            this.rtc.shareScreen.events.on(
-                "local-changed",
-                action("localShareScreen", enabled => {
-                    console.log("local =", enabled);
-                    this.isScreenSharing = enabled;
-                }),
-            ),
-        );
-
-        this.sideEffect.addDisposer(
-            this.rtc.shareScreen.events.on(
-                "remote-changed",
-                action("remoteShareScreen", enabled => {
-                    console.log("remote =", enabled);
-                    this.isRemoteScreenSharing = enabled;
-                }),
-            ),
-        );
     }
 
     public get ownerUUID(): string {
@@ -294,6 +274,26 @@ export class ClassRoomStore {
         }
 
         this.updateCalling(true);
+
+        this.sideEffect.addDisposer(
+            this.rtc.shareScreen.events.on(
+                "local-changed",
+                action("localShareScreen", enabled => {
+                    this.isScreenSharing = enabled;
+                }),
+            ),
+            "share-screen-local-changed",
+        );
+
+        this.sideEffect.addDisposer(
+            this.rtc.shareScreen.events.on(
+                "remote-changed",
+                action("remoteShareScreen", enabled => {
+                    this.isRemoteScreenSharing = enabled;
+                }),
+            ),
+            "share-screen-remote-changed",
+        );
 
         try {
             await this.rtc.joinRoom({
