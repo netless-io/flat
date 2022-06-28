@@ -35,6 +35,9 @@ export abstract class FlatRTC<
 
     /** @returns local avatar if uid is not provided, throws error if uid == shareScreenUID */
     public abstract getAvatar(uid?: TUid): FlatRTCAvatar | undefined;
+
+    public abstract getTestAvatar(): FlatRTCAvatar;
+
     public abstract getVolumeLevel(uid?: TUid): number;
 
     public abstract setCameraID(deviceId: string): Promise<void>;

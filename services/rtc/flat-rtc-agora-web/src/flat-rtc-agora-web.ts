@@ -199,6 +199,10 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         return remoteAvatar;
     }
 
+    public getTestAvatar(): FlatRTCAvatar {
+        return this.localAvatar;
+    }
+
     public getVolumeLevel(uid?: FlatRTCAgoraWebUIDType): number {
         if (!uid || this.uid === uid) {
             return this._localAvatar?.getVolumeLevel() ?? 0;

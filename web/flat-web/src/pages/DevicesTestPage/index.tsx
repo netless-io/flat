@@ -40,7 +40,7 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
 
     useEffect(() => {
         // @FIXME only run once
-        const avatar = rtc.getAvatar();
+        const avatar = rtc.getTestAvatar();
         if (avatar) {
             avatar.enableCamera(true);
             avatar.enableMic(true);

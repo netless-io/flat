@@ -257,6 +257,10 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         return remoteAvatar;
     }
 
+    public getTestAvatar(): FlatRTCAvatar {
+        return this.localAvatar;
+    }
+
     public getVolumeLevel(uid?: FlatRTCAgoraElectronUIDType): number {
         return this._volumeLevels.get(uid || 0) || 0;
     }
