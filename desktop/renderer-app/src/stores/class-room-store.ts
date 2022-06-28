@@ -279,7 +279,6 @@ export class ClassRoomStore {
             this.rtc.shareScreen.events.on(
                 "local-changed",
                 action("localShareScreen", enabled => {
-                    console.log("local =", enabled);
                     this.isScreenSharing = enabled;
                 }),
             ),
@@ -290,7 +289,6 @@ export class ClassRoomStore {
             this.rtc.shareScreen.events.on(
                 "remote-changed",
                 action("remoteShareScreen", enabled => {
-                    console.log("remote =", enabled);
                     this.isRemoteScreenSharing = enabled;
                 }),
             ),
