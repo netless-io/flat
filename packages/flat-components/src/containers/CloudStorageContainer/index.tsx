@@ -118,10 +118,11 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                 const scrollViewOffsetY = cloudStorageContainerRef.current.scrollTop;
                 const scrollViewFrameHeight = cloudStorageContainerRef.current.clientHeight;
                 const scrollViewContentHeight = cloudStorageContainerRef.current.scrollHeight;
-
-                setIsAtTheBottom(
-                    Math.ceil(scrollViewOffsetY + scrollViewFrameHeight) >= scrollViewContentHeight,
-                );
+                // Computer environment of each user using the Flat is different that
+                // there maybe can't scroll to the bottom and therefore the isAtTheBottom always false then can't fetch more data.
+                // As a result, there setting a threshold value to avoid above scenes.
+                const threshold = scrollViewContentHeight - 30;
+                setIsAtTheBottom(Math.ceil(scrollViewOffsetY + scrollViewFrameHeight) >= threshold);
             }
         };
 
