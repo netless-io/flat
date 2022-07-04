@@ -327,3 +327,15 @@ export function cloudRecordStop(payload: CloudRecordStopPayload): Promise<CloudR
         payload,
     );
 }
+
+export interface RTMCensorPayload {
+    text: string;
+}
+
+export interface RTMCensorResult {
+    valid: boolean;
+}
+
+export function checkRTMCensor(payload: RTMCensorPayload): Promise<RTMCensorResult> {
+    return post<RTMCensorPayload, RTMCensorResult>("agora/rtm/censor", payload);
+}
