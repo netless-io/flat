@@ -333,8 +333,7 @@ export interface RTMCensorPayload {
 }
 
 export interface RTMCensorResult {
-    /** true = is blocked */
-    result: boolean;
+    valid: boolean;
 }
 
 export function checkRTMCensor(payload: RTMCensorPayload): Promise<RTMCensorResult> {

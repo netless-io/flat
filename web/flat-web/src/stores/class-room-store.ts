@@ -483,7 +483,7 @@ export class ClassRoomStore {
         if (this.isBan && !this.isCreator) {
             return;
         }
-        if (NEED_CHECK_CENSOR && (await checkRTMCensor({ text })).result) {
+        if (NEED_CHECK_CENSOR && !(await checkRTMCensor({ text })).valid) {
             return;
         }
         await this.rtm.sendMessage(text);
