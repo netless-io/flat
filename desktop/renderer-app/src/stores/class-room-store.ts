@@ -17,6 +17,7 @@ import {
 } from "../api-middleware/rtm";
 import { CloudRecording } from "../api-middleware/cloud-recording";
 import {
+    checkRTMCensor,
     CloudRecordStartPayload,
     CloudRecordUpdateLayoutPayload,
     generateRTCToken,
@@ -40,6 +41,7 @@ import { WhiteboardStore } from "./whiteboard-store";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { getFlatRTC } from "../services/flat-rtc";
+import { NEED_CHECK_CENSOR } from "../constants/config";
 
 export type { User } from "./user-store";
 
@@ -524,6 +526,9 @@ export class ClassRoomStore {
 
     public onMessageSend = async (text: string): Promise<void> => {
         if (this.isBan && !this.isCreator) {
+            return;
+        }
+        if (NEED_CHECK_CENSOR && (await checkRTMCensor({ text })).result) {
             return;
         }
         await this.rtm.sendMessage(text);

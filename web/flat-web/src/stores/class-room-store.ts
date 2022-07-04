@@ -16,6 +16,7 @@ import {
     stopRecordRoom,
 } from "../api-middleware/flatServer";
 import {
+    checkRTMCensor,
     CloudRecordStartPayload,
     CloudRecordUpdateLayoutPayload,
     generateRTCToken,
@@ -40,6 +41,7 @@ import { RoomItem, roomStore } from "./room-store";
 import { User, UserStore } from "./user-store";
 import { WhiteboardStore } from "./whiteboard-store";
 import { getFlatRTC } from "../services/flat-rtc";
+import { NEED_CHECK_CENSOR } from "../constants/config";
 
 export type { User } from "./user-store";
 
@@ -479,6 +481,9 @@ export class ClassRoomStore {
 
     public onMessageSend = async (text: string): Promise<void> => {
         if (this.isBan && !this.isCreator) {
+            return;
+        }
+        if (NEED_CHECK_CENSOR && (await checkRTMCensor({ text })).result) {
             return;
         }
         await this.rtm.sendMessage(text);
