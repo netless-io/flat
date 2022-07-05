@@ -15,6 +15,7 @@ export const githubLogin: LoginExecutor = onSuccess => {
             await setAuthUUID(authUUID);
         } catch (err) {
             errorTips(err);
+            return;
         }
 
         void shell.openExternal(getGithubURL(authUUID, FLAT_SERVER_LOGIN.GITHUB_CALLBACK));

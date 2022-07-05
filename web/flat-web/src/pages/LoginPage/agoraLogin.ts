@@ -13,6 +13,7 @@ export const agoraLogin: LoginExecutor = () => {
             await setAuthUUID(authUUID);
         } catch (err) {
             errorTips(err);
+            return;
         }
 
         window.location.href = getAgoraURL(authUUID, FLAT_SERVER_LOGIN.AGORA_CALLBACK);
