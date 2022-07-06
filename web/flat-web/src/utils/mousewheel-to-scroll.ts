@@ -16,7 +16,7 @@ export function mousewheelToScroll(root: HTMLElement, fastboard: FastboardApp): 
                 centerY: clamp(
                     fastboard.manager.camera.centerY + dy * fastboard.manager.camera.scale,
                     -950,
-                    950,
+                    950 + 2100,
                 ),
                 animationMode: "immediately" as AnimationMode.Immediately,
             });
