@@ -151,7 +151,7 @@ importers:
       '@netless/app-monaco': ^0.1.14-beta.1
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.4-canary.2
+      '@netless/fastboard-react': ^0.3.5-canary.0
       '@netless/flat-rtc': workspace:*
       '@netless/flat-rtc-agora-electron': workspace:*
       '@netless/player-controller': ^0.0.9
@@ -208,7 +208,7 @@ importers:
       '@netless/app-monaco': 0.1.14-beta.1
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.4-canary.2_75wc7cfqgpdqty56nasvdvou34
+      '@netless/fastboard-react': 0.3.5-canary.0_75wc7cfqgpdqty56nasvdvou34
       '@netless/flat-rtc': link:../../services/rtc/flat-rtc
       '@netless/flat-rtc-agora-electron': link:../../services/rtc/flat-rtc-agora-electron
       '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
@@ -427,7 +427,7 @@ importers:
       '@netless/app-monaco': ^0.1.14-beta.1
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.4-canary.2
+      '@netless/fastboard-react': ^0.3.5-canary.0
       '@netless/flat-rtc': workspace:*
       '@netless/flat-rtc-agora-web': workspace:*
       '@netless/mini-svg-data-uri': 0.0.1
@@ -481,7 +481,7 @@ importers:
       '@netless/app-monaco': 0.1.14-beta.1
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.4-canary.2_75wc7cfqgpdqty56nasvdvou34
+      '@netless/fastboard-react': 0.3.5-canary.0_75wc7cfqgpdqty56nasvdvou34
       '@netless/flat-rtc': link:../../services/rtc/flat-rtc
       '@netless/flat-rtc-agora-web': link:../../services/rtc/flat-rtc-agora-web
       '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
@@ -2911,36 +2911,37 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/0.3.4-canary.2_q34arnsiowzfmfxqxfjik5rqta:
-    resolution: {integrity: sha512-fZZ+xkHrjr/OUmMOH0qAWX2zt1WSCrKoToXgBuY1vltoqA51QJysRlTyXoLWZ0OmH0ILByjT67F3rsoK0qBC+A==}
+  /@netless/fastboard-core/0.3.5-canary.0_q34arnsiowzfmfxqxfjik5rqta:
+    resolution: {integrity: sha512-WABnFuwJlD5i2IzZ7PiEaF7guG+ZtlPJrAIFQSvx1EBt5HoiSuo2bAdlABx8SOdu8QB9FRrkHkl3Yxfm8IpgNg==}
     peerDependencies:
       '@netless/window-manager': '>=0.4.0'
       white-web-sdk: '>=2.16.0'
     dependencies:
       '@netless/app-slide': 0.2.2
+      '@netless/synced-store': 1.1.5_white-web-sdk-esm@2.16.24
       '@netless/window-manager': 0.4.31_white-web-sdk-esm@2.16.24
       white-web-sdk: /white-web-sdk-esm/2.16.24
     dev: false
 
-  /@netless/fastboard-react/0.3.4-canary.2_75wc7cfqgpdqty56nasvdvou34:
-    resolution: {integrity: sha512-zquA9nzeFmGNsEFlUdJVO60mp1hAn7348RmfLfsDmrznUaRGrwXDQbpt4keidAv1d7Sh3iqAoDHbw/1Ei3rr7A==}
+  /@netless/fastboard-react/0.3.5-canary.0_75wc7cfqgpdqty56nasvdvou34:
+    resolution: {integrity: sha512-/qnLeGPUobv6/QXTLtaHpirPdXqMCsnZtc1SKipvle9UkpksxFgMvWiwKW7VADw+gTFcR6A2VpgAY+Blqr6jsg==}
     peerDependencies:
       react: '*'
     dependencies:
-      '@netless/fastboard-core': 0.3.4-canary.2_q34arnsiowzfmfxqxfjik5rqta
-      '@netless/fastboard-ui': 0.3.4-canary.2_a3w7b6vntqr4ozers6gdosdyye
+      '@netless/fastboard-core': 0.3.5-canary.0_q34arnsiowzfmfxqxfjik5rqta
+      '@netless/fastboard-ui': 0.3.5-canary.0_xukk34p7cajrxxib4fyrka24l4
       react: 17.0.2
     transitivePeerDependencies:
       - '@netless/window-manager'
       - white-web-sdk
     dev: false
 
-  /@netless/fastboard-ui/0.3.4-canary.2_a3w7b6vntqr4ozers6gdosdyye:
-    resolution: {integrity: sha512-ujkGIXxwTsxqE9cAzP7OsEADXlor0jwPkPWSu5n3btEn3TiePwYxBgtpjJhQxqrsEJNPBL3af8Bon4SL3g+tFA==}
+  /@netless/fastboard-ui/0.3.5-canary.0_xukk34p7cajrxxib4fyrka24l4:
+    resolution: {integrity: sha512-EQU0d+mMS8muP7dUqbj0CuV1FZ07S2IgbbYH04zeOMHBRQ0m9nRwti43YXLF8VraRVIPgNCvBPf5Jnu6Rz6F+w==}
     peerDependencies:
-      '@netless/fastboard-core': 0.3.4-canary.2
+      '@netless/fastboard-core': 0.3.5-canary.0
     dependencies:
-      '@netless/fastboard-core': 0.3.4-canary.2_q34arnsiowzfmfxqxfjik5rqta
+      '@netless/fastboard-core': 0.3.5-canary.0_q34arnsiowzfmfxqxfjik5rqta
       tippy.js: 6.3.7
     dev: false
 
@@ -2962,6 +2963,15 @@ packages:
       antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+      white-web-sdk: /white-web-sdk-esm/2.16.24
+    dev: false
+
+  /@netless/synced-store/1.1.5_white-web-sdk-esm@2.16.24:
+    resolution: {integrity: sha512-ERXoJiPhsK26udMKhvcHhfzyUk1Q3JIIT71wgGoSoNiPpW2VCWQ4+FAFsoRwa0c1pM0wVHGRRcZkxvOTkXZvdg==}
+    requiresBuild: true
+    peerDependencies:
+      white-web-sdk: '>= 2.16'
+    dependencies:
       white-web-sdk: /white-web-sdk-esm/2.16.24
     dev: false
 
@@ -4819,7 +4829,7 @@ packages:
   /@types/keyv/3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 17.0.31
+      '@types/node': 17.0.40
     dev: true
 
   /@types/loadable__component/5.13.4:
@@ -4907,7 +4917,6 @@ packages:
 
   /@types/node/17.0.40:
     resolution: {integrity: sha512-UXdBxNGqTMtm7hCwh9HtncFVLrXoqA3oJW30j6XWp5BH/wu3mVeaxo7cq5benFdBw34HB3XDT2TRPI7rXZ+mDg==}
-    dev: false
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -5010,7 +5019,7 @@ packages:
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
-      '@types/node': 17.0.31
+      '@types/node': 17.0.40
     dev: true
 
   /@types/retry/0.12.0:
@@ -7700,6 +7709,7 @@ packages:
 
   /core-js/3.22.8:
     resolution: {integrity: sha512-UoGQ/cfzGYIuiq6Z7vWL1HfkE9U9IZ4Ub+0XSiJTCzvbZzgPA69oDF2f+lgJ6dFFLEdjW5O6svvoKzXX23xFkA==}
+    deprecated: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
     requiresBuild: true
     dev: false
 
@@ -14487,7 +14497,7 @@ packages:
     resolution: {integrity: sha512-afRERtHn54AlwaF2/+LFszyAANTCggGilmcmILUzEjvs3XgFZT+xE6+QWQcAGmu4xajy+Xtj7acLOPdx5/eXWQ==}
     hasBin: true
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
     dev: false
 
   /pkg-dir/3.0.0:
