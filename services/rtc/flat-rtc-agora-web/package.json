@@ -17,7 +17,7 @@
     "value-enhancer": "^1.0.3"
   },
   "dependencies": {
-    "agora-rtc-sdk-ng": "^4.9.4"
+    "agora-rtc-sdk-ng": "^4.12.2"
   },
   "peerDependencies": {
     "emittery": "0.x",

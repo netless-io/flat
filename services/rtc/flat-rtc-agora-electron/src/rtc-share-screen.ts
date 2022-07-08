@@ -4,6 +4,8 @@ import {
     FlatRTCShareScreenParams,
 } from "@netless/flat-rtc";
 import type AgoraRtcEngine from "agora-electron-sdk";
+import type { DisplayInfo, WindowInfo } from "agora-electron-sdk/types/Api/native_type";
+
 import { SideEffectManager } from "side-effect-manager";
 import { combine, Val } from "value-enhancer";
 import { FlatRTCAgoraElectron, FlatRTCAgoraElectronUIDType } from "./flat-rtc-agora-electron";
@@ -109,14 +111,18 @@ export class RTCShareScreen extends FlatRTCShareScreen {
     public async getScreenInfo(): Promise<FlatRTCShareScreenInfo[]> {
         await new Promise(resolve => setTimeout(resolve, 100));
 
-        const displayList = this.client.getScreenDisplaysInfo();
-        const windowList = this.client.getScreenWindowsInfo();
+        const displayList = await new Promise<DisplayInfo[]>(res =>
+            this.client.getScreenDisplaysInfo(res),
+        );
+        const windowList = await new Promise<WindowInfo[]>(res =>
+            this.client.getScreenWindowsInfo(res),
+        );
 
-        const convertScreenInfo = (info: any): FlatRTCShareScreenInfo => {
+        const convertScreenInfo = (info: DisplayInfo | WindowInfo): FlatRTCShareScreenInfo => {
             if ("displayId" in info) {
                 return {
                     type: "display",
-                    screenId: info.displayId,
+                    screenId: info.displayId.id,
                     name: "Desktop",
                     image: info.image,
                 };
@@ -176,7 +182,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
                 this.client.videoSourceSetVideoProfile(43, false);
                 if (screenInfo.type === "display") {
                     this.client.videoSourceStartScreenCaptureByScreen(
-                        screenInfo.screenId,
+                        { id: screenInfo.screenId },
                         rect,
                         videoSourceParams,
                     );
