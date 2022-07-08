@@ -402,14 +402,14 @@ importers:
   services/rtc/flat-rtc-agora-web:
     specifiers:
       '@netless/flat-rtc': workspace:*
-      agora-rtc-sdk-ng: ^4.9.4
+      agora-rtc-sdk-ng: ^4.12.2
       emittery: ^0.10.2
       prettier: ^2.3.0
       side-effect-manager: ^0.1.5
       typescript: ^4.6.2
       value-enhancer: ^1.0.3
     dependencies:
-      agora-rtc-sdk-ng: 4.11.0
+      agora-rtc-sdk-ng: 4.12.2
     devDependencies:
       '@netless/flat-rtc': link:../flat-rtc
       emittery: 0.10.2
@@ -441,7 +441,7 @@ importers:
       '@types/mime': ^2.0.3
       '@videojs/vhs-utils': ^2.3.0
       '@zip.js/zip.js': ^2.4.6
-      agora-rtc-sdk-ng: ^4.9.4
+      agora-rtc-sdk-ng: ^4.12.2
       agora-rtm-sdk: ^1.4.4
       antd: ^4.19.2
       axios: ^0.26.1
@@ -493,7 +493,7 @@ importers:
       '@netless/window-manager': 0.4.31_white-web-sdk-esm@2.16.24
       '@videojs/vhs-utils': 2.3.0
       '@zip.js/zip.js': 2.4.10
-      agora-rtc-sdk-ng: 4.11.0
+      agora-rtc-sdk-ng: 4.12.2
       agora-rtm-sdk: 1.4.4
       antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
       axios: 0.26.1
@@ -2030,7 +2030,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.9
-    dev: false
 
   /@babel/standalone/7.17.8:
     resolution: {integrity: sha512-tr3SDpVnxR/fzrxyG+HZPAyEA9eTHZIAjy4eqrc7m+KBwsdo1YvTbUfJ6teWHQ177mk6GmdmltsIiOYCcvRPWA==}
@@ -5704,7 +5703,7 @@ packages:
   /aes-decrypter/3.1.0:
     resolution: {integrity: sha512-wL1NFwP2yNrJG4InpXYFhhYe9TfonnDyhyxMq2+K9/qt+SrZzUieOpviN6pkDly7GawTqw5feehk0rn5iYo00g==}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       '@videojs/vhs-utils': 2.3.0
       global: 4.4.0
       pkcs7: 1.0.4
@@ -5754,8 +5753,8 @@ packages:
       - supports-color
     dev: false
 
-  /agora-rtc-sdk-ng/4.11.0:
-    resolution: {integrity: sha512-T4eE1RwBXOuJgimeqqnNR/hD6pTHowJrMN2HJqD6YTwMI/V7ZTKNYiETNRtykyJ7VIPCVlvVcC9yZgHBJb5vrg==}
+  /agora-rtc-sdk-ng/4.12.2:
+    resolution: {integrity: sha512-PcXuqHVrsc1W1A4YM6SSzBwazhbNCKc4peAckQHOQ+KODvR+DlZt0kN8toDcupa0B6gBwtM6guYoPvF9cpEg+w==}
     dependencies:
       agora-rte-extension: 1.0.23
     dev: false
@@ -12944,7 +12943,7 @@ packages:
   /m3u8-parser/4.5.0:
     resolution: {integrity: sha512-RGm/1WVCX3o1bSWbJGmJUu4zTbtJy8lImtgHM4CESFvJRXYztr1j6SW/q9/ghYOrUjgH7radsIar+z1Leln0sA==}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       '@videojs/vhs-utils': 2.3.0
       global: 4.4.0
     dev: false
@@ -13490,7 +13489,7 @@ packages:
   /mpd-parser/0.14.0:
     resolution: {integrity: sha512-HqXQS3WLofcnYFcxv5oWdlciddUaEnN3NasXLVQ793mdnZRrinjz2Yk1DsUYPDYOUWf6ZBBqbFhaJT5LiT2ouA==}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       '@videojs/vhs-utils': 2.3.0
       global: 4.4.0
       xmldom: 0.1.31
@@ -15094,7 +15093,7 @@ packages:
       react: '>=16.9.0 || ^17'
       react-dom: '>=16.9.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       classnames: 2.3.1
       dom-align: 1.12.3
       lodash: 4.17.21
@@ -15280,7 +15279,7 @@ packages:
       react: '>=16.9.0 || ^17'
       react-dom: '>=16.9.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       classnames: 2.3.1
       rc-util: 5.21.2_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
