@@ -149,6 +149,7 @@ importers:
       '@netless/app-geogebra': ^0.0.4
       '@netless/app-iframe-bridge': ^0.0.2
       '@netless/app-monaco': ^0.1.14-beta.1
+      '@netless/app-plyr': ^0.1.3
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
       '@netless/fastboard-react': ^0.3.5-canary.0
@@ -206,6 +207,7 @@ importers:
       '@netless/app-geogebra': 0.0.4
       '@netless/app-iframe-bridge': 0.0.2
       '@netless/app-monaco': 0.1.14-beta.1
+      '@netless/app-plyr': 0.1.3
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
       '@netless/fastboard-react': 0.3.5-canary.0_75wc7cfqgpdqty56nasvdvou34
@@ -425,6 +427,7 @@ importers:
       '@netless/app-geogebra': ^0.0.4
       '@netless/app-iframe-bridge': ^0.0.2
       '@netless/app-monaco': ^0.1.14-beta.1
+      '@netless/app-plyr': ^0.1.3
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
       '@netless/fastboard-react': ^0.3.5-canary.0
@@ -479,6 +482,7 @@ importers:
       '@netless/app-geogebra': 0.0.4
       '@netless/app-iframe-bridge': 0.0.2
       '@netless/app-monaco': 0.1.14-beta.1
+      '@netless/app-plyr': 0.1.3
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
       '@netless/fastboard-react': 0.3.5-canary.0_75wc7cfqgpdqty56nasvdvou34
@@ -2885,6 +2889,10 @@ packages:
 
   /@netless/app-monaco/0.1.14-beta.1:
     resolution: {integrity: sha512-Rlig/UX4dZosv/VWslJRCxm7H9ufZ0TeEZK4krMEVCf+SnEHZsn1HUbbpoTQeead78k3scoaF5fC9wE/chORyQ==}
+    dev: false
+
+  /@netless/app-plyr/0.1.3:
+    resolution: {integrity: sha512-wO0Ovp0kxyL02YJlnn+BvyOx3JI/zpf6h5bmCnLyNS0AbB1Kz5F8rvwudKx1rfAtS5tyG+HX8CVQrRZchnbfQg==}
     dev: false
 
   /@netless/app-slide/0.2.2:
