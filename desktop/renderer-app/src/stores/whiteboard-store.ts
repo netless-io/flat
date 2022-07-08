@@ -239,7 +239,7 @@ export class WhiteboardStore {
         title: string,
     ): Promise<void> => {
         await this.windowManager?.addApp({
-            kind: BuiltinApps.MediaPlayer,
+            kind: "Plyr",
             options: {
                 title,
             },
