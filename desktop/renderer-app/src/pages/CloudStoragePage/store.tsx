@@ -391,6 +391,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             });
 
             const newFiles: Record<string, CloudStorageFile> = {};
+            const toQueryFilesList: string[] = [];
 
             for (const cloudFile of cloudFiles) {
                 const file = this.filesMap.get(cloudFile.fileUUID);
@@ -421,13 +422,18 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 ) {
                     this.convertStatusManager.cancelTask(cloudFile.fileUUID);
                 } else {
-                    await this.queryConvertStatus(cloudFile.fileUUID);
+                    toQueryFilesList.push(cloudFile.fileUUID);
                 }
             }
 
             runInAction(() => {
                 this.filesMap.merge(newFiles);
             });
+
+            // To query files convert status should be after filesMap is updated.
+            for (const fileUUID of toQueryFilesList) {
+                await this.queryConvertStatus(fileUUID);
+            }
         } catch (e) {
             errorTips(e);
         }
