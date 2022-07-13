@@ -93,6 +93,22 @@ export const HotKeySettingPage = (): React.ReactElement => {
                 hotKey: "Shift / ⇧",
             },
             {
+                name: t("switch-to-next-color"),
+                hotKey: "Alt + Q / ⌥ + Q",
+            },
+            {
+                name: t("switch-to-previous-color"),
+                hotKey: "Alt + Shift + Q / ⌥ + Shift + Q",
+            },
+            {
+                name: t("pencil-tool-draws-circle"),
+                hotKey: "Shift + Mouse",
+            },
+            {
+                name: t("draw-circles-from-center"),
+                hotKey: "Ctrl + Mouse / ⌘ + Mouse ",
+            },
+            {
                 name: t("undo"),
                 hotKey: "Ctrl + Z / ⌘ + Z",
             },
