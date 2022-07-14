@@ -152,7 +152,7 @@ importers:
       '@netless/app-plyr': ^0.1.3
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.5-canary.0
+      '@netless/fastboard-react': ^0.3.5-canary.1
       '@netless/flat-rtc': workspace:*
       '@netless/flat-rtc-agora-electron': workspace:*
       '@netless/player-controller': ^0.0.9
@@ -210,7 +210,7 @@ importers:
       '@netless/app-plyr': 0.1.3
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.5-canary.0_75wc7cfqgpdqty56nasvdvou34
+      '@netless/fastboard-react': 0.3.5-canary.1_75wc7cfqgpdqty56nasvdvou34
       '@netless/flat-rtc': link:../../services/rtc/flat-rtc
       '@netless/flat-rtc-agora-electron': link:../../services/rtc/flat-rtc-agora-electron
       '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
@@ -430,7 +430,7 @@ importers:
       '@netless/app-plyr': ^0.1.3
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.5-canary.0
+      '@netless/fastboard-react': ^0.3.5-canary.1
       '@netless/flat-rtc': workspace:*
       '@netless/flat-rtc-agora-web': workspace:*
       '@netless/mini-svg-data-uri': 0.0.1
@@ -485,7 +485,7 @@ importers:
       '@netless/app-plyr': 0.1.3
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.5-canary.0_75wc7cfqgpdqty56nasvdvou34
+      '@netless/fastboard-react': 0.3.5-canary.1_75wc7cfqgpdqty56nasvdvou34
       '@netless/flat-rtc': link:../../services/rtc/flat-rtc
       '@netless/flat-rtc-agora-web': link:../../services/rtc/flat-rtc-agora-web
       '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
@@ -2900,37 +2900,37 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/0.3.5-canary.0_q34arnsiowzfmfxqxfjik5rqta:
-    resolution: {integrity: sha512-WABnFuwJlD5i2IzZ7PiEaF7guG+ZtlPJrAIFQSvx1EBt5HoiSuo2bAdlABx8SOdu8QB9FRrkHkl3Yxfm8IpgNg==}
+  /@netless/fastboard-core/0.3.5-canary.1_q34arnsiowzfmfxqxfjik5rqta:
+    resolution: {integrity: sha512-MlZFdh2nyMzmmQW/8RvrMS6V6TuFaTdl5qsdhCqgt0AI/VmVIRzlA/ngjUETghxd4QmtQF0YWFTJP05FuAPoxQ==}
     peerDependencies:
       '@netless/window-manager': '>=0.4.0'
       white-web-sdk: '>=2.16.0'
     dependencies:
       '@netless/app-slide': 0.2.2
-      '@netless/synced-store': 1.1.5_white-web-sdk-esm@2.16.24
+      '@netless/synced-store': 2.0.1_white-web-sdk-esm@2.16.24
       '@netless/window-manager': 0.4.31_white-web-sdk-esm@2.16.24
       white-web-sdk: /white-web-sdk-esm/2.16.24
     dev: false
 
-  /@netless/fastboard-react/0.3.5-canary.0_75wc7cfqgpdqty56nasvdvou34:
-    resolution: {integrity: sha512-/qnLeGPUobv6/QXTLtaHpirPdXqMCsnZtc1SKipvle9UkpksxFgMvWiwKW7VADw+gTFcR6A2VpgAY+Blqr6jsg==}
+  /@netless/fastboard-react/0.3.5-canary.1_75wc7cfqgpdqty56nasvdvou34:
+    resolution: {integrity: sha512-uPEh1NiTcP1XvhAvbeENEWPBRHxBW/38p5uAyk8qV3Q/vjIk/FrWpsMJtqlrMT8fomf0QyDLe9p9mMvKwSki5g==}
     peerDependencies:
       react: '*'
     dependencies:
-      '@netless/fastboard-core': 0.3.5-canary.0_q34arnsiowzfmfxqxfjik5rqta
-      '@netless/fastboard-ui': 0.3.5-canary.0_xukk34p7cajrxxib4fyrka24l4
+      '@netless/fastboard-core': 0.3.5-canary.1_q34arnsiowzfmfxqxfjik5rqta
+      '@netless/fastboard-ui': 0.3.5-canary.1_hgp66s44te76bsgdnzu6rhfcbm
       react: 17.0.2
     transitivePeerDependencies:
       - '@netless/window-manager'
       - white-web-sdk
     dev: false
 
-  /@netless/fastboard-ui/0.3.5-canary.0_xukk34p7cajrxxib4fyrka24l4:
-    resolution: {integrity: sha512-EQU0d+mMS8muP7dUqbj0CuV1FZ07S2IgbbYH04zeOMHBRQ0m9nRwti43YXLF8VraRVIPgNCvBPf5Jnu6Rz6F+w==}
+  /@netless/fastboard-ui/0.3.5-canary.1_hgp66s44te76bsgdnzu6rhfcbm:
+    resolution: {integrity: sha512-duDhaa5yBUzYKzbu/Ot0WrJjVMRdZJTJ0Vw8pe1OoujRfIZwW17faq5LsV36C0optI2lLzI2rvXsz4nPT0dMRQ==}
     peerDependencies:
-      '@netless/fastboard-core': 0.3.5-canary.0
+      '@netless/fastboard-core': 0.3.5-canary.1
     dependencies:
-      '@netless/fastboard-core': 0.3.5-canary.0_q34arnsiowzfmfxqxfjik5rqta
+      '@netless/fastboard-core': 0.3.5-canary.1_q34arnsiowzfmfxqxfjik5rqta
       tippy.js: 6.3.7
     dev: false
 
@@ -2955,12 +2955,16 @@ packages:
       white-web-sdk: /white-web-sdk-esm/2.16.24
     dev: false
 
-  /@netless/synced-store/1.1.5_white-web-sdk-esm@2.16.24:
-    resolution: {integrity: sha512-ERXoJiPhsK26udMKhvcHhfzyUk1Q3JIIT71wgGoSoNiPpW2VCWQ4+FAFsoRwa0c1pM0wVHGRRcZkxvOTkXZvdg==}
+  /@netless/synced-store/2.0.1_white-web-sdk-esm@2.16.24:
+    resolution: {integrity: sha512-8hyeMb3DPv1lMSC2vTZ03MGhcMXvtBUw7ZEiM7wCTu9WSZZwv5WAT/sSJzKitEPxZ+c2F9V9o52vaunkbJDTbg==}
     requiresBuild: true
     peerDependencies:
       white-web-sdk: '>= 2.16'
     dependencies:
+      lodash-es: 4.17.21
+      remitter: 0.2.6
+      side-effect-manager: 1.1.1
+      value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
     dev: false
 
@@ -16305,6 +16309,10 @@ packages:
       mdast-squeeze-paragraphs: 4.0.0
     dev: true
 
+  /remitter/0.2.6:
+    resolution: {integrity: sha512-vg6psVwfJsg7zcX7HVJ0UxZiRc0V7EfFOOzcp6WAEP2Br0G75DEM5KUglyxyMuxG57ntrfEBzqP6Cd91Nf2CBw==}
+    dev: false
+
   /remove-trailing-separator/1.1.0:
     resolution: {integrity: sha1-wkvOKig62tW8P1jg1IJJuSN52O8=}
     dev: true
@@ -16935,6 +16943,10 @@ packages:
 
   /side-effect-manager/0.1.5:
     resolution: {integrity: sha512-aAEXMS+9qW7rY2cwq4S6UjW3IBO/ZLWRI0sH1oGJ1eDE7YBFR1TW950qffnpx/0hByusAOVbu2zjThk9Vcjs+Q==}
+
+  /side-effect-manager/1.1.1:
+    resolution: {integrity: sha512-ppUBbzOXLydre40Yz553eIIlTdf2WCJcqMI4n06sTRCA2o5AwG5WQ2qq6fHp5C8RK3TAfgtZKrhllNG2F1jzCA==}
+    dev: false
 
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
@@ -18785,6 +18797,10 @@ packages:
   /value-enhancer/1.0.3:
     resolution: {integrity: sha512-pIYwtL9F+T1uh82eV7MG+T3KWBXPMEwr3rVMwt6szfL7ID7YXW/VbnLEqrueEPuiHxje8EybO4wncjIM6eZaug==}
     requiresBuild: true
+
+  /value-enhancer/1.3.2:
+    resolution: {integrity: sha512-RC+yfNMwuLZO2iDtHh4dxvtHP00DnSO0VARBkVoxT1eOwMJ/Rs5jKh6nBUcotWncJhjfGGhQE4SUK8goLEC5oQ==}
+    dev: false
 
   /value-equal/1.0.1:
     resolution: {integrity: sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==}
