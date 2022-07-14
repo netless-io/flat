@@ -468,5 +468,9 @@
   "unbind-success": "Unbind success",
   "delete-account": "Delete Account",
   "confirm-delete-account": "Are you sure to delete your account?",
-  "quit-all-rooms-before-delete-account": "Please quit all rooms before deleting account."
+  "quit-all-rooms-before-delete-account": "Please quit all rooms before deleting account.",
+  "switch-to-next-color": "Switch to next color",
+  "switch-to-previous-color": "Switch to previous color",
+  "pencil-tool-draws-circle": "Pencil tool draws circle",
+  "draw-circles-from-center": "Draw circles from center"
 }

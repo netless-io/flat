@@ -468,5 +468,9 @@
   "unbind-success": "解绑成功",
   "delete-account": "账号注销",
   "confirm-delete-account": "确定注销账号吗？",
-  "quit-all-rooms-before-delete-account": "请先退出所有房间"
+  "quit-all-rooms-before-delete-account": "请先退出所有房间",
+  "switch-to-next-color": "切换到下一个颜色",
+  "switch-to-previous-color": "切换到上一个颜色",
+  "pencil-tool-draws-circle": "画笔工具画直线",
+  "draw-circles-from-center": "以当前点为圆心画圆"
 }
