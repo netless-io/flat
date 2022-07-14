@@ -391,6 +391,9 @@ export class WhiteboardStore {
         if (!room || !windowManager) {
             return;
         }
+        if (!room.isWritable) {
+            return;
+        }
         if (!room.state.globalState || !(room.state.globalState as any).scrollToTop) {
             room.setGlobalState({ scrollToTop: true });
             windowManager.moveCamera({ centerY: -950, animationMode: AnimationMode.Immediately });

@@ -1,10 +1,9 @@
 import { message } from "antd";
 import { ServerRequestError } from "../../utils/error/server-request-error";
-import { NODE_ENV } from "../../constants/process";
 import { i18n } from "../../utils/i18n";
 
 export const errorTips = (e: unknown): void => {
-    if (NODE_ENV === "development") {
+    if (process.env.NODE_ENV === "development") {
         console.error(e);
     }
 
