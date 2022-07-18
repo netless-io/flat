@@ -4,7 +4,6 @@ import faker from "faker";
 import React from "react";
 import { ChatMessageList, ChatMessageListProps } from ".";
 import { User } from "../../../types/user";
-import { ChatMsgType } from "../types";
 
 const chance = new Chance();
 
@@ -39,11 +38,12 @@ Overview.args = {
     messages: Array(20)
         .fill(0)
         .map(() => ({
-            timestamp: +faker.date.past(),
-            type: ChatMsgType.ChannelMessage,
-            userUUID: chance.pickone(users).userUUID,
+            type: "room-message",
+            roomUUID: faker.datatype.uuid(),
             uuid: faker.datatype.uuid(),
-            value: chance.sentence({ words: faker.datatype.number(20) }),
+            timestamp: +faker.date.past(),
+            text: chance.sentence({ words: faker.datatype.number(20) }),
+            senderID: chance.pickone(users).userUUID,
         })),
     getUserByUUID: uuid => users.find(e => e.userUUID === uuid) || makeUser(),
 };
