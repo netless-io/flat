@@ -62,7 +62,7 @@ export const MainPageNavAvatar: React.FC<MainPageNavAvatarProps> = ({
                     return (
                         <a
                             key={menuItem.key}
-                            className="main-page-pop-menu-item "
+                            className="main-page-pop-menu-item"
                             onClick={e => {
                                 e.preventDefault();
                                 onClick(menuItem);
