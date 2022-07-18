@@ -1,7 +1,7 @@
 import "video.js/dist/video-js.css";
 
 import type { i18n } from "i18next";
-import { FastboardApp, createFastboard } from "@netless/fastboard-react";
+import { FastboardApp, createFastboard } from "@netless/fastboard-core";
 import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manager";
 import { message } from "antd";
 import { debounce } from "lodash-es";
@@ -18,7 +18,6 @@ import {
     ViewMode,
 } from "white-web-sdk";
 import { snapshot } from "@netless/white-snapshot";
-import { SyncedStore } from "@netless/synced-store";
 import { queryConvertingTaskStatus } from "../utils/courseware-converting";
 import {
     RoomType,
@@ -277,7 +276,7 @@ export class WhiteboardStore {
                 floatBar: true,
                 disableEraseImage: true,
                 isWritable: this.isWritable,
-                invisiblePlugins: [WindowManager, SyncedStore],
+                invisiblePlugins: [WindowManager],
                 uid: globalStore.userUUID,
                 callbacks: {
                     onPhaseChanged: phase => this.updatePhase(phase),

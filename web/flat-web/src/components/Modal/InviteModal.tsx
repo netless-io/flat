@@ -5,7 +5,7 @@ import { InviteModal as InviteModalImpl, errorTips } from "flat-components";
 import { useTranslation } from "react-i18next";
 import { RoomItem } from "@netless/flat-stores";
 import { GlobalStoreContext, RoomStoreContext } from "../StoreProvider";
-import { FLAT_WEB_BASE_URL } from "../../constants/process";
+import { FLAT_SERVER_BASE_URL } from "@netless/flat-server-api";
 
 export interface InviteModalProps {
     visible: boolean;
@@ -45,7 +45,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
 
     return (
         <InviteModalImpl
-            baseUrl={FLAT_WEB_BASE_URL}
+            baseUrl={FLAT_SERVER_BASE_URL}
             periodicWeeks={periodicInfo?.periodic.weeks}
             room={room}
             userName={globalStore.userName ?? ""}

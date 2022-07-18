@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next";
 
 import { GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { uploadAvatarFinish, uploadAvatarStart } from "../../../api-middleware/flatServer";
-import { globalStore } from "../../../stores/GlobalStore";
 import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../../constants/process";
+import { uploadAvatarFinish, uploadAvatarStart } from "@netless/flat-server-api";
+import { globalStore } from "@netless/flat-stores";
 
 export interface UploadAvatarProps {
     onUpload?: (file: File) => Promise<void>;

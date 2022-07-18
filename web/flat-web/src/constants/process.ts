@@ -32,12 +32,7 @@ export const GOOGLE = Object.freeze({
     CLIENT_ID: process.env.GOOGLE_OAUTH_CLIENT_ID,
 });
 
-export const FLAT_SERVER_DOMAIN = process.env.FLAT_SERVER_DOMAIN;
-export const FLAT_WEB_DOMAIN = process.env.FLAT_WEB_DOMAIN;
-
 export const FLAT_DOWNLOAD_URL = process.env.FLAT_DOWNLOAD_URL;
-
-export const FLAT_WEB_BASE_URL = `https://${FLAT_WEB_DOMAIN}`;
 
 export const PRIVACY_URL_CN = "https://flat.whiteboard.agora.io/privacy.html";
 export const PRIVACY_URL = "https://flat.whiteboard.agora.io/privacy.html";
