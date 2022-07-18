@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form, InputRef } from "antd";
 import { validate, version } from "uuid";
-import { ConfigStoreContext } from "../../../components/StoreProvider";
+import { PreferencesStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { useTranslation } from "react-i18next";
 import { HomePageHeroButton } from "flat-components";
@@ -25,7 +25,7 @@ const uuidRE =
 export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJoinRoom }) {
     const { t } = useTranslation();
     const sp = useSafePromise();
-    const configStore = useContext(ConfigStoreContext);
+    const preferencesStore = useContext(PreferencesStoreContext);
     const [form] = Form.useForm<JoinRoomFormValues>();
 
     const [isLoading, setLoading] = useState(false);
@@ -51,8 +51,8 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
 
     const defaultValues: JoinRoomFormValues = {
         roomUUID: "",
-        autoCameraOn: configStore.autoCameraOn,
-        autoMicOn: configStore.autoMicOn,
+        autoCameraOn: preferencesStore.autoCameraOn,
+        autoMicOn: preferencesStore.autoMicOn,
     };
 
     return (
@@ -141,8 +141,8 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
 
         try {
             const values = form.getFieldsValue();
-            configStore.updateAutoMicOn(values.autoMicOn);
-            configStore.updateAutoCameraOn(values.autoCameraOn);
+            preferencesStore.updateAutoMicOn(values.autoMicOn);
+            preferencesStore.updateAutoCameraOn(values.autoCameraOn);
             await sp(onJoinRoom(values.roomUUID));
             setLoading(false);
             showModal(false);

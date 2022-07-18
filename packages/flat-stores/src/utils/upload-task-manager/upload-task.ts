@@ -9,7 +9,7 @@ import {
     ServerRequestError,
     RequestErrorCode,
 } from "@netless/flat-server-api";
-import { configStore } from "../../config-store";
+import { preferencesStore } from "../../preferences-store";
 import { isPPTX } from "../file";
 
 export enum UploadStatusType {
@@ -65,7 +65,7 @@ export class UploadTask {
                 uploadStartResult = await uploadStart({
                     fileName,
                     fileSize,
-                    region: configStore.getRegion(),
+                    region: preferencesStore.getRegion(),
                 });
             } catch (e) {
                 // max concurrent upload count limit
@@ -78,7 +78,7 @@ export class UploadTask {
                     uploadStartResult = await uploadStart({
                         fileName,
                         fileSize,
-                        region: configStore.getRegion(),
+                        region: preferencesStore.getRegion(),
                     });
                 } else {
                     throw e;
