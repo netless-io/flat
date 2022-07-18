@@ -14,17 +14,24 @@ export type FlatServerResponse<T> =
           code: RequestErrorCode;
       };
 
+export type FlatServerRawResponseData<T> =
+    | FlatServerResponse<T>
+    | {
+          status: Status.Process;
+          data: T;
+      };
+
 export function setFlatAuthToken(token: string): void {
     authToken = token;
     localStorage.setItem("FlatAuthToken", token);
 }
 
-export async function post<Payload, Result>(
+export async function postRAW<Payload, Result>(
     action: string,
     payload: Payload,
     params?: AxiosRequestConfig["params"],
     token?: string,
-): Promise<Result> {
+): Promise<FlatServerRawResponseData<Result>> {
     const config: AxiosRequestConfig = {
         params,
     };
@@ -38,56 +45,34 @@ export async function post<Payload, Result>(
         Authorization: "Bearer " + Authorization,
     };
 
-    const { data: res } = await Axios.post<FlatServerResponse<Result>>(
+    const { data: res } = await Axios.post<FlatServerRawResponseData<Result>>(
         `${FLAT_SERVER_VERSIONS.V1}/${action}`,
         payload,
         config,
     );
 
-    if (res.status !== Status.Success) {
+    if (res.status !== Status.Success && res.status !== Status.Process) {
         throw new ServerRequestError(res.code);
     }
 
-    return res.data;
+    return res;
 }
 
-export const PROCESSING = Symbol("Process");
-
-// TODO: Refactor `post` `getNoAuth` APIs to support Status.X
-export async function post2<Payload, Result>(
+export async function post<Payload, Result>(
     action: string,
     payload: Payload,
     params?: AxiosRequestConfig["params"],
     token?: string,
-): Promise<Result | typeof PROCESSING> {
-    const config: AxiosRequestConfig = {
-        params,
-    };
-
-    const Authorization = token || globalStore.userInfo?.token;
-    if (!Authorization) {
-        throw new ServerRequestError(RequestErrorCode.NeedLoginAgain);
+): Promise<Result> {
+    const res = await postRAW<Payload, Result>(action, payload, params, token);
+    if (res.status !== Status.Success) {
+        if (res.status === Status.Process) {
+            throw new TypeError(`[Flat API] ${action} returns unexpected processing status`);
+        } else {
+            throw new ServerRequestError(res.code);
+        }
     }
-
-    config.headers = {
-        Authorization: "Bearer " + Authorization,
-    };
-
-    const { data: res } = await Axios.post<FlatServerResponse<Result> | { status: Status.Process }>(
-        `${FLAT_SERVER_VERSIONS.V1}/${action}`,
-        payload,
-        config,
-    );
-
-    if (res.status === Status.Process) {
-        return PROCESSING;
-    }
-
-    if (res.status === Status.Success) {
-        return res.data;
-    }
-
-    throw new ServerRequestError(res.code);
+    return res.data;
 }
 
 export async function postNotAuth<Payload, Result>(

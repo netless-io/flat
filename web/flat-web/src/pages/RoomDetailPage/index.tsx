@@ -14,8 +14,7 @@ import {
 } from "../../components/StoreProvider";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
-import { RoomStatus } from "@netless/flat-server-api";
-import { FLAT_WEB_BASE_URL } from "../../constants/process";
+import { FLAT_SERVER_BASE_URL, RoomStatus } from "@netless/flat-server-api";
 import { useLoginCheck } from "../utils/use-login-check";
 
 export const RoomDetailPage = observer(function RoomDetailPage() {
@@ -104,7 +103,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
         if (roomInfo) {
             const { roomType, roomUUID, ownerUUID } = roomInfo;
             window.open(
-                `${FLAT_WEB_BASE_URL}/replay/${roomType}/${roomUUID}/${ownerUUID}/`,
+                `${FLAT_SERVER_BASE_URL}/replay/${roomType}/${roomUUID}/${ownerUUID}/`,
                 "_blank",
             );
         }
@@ -123,7 +122,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
         <div className="room-detail-page-container">
             <div className="room-detail-page-panel-container">
                 <RoomDetailPanel
-                    inviteBaseUrl={FLAT_WEB_BASE_URL}
+                    inviteBaseUrl={FLAT_SERVER_BASE_URL}
                     isCreator={isCreator}
                     isPeriodicDetailsPage={false}
                     jumpToPeriodicRoomDetailPage={jumpToPeriodicRoomDetailPage}

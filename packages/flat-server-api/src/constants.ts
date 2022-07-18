@@ -1,7 +1,7 @@
-const FLAT_SERVER_PROTOCOL = `https://${process.env.FLAT_SERVER_DOMAIN}`;
+export const FLAT_SERVER_BASE_URL = `https://${process.env.FLAT_SERVER_DOMAIN}`;
 
 export const FLAT_SERVER_VERSIONS = {
-    V1: `${FLAT_SERVER_PROTOCOL}/v1`,
+    V1: `${FLAT_SERVER_BASE_URL}/v1`,
 } as const;
 
 export const FLAT_SERVER_LOGIN = {

@@ -5,24 +5,18 @@ import "./index.less";
 import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Checkbox, Input, message, Modal, Radio } from "antd";
-import { FlatPrefersColorScheme, AppearancePicker } from "flat-components";
+import { FlatPrefersColorScheme, AppearancePicker, errorTips } from "flat-components";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { useTranslation } from "react-i18next";
 
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import {
-    deleteAccount,
-    deleteAccountValidate,
-    loginCheck,
-    rename,
-} from "../../../api-middleware/flatServer";
+import { deleteAccount, deleteAccountValidate, loginCheck, rename } from "@netless/flat-server-api";
 import { ConfirmButtons } from "./ConfirmButtons";
 import { uploadAvatar, UploadAvatar } from "./UploadAvatar";
 import { BindWeChat } from "./binding/WeChat";
 import { useBindingList } from "./binding";
 import { BindGitHub } from "./binding/GitHub";
-import { errorTips } from "../../../components/Tips/ErrorTips";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
 
 enum SelectLanguage {
