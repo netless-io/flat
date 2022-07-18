@@ -3,7 +3,6 @@ import Chance from "chance";
 import faker from "faker";
 import React from "react";
 import { ChatMessage, ChatMessageProps } from ".";
-import { ChatMsgType } from "../types";
 
 const chance = new Chance();
 
@@ -23,10 +22,11 @@ Overview.args = {
         avatar: "http://placekitten.com/64/64",
     },
     message: {
-        timestamp: +faker.date.past(),
-        type: ChatMsgType.ChannelMessage,
-        userUUID: faker.datatype.boolean() ? userUUID : faker.datatype.uuid(),
+        type: "room-message",
+        roomUUID: faker.datatype.uuid(),
         uuid: faker.datatype.uuid(),
-        value: chance.sentence({ words: faker.datatype.number(20) }),
+        timestamp: +faker.date.past(),
+        text: chance.sentence({ words: faker.datatype.number(20) }),
+        senderID: faker.datatype.boolean() ? userUUID : faker.datatype.uuid(),
     },
 };
