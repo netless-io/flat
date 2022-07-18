@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { FlatThemeBodyProvider, LoadingPage } from "flat-components";
-import { ConfigStoreContext, PageStoreContext } from "../components/StoreProvider";
+import { PreferencesStoreContext, PageStoreContext } from "../components/StoreProvider";
 import { RouteNameType } from "../route-config";
 import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
 import { routePages } from "./route-pages";
@@ -37,7 +37,7 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
     routeProps,
 }) {
     const pageStore = useContext(PageStoreContext);
-    const configStore = useContext(ConfigStoreContext);
+    const preferencesStore = useContext(PreferencesStoreContext);
     const { t } = useTranslation();
 
     useIsomorphicLayoutEffect(() => {
@@ -62,7 +62,7 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
     const hasHeader = pageStore.name && routePages[pageStore.name].hasHeader;
 
     return (
-        <FlatThemeBodyProvider prefersColorScheme={configStore.prefersColorScheme}>
+        <FlatThemeBodyProvider prefersColorScheme={preferencesStore.prefersColorScheme}>
             <AppRouteErrorBoundary
                 Comp={
                     componentCache.get(name) ||

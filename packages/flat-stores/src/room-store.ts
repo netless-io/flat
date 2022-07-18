@@ -23,7 +23,7 @@ import {
     RoomType,
 } from "@netless/flat-server-api";
 import { globalStore } from "./global-store";
-import { configStore } from "./config-store";
+import { preferencesStore } from "./preferences-store";
 
 export interface RoomRecording {
     beginTime: number;
@@ -82,7 +82,7 @@ export class RoomStore {
         }
 
         const roomUUID = await createOrdinaryRoom(payload);
-        configStore.setRegion(payload.region);
+        preferencesStore.setRegion(payload.region);
         const { ...restPayload } = payload;
         this.updateRoom(roomUUID, globalStore.userUUID, {
             ...restPayload,
@@ -93,7 +93,7 @@ export class RoomStore {
 
     public async createPeriodicRoom(payload: CreatePeriodicRoomPayload): Promise<void> {
         await createPeriodicRoom(payload);
-        configStore.setRegion(payload.region);
+        preferencesStore.setRegion(payload.region);
         // need roomUUID and periodicUUID from server to cache the payload
     }
 
