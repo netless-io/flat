@@ -47,6 +47,6 @@ function getLSStore<TStore>(storeLSName: string, lsVersion: number): null | TSto
     }
 }
 
-function setLSStore<TStore>(storeLSName: string, configStore: TStore, lsVersion: number): void {
-    localStorage.setItem(storeLSName, JSON.stringify([lsVersion, configStore]));
+function setLSStore<TStore>(storeLSName: string, Store: TStore, lsVersion: number): void {
+    localStorage.setItem(storeLSName, JSON.stringify([lsVersion, Store]));
 }
