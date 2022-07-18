@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { listBindings, ListBindingsResult } from "../../../../api-middleware/flatServer";
+import { listBindings, ListBindingsResult } from "@netless/flat-server-api";
 import { useSafePromise } from "../../../../utils/hooks/lifecycle";
 
 const defaultBindings: ListBindingsResult = {

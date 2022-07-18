@@ -11,11 +11,11 @@ import {
     bindingProcess,
     removeBinding,
     LoginPlatform,
-} from "../../../../api-middleware/flatServer";
-import { FLAT_SERVER_USER_BINDING } from "../../../../api-middleware/flatServer/constants";
+    FLAT_SERVER_USER_BINDING,
+} from "@netless/flat-server-api";
 import { useSafePromise } from "../../../../utils/hooks/lifecycle";
-import { errorTips } from "../../../../components/Tips/ErrorTips";
-import { GlobalStore } from "../../../../stores/GlobalStore";
+import { errorTips } from "flat-components";
+import { GlobalStore } from "@netless/flat-stores";
 
 export interface BindingWeChatProps {
     isBind: boolean;

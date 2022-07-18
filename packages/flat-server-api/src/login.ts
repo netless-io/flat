@@ -1,4 +1,5 @@
-import { post, postNotAuth } from "./utils";
+import { Status } from "./constants";
+import { post, postNotAuth, postRAW } from "./utils";
 
 export interface LoginCheckPayload {}
 
@@ -119,4 +120,98 @@ export async function bindingPhone(phone: string, code: number): Promise<Binding
         phone,
         code,
     });
+}
+
+export interface ListBindingsPayload {}
+
+export interface ListBindingsResult {
+    wechat: boolean;
+    phone: boolean;
+    agora: boolean;
+    apple: boolean;
+    github: boolean;
+    google: boolean;
+}
+
+export async function listBindings(): Promise<ListBindingsResult> {
+    return await post<ListBindingsPayload, ListBindingsResult>("user/binding/list", {});
+}
+
+export interface SetBindingAuthUUIDPayload {
+    authUUID: string;
+}
+
+export interface SetBindingAuthUUIDResult {}
+
+export async function setBindingAuthUUID(authUUID: string): Promise<void> {
+    await post<SetBindingAuthUUIDPayload, SetBindingAuthUUIDResult>("user/binding/set-auth-uuid", {
+        authUUID,
+    });
+}
+
+export interface BindingProcessPayload {
+    authUUID: string;
+}
+
+export interface BindingProcessResult {
+    processing: boolean;
+    status: boolean;
+}
+
+export async function bindingProcess(authUUID: string): Promise<BindingProcessResult> {
+    try {
+        const ret = await postRAW<BindingProcessPayload, {}>("user/binding/process", {
+            authUUID,
+        });
+        if (ret.status === Status.Process) {
+            return {
+                processing: true,
+                status: false,
+            };
+        }
+        return {
+            processing: false,
+            status: true,
+        };
+    } catch {
+        return {
+            processing: false,
+            status: false,
+        };
+    }
+}
+
+export enum LoginPlatform {
+    WeChat = "WeChat",
+    Github = "Github",
+    Apple = "Apple",
+    Agora = "Agora",
+    Google = "Google",
+    Phone = "Phone",
+}
+
+export interface RemoveBindingPayload {
+    target: LoginPlatform;
+}
+
+export interface RemoveBindingResult {
+    token: string;
+}
+
+export async function removeBinding(target: LoginPlatform): Promise<RemoveBindingResult> {
+    return await post<RemoveBindingPayload, RemoveBindingResult>("user/binding/remove", {
+        target,
+    });
+}
+
+export interface DeleteAccountValidateResult {
+    alreadyJoinedRoomCount: number;
+}
+
+export async function deleteAccountValidate(): Promise<DeleteAccountValidateResult> {
+    return await post<{}, DeleteAccountValidateResult>("user/deleteAccount/validate", {});
+}
+
+export async function deleteAccount(): Promise<void> {
+    await post<{}, {}>("user/deleteAccount", {});
 }

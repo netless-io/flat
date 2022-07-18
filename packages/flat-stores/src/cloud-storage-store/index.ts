@@ -26,6 +26,7 @@ import {
     removeExternalFiles,
     renameFile,
     renameExternalFile,
+    FLAT_SERVER_BASE_URL,
 } from "@netless/flat-server-api";
 import { coursewarePreloader } from "../utils/courseware-preloader";
 import { getUploadTaskManager } from "../utils/upload-task-manager";
@@ -453,8 +454,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         const projector = resourceType === "WhiteboardProjector" ? "projector" : "legacy";
 
         const resourcePreviewURL = isConvertFileType
-            ? `${FLAT_WEB_BASE_URL}/preview/${encodeFileURL}/${taskToken}/${taskUUID}/${region}/${projector}/`
-            : `${FLAT_WEB_BASE_URL}/preview/${encodeFileURL}/`;
+            ? `${FLAT_SERVER_BASE_URL}/preview/${encodeFileURL}/${taskToken}/${taskUUID}/${region}/${projector}/`
+            : `${FLAT_SERVER_BASE_URL}/preview/${encodeFileURL}/`;
 
         switch (file.convert) {
             case "converting": {
