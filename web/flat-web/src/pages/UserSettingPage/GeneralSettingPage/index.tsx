@@ -9,7 +9,7 @@ import { FlatPrefersColorScheme, AppearancePicker, errorTips } from "flat-compon
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import { useTranslation } from "react-i18next";
 
-import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
+import { PreferencesStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { deleteAccount, deleteAccountValidate, loginCheck, rename } from "@netless/flat-server-api";
 import { ConfirmButtons } from "./ConfirmButtons";
@@ -26,7 +26,7 @@ enum SelectLanguage {
 
 export const GeneralSettingPage = observer(function GeneralSettingPage() {
     const globalStore = useContext(GlobalStoreContext);
-    const configStore = useContext(ConfigStoreContext);
+    const preferencesStore = useContext(PreferencesStoreContext);
 
     const sp = useSafePromise();
     const pushHistory = usePushHistory();
@@ -64,7 +64,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
 
     const changeAppearance = (event: CheckboxChangeEvent): void => {
         const prefersColorScheme: FlatPrefersColorScheme = event.target.value;
-        configStore.updatePrefersColorScheme(prefersColorScheme);
+        preferencesStore.updatePrefersColorScheme(prefersColorScheme);
     };
 
     async function removeAccount(): Promise<void> {
@@ -142,7 +142,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                     <span>{t("app-appearance-setting")}</span>
                     <AppearancePicker
                         changeAppearance={changeAppearance}
-                        defaultValue={configStore.prefersColorScheme}
+                        defaultValue={preferencesStore.prefersColorScheme}
                     />
                 </div>
                 <div className="general-setting-device-test-box">

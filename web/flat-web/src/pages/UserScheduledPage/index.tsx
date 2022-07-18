@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 
 import { RoomType } from "@netless/flat-server-api";
 import {
-    ConfigStoreContext,
+    PreferencesStoreContext,
     GlobalStoreContext,
     RoomStoreContext,
 } from "../../components/StoreProvider";
@@ -34,7 +34,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
     const sp = useSafePromise();
     const roomStore = useContext(RoomStoreContext);
     const globalStore = useContext(GlobalStoreContext);
-    const configStore = useContext(ConfigStoreContext);
+    const preferencesStore = useContext(PreferencesStoreContext);
     const [isLoading, setLoading] = useState(false);
 
     const [defaultValues] = useState<EditRoomFormValues>(() => {
@@ -45,7 +45,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
                 : "",
             type: RoomType.BigClass,
             isPeriodic: false,
-            region: configStore.getRegion(),
+            region: preferencesStore.getRegion(),
             beginTime: new Date(scheduleBeginTime),
             endTime: addMinutes(scheduleBeginTime, 30),
             periodic: {

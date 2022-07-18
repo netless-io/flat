@@ -6,9 +6,11 @@ import { autoPersistStore } from "./utils/auto-persist-store";
 const LS_VERSION = 1;
 
 /**
- * Properties in Config Store are persisted and shared globally.
+ * User preferences
+ *
+ * Properties in Preferences Store are persisted and shared globally.
  */
-export class ConfigStore {
+export class PreferencesStore {
     /** Turn on camera when joining room */
     public autoCameraOn = false;
     /** Turn on mic when joining room */
@@ -23,7 +25,7 @@ export class ConfigStore {
     public prefersColorScheme: FlatPrefersColorScheme = "light";
 
     public constructor() {
-        autoPersistStore({ storeLSName: "ConfigStore", store: this, version: LS_VERSION });
+        autoPersistStore({ storeLSName: "PreferencesStore", store: this, version: LS_VERSION });
     }
 
     public updateAutoCameraOn = (isOn: boolean): void => {
@@ -55,4 +57,4 @@ export class ConfigStore {
     };
 }
 
-export const configStore = new ConfigStore();
+export const preferencesStore = new PreferencesStore();

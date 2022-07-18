@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form, Dropdown, Menu, InputRef } from "antd";
 import { RoomType } from "@netless/flat-server-api";
-import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
+import { PreferencesStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { ClassPicker, HomePageHeroButton, Region, regions, RegionSVG } from "flat-components";
 import { useTranslation } from "react-i18next";
@@ -23,13 +23,13 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const { t } = useTranslation();
     const sp = useSafePromise();
     const globalStore = useContext(GlobalStoreContext);
-    const configStore = useContext(ConfigStoreContext);
+    const preferencesStore = useContext(PreferencesStoreContext);
     const [form] = Form.useForm<CreateRoomFormValues>();
 
     const [isLoading, setLoading] = useState(false);
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
-    const [roomRegion, setRoomRegion] = useState<Region>(configStore.getRegion());
+    const [roomRegion, setRoomRegion] = useState<Region>(preferencesStore.getRegion());
     const [classType, setClassType] = useState<RoomType>(RoomType.BigClass);
     const roomTitleInputRef = useRef<InputRef>(null);
 
@@ -38,7 +38,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
             ? t("create-room-default-title", { name: globalStore.userInfo.name })
             : "",
         roomType: RoomType.BigClass,
-        autoCameraOn: configStore.autoCameraOn,
+        autoCameraOn: preferencesStore.autoCameraOn,
     };
 
     useEffect(() => {
@@ -165,7 +165,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
 
         try {
             const values = form.getFieldsValue();
-            configStore.updateAutoCameraOn(values.autoCameraOn);
+            preferencesStore.updateAutoCameraOn(values.autoCameraOn);
             await sp(onCreateRoom(values.roomTitle, values.roomType, roomRegion));
             setLoading(false);
             showModal(false);

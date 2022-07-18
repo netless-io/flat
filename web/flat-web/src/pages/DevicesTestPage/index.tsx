@@ -8,8 +8,7 @@ import { FlatRTCDevice } from "@netless/flat-rtc";
 import { useParams } from "react-router-dom";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
-import { GlobalStoreContext } from "../../components/StoreProvider";
-import { configStore } from "@netless/flat-stores";
+import { GlobalStoreContext, PreferencesStoreContext } from "../../components/StoreProvider";
 import { FlatRTCContext } from "../../components/FlatRTCContext";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { useLoginCheck } from "../utils/use-login-check";
@@ -18,6 +17,7 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const rtc = useContext(FlatRTCContext);
+    const preferencesStore = useContext(PreferencesStoreContext);
     const sp = useSafePromise();
 
     useLoginCheck();
@@ -114,26 +114,26 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     useEffect(() => {
         // check device id on changes
         if (cameraDevices.length > 0 && !cameraDeviceId) {
-            const lastCameraId = configStore.cameraId;
+            const lastCameraId = preferencesStore.cameraId;
             lastCameraId
                 ? setCameraDeviceId(lastCameraId)
                 : setCameraDeviceId(cameraDevices[0].deviceId);
         }
-    }, [cameraDeviceId, cameraDevices]);
+    }, [preferencesStore, cameraDeviceId, cameraDevices]);
 
     useEffect(() => {
         // check device id on changes
         if (microphoneDevices.length > 0 && !microphoneDeviceId) {
-            const lastMicrophoneId = configStore.microphoneId;
+            const lastMicrophoneId = preferencesStore.microphoneId;
             lastMicrophoneId
                 ? setMicrophoneDeviceId(lastMicrophoneId)
                 : setMicrophoneDeviceId(microphoneDevices[0].deviceId);
         }
-    }, [microphoneDeviceId, microphoneDevices]);
+    }, [preferencesStore, microphoneDeviceId, microphoneDevices]);
 
     const joinRoom = async (): Promise<void> => {
-        configStore.updateCameraId(cameraDeviceId);
-        configStore.updateMicrophoneId(microphoneDeviceId);
+        preferencesStore.updateCameraId(cameraDeviceId);
+        preferencesStore.updateMicrophoneId(microphoneDeviceId);
         await joinRoomHandler(roomUUID, pushHistory);
     };
 
