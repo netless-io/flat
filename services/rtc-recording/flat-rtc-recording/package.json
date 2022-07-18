@@ -1,0 +1,19 @@
+{
+  "name": "@netless/flat-rtc-recording",
+  "version": "0.1.0",
+  "description": "Flat classroom RTC recording interface",
+  "main": "src/index.ts",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "@netless/flat-rtc": "workspace:*"
+  },
+  "devDependencies": {
+    "@netless/flat-rtc": "workspace:*",
+    "prettier": "^2.3.0",
+    "typescript": "^4.6.2"
+  }
+}
