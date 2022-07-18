@@ -1,5 +1,5 @@
 import { SideEffectManager } from "side-effect-manager";
-import { action, makeAutoObservable, observable, reaction } from "mobx";
+import { action, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { RoomState as WhiteRoomState, RoomMember as WhiteRoomMember } from "white-web-sdk";
 import { FlatRTC, FlatRTCMode, FlatRTCRole } from "@netless/flat-rtc";
 import type { FlatRTM } from "@netless/flat-rtm";
@@ -10,10 +10,11 @@ import {
     generateRTCToken,
     RoomStatus,
     RoomType,
+    checkRTMCensor,
 } from "@netless/flat-server-api";
-import { SyncedStore, Storage } from "@netless/synced-store";
 import { i18n } from "flat-i18n";
 import { errorTips, message } from "flat-components";
+import { SyncedStore, Storage } from "@netless/fastboard-core";
 import { RoomItem, roomStore } from "../room-store";
 import { UserStore } from "../user-store";
 import { WhiteboardStore } from "../whiteboard-store";
@@ -57,6 +58,9 @@ export class ClassroomStore {
     public isCloudStoragePanelVisible = false;
 
     public roomStatusLoading = RoomStatusLoadingType.Null;
+
+    /** is RTC joined room */
+    public isJoinedRTC = false;
 
     /** is current user sharing screen */
     public isScreenSharing = false;
@@ -231,7 +235,7 @@ export class ClassroomStore {
         });
 
         const fastboard = await this.whiteboardStore.joinWhiteboardRoom();
-        const syncedStore = await SyncedStore.init<ClassroomReplayEventData>(fastboard.room);
+        const syncedStore: SyncedStore<ClassroomReplayEventData> = fastboard.syncedStore;
 
         await this.users.initUsers([...this.rtm.members]);
 
@@ -327,7 +331,7 @@ export class ClassroomStore {
         );
 
         this.sideEffect.addDisposer(
-            classroomStorage.addStateChangedListener(diff => {
+            classroomStorage.on("stateChanged", diff => {
                 if (diff.classMode) {
                     this.updateClassMode(diff.classMode.newValue);
                 }
@@ -366,7 +370,7 @@ export class ClassroomStore {
         });
 
         this.sideEffect.addDisposer(
-            deviceStateStorage.addStateChangedListener(diff => {
+            deviceStateStorage.on("stateChanged", diff => {
                 this.users.updateUsers(user => {
                     const deviceState = diff[user.userUUID]?.newValue;
                     user.camera = Boolean(deviceState?.camera);
@@ -425,6 +429,9 @@ export class ClassroomStore {
 
     public onMessageSend = async (text: string): Promise<void> => {
         if (this.isBan && !this.isCreator) {
+            return;
+        }
+        if (process.env.FLAT_REGION === "CN" && !(await checkRTMCensor({ text })).valid) {
             return;
         }
         await this.rtm.sendRoomMessage(text);
@@ -664,6 +671,10 @@ export class ClassroomStore {
                 refreshToken: generateRTCToken,
                 shareScreenUID: globalStore.rtcShareScreen?.uid || -1,
                 shareScreenToken: globalStore.rtcShareScreen?.token || "",
+            });
+
+            runInAction(() => {
+                this.isJoinedRTC = true;
             });
         }
     }

@@ -10,8 +10,11 @@ import { useTranslation } from "react-i18next";
 import { PageStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { globalStore } from "@netless/flat-stores";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
-import { cancelPeriodicRoom, cancelPeriodicSubRoom } from "@netless/flat-server-api";
-import { FLAT_WEB_BASE_URL } from "../../constants/process";
+import {
+    cancelPeriodicRoom,
+    cancelPeriodicSubRoom,
+    FLAT_SERVER_BASE_URL,
+} from "@netless/flat-server-api";
 import { useLoginCheck } from "../utils/use-login-check";
 
 export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPage() {
@@ -137,7 +140,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
     return (
         <div className="periodic-room-detail-page-container">
             <PeriodicRoomPanel
-                inviteBaseUrl={FLAT_WEB_BASE_URL}
+                inviteBaseUrl={FLAT_SERVER_BASE_URL}
                 isCreator={isCreator}
                 jumpToModifyOrdinaryRoomPage={jumpToModifyOrdinaryRoomPage}
                 jumpToModifyPeriodicRoomPage={jumpToModifyPeriodicRoomPage}

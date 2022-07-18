@@ -5,17 +5,17 @@ import { message, Modal } from "antd";
 import { useTranslation } from "react-i18next";
 import { GithubFilled } from "@ant-design/icons";
 
-import { GlobalStore } from "../../../../stores/GlobalStore";
+import { GlobalStore } from "@netless/flat-stores";
 import { useSafePromise } from "../../../../utils/hooks/lifecycle";
 import {
     bindingProcess,
     LoginPlatform,
     removeBinding,
     setBindingAuthUUID,
-} from "../../../../api-middleware/flatServer";
-import { FLAT_SERVER_USER_BINDING } from "../../../../api-middleware/flatServer/constants";
+    FLAT_SERVER_USER_BINDING,
+} from "@netless/flat-server-api";
 import { getGithubURL } from "../../../LoginPage/githubLogin";
-import { errorTips } from "../../../../components/Tips/ErrorTips";
+import { errorTips } from "flat-components";
 
 export interface BindGitHubProps {
     isBind: boolean;
