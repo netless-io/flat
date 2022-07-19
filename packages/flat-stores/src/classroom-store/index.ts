@@ -14,14 +14,13 @@ import {
 } from "@netless/flat-server-api";
 import { i18n } from "flat-i18n";
 import { errorTips, message } from "flat-components";
-import { SyncedStore, Storage } from "@netless/fastboard-core";
+import { Storage } from "@netless/fastboard-core";
 import { RoomItem, roomStore } from "../room-store";
 import { UserStore } from "../user-store";
 import { WhiteboardStore } from "../whiteboard-store";
 import { globalStore } from "../global-store";
 import { ClassModeType, RoomStatusLoadingType } from "./constants";
 import { ChatStore } from "./chat-store";
-import type { ClassroomReplayEventData } from "./event";
 
 export * from "./constants";
 export * from "./chat-store";
@@ -235,7 +234,6 @@ export class ClassroomStore {
         });
 
         const fastboard = await this.whiteboardStore.joinWhiteboardRoom();
-        const syncedStore: SyncedStore<ClassroomReplayEventData> = fastboard.syncedStore;
 
         await this.users.initUsers([...this.rtm.members]);
 
@@ -252,14 +250,17 @@ export class ClassroomStore {
         };
         updateOnStateUsers(fastboard.room.state.roomMembers);
 
-        const deviceStateStorage = syncedStore.connectStorage<DeviceStateStorageState>(
+        const deviceStateStorage = fastboard.syncedStore.connectStorage<DeviceStateStorageState>(
             "deviceState",
             {},
         );
-        const classroomStorage = syncedStore.connectStorage<ClassroomStorageState>("raiseHand", {
-            classMode: ClassModeType.Lecture,
-            raiseHandUsers: [],
-        });
+        const classroomStorage = fastboard.syncedStore.connectStorage<ClassroomStorageState>(
+            "raiseHand",
+            {
+                classMode: ClassModeType.Lecture,
+                raiseHandUsers: [],
+            },
+        );
         this.deviceStateStorage = deviceStateStorage;
         this.classroomStorage = classroomStorage;
 
@@ -267,7 +268,7 @@ export class ClassroomStore {
 
         this.chatStore.onNewMessage = message => {
             if (this.isRecording) {
-                syncedStore.dispatchEvent("new-message", message);
+                fastboard.syncedStore.dispatchEvent("new-message", message);
             }
         };
 
