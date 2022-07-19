@@ -28,9 +28,10 @@ import { CloudStorageFile, CloudStorageStore } from "../cloud-storage-store";
 import { coursewarePreloader } from "../utils/courseware-preloader";
 import { getFileExt, isPPTX } from "../utils/file";
 import { globalStore } from "../global-store";
+import { ClassroomReplayEventData } from "../classroom-store/event";
 
 export class WhiteboardStore {
-    public fastboardAPP: FastboardApp | null = null;
+    public fastboardAPP: FastboardApp<ClassroomReplayEventData> | null = null;
     public room: Room | null = null;
     public phase: RoomPhase = RoomPhase.Connecting;
     public viewMode: ViewMode | null = null;
@@ -88,7 +89,7 @@ export class WhiteboardStore {
             ` FLAT/${flatUA}_${process.env.FLAT_REGION}@${process.env.VERSION} `;
     }
 
-    public updateFastboardAPP = (whiteboardApp: FastboardApp): void => {
+    public updateFastboardAPP = (whiteboardApp: FastboardApp<ClassroomReplayEventData>): void => {
         this.fastboardAPP = whiteboardApp;
     };
 
@@ -226,7 +227,7 @@ export class WhiteboardStore {
         await this.windowManager?.addApp(config);
     };
 
-    public async joinWhiteboardRoom(): Promise<FastboardApp> {
+    public async joinWhiteboardRoom(): Promise<FastboardApp<ClassroomReplayEventData>> {
         const NETLESS_APP_IDENTIFIER = process.env.NETLESS_APP_IDENTIFIER;
         if (!NETLESS_APP_IDENTIFIER) {
             throw new Error("Missing env NETLESS_APP_IDENTIFIER");
@@ -242,7 +243,7 @@ export class WhiteboardStore {
 
         const cursorName = globalStore.userInfo?.name;
 
-        const fastboardAPP = await createFastboard({
+        const fastboardAPP = await createFastboard<ClassroomReplayEventData>({
             sdkConfig: {
                 appIdentifier: NETLESS_APP_IDENTIFIER,
                 deviceType: DeviceType.Surface,

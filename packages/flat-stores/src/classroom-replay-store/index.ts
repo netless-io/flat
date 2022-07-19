@@ -8,7 +8,6 @@ import { replayFastboard, FastboardPlayer } from "@netless/fastboard-react";
 import { DeviceType } from "white-web-sdk";
 import { SideEffectManager } from "side-effect-manager";
 import type { ClassroomReplayEventData } from "../classroom-store/event";
-import { SyncedStore } from "@netless/synced-store";
 
 export interface ClassroomReplayStoreConfig {
     roomUUID: string;
@@ -37,7 +36,7 @@ export class ClassroomReplayStore {
 
     public error: Error | null = null;
 
-    public fastboard: FastboardPlayer | null = null;
+    public fastboard: FastboardPlayer<ClassroomReplayEventData> | null = null;
 
     private currentRecording: RoomRecording | null = null;
 
@@ -114,7 +113,7 @@ export class ClassroomReplayStore {
             throw new Error("Missing userUUID");
         }
 
-        const fastboard = await replayFastboard({
+        const fastboard = await replayFastboard<ClassroomReplayEventData>({
             sdkConfig: {
                 appIdentifier: NETLESS_APP_IDENTIFIER,
                 deviceType: DeviceType.Surface,
@@ -135,10 +134,8 @@ export class ClassroomReplayStore {
         });
         this.fastboard = fastboard;
 
-        const syncedStore = await SyncedStore.init<ClassroomReplayEventData>(fastboard.player);
-
         this.sideEffect.addDisposer(
-            syncedStore.addEventListener("new-message", event => {
+            fastboard.syncedStore.addEventListener("new-message", event => {
                 this.messages.push(event.payload);
             }),
         );

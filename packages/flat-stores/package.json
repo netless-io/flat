@@ -9,31 +9,26 @@
     "build": "tsc"
   },
   "peerDependencies": {
-    "@netless/flat-rtc": "workspace:*",
-    "@netless/flat-rtm": "workspace:*",
-    "@netless/flat-server-api": "workspace:*",
-    "emittery": "0.x",
-    "flat-components": "workspace:*",
-    "flat-i18n": "workspace:*",
+    "@netless/fastboard-react": ">=0",
     "mobx": "6.x",
-    "side-effect-manager": "^0.1.5",
-    "uuid": "8.x",
     "white-web-sdk": ">=2.16"
   },
   "devDependencies": {
-    "@netless/fastboard-core": "^0.3.5-canary.2",
+    "@netless/fastboard-react": "^0.3.5-canary.5",
+    "@netless/window-manager": "^0.4.31",
+    "mobx": "^6.4.2",
+    "prettier": "^2.3.0",
+    "react": "^17.0.2",
+    "typescript": "^4.6.2",
+    "white-web-sdk": "npm:white-web-sdk-esm@2.16.24"
+  },
+  "dependencies": {
     "@netless/flat-rtc": "workspace:*",
     "@netless/flat-rtm": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
-    "@netless/window-manager": "^0.4.31",
-    "emittery": "^0.10.2",
     "flat-components": "workspace:*",
     "flat-i18n": "workspace:*",
-    "mobx": "^6.4.2",
-    "prettier": "^2.3.0",
     "side-effect-manager": "^0.1.5",
-    "typescript": "^4.6.2",
-    "uuid": "^8.3.2",
-    "white-web-sdk": "npm:white-web-sdk-esm@2.16.24"
+    "uuid": "^8.3.2"
   }
 }
