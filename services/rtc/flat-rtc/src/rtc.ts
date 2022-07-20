@@ -26,7 +26,9 @@ export abstract class FlatRTC<
 
     public abstract readonly shareScreen: FlatRTCShareScreen;
 
-    public abstract destroy(): Promise<void>;
+    public async destroy(): Promise<void> {
+        this.events.destroy();
+    }
 
     public abstract joinRoom(config: TJoinRoomConfig): Promise<void>;
     public abstract leaveRoom(): Promise<void>;
