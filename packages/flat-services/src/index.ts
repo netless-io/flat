@@ -1,5 +1,5 @@
-import { FlatRTC } from "@netless/flat-rtc";
-import { FlatRTM } from "@netless/flat-rtm";
+import type { FlatRTC } from "@netless/flat-rtc";
+import type { FlatRTM } from "@netless/flat-rtm";
 
 export interface FlatServicesCatalog {
     rtc: FlatRTC;

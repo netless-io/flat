@@ -14,7 +14,7 @@ import {
 } from "@netless/flat-server-api";
 import { i18n } from "flat-i18n";
 import { errorTips, message } from "flat-components";
-import { Storage } from "@netless/fastboard-core";
+import { Storage } from "@netless/fastboard-react";
 import { RoomItem, roomStore } from "../room-store";
 import { UserStore } from "../user-store";
 import { WhiteboardStore } from "../whiteboard-store";
