@@ -1,6 +1,6 @@
 import React, { createContext, FC } from "react";
 import { preferencesStore, globalStore, roomStore } from "@netless/flat-stores";
-import { pageStore } from "../stores/page-store";
+import { pageStore } from "./page-store";
 
 export const GlobalStoreContext = createContext(globalStore);
 

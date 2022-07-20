@@ -13,7 +13,7 @@
     "mobx": "6.x",
     "white-web-sdk": ">=2.16"
   },
-  "devDependencies": {
+"devDependencies": {
     "@netless/fastboard-react": "^0.3.5-canary.5",
     "@netless/window-manager": "^0.4.31",
     "mobx": "^6.4.2",

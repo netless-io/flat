@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
-import { MainPageLayoutHorizontalContainerProps } from "../components/MainPageLayoutHorizontalContainer";
-import { RouteNameType } from "../route-config";
+import { MainPageLayoutHorizontalContainerProps } from "./MainPageLayoutHorizontalContainer";
+import { RouteNameType } from "../../src/route-config";
 
 type DelegateProps = MainPageLayoutHorizontalContainerProps;
 
