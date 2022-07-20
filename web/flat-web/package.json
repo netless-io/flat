@@ -27,6 +27,7 @@
     "@netless/flat-rtm": "workspace:*",
     "@netless/flat-rtm-agora": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
+    "@netless/flat-services": "workspace:*",
     "@netless/flat-stores": "workspace:*",
     "@netless/player-controller": "^0.0.9",
     "@netless/synced-store": "^1.1.1",

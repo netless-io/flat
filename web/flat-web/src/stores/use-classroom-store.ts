@@ -1,44 +1,45 @@
 import { ClassroomStore, ClassroomStoreConfig } from "@netless/flat-stores";
 import { useEffect, useState } from "react";
-import { getFlatRTC } from "../services/flat-rtc";
-import { getFlatRTM } from "../services/flat-rtm";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { errorTips, useSafePromise } from "flat-components";
-import { useAutoRun } from "../utils/mobx";
+import { useFlatService } from "../components/FlatServicesContext";
 
 export type useClassRoomStoreConfig = Omit<ClassroomStoreConfig, "rtc" | "rtm">;
 
-export function useClassroomStore(config: useClassRoomStoreConfig): ClassroomStore {
-    const [classRoomStore] = useState(
-        () =>
-            new ClassroomStore({
-                ...config,
-                rtc: getFlatRTC(),
-                rtm: getFlatRTM(),
-            }),
-    );
+export function useClassroomStore(config: useClassRoomStoreConfig): ClassroomStore | undefined {
+    const rtc = useFlatService("rtc");
+    const rtm = useFlatService("rtm");
+    const [classroomStore, setClassroomStore] = useState<ClassroomStore>();
 
     const pushHistory = usePushHistory();
     const sp = useSafePromise();
 
-    useAutoRun(() => {
-        const title = classRoomStore.roomInfo?.title;
+    const title = classroomStore?.roomInfo?.title;
+    useEffect(() => {
         if (title) {
             document.title = title;
         }
-    });
+    }, [title]);
 
     useEffect(() => {
-        sp(classRoomStore.init()).catch(e => {
-            errorTips(e);
-            pushHistory(RouteNameType.HomePage);
-        });
-        return () => {
-            void classRoomStore.destroy();
-        };
-        // run only on component mount
+        if (rtc && rtm) {
+            const classroomStore = new ClassroomStore({
+                ...config,
+                rtc,
+                rtm,
+            });
+            setClassroomStore(classroomStore);
+            sp(classroomStore.init()).catch(e => {
+                errorTips(e);
+                pushHistory(RouteNameType.HomePage);
+            });
+            return () => {
+                void classroomStore.destroy();
+            };
+        }
+        return;
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [rtc, rtm]);
 
-    return classRoomStore;
+    return classroomStore;
 }

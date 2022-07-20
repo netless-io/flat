@@ -9,14 +9,14 @@ import { useParams } from "react-router-dom";
 import { RouteNameType, RouteParams, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { GlobalStoreContext, PreferencesStoreContext } from "../../components/StoreProvider";
-import { FlatRTCContext } from "../../components/FlatRTCContext";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { useLoginCheck } from "../utils/use-login-check";
+import { useFlatService } from "../../components/FlatServicesContext";
 
 export const DevicesTestPage = observer(function DeviceTestPage() {
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
-    const rtc = useContext(FlatRTCContext);
+    const rtc = useFlatService("rtc");
     const preferencesStore = useContext(PreferencesStoreContext);
     const sp = useSafePromise();
 
@@ -38,6 +38,9 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     const [volume, setVolume] = useState(0);
 
     useEffect(() => {
+        if (!rtc) {
+            return;
+        }
         // @FIXME only run once
         const avatar = rtc.getTestAvatar();
         if (avatar) {
@@ -59,6 +62,10 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     }, [rtc, cameraVideoStreamRef]);
 
     useEffect(() => {
+        if (!rtc) {
+            return;
+        }
+
         const handlerDeviceError = (): void => {
             setIsCameraAccessible(false);
         };
@@ -96,7 +103,7 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     }, [rtc, sp]);
 
     useEffect(() => {
-        if (cameraDeviceId) {
+        if (rtc && cameraDeviceId) {
             void rtc.setCameraID(cameraDeviceId).catch(() => {
                 setIsCameraAccessible(false);
             });
@@ -104,7 +111,7 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     }, [rtc, cameraDeviceId]);
 
     useEffect(() => {
-        if (microphoneDeviceId) {
+        if (rtc && microphoneDeviceId) {
             void rtc.setMicID(microphoneDeviceId).catch(() => {
                 setIsMicrophoneAccessible(false);
             });
