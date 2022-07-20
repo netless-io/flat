@@ -65,6 +65,7 @@ module.exports = {
                 "flat-rtm",
                 "flat-server-api",
                 "flat-stores",
+                "flat-services",
                 "pnpm",
                 "server",
             ],

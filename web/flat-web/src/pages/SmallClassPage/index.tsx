@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { message } from "antd";
 import { RoomPhase } from "white-web-sdk";
 import { observer } from "mobx-react-lite";
-import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
     NetworkStatus,
@@ -39,14 +38,13 @@ import {
     AgoraCloudRecordLayoutConfigItem,
 } from "@netless/flat-server-api";
 import { ClassModeType, User } from "@netless/flat-stores";
-import { RouteNameType, RouteParams } from "../../utils/routes";
 
 import "./SmallClassPage.less";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen } from "../../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
-import { useClassroomStore } from "../../stores/use-classroom-store";
+import { withClassroomStore, WithClassroomStoreProps } from "../../stores/with-classroom-store";
 
 const CLASSROOM_WIDTH = 1200;
 const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
@@ -58,277 +56,285 @@ const AVATAR_BAR_WIDTH = (AVATAR_WIDTH + AVATAR_BAR_GAP) * MAX_AVATAR_COUNT - AV
 
 export type SmallClassPageProps = {};
 
-export const SmallClassPage = observer<SmallClassPageProps>(function SmallClassPage() {
-    useLoginCheck();
-    const { t } = useTranslation();
-    const params = useParams<RouteParams<RouteNameType.SmallClassPage>>();
+export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
+    observer<WithClassroomStoreProps<SmallClassPageProps>>(function SmallClassPage({
+        classroomStore,
+    }) {
+        useLoginCheck();
+        const { t } = useTranslation();
 
-    const classRoomStore = useClassroomStore(params);
-    const whiteboardStore = classRoomStore.whiteboardStore;
+        const whiteboardStore = classroomStore.whiteboardStore;
 
-    const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classRoomStore);
+        const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
-    const { room, phase } = whiteboardStore;
+        const { room, phase } = whiteboardStore;
 
-    const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
+        const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
-    const updateLayoutTimeoutRef = useRef(NaN);
-    const loadingPageRef = useRef(false);
+        const updateLayoutTimeoutRef = useRef(NaN);
+        const loadingPageRef = useRef(false);
 
-    useEffect(() => {
-        if (classRoomStore.isRecording) {
-            window.clearTimeout(updateLayoutTimeoutRef.current);
-            updateLayoutTimeoutRef.current = window.setTimeout(() => {
-                if (classRoomStore.isRecording) {
-                    updateCloudRecordLayout();
-                }
-            }, 1000);
-
-            return () => {
+        useEffect(() => {
+            if (classroomStore.isRecording) {
                 window.clearTimeout(updateLayoutTimeoutRef.current);
-                updateLayoutTimeoutRef.current = NaN;
-            };
-        }
-        return;
-        // ignore updateCloudRecordLayout
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [classRoomStore.users.totalUserCount, classRoomStore.isRecording]);
+                updateLayoutTimeoutRef.current = window.setTimeout(() => {
+                    if (classroomStore.isRecording) {
+                        updateCloudRecordLayout();
+                    }
+                }, 1000);
 
-    if (!room || phase === RoomPhase.Connecting || phase === RoomPhase.Disconnecting) {
-        loadingPageRef.current = true;
-    } else {
-        if (classRoomStore.isCreator && classRoomStore.roomStatus === RoomStatus.Idle) {
-            void classRoomStore.startClass();
-        }
-        loadingPageRef.current = false;
-    }
+                return () => {
+                    window.clearTimeout(updateLayoutTimeoutRef.current);
+                    updateLayoutTimeoutRef.current = NaN;
+                };
+            }
+            return;
+            // ignore updateCloudRecordLayout
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [classroomStore.users.totalUserCount, classroomStore.isRecording]);
 
-    return (
-        <div className="small-class-realtime-container">
-            {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
-            <div className="small-class-realtime-box">
-                <TopBar
-                    center={renderTopBarCenter()}
-                    isMac={runtime.isMac}
-                    left={renderTopBarLeft()}
-                    right={renderTopBarRight()}
-                />
-                {renderAvatars()}
-                <div className="small-class-realtime-content">
-                    <div className="small-class-realtime-content-container">
-                        <ShareScreen classRoomStore={classRoomStore} />
-                        <Whiteboard
-                            classRoomStore={classRoomStore}
-                            disableHandRaising={
-                                classRoomStore.classMode === ClassModeType.Interaction
-                            }
-                            whiteboardStore={whiteboardStore}
-                        />
+        if (!room || phase === RoomPhase.Connecting || phase === RoomPhase.Disconnecting) {
+            loadingPageRef.current = true;
+        } else {
+            if (classroomStore.isCreator && classroomStore.roomStatus === RoomStatus.Idle) {
+                void classroomStore.startClass();
+            }
+            loadingPageRef.current = false;
+        }
+
+        return (
+            <div className="small-class-realtime-container">
+                {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
+                <div className="small-class-realtime-box">
+                    <TopBar
+                        center={renderTopBarCenter()}
+                        isMac={runtime.isMac}
+                        left={renderTopBarLeft()}
+                        right={renderTopBarRight()}
+                    />
+                    {renderAvatars()}
+                    <div className="small-class-realtime-content">
+                        <div className="small-class-realtime-content-container">
+                            <ShareScreen classRoomStore={classroomStore} />
+                            <Whiteboard
+                                classRoomStore={classroomStore}
+                                disableHandRaising={
+                                    classroomStore.classMode === ClassModeType.Interaction
+                                }
+                                whiteboardStore={whiteboardStore}
+                            />
+                        </div>
+                        {renderRealtimePanel()}
                     </div>
-                    {renderRealtimePanel()}
+                    <ExitRoomConfirm
+                        isCreator={classroomStore.isCreator}
+                        {...exitConfirmModalProps}
+                    />
+                    <RoomStatusStoppedModal
+                        isCreator={classroomStore.isCreator}
+                        isRemoteLogin={classroomStore.isRemoteLogin}
+                        roomStatus={classroomStore.roomStatus}
+                    />
                 </div>
-                <ExitRoomConfirm isCreator={classRoomStore.isCreator} {...exitConfirmModalProps} />
-                <RoomStatusStoppedModal
-                    isCreator={classRoomStore.isCreator}
-                    isRemoteLogin={classRoomStore.isRemoteLogin}
-                    roomStatus={classRoomStore.roomStatus}
-                />
-            </div>
-        </div>
-    );
-
-    function renderAvatars(): React.ReactNode {
-        return (
-            <div
-                className="small-class-realtime-avatars-wrap"
-                style={{ maxWidth: `${whiteboardStore.smallClassAvatarWrapMaxWidth}px` }}
-            >
-                {classRoomStore.isJoinedRTC && (
-                    <div className="small-class-realtime-avatars">
-                        <RTCAvatar
-                            avatarUser={classRoomStore.users.creator}
-                            isAvatarUserCreator={true}
-                            isCreator={classRoomStore.isCreator}
-                            rtcAvatar={
-                                classRoomStore.users.creator &&
-                                classRoomStore.rtc.getAvatar(classRoomStore.users.creator.rtcUID)
-                            }
-                            small={true}
-                            updateDeviceState={classRoomStore.updateDeviceState}
-                            userUUID={classRoomStore.userUUID}
-                        />
-                        {classRoomStore.users.joiners.map(renderAvatar)}
-                    </div>
-                )}
             </div>
         );
-    }
 
-    function renderTopBarLeft(): React.ReactNode {
-        return (
-            <>
-                <NetworkStatus networkQuality={classRoomStore.networkQuality} />
-                {classRoomStore.isCreator ? (
-                    classRoomStore.roomInfo?.beginTime && (
-                        <Timer
-                            beginTime={classRoomStore.roomInfo.beginTime}
-                            roomStatus={classRoomStore.roomStatus}
-                        />
-                    )
-                ) : (
-                    <RoomInfo
-                        roomStatus={classRoomStore.roomStatus}
-                        roomType={classRoomStore.roomInfo?.roomType}
-                    />
-                )}
-            </>
-        );
-    }
-
-    function renderClassMode(): React.ReactNode {
-        return classRoomStore.classMode === ClassModeType.Lecture ? (
-            <TopBarRoundBtn
-                dark
-                icon={<SVGModeLecture />}
-                title={t("switch-to-interactive-mode")}
-                onClick={classRoomStore.toggleClassMode}
-            >
-                {t("lecture-mode")}
-            </TopBarRoundBtn>
-        ) : (
-            <TopBarRoundBtn
-                dark
-                icon={<SVGModeInteractive />}
-                title={t("switch-to-lecture-mode")}
-                onClick={classRoomStore.toggleClassMode}
-            >
-                {t("interactive-mode")}
-            </TopBarRoundBtn>
-        );
-    }
-
-    function renderTopBarCenter(): React.ReactNode {
-        if (!classRoomStore.isCreator) {
-            return null;
+        function renderAvatars(): React.ReactNode {
+            return (
+                <div
+                    className="small-class-realtime-avatars-wrap"
+                    style={{ maxWidth: `${whiteboardStore.smallClassAvatarWrapMaxWidth}px` }}
+                >
+                    {classroomStore.isJoinedRTC && (
+                        <div className="small-class-realtime-avatars">
+                            <RTCAvatar
+                                avatarUser={classroomStore.users.creator}
+                                isAvatarUserCreator={true}
+                                isCreator={classroomStore.isCreator}
+                                rtcAvatar={
+                                    classroomStore.users.creator &&
+                                    classroomStore.rtc.getAvatar(
+                                        classroomStore.users.creator.rtcUID,
+                                    )
+                                }
+                                small={true}
+                                updateDeviceState={classroomStore.updateDeviceState}
+                                userUUID={classroomStore.userUUID}
+                            />
+                            {classroomStore.users.joiners.map(renderAvatar)}
+                        </div>
+                    )}
+                </div>
+            );
         }
-        return renderClassMode();
-    }
 
-    function renderTopBarRight(): React.ReactNode {
-        return (
-            <>
-                {whiteboardStore.isWritable && !classRoomStore.isRemoteScreenSharing && (
+        function renderTopBarLeft(): React.ReactNode {
+            return (
+                <>
+                    <NetworkStatus networkQuality={classroomStore.networkQuality} />
+                    {classroomStore.isCreator ? (
+                        classroomStore.roomInfo?.beginTime && (
+                            <Timer
+                                beginTime={classroomStore.roomInfo.beginTime}
+                                roomStatus={classroomStore.roomStatus}
+                            />
+                        )
+                    ) : (
+                        <RoomInfo
+                            roomStatus={classroomStore.roomStatus}
+                            roomType={classroomStore.roomInfo?.roomType}
+                        />
+                    )}
+                </>
+            );
+        }
+
+        function renderClassMode(): React.ReactNode {
+            return classroomStore.classMode === ClassModeType.Lecture ? (
+                <TopBarRoundBtn
+                    dark
+                    icon={<SVGModeLecture />}
+                    title={t("switch-to-interactive-mode")}
+                    onClick={classroomStore.toggleClassMode}
+                >
+                    {t("lecture-mode")}
+                </TopBarRoundBtn>
+            ) : (
+                <TopBarRoundBtn
+                    dark
+                    icon={<SVGModeInteractive />}
+                    title={t("switch-to-lecture-mode")}
+                    onClick={classroomStore.toggleClassMode}
+                >
+                    {t("interactive-mode")}
+                </TopBarRoundBtn>
+            );
+        }
+
+        function renderTopBarCenter(): React.ReactNode {
+            if (!classroomStore.isCreator) {
+                return null;
+            }
+            return renderClassMode();
+        }
+
+        function renderTopBarRight(): React.ReactNode {
+            return (
+                <>
+                    {whiteboardStore.isWritable && !classroomStore.isRemoteScreenSharing && (
+                        <TopBarRightBtn
+                            icon={<SVGScreenSharing active={classroomStore.isScreenSharing} />}
+                            title={t("share-screen.self")}
+                            onClick={() => classroomStore.toggleShareScreen()}
+                        />
+                    )}
+
+                    {classroomStore.isCreator && (
+                        <CloudRecordBtn
+                            isRecording={classroomStore.isRecording}
+                            onClick={() => {
+                                void classroomStore.toggleRecording({
+                                    onStop() {
+                                        void message.success(t("recording-completed-tips"));
+                                    },
+                                });
+                            }}
+                        />
+                    )}
+                    <CloudStorageButton classroom={classroomStore} />
+                    <InviteButton roomInfo={classroomStore.roomInfo} />
                     <TopBarRightBtn
-                        icon={<SVGScreenSharing active={classRoomStore.isScreenSharing} />}
-                        title={t("share-screen.self")}
-                        onClick={() => classRoomStore.toggleShareScreen()}
+                        icon={<SVGExit />}
+                        title={t("exit")}
+                        onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                     />
-                )}
-
-                {classRoomStore.isCreator && (
-                    <CloudRecordBtn
-                        isRecording={classRoomStore.isRecording}
+                    <TopBarDivider />
+                    <TopBarRightBtn
+                        icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
+                        title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                         onClick={() => {
-                            void classRoomStore.toggleRecording({
-                                onStop() {
-                                    void message.success(t("recording-completed-tips"));
-                                },
-                            });
+                            openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
+                            whiteboardStore.setRightSideClose(isRealtimeSideOpen);
                         }}
                     />
-                )}
-                <CloudStorageButton classroom={classRoomStore} />
-                <InviteButton roomInfo={classRoomStore.roomInfo} />
-                <TopBarRightBtn
-                    icon={<SVGExit />}
-                    title={t("exit")}
-                    onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
+                </>
+            );
+        }
+
+        function renderRealtimePanel(): React.ReactNode {
+            return (
+                <RealtimePanel
+                    chatSlot={<ChatPanel classRoomStore={classroomStore}></ChatPanel>}
+                    isShow={isRealtimeSideOpen}
+                    isVideoOn={false}
+                    videoSlot={null}
                 />
-                <TopBarDivider />
-                <TopBarRightBtn
-                    icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
-                    title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
-                    onClick={() => {
-                        openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
-                        whiteboardStore.setRightSideClose(isRealtimeSideOpen);
+            );
+        }
+
+        function renderAvatar(user: User): React.ReactNode {
+            return (
+                <RTCAvatar
+                    key={user.userUUID}
+                    avatarUser={user}
+                    isAvatarUserCreator={false}
+                    isCreator={classroomStore.isCreator}
+                    rtcAvatar={classroomStore.rtc.getAvatar(user.rtcUID)}
+                    small={true}
+                    updateDeviceState={(uid, camera, mic) => {
+                        // Disallow toggling mic when not speak.
+                        const _mic =
+                            whiteboardStore.isWritable ||
+                            user.userUUID === classroomStore.ownerUUID ||
+                            user.userUUID !== classroomStore.users.currentUser?.userUUID ||
+                            classroomStore.classMode !== ClassModeType.Lecture
+                                ? mic
+                                : user.mic;
+                        classroomStore.updateDeviceState(uid, camera, _mic);
                     }}
+                    userUUID={classroomStore.userUUID}
                 />
-            </>
-        );
-    }
-
-    function renderRealtimePanel(): React.ReactNode {
-        return (
-            <RealtimePanel
-                chatSlot={<ChatPanel classRoomStore={classRoomStore}></ChatPanel>}
-                isShow={isRealtimeSideOpen}
-                isVideoOn={false}
-                videoSlot={null}
-            />
-        );
-    }
-
-    function renderAvatar(user: User): React.ReactNode {
-        return (
-            <RTCAvatar
-                key={user.userUUID}
-                avatarUser={user}
-                isAvatarUserCreator={false}
-                isCreator={classRoomStore.isCreator}
-                rtcAvatar={classRoomStore.rtc.getAvatar(user.rtcUID)}
-                small={true}
-                updateDeviceState={(uid, camera, mic) => {
-                    // Disallow toggling mic when not speak.
-                    const _mic =
-                        whiteboardStore.isWritable ||
-                        user.userUUID === classRoomStore.ownerUUID ||
-                        user.userUUID !== classRoomStore.users.currentUser?.userUUID ||
-                        classRoomStore.classMode !== ClassModeType.Lecture
-                            ? mic
-                            : user.mic;
-                    classRoomStore.updateDeviceState(uid, camera, _mic);
-                }}
-                userUUID={classRoomStore.userUUID}
-            />
-        );
-    }
-
-    function updateCloudRecordLayout(): void {
-        const { allUsers } = classRoomStore.users;
-        const layoutConfig: AgoraCloudRecordLayoutConfigItem[] = [];
-        const backgroundConfig: AgoraCloudRecordBackgroundConfigItem[] = [];
-
-        let startX = 0;
-
-        if (allUsers.length < 7) {
-            // center the avatars
-            const avatarsWidth = allUsers.length * (AVATAR_WIDTH + AVATAR_BAR_GAP) - AVATAR_BAR_GAP;
-            startX = (AVATAR_AREA_WIDTH - avatarsWidth) / 2;
+            );
         }
 
-        // calculate the max rendered config count
-        // because x_axis cannot overflow
-        const layoutConfigCount = Math.min(
-            allUsers.length,
-            Math.floor(
-                (AVATAR_BAR_WIDTH - startX + AVATAR_BAR_GAP) / (AVATAR_WIDTH + AVATAR_BAR_GAP),
-            ),
-        );
+        function updateCloudRecordLayout(): void {
+            const { allUsers } = classroomStore.users;
+            const layoutConfig: AgoraCloudRecordLayoutConfigItem[] = [];
+            const backgroundConfig: AgoraCloudRecordBackgroundConfigItem[] = [];
 
-        for (let i = 0; i < layoutConfigCount; i++) {
-            layoutConfig.push({
-                x_axis: (startX + i * (AVATAR_WIDTH + AVATAR_BAR_GAP)) / AVATAR_BAR_WIDTH,
-                y_axis: 0,
-                width: AVATAR_WIDTH / AVATAR_BAR_WIDTH,
-                height: 1,
-            });
+            let startX = 0;
 
-            backgroundConfig.push({
-                uid: String(allUsers[i].rtcUID),
-                image_url: allUsers[i].avatar,
-            });
+            if (allUsers.length < 7) {
+                // center the avatars
+                const avatarsWidth =
+                    allUsers.length * (AVATAR_WIDTH + AVATAR_BAR_GAP) - AVATAR_BAR_GAP;
+                startX = (AVATAR_AREA_WIDTH - avatarsWidth) / 2;
+            }
+
+            // calculate the max rendered config count
+            // because x_axis cannot overflow
+            const layoutConfigCount = Math.min(
+                allUsers.length,
+                Math.floor(
+                    (AVATAR_BAR_WIDTH - startX + AVATAR_BAR_GAP) / (AVATAR_WIDTH + AVATAR_BAR_GAP),
+                ),
+            );
+
+            for (let i = 0; i < layoutConfigCount; i++) {
+                layoutConfig.push({
+                    x_axis: (startX + i * (AVATAR_WIDTH + AVATAR_BAR_GAP)) / AVATAR_BAR_WIDTH,
+                    y_axis: 0,
+                    width: AVATAR_WIDTH / AVATAR_BAR_WIDTH,
+                    height: 1,
+                });
+
+                backgroundConfig.push({
+                    uid: String(allUsers[i].rtcUID),
+                    image_url: allUsers[i].avatar,
+                });
+            }
         }
-    }
-});
+    }),
+);
 
 export default SmallClassPage;
