@@ -1,9 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { RouteNameType, useReplaceHistory } from "../../utils/routes";
-import { GlobalStoreContext } from "../../components/StoreProvider";
+import { RouteNameType, useReplaceHistory } from "./routes";
+import { GlobalStoreContext } from "../components/StoreProvider";
 import { loginCheck } from "@netless/flat-server-api";
 import { errorTips } from "flat-components";
-import { NEED_BINDING_PHONE } from "../../constants/config";
 
 export function useLoginCheck(): boolean {
     const replaceHistory = useReplaceHistory();
@@ -28,7 +27,7 @@ export function useLoginCheck(): boolean {
                 const result = await loginCheck();
                 globalStore.updateUserInfo(result);
                 globalStore.updateLastLoginCheck(Date.now());
-                return NEED_BINDING_PHONE ? result.hasPhone : true;
+                return process.env.FLAT_REGION === "CN" ? result.hasPhone : true;
             } catch (e) {
                 globalStore.updateLastLoginCheck(null);
                 console.error(e);

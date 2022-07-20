@@ -3,7 +3,7 @@ import { Modal } from "antd";
 import { SVGCloudOutlined, TopBarRightBtn } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
-import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
+import { CloudStoragePanel } from "../CloudStoragePage/CloudStoragePanel";
 import { ClassroomStore } from "@netless/flat-stores";
 import "./CloudStorageButton.less";
 import { useTranslation } from "react-i18next";
