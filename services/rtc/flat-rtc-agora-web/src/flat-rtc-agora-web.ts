@@ -9,14 +9,11 @@ import {
     FlatRTC,
     FlatRTCAvatar,
     FlatRTCDevice,
-    FlatRTCEventData,
-    FlatRTCEventNames,
     FlatRTCJoinRoomConfigBase,
     FlatRTCMode,
     FlatRTCRole,
 } from "@netless/flat-rtc";
 import { SideEffectManager } from "side-effect-manager";
-import Emittery from "emittery";
 import { RTCRemoteAvatar } from "./rtc-remote-avatar";
 import { RTCLocalAvatar } from "./rtc-local-avatar";
 import { RTCShareScreen } from "./rtc-share-screen";
@@ -102,7 +99,9 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         });
     }
 
-    public async destroy(): Promise<void> {
+    public override async destroy(): Promise<void> {
+        super.destroy();
+
         this.shareScreen.destroy();
 
         this._sideEffect.flushAll();
@@ -411,7 +410,7 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         });
 
         this._roomSideEffect.addDisposer(
-            beforeAddListener(this.events, "network", () => {
+            this.events.remit("network", () => {
                 const handler = ({
                     uplinkNetworkQuality,
                     downlinkNetworkQuality,
@@ -504,39 +503,4 @@ function singleRun<TFn extends (...args: any[]) => Promise<any>>(fn: TFn): TFn {
         return p;
     }) as TFn;
     return run;
-}
-
-/**
- * @param eventName Event name to listen
- * @param init Runs before adding the first listener of the `eventName`.
- *             Returns a disposer function that runs when the last listener is removed.
- * @returns a disposer function that removes the `listenerAdded` listener.
- */
-function beforeAddListener(
-    events: Emittery<FlatRTCEventData, FlatRTCEventData>,
-    eventName: FlatRTCEventNames,
-    init: () => (() => void) | undefined | void,
-): () => void {
-    let lastCount = events.listenerCount(eventName) || 0;
-    let disposer: (() => void) | undefined | void;
-
-    if (lastCount > 0) {
-        disposer = init();
-    }
-
-    return (events as Emittery<FlatRTCEventData>).on(
-        [Emittery.listenerAdded, Emittery.listenerRemoved],
-        data => {
-            if (data.eventName === eventName) {
-                const count = events.listenerCount(eventName) || 0;
-                // https://github.com/sindresorhus/emittery/issues/63
-                if (lastCount === 0 && count > 0) {
-                    disposer = init();
-                } else if (lastCount > 0 && count === 0) {
-                    disposer?.();
-                }
-                lastCount = count;
-            }
-        },
-    );
 }
