@@ -19,24 +19,24 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatRTCRole } from "@netless/flat-rtc";
 import { RoomStatus } from "@netless/flat-server-api";
-import { ChatPanel } from "../../components/ChatPanel";
-import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
-import { CloudStorageButton } from "../../components/CloudStorageButton";
+import { ChatPanel } from "../components/ChatPanel";
+import { RoomStatusStoppedModal } from "../components/ClassRoom/RoomStatusStoppedModal";
+import { CloudStorageButton } from "../components/CloudStorageButton";
 import {
     ExitRoomConfirm,
     ExitRoomConfirmType,
     useExitRoomConfirmModal,
-} from "../../components/ExitRoomConfirm";
-import InviteButton from "../../components/InviteButton";
-import { RealtimePanel } from "../../components/RealtimePanel";
-import { Whiteboard } from "../../components/Whiteboard";
+} from "../components/ExitRoomConfirm";
+import InviteButton from "../components/InviteButton";
+import { RealtimePanel } from "../components/RealtimePanel";
+import { Whiteboard } from "../components/Whiteboard";
 import { User } from "@netless/flat-stores";
-import { useAutoRun } from "../../utils/mobx";
-import { runtime } from "../../utils/runtime";
-import { RTCAvatar } from "../../components/RTCAvatar";
-import { ShareScreen } from "../../components/ShareScreen";
+import { useAutoRun } from "../utils/mobx";
+import { runtime } from "../utils/runtime";
+import { RTCAvatar } from "../components/RTCAvatar";
+import { ShareScreen } from "../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
-import { withClassroomStore, WithClassroomStoreProps } from "../../stores/with-classroom-store";
+import { withClassroomStore, WithClassroomStoreProps } from "../utils/with-classroom-store";
 
 export type BigClassPageProps = {};
 

@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "jsx": "react",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "ESNext"
+  },
+  "exclude": ["node_modules", "dist", "public"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.d.ts", "scripts/*.ts", "vite.config.ts", "src/stores/class-room-store.tsg"]
+}
