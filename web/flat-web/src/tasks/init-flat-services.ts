@@ -1,14 +1,14 @@
 import { flatServices } from "@netless/flat-services";
-import { FlatRTCAgoraWeb } from "@netless/flat-rtc-agora-web";
-import { FlatRTMAgora } from "@netless/flat-rtm-agora";
 
 export function initFlatServices(): void {
     flatServices.register("rtc", async () => {
+        const { FlatRTCAgoraWeb } = await import("@netless/flat-rtc-agora-web");
         FlatRTCAgoraWeb.APP_ID = process.env.AGORA_APP_ID;
         return FlatRTCAgoraWeb.getInstance();
     });
 
     flatServices.register("rtm", async () => {
+        const { FlatRTMAgora } = await import("@netless/flat-rtm-agora");
         FlatRTMAgora.APP_ID = process.env.AGORA_APP_ID;
         return FlatRTMAgora.getInstance();
     });
