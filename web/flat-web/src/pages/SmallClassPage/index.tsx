@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { message } from "antd";
-import { RoomPhase } from "white-web-sdk";
 import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 import {
@@ -8,7 +7,6 @@ import {
     RoomInfo,
     TopBar,
     TopBarDivider,
-    LoadingPage,
     Timer,
     CloudRecordBtn,
     TopBarRoundBtn,
@@ -32,11 +30,7 @@ import ExitRoomConfirm, {
 } from "../../components/ExitRoomConfirm";
 import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
 
-import {
-    RoomStatus,
-    AgoraCloudRecordBackgroundConfigItem,
-    AgoraCloudRecordLayoutConfigItem,
-} from "@netless/flat-server-api";
+import { RoomStatus } from "@netless/flat-server-api";
 import { ClassModeType, User } from "@netless/flat-stores";
 
 import "./SmallClassPage.less";
@@ -45,14 +39,6 @@ import { runtime } from "../../utils/runtime";
 import { ShareScreen } from "../../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
 import { withClassroomStore, WithClassroomStoreProps } from "../../stores/with-classroom-store";
-
-const CLASSROOM_WIDTH = 1200;
-const AVATAR_AREA_WIDTH = CLASSROOM_WIDTH - 16 * 2;
-const AVATAR_WIDTH = 144;
-// const AVATAR_HEIGHT = 108;
-const MAX_AVATAR_COUNT = 17;
-const AVATAR_BAR_GAP = 4;
-const AVATAR_BAR_WIDTH = (AVATAR_WIDTH + AVATAR_BAR_GAP) * MAX_AVATAR_COUNT - AVATAR_BAR_GAP;
 
 export type SmallClassPageProps = {};
 
@@ -67,44 +53,16 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
 
         const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
-        const { room, phase } = whiteboardStore;
-
         const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
-        const updateLayoutTimeoutRef = useRef(NaN);
-        const loadingPageRef = useRef(false);
-
         useEffect(() => {
-            if (classroomStore.isRecording) {
-                window.clearTimeout(updateLayoutTimeoutRef.current);
-                updateLayoutTimeoutRef.current = window.setTimeout(() => {
-                    if (classroomStore.isRecording) {
-                        updateCloudRecordLayout();
-                    }
-                }, 1000);
-
-                return () => {
-                    window.clearTimeout(updateLayoutTimeoutRef.current);
-                    updateLayoutTimeoutRef.current = NaN;
-                };
-            }
-            return;
-            // ignore updateCloudRecordLayout
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [classroomStore.users.totalUserCount, classroomStore.isRecording]);
-
-        if (!room || phase === RoomPhase.Connecting || phase === RoomPhase.Disconnecting) {
-            loadingPageRef.current = true;
-        } else {
             if (classroomStore.isCreator && classroomStore.roomStatus === RoomStatus.Idle) {
                 void classroomStore.startClass();
             }
-            loadingPageRef.current = false;
-        }
+        }, [classroomStore]);
 
         return (
             <div className="small-class-realtime-container">
-                {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
                 <div className="small-class-realtime-box">
                     <TopBar
                         center={renderTopBarCenter()}
@@ -295,44 +253,6 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                     userUUID={classroomStore.userUUID}
                 />
             );
-        }
-
-        function updateCloudRecordLayout(): void {
-            const { allUsers } = classroomStore.users;
-            const layoutConfig: AgoraCloudRecordLayoutConfigItem[] = [];
-            const backgroundConfig: AgoraCloudRecordBackgroundConfigItem[] = [];
-
-            let startX = 0;
-
-            if (allUsers.length < 7) {
-                // center the avatars
-                const avatarsWidth =
-                    allUsers.length * (AVATAR_WIDTH + AVATAR_BAR_GAP) - AVATAR_BAR_GAP;
-                startX = (AVATAR_AREA_WIDTH - avatarsWidth) / 2;
-            }
-
-            // calculate the max rendered config count
-            // because x_axis cannot overflow
-            const layoutConfigCount = Math.min(
-                allUsers.length,
-                Math.floor(
-                    (AVATAR_BAR_WIDTH - startX + AVATAR_BAR_GAP) / (AVATAR_WIDTH + AVATAR_BAR_GAP),
-                ),
-            );
-
-            for (let i = 0; i < layoutConfigCount; i++) {
-                layoutConfig.push({
-                    x_axis: (startX + i * (AVATAR_WIDTH + AVATAR_BAR_GAP)) / AVATAR_BAR_WIDTH,
-                    y_axis: 0,
-                    width: AVATAR_WIDTH / AVATAR_BAR_WIDTH,
-                    height: 1,
-                });
-
-                backgroundConfig.push({
-                    uid: String(allUsers[i].rtcUID),
-                    image_url: allUsers[i].avatar,
-                });
-            }
         }
     }),
 );
