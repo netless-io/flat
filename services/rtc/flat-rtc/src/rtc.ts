@@ -1,4 +1,4 @@
-import Emittery from "emittery";
+import { Remitter } from "remitter";
 import type { FlatRTCAvatar } from "./avatar";
 import type { FlatRTCMode, FlatRTCRole } from "./constants";
 import type { FlatRTCDevice } from "./device";
@@ -20,7 +20,7 @@ export abstract class FlatRTC<
     TUid = number,
     TJoinRoomConfig extends FlatRTCJoinRoomConfigBase<TUid> = FlatRTCJoinRoomConfigBase<TUid>,
 > {
-    public readonly events = new Emittery<FlatRTCEventData, FlatRTCEventData>();
+    public readonly events = new Remitter<FlatRTCEventData>();
 
     public abstract readonly isJoinedRoom: boolean;
 
