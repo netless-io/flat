@@ -1,4 +1,4 @@
-import Emittery from "emittery";
+import type { Remitter } from "remitter";
 
 /**
  * Network quality types:
@@ -37,4 +37,4 @@ export interface FlatRTCEventData {
 
 export type FlatRTCEventNames = keyof FlatRTCEventData;
 
-export type FlatRTCEvents = Emittery<FlatRTCEventData, FlatRTCEventData>;
+export type FlatRTCEvents = Remitter<FlatRTCEventData>;
