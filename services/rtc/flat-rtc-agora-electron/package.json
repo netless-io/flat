@@ -11,21 +11,13 @@
     "_download:agora-addon": "node scripts/download-agora-addon/cli.js"
   },
   "devDependencies": {
-    "@netless/flat-rtc": "workspace:*",
-    "emittery": "^0.10.2",
-    "fs-extra": "^10.0.1",
     "prettier": "^2.3.0",
-    "side-effect-manager": "^0.1.5",
-    "typescript": "^4.6.2",
-    "value-enhancer": "^1.0.3"
+    "typescript": "^4.6.2"
   },
   "dependencies": {
-    "agora-electron-sdk": "3.7.0-build.527"
-  },
-  "peerDependencies": {
     "@netless/flat-rtc": "workspace:*",
-    "emittery": "0.x",
-    "side-effect-manager": "^0.1.5",
-    "value-enhancer": "1.x"
+    "agora-electron-sdk": "3.7.0-build.527",
+    "fs-extra": "^10.0.1",
+    "side-effect-manager": "^0.1.5"
   }
 }

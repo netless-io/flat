@@ -4,15 +4,12 @@ import {
     FlatRTC,
     FlatRTCAvatar,
     FlatRTCDevice,
-    FlatRTCEventData,
-    FlatRTCEventNames,
     FlatRTCJoinRoomConfigBase,
     FlatRTCMode,
     FlatRTCNetworkQualityType,
     FlatRTCRole,
 } from "@netless/flat-rtc";
 import { SideEffectManager } from "side-effect-manager";
-import Emittery from "emittery";
 import { RTCRemoteAvatar } from "./rtc-remote-avatar";
 import { RTCLocalAvatar } from "./rtc-local-avatar";
 import { RTCShareScreen } from "./rtc-share-screen";
@@ -84,8 +81,6 @@ export class FlatRTCAgoraElectron extends FlatRTC<
     public get localAvatar(): FlatRTCAvatar {
         return (this._localAvatar ??= new RTCLocalAvatar({ rtc: this }));
     }
-
-    public readonly events = new Emittery<FlatRTCEventData, FlatRTCEventData>();
 
     public get isJoinedRoom(): boolean {
         return Boolean(this.roomUUID);
@@ -207,7 +202,9 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         }
     }
 
-    public async destroy(): Promise<void> {
+    public override async destroy(): Promise<void> {
+        super.destroy();
+
         this._sideEffect.flushAll();
 
         await this.leaveRoom();
@@ -547,7 +544,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         });
 
         this._roomSideEffect.addDisposer(
-            beforeAddListener(this.events, "network", () => {
+            this.events.remit("network", () => {
                 let uplink: FlatRTCNetworkQualityType = 0;
                 let downlink: FlatRTCNetworkQualityType = 0;
                 let delay = NaN;
@@ -598,39 +595,4 @@ export class FlatRTCAgoraElectron extends FlatRTC<
             uid: shareScreenUID,
         });
     }
-}
-
-/**
- * @param eventName Event name to listen
- * @param init Runs before adding the first listener of the `eventName`.
- *             Returns a disposer function that runs when the last listener is removed.
- * @returns a disposer function that removes the `listenerAdded` listener.
- */
-function beforeAddListener(
-    events: Emittery<FlatRTCEventData, FlatRTCEventData>,
-    eventName: FlatRTCEventNames,
-    init: () => (() => void) | undefined | void,
-): () => void {
-    let lastCount = events.listenerCount(eventName) || 0;
-    let disposer: (() => void) | undefined | void;
-
-    if (lastCount > 0) {
-        disposer = init();
-    }
-
-    return (events as Emittery<FlatRTCEventData>).on(
-        [Emittery.listenerAdded, Emittery.listenerRemoved],
-        data => {
-            if (data.eventName === eventName) {
-                const count = events.listenerCount(eventName) || 0;
-                // https://github.com/sindresorhus/emittery/issues/63
-                if (lastCount === 0 && count > 0) {
-                    disposer = init();
-                } else if (lastCount > 0 && count === 0) {
-                    disposer?.();
-                }
-                lastCount = count;
-            }
-        },
-    );
 }
