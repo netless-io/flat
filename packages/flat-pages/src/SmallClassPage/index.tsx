@@ -19,26 +19,26 @@ import {
     SVGModeLecture,
 } from "flat-components";
 
-import InviteButton from "../../components/InviteButton";
-import { RealtimePanel } from "../../components/RealtimePanel";
-import { ChatPanel } from "../../components/ChatPanel";
-import { RTCAvatar } from "../../components/RTCAvatar";
-import { Whiteboard } from "../../components/Whiteboard";
+import InviteButton from "../components/InviteButton";
+import { RealtimePanel } from "../components/RealtimePanel";
+import { ChatPanel } from "../components/ChatPanel";
+import { RTCAvatar } from "../components/RTCAvatar";
+import { Whiteboard } from "../components/Whiteboard";
 import ExitRoomConfirm, {
     ExitRoomConfirmType,
     useExitRoomConfirmModal,
-} from "../../components/ExitRoomConfirm";
-import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusStoppedModal";
+} from "../components/ExitRoomConfirm";
+import { RoomStatusStoppedModal } from "../components/ClassRoom/RoomStatusStoppedModal";
 
 import { RoomStatus } from "@netless/flat-server-api";
 import { ClassModeType, User } from "@netless/flat-stores";
 
 import "./SmallClassPage.less";
-import { CloudStorageButton } from "../../components/CloudStorageButton";
-import { runtime } from "../../utils/runtime";
-import { ShareScreen } from "../../components/ShareScreen";
+import { CloudStorageButton } from "../components/CloudStorageButton";
+import { runtime } from "../utils/runtime";
+import { ShareScreen } from "../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
-import { withClassroomStore, WithClassroomStoreProps } from "../../stores/with-classroom-store";
+import { withClassroomStore, WithClassroomStoreProps } from "../utils/with-classroom-store";
 
 export type SmallClassPageProps = {};
 
