@@ -1,17 +1,15 @@
 import "./OneToOnePage.less";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
-import { RoomPhase } from "white-web-sdk";
 import {
     NetworkStatus,
     RoomInfo,
     TopBar,
     TopBarRightBtn,
     TopBarDivider,
-    LoadingPage,
     Timer,
     CloudRecordBtn,
     SVGScreenSharing,
@@ -34,7 +32,6 @@ import { RoomStatusStoppedModal } from "../../components/ClassRoom/RoomStatusSto
 import { RoomStatus } from "@netless/flat-server-api";
 import { useComputed } from "../../utils/mobx";
 import { CloudStorageButton } from "../../components/CloudStorageButton";
-import { AgoraCloudRecordBackgroundConfigItem } from "@netless/flat-server-api";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen } from "../../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
@@ -54,9 +51,6 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
 
         const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
-        const updateLayoutTimeoutRef = useRef(NaN);
-        const loadingPageRef = useRef(false);
-
         const joiner = useComputed(() => {
             if (classroomStore.isCreator) {
                 return classroomStore.users.speakingJoiners.length > 0
@@ -72,40 +66,13 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
         }).get();
 
         useEffect(() => {
-            if (classroomStore.isRecording) {
-                window.clearTimeout(updateLayoutTimeoutRef.current);
-                updateLayoutTimeoutRef.current = window.setTimeout(() => {
-                    if (classroomStore.isRecording) {
-                        updateCloudRecordLayout();
-                    }
-                }, 1000);
-
-                return () => {
-                    window.clearTimeout(updateLayoutTimeoutRef.current);
-                    updateLayoutTimeoutRef.current = NaN;
-                };
-            }
-            return;
-            // ignore updateCloudRecordLayout
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [classroomStore.users.creator, joiner, classroomStore.isRecording]);
-
-        if (
-            !whiteboardStore.room ||
-            whiteboardStore.phase === RoomPhase.Connecting ||
-            whiteboardStore.phase === RoomPhase.Disconnecting
-        ) {
-            loadingPageRef.current = true;
-        } else {
             if (classroomStore.isCreator && classroomStore.roomStatus === RoomStatus.Idle) {
                 void classroomStore.startClass();
             }
-            loadingPageRef.current = false;
-        }
+        }, [classroomStore]);
 
         return (
             <div className="one-to-one-realtime-container">
-                {loadingPageRef.current && <LoadingPage onTimeout="full-reload" />}
                 <div className="one-to-one-realtime-box">
                     <TopBar
                         isMac={runtime.isMac}
@@ -241,25 +208,6 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
         function handleSideOpenerSwitch(): void {
             openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
             whiteboardStore.setRightSideClose(isRealtimeSideOpen);
-        }
-
-        function updateCloudRecordLayout(): void {
-            const { creator } = classroomStore.users;
-            const backgroundConfig: AgoraCloudRecordBackgroundConfigItem[] = [];
-
-            if (creator) {
-                backgroundConfig.push({
-                    uid: String(creator.rtcUID),
-                    image_url: creator.avatar,
-                });
-            }
-
-            if (joiner) {
-                backgroundConfig.push({
-                    uid: String(joiner.rtcUID),
-                    image_url: joiner.avatar,
-                });
-            }
         }
     }),
 );
