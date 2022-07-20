@@ -66,6 +66,7 @@ module.exports = {
                 "flat-server-api",
                 "flat-stores",
                 "flat-services",
+                "flat-pages",
                 "pnpm",
                 "server",
             ],
