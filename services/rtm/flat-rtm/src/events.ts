@@ -1,4 +1,4 @@
-import Emittery from "emittery";
+import { Remitter } from "remitter";
 
 export interface FlatRTMEventData {
     "remote-login": { roomUUID: string };
@@ -31,4 +31,4 @@ export interface FlatRTMEventData {
 
 export type FlatRTMEventNames = keyof FlatRTMEventData;
 
-export type FlatRTMEvents = Emittery<FlatRTMEventData, FlatRTMEventData>;
+export type FlatRTMEvents = Remitter<FlatRTMEventData>;

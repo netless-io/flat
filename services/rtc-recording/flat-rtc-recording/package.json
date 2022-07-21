@@ -8,11 +8,7 @@
   "scripts": {
     "build": "tsc"
   },
-  "peerDependencies": {
-    "@netless/flat-rtc": "workspace:*"
-  },
   "devDependencies": {
-    "@netless/flat-rtc": "workspace:*",
     "prettier": "^2.3.0",
     "typescript": "^4.6.2"
   }
