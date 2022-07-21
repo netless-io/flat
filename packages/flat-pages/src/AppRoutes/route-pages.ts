@@ -12,59 +12,59 @@ export type RoutePages = {
 /**
  * NOTE: If you see error from "loadable-component", the real error
  *       message may be hidden by `import()` below. You can change
- *       `import("../pages/SomePage")` to
+ *       `import("../SomePage")` to
  *       `Promise.resolve({ default: SomePage })` to see the real error.
  */
 export const routePages: RoutePages = {
     [RouteNameType.LoginPage]: {
         title: "LoginPage",
-        component: () => import("../pages/LoginPage"),
+        component: () => import("../LoginPage"),
     },
     [RouteNameType.HomePage]: {
         title: "HomePage",
         hasHeader: true,
-        component: () => import("../pages/HomePage"),
+        component: () => import("../HomePage"),
     },
     [RouteNameType.BigClassPage]: {
         title: "BigClassPage",
-        component: () => import("../pages/BigClassPage"),
+        component: () => import("../BigClassPage"),
     },
     [RouteNameType.SmallClassPage]: {
         title: "SmallClassPage",
-        component: () => import("../pages/SmallClassPage"),
+        component: () => import("../SmallClassPage"),
     },
     [RouteNameType.OneToOnePage]: {
         title: "OneToOnePage",
-        component: () => import("../pages/OneToOnePage"),
+        component: () => import("../OneToOnePage"),
     },
     [RouteNameType.RoomDetailPage]: {
         title: "RoomDetailPage",
         hasHeader: true,
-        component: () => import("../pages/RoomDetailPage"),
+        component: () => import("../RoomDetailPage"),
     },
     [RouteNameType.PeriodicRoomDetailPage]: {
         title: "PeriodicRoomDetailPage",
         hasHeader: true,
-        component: () => import("../pages/PeriodicRoomDetailPage"),
+        component: () => import("../PeriodicRoomDetailPage"),
     },
     [RouteNameType.UserScheduledPage]: {
         title: "UserScheduledPage",
         hasHeader: true,
-        component: () => import("../pages/UserScheduledPage"),
+        component: () => import("../UserScheduledPage"),
     },
     [RouteNameType.ModifyOrdinaryRoomPage]: {
         title: "ModifyOrdinaryRoomPage",
         hasHeader: true,
-        component: () => import("../pages/ModifyOrdinaryRoomPage"),
+        component: () => import("../ModifyOrdinaryRoomPage"),
     },
     [RouteNameType.ModifyPeriodicRoomPage]: {
         title: "ModifyPeriodicRoomPage",
         hasHeader: true,
-        component: () => import("../pages/ModifyPeriodicRoomPage"),
+        component: () => import("../ModifyPeriodicRoomPage"),
     },
     [RouteNameType.ReplayPage]: {
         title: "ReplayPage",
-        component: () => import("../pages/ReplayPage"),
+        component: () => import("../ReplayPage"),
     },
     [RouteNameType.SystemCheckPage]: {
         title: "SystemCheckPage",
@@ -74,33 +74,33 @@ export const routePages: RoutePages = {
     [RouteNameType.GeneralSettingPage]: {
         title: "GeneralSettingPage",
         hasHeader: true,
-        component: () => import("../pages/UserSettingPage/GeneralSettingPage"),
+        component: () => import("../UserSettingPage/GeneralSettingPage"),
     },
     [RouteNameType.HotKeySettingPage]: {
         title: "HotKeySettingPage",
         hasHeader: true,
-        component: () => import("../pages/UserSettingPage/HotKeySettingPage"),
+        component: () => import("../UserSettingPage/HotKeySettingPage"),
     },
     [RouteNameType.AboutPage]: {
         title: "AboutPage",
         hasHeader: true,
-        component: () => import("../pages/UserSettingPage/AboutPage"),
+        component: () => import("../UserSettingPage/AboutPage"),
     },
     [RouteNameType.CloudStoragePage]: {
         title: "CloudStoragePage",
         hasHeader: true,
-        component: () => import("../pages/CloudStoragePage"),
+        component: () => import("../CloudStoragePage"),
     },
     [RouteNameType.JoinPage]: {
         title: "JoinPage",
-        component: () => import("../pages/JoinPage"),
+        component: () => import("../JoinPage"),
     },
     [RouteNameType.ResourcePreviewPage]: {
         title: "ResourcePreviewPage",
-        component: () => import("../pages/ResourcePreviewPage"),
+        component: () => import("../ResourcePreviewPage"),
     },
     [RouteNameType.DevicesTestPage]: {
         title: "DevicesTestPage",
-        component: () => import("../pages/DevicesTestPage"),
+        component: () => import("../DevicesTestPage"),
     },
 };
