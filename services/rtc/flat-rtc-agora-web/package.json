@@ -15,7 +15,7 @@
   "dependencies": {
     "@netless/flat-rtc": "workspace:*",
     "agora-rtc-sdk-ng": "^4.12.2",
-    "side-effect-manager": "^0.1.5",
-    "value-enhancer": "^1.0.3"
+    "side-effect-manager": "^1.1.1",
+    "value-enhancer": "^1.3.2"
   }
 }

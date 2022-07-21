@@ -5,6 +5,7 @@
     "declarationMap": true,
     "sourceMap": true,
     "composite": true,
+    "noImplicitOverride": true,
     "outDir": "./dist",
     "rootDir": "./src"
   },
