@@ -1,6 +1,5 @@
 import {
     FlatRTM,
-    FlatRTMEventData,
     FlatRTMJoinRoomConfig,
     FlatRTMRoomCommandNames,
     FlatRTMRoomCommandData,
@@ -10,11 +9,10 @@ import {
     FlatRTMPeerCommand,
 } from "@netless/flat-rtm";
 import AgoraRTM, { RtmChannel, RtmClient, RtmMessage, RtmStatusCode } from "agora-rtm-sdk";
-import Emittery from "emittery";
 import { SideEffectManager } from "side-effect-manager";
 import { v4 as uuidv4 } from "uuid";
 
-export class FlatRTMAgora implements FlatRTM {
+export class FlatRTMAgora extends FlatRTM {
     public static APP_ID?: string;
 
     private static _instance?: FlatRTMAgora;
@@ -49,15 +47,16 @@ export class FlatRTMAgora implements FlatRTM {
     private userUUID?: string;
     private token?: string;
 
-    public readonly events = new Emittery<FlatRTMEventData, FlatRTMEventData>();
-
-    private constructor() {
+    public constructor() {
+        super();
         if (process.env.DEV) {
             (window as any).rtm_client = this.client;
         }
     }
 
-    public async destroy(): Promise<void> {
+    public override async destroy(): Promise<void> {
+        super.destroy();
+
         this._sideEffect.flushAll();
 
         try {

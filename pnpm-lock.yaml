@@ -113,7 +113,7 @@ importers:
       rimraf: ^3.0.2
       semver: ^7.3.5
       ts-loader: ^9.2.8
-      value-enhancer: ^1.0.3
+      value-enhancer: ^1.3.2
       webpack-cli: ^4.9.2
       webpack-merge: ^5.8.0
       webpack-node-externals: ^3.0.0
@@ -123,7 +123,7 @@ importers:
       fs-extra: 10.1.0
       jquery: 3.6.0
       semver: 7.3.7
-      value-enhancer: 1.0.3
+      value-enhancer: 1.3.2
     devDependencies:
       '@types/webpack-env': 1.16.4
       dotenv-flow-webpack: 1.1.0
@@ -196,9 +196,9 @@ importers:
       react-virtualized: ^9.22.3
       rollup-plugin-copy: ^3.4.0
       rollup-plugin-visualizer: ^5.6.0
-      side-effect-manager: ^0.1.5
+      side-effect-manager: ^1.1.1
       uuid: ^8.3.2
-      value-enhancer: ^1.0.3
+      value-enhancer: ^1.3.2
       video.js: 7.10.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
@@ -243,9 +243,9 @@ importers:
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
-      side-effect-manager: 0.1.5
+      side-effect-manager: 1.1.1
       uuid: 8.3.2
-      value-enhancer: 1.0.3
+      value-enhancer: 1.3.2
       video.js: 7.10.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
     devDependencies:
@@ -421,7 +421,7 @@ importers:
       i18next-browser-languagedetector: ^6.1.3
       lodash-es: ^4.17.21
       mime: ^3.0.0
-      mobx: ^6.4.2
+      mobx: ^6.6.0
       mobx-react-lite: ^3.3.0
       polly-js: ^1.8.3
       react: ^17.0.2
@@ -431,9 +431,9 @@ importers:
       react-router-dom: ^5.2.0
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
-      side-effect-manager: ^0.1.5
+      side-effect-manager: ^1.1.1
       uuid: ^8.3.2
-      value-enhancer: ^1.0.3
+      value-enhancer: ^1.3.2
       video.js: 7.10.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
@@ -476,7 +476,7 @@ importers:
       react-router-dom: 5.3.1_react@17.0.2
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
-      side-effect-manager: 0.1.5
+      side-effect-manager: 1.1.1
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
@@ -526,7 +526,7 @@ importers:
       mobx: ^6.4.2
       prettier: ^2.3.0
       react: ^17.0.2
-      side-effect-manager: ^0.1.5
+      side-effect-manager: ^1.1.1
       typescript: ^4.6.2
       uuid: ^8.3.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
@@ -536,7 +536,7 @@ importers:
       '@netless/flat-server-api': link:../flat-server-api
       flat-components: link:../flat-components
       flat-i18n: link:../flat-i18n
-      side-effect-manager: 0.1.5
+      side-effect-manager: 1.1.1
       uuid: 8.3.2
     devDependencies:
       '@netless/fastboard-react': 0.3.5-canary.5_75wc7cfqgpdqty56nasvdvou34
@@ -552,37 +552,31 @@ importers:
 
   services/rtc-recording/flat-rtc-recording:
     specifiers:
-      '@netless/flat-rtc': workspace:*
       prettier: ^2.3.0
       typescript: ^4.6.2
     devDependencies:
-      '@netless/flat-rtc': link:../../rtc/flat-rtc
       prettier: 2.6.2
       typescript: 4.6.4
 
   services/rtc-recording/flat-rtc-recording-agora:
     specifiers:
       '@netless/flat-rtc-recording': workspace:*
-      emittery: ^0.10.2
       prettier: ^2.3.0
-      side-effect-manager: ^0.1.5
       typescript: ^4.6.2
-      value-enhancer: ^1.0.3
-    devDependencies:
+    dependencies:
       '@netless/flat-rtc-recording': link:../flat-rtc-recording
-      emittery: 0.10.2
+    devDependencies:
       prettier: 2.6.2
-      side-effect-manager: 0.1.5
       typescript: 4.6.4
-      value-enhancer: 1.3.2
 
   services/rtc/flat-rtc:
     specifiers:
-      emittery: ^0.10.2
       prettier: ^2.3.0
+      remitter: ^0.2.6
       typescript: ^4.6.2
+    dependencies:
+      remitter: 0.2.6
     devDependencies:
-      emittery: 0.10.2
       prettier: 2.6.2
       typescript: 4.6.4
 
@@ -590,49 +584,44 @@ importers:
     specifiers:
       '@netless/flat-rtc': workspace:*
       agora-electron-sdk: 3.7.0-build.527
-      emittery: ^0.10.2
       fs-extra: ^10.0.1
       prettier: ^2.3.0
-      side-effect-manager: ^0.1.5
+      side-effect-manager: ^1.1.1
       typescript: ^4.6.2
-      value-enhancer: ^1.0.3
     dependencies:
-      agora-electron-sdk: 3.7.0-build.527
-    devDependencies:
       '@netless/flat-rtc': link:../flat-rtc
-      emittery: 0.10.2
+      agora-electron-sdk: 3.7.0-build.527
       fs-extra: 10.1.0
+      side-effect-manager: 1.1.1
+    devDependencies:
       prettier: 2.6.2
-      side-effect-manager: 0.1.5
       typescript: 4.6.4
-      value-enhancer: 1.0.3
 
   services/rtc/flat-rtc-agora-web:
     specifiers:
       '@netless/flat-rtc': workspace:*
       agora-rtc-sdk-ng: ^4.12.2
-      emittery: ^0.10.2
       prettier: ^2.3.0
-      side-effect-manager: ^0.1.5
+      side-effect-manager: ^1.1.1
       typescript: ^4.6.2
-      value-enhancer: ^1.0.3
+      value-enhancer: ^1.3.2
     dependencies:
-      agora-rtc-sdk-ng: 4.12.2
-    devDependencies:
       '@netless/flat-rtc': link:../flat-rtc
-      emittery: 0.10.2
+      agora-rtc-sdk-ng: 4.12.2
+      side-effect-manager: 1.1.1
+      value-enhancer: 1.3.2
+    devDependencies:
       prettier: 2.6.2
-      side-effect-manager: 0.1.5
       typescript: 4.6.4
-      value-enhancer: 1.0.3
 
   services/rtm/flat-rtm:
     specifiers:
-      emittery: ^0.10.2
       prettier: ^2.3.0
+      remitter: ^0.2.6
       typescript: ^4.6.2
+    dependencies:
+      remitter: 0.2.6
     devDependencies:
-      emittery: 0.10.2
       prettier: 2.6.2
       typescript: 4.6.4
 
@@ -640,22 +629,42 @@ importers:
     specifiers:
       '@netless/flat-rtm': workspace:*
       agora-rtm-sdk: ^1.4.4
-      emittery: ^0.10.2
       prettier: ^2.3.0
-      side-effect-manager: ^0.1.5
+      side-effect-manager: ^1.1.1
       typescript: ^4.6.2
       uuid: ^8.3.2
-      value-enhancer: ^1.0.3
     dependencies:
-      agora-rtm-sdk: 1.4.4
-    devDependencies:
       '@netless/flat-rtm': link:../flat-rtm
-      emittery: 0.10.2
-      prettier: 2.6.2
-      side-effect-manager: 0.1.5
-      typescript: 4.6.4
+      agora-rtm-sdk: 1.4.4
+      side-effect-manager: 1.1.1
       uuid: 8.3.2
-      value-enhancer: 1.3.2
+    devDependencies:
+      prettier: 2.6.2
+      typescript: 4.6.4
+
+  services/whiteboard/flat-whiteboard:
+    specifiers:
+      prettier: ^2.3.0
+      remitter: ^0.2.6
+      typescript: ^4.6.2
+    dependencies:
+      remitter: 0.2.6
+    devDependencies:
+      prettier: 2.6.2
+      typescript: 4.6.4
+
+  services/whiteboard/flat-whiteboard-fastboard:
+    specifiers:
+      '@netless/flat-whiteboard': workspace:*
+      prettier: ^2.3.0
+      side-effect-manager: ^1.1.1
+      typescript: ^4.6.2
+    dependencies:
+      '@netless/flat-whiteboard': link:../flat-whiteboard
+      side-effect-manager: 1.1.1
+    devDependencies:
+      prettier: 2.6.2
+      typescript: 4.6.4
 
   web/flat-web:
     specifiers:
@@ -705,7 +714,7 @@ importers:
       i18next-browser-languagedetector: ^6.1.3
       lodash-es: ^4.17.21
       mime: ^3.0.0
-      mobx: ^6.4.2
+      mobx: ^6.6.0
       mobx-react-lite: ^3.3.0
       polly-js: ^1.8.3
       react: ^17.0.2
@@ -716,9 +725,9 @@ importers:
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
       react-virtualized: ^9.22.3
-      side-effect-manager: ^0.1.5
+      side-effect-manager: ^1.1.1
       uuid: ^8.3.2
-      value-enhancer: ^1.0.3
+      value-enhancer: ^1.3.2
       video.js: 7.10.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
@@ -760,8 +769,8 @@ importers:
       i18next: 21.7.1
       i18next-browser-languagedetector: 6.1.4
       lodash-es: 4.17.21
-      mobx: 6.5.0
-      mobx-react-lite: 3.4.0_hmiq3xiffx2tpvk3y5rm3vgqxa
+      mobx: 6.6.0
+      mobx-react-lite: 3.4.0_5mmsvx7kyvezfxuro7wjt7ivm4
       polly-js: 1.8.3
       react: 17.0.2
       react-device-detect: 2.2.2_sfoxds7t5ydpegc3knd667wn6m
@@ -771,9 +780,9 @@ importers:
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
-      side-effect-manager: 0.1.5
+      side-effect-manager: 1.1.1
       uuid: 8.3.2
-      value-enhancer: 1.0.3
+      value-enhancer: 1.3.2
       video.js: 7.10.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
     devDependencies:
@@ -5020,7 +5029,7 @@ packages:
     requiresBuild: true
     dependencies:
       '@types/minimatch': 3.0.5
-      '@types/node': 17.0.34
+      '@types/node': 17.0.40
     dev: true
 
   /@types/graceful-fs/4.1.5:
@@ -9075,6 +9084,7 @@ packages:
   /emittery/0.10.2:
     resolution: {integrity: sha512-aITqOwnLanpHLNXZJENbOgjUBeHocD+xsSJmNrjovKBW5HbSpW3d1pEls7GFQPUWXiwG9+0P4GtHfEqC/4M0Iw==}
     engines: {node: '>=12'}
+    dev: false
 
   /emittery/0.9.2:
     resolution: {integrity: sha512-sweWHu3j4dQm+NjLPu17pv+m5lCeK7g4Ov0NgfbRUEyzLc59DYDeRYXqlxEvuolaToI0VR3ThjFAghzl7Acjfw==}
@@ -18970,6 +18980,7 @@ packages:
   /uuid/8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
+    dev: false
 
   /v8-compile-cache-lib/3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
@@ -19004,10 +19015,6 @@ packages:
     resolution: {integrity: sha512-ba8Rcyp9ItqlLWoyZVqHGaEdY1tqP1mcbRhlOrCnIrDxdl8rKNH1Rq45syo4IMYNSkwC2oV9xBWcV9dmL14aQg==}
     dependencies:
       side-effect-manager: 0.1.5
-
-  /value-enhancer/1.0.3:
-    resolution: {integrity: sha512-pIYwtL9F+T1uh82eV7MG+T3KWBXPMEwr3rVMwt6szfL7ID7YXW/VbnLEqrueEPuiHxje8EybO4wncjIM6eZaug==}
-    requiresBuild: true
 
   /value-enhancer/1.3.2:
     resolution: {integrity: sha512-RC+yfNMwuLZO2iDtHh4dxvtHP00DnSO0VARBkVoxT1eOwMJ/Rs5jKh6nBUcotWncJhjfGGhQE4SUK8goLEC5oQ==}

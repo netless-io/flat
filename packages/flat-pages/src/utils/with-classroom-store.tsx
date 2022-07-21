@@ -11,8 +11,8 @@ export type WithClassroomStoreProps<P = {}> = P & { classroomStore: ClassroomSto
 
 export const withClassroomStore = <P extends {}>(
     Component: React.ComponentType<WithClassroomStoreProps<P>>,
-): React.FC<P> => {
-    const WithClassroomStore = observer<P>(props => {
+): React.FC<P> =>
+    observer<P>(function WithClassroomStore(props) {
         const params =
             useParams<
                 RouteParams<
@@ -25,7 +25,7 @@ export const withClassroomStore = <P extends {}>(
 
         const isReady =
             classroomStore &&
-            classroomStore.whiteboardStore?.room &&
+            classroomStore.whiteboardStore.room &&
             classroomStore.whiteboardStore.phase !== RoomPhase.Connecting &&
             classroomStore.whiteboardStore.phase !== RoomPhase.Disconnecting;
 
@@ -35,5 +35,3 @@ export const withClassroomStore = <P extends {}>(
             <LoadingPage onTimeout="full-reload" />
         );
     });
-    return WithClassroomStore;
-};
