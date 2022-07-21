@@ -1,3 +1,4 @@
+import { Remitter } from "remitter";
 import type {
     FlatRTMPeerCommandData,
     FlatRTMPeerCommandNames,
@@ -14,30 +15,34 @@ export interface FlatRTMJoinRoomConfig {
     refreshToken?: (roomUUID: string) => Promise<string>;
 }
 
-export interface FlatRTM<TJoinRoomConfig extends FlatRTMJoinRoomConfig = FlatRTMJoinRoomConfig> {
-    readonly members: Set<string>;
+export abstract class FlatRTM<
+    TJoinRoomConfig extends FlatRTMJoinRoomConfig = FlatRTMJoinRoomConfig,
+> {
+    public abstract readonly members: Set<string>;
 
-    readonly events: FlatRTMEvents;
+    public readonly events: FlatRTMEvents = new Remitter();
 
-    destroy(): Promise<void>;
+    public async destroy(): Promise<void> {
+        this.events.destroy();
+    }
 
-    joinRoom(config: TJoinRoomConfig): Promise<void>;
-    leaveRoom(): Promise<void>;
+    public abstract joinRoom(config: TJoinRoomConfig): Promise<void>;
+    public abstract leaveRoom(): Promise<void>;
 
     /** Send text message to all room members */
-    sendRoomMessage(message: string): Promise<void>;
+    public abstract sendRoomMessage(message: string): Promise<void>;
 
     /** Send command message to all room members */
-    sendRoomCommand<TName extends FlatRTMRoomCommandNames>(
+    public abstract sendRoomCommand<TName extends FlatRTMRoomCommandNames>(
         t: TName,
         v: FlatRTMRoomCommandData[TName],
     ): Promise<void>;
 
     /** Send text message to peer */
-    sendPeerMessage(message: string, peerID: string): Promise<boolean>;
+    public abstract sendPeerMessage(message: string, peerID: string): Promise<boolean>;
 
     /** Send command message to peer */
-    sendPeerCommand<TName extends FlatRTMPeerCommandNames>(
+    public abstract sendPeerCommand<TName extends FlatRTMPeerCommandNames>(
         t: TName,
         v: FlatRTMPeerCommandData[TName],
         peerID: string,
