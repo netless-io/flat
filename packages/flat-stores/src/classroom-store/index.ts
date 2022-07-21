@@ -255,7 +255,7 @@ export class ClassroomStore {
             {},
         );
         const classroomStorage = fastboard.syncedStore.connectStorage<ClassroomStorageState>(
-            "raiseHand",
+            "classroom",
             {
                 classMode: ClassModeType.Lecture,
                 raiseHandUsers: [],
