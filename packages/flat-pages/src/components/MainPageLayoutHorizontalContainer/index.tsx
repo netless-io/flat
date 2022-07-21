@@ -17,10 +17,10 @@ import {
     SVGSetting,
 } from "flat-components";
 import { useTranslation } from "react-i18next";
-import { GlobalStoreContext } from "../StoreProvider";
-import { FLAT_DOWNLOAD_URL } from "../../constants/process";
 import { routeConfig, RouteNameType } from "../../route-config";
+import { GlobalStoreContext } from "../StoreProvider";
 import { generateAvatar } from "../../utils/generate-avatar";
+import { FLAT_DOWNLOAD_URL } from "../../constants/process";
 
 export interface MainPageLayoutHorizontalContainerProps {
     subMenu?: MainPageLayoutItem[];
