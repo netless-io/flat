@@ -1,5 +1,5 @@
 {
-  "name": "flat-pages",
+  "name": "@netless/flat-pages",
   "version": "0.1.0",
   "license": "MIT",
   "dependencies": {
