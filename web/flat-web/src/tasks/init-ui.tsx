@@ -11,10 +11,10 @@ import zhCN from "antd/es/locale/zh_CN";
 import enUS from "antd/es/locale/en_US";
 
 import { I18nextProvider } from "react-i18next";
-import { i18n } from "../utils/i18n";
-import { AppRoutes } from "../AppRoutes";
-import { StoreProvider } from "../components/StoreProvider";
-import { FlatServicesContextProvider } from "../components/FlatServicesContext";
+import { i18n } from "@netless/flat-pages/src/utils/i18n";
+import { AppRoutes } from "@netless/flat-pages/src/AppRoutes";
+import { StoreProvider } from "@netless/flat-pages/src/components/StoreProvider";
+import { FlatServicesContextProvider } from "@netless/flat-pages/src/components/FlatServicesContext";
 
 /** configure right after import */
 import { configure } from "mobx";

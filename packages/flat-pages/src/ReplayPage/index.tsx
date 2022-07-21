@@ -7,7 +7,7 @@ import { OrdinaryRoomInfo, RoomType } from "@netless/flat-server-api";
 import { observer } from "mobx-react-lite";
 import { RouteNameType, RouteParams } from "../utils/routes";
 
-import videoPlaySVG from "../../assets/image/video-play.svg";
+import videoPlaySVG from "../assets/image/video-play.svg";
 import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../components/Modal/ExitReplayConfirmModal";
