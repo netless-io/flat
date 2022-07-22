@@ -67,6 +67,7 @@ module.exports = {
                 "flat-stores",
                 "flat-services",
                 "flat-pages",
+                "flat-courseware",
                 "pnpm",
                 "server",
             ],

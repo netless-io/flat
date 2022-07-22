@@ -1,0 +1,19 @@
+{
+  "name": "@netless/flat-courseware-netless",
+  "version": "0.1.0",
+  "description": "Flat Courseware Service with Netless",
+  "main": "src/index.ts",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "@netless/flat-courseware": "workspace:*",
+    "@netless/flat-server-api": "workspace:*"
+  }
+}
