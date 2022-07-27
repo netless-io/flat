@@ -4,8 +4,8 @@ import { RouteNameType } from "../route-config";
 
 type DelegateProps = MainPageLayoutHorizontalContainerProps;
 
-export class PageStore {
-    public name?: RouteNameType = undefined;
+export class PageStoreLegacy {
+    public name: RouteNameType | null = null;
     public title: DelegateProps["title"] = undefined;
     public subMenu: DelegateProps["subMenu"] = undefined;
     public activeKeys: DelegateProps["activeKeys"] = undefined;
@@ -29,4 +29,4 @@ export class PageStore {
     }
 }
 
-export const pageStore = new PageStore();
+export const pageStoreLegacy = new PageStoreLegacy();

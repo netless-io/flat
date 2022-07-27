@@ -7,11 +7,8 @@ import { observer } from "mobx-react-lite";
 import { useHistory, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { message } from "antd";
-import {
-    GlobalStoreContext,
-    PageStoreContext,
-    RoomStoreContext,
-} from "../components/StoreProvider";
+import { GlobalStoreContext, RoomStoreContext } from "../components/StoreProvider";
+import { PageStoreContextLegacy } from "../components/PageStoreContextLegacy";
 import { RouteNameType, RouteParams, usePushHistory } from "../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { FLAT_SERVER_BASE_URL, RoomStatus } from "@netless/flat-server-api";
@@ -26,7 +23,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
     const history = useHistory();
     const globalStore = useContext(GlobalStoreContext);
     const roomStore = useContext(RoomStoreContext);
-    const pageStore = useContext(PageStoreContext);
+    const pageStoreLegacy = useContext(PageStoreContextLegacy);
     const roomInfo = roomStore.rooms.get(roomUUID);
     const periodicInfo = periodicUUID ? roomStore.periodicRooms.get(periodicUUID) : undefined;
 
@@ -40,7 +37,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
 
     useEffect(() => {
         if (roomInfo) {
-            pageStore.configure({
+            pageStoreLegacy.configure({
                 title: <h1 className="room-detail-page-header-title">{roomInfo.title}</h1>,
                 onBackPreviousPage: () => history.goBack(),
             });

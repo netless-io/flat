@@ -5,14 +5,14 @@ import { observer } from "mobx-react-lite";
 import { MainRoomMenu } from "./MainRoomMenu";
 import { MainRoomListPanel } from "./MainRoomListPanel";
 import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
-import { PageStoreContext } from "../components/StoreProvider";
+import { PageStoreContextLegacy } from "../components/PageStoreContextLegacy";
 import { useLoginCheck } from "../utils/use-login-check";
 
 export const HomePage = observer(function HomePage() {
-    const pageStore = useContext(PageStoreContext);
+    const pageStoreLegacy = useContext(PageStoreContextLegacy);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => pageStore.configure(), []);
+    useEffect(() => pageStoreLegacy.configure(), []);
 
     const isLogin = useLoginCheck();
 

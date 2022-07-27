@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useIsomorphicLayoutEffect } from "react-use";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useLocation } from "react-router-dom";
 import { ipcAsyncByMainWindow } from "../utils/ipc";
 import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
-import { useURLAppLauncher } from "../utils/hooks/use-url-app-launcher";
+// import { useURLAppLauncher } from "../utils/hooks/use-url-app-launcher";
 import { ConfigStoreContext } from "../components/StoreProvider";
 import { FlatThemeBodyProvider } from "flat-components";
 import { observer } from "mobx-react-lite";
+import { PageStoreContext } from "@netless/flat-pages/src/components/PageStoreContext";
 
 export interface AppRouteContainerProps {
     Comp: React.ComponentType<any>;
@@ -20,8 +21,15 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
     routeProps,
 }) {
     const configStore = useContext(ConfigStoreContext);
+    const pageStore = useContext(PageStoreContext);
 
-    useURLAppLauncher();
+    const location = useLocation();
+
+    // useURLAppLauncher();
+
+    useEffect(() => {
+        pageStore.configure(location.pathname);
+    }, [location.pathname, pageStore]);
 
     useIsomorphicLayoutEffect(() => {
         const compName = Comp.displayName || Comp.name;

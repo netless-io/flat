@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 import { CloudStorageContainer } from "flat-components";
-import { PageStoreContext } from "../components/StoreProvider";
+import { PageStoreContextLegacy } from "../components/PageStoreContextLegacy";
 import { CloudStorageStore } from "@netless/flat-stores";
 import { useLoginCheck } from "../utils/use-login-check";
 
@@ -19,10 +19,10 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
     );
     useEffect(() => store.initialize(), [store]);
 
-    const pageStore = useContext(PageStoreContext);
+    const pageStoreLegacy = useContext(PageStoreContextLegacy);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => pageStore.configure(), []);
+    useEffect(() => pageStoreLegacy.configure(), []);
 
     return <CloudStorageContainer store={store} />;
 });

@@ -13,12 +13,14 @@ import { useUpdate } from "react-use";
 
 import { i18n } from "../utils/i18n";
 import { AppRoutes } from "../AppRoutes";
-import { StoreProvider } from "../components/StoreProvider";
+import { StoreProvider } from "@netless/flat-pages/src/components/StoreProvider";
+import { PageStoreContext } from "@netless/flat-pages/src/components/PageStoreContext";
 import { FlatRTCContext } from "../components/FlatRTCContext";
 import { getFlatRTC } from "../services/flat-rtc";
 
 /** configure right after import */
 import { configure } from "mobx";
+import { ipcStore } from "../stores/ipc-store";
 configure({
     isolateGlobalState: true,
 });
@@ -54,9 +56,11 @@ const App: React.FC = () => {
                 locale={antdLocale}
             >
                 <StoreProvider>
-                    <FlatRTCContext.Provider value={getFlatRTC()}>
-                        <AppRoutes />
-                    </FlatRTCContext.Provider>
+                    <PageStoreContext.Provider value={ipcStore}>
+                        <FlatRTCContext.Provider value={getFlatRTC()}>
+                            <AppRoutes />
+                        </FlatRTCContext.Provider>
+                    </PageStoreContext.Provider>
                 </StoreProvider>
             </ConfigProvider>
         </I18nextProvider>
