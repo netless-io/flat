@@ -7,16 +7,16 @@ import "./UserSettingLayoutContainer.less";
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { routeConfig, RouteNameType } from "../route-config";
-import { PageStoreContext } from "../components/StoreProvider";
+import { PageStoreContextLegacy } from "../components/PageStoreContextLegacy";
 import { useLoginCheck } from "../utils/use-login-check";
 
 export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactElement => {
     useLoginCheck();
     const { t } = useTranslation();
-    const pageStore = useContext(PageStoreContext);
+    const pageStoreLegacy = useContext(PageStoreContextLegacy);
 
     useEffect(() => {
-        pageStore.configure({
+        pageStoreLegacy.configure({
             subMenu: [
                 {
                     key: routeConfig[RouteNameType.GeneralSettingPage].path,
@@ -38,7 +38,7 @@ export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactE
                 },
             ],
         });
-    }, [pageStore, t]);
+    }, [pageStoreLegacy, t]);
 
     return <div className="user-setting-layout-container">{children}</div>;
 };
