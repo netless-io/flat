@@ -1,14 +1,16 @@
 import loadable from "@loadable/component";
 import React, { ComponentType, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useLocation } from "react-router-dom";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { FlatThemeBodyProvider, LoadingPage } from "flat-components";
-import { PreferencesStoreContext, PageStoreContext } from "../components/StoreProvider";
+import { PreferencesStoreContext } from "../components/StoreProvider";
 import { RouteNameType } from "../route-config";
 import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
 import { routePages } from "./route-pages";
 import { observer } from "mobx-react-lite";
+import { PageStoreContextLegacy } from "../components/PageStoreContextLegacy";
+import { PageStoreContext } from "../components/PageStoreContext";
 
 export interface AppRouteContainerProps {
     name: RouteNameType;
@@ -36,13 +38,15 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
     title,
     routeProps,
 }) {
+    const pageStoreLegacy = useContext(PageStoreContextLegacy);
     const pageStore = useContext(PageStoreContext);
     const preferencesStore = useContext(PreferencesStoreContext);
     const { t } = useTranslation();
+    const location = useLocation();
 
     useIsomorphicLayoutEffect(() => {
-        pageStore.setName(name);
-    }, [name, pageStore]);
+        pageStoreLegacy.setName(name);
+    }, [name, pageStoreLegacy]);
 
     useEffect(() => {
         document.title = t("title-" + title);
@@ -59,7 +63,14 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
         }
     }, [Comp, name]);
 
-    const hasHeader = pageStore.name && routePages[pageStore.name].hasHeader;
+    useEffect(() => {
+        pageStore.configure(location.pathname);
+    }, [location.pathname, pageStore]);
+
+    const hasHeader =
+        pageStoreLegacy.name !== null &&
+        pageStoreLegacy.name &&
+        routePages[pageStoreLegacy.name].hasHeader;
 
     return (
         <FlatThemeBodyProvider prefersColorScheme={preferencesStore.prefersColorScheme}>
