@@ -63,6 +63,8 @@ export enum RTMessageType {
     AcceptRaiseHand = "AcceptRaiseHand",
     /** creator cancel all hand raising */
     CancelAllHandRaising = "CancelHandRaising",
+    /** Cancel all hand raising and whiteboard writable */
+    AllOffStage = "AllOffStage",
     /** creator ban all rtm */
     BanText = "BanText",
     /** creator allows a joiner or joiners allows themselves to speak */
@@ -94,6 +96,7 @@ export type RTMEvents = {
     [RTMessageType.RaiseHand]: boolean;
     [RTMessageType.AcceptRaiseHand]: { userUUID: string; accept: boolean };
     [RTMessageType.CancelAllHandRaising]: boolean;
+    [RTMessageType.AllOffStage]: boolean;
     [RTMessageType.BanText]: boolean;
     [RTMessageType.Speak]: Array<{ userUUID: string; speak: boolean }>;
     [RTMessageType.DeviceState]: { userUUID: string; camera: boolean; mic: boolean };

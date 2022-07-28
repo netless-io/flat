@@ -562,6 +562,18 @@ export class ClassRoomStore {
         }
     };
 
+    public onAllOffStage = (): void => {
+        if (this.isCreator) {
+            this.allOffStage();
+            void message.info(i18next.t("all-off-stage-toast"));
+            void this.rtm.sendCommand({
+                type: RTMessageType.AllOffStage,
+                value: true,
+                keepHistory: true,
+            });
+        }
+    };
+
     /** When current user (who is a joiner) raises hand */
     public onToggleHandRaising = (): void => {
         if (this.isCreator || this.users.currentUser?.isSpeak) {
@@ -808,6 +820,28 @@ export class ClassRoomStore {
         });
     }
 
+    private allOffStage(): void {
+        if (!this.isCreator) {
+            this.whiteboardStore.updateWritable(false);
+            // guard code
+            if (this.whiteboardStore.room) {
+                if (this.whiteboardStore.isWritable !== this.whiteboardStore.room.isWritable) {
+                    this.whiteboardStore.room.setWritable(false);
+                }
+            }
+        }
+        this.users.updateUsers(user => {
+            if (user.userUUID !== this.ownerUUID) {
+                if (user.isRaiseHand) {
+                    user.isRaiseHand = false;
+                }
+                if (user.isSpeak) {
+                    user.isSpeak = false;
+                }
+            }
+        });
+    }
+
     private startListenCommands = (): void => {
         this.rtm.on(RTMessageType.ChannelMessage, (text, senderId) => {
             if (!this.isBan || senderId === this.ownerUUID) {
@@ -822,6 +856,12 @@ export class ClassRoomStore {
         this.rtm.on(RTMessageType.CancelAllHandRaising, (_value, senderId) => {
             if (senderId === this.ownerUUID && !this.isCreator) {
                 this.cancelAllHandRaising();
+            }
+        });
+
+        this.rtm.on(RTMessageType.AllOffStage, (_value, senderId) => {
+            if (senderId === this.ownerUUID && !this.isCreator) {
+                this.allOffStage();
             }
         });
 
@@ -1077,6 +1117,9 @@ export class ClassRoomStore {
 
     private updateBanStatus = (isBan: boolean): void => {
         this.isBan = isBan;
+        if (isBan) {
+            this.allOffStage();
+        }
     };
 
     private updateRoomStatusLoading = (loading: RoomStatusLoadingType): void => {
