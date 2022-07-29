@@ -1,3 +1,13 @@
+## [1.8.3](https://github.com/netless-io/flat/compare/v1.8.2...v1.8.3) (2022-07-29)
+
+
+### Bug Fixes
+
+* **classroom:** disable camera and mic on down stage ([1fc82c3](https://github.com/netless-io/flat/commit/1fc82c3b362de9452e936d2ff6122889eb2caea1))
+* **whiteboard:** don't set state when not writable ([#1607](https://github.com/netless-io/flat/issues/1607)) ([#1616](https://github.com/netless-io/flat/issues/1616)) ([ef012df](https://github.com/netless-io/flat/commit/ef012df48d70f80c9f3f0ddc7df28083aa73c04c))
+
+
+
 ## [1.8.2](https://github.com/netless-io/flat/compare/v1.8.1...v1.8.2) (2022-06-23)
 
 

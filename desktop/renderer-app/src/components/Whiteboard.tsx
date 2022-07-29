@@ -240,15 +240,17 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     onDragOver={onDragOver}
                     onDrop={onDrop}
                 >
-                    {!whiteboardStore.isCreator && !whiteboardStore.isWritable && (
-                        <div className="raise-hand-container">
-                            <RaiseHand
-                                disableHandRaising={disableHandRaising}
-                                isRaiseHand={classRoomStore.users.currentUser?.isRaiseHand}
-                                onRaiseHandChange={classRoomStore.onToggleHandRaising}
-                            />
-                        </div>
-                    )}
+                    {!whiteboardStore.isCreator &&
+                        !whiteboardStore.isWritable &&
+                        !classRoomStore.isBan && (
+                            <div className="raise-hand-container">
+                                <RaiseHand
+                                    disableHandRaising={disableHandRaising}
+                                    isRaiseHand={classRoomStore.users.currentUser?.isRaiseHand}
+                                    onRaiseHandChange={classRoomStore.onToggleHandRaising}
+                                />
+                            </div>
+                        )}
                     <div ref={bindCollector} />
                     <Fastboard
                         app={fastboardAPP}

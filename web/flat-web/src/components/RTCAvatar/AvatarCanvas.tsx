@@ -35,6 +35,17 @@ export const AvatarCanvas = observer<
         }
     }, [canvasEl, rtcAvatar]);
 
+    useEffect(
+        () => () => {
+            if (rtcAvatar) {
+                rtcAvatar.setElement(null);
+                rtcAvatar.enableCamera(false);
+                rtcAvatar.enableMic(false);
+            }
+        },
+        [rtcAvatar],
+    );
+
     useEffect(() => {
         if (rtcAvatar) {
             rtcAvatar.enableCamera(Boolean(camera));
