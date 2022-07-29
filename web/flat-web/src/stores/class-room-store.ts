@@ -800,6 +800,12 @@ export class ClassRoomStore {
                 if (user.isSpeak) {
                     user.isSpeak = false;
                 }
+                if (user.camera) {
+                    user.camera = false;
+                }
+                if (user.mic) {
+                    user.mic = false;
+                }
             }
         });
     }
