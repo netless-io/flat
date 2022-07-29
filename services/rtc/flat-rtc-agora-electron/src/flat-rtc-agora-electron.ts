@@ -236,6 +236,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         this.uid = undefined;
         this.roomUUID = undefined;
         this.shareScreenUID = undefined;
+        this.shareScreen.setActive(false);
         this.shareScreen.setParams(null);
     }
 
@@ -255,6 +256,10 @@ export class FlatRTCAgoraElectron extends FlatRTC<
             this._remoteAvatars.set(uid, remoteAvatar);
         }
         return remoteAvatar;
+    }
+
+    public getTestAvatar(): FlatRTCAvatar {
+        return this.localAvatar;
     }
 
     public getVolumeLevel(uid?: FlatRTCAgoraElectronUIDType): number {

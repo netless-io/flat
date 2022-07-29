@@ -40,7 +40,7 @@ export const MainPageLayoutHorizontalContainer = observer<MainPageLayoutHorizont
         onBackPreviousPage,
     }) {
         const { t } = useTranslation();
-        const leftMenu = [
+        const leftMenu: MainPageLayoutItem[] = [
             {
                 key: routeConfig[RouteNameType.HomePage].path,
                 icon: (active: boolean): React.ReactNode => {
@@ -80,7 +80,7 @@ export const MainPageLayoutHorizontalContainer = observer<MainPageLayoutHorizont
             },
         ];
 
-        const popMenu = [
+        const popMenu: MainPageLayoutItem[] = [
             {
                 key: "feedback",
                 icon: (): React.ReactNode => <SVGFeedback />,

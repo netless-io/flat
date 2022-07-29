@@ -16,6 +16,7 @@ import {
     stopRecordRoom,
 } from "../api-middleware/flatServer";
 import {
+    checkRTMCensor,
     CloudRecordStartPayload,
     CloudRecordUpdateLayoutPayload,
     generateRTCToken,
@@ -40,6 +41,7 @@ import { RoomItem, roomStore } from "./room-store";
 import { User, UserStore } from "./user-store";
 import { WhiteboardStore } from "./whiteboard-store";
 import { getFlatRTC } from "../services/flat-rtc";
+import { NEED_CHECK_CENSOR } from "../constants/config";
 
 export type { User } from "./user-store";
 
@@ -253,6 +255,26 @@ export class ClassRoomStore {
 
         this.updateCalling(true);
 
+        this.sideEffect.addDisposer(
+            this.rtc.shareScreen.events.on(
+                "local-changed",
+                action("localShareScreen", enabled => {
+                    this.isScreenSharing = enabled;
+                }),
+            ),
+            "share-screen-local-changed",
+        );
+
+        this.sideEffect.addDisposer(
+            this.rtc.shareScreen.events.on(
+                "remote-changed",
+                action("remoteShareScreen", enabled => {
+                    this.isRemoteScreenSharing = enabled;
+                }),
+            ),
+            "share-screen-remote-changed",
+        );
+
         try {
             await this.rtc.joinRoom({
                 roomUUID: this.roomUUID,
@@ -461,6 +483,9 @@ export class ClassRoomStore {
         if (this.isBan && !this.isCreator) {
             return;
         }
+        if (NEED_CHECK_CENSOR && !(await checkRTMCensor({ text })).valid) {
+            return;
+        }
         await this.rtm.sendMessage(text);
         this.addMessage(RTMessageType.ChannelMessage, text, this.userUUID);
     };
@@ -601,24 +626,6 @@ export class ClassRoomStore {
                 "network",
                 action("checkNetworkQuality", networkQuality => {
                     this.networkQuality = networkQuality;
-                }),
-            ),
-        );
-
-        this.sideEffect.addDisposer(
-            this.rtc.shareScreen.events.on(
-                "local-changed",
-                action("localShareScreen", enabled => {
-                    this.isScreenSharing = enabled;
-                }),
-            ),
-        );
-
-        this.sideEffect.addDisposer(
-            this.rtc.shareScreen.events.on(
-                "remote-changed",
-                action("remoteShareScreen", enabled => {
-                    this.isRemoteScreenSharing = enabled;
                 }),
             ),
         );

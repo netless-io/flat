@@ -103,6 +103,8 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
     }
 
     public async destroy(): Promise<void> {
+        this.shareScreen.destroy();
+
         this._sideEffect.flushAll();
 
         await this.leaveRoom();
@@ -195,6 +197,10 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
             this._remoteAvatars.set(uid, remoteAvatar);
         }
         return remoteAvatar;
+    }
+
+    public getTestAvatar(): FlatRTCAvatar {
+        return this.localAvatar;
     }
 
     public getVolumeLevel(uid?: FlatRTCAgoraWebUIDType): number {
@@ -374,7 +380,6 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
                         } catch (e) {
                             console.error(e);
                         }
-                        this.shareScreen.destroy();
                     }
                     return;
                 }

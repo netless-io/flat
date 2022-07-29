@@ -23,6 +23,8 @@ import { ClassRoomStore } from "../stores/class-room-store";
 import { refreshApps } from "../utils/toolbar-apps";
 import { PRESETS } from "../constants/presets";
 import { mousewheelToScroll } from "../utils/mousewheel-to-scroll";
+import { registerColorShortcut } from "../utils/color-shortcut";
+import { injectCursor } from "../utils/inject-cursor";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -163,6 +165,20 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
             setSaveAnnotationImages(whiteboardStore.getSaveAnnotationImages());
         }
     }, [saveAnnotationVisible, whiteboardStore]);
+
+    useEffect(() => {
+        if (fastboardAPP) {
+            return registerColorShortcut(fastboardAPP);
+        }
+        return;
+    }, [fastboardAPP]);
+
+    useEffect(() => {
+        if (fastboardAPP) {
+            return injectCursor(fastboardAPP);
+        }
+        return;
+    }, [fastboardAPP]);
 
     const bindWhiteboard = useCallback((ref: HTMLDivElement | null) => {
         if (ref) {

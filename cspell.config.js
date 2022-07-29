@@ -105,6 +105,7 @@ module.exports = {
         "Haximus", // WyriHaximus/github-action-helm3@v2
         "dorny", // dorny/paths-filter@v2
         "peaceiris", // peaceiris/actions-gh-pages@v3
+        "plyr", // @netless/app-plyr
 
         // less
         "isstring",
