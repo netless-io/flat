@@ -102,6 +102,11 @@ export class WhiteboardStore {
 
     public updatePhase = (phase: RoomPhase): void => {
         this.phase = phase;
+        if (phase === RoomPhase.Connected) {
+            if (this.room && this.room.isWritable !== this.isWritable) {
+                this.room.setWritable(this.isWritable);
+            }
+        }
     };
 
     public updateViewMode = (viewMode: ViewMode): void => {

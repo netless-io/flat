@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - "main"
+      - "big-classroom-hand-raise"
     paths:
       - "config/**"
       - "web/flat-web/**"

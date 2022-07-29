@@ -6,11 +6,13 @@ import { generateAvatar } from "../../utils/generate-avatar";
 
 export interface ChatPanelProps {
     classRoomStore: ClassRoomStore;
+    isShowAllOfStage?: boolean;
     disableMultipleSpeakers?: boolean;
 }
 
 export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     classRoomStore,
+    isShowAllOfStage,
     disableMultipleSpeakers,
 }) {
     const users = useComputed(() => {
@@ -28,6 +30,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             hasSpeaking={classRoomStore.users.speakingJoiners.length > 0}
             isBan={classRoomStore.isBan}
             isCreator={classRoomStore.isCreator}
+            isShowAllOfStage={isShowAllOfStage}
             loadMoreRows={classRoomStore.updateHistory}
             messages={classRoomStore.messages}
             openCloudStorage={() => classRoomStore.toggleCloudStoragePanel(true)}
@@ -42,8 +45,8 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                 }
                 classRoomStore.acceptRaiseHand(userUUID);
             }}
+            onAllOffStage={classRoomStore.onAllOffStage}
             onBanChange={classRoomStore.onToggleBan}
-            onCancelAllHandRaising={classRoomStore.onCancelAllHandRaising}
             onEndSpeaking={userUUID => {
                 void classRoomStore.onSpeak([{ userUUID, speak: false }]);
             }}

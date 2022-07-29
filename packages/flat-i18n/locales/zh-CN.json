@@ -13,10 +13,10 @@
   "upload-exception": "上传异常",
   "upload-fail": "上传失败",
   "upload-success": "上传成功",
-  "banned": "已禁言",
-  "unban": "已解除禁言",
+  "banned": "已禁止学生聊天和举手",
+  "unban": "允许学生聊天和举手",
   "say-something": "说点什么…",
-  "ban": "禁言",
+  "ban": "全体禁言",
   "raise-your-hand": "举手",
   "all-staff-are-under-ban": "全员禁言中",
   "send": "发送",
@@ -468,5 +468,7 @@
   "unbind-success": "解绑成功",
   "delete-account": "账号注销",
   "confirm-delete-account": "确定注销账号吗？",
-  "quit-all-rooms-before-delete-account": "请先退出所有房间"
+  "quit-all-rooms-before-delete-account": "请先退出所有房间",
+  "all-off-stage": "全体下台",
+  "all-off-stage-toast": "全体学生已下台"
 }
