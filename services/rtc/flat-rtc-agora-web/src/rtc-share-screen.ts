@@ -76,6 +76,11 @@ export class RTCShareScreen extends FlatRTCShareScreen {
                     }
                     this.events.emit("local-changed", enabled);
                 } catch (e) {
+                    if (enabled) {
+                        this._resolve_EnablingShareScreen();
+                        this._pTogglingShareScreen = undefined;
+                        this._enabled$.setValue(!enabled);
+                    }
                     this.events.emit("err-enable", e);
                 }
             }),
@@ -110,6 +115,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
     }
 
     private _pTogglingShareScreen?: Promise<unknown>;
+    private _resolve_EnablingShareScreen!: () => void;
 
     public async enableShareScreen(): Promise<ILocalVideoTrack> {
         if (!this._params$.value) {
@@ -121,9 +127,8 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         }
 
         if (!this.localVideoTrack) {
-            let resolve_EnablingShareScreen!: () => void;
             this._pTogglingShareScreen = new Promise<void>(resolve => {
-                resolve_EnablingShareScreen = resolve;
+                this._resolve_EnablingShareScreen = resolve;
             });
 
             this.localVideoTrack = await AgoraRTC.createScreenVideoTrack({}, "disable");
@@ -137,7 +142,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
                 await this.client.publish(this.localVideoTrack);
             }
 
-            resolve_EnablingShareScreen();
+            this._resolve_EnablingShareScreen();
             this._pTogglingShareScreen = undefined;
         }
         return this.localVideoTrack;
