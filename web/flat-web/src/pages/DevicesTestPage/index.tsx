@@ -145,7 +145,7 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
     };
 
     return (
-        <div className="device-test-page-container ">
+        <div className="device-test-page-container">
             <div className="device-test-panel-box">
                 <DeviceTestPanel
                     cameraDevices={cameraDevices}
