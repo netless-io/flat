@@ -5,10 +5,13 @@ import { ClassroomStore } from "@netless/flat-stores";
 import { generateAvatar } from "../../utils/generate-avatar";
 
 export interface ChatPanelProps {
-    classRoomStore: ClassRoomStore;
+    classRoomStore: ClassroomStore;
     isShowAllOfStage?: boolean;
     disableMultipleSpeakers?: boolean;
 }
+
+// @TODO add rtm
+const noop = async (): Promise<void> => void 0;
 
 export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     classRoomStore,
@@ -31,8 +34,8 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             isBan={classRoomStore.isBan}
             isCreator={classRoomStore.isCreator}
             isShowAllOfStage={isShowAllOfStage}
-            loadMoreRows={classRoomStore.updateHistory}
-            messages={classRoomStore.messages}
+            loadMoreRows={noop}
+            messages={classRoomStore.chatStore.messages}
             openCloudStorage={() => classRoomStore.toggleCloudStoragePanel(true)}
             ownerUUID={classRoomStore.ownerUUID}
             unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
@@ -45,7 +48,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                 }
                 classRoomStore.acceptRaiseHand(userUUID);
             }}
-            onAllOffStage={classRoomStore.onAllOffStage}
+            onAllOffStage={noop}
             onBanChange={classRoomStore.onToggleBan}
             onEndSpeaking={userUUID => {
                 void classRoomStore.onStaging(userUUID, false);
