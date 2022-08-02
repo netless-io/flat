@@ -1,14 +1,14 @@
 import {
-    FlatRTCShareScreen,
-    FlatRTCShareScreenInfo,
-    FlatRTCShareScreenParams,
-} from "@netless/flat-rtc";
+    IServiceShareScreen,
+    IServiceShareScreenInfo,
+    IServiceShareScreenParams,
+} from "@netless/flat-services";
 import type AgoraRtcEngine from "agora-electron-sdk";
 import type { DisplayInfo, WindowInfo } from "agora-electron-sdk/types/Api/native_type";
 
 import { SideEffectManager } from "side-effect-manager";
 import { combine, Val } from "value-enhancer";
-import { FlatRTCAgoraElectron, FlatRTCAgoraElectronUIDType } from "./flat-rtc-agora-electron";
+import type { AgoraRTCElectron } from "./flat-rtc-agora-electron";
 
 const rect = { x: 0, y: 0, width: 0, height: 0 };
 
@@ -23,26 +23,24 @@ const videoSourceParams = {
     excludeWindowCount: 0,
 };
 
-export type RTCShareScreenParams = FlatRTCShareScreenParams<FlatRTCAgoraElectronUIDType>;
-
-export interface RTCShareScreenAvatarConfig {
-    rtc: FlatRTCAgoraElectron;
+export interface AgoraRTCElectronShareScreenAvatarConfig {
+    rtc: AgoraRTCElectron;
     element?: HTMLElement | null;
 }
 
-export class RTCShareScreen extends FlatRTCShareScreen {
-    private readonly _rtc: FlatRTCAgoraElectron;
+export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
+    private readonly _rtc: AgoraRTCElectron;
     private readonly _sideEffect = new SideEffectManager();
 
-    private readonly _params$ = new Val<RTCShareScreenParams | null>(null);
+    private readonly _params$ = new Val<IServiceShareScreenParams | null>(null);
     private readonly _enabled$ = new Val(false);
 
     private readonly _active$ = new Val(false);
     private readonly _el$: Val<HTMLElement | null>;
 
-    private readonly _screenInfo$ = new Val<FlatRTCShareScreenInfo | null>(null);
+    private readonly _screenInfo$ = new Val<IServiceShareScreenInfo | null>(null);
 
-    public constructor(config: RTCShareScreenAvatarConfig) {
+    public constructor(config: AgoraRTCElectronShareScreenAvatarConfig) {
         super();
 
         this._rtc = config.rtc;
@@ -51,7 +49,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         this._sideEffect.addDisposer(
             combine([this._active$, this._params$]).subscribe(([active, params]) => {
                 if (this._el$.value && params) {
-                    const { uid } = params;
+                    const uid = Number(params.uid);
                     try {
                         if (active) {
                             // this is a bug in agora SDK, when the `desktop` screen sharing is done,
@@ -104,11 +102,11 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         this._active$.setValue(active);
     }
 
-    public setParams(params: RTCShareScreenParams | null): void {
+    public setParams(params: IServiceShareScreenParams | null): void {
         this._params$.setValue(params);
     }
 
-    public async getScreenInfo(): Promise<FlatRTCShareScreenInfo[]> {
+    public override async getScreenInfo(): Promise<IServiceShareScreenInfo[]> {
         await new Promise(resolve => setTimeout(resolve, 100));
 
         const displayList = await new Promise<DisplayInfo[]>(res =>
@@ -118,7 +116,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
             this.client.getScreenWindowsInfo(res),
         );
 
-        const convertScreenInfo = (info: DisplayInfo | WindowInfo): FlatRTCShareScreenInfo => {
+        const convertScreenInfo = (info: DisplayInfo | WindowInfo): IServiceShareScreenInfo => {
             if ("displayId" in info) {
                 return {
                     type: "display",
@@ -139,7 +137,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         return [...displayList.map(convertScreenInfo), ...windowList.map(convertScreenInfo)];
     }
 
-    public setScreenInfo(info: FlatRTCShareScreenInfo | null): void {
+    public override setScreenInfo(info: IServiceShareScreenInfo | null): void {
         this._screenInfo$.setValue(info);
     }
 
@@ -154,14 +152,15 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         this._el$.setValue(element);
     }
 
-    public destroy(): void {
+    public override async destroy(): Promise<void> {
+        super.destroy();
         this._sideEffect.flushAll();
     }
 
     private _pTogglingShareScreen?: Promise<unknown>;
     private _lastEnabled = false;
 
-    public async enableShareScreen(screenInfo: FlatRTCShareScreenInfo): Promise<void> {
+    public async enableShareScreen(screenInfo: IServiceShareScreenInfo): Promise<void> {
         if (!this._params$.value) {
             throw new Error("Should call joinRoom() before share screen.");
         }
@@ -195,9 +194,9 @@ export class RTCShareScreen extends FlatRTCShareScreen {
                 }
                 resolve();
             });
-            this.client.videoSourceInitialize(FlatRTCAgoraElectron.APP_ID);
+            this.client.videoSourceInitialize(this._rtc.APP_ID);
             this.client.videoSourceSetChannelProfile(1);
-            this.client.videoSourceJoin(token, roomUUID, "", uid);
+            this.client.videoSourceJoin(token, roomUUID, "", Number(uid));
         });
         await this._pTogglingShareScreen;
         this._pTogglingShareScreen = undefined;

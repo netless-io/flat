@@ -1,15 +1,15 @@
 import { SideEffectManager } from "side-effect-manager";
 import { Val } from "value-enhancer";
-import type { FlatRTCAvatar } from "@netless/flat-rtc";
-import type { FlatRTCAgoraElectron } from "./flat-rtc-agora-electron";
+import type { IServiceVideoChatAvatar } from "@netless/flat-services";
+import type { AgoraRTCElectron } from "./flat-rtc-agora-electron";
 
 export interface RTCAvatarConfig {
-    rtc: FlatRTCAgoraElectron;
+    rtc: AgoraRTCElectron;
     element?: HTMLElement | null;
 }
 
-export class RTCLocalAvatar implements FlatRTCAvatar {
-    private readonly _rtc: FlatRTCAgoraElectron;
+export class RTCLocalAvatar implements IServiceVideoChatAvatar {
+    private readonly _rtc: AgoraRTCElectron;
     private readonly _sideEffect = new SideEffectManager();
 
     private readonly _shouldCamera$ = new Val(false);

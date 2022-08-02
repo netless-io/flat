@@ -1,3 +1,3 @@
-import { FlatRTCDevice } from "@netless/flat-rtc";
+import { IServiceVideoChatDevice } from "@netless/flat-services";
 
-export type Device = FlatRTCDevice;
+export type Device = IServiceVideoChatDevice;

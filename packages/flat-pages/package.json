@@ -12,7 +12,6 @@
     "@netless/app-slide": "^0.2.2",
     "@netless/combine-player": "^1.1.6",
     "@netless/fastboard-react": "^0.3.5-canary.5",
-    "@netless/flat-rtc": "workspace:*",
     "@netless/flat-rtc-agora-web": "workspace:*",
     "@netless/flat-rtm": "workspace:*",
     "@netless/flat-rtm-agora": "workspace:*",

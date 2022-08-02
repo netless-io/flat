@@ -1,46 +1,57 @@
 import { Remitter } from "remitter";
-import type { FlatRTCAvatar } from "./avatar";
-import type { FlatRTCMode, FlatRTCRole } from "./constants";
-import type { FlatRTCDevice } from "./device";
-import type { FlatRTCEventData } from "./events";
-import type { FlatRTCShareScreen } from "./share-screen";
+import { IServiceVideoChatMode, IServiceVideoChatRole } from "./constants";
+import { IServiceVideoChatEventData } from "./events";
+import { IServiceShareScreen } from "./share-screen";
 
-export interface FlatRTCJoinRoomConfigBase<TUid = number> {
+export type IServiceVideoChatUID = string;
+
+export interface IServiceVideoChatDevice {
+    deviceId: string;
+    label: string;
+}
+
+export interface IServiceVideoChatAvatar {
+    enableCamera(enabled: boolean): void;
+    enableMic(enabled: boolean): void;
+    setElement(element: HTMLElement | null): void;
+    getVolumeLevel(): number;
+    destroy(): void;
+}
+
+export interface IServiceVideoChatJoinRoomConfig {
     roomUUID: string;
-    uid: TUid;
-    mode?: FlatRTCMode;
-    role?: FlatRTCRole;
+    uid: IServiceVideoChatUID;
+    mode?: IServiceVideoChatMode;
+    role?: IServiceVideoChatRole;
     token?: string | null;
     refreshToken?: (roomUUID: string) => Promise<string>;
-    shareScreenUID: TUid;
+    shareScreenUID: IServiceVideoChatUID;
     shareScreenToken: string;
 }
 
-export abstract class FlatRTC<
-    TUid = number,
-    TJoinRoomConfig extends FlatRTCJoinRoomConfigBase<TUid> = FlatRTCJoinRoomConfigBase<TUid>,
-> {
-    public readonly events = new Remitter<FlatRTCEventData>();
+export abstract class IServiceVideoChat {
+    public readonly events = new Remitter<IServiceVideoChatEventData>();
 
     public abstract readonly isJoinedRoom: boolean;
 
-    public abstract readonly shareScreen: FlatRTCShareScreen;
+    // @TODO move share screen to separate service
+    public abstract readonly shareScreen: IServiceShareScreen;
 
     public async destroy(): Promise<void> {
         this.events.destroy();
     }
 
-    public abstract joinRoom(config: TJoinRoomConfig): Promise<void>;
+    public abstract joinRoom(config: IServiceVideoChatJoinRoomConfig): Promise<void>;
     public abstract leaveRoom(): Promise<void>;
 
-    public abstract setRole(role: FlatRTCRole): void;
+    public abstract setRole(role: IServiceVideoChatRole): void;
 
     /** @returns local avatar if uid is not provided, throws error if uid == shareScreenUID */
-    public abstract getAvatar(uid?: TUid): FlatRTCAvatar | undefined;
+    public abstract getAvatar(uid?: IServiceVideoChatUID): IServiceVideoChatAvatar | undefined;
 
-    public abstract getTestAvatar(): FlatRTCAvatar;
+    public abstract getTestAvatar(): IServiceVideoChatAvatar;
 
-    public abstract getVolumeLevel(uid?: TUid): number;
+    public abstract getVolumeLevel(uid?: IServiceVideoChatUID): number;
 
     public abstract setCameraID(deviceId: string): Promise<void>;
     public abstract getCameraID(): string | undefined;
@@ -51,9 +62,9 @@ export abstract class FlatRTC<
     public abstract setSpeakerID(deviceId: string): Promise<void>;
     public abstract getSpeakerID(): string | undefined;
 
-    public abstract getCameraDevices(): Promise<FlatRTCDevice[]>;
-    public abstract getMicDevices(): Promise<FlatRTCDevice[]>;
-    public abstract getSpeakerDevices(): Promise<FlatRTCDevice[]>;
+    public abstract getCameraDevices(): Promise<IServiceVideoChatDevice[]>;
+    public abstract getMicDevices(): Promise<IServiceVideoChatDevice[]>;
+    public abstract getSpeakerDevices(): Promise<IServiceVideoChatDevice[]>;
 
     /** @returns volume 0~1 */
     public abstract getSpeakerVolume(): number;
@@ -95,6 +106,6 @@ export abstract class FlatRTC<
     }
 }
 
-export function doesNotSupportError(type: string): Error {
+function doesNotSupportError(type: string): Error {
     return new Error(`Does not support ${type}`);
 }

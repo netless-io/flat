@@ -1,7 +1,7 @@
 {
   "name": "@netless/flat-rtc-agora-web",
   "version": "0.1.0",
-  "description": "Flat RTC with Agora Web",
+  "description": "Agora RTC Web",
   "main": "src/index.ts",
   "private": true,
   "license": "MIT",
@@ -13,7 +13,7 @@
     "typescript": "^4.6.2"
   },
   "dependencies": {
-    "@netless/flat-rtc": "workspace:*",
+    "@netless/flat-services": "workspace:*",
     "agora-rtc-sdk-ng": "^4.12.2",
     "side-effect-manager": "^1.1.1",
     "value-enhancer": "^1.3.2"

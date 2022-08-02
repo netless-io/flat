@@ -1,13 +1,13 @@
-import { FlatRTCMode } from "@netless/flat-rtc";
+import { IServiceVideoChatMode } from "@netless/flat-services";
 
-export interface FlatRTCRecordingConfig {
+export interface IServiceVideoChatRecordingConfig {
     roomUUID: string;
     avatarWidth: number;
     avatarHeight: number;
-    mode: FlatRTCMode;
+    mode: IServiceVideoChatMode;
 }
 
-export interface FlatRTCRecording {
+export interface IServiceVideoChatRecording {
     startRecording(): Promise<void>;
     stopRecording(): Promise<void>;
 }

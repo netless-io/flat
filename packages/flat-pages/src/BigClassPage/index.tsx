@@ -17,7 +17,7 @@ import {
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatRTCRole } from "@netless/flat-rtc";
+import { IServiceVideoChatRole } from "@netless/flat-services";
 import { RoomStatus } from "@netless/flat-server-api";
 import { ChatPanel } from "../components/ChatPanel";
 import { RoomStatusStoppedModal } from "../components/ClassRoom/RoomStatusStoppedModal";
@@ -67,7 +67,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
             // is current user speaking
             if (classroomStore.userUUID === user.userUUID) {
                 void classroomStore.rtc.setRole(
-                    user.isSpeak ? FlatRTCRole.Host : FlatRTCRole.Audience,
+                    user.isSpeak ? IServiceVideoChatRole.Host : IServiceVideoChatRole.Audience,
                 );
             }
         });
