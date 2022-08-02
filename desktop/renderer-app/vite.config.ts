@@ -4,17 +4,19 @@ import { visualizer } from "rollup-plugin-visualizer";
 import copy from "rollup-plugin-copy";
 import path from "path";
 
-// TODO: find new place to store vite-plugin-dotenv, vite-plugin-react-virtualized
+// TODO: find new place to store vite-plugin-dotenv, vite-plugin-react-virtualized, vite-plugin-version
 import { dotenv } from "../../web/flat-web/scripts/vite-plugin-dotenv";
 import { reactVirtualized } from "../../web/flat-web/scripts/vite-plugin-react-virtualized";
+import { version } from "../../web/flat-web/scripts/vite-plugin-version";
 import { electron } from "./scripts/vite-plugin-electron";
-import { rootNodeModules, rendererPath } from "../../scripts/constants";
+import { rootNodeModules, rendererPath, mainPackageJSONPath } from "../../scripts/constants";
 import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 
 export default defineConfig(() => {
     const plugins = [
         react(),
         dotenv(autoChooseConfig()),
+        version(mainPackageJSONPath),
         reactVirtualized(),
         electron(),
         copy({
