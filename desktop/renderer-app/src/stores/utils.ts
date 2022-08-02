@@ -50,3 +50,13 @@ function getLSStore<TStore>(storeLSName: string, lsVersion: number): null | TSto
 function setLSStore<TStore>(storeLSName: string, configStore: TStore, lsVersion: number): void {
     localStorage.setItem(storeLSName, JSON.stringify([lsVersion, configStore]));
 }
+
+export function applyUAIfNeeded(flatUA: string): void {
+    const exist = window.__netlessUA || "";
+    if (exist.includes("FLAT/")) {
+        return;
+    }
+
+    window.__netlessUA =
+        exist + ` FLAT/${flatUA}_${process.env.FLAT_REGION}@${process.env.VERSION} `;
+}
