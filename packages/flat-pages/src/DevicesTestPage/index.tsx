@@ -3,7 +3,7 @@ import "./style.less";
 import { DeviceTestPanel } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { FlatRTCDevice } from "@netless/flat-rtc";
+import { IServiceVideoChatDevice } from "@netless/flat-services";
 
 import { useParams } from "react-router-dom";
 import { RouteNameType, RouteParams, usePushHistory } from "../utils/routes";
@@ -16,7 +16,7 @@ import { useFlatService } from "../components/FlatServicesContext";
 export const DevicesTestPage = observer(function DeviceTestPage() {
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
-    const rtc = useFlatService("rtc");
+    const rtc = useFlatService("videoChat");
     const preferencesStore = useContext(PreferencesStoreContext);
     const sp = useSafePromise();
 
@@ -26,8 +26,8 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
 
     const cameraVideoStreamRef = useRef<HTMLDivElement>(null);
 
-    const [cameraDevices, setCameraDevices] = useState<FlatRTCDevice[]>([]);
-    const [microphoneDevices, setMicrophoneDevices] = useState<FlatRTCDevice[]>([]);
+    const [cameraDevices, setCameraDevices] = useState<IServiceVideoChatDevice[]>([]);
+    const [microphoneDevices, setMicrophoneDevices] = useState<IServiceVideoChatDevice[]>([]);
 
     const [cameraDeviceId, setCameraDeviceId] = useState<string>("");
     const [microphoneDeviceId, setMicrophoneDeviceId] = useState<string>("");
@@ -55,7 +55,9 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
 
             return () => {
                 window.clearInterval(ticket);
-                avatar.destroy();
+                avatar.enableCamera(false);
+                avatar.enableMic(false);
+                avatar.setElement(null);
             };
         }
         return;

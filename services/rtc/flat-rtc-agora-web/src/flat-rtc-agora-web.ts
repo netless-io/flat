@@ -6,17 +6,18 @@ import AgoraRTC, {
     NetworkQuality,
 } from "agora-rtc-sdk-ng";
 import {
-    FlatRTC,
-    FlatRTCAvatar,
-    FlatRTCDevice,
-    FlatRTCJoinRoomConfigBase,
-    FlatRTCMode,
-    FlatRTCRole,
-} from "@netless/flat-rtc";
+    IServiceVideoChat,
+    IServiceVideoChatAvatar,
+    IServiceVideoChatDevice,
+    IServiceVideoChatJoinRoomConfig,
+    IServiceVideoChatMode,
+    IServiceVideoChatRole,
+    IServiceVideoChatUID,
+} from "@netless/flat-services";
 import { SideEffectManager } from "side-effect-manager";
 import { RTCRemoteAvatar } from "./rtc-remote-avatar";
 import { RTCLocalAvatar } from "./rtc-local-avatar";
-import { RTCShareScreen } from "./rtc-share-screen";
+import { AgoraRTCWebShareScreen } from "./rtc-share-screen";
 
 AgoraRTC.enableLogUpload();
 
@@ -28,26 +29,14 @@ if (process.env.DEV) {
     (window as any).AgoraRTC = AgoraRTC;
 }
 
-export type FlatRTCAgoraWebUIDType = number;
-
-export type FlatRTCAgoraWebJoinRoomConfig = FlatRTCJoinRoomConfigBase<FlatRTCAgoraWebUIDType>;
-
-export interface FlatRTCAgoraWebConfig {
+export interface AgoraRTCWebConfig {
     APP_ID: string;
 }
 
-export type IFlatRTCAgoraWeb = FlatRTC<FlatRTCAgoraWebUIDType, FlatRTCAgoraWebJoinRoomConfig>;
+export class AgoraRTCWeb extends IServiceVideoChat {
+    public readonly APP_ID: string;
 
-export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
-    public static APP_ID: string;
-
-    private static _instance?: FlatRTCAgoraWeb;
-
-    public static getInstance(): FlatRTCAgoraWeb {
-        return (FlatRTCAgoraWeb._instance ??= new FlatRTCAgoraWeb());
-    }
-
-    public readonly shareScreen = new RTCShareScreen();
+    public readonly shareScreen: AgoraRTCWebShareScreen;
 
     private readonly _sideEffect = new SideEffectManager();
     private readonly _roomSideEffect = new SideEffectManager();
@@ -61,17 +50,17 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
     private _micID?: string;
     private _speakerID?: string;
 
-    private uid?: FlatRTCAgoraWebUIDType;
+    private uid?: IServiceVideoChatUID;
     private roomUUID?: string;
-    private shareScreenUID?: FlatRTCAgoraWebUIDType;
+    private shareScreenUID?: IServiceVideoChatUID;
 
-    private _remoteAvatars = new Map<FlatRTCAgoraWebUIDType, RTCRemoteAvatar>();
-    public get remoteAvatars(): FlatRTCAvatar[] {
+    private _remoteAvatars = new Map<IServiceVideoChatUID, RTCRemoteAvatar>();
+    public get remoteAvatars(): IServiceVideoChatAvatar[] {
         return [...this._remoteAvatars.values()];
     }
 
     private _localAvatar?: RTCLocalAvatar;
-    public get localAvatar(): FlatRTCAvatar {
+    public get localAvatar(): IServiceVideoChatAvatar {
         return (this._localAvatar ??= new RTCLocalAvatar({ rtc: this }));
     }
 
@@ -79,8 +68,10 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         return Boolean(this.roomUUID);
     }
 
-    private constructor() {
+    public constructor({ APP_ID }: AgoraRTCWebConfig) {
         super();
+        this.APP_ID = APP_ID;
+        this.shareScreen = new AgoraRTCWebShareScreen({ APP_ID });
         this._sideEffect.add(() => {
             AgoraRTC.onCameraChanged = deviceInfo => {
                 this.setCameraID(deviceInfo.device.deviceId);
@@ -109,8 +100,8 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         await this.leaveRoom();
     }
 
-    public async joinRoom(config: FlatRTCAgoraWebJoinRoomConfig): Promise<void> {
-        if (!FlatRTCAgoraWeb.APP_ID) {
+    public async joinRoom(config: IServiceVideoChatJoinRoomConfig): Promise<void> {
+        if (!this.APP_ID) {
             throw new Error("APP_ID is not set");
         }
 
@@ -179,7 +170,7 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         this.shareScreen.setParams(null);
     }
 
-    public getAvatar(uid?: FlatRTCAgoraWebUIDType): FlatRTCAvatar | undefined {
+    public getAvatar(uid?: IServiceVideoChatUID): IServiceVideoChatAvatar | undefined {
         if (!this.isJoinedRoom) {
             return;
         }
@@ -198,20 +189,20 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         return remoteAvatar;
     }
 
-    public getTestAvatar(): FlatRTCAvatar {
+    public getTestAvatar(): IServiceVideoChatAvatar {
         return this.localAvatar;
     }
 
-    public getVolumeLevel(uid?: FlatRTCAgoraWebUIDType): number {
+    public getVolumeLevel(uid?: IServiceVideoChatUID): number {
         if (!uid || this.uid === uid) {
             return this._localAvatar?.getVolumeLevel() ?? 0;
         }
         return this._remoteAvatars.get(uid)?.getVolumeLevel() ?? 0;
     }
 
-    public setRole(role: FlatRTCRole): void {
+    public setRole(role: IServiceVideoChatRole): void {
         if (this.client) {
-            this.client.setClientRole(role === FlatRTCRole.Host ? "host" : "audience");
+            this.client.setClientRole(role === IServiceVideoChatRole.Host ? "host" : "audience");
         }
     }
 
@@ -229,7 +220,7 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         }
     }
 
-    public async getCameraDevices(): Promise<FlatRTCDevice[]> {
+    public async getCameraDevices(): Promise<IServiceVideoChatDevice[]> {
         return (await AgoraRTC.getCameras()).map(device => ({
             deviceId: device.deviceId,
             label: device.label,
@@ -250,7 +241,7 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         }
     }
 
-    public async getMicDevices(): Promise<FlatRTCDevice[]> {
+    public async getMicDevices(): Promise<IServiceVideoChatDevice[]> {
         return (await AgoraRTC.getMicrophones()).map(device => ({
             deviceId: device.deviceId,
             label: device.label,
@@ -269,7 +260,7 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         }
     }
 
-    public async getSpeakerDevices(): Promise<FlatRTCDevice[]> {
+    public async getSpeakerDevices(): Promise<IServiceVideoChatDevice[]> {
         return (await AgoraRTC.getPlaybackDevices()).map(device => ({
             deviceId: device.deviceId,
             label: device.label,
@@ -289,9 +280,9 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         roomUUID,
         shareScreenUID,
         shareScreenToken,
-    }: FlatRTCAgoraWebJoinRoomConfig): Promise<void> {
+    }: IServiceVideoChatJoinRoomConfig): Promise<void> {
         const client = AgoraRTC.createClient({
-            mode: mode === FlatRTCMode.Broadcast ? "live" : "rtc",
+            mode: mode === IServiceVideoChatMode.Broadcast ? "live" : "rtc",
             codec: "vp8",
         });
         this.client = client;
@@ -299,8 +290,8 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
             (window as any).rtc_client = client;
         }
 
-        if (mode === FlatRTCMode.Broadcast) {
-            await client.setClientRole(role === FlatRTCRole.Host ? "host" : "audience");
+        if (mode === IServiceVideoChatMode.Broadcast) {
+            await client.setClientRole(role === IServiceVideoChatRole.Host ? "host" : "audience");
         }
 
         if (refreshToken) {
@@ -330,7 +321,7 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
                 user: IAgoraRTCRemoteUser,
                 mediaType: "audio" | "video",
             ): Promise<void> => {
-                const uid = user.uid as FlatRTCAgoraWebUIDType;
+                const uid = String(user.uid);
                 if (this.shareScreenUID === uid) {
                     if (mediaType === "video" && this.shareScreen.shouldSubscribeRemoteTrack()) {
                         try {
@@ -370,7 +361,7 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
                 user: IAgoraRTCRemoteUser,
                 mediaType: "audio" | "video",
             ): Promise<void> => {
-                const uid = user.uid as FlatRTCAgoraWebUIDType;
+                const uid = String(user.uid);
                 if (uid === this.shareScreenUID) {
                     if (mediaType === "video") {
                         try {
@@ -427,10 +418,10 @@ export class FlatRTCAgoraWeb extends FlatRTC<FlatRTCAgoraWebUIDType> {
         );
 
         await client.join(
-            FlatRTCAgoraWeb.APP_ID,
+            this.APP_ID,
             roomUUID,
             token || (await refreshToken?.(roomUUID)) || null,
-            uid,
+            Number(uid),
         );
 
         // publish existing tracks after joining channel

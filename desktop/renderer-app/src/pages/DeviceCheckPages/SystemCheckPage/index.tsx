@@ -7,8 +7,7 @@ import { routeConfig } from "../../../route-config";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { DeviceCheckResults, DeviceCheckState } from "../utils";
 import { useTranslation } from "react-i18next";
-import { FlatRTCContext } from "../../../components/FlatRTCContext";
-import { FlatRTCNetworkQualityType } from "@netless/flat-rtc";
+import { IServiceVideoChatNetworkQualityType } from "@netless/flat-services";
 
 const networkDescription = [
     "network-quality-unknown",
@@ -24,7 +23,8 @@ const networkDescription = [
 
 export const SystemCheckPage = (): React.ReactElement => {
     const { t } = useTranslation();
-    const [networkSituation, setNetworkSituation] = useState<FlatRTCNetworkQualityType>(8);
+    const [networkSituation, setNetworkSituation] =
+        useState<IServiceVideoChatNetworkQualityType>(8);
     const rtc = useContext(FlatRTCContext);
     const resultRef = React.useRef<DeviceCheckState>();
     const history = useHistory<DeviceCheckResults>();

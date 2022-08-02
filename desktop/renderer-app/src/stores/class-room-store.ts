@@ -5,7 +5,12 @@ import dateSub from "date-fns/sub";
 import { SideEffectManager } from "side-effect-manager";
 import i18next, { i18n } from "i18next";
 import { message } from "antd";
-import { FlatRTC, FlatRTCMode, FlatRTCRole, FlatRTCShareScreenInfo } from "@netless/flat-rtc";
+import {
+    IServiceVideoChat,
+    IServiceVideoChatMode,
+    IServiceVideoChatRole,
+    IServiceShareScreenInfo,
+} from "@netless/flat-services";
 import { RtcChannelType } from "../api-middleware/rtc";
 import {
     ClassModeType,
@@ -40,7 +45,6 @@ import { errorTips } from "../components/Tips/ErrorTips";
 import { WhiteboardStore } from "./whiteboard-store";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { useSafePromise } from "../utils/hooks/lifecycle";
-import { getFlatRTC } from "../services/flat-rtc";
 import { NEED_CHECK_CENSOR } from "../constants/config";
 
 export type { User } from "./user-store";
@@ -90,11 +94,11 @@ export class ClassRoomStore {
     /** is other users sharing screen */
     public isRemoteScreenSharing = false;
 
-    public shareScreenInfo: FlatRTCShareScreenInfo[] = [];
+    public shareScreenInfo: IServiceShareScreenInfo[] = [];
 
     public showShareScreenPicker = false;
 
-    public selectedScreenInfo: FlatRTCShareScreenInfo | null = null;
+    public selectedScreenInfo: IServiceShareScreenInfo | null = null;
 
     public roomStatusLoading = RoomStatusLoadingType.Null;
 
@@ -106,7 +110,7 @@ export class ClassRoomStore {
 
     public readonly users: UserStore;
 
-    public readonly rtc: FlatRTC;
+    public readonly rtc: IServiceVideoChat;
     public readonly rtm: RTMAPI;
     public readonly cloudRecording: CloudRecording;
 
@@ -132,6 +136,7 @@ export class ClassRoomStore {
     private _userDeviceStatePrePause?: { mic: boolean; camera: boolean } | null;
 
     public constructor(config: {
+        videoChat: IServiceVideoChat;
         roomUUID: string;
         ownerUUID: string;
         recordingConfig: RecordingConfig;
@@ -148,7 +153,7 @@ export class ClassRoomStore {
         this.recordingConfig = config.recordingConfig;
         this.classMode = config.classMode ?? ClassModeType.Lecture;
 
-        this.rtc = getFlatRTC();
+        this.rtc = config.videoChat;
         this.rtm = new RTMAPI();
         this.cloudRecording = new CloudRecording({ roomUUID: config.roomUUID });
 
@@ -300,15 +305,15 @@ export class ClassRoomStore {
         try {
             await this.rtc.joinRoom({
                 roomUUID: this.roomUUID,
-                uid: globalStore.rtcUID,
+                uid: String(globalStore.rtcUID),
                 token: globalStore.rtcToken,
                 mode:
                     this.recordingConfig.channelType === RtcChannelType.Broadcast
-                        ? FlatRTCMode.Broadcast
-                        : FlatRTCMode.Communication,
-                role: this.isCreator ? FlatRTCRole.Host : FlatRTCRole.Audience,
+                        ? IServiceVideoChatMode.Broadcast
+                        : IServiceVideoChatMode.Communication,
+                role: this.isCreator ? IServiceVideoChatRole.Host : IServiceVideoChatRole.Audience,
                 refreshToken: generateRTCToken,
-                shareScreenUID: globalStore.rtcShareScreen?.uid || -1,
+                shareScreenUID: String(globalStore.rtcShareScreen?.uid || -1),
                 shareScreenToken: globalStore.rtcShareScreen?.token || "",
             });
             this.updateIsJoinedRTC(true);
@@ -402,7 +407,7 @@ export class ClassRoomStore {
         this.showShareScreenPicker = show;
     };
 
-    public updateSelectedScreenInfo = (info: FlatRTCShareScreenInfo | null): void => {
+    public updateSelectedScreenInfo = (info: IServiceShareScreenInfo | null): void => {
         this.selectedScreenInfo = info;
         this.rtc.shareScreen.setScreenInfo(info);
     };

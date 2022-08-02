@@ -23,7 +23,7 @@
     "@netless/combine-player": "^1.1.6",
     "@netless/fastboard-react": "^0.3.6",
     "@netless/flat-pages": "workspace:*",
-    "@netless/flat-rtc": "workspace:*",
+    "@netless/flat-services": "workspace:*",
     "@netless/flat-rtc-agora-electron": "workspace:*",
     "@netless/player-controller": "^0.0.9",
     "@netless/video-js-plugin": "^0.3.8",

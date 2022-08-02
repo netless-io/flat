@@ -1,17 +1,17 @@
 import { SideEffectManager } from "side-effect-manager";
 import { combine, Val } from "value-enhancer";
-import type { FlatRTCAvatar } from "@netless/flat-rtc";
-import type { FlatRTCAgoraElectron, FlatRTCAgoraElectronUIDType } from "./flat-rtc-agora-electron";
+import type { IServiceVideoChatAvatar, IServiceVideoChatUID } from "@netless/flat-services";
+import type { AgoraRTCElectron } from "./flat-rtc-agora-electron";
 
 export interface RTCRemoteAvatarConfig {
-    rtc: FlatRTCAgoraElectron;
-    uid: FlatRTCAgoraElectronUIDType;
+    rtc: AgoraRTCElectron;
+    uid: IServiceVideoChatUID;
     element?: HTMLElement | null;
 }
 
-export class RTCRemoteAvatar implements FlatRTCAvatar {
-    private readonly uid: FlatRTCAgoraElectronUIDType;
-    private readonly _rtc: FlatRTCAgoraElectron;
+export class RTCRemoteAvatar implements IServiceVideoChatAvatar {
+    private readonly uid: IServiceVideoChatUID;
+    private readonly _rtc: AgoraRTCElectron;
     private readonly _sideEffect = new SideEffectManager();
 
     private readonly _active$ = new Val(false);
@@ -50,7 +50,7 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
             combine([this._el$, this._active$]).subscribe(([el, active]) => {
                 if (el && active) {
                     try {
-                        this._rtc.rtcEngine.setupRemoteVideo(this.uid, el);
+                        this._rtc.rtcEngine.setupRemoteVideo(Number(this.uid), el);
                     } catch (e) {
                         console.error(e);
                     }
@@ -63,7 +63,7 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
                 ([el, active, shouldMic]) => {
                     try {
                         this._rtc.rtcEngine.muteRemoteAudioStream(
-                            this.uid,
+                            Number(this.uid),
                             !(el && active && shouldMic),
                         );
                     } catch (e) {
@@ -78,7 +78,7 @@ export class RTCRemoteAvatar implements FlatRTCAvatar {
                 ([el, active, shouldCamera]) => {
                     try {
                         this._rtc.rtcEngine.muteRemoteVideoStream(
-                            this.uid,
+                            Number(this.uid),
                             !(el && active && shouldCamera),
                         );
                     } catch (e) {

@@ -7,7 +7,7 @@ import { useFlatService } from "../components/FlatServicesContext";
 export type useClassRoomStoreConfig = Omit<ClassroomStoreConfig, "rtc" | "rtm">;
 
 export function useClassroomStore(config: useClassRoomStoreConfig): ClassroomStore | undefined {
-    const rtc = useFlatService("rtc");
+    const rtc = useFlatService("videoChat");
     const rtm = useFlatService("rtm");
     const [classroomStore, setClassroomStore] = useState<ClassroomStore>();
 

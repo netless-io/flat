@@ -22,11 +22,14 @@ export const useFlatService = <T extends FlatServiceID>(
     name: T,
 ): FlatServicesInstance<T> | undefined => {
     const flatServices = React.useContext(FlatServicesContext);
-    const [service, setService] = React.useState<FlatServicesInstance<T>>();
+    const [service, setService] = React.useState<FlatServicesInstance<T> | null>();
     const sp = useSafePromise();
     useIsomorphicLayoutEffect(() => {
         sp(flatServices.requestService(name)).then(setService);
     }, [flatServices, name]);
+    if (service === null) {
+        throw new Error(`Flat Service ${name} is not registered`);
+    }
     return service;
 };
 

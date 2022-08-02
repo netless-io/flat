@@ -1,7 +1,10 @@
-import type { FlatRTCRecording, FlatRTCRecordingConfig } from "@netless/flat-rtc-recording";
+import type {
+    IServiceVideoChatRecording,
+    IServiceVideoChatRecordingConfig,
+} from "@netless/flat-video-chat-recording";
 
-export class FlatRTCRecordingAgora implements FlatRTCRecording {
-    public constructor(config: FlatRTCRecordingConfig) {
+export class FlatRTCRecordingAgora implements IServiceVideoChatRecording {
+    public constructor(config: IServiceVideoChatRecordingConfig) {
         console.log(config);
     }
 

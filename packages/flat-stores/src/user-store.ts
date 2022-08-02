@@ -4,7 +4,7 @@ import { preferencesStore } from "./preferences-store";
 
 export interface User {
     userUUID: string;
-    rtcUID: number;
+    rtcUID: string;
     avatar: string;
     name: string;
     camera: boolean;
@@ -225,7 +225,7 @@ export class UserStore {
             // must convert to observable first so that it may be reused by other logic
             observable.object<User>({
                 userUUID,
-                rtcUID: users[userUUID].rtcUID,
+                rtcUID: String(users[userUUID].rtcUID),
                 avatar: users[userUUID].avatarURL,
                 name: users[userUUID].name,
                 camera: userUUID === this.userUUID ? preferencesStore.autoCameraOn : false,

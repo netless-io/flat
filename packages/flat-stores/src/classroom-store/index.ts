@@ -1,7 +1,6 @@
 import { SideEffectManager } from "side-effect-manager";
 import { action, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { RoomState as WhiteRoomState, RoomMember as WhiteRoomMember } from "white-web-sdk";
-import { FlatRTC, FlatRTCMode, FlatRTCRole } from "@netless/flat-rtc";
 import type { FlatRTM } from "@netless/flat-rtm";
 import {
     pauseClass,
@@ -21,6 +20,7 @@ import { WhiteboardStore } from "../whiteboard-store";
 import { globalStore } from "../global-store";
 import { ClassModeType, RoomStatusLoadingType } from "./constants";
 import { ChatStore } from "./chat-store";
+import { IServiceVideoChat } from "@netless/flat-services";
 
 export * from "./constants";
 export * from "./chat-store";
@@ -28,7 +28,7 @@ export * from "./chat-store";
 export interface ClassroomStoreConfig {
     roomUUID: string;
     ownerUUID: string;
-    rtc: FlatRTC;
+    rtc: IServiceVideoChat;
     rtm: FlatRTM;
 }
 
@@ -77,7 +77,7 @@ export class ClassroomStore {
 
     public readonly users: UserStore;
 
-    public readonly rtc: FlatRTC;
+    public readonly rtc: IServiceVideoChat;
     public readonly rtm: FlatRTM;
     public readonly chatStore: ChatStore;
     public readonly whiteboardStore: WhiteboardStore;
@@ -668,7 +668,7 @@ export class ClassroomStore {
                     this.roomInfo?.roomType === RoomType.BigClass
                         ? FlatRTCMode.Broadcast
                         : FlatRTCMode.Communication,
-                role: this.isCreator ? FlatRTCRole.Host : FlatRTCRole.Audience,
+                role: this.isCreator ? IServiceVideoChatRole.Host : IServiceVideoChatRole.Audience,
                 refreshToken: generateRTCToken,
                 shareScreenUID: globalStore.rtcShareScreen?.uid || -1,
                 shareScreenToken: globalStore.rtcShareScreen?.token || "",

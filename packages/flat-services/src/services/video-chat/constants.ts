@@ -1,9 +1,9 @@
-export enum FlatRTCMode {
+export enum IServiceVideoChatMode {
     Communication = "Communication",
     Broadcast = "Broadcast",
 }
 
-export enum FlatRTCRole {
+export enum IServiceVideoChatRole {
     Host = "Host",
     Audience = "Audience",
 }

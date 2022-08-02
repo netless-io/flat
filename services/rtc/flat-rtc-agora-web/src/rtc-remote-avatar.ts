@@ -1,6 +1,6 @@
 import { SideEffectManager } from "side-effect-manager";
 import { combine, Val } from "value-enhancer";
-import type { FlatRTCAvatar } from "@netless/flat-rtc";
+import type { IServiceVideoChatAvatar } from "@netless/flat-services";
 import type { IAgoraRTCRemoteUser, IRemoteAudioTrack, IRemoteVideoTrack } from "agora-rtc-sdk-ng";
 
 export interface RTCRemoteAvatarConfig {
@@ -8,7 +8,7 @@ export interface RTCRemoteAvatarConfig {
     element?: HTMLElement | null;
 }
 
-export class RTCRemoteAvatar implements FlatRTCAvatar {
+export class RTCRemoteAvatar implements IServiceVideoChatAvatar {
     private readonly _sideEffect = new SideEffectManager();
 
     private readonly _shouldCamera$ = new Val(false);
