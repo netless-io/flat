@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { EditRoomBody, EditRoomBodyProps } from "flat-components";
 import { useHistory } from "react-router-dom";
 import { useContext } from "react";
-import { PageStoreContextLegacy } from "../PageStoreContextLegacy";
+import { PageStoreContext } from "../StoreProvider";
 import { useTranslation } from "react-i18next";
 
 export type EditRoomPageProps = EditRoomBodyProps;
@@ -13,10 +13,10 @@ export type EditRoomPageProps = EditRoomBodyProps;
 export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(props) {
     const { t } = useTranslation();
     const history = useHistory();
-    const pageStoreLegacy = useContext(PageStoreContextLegacy);
+    const pageStore = useContext(PageStoreContext);
 
     useEffect(() => {
-        pageStoreLegacy.configure({
+        pageStore.configure({
             title: (
                 <div className="edit-room-page-header-title">
                     {props.type === "schedule"

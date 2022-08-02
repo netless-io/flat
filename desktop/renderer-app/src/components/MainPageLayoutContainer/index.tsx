@@ -32,12 +32,25 @@ import { runtime } from "../../utils/runtime";
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];
     activeKeys?: string[];
+    MainPageHeaderTitle?: MainPageLayoutProps["title"];
+    showMainPageHeader?: MainPageLayoutProps["showMainPageHeader"];
     onRouteChange?: MainPageLayoutProps["onClick"];
+    onBackPreviousPage?: MainPageLayoutProps["onBackPreviousPage"];
 }
 
 export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
-    function MainPageLayoutContainer({ subMenu, children, activeKeys, onRouteChange }) {
+    function MainPageLayoutContainer({
+        subMenu,
+        children,
+        activeKeys,
+        MainPageHeaderTitle,
+        showMainPageHeader,
+        onRouteChange,
+        onBackPreviousPage,
+    }) {
+        const location = useLocation();
         const { t } = useTranslation();
+
         const sideMenu = [
             {
                 key: routeConfig[RouteNameType.HomePage].path,
@@ -92,8 +105,6 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
             },
         ];
 
-        const location = useLocation();
-
         activeKeys ??= [location.pathname];
 
         const history = useHistory();
@@ -137,11 +148,14 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
                 generateAvatar={generateAvatar}
                 isWin={runtime.isWin}
                 popMenu={popMenu}
+                showMainPageHeader={showMainPageHeader}
                 sideMenu={sideMenu}
                 sideMenuFooter={sideMenuFooter}
                 subMenu={subMenu}
+                title={MainPageHeaderTitle}
                 topBarMenu={topBarMenu}
                 userName={globalStore.userInfo?.name ?? ""}
+                onBackPreviousPage={onBackPreviousPage}
                 onClick={onMenuItemClick}
                 onClickTopBarMenu={onClickTopBarMenu}
                 onClickWindowsSystemBtn={onClickWindowsSystemBtn}

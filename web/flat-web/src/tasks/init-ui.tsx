@@ -14,14 +14,10 @@ import { I18nextProvider } from "react-i18next";
 import { i18n } from "@netless/flat-pages/src/utils/i18n";
 import { AppRoutes } from "@netless/flat-pages/src/AppRoutes";
 import { StoreProvider } from "@netless/flat-pages/src/components/StoreProvider";
-import { PageStoreContextLegacy } from "@netless/flat-pages/src/components/PageStoreContextLegacy";
 import { FlatServicesContextProvider } from "@netless/flat-pages/src/components/FlatServicesContext";
-import { PageStoreContext } from "@netless/flat-pages/src/components/PageStoreContext";
 
 /** configure right after import */
 import { configure } from "mobx";
-import { pageStoreLegacy } from "@netless/flat-pages/src/stores/page-store";
-import { pageStore } from "../stores/page-store";
 configure({
     isolateGlobalState: true,
 });
@@ -57,13 +53,9 @@ const App: React.FC = () => {
                 locale={antdLocale}
             >
                 <StoreProvider>
-                    <PageStoreContext.Provider value={pageStore}>
-                        <PageStoreContextLegacy.Provider value={pageStoreLegacy}>
-                            <FlatServicesContextProvider>
-                                <AppRoutes />
-                            </FlatServicesContextProvider>
-                        </PageStoreContextLegacy.Provider>
-                    </PageStoreContext.Provider>
+                    <FlatServicesContextProvider>
+                        <AppRoutes />
+                    </FlatServicesContextProvider>
                 </StoreProvider>
             </ConfigProvider>
         </I18nextProvider>
