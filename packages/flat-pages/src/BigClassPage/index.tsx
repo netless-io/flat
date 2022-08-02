@@ -184,7 +184,6 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                     }
                     isShow={isRealtimeSideOpen}
                     isVideoOn={classroomStore.isJoinedRTC}
-                    isShowAllOfStagte={classroomStore.isCreator}
                     videoSlot={
                         <div className="big-class-realtime-rtc-box">
                             <RTCAvatar
