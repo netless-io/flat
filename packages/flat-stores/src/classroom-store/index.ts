@@ -20,7 +20,11 @@ import { WhiteboardStore } from "../whiteboard-store";
 import { globalStore } from "../global-store";
 import { ClassModeType, RoomStatusLoadingType } from "./constants";
 import { ChatStore } from "./chat-store";
-import { IServiceVideoChat } from "@netless/flat-services";
+import {
+    IServiceVideoChat,
+    IServiceVideoChatMode,
+    IServiceVideoChatRole,
+} from "@netless/flat-services";
 
 export * from "./constants";
 export * from "./chat-store";
@@ -662,15 +666,15 @@ export class ClassroomStore {
         if (globalStore.rtcUID) {
             await this.rtc.joinRoom({
                 roomUUID: this.roomUUID,
-                uid: globalStore.rtcUID,
+                uid: String(globalStore.rtcUID),
                 token: globalStore.rtcToken,
                 mode:
                     this.roomInfo?.roomType === RoomType.BigClass
-                        ? FlatRTCMode.Broadcast
-                        : FlatRTCMode.Communication,
+                        ? IServiceVideoChatMode.Broadcast
+                        : IServiceVideoChatMode.Communication,
                 role: this.isCreator ? IServiceVideoChatRole.Host : IServiceVideoChatRole.Audience,
                 refreshToken: generateRTCToken,
-                shareScreenUID: globalStore.rtcShareScreen?.uid || -1,
+                shareScreenUID: String(globalStore.rtcShareScreen?.uid || -1),
                 shareScreenToken: globalStore.rtcShareScreen?.token || "",
             });
 
