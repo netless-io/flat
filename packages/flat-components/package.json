@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@netless/flat-rtc": "workspace:*",
+    "@netless/flat-services": "workspace:*",
     "antd": "^4.19.2",
     "classnames": "^2.3.1",
     "date-fns": "^2.28.0",

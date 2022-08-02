@@ -43,7 +43,7 @@ import { RouteNameType, RouteParams } from "../../utils/routes";
 import { RTCAvatar } from "../../components/RTCAvatar";
 import { runtime } from "../../utils/runtime";
 import { ShareScreen, ShareScreenPicker } from "../../components/ShareScreen";
-import { FlatRTCRole } from "@netless/flat-rtc";
+import { IServiceVideoChatRole } from "@netless/flat-services";
 import { ipcAsyncByMainWindow } from "../../utils/ipc";
 
 const recordingConfig: RecordingConfig = Object.freeze({
@@ -135,7 +135,9 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
 
         // is current user speaking
         if (classRoomStore.userUUID === user.userUUID) {
-            classRoomStore.rtc.setRole(user.isSpeak ? FlatRTCRole.Host : FlatRTCRole.Audience);
+            classRoomStore.rtc.setRole(
+                user.isSpeak ? IServiceVideoChatRole.Host : IServiceVideoChatRole.Audience,
+            );
         }
     });
 

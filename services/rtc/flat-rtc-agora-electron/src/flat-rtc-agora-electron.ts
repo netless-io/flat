@@ -1,61 +1,37 @@
 import type AgoraSdk from "agora-electron-sdk";
 import type { AgoraNetworkQuality, RtcStats } from "agora-electron-sdk/types/Api/native_type";
 import {
-    FlatRTC,
-    FlatRTCAvatar,
-    FlatRTCDevice,
-    FlatRTCJoinRoomConfigBase,
-    FlatRTCMode,
-    FlatRTCNetworkQualityType,
-    FlatRTCRole,
-} from "@netless/flat-rtc";
+    IServiceVideoChat,
+    IServiceVideoChatAvatar,
+    IServiceVideoChatDevice,
+    IServiceVideoChatJoinRoomConfig,
+    IServiceVideoChatMode,
+    IServiceVideoChatNetworkQualityType,
+    IServiceVideoChatRole,
+    IServiceVideoChatUID,
+} from "@netless/flat-services";
 import { SideEffectManager } from "side-effect-manager";
 import { RTCRemoteAvatar } from "./rtc-remote-avatar";
 import { RTCLocalAvatar } from "./rtc-local-avatar";
-import { RTCShareScreen } from "./rtc-share-screen";
-
-export type FlatRTCAgoraElectronUIDType = number;
-
-export interface FlatRTCAgoraElectronConfig {
-    APP_ID: string;
-}
-
-export type FlatRTCAgoraElectronJoinRoomConfig =
-    FlatRTCJoinRoomConfigBase<FlatRTCAgoraElectronUIDType>;
+import { AgoraRTCElectronShareScreen } from "./rtc-share-screen";
 
 export interface FlatRTCAgoraElectronDevice {
     devicename: string;
     deviceid: string;
 }
 
-export class FlatRTCAgoraElectron extends FlatRTC<
-    FlatRTCAgoraElectronUIDType,
-    FlatRTCAgoraElectronJoinRoomConfig
-> {
-    public static APP_ID: string;
+export interface AgoraRTCElectronConfig {
+    APP_ID: string;
+    rtcEngine: AgoraSdk;
+}
 
+export class AgoraRTCElectron extends IServiceVideoChat {
     private static LOW_VOLUME_LEVEL_THRESHOLD = 0.00001;
 
-    private static rtcEngine: AgoraSdk;
+    public readonly shareScreen = new AgoraRTCElectronShareScreen({ rtc: this });
 
-    private static _instance?: FlatRTCAgoraElectron;
-
-    public static getInstance(): FlatRTCAgoraElectron {
-        return (FlatRTCAgoraElectron._instance ??= new FlatRTCAgoraElectron());
-    }
-
-    public static setRtcEngine(rtcEngine: AgoraSdk): void {
-        FlatRTCAgoraElectron.rtcEngine = rtcEngine;
-        if (this._instance) {
-            this._instance._init();
-        }
-    }
-
-    public readonly shareScreen = new RTCShareScreen({ rtc: this });
-
-    public get rtcEngine(): AgoraSdk {
-        return FlatRTCAgoraElectron.rtcEngine;
-    }
+    public readonly APP_ID: string;
+    public readonly rtcEngine: AgoraSdk;
 
     private readonly _sideEffect = new SideEffectManager();
     private readonly _roomSideEffect = new SideEffectManager();
@@ -64,21 +40,21 @@ export class FlatRTCAgoraElectron extends FlatRTC<
     private _micID?: string;
     private _speakerID?: string;
 
-    private uid?: FlatRTCAgoraElectronUIDType;
+    private uid?: IServiceVideoChatUID;
     private roomUUID?: string;
 
-    public shareScreenUID?: FlatRTCAgoraElectronUIDType;
+    public shareScreenUID?: IServiceVideoChatUID;
 
-    private _volumeLevels = new Map<FlatRTCAgoraElectronUIDType, number>();
+    private _volumeLevels = new Map<IServiceVideoChatUID, number>();
 
-    private _remoteAvatars = new Map<FlatRTCAgoraElectronUIDType, RTCRemoteAvatar>();
+    private _remoteAvatars = new Map<IServiceVideoChatUID, RTCRemoteAvatar>();
 
-    public get remoteAvatars(): FlatRTCAvatar[] {
+    public get remoteAvatars(): IServiceVideoChatAvatar[] {
         return [...this._remoteAvatars.values()];
     }
 
     private _localAvatar?: RTCLocalAvatar;
-    public get localAvatar(): FlatRTCAvatar {
+    public get localAvatar(): IServiceVideoChatAvatar {
         return (this._localAvatar ??= new RTCLocalAvatar({ rtc: this }));
     }
 
@@ -86,16 +62,20 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         return Boolean(this.roomUUID);
     }
 
-    private constructor() {
-        super();
-        if (FlatRTCAgoraElectron.rtcEngine) {
-            this._init();
-        }
+    public setRTCEngine(rtcEngine: AgoraSdk): void {
+        (this.rtcEngine as AgoraSdk) = rtcEngine;
+        this._init(rtcEngine);
     }
 
-    private _init(): void {
+    public constructor(config: AgoraRTCElectronConfig) {
+        super();
+        this.APP_ID = config.APP_ID;
+        this.rtcEngine = config.rtcEngine;
+        this._init(this.rtcEngine);
+    }
+
+    private _init(rtcEngine: AgoraSdk): void {
         this._sideEffect.add(() => {
-            const rtcEngine = this.rtcEngine; // keep this in closure
             const getSpeakerID = (): string | undefined => {
                 try {
                     return (rtcEngine.getCurrentAudioPlaybackDevice() as FlatRTCAgoraElectronDevice)
@@ -159,7 +139,6 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         }, "init");
 
         this._sideEffect.add(() => {
-            const rtcEngine = this.rtcEngine;
             const onError = (_err: number, msg: string): void => {
                 this.events.emit("error", new Error(msg));
             };
@@ -169,8 +148,6 @@ export class FlatRTCAgoraElectron extends FlatRTC<
 
         if (process.env.NODE_ENV === "development") {
             this._sideEffect.add(() => {
-                const rtcEngine = this.rtcEngine;
-
                 const onJoinedChannel = (channel: string, uid: number): void => {
                     console.log(`[RTC] ${uid} join channel ${channel}`);
                 };
@@ -210,8 +187,8 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         await this.leaveRoom();
     }
 
-    public async joinRoom(config: FlatRTCAgoraElectronJoinRoomConfig): Promise<void> {
-        if (!FlatRTCAgoraElectron.rtcEngine) {
+    public async joinRoom(config: IServiceVideoChatJoinRoomConfig): Promise<void> {
+        if (!this.rtcEngine) {
             throw new Error("AgoraRTC is not provided");
         }
 
@@ -237,7 +214,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         this.shareScreen.setParams(null);
     }
 
-    public getAvatar(uid?: FlatRTCAgoraElectronUIDType): FlatRTCAvatar | undefined {
+    public override getAvatar(uid?: string): IServiceVideoChatAvatar | undefined {
         if (!this.isJoinedRoom) {
             return;
         }
@@ -255,17 +232,17 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         return remoteAvatar;
     }
 
-    public getTestAvatar(): FlatRTCAvatar {
+    public getTestAvatar(): IServiceVideoChatAvatar {
         return this.localAvatar;
     }
 
-    public getVolumeLevel(uid?: FlatRTCAgoraElectronUIDType): number {
-        return this._volumeLevels.get(uid || 0) || 0;
+    public override getVolumeLevel(uid?: IServiceVideoChatUID): number {
+        return this._volumeLevels.get(uid || "0") || 0;
     }
 
-    public setRole(role: FlatRTCRole): void {
+    public setRole(role: IServiceVideoChatRole): void {
         if (this.rtcEngine) {
-            this.rtcEngine.setClientRole(role === FlatRTCRole.Host ? 1 : 2);
+            this.rtcEngine.setClientRole(role === IServiceVideoChatRole.Host ? 1 : 2);
         }
     }
 
@@ -281,7 +258,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         }
     }
 
-    public async getCameraDevices(): Promise<FlatRTCDevice[]> {
+    public async getCameraDevices(): Promise<IServiceVideoChatDevice[]> {
         return (this.rtcEngine.getVideoDevices() as FlatRTCAgoraElectronDevice[]).map(device => ({
             deviceId: device.deviceid,
             label: device.devicename,
@@ -300,7 +277,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         }
     }
 
-    public async getMicDevices(): Promise<FlatRTCDevice[]> {
+    public async getMicDevices(): Promise<IServiceVideoChatDevice[]> {
         return (this.rtcEngine.getAudioRecordingDevices() as FlatRTCAgoraElectronDevice[]).map(
             device => ({
                 deviceId: device.deviceid,
@@ -322,7 +299,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         }
     }
 
-    public async getSpeakerDevices(): Promise<FlatRTCDevice[]> {
+    public async getSpeakerDevices(): Promise<IServiceVideoChatDevice[]> {
         return (this.rtcEngine.getAudioPlaybackDevices() as FlatRTCAgoraElectronDevice[]).map(
             device => ({
                 deviceId: device.deviceid,
@@ -335,12 +312,12 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         return this.rtcEngine.getAudioPlaybackVolume() / 255 || 0;
     }
 
-    public async setSpeakerVolume(volume: number): Promise<void> {
+    public override async setSpeakerVolume(volume: number): Promise<void> {
         volume = Math.max(0, Math.min(volume, 1));
         this.rtcEngine.setAudioPlaybackVolume(Math.ceil(volume * 255));
     }
 
-    public startNetworkTest(): void {
+    public override startNetworkTest(): void {
         this._sideEffect.add(() => {
             const rtcEngine = this.rtcEngine;
             const handler = (quality: AgoraNetworkQuality): void => {
@@ -358,12 +335,12 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         });
     }
 
-    public stopNetworkTest(): void {
+    public override stopNetworkTest(): void {
         this.rtcEngine.stopLastmileProbeTest();
         this._sideEffect.flush("network-test");
     }
 
-    public startCameraTest(el: HTMLElement): void {
+    public override startCameraTest(el: HTMLElement): void {
         this.rtcEngine.enableVideo();
 
         const avatar = this.localAvatar;
@@ -374,7 +351,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         this.rtcEngine.startPreview();
     }
 
-    public stopCameraTest(): void {
+    public override stopCameraTest(): void {
         const avatar = this.localAvatar;
         avatar.setElement(null);
         avatar.enableCamera(false);
@@ -384,7 +361,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         this.rtcEngine.disableVideo();
     }
 
-    public startMicTest(): void {
+    public override startMicTest(): void {
         this.rtcEngine.startAudioRecordingDeviceTest(300);
 
         this._sideEffect.add(() => {
@@ -401,18 +378,18 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         }, "mic-test");
     }
 
-    public stopMicTest(): void {
+    public override stopMicTest(): void {
         this.rtcEngine.stopAudioRecordingDeviceTest();
         this._sideEffect.flush("mic-test");
     }
 
-    public startSpeakerTest(filePath: string): void {
+    public override startSpeakerTest(filePath: string): void {
         this.rtcEngine.enableAudio();
         this.rtcEngine.enableLocalAudio(true);
         this.rtcEngine.startAudioPlaybackDeviceTest(filePath);
     }
 
-    public stopSpeakerTest(): void {
+    public override stopSpeakerTest(): void {
         this.rtcEngine.stopAudioPlaybackDeviceTest();
         this.rtcEngine.enableLocalAudio(false);
         this.rtcEngine.disableAudio();
@@ -427,10 +404,10 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         roomUUID,
         shareScreenUID,
         shareScreenToken,
-    }: FlatRTCAgoraElectronJoinRoomConfig): Promise<void> {
+    }: IServiceVideoChatJoinRoomConfig): Promise<void> {
         this.shareScreenUID = shareScreenUID;
 
-        const channelProfile = mode === FlatRTCMode.Broadcast ? 1 : 0;
+        const channelProfile = mode === IServiceVideoChatMode.Broadcast ? 1 : 0;
         this.rtcEngine.setChannelProfile(channelProfile);
         this.rtcEngine.videoSourceSetChannelProfile(channelProfile);
         this.rtcEngine.setVideoEncoderConfiguration({
@@ -445,8 +422,8 @@ export class FlatRTCAgoraElectron extends FlatRTC<
             width: 288,
         });
 
-        if (mode === FlatRTCMode.Broadcast) {
-            this.rtcEngine.setClientRole(role === FlatRTCRole.Host ? 1 : 2);
+        if (mode === IServiceVideoChatMode.Broadcast) {
+            this.rtcEngine.setClientRole(role === IServiceVideoChatRole.Host ? 1 : 2);
         }
 
         this.rtcEngine.enableVideo();
@@ -473,8 +450,8 @@ export class FlatRTCAgoraElectron extends FlatRTC<
                     volume = volume / 255;
 
                     if (uid === 0) {
-                        const oldVolume = this._volumeLevels.get(0) || 0;
-                        this._volumeLevels.set(uid, volume);
+                        const oldVolume = this._volumeLevels.get("0") || 0;
+                        this._volumeLevels.set(String(uid), volume);
                         if (this.uid) {
                             this._volumeLevels.set(this.uid, volume);
                         }
@@ -483,7 +460,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
                             this.events.emit("volume-level-changed", oldVolume);
                         }
 
-                        if (volume <= FlatRTCAgoraElectron.LOW_VOLUME_LEVEL_THRESHOLD) {
+                        if (volume <= AgoraRTCElectron.LOW_VOLUME_LEVEL_THRESHOLD) {
                             if (++lowVolumeLevelCount >= 10) {
                                 this.events.emit("err-low-volume");
                             }
@@ -491,12 +468,12 @@ export class FlatRTCAgoraElectron extends FlatRTC<
                             lowVolumeLevelCount = 0;
                         }
                     } else {
-                        this._volumeLevels.set(uid, volume);
+                        this._volumeLevels.set(String(uid), volume);
                     }
                 });
             };
             const deleteVolumeLevels = (uid: number): void => {
-                this._volumeLevels.delete(uid);
+                this._volumeLevels.delete(String(uid));
             };
 
             this.rtcEngine.on("groupAudioVolumeIndication", updateVolumeLevels);
@@ -510,7 +487,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         });
 
         this._roomSideEffect.add(() => {
-            const handler = (uid: FlatRTCAgoraElectronUIDType): void => {
+            const handler = (uid: IServiceVideoChatUID): void => {
                 if (this.shareScreenUID === uid && this.shareScreen.shouldSubscribeRemoteTrack()) {
                     this.shareScreen.setActive(true);
                     return;
@@ -528,7 +505,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
         });
 
         this._roomSideEffect.add(() => {
-            const handler = (uid: FlatRTCAgoraElectronUIDType): void => {
+            const handler = (uid: IServiceVideoChatUID): void => {
                 if (this.shareScreenUID === uid) {
                     this.shareScreen.setActive(false);
                     return;
@@ -545,12 +522,12 @@ export class FlatRTCAgoraElectron extends FlatRTC<
 
         this._roomSideEffect.addDisposer(
             this.events.remit("network", () => {
-                let uplink: FlatRTCNetworkQualityType = 0;
-                let downlink: FlatRTCNetworkQualityType = 0;
+                let uplink: IServiceVideoChatNetworkQualityType = 0;
+                let downlink: IServiceVideoChatNetworkQualityType = 0;
                 let delay = NaN;
 
                 const onNetworkQuality = (
-                    uid: FlatRTCAgoraElectronUIDType,
+                    uid: IServiceVideoChatUID,
                     uplinkQuality: AgoraNetworkQuality,
                     downlinkQuality: AgoraNetworkQuality,
                 ): void => {
@@ -580,7 +557,7 @@ export class FlatRTCAgoraElectron extends FlatRTC<
             throw new Error("No join room token provided");
         }
 
-        if (this.rtcEngine.joinChannel(joinRoomToken, roomUUID, "", uid) < 0) {
+        if (this.rtcEngine.joinChannel(joinRoomToken, roomUUID, "", Number(uid)) < 0) {
             throw new Error("[RTC]: join channel failed");
         }
 

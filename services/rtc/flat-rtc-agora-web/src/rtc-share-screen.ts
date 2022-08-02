@@ -1,21 +1,20 @@
 import type { IAgoraRTCClient, ILocalVideoTrack, IRemoteVideoTrack } from "agora-rtc-sdk-ng";
 import { SideEffectManager } from "side-effect-manager";
 import { Val } from "value-enhancer";
-import { FlatRTCShareScreen, FlatRTCShareScreenParams } from "@netless/flat-rtc";
+import { IServiceShareScreen, IServiceShareScreenParams } from "@netless/flat-services";
 import AgoraRTC from "agora-rtc-sdk-ng";
-import { FlatRTCAgoraWeb, FlatRTCAgoraWebUIDType } from "./flat-rtc-agora-web";
 
-export type RTCShareScreenParams = FlatRTCShareScreenParams<FlatRTCAgoraWebUIDType>;
-
-export interface RTCShareScreenAvatarConfig {
+export interface AgoraRTCWebShareScreenAvatarConfig {
+    APP_ID: string;
     element?: HTMLElement | null;
 }
 
 // Only play remote screen track on element.
-export class RTCShareScreen extends FlatRTCShareScreen {
+export class AgoraRTCWebShareScreen extends IServiceShareScreen {
+    private readonly APP_ID: string;
     private readonly _sideEffect = new SideEffectManager();
 
-    private readonly _params$ = new Val<RTCShareScreenParams | null>(null);
+    private readonly _params$ = new Val<IServiceShareScreenParams | null>(null);
     private readonly _enabled$ = new Val(false);
 
     private readonly _remoteVideoTrack$ = new Val<IRemoteVideoTrack | null>(null);
@@ -25,8 +24,10 @@ export class RTCShareScreen extends FlatRTCShareScreen {
     public localVideoTrack: ILocalVideoTrack | null = null;
     public remoteVideoTrack: IRemoteVideoTrack | null = null;
 
-    public constructor(config: RTCShareScreenAvatarConfig = {}) {
+    public constructor(config: AgoraRTCWebShareScreenAvatarConfig) {
         super();
+
+        this.APP_ID = config.APP_ID;
 
         this.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
@@ -95,7 +96,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         this._remoteVideoTrack$.setValue(remoteVideoTrack);
     }
 
-    public setParams(params: RTCShareScreenParams | null): void {
+    public setParams(params: IServiceShareScreenParams | null): void {
         this._params$.setValue(params);
     }
 
@@ -110,7 +111,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
         this._el$.setValue(element);
     }
 
-    public destroy(): void {
+    public override async destroy(): Promise<void> {
         this._sideEffect.flushAll();
     }
 
@@ -138,7 +139,7 @@ export class RTCShareScreen extends FlatRTCShareScreen {
 
             if (this._params$.value) {
                 const { roomUUID, token, uid } = this._params$.value;
-                await this.client.join(FlatRTCAgoraWeb.APP_ID, roomUUID, token, uid);
+                await this.client.join(this.APP_ID, roomUUID, token, Number(uid));
                 await this.client.publish(this.localVideoTrack);
             }
 

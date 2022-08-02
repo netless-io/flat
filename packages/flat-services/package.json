@@ -9,7 +9,6 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@netless/flat-rtc": "workspace:*",
     "@netless/flat-rtm": "workspace:*"
   },
   "devDependencies": {

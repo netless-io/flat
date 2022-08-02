@@ -3,8 +3,8 @@ import { initRegisterApps } from "./init-register-apps";
 import { initWhiteSDK } from "./init-white-sdk";
 import { initUI } from "./init-ui";
 import { initURLProtocol } from "./init-url-protocol";
-import { initFlatRTC } from "../services/flat-rtc";
+import { initFlatServices } from "./init-flat-services";
 
-const tasks = [initEnv, initURLProtocol, initFlatRTC, initWhiteSDK, initUI, initRegisterApps];
+const tasks = [initEnv, initURLProtocol, initFlatServices, initWhiteSDK, initUI, initRegisterApps];
 
 export default tasks;

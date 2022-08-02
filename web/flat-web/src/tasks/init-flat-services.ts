@@ -1,10 +1,9 @@
 import { flatServices } from "@netless/flat-services";
 
 export function initFlatServices(): void {
-    flatServices.register("rtc", async () => {
-        const { FlatRTCAgoraWeb } = await import("@netless/flat-rtc-agora-web");
-        FlatRTCAgoraWeb.APP_ID = process.env.AGORA_APP_ID;
-        return FlatRTCAgoraWeb.getInstance();
+    flatServices.register("videoChat", async () => {
+        const { AgoraRTCWeb } = await import("@netless/flat-rtc-agora-web");
+        return new AgoraRTCWeb({ APP_ID: process.env.AGORA_APP_ID });
     });
 
     flatServices.register("rtm", async () => {

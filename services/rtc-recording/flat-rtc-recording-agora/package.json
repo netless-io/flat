@@ -1,7 +1,7 @@
 {
-  "name": "@netless/flat-rtc-recording-agora",
+  "name": "@netless/agora-rtc-cloud-recording-agora",
   "version": "0.1.0",
-  "description": "Flat classroom RTC recording with Agora Cloud Recording",
+  "description": "Flat classroom video chat recording with Agora RTC Cloud Recording",
   "main": "src/index.ts",
   "private": true,
   "license": "MIT",
@@ -9,7 +9,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@netless/flat-rtc-recording": "workspace:*"
+    "@netless/flat-video-chat-recording": "workspace:*"
   },
   "devDependencies": {
     "prettier": "^2.3.0",

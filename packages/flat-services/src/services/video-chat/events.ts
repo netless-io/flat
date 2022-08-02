@@ -13,15 +13,15 @@ import type { Remitter } from "remitter";
  * - 7: Users cannot detect the network quality.
  * - 8: Detecting the network quality.
  */
-export type FlatRTCNetworkQualityType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type IServiceVideoChatNetworkQualityType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
-export interface FlatRTCEventData {
+export interface IServiceVideoChatEventData {
     network: {
         delay: number;
-        uplink: FlatRTCNetworkQualityType;
-        downlink: FlatRTCNetworkQualityType;
+        uplink: IServiceVideoChatNetworkQualityType;
+        downlink: IServiceVideoChatNetworkQualityType;
     };
-    "network-test": FlatRTCNetworkQualityType;
+    "network-test": IServiceVideoChatNetworkQualityType;
     "volume-level-changed": number;
     /** When a video capture device is added or removed */
     "camera-changed": string;
@@ -35,6 +35,6 @@ export interface FlatRTCEventData {
     error: Error;
 }
 
-export type FlatRTCEventNames = keyof FlatRTCEventData;
+export type IServiceVideoChatEventNames = keyof IServiceVideoChatEventData;
 
-export type FlatRTCEvents = Remitter<FlatRTCEventData>;
+export type IServiceVideoChatEvents = Remitter<IServiceVideoChatEventData>;

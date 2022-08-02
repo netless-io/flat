@@ -1,12 +1,15 @@
 {
-  "name": "@netless/flat-rtc-recording",
+  "name": "@netless/flat-video-chat-recording",
   "version": "0.1.0",
-  "description": "Flat classroom RTC recording interface",
+  "description": "Flat video chat recording interface",
   "main": "src/index.ts",
   "private": false,
   "license": "MIT",
   "scripts": {
     "build": "tsc"
+  },
+  "dependencies": {
+    "@netless/flat-services": "workspace:*"
   },
   "devDependencies": {
     "prettier": "^2.3.0",

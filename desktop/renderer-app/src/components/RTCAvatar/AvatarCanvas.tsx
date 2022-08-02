@@ -2,13 +2,13 @@ import "./AvatarCanvas.less";
 
 import React, { useCallback, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { FlatRTCAvatar } from "@netless/flat-rtc";
+import { IServiceVideoChatAvatar } from "@netless/flat-services";
 import { User } from "../../stores/class-room-store";
 
 export interface AvatarCanvasProps {
     /** the user of this avatar */
     avatarUser: User;
-    rtcAvatar?: FlatRTCAvatar | null;
+    rtcAvatar?: IServiceVideoChatAvatar | null;
 }
 
 export const AvatarCanvas = observer<
