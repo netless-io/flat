@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { MainPageLayoutContainer } from "./MainPageLayoutContainer";
 import { PageStoreContext } from "@netless/flat-pages/src/components/StoreProvider";
@@ -9,7 +9,7 @@ export const MainPageLayoutWrapper = observer(function MainPageLayoutWrap({ chil
     const pageStore = useContext(PageStoreContext);
     const location = useLocation();
 
-    const hasHeader = (routePath: string): boolean => {
+    const hasHeader = useMemo((): boolean => {
         return [
             routeConfig.RoomDetailPage,
             routeConfig.PeriodicRoomDetailPage,
@@ -17,18 +17,18 @@ export const MainPageLayoutWrapper = observer(function MainPageLayoutWrap({ chil
             routeConfig.ModifyPeriodicRoomPage,
             routeConfig.UserScheduledPage,
         ].some(({ path }) => {
-            return !!matchPath(routePath, {
+            return !!matchPath(location.pathname, {
                 path,
                 sensitive: true,
             });
         });
-    };
+    }, [location.pathname]);
 
     return (
         <MainPageLayoutContainer
             MainPageHeaderTitle={pageStore.title}
             activeKeys={pageStore.activeKeys}
-            showMainPageHeader={hasHeader(location.pathname)}
+            showMainPageHeader={hasHeader}
             subMenu={pageStore.subMenu}
             onBackPreviousPage={pageStore.onBackPreviousPage}
             onRouteChange={pageStore.onRouteChange}
