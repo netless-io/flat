@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@netless/flat-services": "workspace:*",
-    "@netless/flat-rtm": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
     "flat-components": "workspace:*",
     "flat-i18n": "workspace:*",

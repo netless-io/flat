@@ -1,7 +1,6 @@
 import { SideEffectManager } from "side-effect-manager";
 import { action, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { RoomState as WhiteRoomState, RoomMember as WhiteRoomMember } from "white-web-sdk";
-import type { FlatRTM } from "@netless/flat-rtm";
 import {
     pauseClass,
     startClass,
@@ -21,6 +20,7 @@ import { globalStore } from "../global-store";
 import { ClassModeType, RoomStatusLoadingType } from "./constants";
 import { ChatStore } from "./chat-store";
 import {
+    IServiceTextChat,
     IServiceVideoChat,
     IServiceVideoChatMode,
     IServiceVideoChatRole,
@@ -33,7 +33,7 @@ export interface ClassroomStoreConfig {
     roomUUID: string;
     ownerUUID: string;
     rtc: IServiceVideoChat;
-    rtm: FlatRTM;
+    rtm: IServiceTextChat;
 }
 
 export type DeviceStateStorageState = Record<string, { camera: boolean; mic: boolean }>;
@@ -82,7 +82,7 @@ export class ClassroomStore {
     public readonly users: UserStore;
 
     public readonly rtc: IServiceVideoChat;
-    public readonly rtm: FlatRTM;
+    public readonly rtm: IServiceTextChat;
     public readonly chatStore: ChatStore;
     public readonly whiteboardStore: WhiteboardStore;
 

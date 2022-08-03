@@ -6,9 +6,9 @@ export function initFlatServices(): void {
         return new AgoraRTCWeb({ APP_ID: process.env.AGORA_APP_ID });
     });
 
-    flatServices.register("rtm", async () => {
-        const { FlatRTMAgora } = await import("@netless/flat-rtm-agora");
-        FlatRTMAgora.APP_ID = process.env.AGORA_APP_ID;
-        return FlatRTMAgora.getInstance();
+    flatServices.register("textChat", async () => {
+        const { AgoraRTM } = await import("@netless/agora-rtm");
+        AgoraRTM.APP_ID = process.env.AGORA_APP_ID;
+        return AgoraRTM.getInstance();
     });
 }
