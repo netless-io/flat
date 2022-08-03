@@ -285,6 +285,7 @@ export class AgoraRTM extends IServiceTextChat {
                                 this.events.emit("raise-hand", {
                                     roomUUID,
                                     userUUID: senderID,
+                                    raiseHand: command.v.raiseHand,
                                 });
                                 break;
                             }
