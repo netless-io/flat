@@ -27,4 +27,10 @@ export function initFlatServices(): void {
             });
         });
     });
+
+    flatServices.register("textChat", async () => {
+        const { AgoraRTM } = await import("@netless/agora-rtm");
+        AgoraRTM.APP_ID = process.env.AGORA_APP_ID;
+        return AgoraRTM.getInstance();
+    });
 }

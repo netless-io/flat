@@ -14,14 +14,11 @@
     "start": "start-storybook -p 6006 -s public --no-version-updates",
     "build": "build-storybook -s public"
   },
-  "peerDependencies": {
-    "@netless/flat-rtm": "workspace:*",
-    "@netless/flat-server-api": "workspace:*",
-    "flat-i18n": "workspace:*"
-  },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@netless/flat-services": "workspace:*",
+    "@netless/flat-server-api": "workspace:*",
+    "flat-i18n": "workspace:*",
     "antd": "^4.19.2",
     "classnames": "^2.3.1",
     "date-fns": "^2.28.0",
@@ -43,8 +40,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.7",
-    "@netless/flat-rtm": "workspace:*",
-    "@netless/flat-server-api": "workspace:*",
     "@storybook/addon-actions": "~6.3.7",
     "@storybook/addon-essentials": "~6.3.7",
     "@storybook/addon-links": "~6.3.7",

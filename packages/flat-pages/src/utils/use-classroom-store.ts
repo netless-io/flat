@@ -8,7 +8,7 @@ export type useClassRoomStoreConfig = Omit<ClassroomStoreConfig, "rtc" | "rtm">;
 
 export function useClassroomStore(config: useClassRoomStoreConfig): ClassroomStore | undefined {
     const rtc = useFlatService("videoChat");
-    const rtm = useFlatService("rtm");
+    const rtm = useFlatService("textChat");
     const [classroomStore, setClassroomStore] = useState<ClassroomStore>();
 
     const pushHistory = usePushHistory();

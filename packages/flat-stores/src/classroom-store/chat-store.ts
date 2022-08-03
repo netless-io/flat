@@ -1,4 +1,4 @@
-import { FlatRTM } from "@netless/flat-rtm";
+import { IServiceTextChat } from "@netless/flat-services";
 import { ChatMsg } from "flat-components";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { SideEffectManager } from "side-effect-manager";
@@ -6,7 +6,7 @@ import { SideEffectManager } from "side-effect-manager";
 export interface ChatStoreConfig {
     roomUUID: string;
     ownerUUID: string;
-    rtm: FlatRTM;
+    rtm: IServiceTextChat;
     isShowUserGuide: boolean;
 }
 
@@ -15,7 +15,7 @@ export class ChatStore {
 
     public readonly messages = observable.array<ChatMsg>([]);
 
-    public readonly rtm: FlatRTM;
+    public readonly rtm: IServiceTextChat;
 
     public constructor(config: ChatStoreConfig) {
         this.rtm = config.rtm;
