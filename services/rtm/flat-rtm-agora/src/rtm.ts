@@ -1,24 +1,24 @@
 import {
-    FlatRTM,
-    FlatRTMJoinRoomConfig,
-    FlatRTMRoomCommandNames,
-    FlatRTMRoomCommandData,
-    FlatRTMPeerCommandNames,
-    FlatRTMPeerCommandData,
-    FlatRTMRoomCommand,
-    FlatRTMPeerCommand,
-} from "@netless/flat-rtm";
-import AgoraRTM, { RtmChannel, RtmClient, RtmMessage, RtmStatusCode } from "agora-rtm-sdk";
+    IServiceTextChat,
+    IServiceTextChatJoinRoomConfig,
+    IServiceTextChatPeerCommand,
+    IServiceTextChatPeerCommandData,
+    IServiceTextChatPeerCommandNames,
+    IServiceTextChatRoomCommand,
+    IServiceTextChatRoomCommandData,
+    IServiceTextChatRoomCommandNames,
+} from "@netless/flat-services";
+import RtmEngine, { RtmChannel, RtmClient, RtmMessage, RtmStatusCode } from "agora-rtm-sdk";
 import { SideEffectManager } from "side-effect-manager";
 import { v4 as uuidv4 } from "uuid";
 
-export class FlatRTMAgora extends FlatRTM {
+export class AgoraRTM extends IServiceTextChat {
     public static APP_ID?: string;
 
-    private static _instance?: FlatRTMAgora;
+    private static _instance?: AgoraRTM;
 
-    public static getInstance(): FlatRTMAgora {
-        return (FlatRTMAgora._instance ??= new FlatRTMAgora());
+    public static getInstance(): AgoraRTM {
+        return (AgoraRTM._instance ??= new AgoraRTM());
     }
 
     public readonly members = new Set<string>();
@@ -32,11 +32,11 @@ export class FlatRTMAgora extends FlatRTM {
     private _client?: RtmClient;
     public get client(): RtmClient {
         if (!this._client) {
-            if (!FlatRTMAgora.APP_ID) {
+            if (!AgoraRTM.APP_ID) {
                 throw new Error("APP_ID is not set");
             }
-            this._client = AgoraRTM.createInstance(FlatRTMAgora.APP_ID, {
-                logFilter: AgoraRTM.LOG_FILTER_WARNING,
+            this._client = RtmEngine.createInstance(AgoraRTM.APP_ID, {
+                logFilter: RtmEngine.LOG_FILTER_WARNING,
             });
         }
         return this._client;
@@ -67,7 +67,7 @@ export class FlatRTMAgora extends FlatRTM {
         }
     }
 
-    public async joinRoom(config: FlatRTMJoinRoomConfig): Promise<void> {
+    public async joinRoom(config: IServiceTextChatJoinRoomConfig): Promise<void> {
         if (this._pJoiningRoom) {
             await this._pJoiningRoom;
         }
@@ -115,7 +115,7 @@ export class FlatRTMAgora extends FlatRTM {
         if (this.channel) {
             await this.channel.sendMessage(
                 {
-                    messageType: AgoraRTM.MessageType.TEXT,
+                    messageType: RtmEngine.MessageType.TEXT,
                     text: message,
                 },
                 { enableHistoricalMessaging: true },
@@ -137,14 +137,14 @@ export class FlatRTMAgora extends FlatRTM {
         }
     }
 
-    public async sendRoomCommand<TName extends FlatRTMRoomCommandNames>(
+    public async sendRoomCommand<TName extends IServiceTextChatRoomCommandNames>(
         t: TName,
-        v: FlatRTMRoomCommandData[TName],
+        v: IServiceTextChatRoomCommandData[TName],
     ): Promise<void> {
         if (this.channel) {
-            const command = { t, v } as FlatRTMRoomCommand;
+            const command = { t, v } as IServiceTextChatRoomCommand;
             await this.channel.sendMessage({
-                messageType: AgoraRTM.MessageType.RAW,
+                messageType: RtmEngine.MessageType.RAW,
                 rawMessage: new TextEncoder().encode(JSON.stringify(command)),
             });
             // emit to local
@@ -170,15 +170,15 @@ export class FlatRTMAgora extends FlatRTM {
         }
     }
 
-    public async sendPeerCommand<TName extends FlatRTMPeerCommandNames>(
+    public async sendPeerCommand<TName extends IServiceTextChatPeerCommandNames>(
         t: TName,
-        v: FlatRTMPeerCommandData[TName],
+        v: IServiceTextChatPeerCommandData[TName],
         peerID: string,
     ): Promise<boolean> {
         if (this.channel) {
             const result = await this.client.sendMessageToPeer(
                 {
-                    messageType: AgoraRTM.MessageType.RAW,
+                    messageType: RtmEngine.MessageType.RAW,
                     rawMessage: new TextEncoder().encode(JSON.stringify({ t, v })),
                 },
                 peerID,
@@ -198,8 +198,8 @@ export class FlatRTMAgora extends FlatRTM {
         refreshToken,
         roomUUID,
         ownerUUID,
-    }: FlatRTMJoinRoomConfig): Promise<void> {
-        if (!FlatRTMAgora.APP_ID) {
+    }: IServiceTextChatJoinRoomConfig): Promise<void> {
+        if (!AgoraRTM.APP_ID) {
             throw new Error("APP_ID is not set");
         }
 
@@ -225,7 +225,7 @@ export class FlatRTMAgora extends FlatRTM {
                 _state: RtmStatusCode.ConnectionState,
                 reason: RtmStatusCode.ConnectionChangeReason,
             ): void => {
-                if (reason === AgoraRTM.ConnectionChangeReason.REMOTE_LOGIN) {
+                if (reason === RtmEngine.ConnectionChangeReason.REMOTE_LOGIN) {
                     this.events.emit("remote-login", { roomUUID });
                 }
             };
@@ -241,7 +241,7 @@ export class FlatRTMAgora extends FlatRTM {
         this._roomSideEffect.add(() => {
             const handler = (msg: RtmMessage, senderID: string): void => {
                 switch (msg.messageType) {
-                    case AgoraRTM.MessageType.TEXT: {
+                    case RtmEngine.MessageType.TEXT: {
                         this.events.emit("room-message", {
                             uuid: uuidv4(),
                             roomUUID,
@@ -251,12 +251,12 @@ export class FlatRTMAgora extends FlatRTM {
                         });
                         break;
                     }
-                    case AgoraRTM.MessageType.RAW: {
+                    case RtmEngine.MessageType.RAW: {
                         if (senderID === ownerUUID) {
                             try {
                                 const command = JSON.parse(
                                     new TextDecoder().decode(msg.rawMessage),
-                                ) as FlatRTMRoomCommand;
+                                ) as IServiceTextChatRoomCommand;
                                 this._emitRoomCommand(roomUUID, senderID, command);
                             } catch (e) {
                                 console.error(e);
@@ -272,11 +272,11 @@ export class FlatRTMAgora extends FlatRTM {
 
         this._roomSideEffect.add(() => {
             const handler = (msg: RtmMessage, senderID: string): void => {
-                if (msg.messageType === AgoraRTM.MessageType.RAW) {
+                if (msg.messageType === RtmEngine.MessageType.RAW) {
                     try {
                         const command = JSON.parse(
                             new TextDecoder().decode(msg.rawMessage),
-                        ) as FlatRTMPeerCommand;
+                        ) as IServiceTextChatPeerCommand;
                         if (command.v.roomUUID !== roomUUID) {
                             return;
                         }
@@ -341,7 +341,7 @@ export class FlatRTMAgora extends FlatRTM {
     private _emitRoomCommand(
         roomUUID: string,
         ownerUUID: string,
-        command: FlatRTMRoomCommand,
+        command: IServiceTextChatRoomCommand,
     ): void {
         switch (command.t) {
             case "ban": {

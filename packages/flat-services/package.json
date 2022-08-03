@@ -8,9 +8,6 @@
   "scripts": {
     "build": "tsc"
   },
-  "dependencies": {
-    "@netless/flat-rtm": "workspace:*"
-  },
   "devDependencies": {
     "prettier": "^2.3.0",
     "typescript": "^4.6.2"

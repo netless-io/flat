@@ -1,9 +1,9 @@
-import type { FlatRTM } from "@netless/flat-rtm";
+import { IServiceTextChat } from "./services/text-chat";
 import { IServiceVideoChat } from "./services/video-chat";
 
 export interface FlatServicesCatalog {
     videoChat: IServiceVideoChat;
-    rtm: FlatRTM;
+    textChat: IServiceTextChat;
 }
 
 export type FlatServiceID = Extract<keyof FlatServicesCatalog, string>;
@@ -78,5 +78,8 @@ export class FlatServices {
     }
 }
 
-export const flatServices: FlatServices =
-    (window as any).__FlAtSeRvIcEs || ((window as any).__FlAtSeRvIcEs = new FlatServices());
+export function getFlatServices(): FlatServices {
+    return ((window as any).__FlAtSeRvIcEs ||= new FlatServices());
+}
+
+export const flatServices: FlatServices = /* @__PURE__ */ getFlatServices();
