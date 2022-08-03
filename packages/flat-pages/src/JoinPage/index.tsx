@@ -7,8 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useWindowSize } from "react-use";
 
 import { RouteNameType, RouteParams, usePushHistory } from "../utils/routes";
-import { GlobalStoreContext } from "../components/StoreProvider";
-import { PageStoreContextLegacy } from "../components/PageStoreContextLegacy";
+import { GlobalStoreContext, PageStoreContext } from "../components/StoreProvider";
 import { loginCheck } from "@netless/flat-server-api";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../constants/process";
@@ -20,7 +19,7 @@ export const JoinPage = observer(function JoinPage() {
     const { i18n } = useTranslation();
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
-    const pageStoreLegacy = useContext(PageStoreContextLegacy);
+    const pageStore = useContext(PageStoreContext);
     const [isLogin, setIsLogin] = useState(false);
     const { width } = useWindowSize(1080);
 
@@ -28,7 +27,7 @@ export const JoinPage = observer(function JoinPage() {
     const { roomUUID } = params;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => pageStoreLegacy.configure(), []);
+    useEffect(() => pageStore.configure(), []);
 
     useEffect(() => {
         async function checkLogin(): Promise<void> {
