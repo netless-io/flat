@@ -173,19 +173,29 @@ export class ClassroomStore {
         if (this.isCreator) {
             this.sideEffect.addDisposer(
                 this.rtm.events.on("raise-hand", message => {
-                    if (
-                        this.classroomStorage?.isWritable &&
-                        this.roomUUID === message.roomUUID &&
-                        this.classroomStorage.state.raiseHandUsers.every(
-                            userUUID => userUUID !== message.userUUID,
-                        )
-                    ) {
-                        this.classroomStorage.setState({
-                            raiseHandUsers: [
-                                ...this.classroomStorage.state.raiseHandUsers,
-                                message.userUUID,
-                            ],
-                        });
+                    if (this.classroomStorage?.isWritable && this.roomUUID === message.roomUUID) {
+                        const isRaisingHand = this.classroomStorage.state.raiseHandUsers.some(
+                            userUUID => userUUID === message.userUUID,
+                        );
+                        if (message.raiseHand) {
+                            if (!isRaisingHand) {
+                                this.classroomStorage.setState({
+                                    raiseHandUsers: [
+                                        ...this.classroomStorage.state.raiseHandUsers,
+                                        message.userUUID,
+                                    ],
+                                });
+                            }
+                        } else {
+                            if (isRaisingHand) {
+                                this.classroomStorage.setState({
+                                    raiseHandUsers:
+                                        this.classroomStorage.state.raiseHandUsers.filter(
+                                            userUUID => userUUID !== message.userUUID,
+                                        ),
+                                });
+                            }
+                        }
                     }
                 }),
             );
