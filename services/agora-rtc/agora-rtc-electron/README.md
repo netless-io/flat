@@ -1,0 +1,3 @@
+# agora-rtc-electron
+
+Implements the `videoChat` Flat service in Electron.
