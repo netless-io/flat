@@ -7,8 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useLastLocation } from "react-router-last-location";
 import { LoadingPage, PeriodicRoomPanel, errorTips } from "flat-components";
 import { useTranslation } from "react-i18next";
-import { RoomStoreContext } from "../components/StoreProvider";
-import { PageStoreContextLegacy } from "../components/PageStoreContextLegacy";
+import { PageStoreContext, RoomStoreContext } from "../components/StoreProvider";
 import { globalStore } from "@netless/flat-stores";
 import { RouteNameType, RouteParams, usePushHistory } from "../utils/routes";
 import {
@@ -28,7 +27,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
     const history = useHistory();
     const pushHistory = usePushHistory();
     const previousPage = useLastLocation();
-    const pageStoreLegacy = useContext(PageStoreContextLegacy);
+    const pageStore = useContext(PageStoreContext);
 
     useEffect(() => {
         // if the room has been cancelled and return to the previous page, an error will be reported
@@ -50,7 +49,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
 
         const title = periodicInfo?.periodic.title;
 
-        pageStoreLegacy.configure({
+        pageStore.configure({
             title: <h1 className="periodic-room-detail-page-header-title">{title}</h1>,
             onBackPreviousPage: backPreviousPage,
         });

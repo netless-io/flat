@@ -4,6 +4,7 @@ import { MainPageLayoutItem } from "./types";
 import { MainPageNav, MainPageNavProps } from "./MainPageNav";
 import { MainPageSubMenu, MainPageSubMenuProps } from "./MainPageSubMenu";
 import { MainPageTopBar, MainPageTopBarProps } from "./MainPageTopBar";
+import { MainPageHeader, MainPageHeaderProps } from "./MainPageHeader";
 
 export * from "./MainPageHeader";
 export type { MainPageLayoutItem, MainPageTopBarMenuItem, WindowsSystemBtnItem } from "./types";
@@ -11,11 +12,13 @@ export type { MainPageLayoutItem, MainPageTopBarMenuItem, WindowsSystemBtnItem }
 export interface MainPageLayoutProps
     extends MainPageNavProps,
         MainPageTopBarProps,
+        MainPageHeaderProps,
         Partial<Omit<MainPageSubMenuProps, "onClick" | "activeKeys">> {
     /** when an item is clicked */
     onClick: (mainPageLayoutItem: MainPageLayoutItem) => void;
     /** a list of keys to highlight the items */
     activeKeys: string[];
+    showMainPageHeader?: boolean;
 }
 
 export const MainPageLayout: React.FC<MainPageLayoutProps> = ({
@@ -23,6 +26,7 @@ export const MainPageLayout: React.FC<MainPageLayoutProps> = ({
     activeKeys,
     subMenu,
     children,
+    showMainPageHeader,
     ...restProps
 }) => {
     return (
@@ -38,7 +42,16 @@ export const MainPageLayout: React.FC<MainPageLayoutProps> = ({
                             onClick={onClick}
                         />
                     )}
-                    <div className="main-page-layout-inner fancy-scrollbar">{children}</div>
+                    <div className="main-page-layout-inner fancy-scrollbar">
+                        {showMainPageHeader ? (
+                            <div className="main-page-layout-content-detail-container">
+                                <MainPageHeader {...restProps} />
+                                <div className="main-page-layout-content-detail">{children}</div>
+                            </div>
+                        ) : (
+                            <>{children}</>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

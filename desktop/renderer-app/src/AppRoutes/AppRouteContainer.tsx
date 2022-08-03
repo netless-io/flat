@@ -7,7 +7,8 @@ import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
 import { ConfigStoreContext } from "../components/StoreProvider";
 import { FlatThemeBodyProvider } from "flat-components";
 import { observer } from "mobx-react-lite";
-import { PageStoreContext } from "@netless/flat-pages/src/components/PageStoreContext";
+import { IPCContext } from "../components/IPCContext";
+import { useLastLocation } from "react-router-last-location";
 
 export interface AppRouteContainerProps {
     Comp: React.ComponentType<any>;
@@ -21,15 +22,16 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
     routeProps,
 }) {
     const configStore = useContext(ConfigStoreContext);
-    const pageStore = useContext(PageStoreContext);
+    const ipcStore = useContext(IPCContext);
 
     const location = useLocation();
+    const lastLocation = useLastLocation();
 
     // useURLAppLauncher();
 
     useEffect(() => {
-        pageStore.configure(location.pathname);
-    }, [location.pathname, pageStore]);
+        ipcStore.configure(location.pathname, lastLocation?.pathname);
+    }, [ipcStore, lastLocation?.pathname, location.pathname]);
 
     useIsomorphicLayoutEffect(() => {
         const compName = Comp.displayName || Comp.name;
