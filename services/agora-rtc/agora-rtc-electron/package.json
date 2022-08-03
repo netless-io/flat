@@ -1,7 +1,7 @@
 {
-  "name": "@netless/flat-rtc-agora-electron",
+  "name": "@netless/agora-rtc-electron",
   "version": "0.1.0",
-  "description": "Flat RTC with Agora Electron",
+  "description": "Agora RTC Electron",
   "main": "src/index.ts",
   "private": true,
   "license": "MIT",

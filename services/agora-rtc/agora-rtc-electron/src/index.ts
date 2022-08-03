@@ -1,2 +1,2 @@
 export * from "./constants";
-export * from "./flat-rtc-agora-electron";
+export * from "./agora-rtc-electron";

@@ -1,7 +1,7 @@
 import { SideEffectManager } from "side-effect-manager";
 import { Val } from "value-enhancer";
 import type { IServiceVideoChatAvatar } from "@netless/flat-services";
-import type { AgoraRTCWeb } from "./flat-rtc-agora-web";
+import type { AgoraRTCWeb } from "./agora-rtc-web";
 
 export interface RTCAvatarConfig {
     rtc: AgoraRTCWeb;
