@@ -206,7 +206,7 @@ importers:
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@netless/agora-rtc-electron': link:../../services/agora-rtc/agora-rtc-electron
-      '@netless/agora-rtm': link:../../services/rtm/flat-rtm-agora
+      '@netless/agora-rtm': link:../../services/agora-rtm
       '@netless/app-countdown': 0.0.2
       '@netless/app-geogebra': 0.0.4
       '@netless/app-iframe-bridge': 0.0.2
@@ -439,7 +439,7 @@ importers:
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@netless/agora-rtc-web': link:../../services/agora-rtc/agora-rtc-web
-      '@netless/agora-rtm': link:../../services/rtm/flat-rtm-agora
+      '@netless/agora-rtm': link:../../services/agora-rtm
       '@netless/app-countdown': 0.0.2
       '@netless/app-geogebra': 0.0.4
       '@netless/app-iframe-bridge': 0.0.2
@@ -575,6 +575,23 @@ importers:
       prettier: 2.6.2
       typescript: 4.6.4
 
+  services/agora-rtm:
+    specifiers:
+      '@netless/flat-services': workspace:*
+      agora-rtm-sdk: ^1.4.4
+      prettier: ^2.3.0
+      side-effect-manager: ^1.1.1
+      typescript: ^4.6.2
+      uuid: ^8.3.2
+    dependencies:
+      '@netless/flat-services': link:../../packages/flat-services
+      agora-rtm-sdk: 1.4.4
+      side-effect-manager: 1.1.1
+      uuid: 8.3.2
+    devDependencies:
+      prettier: 2.6.2
+      typescript: 4.6.4
+
   services/courseware/flat-courseware:
     specifiers:
       '@netless/flat-server-api': workspace:*
@@ -619,34 +636,6 @@ importers:
       typescript: ^4.6.2
     dependencies:
       '@netless/flat-video-chat-recording': link:../flat-rtc-recording
-    devDependencies:
-      prettier: 2.6.2
-      typescript: 4.6.4
-
-  services/rtm/flat-rtm:
-    specifiers:
-      prettier: ^2.3.0
-      remitter: ^0.2.6
-      typescript: ^4.6.2
-    dependencies:
-      remitter: 0.2.6
-    devDependencies:
-      prettier: 2.6.2
-      typescript: 4.6.4
-
-  services/rtm/flat-rtm-agora:
-    specifiers:
-      '@netless/flat-services': workspace:*
-      agora-rtm-sdk: ^1.4.4
-      prettier: ^2.3.0
-      side-effect-manager: ^1.1.1
-      typescript: ^4.6.2
-      uuid: ^8.3.2
-    dependencies:
-      '@netless/flat-services': link:../../../packages/flat-services
-      agora-rtm-sdk: 1.4.4
-      side-effect-manager: 1.1.1
-      uuid: 8.3.2
     devDependencies:
       prettier: 2.6.2
       typescript: 4.6.4
@@ -717,7 +706,7 @@ importers:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@loadable/component': 5.15.2_react@17.0.2
       '@netless/agora-rtc-web': link:../../services/agora-rtc/agora-rtc-web
-      '@netless/agora-rtm': link:../../services/rtm/flat-rtm-agora
+      '@netless/agora-rtm': link:../../services/agora-rtm
       '@netless/app-countdown': 0.0.2
       '@netless/app-geogebra': 0.0.4
       '@netless/app-iframe-bridge': 0.0.2
