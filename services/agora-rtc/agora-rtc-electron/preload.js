@@ -6,7 +6,7 @@ window.agoraRtcSDK$ = agoraRtcSDK$;
 /**
  * @param {string} [AGORA_APP_ID]
  */
-module.exports.flatRTCAgoraElectronPreload = AGORA_APP_ID => {
+module.exports.agoraRTCElectronPreload = AGORA_APP_ID => {
     if (agoraRtcSDK$.value) {
         return;
     }
