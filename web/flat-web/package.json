@@ -23,7 +23,7 @@
     "@netless/combine-player": "^1.1.6",
     "@netless/fastboard-react": "^0.3.6",
     "@netless/flat-pages": "workspace:*",
-    "@netless/flat-rtc-agora-web": "workspace:*",
+    "@netless/agora-rtc-web": "workspace:*",
     "@netless/flat-rtm": "workspace:*",
     "@netless/flat-rtm-agora": "workspace:*",
     "@netless/flat-server-api": "workspace:*",

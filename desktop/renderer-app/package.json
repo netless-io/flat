@@ -24,7 +24,7 @@
     "@netless/fastboard-react": "^0.3.6",
     "@netless/flat-pages": "workspace:*",
     "@netless/flat-services": "workspace:*",
-    "@netless/flat-rtc-agora-electron": "workspace:*",
+    "@netless/agora-rtc-electron": "workspace:*",
     "@netless/player-controller": "^0.0.9",
     "@netless/video-js-plugin": "^0.3.8",
     "@netless/window-manager": "^0.4.37",

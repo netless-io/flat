@@ -1,1 +1,1 @@
-export * from "./flat-rtc-agora-web";
+export * from "./agora-rtc-web";

@@ -8,7 +8,7 @@ import type { DisplayInfo, WindowInfo } from "agora-electron-sdk/types/Api/nativ
 
 import { SideEffectManager } from "side-effect-manager";
 import { combine, Val } from "value-enhancer";
-import type { AgoraRTCElectron } from "./flat-rtc-agora-electron";
+import type { AgoraRTCElectron } from "./agora-rtc-electron";
 
 const rect = { x: 0, y: 0, width: 0, height: 0 };
 

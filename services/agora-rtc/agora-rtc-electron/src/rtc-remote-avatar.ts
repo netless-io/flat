@@ -1,7 +1,7 @@
 import { SideEffectManager } from "side-effect-manager";
 import { combine, Val } from "value-enhancer";
 import type { IServiceVideoChatAvatar, IServiceVideoChatUID } from "@netless/flat-services";
-import type { AgoraRTCElectron } from "./flat-rtc-agora-electron";
+import type { AgoraRTCElectron } from "./agora-rtc-electron";
 
 export interface RTCRemoteAvatarConfig {
     rtc: AgoraRTCElectron;

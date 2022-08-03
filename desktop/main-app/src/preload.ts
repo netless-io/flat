@@ -1,7 +1,7 @@
 export {};
 
 const { ipcRenderer } = require("electron");
-const { flatRTCAgoraElectronPreload } = require("@netless/flat-rtc-agora-electron/preload");
+const { agoraRTCElectronPreload } = require("@netless/agora-rtc-electron/preload");
 
 /**
  * cannot be used here DOMContentLoaded or DOMNodeInserted
@@ -13,7 +13,7 @@ const { flatRTCAgoraElectronPreload } = require("@netless/flat-rtc-agora-electro
  * see: window-manager.ts
  */
 ipcRenderer.once("preload-dom-ready", () => {
-    flatRTCAgoraElectronPreload(process.env.AGORA_APP_ID);
+    agoraRTCElectronPreload(process.env.AGORA_APP_ID);
 });
 
 // because DOMContentLoaded and DOMNodeInserted cannot be used, a new method is adopted to solve the problem of jQuery import failure
