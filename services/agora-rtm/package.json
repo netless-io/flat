@@ -1,5 +1,5 @@
 {
-  "name": "@netless/agora-rtm",
+  "name": "@netless/flat-service-provider-agora-rtm",
   "version": "0.1.0",
   "description": "Agora Realtime Messaging",
   "main": "src/index.ts",
