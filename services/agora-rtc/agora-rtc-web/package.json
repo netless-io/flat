@@ -1,5 +1,5 @@
 {
-  "name": "@netless/agora-rtc-web",
+  "name": "@netless/flat-service-provider-agora-rtc-web",
   "version": "0.1.0",
   "description": "Agora RTC Web",
   "main": "src/index.ts",

@@ -1,9 +1,11 @@
 import { flatServices } from "@netless/flat-services";
-import type { AgoraRTCElectron } from "@netless/agora-rtc-electron";
+import type { AgoraRTCElectron } from "@netless/flat-service-provider-agora-rtc-electron";
 
 export function initFlatServices(): void {
     flatServices.register("videoChat", async () => {
-        const { AgoraRTCElectron } = await import("@netless/agora-rtc-electron");
+        const { AgoraRTCElectron } = await import(
+            "@netless/flat-service-provider-agora-rtc-electron"
+        );
 
         const agoraRtcSDK$ = (window as any).agoraRtcSDK$;
         if (!agoraRtcSDK$) {
@@ -29,7 +31,7 @@ export function initFlatServices(): void {
     });
 
     flatServices.register("textChat", async () => {
-        const { AgoraRTM } = await import("@netless/agora-rtm");
+        const { AgoraRTM } = await import("@netless/flat-service-provider-agora-rtm");
         AgoraRTM.APP_ID = process.env.AGORA_APP_ID;
         return AgoraRTM.getInstance();
     });

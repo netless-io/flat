@@ -46,7 +46,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "@netless/agora-rtc-electron": "workspace:*",
+    "@netless/flat-service-provider-agora-rtc-electron": "workspace:*",
     "electron-updater": "^5.0.1",
     "fs-extra": "^10.0.1",
     "jquery": "^3.6.0",
