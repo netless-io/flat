@@ -62,7 +62,7 @@
     "yaml": "^1.10.2"
   },
   "pnpm": {
-    "//": "don't worry, we will download it in the @netless/agora-rtc-electron -> postinstall script.",
+    "//": "don't worry, we will download it in the @netless/flat-service-provider-agora-rtc-electron -> postinstall script.",
     "neverBuiltDependencies": [
       "agora-electron-sdk"
     ],
