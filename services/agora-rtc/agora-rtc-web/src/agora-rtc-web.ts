@@ -305,16 +305,15 @@ export class AgoraRTCWeb extends IServiceVideoChat {
             });
         }
 
-        this._roomSideEffect.add(() => {
-            const handler = (error: Error): void => {
-                this.events.emit("error", error);
-                if (process.env.NODE_ENV === "development") {
-                    console.error(error);
-                }
-            };
-            client.on("exception", handler);
-            return () => client.off("exception", handler);
-        });
+        if (process.env.NODE_ENV === "development") {
+            this._roomSideEffect.add(() => {
+                const handler = (exception: any): void => {
+                    console.log(exception);
+                };
+                client.on("exception", handler);
+                return () => client.off("exception", handler);
+            });
+        }
 
         this._roomSideEffect.add(() => {
             const handler = async (
@@ -426,9 +425,15 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
         // publish existing tracks after joining channel
         if (this.localCameraTrack) {
+            if (!this.localCameraTrack.enabled) {
+                await this.localCameraTrack.setEnabled(true);
+            }
             await client.publish(this.localCameraTrack);
         }
         if (this.localMicTrack) {
+            if (!this.localMicTrack.enabled) {
+                await this.localMicTrack.setEnabled(true);
+            }
             await client.publish(this.localMicTrack);
         }
 
