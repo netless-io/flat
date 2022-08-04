@@ -81,5 +81,3 @@ export class FlatServices {
 export function getFlatServices(): FlatServices {
     return ((window as any).__FlAtSeRvIcEs ||= new FlatServices());
 }
-
-export const flatServices: FlatServices = /* @__PURE__ */ getFlatServices();

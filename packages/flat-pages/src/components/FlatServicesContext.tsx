@@ -2,18 +2,18 @@ import React from "react";
 import { createContext } from "react";
 import {
     FlatServices,
-    flatServices,
     FlatServiceID,
     FlatServicesInstance,
     FlatServicesCatalog,
+    getFlatServices,
 } from "@netless/flat-services";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { useSafePromise } from "flat-components";
 
-export const FlatServicesContext = createContext<FlatServices>(flatServices);
+export const FlatServicesContext = createContext<FlatServices>(null as unknown as FlatServices);
 
 export const FlatServicesContextProvider: React.FC = props => (
-    <FlatServicesContext.Provider value={flatServices}>
+    <FlatServicesContext.Provider value={getFlatServices()}>
         {props.children}
     </FlatServicesContext.Provider>
 );
