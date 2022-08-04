@@ -19,7 +19,7 @@
     "@netless/flat-stores": "workspace:*",
     "@netless/player-controller": "^0.0.9",
     "@netless/video-js-plugin": "^0.3.8",
-    "@netless/window-manager": "^0.4.31",
+    "@netless/window-manager": "^0.4.37",
     "antd": "^4.19.2",
     "axios": "^0.26.1",
     "classnames": "^2.3.1",

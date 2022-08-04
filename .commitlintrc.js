@@ -61,7 +61,7 @@ module.exports = {
                 "assets",
                 "login",
                 "config",
-                "services",
+                "service-providers",
                 "flat-server-api",
                 "flat-stores",
                 "flat-services",

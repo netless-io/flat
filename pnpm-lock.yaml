@@ -118,7 +118,7 @@ importers:
       webpack-merge: ^5.8.0
       webpack-node-externals: ^3.0.0
     dependencies:
-      '@netless/flat-service-provider-agora-rtc-electron': link:../../services/agora-rtc/agora-rtc-electron
+      '@netless/flat-service-provider-agora-rtc-electron': link:../../service-providers/agora-rtc/agora-rtc-electron
       electron-updater: 5.0.1
       fs-extra: 10.1.0
       jquery: 3.6.0
@@ -214,8 +214,8 @@ importers:
       '@netless/combine-player': 1.1.6
       '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
       '@netless/flat-pages': link:../../packages/flat-pages
-      '@netless/flat-service-provider-agora-rtc-electron': link:../../services/agora-rtc/agora-rtc-electron
-      '@netless/flat-service-provider-agora-rtm': link:../../services/agora-rtm
+      '@netless/flat-service-provider-agora-rtc-electron': link:../../service-providers/agora-rtc/agora-rtc-electron
+      '@netless/flat-service-provider-agora-rtm': link:../../service-providers/agora-rtm
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
       '@netless/video-js-plugin': 0.3.8_igmyzdvqqkv6gevwhshexnrgbm
@@ -404,7 +404,7 @@ importers:
       '@netless/mini-svg-data-uri': 0.0.1
       '@netless/player-controller': ^0.0.9
       '@netless/video-js-plugin': ^0.3.8
-      '@netless/window-manager': ^0.4.31
+      '@netless/window-manager': ^0.4.37
       '@types/loadable__component': ^5.13.4
       '@types/mime': ^2.0.3
       antd: ^4.19.2
@@ -447,8 +447,8 @@ importers:
       '@netless/combine-player': 1.1.6
       '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
       '@netless/flat-server-api': link:../flat-server-api
-      '@netless/flat-service-provider-agora-rtc-web': link:../../services/agora-rtc/agora-rtc-web
-      '@netless/flat-service-provider-agora-rtm': link:../../services/agora-rtm
+      '@netless/flat-service-provider-agora-rtc-web': link:../../service-providers/agora-rtc/agora-rtc-web
+      '@netless/flat-service-provider-agora-rtm': link:../../service-providers/agora-rtm
       '@netless/flat-services': link:../flat-services
       '@netless/flat-stores': link:../flat-stores
       '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
@@ -512,7 +512,7 @@ importers:
       '@netless/fastboard-react': ^0.3.5-canary.5
       '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
-      '@netless/window-manager': ^0.4.31
+      '@netless/window-manager': ^0.4.37
       flat-components: workspace:*
       flat-i18n: workspace:*
       mobx: ^6.4.2
@@ -541,7 +541,7 @@ importers:
   packages/flat-types:
     specifiers: {}
 
-  services/agora-rtc/agora-rtc-electron:
+  service-providers/agora-rtc/agora-rtc-electron:
     specifiers:
       '@netless/flat-services': workspace:*
       agora-electron-sdk: 3.7.0-build.527
@@ -558,7 +558,7 @@ importers:
       prettier: 2.6.2
       typescript: 4.6.4
 
-  services/agora-rtc/agora-rtc-web:
+  service-providers/agora-rtc/agora-rtc-web:
     specifiers:
       '@netless/flat-services': workspace:*
       agora-rtc-sdk-ng: ^4.12.2
@@ -575,7 +575,7 @@ importers:
       prettier: 2.6.2
       typescript: 4.6.4
 
-  services/agora-rtm:
+  service-providers/agora-rtm:
     specifiers:
       '@netless/flat-services': workspace:*
       agora-rtm-sdk: ^1.4.4
@@ -592,7 +592,7 @@ importers:
       prettier: 2.6.2
       typescript: 4.6.4
 
-  services/courseware/flat-courseware:
+  service-providers/courseware/flat-courseware:
     specifiers:
       '@netless/flat-server-api': workspace:*
       prettier: ^2.3.0
@@ -605,7 +605,7 @@ importers:
       prettier: 2.6.2
       typescript: 4.6.4
 
-  services/courseware/flat-courseware-netless:
+  service-providers/courseware/flat-courseware-netless:
     specifiers:
       '@netless/flat-courseware': workspace:*
       '@netless/flat-server-api': workspace:*
@@ -618,18 +618,24 @@ importers:
       prettier: 2.6.2
       typescript: 4.6.4
 
-  services/fastboard:
+  service-providers/fastboard:
     specifiers:
+      '@netless/fastboard': ^0.3.6
       '@netless/flat-services': workspace:*
+      '@netless/window-manager': ^0.4.37
       prettier: ^2.3.0
       typescript: ^4.6.2
+      white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
+      '@netless/fastboard': 0.3.6_hwmjbaemn5qt5obfebefyxa7dq
       '@netless/flat-services': link:../../packages/flat-services
     devDependencies:
+      '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
       prettier: 2.6.2
       typescript: 4.6.4
+      white-web-sdk: /white-web-sdk-esm/2.16.24
 
-  services/rtc-recording/flat-rtc-recording:
+  service-providers/rtc-recording/flat-rtc-recording:
     specifiers:
       '@netless/flat-services': workspace:*
       prettier: ^2.3.0
@@ -640,7 +646,7 @@ importers:
       prettier: 2.6.2
       typescript: 4.6.4
 
-  services/rtc-recording/flat-rtc-recording-agora:
+  service-providers/rtc-recording/flat-rtc-recording-agora:
     specifiers:
       '@netless/flat-video-chat-recording': workspace:*
       prettier: ^2.3.0
@@ -726,8 +732,8 @@ importers:
       '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
       '@netless/flat-pages': link:../../packages/flat-pages
       '@netless/flat-server-api': link:../../packages/flat-server-api
-      '@netless/flat-service-provider-agora-rtc-web': link:../../services/agora-rtc/agora-rtc-web
-      '@netless/flat-service-provider-agora-rtm': link:../../services/agora-rtm
+      '@netless/flat-service-provider-agora-rtc-web': link:../../service-providers/agora-rtc/agora-rtc-web
+      '@netless/flat-service-provider-agora-rtm': link:../../service-providers/agora-rtm
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/flat-stores': link:../../packages/flat-stores
       '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
@@ -3170,6 +3176,16 @@ packages:
     dependencies:
       '@netless/fastboard-core': 0.3.6_hwmjbaemn5qt5obfebefyxa7dq
       tippy.js: 6.3.7
+
+  /@netless/fastboard/0.3.6_hwmjbaemn5qt5obfebefyxa7dq:
+    resolution: {integrity: sha512-YH3NKT47D+0GWl7nIyUDLI/T2AgVoD6TnpV8kJTTYsPbFX41pZ5bfSKXZNF33577ehcUxWW3SvQScaqHSc3Jyw==}
+    dependencies:
+      '@netless/fastboard-core': 0.3.6_hwmjbaemn5qt5obfebefyxa7dq
+      '@netless/fastboard-ui': 0.3.6_dh4pwpaiunoyuozzscsfopi4z4
+    transitivePeerDependencies:
+      - '@netless/window-manager'
+      - white-web-sdk
+    dev: false
 
   /@netless/mini-svg-data-uri/0.0.1:
     resolution: {integrity: sha512-HsQ04Yzuh8PV4+N31erOeS2pEC6IHGCO/Y7RNwi3AWaQ5ASRpzUka5TxWE4QEXZoseccthcjVL5XN687b/cwRg==}
