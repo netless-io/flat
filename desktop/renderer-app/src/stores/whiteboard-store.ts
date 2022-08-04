@@ -29,6 +29,7 @@ import { queryConvertingTaskStatus } from "../api-middleware/courseware-converti
 import { convertFinish } from "../api-middleware/flatServer/storage";
 import { ServerRequestError } from "../utils/error/server-request-error";
 import { RequestErrorCode } from "../constants/error-code";
+import { applyUAIfNeeded } from "./utils";
 
 export class WhiteboardStore {
     public fastboardAPP: FastboardApp | null = null;
@@ -83,9 +84,8 @@ export class WhiteboardStore {
         // Whiteboard debugging
         const flatUA =
             process.env.FLAT_UA || (this.i18n.t("app-name") || "").replace(/s+/g, "_").slice(0, 50);
-        window.__netlessUA =
-            (window.__netlessUA || "") +
-            ` FLAT/${flatUA}_${process.env.FLAT_REGION}@${process.env.VERSION} `;
+
+        applyUAIfNeeded(flatUA + "_ELECTRON");
     }
 
     public updateFastboardAPP = (whiteboardApp: FastboardApp): void => {
