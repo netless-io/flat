@@ -2,4 +2,4 @@ workspaces:
   - "desktop/**"
   - "web/**"
   - "packages/**"
-  - "services/**"
+  - "service-providers/**"
