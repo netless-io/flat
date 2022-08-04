@@ -23,7 +23,7 @@ export interface IServiceTextChatEventData {
         text: string;
         senderID: string;
     };
-    "raise-hand": { roomUUID: string; userUUID: string };
+    "raise-hand": { roomUUID: string; userUUID: string; raiseHand: boolean };
     "on-stage": { roomUUID: string; onStage: boolean; senderID: string };
     "member-joined": { roomUUID: string; userUUID: string };
     "member-left": { roomUUID: string; userUUID: string };
