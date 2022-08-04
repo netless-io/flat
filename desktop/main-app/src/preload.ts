@@ -1,7 +1,9 @@
 export {};
 
 const { ipcRenderer } = require("electron");
-const { agoraRTCElectronPreload } = require("@netless/agora-rtc-electron/preload");
+const {
+    agoraRTCElectronPreload,
+} = require("@netless/flat-service-provider-agora-rtc-electron/preload");
 
 /**
  * cannot be used here DOMContentLoaded or DOMNodeInserted
