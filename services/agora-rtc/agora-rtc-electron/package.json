@@ -1,5 +1,5 @@
 {
-  "name": "@netless/agora-rtc-electron",
+  "name": "@netless/flat-service-provider-agora-rtc-electron",
   "version": "0.1.0",
   "description": "Agora RTC Electron",
   "main": "src/index.ts",
