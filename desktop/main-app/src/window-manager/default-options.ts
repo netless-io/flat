@@ -2,8 +2,8 @@ import { BrowserWindowConstructorOptions } from "electron";
 import { constants } from "flat-types";
 import runtime from "../utils/runtime";
 
-export const defaultWindowOptions: Pick<WindowOptions, "disableClose" | "isOpenDevTools"> = {
-    disableClose: false,
+export const defaultWindowOptions: Pick<WindowOptions, "interceptClose" | "isOpenDevTools"> = {
+    interceptClose: false,
     isOpenDevTools: false,
 };
 
@@ -37,7 +37,7 @@ export const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
 export interface WindowOptions {
     url: string;
     name: constants.WindowsName;
-    disableClose?: boolean;
+    interceptClose?: boolean;
     isOpenDevTools?: boolean;
     isPortal: boolean;
 }
