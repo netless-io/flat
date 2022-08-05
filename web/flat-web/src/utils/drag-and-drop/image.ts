@@ -1,6 +1,6 @@
 import { message } from "antd";
 import { v4 as v4uuid } from "uuid";
-import type { Room, Size } from "white-web-sdk";
+import { ApplianceNames, Room, Size } from "white-web-sdk";
 import { listFiles } from "../../api-middleware/flatServer/storage";
 import { i18n } from "../i18n";
 import { UploadTask } from "../upload-task-manager/upload-task";
@@ -50,6 +50,7 @@ export async function onDropImage(file: File, x: number, y: number, room: Room):
     const { width, height } = await getSize;
     room.insertImage({ uuid, centerX: x, centerY: y, width, height, locked: false });
     room.completeImageUpload(uuid, cloudFile.fileURL);
+    room.setMemberState({ currentApplianceName: ApplianceNames.selector });
 }
 
 export function getImageSize(file: File): Promise<Size> {
