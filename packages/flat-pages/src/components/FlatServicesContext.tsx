@@ -5,7 +5,6 @@ import {
     FlatServiceID,
     FlatServicesInstance,
     FlatServicesCatalog,
-    getFlatServices,
 } from "@netless/flat-services";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { useSafePromise } from "flat-components";
@@ -13,7 +12,7 @@ import { useSafePromise } from "flat-components";
 export const FlatServicesContext = createContext<FlatServices>(null as unknown as FlatServices);
 
 export const FlatServicesContextProvider: React.FC = props => (
-    <FlatServicesContext.Provider value={getFlatServices()}>
+    <FlatServicesContext.Provider value={FlatServices.getInstance()}>
         {props.children}
     </FlatServicesContext.Provider>
 );

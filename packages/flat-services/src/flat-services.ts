@@ -20,10 +20,24 @@ export type FlatServicesCreatorCatalog = {
     [K in FlatServiceID]: FlatServicesCreator<K>;
 };
 
+declare global {
+    interface Window {
+        __FlAtSeRvIcEs?: FlatServices;
+    }
+}
+
 export class FlatServices {
+    public static getInstance(): FlatServices {
+        return (window.__FlAtSeRvIcEs ||= new FlatServices());
+    }
+
     private registry: Partial<FlatServicesCreatorCatalog> = {};
 
     private services: Partial<FlatServicesPendingCatalog> = {};
+
+    private constructor() {
+        // make private
+    }
 
     public register<T extends FlatServiceID>(
         name: T,
@@ -76,8 +90,4 @@ export class FlatServices {
     public isCreated(name: FlatServiceID): boolean {
         return Boolean(this.services[name]);
     }
-}
-
-export function getFlatServices(): FlatServices {
-    return ((window as any).__FlAtSeRvIcEs ||= new FlatServices());
 }
