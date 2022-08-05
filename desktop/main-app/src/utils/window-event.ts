@@ -9,7 +9,7 @@ export const windowHookClose = (customWindow: CustomWindow): void => {
             return;
         }
 
-        if (customWindow.options.disableClose) {
+        if (customWindow.options.interceptClose) {
             e.preventDefault();
             ipcEmit(customWindow.options.name)("window-will-close", {});
         }
