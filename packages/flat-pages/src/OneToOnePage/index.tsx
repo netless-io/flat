@@ -1,7 +1,7 @@
 import "./OneToOnePage.less";
 
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import {
@@ -43,7 +43,7 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
     observer<WithClassroomStoreProps<OneToOnePageProps>>(function OneToOnePage({ classroomStore }) {
         useLoginCheck();
 
-        const { t } = useTranslation();
+        const t = useTranslate();
 
         const whiteboardStore = classroomStore.whiteboardStore;
 

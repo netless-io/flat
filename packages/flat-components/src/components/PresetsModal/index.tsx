@@ -2,7 +2,7 @@ import "./style.less";
 
 import React from "react";
 import { Modal } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 import { SVGPlus } from "../FlatIcons";
 
@@ -24,7 +24,7 @@ export const PresetsModal: React.FC<PresetsModalProps> = ({
     onClick,
     onClose,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <Modal

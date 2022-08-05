@@ -3,7 +3,7 @@ import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import classNames from "classnames";
 import { Region } from "flat-components";
 import { observer } from "mobx-react-lite";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
@@ -18,7 +18,7 @@ export interface UploadAvatarProps {
 export const UploadAvatar = observer<UploadAvatarProps>(function UploadAvatar({ onUpload }) {
     const globalStore = useContext(GlobalStoreContext);
     const sp = useSafePromise();
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState(globalStore.userInfo?.avatar || "");

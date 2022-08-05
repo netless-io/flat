@@ -7,7 +7,7 @@ import { RoomType } from "../../../api-middleware/flatServer/constants";
 import { ConfigStoreContext, GlobalStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { ClassPicker, HomePageHeroButton, Region, regions, RegionSVG } from "flat-components";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 interface CreateRoomFormValues {
     roomTitle: string;
@@ -20,7 +20,7 @@ export interface CreateRoomBoxProps {
 }
 
 export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox({ onCreateRoom }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const sp = useSafePromise();
     const globalStore = useContext(GlobalStoreContext);
     const configStore = useContext(ConfigStoreContext);

@@ -3,12 +3,12 @@ import { observer } from "mobx-react-lite";
 import { RoomList } from "flat-components";
 import { MainRoomList } from "./MainRoomList";
 import { ListRoomsType } from "@netless/flat-server-api";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export const MainRoomListPanel = observer<{ isLogin: boolean }>(function MainRoomListPanel({
     isLogin,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [activeTab, setActiveTab] = useState<"all" | "today" | "periodic">("all");
     const filters = useMemo<Array<{ key: "all" | "today" | "periodic"; title: string }>>(
         () => [

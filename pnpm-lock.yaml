@@ -153,6 +153,7 @@ importers:
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
       '@netless/fastboard-react': ^0.3.6
+      '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
       '@netless/flat-service-provider-agora-rtc-electron': workspace:*
       '@netless/flat-service-provider-agora-rtm': workspace:*
@@ -176,11 +177,8 @@ importers:
       esbuild: ^0.14.27
       extract-zip: ^2.0.1
       flat-components: workspace:*
-      flat-i18n: workspace:*
       flat-types: workspace:*
       fs-extra: ^10.0.1
-      i18next: ^21.6.14
-      i18next-browser-languagedetector: ^6.1.3
       lodash-es: ^4.17.21
       mobx: ^6.4.2
       mobx-react-lite: ^3.3.0
@@ -191,7 +189,6 @@ importers:
       react: ^17.0.2
       react-device-detect: ^2.1.2
       react-dom: ^17.0.2
-      react-i18next: ^11.15.7
       react-router-dom: ^5.2.0
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
@@ -213,6 +210,7 @@ importers:
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
       '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
+      '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
       '@netless/flat-service-provider-agora-rtc-electron': link:../../service-providers/agora-rtc/agora-rtc-electron
       '@netless/flat-service-provider-agora-rtm': link:../../service-providers/agora-rtm
@@ -230,10 +228,7 @@ importers:
       emittery: 0.10.2
       extract-zip: 2.0.1
       flat-components: link:../../packages/flat-components
-      flat-i18n: link:../../packages/flat-i18n
       fs-extra: 10.1.0
-      i18next: 21.7.1
-      i18next-browser-languagedetector: 6.1.4
       lodash-es: 4.17.21
       mobx: 6.5.0
       mobx-react-lite: 3.4.0_hmiq3xiffx2tpvk3y5rm3vgqxa
@@ -242,7 +237,6 @@ importers:
       react: 17.0.2
       react-device-detect: 2.2.2_sfoxds7t5ydpegc3knd667wn6m
       react-dom: 17.0.2_react@17.0.2
-      react-i18next: 11.16.9_jzsml6ph5qfrjyi3jkdinvojay
       react-router-dom: 5.3.1_react@17.0.2
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
@@ -269,6 +263,7 @@ importers:
     specifiers:
       '@ant-design/icons': ^4.7.0
       '@babel/core': ^7.17.7
+      '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
       '@storybook/addon-actions': ~6.3.7
@@ -294,9 +289,8 @@ importers:
       css-loader: ^6.7.1
       date-fns: ^2.28.0
       faker: ^5.5.3
-      flat-i18n: workspace:*
-      i18next: ^21.6.14
-      i18next-browser-languagedetector: ^6.1.3
+      i18next: ^21.8.16
+      i18next-browser-languagedetector: ^6.1.4
       less-loader: ^10.2.0
       lodash-es: ^4.17.21
       mobx: ^6.4.2
@@ -306,7 +300,7 @@ importers:
       rc-picker: ^2.6.4
       react: ^17.0.2
       react-dom: ^17.0.2
-      react-i18next: ^11.15.7
+      react-i18next: ^11.18.3
       react-resize-detector: ^7.0.0
       react-router-dom: ^5.2.0
       react-transition-group: ^4.4.2
@@ -319,14 +313,12 @@ importers:
       tachyons: ^4.12.0
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
+      '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
       '@netless/flat-services': link:../flat-services
       antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
       classnames: 2.3.1
       date-fns: 2.28.0
-      flat-i18n: link:../flat-i18n
-      i18next: 21.7.1
-      i18next-browser-languagedetector: 6.1.4
       mobx: 6.5.0
       mobx-react-lite: 3.4.0_hmiq3xiffx2tpvk3y5rm3vgqxa
       p-limit: 4.0.0
@@ -334,7 +326,6 @@ importers:
       rc-picker: 2.6.8_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-i18next: 11.16.9_jzsml6ph5qfrjyi3jkdinvojay
       react-resize-detector: 7.0.0_sfoxds7t5ydpegc3knd667wn6m
       react-router-dom: 5.3.1_react@17.0.2
       react-transition-group: 4.4.2_sfoxds7t5ydpegc3knd667wn6m
@@ -362,26 +353,36 @@ importers:
       chance: 1.1.8
       css-loader: 6.7.1
       faker: 5.5.3
+      i18next: 21.8.16
+      i18next-browser-languagedetector: 6.1.4
       less-loader: 10.2.0
       lodash-es: 4.17.21
+      react-i18next: 11.18.3_4bcptp673aptsea4uz6tljt4ci
       sass: 1.51.0
       sass-loader: 12.6.0_sass@1.51.0
-      storybook-react-i18next: 1.0.13_wy2c6ler4q6lsah3eczmijzkqm
+      storybook-react-i18next: 1.0.13_ewirjhm7l6lnknkof5yeb2r6o4
       style-loader: 3.3.1
       tachyons: 4.12.0
 
   packages/flat-i18n:
     specifiers:
-      i18next: ^21.6.14
+      i18next: ^21.8.16
+      i18next-browser-languagedetector: ^6.1.4
       prettier: ^2.3.0
       react: ^17.0.2
-      react-i18next: ^11.15.7
+      side-effect-manager: ^1.1.1
       typescript: ^4.6.2
+      use-value-enhancer: ^0.1.0
+      value-enhancer: ^1.3.2
+    dependencies:
+      i18next: 21.8.16
+      i18next-browser-languagedetector: 6.1.4
+      side-effect-manager: 1.1.1
+      use-value-enhancer: 0.1.0_s4t5ozp5v364eom36t7digbp2q
+      value-enhancer: 1.3.2
     devDependencies:
-      i18next: 21.7.1
       prettier: 2.6.2
       react: 17.0.2
-      react-i18next: 11.16.9_6paiyehwr4ov62opw6r6idgboa
       typescript: 4.6.4
 
   packages/flat-pages:
@@ -396,6 +397,7 @@ importers:
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
       '@netless/fastboard-react': ^0.3.5-canary.5
+      '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-service-provider-agora-rtc-web': workspace:*
       '@netless/flat-service-provider-agora-rtm': workspace:*
@@ -415,10 +417,7 @@ importers:
       dotenv-expand: ^8.0.2
       eslint-loader: ^4.0.2
       flat-components: workspace:*
-      flat-i18n: workspace:*
       flat-types: workspace:*
-      i18next: ^21.6.14
-      i18next-browser-languagedetector: ^6.1.3
       lodash-es: ^4.17.21
       mime: ^3.0.0
       mobx: ^6.6.0
@@ -427,7 +426,6 @@ importers:
       react: ^17.0.2
       react-device-detect: ^2.1.2
       react-dom: ^17.0.2
-      react-i18next: ^11.15.7
       react-router-dom: ^5.2.0
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
@@ -446,6 +444,7 @@ importers:
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
       '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
+      '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
       '@netless/flat-service-provider-agora-rtc-web': link:../../service-providers/agora-rtc/agora-rtc-web
       '@netless/flat-service-provider-agora-rtm': link:../../service-providers/agora-rtm
@@ -459,10 +458,7 @@ importers:
       classnames: 2.3.1
       date-fns: 2.28.0
       flat-components: link:../flat-components
-      flat-i18n: link:../flat-i18n
       flat-types: link:../flat-types
-      i18next: 21.7.1
-      i18next-browser-languagedetector: 6.1.4
       lodash-es: 4.17.21
       mobx: 6.6.0
       mobx-react-lite: 3.4.0_5mmsvx7kyvezfxuro7wjt7ivm4
@@ -470,7 +466,6 @@ importers:
       react: 17.0.2
       react-device-detect: 2.2.2_sfoxds7t5ydpegc3knd667wn6m
       react-dom: 17.0.2_react@17.0.2
-      react-i18next: 11.16.9_jzsml6ph5qfrjyi3jkdinvojay
       react-router-dom: 5.3.1_react@17.0.2
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
@@ -503,6 +498,9 @@ importers:
     specifiers:
       prettier: ^2.3.0
       typescript: ^4.6.2
+      value-enhancer: ^1.3.2
+    dependencies:
+      value-enhancer: 1.3.2
     devDependencies:
       prettier: 2.6.2
       typescript: 4.6.4
@@ -510,11 +508,11 @@ importers:
   packages/flat-stores:
     specifiers:
       '@netless/fastboard-react': ^0.3.5-canary.5
+      '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/window-manager': ^0.4.37
       flat-components: workspace:*
-      flat-i18n: workspace:*
       mobx: ^6.4.2
       prettier: ^2.3.0
       react: ^17.0.2
@@ -523,10 +521,10 @@ importers:
       uuid: ^8.3.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
+      '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
       '@netless/flat-services': link:../flat-services
       flat-components: link:../flat-components
-      flat-i18n: link:../flat-i18n
       side-effect-manager: 1.1.1
       uuid: 8.3.2
     devDependencies:
@@ -670,6 +668,7 @@ importers:
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
       '@netless/fastboard-react': ^0.3.6
+      '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-service-provider-agora-rtc-web': workspace:*
@@ -697,10 +696,7 @@ importers:
       eslint-loader: ^4.0.2
       eventemitter3: ^4.0.7
       flat-components: workspace:*
-      flat-i18n: workspace:*
       flat-types: workspace:*
-      i18next: ^21.6.14
-      i18next-browser-languagedetector: ^6.1.3
       lodash-es: ^4.17.21
       mime: ^3.0.0
       mobx: ^6.6.0
@@ -709,7 +705,6 @@ importers:
       react: ^17.0.2
       react-device-detect: ^2.1.2
       react-dom: ^17.0.2
-      react-i18next: ^11.15.7
       react-router-dom: ^5.2.0
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
@@ -730,6 +725,7 @@ importers:
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
       '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
+      '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
       '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-service-provider-agora-rtc-web': link:../../service-providers/agora-rtc/agora-rtc-web
@@ -751,10 +747,7 @@ importers:
       emittery: 0.10.2
       eventemitter3: 4.0.7
       flat-components: link:../../packages/flat-components
-      flat-i18n: link:../../packages/flat-i18n
       flat-types: link:../../packages/flat-types
-      i18next: 21.7.1
-      i18next-browser-languagedetector: 6.1.4
       lodash-es: 4.17.21
       mobx: 6.6.0
       mobx-react-lite: 3.4.0_5mmsvx7kyvezfxuro7wjt7ivm4
@@ -762,7 +755,6 @@ importers:
       react: 17.0.2
       react-device-detect: 2.2.2_sfoxds7t5ydpegc3knd667wn6m
       react-dom: 17.0.2_react@17.0.2
-      react-i18next: 11.16.9_jzsml6ph5qfrjyi3jkdinvojay
       react-router-dom: 5.3.1_react@17.0.2
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
@@ -2801,7 +2793,7 @@ packages:
     peerDependencies:
       react: '>=16.3.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       '@emotion/cache': 10.0.29
       '@emotion/css': 10.0.27
       '@emotion/serialize': 0.11.16
@@ -2852,7 +2844,7 @@ packages:
       '@emotion/core': ^10.0.28
       react: '>=16.3.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       '@emotion/core': 10.3.1_react@17.0.2
       '@emotion/is-prop-valid': 0.8.8
       '@emotion/serialize': 0.11.16
@@ -6714,7 +6706,7 @@ packages:
   /babel-plugin-macros/2.8.0:
     resolution: {integrity: sha512-SEP5kJpfGYqYKpBrj5XU3ahw5p5GOHJ0U5ssOSQ/WBVdwkD2Dzlce95exQTs3jOVWPPKLBN2rlEWkCK7dSmLvg==}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       cosmiconfig: 6.0.0
       resolve: 1.22.0
     dev: true
@@ -6723,7 +6715,7 @@ packages:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
     engines: {node: '>=10', npm: '>=6'}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       cosmiconfig: 7.0.1
       resolve: 1.22.0
     dev: true
@@ -8917,7 +8909,7 @@ packages:
     peerDependencies:
       react: '>=16.12.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       compute-scroll-into-view: 1.0.17
       prop-types: 15.8.1
       react: 17.0.2
@@ -9105,7 +9097,7 @@ packages:
       '@emotion/core': ^10.0.27
       react: '>=16.3.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       '@emotion/core': 10.3.1_react@17.0.2
       '@emotion/weak-memoize': 0.2.5
       hoist-non-react-statics: 3.3.2
@@ -11596,6 +11588,7 @@ packages:
 
   /html-escaper/2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
+    dev: true
 
   /html-minifier-terser/5.1.1:
     resolution: {integrity: sha512-ZPr5MNObqnV/T9akshPKbVgyOqLmy+Bxo7juKCfTfnjNniTAMdy4hz21YQqoofMBJD2kdREaqPPdThoR78Tgxg==}
@@ -11629,6 +11622,7 @@ packages:
     resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
     dependencies:
       void-elements: 3.1.0
+    dev: true
 
   /html-tags/3.2.0:
     resolution: {integrity: sha512-vy7ClnArOZwCnqZgvv+ddgHgJiAFXe3Ge9ML5/mBctVJoUoYPCdxVucOywjDARn6CVoh3dRSFdPHy2sX80L0Wg==}
@@ -11782,12 +11776,12 @@ packages:
   /i18next-browser-languagedetector/6.1.4:
     resolution: {integrity: sha512-wukWnFeU7rKIWT66VU5i8I+3Zc4wReGcuDK2+kuFhtoxBRGWGdvYI9UQmqNL/yQH1KogWwh+xGEaIPH8V/i2Zg==}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
 
-  /i18next/21.7.1:
-    resolution: {integrity: sha512-uNt0BM+HV7wgWrrTE+Z4qinQFTONB21hK3I5V/LayhquPv78WchnO4hjF2PWY/OZocahHBDbzbe0/o1rp/RcWQ==}
+  /i18next/21.8.16:
+    resolution: {integrity: sha512-acJLCk38YMfEPjBR/1vS13SFY7rBQLs9E5m1tSRnWc9UW3f+SZszgH+NP1fZRA1+O+CdG2eLGGmuUMJW52EwzQ==}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
 
   /iconv-corefoundation/1.1.7:
     resolution: {integrity: sha512-T10qvkw0zz4wnm560lOEg0PovVqUXuOFhhHAkixw8/sycy7TJt7v/RrkEKEQnAw2viPSJu6iAkErxnzR0g8PpQ==}
@@ -12853,7 +12847,7 @@ packages:
     resolution: {integrity: sha512-prXSYk799h3GY3iOWnC6ZigYzMPjxN2svgjJ9shk7oMadSNX3wXy0B6F32PMJv7qtMnrIbUxoEHzbutvxR2LBQ==}
     engines: {node: '>=6.0.0', npm: '>=6.0.0', yarn: '>=1.0.0'}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       app-root-dir: 1.0.2
       core-js: 3.22.4
       dotenv: 8.6.0
@@ -13495,7 +13489,7 @@ packages:
       prop-types:
         optional: true
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       prop-types: 15.8.1
       react: 17.0.2
       tiny-warning: 1.0.3
@@ -14749,7 +14743,7 @@ packages:
     resolution: {integrity: sha512-Sz2Lkdxz6F2Pgnpi9U5Ng/WdWAUZxmHrNPoVlm3aAemxoy2Qy7LGjQg4uf8qKelDAUW94F4np3iH2YPf2qefcQ==}
     engines: {node: '>=10'}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
     dev: true
 
   /polly-js/1.8.3:
@@ -15761,7 +15755,7 @@ packages:
       react: '>=16.9.0 || ^17'
       react-dom: '>=16.9.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-is: 16.13.1
@@ -15932,7 +15926,7 @@ packages:
     dependencies:
       '@babel/core': 7.17.10
       '@babel/generator': 7.17.10
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       ast-types: 0.14.2
       commander: 2.20.3
       doctrine: 3.0.0
@@ -16004,7 +15998,7 @@ packages:
       react: ^16.6.0 || ^17.0.0 || ^18.0.0 || ^17
       react-dom: ^16.6.0 || ^17.0.0 || ^18.0.0 || ^17
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       invariant: 2.2.4
       prop-types: 15.8.1
       react: 17.0.2
@@ -16013,8 +16007,8 @@ packages:
       shallowequal: 1.1.0
     dev: true
 
-  /react-i18next/11.16.9_6paiyehwr4ov62opw6r6idgboa:
-    resolution: {integrity: sha512-euXxWvcEAvsY7ZVkwx9ztCq4butqtsGHEkpkuo0RMj8Ru09IF9o2KxCyN+zyv51Nr0aBh/elaTIiR6fMb8YfVg==}
+  /react-i18next/11.18.3_4bcptp673aptsea4uz6tljt4ci:
+    resolution: {integrity: sha512-EttTX31HbqzZymUM3SIrMPuvamfSXFZVsDHm/ZAqoDfTLjhzlwyxqfbDNxcKNAGOi2mjZaXfR7hSNMlvLNpB/g==}
     peerDependencies:
       i18next: '>= 19.0.0'
       react: '>= 16.8.0 || ^17'
@@ -16026,39 +16020,19 @@ packages:
       react-native:
         optional: true
     dependencies:
-      '@babel/runtime': 7.17.9
-      html-escaper: 2.0.2
+      '@babel/runtime': 7.18.3
       html-parse-stringify: 3.0.1
-      i18next: 21.7.1
-      react: 17.0.2
-    dev: true
-
-  /react-i18next/11.16.9_jzsml6ph5qfrjyi3jkdinvojay:
-    resolution: {integrity: sha512-euXxWvcEAvsY7ZVkwx9ztCq4butqtsGHEkpkuo0RMj8Ru09IF9o2KxCyN+zyv51Nr0aBh/elaTIiR6fMb8YfVg==}
-    peerDependencies:
-      i18next: '>= 19.0.0'
-      react: '>= 16.8.0 || ^17'
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.17.9
-      html-escaper: 2.0.2
-      html-parse-stringify: 3.0.1
-      i18next: 21.7.1
+      i18next: 21.8.16
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+    dev: true
 
   /react-inspector/5.1.1_react@17.0.2:
     resolution: {integrity: sha512-GURDaYzoLbW8pMGXwYPDBIv6nqei4kK7LPRZ9q9HCZF54wqXz/dnylBp/kfE9XmekBhHvLDdcYeyIwSrvtOiWg==}
     peerDependencies:
       react: ^16.8.4 || ^17.0.0 || ^17
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       is-dom: 1.1.0
       prop-types: 15.8.1
       react: 17.0.2
@@ -16080,7 +16054,7 @@ packages:
       react: ^16.6.0 || ^17.0.0 || ^17
       react-dom: ^16.6.0 || ^17.0.0 || ^17
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       '@popperjs/core': 2.11.5
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -16186,7 +16160,7 @@ packages:
     peerDependencies:
       react: '>= 0.14.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       highlight.js: 10.7.3
       lowlight: 1.20.0
       prismjs: 1.28.0
@@ -16200,7 +16174,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^17
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
       react: 17.0.2
       use-composed-ref: 1.3.0_react@17.0.2
       use-latest: 1.2.1_react@17.0.2
@@ -16418,7 +16392,7 @@ packages:
   /regenerator-transform/0.15.0:
     resolution: {integrity: sha512-LsrGtPmbYg19bcPHwdtmXwbW+TqNvtY4riE3P83foeHRroMbH6/2ddFBfab3t7kbzc7v7p4wbkIecHImqt0QNg==}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
     dev: true
 
   /regex-not/1.0.2:
@@ -16791,7 +16765,7 @@ packages:
   /rtl-css-js/1.15.0:
     resolution: {integrity: sha512-99Cu4wNNIhrI10xxUaABHsdDqzalrSRTie4GeCmbGVuehm4oj+fIy8fTzB+16pmKe8Bv9rl+hxIBez6KxExTew==}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.3
     dev: false
 
   /run-parallel/1.2.0:
@@ -17552,7 +17526,7 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: true
 
-  /storybook-react-i18next/1.0.13_wy2c6ler4q6lsah3eczmijzkqm:
+  /storybook-react-i18next/1.0.13_ewirjhm7l6lnknkof5yeb2r6o4:
     resolution: {integrity: sha512-9UVPrX8xJF/IAEvZnftZCK5UEX/UZgxCjZ9XrZF6cBBrkyP73TtFRq+H7F1UssiCgWgwJEKCvLUG1D7I8fXUBQ==}
     peerDependencies:
       '@storybook/addons': ^6.3.8
@@ -17583,11 +17557,11 @@ packages:
         optional: true
     dependencies:
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      i18next: 21.7.1
+      i18next: 21.8.16
       i18next-browser-languagedetector: 6.1.4
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-i18next: 11.16.9_jzsml6ph5qfrjyi3jkdinvojay
+      react-i18next: 11.18.3_4bcptp673aptsea4uz6tljt4ci
       storybook-i18n: 1.0.11_xcyx36dtd6hcocm3xpyctdigfm
     dev: true
 
@@ -18897,6 +18871,16 @@ packages:
       use-isomorphic-layout-effect: 1.1.2_react@17.0.2
     dev: true
 
+  /use-value-enhancer/0.1.0_s4t5ozp5v364eom36t7digbp2q:
+    resolution: {integrity: sha512-q248oL/c5mQSjEnZ3jd1xsOFQ3TboXPuylWb+JaskCuzs9MB1hrN6xEaD9c2RejLAw2BigSldpQxhAIVi7ryEw==}
+    peerDependencies:
+      react: '>=16 || ^17'
+      value-enhancer: '>=1'
+    dependencies:
+      react: 17.0.2
+      value-enhancer: 1.3.2
+    dev: false
+
   /use/3.1.1:
     resolution: {integrity: sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==}
     engines: {node: '>=0.10.0'}
@@ -19123,8 +19107,9 @@ packages:
     dev: true
 
   /void-elements/3.1.0:
-    resolution: {integrity: sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=}
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
     engines: {node: '>=0.10.0'}
+    dev: true
 
   /vscode-languageserver-textdocument/1.0.4:
     resolution: {integrity: sha512-/xhqXP/2A2RSs+J8JNXpiiNVvvNM0oTosNVmQnunlKvq9o4mupHOBAnnzH0lwIPKazXKvAKsVp1kr+H/K4lgoQ==}

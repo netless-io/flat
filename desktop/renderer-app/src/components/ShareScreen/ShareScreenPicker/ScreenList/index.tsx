@@ -4,7 +4,7 @@ import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { IServiceShareScreenInfo } from "@netless/flat-services";
 
 import { uint8ArrayToImageURL } from "./Utils";
@@ -20,7 +20,7 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
     classRoomStore,
 }) {
     const [activeInfo, setActiveInfo] = useState("");
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     useEffect(() => {
         if (screenInfo.length === 0) {

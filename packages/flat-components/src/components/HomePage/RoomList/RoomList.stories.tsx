@@ -4,7 +4,7 @@ import { Chance } from "chance";
 import React from "react";
 import { RoomList, RoomListItem, RoomListItemProps, RoomListProps } from ".";
 import { addHours } from "date-fns";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 const chance = new Chance();
 
@@ -27,7 +27,7 @@ export const Overview: Story<
     RoomListProps<string> & Pick<RoomListItemProps<string>, "onAction">
 > = args => {
     const beginTime = chance.date();
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <RoomList

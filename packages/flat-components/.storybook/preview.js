@@ -6,10 +6,9 @@ import { addons } from "@storybook/addons";
 import { UPDATE_GLOBALS } from "@storybook/core-events";
 import { FlatThemeBodyProvider, useDarkMode } from "../src/components/FlatThemeProvider";
 import { AntdProvider } from "../src/theme/antd.mod";
-import { i18n } from "./i18next.js";
 import { useEffect } from "react";
 import { get } from "lodash-es";
-import { useTranslation } from "react-i18next";
+import { FlatI18n, useLanguage } from "@netless/flat-i18n";
 
 document.body.classList.add("flat-colors-root");
 
@@ -38,7 +37,7 @@ export const parameters = {
             },
         ],
     },
-    i18n,
+    i18n: FlatI18n.getInstance().i18n,
     locale: "en",
     locales: {
         en: {
@@ -67,8 +66,8 @@ export const parameters = {
 
 export const decorators = [
     (Story, context) => {
-        const { i18n } = useTranslation();
-        return <AntdProvider lang={i18n.language}>{Story(context)}</AntdProvider>;
+        const language = useLanguage();
+        return <AntdProvider lang={language}>{Story(context)}</AntdProvider>;
     },
     (Story, context) => {
         const channel = addons.getChannel();

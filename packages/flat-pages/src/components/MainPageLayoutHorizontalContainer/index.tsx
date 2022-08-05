@@ -16,7 +16,7 @@ import {
     SVGLogout,
     SVGSetting,
 } from "flat-components";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
 import { generateAvatar } from "../../utils/generate-avatar";
@@ -39,7 +39,7 @@ export const MainPageLayoutHorizontalContainer = observer<MainPageLayoutHorizont
         title,
         onBackPreviousPage,
     }) {
-        const { t } = useTranslation();
+        const t = useTranslate();
         const leftMenu: MainPageLayoutItem[] = [
             {
                 key: routeConfig[RouteNameType.HomePage].path,

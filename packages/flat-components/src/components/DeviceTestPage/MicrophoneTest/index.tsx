@@ -3,7 +3,7 @@ import "./style.less";
 import React from "react";
 import { Device } from "../constants";
 import { DeviceTestSelect } from "../DeviceTestSelect";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface MicrophoneTestProps {
     microphoneDevices?: Device[];
@@ -20,7 +20,7 @@ export const MicrophoneTest: React.FC<MicrophoneTestProps> = ({
     currentMicrophoneDeviceID,
     setMicrophoneDevice,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <div className="microphone-test-container">

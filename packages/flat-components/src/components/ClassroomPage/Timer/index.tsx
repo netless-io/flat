@@ -1,7 +1,7 @@
 import "./style.less";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { useIsUnMounted } from "../../../utils/hooks";
 import { RoomStatus } from "../../../types/room";
 import { intervalToDuration } from "date-fns/fp";
@@ -62,7 +62,7 @@ const useClockTick = (beginTime: number, roomStatus: RoomStatus): string => {
 export const Timer: React.FC<TimerProps> = ({ roomStatus = RoomStatus.Paused, beginTime }) => {
     const timing = useClockTick(beginTime, roomStatus);
 
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <span className="timer-bar">

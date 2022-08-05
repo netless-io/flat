@@ -4,7 +4,7 @@ import downloadSVG from "./icons/download.svg";
 import pLimit from "p-limit";
 import classNames from "classnames";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { Modal, message } from "antd";
 
 import { useSafePromise } from "../../utils/hooks";
@@ -36,7 +36,7 @@ export const SaveAnnotationModal: React.FC<SaveAnnotationModalProps> = ({
     onClose,
     images,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     const params = useMemo(() => {
         const limit = pLimit(1);
@@ -81,7 +81,7 @@ const Annotation = React.memo(function Annotation({
     failText = "Save image failed",
 }: AnnotationProps) {
     const sp = useSafePromise();
-    const { t } = useTranslation();
+    const t = useTranslate();
     const ref = useRef<HTMLDivElement>(null);
     const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
 

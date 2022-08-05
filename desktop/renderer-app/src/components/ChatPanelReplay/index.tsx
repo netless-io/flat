@@ -3,7 +3,7 @@ import { Tabs } from "antd";
 import { observer } from "mobx-react-lite";
 import { ChatMessagesReplay } from "./ChatMessagesReplay";
 import { ClassRoomReplayStore } from "../../stores/class-room-replay-store";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface ChatPanelReplayProps {
     classRoomReplayStore: ClassRoomReplayStore;
@@ -12,7 +12,7 @@ export interface ChatPanelReplayProps {
 export const ChatPanelReplay = observer<ChatPanelReplayProps>(function ChatPanelReplay({
     classRoomReplayStore,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <div className="chat-panel">
             <Tabs defaultActiveKey="messages" tabBarGutter={0}>

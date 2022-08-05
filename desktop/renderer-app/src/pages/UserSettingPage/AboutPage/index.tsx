@@ -9,10 +9,10 @@ import { runtime } from "../../../utils/runtime";
 import { ipcSyncByApp } from "../../../utils/ipc";
 import { AppUpgradeModal, AppUpgradeModalProps } from "../../../components/AppUpgradeModal";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export const AboutPage = (): React.ReactElement => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const sp = useSafePromise();
     const [updateInfo, setUpdateInfo] = useState<AppUpgradeModalProps["updateInfo"]>(null);
 

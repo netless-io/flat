@@ -1,6 +1,6 @@
 import "./index.less";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button, Table } from "antd";
 import { getDay } from "date-fns";
 import { format, formatWithOptions } from "date-fns/fp";
@@ -10,7 +10,7 @@ import { getWeekName, getWeekNames } from "../../utils/room";
 import { RoomStatusElement } from "../RoomStatusElement";
 import { MoreMenu } from "./MoreMenu";
 import { CancelPeriodicRoomModal } from "./CancelPeriodicRoomModal";
-import { useTranslation } from "react-i18next";
+import { useLanguage, useTranslate } from "@netless/flat-i18n";
 
 export interface PeriodicRoomPanelProps {
     rooms: Array<RoomInfo | undefined>;
@@ -43,11 +43,11 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
     jumpToModifyPeriodicRoomPage,
     jumpToModifyOrdinaryRoomPage,
 }) => {
-    const { t, i18n } = useTranslation();
+    const t = useTranslate();
+    const language = useLanguage();
     const [cancelPeriodicRoomModalVisible, setCancelPeriodicRoomModalVisible] = useState(false);
 
-    const lang = i18n.language;
-    const locale = lang.startsWith("zh") ? zhCN : enUS;
+    const locale = useMemo(() => (language.startsWith("zh") ? zhCN : enUS), [language]);
     const yearMonthFormat = formatWithOptions({ locale }, "yyyy/MM");
     const dayFormat = formatWithOptions({ locale }, "dd");
     const timeSuffixFormat = format("HH:mm");
@@ -101,7 +101,7 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                         <Table.Column
                             align="center"
                             render={(_, room: RoomInfo) =>
-                                getWeekName(getDay(room.beginTime || defaultDate), i18n.language)
+                                getWeekName(getDay(room.beginTime || defaultDate), language)
                             }
                         />
                         <Table.Column
@@ -161,7 +161,7 @@ export const PeriodicRoomPanel: React.FC<PeriodicRoomPanelProps> = ({
                 <div className="periodic-room-panel-tips">
                     <div className="periodic-room-panel-tips-title">
                         {t("repeat-frequency", {
-                            week: getWeekNames(periodicInfo.weeks, i18n.language),
+                            week: getWeekNames(periodicInfo.weeks, language),
                         })}
                     </div>
                     <div className="periodic-room-panel-tips-type">

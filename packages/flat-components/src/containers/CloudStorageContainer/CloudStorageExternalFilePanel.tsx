@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useRef } from "react";
 import { Form, Modal, Input, Select, message, FormInstance } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { CloudStorageStore } from "./store";
 import { useSafePromise } from "../../utils/hooks";
 
@@ -22,7 +22,7 @@ export const CloudStorageExternalFilePanel: FC<CloudStorageExternalFilePanelProp
     visible,
     onClose,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     const formRef = useRef<FormInstance>(null);
 

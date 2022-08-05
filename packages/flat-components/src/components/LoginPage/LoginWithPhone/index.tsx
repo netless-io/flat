@@ -3,14 +3,13 @@ import "./index.less";
 
 import React, { useCallback, useMemo, useState } from "react";
 import { Button, Input, message, Modal, Select } from "antd";
-import { TFunction } from "i18next";
+import { useTranslate, FlatI18nTFunction } from "@netless/flat-i18n";
 
 import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
 import { LoginTitle } from "../LoginTitle";
 import { LoginAgreement, LoginAgreementProps } from "../LoginAgreement";
 import { LoginButtons, LoginButtonsDescription, LoginButtonsProps } from "../LoginButtons";
 import { COUNTRY_CODES } from "./data";
-import { useTranslation } from "react-i18next";
 import { LoginPanelContent } from "../LoginPanelContent";
 import { LoginButtonProviderType } from "../LoginButton";
 
@@ -53,7 +52,7 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
     renderQRCode,
 }) => {
     const sp = useSafePromise();
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     const buttons = useMemo<LoginButtonsDescription>(
         () =>
@@ -323,7 +322,7 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
 };
 
 export interface BindingPhonePageProps {
-    t: TFunction;
+    t: FlatI18nTFunction;
     setCountryCode: (countryCode: string) => void;
     phone: string;
     setPhone: (phone: string) => void;
@@ -341,7 +340,7 @@ export interface BindingPhonePageProps {
 export interface RequestAgreementParams {
     privacyURL?: string;
     serviceURL?: string;
-    t: TFunction;
+    t: FlatI18nTFunction;
 }
 
 export function requestAgreement({

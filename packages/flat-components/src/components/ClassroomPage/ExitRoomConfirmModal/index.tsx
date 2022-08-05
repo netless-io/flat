@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Button, Modal } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface StopClassConfirmModalProps {
     visible: boolean;
@@ -19,7 +19,7 @@ export const StopClassConfirmModal: FC<StopClassConfirmModalProps> = ({
     onStop,
     onCancel,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <Modal
             okButtonProps={{ loading }}
@@ -54,7 +54,7 @@ export const CloseRoomConfirmModal: FC<CloseRoomConfirmModalProps> = ({
     onStop,
     onCancel,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <Modal
             footer={[
@@ -93,7 +93,7 @@ export const ExitRoomConfirmModal: FC<ExitRoomConfirmModalProps> = ({
     onExit,
     onCancel,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <Modal
             title={t("student-sure-to-exit-the-room")}

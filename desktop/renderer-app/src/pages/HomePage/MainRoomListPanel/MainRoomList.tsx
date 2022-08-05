@@ -22,7 +22,7 @@ import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../../../utils/routes";
 import { joinRoomHandler } from "../../utils/join-room-handler";
 import { FLAT_WEB_BASE_URL } from "../../../constants/process";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface MainRoomListProps {
     listRoomsType: ListRoomsType;
@@ -33,7 +33,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     listRoomsType,
     isLogin,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const roomStore = useContext(RoomStoreContext);
     const [roomUUIDs, setRoomUUIDs] = useState<string[]>();
     const [cancelModalVisible, setCancelModalVisible] = useState(false);

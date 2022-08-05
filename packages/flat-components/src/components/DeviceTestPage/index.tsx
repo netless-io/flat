@@ -6,7 +6,7 @@ import { CameraTest } from "./CameraTest";
 import { Device } from "./constants";
 import { MicrophoneTest } from "./MicrophoneTest";
 import { SpeakerTest } from "./SpeakerTest";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export type { Device };
 
@@ -51,7 +51,7 @@ export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
     toggleDeviceTest,
     joinRoom,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <div className="device-test-panel-container">
             <div className="device-test-panel-title-box">{t("device-test")}</div>

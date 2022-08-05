@@ -5,7 +5,7 @@ import React from "react";
 import classNames from "classnames";
 import { Device } from "../constants";
 import { DeviceTestSelect } from "../DeviceTestSelect";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface CameraTestProps {
     cameraDevices?: Device[];
@@ -22,7 +22,7 @@ export const CameraTest: React.FC<CameraTestProps> = ({
     cameraVideoStreamRef,
     setCameraDevice,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <div className="camera-test-container">

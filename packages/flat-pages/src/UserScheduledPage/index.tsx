@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { isBefore, addMinutes, roundToNearestMinutes, getDay, addWeeks } from "date-fns";
 import { EditRoomFormValues } from "flat-components";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { useHistory } from "react-router-dom";
 
 import { RoomType } from "@netless/flat-server-api";
@@ -29,7 +29,7 @@ const getInitialBeginTime = (): Date => {
 
 export const UserScheduledPage = observer(function UserScheduledPage() {
     useLoginCheck();
-    const { t } = useTranslation();
+    const t = useTranslate();
     const history = useHistory();
     const sp = useSafePromise();
     const roomStore = useContext(RoomStoreContext);

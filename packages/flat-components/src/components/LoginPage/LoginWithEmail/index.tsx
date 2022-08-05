@@ -4,7 +4,7 @@ import checkedSVG from "../LoginWithPhone/icons/checked.svg";
 import "./index.less";
 
 import React, { useCallback, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { Button, Input, message } from "antd";
 
 import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
@@ -67,7 +67,7 @@ export const LoginWithEmail: React.FC<LoginWithEmailProps> = ({
     bindingPhone,
     cancelBindingPhone,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const sp = useSafePromise();
 
     const buttons = useMemo<LoginButtonsDescription>(

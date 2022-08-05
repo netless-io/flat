@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { message, Modal } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { GithubFilled } from "@ant-design/icons";
 
 import { GlobalStore } from "../../../../stores/global-store";
@@ -26,7 +26,7 @@ export interface BindGitHubProps {
 
 export const BindGitHub: React.FC<BindGitHubProps> = ({ isBind, onRefresh, globalStore }) => {
     const sp = useSafePromise();
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [authUUID, setAuthUUID] = useState("");
 
     const cancel = useCallback((): void => {

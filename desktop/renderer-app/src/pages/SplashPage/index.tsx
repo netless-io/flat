@@ -9,7 +9,7 @@ import logoSVG from "../../assets/image/logo.svg";
 import "./SplashPage.less";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 enum LoginStatusType {
     Idle = "Idle",
@@ -21,7 +21,7 @@ enum LoginStatusType {
 export const SplashPage = observer<{}>(function SplashPage() {
     useWindowSize("Splash");
 
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [logoLoaded, setLogoLoaded] = useState(false);
     const [loginStatus, updateLoginStatus] = useState(LoginStatusType.Idle);
     const pushHistory = usePushHistory();

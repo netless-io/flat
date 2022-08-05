@@ -6,7 +6,7 @@ import React, { useCallback } from "react";
 import { CloudStoragePanel } from "../CloudStoragePage/CloudStoragePanel";
 import { ClassroomStore } from "@netless/flat-stores";
 import "./CloudStorageButton.less";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 interface CloudStorageButtonProps {
     classroom: ClassroomStore;
@@ -15,7 +15,7 @@ interface CloudStorageButtonProps {
 export const CloudStorageButton = observer<CloudStorageButtonProps>(function CloudStorageButton({
     classroom,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const hideModal = useCallback(() => classroom.toggleCloudStoragePanel(false), [classroom]);
     const showModal = useCallback(() => classroom.toggleCloudStoragePanel(true), [classroom]);
 

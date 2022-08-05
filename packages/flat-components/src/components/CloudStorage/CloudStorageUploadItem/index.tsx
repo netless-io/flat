@@ -8,7 +8,7 @@ import { Button } from "antd";
 import classNames from "classnames";
 import { CloudStorageFileTitle } from "../CloudStorageFileTitle";
 import { CloudStorageUploadTask } from "../types";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface CloudStorageUploadItemProps
     extends Pick<CloudStorageUploadTask, "uploadID" | "fileName" | "percent" | "status"> {
@@ -30,7 +30,7 @@ export const CloudStorageUploadItem: React.FC<CloudStorageUploadItemProps> = ({
     onRetry,
     onCancel,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <div className="cloud-storage-upload-item">
             <CloudStorageFileTitle fileName={fileName} fileUUID={uploadID} />

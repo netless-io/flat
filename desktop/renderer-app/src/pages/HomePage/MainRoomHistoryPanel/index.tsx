@@ -5,12 +5,12 @@ import { observer } from "mobx-react-lite";
 import { MainRoomList } from "../MainRoomListPanel/MainRoomList";
 import { ListRoomsType } from "../../../api-middleware/flatServer";
 import { RoomList } from "flat-components";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export const MainRoomHistoryPanel = observer<{ isLogin: boolean }>(function MainRoomHistoryPanel({
     isLogin,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <RoomList title={t("history")}>
             <MainRoomList isLogin={isLogin} listRoomsType={ListRoomsType.History} />

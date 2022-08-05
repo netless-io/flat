@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { Modal } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { RoomStatus } from "../../../types/room";
 
 export interface RoomStoppedModalProps {
@@ -23,7 +23,7 @@ export const RoomStoppedModal: FC<RoomStoppedModalProps> = ({
 }) => {
     const modalRef = useRef<ReturnType<typeof Modal.info>>();
     const [visible, setVisible] = useState(false);
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     useEffect(() => {
         if (isRemoteLogin) {

@@ -8,10 +8,10 @@ import React from "react";
 import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { routeConfig, RouteNameType } from "../../route-config";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactElement => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     useWindowSize("Main");
 
     const subMenu = [

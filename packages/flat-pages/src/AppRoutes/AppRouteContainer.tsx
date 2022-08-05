@@ -1,6 +1,6 @@
 import loadable from "@loadable/component";
 import React, { ComponentType, useContext, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { RouteComponentProps } from "react-router-dom";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { FlatThemeBodyProvider, LoadingPage } from "flat-components";
@@ -38,7 +38,7 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
 }) {
     const pageStore = useContext(PageStoreContext);
     const preferencesStore = useContext(PreferencesStoreContext);
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     useIsomorphicLayoutEffect(() => {
         pageStore.setName(name);

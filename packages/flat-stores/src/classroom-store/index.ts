@@ -10,7 +10,7 @@ import {
     RoomType,
     checkRTMCensor,
 } from "@netless/flat-server-api";
-import { i18n } from "flat-i18n";
+import { FlatI18n } from "@netless/flat-i18n";
 import { errorTips, message } from "flat-components";
 import { Storage } from "@netless/fastboard-react";
 import { RoomItem, roomStore } from "../room-store";
@@ -116,7 +116,7 @@ export class ClassroomStore {
             isCreator: this.isCreator,
             isWritable: this.isCreator,
             getRoomType: () => this.roomInfo?.roomType || RoomType.BigClass,
-            i18n: i18n,
+            i18n: FlatI18n.getInstance().i18n,
             onDrop: this.onDrop,
         });
 
@@ -133,7 +133,7 @@ export class ClassroomStore {
                 () => this.isRecording,
                 (isRecording: boolean) => {
                     if (isRecording) {
-                        void message.success(i18n.t("start-recording"));
+                        void message.success(FlatI18n.t("start-recording"));
                     }
                 },
             ),

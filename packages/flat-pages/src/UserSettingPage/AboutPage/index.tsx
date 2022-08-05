@@ -1,11 +1,11 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import logoSVG from "../icons/logo.svg";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
 import "./index.less";
 
 export const AboutPage = (): React.ReactElement => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <UserSettingLayoutContainer>
             <div className="about-page-container">

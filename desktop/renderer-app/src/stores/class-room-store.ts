@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import { v4 as uuidv4 } from "uuid";
 import dateSub from "date-fns/sub";
 import { SideEffectManager } from "side-effect-manager";
-import i18next, { i18n } from "i18next";
+import { FlatI18n } from "@netless/flat-i18n";
 import { message } from "antd";
 import {
     IServiceVideoChat,
@@ -38,13 +37,9 @@ import { RoomStatus, RoomType } from "../api-middleware/flatServer/constants";
 import { RoomItem, roomStore } from "./room-store";
 import { globalStore } from "./global-store";
 import { NODE_ENV } from "../constants/process";
-import { useAutoRun } from "../utils/mobx";
 import { User, UserStore } from "./user-store";
-import { ipcAsyncByMainWindow } from "../utils/ipc";
 import { errorTips } from "../components/Tips/ErrorTips";
 import { WhiteboardStore } from "./whiteboard-store";
-import { RouteNameType, usePushHistory } from "../utils/routes";
-import { useSafePromise } from "../utils/hooks/lifecycle";
 import { NEED_CHECK_CENSOR } from "../constants/config";
 
 export type { User } from "./user-store";
@@ -141,7 +136,6 @@ export class ClassRoomStore {
         ownerUUID: string;
         recordingConfig: RecordingConfig;
         classMode?: ClassModeType;
-        i18n: i18n;
     }) {
         if (!globalStore.userUUID) {
             throw new Error("Missing user uuid");
@@ -186,7 +180,6 @@ export class ClassRoomStore {
         this.whiteboardStore = new WhiteboardStore({
             isCreator: this.isCreator,
             getRoomType: () => this.roomInfo?.roomType || RoomType.BigClass,
-            i18n: config.i18n,
             onDrop: this.onDrop,
         });
 
@@ -203,7 +196,7 @@ export class ClassRoomStore {
             () => this.isRecording,
             (isRecording: boolean) => {
                 if (isRecording) {
-                    void message.success(i18next.t("start-recording"));
+                    void message.success(FlatI18n.t("start-recording"));
                 }
             },
         );
@@ -575,7 +568,7 @@ export class ClassRoomStore {
     public onAllOffStage = (): void => {
         if (this.isCreator) {
             this.allOffStage();
-            void message.info(i18next.t("all-off-stage-toast"));
+            void message.info(FlatI18n.t("all-off-stage-toast"));
             void this.rtm.sendCommand({
                 type: RTMessageType.AllOffStage,
                 value: true,
@@ -1194,51 +1187,48 @@ export interface ClassRoomStoreConfig {
     ownerUUID: string;
     recordingConfig: RecordingConfig;
     classMode?: ClassModeType;
-    i18n: i18n;
 }
 
-export function useClassRoomStore({
-    roomUUID,
-    ownerUUID,
-    recordingConfig,
-    classMode,
-    i18n,
-}: ClassRoomStoreConfig): ClassRoomStore {
-    const [classRoomStore] = useState(
-        () =>
-            new ClassRoomStore({
-                roomUUID,
-                ownerUUID,
-                recordingConfig,
-                classMode,
-                i18n,
-            }),
-    );
+// export function useClassRoomStore({
+//     roomUUID,
+//     ownerUUID,
+//     recordingConfig,
+//     classMode,
+// }: ClassRoomStoreConfig): ClassRoomStore {
+//     const [classRoomStore] = useState(
+//         () =>
+//             new ClassRoomStore({
+//                 roomUUID,
+//                 ownerUUID,
+//                 recordingConfig,
+//                 classMode,
+//             }),
+//     );
 
-    const pushHistory = usePushHistory();
-    const sp = useSafePromise();
+//     const pushHistory = usePushHistory();
+//     const sp = useSafePromise();
 
-    useAutoRun(() => {
-        const title = classRoomStore.roomInfo?.title;
-        if (title) {
-            document.title = title;
-            ipcAsyncByMainWindow("set-title", {
-                title: document.title,
-            });
-        }
-    });
+//     useAutoRun(() => {
+//         const title = classRoomStore.roomInfo?.title;
+//         if (title) {
+//             document.title = title;
+//             ipcAsyncByMainWindow("set-title", {
+//                 title: document.title,
+//             });
+//         }
+//     });
 
-    useEffect(() => {
-        sp(classRoomStore.init()).catch(e => {
-            errorTips(e);
-            pushHistory(RouteNameType.HomePage);
-        });
-        return () => {
-            void classRoomStore.destroy();
-        };
-        // run only on component mount
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+//     useEffect(() => {
+//         sp(classRoomStore.init()).catch(e => {
+//             errorTips(e);
+//             pushHistory(RouteNameType.HomePage);
+//         });
+//         return () => {
+//             void classRoomStore.destroy();
+//         };
+//         // run only on component mount
+//         // eslint-disable-next-line react-hooks/exhaustive-deps
+//     }, []);
 
-    return classRoomStore;
-}
+//     return classRoomStore;
+// }

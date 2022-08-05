@@ -1,6 +1,6 @@
 import "video.js/dist/video-js.css";
 
-import type { i18n } from "i18next";
+import { FlatI18n } from "@netless/flat-i18n";
 import { FastboardApp, createFastboard } from "@netless/fastboard-react";
 import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manager";
 import { message } from "antd";
@@ -50,7 +50,6 @@ export class WhiteboardStore {
 
     /** is room Creator */
     public readonly isCreator: boolean;
-    public readonly i18n: i18n;
     public readonly getRoomType: () => RoomType;
     public readonly onDrop: (file: File) => void;
 
@@ -59,13 +58,11 @@ export class WhiteboardStore {
     public constructor(config: {
         isCreator: boolean;
         isWritable: boolean;
-        i18n: i18n;
         getRoomType: () => RoomType;
         onDrop: (file: File) => void;
     }) {
         this.isCreator = config.isCreator;
         this.isWritable = config.isWritable;
-        this.i18n = config.i18n;
         this.getRoomType = config.getRoomType;
         this.onDrop = config.onDrop;
 
@@ -77,13 +74,12 @@ export class WhiteboardStore {
 
         this.cloudStorageStore = new CloudStorageStore({
             compact: true,
-            i18n: this.i18n,
             insertCourseware: this.insertCourseware,
         });
 
         // Whiteboard debugging
         const flatUA =
-            process.env.FLAT_UA || (this.i18n.t("app-name") || "").replace(/s+/g, "_").slice(0, 50);
+            process.env.FLAT_UA || (FlatI18n.t("app-name") || "").replace(/s+/g, "_").slice(0, 50);
         window.__netlessUA =
             (window.__netlessUA || "") +
             ` FLAT/${flatUA}_${process.env.FLAT_REGION}@${process.env.VERSION} `;
@@ -295,7 +291,7 @@ export class WhiteboardStore {
                         }
                     },
                     onDisconnectWithError: error => {
-                        void message.error(this.i18n.t("on-disconnect-with-error"));
+                        void message.error(FlatI18n.t("on-disconnect-with-error"));
                         console.error(error);
                         this.preloadPPTResource.cancel();
                     },
@@ -418,11 +414,11 @@ export class WhiteboardStore {
 
     public insertCourseware = async (file: CloudStorageFile): Promise<void> => {
         if (file.convert === "converting") {
-            void message.warn(this.i18n.t("in-the-process-of-transcoding-tips"));
+            void message.warn(FlatI18n.t("in-the-process-of-transcoding-tips"));
             return;
         }
 
-        void message.info(this.i18n.t("inserting-courseware-tips"));
+        void message.info(FlatI18n.t("inserting-courseware-tips"));
 
         const ext = getFileExt(file.fileName);
 
@@ -560,14 +556,14 @@ export class WhiteboardStore {
                 }
                 if (convertingStatus.status === "Fail") {
                     void message.error(
-                        this.i18n.t("transcoding-failure-reason", {
-                            reason: convertingStatus.errorMessage,
+                        FlatI18n.t("transcoding-failure-reason", {
+                            reason: convertingStatus.errorMessage || "",
                         }),
                     );
                 }
             } else {
                 message.destroy();
-                void message.warn(this.i18n.t("in-the-process-of-transcoding-tips"));
+                void message.warn(FlatI18n.t("in-the-process-of-transcoding-tips"));
                 return;
             }
         } else if (convertingStatus.status === "Finished" && convertingStatus.progress) {
@@ -595,7 +591,7 @@ export class WhiteboardStore {
                 url: convertingStatus.prefix,
             });
         } else {
-            void message.error(this.i18n.t("unable-to-insert-courseware"));
+            void message.error(FlatI18n.t("unable-to-insert-courseware"));
         }
     };
 
@@ -621,11 +617,11 @@ export class WhiteboardStore {
                     },
                 });
             } else {
-                void message.error(this.i18n.t("unable-to-insert-courseware"));
+                void message.error(FlatI18n.t("unable-to-insert-courseware"));
             }
         } catch (e) {
             console.error(e);
-            void message.error(this.i18n.t("unable-to-insert-courseware"));
+            void message.error(FlatI18n.t("unable-to-insert-courseware"));
         }
     };
 
@@ -642,11 +638,11 @@ export class WhiteboardStore {
                     },
                 });
             } else {
-                void message.error(this.i18n.t("unable-to-insert-courseware"));
+                void message.error(FlatI18n.t("unable-to-insert-courseware"));
             }
         } catch (e) {
             console.error(e);
-            void message.error(this.i18n.t("unable-to-insert-courseware"));
+            void message.error(FlatI18n.t("unable-to-insert-courseware"));
         }
     };
 

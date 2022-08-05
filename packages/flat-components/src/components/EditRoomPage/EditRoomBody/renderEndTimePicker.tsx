@@ -2,14 +2,14 @@ import { Form } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
 import { addMinutes, isAfter, isBefore, setHours } from "date-fns";
 import React from "react";
-import { TFunction } from "react-i18next";
+import { FlatI18nTFunction } from "@netless/flat-i18n";
 import type { EditRoomFormValues } from ".";
 import { compareDay, compareHour, excludeRange } from "../../../utils/room";
 import { FullTimePicker } from "../FullTimePicker";
 import { MIN_CLASS_DURATION } from "./constants";
 
 export function renderEndTimePicker(
-    t: TFunction<string>,
+    t: FlatI18nTFunction,
     form: FormInstance<EditRoomFormValues>,
     nextPeriodicRoomEndTime?: number | null,
 ): React.ReactElement {

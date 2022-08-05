@@ -4,7 +4,7 @@ import React from "react";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import { AutoSizer, List, ListRowRenderer, Size } from "react-virtualized";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { ChatUser, ChatUserProps } from "../ChatUser";
 import { User } from "../../../types/user";
 
@@ -24,7 +24,7 @@ export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
     onAllOffStage,
     ...restProps
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const rowRenderer: ListRowRenderer = ({ index, style }): React.ReactNode => {
         const user = users[index];
         return (
