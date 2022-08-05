@@ -1,8 +1,8 @@
-import { getFlatServices } from "@netless/flat-services";
+import { FlatServices } from "@netless/flat-services";
 import type { AgoraRTCElectron } from "@netless/flat-service-provider-agora-rtc-electron";
 
 export function initFlatServices(): void {
-    const flatServices = getFlatServices();
+    const flatServices = FlatServices.getInstance();
 
     flatServices.register("videoChat", async () => {
         const { AgoraRTCElectron } = await import(
