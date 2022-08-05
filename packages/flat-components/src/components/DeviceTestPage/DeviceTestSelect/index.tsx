@@ -4,7 +4,7 @@ import "./style.less";
 import React from "react";
 import { Button, Select } from "antd";
 import { Device } from "../constants";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface DeviceTestSelectProps {
     devices?: Device[];
@@ -19,7 +19,7 @@ export const DeviceTestSelect: React.FC<DeviceTestSelectProps> = ({
     currentDeviceID,
     onChange,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <div className="device-test-select-container">

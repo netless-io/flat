@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { SVGUserInvite, TopBarRightBtn } from "flat-components";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { RoomItem } from "../stores/room-store";
 import { InviteModal } from "./Modal/InviteModal";
 
@@ -10,7 +10,7 @@ export interface InviteButtonProps {
 }
 
 export const InviteButton = observer<InviteButtonProps>(function InviteButton({ roomInfo }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [isShowInviteModal, showInviteModal] = useState(false);
     const hideInviteModal = (): void => showInviteModal(false);
     return (

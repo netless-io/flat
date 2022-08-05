@@ -1,8 +1,8 @@
+import { FlatI18n } from "@netless/flat-i18n";
 import { message } from "antd";
 import { v4 as v4uuid } from "uuid";
 import { ApplianceNames, Room, Size } from "white-web-sdk";
 import { listFiles } from "../../api-middleware/flatServer/storage";
-import { i18n } from "../i18n";
 import { UploadTask } from "../upload-task-manager/upload-task";
 
 const ImageFileTypes = [
@@ -28,7 +28,7 @@ export async function onDropImage(file: File, x: number, y: number, room: Room):
         return;
     }
 
-    const hideLoading = message.loading(i18n.t("inserting-courseware-tips"));
+    const hideLoading = message.loading(FlatI18n.t("inserting-courseware-tips"));
 
     const getSize = getImageSize(file);
     const task = new UploadTask(file);

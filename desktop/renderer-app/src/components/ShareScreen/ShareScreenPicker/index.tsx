@@ -4,7 +4,7 @@ import { Button, Modal, Spin } from "antd";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useLayoutEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 import { ClassRoomStore } from "../../../stores/class-room-store";
 import { ScreenList } from "./ScreenList";
@@ -18,7 +18,7 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
     classRoomStore,
     handleOk,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     useLayoutEffect(() => {
         classRoomStore.refreshShareScreenInfo();
@@ -87,7 +87,7 @@ const ConfirmButton = observer<ConfirmButtonProps>(function ConfirmButton({
     handleOk,
 }) {
     const [confirmLoading, setConfirmLoading] = useState(false);
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <Button

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Button } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 
 export interface ConfirmButtonsProps {
@@ -9,7 +9,7 @@ export interface ConfirmButtonsProps {
 
 export const ConfirmButtons: React.FC<ConfirmButtonsProps> = ({ onConfirm }) => {
     const sp = useSafePromise();
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [loading, setLoading] = useState(false);
     const [phase, setPhase] = useState<"idle" | "confirm">("idle");
 

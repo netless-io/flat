@@ -4,7 +4,7 @@ import "./style.less";
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export type ErrorPageProps = {};
 
@@ -12,7 +12,7 @@ export const ErrorPage: React.FC = () => {
     const [countdown, setCountdown] = useState(15);
     const location = useLocation();
     const history = useHistory();
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     const goHome = (): void => {
         if (location.pathname === "/") {

@@ -9,12 +9,12 @@ import { Device } from "../../../types/device";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckResults } from "../utils";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { withFlatServices } from "@netless/flat-pages/src/components/FlatServicesContext";
 
 export const CameraCheckPage = withFlatServices("videoChat")(
     ({ videoChat: rtc }): React.ReactElement => {
-        const { t } = useTranslation();
+        const t = useTranslate();
         const [devices, setDevices] = useState<Device[]>([]);
         const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
         const cameraStream = useRef<HTMLDivElement>(null);

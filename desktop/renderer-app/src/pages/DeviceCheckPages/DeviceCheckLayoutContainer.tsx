@@ -12,12 +12,12 @@ import { routeConfig, RouteNameType } from "../../route-config";
 import { useHistory, useLocation } from "react-router-dom";
 import { DeviceCheckState } from "./utils";
 import { MainPageLayoutItem } from "flat-components";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export const DeviceCheckLayoutContainer: React.FC = ({ children }): React.ReactElement => {
     useWindowSize("Main");
 
-    const { t } = useTranslation();
+    const t = useTranslate();
     const history = useHistory<DeviceCheckState>();
     const location = useLocation<DeviceCheckState | undefined>();
 

@@ -5,8 +5,8 @@ import React, { useMemo } from "react";
 import { formatInviteCode, formatTime } from "../../../utils/room";
 import { RoomInfo, RoomType } from "../../../types/room";
 import { RoomStatusElement } from "../../RoomStatusElement";
-import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
+import { useTranslate, useLanguage } from "@netless/flat-i18n";
 
 export interface RoomDetailBodyProps {
     roomInfo: RoomInfo;
@@ -15,17 +15,18 @@ export interface RoomDetailBodyProps {
 }
 
 export const RoomDetailBody = observer<RoomDetailBodyProps>(function RoomDetailBody({ roomInfo }) {
-    const { t, i18n } = useTranslation();
+    const t = useTranslate();
+    const language = useLanguage();
     const { beginTime, endTime, inviteCode, periodicUUID, roomUUID } = roomInfo;
     const uuid = periodicUUID || roomUUID;
 
     const formattedBeginTime = useMemo(
-        () => (beginTime ? formatTime(beginTime, i18n.language) : null),
-        [beginTime, i18n.language],
+        () => (beginTime ? formatTime(beginTime, language) : null),
+        [beginTime, language],
     );
     const formattedEndTime = useMemo(
-        () => (endTime ? formatTime(endTime, i18n.language) : null),
-        [endTime, i18n.language],
+        () => (endTime ? formatTime(endTime, language) : null),
+        [endTime, language],
     );
 
     return (

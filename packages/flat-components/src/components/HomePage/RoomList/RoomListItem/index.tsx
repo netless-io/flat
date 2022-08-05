@@ -3,7 +3,7 @@ import "./style.less";
 import React, { PropsWithChildren, ReactElement } from "react";
 import { format } from "date-fns";
 import classNames from "classnames";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { Button } from "antd";
 import { RoomListItemMenus } from "./RoomListItemMenus";
 import { RoomListItemAction, RoomListItemPrimaryAction, RoomStatusType } from "./types";
@@ -37,7 +37,7 @@ export function RoomListItem<T extends string = string>({
     onClick,
     onAction,
 }: PropsWithChildren<RoomListItemProps<T>>): ReactElement {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <div className={classNames("room-list-item", { pointer: !!onClick })}>
             <div className="room-list-item-content">

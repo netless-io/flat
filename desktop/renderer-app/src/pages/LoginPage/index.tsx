@@ -2,7 +2,7 @@ import "./index.less";
 
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { constants } from "flat-types";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import {
     LoginPanel,
@@ -38,7 +38,7 @@ import {
 } from "../../api-middleware/flatServer";
 
 export const LoginPage = observer(function LoginPage() {
-    const { i18n } = useTranslation();
+    const language = useLanguage();
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const loginDisposer = useRef<LoginDisposer>();
@@ -132,8 +132,8 @@ export const LoginPage = observer(function LoginPage() {
         [onLoginResult],
     );
 
-    const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL_EN;
-    const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL_EN;
+    const privacyURL = language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL_EN;
+    const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL_EN;
 
     const onClickWindowsSystemBtn = (winSystemBtn: WindowsSystemBtnItem): void => {
         ipcAsyncByMainWindow("set-win-status", { windowStatus: winSystemBtn });

@@ -6,7 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 import { useLastLocation } from "react-router-last-location";
 import { LoadingPage, PeriodicRoomPanel, errorTips } from "flat-components";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { PageStoreContext, RoomStoreContext } from "../components/StoreProvider";
 import { globalStore } from "@netless/flat-stores";
 import { RouteNameType, RouteParams, usePushHistory } from "../utils/routes";
@@ -19,7 +19,7 @@ import { useLoginCheck } from "../utils/use-login-check";
 
 export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPage() {
     useLoginCheck();
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     const params = useParams<RouteParams<RouteNameType.PeriodicRoomDetailPage>>();
     const roomStore = useContext(RoomStoreContext);

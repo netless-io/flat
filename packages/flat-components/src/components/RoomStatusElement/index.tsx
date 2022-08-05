@@ -2,14 +2,14 @@ import "./index.less";
 
 import React from "react";
 import { RoomInfo, RoomStatus } from "../../types/room";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface RoomStatusElementProps {
     room: RoomInfo;
 }
 
 export const RoomStatusElement: React.FC<RoomStatusElementProps> = ({ room }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     switch (room.roomStatus) {
         case RoomStatus.Started:
         case RoomStatus.Paused: {

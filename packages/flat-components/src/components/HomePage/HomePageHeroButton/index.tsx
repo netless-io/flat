@@ -4,7 +4,7 @@ import { SVGBegin } from "./icons/SVGBegin/";
 import { SVGSchedule } from "./icons/SVGSchedule/";
 import React from "react";
 import { Button } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 type HomePageHeroButtonType = "join" | "begin" | "schedule";
 
@@ -20,7 +20,7 @@ export interface HomePageHeroButtonProps {
 }
 
 export const HomePageHeroButton: React.FC<HomePageHeroButtonProps> = ({ type, onClick }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <Button className="home-page-hero-button" onClick={onClick}>
             <span className="home-page-hero-button-icon">

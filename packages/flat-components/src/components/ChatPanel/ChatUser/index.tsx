@@ -3,7 +3,7 @@ import "./style.less";
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { User } from "../../../types/user";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface ChatUserProps {
     /** room owner uuid */
@@ -28,7 +28,7 @@ export const ChatUser = observer<ChatUserProps>(function ChatUser({
     onEndSpeaking,
     generateAvatar,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
     /** is current user the room owner */
     const isCreator = ownerUUID === userUUID;

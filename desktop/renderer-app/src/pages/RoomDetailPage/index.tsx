@@ -14,12 +14,12 @@ import { joinRoomHandler } from "../utils/join-room-handler";
 import { RoomStatus } from "../../api-middleware/flatServer/constants";
 import { message } from "antd";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
     useWindowSize("Main");
 
-    const { t } = useTranslation();
+    const t = useTranslate();
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
     const pushHistory = usePushHistory();
     const history = useHistory();
@@ -119,7 +119,7 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
                                                 onClick={jumpToPeriodicRoomDetailPage}
                                             >
                                                 {t("view-all-rooms-in-periodic-rooms", {
-                                                    count: roomInfo.count,
+                                                    count: roomInfo.count || 0,
                                                 })}
                                             </div>
                                         )}

@@ -4,7 +4,7 @@ import autoSVG from "./icons/auto.svg";
 import "./style.less";
 
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { Radio, RadioChangeEvent } from "antd";
 import { FlatPrefersColorScheme } from "../../FlatThemeProvider";
 
@@ -17,7 +17,7 @@ export const AppearancePicker: React.FC<AppearancePickerProps> = ({
     defaultValue,
     changeAppearance,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <div className="appearance-picker-container">
             <Radio.Group defaultValue={defaultValue} onChange={changeAppearance}>

@@ -10,7 +10,7 @@ import { CloudStorageSkeletons, CloudStorageUploadPanel } from "../../components
 import { CloudStorageUploadListContainer } from "./CloudStorageUploadListContainer";
 import { CloudStorageFileListContainer } from "./CloudStorageFileListContainer";
 import classNames from "classnames";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { CloudStorageExternalFilePanel } from "./CloudStorageExternalFilePanel";
 
 export * from "./store";
@@ -54,7 +54,7 @@ const onDragOver = (event: React.DragEvent<HTMLDivElement>): void => {
 /** CloudStorage page with MobX Store */
 export const CloudStorageContainer = observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store }) {
-        const { t } = useTranslation();
+        const t = useTranslate();
         const cloudStorageContainerRef = useRef<HTMLDivElement>(null);
         const [skeletonsVisible, setSkeletonsVisible] = useState(false);
         const [isH5PanelVisible, setH5PanelVisible] = useState(false);

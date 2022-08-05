@@ -1,8 +1,8 @@
+import { FlatI18nTFunction } from "@netless/flat-i18n";
 import { Col, Form, InputNumber, Row } from "antd";
 import { FormInstance, RuleObject } from "antd/lib/form";
 import { endOfDay, getDay, isBefore, startOfDay } from "date-fns";
 import React from "react";
-import { TFunction } from "react-i18next";
 import { EditRoomFormValues } from ".";
 import { Week } from "../../../types/room";
 import { formatISODayWeekiii, getWeekNames, syncPeriodicEndAmount } from "../../../utils/room";
@@ -10,7 +10,7 @@ import { DatePicker } from "../FullTimePicker";
 import { PeriodicEndTypeSelector } from "../PeriodicEndTypeSelector";
 import { WeekRateSelector } from "../WeekRateSelector";
 
-export const renderPeriodicForm = (t: TFunction<string>, lang: string) =>
+export const renderPeriodicForm = (t: FlatI18nTFunction, lang: string) =>
     function renderPeriodicForm(form: FormInstance<EditRoomFormValues>) {
         const isPeriodic: EditRoomFormValues["isPeriodic"] = form.getFieldValue("isPeriodic");
         if (!isPeriodic) {

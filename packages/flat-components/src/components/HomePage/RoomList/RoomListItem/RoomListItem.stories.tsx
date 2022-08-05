@@ -1,7 +1,7 @@
 import { Meta, Story } from "@storybook/react";
 import faker from "faker";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { RoomListItem, RoomListItemAction, RoomListItemProps } from ".";
 
 const storyMeta: Meta = {
@@ -20,7 +20,7 @@ const storyMeta: Meta = {
 export default storyMeta;
 
 const Template: Story<RoomListItemProps<string>> = args => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const translateAction = <T extends RoomListItemAction<string>>(action: T): T => ({
         ...action,
         text: t(action.text),

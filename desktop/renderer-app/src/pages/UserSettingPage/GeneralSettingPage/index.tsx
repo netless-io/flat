@@ -3,7 +3,7 @@ import "./style.less";
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Checkbox, Input, message, Modal, Radio, RadioChangeEvent } from "antd";
 import { observer } from "mobx-react-lite";
-import { useTranslation } from "react-i18next";
+import { FlatI18n, useLanguage, useTranslate } from "@netless/flat-i18n";
 import { AppearancePicker, FlatPrefersColorScheme } from "flat-components";
 
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
@@ -32,7 +32,8 @@ enum SelectLanguage {
 export const GeneralSettingPage = observer(function GeneralSettingPage() {
     const sp = useSafePromise();
     const pushHistory = usePushHistory();
-    const { t, i18n } = useTranslation();
+    const t = useTranslate();
+    const language = useLanguage();
     const [openAtLogin, setOpenAtLogin] = useState(false);
     const configStore = useContext(ConfigStoreContext);
     const globalStore = useContext(GlobalStoreContext);
@@ -81,7 +82,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
 
     async function changeLanguage(event: RadioChangeEvent): Promise<void> {
         const language: SelectLanguage = event.target.value;
-        await i18n.changeLanguage(language === SelectLanguage.Chinese ? "zh-CN" : "en");
+        await FlatI18n.changeLanguage(language === SelectLanguage.Chinese ? "zh-CN" : "en");
     }
 
     const changeAppearance = (event: RadioChangeEvent): void => {
@@ -153,9 +154,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                     <span>{t("language-settings")}</span>
                     <Radio.Group
                         defaultValue={
-                            i18n.language === "zh-CN"
-                                ? SelectLanguage.Chinese
-                                : SelectLanguage.English
+                            language === "zh-CN" ? SelectLanguage.Chinese : SelectLanguage.English
                         }
                         onChange={changeLanguage}
                     >

@@ -2,7 +2,7 @@ import "./style.less";
 
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { format } from "date-fns";
 import { ChatMsg } from "../types";
 
@@ -22,7 +22,7 @@ export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
     onMount,
     openCloudStorage,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     useEffect(() => {
         onMount();
         // run only once

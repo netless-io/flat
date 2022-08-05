@@ -4,7 +4,7 @@ import smallClassSVG from "./icons/small-class.svg";
 
 import React from "react";
 import { Radio } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export type ClassPickerItemType = "OneToOne" | "BigClass" | "SmallClass";
 
@@ -20,7 +20,7 @@ const ClassPickerIcons: Record<ClassPickerItemType, string> = {
 };
 
 export const ClassPickerItem: React.FC<ClassPickerItemProps> = ({ value, large }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <Radio value={value}>

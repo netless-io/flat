@@ -5,7 +5,7 @@ import React, { useContext, useEffect } from "react";
 import { LoadingPage, RoomDetailPanel, errorTips } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { useHistory, useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { message } from "antd";
 import {
     GlobalStoreContext,
@@ -19,7 +19,7 @@ import { useLoginCheck } from "../utils/use-login-check";
 
 export const RoomDetailPage = observer(function RoomDetailPage() {
     useLoginCheck();
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     const { roomUUID, periodicUUID } = useParams<RouteParams<RouteNameType.RoomDetailPage>>();
     const pushHistory = usePushHistory();

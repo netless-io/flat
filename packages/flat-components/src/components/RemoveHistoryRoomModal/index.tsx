@@ -3,7 +3,7 @@ import "./style.less";
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Modal } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface RemoveHistoryRoomModalProps {
     visible: boolean;
@@ -14,7 +14,7 @@ export interface RemoveHistoryRoomModalProps {
 
 export const RemoveHistoryRoomModal = observer<RemoveHistoryRoomModalProps>(
     function RemoveHistoryRoomModal({ visible, onCancel, onConfirm, loading }) {
-        const { t } = useTranslation();
+        const t = useTranslate();
         return (
             <Modal
                 destroyOnClose

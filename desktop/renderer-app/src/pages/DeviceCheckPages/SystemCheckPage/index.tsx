@@ -6,7 +6,7 @@ import os from "os";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { DeviceCheckResults, DeviceCheckState } from "../utils";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { IServiceVideoChatNetworkQualityType } from "@netless/flat-services";
 import { withFlatServices } from "@netless/flat-pages/src/components/FlatServicesContext";
 
@@ -24,7 +24,7 @@ const networkDescription = [
 
 export const SystemCheckPage = withFlatServices("videoChat")(
     ({ videoChat: rtc }): React.ReactElement => {
-        const { t } = useTranslation();
+        const t = useTranslate();
         const [networkSituation, setNetworkSituation] =
             useState<IServiceVideoChatNetworkQualityType>(8);
         const resultRef = React.useRef<DeviceCheckState>();

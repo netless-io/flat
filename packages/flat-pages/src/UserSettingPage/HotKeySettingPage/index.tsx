@@ -3,7 +3,7 @@ import "./index.less";
 import { Table } from "antd";
 import React from "react";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 interface HotKeyTable {
     name: string;
@@ -18,7 +18,7 @@ interface HotKey {
 }
 
 export const HotKeySettingPage = (): React.ReactElement => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     const HotKeyTableTitleList = [
         {

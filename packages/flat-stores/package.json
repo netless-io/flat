@@ -23,10 +23,10 @@
     "white-web-sdk": "npm:white-web-sdk-esm@2.16.24"
   },
   "dependencies": {
+    "@netless/flat-i18n": "workspace:*",
     "@netless/flat-services": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
     "flat-components": "workspace:*",
-    "flat-i18n": "workspace:*",
     "side-effect-manager": "^1.1.1",
     "uuid": "^8.3.2"
   }

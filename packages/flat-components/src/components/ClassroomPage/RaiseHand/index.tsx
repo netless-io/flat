@@ -1,7 +1,7 @@
 import "./style.less";
 
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { SVGHandUp } from "../../FlatIcons";
 
 export interface RaiseHandProps {
@@ -15,7 +15,7 @@ export const RaiseHand: React.FC<RaiseHandProps> = ({
     disableHandRaising,
     onRaiseHandChange,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return disableHandRaising ? null : (
         <button className="raise-hand-btn" title={t("raise-your-hand")} onClick={onRaiseHandChange}>

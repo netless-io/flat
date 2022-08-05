@@ -4,7 +4,7 @@ import "./CloudStorageButton.less";
 import { Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { SVGCloudOutlined, TopBarRightBtn } from "flat-components";
 import { CloudStoragePanel } from "../pages/CloudStoragePage/CloudStoragePanel";
 import { ClassRoomStore } from "../stores/class-room-store";
@@ -16,7 +16,7 @@ interface CloudStorageButtonProps {
 export const CloudStorageButton = observer<CloudStorageButtonProps>(function CloudStorageButton({
     classroom,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const hideModal = useCallback(() => classroom.toggleCloudStoragePanel(false), [classroom]);
     const showModal = useCallback(() => classroom.toggleCloudStoragePanel(true), [classroom]);
 

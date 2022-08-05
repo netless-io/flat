@@ -6,7 +6,7 @@ import { formatTime } from "../../../utils/room";
 import { formatDistanceStrict } from "date-fns";
 import { zhCN, enUS } from "date-fns/locale";
 import { RoomInfo } from "../../../types/room";
-import { useTranslation } from "react-i18next";
+import { useLanguage, useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 
 export interface RoomDetailBodyProps {
@@ -22,17 +22,18 @@ export const RoomDetailHeader = observer<RoomDetailBodyProps>(function RoomDetai
     showRoomCountVisible,
     jumpToPeriodicRoomDetailPage,
 }) {
-    const { t, i18n } = useTranslation();
+    const t = useTranslate();
+    const language = useLanguage();
     const { beginTime, endTime } = roomInfo;
-    const lang = i18n.language;
+    const lang = language;
 
     const formattedBeginTime = useMemo(
-        () => (beginTime ? formatTime(beginTime, i18n.language) : null),
-        [beginTime, i18n.language],
+        () => (beginTime ? formatTime(beginTime, language) : null),
+        [beginTime, language],
     );
     const formattedEndTime = useMemo(
-        () => (endTime ? formatTime(endTime, i18n.language) : null),
-        [endTime, i18n.language],
+        () => (endTime ? formatTime(endTime, language) : null),
+        [endTime, language],
     );
 
     return (

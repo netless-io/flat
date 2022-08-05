@@ -3,7 +3,7 @@ import "./style.less";
 import placeholderSVG from "./icons/placeholder.svg";
 
 import React, { FC } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import classnames from "classnames";
 
 export interface VideoAvatarAbsentProps {
@@ -12,7 +12,7 @@ export interface VideoAvatarAbsentProps {
 }
 
 export const VideoAvatarAbsent: FC<VideoAvatarAbsentProps> = ({ small, isAvatarUserCreator }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <div className={classnames("video-avatar-absent", { "is-small": small })}>
             <img className="video-avatar-absent-img" draggable={false} src={placeholderSVG} />

@@ -1,7 +1,7 @@
 import "./index.less";
 
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface LoginTitleProps {
     title?: string;
@@ -9,7 +9,7 @@ export interface LoginTitleProps {
 }
 
 export const LoginTitle: React.FC<LoginTitleProps> = ({ title, subtitle }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <div className="login-title">

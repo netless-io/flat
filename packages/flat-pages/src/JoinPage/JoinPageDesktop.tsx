@@ -5,7 +5,7 @@ import joinSVG from "./icons/join.svg";
 
 import React, { useMemo } from "react";
 import { Avatar, Button } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { FLAT_DOWNLOAD_URL } from "../constants/process";
@@ -27,7 +27,7 @@ export default function JoinPageDesktop({
     serviceURL,
     joinRoom,
 }: JoinPageDesktopProps): React.ReactElement {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const pushHistory = usePushHistory();
 
     const url = useMemo(() => `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`, [roomUUID]);

@@ -6,7 +6,7 @@ import { Button, Input, Modal, Checkbox, Form, InputRef } from "antd";
 import { validate, version } from "uuid";
 import { ConfigStoreContext } from "../../../components/StoreProvider";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { HomePageHeroButton } from "flat-components";
 
 interface JoinRoomFormValues {
@@ -23,7 +23,7 @@ const uuidRE =
     /(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)/i;
 
 export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJoinRoom }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const sp = useSafePromise();
     const configStore = useContext(ConfigStoreContext);
     const [form] = Form.useForm<JoinRoomFormValues>();

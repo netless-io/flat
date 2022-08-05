@@ -16,7 +16,7 @@ import {
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { IServiceVideoChatRole } from "@netless/flat-services";
 import { RoomStatus } from "@netless/flat-server-api";
 import { ChatPanel } from "../components/ChatPanel";
@@ -44,7 +44,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
     observer<WithClassroomStoreProps<BigClassPageProps>>(function BigClassPage({ classroomStore }) {
         useLoginCheck();
 
-        const { t } = useTranslation();
+        const t = useTranslate();
 
         const whiteboardStore = classroomStore.whiteboardStore;
 

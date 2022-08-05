@@ -3,7 +3,7 @@ import "./style.less";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import classNames from "classnames";
 import { Button } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface LoadingPageProps {
     text?: string;
@@ -21,7 +21,7 @@ export const LoadingPage: FC<LoadingPageProps> = ({
     onTimeoutText,
 }) => {
     const [isShowReturnHomePage, showReturnHomePage] = useState(false);
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     useEffect(() => {
         const ticket = window.setTimeout(() => showReturnHomePage(true), timeMS);
