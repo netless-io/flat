@@ -85,6 +85,19 @@ export function useExitRoomConfirmModal({
         [onReturnMain, roomStatus],
     );
 
+    // TODO:
+    /**
+      useEffect(() => {
+        ipcReceive("window-will-close", () => {
+            confirm(ExitRoomConfirmType.ExitButton);
+           })
+
+        return () => {
+            ipcReceiveRemove("window-will-close");
+        }
+        })
+    */
+
     return {
         confirmType,
         visible,

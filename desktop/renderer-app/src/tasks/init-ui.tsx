@@ -14,6 +14,7 @@ import { useUpdate } from "react-use";
 import { i18n } from "../utils/i18n";
 import { AppRoutes } from "../AppRoutes";
 import { StoreProvider } from "@netless/flat-pages/src/components/StoreProvider";
+import { FlatServicesContextProvider } from "@netless/flat-pages/src/components/FlatServicesContext";
 
 /** configure right after import */
 import { configure } from "mobx";
@@ -55,7 +56,9 @@ const App: React.FC = () => {
             >
                 <StoreProvider>
                     <IPCContext.Provider value={ipcStore}>
-                        <AppRoutes />
+                        <FlatServicesContextProvider>
+                            <AppRoutes />
+                        </FlatServicesContextProvider>
                     </IPCContext.Provider>
                 </StoreProvider>
             </ConfigProvider>

@@ -69,8 +69,8 @@ const windowActionAsync = (customWindow: CustomWindow): ipc.WindowActionAsync =>
             //
             // window.setFullScreenable(isReset);
         },
-        "disable-window": args => {
-            options.disableClose = args.disable;
+        "intercept-native-window-close": args => {
+            options.interceptClose = args.intercept;
         },
         "set-title": args => {
             window.setTitle(args.title);
