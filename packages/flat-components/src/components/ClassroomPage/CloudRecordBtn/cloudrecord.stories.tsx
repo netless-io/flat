@@ -16,6 +16,7 @@ export const Overview: Story<CloudRecordBtnProps> = () => {
             isRecording={isRecording}
             onClick={() => {
                 updateRecording(!isRecording);
+                return Promise.resolve();
             }}
         />
     );

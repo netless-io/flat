@@ -237,13 +237,13 @@ export const BigClassPage = observer<BigClassPageProps>(function BigClassPage() 
                 {classRoomStore.isCreator && (
                     <CloudRecordBtn
                         isRecording={classRoomStore.isRecording}
-                        onClick={() => {
-                            void classRoomStore.toggleRecording({
+                        onClick={() =>
+                            classRoomStore.toggleRecording({
                                 onStop() {
                                     void message.success(t("recording-completed-tips"));
                                 },
-                            });
-                        }}
+                            })
+                        }
                     />
                 )}
                 {/* TODO: open cloud-storage sub window */}
