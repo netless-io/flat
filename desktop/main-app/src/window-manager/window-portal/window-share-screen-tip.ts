@@ -16,7 +16,7 @@ export class WindowShareScreenTip extends AbstractWindow<false> {
                 name: constants.WindowsName.ShareScreenTip,
                 isOpenDevTools: false,
                 isPortal: true,
-                disableClose: true,
+                interceptClose: true,
             },
             {
                 x: getXCenterPoint(display, constants.PageSize.ShareScreenTip.width),

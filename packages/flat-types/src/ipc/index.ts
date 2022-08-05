@@ -17,7 +17,7 @@ export type WindowActionAsync = {
         maximizable?: boolean;
     }) => void;
     "set-aspect-ratio": (args: { aspectRatio: number }) => void;
-    "disable-window": (args: { disable: boolean }) => void;
+    "intercept-native-window-close": (args: { intercept: boolean }) => void;
     "set-title": (args: { title: string }) => void;
     "force-close-window": (args: {}) => void;
     "set-visual-zoom-level": (args: { minimumLevel: number; maximumLevel: number }) => void;

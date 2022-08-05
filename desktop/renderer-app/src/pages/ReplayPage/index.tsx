@@ -61,8 +61,8 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
     const lastMouseRef = useRef({ lastMouseX: -100, lastMouseY: -100 });
 
     useEffect(() => {
-        ipcAsyncByMainWindow("disable-window", {
-            disable: true,
+        ipcAsyncByMainWindow("intercept-native-window-close", {
+            intercept: true,
         });
         ipcReceive("window-will-close", () => {
             setShowExitReplayModal(true);
@@ -71,8 +71,8 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         return () => {
             window.clearTimeout(hideControllerTimeoutRef.current);
 
-            ipcAsyncByMainWindow("disable-window", {
-                disable: false,
+            ipcAsyncByMainWindow("intercept-native-window-close", {
+                intercept: false,
             });
 
             ipcReceiveRemove("window-will-close");
