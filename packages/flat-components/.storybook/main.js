@@ -62,12 +62,6 @@ module.exports = {
             ],
         });
 
-        config.resolve.alias = {
-            ...config.resolve.alias,
-            "flat-types": path.resolve(__dirname, "..", "..", "flat-types", "src"),
-            "flat-i18n": path.resolve(__dirname, "..", "..", "flat-i18n"),
-        };
-
         return config;
     },
 };
