@@ -3,7 +3,7 @@ import "./style.less";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { Progress } from "antd";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface CloudStorageUploadTitleProps {
     finishWithError?: boolean;
@@ -13,7 +13,7 @@ export interface CloudStorageUploadTitleProps {
 
 export const CloudStorageUploadTitle = React.memo<CloudStorageUploadTitleProps>(
     function CloudStorageUploadTitle({ finishWithError, finished, total }) {
-        const { t } = useTranslation();
+        const t = useTranslate();
         const percent = finished && total ? (finished / total) * 100 : 0;
         const isFinish = percent >= 100;
 

@@ -1,7 +1,7 @@
 import "./style.less";
 
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import { LoginPanel, LoginButtonProviderType, LoginWithPhone, errorTips } from "flat-components";
 import { LoginDisposer } from "./utils";
@@ -25,7 +25,7 @@ import {
 } from "@netless/flat-server-api";
 
 export const LoginPage = observer(function LoginPage() {
-    const { i18n } = useTranslation();
+    const language = useLanguage();
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const loginDisposer = useRef<LoginDisposer>();
@@ -133,8 +133,8 @@ export const LoginPage = observer(function LoginPage() {
         });
     }, [globalStore, setLoginResult, sp, urlParams.token]);
 
-    const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
-    const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
+    const privacyURL = language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
+    const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
 
     // @TODO: Login with email.
     return (

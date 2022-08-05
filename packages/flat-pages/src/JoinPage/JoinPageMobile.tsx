@@ -2,7 +2,7 @@ import logoSVG from "./icons/logo-sm.svg";
 import openInBrowserSVG from "./icons/open-in-browser.svg";
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { FLAT_DOWNLOAD_URL } from "../constants/process";
 
 export interface JoinPageMobileProps {
@@ -18,7 +18,7 @@ export default function JoinPageMobile({
     privacyURL,
     serviceURL,
 }: JoinPageMobileProps): React.ReactElement {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     const url = useMemo(() => `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`, [roomUUID]);
 

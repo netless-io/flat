@@ -14,14 +14,14 @@ import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { runtime } from "../../../utils/runtime";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckResults } from "../utils";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import path from "path";
 import { useSafePromise } from "flat-components";
 import { withFlatServices } from "@netless/flat-pages/src/components/FlatServicesContext";
 
 export const SpeakerCheckPage = withFlatServices("videoChat")(
     ({ videoChat: rtc }): React.ReactElement => {
-        const { t } = useTranslation();
+        const t = useTranslate();
         const [devices, setDevices] = useState<Device[]>([]);
         const [currentDeviceID, setCurrentDeviceID] = useState<string | null>(null);
         const [currentVolume, setCurrentVolume] = useState(() => rtc.getSpeakerVolume());

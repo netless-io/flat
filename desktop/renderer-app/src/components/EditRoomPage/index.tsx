@@ -5,12 +5,12 @@ import { observer } from "mobx-react-lite";
 import { EditRoomBody, EditRoomBodyProps, MainPageHeader } from "flat-components";
 import { MainPageLayoutContainer } from "../MainPageLayoutContainer";
 import { useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export type EditRoomPageProps = EditRoomBodyProps;
 
 export const EditRoomPage = observer<EditRoomPageProps>(function EditRoomPage(props) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const history = useHistory();
 
     return (

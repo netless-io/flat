@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import { LastLocationProvider } from "react-router-last-location";
 import { MainPageLayoutWrapper } from "../components/MainPageLayoutWrapper";
@@ -8,7 +8,7 @@ import { RouteConfig, routeConfig } from "../route-config";
 import { AppRouteContainer } from "./AppRouteContainer";
 
 export const AppRoutes = observer(function AppRoutes() {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <HashRouter>

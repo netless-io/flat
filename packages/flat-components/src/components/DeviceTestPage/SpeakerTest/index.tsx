@@ -6,7 +6,7 @@ import { Button } from "antd";
 import React, { useRef, useState } from "react";
 import { Device } from "../constants";
 import { DeviceTestSelect } from "../DeviceTestSelect";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import audioLocalResourceMP3 from "./assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
 
 export interface SpeakerTestProps {
@@ -26,7 +26,7 @@ export const SpeakerTest: React.FC<SpeakerTestProps> = ({
     audioResourceSrc,
     setSpeakerDevice,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
 

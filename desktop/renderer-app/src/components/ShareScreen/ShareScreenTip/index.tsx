@@ -4,7 +4,7 @@ import dragSVG from "../../../assets/image/drag.svg";
 import React, { useCallback, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { observer } from "mobx-react-lite";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { Button } from "antd";
 
 import { ClassRoomStore } from "../../../stores/class-room-store";
@@ -20,7 +20,7 @@ export const ShareScreenTip = observer<ShareScreenTipProps>(function ShareScreen
     classRoomStore,
 }) {
     const sp = useSafePromise();
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [containerEl] = useState(() => document.createElement("div"));
 
     useEffect(() => {

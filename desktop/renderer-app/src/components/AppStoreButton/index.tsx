@@ -12,7 +12,7 @@ import { Modal } from "antd";
 import { AddAppParams } from "@netless/window-manager";
 import { TopBarRightBtn, useSafePromise } from "flat-components";
 import { AppButton } from "./AppButton";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface AppStoreButtonProps {
     addApp: (config: AddAppParams) => Promise<void>;
@@ -58,7 +58,7 @@ export const appIcons = {
 export const AppStoreButton = observer<AppStoreButtonProps>(function AppStoreButton({ addApp }) {
     const [appStoreIsVisible, setAppStoreIsVisible] = useState(false);
     const sp = useSafePromise();
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <>

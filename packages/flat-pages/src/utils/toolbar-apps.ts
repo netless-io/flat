@@ -4,13 +4,12 @@ import countdownSVG from "../assets/image/tool-countdown.svg";
 import saveSVG from "../assets/image/tool-save.svg";
 import presetsSVG from "../assets/image/tool-presets.svg";
 
-import { TFunction } from "react-i18next";
 import { apps, FastboardApp } from "@netless/fastboard-react";
 import { noop } from "lodash-es";
-import { i18n } from "./i18n";
+import { FlatI18n, FlatI18nTFunction } from "@netless/flat-i18n";
 
 export interface RefreshAppsParams {
-    t: TFunction;
+    t: FlatI18nTFunction;
     onSaveAnnotation?: (app: FastboardApp) => void;
     onPresets?: (app: FastboardApp) => void;
 }
@@ -51,4 +50,4 @@ export const refreshApps = ({ t, onSaveAnnotation, onPresets }: RefreshAppsParam
     );
 };
 
-refreshApps({ t: i18n.t });
+refreshApps({ t: FlatI18n.t });

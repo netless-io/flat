@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import { InviteModal as InviteModalImpl } from "flat-components";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { RoomItem } from "../../stores/room-store";
 import { GlobalStoreContext, RoomStoreContext } from "../StoreProvider";
 import { clipboard } from "electron";
@@ -23,7 +23,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
     onCopied,
     onCancel,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const globalStore = useContext(GlobalStoreContext);
     const roomStore = useContext(RoomStoreContext);
 

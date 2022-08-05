@@ -1,7 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Modal } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 interface ExitReplayConfirmModalProps {
     visible: boolean;
@@ -11,7 +11,7 @@ interface ExitReplayConfirmModalProps {
 
 export const ExitReplayConfirmModal = observer<ExitReplayConfirmModalProps>(
     function ExitReplayConfirmModal({ visible, onCancel, onConfirm }) {
-        const { t } = useTranslation();
+        const t = useTranslate();
         return (
             <Modal
                 footer={[

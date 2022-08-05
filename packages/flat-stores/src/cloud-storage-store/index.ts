@@ -10,7 +10,7 @@ import {
     UploadID,
     errorTips,
 } from "flat-components";
-import { i18n } from "i18next";
+import { FlatI18n } from "@netless/flat-i18n";
 import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
 import { getFileExt, isPPTX } from "../utils/file";
 import { ConvertingTaskStatus, queryConvertingTaskStatus } from "../utils/courseware-converting";
@@ -61,24 +61,19 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     // a set of taskUUIDs representing querying tasks
     private convertStatusManager = new ConvertStatusManager();
 
-    private i18n: i18n;
-
     private scheduler: Scheduler;
 
     public constructor({
         compact,
         insertCourseware,
-        i18n,
     }: {
         compact: boolean;
         insertCourseware: (file: CloudStorageFile) => void;
-        i18n: i18n;
     }) {
         super();
 
         this.insertCourseware = insertCourseware;
         this.compact = compact;
-        this.i18n = i18n;
         this.scheduler = new Scheduler(this.refreshFiles, 10 * 1000);
 
         makeObservable(this, {
@@ -126,16 +121,16 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     /** Render file menus item base on fileUUID */
     public fileMenus = (file: CloudStorageFileUI): FileMenusItem[] => {
         const menus: FileMenusItem[] = [
-            { key: "open", name: this.i18n.t("open") },
-            { key: "download", name: this.i18n.t("download") },
+            { key: "open", name: FlatI18n.t("open") },
+            { key: "download", name: FlatI18n.t("download") },
         ];
         if (file.convert !== "error") {
-            menus.push({ key: "rename", name: this.i18n.t("rename") });
+            menus.push({ key: "rename", name: FlatI18n.t("rename") });
         }
         menus.push({
             key: "delete",
             className: "danger",
-            name: this.i18n.t("delete"),
+            name: FlatI18n.t("delete"),
         });
         return menus;
     };
@@ -157,7 +152,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             }
             case "delete": {
                 Modal.confirm({
-                    content: this.i18n.t("delete-courseware-tips"),
+                    content: FlatI18n.t("delete-courseware-tips"),
                     onOk: () => this.removeFiles([fileUUID]),
                 });
                 break;
@@ -175,7 +170,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             try {
                 if (this.compact) {
                     if (file.convert === "error") {
-                        Modal.info({ content: this.i18n.t("the-courseware-cannot-be-transcoded") });
+                        Modal.info({ content: FlatI18n.t("the-courseware-cannot-be-transcoded") });
                     } else {
                         this.insertCourseware(file);
                     }
@@ -192,7 +187,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     public onBatchDelete = (): void => {
         if (this.selectedFileUUIDs.length > 0) {
             Modal.confirm({
-                content: this.i18n.t("delete-select-courseware-tips"),
+                content: FlatI18n.t("delete-select-courseware-tips"),
                 onOk: async () => {
                     if (this.selectedFileUUIDs.length > 0) {
                         await this.removeFiles(this.selectedFileUUIDs);
@@ -222,9 +217,9 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             this.uploadTaskManager.uploading.length > 0
         ) {
             Modal.confirm({
-                title: this.i18n.t("cancel-upload"),
-                content: this.i18n.t("cancel-upload-tips"),
-                cancelText: this.i18n.t("think-again"),
+                title: FlatI18n.t("cancel-upload"),
+                content: FlatI18n.t("cancel-upload-tips"),
+                cancelText: FlatI18n.t("think-again"),
                 onOk: () => this.cancelAll(),
             });
         } else {
@@ -459,11 +454,11 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
         switch (file.convert) {
             case "converting": {
-                Modal.info({ content: this.i18n.t("please-wait-while-the-lesson-is-transcoded") });
+                Modal.info({ content: FlatI18n.t("please-wait-while-the-lesson-is-transcoded") });
                 return;
             }
             case "error": {
-                Modal.info({ content: this.i18n.t("the-courseware-cannot-be-transcoded") });
+                Modal.info({ content: FlatI18n.t("the-courseware-cannot-be-transcoded") });
                 return;
             }
             default: {

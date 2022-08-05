@@ -5,7 +5,7 @@ import emptyHistoryDarkSVG from "../icons/empty-history-dark.svg";
 import emptyRoomDarkSVG from "../icons/empty-room-dark.svg";
 
 import React, { useContext } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { DarkModeContext } from "../../../FlatThemeProvider";
 
 export interface RoomListEmptyProps {
@@ -13,7 +13,7 @@ export interface RoomListEmptyProps {
 }
 
 export const RoomListEmpty: React.FC<RoomListEmptyProps> = ({ isHistory }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const darkMode = useContext(DarkModeContext);
     return (
         <div className="room-list-empty">

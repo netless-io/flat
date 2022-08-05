@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import { observer } from "mobx-react-lite";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import {
     NetworkStatus,
     RoomInfo,
@@ -47,7 +47,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
         classroomStore,
     }) {
         useLoginCheck();
-        const { t } = useTranslation();
+        const t = useTranslate();
 
         const whiteboardStore = classroomStore.whiteboardStore;
 

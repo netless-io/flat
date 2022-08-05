@@ -3,7 +3,7 @@ import "./style.less";
 import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useLanguage } from "@netless/flat-i18n";
 import { useWindowSize } from "react-use";
 
 import { RouteNameType, RouteParams, usePushHistory } from "../utils/routes";
@@ -16,7 +16,7 @@ import JoinPageMobile from "./JoinPageMobile";
 import { NEED_BINDING_PHONE } from "../constants/config";
 
 export const JoinPage = observer(function JoinPage() {
-    const { i18n } = useTranslation();
+    const language = useLanguage();
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
     const pageStore = useContext(PageStoreContext);
@@ -63,8 +63,8 @@ export const JoinPage = observer(function JoinPage() {
 
     const isMobile = width <= 480;
 
-    const privacyURL = i18n.language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
-    const serviceURL = i18n.language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
+    const privacyURL = language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
+    const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
 
     return (
         <div>

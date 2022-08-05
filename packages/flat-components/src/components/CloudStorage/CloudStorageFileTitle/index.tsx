@@ -15,7 +15,7 @@ import React, { useMemo } from "react";
 import classNames from "classnames";
 import { CloudStorageConvertStatusType, CloudStorageFileName } from "../types";
 import { CloudStorageFileTitleRename } from "./CloudStorageFileTitleRename";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface CloudStorageFileTitleProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
@@ -49,7 +49,7 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
         onRename,
         ...restProps
     }) {
-        const { t } = useTranslation();
+        const t = useTranslate();
         const isConverting = convertStatus === "converting";
         const isConvertError = !isConverting && convertStatus === "error";
         const fileIcon = useMemo(() => getFileIcon(fileName), [fileName]);

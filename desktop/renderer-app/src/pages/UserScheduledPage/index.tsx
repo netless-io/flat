@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { EditRoomFormValues } from "flat-components";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 const getInitialBeginTime = (): Date => {
     const now = new Date();
@@ -27,7 +27,7 @@ const getInitialBeginTime = (): Date => {
 };
 
 export const UserScheduledPage = observer(function UserScheduledPage() {
-    const { t } = useTranslation();
+    const t = useTranslate();
     useWindowSize("Main");
 
     const history = useHistory();

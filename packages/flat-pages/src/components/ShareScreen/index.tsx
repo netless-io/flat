@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { message } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { ClassroomStore } from "@netless/flat-stores";
 
 interface ShareScreenProps {
@@ -13,7 +13,7 @@ interface ShareScreenProps {
 
 export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ classRoomStore }) {
     const ref = useRef<HTMLDivElement>(null);
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     useEffect(() => {
         if (ref.current) {

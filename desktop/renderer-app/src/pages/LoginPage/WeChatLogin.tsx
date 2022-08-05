@@ -1,7 +1,7 @@
 import "./WeChatLogin.less";
 
 import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import { LoadingOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
@@ -21,7 +21,7 @@ export const WeChatLogin = observer(function WeChatLogin({ setLoginResult }: WeC
     const [qrCodeURL, setQRCodeURL] = useState("");
     const sp = useSafePromise();
 
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     useEffect(() => {
         const authUUID = uuidv4();

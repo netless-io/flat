@@ -4,7 +4,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { ChatTypeBox, ChatTypeBoxProps } from "../ChatTypeBox";
 import { ChatMessageList, ChatMessageListProps } from "../ChatMessageList";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export type ChatMessagesProps = ChatTypeBoxProps & ChatMessageListProps;
 
@@ -12,7 +12,7 @@ export const ChatMessages = observer<ChatMessagesProps>(function ChatMessages({
     messages,
     ...restProps
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <div className="chat-messages-wrap">
             <div className="chat-messages">

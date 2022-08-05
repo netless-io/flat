@@ -3,7 +3,7 @@ import "./style.less";
 import React, { FC } from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Tooltip } from "antd";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface RecordHintTipsProps {
     visible: boolean;
@@ -11,7 +11,7 @@ export interface RecordHintTipsProps {
 }
 
 export const RecordHintTips: FC<RecordHintTipsProps> = ({ visible, onClose, children }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <Tooltip

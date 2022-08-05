@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import { RoomInfo, RoomStatus, Week } from "../../../types/room";
 import { InviteModal } from "../../InviteModal";
 import { RemoveRoomModal } from "../../RemoveRoomModal";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface RoomDetailFooterProps {
     room: RoomInfo;
@@ -36,7 +36,7 @@ export const RoomDetailFooter = observer<RoomDetailFooterProps>(function RoomDet
     onCancelRoom,
     onCopyInvitation,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [cancelModalVisible, setCancelModalVisible] = useState(false);
     const [isShowInviteModal, setIsShowInviteModal] = useState(false);
     const hideInviteModal = (): void => setIsShowInviteModal(false);

@@ -7,7 +7,7 @@ import { observer } from "mobx-react-lite";
 import { Button, Checkbox, Input, message, Modal, Radio } from "antd";
 import { FlatPrefersColorScheme, AppearancePicker, errorTips } from "flat-components";
 import { UserSettingLayoutContainer } from "../UserSettingLayoutContainer";
-import { useTranslation } from "react-i18next";
+import { FlatI18n, useLanguage, useTranslate } from "@netless/flat-i18n";
 
 import { PreferencesStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
@@ -30,7 +30,8 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
 
     const sp = useSafePromise();
     const pushHistory = usePushHistory();
-    const { t, i18n } = useTranslation();
+    const t = useTranslate();
+    const language = useLanguage();
 
     const [name, setName] = useState(globalStore.userName || "");
     const [isRenaming, setRenaming] = useState(false);
@@ -59,7 +60,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
 
     function changeLanguage(event: CheckboxChangeEvent): void {
         const language: SelectLanguage = event.target.value;
-        void i18n.changeLanguage(language === SelectLanguage.Chinese ? "zh-CN" : "en");
+        void FlatI18n.changeLanguage(language === SelectLanguage.Chinese ? "zh-CN" : "en");
     }
 
     const changeAppearance = (event: CheckboxChangeEvent): void => {
@@ -124,9 +125,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                     <span>{t("language-settings")}</span>
                     <Radio.Group
                         defaultValue={
-                            i18n.language === "zh-CN"
-                                ? SelectLanguage.Chinese
-                                : SelectLanguage.English
+                            language === "zh-CN" ? SelectLanguage.Chinese : SelectLanguage.English
                         }
                         onChange={changeLanguage}
                     >

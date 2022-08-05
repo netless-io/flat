@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { v4 } from "uuid";
 import React, { useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { message, Modal } from "antd";
 import { WechatFilled } from "@ant-design/icons";
 
@@ -25,7 +25,7 @@ export interface BindingWeChatProps {
 
 export const BindWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh, globalStore }) => {
     const sp = useSafePromise();
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [authUUID, setAuthUUID] = useState("");
     const [qrCodeURL, setQRCodeURL] = useState("");
 

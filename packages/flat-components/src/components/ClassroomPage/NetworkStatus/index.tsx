@@ -6,7 +6,7 @@ import signal3SVG from "./icons/signal-3.svg";
 
 import React, { useMemo } from "react";
 import { observer } from "mobx-react-lite";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 interface NetworkQuality {
     delay: number;
@@ -38,7 +38,7 @@ export interface NetworkStatusProps {
 export const NetworkStatus = observer<NetworkStatusProps>(function NetworkStatus({
     networkQuality,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const { uplink, downlink } = networkQuality;
 
     const signalIcon = useMemo(() => getSignalIcon(uplink, downlink), [uplink, downlink]);

@@ -22,7 +22,7 @@ import {
     WindowsSystemBtnItem,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
 import { generateAvatar } from "../../utils/generate-avatar";
@@ -48,7 +48,7 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
         onRouteChange,
         onBackPreviousPage,
     }) {
-        const { t } = useTranslation();
+        const t = useTranslate();
         const sideMenu = [
             {
                 key: routeConfig[RouteNameType.HomePage].path,
