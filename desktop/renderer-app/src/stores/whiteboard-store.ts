@@ -10,6 +10,7 @@ import { makeAutoObservable, observable, runInAction } from "mobx";
 import { isMobile, isWindows } from "react-device-detect";
 import {
     AnimationMode,
+    ApplianceNames,
     DeviceType,
     Room,
     RoomPhase,
@@ -555,6 +556,8 @@ export class WhiteboardStore {
         //     width: width,
         //     height: height,
         // });
+
+        windowManager.mainView.setMemberState({ currentApplianceName: ApplianceNames.selector });
     };
 
     public insertMediaFile = async (file: CloudStorageFile): Promise<void> => {
