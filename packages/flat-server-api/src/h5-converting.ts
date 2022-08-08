@@ -1,4 +1,3 @@
-import Axios from "axios";
 import { ServerRequestError } from "./error";
 
 export type H5ConvertingStatusType = "Converting" | "Finished" | "Failed";
@@ -19,9 +18,9 @@ export type H5ConvertingStatusResult =
 
 export async function queryH5ConvertingStatus(fileURL: string): Promise<H5ConvertingStatusResult> {
     try {
-        const response = await Axios.head(fileURL.replace(/[^/]+$/, "") + "result");
-        if (response.headers["x-oss-meta-success"] !== "true") {
-            const errorCode = Number(response.headers["x-oss-meta-error-code"]);
+        const response = await fetch(fileURL.replace(/[^/]+$/, "") + "result", { method: "HEAD" });
+        if (response.headers.get("x-oss-meta-success") !== "true") {
+            const errorCode = Number(response.headers.get("x-oss-meta-error-code"));
             if (errorCode > 0) {
                 return {
                     status: "Failed",
