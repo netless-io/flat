@@ -20,7 +20,12 @@ export class IPCStore {
     public configure = (routePathName: string, lastLocation?: string): void => {
         switch (IPCStore.routeMatchPath(routePathName)) {
             case routeConfig[RouteNameType.HomePage].path: {
-                this.checkUpdateByFlat();
+                const checkUpdateVisible =
+                    differenceInHours(new Date().getTime(), this.checkNewVersionDate) >= 1;
+                if (checkUpdateVisible) {
+                    this.checkUpdateByFlat();
+                    this.updateCheckNewVersionDate();
+                }
                 this.ipcAsyncByMainWindow("set-win-size", {
                     ...constants.PageSize.Main,
                     autoCenter: IPCStore.shouldWindowCenter(lastLocation),
@@ -51,6 +56,14 @@ export class IPCStore {
                     setMinimumSize: true,
                     maximizable: true,
                 });
+
+                this.ipcAsyncByMainWindow("intercept-native-window-close", {
+                    intercept: true,
+                });
+
+                this.ipcAsyncByMainWindow("set-aspect-ratio", {
+                    aspectRatio: 16 / 9,
+                });
                 break;
             }
             case routeConfig[RouteNameType.ReplayPage].path: {
@@ -68,6 +81,7 @@ export class IPCStore {
                 break;
             }
             case routeConfig[RouteNameType.LoginPage].path: {
+                this.checkUpdateByFlat();
                 this.ipcAsyncByMainWindow("set-win-size", {
                     ...constants.PageSize.Login,
                     autoCenter: true,
@@ -81,6 +95,24 @@ export class IPCStore {
                 });
                 break;
             }
+            default: {
+                break;
+            }
+        }
+    };
+
+    public removeIPCEvent = (routePathName: string): void => {
+        switch (IPCStore.routeMatchPath(routePathName)) {
+            case routeConfig[RouteNameType.BigClassPage].path:
+            case routeConfig[RouteNameType.SmallClassPage].path:
+            case routeConfig[RouteNameType.OneToOnePage].path:
+            case routeConfig[RouteNameType.ReplayPage].path: {
+                this.ipcAsyncByMainWindow("intercept-native-window-close", {
+                    intercept: false,
+                });
+                break;
+            }
+
             default: {
                 break;
             }
@@ -130,26 +162,21 @@ export class IPCStore {
     };
 
     public checkUpdateByFlat = (): void => {
-        const checkUpdateVisible =
-            differenceInHours(new Date().getTime(), this.checkNewVersionDate) >= 1;
-        if (checkUpdateVisible) {
-            this.ipcSyncByApp("get-update-info")
-                .then(data => {
-                    console.log("[Auto Updater]: Get Update Info");
-                    if (data.hasNewVersion) {
-                        console.log(
-                            `[Auto Updater]: Remote Version "${data.version}", Local Version "${runtime.appVersion}"`,
-                        );
-                        if (data.version !== runtime.appVersion) {
-                            this.setUpdateInfo(data);
-                        }
+        this.ipcSyncByApp("get-update-info")
+            .then(data => {
+                console.log("[Auto Updater]: Get Update Info");
+                if (data.hasNewVersion) {
+                    console.log(
+                        `[Auto Updater]: Remote Version "${data.version}", Local Version "${runtime.appVersion}"`,
+                    );
+                    if (data.version !== runtime.appVersion) {
+                        this.setUpdateInfo(data);
                     }
-                })
-                .catch(err => {
-                    console.error("ipc failed", err);
-                });
-            this.updateCheckNewVersionDate();
-        }
+                }
+            })
+            .catch(err => {
+                console.error("ipc failed", err);
+            });
     };
 
     public ipcAsyncByMainWindow = <

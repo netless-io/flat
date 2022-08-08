@@ -87,16 +87,16 @@ export function useExitRoomConfirmModal({
     );
 
     useEffect(() => {
-        ipcAsyncByMainWindow("disable-window", {
-            disable: true,
+        ipcAsyncByMainWindow("intercept-native-window-close", {
+            intercept: true,
         });
         ipcReceive("window-will-close", () => {
             confirm(ExitRoomConfirmType.ExitButton);
         });
 
         return () => {
-            ipcAsyncByMainWindow("disable-window", {
-                disable: false,
+            ipcAsyncByMainWindow("intercept-native-window-close", {
+                intercept: false,
             });
 
             ipcReceiveRemove("window-will-close");

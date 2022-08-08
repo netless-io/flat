@@ -4,11 +4,11 @@ import { RouteComponentProps, useLocation } from "react-router-dom";
 import { ipcAsyncByMainWindow } from "../utils/ipc";
 import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
 // import { useURLAppLauncher } from "../utils/hooks/use-url-app-launcher";
-import { ConfigStoreContext } from "../components/StoreProvider";
 import { FlatThemeBodyProvider } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { IPCContext } from "../components/IPCContext";
 import { useLastLocation } from "react-router-last-location";
+import { PreferencesStoreContext } from "@netless/flat-pages/src/components/StoreProvider";
 
 export interface AppRouteContainerProps {
     Comp: React.ComponentType<any>;
@@ -21,7 +21,7 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
     title,
     routeProps,
 }) {
-    const configStore = useContext(ConfigStoreContext);
+    const preferencesStore = useContext(PreferencesStoreContext);
     const ipcStore = useContext(IPCContext);
 
     const location = useLocation();
@@ -31,6 +31,10 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
 
     useEffect(() => {
         ipcStore.configure(location.pathname, lastLocation?.pathname);
+
+        return () => {
+            ipcStore.removeIPCEvent(location.pathname);
+        };
     }, [ipcStore, lastLocation?.pathname, location.pathname]);
 
     useIsomorphicLayoutEffect(() => {
@@ -46,7 +50,7 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
     }, []);
 
     return (
-        <FlatThemeBodyProvider prefersColorScheme={configStore.prefersColorScheme}>
+        <FlatThemeBodyProvider prefersColorScheme={preferencesStore.prefersColorScheme}>
             <AppRouteErrorBoundary Comp={Comp} {...{ title, routeProps }} />
         </FlatThemeBodyProvider>
     );
