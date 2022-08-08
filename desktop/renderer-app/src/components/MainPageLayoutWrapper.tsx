@@ -24,7 +24,22 @@ export const MainPageLayoutWrapper = observer(function MainPageLayoutWrap({ chil
         });
     }, [location.pathname]);
 
-    return (
+    const isClassPage = useMemo((): boolean => {
+        return [
+            routeConfig.BigClassPage,
+            routeConfig.SmallClassPage,
+            routeConfig.OneToOnePage,
+        ].some(({ path }) => {
+            return !!matchPath(location.pathname, {
+                path,
+                sensitive: true,
+            });
+        });
+    }, [location.pathname]);
+
+    return isClassPage ? (
+        <>{children}</>
+    ) : (
         <MainPageLayoutContainer
             MainPageHeaderTitle={pageStore.title}
             activeKeys={pageStore.activeKeys}
