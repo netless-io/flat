@@ -80,7 +80,7 @@ export function listRooms(
     type: ListRoomsType,
     payload: ListRoomsPayload,
 ): Promise<ListRoomsResult> {
-    return post<undefined, ListRoomsResult>(`room/list/${type}`, undefined, payload);
+    return post<undefined, ListRoomsResult>(`room/list/${type}?page=${payload.page}`);
 }
 
 export interface JoinRoomPayload {

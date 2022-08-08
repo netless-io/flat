@@ -8,11 +8,7 @@
   "scripts": {
     "build": "tsc"
   },
-  "peerDependencies": {
-    "axios": "0.x"
-  },
   "devDependencies": {
-    "axios": "^0.26.1",
     "prettier": "^2.3.0",
     "typescript": "^4.6.2"
   }

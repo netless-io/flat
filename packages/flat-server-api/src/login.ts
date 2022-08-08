@@ -1,5 +1,5 @@
 import { Status } from "./constants";
-import { post, postNotAuth, postRAW } from "./utils";
+import { post, postNotAuth, requestFlatServer } from "./utils";
 
 export interface LoginCheckPayload {}
 
@@ -160,7 +160,7 @@ export interface BindingProcessResult {
 
 export async function bindingProcess(authUUID: string): Promise<BindingProcessResult> {
     try {
-        const ret = await postRAW<BindingProcessPayload, {}>("user/binding/process", {
+        const ret = await requestFlatServer<BindingProcessPayload, {}>("user/binding/process", {
             authUUID,
         });
         if (ret.status === Status.Process) {
