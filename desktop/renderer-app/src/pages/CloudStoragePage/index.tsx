@@ -3,7 +3,6 @@ import "./style.less";
 import { CloudStorageContainer } from "flat-components";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { MainPageLayoutContainer } from "../../components/MainPageLayoutContainer";
 import { CloudStorageStore } from "./store";
 import { loginCheck } from "../../api-middleware/flatServer";
 import { ServerRequestError } from "../../utils/error/server-request-error";
@@ -42,9 +41,5 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
 
     useEffect(() => store.initialize(), [store]);
 
-    return (
-        <MainPageLayoutContainer>
-            <CloudStorageContainer store={store} />
-        </MainPageLayoutContainer>
-    );
+    return <CloudStorageContainer store={store} />;
 });
