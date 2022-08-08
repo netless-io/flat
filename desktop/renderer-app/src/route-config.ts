@@ -1,28 +1,26 @@
 import { ComponentType } from "react";
-import SplashPage from "./pages/SplashPage";
-import LoginPage from "./pages/LoginPage";
-// import BigClassPage from "./pages/BigClassPage";
-// import SmallClassPage from "./pages/SmallClassPage";
-// import OneToOnePage from "./pages/OneToOnePage";
-import ReplayPage from "./pages/ReplayPage";
-import RoomDetailPage from "@netless/flat-pages/src/RoomDetailPage";
-import HomePage from "@netless/flat-pages/src/HomePage";
-import UserScheduledPage from "@netless/flat-pages/src/UserScheduledPage";
+import { RoomDetailPage } from "@netless/flat-pages/src/RoomDetailPage";
+import { HomePage } from "@netless/flat-pages/src/HomePage";
+import { UserScheduledPage } from "@netless/flat-pages/src/UserScheduledPage";
 import { ModifyOrdinaryRoomPage } from "@netless/flat-pages/src/ModifyOrdinaryRoomPage";
+import { DevicesTestPage } from "@netless/flat-pages/src/DevicesTestPage";
+import { LoginPage } from "@netless/flat-pages/src/LoginPage";
 import { BigClassPage } from "@netless/flat-pages/src/BigClassPage";
 import { SmallClassPage } from "@netless/flat-pages/src/SmallClassPage";
 import { OneToOnePage } from "@netless/flat-pages/src/OneToOnePage";
 import { ModifyPeriodicRoomPage } from "@netless/flat-pages/src/ModifyPeriodicRoomPage";
-import { RoomType } from "./api-middleware/flatServer/constants";
+import { PeriodicRoomDetailPage } from "@netless/flat-pages/src/PeriodicRoomDetailPage";
+import { GeneralSettingPage } from "@netless/flat-pages/src/UserSettingPage/GeneralSettingPage";
+import { HotKeySettingPage } from "@netless/flat-pages/src/UserSettingPage/HotKeySettingPage";
 import { CloudStoragePage } from "./pages/CloudStoragePage";
 import { CameraCheckPage } from "./pages/DeviceCheckPages/CameraCheckPage";
 import { MicrophoneCheckPage } from "./pages/DeviceCheckPages/MicrophoneCheckPage";
 import { SpeakerCheckPage } from "./pages/DeviceCheckPages/SpeakerCheckPage";
 import { SystemCheckPage } from "./pages/DeviceCheckPages/SystemCheckPage";
-import { GeneralSettingPage } from "./pages/UserSettingPage/GeneralSettingPage";
-import { HotKeySettingPage } from "./pages/UserSettingPage/HotKeySettingPage";
 import { AboutPage } from "./pages/UserSettingPage/AboutPage";
-import { PeriodicRoomDetailPage } from "./pages/PeriodicRoomDetailPage";
+import SplashPage from "./pages/SplashPage";
+import ReplayPage from "./pages/ReplayPage";
+import { RoomType } from "./api-middleware/flatServer/constants";
 
 export enum RouteNameType {
     SplashPage = "SplashPage",
@@ -45,6 +43,7 @@ export enum RouteNameType {
     GeneralSettingPage = "GeneralSettingPage",
     HotKeySettingPage = "HotKeySettingPage",
     AboutPage = "AboutPage",
+    DevicesTestPage = "DevicesTestPage",
 }
 
 export type ClassRouteName =
@@ -55,7 +54,7 @@ export type ClassRouteName =
 export const routeConfig = {
     [RouteNameType.SplashPage]: {
         title: "SplashPage",
-        path: "/",
+        path: "/splash",
         component: SplashPage,
     },
     [RouteNameType.LoginPage]: {
@@ -65,7 +64,7 @@ export const routeConfig = {
     },
     [RouteNameType.HomePage]: {
         title: "HomePage",
-        path: "/user/",
+        path: "/",
         component: HomePage,
     },
     [RouteNameType.SmallClassPage]: {
@@ -152,6 +151,11 @@ export const routeConfig = {
         title: "AboutPage",
         path: "/about/",
         component: AboutPage,
+    },
+    [RouteNameType.DevicesTestPage]: {
+        title: "DevicesTestPage",
+        path: "/devices-test/:roomUUID/",
+        component: DevicesTestPage,
     },
 } as const;
 
