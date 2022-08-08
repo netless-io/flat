@@ -114,7 +114,7 @@ export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {
 
     private static closeWindow(win: CustomWindow): void {
         if (!win.window.isDestroyed()) {
-            win.options.disableClose = false;
+            win.options.interceptClose = false;
             win.window.close();
         }
     }

@@ -29,15 +29,13 @@ export const AboutPage = (): React.ReactElement => {
     return (
         <UserSettingLayoutContainer>
             <div className="about-page-container">
-                <div className="about-page-middle-container">
-                    <img alt="app logo" src={logoSVG} />
-                    <div className="flat-name">{t("app-name")}</div>
-                    <div className="flat-version">Version {runtime.appVersion}</div>
-                    <Button type="primary" onClick={checkUpgradeVersion}>
-                        <img src={updateSVG} />
-                        {t("check-updates")}
-                    </Button>
-                </div>
+                <img alt="app logo" src={logoSVG} />
+                <div className="flat-name">{t("app-name")}</div>
+                <div className="flat-version">Version {runtime.appVersion}</div>
+                <Button type="primary" onClick={checkUpgradeVersion}>
+                    <img src={updateSVG} />
+                    {t("check-updates")}
+                </Button>
             </div>
             <AppUpgradeModal updateInfo={updateInfo} onClose={() => setUpdateInfo(null)} />
         </UserSettingLayoutContainer>
