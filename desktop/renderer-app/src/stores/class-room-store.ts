@@ -814,11 +814,17 @@ export class ClassRoomStore {
     }
 
     private async stopRecording(): Promise<void> {
-        if (this.cloudRecording.isRecording) {
-            await this.cloudRecording.stop();
-        } else {
-            if (this.isRecording) {
-                await stopRecordRoom(this.roomUUID);
+        try {
+            if (this.cloudRecording.isRecording) {
+                await this.cloudRecording.stop();
+            } else {
+                if (this.isRecording) {
+                    await stopRecordRoom(this.roomUUID);
+                }
+            }
+        } catch (error) {
+            if (process.env.NODE_ENV !== "production") {
+                console.error(error);
             }
         }
         runInAction(() => {
