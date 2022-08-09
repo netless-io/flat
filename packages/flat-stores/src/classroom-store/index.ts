@@ -24,6 +24,7 @@ import {
     IServiceVideoChat,
     IServiceVideoChatMode,
     IServiceVideoChatRole,
+    IServiceWhiteboard,
 } from "@netless/flat-services";
 
 export * from "./constants";
@@ -34,6 +35,7 @@ export interface ClassroomStoreConfig {
     ownerUUID: string;
     rtc: IServiceVideoChat;
     rtm: IServiceTextChat;
+    whiteboard: IServiceWhiteboard;
 }
 
 export type DeviceStateStorageState = Record<string, { camera: boolean; mic: boolean }>;
@@ -116,7 +118,7 @@ export class ClassroomStore {
             isCreator: this.isCreator,
             isWritable: this.isCreator,
             getRoomType: () => this.roomInfo?.roomType || RoomType.BigClass,
-            i18n: FlatI18n.getInstance().i18n,
+            whiteboard: config.whiteboard,
             onDrop: this.onDrop,
         });
 

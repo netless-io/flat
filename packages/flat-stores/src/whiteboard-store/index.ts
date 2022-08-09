@@ -1,22 +1,13 @@
 import "video.js/dist/video-js.css";
 
 import { FlatI18n } from "@netless/flat-i18n";
-import { FastboardApp, createFastboard } from "@netless/fastboard-react";
+import { FastboardApp } from "@netless/fastboard-react";
 import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manager";
 import { message } from "antd";
 import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { v4 as v4uuid } from "uuid";
-import {
-    AnimationMode,
-    ApplianceNames,
-    DeviceType,
-    Room,
-    RoomPhase,
-    RoomState,
-    SceneDefinition,
-    ViewMode,
-} from "white-web-sdk";
+import { ApplianceNames, AnimationMode, Room, RoomPhase, SceneDefinition, ViewMode } from "white-web-sdk";
 import { snapshot } from "@netless/white-snapshot";
 import { queryConvertingTaskStatus } from "../utils/courseware-converting";
 import {
@@ -24,14 +15,19 @@ import {
     convertFinish,
     RequestErrorCode,
     ServerRequestError,
+    Region,
 } from "@netless/flat-server-api";
 import { CloudStorageFile, CloudStorageStore } from "../cloud-storage-store";
 import { coursewarePreloader } from "../utils/courseware-preloader";
 import { getFileExt, isPPTX } from "../utils/file";
 import { globalStore } from "../global-store";
 import { ClassroomReplayEventData } from "../classroom-store/event";
+import { IServiceWhiteboard } from "@netless/flat-services";
+import { SideEffectManager } from "side-effect-manager";
 
 export class WhiteboardStore {
+    private sideEffect = new SideEffectManager();
+    public whiteboard: IServiceWhiteboard;
     public fastboardAPP: FastboardApp<ClassroomReplayEventData> | null = null;
     public room: Room | null = null;
     public phase: RoomPhase = RoomPhase.Connecting;
@@ -57,20 +53,24 @@ export class WhiteboardStore {
     public readonly cloudStorageStore: CloudStorageStore;
 
     public constructor(config: {
+        whiteboard: IServiceWhiteboard;
         isCreator: boolean;
         isWritable: boolean;
         getRoomType: () => RoomType;
         onDrop: (file: File) => void;
     }) {
+        this.whiteboard = config.whiteboard;
         this.isCreator = config.isCreator;
         this.isWritable = config.isWritable;
         this.getRoomType = config.getRoomType;
         this.onDrop = config.onDrop;
 
-        makeAutoObservable<this, "preloadPPTResource">(this, {
+        makeAutoObservable<this, "preloadPPTResource" | "sideEffect">(this, {
             room: observable.ref,
             preloadPPTResource: false,
             fastboardAPP: false,
+            sideEffect: false,
+            whiteboard: false,
         });
 
         this.cloudStorageStore = new CloudStorageStore({
@@ -78,12 +78,28 @@ export class WhiteboardStore {
             insertCourseware: this.insertCourseware,
         });
 
-        // Whiteboard debugging
-        const flatUA =
-            process.env.FLAT_UA || (FlatI18n.t("app-name") || "").replace(/s+/g, "_").slice(0, 50);
-        window.__netlessUA =
-            (window.__netlessUA || "") +
-            ` FLAT/${flatUA}_${process.env.FLAT_REGION}@${process.env.VERSION} `;
+        this.sideEffect.push([
+            config.whiteboard.events.on("kicked", () => {
+                // Kick in-room joiners when creator cancels room
+                // from the homepage list menu
+                // Room creator do not need to listen to this event
+                // as they are in control of exiting room.
+                // Listening to this may interrupt the stop room process.
+                if (!this.isCreator) {
+                    runInAction(() => {
+                        this.isKicked = true;
+                    });
+                }
+            }),
+            config.whiteboard.$Val.phase$.subscribe(() => {
+                const room = this.getRoom();
+                if (room) {
+                    runInAction(() => {
+                        this.phase = room.phase;
+                    });
+                }
+            }),
+        ]);
     }
 
     public updateFastboardAPP = (whiteboardApp: FastboardApp<ClassroomReplayEventData>): void => {
@@ -98,30 +114,14 @@ export class WhiteboardStore {
         this.windowManager = manager;
     };
 
-    public updatePhase = (phase: RoomPhase): void => {
-        this.phase = phase;
-        if (phase === RoomPhase.Connected) {
-            if (this.room && this.room.isWritable !== this.isWritable) {
-                this.room.setWritable(this.isWritable);
-            }
-        }
-    };
-
-    public updateViewMode = (viewMode: ViewMode): void => {
-        this.viewMode = viewMode;
-    };
-
     public updateWritable = async (isWritable: boolean): Promise<void> => {
         const oldWritable = this.isWritable;
 
         this.isWritable = isWritable;
+        this.whiteboard.setAllowDrawing(isWritable);
         if (oldWritable !== isWritable && this.room) {
             try {
                 await this.room.setWritable(isWritable);
-                this.room.disableDeviceInputs = !isWritable;
-                if (isWritable) {
-                    this.room.disableSerialization = false;
-                }
             } catch {
                 /* ignored */
             }
@@ -225,11 +225,6 @@ export class WhiteboardStore {
     };
 
     public async joinWhiteboardRoom(): Promise<FastboardApp<ClassroomReplayEventData>> {
-        const NETLESS_APP_IDENTIFIER = process.env.NETLESS_APP_IDENTIFIER;
-        if (!NETLESS_APP_IDENTIFIER) {
-            throw new Error("Missing env NETLESS_APP_IDENTIFIER");
-        }
-
         if (!globalStore.userUUID) {
             throw new Error("Missing userUUID");
         }
@@ -238,85 +233,18 @@ export class WhiteboardStore {
             throw new Error("Missing Whiteboard UUID and Token");
         }
 
-        const cursorName = globalStore.userInfo?.name;
-
-        const fastboardAPP = await createFastboard<ClassroomReplayEventData>({
-            sdkConfig: {
-                appIdentifier: NETLESS_APP_IDENTIFIER,
-                deviceType: DeviceType.Surface,
-                region: globalStore.region ?? "cn-hz",
-                pptParams: {
-                    useServerWrap: true,
-                },
-            },
-            managerConfig: {
-                cursor: true,
-                chessboard: false,
-                containerSizeRatio: this.getWhiteboardRatio(),
-                collectorStyles: {
-                    position: "absolute",
-                    bottom: "8px",
-                },
-            },
-            joinRoom: {
-                uuid: globalStore.whiteboardRoomUUID,
-                roomToken: globalStore.whiteboardRoomToken,
-                region: globalStore.region ?? undefined,
-                userPayload: {
-                    uid: globalStore.userUUID,
-                    nickName: globalStore.userInfo?.name,
-                    // @deprecated
-                    userId: globalStore.userUUID,
-                    // @deprecated
-                    cursorName,
-                },
-                floatBar: true,
-                disableEraseImage: true,
-                isWritable: this.isWritable,
-                invisiblePlugins: [WindowManager],
-                uid: globalStore.userUUID,
-                callbacks: {
-                    onPhaseChanged: phase => this.updatePhase(phase),
-                    onRoomStateChanged: async (modifyState: Partial<RoomState>): Promise<void> => {
-                        if (modifyState.broadcastState) {
-                            this.updateViewMode(modifyState.broadcastState.mode);
-                        }
-
-                        const pptSrc = modifyState.sceneState?.scenes[0]?.ppt?.src;
-                        if (pptSrc) {
-                            try {
-                                await this.preloadPPTResource(pptSrc);
-                            } catch (err) {
-                                console.log(err);
-                            }
-                        }
-                    },
-                    onDisconnectWithError: error => {
-                        void message.error(FlatI18n.t("on-disconnect-with-error"));
-                        console.error(error);
-                        this.preloadPPTResource.cancel();
-                    },
-                    onKickedWithReason: reason => {
-                        if (
-                            reason === "kickByAdmin" ||
-                            reason === "roomDelete" ||
-                            reason === "roomBan"
-                        ) {
-                            // Kick in-room joiners when creator cancels room
-                            // from the homepage list menu
-                            runInAction(() => {
-                                // Room creator do not need to listen to this event
-                                // as they are in control of exiting room.
-                                // Listening to this may interrupt the stop room process.
-                                if (!this.isCreator) {
-                                    this.isKicked = true;
-                                }
-                            });
-                        }
-                    },
-                },
-            },
+        await this.whiteboard.joinRoom({
+            roomID: globalStore.whiteboardRoomUUID,
+            roomToken: globalStore.whiteboardRoomToken,
+            region: globalStore.region ?? Region.CN_HZ,
+            uid: globalStore.userUUID,
+            nickName: globalStore.userInfo?.name ?? globalStore.userUUID,
+            classroomType: this.getRoomType(),
+            allowDrawing: this.isWritable,
         });
+
+        // @TODO remove me after refactoring
+        const fastboardAPP = await (this.whiteboard as any)._app$.value;
 
         // Disable scale, fix height.
         fastboardAPP.manager.mainView.setCameraBound({
@@ -338,10 +266,6 @@ export class WhiteboardStore {
         this.updateWindowManager(manager);
 
         room.disableDeviceInputs = !this.isWritable;
-
-        if (room.state.broadcastState) {
-            this.updateViewMode(room.state.broadcastState.mode);
-        }
 
         this.scrollToTopOnce();
 
@@ -368,8 +292,9 @@ export class WhiteboardStore {
     }
 
     public async destroy(): Promise<void> {
+        this.sideEffect.flushAll();
         this.preloadPPTResource.cancel();
-        await this.fastboardAPP?.destroy();
+        await this.whiteboard.destroy();
 
         if (process.env.DEV) {
             (window as any).room = null;
@@ -668,5 +593,10 @@ export class WhiteboardStore {
         } else {
             return [];
         }
+    }
+
+    // @TODO remove me after refactoring
+    private getRoom(): Room | null {
+        return (this.whiteboard as any)._app$.value?.room ?? null;
     }
 }

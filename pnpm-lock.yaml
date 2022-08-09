@@ -157,6 +157,7 @@ importers:
       '@netless/flat-pages': workspace:*
       '@netless/flat-service-provider-agora-rtc-electron': workspace:*
       '@netless/flat-service-provider-agora-rtm': workspace:*
+      '@netless/flat-service-provider-fastboard': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/player-controller': ^0.0.9
       '@netless/video-js-plugin': ^0.3.8
@@ -193,6 +194,7 @@ importers:
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
       react-virtualized: ^9.22.3
+      remitter: ^0.2.6
       rollup-plugin-copy: ^3.4.0
       rollup-plugin-visualizer: ^5.6.0
       side-effect-manager: ^1.1.2
@@ -214,6 +216,7 @@ importers:
       '@netless/flat-pages': link:../../packages/flat-pages
       '@netless/flat-service-provider-agora-rtc-electron': link:../../service-providers/agora-rtc/agora-rtc-electron
       '@netless/flat-service-provider-agora-rtm': link:../../service-providers/agora-rtm
+      '@netless/flat-service-provider-fastboard': link:../../service-providers/fastboard
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
       '@netless/video-js-plugin': 0.3.8_igmyzdvqqkv6gevwhshexnrgbm
@@ -241,6 +244,7 @@ importers:
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
+      remitter: 0.2.6
       side-effect-manager: 1.1.2
       uuid: 8.3.2
       value-enhancer: 1.3.2
@@ -677,12 +681,12 @@ importers:
       '@netless/app-plyr': ^0.1.3
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-service-provider-agora-rtc-web': workspace:*
       '@netless/flat-service-provider-agora-rtm': workspace:*
+      '@netless/flat-service-provider-fastboard': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/flat-stores': workspace:*
       '@netless/mini-svg-data-uri': 0.0.1
@@ -719,6 +723,7 @@ importers:
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
       react-virtualized: ^9.22.3
+      remitter: ^0.2.6
       side-effect-manager: ^1.1.2
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
@@ -734,12 +739,12 @@ importers:
       '@netless/app-plyr': 0.1.3
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
       '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-service-provider-agora-rtc-web': link:../../service-providers/agora-rtc/agora-rtc-web
       '@netless/flat-service-provider-agora-rtm': link:../../service-providers/agora-rtm
+      '@netless/flat-service-provider-fastboard': link:../../service-providers/fastboard
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/flat-stores': link:../../packages/flat-stores
       '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
@@ -769,6 +774,7 @@ importers:
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
+      remitter: 0.2.6
       side-effect-manager: 1.1.2
       uuid: 8.3.2
       value-enhancer: 1.3.2
