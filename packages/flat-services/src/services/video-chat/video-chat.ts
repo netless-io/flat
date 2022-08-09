@@ -1,4 +1,5 @@
 import { Remitter } from "remitter";
+import { SideEffectManager } from "side-effect-manager";
 import { IServiceVideoChatMode, IServiceVideoChatRole } from "./constants";
 import { IServiceVideoChatEventData } from "./events";
 import { IServiceShareScreen } from "./share-screen";
@@ -30,6 +31,8 @@ export interface IServiceVideoChatJoinRoomConfig {
 }
 
 export abstract class IServiceVideoChat {
+    protected readonly sideEffect = new SideEffectManager();
+
     public readonly events = new Remitter<IServiceVideoChatEventData>();
 
     public abstract readonly isJoinedRoom: boolean;
@@ -38,6 +41,7 @@ export abstract class IServiceVideoChat {
     public abstract readonly shareScreen: IServiceShareScreen;
 
     public async destroy(): Promise<void> {
+        this.sideEffect.flushAll();
         this.events.destroy();
     }
 

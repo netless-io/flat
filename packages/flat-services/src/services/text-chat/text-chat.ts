@@ -1,4 +1,5 @@
 import { Remitter } from "remitter";
+import { SideEffectManager } from "side-effect-manager";
 import {
     IServiceTextChatPeerCommandData,
     IServiceTextChatPeerCommandNames,
@@ -16,11 +17,14 @@ export interface IServiceTextChatJoinRoomConfig {
 }
 
 export abstract class IServiceTextChat {
+    protected readonly sideEffect = new SideEffectManager();
+
     public abstract readonly members: Set<string>;
 
     public readonly events: IServiceTextChatEvents = new Remitter();
 
     public async destroy(): Promise<void> {
+        this.sideEffect.flushAll();
         this.events.destroy();
     }
 

@@ -38,7 +38,6 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
     public readonly shareScreen: AgoraRTCWebShareScreen;
 
-    private readonly _sideEffect = new SideEffectManager();
     private readonly _roomSideEffect = new SideEffectManager();
 
     private _pJoiningRoom?: Promise<unknown>;
@@ -72,7 +71,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
         super();
         this.APP_ID = APP_ID;
         this.shareScreen = new AgoraRTCWebShareScreen({ APP_ID });
-        this._sideEffect.add(() => {
+        this.sideEffect.add(() => {
             AgoraRTC.onCameraChanged = deviceInfo => {
                 this.setCameraID(deviceInfo.device.deviceId);
             };
@@ -95,7 +94,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
         this.shareScreen.destroy();
 
-        this._sideEffect.flushAll();
+        this.sideEffect.flushAll();
 
         await this.leaveRoom();
     }
@@ -281,6 +280,8 @@ export class AgoraRTCWeb extends IServiceVideoChat {
         shareScreenUID,
         shareScreenToken,
     }: IServiceVideoChatJoinRoomConfig): Promise<void> {
+        this._roomSideEffect.flushAll();
+
         const client = AgoraRTC.createClient({
             mode: mode === IServiceVideoChatMode.Broadcast ? "live" : "rtc",
             codec: "vp8",
