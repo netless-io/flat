@@ -660,6 +660,20 @@ export class ClassRoomStore {
         //     this.users.addUser(userUUID).catch(console.warn);
         // });
         channel.on("MemberLeft", this.users.removeUser);
+
+        await this.cloudRecording.queryRecordingStatus();
+        runInAction(() => {
+            this.isRecording = this.cloudRecording.isRecording;
+        });
+
+        // keep cloud recording alive
+        this.sideEffect.setInterval(() => {
+            this.cloudRecording.query().catch(error => {
+                if (process.env.NODE_ENV !== "production") {
+                    console.error(error);
+                }
+            });
+        }, 2 * 60 * 1000);
     }
 
     public async destroy(): Promise<void> {
