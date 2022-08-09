@@ -14,7 +14,7 @@
   "dependencies": {
     "i18next": "^21.8.16",
     "i18next-browser-languagedetector": "^6.1.4",
-    "side-effect-manager": "^1.1.1",
+    "side-effect-manager": "^1.1.2",
     "use-value-enhancer": "^0.1.0",
     "value-enhancer": "^1.3.2"
   }

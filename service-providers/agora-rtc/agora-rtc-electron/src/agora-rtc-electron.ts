@@ -33,7 +33,6 @@ export class AgoraRTCElectron extends IServiceVideoChat {
     public readonly APP_ID: string;
     public readonly rtcEngine: AgoraSdk;
 
-    private readonly _sideEffect = new SideEffectManager();
     private readonly _roomSideEffect = new SideEffectManager();
 
     private _cameraID?: string;
@@ -75,7 +74,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
     }
 
     private _init(rtcEngine: AgoraSdk): void {
-        this._sideEffect.add(() => {
+        this.sideEffect.add(() => {
             const getSpeakerID = (): string | undefined => {
                 try {
                     return (rtcEngine.getCurrentAudioPlaybackDevice() as FlatRTCAgoraElectronDevice)
@@ -138,7 +137,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
             };
         }, "init");
 
-        this._sideEffect.add(() => {
+        this.sideEffect.add(() => {
             const onError = (_err: number, msg: string): void => {
                 this.events.emit("error", new Error(msg));
             };
@@ -147,7 +146,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
         });
 
         if (process.env.NODE_ENV === "development") {
-            this._sideEffect.add(() => {
+            this.sideEffect.add(() => {
                 const onJoinedChannel = (channel: string, uid: number): void => {
                     console.log(`[RTC] ${uid} join channel ${channel}`);
                 };
@@ -182,7 +181,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
     public override async destroy(): Promise<void> {
         super.destroy();
 
-        this._sideEffect.flushAll();
+        this.sideEffect.flushAll();
 
         await this.leaveRoom();
     }
@@ -206,7 +205,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
             this.rtcEngine.leaveChannel();
             this.rtcEngine.videoSourceLeave();
         }
-
+        this._roomSideEffect.flushAll();
         this.uid = undefined;
         this.roomUUID = undefined;
         this.shareScreenUID = undefined;
@@ -318,7 +317,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
     }
 
     public override startNetworkTest(): void {
-        this._sideEffect.add(() => {
+        this.sideEffect.add(() => {
             const rtcEngine = this.rtcEngine;
             const handler = (quality: AgoraNetworkQuality): void => {
                 this.events.emit("network-test", quality);
@@ -337,7 +336,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
 
     public override stopNetworkTest(): void {
         this.rtcEngine.stopLastmileProbeTest();
-        this._sideEffect.flush("network-test");
+        this.sideEffect.flush("network-test");
     }
 
     public override startCameraTest(el: HTMLElement): void {
@@ -364,7 +363,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
     public override startMicTest(): void {
         this.rtcEngine.startAudioRecordingDeviceTest(300);
 
-        this._sideEffect.add(() => {
+        this.sideEffect.add(() => {
             const rtcEngine = this.rtcEngine;
             const handler = (
                 _speakers: unknown,
@@ -380,7 +379,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
 
     public override stopMicTest(): void {
         this.rtcEngine.stopAudioRecordingDeviceTest();
-        this._sideEffect.flush("mic-test");
+        this.sideEffect.flush("mic-test");
     }
 
     public override startSpeakerTest(filePath: string): void {
@@ -405,6 +404,8 @@ export class AgoraRTCElectron extends IServiceVideoChat {
         shareScreenUID,
         shareScreenToken,
     }: IServiceVideoChatJoinRoomConfig): Promise<void> {
+        this._roomSideEffect.flushAll();
+
         this.shareScreenUID = shareScreenUID;
 
         const channelProfile = mode === IServiceVideoChatMode.Broadcast ? 1 : 0;

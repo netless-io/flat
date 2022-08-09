@@ -195,7 +195,7 @@ importers:
       react-virtualized: ^9.22.3
       rollup-plugin-copy: ^3.4.0
       rollup-plugin-visualizer: ^5.6.0
-      side-effect-manager: ^1.1.1
+      side-effect-manager: ^1.1.2
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
@@ -241,7 +241,7 @@ importers:
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
-      side-effect-manager: 1.1.1
+      side-effect-manager: 1.1.2
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
@@ -370,14 +370,14 @@ importers:
       i18next-browser-languagedetector: ^6.1.4
       prettier: ^2.3.0
       react: ^17.0.2
-      side-effect-manager: ^1.1.1
+      side-effect-manager: ^1.1.2
       typescript: ^4.6.2
       use-value-enhancer: ^0.1.0
       value-enhancer: ^1.3.2
     dependencies:
       i18next: 21.8.16
       i18next-browser-languagedetector: 6.1.4
-      side-effect-manager: 1.1.1
+      side-effect-manager: 1.1.2
       use-value-enhancer: 0.1.0_s4t5ozp5v364eom36t7digbp2q
       value-enhancer: 1.3.2
     devDependencies:
@@ -429,7 +429,7 @@ importers:
       react-router-dom: ^5.2.0
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
-      side-effect-manager: ^1.1.1
+      side-effect-manager: ^1.1.2
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
@@ -469,7 +469,7 @@ importers:
       react-router-dom: 5.3.1_react@17.0.2
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
-      side-effect-manager: 1.1.1
+      side-effect-manager: 1.1.2
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
@@ -496,9 +496,13 @@ importers:
     specifiers:
       '@netless/flat-server-api': workspace:*
       prettier: ^2.3.0
+      remitter: ^0.2.6
+      side-effect-manager: ^1.1.2
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
     dependencies:
+      remitter: 0.2.6
+      side-effect-manager: 1.1.2
       value-enhancer: 1.3.2
     devDependencies:
       '@netless/flat-server-api': link:../flat-server-api
@@ -516,7 +520,7 @@ importers:
       mobx: ^6.4.2
       prettier: ^2.3.0
       react: ^17.0.2
-      side-effect-manager: ^1.1.1
+      side-effect-manager: ^1.1.2
       typescript: ^4.6.2
       uuid: ^8.3.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
@@ -525,7 +529,7 @@ importers:
       '@netless/flat-server-api': link:../flat-server-api
       '@netless/flat-services': link:../flat-services
       flat-components: link:../flat-components
-      side-effect-manager: 1.1.1
+      side-effect-manager: 1.1.2
       uuid: 8.3.2
     devDependencies:
       '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
@@ -545,13 +549,13 @@ importers:
       agora-electron-sdk: 3.7.0-build.527
       fs-extra: ^10.0.1
       prettier: ^2.3.0
-      side-effect-manager: ^1.1.1
+      side-effect-manager: ^1.1.2
       typescript: ^4.6.2
     dependencies:
       '@netless/flat-services': link:../../../packages/flat-services
       agora-electron-sdk: 3.7.0-build.527
       fs-extra: 10.1.0
-      side-effect-manager: 1.1.1
+      side-effect-manager: 1.1.2
     devDependencies:
       prettier: 2.6.2
       typescript: 4.6.4
@@ -561,13 +565,13 @@ importers:
       '@netless/flat-services': workspace:*
       agora-rtc-sdk-ng: ^4.12.2
       prettier: ^2.3.0
-      side-effect-manager: ^1.1.1
+      side-effect-manager: ^1.1.2
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
     dependencies:
       '@netless/flat-services': link:../../../packages/flat-services
       agora-rtc-sdk-ng: 4.12.2
-      side-effect-manager: 1.1.1
+      side-effect-manager: 1.1.2
       value-enhancer: 1.3.2
     devDependencies:
       prettier: 2.6.2
@@ -578,13 +582,13 @@ importers:
       '@netless/flat-services': workspace:*
       agora-rtm-sdk: ^1.4.4
       prettier: ^2.3.0
-      side-effect-manager: ^1.1.1
+      side-effect-manager: ^1.1.2
       typescript: ^4.6.2
       uuid: ^8.3.2
     dependencies:
       '@netless/flat-services': link:../../packages/flat-services
       agora-rtm-sdk: 1.4.4
-      side-effect-manager: 1.1.1
+      side-effect-manager: 1.1.2
       uuid: 8.3.2
     devDependencies:
       prettier: 2.6.2
@@ -620,18 +624,22 @@ importers:
     specifiers:
       '@netless/fastboard': ^0.3.6
       '@netless/flat-i18n': workspace:*
+      '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/window-manager': ^0.4.37
       prettier: ^2.3.0
       typescript: ^4.6.2
+      value-enhancer: ^1.3.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
       '@netless/fastboard': 0.3.6_hwmjbaemn5qt5obfebefyxa7dq
+      '@netless/flat-i18n': link:../../packages/flat-i18n
+      '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
+      value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
     devDependencies:
-      '@netless/flat-i18n': link:../../packages/flat-i18n
       prettier: 2.6.2
       typescript: 4.6.4
 
@@ -711,7 +719,7 @@ importers:
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
       react-virtualized: ^9.22.3
-      side-effect-manager: ^1.1.1
+      side-effect-manager: ^1.1.2
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
@@ -761,7 +769,7 @@ importers:
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
-      side-effect-manager: 1.1.1
+      side-effect-manager: 1.1.2
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
@@ -2518,8 +2526,8 @@ packages:
       '@cspell/dict-django': 2.0.0
       '@cspell/dict-dotnet': 2.0.1
       '@cspell/dict-elixir': 2.0.1
-      '@cspell/dict-en_us': 2.2.4
       '@cspell/dict-en-gb': 1.1.33
+      '@cspell/dict-en_us': 2.2.4
       '@cspell/dict-filetypes': 2.0.1
       '@cspell/dict-fonts': 2.0.0
       '@cspell/dict-fullstack': 2.0.5
@@ -6233,10 +6241,10 @@ packages:
     resolution: {integrity: sha512-1qrtXYHXJfXhzJnMtVGjIva3067F1qYQubl2oBjI61gCBoCHvhghdYJ57XxXTQQ0VxnUhg1/Iaez87uXp8mD8w==}
     engines: {node: '>=14.0.0'}
     dependencies:
+      7zip-bin: 5.1.1
       '@develar/schema-utils': 2.6.5
       '@electron/universal': 1.2.0
       '@malept/flatpak-bundler': 0.4.0
-      7zip-bin: 5.1.1
       async-exit-hook: 2.0.1
       bluebird-lst: 1.0.9
       builder-util: 23.0.2
@@ -7168,9 +7176,9 @@ packages:
   /builder-util/23.0.2:
     resolution: {integrity: sha512-HaNHL3axNW/Ms8O1mDx3I07G+ZnZ/TKSWWvorOAPau128cdt9S+lNx5ocbx8deSaHHX4WFXSZVHh3mxlaKJNgg==}
     dependencies:
+      7zip-bin: 5.1.1
       '@types/debug': 4.1.7
       '@types/fs-extra': 9.0.13
-      7zip-bin: 5.1.1
       app-builder-bin: 4.0.0
       bluebird-lst: 1.0.9
       builder-util-runtime: 9.0.0
@@ -7858,8 +7866,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      is-text-path: 1.0.1
       JSONStream: 1.3.5
+      is-text-path: 1.0.1
       lodash: 4.17.21
       meow: 8.1.2
       split2: 3.2.2
@@ -14060,7 +14068,7 @@ packages:
     dev: false
 
   /object-assign/4.1.1:
-    resolution: {integrity: sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=}
+    resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
 
   /object-copy/0.1.0:
@@ -17157,6 +17165,10 @@ packages:
 
   /side-effect-manager/1.1.1:
     resolution: {integrity: sha512-ppUBbzOXLydre40Yz553eIIlTdf2WCJcqMI4n06sTRCA2o5AwG5WQ2qq6fHp5C8RK3TAfgtZKrhllNG2F1jzCA==}
+
+  /side-effect-manager/1.1.2:
+    resolution: {integrity: sha512-gzPFfSfpw9qZJwcjEDJzgEJoAcr7na0JnB/Esvfzn116Bm0MsOtKeMM6g+FyFioF+EXdjDaXAV5YsZ1fxQgoKA==}
+    dev: false
 
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
