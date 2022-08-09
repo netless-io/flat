@@ -1,9 +1,11 @@
 import { IServiceTextChat } from "./services/text-chat";
 import { IServiceVideoChat } from "./services/video-chat";
+import { IServiceWhiteboard } from "./services/whiteboard";
 
 export interface FlatServicesCatalog {
     videoChat: IServiceVideoChat;
     textChat: IServiceTextChat;
+    whiteboard: IServiceWhiteboard;
 }
 
 export type FlatServiceID = Extract<keyof FlatServicesCatalog, string>;
