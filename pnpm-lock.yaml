@@ -182,8 +182,8 @@ importers:
       flat-types: workspace:*
       fs-extra: ^10.0.1
       lodash-es: ^4.17.21
-      mobx: ^6.4.2
-      mobx-react-lite: ^3.3.0
+      mobx: ^6.6.1
+      mobx-react-lite: ^3.4.0
       monaco-editor: ^0.27.0
       node-downloader-helper: ^2.1.0
       polly-js: ^1.8.3
@@ -235,8 +235,8 @@ importers:
       flat-components: link:../../packages/flat-components
       fs-extra: 10.1.0
       lodash-es: 4.17.21
-      mobx: 6.5.0
-      mobx-react-lite: 3.4.0_hmiq3xiffx2tpvk3y5rm3vgqxa
+      mobx: 6.6.1
+      mobx-react-lite: 3.4.0_vuaia3cr2ucdrk3q4mauc2kfvi
       node-downloader-helper: 2.1.1
       polly-js: 1.8.3
       react: 17.0.2
@@ -299,8 +299,8 @@ importers:
       i18next-browser-languagedetector: ^6.1.4
       less-loader: ^10.2.0
       lodash-es: ^4.17.21
-      mobx: ^6.4.2
-      mobx-react-lite: ^3.3.0
+      mobx: ^6.6.1
+      mobx-react-lite: ^3.4.0
       p-limit: ^4.0.0
       pretty-bytes: ^6.0.0
       rc-picker: ^2.6.4
@@ -325,8 +325,8 @@ importers:
       antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
       classnames: 2.3.1
       date-fns: 2.28.0
-      mobx: 6.5.0
-      mobx-react-lite: 3.4.0_hmiq3xiffx2tpvk3y5rm3vgqxa
+      mobx: 6.6.1
+      mobx-react-lite: 3.4.0_vuaia3cr2ucdrk3q4mauc2kfvi
       p-limit: 4.0.0
       pretty-bytes: 6.0.0
       rc-picker: 2.6.8_sfoxds7t5ydpegc3knd667wn6m
@@ -523,7 +523,7 @@ importers:
       '@netless/flat-services': workspace:*
       '@netless/window-manager': ^0.4.37
       flat-components: workspace:*
-      mobx: ^6.4.2
+      mobx: ^6.6.1
       prettier: ^2.3.0
       react: ^17.0.2
       side-effect-manager: ^1.1.2
@@ -540,7 +540,7 @@ importers:
     devDependencies:
       '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
       '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
-      mobx: 6.6.0
+      mobx: 6.6.1
       prettier: 2.6.2
       react: 17.0.2
       typescript: 4.6.4
@@ -693,7 +693,6 @@ importers:
       '@netless/flat-stores': workspace:*
       '@netless/mini-svg-data-uri': 0.0.1
       '@netless/player-controller': ^0.0.9
-      '@netless/synced-store': ^1.1.1
       '@netless/video-js-plugin': ^0.3.8
       '@netless/window-manager': ^0.4.37
       '@types/loadable__component': ^5.13.4
@@ -715,8 +714,8 @@ importers:
       flat-types: workspace:*
       lodash-es: ^4.17.21
       mime: ^3.0.0
-      mobx: ^6.6.0
-      mobx-react-lite: ^3.3.0
+      mobx: ^6.6.1
+      mobx-react-lite: ^3.4.0
       polly-js: ^1.8.3
       react: ^17.0.2
       react-device-detect: ^2.1.2
@@ -750,7 +749,6 @@ importers:
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/flat-stores': link:../../packages/flat-stores
       '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
-      '@netless/synced-store': 1.1.5_white-web-sdk-esm@2.16.24
       '@netless/video-js-plugin': 0.3.8_igmyzdvqqkv6gevwhshexnrgbm
       '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
       '@videojs/vhs-utils': 2.3.0
@@ -766,8 +764,8 @@ importers:
       flat-components: link:../../packages/flat-components
       flat-types: link:../../packages/flat-types
       lodash-es: 4.17.21
-      mobx: 6.6.0
-      mobx-react-lite: 3.4.0_5mmsvx7kyvezfxuro7wjt7ivm4
+      mobx: 6.6.1
+      mobx-react-lite: 3.4.0_vuaia3cr2ucdrk3q4mauc2kfvi
       polly-js: 1.8.3
       react: 17.0.2
       react-device-detect: 2.2.2_sfoxds7t5ydpegc3knd667wn6m
@@ -2290,6 +2288,12 @@ packages:
     dependencies:
       regenerator-runtime: 0.13.9
 
+  /@babel/runtime/7.18.9:
+    resolution: {integrity: sha512-lkqXDcvlFT5rvEjiu6+QYO+1GXrEHRo2LOtS7E4GtX5ESIZOgepqsZBVIj6Pv+a6zqsya9VCgiK1KAK4BvJDAw==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.9
+
   /@babel/standalone/7.17.8:
     resolution: {integrity: sha512-tr3SDpVnxR/fzrxyG+HZPAyEA9eTHZIAjy4eqrc7m+KBwsdo1YvTbUfJ6teWHQ177mk6GmdmltsIiOYCcvRPWA==}
     engines: {node: '>=6.9.0'}
@@ -3163,7 +3167,7 @@ packages:
       white-web-sdk: '>=2.16.0'
     dependencies:
       '@netless/app-slide': 0.2.2
-      '@netless/synced-store': 2.0.3_white-web-sdk-esm@2.16.24
+      '@netless/synced-store': 2.0.4_white-web-sdk-esm@2.16.24
       '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
       white-web-sdk: /white-web-sdk-esm/2.16.24
 
@@ -3218,17 +3222,8 @@ packages:
       white-web-sdk: /white-web-sdk-esm/2.16.24
     dev: false
 
-  /@netless/synced-store/1.1.5_white-web-sdk-esm@2.16.24:
-    resolution: {integrity: sha512-ERXoJiPhsK26udMKhvcHhfzyUk1Q3JIIT71wgGoSoNiPpW2VCWQ4+FAFsoRwa0c1pM0wVHGRRcZkxvOTkXZvdg==}
-    requiresBuild: true
-    peerDependencies:
-      white-web-sdk: '>= 2.16'
-    dependencies:
-      white-web-sdk: /white-web-sdk-esm/2.16.24
-    dev: false
-
-  /@netless/synced-store/2.0.3_white-web-sdk-esm@2.16.24:
-    resolution: {integrity: sha512-MyAOW+QX19PXXb41yrdJzwMmdCLbe9l3Jw8zHI125D6EF516zMvmGjnyXzo1iLHpoMx0JIj1kYlKwEAVNbbe7w==}
+  /@netless/synced-store/2.0.4_white-web-sdk-esm@2.16.24:
+    resolution: {integrity: sha512-F+wdSSsHNrxOaKz05QFWLU4X3UePrW6Mcs+KGXcET3fM6GEr/nV1vtq1fvL1pWnhYqqCp4AGciQ+ebk3qTpOzw==}
     requiresBuild: true
     peerDependencies:
       white-web-sdk: '>= 2.16'
@@ -5184,6 +5179,9 @@ packages:
 
   /@types/node/17.0.40:
     resolution: {integrity: sha512-UXdBxNGqTMtm7hCwh9HtncFVLrXoqA3oJW30j6XWp5BH/wu3mVeaxo7cq5benFdBw34HB3XDT2TRPI7rXZ+mDg==}
+
+  /@types/node/18.6.5:
+    resolution: {integrity: sha512-Xjt5ZGUa5WusGZJ4WJPbOT8QOqp6nDynVFRKcUt32bOgvXEoc6o085WNkYTMO7ifAj2isEfQQ2cseE+wT6jsRw==}
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -7945,9 +7943,8 @@ packages:
     requiresBuild: true
     dev: true
 
-  /core-js/3.22.8:
-    resolution: {integrity: sha512-UoGQ/cfzGYIuiq6Z7vWL1HfkE9U9IZ4Ub+0XSiJTCzvbZzgPA69oDF2f+lgJ6dFFLEdjW5O6svvoKzXX23xFkA==}
-    deprecated: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
+  /core-js/3.24.1:
+    resolution: {integrity: sha512-0QTBSYSUZ6Gq21utGzkfITDylE8jWC9Ne1D2MrhvlsZBI1x39OdDIVbzSqtgMndIy6BlHxBXpMGqzZmnztg2rg==}
     requiresBuild: true
 
   /core-util-is/1.0.2:
@@ -13250,12 +13247,12 @@ packages:
     dev: true
     optional: true
 
-  /mathjs/10.6.1:
-    resolution: {integrity: sha512-8iZp6uUKKBoCFoUHze9ydsrSji9/IOEzMhwURyoQXaLL1+ILEZnraw4KzZnUBt/XN6lPJPV+7JO94oil3AmosQ==}
+  /mathjs/10.6.4:
+    resolution: {integrity: sha512-omQyvRE1jIy+3k2qsqkWASOcd45aZguXZDckr3HtnTYyXk5+2xpVfC3kATgbO2Srjxlqww3TVdhD0oUdZ/hiFA==}
     engines: {node: '>= 14'}
     hasBin: true
     dependencies:
-      '@babel/runtime': 7.18.3
+      '@babel/runtime': 7.18.9
       complex.js: 2.1.1
       decimal.js: 10.3.1
       escape-latex: 1.2.0
@@ -13640,7 +13637,7 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /mobx-react-lite/3.4.0_hmiq3xiffx2tpvk3y5rm3vgqxa:
+  /mobx-react-lite/3.4.0_vuaia3cr2ucdrk3q4mauc2kfvi:
     resolution: {integrity: sha512-bRuZp3C0itgLKHu/VNxi66DN/XVkQG7xtoBVWxpvC5FhAqbOCP21+nPhULjnzEqd7xBMybp6KwytdUpZKEgpIQ==}
     peerDependencies:
       mobx: ^6.1.0
@@ -13653,17 +13650,17 @@ packages:
       react-native:
         optional: true
     dependencies:
-      mobx: 6.5.0
+      mobx: 6.6.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /mobx/6.5.0:
-    resolution: {integrity: sha512-pHZ/cySF00FVENDWIDzJyoObFahK6Eg4d0papqm6d7yMkxWTZ/S/csqJX1A3PsYy4t5k3z2QnlwuCfMW5lSEwA==}
-    dev: false
-
   /mobx/6.6.0:
     resolution: {integrity: sha512-MNTKevLH/6DShLZcmSL351+JgiJPO56A4GUpoiDQ3/yZ0mAtclNLdHK9q4BcQhibx8/JSDupfTpbX2NZPemlRg==}
+    dev: false
+
+  /mobx/6.6.1:
+    resolution: {integrity: sha512-7su3UZv5JF+ohLr2opabjbUAERfXstMY+wiBtey8yNAPoB8H187RaQXuhFjNkH8aE4iHbDWnhDFZw0+5ic4nGQ==}
 
   /moment/2.29.3:
     resolution: {integrity: sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==}
@@ -15083,7 +15080,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 17.0.40
+      '@types/node': 18.6.5
       long: 4.0.0
 
   /proxy-addr/2.0.7:
@@ -19510,11 +19507,11 @@ packages:
       atob: 2.1.2
       bezier-js: 2.6.1
       color: 3.2.1
-      core-js: 3.22.8
+      core-js: 3.24.1
       detect-it: 3.0.7
       eventemitter3: 4.0.7
-      mathjs: 10.6.1
-      mobx: 6.6.0
+      mathjs: 10.6.4
+      mobx: 6.6.1
       protobufjs: 6.11.3
       query-string: 5.1.1
       react: 16.14.0
