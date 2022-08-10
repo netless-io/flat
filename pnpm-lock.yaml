@@ -426,7 +426,7 @@ importers:
       flat-types: workspace:*
       lodash-es: ^4.17.21
       mime: ^3.0.0
-      mobx: ^6.6.0
+      mobx: ^6.6.1
       mobx-react-lite: ^3.3.0
       polly-js: ^1.8.3
       react: ^17.0.2
@@ -466,8 +466,8 @@ importers:
       flat-components: link:../flat-components
       flat-types: link:../flat-types
       lodash-es: 4.17.21
-      mobx: 6.6.0
-      mobx-react-lite: 3.4.0_5mmsvx7kyvezfxuro7wjt7ivm4
+      mobx: 6.6.1
+      mobx-react-lite: 3.4.0_vuaia3cr2ucdrk3q4mauc2kfvi
       polly-js: 1.8.3
       react: 17.0.2
       react-device-detect: 2.2.2_sfoxds7t5ydpegc3knd667wn6m
@@ -13619,24 +13619,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  /mobx-react-lite/3.4.0_5mmsvx7kyvezfxuro7wjt7ivm4:
-    resolution: {integrity: sha512-bRuZp3C0itgLKHu/VNxi66DN/XVkQG7xtoBVWxpvC5FhAqbOCP21+nPhULjnzEqd7xBMybp6KwytdUpZKEgpIQ==}
-    peerDependencies:
-      mobx: ^6.1.0
-      react: ^16.8.0 || ^17 || ^18
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-    dependencies:
-      mobx: 6.6.0
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-    dev: false
-
   /mobx-react-lite/3.4.0_vuaia3cr2ucdrk3q4mauc2kfvi:
     resolution: {integrity: sha512-bRuZp3C0itgLKHu/VNxi66DN/XVkQG7xtoBVWxpvC5FhAqbOCP21+nPhULjnzEqd7xBMybp6KwytdUpZKEgpIQ==}
     peerDependencies:
@@ -13653,10 +13635,6 @@ packages:
       mobx: 6.6.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-    dev: false
-
-  /mobx/6.6.0:
-    resolution: {integrity: sha512-MNTKevLH/6DShLZcmSL351+JgiJPO56A4GUpoiDQ3/yZ0mAtclNLdHK9q4BcQhibx8/JSDupfTpbX2NZPemlRg==}
     dev: false
 
   /mobx/6.6.1:
