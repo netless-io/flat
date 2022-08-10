@@ -155,6 +155,7 @@ importers:
       '@netless/fastboard-react': ^0.3.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
+      '@netless/flat-server-api': workspace:*
       '@netless/flat-service-provider-agora-rtc-electron': workspace:*
       '@netless/flat-service-provider-agora-rtm': workspace:*
       '@netless/flat-service-provider-fastboard': workspace:*
@@ -214,6 +215,7 @@ importers:
       '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
+      '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-service-provider-agora-rtc-electron': link:../../service-providers/agora-rtc/agora-rtc-electron
       '@netless/flat-service-provider-agora-rtm': link:../../service-providers/agora-rtm
       '@netless/flat-service-provider-fastboard': link:../../service-providers/fastboard

@@ -3,8 +3,8 @@ import {
     CloudFile,
     convertFinish,
     FileConvertStep,
+    isServerRequestError,
     RequestErrorCode,
-    ServerRequestError,
 } from "@netless/flat-server-api";
 import { extractLegacySlideUrlPrefix, queryConvertingTaskStatus } from "./courseware-converting";
 import { getFileExt, isPPTX } from "./utils";
@@ -81,7 +81,7 @@ export class FlatCoursewareNetless extends FlatCourseware {
                     await convertFinish({ fileUUID: file.fileUUID, region: file.region });
                 } catch (e) {
                     if (
-                        e instanceof ServerRequestError &&
+                        isServerRequestError(e) &&
                         e.errorCode === RequestErrorCode.FileIsConverted
                     ) {
                         // ignore this error
