@@ -1,6 +1,5 @@
 import { SideEffectManager } from "side-effect-manager";
 import { action, makeAutoObservable, observable, reaction, runInAction } from "mobx";
-import { RoomState as WhiteRoomState, RoomMember as WhiteRoomMember } from "white-web-sdk";
 import {
     pauseClass,
     startClass,
@@ -43,6 +42,7 @@ export type ClassroomStorageState = {
     classMode?: ClassModeType;
     raiseHandUsers: string[];
 };
+export type OnStageUsersStorageState = Record<string, boolean>;
 
 export class ClassroomStore {
     private readonly sideEffect = new SideEffectManager();
@@ -80,6 +80,7 @@ export class ClassroomStore {
 
     public deviceStateStorage?: Storage<DeviceStateStorageState>;
     public classroomStorage?: Storage<ClassroomStorageState>;
+    public onStageUsersStorage?: Storage<OnStageUsersStorageState>;
 
     public readonly users: UserStore;
 
@@ -201,14 +202,6 @@ export class ClassroomStore {
                     }
                 }),
             );
-        } else {
-            this.sideEffect.addDisposer(
-                this.rtm.events.on("on-stage", message => {
-                    if (this.roomUUID === message.roomUUID && this.ownerUUID === message.senderID) {
-                        this.whiteboardStore.updateWritable(message.onStage);
-                    }
-                }),
-            );
         }
     }
 
@@ -253,19 +246,6 @@ export class ClassroomStore {
 
         await this.users.initUsers([...this.rtm.members]);
 
-        const onStageUsers = new Set<string>();
-        const updateOnStateUsers = (roomMembers: ReadonlyArray<WhiteRoomMember>): void => {
-            // @TODO handle on-staged users separately outside of the UserStore
-            onStageUsers.clear();
-            roomMembers.forEach(member => {
-                const uid = member.payload?.uid;
-                if (uid) {
-                    onStageUsers.add(uid);
-                }
-            });
-        };
-        updateOnStateUsers(fastboard.room.state.roomMembers);
-
         const deviceStateStorage = fastboard.syncedStore.connectStorage<DeviceStateStorageState>(
             "deviceState",
             {},
@@ -277,8 +257,13 @@ export class ClassroomStore {
                 raiseHandUsers: [],
             },
         );
+        const onStageUsersStorage = fastboard.syncedStore.connectStorage<OnStageUsersStorageState>(
+            "onStageUsers",
+            {},
+        );
         this.deviceStateStorage = deviceStateStorage;
         this.classroomStorage = classroomStorage;
+        this.onStageUsersStorage = onStageUsersStorage;
 
         this.updateClassMode(classroomStorage.state.classMode);
 
@@ -298,7 +283,7 @@ export class ClassroomStore {
         updateRaiseHandUsers(classroomStorage.state.raiseHandUsers);
 
         this.users.updateUsers(user => {
-            if (onStageUsers.has(user.userUUID)) {
+            if (onStageUsersStorage.state[user.userUUID]) {
                 user.isSpeak = true;
                 user.isRaiseHand = false;
                 const deviceState = deviceStateStorage.state[user.userUUID];
@@ -321,9 +306,8 @@ export class ClassroomStore {
 
         this.sideEffect.addDisposer(
             this.rtm.events.on("member-joined", ({ userUUID }) => {
-                console.log("member-joined", userUUID);
                 this.users.addUser(userUUID);
-                if (onStageUsers.has(userUUID)) {
+                if (onStageUsersStorage.state[userUUID]) {
                     this.users.updateUsers(user => {
                         if (userUUID === user.userUUID) {
                             user.isSpeak = true;
@@ -361,30 +345,30 @@ export class ClassroomStore {
             }),
         );
 
-        this.sideEffect.add(() => {
-            const handler = (state: Partial<WhiteRoomState>): void => {
-                if (state.roomMembers) {
-                    updateOnStateUsers(state.roomMembers);
-                    this.users.updateUsers(user => {
-                        if (onStageUsers.has(user.userUUID)) {
-                            user.isSpeak = true;
-                            user.isRaiseHand = false;
-                            const deviceState = deviceStateStorage.state[user.userUUID];
-                            if (deviceState) {
-                                user.camera = deviceState.camera;
-                                user.mic = deviceState.mic;
-                            }
-                        } else {
-                            user.isSpeak = false;
-                            user.mic = false;
-                            user.camera = false;
+        this.sideEffect.addDisposer(
+            onStageUsersStorage.on("stateChanged", diff => {
+                this.users.updateUsers(user => {
+                    if (onStageUsersStorage.state[user.userUUID]) {
+                        user.isSpeak = true;
+                        user.isRaiseHand = false;
+                        const deviceState = deviceStateStorage.state[user.userUUID];
+                        if (deviceState) {
+                            user.camera = deviceState.camera;
+                            user.mic = deviceState.mic;
                         }
-                    });
+                    } else {
+                        user.isSpeak = false;
+                        user.mic = false;
+                        user.camera = false;
+                    }
+                });
+
+                const userUUID = this.users.currentUser?.userUUID;
+                if (!this.isCreator && userUUID && diff[userUUID]) {
+                    this.whiteboardStore.updateWritable(Boolean(diff[userUUID]?.newValue));
                 }
-            };
-            fastboard.room.callbacks.on("onRoomStateChanged", handler);
-            return () => fastboard.room.callbacks.off("onRoomStateChanged", handler);
-        });
+            }),
+        );
 
         this.sideEffect.addDisposer(
             deviceStateStorage.on("stateChanged", diff => {
@@ -509,11 +493,7 @@ export class ClassroomStore {
                         id => id !== userUUID,
                     ),
                 });
-                this.rtm.sendPeerCommand(
-                    "on-stage",
-                    { roomUUID: this.roomUUID, onStage: true },
-                    userUUID,
-                );
+                this.onStaging(userUUID, true);
             }
         }
     };
@@ -551,15 +531,19 @@ export class ClassroomStore {
     };
 
     public onStaging = async (userUUID: string, onStage: boolean): Promise<void> => {
-        if (this.classMode === ClassModeType.Interaction || userUUID === this.ownerUUID) {
+        if (
+            this.classMode === ClassModeType.Interaction ||
+            userUUID === this.ownerUUID ||
+            !this.whiteboardStore.isWritable
+        ) {
             return;
         }
         if (this.isCreator) {
-            this.rtm.sendPeerCommand("on-stage", { roomUUID: this.roomUUID, onStage }, userUUID);
+            this.onStageUsersStorage?.setState({ [userUUID]: onStage });
         } else {
             // joiner can only turn off speaking
             if (!onStage && userUUID === this.userUUID) {
-                this.whiteboardStore.updateWritable(onStage);
+                this.onStageUsersStorage?.setState({ [userUUID]: false });
             }
         }
     };
