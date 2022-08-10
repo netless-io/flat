@@ -6,8 +6,8 @@ import {
     uploadFinish,
     uploadStart,
     UploadStartResult,
-    ServerRequestError,
     RequestErrorCode,
+    isServerRequestError,
 } from "@netless/flat-server-api";
 import { preferencesStore } from "../../preferences-store";
 import { isPPTX } from "../file";
@@ -70,7 +70,7 @@ export class UploadTask {
             } catch (e) {
                 // max concurrent upload count limit
                 if (
-                    e instanceof ServerRequestError &&
+                    isServerRequestError(e) &&
                     e.errorCode === RequestErrorCode.UploadConcurrentLimit
                 ) {
                     console.warn("[cloud-storage]: hit max concurrent upload count limit");

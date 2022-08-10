@@ -113,3 +113,11 @@ export class ServerRequestError extends Error {
         this.errorMessage = RequestErrorMessage[errorCode];
     }
 }
+
+export function isServerRequestError(error: unknown): error is ServerRequestError {
+    return (
+        error instanceof Error &&
+        Object.prototype.hasOwnProperty.call(error, "errorCode") &&
+        Object.prototype.hasOwnProperty.call(error, "errorMessage")
+    );
+}

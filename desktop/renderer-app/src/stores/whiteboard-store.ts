@@ -28,8 +28,8 @@ import { globalStore } from "./global-store";
 import { getFileExt, isPPTX } from "../utils/file";
 import { queryConvertingTaskStatus } from "../api-middleware/courseware-converting";
 import { convertFinish } from "../api-middleware/flatServer/storage";
-import { ServerRequestError } from "../utils/error/server-request-error";
 import { RequestErrorCode } from "../constants/error-code";
+import { isServerRequestError } from "@netless/flat-server-api";
 
 export class WhiteboardStore {
     public fastboardAPP: FastboardApp | null = null;
@@ -581,7 +581,7 @@ export class WhiteboardStore {
                     await convertFinish({ fileUUID: file.fileUUID, region });
                 } catch (e) {
                     if (
-                        e instanceof ServerRequestError &&
+                        isServerRequestError(e) &&
                         e.errorCode === RequestErrorCode.FileIsConverted
                     ) {
                         // ignore this error

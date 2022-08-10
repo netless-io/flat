@@ -7,15 +7,22 @@ import { message } from "antd";
 import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { v4 as v4uuid } from "uuid";
-import { ApplianceNames, AnimationMode, Room, RoomPhase, SceneDefinition, ViewMode } from "white-web-sdk";
+import {
+    ApplianceNames,
+    AnimationMode,
+    Room,
+    RoomPhase,
+    SceneDefinition,
+    ViewMode,
+} from "white-web-sdk";
 import { snapshot } from "@netless/white-snapshot";
 import { queryConvertingTaskStatus } from "../utils/courseware-converting";
 import {
     RoomType,
     convertFinish,
     RequestErrorCode,
-    ServerRequestError,
     Region,
+    isServerRequestError,
 } from "@netless/flat-server-api";
 import { CloudStorageFile, CloudStorageStore } from "../cloud-storage-store";
 import { coursewarePreloader } from "../utils/courseware-preloader";
@@ -472,7 +479,7 @@ export class WhiteboardStore {
                     await convertFinish({ fileUUID: file.fileUUID, region: file.region });
                 } catch (e) {
                     if (
-                        e instanceof ServerRequestError &&
+                        isServerRequestError(e) &&
                         e.errorCode === RequestErrorCode.FileIsConverted
                     ) {
                         // ignore this error

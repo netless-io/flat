@@ -1,13 +1,13 @@
 import { FlatI18n } from "@netless/flat-i18n";
 import { message } from "antd";
-import { ServerRequestError } from "../../utils/error/server-request-error";
+import { isServerRequestError } from "@netless/flat-server-api";
 
 export const errorTips = (e: unknown): void => {
     if (process.env.NODE_ENV === "development") {
         console.error(e);
     }
 
-    if (e instanceof ServerRequestError) {
+    if (isServerRequestError(e)) {
         void message.error({
             content: FlatI18n.t(e.errorMessage),
             key: e.errorMessage,

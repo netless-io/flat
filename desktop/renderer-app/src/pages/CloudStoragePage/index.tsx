@@ -5,10 +5,10 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { CloudStorageStore } from "./store";
 import { loginCheck } from "../../api-middleware/flatServer";
-import { ServerRequestError } from "../../utils/error/server-request-error";
 import { RequestErrorCode } from "../../constants/error-code";
 import { RouteNameType, useReplaceHistory } from "../../utils/routes";
 import { NEED_BINDING_PHONE } from "../../constants/config";
+import { isServerRequestError } from "@netless/flat-server-api";
 
 export interface CloudStoragePageProps {}
 
@@ -27,7 +27,7 @@ export const CloudStoragePage = observer<CloudStoragePageProps>(function CloudSt
                 }
             })
             .catch(error => {
-                if (error instanceof ServerRequestError) {
+                if (isServerRequestError(error)) {
                     if (
                         [RequestErrorCode.JWTSignFailed, RequestErrorCode.NeedLoginAgain].includes(
                             error.errorCode,

@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { ServerRequestError } from "@netless/flat-server-api";
+import { isServerRequestError } from "@netless/flat-server-api";
 import { FlatI18n } from "@netless/flat-i18n";
 
 export const errorTips = (e: unknown): void => {
@@ -7,7 +7,7 @@ export const errorTips = (e: unknown): void => {
         console.error(e);
     }
 
-    if (e instanceof ServerRequestError) {
+    if (isServerRequestError(e)) {
         void message.error({
             content: FlatI18n.t(e.errorMessage),
             key: e.errorMessage,
