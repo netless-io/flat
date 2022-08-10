@@ -1,3 +1,12 @@
+## [1.8.4](https://github.com/netless-io/flat/compare/v1.8.3...v1.8.4) (2022-08-10)
+
+
+### Bug Fixes
+
+* **classroom:** add loading state to cloud record button ([#1628](https://github.com/netless-io/flat/issues/1628)) ([a2d3878](https://github.com/netless-io/flat/commit/a2d3878797456ac19c4925978c2fe8632568bba9))
+
+
+
 ## [1.8.3](https://github.com/netless-io/flat/compare/v1.8.2...v1.8.3) (2022-07-29)
 
 
