@@ -289,14 +289,6 @@ export class AgoraRTM extends IServiceTextChat {
                                 });
                                 break;
                             }
-                            case "on-stage": {
-                                this.events.emit("on-stage", {
-                                    roomUUID,
-                                    onStage: command.v.onStage,
-                                    senderID,
-                                });
-                                break;
-                            }
                         }
                     } catch (e) {
                         console.error(e);

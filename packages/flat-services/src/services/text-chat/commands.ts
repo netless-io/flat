@@ -14,8 +14,6 @@ export type IServiceTextChatRoomCommand<
 export interface IServiceTextChatPeerCommandData {
     /** From student to teacher */
     "raise-hand": { roomUUID: string; raiseHand: boolean };
-    /** From teacher to student */
-    "on-stage": { roomUUID: string; onStage: boolean };
 }
 
 export type IServiceTextChatPeerCommandNames = keyof IServiceTextChatPeerCommandData;
