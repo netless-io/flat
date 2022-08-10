@@ -44,9 +44,7 @@ export interface ListFilesResult {
 
 export async function listFiles(payload: ListFilesPayload): Promise<ListFilesResult> {
     const { totalUsage, files } = await post<undefined, ListFilesResponse>(
-        "cloud-storage/list",
-        undefined,
-        payload,
+        `cloud-storage/list?page=${payload.page}&order=${payload.order}`,
     );
     return {
         totalUsage,
