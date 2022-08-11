@@ -193,7 +193,7 @@ export class Fastboard extends IServiceWhiteboard {
                         this.toaster.emit("error", this.flatI18n.t("on-disconnect-with-error"));
                         console.error(error);
                     },
-                    onKickedWithReason: reason => {
+                    onKickedWithReason: async reason => {
                         this.events.emit(
                             "kicked",
                             reason === "kickByAdmin"
@@ -204,7 +204,11 @@ export class Fastboard extends IServiceWhiteboard {
                                 ? "roomBanned"
                                 : "unknown",
                         );
-                        this.leaveRoom();
+                        try {
+                            await this.leaveRoom();
+                        } catch {
+                            // already in exception state, ignore errors
+                        }
                     },
                 },
             },
