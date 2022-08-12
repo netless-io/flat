@@ -174,6 +174,14 @@ export class ClassroomStore {
             ),
         );
 
+        if (!this.isCreator) {
+            this.rtm.events.on("update-room-status", event => {
+                if (event.roomUUID === this.roomUUID && event.senderID === this.ownerUUID) {
+                    this.updateRoomStatus(event.status);
+                }
+            });
+        }
+
         if (this.isCreator) {
             this.sideEffect.addDisposer(
                 this.rtm.events.on("raise-hand", message => {
@@ -476,9 +484,15 @@ export class ClassroomStore {
                 : ClassModeType.Lecture);
     };
 
-    public updateRoomStatus = (roomStatus?: RoomStatus): void => {
-        if (this.roomInfo) {
+    public updateRoomStatus = (roomStatus: RoomStatus): void => {
+        if (this.roomInfo && this.roomInfo.roomStatus !== roomStatus) {
             this.roomInfo.roomStatus = roomStatus;
+            if (this.isCreator) {
+                this.rtm.sendRoomCommand("update-room-status", {
+                    roomUUID: this.roomUUID,
+                    status: roomStatus,
+                });
+            }
         }
     };
 

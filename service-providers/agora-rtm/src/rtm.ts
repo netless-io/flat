@@ -357,6 +357,13 @@ export class AgoraRTM extends IServiceTextChat {
                 });
                 break;
             }
+            case "update-room-status": {
+                this.events.emit("update-room-status", {
+                    roomUUID,
+                    status: command.v.status,
+                    senderID: ownerUUID,
+                });
+            }
         }
     }
 }

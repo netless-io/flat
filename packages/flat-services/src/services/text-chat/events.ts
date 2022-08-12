@@ -1,4 +1,5 @@
-import { Remitter } from "remitter";
+import type { RoomStatus } from "@netless/flat-server-api";
+import type { Remitter } from "remitter";
 
 export interface IServiceTextChatEventData {
     "remote-login": { roomUUID: string };
@@ -26,6 +27,7 @@ export interface IServiceTextChatEventData {
     "raise-hand": { roomUUID: string; userUUID: string; raiseHand: boolean };
     "member-joined": { roomUUID: string; userUUID: string };
     "member-left": { roomUUID: string; userUUID: string };
+    "update-room-status": { roomUUID: string; status: RoomStatus; senderID: string };
 }
 
 export type IServiceTextChatEventNames = Extract<keyof IServiceTextChatEventData, string>;
