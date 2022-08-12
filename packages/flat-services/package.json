@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "remitter": "^0.2.6",
-    "side-effect-manager": "^1.1.2",
+    "side-effect-manager": "^1.1.3",
     "value-enhancer": "^1.3.2"
   }
 }

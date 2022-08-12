@@ -27,7 +27,7 @@
     "@netless/flat-services": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
     "flat-components": "workspace:*",
-    "side-effect-manager": "^1.1.2",
+    "side-effect-manager": "^1.1.3",
     "uuid": "^8.3.2"
   }
 }
