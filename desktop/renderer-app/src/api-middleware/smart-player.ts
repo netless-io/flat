@@ -6,7 +6,7 @@ import {
     videoJsPlugin,
     PluginContext as VideoJsPluginContext,
 } from "@netless/video-js-plugin";
-import { EventEmitter } from "events";
+import { EventEmitter } from "eventemitter3";
 import polly from "polly-js";
 import {
     createPlugins,
@@ -48,7 +48,7 @@ export declare interface SmartPlayer {
 }
 
 // eslint-disable-next-line no-redeclare
-export class SmartPlayer extends EventEmitter {
+export class SmartPlayer extends EventEmitter<keyof SmartPlayerEvents> {
     public whiteboardPlayer: Player | undefined;
     public combinePlayer: CombinePlayer | undefined;
     public whiteWebSdk: WhiteWebSdk | undefined;

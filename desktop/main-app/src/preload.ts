@@ -1,6 +1,8 @@
-export {};
+import os from "os";
+import path from "path";
 
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, shell } = require("electron");
+
 const {
     agoraRTCElectronPreload,
 } = require("@netless/flat-service-provider-agora-rtc-electron/preload");
@@ -33,3 +35,37 @@ Object.defineProperties(window, {
 });
 
 ipcRenderer.send("preload-loaded");
+
+// TODO: upgrade new version of the Electron after that replace contextBridge.exposeInMainWorld with window
+(window as any).electron = {
+    ipcRenderer: {
+        on: (
+            channel: string,
+            listeners: (event: Electron.IpcRendererEvent, ...args: any[]) => void,
+        ): Electron.IpcRenderer => ipcRenderer.on(channel, listeners),
+        send: (channel: string, ...args: any[]): void => ipcRenderer.send(channel, ...args),
+        invoke: (channel: string, ...args: any[]): Promise<any> =>
+            ipcRenderer.invoke(channel, ...args),
+        removeAllListeners: (channel: string): Electron.IpcRenderer =>
+            ipcRenderer.removeAllListeners(channel),
+    },
+    shell: {
+        openExternal: (
+            url: string,
+            options?: Electron.OpenExternalOptions | undefined,
+        ): Promise<void> => shell.openExternal(url, options),
+    },
+};
+
+(window as any).node = {
+    os: {
+        cpus: (): os.CpuInfo[] => os.cpus(),
+        freemem: (): number => os.freemem(),
+        platform: (): NodeJS.Platform => os.platform(),
+    },
+    path: {
+        join: (...paths: string[]): string => path.join(...paths),
+        dirname: (p: string): string => path.dirname(p),
+        basename: (p: string, ext?: string | undefined): string => path.basename(p, ext),
+    },
+};

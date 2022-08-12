@@ -1,7 +1,6 @@
 import { setAuthUUID, loginProcess } from "../../api-middleware/flatServer";
 import { v4 as uuidv4 } from "uuid";
 import { LoginExecutor } from "./utils";
-import { shell } from "electron";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { FLAT_SERVER_LOGIN } from "../../api-middleware/flatServer/constants";
 import { GOOGLE } from "../../constants/process";
@@ -27,7 +26,7 @@ export const googleLogin: LoginExecutor = onSuccess => {
             return;
         }
 
-        void shell.openExternal(getGoogleURL(authUUID));
+        void window.electron.shell.openExternal(getGoogleURL(authUUID));
 
         const googleLoginProcessRequest = async (): Promise<void> => {
             try {

@@ -1,4 +1,3 @@
-import { clipboard } from "electron";
 import { message } from "antd";
 import React, { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
@@ -260,7 +259,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     }
 
     function onCopy(text: string): void {
-        clipboard.writeText(text);
+        navigator.clipboard.writeText(text);
         void message.success(t("copy-success"));
         hideInviteModal();
     }

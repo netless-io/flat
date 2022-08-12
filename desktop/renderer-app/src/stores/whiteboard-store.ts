@@ -5,7 +5,6 @@ import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manage
 import { message } from "antd";
 import { FlatI18n } from "@netless/flat-i18n";
 import { v4 as v4uuid } from "uuid";
-import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { isMobile, isWindows } from "react-device-detect";
 import {
@@ -23,7 +22,6 @@ import { snapshot } from "@netless/white-snapshot";
 import { RoomType } from "../../../../packages/flat-components/src/types/room";
 import { CLOUD_STORAGE_DOMAIN, NETLESS, NODE_ENV } from "../constants/process";
 import { CloudStorageFile, CloudStorageStore } from "../pages/CloudStoragePage/store";
-import { getCoursewarePreloader } from "../utils/courseware-preloader";
 import { globalStore } from "./global-store";
 import { getFileExt, isPPTX } from "../utils/file";
 import { queryConvertingTaskStatus } from "../api-middleware/courseware-converting";
@@ -66,9 +64,8 @@ export class WhiteboardStore {
         this.getRoomType = config.getRoomType;
         this.onDrop = config.onDrop;
 
-        makeAutoObservable<this, "preloadPPTResource">(this, {
+        makeAutoObservable<this>(this, {
             room: observable.ref,
-            preloadPPTResource: false,
             fastboardAPP: false,
         });
 
@@ -195,10 +192,6 @@ export class WhiteboardStore {
         }
     };
 
-    private preloadPPTResource = debounce(async (pptSrc: string): Promise<void> => {
-        await getCoursewarePreloader().preload(pptSrc);
-    }, 2000);
-
     public openDocsFileInWindowManager = async (
         scenePath: string,
         title: string,
@@ -318,20 +311,10 @@ export class WhiteboardStore {
                         if (modifyState.broadcastState) {
                             this.updateViewMode(modifyState.broadcastState.mode);
                         }
-
-                        const pptSrc = modifyState.sceneState?.scenes[0]?.ppt?.src;
-                        if (pptSrc) {
-                            try {
-                                await this.preloadPPTResource(pptSrc);
-                            } catch (err) {
-                                console.log(err);
-                            }
-                        }
                     },
                     onDisconnectWithError: error => {
                         void message.error(FlatI18n.t("on-disconnect-with-error"));
                         console.error(error);
-                        this.preloadPPTResource.cancel();
                     },
                     onKickedWithReason: reason => {
                         if (
@@ -403,7 +386,6 @@ export class WhiteboardStore {
     }
 
     public async destroy(): Promise<void> {
-        this.preloadPPTResource.cancel();
         await this.fastboardAPP?.destroy();
 
         if (NODE_ENV === "development") {

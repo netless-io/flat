@@ -2,7 +2,6 @@ import "./index.less";
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
-import os from "os";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckLayoutContainer } from "../DeviceCheckLayoutContainer";
 import { DeviceCheckResults, DeviceCheckState } from "../utils";
@@ -31,8 +30,8 @@ export const SystemCheckPage = withFlatServices("videoChat")(
         const history = useHistory<DeviceCheckResults>();
         const location = useLocation<DeviceCheckResults | undefined>();
 
-        const cpuModel = os.cpus()[0].model;
-        const freeMemory = (os.freemem() / 1024 / 1024).toFixed(2);
+        const cpuModel = window.node.os.cpus()[0].model;
+        const freeMemory = (window.node.os.freemem() / 1024 / 1024).toFixed(2);
 
         useEffect(() => {
             const onError = (e: Error): void => {

@@ -1,5 +1,4 @@
 import { ipc } from "flat-types";
-import { ipcRenderer } from "electron";
 import { constants } from "flat-types";
 import { makeAutoObservable } from "mobx";
 import { AppUpgradeModalProps } from "../components/AppUpgradeModal";
@@ -124,7 +123,7 @@ export class IPCStore {
             const { path } = routeConfig[routeName as keyof RouteConfig];
             const result = matchPath(routePathName, {
                 path,
-                sensitive: true,
+                exact: true,
             });
 
             if (result?.path) {
@@ -186,7 +185,7 @@ export class IPCStore {
         action: T,
         args: U,
     ): void => {
-        ipcRenderer.send(constants.WindowsName.Main, {
+        window.electron.ipcRenderer.send(constants.WindowsName.Main, {
             actions: action,
             args,
             browserWindowID: NaN,
@@ -200,7 +199,7 @@ export class IPCStore {
         action: T,
         args: U,
     ): void => {
-        ipcRenderer.send(constants.WindowsName.ShareScreenTip, {
+        window.electron.ipcRenderer.send(constants.WindowsName.ShareScreenTip, {
             actions: action,
             args,
             browserWindowID: NaN,
@@ -215,7 +214,7 @@ export class IPCStore {
         args: U,
         browserWindowID: string,
     ): void => {
-        ipcRenderer.send(constants.WindowsName.PreviewFile, {
+        window.electron.ipcRenderer.send(constants.WindowsName.PreviewFile, {
             actions: action,
             args,
             browserWindowID,
@@ -229,7 +228,7 @@ export class IPCStore {
         action: T,
         args?: U,
     ): void => {
-        ipcRenderer.send(action, args);
+        window.electron.ipcRenderer.send(action, args);
     };
 
     public ipcSyncByApp = <
@@ -239,20 +238,20 @@ export class IPCStore {
         action: T,
         args?: U,
     ): ReturnType<ipc.AppActionSync[T]> => {
-        return ipcRenderer.invoke(action, args) as any;
+        return window.electron.ipcRenderer.invoke(action, args) as any;
     };
 
     public ipcReceive = <T extends keyof ipc.EmitEvents, U extends ipc.EmitEvents[T]>(
         action: T,
         callback: (args: U) => void,
     ): void => {
-        ipcRenderer.on(action, (_event, args) => {
+        window.electron.ipcRenderer.on(action, (_event, args) => {
             callback(args as U);
         });
     };
 
     public ipcReceiveRemove = <T extends keyof ipc.EmitEvents>(action: T): void => {
-        ipcRenderer.removeAllListeners(action);
+        window.electron.ipcRenderer.removeAllListeners(action);
     };
 }
 

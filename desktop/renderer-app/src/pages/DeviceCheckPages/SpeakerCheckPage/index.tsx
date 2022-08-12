@@ -15,7 +15,6 @@ import { runtime } from "../../../utils/runtime";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckResults } from "../utils";
 import { useTranslate } from "@netless/flat-i18n";
-import path from "path";
 import { useSafePromise } from "flat-components";
 import { withFlatServices } from "@netless/flat-pages/src/components/FlatServicesContext";
 
@@ -50,7 +49,7 @@ export const SpeakerCheckPage = withFlatServices("videoChat")(
 
         useEffect(() => {
             if (currentDeviceID && isPlaying) {
-                rtc.startSpeakerTest(path.join(runtime.assetsPath, audioTestMP3));
+                rtc.startSpeakerTest(window.node.path.join(runtime.assetsPath, audioTestMP3));
                 return () => {
                     rtc.stopSpeakerTest();
                 };
