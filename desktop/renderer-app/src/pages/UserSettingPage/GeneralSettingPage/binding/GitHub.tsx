@@ -1,4 +1,3 @@
-import { shell } from "electron";
 import { v4 } from "uuid";
 import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
@@ -60,7 +59,9 @@ export const BindGitHub: React.FC<BindGitHubProps> = ({ isBind, onRefresh, globa
         const authUUID = v4();
         setAuthUUID(authUUID);
         await sp(setBindingAuthUUID(authUUID));
-        void shell.openExternal(getGithubURL(authUUID, FLAT_SERVER_USER_BINDING.GITHUB_CALLBACK));
+        void window.electron.shell.openExternal(
+            getGithubURL(authUUID, FLAT_SERVER_USER_BINDING.GITHUB_CALLBACK),
+        );
     };
 
     const unbind = (): void => {

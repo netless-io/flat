@@ -5,7 +5,6 @@ import { InviteModal as InviteModalImpl } from "flat-components";
 import { useTranslate } from "@netless/flat-i18n";
 import { RoomItem } from "../../stores/room-store";
 import { GlobalStoreContext, RoomStoreContext } from "../StoreProvider";
-import { clipboard } from "electron";
 import { errorTips } from "../Tips/ErrorTips";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
 
@@ -38,7 +37,7 @@ export const InviteModal = observer<InviteModalProps>(function InviteModal({
 
     const onCopy = useCallback(
         (text: string): void => {
-            clipboard.writeText(text);
+            navigator.clipboard.writeText(text);
             void message.success(t("copy-success"));
             onCopied();
         },

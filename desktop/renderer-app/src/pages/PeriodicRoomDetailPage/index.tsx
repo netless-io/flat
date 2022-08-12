@@ -1,6 +1,5 @@
 import "./index.less";
 
-import { clipboard } from "electron";
 import { message } from "antd";
 import { observer } from "mobx-react-lite";
 import { useHistory, useParams } from "react-router-dom";
@@ -153,7 +152,7 @@ export const PeriodicRoomDetailPage = observer<{}>(function PeriodicRoomDetailPa
                         userName={ownerName}
                         onCancelPeriodicRoom={onCancelPeriodicRoom}
                         onCancelSubPeriodicRoom={onCancelSubPeriodicRoom}
-                        onCopyInvitation={text => clipboard.writeText(text)}
+                        onCopyInvitation={text => navigator.clipboard.writeText(text)}
                     />
                 </div>
             </div>

@@ -1,5 +1,4 @@
 import { ipc } from "flat-types";
-import { ipcRenderer } from "electron";
 import { constants } from "flat-types";
 
 export const ipcAsyncByMainWindow = <
@@ -9,7 +8,7 @@ export const ipcAsyncByMainWindow = <
     action: T,
     args: U,
 ): void => {
-    ipcRenderer.send(constants.WindowsName.Main, {
+    window.electron.ipcRenderer.send(constants.WindowsName.Main, {
         actions: action,
         args,
         browserWindowID: NaN,
@@ -23,7 +22,7 @@ export const ipcAsyncByShareScreenTipWindow = <
     action: T,
     args: U,
 ): void => {
-    ipcRenderer.send(constants.WindowsName.ShareScreenTip, {
+    window.electron.ipcRenderer.send(constants.WindowsName.ShareScreenTip, {
         actions: action,
         args,
         browserWindowID: NaN,
@@ -38,7 +37,7 @@ export const ipcAsyncByPreviewFileWindow = <
     args: U,
     browserWindowID: string,
 ): void => {
-    ipcRenderer.send(constants.WindowsName.PreviewFile, {
+    window.electron.ipcRenderer.send(constants.WindowsName.PreviewFile, {
         actions: action,
         args,
         browserWindowID,
@@ -52,7 +51,7 @@ export const ipcAsyncByApp = <
     action: T,
     args?: U,
 ): void => {
-    ipcRenderer.send(action, args);
+    window.electron.ipcRenderer.send(action, args);
 };
 
 export const ipcSyncByApp = <
@@ -62,18 +61,18 @@ export const ipcSyncByApp = <
     action: T,
     args?: U,
 ): ReturnType<ipc.AppActionSync[T]> => {
-    return ipcRenderer.invoke(action, args) as any;
+    return window.electron.ipcRenderer.invoke(action, args) as any;
 };
 
 export const ipcReceive = <T extends keyof ipc.EmitEvents, U extends ipc.EmitEvents[T]>(
     action: T,
     callback: (args: U) => void,
 ): void => {
-    ipcRenderer.on(action, (_event, args) => {
+    window.electron.ipcRenderer.on(action, (_event, args) => {
         callback(args as U);
     });
 };
 
 export const ipcReceiveRemove = <T extends keyof ipc.EmitEvents>(action: T): void => {
-    ipcRenderer.removeAllListeners(action);
+    window.electron.ipcRenderer.removeAllListeners(action);
 };

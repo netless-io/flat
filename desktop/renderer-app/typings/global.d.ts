@@ -43,4 +43,33 @@ interface PortalWindow extends Window {
 
 interface Window {
     __netlessUA?: string;
+    electron: {
+        ipcRenderer: {
+            on: (
+                channel: string,
+                listeners: (event: Electron.IpcRendererEvent, ...args: any[]) => void,
+            ) => Electron.IpcRenderer;
+            send: (channel: string, ...args: any[]) => void;
+            invoke: (channel: string, ...args: any[]) => Promise<any>;
+            removeAllListeners: (channel: string) => Electron.IpcRenderer;
+        };
+        shell: {
+            openExternal: (
+                url: string,
+                options?: Electron.OpenExternalOptions | undefined,
+            ) => Promise<void>;
+        };
+    };
+    node: {
+        os: {
+            cpus: () => os.CpuInfo[];
+            freemem: () => number;
+            platform: () => NodeJS.Platform;
+        };
+        path: {
+            join: (...paths: string[]) => string;
+            dirname: (p: string) => string;
+            basename: (p: string, ext?: string | undefined) => string;
+        };
+    };
 }
