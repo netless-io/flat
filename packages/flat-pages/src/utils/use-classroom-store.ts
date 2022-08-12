@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { errorTips, useSafePromise } from "flat-components";
 import { useFlatService } from "../components/FlatServicesContext";
+import { FlatServices } from "@netless/flat-services";
 
 export type useClassRoomStoreConfig = Omit<ClassroomStoreConfig, "rtc" | "rtm" | "whiteboard">;
 
@@ -36,7 +37,11 @@ export function useClassroomStore(config: useClassRoomStoreConfig): ClassroomSto
                 pushHistory(RouteNameType.HomePage);
             });
             return () => {
-                void classroomStore.destroy();
+                classroomStore.destroy();
+                const flatServices = FlatServices.getInstance();
+                flatServices.shutdownService("videoChat");
+                flatServices.shutdownService("textChat");
+                flatServices.shutdownService("textChat");
             };
         }
         return;

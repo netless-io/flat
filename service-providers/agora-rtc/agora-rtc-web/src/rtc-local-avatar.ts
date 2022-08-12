@@ -1,6 +1,6 @@
 import { SideEffectManager } from "side-effect-manager";
 import { Val } from "value-enhancer";
-import type { IServiceVideoChatAvatar } from "@netless/flat-services";
+import { IServiceVideoChatAvatar, IServiceVideoChatRole } from "@netless/flat-services";
 import type { AgoraRTCWeb } from "./agora-rtc-web";
 
 export interface RTCAvatarConfig {
@@ -51,6 +51,15 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
                         localMicTrack = await this._rtc.createLocalMicTrack();
                     } else if (localMicTrack) {
                         await localMicTrack.setEnabled(shouldMic);
+                    }
+                    if (shouldMic && localMicTrack) {
+                        await this._rtc.setRole(IServiceVideoChatRole.Host);
+                        await this._rtc.client?.publish(localMicTrack);
+                    } else {
+                        await this._rtc.client?.unpublish(localMicTrack);
+                        if (!this._shouldCamera$.value) {
+                            await this._rtc.setRole(IServiceVideoChatRole.Audience);
+                        }
                     }
 
                     const lowVolumeLevelDisposerID = "local-mic-volume-level";
@@ -108,6 +117,15 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
                     } else if (localCameraTrack) {
                         await localCameraTrack.setEnabled(shouldCamera);
                     }
+                    if (shouldCamera && localCameraTrack) {
+                        await this._rtc.setRole(IServiceVideoChatRole.Host);
+                        await this._rtc.client?.publish(localCameraTrack);
+                    } else {
+                        await this._rtc.client?.unpublish(localCameraTrack);
+                        if (!this._shouldMic$.value) {
+                            await this._rtc.setRole(IServiceVideoChatRole.Audience);
+                        }
+                    }
                 } catch (e) {
                     this._rtc.events.emit("err-set-camera", e);
                 }
@@ -115,11 +133,20 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
         );
 
         this._sideEffect.addDisposer(
-            this._el$.reaction(el => {
+            this._el$.reaction(async el => {
                 if (el && this._rtc.localCameraTrack) {
                     try {
                         this._rtc.localCameraTrack.play(el);
-                        this._rtc.localCameraTrack.setEnabled(this._shouldCamera$.value);
+                        await this._rtc.localCameraTrack.setEnabled(this._shouldCamera$.value);
+                        if (this._shouldCamera$.value) {
+                            await this._rtc.setRole(IServiceVideoChatRole.Host);
+                            await this._rtc.client?.publish(this._rtc.localCameraTrack);
+                        } else {
+                            await this._rtc.client?.unpublish(this._rtc.localCameraTrack);
+                            if (!this._shouldMic$.value) {
+                                await this._rtc.setRole(IServiceVideoChatRole.Audience);
+                            }
+                        }
                     } catch (e) {
                         console.error(e);
                     }

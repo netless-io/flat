@@ -48,7 +48,7 @@ export abstract class IServiceVideoChat {
     public abstract joinRoom(config: IServiceVideoChatJoinRoomConfig): Promise<void>;
     public abstract leaveRoom(): Promise<void>;
 
-    public abstract setRole(role: IServiceVideoChatRole): void;
+    public abstract setRole(role: IServiceVideoChatRole): Promise<void>;
 
     /** @returns local avatar if uid is not provided, throws error if uid == shareScreenUID */
     public abstract getAvatar(uid?: IServiceVideoChatUID): IServiceVideoChatAvatar | undefined;

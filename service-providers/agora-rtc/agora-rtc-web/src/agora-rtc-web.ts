@@ -44,6 +44,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
     private _pLeavingRoom?: Promise<unknown>;
 
     public client?: IAgoraRTCClient;
+    public mode?: IServiceVideoChatMode;
 
     private _cameraID?: string;
     private _micID?: string;
@@ -162,6 +163,10 @@ export class AgoraRTCWeb extends IServiceVideoChat {
             this._pLeavingRoom = undefined;
 
             this.client = undefined;
+            if (process.env.DEV) {
+                (window as any).rtc_client = undefined;
+            }
+            this.mode = undefined;
         }
 
         this.uid = undefined;
@@ -199,9 +204,11 @@ export class AgoraRTCWeb extends IServiceVideoChat {
         return this._remoteAvatars.get(uid)?.getVolumeLevel() ?? 0;
     }
 
-    public setRole(role: IServiceVideoChatRole): void {
-        if (this.client) {
-            this.client.setClientRole(role === IServiceVideoChatRole.Host ? "host" : "audience");
+    public async setRole(role: IServiceVideoChatRole): Promise<void> {
+        if (this.client && this.mode === IServiceVideoChatMode.Broadcast) {
+            await this.client.setClientRole(
+                role === IServiceVideoChatRole.Host ? "host" : "audience",
+            );
         }
     }
 
@@ -287,6 +294,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
             codec: "vp8",
         });
         this.client = client;
+        this.mode = mode;
         if (process.env.DEV) {
             (window as any).rtc_client = client;
         }
@@ -424,20 +432,6 @@ export class AgoraRTCWeb extends IServiceVideoChat {
             Number(uid),
         );
 
-        // publish existing tracks after joining channel
-        if (this.localCameraTrack) {
-            if (!this.localCameraTrack.enabled) {
-                await this.localCameraTrack.setEnabled(true);
-            }
-            await client.publish(this.localCameraTrack);
-        }
-        if (this.localMicTrack) {
-            if (!this.localMicTrack.enabled) {
-                await this.localMicTrack.setEnabled(true);
-            }
-            await client.publish(this.localMicTrack);
-        }
-
         this.uid = uid;
         this.roomUUID = roomUUID;
         this.shareScreenUID = shareScreenUID;
@@ -459,10 +453,6 @@ export class AgoraRTCWeb extends IServiceVideoChat {
             if (this._pJoiningRoom) {
                 await this._pJoiningRoom;
             }
-
-            if (this.client && this.roomUUID) {
-                await this.client.publish(this.localCameraTrack);
-            }
         }
         return this.localCameraTrack;
     });
@@ -480,10 +470,6 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
             if (this._pJoiningRoom) {
                 await this._pJoiningRoom;
-            }
-
-            if (this.client && this.roomUUID) {
-                await this.client.publish(this.localMicTrack);
             }
         }
         return this.localMicTrack;
