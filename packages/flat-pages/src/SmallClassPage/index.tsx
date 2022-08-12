@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import "./SmallClassPage.less";
+
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { message } from "antd";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
@@ -33,12 +35,11 @@ import { RoomStatusStoppedModal } from "../components/ClassRoom/RoomStatusStoppe
 import { RoomStatus } from "@netless/flat-server-api";
 import { ClassModeType, User } from "@netless/flat-stores";
 
-import "./SmallClassPage.less";
 import { CloudStorageButton } from "../components/CloudStorageButton";
-import { runtime } from "../utils/runtime";
 import { ShareScreen } from "../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
 import { withClassroomStore, WithClassroomStoreProps } from "../utils/with-classroom-store";
+import { WindowsSystemBtnContext } from "../components/StoreProvider";
 
 export type SmallClassPageProps = {};
 
@@ -50,10 +51,12 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
         const t = useTranslate();
 
         const whiteboardStore = classroomStore.whiteboardStore;
+        const windowsBtn = useContext(WindowsSystemBtnContext);
 
         const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
         const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
+        const topBarRef = useRef<HTMLDivElement>(null);
 
         useEffect(() => {
             if (classroomStore.isCreator && classroomStore.roomStatus === RoomStatus.Idle) {
@@ -61,38 +64,58 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
             }
         }, [classroomStore]);
 
+        useEffect(() => {
+            const topBarEl = topBarRef.current;
+            if (windowsBtn && topBarEl) {
+                topBarEl.addEventListener("dblclick", windowsBtn.clickWindowMaximize);
+
+                return () => {
+                    topBarEl.removeEventListener("dblclick", windowsBtn.clickWindowMaximize);
+                };
+            }
+            return;
+        }, [windowsBtn]);
+
         return (
-            <div className="small-class-realtime-container">
-                <div className="small-class-realtime-box">
-                    <TopBar
-                        center={renderTopBarCenter()}
-                        isMac={runtime.isMac}
-                        left={renderTopBarLeft()}
-                        right={renderTopBarRight()}
-                    />
-                    {renderAvatars()}
-                    <div className="small-class-realtime-content">
-                        <div className="small-class-realtime-content-container">
-                            <ShareScreen classRoomStore={classroomStore} />
-                            <Whiteboard
-                                classRoomStore={classroomStore}
-                                disableHandRaising={
-                                    classroomStore.classMode === ClassModeType.Interaction
-                                }
-                                whiteboardStore={whiteboardStore}
+            <div className="small-class-page-container">
+                <div className="small-class-realtime-container">
+                    <div className="small-class-realtime-box">
+                        {windowsBtn ? (
+                            <TopBar
+                                center={renderTopBarCenter()}
+                                left={renderTopBarLeft()}
+                                right={renderTopBarRight()}
+                                showWindowsSystemBtn={windowsBtn.showWindowsBtn}
+                                topBarRef={topBarRef}
+                                onClickWindowsSystemBtn={windowsBtn.onClickWindowsSystemBtn}
                             />
+                        ) : (
+                            <TopBar left={renderTopBarLeft()} right={renderTopBarRight()} />
+                        )}
+                        {renderAvatars()}
+                        <div className="small-class-realtime-content">
+                            <div className="small-class-realtime-content-container">
+                                <ShareScreen classRoomStore={classroomStore} />
+                                <Whiteboard
+                                    classRoomStore={classroomStore}
+                                    disableHandRaising={
+                                        classroomStore.classMode === ClassModeType.Interaction
+                                    }
+                                    whiteboardStore={whiteboardStore}
+                                />
+                            </div>
+                            {renderRealtimePanel()}
                         </div>
-                        {renderRealtimePanel()}
+                        <ExitRoomConfirm
+                            isCreator={classroomStore.isCreator}
+                            {...exitConfirmModalProps}
+                        />
+                        <RoomStatusStoppedModal
+                            isCreator={classroomStore.isCreator}
+                            isRemoteLogin={classroomStore.isRemoteLogin}
+                            roomStatus={classroomStore.roomStatus}
+                        />
                     </div>
-                    <ExitRoomConfirm
-                        isCreator={classroomStore.isCreator}
-                        {...exitConfirmModalProps}
-                    />
-                    <RoomStatusStoppedModal
-                        isCreator={classroomStore.isCreator}
-                        isRemoteLogin={classroomStore.isRemoteLogin}
-                        roomStatus={classroomStore.roomStatus}
-                    />
                 </div>
             </div>
         );
@@ -201,12 +224,14 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                     )}
                     <CloudStorageButton classroom={classroomStore} />
                     <InviteButton roomInfo={classroomStore.roomInfo} />
-                    <TopBarRightBtn
-                        icon={<SVGExit />}
-                        title={t("exit")}
-                        onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
-                    />
-                    <TopBarDivider />
+                    {!windowsBtn?.showWindowsBtn && (
+                        <TopBarRightBtn
+                            icon={<SVGExit />}
+                            title={t("exit")}
+                            onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
+                        />
+                    )}
+                    {windowsBtn?.showWindowsBtn ? null : <TopBarDivider />}
                     <TopBarRightBtn
                         icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                         title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
@@ -215,6 +240,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                             whiteboardStore.setRightSideClose(isRealtimeSideOpen);
                         }}
                     />
+                    {windowsBtn?.showWindowsBtn && <TopBarDivider />}
                 </>
             );
         }

@@ -2,7 +2,6 @@
 import "./index.less";
 
 import React, { useContext } from "react";
-import { shell } from "electron";
 import { useHistory, useLocation } from "react-router-dom";
 import {
     MainPageLayout,
@@ -19,15 +18,13 @@ import {
     SVGSetting,
     SVGFeedback,
     SVGLogout,
-    WindowsSystemBtnItem,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { GlobalStoreContext } from "../StoreProvider";
 import { generateAvatar } from "../../utils/generate-avatar";
-import { ipcAsyncByMainWindow } from "../../utils/ipc";
-import { runtime } from "../../utils/runtime";
+import { WindowsSystemBtnContext } from "@netless/flat-pages/src/components/StoreProvider";
 
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];
@@ -49,6 +46,8 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
         onBackPreviousPage,
     }) {
         const t = useTranslate();
+        const windowsBtnContext = useContext(WindowsSystemBtnContext);
+
         const sideMenu = [
             {
                 key: routeConfig[RouteNameType.HomePage].path,
@@ -121,7 +120,7 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
                     ? onRouteChange(mainPageLayoutItem)
                     : history.push(mainPageLayoutItem.route);
             } else {
-                void shell.openExternal(mainPageLayoutItem.route);
+                void window.electron.shell.openExternal(mainPageLayoutItem.route);
             }
         };
 
@@ -134,11 +133,7 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
         ];
 
         const onClickTopBarMenu = (mainPageTopBarMenuItem: MainPageTopBarMenuItem): void => {
-            void shell.openExternal(mainPageTopBarMenuItem.route);
-        };
-
-        const onClickWindowsSystemBtn = (winSystemBtn: WindowsSystemBtnItem): void => {
-            ipcAsyncByMainWindow("set-win-status", { windowStatus: winSystemBtn });
+            void window.electron.shell.openExternal(mainPageTopBarMenuItem.route);
         };
 
         return (
@@ -146,9 +141,9 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
                 activeKeys={activeKeys}
                 avatarSrc={globalStore.userInfo?.avatar ?? ""}
                 generateAvatar={generateAvatar}
-                isWin={runtime.isWin}
                 popMenu={popMenu}
                 showMainPageHeader={showMainPageHeader}
+                showWindowsSystemBtn={windowsBtnContext?.showWindowsBtn}
                 sideMenu={sideMenu}
                 sideMenuFooter={sideMenuFooter}
                 subMenu={subMenu}
@@ -158,7 +153,7 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
                 onBackPreviousPage={onBackPreviousPage}
                 onClick={onMenuItemClick}
                 onClickTopBarMenu={onClickTopBarMenu}
-                onClickWindowsSystemBtn={onClickWindowsSystemBtn}
+                onClickWindowsSystemBtn={windowsBtnContext?.onClickWindowsSystemBtn}
             >
                 {children}
             </MainPageLayout>

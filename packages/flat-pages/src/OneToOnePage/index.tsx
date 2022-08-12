@@ -1,6 +1,6 @@
 import "./OneToOnePage.less";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
@@ -32,10 +32,10 @@ import { RoomStatusStoppedModal } from "../components/ClassRoom/RoomStatusStoppe
 import { RoomStatus } from "@netless/flat-server-api";
 import { useComputed } from "../utils/mobx";
 import { CloudStorageButton } from "../components/CloudStorageButton";
-import { runtime } from "../utils/runtime";
 import { ShareScreen } from "../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
 import { withClassroomStore, WithClassroomStoreProps } from "../utils/with-classroom-store";
+import { WindowsSystemBtnContext } from "../components/StoreProvider";
 
 export type OneToOnePageProps = {};
 
@@ -46,10 +46,12 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
         const t = useTranslate();
 
         const whiteboardStore = classroomStore.whiteboardStore;
+        const windowsBtn = useContext(WindowsSystemBtnContext);
 
         const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
         const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
+        const topBarRef = useRef<HTMLDivElement>(null);
 
         const joiner = useComputed(() => {
             if (classroomStore.isCreator) {
@@ -71,34 +73,54 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
             }
         }, [classroomStore]);
 
+        useEffect(() => {
+            const topBarEl = topBarRef.current;
+            if (windowsBtn && topBarEl) {
+                topBarEl.addEventListener("dblclick", windowsBtn.clickWindowMaximize);
+
+                return () => {
+                    topBarEl.removeEventListener("dblclick", windowsBtn.clickWindowMaximize);
+                };
+            }
+            return;
+        }, [windowsBtn]);
+
         return (
-            <div className="one-to-one-realtime-container">
-                <div className="one-to-one-realtime-box">
-                    <TopBar
-                        isMac={runtime.isMac}
-                        left={renderTopBarLeft()}
-                        right={renderTopBarRight()}
-                    />
-                    <div className="one-to-one-realtime-content">
-                        <div className="one-to-one-realtime-content-container">
-                            <ShareScreen classRoomStore={classroomStore} />
-                            <Whiteboard
-                                classRoomStore={classroomStore}
-                                disableHandRaising={true}
-                                whiteboardStore={whiteboardStore}
+            <div className="one-to-one-class-page-container">
+                <div className="one-to-one-realtime-container">
+                    <div className="one-to-one-realtime-box">
+                        {windowsBtn ? (
+                            <TopBar
+                                left={renderTopBarLeft()}
+                                right={renderTopBarRight()}
+                                showWindowsSystemBtn={windowsBtn.showWindowsBtn}
+                                topBarRef={topBarRef}
+                                onClickWindowsSystemBtn={windowsBtn.onClickWindowsSystemBtn}
                             />
+                        ) : (
+                            <TopBar left={renderTopBarLeft()} right={renderTopBarRight()} />
+                        )}
+                        <div className="one-to-one-realtime-content">
+                            <div className="one-to-one-realtime-content-container">
+                                <ShareScreen classRoomStore={classroomStore} />
+                                <Whiteboard
+                                    classRoomStore={classroomStore}
+                                    disableHandRaising={true}
+                                    whiteboardStore={whiteboardStore}
+                                />
+                            </div>
+                            {renderRealtimePanel()}
                         </div>
-                        {renderRealtimePanel()}
+                        <ExitRoomConfirm
+                            isCreator={classroomStore.isCreator}
+                            {...exitConfirmModalProps}
+                        />
+                        <RoomStatusStoppedModal
+                            isCreator={classroomStore.isCreator}
+                            isRemoteLogin={classroomStore.isRemoteLogin}
+                            roomStatus={classroomStore.roomStatus}
+                        />
                     </div>
-                    <ExitRoomConfirm
-                        isCreator={classroomStore.isCreator}
-                        {...exitConfirmModalProps}
-                    />
-                    <RoomStatusStoppedModal
-                        isCreator={classroomStore.isCreator}
-                        isRemoteLogin={classroomStore.isRemoteLogin}
-                        roomStatus={classroomStore.roomStatus}
-                    />
                 </div>
             </div>
         );
@@ -150,17 +172,20 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                     {/* TODO: open cloud-storage sub window */}
                     <CloudStorageButton classroom={classroomStore} />
                     <InviteButton roomInfo={classroomStore.roomInfo} />
-                    <TopBarRightBtn
-                        icon={<SVGExit />}
-                        title={t("exit")}
-                        onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
-                    />
-                    <TopBarDivider />
+                    {!windowsBtn?.showWindowsBtn && (
+                        <TopBarRightBtn
+                            icon={<SVGExit />}
+                            title={t("exit")}
+                            onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
+                        />
+                    )}
+                    {windowsBtn?.showWindowsBtn ? null : <TopBarDivider />}
                     <TopBarRightBtn
                         icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                         title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                         onClick={handleSideOpenerSwitch}
                     />
+                    {windowsBtn?.showWindowsBtn && <TopBarDivider />}
                 </>
             );
         }
