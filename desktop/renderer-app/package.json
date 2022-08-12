@@ -28,6 +28,8 @@
     "@netless/flat-service-provider-agora-rtc-electron": "workspace:*",
     "@netless/flat-service-provider-agora-rtm": "workspace:*",
     "@netless/flat-service-provider-fastboard": "workspace:*",
+    "@netless/flat-service-provider-file-convert-h5": "workspace:*",
+    "@netless/flat-service-provider-file-convert-netless": "workspace:*",
     "@netless/flat-services": "workspace:*",
     "@netless/player-controller": "^0.0.9",
     "@netless/video-js-plugin": "^0.3.8",

@@ -62,6 +62,27 @@ export function initFlatServices(): void {
             },
         });
     });
+
+    flatServices.register(
+        [
+            "file-convert:doc",
+            "file-convert:docx",
+            "file-convert:ppt",
+            "file-convert:pptx",
+            "file-convert:pdf",
+        ],
+        async () => {
+            const { FileConvertNetless } = await import(
+                "@netless/flat-service-provider-file-convert-netless"
+            );
+            return new FileConvertNetless();
+        },
+    );
+
+    flatServices.register("file-convert:ice", async () => {
+        const { FileConvertH5 } = await import("@netless/flat-service-provider-file-convert-h5");
+        return new FileConvertH5();
+    });
 }
 
 function createToaster(): Toaster {

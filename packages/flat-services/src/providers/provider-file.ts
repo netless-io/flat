@@ -75,16 +75,16 @@ export class FlatServiceProviderFile implements IServiceFile {
                             console.warn(e);
                         }
                         if (result.status === FileConvertStep.Failed) {
-                            this.toaster.emit("error", {
-                                message: this.flatI18n.t("transcoding-failure-reason"),
-                                args: {
+                            this.toaster.emit(
+                                "error",
+                                this.flatI18n.t("transcoding-failure-reason", {
                                     reason: result.error
                                         ? isServerRequestError(result.error)
                                             ? result.error.errorMessage
                                             : result.error.message
                                         : "",
-                                },
-                            });
+                                }),
+                            );
                         }
                     } else {
                         this.toaster.emit(

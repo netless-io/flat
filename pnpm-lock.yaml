@@ -159,6 +159,8 @@ importers:
       '@netless/flat-service-provider-agora-rtc-electron': workspace:*
       '@netless/flat-service-provider-agora-rtm': workspace:*
       '@netless/flat-service-provider-fastboard': workspace:*
+      '@netless/flat-service-provider-file-convert-h5': workspace:*
+      '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/player-controller': ^0.0.9
       '@netless/video-js-plugin': ^0.3.8
@@ -219,6 +221,8 @@ importers:
       '@netless/flat-service-provider-agora-rtc-electron': link:../../service-providers/agora-rtc/agora-rtc-electron
       '@netless/flat-service-provider-agora-rtm': link:../../service-providers/agora-rtm
       '@netless/flat-service-provider-fastboard': link:../../service-providers/fastboard
+      '@netless/flat-service-provider-file-convert-h5': link:../../service-providers/file-convert-h5
+      '@netless/flat-service-provider-file-convert-netless': link:../../service-providers/file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
       '@netless/video-js-plugin': 0.3.8_igmyzdvqqkv6gevwhshexnrgbm
