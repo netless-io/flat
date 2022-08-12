@@ -15,7 +15,7 @@
   "dependencies": {
     "@netless/flat-services": "workspace:*",
     "agora-rtm-sdk": "^1.4.4",
-    "side-effect-manager": "^1.1.2",
+    "side-effect-manager": "^1.1.3",
     "uuid": "^8.3.2"
   }
 }

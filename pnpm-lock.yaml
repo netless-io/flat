@@ -198,7 +198,7 @@ importers:
       remitter: ^0.2.6
       rollup-plugin-copy: ^3.4.0
       rollup-plugin-visualizer: ^5.6.0
-      side-effect-manager: ^1.1.2
+      side-effect-manager: ^1.1.3
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
@@ -247,7 +247,7 @@ importers:
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
       remitter: 0.2.6
-      side-effect-manager: 1.1.2
+      side-effect-manager: 1.1.3
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
@@ -376,14 +376,14 @@ importers:
       i18next-browser-languagedetector: ^6.1.4
       prettier: ^2.3.0
       react: ^17.0.2
-      side-effect-manager: ^1.1.2
+      side-effect-manager: ^1.1.3
       typescript: ^4.6.2
       use-value-enhancer: ^0.1.0
       value-enhancer: ^1.3.2
     dependencies:
       i18next: 21.8.16
       i18next-browser-languagedetector: 6.1.4
-      side-effect-manager: 1.1.2
+      side-effect-manager: 1.1.3
       use-value-enhancer: 0.1.0_s4t5ozp5v364eom36t7digbp2q
       value-enhancer: 1.3.2
     devDependencies:
@@ -435,7 +435,7 @@ importers:
       react-router-dom: ^5.2.0
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
-      side-effect-manager: ^1.1.2
+      side-effect-manager: ^1.1.3
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
@@ -475,7 +475,7 @@ importers:
       react-router-dom: 5.3.1_react@17.0.2
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
-      side-effect-manager: 1.1.2
+      side-effect-manager: 1.1.3
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
@@ -503,12 +503,12 @@ importers:
       '@netless/flat-server-api': workspace:*
       prettier: ^2.3.0
       remitter: ^0.2.6
-      side-effect-manager: ^1.1.2
+      side-effect-manager: ^1.1.3
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
     dependencies:
       remitter: 0.2.6
-      side-effect-manager: 1.1.2
+      side-effect-manager: 1.1.3
       value-enhancer: 1.3.2
     devDependencies:
       '@netless/flat-server-api': link:../flat-server-api
@@ -526,7 +526,7 @@ importers:
       mobx: ^6.6.1
       prettier: ^2.3.0
       react: ^17.0.2
-      side-effect-manager: ^1.1.2
+      side-effect-manager: ^1.1.3
       typescript: ^4.6.2
       uuid: ^8.3.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
@@ -535,7 +535,7 @@ importers:
       '@netless/flat-server-api': link:../flat-server-api
       '@netless/flat-services': link:../flat-services
       flat-components: link:../flat-components
-      side-effect-manager: 1.1.2
+      side-effect-manager: 1.1.3
       uuid: 8.3.2
     devDependencies:
       '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
@@ -555,13 +555,13 @@ importers:
       agora-electron-sdk: 3.7.0-build.527
       fs-extra: ^10.0.1
       prettier: ^2.3.0
-      side-effect-manager: ^1.1.2
+      side-effect-manager: ^1.1.3
       typescript: ^4.6.2
     dependencies:
       '@netless/flat-services': link:../../../packages/flat-services
       agora-electron-sdk: 3.7.0-build.527
       fs-extra: 10.1.0
-      side-effect-manager: 1.1.2
+      side-effect-manager: 1.1.3
     devDependencies:
       prettier: 2.6.2
       typescript: 4.6.4
@@ -571,13 +571,13 @@ importers:
       '@netless/flat-services': workspace:*
       agora-rtc-sdk-ng: ^4.12.2
       prettier: ^2.3.0
-      side-effect-manager: ^1.1.2
+      side-effect-manager: ^1.1.3
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
     dependencies:
       '@netless/flat-services': link:../../../packages/flat-services
       agora-rtc-sdk-ng: 4.12.2
-      side-effect-manager: 1.1.2
+      side-effect-manager: 1.1.3
       value-enhancer: 1.3.2
     devDependencies:
       prettier: 2.6.2
@@ -588,13 +588,13 @@ importers:
       '@netless/flat-services': workspace:*
       agora-rtm-sdk: ^1.4.4
       prettier: ^2.3.0
-      side-effect-manager: ^1.1.2
+      side-effect-manager: ^1.1.3
       typescript: ^4.6.2
       uuid: ^8.3.2
     dependencies:
       '@netless/flat-services': link:../../packages/flat-services
       agora-rtm-sdk: 1.4.4
-      side-effect-manager: 1.1.2
+      side-effect-manager: 1.1.3
       uuid: 8.3.2
     devDependencies:
       prettier: 2.6.2
@@ -634,6 +634,7 @@ importers:
       '@netless/flat-services': workspace:*
       '@netless/window-manager': ^0.4.37
       prettier: ^2.3.0
+      side-effect-manager: ^1.1.3
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
@@ -643,6 +644,7 @@ importers:
       '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
+      side-effect-manager: 1.1.3
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
     devDependencies:
@@ -725,7 +727,7 @@ importers:
       react-use: ^17.3.2
       react-virtualized: ^9.22.3
       remitter: ^0.2.6
-      side-effect-manager: ^1.1.2
+      side-effect-manager: ^1.1.3
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
@@ -775,7 +777,7 @@ importers:
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
       remitter: 0.2.6
-      side-effect-manager: 1.1.2
+      side-effect-manager: 1.1.3
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
@@ -3167,7 +3169,7 @@ packages:
       white-web-sdk: '>=2.16.0'
     dependencies:
       '@netless/app-slide': 0.2.2
-      '@netless/synced-store': 2.0.4_white-web-sdk-esm@2.16.24
+      '@netless/synced-store': 2.0.5_white-web-sdk-esm@2.16.24
       '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
       white-web-sdk: /white-web-sdk-esm/2.16.24
 
@@ -3222,15 +3224,15 @@ packages:
       white-web-sdk: /white-web-sdk-esm/2.16.24
     dev: false
 
-  /@netless/synced-store/2.0.4_white-web-sdk-esm@2.16.24:
-    resolution: {integrity: sha512-F+wdSSsHNrxOaKz05QFWLU4X3UePrW6Mcs+KGXcET3fM6GEr/nV1vtq1fvL1pWnhYqqCp4AGciQ+ebk3qTpOzw==}
+  /@netless/synced-store/2.0.5_white-web-sdk-esm@2.16.24:
+    resolution: {integrity: sha512-apL1HV+e6OJ2YIzizPqNb5tPboO4LB5HHeHKzh9N+Cc5NqbrYgGdQuSWVD2Xbj5MajKJzPNVOaJ3vXTdgUlIuw==}
     requiresBuild: true
     peerDependencies:
       white-web-sdk: '>= 2.16'
     dependencies:
       lodash-es: 4.17.21
       remitter: 0.2.6
-      side-effect-manager: 1.1.1
+      side-effect-manager: 1.1.3
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
 
@@ -5180,8 +5182,8 @@ packages:
   /@types/node/17.0.40:
     resolution: {integrity: sha512-UXdBxNGqTMtm7hCwh9HtncFVLrXoqA3oJW30j6XWp5BH/wu3mVeaxo7cq5benFdBw34HB3XDT2TRPI7rXZ+mDg==}
 
-  /@types/node/18.6.5:
-    resolution: {integrity: sha512-Xjt5ZGUa5WusGZJ4WJPbOT8QOqp6nDynVFRKcUt32bOgvXEoc6o085WNkYTMO7ifAj2isEfQQ2cseE+wT6jsRw==}
+  /@types/node/18.7.1:
+    resolution: {integrity: sha512-GKX1Qnqxo4S+Z/+Z8KKPLpH282LD7jLHWJcVryOflnsnH+BtSDfieR6ObwBMwpnNws0bUK8GI7z0unQf9bARNQ==}
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -15058,7 +15060,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 18.6.5
+      '@types/node': 18.7.1
       long: 4.0.0
 
   /proxy-addr/2.0.7:
@@ -17146,12 +17148,8 @@ packages:
   /side-effect-manager/0.1.5:
     resolution: {integrity: sha512-aAEXMS+9qW7rY2cwq4S6UjW3IBO/ZLWRI0sH1oGJ1eDE7YBFR1TW950qffnpx/0hByusAOVbu2zjThk9Vcjs+Q==}
 
-  /side-effect-manager/1.1.1:
-    resolution: {integrity: sha512-ppUBbzOXLydre40Yz553eIIlTdf2WCJcqMI4n06sTRCA2o5AwG5WQ2qq6fHp5C8RK3TAfgtZKrhllNG2F1jzCA==}
-
-  /side-effect-manager/1.1.2:
-    resolution: {integrity: sha512-gzPFfSfpw9qZJwcjEDJzgEJoAcr7na0JnB/Esvfzn116Bm0MsOtKeMM6g+FyFioF+EXdjDaXAV5YsZ1fxQgoKA==}
-    dev: false
+  /side-effect-manager/1.1.3:
+    resolution: {integrity: sha512-bD3zMAmMpVa5OR42UHK5HKY6XB/+d4NiICTMQAxwMTGkGY8epcnjK3+b0nuFb+9r1YBlVhSh+lt6wLMLdOxP4w==}
 
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
