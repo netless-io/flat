@@ -1,6 +1,6 @@
 import "./OneToOnePage.less";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
@@ -51,7 +51,6 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
         const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
         const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
-        const topBarRef = useRef<HTMLDivElement>(null);
 
         const joiner = useComputed(() => {
             if (classroomStore.isCreator) {
@@ -73,18 +72,6 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
             }
         }, [classroomStore]);
 
-        useEffect(() => {
-            const topBarEl = topBarRef.current;
-            if (windowsBtn && topBarEl) {
-                topBarEl.addEventListener("dblclick", windowsBtn.clickWindowMaximize);
-
-                return () => {
-                    topBarEl.removeEventListener("dblclick", windowsBtn.clickWindowMaximize);
-                };
-            }
-            return;
-        }, [windowsBtn]);
-
         return (
             <div className="one-to-one-class-page-container">
                 <div className="one-to-one-realtime-container">
@@ -94,8 +81,8 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                                 left={renderTopBarLeft()}
                                 right={renderTopBarRight()}
                                 showWindowsSystemBtn={windowsBtn.showWindowsBtn}
-                                topBarRef={topBarRef}
                                 onClickWindowsSystemBtn={windowsBtn.onClickWindowsSystemBtn}
+                                onDoubleClick={windowsBtn.clickWindowMaximize}
                             />
                         ) : (
                             <TopBar left={renderTopBarLeft()} right={renderTopBarRight()} />

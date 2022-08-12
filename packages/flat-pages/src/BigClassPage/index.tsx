@@ -15,7 +15,7 @@ import {
     SVGScreenSharing,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslate } from "@netless/flat-i18n";
 import { RoomStatus } from "@netless/flat-server-api";
 import { ChatPanel } from "../components/ChatPanel";
@@ -49,7 +49,6 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
         const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
         const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
-        const topBarRef = useRef<HTMLDivElement>(null);
 
         const speakingJoiner =
             classroomStore.users.speakingJoiners.length > 0
@@ -62,18 +61,6 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
             }
         }, [classroomStore]);
 
-        useEffect(() => {
-            const topBarEl = topBarRef.current;
-            if (windowsBtn && topBarEl) {
-                topBarEl.addEventListener("dblclick", windowsBtn.clickWindowMaximize);
-
-                return () => {
-                    topBarEl.removeEventListener("dblclick", windowsBtn.clickWindowMaximize);
-                };
-            }
-            return;
-        }, [windowsBtn]);
-
         return (
             <div className="big-class-page-container">
                 <div className="big-class-realtime-container">
@@ -83,8 +70,8 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                                 left={renderTopBarLeft()}
                                 right={renderTopBarRight()}
                                 showWindowsSystemBtn={windowsBtn.showWindowsBtn}
-                                topBarRef={topBarRef}
                                 onClickWindowsSystemBtn={windowsBtn.onClickWindowsSystemBtn}
+                                onDoubleClick={windowsBtn.clickWindowMaximize}
                             />
                         ) : (
                             <TopBar left={renderTopBarLeft()} right={renderTopBarRight()} />

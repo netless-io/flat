@@ -1,6 +1,6 @@
 import "./SmallClassPage.less";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { message } from "antd";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
@@ -56,25 +56,12 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
         const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
         const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
-        const topBarRef = useRef<HTMLDivElement>(null);
 
         useEffect(() => {
             if (classroomStore.isCreator && classroomStore.roomStatus === RoomStatus.Idle) {
                 void classroomStore.startClass();
             }
         }, [classroomStore]);
-
-        useEffect(() => {
-            const topBarEl = topBarRef.current;
-            if (windowsBtn && topBarEl) {
-                topBarEl.addEventListener("dblclick", windowsBtn.clickWindowMaximize);
-
-                return () => {
-                    topBarEl.removeEventListener("dblclick", windowsBtn.clickWindowMaximize);
-                };
-            }
-            return;
-        }, [windowsBtn]);
 
         return (
             <div className="small-class-page-container">
@@ -86,8 +73,8 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                                 left={renderTopBarLeft()}
                                 right={renderTopBarRight()}
                                 showWindowsSystemBtn={windowsBtn.showWindowsBtn}
-                                topBarRef={topBarRef}
                                 onClickWindowsSystemBtn={windowsBtn.onClickWindowsSystemBtn}
+                                onDoubleClick={windowsBtn.clickWindowMaximize}
                             />
                         ) : (
                             <TopBar left={renderTopBarLeft()} right={renderTopBarRight()} />

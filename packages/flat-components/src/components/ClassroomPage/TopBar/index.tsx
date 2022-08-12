@@ -20,9 +20,9 @@ export interface TopBarProps {
     right?: ReactNode;
     showWindowsSystemBtn?: boolean;
     hiddenMaximizeBtn?: boolean;
-    topBarRef?: React.RefObject<HTMLDivElement>;
     // flat-web don't need pass this method.
     onClickWindowsSystemBtn?: WindowsSystemBtnProps["onClickWindowsSystemBtn"];
+    onDoubleClick?: () => void;
 }
 
 export const TopBar: FC<TopBarProps> = ({
@@ -30,11 +30,14 @@ export const TopBar: FC<TopBarProps> = ({
     center,
     right,
     showWindowsSystemBtn,
-    topBarRef,
     hiddenMaximizeBtn,
     onClickWindowsSystemBtn,
+    onDoubleClick,
 }) => (
-    <div ref={topBarRef} className={classNames("topbar-box", { showWindowsSystemBtn })}>
+    <div
+        className={classNames("topbar-box", { showWindowsSystemBtn })}
+        onDoubleClick={onDoubleClick}
+    >
         <div className="topbar-content-left">{left}</div>
         <div className="topbar-content-center">{center}</div>
         <div className="topbar-content-right">
