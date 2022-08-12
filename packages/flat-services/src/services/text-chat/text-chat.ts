@@ -1,5 +1,6 @@
 import { Remitter } from "remitter";
 import { SideEffectManager } from "side-effect-manager";
+import { IService } from "../typing";
 import {
     IServiceTextChatPeerCommandData,
     IServiceTextChatPeerCommandNames,
@@ -16,7 +17,7 @@ export interface IServiceTextChatJoinRoomConfig {
     refreshToken?: (roomUUID: string) => Promise<string>;
 }
 
-export abstract class IServiceTextChat {
+export abstract class IServiceTextChat implements IService {
     protected readonly sideEffect = new SideEffectManager();
 
     public abstract readonly members: Set<string>;

@@ -1,0 +1,19 @@
+{
+  "name": "@netless/flat-service-provider-file-convert-h5",
+  "version": "0.1.0",
+  "description": "HTML5 Courseware File Conversion",
+  "main": "src/index.ts",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "@netless/flat-services": "workspace:*",
+    "@netless/flat-server-api": "workspace:*"
+  }
+}

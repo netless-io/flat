@@ -1,12 +1,18 @@
-import { FlatServices, Toaster } from "@netless/flat-services";
+import { FlatServiceProviderFile, FlatServices, Toaster } from "@netless/flat-services";
 import type { AgoraRTCElectron } from "@netless/flat-service-provider-agora-rtc-electron";
 import { FlatI18n } from "@netless/flat-i18n";
 import { Remitter } from "remitter";
 import { message } from "antd";
 
 export function initFlatServices(): void {
-    const flatServices = FlatServices.getInstance();
     const toaster = createToaster();
+    const flatI18n = FlatI18n.getInstance();
+    const flatServices = FlatServices.getInstance();
+
+    flatServices.register(
+        "file",
+        async () => new FlatServiceProviderFile(flatServices, toaster, flatI18n),
+    );
 
     flatServices.register("videoChat", async () => {
         const { AgoraRTCElectron } = await import(
@@ -47,7 +53,7 @@ export function initFlatServices(): void {
         return new Fastboard({
             APP_ID: process.env.NETLESS_APP_IDENTIFIER,
             toaster,
-            flatI18n: FlatI18n.getInstance(),
+            flatI18n,
             flatInfo: {
                 platform: "electron",
                 ua: process.env.FLAT_UA,
