@@ -41,6 +41,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
 
     private uid?: IServiceVideoChatUID;
     private roomUUID?: string;
+    private mode?: IServiceVideoChatMode;
 
     public shareScreenUID?: IServiceVideoChatUID;
 
@@ -208,6 +209,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
         this._roomSideEffect.flushAll();
         this.uid = undefined;
         this.roomUUID = undefined;
+        this.mode = undefined;
         this.shareScreenUID = undefined;
         this.shareScreen.setActive(false);
         this.shareScreen.setParams(null);
@@ -239,8 +241,8 @@ export class AgoraRTCElectron extends IServiceVideoChat {
         return this._volumeLevels.get(uid || "0") || 0;
     }
 
-    public setRole(role: IServiceVideoChatRole): void {
-        if (this.rtcEngine) {
+    public async setRole(role: IServiceVideoChatRole): Promise<void> {
+        if (this.rtcEngine && this.mode === IServiceVideoChatMode.Broadcast) {
             this.rtcEngine.setClientRole(role === IServiceVideoChatRole.Host ? 1 : 2);
         }
     }
@@ -567,6 +569,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
         this.uid = uid;
         this.roomUUID = roomUUID;
         this.shareScreenUID = shareScreenUID;
+        this.mode = mode;
         this.shareScreen.setParams({
             roomUUID,
             token: shareScreenToken,

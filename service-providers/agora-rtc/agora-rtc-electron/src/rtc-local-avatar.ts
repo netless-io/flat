@@ -1,6 +1,6 @@
 import { SideEffectManager } from "side-effect-manager";
 import { Val } from "value-enhancer";
-import type { IServiceVideoChatAvatar } from "@netless/flat-services";
+import { IServiceVideoChatAvatar, IServiceVideoChatRole } from "@netless/flat-services";
 import type { AgoraRTCElectron } from "./agora-rtc-electron";
 
 export interface RTCAvatarConfig {
@@ -41,12 +41,16 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
             this._el$.subscribe(el => {
                 try {
                     if (el) {
+                        if (this._shouldCamera$.value || this._shouldMic$.value) {
+                            this._rtc.setRole(IServiceVideoChatRole.Host);
+                        }
                         this._rtc.rtcEngine.setupLocalVideo(el);
                         this._rtc.rtcEngine.enableLocalAudio(this._shouldMic$.value);
                         this._rtc.rtcEngine.enableLocalVideo(this._shouldCamera$.value);
                     } else {
                         this._rtc.rtcEngine.enableLocalAudio(false);
                         this._rtc.rtcEngine.enableLocalVideo(false);
+                        this._rtc.setRole(IServiceVideoChatRole.Audience);
                     }
                 } catch (e) {
                     console.error(e);
@@ -58,7 +62,13 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
             this._shouldMic$.reaction(shouldMic => {
                 if (this._el$.value) {
                     try {
-                        this._rtc.rtcEngine.enableLocalAudio(shouldMic);
+                        if (shouldMic) {
+                            this._rtc.setRole(IServiceVideoChatRole.Host);
+                            this._rtc.rtcEngine.enableLocalAudio(true);
+                        } else {
+                            this._rtc.rtcEngine.enableLocalAudio(false);
+                            this._rtc.setRole(IServiceVideoChatRole.Audience);
+                        }
                     } catch (e) {
                         console.error(e);
                     }
@@ -70,7 +80,13 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
             this._shouldCamera$.reaction(shouldCamera => {
                 if (this._el$.value) {
                     try {
-                        this._rtc.rtcEngine.enableLocalVideo(shouldCamera);
+                        if (shouldCamera) {
+                            this._rtc.setRole(IServiceVideoChatRole.Host);
+                            this._rtc.rtcEngine.enableLocalVideo(true);
+                        } else {
+                            this._rtc.rtcEngine.enableLocalVideo(false);
+                            this._rtc.setRole(IServiceVideoChatRole.Audience);
+                        }
                     } catch (e) {
                         console.error(e);
                     }

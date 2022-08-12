@@ -127,8 +127,9 @@ export class ClassroomStore {
             rtc: observable.ref,
             rtm: observable.ref,
             sideEffect: false,
-            deviceStateStorage: observable.ref,
-            classroomStorage: observable.ref,
+            deviceStateStorage: false,
+            classroomStorage: false,
+            onStageUsersStorage: false,
         });
 
         this.sideEffect.addDisposer(
@@ -265,6 +266,10 @@ export class ClassroomStore {
         this.classroomStorage = classroomStorage;
         this.onStageUsersStorage = onStageUsersStorage;
 
+        if (!this.isCreator) {
+            this.whiteboardStore.updateWritable(Boolean(onStageUsersStorage.state[this.userUUID]));
+        }
+
         this.updateClassMode(classroomStorage.state.classMode);
 
         this.chatStore.onNewMessage = message => {
@@ -346,7 +351,7 @@ export class ClassroomStore {
         );
 
         this.sideEffect.addDisposer(
-            onStageUsersStorage.on("stateChanged", diff => {
+            onStageUsersStorage.on("stateChanged", () => {
                 this.users.updateUsers(user => {
                     if (onStageUsersStorage.state[user.userUUID]) {
                         user.isSpeak = true;
@@ -363,9 +368,10 @@ export class ClassroomStore {
                     }
                 });
 
-                const userUUID = this.users.currentUser?.userUUID;
-                if (!this.isCreator && userUUID && diff[userUUID]) {
-                    this.whiteboardStore.updateWritable(Boolean(diff[userUUID]?.newValue));
+                if (!this.isCreator) {
+                    this.whiteboardStore.updateWritable(
+                        Boolean(onStageUsersStorage.state[this.userUUID]),
+                    );
                 }
             }),
         );
@@ -668,7 +674,11 @@ export class ClassroomStore {
                     this.roomInfo?.roomType === RoomType.BigClass
                         ? IServiceVideoChatMode.Broadcast
                         : IServiceVideoChatMode.Communication,
-                role: this.isCreator ? IServiceVideoChatRole.Host : IServiceVideoChatRole.Audience,
+                role:
+                    this.isCreator ||
+                    (globalStore.userUUID && this.onStageUsersStorage?.state[globalStore.userUUID])
+                        ? IServiceVideoChatRole.Host
+                        : IServiceVideoChatRole.Audience,
                 refreshToken: generateRTCToken,
                 shareScreenUID: String(globalStore.rtcShareScreen?.uid || -1),
                 shareScreenToken: globalStore.rtcShareScreen?.token || "",

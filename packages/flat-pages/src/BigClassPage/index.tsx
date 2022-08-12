@@ -17,7 +17,6 @@ import {
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { useTranslate } from "@netless/flat-i18n";
-import { IServiceVideoChatRole } from "@netless/flat-services";
 import { RoomStatus } from "@netless/flat-server-api";
 import { ChatPanel } from "../components/ChatPanel";
 import { RoomStatusStoppedModal } from "../components/ClassRoom/RoomStatusStoppedModal";
@@ -30,8 +29,6 @@ import {
 import InviteButton from "../components/InviteButton";
 import { RealtimePanel } from "../components/RealtimePanel";
 import { Whiteboard } from "../components/Whiteboard";
-import { User } from "@netless/flat-stores";
-import { useAutoRun } from "../utils/mobx";
 import { runtime } from "../utils/runtime";
 import { RTCAvatar } from "../components/RTCAvatar";
 import { ShareScreen } from "../components/ShareScreen";
@@ -50,27 +47,12 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
 
         const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
-        const [speakingJoiner, setSpeakingJoiner] = useState<User | undefined>();
         const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
-        useAutoRun(() => {
-            if (classroomStore.users.speakingJoiners.length <= 0) {
-                setSpeakingJoiner(void 0);
-                return;
-            }
-
-            // only one user is allowed to speak in big class
-            const user = classroomStore.users.speakingJoiners[0];
-
-            setSpeakingJoiner(user);
-
-            // is current user speaking
-            if (classroomStore.userUUID === user.userUUID) {
-                void classroomStore.rtc.setRole(
-                    user.isSpeak ? IServiceVideoChatRole.Host : IServiceVideoChatRole.Audience,
-                );
-            }
-        });
+        const speakingJoiner =
+            classroomStore.users.speakingJoiners.length > 0
+                ? classroomStore.users.speakingJoiners[0]
+                : undefined;
 
         useEffect(() => {
             if (classroomStore.isCreator && classroomStore.roomStatus === RoomStatus.Idle) {

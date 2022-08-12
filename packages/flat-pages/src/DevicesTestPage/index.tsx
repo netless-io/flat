@@ -55,9 +55,8 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
 
             return () => {
                 window.clearInterval(ticket);
-                // @TODO @FIXME fix track reuse
-                // avatar.enableCamera(false);
-                // avatar.enableMic(false);
+                avatar.enableCamera(false);
+                avatar.enableMic(false);
                 avatar.setElement(null);
             };
         }
