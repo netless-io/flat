@@ -11,7 +11,7 @@ export default storyMeta;
 
 export const Overview: Story<TopBarProps> = args => <TopBar {...args} />;
 Overview.args = {
-    isMac: true,
+    showWindowsSystemBtn: true,
     left: <span>Hello</span>,
     center: <span>,</span>,
     right: <span>world</span>,

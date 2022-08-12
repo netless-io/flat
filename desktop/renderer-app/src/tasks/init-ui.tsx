@@ -14,6 +14,7 @@ import { IPCContext } from "../components/IPCContext";
 
 /** configure right after import */
 import { configure } from "mobx";
+import { windowsBtnContext } from "../components/WindowsBtnContext";
 configure({
     isolateGlobalState: true,
 });
@@ -23,7 +24,7 @@ const App: React.FC = () => {
 
     return (
         <AntdProvider lang={language}>
-            <StoreProvider>
+            <StoreProvider WindowsBtnContext={windowsBtnContext}>
                 <IPCContext.Provider value={ipcStore}>
                     <FlatServicesContextProvider>
                         <AppRoutes />

@@ -5,10 +5,11 @@ import {
     errorTips,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { RoomStatus } from "@netless/flat-server-api";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../utils/routes";
+import { WindowsSystemBtnContext } from "./StoreProvider";
 
 export enum ExitRoomConfirmType {
     StopClassButton,
@@ -42,6 +43,8 @@ export function useExitRoomConfirmModal({
     const [isStopLoading, setStopLoading] = useState(false);
     const sp = useSafePromise();
     const pushHistory = usePushHistory();
+
+    const windowsBtn = useContext(WindowsSystemBtnContext);
 
     const onReturnMain = useCallback(async () => {
         setReturnLoading(true);
@@ -86,17 +89,15 @@ export function useExitRoomConfirmModal({
     );
 
     // TODO:
-    /**
-      useEffect(() => {
-        ipcReceive("window-will-close", () => {
-            confirm(ExitRoomConfirmType.ExitButton);
-           })
-
-        return () => {
-            ipcReceiveRemove("window-will-close");
+    useEffect(() => {
+        if (windowsBtn) {
+            windowsBtn.sendWindowWillCloseEvent(() => confirm(ExitRoomConfirmType.ExitButton));
+            return () => {
+                windowsBtn.removeWindowWillCloseEvent();
+            };
         }
-        })
-    */
+        return;
+    });
 
     return {
         confirmType,
