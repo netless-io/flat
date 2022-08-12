@@ -29,7 +29,6 @@ import {
     renameExternalFile,
 } from "../../api-middleware/flatServer/storage";
 import { errorTips } from "../../components/Tips/ErrorTips";
-import { getCoursewarePreloader } from "../../utils/courseware-preloader";
 import { getUploadTaskManager } from "../../utils/upload-task-manager";
 import { UploadStatusType, UploadTask } from "../../utils/upload-task-manager/upload-task";
 import { createResourcePreview, FileInfo } from "./CloudStorageFilePreview";
@@ -696,14 +695,6 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             runInAction(() => {
                 file.convert = statusText === "Fail" ? "error" : "success";
             });
-
-            if (statusText === "Finished" && status.prefix) {
-                const src = status.prefix + "/" + status.uuid + dynamic + "/1.png";
-                if (src) {
-                    void getCoursewarePreloader().preload(src).catch(console.warn);
-                }
-            }
-
             return true;
         }
 
