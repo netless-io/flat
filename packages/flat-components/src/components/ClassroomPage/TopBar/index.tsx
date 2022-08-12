@@ -18,7 +18,7 @@ export interface TopBarProps {
     left?: ReactNode;
     center?: ReactNode;
     right?: ReactNode;
-    isMac?: boolean;
+    showWindowsSystemBtn?: boolean;
     hiddenMaximizeBtn?: boolean;
     topBarRef?: React.RefObject<HTMLDivElement>;
     // flat-web don't need pass this method.
@@ -29,17 +29,17 @@ export const TopBar: FC<TopBarProps> = ({
     left,
     center,
     right,
-    isMac,
+    showWindowsSystemBtn,
     topBarRef,
     hiddenMaximizeBtn,
     onClickWindowsSystemBtn,
 }) => (
-    <div ref={topBarRef} className={classNames("topbar-box", { isMac, isWin: !isMac })}>
+    <div ref={topBarRef} className={classNames("topbar-box", { showWindowsSystemBtn })}>
         <div className="topbar-content-left">{left}</div>
         <div className="topbar-content-center">{center}</div>
         <div className="topbar-content-right">
             {right}
-            {!isMac && onClickWindowsSystemBtn && (
+            {showWindowsSystemBtn && onClickWindowsSystemBtn && (
                 <>
                     <WindowsSystemBtn
                         hiddenMaximizeBtn={hiddenMaximizeBtn}
