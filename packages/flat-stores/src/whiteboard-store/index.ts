@@ -122,17 +122,8 @@ export class WhiteboardStore {
     };
 
     public updateWritable = async (isWritable: boolean): Promise<void> => {
-        const oldWritable = this.isWritable;
-
         this.isWritable = isWritable;
         this.whiteboard.setAllowDrawing(isWritable);
-        if (oldWritable !== isWritable && this.room) {
-            try {
-                await this.room.setWritable(isWritable);
-            } catch {
-                /* ignored */
-            }
-        }
     };
 
     public updateWindowMaximization = (isMaximization: boolean): void => {

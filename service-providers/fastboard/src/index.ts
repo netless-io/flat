@@ -10,6 +10,7 @@ import {
 } from "@netless/flat-services";
 import { WindowManager } from "@netless/window-manager";
 import { ReadonlyVal, Val, combine } from "value-enhancer";
+import { AsyncSideEffectManager } from "side-effect-manager";
 
 declare global {
     interface Window {
@@ -32,6 +33,7 @@ export interface FastboardConfig {
 }
 
 export class Fastboard extends IServiceWhiteboard {
+    private asyncSideEffect = new AsyncSideEffectManager();
     private toaster: Toaster;
     private flatI18n: FlatI18n;
     private flatInfo: FlatInfo;
@@ -95,20 +97,36 @@ export class Fastboard extends IServiceWhiteboard {
         this.setUA();
 
         this.sideEffect.push([
-            combine([this._app$, allowDrawing$]).subscribe(async ([app, allowDrawing]) => {
+            combine([this._app$, allowDrawing$]).subscribe(([app, allowDrawing]) => {
                 const room = app?.room;
                 if (!room) {
                     return;
                 }
                 room.disableDeviceInputs = !allowDrawing;
-                if (allowDrawing && !room.isWritable) {
-                    try {
-                        await app.room.setWritable(true);
-                    } catch (e) {
-                        if (process.env.NODE_ENV !== "production") {
-                            console.error(e);
+                // room.isWritable follows allowDrawing for now
+                if (allowDrawing !== room.isWritable) {
+                    this.asyncSideEffect.add(async () => {
+                        let isDisposed = false;
+                        try {
+                            if (room.isWritable) {
+                                // wait until room isWritable
+                                // remove after the issue is fixed
+                                await app.syncedStore.nextFrame();
+                                if (isDisposed) {
+                                    await app.room.setWritable(false);
+                                }
+                            } else {
+                                await app.room.setWritable(true);
+                            }
+                        } catch (e) {
+                            if (process.env.NODE_ENV !== "production") {
+                                console.error(e);
+                            }
                         }
-                    }
+                        return () => {
+                            isDisposed = true;
+                        };
+                    }, "setWritable");
                 }
             }),
             this._el$.subscribe(el => (el ? this.ui.mount(el) : this.ui.destroy())),
@@ -232,6 +250,7 @@ export class Fastboard extends IServiceWhiteboard {
 
     public override async destroy(): Promise<void> {
         super.destroy();
+        this.asyncSideEffect.flushAll();
         await this.leaveRoom();
     }
 
