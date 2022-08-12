@@ -11,10 +11,9 @@ import { useHistory, useLocation } from "react-router-dom";
 import { DeviceCheckState } from "./utils";
 import { MainPageLayoutItem } from "flat-components";
 import { useTranslate } from "@netless/flat-i18n";
+import { PageStoreContext } from "@netless/flat-pages/src/components/StoreProvider";
 
 export const DeviceCheckLayoutContainer: React.FC = ({ children }): React.ReactElement => {
-    useWindowSize("Main");
-
     const t = useTranslate();
     const history = useHistory<DeviceCheckState>();
     const location = useLocation<DeviceCheckState | undefined>();
