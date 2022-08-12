@@ -1,7 +1,6 @@
 import "./index.less";
 
 import React, { useContext, useEffect } from "react";
-import { clipboard } from "electron";
 import { LoadingPage, MainPageHeader, RoomDetailPanel } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { useHistory, useParams } from "react-router-dom";
@@ -140,7 +139,7 @@ export const RoomDetailPage = observer<{}>(function RoomDetailPage() {
                         roomInfo={roomInfo}
                         userName={roomInfo.ownerName || ""}
                         onCancelRoom={onCancelRoom}
-                        onCopyInvitation={text => clipboard.writeText(text)}
+                        onCopyInvitation={text => navigator.clipboard.writeText(text)}
                         onJoinRoom={joinRoom}
                         onModifyRoom={jumpToModifyRoom}
                         onReplayRoom={jumpToReplayPage}

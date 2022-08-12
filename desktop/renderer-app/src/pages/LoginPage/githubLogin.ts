@@ -1,7 +1,6 @@
 import { setAuthUUID, loginProcess } from "../../api-middleware/flatServer";
 import { v4 as uuidv4 } from "uuid";
 import { LoginExecutor } from "./utils";
-import { shell } from "electron";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { FLAT_SERVER_LOGIN } from "../../api-middleware/flatServer/constants";
 import { GITHUB } from "../../constants/process";
@@ -18,7 +17,9 @@ export const githubLogin: LoginExecutor = onSuccess => {
             return;
         }
 
-        void shell.openExternal(getGithubURL(authUUID, FLAT_SERVER_LOGIN.GITHUB_CALLBACK));
+        void window.electron.shell.openExternal(
+            getGithubURL(authUUID, FLAT_SERVER_LOGIN.GITHUB_CALLBACK),
+        );
 
         const githubLoginProcessRequest = async (): Promise<void> => {
             try {

@@ -2,7 +2,7 @@ import AgoraRTM, { RtmChannel, RtmClient } from "agora-rtm-sdk";
 import polly from "polly-js";
 import { v4 as uuidv4 } from "uuid";
 import { AGORA, NODE_ENV } from "../constants/process";
-import { EventEmitter } from "events";
+import { EventEmitter } from "eventemitter3";
 import { RoomStatus } from "./flatServer/constants";
 import { generateRTMToken } from "./flatServer/agora";
 import { globalStore } from "../stores/global-store";
@@ -154,7 +154,7 @@ export declare interface Rtm {
 }
 
 // eslint-disable-next-line no-redeclare
-export class Rtm extends EventEmitter {
+export class Rtm extends EventEmitter<keyof RTMEvents> {
     public static MessageType = AgoraRTM.MessageType;
 
     public client: RtmClient;
@@ -192,7 +192,7 @@ export class Rtm extends EventEmitter {
                 try {
                     const { r, t, v } = JSON.parse(msg.text);
                     if (r === this.commandsID && t) {
-                        this.emit(t as string, v, senderId);
+                        this.emit(t as keyof RTMEvents, v, senderId);
                         if (NODE_ENV === "development") {
                             console.log(`[RTM] Received p2p command from ${senderId}: `, t, v);
                         }
@@ -242,7 +242,7 @@ export class Rtm extends EventEmitter {
                     try {
                         const { t, v } = JSON.parse(msg.text);
                         if (t) {
-                            this.emit(t as string, v, senderId);
+                            this.emit(t as keyof RTMEvents, v, senderId);
                             if (NODE_ENV === "development") {
                                 console.log(`[RTM] Received command from ${senderId}: `, t, v);
                             }

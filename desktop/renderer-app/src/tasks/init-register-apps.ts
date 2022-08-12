@@ -1,5 +1,4 @@
 import AppSlide, { addHooks as addHooksSlide } from "@netless/app-slide";
-import path from "path";
 import { register } from "@netless/fastboard-react";
 
 const registerApps = (): void => {
@@ -60,7 +59,7 @@ export const initRegisterApps = (): void => {
 const getVSPath = (): string => {
     let vsPath;
     if (process.env.NODE_ENV === "production") {
-        vsPath = path.join(__dirname, "monaco-editor", "min", "vs");
+        vsPath = window.node.path.join(__dirname, "monaco-editor", "min", "vs");
     } else {
         const nodeModulesName = "node_modules";
         const nodeModulesEndIndexByPath =
@@ -68,7 +67,7 @@ const getVSPath = (): string => {
 
         const rootNodeModulesPath = __dirname.slice(0, nodeModulesEndIndexByPath);
 
-        vsPath = path.join(rootNodeModulesPath, "monaco-editor", "min", "vs");
+        vsPath = window.node.path.join(rootNodeModulesPath, "monaco-editor", "min", "vs");
     }
 
     return `file:///${vsPath.replace(/\\/g, "/")}`;
