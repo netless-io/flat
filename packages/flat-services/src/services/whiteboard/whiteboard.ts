@@ -2,10 +2,11 @@ import type { Region, RoomType } from "@netless/flat-server-api";
 import { Remitter } from "remitter";
 import { SideEffectManager } from "side-effect-manager";
 import { ReadonlyVal } from "value-enhancer";
+import { IService } from "../typing";
 import { IServiceWhiteboardPhase } from "./constants";
 import { IServiceWhiteboardEvents } from "./events";
 
-export interface IServiceWhiteboardJoinRoomConfig {
+export interface IServiceWhiteboardJoinRoomConfig extends IService {
     appID?: string;
     roomID: string;
     roomToken: string;

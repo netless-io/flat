@@ -1,5 +1,6 @@
 import { Remitter } from "remitter";
 import { SideEffectManager } from "side-effect-manager";
+import { IService } from "../typing";
 import { IServiceVideoChatMode, IServiceVideoChatRole } from "./constants";
 import { IServiceVideoChatEventData } from "./events";
 import { IServiceShareScreen } from "./share-screen";
@@ -30,7 +31,7 @@ export interface IServiceVideoChatJoinRoomConfig {
     shareScreenToken: string;
 }
 
-export abstract class IServiceVideoChat {
+export abstract class IServiceVideoChat implements IService {
     protected readonly sideEffect = new SideEffectManager();
 
     public readonly events = new Remitter<IServiceVideoChatEventData>();

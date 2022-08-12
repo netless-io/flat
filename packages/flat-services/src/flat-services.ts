@@ -1,12 +1,14 @@
+import { IServiceFile, IServiceFileCatalog } from "./services/file";
 import { IServiceTextChat } from "./services/text-chat";
 import { IServiceVideoChat } from "./services/video-chat";
 import { IServiceWhiteboard } from "./services/whiteboard";
 
-export interface FlatServicesCatalog {
+export type FlatServicesCatalog = IServiceFileCatalog & {
+    file: IServiceFile;
     videoChat: IServiceVideoChat;
     textChat: IServiceTextChat;
     whiteboard: IServiceWhiteboard;
-}
+};
 
 export type FlatServiceID = Extract<keyof FlatServicesCatalog, string>;
 
@@ -42,13 +44,16 @@ export class FlatServices {
     }
 
     public register<T extends FlatServiceID>(
-        name: T,
+        name: T | T[],
         serviceCreator: FlatServicesCreatorCatalog[T],
     ): void {
-        if (this.isRegistered(name)) {
-            throw new Error(`${name} is already registered`);
-        }
-        this.registry[name] = serviceCreator;
+        const names = Array.isArray(name) ? name : [name];
+        names.forEach(name => {
+            if (this.isRegistered(name)) {
+                throw new Error(`${name} is already registered`);
+            }
+            this.registry[name] = serviceCreator;
+        });
     }
 
     public async unregister<T extends FlatServiceID>(name: T): Promise<boolean> {
@@ -79,7 +84,8 @@ export class FlatServices {
         const pService = this.services[name] as Promise<FlatServicesCatalog[T]> | undefined;
         if (pService) {
             this.services[name] = undefined;
-            await (await pService).destroy();
+            const service = await pService;
+            await service.destroy?.();
             return true;
         }
         return false;

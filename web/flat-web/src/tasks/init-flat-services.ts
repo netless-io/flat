@@ -1,11 +1,18 @@
 import { FlatI18n } from "@netless/flat-i18n";
-import { FlatServices, Toaster } from "@netless/flat-services";
+import { FlatServiceProviderFile, FlatServices, Toaster } from "@netless/flat-services";
 import { message } from "antd";
 import { Remitter } from "remitter";
 
 export function initFlatServices(): void {
-    const flatServices = FlatServices.getInstance();
     const toaster = createToaster();
+    const flatI18n = FlatI18n.getInstance();
+
+    const flatServices = FlatServices.getInstance();
+
+    flatServices.register(
+        "file",
+        async () => new FlatServiceProviderFile(flatServices, toaster, flatI18n),
+    );
 
     flatServices.register("videoChat", async () => {
         const { AgoraRTCWeb } = await import("@netless/flat-service-provider-agora-rtc-web");
@@ -23,7 +30,7 @@ export function initFlatServices(): void {
         return new Fastboard({
             APP_ID: process.env.NETLESS_APP_IDENTIFIER,
             toaster,
-            flatI18n: FlatI18n.getInstance(),
+            flatI18n,
             flatInfo: {
                 platform: "web",
                 ua: process.env.FLAT_UA,
@@ -31,6 +38,27 @@ export function initFlatServices(): void {
                 version: process.env.VERSION,
             },
         });
+    });
+
+    flatServices.register(
+        [
+            "file-convert:doc",
+            "file-convert:docx",
+            "file-convert:ppt",
+            "file-convert:pptx",
+            "file-convert:pdf",
+        ],
+        async () => {
+            const { FileConvertNetless } = await import(
+                "@netless/flat-service-provider-file-convert-netless"
+            );
+            return new FileConvertNetless();
+        },
+    );
+
+    flatServices.register("file-convert:ice", async () => {
+        const { FileConvertH5 } = await import("@netless/flat-service-provider-file-convert-h5");
+        return new FileConvertH5();
     });
 }
 
