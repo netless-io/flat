@@ -1,7 +1,5 @@
 import { Modal } from "antd";
 import {
-    CloudStorageConvertStatusType,
-    CloudStorageFile as CloudStorageFileUI,
     CloudStorageFileName,
     CloudStorageStore as CloudStorageStoreBase,
     CloudStorageUploadStatusType,
@@ -10,17 +8,11 @@ import {
     UploadID,
     errorTips,
 } from "flat-components";
-import { FlatI18n } from "@netless/flat-i18n";
 import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
-import { getFileExt, isPPTX } from "../utils/file";
-import { ConvertingTaskStatus, queryConvertingTaskStatus } from "../utils/courseware-converting";
 import {
-    queryH5ConvertingStatus,
     FileConvertStep,
     addExternalFile,
     CloudFile,
-    convertFinish,
-    convertStart,
     listFiles,
     removeFiles,
     removeExternalFiles,
@@ -28,14 +20,11 @@ import {
     renameExternalFile,
     FLAT_SERVER_BASE_URL,
 } from "@netless/flat-server-api";
-import { coursewarePreloader } from "../utils/courseware-preloader";
 import { getUploadTaskManager } from "../utils/upload-task-manager";
 import { UploadStatusType, UploadTask } from "../utils/upload-task-manager/upload-task";
 import { ConvertStatusManager } from "./convert-status-manager";
 import { Scheduler } from "./scheduler";
-
-export type CloudStorageFile = CloudStorageFileUI &
-    Pick<CloudFile, "fileURL" | "taskUUID" | "taskToken" | "region" | "external" | "resourceType">;
+import { FlatI18n } from "@netless/flat-i18n";
 
 export type FileMenusKey = "open" | "download" | "rename" | "delete";
 
@@ -49,9 +38,9 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     public uploadTaskManager = getUploadTaskManager();
 
     /** User cloud storage files */
-    public filesMap = observable.map<FileUUID, CloudStorageFile>();
+    public filesMap = observable.map<FileUUID, CloudFile>();
 
-    public insertCourseware: (file: CloudStorageFile) => void;
+    public insertCourseware: (file: CloudFile) => void;
     public onCoursewareInserted?: () => void;
 
     /** In order to avoid multiple calls the fetchMoreCloudStorageData
@@ -68,7 +57,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         insertCourseware,
     }: {
         compact: boolean;
-        insertCourseware: (file: CloudStorageFile) => void;
+        insertCourseware: (file: CloudFile) => void;
     }) {
         super();
 
@@ -114,17 +103,17 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     }
 
     /** User cloud storage files */
-    public get files(): CloudStorageFileUI[] {
+    public get files(): CloudFile[] {
         return observable.array([...this.filesMap.values()]);
     }
 
     /** Render file menus item base on fileUUID */
-    public fileMenus = (file: CloudStorageFileUI): FileMenusItem[] => {
+    public fileMenus = (file: CloudFile): FileMenusItem[] => {
         const menus: FileMenusItem[] = [
             { key: "open", name: FlatI18n.t("open") },
             { key: "download", name: FlatI18n.t("download") },
         ];
-        if (file.convert !== "error") {
+        if (file.convertStep !== FileConvertStep.Failed) {
             menus.push({ key: "rename", name: FlatI18n.t("rename") });
         }
         menus.push({
@@ -169,7 +158,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         if (file) {
             try {
                 if (this.compact) {
-                    if (file.convert === "error") {
+                    if (file.convertStep === FileConvertStep.Failed) {
                         Modal.info({ content: FlatI18n.t("the-courseware-cannot-be-transcoded") });
                     } else {
                         this.insertCourseware(file);
@@ -307,7 +296,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
                 this.hasMoreFile = cloudFiles.length > 0;
 
-                const newFiles: Record<string, CloudStorageFile> = {};
+                const newFiles: Record<string, CloudFile> = {};
 
                 for (const cloudFile of cloudFiles) {
                     const file = this.filesMap.get(cloudFile.fileUUID);
@@ -319,16 +308,13 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                             }
                             file.fileName = cloudFile.fileName;
                             file.fileSize = cloudFile.fileSize;
-                            file.convert = CloudStorageStore.mapConvertStep(cloudFile.convertStep);
+                            file.convertStep = cloudFile.convertStep;
                             file.taskToken = cloudFile.taskToken;
                             file.taskUUID = cloudFile.taskUUID;
                             file.external = cloudFile.external;
                             file.resourceType = cloudFile.resourceType;
                         } else {
-                            newFiles[cloudFile.fileUUID] = observable.object({
-                                ...cloudFile,
-                                convert: CloudStorageStore.mapConvertStep(cloudFile.convertStep),
-                            });
+                            newFiles[cloudFile.fileUUID] = observable.object(cloudFile);
                         }
                     });
                 }
@@ -388,7 +374,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 this.totalUsage = totalUsage;
             });
 
-            const newFiles: Record<string, CloudStorageFile> = {};
+            const newFiles: Record<string, CloudFile> = {};
             const toQueryFilesList: string[] = [];
 
             for (const cloudFile of cloudFiles) {
@@ -401,16 +387,13 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         }
                         file.fileName = cloudFile.fileName;
                         file.fileSize = cloudFile.fileSize;
-                        file.convert = CloudStorageStore.mapConvertStep(cloudFile.convertStep);
+                        file.convertStep = cloudFile.convertStep;
                         file.taskToken = cloudFile.taskToken;
                         file.taskUUID = cloudFile.taskUUID;
                         file.external = cloudFile.external;
                         file.resourceType = cloudFile.resourceType;
                     } else {
-                        newFiles[cloudFile.fileUUID] = observable.object({
-                            ...cloudFile,
-                            convert: CloudStorageStore.mapConvertStep(cloudFile.convertStep),
-                        });
+                        newFiles[cloudFile.fileUUID] = observable.object(cloudFile);
                     }
                 });
 
@@ -437,7 +420,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
     };
 
-    private previewCourseware(file: CloudStorageFile): void {
+    private previewCourseware(file: CloudFile): void {
         const { fileURL, taskToken, taskUUID, region, resourceType } = file;
 
         const convertFileTypeList = [".pptx", ".ppt", ".pdf", ".doc", ".docx"];
@@ -452,12 +435,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             ? `${FLAT_SERVER_BASE_URL}/preview/${encodeFileURL}/${taskToken}/${taskUUID}/${region}/${projector}/`
             : `${FLAT_SERVER_BASE_URL}/preview/${encodeFileURL}/`;
 
-        switch (file.convert) {
-            case "converting": {
+        switch (file.convertStep) {
+            case FileConvertStep.Converting: {
                 Modal.info({ content: FlatI18n.t("please-wait-while-the-lesson-is-transcoded") });
                 return;
             }
-            case "error": {
+            case FileConvertStep.Failed: {
                 Modal.info({ content: FlatI18n.t("the-courseware-cannot-be-transcoded") });
                 return;
             }
@@ -499,27 +482,6 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             const a = document.createElement("a");
             a.href = file.fileURL;
             a.click();
-        }
-    }
-
-    private static mapConvertStep(convertStep: FileConvertStep): CloudStorageConvertStatusType {
-        switch (convertStep) {
-            case FileConvertStep.None: {
-                return "idle";
-            }
-            case FileConvertStep.Failed: {
-                return "error";
-            }
-            case FileConvertStep.Converting: {
-                return "converting";
-            }
-            case FileConvertStep.Done: {
-                return "success";
-            }
-            default: {
-                console.error("[cloud storage]: cannot map convert step", convertStep);
-                return "idle";
-            }
         }
     }
 
@@ -575,154 +537,14 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             return;
         }
 
-        switch (getFileExt(file.fileName)) {
-            case "ice": {
-                if (file.convert === "converting") {
-                    await this.convertStatusManager.addTask(file.fileUUID, () =>
-                        this.pollH5ConvertStatus(file),
-                    );
-                }
-                break;
-            }
-            case "ppt":
-            case "pdf":
-            case "doc":
-            case "docx":
-            case "pptx": {
-                if (file.convert === "idle") {
-                    try {
-                        if (process.env.NODE_ENV === "development") {
-                            console.log(
-                                "[cloud-storage] convert start",
-                                file.fileUUID,
-                                file.fileName,
-                            );
-                        }
-                        const { taskToken, taskUUID } = await convertStart({
-                            fileUUID: file.fileUUID,
-                            isWhiteboardProjector: isPPTX(file.fileName),
-                        });
-                        runInAction(() => {
-                            file.convert = "converting";
-                            file.taskToken = taskToken;
-                            file.taskUUID = taskUUID;
-                        });
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }
-
-                if (file.convert === "converting") {
-                    await this.convertStatusManager.addTask(file.fileUUID, () =>
-                        this.pollDocConvertStatus(file),
-                    );
-                }
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    private async pollH5ConvertStatus(file: CloudStorageFile): Promise<boolean> {
-        if (process.env.NODE_ENV === "development") {
-            console.log("[cloud-storage] query convert status", file.fileName);
+        if (
+            file.convertStep === FileConvertStep.Done ||
+            file.convertStep === FileConvertStep.Failed
+        ) {
+            return;
         }
 
-        if (!this.filesMap.has(file.fileUUID)) {
-            return true;
-        }
-
-        const result = await queryH5ConvertingStatus(file.fileURL);
-
-        if (result.status === "Failed" || result.status === "Finished") {
-            if (process.env.NODE_ENV === "development") {
-                console.log("[cloud storage]: convert finish", file.fileName);
-            }
-
-            if (result.status === "Failed") {
-                errorTips(result.error);
-            }
-
-            try {
-                await convertFinish({ fileUUID: file.fileUUID, region: file.region });
-            } catch (e) {
-                // ignore error when notifying server finish status
-                console.warn(e);
-            }
-
-            runInAction(() => {
-                file.convert = result.status === "Failed" ? "error" : "success";
-            });
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private async pollDocConvertStatus(file: CloudStorageFile): Promise<boolean> {
-        if (process.env.DEV) {
-            console.log("[cloud-storage] query convert status", file.fileName);
-        }
-
-        if (!this.filesMap.has(file.fileUUID)) {
-            return true;
-        }
-
-        const dynamic = isPPTX(file.fileName);
-        let status: ConvertingTaskStatus;
-
-        try {
-            status = await queryConvertingTaskStatus({
-                taskToken: file.taskToken,
-                taskUUID: file.taskUUID,
-                dynamic,
-                region: file.region,
-                projector: file.resourceType === "WhiteboardProjector",
-            });
-        } catch (e) {
-            console.error(e);
-            return false;
-        }
-
-        if (process.env.DEV) {
-            console.log(
-                "[cloud-storage] query convert status",
-                file.fileName,
-                status.status,
-                status.convertedPercentage,
-            );
-        }
-
-        const statusText = status.status;
-
-        if (statusText === "Fail" || statusText === "Finished") {
-            if (process.env.DEV) {
-                console.log("[cloud storage]: convert finish", file.fileName);
-            }
-
-            try {
-                await convertFinish({ fileUUID: file.fileUUID, region: file.region });
-            } catch (e) {
-                // ignore error when notifying server finish status
-                console.warn(e);
-            }
-
-            runInAction(() => {
-                file.convert = statusText === "Fail" ? "error" : "success";
-            });
-
-            if (statusText === "Finished" && status.prefix) {
-                const src = status.prefix + "/" + status.uuid + "/1.png";
-                void coursewarePreloader.preload(src).catch(error => console.warn(error));
-            }
-
-            return true;
-        }
-
-        return false;
+        this.convertStatusManager.addTask(file);
     }
 
     private async cancelAll(): Promise<void> {

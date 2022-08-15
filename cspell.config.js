@@ -106,6 +106,7 @@ module.exports = {
         "dorny", // dorny/paths-filter@v2
         "peaceiris", // peaceiris/actions-gh-pages@v3
         "plyr", // @netless/app-plyr
+        "lukeed", // @luckeed/uuid
 
         // less
         "isstring",

@@ -9,11 +9,13 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@lukeed/uuid": "^2.0.0",
     "@netless/fastboard": "^0.3.6",
     "@netless/flat-i18n": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
+    "@netless/flat-service-provider-file-convert-netless": "workspace:*",
     "@netless/flat-services": "workspace:*",
-    "@netless/window-manager": "^0.4.37",
+    "@netless/window-manager": "^0.4.39",
     "side-effect-manager": "^1.1.3",
     "value-enhancer": "^1.3.2",
     "white-web-sdk": "npm:white-web-sdk-esm@2.16.24"
