@@ -4,7 +4,7 @@ import { errorTips } from "flat-components";
 import { FLAT_SERVER_LOGIN, setAuthUUID, loginProcess } from "@netless/flat-server-api";
 import { GITHUB } from "../constants/process";
 
-export const githubLogin: LoginExecutor = onSuccess => {
+export const githubLogin: LoginExecutor = (onSuccess, windowsBtn) => {
     let timer = NaN;
     const authUUID = uuidv4();
 
@@ -16,7 +16,11 @@ export const githubLogin: LoginExecutor = onSuccess => {
             return;
         }
 
-        void window.open(getGithubURL(authUUID, FLAT_SERVER_LOGIN.GITHUB_CALLBACK));
+        windowsBtn
+            ? windowsBtn.openExternalBrowser(
+                  getGithubURL(authUUID, FLAT_SERVER_LOGIN.GITHUB_CALLBACK),
+              )
+            : void window.open(getGithubURL(authUUID, FLAT_SERVER_LOGIN.GITHUB_CALLBACK));
 
         const githubLoginProcessRequest = async (): Promise<void> => {
             try {
