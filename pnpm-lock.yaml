@@ -152,7 +152,6 @@ importers:
       '@netless/app-plyr': ^0.1.3
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
       '@netless/flat-server-api': workspace:*
@@ -162,9 +161,6 @@ importers:
       '@netless/flat-service-provider-file-convert-h5': workspace:*
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
-      '@netless/player-controller': ^0.0.9
-      '@netless/video-js-plugin': ^0.3.8
-      '@netless/window-manager': ^0.4.37
       '@types/classnames': ^2.3.0
       '@types/lodash': ^4.14.180
       '@types/node-downloader-helper': ^1.0.16
@@ -204,7 +200,6 @@ importers:
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
-      white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@netless/app-countdown': 0.0.2
@@ -214,7 +209,6 @@ importers:
       '@netless/app-plyr': 0.1.3
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
       '@netless/flat-server-api': link:../../packages/flat-server-api
@@ -224,9 +218,6 @@ importers:
       '@netless/flat-service-provider-file-convert-h5': link:../../service-providers/file-convert-h5
       '@netless/flat-service-provider-file-convert-netless': link:../../service-providers/file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
-      '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
-      '@netless/video-js-plugin': 0.3.8_igmyzdvqqkv6gevwhshexnrgbm
-      '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
       '@videojs/vhs-utils': 2.3.0
       agora-rtm-sdk: 1.4.4
       antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
@@ -255,7 +246,6 @@ importers:
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
-      white-web-sdk: /white-web-sdk-esm/2.16.24
     devDependencies:
       '@types/classnames': 2.3.1
       '@types/lodash': 4.14.182
@@ -406,7 +396,6 @@ importers:
       '@netless/app-plyr': ^0.1.3
       '@netless/app-slide': ^0.2.2
       '@netless/combine-player': ^1.1.6
-      '@netless/fastboard-react': ^0.3.5-canary.5
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-service-provider-agora-rtc-web': workspace:*
@@ -414,9 +403,6 @@ importers:
       '@netless/flat-services': workspace:*
       '@netless/flat-stores': workspace:*
       '@netless/mini-svg-data-uri': 0.0.1
-      '@netless/player-controller': ^0.0.9
-      '@netless/video-js-plugin': ^0.3.8
-      '@netless/window-manager': ^0.4.37
       '@types/loadable__component': ^5.13.4
       '@types/mime': ^2.0.3
       antd: ^4.19.2
@@ -443,7 +429,6 @@ importers:
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
-      white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@netless/app-countdown': 0.0.2
@@ -453,16 +438,12 @@ importers:
       '@netless/app-plyr': 0.1.3
       '@netless/app-slide': 0.2.2
       '@netless/combine-player': 1.1.6
-      '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
       '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
       '@netless/flat-service-provider-agora-rtc-web': link:../../service-providers/agora-rtc/agora-rtc-web
       '@netless/flat-service-provider-agora-rtm': link:../../service-providers/agora-rtm
       '@netless/flat-services': link:../flat-services
       '@netless/flat-stores': link:../flat-stores
-      '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
-      '@netless/video-js-plugin': 0.3.8_igmyzdvqqkv6gevwhshexnrgbm
-      '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
       antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
       axios: 0.26.1
       classnames: 2.3.1
@@ -483,7 +464,6 @@ importers:
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
-      white-web-sdk: /white-web-sdk-esm/2.16.24
     devDependencies:
       '@babel/standalone': 7.17.8
       '@netless/mini-svg-data-uri': 0.0.1
@@ -527,7 +507,7 @@ importers:
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
-      '@netless/window-manager': ^0.4.37
+      '@netless/window-manager': ^0.4.39
       flat-components: workspace:*
       mobx: ^6.6.1
       prettier: ^2.3.0
@@ -544,8 +524,8 @@ importers:
       side-effect-manager: 1.1.3
       uuid: 8.3.2
     devDependencies:
-      '@netless/fastboard-react': 0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4
-      '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
+      '@netless/fastboard-react': 0.3.6_y3h2snxos52weau5pnhp7psr2q
+      '@netless/window-manager': 0.4.39_white-web-sdk-esm@2.16.24
       mobx: 6.6.1
       prettier: 2.6.2
       react: 17.0.2
@@ -634,22 +614,26 @@ importers:
 
   service-providers/fastboard:
     specifiers:
+      '@lukeed/uuid': ^2.0.0
       '@netless/fastboard': ^0.3.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
+      '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
-      '@netless/window-manager': ^0.4.37
+      '@netless/window-manager': ^0.4.39
       prettier: ^2.3.0
       side-effect-manager: ^1.1.3
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
-      '@netless/fastboard': 0.3.6_hwmjbaemn5qt5obfebefyxa7dq
+      '@lukeed/uuid': 2.0.0
+      '@netless/fastboard': 0.3.6_man77k32qv55e56rrqybt2aexa
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-server-api': link:../../packages/flat-server-api
+      '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
-      '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
+      '@netless/window-manager': 0.4.39_white-web-sdk-esm@2.16.24
       side-effect-manager: 1.1.3
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
@@ -728,9 +712,6 @@ importers:
       '@netless/flat-services': workspace:*
       '@netless/flat-stores': workspace:*
       '@netless/mini-svg-data-uri': 0.0.1
-      '@netless/player-controller': ^0.0.9
-      '@netless/video-js-plugin': ^0.3.8
-      '@netless/window-manager': ^0.4.37
       '@types/loadable__component': ^5.13.4
       '@types/mime': ^2.0.3
       '@videojs/vhs-utils': ^2.3.0
@@ -765,7 +746,6 @@ importers:
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
-      white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@loadable/component': 5.15.2_react@17.0.2
@@ -786,9 +766,6 @@ importers:
       '@netless/flat-service-provider-file-convert-netless': link:../../service-providers/file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/flat-stores': link:../../packages/flat-stores
-      '@netless/player-controller': 0.0.9_7wevdi4665xpaid7wna2nfytg4
-      '@netless/video-js-plugin': 0.3.8_igmyzdvqqkv6gevwhshexnrgbm
-      '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
       '@videojs/vhs-utils': 2.3.0
       '@zip.js/zip.js': 2.4.10
       agora-rtc-sdk-ng: 4.12.2
@@ -817,7 +794,6 @@ importers:
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
-      white-web-sdk: /white-web-sdk-esm/2.16.24
     devDependencies:
       '@babel/standalone': 7.17.8
       '@netless/mini-svg-data-uri': 0.0.1
@@ -3080,6 +3056,18 @@ packages:
       react-is: 16.13.1
     dev: false
 
+  /@lukeed/csprng/1.0.1:
+    resolution: {integrity: sha512-uSvJdwQU5nK+Vdf6zxcWAY2A8r7uqe+gePwLWzJ+fsQehq18pc0I2hJKwypZ2aLM90+Er9u1xn4iLJPZ+xlL4g==}
+    engines: {node: '>=8'}
+    dev: false
+
+  /@lukeed/uuid/2.0.0:
+    resolution: {integrity: sha512-dUz8OmYvlY5A9wXaroHIMSPASpSYRLCqbPvxGSyHguhtTQIy24lC+EGxQlwv71AhRCO55WOtgwhzQLpw27JaJQ==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@lukeed/csprng': 1.0.1
+    dev: false
+
   /@malept/cross-spawn-promise/1.1.1:
     resolution: {integrity: sha512-RTBGWL5FWQcg9orDOCcp4LvItNzUPcyEU9bwaeJX0rJ1IQxzucC48Y0/sQLp/g6t99IQgAlGIaesJS+gTn7tVQ==}
     engines: {node: '>= 10'}
@@ -3198,7 +3186,7 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/0.3.6_hwmjbaemn5qt5obfebefyxa7dq:
+  /@netless/fastboard-core/0.3.6_man77k32qv55e56rrqybt2aexa:
     resolution: {integrity: sha512-EoiN8CQREv1UTjM9EDs4dmqy8TsVW7HPQ+vhoWJk/idvP7Xgt1EY0x1Mg3zziU+jb9vhnC8+c9NpayfSfenE9w==}
     peerDependencies:
       '@netless/window-manager': '>=0.4.0'
@@ -3206,33 +3194,34 @@ packages:
     dependencies:
       '@netless/app-slide': 0.2.2
       '@netless/synced-store': 2.0.5_white-web-sdk-esm@2.16.24
-      '@netless/window-manager': 0.4.37_white-web-sdk-esm@2.16.24
+      '@netless/window-manager': 0.4.39_white-web-sdk-esm@2.16.24
       white-web-sdk: /white-web-sdk-esm/2.16.24
 
-  /@netless/fastboard-react/0.3.6_apvt3zpc7sgdrfib3p3q7kk5l4:
+  /@netless/fastboard-react/0.3.6_y3h2snxos52weau5pnhp7psr2q:
     resolution: {integrity: sha512-ijaXelp9i6vYrBAfF0ZPQIhyhDcDTmt5vGZ9Pk7lHTgkhZ58FJf4biTxX2fESjiG3p2kyQYNqw5/eFxuBaKVlA==}
     peerDependencies:
       react: '*'
     dependencies:
-      '@netless/fastboard-core': 0.3.6_hwmjbaemn5qt5obfebefyxa7dq
+      '@netless/fastboard-core': 0.3.6_man77k32qv55e56rrqybt2aexa
       '@netless/fastboard-ui': 0.3.6_dh4pwpaiunoyuozzscsfopi4z4
       react: 17.0.2
     transitivePeerDependencies:
       - '@netless/window-manager'
       - white-web-sdk
+    dev: true
 
   /@netless/fastboard-ui/0.3.6_dh4pwpaiunoyuozzscsfopi4z4:
     resolution: {integrity: sha512-tbHJ29neCS51ojWoETEIagy/JsUJkT8UcLEMOm1Mj6tMj7Nha60SM3mT79iwBHlRYCImDxVadV+WogEMhk2YWw==}
     peerDependencies:
       '@netless/fastboard-core': 0.3.6
     dependencies:
-      '@netless/fastboard-core': 0.3.6_hwmjbaemn5qt5obfebefyxa7dq
+      '@netless/fastboard-core': 0.3.6_man77k32qv55e56rrqybt2aexa
       tippy.js: 6.3.7
 
-  /@netless/fastboard/0.3.6_hwmjbaemn5qt5obfebefyxa7dq:
+  /@netless/fastboard/0.3.6_man77k32qv55e56rrqybt2aexa:
     resolution: {integrity: sha512-YH3NKT47D+0GWl7nIyUDLI/T2AgVoD6TnpV8kJTTYsPbFX41pZ5bfSKXZNF33577ehcUxWW3SvQScaqHSc3Jyw==}
     dependencies:
-      '@netless/fastboard-core': 0.3.6_hwmjbaemn5qt5obfebefyxa7dq
+      '@netless/fastboard-core': 0.3.6_man77k32qv55e56rrqybt2aexa
       '@netless/fastboard-ui': 0.3.6_dh4pwpaiunoyuozzscsfopi4z4
     transitivePeerDependencies:
       - '@netless/window-manager'
@@ -3243,22 +3232,6 @@ packages:
     resolution: {integrity: sha512-HsQ04Yzuh8PV4+N31erOeS2pEC6IHGCO/Y7RNwi3AWaQ5ASRpzUka5TxWE4QEXZoseccthcjVL5XN687b/cwRg==}
     hasBin: true
     dev: true
-
-  /@netless/player-controller/0.0.9_7wevdi4665xpaid7wna2nfytg4:
-    resolution: {integrity: sha512-n+30ug/DMYsGI6awfe0JP8JxgQto3FN20V5IPkDZjXfo2vXfeySkGTE9/36r67p9UV4e19uiF5wq8BsG73Ra3A==}
-    peerDependencies:
-      antd: 4.x
-      react: ^16.8.0 || ^17
-      react-dom: ^16.8.0 || ^17
-      white-web-sdk: ^2.9.12
-    dependencies:
-      '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
-      '@netless/combine-player': 1.1.6
-      antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      white-web-sdk: /white-web-sdk-esm/2.16.24
-    dev: false
 
   /@netless/synced-store/2.0.5_white-web-sdk-esm@2.16.24:
     resolution: {integrity: sha512-apL1HV+e6OJ2YIzizPqNb5tPboO4LB5HHeHKzh9N+Cc5NqbrYgGdQuSWVD2Xbj5MajKJzPNVOaJ3vXTdgUlIuw==}
@@ -3282,28 +3255,14 @@ packages:
       stylefire: 7.0.3
       value-enhancer: 0.0.8
 
-  /@netless/video-js-plugin/0.3.8_igmyzdvqqkv6gevwhshexnrgbm:
-    resolution: {integrity: sha512-xCLfL8ISjPD5XQbeGWT/pwKdWXqYXmaEXiP4jcX8oaR83+vJo463znIg2JW8EXHkTq7KRrYnZqqlQdI6It4L+A==}
-    peerDependencies:
-      react: '>=16 || ^17'
-      react-dom: '>=16 || ^17'
-      video.js: ^7
-      white-web-sdk: ^2.13.8
-    dependencies:
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      video.js: 7.10.2
-      white-web-sdk: /white-web-sdk-esm/2.16.24
-    dev: false
-
   /@netless/white-snapshot/0.4.1:
     resolution: {integrity: sha512-1de6d7e8reCTr8EiordR25WpgYryFh+OpL6k4k5bz35opr3WTeWesKi7RZTrS08hQgtVV8JOcavUeb/dfbF08Q==}
     dependencies:
       html2canvas: 1.4.1
     dev: true
 
-  /@netless/window-manager/0.4.37_white-web-sdk-esm@2.16.24:
-    resolution: {integrity: sha512-OgYF70mnZ/bKSdi+zh1wdw+zh5cuQPB6mj8JOzVQvc8MQuJqXUU1Rn9PGo++LLSYcby7XCOyUAYfVibj0xM80g==}
+  /@netless/window-manager/0.4.39_white-web-sdk-esm@2.16.24:
+    resolution: {integrity: sha512-Fvls15ezxE0ic2Sfo/UpddiwVTItZGk+U5+HGtLuVRsMQOvoKek9reT6KpCxo0MgT89hZLdLjURyut04pT7JdA==}
     peerDependencies:
       white-web-sdk: ^2.16.0
     dependencies:

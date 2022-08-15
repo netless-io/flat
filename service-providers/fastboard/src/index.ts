@@ -1,6 +1,6 @@
 import { createFastboard, createUI, FastboardApp } from "@netless/fastboard";
 import { DeviceType, RoomPhase } from "white-web-sdk";
-import { RoomType } from "@netless/flat-server-api";
+import { CloudFile, RoomType } from "@netless/flat-server-api";
 import type { FlatI18n } from "@netless/flat-i18n";
 import {
     IServiceWhiteboard,
@@ -11,6 +11,10 @@ import {
 import { WindowManager } from "@netless/window-manager";
 import { ReadonlyVal, Val, combine } from "value-enhancer";
 import { AsyncSideEffectManager } from "side-effect-manager";
+import { getFileExt } from "@netless/flat-service-provider-file-convert-netless/src/utils";
+import { insertDocs, insertImage, insertMedia, insertVf, insertZippedH5 } from "./file-insert";
+
+export { register } from "@netless/fastboard";
 
 declare global {
     interface Window {
@@ -252,6 +256,55 @@ export class Fastboard extends IServiceWhiteboard {
         super.destroy();
         this.asyncSideEffect.flushAll();
         await this.leaveRoom();
+    }
+
+    public async insert(file: CloudFile): Promise<void> {
+        const fastboardApp = this._app$.value;
+        if (!fastboardApp) {
+            this.toaster.emit("warn", this.flatI18n.t("unable-to-insert-courseware"));
+            return;
+        }
+
+        try {
+            switch (getFileExt(file.fileName)) {
+                case "jpg":
+                case "jpeg":
+                case "png":
+                case "webp": {
+                    await insertImage(file, fastboardApp);
+                    break;
+                }
+                case "mp3":
+                case "mp4": {
+                    await insertMedia(file, fastboardApp);
+                    break;
+                }
+                case "doc":
+                case "docx":
+                case "ppt":
+                case "pptx":
+                case "pdf": {
+                    await insertDocs(file, fastboardApp, this.flatI18n, this.toaster);
+                    break;
+                }
+                case "ice": {
+                    await insertZippedH5(file, fastboardApp);
+                    break;
+                }
+                case "vf": {
+                    await insertVf(file, fastboardApp);
+                    break;
+                }
+                default: {
+                    throw new Error(
+                        `[cloud storage]: insert unknown format "${file.fileName}" into whiteboard`,
+                    );
+                }
+            }
+        } catch (e) {
+            this.toaster.emit("error", this.flatI18n.t("unable-to-insert-courseware"));
+            console.error(e);
+        }
     }
 
     private setUA(): void {

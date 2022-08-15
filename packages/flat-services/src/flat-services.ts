@@ -19,7 +19,9 @@ export type FlatServicesPendingCatalog = {
     [K in FlatServiceID]?: Promise<FlatServicesCatalog[K]>;
 };
 
-export type FlatServicesCreator<T extends FlatServiceID> = () => Promise<FlatServicesCatalog[T]>;
+export type FlatServicesCreator<T extends FlatServiceID> = () => Promise<
+    FlatServicesCatalog[T] | null
+>;
 
 export type FlatServicesCreatorCatalog = {
     [K in FlatServiceID]: FlatServicesCreator<K>;
@@ -36,9 +38,9 @@ export class FlatServices {
         return (window.__FlAtSeRvIcEs ||= new FlatServices());
     }
 
-    private registry = new Map<FlatServiceID, () => Promise<IService>>();
+    private registry = new Map<FlatServiceID, () => Promise<IService | null>>();
 
-    private services = new Map<FlatServiceID, Promise<IService>>();
+    private services = new Map<FlatServiceID, Promise<IService | null>>();
 
     private constructor() {
         // make private
@@ -77,7 +79,7 @@ export class FlatServices {
                 this.services.set(name, service);
             }
         }
-        return service as Promise<FlatServicesCatalog[T]> | null;
+        return service as Promise<FlatServicesCatalog[T] | null>;
     }
 
     public async shutdownService<T extends FlatServiceID = FlatServiceID>(
@@ -87,7 +89,7 @@ export class FlatServices {
         if (pService) {
             this.services.delete(name);
             const service = await pService;
-            await service.destroy?.();
+            await service?.destroy?.();
             return true;
         }
         return false;
