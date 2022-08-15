@@ -1,5 +1,6 @@
 import { IServiceFile, IServiceFileCatalog } from "./services/file";
 import { IServiceTextChat } from "./services/text-chat";
+import { IService } from "./services/typing";
 import { IServiceVideoChat } from "./services/video-chat";
 import { IServiceWhiteboard } from "./services/whiteboard";
 
@@ -35,9 +36,9 @@ export class FlatServices {
         return (window.__FlAtSeRvIcEs ||= new FlatServices());
     }
 
-    private registry: Partial<FlatServicesCreatorCatalog> = {};
+    private registry = new Map<FlatServiceID, () => Promise<IService>>();
 
-    private services: Partial<FlatServicesPendingCatalog> = {};
+    private services = new Map<FlatServiceID, Promise<IService>>();
 
     private constructor() {
         // make private
@@ -52,13 +53,13 @@ export class FlatServices {
             if (this.isRegistered(name)) {
                 throw new Error(`${name} is already registered`);
             }
-            this.registry[name] = serviceCreator;
+            this.registry.set(name, serviceCreator);
         });
     }
 
     public async unregister<T extends FlatServiceID>(name: T): Promise<boolean> {
         if (this.isRegistered(name)) {
-            this.registry[name] = undefined;
+            this.registry.delete(name);
             await this.shutdownService(name);
             return true;
         }
@@ -68,22 +69,23 @@ export class FlatServices {
     public async requestService<T extends FlatServiceID>(
         name: T,
     ): Promise<FlatServicesCatalog[T] | null> {
-        if (this.services[name]) {
-            return this.services[name] as Promise<FlatServicesCatalog[T]>;
+        let service = this.services.get(name) || null;
+        if (!service) {
+            const creator = this.registry.get(name);
+            if (creator) {
+                service = creator();
+                this.services.set(name, service);
+            }
         }
-        const creator = this.registry[name];
-        if (creator) {
-            return ((this.services[name] as any) = creator());
-        }
-        return null;
+        return service as Promise<FlatServicesCatalog[T]> | null;
     }
 
     public async shutdownService<T extends FlatServiceID = FlatServiceID>(
         name: T,
     ): Promise<boolean> {
-        const pService = this.services[name] as Promise<FlatServicesCatalog[T]> | undefined;
+        const pService = this.services.get(name);
         if (pService) {
-            this.services[name] = undefined;
+            this.services.delete(name);
             const service = await pService;
             await service.destroy?.();
             return true;
@@ -92,10 +94,10 @@ export class FlatServices {
     }
 
     public isRegistered(name: FlatServiceID): boolean {
-        return Boolean(this.registry[name]);
+        return this.registry.has(name);
     }
 
     public isCreated(name: FlatServiceID): boolean {
-        return Boolean(this.services[name]);
+        return this.services.has(name);
     }
 }

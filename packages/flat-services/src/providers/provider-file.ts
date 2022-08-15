@@ -6,11 +6,14 @@ import {
 } from "@netless/flat-server-api";
 import type { FlatI18n } from "@netless/flat-i18n";
 import type { Toaster } from "../toaster";
-import { FlatServices } from "../flat-services";
+import { FlatServiceID, FlatServices } from "../flat-services";
 import { getFileExt } from "../services/file/utils";
 import { IServiceFile, IServiceFileExtensions } from "../services/file";
+import { SideEffectManager } from "side-effect-manager";
 
 export class FlatServiceProviderFile implements IServiceFile {
+    private sideEffect = new SideEffectManager();
+
     public constructor(
         public flatServices: FlatServices,
         public toaster: Toaster,
@@ -19,8 +22,9 @@ export class FlatServiceProviderFile implements IServiceFile {
 
     public async insert(file: CloudFile): Promise<void> {
         const ext = getFileExt(file.fileName) as IServiceFileExtensions;
+        const serviceName = `file-insert:${ext}` as const;
 
-        const insertService = await this.flatServices.requestService(`file-insert:${ext}`);
+        const insertService = await this.flatServices.requestService(serviceName);
         if (!insertService) {
             throw new TypeError(`No service provider for inserting file '${file.fileName}'`);
         }
@@ -34,12 +38,15 @@ export class FlatServiceProviderFile implements IServiceFile {
                 this.toaster.emit("error", this.flatI18n.t("unable-to-insert-courseware"));
             }
         }
+
+        this.shutdown(serviceName);
     }
 
     public async preview(file: CloudFile): Promise<void> {
         const ext = getFileExt(file.fileName) as IServiceFileExtensions;
+        const serviceName = `file-preview:${ext}` as const;
 
-        const previewService = await this.flatServices.requestService(`file-preview:${ext}`);
+        const previewService = await this.flatServices.requestService(serviceName);
         if (!previewService) {
             throw new TypeError(`No service provider for previewing file '${file.fileName}'`);
         }
@@ -53,6 +60,15 @@ export class FlatServiceProviderFile implements IServiceFile {
                 this.toaster.emit("error", this.flatI18n.t("unable-to-insert-courseware"));
             }
         }
+
+        this.shutdown(serviceName);
+    }
+
+    public async destroy(): Promise<void> {
+        this.sideEffect.disposers.forEach((_timeoutDisposer, serviceName) => {
+            this.flatServices.shutdownService(serviceName as FlatServiceID);
+        });
+        this.sideEffect.flushAll();
     }
 
     private async checkConvertStatus(
@@ -60,7 +76,8 @@ export class FlatServiceProviderFile implements IServiceFile {
         ext: IServiceFileExtensions,
     ): Promise<FileConvertStep> {
         if (file.convertStep !== FileConvertStep.Done) {
-            const convertService = await this.flatServices.requestService(`file-convert:${ext}`);
+            const serviceName = `file-convert:${ext}` as const;
+            const convertService = await this.flatServices.requestService(serviceName);
             if (convertService) {
                 try {
                     const result = await convertService.queryStatus(file);
@@ -92,6 +109,7 @@ export class FlatServiceProviderFile implements IServiceFile {
                             this.flatI18n.t("in-the-process-of-transcoding-tips"),
                         );
                     }
+                    this.shutdown(serviceName);
                     return result.status;
                 } catch (e) {
                     console.error(e);
@@ -100,5 +118,13 @@ export class FlatServiceProviderFile implements IServiceFile {
             }
         }
         return file.convertStep;
+    }
+
+    private shutdown(serviceName: FlatServiceID): void {
+        this.sideEffect.setTimeout(
+            () => this.flatServices.shutdownService(serviceName),
+            5000,
+            serviceName,
+        );
     }
 }
