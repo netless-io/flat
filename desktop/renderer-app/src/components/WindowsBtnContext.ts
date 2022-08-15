@@ -22,6 +22,10 @@ export class WindowsBtnContext implements WindowsBtnContextInterface {
     public removeWindowWillCloseEvent = (): void => {
         ipcReceiveRemove("window-will-close");
     };
+
+    public openExternalBrowser = (url: string): void => {
+        void window.electron.shell.openExternal(url);
+    };
 }
 
 export const windowsBtnContext = new WindowsBtnContext();

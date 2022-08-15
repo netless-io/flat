@@ -6,4 +6,5 @@ export interface WindowsBtnContextInterface {
     clickWindowMaximize: () => void;
     sendWindowWillCloseEvent: (callback: () => void) => void;
     removeWindowWillCloseEvent: () => void;
+    openExternalBrowser: (url: string) => void;
 }

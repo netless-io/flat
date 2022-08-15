@@ -146,7 +146,7 @@ export const LoginPage = observer(function LoginPage() {
                 {!runtime.isMac && (
                     <TopBar
                         hiddenMaximizeBtn={true}
-                        isMac={runtime.isMac}
+                        showWindowsSystemBtn={runtime.isMac}
                         onClickWindowsSystemBtn={onClickWindowsSystemBtn}
                     />
                 )}
