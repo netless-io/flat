@@ -113,8 +113,8 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
             <div className="replay-top-bar">
                 {!runtime.isMac && (
                     <TopBar
-                        isMac={runtime.isMac}
                         left={renderTopBarLeft()}
+                        showWindowsSystemBtn={runtime.isMac}
                         onClickWindowsSystemBtn={onClickWindowsSystemBtn}
                     />
                 )}

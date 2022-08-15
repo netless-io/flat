@@ -6,7 +6,7 @@ import { GOOGLE } from "../constants/process";
 
 // @TODO: migrate to new google login api before 2023
 //        https://developers.google.com/identity/gsi/web
-export const googleLogin: LoginExecutor = onSuccess => {
+export const googleLogin: LoginExecutor = (onSuccess, windowsBtn) => {
     let timer = NaN;
     const authUUID = uuidv4();
     const scopes = ["openid", "https://www.googleapis.com/auth/userinfo.profile"];
@@ -25,7 +25,9 @@ export const googleLogin: LoginExecutor = onSuccess => {
             return;
         }
 
-        void window.open(getGoogleURL(authUUID));
+        windowsBtn
+            ? windowsBtn.openExternalBrowser(getGoogleURL(authUUID))
+            : void window.open(getGoogleURL(authUUID));
 
         const googleLoginProcessRequest = async (): Promise<void> => {
             try {

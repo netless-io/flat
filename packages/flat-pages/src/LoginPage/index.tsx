@@ -10,7 +10,7 @@ import { WeChatLogin } from "./WeChatLogin";
 import { agoraLogin } from "./agoraLogin";
 import { googleLogin } from "./googleLogin";
 import { RouteNameType, usePushHistory, useURLParams } from "../utils/routes";
-import { GlobalStoreContext } from "../components/StoreProvider";
+import { GlobalStoreContext, WindowsSystemBtnContext } from "../components/StoreProvider";
 import { joinRoomHandler } from "../utils/join-room-handler";
 import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../constants/process";
 import { useSafePromise } from "../utils/hooks/lifecycle";
@@ -28,6 +28,7 @@ export const LoginPage = observer(function LoginPage() {
     const language = useLanguage();
     const pushHistory = usePushHistory();
     const globalStore = useContext(GlobalStoreContext);
+    const windowsBtn = useContext(WindowsSystemBtnContext);
     const loginDisposer = useRef<LoginDisposer>();
 
     const [roomUUID] = useState(() => sessionStorage.getItem("roomUUID"));
@@ -95,11 +96,11 @@ export const LoginPage = observer(function LoginPage() {
                     return;
                 }
                 case "github": {
-                    loginDisposer.current = githubLogin(onLoginResult);
+                    loginDisposer.current = githubLogin(onLoginResult, windowsBtn);
                     return;
                 }
                 case "google": {
-                    loginDisposer.current = googleLogin(onLoginResult);
+                    loginDisposer.current = googleLogin(onLoginResult, windowsBtn);
                     return;
                 }
                 default: {
@@ -107,7 +108,7 @@ export const LoginPage = observer(function LoginPage() {
                 }
             }
         },
-        [onLoginResult],
+        [onLoginResult, windowsBtn],
     );
 
     useEffect(() => {
