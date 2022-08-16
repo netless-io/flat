@@ -10,7 +10,7 @@ interface ListFilesResponse {
     files: Array<Omit<CloudFile, "createAt"> & { createAt: number }>;
 }
 
-enum FileResourceType {
+export enum FileResourceType {
     WhiteboardConvert = "WhiteboardConvert",
     LocalCourseware = "LocalCourseware",
     OnlineCourseware = "OnlineCourseware",

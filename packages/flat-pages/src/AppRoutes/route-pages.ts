@@ -99,6 +99,10 @@ export const routePages: RoutePages = {
         title: "ResourcePreviewPage",
         component: () => import("../ResourcePreviewPage"),
     },
+    [RouteNameType.FilePreviewPage]: {
+        title: "FilePreviewPage",
+        component: () => import("../FilePreviewPage"),
+    },
     [RouteNameType.DevicesTestPage]: {
         title: "DevicesTestPage",
         component: () => import("../DevicesTestPage"),

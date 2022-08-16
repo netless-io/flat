@@ -17,6 +17,7 @@ export enum RouteNameType {
     CloudStoragePage = "CloudStoragePage",
     JoinPage = "JoinPage",
     ResourcePreviewPage = "ResourcePreviewPage",
+    FilePreviewPage = "FilePreviewPage",
     DevicesTestPage = "DevicesTestPage",
 }
 
@@ -85,7 +86,10 @@ export const routeConfig = {
         path: "/join/:roomUUID/",
     },
     [RouteNameType.ResourcePreviewPage]: {
-        path: "/preview/:fileURL/:taskToken?/:taskUUID?/:region?/:projector?/",
+        path: "/preview-legacy/:fileURL/:taskToken?/:taskUUID?/:region?/:projector?/",
+    },
+    [RouteNameType.FilePreviewPage]: {
+        path: "/preview/:file/",
     },
     [RouteNameType.DevicesTestPage]: {
         path: "/devices-test/:roomUUID/",
