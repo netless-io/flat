@@ -6,6 +6,7 @@ import { action, AnnotationsMap, makeObservable, observable } from "mobx";
 import { Modal } from "antd";
 import { CloudStorageContainer, CloudStorageStore } from "./index";
 import { CloudStorageUploadTask } from "../../components/CloudStorage/types";
+import { FileConvertStep, FileResourceType, Region } from "@netless/flat-server-api";
 
 const chance = new Chance();
 
@@ -69,8 +70,19 @@ class FakeStore extends CloudStorageStore {
                 fileUUID: faker.datatype.uuid(),
                 fileName: faker.random.words() + "." + faker.system.commonFileExt(),
                 fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
-                convert: chance.pickone(["idle", "error", "success", "converting"]),
+                convertStep: chance.pickone([
+                    FileConvertStep.None,
+                    FileConvertStep.Converting,
+                    FileConvertStep.Done,
+                    FileConvertStep.Failed,
+                ]),
                 createAt: faker.date.past(),
+                fileURL: faker.internet.url(),
+                taskToken: faker.random.word(),
+                taskUUID: faker.random.word(),
+                region: Region.CN_HZ,
+                external: faker.datatype.boolean(),
+                resourceType: FileResourceType.NormalResources,
             }));
 
         this.totalUsage = this.files.reduce((sum, file) => sum + file.fileSize, 0);
@@ -151,8 +163,19 @@ class FakeStore extends CloudStorageStore {
                     fileUUID: faker.datatype.uuid(),
                     fileName: file.name,
                     fileSize: file.size,
-                    convert: "idle",
+                    convertStep: chance.pickone([
+                        FileConvertStep.None,
+                        FileConvertStep.Converting,
+                        FileConvertStep.Done,
+                        FileConvertStep.Failed,
+                    ]),
                     createAt: faker.date.past(),
+                    fileURL: faker.internet.url(),
+                    taskToken: faker.random.word(),
+                    taskUUID: faker.random.word(),
+                    region: Region.CN_HZ,
+                    external: faker.datatype.boolean(),
+                    resourceType: FileResourceType.NormalResources,
                 });
             }
         };
@@ -183,8 +206,19 @@ class FakeStore extends CloudStorageStore {
                         fileUUID: faker.datatype.uuid(),
                         fileName: fileName,
                         fileSize: fileSize,
-                        convert: "idle",
+                        convertStep: chance.pickone([
+                            FileConvertStep.None,
+                            FileConvertStep.Converting,
+                            FileConvertStep.Done,
+                            FileConvertStep.Failed,
+                        ]),
                         createAt: faker.date.past(),
+                        fileURL: faker.internet.url(),
+                        taskToken: faker.random.word(),
+                        taskUUID: faker.random.word(),
+                        region: Region.CN_HZ,
+                        external: faker.datatype.boolean(),
+                        resourceType: FileResourceType.NormalResources,
                     });
                 }
 

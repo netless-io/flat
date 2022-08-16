@@ -3,17 +3,18 @@ import fileMenusSVG from "./icons/file-menus.svg";
 import React from "react";
 import { Button, Dropdown, Menu } from "antd";
 import { CloudStorageFileTitle } from "../CloudStorageFileTitle";
-import { CloudStorageFile, CloudStorageFileName } from "../types";
+import { CloudStorageFileName } from "../types";
+import { CloudFile } from "@netless/flat-server-api";
 
 export interface CloudStorageFileListFileNameProps {
-    file: CloudStorageFile;
+    file: CloudFile;
     index: number;
     /** Is title clickable */
     titleClickable?: boolean;
     getPopupContainer: () => HTMLElement;
     /** Render file menus item base on fileUUID */
     fileMenus?: (
-        file: CloudStorageFile,
+        file: CloudFile,
         index: number,
     ) =>
         | Array<{ key: React.Key; name: React.ReactNode; className?: string }>
@@ -47,7 +48,7 @@ export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileN
         return (
             <div className="cloud-storage-file-list-filename-container">
                 <CloudStorageFileTitle
-                    convertStatus={file.convert}
+                    convertStatus={file.convertStep}
                     fileName={file.fileName}
                     fileUUID={file.fileUUID}
                     renamingFileUUID={renamingFileUUID}

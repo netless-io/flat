@@ -13,9 +13,10 @@ import iceSVG from "./icons/ice.svg";
 
 import React, { useMemo } from "react";
 import classNames from "classnames";
-import { CloudStorageConvertStatusType, CloudStorageFileName } from "../types";
+import { CloudStorageFileName } from "../types";
 import { CloudStorageFileTitleRename } from "./CloudStorageFileTitleRename";
-import { useTranslate } from "@netless/flat-i18n";
+import { useTranslation } from "react-i18next";
+import { FileConvertStep } from "@netless/flat-server-api";
 
 export interface CloudStorageFileTitleProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
@@ -24,7 +25,7 @@ export interface CloudStorageFileTitleProps
     /** File Name */
     fileName: string;
     /** Cloud converting status */
-    convertStatus?: CloudStorageConvertStatusType;
+    convertStatus?: FileConvertStep;
     /** Is title clickable. Default false */
     titleClickable?: boolean;
     /** When title is clicked */
@@ -49,9 +50,9 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
         onRename,
         ...restProps
     }) {
-        const t = useTranslate();
-        const isConverting = convertStatus === "converting";
-        const isConvertError = !isConverting && convertStatus === "error";
+        const { t } = useTranslation();
+        const isConverting = convertStatus === FileConvertStep.Converting;
+        const isConvertError = !isConverting && convertStatus === FileConvertStep.Failed;
         const fileIcon = useMemo(() => getFileIcon(fileName), [fileName]);
 
         return (
