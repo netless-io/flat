@@ -6,19 +6,26 @@ import { CloudFile } from "@netless/flat-server-api";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { FlatServices, IServiceFileExtensions, IServiceFilePreview } from "@netless/flat-services";
 
-export const FilePreviewPage: React.FC = () => {
+export interface FilePreviewPageProps {
+    file?: CloudFile;
+}
+
+export const FilePreviewPage: React.FC<FilePreviewPageProps> = props => {
     const sp = useSafePromise();
     const params = useParams<RouteParams<RouteNameType.FilePreviewPage>>();
     const [containerNode, setContainerNode] = React.useState<HTMLDivElement | null>(null);
     const [service, setService] = React.useState<IServiceFilePreview | null | undefined>();
 
     const file = React.useMemo(() => {
+        if (props.file) {
+            return props.file;
+        }
         try {
             return JSON.parse(decodeURIComponent(params.file)) as CloudFile;
         } catch {
             return null;
         }
-    }, [params]);
+    }, [props.file, params]);
 
     const fileExt = React.useMemo(
         () =>
