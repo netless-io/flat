@@ -89,10 +89,30 @@ export class FlatServices {
         if (pService) {
             this.services.delete(name);
             const service = await pService;
-            await service?.destroy?.();
+            try {
+                await service?.destroy?.();
+            } catch (e) {
+                if (process.env.NODE_ENV !== "production") {
+                    console.error(e);
+                }
+            }
             return true;
         }
         return false;
+    }
+
+    public async shutdownAllServices(): Promise<void> {
+        this.services.forEach(async pService => {
+            const service = await pService;
+            try {
+                await service?.destroy?.();
+            } catch (e) {
+                if (process.env.NODE_ENV !== "production") {
+                    console.error(e);
+                }
+            }
+        });
+        this.services.clear();
     }
 
     public isRegistered(name: FlatServiceID): boolean {

@@ -1,6 +1,7 @@
 import React, { ComponentType } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { ErrorPage } from "flat-components";
+import { FlatServices } from "@netless/flat-services";
 
 export interface AppRouteErrorBoundaryProps {
     Comp: ComponentType<any>;
@@ -25,11 +26,12 @@ export class AppRouteErrorBoundary extends React.PureComponent<
         return { hasError: true };
     }
 
-    public componentDidCatch(error: any, errorInfo: any): void {
+    public override componentDidCatch(error: any, errorInfo: any): void {
         console.error(error, errorInfo);
+        FlatServices.getInstance().shutdownAllServices();
     }
 
-    public render(): React.ReactNode {
+    public override render(): React.ReactNode {
         if (this.state.hasError) {
             return <ErrorPage />;
         }
