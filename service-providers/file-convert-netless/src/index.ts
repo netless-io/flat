@@ -4,6 +4,7 @@ import { queryConvertingTaskStatus } from "./courseware-converting";
 import { isPPTX } from "./utils";
 
 export * from "./courseware-converting";
+export * from "./utils";
 
 export class FileConvertNetless implements IServiceFileConvert {
     public async startConvert(
