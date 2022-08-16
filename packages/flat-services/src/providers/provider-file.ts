@@ -11,14 +11,31 @@ import { getFileExt } from "../services/file/utils";
 import { IServiceFile, IServiceFileExtensions } from "../services/file";
 import { SideEffectManager } from "side-effect-manager";
 
+export interface FlatServiceProviderFileConfig {
+    flatServices: FlatServices;
+    toaster: Toaster;
+    flatI18n: FlatI18n;
+    openPreviewWindow: (file: CloudFile) => void;
+}
+
 export class FlatServiceProviderFile implements IServiceFile {
     private sideEffect = new SideEffectManager();
+    public flatServices: FlatServiceProviderFileConfig["flatServices"];
+    public toaster: FlatServiceProviderFileConfig["toaster"];
+    public flatI18n: FlatServiceProviderFileConfig["flatI18n"];
+    public openPreviewWindow: FlatServiceProviderFileConfig["openPreviewWindow"];
 
-    public constructor(
-        public flatServices: FlatServices,
-        public toaster: Toaster,
-        public flatI18n: FlatI18n,
-    ) {}
+    public constructor({
+        flatServices,
+        toaster,
+        flatI18n,
+        openPreviewWindow,
+    }: FlatServiceProviderFileConfig) {
+        this.flatServices = flatServices;
+        this.toaster = toaster;
+        this.flatI18n = flatI18n;
+        this.openPreviewWindow = openPreviewWindow;
+    }
 
     public async insert(file: CloudFile): Promise<void> {
         const ext = getFileExt(file.fileName) as IServiceFileExtensions;
@@ -42,21 +59,11 @@ export class FlatServiceProviderFile implements IServiceFile {
 
     public async preview(file: CloudFile): Promise<void> {
         const ext = getFileExt(file.fileName) as IServiceFileExtensions;
-        const serviceName = `file-preview:${ext}` as const;
-
-        const previewService = await this.requestAutoService(serviceName);
-        if (!previewService) {
-            throw new TypeError(`No service provider for previewing file '${file.fileName}'`);
-        }
 
         const convertStatus = await this.checkConvertStatus(file, ext);
 
         if (convertStatus === FileConvertStep.Done || convertStatus === FileConvertStep.None) {
-            try {
-                await previewService.preview(file);
-            } catch (e) {
-                this.toaster.emit("error", this.flatI18n.t("unable-to-insert-courseware"));
-            }
+            this.openPreviewWindow(file);
         }
     }
 

@@ -1,8 +1,14 @@
-import { FlatServiceProviderFile, FlatServices, Toaster } from "@netless/flat-services";
+import { FlatServiceProviderFile, FlatServices, Toaster, getFileExt } from "@netless/flat-services";
 import type { AgoraRTCElectron } from "@netless/flat-service-provider-agora-rtc-electron";
 import { FlatI18n } from "@netless/flat-i18n";
 import { Remitter } from "remitter";
 import { message } from "antd";
+import React from "react";
+import ReactDOM from "react-dom";
+import { FilePreviewPage } from "@netless/flat-pages/src/FilePreviewPage";
+import { portalWindowManager } from "../utils/portal-window-manager";
+import { ipcAsyncByPreviewFileWindow } from "../utils/ipc";
+import { BrowserRouter } from "react-router-dom";
 
 export function initFlatServices(): void {
     const toaster = createToaster();
@@ -11,7 +17,55 @@ export function initFlatServices(): void {
 
     flatServices.register(
         "file",
-        async () => new FlatServiceProviderFile(flatServices, toaster, flatI18n),
+        async () =>
+            new FlatServiceProviderFile({
+                flatServices,
+                toaster,
+                flatI18n,
+                openPreviewWindow: async file => {
+                    // @FIXME use simple window to preview file @BlackHole1
+                    const containerEl = document.createElement("div");
+
+                    try {
+                        const instance = await portalWindowManager.createPreviewFilePortalWindow(
+                            containerEl,
+                            file.fileName,
+                        );
+
+                        ReactDOM.render(
+                            // Wrap a RouterContext until @BlackHole1 finishes the refactoring
+                            React.createElement(
+                                BrowserRouter,
+                                {},
+                                React.createElement(FilePreviewPage, { file }),
+                            ),
+                            containerEl,
+                        );
+
+                        // when BrowserWindow close, will trigger onbeforeunload
+                        // since the current function may be called in non-component code
+                        // we need to manually call unmountComponentAtNode to unload the DOM
+                        instance.onbeforeunload = () => {
+                            ReactDOM.unmountComponentAtNode(containerEl);
+                        };
+
+                        const fileExt = getFileExt(file.fileURL).toLowerCase();
+
+                        if (["png", "jpg", "jpeg"].includes(fileExt)) {
+                            ipcAsyncByPreviewFileWindow(
+                                "set-visual-zoom-level",
+                                {
+                                    minimumLevel: 1,
+                                    maximumLevel: 3,
+                                },
+                                instance.browserWindowID,
+                            );
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                },
+            }),
     );
 
     flatServices.register("videoChat", async () => {

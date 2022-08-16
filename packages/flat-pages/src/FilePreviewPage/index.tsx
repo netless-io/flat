@@ -1,7 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { ErrorPage, useSafePromise } from "flat-components";
-import { FilePreviewImage } from "flat-components/src/components/FilePreview/FilePreviewImage";
+import { ErrorPage, useSafePromise, FilePreviewImage } from "flat-components";
 import { RouteNameType, RouteParams } from "../utils/routes";
 import { CloudFile } from "@netless/flat-server-api";
 import { useIsomorphicLayoutEffect } from "react-use";

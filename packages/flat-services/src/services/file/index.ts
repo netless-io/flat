@@ -8,6 +8,7 @@ import { IServiceFilePreview } from "./file-preview";
 export * from "./file-convert";
 export * from "./file-preview";
 export * from "./file-insert";
+export * from "./utils";
 
 export type { CloudFile } from "@netless/flat-server-api";
 export { FileConvertStep } from "@netless/flat-server-api";
