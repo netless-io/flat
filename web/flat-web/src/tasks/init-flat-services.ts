@@ -108,10 +108,12 @@ export function initFlatServices(): void {
         ],
         async () => {
             if (flatServices.isCreated("whiteboard")) {
-                const { Fastboard } = await import("@netless/flat-service-provider-fastboard");
+                const { Fastboard, FastboardFileInsert } = await import(
+                    "@netless/flat-service-provider-fastboard"
+                );
                 const service = await flatServices.requestService("whiteboard");
                 if (service instanceof Fastboard) {
-                    return { insert: file => service.insert(file) };
+                    return new FastboardFileInsert(service, flatI18n, toaster);
                 }
             }
             return null;

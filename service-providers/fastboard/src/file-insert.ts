@@ -1,12 +1,73 @@
 import type { CloudFile } from "@netless/flat-server-api";
 import { BuiltinApps } from "@netless/window-manager";
-import { queryConvertingTaskStatus } from "@netless/flat-service-provider-file-convert-netless";
+import {
+    getFileExt,
+    queryConvertingTaskStatus,
+    isPPTX,
+} from "@netless/flat-service-provider-file-convert-netless";
 import { ApplianceNames, SceneDefinition } from "white-web-sdk";
-import { Toaster } from "@netless/flat-services";
-import { FastboardApp } from "@netless/fastboard";
+import { Toaster, IServiceFileInsert } from "@netless/flat-services";
+import type { FastboardApp } from "@netless/fastboard";
 import { v4 as uuidv4 } from "@lukeed/uuid";
-import { FlatI18n } from "@netless/flat-i18n";
-import { isPPTX } from "@netless/flat-service-provider-file-convert-netless/src/utils";
+import type { FlatI18n } from "@netless/flat-i18n";
+import type { Fastboard } from "./index";
+
+export class FastboardFileInsert implements IServiceFileInsert {
+    public constructor(
+        public fastboard: Fastboard,
+        public flatI18n: FlatI18n,
+        public toaster: Toaster,
+    ) {}
+
+    public async insert(file: CloudFile): Promise<void> {
+        const fastboardApp = this.fastboard._app$.value;
+        if (!fastboardApp) {
+            this.toaster.emit("warn", this.flatI18n.t("unable-to-insert-courseware"));
+            return;
+        }
+
+        try {
+            switch (getFileExt(file.fileName)) {
+                case "jpg":
+                case "jpeg":
+                case "png":
+                case "webp": {
+                    await insertImage(file, fastboardApp);
+                    break;
+                }
+                case "mp3":
+                case "mp4": {
+                    await insertMedia(file, fastboardApp);
+                    break;
+                }
+                case "doc":
+                case "docx":
+                case "ppt":
+                case "pptx":
+                case "pdf": {
+                    await insertDocs(file, fastboardApp, this.flatI18n, this.toaster);
+                    break;
+                }
+                case "ice": {
+                    await insertZippedH5(file, fastboardApp);
+                    break;
+                }
+                case "vf": {
+                    await insertVf(file, fastboardApp);
+                    break;
+                }
+                default: {
+                    throw new Error(
+                        `[cloud storage]: insert unknown format "${file.fileName}" into whiteboard`,
+                    );
+                }
+            }
+        } catch (e) {
+            this.toaster.emit("error", this.flatI18n.t("unable-to-insert-courseware"));
+            console.error(e);
+        }
+    }
+}
 
 export async function insertImage(file: CloudFile, fastboardApp: FastboardApp): Promise<void> {
     // 1. shrink the image a little to fit the screen
