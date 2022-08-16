@@ -68,6 +68,7 @@
     "dotenv": "^16.0.0",
     "dotenv-expand": "^8.0.2",
     "eslint-loader": "^4.0.2",
-    "mime": "^3.0.0"
+    "mime": "^3.0.0",
+    "vite-plugin-compression": "^0.5.1"
   }
 }

@@ -7,7 +7,7 @@ import { inlineAssets } from "./scripts/vite-plugin-inline-assets";
 import { reactVirtualized } from "./scripts/vite-plugin-react-virtualized";
 import { mainPackageJSONPath } from "../../scripts/constants";
 import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
-
+import viteCompression from "vite-plugin-compression";
 export default defineConfig({
     plugins: [
         react(),
@@ -16,6 +16,7 @@ export default defineConfig({
         version(mainPackageJSONPath),
         inlineAssets(),
         reactVirtualized(),
+        viteCompression({ filter: /\.(js)$/i }),
     ],
     resolve: {
         alias: [
