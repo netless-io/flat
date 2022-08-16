@@ -18,13 +18,13 @@ import {
     removeExternalFiles,
     renameFile,
     renameExternalFile,
-    FLAT_SERVER_BASE_URL,
 } from "@netless/flat-server-api";
 import { getUploadTaskManager } from "../utils/upload-task-manager";
 import { UploadStatusType, UploadTask } from "../utils/upload-task-manager/upload-task";
 import { ConvertStatusManager } from "./convert-status-manager";
 import { Scheduler } from "./scheduler";
 import { FlatI18n } from "@netless/flat-i18n";
+import { FlatServices } from "@netless/flat-services";
 
 export type FileMenusKey = "open" | "download" | "rename" | "delete";
 
@@ -420,34 +420,9 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
     };
 
-    private previewCourseware(file: CloudFile): void {
-        const { fileURL, taskToken, taskUUID, region, resourceType } = file;
-
-        const convertFileTypeList = [".pptx", ".ppt", ".pdf", ".doc", ".docx"];
-
-        const isConvertFileType = convertFileTypeList.some(type => fileURL.includes(type));
-
-        const encodeFileURL = encodeURIComponent(fileURL);
-
-        const projector = resourceType === "WhiteboardProjector" ? "projector" : "legacy";
-
-        const resourcePreviewURL = isConvertFileType
-            ? `${FLAT_SERVER_BASE_URL}/preview/${encodeFileURL}/${taskToken}/${taskUUID}/${region}/${projector}/`
-            : `${FLAT_SERVER_BASE_URL}/preview/${encodeFileURL}/`;
-
-        switch (file.convertStep) {
-            case FileConvertStep.Converting: {
-                Modal.info({ content: FlatI18n.t("please-wait-while-the-lesson-is-transcoded") });
-                return;
-            }
-            case FileConvertStep.Failed: {
-                Modal.info({ content: FlatI18n.t("the-courseware-cannot-be-transcoded") });
-                return;
-            }
-            default: {
-                window.open(resourcePreviewURL, "_blank");
-            }
-        }
+    private async previewCourseware(file: CloudFile): Promise<void> {
+        const fileService = await FlatServices.getInstance().requestService("file");
+        fileService?.preview(file);
     }
 
     private async removeFiles(fileUUIDs: FileUUID[]): Promise<void> {

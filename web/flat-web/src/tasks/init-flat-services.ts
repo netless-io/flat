@@ -1,6 +1,8 @@
 import { FlatI18n } from "@netless/flat-i18n";
+import { routeConfig } from "@netless/flat-pages/src/route-config";
 import { FlatServiceProviderFile, FlatServices, Toaster } from "@netless/flat-services";
 import { message } from "antd";
+import { generatePath } from "react-router-dom";
 import { Remitter } from "remitter";
 
 export function initFlatServices(): void {
@@ -11,7 +13,20 @@ export function initFlatServices(): void {
 
     flatServices.register(
         "file",
-        async () => new FlatServiceProviderFile(flatServices, toaster, flatI18n),
+        async () =>
+            new FlatServiceProviderFile({
+                flatServices,
+                toaster,
+                flatI18n,
+                openPreviewWindow: file => {
+                    window.open(
+                        generatePath(routeConfig.FilePreviewPage.path, {
+                            file: encodeURIComponent(JSON.stringify(file)),
+                        }),
+                        "_blank",
+                    );
+                },
+            }),
     );
 
     flatServices.register("videoChat", async () => {

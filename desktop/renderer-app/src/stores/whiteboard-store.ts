@@ -21,13 +21,14 @@ import { snapshot } from "@netless/white-snapshot";
 
 import { RoomType } from "../../../../packages/flat-components/src/types/room";
 import { CLOUD_STORAGE_DOMAIN, NETLESS, NODE_ENV } from "../constants/process";
-import { CloudStorageFile, CloudStorageStore } from "../pages/CloudStoragePage/store";
+import { CloudStorageStore } from "../pages/CloudStoragePage/store";
 import { globalStore } from "./global-store";
-import { getFileExt, isPPTX } from "../utils/file";
+import { isPPTX } from "../utils/file";
 import { queryConvertingTaskStatus } from "../api-middleware/courseware-converting";
 import { convertFinish } from "../api-middleware/flatServer/storage";
 import { RequestErrorCode } from "../constants/error-code";
-import { isServerRequestError } from "@netless/flat-server-api";
+import { CloudFile, FileConvertStep, isServerRequestError } from "@netless/flat-server-api";
+import { FlatServices } from "@netless/flat-services";
 
 export class WhiteboardStore {
     public fastboardAPP: FastboardApp | null = null;
@@ -430,58 +431,28 @@ export class WhiteboardStore {
         return scenePath.slice(0, scenePath.lastIndexOf("/"));
     };
 
-    public insertCourseware = async (file: CloudStorageFile): Promise<void> => {
-        if (file.convert === "converting") {
+    public insertCourseware = async (file: CloudFile): Promise<void> => {
+        if (file.convertStep === FileConvertStep.Converting) {
             void message.warn(FlatI18n.t("in-the-process-of-transcoding-tips"));
             return;
         }
 
         void message.info(FlatI18n.t("inserting-courseware-tips"));
 
-        const ext = getFileExt(file.fileName);
-
-        switch (ext) {
-            case "jpg":
-            case "jpeg":
-            case "png":
-            case "webp": {
-                await this.insertImage(file);
-                break;
-            }
-            case "mp3":
-            case "mp4": {
-                await this.insertMediaFile(file);
-                break;
-            }
-            case "doc":
-            case "docx":
-            case "ppt":
-            case "pptx":
-            case "pdf": {
-                await this.insertDocs(file);
-                break;
-            }
-            case "ice": {
-                await this.insertIce(file);
-                break;
-            }
-            case "vf": {
-                await this.insertVf(file);
-                break;
-            }
-            default: {
-                console.log(
-                    `[cloud storage]: insert unknown format "${file.fileName}" into whiteboard`,
-                );
-            }
+        const fileService = await FlatServices.getInstance().requestService("file");
+        if (!fileService) {
+            void message.error(FlatI18n.t("unable-to-insert-courseware"));
+            return;
         }
+
+        await fileService.insert(file);
 
         if (this.cloudStorageStore.onCoursewareInserted) {
             this.cloudStorageStore.onCoursewareInserted();
         }
     };
 
-    public insertImage = async (file: Pick<CloudStorageFile, "fileURL">): Promise<void> => {
+    public insertImage = async (file: Pick<CloudFile, "fileURL">): Promise<void> => {
         const windowManager = this.windowManager;
         if (!windowManager) {
             return;
@@ -538,11 +509,11 @@ export class WhiteboardStore {
         windowManager.mainView.setMemberState({ currentApplianceName: ApplianceNames.selector });
     };
 
-    public insertMediaFile = async (file: CloudStorageFile): Promise<void> => {
+    public insertMediaFile = async (file: CloudFile): Promise<void> => {
         await this.openMediaFileInWindowManager(file.fileURL, file.fileName);
     };
 
-    public insertDocs = async (file: CloudStorageFile): Promise<void> => {
+    public insertDocs = async (file: CloudFile): Promise<void> => {
         const room = this.room;
         if (!room) {
             return;
@@ -557,7 +528,7 @@ export class WhiteboardStore {
             projector: resourceType === "WhiteboardProjector",
         });
 
-        if (file.convert !== "success") {
+        if (file.convertStep !== FileConvertStep.Done) {
             if (convertingStatus.status === "Finished" || convertingStatus.status === "Fail") {
                 try {
                     await convertFinish({ fileUUID: file.fileUUID, region });
@@ -613,7 +584,7 @@ export class WhiteboardStore {
         }
     };
 
-    public insertIce = async (file: CloudStorageFile): Promise<void> => {
+    public insertIce = async (file: CloudFile): Promise<void> => {
         try {
             const src =
                 CLOUD_STORAGE_DOMAIN.replace("[region]", file.region) +
@@ -639,7 +610,7 @@ export class WhiteboardStore {
         }
     };
 
-    public insertVf = async (file: CloudStorageFile): Promise<void> => {
+    public insertVf = async (file: CloudFile): Promise<void> => {
         try {
             if (this.windowManager) {
                 await this.windowManager.addApp({
