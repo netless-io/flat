@@ -196,7 +196,7 @@ importers:
       remitter: ^0.2.6
       rollup-plugin-copy: ^3.4.0
       rollup-plugin-visualizer: ^5.6.0
-      side-effect-manager: ^1.1.3
+      side-effect-manager: ^1.2.1
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
@@ -242,7 +242,7 @@ importers:
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
       remitter: 0.2.6
-      side-effect-manager: 1.1.3
+      side-effect-manager: 1.2.1
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
@@ -370,14 +370,14 @@ importers:
       i18next-browser-languagedetector: ^6.1.4
       prettier: ^2.3.0
       react: ^17.0.2
-      side-effect-manager: ^1.1.3
+      side-effect-manager: ^1.2.1
       typescript: ^4.6.2
       use-value-enhancer: ^0.1.0
       value-enhancer: ^1.3.2
     dependencies:
       i18next: 21.8.16
       i18next-browser-languagedetector: 6.1.4
-      side-effect-manager: 1.1.3
+      side-effect-manager: 1.2.1
       use-value-enhancer: 0.1.0_s4t5ozp5v364eom36t7digbp2q
       value-enhancer: 1.3.2
     devDependencies:
@@ -425,7 +425,7 @@ importers:
       react-router-dom: ^5.2.0
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
-      side-effect-manager: ^1.1.3
+      side-effect-manager: ^1.2.1
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
@@ -460,7 +460,7 @@ importers:
       react-router-dom: 5.3.1_react@17.0.2
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
-      side-effect-manager: 1.1.3
+      side-effect-manager: 1.2.1
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
@@ -488,14 +488,14 @@ importers:
       '@netless/flat-server-api': workspace:*
       prettier: ^2.3.0
       remitter: ^0.2.6
-      side-effect-manager: ^1.1.3
+      side-effect-manager: ^1.2.1
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
     dependencies:
       '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
       remitter: 0.2.6
-      side-effect-manager: 1.1.3
+      side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
     devDependencies:
       prettier: 2.6.2
@@ -512,7 +512,7 @@ importers:
       mobx: ^6.6.1
       prettier: ^2.3.0
       react: ^17.0.2
-      side-effect-manager: ^1.1.3
+      side-effect-manager: ^1.2.1
       typescript: ^4.6.2
       uuid: ^8.3.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
@@ -521,7 +521,7 @@ importers:
       '@netless/flat-server-api': link:../flat-server-api
       '@netless/flat-services': link:../flat-services
       flat-components: link:../flat-components
-      side-effect-manager: 1.1.3
+      side-effect-manager: 1.2.1
       uuid: 8.3.2
     devDependencies:
       '@netless/fastboard-react': 0.3.6_y3h2snxos52weau5pnhp7psr2q
@@ -557,13 +557,13 @@ importers:
       '@netless/flat-services': workspace:*
       agora-rtc-sdk-ng: ^4.12.2
       prettier: ^2.3.0
-      side-effect-manager: ^1.1.3
+      side-effect-manager: ^1.2.1
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
     dependencies:
       '@netless/flat-services': link:../../../packages/flat-services
       agora-rtc-sdk-ng: 4.12.2
-      side-effect-manager: 1.1.3
+      side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
     devDependencies:
       prettier: 2.6.2
@@ -574,13 +574,13 @@ importers:
       '@netless/flat-services': workspace:*
       agora-rtm-sdk: ^1.4.4
       prettier: ^2.3.0
-      side-effect-manager: ^1.1.3
+      side-effect-manager: ^1.2.1
       typescript: ^4.6.2
       uuid: ^8.3.2
     dependencies:
       '@netless/flat-services': link:../../packages/flat-services
       agora-rtm-sdk: 1.4.4
-      side-effect-manager: 1.1.3
+      side-effect-manager: 1.2.1
       uuid: 8.3.2
     devDependencies:
       prettier: 2.6.2
@@ -622,7 +622,7 @@ importers:
       '@netless/flat-services': workspace:*
       '@netless/window-manager': ^0.4.39
       prettier: ^2.3.0
-      side-effect-manager: ^1.1.3
+      side-effect-manager: ^1.2.1
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
@@ -634,7 +634,7 @@ importers:
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/window-manager': 0.4.39_white-web-sdk-esm@2.16.24
-      side-effect-manager: 1.1.3
+      side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
     devDependencies:
@@ -663,6 +663,23 @@ importers:
     dependencies:
       '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-services': link:../../packages/flat-services
+    devDependencies:
+      prettier: 2.6.2
+      typescript: 4.6.4
+
+  service-providers/file-preview-netless:
+    specifiers:
+      '@netless/app-docs-viewer': 1.0.0-canary.2
+      '@netless/flat-service-provider-file-convert-netless': workspace:*
+      '@netless/flat-services': workspace:*
+      prettier: ^2.3.0
+      typescript: ^4.6.2
+      value-enhancer: ^1.3.2
+    dependencies:
+      '@netless/app-docs-viewer': 1.0.0-canary.2
+      '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
+      '@netless/flat-services': link:../../packages/flat-services
+      value-enhancer: 1.3.2
     devDependencies:
       prettier: 2.6.2
       typescript: 4.6.4
@@ -742,7 +759,7 @@ importers:
       react-use: ^17.3.2
       react-virtualized: ^9.22.3
       remitter: ^0.2.6
-      side-effect-manager: ^1.1.3
+      side-effect-manager: ^1.2.1
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
       video.js: 7.10.2
@@ -790,7 +807,7 @@ importers:
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
       remitter: 0.2.6
-      side-effect-manager: 1.1.3
+      side-effect-manager: 1.2.1
       uuid: 8.3.2
       value-enhancer: 1.3.2
       video.js: 7.10.2
@@ -3148,6 +3165,15 @@ packages:
     resolution: {integrity: sha512-270HO3lQQRw+NraoRB4I6WjFJdNMOlXGXiS+s+EyBkuK2qmqfB2ne4+aIRoT7GOklTxTQYiSRseT8lxtP6Nxgg==}
     dev: false
 
+  /@netless/app-docs-viewer/1.0.0-canary.2:
+    resolution: {integrity: sha512-C5atZ8VpKGXJOtxD2z1tRhIHteBJ+lBBMfWhrr4Iqxek3JHyTZ5hl3RtLQOJokmpUINnk5v1lZZi5NdP2pn4MA==}
+    dependencies:
+      remitter: 0.2.7
+      side-effect-manager: 1.2.1
+      value-enhancer: 1.3.2
+      vanilla-lazyload: 17.8.3
+    dev: false
+
   /@netless/app-geogebra/0.0.4:
     resolution: {integrity: sha512-y5+XzVXUibmBixtTHZkBmfK3pORfeJ3tOgmoh/GskShIXyMKDAnJ+YP1X0ozskWWRvkYrAchT/5HM9DUXaMGLQ==}
     dev: false
@@ -3241,7 +3267,7 @@ packages:
     dependencies:
       lodash-es: 4.17.21
       remitter: 0.2.6
-      side-effect-manager: 1.1.3
+      side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
 
@@ -16518,6 +16544,10 @@ packages:
   /remitter/0.2.6:
     resolution: {integrity: sha512-vg6psVwfJsg7zcX7HVJ0UxZiRc0V7EfFOOzcp6WAEP2Br0G75DEM5KUglyxyMuxG57ntrfEBzqP6Cd91Nf2CBw==}
 
+  /remitter/0.2.7:
+    resolution: {integrity: sha512-4UFLuiw5+pogiodIcxZJamjdg6LHLiBQskUBiNmCG/bNi4lF6mpaSI4Lpcoyj6oax1HL530JdOrjKzsBxsSw9w==}
+    dev: false
+
   /remove-trailing-separator/1.1.0:
     resolution: {integrity: sha1-wkvOKig62tW8P1jg1IJJuSN52O8=}
     dev: true
@@ -17145,6 +17175,10 @@ packages:
 
   /side-effect-manager/1.1.3:
     resolution: {integrity: sha512-bD3zMAmMpVa5OR42UHK5HKY6XB/+d4NiICTMQAxwMTGkGY8epcnjK3+b0nuFb+9r1YBlVhSh+lt6wLMLdOxP4w==}
+    dev: false
+
+  /side-effect-manager/1.2.1:
+    resolution: {integrity: sha512-RBosCqit8LYMfrEXBt+4klzwWi3faGy4vfXNmUFZhgJY/oY6ZqF7RyUxWOJb0EUfA3jsY3juvFBJHYTk1q/3RQ==}
 
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
@@ -18994,6 +19028,10 @@ packages:
 
   /value-equal/1.0.1:
     resolution: {integrity: sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==}
+    dev: false
+
+  /vanilla-lazyload/17.8.3:
+    resolution: {integrity: sha512-0eYjhkSkfP/JCDIzVpmgnh9I3XKAA8/i/6FpRrH8qjcC+nHv5mYZ6DQZUIGU16TqJei23hHl0J/Zuv/zmCC2Zw==}
     dev: false
 
   /vary/1.1.2:
