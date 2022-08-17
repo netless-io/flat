@@ -1,10 +1,10 @@
 import { Meta, Story } from "@storybook/react";
 import React from "react";
-import { randomCloudFile } from "src/utils/storybook";
+import { randomCloudFile } from "../../../utils/storybook";
 import { FilePreviewImage, FilePreviewImageProps } from ".";
 
 const storyMeta: Meta = {
-    title: "ClassroomPage/CloudRecordBtn",
+    title: "FilePreview/FilePreviewImage",
     component: FilePreviewImage,
 };
 
