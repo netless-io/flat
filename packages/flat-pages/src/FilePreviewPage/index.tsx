@@ -1,6 +1,12 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { ErrorPage, useSafePromise, FilePreviewImage } from "flat-components";
+import {
+    ErrorPage,
+    useSafePromise,
+    FilePreviewImage,
+    FilePreviewAudio,
+    FilePreviewVideo,
+} from "flat-components";
 import { RouteNameType, RouteParams } from "../utils/routes";
 import { CloudFile } from "@netless/flat-server-api";
 import { useIsomorphicLayoutEffect } from "react-use";
@@ -51,7 +57,11 @@ export const FilePreviewPage: React.FC<FilePreviewPageProps> = props => {
     }
 
     return (
-        <div ref={setContainerNode} className="file-preview-container">
+        <div
+            ref={setContainerNode}
+            className="file-preview-container"
+            style={{ height: "100%", overflow: "hidden" }}
+        >
             {service === null && renderBuiltinFilePreview(file, fileExt)}
         </div>
     );
@@ -61,24 +71,17 @@ export default FilePreviewPage;
 
 function renderBuiltinFilePreview(file: CloudFile, fileExt: string): React.ReactNode {
     switch (fileExt) {
-        case "ppt":
-        case "pdf":
-        case "doc":
-        case "docx": {
-            if (file.taskUUID && file.taskToken) {
-                // return <FilePreviewDocs file={file} />;
-            }
-            break;
-        }
         case "jpg":
         case "jpeg":
         case "png":
         case "webp": {
             return <FilePreviewImage file={file} />;
         }
-        case "mp3":
+        case "mp3": {
+            return <FilePreviewAudio file={file} />;
+        }
         case "mp4": {
-            // return <FilePreviewMedia file={file} />;
+            return <FilePreviewVideo file={file} />;
         }
     }
     return <ErrorPage />;

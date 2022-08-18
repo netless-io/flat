@@ -3,6 +3,8 @@
     "target": "es2017",
     "jsx": "react",
 
+    "types": ["vite/client"],
+
     "allowJs": true,
 
     "strict": true,
@@ -36,5 +38,5 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true
   },
-  "exclude": ["node_modules"]
+  "include": []
 }

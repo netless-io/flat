@@ -29,6 +29,8 @@
     "@netless/flat-service-provider-fastboard": "workspace:*",
     "@netless/flat-service-provider-file-convert-h5": "workspace:*",
     "@netless/flat-service-provider-file-convert-netless": "workspace:*",
+    "@netless/flat-service-provider-file-preview-netless": "workspace:*",
+    "@netless/flat-service-provider-file-preview-netless-slide": "workspace:*",
     "@netless/flat-services": "workspace:*",
     "@videojs/vhs-utils": "^2.3.0",
     "agora-rtm-sdk": "^1.4.4",
