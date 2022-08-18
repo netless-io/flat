@@ -23,6 +23,8 @@ import { PRESETS } from "../constants/presets";
 import { mousewheelToScroll } from "../utils/mousewheel-to-scroll";
 import { registerColorShortcut } from "../utils/color-shortcut";
 import { injectCursor } from "../utils/inject-cursor";
+import { FlatServices } from "@netless/flat-services";
+import { createCloudFile } from "../utils/create-cloud-file";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -137,13 +139,13 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         }
     }, []);
 
-    const insertPresetImage = useCallback(
-        (fileURL: string) => {
-            whiteboardStore.insertImage({ fileURL });
-            showPresets(false);
-        },
-        [whiteboardStore],
-    );
+    const insertPresetImage = useCallback(async (fileURL: string) => {
+        const fileService = await FlatServices.getInstance().requestService("file");
+        if (fileService) {
+            fileService.insert(createCloudFile({ fileName: `${Date.now()}.png`, fileURL }));
+        }
+        showPresets(false);
+    }, []);
 
     const onDragOver = useCallback(
         (event: React.DragEvent<HTMLDivElement>) => {
