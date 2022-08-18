@@ -49,7 +49,8 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
                     let localMicTrack = this._rtc.localMicTrack;
                     if (shouldMic && !localMicTrack) {
                         localMicTrack = await this._rtc.createLocalMicTrack();
-                    } else if (localMicTrack) {
+                    }
+                    if (localMicTrack) {
                         await localMicTrack.setEnabled(shouldMic);
                     }
                     if (shouldMic && localMicTrack) {
@@ -114,7 +115,8 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
                         if (this._el$.value) {
                             localCameraTrack.play(this._el$.value);
                         }
-                    } else if (localCameraTrack) {
+                    }
+                    if (localCameraTrack) {
                         await localCameraTrack.setEnabled(shouldCamera);
                     }
                     if (shouldCamera && localCameraTrack) {
