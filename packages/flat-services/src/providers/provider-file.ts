@@ -6,7 +6,7 @@ import {
 } from "@netless/flat-server-api";
 import type { FlatI18n } from "@netless/flat-i18n";
 import type { Toaster } from "../toaster";
-import { FlatServiceID, FlatServices, FlatServicesCatalog } from "../flat-services";
+import { FlatServiceID, FlatServices } from "../flat-services";
 import { getFileExt } from "../services/file/utils";
 import { IServiceFile, IServiceFileExtensions } from "../services/file";
 import { SideEffectManager } from "side-effect-manager";
@@ -41,20 +41,22 @@ export class FlatServiceProviderFile implements IServiceFile {
         const ext = getFileExt(file.fileName) as IServiceFileExtensions;
         const serviceName = `file-insert:${ext}` as const;
 
-        const insertService = await this.requestAutoService(serviceName);
+        const insertService = await this.flatServices.requestService(serviceName, false);
         if (!insertService) {
             throw new TypeError(`No service provider for inserting file '${file.fileName}'`);
         }
 
-        const convertStatus = await this.checkConvertStatus(file, ext);
+        try {
+            const convertStatus = await this.checkConvertStatus(file, ext);
 
-        if (convertStatus === FileConvertStep.Done || convertStatus === FileConvertStep.None) {
-            try {
+            if (convertStatus === FileConvertStep.Done || convertStatus === FileConvertStep.None) {
                 await insertService.insert(file);
-            } catch (e) {
-                this.toaster.emit("error", this.flatI18n.t("unable-to-insert-courseware"));
             }
+        } catch (e) {
+            this.toaster.emit("error", this.flatI18n.t("unable-to-insert-courseware"));
         }
+
+        await insertService.destroy?.();
     }
 
     public async preview(file: CloudFile): Promise<void> {
@@ -78,9 +80,10 @@ export class FlatServiceProviderFile implements IServiceFile {
         file: CloudFile,
         ext: IServiceFileExtensions,
     ): Promise<FileConvertStep> {
+        let convertStep = file.convertStep;
         if (file.convertStep !== FileConvertStep.Done) {
             const serviceName = `file-convert:${ext}` as const;
-            const convertService = await this.requestAutoService(serviceName);
+            const convertService = await this.flatServices.requestService(serviceName, false);
             if (convertService) {
                 try {
                     const result = await convertService.queryStatus(file);
@@ -112,25 +115,13 @@ export class FlatServiceProviderFile implements IServiceFile {
                             this.flatI18n.t("in-the-process-of-transcoding-tips"),
                         );
                     }
-                    return result.status;
+                    convertStep = result.status;
                 } catch (e) {
                     console.error(e);
-                    return file.convertStep;
                 }
+                convertService.destroy?.();
             }
         }
-        return file.convertStep;
-    }
-
-    private async requestAutoService<T extends FlatServiceID>(
-        serviceName: T,
-    ): Promise<FlatServicesCatalog[T] | null> {
-        const convertService = await this.flatServices.requestService(serviceName);
-        this.sideEffect.setTimeout(
-            () => this.flatServices.shutdownService(serviceName),
-            5000,
-            serviceName,
-        );
-        return convertService;
+        return convertStep;
     }
 }

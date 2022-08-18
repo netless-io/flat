@@ -43,7 +43,16 @@ export const FilePreviewPage: React.FC<FilePreviewPageProps> = props => {
     );
 
     useIsomorphicLayoutEffect(() => {
-        sp(FlatServices.getInstance().requestService(`file-preview:${fileExt}`)).then(setService);
+        let previewService: IServiceFilePreview | null = null;
+        sp(FlatServices.getInstance().requestService(`file-preview:${fileExt}`, false)).then(
+            service => {
+                previewService = service;
+                setService(service);
+            },
+        );
+        return () => {
+            previewService?.destroy?.();
+        };
     }, []);
 
     useIsomorphicLayoutEffect(() => {
