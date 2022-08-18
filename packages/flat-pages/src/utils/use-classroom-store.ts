@@ -20,8 +20,10 @@ export function useClassroomStore(config: useClassRoomStoreConfig): ClassroomSto
     }, [title]);
 
     useEffect(() => {
+        let isUnmounted = false;
         let classroomStore: ClassroomStore | undefined;
         const flatServices = FlatServices.getInstance();
+
         sp(
             Promise.all([
                 flatServices.requestService("videoChat"),
@@ -29,8 +31,8 @@ export function useClassroomStore(config: useClassRoomStoreConfig): ClassroomSto
                 flatServices.requestService("whiteboard"),
             ]),
         ).then(([videoChat, textChat, whiteboard]) => {
-            if (videoChat && textChat && whiteboard) {
-                const classroomStore = new ClassroomStore({
+            if (!isUnmounted && videoChat && textChat && whiteboard) {
+                classroomStore = new ClassroomStore({
                     ...config,
                     rtc: videoChat,
                     rtm: textChat,
@@ -45,12 +47,15 @@ export function useClassroomStore(config: useClassRoomStoreConfig): ClassroomSto
         });
 
         return () => {
-            if (classroomStore) {
-                classroomStore.destroy();
-                flatServices.shutdownService("videoChat");
-                flatServices.shutdownService("textChat");
-                flatServices.shutdownService("whiteboard");
-            }
+            isUnmounted = true;
+            classroomStore?.destroy().catch(e => {
+                if (process.env.NODE_ENV !== "production") {
+                    console.error(e);
+                }
+            });
+            flatServices.shutdownService("videoChat");
+            flatServices.shutdownService("textChat");
+            flatServices.shutdownService("whiteboard");
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

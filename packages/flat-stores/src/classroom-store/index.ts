@@ -398,23 +398,7 @@ export class ClassroomStore {
     public async destroy(): Promise<void> {
         this.sideEffect.flushAll();
 
-        const promises: Array<Promise<any>> = [];
-
-        promises.push(this.rtm.destroy());
-
         // promises.push(this.stopRecording());
-
-        promises.push(this.rtc.destroy());
-
-        promises.push(this.rtc.destroy());
-
-        promises.push(this.whiteboardStore.destroy());
-
-        try {
-            await Promise.all(promises);
-        } catch (e) {
-            console.error(e);
-        }
 
         this.deviceStateStorage = undefined;
         this.classroomStorage = undefined;
