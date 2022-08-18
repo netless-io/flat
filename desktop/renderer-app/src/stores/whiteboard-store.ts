@@ -17,7 +17,6 @@ import {
     SceneDefinition,
     ViewMode,
 } from "white-web-sdk";
-import { snapshot } from "@netless/white-snapshot";
 
 import { RoomType } from "../../../../packages/flat-components/src/types/room";
 import { CLOUD_STORAGE_DOMAIN, NETLESS, NODE_ENV } from "../constants/process";
@@ -632,23 +631,24 @@ export class WhiteboardStore {
     };
 
     public getSaveAnnotationImages(): Array<() => Promise<HTMLCanvasElement | null>> {
-        if (this.fastboardAPP) {
-            const { manager } = this.fastboardAPP;
-            return manager.sceneState.scenes.map(scene => {
-                const dir = manager.mainViewSceneDir;
-                // Because manager hacks room.fillSceneSnapshot, we need to hack it back.
-                const room = {
-                    state: manager,
-                    fillSceneSnapshot: manager.mainView.fillSceneSnapshot.bind(manager.mainView),
-                } as any;
-                return () =>
-                    snapshot(room, {
-                        scenePath: dir + scene.name,
-                        crossorigin: true,
-                    });
-            });
-        } else {
-            return [];
-        }
+        // if (this.fastboardAPP) {
+        //     const { manager } = this.fastboardAPP;
+        //     return manager.sceneState.scenes.map(scene => {
+        //         const dir = manager.mainViewSceneDir;
+        //         // Because manager hacks room.fillSceneSnapshot, we need to hack it back.
+        //         const room = {
+        //             state: manager,
+        //             fillSceneSnapshot: manager.mainView.fillSceneSnapshot.bind(manager.mainView),
+        //         } as any;
+        //         return () =>
+        //             snapshot(room, {
+        //                 scenePath: dir + scene.name,
+        //                 crossorigin: true,
+        //             });
+        //     });
+        // } else {
+        //     return [];
+        // }
+        return [];
     }
 }

@@ -7,7 +7,6 @@ import { message } from "antd";
 import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { AnimationMode, Room, RoomPhase, ViewMode } from "white-web-sdk";
-import { snapshot } from "@netless/white-snapshot";
 import { RoomType, Region, CloudFile, FileConvertStep } from "@netless/flat-server-api";
 import { CloudStorageStore } from "../cloud-storage-store";
 import { coursewarePreloader } from "../utils/courseware-preloader";
@@ -251,48 +250,7 @@ export class WhiteboardStore {
     };
 
     public getSaveAnnotationImages(): Array<Promise<HTMLCanvasElement | null>> {
-        if (this.fastboardAPP) {
-            const { manager } = this.fastboardAPP;
-            // Because manager hacks room.fillSceneSnapshot, we need to hack it back.
-            const room = {
-                state: manager,
-                fillSceneSnapshot: manager.mainView.fillSceneSnapshot.bind(manager.mainView),
-            } as any;
-            const dir = manager.mainViewSceneDir;
-            const scenes = manager.sceneState.scenes;
-
-            const promises = scenes.map(() => {
-                let res!: (value: HTMLCanvasElement | null) => void;
-                const p = new Promise<HTMLCanvasElement | null>(resolve => {
-                    res = resolve;
-                });
-                return [p, res] as const;
-            });
-
-            // Start downloading images, one by one.
-            Promise.resolve().then(async () => {
-                for (let index = 0; index < promises.length; ++index) {
-                    const scene = scenes[index];
-                    const [, resolve] = promises[index];
-                    try {
-                        const canvas = await snapshot(room, {
-                            scenePath: dir + scene.name,
-                            crossorigin: true,
-                        });
-                        resolve(canvas);
-                    } catch (error) {
-                        console.warn("Failed to snapshot scene", scene.name);
-                        console.error(error);
-                        resolve(null);
-                    }
-                }
-            });
-
-            // Return the promises, which will be resolved one by one.
-            return promises.map(p => p[0]);
-        } else {
-            return [];
-        }
+        return this.whiteboard.exportAnnotations();
     }
 
     // @TODO remove me after refactoring
