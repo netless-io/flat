@@ -41,6 +41,8 @@ export abstract class IServiceWhiteboard {
 
     public abstract render(el: HTMLElement): void;
 
+    public abstract exportAnnotations(): Array<Promise<HTMLCanvasElement | null>>;
+
     public async destroy(): Promise<void> {
         this.events.destroy();
         this.sideEffect.flushAll();

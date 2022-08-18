@@ -257,6 +257,51 @@ export class Fastboard extends IServiceWhiteboard {
         await this.leaveRoom();
     }
 
+    public exportAnnotations(): Array<Promise<HTMLCanvasElement | null>> {
+        const app = this._app$.value;
+        if (!app) {
+            return [];
+        }
+
+        // @FIXME @hyrious please remove this hack
+        const room = {
+            state: app.manager,
+            fillSceneSnapshot: app.manager.mainView.fillSceneSnapshot.bind(app.manager.mainView),
+        };
+        const scenes = app.manager.sceneState.scenes;
+        const actions: Array<
+            (snapshot: (...args: any) => Promise<HTMLCanvasElement | null>) => Promise<void>
+        > = Array(scenes.length);
+        const canvases: Array<Promise<HTMLCanvasElement | null>> = Array(scenes.length);
+
+        scenes.forEach((scene, i) => {
+            canvases[i] = new Promise(resolve => {
+                actions[i] = async snapshot => {
+                    try {
+                        const canvas = await snapshot(room, {
+                            scenePath: app.manager.mainViewSceneDir + scene.name,
+                            crossorigin: true,
+                        });
+                        resolve(canvas);
+                    } catch (e) {
+                        console.warn("Failed to snapshot scene", scene.name);
+                        console.error(e);
+                        resolve(null);
+                    }
+                };
+            });
+        });
+
+        Promise.resolve().then(async () => {
+            const { snapshot } = await import("@netless/white-snapshot");
+            for (const act of actions) {
+                await act(snapshot);
+            }
+        });
+
+        return canvases;
+    }
+
     private setUA(): void {
         const exist = window.__netlessUA || "";
         if (!exist.includes("FLAT/")) {
