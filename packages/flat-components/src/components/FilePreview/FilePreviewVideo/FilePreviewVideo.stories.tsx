@@ -12,7 +12,7 @@ export default storyMeta;
 
 export const Overview: Story<FilePreviewVideoProps> = () => {
     return (
-        <div className="vh-75 w-70">
+        <div className="vh-75">
             <FilePreviewVideo
                 file={randomCloudFile({
                     fileName: "test.mp4",
