@@ -37,7 +37,5 @@ export const Overview: Story<SaveAnnotationModalProps> = args => (
 );
 Overview.args = {
     visible: true,
-    images: Array.from<() => Promise<HTMLCanvasElement>>({
-        length: faker.datatype.number(20),
-    }).fill(randomCanvas),
+    images: Array.from({ length: faker.datatype.number(20) }, randomCanvas),
 };
