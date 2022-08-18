@@ -160,6 +160,8 @@ importers:
       '@netless/flat-service-provider-fastboard': workspace:*
       '@netless/flat-service-provider-file-convert-h5': workspace:*
       '@netless/flat-service-provider-file-convert-netless': workspace:*
+      '@netless/flat-service-provider-file-preview-netless': workspace:*
+      '@netless/flat-service-provider-file-preview-netless-slide': workspace:*
       '@netless/flat-services': workspace:*
       '@types/classnames': ^2.3.0
       '@types/lodash': ^4.14.180
@@ -217,6 +219,8 @@ importers:
       '@netless/flat-service-provider-fastboard': link:../../service-providers/fastboard
       '@netless/flat-service-provider-file-convert-h5': link:../../service-providers/file-convert-h5
       '@netless/flat-service-provider-file-convert-netless': link:../../service-providers/file-convert-netless
+      '@netless/flat-service-provider-file-preview-netless': link:../../service-providers/file-preview-netless
+      '@netless/flat-service-provider-file-preview-netless-slide': link:../../service-providers/file-preview-netless-slide
       '@netless/flat-services': link:../../packages/flat-services
       '@videojs/vhs-utils': 2.3.0
       agora-rtm-sdk: 1.4.4
@@ -673,13 +677,30 @@ importers:
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       prettier: ^2.3.0
+      side-effect-manager: ^1.2.1
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
     dependencies:
       '@netless/app-docs-viewer': 1.0.0-canary.2
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
+      side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
+    devDependencies:
+      prettier: 2.6.2
+      typescript: 4.6.4
+
+  service-providers/file-preview-netless-slide:
+    specifiers:
+      '@netless/app-slide': ^0.2.2
+      '@netless/flat-service-provider-file-convert-netless': workspace:*
+      '@netless/flat-services': workspace:*
+      prettier: ^2.3.0
+      typescript: ^4.6.2
+    dependencies:
+      '@netless/app-slide': 0.2.2
+      '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
+      '@netless/flat-services': link:../../packages/flat-services
     devDependencies:
       prettier: 2.6.2
       typescript: 4.6.4
@@ -726,6 +747,8 @@ importers:
       '@netless/flat-service-provider-fastboard': workspace:*
       '@netless/flat-service-provider-file-convert-h5': workspace:*
       '@netless/flat-service-provider-file-convert-netless': workspace:*
+      '@netless/flat-service-provider-file-preview-netless': workspace:*
+      '@netless/flat-service-provider-file-preview-netless-slide': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/flat-stores': workspace:*
       '@netless/mini-svg-data-uri': 0.0.1
@@ -781,6 +804,8 @@ importers:
       '@netless/flat-service-provider-fastboard': link:../../service-providers/fastboard
       '@netless/flat-service-provider-file-convert-h5': link:../../service-providers/file-convert-h5
       '@netless/flat-service-provider-file-convert-netless': link:../../service-providers/file-convert-netless
+      '@netless/flat-service-provider-file-preview-netless': link:../../service-providers/file-preview-netless
+      '@netless/flat-service-provider-file-preview-netless-slide': link:../../service-providers/file-preview-netless-slide
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/flat-stores': link:../../packages/flat-stores
       '@videojs/vhs-utils': 2.3.0

@@ -196,6 +196,23 @@ export function initFlatServices(): void {
             return null;
         },
     );
+
+    flatServices.register(
+        ["file-preview:doc", "file-preview:docx", "file-preview:ppt", "file-preview:pdf"],
+        async () => {
+            const { FilePreviewNetless } = await import(
+                "@netless/flat-service-provider-file-preview-netless"
+            );
+            return new FilePreviewNetless();
+        },
+    );
+
+    flatServices.register("file-preview:pptx", async () => {
+        const { FilePreviewNetlessSlide } = await import(
+            "@netless/flat-service-provider-file-preview-netless-slide"
+        );
+        return new FilePreviewNetlessSlide();
+    });
 }
 
 function createToaster(): Toaster {

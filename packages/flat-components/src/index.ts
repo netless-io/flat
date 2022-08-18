@@ -8,6 +8,8 @@ export * from "./components/CloudStorage";
 export * from "./components/EditRoomPage";
 export * from "./components/ErrorPage";
 export * from "./components/FilePreview/FilePreviewImage";
+export * from "./components/FilePreview/FilePreviewAudio";
+export * from "./components/FilePreview/FilePreviewVideo";
 export * from "./components/FlatThemeProvider";
 export * from "./components/HomePage";
 export * from "./components/InviteModal";
