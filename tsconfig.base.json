@@ -3,7 +3,7 @@
     "target": "es2017",
     "jsx": "react",
 
-    "types": ["vite/client"],
+    "types": ["vite/client", "node"],
 
     "allowJs": true,
 
