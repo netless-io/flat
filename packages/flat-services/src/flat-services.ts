@@ -70,13 +70,16 @@ export class FlatServices {
 
     public async requestService<T extends FlatServiceID>(
         name: T,
+        keepReference = true,
     ): Promise<FlatServicesCatalog[T] | null> {
         let service = this.services.get(name) || null;
         if (!service) {
             const creator = this.registry.get(name);
             if (creator) {
                 service = creator();
-                this.services.set(name, service);
+                if (keepReference) {
+                    this.services.set(name, service);
+                }
             }
         }
         return service as Promise<FlatServicesCatalog[T] | null>;
