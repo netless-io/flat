@@ -401,6 +401,7 @@ export class ClassroomStore {
         // promises.push(this.stopRecording());
 
         this.deviceStateStorage = undefined;
+        this.onStageUsersStorage = undefined;
         this.classroomStorage = undefined;
     }
 
@@ -538,17 +539,20 @@ export class ClassroomStore {
         if (
             this.classMode === ClassModeType.Interaction ||
             userUUID === this.ownerUUID ||
-            !this.whiteboardStore.isWritable
+            !this.onStageUsersStorage?.isWritable
         ) {
             return;
         }
         if (this.isCreator) {
-            this.onStageUsersStorage?.setState({ [userUUID]: onStage });
+            this.onStageUsersStorage.setState({ [userUUID]: onStage });
         } else {
             // joiner can only turn off speaking
             if (!onStage && userUUID === this.userUUID) {
-                this.onStageUsersStorage?.setState({ [userUUID]: false });
+                this.onStageUsersStorage.setState({ [userUUID]: false });
             }
+        }
+        if (!onStage) {
+            this.updateDeviceState(userUUID, false, false);
         }
     };
 
