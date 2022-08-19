@@ -12,7 +12,7 @@ import { ModifyPeriodicRoomPage } from "@netless/flat-pages/src/ModifyPeriodicRo
 import { PeriodicRoomDetailPage } from "@netless/flat-pages/src/PeriodicRoomDetailPage";
 import { GeneralSettingPage } from "@netless/flat-pages/src/UserSettingPage/GeneralSettingPage";
 import { HotKeySettingPage } from "@netless/flat-pages/src/UserSettingPage/HotKeySettingPage";
-import { CloudStoragePage } from "./pages/CloudStoragePage";
+import { CloudStoragePage } from "@netless/flat-pages/src/CloudStoragePage";
 import { CameraCheckPage } from "./pages/DeviceCheckPages/CameraCheckPage";
 import { MicrophoneCheckPage } from "./pages/DeviceCheckPages/MicrophoneCheckPage";
 import { SpeakerCheckPage } from "./pages/DeviceCheckPages/SpeakerCheckPage";
