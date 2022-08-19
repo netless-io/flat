@@ -557,14 +557,14 @@ importers:
   service-providers/agora-rtc/agora-rtc-web:
     specifiers:
       '@netless/flat-services': workspace:*
-      agora-rtc-sdk-ng: ^4.12.2
+      agora-rtc-sdk-ng: 4.13.0
       prettier: ^2.3.0
       side-effect-manager: ^1.2.1
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
     dependencies:
       '@netless/flat-services': link:../../../packages/flat-services
-      agora-rtc-sdk-ng: 4.12.2
+      agora-rtc-sdk-ng: 4.13.0
       side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
     devDependencies:
@@ -6054,6 +6054,12 @@ packages:
 
   /agora-rtc-sdk-ng/4.12.2:
     resolution: {integrity: sha512-PcXuqHVrsc1W1A4YM6SSzBwazhbNCKc4peAckQHOQ+KODvR+DlZt0kN8toDcupa0B6gBwtM6guYoPvF9cpEg+w==}
+    dependencies:
+      agora-rte-extension: 1.0.23
+    dev: false
+
+  /agora-rtc-sdk-ng/4.13.0:
+    resolution: {integrity: sha512-+ZVVPgaSbAVjTREbOtyyfhVyJ24dgvTug68kFFRDxEhSuGHqReOwS8obwJiDmH9JvYhc8CzuWWwAebWEmbupsg==}
     dependencies:
       agora-rte-extension: 1.0.23
     dev: false
