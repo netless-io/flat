@@ -95,8 +95,6 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
         this.shareScreen.destroy();
 
-        this.sideEffect.flushAll();
-
         await this.leaveRoom();
     }
 
@@ -373,7 +371,6 @@ export class AgoraRTCWeb extends IServiceVideoChat {
                 if (uid === this.shareScreenUID) {
                     if (mediaType === "video") {
                         try {
-                            await client.unsubscribe(user, mediaType);
                             this.shareScreen.setRemoteVideoTrack(null);
                         } catch (e) {
                             console.error(e);
@@ -383,7 +380,6 @@ export class AgoraRTCWeb extends IServiceVideoChat {
                 }
 
                 try {
-                    await client.unsubscribe(user, mediaType);
                     const avatar = this._remoteAvatars.get(uid);
                     if (avatar) {
                         if (mediaType === "audio") {
@@ -394,14 +390,6 @@ export class AgoraRTCWeb extends IServiceVideoChat {
                     }
                 } catch (e) {
                     console.error(e);
-                }
-
-                if (!user.videoTrack && !user.audioTrack) {
-                    const avatar = this._remoteAvatars.get(uid);
-                    if (avatar) {
-                        avatar.destroy();
-                        this._remoteAvatars.delete(uid);
-                    }
                 }
             };
             client.on("user-unpublished", handler);
