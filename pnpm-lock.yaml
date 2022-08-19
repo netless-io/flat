@@ -511,7 +511,7 @@ importers:
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
-      '@netless/window-manager': ^0.4.39
+      '@netless/window-manager': ^0.4.41
       flat-components: workspace:*
       mobx: ^6.6.1
       prettier: ^2.3.0
@@ -528,8 +528,8 @@ importers:
       side-effect-manager: 1.2.1
       uuid: 8.3.2
     devDependencies:
-      '@netless/fastboard-react': 0.3.6_y3h2snxos52weau5pnhp7psr2q
-      '@netless/window-manager': 0.4.39_white-web-sdk-esm@2.16.24
+      '@netless/fastboard-react': 0.3.6_ojo25ixkz6jyehyhv7mcovq7mu
+      '@netless/window-manager': 0.4.41_white-web-sdk-esm@2.16.24
       mobx: 6.6.1
       prettier: 2.6.2
       react: 17.0.2
@@ -624,7 +624,7 @@ importers:
       '@netless/flat-server-api': workspace:*
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
-      '@netless/window-manager': ^0.4.39
+      '@netless/window-manager': ^0.4.41
       prettier: ^2.3.0
       side-effect-manager: ^1.2.1
       typescript: ^4.6.2
@@ -632,12 +632,12 @@ importers:
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
       '@lukeed/uuid': 2.0.0
-      '@netless/fastboard': 0.3.6_man77k32qv55e56rrqybt2aexa
+      '@netless/fastboard': 0.3.6_i7ei35pwu55cvcbffd5wthrwmu
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
-      '@netless/window-manager': 0.4.39_white-web-sdk-esm@2.16.24
+      '@netless/window-manager': 0.4.41_white-web-sdk-esm@2.16.24
       side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
@@ -3237,23 +3237,23 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/0.3.6_man77k32qv55e56rrqybt2aexa:
+  /@netless/fastboard-core/0.3.6_i7ei35pwu55cvcbffd5wthrwmu:
     resolution: {integrity: sha512-EoiN8CQREv1UTjM9EDs4dmqy8TsVW7HPQ+vhoWJk/idvP7Xgt1EY0x1Mg3zziU+jb9vhnC8+c9NpayfSfenE9w==}
     peerDependencies:
       '@netless/window-manager': '>=0.4.0'
       white-web-sdk: '>=2.16.0'
     dependencies:
       '@netless/app-slide': 0.2.2
-      '@netless/synced-store': 2.0.5_white-web-sdk-esm@2.16.24
-      '@netless/window-manager': 0.4.39_white-web-sdk-esm@2.16.24
+      '@netless/synced-store': 2.0.4_white-web-sdk-esm@2.16.24
+      '@netless/window-manager': 0.4.41_white-web-sdk-esm@2.16.24
       white-web-sdk: /white-web-sdk-esm/2.16.24
 
-  /@netless/fastboard-react/0.3.6_y3h2snxos52weau5pnhp7psr2q:
+  /@netless/fastboard-react/0.3.6_ojo25ixkz6jyehyhv7mcovq7mu:
     resolution: {integrity: sha512-ijaXelp9i6vYrBAfF0ZPQIhyhDcDTmt5vGZ9Pk7lHTgkhZ58FJf4biTxX2fESjiG3p2kyQYNqw5/eFxuBaKVlA==}
     peerDependencies:
       react: '*'
     dependencies:
-      '@netless/fastboard-core': 0.3.6_man77k32qv55e56rrqybt2aexa
+      '@netless/fastboard-core': 0.3.6_i7ei35pwu55cvcbffd5wthrwmu
       '@netless/fastboard-ui': 0.3.6_dh4pwpaiunoyuozzscsfopi4z4
       react: 17.0.2
     transitivePeerDependencies:
@@ -3266,13 +3266,13 @@ packages:
     peerDependencies:
       '@netless/fastboard-core': 0.3.6
     dependencies:
-      '@netless/fastboard-core': 0.3.6_man77k32qv55e56rrqybt2aexa
+      '@netless/fastboard-core': 0.3.6_i7ei35pwu55cvcbffd5wthrwmu
       tippy.js: 6.3.7
 
-  /@netless/fastboard/0.3.6_man77k32qv55e56rrqybt2aexa:
+  /@netless/fastboard/0.3.6_i7ei35pwu55cvcbffd5wthrwmu:
     resolution: {integrity: sha512-YH3NKT47D+0GWl7nIyUDLI/T2AgVoD6TnpV8kJTTYsPbFX41pZ5bfSKXZNF33577ehcUxWW3SvQScaqHSc3Jyw==}
     dependencies:
-      '@netless/fastboard-core': 0.3.6_man77k32qv55e56rrqybt2aexa
+      '@netless/fastboard-core': 0.3.6_i7ei35pwu55cvcbffd5wthrwmu
       '@netless/fastboard-ui': 0.3.6_dh4pwpaiunoyuozzscsfopi4z4
     transitivePeerDependencies:
       - '@netless/window-manager'
@@ -3284,8 +3284,8 @@ packages:
     hasBin: true
     dev: true
 
-  /@netless/synced-store/2.0.5_white-web-sdk-esm@2.16.24:
-    resolution: {integrity: sha512-apL1HV+e6OJ2YIzizPqNb5tPboO4LB5HHeHKzh9N+Cc5NqbrYgGdQuSWVD2Xbj5MajKJzPNVOaJ3vXTdgUlIuw==}
+  /@netless/synced-store/2.0.4_white-web-sdk-esm@2.16.24:
+    resolution: {integrity: sha512-F+wdSSsHNrxOaKz05QFWLU4X3UePrW6Mcs+KGXcET3fM6GEr/nV1vtq1fvL1pWnhYqqCp4AGciQ+ebk3qTpOzw==}
     requiresBuild: true
     peerDependencies:
       white-web-sdk: '>= 2.16'
@@ -3296,8 +3296,8 @@ packages:
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
 
-  /@netless/telebox-insider/0.2.26:
-    resolution: {integrity: sha512-HOBi9HWK0Zf0nvzfjM0V/0QmZ69ec7L/lCKMwRcfiQHxAAJ/zo9fEm468WocYFsliixWW5L7HwMN0eHb0mw7hA==}
+  /@netless/telebox-insider/0.2.27:
+    resolution: {integrity: sha512-6329Zf9Z8M7DI6EI4OyBM25HuVm1moKZfjuBguSEc6YkM0TvNFckq8UEszVYxPn4Wh5p1TJnho3i69gxzgXKLA==}
     dependencies:
       '@types/shallowequal': 1.1.1
       eventemitter3: 4.0.7
@@ -3312,13 +3312,13 @@ packages:
       html2canvas: 1.4.1
     dev: true
 
-  /@netless/window-manager/0.4.39_white-web-sdk-esm@2.16.24:
-    resolution: {integrity: sha512-Fvls15ezxE0ic2Sfo/UpddiwVTItZGk+U5+HGtLuVRsMQOvoKek9reT6KpCxo0MgT89hZLdLjURyut04pT7JdA==}
+  /@netless/window-manager/0.4.41_white-web-sdk-esm@2.16.24:
+    resolution: {integrity: sha512-R+vb+6nC0aECJqBjDJ3WJbkzGaT0ikfAd+hdqObLc6EPhjZlxKwfpVnyU+i/Z5P3OfclpaWFrh/qJq7KjSAGkQ==}
     peerDependencies:
       white-web-sdk: ^2.16.0
     dependencies:
       '@juggle/resize-observer': 3.3.1
-      '@netless/telebox-insider': 0.2.26
+      '@netless/telebox-insider': 0.2.27
       emittery: 0.9.2
       lodash: 4.17.21
       p-retry: 4.6.2
@@ -5228,8 +5228,8 @@ packages:
   /@types/node/17.0.40:
     resolution: {integrity: sha512-UXdBxNGqTMtm7hCwh9HtncFVLrXoqA3oJW30j6XWp5BH/wu3mVeaxo7cq5benFdBw34HB3XDT2TRPI7rXZ+mDg==}
 
-  /@types/node/18.7.1:
-    resolution: {integrity: sha512-GKX1Qnqxo4S+Z/+Z8KKPLpH282LD7jLHWJcVryOflnsnH+BtSDfieR6ObwBMwpnNws0bUK8GI7z0unQf9bARNQ==}
+  /@types/node/18.6.5:
+    resolution: {integrity: sha512-Xjt5ZGUa5WusGZJ4WJPbOT8QOqp6nDynVFRKcUt32bOgvXEoc6o085WNkYTMO7ifAj2isEfQQ2cseE+wT6jsRw==}
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -14099,7 +14099,7 @@ packages:
     dev: false
 
   /object-assign/4.1.1:
-    resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
+    resolution: {integrity: sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=}
     engines: {node: '>=0.10.0'}
 
   /object-copy/0.1.0:
@@ -15106,7 +15106,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 18.7.1
+      '@types/node': 18.6.5
       long: 4.0.0
 
   /proxy-addr/2.0.7:

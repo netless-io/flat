@@ -15,7 +15,7 @@
     "@netless/flat-server-api": "workspace:*",
     "@netless/flat-service-provider-file-convert-netless": "workspace:*",
     "@netless/flat-services": "workspace:*",
-    "@netless/window-manager": "^0.4.39",
+    "@netless/window-manager": "^0.4.41",
     "side-effect-manager": "^1.2.1",
     "value-enhancer": "^1.3.2",
     "white-web-sdk": "npm:white-web-sdk-esm@2.16.24"
