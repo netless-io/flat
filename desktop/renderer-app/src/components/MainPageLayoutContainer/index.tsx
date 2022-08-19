@@ -22,9 +22,12 @@ import {
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
 import { routeConfig, RouteNameType } from "../../route-config";
-import { GlobalStoreContext } from "../StoreProvider";
+
 import { generateAvatar } from "../../utils/generate-avatar";
-import { WindowsSystemBtnContext } from "@netless/flat-pages/src/components/StoreProvider";
+import {
+    GlobalStoreContext,
+    WindowsSystemBtnContext,
+} from "@netless/flat-pages/src/components/StoreProvider";
 
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];
