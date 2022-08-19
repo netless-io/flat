@@ -14,7 +14,7 @@ export interface ChatTypeBoxProps {
     onMessageSend: (text: string) => Promise<void>;
 }
 
-export const ChatTypeBox = observer<ChatTypeBoxProps>(function ChatTypeBox({
+export const ChatTypeBox = /* @__PURE__ */ observer<ChatTypeBoxProps>(function ChatTypeBox({
     isCreator,
     isBan,
     onBanChange,

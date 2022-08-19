@@ -20,7 +20,7 @@ export interface ChatUserProps {
     generateAvatar: (uid: string) => string;
 }
 
-export const ChatUser = observer<ChatUserProps>(function ChatUser({
+export const ChatUser = /* @__PURE__ */ observer<ChatUserProps>(function ChatUser({
     ownerUUID,
     userUUID,
     user,
