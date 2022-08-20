@@ -17,7 +17,7 @@ export type ChatUsersProps = {
     onAllOffStage: () => void;
 } & Omit<ChatUserProps, "user">;
 
-export const ChatUsers = observer<ChatUsersProps>(function ChatUsers({
+export const ChatUsers = /* @__PURE__ */ observer<ChatUsersProps>(function ChatUsers({
     isShowAllOfStage,
     hasSpeaking,
     users,

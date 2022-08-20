@@ -35,7 +35,7 @@ export interface NetworkStatusProps {
     networkQuality: NetworkQuality;
 }
 
-export const NetworkStatus = observer<NetworkStatusProps>(function NetworkStatus({
+export const NetworkStatus = /* @__PURE__ */ observer<NetworkStatusProps>(function NetworkStatus({
     networkQuality,
 }) {
     const t = useTranslate();

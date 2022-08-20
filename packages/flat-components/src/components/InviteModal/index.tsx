@@ -7,8 +7,8 @@ import { RoomInfo, Week } from "../../types/room";
 import { formatInviteCode, getWeekNames } from "../../utils/room";
 import { useLanguage, useTranslate } from "@netless/flat-i18n";
 
-const completeTimeFormat = format("yyyy-MM-dd HH:mm");
-const onlySuffixTimeFormat = format("HH:mm");
+const completeTimeFormat = /* @__PURE__ */ format("yyyy-MM-dd HH:mm");
+const onlySuffixTimeFormat = /* @__PURE__ */ format("HH:mm");
 
 export interface InviteModalProps {
     visible: boolean;

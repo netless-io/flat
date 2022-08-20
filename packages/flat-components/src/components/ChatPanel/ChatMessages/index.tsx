@@ -8,7 +8,7 @@ import { useTranslate } from "@netless/flat-i18n";
 
 export type ChatMessagesProps = ChatTypeBoxProps & ChatMessageListProps;
 
-export const ChatMessages = observer<ChatMessagesProps>(function ChatMessages({
+export const ChatMessages = /* @__PURE__ */ observer<ChatMessagesProps>(function ChatMessages({
     messages,
     ...restProps
 }) {

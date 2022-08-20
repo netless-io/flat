@@ -8,7 +8,7 @@ export interface IconMicProps
     noise?: number;
 }
 
-export const IconMic = React.memo<IconMicProps>(function IconMic({
+export const IconMic = /* @__PURE__ */ React.memo<IconMicProps>(function IconMic({
     getVolumeLevel,
     noise = 0.075,
     ...restProps

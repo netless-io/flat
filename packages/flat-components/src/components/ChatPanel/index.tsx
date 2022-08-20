@@ -13,7 +13,7 @@ export type ChatPanelProps = ChatTabTitleProps &
     Omit<ChatMessagesProps, "visible"> &
     ChatUsersProps;
 
-export const ChatPanel = observer<ChatPanelProps>(function ChatPanel(props) {
+export const ChatPanel = /* @__PURE__ */ observer<ChatPanelProps>(function ChatPanel(props) {
     const t = useTranslate();
     const [activeTab, setActiveTab] = useState<"messages" | "users">("messages");
 

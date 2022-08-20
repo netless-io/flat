@@ -7,16 +7,17 @@ import { Tooltip, TooltipProps } from "antd";
 
 export type CloudStorageFileListHeadTipProps = TooltipProps;
 
-export const CloudStorageFileListHeadTip = React.memo<CloudStorageFileListHeadTipProps>(
-    function CloudStorageFileListHeadTip(props) {
-        const { className, ...restProps } = props;
-        return (
-            <Tooltip
-                {...restProps}
-                className={classNames(className, "cloud-storage-file-list-help")}
-            >
-                <QuestionCircleOutlined />
-            </Tooltip>
-        );
-    },
-);
+export const CloudStorageFileListHeadTip =
+    /* @__PURE__ */ React.memo<CloudStorageFileListHeadTipProps>(
+        function CloudStorageFileListHeadTip(props) {
+            const { className, ...restProps } = props;
+            return (
+                <Tooltip
+                    {...restProps}
+                    className={classNames(className, "cloud-storage-file-list-help")}
+                >
+                    <QuestionCircleOutlined />
+                </Tooltip>
+            );
+        },
+    );
