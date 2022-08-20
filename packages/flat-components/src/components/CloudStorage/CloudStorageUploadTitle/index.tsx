@@ -11,7 +11,7 @@ export interface CloudStorageUploadTitleProps {
     total: number;
 }
 
-export const CloudStorageUploadTitle = React.memo<CloudStorageUploadTitleProps>(
+export const CloudStorageUploadTitle = /* @__PURE__ */ React.memo<CloudStorageUploadTitleProps>(
     function CloudStorageUploadTitle({ finishWithError, finished, total }) {
         const t = useTranslate();
         const percent = finished && total ? (finished / total) * 100 : 0;

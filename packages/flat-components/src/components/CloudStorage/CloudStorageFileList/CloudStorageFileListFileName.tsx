@@ -31,58 +31,59 @@ export interface CloudStorageFileListFileNameProps {
     onRename?: (fileUUID: string, fileName?: CloudStorageFileName) => void;
 }
 
-export const CloudStorageFileListFileName = React.memo<CloudStorageFileListFileNameProps>(
-    function CloudStorageFileListFileName({
-        file,
-        index,
-        titleClickable,
-        getPopupContainer,
-        fileMenus,
-        onItemMenuClick,
-        onItemTitleClick,
-        renamingFileUUID,
-        onRename,
-    }) {
-        const menuItems = fileMenus && fileMenus(file, index);
+export const CloudStorageFileListFileName =
+    /* @__PURE__ */ React.memo<CloudStorageFileListFileNameProps>(
+        function CloudStorageFileListFileName({
+            file,
+            index,
+            titleClickable,
+            getPopupContainer,
+            fileMenus,
+            onItemMenuClick,
+            onItemTitleClick,
+            renamingFileUUID,
+            onRename,
+        }) {
+            const menuItems = fileMenus && fileMenus(file, index);
 
-        return (
-            <div className="cloud-storage-file-list-filename-container">
-                <CloudStorageFileTitle
-                    convertStatus={file.convertStep}
-                    fileName={file.fileName}
-                    fileUUID={file.fileUUID}
-                    renamingFileUUID={renamingFileUUID}
-                    titleClickable={titleClickable}
-                    onRename={onRename}
-                    onTitleClick={onItemTitleClick}
-                />
-                {menuItems && menuItems.length > 0 && (
-                    <div className="cloud-storage-file-list-menu-btn-wrap">
-                        <Dropdown
-                            className="cloud-storage-file-list-menu-btn"
-                            getPopupContainer={getPopupContainer}
-                            overlay={
-                                <Menu
-                                    onClick={({ key }) =>
-                                        onItemMenuClick && onItemMenuClick(file.fileUUID, key)
-                                    }
-                                >
-                                    {menuItems.map(({ key, name, className = "" }) => (
-                                        <Menu.Item key={key} className={className}>
-                                            {name}
-                                        </Menu.Item>
-                                    ))}
-                                </Menu>
-                            }
-                            overlayClassName="cloud-storage-file-list-menu"
-                        >
-                            <Button>
-                                <img aria-hidden height={22} src={fileMenusSVG} width={22} />
-                            </Button>
-                        </Dropdown>
-                    </div>
-                )}
-            </div>
-        );
-    },
-);
+            return (
+                <div className="cloud-storage-file-list-filename-container">
+                    <CloudStorageFileTitle
+                        convertStatus={file.convertStep}
+                        fileName={file.fileName}
+                        fileUUID={file.fileUUID}
+                        renamingFileUUID={renamingFileUUID}
+                        titleClickable={titleClickable}
+                        onRename={onRename}
+                        onTitleClick={onItemTitleClick}
+                    />
+                    {menuItems && menuItems.length > 0 && (
+                        <div className="cloud-storage-file-list-menu-btn-wrap">
+                            <Dropdown
+                                className="cloud-storage-file-list-menu-btn"
+                                getPopupContainer={getPopupContainer}
+                                overlay={
+                                    <Menu
+                                        onClick={({ key }) =>
+                                            onItemMenuClick && onItemMenuClick(file.fileUUID, key)
+                                        }
+                                    >
+                                        {menuItems.map(({ key, name, className = "" }) => (
+                                            <Menu.Item key={key} className={className}>
+                                                {name}
+                                            </Menu.Item>
+                                        ))}
+                                    </Menu>
+                                }
+                                overlayClassName="cloud-storage-file-list-menu"
+                            >
+                                <Button>
+                                    <img aria-hidden height={22} src={fileMenusSVG} width={22} />
+                                </Button>
+                            </Dropdown>
+                        </div>
+                    )}
+                </div>
+            );
+        },
+    );

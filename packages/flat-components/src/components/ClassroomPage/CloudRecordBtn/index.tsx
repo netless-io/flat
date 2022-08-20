@@ -9,7 +9,7 @@ export type CloudRecordBtnProps = {
     onClick: (evt: any) => void;
 };
 
-export const CloudRecordBtn: React.FC<CloudRecordBtnProps> = observer(
+export const CloudRecordBtn: React.FC<CloudRecordBtnProps> = /* @__PURE__ */ observer(
     ({ isRecording, onClick }) => {
         const t = useTranslate();
 

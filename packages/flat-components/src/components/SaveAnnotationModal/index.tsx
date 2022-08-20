@@ -69,7 +69,7 @@ interface AnnotationProps {
     failText?: string;
 }
 
-const Annotation = React.memo(function Annotation({
+const Annotation = /* @__PURE__ */ React.memo(function Annotation({
     image,
     filename = "annotation.png",
     footerText,

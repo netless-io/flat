@@ -12,7 +12,7 @@ export interface RemoveHistoryRoomModalProps {
     loading: boolean;
 }
 
-export const RemoveHistoryRoomModal = observer<RemoveHistoryRoomModalProps>(
+export const RemoveHistoryRoomModal = /* @__PURE__ */ observer<RemoveHistoryRoomModalProps>(
     function RemoveHistoryRoomModal({ visible, onCancel, onConfirm, loading }) {
         const t = useTranslate();
         return (

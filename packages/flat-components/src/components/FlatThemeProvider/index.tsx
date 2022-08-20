@@ -6,7 +6,7 @@ import { useIsomorphicLayoutEffect } from "react-use";
 
 export * from "./useDarkMode";
 
-export const DarkModeContext = React.createContext(false);
+export const DarkModeContext = /* @__PURE__ */ React.createContext(false);
 
 export interface FlatThemeProviderProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {

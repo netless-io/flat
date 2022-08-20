@@ -39,7 +39,7 @@ export interface CloudStorageFileTitleProps
 /**
  * Render a file icon in front of file name according to file extension.
  */
-export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
+export const CloudStorageFileTitle = /* @__PURE__ */ React.memo<CloudStorageFileTitleProps>(
     function CloudStorageFileTitle({
         fileUUID,
         fileName,

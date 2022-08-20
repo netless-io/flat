@@ -15,7 +15,7 @@ export interface ChatMessageProps {
     openCloudStorage?: () => void;
 }
 
-export const ChatMessage = observer<ChatMessageProps>(function ChatMessage({
+export const ChatMessage = /* @__PURE__ */ observer<ChatMessageProps>(function ChatMessage({
     userUUID,
     messageUser,
     message,

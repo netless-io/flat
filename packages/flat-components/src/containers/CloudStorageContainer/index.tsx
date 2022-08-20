@@ -52,7 +52,7 @@ const onDragOver = (event: React.DragEvent<HTMLDivElement>): void => {
 };
 
 /** CloudStorage page with MobX Store */
-export const CloudStorageContainer = observer<CloudStorageContainerProps>(
+export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store }) {
         const t = useTranslate();
         const cloudStorageContainerRef = useRef<HTMLDivElement>(null);
