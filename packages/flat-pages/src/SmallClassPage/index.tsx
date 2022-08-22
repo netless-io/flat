@@ -126,7 +126,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                                 updateDeviceState={classroomStore.updateDeviceState}
                                 userUUID={classroomStore.userUUID}
                             />
-                            {classroomStore.users.joiners.map(renderAvatar)}
+                            {classroomStore.users.speakingJoiners.map(renderAvatar)}
                         </div>
                     )}
                 </div>
