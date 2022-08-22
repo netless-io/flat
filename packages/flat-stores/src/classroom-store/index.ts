@@ -39,7 +39,6 @@ export interface ClassroomStoreConfig {
 
 export type DeviceStateStorageState = Record<string, { camera: boolean; mic: boolean }>;
 export type ClassroomStorageState = {
-    classMode: ClassModeType;
     ban: boolean;
     raiseHandUsers: string[];
 };
@@ -256,7 +255,6 @@ export class ClassroomStore {
         const classroomStorage = fastboard.syncedStore.connectStorage<ClassroomStorageState>(
             "classroom",
             {
-                classMode: ClassModeType.Lecture,
                 ban: false,
                 raiseHandUsers: [],
             },
@@ -273,7 +271,6 @@ export class ClassroomStore {
             this.whiteboardStore.updateWritable(Boolean(onStageUsersStorage.state[this.userUUID]));
         }
 
-        this.updateClassMode(classroomStorage.state.classMode);
         this._updateIsBan(classroomStorage.state.ban);
 
         this.chatStore.onNewMessage = message => {
@@ -342,9 +339,9 @@ export class ClassroomStore {
 
         this.sideEffect.addDisposer(
             classroomStorage.on("stateChanged", diff => {
-                if (diff.classMode) {
-                    this.updateClassMode(diff.classMode.newValue);
-                }
+                // if (diff.classMode) {
+                //     this.updateClassMode(diff.classMode.newValue);
+                // }
                 if (diff.raiseHandUsers) {
                     updateRaiseHandUsers(diff.raiseHandUsers.newValue);
                     this.users.updateUsers(user => {
@@ -452,17 +449,6 @@ export class ClassroomStore {
             }
         } catch (e) {
             errorTips(e as Error);
-        }
-    };
-
-    public toggleClassMode = (): void => {
-        if (this.classroomStorage?.isWritable) {
-            this.classroomStorage.setState({
-                classMode:
-                    this.classMode === ClassModeType.Lecture
-                        ? ClassModeType.Interaction
-                        : ClassModeType.Lecture,
-            });
         }
     };
 

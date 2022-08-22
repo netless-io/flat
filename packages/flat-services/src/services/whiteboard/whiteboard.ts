@@ -14,7 +14,6 @@ export interface IServiceWhiteboardJoinRoomConfig extends IService {
     nickName: string;
     region: Region;
     classroomType: RoomType;
-    allowDrawing: boolean;
 }
 
 export interface IServiceWhiteboard$Val {
