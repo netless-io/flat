@@ -311,21 +311,21 @@ export class ClassroomStore {
         );
 
         this.sideEffect.addDisposer(
-            this.rtm.events.on("member-joined", ({ userUUID }) => {
-                this.users.addUser(userUUID);
+            this.rtm.events.on("member-joined", async ({ userUUID }) => {
+                const user = await this.users.addUser(userUUID);
+                console.log(
+                    "onStageUsersStorage.state[userUUID]",
+                    onStageUsersStorage.state[userUUID],
+                );
                 if (onStageUsersStorage.state[userUUID]) {
-                    this.users.updateUsers(user => {
-                        if (userUUID === user.userUUID) {
-                            user.isSpeak = true;
-                            user.isRaiseHand = false;
-                            const deviceState = deviceStateStorage.state[user.userUUID];
-                            if (deviceState) {
-                                user.camera = deviceState.camera;
-                                user.mic = deviceState.mic;
-                            }
-                            return false;
+                    runInAction(() => {
+                        user.isSpeak = true;
+                        user.isRaiseHand = false;
+                        const deviceState = deviceStateStorage.state[user.userUUID];
+                        if (deviceState) {
+                            user.camera = deviceState.camera;
+                            user.mic = deviceState.mic;
                         }
-                        return true;
                     });
                 }
             }),
@@ -339,9 +339,6 @@ export class ClassroomStore {
 
         this.sideEffect.addDisposer(
             classroomStorage.on("stateChanged", diff => {
-                // if (diff.classMode) {
-                //     this.updateClassMode(diff.classMode.newValue);
-                // }
                 if (diff.raiseHandUsers) {
                     updateRaiseHandUsers(diff.raiseHandUsers.newValue);
                     this.users.updateUsers(user => {
@@ -360,31 +357,32 @@ export class ClassroomStore {
             }),
         );
 
-        this.sideEffect.addDisposer(
-            onStageUsersStorage.on("stateChanged", () => {
-                this.users.updateUsers(user => {
-                    if (onStageUsersStorage.state[user.userUUID]) {
-                        user.isSpeak = true;
-                        user.isRaiseHand = false;
-                        const deviceState = deviceStateStorage.state[user.userUUID];
-                        if (deviceState) {
-                            user.camera = deviceState.camera;
-                            user.mic = deviceState.mic;
-                        }
-                    } else {
-                        user.isSpeak = false;
-                        user.mic = false;
-                        user.camera = false;
+        const updateUserStagingState = (): void => {
+            this.users.updateUsers(user => {
+                if (onStageUsersStorage.state[user.userUUID]) {
+                    user.isSpeak = true;
+                    user.isRaiseHand = false;
+                    const deviceState = deviceStateStorage.state[user.userUUID];
+                    if (deviceState) {
+                        user.camera = deviceState.camera;
+                        user.mic = deviceState.mic;
                     }
-                });
-
-                if (!this.isCreator) {
-                    this.whiteboardStore.updateWritable(
-                        Boolean(onStageUsersStorage.state[this.userUUID]),
-                    );
+                } else {
+                    user.isSpeak = false;
+                    user.mic = false;
+                    user.camera = false;
                 }
-            }),
-        );
+            });
+
+            if (!this.isCreator) {
+                this.whiteboardStore.updateWritable(
+                    Boolean(onStageUsersStorage.state[this.userUUID]),
+                );
+            }
+        };
+        updateUserStagingState();
+
+        this.sideEffect.addDisposer(onStageUsersStorage.on("stateChanged", updateUserStagingState));
 
         this.sideEffect.addDisposer(
             deviceStateStorage.on("stateChanged", diff => {

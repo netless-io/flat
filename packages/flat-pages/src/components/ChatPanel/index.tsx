@@ -7,6 +7,7 @@ import { generateAvatar } from "../../utils/generate-avatar";
 export interface ChatPanelProps {
     classRoomStore: ClassroomStore;
     isShowAllOfStage?: boolean;
+    disableEndSpeaking?: boolean;
     disableMultipleSpeakers?: boolean;
 }
 
@@ -15,6 +16,7 @@ const noop = async (): Promise<void> => void 0;
 
 export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     classRoomStore,
+    disableEndSpeaking,
     disableMultipleSpeakers,
     isShowAllOfStage,
 }) {
@@ -27,6 +29,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
 
     return (
         <ChatPanelImpl
+            disableEndSpeaking={disableEndSpeaking}
             generateAvatar={generateAvatar}
             getUserByUUID={(userUUID: string) => classRoomStore.users.cachedUsers.get(userUUID)}
             hasHandRaising={classRoomStore.users.handRaisingJoiners.length > 0}

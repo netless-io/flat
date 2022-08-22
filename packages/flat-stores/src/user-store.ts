@@ -79,15 +79,14 @@ export class UserStore {
         });
     };
 
-    public addUser = async (userUUID: string): Promise<void> => {
+    public addUser = async (userUUID: string): Promise<User> => {
         if (this.cachedUsers.has(userUUID)) {
             this.removeUser(userUUID);
         }
-        const users = await this.createUsers([userUUID]);
-        users.forEach(user => {
-            this.cacheUser(user);
-            this.sortUser(user);
-        });
+        const [user] = await this.createUsers([userUUID]);
+        this.cacheUser(user);
+        this.sortUser(user);
+        return user;
     };
 
     public removeUser = (userUUID: string): void => {
