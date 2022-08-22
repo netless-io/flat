@@ -385,11 +385,16 @@ export class ClassroomStore {
         this.sideEffect.addDisposer(onStageUsersStorage.on("stateChanged", updateUserStagingState));
 
         this.sideEffect.addDisposer(
-            deviceStateStorage.on("stateChanged", diff => {
+            deviceStateStorage.on("stateChanged", () => {
                 this.users.updateUsers(user => {
-                    const deviceState = diff[user.userUUID]?.newValue;
-                    user.camera = Boolean(deviceState?.camera);
-                    user.mic = Boolean(deviceState?.mic);
+                    const deviceState = deviceStateStorage.state[user.userUUID];
+                    if (deviceState) {
+                        user.camera = deviceState.camera;
+                        user.mic = deviceState.mic;
+                    } else {
+                        user.mic = false;
+                        user.camera = false;
+                    }
                 });
             }),
         );
