@@ -6,7 +6,6 @@ import { generateAvatar } from "../../utils/generate-avatar";
 
 export interface ChatPanelProps {
     classRoomStore: ClassroomStore;
-    isShowAllOfStage?: boolean;
     disableEndSpeaking?: boolean;
     disableMultipleSpeakers?: boolean;
 }
@@ -18,7 +17,6 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     classRoomStore,
     disableEndSpeaking,
     disableMultipleSpeakers,
-    isShowAllOfStage,
 }) {
     const users = useComputed(() => {
         const { creator, speakingJoiners, handRaisingJoiners, otherJoiners } = classRoomStore.users;
@@ -27,16 +25,17 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             : [...speakingJoiners, ...handRaisingJoiners, ...otherJoiners];
     }).get();
 
+    const handHandRaising = classRoomStore.users.handRaisingJoiners.length > 0;
+
     return (
         <ChatPanelImpl
             disableEndSpeaking={disableEndSpeaking}
+            disableMultipleSpeakers={disableMultipleSpeakers}
             generateAvatar={generateAvatar}
             getUserByUUID={(userUUID: string) => classRoomStore.users.cachedUsers.get(userUUID)}
-            hasHandRaising={classRoomStore.users.handRaisingJoiners.length > 0}
-            hasSpeaking={classRoomStore.users.speakingJoiners.length > 0}
+            hasHandRaising={handHandRaising}
             isBan={classRoomStore.isBan}
             isCreator={classRoomStore.isCreator}
-            isShowAllOfStage={isShowAllOfStage}
             loadMoreRows={noop}
             messages={classRoomStore.chatStore.messages}
             openCloudStorage={() => classRoomStore.toggleCloudStoragePanel(true)}
@@ -44,6 +43,10 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
             userUUID={classRoomStore.userUUID}
             users={users}
+            withAcceptHands={
+                handHandRaising &&
+                (!disableMultipleSpeakers || classRoomStore.users.speakingJoiners.length <= 0)
+            }
             onAcceptRaiseHand={(userUUID: string) => {
                 if (classRoomStore.users.speakingJoiners.length > 0 && disableMultipleSpeakers) {
                     // only one speaker is allowed
@@ -51,8 +54,8 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
                 }
                 classRoomStore.acceptRaiseHand(userUUID);
             }}
-            onAllOffStage={noop}
             onBanChange={classRoomStore.onToggleBan}
+            onCancelAllHandRaising={classRoomStore.onCancelAllHandRaising}
             onEndSpeaking={userUUID => {
                 void classRoomStore.onStaging(userUUID, false);
             }}

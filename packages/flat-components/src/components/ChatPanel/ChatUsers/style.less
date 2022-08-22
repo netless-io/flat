@@ -2,9 +2,13 @@
     position: relative;
     height: 100%;
 
-    &.has-speaking {
+    .chat-user-ctl-btn.is-hand-raising {
+        display: none !important;
+    }
+
+    &.with-accept-hands {
         .chat-user-ctl-btn.is-hand-raising {
-            display: none !important;
+            display: block !important;
         }
     }
 }

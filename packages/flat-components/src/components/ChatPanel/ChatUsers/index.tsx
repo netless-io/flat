@@ -10,18 +10,19 @@ import { User } from "../../../types/user";
 
 export type ChatUsersProps = {
     isCreator: boolean;
-    hasHandRaising: boolean;
-    isShowAllOfStage?: boolean;
-    hasSpeaking: boolean;
+    hasHandRaising?: boolean;
+    withAcceptHands: boolean;
     users: User[];
-    onAllOffStage: () => void;
+    disableMultipleSpeakers?: boolean;
+    onCancelAllHandRaising: () => void;
 } & Omit<ChatUserProps, "user">;
 
 export const ChatUsers = /* @__PURE__ */ observer<ChatUsersProps>(function ChatUsers({
-    isShowAllOfStage,
-    hasSpeaking,
+    isCreator,
+    hasHandRaising,
+    withAcceptHands,
     users,
-    onAllOffStage,
+    onCancelAllHandRaising,
     ...restProps
 }) {
     const t = useTranslate();
@@ -49,17 +50,17 @@ export const ChatUsers = /* @__PURE__ */ observer<ChatUsersProps>(function ChatU
     };
 
     return (
-        <div className={classNames("chat-users-wrap", { "has-speaking": hasSpeaking })}>
-            {isShowAllOfStage && (
+        <div className={classNames("chat-users-wrap", { "with-accept-hands": withAcceptHands })}>
+            {isCreator && hasHandRaising && (
                 <div className="chat-users-cancel-hands-wrap">
-                    <button className="chat-users-cancel-hands" onClick={onAllOffStage}>
-                        {t("all-off-stage")}
+                    <button className="chat-users-cancel-hands" onClick={onCancelAllHandRaising}>
+                        {t("cancel-hand-raising")}
                     </button>
                 </div>
             )}
             <div
                 className={classNames("chat-users", {
-                    "with-cancel-hands": isShowAllOfStage,
+                    "with-cancel-hands": hasHandRaising,
                 })}
             >
                 <AutoSizer>{renderList}</AutoSizer>
