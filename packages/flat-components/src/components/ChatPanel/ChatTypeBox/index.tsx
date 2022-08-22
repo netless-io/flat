@@ -74,7 +74,7 @@ export const ChatTypeBox = /* @__PURE__ */ observer<ChatTypeBoxProps>(function C
             )}
             <button
                 className="chat-typebox-send"
-                disabled={isBan || isSending || trimmedText.length <= 0}
+                disabled={(!isCreator && isBan) || isSending || trimmedText.length <= 0}
                 title={t("send")}
                 onClick={sendMessage}
             >
