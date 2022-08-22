@@ -63,6 +63,8 @@ export class WhiteboardStore {
             whiteboard: false,
         });
 
+        this.whiteboard.setAllowDrawing(this.isWritable);
+
         this.cloudStorageStore = new CloudStorageStore({
             compact: true,
             insertCourseware: this.insertCourseware,
@@ -161,7 +163,6 @@ export class WhiteboardStore {
             uid: globalStore.userUUID,
             nickName: globalStore.userInfo?.name ?? globalStore.userUUID,
             classroomType: this.getRoomType(),
-            allowDrawing: this.isWritable,
         });
 
         // @TODO remove me after refactoring
@@ -185,8 +186,6 @@ export class WhiteboardStore {
         this.updateRoom(room);
 
         this.updateWindowManager(manager);
-
-        room.disableDeviceInputs = !this.isWritable;
 
         this.scrollToTopOnce();
 

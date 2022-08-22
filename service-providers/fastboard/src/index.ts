@@ -111,15 +111,15 @@ export class Fastboard extends IServiceWhiteboard {
                     this.asyncSideEffect.add(async () => {
                         let isDisposed = false;
                         try {
-                            if (room.isWritable) {
+                            if (allowDrawing) {
+                                await app.room.setWritable(true);
+                            } else {
                                 // wait until room isWritable
                                 // remove after the issue is fixed
                                 await app.syncedStore.nextFrame();
-                                if (isDisposed) {
+                                if (!isDisposed) {
                                     await app.room.setWritable(false);
                                 }
-                            } else {
-                                await app.room.setWritable(true);
                             }
                         } catch (e) {
                             if (process.env.NODE_ENV !== "production") {
@@ -145,7 +145,6 @@ export class Fastboard extends IServiceWhiteboard {
         nickName,
         region,
         classroomType,
-        allowDrawing,
     }: IServiceWhiteboardJoinRoomConfig): Promise<void> {
         if (!appID) {
             throw new Error("[Fastboard] APP_ID is not set");
@@ -157,7 +156,6 @@ export class Fastboard extends IServiceWhiteboard {
             );
         }
 
-        this.setAllowDrawing(allowDrawing);
         this._roomPhase$.setValue(RoomPhase.Disconnected);
 
         const fastboardAPP = await createFastboard({
@@ -190,7 +188,7 @@ export class Fastboard extends IServiceWhiteboard {
                     // @deprecated
                     cursorName: nickName,
                 },
-                isWritable: allowDrawing,
+                isWritable: this.allowDrawing,
                 uid,
                 floatBar: true,
                 disableEraseImage: true,

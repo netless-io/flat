@@ -11,14 +11,11 @@ import {
     TopBarDivider,
     Timer,
     CloudRecordBtn,
-    TopBarRoundBtn,
     TopBarRightBtn,
     SVGScreenSharing,
     SVGExit,
     SVGMenuFold,
     SVGMenuUnfold,
-    SVGModeInteractive,
-    SVGModeLecture,
 } from "flat-components";
 
 import InviteButton from "../components/InviteButton";
@@ -69,7 +66,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                     <div className="small-class-realtime-box">
                         {windowsBtn ? (
                             <TopBar
-                                center={renderTopBarCenter()}
+                                // center={renderTopBarCenter()}
                                 left={renderTopBarLeft()}
                                 right={renderTopBarRight()}
                                 showWindowsSystemBtn={windowsBtn.showWindowsBtn}
@@ -157,34 +154,34 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
             );
         }
 
-        function renderClassMode(): React.ReactNode {
-            return classroomStore.classMode === ClassModeType.Lecture ? (
-                <TopBarRoundBtn
-                    dark
-                    icon={<SVGModeLecture />}
-                    title={t("switch-to-interactive-mode")}
-                    onClick={classroomStore.toggleClassMode}
-                >
-                    {t("lecture-mode")}
-                </TopBarRoundBtn>
-            ) : (
-                <TopBarRoundBtn
-                    dark
-                    icon={<SVGModeInteractive />}
-                    title={t("switch-to-lecture-mode")}
-                    onClick={classroomStore.toggleClassMode}
-                >
-                    {t("interactive-mode")}
-                </TopBarRoundBtn>
-            );
-        }
+        // function renderClassMode(): React.ReactNode {
+        //     return classroomStore.classMode === ClassModeType.Lecture ? (
+        //         <TopBarRoundBtn
+        //             dark
+        //             icon={<SVGModeLecture />}
+        //             title={t("switch-to-interactive-mode")}
+        //             onClick={classroomStore.toggleClassMode}
+        //         >
+        //             {t("lecture-mode")}
+        //         </TopBarRoundBtn>
+        //     ) : (
+        //         <TopBarRoundBtn
+        //             dark
+        //             icon={<SVGModeInteractive />}
+        //             title={t("switch-to-lecture-mode")}
+        //             onClick={classroomStore.toggleClassMode}
+        //         >
+        //             {t("interactive-mode")}
+        //         </TopBarRoundBtn>
+        //     );
+        // }
 
-        function renderTopBarCenter(): React.ReactNode {
-            if (!classroomStore.isCreator) {
-                return null;
-            }
-            return renderClassMode();
-        }
+        // function renderTopBarCenter(): React.ReactNode {
+        //     if (!classroomStore.isCreator) {
+        //         return null;
+        //     }
+        //     return renderClassMode();
+        // }
 
         function renderTopBarRight(): React.ReactNode {
             return (
