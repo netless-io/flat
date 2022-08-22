@@ -39,7 +39,8 @@ export interface ClassroomStoreConfig {
 
 export type DeviceStateStorageState = Record<string, { camera: boolean; mic: boolean }>;
 export type ClassroomStorageState = {
-    classMode?: ClassModeType;
+    classMode: ClassModeType;
+    ban: boolean;
     raiseHandUsers: string[];
 };
 export type OnStageUsersStorageState = Record<string, boolean>;
@@ -163,17 +164,6 @@ export class ClassroomStore {
             ),
         );
 
-        this.sideEffect.addDisposer(
-            this.rtm.events.on(
-                "ban",
-                action("ban", event => {
-                    if (event.senderID === this.ownerUUID) {
-                        this.isBan = event.status;
-                    }
-                }),
-            ),
-        );
-
         if (!this.isCreator) {
             this.rtm.events.on("update-room-status", event => {
                 if (event.roomUUID === this.roomUUID && event.senderID === this.ownerUUID) {
@@ -212,6 +202,10 @@ export class ClassroomStore {
                 }),
             );
         }
+    }
+
+    public get roomType(): RoomType {
+        return this.roomInfo?.roomType ?? RoomType.BigClass;
     }
 
     public get roomInfo(): RoomItem | undefined {
@@ -263,6 +257,7 @@ export class ClassroomStore {
             "classroom",
             {
                 classMode: ClassModeType.Lecture,
+                ban: false,
                 raiseHandUsers: [],
             },
         );
@@ -279,6 +274,7 @@ export class ClassroomStore {
         }
 
         this.updateClassMode(classroomStorage.state.classMode);
+        this._updateIsBan(classroomStorage.state.ban);
 
         this.chatStore.onNewMessage = message => {
             if (this.isRecording) {
@@ -354,6 +350,15 @@ export class ClassroomStore {
                     this.users.updateUsers(user => {
                         user.isRaiseHand = raiseHandUsers.has(user.userUUID);
                     });
+                }
+                if (diff.ban) {
+                    this._updateIsBan(diff.ban.newValue);
+                    if (this.isCreator) {
+                        this.rtm.sendRoomCommand("ban", {
+                            roomUUID: this.roomUUID,
+                            status: diff.ban.newValue,
+                        });
+                    }
                 }
             }),
         );
@@ -524,16 +529,15 @@ export class ClassroomStore {
         }
     };
 
-    public onToggleBan = async (): Promise<void> => {
-        if (!this.isCreator) {
-            return;
+    public onToggleBan = (): void => {
+        if (this.isCreator && this.classroomStorage?.isWritable) {
+            this.classroomStorage.setState({ ban: !this.classroomStorage.state.ban });
         }
-        const newBanStatus = !this.isBan;
-        await this.rtm.sendRoomCommand("ban", {
-            roomUUID: this.roomUUID,
-            status: newBanStatus,
-        });
     };
+
+    private _updateIsBan(ban: boolean): void {
+        this.isBan = ban;
+    }
 
     public onStaging = async (userUUID: string, onStage: boolean): Promise<void> => {
         if (
