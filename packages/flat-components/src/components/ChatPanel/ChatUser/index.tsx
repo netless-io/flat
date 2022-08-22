@@ -12,6 +12,7 @@ export interface ChatUserProps {
     userUUID: string;
     /** a user */
     user: User;
+    disableEndSpeaking?: boolean;
     /** when hand raising is accepted by the teacher */
     onAcceptRaiseHand: (uid: string) => void;
     /** user stops speaking */
@@ -24,6 +25,7 @@ export const ChatUser = /* @__PURE__ */ observer<ChatUserProps>(function ChatUse
     ownerUUID,
     userUUID,
     user,
+    disableEndSpeaking,
     onAcceptRaiseHand,
     onEndSpeaking,
     generateAvatar,
@@ -51,7 +53,7 @@ export const ChatUser = /* @__PURE__ */ observer<ChatUserProps>(function ChatUse
                     <span className="chat-user-status is-speaking">
                         {t("during-the-presentation")}
                     </span>
-                    {(isCreator || isCurrentUser) && (
+                    {(isCreator || isCurrentUser) && !disableEndSpeaking && (
                         <button
                             className="chat-user-ctl-btn is-speaking"
                             onClick={() => onEndSpeaking(user.userUUID)}

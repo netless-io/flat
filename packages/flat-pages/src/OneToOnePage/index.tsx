@@ -30,7 +30,6 @@ import {
 import { Whiteboard } from "../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../components/ClassRoom/RoomStatusStoppedModal";
 import { RoomStatus } from "@netless/flat-server-api";
-import { useComputed } from "../utils/mobx";
 import { CloudStorageButton } from "../components/CloudStorageButton";
 import { ShareScreen } from "../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
@@ -52,25 +51,24 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
 
         const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
-        const joiner = useComputed(() => {
-            if (classroomStore.isCreator) {
-                return classroomStore.users.speakingJoiners.length > 0
-                    ? classroomStore.users.speakingJoiners[0]
-                    : classroomStore.users.handRaisingJoiners.length > 0
-                    ? classroomStore.users.handRaisingJoiners[0]
-                    : classroomStore.users.otherJoiners.length > 0
-                    ? classroomStore.users.otherJoiners[0]
-                    : null;
-            }
-
-            return classroomStore.users.currentUser;
-        }).get();
+        const joiner = classroomStore.users.speakingJoiners[0] ?? null;
 
         useEffect(() => {
             if (classroomStore.isCreator && classroomStore.roomStatus === RoomStatus.Idle) {
                 void classroomStore.startClass();
             }
         }, [classroomStore]);
+
+        useEffect(() => {
+            if (
+                classroomStore.isCreator &&
+                classroomStore.users.joiners.length > 0 &&
+                classroomStore.users.speakingJoiners.length <= 0
+            ) {
+                classroomStore.onStaging(classroomStore.users.joiners[0].userUUID, true);
+            }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [classroomStore.users.joiners.length]);
 
         return (
             <div className="one-to-one-class-page-container">
@@ -183,6 +181,7 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                     chatSlot={
                         <ChatPanel
                             classRoomStore={classroomStore}
+                            disableEndSpeaking={true}
                             disableMultipleSpeakers={true}
                         ></ChatPanel>
                     }
