@@ -7,7 +7,7 @@ import { generateAvatar } from "../../utils/generate-avatar";
 export interface ChatPanelProps {
     classRoomStore: ClassroomStore;
     disableEndSpeaking?: boolean;
-    disableMultipleSpeakers?: boolean;
+    maxSpeakingUsers?: number;
 }
 
 // @TODO add rtm
@@ -16,7 +16,7 @@ const noop = async (): Promise<void> => void 0;
 export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     classRoomStore,
     disableEndSpeaking,
-    disableMultipleSpeakers,
+    maxSpeakingUsers = 1,
 }) {
     const users = useComputed(() => {
         const { creator, speakingJoiners, handRaisingJoiners, otherJoiners } = classRoomStore.users;
@@ -30,7 +30,6 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     return (
         <ChatPanelImpl
             disableEndSpeaking={disableEndSpeaking}
-            disableMultipleSpeakers={disableMultipleSpeakers}
             generateAvatar={generateAvatar}
             getUserByUUID={(userUUID: string) => classRoomStore.users.cachedUsers.get(userUUID)}
             hasHandRaising={handHandRaising}
@@ -44,15 +43,12 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             userUUID={classRoomStore.userUUID}
             users={users}
             withAcceptHands={
-                handHandRaising &&
-                (!disableMultipleSpeakers || classRoomStore.users.speakingJoiners.length <= 0)
+                handHandRaising && classRoomStore.users.speakingJoiners.length < maxSpeakingUsers
             }
             onAcceptRaiseHand={(userUUID: string) => {
-                if (classRoomStore.users.speakingJoiners.length > 0 && disableMultipleSpeakers) {
-                    // only one speaker is allowed
-                    return;
+                if (classRoomStore.users.speakingJoiners.length < maxSpeakingUsers) {
+                    classRoomStore.acceptRaiseHand(userUUID);
                 }
-                classRoomStore.acceptRaiseHand(userUUID);
             }}
             onBanChange={classRoomStore.onToggleBan}
             onCancelAllHandRaising={classRoomStore.onCancelAllHandRaising}

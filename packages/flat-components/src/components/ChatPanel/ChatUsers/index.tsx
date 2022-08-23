@@ -13,7 +13,6 @@ export type ChatUsersProps = {
     hasHandRaising?: boolean;
     withAcceptHands: boolean;
     users: User[];
-    disableMultipleSpeakers?: boolean;
     onCancelAllHandRaising: () => void;
 } & Omit<ChatUserProps, "user">;
 
