@@ -10,8 +10,6 @@ const SupportedFileExts = [
     ".gif",
     ".mp3",
     ".mp4",
-    ".ice",
-    ".vf",
 ];
 
 export function isSupportedFileExt(file: File): boolean {

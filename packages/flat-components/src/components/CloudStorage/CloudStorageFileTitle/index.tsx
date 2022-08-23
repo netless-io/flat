@@ -8,8 +8,6 @@ import videoSVG from "./icons/video.svg";
 import wordSVG from "./icons/word.svg";
 import convertingSVG from "./icons/converting.svg";
 import convertErrorSVG from "./icons/convert-error.svg";
-import vfSVG from "./icons/vf.svg";
-import iceSVG from "./icons/ice.svg";
 
 import React, { useMemo } from "react";
 import classNames from "classnames";
@@ -161,12 +159,6 @@ function getFileIcon(fileName: string): string {
         case ".wma":
         case ".flac": {
             return audioSVG;
-        }
-        case ".vf": {
-            return vfSVG;
-        }
-        case ".ice": {
-            return iceSVG;
         }
         default: {
             return defaultSVG;

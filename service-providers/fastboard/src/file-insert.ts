@@ -48,14 +48,6 @@ export class FastboardFileInsert implements IServiceFileInsert {
                     await insertDocs(file, fastboardApp, this.flatI18n, this.toaster);
                     break;
                 }
-                case "ice": {
-                    await insertZippedH5(file, fastboardApp);
-                    break;
-                }
-                case "vf": {
-                    await insertVf(file, fastboardApp);
-                    break;
-                }
                 default: {
                     throw new Error(
                         `[cloud storage]: insert unknown format "${file.fileName}" into whiteboard`,
