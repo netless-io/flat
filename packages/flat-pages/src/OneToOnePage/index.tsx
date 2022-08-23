@@ -1,6 +1,6 @@
 import "./OneToOnePage.less";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
@@ -29,7 +29,6 @@ import {
 } from "../components/ExitRoomConfirm";
 import { Whiteboard } from "../components/Whiteboard";
 import { RoomStatusStoppedModal } from "../components/ClassRoom/RoomStatusStoppedModal";
-import { RoomStatus } from "@netless/flat-server-api";
 import { CloudStorageButton } from "../components/CloudStorageButton";
 import { ShareScreen } from "../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
@@ -50,25 +49,6 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
         const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
         const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
-
-        const joiner = classroomStore.users.speakingJoiners[0] ?? null;
-
-        useEffect(() => {
-            if (classroomStore.isCreator && classroomStore.roomStatus === RoomStatus.Idle) {
-                void classroomStore.startClass();
-            }
-        }, [classroomStore]);
-
-        useEffect(() => {
-            if (
-                classroomStore.isCreator &&
-                classroomStore.users.joiners.length > 0 &&
-                classroomStore.users.speakingJoiners.length <= 0
-            ) {
-                classroomStore.onStaging(classroomStore.users.joiners[0].userUUID, true);
-            }
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [classroomStore.users.joiners.length]);
 
         return (
             <div className="one-to-one-class-page-container">
@@ -180,7 +160,7 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                     chatSlot={
                         <ChatPanel
                             classRoomStore={classroomStore}
-                            disableEndSpeaking={true}
+                            disableEndSpeaking={false}
                             maxSpeakingUsers={1}
                         ></ChatPanel>
                     }
@@ -201,14 +181,21 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                                 updateDeviceState={classroomStore.updateDeviceState}
                                 userUUID={classroomStore.userUUID}
                             />
-                            <RTCAvatar
-                                avatarUser={joiner}
-                                isAvatarUserCreator={false}
-                                isCreator={classroomStore.isCreator}
-                                rtcAvatar={joiner && classroomStore.rtc.getAvatar(joiner.rtcUID)}
-                                updateDeviceState={classroomStore.updateDeviceState}
-                                userUUID={classroomStore.userUUID}
-                            />
+                            {classroomStore.firstOnStageUser && (
+                                <RTCAvatar
+                                    avatarUser={classroomStore.firstOnStageUser}
+                                    isAvatarUserCreator={false}
+                                    isCreator={classroomStore.isCreator}
+                                    rtcAvatar={
+                                        classroomStore.firstOnStageUser &&
+                                        classroomStore.rtc.getAvatar(
+                                            classroomStore.firstOnStageUser.rtcUID,
+                                        )
+                                    }
+                                    updateDeviceState={classroomStore.updateDeviceState}
+                                    userUUID={classroomStore.userUUID}
+                                />
+                            )}
                         </div>
                     }
                 />

@@ -48,6 +48,18 @@ export const ChatUser = /* @__PURE__ */ observer<ChatUserProps>(function ChatUse
             <span className="chat-user-name">{user.name}</span>
             {ownerUUID === user.userUUID ? (
                 <span className="chat-user-status is-teacher">{t("teacher")}</span>
+            ) : user.hasLeft ? (
+                <>
+                    <span className="chat-user-status has-left">{t("has-left")}</span>
+                    {(isCreator || isCurrentUser) && !disableEndSpeaking && (
+                        <button
+                            className="chat-user-ctl-btn is-speaking"
+                            onClick={() => onEndSpeaking(user.userUUID)}
+                        >
+                            {t("end")}
+                        </button>
+                    )}
+                </>
             ) : user.isSpeak ? (
                 <>
                     <span className="chat-user-status is-speaking">

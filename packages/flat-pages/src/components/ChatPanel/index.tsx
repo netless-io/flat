@@ -1,7 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { ChatPanel as ChatPanelImpl, useComputed } from "flat-components";
-import { ClassroomStore } from "@netless/flat-stores";
+import { ClassroomStore, User } from "@netless/flat-stores";
 import { generateAvatar } from "../../utils/generate-avatar";
 
 export interface ChatPanelProps {
@@ -19,10 +19,13 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
     maxSpeakingUsers = 1,
 }) {
     const users = useComputed(() => {
-        const { creator, speakingJoiners, handRaisingJoiners, otherJoiners } = classRoomStore.users;
+        const onStageUsers = classRoomStore.onStageUserUUIDs
+            .map(userUUID => classRoomStore.users.cachedUsers.get(userUUID))
+            .filter((user): user is User => !!user);
+        const { creator, handRaisingJoiners, otherJoiners } = classRoomStore.users;
         return creator
-            ? [...speakingJoiners, ...handRaisingJoiners, creator, ...otherJoiners]
-            : [...speakingJoiners, ...handRaisingJoiners, ...otherJoiners];
+            ? [...onStageUsers, ...handRaisingJoiners, creator, ...otherJoiners]
+            : [...onStageUsers, ...handRaisingJoiners, ...otherJoiners];
     }).get();
 
     const handHandRaising = classRoomStore.users.handRaisingJoiners.length > 0;
@@ -43,10 +46,10 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             userUUID={classRoomStore.userUUID}
             users={users}
             withAcceptHands={
-                handHandRaising && classRoomStore.users.speakingJoiners.length < maxSpeakingUsers
+                handHandRaising && classRoomStore.onStageUserUUIDs.length < maxSpeakingUsers
             }
             onAcceptRaiseHand={(userUUID: string) => {
-                if (classRoomStore.users.speakingJoiners.length < maxSpeakingUsers) {
+                if (classRoomStore.onStageUserUUIDs.length < maxSpeakingUsers) {
                     classRoomStore.acceptRaiseHand(userUUID);
                 }
             }}

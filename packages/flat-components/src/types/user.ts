@@ -4,4 +4,5 @@ export interface User {
     isSpeak: boolean;
     isRaiseHand: boolean;
     avatar: string;
+    hasLeft?: boolean;
 }

@@ -11,6 +11,7 @@ export interface User {
     mic: boolean;
     isSpeak: boolean;
     isRaiseHand: boolean;
+    hasLeft: boolean;
 }
 
 export type RecordingConfig = Required<
@@ -39,10 +40,6 @@ export class UserStore {
     /** the rest joiners */
     public otherJoiners = observable.array<User>([]);
 
-    public get allUsers(): User[] {
-        return this.creator ? [this.creator, ...this.joiners] : this.joiners;
-    }
-
     public get joiners(): User[] {
         return [...this.speakingJoiners, ...this.handRaisingJoiners, ...this.otherJoiners];
     }
@@ -60,10 +57,18 @@ export class UserStore {
         return this.ownerUUID === this.userUUID;
     }
 
-    public constructor(config: { userUUID: string; ownerUUID: string; roomUUID: string }) {
+    public isInRoom: (userUUID: string) => boolean;
+
+    public constructor(config: {
+        userUUID: string;
+        ownerUUID: string;
+        roomUUID: string;
+        isInRoom: (userUUID: string) => boolean;
+    }) {
         this.roomUUID = config.roomUUID;
         this.userUUID = config.userUUID;
         this.ownerUUID = config.ownerUUID;
+        this.isInRoom = config.isInRoom;
 
         makeAutoObservable(this);
     }
@@ -91,11 +96,13 @@ export class UserStore {
 
     public removeUser = (userUUID: string): void => {
         if (this.creator && this.creator.userUUID === userUUID) {
+            this.creator.hasLeft = true;
             this.creator = null;
         } else {
             for (const { group } of this.joinerGroups) {
                 for (let i = 0; i < this[group].length; i++) {
                     if (this[group][i].userUUID === userUUID) {
+                        this[group][i].hasLeft = true;
                         this[group].splice(i, 1);
                         break;
                     }
@@ -231,6 +238,7 @@ export class UserStore {
                 mic: userUUID === this.userUUID ? preferencesStore.autoMicOn : false,
                 isSpeak: userUUID === this.userUUID && this.isCreator,
                 isRaiseHand: false,
+                hasLeft: !this.isInRoom(userUUID),
             }),
         );
     }

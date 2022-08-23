@@ -1,5 +1,5 @@
 import { SideEffectManager } from "side-effect-manager";
-import { action, makeAutoObservable, observable, reaction, runInAction } from "mobx";
+import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import {
     pauseClass,
     startClass,
@@ -13,7 +13,7 @@ import { FlatI18n } from "@netless/flat-i18n";
 import { errorTips, message } from "flat-components";
 import { Storage } from "@netless/fastboard-react";
 import { RoomItem, roomStore } from "../room-store";
-import { UserStore } from "../user-store";
+import { User, UserStore } from "../user-store";
 import { WhiteboardStore } from "../whiteboard-store";
 import { globalStore } from "../global-store";
 import { ClassModeType, RoomStatusLoadingType } from "./constants";
@@ -84,6 +84,8 @@ export class ClassroomStore {
 
     public readonly users: UserStore;
 
+    public readonly onStageUserUUIDs = observable.array<string>();
+
     public readonly rtc: IServiceVideoChat;
     public readonly rtm: IServiceTextChat;
     public readonly chatStore: ChatStore;
@@ -113,6 +115,7 @@ export class ClassroomStore {
             roomUUID: this.roomUUID,
             ownerUUID: this.ownerUUID,
             userUUID: this.userUUID,
+            isInRoom: userUUID => this.rtm.members.has(userUUID),
         });
 
         this.whiteboardStore = new WhiteboardStore({
@@ -222,6 +225,12 @@ export class ClassroomStore {
         return this.roomInfo?.roomStatus ?? RoomStatus.Idle;
     }
 
+    public get firstOnStageUser(): User | undefined {
+        return this.onStageUserUUIDs.length > 0
+            ? this.users.cachedUsers.get(this.onStageUserUUIDs[0])
+            : undefined;
+    }
+
     public async init(): Promise<void> {
         await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
 
@@ -312,20 +321,20 @@ export class ClassroomStore {
 
         this.sideEffect.addDisposer(
             this.rtm.events.on("member-joined", async ({ userUUID }) => {
-                const user = await this.users.addUser(userUUID);
-                console.log(
-                    "onStageUsersStorage.state[userUUID]",
-                    onStageUsersStorage.state[userUUID],
-                );
+                await this.users.addUser(userUUID);
                 if (onStageUsersStorage.state[userUUID]) {
-                    runInAction(() => {
-                        user.isSpeak = true;
-                        user.isRaiseHand = false;
-                        const deviceState = deviceStateStorage.state[user.userUUID];
-                        if (deviceState) {
-                            user.camera = deviceState.camera;
-                            user.mic = deviceState.mic;
+                    this.users.updateUsers(user => {
+                        if (user.userUUID === userUUID) {
+                            user.isSpeak = true;
+                            user.isRaiseHand = false;
+                            const deviceState = deviceStateStorage.state[user.userUUID];
+                            if (deviceState) {
+                                user.camera = deviceState.camera;
+                                user.mic = deviceState.mic;
+                            }
+                            return false;
                         }
+                        return true;
                     });
                 }
             }),
@@ -357,7 +366,12 @@ export class ClassroomStore {
             }),
         );
 
-        const updateUserStagingState = (): void => {
+        const updateUserStagingState = async (): Promise<void> => {
+            const onStageUsers = Object.keys(onStageUsersStorage.state).filter(
+                userUUID => onStageUsersStorage.state[userUUID],
+            );
+            await this.users.syncExtraUsersInfo(onStageUsers);
+            this.onStageUserUUIDs.replace(onStageUsers);
             this.users.updateUsers(user => {
                 if (onStageUsersStorage.state[user.userUUID]) {
                     user.isSpeak = true;
@@ -398,6 +412,27 @@ export class ClassroomStore {
                 });
             }),
         );
+
+        if (this.roomType === RoomType.OneToOne) {
+            if (this.isCreator && this.roomStatus === RoomStatus.Idle) {
+                void this.startClass();
+            }
+
+            if (this.isCreator && fastboard.syncedStore.isRoomWritable) {
+                await fastboard.syncedStore.nextFrame();
+                this.sideEffect.addDisposer(
+                    autorun(reaction => {
+                        if (this.onStageUserUUIDs.length > 0) {
+                            reaction.dispose();
+                            return;
+                        }
+                        if (this.users.joiners.length === 1) {
+                            this.onStaging(this.users.joiners[0].userUUID, true);
+                        }
+                    }),
+                );
+            }
+        }
     }
 
     public async destroy(): Promise<void> {
