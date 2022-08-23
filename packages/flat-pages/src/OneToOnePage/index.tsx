@@ -182,7 +182,7 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                         <ChatPanel
                             classRoomStore={classroomStore}
                             disableEndSpeaking={true}
-                            disableMultipleSpeakers={true}
+                            maxSpeakingUsers={1}
                         ></ChatPanel>
                     }
                     isShow={isRealtimeSideOpen}

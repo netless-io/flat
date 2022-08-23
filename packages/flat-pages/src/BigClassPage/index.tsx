@@ -171,10 +171,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
             return (
                 <RealtimePanel
                     chatSlot={
-                        <ChatPanel
-                            classRoomStore={classroomStore}
-                            disableMultipleSpeakers={true}
-                        ></ChatPanel>
+                        <ChatPanel classRoomStore={classroomStore} maxSpeakingUsers={1}></ChatPanel>
                     }
                     isShow={isRealtimeSideOpen}
                     isVideoOn={classroomStore.isJoinedRTC}

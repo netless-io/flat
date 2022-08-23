@@ -243,8 +243,8 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     onDrop={onDrop}
                 >
                     {!whiteboardStore.isCreator &&
-                        !whiteboardStore.isWritable &&
-                        !classRoomStore.isBan && (
+                        classRoomStore.users.currentUser &&
+                        !classRoomStore.users.currentUser.isSpeak && (
                             <div className="raise-hand-container">
                                 <RaiseHand
                                     disableHandRaising={disableHandRaising}
