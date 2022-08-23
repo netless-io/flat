@@ -59,7 +59,7 @@ export const ChatUsers = /* @__PURE__ */ observer<ChatUsersProps>(function ChatU
             )}
             <div
                 className={classNames("chat-users", {
-                    "with-cancel-hands": hasHandRaising,
+                    "with-cancel-hands": isCreator && hasHandRaising,
                 })}
             >
                 <AutoSizer>{renderList}</AutoSizer>

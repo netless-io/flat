@@ -90,7 +90,6 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                                 <ShareScreen classRoomStore={classroomStore} />
                                 <Whiteboard
                                     classRoomStore={classroomStore}
-                                    disableHandRaising={true}
                                     whiteboardStore={whiteboardStore}
                                 />
                             </div>
