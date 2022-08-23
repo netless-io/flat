@@ -82,9 +82,6 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                                 <ShareScreen classRoomStore={classroomStore} />
                                 <Whiteboard
                                     classRoomStore={classroomStore}
-                                    disableHandRaising={
-                                        classroomStore.classMode === ClassModeType.Interaction
-                                    }
                                     whiteboardStore={whiteboardStore}
                                 />
                             </div>
