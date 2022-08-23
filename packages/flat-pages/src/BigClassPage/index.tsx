@@ -50,11 +50,6 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
 
         const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
 
-        const speakingJoiner =
-            classroomStore.users.speakingJoiners.length > 0
-                ? classroomStore.users.speakingJoiners[0]
-                : undefined;
-
         useEffect(() => {
             if (classroomStore.isCreator && classroomStore.roomStatus === RoomStatus.Idle) {
                 void classroomStore.startClass();
@@ -185,12 +180,17 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                                 updateDeviceState={classroomStore.updateDeviceState}
                                 userUUID={classroomStore.userUUID}
                             />
-                            {speakingJoiner && (
+                            {classroomStore.onStageUserUUIDs.length > 0 && (
                                 <RTCAvatar
-                                    avatarUser={speakingJoiner}
+                                    avatarUser={classroomStore.firstOnStageUser}
                                     isAvatarUserCreator={false}
                                     isCreator={classroomStore.isCreator}
-                                    rtcAvatar={classroomStore.rtc.getAvatar(speakingJoiner.rtcUID)}
+                                    rtcAvatar={
+                                        classroomStore.firstOnStageUser &&
+                                        classroomStore.rtc.getAvatar(
+                                            classroomStore.firstOnStageUser.rtcUID,
+                                        )
+                                    }
                                     updateDeviceState={classroomStore.updateDeviceState}
                                     userUUID={classroomStore.userUUID}
                                 />

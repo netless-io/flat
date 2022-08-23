@@ -30,7 +30,6 @@ import ExitRoomConfirm, {
 import { RoomStatusStoppedModal } from "../components/ClassRoom/RoomStatusStoppedModal";
 
 import { RoomStatus } from "@netless/flat-server-api";
-import { ClassModeType, User } from "@netless/flat-stores";
 
 import { CloudStorageButton } from "../components/CloudStorageButton";
 import { ShareScreen } from "../components/ShareScreen";
@@ -123,7 +122,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                                 updateDeviceState={classroomStore.updateDeviceState}
                                 userUUID={classroomStore.userUUID}
                             />
-                            {classroomStore.users.speakingJoiners.map(renderAvatar)}
+                            {classroomStore.onStageUserUUIDs.map(renderAvatar)}
                         </div>
                     )}
                 </div>
@@ -242,22 +241,23 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
             );
         }
 
-        function renderAvatar(user: User): React.ReactNode {
+        function renderAvatar(userUUID: string): React.ReactNode {
+            const user = classroomStore.users.cachedUsers.get(userUUID);
             return (
                 <RTCAvatar
-                    key={user.userUUID}
+                    key={userUUID}
                     avatarUser={user}
                     isAvatarUserCreator={false}
                     isCreator={classroomStore.isCreator}
-                    rtcAvatar={classroomStore.rtc.getAvatar(user.rtcUID)}
+                    rtcAvatar={user && classroomStore.rtc.getAvatar(user.rtcUID)}
                     small={true}
                     updateDeviceState={(uid, camera, mic) => {
                         // Disallow toggling mic when not speak.
                         const _mic =
                             whiteboardStore.isWritable ||
+                            !user ||
                             user.userUUID === classroomStore.ownerUUID ||
-                            user.userUUID !== classroomStore.users.currentUser?.userUUID ||
-                            classroomStore.classMode !== ClassModeType.Lecture
+                            user.userUUID !== classroomStore.users.currentUser?.userUUID
                                 ? mic
                                 : user.mic;
                         classroomStore.updateDeviceState(uid, camera, _mic);

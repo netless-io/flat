@@ -5,8 +5,10 @@ import placeholderSVG from "./icons/placeholder.svg";
 import React, { FC } from "react";
 import { useTranslate } from "@netless/flat-i18n";
 import classnames from "classnames";
+import { User } from "../../../types/user";
 
 export interface VideoAvatarAbsentProps {
+    avatarUser?: User | null;
     small?: boolean;
     isAvatarUserCreator: boolean;
 }
