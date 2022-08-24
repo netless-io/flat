@@ -13,18 +13,14 @@ import {
     RoomStatusType,
     errorTips,
 } from "flat-components";
-import {
-    FLAT_SERVER_BASE_URL,
-    ListRoomsType,
-    RoomStatus,
-    RoomType,
-} from "@netless/flat-server-api";
+import { ListRoomsType, RoomStatus, RoomType } from "@netless/flat-server-api";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { RoomItem } from "@netless/flat-stores";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../../utils/join-room-handler";
 import { useTranslate } from "@netless/flat-i18n";
+import { FLAT_WEB_BASE_URL } from "../../constants/process";
 
 export interface MainRoomListProps {
     listRoomsType: ListRoomsType;
@@ -233,7 +229,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
             )}
             {currentRoom && (
                 <InviteModal
-                    baseUrl={FLAT_SERVER_BASE_URL}
+                    baseUrl={FLAT_WEB_BASE_URL}
                     periodicWeeks={periodicInfo?.periodic.weeks}
                     room={currentRoom}
                     userName={globalStore.userName ?? ""}
@@ -263,10 +259,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
 
     function replayRoom(config: { roomUUID: string; ownerUUID: string; roomType: RoomType }): void {
         const { roomUUID, ownerUUID, roomType } = config;
-        window.open(
-            `${FLAT_SERVER_BASE_URL}/replay/${roomType}/${roomUUID}/${ownerUUID}/`,
-            "_blank",
-        );
+        window.open(`${FLAT_WEB_BASE_URL}/replay/${roomType}/${roomUUID}/${ownerUUID}/`, "_blank");
     }
 
     function hideCancelModal(): void {
