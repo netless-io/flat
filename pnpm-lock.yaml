@@ -193,7 +193,7 @@ importers:
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
       react-virtualized: ^9.22.3
-      remitter: ^0.2.6
+      remitter: ^0.2.8
       rollup-plugin-copy: ^3.4.0
       rollup-plugin-visualizer: ^5.6.0
       side-effect-manager: ^1.2.1
@@ -243,7 +243,7 @@ importers:
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
-      remitter: 0.2.6
+      remitter: 0.2.8
       side-effect-manager: 1.2.1
       uuid: 8.3.2
       value-enhancer: 1.3.2
@@ -489,14 +489,14 @@ importers:
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
       prettier: ^2.3.0
-      remitter: ^0.2.6
+      remitter: ^0.2.8
       side-effect-manager: ^1.2.1
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
     dependencies:
       '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
-      remitter: 0.2.6
+      remitter: 0.2.8
       side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
     devDependencies:
@@ -592,11 +592,11 @@ importers:
     specifiers:
       '@netless/flat-server-api': workspace:*
       prettier: ^2.3.0
-      remitter: ^0.2.6
+      remitter: ^0.2.8
       typescript: ^4.6.2
     dependencies:
       '@netless/flat-server-api': link:../../../packages/flat-server-api
-      remitter: 0.2.6
+      remitter: 0.2.8
     devDependencies:
       prettier: 2.6.2
       typescript: 4.6.4
@@ -781,7 +781,7 @@ importers:
       react-router-last-location: ^2.0.1
       react-use: ^17.3.2
       react-virtualized: ^9.22.3
-      remitter: ^0.2.6
+      remitter: ^0.2.8
       side-effect-manager: ^1.2.1
       uuid: ^8.3.2
       value-enhancer: ^1.3.2
@@ -831,7 +831,7 @@ importers:
       react-router-last-location: 2.0.1_hkqeomzib2ptgykess74qeszhm
       react-use: 17.3.2_sfoxds7t5ydpegc3knd667wn6m
       react-virtualized: 9.22.3_sfoxds7t5ydpegc3knd667wn6m
-      remitter: 0.2.6
+      remitter: 0.2.8
       side-effect-manager: 1.2.1
       uuid: 8.3.2
       value-enhancer: 1.3.2
@@ -16580,6 +16580,10 @@ packages:
 
   /remitter/0.2.7:
     resolution: {integrity: sha512-4UFLuiw5+pogiodIcxZJamjdg6LHLiBQskUBiNmCG/bNi4lF6mpaSI4Lpcoyj6oax1HL530JdOrjKzsBxsSw9w==}
+    dev: false
+
+  /remitter/0.2.8:
+    resolution: {integrity: sha512-SX6iWCNwmz72pYMORTCEBT+PVGybKywTJLuIvY1PskaDS/u7UhXHW2hUhKe19pGz/Q7aReOGwgJc6S0XafPebw==}
     dev: false
 
   /remove-trailing-separator/1.1.0:
