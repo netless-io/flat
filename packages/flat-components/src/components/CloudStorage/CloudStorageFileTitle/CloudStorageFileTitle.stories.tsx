@@ -84,7 +84,6 @@ export const FileTitles: Story<CloudStorageFileTitleProps> = ({ onTitleClick }) 
                 ".webm",
             ])}
             {renderFileTitles("Audio", [".aac", ".mp3", ".wave", ".wma", ".flac"])}
-            {renderFileTitles("HTML5 Courseware", [".ice", ".vf"])}
         </div>
     );
 };

@@ -11,7 +11,7 @@ import {
     CloudStorageFileListFileName,
     CloudStorageFileListFileNameProps,
 } from "./CloudStorageFileListFileName";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { SVGListLoading } from "../../FlatIcons";
 import { CloudFile } from "@netless/flat-server-api";
 
@@ -49,7 +49,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
     isLoadingData,
     onRename,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const popupContainerRef = useRef<HTMLDivElement>(null);
     const getPopupContainer = useCallback(() => popupContainerRef.current || document.body, []);
 

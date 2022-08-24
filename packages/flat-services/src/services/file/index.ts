@@ -24,9 +24,7 @@ export type IServiceFileExtensions =
     | "docx"
     | "ppt"
     | "pptx"
-    | "pdf"
-    | "ice"
-    | "vf";
+    | "pdf";
 
 export type IServiceFileCatalog = {
     [K in `file-convert:${IServiceFileExtensions}`]: IServiceFileConvert;

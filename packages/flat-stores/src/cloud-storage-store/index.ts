@@ -465,7 +465,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             const input = document.createElement("input");
             input.type = "file";
             input.multiple = true;
-            input.accept = ".ppt,.pptx,.doc,.docx,.pdf,.png,.jpg,.jpeg,.gif,.mp3,.mp4,.ice,.vf";
+            input.accept = ".ppt,.pptx,.doc,.docx,.pdf,.png,.jpg,.jpeg,.gif,.mp3,.mp4";
             input.onchange = () => resolve(input.files);
             input.click();
         });

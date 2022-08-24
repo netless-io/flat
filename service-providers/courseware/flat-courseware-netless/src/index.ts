@@ -51,14 +51,6 @@ export class FlatCoursewareNetless extends FlatCourseware {
                 await this.handleDocs(action, file);
                 break;
             }
-            case "ice": {
-                this.events.emit(action, { type: "ice", file });
-                break;
-            }
-            case "vf": {
-                this.events.emit(action, { type: "vf", file });
-                break;
-            }
             default: {
                 console.error(`[FlatCourseware]: ${action} unknown format "${file.fileName}"`);
             }

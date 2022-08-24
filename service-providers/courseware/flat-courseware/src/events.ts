@@ -20,9 +20,7 @@ export type FlatCoursewareFileAction =
     | { type: "media"; file: FlatCoursewareFile }
     | { type: "docs"; file: FlatCoursewareFile }
     | { type: "pptx"; file: FlatCoursewareFile; urlPrefix: string }
-    | { type: "pptx-legacy"; file: FlatCoursewareFile; scenes: FlatCoursewareLegacyPPTXScene[] }
-    | { type: "ice"; file: FlatCoursewareFile }
-    | { type: "vf"; file: FlatCoursewareFile };
+    | { type: "pptx-legacy"; file: FlatCoursewareFile; scenes: FlatCoursewareLegacyPPTXScene[] };
 
 export interface FlatCoursewareEventData {
     insert: FlatCoursewareFileAction;
