@@ -25,6 +25,7 @@ import {
     IServiceVideoChatRole,
     IServiceWhiteboard,
 } from "@netless/flat-services";
+import { preferencesStore } from "../preferences-store";
 
 export * from "./constants";
 export * from "./chat-store";
@@ -278,7 +279,14 @@ export class ClassroomStore {
         this.classroomStorage = classroomStorage;
         this.onStageUsersStorage = onStageUsersStorage;
 
-        if (!this.isCreator) {
+        if (this.isCreator) {
+            deviceStateStorage.setState({
+                [this.userUUID]: {
+                    camera: Boolean(preferencesStore.autoCameraOn),
+                    mic: Boolean(preferencesStore.autoMicOn),
+                },
+            });
+        } else {
             this.whiteboardStore.updateWritable(Boolean(onStageUsersStorage.state[this.userUUID]));
         }
 
@@ -300,7 +308,7 @@ export class ClassroomStore {
         updateRaiseHandUsers(classroomStorage.state.raiseHandUsers);
 
         this.users.updateUsers(user => {
-            if (onStageUsersStorage.state[user.userUUID]) {
+            if (user.userUUID === this.ownerUUID || onStageUsersStorage.state[user.userUUID]) {
                 user.isSpeak = true;
                 user.isRaiseHand = false;
                 const deviceState = deviceStateStorage.state[user.userUUID];
@@ -326,7 +334,7 @@ export class ClassroomStore {
                 await this.users.addUser(userUUID);
                 this.users.updateUsers(user => {
                     if (user.userUUID === userUUID) {
-                        if (onStageUsersStorage.state[userUUID]) {
+                        if (userUUID === this.ownerUUID || onStageUsersStorage.state[userUUID]) {
                             user.isSpeak = true;
                             user.isRaiseHand = false;
                             const deviceState = deviceStateStorage.state[user.userUUID];
@@ -378,6 +386,9 @@ export class ClassroomStore {
             await this.users.syncExtraUsersInfo(onStageUsers);
             this.onStageUserUUIDs.replace(onStageUsers);
             this.users.updateUsers(user => {
+                if (user.userUUID === this.ownerUUID) {
+                    return;
+                }
                 if (onStageUsersStorage.state[user.userUUID]) {
                     user.isSpeak = true;
                     user.isRaiseHand = false;
