@@ -13,8 +13,8 @@
     "typescript": "^4.6.2"
   },
   "dependencies": {
-    "@netless/flat-server-api": "workspace:*",
     "@netless/flat-i18n": "workspace:*",
+    "@netless/flat-server-api": "workspace:*",
     "remitter": "^0.2.8",
     "side-effect-manager": "^1.2.1",
     "value-enhancer": "^1.3.2"
