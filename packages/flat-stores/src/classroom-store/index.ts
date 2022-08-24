@@ -149,17 +149,6 @@ export class ClassroomStore {
             ),
         );
 
-        if (!this.isCreator) {
-            this.sideEffect.addDisposer(
-                reaction(
-                    () => this.classMode === ClassModeType.Interaction,
-                    (isInteraction: boolean) => {
-                        this.whiteboardStore.updateWritable(isInteraction);
-                    },
-                ),
-            );
-        }
-
         this.sideEffect.addDisposer(
             this.rtm.events.on(
                 "remote-login",
@@ -280,12 +269,11 @@ export class ClassroomStore {
         this.onStageUsersStorage = onStageUsersStorage;
 
         if (this.isCreator) {
-            deviceStateStorage.setState({
-                [this.userUUID]: {
-                    camera: Boolean(preferencesStore.autoCameraOn),
-                    mic: Boolean(preferencesStore.autoMicOn),
-                },
-            });
+            this.updateDeviceState(
+                this.userUUID,
+                Boolean(preferencesStore.autoCameraOn),
+                Boolean(preferencesStore.autoMicOn),
+            );
         } else {
             this.whiteboardStore.updateWritable(Boolean(onStageUsersStorage.state[this.userUUID]));
         }
@@ -323,11 +311,6 @@ export class ClassroomStore {
                 user.isRaiseHand = raiseHandUsers.has(user.userUUID);
             }
         });
-        this.updateDeviceState(
-            this.userUUID,
-            Boolean(this.users.currentUser?.camera),
-            Boolean(this.users.currentUser?.mic),
-        );
 
         this.sideEffect.addDisposer(
             this.rtm.events.on("member-joined", async ({ userUUID }) => {
@@ -627,7 +610,9 @@ export class ClassroomStore {
                     return;
                 }
             }
-            this.deviceStateStorage.setState({ [userUUID]: { camera, mic } });
+            this.deviceStateStorage.setState({
+                [userUUID]: camera || mic ? { camera, mic } : undefined,
+            });
         }
     };
 
