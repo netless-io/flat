@@ -162,11 +162,6 @@ export function initFlatServices(): void {
         },
     );
 
-    flatServices.register("file-convert:ice", async () => {
-        const { FileConvertH5 } = await import("@netless/flat-service-provider-file-convert-h5");
-        return new FileConvertH5();
-    });
-
     flatServices.register(
         [
             "file-insert:jpg",
@@ -180,8 +175,6 @@ export function initFlatServices(): void {
             "file-insert:ppt",
             "file-insert:pptx",
             "file-insert:pdf",
-            "file-insert:ice",
-            "file-insert:vf",
         ],
         async () => {
             if (flatServices.isCreated("whiteboard")) {
