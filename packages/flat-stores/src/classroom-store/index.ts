@@ -57,6 +57,8 @@ export class ClassroomStore {
     public isBan = false;
     /** is Cloud Recording on */
     public isRecording = false;
+    /** is toggling cloud recording */
+    public isRecordingLoading = false;
     /** is user login on other device */
     public isRemoteLogin = false;
 
@@ -478,6 +480,7 @@ export class ClassroomStore {
     };
 
     public toggleRecording = async ({ onStop }: { onStop?: () => void } = {}): Promise<void> => {
+        this.isRecordingLoading = true;
         try {
             if (this.isRecording) {
                 await this.stopRecording();
@@ -488,6 +491,9 @@ export class ClassroomStore {
         } catch (e) {
             errorTips(e as Error);
         }
+        runInAction(() => {
+            this.isRecordingLoading = false;
+        });
     };
 
     public updateClassMode = (classMode?: ClassModeType): void => {
