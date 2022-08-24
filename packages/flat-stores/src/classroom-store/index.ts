@@ -324,21 +324,24 @@ export class ClassroomStore {
         this.sideEffect.addDisposer(
             this.rtm.events.on("member-joined", async ({ userUUID }) => {
                 await this.users.addUser(userUUID);
-                if (onStageUsersStorage.state[userUUID]) {
-                    this.users.updateUsers(user => {
-                        if (user.userUUID === userUUID) {
+                this.users.updateUsers(user => {
+                    if (user.userUUID === userUUID) {
+                        if (onStageUsersStorage.state[userUUID]) {
                             user.isSpeak = true;
                             user.isRaiseHand = false;
                             const deviceState = deviceStateStorage.state[user.userUUID];
                             if (deviceState) {
                                 user.camera = deviceState.camera;
                                 user.mic = deviceState.mic;
+                            } else {
+                                user.camera = false;
+                                user.mic = false;
                             }
                             return false;
                         }
-                        return true;
-                    });
-                }
+                    }
+                    return true;
+                });
             }),
         );
 
@@ -382,6 +385,9 @@ export class ClassroomStore {
                     if (deviceState) {
                         user.camera = deviceState.camera;
                         user.mic = deviceState.mic;
+                    } else {
+                        user.camera = false;
+                        user.mic = false;
                     }
                 } else {
                     user.isSpeak = false;
@@ -585,7 +591,7 @@ export class ClassroomStore {
                 this.onStageUsersStorage.setState({ [userUUID]: false });
             }
         }
-        if (!onStage) {
+        if (!this.isCreator && !onStage) {
             this.updateDeviceState(userUUID, false, false);
         }
     };
