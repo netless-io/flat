@@ -517,7 +517,7 @@ importers:
       side-effect-manager: ^1.2.1
       typescript: ^4.6.2
       uuid: ^8.3.2
-      white-web-sdk: npm:white-web-sdk-esm@2.16.24
+      white-web-sdk: npm:white-web-sdk-esm@2.16.34
     dependencies:
       '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
@@ -526,13 +526,13 @@ importers:
       side-effect-manager: 1.2.1
       uuid: 8.3.2
     devDependencies:
-      '@netless/fastboard-react': 0.3.6_ezbppzj6aszf252o73ztxkp57a
-      '@netless/window-manager': 0.4.43_white-web-sdk-esm@2.16.24
+      '@netless/fastboard-react': 0.3.6_fcggtu4rqkawodagyvwpmsz22i
+      '@netless/window-manager': 0.4.43_white-web-sdk-esm@2.16.34
       mobx: 6.6.1
       prettier: 2.6.2
       react: 17.0.2
       typescript: 4.6.4
-      white-web-sdk: /white-web-sdk-esm/2.16.24
+      white-web-sdk: /white-web-sdk-esm/2.16.34
 
   packages/flat-types:
     specifiers: {}
@@ -628,19 +628,19 @@ importers:
       side-effect-manager: ^1.2.1
       typescript: ^4.6.2
       value-enhancer: ^1.3.2
-      white-web-sdk: npm:white-web-sdk-esm@2.16.24
+      white-web-sdk: npm:white-web-sdk-esm@2.16.34
     dependencies:
       '@lukeed/uuid': 2.0.0
-      '@netless/fastboard': 0.3.6_bqg5nel2o4ksti4hmin2qb3rrq
+      '@netless/fastboard': 0.3.6_7dylb2br26bu4r2d4mn4afzndu
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/white-snapshot': 0.4.1
-      '@netless/window-manager': 0.4.43_white-web-sdk-esm@2.16.24
+      '@netless/window-manager': 0.4.43_white-web-sdk-esm@2.16.34
       side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
-      white-web-sdk: /white-web-sdk-esm/2.16.24
+      white-web-sdk: /white-web-sdk-esm/2.16.34
     devDependencies:
       prettier: 2.6.2
       typescript: 4.6.4
@@ -3241,23 +3241,23 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/0.3.6_bqg5nel2o4ksti4hmin2qb3rrq:
+  /@netless/fastboard-core/0.3.6_7dylb2br26bu4r2d4mn4afzndu:
     resolution: {integrity: sha512-EoiN8CQREv1UTjM9EDs4dmqy8TsVW7HPQ+vhoWJk/idvP7Xgt1EY0x1Mg3zziU+jb9vhnC8+c9NpayfSfenE9w==}
     peerDependencies:
       '@netless/window-manager': '>=0.4.0'
       white-web-sdk: '>=2.16.0'
     dependencies:
       '@netless/app-slide': 0.2.2
-      '@netless/synced-store': 2.0.7_white-web-sdk-esm@2.16.24
-      '@netless/window-manager': 0.4.43_white-web-sdk-esm@2.16.24
-      white-web-sdk: /white-web-sdk-esm/2.16.24
+      '@netless/synced-store': 2.0.7_white-web-sdk-esm@2.16.34
+      '@netless/window-manager': 0.4.43_white-web-sdk-esm@2.16.34
+      white-web-sdk: /white-web-sdk-esm/2.16.34
 
-  /@netless/fastboard-react/0.3.6_ezbppzj6aszf252o73ztxkp57a:
+  /@netless/fastboard-react/0.3.6_fcggtu4rqkawodagyvwpmsz22i:
     resolution: {integrity: sha512-ijaXelp9i6vYrBAfF0ZPQIhyhDcDTmt5vGZ9Pk7lHTgkhZ58FJf4biTxX2fESjiG3p2kyQYNqw5/eFxuBaKVlA==}
     peerDependencies:
       react: '*'
     dependencies:
-      '@netless/fastboard-core': 0.3.6_bqg5nel2o4ksti4hmin2qb3rrq
+      '@netless/fastboard-core': 0.3.6_7dylb2br26bu4r2d4mn4afzndu
       '@netless/fastboard-ui': 0.3.6_dh4pwpaiunoyuozzscsfopi4z4
       react: 17.0.2
     transitivePeerDependencies:
@@ -3270,13 +3270,13 @@ packages:
     peerDependencies:
       '@netless/fastboard-core': 0.3.6
     dependencies:
-      '@netless/fastboard-core': 0.3.6_bqg5nel2o4ksti4hmin2qb3rrq
+      '@netless/fastboard-core': 0.3.6_7dylb2br26bu4r2d4mn4afzndu
       tippy.js: 6.3.7
 
-  /@netless/fastboard/0.3.6_bqg5nel2o4ksti4hmin2qb3rrq:
+  /@netless/fastboard/0.3.6_7dylb2br26bu4r2d4mn4afzndu:
     resolution: {integrity: sha512-YH3NKT47D+0GWl7nIyUDLI/T2AgVoD6TnpV8kJTTYsPbFX41pZ5bfSKXZNF33577ehcUxWW3SvQScaqHSc3Jyw==}
     dependencies:
-      '@netless/fastboard-core': 0.3.6_bqg5nel2o4ksti4hmin2qb3rrq
+      '@netless/fastboard-core': 0.3.6_7dylb2br26bu4r2d4mn4afzndu
       '@netless/fastboard-ui': 0.3.6_dh4pwpaiunoyuozzscsfopi4z4
     transitivePeerDependencies:
       - '@netless/window-manager'
@@ -3288,7 +3288,7 @@ packages:
     hasBin: true
     dev: true
 
-  /@netless/synced-store/2.0.7_white-web-sdk-esm@2.16.24:
+  /@netless/synced-store/2.0.7_white-web-sdk-esm@2.16.34:
     resolution: {integrity: sha512-E5ukXMTLa0Mlhlv9Rcy3MJSAM5kwiLoXQy42OCSIFdBR8jf0BKbSUXSjnA8J+FZq6UidNtGaadDWjhwlM1z5MA==}
     requiresBuild: true
     peerDependencies:
@@ -3298,7 +3298,7 @@ packages:
       remitter: 0.2.8
       side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
-      white-web-sdk: /white-web-sdk-esm/2.16.24
+      white-web-sdk: /white-web-sdk-esm/2.16.34
 
   /@netless/telebox-insider/0.2.27:
     resolution: {integrity: sha512-6329Zf9Z8M7DI6EI4OyBM25HuVm1moKZfjuBguSEc6YkM0TvNFckq8UEszVYxPn4Wh5p1TJnho3i69gxzgXKLA==}
@@ -3316,7 +3316,7 @@ packages:
       html2canvas: 1.4.1
     dev: false
 
-  /@netless/window-manager/0.4.43_white-web-sdk-esm@2.16.24:
+  /@netless/window-manager/0.4.43_white-web-sdk-esm@2.16.34:
     resolution: {integrity: sha512-0q8p1hQ3OJq+PWV+t8kztCLxTrKShrzW3xYe8UHnK2wADoMqYCtAWnYx1l91IjY0+u6SyGawOx+xNMbFk3n92Q==}
     peerDependencies:
       white-web-sdk: ^2.16.0
@@ -3329,7 +3329,7 @@ packages:
       side-effect-manager: 0.1.5
       uuid: 7.0.3
       video.js: 7.10.2
-      white-web-sdk: /white-web-sdk-esm/2.16.24
+      white-web-sdk: /white-web-sdk-esm/2.16.34
 
   /@netless/xml-js/1.6.15:
     resolution: {integrity: sha512-e0emMs7YtDB/ATUns1SJ61R9n9nfVvwwFodoc539Qt0ScksaCLCaFWgpEbLloj9sr60ry6Xd8QFHKULFIZB6zA==}
@@ -7034,6 +7034,9 @@ packages:
   /bowser/1.9.4:
     resolution: {integrity: sha512-9IdMmj2KjigRq6oWhmwv1W36pDuA4STQZ8q6YO9um+x07xgYNCD3Oou+WP/3L1HNz7iqythGet3/p4wvc8AAwQ==}
     dev: true
+
+  /bowser/2.11.0:
+    resolution: {integrity: sha512-AlcaJBi/pqqJBIQ8U9Mcpc9i8Aqxn88Skv5d+xBX006BY5u8N3mGLHa5Lgppa7L/HfwgwLgZ6NYs+Ag6uUmJRA==}
 
   /boxen/4.2.0:
     resolution: {integrity: sha512-eB4uT9RGzg2odpER62bBwSLvUeGC+WbRjjyyFhGsKnc8wp/m0+hQsMUvUe3H2V0D5vw0nBdO1hCJoZo5mKeuIQ==}
@@ -19557,14 +19560,15 @@ packages:
     dependencies:
       isexe: 2.0.0
 
-  /white-web-sdk-esm/2.16.24:
-    resolution: {integrity: sha512-eDRHAtn5NhA8Dl6u9oZg5S3sM+2sfs/7hyxjt0YaHLB4EouA3HWtFLADtsthNLgA8uP6ZLXmVTmaMjCHfDPJ6g==}
+  /white-web-sdk-esm/2.16.34:
+    resolution: {integrity: sha512-qXf/31W6aqr7p2u/NMo8FAQMKeclsU+B0tUmYa0DNRtM/IbBqNfLhnnu+UVQXqtLwA2eiz1lDPmlJgtC2yRO6w==}
     dependencies:
       '@juggle/resize-observer': 3.4.0
       '@netless/canvas-polyfill': 0.0.4
       '@netless/xml-js': 1.6.15
       atob: 2.1.2
       bezier-js: 2.6.1
+      bowser: 2.11.0
       color: 3.2.1
       core-js: 3.24.1
       detect-it: 3.0.7
