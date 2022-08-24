@@ -505,11 +505,11 @@ importers:
 
   packages/flat-stores:
     specifiers:
-      '@netless/fastboard-react': ^0.3.5-canary.5
+      '@netless/fastboard-react': ^0.3.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
-      '@netless/window-manager': ^0.4.41
+      '@netless/window-manager': ^0.4.43
       flat-components: workspace:*
       mobx: ^6.6.1
       prettier: ^2.3.0
@@ -526,8 +526,8 @@ importers:
       side-effect-manager: 1.2.1
       uuid: 8.3.2
     devDependencies:
-      '@netless/fastboard-react': 0.3.6_ojo25ixkz6jyehyhv7mcovq7mu
-      '@netless/window-manager': 0.4.41_white-web-sdk-esm@2.16.24
+      '@netless/fastboard-react': 0.3.6_ezbppzj6aszf252o73ztxkp57a
+      '@netless/window-manager': 0.4.43_white-web-sdk-esm@2.16.24
       mobx: 6.6.1
       prettier: 2.6.2
       react: 17.0.2
@@ -623,7 +623,7 @@ importers:
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/white-snapshot': ^0.4.1
-      '@netless/window-manager': ^0.4.41
+      '@netless/window-manager': ^0.4.43
       prettier: ^2.3.0
       side-effect-manager: ^1.2.1
       typescript: ^4.6.2
@@ -631,13 +631,13 @@ importers:
       white-web-sdk: npm:white-web-sdk-esm@2.16.24
     dependencies:
       '@lukeed/uuid': 2.0.0
-      '@netless/fastboard': 0.3.6_i7ei35pwu55cvcbffd5wthrwmu
+      '@netless/fastboard': 0.3.6_bqg5nel2o4ksti4hmin2qb3rrq
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/white-snapshot': 0.4.1
-      '@netless/window-manager': 0.4.41_white-web-sdk-esm@2.16.24
+      '@netless/window-manager': 0.4.43_white-web-sdk-esm@2.16.24
       side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
@@ -3085,6 +3085,7 @@ packages:
 
   /@juggle/resize-observer/3.3.1:
     resolution: {integrity: sha512-zMM9Ds+SawiUkakS7y94Ymqx+S0ORzpG3frZirN3l+UlXUmSUR7hF4wxCVqW+ei94JzV5kt0uXBcoOEAuiydrw==}
+    dev: false
 
   /@juggle/resize-observer/3.4.0:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
@@ -3240,7 +3241,7 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/0.3.6_i7ei35pwu55cvcbffd5wthrwmu:
+  /@netless/fastboard-core/0.3.6_bqg5nel2o4ksti4hmin2qb3rrq:
     resolution: {integrity: sha512-EoiN8CQREv1UTjM9EDs4dmqy8TsVW7HPQ+vhoWJk/idvP7Xgt1EY0x1Mg3zziU+jb9vhnC8+c9NpayfSfenE9w==}
     peerDependencies:
       '@netless/window-manager': '>=0.4.0'
@@ -3248,15 +3249,15 @@ packages:
     dependencies:
       '@netless/app-slide': 0.2.2
       '@netless/synced-store': 2.0.7_white-web-sdk-esm@2.16.24
-      '@netless/window-manager': 0.4.41_white-web-sdk-esm@2.16.24
+      '@netless/window-manager': 0.4.43_white-web-sdk-esm@2.16.24
       white-web-sdk: /white-web-sdk-esm/2.16.24
 
-  /@netless/fastboard-react/0.3.6_ojo25ixkz6jyehyhv7mcovq7mu:
+  /@netless/fastboard-react/0.3.6_ezbppzj6aszf252o73ztxkp57a:
     resolution: {integrity: sha512-ijaXelp9i6vYrBAfF0ZPQIhyhDcDTmt5vGZ9Pk7lHTgkhZ58FJf4biTxX2fESjiG3p2kyQYNqw5/eFxuBaKVlA==}
     peerDependencies:
       react: '*'
     dependencies:
-      '@netless/fastboard-core': 0.3.6_i7ei35pwu55cvcbffd5wthrwmu
+      '@netless/fastboard-core': 0.3.6_bqg5nel2o4ksti4hmin2qb3rrq
       '@netless/fastboard-ui': 0.3.6_dh4pwpaiunoyuozzscsfopi4z4
       react: 17.0.2
     transitivePeerDependencies:
@@ -3269,13 +3270,13 @@ packages:
     peerDependencies:
       '@netless/fastboard-core': 0.3.6
     dependencies:
-      '@netless/fastboard-core': 0.3.6_i7ei35pwu55cvcbffd5wthrwmu
+      '@netless/fastboard-core': 0.3.6_bqg5nel2o4ksti4hmin2qb3rrq
       tippy.js: 6.3.7
 
-  /@netless/fastboard/0.3.6_i7ei35pwu55cvcbffd5wthrwmu:
+  /@netless/fastboard/0.3.6_bqg5nel2o4ksti4hmin2qb3rrq:
     resolution: {integrity: sha512-YH3NKT47D+0GWl7nIyUDLI/T2AgVoD6TnpV8kJTTYsPbFX41pZ5bfSKXZNF33577ehcUxWW3SvQScaqHSc3Jyw==}
     dependencies:
-      '@netless/fastboard-core': 0.3.6_i7ei35pwu55cvcbffd5wthrwmu
+      '@netless/fastboard-core': 0.3.6_bqg5nel2o4ksti4hmin2qb3rrq
       '@netless/fastboard-ui': 0.3.6_dh4pwpaiunoyuozzscsfopi4z4
     transitivePeerDependencies:
       - '@netless/window-manager'
@@ -3294,7 +3295,7 @@ packages:
       white-web-sdk: '>= 2.16'
     dependencies:
       lodash-es: 4.17.21
-      remitter: 0.2.6
+      remitter: 0.2.8
       side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.24
@@ -3315,12 +3316,12 @@ packages:
       html2canvas: 1.4.1
     dev: false
 
-  /@netless/window-manager/0.4.41_white-web-sdk-esm@2.16.24:
-    resolution: {integrity: sha512-R+vb+6nC0aECJqBjDJ3WJbkzGaT0ikfAd+hdqObLc6EPhjZlxKwfpVnyU+i/Z5P3OfclpaWFrh/qJq7KjSAGkQ==}
+  /@netless/window-manager/0.4.43_white-web-sdk-esm@2.16.24:
+    resolution: {integrity: sha512-0q8p1hQ3OJq+PWV+t8kztCLxTrKShrzW3xYe8UHnK2wADoMqYCtAWnYx1l91IjY0+u6SyGawOx+xNMbFk3n92Q==}
     peerDependencies:
       white-web-sdk: ^2.16.0
     dependencies:
-      '@juggle/resize-observer': 3.3.1
+      '@juggle/resize-observer': 3.4.0
       '@netless/telebox-insider': 0.2.27
       emittery: 0.9.2
       lodash: 4.17.21
@@ -15850,6 +15851,14 @@ packages:
   /react-dev-utils/11.0.4_webpack@4.46.0:
     resolution: {integrity: sha512-dx0LvIGHcOPtKbeiSUM4jqpBl3TcY7CDjZdfOIcKeznE7BWr9dg0iPG90G5yfVQ+p/rGNMXdbfStvzQZEVEi4A==}
     engines: {node: '>=10'}
+    peerDependencies:
+      typescript: '>=2.7'
+      webpack: '>=4 || ^5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      webpack:
+        optional: true
     dependencies:
       '@babel/code-frame': 7.10.4
       address: 1.1.2
@@ -15875,17 +15884,24 @@ packages:
       shell-quote: 1.7.2
       strip-ansi: 6.0.0
       text-table: 0.2.0
+      webpack: 4.46.0
     transitivePeerDependencies:
       - eslint
       - supports-color
-      - typescript
       - vue-template-compiler
-      - webpack
     dev: true
 
   /react-dev-utils/11.0.4_webpack@5.72.0:
     resolution: {integrity: sha512-dx0LvIGHcOPtKbeiSUM4jqpBl3TcY7CDjZdfOIcKeznE7BWr9dg0iPG90G5yfVQ+p/rGNMXdbfStvzQZEVEi4A==}
     engines: {node: '>=10'}
+    peerDependencies:
+      typescript: '>=2.7'
+      webpack: '>=4 || ^5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      webpack:
+        optional: true
     dependencies:
       '@babel/code-frame': 7.10.4
       address: 1.1.2
@@ -15911,12 +15927,11 @@ packages:
       shell-quote: 1.7.2
       strip-ansi: 6.0.0
       text-table: 0.2.0
+      webpack: 5.72.0
     transitivePeerDependencies:
       - eslint
       - supports-color
-      - typescript
       - vue-template-compiler
-      - webpack
     dev: true
 
   /react-device-detect/2.2.2_sfoxds7t5ydpegc3knd667wn6m:
@@ -16575,16 +16590,12 @@ packages:
       mdast-squeeze-paragraphs: 4.0.0
     dev: true
 
-  /remitter/0.2.6:
-    resolution: {integrity: sha512-vg6psVwfJsg7zcX7HVJ0UxZiRc0V7EfFOOzcp6WAEP2Br0G75DEM5KUglyxyMuxG57ntrfEBzqP6Cd91Nf2CBw==}
-
   /remitter/0.2.7:
     resolution: {integrity: sha512-4UFLuiw5+pogiodIcxZJamjdg6LHLiBQskUBiNmCG/bNi4lF6mpaSI4Lpcoyj6oax1HL530JdOrjKzsBxsSw9w==}
     dev: false
 
   /remitter/0.2.8:
     resolution: {integrity: sha512-SX6iWCNwmz72pYMORTCEBT+PVGybKywTJLuIvY1PskaDS/u7UhXHW2hUhKe19pGz/Q7aReOGwgJc6S0XafPebw==}
-    dev: false
 
   /remove-trailing-separator/1.1.0:
     resolution: {integrity: sha1-wkvOKig62tW8P1jg1IJJuSN52O8=}
@@ -18667,6 +18678,7 @@ packages:
   /unified/9.2.0:
     resolution: {integrity: sha512-vx2Z0vY+a3YoTj8+pttM3tiJHCwY5UFbYdiWrwBEbHmK8pvsPj2rtAX2BFfgXen8T39CJWblWRDT4L5WGXtDdg==}
     dependencies:
+      '@types/unist': 2.0.6
       bail: 1.0.5
       extend: 3.0.2
       is-buffer: 2.0.5
