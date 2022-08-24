@@ -1,6 +1,6 @@
 import { message } from "antd";
 import { v4 as v4uuid } from "uuid";
-import type { ApplianceNames, Room, Size } from "white-web-sdk";
+import { ApplianceNames, Room, Size } from "white-web-sdk";
 import { listFiles } from "@netless/flat-server-api";
 import { UploadTask } from "@netless/flat-stores";
 import { FlatI18n } from "@netless/flat-i18n";

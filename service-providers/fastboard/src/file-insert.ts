@@ -1,15 +1,17 @@
-import type { CloudFile } from "@netless/flat-server-api";
+import { v4 as uuidv4 } from "@lukeed/uuid";
+import type { FastboardApp } from "@netless/fastboard";
 import { BuiltinApps } from "@netless/window-manager";
+import { ApplianceNames, SceneDefinition } from "white-web-sdk";
+
+import type { FlatI18n } from "@netless/flat-i18n";
+import type { CloudFile } from "@netless/flat-server-api";
 import {
     getFileExt,
-    queryConvertingTaskStatus,
     isPPTX,
+    queryConvertingTaskStatus,
 } from "@netless/flat-service-provider-file-convert-netless";
-import { ApplianceNames, SceneDefinition } from "white-web-sdk";
-import { Toaster, IServiceFileInsert } from "@netless/flat-services";
-import type { FastboardApp } from "@netless/fastboard";
-import { v4 as uuidv4 } from "@lukeed/uuid";
-import type { FlatI18n } from "@netless/flat-i18n";
+import { IServiceFileInsert, IServiceFileInsertOptions, Toaster } from "@netless/flat-services";
+
 import type { Fastboard } from "./index";
 
 export class FastboardFileInsert implements IServiceFileInsert {
@@ -19,7 +21,7 @@ export class FastboardFileInsert implements IServiceFileInsert {
         public toaster: Toaster,
     ) {}
 
-    public async insert(file: CloudFile): Promise<void> {
+    public async insert(file: CloudFile, options: IServiceFileInsertOptions): Promise<void> {
         const fastboardApp = this.fastboard._app$.value;
         if (!fastboardApp) {
             this.toaster.emit("warn", this.flatI18n.t("unable-to-insert-courseware"));
@@ -32,7 +34,7 @@ export class FastboardFileInsert implements IServiceFileInsert {
                 case "jpeg":
                 case "png":
                 case "webp": {
-                    await insertImage(file, fastboardApp);
+                    await insertImage(file, fastboardApp, options?.coord);
                     break;
                 }
                 case "mp3":
@@ -69,7 +71,11 @@ export class FastboardFileInsert implements IServiceFileInsert {
     }
 }
 
-export async function insertImage(file: CloudFile, fastboardApp: FastboardApp): Promise<void> {
+export async function insertImage(
+    file: CloudFile,
+    fastboardApp: FastboardApp,
+    coord: IServiceFileInsertOptions["coord"],
+): Promise<void> {
     // 1. shrink the image a little to fit the screen
     const maxWidth = window.innerWidth * 0.6;
 
@@ -93,7 +99,18 @@ export async function insertImage(file: CloudFile, fastboardApp: FastboardApp): 
     }
 
     const uuid = uuidv4();
-    const { centerX, centerY } = fastboardApp.manager.cameraState;
+    let { centerX, centerY } = fastboardApp.manager.cameraState;
+
+    if (coord) {
+        const rect = fastboardApp.manager.mainView.divElement?.getBoundingClientRect();
+        if (rect) {
+            ({ x: centerX, y: centerY } = fastboardApp.manager.mainView.convertToPointInWorld({
+                x: coord.clientX - rect.left,
+                y: coord.clientY - rect.top,
+            }));
+        }
+    }
+
     width *= scale;
     height *= scale;
     fastboardApp.manager.mainView.insertImage({

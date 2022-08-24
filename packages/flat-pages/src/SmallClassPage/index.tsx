@@ -193,6 +193,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                     {classroomStore.isCreator && (
                         <CloudRecordBtn
                             isRecording={classroomStore.isRecording}
+                            loading={classroomStore.isRecordingLoading}
                             onClick={() => {
                                 void classroomStore.toggleRecording({
                                     onStop() {
