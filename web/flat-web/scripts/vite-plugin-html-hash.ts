@@ -23,9 +23,13 @@ export function injectHtmlHash(): Plugin {
 // so using the function
 const gitHash = (): string => {
     try {
-        return execSync("git rev-parse HEAD", {
+        const hash = execSync("git rev-parse HEAD", {
             encoding: "utf-8",
         }).trim();
+        const time = execSync(`git show ${hash} --pretty=%cI --no-patch --no-notes`, {
+            encoding: "utf-8",
+        }).trim();
+        return [hash, time].join(" ");
     } catch {
         return "NOT_A_GIT_REPO";
     }
