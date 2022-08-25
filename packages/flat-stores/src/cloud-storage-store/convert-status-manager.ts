@@ -1,4 +1,4 @@
-import { CloudFile, FileConvertStep } from "@netless/flat-server-api";
+import { CloudFile, convertFinish, FileConvertStep } from "@netless/flat-server-api";
 import { errorTips, FileUUID } from "flat-components";
 import { SideEffectManager } from "side-effect-manager";
 import { getFileExt } from "../utils/file";
@@ -51,6 +51,11 @@ export class ConvertStatusManager {
                     result.status === FileConvertStep.Done ||
                     result.status === FileConvertStep.Failed
                 ) {
+                    try {
+                        await convertFinish({ fileUUID: file.fileUUID, region: file.region });
+                    } catch (e) {
+                        console.error(e);
+                    }
                     runInAction(() => {
                         file.convertStep = result.status;
                     });
