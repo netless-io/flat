@@ -2,6 +2,7 @@ import { createFastboard, createUI, FastboardApp } from "@netless/fastboard";
 import { DeviceType, RoomPhase } from "white-web-sdk";
 import { RoomType } from "@netless/flat-server-api";
 import type { FlatI18n } from "@netless/flat-i18n";
+import type { Displayer } from "@netless/white-snapshot";
 import {
     IServiceWhiteboard,
     IServiceWhiteboardJoinRoomConfig,
@@ -12,7 +13,10 @@ import { WindowManager } from "@netless/window-manager";
 import { ReadonlyVal, Val, combine } from "value-enhancer";
 import { AsyncSideEffectManager } from "side-effect-manager";
 
-export { register } from "@netless/fastboard";
+import { registerColorShortcut } from "./color-shortcut";
+import { injectCursor } from "./inject-cursor";
+
+export { register, apps as stockedApps } from "@netless/fastboard";
 export { FastboardFileInsert } from "./file-insert";
 
 declare global {
@@ -132,8 +136,19 @@ export class Fastboard extends IServiceWhiteboard {
                     }, "setWritable");
                 }
             }),
-            this._el$.subscribe(el => (el ? this.ui.mount(el) : this.ui.destroy())),
-            this._app$.subscribe(app => this.ui.update({ app })),
+            this._el$.subscribe(el => {
+                if (el) {
+                    this.ui.mount(el, { app: this._app$.value });
+                } else {
+                    this.ui.destroy();
+                }
+            }),
+            this._app$.subscribe(app => {
+                this.ui.update({ app });
+            }),
+            this.flatI18n.$Val.language$.subscribe(language => {
+                this.ui.update({ language });
+            }),
         ]);
     }
 
@@ -233,6 +248,9 @@ export class Fastboard extends IServiceWhiteboard {
             },
         });
         this._app$.setValue(fastboardAPP);
+
+        this.sideEffect.push(registerColorShortcut(fastboardAPP));
+        this.sideEffect.push(injectCursor(fastboardAPP));
     }
 
     public async leaveRoom(): Promise<void> {
@@ -249,6 +267,10 @@ export class Fastboard extends IServiceWhiteboard {
         this._el$.setValue(el);
     }
 
+    public override setTheme(theme: "light" | "dark"): void {
+        this.ui.update({ theme });
+    }
+
     public override async destroy(): Promise<void> {
         super.destroy();
         this.asyncSideEffect.flushAll();
@@ -261,8 +283,7 @@ export class Fastboard extends IServiceWhiteboard {
             return [];
         }
 
-        // @FIXME @hyrious please remove this hack
-        const room = {
+        const displayer: Displayer = {
             state: app.manager,
             fillSceneSnapshot: app.manager.mainView.fillSceneSnapshot.bind(app.manager.mainView),
         };
@@ -276,7 +297,7 @@ export class Fastboard extends IServiceWhiteboard {
             canvases[i] = new Promise(resolve => {
                 actions[i] = async snapshot => {
                     try {
-                        const canvas = await snapshot(room, {
+                        const canvas = await snapshot(displayer, {
                             scenePath: app.manager.mainViewSceneDir + scene.name,
                             crossorigin: true,
                         });

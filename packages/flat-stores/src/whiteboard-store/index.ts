@@ -1,7 +1,7 @@
 import "video.js/dist/video-js.css";
 
+import type { FastboardApp } from "@netless/fastboard";
 import { FlatI18n } from "@netless/flat-i18n";
-import { FastboardApp } from "@netless/fastboard-react";
 import { WindowManager } from "@netless/window-manager";
 import { message } from "antd";
 import { debounce } from "lodash-es";

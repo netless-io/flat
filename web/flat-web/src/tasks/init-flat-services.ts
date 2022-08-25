@@ -1,9 +1,17 @@
 import { FlatI18n } from "@netless/flat-i18n";
 import { routeConfig } from "@netless/flat-pages/src/route-config";
+
+import monacoSVG from "@netless/flat-pages/src/assets/image/tool-monaco.svg";
+import geogebraSVG from "@netless/flat-pages/src/assets/image/tool-geogebra.svg";
+import countdownSVG from "@netless/flat-pages/src/assets/image/tool-countdown.svg";
+import saveSVG from "@netless/flat-pages/src/assets/image/tool-save.svg";
+import presetsSVG from "@netless/flat-pages/src/assets/image/tool-presets.svg";
+
 import { FlatServiceProviderFile, FlatServices, Toaster } from "@netless/flat-services";
 import { message } from "antd";
 import { generatePath } from "react-router-dom";
 import { Remitter } from "remitter";
+import { combine } from "value-enhancer";
 
 export function initFlatServices(): void {
     const toaster = createToaster();
@@ -41,7 +49,9 @@ export function initFlatServices(): void {
     });
 
     flatServices.register("whiteboard", async () => {
-        const { Fastboard, register } = await import("@netless/flat-service-provider-fastboard");
+        const { Fastboard, register, stockedApps } = await import(
+            "@netless/flat-service-provider-fastboard"
+        );
         void register({
             kind: "Monaco",
             appOptions: {
@@ -71,7 +81,7 @@ export function initFlatServices(): void {
             src: () => import("@netless/app-iframe-bridge"),
         });
 
-        return new Fastboard({
+        const service = new Fastboard({
             APP_ID: process.env.NETLESS_APP_IDENTIFIER,
             toaster,
             flatI18n,
@@ -82,6 +92,50 @@ export function initFlatServices(): void {
                 version: process.env.VERSION,
             },
         });
+
+        service.sideEffect.addDisposer(
+            combine([service._app$, flatI18n.$Val.language$]).subscribe(([_app, _lang]) => {
+                stockedApps.clear();
+                stockedApps.push(
+                    {
+                        kind: "Monaco",
+                        icon: monacoSVG,
+                        label: flatI18n.t("tool.monaco"),
+                        onClick: app => app.manager.addApp({ kind: "Monaco" }),
+                    },
+                    {
+                        kind: "GeoGebra",
+                        icon: geogebraSVG,
+                        label: flatI18n.t("tool.geogebra"),
+                        onClick: app => app.manager.addApp({ kind: "GeoGebra" }),
+                    },
+                    {
+                        kind: "Countdown",
+                        icon: countdownSVG,
+                        label: flatI18n.t("tool.countdown"),
+                        onClick: app => app.manager.addApp({ kind: "Countdown" }),
+                    },
+                    {
+                        kind: "Save",
+                        icon: saveSVG,
+                        label: flatI18n.t("tool.save"),
+                        onClick: () => {
+                            service.events.emit("exportAnnotations");
+                        },
+                    },
+                    {
+                        kind: "Presets",
+                        icon: presetsSVG,
+                        label: flatI18n.t("tool.presets"),
+                        onClick: () => {
+                            service.events.emit("insertPresets");
+                        },
+                    },
+                );
+            }),
+        );
+
+        return service;
     });
 
     flatServices.register(

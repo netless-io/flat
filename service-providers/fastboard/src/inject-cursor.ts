@@ -1,4 +1,4 @@
-import type { FastboardApp } from "@netless/fastboard-react";
+import type { FastboardApp } from "@netless/fastboard";
 import type { CursorNames } from "white-web-sdk";
 
 type Color = string;

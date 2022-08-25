@@ -8,6 +8,8 @@ export type IServiceWhiteboardKickedReason =
 
 export interface IServiceWhiteboardEventData {
     kicked: IServiceWhiteboardKickedReason;
+    exportAnnotations: void;
+    insertPresets: void;
 }
 
 export type IServiceWhiteboardEventName = Extract<keyof IServiceWhiteboardEventData, string>;

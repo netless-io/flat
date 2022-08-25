@@ -1,6 +1,6 @@
 // Add keyboard shortcut "Opt/Alt + [Shift] + Q" to select next/previous color.
 
-import type { FastboardApp, Appliance } from "@netless/fastboard-react";
+import type { FastboardApp, Appliance } from "@netless/fastboard";
 
 type Color = [r: number, g: number, b: number];
 

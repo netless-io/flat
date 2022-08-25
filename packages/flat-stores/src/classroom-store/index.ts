@@ -1,3 +1,5 @@
+import type { Storage } from "@netless/fastboard";
+
 import { SideEffectManager } from "side-effect-manager";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
 import {
@@ -11,7 +13,6 @@ import {
 } from "@netless/flat-server-api";
 import { FlatI18n } from "@netless/flat-i18n";
 import { errorTips, message } from "flat-components";
-import { Storage } from "@netless/fastboard-react";
 import { RoomItem, roomStore } from "../room-store";
 import { User, UserStore } from "../user-store";
 import { WhiteboardStore } from "../whiteboard-store";
