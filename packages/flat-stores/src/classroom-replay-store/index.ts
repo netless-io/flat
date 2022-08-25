@@ -1,13 +1,14 @@
 import { makeAutoObservable, observable } from "mobx";
 import { ChatMsg } from "flat-components";
+import { replayFastboard, FastboardPlayer } from "@netless/fastboard";
+import { DeviceType } from "white-web-sdk";
+import { SideEffectManager } from "side-effect-manager";
+
+import type { ClassroomReplayEventData } from "../classroom-store/event";
 import { globalStore } from "../global-store";
 import { RoomItem, RoomRecording, roomStore } from "../room-store";
 import { ClassModeType } from "../classroom-store";
 import { UserStore } from "../user-store";
-import { replayFastboard, FastboardPlayer } from "@netless/fastboard-react";
-import { DeviceType } from "white-web-sdk";
-import { SideEffectManager } from "side-effect-manager";
-import type { ClassroomReplayEventData } from "../classroom-store/event";
 
 export interface ClassroomReplayStoreConfig {
     roomUUID: string;
@@ -54,6 +55,7 @@ export class ClassroomReplayStore {
             roomUUID: this.roomUUID,
             ownerUUID: this.ownerUUID,
             userUUID: this.userUUID,
+            isInRoom: () => false,
         });
 
         makeAutoObservable<this, "sideEffect" | "_currentPlayTime" | "_oldestSeekTime">(this, {

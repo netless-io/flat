@@ -54,6 +54,7 @@ module.exports = {
         "unban",
         "convertcdn",
         "fastboard",
+        "displayer",
 
         // date-fns
         "Weekiii",

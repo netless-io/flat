@@ -1,14 +1,23 @@
-import { FlatServiceProviderFile, FlatServices, Toaster, getFileExt } from "@netless/flat-services";
 import type { AgoraRTCElectron } from "@netless/flat-service-provider-agora-rtc-electron";
+import { FlatServiceProviderFile, FlatServices, Toaster, getFileExt } from "@netless/flat-services";
 import { FlatI18n } from "@netless/flat-i18n";
+import { FilePreviewPage } from "@netless/flat-pages/src/FilePreviewPage";
+
+import monacoSVG from "@netless/flat-pages/src/assets/image/tool-monaco.svg";
+import geogebraSVG from "@netless/flat-pages/src/assets/image/tool-geogebra.svg";
+import countdownSVG from "@netless/flat-pages/src/assets/image/tool-countdown.svg";
+import saveSVG from "@netless/flat-pages/src/assets/image/tool-save.svg";
+import presetsSVG from "@netless/flat-pages/src/assets/image/tool-presets.svg";
+
 import { Remitter } from "remitter";
 import { message } from "antd";
 import React from "react";
 import ReactDOM from "react-dom";
-import { FilePreviewPage } from "@netless/flat-pages/src/FilePreviewPage";
+import { BrowserRouter } from "react-router-dom";
+import { combine } from "value-enhancer";
+
 import { portalWindowManager } from "../utils/portal-window-manager";
 import { ipcAsyncByPreviewFileWindow } from "../utils/ipc";
-import { BrowserRouter } from "react-router-dom";
 
 export function initFlatServices(): void {
     const toaster = createToaster();
@@ -103,7 +112,9 @@ export function initFlatServices(): void {
     });
 
     flatServices.register("whiteboard", async () => {
-        const { Fastboard, register } = await import("@netless/flat-service-provider-fastboard");
+        const { Fastboard, register, stockedApps } = await import(
+            "@netless/flat-service-provider-fastboard"
+        );
         void register({
             kind: "Monaco",
             appOptions: {
@@ -133,7 +144,7 @@ export function initFlatServices(): void {
             src: () => import("@netless/app-iframe-bridge"),
         });
 
-        return new Fastboard({
+        const service = new Fastboard({
             APP_ID: process.env.NETLESS_APP_IDENTIFIER,
             toaster,
             flatI18n,
@@ -144,6 +155,50 @@ export function initFlatServices(): void {
                 version: process.env.VERSION,
             },
         });
+
+        service.sideEffect.addDisposer(
+            combine([service._app$, flatI18n.$Val.language$]).subscribe(([_app, _lang]) => {
+                stockedApps.clear();
+                stockedApps.push(
+                    {
+                        kind: "Monaco",
+                        icon: monacoSVG,
+                        label: flatI18n.t("tool.monaco"),
+                        onClick: app => app.manager.addApp({ kind: "Monaco" }),
+                    },
+                    {
+                        kind: "GeoGebra",
+                        icon: geogebraSVG,
+                        label: flatI18n.t("tool.geogebra"),
+                        onClick: app => app.manager.addApp({ kind: "GeoGebra" }),
+                    },
+                    {
+                        kind: "Countdown",
+                        icon: countdownSVG,
+                        label: flatI18n.t("tool.countdown"),
+                        onClick: app => app.manager.addApp({ kind: "Countdown" }),
+                    },
+                    {
+                        kind: "Save",
+                        icon: saveSVG,
+                        label: flatI18n.t("tool.save"),
+                        onClick: () => {
+                            service.events.emit("exportAnnotations");
+                        },
+                    },
+                    {
+                        kind: "Presets",
+                        icon: presetsSVG,
+                        label: flatI18n.t("tool.presets"),
+                        onClick: () => {
+                            service.events.emit("insertPresets");
+                        },
+                    },
+                );
+            }),
+        );
+
+        return service;
     });
 
     flatServices.register(

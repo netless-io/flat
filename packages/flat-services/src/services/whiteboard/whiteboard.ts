@@ -22,7 +22,7 @@ export interface IServiceWhiteboard$Val {
 }
 
 export abstract class IServiceWhiteboard {
-    protected readonly sideEffect = new SideEffectManager();
+    public readonly sideEffect = new SideEffectManager();
 
     public readonly events: IServiceWhiteboardEvents = new Remitter();
 
@@ -39,6 +39,8 @@ export abstract class IServiceWhiteboard {
     public abstract joinRoom(config: IServiceWhiteboardJoinRoomConfig): Promise<void>;
 
     public abstract render(el: HTMLElement): void;
+
+    public abstract setTheme(theme: "light" | "dark"): void;
 
     public abstract exportAnnotations(): Array<Promise<HTMLCanvasElement | null>>;
 

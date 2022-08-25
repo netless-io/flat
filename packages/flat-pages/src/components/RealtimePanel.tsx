@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import classNames from "classnames";
 
 import "./RealtimePanel.less";
@@ -13,7 +13,7 @@ export type RealtimePanelProps = {
 };
 
 export class RealtimePanel extends React.PureComponent<RealtimePanelProps> {
-    public render(): JSX.Element {
+    public override render(): ReactElement {
         const { isVideoOn, isShow, videoSlot, chatSlot } = this.props;
 
         return (

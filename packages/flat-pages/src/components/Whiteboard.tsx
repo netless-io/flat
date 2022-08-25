@@ -3,7 +3,6 @@ import "./Whiteboard.less";
 
 import classNames from "classnames";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Fastboard, FastboardUIConfig } from "@netless/fastboard-react";
 import { RoomPhase } from "white-web-sdk";
 import {
     DarkModeContext,
@@ -12,17 +11,13 @@ import {
     SaveAnnotationModal,
     SaveAnnotationModalProps,
 } from "flat-components";
-import { useLanguage, useTranslate } from "@netless/flat-i18n";
+import { useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import { WhiteboardStore, ClassroomStore } from "@netless/flat-stores";
 import { isSupportedFileExt } from "../utils/drag-and-drop";
 import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image";
-import { refreshApps } from "../utils/toolbar-apps";
 import { PRESETS } from "../constants/presets";
-import { mousewheelToScroll } from "../utils/mousewheel-to-scroll";
-import { registerColorShortcut } from "../utils/color-shortcut";
-import { injectCursor } from "../utils/inject-cursor";
 import { FlatServices } from "@netless/flat-services";
 import { createCloudFile } from "../utils/create-cloud-file";
 
@@ -36,20 +31,13 @@ const noop = (): void => {
     // noop
 };
 
-// Hide zoom control.
-const config: FastboardUIConfig = {
-    zoom_control: { enable: false },
-    toolbar: { apps: { enable: true } },
-};
-
 export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     whiteboardStore,
     classRoomStore,
     disableHandRaising,
 }) {
     const t = useTranslate();
-    const language = useLanguage();
-    const { room, phase, fastboardAPP } = whiteboardStore;
+    const { room, phase, fastboardAPP, whiteboard } = whiteboardStore;
     const isDark = useContext(DarkModeContext);
 
     const [whiteboardEl, setWhiteboardEl] = useState<HTMLElement | null>(null);
@@ -61,6 +49,18 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     const [presetsVisible, showPresets] = useState(false);
 
     const isReconnecting = phase === RoomPhase.Reconnecting;
+
+    useEffect(() => {
+        return whiteboard.events.on("exportAnnotations", () => showSaveAnnotation(true));
+    }, [whiteboard]);
+
+    useEffect(() => {
+        return whiteboard.events.on("insertPresets", () => showPresets(true));
+    }, [whiteboard]);
+
+    useEffect(() => {
+        whiteboard.setTheme(isDark ? "dark" : "light");
+    }, [isDark, whiteboard]);
 
     useEffect(() => {
         return isReconnecting ? message.info(t("reconnecting"), 0) : noop;
@@ -84,54 +84,25 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     }, [whiteboardEl]);
 
     useEffect(() => {
-        if (whiteboardEl && fastboardAPP) {
-            return mousewheelToScroll(whiteboardEl, fastboardAPP);
-        }
-        return;
-    }, [whiteboardEl, fastboardAPP]);
-
-    useEffect(() => {
-        refreshApps({
-            t,
-            onSaveAnnotation: () => {
-                showSaveAnnotation(true);
-            },
-            onPresets: () => {
-                showPresets(true);
-            },
-        });
-    }, [t]);
-
-    useEffect(() => {
         if (saveAnnotationVisible) {
             setSaveAnnotationImages(whiteboardStore.getSaveAnnotationImages());
         }
     }, [saveAnnotationVisible, whiteboardStore]);
 
     useEffect(() => {
-        if (fastboardAPP) {
-            return registerColorShortcut(fastboardAPP);
-        }
-        return;
-    }, [fastboardAPP]);
-
-    useEffect(() => {
-        if (fastboardAPP) {
-            return injectCursor(fastboardAPP);
-        }
-        return;
-    }, [fastboardAPP]);
-
-    useEffect(() => {
         whiteboardOnResize();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [whiteboardStore.isRightSideClose]);
 
-    const bindWhiteboard = useCallback((ref: HTMLDivElement | null) => {
-        if (ref) {
-            setWhiteboardEl(ref);
-        }
-    }, []);
+    const bindWhiteboard = useCallback(
+        (ref: HTMLDivElement | null) => {
+            if (ref) {
+                whiteboard.render(ref);
+                setWhiteboardEl(ref);
+            }
+        },
+        [whiteboard],
+    );
 
     const bindCollector = useCallback((ref: HTMLDivElement | null) => {
         if (ref) {
@@ -254,13 +225,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                             </div>
                         )}
                     <div ref={bindCollector} />
-                    <Fastboard
-                        app={fastboardAPP}
-                        config={config}
-                        containerRef={bindWhiteboard}
-                        language={language}
-                        theme={isDark ? "dark" : "light"}
-                    />
+                    <div ref={bindWhiteboard} className="whiteboard" />
                 </div>
             )}
             <SaveAnnotationModal

@@ -1,4 +1,4 @@
-import type { FastboardApp } from "@netless/fastboard-react";
+import type { FastboardApp } from "@netless/fastboard";
 import type { AnimationMode } from "@netless/window-manager";
 
 // Let mouse wheel act as scrolling the whiteboard
