@@ -66,7 +66,6 @@ export default defineConfig(() => {
             assetsDir: "",
             rollupOptions: {
                 output: {
-                    format: "cjs",
                     assetFileNames: assetInfo => {
                         if (assetInfo.name?.endsWith("mp3")) {
                             return "[name][extname]";

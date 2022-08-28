@@ -4,14 +4,14 @@ import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
-import { useTranslation } from "react-i18next";
-import { FlatRTCShareScreenInfo } from "@netless/flat-rtc";
+import { useTranslate } from "@netless/flat-i18n";
+import { IServiceShareScreenInfo } from "@netless/flat-services";
 
 import { uint8ArrayToImageURL } from "./Utils";
 import { ClassRoomStore } from "../../../../stores/class-room-store";
 
 interface ScreenListProps {
-    screenInfo: FlatRTCShareScreenInfo[];
+    screenInfo: IServiceShareScreenInfo[];
     classRoomStore: ClassRoomStore;
 }
 
@@ -20,7 +20,7 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
     classRoomStore,
 }) {
     const [activeInfo, setActiveInfo] = useState("");
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     useEffect(() => {
         if (screenInfo.length === 0) {
@@ -29,7 +29,7 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
     }, [screenInfo, t]);
 
     const onClick = useCallback(
-        (screenInfo: FlatRTCShareScreenInfo, activeKey: string) => {
+        (screenInfo: IServiceShareScreenInfo, activeKey: string) => {
             setActiveInfo(activeKey);
             classRoomStore.updateSelectedScreenInfo(screenInfo);
         },
@@ -62,8 +62,8 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
 });
 
 interface ScreenItemProps {
-    info: FlatRTCShareScreenInfo;
-    handleClick: (screenInfo: FlatRTCShareScreenInfo, key: string) => void;
+    info: IServiceShareScreenInfo;
+    handleClick: (screenInfo: IServiceShareScreenInfo, key: string) => void;
     active: boolean;
     activeKey: string;
 }

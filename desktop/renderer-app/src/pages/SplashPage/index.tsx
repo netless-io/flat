@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { loginCheck } from "../../api-middleware/flatServer";
-import { GlobalStoreContext } from "../../components/StoreProvider";
+import { GlobalStoreContext } from "@netless/flat-pages/src/components/StoreProvider";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 import logoSVG from "../../assets/image/logo.svg";
 import "./SplashPage.less";
 import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 enum LoginStatusType {
     Idle = "Idle",
@@ -21,7 +21,7 @@ enum LoginStatusType {
 export const SplashPage = observer<{}>(function SplashPage() {
     useWindowSize("Splash");
 
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [logoLoaded, setLogoLoaded] = useState(false);
     const [loginStatus, updateLoginStatus] = useState(LoginStatusType.Idle);
     const pushHistory = usePushHistory();

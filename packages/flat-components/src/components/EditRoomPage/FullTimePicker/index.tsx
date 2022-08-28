@@ -10,7 +10,7 @@ import { ConfigContext } from "antd/es/config-provider";
 
 export type DatePickerProps = PickerProps<Date>;
 
-const DatePickerInner = generatePicker<Date>(dateFnsGenerateConfig);
+const DatePickerInner = /* @__PURE__ */ generatePicker<Date>(dateFnsGenerateConfig);
 
 export const DatePicker: FC<DatePickerProps> = props => {
     // For some reason DatePickerInner does not receive configs from ConfigContext.

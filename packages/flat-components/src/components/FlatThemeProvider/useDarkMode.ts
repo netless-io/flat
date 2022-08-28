@@ -3,7 +3,7 @@ import { useIsomorphicLayoutEffect } from "react-use";
 
 export type FlatPrefersColorScheme = "auto" | "dark" | "light";
 
-const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+const prefersDark = /* @__PURE__ */ window.matchMedia("(prefers-color-scheme: dark)");
 
 export function useDarkMode(prefersColorScheme?: FlatPrefersColorScheme): boolean {
     const [darkMode, setDarkMode] = useState(() =>

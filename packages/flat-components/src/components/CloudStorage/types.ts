@@ -1,14 +1,3 @@
-/**
- * Cloud Storage file item
- */
-export interface CloudStorageFile {
-    fileUUID: string;
-    fileName: string;
-    fileSize: number;
-    convert: CloudStorageConvertStatusType;
-    createAt: Date;
-}
-
 export type CloudStorageUploadStatusType = "idle" | "error" | "uploading" | "success";
 
 export interface CloudStorageUploadTask {

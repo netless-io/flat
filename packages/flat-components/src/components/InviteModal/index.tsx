@@ -5,10 +5,10 @@ import { Modal } from "antd";
 import { differenceInCalendarDays, format } from "date-fns/fp";
 import { RoomInfo, Week } from "../../types/room";
 import { formatInviteCode, getWeekNames } from "../../utils/room";
-import { useTranslation } from "react-i18next";
+import { useLanguage, useTranslate } from "@netless/flat-i18n";
 
-const completeTimeFormat = format("yyyy-MM-dd HH:mm");
-const onlySuffixTimeFormat = format("HH:mm");
+const completeTimeFormat = /* @__PURE__ */ format("yyyy-MM-dd HH:mm");
+const onlySuffixTimeFormat = /* @__PURE__ */ format("HH:mm");
 
 export interface InviteModalProps {
     visible: boolean;
@@ -30,7 +30,8 @@ export const InviteModal: React.FC<InviteModalProps> = ({
     onCopy,
     onCancel,
 }) => {
-    const { t, i18n } = useTranslation();
+    const t = useTranslate();
+    const language = useLanguage();
     const { beginTime, endTime, periodicUUID, roomUUID, inviteCode, title } = room;
     const uuid = periodicUUID || roomUUID;
 
@@ -62,7 +63,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
 
         if (periodicUUID) {
             const content = periodicWeeks
-                ? t("repeat-weeks", { weeks: getWeekNames(periodicWeeks, i18n.language) })
+                ? t("repeat-weeks", { weeks: getWeekNames(periodicWeeks, language) })
                 : "";
 
             onCopy(`${basePrefixText}${content}${baseSuffixText}`);

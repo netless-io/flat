@@ -1,0 +1,21 @@
+{
+  "name": "@netless/flat-service-provider-file-preview-netless-slide",
+  "version": "0.1.0",
+  "description": "Netless Slide File Preview",
+  "main": "src/index.ts",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "vite --open",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@netless/app-slide": "^0.2.2",
+    "@netless/flat-service-provider-file-convert-netless": "workspace:*",
+    "@netless/flat-services": "workspace:*"
+  }
+}

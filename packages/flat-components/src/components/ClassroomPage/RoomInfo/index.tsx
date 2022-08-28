@@ -2,7 +2,7 @@ import "./style.less";
 
 import classNames from "classnames";
 import React, { FC } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { RoomStatus, RoomType } from "../../../types/room";
 import { roomStatusToI18nKey } from "../../../utils/room";
 
@@ -12,7 +12,7 @@ export interface RoomInfoProps {
 }
 
 export const RoomInfo: FC<RoomInfoProps> = ({ roomStatus, roomType }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     return (
         <div className="room-info">
             <span>

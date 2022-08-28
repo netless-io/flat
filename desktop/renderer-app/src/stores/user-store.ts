@@ -2,10 +2,11 @@ import { action, makeAutoObservable, observable } from "mobx";
 import { CloudRecordStartPayload } from "../api-middleware/flatServer/agora";
 import { usersInfo } from "../api-middleware/flatServer";
 import { configStore } from "./config-store";
+import { IServiceVideoChatUID } from "@netless/flat-services";
 
 export interface User {
     userUUID: string;
-    rtcUID: number;
+    rtcUID: IServiceVideoChatUID;
     avatar: string;
     name: string;
     camera: boolean;
@@ -226,7 +227,7 @@ export class UserStore {
             // must convert to observable first so that it may be reused by other logic
             observable.object<User>({
                 userUUID,
-                rtcUID: users[userUUID].rtcUID,
+                rtcUID: String(users[userUUID].rtcUID),
                 avatar: users[userUUID].avatarURL,
                 name: users[userUUID].name,
                 camera: userUUID === this.userUUID ? configStore.autoCameraOn : false,

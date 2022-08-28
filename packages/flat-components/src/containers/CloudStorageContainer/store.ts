@@ -1,11 +1,8 @@
 import React from "react";
 import { action, computed, makeObservable, observable } from "mobx";
 import prettyBytes from "pretty-bytes";
-import {
-    CloudStorageFile,
-    CloudStorageFileName,
-    CloudStorageUploadTask,
-} from "../../components/CloudStorage/types";
+import { CloudStorageFileName, CloudStorageUploadTask } from "../../components/CloudStorage/types";
+import type { CloudFile } from "@netless/flat-server-api";
 
 export type UploadID = string;
 export type FileUUID = string;
@@ -130,11 +127,11 @@ export abstract class CloudStorageStore {
     public abstract failedUploadTasks: CloudStorageUploadTask[];
 
     /** User cloud storage files */
-    public abstract files: CloudStorageFile[];
+    public abstract files: CloudFile[];
 
     /** Render file menus item base on fileUUID */
     public abstract fileMenus: (
-        file: CloudStorageFile,
+        file: CloudFile,
         index: number,
     ) => Array<{ key: React.Key; name: React.ReactNode }> | void | undefined | null;
 

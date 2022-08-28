@@ -66,6 +66,7 @@ export const MainPageNavAvatar: React.FC<MainPageNavAvatarProps> = ({
                             onClick={e => {
                                 e.preventDefault();
                                 onClick(menuItem);
+                                togglePopMenuVisible();
                             }}
                         >
                             <span className="main-page-pop-menu-item-icon">

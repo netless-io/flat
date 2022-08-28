@@ -1,4 +1,4 @@
-import react from "@vitejs/plugin-react";
+// import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { dotenv } from "./scripts/vite-plugin-dotenv";
 import { injectHtmlHash } from "./scripts/vite-plugin-html-hash";
@@ -10,7 +10,7 @@ import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 import viteCompression from "vite-plugin-compression";
 export default defineConfig({
     plugins: [
-        react(),
+        // react(),
         dotenv(autoChooseConfig()),
         injectHtmlHash(),
         version(mainPackageJSONPath),

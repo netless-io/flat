@@ -14,17 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
-        id: pnpm-cache
-        with:
-          key: pnpm-storybook-v1-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-storybook-v1-${{ runner.os }}-
-          path: |
-            ~/.pnpm-store
-            ./node_modules
-            ./packages/**/node_modules
-
       - name: Install PNPM
         uses: pnpm/action-setup@v2
         with:
@@ -34,14 +23,6 @@ jobs:
         run: |-
             # failure automatically retries 3 times
             pnpm i || pnpm i || pnpm i
-        env:
-          components: true
-        if: steps.pnpm-cache.outputs.cache-hit != 'true'
-
-      - name: Build Types
-        # it must be added here, otherwise when the cache matches, there will be flat-types not found
-        run: pnpm -F flat-types build
-        if: steps.pnpm-cache.outputs.cache-hit == 'true'
 
       - name: Build Storybook
         run: pnpm -F flat-components build

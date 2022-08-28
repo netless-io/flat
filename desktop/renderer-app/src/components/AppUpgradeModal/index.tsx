@@ -3,7 +3,7 @@ import { Button, Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { ipcAsyncByApp, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { update } from "flat-types";
 
 export interface AppUpgradeModalProps {
@@ -19,7 +19,7 @@ export const AppUpgradeModal = observer<AppUpgradeModalProps>(function AppUpgrad
     updateInfo,
     onClose,
 }) {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [upgradePercent, setUpgradePercent] = useState(0);
     const [showUpgradeProgress, setShowUpgradeProgress] = useState(false);
     const [upgradeFail, setUpgradeFail] = useState(false);

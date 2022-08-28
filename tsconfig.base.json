@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "target": "es2017",
+    "jsx": "react",
+
+    "types": ["vite/client", "node"],
 
     "allowJs": true,
 
@@ -17,6 +20,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
+    "noImplicitOverride": true,
 
     "esModuleInterop": true,
     "isolatedModules": true,
@@ -34,5 +38,5 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true
   },
-  "exclude": ["node_modules"]
+  "include": []
 }

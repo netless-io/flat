@@ -1,5 +1,5 @@
+import { FlatI18n } from "@netless/flat-i18n";
 import { FlatPrefersColorScheme, Region } from "flat-components";
-import { i18n } from "../utils/i18n";
 import { autoPersistStore } from "./utils";
 
 // clear storage if not match
@@ -35,7 +35,10 @@ export class ConfigStore {
     };
 
     public getRegion = (): Region => {
-        return this.region || (i18n.language.startsWith("zh") ? Region.CN_HZ : Region.US_SV);
+        return (
+            this.region ||
+            (FlatI18n.getInstance().language.startsWith("zh") ? Region.CN_HZ : Region.US_SV)
+        );
     };
 
     public updatePrefersColorScheme = (prefersColorScheme: FlatPrefersColorScheme): void => {

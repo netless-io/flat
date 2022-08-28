@@ -1,7 +1,6 @@
-import { initRegisterApps } from "./init-register-apps";
 import { initServiceWork } from "./init-service-works";
 import { initWhiteSDK } from "./init-white-sdk";
 import { initUI } from "./init-ui";
-import { initFlatRTC } from "../services/flat-rtc";
+import { initFlatServices } from "./init-flat-services";
 
-export const tasks = [initServiceWork, initFlatRTC, initWhiteSDK, initUI, initRegisterApps];
+export const tasks = [initServiceWork, initFlatServices, initWhiteSDK, initUI];

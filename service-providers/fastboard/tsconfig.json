@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "noImplicitOverride": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["./src"]
+}

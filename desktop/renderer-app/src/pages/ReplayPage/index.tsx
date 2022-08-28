@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps, useParams, useHistory } from "react-router-dom";
 import { ErrorPage, LoadingPage, TopBar, WindowsSystemBtnItem } from "flat-components";
-import PlayerController from "@netless/player-controller";
+// import PlayerController from "@netless/player-controller";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
 import { RealtimePanel } from "../../components/RealtimePanel";
 import { ChatPanelReplay } from "../../components/ChatPanelReplay";
@@ -56,13 +56,13 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
 
     const roomInfo = roomStore.rooms.get(params.roomUUID);
 
-    const [isShowController, setShowController] = useState(false);
+    // const [isShowController, setShowController] = useState(false);
     const hideControllerTimeoutRef = useRef<number>();
     const lastMouseRef = useRef({ lastMouseX: -100, lastMouseY: -100 });
 
     useEffect(() => {
-        ipcAsyncByMainWindow("disable-window", {
-            disable: true,
+        ipcAsyncByMainWindow("intercept-native-window-close", {
+            intercept: true,
         });
         ipcReceive("window-will-close", () => {
             setShowExitReplayModal(true);
@@ -71,8 +71,8 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         return () => {
             window.clearTimeout(hideControllerTimeoutRef.current);
 
-            ipcAsyncByMainWindow("disable-window", {
-                disable: false,
+            ipcAsyncByMainWindow("intercept-native-window-close", {
+                intercept: false,
             });
 
             ipcReceiveRemove("window-will-close");
@@ -113,8 +113,8 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
             <div className="replay-top-bar">
                 {!runtime.isMac && (
                     <TopBar
-                        isMac={runtime.isMac}
                         left={renderTopBarLeft()}
+                        showWindowsSystemBtn={runtime.isMac}
                         onClickWindowsSystemBtn={onClickWindowsSystemBtn}
                     />
                 )}
@@ -159,14 +159,14 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
                         </button>
                     </div>
                 )}
-                {isShowController &&
+                {/* {isShowController &&
                     classRoomReplayStore.isReady &&
                     classRoomReplayStore.smartPlayer.whiteboardPlayer && (
                         <PlayerController
                             combinePlayer={classRoomReplayStore.smartPlayer.combinePlayer}
                             player={classRoomReplayStore.smartPlayer.whiteboardPlayer}
                         />
-                    )}
+                    )} */}
             </div>
         );
     }
@@ -212,10 +212,10 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage() {
         if (Math.abs(evt.clientX - lastMouseX) < 2 || Math.abs(evt.clientY - lastMouseY) < 2) {
             return;
         }
-        setShowController(true);
+        // setShowController(true);
         window.clearTimeout(hideControllerTimeoutRef.current);
         hideControllerTimeoutRef.current = window.setTimeout(() => {
-            setShowController(false);
+            // setShowController(false);
         }, 5000);
     }
 });

@@ -2,16 +2,14 @@ import "./style.less";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Dropdown, Menu } from "antd";
-import { FormOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 import { CSSTransition } from "react-transition-group";
 import { CloudStorageStore } from "./store";
 import { CloudStorageSkeletons, CloudStorageUploadPanel } from "../../components/CloudStorage";
 import { CloudStorageUploadListContainer } from "./CloudStorageUploadListContainer";
 import { CloudStorageFileListContainer } from "./CloudStorageFileListContainer";
 import classNames from "classnames";
-import { useTranslation } from "react-i18next";
-import { CloudStorageExternalFilePanel } from "./CloudStorageExternalFilePanel";
+import { useTranslate } from "@netless/flat-i18n";
 
 export * from "./store";
 
@@ -32,8 +30,6 @@ const SupportedFileExts = [
     ".gif",
     ".mp3",
     ".mp4",
-    ".ice",
-    ".vf",
 ];
 
 const isSupportedFile = (file: File): boolean => {
@@ -52,12 +48,11 @@ const onDragOver = (event: React.DragEvent<HTMLDivElement>): void => {
 };
 
 /** CloudStorage page with MobX Store */
-export const CloudStorageContainer = observer<CloudStorageContainerProps>(
+export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store }) {
-        const { t } = useTranslation();
+        const t = useTranslate();
         const cloudStorageContainerRef = useRef<HTMLDivElement>(null);
         const [skeletonsVisible, setSkeletonsVisible] = useState(false);
-        const [isH5PanelVisible, setH5PanelVisible] = useState(false);
         const [isAtTheBottom, setIsAtTheBottom] = useState(false);
 
         // Wait 200ms before showing skeletons to reduce flashing.
@@ -71,12 +66,6 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                 void store.fetchMoreCloudStorageData(store.cloudStorageDataPagination + 1);
             }
         }, [isAtTheBottom, store]);
-
-        const handleMenuClick = useCallback(({ key }: { key: string }) => {
-            if (key === "h5") {
-                setH5PanelVisible(true);
-            }
-        }, []);
 
         const onDrop = useCallback(
             (event: React.DragEvent<HTMLDivElement>): void => {
@@ -97,19 +86,9 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                 >
                     {t("delete")}
                 </Button>
-                <Dropdown.Button
-                    overlay={
-                        <Menu onClick={handleMenuClick}>
-                            <Menu.Item key="h5" icon={<FormOutlined />}>
-                                {t("online-h5.add")}
-                            </Menu.Item>
-                        </Menu>
-                    }
-                    type="primary"
-                    onClick={store.onUpload}
-                >
+                <Button type="primary" onClick={store.onUpload}>
                     {t("upload")}
-                </Dropdown.Button>
+                </Button>
             </div>
         );
 
@@ -196,11 +175,6 @@ export const CloudStorageContainer = observer<CloudStorageContainerProps>(
                 {store.compact && (
                     <div className="cloud-storage-container-footer">{containerBtns}</div>
                 )}
-                <CloudStorageExternalFilePanel
-                    store={store}
-                    visible={isH5PanelVisible}
-                    onClose={() => setH5PanelVisible(false)}
-                />
             </div>
         );
     },

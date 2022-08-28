@@ -3,9 +3,8 @@ import "video.js/dist/video-js.css";
 import { FastboardApp, createFastboard } from "@netless/fastboard-react";
 import { AddAppParams, BuiltinApps, WindowManager } from "@netless/window-manager";
 import { message } from "antd";
-import { i18n } from "i18next";
+import { FlatI18n } from "@netless/flat-i18n";
 import { v4 as v4uuid } from "uuid";
-import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { isMobile, isWindows } from "react-device-detect";
 import {
@@ -18,18 +17,17 @@ import {
     SceneDefinition,
     ViewMode,
 } from "white-web-sdk";
-import { snapshot } from "@netless/white-snapshot";
 
 import { RoomType } from "../../../../packages/flat-components/src/types/room";
 import { CLOUD_STORAGE_DOMAIN, NETLESS, NODE_ENV } from "../constants/process";
-import { CloudStorageFile, CloudStorageStore } from "../pages/CloudStoragePage/store";
-import { getCoursewarePreloader } from "../utils/courseware-preloader";
+import { CloudStorageStore } from "../pages/CloudStoragePage/store";
 import { globalStore } from "./global-store";
-import { getFileExt, isPPTX } from "../utils/file";
+import { isPPTX } from "../utils/file";
 import { queryConvertingTaskStatus } from "../api-middleware/courseware-converting";
 import { convertFinish } from "../api-middleware/flatServer/storage";
-import { ServerRequestError } from "../utils/error/server-request-error";
 import { RequestErrorCode } from "../constants/error-code";
+import { CloudFile, FileConvertStep, isServerRequestError } from "@netless/flat-server-api";
+import { FlatServices } from "@netless/flat-services";
 
 export class WhiteboardStore {
     public fastboardAPP: FastboardApp | null = null;
@@ -52,7 +50,6 @@ export class WhiteboardStore {
     /** is room Creator */
     public readonly isCreator: boolean;
     public readonly getRoomType: () => RoomType;
-    public readonly i18n: i18n;
     public readonly onDrop: (file: File) => void;
 
     public readonly cloudStorageStore: CloudStorageStore;
@@ -60,30 +57,26 @@ export class WhiteboardStore {
     public constructor(config: {
         isCreator: boolean;
         getRoomType: () => RoomType;
-        i18n: i18n;
         onDrop: (file: File) => void;
     }) {
         this.isCreator = config.isCreator;
         this.isWritable = config.isCreator;
-        this.i18n = config.i18n;
         this.getRoomType = config.getRoomType;
         this.onDrop = config.onDrop;
 
-        makeAutoObservable<this, "preloadPPTResource">(this, {
+        makeAutoObservable<this>(this, {
             room: observable.ref,
-            preloadPPTResource: false,
             fastboardAPP: false,
         });
 
         this.cloudStorageStore = new CloudStorageStore({
             compact: true,
-            i18n: this.i18n,
             insertCourseware: this.insertCourseware,
         });
 
         // Whiteboard debugging
         const flatUA =
-            process.env.FLAT_UA || (this.i18n.t("app-name") || "").replace(/s+/g, "_").slice(0, 50);
+            process.env.FLAT_UA || (FlatI18n.t("app-name") || "").replace(/s+/g, "_").slice(0, 50);
         window.__netlessUA =
             (window.__netlessUA || "") +
             ` FLAT/${flatUA}_${process.env.FLAT_REGION}@${process.env.VERSION} `;
@@ -198,10 +191,6 @@ export class WhiteboardStore {
             await this.windowManager.setMainViewSceneIndex(this.currentSceneIndex + 1);
         }
     };
-
-    private preloadPPTResource = debounce(async (pptSrc: string): Promise<void> => {
-        await getCoursewarePreloader().preload(pptSrc);
-    }, 2000);
 
     public openDocsFileInWindowManager = async (
         scenePath: string,
@@ -322,20 +311,10 @@ export class WhiteboardStore {
                         if (modifyState.broadcastState) {
                             this.updateViewMode(modifyState.broadcastState.mode);
                         }
-
-                        const pptSrc = modifyState.sceneState?.scenes[0]?.ppt?.src;
-                        if (pptSrc) {
-                            try {
-                                await this.preloadPPTResource(pptSrc);
-                            } catch (err) {
-                                console.log(err);
-                            }
-                        }
                     },
                     onDisconnectWithError: error => {
-                        void message.error(this.i18n.t("on-disconnect-with-error"));
+                        void message.error(FlatI18n.t("on-disconnect-with-error"));
                         console.error(error);
-                        this.preloadPPTResource.cancel();
                     },
                     onKickedWithReason: reason => {
                         if (
@@ -407,7 +386,6 @@ export class WhiteboardStore {
     }
 
     public async destroy(): Promise<void> {
-        this.preloadPPTResource.cancel();
         await this.fastboardAPP?.destroy();
 
         if (NODE_ENV === "development") {
@@ -452,58 +430,28 @@ export class WhiteboardStore {
         return scenePath.slice(0, scenePath.lastIndexOf("/"));
     };
 
-    public insertCourseware = async (file: CloudStorageFile): Promise<void> => {
-        if (file.convert === "converting") {
-            void message.warn(this.i18n.t("in-the-process-of-transcoding-tips"));
+    public insertCourseware = async (file: CloudFile): Promise<void> => {
+        if (file.convertStep === FileConvertStep.Converting) {
+            void message.warn(FlatI18n.t("in-the-process-of-transcoding-tips"));
             return;
         }
 
-        void message.info(this.i18n.t("inserting-courseware-tips"));
+        void message.info(FlatI18n.t("inserting-courseware-tips"));
 
-        const ext = getFileExt(file.fileName);
-
-        switch (ext) {
-            case "jpg":
-            case "jpeg":
-            case "png":
-            case "webp": {
-                await this.insertImage(file);
-                break;
-            }
-            case "mp3":
-            case "mp4": {
-                await this.insertMediaFile(file);
-                break;
-            }
-            case "doc":
-            case "docx":
-            case "ppt":
-            case "pptx":
-            case "pdf": {
-                await this.insertDocs(file);
-                break;
-            }
-            case "ice": {
-                await this.insertIce(file);
-                break;
-            }
-            case "vf": {
-                await this.insertVf(file);
-                break;
-            }
-            default: {
-                console.log(
-                    `[cloud storage]: insert unknown format "${file.fileName}" into whiteboard`,
-                );
-            }
+        const fileService = await FlatServices.getInstance().requestService("file");
+        if (!fileService) {
+            void message.error(FlatI18n.t("unable-to-insert-courseware"));
+            return;
         }
+
+        await fileService.insert(file);
 
         if (this.cloudStorageStore.onCoursewareInserted) {
             this.cloudStorageStore.onCoursewareInserted();
         }
     };
 
-    public insertImage = async (file: Pick<CloudStorageFile, "fileURL">): Promise<void> => {
+    public insertImage = async (file: Pick<CloudFile, "fileURL">): Promise<void> => {
         const windowManager = this.windowManager;
         if (!windowManager) {
             return;
@@ -560,11 +508,11 @@ export class WhiteboardStore {
         windowManager.mainView.setMemberState({ currentApplianceName: ApplianceNames.selector });
     };
 
-    public insertMediaFile = async (file: CloudStorageFile): Promise<void> => {
+    public insertMediaFile = async (file: CloudFile): Promise<void> => {
         await this.openMediaFileInWindowManager(file.fileURL, file.fileName);
     };
 
-    public insertDocs = async (file: CloudStorageFile): Promise<void> => {
+    public insertDocs = async (file: CloudFile): Promise<void> => {
         const room = this.room;
         if (!room) {
             return;
@@ -579,13 +527,13 @@ export class WhiteboardStore {
             projector: resourceType === "WhiteboardProjector",
         });
 
-        if (file.convert !== "success") {
+        if (file.convertStep !== FileConvertStep.Done) {
             if (convertingStatus.status === "Finished" || convertingStatus.status === "Fail") {
                 try {
                     await convertFinish({ fileUUID: file.fileUUID, region });
                 } catch (e) {
                     if (
-                        e instanceof ServerRequestError &&
+                        isServerRequestError(e) &&
                         e.errorCode === RequestErrorCode.FileIsConverted
                     ) {
                         // ignore this error
@@ -597,14 +545,14 @@ export class WhiteboardStore {
                 }
                 if (convertingStatus.status === "Fail") {
                     void message.error(
-                        this.i18n.t("transcoding-failure-reason", {
-                            reason: convertingStatus.errorMessage,
+                        FlatI18n.t("transcoding-failure-reason", {
+                            reason: convertingStatus.errorMessage || "",
                         }),
                     );
                 }
             } else {
                 message.destroy();
-                void message.warn(this.i18n.t("in-the-process-of-transcoding-tips"));
+                void message.warn(FlatI18n.t("in-the-process-of-transcoding-tips"));
                 return;
             }
         } else if (convertingStatus.status === "Finished" && convertingStatus.progress) {
@@ -631,11 +579,11 @@ export class WhiteboardStore {
                 url: convertingStatus.prefix,
             });
         } else {
-            void message.error(this.i18n.t("unable-to-insert-courseware"));
+            void message.error(FlatI18n.t("unable-to-insert-courseware"));
         }
     };
 
-    public insertIce = async (file: CloudStorageFile): Promise<void> => {
+    public insertIce = async (file: CloudFile): Promise<void> => {
         try {
             const src =
                 CLOUD_STORAGE_DOMAIN.replace("[region]", file.region) +
@@ -653,15 +601,15 @@ export class WhiteboardStore {
                     },
                 });
             } else {
-                void message.error(this.i18n.t("unable-to-insert-courseware"));
+                void message.error(FlatI18n.t("unable-to-insert-courseware"));
             }
         } catch (e) {
             console.error(e);
-            void message.error(this.i18n.t("unable-to-insert-courseware"));
+            void message.error(FlatI18n.t("unable-to-insert-courseware"));
         }
     };
 
-    public insertVf = async (file: CloudStorageFile): Promise<void> => {
+    public insertVf = async (file: CloudFile): Promise<void> => {
         try {
             if (this.windowManager) {
                 await this.windowManager.addApp({
@@ -674,32 +622,33 @@ export class WhiteboardStore {
                     },
                 });
             } else {
-                void message.error(this.i18n.t("unable-to-insert-courseware"));
+                void message.error(FlatI18n.t("unable-to-insert-courseware"));
             }
         } catch (e) {
             console.error(e);
-            void message.error(this.i18n.t("unable-to-insert-courseware"));
+            void message.error(FlatI18n.t("unable-to-insert-courseware"));
         }
     };
 
     public getSaveAnnotationImages(): Array<() => Promise<HTMLCanvasElement | null>> {
-        if (this.fastboardAPP) {
-            const { manager } = this.fastboardAPP;
-            return manager.sceneState.scenes.map(scene => {
-                const dir = manager.mainViewSceneDir;
-                // Because manager hacks room.fillSceneSnapshot, we need to hack it back.
-                const room = {
-                    state: manager,
-                    fillSceneSnapshot: manager.mainView.fillSceneSnapshot.bind(manager.mainView),
-                } as any;
-                return () =>
-                    snapshot(room, {
-                        scenePath: dir + scene.name,
-                        crossorigin: true,
-                    });
-            });
-        } else {
-            return [];
-        }
+        // if (this.fastboardAPP) {
+        //     const { manager } = this.fastboardAPP;
+        //     return manager.sceneState.scenes.map(scene => {
+        //         const dir = manager.mainViewSceneDir;
+        //         // Because manager hacks room.fillSceneSnapshot, we need to hack it back.
+        //         const room = {
+        //             state: manager,
+        //             fillSceneSnapshot: manager.mainView.fillSceneSnapshot.bind(manager.mainView),
+        //         } as any;
+        //         return () =>
+        //             snapshot(room, {
+        //                 scenePath: dir + scene.name,
+        //                 crossorigin: true,
+        //             });
+        //     });
+        // } else {
+        //     return [];
+        // }
+        return [];
     }
 }

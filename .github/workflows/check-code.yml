@@ -7,8 +7,10 @@ on:
     paths-ignore:
       - "docs/**"
       - "*.md"
-      - ".yarnrc"
       - "LICENSE"
+      - ".vscode"
+      - ".husky"
+      - "assets"
 
 jobs:
   check-code:
@@ -22,49 +24,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: |
-            i18n: &i18n
-              - 'packages/flat-i18n/locales/*.json'
-            components: &components
-              - 'packages/flat-components/**/*.(ts|tsx|css|less)'
-              # e.g: package.json / tsconfig.json rollup.config.js eslintrc.js
-              - 'packages/flat-components/*.(js|json)'
-              - 'packages/flat-components/.eslintignore'
-            types: &types
-              - 'packages/flat-types/*.json'
-              - 'packages/flat-types/**/*.ts'
-            renderer:
-              - *components
-              - *types
-              - 'desktop/renderer-app/*.(js|json)'
-              - 'desktop/renderer-app/.eslintignore'
-              - 'desktop/renderer-app/webpack/**'
-              - 'desktop/renderer-app/typings/**'
-              - 'desktop/renderer-app/**/*.(ts|tsx|css|less)'
-            main:
-              - *types
-              - 'desktop/main-app/*.(js|json)'
-              - 'desktop/main-app/.eslintignore'
-              - 'desktop/main-app/webpack/**'
-              - 'desktop/main-app/typings/**'
-              - 'desktop/main-app/**/*.ts'
-            flat-web:
-              - 'web/flat-web/**/*.(ts|tsx)'
-
-      - uses: actions/cache@v2
-        id: pnpm-cache
-        with:
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
-          path: |
-            ~/.pnpm-store
-            ./node_modules
-            ./packages/**/node_modules
-
       - name: Install PNPM
         uses: pnpm/action-setup@v2
         with:
@@ -74,25 +33,15 @@ jobs:
         run: |-
           # failure automatically retries 3 times
           pnpm i  || pnpm i || pnpm i
-        env:
-          components: ${{ steps.filter.outputs.components }}
-          types: ${{ steps.filter.outputs.types }}
-          renderer: ${{ steps.filter.outputs.renderer }}
-          main: ${{ steps.filter.outputs.main }}
-          flatWeb: ${{ steps.filter.outputs.flat-web }}
 
       - name: Build renderer
         run: pnpm -F renderer-app build
-        if: steps.filter.outputs.renderer == 'true'
 
       - name: Build main
         run: pnpm -F flat build
-        if: steps.filter.outputs.main == 'true'
 
       - name: Build flat-web
         run: pnpm -F flat-web build
-        if: steps.filter.outputs.flat-web == 'true'
 
       - name: Check i18n
         run: node packages/flat-i18n/scripts/check.js
-        if: steps.filter.outputs.i18n == 'true'

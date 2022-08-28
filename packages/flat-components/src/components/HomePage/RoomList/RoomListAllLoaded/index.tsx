@@ -1,12 +1,12 @@
 import "./style.less";
 
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface RoomListAllLoadedProps {}
 
 export const RoomListAllLoaded: React.FC = () => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <div className="room-list-all-loaded">

@@ -10,19 +10,20 @@ export type CloudStorageUploadListContainerProps = {
     tasks: CloudStorageUploadTask[];
 } & Pick<CloudStorageUploadItemContainerProps, "onCancel" | "onRetry">;
 
-export const CloudStorageUploadListContainer = observer<CloudStorageUploadListContainerProps>(
-    function CloudStorageUploadListContainer({ tasks, onCancel, onRetry }) {
-        return (
-            <>
-                {tasks.map(task => (
-                    <CloudStorageUploadItemContainer
-                        key={task.uploadID}
-                        task={task}
-                        onCancel={onCancel}
-                        onRetry={onRetry}
-                    />
-                ))}
-            </>
-        );
-    },
-);
+export const CloudStorageUploadListContainer =
+    /* @__PURE__ */ observer<CloudStorageUploadListContainerProps>(
+        function CloudStorageUploadListContainer({ tasks, onCancel, onRetry }) {
+            return (
+                <>
+                    {tasks.map(task => (
+                        <CloudStorageUploadItemContainer
+                            key={task.uploadID}
+                            task={task}
+                            onCancel={onCancel}
+                            onRetry={onRetry}
+                        />
+                    ))}
+                </>
+            );
+        },
+    );

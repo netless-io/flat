@@ -7,11 +7,11 @@ import { WindowsSystemBtn } from "./WindowsSystemBtn";
 
 export interface MainPageTopBarProps extends MainPageNavAvatarProps {
     topBarMenu: MainPageTopBarMenuItem[];
-    isWin?: boolean;
+    showWindowsSystemBtn?: boolean;
     onMinimizeClick?: () => void;
     onCloseClick?: () => void;
     onClickTopBarMenu: (menuItem: MainPageTopBarMenuItem) => void;
-    onClickWindowsSystemBtn: (winSystemBtn: WindowsSystemBtnItem) => void;
+    onClickWindowsSystemBtn?: (winSystemBtn: WindowsSystemBtnItem) => void;
 }
 
 export const MainPageTopBar: React.FC<MainPageTopBarProps> = ({
@@ -20,7 +20,7 @@ export const MainPageTopBar: React.FC<MainPageTopBarProps> = ({
     popMenu,
     topBarMenu,
     userName,
-    isWin,
+    showWindowsSystemBtn,
     generateAvatar,
     onClick,
     onClickTopBarMenu,
@@ -53,7 +53,7 @@ export const MainPageTopBar: React.FC<MainPageTopBarProps> = ({
                         </a>
                     );
                 })}
-                {isWin && (
+                {onClickWindowsSystemBtn && showWindowsSystemBtn && (
                     <>
                         <div className="main-page-top-bar-divider" />
                         <WindowsSystemBtn

@@ -1,13 +1,13 @@
 import "./style.less";
 import downloadSVG from "./icons/download.svg";
 
-import pLimit from "p-limit";
 import classNames from "classnames";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Modal, message } from "antd";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslate } from "@netless/flat-i18n";
+import { Modal, message, Spin } from "antd";
 
 import { useSafePromise } from "../../utils/hooks";
+import { LoadingOutlined } from "@ant-design/icons";
 
 function download(
     canvas: HTMLCanvasElement,
@@ -28,7 +28,7 @@ function download(
 export interface SaveAnnotationModalProps {
     visible: boolean;
     onClose: () => void;
-    images: Array<() => Promise<HTMLCanvasElement | null>>;
+    images: Array<Promise<HTMLCanvasElement | null>>;
 }
 
 export const SaveAnnotationModal: React.FC<SaveAnnotationModalProps> = ({
@@ -36,12 +36,7 @@ export const SaveAnnotationModal: React.FC<SaveAnnotationModalProps> = ({
     onClose,
     images,
 }) => {
-    const { t } = useTranslation();
-
-    const params = useMemo(() => {
-        const limit = pLimit(1);
-        return images.map(image => limit(image));
-    }, [images]);
+    const t = useTranslate();
 
     return (
         <Modal
@@ -54,7 +49,7 @@ export const SaveAnnotationModal: React.FC<SaveAnnotationModalProps> = ({
             wrapClassName="save-annotation-modal-container"
             onCancel={onClose}
         >
-            {params.map((image, index) => (
+            {images.map((image, index) => (
                 <Annotation
                     key={index}
                     failText={t("annotation.save-failed")}
@@ -74,19 +69,23 @@ interface AnnotationProps {
     failText?: string;
 }
 
-const Annotation = React.memo(function Annotation({
+const Annotation = /* @__PURE__ */ React.memo(function Annotation({
     image,
     filename = "annotation.png",
     footerText,
     failText = "Save image failed",
 }: AnnotationProps) {
     const sp = useSafePromise();
-    const { t } = useTranslation();
+    const t = useTranslate();
     const ref = useRef<HTMLDivElement>(null);
+    const [loading, setLoading] = useState(true);
     const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
-        sp(image).then(setCanvas);
+        sp(image).then(canvas => {
+            setCanvas(canvas);
+            setLoading(false);
+        });
     }, [image, sp]);
 
     useEffect(() => {
@@ -115,6 +114,11 @@ const Annotation = React.memo(function Annotation({
             title={t("save")}
             onClick={downloadImage}
         >
+            {loading && (
+                <div className="save-annotation-loader">
+                    <Spin indicator={<LoadingOutlined spin />} size="large" />
+                </div>
+            )}
             <div ref={ref} className="save-annotation-image" />
             <div className="save-annotation-mask" />
             <div className="save-annotation-actions">

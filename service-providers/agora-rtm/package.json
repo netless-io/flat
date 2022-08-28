@@ -1,0 +1,21 @@
+{
+  "name": "@netless/flat-service-provider-agora-rtm",
+  "version": "0.1.0",
+  "description": "Agora Realtime Messaging",
+  "main": "src/index.ts",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@netless/flat-services": "workspace:*",
+    "agora-rtm-sdk": "^1.4.4",
+    "side-effect-manager": "^1.2.1",
+    "uuid": "^8.3.2"
+  }
+}

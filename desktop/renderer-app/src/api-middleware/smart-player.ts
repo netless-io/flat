@@ -1,15 +1,15 @@
 import "video.js/dist/video-js.css";
 
 import CombinePlayerFactory, { CombinePlayer, PublicCombinedStatus } from "@netless/combine-player";
-import {
-    PluginId as VideoJsPluginId,
-    videoJsPlugin,
-    PluginContext as VideoJsPluginContext,
-} from "@netless/video-js-plugin";
-import { EventEmitter } from "events";
+// import {
+//     PluginId as VideoJsPluginId,
+//     videoJsPlugin,
+//     PluginContext as VideoJsPluginContext,
+// } from "@netless/video-js-plugin";
+import { EventEmitter } from "eventemitter3";
 import polly from "polly-js";
 import {
-    createPlugins,
+    // createPlugins,
     PlayableCheckingParams,
     Player,
     PlayerPhase,
@@ -48,7 +48,7 @@ export declare interface SmartPlayer {
 }
 
 // eslint-disable-next-line no-redeclare
-export class SmartPlayer extends EventEmitter {
+export class SmartPlayer extends EventEmitter<keyof SmartPlayerEvents> {
     public whiteboardPlayer: Player | undefined;
     public combinePlayer: CombinePlayer | undefined;
     public whiteWebSdk: WhiteWebSdk | undefined;
@@ -91,13 +91,13 @@ export class SmartPlayer extends EventEmitter {
         this._isReady = false;
         this._isEnded = false;
 
-        const plugins = createPlugins({ [VideoJsPluginId]: videoJsPlugin() });
-        const videoJsPluginContext: Partial<VideoJsPluginContext> = { verbose: true };
-        plugins.setPluginContext(VideoJsPluginId, videoJsPluginContext);
+        // const plugins = createPlugins({ [VideoJsPluginId]: videoJsPlugin() });
+        // const videoJsPluginContext: Partial<VideoJsPluginContext> = { verbose: true };
+        // plugins.setPluginContext(VideoJsPluginId, videoJsPluginContext);
 
         const whiteWebSdk = new WhiteWebSdk({
             appIdentifier: NETLESS.APP_IDENTIFIER,
-            plugins: plugins,
+            // plugins: plugins,
             region,
             useMobXState: true,
         });

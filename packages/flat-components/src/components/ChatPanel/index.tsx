@@ -3,7 +3,7 @@ import "./style.less";
 import React, { useState } from "react";
 import { Tabs } from "antd";
 import { observer } from "mobx-react-lite";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { SVGChat, SVGUserGroup } from "../FlatIcons";
 import { ChatMessages, ChatMessagesProps } from "./ChatMessages";
 import { ChatTabTitle, ChatTabTitleProps } from "./ChatTabTitle";
@@ -13,8 +13,8 @@ export type ChatPanelProps = ChatTabTitleProps &
     Omit<ChatMessagesProps, "visible"> &
     ChatUsersProps;
 
-export const ChatPanel = observer<ChatPanelProps>(function ChatPanel(props) {
-    const { t } = useTranslation();
+export const ChatPanel = /* @__PURE__ */ observer<ChatPanelProps>(function ChatPanel(props) {
+    const t = useTranslate();
     const [activeTab, setActiveTab] = useState<"messages" | "users">("messages");
 
     return (

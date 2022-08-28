@@ -3,6 +3,7 @@ import { Story, Meta } from "@storybook/react";
 import faker from "faker";
 
 import { CloudStorageFileTitle, CloudStorageFileTitleProps } from "./index";
+import { FileConvertStep } from "@netless/flat-server-api";
 
 const storyMeta: Meta = {
     title: "CloudStorage/CloudStorageFileTitle",
@@ -25,7 +26,7 @@ export const Converting: Story<CloudStorageFileTitleProps> = args => (
 Converting.args = {
     fileUUID: faker.datatype.uuid(),
     fileName: faker.random.word() + ".pptx",
-    convertStatus: "converting",
+    convertStatus: FileConvertStep.Converting,
 };
 
 export const ConvertError: Story<CloudStorageFileTitleProps> = args => (
@@ -34,7 +35,7 @@ export const ConvertError: Story<CloudStorageFileTitleProps> = args => (
 ConvertError.args = {
     fileUUID: faker.datatype.uuid(),
     fileName: faker.random.word() + ".doc",
-    convertStatus: "error",
+    convertStatus: FileConvertStep.Failed,
 };
 
 export const Rename: Story<CloudStorageFileTitleProps> = args => (
@@ -43,7 +44,7 @@ export const Rename: Story<CloudStorageFileTitleProps> = args => (
 Rename.args = {
     fileUUID: faker.datatype.uuid(),
     fileName: faker.random.word() + ".doc",
-    convertStatus: "success",
+    convertStatus: FileConvertStep.Done,
 };
 Rename.args.renamingFileUUID = Rename.args.fileUUID;
 
@@ -83,7 +84,6 @@ export const FileTitles: Story<CloudStorageFileTitleProps> = ({ onTitleClick }) 
                 ".webm",
             ])}
             {renderFileTitles("Audio", [".aac", ".mp3", ".wave", ".wma", ".flac"])}
-            {renderFileTitles("HTML5 Courseware", [".ice", ".vf"])}
         </div>
     );
 };

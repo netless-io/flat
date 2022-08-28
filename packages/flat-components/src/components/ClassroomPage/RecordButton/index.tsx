@@ -1,7 +1,7 @@
 import "./style.less";
 
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { TopBarRoundBtn } from "../TopBar";
 import { SVGRecord, SVGRecordStop } from "../../FlatIcons";
 
@@ -27,7 +27,7 @@ export const RecordButton: FC<RecordButtonProps> = ({ isRecording, onClick }) =>
     const startTime = useRef(0);
     const [count, setCount] = useState("");
 
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     const countUp = useCallback(() => {
         setCount(renderTime(Math.floor((Date.now() - startTime.current) / 1000)));

@@ -5,7 +5,7 @@ import { Dropdown, Menu, message } from "antd";
 import { RoomInfo } from "../../types/room";
 import { InviteModal } from "../InviteModal";
 import { CancelSubPeriodicRoomModal } from "./CancelSubPeriodicRoomModal";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface MoreMenuProps {
     room: RoomInfo;
@@ -28,7 +28,7 @@ export const MoreMenu: React.FC<MoreMenuProps> = ({
     jumpToRoomDetailPage,
     jumpToModifyOrdinaryRoomPage,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const [cancelSubPeriodicRoomVisible, setCancelSubPeriodicRoomVisible] = useState(false);
     const [inviteRoomVisible, setInviteRoomVisible] = useState(false);
 

@@ -1,0 +1,23 @@
+{
+  "name": "@netless/flat-service-provider-agora-rtc-electron",
+  "version": "0.1.0",
+  "description": "Agora RTC Electron",
+  "main": "src/index.ts",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "echo",
+    "postinstall": "pnpm _download:agora-addon",
+    "_download:agora-addon": "node scripts/download-agora-addon/cli.js"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@netless/flat-services": "workspace:*",
+    "agora-electron-sdk": "3.7.0-build.527",
+    "fs-extra": "^10.0.1",
+    "side-effect-manager": "^1.1.3"
+  }
+}

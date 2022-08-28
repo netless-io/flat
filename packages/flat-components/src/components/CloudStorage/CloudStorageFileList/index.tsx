@@ -6,14 +6,14 @@ import { Table } from "antd";
 import prettyBytes from "pretty-bytes";
 import { format } from "date-fns";
 import { ColumnsType } from "antd/lib/table";
-import { CloudStorageFile } from "../types";
 import { CloudStorageFileListHeadTip } from "../CloudStorageFileListHeadTip";
 import {
     CloudStorageFileListFileName,
     CloudStorageFileListFileNameProps,
 } from "./CloudStorageFileListFileName";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { SVGListLoading } from "../../FlatIcons";
+import { CloudFile } from "@netless/flat-server-api";
 
 export interface CloudStorageFileListProps
     extends Pick<
@@ -26,7 +26,7 @@ export interface CloudStorageFileListProps
         | "onRename"
     > {
     /** Cloud Storage List items */
-    files: CloudStorageFile[];
+    files: CloudFile[];
     /** User selected file UUIDs */
     selectedFileUUIDs: string[];
     isLoadingData: Boolean;
@@ -49,11 +49,11 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
     isLoadingData,
     onRename,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
     const popupContainerRef = useRef<HTMLDivElement>(null);
     const getPopupContainer = useCallback(() => popupContainerRef.current || document.body, []);
 
-    const columns = useMemo<ColumnsType<CloudStorageFile>>(
+    const columns = useMemo<ColumnsType<CloudFile>>(
         () => [
             {
                 title: (
@@ -91,9 +91,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 width: 100,
                 sorter: (file1, file2) => file1.fileSize - file2.fileSize,
                 showSorterTooltip: false,
-                render: function renderCloudStorageFileSize(
-                    fileSize: CloudStorageFile["fileSize"],
-                ) {
+                render: function renderCloudStorageFileSize(fileSize: CloudFile["fileSize"]) {
                     const formattedSize = prettyBytes(fileSize);
                     return <span title={formattedSize}>{formattedSize}</span>;
                 },
@@ -107,7 +105,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 sortDirections: ["ascend", "descend", "ascend"],
                 defaultSortOrder: "descend",
                 showSorterTooltip: false,
-                render: function renderCloudStorageCreateAt(date: CloudStorageFile["createAt"]) {
+                render: function renderCloudStorageCreateAt(date: CloudFile["createAt"]) {
                     const formattedDate = format(date, "yyyy/MM/dd HH:mm");
                     return <span title={formattedDate}>{formattedDate}</span>;
                 },

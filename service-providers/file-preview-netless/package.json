@@ -1,0 +1,23 @@
+{
+  "name": "@netless/flat-service-provider-file-preview-netless",
+  "version": "0.1.0",
+  "description": "Netless File Preview",
+  "main": "src/index.ts",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "vite --open",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@netless/app-docs-viewer": "1.0.0-canary.2",
+    "@netless/flat-service-provider-file-convert-netless": "workspace:*",
+    "@netless/flat-services": "workspace:*",
+    "side-effect-manager": "^1.2.1",
+    "value-enhancer": "^1.3.2"
+  }
+}

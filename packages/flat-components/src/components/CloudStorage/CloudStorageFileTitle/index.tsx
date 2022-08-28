@@ -8,14 +8,13 @@ import videoSVG from "./icons/video.svg";
 import wordSVG from "./icons/word.svg";
 import convertingSVG from "./icons/converting.svg";
 import convertErrorSVG from "./icons/convert-error.svg";
-import vfSVG from "./icons/vf.svg";
-import iceSVG from "./icons/ice.svg";
 
 import React, { useMemo } from "react";
 import classNames from "classnames";
-import { CloudStorageConvertStatusType, CloudStorageFileName } from "../types";
+import { CloudStorageFileName } from "../types";
 import { CloudStorageFileTitleRename } from "./CloudStorageFileTitleRename";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
+import { FileConvertStep } from "@netless/flat-server-api";
 
 export interface CloudStorageFileTitleProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
@@ -24,7 +23,7 @@ export interface CloudStorageFileTitleProps
     /** File Name */
     fileName: string;
     /** Cloud converting status */
-    convertStatus?: CloudStorageConvertStatusType;
+    convertStatus?: FileConvertStep;
     /** Is title clickable. Default false */
     titleClickable?: boolean;
     /** When title is clicked */
@@ -38,7 +37,7 @@ export interface CloudStorageFileTitleProps
 /**
  * Render a file icon in front of file name according to file extension.
  */
-export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
+export const CloudStorageFileTitle = /* @__PURE__ */ React.memo<CloudStorageFileTitleProps>(
     function CloudStorageFileTitle({
         fileUUID,
         fileName,
@@ -49,9 +48,9 @@ export const CloudStorageFileTitle = React.memo<CloudStorageFileTitleProps>(
         onRename,
         ...restProps
     }) {
-        const { t } = useTranslation();
-        const isConverting = convertStatus === "converting";
-        const isConvertError = !isConverting && convertStatus === "error";
+        const t = useTranslate();
+        const isConverting = convertStatus === FileConvertStep.Converting;
+        const isConvertError = !isConverting && convertStatus === FileConvertStep.Failed;
         const fileIcon = useMemo(() => getFileIcon(fileName), [fileName]);
 
         return (
@@ -160,12 +159,6 @@ function getFileIcon(fileName: string): string {
         case ".wma":
         case ".flac": {
             return audioSVG;
-        }
-        case ".vf": {
-            return vfSVG;
-        }
-        case ".ice": {
-            return iceSVG;
         }
         default: {
             return defaultSVG;

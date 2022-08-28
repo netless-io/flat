@@ -1,0 +1,7 @@
+node_modules/
+dist/
+public/
+deploy/
+.eslint.common.js
+vite.config.ts
+.eslintrc.js

@@ -1,14 +1,21 @@
-export enum ChatMsgType {
-    Notice = "Notice",
-    BanText = "BanText",
-    ChannelMessage = "ChannelMessage",
-    UserGuide = "UserGuide",
-}
+import type { IServiceTextChatEventData } from "@netless/flat-services";
 
-export type ChatMsg = {
+export type ChatMsgType = "notice" | "ban" | "room-message" | "user-guide";
+
+export type ChatMsgRoomMessage = {
+    type: "room-message";
+} & IServiceTextChatEventData["room-message"];
+
+export type ChatMsgNotice = { type: "notice" } & IServiceTextChatEventData["notice"];
+
+export type ChatMsgBan = { type: "ban" } & IServiceTextChatEventData["ban"];
+
+export type ChatMsgUserGuide = {
+    type: "user-guide";
+    roomUUID: string;
     uuid: string;
-    type: string;
-    value: string | boolean;
-    userUUID: string;
     timestamp: number;
+    senderID: string;
 };
+
+export type ChatMsg = ChatMsgRoomMessage | ChatMsgNotice | ChatMsgBan | ChatMsgUserGuide;

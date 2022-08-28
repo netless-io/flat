@@ -8,10 +8,10 @@ import {
     UploadStartResult,
 } from "../../api-middleware/flatServer/storage";
 import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/process";
-import { ServerRequestError } from "../error/server-request-error";
 import { RequestErrorCode } from "../../constants/error-code";
 import { configStore } from "../../stores/config-store";
 import { isPPTX } from "../file";
+import { isServerRequestError } from "@netless/flat-server-api";
 
 export enum UploadStatusType {
     Pending = 1,
@@ -65,7 +65,7 @@ export class UploadTask {
             } catch (e) {
                 // max concurrent upload count limit
                 if (
-                    e instanceof ServerRequestError &&
+                    isServerRequestError(e) &&
                     e.errorCode === RequestErrorCode.UploadConcurrentLimit
                 ) {
                     console.warn("[cloud-storage]: hit max concurrent upload count limit");

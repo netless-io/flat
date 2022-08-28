@@ -1,7 +1,7 @@
 import "./index.less";
 
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslate } from "@netless/flat-i18n";
 import { Checkbox } from "antd";
 
 export interface LoginAgreementProps {
@@ -17,7 +17,7 @@ export const LoginAgreement: React.FC<LoginAgreementProps> = ({
     privacyURL,
     serviceURL,
 }) => {
-    const { t } = useTranslation();
+    const t = useTranslate();
 
     return (
         <div className="login-agreement">
