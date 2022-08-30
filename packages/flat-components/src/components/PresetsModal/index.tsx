@@ -5,6 +5,7 @@ import { Modal } from "antd";
 import { useTranslate } from "@netless/flat-i18n";
 
 import { SVGPlus } from "../FlatIcons";
+import { Thumbnail } from "./Thumbnail";
 
 export interface PresetImage {
     src: string;
@@ -18,6 +19,9 @@ export interface PresetsModalProps {
     onClose: () => void;
 }
 
+const ThumbnailWidth = 280;
+const ThumbnailHeight = 200;
+
 export const PresetsModal: React.FC<PresetsModalProps> = ({
     visible,
     images,
@@ -29,7 +33,6 @@ export const PresetsModal: React.FC<PresetsModalProps> = ({
     return (
         <Modal
             closable
-            destroyOnClose
             footer={null}
             title={t("presets.title")}
             visible={visible}
@@ -44,7 +47,7 @@ export const PresetsModal: React.FC<PresetsModalProps> = ({
                         title={t(i18nKey)}
                         onClick={() => onClick(src)}
                     >
-                        <img alt={i18nKey} src={src} title={t(i18nKey)} />
+                        <Thumbnail height={ThumbnailHeight} image={src} width={ThumbnailWidth} />
                         <div className="presets-modal-mask">
                             <SVGPlus />
                         </div>
