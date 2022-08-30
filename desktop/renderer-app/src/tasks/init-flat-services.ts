@@ -201,6 +201,13 @@ export function initFlatServices(): void {
         return service;
     });
 
+    flatServices.register("recording", async () => {
+        const { AgoraCloudRecording } = await import(
+            "@netless/flat-service-provider-agora-cloud-recording"
+        );
+        return new AgoraCloudRecording();
+    });
+
     flatServices.register(
         [
             "file-convert:doc",

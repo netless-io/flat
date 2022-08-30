@@ -11,13 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0
-        (
-            (
-                    @topbar-right-btn-gap -
-                        (@topbar-right-btn-width - @topbar-icon-width)
-                ) / 2
-        );
+    margin: 0 ((@topbar-right-btn-gap - (@topbar-right-btn-width - @topbar-icon-width)) / 2);
     padding: 4px;
     cursor: pointer;
     background-color: white;
@@ -27,6 +21,11 @@
 
     &:hover {
         background-color: var(--blue-1);
+    }
+
+    &:disabled {
+        cursor: wait;
+        opacity: 0.5;
     }
 }
 

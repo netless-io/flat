@@ -1,4 +1,5 @@
 import { IServiceFile, IServiceFileCatalog } from "./services/file";
+import { IServiceRecording } from "./services/recording";
 import { IServiceTextChat } from "./services/text-chat";
 import { IService } from "./services/typing";
 import { IServiceVideoChat } from "./services/video-chat";
@@ -9,6 +10,7 @@ export type FlatServicesCatalog = IServiceFileCatalog & {
     videoChat: IServiceVideoChat;
     textChat: IServiceTextChat;
     whiteboard: IServiceWhiteboard;
+    recording: IServiceRecording;
 };
 
 export type FlatServiceID = Extract<keyof FlatServicesCatalog, string>;

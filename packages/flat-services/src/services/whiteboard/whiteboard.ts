@@ -38,6 +38,8 @@ export abstract class IServiceWhiteboard {
 
     public abstract joinRoom(config: IServiceWhiteboardJoinRoomConfig): Promise<void>;
 
+    public abstract leaveRoom(): Promise<void>;
+
     public abstract render(el: HTMLElement): void;
 
     public abstract setTheme(theme: "light" | "dark"): void;
