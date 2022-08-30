@@ -1,0 +1,21 @@
+{
+  "name": "@netless/flat-service-provider-agora-cloud-recording",
+  "version": "0.1.0",
+  "description": "Agora Cloud Recording",
+  "main": "src/index.ts",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@netless/flat-server-api": "workspace:*",
+    "@netless/flat-services": "workspace:*",
+    "polly-js": "^1.8.3",
+    "value-enhancer": "^1.3.2"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "typescript": "^4.7.4"
+  }
+}

@@ -20,6 +20,7 @@ import { globalStore } from "../global-store";
 import { ClassModeType, RoomStatusLoadingType } from "./constants";
 import { ChatStore } from "./chat-store";
 import {
+    IServiceRecording,
     IServiceTextChat,
     IServiceVideoChat,
     IServiceVideoChatMode,
@@ -37,6 +38,7 @@ export interface ClassroomStoreConfig {
     rtc: IServiceVideoChat;
     rtm: IServiceTextChat;
     whiteboard: IServiceWhiteboard;
+    recording: IServiceRecording;
 }
 
 export type DeviceStateStorageState = Record<string, { camera: boolean; mic: boolean }>;
@@ -94,6 +96,7 @@ export class ClassroomStore {
     public readonly rtm: IServiceTextChat;
     public readonly chatStore: ChatStore;
     public readonly whiteboardStore: WhiteboardStore;
+    public readonly recording: IServiceRecording;
 
     public constructor(config: ClassroomStoreConfig) {
         if (!globalStore.userUUID) {
@@ -108,6 +111,8 @@ export class ClassroomStore {
         this.classMode = ClassModeType.Lecture;
         this.rtc = config.rtc;
         this.rtm = config.rtm;
+        this.recording = config.recording;
+
         this.chatStore = new ChatStore({
             roomUUID: this.roomUUID,
             ownerUUID: this.ownerUUID,
@@ -138,6 +143,14 @@ export class ClassroomStore {
             classroomStorage: false,
             onStageUsersStorage: false,
         });
+
+        this.sideEffect.addDisposer(
+            this.recording.$Val.isRecording$.subscribe(isRecording => {
+                runInAction(() => {
+                    this.isRecording = isRecording;
+                });
+            }),
+        );
 
         this.sideEffect.addDisposer(
             reaction(
@@ -436,6 +449,13 @@ export class ClassroomStore {
                 );
             }
         }
+
+        if (this.isCreator) {
+            await this.recording.joinRoom({
+                roomID: this.roomUUID,
+                classroomType: this.roomType,
+            });
+        }
     }
 
     public async destroy(): Promise<void> {
@@ -669,11 +689,11 @@ export class ClassroomStore {
     };
 
     private async startRecording(): Promise<void> {
-        // @TODO add cloud recording
+        await this.recording.startRecording();
     }
 
     private async stopRecording(): Promise<void> {
-        // @TODO add cloud recording
+        await this.recording.stopRecording();
     }
 
     private async initRTC(): Promise<void> {

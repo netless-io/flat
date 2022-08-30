@@ -24,6 +24,7 @@
     "@netless/flat-i18n": "workspace:*",
     "@netless/flat-pages": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
+    "@netless/flat-service-provider-agora-cloud-recording": "workspace:*",
     "@netless/flat-service-provider-agora-rtc-electron": "workspace:*",
     "@netless/flat-service-provider-agora-rtm": "workspace:*",
     "@netless/flat-service-provider-fastboard": "workspace:*",
