@@ -168,17 +168,6 @@ export class WhiteboardStore {
         // @TODO remove me after refactoring
         const fastboardAPP = await (this.whiteboard as any)._app$.value;
 
-        // Disable scale, fix height.
-        fastboardAPP.manager.mainView.setCameraBound({
-            damping: 1,
-            centerX: 0,
-            centerY: 0,
-            minContentMode: () => 1,
-            maxContentMode: () => 1,
-            width: 0,
-            height: 9999,
-        });
-
         this.updateFastboardAPP(fastboardAPP);
 
         const { room, manager } = fastboardAPP;

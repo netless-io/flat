@@ -442,6 +442,10 @@
     "monaco": "编辑器",
     "geogebra": "几何代数",
     "countdown": "计时器",
+    "selector": "答题器",
+    "dice": "骰子",
+    "mindmap": "思维导图",
+    "quill": "富文本编辑器",
     "save": "保存板书",
     "presets": "素材库"
   },

@@ -138,7 +138,13 @@ export class Fastboard extends IServiceWhiteboard {
             }),
             this._el$.subscribe(el => {
                 if (el) {
-                    this.ui.mount(el, { app: this._app$.value });
+                    this.ui.mount(el, {
+                        app: this._app$.value,
+                        config: {
+                            // Hide zoom control
+                            zoom_control: { enable: false },
+                        },
+                    });
                 } else {
                     this.ui.destroy();
                 }

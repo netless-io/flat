@@ -442,6 +442,10 @@
     "monaco": "Code Editor",
     "geogebra": "GeoGebra",
     "countdown": "Countdown",
+    "selector": "Selector",
+    "dice": "Dice",
+    "mindmap": "MindMap",
+    "quill": "Rich Text Editor",
     "save": "Save Annotation",
     "presets": "Presets"
   },

@@ -98,6 +98,7 @@ module.exports = {
         "Buildin", // @netless/widnow-manager
         "zindex", // antd
         "geogebra", // @netless/app-geogebra
+        "mindmap", // @netless/app-mindmap
         "commitlintrc", // @commitlint/cli
         "unpublish", // agora-rtc-sdk-ng
         "multipass", // svgo
