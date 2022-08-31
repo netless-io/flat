@@ -4,6 +4,10 @@ import { routeConfig } from "@netless/flat-pages/src/route-config";
 import monacoSVG from "@netless/flat-pages/src/assets/image/tool-monaco.svg";
 import geogebraSVG from "@netless/flat-pages/src/assets/image/tool-geogebra.svg";
 import countdownSVG from "@netless/flat-pages/src/assets/image/tool-countdown.svg";
+import selectorSVG from "@netless/flat-pages/src/assets/image/tool-selector.svg";
+import diceSVG from "@netless/flat-pages/src/assets/image/tool-dice.svg";
+import mindmapSVG from "@netless/flat-pages/src/assets/image/tool-mindmap.svg";
+import quillSVG from "@netless/flat-pages/src/assets/image/tool-quill.svg";
 import saveSVG from "@netless/flat-pages/src/assets/image/tool-save.svg";
 import presetsSVG from "@netless/flat-pages/src/assets/image/tool-presets.svg";
 
@@ -69,12 +73,28 @@ export function initFlatServices(): void {
         });
         void register({
             kind: "GeoGebra",
-            src: async () => import("@netless/app-geogebra"),
+            src: () => import("@netless/app-geogebra"),
             appOptions: {
                 // TODO: replace it with non-country specific url
                 HTML5Codebase:
                     "https://flat-storage-cn-hz.whiteboard.agora.io/GeoGebra/HTML5/5.0/web3d",
             },
+        });
+        void register({
+            kind: "Selector",
+            src: () => import("@netless/app-selector"),
+        });
+        void register({
+            kind: "Dice",
+            src: () => import("@netless/app-dice"),
+        });
+        void register({
+            kind: "MindMap",
+            src: () => import("@netless/app-mindmap"),
+        });
+        void register({
+            kind: "Quill",
+            src: () => import("@netless/app-quill"),
         });
         void register({
             kind: "IframeBridge",
@@ -114,6 +134,35 @@ export function initFlatServices(): void {
                         icon: countdownSVG,
                         label: flatI18n.t("tool.countdown"),
                         onClick: app => app.manager.addApp({ kind: "Countdown" }),
+                    },
+                    {
+                        kind: "Selector",
+                        icon: selectorSVG,
+                        label: flatI18n.t("tool.selector"),
+                        onClick: app => app.manager.addApp({ kind: "Selector" }),
+                    },
+                    {
+                        kind: "Dice",
+                        icon: diceSVG,
+                        label: flatI18n.t("tool.dice"),
+                        onClick: app => app.manager.addApp({ kind: "Dice" }),
+                    },
+                    {
+                        kind: "MindMap",
+                        icon: mindmapSVG,
+                        label: flatI18n.t("tool.mindmap"),
+                        onClick: app => {
+                            // HACK: workaround app-monaco defines a `define` in global scope,
+                            // and mindmap uses an AMD module that will break in this case.
+                            (window as any).define = undefined;
+                            app.manager.addApp({ kind: "MindMap", options: { title: "MindMap" } });
+                        },
+                    },
+                    {
+                        kind: "Quill",
+                        icon: quillSVG,
+                        label: flatI18n.t("tool.quill"),
+                        onClick: app => app.manager.addApp({ kind: "Quill" }),
                     },
                     {
                         kind: "Save",
