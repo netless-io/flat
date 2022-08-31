@@ -134,7 +134,7 @@ export class ScrollMode {
                         el,
                         "wheel",
                         this.onWheel,
-                        { passive: false },
+                        { capture: true, passive: false },
                         "wheel",
                     );
                 }
@@ -177,9 +177,10 @@ export class ScrollMode {
         this.sideEffect.flushAll();
     }
 
-    private getWhiteboardElement = (root: HTMLElement | null): HTMLDivElement | null => {
+    private getWhiteboardElement = (root: HTMLElement | null): HTMLElement | null => {
         const className = ".netless-window-manager-main-view";
-        return root && root.querySelector(className);
+        const mainView = root && root.querySelector(className);
+        return mainView && mainView.parentElement;
     };
 
     private onWheel = (ev: WheelEvent): void => {
