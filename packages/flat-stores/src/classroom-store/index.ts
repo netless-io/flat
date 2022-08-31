@@ -381,7 +381,9 @@ export class ClassroomStore {
                 userUUID => onStageUsersStorage.state[userUUID],
             );
             await this.users.syncExtraUsersInfo(onStageUsers);
-            this.onStageUserUUIDs.replace(onStageUsers);
+            runInAction(() => {
+                this.onStageUserUUIDs.replace(onStageUsers);
+            });
             this.users.updateUsers(user => {
                 if (user.userUUID === this.ownerUUID) {
                     return;

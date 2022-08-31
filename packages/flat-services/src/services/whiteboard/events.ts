@@ -10,6 +10,7 @@ export interface IServiceWhiteboardEventData {
     kicked: IServiceWhiteboardKickedReason;
     exportAnnotations: void;
     insertPresets: void;
+    scrollPage: number;
 }
 
 export type IServiceWhiteboardEventName = Extract<keyof IServiceWhiteboardEventData, string>;
