@@ -7,5 +7,12 @@
     "module": "ESNext"
   },
   "exclude": ["node_modules", "dist", "public"],
-  "include": ["src/**/*.ts", "src/**/*.tsx", "typings/*.d.ts", "scripts/*.ts", "vite.config.ts", "src/stores/class-room-store.tsx"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "typings/*.d.ts",
+    "scripts/*.ts",
+    "vite.config.ts",
+    "src/stores/class-room-store.tsx"
+  ]
 }

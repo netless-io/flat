@@ -14,7 +14,6 @@ export interface IServiceTextChatJoinRoomConfig {
     ownerUUID: string;
     uid: string;
     token?: string | null;
-    refreshToken?: (roomUUID: string) => Promise<string>;
 }
 
 export abstract class IServiceTextChat implements IService {

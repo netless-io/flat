@@ -108,6 +108,11 @@ export class AgoraCloudRecording extends IServiceRecording {
                                     subscribeUidGroup: 2,
                                     maxIdleTime: 5 * 60,
                                     channelType: channelType,
+                                    streamMode: "standard",
+                                    videoStreamType: 1,
+                                    privateParams: JSON.stringify({
+                                        correctEXTINF: true,
+                                    }),
                                 },
                             },
                         },

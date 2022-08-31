@@ -373,7 +373,7 @@ export function stopClass(roomUUID: string): Promise<StopClassResult> {
 
 export interface UsersInfoPayload {
     roomUUID: string;
-    usersUUID: string[];
+    usersUUID?: string[];
 }
 
 export type UsersInfoResult = {

@@ -18,8 +18,8 @@ import { MicrophoneCheckPage } from "./pages/DeviceCheckPages/MicrophoneCheckPag
 import { SpeakerCheckPage } from "./pages/DeviceCheckPages/SpeakerCheckPage";
 import { SystemCheckPage } from "./pages/DeviceCheckPages/SystemCheckPage";
 import { AboutPage } from "./pages/UserSettingPage/AboutPage";
+import { ReplayPage } from "@netless/flat-pages/src/ReplayPage";
 import SplashPage from "./pages/SplashPage";
-import ReplayPage from "./pages/ReplayPage";
 import { RoomType } from "./api-middleware/flatServer/constants";
 
 export enum RouteNameType {
