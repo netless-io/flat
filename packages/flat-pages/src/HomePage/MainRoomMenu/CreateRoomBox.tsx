@@ -84,7 +84,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                 }}
             />
             <Modal
-                destroyOnClose
+                forceRender // make "form" usable
                 footer={[
                     <Button key="cancel" onClick={handleCancel}>
                         {t("cancel")}

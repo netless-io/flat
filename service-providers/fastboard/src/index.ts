@@ -15,6 +15,7 @@ import { AsyncSideEffectManager } from "side-effect-manager";
 
 import { registerColorShortcut } from "./color-shortcut";
 import { injectCursor } from "./inject-cursor";
+import { ScrollMode } from "./scroll-mode";
 
 export { register, apps as stockedApps } from "@netless/fastboard";
 export { FastboardFileInsert } from "./file-insert";
@@ -46,6 +47,7 @@ export class Fastboard extends IServiceWhiteboard {
     private flatInfo: FlatInfo;
     private APP_ID?: string;
     private ui = createUI();
+    private scrollMode: ScrollMode | null;
 
     public readonly _app$: Val<FastboardApp | null>;
     public readonly _el$: Val<HTMLElement | null>;
@@ -84,6 +86,8 @@ export class Fastboard extends IServiceWhiteboard {
         this._el$ = new Val<HTMLElement | null>(null);
         this._roomPhase$ = new Val<RoomPhase>(RoomPhase.Disconnected);
         const allowDrawing$ = new Val(false);
+
+        this.scrollMode = null;
 
         const phase$ = combine([this._app$, this._roomPhase$], ([app, phase]) =>
             app ? convertRoomPhase(phase) : IServiceWhiteboardPhase.Disconnected,
@@ -145,12 +149,26 @@ export class Fastboard extends IServiceWhiteboard {
                             zoom_control: { enable: false },
                         },
                     });
+                    if (this.scrollMode) {
+                        this.scrollMode.setRoot(el);
+                    }
                 } else {
                     this.ui.destroy();
                 }
             }),
             this._app$.subscribe(app => {
                 this.ui.update({ app });
+                if (app) {
+                    if (this.scrollMode) {
+                        this.scrollMode.dispose();
+                    }
+                    this.scrollMode = new ScrollMode(app, this.events);
+                    if (this._el$.value) {
+                        this.scrollMode.setRoot(this._el$.value);
+                    }
+                } else if (this.scrollMode) {
+                    this.scrollMode.dispose();
+                }
             }),
             this.flatI18n.$Val.language$.subscribe(language => {
                 this.ui.update({ language });

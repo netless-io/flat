@@ -37,16 +37,16 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     disableHandRaising,
 }) {
     const t = useTranslate();
-    const { room, phase, fastboardAPP, whiteboard } = whiteboardStore;
+    const { room, phase, whiteboard } = whiteboardStore;
     const isDark = useContext(DarkModeContext);
 
     const [whiteboardEl, setWhiteboardEl] = useState<HTMLElement | null>(null);
-    const [collectorEl, setCollectorEl] = useState<HTMLElement | null>(null);
     const [saveAnnotationVisible, showSaveAnnotation] = useState(false);
     const [saveAnnotationImages, setSaveAnnotationImages] = useState<
         SaveAnnotationModalProps["images"]
     >([]);
     const [presetsVisible, showPresets] = useState(false);
+    const [page, setPage] = useState(0);
 
     const isReconnecting = phase === RoomPhase.Reconnecting;
 
@@ -59,18 +59,16 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     }, [whiteboard]);
 
     useEffect(() => {
+        return whiteboard.events.on("scrollPage", setPage);
+    }, [whiteboard]);
+
+    useEffect(() => {
         whiteboard.setTheme(isDark ? "dark" : "light");
     }, [isDark, whiteboard]);
 
     useEffect(() => {
         return isReconnecting ? message.info(t("reconnecting"), 0) : noop;
     }, [isReconnecting, t]);
-
-    useEffect(() => {
-        if (fastboardAPP && collectorEl) {
-            fastboardAPP.bindCollector(collectorEl);
-        }
-    }, [collectorEl, fastboardAPP]);
 
     useEffect(() => {
         if (whiteboardEl) {
@@ -103,12 +101,6 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         },
         [whiteboard],
     );
-
-    const bindCollector = useCallback((ref: HTMLDivElement | null) => {
-        if (ref) {
-            setCollectorEl(ref);
-        }
-    }, []);
 
     const insertPresetImage = useCallback(async (fileURL: string) => {
         const fileService = await FlatServices.getInstance().requestService("file");
@@ -224,8 +216,8 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                                 />
                             </div>
                         )}
-                    <div ref={bindCollector} />
                     <div ref={bindWhiteboard} className="whiteboard" />
+                    <div className="whiteboard-scroll-page">{renderScrollPage(page)}</div>
                 </div>
             )}
             <SaveAnnotationModal
@@ -242,3 +234,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         </>
     );
 });
+
+function renderScrollPage(page: number): string {
+    return `${(page * 100) | 0}%`;
+}
