@@ -490,7 +490,8 @@ export class AgoraRTCElectron extends IServiceVideoChat {
         });
 
         this._roomSideEffect.add(() => {
-            const handler = (uid: IServiceVideoChatUID): void => {
+            const handler = (uid_: number): void => {
+                const uid: IServiceVideoChatUID = String(uid_);
                 if (this.shareScreenUID === uid && this.shareScreen.shouldSubscribeRemoteTrack()) {
                     this.shareScreen.setActive(true);
                     return;
@@ -508,7 +509,8 @@ export class AgoraRTCElectron extends IServiceVideoChat {
         });
 
         this._roomSideEffect.add(() => {
-            const handler = (uid: IServiceVideoChatUID): void => {
+            const handler = (uid_: number): void => {
+                const uid: IServiceVideoChatUID = String(uid_);
                 if (this.shareScreenUID === uid) {
                     this.shareScreen.setActive(false);
                     return;
@@ -530,10 +532,11 @@ export class AgoraRTCElectron extends IServiceVideoChat {
                 let delay = NaN;
 
                 const onNetworkQuality = (
-                    uid: IServiceVideoChatUID,
+                    uid_: number,
                     uplinkQuality: AgoraNetworkQuality,
                     downlinkQuality: AgoraNetworkQuality,
                 ): void => {
+                    const uid: IServiceVideoChatUID = String(uid_);
                     if (!uid || uid === this.uid) {
                         uplink = uplinkQuality;
                         downlink = downlinkQuality;
