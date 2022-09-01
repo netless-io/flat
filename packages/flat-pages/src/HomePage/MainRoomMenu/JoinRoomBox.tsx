@@ -1,6 +1,6 @@
 import "./JoinRoomBox.less";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form, InputRef } from "antd";
 import { validate, version } from "uuid";
@@ -95,7 +95,11 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                         name="roomUUID"
                         rules={[{ required: true, message: t("enter-room-uuid") }]}
                     >
-                        <Input ref={roomTitleInputRef} placeholder={t("enter-room-uuid")} />
+                        <Input
+                            ref={roomTitleInputRef}
+                            placeholder={t("enter-room-uuid")}
+                            onKeyUp={submitOnEnter}
+                        />
                     </Form.Item>
                     <Form.Item label={t("join-options")}>
                         <Form.Item noStyle name="autoMicOn" valuePropName="checked">
@@ -127,6 +131,13 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
             // ignore
         }
         showModal(true);
+    }
+
+    function submitOnEnter(ev: KeyboardEvent<HTMLInputElement>): void {
+        if (ev.key === "Enter" && !ev.ctrlKey && !ev.shiftKey && !ev.altKey && !ev.metaKey) {
+            ev.preventDefault();
+            sp(form.validateFields()).then(handleOk);
+        }
     }
 
     async function handleOk(): Promise<void> {
