@@ -1,6 +1,7 @@
 export const FLAT_SERVER_BASE_URL = `https://${process.env.FLAT_SERVER_DOMAIN}`;
 
 export const FLAT_SERVER_BASE_URL_V1 = `https://${process.env.FLAT_SERVER_DOMAIN}/v1`;
+export const FLAT_SERVER_BASE_URL_V2 = `https://${process.env.FLAT_SERVER_DOMAIN}/v2`;
 
 export const FLAT_SERVER_LOGIN = {
     AGORA_CALLBACK: `https://${process.env.FLAT_SERVER_DOMAIN}/v1/login/agora/callback`,
