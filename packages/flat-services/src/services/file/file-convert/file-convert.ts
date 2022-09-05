@@ -1,4 +1,4 @@
-import type { CloudFile, FileConvertStep } from "@netless/flat-server-api";
+import type { CloudFile, FileConvertStep, FileResourceType } from "@netless/flat-server-api";
 import { IService } from "../../typing";
 
 export interface IServiceFileConvertStatus {
@@ -9,6 +9,7 @@ export interface IServiceFileConvertStatus {
 export interface IServiceFileConvertTask {
     taskUUID: string;
     taskToken: string;
+    resourceType: FileResourceType;
 }
 
 export interface IServiceFileConvert extends IService {

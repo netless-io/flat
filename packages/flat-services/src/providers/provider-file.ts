@@ -2,6 +2,7 @@ import {
     CloudFile,
     convertFinish,
     FileConvertStep,
+    getWhiteboardTaskData,
     isServerRequestError,
 } from "@netless/flat-server-api";
 import type { FlatI18n } from "@netless/flat-i18n";
@@ -80,8 +81,13 @@ export class FlatServiceProviderFile implements IServiceFile {
         file: CloudFile,
         ext: IServiceFileExtensions,
     ): Promise<FileConvertStep> {
-        let convertStep = file.convertStep;
-        if (file.convertStep !== FileConvertStep.Done) {
+        const taskResult = getWhiteboardTaskData(file.resourceType, file.meta);
+
+        if (taskResult === null) {
+            return FileConvertStep.None;
+        }
+
+        if (taskResult.convertStep !== FileConvertStep.Done) {
             const serviceName = `file-convert:${ext}` as const;
             const convertService = await this.flatServices.requestService(serviceName, false);
             if (convertService) {
@@ -92,7 +98,7 @@ export class FlatServiceProviderFile implements IServiceFile {
                         result.status === FileConvertStep.Failed
                     ) {
                         try {
-                            await convertFinish({ fileUUID: file.fileUUID, region: file.region });
+                            await convertFinish({ fileUUID: file.fileUUID });
                         } catch (e) {
                             // ignore error when notifying server finish status
                             console.warn(e);
@@ -115,13 +121,13 @@ export class FlatServiceProviderFile implements IServiceFile {
                             this.flatI18n.t("in-the-process-of-transcoding-tips"),
                         );
                     }
-                    convertStep = result.status;
+                    taskResult.convertStep = result.status;
                 } catch (e) {
                     console.error(e);
                 }
                 convertService.destroy?.();
             }
         }
-        return convertStep;
+        return taskResult.convertStep;
     }
 }
