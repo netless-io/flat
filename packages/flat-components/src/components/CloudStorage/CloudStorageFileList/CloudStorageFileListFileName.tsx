@@ -45,11 +45,14 @@ export const CloudStorageFileListFileName =
             onRename,
         }) {
             const menuItems = fileMenus && fileMenus(file, index);
+            const fileConvertStep =
+                file.meta.whiteboardConvert?.convertStep ||
+                file.meta.whiteboardProjector?.convertStep;
 
             return (
                 <div className="cloud-storage-file-list-filename-container">
                     <CloudStorageFileTitle
-                        convertStatus={file.convertStep}
+                        convertStatus={fileConvertStep}
                         fileName={file.fileName}
                         fileUUID={file.fileUUID}
                         renamingFileUUID={renamingFileUUID}
