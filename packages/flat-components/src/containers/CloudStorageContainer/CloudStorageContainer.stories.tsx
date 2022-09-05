@@ -33,7 +33,6 @@ const fakeStoreImplProps = [
     "onItemMenuClick",
     "onItemTitleClick",
     "onNewFileName",
-    "addExternalFile",
     "onDropFile",
     "fetchMoreCloudStorageData",
 ] as const;
@@ -51,7 +50,6 @@ class FakeStore extends CloudStorageStore {
     public onItemMenuClick: FakeStoreConfig["onItemMenuClick"];
     public onItemTitleClick;
     public onNewFileName: FakeStoreConfig["onNewFileName"];
-    public addExternalFile;
     public onDropFile: FakeStoreConfig["onDropFile"];
     public fetchMoreCloudStorageData;
 
@@ -70,19 +68,23 @@ class FakeStore extends CloudStorageStore {
                 fileUUID: faker.datatype.uuid(),
                 fileName: faker.random.words() + "." + faker.system.commonFileExt(),
                 fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
-                convertStep: chance.pickone([
-                    FileConvertStep.None,
-                    FileConvertStep.Converting,
-                    FileConvertStep.Done,
-                    FileConvertStep.Failed,
-                ]),
                 createAt: faker.date.past(),
                 fileURL: faker.internet.url(),
-                taskToken: faker.random.word(),
-                taskUUID: faker.random.word(),
-                region: Region.CN_HZ,
                 external: faker.datatype.boolean(),
                 resourceType: FileResourceType.NormalResources,
+                meta: {
+                    whiteboardProjector: {
+                        taskToken: faker.random.word(),
+                        taskUUID: faker.random.word(),
+                        convertStep: chance.pickone([
+                            FileConvertStep.None,
+                            FileConvertStep.Converting,
+                            FileConvertStep.Done,
+                            FileConvertStep.Failed,
+                        ]),
+                        region: Region.CN_HZ,
+                    },
+                },
             }));
 
         this.totalUsage = this.files.reduce((sum, file) => sum + file.fileSize, 0);
@@ -124,7 +126,6 @@ class FakeStore extends CloudStorageStore {
         this.onUploadCancel = config.onUploadCancel;
         this.onUploadPanelClose = config.onUploadPanelClose;
         this.onUploadRetry = config.onUploadRetry;
-        this.addExternalFile = config.addExternalFile;
         this.onItemMenuClick = (fileUUID, menuKey) => {
             switch (menuKey) {
                 case "download": {
@@ -163,19 +164,22 @@ class FakeStore extends CloudStorageStore {
                     fileUUID: faker.datatype.uuid(),
                     fileName: file.name,
                     fileSize: file.size,
-                    convertStep: chance.pickone([
-                        FileConvertStep.None,
-                        FileConvertStep.Converting,
-                        FileConvertStep.Done,
-                        FileConvertStep.Failed,
-                    ]),
                     createAt: faker.date.past(),
                     fileURL: faker.internet.url(),
-                    taskToken: faker.random.word(),
-                    taskUUID: faker.random.word(),
-                    region: Region.CN_HZ,
-                    external: faker.datatype.boolean(),
                     resourceType: FileResourceType.NormalResources,
+                    meta: {
+                        whiteboardProjector: {
+                            taskToken: faker.random.word(),
+                            taskUUID: faker.random.word(),
+                            convertStep: chance.pickone([
+                                FileConvertStep.None,
+                                FileConvertStep.Converting,
+                                FileConvertStep.Done,
+                                FileConvertStep.Failed,
+                            ]),
+                            region: Region.CN_HZ,
+                        },
+                    },
                 });
             }
         };
@@ -206,19 +210,22 @@ class FakeStore extends CloudStorageStore {
                         fileUUID: faker.datatype.uuid(),
                         fileName: fileName,
                         fileSize: fileSize,
-                        convertStep: chance.pickone([
-                            FileConvertStep.None,
-                            FileConvertStep.Converting,
-                            FileConvertStep.Done,
-                            FileConvertStep.Failed,
-                        ]),
                         createAt: faker.date.past(),
                         fileURL: faker.internet.url(),
-                        taskToken: faker.random.word(),
-                        taskUUID: faker.random.word(),
-                        region: Region.CN_HZ,
-                        external: faker.datatype.boolean(),
                         resourceType: FileResourceType.NormalResources,
+                        meta: {
+                            whiteboardProjector: {
+                                taskToken: faker.random.word(),
+                                taskUUID: faker.random.word(),
+                                convertStep: chance.pickone([
+                                    FileConvertStep.None,
+                                    FileConvertStep.Converting,
+                                    FileConvertStep.Done,
+                                    FileConvertStep.Failed,
+                                ]),
+                                region: Region.CN_HZ,
+                            },
+                        },
                     });
                 }
 

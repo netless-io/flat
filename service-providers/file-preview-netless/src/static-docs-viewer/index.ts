@@ -255,27 +255,30 @@ export class StaticDocsViewer implements IServiceFilePreview {
     }
 
     public async preview(file: CloudFile, container: HTMLElement): Promise<void> {
-        const result = await queryConvertingTaskStatus({
-            taskUUID: file.taskUUID,
-            taskToken: file.taskToken,
-            dynamic: false,
-            region: file.region,
-            projector: false,
-        });
+        if (
+            file.resourceType === "WhiteboardConvert" ||
+            file.resourceType === "WhiteboardProjector"
+        ) {
+            const result = await queryConvertingTaskStatus({
+                dynamic: false,
+                resourceType: file.resourceType,
+                meta: file.meta,
+            });
 
-        if (result.progress?.convertedFileList) {
-            this.pagesScrollTop$.setValue(0);
-            this.pages$.setValue(
-                result.progress.convertedFileList.map(item => ({
-                    width: item.width,
-                    height: item.height,
-                    src: item.conversionFileUrl,
-                    thumbnail: item.preview || item.conversionFileUrl,
-                })),
-            );
+            if (result.progress?.convertedFileList) {
+                this.pagesScrollTop$.setValue(0);
+                this.pages$.setValue(
+                    result.progress.convertedFileList.map(item => ({
+                        width: item.width,
+                        height: item.height,
+                        src: item.conversionFileUrl,
+                        thumbnail: item.preview || item.conversionFileUrl,
+                    })),
+                );
+            }
+
+            container.appendChild(this.$docsViewer);
         }
-
-        container.appendChild(this.$docsViewer);
     }
 
     public async destroy(): Promise<void> {

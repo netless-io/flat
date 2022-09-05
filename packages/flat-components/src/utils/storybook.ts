@@ -10,19 +10,22 @@ export function randomCloudFile(file: Partial<CloudFile> = {}): CloudFile {
         fileUUID: faker.datatype.uuid(),
         fileName: faker.random.word() + "." + faker.system.commonFileExt(),
         fileSize: chance.integer({ min: 0, max: 1000 * 1000 * 100 }),
-        convertStep: chance.pickone([
-            FileConvertStep.None,
-            FileConvertStep.Converting,
-            FileConvertStep.Done,
-            FileConvertStep.Failed,
-        ]),
         createAt: faker.date.past(),
         fileURL: faker.internet.url(),
-        taskToken: faker.random.word(),
-        taskUUID: faker.random.word(),
-        region: Region.CN_HZ,
-        external: faker.datatype.boolean(),
         resourceType: FileResourceType.NormalResources,
+        meta: {
+            whiteboardProjector: {
+                taskToken: faker.random.word(),
+                taskUUID: faker.random.word(),
+                convertStep: chance.pickone([
+                    FileConvertStep.None,
+                    FileConvertStep.Converting,
+                    FileConvertStep.Done,
+                    FileConvertStep.Failed,
+                ]),
+                region: Region.CN_HZ,
+            },
+        },
         ...file,
     };
 }

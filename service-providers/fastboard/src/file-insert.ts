@@ -4,7 +4,7 @@ import { BuiltinApps } from "@netless/window-manager";
 import { ApplianceNames, SceneDefinition } from "white-web-sdk";
 
 import type { FlatI18n } from "@netless/flat-i18n";
-import type { CloudFile } from "@netless/flat-server-api";
+import { CloudFile, getWhiteboardTaskData } from "@netless/flat-server-api";
 import {
     getFileExt,
     isPPTX,
@@ -148,76 +148,82 @@ export async function insertDocs(
     flatI18n: FlatI18n,
     toaster: Toaster,
 ): Promise<void> {
-    const convertingStatus = await queryConvertingTaskStatus({
-        taskUUID: file.taskUUID,
-        taskToken: file.taskToken,
-        dynamic: isPPTX(file.fileName),
-        region: file.region,
-        projector: file.resourceType === "WhiteboardProjector",
-    });
+    if (file.resourceType === "WhiteboardConvert" || file.resourceType === "WhiteboardProjector") {
+        const whiteboardTaskData = getWhiteboardTaskData(file.resourceType, file.meta);
+        if (whiteboardTaskData === null) {
+            return;
+        }
+        const { taskUUID } = whiteboardTaskData;
 
-    if (convertingStatus.status === "Fail") {
-        toaster.emit("error", flatI18n.t("unable-to-insert-courseware"));
-        return;
-    }
+        const convertingStatus = await queryConvertingTaskStatus({
+            dynamic: isPPTX(file.fileName),
+            meta: file.meta,
+            resourceType: file.resourceType,
+        });
 
-    if (convertingStatus.status !== "Finished") {
-        toaster.emit("warn", flatI18n.t("in-the-process-of-transcoding-tips"));
-        return;
-    }
+        if (convertingStatus.status === "Fail") {
+            toaster.emit("error", flatI18n.t("unable-to-insert-courseware"));
+            return;
+        }
 
-    if (convertingStatus.progress) {
-        const scenes: SceneDefinition[] = convertingStatus.progress.convertedFileList.map(
-            (f, i) => ({
-                name: `${i + 1}`,
-                ppt: {
-                    src: f.conversionFileUrl,
-                    width: f.width,
-                    height: f.height,
-                    previewURL: f.preview,
-                },
-            }),
-        );
+        if (convertingStatus.status !== "Finished") {
+            toaster.emit("warn", flatI18n.t("in-the-process-of-transcoding-tips"));
+            return;
+        }
 
-        const uuid = uuidv4();
-        const scenePath = `/${file.taskUUID}/${uuid}`;
+        if (convertingStatus.progress) {
+            const scenes: SceneDefinition[] = convertingStatus.progress.convertedFileList.map(
+                (f, i) => ({
+                    name: `${i + 1}`,
+                    ppt: {
+                        src: f.conversionFileUrl,
+                        width: f.width,
+                        height: f.height,
+                        previewURL: f.preview,
+                    },
+                }),
+            );
 
-        const legacySlideParams = extractLegacySlideParams(scenes);
+            const uuid = uuidv4();
+            const scenePath = `/${taskUUID}/${uuid}`;
 
-        if (legacySlideParams) {
-            // legacy PPTX conversion
-            await fastboardApp.manager.addApp({
-                kind: "Slide",
-                options: {
-                    scenePath,
-                    title: file.fileName,
-                    scenes: scenes.map(s => ({ name: s.name })),
-                },
-                attributes: legacySlideParams,
-            });
-        } else {
-            // other docs
-            await fastboardApp.manager.addApp({
-                kind: BuiltinApps.DocsViewer,
-                options: {
-                    scenePath,
-                    title: file.fileName,
-                    scenes,
-                },
+            const legacySlideParams = extractLegacySlideParams(scenes);
+
+            if (legacySlideParams) {
+                // legacy PPTX conversion
+                await fastboardApp.manager.addApp({
+                    kind: "Slide",
+                    options: {
+                        scenePath,
+                        title: file.fileName,
+                        scenes: scenes.map(s => ({ name: s.name })),
+                    },
+                    attributes: legacySlideParams,
+                });
+            } else {
+                // other docs
+                await fastboardApp.manager.addApp({
+                    kind: BuiltinApps.DocsViewer,
+                    options: {
+                        scenePath,
+                        title: file.fileName,
+                        scenes,
+                    },
+                });
+            }
+            return;
+        }
+
+        if (convertingStatus.prefix) {
+            // new Projector PPTX conversion
+            await fastboardApp.insertDocs({
+                fileType: "pptx",
+                title: file.fileName,
+                scenePath: `/${taskUUID}/${uuidv4()}`,
+                taskId: taskUUID,
+                url: convertingStatus.prefix,
             });
         }
-        return;
-    }
-
-    if (convertingStatus.prefix) {
-        // new Projector PPTX conversion
-        await fastboardApp.insertDocs({
-            fileType: "pptx",
-            title: file.fileName,
-            scenePath: `/${file.taskUUID}/${uuidv4()}`,
-            taskId: file.taskUUID,
-            url: convertingStatus.prefix,
-        });
     }
 }
 
@@ -241,28 +247,6 @@ function extractLegacySlideParams(
     }
 
     return null;
-}
-
-export async function insertZippedH5(file: CloudFile, fastboardApp: FastboardApp): Promise<void> {
-    const CLOUD_STORAGE_DOMAIN = process.env.CLOUD_STORAGE_DOMAIN;
-    if (!CLOUD_STORAGE_DOMAIN) {
-        throw new Error("Missing env CLOUD_STORAGE_DOMAIN");
-    }
-
-    const src =
-        CLOUD_STORAGE_DOMAIN.replace("[region]", file.region) +
-        new URL(file.fileURL).pathname.replace(/[^/]+$/, "") +
-        "resource/index.html";
-
-    await fastboardApp.manager.addApp({
-        kind: "IframeBridge",
-        options: {
-            title: file.fileName,
-        },
-        attributes: {
-            src,
-        },
-    });
 }
 
 export async function insertVf(file: CloudFile, fastboardApp: FastboardApp): Promise<void> {

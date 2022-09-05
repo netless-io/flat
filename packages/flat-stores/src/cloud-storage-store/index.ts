@@ -11,13 +11,11 @@ import {
 import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
 import {
     FileConvertStep,
-    addExternalFile,
     CloudFile,
     listFiles,
     removeFiles,
-    removeExternalFiles,
     renameFile,
-    renameExternalFile,
+    getWhiteboardTaskData,
 } from "@netless/flat-server-api";
 import { getUploadTaskManager } from "../utils/upload-task-manager";
 import { UploadStatusType, UploadTask } from "../utils/upload-task-manager/upload-task";
@@ -113,7 +111,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             { key: "open", name: FlatI18n.t("open") },
             { key: "download", name: FlatI18n.t("download") },
         ];
-        if (file.convertStep !== FileConvertStep.Failed) {
+        if (
+            file.meta.whiteboardConvert?.convertStep !== FileConvertStep.Failed ||
+            file.meta.whiteboardProjector?.convertStep !== FileConvertStep.Failed
+        ) {
             menus.push({ key: "rename", name: FlatI18n.t("rename") });
         }
         menus.push({
@@ -158,7 +159,10 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         if (file) {
             try {
                 if (this.compact) {
-                    if (file.convertStep === FileConvertStep.Failed) {
+                    if (
+                        file.meta.whiteboardConvert?.convertStep === FileConvertStep.Failed ||
+                        file.meta.whiteboardProjector?.convertStep === FileConvertStep.Failed
+                    ) {
                         Modal.info({ content: FlatI18n.t("the-courseware-cannot-be-transcoded") });
                     } else {
                         this.insertCourseware(file);
@@ -250,20 +254,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             if (file.fileName === fileNameObject.fullName) {
                 return;
             } else {
-                if (file?.external) {
-                    await renameExternalFile({ fileUUID, fileName: fileNameObject.fullName });
-                } else {
-                    await renameFile({ fileUUID, fileName: fileNameObject.fullName });
-                }
+                await renameFile({ fileUUID, newName: fileNameObject.fullName });
                 runInAction(() => {
                     file.fileName = fileNameObject.fullName;
                 });
             }
         }
-    };
-
-    public addExternalFile = (fileName: string, fileURL: string): Promise<void> => {
-        return addExternalFile({ fileName, url: fileURL });
     };
 
     public onDropFile(files: FileList): void {
@@ -308,11 +304,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                             }
                             file.fileName = cloudFile.fileName;
                             file.fileSize = cloudFile.fileSize;
-                            file.convertStep = cloudFile.convertStep;
-                            file.taskToken = cloudFile.taskToken;
-                            file.taskUUID = cloudFile.taskUUID;
-                            file.external = cloudFile.external;
                             file.resourceType = cloudFile.resourceType;
+                            file.meta = cloudFile.meta;
                         } else {
                             newFiles[cloudFile.fileUUID] = observable.object(cloudFile);
                         }
@@ -387,19 +380,16 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         }
                         file.fileName = cloudFile.fileName;
                         file.fileSize = cloudFile.fileSize;
-                        file.convertStep = cloudFile.convertStep;
-                        file.taskToken = cloudFile.taskToken;
-                        file.taskUUID = cloudFile.taskUUID;
-                        file.external = cloudFile.external;
                         file.resourceType = cloudFile.resourceType;
+                        file.meta = cloudFile.meta;
                     } else {
                         newFiles[cloudFile.fileUUID] = observable.object(cloudFile);
                     }
                 });
 
                 if (
-                    cloudFile.convertStep === FileConvertStep.Done ||
-                    cloudFile.convertStep === FileConvertStep.Failed
+                    cloudFile.meta.whiteboardProjector?.convertStep === FileConvertStep.Done ||
+                    cloudFile.meta.whiteboardProjector?.convertStep === FileConvertStep.Failed
                 ) {
                     this.convertStatusManager.cancelTask(cloudFile.fileUUID);
                 } else {
@@ -427,19 +417,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     private async removeFiles(fileUUIDs: FileUUID[]): Promise<void> {
         try {
-            const externalFiles: FileUUID[] = [];
             const normalFiles: FileUUID[] = [];
-            fileUUIDs.forEach(fileUUID => {
-                if (this.filesMap.get(fileUUID)?.external) {
-                    externalFiles.push(fileUUID);
-                } else {
-                    normalFiles.push(fileUUID);
-                }
-            });
-            await Promise.all([
-                removeExternalFiles({ fileUUIDs: externalFiles }),
-                removeFiles({ fileUUIDs: normalFiles }),
-            ]);
+            await Promise.all([removeFiles({ uuids: normalFiles })]);
             runInAction(() => {
                 for (const fileUUID of fileUUIDs) {
                     this.filesMap.delete(fileUUID);
@@ -513,13 +492,22 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
 
         if (
-            file.convertStep === FileConvertStep.Done ||
-            file.convertStep === FileConvertStep.Failed
+            file.resourceType === "WhiteboardConvert" ||
+            file.resourceType === "WhiteboardProjector"
         ) {
-            return;
-        }
+            const whiteboardTaskData = getWhiteboardTaskData(file.resourceType, file.meta);
+            if (whiteboardTaskData === null) {
+                throw new Error("error");
+            }
 
-        this.convertStatusManager.addTask(file);
+            if (
+                whiteboardTaskData.convertStep === FileConvertStep.Done ||
+                whiteboardTaskData.convertStep === FileConvertStep.Failed
+            ) {
+                return;
+            }
+            this.convertStatusManager.addTask(file);
+        }
     }
 
     private async cancelAll(): Promise<void> {
