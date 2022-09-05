@@ -1,20 +1,46 @@
 import { FileConvertStep, Region } from "./constants";
-import { post } from "./utils";
+import { postV2 } from "./utils";
 
 export interface ListFilesPayload {
     page: number;
     order: "ASC" | "DESC";
+    /** Number of displays per page */
+    size?: number;
+    directoryPath?: string;
 }
 interface ListFilesResponse {
     totalUsage: number;
     files: Array<Omit<CloudFile, "createAt"> & { createAt: number }>;
+    canCreateDirectory: boolean;
 }
 
+interface RegionPayload {
+    region: Region;
+}
+
+interface ConvertPayload {
+    convertStep: FileConvertStep;
+}
+
+export interface WhiteboardConvertPayload extends RegionPayload, ConvertPayload {
+    taskUUID?: string;
+    taskToken?: string;
+}
+
+export interface WhiteboardProjectorPayload extends RegionPayload, ConvertPayload {
+    taskUUID?: string;
+    taskToken?: string;
+}
+
+export type metaType = {
+    whiteboardConvert?: WhiteboardConvertPayload;
+    whiteboardProjector?: WhiteboardProjectorPayload;
+};
+
 export enum FileResourceType {
-    WhiteboardConvert = "WhiteboardConvert",
-    LocalCourseware = "LocalCourseware",
-    OnlineCourseware = "OnlineCourseware",
+    Directory = "Directory",
     NormalResources = "NormalResources",
+    WhiteboardConvert = "WhiteboardConvert",
     WhiteboardProjector = "WhiteboardProjector",
 }
 
@@ -25,49 +51,49 @@ export interface CloudFile {
     fileName: string;
     fileSize: number;
     fileURL: string;
-    convertStep: FileConvertStep;
-    /** Query courseware converting status */
-    taskUUID: string;
-    /** Query courseware converting status */
-    taskToken: string;
     createAt: Date;
-    region: Region;
-    /** online courseware */
-    external: boolean;
     resourceType: ResourceType;
+    /** include WhiteboardProjector and WhiteboardConvert convert task info */
+    meta: metaType;
 }
 
 export interface ListFilesResult {
     totalUsage: number;
     files: CloudFile[];
+    canCreateDirectory: boolean;
 }
 
 export async function listFiles(payload: ListFilesPayload): Promise<ListFilesResult> {
-    const { totalUsage, files } = await post<undefined, ListFilesResponse>(
-        `cloud-storage/list?page=${payload.page}&order=${payload.order}`,
-    );
+    const { totalUsage, files, canCreateDirectory } = await postV2<
+        ListFilesPayload,
+        ListFilesResponse
+    >("cloud-storage/list", {
+        ...payload,
+        directoryPath: "/",
+    });
     return {
         totalUsage,
         files: files.map(file => ({ ...file, createAt: new Date(file.createAt) })),
+        canCreateDirectory,
     };
 }
 
 export interface UploadStartPayload {
     fileName: string;
     fileSize: number;
-    region: Region;
+    targetDirectoryPath: string;
 }
 
 export interface UploadStartResult {
     fileUUID: string;
-    filePath: string;
+    ossFilePath: string;
     policy: string;
-    policyURL: string;
+    ossDomain: string;
     signature: string;
 }
 
 export async function uploadStart(payload: UploadStartPayload): Promise<UploadStartResult> {
-    return await post("cloud-storage/alibaba-cloud/upload/start", payload);
+    return await postV2("cloud-storage/upload/start", payload);
 }
 interface UploadFinishPayload {
     fileUUID: string;
@@ -76,50 +102,50 @@ interface UploadFinishPayload {
 }
 
 export async function uploadFinish(payload: UploadFinishPayload): Promise<void> {
-    await post("cloud-storage/alibaba-cloud/upload/finish", payload);
+    await postV2("cloud-storage/upload/finish", payload);
 }
 
 export interface RenameFilePayload {
     fileUUID: string;
-    fileName: string;
+    newName: string;
 }
 
 export async function renameFile(payload: RenameFilePayload): Promise<void> {
-    await post("cloud-storage/alibaba-cloud/rename", payload);
+    await postV2("cloud-storage/rename", payload);
 }
 
 export interface RemoveFilesPayload {
-    fileUUIDs: string[];
+    uuids: string[];
 }
 
 export async function removeFiles(payload: RemoveFilesPayload): Promise<void> {
-    if (payload.fileUUIDs.length > 0) {
-        await post("cloud-storage/alibaba-cloud/remove", payload);
+    if (payload.uuids.length > 0) {
+        await postV2("cloud-storage/delete", payload);
     }
 }
 
 export interface ConvertStartPayload {
     fileUUID: string;
-    /** Use the new backend "projector" to convert file. */
-    isWhiteboardProjector?: boolean;
 }
 
 export interface ConvertStartResult {
-    taskUUID: string;
-    taskToken: string;
+    resourceType: FileResourceType.WhiteboardConvert | FileResourceType.WhiteboardProjector;
+    whiteboardProjector: {
+        taskUUID: string;
+        taskToken: string;
+    };
 }
 
 export async function convertStart(payload: ConvertStartPayload): Promise<ConvertStartResult> {
-    return await post("cloud-storage/convert/start", payload);
+    return await postV2("cloud-storage/convert/start", payload);
 }
 
 export interface ConvertFinishPayload {
     fileUUID: string;
-    region: Region;
 }
 
 export async function convertFinish(payload: ConvertFinishPayload): Promise<{}> {
-    return await post("cloud-storage/convert/finish", payload);
+    return await postV2("cloud-storage/convert/finish", payload);
 }
 
 export interface CancelUploadPayload {
@@ -127,33 +153,31 @@ export interface CancelUploadPayload {
 }
 
 export async function cancelUpload(payload?: CancelUploadPayload): Promise<void> {
-    await post("cloud-storage/upload/cancel", payload || {});
+    await postV2("cloud-storage/upload/cancel", payload || {});
 }
 
-export interface AddExternalFilePayload {
-    fileName: string;
-    url: string;
-}
+export function getWhiteboardTaskData(
+    resourceType: ResourceType,
+    meta: metaType,
+): { taskUUID: string; taskToken: string; convertStep: FileConvertStep } | null {
+    switch (resourceType) {
+        case "WhiteboardProjector": {
+            return {
+                taskUUID: meta.whiteboardProjector!.taskUUID!,
+                taskToken: meta.whiteboardProjector!.taskToken!,
+                convertStep: meta.whiteboardProjector!.convertStep!,
+            };
+        }
+        case "WhiteboardConvert": {
+            return {
+                taskUUID: meta.whiteboardConvert!.taskUUID!,
+                taskToken: meta.whiteboardConvert!.taskToken!,
+                convertStep: meta.whiteboardConvert!.convertStep!,
+            };
+        }
 
-export async function addExternalFile(payload: AddExternalFilePayload): Promise<void> {
-    await post("cloud-storage/url-cloud/add", payload);
-}
-
-export interface RemoveExternalFilesPayload {
-    fileUUIDs: string[];
-}
-
-export async function removeExternalFiles(payload: RemoveExternalFilesPayload): Promise<void> {
-    if (payload.fileUUIDs.length > 0) {
-        await post("cloud-storage/url-cloud/remove", payload);
+        default: {
+            return null;
+        }
     }
-}
-
-export interface RenameExternalFilePayload {
-    fileName: string;
-    fileUUID: string;
-}
-
-export async function renameExternalFile(payload: RenameExternalFilePayload): Promise<void> {
-    await post("cloud-storage/url-cloud/rename", payload);
 }
