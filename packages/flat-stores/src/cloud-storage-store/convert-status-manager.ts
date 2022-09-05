@@ -1,4 +1,10 @@
-import { CloudFile, convertFinish, FileConvertStep } from "@netless/flat-server-api";
+import {
+    CloudFile,
+    convertFinish,
+    FileConvertStep,
+    FileResourceType,
+    getWhiteboardTaskData,
+} from "@netless/flat-server-api";
 import { errorTips, FileUUID } from "flat-components";
 import { SideEffectManager } from "side-effect-manager";
 import { getFileExt } from "../utils/file";
@@ -15,9 +21,14 @@ export class ConvertStatusManager {
     }
 
     public async addTask(file: CloudFile, interval = 1500): Promise<void> {
+        const whiteboardTaskResult = getWhiteboardTaskData(file.resourceType, file.meta);
+        if (whiteboardTaskResult === null) {
+            return;
+        }
+        const { convertStep } = whiteboardTaskResult;
         if (
-            file.convertStep === FileConvertStep.Done ||
-            file.convertStep === FileConvertStep.Failed ||
+            convertStep === FileConvertStep.Done ||
+            convertStep === FileConvertStep.Failed ||
             this.tasks.has(file.fileUUID)
         ) {
             return;
@@ -30,16 +41,27 @@ export class ConvertStatusManager {
             return;
         }
 
-        if (file.convertStep === FileConvertStep.None) {
+        if (convertStep === FileConvertStep.None) {
             const startResult = await processor.startConvert(file);
-            runInAction(() => {
-                file.convertStep = FileConvertStep.Converting;
-            });
             if (startResult) {
-                runInAction(() => {
-                    file.taskUUID = startResult.taskUUID;
-                    file.taskToken = startResult.taskToken;
-                });
+                if (startResult.resourceType === FileResourceType.WhiteboardProjector) {
+                    runInAction(() => {
+                        if (file.meta.whiteboardProjector) {
+                            file.meta.whiteboardProjector.convertStep = FileConvertStep.Converting;
+                            file.meta.whiteboardProjector.taskUUID = startResult.taskUUID;
+                            file.meta.whiteboardProjector.taskToken = startResult.taskToken;
+                        }
+                    });
+                }
+                if (startResult.resourceType === FileResourceType.WhiteboardConvert) {
+                    runInAction(() => {
+                        if (file.meta.whiteboardConvert) {
+                            file.meta.whiteboardConvert.convertStep = FileConvertStep.Converting;
+                            file.meta.whiteboardConvert.taskUUID = startResult.taskUUID;
+                            file.meta.whiteboardConvert.taskToken = startResult.taskToken;
+                        }
+                    });
+                }
             }
         }
 
@@ -52,12 +74,17 @@ export class ConvertStatusManager {
                     result.status === FileConvertStep.Failed
                 ) {
                     try {
-                        await convertFinish({ fileUUID: file.fileUUID, region: file.region });
+                        await convertFinish({ fileUUID: file.fileUUID });
                     } catch (e) {
                         console.error(e);
                     }
                     runInAction(() => {
-                        file.convertStep = result.status;
+                        if (file.meta.whiteboardConvert) {
+                            file.meta.whiteboardConvert.convertStep = result.status;
+                        }
+                        if (file.meta.whiteboardProjector) {
+                            file.meta.whiteboardProjector.convertStep = result.status;
+                        }
                     });
                     if (result.error) {
                         errorTips(result.error);
