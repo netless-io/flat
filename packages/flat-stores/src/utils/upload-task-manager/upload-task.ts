@@ -9,7 +9,6 @@ import {
     RequestErrorCode,
     isServerRequestError,
 } from "@netless/flat-server-api";
-import { preferencesStore } from "../../preferences-store";
 import { isPPTX } from "../file";
 
 export enum UploadStatusType {
@@ -65,7 +64,7 @@ export class UploadTask {
                 uploadStartResult = await uploadStart({
                     fileName,
                     fileSize,
-                    region: preferencesStore.getRegion(),
+                    targetDirectoryPath: "/",
                 });
             } catch (e) {
                 // max concurrent upload count limit
@@ -78,14 +77,14 @@ export class UploadTask {
                     uploadStartResult = await uploadStart({
                         fileName,
                         fileSize,
-                        region: preferencesStore.getRegion(),
+                        targetDirectoryPath: "/",
                     });
                 } else {
                     throw e;
                 }
             }
 
-            const { filePath, fileUUID, policy, policyURL, signature } = uploadStartResult;
+            const { ossFilePath, fileUUID, policy, ossDomain, signature } = uploadStartResult;
 
             if (this.getStatus() !== UploadStatusType.Starting) {
                 return;
@@ -95,7 +94,7 @@ export class UploadTask {
 
             const formData = new FormData();
             const encodeFileName = encodeURIComponent(fileName);
-            formData.append("key", filePath);
+            formData.append("key", ossFilePath);
             formData.append("name", fileName);
             formData.append("policy", policy);
             formData.append("OSSAccessKeyId", CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY);
@@ -112,7 +111,7 @@ export class UploadTask {
 
             this.updateStatus(UploadStatusType.Uploading);
 
-            await Axios.post(policyURL, formData, {
+            await Axios.post(ossDomain, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

@@ -159,9 +159,6 @@ export abstract class CloudStorageStore {
     /** When a filename is changed to a meaningful new name */
     public abstract onNewFileName(fileUUID: FileUUID, fileName: CloudStorageFileName): void;
 
-    /** Add Online HTML5 Courseware to Cloud Storage */
-    public abstract addExternalFile(fileName: string, fileURL: string): Promise<void>;
-
     /** When file(s) are dropped in the container. */
     public abstract onDropFile(files: FileList): void;
 
