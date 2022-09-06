@@ -30,6 +30,7 @@ export class ScrollMode {
     public readonly _page$: ReadonlyVal<number>;
 
     private readonly _root$: Val<HTMLElement | null>;
+    private readonly _whiteboard$: ReadonlyVal<HTMLElement | null>;
     private readonly _size$: Val<Size>;
     private readonly _scale$: ReadonlyVal<number>;
     private readonly _scrollTop$: Val<number>;
@@ -127,11 +128,12 @@ export class ScrollMode {
 
         // 7. onwheel = () => { scrollTop$ += deltaY }
         const whiteboard$ = derive(this._root$, this.getWhiteboardElement);
+        this._whiteboard$ = whiteboard$;
         this.sideEffect.push(
             whiteboard$.reaction(el => {
-                if (el) {
+                if (el?.parentElement) {
                     this.sideEffect.addEventListener(
-                        el,
+                        el.parentElement,
                         "wheel",
                         this.onWheel,
                         { capture: true, passive: false },
@@ -179,14 +181,14 @@ export class ScrollMode {
 
     private getWhiteboardElement = (root: HTMLElement | null): HTMLElement | null => {
         const className = ".netless-window-manager-main-view";
-        const mainView = root && root.querySelector(className);
-        return mainView && mainView.parentElement;
+        return root && root.querySelector(className);
     };
 
     private onWheel = (ev: WheelEvent): void => {
         ev.preventDefault();
         ev.stopPropagation();
-        if (this.fastboard.writable.value) {
+        const target = ev.target as HTMLElement | null;
+        if (this.fastboard.writable.value && this._whiteboard$.value?.contains(target)) {
             const dy = ev.deltaY || 0;
             const { width } = this._size$.value;
             if (dy && width > 0) {
