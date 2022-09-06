@@ -3,7 +3,7 @@ import styles from "./style.css?inline";
 import { derive, ReadonlyVal, Val } from "value-enhancer";
 import { Disposable } from "side-effect-manager";
 import { DocsViewer, DocsViewerPage, PageRenderer, Stepper } from "@netless/app-docs-viewer";
-import { IServiceFilePreview, CloudFile } from "@netless/flat-services";
+import { IServiceFilePreview, CloudFile, FileResourceType } from "@netless/flat-services";
 import { queryConvertingTaskStatus } from "@netless/flat-service-provider-file-convert-netless";
 import { clamp, isSameRect, isSameSize, Rect, Size } from "../utils";
 
@@ -256,8 +256,8 @@ export class StaticDocsViewer implements IServiceFilePreview {
 
     public async preview(file: CloudFile, container: HTMLElement): Promise<void> {
         if (
-            file.resourceType === "WhiteboardConvert" ||
-            file.resourceType === "WhiteboardProjector"
+            file.resourceType === FileResourceType.WhiteboardConvert ||
+            file.resourceType === FileResourceType.WhiteboardProjector
         ) {
             const result = await queryConvertingTaskStatus({
                 dynamic: false,

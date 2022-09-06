@@ -12,6 +12,7 @@ export * from "./utils";
 
 export type { CloudFile } from "@netless/flat-server-api";
 export { FileConvertStep } from "@netless/flat-server-api";
+export { FileResourceType } from "@netless/flat-server-api";
 
 export type IServiceFileExtensions =
     | "jpg"
