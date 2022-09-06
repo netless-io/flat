@@ -1,4 +1,9 @@
-import { getWhiteboardTaskData, metaType, ResourceType } from "@netless/flat-server-api";
+import {
+    FileResourceType,
+    getWhiteboardTaskData,
+    metaType,
+    ResourceType,
+} from "@netless/flat-server-api";
 
 export interface ConvertingTaskStatus {
     uuid: string;
@@ -46,11 +51,13 @@ export async function queryConvertingTaskStatus(
     if (whiteboardTaskData === null) {
         throw new Error("get whiteboard task data error!");
     }
+
+    // When the convertStart method is called, the taskUUID and taskToken are definitely exist.
     const { taskUUID, taskToken } = whiteboardTaskData;
 
-    if (resourceType === "WhiteboardProjector") {
+    if (resourceType === FileResourceType.WhiteboardProjector) {
         const response = await fetch(`https://api.netless.link/v5/projector/tasks/${taskUUID}`, {
-            headers: { token: taskToken },
+            headers: { token: taskToken! },
         });
         return response.json();
     } else {
@@ -58,7 +65,7 @@ export async function queryConvertingTaskStatus(
             `https://api.netless.link/v5/services/conversion/tasks/${taskUUID}?type=${
                 dynamic ? "dynamic" : "static"
             }`,
-            { headers: { token: taskToken } },
+            { headers: { token: taskToken! } },
         );
         const data = await response.json();
         const prefix = data.progress?.convertedFileList?.[0]?.conversionFileUrl || "";

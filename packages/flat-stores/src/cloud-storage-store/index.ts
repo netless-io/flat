@@ -16,6 +16,7 @@ import {
     removeFiles,
     renameFile,
     getWhiteboardTaskData,
+    FileResourceType,
 } from "@netless/flat-server-api";
 import { getUploadTaskManager } from "../utils/upload-task-manager";
 import { UploadStatusType, UploadTask } from "../utils/upload-task-manager/upload-task";
@@ -254,7 +255,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             if (file.fileName === fileNameObject.fullName) {
                 return;
             } else {
-                await renameFile({ fileUUID, newName: fileNameObject.fullName });
+                await renameFile({ fileUUID, newName: fileNameObject.name });
                 runInAction(() => {
                     file.fileName = fileNameObject.fullName;
                 });
@@ -492,12 +493,12 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
 
         if (
-            file.resourceType === "WhiteboardConvert" ||
-            file.resourceType === "WhiteboardProjector"
+            file.resourceType === FileResourceType.WhiteboardConvert ||
+            file.resourceType === FileResourceType.WhiteboardProjector
         ) {
             const whiteboardTaskData = getWhiteboardTaskData(file.resourceType, file.meta);
             if (whiteboardTaskData === null) {
-                throw new Error("error");
+                return;
             }
 
             if (

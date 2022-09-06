@@ -2,6 +2,7 @@ import {
     CloudFile,
     convertFinish,
     FileConvertStep,
+    FileResourceType,
     getWhiteboardTaskData,
     isServerRequestError,
 } from "@netless/flat-server-api";
@@ -48,9 +49,12 @@ export class FlatServiceProviderFile implements IServiceFile {
         }
 
         try {
+            if (file.resourceType === FileResourceType.NormalResources) {
+                await insertService.insert(file);
+            }
             const convertStatus = await this.checkConvertStatus(file, ext);
 
-            if (convertStatus === FileConvertStep.Done || convertStatus === FileConvertStep.None) {
+            if (convertStatus === FileConvertStep.Done) {
                 await insertService.insert(file);
             }
         } catch (e) {
@@ -63,10 +67,19 @@ export class FlatServiceProviderFile implements IServiceFile {
     public async preview(file: CloudFile): Promise<void> {
         const ext = getFileExt(file.fileName) as IServiceFileExtensions;
 
-        const convertStatus = await this.checkConvertStatus(file, ext);
-
-        if (convertStatus === FileConvertStep.Done || convertStatus === FileConvertStep.None) {
+        if (file.resourceType === FileResourceType.NormalResources) {
             this.openPreviewWindow(file);
+        }
+
+        if (
+            file.resourceType === FileResourceType.WhiteboardConvert ||
+            file.resourceType === FileResourceType.WhiteboardProjector
+        ) {
+            const convertStatus = await this.checkConvertStatus(file, ext);
+
+            if (convertStatus === FileConvertStep.Done) {
+                this.openPreviewWindow(file);
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 import { previewSlide, SlideViewer } from "@netless/app-slide";
 import { queryConvertingTaskStatus } from "@netless/flat-service-provider-file-convert-netless";
-import { CloudFile, IServiceFilePreview } from "@netless/flat-services";
+import { CloudFile, IServiceFilePreview, FileResourceType } from "@netless/flat-services";
 
 export class FilePreviewNetlessSlide implements IServiceFilePreview {
     public slideViewer?: SlideViewer;
@@ -11,8 +11,8 @@ export class FilePreviewNetlessSlide implements IServiceFilePreview {
         }
 
         if (
-            file.resourceType === "WhiteboardConvert" ||
-            file.resourceType === "WhiteboardProjector"
+            file.resourceType === FileResourceType.WhiteboardConvert ||
+            file.resourceType === FileResourceType.WhiteboardProjector
         ) {
             const result = await queryConvertingTaskStatus({
                 dynamic: true,

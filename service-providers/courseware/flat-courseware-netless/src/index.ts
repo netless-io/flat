@@ -3,9 +3,8 @@ import {
     CloudFile,
     convertFinish,
     FileConvertStep,
+    FileResourceType,
     getWhiteboardTaskData,
-    isServerRequestError,
-    RequestErrorCode,
 } from "@netless/flat-server-api";
 import { extractLegacySlideUrlPrefix, queryConvertingTaskStatus } from "./courseware-converting";
 import { getFileExt, isPPTX } from "./utils";
@@ -64,7 +63,10 @@ export class FlatCoursewareNetless extends FlatCourseware {
 
     private async handleDocs(action: "insert" | "preview", file: CloudFile): Promise<void> {
         const { meta, resourceType } = file;
-        if (resourceType === "WhiteboardConvert" || resourceType === "WhiteboardProjector") {
+        if (
+            resourceType === FileResourceType.WhiteboardConvert ||
+            resourceType === FileResourceType.WhiteboardProjector
+        ) {
             const convertingStatus = await queryConvertingTaskStatus({
                 dynamic: isPPTX(file.fileName),
                 meta,
@@ -79,16 +81,7 @@ export class FlatCoursewareNetless extends FlatCourseware {
                     try {
                         await convertFinish({ fileUUID: file.fileUUID });
                     } catch (e) {
-                        if (
-                            isServerRequestError(e) &&
-                            e.errorCode === RequestErrorCode.FileIsConverted
-                        ) {
-                            // ignore this error
-                            // there's another `convertFinish()` call in ./store.tsx
-                            // we call this api in two places to make sure the file is correctly converted (in server)
-                        } else {
-                            console.error(e);
-                        }
+                        console.error(e);
                     }
                     if (convertingStatus.status === "Fail") {
                         this.events.emit("error", {

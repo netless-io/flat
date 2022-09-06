@@ -159,20 +159,22 @@ export async function cancelUpload(payload?: CancelUploadPayload): Promise<void>
 export function getWhiteboardTaskData(
     resourceType: ResourceType,
     meta: metaType,
-): { taskUUID: string; taskToken: string; convertStep: FileConvertStep } | null {
+): WhiteboardConvertPayload | WhiteboardProjectorPayload | null {
     switch (resourceType) {
         case "WhiteboardProjector": {
             return {
-                taskUUID: meta.whiteboardProjector!.taskUUID!,
-                taskToken: meta.whiteboardProjector!.taskToken!,
-                convertStep: meta.whiteboardProjector!.convertStep!,
+                taskUUID: meta.whiteboardProjector!.taskUUID,
+                taskToken: meta.whiteboardProjector!.taskToken,
+                convertStep: meta.whiteboardProjector!.convertStep,
+                region: meta.whiteboardProjector!.region,
             };
         }
         case "WhiteboardConvert": {
             return {
-                taskUUID: meta.whiteboardConvert!.taskUUID!,
-                taskToken: meta.whiteboardConvert!.taskToken!,
-                convertStep: meta.whiteboardConvert!.convertStep!,
+                taskUUID: meta.whiteboardConvert!.taskUUID,
+                taskToken: meta.whiteboardConvert!.taskToken,
+                convertStep: meta.whiteboardConvert!.convertStep,
+                region: meta.whiteboardConvert!.region,
             };
         }
 

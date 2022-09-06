@@ -38,8 +38,8 @@ export class FileConvertNetless implements IServiceFileConvert {
 
     public async queryStatus(file: CloudFile): Promise<IServiceFileConvertStatus> {
         if (
-            file.resourceType === "WhiteboardConvert" ||
-            file.resourceType === "WhiteboardProjector"
+            file.resourceType === FileResourceType.WhiteboardConvert ||
+            file.resourceType === FileResourceType.WhiteboardProjector
         ) {
             const convertingStatus = await queryConvertingTaskStatus({
                 dynamic: isPPTX(file.fileName),
