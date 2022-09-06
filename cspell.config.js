@@ -109,6 +109,7 @@ module.exports = {
         "peaceiris", // peaceiris/actions-gh-pages@v3
         "plyr", // @netless/app-plyr
         "lukeed", // @luckeed/uuid
+        "EXTINF",
 
         // less
         "isstring",

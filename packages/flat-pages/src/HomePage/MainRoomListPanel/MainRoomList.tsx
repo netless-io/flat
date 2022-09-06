@@ -259,7 +259,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
 
     function replayRoom(config: { roomUUID: string; ownerUUID: string; roomType: RoomType }): void {
         const { roomUUID, ownerUUID, roomType } = config;
-        window.open(`${FLAT_WEB_BASE_URL}/replay/${roomType}/${roomUUID}/${ownerUUID}/`, "_blank");
+        window.open(`/replay/${roomType}/${roomUUID}/${ownerUUID}/`, "_blank");
     }
 
     function hideCancelModal(): void {

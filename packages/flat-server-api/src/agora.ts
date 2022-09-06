@@ -71,16 +71,27 @@ export function cloudRecordAcquire(
     );
 }
 
+/**
+ * @see {@link https://docs.agora.io/en/cloud-recording/cloud_recording_api_start?platform=RESTful#recordingConfig}
+ */
 export interface AgoraCloudRecordStartRequestBody {
     clientRequest: {
         recordingConfig?: {
+            /** 0 (messaging*) | 1 (broadcasting) */
             channelType?: number;
+            /** 0 (audio) | 1 (video) | 2 (both*) */
             streamTypes?: number;
+            /** 'individual' mode only, 'standard' is recommended */
+            streamMode?: "default" | "standard" | "original";
             decryptionMode?: number;
             secret?: string;
+            salt?: string;
             audioProfile?: number;
+            /** 0 (HD video*) | 1 (small video) */
             videoStreamType?: number;
+            /** seconds, default 30 */
             maxIdleTime?: number;
+            /** 'mix' mode only */
             transcodingConfig?: {
                 width: number;
                 height: number;
@@ -110,6 +121,7 @@ export interface AgoraCloudRecordStartRequestBody {
             subscribeAudioUids?: string[];
             unSubscribeAudioUids?: string[];
             subscribeUidGroup?: number;
+            privateParams?: any;
         };
         recordingFileConfig?: {
             avFileType?: string[];

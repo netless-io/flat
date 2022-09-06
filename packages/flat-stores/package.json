@@ -27,6 +27,7 @@
     "@netless/flat-server-api": "workspace:*",
     "@netless/flat-services": "workspace:*",
     "flat-components": "workspace:*",
+    "polly-js": "^1.8.3",
     "side-effect-manager": "^1.2.1",
     "uuid": "^8.3.2"
   }

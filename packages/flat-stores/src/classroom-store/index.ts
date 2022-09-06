@@ -256,7 +256,6 @@ export class ClassroomStore {
             ownerUUID: this.ownerUUID,
             uid: this.userUUID,
             token: globalStore.rtmToken,
-            refreshToken: generateRTCToken,
         });
 
         const fastboard = await this.whiteboardStore.joinWhiteboardRoom();

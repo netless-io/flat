@@ -1,3 +1,4 @@
+import { generateRTMToken } from "@netless/flat-server-api/src/agora";
 import {
     IServiceTextChat,
     IServiceTextChatJoinRoomConfig,
@@ -195,7 +196,6 @@ export class AgoraRTM extends IServiceTextChat {
     private async _joinRoom({
         uid,
         token,
-        refreshToken,
         roomUUID,
         ownerUUID,
     }: IServiceTextChatJoinRoomConfig): Promise<void> {
@@ -203,22 +203,20 @@ export class AgoraRTM extends IServiceTextChat {
             throw new Error("APP_ID is not set");
         }
 
-        this.token = token || (await refreshToken?.(roomUUID));
+        this.token = token || (await generateRTMToken());
 
         if (!this.token) {
             throw new Error("Missing Agora RTM token");
         }
 
-        if (refreshToken) {
-            this._roomSideEffect.add(() => {
-                const handler = async (): Promise<void> => {
-                    this.token = await refreshToken(roomUUID);
-                    await this.client.renewToken(this.token);
-                };
-                this.client.on("TokenExpired", handler);
-                return () => this.client.off("TokenExpired", handler);
-            });
-        }
+        this._roomSideEffect.add(() => {
+            const handler = async (): Promise<void> => {
+                this.token = await generateRTMToken();
+                await this.client.renewToken(this.token);
+            };
+            this.client.on("TokenExpired", handler);
+            return () => this.client.off("TokenExpired", handler);
+        });
 
         this._roomSideEffect.add(() => {
             const handler = (
