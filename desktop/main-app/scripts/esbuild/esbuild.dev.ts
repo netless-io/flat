@@ -1,6 +1,6 @@
 import { ChildProcess, spawn } from "child_process";
 import esbuild from "esbuild";
-import { dotenvPlugin, external } from "./esbuild.common";
+import { dotenvPlugin, external, replaceMetaPlugin } from "./esbuild.common";
 import * as paths from "./paths";
 
 let child: ChildProcess | undefined;
@@ -38,7 +38,7 @@ const buildMain = esbuild.build({
             }
         },
     },
-    plugins: [dotenvPlugin],
+    plugins: [dotenvPlugin, replaceMetaPlugin],
 });
 
 const allDone = Promise.all([buildPreload, buildMain]);

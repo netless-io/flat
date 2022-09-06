@@ -1,5 +1,5 @@
 import esbuild from "esbuild";
-import { dotenvPlugin, external } from "./esbuild.common";
+import { dotenvPlugin, external, replaceMetaPlugin } from "./esbuild.common";
 import * as paths from "./paths";
 
 const buildPreload = esbuild.build({
@@ -19,7 +19,7 @@ const buildMain = esbuild.build({
     external: [...external, "electron", "electron-devtools-vendor"],
     sourcemap: true,
     outfile: paths.dist,
-    plugins: [dotenvPlugin],
+    plugins: [dotenvPlugin, replaceMetaPlugin],
 });
 
 Promise.all([buildPreload, buildMain]).catch(() => process.exit(1));
