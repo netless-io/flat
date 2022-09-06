@@ -4,7 +4,7 @@ import { BuiltinApps } from "@netless/window-manager";
 import { ApplianceNames, SceneDefinition } from "white-web-sdk";
 
 import type { FlatI18n } from "@netless/flat-i18n";
-import { CloudFile, getWhiteboardTaskData } from "@netless/flat-server-api";
+import { CloudFile, FileResourceType, getWhiteboardTaskData } from "@netless/flat-server-api";
 import {
     getFileExt,
     isPPTX,
@@ -148,7 +148,10 @@ export async function insertDocs(
     flatI18n: FlatI18n,
     toaster: Toaster,
 ): Promise<void> {
-    if (file.resourceType === "WhiteboardConvert" || file.resourceType === "WhiteboardProjector") {
+    if (
+        file.resourceType === FileResourceType.WhiteboardConvert ||
+        file.resourceType === FileResourceType.WhiteboardProjector
+    ) {
         const whiteboardTaskData = getWhiteboardTaskData(file.resourceType, file.meta);
         if (whiteboardTaskData === null) {
             return;
@@ -220,7 +223,7 @@ export async function insertDocs(
                 fileType: "pptx",
                 title: file.fileName,
                 scenePath: `/${taskUUID}/${uuidv4()}`,
-                taskId: taskUUID,
+                taskId: taskUUID!,
                 url: convertingStatus.prefix,
             });
         }
