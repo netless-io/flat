@@ -1,5 +1,5 @@
-import type { AnimationMode, Size, ViewMode } from "white-web-sdk";
-import type { FastboardApp, Storage } from "@netless/fastboard";
+import type { AnimationMode, Camera, Size, ViewMode } from "white-web-sdk";
+import type { Storage, SyncedStore, WindowManager } from "@netless/fastboard";
 import type { IServiceWhiteboardEvents } from "@netless/flat-services";
 
 import { SideEffectManager } from "side-effect-manager";
@@ -52,7 +52,7 @@ export class ScrollMode {
     }
 
     public constructor(
-        public readonly fastboard: FastboardApp,
+        public readonly fastboard: { manager: WindowManager; syncedStore: SyncedStore },
         public readonly events: IServiceWhiteboardEvents,
     ) {
         this._root$ = new Val<HTMLElement | null>(null);
@@ -91,6 +91,22 @@ export class ScrollMode {
             };
             fastboard.manager.mainView.callbacks.on("onSizeUpdated", onSizeUpdated);
             return () => fastboard.manager.mainView.callbacks.off("onSizeUpdated", onSizeUpdated);
+        });
+
+        this.sideEffect.add(() => {
+            const onCameraUpdated = (camera: Camera): void => {
+                const halfWbHeight = this._size$.value.height / 2 / this._scale$.value;
+                const scrollTop = camera.centerY;
+                this.storage.setState({
+                    scrollTop: clamp(scrollTop, halfWbHeight, BASE_HEIGHT - halfWbHeight),
+                });
+            };
+            fastboard.manager.mainView.callbacks.on("onCameraUpdatedByDevice", onCameraUpdated);
+            return () =>
+                fastboard.manager.mainView.callbacks.off(
+                    "onCameraUpdatedByDevice",
+                    onCameraUpdated,
+                );
         });
 
         // 4. scale$ = size$.width / BASE_WIDTH
@@ -188,7 +204,7 @@ export class ScrollMode {
 
     private onWheel = (ev: WheelEvent): void => {
         const target = ev.target as HTMLElement | null;
-        if (this.fastboard.writable.value && this._whiteboard$.value?.contains(target)) {
+        if (this.fastboard.manager.canOperate && this._whiteboard$.value?.contains(target)) {
             ev.preventDefault();
             ev.stopPropagation();
             const dy = ev.deltaY || 0;
