@@ -147,8 +147,10 @@ export class ScrollMode {
     }
 
     private initScroll = (): void => {
-        // HACK: set a different number to trigger all listeners above
-        this._scrollTop$.setValue(this.scrollTop + 0.5);
+        const halfWbHeight = this._size$.value.height / 2 / this._scale$.value;
+        const scrollTop = this._scrollTop$.value;
+        // HACK: set a different value (+0.5) to trigger all effects above
+        this._scrollTop$.setValue(clamp(scrollTop, halfWbHeight, BASE_HEIGHT - halfWbHeight) + 0.5);
     };
 
     private updateBound(scrollTop: number, { height }: Size, scale: number): void {
@@ -185,10 +187,10 @@ export class ScrollMode {
     };
 
     private onWheel = (ev: WheelEvent): void => {
-        ev.preventDefault();
-        ev.stopPropagation();
         const target = ev.target as HTMLElement | null;
         if (this.fastboard.writable.value && this._whiteboard$.value?.contains(target)) {
+            ev.preventDefault();
+            ev.stopPropagation();
             const dy = ev.deltaY || 0;
             const { width } = this._size$.value;
             if (dy && width > 0) {
