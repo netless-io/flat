@@ -2,7 +2,6 @@ import { makeAutoObservable, observable } from "mobx";
 import { v4 as v4uuid } from "uuid";
 import Axios, { CancelTokenSource } from "axios";
 import {
-    cancelUpload,
     uploadFinish,
     uploadStart,
     UploadStartResult,
@@ -73,7 +72,6 @@ export class UploadTask {
                     e.errorCode === RequestErrorCode.UploadConcurrentLimit
                 ) {
                     console.warn("[cloud-storage]: hit max concurrent upload count limit");
-                    await cancelUpload();
                     uploadStartResult = await uploadStart({
                         fileName,
                         fileSize,
@@ -125,13 +123,6 @@ export class UploadTask {
                 this.updateStatus(UploadStatusType.Cancelled);
             } else {
                 console.error(e);
-                if (this.fileUUID) {
-                    try {
-                        await cancelUpload({ fileUUIDs: [this.fileUUID] });
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }
                 this.updateStatus(UploadStatusType.Failed);
             }
         }
@@ -173,7 +164,6 @@ export class UploadTask {
 
         try {
             this.cancelUploadProgress();
-            await cancelUpload({ fileUUIDs: [this.fileUUID] });
         } catch (e) {
             console.error(e);
         }

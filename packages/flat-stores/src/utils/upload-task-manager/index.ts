@@ -1,5 +1,4 @@
 import { makeAutoObservable, observable, runInAction } from "mobx";
-import { cancelUpload } from "@netless/flat-server-api";
 import { UploadStatusType, UploadTask } from "./upload-task";
 import { UploadID } from "flat-components";
 
@@ -108,10 +107,6 @@ export class UploadTaskManager {
 
         for (const task of this.uploadingMap.values()) {
             task.cancelUploadProgress();
-        }
-
-        if (this.uploadingMap.size > 0) {
-            await cancelUpload();
         }
 
         runInAction(() => {
