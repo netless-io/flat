@@ -148,14 +148,6 @@ export async function convertFinish(payload: ConvertFinishPayload): Promise<{}> 
     return await postV2("cloud-storage/convert/finish", payload);
 }
 
-export interface CancelUploadPayload {
-    fileUUIDs?: string[];
-}
-
-export async function cancelUpload(payload?: CancelUploadPayload): Promise<void> {
-    await postV2("cloud-storage/upload/cancel", payload || {});
-}
-
 export function getWhiteboardTaskData(
     resourceType: ResourceType,
     meta: metaType,
