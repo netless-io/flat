@@ -15,10 +15,10 @@ import { useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import { WhiteboardStore, ClassroomStore } from "@netless/flat-stores";
+import { FlatServices } from "@netless/flat-services";
 import { isSupportedFileExt } from "../utils/drag-and-drop";
 import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image";
 import { PRESETS } from "../constants/presets";
-import { FlatServices } from "@netless/flat-services";
 import { createCloudFile } from "../utils/create-cloud-file";
 
 export interface WhiteboardProps {
@@ -47,6 +47,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     >([]);
     const [presetsVisible, showPresets] = useState(false);
     const [page, setPage] = useState(0);
+    const [showPage, setShowPage] = useState(false);
 
     const isReconnecting = phase === RoomPhase.Reconnecting;
 
@@ -61,6 +62,18 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     useEffect(() => {
         return whiteboard.events.on("scrollPage", setPage);
     }, [whiteboard]);
+
+    useEffect(() => {
+        let isMounted = true;
+        setShowPage(true);
+        const timer = setTimeout(() => {
+            isMounted && setShowPage(false);
+        }, 3000);
+        return () => {
+            clearTimeout(timer);
+            isMounted = false;
+        };
+    }, [page]);
 
     useEffect(() => {
         whiteboard.setTheme(isDark ? "dark" : "light");
@@ -217,7 +230,11 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                             </div>
                         )}
                     <div ref={bindWhiteboard} className="whiteboard" />
-                    <div className="whiteboard-scroll-page">{renderScrollPage(page)}</div>
+                    <div
+                        className={classNames("whiteboard-scroll-page", { "is-active": showPage })}
+                    >
+                        {renderScrollPage(page)}
+                    </div>
                 </div>
             )}
             <SaveAnnotationModal
