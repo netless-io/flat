@@ -76,8 +76,11 @@
 
 .whiteboard-scroll-page {
     position: absolute;
-    right: 140px;
-    bottom: 9px;
+    top: 50%;
+    left: 50%;
+    min-width: 120px;
+    text-align: center;
+    transform: translate(-50%, -50%);
     border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.15);
     padding: 4px 8px;
@@ -86,6 +89,7 @@
     font-variant-numeric: tabular-nums;
     background: #fff;
     opacity: 0;
+    pointer-events: none;
 }
 
 .whiteboard-scroll-page.is-active {

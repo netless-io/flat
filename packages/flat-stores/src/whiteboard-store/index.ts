@@ -217,7 +217,10 @@ export class WhiteboardStore {
     }, 2000);
 
     public insertCourseware = async (file: CloudFile): Promise<void> => {
-        if (file.convertStep === FileConvertStep.Converting) {
+        if (
+            (file.meta.whiteboardConvert || file.meta.whiteboardProjector)?.convertStep ===
+            FileConvertStep.Converting
+        ) {
             void message.warn(FlatI18n.t("in-the-process-of-transcoding-tips"));
             return;
         }

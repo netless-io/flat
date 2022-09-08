@@ -11,6 +11,7 @@ export interface IServiceWhiteboardEventData {
     exportAnnotations: void;
     insertPresets: void;
     scrollPage: number;
+    maxScrollPage: number;
 }
 
 export type IServiceWhiteboardEventName = Extract<keyof IServiceWhiteboardEventData, string>;

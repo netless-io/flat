@@ -1,5 +1,5 @@
+import { CloudFile } from "@netless/flat-server-api";
 import { v4 as uuidv4 } from "uuid";
-import { CloudFile, FileConvertStep, Region } from "@netless/flat-server-api";
 
 export function createCloudFile(file: Partial<CloudFile>): CloudFile {
     return {
@@ -7,13 +7,9 @@ export function createCloudFile(file: Partial<CloudFile>): CloudFile {
         fileName: "",
         fileSize: 0,
         fileURL: "",
-        convertStep: FileConvertStep.Done,
-        taskUUID: uuidv4(),
-        taskToken: "",
-        region: Region.CN_HZ,
-        external: false,
         resourceType: "NormalResources",
         createAt: new Date(),
+        meta: {},
         ...file,
     };
 }
