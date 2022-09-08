@@ -1,4 +1,3 @@
-import { FlatServices } from "@netless/flat-services";
 import { ClassroomReplayStore } from "@netless/flat-stores";
 import { errorTips, useSafePromise } from "flat-components";
 import { useEffect, useState } from "react";
@@ -25,38 +24,22 @@ export function useClassroomReplayStore(
     }, [title]);
 
     useEffect(() => {
-        let isUnmounted = false;
-        let classroomReplayStore: ClassroomReplayStore | undefined;
-        const flatServices = FlatServices.getInstance();
+        const classroomReplayStore = new ClassroomReplayStore(config);
+        // TODO: add whiteboard service
+        // const flatServices = FlatServices.getInstance();
 
-        sp(
-            Promise.all([
-                // TODO: add whiteboard service
-                flatServices.requestService("textChat"),
-            ]),
-        ).then(([textChat]) => {
-            if (!isUnmounted && textChat) {
-                classroomReplayStore = new ClassroomReplayStore({
-                    ...config,
-                    rtm: textChat,
-                });
-                setClassroomReplayStore(classroomReplayStore);
-                sp(classroomReplayStore.init()).catch(e => {
-                    errorTips(e);
-                    pushHistory(RouteNameType.HomePage);
-                });
-            }
+        setClassroomReplayStore(classroomReplayStore);
+        sp(classroomReplayStore.init()).catch(e => {
+            errorTips(e);
+            pushHistory(RouteNameType.HomePage);
         });
 
         return () => {
-            isUnmounted = true;
             classroomReplayStore?.destroy().catch(e => {
                 if (process.env.NODE_ENV !== "production") {
                     console.error(e);
                 }
             });
-            // TODO: add whiteboard service
-            flatServices.shutdownService("textChat");
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

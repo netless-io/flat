@@ -11,7 +11,7 @@ import {
     SaveAnnotationModal,
     SaveAnnotationModalProps,
 } from "flat-components";
-import { useTranslate } from "@netless/flat-i18n";
+import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import { WhiteboardStore, ClassroomStore } from "@netless/flat-stores";
@@ -47,6 +47,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     >([]);
     const [presetsVisible, showPresets] = useState(false);
     const [page, setPage] = useState(0);
+    const [maxPage, setMaxPage] = useState(Infinity);
     const [showPage, setShowPage] = useState(false);
 
     const isReconnecting = phase === RoomPhase.Reconnecting;
@@ -60,7 +61,12 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     }, [whiteboard]);
 
     useEffect(() => {
-        return whiteboard.events.on("scrollPage", setPage);
+        const stopListenPage = whiteboard.events.on("scrollPage", setPage);
+        const stopListenMaxPage = whiteboard.events.on("maxScrollPage", setMaxPage);
+        return () => {
+            stopListenPage();
+            stopListenMaxPage();
+        };
     }, [whiteboard]);
 
     useEffect(() => {
@@ -68,7 +74,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         setShowPage(true);
         const timer = setTimeout(() => {
             isMounted && setShowPage(false);
-        }, 3000);
+        }, 1000);
         return () => {
             clearTimeout(timer);
             isMounted = false;
@@ -231,9 +237,11 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                         )}
                     <div ref={bindWhiteboard} className="whiteboard" />
                     <div
-                        className={classNames("whiteboard-scroll-page", { "is-active": showPage })}
+                        className={classNames("whiteboard-scroll-page", {
+                            "is-active": showPage,
+                        })}
                     >
-                        {renderScrollPage(page)}
+                        {renderScrollPage(t, page, maxPage)}
                     </div>
                 </div>
             )}
@@ -252,6 +260,12 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     );
 });
 
-function renderScrollPage(page: number): string {
-    return `${(page * 100) | 0}%`;
+function renderScrollPage(t: FlatI18nTFunction, page: number, maxPage: number): string {
+    if (page === 0) {
+        return t("scroll.first-page");
+    } else if (page >= maxPage) {
+        return t("scroll.last-page");
+    } else {
+        return t("scroll.page", { page: ((((page + 1) * 10) | 0) / 10).toFixed(1) });
+    }
 }

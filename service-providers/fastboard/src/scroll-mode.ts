@@ -159,14 +159,26 @@ export class ScrollMode {
             }),
         );
 
-        this.sideEffect.push(fastboard.manager.emitter.on("ready", this.initScroll));
+        this.sideEffect.push(
+            scale$.reaction(scale => {
+                if (scale > 0) {
+                    this.sideEffect.flush("initScroll");
+                    // XXX: wait window-manager's sync behavior then we reset the camera
+                    this.sideEffect.setTimeout(this.initScroll, 0);
+                }
+            }),
+            "initScroll",
+        );
     }
 
     private initScroll = (): void => {
         const halfWbHeight = this._size$.value.height / 2 / this._scale$.value;
         const scrollTop = this._scrollTop$.value;
-        // HACK: set a different value (+0.5) to trigger all effects above
-        this._scrollTop$.setValue(clamp(scrollTop, halfWbHeight, BASE_HEIGHT - halfWbHeight) + 0.5);
+        // HACK: set a different value (+0.01) to trigger all effects above
+        this._scrollTop$.setValue(
+            clamp(scrollTop, halfWbHeight, BASE_HEIGHT - halfWbHeight) - 0.01,
+        );
+        this.events.emit("maxScrollPage", (BASE_HEIGHT - halfWbHeight) / halfWbHeight / 2 - 0.51);
     };
 
     private updateBound(scrollTop: number, { height }: Size, scale: number): void {

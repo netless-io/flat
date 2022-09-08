@@ -3,7 +3,7 @@ import "./DynamicPreview.less";
 import React, { useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { Region } from "flat-components";
-import { previewSlide, SlidePreviewer } from "@netless/app-slide";
+import { previewSlide, SlideViewer } from "@netless/app-slide";
 import { queryConvertingTaskStatus } from "@netless/flat-stores";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 
@@ -20,7 +20,7 @@ export const DynamicPreview = observer<DynamicPreviewProps>(function PPTPreview(
     region,
     projector,
 }) {
-    const previewer = useRef<SlidePreviewer | null>(null);
+    const previewer = useRef<SlideViewer | null>(null);
     const DynamicPreviewRef = useRef<HTMLDivElement>(null);
     const sp = useSafePromise();
 
