@@ -30,7 +30,7 @@ export abstract class CloudStorageStore {
 
     /** Human readable user total cloud storage usage */
     public get totalUsageHR(): string {
-        return Number.isNaN(this.totalUsage) ? "" : prettyBytes(this.totalUsage);
+        return Number.isNaN(this.totalUsage) ? "" : prettyBytes(this.totalUsage, { binary: true });
     }
 
     /** get fetch data pagination value of cloudStorage. */
