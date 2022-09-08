@@ -8,6 +8,7 @@ import {
     RequestErrorCode,
     isServerRequestError,
 } from "@netless/flat-server-api";
+import { errorTips } from "flat-components";
 import { isPPTX } from "../file";
 
 export enum UploadStatusType {
@@ -124,6 +125,7 @@ export class UploadTask {
             } else {
                 console.error(e);
                 this.updateStatus(UploadStatusType.Failed);
+                errorTips(e);
             }
         }
 
