@@ -415,7 +415,6 @@ importers:
       '@netless/flat-services': workspace:*
       '@netless/flat-stores': workspace:*
       '@netless/mini-svg-data-uri': 0.0.1
-      '@netless/sync-player': ^1.0.4
       '@types/loadable__component': ^5.13.4
       '@types/mime': ^2.0.3
       '@types/video.js': ^7.3.46
@@ -458,7 +457,6 @@ importers:
       '@netless/flat-service-provider-agora-rtm': link:../../service-providers/agora-rtm
       '@netless/flat-services': link:../flat-services
       '@netless/flat-stores': link:../flat-stores
-      '@netless/sync-player': 1.0.4
       antd: 4.22.8_sfoxds7t5ydpegc3knd667wn6m
       axios: 0.26.1
       classnames: 2.3.1
@@ -519,12 +517,14 @@ importers:
 
   packages/flat-stores:
     specifiers:
-      '@netless/fastboard': 1.0.0-canary.5
+      '@netless/fastboard': 1.0.0-canary.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
+      '@netless/sync-player': ^1.0.6
       '@netless/window-manager': 1.0.0-canary.52
       flat-components: workspace:*
+      hls.js: ^1.2.1
       mobx: ^6.6.1
       polly-js: ^1.8.3
       prettier: ^2.3.0
@@ -537,12 +537,14 @@ importers:
       '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
       '@netless/flat-services': link:../flat-services
+      '@netless/sync-player': 1.0.6_white-web-sdk-esm@2.16.34
       flat-components: link:../flat-components
+      hls.js: 1.2.1
       polly-js: 1.8.3
       side-effect-manager: 1.2.1
       uuid: 8.3.2
     devDependencies:
-      '@netless/fastboard': 1.0.0-canary.5_ubyj6piufzu7ykiacmzdszyuvu
+      '@netless/fastboard': 1.0.0-canary.6_ubyj6piufzu7ykiacmzdszyuvu
       '@netless/window-manager': 1.0.0-canary.52_white-web-sdk-esm@2.16.34
       mobx: 6.6.1
       prettier: 2.6.2
@@ -652,7 +654,7 @@ importers:
   service-providers/fastboard:
     specifiers:
       '@lukeed/uuid': ^2.0.0
-      '@netless/fastboard': 1.0.0-canary.5
+      '@netless/fastboard': 1.0.0-canary.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-service-provider-file-convert-netless': workspace:*
@@ -666,7 +668,7 @@ importers:
       white-web-sdk: npm:white-web-sdk-esm@2.16.34
     dependencies:
       '@lukeed/uuid': 2.0.0
-      '@netless/fastboard': 1.0.0-canary.5_ubyj6piufzu7ykiacmzdszyuvu
+      '@netless/fastboard': 1.0.0-canary.6_ubyj6piufzu7ykiacmzdszyuvu
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
@@ -3330,8 +3332,8 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/1.0.0-canary.5_ubyj6piufzu7ykiacmzdszyuvu:
-    resolution: {integrity: sha512-g+B/U4qNU7mJOoOGoUdRpEvt7n/nm6DUA+adFsZd5mYXo8tH6Jubg68a473GUxZPSiQfjFL8J9tkyZms19hLsQ==}
+  /@netless/fastboard-core/1.0.0-canary.6_ubyj6piufzu7ykiacmzdszyuvu:
+    resolution: {integrity: sha512-lcPYhsFuHEPgi+nOHtqR0bX/nbAM3fKvJXgkBwh9ATstUArz15WOb/W7AwXGw/INze+tsRbIxnbA/5Y/z8hKvA==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
       white-web-sdk: '>=2.16.0'
@@ -3341,23 +3343,23 @@ packages:
       '@netless/window-manager': 1.0.0-canary.52_white-web-sdk-esm@2.16.34
       white-web-sdk: /white-web-sdk-esm/2.16.34
 
-  /@netless/fastboard-ui/1.0.0-canary.5_q3q3mehaqyljusltw53sy5zeiu:
-    resolution: {integrity: sha512-rAh/GlC7mgdQj74dqkxaiK0c/eQzznWfhhrK1pokCEUS2hknyM8POGoBsofhfDCwl3lVjKHfZHuXaMefVuGyJA==}
+  /@netless/fastboard-ui/1.0.0-canary.6_m23f4skpfoq3arppzbqjiodchi:
+    resolution: {integrity: sha512-yvAhixIuv5QrJ1w49iRNCXUm+bLCl9U2bEU5IaCiPDL0neuo8vLOONI96KBqxS9JQLQVwNtJ/ZCnfbIUVh1/1g==}
     peerDependencies:
-      '@netless/fastboard-core': 1.0.0-canary.5
+      '@netless/fastboard-core': 1.0.0-canary.6
     dependencies:
-      '@netless/fastboard-core': 1.0.0-canary.5_ubyj6piufzu7ykiacmzdszyuvu
+      '@netless/fastboard-core': 1.0.0-canary.6_ubyj6piufzu7ykiacmzdszyuvu
       tippy.js: 6.3.7
 
-  /@netless/fastboard/1.0.0-canary.5_ubyj6piufzu7ykiacmzdszyuvu:
-    resolution: {integrity: sha512-Xn3iXTZHtK2o9rpfKDP0tdcEPf+TqZfoOTzH2iQffhpT4IDRV687TvNA1gbRSF2LcyQnA2rW+lgC1mIhCmqe/w==}
+  /@netless/fastboard/1.0.0-canary.6_ubyj6piufzu7ykiacmzdszyuvu:
+    resolution: {integrity: sha512-w36BHxkkreCVztCirKRItaMtSy80aRLaE6ApYyVLvegyiopOa4LoY5GRkL117ySxnXLK+DGnAicgB7eFc9gEqA==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
       white-web-sdk: '>=2.16.0'
     dependencies:
       '@netless/app-slide': 0.3.0-canary.7
-      '@netless/fastboard-core': 1.0.0-canary.5_ubyj6piufzu7ykiacmzdszyuvu
-      '@netless/fastboard-ui': 1.0.0-canary.5_q3q3mehaqyljusltw53sy5zeiu
+      '@netless/fastboard-core': 1.0.0-canary.6_ubyj6piufzu7ykiacmzdszyuvu
+      '@netless/fastboard-ui': 1.0.0-canary.6_m23f4skpfoq3arppzbqjiodchi
       '@netless/window-manager': 1.0.0-canary.52_white-web-sdk-esm@2.16.34
       white-web-sdk: /white-web-sdk-esm/2.16.34
 
@@ -3376,15 +3378,16 @@ packages:
       localforage: 1.10.0
       lodash: 4.17.21
 
-  /@netless/sync-player/1.0.4:
-    resolution: {integrity: sha512-tb0e/FACMwAzGMHssT6mXTpndqsOpZIobriwRPqNX1cmQrmpGeEOkblPbznmrsp2Lg+sGdxnR4D7Z/KSNz2QOg==}
+  /@netless/sync-player/1.0.6_white-web-sdk-esm@2.16.34:
+    resolution: {integrity: sha512-lyWeZOwuIOIRdHbPKM1dlvy4QSXOquYSO/vQZDEbkyRmJEtBptn7FS+sgKGWaSjKI+yol6XcAEpU7gWPrT/76w==}
     peerDependencies:
       white-web-sdk: '>=2'
     dependencies:
       '@babel/runtime': 7.18.9
       eventemitter3: 4.0.7
-      side-effect-manager: 0.1.6
+      side-effect-manager: 1.2.1
       video.js: 7.20.2
+      white-web-sdk: /white-web-sdk-esm/2.16.34
     dev: false
 
   /@netless/synced-store/2.0.7_white-web-sdk-esm@2.16.34:
@@ -6541,7 +6544,7 @@ packages:
     resolution: {integrity: sha512-o/HelwhuKpTj/frsOsbNLNgnNGVIFsVP/SW2BSF14gVl7kAfMOJ6/8wUAUvG1R1NHKrfG+2sHZTu0yauT1qBrA==}
     engines: {node: '>=6.0'}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.9
       '@babel/runtime-corejs3': 7.17.9
     dev: true
 
@@ -7056,7 +7059,7 @@ packages:
       '@babel/preset-env': 7.17.10_@babel+core@7.17.10
       '@babel/preset-react': 7.16.7_@babel+core@7.17.10
       '@babel/preset-typescript': 7.16.7_@babel+core@7.17.10
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.9
       babel-plugin-macros: 3.1.0
       babel-plugin-transform-react-remove-prop-types: 0.4.24
     transitivePeerDependencies:
@@ -11877,6 +11880,10 @@ packages:
       value-equal: 1.0.1
     dev: false
 
+  /hls.js/1.2.1:
+    resolution: {integrity: sha512-+m/5+ikSpmQQvb6FmVWZUZfzvTJMn/QVfiCGP1Oq9WW4RKrAvxlExkhhbcVGgGqLNPFk1kdFkVQur//wKu3JVw==}
+    dev: false
+
   /hmac-drbg/1.0.1:
     resolution: {integrity: sha1-0nRXAQJabHdabFRXk+1QL8DGSaE=}
     dependencies:
@@ -12224,7 +12231,7 @@ packages:
     dev: true
 
   /individual/2.0.0:
-    resolution: {integrity: sha1-gzsJfa0jKU52EXqY+zjg2a1hu5c=}
+    resolution: {integrity: sha512-pWt8hBCqJsUWI/HtcfWod7+N9SgAqyPEaF7JQjwzjn5vGrpg6aQ5qeAFQ7dx//UH4J1O+7xqew+gCeeFt6xN/g==}
     dev: false
 
   /infer-owner/1.0.4:
@@ -13840,7 +13847,7 @@ packages:
     engines: {node: '>=4'}
 
   /min-document/2.19.0:
-    resolution: {integrity: sha1-e9KC4/WELtKVu3SM3Z8f+iyCRoU=}
+    resolution: {integrity: sha512-9Wy1B3m3f66bPPmU5hdA4DR4PB2OfDU/+GS3yAB7IQozE3tqXaVv2zOjgla7MEGSRv95+ILmOuvhLkOK6wJtCQ==}
     dependencies:
       dom-walk: 0.1.2
 
@@ -15408,7 +15415,7 @@ packages:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
 
   /process/0.11.10:
-    resolution: {integrity: sha1-czIwDoQBYb2j5podHZGn1LwW8YI=}
+    resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
     engines: {node: '>= 0.6.0'}
 
   /process/0.5.2:
@@ -17301,7 +17308,7 @@ packages:
     dev: true
 
   /rust-result/1.0.0:
-    resolution: {integrity: sha1-NMdbLm3Dn+WHXlveyFteD5FTb3I=}
+    resolution: {integrity: sha512-6cJzSBU+J/RJCF063onnQf0cDUOHs9uZI1oroSGnHOph+CQTIJ5Pp2hK5kEQq1+7yE/EEWfulSNXAQ2jikPthA==}
     dependencies:
       individual: 2.0.0
     dev: false
@@ -17669,10 +17676,6 @@ packages:
       get-intrinsic: 1.1.1
       object-inspect: 1.12.0
     dev: true
-
-  /side-effect-manager/0.1.6:
-    resolution: {integrity: sha512-2AniIPP3EgNjlVSHzukf1v5v8Y3F+j6AWZPKLh+p/AM3FthtQYhBkkGeOYd1yH5USSCvSQ1qRsRVeYDuAjvZ+A==}
-    dev: false
 
   /side-effect-manager/1.1.3:
     resolution: {integrity: sha512-bD3zMAmMpVa5OR42UHK5HKY6XB/+d4NiICTMQAxwMTGkGY8epcnjK3+b0nuFb+9r1YBlVhSh+lt6wLMLdOxP4w==}

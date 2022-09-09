@@ -14,7 +14,7 @@
     "white-web-sdk": ">=2.16"
   },
   "devDependencies": {
-    "@netless/fastboard": "1.0.0-canary.5",
+    "@netless/fastboard": "1.0.0-canary.6",
     "@netless/window-manager": "1.0.0-canary.52",
     "mobx": "^6.6.1",
     "prettier": "^2.3.0",
@@ -26,7 +26,9 @@
     "@netless/flat-i18n": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
     "@netless/flat-services": "workspace:*",
+    "@netless/sync-player": "^1.0.6",
     "flat-components": "workspace:*",
+    "hls.js": "^1.2.1",
     "polly-js": "^1.8.3",
     "side-effect-manager": "^1.2.1",
     "uuid": "^8.3.2"

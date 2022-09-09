@@ -485,5 +485,10 @@
     "first-page": "已达第一页",
     "last-page": "已达最后一页",
     "page": "当前页数: {{page}}"
+  },
+  "record-nth": "第 {{nth}} 段",
+  "replay-page": {
+    "loading": "加载中",
+    "playing": "正在播放"
   }
 }

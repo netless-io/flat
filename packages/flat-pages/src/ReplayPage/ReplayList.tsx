@@ -6,8 +6,9 @@ import { observer } from "mobx-react-lite";
 import React, { useCallback, useEffect, useState } from "react";
 
 import { ClassroomReplayStore } from "@netless/flat-stores";
-import { SVGRecord, SVGPause, SVGPlay, useSafePromise } from "flat-components";
+import { SVGPause, SVGPlay, useSafePromise, SVGRecordList } from "flat-components";
 import { LoadingOutlined } from "@ant-design/icons";
+import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
 
 export interface ReplayListProps {
     classroomReplayStore: ClassroomReplayStore;
@@ -16,9 +17,11 @@ export interface ReplayListProps {
 const Trigger: DropdownProps["trigger"] = ["click"];
 
 export const ReplayList = observer<ReplayListProps>(function ReplayList({ classroomReplayStore }) {
+    const t = useTranslate();
     const sp = useSafePromise();
     const { currentRecording, recordings } = classroomReplayStore;
     const [loadingRecording, setLoading] = useState(false);
+    const currentRecordingIndex = currentRecording ? recordings.indexOf(currentRecording) : -1;
 
     const loadRecording = useCallback(
         async (recording: Recording): Promise<void> => {
@@ -49,25 +52,6 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
                     onChange={classroomReplayStore.seek}
                 />
             )}
-            <span className="replay-playlist-dropdown-wrapper">
-                <Dropdown
-                    className="replay-playlist-dropdown"
-                    overlay={
-                        <Menu
-                            items={recordings.map((r, i) => ({
-                                key: i,
-                                label: renderTime(r),
-                            }))}
-                            onClick={({ key }) => loadRecording(recordings[+key])}
-                        />
-                    }
-                    trigger={Trigger}
-                >
-                    <Button className="replay-select-playlist" disabled={loading} type="primary">
-                        <SVGRecord />
-                    </Button>
-                </Dropdown>
-            </span>
             <Button
                 disabled={!currentRecording || loading}
                 onClick={classroomReplayStore.togglePlayPause}
@@ -78,18 +62,63 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
                 <Tag color={loading ? "yellow" : "blue"}>
                     <div className="replay-current-recording">
                         {loading && <Spin indicator={<LoadingOutlined spin />} />}
-                        {loading ? "Loading" : "Now Playing"}: {renderTime(currentRecording)}
+                        {loading ? t("replay-page.loading") : t("replay-page.playing")}
+                        {": "}
+                        {renderTime(t, currentRecordingIndex, currentRecording)}
                     </div>
                 </Tag>
             )}
             <div className="replay-splitter"></div>
-            <div className="replay-time">
-                {format(classroomReplayStore.currentTimestamp, "hh:mm:ss")}
-            </div>
+            {classroomReplayStore.duration > 0 && (
+                <div className="replay-time">
+                    {renderPlayerTime(classroomReplayStore.currentTime)}/
+                    {renderPlayerTime(classroomReplayStore.duration)}
+                </div>
+            )}
+            <span className="replay-playlist-dropdown-wrapper">
+                <Dropdown
+                    className="replay-playlist-dropdown"
+                    overlay={
+                        <Menu
+                            items={recordings.map((r, i) => ({
+                                key: i,
+                                label: renderTime(t, i, r),
+                            }))}
+                            onClick={({ key }) => loadRecording(recordings[+key])}
+                        />
+                    }
+                    placement="topRight"
+                    trigger={Trigger}
+                >
+                    <Button className="replay-select-playlist" disabled={loading}>
+                        <SVGRecordList />
+                    </Button>
+                </Dropdown>
+            </span>
         </div>
     );
 });
 
-function renderTime({ beginTime, endTime }: Record<"beginTime" | "endTime", number>): string {
-    return format(beginTime, "Y-MM-dd hh:mm:ss") + " ~ " + format(endTime, "Y-MM-dd hh:mm:ss");
+function renderTime(
+    t: FlatI18nTFunction,
+    i: number,
+    record?: Record<"beginTime" | "endTime", number>,
+): string {
+    let string = t("record-nth", { nth: i + 1 });
+    if (record) {
+        const { beginTime, endTime } = record;
+        string += " (" + format(beginTime, "hh:mm:ss") + " ~ " + format(endTime, "hh:mm:ss") + ")";
+    }
+    return string;
+}
+
+function renderPlayerTime(ms: number): string {
+    const seconds = (ms / 1000) | 0;
+    const minutes = (seconds / 60) | 0;
+    const hours = (minutes / 60) | 0;
+    return `${pad2(hours)}:${pad2(minutes % 60)}:${pad2(seconds % 60)}`;
+}
+
+function pad2(i: number): string {
+    return i.toString().padStart(2, "0");
 }

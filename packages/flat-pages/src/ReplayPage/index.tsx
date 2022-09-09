@@ -85,10 +85,15 @@ const ReplayVideo = observer<ReplayVideoProps>(function ReplayVideo({
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (user && ref.current) {
-            const video = classroomReplayStore.userVideos.get(user.userUUID);
-            if (video) {
-                ref.current.appendChild(video.el());
+        if (ref.current) {
+            while (ref.current.firstChild) {
+                ref.current.removeChild(ref.current.lastChild!);
+            }
+            if (user) {
+                const video = classroomReplayStore.userVideos.get(user.userUUID);
+                if (video) {
+                    ref.current.appendChild(video);
+                }
             }
         }
     }, [classroomReplayStore.userVideos, user]);

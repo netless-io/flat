@@ -17,7 +17,6 @@
     "@netless/flat-service-provider-agora-rtm": "workspace:*",
     "@netless/flat-services": "workspace:*",
     "@netless/flat-stores": "workspace:*",
-    "@netless/sync-player": "^1.0.4",
     "antd": "^4.22.8",
     "axios": "^0.26.1",
     "classnames": "^2.3.1",

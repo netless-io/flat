@@ -1,10 +1,8 @@
-import videojs from "video.js";
-
-import { FastboardPlayer, replayFastboard, Storage } from "@netless/fastboard";
-import { SyncPlayer, VideoPlayer, WhiteboardPlayer } from "@netless/sync-player";
+import { AnimationMode, FastboardPlayer, replayFastboard, Storage } from "@netless/fastboard";
+import { SyncPlayer, AtomPlayer, NativeVideoPlayer, WhiteboardPlayer } from "@netless/sync-player";
 import { addYears } from "date-fns";
 import { ChatMsg } from "flat-components";
-import { makeAutoObservable, observable, runInAction } from "mobx";
+import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import { SideEffectManager } from "side-effect-manager";
 
 import { OnStageUsersStorageState } from "../classroom-store";
@@ -13,7 +11,7 @@ import { globalStore } from "../global-store";
 import { RoomItem, RoomRecording, roomStore } from "../room-store";
 import { UserStore } from "../user-store";
 import { TextChatHistory } from "./history";
-import { AtomPlayer, getRecordings, makeVideoPlayer, Recording } from "./utils";
+import { getRecordings, makeVideoPlayer, Recording } from "./utils";
 
 export interface ClassroomReplayStoreConfig {
     roomUUID: string;
@@ -32,7 +30,7 @@ export class ClassroomReplayStore {
     public readonly users: UserStore;
     public readonly onStageUserUUIDs = observable.array<string>();
     public readonly recordings = observable.array<Recording>();
-    public readonly userVideos = observable.map<string, videojs.Player>();
+    public readonly userVideos = observable.map<string, HTMLVideoElement>();
 
     public syncPlayer: AtomPlayer | null = null;
 
@@ -50,11 +48,18 @@ export class ClassroomReplayStore {
     public tempTimestamp = 0;
     public realTimestamp = 0;
 
+    public currentTime = 0;
+    public duration = 0;
+
     public get currentTimestamp(): number {
         return this.tempTimestamp || this.realTimestamp;
     }
 
     private cachedMessages = observable.array<ChatMsg>();
+    private _isLoadingRecording: { current: boolean; next: RoomRecording | null } = {
+        current: false,
+        next: null,
+    };
     private _oldestSeekTime = -1;
     private _isLoadingHistory = false;
     private _remoteNewestTimestamp = Infinity;
@@ -80,7 +85,10 @@ export class ClassroomReplayStore {
 
         makeAutoObservable<
             this,
-            "_isLoadingHistory" | "_oldestSeekTime" | "_remoteNewestTimestamp"
+            | "_isLoadingHistory"
+            | "_oldestSeekTime"
+            | "_remoteNewestTimestamp"
+            | "_isLoadingRecording"
         >(this, {
             sideEffect: false,
             history: false,
@@ -91,6 +99,7 @@ export class ClassroomReplayStore {
             _isLoadingHistory: false,
             _oldestSeekTime: false,
             _remoteNewestTimestamp: false,
+            _isLoadingRecording: false,
         });
     }
 
@@ -128,8 +137,18 @@ export class ClassroomReplayStore {
             return;
         }
 
+        if (this._isLoadingRecording.current) {
+            this._isLoadingRecording.next = recording;
+            return;
+        }
+
+        this._isLoadingRecording = { current: true, next: null };
         this.currentRecording = recording;
         this.isPlaying = false;
+
+        if (this.fastboard) {
+            await this.fastboard.destroy();
+        }
 
         const fastboard = await replayFastboard<ClassroomReplayEventData>({
             sdkConfig: {
@@ -149,6 +168,16 @@ export class ClassroomReplayStore {
                 cursor: true,
             },
         });
+
+        const next = this._isLoadingRecording.next;
+        if (next) {
+            this._isLoadingRecording = { current: false, next: null };
+            await fastboard.destroy();
+            return this.loadRecording(next);
+        }
+
+        this._isLoadingRecording = { current: false, next: null };
+
         this.sideEffect.push(
             fastboard.phase.subscribe(phase => {
                 runInAction(() => {
@@ -181,23 +210,61 @@ export class ClassroomReplayStore {
         this.users.initUsers([this.ownerUUID]);
         this.updateFastboard(fastboard, onStageUsersStorage);
 
+        const scrollTopStorage = fastboard.syncedStore.connectStorage<{ scrollTop: number }>(
+            "scroll",
+            { scrollTop: 0 },
+        );
+        this.sideEffect.push(
+            scrollTopStorage.on("stateChanged", () => {
+                const scrollTop = scrollTopStorage.state.scrollTop;
+                const BASE_WIDTH = 1600;
+                const { height, scale } = fastboard.manager.cameraState;
+                fastboard.manager.mainView.moveCameraToContain({
+                    originX: 0,
+                    originY: scrollTop - height / scale / 2,
+                    width: BASE_WIDTH,
+                    height: height / scale,
+                    animationMode: "immediately" as AnimationMode,
+                });
+            }),
+            "scrollTop",
+        );
+
         const players: AtomPlayer[] = [];
         players.push(new WhiteboardPlayer({ name: "whiteboard", player: fastboard.player }));
-        const userVideos = new Map<string, videojs.Player>();
+        const userVideos = new Map<string, HTMLVideoElement>();
         if (recording.videoURL) {
             const mainVideo = makeVideoPlayer(recording.videoURL);
             userVideos.set(this.userUUID, mainVideo);
-            players.push(new VideoPlayer({ name: "main", video: mainVideo }));
+            players.push(new NativeVideoPlayer({ name: "main", video: mainVideo }));
         }
         if (recording.users) {
             for (const userUUID in recording.users) {
                 const { videoURL } = recording.users[userUUID];
                 const userVideo = makeVideoPlayer(videoURL);
                 userVideos.set(userUUID, userVideo);
-                players.push(new VideoPlayer({ name: userUUID, video: userVideo }));
+                const userPlayer = new NativeVideoPlayer({ name: userUUID, video: userVideo });
+                userPlayer.on("status", () => {
+                    console.log("xxxx", userPlayer.status);
+                });
+                players.push(userPlayer);
             }
         }
         const syncPlayer = new SyncPlayer({ players });
+        this.sideEffect.add(() => {
+            const updateDuration = action(() => {
+                this.duration = syncPlayer.duration;
+            });
+            syncPlayer.on("durationchange", updateDuration);
+            const updateCurrentTime = action(() => {
+                this.currentTime = syncPlayer.currentTime;
+            });
+            syncPlayer.on("timeupdate", updateCurrentTime);
+            return () => {
+                syncPlayer.off("durationchange", updateDuration);
+                syncPlayer.off("timeupdate", updateCurrentTime);
+            };
+        }, "syncCurrentTime");
         this.sideEffect.add(() => {
             syncPlayer.on("timeupdate", this.syncMessages);
             return () => {
@@ -207,7 +274,7 @@ export class ClassroomReplayStore {
         this.updateUserVideos(userVideos, syncPlayer);
     }
 
-    public updateUserVideos(userVideos: Map<string, videojs.Player>, player: AtomPlayer): void {
+    public updateUserVideos(userVideos: Map<string, HTMLVideoElement>, player: AtomPlayer): void {
         this.userVideos.replace(userVideos);
         this.syncPlayer = player;
     }
@@ -216,9 +283,6 @@ export class ClassroomReplayStore {
         fastboard: FastboardPlayer,
         onStageUsersStorage: Storage<OnStageUsersStorageState>,
     ): void {
-        if (this.fastboard) {
-            this.fastboard.destroy();
-        }
         this.fastboard = fastboard;
         this.onStageUsersStorage = onStageUsersStorage;
     }

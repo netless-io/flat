@@ -485,5 +485,10 @@
     "first-page": "This is the first page",
     "last-page": "This is the last page",
     "page": "Page {{page}}"
+  },
+  "record-nth": "Part {{nth}}",
+  "replay-page": {
+    "loading": "Loading",
+    "playing": "Now Playing"
   }
 }
