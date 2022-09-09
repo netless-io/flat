@@ -17,7 +17,7 @@ import { registerColorShortcut } from "./color-shortcut";
 import { injectCursor } from "./inject-cursor";
 import { ScrollMode } from "./scroll-mode";
 
-export { replayFastboard, register, apps as stockedApps } from "@netless/fastboard";
+export { replayFastboard, register, stockedApps } from "@netless/fastboard";
 export { FastboardFileInsert } from "./file-insert";
 
 declare global {
