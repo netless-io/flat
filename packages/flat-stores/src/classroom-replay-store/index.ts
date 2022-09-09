@@ -1,6 +1,6 @@
 import videojs from "video.js";
 
-import { FastboardPlayer, replayFastboard, Storage } from "@netless/fastboard";
+import { AnimationMode, FastboardPlayer, replayFastboard, Storage } from "@netless/fastboard";
 import { SyncPlayer, VideoPlayer, WhiteboardPlayer } from "@netless/sync-player";
 import { addYears } from "date-fns";
 import { ChatMsg } from "flat-components";
@@ -55,6 +55,10 @@ export class ClassroomReplayStore {
     }
 
     private cachedMessages = observable.array<ChatMsg>();
+    private _isLoadingRecording: { current: boolean; next: RoomRecording | null } = {
+        current: false,
+        next: null,
+    };
     private _oldestSeekTime = -1;
     private _isLoadingHistory = false;
     private _remoteNewestTimestamp = Infinity;
@@ -80,7 +84,10 @@ export class ClassroomReplayStore {
 
         makeAutoObservable<
             this,
-            "_isLoadingHistory" | "_oldestSeekTime" | "_remoteNewestTimestamp"
+            | "_isLoadingHistory"
+            | "_oldestSeekTime"
+            | "_remoteNewestTimestamp"
+            | "_isLoadingRecording"
         >(this, {
             sideEffect: false,
             history: false,
@@ -91,6 +98,7 @@ export class ClassroomReplayStore {
             _isLoadingHistory: false,
             _oldestSeekTime: false,
             _remoteNewestTimestamp: false,
+            _isLoadingRecording: false,
         });
     }
 
@@ -128,8 +136,18 @@ export class ClassroomReplayStore {
             return;
         }
 
+        if (this._isLoadingRecording.current) {
+            this._isLoadingRecording.next = recording;
+            return;
+        }
+
+        this._isLoadingRecording = { current: true, next: null };
         this.currentRecording = recording;
         this.isPlaying = false;
+
+        if (this.fastboard) {
+            await this.fastboard.destroy();
+        }
 
         const fastboard = await replayFastboard<ClassroomReplayEventData>({
             sdkConfig: {
@@ -149,6 +167,16 @@ export class ClassroomReplayStore {
                 cursor: true,
             },
         });
+
+        const next = this._isLoadingRecording.next;
+        if (next) {
+            this._isLoadingRecording = { current: false, next: null };
+            await fastboard.destroy();
+            return this.loadRecording(next);
+        }
+
+        this._isLoadingRecording = { current: false, next: null };
+
         this.sideEffect.push(
             fastboard.phase.subscribe(phase => {
                 runInAction(() => {
@@ -180,6 +208,26 @@ export class ClassroomReplayStore {
 
         this.users.initUsers([this.ownerUUID]);
         this.updateFastboard(fastboard, onStageUsersStorage);
+
+        const scrollTopStorage = fastboard.syncedStore.connectStorage<{ scrollTop: number }>(
+            "scroll",
+            { scrollTop: 0 },
+        );
+        this.sideEffect.push(
+            scrollTopStorage.on("stateChanged", () => {
+                const scrollTop = scrollTopStorage.state.scrollTop;
+                const BASE_WIDTH = 1600;
+                const { height, scale } = fastboard.manager.cameraState;
+                fastboard.manager.mainView.moveCameraToContain({
+                    originX: 0,
+                    originY: scrollTop - height / scale / 2,
+                    width: BASE_WIDTH,
+                    height: height / scale,
+                    animationMode: "immediately" as AnimationMode,
+                });
+            }),
+            "scrollTop",
+        );
 
         const players: AtomPlayer[] = [];
         players.push(new WhiteboardPlayer({ name: "whiteboard", player: fastboard.player }));
@@ -216,9 +264,6 @@ export class ClassroomReplayStore {
         fastboard: FastboardPlayer,
         onStageUsersStorage: Storage<OnStageUsersStorageState>,
     ): void {
-        if (this.fastboard) {
-            this.fastboard.destroy();
-        }
         this.fastboard = fastboard;
         this.onStageUsersStorage = onStageUsersStorage;
     }

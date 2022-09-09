@@ -8,6 +8,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ClassroomReplayStore } from "@netless/flat-stores";
 import { SVGRecord, SVGPause, SVGPlay, useSafePromise } from "flat-components";
 import { LoadingOutlined } from "@ant-design/icons";
+import { isSameDay } from "date-fns";
+import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
 
 export interface ReplayListProps {
     classroomReplayStore: ClassroomReplayStore;
@@ -16,9 +18,11 @@ export interface ReplayListProps {
 const Trigger: DropdownProps["trigger"] = ["click"];
 
 export const ReplayList = observer<ReplayListProps>(function ReplayList({ classroomReplayStore }) {
+    const t = useTranslate();
     const sp = useSafePromise();
     const { currentRecording, recordings } = classroomReplayStore;
     const [loadingRecording, setLoading] = useState(false);
+    const currentRecordingIndex = currentRecording ? recordings.indexOf(currentRecording) : -1;
 
     const loadRecording = useCallback(
         async (recording: Recording): Promise<void> => {
@@ -56,7 +60,7 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
                         <Menu
                             items={recordings.map((r, i) => ({
                                 key: i,
-                                label: renderTime(r),
+                                label: renderTime(t, i, r),
                             }))}
                             onClick={({ key }) => loadRecording(recordings[+key])}
                         />
@@ -78,18 +82,38 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
                 <Tag color={loading ? "yellow" : "blue"}>
                     <div className="replay-current-recording">
                         {loading && <Spin indicator={<LoadingOutlined spin />} />}
-                        {loading ? "Loading" : "Now Playing"}: {renderTime(currentRecording)}
+                        {loading ? t("replay-page.loading") : t("replay-page.playing")}
+                        {": "}
+                        {renderTime(t, currentRecordingIndex, currentRecording)}
                     </div>
                 </Tag>
             )}
             <div className="replay-splitter"></div>
-            <div className="replay-time">
-                {format(classroomReplayStore.currentTimestamp, "hh:mm:ss")}
-            </div>
+            {currentRecording && (
+                <div className="replay-time">
+                    {format(classroomReplayStore.currentTimestamp, "hh:mm:ss")}
+                </div>
+            )}
         </div>
     );
 });
 
-function renderTime({ beginTime, endTime }: Record<"beginTime" | "endTime", number>): string {
-    return format(beginTime, "Y-MM-dd hh:mm:ss") + " ~ " + format(endTime, "Y-MM-dd hh:mm:ss");
+function renderTime(
+    t: FlatI18nTFunction,
+    i: number,
+    record?: Record<"beginTime" | "endTime", number>,
+): string {
+    let string = t("record-nth", { nth: i + 1 });
+    if (record) {
+        const { beginTime, endTime } = record;
+        string +=
+            " (" +
+            format(beginTime, "Y-MM-dd hh:mm:ss") +
+            " ~ " +
+            (isSameDay(beginTime, endTime)
+                ? format(endTime, "hh:mm:ss")
+                : format(endTime, "Y-MM-dd hh:mm:ss")) +
+            ")";
+    }
+    return string;
 }
