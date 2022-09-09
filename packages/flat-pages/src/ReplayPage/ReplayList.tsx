@@ -71,7 +71,7 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
             <div className="replay-splitter"></div>
             {classroomReplayStore.duration > 0 && (
                 <div className="replay-time">
-                    {renderPlayerTime(classroomReplayStore.currentTime, 3)}/
+                    {renderPlayerTime(classroomReplayStore.currentTime)}/
                     {renderPlayerTime(classroomReplayStore.duration)}
                 </div>
             )}
@@ -112,14 +112,13 @@ function renderTime(
     return string;
 }
 
-function renderPlayerTime(ms: number, precision = 0): string {
+function renderPlayerTime(ms: number): string {
     const seconds = (ms / 1000) | 0;
     const minutes = (seconds / 60) | 0;
     const hours = (minutes / 60) | 0;
-    const base = `${padN(hours)}:${padN(minutes % 60)}:${padN(seconds % 60)}`;
-    return precision ? base + "." + padN(ms % 1000, 3) : base;
+    return `${pad2(hours)}:${pad2(minutes % 60)}:${pad2(seconds % 60)}`;
 }
 
-function padN(i: number, n = 2): string {
-    return i.toString().padStart(n, "0");
+function pad2(i: number): string {
+    return i.toString().padStart(2, "0");
 }
