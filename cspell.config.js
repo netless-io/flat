@@ -110,6 +110,7 @@ module.exports = {
         "plyr", // @netless/app-plyr
         "lukeed", // @luckeed/uuid
         "EXTINF",
+        "mpegurl", // hls.js
 
         // less
         "isstring",

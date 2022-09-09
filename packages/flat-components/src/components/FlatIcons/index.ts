@@ -95,6 +95,7 @@ export * from "./icons/SVGPlay";
 export * from "./icons/SVGPlus";
 export * from "./icons/SVGQuestion";
 export * from "./icons/SVGRecord";
+export * from "./icons/SVGRecordList";
 export * from "./icons/SVGRecordStop";
 export * from "./icons/SVGRedo";
 export * from "./icons/SVGReset";

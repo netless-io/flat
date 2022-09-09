@@ -92,7 +92,7 @@ const ReplayVideo = observer<ReplayVideoProps>(function ReplayVideo({
             if (user) {
                 const video = classroomReplayStore.userVideos.get(user.userUUID);
                 if (video) {
-                    ref.current.appendChild(video.el());
+                    ref.current.appendChild(video);
                 }
             }
         }

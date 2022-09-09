@@ -1,12 +1,8 @@
 import { usersInfo } from "@netless/flat-server-api";
-import { VideoPlayer } from "@netless/sync-player";
 import { toJS } from "mobx";
-import videojs from "video.js"; // TODO: move videojs to some player service
+import Hls from "hls.js";
 
 import { RoomRecording, roomStore } from "../room-store";
-
-type VideoPlayerType = typeof VideoPlayer;
-export type AtomPlayer = VideoPlayerType extends new (...args: any[]) => infer T ? T : never;
 
 export interface UserRecordingInfo {
     name: string;
@@ -66,10 +62,24 @@ export async function getRecordings(roomUUID: string): Promise<Recording[]> {
     return result;
 }
 
-export function makeVideoPlayer(url: string): videojs.Player {
+const M3U8_EXT = /\.m3u8$/i;
+
+export function makeVideoPlayer(url: string): HTMLVideoElement {
     const $video = document.createElement("video");
     const $source = document.createElement("source");
     $source.src = url;
     $video.appendChild($source);
-    return videojs($video);
+    document.body.appendChild($video); // XXX: videojs warn about detached video element
+
+    if (M3U8_EXT.test(url)) {
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(url);
+            hls.attachMedia($video);
+        } else if ($video.canPlayType("application/vnd.apple.mpegurl")) {
+            $video.src = url;
+        }
+    }
+
+    return $video;
 }

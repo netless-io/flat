@@ -6,9 +6,8 @@ import { observer } from "mobx-react-lite";
 import React, { useCallback, useEffect, useState } from "react";
 
 import { ClassroomReplayStore } from "@netless/flat-stores";
-import { SVGRecord, SVGPause, SVGPlay, useSafePromise } from "flat-components";
+import { SVGPause, SVGPlay, useSafePromise, SVGRecordList } from "flat-components";
 import { LoadingOutlined } from "@ant-design/icons";
-import { isSameDay } from "date-fns";
 import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
 
 export interface ReplayListProps {
@@ -53,25 +52,6 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
                     onChange={classroomReplayStore.seek}
                 />
             )}
-            <span className="replay-playlist-dropdown-wrapper">
-                <Dropdown
-                    className="replay-playlist-dropdown"
-                    overlay={
-                        <Menu
-                            items={recordings.map((r, i) => ({
-                                key: i,
-                                label: renderTime(t, i, r),
-                            }))}
-                            onClick={({ key }) => loadRecording(recordings[+key])}
-                        />
-                    }
-                    trigger={Trigger}
-                >
-                    <Button className="replay-select-playlist" disabled={loading} type="primary">
-                        <SVGRecord />
-                    </Button>
-                </Dropdown>
-            </span>
             <Button
                 disabled={!currentRecording || loading}
                 onClick={classroomReplayStore.togglePlayPause}
@@ -89,11 +69,32 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
                 </Tag>
             )}
             <div className="replay-splitter"></div>
-            {currentRecording && (
+            {classroomReplayStore.duration > 0 && (
                 <div className="replay-time">
-                    {format(classroomReplayStore.currentTimestamp, "hh:mm:ss")}
+                    {renderPlayerTime(classroomReplayStore.currentTime, 3)}/
+                    {renderPlayerTime(classroomReplayStore.duration)}
                 </div>
             )}
+            <span className="replay-playlist-dropdown-wrapper">
+                <Dropdown
+                    className="replay-playlist-dropdown"
+                    overlay={
+                        <Menu
+                            items={recordings.map((r, i) => ({
+                                key: i,
+                                label: renderTime(t, i, r),
+                            }))}
+                            onClick={({ key }) => loadRecording(recordings[+key])}
+                        />
+                    }
+                    placement="topRight"
+                    trigger={Trigger}
+                >
+                    <Button className="replay-select-playlist" disabled={loading}>
+                        <SVGRecordList />
+                    </Button>
+                </Dropdown>
+            </span>
         </div>
     );
 });
@@ -106,14 +107,19 @@ function renderTime(
     let string = t("record-nth", { nth: i + 1 });
     if (record) {
         const { beginTime, endTime } = record;
-        string +=
-            " (" +
-            format(beginTime, "Y-MM-dd hh:mm:ss") +
-            " ~ " +
-            (isSameDay(beginTime, endTime)
-                ? format(endTime, "hh:mm:ss")
-                : format(endTime, "Y-MM-dd hh:mm:ss")) +
-            ")";
+        string += " (" + format(beginTime, "hh:mm:ss") + " ~ " + format(endTime, "hh:mm:ss") + ")";
     }
     return string;
+}
+
+function renderPlayerTime(ms: number, precision = 0): string {
+    const seconds = (ms / 1000) | 0;
+    const minutes = (seconds / 60) | 0;
+    const hours = (minutes / 60) | 0;
+    const base = `${padN(hours)}:${padN(minutes % 60)}:${padN(seconds % 60)}`;
+    return precision ? base + "." + padN(ms % 1000, 3) : base;
+}
+
+function padN(i: number, n = 2): string {
+    return i.toString().padStart(n, "0");
 }
