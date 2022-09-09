@@ -521,7 +521,7 @@ importers:
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
-      '@netless/sync-player': ^1.0.5
+      '@netless/sync-player': ^1.0.6
       '@netless/window-manager': 1.0.0-canary.52
       flat-components: workspace:*
       hls.js: ^1.2.1
@@ -537,7 +537,7 @@ importers:
       '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
       '@netless/flat-services': link:../flat-services
-      '@netless/sync-player': 1.0.5_white-web-sdk-esm@2.16.34
+      '@netless/sync-player': 1.0.6_white-web-sdk-esm@2.16.34
       flat-components: link:../flat-components
       hls.js: 1.2.1
       polly-js: 1.8.3
@@ -3378,8 +3378,8 @@ packages:
       localforage: 1.10.0
       lodash: 4.17.21
 
-  /@netless/sync-player/1.0.5_white-web-sdk-esm@2.16.34:
-    resolution: {integrity: sha512-wXwY6WB+LeaxXgL7Y6tPY8tMLHyyBLMzEMwRZKcJ2kVeCcAnMi+sqltbDvrgC+FR7iv50I1qI8S6dKjJ/mh/yA==}
+  /@netless/sync-player/1.0.6_white-web-sdk-esm@2.16.34:
+    resolution: {integrity: sha512-lyWeZOwuIOIRdHbPKM1dlvy4QSXOquYSO/vQZDEbkyRmJEtBptn7FS+sgKGWaSjKI+yol6XcAEpU7gWPrT/76w==}
     peerDependencies:
       white-web-sdk: '>=2'
     dependencies:
@@ -6544,7 +6544,7 @@ packages:
     resolution: {integrity: sha512-o/HelwhuKpTj/frsOsbNLNgnNGVIFsVP/SW2BSF14gVl7kAfMOJ6/8wUAUvG1R1NHKrfG+2sHZTu0yauT1qBrA==}
     engines: {node: '>=6.0'}
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.9
       '@babel/runtime-corejs3': 7.17.9
     dev: true
 
@@ -7059,7 +7059,7 @@ packages:
       '@babel/preset-env': 7.17.10_@babel+core@7.17.10
       '@babel/preset-react': 7.16.7_@babel+core@7.17.10
       '@babel/preset-typescript': 7.16.7_@babel+core@7.17.10
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.18.9
       babel-plugin-macros: 3.1.0
       babel-plugin-transform-react-remove-prop-types: 0.4.24
     transitivePeerDependencies:
