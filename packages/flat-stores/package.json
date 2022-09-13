@@ -26,7 +26,7 @@
     "@netless/flat-i18n": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
     "@netless/flat-services": "workspace:*",
-    "@netless/sync-player": "^1.0.6",
+    "@netless/sync-player": "^1.0.7",
     "flat-components": "workspace:*",
     "hls.js": "^1.2.1",
     "polly-js": "^1.8.3",
