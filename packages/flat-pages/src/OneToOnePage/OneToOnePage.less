@@ -4,6 +4,7 @@
     // then this window can't to resize size of window.
     // so that wrap draggable elements and add padding property to achieve resize feature.
     // TODO: upgrade new version of the Electron after remove the PATCH.
+    width: 100%;
     height: 100%;
     padding: 0.5px;
 }
@@ -14,25 +15,37 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
     height: 100%;
-    background: #edeff2;
+    background: #f9f9f9;
 }
 
 .one-to-one-realtime-box {
+    width: 100%;
+    height: 100%;
     -webkit-app-region: no-drag;
 
     overflow: hidden;
     display: flex;
     flex-direction: column;
     background-color: #fff;
+
+    .topbar-box {
+        border-bottom: 1px solid var(--grey-0);
+    }
 }
 
 .one-to-one-realtime-content {
     flex: 1;
     display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 .one-to-one-realtime-content-container {
+    flex: 1;
+    overflow: hidden;
     position: relative;
 }
 

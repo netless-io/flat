@@ -6,6 +6,7 @@
     width: @panel-width;
     height: 100%;
     position: relative;
+    border-left: 1px solid var(--grey-0);
 }
 
 .realtime-panel-video-slot {
@@ -31,8 +32,10 @@
 
 .realtime-panel-wrap {
     position: relative;
+    padding-top: 8px;
     width: 0;
     transition: width 0.4s;
+    flex-shrink: 0;
 
     &.isActive {
         width: @panel-width;
