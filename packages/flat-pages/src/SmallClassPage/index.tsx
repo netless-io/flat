@@ -102,10 +102,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
 
         function renderAvatars(): React.ReactNode {
             return (
-                <div
-                    className="small-class-realtime-avatars-wrap"
-                    style={{ maxWidth: `${whiteboardStore.smallClassAvatarWrapMaxWidth}px` }}
-                >
+                <div className="small-class-realtime-avatars-wrap">
                     {classroomStore.isJoinedRTC && (
                         <div className="small-class-realtime-avatars">
                             <RTCAvatar

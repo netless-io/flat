@@ -15,14 +15,14 @@
     justify-content: center;
     flex-direction: row;
     height: 40px;
+    flex-shrink: 0;
     padding: 0 8px;
     font-size: 16px;
-    border-bottom: 0.5px #dbe1ea solid;
     user-select: none;
     &.isMac {
         border-top: none;
     }
-    
+
     &.isWin {
         border-bottom: none;
     }
@@ -49,8 +49,9 @@
     .topbar-box {
         border-color: var(--grey-8);
     }
-    
-    .topbar-divider, .topbar-content-divider{
+
+    .topbar-divider,
+    .topbar-content-divider {
         background-color: var(--grey-8);
     }
 }

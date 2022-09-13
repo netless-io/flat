@@ -40,7 +40,6 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     const { room, phase, whiteboard } = whiteboardStore;
     const isDark = useContext(DarkModeContext);
 
-    const [whiteboardEl, setWhiteboardEl] = useState<HTMLElement | null>(null);
     const [saveAnnotationVisible, showSaveAnnotation] = useState(false);
     const [saveAnnotationImages, setSaveAnnotationImages] = useState<
         SaveAnnotationModalProps["images"]
@@ -90,33 +89,14 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     }, [isReconnecting, t]);
 
     useEffect(() => {
-        if (whiteboardEl) {
-            whiteboardOnResize();
-            window.addEventListener("resize", whiteboardOnResize);
-        }
-        return () => {
-            window.removeEventListener("resize", whiteboardOnResize);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [whiteboardEl]);
-
-    useEffect(() => {
         if (saveAnnotationVisible) {
             setSaveAnnotationImages(whiteboardStore.getSaveAnnotationImages());
         }
     }, [saveAnnotationVisible, whiteboardStore]);
 
-    useEffect(() => {
-        whiteboardOnResize();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [whiteboardStore.isRightSideClose]);
-
     const bindWhiteboard = useCallback(
         (ref: HTMLDivElement | null) => {
-            if (ref) {
-                whiteboard.render(ref);
-                setWhiteboardEl(ref);
-            }
+            ref && whiteboard.render(ref);
         },
         [whiteboard],
     );
@@ -158,61 +138,6 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         },
         [room, whiteboardStore],
     );
-
-    const whiteboardOnResize = useCallback(() => {
-        if (whiteboardEl) {
-            const whiteboardRatio = whiteboardStore.getWhiteboardRatio();
-
-            const isSmallClass = whiteboardStore.smallClassRatio === whiteboardRatio;
-            const classRoomRightSideWidth = whiteboardStore.isRightSideClose ? 0 : 304;
-
-            let classRoomTopBarHeight: number;
-            let classRoomMinWidth: number;
-            let classRoomMinHeight: number;
-            let smallClassAvatarWrapMaxWidth: number;
-
-            if (isSmallClass) {
-                classRoomTopBarHeight = 150;
-                classRoomMinWidth = whiteboardStore.isRightSideClose ? 826 : 1130;
-                classRoomMinHeight = 610;
-            } else {
-                classRoomTopBarHeight = 40;
-                classRoomMinWidth = whiteboardStore.isRightSideClose ? 716 : 1020;
-                classRoomMinHeight = 522;
-            }
-
-            const whiteboardWidth = Math.min(
-                window.innerWidth - classRoomRightSideWidth,
-                (window.innerHeight - classRoomTopBarHeight) / whiteboardRatio,
-            );
-
-            const whiteboardHeight = whiteboardWidth * whiteboardRatio;
-
-            whiteboardEl.style.width = `${whiteboardWidth}px`;
-            whiteboardEl.style.height = `${whiteboardHeight}px`;
-
-            if (window.innerHeight < classRoomMinHeight || window.innerWidth < classRoomMinWidth) {
-                const whiteboardMinWidth = classRoomMinWidth - classRoomRightSideWidth;
-
-                whiteboardEl.style.minWidth = `${whiteboardMinWidth}px`;
-                whiteboardEl.style.minHeight = `${whiteboardMinWidth * whiteboardRatio}px`;
-            }
-
-            const classRoomWidth = whiteboardWidth + classRoomRightSideWidth;
-            const classRoomWithoutRightSideWidth = classRoomMinWidth - classRoomRightSideWidth;
-
-            if (whiteboardStore.isRightSideClose) {
-                smallClassAvatarWrapMaxWidth =
-                    classRoomWidth < classRoomWithoutRightSideWidth
-                        ? classRoomWithoutRightSideWidth
-                        : classRoomWidth;
-            } else {
-                smallClassAvatarWrapMaxWidth =
-                    classRoomWidth < classRoomMinWidth ? classRoomMinWidth : classRoomWidth;
-            }
-            whiteboardStore.updateSmallClassAvatarWrapMaxWidth(smallClassAvatarWrapMaxWidth);
-        }
-    }, [whiteboardEl, whiteboardStore]);
 
     return (
         <>

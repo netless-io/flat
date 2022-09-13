@@ -28,7 +28,7 @@ export const ChatPanel = /* @__PURE__ */ observer<ChatPanelProps>(function ChatP
                     key="messages"
                     tab={
                         <ChatTabTitle>
-                            <SVGChat />
+                            <SVGChat active={activeTab === "messages"} />
                             <span>{t("messages")}</span>
                         </ChatTabTitle>
                     }
@@ -39,7 +39,7 @@ export const ChatPanel = /* @__PURE__ */ observer<ChatPanelProps>(function ChatP
                     key="users"
                     tab={
                         <ChatTabTitle {...props}>
-                            <SVGUserGroup />
+                            <SVGUserGroup active={activeTab === "users"} />
                             <span>{t("users")}</span>
                         </ChatTabTitle>
                     }
