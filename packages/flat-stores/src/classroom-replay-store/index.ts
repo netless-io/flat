@@ -244,9 +244,6 @@ export class ClassroomReplayStore {
                 const userVideo = makeVideoPlayer(videoURL);
                 userVideos.set(userUUID, userVideo);
                 const userPlayer = new NativeVideoPlayer({ name: userUUID, video: userVideo });
-                userPlayer.on("status", () => {
-                    console.log("xxxx", userPlayer.status);
-                });
                 players.push(userPlayer);
             }
         }
