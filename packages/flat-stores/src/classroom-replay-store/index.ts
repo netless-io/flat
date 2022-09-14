@@ -194,18 +194,20 @@ export class ClassroomReplayStore {
             "onStageUsers",
             {},
         );
-        this.sideEffect.push(
-            onStageUsersStorage.on("stateChanged", () => {
-                const onStageUserUUIDs = [];
-                for (const key in onStageUsersStorage.state) {
-                    if (onStageUsersStorage.state[key]) {
-                        onStageUserUUIDs.push(key);
-                    }
+        const refreshOnStageUserUUIDs = (): void => {
+            const onStageUserUUIDs = [];
+            for (const key in onStageUsersStorage.state) {
+                if (onStageUsersStorage.state[key]) {
+                    onStageUserUUIDs.push(key);
                 }
-                this.onStageUserUUIDs.replace(onStageUserUUIDs);
-            }),
+            }
+            this.onStageUserUUIDs.replace(onStageUserUUIDs);
+        };
+        this.sideEffect.push(
+            onStageUsersStorage.on("stateChanged", refreshOnStageUserUUIDs),
             "onStageUsers",
         );
+        refreshOnStageUserUUIDs();
 
         this.users.initUsers([this.ownerUUID]);
         this.updateFastboard(fastboard, onStageUsersStorage);
