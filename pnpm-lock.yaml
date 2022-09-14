@@ -152,7 +152,7 @@ importers:
       '@netless/app-plyr': ^0.2.2
       '@netless/app-quill': ^0.1.0
       '@netless/app-selector': ^0.0.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
@@ -216,7 +216,7 @@ importers:
       '@netless/app-plyr': 0.2.2
       '@netless/app-quill': 0.1.0
       '@netless/app-selector': 0.0.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
@@ -406,7 +406,7 @@ importers:
       '@netless/app-iframe-bridge': ^0.0.2
       '@netless/app-monaco': 0.2.0-canary.0
       '@netless/app-plyr': ^0.2.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
@@ -449,7 +449,7 @@ importers:
       '@netless/app-iframe-bridge': 0.0.2
       '@netless/app-monaco': 0.2.0-canary.0
       '@netless/app-plyr': 0.2.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
@@ -729,13 +729,13 @@ importers:
 
   service-providers/file-preview-netless-slide:
     specifiers:
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       prettier: ^2.3.0
       typescript: ^4.7.4
     dependencies:
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
     devDependencies:
@@ -756,7 +756,7 @@ importers:
       '@netless/app-plyr': ^0.2.2
       '@netless/app-quill': ^0.1.0
       '@netless/app-selector': ^0.0.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
@@ -819,7 +819,7 @@ importers:
       '@netless/app-plyr': 0.2.2
       '@netless/app-quill': 0.1.0
       '@netless/app-selector': 0.0.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
@@ -3308,6 +3308,12 @@ packages:
       - ts-node
     dev: false
 
+  /@netless/app-slide/0.3.0-canary.10:
+    resolution: {integrity: sha512-pE85t1X0NkbIggKOf3kGImiY6sJmHocefGnsfCurRSVyJtX8dtya4esaFYDGfjuP6bJ+saNm9SgsnTKAkQGW+A==}
+    dependencies:
+      '@netless/slide': 0.6.5
+    dev: false
+
   /@netless/app-slide/0.3.0-canary.7:
     resolution: {integrity: sha512-k93RBwVnNHH6OdG5Q+6WKnxBcJm0WHJ4sQAZcgGBW4c87/TaZiE2h7NoEcG45Au+D+szos8TxjaLV/zM0mmKXg==}
     dependencies:
@@ -3377,6 +3383,17 @@ packages:
       eventemitter3: 4.0.7
       localforage: 1.10.0
       lodash: 4.17.21
+
+  /@netless/slide/0.6.5:
+    resolution: {integrity: sha512-HxoeX7pSUpQezdCy0SH7FkBOPdn9X6n2ESC4YuEe8u5bsBXMrjso+YxG/ljuc7bi72eKBw9CVwBaWrdYJ8dglw==}
+    dependencies:
+      '@juggle/resize-observer': 3.4.0
+      '@types/lodash': 4.14.182
+      dat.gui: 0.7.9
+      eventemitter3: 4.0.7
+      localforage: 1.10.0
+      lodash: 4.17.21
+    dev: false
 
   /@netless/sync-player/1.0.7_white-web-sdk-esm@2.16.34:
     resolution: {integrity: sha512-r4gnHRosOI95NYZwqSedDI8WR4m5mkuO8Ueq9blHOJ1ZjbeB8bMIdmZJ4nLcXKO/EhxEt8xlF8qJelOF7LCsrA==}
