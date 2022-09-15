@@ -95,8 +95,7 @@
     },
     "overrides": {
       "@types/eslint": "^8",
-      "@types/react": "^17",
-      "@netless/app-slide": "^0.3.0-canary.10"
+      "@types/react": "^17"
     }
   }
 }

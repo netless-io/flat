@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@lukeed/uuid": "^2.0.0",
-    "@netless/fastboard": "1.0.0-canary.6",
+    "@netless/fastboard": "1.0.0-canary.7",
     "@netless/flat-i18n": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
     "@netless/flat-service-provider-file-convert-netless": "workspace:*",
