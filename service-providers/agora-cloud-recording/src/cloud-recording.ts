@@ -110,9 +110,6 @@ export class AgoraCloudRecording extends IServiceRecording {
                                     channelType: channelType,
                                     streamMode: "standard",
                                     videoStreamType: 1,
-                                    privateParams: JSON.stringify({
-                                        correctEXTINF: true,
-                                    }),
                                 },
                             },
                         },
