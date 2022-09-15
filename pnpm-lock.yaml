@@ -6,7 +6,6 @@ neverBuiltDependencies:
 overrides:
   '@types/eslint': ^8
   '@types/react': ^17
-  '@netless/app-slide': ^0.3.0-canary.10
 
 importers:
 
@@ -153,7 +152,7 @@ importers:
       '@netless/app-plyr': ^0.2.2
       '@netless/app-quill': ^0.1.0
       '@netless/app-selector': ^0.0.2
-      '@netless/app-slide': ^0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
@@ -407,7 +406,7 @@ importers:
       '@netless/app-iframe-bridge': ^0.0.2
       '@netless/app-monaco': 0.2.0-canary.0
       '@netless/app-plyr': ^0.2.2
-      '@netless/app-slide': ^0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
@@ -730,7 +729,7 @@ importers:
 
   service-providers/file-preview-netless-slide:
     specifiers:
-      '@netless/app-slide': ^0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       prettier: ^2.3.0
@@ -757,7 +756,7 @@ importers:
       '@netless/app-plyr': ^0.2.2
       '@netless/app-quill': ^0.1.0
       '@netless/app-selector': ^0.0.2
-      '@netless/app-slide': ^0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
