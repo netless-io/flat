@@ -5,7 +5,6 @@
     overflow: hidden;
     user-select: none;
     background: #000;
-    border-radius: 6px;
 
     &::after {
         content: "";
@@ -21,6 +20,10 @@
 
     &:hover::after {
         opacity: 1;
+    }
+
+    &.is-small {
+        border-radius: 6px;
     }
 }
 

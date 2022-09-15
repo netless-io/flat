@@ -1,10 +1,10 @@
 import "./style.less";
+import chatMessagesDefaultSVG from "./icons/chat-messages-default.svg";
 
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { ChatTypeBox, ChatTypeBoxProps } from "../ChatTypeBox";
 import { ChatMessageList, ChatMessageListProps } from "../ChatMessageList";
-import { useTranslate } from "@netless/flat-i18n";
 
 export type ChatMessagesProps = ChatTypeBoxProps & ChatMessageListProps;
 
@@ -12,7 +12,6 @@ export const ChatMessages = /* @__PURE__ */ observer<ChatMessagesProps>(function
     messages,
     ...restProps
 }) {
-    const t = useTranslate();
     return (
         <div className="chat-messages-wrap">
             <div className="chat-messages">
@@ -21,7 +20,9 @@ export const ChatMessages = /* @__PURE__ */ observer<ChatMessagesProps>(function
                         <ChatMessageList messages={messages} {...restProps} />
                     </div>
                 ) : (
-                    <div className="chat-messages-default">{t("say-something")}</div>
+                    <div className="chat-messages-default">
+                        <img src={chatMessagesDefaultSVG}></img>
+                    </div>
                 )}
             </div>
             <ChatTypeBox {...restProps} />

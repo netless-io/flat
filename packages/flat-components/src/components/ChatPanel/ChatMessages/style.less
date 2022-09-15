@@ -1,14 +1,26 @@
 .chat-messages-default {
     position: absolute;
-    top: 40%;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     text-align: center;
     white-space: nowrap;
     word-break: keep-all;
-    color: var(--text-weak);
+    color: var(--text-weaker);
     user-select: none;
     pointer-events: none;
+
+    img {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+.flat-color-scheme-dark {
+    .chat-messages-default img {
+        filter: invert(0.875) hue-rotate(180deg);
+    }
 }
 
 .chat-messages-wrap {
