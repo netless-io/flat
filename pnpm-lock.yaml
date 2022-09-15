@@ -6,6 +6,7 @@ neverBuiltDependencies:
 overrides:
   '@types/eslint': ^8
   '@types/react': ^17
+  '@netless/app-slide': ^0.3.0-canary.10
 
 importers:
 
@@ -152,7 +153,7 @@ importers:
       '@netless/app-plyr': ^0.2.2
       '@netless/app-quill': ^0.1.0
       '@netless/app-selector': ^0.0.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': ^0.3.0-canary.10
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
@@ -216,7 +217,7 @@ importers:
       '@netless/app-plyr': 0.2.2
       '@netless/app-quill': 0.1.0
       '@netless/app-selector': 0.0.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
@@ -406,7 +407,7 @@ importers:
       '@netless/app-iframe-bridge': ^0.0.2
       '@netless/app-monaco': 0.2.0-canary.0
       '@netless/app-plyr': ^0.2.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': ^0.3.0-canary.10
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
@@ -449,7 +450,7 @@ importers:
       '@netless/app-iframe-bridge': 0.0.2
       '@netless/app-monaco': 0.2.0-canary.0
       '@netless/app-plyr': 0.2.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
@@ -729,13 +730,13 @@ importers:
 
   service-providers/file-preview-netless-slide:
     specifiers:
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': ^0.3.0-canary.10
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       prettier: ^2.3.0
       typescript: ^4.7.4
     dependencies:
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
     devDependencies:
@@ -756,7 +757,7 @@ importers:
       '@netless/app-plyr': ^0.2.2
       '@netless/app-quill': ^0.1.0
       '@netless/app-selector': ^0.0.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': ^0.3.0-canary.10
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
@@ -819,7 +820,7 @@ importers:
       '@netless/app-plyr': 0.2.2
       '@netless/app-quill': 0.1.0
       '@netless/app-selector': 0.0.2
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
@@ -3308,10 +3309,10 @@ packages:
       - ts-node
     dev: false
 
-  /@netless/app-slide/0.3.0-canary.7:
-    resolution: {integrity: sha512-k93RBwVnNHH6OdG5Q+6WKnxBcJm0WHJ4sQAZcgGBW4c87/TaZiE2h7NoEcG45Au+D+szos8TxjaLV/zM0mmKXg==}
+  /@netless/app-slide/0.3.0-canary.10:
+    resolution: {integrity: sha512-pE85t1X0NkbIggKOf3kGImiY6sJmHocefGnsfCurRSVyJtX8dtya4esaFYDGfjuP6bJ+saNm9SgsnTKAkQGW+A==}
     dependencies:
-      '@netless/slide': 0.5.13
+      '@netless/slide': 0.6.5
 
   /@netless/canvas-polyfill/0.0.4:
     resolution: {integrity: sha512-7NzsJrba0R/mq/l10SkIZQwbrNVJyPxZYrjK6xL3Ts732iWAVuS2UB0u3s6iGeUVcqV39A679yva8APWRl4M0A==}
@@ -3357,7 +3358,7 @@ packages:
       '@netless/window-manager': '>=1.0.0-canary.0'
       white-web-sdk: '>=2.16.0'
     dependencies:
-      '@netless/app-slide': 0.3.0-canary.7
+      '@netless/app-slide': 0.3.0-canary.10
       '@netless/fastboard-core': 1.0.0-canary.6_ubyj6piufzu7ykiacmzdszyuvu
       '@netless/fastboard-ui': 1.0.0-canary.6_m23f4skpfoq3arppzbqjiodchi
       '@netless/window-manager': 1.0.0-canary.52_white-web-sdk-esm@2.16.34
@@ -3368,8 +3369,8 @@ packages:
     hasBin: true
     dev: true
 
-  /@netless/slide/0.5.13:
-    resolution: {integrity: sha512-Epb2WOtVwZLDbtGlWEinfHi74JdnrqcW3AwuoISYHzirCRwGgrqWqFYSb8IxMuUrBWCEvJ3I1WDAaDmzUD5YSg==}
+  /@netless/slide/0.6.5:
+    resolution: {integrity: sha512-HxoeX7pSUpQezdCy0SH7FkBOPdn9X6n2ESC4YuEe8u5bsBXMrjso+YxG/ljuc7bi72eKBw9CVwBaWrdYJ8dglw==}
     dependencies:
       '@juggle/resize-observer': 3.4.0
       '@types/lodash': 4.14.182
