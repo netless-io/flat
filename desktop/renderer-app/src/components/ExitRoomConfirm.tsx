@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import {
     CloseRoomConfirmModal,
+    errorTips,
     ExitRoomConfirmModal,
     StopClassConfirmModal,
 } from "flat-components";
@@ -9,7 +10,6 @@ import { RoomStatus } from "../api-middleware/flatServer/constants";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../utils/ipc";
 import { RouteNameType, usePushHistory } from "../utils/routes";
-import { errorTips } from "./Tips/ErrorTips";
 
 export enum ExitRoomConfirmType {
     StopClassButton,
@@ -65,7 +65,6 @@ export function useExitRoomConfirmModal({
             await sp(stopClass());
         } catch (e) {
             setStopLoading(false);
-            console.error(e);
             errorTips(e);
         }
     }, [stopClass, sp]);

@@ -7,9 +7,9 @@ import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 import logoSVG from "../../assets/image/logo.svg";
 import "./SplashPage.less";
-import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { useTranslate } from "@netless/flat-i18n";
+import { errorTips } from "flat-components";
 
 enum LoginStatusType {
     Idle = "Idle",

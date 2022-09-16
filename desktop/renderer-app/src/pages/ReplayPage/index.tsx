@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps, useParams, useHistory } from "react-router-dom";
-import { ErrorPage, LoadingPage, TopBar, WindowsSystemBtnItem } from "flat-components";
+import { ErrorPage, errorTips, LoadingPage, TopBar, WindowsSystemBtnItem } from "flat-components";
 // import PlayerController from "@netless/player-controller";
 import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../../utils/ipc";
 import { RealtimePanel } from "../../components/RealtimePanel";
@@ -16,7 +16,6 @@ import "video.js/dist/video-js.min.css";
 import "@netless/window-manager/dist/style.css";
 import "./ReplayPage.less";
 import { ExitReplayConfirmModal } from "../../components/Modal/ExitReplayConfirmModal";
-import { errorTips } from "../../components/Tips/ErrorTips";
 import { useWindowSize } from "../../utils/hooks/use-window-size";
 import { runtime } from "../../utils/runtime";
 import { roomStore } from "../../stores/room-store";

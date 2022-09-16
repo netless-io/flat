@@ -38,9 +38,9 @@ import { RoomItem, roomStore } from "./room-store";
 import { globalStore } from "./global-store";
 import { NODE_ENV } from "../constants/process";
 import { User, UserStore } from "./user-store";
-import { errorTips } from "../components/Tips/ErrorTips";
 import { WhiteboardStore } from "./whiteboard-store";
 import { NEED_CHECK_CENSOR } from "../constants/config";
+import { errorTips } from "flat-components";
 
 export type { User } from "./user-store";
 
