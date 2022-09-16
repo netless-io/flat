@@ -100,6 +100,7 @@ export class ScrollMode {
                 this.storage.setState({
                     scrollTop: clamp(scrollTop, halfWbHeight, BASE_HEIGHT - halfWbHeight),
                 });
+                this.events.emit("userScroll");
             };
             fastboard.manager.mainView.callbacks.on("onCameraUpdatedByDevice", onCameraUpdated);
             return () =>
@@ -227,6 +228,7 @@ export class ScrollMode {
                 this.storage.setState({
                     scrollTop: clamp(scrollTop, halfWbHeight, BASE_HEIGHT - halfWbHeight),
                 });
+                this.events.emit("userScroll");
             }
         }
     };
