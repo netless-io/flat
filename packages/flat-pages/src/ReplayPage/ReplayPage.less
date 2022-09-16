@@ -95,10 +95,30 @@
     align-items: center;
     justify-content: center;
 
-    .vjs-loading-spinner,
-    .vjs-modal-dialog-description,
-    .vjs-error-display::before {
-        display: none;
+    video {
+        max-width: 100%;
+        max-height: 100%;
+        overflow: hidden;
+    }
+}
+
+.replay-videos.is-horizontal {
+    min-width: 100%;
+    padding: 8px 4px;
+    height: 130px;
+    border-bottom: 1px solid var(--grey-0);
+    overflow-x: overlay;
+    text-align: center;
+    white-space: nowrap;
+
+    .replay-video {
+        display: inline-block;
+        flex-shrink: 0;
+        width: max-content;
+        height: 100%;
+        border-radius: 6px;
+        overflow: hidden;
+        margin: 0 4px;
     }
 }
 
@@ -111,6 +131,9 @@
         .ant-tag {
             filter: invert(0.8325) hue-rotate(180deg);
         }
+    }
+    .replay-videos.is-horizontal {
+        border-bottom: 1px solid var(--grey-8);
     }
     .replay-bottom {
         background-color: var(--grey-12);
