@@ -62,23 +62,28 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     useEffect(() => {
         const stopListenPage = whiteboard.events.on("scrollPage", setPage);
         const stopListenMaxPage = whiteboard.events.on("maxScrollPage", setMaxPage);
+        const stopListenUserScroll = whiteboard.events.on("userScroll", () => setShowPage(true));
         return () => {
             stopListenPage();
             stopListenMaxPage();
+            stopListenUserScroll();
         };
     }, [whiteboard]);
 
     useEffect(() => {
-        let isMounted = true;
-        setShowPage(true);
-        const timer = setTimeout(() => {
-            isMounted && setShowPage(false);
-        }, 1000);
-        return () => {
-            clearTimeout(timer);
-            isMounted = false;
-        };
-    }, [page]);
+        if (showPage) {
+            let isMounted = true;
+            const timer = setTimeout(() => {
+                isMounted && setShowPage(false);
+            }, 1000);
+            return () => {
+                clearTimeout(timer);
+                isMounted = false;
+            };
+        } else {
+            return;
+        }
+    }, [showPage]);
 
     useEffect(() => {
         whiteboard.setTheme(isDark ? "dark" : "light");
