@@ -14,14 +14,6 @@ import { SideEffectManager } from "side-effect-manager";
 import { v4 as uuidv4 } from "uuid";
 
 export class AgoraRTM extends IServiceTextChat {
-    public static APP_ID?: string;
-
-    private static _instance?: AgoraRTM;
-
-    public static getInstance(): AgoraRTM {
-        return (AgoraRTM._instance ??= new AgoraRTM());
-    }
-
     public readonly members = new Set<string>();
 
     private readonly _sideEffect = new SideEffectManager();
@@ -30,29 +22,21 @@ export class AgoraRTM extends IServiceTextChat {
     private _pJoiningRoom?: Promise<unknown>;
     private _pLeavingRoom?: Promise<unknown>;
 
-    private _client?: RtmClient;
-    public get client(): RtmClient {
-        if (!this._client) {
-            if (!AgoraRTM.APP_ID) {
-                throw new Error("APP_ID is not set");
-            }
-            this._client = RtmEngine.createInstance(AgoraRTM.APP_ID, {
-                logFilter: RtmEngine.LOG_FILTER_WARNING,
-            });
-        }
-        return this._client;
-    }
+    public readonly client: RtmClient;
     public channel?: RtmChannel;
 
     private roomUUID?: string;
     private userUUID?: string;
     private token?: string;
 
-    public constructor() {
+    public constructor(APP_ID: string) {
         super();
-        if (process.env.DEV) {
-            (window as any).rtm_client = this.client;
+        if (!APP_ID) {
+            throw new Error("APP_ID is not set");
         }
+        this.client = RtmEngine.createInstance(APP_ID, {
+            logFilter: RtmEngine.LOG_FILTER_WARNING,
+        });
     }
 
     public override async destroy(): Promise<void> {
@@ -199,10 +183,6 @@ export class AgoraRTM extends IServiceTextChat {
         roomUUID,
         ownerUUID,
     }: IServiceTextChatJoinRoomConfig): Promise<void> {
-        if (!AgoraRTM.APP_ID) {
-            throw new Error("APP_ID is not set");
-        }
-
         this.token = token || (await generateRTMToken());
 
         if (!this.token) {

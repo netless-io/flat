@@ -12,8 +12,8 @@ export const errorTips = (e: unknown): void => {
             content: FlatI18n.t(e.errorMessage),
             key: e.errorMessage,
         });
-    } else {
-        const { message: content, message: key } = e as Error;
-        void message.error({ content, key });
     }
+
+    const { message: content, message: key } = e as Error;
+    void message.error({ content, key });
 };
