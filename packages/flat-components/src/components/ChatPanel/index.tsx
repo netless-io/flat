@@ -1,10 +1,9 @@
 import "./style.less";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Tabs } from "antd";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
-import { SVGChat, SVGUserGroup } from "../FlatIcons";
 import { ChatMessages, ChatMessagesProps } from "./ChatMessages";
 import { ChatTabTitle, ChatTabTitleProps } from "./ChatTabTitle";
 import { ChatUsers, ChatUsersProps } from "./ChatUsers";
@@ -16,6 +15,16 @@ export type ChatPanelProps = ChatTabTitleProps &
 export const ChatPanel = /* @__PURE__ */ observer<ChatPanelProps>(function ChatPanel(props) {
     const t = useTranslate();
     const [activeTab, setActiveTab] = useState<"messages" | "users">("messages");
+    const usersCount = useMemo(() => {
+        const count = props.users.length;
+        if (count === 0) {
+            return "";
+        }
+        if (count > 999) {
+            return "(999+)";
+        }
+        return `(${count})`;
+    }, [props.users.length]);
 
     return (
         <div className="chat-panel">
@@ -28,7 +37,6 @@ export const ChatPanel = /* @__PURE__ */ observer<ChatPanelProps>(function ChatP
                     key="messages"
                     tab={
                         <ChatTabTitle>
-                            <SVGChat active={activeTab === "messages"} />
                             <span>{t("messages")}</span>
                         </ChatTabTitle>
                     }
@@ -39,8 +47,9 @@ export const ChatPanel = /* @__PURE__ */ observer<ChatPanelProps>(function ChatP
                     key="users"
                     tab={
                         <ChatTabTitle {...props}>
-                            <SVGUserGroup active={activeTab === "users"} />
-                            <span>{t("users")}</span>
+                            <span>
+                                {t("users")} {usersCount}
+                            </span>
                         </ChatTabTitle>
                     }
                 >
