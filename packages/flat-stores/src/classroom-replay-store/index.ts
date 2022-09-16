@@ -1,4 +1,5 @@
 import { AnimationMode, FastboardPlayer, replayFastboard, Storage } from "@netless/fastboard";
+import { RoomType } from "@netless/flat-server-api";
 import { SyncPlayer, AtomPlayer, NativeVideoPlayer, WhiteboardPlayer } from "@netless/sync-player";
 import { addYears } from "date-fns";
 import { ChatMsg } from "flat-components";
@@ -16,6 +17,7 @@ import { getRecordings, makeVideoPlayer, Recording } from "./utils";
 export interface ClassroomReplayStoreConfig {
     roomUUID: string;
     ownerUUID: string;
+    roomType: RoomType;
 }
 
 export class ClassroomReplayStore {
@@ -24,6 +26,7 @@ export class ClassroomReplayStore {
     public readonly roomUUID: string;
     public readonly ownerUUID: string;
     public readonly userUUID: string;
+    public readonly roomType: RoomType;
 
     public readonly history: TextChatHistory;
 
@@ -74,6 +77,7 @@ export class ClassroomReplayStore {
         this.roomUUID = config.roomUUID;
         this.ownerUUID = config.ownerUUID;
         this.userUUID = globalStore.userUUID;
+        this.roomType = config.roomType;
         this.history = new TextChatHistory(this);
 
         this.users = new UserStore({

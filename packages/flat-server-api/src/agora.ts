@@ -61,7 +61,6 @@ export interface CloudRecordAcquireResult {
     resourceId: string;
 }
 
-/** {@link https://docs.agora.io/en/cloud-recording/restfulapi/#/Cloud%20Recording/acquire} */
 export function cloudRecordAcquire(
     payload: CloudRecordAcquirePayload,
 ): Promise<CloudRecordAcquireResult> {
@@ -72,7 +71,7 @@ export function cloudRecordAcquire(
 }
 
 /**
- * @see {@link https://docs.agora.io/en/cloud-recording/cloud_recording_api_start?platform=RESTful#recordingConfig}
+ * @see {@link https://docs.agora.io/en/cloud-recording/cloud_recording_api_rest?platform=RESTful}
  */
 export interface AgoraCloudRecordStartRequestBody {
     clientRequest: {
@@ -170,7 +169,7 @@ export interface CloudRecordStartResult {
     resourceId: string;
 }
 
-/** {@link https://docs.agora.io/en/cloud-recording/restfulapi/#/Cloud%20Recording/start} */
+/** {@link https://docs.agora.io/en/cloud-recording/cloud_recording_api_rest?platform=RESTful} */
 export function cloudRecordStart(
     payload: CloudRecordStartPayload,
 ): Promise<CloudRecordStartResult> {
