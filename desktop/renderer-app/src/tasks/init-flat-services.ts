@@ -111,8 +111,7 @@ export function initFlatServices(): void {
 
     flatServices.register("textChat", async () => {
         const { AgoraRTM } = await import("@netless/flat-service-provider-agora-rtm");
-        AgoraRTM.APP_ID = process.env.AGORA_APP_ID;
-        return AgoraRTM.getInstance();
+        return new AgoraRTM(process.env.AGORA_APP_ID);
     });
 
     flatServices.register("whiteboard", async () => {
