@@ -1,4 +1,4 @@
-import type { Storage } from "@netless/fastboard";
+import type { Diff, Storage } from "@netless/fastboard";
 
 import { SideEffectManager } from "side-effect-manager";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
@@ -375,7 +375,9 @@ export class ClassroomStore {
             }),
         );
 
-        const updateUserStagingState = async (): Promise<void> => {
+        const updateUserStagingState = async (
+            diff?: Diff<OnStageUsersStorageState>,
+        ): Promise<void> => {
             const onStageUsers = Object.keys(onStageUsersStorage.state).filter(
                 userUUID => onStageUsersStorage.state[userUUID],
             );
@@ -406,9 +408,33 @@ export class ClassroomStore {
             });
 
             if (!this.isCreator) {
-                this.whiteboardStore.updateWritable(
-                    Boolean(onStageUsersStorage.state[this.userUUID]),
-                );
+                const isJoinerOnStage = Boolean(onStageUsersStorage.state[this.userUUID]);
+                await this.whiteboardStore.updateWritable(isJoinerOnStage);
+
+                // @FIXME add reliable way to ensure writable is set
+                if (isJoinerOnStage && !fastboard.syncedStore.isRoomWritable) {
+                    await new Promise<void>(resolve => {
+                        const disposer = fastboard.syncedStore.addRoomWritableChangeListener(
+                            isWritable => {
+                                if (isWritable) {
+                                    disposer();
+                                    resolve();
+                                }
+                            },
+                        );
+                    });
+                }
+
+                if (
+                    isJoinerOnStage &&
+                    (diff?.[this.userUUID] || !deviceStateStorage.state[this.userUUID])
+                ) {
+                    this.updateDeviceState(
+                        this.userUUID,
+                        preferencesStore.autoCameraOn,
+                        preferencesStore.autoMicOn,
+                    );
+                }
             }
         };
         updateUserStagingState();
@@ -607,7 +633,7 @@ export class ClassroomStore {
                 this.onStageUsersStorage.setState({ [userUUID]: false });
             }
         }
-        if (!this.isCreator && !onStage) {
+        if (!onStage && (!this.isCreator || userUUID !== this.userUUID)) {
             this.updateDeviceState(userUUID, false, false);
         }
     };

@@ -139,7 +139,7 @@ export class Fastboard extends IServiceWhiteboard {
                         };
                     }, "setWritable");
                 }
-            }),
+            }, true),
             this._el$.subscribe(el => {
                 if (el) {
                     this.ui.mount(el, {
