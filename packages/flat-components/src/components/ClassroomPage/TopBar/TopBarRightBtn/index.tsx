@@ -1,8 +1,7 @@
 import "./style.less";
 
 import classNames from "classnames";
-import React, { ReactElement } from "react";
-import { ButtonHTMLAttributes, FC } from "react";
+import React, { ReactElement, ButtonHTMLAttributes, FC } from "react";
 
 export interface TopBarRightBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     icon?: ReactElement;
