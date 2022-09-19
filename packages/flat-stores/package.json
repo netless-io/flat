@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@netless/fastboard": "1.0.0-canary.7",
-    "@netless/window-manager": "1.0.0-canary.52",
+    "@netless/window-manager": "1.0.0-canary.53",
     "mobx": "^6.6.1",
     "prettier": "^2.3.0",
     "react": "^17.0.2",
