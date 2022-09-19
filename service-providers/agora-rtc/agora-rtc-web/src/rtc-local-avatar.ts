@@ -87,12 +87,13 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
                                                 this._sideEffect.flush(lowVolumeLevelDisposerID);
                                                 return;
                                             }
+                                        } else {
+                                            lowVolumeLevelCount = 0;
                                         }
                                     } catch (e) {
                                         console.error(e);
                                     }
                                 }
-                                lowVolumeLevelCount = 0;
                             },
                             500,
                             lowVolumeLevelDisposerID,
