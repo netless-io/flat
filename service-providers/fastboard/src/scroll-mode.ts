@@ -2,6 +2,7 @@ import type { AnimationMode, Camera, Size, ViewMode } from "white-web-sdk";
 import type { Storage, SyncedStore, WindowManager } from "@netless/fastboard";
 import type { IServiceWhiteboardEvents } from "@netless/flat-services";
 
+import { addViewListener } from "@netless/fastboard";
 import { SideEffectManager } from "side-effect-manager";
 import { combine, derive, ReadonlyVal, Val } from "value-enhancer";
 
@@ -86,11 +87,8 @@ export class ScrollMode {
         );
         this._size$ = size$;
         this.sideEffect.add(() => {
-            const onSizeUpdated = (size: Size): void => {
-                size$.setValue(size);
-            };
-            fastboard.manager.mainView.callbacks.on("onSizeUpdated", onSizeUpdated);
-            return () => fastboard.manager.mainView.callbacks.off("onSizeUpdated", onSizeUpdated);
+            const onSizeUpdated = size$.setValue.bind(size$);
+            return addViewListener(fastboard.manager.mainView, "onSizeUpdated", onSizeUpdated);
         });
 
         this.sideEffect.add(() => {
@@ -102,12 +100,11 @@ export class ScrollMode {
                 });
                 this.events.emit("userScroll");
             };
-            fastboard.manager.mainView.callbacks.on("onCameraUpdatedByDevice", onCameraUpdated);
-            return () =>
-                fastboard.manager.mainView.callbacks.off(
-                    "onCameraUpdatedByDevice",
-                    onCameraUpdated,
-                );
+            return addViewListener(
+                fastboard.manager.mainView,
+                "onCameraUpdatedByDevice",
+                onCameraUpdated,
+            );
         });
 
         // 4. scale$ = size$.width / BASE_WIDTH
@@ -133,15 +130,14 @@ export class ScrollMode {
             }),
         );
 
-        // 6. $: scrollTo(scrollTop$)
         this.sideEffect.push(
-            scrollTop$.subscribe(scrollTop => {
-                fastboard.manager.mainView.moveCamera({
-                    centerY: scrollTop,
-                    animationMode: enumLiteral<AnimationMode>("immediately"),
-                });
+            size$.reaction(() => {
+                this.updateScroll(scrollTop$.value);
             }),
         );
+
+        // 6. $: scrollTo(scrollTop$)
+        this.sideEffect.push(scrollTop$.subscribe(this.updateScroll.bind(this)));
 
         // 7. onwheel = () => { scrollTop$ += deltaY }
         const whiteboard$ = derive(this._root$, this.getWhiteboardElement);
@@ -182,13 +178,22 @@ export class ScrollMode {
         this.events.emit("maxScrollPage", (BASE_HEIGHT - halfWbHeight) / halfWbHeight / 2 - 0.51);
     };
 
+    private updateScroll(scrollTop: number): void {
+        const { fastboard } = this;
+
+        fastboard.manager.mainView.moveCamera({
+            centerY: scrollTop,
+            animationMode: enumLiteral<AnimationMode>("immediately"),
+        });
+    }
+
     private updateBound(scrollTop: number, { height }: Size, scale: number): void {
         if (scale > 0) {
             const { fastboard } = this;
 
             fastboard.manager.mainView.moveCameraToContain({
                 originX: 0,
-                originY: scrollTop,
+                originY: scrollTop - height / scale / 2,
                 width: BASE_WIDTH,
                 height: height / scale,
                 animationMode: enumLiteral<AnimationMode>("immediately"),
