@@ -9,13 +9,13 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "prettier": "^2.3.0",
-    "typescript": "^4.7.4"
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.3"
   },
   "dependencies": {
     "@netless/flat-i18n": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
-    "remitter": "^0.2.8",
+    "remitter": "^0.2.9",
     "side-effect-manager": "^1.2.1",
     "value-enhancer": "^1.3.2"
   }

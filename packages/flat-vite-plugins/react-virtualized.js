@@ -3,15 +3,14 @@
  *
  * @TODO: Remove this file when react-virtualized fix the code.
  */
-
-import type { Plugin } from "vite";
-import fs from "fs";
-import path from "path";
+const fs = require("fs");
+const path = require("path");
 
 // eslint-disable-next-line @typescript-eslint/quotes
 const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`;
 
-export function reactVirtualized(): Plugin {
+/** @return {import('vite').PluginOption} */
+exports.reactVirtualized = function reactVirtualized() {
     return {
         name: "flat:react-virtualized",
         // Note: we cannot use the `transform` hook here
@@ -31,4 +30,4 @@ export function reactVirtualized(): Plugin {
             fs.writeFileSync(file, modified);
         },
     };
-}
+};

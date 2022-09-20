@@ -1,18 +1,21 @@
-import fs from "fs";
-import path from "path";
-import dotenvReal from "dotenv";
-import { expand } from "dotenv-expand";
-import type { Plugin } from "vite";
-import { configRegion } from "../../../scripts/utils/auto-choose-config";
+const { configRegion } = require("../../scripts/utils/auto-choose-config.js");
+const dotenvReal = require("dotenv");
+const { expand } = require("dotenv-expand");
+const fs = require("fs");
+const path = require("path");
 
 // based on https://github.com/IndexXuan/vite-plugin-env-compatible
-export function dotenv(envDir: string): Plugin {
+/**
+ * @param {string} envDir
+ * @return {import('vite').PluginOption}
+ */
+exports.dotenv = function dotenv(envDir) {
     return {
         name: "flat:dotenv",
         enforce: "pre",
         config(config, { mode }) {
             const envConfigContent = getEnvConfigContent(envDir, mode);
-            const define: Record<string, string | {}> = {};
+            const define = {};
 
             if (process.env["FLAT_UA"] !== undefined && process.env["FLAT_UA"] !== "undefined") {
                 define["process.env.FLAT_UA"] = JSON.stringify(process.env["FLAT_UA"]);
@@ -36,9 +39,9 @@ export function dotenv(envDir: string): Plugin {
             config.define = { ...config.define, ...define };
         },
     };
-}
+};
 
-const getEnvConfigContent = (envDir: string, mode: string): string | null => {
+const getEnvConfigContent = (envDir, mode) => {
     const configFileList = [
         path.join(envDir, `.env.${mode}.local`),
         path.join(envDir, `.env.${mode}`),
