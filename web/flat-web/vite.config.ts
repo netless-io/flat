@@ -1,14 +1,17 @@
 // import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { dotenv } from "./scripts/vite-plugin-dotenv";
+import { dotenv } from "@netless/flat-vite-plugins/dotenv";
+import { reactVirtualized } from "@netless/flat-vite-plugins/react-virtualized";
 import { injectHtmlHash } from "./scripts/vite-plugin-html-hash";
 import { version } from "./scripts/vite-plugin-version";
 import { inlineAssets } from "./scripts/vite-plugin-inline-assets";
-import { reactVirtualized } from "./scripts/vite-plugin-react-virtualized";
 import { mainPackageJSONPath } from "../../scripts/constants";
 import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 import viteCompression from "vite-plugin-compression";
 export default defineConfig({
+    server: {
+        port: 3000,
+    },
     plugins: [
         // react(),
         dotenv(autoChooseConfig()),

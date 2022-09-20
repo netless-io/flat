@@ -11,13 +11,13 @@
     "_download:agora-addon": "node scripts/download-agora-addon/cli.js"
   },
   "devDependencies": {
-    "prettier": "^2.3.0",
-    "typescript": "^4.7.4"
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.3"
   },
   "dependencies": {
     "@netless/flat-services": "workspace:*",
     "agora-electron-sdk": "3.7.0-build.527",
-    "fs-extra": "^10.0.1",
-    "side-effect-manager": "^1.1.3"
+    "fs-extra": "^10.1.0",
+    "side-effect-manager": "^1.2.1"
   }
 }
