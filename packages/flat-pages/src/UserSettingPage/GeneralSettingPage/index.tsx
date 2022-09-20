@@ -158,8 +158,8 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                         {t("recording-settings.title")}
                     </div>
                     <Checkbox
-                        checked={globalStore.isAutoRecording}
-                        onClick={globalStore.toggleAutoRecording}
+                        checked={preferencesStore.autoRecording}
+                        onClick={preferencesStore.toggleAutoRecording}
                     >
                         <span className="checkbox-item-inner">
                             {t("recording-settings.auto-recording")}
@@ -171,8 +171,8 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                         {t("whiteboard-settings.title")}
                     </div>
                     <Checkbox
-                        checked={globalStore.isShowPencilTail}
-                        onClick={globalStore.togglePencilTail}
+                        checked={preferencesStore.strokeTail}
+                        onClick={preferencesStore.toggleStrokeTail}
                     >
                         <span className="checkbox-item-inner">
                             {t("whiteboard-settings.pencil-tail")}

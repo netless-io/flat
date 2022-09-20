@@ -483,7 +483,7 @@ export class ClassroomStore {
                 classroomType: this.roomType,
             });
 
-            if (globalStore.isAutoRecording && !this.isRecording) {
+            if (preferencesStore.autoRecording && !this.isRecording) {
                 await this.toggleRecording();
             }
         }
