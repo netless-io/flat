@@ -9,7 +9,7 @@
     "@netless/app-iframe-bridge": "^0.0.2",
     "@netless/app-monaco": "0.2.0-canary.0",
     "@netless/app-plyr": "^0.2.2",
-    "@netless/app-slide": "0.3.0-canary.10",
+    "@netless/app-slide": "0.3.0-canary.11",
     "@netless/combine-player": "^1.1.6",
     "@netless/flat-i18n": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
