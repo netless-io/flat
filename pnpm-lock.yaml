@@ -13,7 +13,7 @@ importers:
     specifiers:
       '@commitlint/cli': ^17.0.0
       '@commitlint/config-angular': ^17.0.0
-      '@hyrious/esbuild-dev': ^0.7.6
+      '@hyrious/esbuild-dev': ^0.8.3
       '@netless/eslint-plugin': ^2.0.0
       '@types/fs-extra': ^9.0.13
       '@types/lodash-es': ^4.17.6
@@ -53,7 +53,7 @@ importers:
     devDependencies:
       '@commitlint/cli': 17.0.0
       '@commitlint/config-angular': 17.0.0
-      '@hyrious/esbuild-dev': 0.7.6_esbuild@0.14.38
+      '@hyrious/esbuild-dev': 0.8.3_esbuild@0.14.38
       '@netless/eslint-plugin': 2.0.0_eslint@8.14.0
       '@types/fs-extra': 9.0.13
       '@types/lodash-es': 4.17.6
@@ -94,7 +94,9 @@ importers:
   desktop/main-app:
     specifiers:
       '@netless/flat-service-provider-agora-rtc-electron': workspace:*
+      '@types/dotenv-flow': ^3.2.0
       '@types/webpack-env': ^1.16.3
+      dotenv-flow: ^3.2.0
       dotenv-flow-webpack: ^1.1.0
       electron: 12.0.15
       electron-builder: ^23.0.3
@@ -123,7 +125,9 @@ importers:
       semver: 7.3.7
       value-enhancer: 1.3.2
     devDependencies:
+      '@types/dotenv-flow': 3.2.0
       '@types/webpack-env': 1.16.4
+      dotenv-flow: 3.2.0
       dotenv-flow-webpack: 1.1.0
       electron: 12.0.15
       electron-builder: 23.0.3
@@ -482,7 +486,7 @@ importers:
       '@netless/mini-svg-data-uri': 0.0.1
       '@types/loadable__component': 5.13.4
       '@types/mime': 2.0.3
-      '@types/video.js': 7.3.46
+      '@types/video.js': 7.3.47
       dotenv: 16.0.0
       dotenv-expand: 8.0.3
       eslint-loader: 4.0.2
@@ -539,7 +543,7 @@ importers:
       '@netless/flat-services': link:../flat-services
       '@netless/sync-player': 1.0.7_white-web-sdk-esm@2.16.34
       flat-components: link:../flat-components
-      hls.js: 1.2.1
+      hls.js: 1.2.3
       polly-js: 1.8.3
       side-effect-manager: 1.2.1
       uuid: 8.3.2
@@ -3045,9 +3049,9 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@hyrious/esbuild-dev/0.7.6_esbuild@0.14.38:
-    resolution: {integrity: sha512-ULrwpkaXG7RLg8u7Zd3y8feJqyL9lpy5hv848/33Swa9EXT02uvABrPPdNczyLln3DAlKnwy2Up9K8B/ZcphWw==}
-    engines: {node: '>=16.13.0'}
+  /@hyrious/esbuild-dev/0.8.3_esbuild@0.14.38:
+    resolution: {integrity: sha512-kM3+q5D6eSunAzmbccetW70w/KouSW4oQJ6gGx8ynCXmJL/Kcy4q6rBPkLdp8pPbFihTTVOf/vOiCdyHsOcI5A==}
+    engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
       esbuild: '*'
@@ -3721,7 +3725,7 @@ packages:
       '@storybook/components': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/core-events': 6.3.13
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      core-js: 3.24.1
+      core-js: 3.22.4
       global: 4.4.0
       memoizerific: 1.11.3
       react: 17.0.2
@@ -3750,7 +3754,7 @@ packages:
       '@storybook/components': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/node-logger': 6.3.13
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      core-js: 3.24.1
+      core-js: 3.22.4
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       ts-dedent: 2.2.0
@@ -3825,7 +3829,7 @@ packages:
       acorn: 7.4.1
       acorn-jsx: 5.3.2_acorn@7.4.1
       acorn-walk: 7.2.0
-      core-js: 3.24.1
+      core-js: 3.22.4
       doctrine: 3.0.0
       escodegen: 2.0.0
       fast-deep-equal: 3.1.3
@@ -3999,7 +4003,7 @@ packages:
       '@storybook/client-api': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/components': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      core-js: 3.24.1
+      core-js: 3.22.4
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       regenerator-runtime: 0.13.9
@@ -4047,7 +4051,7 @@ packages:
       '@storybook/core-events': 6.3.13
       '@storybook/router': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      core-js: 3.24.1
+      core-js: 3.22.4
       global: 4.4.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -4069,7 +4073,7 @@ packages:
       '@storybook/semver': 7.3.2
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@types/reach__router': 1.3.10
-      core-js: 3.24.1
+      core-js: 3.22.4
       fast-deep-equal: 3.1.3
       global: 4.4.0
       lodash: 4.17.21
@@ -4262,7 +4266,7 @@ packages:
       '@storybook/channels': 6.3.13
       '@storybook/client-logger': 6.3.13
       '@storybook/core-events': 6.3.13
-      core-js: 3.24.1
+      core-js: 3.22.4
       global: 4.4.0
       qs: 6.10.3
       telejson: 5.3.3
@@ -4271,7 +4275,7 @@ packages:
   /@storybook/channels/6.3.13:
     resolution: {integrity: sha512-LQEJ9tox/RIRV4mOMPniesfPdWGOU3YI27+MY7NGnhrG58np9h9Sp2dJTpH5X7jmZT0zK5/XpwlbKmz+CeFiGQ==}
     dependencies:
-      core-js: 3.24.1
+      core-js: 3.22.4
       ts-dedent: 2.2.0
       util-deprecate: 1.0.2
     dev: true
@@ -4307,7 +4311,7 @@ packages:
   /@storybook/client-logger/6.3.13:
     resolution: {integrity: sha512-4cPsx6V2UsK3KODYHp/k7FMG3HIIgkGh2v3yrpHFoZqYSvFzjoToapc11jYw91maZ4Prj0Agl6GccDxzcsBecQ==}
     dependencies:
-      core-js: 3.24.1
+      core-js: 3.22.4
       global: 4.4.0
     dev: true
 
@@ -4325,7 +4329,7 @@ packages:
       '@types/overlayscrollbars': 1.12.1
       '@types/react-syntax-highlighter': 11.0.5
       color-convert: 2.0.1
-      core-js: 3.24.1
+      core-js: 3.22.4
       fast-deep-equal: 3.1.3
       global: 4.4.0
       lodash: 4.17.21
@@ -4369,7 +4373,7 @@ packages:
       '@storybook/ui': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       airbnb-js-shims: 2.2.1
       ansi-to-html: 0.6.15
-      core-js: 3.24.1
+      core-js: 3.22.4
       global: 4.4.0
       lodash: 4.17.21
       qs: 6.10.3
@@ -4406,7 +4410,7 @@ packages:
       '@storybook/ui': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       airbnb-js-shims: 2.2.1
       ansi-to-html: 0.6.15
-      core-js: 3.24.1
+      core-js: 3.22.4
       global: 4.4.0
       lodash: 4.17.21
       qs: 6.10.3
@@ -4443,7 +4447,7 @@ packages:
       '@storybook/ui': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       airbnb-js-shims: 2.2.1
       ansi-to-html: 0.6.15
-      core-js: 3.24.1
+      core-js: 3.22.4
       global: 4.4.0
       lodash: 4.17.21
       qs: 6.10.3
@@ -4498,7 +4502,7 @@ packages:
       babel-plugin-macros: 3.1.0
       babel-plugin-polyfill-corejs3: 0.1.7_@babel+core@7.17.10
       chalk: 4.1.2
-      core-js: 3.24.1
+      core-js: 3.22.4
       express: 4.18.1
       file-system-cache: 1.0.5
       find-up: 5.0.0
@@ -4528,7 +4532,7 @@ packages:
   /@storybook/core-events/6.3.13:
     resolution: {integrity: sha512-0uuyrlIn3nOlJMcM+rJtZs+eF/7LUzDxsgcxESdzqCl9WWHb7+ERmEaxOryQZjdSnRbm1mxhTw4RbWbwqBuckg==}
     dependencies:
-      core-js: 3.24.1
+      core-js: 3.22.4
     dev: true
 
   /@storybook/core-server/6.3.13_w6tv4oyoa4hlw4dxxlhu54rui4:
@@ -4950,7 +4954,7 @@ packages:
       '@reach/router': 1.3.4_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/client-logger': 6.3.13
       '@types/reach__router': 1.3.10
-      core-js: 3.24.1
+      core-js: 3.22.4
       fast-deep-equal: 3.1.3
       global: 4.4.0
       lodash: 4.17.21
@@ -4966,7 +4970,7 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      core-js: 3.24.1
+      core-js: 3.22.4
       find-up: 4.1.0
     dev: true
 
@@ -5030,7 +5034,7 @@ packages:
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@types/markdown-to-jsx': 6.11.3
       copy-to-clipboard: 3.3.1
-      core-js: 3.24.1
+      core-js: 3.22.4
       core-js-pure: 3.22.4
       downshift: 6.1.7_react@17.0.2
       emotion-theming: 10.3.0_gfrer23gq2rp2t523t6qbxrx6m
@@ -5151,6 +5155,10 @@ packages:
       '@types/ms': 0.7.31
     dev: true
 
+  /@types/dotenv-flow/3.2.0:
+    resolution: {integrity: sha512-A79hbPwocbYkcTwGcDOFbKDuqyVo5mLAz/6Iq465YZ7R7Go5bT1PIM8I2jlPQkaD9u9fbotGVLkUPhX+9XUHfw==}
+    dev: true
+
   /@types/eslint-scope/3.7.3:
     resolution: {integrity: sha512-PB3ldyrcnAicT35TWPs5IcwKD8S333HMaa2VVv4+wdvebJkjWuW/xESoB8IwRcog8HYVYamb1g/R31Qv5Bx03g==}
     dependencies:
@@ -5194,7 +5202,7 @@ packages:
     requiresBuild: true
     dependencies:
       '@types/minimatch': 3.0.5
-      '@types/node': 18.7.9
+      '@types/node': 17.0.40
     dev: true
 
   /@types/graceful-fs/4.1.5:
@@ -5337,6 +5345,10 @@ packages:
 
   /@types/node/17.0.34:
     resolution: {integrity: sha512-XImEz7XwTvDBtzlTnm8YvMqGW/ErMWBsKZ+hMTvnDIjGCKxwK5Xpc+c/oQjOauwq8M4OS11hEkpjX8rrI/eEgA==}
+    dev: true
+
+  /@types/node/17.0.40:
+    resolution: {integrity: sha512-UXdBxNGqTMtm7hCwh9HtncFVLrXoqA3oJW30j6XWp5BH/wu3mVeaxo7cq5benFdBw34HB3XDT2TRPI7rXZ+mDg==}
     dev: true
 
   /@types/node/18.7.9:
@@ -5486,8 +5498,8 @@ packages:
     dev: true
     optional: true
 
-  /@types/video.js/7.3.46:
-    resolution: {integrity: sha512-nWuT2/UyTDzr60btoB3nJD8Bpeh6kxmaiGvmeG7JPqlfCiR12uVnE9+XUUkEcHTPjgaSd+11PfhI2pEIb+TxNw==}
+  /@types/video.js/7.3.47:
+    resolution: {integrity: sha512-dh4pnTpJVSXk6UYtYNtcokeKqbc3liAnDj0PQJ67oXudXWSdrltGu5lqhXQ1OMnKuNLbJPANIiVhObpgEUqXoA==}
     dev: true
 
   /@types/webpack-env/1.16.4:
@@ -5497,7 +5509,7 @@ packages:
   /@types/webpack-sources/3.2.0:
     resolution: {integrity: sha512-Ft7YH3lEVRQ6ls8k4Ff1oB4jN6oy/XmU6tQISKdhfh+1mR+viZFphS6WL0IrtDOzvefmJg5a0s7ZQoRXwqTEFg==}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 17.0.31
       '@types/source-list-map': 0.1.2
       source-map: 0.7.3
     dev: true
@@ -6543,7 +6555,7 @@ packages:
     resolution: {integrity: sha512-o/HelwhuKpTj/frsOsbNLNgnNGVIFsVP/SW2BSF14gVl7kAfMOJ6/8wUAUvG1R1NHKrfG+2sHZTu0yauT1qBrA==}
     engines: {node: '>=6.0'}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.17.9
       '@babel/runtime-corejs3': 7.17.9
     dev: true
 
@@ -7058,7 +7070,7 @@ packages:
       '@babel/preset-env': 7.17.10_@babel+core@7.17.10
       '@babel/preset-react': 7.16.7_@babel+core@7.17.10
       '@babel/preset-typescript': 7.16.7_@babel+core@7.17.10
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.17.9
       babel-plugin-macros: 3.1.0
       babel-plugin-transform-react-remove-prop-types: 0.4.24
     transitivePeerDependencies:
@@ -11879,8 +11891,8 @@ packages:
       value-equal: 1.0.1
     dev: false
 
-  /hls.js/1.2.1:
-    resolution: {integrity: sha512-+m/5+ikSpmQQvb6FmVWZUZfzvTJMn/QVfiCGP1Oq9WW4RKrAvxlExkhhbcVGgGqLNPFk1kdFkVQur//wKu3JVw==}
+  /hls.js/1.2.3:
+    resolution: {integrity: sha512-CC/vHi82ldiiydIhliNI3whlcepRXxI2jdpd/KKb6lyEv+74e7lXs4cGk5PHfTLxZMKOj6+m5LX9VAbvV/r7AQ==}
     dev: false
 
   /hmac-drbg/1.0.1:
@@ -12230,7 +12242,7 @@ packages:
     dev: true
 
   /individual/2.0.0:
-    resolution: {integrity: sha512-pWt8hBCqJsUWI/HtcfWod7+N9SgAqyPEaF7JQjwzjn5vGrpg6aQ5qeAFQ7dx//UH4J1O+7xqew+gCeeFt6xN/g==}
+    resolution: {integrity: sha1-gzsJfa0jKU52EXqY+zjg2a1hu5c=}
     dev: false
 
   /infer-owner/1.0.4:
@@ -13846,7 +13858,7 @@ packages:
     engines: {node: '>=4'}
 
   /min-document/2.19.0:
-    resolution: {integrity: sha512-9Wy1B3m3f66bPPmU5hdA4DR4PB2OfDU/+GS3yAB7IQozE3tqXaVv2zOjgla7MEGSRv95+ILmOuvhLkOK6wJtCQ==}
+    resolution: {integrity: sha1-e9KC4/WELtKVu3SM3Z8f+iyCRoU=}
     dependencies:
       dom-walk: 0.1.2
 
@@ -15414,7 +15426,7 @@ packages:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
 
   /process/0.11.10:
-    resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
+    resolution: {integrity: sha1-czIwDoQBYb2j5podHZGn1LwW8YI=}
     engines: {node: '>= 0.6.0'}
 
   /process/0.5.2:
@@ -17307,7 +17319,7 @@ packages:
     dev: true
 
   /rust-result/1.0.0:
-    resolution: {integrity: sha512-6cJzSBU+J/RJCF063onnQf0cDUOHs9uZI1oroSGnHOph+CQTIJ5Pp2hK5kEQq1+7yE/EEWfulSNXAQ2jikPthA==}
+    resolution: {integrity: sha1-NMdbLm3Dn+WHXlveyFteD5FTb3I=}
     dependencies:
       individual: 2.0.0
     dev: false
