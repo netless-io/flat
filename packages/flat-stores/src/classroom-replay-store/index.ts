@@ -6,7 +6,7 @@ import { ChatMsg } from "flat-components";
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import { SideEffectManager } from "side-effect-manager";
 
-import { OnStageUsersStorageState } from "../classroom-store";
+import { DeviceStateStorageState, OnStageUsersStorageState } from "../classroom-store";
 import { ClassroomReplayEventData } from "../classroom-store/event";
 import { globalStore } from "../global-store";
 import { RoomItem, RoomRecording, roomStore } from "../room-store";
@@ -34,6 +34,7 @@ export class ClassroomReplayStore {
     public readonly onStageUserUUIDs = observable.array<string>();
     public readonly recordings = observable.array<Recording>();
     public readonly userVideos = observable.map<string, HTMLVideoElement>();
+    public readonly userDevices = observable.map<string, DeviceStateStorageState[string]>();
 
     public syncPlayer: AtomPlayer | null = null;
 
@@ -234,6 +235,17 @@ export class ClassroomReplayStore {
                 });
             }),
             "scrollTop",
+        );
+
+        const deviceStateStorage = fastboard.syncedStore.connectStorage<DeviceStateStorageState>(
+            "deviceState",
+            {},
+        );
+        this.sideEffect.push(
+            deviceStateStorage.on("stateChanged", () => {
+                this.userDevices.replace(deviceStateStorage.state);
+            }),
+            "deviceState",
         );
 
         const players: AtomPlayer[] = [];
