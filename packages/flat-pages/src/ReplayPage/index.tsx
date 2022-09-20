@@ -38,12 +38,15 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage({ match 
         <div className={classNames("replay-videos", { "is-horizontal": isSmallClass })}>
             <ReplayVideo
                 classroomReplayStore={classroomReplayStore}
+                small={isSmallClass}
                 user={classroomReplayStore.users.creator}
             />
             {classroomReplayStore.onStageUserUUIDs.map(uuid => (
                 <ReplayVideo
                     key={uuid}
                     classroomReplayStore={classroomReplayStore}
+                    small={isSmallClass}
+                    user={classroomReplayStore.users.cachedUsers.get(uuid)}
                     video={classroomReplayStore.userVideos.get(uuid)}
                 />
             ))}

@@ -1,3 +1,4 @@
+import { RoomType } from "@netless/flat-server-api";
 import { ClassroomReplayStore } from "@netless/flat-stores";
 import { errorTips, useSafePromise } from "flat-components";
 import { useEffect, useState } from "react";
@@ -7,6 +8,7 @@ import { usePushHistory } from "./routes";
 export interface UseClassroomReplayStoreConfig {
     roomUUID: string;
     ownerUUID: string;
+    roomType: RoomType;
 }
 
 export function useClassroomReplayStore(
