@@ -156,7 +156,7 @@ importers:
       '@netless/app-plyr': ^0.2.2
       '@netless/app-quill': ^0.1.0
       '@netless/app-selector': ^0.0.2
-      '@netless/app-slide': 0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.11
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
@@ -220,7 +220,7 @@ importers:
       '@netless/app-plyr': 0.2.2
       '@netless/app-quill': 0.1.0
       '@netless/app-selector': 0.0.2
-      '@netless/app-slide': 0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.11
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
@@ -410,7 +410,7 @@ importers:
       '@netless/app-iframe-bridge': ^0.0.2
       '@netless/app-monaco': 0.2.0-canary.0
       '@netless/app-plyr': ^0.2.2
-      '@netless/app-slide': 0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.11
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
@@ -453,7 +453,7 @@ importers:
       '@netless/app-iframe-bridge': 0.0.2
       '@netless/app-monaco': 0.2.0-canary.0
       '@netless/app-plyr': 0.2.2
-      '@netless/app-slide': 0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.11
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
@@ -733,13 +733,13 @@ importers:
 
   service-providers/file-preview-netless-slide:
     specifiers:
-      '@netless/app-slide': 0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.11
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       prettier: ^2.3.0
       typescript: ^4.7.4
     dependencies:
-      '@netless/app-slide': 0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.11
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
     devDependencies:
@@ -760,7 +760,7 @@ importers:
       '@netless/app-plyr': ^0.2.2
       '@netless/app-quill': ^0.1.0
       '@netless/app-selector': ^0.0.2
-      '@netless/app-slide': 0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.11
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
@@ -823,7 +823,7 @@ importers:
       '@netless/app-plyr': 0.2.2
       '@netless/app-quill': 0.1.0
       '@netless/app-selector': 0.0.2
-      '@netless/app-slide': 0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.11
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
@@ -2405,6 +2405,12 @@ packages:
     dependencies:
       regenerator-runtime: 0.13.9
 
+  /@babel/runtime/7.19.0:
+    resolution: {integrity: sha512-eR8Lo9hnDS7tqkO7NsV+mKvCmv5boaXFSZ70DnfhcgiEne8hv9oCEd36Klw74EtizEqLsy4YnW8UWwpBVolHZA==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.9
+
   /@babel/standalone/7.17.8:
     resolution: {integrity: sha512-tr3SDpVnxR/fzrxyG+HZPAyEA9eTHZIAjy4eqrc7m+KBwsdo1YvTbUfJ6teWHQ177mk6GmdmltsIiOYCcvRPWA==}
     engines: {node: '>=6.9.0'}
@@ -3104,7 +3110,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.7.9
+      '@types/node': 18.7.18
       '@types/yargs': 15.0.14
       chalk: 4.1.2
     dev: true
@@ -3312,10 +3318,10 @@ packages:
       - ts-node
     dev: false
 
-  /@netless/app-slide/0.3.0-canary.10:
-    resolution: {integrity: sha512-pE85t1X0NkbIggKOf3kGImiY6sJmHocefGnsfCurRSVyJtX8dtya4esaFYDGfjuP6bJ+saNm9SgsnTKAkQGW+A==}
+  /@netless/app-slide/0.3.0-canary.11:
+    resolution: {integrity: sha512-fMUSppUXjoCMMMjmD0vaJizHwr/5138QClwJieqblAprqyqVD1jQ7nywnV8xU1MrTzkSS+O9Rm0jsWvCfKiJeg==}
     dependencies:
-      '@netless/slide': 0.6.5
+      '@netless/slide': 0.7.0
 
   /@netless/canvas-polyfill/0.0.4:
     resolution: {integrity: sha512-7NzsJrba0R/mq/l10SkIZQwbrNVJyPxZYrjK6xL3Ts732iWAVuS2UB0u3s6iGeUVcqV39A679yva8APWRl4M0A==}
@@ -3361,7 +3367,7 @@ packages:
       '@netless/window-manager': '>=1.0.0-canary.0'
       white-web-sdk: '>=2.16.0'
     dependencies:
-      '@netless/app-slide': 0.3.0-canary.10
+      '@netless/app-slide': 0.3.0-canary.11
       '@netless/fastboard-core': 1.0.0-canary.7_ayu22vuam2jcfnyaaly7yhty7q
       '@netless/fastboard-ui': 1.0.0-canary.7_cdb3cxxszhadikmporkl6mi74y
       '@netless/window-manager': 1.0.0-canary.53_white-web-sdk-esm@2.16.34
@@ -3372,8 +3378,8 @@ packages:
     hasBin: true
     dev: true
 
-  /@netless/slide/0.6.5:
-    resolution: {integrity: sha512-HxoeX7pSUpQezdCy0SH7FkBOPdn9X6n2ESC4YuEe8u5bsBXMrjso+YxG/ljuc7bi72eKBw9CVwBaWrdYJ8dglw==}
+  /@netless/slide/0.7.0:
+    resolution: {integrity: sha512-8DE9yfikyWxxIRXMK5GUrW2c51MDrlo/rd1yhJarFtwp6q3EN3LSJUgha8HABnQ2lfDzHRc1HCOebOngTsMBdw==}
     dependencies:
       '@juggle/resize-observer': 3.4.0
       '@types/lodash': 4.14.182
@@ -4140,7 +4146,7 @@ packages:
       babel-plugin-macros: 2.8.0
       babel-plugin-polyfill-corejs3: 0.1.7_@babel+core@7.17.10
       case-sensitive-paths-webpack-plugin: 2.4.0
-      core-js: 3.24.1
+      core-js: 3.22.4
       css-loader: 3.6.0_webpack@4.46.0
       dotenv-webpack: 1.8.0_webpack@4.46.0
       file-loader: 6.2.0_webpack@4.46.0
@@ -4571,7 +4577,7 @@ packages:
       cli-table3: 0.6.2
       commander: 6.2.1
       compression: 1.7.4
-      core-js: 3.24.1
+      core-js: 3.22.4
       cpy: 8.1.2
       detect-port: 1.3.0
       express: 4.18.1
@@ -4676,7 +4682,7 @@ packages:
       '@babel/types': 7.17.10
       '@mdx-js/mdx': 1.6.22
       '@storybook/csf': 0.0.1
-      core-js: 3.24.1
+      core-js: 3.22.4
       fs-extra: 9.1.0
       js-string-escape: 1.0.1
       lodash: 4.17.21
@@ -4717,7 +4723,7 @@ packages:
       babel-loader: 8.2.5_usdhdj5awexcm2e5jtwd44bofa
       case-sensitive-paths-webpack-plugin: 2.4.0
       chalk: 4.1.2
-      core-js: 3.24.1
+      core-js: 3.22.4
       css-loader: 3.6.0_webpack@4.46.0
       dotenv-webpack: 1.8.0_webpack@4.46.0
       express: 4.18.1
@@ -4826,7 +4832,7 @@ packages:
   /@storybook/postinstall/6.3.13:
     resolution: {integrity: sha512-pxMjazJ43bkb0YmorZH+RmhHuhizZPb47GKQc7tODei+/wg0vLrTo19Kj1lBhvptnQGY/EQhVKlc/6Mv6xXeWw==}
     dependencies:
-      core-js: 3.24.1
+      core-js: 3.22.4
     dev: true
 
   /@storybook/preset-create-react-app/3.2.0_fyzyjyxsbpkfj7hwcxvjoivyca:
@@ -4983,7 +4989,7 @@ packages:
       '@storybook/addons': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/client-logger': 6.3.13
       '@storybook/csf': 0.0.1
-      core-js: 3.24.1
+      core-js: 3.22.4
       estraverse: 5.3.0
       global: 4.4.0
       loader-utils: 2.0.2
@@ -5208,7 +5214,7 @@ packages:
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 18.7.18
     dev: true
 
   /@types/hast/2.3.4:
@@ -5328,7 +5334,7 @@ packages:
   /@types/node-fetch/2.6.1:
     resolution: {integrity: sha512-oMqjURCaxoSIsHSr1E47QHzbmzNR5rK8McHuNb11BOM9cHcIK3Avy0s/b2JlXHoQGTYS3NsvWzV1M0iK7l0wbA==}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 14.18.16
       form-data: 3.0.1
     dev: true
 
@@ -5350,6 +5356,9 @@ packages:
   /@types/node/17.0.40:
     resolution: {integrity: sha512-UXdBxNGqTMtm7hCwh9HtncFVLrXoqA3oJW30j6XWp5BH/wu3mVeaxo7cq5benFdBw34HB3XDT2TRPI7rXZ+mDg==}
     dev: true
+
+  /@types/node/18.7.18:
+    resolution: {integrity: sha512-m+6nTEOadJZuTPkKR/SYK3A2d7FZrgElol9UP1Kae90VVU4a6mxnPuLiIW1m4Cq4gZ/nWb9GrdVXJCoCazDAbg==}
 
   /@types/node/18.7.9:
     resolution: {integrity: sha512-0N5Y1XAdcl865nDdjbO0m3T6FdmQ4ijE89/urOHLREyTXbpMWbSafx9y7XIsgWGtwUP2iYTinLyyW3FatAxBLQ==}
@@ -6965,7 +6974,7 @@ packages:
   /babel-plugin-macros/2.8.0:
     resolution: {integrity: sha512-SEP5kJpfGYqYKpBrj5XU3ahw5p5GOHJ0U5ssOSQ/WBVdwkD2Dzlce95exQTs3jOVWPPKLBN2rlEWkCK7dSmLvg==}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       cosmiconfig: 6.0.0
       resolve: 1.22.0
     dev: true
@@ -8203,8 +8212,8 @@ packages:
     requiresBuild: true
     dev: true
 
-  /core-js/3.24.1:
-    resolution: {integrity: sha512-0QTBSYSUZ6Gq21utGzkfITDylE8jWC9Ne1D2MrhvlsZBI1x39OdDIVbzSqtgMndIy6BlHxBXpMGqzZmnztg2rg==}
+  /core-js/3.25.2:
+    resolution: {integrity: sha512-YB4IAT1bjEfxTJ1XYy11hJAKskO+qmhuDBM8/guIfMz4JvdsAQAqvyb97zXX7JgSrfPLG5mRGFWJwJD39ruq2A==}
     requiresBuild: true
 
   /core-util-is/1.0.2:
@@ -8718,8 +8727,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /decimal.js/10.4.0:
-    resolution: {integrity: sha512-Nv6ENEzyPQ6AItkGwLE2PGKinZZ9g59vSh2BeH6NqPu0OTKZ5ruJsVqh/orbAnqXc9pBbgXAIrc2EyaCj8NpGg==}
+  /decimal.js/10.4.1:
+    resolution: {integrity: sha512-F29o+vci4DodHYT9UrR5IEbfBw9pE5eSapIJdTqXK5+6hq+t8VRxwQyKlW2i+KDKFkkJQRvFyI/QXD83h8LyQw==}
 
   /decode-uri-component/0.2.0:
     resolution: {integrity: sha512-hjf+xovcEn31w/EUYdTXQh/8smFL/dzYjohQGEIgjyNavaJfBY2p5F527Bo1VPATxv0VYTUC2bOcXvqFwk78Og==}
@@ -12874,7 +12883,7 @@ packages:
     dependencies:
       '@jest/types': 26.6.2
       '@types/graceful-fs': 4.1.5
-      '@types/node': 18.7.9
+      '@types/node': 18.7.18
       anymatch: 3.1.2
       fb-watchman: 2.0.1
       graceful-fs: 4.2.10
@@ -12900,7 +12909,7 @@ packages:
     resolution: {integrity: sha512-S5wqyz0DXnNJPd/xfIzZ5Xnp1HrJWBczg8mMfMpN78OJ5eDxXyf+Ygld9wX1DnUWbIbhM1YDY95NjR4CBXkb2g==}
     engines: {node: '>= 10.14.2'}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 18.7.18
       graceful-fs: 4.2.10
     dev: true
 
@@ -12909,7 +12918,7 @@ packages:
     engines: {node: '>= 10.14.2'}
     dependencies:
       '@jest/types': 26.6.2
-      '@types/node': 18.7.9
+      '@types/node': 18.7.18
       chalk: 4.1.2
       graceful-fs: 4.2.10
       is-ci: 2.0.0
@@ -12920,7 +12929,7 @@ packages:
     resolution: {integrity: sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 18.7.18
       merge-stream: 2.0.0
       supports-color: 7.2.0
     dev: true
@@ -13207,7 +13216,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.9
       app-root-dir: 1.0.2
-      core-js: 3.24.1
+      core-js: 3.22.4
       dotenv: 8.6.0
       dotenv-expand: 5.1.0
     dev: true
@@ -13624,9 +13633,9 @@ packages:
     engines: {node: '>= 14'}
     hasBin: true
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       complex.js: 2.1.1
-      decimal.js: 10.4.0
+      decimal.js: 10.4.1
       escape-latex: 1.2.0
       fraction.js: 4.2.0
       javascript-natural-sort: 0.7.1
@@ -14009,6 +14018,9 @@ packages:
 
   /mobx/6.6.1:
     resolution: {integrity: sha512-7su3UZv5JF+ohLr2opabjbUAERfXstMY+wiBtey8yNAPoB8H187RaQXuhFjNkH8aE4iHbDWnhDFZw0+5ic4nGQ==}
+
+  /mobx/6.6.2:
+    resolution: {integrity: sha512-IOpS0bf3+hXIhDIy+CmlNMBfFpAbHS0aVHcNC+xH/TFYEKIIVDKNYRh9eKlXuVfJ1iRKAp0cRVmO145CyJAMVQ==}
 
   /moment/2.29.3:
     resolution: {integrity: sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==}
@@ -15528,7 +15540,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 18.7.9
+      '@types/node': 18.7.18
       long: 4.0.0
 
   /proxy-addr/2.0.7:
@@ -16920,7 +16932,7 @@ packages:
   /regenerator-transform/0.15.0:
     resolution: {integrity: sha512-LsrGtPmbYg19bcPHwdtmXwbW+TqNvtY4riE3P83foeHRroMbH6/2ddFBfab3t7kbzc7v7p4wbkIecHImqt0QNg==}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
     dev: true
 
   /regex-not/1.0.2:
@@ -20100,11 +20112,11 @@ packages:
       bezier-js: 2.6.1
       bowser: 2.11.0
       color: 3.2.1
-      core-js: 3.24.1
+      core-js: 3.25.2
       detect-it: 3.0.7
       eventemitter3: 4.0.7
       mathjs: 10.6.4
-      mobx: 6.6.1
+      mobx: 6.6.2
       protobufjs: 6.11.3
       query-string: 5.1.1
       react: 16.14.0
