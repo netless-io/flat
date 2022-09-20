@@ -19,7 +19,7 @@ fs.removeSync(path.join(agoraElectronSdkPath, "build"));
 download({
     electronVersion,
     platform: platform === "win" ? "win32" : "darwin",
-    arch: platform === "win" ? "x86" : "x64",
+    arch: platform === "x64",
     packageVersion: agoraVersion,
     no_symbol: false,
 });
