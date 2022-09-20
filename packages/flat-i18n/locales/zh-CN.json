@@ -491,5 +491,13 @@
   "replay-page": {
     "loading": "加载中",
     "playing": "正在播放"
+  },
+  "recording-settings": {
+    "title": "录制选项",
+    "auto-recording": "进入房间自动开启录制"
+  },
+  "whiteboard-settings": {
+    "title": "笔锋选项",
+    "pencil-tail": "开启铅笔笔锋"
   }
 }

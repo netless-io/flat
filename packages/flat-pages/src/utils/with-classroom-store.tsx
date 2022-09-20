@@ -1,5 +1,5 @@
-import { ClassroomStore } from "@netless/flat-stores";
 import React from "react";
+import { ClassroomStore } from "@netless/flat-stores";
 import { RouteNameType, RouteParams } from "../utils/routes";
 import { useParams } from "react-router-dom";
 import { useClassroomStore } from "./use-classroom-store";

@@ -163,6 +163,9 @@ export class WhiteboardStore {
             uid: globalStore.userUUID,
             nickName: globalStore.userInfo?.name ?? globalStore.userUUID,
             classroomType: this.getRoomType(),
+            options: {
+                strokeTail: globalStore.isShowPencilTail,
+            },
         });
 
         // @TODO remove me after refactoring

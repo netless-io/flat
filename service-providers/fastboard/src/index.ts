@@ -184,6 +184,7 @@ export class Fastboard extends IServiceWhiteboard {
         nickName,
         region,
         classroomType,
+        options = {},
     }: IServiceWhiteboardJoinRoomConfig): Promise<void> {
         if (!appID) {
             throw new Error("[Fastboard] APP_ID is not set");
@@ -205,6 +206,7 @@ export class Fastboard extends IServiceWhiteboard {
                 pptParams: {
                     useServerWrap: true,
                 },
+                disableNewPencilStroke: options.strokeTail === false,
             },
             managerConfig: {
                 containerSizeRatio: classroomType === RoomType.SmallClass ? 8.3 / 16 : 10.46 / 16,

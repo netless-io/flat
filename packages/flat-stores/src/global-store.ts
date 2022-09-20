@@ -19,6 +19,8 @@ export class GlobalStore {
     public isShowRecordHintTips = true;
     public isShowGuide = false;
     public isTurnOffDeviceTest = false;
+    public isAutoRecording = false;
+    public isShowPencilTail = true;
     public userInfo: UserInfo | null = null;
     public whiteboardRoomUUID: string | null = null;
     public whiteboardRoomToken: string | null = null;
@@ -129,6 +131,18 @@ export class GlobalStore {
     public updatePeriodicUUID = (periodicUUID?: string): void => {
         this.periodicUUID = periodicUUID;
     };
+
+    public toggleAutoRecording = (): void => {
+        this.isAutoRecording = !this.isAutoRecording;
+    };
+
+    public togglePencilTail = (): void => {
+        this.isShowPencilTail = !this.isShowPencilTail;
+    };
 }
 
 export const globalStore = new GlobalStore();
+
+if (process.env.NODE_ENV !== "production") {
+    (window as any).globalStore = globalStore;
+}

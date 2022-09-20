@@ -419,7 +419,7 @@
   "device-test": "Devices Test",
   "close-tip": "Close tip",
   "device-test-option": "Device test option",
-  "turn-on-device-test": "Turn on device test when join the room",
+  "turn-on-device-test": "Turn on device test on entering room",
   "user-guide-text": "Want to learn more about {{appName}}? ",
   "user-guide-button": "Check it out now",
   "start-recording": "Start recording",
@@ -491,5 +491,13 @@
   "replay-page": {
     "loading": "Loading",
     "playing": "Now Playing"
+  },
+  "recording-settings": {
+    "title": "Recording Options",
+    "auto-recording": "Turn on recording on entering room"
+  },
+  "whiteboard-settings": {
+    "title": "Whiteboard Options",
+    "pencil-tail": "Pencil tail"
   }
 }

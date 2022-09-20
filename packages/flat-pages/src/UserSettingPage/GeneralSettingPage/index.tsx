@@ -147,12 +147,36 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                 <div className="general-setting-device-test-box">
                     <div className="general-setting-checkbox-title">{t("device-test-option")}</div>
                     <Checkbox
-                        defaultChecked={!globalStore.isTurnOffDeviceTest}
-                        onClick={() => {
-                            globalStore.toggleDeviceTest();
-                        }}
+                        checked={!globalStore.isTurnOffDeviceTest}
+                        onClick={globalStore.toggleDeviceTest}
                     >
                         <span className="checkbox-item-inner">{t("turn-on-device-test")}</span>
+                    </Checkbox>
+                </div>
+                <div className="general-setting-recording-box">
+                    <div className="general-setting-checkbox-title">
+                        {t("recording-settings.title")}
+                    </div>
+                    <Checkbox
+                        checked={globalStore.isAutoRecording}
+                        onClick={globalStore.toggleAutoRecording}
+                    >
+                        <span className="checkbox-item-inner">
+                            {t("recording-settings.auto-recording")}
+                        </span>
+                    </Checkbox>
+                </div>
+                <div className="general-setting-recording-box">
+                    <div className="general-setting-checkbox-title">
+                        {t("whiteboard-settings.title")}
+                    </div>
+                    <Checkbox
+                        checked={globalStore.isShowPencilTail}
+                        onClick={globalStore.togglePencilTail}
+                    >
+                        <span className="checkbox-item-inner">
+                            {t("whiteboard-settings.pencil-tail")}
+                        </span>
                     </Checkbox>
                 </div>
                 <div className="general-setting-user-account">
