@@ -8,6 +8,9 @@ on:
 jobs:
   deploy-flat-web-prod:
     environment: production
+    env:
+      FLAT_UA: ${{ secrets.FLAT_UA }}
+
     runs-on: ubuntu-latest
 
     steps:
