@@ -1,6 +1,6 @@
 import "./CreateRoomBox.less";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form, Dropdown, Menu, InputRef } from "antd";
 import { RoomType } from "@netless/flat-server-api";
@@ -60,17 +60,18 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const regionMenu = (
         <Menu
             className="create-room-modal-menu-item"
+            items={regions.map(region => ({
+                key: region,
+                label: (
+                    <Fragment>
+                        <img alt={region} src={RegionSVG[region]} style={{ width: 22 }} />
+                        <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
+                    </Fragment>
+                ),
+            }))}
             style={{ width: "auto" }}
             onClick={e => setRoomRegion(e.key as Region)}
-        >
-            <div style={{ padding: "4px 12px 0 14px", color: "gray" }}>{t("servers")}</div>
-            {regions.map(region => (
-                <Menu.Item key={region}>
-                    <img alt={region} src={RegionSVG[region]} style={{ width: 22 }} />
-                    <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
-                </Menu.Item>
-            ))}
-        </Menu>
+        ></Menu>
     );
 
     return (
@@ -99,8 +100,8 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                         {t("begin")}
                     </Button>,
                 ]}
+                open={isShowModal}
                 title={t("home-page-hero-button-type.begin")}
-                visible={isShowModal}
                 width={400}
                 wrapClassName="create-room-box-container"
                 onCancel={handleCancel}

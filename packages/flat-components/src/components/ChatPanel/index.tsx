@@ -30,32 +30,31 @@ export const ChatPanel = /* @__PURE__ */ observer<ChatPanelProps>(function ChatP
         <div className="chat-panel">
             <Tabs
                 activeKey={activeTab}
+                items={[
+                    {
+                        key: "messages",
+                        label: (
+                            <ChatTabTitle>
+                                <span>{t("messages")}</span>
+                            </ChatTabTitle>
+                        ),
+                        children: <ChatMessages {...props} visible={activeTab === "messages"} />,
+                    },
+                    {
+                        key: "users",
+                        label: (
+                            <ChatTabTitle {...props}>
+                                <span>
+                                    {t("users")} {usersCount}
+                                </span>
+                            </ChatTabTitle>
+                        ),
+                        children: <ChatUsers {...props} />,
+                    },
+                ]}
                 tabBarGutter={0}
                 onChange={setActiveTab as (key: string) => void}
-            >
-                <Tabs.TabPane
-                    key="messages"
-                    tab={
-                        <ChatTabTitle>
-                            <span>{t("messages")}</span>
-                        </ChatTabTitle>
-                    }
-                >
-                    <ChatMessages {...props} visible={activeTab === "messages"} />
-                </Tabs.TabPane>
-                <Tabs.TabPane
-                    key="users"
-                    tab={
-                        <ChatTabTitle {...props}>
-                            <span>
-                                {t("users")} {usersCount}
-                            </span>
-                        </ChatTabTitle>
-                    }
-                >
-                    <ChatUsers {...props} />
-                </Tabs.TabPane>
-            </Tabs>
+            ></Tabs>
         </div>
     );
 });

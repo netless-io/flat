@@ -72,8 +72,7 @@ export const FullTimePicker: FC<FullTimePickerProps> = ({
             <Col span={12}>
                 <TimePicker
                     allowClear={false}
-                    disabledHours={disabledHours}
-                    disabledMinutes={disabledMinutes}
+                    disabledTime={() => ({ disabledHours, disabledMinutes })}
                     format="HH:mm"
                     value={value}
                     onChange={date => {

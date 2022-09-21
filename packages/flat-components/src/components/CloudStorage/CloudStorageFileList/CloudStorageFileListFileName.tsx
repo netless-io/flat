@@ -67,16 +67,13 @@ export const CloudStorageFileListFileName =
                                 getPopupContainer={getPopupContainer}
                                 overlay={
                                     <Menu
-                                        onClick={({ key }) =>
-                                            onItemMenuClick && onItemMenuClick(file.fileUUID, key)
-                                        }
-                                    >
-                                        {menuItems.map(({ key, name, className = "" }) => (
-                                            <Menu.Item key={key} className={className}>
-                                                {name}
-                                            </Menu.Item>
-                                        ))}
-                                    </Menu>
+                                        items={menuItems.map(e => ({
+                                            key: e.key,
+                                            className: e.className,
+                                            label: e.name,
+                                        }))}
+                                        onClick={({ key }) => onItemMenuClick?.(file.fileUUID, key)}
+                                    />
                                 }
                                 overlayClassName="cloud-storage-file-list-menu"
                             >

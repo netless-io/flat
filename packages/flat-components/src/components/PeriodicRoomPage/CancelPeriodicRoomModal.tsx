@@ -42,8 +42,8 @@ export const CancelPeriodicRoomModal: React.FC<CancelPeriodicRoomModalProps> = (
                     {t("confirm")}
                 </Button>,
             ]}
+            open={visible}
             title={title}
-            visible={visible}
             onCancel={onCancel}
         >
             {content()}

@@ -15,13 +15,13 @@ export function RoomListItemMenus<TKey extends string = string>({
     return (
         <Dropdown
             overlay={
-                <Menu>
-                    {actions.map(action => (
-                        <Menu.Item key={action.key} onClick={() => onAction(action.key)}>
-                            {action.text}
-                        </Menu.Item>
-                    ))}
-                </Menu>
+                <Menu
+                    items={actions.map(action => ({
+                        key: action.key,
+                        onClick: () => onAction(action.key),
+                        label: action.text,
+                    }))}
+                />
             }
             overlayClassName="room-list-item-sub-menu"
             trigger={["click"]}

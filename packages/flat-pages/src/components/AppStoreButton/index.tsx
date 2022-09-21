@@ -71,13 +71,13 @@ export const AppStoreButton = observer<AppStoreButtonProps>(function AppStoreBut
                 destroyOnClose
                 className="app-store-modal"
                 footer={null}
+                open={appStoreIsVisible}
                 title={
                     <div className="app-store-modal-title-box">
                         <div className="app-store-modal-title">{t("app-store")}</div>
                         <div className="app-store-modal-inner-text">{t("recently-used")}</div>
                     </div>
                 }
-                visible={appStoreIsVisible}
                 onCancel={() => setAppStoreIsVisible(false)}
             >
                 <div className="apps-container">

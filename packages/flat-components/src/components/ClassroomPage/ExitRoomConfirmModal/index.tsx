@@ -23,8 +23,8 @@ export const StopClassConfirmModal: FC<StopClassConfirmModalProps> = ({
     return (
         <Modal
             okButtonProps={{ loading }}
+            open={visible}
             title={t("confirmation-of-the-end-of-classes")}
-            visible={visible}
             onCancel={onCancel}
             onOk={onStop}
         >
@@ -68,8 +68,8 @@ export const CloseRoomConfirmModal: FC<CloseRoomConfirmModalProps> = ({
                     {t("end-the-class")}
                 </Button>,
             ]}
+            open={visible}
             title={t("close-option")}
-            visible={visible}
             onCancel={onCancel}
             onOk={onCancel}
         >
@@ -96,8 +96,8 @@ export const ExitRoomConfirmModal: FC<ExitRoomConfirmModalProps> = ({
     const t = useTranslate();
     return (
         <Modal
+            open={visible}
             title={t("student-sure-to-exit-the-room")}
-            visible={visible}
             onCancel={onCancel}
             onOk={onExit}
         >

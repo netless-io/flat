@@ -103,10 +103,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
     function jumpToReplayPage(): void {
         if (roomInfo) {
             const { roomType, roomUUID, ownerUUID } = roomInfo;
-            window.open(
-                `${FLAT_WEB_BASE_URL}/replay/${roomType}/${roomUUID}/${ownerUUID}/`,
-                "_blank",
-            );
+            window.open(`/replay/${roomType}/${roomUUID}/${ownerUUID}/`, "_blank");
         }
     }
 
