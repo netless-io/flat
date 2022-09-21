@@ -22,8 +22,8 @@ export const ExitReplayConfirmModal = observer<ExitReplayConfirmModalProps>(
                         {t("confirm")}
                     </Button>,
                 ]}
+                open={visible}
                 title={t("exit-replay")}
-                visible={visible}
                 onCancel={onCancel}
             >
                 {t("exit-reply-tips")}

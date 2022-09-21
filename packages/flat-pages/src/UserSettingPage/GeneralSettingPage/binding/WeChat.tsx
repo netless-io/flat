@@ -96,8 +96,8 @@ export const BindWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh, gl
                 destroyOnClose
                 className="binding-wechat-modal"
                 footer={null}
+                open={!!qrCodeURL}
                 title={t("bind-wechat")}
-                visible={!!qrCodeURL}
                 onCancel={cancel}
             >
                 <iframe

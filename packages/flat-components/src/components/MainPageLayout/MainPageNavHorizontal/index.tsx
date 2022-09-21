@@ -33,8 +33,6 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
     generateAvatar,
     title,
 }) => {
-    const { TabPane } = Tabs;
-
     return (
         <div className="main-page-nav-horizontal-container">
             <div className="main-page-nav-horizontal-content">
@@ -48,6 +46,17 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
                                     leftMenu.some(menuItem => menuItem.key === key),
                                 ) || "none"
                             }
+                            items={leftMenu.map(menuItem => ({
+                                key: menuItem.key,
+                                label: (
+                                    <div className="main-page-nav-horizontal-left-menu-item">
+                                        <div className="main-page-nav-horizontal-left-menu-item-icon">
+                                            {menuItem.icon(activeKeys.includes(menuItem.key))}
+                                        </div>
+                                        {menuItem.title}
+                                    </div>
+                                ),
+                            }))}
                             onChange={key => {
                                 const item = leftMenu.find(e => e.key === key);
                                 if (item) {
@@ -58,25 +67,7 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
                                     }
                                 }
                             }}
-                        >
-                            {leftMenu.map(menuItem => {
-                                return (
-                                    <TabPane
-                                        key={menuItem.key}
-                                        tab={
-                                            <div className="main-page-nav-horizontal-left-menu-item">
-                                                <div className="main-page-nav-horizontal-left-menu-item-icon">
-                                                    {menuItem.icon(
-                                                        activeKeys.includes(menuItem.key),
-                                                    )}
-                                                </div>
-                                                {menuItem.title}
-                                            </div>
-                                        }
-                                    />
-                                );
-                            })}
-                        </Tabs>
+                        ></Tabs>
                     )}
                 </div>
                 <div className="main-page-nav-horizontal-right">

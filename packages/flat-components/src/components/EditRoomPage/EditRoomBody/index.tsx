@@ -16,6 +16,7 @@ import { renderBeginTimePicker } from "./renderBeginTimePicker";
 import { renderEndTimePicker } from "./renderEndTimePicker";
 import { renderPeriodicForm } from "./renderPeriodicForm";
 import { ClassPicker } from "../../HomePage/ClassPicker";
+import { Fragment } from "react";
 
 export enum Region {
     CN_HZ = "cn-hz",
@@ -106,17 +107,19 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
     const regionMenu = (
         <Menu
             className="edit-room-body-menu-item"
+            items={regions.map(region => ({
+                key: region,
+                label: (
+                    <Fragment>
+                        <img alt={region} src={RegionSVG[region]} style={{ width: 22 }} />
+                        <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
+                    </Fragment>
+                ),
+            }))}
+            prefix="hello"
             style={{ width: "auto" }}
             onClick={e => setRegion(e.key as Region)}
-        >
-            <div style={{ padding: "4px 12px 0 14px", color: "gray" }}>{t("servers")}</div>
-            {regions.map(region => (
-                <Menu.Item key={region}>
-                    <img alt={region} src={RegionSVG[region]} style={{ width: 22 }} />
-                    <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
-                </Menu.Item>
-            ))}
-        </Menu>
+        />
     );
 
     return (
@@ -251,8 +254,8 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                             {t("confirm")}
                         </Button>,
                     ]}
+                    open={isShowEditSubmitConfirm}
                     title={renderModalTitle(type)}
-                    visible={isShowEditSubmitConfirm}
                     onCancel={hideEditSubmitConfirm}
                     onOk={onSubmitForm}
                 >

@@ -43,8 +43,8 @@ export const SaveAnnotationModal: React.FC<SaveAnnotationModalProps> = ({
             closable
             destroyOnClose
             footer={null}
+            open={visible}
             title={t("annotation.save-action")}
-            visible={visible}
             width={640}
             wrapClassName="save-annotation-modal-container"
             onCancel={onClose}

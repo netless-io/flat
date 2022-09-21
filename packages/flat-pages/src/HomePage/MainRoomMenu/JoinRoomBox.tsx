@@ -75,8 +75,8 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                     </Button>,
                 ]}
                 okText={t("join")}
+                open={isShowModal}
                 title={t("home-page-hero-button-type.join")}
-                visible={isShowModal}
                 width={400}
                 wrapClassName="join-room-box-container"
                 onCancel={handleCancel}

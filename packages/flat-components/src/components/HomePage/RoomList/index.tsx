@@ -42,13 +42,13 @@ export function RoomList<T extends string>({
                 {filters && (
                     <Dropdown
                         overlay={
-                            <Menu>
-                                {filters.map(({ title, key }) => (
-                                    <Menu.Item key={key} onClick={() => onTabActive?.(key)}>
-                                        {title}
-                                    </Menu.Item>
-                                ))}
-                            </Menu>
+                            <Menu
+                                items={filters.map(({ title, key }) => ({
+                                    key,
+                                    onClick: () => onTabActive?.(key),
+                                    label: title,
+                                }))}
+                            />
                         }
                     >
                         <span className="room-list-filters">

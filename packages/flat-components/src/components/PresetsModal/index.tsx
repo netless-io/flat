@@ -34,8 +34,8 @@ export const PresetsModal: React.FC<PresetsModalProps> = ({
         <Modal
             closable
             footer={null}
+            open={visible}
             title={t("presets.title")}
-            visible={visible}
             width={640}
             wrapClassName="presets-modal-container"
             onCancel={onClose}

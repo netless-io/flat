@@ -26,8 +26,8 @@ export const RemoveHistoryRoomModal = /* @__PURE__ */ observer<RemoveHistoryRoom
                         {t("confirm")}
                     </Button>,
                 ]}
+                open={visible}
                 title={t("delete-room-records")}
-                visible={visible}
                 wrapClassName="remove-history-room-modal-container"
                 onCancel={onCancel}
             >

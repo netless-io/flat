@@ -26,8 +26,8 @@ export const CancelSubPeriodicRoomModal: React.FC<CancelSubPeriodicRoomModalProp
                     {t("confirm")}
                 </Button>,
             ]}
+            open={visible}
             title={t("cancel-room")}
-            visible={visible}
             onCancel={onCancel}
         >
             <span>{t("cancel-sub-periodic-room-tips")}</span>

@@ -15,11 +15,19 @@ export const ChatPanelReplay = observer<ChatPanelReplayProps>(function ChatPanel
     const t = useTranslate();
     return (
         <div className="chat-panel">
-            <Tabs defaultActiveKey="messages" tabBarGutter={0}>
-                <Tabs.TabPane key="messages" tab={t("messages")}>
-                    <ChatMessagesReplay classRoomReplayStore={classRoomReplayStore} />
-                </Tabs.TabPane>
-            </Tabs>
+            <Tabs
+                defaultActiveKey="messages"
+                items={[
+                    {
+                        key: "messages",
+                        label: t("messages"),
+                        children: (
+                            <ChatMessagesReplay classRoomReplayStore={classRoomReplayStore} />
+                        ),
+                    },
+                ]}
+                tabBarGutter={0}
+            ></Tabs>
         </div>
     );
 });

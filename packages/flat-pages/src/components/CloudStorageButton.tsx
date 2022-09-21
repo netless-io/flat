@@ -35,8 +35,8 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
                 destroyOnClose
                 className="cloud-storage-button-modal"
                 footer={[]}
+                open={classroom.isCloudStoragePanelVisible}
                 title={t("my-cloud ")}
-                visible={classroom.isCloudStoragePanelVisible}
                 onCancel={hideModal}
             >
                 <CloudStoragePanel
