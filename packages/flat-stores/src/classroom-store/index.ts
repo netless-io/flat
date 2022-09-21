@@ -482,6 +482,10 @@ export class ClassroomStore {
                 roomID: this.roomUUID,
                 classroomType: this.roomType,
             });
+
+            if (preferencesStore.autoRecording && !this.isRecording) {
+                await this.toggleRecording();
+            }
         }
     }
 

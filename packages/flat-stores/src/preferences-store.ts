@@ -23,6 +23,10 @@ export class PreferencesStore {
     public microphoneId?: string | null = null;
 
     public prefersColorScheme: FlatPrefersColorScheme = "light";
+    /** Turn on recording on joining room */
+    public autoRecording = false;
+    /** Show or hide stroke tails */
+    public strokeTail = true;
 
     public constructor() {
         autoPersistStore({ storeLSName: "PreferencesStore", store: this, version: LS_VERSION });
@@ -57,6 +61,14 @@ export class PreferencesStore {
 
     public updatePrefersColorScheme = (prefersColorScheme: FlatPrefersColorScheme): void => {
         this.prefersColorScheme = prefersColorScheme;
+    };
+
+    public toggleAutoRecording = (): void => {
+        this.autoRecording = !this.autoRecording;
+    };
+
+    public toggleStrokeTail = (): void => {
+        this.strokeTail = !this.strokeTail;
     };
 }
 

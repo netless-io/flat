@@ -14,6 +14,7 @@ import { globalStore } from "../global-store";
 import { ClassroomReplayEventData } from "../classroom-store/event";
 import { FlatServices, IServiceWhiteboard } from "@netless/flat-services";
 import { SideEffectManager } from "side-effect-manager";
+import { preferencesStore } from "../preferences-store";
 
 export class WhiteboardStore {
     private sideEffect = new SideEffectManager();
@@ -163,6 +164,9 @@ export class WhiteboardStore {
             uid: globalStore.userUUID,
             nickName: globalStore.userInfo?.name ?? globalStore.userUUID,
             classroomType: this.getRoomType(),
+            options: {
+                strokeTail: preferencesStore.strokeTail,
+            },
         });
 
         // @TODO remove me after refactoring

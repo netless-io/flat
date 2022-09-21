@@ -132,3 +132,7 @@ export class GlobalStore {
 }
 
 export const globalStore = new GlobalStore();
+
+if (process.env.NODE_ENV !== "production") {
+    (window as any).globalStore = globalStore;
+}

@@ -6,6 +6,13 @@ import { IService } from "../typing";
 import { IServiceWhiteboardPhase } from "./constants";
 import { IServiceWhiteboardEvents } from "./events";
 
+export interface IServiceWhiteboardOptions {
+    /**
+     * true = render stroke tail
+     */
+    strokeTail?: boolean;
+}
+
 export interface IServiceWhiteboardJoinRoomConfig extends IService {
     appID?: string;
     roomID: string;
@@ -14,6 +21,7 @@ export interface IServiceWhiteboardJoinRoomConfig extends IService {
     nickName: string;
     region: Region;
     classroomType: RoomType;
+    options?: IServiceWhiteboardOptions;
 }
 
 export interface IServiceWhiteboard$Val {
