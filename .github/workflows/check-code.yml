@@ -32,7 +32,7 @@ jobs:
       - name: Install changed package dependencies and build packages
         run: |-
           # failure automatically retries 3 times
-          pnpm i  || pnpm i || pnpm i
+          pnpm i || pnpm i || pnpm i
 
       - name: Build renderer
         run: pnpm -F renderer-app build

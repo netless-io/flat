@@ -19,6 +19,8 @@ exports.dotenv = function dotenv(envDir) {
 
             if (process.env["FLAT_UA"] !== undefined && process.env["FLAT_UA"] !== "undefined") {
                 define["process.env.FLAT_UA"] = JSON.stringify(process.env["FLAT_UA"]);
+            } else {
+                define["process.env.FLAT_UA"] = "''";
             }
 
             if (envConfigContent) {
