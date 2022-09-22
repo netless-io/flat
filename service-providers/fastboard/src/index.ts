@@ -1,4 +1,4 @@
-import { createFastboard, createUI, FastboardApp } from "@netless/fastboard";
+import { createFastboard, createUI, FastboardApp, addManagerListener } from "@netless/fastboard";
 import { DeviceType, RoomPhase } from "white-web-sdk";
 import { RoomType } from "@netless/flat-server-api";
 import type { FlatI18n } from "@netless/flat-i18n";
@@ -15,7 +15,6 @@ import { AsyncSideEffectManager } from "side-effect-manager";
 
 import { registerColorShortcut } from "./color-shortcut";
 import { injectCursor } from "./inject-cursor";
-import { ScrollMode } from "./scroll-mode";
 
 export { replayFastboard, register, stockedApps } from "@netless/fastboard";
 export { FastboardFileInsert } from "./file-insert";
@@ -47,7 +46,6 @@ export class Fastboard extends IServiceWhiteboard {
     private flatInfo: FlatInfo;
     private APP_ID?: string;
     private ui = createUI();
-    private scrollMode: ScrollMode | null;
 
     public readonly _app$: Val<FastboardApp | null>;
     public readonly _el$: Val<HTMLElement | null>;
@@ -86,8 +84,6 @@ export class Fastboard extends IServiceWhiteboard {
         this._el$ = new Val<HTMLElement | null>(null);
         this._roomPhase$ = new Val<RoomPhase>(RoomPhase.Disconnected);
         const allowDrawing$ = new Val(false);
-
-        this.scrollMode = null;
 
         const phase$ = combine([this._app$, this._roomPhase$], ([app, phase]) =>
             app ? convertRoomPhase(phase) : IServiceWhiteboardPhase.Disconnected,
@@ -149,26 +145,12 @@ export class Fastboard extends IServiceWhiteboard {
                             zoom_control: { enable: false },
                         },
                     });
-                    if (this.scrollMode) {
-                        this.scrollMode.setRoot(el);
-                    }
                 } else {
                     this.ui.destroy();
                 }
             }),
             this._app$.subscribe(app => {
                 this.ui.update({ app });
-                if (app) {
-                    if (this.scrollMode) {
-                        this.scrollMode.dispose();
-                    }
-                    this.scrollMode = new ScrollMode(app, this.events);
-                    if (this._el$.value) {
-                        this.scrollMode.setRoot(this._el$.value);
-                    }
-                } else if (this.scrollMode) {
-                    this.scrollMode.dispose();
-                }
             }),
             this.flatI18n.$Val.language$.subscribe(language => {
                 this.ui.update({ language });
@@ -216,6 +198,7 @@ export class Fastboard extends IServiceWhiteboard {
                     position: "absolute",
                     bottom: "8px",
                 },
+                viewMode: "scroll",
             },
             joinRoom: {
                 uuid: roomID,
@@ -273,10 +256,37 @@ export class Fastboard extends IServiceWhiteboard {
                 },
             },
         });
+
         this._app$.setValue(fastboardAPP);
 
-        this.sideEffect.push(registerColorShortcut(fastboardAPP));
-        this.sideEffect.push(injectCursor(fastboardAPP));
+        this.sideEffect.push(registerColorShortcut(fastboardAPP), "color-shortcut");
+        this.sideEffect.push(injectCursor(fastboardAPP), "cursor");
+
+        this.sideEffect.push(
+            addManagerListener(
+                fastboardAPP.manager,
+                "scrollStateChange",
+                ({ page, maxScrollPage }) => {
+                    this.events.emit("scrollPage", page);
+                    this.events.emit("maxScrollPage", maxScrollPage);
+                },
+            ),
+            "scroll-state",
+        );
+
+        if (fastboardAPP.manager.scrollState) {
+            const { page, maxScrollPage } = fastboardAPP.manager.scrollState;
+            this.events.emit("scrollPage", page);
+            this.events.emit("maxScrollPage", maxScrollPage);
+        }
+
+        this.sideEffect.push(
+            addManagerListener(
+                fastboardAPP.manager,
+                "userScroll",
+                this.events.emit.bind(this.events, "userScroll"),
+            ),
+        );
     }
 
     public async leaveRoom(): Promise<void> {
