@@ -86,7 +86,8 @@
         "vite",
         "less",
         "typescript",
-        "eslint"
+        "eslint",
+        "white-web-sdk"
       ],
       "allowedVersions": {
         "@storybook/theming": "~6.3.7",
