@@ -103,6 +103,7 @@ module.exports = {
         "commitlintrc", // @commitlint/cli
         "unpublish", // agora-rtc-sdk-ng
         "multipass", // svgo
+        "svglint",
         "allowlist", // webpack-node-externals
         "Wyri", // WyriHaximus/github-action-helm3@v2
         "Haximus", // WyriHaximus/github-action-helm3@v2
