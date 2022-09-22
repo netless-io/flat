@@ -1,6 +1,6 @@
 import "./CreateRoomBox.less";
 
-import React, { Fragment, useContext, useEffect, useRef, useState } from "react";
+import React, { Fragment, useContext, useEffect, useRef, useState, KeyboardEvent } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form, Dropdown, Menu, InputRef } from "antd";
 import { RoomType } from "@netless/flat-server-api";
@@ -139,6 +139,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                                     />
                                 </Dropdown>
                             }
+                            onKeyUp={submitOnEnter}
                         />
                     </Form.Item>
                     <Form.Item label={t("type")} name="roomType" valuePropName="type">
@@ -153,6 +154,13 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
             </Modal>
         </>
     );
+
+    function submitOnEnter(ev: KeyboardEvent<HTMLInputElement>): void {
+        if (ev.key === "Enter" && !ev.ctrlKey && !ev.shiftKey && !ev.altKey && !ev.metaKey) {
+            ev.preventDefault();
+            sp(form.validateFields()).then(handleOk);
+        }
+    }
 
     async function handleOk(): Promise<void> {
         try {
