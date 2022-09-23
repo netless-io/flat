@@ -240,7 +240,7 @@ export class ClassroomStore {
     public async init(): Promise<void> {
         await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
 
-        if (process.env.Node_ENV === "development") {
+        if (process.env.NODE_ENV === "development") {
             if (this.roomInfo && this.roomInfo.ownerUUID !== this.ownerUUID) {
                 (this.ownerUUID as string) = this.roomInfo.ownerUUID;
                 if (process.env.DEV) {
