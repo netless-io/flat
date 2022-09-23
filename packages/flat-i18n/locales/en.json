@@ -499,5 +499,6 @@
   "whiteboard-settings": {
     "title": "Whiteboard Options",
     "pencil-tail": "Pencil tail"
-  }
+  },
+  "upload-avatar-size-limit": "Avatar size should be less than 5MB"
 }
