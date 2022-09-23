@@ -51,7 +51,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
 
     async function onUpload(file: File): Promise<void> {
         try {
-            await uploadAvatar(file);
+            await uploadAvatar(file, t);
         } catch (error) {
             message.info(t("upload-avatar-failed"));
             throw error;

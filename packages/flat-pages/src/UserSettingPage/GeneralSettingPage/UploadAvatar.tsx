@@ -1,9 +1,9 @@
 import Axios from "axios";
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import classNames from "classnames";
-import { Region } from "flat-components";
+import { message, Region } from "flat-components";
 import { observer } from "mobx-react-lite";
-import { useTranslate } from "@netless/flat-i18n";
+import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
 
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
@@ -49,7 +49,12 @@ export const UploadAvatar = observer<UploadAvatarProps>(function UploadAvatar({ 
                 "is-loading": loading,
             })}
         >
-            <input className="user-avatar-input" type="file" onChange={updateInput} />
+            <input
+                accept=".png,.jpg,.jpeg"
+                className="user-avatar-input"
+                type="file"
+                onChange={updateInput}
+            />
             {imageUrl ? (
                 <img alt="avatar" className="user-avatar-image" src={imageUrl} />
             ) : (
@@ -68,7 +73,14 @@ function fileToDataUrl(file: File): Promise<string> {
     });
 }
 
-export async function uploadAvatar(file: File): Promise<void> {
+const USER_AVATAR_SIZE_LIMIT = 5242880;
+
+export async function uploadAvatar(file: File, t: FlatI18nTFunction): Promise<void> {
+    if (file.size >= USER_AVATAR_SIZE_LIMIT) {
+        message.info(t("upload-avatar-size-limit"));
+        throw new Error("upload avatar size limit");
+    }
+
     const ticket = await uploadAvatarStart(
         file.name,
         file.size,

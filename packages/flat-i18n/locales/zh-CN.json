@@ -499,5 +499,6 @@
   "whiteboard-settings": {
     "title": "笔锋选项",
     "pencil-tail": "开启铅笔笔锋"
-  }
+  },
+  "upload-avatar-size-limit": "头像大小不能超过 5MB"
 }
