@@ -1,4 +1,4 @@
-// import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { dotenv } from "@netless/flat-vite-plugins/dotenv";
 import { reactVirtualized } from "@netless/flat-vite-plugins/react-virtualized";
@@ -8,12 +8,21 @@ import { inlineAssets } from "./scripts/vite-plugin-inline-assets";
 import { mainPackageJSONPath } from "../../scripts/constants";
 import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 import viteCompression from "vite-plugin-compression";
+
+// HACK: disable dedupe in the react plugin
+const reactPlugin = react();
+{
+    const p = (reactPlugin as any).find((e: any) => e?.name === "vite:react-refresh");
+    // This line overrides the original config (dedupe)
+    p.config = () => ({ esbuild: { target: "esnext" } });
+}
+
 export default defineConfig({
     server: {
         port: 3000,
     },
     plugins: [
-        // react(),
+        reactPlugin,
         dotenv(autoChooseConfig()),
         injectHtmlHash(),
         version(mainPackageJSONPath),

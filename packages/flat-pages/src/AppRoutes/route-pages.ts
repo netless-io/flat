@@ -107,4 +107,14 @@ export const routePages: RoutePages = {
         title: "DevicesTestPage",
         component: () => import("../DevicesTestPage"),
     },
+    [RouteNameType.ApplicationsPage]: {
+        title: "ApplicationsPage",
+        hasHeader: true,
+        component: () => import("../UserSettingPage/ApplicationsPage"),
+    },
+    [RouteNameType.OAuthPage]: {
+        title: "OAuthPage",
+        hasHeader: true,
+        component: () => import("../UserSettingPage/OAuthPage"),
+    },
 };

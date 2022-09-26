@@ -3,17 +3,35 @@
     border-right: solid 1px #dbe1ea;
     background-color: #fff;
 
-    > ul {
+    ul {
+        display: none;
         list-style-type: none;
         padding-inline-start: 0px;
+    }
+
+    > ul {
+        display: block;
+    }
+
+    .expanded > ul {
+        display: block;
     }
 }
 
 .main-layout-sub-menu-item-icon {
+    width: 24px;
+    height: 24px;
     margin-right: 8px;
+
+    svg {
+        width: 22px;
+        height: 22px;
+        vertical-align: text-top;
+    }
 }
 
 .main-layout-sub-menu-item {
+    position: relative;
     display: flex;
     padding: 9px 0px 9px 16px;
     transition: background-color 0.4s;
@@ -30,6 +48,17 @@
         color: var(--text);
         background-color: rgba(51, 129, 255, 0.06);
     }
+}
+
+.main-layout-sub-menu-item-expand {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 8px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
 }
 
 .flat-color-scheme-dark {

@@ -2,7 +2,7 @@ import "./antd.mod.stories.less";
 
 import React from "react";
 import { Story, Meta } from "@storybook/react";
-import { Input, Radio, Checkbox, Button, ButtonProps, InputRef } from "antd";
+import { Input, Radio, Checkbox, Button, ButtonProps, InputRef, Table } from "antd";
 import { SVGChat } from "../components/FlatIcons";
 import { useRef } from "@storybook/client-api";
 import faker from "faker";
@@ -189,6 +189,29 @@ export const Overview: Story = () => {
         <Input.TextArea rows={5} value={Array(50).fill(faker.lorem.words(100)).join("\n\n")} />
     );
 
+    const tableExample = (
+        <Table
+            columns={[
+                {
+                    key: "name",
+                    dataIndex: "name",
+                    title: "Name",
+                    render: text => <a>{text}</a>,
+                },
+                {
+                    key: "age",
+                    dataIndex: "age",
+                    title: "Age",
+                },
+            ]}
+            dataSource={[
+                { key: "1", name: "John Brown", age: 32 },
+                { key: "2", name: "Jim Green", age: 42 },
+                { key: "3", name: "Joe Black", age: 32 },
+            ]}
+        />
+    );
+
     return (
         <div className="w-80-ns center" style={{ color: "#7A7B7C" }}>
             <div className="columns is-variable is-8">
@@ -207,6 +230,9 @@ export const Overview: Story = () => {
                 <div className="column is-half-desktop is-three-quarters-tablet">
                     {textAreaExample}
                 </div>
+            </div>
+            <div className="columns">
+                <div className="column">{tableExample}</div>
             </div>
         </div>
     );

@@ -19,6 +19,8 @@ export enum RouteNameType {
     ResourcePreviewPage = "ResourcePreviewPage",
     FilePreviewPage = "FilePreviewPage",
     DevicesTestPage = "DevicesTestPage",
+    ApplicationsPage = "ApplicationsPage",
+    OAuthPage = "OAuthPage",
 }
 
 export const routeConfig = {
@@ -93,6 +95,12 @@ export const routeConfig = {
     },
     [RouteNameType.DevicesTestPage]: {
         path: "/devices-test/:roomUUID/",
+    },
+    [RouteNameType.ApplicationsPage]: {
+        path: "/installations/",
+    },
+    [RouteNameType.OAuthPage]: {
+        path: "/apps/",
     },
 } as const;
 

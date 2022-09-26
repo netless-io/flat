@@ -219,6 +219,7 @@ export const InteractiveIcons: Story = ({ active }) => (
             "TestFilled",
             "Github",
             "Copy",
+            "Code",
             "HandUp",
             "Delete",
             "Reset",

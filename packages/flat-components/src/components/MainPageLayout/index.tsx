@@ -7,7 +7,7 @@ import { MainPageTopBar, MainPageTopBarProps } from "./MainPageTopBar";
 import { MainPageHeader, MainPageHeaderProps } from "./MainPageHeader";
 
 export * from "./MainPageHeader";
-export type { MainPageLayoutItem, MainPageTopBarMenuItem, WindowsSystemBtnItem } from "./types";
+export * from "./types";
 
 export interface MainPageLayoutProps
     extends MainPageNavProps,
