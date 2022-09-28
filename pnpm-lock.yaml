@@ -149,16 +149,15 @@ importers:
   desktop/renderer-app:
     specifiers:
       '@ant-design/icons': ^4.7.0
-      '@netless/app-countdown': ^0.0.3
-      '@netless/app-dice': ^0.1.0
-      '@netless/app-geogebra': ^0.0.5
+      '@netless/app-countdown': ^0.0.4
+      '@netless/app-dice': ^0.1.1
+      '@netless/app-geogebra': ^0.0.6
       '@netless/app-iframe-bridge': ^0.0.2
-      '@netless/app-mindmap': ^0.1.0
-      '@netless/app-monaco': 0.2.0-canary.0
-      '@netless/app-plyr': ^0.2.2
-      '@netless/app-quill': ^0.1.0
-      '@netless/app-selector': ^0.0.2
-      '@netless/app-slide': 0.3.0-canary.11
+      '@netless/app-mindmap': ^0.1.1
+      '@netless/app-monaco': 0.2.0-canary.1
+      '@netless/app-quill': ^0.1.1
+      '@netless/app-selector': ^0.0.3
+      '@netless/app-slide': 0.3.0-canary.13
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
@@ -214,16 +213,15 @@ importers:
       video.js: 7.20.3
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
-      '@netless/app-countdown': 0.0.3
-      '@netless/app-dice': 0.1.0
-      '@netless/app-geogebra': 0.0.5
+      '@netless/app-countdown': 0.0.4
+      '@netless/app-dice': 0.1.1
+      '@netless/app-geogebra': 0.0.6
       '@netless/app-iframe-bridge': 0.0.2
-      '@netless/app-mindmap': 0.1.0
-      '@netless/app-monaco': 0.2.0-canary.0
-      '@netless/app-plyr': 0.2.2
-      '@netless/app-quill': 0.1.0
-      '@netless/app-selector': 0.0.2
-      '@netless/app-slide': 0.3.0-canary.11
+      '@netless/app-mindmap': 0.1.1
+      '@netless/app-monaco': 0.2.0-canary.1
+      '@netless/app-quill': 0.1.1
+      '@netless/app-selector': 0.0.3
+      '@netless/app-slide': 0.3.0-canary.13
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
@@ -409,12 +407,11 @@ importers:
     specifiers:
       '@ant-design/icons': ^4.7.0
       '@babel/standalone': 7.19.2
-      '@netless/app-countdown': ^0.0.3
-      '@netless/app-geogebra': ^0.0.5
+      '@netless/app-countdown': ^0.0.4
+      '@netless/app-geogebra': ^0.0.6
       '@netless/app-iframe-bridge': ^0.0.2
-      '@netless/app-monaco': 0.2.0-canary.0
-      '@netless/app-plyr': ^0.2.2
-      '@netless/app-slide': 0.3.0-canary.11
+      '@netless/app-monaco': 0.2.0-canary.1
+      '@netless/app-slide': 0.3.0-canary.13
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
@@ -453,12 +450,11 @@ importers:
       video.js: 7.20.3
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
-      '@netless/app-countdown': 0.0.3
-      '@netless/app-geogebra': 0.0.5
+      '@netless/app-countdown': 0.0.4
+      '@netless/app-geogebra': 0.0.6
       '@netless/app-iframe-bridge': 0.0.2
-      '@netless/app-monaco': 0.2.0-canary.0
-      '@netless/app-plyr': 0.2.2
-      '@netless/app-slide': 0.3.0-canary.11
+      '@netless/app-monaco': 0.2.0-canary.1
+      '@netless/app-slide': 0.3.0-canary.13
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
@@ -532,7 +528,7 @@ importers:
       '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/sync-player': ^1.0.7
-      '@netless/window-manager': 1.0.0-canary.56
+      '@netless/window-manager': 1.0.0-canary.61
       flat-components: workspace:*
       hls.js: ^1.2.1
       mobx: ^6.6.1
@@ -554,8 +550,8 @@ importers:
       side-effect-manager: 1.2.1
       uuid: 9.0.0
     devDependencies:
-      '@netless/fastboard': 1.0.0-canary.7_n37dyswfkh7ckv3g6o42cntbvi
-      '@netless/window-manager': 1.0.0-canary.56_white-web-sdk-esm@2.16.34
+      '@netless/fastboard': 1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky
+      '@netless/window-manager': 1.0.0-canary.61_white-web-sdk-esm@2.16.34
       mobx: 6.6.1
       prettier: 2.7.1
       react: 17.0.2
@@ -673,7 +669,7 @@ importers:
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/white-snapshot': ^0.4.2
-      '@netless/window-manager': 1.0.0-canary.56
+      '@netless/window-manager': 1.0.0-canary.61
       prettier: ^2.7.1
       side-effect-manager: ^1.2.1
       typescript: ^4.8.3
@@ -681,13 +677,13 @@ importers:
       white-web-sdk: npm:white-web-sdk-esm@2.16.34
     dependencies:
       '@lukeed/uuid': 2.0.0
-      '@netless/fastboard': 1.0.0-canary.7_n37dyswfkh7ckv3g6o42cntbvi
+      '@netless/fastboard': 1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/white-snapshot': 0.4.2
-      '@netless/window-manager': 1.0.0-canary.56_white-web-sdk-esm@2.16.34
+      '@netless/window-manager': 1.0.0-canary.61_white-web-sdk-esm@2.16.34
       side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.34
@@ -742,13 +738,13 @@ importers:
 
   service-providers/file-preview-netless-slide:
     specifiers:
-      '@netless/app-slide': 0.3.0-canary.11
+      '@netless/app-slide': 0.3.0-canary.13
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       prettier: ^2.7.1
       typescript: ^4.8.3
     dependencies:
-      '@netless/app-slide': 0.3.0-canary.11
+      '@netless/app-slide': 0.3.0-canary.13
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
     devDependencies:
@@ -760,16 +756,15 @@ importers:
       '@ant-design/icons': ^4.7.0
       '@babel/standalone': 7.19.2
       '@loadable/component': ^5.15.2
-      '@netless/app-countdown': ^0.0.3
-      '@netless/app-dice': ^0.1.0
-      '@netless/app-geogebra': ^0.0.5
+      '@netless/app-countdown': ^0.0.4
+      '@netless/app-dice': ^0.1.1
+      '@netless/app-geogebra': ^0.0.6
       '@netless/app-iframe-bridge': ^0.0.2
-      '@netless/app-mindmap': ^0.1.0
-      '@netless/app-monaco': 0.2.0-canary.0
-      '@netless/app-plyr': ^0.2.2
-      '@netless/app-quill': ^0.1.0
-      '@netless/app-selector': ^0.0.2
-      '@netless/app-slide': 0.3.0-canary.11
+      '@netless/app-mindmap': ^0.1.1
+      '@netless/app-monaco': 0.2.0-canary.1
+      '@netless/app-quill': ^0.1.1
+      '@netless/app-selector': ^0.0.3
+      '@netless/app-slide': 0.3.0-canary.13
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
@@ -824,16 +819,15 @@ importers:
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@loadable/component': 5.15.2_react@17.0.2
-      '@netless/app-countdown': 0.0.3
-      '@netless/app-dice': 0.1.0
-      '@netless/app-geogebra': 0.0.5
+      '@netless/app-countdown': 0.0.4
+      '@netless/app-dice': 0.1.1
+      '@netless/app-geogebra': 0.0.6
       '@netless/app-iframe-bridge': 0.0.2
-      '@netless/app-mindmap': 0.1.0
-      '@netless/app-monaco': 0.2.0-canary.0
-      '@netless/app-plyr': 0.2.2
-      '@netless/app-quill': 0.1.0
-      '@netless/app-selector': 0.0.2
-      '@netless/app-slide': 0.3.0-canary.11
+      '@netless/app-mindmap': 0.1.1
+      '@netless/app-monaco': 0.2.0-canary.1
+      '@netless/app-quill': 0.1.1
+      '@netless/app-selector': 0.0.3
+      '@netless/app-slide': 0.3.0-canary.13
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
@@ -2431,6 +2425,12 @@ packages:
     dependencies:
       regenerator-runtime: 0.13.9
 
+  /@babel/runtime/7.19.0:
+    resolution: {integrity: sha512-eR8Lo9hnDS7tqkO7NsV+mKvCmv5boaXFSZ70DnfhcgiEne8hv9oCEd36Klw74EtizEqLsy4YnW8UWwpBVolHZA==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.9
+
   /@babel/standalone/7.19.2:
     resolution: {integrity: sha512-p+U+TYGevnPUemfHeQVFwABp9kWe5+h20MKxCzvyeAD1SIm7tlvo6lGRFz1WakAxmVZvLz7WDuWjwdC8FZKp+A==}
     engines: {node: '>=6.9.0'}
@@ -2966,7 +2966,7 @@ packages:
     peerDependencies:
       react: '>=16.3.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       '@emotion/cache': 10.0.29
       '@emotion/css': 10.0.27
       '@emotion/serialize': 0.11.16
@@ -3017,7 +3017,7 @@ packages:
       '@emotion/core': ^10.0.28
       react: '>=16.3.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       '@emotion/core': 10.3.1_react@17.0.2
       '@emotion/is-prop-valid': 0.8.8
       '@emotion/serialize': 0.11.16
@@ -3173,7 +3173,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.7.9
+      '@types/node': 18.7.23
       '@types/yargs': 15.0.14
       chalk: 4.1.2
     dev: true
@@ -3328,12 +3328,12 @@ packages:
       glob-to-regexp: 0.3.0
     dev: true
 
-  /@netless/app-countdown/0.0.3:
-    resolution: {integrity: sha512-2AcnExiK2iyqnkJ7ziS06SvAJvnzPYielRz2NXEjE3vCcBqdlDrETzFMlQGdYt/dSJdITY+QvjYA6nPHz+H0vw==}
+  /@netless/app-countdown/0.0.4:
+    resolution: {integrity: sha512-fu/Mn2BjfRkTscd4GYDny9fty2HihFYQMrEPu3Du1tX3fwO92l7U4Marw2lNBUoKdRBlXy9sP0hroL+QDqg58g==}
     dev: false
 
-  /@netless/app-dice/0.1.0:
-    resolution: {integrity: sha512-BSmbunNrlxtvCklJy1AeHGTQdbOQLlZcZt/D3Kl7ud2Ho60h6c69c+vjWglWHaPE0ALmIlQL5kJXvfcVI9YmMA==}
+  /@netless/app-dice/0.1.1:
+    resolution: {integrity: sha512-RCa34ubdHsYNm8jEwty71RQDXM0g1a5oy7x/WGj6xoCa0u8USNol2Yo1VDforWFLX7uuUJHZH05vNFli6kteIQ==}
     dev: false
 
   /@netless/app-docs-viewer/1.0.0-canary.2:
@@ -3345,33 +3345,29 @@ packages:
       vanilla-lazyload: 17.8.3
     dev: false
 
-  /@netless/app-geogebra/0.0.5:
-    resolution: {integrity: sha512-dqEF/HGu9bBihtY5w75Sdjxjh/ZWMGL780JQdSv7CKqOxkGShEuPSMfIxZpLO2LBcuycRVSFXrg6mgFPUVBrfw==}
+  /@netless/app-geogebra/0.0.6:
+    resolution: {integrity: sha512-FHiHIDtTHHi+J9wXVoehR+FjGPS30j2HFzCZOWWaP5u3N6Bi9KjoJI8QW4Y7bTziEgKBn+xq3D6zwC/OuioUWQ==}
     dev: false
 
   /@netless/app-iframe-bridge/0.0.2:
     resolution: {integrity: sha512-G7wZoX0CjqVBGeP0eYp8e7OYxRIN+vNwZJPxO45Gv4e8Nb/i3hF82F8FALaiLgWC89HG74XGNa98DJ3R+wSz2g==}
     dev: false
 
-  /@netless/app-mindmap/0.1.0:
-    resolution: {integrity: sha512-c0AhV9geingX7SAhJsOvakk51ZLe0qab2Qmp9pREyzj7u6TBl2FKr3P02ecVC0U2BqCSmYtJcFg2HXk/we7QRA==}
+  /@netless/app-mindmap/0.1.1:
+    resolution: {integrity: sha512-PCNq7pdQpRS2d9EKrPJnEQLi0CZ3xA7WVpnpz66SrHVadJqmK/4o+PRVUEDnB/Re0PbjDP771Y+aTIyzshRw6Q==}
     dependencies:
       '@antv/hierarchy': 0.6.8
       '@antv/x6': 1.33.1
     dev: false
 
-  /@netless/app-monaco/0.2.0-canary.0:
-    resolution: {integrity: sha512-P+cymtUXS0gTcpOVz7khdIyfizKvN9nw70tEIYvz+3p4LKE+20iIs6rJcwowB63jGYLoZAEZY4FuJumLmYbang==}
+  /@netless/app-monaco/0.2.0-canary.1:
+    resolution: {integrity: sha512-8vkDod4RtFJflCafz5fFSD+zQRLIzD+7I2TRNSBiGseEwMkmC7yOJvOj4Df5AV4pXFq+3RAgQaaBidnpoJTC0w==}
     dev: false
 
-  /@netless/app-plyr/0.2.2:
-    resolution: {integrity: sha512-bB/xQMMb7bUcr3SH7Sb7/orYyzoeWgADX8vQWNskvQuiX7uIvFHZSZSG2ld+Idmjiqjo7zU6L1bUMAMshLu5/g==}
-    dev: false
-
-  /@netless/app-quill/0.1.0:
-    resolution: {integrity: sha512-d8JtYRz/jVyxmMo0I4voKjSWmoWE7DS5zQnz9FDMztNonAzAJx7CG27b35ftUXmjFsiLTWt0AyLU/xoPW2ClnQ==}
+  /@netless/app-quill/0.1.1:
+    resolution: {integrity: sha512-WLwhMGOJcENQd7+c557HcZc8UGqSf6hsvg9c5pDyILkOvulrF0GLztz4tswZK5KS8jAFKLihxTPk4ylzPVxygg==}
     dependencies:
-      '@netless/y': 0.1.5_yjs@13.5.13
+      '@netless/y': 0.2.0-canary.0_yjs@13.5.13
       katex: 0.16.2
       quill: 1.3.7
       quill-cursors: 3.1.2
@@ -3381,8 +3377,8 @@ packages:
       - '@netless/window-manager'
     dev: false
 
-  /@netless/app-selector/0.0.2:
-    resolution: {integrity: sha512-Vm9+HGiNfUH+1tilI+sxnVn2+VSPhKMbfzeoyUPAa27ynvimOCag1uIFm3KTAF4CkL2nZGb27ga1rGbqswiwbQ==}
+  /@netless/app-selector/0.0.3:
+    resolution: {integrity: sha512-moOZ6yCxehl/hjZtslPYzgvEMsnQElYqW2dOpIBFbaue4DQc2JAv0/rRchKXcGZSp0bY+RtIo97tguMrkuqL5Q==}
     dependencies:
       antd: 4.23.2_sfoxds7t5ydpegc3knd667wn6m
       clsx: 1.2.1
@@ -3397,10 +3393,10 @@ packages:
       - ts-node
     dev: false
 
-  /@netless/app-slide/0.3.0-canary.11:
-    resolution: {integrity: sha512-fMUSppUXjoCMMMjmD0vaJizHwr/5138QClwJieqblAprqyqVD1jQ7nywnV8xU1MrTzkSS+O9Rm0jsWvCfKiJeg==}
+  /@netless/app-slide/0.3.0-canary.13:
+    resolution: {integrity: sha512-PHzhx322hpWto5wm1ldOmtZhnwi/Aj/VQ/dxTUxB0HZuZMy4Rnmj3LQSbkMDjwJC3ioIeu5LQi6WI0t+VlFkKw==}
     dependencies:
-      '@netless/slide': 0.7.0
+      '@netless/slide': 0.7.4
 
   /@netless/canvas-polyfill/0.0.4:
     resolution: {integrity: sha512-7NzsJrba0R/mq/l10SkIZQwbrNVJyPxZYrjK6xL3Ts732iWAVuS2UB0u3s6iGeUVcqV39A679yva8APWRl4M0A==}
@@ -3421,7 +3417,7 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/1.0.0-canary.7_n37dyswfkh7ckv3g6o42cntbvi:
+  /@netless/fastboard-core/1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky:
     resolution: {integrity: sha512-wblXojxoGw7QE+H+YkAoydm0zx7CQtp66EESx902g9e4skghP7V+RgeevrB0DdipPFHme/jolBbpSWa9i4qxww==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
@@ -3434,7 +3430,7 @@ packages:
     dependencies:
       '@lukeed/uuid': 2.0.0
       '@netless/synced-store': 2.0.7_white-web-sdk-esm@2.16.34
-      '@netless/window-manager': 1.0.0-canary.56_white-web-sdk-esm@2.16.34
+      '@netless/window-manager': 1.0.0-canary.61_white-web-sdk-esm@2.16.34
       white-web-sdk: /white-web-sdk-esm/2.16.34
 
   /@netless/fastboard-ui/1.0.0-canary.7_cdb3cxxszhadikmporkl6mi74y:
@@ -3442,10 +3438,10 @@ packages:
     peerDependencies:
       '@netless/fastboard-core': 1.0.0-canary.7
     dependencies:
-      '@netless/fastboard-core': 1.0.0-canary.7_n37dyswfkh7ckv3g6o42cntbvi
+      '@netless/fastboard-core': 1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky
       tippy.js: 6.3.7
 
-  /@netless/fastboard/1.0.0-canary.7_n37dyswfkh7ckv3g6o42cntbvi:
+  /@netless/fastboard/1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky:
     resolution: {integrity: sha512-1/veeLuG8/YO//pqb9LkEqMLBDKcy3j3iPS03dDB9neeZy5WxcGMjU8rbE98jW/JUb9lUpZxQlOTmIklg2MNUQ==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
@@ -3456,10 +3452,10 @@ packages:
       white-web-sdk:
         optional: true
     dependencies:
-      '@netless/app-slide': 0.3.0-canary.11
-      '@netless/fastboard-core': 1.0.0-canary.7_n37dyswfkh7ckv3g6o42cntbvi
+      '@netless/app-slide': 0.3.0-canary.13
+      '@netless/fastboard-core': 1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky
       '@netless/fastboard-ui': 1.0.0-canary.7_cdb3cxxszhadikmporkl6mi74y
-      '@netless/window-manager': 1.0.0-canary.56_white-web-sdk-esm@2.16.34
+      '@netless/window-manager': 1.0.0-canary.61_white-web-sdk-esm@2.16.34
       white-web-sdk: /white-web-sdk-esm/2.16.34
 
   /@netless/mini-svg-data-uri/0.0.1:
@@ -3467,8 +3463,8 @@ packages:
     hasBin: true
     dev: true
 
-  /@netless/slide/0.7.0:
-    resolution: {integrity: sha512-8DE9yfikyWxxIRXMK5GUrW2c51MDrlo/rd1yhJarFtwp6q3EN3LSJUgha8HABnQ2lfDzHRc1HCOebOngTsMBdw==}
+  /@netless/slide/0.7.4:
+    resolution: {integrity: sha512-9Gd6BY/JWcvpBotyyS7c/IHaGC1yVOb5AfvF7l9ZdSWnqyMU5GEMxcmc2AgFn+DezS24wDJN/zAL33M6fGS+3Q==}
     dependencies:
       '@juggle/resize-observer': 3.4.0
       '@types/lodash': 4.14.185
@@ -3536,8 +3532,8 @@ packages:
       html2canvas: 1.4.1
     dev: false
 
-  /@netless/window-manager/1.0.0-canary.56_white-web-sdk-esm@2.16.34:
-    resolution: {integrity: sha512-VCDeZHQtw5T7N8t7Dljk6Be/uxtSF9i/OTqlrMWmiGib0gV3TVo0vj0BW2xQOlxe38AmzANCS6HRLOdwdTTp0Q==}
+  /@netless/window-manager/1.0.0-canary.61_white-web-sdk-esm@2.16.34:
+    resolution: {integrity: sha512-37fwXPD3QjUj4DimOsVOpTr8/proELXmHexQbj5vdxquLLtUyhEth091z5vPEl4EkO7jOuPtuwm38Wak1QCBYw==}
     peerDependencies:
       white-web-sdk: ^2.16.0
     peerDependenciesMeta:
@@ -3559,8 +3555,8 @@ packages:
     resolution: {integrity: sha512-e0emMs7YtDB/ATUns1SJ61R9n9nfVvwwFodoc539Qt0ScksaCLCaFWgpEbLloj9sr60ry6Xd8QFHKULFIZB6zA==}
     hasBin: true
 
-  /@netless/y/0.1.5_yjs@13.5.13:
-    resolution: {integrity: sha512-zTyKXCEyZAkhT/bccPq09xwvi1hvv6+K06nnCtsyG1z44hugE+UMSM4XLuxmsqwalkMYswq9KpIkPZdyf97tsw==}
+  /@netless/y/0.2.0-canary.0_yjs@13.5.13:
+    resolution: {integrity: sha512-cxWyoCtjaZ+yXsDhpUehbcX4r8lt8NFRWAukTyZfrLJ1FWqyW1JE+q/ojsNZMQhFu6C69YI8G+tp9rKPtmJZGQ==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
       yjs: '*'
@@ -4245,7 +4241,7 @@ packages:
       '@storybook/semver': 7.3.2
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/ui': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      '@types/node': 14.18.16
+      '@types/node': 14.18.31
       '@types/webpack': 4.41.32
       autoprefixer: 9.8.8
       babel-loader: 8.2.5_7k5t74zmen3ocxyd32avkcyrwe
@@ -4608,7 +4604,7 @@ packages:
       '@storybook/semver': 7.3.2
       '@types/glob-base': 0.3.0
       '@types/micromatch': 4.0.2
-      '@types/node': 14.18.16
+      '@types/node': 14.18.31
       '@types/pretty-hrtime': 1.0.1
       babel-loader: 8.2.5_7k5t74zmen3ocxyd32avkcyrwe
       babel-plugin-macros: 3.1.0
@@ -4673,7 +4669,7 @@ packages:
       '@storybook/manager-webpack5': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/node-logger': 6.3.13
       '@storybook/semver': 7.3.2
-      '@types/node': 14.18.16
+      '@types/node': 14.18.31
       '@types/node-fetch': 2.6.1
       '@types/pretty-hrtime': 1.0.1
       '@types/webpack': 4.41.32
@@ -4824,7 +4820,7 @@ packages:
       '@storybook/node-logger': 6.3.13
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/ui': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      '@types/node': 14.18.16
+      '@types/node': 14.18.31
       '@types/webpack': 4.41.32
       babel-loader: 8.2.5_7k5t74zmen3ocxyd32avkcyrwe
       case-sensitive-paths-webpack-plugin: 2.4.0
@@ -5314,13 +5310,13 @@ packages:
     requiresBuild: true
     dependencies:
       '@types/minimatch': 3.0.5
-      '@types/node': 18.7.9
+      '@types/node': 18.7.23
     dev: true
 
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 18.7.23
     dev: true
 
   /@types/hast/2.3.4:
@@ -5376,7 +5372,7 @@ packages:
   /@types/keyv/3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 18.7.23
 
   /@types/loadable__component/5.13.4:
     resolution: {integrity: sha512-YhoCCxyuvP2XeZNbHbi8Wb9EMaUJuA2VGHxJffcQYrJKIKSkymJrhbzsf9y4zpTmr5pExAAEh5hbF628PAZ8Dg==}
@@ -5440,7 +5436,7 @@ packages:
   /@types/node-fetch/2.6.1:
     resolution: {integrity: sha512-oMqjURCaxoSIsHSr1E47QHzbmzNR5rK8McHuNb11BOM9cHcIK3Avy0s/b2JlXHoQGTYS3NsvWzV1M0iK7l0wbA==}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 14.18.31
       form-data: 3.0.1
     dev: true
 
@@ -5452,9 +5448,16 @@ packages:
     resolution: {integrity: sha512-X3bUMdK/VmvrWdoTkz+VCn6nwKwrKCFTHtqwBIaQJNx4RUIBBUFXM00bqPz/DsDd+Icjmzm6/tyYZzeGVqb6/Q==}
     dev: true
 
+  /@types/node/14.18.31:
+    resolution: {integrity: sha512-vQAnaReSQkEDa8uwAyQby8bYGKu84R/deEc6mg5T8fX6gzCn8QW6rziSgsti1fNvsrswKUKPnVTi7uoB+u62Mw==}
+    dev: true
+
   /@types/node/17.0.45:
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
     dev: true
+
+  /@types/node/18.7.23:
+    resolution: {integrity: sha512-DWNcCHolDq0ZKGizjx2DZjR/PqsYwAcYUJmfMWqtVU2MBMG5Mo+xFZrhGId5r/O5HOuMPyQEcM6KUBp5lBZZBg==}
 
   /@types/node/18.7.9:
     resolution: {integrity: sha512-0N5Y1XAdcl865nDdjbO0m3T6FdmQ4ijE89/urOHLREyTXbpMWbSafx9y7XIsgWGtwUP2iYTinLyyW3FatAxBLQ==}
@@ -5482,7 +5485,7 @@ packages:
   /@types/plist/3.0.2:
     resolution: {integrity: sha512-ULqvZNGMv0zRFvqn8/4LSPtnmN4MfhlPNtJCTpKuIIxGVGZ2rYWzFXrvEBoh9CVyqSE7D6YFRJ1hydLHI6kbWw==}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 18.7.23
       xmlbuilder: 11.0.1
     dev: true
     optional: true
@@ -5556,7 +5559,7 @@ packages:
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 18.7.23
 
   /@types/retry/0.12.0:
     resolution: {integrity: sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==}
@@ -5890,7 +5893,7 @@ packages:
     peerDependencies:
       video.js: ^6 || ^7
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       '@videojs/vhs-utils': 3.0.5
       aes-decrypter: 3.1.3
       global: 4.4.0
@@ -5904,7 +5907,7 @@ packages:
     resolution: {integrity: sha512-PKVgdo8/GReqdx512F+ombhS+Bzogiofy1LgAj4tN8PfdBx3HSS7V5WfJotKTqtOWGwVfSWsrYN/t09/DSryrw==}
     engines: {node: '>=8', npm: '>=5'}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       global: 4.4.0
       url-toolkit: 2.2.5
     dev: false
@@ -5921,7 +5924,7 @@ packages:
   /@videojs/xhr/2.6.0:
     resolution: {integrity: sha512-7J361GiN1tXpm+gd0xz2QWr3xNWBE+rytvo8J3KuggFaLg+U37gZQ2BuPLcnkfGffy2e+ozY70RHC8jt7zjA6Q==}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       global: 4.4.0
       is-function: 1.0.2
     dev: false
@@ -6331,7 +6334,7 @@ packages:
   /aes-decrypter/3.1.3:
     resolution: {integrity: sha512-VkG9g4BbhMBy+N5/XodDeV6F02chEk9IpgRTq/0bS80y4dzy79VH2Gtms02VXomf3HmyRe3yyJYkJ990ns+d6A==}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       '@videojs/vhs-utils': 3.0.5
       global: 4.4.0
       pkcs7: 1.0.4
@@ -7141,7 +7144,7 @@ packages:
   /babel-plugin-macros/2.8.0:
     resolution: {integrity: sha512-SEP5kJpfGYqYKpBrj5XU3ahw5p5GOHJ0U5ssOSQ/WBVdwkD2Dzlce95exQTs3jOVWPPKLBN2rlEWkCK7dSmLvg==}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       cosmiconfig: 6.0.0
       resolve: 1.22.1
     dev: true
@@ -7150,7 +7153,7 @@ packages:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
     engines: {node: '>=10', npm: '>=6'}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       cosmiconfig: 7.0.1
       resolve: 1.22.1
     dev: true
@@ -7246,7 +7249,7 @@ packages:
       '@babel/preset-env': 7.17.10_@babel+core@7.19.1
       '@babel/preset-react': 7.16.7_@babel+core@7.19.1
       '@babel/preset-typescript': 7.16.7_@babel+core@7.19.1
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       babel-plugin-macros: 3.1.0
       babel-plugin-transform-react-remove-prop-types: 0.4.24
     transitivePeerDependencies:
@@ -8443,6 +8446,11 @@ packages:
   /core-js/3.24.1:
     resolution: {integrity: sha512-0QTBSYSUZ6Gq21utGzkfITDylE8jWC9Ne1D2MrhvlsZBI1x39OdDIVbzSqtgMndIy6BlHxBXpMGqzZmnztg2rg==}
     requiresBuild: true
+    dev: true
+
+  /core-js/3.25.3:
+    resolution: {integrity: sha512-y1hvKXmPHvm5B7w4ln1S4uc9eV/O5+iFExSRUimnvIph11uaizFR8LFMdONN8hG3P2pipUfX4Y/fR8rAEtcHcQ==}
+    requiresBuild: true
 
   /core-util-is/1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
@@ -8981,8 +8989,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /decimal.js/10.4.0:
-    resolution: {integrity: sha512-Nv6ENEzyPQ6AItkGwLE2PGKinZZ9g59vSh2BeH6NqPu0OTKZ5ruJsVqh/orbAnqXc9pBbgXAIrc2EyaCj8NpGg==}
+  /decimal.js/10.4.1:
+    resolution: {integrity: sha512-F29o+vci4DodHYT9UrR5IEbfBw9pE5eSapIJdTqXK5+6hq+t8VRxwQyKlW2i+KDKFkkJQRvFyI/QXD83h8LyQw==}
 
   /decode-uri-component/0.2.0:
     resolution: {integrity: sha512-hjf+xovcEn31w/EUYdTXQh/8smFL/dzYjohQGEIgjyNavaJfBY2p5F527Bo1VPATxv0VYTUC2bOcXvqFwk78Og==}
@@ -9549,7 +9557,7 @@ packages:
     peerDependencies:
       react: '>=16.12.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       compute-scroll-into-view: 1.0.17
       prop-types: 15.8.1
       react: 17.0.2
@@ -9743,7 +9751,7 @@ packages:
       '@emotion/core': ^10.0.27
       react: '>=16.3.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       '@emotion/core': 10.3.1_react@17.0.2
       '@emotion/weak-memoize': 0.2.5
       hoist-non-react-statics: 3.3.2
@@ -13283,7 +13291,7 @@ packages:
     dependencies:
       '@jest/types': 26.6.2
       '@types/graceful-fs': 4.1.5
-      '@types/node': 18.7.9
+      '@types/node': 18.7.23
       anymatch: 3.1.2
       fb-watchman: 2.0.1
       graceful-fs: 4.2.10
@@ -13309,7 +13317,7 @@ packages:
     resolution: {integrity: sha512-S5wqyz0DXnNJPd/xfIzZ5Xnp1HrJWBczg8mMfMpN78OJ5eDxXyf+Ygld9wX1DnUWbIbhM1YDY95NjR4CBXkb2g==}
     engines: {node: '>= 10.14.2'}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 18.7.23
       graceful-fs: 4.2.10
     dev: true
 
@@ -13318,7 +13326,7 @@ packages:
     engines: {node: '>= 10.14.2'}
     dependencies:
       '@jest/types': 26.6.2
-      '@types/node': 18.7.9
+      '@types/node': 18.7.23
       chalk: 4.1.2
       graceful-fs: 4.2.10
       is-ci: 2.0.0
@@ -13329,7 +13337,7 @@ packages:
     resolution: {integrity: sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 18.7.23
       merge-stream: 2.0.0
       supports-color: 7.2.0
     dev: true
@@ -13338,7 +13346,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.7.9
+      '@types/node': 14.18.31
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -13631,7 +13639,7 @@ packages:
     resolution: {integrity: sha512-prXSYk799h3GY3iOWnC6ZigYzMPjxN2svgjJ9shk7oMadSNX3wXy0B6F32PMJv7qtMnrIbUxoEHzbutvxR2LBQ==}
     engines: {node: '>=6.0.0', npm: '>=6.0.0', yarn: '>=1.0.0'}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       app-root-dir: 1.0.2
       core-js: 3.24.1
       dotenv: 8.6.0
@@ -13755,7 +13763,7 @@ packages:
       log-update: 4.0.0
       p-map: 4.0.0
       rfdc: 1.3.0
-      rxjs: 7.5.5
+      rxjs: 7.5.7
       through: 2.3.8
       wrap-ansi: 7.0.0
     dev: true
@@ -13938,7 +13946,7 @@ packages:
   /m3u8-parser/4.7.1:
     resolution: {integrity: sha512-pbrQwiMiq+MmI9bl7UjtPT3AK603PV9bogNlr83uC+X9IoxqL5E4k7kU7fMQ0dpRgxgeSMygqUa0IMLQNXLBNA==}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       '@videojs/vhs-utils': 3.0.5
       global: 4.4.0
     dev: false
@@ -14060,9 +14068,9 @@ packages:
     engines: {node: '>= 14'}
     hasBin: true
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       complex.js: 2.1.1
-      decimal.js: 10.4.0
+      decimal.js: 10.4.1
       escape-latex: 1.2.0
       fraction.js: 4.2.0
       javascript-natural-sort: 0.7.1
@@ -14469,6 +14477,9 @@ packages:
   /mobx/6.6.1:
     resolution: {integrity: sha512-7su3UZv5JF+ohLr2opabjbUAERfXstMY+wiBtey8yNAPoB8H187RaQXuhFjNkH8aE4iHbDWnhDFZw0+5ic4nGQ==}
 
+  /mobx/6.6.2:
+    resolution: {integrity: sha512-IOpS0bf3+hXIhDIy+CmlNMBfFpAbHS0aVHcNC+xH/TFYEKIIVDKNYRh9eKlXuVfJ1iRKAp0cRVmO145CyJAMVQ==}
+
   /moment/2.29.3:
     resolution: {integrity: sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==}
 
@@ -14504,7 +14515,7 @@ packages:
     resolution: {integrity: sha512-BxlSXWbKE1n7eyEPBnTEkrzhS3PdmkkKdM1pgKbPnPOH0WFZIc0sPOWi7m0Uo3Wd2a4Or8Qf4ZbS7+ASqQ49fw==}
     hasBin: true
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       '@videojs/vhs-utils': 3.0.5
       '@xmldom/xmldom': 0.7.5
       global: 4.4.0
@@ -14529,7 +14540,7 @@ packages:
     engines: {node: '>=8', npm: '>=5'}
     hasBin: true
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       global: 4.4.0
     dev: false
 
@@ -15568,7 +15579,7 @@ packages:
     resolution: {integrity: sha512-afRERtHn54AlwaF2/+LFszyAANTCggGilmcmILUzEjvs3XgFZT+xE6+QWQcAGmu4xajy+Xtj7acLOPdx5/eXWQ==}
     hasBin: true
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
     dev: false
 
   /pkg-dir/3.0.0:
@@ -15633,7 +15644,7 @@ packages:
     resolution: {integrity: sha512-Sz2Lkdxz6F2Pgnpi9U5Ng/WdWAUZxmHrNPoVlm3aAemxoy2Qy7LGjQg4uf8qKelDAUW94F4np3iH2YPf2qefcQ==}
     engines: {node: '>=10'}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
     dev: true
 
   /polly-js/1.8.3:
@@ -16087,7 +16098,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 18.7.9
+      '@types/node': 18.7.23
       long: 4.0.0
 
   /proxy-addr/2.0.7:
@@ -16809,7 +16820,7 @@ packages:
       react: '>=16.9.0 || ^17'
       react-dom: '>=16.9.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.17.9
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-is: 16.13.1
@@ -17007,7 +17018,7 @@ packages:
     dependencies:
       '@babel/core': 7.19.1
       '@babel/generator': 7.19.0
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       ast-types: 0.14.2
       commander: 2.20.3
       doctrine: 3.0.0
@@ -17079,7 +17090,7 @@ packages:
       react: ^16.6.0 || ^17.0.0 || ^18.0.0 || ^17
       react-dom: ^16.6.0 || ^17.0.0 || ^18.0.0 || ^17
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       invariant: 2.2.4
       prop-types: 15.8.1
       react: 17.0.2
@@ -17113,7 +17124,7 @@ packages:
     peerDependencies:
       react: ^16.8.4 || ^17.0.0 || ^17
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       is-dom: 1.1.0
       prop-types: 15.8.1
       react: 17.0.2
@@ -17135,7 +17146,7 @@ packages:
       react: ^16.6.0 || ^17.0.0 || ^17
       react-dom: ^16.6.0 || ^17.0.0 || ^17
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       '@popperjs/core': 2.11.5
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -17240,7 +17251,7 @@ packages:
     peerDependencies:
       react: '>= 0.14.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       highlight.js: 10.7.3
       lowlight: 1.20.0
       prismjs: 1.28.0
@@ -17254,7 +17265,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^17
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       react: 17.0.2
       use-composed-ref: 1.3.0_react@17.0.2
       use-latest: 1.2.1_react@17.0.2
@@ -17505,7 +17516,7 @@ packages:
   /regenerator-transform/0.15.0:
     resolution: {integrity: sha512-LsrGtPmbYg19bcPHwdtmXwbW+TqNvtY4riE3P83foeHRroMbH6/2ddFBfab3t7kbzc7v7p4wbkIecHImqt0QNg==}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
     dev: true
 
   /regex-not/1.0.2:
@@ -17889,7 +17900,7 @@ packages:
   /rtl-css-js/1.15.0:
     resolution: {integrity: sha512-99Cu4wNNIhrI10xxUaABHsdDqzalrSRTie4GeCmbGVuehm4oj+fIy8fTzB+16pmKe8Bv9rl+hxIBez6KxExTew==}
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
     dev: false
 
   /run-parallel/1.2.0:
@@ -17909,8 +17920,8 @@ packages:
       individual: 2.0.0
     dev: false
 
-  /rxjs/7.5.5:
-    resolution: {integrity: sha512-sy+H0pQofO95VDmFLzyaw9xNJU4KTRSwQIGM6+iG3SypAtCiLDzpeG8sJrNCWn2Up9km+KhkvTdbkrdy+yzZdw==}
+  /rxjs/7.5.7:
+    resolution: {integrity: sha512-z9MzKh/UcOqB3i20H6rtrlaE/CgjLOvheWK/9ILrbhROGTweAi1BaFsTT9FbwZi5Trr1qNRs+MXkhmR06awzQA==}
     dependencies:
       tslib: 2.4.0
 
@@ -19705,7 +19716,7 @@ packages:
   /typed-emitter/2.1.0:
     resolution: {integrity: sha512-g/KzbYKbH5C2vPkaXGu8DJlHrGKHLsM25Zg9WuC9pMGfuvT+X25tZQWo5fK1BjBm8+UrVE9LDCvaY0CQk+fXDA==}
     optionalDependencies:
-      rxjs: 7.5.5
+      rxjs: 7.5.7
     dev: false
 
   /typed-function/2.1.0:
@@ -20739,11 +20750,11 @@ packages:
       bezier-js: 2.6.1
       bowser: 2.11.0
       color: 3.2.1
-      core-js: 3.24.1
+      core-js: 3.25.3
       detect-it: 3.0.7
       eventemitter3: 4.0.7
       mathjs: 10.6.4
-      mobx: 6.6.1
+      mobx: 6.6.2
       protobufjs: 6.11.3
       query-string: 5.1.1
       react: 16.14.0

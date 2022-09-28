@@ -75,6 +75,7 @@
         "@storybook/components",
         "@storybook/core-events",
         "@netless/window-manager",
+        "@netless/app-player",
         "i18next-http-backend",
         "rollup",
         "postcss",
