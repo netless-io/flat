@@ -132,7 +132,7 @@ export async function insertImage(
 
 export async function insertMedia(file: CloudFile, fastboardApp: FastboardApp): Promise<void> {
     await fastboardApp.manager.addApp({
-        kind: "Plyr",
+        kind: BuiltinApps.MediaPlayer,
         options: {
             title: file.fileName,
         },
