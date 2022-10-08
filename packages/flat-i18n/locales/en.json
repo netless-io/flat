@@ -208,6 +208,8 @@
   "title-ResourcePreviewPage": "Resource Preview",
   "title-FilePreviewPage": "File Preview",
   "title-DevicesTestPage": "Device Test",
+  "title-ApplicationsPage": "Applications",
+  "title-OAuthPage": "OAuth Applications",
   "inserting-courseware-tips": "Inserting courseware...",
   "cancel-upload": "Cancel upload",
   "cancel-upload-tips": "The upload has not been completed. Are you sure to cancel all ongoing uploads?",

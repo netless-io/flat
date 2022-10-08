@@ -208,6 +208,8 @@
   "title-ResourcePreviewPage": "资源预览",
   "title-FilePreviewPage": "资源预览",
   "title-DevicesTestPage": "设备检测",
+  "title-ApplicationsPage": "应用管理",
+  "title-OAuthPage": "OAuth 应用",
   "in-the-process-of-transcoding-tips": "正在转码中，请稍后再试",
   "inserting-courseware-tips": "正在插入课件……",
   "unable-to-insert-courseware": "无法插入课件",
