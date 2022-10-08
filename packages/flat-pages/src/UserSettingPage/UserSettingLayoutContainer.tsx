@@ -33,19 +33,19 @@ export const UserSettingLayoutContainer: React.FC = observer(function UserSettin
                 {
                     key: routeConfig[RouteNameType.ApplicationsPage].path,
                     icon: (active): React.ReactNode => <SVGApps active={active} />,
-                    title: "应用管理",
+                    title: t("applications"),
                     route: routeConfig[RouteNameType.ApplicationsPage].path,
                 },
                 {
                     key: "developer",
                     icon: (active): React.ReactNode => <SVGCode active={active} />,
-                    title: "开发者设置",
+                    title: t("developer"),
                     route: "#",
                     children: [
                         {
                             key: routeConfig[RouteNameType.OAuthPage].path,
                             icon: () => null,
-                            title: "OAuth 应用",
+                            title: t("oauth-apps"),
                             route: routeConfig[RouteNameType.OAuthPage].path,
                         },
                     ],

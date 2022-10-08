@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Button, Input, message, Table, TableColumnsType } from "antd";
 import { errorTips, SVGCirclePlusFilled, SVGDelete } from "flat-components";
 import { createOAuth, CreateOAuthPayload, DeveloperOAuthScope } from "@netless/flat-server-api";
+import { useTranslate } from "@netless/flat-i18n";
 import { OAuthPageCommonProps } from "./index";
 import { validateURL } from "./utils";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
@@ -20,25 +21,27 @@ export interface ScopesData {
 }
 
 export function useScopesData(): ScopesData {
+    const t = useTranslate();
     const scopesColumns = useMemo<TableColumnsType<ScopesDataSource>>(
         () => [
-            { dataIndex: "scope", title: "范围" },
-            { dataIndex: "desc", title: "说明" },
+            { dataIndex: "scope", title: t("oauth-app-scope") },
+            { dataIndex: "desc", title: t("oauth-app-desc") },
         ],
-        [],
+        [t],
     );
     const scopesDataSource = useMemo<ScopesDataSource[]>(
         () => [
-            { scope: DeveloperOAuthScope.UserAvatarRead, desc: "读取用户头像" },
-            { scope: DeveloperOAuthScope.UserNameRead, desc: "读取用户昵称" },
-            { scope: DeveloperOAuthScope.UserUUIDRead, desc: "读取用户 UUID" },
+            { scope: DeveloperOAuthScope.UserAvatarRead, desc: t("oauth-scope-user-avatar-read") },
+            { scope: DeveloperOAuthScope.UserNameRead, desc: t("oauth-scope-user-name-read") },
+            { scope: DeveloperOAuthScope.UserUUIDRead, desc: t("oauth-scope-user-uuid-read") },
         ],
-        [],
+        [t],
     );
     return { scopesColumns, scopesDataSource };
 }
 
 export const NewOAuth: React.FC<NewOAuthProps> = ({ navigate }) => {
+    const t = useTranslate();
     const sp = useSafePromise();
     const history = useHistory();
     const [appName, setAppName] = useState("");
@@ -58,11 +61,11 @@ export const NewOAuth: React.FC<NewOAuthProps> = ({ navigate }) => {
 
     const pushTempCallbackURL = (): void => {
         if (!tempCallbackURL) {
-            message.error("请输入回调地址");
+            message.error(t("oauth-missing-callback-url"));
             return;
         }
         if (!validateURL(tempCallbackURL)) {
-            message.error("请输入有效的回调地址");
+            message.error(t("oauth-invalid-callback-url"));
             return;
         }
         setCallbacksURL([...callbacksURL, tempCallbackURL]);
@@ -77,31 +80,31 @@ export const NewOAuth: React.FC<NewOAuthProps> = ({ navigate }) => {
 
     const submit = async (): Promise<void> => {
         if (!appName) {
-            message.error("请输入应用名称");
+            message.error(t("oauth-missing-app-name"));
             return;
         }
         if (!appDesc) {
-            message.error("请输入应用描述");
+            message.error(t("oauth-missing-app-desc"));
             return;
         }
         if (!homepageURL) {
-            message.error("请输入应用主页地址");
+            message.error(t("oauth-missing-homepage-url"));
             return;
         }
         if (!validateURL(homepageURL)) {
-            message.error("请输入有效的应用主页地址");
+            message.error(t("oauth-invalid-homepage-url"));
             return;
         }
         if (callbacksURL.length === 0) {
-            message.error("请至少添加一个回调地址");
+            message.error(t("oauth-missing-callbacks-url"));
             return;
         }
         if (callbacksURL.some(url => !validateURL(url))) {
-            message.error("请输入有效的回调地址");
+            message.error(t("oauth-invalid-callback-url"));
             return;
         }
         if (scopes.length === 0) {
-            message.error("请至少选择一个范围");
+            message.error(t("oauth-missing-scopes"));
             return;
         }
         setLoading(true);
@@ -123,44 +126,44 @@ export const NewOAuth: React.FC<NewOAuthProps> = ({ navigate }) => {
 
     return (
         <section className={"new-oauth"}>
-            <h1 className="new-oauth-title">新建 OAuth 应用</h1>
+            <h1 className="new-oauth-title">{t("create-oauth-app")}</h1>
             <label className="new-oauth-subtitle is-required" htmlFor="new-oauth-app-name">
-                Application name
+                {t("oauth-app-name")}
             </label>
             <Input
                 autoComplete="off"
                 className="new-oauth-input"
                 id="new-oauth-app-name"
                 maxLength={20}
-                placeholder="Something users will recognize and trust."
+                placeholder={t("oauth-text-placeholder")}
                 value={appName}
                 onChange={e => setAppName(e.target.value)}
             />
             <label className="new-oauth-subtitle is-required" htmlFor="new-oauth-homepage-url">
-                Homepage URL
+                {t("oauth-homepage-url")}
             </label>
             <Input
                 autoComplete="off"
                 className="new-oauth-input"
                 id="new-oauth-homepage-url"
                 maxLength={100}
-                placeholder="The full URL to your application homepage."
+                placeholder={t("oauth-homepage-url-desc")}
                 value={homepageURL}
                 onChange={e => setHomepageURL(e.target.value)}
             />
             <label className="new-oauth-subtitle is-required" htmlFor="new-oauth-app-desc">
-                Application description
+                {t("oauth-app-description")}
             </label>
             <Input.TextArea
                 className="new-oauth-input new-oauth-textarea"
                 id="new-oauth-app-desc"
                 maxLength={300}
-                placeholder="Something users will recognize and trust."
+                placeholder={t("oauth-text-placeholder")}
                 rows={4}
                 value={appDesc}
                 onChange={e => setAppDesc(e.target.value)}
             />
-            <h2 className="new-oauth-subtitle is-required">Authorization callback URL</h2>
+            <h2 className="new-oauth-subtitle is-required">{t("oauth-callback-url")}</h2>
             {callbacksURL.map((url, index) => (
                 <div key={index} className="new-oauth-input-wrapper">
                     <Input
@@ -171,7 +174,7 @@ export const NewOAuth: React.FC<NewOAuthProps> = ({ navigate }) => {
                     />
                     <button
                         className="new-oauth-input-btn new-oauth-input-delete"
-                        title="delete"
+                        title={t("delete")}
                         onClick={() => deleteCallbackURL(index)}
                     >
                         <SVGDelete />
@@ -188,20 +191,20 @@ export const NewOAuth: React.FC<NewOAuthProps> = ({ navigate }) => {
                     />
                     <button
                         className="new-oauth-input-btn new-oauth-input-add"
-                        title="add"
+                        title={t("add")}
                         onClick={pushTempCallbackURL}
                     >
                         <SVGCirclePlusFilled />
                     </button>
                 </div>
             )}
-            <h2 className="new-oauth-subtitle is-required">权限管理</h2>
+            <h2 className="new-oauth-subtitle is-required">{t("oauth-scopes")}</h2>
             <Table
                 className="new-oauth-table"
                 columns={scopesColumns}
                 dataSource={scopesDataSource}
                 locale={{
-                    emptyText: "No Data",
+                    emptyText: t("no-data"),
                 }}
                 pagination={false}
                 rowKey="scope"
@@ -212,9 +215,9 @@ export const NewOAuth: React.FC<NewOAuthProps> = ({ navigate }) => {
                 }}
             />
             <div className="new-oauth-action">
-                <Button onClick={() => history.goBack()}>取消</Button>
+                <Button onClick={() => history.goBack()}>{t("cancel")}</Button>
                 <Button loading={loading} type="primary" onClick={submit}>
-                    注册应用
+                    {t("oauth-register-app")}
                 </Button>
             </div>
         </section>

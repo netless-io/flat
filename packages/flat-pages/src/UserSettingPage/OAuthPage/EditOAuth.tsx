@@ -55,7 +55,7 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
 
     const remove = async (secretUUID: string): Promise<void> => {
         Modal.confirm({
-            content: "确定删除该 secret 吗？",
+            content: t("oauth-delete-secret-confirm"),
             onOk: async () => {
                 await sp(deleteOAuthSecret(secretUUID));
                 await sp(getOAuthDetail(oauthUUID)).then(setDetail);
@@ -76,7 +76,7 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
             await uploadLogo(oauthUUID, file, t);
             await sp(getOAuthDetail(oauthUUID)).then(setDetail);
         } catch (error) {
-            message.info(t("upload-avatar-failed"));
+            message.info(t("upload-logo-failed"));
             throw error;
         }
     };
@@ -115,31 +115,31 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
     const submit = async (): Promise<void> => {
         const { appName, appDesc, homepageURL, callbacksURL } = detail;
         if (!appName) {
-            message.error("请输入应用名称");
+            message.error(t("oauth-missing-app-name"));
             return;
         }
         if (!appDesc) {
-            message.error("请输入应用描述");
+            message.error(t("oauth-missing-app-desc"));
             return;
         }
         if (!homepageURL) {
-            message.error("请输入应用主页地址");
+            message.error(t("oauth-missing-homepage-url"));
             return;
         }
         if (!validateURL(homepageURL)) {
-            message.error("请输入有效的应用主页地址");
+            message.error(t("oauth-invalid-homepage-url"));
             return;
         }
         if (callbacksURL.length === 0) {
-            message.error("请至少添加一个回调地址");
+            message.error(t("oauth-missing-callbacks-url"));
             return;
         }
         if (callbacksURL.some(url => !validateURL(url))) {
-            message.error("请输入有效的回调地址");
+            message.error(t("oauth-invalid-callback-url"));
             return;
         }
         if (scopes.length === 0) {
-            message.error("请至少选择一个范围");
+            message.error(t("oauth-missing-scopes"));
             return;
         }
         setLoading(true);
@@ -162,12 +162,10 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
     return (
         <section className="edit-oauth">
             <h1 className="edit-oauth-title">{detail.appName}</h1>
-            <h2 className="edit-oauth-subtitle">Client ID</h2>
+            <h2 className="edit-oauth-subtitle">{t("client-id")}</h2>
             <p className="edit-oauth-content">{detail.clientID}</p>
-            <h2 className="edit-oauth-subtitle">Client Secrets</h2>
-            <p className="edit-oauth-content">
-                You need a client secret to authenticate the application to the API
-            </p>
+            <h2 className="edit-oauth-subtitle">{t("client-secrets")}</h2>
+            <p className="edit-oauth-content">{t("client-secret-desc")}</p>
             <div className="edit-oauth-new-secret-wrapper">
                 <Button
                     className="edit-oauth-new-secret"
@@ -175,15 +173,12 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
                     type="primary"
                     onClick={generateNewSecret}
                 >
-                    Generate a new client secret
+                    {t("create-client-secret")}
                 </Button>
             </div>
             {secretUUID && (
                 <>
-                    <p className="edit-oauth-copy-secret-tip">
-                        Make sure to copy your new client secret now. You won&rsquo;t be able to see
-                        it again.
-                    </p>
+                    <p className="edit-oauth-copy-secret-tip">{t("oauth-copy-secret-tip")}</p>
                     <div className="edit-oauth-secret-wrapper is-new" data-secret-uuid={secretUUID}>
                         <div className="edit-oauth-secret-icon">
                             <img alt="key" src={keySVG} />
@@ -199,7 +194,9 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
                                 </button>
                             </div>
                             <div className="edit-oauth-secret-row">
-                                <span>创建时间: {format(new Date(), "yyyy-MM-dd hh:mm")}</span>
+                                <span>
+                                    {t("created-at")}: {format(new Date(), "yyyy-MM-dd hh:mm")}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -221,7 +218,9 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
                                 <span className="edit-oauth-secret-content">{e.clientSecret}</span>
                             </div>
                             <div className="edit-oauth-secret-row">
-                                <span>创建时间: {format(e.createdAt, "yyyy-MM-dd hh:mm")}</span>
+                                <span>
+                                    {t("created-at")}: {format(e.createdAt, "yyyy-MM-dd hh:mm")}
+                                </span>
                             </div>
                         </div>
                         <div className="edit-oauth-secret-action">
@@ -235,11 +234,11 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
                     </div>
                 ))}
             <hr className="edit-oauth-splitter" />
-            <h2 className="edit-oauth-subtitle">Application logo</h2>
+            <h2 className="edit-oauth-subtitle">{t("oauth-app-logo")}</h2>
             <UploadLogo logoURL={detail.logoURL} onUpload={onUpload} />
             <hr className="edit-oauth-splitter" />
             <label className="edit-oauth-subtitle is-required" htmlFor="edit-oauth-app-name">
-                应用名称
+                {t("oauth-app-name")}
             </label>
             <Input
                 className="edit-oauth-input"
@@ -248,7 +247,7 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
                 onChange={e => setAppName(e.target.value)}
             />
             <label className="edit-oauth-subtitle is-required" htmlFor="edit-oauth-homepage-url">
-                应用首页地址
+                {t("oauth-homepage-url")}
             </label>
             <Input
                 className="edit-oauth-input"
@@ -257,7 +256,7 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
                 onChange={e => setHomepageURL(e.target.value)}
             />
             <label className="edit-oauth-subtitle is-required" htmlFor="edit-oauth-app-desc">
-                应用描述
+                {t("oauth-app-description")}
             </label>
             <Input.TextArea
                 className="edit-oauth-input edit-oauth-textarea"
@@ -266,13 +265,13 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
                 value={detail.appDesc}
                 onChange={e => setAppDesc(e.target.value)}
             />
-            <h2 className="edit-oauth-subtitle is-required">权限管理</h2>
+            <h2 className="edit-oauth-subtitle is-required">{t("oauth-scopes")}</h2>
             <Table
                 className="edit-oauth-table"
                 columns={scopesColumns}
                 dataSource={scopesDataSource}
                 locale={{
-                    emptyText: "No Data",
+                    emptyText: t("no-data"),
                 }}
                 pagination={false}
                 rowKey="scope"
@@ -282,7 +281,7 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
                     onChange: setScopes as (keys: React.Key[]) => void,
                 }}
             />
-            <h2 className="edit-oauth-subtitle is-required">重定向地址</h2>
+            <h2 className="edit-oauth-subtitle is-required">{t("oauth-callback-url")}</h2>
             {callbacksURL.map((url, i) => (
                 <div key={i} className="edit-oauth-input-wrapper">
                     <Input
@@ -292,7 +291,7 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
                     />
                     <button
                         className="edit-oauth-input-btn edit-oauth-input-delete"
-                        title="delete"
+                        title={t("delete")}
                         onClick={() => deleteCallbackURL(i)}
                     >
                         <SVGDelete />
@@ -307,7 +306,7 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
                 />
                 <button
                     className="edit-oauth-input-btn edit-oauth-input-add"
-                    title="add"
+                    title={t("add")}
                     onClick={pushTempCallbackURL}
                 >
                     <SVGCirclePlusFilled />
@@ -315,7 +314,7 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
             </div>
             <div className="edit-oauth-action">
                 <Button loading={loading} type="primary" onClick={submit}>
-                    更新设置
+                    {t("oauth-update-settings")}
                 </Button>
             </div>
         </section>

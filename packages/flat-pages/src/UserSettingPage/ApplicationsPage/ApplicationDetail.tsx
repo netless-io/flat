@@ -1,12 +1,7 @@
-import { useTranslate } from "@netless/flat-i18n";
-import {
-    applicationDetail,
-    ApplicationDetail as Data,
-    DeveloperOAuthScope,
-} from "@netless/flat-server-api";
-import { Button } from "antd";
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { applicationDetail, ApplicationDetail as Data } from "@netless/flat-server-api";
+import { useTranslate } from "@netless/flat-i18n";
+import { Button } from "antd";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 export interface ApplicationDetailProps {
@@ -18,31 +13,14 @@ export const ApplicationDetail: React.FC<ApplicationDetailProps> = ({ oauthUUID 
     const sp = useSafePromise();
     const [data, setData] = useState<Data | null>(null);
     const [error, setError] = useState(false);
-    const history = useHistory();
 
     useEffect(() => {
         setError(false);
-        // sp(applicationDetail(oauthUUID))
-        //     .then(setData)
-        //     .catch(() => {
-        //         setError(true);
-        //     });
-
-        // fake data
-        sp(new Promise(r => setTimeout(r, 1000))).then(() => {
-            setData({
-                appDesc: "desc",
-                appName: "name",
-                homepageURL: "https://example.org",
-                logoURL: "http://placekitten.com/64/64",
-                ownerName: "owner",
-                scopes: [
-                    DeveloperOAuthScope.UserAvatarRead,
-                    DeveloperOAuthScope.UserNameRead,
-                    DeveloperOAuthScope.UserUUIDRead,
-                ],
+        sp(applicationDetail(oauthUUID))
+            .then(setData)
+            .catch(() => {
+                setError(true);
             });
-        });
     }, [oauthUUID, sp]);
 
     if (error) {
@@ -54,7 +32,7 @@ export const ApplicationDetail: React.FC<ApplicationDetailProps> = ({ oauthUUID 
     }
 
     if (data === null) {
-        return <div className="application-detail-loading">Loading...</div>;
+        return <div className="application-detail-loading">{t("loading")}&hellip;</div>;
     }
 
     const { logoURL, appName, ownerName, homepageURL, appDesc, scopes } = data;
@@ -75,12 +53,12 @@ export const ApplicationDetail: React.FC<ApplicationDetailProps> = ({ oauthUUID 
                     </div>
                 </div>
                 <div className="application-detail-brand-action">
-                    <Button danger>取消授权</Button>
+                    <Button danger>{t("apps-revoke")}</Button>
                 </div>
             </header>
             <p className="application-detail-desc">{appDesc}</p>
             <div className="application-detail-scopes">
-                <h4>Permissions</h4>
+                <h4>{t("apps-permissions")}</h4>
                 <ul>
                     {scopes.map(scope => (
                         <li key={scope} data-scope={scope}>

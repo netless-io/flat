@@ -18,14 +18,14 @@ export const ApplicationsList: React.FC<ApplicationsListProps> = ({ navigate }) 
     const revoke = useCallback(
         (item: ApplicationInfo) => {
             Modal.confirm({
-                content: `确定取消对${item.appName}的授权吗？`,
+                content: t("apps-revoke-confirm", { appName: item.appName }),
                 onOk: async () => {
                     await sp(revokeApplication(item.oauthUUID));
                     setData(data.filter(i => i !== item));
                 },
             });
         },
-        [data, sp],
+        [data, sp, t],
     );
 
     const columns = useMemo<TableColumnsType<ApplicationInfo>>(
@@ -33,18 +33,18 @@ export const ApplicationsList: React.FC<ApplicationsListProps> = ({ navigate }) 
             {
                 key: "appName",
                 dataIndex: "appName",
-                title: "应用名称",
+                title: t("oauth-app-name"),
                 render: (appName, item) => <a onClick={() => navigate(item)}>{appName}</a>,
             },
             {
                 key: "ownerName",
                 dataIndex: "ownerName",
-                title: "创建者",
+                title: t("oauth-app-creator"),
             },
             {
                 key: "homepageURL",
                 dataIndex: "homepageURL",
-                title: "主页",
+                title: t("oauth-homepage"),
                 render: url => (
                     <a href={url} rel="noreferrer" target="_blank">
                         {url}
@@ -56,7 +56,7 @@ export const ApplicationsList: React.FC<ApplicationsListProps> = ({ navigate }) 
                 render: (_, item) => (
                     <button
                         className="applications-revoke-btn"
-                        title="revoke"
+                        title={t("delete")}
                         onClick={() => revoke(item)}
                     >
                         <SVGDelete className="applications-revoke-icon" />
@@ -64,23 +64,13 @@ export const ApplicationsList: React.FC<ApplicationsListProps> = ({ navigate }) 
                 ),
             },
         ],
-        [navigate, revoke],
+        [navigate, revoke, t],
     );
 
     useEffect(() => {
-        // sp(listApplications(1, 50)).then(setData);
-        sp(new Promise(r => setTimeout(r, 1000))).then(() => {
-            // fake data
-            setData([
-                {
-                    appName: "Hello",
-                    homepageURL: "https://example.org",
-                    logoURL: "http://placekitten.com/64/64",
-                    oauthUUID: "uuid1",
-                    ownerName: "world",
-                },
-            ]);
-
+        setLoading(true);
+        sp(listApplications(1, 50)).then(data => {
+            setData(data);
             setLoading(false);
         });
     }, [sp]);
@@ -88,16 +78,14 @@ export const ApplicationsList: React.FC<ApplicationsListProps> = ({ navigate }) 
     return (
         <div className="applications">
             {data.length ? (
-                <p className="applications-stats">
-                    You have granted {data.length} applications access to your account.
-                </p>
+                <p className="applications-stats">{t("apps-stats", { count: data.length })}</p>
             ) : null}
             <Table
                 columns={columns}
                 dataSource={data}
                 loading={loading}
                 locale={{
-                    emptyText: "No Data",
+                    emptyText: t("no-data"),
                 }}
                 pagination={false}
                 rowKey="oauthUUID"
