@@ -1,11 +1,6 @@
 import "../style.less";
 import React from "react";
 import { FlatIconProps } from "../types";
-<svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 7L5 12L10 17" stroke="#5D6066" strokeLinejoin="round" strokeWidth="1.25" />
-    <path d="M15 7L20 12L15 17" stroke="#5D6066" strokeLinejoin="round" strokeWidth="1.25" />
-    <path d="M11 18L14 6" stroke="#5D6066" strokeLinejoin="round" strokeWidth="1.25" />
-</svg>;
 
 export const SVGCode: React.FC<FlatIconProps> = ({ active, className = "", ...restProps }) => {
     return (
