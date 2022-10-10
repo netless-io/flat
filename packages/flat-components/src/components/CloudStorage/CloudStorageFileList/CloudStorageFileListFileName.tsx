@@ -5,12 +5,17 @@ import { Button, Dropdown, Menu } from "antd";
 import { CloudStorageFileTitle } from "../CloudStorageFileTitle";
 import { CloudStorageFileName } from "../types";
 import { CloudFile } from "@netless/flat-server-api";
+import { DirectoryInfo } from "../../../containers/CloudStorageContainer";
+import { useHistory } from "react-router-dom";
 
 export interface CloudStorageFileListFileNameProps {
     file: CloudFile;
     index: number;
     /** Is title clickable */
     titleClickable?: boolean;
+    /** UUID of file that is under renaming */
+    renamingFileUUID?: string;
+    parentDirectoryPath?: string;
     getPopupContainer: () => HTMLElement;
     /** Render file menus item base on fileUUID */
     fileMenus?: (
@@ -22,13 +27,16 @@ export interface CloudStorageFileListFileNameProps {
         | undefined
         | null;
     /** When file menu item clicked */
-    onItemMenuClick?: (fileUUID: string, menuKey: React.Key) => void;
+    onItemMenuClick?: (
+        fileUUID: string,
+        menuKey: React.Key,
+        pushHistory: (path: string) => void,
+    ) => void;
     /** When title is clicked */
-    onItemTitleClick?: (fileUUID: string) => void;
-    /** UUID of file that is under renaming */
-    renamingFileUUID?: string;
+    onItemTitleClick?: (fileUUID: string, pushHistory: (path: string) => void) => void;
     /** Rename file. Empty name for cancelling */
     onRename?: (fileUUID: string, fileName?: CloudStorageFileName) => void;
+    onNewDirectoryFile?: (directoryInfo: DirectoryInfo) => Promise<void>;
 }
 
 export const CloudStorageFileListFileName =
@@ -37,17 +45,25 @@ export const CloudStorageFileListFileName =
             file,
             index,
             titleClickable,
+            renamingFileUUID,
+            parentDirectoryPath,
             getPopupContainer,
             fileMenus,
             onItemMenuClick,
             onItemTitleClick,
-            renamingFileUUID,
             onRename,
+            onNewDirectoryFile,
         }) {
             const menuItems = fileMenus && fileMenus(file, index);
             const fileConvertStep =
                 file.meta.whiteboardConvert?.convertStep ||
                 file.meta.whiteboardProjector?.convertStep;
+
+            const history = useHistory();
+            const pushHistory = (path: string): void => {
+                const search = new URLSearchParams({ path }).toString();
+                history.push({ search });
+            };
 
             return (
                 <div className="cloud-storage-file-list-filename-container">
@@ -55,8 +71,11 @@ export const CloudStorageFileListFileName =
                         convertStatus={fileConvertStep}
                         fileName={file.fileName}
                         fileUUID={file.fileUUID}
+                        parentDirectoryPath={parentDirectoryPath}
                         renamingFileUUID={renamingFileUUID}
+                        resourceType={file.resourceType}
                         titleClickable={titleClickable}
+                        onNewDirectoryFile={onNewDirectoryFile}
                         onRename={onRename}
                         onTitleClick={onItemTitleClick}
                     />
@@ -72,7 +91,9 @@ export const CloudStorageFileListFileName =
                                             className: e.className,
                                             label: e.name,
                                         }))}
-                                        onClick={({ key }) => onItemMenuClick?.(file.fileUUID, key)}
+                                        onClick={({ key }) =>
+                                            onItemMenuClick?.(file.fileUUID, key, pushHistory)
+                                        }
                                     />
                                 }
                                 overlayClassName="cloud-storage-file-list-menu"
