@@ -13,11 +13,13 @@ export interface CloudStorageNavigationProps {
 export const CloudStorageNavigation = /* @__PURE__ */ React.memo<CloudStorageNavigationProps>(
     function CloudStorageNavigation({ path, pushHistory }) {
         const pathName = useMemo(() => path.split("/").filter(Boolean), [path]);
-
+        // if the path name length >= breadcrumbMaxLength,
+        // the breadcrumb style will like this: /myCloudStorage/.../aa/bb/current path/
+        const breadcrumbMaxLength = 5;
         return (
             <div className="cloud-storage-navigation-container">
                 <Breadcrumb separator={<img src={rightSVG} />}>
-                    {pathName.length >= 5 ? (
+                    {pathName.length >= breadcrumbMaxLength ? (
                         <>
                             <Breadcrumb.Item>
                                 <a onClick={() => pushHistory("/")}>myCloudStorage</a>
@@ -28,7 +30,7 @@ export const CloudStorageNavigation = /* @__PURE__ */ React.memo<CloudStorageNav
                             {pathName.map((path, index) => {
                                 const routePath =
                                     "/" + pathName.slice(0, index + 1).join("/") + "/";
-                                // get last tree element of path name array
+                                // the -3 number mean that is get the last three elements of path name array
                                 if (pathName.slice(-3).some(pathVal => path === pathVal)) {
                                     return (
                                         <Breadcrumb.Item key={index}>
