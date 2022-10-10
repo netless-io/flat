@@ -514,7 +514,7 @@
   "oauth-app-scope": "Scope",
   "oauth-scope-user-avatar-read": "Read user avatar",
   "oauth-scope-user-name-read": "Read user name",
-  "oauth-scope-user-uuid-read": "Read user UUID",
+  "oauth-scope-user-uuid-read": "Read your UUID identifier",
   "oauth-missing-callback-url": "Please enter the callback URL",
   "oauth-invalid-callback-url": "Please enter a valid callback URL",
   "oauth-invalid-homepage-url": "Please enter a valid homepage URL",
