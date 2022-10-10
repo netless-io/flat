@@ -33,6 +33,9 @@ const fakeStoreImplProps = [
     "onItemMenuClick",
     "onItemTitleClick",
     "onNewFileName",
+    "onNewEmptyDirectory",
+    "onNewDirectoryFile",
+    "onParentDirectoryPathClick",
     "onDropFile",
     "fetchMoreCloudStorageData",
 ] as const;
@@ -50,6 +53,9 @@ class FakeStore extends CloudStorageStore {
     public onItemMenuClick: FakeStoreConfig["onItemMenuClick"];
     public onItemTitleClick;
     public onNewFileName: FakeStoreConfig["onNewFileName"];
+    public onNewEmptyDirectory: FakeStoreConfig["onNewEmptyDirectory"];
+    public onNewDirectoryFile: FakeStoreConfig["onNewDirectoryFile"];
+    public onParentDirectoryPathClick: FakeStoreConfig["onParentDirectoryPathClick"];
     public onDropFile: FakeStoreConfig["onDropFile"];
     public fetchMoreCloudStorageData;
 
@@ -126,7 +132,7 @@ class FakeStore extends CloudStorageStore {
         this.onUploadCancel = config.onUploadCancel;
         this.onUploadPanelClose = config.onUploadPanelClose;
         this.onUploadRetry = config.onUploadRetry;
-        this.onItemMenuClick = (fileUUID, menuKey) => {
+        this.onItemMenuClick = (fileUUID, menuKey, pushHistory) => {
             switch (menuKey) {
                 case "download": {
                     const file = this.files.find(file => file.fileUUID === fileUUID);
@@ -148,7 +154,7 @@ class FakeStore extends CloudStorageStore {
                     break;
                 }
             }
-            config.onItemMenuClick(fileUUID, menuKey);
+            config.onItemMenuClick(fileUUID, menuKey, pushHistory);
         };
         this.onItemTitleClick = config.onItemTitleClick;
         this.onNewFileName = (fileUUID, fileName) => {
@@ -158,6 +164,9 @@ class FakeStore extends CloudStorageStore {
             }
             config.onNewFileName(fileUUID, fileName);
         };
+        this.onNewEmptyDirectory = config.onNewEmptyDirectory;
+        this.onParentDirectoryPathClick = config.onParentDirectoryPathClick;
+        this.onNewDirectoryFile = config.onNewDirectoryFile;
         this.onDropFile = files => {
             for (const file of files) {
                 this.files.push({
@@ -265,7 +274,13 @@ export const Overview: Story<FakeStoreConfig> = config => {
     const [store] = useState(() => new FakeStore(config));
     return (
         <div className="ba br3 b--gray overflow-hidden" style={{ height: 600, maxHeight: "80vh" }}>
-            <CloudStorageContainer store={store} />
+            <CloudStorageContainer
+                path={"/new directory/directory1/directory2/"}
+                pushHistory={(): void => {
+                    console.log("click push history");
+                }}
+                store={store}
+            />
         </div>
     );
 };
@@ -279,7 +294,13 @@ export const CompactMode: Story<FakeStoreConfig> = config => {
     });
     return (
         <div className="ba br3 b--gray overflow-hidden" style={{ height: "400px" }}>
-            <CloudStorageContainer store={store} />
+            <CloudStorageContainer
+                path={"/new directory/directory1/directory2/"}
+                pushHistory={(): void => {
+                    console.log("click push history");
+                }}
+                store={store}
+            />
         </div>
     );
 };

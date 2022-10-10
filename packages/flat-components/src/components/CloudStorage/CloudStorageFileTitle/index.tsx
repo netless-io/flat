@@ -111,7 +111,7 @@ export const CloudStorageFileTitle = /* @__PURE__ */ React.memo<CloudStorageFile
                 </span>
                 {parentDirectoryPath &&
                     resourceType === FileResourceType.Directory &&
-                    fileUUID === "/" && (
+                    fileUUID === "temporaryDirectory" && (
                         <CloudStorageNewDirectory
                             parentDirectoryPath={parentDirectoryPath}
                             onNewDirectory={onNewDirectoryFile}

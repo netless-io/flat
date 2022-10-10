@@ -24,6 +24,8 @@ export interface CloudStorageFileListProps
         | "onItemTitleClick"
         | "renamingFileUUID"
         | "onRename"
+        | "onNewDirectoryFile"
+        | "parentDirectoryPath"
     > {
     /** Cloud Storage List items */
     files: CloudFile[];
@@ -48,6 +50,8 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
     renamingFileUUID,
     isLoadingData,
     onRename,
+    onNewDirectoryFile,
+    parentDirectoryPath,
 }) => {
     const t = useTranslate();
     const popupContainerRef = useRef<HTMLDivElement>(null);
@@ -75,10 +79,12 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                             fileMenus={fileMenus}
                             getPopupContainer={getPopupContainer}
                             index={index}
+                            parentDirectoryPath={parentDirectoryPath}
                             renamingFileUUID={renamingFileUUID}
                             titleClickable={titleClickable}
                             onItemMenuClick={onItemMenuClick}
                             onItemTitleClick={onItemTitleClick}
+                            onNewDirectoryFile={onNewDirectoryFile}
                             onRename={onRename}
                         />
                     );
@@ -93,7 +99,9 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 showSorterTooltip: false,
                 render: function renderCloudStorageFileSize(fileSize: CloudFile["fileSize"]) {
                     const formattedSize = prettyBytes(fileSize);
-                    return <span title={formattedSize}>{formattedSize}</span>;
+                    return (
+                        <span title={formattedSize}>{fileSize === 0 ? "-" : formattedSize}</span>
+                    );
                 },
             },
             {
@@ -103,7 +111,6 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 width: 170,
                 sorter: (file1, file2) => file1.createAt.valueOf() - file2.createAt.valueOf(),
                 sortDirections: ["ascend", "descend", "ascend"],
-                defaultSortOrder: "descend",
                 showSorterTooltip: false,
                 render: function renderCloudStorageCreateAt(date: CloudFile["createAt"]) {
                     const formattedDate = format(date, "yyyy/MM/dd HH:mm");
@@ -112,14 +119,16 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
             },
         ],
         [
-            fileMenus,
+            t,
             getPopupContainer,
-            onItemMenuClick,
-            onItemTitleClick,
-            onRename,
+            fileMenus,
+            parentDirectoryPath,
             renamingFileUUID,
             titleClickable,
-            t,
+            onItemMenuClick,
+            onItemTitleClick,
+            onNewDirectoryFile,
+            onRename,
         ],
     );
 

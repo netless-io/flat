@@ -18,10 +18,12 @@ export const CloudStorageFileListContainer =
                     fileMenus={store.fileMenus}
                     files={toJS(store.files)}
                     isLoadingData={isLoadingData}
+                    parentDirectoryPath={store.parentDirectoryPath}
                     renamingFileUUID={store.renamingFileUUID}
                     selectedFileUUIDs={toJS(store.selectedFileUUIDs)}
                     onItemMenuClick={store.onItemMenuClick}
                     onItemTitleClick={store.onItemTitleClick}
+                    onNewDirectoryFile={store.onNewDirectoryFile}
                     onRename={store.onRename}
                     onSelectionChange={store.onSelectionChange}
                 />
