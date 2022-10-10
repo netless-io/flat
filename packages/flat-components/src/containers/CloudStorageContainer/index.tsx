@@ -178,7 +178,7 @@ export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContai
                     </div>
                 )}
                 <div className="cloud-storage-container-navigation-box">
-                    {path !== null && (
+                    {path !== null && path !== "/" && (
                         <CloudStorageNavigation path={path} pushHistory={pushHistory} />
                     )}
                 </div>
