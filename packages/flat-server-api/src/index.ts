@@ -1,4 +1,5 @@
 export * from "./agora";
+export * from "./application";
 export * from "./constants";
 export * from "./error";
 export * from "./h5-converting";

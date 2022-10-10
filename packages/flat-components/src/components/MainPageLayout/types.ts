@@ -7,6 +7,10 @@ export interface MainPageLayoutItem {
     route: string;
 }
 
+export interface MainPageLayoutTreeItem extends MainPageLayoutItem {
+    children?: MainPageLayoutTreeItem[];
+}
+
 export interface MainPageTopBarMenuItem {
     key: string;
     route: string;

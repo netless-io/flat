@@ -1,0 +1,285 @@
+.oauth-list-header {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 24px;
+    padding-bottom: 8px;
+    color: var(--text);
+    border-bottom: 1px solid var(--grey-1);
+}
+
+.oauth-list-header {
+    display: flex;
+    align-items: center;
+}
+
+.oauth-list-title {
+    flex: 1;
+}
+
+.oauth-list-loading {
+    text-align: center;
+}
+
+.oauth-list-table {
+    list-style-type: none;
+    padding-inline: 0;
+}
+
+.oauth-list-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--grey-1);
+}
+
+.oauth-list-item-logo {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 0;
+    margin-right: 16px;
+}
+
+.oauth-list-item-name {
+    flex: 1;
+}
+
+.oauth-list-item-more {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    appearance: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: var(--blue-1);
+        color: var(--primary);
+    }
+}
+
+.oauth-list-item-revoke {
+    color: var(--danger) !important;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.new-oauth-title,
+.edit-oauth-title {
+    font-size: 14px;
+    color: var(--text-stronger);
+    font-weight: bold;
+}
+
+.new-oauth-subtitle,
+.edit-oauth-subtitle {
+    display: block;
+    font-size: 16px;
+    line-height: 24px;
+    padding-top: 16px;
+    padding-bottom: 8px;
+    margin: 0;
+    color: var(--text-stronger);
+    font-weight: bold;
+
+    &.is-required::after {
+        content: "*";
+        color: var(--danger);
+    }
+}
+
+.new-oauth-input,
+.edit-oauth-input {
+    width: 480px;
+}
+
+.new-oauth-input-wrapper,
+.edit-oauth-input-wrapper {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.new-oauth-textarea,
+.edit-oauth-textarea {
+    resize: vertical;
+}
+
+.new-oauth-input-btn,
+.edit-oauth-input-btn {
+    position: absolute;
+    left: calc(100% + 4px);
+    top: 0;
+    bottom: 8px;
+    margin: auto;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.new-oauth-input-delete,
+.edit-oauth-input-delete {
+    color: var(--danger);
+}
+
+.new-oauth-input-add,
+.edit-oauth-input-add {
+    color: var(--primary);
+}
+
+.new-oauth-action,
+.edit-oauth-action {
+    padding: 16px 0 0;
+    display: flex;
+    gap: 8px;
+}
+
+.edit-oauth-new-secret {
+    padding: 0 16px;
+}
+
+.edit-oauth-copy-secret-tip {
+    margin: 16px 0 8px;
+    border: 1px solid var(--primary-weak);
+    background-color: var(--primary-weaker);
+    padding: 8px 16px;
+    border-radius: 6px;
+}
+
+.edit-oauth-secret-wrapper {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 16px;
+    border: 1px solid transparent;
+    background-color: var(--grey-1);
+    padding: 8px 16px;
+    border-radius: 6px;
+
+    &.is-new {
+        border: 1px solid var(--green-1);
+        background-color: var(--green-0);
+    }
+}
+
+.edit-oauth-secret-row {
+    display: flex;
+    align-items: center;
+}
+
+.edit-oauth-secret {
+    flex: 1;
+}
+
+.edit-oauth-secret-icon {
+    display: inline-flex;
+    width: 48px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-oauth-secret-content {
+    padding-right: 8px;
+}
+
+.edit-oauth-secret-btn,
+.edit-oauth-delete-btn {
+    width: 24px;
+    height: 24px;
+    border: 0;
+    padding: 0;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.edit-oauth-secret-action {
+    display: inline-flex;
+    align-items: center;
+}
+
+.edit-oauth-delete-btn {
+    color: var(--danger);
+}
+
+.edit-oauth-splitter {
+    margin: 16px 0 0;
+    border: 0;
+    border-bottom: 1px solid var(--grey-1);
+}
+
+.edit-oauth-logo {
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 50%;
+    position: relative;
+    transition: opacity 0.2s ease;
+
+    &.is-loading {
+        opacity: 0.5;
+    }
+}
+
+.edit-oauth-logo-input {
+    appearance: none;
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.edit-oauth-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.edit-oauth-logo-btn {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.618);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+}
+
+.edit-oauth-logo:hover .edit-oauth-logo-btn {
+    opacity: 1;
+}
+
+.flat-color-scheme-dark {
+    .oauth-list-header,
+    .oauth-list-item,
+    .edit-oauth-splitter {
+        border-bottom: 1px solid var(--grey-8);
+    }
+    .oauth-list-item-more:hover {
+        background-color: var(--grey-11);
+    }
+    .edit-oauth-secret-wrapper {
+        background-color: var(--grey-8);
+    }
+    .edit-oauth-secret-wrapper.is-new {
+        border: 1px solid var(--green-8);
+        background-color: var(--green-10);
+    }
+}

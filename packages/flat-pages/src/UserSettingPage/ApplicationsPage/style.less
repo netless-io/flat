@@ -1,0 +1,81 @@
+.applications-stats {
+    color: var(--text);
+}
+
+.applications-revoke-btn {
+    vertical-align: text-top;
+    border: 0;
+    background-color: transparent;
+    color: var(--danger);
+    transition: color 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--danger-strong);
+    }
+}
+
+.application-back {
+    margin-bottom: 16px;
+}
+
+.application-detail-brand {
+    display: flex;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--grey-1);
+
+    .application-detail-brand-logo {
+        width: 64px;
+        height: 64px;
+        margin-right: 16px;
+        border-radius: 50%;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .application-detail-brand-info {
+        flex: 1;
+    }
+
+    .application-detail-name {
+        font-size: 14px;
+    }
+
+    .application-detail-owner-url {
+        font-size: 12px;
+    }
+
+    .application-detail-owner {
+        margin-right: 16px;
+    }
+}
+
+.application-detail-desc {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--grey-1);
+}
+
+.application-detail-scopes {
+    h4 {
+        color: var(--text-strong);
+        margin: 0;
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding-inline: 0;
+    }
+    li {
+        border-bottom: 1px solid var(--grey-1);
+        padding: 8px 0;
+    }
+}
+
+.flat-color-scheme-dark {
+    .application-detail-brand,
+    .application-detail-desc,
+    .application-detail-scopes li {
+        border-bottom: 1px solid var(--grey-8);
+    }
+}

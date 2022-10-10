@@ -5,6 +5,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import {
     MainPageLayoutHorizontal,
     MainPageLayoutItem,
+    MainPageLayoutTreeItem,
     MainPageLayoutProps,
     SVGCloudFilled,
     SVGCloudOutlined,
@@ -23,7 +24,7 @@ import { generateAvatar } from "../../utils/generate-avatar";
 import { FLAT_DOWNLOAD_URL } from "../../constants/process";
 
 export interface MainPageLayoutHorizontalContainerProps {
-    subMenu?: MainPageLayoutItem[];
+    subMenu?: MainPageLayoutTreeItem[];
     activeKeys?: string[];
     onRouteChange?: MainPageLayoutProps["onClick"];
     title?: React.ReactNode;

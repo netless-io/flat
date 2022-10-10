@@ -580,6 +580,15 @@
             }
         }
     }
+
+    .ant-dropdown-menu-item:hover,
+    .ant-dropdown-menu-submenu-title:hover,
+    .ant-dropdown-menu-item.ant-dropdown-menu-item-active,
+    .ant-dropdown-menu-item.ant-dropdown-menu-submenu-title-active,
+    .ant-dropdown-menu-submenu-title.ant-dropdown-menu-item-active,
+    .ant-dropdown-menu-submenu-title.ant-dropdown-menu-submenu-title-active {
+        background-color: var(--grey-11);
+    }
 }
 
 /* ------------------------ *\
@@ -628,10 +637,15 @@
     .ant-table-tbody > tr.ant-table-row:hover > td {
         background: var(--grey-1);
     }
+
+    .ant-table-thead > tr > th {
+        background: #fff;
+    }
 }
 
 .flat-color-scheme-dark {
     .ant-table {
+        color: var(--text);
         background: var(--grey-10);
 
         .ant-table-row {
@@ -652,6 +666,32 @@
         .ant-table-tbody > tr > td.ant-table-cell-row-hover {
             background-color: var(--grey-11);
         }
+    }
+
+    .ant-table-thead > tr > th {
+        color: var(--text-strong);
+        background: var(--grey-10);
+        border-bottom: 1px solid var(--grey-9);
+    }
+
+    .ant-table-tbody > tr > td {
+        color: var(--text);
+        border-bottom: 1px solid var(--grey-9);
+    }
+
+    .ant-table-tbody > tr.ant-table-row-selected > td {
+        background-color: var(--grey-11);
+    }
+
+    .ant-pagination-disabled .ant-pagination-item-link,
+    .ant-pagination-disabled:hover .ant-pagination-item-link {
+        color: var(--text);
+        border-color: var(--grey-9);
+        background-color: transparent;
+    }
+
+    .ant-pagination-item-active {
+        background-color: transparent;
     }
 }
 
@@ -894,5 +934,14 @@
                 background-color: var(--grey-10);
             }
         }
+    }
+}
+
+/* ------------------------ *\
+ * Spin
+\* ------------------------ */
+.flat-color-scheme-dark {
+    .ant-spin-container::after {
+        background: var(--grey-10);
     }
 }

@@ -41,6 +41,7 @@ export * from "./icons/SVGClose";
 export * from "./icons/SVGCloud";
 export * from "./icons/SVGCloudFilled";
 export * from "./icons/SVGCloudOutlined";
+export * from "./icons/SVGCode";
 export * from "./icons/SVGCopy";
 export * from "./icons/SVGDelete";
 export * from "./icons/SVGDoubleDown";
