@@ -2,7 +2,7 @@ import { message } from "antd";
 import { v4 as v4uuid } from "uuid";
 import { ApplianceNames, Room, Size } from "white-web-sdk";
 import { listFiles } from "@netless/flat-server-api";
-import { UploadTask } from "@netless/flat-stores";
+import { CloudStorageStore, UploadTask } from "@netless/flat-stores";
 import { FlatI18n } from "@netless/flat-i18n";
 
 const ImageFileTypes = [
@@ -22,7 +22,13 @@ export function isSupportedImageType(file: File): boolean {
     return ImageFileTypes.includes(file.type);
 }
 
-export async function onDropImage(file: File, x: number, y: number, room: Room): Promise<void> {
+export async function onDropImage(
+    file: File,
+    x: number,
+    y: number,
+    room: Room,
+    cloudStorageStore: CloudStorageStore,
+): Promise<void> {
     if (!isSupportedImageType(file)) {
         console.log("[dnd:image] unsupported file type:", file.type, file.name);
         return;
@@ -31,11 +37,12 @@ export async function onDropImage(file: File, x: number, y: number, room: Room):
     const hideLoading = message.loading(FlatI18n.t("inserting-courseware-tips"));
 
     const getSize = getImageSize(file);
-    const task = new UploadTask(file);
+    const task = new UploadTask(file, cloudStorageStore.parentDirectoryPath);
     await task.upload();
     const { files } = await listFiles({
         page: 1,
         order: "DESC",
+        directoryPath: cloudStorageStore.parentDirectoryPath,
     });
     const cloudFile = files.find(f => f.fileUUID === task.fileUUID);
 

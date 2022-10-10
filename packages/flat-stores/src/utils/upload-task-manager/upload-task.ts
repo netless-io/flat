@@ -32,10 +32,13 @@ export class UploadTask {
 
     public fileUUID?: string;
 
+    public targetDirectoryPath: string;
+
     private _cancelTokenSource?: CancelTokenSource;
 
-    public constructor(file: File) {
+    public constructor(file: File, targetDirectoryPath: string) {
         this.file = file;
+        this.targetDirectoryPath = targetDirectoryPath;
 
         makeAutoObservable<this, "_cancelTokenSource">(this, {
             file: observable.ref,
@@ -64,7 +67,7 @@ export class UploadTask {
                 uploadStartResult = await uploadStart({
                     fileName,
                     fileSize,
-                    targetDirectoryPath: "/",
+                    targetDirectoryPath: this.targetDirectoryPath,
                 });
             } catch (e) {
                 // max concurrent upload count limit
@@ -76,7 +79,7 @@ export class UploadTask {
                     uploadStartResult = await uploadStart({
                         fileName,
                         fileSize,
-                        targetDirectoryPath: "/",
+                        targetDirectoryPath: this.targetDirectoryPath,
                     });
                 } else {
                     throw e;

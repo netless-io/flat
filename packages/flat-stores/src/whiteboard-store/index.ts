@@ -7,7 +7,13 @@ import { message } from "antd";
 import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { AnimationMode, Room, RoomPhase, ViewMode } from "white-web-sdk";
-import { RoomType, Region, CloudFile, FileConvertStep } from "@netless/flat-server-api";
+import {
+    RoomType,
+    Region,
+    CloudFile,
+    FileConvertStep,
+    FileResourceType,
+} from "@netless/flat-server-api";
 import { CloudStorageStore } from "../cloud-storage-store";
 import { coursewarePreloader } from "../utils/courseware-preloader";
 import { globalStore } from "../global-store";
@@ -229,7 +235,9 @@ export class WhiteboardStore {
             return;
         }
 
-        void message.info(FlatI18n.t("inserting-courseware-tips"));
+        if (file.resourceType !== FileResourceType.Directory) {
+            void message.info(FlatI18n.t("inserting-courseware-tips"));
+        }
 
         const fileService = await FlatServices.getInstance().requestService("file");
         if (!fileService) {

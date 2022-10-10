@@ -29,9 +29,9 @@ export class UploadTaskManager {
         makeAutoObservable(this);
     }
 
-    public addTasks(files: File[]): void {
+    public addTasks(files: File[], targetDirectoryPath: string): void {
         for (const file of files) {
-            const task = new UploadTask(file);
+            const task = new UploadTask(file, targetDirectoryPath);
             this.pending.unshift(task);
         }
         void this.startUpload();
@@ -84,7 +84,7 @@ export class UploadTaskManager {
         if (index >= 0) {
             const task = this.failed[index];
             this.failed.splice(index, 1);
-            this.addTasks([task.file]);
+            this.addTasks([task.file], task.targetDirectoryPath);
         }
     }
 
