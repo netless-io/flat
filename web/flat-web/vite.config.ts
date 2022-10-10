@@ -10,10 +10,14 @@ import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 import viteCompression from "vite-plugin-compression";
 
 // HACK: disable dedupe in the react plugin
+// We need to do this because Flat is not a typical react project,
+// the 'white-web-sdk' has a dependency of react@16 while Flat is using react@17,
+// they cannot be de-deduplicated because 'white-web-sdk' heavily uses the react@16 internal APIs.
 const reactPlugin = react();
 {
     const p = (reactPlugin as any).find((e: any) => e?.name === "vite:react-refresh");
     // This line overrides the original config (dedupe)
+    // See https://github.com/vitejs/vite/blob/87b48f9103f467c3ad33b039ccf845aed9a281d7/packages/plugin-react/src/index.ts#L379
     p.config = () => ({ esbuild: { target: "esnext" } });
 }
 
