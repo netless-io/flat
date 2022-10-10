@@ -1,8 +1,10 @@
 import "./style.less";
+import deleteSVG from "./icons/delete.svg";
+import newDirectorySVG from "./icons/new-directory.svg";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { CSSTransition } from "react-transition-group";
 import { CloudStorageStore } from "./store";
 import { CloudStorageSkeletons, CloudStorageUploadPanel } from "../../components/CloudStorage";
@@ -10,12 +12,15 @@ import { CloudStorageUploadListContainer } from "./CloudStorageUploadListContain
 import { CloudStorageFileListContainer } from "./CloudStorageFileListContainer";
 import classNames from "classnames";
 import { useTranslate } from "@netless/flat-i18n";
+import { CloudStorageNavigation } from "../../components/CloudStorage/CloudStorageNavigation";
 
 export * from "./store";
 
 export interface CloudStorageContainerProps {
     /** CloudStorage MobX store */
     store: CloudStorageStore;
+    path: string | null;
+    pushHistory: (path: string) => void;
 }
 
 const SupportedFileExts = [
@@ -49,7 +54,7 @@ const onDragOver = (event: React.DragEvent<HTMLDivElement>): void => {
 
 /** CloudStorage page with MobX Store */
 export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContainerProps>(
-    function CloudStorageContainer({ store }) {
+    function CloudStorageContainer({ store, path, pushHistory }) {
         const t = useTranslate();
         const cloudStorageContainerRef = useRef<HTMLDivElement>(null);
         const [skeletonsVisible, setSkeletonsVisible] = useState(false);
@@ -63,7 +68,10 @@ export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContai
 
         useEffect(() => {
             if (isAtTheBottom) {
-                void store.fetchMoreCloudStorageData(store.cloudStorageDataPagination + 1);
+                void store.fetchMoreCloudStorageData(
+                    store.cloudStorageDataPagination + 1,
+                    store.parentDirectoryPath,
+                );
             }
         }, [isAtTheBottom, store]);
 
@@ -77,18 +85,63 @@ export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContai
             [store],
         );
 
+        const newBtnMenu = (
+            <Menu
+                items={[
+                    {
+                        label: t("new-directory-file"),
+                        key: "new-directory",
+                        icon: <img src={newDirectorySVG} />,
+                        onClick: store.onNewEmptyDirectory,
+                    },
+                ]}
+            />
+        );
+
+        const uploadBtnMenu = (
+            <Menu
+                items={[
+                    {
+                        label: "t('local-file')",
+                        key: "local-file",
+                        onClick: store.onUpload,
+                    },
+                ]}
+            />
+        );
+
+        const renderArrow = (primary?: boolean): React.ReactElement => {
+            return (
+                <span
+                    className={classNames("cloud-storage-container-btn-arrow", {
+                        "cloud-storage-container-btn-arrow-primary": primary,
+                    })}
+                >
+                    <span></span>
+                    <span></span>
+                </span>
+            );
+        };
+
         const containerBtns = (
             <div className="cloud-storage-container-btns">
-                <Button
-                    danger
-                    disabled={store.selectedFileUUIDs.length <= 0}
-                    onClick={store.onBatchDelete}
-                >
-                    {t("delete")}
-                </Button>
-                <Button type="primary" onClick={store.onUpload}>
-                    {t("upload")}
-                </Button>
+                {store.selectedFileUUIDs.length >= 1 && (
+                    <span onClick={store.onBatchDelete}>
+                        <img className="cloud-storage-container-btn-delete" src={deleteSVG} />
+                    </span>
+                )}
+                <Dropdown overlay={newBtnMenu} placement="bottomLeft">
+                    <Button className="cloud-storage-container-dropdown-btn">
+                        new
+                        {renderArrow()}
+                    </Button>
+                </Dropdown>
+                <Dropdown overlay={uploadBtnMenu} placement="bottomLeft">
+                    <Button className="cloud-storage-container-dropdown-btn" type="primary">
+                        {t("upload")}
+                        {renderArrow(true)}
+                    </Button>
+                </Dropdown>
             </div>
         );
 
@@ -124,6 +177,11 @@ export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContai
                         {containerBtns}
                     </div>
                 )}
+                <div className="cloud-storage-container-navigation-box">
+                    {path !== null && (
+                        <CloudStorageNavigation path={path} pushHistory={pushHistory} />
+                    )}
+                </div>
                 <div
                     ref={cloudStorageContainerRef}
                     className="cloud-storage-container-file-list fancy-scrollbar"

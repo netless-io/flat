@@ -2,10 +2,11 @@ import React from "react";
 import { action, computed, makeObservable, observable } from "mobx";
 import prettyBytes from "pretty-bytes";
 import { CloudStorageFileName, CloudStorageUploadTask } from "../../components/CloudStorage/types";
-import type { CloudFile } from "@netless/flat-server-api";
+import type { CloudFile, NewDirectoryPayload } from "@netless/flat-server-api";
 
 export type UploadID = string;
 export type FileUUID = string;
+export type DirectoryInfo = NewDirectoryPayload;
 
 export abstract class CloudStorageStore {
     /** Compact UI for small panel */
@@ -22,6 +23,8 @@ export abstract class CloudStorageStore {
     public cloudStorageSinglePageFiles = 50;
     /** In order to avoid multiple calls the fetchMoreCloudStorageData when fetching data */
     public isFetchingFiles = false;
+    //  current parent directory
+    public parentDirectoryPath = new URLSearchParams(window.location.search).get("path") || "/";
 
     /** Display upload panel */
     public get isUploadPanelVisible(): boolean {
@@ -75,6 +78,7 @@ export abstract class CloudStorageStore {
             isUploadPanelExpand: observable,
             renamingFileUUID: observable,
             isFetchingFiles: observable,
+            parentDirectoryPath: observable,
 
             isUploadPanelVisible: computed,
             totalUsageHR: computed,
@@ -84,6 +88,8 @@ export abstract class CloudStorageStore {
             uploadTotalCount: computed,
 
             setRenamePanel: action,
+            setCurrentDirectoryPath: action,
+            setParentDirectoryPath: action,
             setPanelExpand: action,
             setCompact: action,
             onSelectionChange: action,
@@ -93,6 +99,14 @@ export abstract class CloudStorageStore {
 
     public setRenamePanel = (fileUUID?: FileUUID): void => {
         this.renamingFileUUID = fileUUID;
+    };
+
+    public setCurrentDirectoryPath = (currentDirectoryPath: string): void => {
+        this.parentDirectoryPath = this.parentDirectoryPath + currentDirectoryPath + "/";
+    };
+
+    public setParentDirectoryPath = (parentDirectoryPath: string): void => {
+        this.parentDirectoryPath = parentDirectoryPath;
     };
 
     public setPanelExpand = (isExpand: boolean): void => {
@@ -136,10 +150,19 @@ export abstract class CloudStorageStore {
     ) => Array<{ key: React.Key; name: React.ReactNode }> | void | undefined | null;
 
     /** When a file menus item is clicked */
-    public abstract onItemMenuClick: (fileUUID: FileUUID, menuKey: React.Key) => void;
+    public abstract onItemMenuClick: (
+        fileUUID: FileUUID,
+        menuKey: React.Key,
+        pushHistory: (path: string) => void,
+    ) => void;
 
     /** When file title click */
-    public abstract onItemTitleClick: (fileUUID: FileUUID) => void;
+    public abstract onItemTitleClick: (
+        fileUUID: FileUUID,
+        pushHistory: (path: string) => void,
+    ) => void;
+
+    public abstract onParentDirectoryPathClick: (parentPath: string) => void;
 
     /** When page delete button is pressed */
     public abstract onBatchDelete(): void;
@@ -159,6 +182,11 @@ export abstract class CloudStorageStore {
     /** When a filename is changed to a meaningful new name */
     public abstract onNewFileName(fileUUID: FileUUID, fileName: CloudStorageFileName): void;
 
+    /** new empty directory file */
+    public abstract onNewEmptyDirectory(): void;
+    /** new directory file */
+    public abstract onNewDirectoryFile(directoryInfo: DirectoryInfo): Promise<void>;
+
     /** When file(s) are dropped in the container. */
     public abstract onDropFile(files: FileList): void;
 
@@ -166,5 +194,8 @@ export abstract class CloudStorageStore {
     public abstract onDropFile(files: FileList): void;
 
     /** When cloudStorage files is 50 or more, pull up to bottom that loading will fetch more pagination Data of the cloudStorage. */
-    public abstract fetchMoreCloudStorageData: (page: number) => Promise<void>;
+    public abstract fetchMoreCloudStorageData: (
+        page: number,
+        currentDirectoryPath: string,
+    ) => Promise<void>;
 }
