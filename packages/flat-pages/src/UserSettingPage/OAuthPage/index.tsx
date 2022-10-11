@@ -29,7 +29,7 @@ export const OAuthPage = observer(function OAuthPage() {
                 {page === "new" ? (
                     <NewOAuth navigate={navigate} />
                 ) : page === "edit" && oauthUUID ? (
-                    <EditOAuth navigate={navigate} oauthUUID={oauthUUID} />
+                    <EditOAuth oauthUUID={oauthUUID} />
                 ) : (
                     <OAuthList navigate={navigate} />
                 )}

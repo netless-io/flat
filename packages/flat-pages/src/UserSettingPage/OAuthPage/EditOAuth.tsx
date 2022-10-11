@@ -12,7 +12,6 @@ import {
     updateOAuth,
     UpdateOAuthPayload,
 } from "@netless/flat-server-api";
-import { OAuthPageCommonProps } from "./index";
 import { LoadingOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
 import { useTranslate } from "@netless/flat-i18n";
@@ -21,11 +20,11 @@ import { useScopesData } from "./NewOAuth";
 import { validateURL } from "./utils";
 import { uploadLogo, UploadLogo } from "./UploadLogo";
 
-export interface EditOAuthProps extends OAuthPageCommonProps {
+export interface EditOAuthProps {
     oauthUUID: string;
 }
 
-export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => {
+export const EditOAuth: React.FC<EditOAuthProps> = ({ oauthUUID }) => {
     const t = useTranslate();
     const sp = useSafePromise();
     const [secretUUID, setSecretUUID] = useState("");
@@ -152,10 +151,11 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ navigate, oauthUUID }) => 
                 scopes,
             };
             await sp(updateOAuth(oauthUUID, payload));
-            navigate("index");
+            message.success(t("oauth-update-success"));
         } catch (error) {
-            setLoading(false);
             errorTips(error);
+        } finally {
+            setLoading(false);
         }
     };
 
