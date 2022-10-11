@@ -3,6 +3,7 @@ import "./style.less";
 import React, { useMemo } from "react";
 import { Breadcrumb } from "antd";
 import rightSVG from "./icons/right.svg";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface CloudStorageNavigationProps {
     // eg: /myCloudStorage/aaa/bbb/ccc
@@ -12,6 +13,7 @@ export interface CloudStorageNavigationProps {
 
 export const CloudStorageNavigation = /* @__PURE__ */ React.memo<CloudStorageNavigationProps>(
     function CloudStorageNavigation({ path, pushHistory }) {
+        const t = useTranslate();
         const pathName = useMemo(() => path.split("/").filter(Boolean), [path]);
         // if the path name length >= breadcrumbMaxLength,
         // the breadcrumb style will like this: /myCloudStorage/.../aa/bb/current path/
@@ -22,7 +24,7 @@ export const CloudStorageNavigation = /* @__PURE__ */ React.memo<CloudStorageNav
                     {pathName.length >= breadcrumbMaxLength ? (
                         <>
                             <Breadcrumb.Item>
-                                <a onClick={() => pushHistory("/")}>myCloudStorage</a>
+                                <a onClick={() => pushHistory("/")}>{t("my-cloud")}</a>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
                                 <span className="cloud-storage-navigation-more-path">...</span>

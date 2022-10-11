@@ -102,7 +102,7 @@ export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContai
             <Menu
                 items={[
                     {
-                        label: "t('local-file')",
+                        label: t("local-file"),
                         key: "local-file",
                         onClick: store.onUpload,
                     },
