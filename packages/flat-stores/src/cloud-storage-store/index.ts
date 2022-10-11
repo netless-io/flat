@@ -110,7 +110,18 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     /** User cloud storage files */
     public get files(): CloudFile[] {
-        return observable.array([...this.filesMap.values()]);
+        return observable.array(
+            [...this.filesMap.values()].sort((a, b) => {
+                const aIsDir = a.resourceType === "Directory";
+                const bIsDir = b.resourceType === "Directory";
+                if (aIsDir === bIsDir) {
+                    // new directory is first
+                    return b.createAt.valueOf() - a.createAt.valueOf();
+                }
+                // directory file is first
+                return aIsDir ? -1 : 1;
+            }),
+        );
     }
 
     /** Render file menus item base on fileUUID */
