@@ -116,8 +116,8 @@ export const NewOAuth: React.FC<NewOAuthProps> = ({ navigate }) => {
                 callbacksURL,
                 scopes,
             };
-            await sp(createOAuth(payload));
-            navigate("index");
+            const result = await sp(createOAuth(payload));
+            navigate("edit", result.oauthUUID);
         } catch (error) {
             setLoading(false);
             errorTips(error);
