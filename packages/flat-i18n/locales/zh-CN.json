@@ -547,5 +547,6 @@
   "apps-stats": "你已经授权了 {{count}} 个应用",
   "apps-revoke": "取消授权",
   "apps-permissions": "权限",
-  "loading": "加载中"
+  "loading": "加载中",
+  "oauth-update-success": "应用更新成功"
 }

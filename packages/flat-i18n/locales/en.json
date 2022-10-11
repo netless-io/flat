@@ -547,5 +547,6 @@
   "apps-stats": "You have granted {{count}} application(s) access to your account.",
   "apps-revoke": "Revoke",
   "apps-permissions": "Permissions",
-  "loading": "Loading"
+  "loading": "Loading",
+  "oauth-update-success": "Application updated successfully"
 }
