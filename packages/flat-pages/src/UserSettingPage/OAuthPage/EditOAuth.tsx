@@ -163,7 +163,9 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ oauthUUID }) => {
         <section className="edit-oauth">
             <h1 className="edit-oauth-title">{detail.appName}</h1>
             <h2 className="edit-oauth-subtitle">{t("client-id")}</h2>
-            <p className="edit-oauth-content">{detail.clientID}</p>
+            <p className="edit-oauth-content" style={{ userSelect: "text" }}>
+                {detail.clientID}
+            </p>
             <h2 className="edit-oauth-subtitle">{t("client-secrets")}</h2>
             <p className="edit-oauth-content">{t("client-secret-desc")}</p>
             <div className="edit-oauth-new-secret-wrapper">
@@ -185,7 +187,12 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ oauthUUID }) => {
                         </div>
                         <div className="edit-oauth-secret">
                             <div className="edit-oauth-secret-row">
-                                <span className="edit-oauth-secret-content">{clientSecret}</span>
+                                <span
+                                    className="edit-oauth-secret-content"
+                                    style={{ userSelect: "text" }}
+                                >
+                                    {clientSecret}
+                                </span>
                                 <button
                                     className="edit-oauth-secret-btn"
                                     onClick={copyClientSecret}
