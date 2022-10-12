@@ -22,21 +22,15 @@ import { useHistory } from "react-router-dom";
 
 export interface CloudStorageFileTitleProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
-    /** file UUID */
     fileUUID: string;
-    /** File Name */
     fileName: string;
-    /** Cloud converting status */
     convertStatus?: FileConvertStep;
-    /** Is title clickable. Default false */
     titleClickable?: boolean;
     /** UUID of file that is under renaming */
     renamingFileUUID?: string;
     resourceType?: ResourceType;
     parentDirectoryPath?: string;
-    /** When title is clicked */
     onTitleClick?: (fileUUID: string, pushHistory: (path: string) => void) => void;
-    /** Rename file. Empty name for cancelling */
     onRename?: (fileUUID: string, fileName?: CloudStorageFileName) => void;
     onNewDirectoryFile?: (directoryInfo: DirectoryInfo) => Promise<void>;
 }

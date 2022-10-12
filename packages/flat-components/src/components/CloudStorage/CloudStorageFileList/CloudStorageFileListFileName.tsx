@@ -11,7 +11,6 @@ import { useHistory } from "react-router-dom";
 export interface CloudStorageFileListFileNameProps {
     file: CloudFile;
     index: number;
-    /** Is title clickable */
     titleClickable?: boolean;
     /** UUID of file that is under renaming */
     renamingFileUUID?: string;
@@ -26,13 +25,11 @@ export interface CloudStorageFileListFileNameProps {
         | void
         | undefined
         | null;
-    /** When file menu item clicked */
     onItemMenuClick?: (
         fileUUID: string,
         menuKey: React.Key,
         pushHistory: (path: string) => void,
     ) => void;
-    /** When title is clicked */
     onItemTitleClick?: (fileUUID: string, pushHistory: (path: string) => void) => void;
     /** Rename file. Empty name for cancelling */
     onRename?: (fileUUID: string, fileName?: CloudStorageFileName) => void;

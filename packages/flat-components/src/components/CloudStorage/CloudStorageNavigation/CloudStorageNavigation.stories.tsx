@@ -13,7 +13,7 @@ export const Overview: Story<CloudStorageNavigationProps> = args => (
     <CloudStorageNavigation {...args} />
 );
 Overview.args = {
-    path: "/my cloud storage/new directory/cheer ego/project/video/",
+    path: "/cloud/path/to/video",
     pushHistory: () => {
         console.log("click");
     },

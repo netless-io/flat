@@ -6,7 +6,7 @@ import rightSVG from "./icons/right.svg";
 import { useTranslate } from "@netless/flat-i18n";
 
 export interface CloudStorageNavigationProps {
-    // eg: /myCloudStorage/aaa/bbb/ccc
+    // eg: /cloud/path/to/video
     path: string;
     pushHistory: (path: string) => void;
 }

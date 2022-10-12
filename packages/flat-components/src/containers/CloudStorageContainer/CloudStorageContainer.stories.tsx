@@ -275,7 +275,7 @@ export const Overview: Story<FakeStoreConfig> = config => {
     return (
         <div className="ba br3 b--gray overflow-hidden" style={{ height: 600, maxHeight: "80vh" }}>
             <CloudStorageContainer
-                path={"/new directory/directory1/directory2/"}
+                path={"/path/to/directory/"}
                 pushHistory={(): void => {
                     console.log("click push history");
                 }}
@@ -295,7 +295,7 @@ export const CompactMode: Story<FakeStoreConfig> = config => {
     return (
         <div className="ba br3 b--gray overflow-hidden" style={{ height: "400px" }}>
             <CloudStorageContainer
-                path={"/new directory/directory1/directory2/"}
+                path={"/path/to/directory/"}
                 pushHistory={(): void => {
                     console.log("click push history");
                 }}
