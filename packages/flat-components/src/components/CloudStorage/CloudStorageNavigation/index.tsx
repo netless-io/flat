@@ -46,7 +46,7 @@ export const CloudStorageNavigation = /* @__PURE__ */ React.memo<CloudStorageNav
                     ) : (
                         <>
                             <Breadcrumb.Item>
-                                <a onClick={() => pushHistory("/")}>myCloudStorage</a>
+                                <a onClick={() => pushHistory("/")}>{t("my-cloud")}</a>
                             </Breadcrumb.Item>
                             {pathName.map((path, index) => {
                                 const routePath =
