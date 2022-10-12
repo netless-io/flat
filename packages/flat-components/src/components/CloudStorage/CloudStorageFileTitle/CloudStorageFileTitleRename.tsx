@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { CloudStorageFileName } from "../types";
 import { FileResourceType, ResourceType } from "@netless/flat-server-api";
 import { checkInvalidDirectoryName } from "./utils";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface CloudStorageFileTitleRenameProps {
     fileUUID: string;
@@ -19,6 +20,7 @@ export const CloudStorageFileTitleRename =
     /* @__PURE__ */ React.memo<CloudStorageFileTitleRenameProps>(
         function CloudStorageFileTitleRename({ fileUUID, fileName, fileResourceType, onRename }) {
             // Antd docs uses any
+            const t = useTranslate();
             const inputRef = useRef<any>();
             const [oldName, ext] = splitFileName(fileName, fileResourceType);
             const [name, setText] = useState(oldName);
@@ -34,7 +36,7 @@ export const CloudStorageFileTitleRename =
                     } else {
                         if (fileResourceType === FileResourceType.Directory) {
                             checkInvalidDirectoryName(name)
-                                ? message.error("不允许包含以下非法字符串 \\ /")
+                                ? message.error(t("invalid-directory-name-tips"))
                                 : onRename(fileUUID, { name, ext, fullName });
                         } else {
                             onRename(fileUUID, { name, ext, fullName });

@@ -5,6 +5,7 @@ import { Button, Input, InputRef, message } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { DirectoryInfo } from "../../../containers/CloudStorageContainer";
 import { checkInvalidDirectoryName } from "./utils";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface CloudStorageNewDirectoryProps {
     parentDirectoryPath: string;
@@ -14,8 +15,9 @@ export interface CloudStorageNewDirectoryProps {
 export const CloudStorageNewDirectory = /* @__PURE__ */ React.memo<CloudStorageNewDirectoryProps>(
     function CloudStorageNewDirectory({ parentDirectoryPath, onNewDirectory }) {
         // Antd docs uses any
+        const t = useTranslate();
         const inputRef = useRef<any>();
-        const [name, setText] = useState("new directory");
+        const [name, setText] = useState(t("new-directory"));
 
         const onCancel =
             onNewDirectory && (() => onNewDirectory({ directoryName: "", parentDirectoryPath }));
@@ -23,7 +25,7 @@ export const CloudStorageNewDirectory = /* @__PURE__ */ React.memo<CloudStorageN
             onNewDirectory &&
             (() => {
                 checkInvalidDirectoryName(name)
-                    ? message.error("不允许包含以下非法字符串 \\ /")
+                    ? message.error(t("invalid-directory-name-tips"))
                     : onNewDirectory({ directoryName: name, parentDirectoryPath });
             });
 

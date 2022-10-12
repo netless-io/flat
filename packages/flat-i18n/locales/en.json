@@ -548,5 +548,7 @@
   "apps-revoke": "Revoke",
   "apps-permissions": "Permissions",
   "loading": "Loading",
-  "oauth-update-success": "Application updated successfully"
+  "oauth-update-success": "Application updated successfully",
+  "invalid-directory-name-tips": "The directory name cannot contain the following characters: \\ /",
+  "new-directory": "New Directory"
 }
