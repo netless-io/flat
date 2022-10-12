@@ -467,7 +467,6 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                             file.meta = cloudFile.meta;
                         }
                     } else {
-                        console.log("i want't to go there -----");
                         newFiles[cloudFile.fileUUID] = observable.object(cloudFile);
                     }
                 });
