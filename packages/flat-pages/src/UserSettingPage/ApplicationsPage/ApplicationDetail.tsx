@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { applicationDetail, ApplicationDetail as Data } from "@netless/flat-server-api";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+    applicationDetail,
+    ApplicationDetail as Data,
+    ApplicationInfo,
+    revokeApplication,
+} from "@netless/flat-server-api";
 import { useTranslate } from "@netless/flat-i18n";
-import { Button } from "antd";
+import { Button, Modal } from "antd";
+import { SVGCircleCheckFilled, SVGUser, SVGWeb } from "flat-components";
+import { noop } from "lodash-es";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 
 export interface ApplicationDetailProps {
     oauthUUID: string;
+    navigate: (app: ApplicationInfo | null) => void;
 }
 
-export const ApplicationDetail: React.FC<ApplicationDetailProps> = ({ oauthUUID }) => {
+export const ApplicationDetail: React.FC<ApplicationDetailProps> = ({ oauthUUID, navigate }) => {
     const t = useTranslate();
     const sp = useSafePromise();
     const [data, setData] = useState<Data | null>(null);
@@ -22,6 +30,19 @@ export const ApplicationDetail: React.FC<ApplicationDetailProps> = ({ oauthUUID 
                 setError(true);
             });
     }, [oauthUUID, sp]);
+
+    const revoke = useCallback(() => {
+        if (!data) {
+            return;
+        }
+        Modal.confirm({
+            content: t("apps-revoke-confirm", { appName: data.appName }),
+            onOk: async () => {
+                await sp(revokeApplication(oauthUUID).catch(noop));
+                navigate(null);
+            },
+        });
+    }, [data, navigate, oauthUUID, sp, t]);
 
     if (error) {
         return (
@@ -46,14 +67,20 @@ export const ApplicationDetail: React.FC<ApplicationDetailProps> = ({ oauthUUID 
                 <div className="application-detail-brand-info">
                     <div className="application-detail-name">{appName}</div>
                     <div className="application-detail-owner-url">
-                        <span className="application-detail-owner">{ownerName}</span>
+                        <span className="application-detail-owner">
+                            <SVGUser />
+                            <span>{ownerName}</span>
+                        </span>
                         <span className="application-detail-url">
+                            <SVGWeb />
                             <a href={homepageURL}>{homepageURL}</a>
                         </span>
                     </div>
                 </div>
                 <div className="application-detail-brand-action">
-                    <Button danger>{t("apps-revoke")}</Button>
+                    <Button danger onClick={revoke}>
+                        {t("apps-revoke")}
+                    </Button>
                 </div>
             </header>
             <p className="application-detail-desc">{appDesc}</p>
@@ -61,8 +88,11 @@ export const ApplicationDetail: React.FC<ApplicationDetailProps> = ({ oauthUUID 
                 <h4>{t("apps-permissions")}</h4>
                 <ul>
                     {scopes.map(scope => (
-                        <li key={scope} data-scope={scope}>
-                            {scope}
+                        <li key={scope} className="application-detail-scope" data-scope={scope}>
+                            <SVGCircleCheckFilled />
+                            <span className="application-detail-scope-text">
+                                {t("oauth-scope-" + scope.replace(/[.:]/g, "-"))}
+                            </span>
                         </li>
                     ))}
                 </ul>

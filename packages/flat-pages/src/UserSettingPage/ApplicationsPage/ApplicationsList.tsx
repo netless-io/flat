@@ -34,7 +34,17 @@ export const ApplicationsList: React.FC<ApplicationsListProps> = ({ navigate }) 
                 key: "appName",
                 dataIndex: "appName",
                 title: t("oauth-app-name"),
-                render: (appName, item) => <a onClick={() => navigate(item)}>{appName}</a>,
+                render: (appName, item) => (
+                    <a className="applications-app-name-wrapper" onClick={() => navigate(item)}>
+                        <img
+                            alt="logo"
+                            className="applications-app-logo"
+                            src={item.logoURL}
+                            title={appName}
+                        />
+                        <span className="applications-app-name">{appName}</span>
+                    </a>
+                ),
             },
             {
                 key: "ownerName",

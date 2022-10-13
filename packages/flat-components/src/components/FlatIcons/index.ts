@@ -130,3 +130,4 @@ export * from "./icons/SVGVideoFold";
 export * from "./icons/SVGVideoUnfold";
 export * from "./icons/SVGWhiteboard";
 export * from "./icons/SVGWhiteboardAdd";
+export * from "./icons/SVGWeb";
