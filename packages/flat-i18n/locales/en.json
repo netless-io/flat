@@ -550,5 +550,7 @@
   "loading": "Loading",
   "oauth-update-success": "Application updated successfully",
   "invalid-directory-name-tips": "The directory name cannot contain the following characters: \\ /",
-  "new-directory": "New Directory"
+  "new-directory": "New Directory",
+  "local-file": "Local File",
+  "new": "New"
 }
