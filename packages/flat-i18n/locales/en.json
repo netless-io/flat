@@ -174,7 +174,7 @@
   "theme-can-be-up-to-50-characters": "Subject is up to 50 characters",
   "type": "Type",
   "delete": "Delete",
-  "my-cloud ": "My cloud storage",
+  "my-cloud": "My cloud storage",
   "upload": "Upload",
   "used-storage": "{{usage}} Used",
   "downloading": "Downloading",
@@ -548,5 +548,7 @@
   "apps-revoke": "Revoke",
   "apps-permissions": "Permissions",
   "loading": "Loading",
-  "oauth-update-success": "Application updated successfully"
+  "oauth-update-success": "Application updated successfully",
+  "invalid-directory-name-tips": "The directory name cannot contain the following characters: \\ /",
+  "new-directory": "New Directory"
 }

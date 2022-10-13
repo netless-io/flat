@@ -32,6 +32,8 @@
 }
 
 .cloud-storage-container-btns {
+    display: flex;
+    align-items: center;
     margin-left: auto;
 
     & > * {
@@ -52,7 +54,86 @@
 
     & > button {
         border-radius: 5px;
-        padding: 0 2em;
+        width: 93px;
+    }
+
+    .ant-dropdown-menu {
+        border-radius: 8px;
+    }
+}
+
+.cloud-storage-container-btn-delete {
+    cursor: pointer;
+    margin-left: 16px;
+}
+
+.cloud-storage-container-navigation-box {
+    padding: 0 18px;
+}
+
+.cloud-storage-container-btn-arrow {
+    position: relative;
+    width: 15px;
+    height: 20px;
+    display: inline-block;
+    margin-left: 14px;
+
+    > span {
+        position: absolute;
+        top: 10px;
+        width: 9px;
+        height: 1px;
+        background-color: var(--grey-6);
+        display: inline-block;
+        transition: all .2s ease;
+        &:first-of-type {
+            left: 0;
+            transform: rotate(45deg);
+        }
+        &:last-of-type {
+            right: 0;
+            transform: rotate(-45deg);
+        }
+    }
+}
+
+.cloud-storage-container-dropdown-btn {
+    display: inline-flex;
+    align-items: center;
+}
+
+.cloud-storage-container-btns .ant-dropdown:hover,
+.cloud-storage-container-dropdown-btn:hover {
+    .cloud-storage-container-btn-arrow {
+        > span {
+            &:first-of-type {
+                background-color: var(--primary);
+                transform: rotate(-45deg);
+            }
+            &:last-of-type {
+                background-color: var(--primary);
+                transform: rotate(45deg);
+            }
+        }
+    }
+
+    .cloud-storage-container-btn-arrow-primary {
+         > span {
+            &:first-of-type {
+                background-color: #fff;
+                transform: rotate(-45deg);
+            }
+            &:last-of-type {
+                background-color: #fff;
+                transform: rotate(45deg);
+            }
+        }
+    }
+}
+
+.cloud-storage-container-btn-arrow-primary:extend(.cloud-storage-container-btn-arrow){
+    > span {
+        background-color: #fff;
     }
 }
 

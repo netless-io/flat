@@ -6,7 +6,7 @@ export interface ListFilesPayload {
     order: "ASC" | "DESC";
     /** Number of displays per page */
     size?: number;
-    directoryPath?: string;
+    directoryPath: string;
 }
 interface ListFilesResponse {
     totalUsage: number;
@@ -69,7 +69,6 @@ export async function listFiles(payload: ListFilesPayload): Promise<ListFilesRes
         ListFilesResponse
     >("cloud-storage/list", {
         ...payload,
-        directoryPath: "/",
     });
     return {
         totalUsage,
@@ -146,6 +145,19 @@ export interface ConvertFinishPayload {
 
 export async function convertFinish(payload: ConvertFinishPayload): Promise<{}> {
     return await postV2("cloud-storage/convert/finish", payload);
+}
+
+export interface NewDirectoryPayload {
+    parentDirectoryPath: string;
+    directoryName: string;
+}
+
+export interface NewDirectoryResult {
+    fileUUID: string;
+}
+
+export async function newDirectory(payload: NewDirectoryPayload): Promise<NewDirectoryResult> {
+    return await postV2("cloud-storage/create-directory", payload);
 }
 
 export function getWhiteboardTaskData(

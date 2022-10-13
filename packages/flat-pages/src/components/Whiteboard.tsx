@@ -135,7 +135,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     const rx = event.clientX - rect.left;
                     const ry = event.clientY - rect.top;
                     const { x, y } = room.convertToPointInWorld({ x: rx, y: ry });
-                    await onDropImage(file, x, y, room);
+                    await onDropImage(file, x, y, room, whiteboardStore.cloudStorageStore);
                 } else if (isSupportedFileExt(file)) {
                     whiteboardStore.onDrop(file);
                 }

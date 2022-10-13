@@ -8,30 +8,31 @@ import videoSVG from "./icons/video.svg";
 import wordSVG from "./icons/word.svg";
 import convertingSVG from "./icons/converting.svg";
 import convertErrorSVG from "./icons/convert-error.svg";
+import directorySVG from "./icons/directory.svg";
 
 import React, { useMemo } from "react";
 import classNames from "classnames";
 import { CloudStorageFileName } from "../types";
 import { CloudStorageFileTitleRename } from "./CloudStorageFileTitleRename";
 import { useTranslate } from "@netless/flat-i18n";
-import { FileConvertStep } from "@netless/flat-server-api";
+import { FileConvertStep, FileResourceType, ResourceType } from "@netless/flat-server-api";
+import { DirectoryInfo } from "../../../containers/CloudStorageContainer";
+import { CloudStorageNewDirectory } from "./CloudStorageNewDirectory";
+import { useHistory } from "react-router-dom";
 
 export interface CloudStorageFileTitleProps
     extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
-    /** file UUID */
     fileUUID: string;
-    /** File Name */
     fileName: string;
-    /** Cloud converting status */
     convertStatus?: FileConvertStep;
-    /** Is title clickable. Default false */
     titleClickable?: boolean;
-    /** When title is clicked */
-    onTitleClick?: (fileUUID: string) => void;
     /** UUID of file that is under renaming */
     renamingFileUUID?: string;
-    /** Rename file. Empty name for cancelling */
+    resourceType?: ResourceType;
+    parentDirectoryPath?: string;
+    onTitleClick?: (fileUUID: string, pushHistory: (path: string) => void) => void;
     onRename?: (fileUUID: string, fileName?: CloudStorageFileName) => void;
+    onNewDirectoryFile?: (directoryInfo: DirectoryInfo) => Promise<void>;
 }
 
 /**
@@ -46,12 +47,21 @@ export const CloudStorageFileTitle = /* @__PURE__ */ React.memo<CloudStorageFile
         onTitleClick,
         renamingFileUUID,
         onRename,
+        onNewDirectoryFile,
+        resourceType,
+        parentDirectoryPath,
         ...restProps
     }) {
         const t = useTranslate();
         const isConverting = convertStatus === FileConvertStep.Converting;
         const isConvertError = !isConverting && convertStatus === FileConvertStep.Failed;
         const fileIcon = useMemo(() => getFileIcon(fileName), [fileName]);
+        const history = useHistory();
+
+        const pushHistory = (path: string): void => {
+            const search = new URLSearchParams({ path }).toString();
+            history.push({ search });
+        };
 
         return (
             <span
@@ -93,9 +103,18 @@ export const CloudStorageFileTitle = /* @__PURE__ */ React.memo<CloudStorageFile
                         />
                     ) : null}
                 </span>
+                {parentDirectoryPath &&
+                    resourceType === FileResourceType.Directory &&
+                    fileUUID === "temporaryDirectory" && (
+                        <CloudStorageNewDirectory
+                            parentDirectoryPath={parentDirectoryPath}
+                            onNewDirectory={onNewDirectoryFile}
+                        />
+                    )}
                 {renamingFileUUID === fileUUID ? (
                     <CloudStorageFileTitleRename
                         fileName={fileName}
+                        fileResourceType={resourceType}
                         fileUUID={fileUUID}
                         onRename={onRename}
                     />
@@ -104,7 +123,7 @@ export const CloudStorageFileTitle = /* @__PURE__ */ React.memo<CloudStorageFile
                         className="cloud-storage-file-title-content"
                         onClick={e => {
                             e.preventDefault();
-                            onTitleClick && onTitleClick(fileUUID);
+                            onTitleClick && onTitleClick(fileUUID, pushHistory);
                         }}
                     >
                         {fileName}
@@ -159,6 +178,9 @@ function getFileIcon(fileName: string): string {
         case ".wma":
         case ".flac": {
             return audioSVG;
+        }
+        case "": {
+            return directorySVG;
         }
         default: {
             return defaultSVG;

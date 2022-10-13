@@ -1,23 +1,28 @@
 import checkSVG from "./icons/check.svg";
 import crossSVG from "./icons/cross.svg";
 
-import { Button, Input, InputRef } from "antd";
+import { Button, Input, InputRef, message } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { CloudStorageFileName } from "../types";
+import { FileResourceType, ResourceType } from "@netless/flat-server-api";
+import { checkInvalidDirectoryName } from "./utils";
+import { useTranslate } from "@netless/flat-i18n";
 
 export interface CloudStorageFileTitleRenameProps {
     fileUUID: string;
     fileName: string;
+    fileResourceType?: ResourceType;
     /** Rename file. Empty name for cancelling */
     onRename?: (fileUUID: string, fileName?: CloudStorageFileName) => void;
 }
 
 export const CloudStorageFileTitleRename =
     /* @__PURE__ */ React.memo<CloudStorageFileTitleRenameProps>(
-        function CloudStorageFileTitleRename({ fileUUID, fileName, onRename }) {
+        function CloudStorageFileTitleRename({ fileUUID, fileName, fileResourceType, onRename }) {
             // Antd docs uses any
+            const t = useTranslate();
             const inputRef = useRef<any>();
-            const [oldName, ext] = splitFileName(fileName);
+            const [oldName, ext] = splitFileName(fileName, fileResourceType);
             const [name, setText] = useState(oldName);
 
             const onCancel = onRename && (() => onRename(fileUUID));
@@ -29,7 +34,13 @@ export const CloudStorageFileTitleRename =
                         // cancel on empty and same name
                         onRename(fileUUID);
                     } else {
-                        onRename(fileUUID, { name, ext, fullName });
+                        if (fileResourceType === FileResourceType.Directory) {
+                            checkInvalidDirectoryName(name)
+                                ? message.error(t("invalid-directory-name-tips"))
+                                : onRename(fileUUID, { name, ext, fullName });
+                        } else {
+                            onRename(fileUUID, { name, ext, fullName });
+                        }
                     }
                 });
 
@@ -75,7 +86,10 @@ export const CloudStorageFileTitleRename =
     );
 
 /** split filename to name and extension */
-function splitFileName(fileName: string): [string, string] {
+function splitFileName(fileName: string, fileResourceType?: ResourceType): [string, string] {
+    if (fileResourceType === FileResourceType.Directory) {
+        return [fileName, ""];
+    }
     const dotIndex = fileName.lastIndexOf(".");
     return [fileName.substr(0, dotIndex), fileName.slice(dotIndex)];
 }

@@ -7,6 +7,7 @@ import {
     FileUUID,
     UploadID,
     errorTips,
+    DirectoryInfo,
 } from "flat-components";
 import { action, computed, makeObservable, observable, reaction, runInAction } from "mobx";
 import {
@@ -17,6 +18,7 @@ import {
     renameFile,
     getWhiteboardTaskData,
     FileResourceType,
+    newDirectory,
 } from "@netless/flat-server-api";
 import { getUploadTaskManager } from "../utils/upload-task-manager";
 import { UploadStatusType, UploadTask } from "../utils/upload-task-manager/upload-task";
@@ -24,6 +26,7 @@ import { ConvertStatusManager } from "./convert-status-manager";
 import { Scheduler } from "./scheduler";
 import { FlatI18n } from "@netless/flat-i18n";
 import { FlatServices } from "@netless/flat-services";
+import { isEqual } from "lodash-es";
 
 export type FileMenusKey = "open" | "download" | "rename" | "delete";
 
@@ -45,6 +48,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     /** In order to avoid multiple calls the fetchMoreCloudStorageData
      * when request fetchMoreCloudStorageData after files length is 0  */
     public hasMoreFile = true;
+
+    public isOpenDirectoryFile = false;
 
     // a set of taskUUIDs representing querying tasks
     private convertStatusManager = new ConvertStatusManager();
@@ -76,12 +81,14 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             fileMenus: action,
             onItemMenuClick: action,
             onItemTitleClick: action,
+            onParentDirectoryPathClick: action,
             onBatchDelete: action,
             onUpload: action,
             onUploadPanelClose: action,
             onUploadRetry: action,
             onUploadCancel: action,
             onNewFileName: action,
+            onNewEmptyDirectory: action,
         });
     }
 
@@ -103,20 +110,31 @@ export class CloudStorageStore extends CloudStorageStoreBase {
 
     /** User cloud storage files */
     public get files(): CloudFile[] {
-        return observable.array([...this.filesMap.values()]);
+        return observable.array(
+            [...this.filesMap.values()].sort((a, b) => {
+                const aIsDir = a.resourceType === "Directory";
+                const bIsDir = b.resourceType === "Directory";
+                if (aIsDir === bIsDir) {
+                    // new directory is first
+                    return b.createAt.valueOf() - a.createAt.valueOf();
+                }
+                // directory file is first
+                return aIsDir ? -1 : 1;
+            }),
+        );
     }
 
     /** Render file menus item base on fileUUID */
     public fileMenus = (file: CloudFile): FileMenusItem[] => {
-        const menus: FileMenusItem[] = [
-            { key: "open", name: FlatI18n.t("open") },
-            { key: "download", name: FlatI18n.t("download") },
-        ];
+        const menus: FileMenusItem[] = [{ key: "open", name: FlatI18n.t("open") }];
         if (
             file.meta.whiteboardConvert?.convertStep !== FileConvertStep.Failed ||
             file.meta.whiteboardProjector?.convertStep !== FileConvertStep.Failed
         ) {
             menus.push({ key: "rename", name: FlatI18n.t("rename") });
+        }
+        if (file.resourceType !== FileResourceType.Directory) {
+            menus.push({ key: "download", name: FlatI18n.t("download") });
         }
         menus.push({
             key: "delete",
@@ -126,11 +144,26 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         return menus;
     };
 
+    public onParentDirectoryPathClick = (parentDirectoryPath: string): void => {
+        this.setParentDirectoryPath(parentDirectoryPath);
+        this.isOpenDirectoryFile = true;
+        this.scheduler.invoke();
+    };
+
     /** When a file menus item is clicked */
-    public onItemMenuClick = (fileUUID: FileUUID, menuKey: React.Key): void => {
+    public onItemMenuClick = (
+        fileUUID: FileUUID,
+        menuKey: React.Key,
+        pushHistory: (path: string) => void,
+    ): void => {
+        const file = this.filesMap.get(fileUUID);
         switch (menuKey) {
             case "open": {
-                this.onItemTitleClick(fileUUID);
+                if (file && file.resourceType === FileResourceType.Directory) {
+                    this.setCurrentDirectoryPath(file.fileName);
+                    this.isOpenDirectoryFile = true;
+                }
+                this.onItemTitleClick(fileUUID, pushHistory);
                 break;
             }
             case "download": {
@@ -155,10 +188,15 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     };
 
     /** When file title click */
-    public onItemTitleClick = (fileUUID: FileUUID): void => {
+    public onItemTitleClick = (fileUUID: FileUUID, pushHistory: (path: string) => void): void => {
         const file = this.filesMap.get(fileUUID);
         if (file) {
             try {
+                if (file.resourceType === FileResourceType.Directory) {
+                    this.setCurrentDirectoryPath(file.fileName);
+                    pushHistory(this.parentDirectoryPath);
+                    this.isOpenDirectoryFile = true;
+                }
                 if (this.compact) {
                     if (
                         file.meta.whiteboardConvert?.convertStep === FileConvertStep.Failed ||
@@ -197,7 +235,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             const files = await this.pickCourseware();
             if (files && files.length > 0) {
                 this.setPanelExpand(true);
-                this.uploadTaskManager.addTasks(Array.from(files));
+                this.uploadTaskManager.addTasks(Array.from(files), this.parentDirectoryPath);
             }
         } catch (e) {
             errorTips(e);
@@ -245,6 +283,46 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         }
     };
 
+    public onNewEmptyDirectory = async (): Promise<void> => {
+        runInAction(() => {
+            this.filesMap.set("temporaryDirectory", {
+                fileName: "",
+                fileURL: "/",
+                fileUUID: "temporaryDirectory",
+                fileSize: 0,
+                createAt: new Date(),
+                resourceType: FileResourceType.Directory,
+                meta: {},
+            });
+        });
+    };
+
+    public onNewDirectoryFile = async (directoryInfo: DirectoryInfo): Promise<void> => {
+        try {
+            if (directoryInfo.directoryName === "") {
+                this.filesMap.delete("temporaryDirectory");
+                return;
+            }
+
+            const { fileUUID } = await newDirectory(directoryInfo);
+            runInAction(() => {
+                this.filesMap.delete("temporaryDirectory");
+
+                this.filesMap.set(fileUUID, {
+                    fileName: directoryInfo.directoryName,
+                    fileURL: "",
+                    fileUUID: fileUUID,
+                    fileSize: 0,
+                    createAt: new Date(),
+                    resourceType: FileResourceType.Directory,
+                    meta: {},
+                });
+            });
+        } catch (e) {
+            errorTips(e);
+        }
+    };
+
     /** When a filename is changed to a meaningful new name */
     public onNewFileName = async (
         fileUUID: FileUUID,
@@ -254,18 +332,17 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         if (file) {
             if (file.fileName === fileNameObject.fullName) {
                 return;
-            } else {
-                await renameFile({ fileUUID, newName: fileNameObject.name });
-                runInAction(() => {
-                    file.fileName = fileNameObject.fullName;
-                });
             }
+            await renameFile({ fileUUID, newName: fileNameObject.name });
+            runInAction(() => {
+                file.fileName = fileNameObject.fullName;
+            });
         }
     };
 
     public onDropFile(files: FileList): void {
         this.setPanelExpand(true);
-        this.uploadTaskManager.addTasks(Array.from(files));
+        this.uploadTaskManager.addTasks(Array.from(files), this.parentDirectoryPath);
     }
 
     public fetchMoreCloudStorageData = async (page: number): Promise<void> => {
@@ -285,6 +362,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                 const { files: cloudFiles } = await listFiles({
                     page,
                     order: "DESC",
+                    directoryPath: this.parentDirectoryPath,
                 });
 
                 runInAction(() => {
@@ -306,7 +384,9 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                             file.fileName = cloudFile.fileName;
                             file.fileSize = cloudFile.fileSize;
                             file.resourceType = cloudFile.resourceType;
-                            file.meta = cloudFile.meta;
+                            if (!isEqual(file.meta, cloudFile.meta)) {
+                                file.meta = cloudFile.meta;
+                            }
                         } else {
                             newFiles[cloudFile.fileUUID] = observable.object(cloudFile);
                         }
@@ -362,6 +442,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
             const { totalUsage, files: cloudFiles } = await listFiles({
                 page: 1,
                 order: "DESC",
+                directoryPath: this.parentDirectoryPath,
             });
 
             runInAction(() => {
@@ -382,24 +463,33 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         file.fileName = cloudFile.fileName;
                         file.fileSize = cloudFile.fileSize;
                         file.resourceType = cloudFile.resourceType;
-                        file.meta = cloudFile.meta;
+                        if (!isEqual(file.meta, cloudFile.meta)) {
+                            file.meta = cloudFile.meta;
+                        }
                     } else {
                         newFiles[cloudFile.fileUUID] = observable.object(cloudFile);
                     }
                 });
 
-                if (
-                    cloudFile.meta.whiteboardProjector?.convertStep === FileConvertStep.Done ||
-                    cloudFile.meta.whiteboardProjector?.convertStep === FileConvertStep.Failed
-                ) {
-                    this.convertStatusManager.cancelTask(cloudFile.fileUUID);
-                } else {
-                    toQueryFilesList.push(cloudFile.fileUUID);
+                if (cloudFile.meta.whiteboardProjector) {
+                    if (
+                        cloudFile.meta.whiteboardProjector.convertStep === FileConvertStep.Done ||
+                        cloudFile.meta.whiteboardProjector.convertStep === FileConvertStep.Failed
+                    ) {
+                        this.convertStatusManager.cancelTask(cloudFile.fileUUID);
+                    } else {
+                        toQueryFilesList.push(cloudFile.fileUUID);
+                    }
                 }
             }
 
             runInAction(() => {
-                this.filesMap.merge(newFiles);
+                if (this.isOpenDirectoryFile) {
+                    this.filesMap.replace(newFiles);
+                    this.isOpenDirectoryFile = false;
+                } else {
+                    this.filesMap.merge(newFiles);
+                }
             });
 
             // To query files convert status should be after filesMap is updated.
@@ -419,6 +509,9 @@ export class CloudStorageStore extends CloudStorageStoreBase {
     private async removeFiles(fileUUIDs: FileUUID[]): Promise<void> {
         try {
             const normalFiles: FileUUID[] = [];
+            fileUUIDs.forEach(fileUUID => {
+                normalFiles.push(fileUUID);
+            });
             await Promise.all([removeFiles({ uuids: normalFiles })]);
             runInAction(() => {
                 for (const fileUUID of fileUUIDs) {

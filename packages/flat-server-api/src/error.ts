@@ -33,11 +33,15 @@ export enum RequestErrorCode {
     FileSizeTooBig, // single file size too big
     FileNotFound, // file info not found
     FileExists, // file already exists
+    DirectoryNotExists, // current directory not exists
+    DirectoryAlreadyExists, // directory already exists
 
     FileIsConverted = 800000,
     FileConvertFailed, // file convert failed
     FileIsConverting, // file is converting
     FileIsConvertWaiting, // file convert is in waiting status
+    FileNotIsConvertNone, // file convertStep not ConvertStep.None
+    FileNotIsConverting, // file convertStep not ConvertStep.Converting
 
     LoginGithubSuspended = 900000, // https://docs.github.com/en/developers/apps/troubleshooting-authorization-request-errors
     LoginGithubURLMismatch,
@@ -91,11 +95,15 @@ export const RequestErrorMessage = {
     [RequestErrorCode.FileSizeTooBig]: "file-is-too-big",
     [RequestErrorCode.FileNotFound]: "file-not-found",
     [RequestErrorCode.FileExists]: "file-already-exists",
+    [RequestErrorCode.DirectoryNotExists]: "directory-not-exists",
+    [RequestErrorCode.DirectoryAlreadyExists]: "convert-already-exists",
 
     [RequestErrorCode.FileIsConverted]: "file-is-converted",
     [RequestErrorCode.FileConvertFailed]: "convert-failed",
     [RequestErrorCode.FileIsConverting]: "file-is-converting",
     [RequestErrorCode.FileIsConvertWaiting]: "convert-is-pending",
+    [RequestErrorCode.FileNotIsConvertNone]: "convert-step-not-none",
+    [RequestErrorCode.FileNotIsConverting]: "convert-step-not-converting",
 
     [RequestErrorCode.LoginGithubSuspended]: "login-github-suspended",
     [RequestErrorCode.LoginGithubURLMismatch]: "login-github-url-is-wrong",
