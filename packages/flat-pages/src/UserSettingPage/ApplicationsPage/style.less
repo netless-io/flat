@@ -2,6 +2,19 @@
     color: var(--text);
 }
 
+.applications-app-logo {
+    display: inline-block;
+    font-size: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.applications-app-name {
+    padding-left: 16px;
+}
+
 .applications-revoke-btn {
     vertical-align: text-top;
     border: 0;
@@ -32,6 +45,13 @@
         border-radius: 50%;
         overflow: hidden;
         text-align: center;
+        font-size: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 
     .application-detail-brand-info {
@@ -43,11 +63,26 @@
     }
 
     .application-detail-owner-url {
+        padding-top: 8px;
+        display: inline-flex;
+        align-items: center;
         font-size: 12px;
+
+        svg {
+            width: 18px;
+            height: 18px;
+        }
     }
 
     .application-detail-owner {
         margin-right: 16px;
+    }
+
+    .application-detail-owner,
+    .application-detail-url {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
     }
 }
 
@@ -67,9 +102,22 @@
         padding-inline: 0;
     }
     li {
+        display: flex;
+        align-items: center;
         border-bottom: 1px solid var(--grey-1);
         padding: 8px 0;
     }
+    .flat-icon {
+        width: 18px;
+        height: 18px;
+    }
+    .flat-icon-fill-color {
+        fill: var(--success);
+    }
+}
+
+.application-detail-scope-text {
+    padding-left: 8px;
 }
 
 .flat-color-scheme-dark {

@@ -11,8 +11,8 @@ import { ApplicationInfo } from "@netless/flat-server-api";
 export const ApplicationsPage = observer(function ApplicationsPage() {
     const [query, setQuery] = useSearchParams();
     const navigate = useCallback(
-        (a: ApplicationInfo) => {
-            setQuery({ q: a.oauthUUID });
+        (a: ApplicationInfo | null) => {
+            setQuery({ q: a?.oauthUUID });
         },
         [setQuery],
     );
@@ -21,7 +21,7 @@ export const ApplicationsPage = observer(function ApplicationsPage() {
     return (
         <UserSettingLayoutContainer>
             {oauthUUID ? (
-                <ApplicationDetail oauthUUID={oauthUUID} />
+                <ApplicationDetail navigate={navigate} oauthUUID={oauthUUID} />
             ) : (
                 <ApplicationsList navigate={navigate} />
             )}
