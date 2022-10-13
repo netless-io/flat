@@ -23,6 +23,7 @@ import {
     loginPhoneSendCode,
     LoginProcessResult,
 } from "@netless/flat-server-api";
+import { saveJWTToken } from "../utils/use-login-check";
 
 export const LoginPage = observer(function LoginPage() {
     const language = useLanguage();
@@ -31,6 +32,9 @@ export const LoginPage = observer(function LoginPage() {
     const windowsBtn = useContext(WindowsSystemBtnContext);
     const loginDisposer = useRef<LoginDisposer>();
 
+    const [redirectURL] = useState(() =>
+        new URLSearchParams(window.location.search).get("redirect"),
+    );
     const [roomUUID] = useState(() => sessionStorage.getItem("roomUUID"));
 
     const sp = useSafePromise();
@@ -61,8 +65,13 @@ export const LoginPage = observer(function LoginPage() {
     const onLoginResult = useCallback(
         async (authData: LoginProcessResult) => {
             globalStore.updateUserInfo(authData);
+            saveJWTToken(authData.token);
             if (NEED_BINDING_PHONE && !authData.hasPhone) {
                 setLoginResult(authData);
+                return;
+            }
+            if (redirectURL) {
+                window.location.href = redirectURL;
                 return;
             }
             if (!roomUUID) {
@@ -75,7 +84,7 @@ export const LoginPage = observer(function LoginPage() {
                 pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
             }
         },
-        [globalStore, pushHistory, roomUUID, setLoginResult],
+        [globalStore, pushHistory, redirectURL, roomUUID, setLoginResult],
     );
 
     const onBoundPhone = useCallback(() => {
