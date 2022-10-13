@@ -27,8 +27,7 @@ export function useLoginCheck(): boolean {
                 const result = await loginCheck();
                 globalStore.updateUserInfo(result);
                 globalStore.updateLastLoginCheck(Date.now());
-                const maxAge = 60 * 60 * 24 * 29; // 29 days
-                document.cookie = `flatJWTToken=${result.token}; SameSite=Lax; domain=whiteboard.agora.io; max-age=${maxAge}`;
+                saveJWTToken(result.token);
                 return process.env.FLAT_REGION === "CN" ? result.hasPhone : true;
             } catch (e) {
                 globalStore.updateLastLoginCheck(null);
@@ -57,4 +56,9 @@ export function useLoginCheck(): boolean {
     }, []);
 
     return isLogin;
+}
+
+export function saveJWTToken(token: string): void {
+    const maxAge = 60 * 60 * 24 * 29; // 29 days
+    document.cookie = `flatJWTToken=${token}; SameSite=Lax; domain=whiteboard.agora.io; max-age=${maxAge}`;
 }
