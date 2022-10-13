@@ -89,7 +89,7 @@ export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContai
             <Menu
                 items={[
                     {
-                        label: t("new-directory-file"),
+                        label: t("new-directory"),
                         key: "new-directory",
                         icon: <img src={newDirectorySVG} />,
                         onClick: store.onNewEmptyDirectory,
@@ -132,7 +132,7 @@ export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContai
                 )}
                 <Dropdown overlay={newBtnMenu} placement="bottomLeft">
                     <Button className="cloud-storage-container-dropdown-btn">
-                        new
+                        {t("new")}
                         {renderArrow()}
                     </Button>
                 </Dropdown>

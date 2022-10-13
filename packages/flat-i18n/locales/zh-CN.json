@@ -550,5 +550,7 @@
   "loading": "加载中",
   "oauth-update-success": "应用更新成功",
   "invalid-directory-name-tips": "文件名不能包含以下字符: \\\\ /",
-  "new-directory": "新建文件夹"
+  "new-directory": "新建文件夹",
+  "local-file": "本地文件",
+  "new": "新建"
 }
