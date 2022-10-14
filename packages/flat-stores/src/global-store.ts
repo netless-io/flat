@@ -108,6 +108,7 @@ export class GlobalStore {
     public logout = (): void => {
         this.userInfo = null;
         this.lastLoginCheck = null;
+        document.cookie = "flatJWTToken=; SameSite=Lax; domain=whiteboard.agora.io; max-age=0";
     };
 
     public hideRecordHintTips = (): void => {
