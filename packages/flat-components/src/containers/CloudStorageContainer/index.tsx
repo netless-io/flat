@@ -163,7 +163,7 @@ export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContai
                 {!store.compact && (
                     <div className="cloud-storage-container-head">
                         <div>
-                            <h1 className="cloud-storage-container-title">{t("my-cloud ")}</h1>
+                            <h1 className="cloud-storage-container-title">{t("my-cloud")}</h1>
                             <small
                                 className={classNames("cloud-storage-container-subtitle", {
                                     "is-hide": !store.totalUsage,
