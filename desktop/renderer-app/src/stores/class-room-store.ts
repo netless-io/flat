@@ -370,7 +370,6 @@ export class ClassRoomStore {
             await this.rtm.sendCommand({
                 type: RTMessageType.ClassMode,
                 value: this.classMode,
-                keepHistory: true,
             });
         } catch (e) {
             console.error(e);
@@ -481,7 +480,6 @@ export class ClassRoomStore {
             void this.rtm.sendCommand({
                 type: RTMessageType.DeviceState,
                 value: { userUUID, camera, mic },
-                keepHistory: true,
             });
         }
     };
@@ -517,7 +515,6 @@ export class ClassRoomStore {
             void this.rtm.sendCommand({
                 type: RTMessageType.AcceptRaiseHand,
                 value: { userUUID, accept: true },
-                keepHistory: true,
             });
         }
     };
@@ -560,7 +557,6 @@ export class ClassRoomStore {
             void this.rtm.sendCommand({
                 type: RTMessageType.CancelAllHandRaising,
                 value: true,
-                keepHistory: true,
             });
         }
     };
@@ -572,7 +568,6 @@ export class ClassRoomStore {
             void this.rtm.sendCommand({
                 type: RTMessageType.AllOffStage,
                 value: true,
-                keepHistory: true,
             });
         }
     };
@@ -593,7 +588,6 @@ export class ClassRoomStore {
             void this.rtm.sendCommand({
                 type: RTMessageType.RaiseHand,
                 value: this.users.currentUser.isRaiseHand,
-                keepHistory: true,
             });
         }
     };
@@ -607,7 +601,6 @@ export class ClassRoomStore {
             await this.rtm.sendCommand({
                 type: RTMessageType.BanText,
                 value: newBanStatus,
-                keepHistory: true,
             });
             this.updateBanStatus(newBanStatus);
             this.addMessage(RTMessageType.BanText, newBanStatus, this.userUUID);
@@ -632,7 +625,6 @@ export class ClassRoomStore {
             await this.rtm.sendCommand({
                 type: RTMessageType.Speak,
                 value: configs,
-                keepHistory: true,
             });
         } catch (e) {
             // @TODO handle error
@@ -750,7 +742,6 @@ export class ClassRoomStore {
                 await this.rtm.sendCommand({
                     type: RTMessageType.RoomStatus,
                     value: roomStatus,
-                    keepHistory: true,
                 });
             } catch (e) {
                 console.error(e);
@@ -1019,7 +1010,6 @@ export class ClassRoomStore {
                         rMode: this.classMode,
                         uStates,
                     },
-                    keepHistory: false,
                     peerId: senderId,
                     retry: 3,
                 });
@@ -1102,7 +1092,6 @@ export class ClassRoomStore {
                         camera: this.users.currentUser.camera,
                     },
                 },
-                keepHistory: false,
             });
 
             // @TODO support multiple senders

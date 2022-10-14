@@ -98,13 +98,10 @@ export class AgoraRTM extends IServiceTextChat {
 
     public async sendRoomMessage(message: string): Promise<void> {
         if (this.channel) {
-            await this.channel.sendMessage(
-                {
-                    messageType: RtmEngine.MessageType.TEXT,
-                    text: message,
-                },
-                { enableHistoricalMessaging: true },
-            );
+            await this.channel.sendMessage({
+                messageType: RtmEngine.MessageType.TEXT,
+                text: message,
+            });
             // emit to local
             if (this.roomUUID && this.userUUID) {
                 this.events.emit("room-message", {
