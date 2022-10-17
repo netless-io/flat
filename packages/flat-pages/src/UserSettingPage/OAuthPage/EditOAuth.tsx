@@ -202,7 +202,7 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ oauthUUID }) => {
                             </div>
                             <div className="edit-oauth-secret-row">
                                 <span>
-                                    {t("created-at")}: {format(new Date(), "yyyy-MM-dd hh:mm")}
+                                    {t("created-at")}: {format(new Date(), "yyyy-MM-dd HH:mm")}
                                 </span>
                             </div>
                         </div>
@@ -226,7 +226,7 @@ export const EditOAuth: React.FC<EditOAuthProps> = ({ oauthUUID }) => {
                             </div>
                             <div className="edit-oauth-secret-row">
                                 <span>
-                                    {t("created-at")}: {format(e.createdAt, "yyyy-MM-dd hh:mm")}
+                                    {t("created-at")}: {format(e.createdAt, "yyyy-MM-dd HH:mm")}
                                 </span>
                             </div>
                         </div>
