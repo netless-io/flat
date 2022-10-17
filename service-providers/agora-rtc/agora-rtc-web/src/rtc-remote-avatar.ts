@@ -82,7 +82,9 @@ export class RTCRemoteAvatar implements IServiceVideoChatAvatar {
                             try {
                                 if (shouldCamera) {
                                     if (!videoTrack.isPlaying) {
-                                        videoTrack.play(el);
+                                        videoTrack.play(el, {
+                                            mirror: true,
+                                        });
                                         // dispose this track on next track update
                                         disposer = () => videoTrack.stop();
                                     }
