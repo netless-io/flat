@@ -481,6 +481,17 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                         toQueryFilesList.push(cloudFile.fileUUID);
                     }
                 }
+
+                if (cloudFile.meta.whiteboardConvert) {
+                    if (
+                        cloudFile.meta.whiteboardConvert.convertStep === FileConvertStep.Done ||
+                        cloudFile.meta.whiteboardConvert.convertStep === FileConvertStep.Failed
+                    ) {
+                        this.convertStatusManager.cancelTask(cloudFile.fileUUID);
+                    } else {
+                        toQueryFilesList.push(cloudFile.fileUUID);
+                    }
+                }
             }
 
             runInAction(() => {

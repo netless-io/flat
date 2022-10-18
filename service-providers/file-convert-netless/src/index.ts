@@ -18,18 +18,28 @@ export class FileConvertNetless implements IServiceFileConvert {
         { taskUUID: string; taskToken: string; resourceType: FileResourceType } | undefined
     > {
         try {
-            const {
-                resourceType,
-                whiteboardProjector: { taskUUID, taskToken },
-            } = await convertStart({
+            const convertResult = await convertStart({
                 fileUUID: file.fileUUID,
             });
+            const { resourceType, whiteboardProjector, whiteboardConvert } = convertResult;
 
-            return {
-                taskUUID,
-                taskToken,
-                resourceType,
-            };
+            if (whiteboardProjector) {
+                const { taskUUID, taskToken } = whiteboardProjector;
+                return {
+                    taskUUID,
+                    taskToken,
+                    resourceType,
+                };
+            }
+
+            if (whiteboardConvert) {
+                const { taskUUID, taskToken } = whiteboardConvert;
+                return {
+                    taskUUID,
+                    taskToken,
+                    resourceType,
+                };
+            }
         } catch (e) {
             console.error(e);
         }
