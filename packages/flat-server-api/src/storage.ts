@@ -129,7 +129,11 @@ export interface ConvertStartPayload {
 
 export interface ConvertStartResult {
     resourceType: FileResourceType.WhiteboardConvert | FileResourceType.WhiteboardProjector;
-    whiteboardProjector: {
+    whiteboardProjector?: {
+        taskUUID: string;
+        taskToken: string;
+    };
+    whiteboardConvert?: {
         taskUUID: string;
         taskToken: string;
     };
