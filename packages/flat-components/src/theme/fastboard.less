@@ -1,17 +1,15 @@
-.fastboard-toolbar-panel.apps,
-.fastboard-toolbar-app-btn {
+.fastboard-toolbar-panel.apps {
     gap: 8px;
+
+    .fastboard-toolbar-app-btn-text {
+        line-height: 1.5;
+    }
+
+    .fastboard-toolbar-app-btn.dark > img {
+        filter: invert(0.875) hue-rotate(180deg);
+    }
 }
 
 .fastboard-toolbar-panel.apps {
     padding: 4px 0;
-}
-
-.fastboard-toolbar-app-btn-icon {
-    width: 40px;
-    height: 40px;
-}
-
-.fastboard-toolbar-app-btn-text {
-    line-height: 1.5;
 }
