@@ -1,44 +1,40 @@
 import "./style.less";
+
 import dragSVG from "../../../assets/image/drag.svg";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
+import { ClassroomStore } from "@netless/flat-stores";
 import { Button } from "antd";
 
-import { ClassRoomStore } from "../../../stores/class-room-store";
-import { useSafePromise } from "../../../utils/hooks/lifecycle";
-import { ipcAsyncByShareScreenTipWindow } from "../../../utils/ipc";
-import { portalWindowManager } from "../../../utils/portal-window-manager";
+import { WindowsSystemBtnContext } from "../../StoreProvider";
 
 interface ShareScreenTipProps {
-    classRoomStore: ClassRoomStore;
+    classroomStore: ClassroomStore;
 }
 
 export const ShareScreenTip = observer<ShareScreenTipProps>(function ShareScreenTip({
-    classRoomStore,
+    classroomStore,
 }) {
-    const sp = useSafePromise();
     const t = useTranslate();
+    const windows = useContext(WindowsSystemBtnContext);
     const [containerEl] = useState(() => document.createElement("div"));
 
     useEffect(() => {
-        sp(
-            portalWindowManager.createShareScreenTipPortalWindow(
+        if (windows) {
+            return windows.createShareScreenTipPortalWindow(
                 containerEl,
                 t("share-screen.tip-window-title"),
-            ),
-        ).catch(console.error);
-
-        return () => {
-            ipcAsyncByShareScreenTipWindow("force-close-window", {});
-        };
-    }, [containerEl, sp, t]);
+            );
+        }
+        return;
+    }, [containerEl, t, windows]);
 
     const stopShareScreen = useCallback(
-        () => classRoomStore.toggleShareScreen(false),
-        [classRoomStore],
+        () => classroomStore.toggleShareScreen(false),
+        [classroomStore],
     );
 
     return ReactDOM.createPortal(

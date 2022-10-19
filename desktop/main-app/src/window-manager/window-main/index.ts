@@ -32,9 +32,9 @@ export class WindowMain extends AbstractWindow<false> {
 
         this._mainWindow$.setValue(customWindow);
 
-        if (process.env.NODE_ENV === "development") {
-            WindowMain.loadExtensions(customWindow, "react-devtools");
-        }
+        // if (process.env.NODE_ENV === "development") {
+        //     WindowMain.loadExtensions(customWindow, "react-devtools");
+        // }
 
         return customWindow;
     }

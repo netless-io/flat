@@ -34,6 +34,7 @@ import { ShareScreen } from "../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
 import { withClassroomStore, WithClassroomStoreProps } from "../utils/with-classroom-store";
 import { WindowsSystemBtnContext } from "../components/StoreProvider";
+import { ShareScreenPicker } from "../components/ShareScreen/ShareScreenPicker";
 
 export type OneToOnePageProps = {};
 
@@ -67,7 +68,11 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                         )}
                         <div className="one-to-one-realtime-content">
                             <div className="one-to-one-realtime-content-container">
-                                <ShareScreen classRoomStore={classroomStore} />
+                                <ShareScreen classroomStore={classroomStore} />
+                                <ShareScreenPicker
+                                    classroomStore={classroomStore}
+                                    handleOk={() => classroomStore.toggleShareScreen(true)}
+                                />
                                 <Whiteboard
                                     classRoomStore={classroomStore}
                                     whiteboardStore={whiteboardStore}
@@ -117,7 +122,17 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                         <TopBarRightBtn
                             icon={<SVGScreenSharing active={classroomStore.isScreenSharing} />}
                             title={t("share-screen.self")}
-                            onClick={() => classroomStore.toggleShareScreen()}
+                            onClick={() => {
+                                if (window.isElectron) {
+                                    if (classroomStore.isScreenSharing) {
+                                        classroomStore.toggleShareScreen(false);
+                                    } else {
+                                        classroomStore.toggleShareScreenPicker(true);
+                                    }
+                                } else {
+                                    classroomStore.toggleShareScreen();
+                                }
+                            }}
                         />
                     )}
 

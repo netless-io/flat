@@ -21,6 +21,7 @@ import { ClassModeType, RoomStatusLoadingType } from "./constants";
 import { ChatStore } from "./chat-store";
 import {
     IServiceRecording,
+    IServiceShareScreenInfo,
     IServiceTextChat,
     IServiceVideoChat,
     IServiceVideoChatMode,
@@ -77,6 +78,12 @@ export class ClassroomStore {
     public isScreenSharing = false;
     /** is other users sharing screen */
     public isRemoteScreenSharing = false;
+    /** (electron only) */
+    public shareScreenInfo: IServiceShareScreenInfo[] = [];
+
+    public selectedScreenInfo: IServiceShareScreenInfo | null = null;
+
+    public shareScreenPickerVisible = false;
 
     public networkQuality = {
         delay: 0,
@@ -573,8 +580,27 @@ export class ClassroomStore {
         this.isRemoteScreenSharing = remote;
     };
 
+    public refreshShareScreenInfo = async (): Promise<void> => {
+        this.selectShareScreenInfo(null);
+        this.shareScreenInfo = [];
+        const shareScreenInfo = await this.rtc.shareScreen.getScreenInfo();
+        runInAction(() => {
+            this.shareScreenInfo = shareScreenInfo;
+        });
+    };
+
+    public toggleShareScreenPicker = (force = !this.shareScreenPickerVisible): void => {
+        this.shareScreenPickerVisible = force;
+    };
+
+    public selectShareScreenInfo = (info: IServiceShareScreenInfo | null): void => {
+        this.selectedScreenInfo = info;
+        this.rtc.shareScreen.setScreenInfo(info);
+    };
+
     public toggleShareScreen = (force = !this.isScreenSharing): void => {
         this.rtc.shareScreen.enable(force);
+        this.toggleShareScreenPicker(false);
     };
 
     public acceptRaiseHand = (userUUID: string): void => {
