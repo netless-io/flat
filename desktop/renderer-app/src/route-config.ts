@@ -21,6 +21,8 @@ import { AboutPage } from "./pages/UserSettingPage/AboutPage";
 import { ReplayPage } from "@netless/flat-pages/src/ReplayPage";
 import SplashPage from "./pages/SplashPage";
 import { RoomType } from "./api-middleware/flatServer/constants";
+import { ApplicationsPage } from "@netless/flat-pages/src/UserSettingPage/ApplicationsPage";
+import { OAuthPage } from "@netless/flat-pages/src/UserSettingPage/OAuthPage";
 
 export enum RouteNameType {
     SplashPage = "SplashPage",
@@ -44,6 +46,8 @@ export enum RouteNameType {
     HotKeySettingPage = "HotKeySettingPage",
     AboutPage = "AboutPage",
     DevicesTestPage = "DevicesTestPage",
+    ApplicationsPage = "ApplicationsPage",
+    OAuthPage = "OAuthPage",
 }
 
 export type ClassRouteName =
@@ -156,6 +160,16 @@ export const routeConfig = {
         title: "DevicesTestPage",
         path: "/devices-test/:roomUUID/",
         component: DevicesTestPage,
+    },
+    [RouteNameType.ApplicationsPage]: {
+        title: "ApplicationsPage",
+        path: "/installations/",
+        component: ApplicationsPage,
+    },
+    [RouteNameType.OAuthPage]: {
+        title: "OAuthPage",
+        path: "/apps/",
+        component: OAuthPage,
     },
 } as const;
 
