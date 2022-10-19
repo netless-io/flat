@@ -33,6 +33,14 @@ class UpdateService {
                 });
             };
 
+            const onCheckUpdateResult = (result: UpdateCheckResult | null): void => {
+                if (result) {
+                    updateAvailable(result.updateInfo);
+                } else {
+                    updateNotAvailable();
+                }
+            };
+
             const error = (err: Error): void => {
                 removeListeners();
                 reject(err);
@@ -48,9 +56,12 @@ class UpdateService {
                 autoUpdater.removeListener("error", error);
             };
 
-            autoUpdater.checkForUpdates().catch(err => {
-                reject(err);
-            });
+            autoUpdater
+                .checkForUpdates()
+                .then(onCheckUpdateResult)
+                .catch(err => {
+                    reject(err);
+                });
         });
     }
 

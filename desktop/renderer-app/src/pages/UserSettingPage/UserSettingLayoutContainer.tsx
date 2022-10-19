@@ -5,9 +5,10 @@ import hotkeySVG from "./icons/hotkey.svg";
 import "./UserSettingLayoutContainer.less";
 
 import React, { useContext, useEffect } from "react";
-import { routeConfig, RouteNameType } from "../../route-config";
+import { SVGApps, SVGCode } from "flat-components";
 import { useTranslate } from "@netless/flat-i18n";
 import { PageStoreContext } from "@netless/flat-pages/src/components/StoreProvider";
+import { routeConfig, RouteNameType } from "../../route-config";
 
 export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactElement => {
     const t = useTranslate();
@@ -27,6 +28,26 @@ export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactE
                     icon: (): React.ReactNode => <img src={hotkeySVG} />,
                     title: t("shortcut-settings"),
                     route: routeConfig[RouteNameType.HotKeySettingPage].path,
+                },
+                {
+                    key: routeConfig[RouteNameType.ApplicationsPage].path,
+                    icon: (active): React.ReactNode => <SVGApps active={active} />,
+                    title: t("applications"),
+                    route: routeConfig[RouteNameType.ApplicationsPage].path,
+                },
+                {
+                    key: "developer",
+                    icon: (active): React.ReactNode => <SVGCode active={active} />,
+                    title: t("developer"),
+                    route: "#",
+                    children: [
+                        {
+                            key: routeConfig[RouteNameType.OAuthPage].path,
+                            icon: () => null,
+                            title: t("oauth-apps"),
+                            route: routeConfig[RouteNameType.OAuthPage].path,
+                        },
+                    ],
                 },
                 {
                     key: routeConfig[RouteNameType.AboutPage].path,
