@@ -219,7 +219,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
         if (!this.isJoinedRoom) {
             return;
         }
-        if (!uid || this.uid === uid) {
+        if (!uid || uid === "0" || this.uid === uid) {
             return this.localAvatar;
         }
         if (this.shareScreenUID === uid) {
@@ -537,7 +537,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
                     downlinkQuality: AgoraNetworkQuality,
                 ): void => {
                     const uid: IServiceVideoChatUID = String(uid_);
-                    if (!uid || uid === this.uid) {
+                    if (uid === "0" || uid === this.uid) {
                         uplink = uplinkQuality;
                         downlink = downlinkQuality;
                         this.events.emit("network", { uplink, downlink, delay });

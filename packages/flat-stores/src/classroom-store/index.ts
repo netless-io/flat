@@ -518,7 +518,7 @@ export class ClassroomStore {
         this.toggleCloudStoragePanel(true);
         const cloudStorage = this.whiteboardStore.cloudStorageStore;
         cloudStorage.setPanelExpand(true);
-        cloudStorage.uploadTaskManager.addTasks([file]);
+        cloudStorage.uploadTaskManager.addTasks([file], cloudStorage.parentDirectoryPath);
     };
 
     public onMessageSend = async (text: string): Promise<void> => {
