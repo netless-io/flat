@@ -1,23 +1,29 @@
 import "./style.less";
 
-import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
+import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import { message } from "antd";
 import { useTranslate } from "@netless/flat-i18n";
 import { IServiceShareScreenInfo } from "@netless/flat-services";
+import { ClassroomStore } from "@netless/flat-stores";
+import { message } from "antd";
 
-import { uint8ArrayToImageURL } from "./Utils";
-import { ClassRoomStore } from "../../../../stores/class-room-store";
+const uint8ArrayToImageURL = (buffer: Uint8Array): string => {
+    return URL.createObjectURL(
+        new Blob([buffer.buffer], {
+            type: "image/png",
+        }),
+    );
+};
 
 interface ScreenListProps {
     screenInfo: IServiceShareScreenInfo[];
-    classRoomStore: ClassRoomStore;
+    classroomStore: ClassroomStore;
 }
 
 export const ScreenList = observer<ScreenListProps>(function ShareScreen({
     screenInfo,
-    classRoomStore,
+    classroomStore,
 }) {
     const [activeInfo, setActiveInfo] = useState("");
     const t = useTranslate();
@@ -31,15 +37,15 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
     const onClick = useCallback(
         (screenInfo: IServiceShareScreenInfo, activeKey: string) => {
             setActiveInfo(activeKey);
-            classRoomStore.updateSelectedScreenInfo(screenInfo);
+            classroomStore.selectShareScreenInfo(screenInfo);
         },
-        [classRoomStore],
+        [classroomStore],
     );
 
     const cancelSelected = useCallback(() => {
         setActiveInfo("");
-        classRoomStore.updateSelectedScreenInfo(null);
-    }, [classRoomStore]);
+        classroomStore.selectShareScreenInfo(null);
+    }, [classroomStore]);
 
     return (
         <div className="screen-list">

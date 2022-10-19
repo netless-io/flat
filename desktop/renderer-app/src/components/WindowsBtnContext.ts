@@ -1,6 +1,12 @@
 import { WindowsBtnContextInterface } from "@netless/flat-pages/src/components/WindowsBtnContext";
 import { WindowsSystemBtnItem } from "flat-components";
-import { ipcAsyncByMainWindow, ipcReceive, ipcReceiveRemove } from "../utils/ipc";
+import {
+    ipcAsyncByMainWindow,
+    ipcAsyncByShareScreenTipWindow,
+    ipcReceive,
+    ipcReceiveRemove,
+} from "../utils/ipc";
+import { portalWindowManager } from "../utils/portal-window-manager";
 
 export class WindowsBtnContext implements WindowsBtnContextInterface {
     public showWindowsBtn: boolean = window.node.os.platform() === "win32";
@@ -25,6 +31,14 @@ export class WindowsBtnContext implements WindowsBtnContextInterface {
 
     public openExternalBrowser = (url: string): void => {
         void window.electron.shell.openExternal(url);
+    };
+
+    public createShareScreenTipPortalWindow = (
+        div: HTMLDivElement,
+        title: string,
+    ): (() => void) => {
+        portalWindowManager.createShareScreenTipPortalWindow(div, title);
+        return () => ipcAsyncByShareScreenTipWindow("force-close-window", {});
     };
 }
 

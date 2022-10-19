@@ -1,25 +1,27 @@
 import "./style.less";
 
 import React, { useEffect, useMemo, useRef } from "react";
-import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { message } from "antd";
+import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
 import { ClassroomStore } from "@netless/flat-stores";
 
+import { ShareScreenTip } from "./ShareScreenTip";
+
 interface ShareScreenProps {
-    classRoomStore: ClassroomStore;
+    classroomStore: ClassroomStore;
 }
 
-export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ classRoomStore }) {
+export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ classroomStore }) {
     const ref = useRef<HTMLDivElement>(null);
     const t = useTranslate();
 
     useEffect(() => {
         if (ref.current) {
-            classRoomStore.rtc.shareScreen.setElement(ref.current);
+            classroomStore.rtc.shareScreen.setElement(ref.current);
         }
-    }, [classRoomStore]);
+    }, [classroomStore]);
 
     useEffect(() => {
         const onBrowserNotPermission = (error: Error): void => {
@@ -28,18 +30,29 @@ export const ShareScreen = observer<ShareScreenProps>(function ShareScreen({ cla
             }
         };
 
-        classRoomStore.rtc.shareScreen.events.on("err-enable", onBrowserNotPermission);
+        classroomStore.rtc.shareScreen.events.on("err-enable", onBrowserNotPermission);
 
         return () => {
-            classRoomStore.rtc.shareScreen.events.off("err-enable", onBrowserNotPermission);
+            classroomStore.rtc.shareScreen.events.off("err-enable", onBrowserNotPermission);
         };
-    }, [classRoomStore.rtc.shareScreen.events, t]);
+    }, [classroomStore.rtc.shareScreen.events, t]);
 
     const classNameList = useMemo(() => {
         return classNames("share-screen", {
-            active: classRoomStore.isRemoteScreenSharing,
+            active: classroomStore.isRemoteScreenSharing,
         });
-    }, [classRoomStore.isRemoteScreenSharing]);
+    }, [classroomStore.isRemoteScreenSharing]);
+
+    if (window.isElectron) {
+        return (
+            <>
+                <div ref={ref} className={classNameList} />
+                {classroomStore.isScreenSharing && (
+                    <ShareScreenTip classroomStore={classroomStore} />
+                )}
+            </>
+        );
+    }
 
     return <div ref={ref} className={classNameList} />;
 });

@@ -1,39 +1,40 @@
 import "./style.less";
 
-import { Button, Modal, Spin } from "antd";
-import classNames from "classnames";
-import { observer } from "mobx-react-lite";
 import React, { useCallback, useLayoutEffect, useState } from "react";
+import classNames from "classnames";
 import { useTranslate } from "@netless/flat-i18n";
+import { ClassroomStore } from "@netless/flat-stores";
+import { Button, Modal, Spin } from "antd";
+import { observer } from "mobx-react-lite";
 
-import { ClassRoomStore } from "../../../stores/class-room-store";
 import { ScreenList } from "./ScreenList";
 
 interface ShareScreenPickerProps {
-    classRoomStore: ClassRoomStore;
+    classroomStore: ClassroomStore;
     handleOk: () => void;
 }
 
 const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareScreen({
-    classRoomStore,
+    classroomStore,
     handleOk,
 }) {
     const t = useTranslate();
 
     useLayoutEffect(() => {
-        classRoomStore.refreshShareScreenInfo();
-    }, [classRoomStore]);
+        classroomStore.refreshShareScreenInfo();
+    }, [classroomStore]);
 
     const closeModal = useCallback(() => {
-        classRoomStore.updateShowShareScreenPicker(false);
-    }, [classRoomStore]);
+        classroomStore.toggleShareScreenPicker(false);
+    }, [classroomStore]);
 
-    const isSelected = classRoomStore.selectedScreenInfo !== null;
+    const isSelected = classroomStore.selectedScreenInfo !== null;
 
     return (
         <div>
             <Modal
                 centered
+                open
                 bodyStyle={{
                     padding: "16px 0 0 16px",
                 }}
@@ -45,19 +46,18 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
                     <ConfirmButton key={"confirm"} handleOk={handleOk} isSelected={isSelected} />,
                 ]}
                 title={t("share-screen.choose-share-content")}
-                visible={true}
                 width="784px"
                 onCancel={closeModal}
             >
                 <div
                     className={classNames("share-screen-picker", {
-                        loading: classRoomStore.shareScreenInfo.length === 0,
+                        loading: classroomStore.shareScreenInfo.length === 0,
                     })}
                 >
-                    {classRoomStore.shareScreenInfo.length > 0 ? (
+                    {classroomStore.shareScreenInfo.length > 0 ? (
                         <ScreenList
-                            classRoomStore={classRoomStore}
-                            screenInfo={classRoomStore.shareScreenInfo}
+                            classroomStore={classroomStore}
+                            screenInfo={classroomStore.shareScreenInfo}
                         />
                     ) : (
                         <Spin size="large" />
@@ -69,11 +69,11 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
 });
 
 export const ShareScreenPicker = observer<ShareScreenPickerProps>(function ShareScreen({
-    classRoomStore,
+    classroomStore: classRoomStore,
     handleOk,
 }) {
-    return classRoomStore.showShareScreenPicker ? (
-        <ShareScreenPickerModel classRoomStore={classRoomStore} handleOk={handleOk} />
+    return classRoomStore.shareScreenPickerVisible ? (
+        <ShareScreenPickerModel classroomStore={classRoomStore} handleOk={handleOk} />
     ) : null;
 });
 

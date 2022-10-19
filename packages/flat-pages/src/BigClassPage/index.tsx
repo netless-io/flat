@@ -34,6 +34,7 @@ import { ShareScreen } from "../components/ShareScreen";
 import { useLoginCheck } from "../utils/use-login-check";
 import { withClassroomStore, WithClassroomStoreProps } from "../utils/with-classroom-store";
 import { WindowsSystemBtnContext } from "../components/StoreProvider";
+import { ShareScreenPicker } from "../components/ShareScreen/ShareScreenPicker";
 
 export type BigClassPageProps = {};
 
@@ -73,7 +74,11 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                         )}
                         <div className="big-class-realtime-content">
                             <div className="big-class-realtime-content-container">
-                                <ShareScreen classRoomStore={classroomStore} />
+                                <ShareScreen classroomStore={classroomStore} />
+                                <ShareScreenPicker
+                                    classroomStore={classroomStore}
+                                    handleOk={() => classroomStore.toggleShareScreen(true)}
+                                />
                                 <Whiteboard
                                     classRoomStore={classroomStore}
                                     whiteboardStore={whiteboardStore}
@@ -123,10 +128,19 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                         <TopBarRightBtn
                             icon={<SVGScreenSharing active={classroomStore.isScreenSharing} />}
                             title={t("share-screen.self")}
-                            onClick={() => classroomStore.toggleShareScreen()}
+                            onClick={() => {
+                                if (window.isElectron) {
+                                    if (classroomStore.isScreenSharing) {
+                                        classroomStore.toggleShareScreen(false);
+                                    } else {
+                                        classroomStore.toggleShareScreenPicker(true);
+                                    }
+                                } else {
+                                    classroomStore.toggleShareScreen();
+                                }
+                            }}
                         />
                     )}
-
                     {classroomStore.isCreator && (
                         <CloudRecordBtn
                             isRecording={classroomStore.isRecording}

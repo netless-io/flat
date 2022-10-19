@@ -69,3 +69,6 @@ ipcRenderer.send("preload-loaded");
         basename: (p: string, ext?: string | undefined): string => path.basename(p, ext),
     },
 };
+
+// code in renderer can use `if (window.isElectron)` with different logic
+(window as any).isElectron = true;
