@@ -1,11 +1,8 @@
 /* eslint react/display-name: off */
-import generalSVG from "./icons/general.svg";
-import aboutSVG from "./icons/about.svg";
-import hotkeySVG from "./icons/hotkey.svg";
 import "./UserSettingLayoutContainer.less";
 
 import React, { useContext, useEffect } from "react";
-import { SVGApps, SVGCode } from "flat-components";
+import { SVGApps, SVGCircleInfoOutlined, SVGCode, SVGGeneral, SVGShortcut } from "flat-components";
 import { useTranslate } from "@netless/flat-i18n";
 import { PageStoreContext } from "@netless/flat-pages/src/components/StoreProvider";
 import { routeConfig, RouteNameType } from "../../route-config";
@@ -19,13 +16,13 @@ export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactE
             subMenu: [
                 {
                     key: routeConfig[RouteNameType.GeneralSettingPage].path,
-                    icon: (): React.ReactNode => <img src={generalSVG} />,
+                    icon: (active): React.ReactNode => <SVGGeneral active={active} />,
                     title: t("general-settings"),
                     route: routeConfig[RouteNameType.GeneralSettingPage].path,
                 },
                 {
                     key: routeConfig[RouteNameType.HotKeySettingPage].path,
-                    icon: (): React.ReactNode => <img src={hotkeySVG} />,
+                    icon: (active): React.ReactNode => <SVGShortcut active={active} />,
                     title: t("shortcut-settings"),
                     route: routeConfig[RouteNameType.HotKeySettingPage].path,
                 },
@@ -51,7 +48,7 @@ export const UserSettingLayoutContainer: React.FC = ({ children }): React.ReactE
                 },
                 {
                     key: routeConfig[RouteNameType.AboutPage].path,
-                    icon: (): React.ReactNode => <img src={aboutSVG} />,
+                    icon: (active): React.ReactNode => <SVGCircleInfoOutlined active={active} />,
                     title: t("about-us"),
                     route: routeConfig[RouteNameType.AboutPage].path,
                 },
