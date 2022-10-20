@@ -47,8 +47,8 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         this._el$ = new Val(config.element ?? null);
 
         this._sideEffect.addDisposer(
-            combine([this._active$, this._params$]).subscribe(([active, params]) => {
-                if (this._el$.value && params) {
+            combine([this._active$, this._params$, this._el$]).subscribe(([active, params, el]) => {
+                if (el && params) {
                     const uid = Number(params.uid);
                     try {
                         if (active) {
@@ -57,11 +57,11 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
                             // the `desktop` will have a black screen.
                             // this is because the SDK has `mute` the remote screen sharing stream
                             this.client.muteRemoteVideoStream(uid, false);
-                            this.client.setupRemoteVideo(uid, this._el$.value);
+                            this.client.setupRemoteVideo(uid, el);
                             this.client.setupViewContentMode(uid, 1, undefined);
                         } else {
                             this.client.destroyRender(uid, undefined);
-                            this.client.destroyRenderView(uid, undefined, this._el$.value);
+                            this.client.destroyRenderView(uid, undefined, el);
                         }
                         this.events.emit("remote-changed", active);
                     } catch (e) {
