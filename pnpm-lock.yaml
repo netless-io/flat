@@ -528,7 +528,7 @@ importers:
       '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/sync-player': ^1.0.7
-      '@netless/window-manager': 1.0.0-canary.61
+      '@netless/window-manager': 1.0.0-canary.65
       flat-components: workspace:*
       hls.js: ^1.2.1
       mobx: ^6.6.1
@@ -550,8 +550,8 @@ importers:
       side-effect-manager: 1.2.1
       uuid: 9.0.0
     devDependencies:
-      '@netless/fastboard': 1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky
-      '@netless/window-manager': 1.0.0-canary.61_white-web-sdk-esm@2.16.34
+      '@netless/fastboard': 1.0.0-canary.7_s7f7mm6e5vzzlrk2jiml6a5lbu
+      '@netless/window-manager': 1.0.0-canary.65_white-web-sdk-esm@2.16.34
       mobx: 6.6.1
       prettier: 2.7.1
       react: 17.0.2
@@ -669,7 +669,7 @@ importers:
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/white-snapshot': ^0.4.2
-      '@netless/window-manager': 1.0.0-canary.61
+      '@netless/window-manager': 1.0.0-canary.65
       prettier: ^2.7.1
       side-effect-manager: ^1.2.1
       typescript: ^4.8.3
@@ -677,13 +677,13 @@ importers:
       white-web-sdk: npm:white-web-sdk-esm@2.16.34
     dependencies:
       '@lukeed/uuid': 2.0.0
-      '@netless/fastboard': 1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky
+      '@netless/fastboard': 1.0.0-canary.7_s7f7mm6e5vzzlrk2jiml6a5lbu
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/white-snapshot': 0.4.2
-      '@netless/window-manager': 1.0.0-canary.61_white-web-sdk-esm@2.16.34
+      '@netless/window-manager': 1.0.0-canary.65_white-web-sdk-esm@2.16.34
       side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.34
@@ -3417,7 +3417,7 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky:
+  /@netless/fastboard-core/1.0.0-canary.7_s7f7mm6e5vzzlrk2jiml6a5lbu:
     resolution: {integrity: sha512-wblXojxoGw7QE+H+YkAoydm0zx7CQtp66EESx902g9e4skghP7V+RgeevrB0DdipPFHme/jolBbpSWa9i4qxww==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
@@ -3430,7 +3430,7 @@ packages:
     dependencies:
       '@lukeed/uuid': 2.0.0
       '@netless/synced-store': 2.0.7_white-web-sdk-esm@2.16.34
-      '@netless/window-manager': 1.0.0-canary.61_white-web-sdk-esm@2.16.34
+      '@netless/window-manager': 1.0.0-canary.65_white-web-sdk-esm@2.16.34
       white-web-sdk: /white-web-sdk-esm/2.16.34
 
   /@netless/fastboard-ui/1.0.0-canary.7_cdb3cxxszhadikmporkl6mi74y:
@@ -3438,10 +3438,10 @@ packages:
     peerDependencies:
       '@netless/fastboard-core': 1.0.0-canary.7
     dependencies:
-      '@netless/fastboard-core': 1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky
+      '@netless/fastboard-core': 1.0.0-canary.7_s7f7mm6e5vzzlrk2jiml6a5lbu
       tippy.js: 6.3.7
 
-  /@netless/fastboard/1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky:
+  /@netless/fastboard/1.0.0-canary.7_s7f7mm6e5vzzlrk2jiml6a5lbu:
     resolution: {integrity: sha512-1/veeLuG8/YO//pqb9LkEqMLBDKcy3j3iPS03dDB9neeZy5WxcGMjU8rbE98jW/JUb9lUpZxQlOTmIklg2MNUQ==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
@@ -3453,9 +3453,9 @@ packages:
         optional: true
     dependencies:
       '@netless/app-slide': 0.3.0-canary.13
-      '@netless/fastboard-core': 1.0.0-canary.7_occjor4zlwwx2gcceupsv4ldky
+      '@netless/fastboard-core': 1.0.0-canary.7_s7f7mm6e5vzzlrk2jiml6a5lbu
       '@netless/fastboard-ui': 1.0.0-canary.7_cdb3cxxszhadikmporkl6mi74y
-      '@netless/window-manager': 1.0.0-canary.61_white-web-sdk-esm@2.16.34
+      '@netless/window-manager': 1.0.0-canary.65_white-web-sdk-esm@2.16.34
       white-web-sdk: /white-web-sdk-esm/2.16.34
 
   /@netless/mini-svg-data-uri/0.0.1:
@@ -3532,8 +3532,8 @@ packages:
       html2canvas: 1.4.1
     dev: false
 
-  /@netless/window-manager/1.0.0-canary.61_white-web-sdk-esm@2.16.34:
-    resolution: {integrity: sha512-37fwXPD3QjUj4DimOsVOpTr8/proELXmHexQbj5vdxquLLtUyhEth091z5vPEl4EkO7jOuPtuwm38Wak1QCBYw==}
+  /@netless/window-manager/1.0.0-canary.65_white-web-sdk-esm@2.16.34:
+    resolution: {integrity: sha512-neqTeDIMV0w9fV+VikiKaY1q9lAW4WADTJVAMmV7fdmIDSZMLzQMqGeICirwcEAN1R1Hy3oHui74fAyfMFikpw==}
     peerDependencies:
       white-web-sdk: ^2.16.0
     peerDependenciesMeta:
@@ -3833,7 +3833,7 @@ packages:
       '@storybook/components': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/core-events': 6.3.13
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      core-js: 3.24.1
+      core-js: 3.25.3
       global: 4.4.0
       memoizerific: 1.11.3
       react: 17.0.2
@@ -3862,7 +3862,7 @@ packages:
       '@storybook/components': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/node-logger': 6.3.13
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      core-js: 3.24.1
+      core-js: 3.25.3
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       ts-dedent: 2.2.0
@@ -3937,7 +3937,7 @@ packages:
       acorn: 7.4.1
       acorn-jsx: 5.3.2_acorn@7.4.1
       acorn-walk: 7.2.0
-      core-js: 3.24.1
+      core-js: 3.25.3
       doctrine: 3.0.0
       escodegen: 2.0.0
       fast-deep-equal: 3.1.3
@@ -4111,7 +4111,7 @@ packages:
       '@storybook/client-api': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/components': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      core-js: 3.24.1
+      core-js: 3.25.3
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       regenerator-runtime: 0.13.9
@@ -4159,7 +4159,7 @@ packages:
       '@storybook/core-events': 6.3.13
       '@storybook/router': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
-      core-js: 3.24.1
+      core-js: 3.25.3
       global: 4.4.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -4181,7 +4181,7 @@ packages:
       '@storybook/semver': 7.3.2
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@types/reach__router': 1.3.10
-      core-js: 3.24.1
+      core-js: 3.25.3
       fast-deep-equal: 3.1.3
       global: 4.4.0
       lodash: 4.17.21
@@ -4248,7 +4248,7 @@ packages:
       babel-plugin-macros: 2.8.0
       babel-plugin-polyfill-corejs3: 0.1.7_@babel+core@7.19.1
       case-sensitive-paths-webpack-plugin: 2.4.0
-      core-js: 3.24.1
+      core-js: 3.25.3
       css-loader: 3.6.0_webpack@4.46.0
       dotenv-webpack: 1.8.0_webpack@4.46.0
       file-loader: 6.2.0_webpack@4.46.0
@@ -4374,7 +4374,7 @@ packages:
       '@storybook/channels': 6.3.13
       '@storybook/client-logger': 6.3.13
       '@storybook/core-events': 6.3.13
-      core-js: 3.24.1
+      core-js: 3.25.3
       global: 4.4.0
       qs: 6.10.3
       telejson: 5.3.3
@@ -4383,7 +4383,7 @@ packages:
   /@storybook/channels/6.3.13:
     resolution: {integrity: sha512-LQEJ9tox/RIRV4mOMPniesfPdWGOU3YI27+MY7NGnhrG58np9h9Sp2dJTpH5X7jmZT0zK5/XpwlbKmz+CeFiGQ==}
     dependencies:
-      core-js: 3.24.1
+      core-js: 3.25.3
       ts-dedent: 2.2.0
       util-deprecate: 1.0.2
     dev: true
@@ -4419,7 +4419,7 @@ packages:
   /@storybook/client-logger/6.3.13:
     resolution: {integrity: sha512-4cPsx6V2UsK3KODYHp/k7FMG3HIIgkGh2v3yrpHFoZqYSvFzjoToapc11jYw91maZ4Prj0Agl6GccDxzcsBecQ==}
     dependencies:
-      core-js: 3.24.1
+      core-js: 3.25.3
       global: 4.4.0
     dev: true
 
@@ -4437,7 +4437,7 @@ packages:
       '@types/overlayscrollbars': 1.12.1
       '@types/react-syntax-highlighter': 11.0.5
       color-convert: 2.0.1
-      core-js: 3.24.1
+      core-js: 3.25.3
       fast-deep-equal: 3.1.3
       global: 4.4.0
       lodash: 4.17.21
@@ -4481,7 +4481,7 @@ packages:
       '@storybook/ui': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       airbnb-js-shims: 2.2.1
       ansi-to-html: 0.6.15
-      core-js: 3.24.1
+      core-js: 3.25.3
       global: 4.4.0
       lodash: 4.17.21
       qs: 6.10.3
@@ -4518,7 +4518,7 @@ packages:
       '@storybook/ui': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       airbnb-js-shims: 2.2.1
       ansi-to-html: 0.6.15
-      core-js: 3.24.1
+      core-js: 3.25.3
       global: 4.4.0
       lodash: 4.17.21
       qs: 6.10.3
@@ -4555,7 +4555,7 @@ packages:
       '@storybook/ui': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       airbnb-js-shims: 2.2.1
       ansi-to-html: 0.6.15
-      core-js: 3.24.1
+      core-js: 3.25.3
       global: 4.4.0
       lodash: 4.17.21
       qs: 6.10.3
@@ -4610,7 +4610,7 @@ packages:
       babel-plugin-macros: 3.1.0
       babel-plugin-polyfill-corejs3: 0.1.7_@babel+core@7.19.1
       chalk: 4.1.2
-      core-js: 3.24.1
+      core-js: 3.25.3
       express: 4.18.1
       file-system-cache: 1.0.5
       find-up: 5.0.0
@@ -4640,7 +4640,7 @@ packages:
   /@storybook/core-events/6.3.13:
     resolution: {integrity: sha512-0uuyrlIn3nOlJMcM+rJtZs+eF/7LUzDxsgcxESdzqCl9WWHb7+ERmEaxOryQZjdSnRbm1mxhTw4RbWbwqBuckg==}
     dependencies:
-      core-js: 3.24.1
+      core-js: 3.25.3
     dev: true
 
   /@storybook/core-server/6.3.13_yujmf65sxr3x7rj4e4f3t5hkiu:
@@ -4679,7 +4679,7 @@ packages:
       cli-table3: 0.6.2
       commander: 6.2.1
       compression: 1.7.4
-      core-js: 3.24.1
+      core-js: 3.25.3
       cpy: 8.1.2
       detect-port: 1.3.0
       express: 4.18.1
@@ -4784,7 +4784,7 @@ packages:
       '@babel/types': 7.19.0
       '@mdx-js/mdx': 1.6.22
       '@storybook/csf': 0.0.1
-      core-js: 3.24.1
+      core-js: 3.25.3
       fs-extra: 9.1.0
       js-string-escape: 1.0.1
       lodash: 4.17.21
@@ -4825,7 +4825,7 @@ packages:
       babel-loader: 8.2.5_7k5t74zmen3ocxyd32avkcyrwe
       case-sensitive-paths-webpack-plugin: 2.4.0
       chalk: 4.1.2
-      core-js: 3.24.1
+      core-js: 3.25.3
       css-loader: 3.6.0_webpack@4.46.0
       dotenv-webpack: 1.8.0_webpack@4.46.0
       express: 4.18.1
@@ -4934,7 +4934,7 @@ packages:
   /@storybook/postinstall/6.3.13:
     resolution: {integrity: sha512-pxMjazJ43bkb0YmorZH+RmhHuhizZPb47GKQc7tODei+/wg0vLrTo19Kj1lBhvptnQGY/EQhVKlc/6Mv6xXeWw==}
     dependencies:
-      core-js: 3.24.1
+      core-js: 3.25.3
     dev: true
 
   /@storybook/preset-create-react-app/3.2.0_ardho7jzmhztylvnoycv426mmm:
@@ -5062,7 +5062,7 @@ packages:
       '@reach/router': 1.3.4_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/client-logger': 6.3.13
       '@types/reach__router': 1.3.10
-      core-js: 3.24.1
+      core-js: 3.25.3
       fast-deep-equal: 3.1.3
       global: 4.4.0
       lodash: 4.17.21
@@ -5078,7 +5078,7 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      core-js: 3.24.1
+      core-js: 3.25.3
       find-up: 4.1.0
     dev: true
 
@@ -5091,7 +5091,7 @@ packages:
       '@storybook/addons': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/client-logger': 6.3.13
       '@storybook/csf': 0.0.1
-      core-js: 3.24.1
+      core-js: 3.25.3
       estraverse: 5.3.0
       global: 4.4.0
       loader-utils: 2.0.2
@@ -5142,7 +5142,7 @@ packages:
       '@storybook/theming': 6.3.13_sfoxds7t5ydpegc3knd667wn6m
       '@types/markdown-to-jsx': 6.11.3
       copy-to-clipboard: 3.3.1
-      core-js: 3.24.1
+      core-js: 3.25.3
       core-js-pure: 3.22.4
       downshift: 6.1.7_react@17.0.2
       emotion-theming: 10.3.0_gfrer23gq2rp2t523t6qbxrx6m
@@ -5436,7 +5436,7 @@ packages:
   /@types/node-fetch/2.6.1:
     resolution: {integrity: sha512-oMqjURCaxoSIsHSr1E47QHzbmzNR5rK8McHuNb11BOM9cHcIK3Avy0s/b2JlXHoQGTYS3NsvWzV1M0iK7l0wbA==}
     dependencies:
-      '@types/node': 14.18.31
+      '@types/node': 18.7.23
       form-data: 3.0.1
     dev: true
 
@@ -13346,7 +13346,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 14.18.31
+      '@types/node': 18.7.23
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -13641,7 +13641,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.19.0
       app-root-dir: 1.0.2
-      core-js: 3.24.1
+      core-js: 3.25.3
       dotenv: 8.6.0
       dotenv-expand: 5.1.0
     dev: true
@@ -14343,7 +14343,7 @@ packages:
       prop-types:
         optional: true
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       prop-types: 15.8.1
       react: 17.0.2
       tiny-warning: 1.0.3
@@ -16325,7 +16325,7 @@ packages:
       react: '>=16.9.0 || ^17'
       react-dom: '>=16.9.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       classnames: 2.3.1
       dom-align: 1.12.3
       lodash: 4.17.21
@@ -16539,7 +16539,7 @@ packages:
       react: '>=16.9.0 || ^17'
       react-dom: '>=16.9.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.19.0
       classnames: 2.3.1
       rc-resize-observer: 1.2.0_sfoxds7t5ydpegc3knd667wn6m
       rc-util: 5.23.0_sfoxds7t5ydpegc3knd667wn6m
@@ -16820,7 +16820,7 @@ packages:
       react: '>=16.9.0 || ^17'
       react-dom: '>=16.9.0 || ^17'
     dependencies:
-      '@babel/runtime': 7.17.9
+      '@babel/runtime': 7.19.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-is: 16.13.1
