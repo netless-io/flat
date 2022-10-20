@@ -27,7 +27,7 @@ export default defineConfig((): UserConfig => {
         reactPlugin,
         dotenv(autoChooseConfig()),
         reactVirtualized(),
-        electron(),
+        // electron(),
         copy({
             targets: [
                 /**

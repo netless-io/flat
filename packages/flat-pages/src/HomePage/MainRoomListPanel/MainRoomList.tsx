@@ -259,7 +259,11 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
 
     function replayRoom(config: { roomUUID: string; ownerUUID: string; roomType: RoomType }): void {
         const { roomUUID, ownerUUID, roomType } = config;
-        window.open(`/replay/${roomType}/${roomUUID}/${ownerUUID}/`, "_blank");
+        if (window.isElectron) {
+            pushHistory(RouteNameType.ReplayPage, { roomType, roomUUID, ownerUUID });
+        } else {
+            window.open(`/replay/${roomType}/${roomUUID}/${ownerUUID}/`, "_blank");
+        }
     }
 
     function hideCancelModal(): void {
