@@ -3,11 +3,11 @@ import "./ReplayPage.less";
 
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { RouteComponentProps, useHistory } from "react-router-dom";
 
 import { RoomType } from "@netless/flat-server-api";
-import { LoadingPage } from "flat-components";
+import { LoadingPage, TopBar } from "flat-components";
 
 import ChatPanelReplay from "../components/ChatPanelReplay";
 import RealtimePanel from "../components/RealtimePanel";
@@ -16,6 +16,8 @@ import { useLoginCheck } from "../utils/use-login-check";
 import { ReplayList } from "./ReplayList";
 import { ReplayVideo } from "./ReplayVideo";
 import { ReplayWhiteboard } from "./ReplayWhiteboard";
+import ExitReplayConfirm from "../components/ExitReplayConfirm";
+import { WindowsSystemBtnContext } from "../components/StoreProvider";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;
@@ -26,11 +28,19 @@ export type ReplayPageProps = RouteComponentProps<{
 export const ReplayPage = observer<ReplayPageProps>(function ReplayPage({ match }) {
     useLoginCheck();
 
+    const history = useHistory();
     const classroomReplayStore = useClassroomReplayStore(match.params);
+    const [showExitReplayModal, setShowExitReplayModal] = useState(false);
+
+    const windowsBtn = useContext(WindowsSystemBtnContext);
 
     if (!classroomReplayStore) {
         return <LoadingPage />;
     }
+
+    const exitConfirm = (): void => {
+        history.goBack();
+    };
 
     const isSmallClass = classroomReplayStore.roomType === RoomType.SmallClass;
 
@@ -56,6 +66,13 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage({ match 
     return (
         <div className="replay-container">
             {isSmallClass && ReplayVideos}
+            {windowsBtn && (
+                <TopBar
+                    showWindowsSystemBtn={windowsBtn.showWindowsBtn}
+                    onClickWindowsSystemBtn={windowsBtn.onClickWindowsSystemBtn}
+                    onDoubleClick={windowsBtn.clickWindowMaximize}
+                />
+            )}
             <div className="replay-content">
                 <div className="replay-left">
                     <ReplayWhiteboard classroomReplayStore={classroomReplayStore} />
@@ -75,6 +92,12 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage({ match 
                     videoSlot={!isSmallClass && ReplayVideos}
                 />
             </div>
+            <ExitReplayConfirm
+                visible={showExitReplayModal}
+                onCancel={() => setShowExitReplayModal(false)}
+                onConfirm={exitConfirm}
+                onSendWindowWillClose={() => setShowExitReplayModal(true)}
+            />
         </div>
     );
 });

@@ -29,6 +29,7 @@ export const MainPageLayoutWrapper = observer(function MainPageLayoutWrap({ chil
             routeConfig.BigClassPage,
             routeConfig.SmallClassPage,
             routeConfig.OneToOnePage,
+            routeConfig.ReplayPage,
         ].some(({ path }) => {
             return !!matchPath(location.pathname, {
                 path,
