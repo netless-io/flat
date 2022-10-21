@@ -156,13 +156,8 @@ export class CloudStorageStore extends CloudStorageStoreBase {
         menuKey: React.Key,
         pushHistory: (path: string) => void,
     ): void => {
-        const file = this.filesMap.get(fileUUID);
         switch (menuKey) {
             case "open": {
-                if (file && file.resourceType === FileResourceType.Directory) {
-                    this.setCurrentDirectoryPath(file.fileName);
-                    this.isOpenDirectoryFile = true;
-                }
                 this.onItemTitleClick(fileUUID, pushHistory);
                 break;
             }
