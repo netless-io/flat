@@ -73,12 +73,15 @@ export class StaticDocsViewer implements IServiceFilePreview {
         };
         const bodyRect$ = new ReadonlyVal(getBodyRect(), {
             beforeSubscribe: setValue => {
-                setValue(getBodyRect());
-                const observer = new ResizeObserver(() => {
+                // ResizeObserver cannot observer DOM in another window,
+                // so we measure the size of container at 60FPS.
+                let timer = 0;
+                function update(): void {
+                    timer = requestAnimationFrame(update);
                     setValue(getBodyRect());
-                });
-                observer.observe($body);
-                return () => observer.disconnect();
+                }
+                update();
+                return () => cancelAnimationFrame(timer);
             },
             compare: isSameRect,
         });
