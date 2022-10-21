@@ -200,13 +200,15 @@ export class ClassroomReplayStore {
             {},
         );
         const refreshOnStageUserUUIDs = (): void => {
-            const onStageUserUUIDs = [];
-            for (const key in onStageUsersStorage.state) {
-                if (onStageUsersStorage.state[key]) {
-                    onStageUserUUIDs.push(key);
+            runInAction(() => {
+                const onStageUserUUIDs = [];
+                for (const key in onStageUsersStorage.state) {
+                    if (onStageUsersStorage.state[key]) {
+                        onStageUserUUIDs.push(key);
+                    }
                 }
-            }
-            this.onStageUserUUIDs.replace(onStageUserUUIDs);
+                this.onStageUserUUIDs.replace(onStageUserUUIDs);
+            });
         };
         this.sideEffect.push(
             onStageUsersStorage.on("stateChanged", refreshOnStageUserUUIDs),
