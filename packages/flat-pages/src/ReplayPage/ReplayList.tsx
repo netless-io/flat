@@ -47,7 +47,7 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
                     className="replay-progress"
                     max={currentRecording.endTime}
                     min={currentRecording.beginTime}
-                    tipFormatter={time => time && format(time, "Y-MM-dd hh:mm:ss.SS")}
+                    tooltip={{ formatter: time => time && format(time, "Y-MM-dd hh:mm:ss.SS") }}
                     value={classroomReplayStore.currentTimestamp}
                     onChange={classroomReplayStore.seek}
                 />
