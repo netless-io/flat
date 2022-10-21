@@ -74,6 +74,10 @@ export class IPCStore {
                     maximizable: true,
                 });
 
+                this.ipcAsyncByMainWindow("intercept-native-window-close", {
+                    intercept: true,
+                });
+
                 this.ipcAsyncByMainWindow("set-aspect-ratio", {
                     aspectRatio: 16 / 9,
                 });
