@@ -119,7 +119,10 @@ export interface RemoveFilesPayload {
 
 export async function removeFiles(payload: RemoveFilesPayload): Promise<void> {
     if (payload.uuids.length > 0) {
-        await postV2("cloud-storage/delete", payload);
+        for (let i = 0; i < payload.uuids.length; i += 50) {
+            const slice = payload.uuids.slice(i, i + 50);
+            await postV2("cloud-storage/delete", { uuids: slice });
+        }
     }
 }
 
