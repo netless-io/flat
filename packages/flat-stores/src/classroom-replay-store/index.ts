@@ -121,6 +121,7 @@ export class ClassroomReplayStore {
     }
 
     public async destroy(): Promise<void> {
+        this.syncPlayer?.pause();
         this.sideEffect.flushAll();
         this.fastboard?.destroy();
     }
@@ -293,6 +294,7 @@ export class ClassroomReplayStore {
 
     public updateUserVideos(userVideos: Map<string, HTMLVideoElement>, player: AtomPlayer): void {
         this.userVideos.replace(userVideos);
+        this.syncPlayer?.pause();
         this.syncPlayer = player;
     }
 
