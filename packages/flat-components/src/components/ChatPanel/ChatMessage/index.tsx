@@ -77,23 +77,27 @@ export const ChatMessage = /* @__PURE__ */ observer<ChatMessageProps>(function C
     if (userUUID === message.senderID) {
         return (
             <div className="chat-message-line is-reverse">
-                <div className="chat-message-bubble is-self">
-                    <pre>{message.text}</pre>
-                </div>
-                <div className="chat-message-user">
-                    <time
-                        className="chat-message-user-time"
-                        dateTime={time.toISOString()}
-                        title={time.toLocaleString()}
-                    >
-                        {finalTimeString}
-                    </time>
-                    <span className="chat-message-user-name">
-                        {messageUser?.name || message.senderID}
-                    </span>
+                <div className="chat-message-avatar">
                     <span className="chat-message-user-avatar">
                         <img alt="[avatar]" src={messageUser?.avatar} />
                     </span>
+                </div>
+                <div className="chat-message-user-bubble">
+                    <div className="chat-message-user">
+                        <span className="chat-message-user-name">
+                            {messageUser?.name || message.senderID}
+                        </span>
+                        <time
+                            className="chat-message-user-time"
+                            dateTime={time.toISOString()}
+                            title={time.toLocaleString()}
+                        >
+                            {finalTimeString}
+                        </time>
+                    </div>
+                    <div className="chat-message-bubble is-self">
+                        <pre>{message.text}</pre>
+                    </div>
                 </div>
             </div>
         );
@@ -101,23 +105,27 @@ export const ChatMessage = /* @__PURE__ */ observer<ChatMessageProps>(function C
 
     return (
         <div className="chat-message-line">
-            <div className="chat-message-bubble">
-                <pre>{message.text}</pre>
-            </div>
-            <div className="chat-message-user">
+            <div className="chat-message-avatar">
                 <span className="chat-message-user-avatar">
                     <img alt="[avatar]" src={messageUser?.avatar} />
                 </span>
-                <span className="chat-message-user-name">
-                    {messageUser?.name || message.senderID}
-                </span>
-                <time
-                    className="chat-message-user-time"
-                    dateTime={time.toISOString()}
-                    title={time.toLocaleString()}
-                >
-                    {finalTimeString}
-                </time>
+            </div>
+            <div className="chat-message-user-bubble">
+                <div className="chat-message-user">
+                    <span className="chat-message-user-name">
+                        {messageUser?.name || message.senderID}
+                    </span>
+                    <time
+                        className="chat-message-user-time"
+                        dateTime={time.toISOString()}
+                        title={time.toLocaleString()}
+                    >
+                        {finalTimeString}
+                    </time>
+                </div>
+                <div className="chat-message-bubble">
+                    <pre>{message.text}</pre>
+                </div>
             </div>
         </div>
     );
