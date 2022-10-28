@@ -69,7 +69,6 @@ export function makeVideoPlayer(url: string): HTMLVideoElement {
     const $source = document.createElement("source");
     $source.src = url;
     $video.appendChild($source);
-    document.body.appendChild($video); // XXX: videojs warn about detached video element
 
     if (M3U8_EXT.test(url)) {
         if (Hls.isSupported()) {
