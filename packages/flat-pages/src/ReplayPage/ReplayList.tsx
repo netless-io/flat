@@ -107,7 +107,7 @@ function renderTime(
     let string = t("record-nth", { nth: i + 1 });
     if (record) {
         const { beginTime, endTime } = record;
-        string += " (" + format(beginTime, "hh:mm:ss") + " ~ " + format(endTime, "hh:mm:ss") + ")";
+        string += " (" + format(beginTime, "HH:mm:ss") + " ~ " + format(endTime, "HH:mm:ss") + ")";
     }
     return string;
 }
