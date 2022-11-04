@@ -1,8 +1,8 @@
 import "./BigClassPage.less";
 
-import { message } from "antd";
+// import { message } from "antd";
 import {
-    CloudRecordBtn,
+    // CloudRecordBtn,
     Timer,
     NetworkStatus,
     RoomInfo,
@@ -141,7 +141,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                             }}
                         />
                     )}
-                    {classroomStore.isCreator && (
+                    {/* classroomStore.isCreator && (
                         <CloudRecordBtn
                             isRecording={classroomStore.isRecording}
                             loading={classroomStore.isRecordingLoading}
@@ -153,7 +153,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                                 });
                             }}
                         />
-                    )}
+                    ) */}
                     {/* TODO: open cloud-storage sub window */}
                     <CloudStorageButton classroom={classroomStore} />
                     <InviteButton roomInfo={classroomStore.roomInfo} />

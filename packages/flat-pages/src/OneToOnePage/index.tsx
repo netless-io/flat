@@ -3,7 +3,7 @@ import "./OneToOnePage.less";
 import React, { useContext, useState } from "react";
 import { useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
-import { message } from "antd";
+// import { message } from "antd";
 import {
     NetworkStatus,
     RoomInfo,
@@ -11,7 +11,7 @@ import {
     TopBarRightBtn,
     TopBarDivider,
     Timer,
-    CloudRecordBtn,
+    // CloudRecordBtn,
     SVGScreenSharing,
     SVGExit,
     SVGMenuFold,
@@ -135,8 +135,7 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                             }}
                         />
                     )}
-
-                    {classroomStore.isCreator && (
+                    {/* classroomStore.isCreator && (
                         <CloudRecordBtn
                             isRecording={classroomStore.isRecording}
                             loading={classroomStore.isRecordingLoading}
@@ -148,7 +147,7 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                                 });
                             }}
                         />
-                    )}
+                    ) */}
                     {/* TODO: open cloud-storage sub window */}
                     <CloudStorageButton classroom={classroomStore} />
                     <InviteButton roomInfo={classroomStore.roomInfo} />

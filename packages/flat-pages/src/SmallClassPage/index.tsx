@@ -1,7 +1,7 @@
 import "./SmallClassPage.less";
 
 import React, { useContext, useEffect, useState } from "react";
-import { message } from "antd";
+// import { message } from "antd";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
 import {
@@ -10,7 +10,7 @@ import {
     TopBar,
     TopBarDivider,
     Timer,
-    CloudRecordBtn,
+    // CloudRecordBtn,
     TopBarRightBtn,
     SVGScreenSharing,
     SVGExit,
@@ -201,8 +201,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                             }}
                         />
                     )}
-
-                    {classroomStore.isCreator && (
+                    {/* classroomStore.isCreator && (
                         <CloudRecordBtn
                             isRecording={classroomStore.isRecording}
                             loading={classroomStore.isRecordingLoading}
@@ -214,7 +213,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                                 });
                             }}
                         />
-                    )}
+                    ) */}
                     <CloudStorageButton classroom={classroomStore} />
                     <InviteButton roomInfo={classroomStore.roomInfo} />
                     {!windowsBtn?.showWindowsBtn && (

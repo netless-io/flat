@@ -202,9 +202,8 @@ export class AgoraCloudRecording extends IServiceRecording {
 }
 
 /**
- * We always use "individual" mode in Flat.
- *
- * @see {@link https://docs.agora.io/en/cloud-recording/cloud_recording_manage_files?platform=RESTful#individual-recording}
+ * @see {@link https://docs.agora.io/en/cloud-recording/reference/rest-api/rest}
+ * @see {@link https://docs.agora.io/cn/cloud-recording/cloud_recording_api_rest}
  */
 export type AgoraCloudRecordingMode = "individual" | "mix";
 
