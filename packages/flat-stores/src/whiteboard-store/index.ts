@@ -23,7 +23,8 @@ import { SideEffectManager } from "side-effect-manager";
 import { preferencesStore } from "../preferences-store";
 
 export class WhiteboardStore {
-    private sideEffect = new SideEffectManager();
+    public readonly sideEffect = new SideEffectManager();
+
     public whiteboard: IServiceWhiteboard;
     public fastboardAPP: FastboardApp<ClassroomReplayEventData> | null = null;
     public room: Room | null = null;
@@ -34,13 +35,9 @@ export class WhiteboardStore {
     public isShowPreviewPanel = false;
     public isFileOpen = false;
     public isKicked = false;
-    public isWindowMaximization = false;
     public isRightSideClose = false;
     public currentSceneIndex = 0;
     public scenesCount = 0;
-    public smallClassRatio = 8.3 / 16;
-    public otherClassRatio = 10.46 / 16;
-    public smallClassAvatarWrapMaxWidth = 0;
 
     /** is room Creator */
     public readonly isCreator: boolean;
@@ -118,20 +115,8 @@ export class WhiteboardStore {
         this.whiteboard.setAllowDrawing(isWritable);
     };
 
-    public updateWindowMaximization = (isMaximization: boolean): void => {
-        this.isWindowMaximization = isMaximization;
-    };
-
-    public updateSmallClassAvatarWrapMaxWidth = (smallClassAvatarWrapMaxWidth: number): void => {
-        this.smallClassAvatarWrapMaxWidth = smallClassAvatarWrapMaxWidth;
-    };
-
     public getWhiteboardRatio = (): number => {
-        // the Ratio of whiteboard compute method is height / width.
-        if (this.getRoomType() === RoomType.SmallClass) {
-            return this.smallClassRatio;
-        }
-        return this.otherClassRatio;
+        return 3 / 4;
     };
 
     public setFileOpen = (open: boolean): void => {
@@ -172,6 +157,7 @@ export class WhiteboardStore {
             classroomType: this.getRoomType(),
             options: {
                 strokeTail: preferencesStore.strokeTail,
+                ratio: this.getWhiteboardRatio(),
             },
         });
 

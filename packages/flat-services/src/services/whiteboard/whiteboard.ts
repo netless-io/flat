@@ -11,6 +11,10 @@ export interface IServiceWhiteboardOptions {
      * true = render stroke tail
      */
     strokeTail?: boolean;
+    /**
+     * whiteboard ratio, should be the same at all platforms
+     */
+    ratio?: number;
 }
 
 export interface IServiceWhiteboardJoinRoomConfig extends IService {

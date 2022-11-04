@@ -1,4 +1,3 @@
-import "video.js/dist/video-js.min.css";
 import "./ReplayPage.less";
 
 import classNames from "classnames";
@@ -9,15 +8,13 @@ import { RouteComponentProps, useHistory } from "react-router-dom";
 import { RoomType } from "@netless/flat-server-api";
 import { LoadingPage, TopBar } from "flat-components";
 
-import ChatPanelReplay from "../components/ChatPanelReplay";
-import RealtimePanel from "../components/RealtimePanel";
+import ExitReplayConfirm from "../components/ExitReplayConfirm";
+import { WindowsSystemBtnContext } from "../components/StoreProvider";
 import { useClassroomReplayStore } from "../utils/use-classroom-replay-store";
 import { useLoginCheck } from "../utils/use-login-check";
 import { ReplayList } from "./ReplayList";
 import { ReplayVideo } from "./ReplayVideo";
 import { ReplayWhiteboard } from "./ReplayWhiteboard";
-import ExitReplayConfirm from "../components/ExitReplayConfirm";
-import { WindowsSystemBtnContext } from "../components/StoreProvider";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;
@@ -42,30 +39,12 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage({ match 
         history.goBack();
     };
 
-    const isSmallClass = classroomReplayStore.roomType === RoomType.SmallClass;
-
-    const ReplayVideos = (
-        <div className={classNames("replay-videos", { "is-horizontal": isSmallClass })}>
-            <ReplayVideo
-                classroomReplayStore={classroomReplayStore}
-                small={isSmallClass}
-                user={classroomReplayStore.users.creator}
-            />
-            {classroomReplayStore.onStageUserUUIDs.map(uuid => (
-                <ReplayVideo
-                    key={uuid}
-                    classroomReplayStore={classroomReplayStore}
-                    small={isSmallClass}
-                    user={classroomReplayStore.users.cachedUsers.get(uuid)}
-                    video={classroomReplayStore.userVideos.get(uuid)}
-                />
-            ))}
-        </div>
-    );
+    const onStageUsersLength = classroomReplayStore.currentRecording
+        ? classroomReplayStore.onStageUsers.length + 1
+        : 0;
 
     return (
         <div className="replay-container">
-            {isSmallClass && ReplayVideos}
             {windowsBtn && (
                 <TopBar
                     showWindowsSystemBtn={windowsBtn.showWindowsBtn}
@@ -73,24 +52,28 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage({ match 
                     onDoubleClick={windowsBtn.clickWindowMaximize}
                 />
             )}
-            <div className="replay-content">
-                <div className="replay-left">
-                    <ReplayWhiteboard classroomReplayStore={classroomReplayStore} />
-                    <div className="replay-share-screen">{/* TODO */}</div>
-                    <div
-                        className={classNames("replay-bottom", {
-                            "is-playing": classroomReplayStore.isPlaying,
-                        })}
-                    >
-                        <ReplayList classroomReplayStore={classroomReplayStore} />
-                    </div>
-                </div>
-                <RealtimePanel
-                    isShow
-                    isVideoOn
-                    chatSlot={<ChatPanelReplay classRoomReplayStore={classroomReplayStore} />}
-                    videoSlot={!isSmallClass && ReplayVideos}
+            <div className="replay-videos is-horizontal">
+                <ReplayVideo classroomReplayStore={classroomReplayStore} />
+                <div
+                    className="replay-mask"
+                    style={
+                        {
+                            "--width": `${144 * (17 - onStageUsersLength)}px`,
+                            "--left": `${144 * onStageUsersLength}px`,
+                        } as React.CSSProperties
+                    }
                 />
+            </div>
+            <div className="replay-content">
+                <ReplayWhiteboard classroomReplayStore={classroomReplayStore} />
+                <div className="replay-share-screen">{/* TODO */}</div>
+                <div
+                    className={classNames("replay-bottom", {
+                        "is-playing": classroomReplayStore.isPlaying,
+                    })}
+                >
+                    <ReplayList classroomReplayStore={classroomReplayStore} />
+                </div>
             </div>
             <ExitReplayConfirm
                 visible={showExitReplayModal}
