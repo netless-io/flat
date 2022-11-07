@@ -21,6 +21,7 @@ import { ClassroomReplayEventData } from "../classroom-store/event";
 import { FlatServices, IServiceWhiteboard } from "@netless/flat-services";
 import { SideEffectManager } from "side-effect-manager";
 import { preferencesStore } from "../preferences-store";
+import { WHITEBOARD_RATIO } from "../constants";
 
 export class WhiteboardStore {
     public readonly sideEffect = new SideEffectManager();
@@ -115,10 +116,6 @@ export class WhiteboardStore {
         this.whiteboard.setAllowDrawing(isWritable);
     };
 
-    public getWhiteboardRatio = (): number => {
-        return 3 / 4;
-    };
-
     public setFileOpen = (open: boolean): void => {
         this.isFileOpen = open;
     };
@@ -157,7 +154,7 @@ export class WhiteboardStore {
             classroomType: this.getRoomType(),
             options: {
                 strokeTail: preferencesStore.strokeTail,
-                ratio: this.getWhiteboardRatio(),
+                ratio: WHITEBOARD_RATIO,
             },
         });
 

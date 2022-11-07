@@ -6,6 +6,7 @@ import { SideEffectManager } from "side-effect-manager";
 
 import { OnStageUsersStorageState } from "../classroom-store";
 import { ClassroomReplayEventData } from "../classroom-store/event";
+import { WHITEBOARD_RATIO } from "../constants";
 import { globalStore } from "../global-store";
 import { RoomItem, RoomRecording, roomStore } from "../room-store";
 import { getRoomRecordings, makeVideoPlayer } from "./utils";
@@ -143,7 +144,7 @@ export class ClassroomReplayStore {
             },
             managerConfig: {
                 cursor: true,
-                containerSizeRatio: 3 / 4,
+                containerSizeRatio: WHITEBOARD_RATIO,
                 viewMode: "scroll",
             },
         });
