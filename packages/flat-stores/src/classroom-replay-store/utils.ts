@@ -12,7 +12,7 @@ export interface UserRecordingInfo {
 }
 
 // use RoomRecording instead
-/** @deprecated becasue we do not use individual recording mode, use RoomRecording instead */
+/** @deprecated because we do not use individual recording mode, use RoomRecording instead */
 export interface Recording extends RoomRecording {
     users?: Record<string, UserRecordingInfo>;
 }
@@ -26,7 +26,7 @@ export async function existsUrl(url: string): Promise<boolean> {
     }
 }
 
-/** @deprecated becasue we do not use individual recording mode */
+/** @deprecated because we do not use individual recording mode */
 export async function getRecordings(roomUUID: string): Promise<Recording[]> {
     await roomStore.syncRecordInfo(roomUUID);
     const room = roomStore.rooms.get(roomUUID)!;
