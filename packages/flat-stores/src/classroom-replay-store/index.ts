@@ -143,6 +143,7 @@ export class ClassroomReplayStore {
             },
             managerConfig: {
                 cursor: true,
+                containerSizeRatio: 3 / 4,
             },
         });
 
