@@ -36,6 +36,7 @@ export interface AgoraRTMQueryResourceResponse {
     result: string;
 }
 
+// unused because RTM has shutdown the history function
 export class TextChatHistory {
     public roomUUID: string;
     public userUUID: string;

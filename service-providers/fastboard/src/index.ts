@@ -1,6 +1,5 @@
 import { createFastboard, createUI, FastboardApp, addManagerListener } from "@netless/fastboard";
 import { DeviceType, RoomPhase } from "white-web-sdk";
-import { RoomType } from "@netless/flat-server-api";
 import type { FlatI18n } from "@netless/flat-i18n";
 import type { Displayer } from "@netless/white-snapshot";
 import {
@@ -165,7 +164,6 @@ export class Fastboard extends IServiceWhiteboard {
         uid,
         nickName,
         region,
-        classroomType,
         options = {},
     }: IServiceWhiteboardJoinRoomConfig): Promise<void> {
         if (!appID) {
@@ -191,7 +189,7 @@ export class Fastboard extends IServiceWhiteboard {
                 disableNewPencilStroke: options.strokeTail === false,
             },
             managerConfig: {
-                containerSizeRatio: classroomType === RoomType.SmallClass ? 8.3 / 16 : 10.46 / 16,
+                containerSizeRatio: options.ratio ?? 9 / 16,
                 cursor: true,
                 chessboard: false,
                 collectorStyles: {

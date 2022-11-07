@@ -1,18 +1,14 @@
-import { AnimationMode, FastboardPlayer, replayFastboard, Storage } from "@netless/fastboard";
+import { FastboardPlayer, replayFastboard, Storage } from "@netless/fastboard";
 import { RoomType } from "@netless/flat-server-api";
-import { SyncPlayer, AtomPlayer, NativeVideoPlayer, WhiteboardPlayer } from "@netless/sync-player";
-import { addYears } from "date-fns";
-import { ChatMsg } from "flat-components";
+import { AtomPlayer, NativeVideoPlayer, SyncPlayer, WhiteboardPlayer } from "@netless/sync-player";
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import { SideEffectManager } from "side-effect-manager";
 
-import { DeviceStateStorageState, OnStageUsersStorageState } from "../classroom-store";
+import { OnStageUsersStorageState } from "../classroom-store";
 import { ClassroomReplayEventData } from "../classroom-store/event";
 import { globalStore } from "../global-store";
 import { RoomItem, RoomRecording, roomStore } from "../room-store";
-import { UserStore } from "../user-store";
-import { TextChatHistory } from "./history";
-import { getRecordings, makeVideoPlayer, Recording } from "./utils";
+import { getRoomRecordings, makeVideoPlayer } from "./utils";
 
 export interface ClassroomReplayStoreConfig {
     roomUUID: string;
@@ -28,45 +24,35 @@ export class ClassroomReplayStore {
     public readonly userUUID: string;
     public readonly roomType: RoomType;
 
-    public readonly history: TextChatHistory;
-
-    public readonly users: UserStore;
-    public readonly onStageUserUUIDs = observable.array<string>();
-    public readonly recordings = observable.array<Recording>();
-    public readonly userVideos = observable.map<string, HTMLVideoElement>();
-    public readonly userDevices = observable.map<string, DeviceStateStorageState[string]>();
-
-    public syncPlayer: AtomPlayer | null = null;
-
-    /** RTM messages */
-    public messages = observable.array<ChatMsg>();
-
-    public fastboard: FastboardPlayer<ClassroomReplayEventData> | null = null;
-
-    public onStageUsersStorage: Storage<OnStageUsersStorageState> | null = null;
+    public readonly recordings = observable.array<RoomRecording>();
 
     public currentRecording: RoomRecording | null = null;
 
+    public video: HTMLVideoElement | null = null;
+    public fastboard: FastboardPlayer<ClassroomReplayEventData> | null = null;
+    public syncPlayer: AtomPlayer | null = null;
+    public onStageUsersStorage: Storage<OnStageUsersStorageState> | null = null;
+    public onStageUsers = observable.array<string>([]);
+
     public isPlaying = false;
     public isBuffering = false;
-    public tempTimestamp = 0;
-    public realTimestamp = 0;
+    public tempTimestamp = 0; // used for displaying instant timestamp before debounced seeking
 
-    public currentTime = 0;
-    public duration = 0;
+    public currentTime = 0; // mirror syncPlayer.currentTime
+    public duration = 0; // mirror syncPlayer.duration
 
     public get currentTimestamp(): number {
         return this.tempTimestamp || this.realTimestamp;
     }
 
-    private cachedMessages = observable.array<ChatMsg>();
+    public get realTimestamp(): number {
+        return (this.currentRecording?.beginTime || 0) + this.currentTime;
+    }
+
     private _isLoadingRecording: { current: boolean; next: RoomRecording | null } = {
         current: false,
         next: null,
     };
-    private _oldestSeekTime = -1;
-    private _isLoadingHistory = false;
-    private _remoteNewestTimestamp = Infinity;
 
     public constructor(config: ClassroomReplayStoreConfig) {
         if (!globalStore.userUUID) {
@@ -79,31 +65,12 @@ export class ClassroomReplayStore {
         this.ownerUUID = config.ownerUUID;
         this.userUUID = globalStore.userUUID;
         this.roomType = config.roomType;
-        this.history = new TextChatHistory(this);
 
-        this.users = new UserStore({
-            roomUUID: config.roomUUID,
-            ownerUUID: config.ownerUUID,
-            userUUID: this.userUUID,
-            isInRoom: () => false,
-        });
-
-        makeAutoObservable<
-            this,
-            | "_isLoadingHistory"
-            | "_oldestSeekTime"
-            | "_remoteNewestTimestamp"
-            | "_isLoadingRecording"
-        >(this, {
+        makeAutoObservable<this, "_isLoadingRecording">(this, {
             sideEffect: false,
-            history: false,
             fastboard: observable.ref,
             syncPlayer: observable.ref,
             currentRecording: observable.ref,
-            onStageUsersStorage: false,
-            _isLoadingHistory: false,
-            _oldestSeekTime: false,
-            _remoteNewestTimestamp: false,
             _isLoadingRecording: false,
         });
     }
@@ -117,20 +84,22 @@ export class ClassroomReplayStore {
     }
 
     public async init(): Promise<void> {
-        this.updateRecordings(await getRecordings(this.roomUUID));
+        this.updateRecordings(await getRoomRecordings(this.roomUUID));
     }
 
     public async destroy(): Promise<void> {
         this.syncPlayer?.pause();
         this.sideEffect.flushAll();
         this.fastboard?.destroy();
+
+        (window as any).classroomReplayStore = undefined;
     }
 
-    public updateRecordings(recordings: Recording[]): void {
+    public updateRecordings(recordings: RoomRecording[]): void {
         this.recordings.replace(recordings);
     }
 
-    public async loadRecording(recording: Recording): Promise<void> {
+    public async loadRecording(recording: RoomRecording): Promise<void> {
         if (!process.env.NETLESS_APP_IDENTIFIER) {
             throw new Error("Missing NETLESS_APP_IDENTIFIER");
         }
@@ -151,6 +120,8 @@ export class ClassroomReplayStore {
         this._isLoadingRecording = { current: true, next: null };
         this.currentRecording = recording;
         this.isPlaying = false;
+        this.currentTime = 0;
+        this.video = null;
 
         if (this.fastboard) {
             await this.fastboard.destroy();
@@ -172,8 +143,21 @@ export class ClassroomReplayStore {
             },
             managerConfig: {
                 cursor: true,
+                containerSizeRatio: 3 / 4,
+                viewMode: "scroll",
             },
         });
+
+        const onStageUsersStorage = fastboard.syncedStore.connectStorage<OnStageUsersStorageState>(
+            "onStageUsers",
+            {},
+        );
+        this.sideEffect.push(
+            onStageUsersStorage.on("stateChanged", () => {
+                this.updateOnStageUsers(onStageUsersStorage.state);
+            }),
+            "onStageUsers",
+        );
 
         const next = this._isLoadingRecording.next;
         if (next) {
@@ -196,78 +180,25 @@ export class ClassroomReplayStore {
             "isBuffering",
         );
 
-        const onStageUsersStorage = fastboard.syncedStore.connectStorage<OnStageUsersStorageState>(
-            "onStageUsers",
-            {},
-        );
-        const refreshOnStageUserUUIDs = (): void => {
-            runInAction(() => {
-                const onStageUserUUIDs = [];
-                for (const key in onStageUsersStorage.state) {
-                    if (onStageUsersStorage.state[key]) {
-                        onStageUserUUIDs.push(key);
-                    }
-                }
-                this.onStageUserUUIDs.replace(onStageUserUUIDs);
-            });
-        };
-        this.sideEffect.push(
-            onStageUsersStorage.on("stateChanged", refreshOnStageUserUUIDs),
-            "onStageUsers",
-        );
-        refreshOnStageUserUUIDs();
-
-        this.users.initUsers([this.ownerUUID]);
         this.updateFastboard(fastboard, onStageUsersStorage);
 
-        const scrollTopStorage = fastboard.syncedStore.connectStorage<{ scrollTop: number }>(
-            "scroll",
-            { scrollTop: 0 },
-        );
-        this.sideEffect.push(
-            scrollTopStorage.on("stateChanged", () => {
-                const scrollTop = scrollTopStorage.state.scrollTop;
-                const BASE_WIDTH = 1600;
-                const { height, scale } = fastboard.manager.cameraState;
-                fastboard.manager.mainView.moveCameraToContain({
-                    originX: 0,
-                    originY: scrollTop - height / scale / 2,
-                    width: BASE_WIDTH,
-                    height: height / scale,
-                    animationMode: "immediately" as AnimationMode,
-                });
-            }),
-            "scrollTop",
-        );
-
-        const deviceStateStorage = fastboard.syncedStore.connectStorage<DeviceStateStorageState>(
-            "deviceState",
-            {},
-        );
-        this.sideEffect.push(
-            deviceStateStorage.on("stateChanged", () => {
-                this.userDevices.replace(deviceStateStorage.state);
-            }),
-            "deviceState",
-        );
-
         const players: AtomPlayer[] = [];
-        players.push(new WhiteboardPlayer({ name: "whiteboard", player: fastboard.player }));
-        const userVideos = new Map<string, HTMLVideoElement>();
+
+        const whiteboardPlayer = new WhiteboardPlayer({
+            name: "whiteboard",
+            player: fastboard.player,
+        });
+        players.push(whiteboardPlayer);
+
         if (recording.videoURL) {
-            const mainVideo = makeVideoPlayer(recording.videoURL);
-            userVideos.set(this.userUUID, mainVideo);
-            players.push(new NativeVideoPlayer({ name: "main", video: mainVideo }));
+            const video = makeVideoPlayer(recording.videoURL);
+            const videoPlayer = new NativeVideoPlayer({ name: "main", video });
+            players.push(videoPlayer);
+            this.updateVideo(video);
+        } else {
+            this.updateVideo(null);
         }
-        if (recording.users) {
-            for (const userUUID in recording.users) {
-                const { videoURL } = recording.users[userUUID];
-                const userVideo = makeVideoPlayer(videoURL);
-                userVideos.set(userUUID, userVideo);
-                const userPlayer = new NativeVideoPlayer({ name: userUUID, video: userVideo });
-                players.push(userPlayer);
-            }
-        }
+
         const syncPlayer = new SyncPlayer({ players });
         this.sideEffect.add(() => {
             const updateDuration = action(() => {
@@ -283,17 +214,15 @@ export class ClassroomReplayStore {
                 syncPlayer.off("timeupdate", updateCurrentTime);
             };
         }, "syncCurrentTime");
-        this.sideEffect.add(() => {
-            syncPlayer.on("timeupdate", this.syncMessages);
-            return () => {
-                syncPlayer.off("timeupdate", this.syncMessages);
-            };
-        }, "syncMessages");
-        this.updateUserVideos(userVideos, syncPlayer);
+
+        this.updateSyncPlayer(syncPlayer);
     }
 
-    public updateUserVideos(userVideos: Map<string, HTMLVideoElement>, player: AtomPlayer): void {
-        this.userVideos.replace(userVideos);
+    public updateVideo(video: HTMLVideoElement | null): void {
+        this.video = video;
+    }
+
+    public updateSyncPlayer(player: AtomPlayer | null): void {
         this.syncPlayer?.pause();
         this.syncPlayer = player;
     }
@@ -306,8 +235,8 @@ export class ClassroomReplayStore {
         this.onStageUsersStorage = onStageUsersStorage;
     }
 
-    public onNewMessage(msg: ChatMsg): void {
-        this.messages.push(msg);
+    public updateOnStageUsers(state: Record<string, boolean>): void {
+        this.onStageUsers.replace(Object.keys(state).filter(userUUID => state[userUUID]));
     }
 
     public play(): void {
@@ -337,117 +266,5 @@ export class ClassroomReplayStore {
         } else {
             this.play();
         }
-    };
-
-    private syncMessages = async (): Promise<void> => {
-        if (!this.syncPlayer || !this.currentRecording) {
-            return;
-        }
-
-        if (this._isLoadingHistory) {
-            return;
-        }
-
-        const currentTimestamp = this.currentRecording.beginTime + this.syncPlayer.currentTime;
-        this.realTimestamp = currentTimestamp;
-        if (this.tempTimestamp === this.realTimestamp) {
-            this.tempTimestamp = 0;
-        }
-        if (this.cachedMessages.length === 0) {
-            const newMessages = await this.getHistory(currentTimestamp - 1);
-            if (newMessages.length === 0) {
-                return;
-            }
-            this._oldestSeekTime = currentTimestamp;
-            runInAction(() => {
-                this.cachedMessages.replace(newMessages);
-            });
-            return this.syncMessages();
-        }
-
-        if (currentTimestamp < this._oldestSeekTime) {
-            runInAction(() => {
-                this.messages.clear();
-                this.cachedMessages.clear();
-            });
-            return this.syncMessages();
-        }
-
-        if (
-            this.messages.length > 0 &&
-            currentTimestamp < this.messages[this.messages.length - 1].timestamp
-        ) {
-            runInAction(() => {
-                this.messages.clear();
-            });
-            return this.syncMessages();
-        }
-
-        let start = this.messages.length;
-        while (
-            start < this.cachedMessages.length &&
-            currentTimestamp >= this.cachedMessages[start].timestamp
-        ) {
-            start++;
-        }
-
-        if (start === this.messages.length) {
-            // no new messages
-            return;
-        }
-
-        if (start >= this.cachedMessages.length) {
-            // more messages need to be loaded
-            const newMessages = await this.getHistory(
-                this.cachedMessages[this.cachedMessages.length - 1].timestamp,
-            );
-            if (newMessages.length > 0) {
-                runInAction(() => {
-                    this.cachedMessages.push(...newMessages);
-                });
-                return this.syncMessages();
-            }
-        }
-
-        runInAction(() => {
-            this.messages.push(...this.cachedMessages.slice(this.messages.length, start));
-        });
-    };
-
-    private getHistory = async (newestTimestamp: number): Promise<ChatMsg[]> => {
-        let history: ChatMsg[] = [];
-
-        if (newestTimestamp >= this._remoteNewestTimestamp) {
-            return history;
-        }
-
-        this._isLoadingHistory = true;
-
-        try {
-            const messages = await this.history.fetchTextHistory(
-                newestTimestamp + 1,
-                addYears(newestTimestamp, 1).valueOf(),
-            );
-
-            if (messages.length === 0) {
-                this._remoteNewestTimestamp = newestTimestamp;
-            }
-
-            history = messages.map(msg => ({
-                type: "room-message",
-                ...msg,
-            }));
-
-            // fetch user name first to avoid flashing
-            await this.users
-                .syncExtraUsersInfo(history.map(msg => msg.senderID))
-                .catch(console.warn); // swallow error
-        } catch (error) {
-            console.warn(error);
-        }
-
-        this._isLoadingHistory = false;
-
-        return history;
     };
 }

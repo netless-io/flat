@@ -36,6 +36,8 @@ export abstract class IServiceRecording implements IService {
     /** Use with try-catch. */
     public abstract stopRecording(): Promise<void>;
 
+    public abstract updateLayout(users: Array<{ uid: string; avatar: string }>): Promise<void>;
+
     public async destroy(): Promise<void> {
         this.events.destroy();
         this.sideEffect.flushAll();

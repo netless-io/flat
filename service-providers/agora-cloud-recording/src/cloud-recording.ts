@@ -3,19 +3,16 @@ import {
     cloudRecordQuery,
     cloudRecordStart,
     cloudRecordStop,
-    RoomType,
+    cloudRecordUpdateLayout,
     updateRecordEndTime,
 } from "@netless/flat-server-api";
 import { IServiceRecording, IServiceRecordingJoinRoomConfig } from "@netless/flat-services";
 import { Val } from "value-enhancer";
 import polly from "polly-js";
 
-export type AgoraCloudRecordingRoomInfo = IServiceRecordingJoinRoomConfig;
+import { getClientRequest, getRecordingConfig } from "./constants";
 
-export enum AgoraCloudRecordingChannelType {
-    Communication = 0,
-    Broadcast = 1,
-}
+export type AgoraCloudRecordingRoomInfo = IServiceRecordingJoinRoomConfig;
 
 // Caveats: This service saves current recording state in localStorage "recordingStates",
 // which means when you enter your browser's private mode or switch to another browser,
@@ -77,9 +74,8 @@ export class AgoraCloudRecording extends IServiceRecording {
             return;
         }
 
-        const mode: AgoraCloudRecordingMode = "individual";
+        const mode: AgoraCloudRecordingMode = "mix";
         const { roomID, classroomType } = this.roomInfo;
-        const channelType = convertRoomType(classroomType);
         try {
             const RetryIntervals = [0, 1000, 3000, 5000, 7000];
             const recordingState = await polly()
@@ -104,13 +100,7 @@ export class AgoraCloudRecording extends IServiceRecording {
                         },
                         agoraData: {
                             clientRequest: {
-                                recordingConfig: {
-                                    subscribeUidGroup: 2,
-                                    maxIdleTime: 5 * 60,
-                                    channelType: channelType,
-                                    streamMode: "standard",
-                                    videoStreamType: 1,
-                                },
+                                recordingConfig: getRecordingConfig(classroomType),
                             },
                         },
                     });
@@ -159,6 +149,26 @@ export class AgoraCloudRecording extends IServiceRecording {
         }
     }
 
+    public async updateLayout(users: Array<{ uid: string; avatar: string }>): Promise<void> {
+        if (this.roomInfo === null || this.recordingState === null) {
+            throw new Error("should call joinRoom() and startRecording() before updateLayout()");
+        }
+
+        const { roomID, classroomType } = this.roomInfo;
+
+        const clientRequest = getClientRequest(classroomType, users);
+
+        await cloudRecordUpdateLayout({
+            roomUUID: roomID,
+            agoraParams: {
+                resourceid: this.recordingState.resourceId,
+                mode: this.recordingState.mode,
+                sid: this.recordingState.sid,
+            },
+            agoraData: { clientRequest },
+        });
+    }
+
     private async queryRecordingStatus(): Promise<void> {
         if (this.recordingState === null || this.roomID === null) {
             this.$Val.isRecording$.setValue(false);
@@ -202,9 +212,8 @@ export class AgoraCloudRecording extends IServiceRecording {
 }
 
 /**
- * We always use "individual" mode in Flat.
- *
- * @see {@link https://docs.agora.io/en/cloud-recording/cloud_recording_manage_files?platform=RESTful#individual-recording}
+ * @see {@link https://docs.agora.io/en/cloud-recording/reference/rest-api/rest}
+ * @see {@link https://docs.agora.io/cn/cloud-recording/cloud_recording_api_rest}
  */
 export type AgoraCloudRecordingMode = "individual" | "mix";
 
@@ -241,12 +250,4 @@ function saveCloudRecordingState(roomID: string, state: AgoraCloudRecordingState
 
 function sleep(ms: number): Promise<void> {
     return new Promise<void>(resolve => setTimeout(resolve, ms));
-}
-
-function convertRoomType(roomType: RoomType): AgoraCloudRecordingChannelType {
-    if (roomType === RoomType.BigClass) {
-        return AgoraCloudRecordingChannelType.Broadcast;
-    } else {
-        return AgoraCloudRecordingChannelType.Communication;
-    }
 }
