@@ -2,7 +2,6 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { ChatPanel as ChatPanelImpl, useComputed } from "flat-components";
 import { ClassroomStore, User } from "@netless/flat-stores";
-import { uniqBy } from "lodash-es";
 import { generateAvatar } from "../../utils/generate-avatar";
 
 export interface ChatPanelProps {
@@ -24,10 +23,9 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({
             .map(userUUID => classRoomStore.users.cachedUsers.get(userUUID))
             .filter((user): user is User => !!user);
         const { creator, handRaisingJoiners, otherJoiners } = classRoomStore.users;
-        const users = creator
+        return creator
             ? [...onStageUsers, ...handRaisingJoiners, creator, ...otherJoiners]
             : [...onStageUsers, ...handRaisingJoiners, ...otherJoiners];
-        return uniqBy(users, user => user.userUUID);
     }).get();
 
     const handHandRaising = classRoomStore.users.handRaisingJoiners.length > 0;
