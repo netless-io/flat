@@ -1,4 +1,4 @@
-import { AnimationMode, FastboardPlayer, replayFastboard, Storage } from "@netless/fastboard";
+import { FastboardPlayer, replayFastboard, Storage } from "@netless/fastboard";
 import { RoomType } from "@netless/flat-server-api";
 import { AtomPlayer, NativeVideoPlayer, SyncPlayer, WhiteboardPlayer } from "@netless/sync-player";
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
@@ -144,6 +144,7 @@ export class ClassroomReplayStore {
             managerConfig: {
                 cursor: true,
                 containerSizeRatio: 3 / 4,
+                viewMode: "scroll",
             },
         });
 
@@ -180,26 +181,6 @@ export class ClassroomReplayStore {
         );
 
         this.updateFastboard(fastboard, onStageUsersStorage);
-
-        const scrollTopStorage = fastboard.syncedStore.connectStorage<{ scrollTop: number }>(
-            "scroll",
-            { scrollTop: 0 },
-        );
-        this.sideEffect.push(
-            scrollTopStorage.on("stateChanged", () => {
-                const BASE_WIDTH = 1600;
-                const scrollTop = scrollTopStorage.state.scrollTop;
-                const { height, scale } = fastboard.manager.cameraState;
-                fastboard.manager.mainView.moveCameraToContain({
-                    originX: 0,
-                    originY: scrollTop - height / scale / 2,
-                    width: BASE_WIDTH,
-                    height: height / scale,
-                    animationMode: "immediately" as AnimationMode,
-                });
-            }),
-            "scrollTop",
-        );
 
         const players: AtomPlayer[] = [];
 
