@@ -468,27 +468,24 @@ export class ClassroomStore {
         this.sideEffect.addDisposer(onStageUsersStorage.on("stateChanged", updateUserStagingState));
 
         this.sideEffect.addDisposer(
-            reaction(
-                () => this.onStageUserUUIDs,
-                onStageUserUUIDs => {
-                    const users: Array<{ uid: string; avatar: string; isOwner: boolean }> = [];
-                    onStageUserUUIDs.forEach(userUUID => {
-                        const user = this.users.cachedUsers.get(userUUID);
-                        if (user) {
-                            users.push({
-                                uid: user.rtcUID,
-                                avatar: user.avatar,
-                                isOwner: userUUID === this.ownerUUID,
-                            });
-                        }
-                    });
-                    // sort creator to the first, then small uid to large uid
-                    users.sort((a, b) =>
-                        a.isOwner ? -1 : b.isOwner ? 1 : (+a.uid | 0) - (+b.uid | 0),
-                    );
-                    this.updateRecordingLayout(users);
-                },
-            ),
+            autorun(() => {
+                const users: Array<{ uid: string; avatar: string; isOwner: boolean }> = [];
+                this.onStageUserUUIDs.forEach(userUUID => {
+                    const user = this.users.cachedUsers.get(userUUID);
+                    if (user) {
+                        users.push({
+                            uid: user.rtcUID,
+                            avatar: user.avatar,
+                            isOwner: userUUID === this.ownerUUID,
+                        });
+                    }
+                });
+                // sort creator to the first, then small uid to large uid
+                users.sort((a, b) =>
+                    a.isOwner ? -1 : b.isOwner ? 1 : (+a.uid | 0) - (+b.uid | 0),
+                );
+                this.updateRecordingLayout(users);
+            }),
         );
 
         this.sideEffect.addDisposer(
