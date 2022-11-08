@@ -35,14 +35,6 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage({ match 
         return <LoadingPage />;
     }
 
-    const exitConfirm = (): void => {
-        history.goBack();
-    };
-
-    const onStageUsersLength = classroomReplayStore.currentRecording
-        ? classroomReplayStore.onStageUsers.length + 1
-        : 0;
-
     return (
         <div className="replay-container">
             {windowsBtn && (
@@ -54,15 +46,6 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage({ match 
             )}
             <div className="replay-videos is-horizontal">
                 <ReplayVideo classroomReplayStore={classroomReplayStore} />
-                <div
-                    className="replay-mask"
-                    style={
-                        {
-                            "--width": `${144 * (17 - onStageUsersLength)}px`,
-                            "--left": `${144 * onStageUsersLength}px`,
-                        } as React.CSSProperties
-                    }
-                />
             </div>
             <div className="replay-content">
                 <ReplayWhiteboard classroomReplayStore={classroomReplayStore} />
@@ -78,7 +61,7 @@ export const ReplayPage = observer<ReplayPageProps>(function ReplayPage({ match 
             <ExitReplayConfirm
                 visible={showExitReplayModal}
                 onCancel={() => setShowExitReplayModal(false)}
-                onConfirm={exitConfirm}
+                onConfirm={() => history.goBack()}
                 onSendWindowWillClose={() => setShowExitReplayModal(true)}
             />
         </div>

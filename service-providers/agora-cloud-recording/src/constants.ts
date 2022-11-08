@@ -61,7 +61,7 @@ export const SMALL_CLASS_RECORDING_CONFIG: RecordingConfig = {
         fps: 15,
         bitrate: 500,
         mixedVideoLayout: 3,
-        backgroundColor: "#000000",
+        backgroundColor: "#FFFFFF",
         defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
         layoutConfig: [
             {
@@ -71,6 +71,7 @@ export const SMALL_CLASS_RECORDING_CONFIG: RecordingConfig = {
                 height: 1,
             },
         ],
+        backgroundConfig: [],
     },
     maxIdleTime: 60,
     subscribeUidGroup: 3,
@@ -147,7 +148,7 @@ export function getClientRequest(
     ) {
         return {
             mixedVideoLayout: 3,
-            backgroundColor: "#000000",
+            backgroundColor: "#FFFFFF",
             defaultUserBackgroundImage: process.env.CLOUD_RECORDING_DEFAULT_AVATAR,
             backgroundConfig,
             layoutConfig: users.map((_user, i) => ({
