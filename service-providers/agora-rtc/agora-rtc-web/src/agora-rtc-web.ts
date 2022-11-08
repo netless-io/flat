@@ -289,7 +289,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
         const client = AgoraRTC.createClient({
             mode: mode === IServiceVideoChatMode.Broadcast ? "live" : "rtc",
-            codec: "h264",
+            codec: "vp8",
         });
         this.client = client;
         this.mode = mode;

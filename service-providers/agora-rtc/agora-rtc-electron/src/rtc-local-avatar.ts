@@ -67,7 +67,9 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
                             this._rtc.rtcEngine.enableLocalAudio(true);
                         } else {
                             this._rtc.rtcEngine.enableLocalAudio(false);
-                            this._rtc.setRole(IServiceVideoChatRole.Audience);
+                            if (!this._shouldCamera$.value) {
+                                this._rtc.setRole(IServiceVideoChatRole.Audience);
+                            }
                         }
                     } catch (e) {
                         console.error(e);
@@ -85,7 +87,9 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
                             this._rtc.rtcEngine.enableLocalVideo(true);
                         } else {
                             this._rtc.rtcEngine.enableLocalVideo(false);
-                            this._rtc.setRole(IServiceVideoChatRole.Audience);
+                            if (!this._shouldMic$.value) {
+                                this._rtc.setRole(IServiceVideoChatRole.Audience);
+                            }
                         }
                     } catch (e) {
                         console.error(e);
