@@ -106,19 +106,19 @@
     color: var(--text-weak);
     font-size: 12px;
     text-align: center;
+    flex: 1;
     user-select: none;
 }
 
 .chat-message-ban {
+    flex: 1;
     text-align: center;
 
     & > span {
         display: inline-block;
         padding: 2px 12px;
         font-size: 12px;
-        color: var(--text);
-        background: var(--grey-0);
-        border-radius: 12px;
+        color: var(--text-weak);
         user-select: none;
     }
 }
@@ -170,10 +170,6 @@
     }
 
     .chat-message-user-guide-bubble {
-        background: var(--grey-11);
-    }
-
-    .chat-message-ban > span {
         background: var(--grey-11);
     }
 }
