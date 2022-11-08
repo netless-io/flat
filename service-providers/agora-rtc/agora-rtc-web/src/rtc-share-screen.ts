@@ -29,7 +29,7 @@ export class AgoraRTCWebShareScreen extends IServiceShareScreen {
 
         this.APP_ID = config.APP_ID;
 
-        this.client = AgoraRTC.createClient({ mode: "rtc", codec: "h264" });
+        this.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
         this._el$ = new Val(config.element ?? null);
 
