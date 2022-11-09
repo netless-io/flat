@@ -49,7 +49,13 @@ export const SpeakerCheckPage = withFlatServices("videoChat")(
 
         useEffect(() => {
             if (currentDeviceID && isPlaying) {
-                rtc.startSpeakerTest(window.node.path.join(runtime.assetsPath, audioTestMP3));
+                // Vite 3 returns a file url in production,
+                // we need to convert it to an absolute path to feed it to rtc.
+                if (audioTestMP3.startsWith("file://")) {
+                    rtc.startSpeakerTest(fileURLToPath(audioTestMP3));
+                } else {
+                    rtc.startSpeakerTest(window.node.path.join(runtime.assetsPath, audioTestMP3));
+                }
                 return () => {
                     rtc.stopSpeakerTest();
                 };
@@ -128,3 +134,15 @@ export const SpeakerCheckPage = withFlatServices("videoChat")(
         }
     },
 );
+
+// Note: electron does not have url.fileURLToPath internally for 'safety'
+// See https://www.electronjs.org/de/docs/latest/tutorial/sandbox#preload-scripts
+// So we have to implement our own.
+function fileURLToPath(url: string): string {
+    let pathname = new URL(url).pathname;
+    // if starts with a windows driver letter like "/C:/", strip the first slash
+    if (/^\/\w:\//.test(pathname)) {
+        pathname = pathname.slice(1);
+    }
+    return decodeURIComponent(pathname);
+}
