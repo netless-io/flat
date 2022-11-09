@@ -103,7 +103,14 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
     function jumpToReplayPage(): void {
         if (roomInfo) {
             const { roomType, roomUUID, ownerUUID } = roomInfo;
-            window.open(`/replay/${roomType}/${roomUUID}/${ownerUUID}/`, "_blank");
+            if (!roomType) {
+                return void message.error("Unknown roomType");
+            }
+            if (window.isElectron) {
+                pushHistory(RouteNameType.ReplayPage, { roomType, roomUUID, ownerUUID });
+            } else {
+                window.open(`/replay/${roomType}/${roomUUID}/${ownerUUID}/`, "_blank");
+            }
         }
     }
 
