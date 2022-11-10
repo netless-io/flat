@@ -95,7 +95,8 @@ module.exports = {
         "pickone", // chance
         "viewports", // storybook
         "videojs", // @videojs/vhs-utils
-        "telebox", // @netless/widnow-manager
+        "tele", // @netless/widnow-manager
+        "telebox",
         "Buildin", // @netless/widnow-manager
         "zindex", // antd
         "geogebra", // @netless/app-geogebra
