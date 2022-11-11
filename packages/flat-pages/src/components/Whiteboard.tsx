@@ -15,7 +15,8 @@ import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import { WhiteboardStore, ClassroomStore } from "@netless/flat-stores";
-import { FlatServices } from "@netless/flat-services";
+import { FlatServices, getFileExt } from "@netless/flat-services";
+import { format } from "date-fns";
 import { isSupportedFileExt } from "../utils/drag-and-drop";
 import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image";
 import { PRESETS } from "../constants/presets";
@@ -37,7 +38,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     disableHandRaising,
 }) {
     const t = useTranslate();
-    const { room, phase, whiteboard } = whiteboardStore;
+    const { room, windowManager, phase, whiteboard } = whiteboardStore;
     const isDark = useContext(DarkModeContext);
 
     const [saveAnnotationVisible, showSaveAnnotation] = useState(false);
@@ -143,6 +144,29 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         },
         [room, whiteboardStore],
     );
+
+    useEffect(() => {
+        const pasteHandler = (event: ClipboardEvent): void => {
+            const file = event.clipboardData?.files[0];
+            if (room && windowManager && file) {
+                const { centerX, centerY } = windowManager.camera;
+                if (isSupportedImageType(file)) {
+                    const id = format(Date.now(), "yyyy-MM-dd_HH-mm-ss");
+                    const extname = getFileExt(file.name);
+                    const fileName = `screenshot_${id}.${extname}`;
+                    const renamed = new File([file], fileName, {
+                        type: file.type,
+                        lastModified: file.lastModified,
+                    });
+                    onDropImage(renamed, centerX, centerY, room, whiteboardStore.cloudStorageStore);
+                } else if (isSupportedFileExt(file)) {
+                    whiteboardStore.onDrop(file);
+                }
+            }
+        };
+        document.addEventListener("paste", pasteHandler);
+        return () => document.removeEventListener("paste", pasteHandler);
+    }, [room, whiteboardStore, windowManager]);
 
     return (
         <>
