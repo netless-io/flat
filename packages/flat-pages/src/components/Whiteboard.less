@@ -107,6 +107,15 @@
     opacity: 0;
 }
 
+.telebox-manager-container {
+    --tele-managerStageShadow: none;
+}
+
+.fastboard-root {
+    --fastboard-bg-color: #fff;
+    --fastboard-border-color: var(--grey-1);
+}
+
 .flat-color-scheme-dark {
     .whiteboard-container {
         background: #15181d;
@@ -120,4 +129,14 @@
     .whiteboard-scroll-page {
         background: #15181d;
     }
+
+    .fastboard-root {
+        --fastboard-bg-color: var(--grey-9);
+        --fastboard-border-color: var(--grey-8);
+    }
+}
+
+.telebox-color-scheme-dark.telebox-manager-container {
+    --tele-managerStageShadow: none;
+    --tele-managerContainerBackground: #222429;
 }

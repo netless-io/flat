@@ -35,6 +35,7 @@ import { useLoginCheck } from "../utils/use-login-check";
 import { withClassroomStore, WithClassroomStoreProps } from "../utils/with-classroom-store";
 import { WindowsSystemBtnContext } from "../components/StoreProvider";
 import { ShareScreenPicker } from "../components/ShareScreen/ShareScreenPicker";
+import { ExtraPadding } from "../components/ExtraPadding";
 
 export type BigClassPageProps = {};
 
@@ -103,6 +104,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
         function renderTopBarLeft(): React.ReactNode {
             return (
                 <>
+                    <ExtraPadding />
                     <NetworkStatus networkQuality={classroomStore.networkQuality} />
                     {classroomStore.isCreator ? (
                         classroomStore.roomInfo?.beginTime && (

@@ -11,10 +11,11 @@ import { StoreProvider } from "@netless/flat-pages/src/components/StoreProvider"
 import { FlatServicesContextProvider } from "@netless/flat-pages/src/components/FlatServicesContext";
 import { ipcStore } from "../stores/ipc-store";
 import { IPCContext } from "../components/IPCContext";
+import { windowsBtnContext } from "../components/WindowsBtnContext";
+import { runtime } from "../utils/runtime";
 
 /** configure right after import */
 import { configure } from "mobx";
-import { windowsBtnContext } from "../components/WindowsBtnContext";
 configure({
     isolateGlobalState: true,
 });
@@ -24,7 +25,7 @@ const App: React.FC = () => {
 
     return (
         <AntdProvider lang={language}>
-            <StoreProvider WindowsBtnContext={windowsBtnContext}>
+            <StoreProvider WindowsBtnContext={windowsBtnContext} runtime={runtime}>
                 <IPCContext.Provider value={ipcStore}>
                     <FlatServicesContextProvider>
                         <AppRoutes />

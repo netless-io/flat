@@ -113,6 +113,7 @@ export class AgoraRTCWebShareScreen extends IServiceShareScreen {
 
     public override async destroy(): Promise<void> {
         this._sideEffect.flushAll();
+        await this.disableShareScreen();
     }
 
     private _pTogglingShareScreen?: Promise<unknown>;
