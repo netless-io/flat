@@ -258,6 +258,7 @@ export class ClassroomReplayStore {
     private seekNow = (): void => {
         if (this.currentRecording && this.syncPlayer) {
             this.syncPlayer.seek(this.tempTimestamp - this.currentRecording.beginTime);
+            this.tempTimestamp = 0;
         }
     };
 
