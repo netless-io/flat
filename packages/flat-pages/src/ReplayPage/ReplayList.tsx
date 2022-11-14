@@ -1,14 +1,13 @@
-import type { Recording } from "@netless/flat-stores/src/classroom-replay-store/utils";
-
 import { Button, Dropdown, DropdownProps, Menu, Slider, Spin, Tag } from "antd";
+import type { SliderTooltipProps } from "antd/lib/slider";
 import format from "date-fns/format";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { ClassroomReplayStore } from "@netless/flat-stores";
-import { SVGPause, SVGPlay, useSafePromise, SVGRecordList } from "flat-components";
 import { LoadingOutlined } from "@ant-design/icons";
 import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
+import { ClassroomReplayStore, RoomRecording } from "@netless/flat-stores";
+import { SVGPause, SVGPlay, SVGRecordList, useSafePromise } from "flat-components";
 
 export interface ReplayListProps {
     classroomReplayStore: ClassroomReplayStore;
@@ -24,7 +23,7 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
     const currentRecordingIndex = currentRecording ? recordings.indexOf(currentRecording) : -1;
 
     const loadRecording = useCallback(
-        async (recording: Recording): Promise<void> => {
+        async (recording: RoomRecording): Promise<void> => {
             setLoading(true);
             await sp(classroomReplayStore.loadRecording(recording));
             setLoading(false);
@@ -40,6 +39,11 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
         }
     }, [currentRecording, loadRecording, recordings, recordings.length]);
 
+    const tooltipFormatter: SliderTooltipProps["formatter"] = useCallback(
+        time => time && currentRecording && renderPlayerTime(time - currentRecording.beginTime),
+        [currentRecording],
+    );
+
     return (
         <div className="replay-playlist">
             {currentRecording && (
@@ -47,7 +51,7 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
                     className="replay-progress"
                     max={currentRecording.endTime}
                     min={currentRecording.beginTime}
-                    tooltip={{ formatter: time => time && format(time, "Y-MM-dd hh:mm:ss.SS") }}
+                    tooltip={{ formatter: tooltipFormatter }}
                     value={classroomReplayStore.currentTimestamp}
                     onChange={classroomReplayStore.seek}
                 />
