@@ -1,5 +1,5 @@
 import { createFastboard, createUI, FastboardApp, addManagerListener } from "@netless/fastboard";
-import { DeviceType, RoomPhase } from "white-web-sdk";
+import { DeviceType, RoomPhase, DefaultHotKeys } from "white-web-sdk";
 import type { FlatI18n } from "@netless/flat-i18n";
 import type { Displayer } from "@netless/white-snapshot";
 import {
@@ -191,7 +191,6 @@ export class Fastboard extends IServiceWhiteboard {
             managerConfig: {
                 containerSizeRatio: options.ratio ?? 9 / 16,
                 cursor: true,
-                chessboard: false,
                 collectorStyles: {
                     position: "absolute",
                     bottom: "8px",
@@ -214,6 +213,23 @@ export class Fastboard extends IServiceWhiteboard {
                 uid,
                 floatBar: true,
                 disableEraseImage: true,
+                hotKeys: {
+                    ...DefaultHotKeys,
+                    changeToSelector: "s",
+                    changeToLaserPointer: "z",
+                    changeToPencil: "p",
+                    changeToRectangle: "r",
+                    changeToEllipse: "c",
+                    changeToPencilEraser: "e",
+                    changeToEraser: { key: "E", shiftKey: true, altKey: false, ctrlKey: false },
+                    changeToText: "t",
+                    changeToStraight: "l",
+                    changeToArrow: "a",
+                    changeToHand: "h",
+                    // disable builtin copy-paste hotkeys
+                    copy: undefined,
+                    paste: undefined,
+                },
                 invisiblePlugins: [WindowManager],
                 callbacks: {
                     onEnableWriteNowChanged: async () => {
