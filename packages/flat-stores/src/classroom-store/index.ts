@@ -470,6 +470,14 @@ export class ClassroomStore {
         this.sideEffect.addDisposer(
             autorun(() => {
                 const users: Array<{ uid: string; avatar: string; isOwner: boolean }> = [];
+                const owner = this.users.cachedUsers.get(this.ownerUUID);
+                if (owner) {
+                    users.push({
+                        uid: owner.rtcUID,
+                        avatar: owner.avatar,
+                        isOwner: true,
+                    });
+                }
                 this.onStageUserUUIDs.forEach(userUUID => {
                     const user = this.users.cachedUsers.get(userUUID);
                     if (user) {
