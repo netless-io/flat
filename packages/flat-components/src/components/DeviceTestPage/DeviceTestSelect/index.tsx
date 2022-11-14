@@ -20,7 +20,7 @@ export const DeviceTestSelect: React.FC<DeviceTestSelectProps> = ({
     onChange,
 }) => {
     const t = useTranslate();
-    const devideId = devices?.some(device => device.deviceId === currentDeviceID)
+    const deviceId = devices?.some(device => device.deviceId === currentDeviceID)
         ? currentDeviceID
         : undefined;
 
@@ -28,7 +28,7 @@ export const DeviceTestSelect: React.FC<DeviceTestSelectProps> = ({
         <div className="device-test-select-container">
             {isDeviceAccessible ? (
                 <div className="device-test-select-box">
-                    <Select value={devideId} onChange={onChange}>
+                    <Select value={deviceId} onChange={onChange}>
                         {devices?.map(({ deviceId, label }) => {
                             return (
                                 <Select.Option key={deviceId} value={deviceId}>
