@@ -1,7 +1,3 @@
-import playSVG from "../../../assets/image/play.svg";
-import stopSVG from "../../../assets/image/stop.svg";
-import muteSVG from "../../../assets/image/mute.svg";
-import volumeSVG from "../../../assets/image/volume.svg";
 import "./index.less";
 
 import React, { useCallback, useEffect, useState } from "react";
@@ -15,7 +11,7 @@ import { runtime } from "../../../utils/runtime";
 import { routeConfig } from "../../../route-config";
 import { DeviceCheckResults } from "../utils";
 import { useTranslate } from "@netless/flat-i18n";
-import { useSafePromise } from "flat-components";
+import { SVGPause, SVGPlay, SVGSound, SVGSoundSilent, useSafePromise } from "flat-components";
 import { withFlatServices } from "@netless/flat-pages/src/components/FlatServicesContext";
 
 export const SpeakerCheckPage = withFlatServices("videoChat")(
@@ -82,17 +78,14 @@ export const SpeakerCheckPage = withFlatServices("videoChat")(
                             onChange={onDeviceIDChanged}
                         />
                         <p>{t("audition-sound")}</p>
-                        <Button
-                            icon={<img src={isPlaying ? stopSVG : playSVG} />}
-                            onClick={togglePlay}
-                        >
+                        <Button icon={isPlaying ? <SVGPause /> : <SVGPlay />} onClick={togglePlay}>
                             BWV 988 - 05 - Variatio 4 a 1 Clav.mp3
                         </Button>
                     </div>
                     <div className="speaker-audio-check-container">
                         <p>{t("volume")}</p>
                         <div className="speaker-audio-check-inner">
-                            <img src={muteSVG} />
+                            <SVGSoundSilent />
                             <Slider
                                 max={1}
                                 min={0}
@@ -100,7 +93,7 @@ export const SpeakerCheckPage = withFlatServices("videoChat")(
                                 value={currentVolume}
                                 onChange={setCurrentVolume}
                             />
-                            <img src={volumeSVG} />
+                            <SVGSound />
                         </div>
                     </div>
                     <div className="speaker-btn-container">
