@@ -3,7 +3,7 @@ import stopSVG from "../icons/stop.svg";
 import "./style.less";
 
 import { Button } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Device } from "../constants";
 import { DeviceTestSelect } from "../DeviceTestSelect";
 import { useTranslate } from "@netless/flat-i18n";
@@ -29,6 +29,8 @@ export const SpeakerTest: React.FC<SpeakerTestProps> = ({
     const t = useTranslate();
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
+
+    useEffect(() => () => audioRef.current?.pause(), []);
 
     const togglePlay = (): void => {
         isPlaying ? audioRef.current?.pause() : audioRef.current?.play();
