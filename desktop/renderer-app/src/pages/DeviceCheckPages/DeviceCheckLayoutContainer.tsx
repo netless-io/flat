@@ -1,15 +1,11 @@
 /* eslint react/display-name: off */
-import systemSVG from "./icons/system.svg";
-import cameraSVG from "./icons/camera.svg";
-import speakerSVG from "./icons/speaker.svg";
-import microphoneSVG from "./icons/microphone.svg";
 import "./DeviceCheckLayoutContainer.less";
 
 import React, { useContext, useEffect } from "react";
 import { routeConfig, RouteNameType } from "../../route-config";
 import { useHistory, useLocation } from "react-router-dom";
 import { DeviceCheckState } from "./utils";
-import { MainPageLayoutItem } from "flat-components";
+import { MainPageLayoutItem, SVGCamera, SVGMicrophone, SVGSound, SVGSystem } from "flat-components";
 import { useTranslate } from "@netless/flat-i18n";
 import { PageStoreContext } from "@netless/flat-pages/src/components/StoreProvider";
 
@@ -24,25 +20,25 @@ export const DeviceCheckLayoutContainer: React.FC = ({ children }): React.ReactE
             subMenu: [
                 {
                     key: routeConfig[RouteNameType.SystemCheckPage].path,
-                    icon: (): React.ReactNode => <img src={systemSVG} />,
+                    icon: active => <SVGSystem active={active} />,
                     title: t("system-testing"),
                     route: routeConfig[RouteNameType.SystemCheckPage].path,
                 },
                 {
                     key: routeConfig[RouteNameType.CameraCheckPage].path,
-                    icon: (): React.ReactNode => <img src={cameraSVG} />,
+                    icon: active => <SVGCamera active={active} />,
                     title: t("camera-testing"),
                     route: routeConfig[RouteNameType.CameraCheckPage].path,
                 },
                 {
                     key: routeConfig[RouteNameType.SpeakerCheckPage].path,
-                    icon: (): React.ReactNode => <img src={speakerSVG} />,
+                    icon: active => <SVGSound active={active} />,
                     title: t("headphone-testing"),
                     route: routeConfig[RouteNameType.SpeakerCheckPage].path,
                 },
                 {
                     key: routeConfig[RouteNameType.MicrophoneCheckPage].path,
-                    icon: (): React.ReactNode => <img src={microphoneSVG} />,
+                    icon: active => <SVGMicrophone active={active} />,
                     title: t("microphone-testing"),
                     route: routeConfig[RouteNameType.MicrophoneCheckPage].path,
                 },
