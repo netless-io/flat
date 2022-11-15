@@ -124,9 +124,11 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
         // check device id on changes
         if (cameraDevices.length > 0 && !cameraDeviceId) {
             const lastCameraId = preferencesStore.cameraId;
-            lastCameraId
-                ? setCameraDeviceId(lastCameraId)
-                : setCameraDeviceId(cameraDevices[0].deviceId);
+            if (lastCameraId && cameraDevices.find(device => device.deviceId === lastCameraId)) {
+                setCameraDeviceId(lastCameraId);
+            } else {
+                setCameraDeviceId(cameraDevices[0].deviceId);
+            }
         }
     }, [preferencesStore, cameraDeviceId, cameraDevices]);
 
@@ -134,9 +136,14 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
         // check device id on changes
         if (microphoneDevices.length > 0 && !microphoneDeviceId) {
             const lastMicrophoneId = preferencesStore.microphoneId;
-            lastMicrophoneId
-                ? setMicrophoneDeviceId(lastMicrophoneId)
-                : setMicrophoneDeviceId(microphoneDevices[0].deviceId);
+            if (
+                lastMicrophoneId &&
+                microphoneDevices.some(device => device.deviceId === lastMicrophoneId)
+            ) {
+                setMicrophoneDeviceId(lastMicrophoneId);
+            } else {
+                setMicrophoneDeviceId(microphoneDevices[0].deviceId);
+            }
         }
     }, [preferencesStore, microphoneDeviceId, microphoneDevices]);
 
