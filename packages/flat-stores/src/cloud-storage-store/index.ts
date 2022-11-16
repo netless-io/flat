@@ -191,6 +191,7 @@ export class CloudStorageStore extends CloudStorageStoreBase {
                     this.setCurrentDirectoryPath(file.fileName);
                     pushHistory(this.parentDirectoryPath);
                     this.isOpenDirectoryFile = true;
+                    return;
                 }
                 if (this.compact) {
                     if (
