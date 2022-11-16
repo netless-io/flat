@@ -60,7 +60,7 @@ export const RoomDetailPage = observer(function RoomDetailPage() {
     async function joinRoom(): Promise<void> {
         if (roomInfo) {
             const roomUUID = roomInfo.roomUUID;
-            if (globalStore.isTurnOffDeviceTest) {
+            if (globalStore.isTurnOffDeviceTest || window.isElectron) {
                 await joinRoomHandler(roomUUID, pushHistory);
             } else {
                 pushHistory(RouteNameType.DevicesTestPage, { roomUUID });

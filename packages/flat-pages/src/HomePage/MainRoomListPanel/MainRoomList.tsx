@@ -250,7 +250,7 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     );
 
     async function joinRoom(roomUUID: string): Promise<void> {
-        if (globalStore.isTurnOffDeviceTest) {
+        if (globalStore.isTurnOffDeviceTest || window.isElectron) {
             await joinRoomHandler(roomUUID, pushHistory);
         } else {
             pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
