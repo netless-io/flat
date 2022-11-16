@@ -1,3 +1,12 @@
+## [2.0.1](https://github.com/netless-io/flat/compare/v2.0.0...v2.0.1) (2022-11-16)
+
+
+### Bug Fixes
+
+* **flat-stores:** do not insert directory as courseware ([#1777](https://github.com/netless-io/flat/issues/1777)) ([24c5b1c](https://github.com/netless-io/flat/commit/24c5b1caec5c3745e9b057dff371238a1d701d45))
+
+
+
 # [2.0.0](https://github.com/netless-io/flat/compare/v1.8.2...v2.0.0) (2022-11-16)
 
 
