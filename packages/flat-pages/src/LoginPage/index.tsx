@@ -78,7 +78,7 @@ export const LoginPage = observer(function LoginPage() {
                 pushHistory(RouteNameType.HomePage);
                 return;
             }
-            if (globalStore.isTurnOffDeviceTest) {
+            if (globalStore.isTurnOffDeviceTest || window.isElectron) {
                 await joinRoomHandler(roomUUID, pushHistory);
             } else {
                 pushHistory(RouteNameType.DevicesTestPage, { roomUUID });
