@@ -1,3 +1,12 @@
+## [2.0.2](https://github.com/netless-io/flat/compare/v2.0.1...v2.0.2) (2022-11-16)
+
+
+### Bug Fixes
+
+* **desktop:** launch windows app failed ([#1780](https://github.com/netless-io/flat/issues/1780)) ([fdedef9](https://github.com/netless-io/flat/commit/fdedef99bbcf0336c31f8fea32e881272d544f12))
+
+
+
 ## [2.0.1](https://github.com/netless-io/flat/compare/v2.0.0...v2.0.1) (2022-11-16)
 
 
