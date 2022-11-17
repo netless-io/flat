@@ -39,7 +39,7 @@ win:
     - target: zip
     - target: nsis
       arch:
-        - ia32
+        - x64
 
 protocols:
   - name: Agora Flat Client
