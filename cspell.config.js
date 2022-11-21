@@ -18,6 +18,7 @@ module.exports = {
         "Magix",
         "quickstart",
         "signup",
+        "dataurl",
 
         // wechat
         "wechat",
