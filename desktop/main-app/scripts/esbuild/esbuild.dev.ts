@@ -1,3 +1,4 @@
+import { platform } from "os";
 import { ChildProcess, spawn } from "child_process";
 import esbuild from "esbuild";
 import { dotenvPlugin, external, replaceMetaPlugin } from "./esbuild.common";
@@ -8,7 +9,8 @@ const respawn = () => {
     if (child) {
         child.kill("SIGTERM");
     }
-    child = spawn("pnpm", ["electron", paths.dist], { stdio: "inherit" });
+    const bin = platform() === "win32" ? "pnpm.cmd" : "pnpm";
+    child = spawn(bin, ["electron", paths.dist], { stdio: "inherit" });
 };
 
 const buildPreload = esbuild.build({
