@@ -333,23 +333,26 @@ export class Fastboard extends IServiceWhiteboard {
             return [];
         }
 
+        type snapshot_t = typeof import("@netless/white-snapshot").snapshot;
+        type src2dataurl_t = typeof import("@netless/white-snapshot").src2dataurl;
+
         const displayer: Displayer = {
             state: app.manager,
             fillSceneSnapshot: app.manager.mainView.fillSceneSnapshot.bind(app.manager.mainView),
         };
         const scenes = app.manager.sceneState.scenes;
-        const actions: Array<
-            (snapshot: (...args: any) => Promise<HTMLCanvasElement | null>) => Promise<void>
-        > = Array(scenes.length);
+        const actions: Array<(snapshot: snapshot_t, src2dataurl: src2dataurl_t) => Promise<void>> =
+            Array(scenes.length);
         const canvases: Array<Promise<HTMLCanvasElement | null>> = Array(scenes.length);
 
         scenes.forEach((scene, i) => {
             canvases[i] = new Promise(resolve => {
-                actions[i] = async snapshot => {
+                actions[i] = async (snapshot, src2dataurl) => {
                     try {
                         const canvas = await snapshot(displayer, {
                             scenePath: app.manager.mainViewSceneDir + scene.name,
                             crossorigin: true,
+                            src2dataurl: src => src2dataurl(src, true),
                         });
                         resolve(canvas);
                     } catch (e) {
@@ -362,9 +365,9 @@ export class Fastboard extends IServiceWhiteboard {
         });
 
         Promise.resolve().then(async () => {
-            const { snapshot } = await import("@netless/white-snapshot");
+            const { snapshot, src2dataurl } = await import("@netless/white-snapshot");
             for (const act of actions) {
-                await act(snapshot);
+                await act(snapshot, src2dataurl);
             }
         });
 
