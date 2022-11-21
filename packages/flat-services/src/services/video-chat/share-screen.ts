@@ -41,9 +41,11 @@ export abstract class IServiceShareScreen {
 // Only used in electron.
 export interface IServiceShareScreenInfo {
     type: "display" | "window";
-    screenId: number;
+    screenId: number | { id: number };
     name: string;
     image: Uint8Array;
+    width: number;
+    height: number;
 }
 
 function doesNotSupportError(type: string): Error {

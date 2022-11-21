@@ -4,7 +4,11 @@ import {
     IServiceShareScreenParams,
 } from "@netless/flat-services";
 import type AgoraRtcEngine from "agora-electron-sdk";
-import type { DisplayInfo, WindowInfo } from "agora-electron-sdk/types/Api/native_type";
+import type {
+    DisplayInfo,
+    ScreenSymbol,
+    WindowInfo,
+} from "agora-electron-sdk/types/Api/native_type";
 
 import { SideEffectManager } from "side-effect-manager";
 import { combine, Val } from "value-enhancer";
@@ -120,9 +124,11 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
             if ("displayId" in info) {
                 return {
                     type: "display",
-                    screenId: info.displayId.id,
+                    screenId: info.displayId,
                     name: "Desktop",
                     image: info.image,
+                    width: info.width,
+                    height: info.height,
                 };
             } else {
                 return {
@@ -130,6 +136,8 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
                     screenId: info.windowId,
                     name: `${info.ownerName} - ${info.name}`,
                     image: info.image,
+                    width: info.width,
+                    height: info.height,
                 };
             }
         };
@@ -179,17 +187,18 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         this._pTogglingShareScreen = new Promise<void>(resolve => {
             this.client.once("videoSourceJoinedSuccess", () => {
                 this.client.videoSourceSetVideoProfile(43, false);
+                const { width, height } = screenInfo;
                 if (screenInfo.type === "display") {
                     this.client.videoSourceStartScreenCaptureByScreen(
-                        { id: screenInfo.screenId },
-                        rect,
-                        videoSourceParams,
+                        screenInfo.screenId as ScreenSymbol,
+                        { ...rect, width, height },
+                        { ...videoSourceParams, width, height },
                     );
                 } else {
                     this.client.videoSourceStartScreenCaptureByWindow(
-                        screenInfo.screenId,
-                        rect,
-                        videoSourceParams,
+                        screenInfo.screenId as number,
+                        { ...rect, width, height },
+                        { ...videoSourceParams, width, height },
                     );
                 }
                 resolve();

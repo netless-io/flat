@@ -50,7 +50,8 @@ export const ScreenList = observer<ScreenListProps>(function ShareScreen({
     return (
         <div className="screen-list">
             {screenInfo.map(info => {
-                const key = `${info.type}-${info.screenId}`;
+                const id = typeof info.screenId === "number" ? info.screenId : info.screenId.id;
+                const key = `${info.type}-${id}`;
                 const isActive = activeInfo === key;
 
                 return (
