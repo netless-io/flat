@@ -552,5 +552,7 @@
   "invalid-directory-name-tips": "The directory name cannot contain the following characters: \\ /",
   "new-directory": "New Directory",
   "local-file": "Local File",
-  "new": "New"
+  "new": "New",
+  "error-code-error": "An error occurred, error code: {code}",
+  "unknown-error": "Unknown error"
 }
