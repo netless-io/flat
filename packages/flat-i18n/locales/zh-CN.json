@@ -552,5 +552,7 @@
   "invalid-directory-name-tips": "文件名不能包含以下字符: \\\\ /",
   "new-directory": "新建文件夹",
   "local-file": "本地文件",
-  "new": "新建"
+  "new": "新建",
+  "error-code-error": "出现错误，错误码：{code}",
+  "unknown-error": "未知错误"
 }
