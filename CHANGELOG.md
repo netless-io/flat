@@ -1,3 +1,16 @@
+## [2.0.3](https://github.com/netless-io/flat/compare/v2.0.2...v2.0.3) (2022-11-23)
+
+
+### Bug Fixes
+
+* **flat-components**: add cases where the backend does not return error messages ([#1788](https://github.com/netless-io/flat/issues/1788)) ([316f2181](https://github.com/netless-io/flat/commit/316f21819229377c6eb13ff02592447816ca5dc7))
+* **flat-components**: remove horizontal scrollbar in chat users ([#1787](https://github.com/netless-io/flat/issues/1787)) ([7b482df1](https://github.com/netless-io/flat/commit/7b482df19f09552ce50fc0546508af41ef6c19bd))
+* **service-providers**: (snapshot) fetch images without cache ([#1786](https://github.com/netless-io/flat/issues/1786)) ([e8787a74](https://github.com/netless-io/flat/commit/e8787a748042f94377588be008539e652e15f970))
+* **flat-services**: share screen not working on windows ([#1785](https://github.com/netless-io/flat/issues/1785)) ([188d2b39](https://github.com/netless-io/flat/commit/188d2b39a8891e9726b3e8ae5087363192c3876f))
+* **desktop**: windows arch incorrect ([#1783](https://github.com/netless-io/flat/issues/1783)) ([3d924fb9](https://github.com/netless-io/flat/commit/3d924fb9dc39671aa92aaa7e815ac3c914fead2e))
+
+
+
 ## [2.0.2](https://github.com/netless-io/flat/compare/v2.0.1...v2.0.2) (2022-11-16)
 
 
