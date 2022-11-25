@@ -13,6 +13,7 @@ import { ipcStore } from "../stores/ipc-store";
 import { IPCContext } from "../components/IPCContext";
 import { windowsBtnContext } from "../components/WindowsBtnContext";
 import { runtime } from "../utils/runtime";
+import { autoUpdate } from "../utils/auto-update";
 
 /** configure right after import */
 import { configure } from "mobx";
@@ -25,7 +26,11 @@ const App: React.FC = () => {
 
     return (
         <AntdProvider lang={language}>
-            <StoreProvider WindowsBtnContext={windowsBtnContext} runtime={runtime}>
+            <StoreProvider
+                WindowsBtnContext={windowsBtnContext}
+                autoUpdate={autoUpdate}
+                runtime={runtime}
+            >
                 <IPCContext.Provider value={ipcStore}>
                     <FlatServicesContextProvider>
                         <AppRoutes />
