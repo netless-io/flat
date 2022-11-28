@@ -155,6 +155,7 @@ export class ClassroomStore {
             deviceStateStorage: false,
             classroomStorage: false,
             onStageUsersStorage: false,
+            shareScreenInfo: observable.ref,
         });
 
         this.sideEffect.addDisposer(

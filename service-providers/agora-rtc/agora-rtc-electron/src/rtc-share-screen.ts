@@ -136,8 +136,9 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
                     screenId: info.windowId,
                     name: `${info.ownerName} - ${info.name}`,
                     image: info.image,
-                    width: info.width,
-                    height: info.height,
+                    // There's no other way to get the original window size :/
+                    width: info.originWidth,
+                    height: info.originHeight,
                 };
             }
         };
@@ -187,18 +188,17 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         this._pTogglingShareScreen = new Promise<void>(resolve => {
             this.client.once("videoSourceJoinedSuccess", () => {
                 this.client.videoSourceSetVideoProfile(43, false);
-                const { width, height } = screenInfo;
                 if (screenInfo.type === "display") {
                     this.client.videoSourceStartScreenCaptureByScreen(
                         screenInfo.screenId as ScreenSymbol,
-                        { ...rect, width, height },
-                        { ...videoSourceParams, width, height },
+                        rect,
+                        videoSourceParams,
                     );
                 } else {
                     this.client.videoSourceStartScreenCaptureByWindow(
                         screenInfo.screenId as number,
-                        { ...rect, width, height },
-                        { ...videoSourceParams, width, height },
+                        rect,
+                        videoSourceParams,
                     );
                 }
                 resolve();
