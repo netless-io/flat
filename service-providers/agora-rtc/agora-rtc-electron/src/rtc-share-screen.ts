@@ -120,7 +120,13 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
             this.client.getScreenWindowsInfo(res),
         );
 
-        const convertScreenInfo = (info: DisplayInfo | WindowInfo): IServiceShareScreenInfo => {
+        const convertScreenInfo = (
+            info: DisplayInfo | WindowInfo,
+        ): IServiceShareScreenInfo | null => {
+            // There's a bug in agora SDK, the image may be missing on mirrored screen
+            if (!info.image) {
+                return null;
+            }
             if ("displayId" in info) {
                 return {
                     type: "display",
@@ -142,7 +148,10 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
             }
         };
 
-        return [...displayList.map(convertScreenInfo), ...windowList.map(convertScreenInfo)];
+        return compact([
+            ...displayList.map(convertScreenInfo),
+            ...windowList.map(convertScreenInfo),
+        ]);
     }
 
     public override setScreenInfo(info: IServiceShareScreenInfo | null): void {
@@ -231,4 +240,10 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         await this._pTogglingShareScreen;
         this._pTogglingShareScreen = undefined;
     }
+}
+
+type Truthy<T> = T extends false | "" | 0 | null | undefined ? never : T;
+
+function compact<T>(arr: T[]): Array<Truthy<T>> {
+    return arr.filter(Boolean) as Array<Truthy<T>>;
 }
