@@ -24,6 +24,7 @@ import {
     LoginProcessResult,
 } from "@netless/flat-server-api";
 import { saveJWTToken } from "../utils/use-login-check";
+import { AppUpgradeModal } from "../components/AppUpgradeModal";
 
 export const LoginPage = observer(function LoginPage() {
     const language = useLanguage();
@@ -174,6 +175,7 @@ export const LoginPage = observer(function LoginPage() {
                     onClickButton={handleLogin}
                 />
             </LoginPanel>
+            <AppUpgradeModal />
         </div>
     );
 });

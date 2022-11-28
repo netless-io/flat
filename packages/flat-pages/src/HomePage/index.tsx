@@ -7,6 +7,7 @@ import { MainRoomListPanel } from "./MainRoomListPanel";
 import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
 import { useLoginCheck } from "../utils/use-login-check";
 import { PageStoreContext } from "../components/StoreProvider";
+import { AppUpgradeModal } from "../components/AppUpgradeModal";
 
 export const HomePage = observer(function HomePage() {
     const pageStore = useContext(PageStoreContext);
@@ -23,6 +24,7 @@ export const HomePage = observer(function HomePage() {
                 <MainRoomListPanel isLogin={isLogin} />
                 <MainRoomHistoryPanel isLogin={isLogin} />
             </div>
+            <AppUpgradeModal />
         </div>
     );
 });
