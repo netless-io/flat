@@ -74,13 +74,19 @@ export class AgoraRTCWeb extends IServiceVideoChat {
         this.shareScreen = new AgoraRTCWebShareScreen({ APP_ID });
         this.sideEffect.add(() => {
             AgoraRTC.onCameraChanged = deviceInfo => {
-                this.setCameraID(deviceInfo.device.deviceId);
+                if (deviceInfo.state === "ACTIVE") {
+                    this.setCameraID(deviceInfo.device.deviceId);
+                }
             };
             AgoraRTC.onMicrophoneChanged = deviceInfo => {
-                this.setMicID(deviceInfo.device.deviceId);
+                if (deviceInfo.state === "ACTIVE") {
+                    this.setMicID(deviceInfo.device.deviceId);
+                }
             };
             AgoraRTC.onPlaybackDeviceChanged = deviceInfo => {
-                this.setSpeakerID(deviceInfo.device.deviceId);
+                if (deviceInfo.state === "ACTIVE") {
+                    this.setSpeakerID(deviceInfo.device.deviceId);
+                }
             };
             return () => {
                 AgoraRTC.onCameraChanged = undefined;
