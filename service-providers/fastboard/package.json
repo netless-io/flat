@@ -16,7 +16,7 @@
     "@netless/flat-service-provider-file-convert-netless": "workspace:*",
     "@netless/flat-services": "workspace:*",
     "@netless/white-snapshot": "^0.4.2",
-    "@netless/window-manager": "1.0.0-canary.69",
+    "@netless/window-manager": "1.0.0-canary.71",
     "side-effect-manager": "^1.2.1",
     "value-enhancer": "^1.3.2",
     "white-web-sdk": "npm:white-web-sdk-esm@2.16.34"
