@@ -3,7 +3,7 @@ import "../JoinPage/style.less";
 import logoSVG from "../JoinPage/icons/logo-sm.svg";
 import openInBrowserSVG from "../JoinPage/icons/open-in-browser.svg";
 
-import React from "react";
+import React, { useState } from "react";
 import { useLanguage, useTranslate } from "@netless/flat-i18n";
 import {
     FLAT_DOWNLOAD_URL,
@@ -12,7 +12,6 @@ import {
     SERVICE_URL,
     SERVICE_URL_CN,
 } from "../constants/process";
-import { useState } from "react";
 
 // This is a simplified version of JoinPageMobile.tsx, it can not join room.
 export const WeChatRedirect = (): React.ReactElement => {
