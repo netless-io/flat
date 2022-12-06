@@ -1,47 +1,39 @@
-import logoSVG from "./icons/logo-sm.svg";
-import openInBrowserSVG from "./icons/open-in-browser.svg";
+import "../JoinPage/style.less";
 
-import React, { useCallback, useEffect, useMemo } from "react";
-import { useTranslate } from "@netless/flat-i18n";
-import { FLAT_DOWNLOAD_URL } from "../constants/process";
-import { isWeChatBrowser } from "../utils/user-agent";
+import logoSVG from "../JoinPage/icons/logo-sm.svg";
+import openInBrowserSVG from "../JoinPage/icons/open-in-browser.svg";
 
-export interface JoinPageMobileProps {
-    roomUUID: string;
-    privacyURL: string;
-    serviceURL: string;
-}
+import React from "react";
+import { useLanguage, useTranslate } from "@netless/flat-i18n";
+import {
+    FLAT_DOWNLOAD_URL,
+    PRIVACY_URL,
+    PRIVACY_URL_CN,
+    SERVICE_URL,
+    SERVICE_URL_CN,
+} from "../constants/process";
+import { useState } from "react";
 
-export default function JoinPageMobile({
-    roomUUID,
-    privacyURL,
-    serviceURL,
-}: JoinPageMobileProps): React.ReactElement {
+// This is a simplified version of JoinPageMobile.tsx, it can not join room.
+export const WeChatRedirect = (): React.ReactElement => {
     const t = useTranslate();
+    const language = useLanguage();
+    const [openCount, setOpenCount] = useState(0);
 
-    const url = useMemo(() => `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`, [roomUUID]);
+    const privacyURL = language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
+    const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
 
-    const openApp = useCallback(() => {
-        window.location.href = url;
-    }, [url]);
+    const openApp = (): void => {
+        window.location.href = "x-agora-flat-client://active";
+        setOpenCount(openCount + 1);
+    };
 
     const download = (): void => {
         window.location.href = FLAT_DOWNLOAD_URL;
     };
 
-    useEffect(() => {
-        openApp();
-    }, [openApp]);
-
     return (
         <div className="join-page-mobile-container">
-            <iframe
-                height="0"
-                src={url}
-                style={{ display: "none" }}
-                title={`join ${t("app-name")}`}
-                width="0"
-            />
             <div className="join-page-mobile-effect"></div>
             <div className="join-page-mobile-header">
                 <div className="join-page-mobile-app-icon">
@@ -65,7 +57,7 @@ export default function JoinPageMobile({
                     {t("service-policy")}
                 </a>
             </div>
-            {isWeChatBrowser && (
+            {openCount > 0 && (
                 <div className="join-page-mobile-wechat-overlay">
                     <img alt="[open-in-browser]" src={openInBrowserSVG} />
                     <strong>{t("open-in-browser")}</strong>
@@ -73,4 +65,4 @@ export default function JoinPageMobile({
             )}
         </div>
     );
-}
+};
