@@ -1,14 +1,16 @@
-import loadable from "@loadable/component";
 import React, { ComponentType, useContext, useEffect } from "react";
+import { observer } from "mobx-react-lite";
+import loadable from "@loadable/component";
 import { useTranslate } from "@netless/flat-i18n";
+import { FlatThemeBodyProvider, LoadingPage } from "flat-components";
 import { RouteComponentProps } from "react-router-dom";
 import { useIsomorphicLayoutEffect } from "react-use";
-import { FlatThemeBodyProvider, LoadingPage } from "flat-components";
 import { PageStoreContext, PreferencesStoreContext } from "../components/StoreProvider";
 import { RouteNameType } from "../route-config";
+import { isWeChatBrowser } from "../utils/user-agent";
 import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
 import { routePages } from "./route-pages";
-import { observer } from "mobx-react-lite";
+import { WeChatRedirect } from "./WeChatRedirect";
 
 export interface AppRouteContainerProps {
     name: RouteNameType;
@@ -61,6 +63,10 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
 
     const hasHeader =
         pageStore.name !== null && pageStore.name && routePages[pageStore.name].hasHeader;
+
+    if (isWeChatBrowser && !routeProps.location.pathname.startsWith("/join/")) {
+        return <WeChatRedirect />;
+    }
 
     return (
         <FlatThemeBodyProvider prefersColorScheme={preferencesStore.prefersColorScheme}>
