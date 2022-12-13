@@ -103,6 +103,7 @@ export class AgoraRTM extends IServiceTextChat {
                     messageType: RtmEngine.MessageType.TEXT,
                     text: message,
                 },
+                // @ts-ignore
                 { enableHistoricalMessaging: true },
             );
             // emit to local

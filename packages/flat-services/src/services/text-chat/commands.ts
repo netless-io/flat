@@ -3,8 +3,8 @@ import type { RoomStatus } from "@netless/flat-server-api";
 /** From teacher to students */
 export interface IServiceTextChatRoomCommandData {
     "update-room-status": { roomUUID: string; status: RoomStatus };
-    ban: { roomUUID: string; status: boolean };
-    notice: { roomUUID: string; text: string };
+    "ban": { roomUUID: string; status: boolean };
+    "notice": { roomUUID: string; text: string };
 }
 
 export type IServiceTextChatRoomCommandNames = keyof IServiceTextChatRoomCommandData;

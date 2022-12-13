@@ -81,13 +81,13 @@ export class FlatI18n {
         this.i18n = i18next;
 
         const resources: Resource = {
-            en: { translation: en },
+            "en": { translation: en },
             "zh-CN": { translation: zhCN },
         };
 
         const defaultVars: Record<string, Record<string, string>> = process.env.FLAT_REGION === "US"
-            ? { en: varsUSen, "zh-CN": varsUSzhCN }
-            : { en: varsCNen, "zh-CN": varsCNzhCN };
+            ? { "en": varsUSen, "zh-CN": varsUSzhCN }
+            : { "en": varsCNen, "zh-CN": varsCNzhCN };
 
         i18next
             .use(I18nextBrowserLanguageDetector)

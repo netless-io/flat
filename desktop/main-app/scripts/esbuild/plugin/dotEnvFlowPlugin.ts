@@ -5,7 +5,7 @@ function parseWithEnvObject(orgEnv: Record<string, string | undefined>): Record<
     return Reflect.ownKeys(orgEnv)
         ?.map(item => {
             const result: Record<string, any> = {};
-            if (typeof item === "string" && orgEnv?.[item] && !item.includes('(')) {
+            if (typeof item === "string" && orgEnv?.[item] && !item.includes("(")) {
                 result[`process.env.${item}`] = JSON.stringify(orgEnv?.[item]);
             }
             return result;

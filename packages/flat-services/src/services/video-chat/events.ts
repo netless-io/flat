@@ -16,7 +16,7 @@ import type { Remitter } from "remitter";
 export type IServiceVideoChatNetworkQualityType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 export interface IServiceVideoChatEventData {
-    network: {
+    "network": {
         delay: number;
         uplink: IServiceVideoChatNetworkQualityType;
         downlink: IServiceVideoChatNetworkQualityType;
@@ -32,7 +32,7 @@ export interface IServiceVideoChatEventData {
     "err-set-camera": Error;
     "err-set-mic": Error;
     "err-low-volume": undefined;
-    error: Error;
+    "error": Error;
 }
 
 export type IServiceVideoChatEventNames = keyof IServiceVideoChatEventData;
