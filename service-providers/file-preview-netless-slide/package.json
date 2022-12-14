@@ -14,7 +14,7 @@
     "typescript": "^4.8.3"
   },
   "dependencies": {
-    "@netless/app-slide": "0.3.0-canary.13",
+    "@netless/app-slide": "0.3.0-canary.16",
     "@netless/flat-service-provider-file-convert-netless": "workspace:*",
     "@netless/flat-services": "workspace:*"
   }

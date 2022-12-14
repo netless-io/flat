@@ -10,14 +10,14 @@ export interface IServiceTextChatEventData {
         text: string;
         senderID: string;
     };
-    ban: {
+    "ban": {
         roomUUID: string;
         uuid: string;
         timestamp: number;
         status: boolean;
         senderID: string;
     };
-    notice: {
+    "notice": {
         roomUUID: string;
         uuid: string;
         timestamp: number;
