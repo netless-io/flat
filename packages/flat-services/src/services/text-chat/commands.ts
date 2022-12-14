@@ -18,6 +18,12 @@ export type IServiceTextChatRoomCommand<
 export interface IServiceTextChatPeerCommandData {
     /** From student to teacher */
     "raise-hand": { roomUUID: string; raiseHand: boolean };
+    /** From teacher to student */
+    "request-device": { roomUUID: string; camera?: true; mic?: true };
+    /** From student to teacher */
+    "request-device-response": { roomUUID: string; camera?: boolean; mic?: boolean };
+    /** From teacher to student */
+    "notify-device-off": { roomUUID: string; camera?: false; mic?: false };
 }
 
 export type IServiceTextChatPeerCommandNames = keyof IServiceTextChatPeerCommandData;

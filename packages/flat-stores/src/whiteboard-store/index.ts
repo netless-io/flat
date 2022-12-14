@@ -111,9 +111,13 @@ export class WhiteboardStore {
         this.windowManager = manager;
     };
 
-    public updateWritable = async (isWritable: boolean): Promise<void> => {
+    public updateWritable = (isWritable: boolean): void => {
         this.isWritable = isWritable;
-        this.whiteboard.setAllowDrawing(isWritable);
+        this.whiteboard.setIsWritable(isWritable);
+    };
+
+    public updateAllowDrawing = (allowDrawing: boolean): void => {
+        this.whiteboard.setAllowDrawing(allowDrawing);
     };
 
     public setFileOpen = (open: boolean): void => {

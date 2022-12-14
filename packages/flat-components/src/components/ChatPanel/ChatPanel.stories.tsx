@@ -23,6 +23,7 @@ const makeUser = (): User => ({
     userUUID: faker.datatype.uuid(),
     name: faker.name.lastName(),
     isSpeak: faker.datatype.boolean(),
+    wbOperate: faker.datatype.boolean(),
     isRaiseHand: faker.datatype.boolean(),
     avatar: "http://placekitten.com/64/64",
 });
@@ -36,8 +37,6 @@ Overview.args = {
     unreadCount: faker.datatype.number(),
     isCreator: faker.datatype.boolean(),
     isBan: faker.datatype.boolean(),
-    hasHandRaising: faker.datatype.boolean(),
-    generateAvatar: () => "http://placekitten.com/64/64",
     getUserByUUID: uuid => users.find(e => e.userUUID === uuid) || makeUser(),
     messages: Array(20)
         .fill(0)
@@ -49,9 +48,7 @@ Overview.args = {
             text: chance.sentence({ words: faker.datatype.number(20) }),
             senderID: chance.pickone(users).userUUID,
         })),
-    ownerUUID: faker.datatype.uuid(),
     userUUID: currentUser.userUUID,
-    users,
 };
 Overview.argTypes = {
     loadMoreRows: { action: "loadMoreRows" },

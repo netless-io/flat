@@ -16,6 +16,7 @@ const makeUser = (): User => ({
     userUUID: faker.datatype.uuid(),
     name: faker.name.lastName(),
     isSpeak: faker.datatype.boolean(),
+    wbOperate: faker.datatype.boolean(),
     isRaiseHand: faker.datatype.boolean(),
     avatar: "http://placekitten.com/64/64",
     hasLeft: faker.datatype.boolean(),

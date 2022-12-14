@@ -10,7 +10,6 @@ import {
     RoomStatus,
     RoomType,
     checkRTMCensor,
-    CloudRecordStartPayload,
 } from "@netless/flat-server-api";
 import { FlatI18n } from "@netless/flat-i18n";
 import { errorTips, message } from "flat-components";
@@ -43,10 +42,6 @@ export interface ClassroomStoreConfig {
     recording: IServiceRecording;
 }
 
-export type RecordingConfig = Required<
-    CloudRecordStartPayload["agoraData"]["clientRequest"]
->["recordingConfig"];
-
 export type DeviceStateStorageState = Record<string, { camera: boolean; mic: boolean }>;
 export type ClassroomStorageState = {
     ban: boolean;
@@ -54,6 +49,7 @@ export type ClassroomStorageState = {
     shareScreen: boolean;
 };
 export type OnStageUsersStorageState = Record<string, boolean>;
+export type WhiteboardStorageState = Record<string, boolean>;
 
 export class ClassroomStore {
     private readonly sideEffect = new SideEffectManager();
@@ -72,6 +68,9 @@ export class ClassroomStore {
     public isRecordingLoading = false;
     /** is user login on other device */
     public isRemoteLogin = false;
+    /** is being requested for turning on device */
+    public isRequestingCamera = false;
+    public isRequestingMic = false;
 
     public isCloudStoragePanelVisible = false;
 
@@ -100,6 +99,8 @@ export class ClassroomStore {
     public deviceStateStorage?: Storage<DeviceStateStorageState>;
     public classroomStorage?: Storage<ClassroomStorageState>;
     public onStageUsersStorage?: Storage<OnStageUsersStorageState>;
+    /** users that can operate the whiteboard */
+    public whiteboardStorage?: Storage<WhiteboardStorageState>;
 
     public readonly users: UserStore;
 
@@ -187,11 +188,37 @@ export class ClassroomStore {
         );
 
         if (!this.isCreator) {
-            this.rtm.events.on("update-room-status", event => {
-                if (event.roomUUID === this.roomUUID && event.senderID === this.ownerUUID) {
-                    this.updateRoomStatus(event.status);
-                }
-            });
+            this.sideEffect.addDisposer(
+                this.rtm.events.on("update-room-status", event => {
+                    if (event.roomUUID === this.roomUUID && event.senderID === this.ownerUUID) {
+                        this.updateRoomStatus(event.status);
+                    }
+                }),
+            );
+
+            this.sideEffect.addDisposer(
+                this.rtm.events.on("request-device", event => {
+                    if (event.roomUUID === this.roomUUID && event.senderID === this.ownerUUID) {
+                        this.toggleRequestingDevice(
+                            event.deviceState.camera,
+                            event.deviceState.mic,
+                        );
+                    }
+                }),
+            );
+
+            this.sideEffect.addDisposer(
+                this.rtm.events.on("notify-device-off", event => {
+                    if (event.roomUUID === this.roomUUID && event.senderID === this.ownerUUID) {
+                        if (event.deviceState.camera === false) {
+                            message.info(FlatI18n.t("teacher-has-turn-off-camera"));
+                        }
+                        if (event.deviceState.mic === false) {
+                            message.info(FlatI18n.t("teacher-has-turn-off-mic"));
+                        }
+                    }
+                }),
+            );
         }
 
         if (this.isCreator) {
@@ -219,6 +246,19 @@ export class ClassroomStore {
                                         ),
                                 });
                             }
+                        }
+                    }
+                }),
+            );
+            this.sideEffect.addDisposer(
+                this.rtm.events.on("request-device-response", event => {
+                    if (event.roomUUID === this.roomUUID) {
+                        const name = this.users.cachedUsers.get(event.userUUID)?.name;
+                        if (event.deviceState.camera === false) {
+                            message.info(FlatI18n.t("refuse-to-turn-on-camera", { name }));
+                        }
+                        if (event.deviceState.mic === false) {
+                            message.info(FlatI18n.t("refuse-to-turn-on-mic", { name }));
                         }
                     }
                 }),
@@ -304,9 +344,14 @@ export class ClassroomStore {
             "onStageUsers",
             {},
         );
+        const whiteboardStorage = fastboard.syncedStore.connectStorage<WhiteboardStorageState>(
+            "whiteboard",
+            {},
+        );
         this.deviceStateStorage = deviceStateStorage;
         this.classroomStorage = classroomStorage;
         this.onStageUsersStorage = onStageUsersStorage;
+        this.whiteboardStorage = whiteboardStorage;
 
         if (this.isCreator) {
             this.updateDeviceState(
@@ -315,7 +360,13 @@ export class ClassroomStore {
                 Boolean(preferencesStore.autoMicOn),
             );
         } else {
-            this.whiteboardStore.updateWritable(Boolean(onStageUsersStorage.state[this.userUUID]));
+            this.whiteboardStore.updateWritable(
+                Boolean(
+                    onStageUsersStorage.state[this.userUUID] ||
+                        whiteboardStorage.state[this.userUUID],
+                ),
+            );
+            this.whiteboardStore.updateAllowDrawing(whiteboardStorage.state[this.userUUID]);
         }
 
         this._updateIsBan(classroomStorage.state.ban);
@@ -350,6 +401,7 @@ export class ClassroomStore {
                 user.camera = false;
                 user.isRaiseHand = raiseHandUsers.has(user.userUUID);
             }
+            user.wbOperate = !!whiteboardStorage.state[user.userUUID];
         });
 
         this.sideEffect.addDisposer(
@@ -359,6 +411,7 @@ export class ClassroomStore {
                     if (user.userUUID === userUUID) {
                         if (userUUID === this.ownerUUID || onStageUsersStorage.state[userUUID]) {
                             user.isSpeak = true;
+                            user.wbOperate = !!whiteboardStorage.state[userUUID];
                             user.isRaiseHand = false;
                             const deviceState = deviceStateStorage.state[user.userUUID];
                             if (deviceState) {
@@ -368,6 +421,11 @@ export class ClassroomStore {
                                 user.camera = false;
                                 user.mic = false;
                             }
+                            return false;
+                        }
+                        // not on stage, but has whiteboard access
+                        if (whiteboardStorage.state[userUUID]) {
+                            user.wbOperate = true;
                             return false;
                         }
                     }
@@ -436,7 +494,10 @@ export class ClassroomStore {
 
             if (!this.isCreator) {
                 const isJoinerOnStage = Boolean(onStageUsersStorage.state[this.userUUID]);
-                await this.whiteboardStore.updateWritable(isJoinerOnStage);
+                this.whiteboardStore.updateWritable(
+                    isJoinerOnStage || whiteboardStorage.state[this.userUUID],
+                );
+                this.whiteboardStore.updateAllowDrawing(whiteboardStorage.state[this.userUUID]);
 
                 // @FIXME add reliable way to ensure writable is set
                 if (isJoinerOnStage && !fastboard.syncedStore.isRoomWritable) {
@@ -467,6 +528,23 @@ export class ClassroomStore {
         updateUserStagingState();
 
         this.sideEffect.addDisposer(onStageUsersStorage.on("stateChanged", updateUserStagingState));
+        this.sideEffect.addDisposer(
+            whiteboardStorage.on("stateChanged", () => {
+                this.users.updateUsers(user => {
+                    user.wbOperate =
+                        user.userUUID === this.ownerUUID ||
+                        !!whiteboardStorage.state[user.userUUID];
+                });
+                this.whiteboardStore.updateWritable(
+                    this.isCreator ||
+                        onStageUsersStorage.state[this.userUUID] ||
+                        whiteboardStorage.state[this.userUUID],
+                );
+                this.whiteboardStore.updateAllowDrawing(
+                    this.isCreator || whiteboardStorage.state[this.userUUID],
+                );
+            }),
+        );
 
         this.sideEffect.addDisposer(
             autorun(() => {
@@ -553,6 +631,7 @@ export class ClassroomStore {
         this.deviceStateStorage = undefined;
         this.onStageUsersStorage = undefined;
         this.classroomStorage = undefined;
+        this.whiteboardStorage = undefined;
     }
 
     public startClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
@@ -721,33 +800,133 @@ export class ClassroomStore {
         if (!onStage && (!this.isCreator || userUUID !== this.userUUID)) {
             this.updateDeviceState(userUUID, false, false);
         }
+        if (this.classroomStorage?.state.raiseHandUsers.includes(userUUID)) {
+            const raiseHandUsers = this.classroomStorage.state.raiseHandUsers;
+            this.classroomStorage.setState({
+                raiseHandUsers: raiseHandUsers.filter(id => id !== userUUID),
+            });
+        }
+    };
+
+    public offStageAll = async (): Promise<void> => {
+        if (this.classMode === ClassModeType.Interaction || !this.onStageUsersStorage?.isWritable) {
+            return;
+        }
+        if (this.isCreator) {
+            this.onStageUsersStorage.resetState();
+            this.whiteboardStorage?.resetState();
+            message.info(FlatI18n.t("all-off-stage-toast"));
+        }
+    };
+
+    public muteAll = async (): Promise<void> => {
+        if (this.isCreator && this.deviceStateStorage && this.deviceStateStorage.isWritable) {
+            const state = this.deviceStateStorage.state;
+            const payload: Partial<DeviceStateStorageState> = {};
+            for (const userUUID in state) {
+                if (state[userUUID].mic) {
+                    payload[userUUID] = { ...state[userUUID], mic: false };
+                }
+            }
+            this.deviceStateStorage.setState(payload);
+            message.info(FlatI18n.t("all-mute-mic-toast"));
+        }
+    };
+
+    public authorizeWhiteboard = async (userUUID: string, enabled: boolean): Promise<void> => {
+        if (
+            this.classMode === ClassModeType.Interaction ||
+            userUUID === this.ownerUUID ||
+            !this.whiteboardStorage?.isWritable
+        ) {
+            return;
+        }
+        if (this.isCreator) {
+            this.whiteboardStorage.setState({ [userUUID]: enabled });
+        } else {
+            // joiner can only turn off drawing
+            if (!enabled && userUUID === this.userUUID) {
+                this.whiteboardStorage.setState({ [userUUID]: false });
+            }
+        }
     };
 
     /** joiner updates own camera and mic state */
     public updateDeviceState = (userUUID: string, camera: boolean, mic: boolean): void => {
         if (this.deviceStateStorage?.isWritable && (this.userUUID === userUUID || this.isCreator)) {
-            const deviceState = this.deviceStateStorage.state[userUUID];
-            if (deviceState) {
-                // creator can turn off joiner's camera and mic
-                // creator can request joiner to turn on camera and mic
-                if (userUUID !== this.userUUID) {
-                    if (camera && !deviceState.camera) {
-                        camera = deviceState.camera;
-                    }
-
-                    if (mic && !deviceState.mic) {
-                        mic = deviceState.mic;
-                    }
-                }
-                if (camera === deviceState.camera && mic === deviceState.mic) {
+            const deviceState = this.deviceStateStorage.state[userUUID] || {
+                camera: false,
+                mic: false,
+            };
+            if (camera === deviceState.camera && mic === deviceState.mic) {
+                return;
+            }
+            let shouldNotify = false;
+            // creator can request joiner to turn on camera and mic
+            if (this.isCreator && userUUID !== this.userUUID) {
+                if (camera && !deviceState.camera) {
+                    void this.rtm.sendPeerCommand(
+                        "request-device",
+                        { roomUUID: this.roomUUID, camera },
+                        userUUID,
+                    );
+                    message.info(FlatI18n.t("sent-invitation"));
                     return;
                 }
+                if (mic && !deviceState.mic) {
+                    void this.rtm.sendPeerCommand(
+                        "request-device",
+                        { roomUUID: this.roomUUID, mic },
+                        userUUID,
+                    );
+                    message.info(FlatI18n.t("sent-invitation"));
+                    return;
+                }
+                shouldNotify = true;
             }
+            // creator can turn off joiner's camera and mic
             this.deviceStateStorage.setState({
                 [userUUID]: camera || mic ? { camera, mic } : undefined,
             });
+            if (shouldNotify) {
+                if (!camera && deviceState.camera) {
+                    message.info(FlatI18n.t("has-turn-off-camera"));
+                    void this.rtm.sendPeerCommand(
+                        "notify-device-off",
+                        { roomUUID: this.roomUUID, camera },
+                        userUUID,
+                    );
+                }
+                if (!mic && deviceState.mic) {
+                    message.info(FlatI18n.t("has-turn-off-mic"));
+                    void this.rtm.sendPeerCommand(
+                        "notify-device-off",
+                        { roomUUID: this.roomUUID, mic },
+                        userUUID,
+                    );
+                }
+            }
         }
     };
+
+    public toggleRequestingDevice(camera: boolean | undefined, mic: boolean | undefined): void {
+        if (camera !== undefined) {
+            this.isRequestingCamera = camera;
+        }
+        if (mic !== undefined) {
+            this.isRequestingMic = mic;
+        }
+    }
+
+    public replyRequestingDevice(device: "camera" | "mic", enabled: boolean): void {
+        if (!this.isCreator) {
+            void this.rtm.sendPeerCommand(
+                "request-device-response",
+                { roomUUID: this.roomUUID, [device]: enabled },
+                this.ownerUUID,
+            );
+        }
+    }
 
     private async switchRoomStatus(roomStatus: RoomStatus): Promise<void> {
         if (!this.isCreator || this.roomStatusLoading !== RoomStatusLoadingType.Null) {

@@ -36,6 +36,7 @@ import { withClassroomStore, WithClassroomStoreProps } from "../utils/with-class
 import { WindowsSystemBtnContext } from "../components/StoreProvider";
 import { ShareScreenPicker } from "../components/ShareScreen/ShareScreenPicker";
 import { ExtraPadding } from "../components/ExtraPadding";
+import { UsersButton } from "../components/UsersButton";
 
 export type BigClassPageProps = {};
 
@@ -159,6 +160,8 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                     {/* TODO: open cloud-storage sub window */}
                     <CloudStorageButton classroom={classroomStore} />
                     <InviteButton roomInfo={classroomStore.roomInfo} />
+                    {/* TODO: open users sub window */}
+                    <UsersButton classroom={classroomStore} />
                     {!windowsBtn?.showWindowsBtn && (
                         <TopBarRightBtn
                             icon={<SVGExit />}
@@ -182,9 +185,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
 
             return (
                 <RealtimePanel
-                    chatSlot={
-                        <ChatPanel classRoomStore={classroomStore} maxSpeakingUsers={1}></ChatPanel>
-                    }
+                    chatSlot={<ChatPanel classRoomStore={classroomStore} />}
                     isShow={isRealtimeSideOpen}
                     isVideoOn={classroomStore.isJoinedRTC}
                     videoSlot={

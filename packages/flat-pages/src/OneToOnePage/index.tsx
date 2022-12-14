@@ -175,13 +175,7 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
         function renderRealtimePanel(): React.ReactNode {
             return (
                 <RealtimePanel
-                    chatSlot={
-                        <ChatPanel
-                            classRoomStore={classroomStore}
-                            disableEndSpeaking={false}
-                            maxSpeakingUsers={1}
-                        ></ChatPanel>
-                    }
+                    chatSlot={<ChatPanel classRoomStore={classroomStore} />}
                     isShow={isRealtimeSideOpen}
                     isVideoOn={classroomStore.isJoinedRTC}
                     videoSlot={
