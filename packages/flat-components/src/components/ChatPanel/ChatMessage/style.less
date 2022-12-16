@@ -21,9 +21,13 @@
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
+    background: #fff;
+    font-size: 0;
 
     & > img {
-        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 }
 
@@ -151,6 +155,10 @@
 }
 
 .flat-color-scheme-dark {
+    .chat-message-user-avatar {
+        background: var(--grey-8);
+    }
+
     .chat-message-user-time {
         color: var(--grey-6);
     }
