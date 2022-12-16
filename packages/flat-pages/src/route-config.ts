@@ -72,18 +72,6 @@ export const routeConfig = {
     [RouteNameType.CloudStoragePage]: {
         path: "/pan/",
     },
-    [RouteNameType.BigClassPage]: {
-        path: "/classroom/BigClass/:roomUUID/:ownerUUID/",
-    },
-    [RouteNameType.SmallClassPage]: {
-        path: "/classroom/SmallClass/:roomUUID/:ownerUUID/",
-    },
-    [RouteNameType.OneToOnePage]: {
-        path: "/classroom/OneToOne/:roomUUID/:ownerUUID/",
-    },
-    [RouteNameType.ReplayPage]: {
-        path: "/replay/:roomType/:roomUUID/:ownerUUID/",
-    },
     [RouteNameType.JoinPage]: {
         path: "/join/:roomUUID/",
     },
