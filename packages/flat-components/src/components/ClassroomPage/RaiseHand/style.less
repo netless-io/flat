@@ -5,12 +5,36 @@
     border-radius: 24px;
     border: 1px solid rgba(0, 0, 0, 0.15);
     background: rgba(255, 255, 255, 0.9);
+    font-size: 0;
     outline: 0;
 }
 
+.raise-hand-red-dot {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 22px;
+    height: 22px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 75%;
+    transform: translate(-5px, -6px);
+    font-size: 12px;
+    border: 1px solid var(--grey-0);
+    border-radius: 22px;
+    color: var(--grey-0);
+    background: var(--danger);
+
+    &.is-large {
+        width: auto;
+        height: auto;
+        padding: 0 5px;
+    }
+}
+
 .flat-color-scheme-dark {
-    .raise-hand-btn {
-        background: var(--grey-10);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+    .raise-hand-red-dot {
+        border-color: var(--grey-11);
     }
 }

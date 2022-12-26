@@ -73,6 +73,7 @@ export class ClassroomStore {
     public isRequestingMic = false;
 
     public isCloudStoragePanelVisible = false;
+    public isHandRaisingPanelVisible = false;
 
     public roomStatusLoading = RoomStatusLoadingType.Null;
 
@@ -771,6 +772,10 @@ export class ClassroomStore {
         }
     };
 
+    public onToggleHandRaisingPanel = (): void => {
+        this.isHandRaisingPanelVisible = !this.isHandRaisingPanelVisible;
+    };
+
     public onToggleBan = (): void => {
         if (this.isCreator && this.classroomStorage?.isWritable) {
             this.classroomStorage.setState({ ban: !this.classroomStorage.state.ban });
@@ -791,6 +796,7 @@ export class ClassroomStore {
         }
         if (this.isCreator) {
             this.onStageUsersStorage.setState({ [userUUID]: onStage });
+            this.isHandRaisingPanelVisible = false;
         } else {
             // joiner can only turn off speaking
             if (!onStage && userUUID === this.userUUID) {

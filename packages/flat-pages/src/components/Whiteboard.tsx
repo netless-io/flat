@@ -8,6 +8,7 @@ import {
     DarkModeContext,
     PresetsModal,
     RaiseHand,
+    RaisingHand,
     SaveAnnotationModal,
     SaveAnnotationModalProps,
 } from "flat-components";
@@ -189,6 +190,15 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                                 />
                             </div>
                         )}
+                    {whiteboardStore.isCreator &&
+                        classRoomStore.users.handRaisingJoiners.length > 0 && (
+                            <div className="raise-hand-container">
+                                <RaisingHand
+                                    count={classRoomStore.users.handRaisingJoiners.length}
+                                    onClick={classRoomStore.onToggleHandRaisingPanel}
+                                />
+                            </div>
+                        )}
                     <div ref={bindWhiteboard} className="whiteboard" />
                     <div
                         className={classNames("whiteboard-scroll-page", {
@@ -196,6 +206,32 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                         })}
                     >
                         {renderScrollPage(t, page, maxPage)}
+                    </div>
+                    <div
+                        className={classNames("hand-raising-panel", {
+                            "is-active": classRoomStore.isHandRaisingPanelVisible,
+                        })}
+                    >
+                        {classRoomStore.users.handRaisingJoiners.map(user => (
+                            <div
+                                key={user.userUUID}
+                                className="hand-raising-user"
+                                title={user.name}
+                            >
+                                <img
+                                    alt="avatar"
+                                    className="hand-raising-user-avatar"
+                                    src={user.avatar}
+                                />
+                                <span className="hand-raising-user-name">{user.name}</span>
+                                <button
+                                    className="hand-raising-btn"
+                                    onClick={() => classRoomStore.onStaging(user.userUUID, true)}
+                                >
+                                    {t("agree")}
+                                </button>
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}
