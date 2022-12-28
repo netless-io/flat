@@ -30,6 +30,9 @@ export interface IServiceWhiteboardJoinRoomConfig extends IService {
 
 export interface IServiceWhiteboard$Val {
     readonly phase$: ReadonlyVal<IServiceWhiteboardPhase>;
+    /** able to write data to whiteboard service */
+    readonly isWritable$: ReadonlyVal<boolean>;
+    /** able to draw on the whiteboard, requires isWritable = true */
     readonly allowDrawing$: ReadonlyVal<boolean>;
 }
 
@@ -44,7 +47,11 @@ export abstract class IServiceWhiteboard {
 
     public abstract readonly phase: IServiceWhiteboardPhase;
 
+    public abstract readonly isWritable: boolean;
+
     public abstract readonly allowDrawing: boolean;
+
+    public abstract setIsWritable(isWritable: boolean): void;
 
     public abstract setAllowDrawing(allowDrawing: boolean): void;
 

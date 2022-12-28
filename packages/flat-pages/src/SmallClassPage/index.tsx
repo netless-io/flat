@@ -243,12 +243,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
         function renderRealtimePanel(): React.ReactNode {
             return (
                 <RealtimePanel
-                    chatSlot={
-                        <ChatPanel
-                            classRoomStore={classroomStore}
-                            maxSpeakingUsers={16}
-                        ></ChatPanel>
-                    }
+                    chatSlot={<ChatPanel classRoomStore={classroomStore} />}
                     isShow={isRealtimeSideOpen}
                     isVideoOn={false}
                     videoSlot={null}

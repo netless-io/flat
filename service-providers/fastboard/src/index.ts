@@ -52,6 +52,7 @@ export class Fastboard extends IServiceWhiteboard {
 
     public readonly $Val: Readonly<{
         phase$: ReadonlyVal<IServiceWhiteboardPhase>;
+        isWritable$: Val<boolean>;
         allowDrawing$: Val<boolean>;
     }>;
 
@@ -61,6 +62,14 @@ export class Fastboard extends IServiceWhiteboard {
 
     public get phase(): IServiceWhiteboardPhase {
         return this.$Val.phase$.value;
+    }
+
+    public get isWritable(): boolean {
+        return this.$Val.isWritable$.value;
+    }
+
+    public setIsWritable(isWritable: boolean): void {
+        this.$Val.isWritable$.setValue(isWritable);
     }
 
     public get allowDrawing(): boolean {
@@ -82,6 +91,7 @@ export class Fastboard extends IServiceWhiteboard {
         this._app$ = new Val<FastboardApp | null>(null);
         this._el$ = new Val<HTMLElement | null>(null);
         this._roomPhase$ = new Val<RoomPhase>(RoomPhase.Disconnected);
+        const isWritable$ = new Val(false);
         const allowDrawing$ = new Val(false);
 
         const phase$ = combine([this._app$, this._roomPhase$], ([app, phase]) =>
@@ -90,6 +100,7 @@ export class Fastboard extends IServiceWhiteboard {
 
         this.$Val = {
             phase$,
+            isWritable$,
             allowDrawing$,
         };
         this.sideEffect.push(() => {
@@ -109,12 +120,18 @@ export class Fastboard extends IServiceWhiteboard {
                     return;
                 }
                 room.disableDeviceInputs = !allowDrawing;
+            }),
+            combine([this._app$, isWritable$]).subscribe(([app, isWritable]) => {
+                const room = app?.room;
+                if (!room) {
+                    return;
+                }
                 // room.isWritable follows allowDrawing for now
-                if (allowDrawing !== room.isWritable) {
+                if (isWritable !== room.isWritable) {
                     this.asyncSideEffect.add(async () => {
                         let isDisposed = false;
                         try {
-                            if (allowDrawing) {
+                            if (isWritable) {
                                 await app.room.setWritable(true);
                             } else {
                                 // wait until room isWritable

@@ -10,6 +10,7 @@ export interface User {
     camera: boolean;
     mic: boolean;
     isSpeak: boolean;
+    wbOperate: boolean;
     isRaiseHand: boolean;
     hasLeft: boolean;
 }
@@ -237,6 +238,7 @@ export class UserStore {
                 camera: userUUID === this.userUUID ? preferencesStore.autoCameraOn : false,
                 mic: userUUID === this.userUUID ? preferencesStore.autoMicOn : false,
                 isSpeak: userUUID === this.userUUID && this.isCreator,
+                wbOperate: userUUID === this.userUUID && this.isCreator,
                 isRaiseHand: false,
                 hasLeft: !this.isInRoom(userUUID),
             }),

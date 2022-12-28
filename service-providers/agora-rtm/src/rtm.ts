@@ -268,6 +268,30 @@ export class AgoraRTM extends IServiceTextChat {
                                 });
                                 break;
                             }
+                            case "request-device": {
+                                this.events.emit("request-device", {
+                                    roomUUID,
+                                    senderID,
+                                    deviceState: command.v,
+                                });
+                                break;
+                            }
+                            case "request-device-response": {
+                                this.events.emit("request-device-response", {
+                                    roomUUID,
+                                    userUUID: senderID,
+                                    deviceState: command.v,
+                                });
+                                break;
+                            }
+                            case "notify-device-off": {
+                                this.events.emit("notify-device-off", {
+                                    roomUUID,
+                                    senderID,
+                                    deviceState: command.v,
+                                });
+                                break;
+                            }
                         }
                     } catch (e) {
                         console.error(e);

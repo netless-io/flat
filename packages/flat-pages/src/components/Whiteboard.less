@@ -1,3 +1,5 @@
+@import "flat-components/theme/fancy-scrollbar.less";
+
 .whiteboard-container {
     position: relative;
     width: 100%;
@@ -77,8 +79,65 @@
     width: 48px;
     height: 48px;
     right: 8px;
-    bottom: 32px;
+    bottom: 48px;
     z-index: 3;
+}
+
+.hand-raising-panel {
+    display: none;
+    position: absolute;
+    right: 64px;
+    bottom: 48px;
+    width: 200px;
+    max-height: 400px;
+    border: 1px solid var(--grey-3);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    padding: 8px 4px;
+    background-color: #fff;
+    z-index: 4;
+
+    .fancy-scrollbar-mixin();
+
+    &.is-active {
+        display: block;
+    }
+}
+
+.hand-raising-user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+
+    &:hover {
+        background-color: var(--primary-weaker);
+    }
+}
+
+.hand-raising-user-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.hand-raising-user-name {
+    font-size: 14px;
+}
+
+.hand-raising-btn {
+    flex: 1;
+    text-align: right;
+    font-size: 14px;
+    color: var(--primary);
+    border: none;
+    outline: none;
+    padding: 0 8px 0 0;
+    background: none;
+    cursor: pointer;
 }
 
 .whiteboard-scroll-page {
@@ -133,6 +192,15 @@
     .fastboard-root {
         --fastboard-bg-color: var(--grey-9);
         --fastboard-border-color: var(--grey-8);
+    }
+
+    .hand-raising-panel {
+        background-color: var(--grey-9);
+        border-color: var(--grey-8);
+    }
+
+    .hand-raising-user:hover {
+        background-color: var(--grey-8);
     }
 }
 

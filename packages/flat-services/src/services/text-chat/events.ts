@@ -28,6 +28,21 @@ export interface IServiceTextChatEventData {
     "member-joined": { roomUUID: string; userUUID: string };
     "member-left": { roomUUID: string; userUUID: string };
     "update-room-status": { roomUUID: string; status: RoomStatus; senderID: string };
+    "request-device": {
+        roomUUID: string;
+        senderID: string;
+        deviceState: { camera?: boolean; mic?: boolean };
+    };
+    "request-device-response": {
+        roomUUID: string;
+        userUUID: string;
+        deviceState: { camera?: boolean; mic?: boolean };
+    };
+    "notify-device-off": {
+        roomUUID: string;
+        senderID: string;
+        deviceState: { camera?: boolean; mic?: boolean };
+    };
 }
 
 export type IServiceTextChatEventNames = Extract<keyof IServiceTextChatEventData, string>;

@@ -85,7 +85,7 @@ export const IconMic = /* @__PURE__ */ React.memo<IconMicProps>(function IconMic
                     fill="#44AD00"
                     height={vHeight * 2}
                     style={{
-                        transform: `translateY(${Math.pow(1 - volumeLevel, 2.3) * vHeight}px)`,
+                        transform: `translateY(${(1 - volumeLevel) * vHeight}px)`,
                         transition: "transform .1s",
                     }}
                     width={vWidth}

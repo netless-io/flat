@@ -1,5 +1,7 @@
 .chat-panel {
     height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
 
     .ant-tabs {
         height: 100%;
@@ -43,6 +45,20 @@
     }
 }
 
+.chat-panel-header {
+    flex-shrink: 0;
+    flex-grow: 0;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 600;
+    color: var(--text-strong);
+    border-bottom: 1px solid var(--grey-1);
+}
+
 .flat-color-scheme-dark {
     .chat-panel {
         .ant-tabs-ink-bar {
@@ -51,5 +67,8 @@
         .ant-tabs-top > .ant-tabs-nav::before {
             border-bottom-color: var(--grey-8);
         }
+    }
+    .chat-panel-header {
+        border-bottom-color: var(--grey-8);
     }
 }
