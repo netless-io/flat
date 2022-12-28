@@ -209,7 +209,9 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     </div>
                     <div
                         className={classNames("hand-raising-panel", {
-                            "is-active": classRoomStore.isHandRaisingPanelVisible,
+                            "is-active":
+                                classRoomStore.users.handRaisingJoiners.length > 0 &&
+                                classRoomStore.isHandRaisingPanelVisible,
                         })}
                     >
                         {classRoomStore.users.handRaisingJoiners.map(user => (

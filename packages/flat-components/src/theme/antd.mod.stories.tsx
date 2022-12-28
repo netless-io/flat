@@ -2,7 +2,7 @@ import "./antd.mod.stories.less";
 
 import React from "react";
 import { Story, Meta } from "@storybook/react";
-import { Input, Radio, Checkbox, Button, ButtonProps, InputRef, Table } from "antd";
+import { Input, Radio, Checkbox, Button, ButtonProps, InputRef, Table, Switch } from "antd";
 import { SVGChat } from "../components/FlatIcons";
 import { useRef } from "@storybook/client-api";
 import faker from "faker";
@@ -141,6 +141,26 @@ export const Overview: Story = () => {
         </div>
     );
 
+    const switchExample = (
+        <div>
+            <div className="mv4">
+                <Switch checked={false} />
+            </div>
+            <div className="mv4">
+                <Switch checked={false} className="ant-switch-hovered" />
+            </div>
+            <div className="mv4">
+                <Switch checked />
+            </div>
+            <div className="mv4">
+                <Switch disabled />
+            </div>
+            <div className="mv4">
+                <Switch checked disabled />
+            </div>
+        </div>
+    );
+
     const buttonExample = (
         <div>
             <div className="flex justify-around items-center mb3">
@@ -220,6 +240,7 @@ export const Overview: Story = () => {
                     <div className="columns is-mobile">
                         <div className="column flex justify-center">{radioExample}</div>
                         <div className="column flex justify-center">{checkboxExample}</div>
+                        <div className="column flex justify-center">{switchExample}</div>
                     </div>
                 </div>
             </div>
