@@ -68,6 +68,7 @@ export class WhiteboardStore {
             whiteboard: false,
         });
 
+        this.whiteboard.setIsWritable(this.isWritable);
         this.whiteboard.setAllowDrawing(this.isWritable);
 
         this.cloudStorageStore = new CloudStorageStore({
