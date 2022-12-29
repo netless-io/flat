@@ -9,6 +9,7 @@ import { githubLogin } from "./githubLogin";
 import { WeChatLogin } from "./WeChatLogin";
 import { agoraLogin } from "./agoraLogin";
 import { googleLogin } from "./googleLogin";
+import { qqLogin } from "./qqLogin";
 import { RouteNameType, usePushHistory, useURLParams } from "../utils/routes";
 import { GlobalStoreContext, WindowsSystemBtnContext } from "../components/StoreProvider";
 import { joinRoomHandler } from "../utils/join-room-handler";
@@ -113,6 +114,10 @@ export const LoginPage = observer(function LoginPage() {
                     loginDisposer.current = googleLogin(onLoginResult, windowsBtn);
                     return;
                 }
+                case "qq": {
+                    loginDisposer.current = qqLogin(onLoginResult, windowsBtn);
+                    return;
+                }
                 default: {
                     return;
                 }
@@ -155,7 +160,11 @@ export const LoginPage = observer(function LoginPage() {
                     bindingPhone={async (countryCode, phone, code) =>
                         wrap(bindingPhone(countryCode + phone, Number(code)).then(onBoundPhone))
                     }
-                    buttons={[process.env.FLAT_REGION === "US" ? "google" : "wechat", "github"]}
+                    buttons={
+                        process.env.FLAT_REGION === "US"
+                            ? ["google", "github"]
+                            : ["wechat", "qq", "github"]
+                    }
                     cancelBindingPhone={() => setLoginResult(null)}
                     isBindingPhone={
                         NEED_BINDING_PHONE && (loginResult ? !loginResult.hasPhone : false)

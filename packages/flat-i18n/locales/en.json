@@ -111,6 +111,7 @@
   "begin-time": "Start time",
   "join-and-book-by-room-uuid": "Can join and book by room ID",
   "copy": "Copy",
+  "login-qq": "QQ",
   "login-github": "GitHub",
   "login-google": "Google",
   "login-wechat": "WeChat",

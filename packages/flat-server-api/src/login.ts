@@ -131,6 +131,7 @@ export interface ListBindingsResult {
     apple: boolean;
     github: boolean;
     google: boolean;
+    qq: boolean;
 }
 
 export async function listBindings(): Promise<ListBindingsResult> {
@@ -188,6 +189,7 @@ export enum LoginPlatform {
     Agora = "Agora",
     Google = "Google",
     Phone = "Phone",
+    QQ = "QQ",
 }
 
 export interface RemoveBindingPayload {

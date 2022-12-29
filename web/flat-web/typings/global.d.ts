@@ -20,6 +20,7 @@ declare namespace NodeJS {
         GITHUB_CLIENT_ID: string;
         GOOGLE_OAUTH_CLIENT_ID: string;
 
+        QQ_APP_ID: string;
         WECHAT_APP_ID: string;
         FLAT_SERVER_DOMAIN: string;
         FLAT_WEB_DOMAIN: string;

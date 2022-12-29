@@ -8,6 +8,7 @@ export const FLAT_SERVER_LOGIN = {
     GITHUB_CALLBACK: `https://${process.env.FLAT_SERVER_DOMAIN}/v1/login/github/callback?platform=web`,
     GOOGLE_CALLBACK: `https://${process.env.FLAT_SERVER_DOMAIN}/v1/login/google/callback`,
     WECHAT_CALLBACK: `https://${process.env.FLAT_SERVER_DOMAIN}/v1/login/weChat/web/callback`,
+    QQ_CALLBACK: `https://${process.env.FLAT_SERVER_DOMAIN}/v1/login/qq/callback?platform=web`,
 } as const;
 
 export const FLAT_SERVER_USER_BINDING = {

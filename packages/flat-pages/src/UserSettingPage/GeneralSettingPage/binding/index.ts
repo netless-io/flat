@@ -10,6 +10,7 @@ const defaultBindings: ListBindingsResult = {
     apple: false,
     github: false,
     google: false,
+    qq: false,
 };
 
 export function useBindingList(): { bindings: ListBindingsResult; refresh: () => void } {

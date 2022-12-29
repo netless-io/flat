@@ -666,6 +666,7 @@ export enum LoginPlatform {
     Agora = "Agora",
     Google = "Google",
     Phone = "Phone",
+    QQ = "QQ",
 }
 
 export interface RemoveBindingPayload {
