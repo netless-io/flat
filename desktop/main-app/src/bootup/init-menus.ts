@@ -1,68 +1,147 @@
 import { app, Menu, MenuItemConstructorOptions } from "electron";
 import runtime from "../utils/runtime";
 
+const i18n = {
+    en: {
+        about: `About ${app.name}`,
+        services: "Services",
+        hide: `Hide ${app.name}`,
+        hideOthers: "Hide Others",
+        unhide: "Show All",
+        file: "File",
+        quit: `Quit ${app.name}`,
+        close: "Close",
+        edit: "Edit",
+        undo: "Undo",
+        redo: "Redo",
+        cut: "Cut",
+        copy: "Copy",
+        paste: "Paste",
+        delete: "Delete",
+        selectAll: "Select All",
+        pasteAndMatchStyle: "Paste and Match Style",
+        speech: "Speech",
+        startSpeaking: "Start Speaking",
+        stopSpeaking: "Stop Speaking",
+        window: "Window",
+        minimize: "Minimize",
+        zoom: "Zoom",
+        front: "Bring All to Front",
+        view: "View",
+        reload: "Reload",
+        forceReload: "Force Reload",
+        toggleDevTools: "Toggle Developer Tools",
+        resetZoom: "Reset Zoom",
+        toggleFullScreen: "Toggle Full Screen",
+    },
+    zh: {
+        about: "关于",
+        services: "服务",
+        hide: "隐藏",
+        hideOthers: "隐藏其他",
+        unhide: "显示全部",
+        file: "文件",
+        quit: "退出",
+        close: "关闭",
+        edit: "编辑",
+        undo: "撤销",
+        redo: "重做",
+        cut: "剪切",
+        copy: "复制",
+        paste: "粘贴",
+        delete: "删除",
+        selectAll: "全选",
+        pasteAndMatchStyle: "粘贴并匹配样式",
+        speech: "语音",
+        startSpeaking: "开始朗读",
+        stopSpeaking: "停止朗读",
+        window: "窗口",
+        minimize: "最小化",
+        zoom: "缩放",
+        front: "全部置顶",
+        view: "视图",
+        reload: "重新加载",
+        forceReload: "强制重新加载",
+        toggleDevTools: "切换开发者工具",
+        resetZoom: "重置缩放",
+        toggleFullScreen: "切换全屏",
+    },
+} as const;
+
 export default (): void => {
+    const t = app.getLocale().startsWith("zh") ? i18n.zh : i18n.en;
+
     const appByMacMenu: IMenu = {
         label: app.name,
         submenu: [
-            { role: "about" },
+            { label: t.about, role: "about" },
             { type: "separator" },
-            { role: "services" },
+            { label: t.services, role: "services" },
             { type: "separator" },
-            { role: "hide" },
-            { role: "hideOthers" },
-            { role: "unhide" },
+            { label: t.hide, role: "hide" },
+            { label: t.hideOthers, role: "hideOthers" },
+            { label: t.unhide, role: "unhide" },
             { type: "separator" },
-            { role: "quit" },
+            { label: t.quit, role: "quit" },
         ],
     };
 
     const fileMenu: IMenu = {
-        label: "File",
-        submenu: [{ role: "close" }],
+        label: t.file,
+        submenu: [{ label: t.close, role: "close" }],
     };
     if (runtime.isWin) {
-        fileMenu.submenu = [{ role: "quit" }];
+        fileMenu.submenu = [{ label: t.quit, role: "quit" }];
     }
 
     const editMenu: IMenu = {
-        label: "Edit",
+        label: t.edit,
         submenu: [
-            { role: "undo" },
-            { role: "redo" },
+            { label: t.undo, role: "undo" },
+            { label: t.redo, role: "redo" },
             { type: "separator" },
-            { role: "cut" },
-            { role: "copy" },
-            { role: "paste" },
+            { label: t.cut, role: "cut" },
+            { label: t.copy, role: "copy" },
+            { label: t.paste, role: "paste" },
         ],
     };
     if (runtime.isWin) {
-        editMenu.submenu.push({ role: "delete" }, { type: "separator" }, { role: "selectAll" });
+        editMenu.submenu.push(
+            { label: t.delete, role: "delete" },
+            { type: "separator" },
+            { label: t.selectAll, role: "selectAll" },
+        );
     } else {
         editMenu.submenu.push(
-            { role: "pasteAndMatchStyle" },
-            { role: "delete" },
-            { role: "selectAll" },
+            { label: t.pasteAndMatchStyle, role: "pasteAndMatchStyle" },
+            { label: t.delete, role: "delete" },
+            { label: t.selectAll, role: "selectAll" },
             { type: "separator" },
             {
-                label: "Speech",
-                submenu: [{ role: "startSpeaking" }, { role: "stopSpeaking" }],
+                label: t.speech,
+                submenu: [
+                    { label: t.startSpeaking, role: "startSpeaking" },
+                    { label: t.stopSpeaking, role: "stopSpeaking" },
+                ],
             },
         );
     }
 
     const windowMenu: IMenu = {
-        label: "Window",
-        submenu: [{ role: "minimize" }, { role: "zoom" }],
+        label: t.window,
+        submenu: [
+            { label: t.minimize, role: "minimize" },
+            { label: t.zoom, role: "zoom" },
+        ],
     };
     if (runtime.isWin) {
-        windowMenu.submenu.push({ role: "close" });
+        windowMenu.submenu.push({ label: t.close, role: "close" });
     } else {
         windowMenu.submenu.push(
             { type: "separator" },
-            { role: "front" },
+            { label: t.front, role: "front" },
             { type: "separator" },
-            { role: "window" },
+            { label: t.window, role: "window" },
         );
     }
 
@@ -70,15 +149,15 @@ export default (): void => {
         editMenu,
         fileMenu,
         {
-            label: "View",
+            label: t.view,
             submenu: [
-                { role: "reload" },
-                { role: "forceReload" },
-                { role: "toggleDevTools" },
+                { label: t.reload, role: "reload" },
+                { label: t.forceReload, role: "forceReload" },
+                { label: t.toggleDevTools, role: "toggleDevTools" },
                 { type: "separator" },
-                { role: "resetZoom" },
+                { label: t.resetZoom, role: "resetZoom" },
                 { type: "separator" },
-                { role: "togglefullscreen" },
+                { label: t.toggleFullScreen, role: "togglefullscreen" },
             ],
         },
         windowMenu,
