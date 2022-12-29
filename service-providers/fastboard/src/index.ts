@@ -226,7 +226,7 @@ export class Fastboard extends IServiceWhiteboard {
                     // @deprecated
                     cursorName: nickName,
                 },
-                isWritable: this.allowDrawing,
+                isWritable: this.isWritable,
                 uid,
                 floatBar: true,
                 disableEraseImage: true,
