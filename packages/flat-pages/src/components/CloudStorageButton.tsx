@@ -19,7 +19,7 @@ export const CloudStorageButton = observer<CloudStorageButtonProps>(function Clo
     const hideModal = useCallback(() => classroom.toggleCloudStoragePanel(false), [classroom]);
     const showModal = useCallback(() => classroom.toggleCloudStoragePanel(true), [classroom]);
 
-    if (!classroom.whiteboardStore.isWritable) {
+    if (!classroom.whiteboardStore.allowDrawing) {
         return null;
     }
 

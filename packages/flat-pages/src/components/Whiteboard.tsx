@@ -199,7 +199,14 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                                 />
                             </div>
                         )}
-                    <div ref={bindWhiteboard} className="whiteboard" />
+                    <div
+                        ref={bindWhiteboard}
+                        className={classNames("whiteboard", {
+                            "can-operate":
+                                classRoomStore.isCreator ||
+                                classRoomStore.users.currentUser?.wbOperate,
+                        })}
+                    />
                     <div
                         className={classNames("whiteboard-scroll-page", {
                             "is-active": showPage,

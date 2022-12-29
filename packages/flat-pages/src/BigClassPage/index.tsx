@@ -127,7 +127,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
         function renderTopBarRight(): React.ReactNode {
             return (
                 <>
-                    {whiteboardStore.isWritable && !classroomStore.isRemoteScreenSharing && (
+                    {whiteboardStore.allowDrawing && !classroomStore.isRemoteScreenSharing && (
                         <TopBarRightBtn
                             icon={<SVGScreenSharing active={classroomStore.isScreenSharing} />}
                             title={t("share-screen.self")}
@@ -157,8 +157,9 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                             }}
                         />
                     )}
-                    {/* TODO: open cloud-storage sub window */}
-                    <CloudStorageButton classroom={classroomStore} />
+                    {classroomStore.whiteboardStore.allowDrawing && (
+                        <CloudStorageButton classroom={classroomStore} />
+                    )}
                     <InviteButton roomInfo={classroomStore.roomInfo} />
                     {/* TODO: open users sub window */}
                     <UsersButton classroom={classroomStore} />
