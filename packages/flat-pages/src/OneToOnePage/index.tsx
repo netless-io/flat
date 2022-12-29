@@ -36,6 +36,7 @@ import { withClassroomStore, WithClassroomStoreProps } from "../utils/with-class
 import { WindowsSystemBtnContext } from "../components/StoreProvider";
 import { ShareScreenPicker } from "../components/ShareScreen/ShareScreenPicker";
 import { ExtraPadding } from "../components/ExtraPadding";
+import { UsersButton } from "../components/UsersButton";
 
 export type OneToOnePageProps = {};
 
@@ -155,6 +156,8 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                         <CloudStorageButton classroom={classroomStore} />
                     )}
                     <InviteButton roomInfo={classroomStore.roomInfo} />
+                    {/* TODO: open users sub window */}
+                    <UsersButton classroom={classroomStore} />
                     {!windowsBtn?.showWindowsBtn && (
                         <TopBarRightBtn
                             icon={<SVGExit />}
