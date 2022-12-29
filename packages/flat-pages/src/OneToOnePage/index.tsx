@@ -120,7 +120,7 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
         function renderTopBarRight(): React.ReactNode {
             return (
                 <>
-                    {whiteboardStore.isWritable && !classroomStore.isRemoteScreenSharing && (
+                    {whiteboardStore.allowDrawing && !classroomStore.isRemoteScreenSharing && (
                         <TopBarRightBtn
                             icon={<SVGScreenSharing active={classroomStore.isScreenSharing} />}
                             title={t("share-screen.self")}
@@ -151,8 +151,9 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                             }}
                         />
                     )}
-                    {/* TODO: open cloud-storage sub window */}
-                    <CloudStorageButton classroom={classroomStore} />
+                    {classroomStore.whiteboardStore.allowDrawing && (
+                        <CloudStorageButton classroom={classroomStore} />
+                    )}
                     <InviteButton roomInfo={classroomStore.roomInfo} />
                     {!windowsBtn?.showWindowsBtn && (
                         <TopBarRightBtn

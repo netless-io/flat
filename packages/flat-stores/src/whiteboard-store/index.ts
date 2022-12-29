@@ -33,6 +33,7 @@ export class WhiteboardStore {
     public viewMode: ViewMode | null = null;
     public windowManager: WindowManager | null = null;
     public isWritable: boolean;
+    public allowDrawing: boolean;
     public isShowPreviewPanel = false;
     public isFileOpen = false;
     public isKicked = false;
@@ -57,6 +58,7 @@ export class WhiteboardStore {
         this.whiteboard = config.whiteboard;
         this.isCreator = config.isCreator;
         this.isWritable = config.isWritable;
+        this.allowDrawing = config.isWritable;
         this.getRoomType = config.getRoomType;
         this.onDrop = config.onDrop;
 
@@ -118,6 +120,7 @@ export class WhiteboardStore {
     };
 
     public updateAllowDrawing = (allowDrawing: boolean): void => {
+        this.allowDrawing = allowDrawing;
         this.whiteboard.setAllowDrawing(allowDrawing);
     };
 

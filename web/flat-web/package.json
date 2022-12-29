@@ -22,7 +22,7 @@
     "@netless/app-monaco": "0.2.0-canary.1",
     "@netless/app-quill": "^0.1.1",
     "@netless/app-selector": "^0.0.3",
-    "@netless/app-slide": "0.3.0-canary.16",
+    "@netless/app-slide": "0.3.0-canary.17",
     "@netless/combine-player": "^1.1.6",
     "@netless/flat-i18n": "workspace:*",
     "@netless/flat-pages": "workspace:*",

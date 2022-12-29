@@ -9,6 +9,20 @@
     .whiteboard {
         width: 100%;
         height: 100%;
+
+        .fastboard-left,
+        .fastboard-bottom-left,
+        .fastboard-bottom-right {
+            display: none;
+        }
+
+        &.can-operate {
+            .fastboard-left,
+            .fastboard-bottom-left,
+            .fastboard-bottom-right {
+                display: revert;
+            }
+        }
     }
 
     .telebox-collector {

@@ -186,7 +186,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
         function renderTopBarRight(): React.ReactNode {
             return (
                 <>
-                    {whiteboardStore.isWritable && !classroomStore.isRemoteScreenSharing && (
+                    {whiteboardStore.allowDrawing && !classroomStore.isRemoteScreenSharing && (
                         <TopBarRightBtn
                             icon={<SVGScreenSharing active={classroomStore.isScreenSharing} />}
                             title={t("share-screen.self")}
@@ -217,7 +217,9 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                             }}
                         />
                     )}
-                    <CloudStorageButton classroom={classroomStore} />
+                    {classroomStore.whiteboardStore.allowDrawing && (
+                        <CloudStorageButton classroom={classroomStore} />
+                    )}
                     <InviteButton roomInfo={classroomStore.roomInfo} />
                     {!windowsBtn?.showWindowsBtn && (
                         <TopBarRightBtn
