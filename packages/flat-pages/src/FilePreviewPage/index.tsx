@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import {
     ErrorPage,
@@ -6,11 +6,14 @@ import {
     FilePreviewImage,
     FilePreviewAudio,
     FilePreviewVideo,
+    FlatPrefersColorScheme,
 } from "flat-components";
 import { RouteNameType, RouteParams } from "../utils/routes";
 import { CloudFile } from "@netless/flat-server-api";
 import { useIsomorphicLayoutEffect } from "react-use";
 import { FlatServices, IServiceFileExtensions, IServiceFilePreview } from "@netless/flat-services";
+import { PreferencesStoreContext } from "../components/StoreProvider";
+import { useSearchParams } from "../UserSettingPage/ApplicationsPage/hooks";
 
 export interface FilePreviewPageProps {
     file?: CloudFile;
@@ -18,7 +21,9 @@ export interface FilePreviewPageProps {
 
 export const FilePreviewPage: React.FC<FilePreviewPageProps> = props => {
     const sp = useSafePromise();
+    const preferencesStore = useContext(PreferencesStoreContext);
     const params = useParams<RouteParams<RouteNameType.FilePreviewPage>>();
+    const [query] = useSearchParams();
     const [containerNode, setContainerNode] = React.useState<HTMLDivElement | null>(null);
     const [service, setService] = React.useState<IServiceFilePreview | null | undefined>();
 
@@ -41,6 +46,13 @@ export const FilePreviewPage: React.FC<FilePreviewPageProps> = props => {
             ])[1].toLowerCase() as IServiceFileExtensions,
         [file],
     );
+
+    useIsomorphicLayoutEffect(() => {
+        const raw = query.get("theme");
+        const theme: FlatPrefersColorScheme =
+            raw === "dark" ? "dark" : raw === "light" ? "light" : "auto";
+        preferencesStore.updatePrefersColorScheme(theme);
+    }, []);
 
     useIsomorphicLayoutEffect(() => {
         let previewService: IServiceFilePreview | null = null;
