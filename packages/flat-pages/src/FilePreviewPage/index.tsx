@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import classNames from "classnames";
 import { useParams } from "react-router-dom";
 import {
     ErrorPage,
@@ -7,6 +8,7 @@ import {
     FilePreviewAudio,
     FilePreviewVideo,
     FlatPrefersColorScheme,
+    DarkModeContext,
 } from "flat-components";
 import { RouteNameType, RouteParams } from "../utils/routes";
 import { CloudFile } from "@netless/flat-server-api";
@@ -22,6 +24,7 @@ export interface FilePreviewPageProps {
 export const FilePreviewPage: React.FC<FilePreviewPageProps> = props => {
     const sp = useSafePromise();
     const preferencesStore = useContext(PreferencesStoreContext);
+    const isDark = useContext(DarkModeContext);
     const params = useParams<RouteParams<RouteNameType.FilePreviewPage>>();
     const [query] = useSearchParams();
     const [containerNode, setContainerNode] = React.useState<HTMLDivElement | null>(null);
@@ -80,7 +83,9 @@ export const FilePreviewPage: React.FC<FilePreviewPageProps> = props => {
     return (
         <div
             ref={setContainerNode}
-            className="file-preview-container"
+            className={classNames("file-preview-container", {
+                "telebox-color-scheme-dark": isDark,
+            })}
             style={{ height: "100%", overflow: "hidden" }}
         >
             {service === null && renderBuiltinFilePreview(file, fileExt)}
