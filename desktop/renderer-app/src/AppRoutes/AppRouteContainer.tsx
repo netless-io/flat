@@ -3,7 +3,7 @@ import { useIsomorphicLayoutEffect } from "react-use";
 import { RouteComponentProps, useLocation } from "react-router-dom";
 import { ipcAsyncByMainWindow } from "../utils/ipc";
 import { AppRouteErrorBoundary } from "./AppRouteErrorBoundary";
-// import { useURLAppLauncher } from "../utils/hooks/use-url-app-launcher";
+import { useURLAppLauncher } from "../utils/hooks/use-url-app-launcher";
 import { FlatThemeBodyProvider } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { IPCContext } from "../components/IPCContext";
@@ -27,7 +27,7 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
     const location = useLocation();
     const lastLocation = useLastLocation();
 
-    // useURLAppLauncher();
+    useURLAppLauncher();
 
     useEffect(() => {
         ipcStore.configure(location.pathname, lastLocation?.pathname);
