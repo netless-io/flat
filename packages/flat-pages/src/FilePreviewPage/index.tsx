@@ -1,3 +1,5 @@
+import "./style.less";
+
 import React, { useContext } from "react";
 import classNames from "classnames";
 import { useParams } from "react-router-dom";
