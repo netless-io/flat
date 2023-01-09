@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import { GlobalStoreContext, URLProtocolStoreContext } from "../../components/StoreProvider";
+import { matchPath, useLocation } from "react-router-dom";
+import { GlobalStoreContext } from "@netless/flat-pages/src/components/StoreProvider";
+import { urlProtocolStore } from "../../stores/url-protocol-store";
 import { joinRoomHandler } from "../../pages/utils/join-room-handler";
 import { useAutoRun } from "../mobx";
 import { usePushHistory, RouteNameType, RouteParams } from "../routes";
-import { matchPath, useLocation } from "react-router-dom";
 import { ClassRouteName, routeConfig } from "../../route-config";
 
 /**
@@ -11,7 +12,6 @@ import { ClassRouteName, routeConfig } from "../../route-config";
  * Jump to login page if user is not logged in.
  */
 export function useURLAppLauncher(): void {
-    const urlProtocolStore = useContext(URLProtocolStoreContext);
     const globalStore = useContext(GlobalStoreContext);
     const pushHistory = usePushHistory();
     const location = useLocation();
