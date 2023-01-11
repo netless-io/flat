@@ -424,6 +424,7 @@ importers:
       '@types/loadable__component': ^5.13.4
       '@types/mime': ^2.0.3
       '@types/video.js': ^7.3.48
+      '@wopjs/dom': ^0.1.3
       antd: ^4.23.2
       axios: ^0.27.2
       classnames: ^2.3.1
@@ -463,6 +464,7 @@ importers:
       '@netless/flat-services': link:../flat-services
       '@netless/flat-stores': link:../flat-stores
       '@netless/sync-player': 1.0.7
+      '@wopjs/dom': 0.1.3
       antd: 4.23.2_sfoxds7t5ydpegc3knd667wn6m
       axios: 0.27.2
       classnames: 2.3.1
@@ -6179,6 +6181,10 @@ packages:
     dependencies:
       webpack-cli: 4.10.0
     dev: true
+
+  /@wopjs/dom/0.1.3:
+    resolution: {integrity: sha512-3ywhZXVKT3taJmjqo0I0/MBpumO8a93lKbiBYV7cVcCBegiDxkApa/UuHDGKFITqso1LT8MWmWSzOwupB4S5RQ==}
+    dev: false
 
   /@xmldom/xmldom/0.7.5:
     resolution: {integrity: sha512-V3BIhmY36fXZ1OtVcI9W+FxQqxVLsPKcNjWigIaa81dLC9IolJl5Mt4Cvhmr0flUnjSpTdrbMTSbXqYqV5dT6A==}

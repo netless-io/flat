@@ -39,7 +39,7 @@ import { WindowsSystemBtnContext } from "../components/StoreProvider";
 import { ShareScreenPicker } from "../components/ShareScreen/ShareScreenPicker";
 import { ExtraPadding } from "../components/ExtraPadding";
 import { UsersButton } from "../components/UsersButton";
-import { makeDraggable } from "./utils";
+import { useDraggable } from "./utils";
 
 export type SmallClassPageProps = {};
 
@@ -62,6 +62,8 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                 void classroomStore.startClass();
             }
         }, [classroomStore]);
+
+        const { makeDraggable, isDragging } = useDraggable();
 
         return (
             <div className="small-class-page-container">
@@ -110,7 +112,11 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
 
         function renderAvatars(): React.ReactNode {
             return (
-                <div ref={makeDraggable} className="small-class-realtime-avatars-wrap">
+                <div
+                    ref={makeDraggable}
+                    className="small-class-realtime-avatars-wrap"
+                    style={{ cursor: isDragging ? "grabbing" : "grab" }}
+                >
                     {classroomStore.isJoinedRTC && (
                         <div className="small-class-realtime-avatars">
                             <RTCAvatar
