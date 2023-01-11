@@ -115,6 +115,7 @@ module.exports = {
         "lukeed", // @luckeed/uuid
         "EXTINF",
         "mpegurl", // hls.js
+        "wopjs", // @wopjs/dom
 
         // less
         "isstring",
