@@ -12,6 +12,10 @@ export enum RequestErrorCode {
     NeedLoginAgain,
     UnsupportedPlatform,
     JWTSignFailed,
+    ExhaustiveAttack,
+    RequestSignatureIncorrect,
+    NonCompliant,
+    UnsupportedOperation,
 
     RoomNotFound = 200000,
     RoomIsEnded,
@@ -25,6 +29,8 @@ export enum RequestErrorCode {
     PeriodicSubRoomHasRunning,
 
     UserNotFound = 400000,
+    UserRoomListNotEmpty, // occurs when delete account, user must have quitted all running rooms
+    UserAlreadyBinding, // already bound, should unbind first
 
     RecordNotFound = 500000,
 
@@ -50,6 +56,12 @@ export enum RequestErrorCode {
     SMSVerificationCodeInvalid = 110000, // verification code invalid
     SMSAlreadyExist, // phone already exist
     SMSAlreadyBinding, // phone are binding by other users
+
+    CensorshipFailed = 120000, // censorship failed
+
+    OAuthUUIDNotFound = 130000, // oauth uuid not found
+    OAuthClientIDNotFound, // oauth client id not found
+    OAuthSecretUUIDNotFound, // oauth secret uuid not found
 }
 
 export const RequestErrorMessage = {
@@ -69,6 +81,10 @@ export const RequestErrorMessage = {
     [RequestErrorCode.NeedLoginAgain]: "voucher-expired",
     [RequestErrorCode.UnsupportedPlatform]: "unsupported-login-platforms",
     [RequestErrorCode.JWTSignFailed]: "authentication-information-verification-failed",
+    [RequestErrorCode.ExhaustiveAttack]: "exhaustive-attack",
+    [RequestErrorCode.RequestSignatureIncorrect]: "request-signature-incorrect",
+    [RequestErrorCode.NonCompliant]: "non-compliant",
+    [RequestErrorCode.UnsupportedOperation]: "unsupported-operation",
 
     [RequestErrorCode.RoomNotFound]: "room-does-not-exist",
     [RequestErrorCode.RoomIsEnded]: "the-room-has-ended",
@@ -82,6 +98,8 @@ export const RequestErrorMessage = {
     [RequestErrorCode.PeriodicSubRoomHasRunning]: "periodic-sub-rooms-do-not-exist",
 
     [RequestErrorCode.UserNotFound]: "user-does-not-exist",
+    [RequestErrorCode.UserRoomListNotEmpty]: "user-room-list-is-not-empty",
+    [RequestErrorCode.UserAlreadyBinding]: "user-already-binding",
 
     [RequestErrorCode.RecordNotFound]: "replay-does-not-exist",
 
@@ -89,14 +107,13 @@ export const RequestErrorMessage = {
     [RequestErrorCode.SMSAlreadyExist]: "login-phone-already-exist",
     [RequestErrorCode.SMSAlreadyBinding]: "phone-already-binding",
 
-    // TODO: translate messages below
     [RequestErrorCode.UploadConcurrentLimit]: "upload-concurrent-limit",
     [RequestErrorCode.NotEnoughTotalUsage]: "total-usage-is-full",
     [RequestErrorCode.FileSizeTooBig]: "file-is-too-big",
     [RequestErrorCode.FileNotFound]: "file-not-found",
     [RequestErrorCode.FileExists]: "file-already-exists",
     [RequestErrorCode.DirectoryNotExists]: "directory-not-exists",
-    [RequestErrorCode.DirectoryAlreadyExists]: "convert-already-exists",
+    [RequestErrorCode.DirectoryAlreadyExists]: "directory-already-exists",
 
     [RequestErrorCode.FileIsConverted]: "file-is-converted",
     [RequestErrorCode.FileConvertFailed]: "convert-failed",
@@ -108,6 +125,12 @@ export const RequestErrorMessage = {
     [RequestErrorCode.LoginGithubSuspended]: "login-github-suspended",
     [RequestErrorCode.LoginGithubURLMismatch]: "login-github-url-is-wrong",
     [RequestErrorCode.LoginGithubAccessDenied]: "login-github-access-denied",
+
+    [RequestErrorCode.CensorshipFailed]: "censorship-failed",
+
+    [RequestErrorCode.OAuthUUIDNotFound]: "oauth-uuid-not-found",
+    [RequestErrorCode.OAuthClientIDNotFound]: "oauth-client-id-not-found",
+    [RequestErrorCode.OAuthSecretUUIDNotFound]: "oauth-secret-uuid-not-found",
 };
 
 export class ServerRequestError extends Error {
