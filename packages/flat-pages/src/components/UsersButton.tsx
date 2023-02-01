@@ -16,16 +16,11 @@ export const UsersButton = observer<UsersButtonProps>(function UsersButton({ cla
     const t = useTranslate();
     const [open, setOpen] = useState(false);
 
+    // not including teacher
     const users = useComputed(() => {
-        const { creator, speakingJoiners, handRaisingJoiners, otherJoiners, offlineJoiners } =
+        const { speakingJoiners, handRaisingJoiners, otherJoiners, offlineJoiners } =
             classroom.users;
-        return [
-            ...speakingJoiners,
-            ...handRaisingJoiners,
-            ...(creator ? [creator] : []),
-            ...offlineJoiners,
-            ...otherJoiners,
-        ];
+        return [...speakingJoiners, ...handRaisingJoiners, ...offlineJoiners, ...otherJoiners];
     }).get();
 
     const getDeviceState = useCallback(
@@ -107,6 +102,7 @@ export const UsersButton = observer<UsersButtonProps>(function UsersButton({ cla
                     getDeviceState={getDeviceState}
                     getVolumeLevel={getVolumeLevel}
                     ownerUUID={classroom.ownerUUID}
+                    roomInfo={classroom.roomInfo}
                     userUUID={classroom.userUUID}
                     users={users}
                     onDeviceState={classroom.updateDeviceState}
