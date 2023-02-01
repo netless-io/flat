@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
 import { ClassroomStore } from "@netless/flat-stores";
 import { SVGUserGroup, TopBarRightBtn, useComputed, UsersPanel } from "flat-components";
+import type { User } from "flat-components/src/types/user";
 
 interface UsersButtonProps {
     classroom: ClassroomStore;
@@ -17,10 +18,31 @@ export const UsersButton = observer<UsersButtonProps>(function UsersButton({ cla
     const [open, setOpen] = useState(false);
 
     const users = useComputed(() => {
+        const { onStageUserUUIDs } = classroom;
         const { creator, speakingJoiners, handRaisingJoiners, otherJoiners } = classroom.users;
-        return creator
-            ? [...speakingJoiners, ...handRaisingJoiners, creator, ...otherJoiners]
-            : [...speakingJoiners, ...handRaisingJoiners, ...otherJoiners];
+        const users: User[] = [];
+        const visited = new Set<string>();
+        const addUser = (user: User): void => {
+            if (!visited.has(user.userUUID)) {
+                users.push(user);
+                visited.add(user.userUUID);
+            }
+        };
+        for (const uuid of onStageUserUUIDs) {
+            const user = classroom.users.cachedUsers.get(uuid);
+            user && addUser(user);
+        }
+        for (const user of speakingJoiners) {
+            addUser(user);
+        }
+        for (const user of handRaisingJoiners) {
+            addUser(user);
+        }
+        creator && addUser(creator);
+        for (const user of otherJoiners) {
+            addUser(user);
+        }
+        return users;
     }).get();
 
     const getDeviceState = useCallback(

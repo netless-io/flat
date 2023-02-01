@@ -153,7 +153,14 @@ const Row = /* @__PURE__ */ observer(function Row({
                     <span className="users-panel-list-avatar">
                         <img src={user.avatar} />
                     </span>
-                    <span className="users-panel-list-name">{user.name}</span>
+                    {user.hasLeft ? (
+                        <div className="users-panel-list-name-wrapper">
+                            <span className="users-panel-list-name">{user.name}</span>
+                            <span className="users-panel-list-has-left">{t("offline")}</span>
+                        </div>
+                    ) : (
+                        <span className="users-panel-list-name">{user.name}</span>
+                    )}
                 </span>
             </td>
             <td>
