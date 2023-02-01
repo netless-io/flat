@@ -1,7 +1,7 @@
 import { createFastboard, createUI, FastboardApp, addManagerListener } from "@netless/fastboard";
 import { DeviceType, RoomPhase, DefaultHotKeys } from "white-web-sdk";
+import type { Camera } from "white-web-sdk";
 import type { FlatI18n } from "@netless/flat-i18n";
-import type { Displayer } from "@netless/white-snapshot";
 import {
     IServiceWhiteboard,
     IServiceWhiteboardJoinRoomConfig,
@@ -350,27 +350,53 @@ export class Fastboard extends IServiceWhiteboard {
             return [];
         }
 
-        type snapshot_t = typeof import("@netless/white-snapshot").snapshot;
-        type src2dataurl_t = typeof import("@netless/white-snapshot").src2dataurl;
+        // Sometimes aliyun oss will return images without CORS headers,
+        // this forbids us to use canvas.toDataURL() to download them.
+        // So we hack the drawing process to replace images with placeholders.
+        const placeholder = document.createElement("canvas");
+        placeholder.width = placeholder.height = 1;
 
-        const displayer: Displayer = {
-            state: app.manager,
-            fillSceneSnapshot: app.manager.mainView.fillSceneSnapshot.bind(app.manager.mainView),
+        const realDrawImage = CanvasRenderingContext2D.prototype.drawImage;
+        // @ts-ignore
+        CanvasRenderingContext2D.prototype.drawImage = function drawImage(image, ...args) {
+            if ("src" in image && image.src.startsWith("https://flat-storage.oss-accelerate.")) {
+                // @ts-ignore
+                return realDrawImage.call(this, placeholder, ...args);
+            }
+            // @ts-ignore
+            return realDrawImage.call(this, image, ...args);
         };
-        const scenes = app.manager.sceneState.scenes;
-        const actions: Array<(snapshot: snapshot_t, src2dataurl: src2dataurl_t) => Promise<void>> =
-            Array(scenes.length);
+
+        const room = app.manager.mainView;
+        const { contextPath, scenes } = app.manager.sceneState;
+        const scale = app.manager.cameraState.scale;
+        const actions: Array<() => Promise<void>> = Array(scenes.length);
         const canvases: Array<Promise<HTMLCanvasElement | null>> = Array(scenes.length);
 
         scenes.forEach((scene, i) => {
             canvases[i] = new Promise(resolve => {
-                actions[i] = async (snapshot, src2dataurl) => {
+                actions[i] = async () => {
                     try {
-                        const canvas = await snapshot(displayer, {
-                            scenePath: app.manager.mainViewSceneDir + scene.name,
-                            crossorigin: true,
-                            src2dataurl: src => src2dataurl(src, true),
-                        });
+                        const scenePath = contextPath + scene.name;
+                        // @ts-ignore TODO: should fixe the typings in white-web-sdk
+                        const rect = room.getBoundingRect(scenePath);
+                        const canvas = document.createElement("canvas");
+                        canvas.width = rect.width * devicePixelRatio;
+                        canvas.height = rect.height * devicePixelRatio;
+                        const c = canvas.getContext("2d")!;
+                        const camera: Camera = {
+                            centerX: rect.originX + rect.width / 2,
+                            centerY: rect.originY + rect.height / 2,
+                            scale: scale,
+                        };
+                        room.screenshotToCanvas(
+                            c,
+                            scenePath,
+                            rect.width,
+                            rect.height,
+                            camera,
+                            devicePixelRatio,
+                        );
                         resolve(canvas);
                     } catch (e) {
                         console.warn("Failed to snapshot scene", scene.name);
@@ -382,10 +408,10 @@ export class Fastboard extends IServiceWhiteboard {
         });
 
         Promise.resolve().then(async () => {
-            const { snapshot, src2dataurl } = await import("@netless/white-snapshot");
             for (const act of actions) {
-                await act(snapshot, src2dataurl);
+                await act();
             }
+            CanvasRenderingContext2D.prototype.drawImage = realDrawImage;
         });
 
         return canvases;
