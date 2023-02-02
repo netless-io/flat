@@ -102,6 +102,9 @@ export const UsersPanel = /* @__PURE__ */ observer<UsersPanelProps>(function Use
                         ))}
                     </tbody>
                 </table>
+                {users.length === 0 && (
+                    <div className="users-panel-list-empty">{t("no-students")}</div>
+                )}
             </div>
         </div>
     );
