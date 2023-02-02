@@ -21,6 +21,7 @@ import {
     recordInfo,
     RoomStatus,
     RoomType,
+    usersInfo,
 } from "@netless/flat-server-api";
 import { globalStore } from "./global-store";
 import { preferencesStore } from "./preferences-store";
@@ -132,10 +133,16 @@ export class RoomStore {
 
     public async syncOrdinaryRoomInfo(roomUUID: string): Promise<void> {
         const { roomInfo, ...restInfo } = await ordinaryRoomInfo(roomUUID);
+        // always include owner avatar url in full room info
+        const { [roomInfo.ownerUUID]: owner } = await usersInfo({
+            roomUUID,
+            usersUUID: [roomInfo.ownerUUID],
+        });
         this.updateRoom(roomUUID, roomInfo.ownerUUID, {
             ...restInfo,
             ...roomInfo,
             roomUUID,
+            ownerAvatarURL: owner.avatarURL,
         });
     }
 

@@ -9,10 +9,16 @@ import { User } from "../../types/user";
 import { IconMic } from "../ClassroomPage/VideoAvatar/IconMic";
 import { SVGCamera, SVGCameraMute, SVGMicrophoneMute } from "../FlatIcons";
 
+export interface UsersPanelRoomInfo {
+    ownerName?: string;
+    ownerAvatarURL?: string;
+}
+
 export interface UsersPanelProps {
     ownerUUID: string;
     userUUID: string;
     users: User[];
+    roomInfo?: UsersPanelRoomInfo;
     getDeviceState?: (userUUID: string) => { camera: boolean; mic: boolean };
     getVolumeLevel?: (userUUID: string) => number;
     onOffStageAll?: () => void;
@@ -26,6 +32,7 @@ export const UsersPanel = /* @__PURE__ */ observer<UsersPanelProps>(function Use
     ownerUUID,
     userUUID,
     users,
+    roomInfo,
     getDeviceState,
     getVolumeLevel,
     onOffStageAll,
@@ -37,19 +44,17 @@ export const UsersPanel = /* @__PURE__ */ observer<UsersPanelProps>(function Use
     const t = useTranslate();
 
     const isCreator = ownerUUID === userUUID;
-    const owner = users.find(user => user.userUUID === ownerUUID);
-    const students = users.filter(user => user.userUUID !== ownerUUID);
 
     return (
         <div className="users-panel">
             <div className="users-panel-headline">
-                {owner && (
+                {roomInfo && (
                     <>
                         <span className="users-panel-headline-avatar">
-                            <img src={owner.avatar} />
+                            <img src={roomInfo.ownerAvatarURL} />
                         </span>
                         <span className="users-panel-headline-name">{t("teacher")}: </span>
-                        <span className="users-panel-headline-name">{owner.name}</span>
+                        <span className="users-panel-headline-name">{roomInfo.ownerName}</span>
                     </>
                 )}
                 <span className="users-panel-splitter" />
@@ -69,20 +74,19 @@ export const UsersPanel = /* @__PURE__ */ observer<UsersPanelProps>(function Use
                     <thead>
                         <tr>
                             <th>
-                                {t("members")} ({students.length})
+                                {t("members")} ({users.length})
                             </th>
                             <th>{t("staging")}</th>
                             <th>{t("whiteboard-access")}</th>
                             <th>{t("camera")}</th>
                             <th>{t("microphone")}</th>
                             <th>
-                                {t("raise-hand")} (
-                                {students.filter(user => user.isRaiseHand).length})
+                                {t("raise-hand")} ({users.filter(user => user.isRaiseHand).length})
                             </th>
                         </tr>
                     </thead>
                     <tbody className="users-panel-items">
-                        {students.map(user => (
+                        {users.map(user => (
                             <Row
                                 key={user.userUUID}
                                 getDeviceState={getDeviceState}
@@ -98,6 +102,9 @@ export const UsersPanel = /* @__PURE__ */ observer<UsersPanelProps>(function Use
                         ))}
                     </tbody>
                 </table>
+                {users.length === 0 && (
+                    <div className="users-panel-list-empty">{t("no-students")}</div>
+                )}
             </div>
         </div>
     );
