@@ -52,6 +52,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     const [showPage, setShowPage] = useState(false);
 
     const isReconnecting = phase === RoomPhase.Reconnecting;
+    const handRaisingCount = classRoomStore.users.handRaisingJoiners.length;
 
     useEffect(() => {
         return whiteboard.events.on("exportAnnotations", () => showSaveAnnotation(true));
@@ -190,15 +191,15 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                                 />
                             </div>
                         )}
-                    {whiteboardStore.isCreator &&
-                        classRoomStore.users.handRaisingJoiners.length > 0 && (
-                            <div className="raise-hand-container">
-                                <RaisingHand
-                                    count={classRoomStore.users.handRaisingJoiners.length}
-                                    onClick={classRoomStore.onToggleHandRaisingPanel}
-                                />
-                            </div>
-                        )}
+                    {whiteboardStore.isCreator && (
+                        <div className="raise-hand-container">
+                            <RaisingHand
+                                active={handRaisingCount > 0}
+                                count={handRaisingCount}
+                                onClick={classRoomStore.onToggleHandRaisingPanel}
+                            />
+                        </div>
+                    )}
                     <div
                         ref={bindWhiteboard}
                         className={classNames("whiteboard", {
@@ -216,9 +217,8 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     </div>
                     <div
                         className={classNames("hand-raising-panel", {
-                            "is-active":
-                                classRoomStore.users.handRaisingJoiners.length > 0 &&
-                                classRoomStore.isHandRaisingPanelVisible,
+                            "is-active": classRoomStore.isHandRaisingPanelVisible,
+                            "is-empty": handRaisingCount === 0,
                         })}
                     >
                         {classRoomStore.users.handRaisingJoiners.map(user => (
@@ -241,6 +241,9 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                                 </button>
                             </div>
                         ))}
+                        {handRaisingCount === 0 && (
+                            <div className="hand-raising-empty">{t("no-one-raising-hand")}</div>
+                        )}
                     </div>
                 </div>
             )}
