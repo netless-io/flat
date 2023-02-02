@@ -7,7 +7,6 @@ import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
 import { ClassroomStore } from "@netless/flat-stores";
 import { SVGUserGroup, TopBarRightBtn, useComputed, UsersPanel } from "flat-components";
-import type { User } from "flat-components/src/types/user";
 
 interface UsersButtonProps {
     classroom: ClassroomStore;
