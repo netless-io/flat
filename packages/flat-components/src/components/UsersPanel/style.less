@@ -119,8 +119,16 @@
 .users-panel-small-btn {
     padding: 0;
 
-    &.is-cancel {
+    &.is-cancel, &.is-hand {
         color: var(--text-weak);
+    }
+
+    .flat-icon-fill-color {
+        fill: currentColor;
+    }
+
+    .flat-icon-stroke-color {
+        stroke: currentColor;
     }
 }
 
@@ -133,10 +141,11 @@
     overflow: hidden;
     font-size: 0;
     vertical-align: text-top;
-    color: var(--text-weak);
+    color: var(--danger);
     cursor: pointer;
 
     &:disabled {
+        color: var(--text-weak);
         cursor: not-allowed;
         opacity: 0.8;
     }

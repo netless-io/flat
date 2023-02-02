@@ -28,15 +28,16 @@ export const RaiseHand: React.FC<RaiseHandProps> = ({
 
 export interface RaisingHandProps {
     count: number;
+    active?: boolean;
     onClick: () => void;
 }
 
-export const RaisingHand: React.FC<RaisingHandProps> = ({ count, onClick }) => {
+export const RaisingHand: React.FC<RaisingHandProps> = ({ count, active = false, onClick }) => {
     const t = useTranslate();
 
     const countLabel = useMemo(
         () =>
-            isInteger(count) ? (
+            isInteger(count) && count > 0 ? (
                 <span
                     className={classNames("raise-hand-red-dot", {
                         "is-large": count > 9,
@@ -48,10 +49,10 @@ export const RaisingHand: React.FC<RaisingHandProps> = ({ count, onClick }) => {
         [count],
     );
 
-    return count > 0 ? (
+    return (
         <button className="raise-hand-btn" title={t("raise-your-hand")} onClick={onClick}>
-            <SVGHandUp active />
+            <SVGHandUp active={active} />
             {countLabel}
         </button>
-    ) : null;
+    );
 };

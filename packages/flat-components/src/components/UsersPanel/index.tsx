@@ -7,7 +7,7 @@ import { observer } from "mobx-react-lite";
 import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
 import { User } from "../../types/user";
 import { IconMic } from "../ClassroomPage/VideoAvatar/IconMic";
-import { SVGCamera, SVGCameraMute, SVGMicrophoneMute } from "../FlatIcons";
+import { SVGCamera, SVGCameraMute, SVGHandUp, SVGMicrophoneMute } from "../FlatIcons";
 
 export interface UsersPanelRoomInfo {
     ownerName?: string;
@@ -81,7 +81,7 @@ export const UsersPanel = /* @__PURE__ */ observer<UsersPanelProps>(function Use
                             <th>{t("camera")}</th>
                             <th>{t("microphone")}</th>
                             <th>
-                                {t("raise-hand")} ({users.filter(user => user.isRaiseHand).length})
+                                {t("raised-hand")} ({users.filter(user => user.isRaiseHand).length})
                             </th>
                         </tr>
                     </thead>
@@ -194,7 +194,7 @@ const Row = /* @__PURE__ */ observer(function Row({
                         {camera ? <SVGCamera active /> : <SVGCameraMute />}
                     </button>
                 ) : (
-                    <span className="users-panel-media-off">-/-</span>
+                    <span className="users-panel-media-off">--</span>
                 )}
             </td>
             <td>
@@ -209,40 +209,44 @@ const Row = /* @__PURE__ */ observer(function Row({
                         {mic ? <IconMic getVolumeLevel={getVolumeLevel} /> : <SVGMicrophoneMute />}
                     </button>
                 ) : (
-                    <span className="users-panel-media-off">-/-</span>
+                    <span className="users-panel-media-off">--</span>
                 )}
             </td>
             <td className="users-panel-btn-group">
                 {user.isRaiseHand ? (
-                    <>
-                        <Button
-                            className="users-panel-small-btn is-ok"
-                            disabled={!isCreator}
-                            size="small"
-                            type="link"
-                            onClick={() => isCreator && onStaging?.(user.userUUID, true)}
-                        >
-                            {t("agree")}
-                        </Button>
-                        <span
-                            className={classNames("users-panel-small-btn-splitter", {
-                                "is-disabled": !isCreator,
-                            })}
-                        >
-                            /
-                        </span>
-                        <Button
-                            className="users-panel-small-btn is-cancel"
-                            disabled={!isCreator}
-                            size="small"
-                            type="link"
-                            onClick={() => isCreator && onStaging?.(user.userUUID, false)}
-                        >
-                            {t("cancel")}
-                        </Button>
-                    </>
+                    isCreator ? (
+                        <>
+                            <Button
+                                className="users-panel-small-btn is-ok"
+                                disabled={!isCreator}
+                                size="small"
+                                type="link"
+                                onClick={() => isCreator && onStaging?.(user.userUUID, true)}
+                            >
+                                {t("agree")}
+                            </Button>
+                            <span
+                                className={classNames("users-panel-small-btn-splitter", {
+                                    "is-disabled": !isCreator,
+                                })}
+                            >
+                                /
+                            </span>
+                            <Button
+                                className="users-panel-small-btn is-cancel"
+                                disabled={!isCreator}
+                                size="small"
+                                type="link"
+                                onClick={() => isCreator && onStaging?.(user.userUUID, false)}
+                            >
+                                {t("cancel")}
+                            </Button>
+                        </>
+                    ) : (
+                        <SVGHandUp className="users-panel-small-btn is-hand" />
+                    )
                 ) : (
-                    <span className="users-panel-media-off">-/-</span>
+                    <span className="users-panel-media-off">--</span>
                 )}
             </td>
         </tr>
