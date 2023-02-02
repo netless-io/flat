@@ -80,12 +80,10 @@ export const UsersButton = observer<UsersButtonProps>(function UsersButton({ cla
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [t, classroom.isRequestingMic, getDeviceState]);
 
-    const hasRaisingHand = !!classroom.classroomStorage?.state.raiseHandUsers.length;
-
     return (
         <>
             <TopBarRightBtn
-                icon={<SVGUserGroup active={classroom.isCreator && hasRaisingHand} />}
+                icon={<SVGUserGroup active={open} />}
                 title={t("users")}
                 onClick={() => setOpen(!open)}
             />
