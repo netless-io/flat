@@ -17,10 +17,15 @@ export const UsersButton = observer<UsersButtonProps>(function UsersButton({ cla
     const [open, setOpen] = useState(false);
 
     const users = useComputed(() => {
-        const { creator, speakingJoiners, handRaisingJoiners, otherJoiners } = classroom.users;
-        return creator
-            ? [...speakingJoiners, ...handRaisingJoiners, creator, ...otherJoiners]
-            : [...speakingJoiners, ...handRaisingJoiners, ...otherJoiners];
+        const { creator, speakingJoiners, handRaisingJoiners, otherJoiners, offlineJoiners } =
+            classroom.users;
+        return [
+            ...speakingJoiners,
+            ...handRaisingJoiners,
+            ...(creator ? [creator] : []),
+            ...offlineJoiners,
+            ...otherJoiners,
+        ];
     }).get();
 
     const getDeviceState = useCallback(

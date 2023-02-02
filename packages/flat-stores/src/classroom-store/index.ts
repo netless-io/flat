@@ -492,6 +492,7 @@ export class ClassroomStore {
                     user.camera = false;
                 }
             });
+            this.users.updateOfflineJoiners(onStageUsers);
 
             if (!this.isCreator) {
                 const isJoinerOnStage = Boolean(onStageUsersStorage.state[this.userUUID]);
