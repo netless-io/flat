@@ -141,6 +141,7 @@
 }
 
 .hand-raising-user-avatar {
+    flex-shrink: 0;
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -149,11 +150,15 @@
 
 .hand-raising-user-name {
     font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .hand-raising-btn {
     flex: 1;
     text-align: right;
+    white-space: nowrap;
     font-size: 14px;
     color: var(--primary);
     border: none;
