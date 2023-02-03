@@ -59,7 +59,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
             "\n" +
             t("invite-suffix", { uuid: formatInviteCode(uuid, inviteCode) }) +
             "\n" +
-            t("join-link", { link: `${baseUrl}/join/${uuid}` });
+            t("invite-join-link", { link: `${baseUrl}/join/${uuid}` });
 
         if (periodicUUID) {
             const content = periodicWeeks
@@ -102,7 +102,7 @@ export const InviteModal: React.FC<InviteModalProps> = ({
                     </div>
                 )}
                 <div className="invite-modal-content-item">
-                    <span>{t("join-link", { link: "" })}</span>
+                    <span>{t("join-link")}</span>
                     <span style={{ userSelect: "text" }}>
                         {baseUrl}/join/{uuid}
                     </span>

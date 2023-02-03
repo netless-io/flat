@@ -107,7 +107,8 @@
   "invite-prefix": "{{userName}} invites you to join the {{appName}} room\n\nRoom theme: {{title}}",
   "invite-suffix": "Room ID: {{uuid}}",
   "invite-title": "{{userName}} invite to join the {{appName}} room",
-  "join-link": "Join Link : {{link}}",
+  "invite-join-link": "Join Link: {{link}}",
+  "join-link": "Join Link",
   "repeat-weeks": "Repeat period: {{weeks}}",
   "room-uuid": "Room ID",
   "room-theme": "Room theme",
@@ -565,6 +566,8 @@
   "unknown-error": "Unknown error",
   "members": "Members",
   "staging": "On Stage",
+  "stage-on": "You are on stage",
+  "stage-off": "You are off stage",
   "warn-staging-limit": {
     "small-class": "The number of users on stage has reached the limit\n(Small class supports up to 16 users on stage)",
     "other": "The number of users on stage has reached the limit\n(Small class supports up to 16 users on stage)"

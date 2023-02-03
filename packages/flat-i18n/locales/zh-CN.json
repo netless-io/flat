@@ -105,8 +105,9 @@
   "no-room": "暂无房间",
   "invite-prefix": "{{userName}} 邀请你加入 {{appName}} 房间\n房间主题：{{title}}\n",
   "invite-begin-time": "开始时间：{{time}}\n",
-  "invite-suffix": "房间号： {{uuid}}",
-  "join-link": "加入链接: {{link}}",
+  "invite-suffix": "房间号：{{uuid}}",
+  "invite-join-link": "加入链接：{{link}}",
+  "join-link": "加入链接",
   "repeat-weeks": "重复周期：{{weeks}}",
   "invite-title": "{{userName}} 邀请加入 {{appName}} 房间",
   "join-and-book-by-room-uuid": "可通过房间号加入和预约",
@@ -565,6 +566,8 @@
   "unknown-error": "未知错误",
   "members": "学生",
   "staging": "上/下台",
+  "stage-on": "你已上台",
+  "stage-off": "你已下台",
   "warn-staging-limit": {
     "small-class": "台上座位已满，请先关闭已有学生发言再同意其他学生的上台请求\n（小班课最多支持16位学生同时发言）",
     "other": "台上座位已满，请先关闭已有学生发言再同意其他学生的上台请求\n（或切换房间类型为小班课，支持多位学生同时发言）"

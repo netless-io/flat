@@ -464,6 +464,7 @@ export class ClassroomStore {
         const updateUserStagingState = async (
             diff?: Diff<OnStageUsersStorageState>,
         ): Promise<void> => {
+            const wasJoinerOnStage = this.onStageUserUUIDs.includes(this.userUUID);
             const onStageUsers = Object.keys(onStageUsersStorage.state).filter(
                 userUUID => onStageUsersStorage.state[userUUID],
             );
@@ -524,6 +525,10 @@ export class ClassroomStore {
                         preferencesStore.autoCameraOn,
                         preferencesStore.autoMicOn,
                     );
+                }
+
+                if (wasJoinerOnStage !== isJoinerOnStage) {
+                    message.info(FlatI18n.t(isJoinerOnStage ? "stage-on" : "stage-off"));
                 }
             }
         };
