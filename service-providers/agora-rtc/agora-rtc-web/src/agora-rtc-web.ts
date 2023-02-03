@@ -31,6 +31,7 @@ if (process.env.DEV) {
 
 declare global {
     interface HTMLMediaElement {
+        /** If there's DOMException, it will be returned as a rejected promise. */
         setSinkId(sinkId: string): Promise<void>;
     }
 }
@@ -298,13 +299,9 @@ export class AgoraRTCWeb extends IServiceVideoChat {
     public override startSpeakerTest = (url: string): void => {
         this._testingAudio = document.createElement("audio");
         let afterSetSinkId = Promise.resolve();
-        try {
-            // Safari does not support setSinkId
-            if (this._speakerID && this._testingAudio.setSinkId) {
-                afterSetSinkId = this._testingAudio.setSinkId(this._speakerID);
-            }
-        } catch (error) {
-            console.error(error);
+        // Safari does not support setSinkId
+        if (this._speakerID && this._testingAudio.setSinkId) {
+            afterSetSinkId = this._testingAudio.setSinkId(this._speakerID).catch(console.error);
         }
         afterSetSinkId.then(() => {
             if (this._testingAudio) {
