@@ -18,6 +18,7 @@ import { message } from "antd";
 import { WhiteboardStore, ClassroomStore } from "@netless/flat-stores";
 import { FlatServices, getFileExt } from "@netless/flat-services";
 import { format } from "date-fns";
+import { listen } from "@wopjs/dom";
 import { isSupportedFileExt } from "../utils/drag-and-drop";
 import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image";
 import { PRESETS } from "../constants/presets";
@@ -170,6 +171,22 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         return () => document.removeEventListener("paste", pasteHandler);
     }, [room, whiteboardStore, windowManager]);
 
+    // Toggle off hand raising panel when there's user input on whiteboard.
+    useEffect(() => {
+        if (classRoomStore.isHandRaisingPanelVisible) {
+            const whiteboard: HTMLDivElement | null = document.querySelector(".fastboard-view");
+            if (whiteboard) {
+                return listen(
+                    whiteboard,
+                    "pointerdown",
+                    () => classRoomStore.onToggleHandRaisingPanel(false),
+                    { capture: true },
+                );
+            }
+        }
+        return;
+    }, [classRoomStore, classRoomStore.isHandRaisingPanelVisible]);
+
     return (
         <>
             {room && (
@@ -196,7 +213,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                             <RaisingHand
                                 active={handRaisingCount > 0}
                                 count={handRaisingCount}
-                                onClick={classRoomStore.onToggleHandRaisingPanel}
+                                onClick={() => classRoomStore.onToggleHandRaisingPanel()}
                             />
                         </div>
                     )}

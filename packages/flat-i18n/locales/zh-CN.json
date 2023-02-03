@@ -565,6 +565,10 @@
   "unknown-error": "未知错误",
   "members": "学生",
   "staging": "上/下台",
+  "warn-staging-limit": {
+    "small-class": "台上座位已满，请先关闭已有学生发言再同意其他学生的上台请求\n（小班课最多支持16位学生同时发言）",
+    "other": "台上座位已满，请先关闭已有学生发言再同意其他学生的上台请求\n（或切换房间类型为小班课，支持多位学生同时发言）"
+  },
   "whiteboard-access": "白板权限",
   "teacher-request-camera": "老师请求开启摄像头",
   "teacher-request-mic": "老师请求开启麦克风",

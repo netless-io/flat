@@ -370,7 +370,7 @@ export class ClassroomStore {
             this.whiteboardStore.updateAllowDrawing(whiteboardStorage.state[this.userUUID]);
         }
 
-        this._updateIsBan(classroomStorage.state.ban);
+        this.updateIsBan(classroomStorage.state.ban);
 
         this.chatStore.onNewMessage = message => {
             if (this.isRecording) {
@@ -450,7 +450,7 @@ export class ClassroomStore {
                     });
                 }
                 if (diff.ban) {
-                    this._updateIsBan(diff.ban.newValue);
+                    this.updateIsBan(diff.ban.newValue);
                     if (this.isCreator) {
                         this.rtm.sendRoomCommand("ban", {
                             roomUUID: this.roomUUID,
@@ -742,11 +742,6 @@ export class ClassroomStore {
     public acceptRaiseHand = (userUUID: string): void => {
         if (this.isCreator && this.classroomStorage?.isWritable) {
             if (this.classroomStorage.state.raiseHandUsers.includes(userUUID)) {
-                this.classroomStorage.setState({
-                    raiseHandUsers: this.classroomStorage.state.raiseHandUsers.filter(
-                        id => id !== userUUID,
-                    ),
-                });
                 this.onStaging(userUUID, true);
             }
         }
@@ -773,8 +768,8 @@ export class ClassroomStore {
         }
     };
 
-    public onToggleHandRaisingPanel = (): void => {
-        this.isHandRaisingPanelVisible = !this.isHandRaisingPanelVisible;
+    public onToggleHandRaisingPanel = (force = !this.isHandRaisingPanelVisible): void => {
+        this.isHandRaisingPanelVisible = force;
     };
 
     public onToggleBan = (): void => {
@@ -783,11 +778,11 @@ export class ClassroomStore {
         }
     };
 
-    private _updateIsBan(ban: boolean): void {
+    private updateIsBan(ban: boolean): void {
         this.isBan = ban;
     }
 
-    public onStaging = async (userUUID: string, onStage: boolean): Promise<void> => {
+    public onStaging = (userUUID: string, onStage: boolean): void => {
         if (
             this.classMode === ClassModeType.Interaction ||
             userUUID === this.ownerUUID ||
@@ -796,8 +791,12 @@ export class ClassroomStore {
             return;
         }
         if (this.isCreator) {
-            this.onStageUsersStorage.setState({ [userUUID]: onStage });
-            this.isHandRaisingPanelVisible = false;
+            if (!onStage || this.assertStageNotFull()) {
+                this.onStageUsersStorage.setState({ [userUUID]: onStage });
+            } else {
+                // assert failed
+                return;
+            }
         } else {
             // joiner can only turn off speaking
             if (!onStage && userUUID === this.userUUID) {
@@ -815,6 +814,21 @@ export class ClassroomStore {
         }
     };
 
+    private assertStageNotFull(): boolean {
+        const limit = this.roomType === RoomType.SmallClass ? 16 : 1;
+        if (this.onStageUserUUIDs.length < limit) {
+            return true;
+        }
+        message.warn({
+            content: FlatI18n.t(
+                "warn-staging-limit." +
+                    (this.roomType === RoomType.SmallClass ? "small-class" : "other"),
+            ),
+            style: { whiteSpace: "pre" },
+        });
+        return false;
+    }
+
     public offStageAll = async (): Promise<void> => {
         if (this.classMode === ClassModeType.Interaction || !this.onStageUsersStorage?.isWritable) {
             return;
@@ -831,7 +845,7 @@ export class ClassroomStore {
             const state = this.deviceStateStorage.state;
             const payload: Partial<DeviceStateStorageState> = {};
             for (const userUUID in state) {
-                if (state[userUUID].mic) {
+                if (userUUID !== this.userUUID && state[userUUID].mic) {
                     payload[userUUID] = { ...state[userUUID], mic: false };
                 }
             }

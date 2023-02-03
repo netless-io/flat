@@ -565,6 +565,10 @@
   "unknown-error": "Unknown error",
   "members": "Members",
   "staging": "On Stage",
+  "warn-staging-limit": {
+    "small-class": "The number of users on stage has reached the limit\n(Small class supports up to 16 users on stage)",
+    "other": "The number of users on stage has reached the limit\n(Small class supports up to 16 users on stage)"
+  },
   "whiteboard-access": "Whiteboard",
   "teacher-request-camera": "Teacher requests to turn on camera",
   "teacher-request-mic": "Teacher requests to turn on microphone",
