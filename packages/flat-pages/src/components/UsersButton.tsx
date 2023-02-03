@@ -83,7 +83,7 @@ export const UsersButton = observer<UsersButtonProps>(function UsersButton({ cla
     return (
         <>
             <TopBarRightBtn
-                icon={<SVGUserGroup active={open} />}
+                icon={<SVGUserGroup />}
                 title={t("users")}
                 onClick={() => setOpen(!open)}
             />
