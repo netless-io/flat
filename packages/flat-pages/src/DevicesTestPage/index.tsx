@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { IServiceVideoChatDevice } from "@netless/flat-services";
 
+import { noop } from "lodash-es";
 import { useParams } from "react-router-dom";
 import { RouteNameType, RouteParams, usePushHistory } from "../utils/routes";
 import { joinRoomHandler } from "../utils/join-room-handler";
@@ -28,12 +29,15 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
 
     const [cameraDevices, setCameraDevices] = useState<IServiceVideoChatDevice[]>([]);
     const [microphoneDevices, setMicrophoneDevices] = useState<IServiceVideoChatDevice[]>([]);
+    const [speakerDevices, setSpeakerDevices] = useState<IServiceVideoChatDevice[]>([]);
 
     const [cameraDeviceId, setCameraDeviceId] = useState<string>("");
     const [microphoneDeviceId, setMicrophoneDeviceId] = useState<string>("");
+    const [speakerDeviceId, setSpeakerDeviceId] = useState<string>("");
 
     const [isCameraAccessible, setIsCameraAccessible] = useState(true);
     const [isMicrophoneAccessible, setIsMicrophoneAccessible] = useState(true);
+    const [isSpeakerAccessible, setIsSpeakerAccessible] = useState(true);
 
     const [volume, setVolume] = useState(0);
 
@@ -68,10 +72,6 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
             return;
         }
 
-        const handlerDeviceError = (): void => {
-            setIsCameraAccessible(false);
-        };
-
         const refreshCameraDevices = (): void => {
             sp(rtc.getCameraDevices())
                 .then(devices => {
@@ -79,7 +79,9 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
                     setCameraDevices(cameraDevices);
                     setIsCameraAccessible(cameraDevices.length > 0);
                 })
-                .catch(handlerDeviceError);
+                .catch(() => {
+                    setIsCameraAccessible(false);
+                });
         };
 
         const refreshMicDevices = (): void => {
@@ -89,18 +91,35 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
                     setMicrophoneDevices(microphoneDevices);
                     setIsMicrophoneAccessible(microphoneDevices.length > 0);
                 })
-                .catch(handlerDeviceError);
+                .catch(() => {
+                    setIsMicrophoneAccessible(false);
+                });
+        };
+
+        const refreshSpeakerDevices = (): void => {
+            sp(rtc.getSpeakerDevices())
+                .then(devices => {
+                    const speakerDevices = devices.filter(device => device.deviceId);
+                    setSpeakerDevices(speakerDevices);
+                    setIsMicrophoneAccessible(speakerDevices.length > 0);
+                })
+                .catch(() => {
+                    setIsSpeakerAccessible(false);
+                });
         };
 
         const cameraChangeDisposer = rtc.events.on("camera-changed", refreshCameraDevices);
         const micChangedDisposer = rtc.events.on("mic-changed", refreshMicDevices);
+        const speakerChangedDisposer = rtc.events.on("speaker-changed", refreshSpeakerDevices);
 
         refreshCameraDevices();
         refreshMicDevices();
+        refreshSpeakerDevices();
 
         return () => {
             cameraChangeDisposer();
             micChangedDisposer();
+            speakerChangedDisposer();
         };
     }, [rtc, sp]);
 
@@ -119,6 +138,14 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
             });
         }
     }, [rtc, microphoneDeviceId]);
+
+    useEffect(() => {
+        if (rtc && speakerDeviceId) {
+            void rtc.setSpeakerID(speakerDeviceId).catch(() => {
+                setIsSpeakerAccessible(false);
+            });
+        }
+    }, [rtc, speakerDeviceId]);
 
     useEffect(() => {
         // check device id on changes
@@ -147,6 +174,18 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
         }
     }, [preferencesStore, microphoneDeviceId, microphoneDevices]);
 
+    useEffect(() => {
+        // check device id on changes
+        if (speakerDevices.length > 0 && !speakerDeviceId) {
+            const lastSpeakerId = preferencesStore.speakerId;
+            if (lastSpeakerId && speakerDevices.some(device => device.deviceId === lastSpeakerId)) {
+                setSpeakerDeviceId(lastSpeakerId);
+            } else {
+                setSpeakerDeviceId(speakerDevices[0].deviceId);
+            }
+        }
+    }, [preferencesStore, speakerDeviceId, speakerDevices]);
+
     const joinRoom = async (): Promise<void> => {
         preferencesStore.updateCameraId(cameraDeviceId);
         preferencesStore.updateMicrophoneId(microphoneDeviceId);
@@ -161,18 +200,20 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
                     cameraVideoStreamRef={cameraVideoStreamRef}
                     currentCameraDeviceID={cameraDeviceId}
                     currentMicrophoneDeviceID={microphoneDeviceId}
-                    currentSpeakerDeviceID={"default browser"}
+                    currentSpeakerDeviceID={speakerDeviceId}
                     isCameraAccessible={isCameraAccessible}
                     isMicrophoneAccessible={isMicrophoneAccessible}
-                    isSpeakerAccessible={true}
+                    isSpeakerAccessible={isSpeakerAccessible}
                     joinRoom={joinRoom}
                     microphoneDevices={microphoneDevices}
                     microphoneVolume={volume}
                     setCameraDevice={setCameraDeviceId}
-                    // Currently, the browser does not support switch speaker devices
                     setMicrophoneDevice={setMicrophoneDeviceId}
-                    setSpeakerDevice={() => null}
+                    setSpeakerDevice={setSpeakerDeviceId}
+                    speakerDevices={speakerDevices}
                     speakerTestFileName={"Music"}
+                    startSpeakerTest={rtc ? rtc.startSpeakerTest : noop}
+                    stopSpeakerTest={rtc ? rtc.stopSpeakerTest : noop}
                     toggleDeviceTest={() => globalStore.toggleDeviceTest()}
                 />
             </div>

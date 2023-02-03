@@ -29,6 +29,13 @@ if (process.env.DEV) {
     (window as any).AgoraRTC = AgoraRTC;
 }
 
+declare global {
+    interface HTMLMediaElement {
+        /** If there's DOMException, it will be returned as a rejected promise. */
+        setSinkId(sinkId: string): Promise<void>;
+    }
+}
+
 export interface AgoraRTCWebConfig {
     APP_ID: string;
 }
@@ -42,6 +49,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
     private _pJoiningRoom?: Promise<unknown>;
     private _pLeavingRoom?: Promise<unknown>;
+    private _testingAudio?: HTMLAudioElement;
 
     public client?: IAgoraRTCClient;
     public mode?: IServiceVideoChatMode;
@@ -258,24 +266,57 @@ export class AgoraRTCWeb extends IServiceVideoChat {
         }));
     }
 
-    /** Does not support  */
     public getSpeakerID(): string | undefined {
         return this._speakerID;
     }
 
     public async setSpeakerID(deviceId: string): Promise<void> {
         if (this._speakerID !== deviceId) {
+            for (const remoteAvatar of this._remoteAvatars.values()) {
+                remoteAvatar.setSpeakerId(deviceId);
+            }
             this._speakerID = deviceId;
             this.events.emit("speaker-changed", deviceId);
         }
     }
 
     public async getSpeakerDevices(): Promise<IServiceVideoChatDevice[]> {
-        return (await AgoraRTC.getPlaybackDevices()).map(device => ({
-            deviceId: device.deviceId,
-            label: device.label,
-        }));
+        return await AgoraRTC.getPlaybackDevices();
     }
+
+    // AgoraRTC.createBufferSourceAudioTrack() is supposed to do this work, but
+    // the main purpose for this kind of track is to mix audio with other effects,
+    // in which case it uses WebAudio under the hood.
+    //
+    // However, WebAudio does not support changing output device (setSinkId) until chrome 110.
+    // https://developer.chrome.com/blog/audiocontext-setsinkid
+    //
+    // But Agora RTC does support change remote audio track output device,
+    // in which case it uses HTMLAudioElement under the hood.
+    //
+    // So in summary, we have to implement speaker test function by ourself using
+    // a real audio element.
+    public override startSpeakerTest = (url: string): void => {
+        this._testingAudio = document.createElement("audio");
+        let afterSetSinkId = Promise.resolve();
+        // Safari does not support setSinkId
+        if (this._speakerID && this._testingAudio.setSinkId) {
+            afterSetSinkId = this._testingAudio.setSinkId(this._speakerID).catch(console.error);
+        }
+        afterSetSinkId.then(() => {
+            if (this._testingAudio) {
+                this._testingAudio.src = url;
+                this._testingAudio.play();
+            }
+        });
+    };
+
+    public override stopSpeakerTest = (): void => {
+        if (this._testingAudio) {
+            this._testingAudio.pause();
+            this._testingAudio = undefined;
+        }
+    };
 
     public getSpeakerVolume(): number {
         return this.getVolumeLevel();

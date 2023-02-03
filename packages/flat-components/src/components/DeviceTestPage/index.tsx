@@ -27,6 +27,8 @@ export interface DeviceTestPanelProps {
     setSpeakerDevice: (deviceID: string) => void;
     setCameraDevice: (deviceID: string) => void;
     setMicrophoneDevice: (deviceID: string) => void;
+    startSpeakerTest: (url: string) => void;
+    stopSpeakerTest: () => void;
     toggleDeviceTest: () => void;
     joinRoom: () => void;
 }
@@ -48,6 +50,8 @@ export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
     setCameraDevice,
     setMicrophoneDevice,
     setSpeakerDevice,
+    startSpeakerTest,
+    stopSpeakerTest,
     toggleDeviceTest,
     joinRoom,
 }) => {
@@ -73,6 +77,8 @@ export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
                         setSpeakerDevice={setSpeakerDevice}
                         speakerDevices={speakerDevices}
                         speakerTestFileName={speakerTestFileName}
+                        startSpeakerTest={startSpeakerTest}
+                        stopSpeakerTest={stopSpeakerTest}
                     />
                     <MicrophoneTest
                         currentMicrophoneDeviceID={currentMicrophoneDeviceID}
