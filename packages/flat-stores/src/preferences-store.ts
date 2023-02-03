@@ -21,6 +21,8 @@ export class PreferencesStore {
     public cameraId?: string | null = null;
     /** selected microphone device id on devices test page */
     public microphoneId?: string | null = null;
+    /** selected speaker device id on devices test page */
+    public speakerId?: string | null = null;
 
     public prefersColorScheme: FlatPrefersColorScheme = "light";
     /** Turn on recording on joining room */
@@ -46,6 +48,10 @@ export class PreferencesStore {
 
     public updateMicrophoneId = (microphoneId: string): void => {
         this.microphoneId = microphoneId;
+    };
+
+    public updateSpeakerId = (speakerId: string): void => {
+        this.speakerId = speakerId;
     };
 
     public setRegion = (region: Region): void => {

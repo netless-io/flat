@@ -13,6 +13,7 @@ export class RTCRemoteAvatar implements IServiceVideoChatAvatar {
 
     private readonly _shouldCamera$ = new Val(false);
     private readonly _shouldMic$ = new Val(false);
+    private readonly _speakerId$ = new Val<string | undefined>(undefined);
 
     private readonly _el$: Val<HTMLElement | undefined | null>;
     private readonly _videoTrack$: Val<IRemoteVideoTrack | undefined>;
@@ -30,6 +31,10 @@ export class RTCRemoteAvatar implements IServiceVideoChatAvatar {
         this._el$.setValue(el);
     }
 
+    public setSpeakerId(speakerId: string | undefined): void {
+        this._speakerId$.setValue(speakerId);
+    }
+
     public setVideoTrack(videoTrack?: IRemoteVideoTrack): void {
         this._videoTrack$.setValue(videoTrack);
     }
@@ -42,10 +47,23 @@ export class RTCRemoteAvatar implements IServiceVideoChatAvatar {
         return this._audioTrack$.value?.getVolumeLevel() || 0;
     }
 
-    public constructor(config: RTCRemoteAvatarConfig = {}) {
+    public constructor(config: RTCRemoteAvatarConfig) {
         this._el$ = new Val(config.element);
         this._videoTrack$ = new Val(config.rtcRemoteUser?.videoTrack);
         this._audioTrack$ = new Val(config.rtcRemoteUser?.audioTrack);
+
+        this._sideEffect.addDisposer(
+            combine([this._audioTrack$, this._speakerId$]).subscribe(([audioTrack, speakerId]) => {
+                if (audioTrack && speakerId) {
+                    try {
+                        // only works on chrome (desktop), other browsers will throw error
+                        audioTrack.setPlaybackDevice(speakerId);
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            }),
+        );
 
         this._sideEffect.addDisposer(
             combine([this._audioTrack$, this._shouldMic$]).subscribe(([audioTrack, shouldMic]) => {

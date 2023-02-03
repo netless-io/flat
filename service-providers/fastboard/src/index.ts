@@ -278,11 +278,7 @@ export class Fastboard extends IServiceWhiteboard {
                                 ? "roomBanned"
                                 : "unknown",
                         );
-                        try {
-                            await this.leaveRoom();
-                        } catch {
-                            // already in exception state, ignore errors
-                        }
+                        await this.leaveRoom();
                     },
                 },
             },
@@ -326,7 +322,7 @@ export class Fastboard extends IServiceWhiteboard {
             this._app$.setValue(null);
             this._el$.setValue(null);
             this.ui.destroy();
-            await app.destroy();
+            await app.destroy().catch(console.error);
         }
     }
 

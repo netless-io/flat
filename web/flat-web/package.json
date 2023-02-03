@@ -39,7 +39,7 @@
     "@netless/flat-stores": "workspace:*",
     "@videojs/vhs-utils": "^4.0.0",
     "@zip.js/zip.js": "^2.6.29",
-    "agora-rtc-sdk-ng": "^4.14.0",
+    "agora-rtc-sdk-ng": "^4.16.0",
     "agora-rtm-sdk": "^1.6.0",
     "antd": "^4.23.2",
     "axios": "^0.27.2",
