@@ -34,10 +34,9 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
     getVolumeLevel,
     children,
 }) => {
-    const isCameraCtrlDisable =
-        avatarUser.userUUID !== userUUID && (!isCreator || !avatarUser.camera);
+    const isCameraCtrlDisable = !isCreator && avatarUser.userUUID !== userUUID;
 
-    const isMicCtrlDisable = avatarUser.userUUID !== userUUID && (!isCreator || !avatarUser.mic);
+    const isMicCtrlDisable = !isCreator && avatarUser.userUUID !== userUUID;
 
     return (
         <div className={classnames("video-avatar", { "is-small": small })}>
