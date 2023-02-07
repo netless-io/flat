@@ -103,8 +103,23 @@
     flex-direction: column;
 }
 
+.users-panel-list-name-content {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .users-panel-list-name {
+    max-width: 100px;
+    display: inline-flex;
+    gap: 4px;
     font-size: 14px;
+}
+
+.users-panel-is-self {
+    flex-shrink: 0;
+    color: var(--text-weak);
 }
 
 .users-panel-list-has-left {
