@@ -40,8 +40,6 @@ export class UserStore {
     public handRaisingJoiners = observable.array<User>([]);
     /** the rest joiners */
     public otherJoiners = observable.array<User>([]);
-    /** joiners who have left */
-    public offlineJoiners = observable.array<User>([]);
 
     public get joiners(): User[] {
         return [...this.speakingJoiners, ...this.handRaisingJoiners, ...this.otherJoiners];
@@ -152,16 +150,6 @@ export class UserStore {
         // Sort each unsorted users into different group
         unSortedUsers.forEach(this.sortUser);
     };
-
-    public updateOfflineJoiners(onStageUserUUIDs: string[]): void {
-        this.offlineJoiners.clear();
-        for (const userUUID of onStageUserUUIDs) {
-            const user = this.cachedUsers.get(userUUID);
-            if (user && user.hasLeft) {
-                this.offlineJoiners.push(user);
-            }
-        }
-    }
 
     /**
      * Fetch info of users who have left the room.

@@ -17,32 +17,29 @@ export class FileConvertNetless implements IServiceFileConvert {
     ): Promise<
         { taskUUID: string; taskToken: string; resourceType: FileResourceType } | undefined
     > {
-        try {
-            const convertResult = await convertStart({
-                fileUUID: file.fileUUID,
-            });
-            const { resourceType, whiteboardProjector, whiteboardConvert } = convertResult;
+        const convertResult = await convertStart({
+            fileUUID: file.fileUUID,
+        });
+        const { resourceType, whiteboardProjector, whiteboardConvert } = convertResult;
 
-            if (whiteboardProjector) {
-                const { taskUUID, taskToken } = whiteboardProjector;
-                return {
-                    taskUUID,
-                    taskToken,
-                    resourceType,
-                };
-            }
-
-            if (whiteboardConvert) {
-                const { taskUUID, taskToken } = whiteboardConvert;
-                return {
-                    taskUUID,
-                    taskToken,
-                    resourceType,
-                };
-            }
-        } catch (e) {
-            console.error(e);
+        if (whiteboardProjector) {
+            const { taskUUID, taskToken } = whiteboardProjector;
+            return {
+                taskUUID,
+                taskToken,
+                resourceType,
+            };
         }
+
+        if (whiteboardConvert) {
+            const { taskUUID, taskToken } = whiteboardConvert;
+            return {
+                taskUUID,
+                taskToken,
+                resourceType,
+            };
+        }
+
         return;
     }
 

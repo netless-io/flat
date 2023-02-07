@@ -18,8 +18,8 @@ export const UsersButton = observer<UsersButtonProps>(function UsersButton({ cla
 
     // not including teacher
     const users = useComputed(() => {
-        const { speakingJoiners, handRaisingJoiners, otherJoiners, offlineJoiners } =
-            classroom.users;
+        const { offlineJoiners } = classroom;
+        const { speakingJoiners, handRaisingJoiners, otherJoiners } = classroom.users;
         return [...speakingJoiners, ...handRaisingJoiners, ...offlineJoiners, ...otherJoiners];
     }).get();
 

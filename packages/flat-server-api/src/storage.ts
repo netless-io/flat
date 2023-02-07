@@ -171,41 +171,24 @@ export function getWhiteboardTaskData(
     resourceType: ResourceType,
     meta: metaType,
 ): WhiteboardConvertPayload | WhiteboardProjectorPayload | null {
-    let data: WhiteboardConvertPayload | WhiteboardProjectorPayload | null = null;
-
     switch (resourceType) {
         case "WhiteboardProjector": {
-            data = {
+            return {
                 taskUUID: meta.whiteboardProjector!.taskUUID,
                 taskToken: meta.whiteboardProjector!.taskToken,
                 convertStep: meta.whiteboardProjector!.convertStep,
                 region: meta.whiteboardProjector!.region,
             };
-            break;
         }
         case "WhiteboardConvert": {
-            data = {
+            return {
                 taskUUID: meta.whiteboardConvert!.taskUUID,
                 taskToken: meta.whiteboardConvert!.taskToken,
                 convertStep: meta.whiteboardConvert!.convertStep,
                 region: meta.whiteboardConvert!.region,
             };
-            break;
         }
-    }
-
-    if (data && assertAllFieldsPresent(data)) {
-        return data;
     }
 
     return null;
-}
-
-function assertAllFieldsPresent(obj: Record<string, any>): boolean {
-    for (const key in obj) {
-        if (obj[key] === undefined) {
-            return false;
-        }
-    }
-    return true;
 }

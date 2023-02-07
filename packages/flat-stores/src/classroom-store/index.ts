@@ -304,6 +304,16 @@ export class ClassroomStore {
             : undefined;
     }
 
+    public get offlineJoiners(): User[] {
+        const result: User[] = [];
+        for (const user of this.users.cachedUsers.values()) {
+            if (this.onStageUserUUIDs.includes(user.userUUID) && user.hasLeft) {
+                result.push(user);
+            }
+        }
+        return result;
+    }
+
     public async init(): Promise<void> {
         await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
 
@@ -493,7 +503,6 @@ export class ClassroomStore {
                     user.camera = false;
                 }
             });
-            this.users.updateOfflineJoiners(onStageUsers);
 
             if (!this.isCreator) {
                 const isJoinerOnStage = Boolean(onStageUsersStorage.state[this.userUUID]);

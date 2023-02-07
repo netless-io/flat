@@ -18,7 +18,7 @@ export function useDraggable(): Draggable {
 
             const stopListenDown = listen(div, "pointerdown", ev => {
                 // is dragging avatar, not the buttons on it
-                const isAvatar = (ev.target as HTMLElement).classList?.contains("video-avatar");
+                const isAvatar = (ev.target as HTMLElement).className?.includes("video-avatar");
                 if (isAvatar && ev.pointerType === "mouse" && ev.isPrimary && ev.button === 0) {
                     div.setPointerCapture(ev.pointerId);
                     start.current = [ev.clientX, div.scrollLeft];
