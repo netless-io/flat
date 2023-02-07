@@ -63,6 +63,7 @@
   "student-sure-to-exit-the-room": "Sure to exit the room",
   "teacher-left-temporarily": "Teacher has left",
   "student-left-temporarily": "Student has left",
+  "user-left-temporarily": "{{name}} has left",
   "the-room-has-ended-and-is-about-to-exit": "The room has ended and is about to exit...",
   "you-have-entered-the-room-at-another-device": "You have entered the room at another device",
   "class-picker-text": {

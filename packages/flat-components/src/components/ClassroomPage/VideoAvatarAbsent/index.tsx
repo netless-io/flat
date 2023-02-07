@@ -13,13 +13,21 @@ export interface VideoAvatarAbsentProps {
     isAvatarUserCreator: boolean;
 }
 
-export const VideoAvatarAbsent: FC<VideoAvatarAbsentProps> = ({ small, isAvatarUserCreator }) => {
+export const VideoAvatarAbsent: FC<VideoAvatarAbsentProps> = ({
+    avatarUser,
+    small,
+    isAvatarUserCreator,
+}) => {
     const t = useTranslate();
     return (
         <div className={classnames("video-avatar-absent", { "is-small": small })}>
             <img className="video-avatar-absent-img" draggable={false} src={placeholderSVG} />
             <span className="video-avatar-absent-content">
-                {t(`${isAvatarUserCreator ? "teacher" : "student"}-left-temporarily`)}
+                {isAvatarUserCreator
+                    ? t("teacher-left-temporarily")
+                    : avatarUser
+                    ? t("user-left-temporarily", { name: avatarUser.name })
+                    : t("student-left-temporarily")}
             </span>
         </div>
     );

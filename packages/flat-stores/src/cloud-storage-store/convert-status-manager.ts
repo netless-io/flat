@@ -42,26 +42,42 @@ export class ConvertStatusManager {
         }
 
         if (convertStep === FileConvertStep.None) {
-            const startResult = await processor.startConvert(file);
-            if (startResult) {
-                if (startResult.resourceType === FileResourceType.WhiteboardProjector) {
-                    runInAction(() => {
-                        if (file.meta.whiteboardProjector) {
-                            file.meta.whiteboardProjector.convertStep = FileConvertStep.Converting;
-                            file.meta.whiteboardProjector.taskUUID = startResult.taskUUID;
-                            file.meta.whiteboardProjector.taskToken = startResult.taskToken;
-                        }
-                    });
+            try {
+                const startResult = await processor.startConvert(file);
+                if (startResult) {
+                    if (startResult.resourceType === FileResourceType.WhiteboardProjector) {
+                        runInAction(() => {
+                            if (file.meta.whiteboardProjector) {
+                                file.meta.whiteboardProjector.convertStep =
+                                    FileConvertStep.Converting;
+                                file.meta.whiteboardProjector.taskUUID = startResult.taskUUID;
+                                file.meta.whiteboardProjector.taskToken = startResult.taskToken;
+                            }
+                        });
+                    }
+                    if (startResult.resourceType === FileResourceType.WhiteboardConvert) {
+                        runInAction(() => {
+                            if (file.meta.whiteboardConvert) {
+                                file.meta.whiteboardConvert.convertStep =
+                                    FileConvertStep.Converting;
+                                file.meta.whiteboardConvert.taskUUID = startResult.taskUUID;
+                                file.meta.whiteboardConvert.taskToken = startResult.taskToken;
+                            }
+                        });
+                    }
                 }
-                if (startResult.resourceType === FileResourceType.WhiteboardConvert) {
-                    runInAction(() => {
-                        if (file.meta.whiteboardConvert) {
-                            file.meta.whiteboardConvert.convertStep = FileConvertStep.Converting;
-                            file.meta.whiteboardConvert.taskUUID = startResult.taskUUID;
-                            file.meta.whiteboardConvert.taskToken = startResult.taskToken;
-                        }
-                    });
-                }
+            } catch (error) {
+                console.error(error);
+                runInAction(() => {
+                    if (file.meta.whiteboardProjector) {
+                        file.meta.whiteboardProjector.convertStep = FileConvertStep.Failed;
+                    }
+                    if (file.meta.whiteboardConvert) {
+                        file.meta.whiteboardConvert.convertStep = FileConvertStep.Failed;
+                    }
+                });
+                await convertFinish({ fileUUID: file.fileUUID });
+                return;
             }
         }
 
