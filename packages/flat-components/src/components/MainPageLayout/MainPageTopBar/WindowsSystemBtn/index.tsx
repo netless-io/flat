@@ -15,30 +15,23 @@ export const WindowsSystemBtn: React.FC<WindowsSystemBtnProps> = ({
 }) => {
     return (
         <div className="windows-system-btn">
-            {
-                <>
-                    <a
-                        className="windows-system-btn-item"
-                        onClick={() => onClickWindowsSystemBtn("minimize")}
-                    >
-                        <SVGMinimize />
-                    </a>
-                    {hiddenMaximizeBtn ? null : (
-                        <a
-                            className="windows-system-btn-item"
-                            onClick={() => onClickWindowsSystemBtn("maximize")}
-                        >
-                            <SVGMaximize />
-                        </a>
-                    )}
-                    <a
-                        className="windows-system-btn-item"
-                        onClick={() => onClickWindowsSystemBtn("close")}
-                    >
-                        <SVGClose />
-                    </a>
-                </>
-            }
+            <a
+                className="windows-system-btn-item"
+                onClick={() => onClickWindowsSystemBtn("minimize")}
+            >
+                <SVGMinimize />
+            </a>
+            {hiddenMaximizeBtn ? null : (
+                <a
+                    className="windows-system-btn-item"
+                    onClick={() => onClickWindowsSystemBtn("maximize")}
+                >
+                    <SVGMaximize />
+                </a>
+            )}
+            <a className="windows-system-btn-item" onClick={() => onClickWindowsSystemBtn("close")}>
+                <SVGClose />
+            </a>
         </div>
     );
 };

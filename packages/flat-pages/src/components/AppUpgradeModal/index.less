@@ -12,16 +12,17 @@
 }
 
 .app-upgrade-modal-title {
-    color: #444e60;
+    color: var(--blue-12);
 }
 
 .app-upgrade-modal-font {
-    color: #7a7b7c;
+    color: var(--text);
 }
+
 .app-upgrade-modal-progress {
     height: 5px;
     border-radius: 3px;
-    background: #dbe1ea;
+    background: var(--grey-1);
 }
 
 .app-upgrade-active-progress {
@@ -29,10 +30,20 @@
     height: 5px;
     top: -5px;
     border-radius: 3px;
-    background: #3381ff;
+    background: var(--primary);
 }
 
 .app-upgrade-modal-btn {
     text-align: right;
     margin-top: 30px;
+}
+
+.flat-color-scheme-dark {
+    .app-upgrade-modal-title {
+        color: var(--grey-0);
+    }
+
+    .app-upgrade-modal-progress {
+        background: var(--grey-8);
+    }
 }

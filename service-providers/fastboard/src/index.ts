@@ -120,6 +120,7 @@ export class Fastboard extends IServiceWhiteboard {
                     return;
                 }
                 room.disableDeviceInputs = !allowDrawing;
+                room.disableCameraTransform = !allowDrawing;
             }),
             combine([this._app$, isWritable$]).subscribe(([app, isWritable]) => {
                 const room = app?.room;
@@ -374,7 +375,7 @@ export class Fastboard extends IServiceWhiteboard {
                 actions[i] = async () => {
                     try {
                         const scenePath = contextPath + scene.name;
-                        // @ts-ignore TODO: should fixe the typings in white-web-sdk
+                        // @ts-ignore TODO: should fix the typings in white-web-sdk
                         const rect = room.getBoundingRect(scenePath);
                         const canvas = document.createElement("canvas");
                         canvas.width = rect.width * devicePixelRatio;
