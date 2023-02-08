@@ -12,5 +12,8 @@
   "i18n-ally.displayLanguage": "zh-CN",
   "eslint.enable": true,
   "eslint.format.enable": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[less]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  }
 }
