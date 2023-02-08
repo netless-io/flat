@@ -58,7 +58,7 @@ export type ClassRouteName =
 export const routeConfig = {
     [RouteNameType.SplashPage]: {
         title: "SplashPage",
-        path: "/",
+        path: "/splash",
         component: SplashPage,
     },
     [RouteNameType.LoginPage]: {
@@ -68,7 +68,7 @@ export const routeConfig = {
     },
     [RouteNameType.HomePage]: {
         title: "HomePage",
-        path: "/home/",
+        path: "/",
         component: HomePage,
     },
     [RouteNameType.SmallClassPage]: {
