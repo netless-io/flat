@@ -119,7 +119,8 @@ export class AgoraCloudRecording extends IServiceRecording {
 
     public async stopRecording(): Promise<void> {
         if (this.roomInfo === null) {
-            throw new Error("should call joinRoom() before stopRecording()");
+            console.warn("should call joinRoom() before stopRecording()");
+            return;
         }
 
         await this.queryRecordingStatus();
