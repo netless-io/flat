@@ -192,7 +192,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
             {room && (
                 <div
                     className={classNames("whiteboard-container", {
-                        "is-readonly": !whiteboardStore.isWritable,
+                        "is-readonly": !whiteboardStore.allowDrawing,
                     })}
                     onDragOver={onDragOver}
                     onDrop={onDrop}

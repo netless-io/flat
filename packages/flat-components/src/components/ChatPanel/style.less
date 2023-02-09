@@ -5,7 +5,8 @@
 
     .ant-tabs {
         height: 100%;
-        & > .ant-tabs-nav .ant-tabs-nav-list {
+
+        &>.ant-tabs-nav .ant-tabs-nav-list {
             width: 100%;
             justify-content: space-around;
         }
@@ -20,7 +21,7 @@
         color: var(--primary-strong);
     }
 
-    .ant-tabs-top > .ant-tabs-nav::before {
+    .ant-tabs-top>.ant-tabs-nav::before {
         border-bottom-color: var(--grey-1);
     }
 
@@ -59,15 +60,25 @@
     border-bottom: 1px solid var(--grey-1);
 }
 
+.chat-tab-subtitle {
+    flex: 1;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text);
+}
+
 .flat-color-scheme-dark {
     .chat-panel {
         .ant-tabs-ink-bar {
             background: var(--primary-strong);
         }
-        .ant-tabs-top > .ant-tabs-nav::before {
+
+        .ant-tabs-top>.ant-tabs-nav::before {
             border-bottom-color: var(--grey-8);
         }
     }
+
     .chat-panel-header {
         border-bottom-color: var(--grey-8);
     }

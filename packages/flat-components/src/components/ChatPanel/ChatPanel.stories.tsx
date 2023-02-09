@@ -34,6 +34,7 @@ const users = (() => {
     return chance.shuffle(users);
 })();
 Overview.args = {
+    totalUserCount: faker.datatype.number(),
     unreadCount: faker.datatype.number(),
     isCreator: faker.datatype.boolean(),
     isBan: faker.datatype.boolean(),

@@ -6,7 +6,8 @@ import { useTranslate } from "@netless/flat-i18n";
 import { ChatMessages, ChatMessagesProps } from "./ChatMessages";
 import { ChatTabTitle, ChatTabTitleProps } from "./ChatTabTitle";
 
-export type ChatPanelProps = ChatTabTitleProps & Omit<ChatMessagesProps, "visible">;
+export type ChatPanelProps = { totalUserCount?: number } & ChatTabTitleProps &
+    Omit<ChatMessagesProps, "visible">;
 
 export const ChatPanel = /* @__PURE__ */ observer<ChatPanelProps>(function ChatPanel(props) {
     const t = useTranslate();
@@ -17,6 +18,11 @@ export const ChatPanel = /* @__PURE__ */ observer<ChatPanelProps>(function ChatP
                 <ChatTabTitle>
                     <span>{t("messages")}</span>
                 </ChatTabTitle>
+                {props.totalUserCount && (
+                    <span className="chat-tab-subtitle">
+                        {t("total-users-count", { count: props.totalUserCount })}
+                    </span>
+                )}
             </div>
             <ChatMessages {...props} visible />
         </div>
