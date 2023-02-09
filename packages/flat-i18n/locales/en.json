@@ -22,6 +22,7 @@
   "end": "End",
   "me": "(Me)",
   "messages": "Chat",
+  "total-users-count": "Online {{count}}",
   "raise-your-hand": "Raise hand",
   "raise-hand": "Raise hand",
   "raised-hand": "Hand raised",

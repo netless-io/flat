@@ -33,6 +33,7 @@
   "me": "(我)",
   "cancel-hand-raising": "取消举手",
   "messages": "聊天",
+  "total-users-count": "在线人数 {{count}}",
   "users": "用户列表",
   "confirmation-of-the-end-of-classes": "确定结束上课",
   "end-of-class-tips": "一旦结束上课，所有用户自动退出房间，并且自动结束课程和录制（如有），不能继续直播。",

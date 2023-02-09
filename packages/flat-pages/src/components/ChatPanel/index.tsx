@@ -19,6 +19,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({ classRoom
             loadMoreRows={noop}
             messages={classRoomStore.chatStore.messages}
             openCloudStorage={() => classRoomStore.toggleCloudStoragePanel(true)}
+            totalUserCount={classRoomStore.users.totalUserCount}
             unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
             userUUID={classRoomStore.userUUID}
             onBanChange={classRoomStore.onToggleBan}
