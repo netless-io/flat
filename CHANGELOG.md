@@ -1,3 +1,28 @@
+## [2.1.0](https://github.com/netless-io/flat/compare/v2.1.0...v2.1.0) (2023-02-09)
+
+
+### Features
+
+* **flat-components**: users panel ([#1801](https://github.com/netless-io/flat/issues/1801)) ([e46e275a](https://github.com/netless-io/flat/commit/e46e275ac7c0fc518344130ff1890a494389bd27))
+
+### Bug Fixes
+
+* **service-providers**: disable app collector when not allow drawing ([#1836](https://github.com/netless-io/flat/issues/1836)) ([b0d328be](https://github.com/netless-io/flat/commit/b0d328be4da67fd1d6a39501332d86a7ba252e14))
+* **flat-components**: users panel incorrect on stage permission ([#1835](https://github.com/netless-io/flat/issues/1835)) ([b22f7c50](https://github.com/netless-io/flat/commit/b22f7c50779f1eb30b314c0f07604967e3b9f7be))
+* **flat-pages**: don't update color scheme in preview when no query ([#1833](https://github.com/netless-io/flat/issues/1833)) ([04c00643](https://github.com/netless-io/flat/commit/04c00643dc8072f5317d88dd9a407c0e0d6ded7a))
+* **flat-components**: users panel incorrect on stage permission ([#1832](https://github.com/netless-io/flat/issues/1832)) ([25241c54](https://github.com/netless-io/flat/commit/25241c54f682ccd58ac7220b8c9c6b0da96e375d))
+* **flat-server-api**: make sure to not return broken meta data ([#1822](https://github.com/netless-io/flat/issues/1822)) ([1f2daff1](https://github.com/netless-io/flat/commit/1f2daff12495b49dc952f55e1948de6e6cfa6c44))
+* **project**: downgrade electron-builder ([#1813](https://github.com/netless-io/flat/issues/1813)) ([228e8d9f](https://github.com/netless-io/flat/commit/228e8d9ff54528314f16b1e2d3184fcafba6af41))
+* **flat-pages**: missing users button ([#1808](https://github.com/netless-io/flat/issues/1808)) ([75f3d1e5](https://github.com/netless-io/flat/commit/75f3d1e5c40de22f423b4c2109602182267a99a3))
+* **flat-stores**: creator's initial whiteboard state ([#1806](https://github.com/netless-io/flat/issues/1806)) ([3b55243a](https://github.com/netless-io/flat/commit/3b55243a09bab3c4e5b3d012a53195e1ccce7975))
+* **flat-pages**: delete redundant routeConfig ([#1799](https://github.com/netless-io/flat/issues/1799)) ([f8418fd2](https://github.com/netless-io/flat/commit/f8418fd2382ae62019791a3c03136fad41e57169))
+* **flat-components**: clickable after the button is show ([#1800](https://github.com/netless-io/flat/issues/1800)) ([a22b27fa](https://github.com/netless-io/flat/commit/a22b27fa25d4ab314d2f6a42b322f2c25179ea3d))
+* **service-providers**: share screen buffer may be null ([#1792](https://github.com/netless-io/flat/issues/1792)) ([1885870d](https://github.com/netless-io/flat/commit/1885870d2c999deda1dc26543b21878827998971))
+* **flat-pages**: bring back auto update in login and home page ([#1793](https://github.com/netless-io/flat/issues/1793)) ([76315db0](https://github.com/netless-io/flat/commit/76315db0443c954fa0205631796121d2e365499f))
+* **service-providers**: incorrect window size ([#1791](https://github.com/netless-io/flat/issues/1791)) ([f4c41012](https://github.com/netless-io/flat/commit/f4c410126dc686acca8095d3b2d625dd44540190))
+* **service-providers**: only switch to usable devices ([#1790](https://github.com/netless-io/flat/issues/1790)) ([e3ac6906](https://github.com/netless-io/flat/commit/e3ac6906aaad7fcd64927b1a2ba576d66bc40d54))
+
+
 ## [2.0.3](https://github.com/netless-io/flat/compare/v2.0.2...v2.0.3) (2022-11-23)
 
 
