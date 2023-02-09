@@ -54,6 +54,9 @@ export const FilePreviewPage: React.FC<FilePreviewPageProps> = props => {
 
     useIsomorphicLayoutEffect(() => {
         const raw = query.get("theme");
+        if (!raw) {
+            return;
+        }
         const theme: FlatPrefersColorScheme =
             raw === "dark" ? "dark" : raw === "light" ? "light" : "auto";
         preferencesStore.updatePrefersColorScheme(theme);
