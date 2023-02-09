@@ -121,6 +121,7 @@ export class Fastboard extends IServiceWhiteboard {
                 }
                 room.disableDeviceInputs = !allowDrawing;
                 room.disableCameraTransform = !allowDrawing;
+                app.manager.setReadonly(!allowDrawing);
             }),
             combine([this._app$, isWritable$]).subscribe(([app, isWritable]) => {
                 const room = app?.room;
