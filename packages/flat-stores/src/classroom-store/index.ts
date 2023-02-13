@@ -74,6 +74,7 @@ export class ClassroomStore {
 
     public isCloudStoragePanelVisible = false;
     public isHandRaisingPanelVisible = false;
+    public isUsersPanelVisible = false;
 
     public roomStatusLoading = RoomStatusLoadingType.Null;
 
@@ -663,6 +664,10 @@ export class ClassroomStore {
 
     public toggleCloudStoragePanel = (visible: boolean): void => {
         this.isCloudStoragePanelVisible = visible;
+    };
+
+    public toggleUsersPanel = (visible = !this.isUsersPanelVisible): void => {
+        this.isUsersPanelVisible = visible;
     };
 
     public onDrop = (file: File): void => {

@@ -23,6 +23,7 @@ export const ChatPanel = observer<ChatPanelProps>(function ChatPanel({ classRoom
             unreadCount={classRoomStore.users.handRaisingJoiners.length || null}
             userUUID={classRoomStore.userUUID}
             onBanChange={classRoomStore.onToggleBan}
+            onClickTotalUsersCount={() => classRoomStore.toggleUsersPanel(true)}
             onMessageSend={classRoomStore.onMessageSend}
         />
     );
