@@ -1,7 +1,7 @@
 import "./UsersButton.less";
 
 // TODO: remove this component when multi sub window is done
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Modal } from "antd";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
@@ -14,7 +14,6 @@ interface UsersButtonProps {
 
 export const UsersButton = observer<UsersButtonProps>(function UsersButton({ classroom }) {
     const t = useTranslate();
-    const [open, setOpen] = useState(false);
 
     // not including teacher
     const users = useComputed(() => {
@@ -87,16 +86,16 @@ export const UsersButton = observer<UsersButtonProps>(function UsersButton({ cla
             <TopBarRightBtn
                 icon={<SVGUserGroup />}
                 title={t("users")}
-                onClick={() => setOpen(!open)}
+                onClick={() => classroom.toggleUsersPanel(!classroom.isUsersPanelVisible)}
             />
             <Modal
                 centered
                 destroyOnClose
                 className="users-button-modal"
                 footer={[]}
-                open={open}
+                open={classroom.isUsersPanelVisible}
                 title={t("users")}
-                onCancel={() => setOpen(false)}
+                onCancel={() => classroom.toggleUsersPanel(false)}
             >
                 <UsersPanel
                     getDeviceState={getDeviceState}
