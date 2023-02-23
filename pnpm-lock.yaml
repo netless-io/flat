@@ -171,6 +171,7 @@ importers:
       '@netless/flat-service-provider-file-preview-netless': workspace:*
       '@netless/flat-service-provider-file-preview-netless-slide': workspace:*
       '@netless/flat-services': workspace:*
+      '@netless/flat-stores': workspace:*
       '@netless/flat-vite-plugins': workspace:*
       '@types/classnames': ^2.3.1
       '@types/lodash': ^4.14.185
@@ -235,6 +236,7 @@ importers:
       '@netless/flat-service-provider-file-preview-netless': link:../../service-providers/file-preview-netless
       '@netless/flat-service-provider-file-preview-netless-slide': link:../../service-providers/file-preview-netless-slide
       '@netless/flat-services': link:../../packages/flat-services
+      '@netless/flat-stores': link:../../packages/flat-stores
       '@videojs/vhs-utils': 4.0.0
       agora-rtm-sdk: 1.6.0
       antd: 4.23.2_sfoxds7t5ydpegc3knd667wn6m
@@ -3143,7 +3145,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.11.3
+      '@types/node': 17.0.45
       '@types/yargs': 15.0.14
       chalk: 4.1.2
     dev: true
@@ -5280,13 +5282,13 @@ packages:
     requiresBuild: true
     dependencies:
       '@types/minimatch': 3.0.5
-      '@types/node': 18.11.3
+      '@types/node': 17.0.45
     dev: true
 
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
-      '@types/node': 18.11.3
+      '@types/node': 17.0.45
     dev: true
 
   /@types/hast/2.3.4:
@@ -5406,7 +5408,7 @@ packages:
   /@types/node-fetch/2.6.1:
     resolution: {integrity: sha512-oMqjURCaxoSIsHSr1E47QHzbmzNR5rK8McHuNb11BOM9cHcIK3Avy0s/b2JlXHoQGTYS3NsvWzV1M0iK7l0wbA==}
     dependencies:
-      '@types/node': 18.11.3
+      '@types/node': 17.0.45
       form-data: 3.0.1
     dev: true
 
@@ -13238,7 +13240,7 @@ packages:
     dependencies:
       '@jest/types': 26.6.2
       '@types/graceful-fs': 4.1.5
-      '@types/node': 18.11.3
+      '@types/node': 17.0.45
       anymatch: 3.1.2
       fb-watchman: 2.0.1
       graceful-fs: 4.2.10
@@ -13264,7 +13266,7 @@ packages:
     resolution: {integrity: sha512-S5wqyz0DXnNJPd/xfIzZ5Xnp1HrJWBczg8mMfMpN78OJ5eDxXyf+Ygld9wX1DnUWbIbhM1YDY95NjR4CBXkb2g==}
     engines: {node: '>= 10.14.2'}
     dependencies:
-      '@types/node': 18.11.3
+      '@types/node': 17.0.45
       graceful-fs: 4.2.10
     dev: true
 
@@ -13273,7 +13275,7 @@ packages:
     engines: {node: '>= 10.14.2'}
     dependencies:
       '@jest/types': 26.6.2
-      '@types/node': 18.11.3
+      '@types/node': 17.0.45
       chalk: 4.1.2
       graceful-fs: 4.2.10
       is-ci: 2.0.0
@@ -13284,7 +13286,7 @@ packages:
     resolution: {integrity: sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.11.3
+      '@types/node': 17.0.45
       merge-stream: 2.0.0
       supports-color: 7.2.0
     dev: true
@@ -13293,7 +13295,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.11.3
+      '@types/node': 17.0.45
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true

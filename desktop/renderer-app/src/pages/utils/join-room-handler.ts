@@ -1,8 +1,8 @@
-import { RouteNameType, usePushHistory } from "../../utils/routes";
-import { roomStore } from "../../stores/room-store";
-import { RoomType } from "../../api-middleware/flatServer/constants";
-import { globalStore } from "../../stores/global-store";
+import { RoomType } from "@netless/flat-server-api";
+import { roomStore, globalStore } from "@netless/flat-stores";
 import { errorTips } from "flat-components";
+import { RouteNameType } from "../../route-config";
+import { usePushHistory } from "../../utils/routes";
 
 export const joinRoomHandler = async (
     roomUUID: string,

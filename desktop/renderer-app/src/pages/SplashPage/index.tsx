@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
-import { loginCheck } from "../../api-middleware/flatServer";
 import { GlobalStoreContext } from "@netless/flat-pages/src/components/StoreProvider";
+import { loginCheck } from "@netless/flat-server-api";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 
 import logoSVG from "../../assets/image/logo.svg";
