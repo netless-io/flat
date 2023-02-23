@@ -20,9 +20,9 @@ import { SystemCheckPage } from "./pages/DeviceCheckPages/SystemCheckPage";
 import { AboutPage } from "./pages/UserSettingPage/AboutPage";
 import { ReplayPage } from "@netless/flat-pages/src/ReplayPage";
 import SplashPage from "./pages/SplashPage";
-import { RoomType } from "./api-middleware/flatServer/constants";
 import { ApplicationsPage } from "@netless/flat-pages/src/UserSettingPage/ApplicationsPage";
 import { OAuthPage } from "@netless/flat-pages/src/UserSettingPage/OAuthPage";
+import { RoomType } from "@netless/flat-server-api";
 
 export enum RouteNameType {
     SplashPage = "SplashPage",
