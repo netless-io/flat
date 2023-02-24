@@ -14,7 +14,6 @@ const preventEvent = (ev: React.UIEvent | Event): void => {
 export interface AvatarWindowProps {
     mode: "normal" | "maximized";
     rect: Rectangle;
-    index?: number;
     zIndex?: number;
     hidden?: boolean;
     readonly?: boolean;
@@ -37,7 +36,6 @@ export type ResizeHandle = "" | "n" | "s" | "w" | "e" | "nw" | "ne" | "sw" | "se
 export const AvatarWindow: React.FC<AvatarWindowProps> = ({
     mode,
     rect,
-    index,
     zIndex,
     hidden,
     readonly,
@@ -184,31 +182,25 @@ export const AvatarWindow: React.FC<AvatarWindowProps> = ({
         );
     };
 
-    const style =
-        mode === "normal"
-            ? ({
-                  position: "absolute",
-                  // Prevent a rendering issue on Chrome when set transform to sub-pixel values
-                  width: rect.width | 0,
-                  height: rect.height | 0,
-                  transform: `translate(${rect.x | 0}px,${rect.y | 0}px)`,
-                  zIndex: zIndex,
-              } as React.CSSProperties)
-            : ({
-                  flex: 1,
-                  order: index,
-              } as React.CSSProperties);
-
     return (
         <div
             className={classNames("window", {
                 "window-readonly": readonly,
                 "window-maximized": mode === "maximized",
             })}
-            data-index={index}
-            data-z-index={zIndex}
             hidden={hidden}
-            style={style}
+            style={
+                mode === "normal"
+                    ? {
+                          position: "absolute",
+                          // Prevent a rendering issue on Chrome when set transform to sub-pixel values
+                          width: rect.width | 0,
+                          height: rect.height | 0,
+                          transform: `translate(${rect.x | 0}px,${rect.y | 0}px)`,
+                          zIndex: zIndex,
+                      }
+                    : undefined
+            }
         >
             <div className="window-main" onClick={onClick} onPointerDown={handleTrackStart}>
                 {children}

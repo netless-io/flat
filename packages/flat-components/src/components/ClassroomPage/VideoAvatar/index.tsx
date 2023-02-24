@@ -65,6 +65,7 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
                 "is-small": small && !portal,
                 "is-drop-target": isDropTarget,
             })}
+            data-user-uuid={avatarUser.userUUID}
             draggable={isCreator && !portal}
             onDoubleClick={portal ? undefined : onDoubleClick}
             onDragEnd={onDragEnd}
@@ -140,11 +141,12 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
     return portal ? (
         <div
             className={classnames("video-avatar", "video-avatar-holder", {
-                "is-small": small && !portal,
+                "is-small": small,
                 "is-drop-target": isDropTarget,
             })}
             data-user-uuid={avatarUser.userUUID}
         >
+            <span className="video-avatar-holder-name">{avatarUser.name}</span>
             {createPortal(view, portal)}
         </div>
     ) : (

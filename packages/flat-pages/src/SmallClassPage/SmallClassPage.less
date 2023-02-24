@@ -37,6 +37,10 @@
     overflow: hidden;
 }
 
+.small-class-realtime-avatars-wrap-wrap {
+    position: relative;
+}
+
 .small-class-realtime-avatars-wrap {
     overflow-y: hidden;
     overflow-x: overlay;
@@ -61,7 +65,7 @@
 .small-class-realtime-avatars {
     height: 108px;
     flex: 1;
-    gap: 4px;
+    gap: 8px;
     padding: 0 4px;
     display: flex;
     justify-content: center;
@@ -84,12 +88,18 @@
 
 .small-class-scroll-handles {
     position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
     display: flex;
     align-items: stretch;
     justify-content: space-between;
     pointer-events: none;
     z-index: 100;
     font-size: 0;
+    opacity: 0;
+    transition: opacity 0.1s;
 }
 
 .small-class-scroll-handle {
@@ -98,25 +108,41 @@
     border: none;
     padding: 0;
     outline: none;
-    width: 36px;
-    background-color: #fff;
+    width: 72px;
+    background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    transition: opacity 0.1s;
     cursor: pointer;
+}
 
-    &.is-left {
-        border-right: 1px solid var(--grey-0);
-    }
+.small-class-realtime-avatars-wrap:hover+.small-class-scroll-handles {
+    opacity: .5;
+    transition: opacity 0.5s;
+}
 
-    &.is-right {
-        border-left: 1px solid var(--grey-0);
-    }
+.small-class-scroll-handles:hover {
+    opacity: 1;
+    transition: opacity 0.1s;
+}
 
-    &:hover {
-        opacity: 1;
+.small-class-scroll-handle-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--grey-3);
+    border-radius: 50%;
+    background-color: #fff;
+    font-size: 0;
+
+    -webkit-backdrop-filter: blur(2.71828px);
+    backdrop-filter: blur(2.71828px);
+
+    >svg {
+        width: 32px;
+        height: 32px;
     }
 }
 
@@ -140,6 +166,10 @@
 
     .small-class-scroll-handle.is-right {
         background-color: #383B42;
+        border-color: var(--grey-8);
+    }
+
+    .small-class-scroll-handle-btn {
         border-color: var(--grey-8);
     }
 
