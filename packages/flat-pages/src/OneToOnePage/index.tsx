@@ -186,8 +186,10 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                         <div className="one-to-one-rtc-avatar-container">
                             <RTCAvatar
                                 avatarUser={classroomStore.users.creator}
+                                getPortal={classroomStore.getPortal}
                                 isAvatarUserCreator={true}
                                 isCreator={classroomStore.isCreator}
+                                isDropTarget={classroomStore.isDropTarget(classroomStore.ownerUUID)}
                                 rtcAvatar={
                                     classroomStore.users.creator &&
                                     classroomStore.rtc.getAvatar(
@@ -196,12 +198,26 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                                 }
                                 updateDeviceState={classroomStore.updateDeviceState}
                                 userUUID={classroomStore.userUUID}
+                                onDoubleClick={() =>
+                                    classroomStore.createMaximizedAvatarWindow(
+                                        classroomStore.ownerUUID,
+                                    )
+                                }
+                                onDragEnd={classroomStore.onDragEnd}
+                                onDragStart={classroomStore.onDragStart}
                             />
                             {classroomStore.firstOnStageUser && (
                                 <RTCAvatar
                                     avatarUser={classroomStore.firstOnStageUser}
+                                    getPortal={classroomStore.getPortal}
                                     isAvatarUserCreator={false}
                                     isCreator={classroomStore.isCreator}
+                                    isDropTarget={
+                                        classroomStore.firstOnStageUser &&
+                                        classroomStore.isDropTarget(
+                                            classroomStore.firstOnStageUser.userUUID,
+                                        )
+                                    }
                                     rtcAvatar={
                                         classroomStore.firstOnStageUser &&
                                         classroomStore.rtc.getAvatar(
@@ -210,6 +226,14 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                                     }
                                     updateDeviceState={classroomStore.updateDeviceState}
                                     userUUID={classroomStore.userUUID}
+                                    onDoubleClick={() =>
+                                        classroomStore.firstOnStageUser &&
+                                        classroomStore.createMaximizedAvatarWindow(
+                                            classroomStore.firstOnStageUser.userUUID,
+                                        )
+                                    }
+                                    onDragEnd={classroomStore.onDragEnd}
+                                    onDragStart={classroomStore.onDragStart}
                                 />
                             )}
                         </div>

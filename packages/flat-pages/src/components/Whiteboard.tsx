@@ -23,6 +23,7 @@ import { isSupportedFileExt } from "../utils/drag-and-drop";
 import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image";
 import { PRESETS } from "../constants/presets";
 import { createCloudFile } from "../utils/create-cloud-file";
+import { UserWindows } from "./UserWindows";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -197,6 +198,15 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     onDragOver={onDragOver}
                     onDrop={onDrop}
                 >
+                    <div
+                        ref={bindWhiteboard}
+                        className={classNames("whiteboard", {
+                            "can-operate":
+                                classRoomStore.isCreator ||
+                                classRoomStore.users.currentUser?.wbOperate,
+                        })}
+                    />
+                    <UserWindows classroom={classRoomStore} />
                     {!whiteboardStore.isCreator &&
                         classRoomStore.users.currentUser &&
                         !classRoomStore.users.currentUser.isSpeak && (
@@ -217,14 +227,6 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                             />
                         </div>
                     )}
-                    <div
-                        ref={bindWhiteboard}
-                        className={classNames("whiteboard", {
-                            "can-operate":
-                                classRoomStore.isCreator ||
-                                classRoomStore.users.currentUser?.wbOperate,
-                        })}
-                    />
                     <div
                         className={classNames("whiteboard-scroll-page", {
                             "is-active": showPage,

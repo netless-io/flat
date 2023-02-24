@@ -7,9 +7,9 @@ import {
     VideoAvatarProps,
 } from "flat-components";
 import { AvatarCanvas, AvatarCanvasProps } from "./AvatarCanvas";
-export type RTCAvatarProps = Omit<VideoAvatarProps, "getVolumeLevel" | "avatarUser"> &
+export type RTCAvatarProps = Omit<VideoAvatarProps, "getVolumeLevel" | "avatarUser" | "portal"> &
     VideoAvatarAbsentProps &
-    AvatarCanvasProps;
+    AvatarCanvasProps & { getPortal: (userUUID: string) => HTMLElement | undefined };
 
 export const RTCAvatar: FC<RTCAvatarProps> = /* @__PURE__ */ observer<RTCAvatarProps>(
     function RTCAvatar({
@@ -19,6 +19,11 @@ export const RTCAvatar: FC<RTCAvatarProps> = /* @__PURE__ */ observer<RTCAvatarP
         isAvatarUserCreator,
         small,
         isCreator,
+        isDropTarget,
+        onDoubleClick,
+        getPortal,
+        onDragStart,
+        onDragEnd,
         updateDeviceState,
     }) {
         return avatarUser && !avatarUser.hasLeft ? (
@@ -28,9 +33,14 @@ export const RTCAvatar: FC<RTCAvatarProps> = /* @__PURE__ */ observer<RTCAvatarP
                         avatarUser={avatarUser}
                         getVolumeLevel={getVolumeLevel}
                         isCreator={isCreator}
+                        isDropTarget={isDropTarget}
+                        portal={getPortal(avatarUser.userUUID)}
                         small={small}
                         updateDeviceState={updateDeviceState}
                         userUUID={userUUID}
+                        onDoubleClick={onDoubleClick}
+                        onDragEnd={onDragEnd}
+                        onDragStart={onDragStart}
                     >
                         {canvas}
                     </VideoAvatar>

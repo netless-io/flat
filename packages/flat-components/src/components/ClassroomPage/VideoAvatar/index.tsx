@@ -2,6 +2,7 @@ import "./style.less";
 
 import React from "react";
 import classnames from "classnames";
+import { createPortal } from "react-dom";
 import { IconMic } from "./IconMic";
 import { SVGCamera, SVGCameraMute, SVGMicrophoneMute } from "../../FlatIcons";
 
@@ -23,23 +24,52 @@ export interface VideoAvatarProps {
     userUUID: string;
     updateDeviceState(id: string, camera: boolean, mic: boolean): void;
     getVolumeLevel?: () => number;
+
+    portal?: HTMLElement;
+    onDoubleClick?: () => void;
+    onDragStart?: () => void;
+    onDragEnd?: () => void;
+    isDropTarget?: boolean;
 }
 
 export const VideoAvatar: React.FC<VideoAvatarProps> = ({
+    portal,
     small,
     avatarUser,
     isCreator,
+    isDropTarget,
     userUUID,
     updateDeviceState,
     getVolumeLevel,
+    onDoubleClick,
+    onDragStart,
+    onDragEnd,
     children,
 }) => {
     const isCameraCtrlDisable = !isCreator && avatarUser.userUUID !== userUUID;
 
     const isMicCtrlDisable = !isCreator && avatarUser.userUUID !== userUUID;
 
-    return (
-        <div className={classnames("video-avatar", { "is-small": small })}>
+    const onDragStartImpl = (ev: React.DragEvent<HTMLDivElement>): void => {
+        const rect = ev.currentTarget.getBoundingClientRect();
+        const x = (ev.clientX - rect.left) / rect.width;
+        const y = (ev.clientY - rect.top) / rect.height;
+        ev.dataTransfer.setData("video-avatar", JSON.stringify([avatarUser.userUUID, x, y]));
+        ev.dataTransfer.effectAllowed = "move";
+        onDragStart && onDragStart();
+    };
+
+    const view = (
+        <div
+            className={classnames("video-avatar", {
+                "is-small": small && !portal,
+                "is-drop-target": isDropTarget,
+            })}
+            draggable={isCreator && !portal}
+            onDoubleClick={portal ? undefined : onDoubleClick}
+            onDragEnd={onDragEnd}
+            onDragStart={onDragStartImpl}
+        >
             <div className="video-avatar-video">{children}</div>
             {(!children || !avatarUser.camera) && (
                 <div className="video-avatar-image-container">
@@ -59,7 +89,11 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
                 <h1 className="video-avatar-user-name" title={avatarUser.name}>
                     {avatarUser.name}
                 </h1>
-                <div className="video-avatar-media-ctrl">
+                <div
+                    className={classnames("video-avatar-media-ctrl", {
+                        "is-portal": portal,
+                    })}
+                >
                     <button
                         className={classnames("video-avatar-media-ctrl-btn", {
                             "is-muted": !avatarUser.camera,
@@ -101,5 +135,19 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
                 </div>
             </div>
         </div>
+    );
+
+    return portal ? (
+        <div
+            className={classnames("video-avatar", "video-avatar-holder", {
+                "is-small": small && !portal,
+                "is-drop-target": isDropTarget,
+            })}
+            data-user-uuid={avatarUser.userUUID}
+        >
+            {createPortal(view, portal)}
+        </div>
+    ) : (
+        view
     );
 };

@@ -50,6 +50,20 @@ export type ClassroomStorageState = {
 };
 export type OnStageUsersStorageState = Record<string, boolean>;
 export type WhiteboardStorageState = Record<string, boolean>;
+export type UserWindowsStorageState = {
+    mode: "normal" | "maximized";
+};
+// stored in UserWindowsStorageState too, but TypeScript does not support union records
+export type UserWindow = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    // the order in normal mode
+    z: number;
+    // the order in maximized mode
+    index: number;
+};
 
 export class ClassroomStore {
     private readonly sideEffect = new SideEffectManager();
@@ -76,6 +90,9 @@ export class ClassroomStore {
     public isHandRaisingPanelVisible = false;
     public isUsersPanelVisible = false;
 
+    public isDraggingAvatar = false;
+    public droppingUserUUID: string | null = null;
+
     public roomStatusLoading = RoomStatusLoadingType.Null;
 
     /** is RTC joined room */
@@ -98,11 +115,16 @@ export class ClassroomStore {
         downlink: 0,
     };
 
+    public userWindowsMode: UserWindowsStorageState["mode"] = "normal";
+    public readonly userWindows = observable.map<string, UserWindow>();
+    public readonly userWindowsPortal = observable.map<string, HTMLDivElement>();
+
     public deviceStateStorage?: Storage<DeviceStateStorageState>;
     public classroomStorage?: Storage<ClassroomStorageState>;
     public onStageUsersStorage?: Storage<OnStageUsersStorageState>;
     /** users that can operate the whiteboard */
     public whiteboardStorage?: Storage<WhiteboardStorageState>;
+    public userWindowsStorage?: Storage<UserWindowsStorageState>;
 
     public readonly users: UserStore;
 
@@ -360,10 +382,15 @@ export class ClassroomStore {
             "whiteboard",
             {},
         );
+        const userWindowsStorage = fastboard.syncedStore.connectStorage<UserWindowsStorageState>(
+            "userWindows",
+            { mode: "normal" },
+        );
         this.deviceStateStorage = deviceStateStorage;
         this.classroomStorage = classroomStorage;
         this.onStageUsersStorage = onStageUsersStorage;
         this.whiteboardStorage = whiteboardStorage;
+        this.userWindowsStorage = userWindowsStorage;
 
         if (this.isCreator) {
             this.updateDeviceState(
@@ -544,6 +571,20 @@ export class ClassroomStore {
         };
         updateUserStagingState();
 
+        const initialUserWindows = new Map<string, UserWindow>();
+        for (const key in userWindowsStorage.state) {
+            if (key !== "mode") {
+                const userWindow: UserWindow | null = (userWindowsStorage.state as any)[key];
+                if (userWindow) {
+                    initialUserWindows.set(key, userWindow);
+                }
+            }
+        }
+        runInAction(() => {
+            this.userWindowsMode = userWindowsStorage.state.mode;
+            this.userWindows.replace(initialUserWindows);
+        });
+
         this.sideEffect.addDisposer(onStageUsersStorage.on("stateChanged", updateUserStagingState));
         this.sideEffect.addDisposer(
             whiteboardStorage.on("stateChanged", () => {
@@ -560,6 +601,24 @@ export class ClassroomStore {
                 this.whiteboardStore.updateAllowDrawing(
                     this.isCreator || whiteboardStorage.state[this.userUUID],
                 );
+            }),
+        );
+        this.sideEffect.addDisposer(
+            userWindowsStorage.on("stateChanged", diff => {
+                runInAction(() => {
+                    for (const key in diff) {
+                        if (key === "mode") {
+                            this.userWindowsMode = diff[key]!.newValue;
+                        } else {
+                            const userWindow: UserWindow | undefined = (diff as any)[key].newValue;
+                            if (userWindow) {
+                                this.userWindows.set(key, userWindow);
+                            } else {
+                                this.userWindows.delete(key);
+                            }
+                        }
+                    }
+                });
             }),
         );
 
@@ -649,6 +708,7 @@ export class ClassroomStore {
         this.onStageUsersStorage = undefined;
         this.classroomStorage = undefined;
         this.whiteboardStorage = undefined;
+        this.userWindowsStorage = undefined;
     }
 
     public startClass = (): Promise<void> => this.switchRoomStatus(RoomStatus.Started);
@@ -668,6 +728,120 @@ export class ClassroomStore {
 
     public toggleUsersPanel = (visible = !this.isUsersPanelVisible): void => {
         this.isUsersPanelVisible = visible;
+    };
+
+    public onDragStart = (): void => {
+        this.isDraggingAvatar = true;
+    };
+
+    public onDragEnd = (): void => {
+        this.isDraggingAvatar = false;
+    };
+
+    public getPortal = (userUUID: string): HTMLDivElement | undefined => {
+        return this.userWindowsPortal.get(userUUID);
+    };
+
+    public setPortal = (userUUID: string, portal: HTMLDivElement | null | undefined): void => {
+        if (portal) {
+            this.userWindowsPortal.set(userUUID, portal);
+        } else {
+            this.userWindowsPortal.delete(userUUID);
+        }
+    };
+
+    public maxOfUserWindows = (exclude?: string): { z: number; index: number } => {
+        if (!this.userWindowsStorage) {
+            return { z: 0, index: 0 };
+        }
+        const windows = this.userWindowsStorage.state as unknown as Record<string, UserWindow>;
+        let maxZ = 0;
+        let maxIndex = 0;
+        for (const key in windows) {
+            if (key !== "mode" && key !== exclude && windows[key]) {
+                maxZ = Math.max(maxZ, windows[key].z);
+                maxIndex = Math.max(maxZ, windows[key].index);
+            }
+        }
+        return { z: maxZ, index: maxIndex };
+    };
+
+    private isUserWindowsEmpty(): boolean {
+        if (!this.userWindowsStorage) {
+            return true;
+        }
+        const windows = this.userWindowsStorage.state as unknown as Record<string, UserWindow>;
+        for (const key in windows) {
+            if (key !== "mode" && windows[key]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public userHasLeft = (userUUID: string): boolean => {
+        return this.users.cachedUsers.get(userUUID)?.hasLeft ?? true;
+    };
+
+    public toggleUserWindowsMode = (mode?: UserWindowsStorageState["mode"]): void => {
+        if (this.isCreator && this.userWindowsStorage) {
+            this.userWindowsStorage.setState({
+                mode: mode || (this.userWindowsMode === "normal" ? "maximized" : "normal"),
+            });
+        }
+    };
+
+    public createAvatarWindow = (
+        userUUID: string,
+        window: Omit<UserWindow, "z" | "index">,
+    ): void => {
+        if (this.isCreator && this.userWindowsStorage) {
+            const { z, index } = this.maxOfUserWindows();
+            this.userWindowsStorage.setState({
+                [userUUID]: { ...window, z: z + 1, index: index + 1 },
+            });
+        }
+    };
+
+    public createMaximizedAvatarWindow = (userUUID: string): void => {
+        if (this.isCreator && this.userWindowsStorage) {
+            const { z, index } = this.maxOfUserWindows();
+            this.userWindowsStorage.setState({
+                mode: "maximized",
+                [userUUID]: {
+                    x: 0.1,
+                    y: 0.1,
+                    width: 2 / 5,
+                    height: 8 / 15,
+                    z: z + 1,
+                    index: index + 1,
+                },
+            });
+        }
+    };
+
+    public updateAvatarWindow = (userUUID: string, window: UserWindow): void => {
+        if (this.isCreator && this.userWindowsStorage) {
+            const { z } = this.maxOfUserWindows(userUUID);
+            this.userWindowsStorage.setState({ [userUUID]: { ...window, z: z + 1 } });
+        }
+    };
+
+    public deleteAvatarWindow = (userUUID: string): void => {
+        if (this.isCreator && this.userWindowsStorage) {
+            this.userWindowsStorage.setState({ [userUUID]: undefined });
+            if (this.userWindowsMode === "maximized" && this.isUserWindowsEmpty()) {
+                this.toggleUserWindowsMode("normal");
+            }
+        }
+    };
+
+    public setDroppingUserUUID = (userUUID: string | null): void => {
+        this.droppingUserUUID = userUUID;
+    };
+
+    public isDropTarget = (userUUID: string): boolean => {
+        return this.droppingUserUUID === userUUID;
     };
 
     public onDrop = (file: File): void => {
@@ -855,6 +1029,7 @@ export class ClassroomStore {
         if (this.isCreator) {
             this.onStageUsersStorage.resetState();
             this.whiteboardStorage?.resetState();
+            this.userWindowsStorage?.resetState();
             message.info(FlatI18n.t("all-off-stage-toast"));
         }
     };

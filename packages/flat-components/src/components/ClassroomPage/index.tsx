@@ -9,3 +9,4 @@ export * from "./VideoAvatar";
 export * from "./VideoAvatarAbsent";
 export * from "./ScenesController";
 export * from "./RaiseHand";
+export * from "./AvatarWindow";

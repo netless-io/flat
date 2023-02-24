@@ -1,0 +1,37 @@
+.user-windows,
+.user-window-portal,
+.user-windows-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+}
+
+// Prevent React Portal from blocking pointer events
+.user-window-portal {
+    pointer-events: none;
+}
+
+.user-windows {
+    pointer-events: none;
+
+    &.is-grid {
+        display: flex;
+
+        .window {
+            flex: 1;
+            display: flex;
+        }
+    }
+}
+
+.user-windows-mask {
+    pointer-events: all;
+    z-index: 999999;
+}
+
+.user-windows.is-hovering {
+    box-shadow: inset 0 0 0 2px var(--primary);
+}
