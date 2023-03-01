@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { listen } from "@wopjs/dom";
 import { noop } from "lodash-es";
 
@@ -57,4 +57,84 @@ export function useDraggable(): Draggable {
     }, [div]);
 
     return { isDragging, makeDraggable };
+}
+
+export interface Scrollable {
+    readonly isScrollable: boolean;
+    readonly makeScrollable: (div: HTMLDivElement | null) => void;
+    readonly trackPosition: (div: HTMLDivElement | null) => void;
+    readonly scrollLeft: (ev: React.MouseEvent) => void;
+    readonly scrollRight: (ev: React.MouseEvent) => void;
+}
+
+export function useScrollable(): Scrollable {
+    const [div, makeScrollable] = useState<HTMLDivElement | null>(null);
+    const [tracker, trackPosition] = useState<HTMLDivElement | null>(null);
+    const [isScrollable, setScrollable] = useState(false);
+
+    useEffect(() => {
+        if (div && tracker) {
+            let isHorizontal = false;
+            let timer = 0;
+            // translate mouse wheel to scroll left/right
+            const stopListenWheel = listen(
+                div,
+                "wheel",
+                ev => {
+                    if (ev.deltaX !== 0) {
+                        isHorizontal = true;
+                        clearTimeout(timer);
+                        timer = window.setTimeout(() => {
+                            isHorizontal = false;
+                        }, 2000);
+                    }
+                    if (!isHorizontal) {
+                        ev.preventDefault();
+                        div.scrollLeft += ev.deltaY * (ev.deltaMode === 1 ? 18 : 1);
+                    }
+                },
+                { passive: false },
+            );
+            // move tracker to follow the scrollable div
+            const observer = new ResizeObserver(() => {
+                const { scrollWidth, clientWidth } = div;
+                setScrollable(scrollWidth > clientWidth);
+                const { top, left, width, height } = div.getBoundingClientRect();
+                Object.assign(tracker.style, {
+                    top: `${top}px`,
+                    left: `${left}px`,
+                    width: `${width}px`,
+                    height: `${height}px`,
+                });
+            });
+            observer.observe(div);
+            return () => {
+                stopListenWheel();
+                observer.disconnect();
+            };
+        }
+        return;
+    }, [div, tracker]);
+
+    const DISTANCE = 148;
+
+    const scrollLeft = useCallback(
+        (ev: React.MouseEvent) =>
+            div?.scrollBy({
+                left: -(ev.shiftKey ? 5 : 1) * DISTANCE,
+                behavior: "smooth",
+            }),
+        [div],
+    );
+
+    const scrollRight = useCallback(
+        (ev: React.MouseEvent) =>
+            div?.scrollBy({
+                left: (ev.shiftKey ? 5 : 1) * DISTANCE,
+                behavior: "smooth",
+            }),
+        [div],
+    );
+
+    return { isScrollable, makeScrollable, trackPosition, scrollLeft, scrollRight };
 }

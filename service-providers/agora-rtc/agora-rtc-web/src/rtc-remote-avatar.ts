@@ -92,15 +92,15 @@ export class RTCRemoteAvatar implements IServiceVideoChatAvatar {
         );
 
         this._sideEffect.addDisposer(
-            combine([this._el$, this._videoTrack$, this._shouldCamera$]).subscribe(
-                ([el, videoTrack, shouldCamera]) => {
+            combine([this._videoTrack$, this._shouldCamera$]).subscribe(
+                ([videoTrack, shouldCamera]) => {
                     this._sideEffect.add(() => {
                         let disposer = (): void => void 0;
-                        if (el && videoTrack) {
+                        if (videoTrack) {
                             try {
-                                if (shouldCamera) {
+                                if (shouldCamera && this._el$.value) {
                                     if (!videoTrack.isPlaying) {
-                                        videoTrack.play(el);
+                                        videoTrack.play(this._el$.value);
                                         // dispose this track on next track update
                                         disposer = () => videoTrack.stop();
                                     }
@@ -117,6 +117,20 @@ export class RTCRemoteAvatar implements IServiceVideoChatAvatar {
                     }, "video-track");
                 },
             ),
+        );
+
+        this._sideEffect.addDisposer(
+            this._el$.reaction(el => {
+                const videoTrack = this._videoTrack$.value;
+                const shouldCamera = this._shouldCamera$.value;
+                if (el && videoTrack) {
+                    if (shouldCamera) {
+                        videoTrack.play(el);
+                    } else {
+                        videoTrack.stop();
+                    }
+                }
+            }),
         );
     }
 

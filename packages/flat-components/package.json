@@ -19,6 +19,7 @@
     "@netless/flat-i18n": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
     "@netless/flat-services": "workspace:*",
+    "@wopjs/dom": "^0.1.3",
     "antd": "^4.23.2",
     "classnames": "^2.3.1",
     "date-fns": "^2.29.3",

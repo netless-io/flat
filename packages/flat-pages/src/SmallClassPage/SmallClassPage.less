@@ -47,6 +47,8 @@
     border-bottom: 0.5px #dbe1ea solid;
     flex-shrink: 0;
     padding-bottom: 4px;
+    position: relative;
+    overscroll-behavior: contain;
 
     &::-webkit-scrollbar {
         display: none;
@@ -80,16 +82,67 @@
     overflow: hidden;
 }
 
+.small-class-scroll-handles {
+    position: absolute;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 100;
+    font-size: 0;
+}
+
+.small-class-scroll-handle {
+    pointer-events: all;
+    appearance: none;
+    border: none;
+    padding: 0;
+    outline: none;
+    width: 36px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.1s;
+    cursor: pointer;
+
+    &.is-left {
+        border-right: 1px solid var(--grey-0);
+    }
+
+    &.is-right {
+        border-left: 1px solid var(--grey-0);
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
 .flat-color-scheme-dark {
+
     .small-class-realtime-container,
     .small-class-realtime-box {
         color: var(--text);
         background-color: var(--grey-9);
     }
+
     .small-class-realtime-avatars-wrap {
         background: linear-gradient(270deg, #383B42 0%, #2B2F38 100%);
         border-color: var(--grey-8);
     }
+
+    .small-class-scroll-handle.is-left {
+        background-color: #2B2F38;
+        border-color: var(--grey-8);
+    }
+
+    .small-class-scroll-handle.is-right {
+        background-color: #383B42;
+        border-color: var(--grey-8);
+    }
+
     .small-class-realtime-avatars {
         background: linear-gradient(270deg, #383B42 0%, #2B2F38 100%);
     }

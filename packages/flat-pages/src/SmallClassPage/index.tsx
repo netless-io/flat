@@ -16,6 +16,8 @@ import {
     SVGExit,
     SVGMenuFold,
     SVGMenuUnfold,
+    SVGLeft,
+    SVGRight,
 } from "flat-components";
 
 import InviteButton from "../components/InviteButton";
@@ -39,7 +41,8 @@ import { WindowsSystemBtnContext } from "../components/StoreProvider";
 import { ShareScreenPicker } from "../components/ShareScreen/ShareScreenPicker";
 import { ExtraPadding } from "../components/ExtraPadding";
 import { UsersButton } from "../components/UsersButton";
-import { useDraggable } from "./utils";
+import { useScrollable } from "./utils";
+import classNames from "classnames";
 
 export type SmallClassPageProps = {};
 
@@ -63,7 +66,8 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
             }
         }, [classroomStore]);
 
-        const { makeDraggable, isDragging } = useDraggable();
+        const { isScrollable, makeScrollable, trackPosition, scrollLeft, scrollRight } =
+            useScrollable();
 
         return (
             <div className="small-class-page-container">
@@ -82,6 +86,25 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                             <TopBar left={renderTopBarLeft()} right={renderTopBarRight()} />
                         )}
                         {renderAvatars()}
+                        <div
+                            ref={trackPosition}
+                            className={classNames("small-class-scroll-handles", {
+                                active: isScrollable,
+                            })}
+                        >
+                            <button
+                                className="small-class-scroll-handle is-left"
+                                onClick={scrollLeft}
+                            >
+                                <SVGLeft />
+                            </button>
+                            <button
+                                className="small-class-scroll-handle is-right"
+                                onClick={scrollRight}
+                            >
+                                <SVGRight />
+                            </button>
+                        </div>
                         <div className="small-class-realtime-content">
                             <div className="small-class-realtime-content-container">
                                 <ShareScreen classroomStore={classroomStore} />
@@ -112,17 +135,15 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
 
         function renderAvatars(): React.ReactNode {
             return (
-                <div
-                    ref={makeDraggable}
-                    className="small-class-realtime-avatars-wrap"
-                    style={{ cursor: isDragging ? "grabbing" : "grab" }}
-                >
+                <div ref={makeScrollable} className="small-class-realtime-avatars-wrap">
                     {classroomStore.isJoinedRTC && (
                         <div className="small-class-realtime-avatars">
                             <RTCAvatar
                                 avatarUser={classroomStore.users.creator}
+                                getPortal={classroomStore.getPortal}
                                 isAvatarUserCreator={true}
                                 isCreator={classroomStore.isCreator}
+                                isDropTarget={classroomStore.isDropTarget(classroomStore.ownerUUID)}
                                 rtcAvatar={
                                     classroomStore.users.creator &&
                                     classroomStore.rtc.getAvatar(
@@ -132,6 +153,13 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                                 small={true}
                                 updateDeviceState={classroomStore.updateDeviceState}
                                 userUUID={classroomStore.userUUID}
+                                onDoubleClick={() =>
+                                    classroomStore.createMaximizedAvatarWindow(
+                                        classroomStore.ownerUUID,
+                                    )
+                                }
+                                onDragEnd={classroomStore.onDragEnd}
+                                onDragStart={classroomStore.onDragStart}
                             />
                             {classroomStore.onStageUserUUIDs.map(renderAvatar)}
                         </div>
@@ -269,8 +297,10 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                 <RTCAvatar
                     key={userUUID}
                     avatarUser={user}
+                    getPortal={classroomStore.getPortal}
                     isAvatarUserCreator={false}
                     isCreator={classroomStore.isCreator}
+                    isDropTarget={classroomStore.isDropTarget(userUUID)}
                     rtcAvatar={user && classroomStore.rtc.getAvatar(user.rtcUID)}
                     small={true}
                     updateDeviceState={(uid, camera, mic) => {
@@ -285,6 +315,11 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                         classroomStore.updateDeviceState(uid, camera, _mic);
                     }}
                     userUUID={classroomStore.userUUID}
+                    onDoubleClick={() =>
+                        user && classroomStore.createMaximizedAvatarWindow(user.userUUID)
+                    }
+                    onDragEnd={classroomStore.onDragEnd}
+                    onDragStart={classroomStore.onDragStart}
                 />
             );
         }

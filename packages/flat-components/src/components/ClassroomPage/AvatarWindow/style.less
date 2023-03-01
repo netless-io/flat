@@ -1,0 +1,113 @@
+.window {
+    top: 0;
+    left: 0;
+    pointer-events: all;
+    transition:
+        width 0.4s cubic-bezier(0.4, 0.9, 0.71, 1.02),
+        height 0.4s cubic-bezier(0.55, 0.82, 0.63, 0.95),
+        opacity 0.6s cubic-bezier(0.7, 0, 0.84, 0),
+        transform 0.4s ease;
+    cursor: grab;
+}
+
+.window[hidden] {
+    display: none;
+}
+
+.window-grabbing,
+.window-restoring {
+    transition: none;
+    cursor: grabbing;
+}
+
+.window-readonly,
+.window-readonly .window-resize-handle {
+    pointer-events: none;
+    cursor: default;
+}
+
+.window-maximized {
+    transition: none;
+    cursor: default;
+}
+
+.window-main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    pointer-events: all;
+}
+
+.window-resize-handle {
+    position: absolute;
+    z-index: 2147483647;
+    user-select: none;
+    pointer-events: all;
+}
+
+.window-n {
+    width: 100%;
+    height: 5px;
+    left: 0;
+    top: -5px;
+    cursor: n-resize;
+}
+
+.window-s {
+    width: 100%;
+    height: 5px;
+    left: 0;
+    bottom: -5px;
+    cursor: s-resize;
+}
+
+.window-w {
+    width: 5px;
+    height: 100%;
+    left: -5px;
+    top: 0;
+    cursor: w-resize;
+}
+
+.window-e {
+    width: 5px;
+    height: 100%;
+    right: -5px;
+    top: 0;
+    cursor: e-resize;
+}
+
+.window-nw {
+    width: 15px;
+    height: 15px;
+    top: -5px;
+    left: -5px;
+    cursor: nw-resize;
+}
+
+.window-ne {
+    width: 15px;
+    height: 15px;
+    top: -5px;
+    right: -5px;
+    cursor: ne-resize;
+}
+
+.window-se {
+    width: 15px;
+    height: 15px;
+    bottom: -5px;
+    right: -5px;
+    cursor: se-resize;
+}
+
+.window-sw {
+    width: 15px;
+    height: 15px;
+    bottom: -5px;
+    left: -5px;
+    cursor: sw-resize;
+}
