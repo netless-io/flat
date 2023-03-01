@@ -162,14 +162,6 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                                 onDragStart={classroomStore.onDragStart}
                             />
                             {classroomStore.onStageUserUUIDs.map(renderAvatar)}
-                            <div className="video-avatar is-small"></div>
-                            <div className="video-avatar is-small"></div>
-                            <div className="video-avatar is-small"></div>
-                            <div className="video-avatar is-small"></div>
-                            <div className="video-avatar is-small"></div>
-                            <div className="video-avatar is-small"></div>
-                            <div className="video-avatar is-small"></div>
-                            <div className="video-avatar is-small"></div>
                         </div>
                     )}
                 </div>
