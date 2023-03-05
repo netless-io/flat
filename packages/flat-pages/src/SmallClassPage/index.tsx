@@ -66,8 +66,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
             }
         }, [classroomStore]);
 
-        const { isScrollable, makeScrollable, trackPosition, scrollLeft, scrollRight } =
-            useScrollable();
+        const { isScrollable, makeScrollable, scrollLeft, scrollRight } = useScrollable();
 
         return (
             <div className="small-class-page-container">
@@ -86,25 +85,6 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                             <TopBar left={renderTopBarLeft()} right={renderTopBarRight()} />
                         )}
                         {renderAvatars()}
-                        <div
-                            ref={trackPosition}
-                            className={classNames("small-class-scroll-handles", {
-                                active: isScrollable,
-                            })}
-                        >
-                            <button
-                                className="small-class-scroll-handle is-left"
-                                onClick={scrollLeft}
-                            >
-                                <SVGLeft />
-                            </button>
-                            <button
-                                className="small-class-scroll-handle is-right"
-                                onClick={scrollRight}
-                            >
-                                <SVGRight />
-                            </button>
-                        </div>
                         <div className="small-class-realtime-content">
                             <div className="small-class-realtime-content-container">
                                 <ShareScreen classroomStore={classroomStore} />
@@ -135,35 +115,66 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
 
         function renderAvatars(): React.ReactNode {
             return (
-                <div ref={makeScrollable} className="small-class-realtime-avatars-wrap">
-                    {classroomStore.isJoinedRTC && (
-                        <div className="small-class-realtime-avatars">
-                            <RTCAvatar
-                                avatarUser={classroomStore.users.creator}
-                                getPortal={classroomStore.getPortal}
-                                isAvatarUserCreator={true}
-                                isCreator={classroomStore.isCreator}
-                                isDropTarget={classroomStore.isDropTarget(classroomStore.ownerUUID)}
-                                rtcAvatar={
-                                    classroomStore.users.creator &&
-                                    classroomStore.rtc.getAvatar(
-                                        classroomStore.users.creator.rtcUID,
-                                    )
-                                }
-                                small={true}
-                                updateDeviceState={classroomStore.updateDeviceState}
-                                userUUID={classroomStore.userUUID}
-                                onDoubleClick={() =>
-                                    classroomStore.createMaximizedAvatarWindow(
+                <div className="small-class-realtime-avatars-wrap-wrap">
+                    <div ref={makeScrollable} className="small-class-realtime-avatars-wrap">
+                        {classroomStore.isJoinedRTC && (
+                            <div
+                                className="small-class-realtime-avatars"
+                                data-user-uuid="[object Object]"
+                            >
+                                <RTCAvatar
+                                    avatarUser={classroomStore.users.creator}
+                                    getPortal={classroomStore.getPortal}
+                                    isAvatarUserCreator={true}
+                                    isCreator={classroomStore.isCreator}
+                                    isDropTarget={classroomStore.isDropTarget(
                                         classroomStore.ownerUUID,
-                                    )
-                                }
-                                onDragEnd={classroomStore.onDragEnd}
-                                onDragStart={classroomStore.onDragStart}
-                            />
-                            {classroomStore.onStageUserUUIDs.map(renderAvatar)}
-                        </div>
-                    )}
+                                    )}
+                                    rtcAvatar={
+                                        classroomStore.users.creator &&
+                                        classroomStore.rtc.getAvatar(
+                                            classroomStore.users.creator.rtcUID,
+                                        )
+                                    }
+                                    small={true}
+                                    updateDeviceState={classroomStore.updateDeviceState}
+                                    userUUID={classroomStore.userUUID}
+                                    onDoubleClick={() =>
+                                        classroomStore.createMaximizedAvatarWindow(
+                                            classroomStore.ownerUUID,
+                                        )
+                                    }
+                                    onDragEnd={classroomStore.onDragEnd}
+                                    onDragStart={classroomStore.onDragStart}
+                                />
+                                {classroomStore.onStageUserUUIDs.map(renderAvatar)}
+                            </div>
+                        )}
+                    </div>
+                    <div
+                        className={classNames("small-class-scroll-handles", {
+                            active: isScrollable,
+                        })}
+                    >
+                        <button
+                            className="small-class-scroll-handle is-left"
+                            title="press shift to scroll 5x faster"
+                            onClick={scrollLeft}
+                        >
+                            <span className="small-class-scroll-handle-btn">
+                                <SVGLeft active />
+                            </span>
+                        </button>
+                        <button
+                            className="small-class-scroll-handle is-right"
+                            title="press shift to scroll 5x faster"
+                            onClick={scrollRight}
+                        >
+                            <span className="small-class-scroll-handle-btn">
+                                <SVGRight active />
+                            </span>
+                        </button>
+                    </div>
                 </div>
             );
         }

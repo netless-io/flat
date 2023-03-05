@@ -51,7 +51,7 @@ export type ClassroomStorageState = {
 export type OnStageUsersStorageState = Record<string, boolean>;
 export type WhiteboardStorageState = Record<string, boolean>;
 export type UserWindowsStorageState = {
-    mode: "normal" | "maximized";
+    grid: null | string[];
 };
 // stored in UserWindowsStorageState too, but TypeScript does not support union records
 export type UserWindow = {
@@ -59,10 +59,7 @@ export type UserWindow = {
     y: number;
     width: number;
     height: number;
-    // the order in normal mode
     z: number;
-    // the order in maximized mode
-    index: number;
 };
 
 export class ClassroomStore {
@@ -115,7 +112,7 @@ export class ClassroomStore {
         downlink: 0,
     };
 
-    public userWindowsMode: UserWindowsStorageState["mode"] = "normal";
+    public userWindowsGrid: string[] | null = null;
     public readonly userWindows = observable.map<string, UserWindow>();
     public readonly userWindowsPortal = observable.map<string, HTMLDivElement>();
 
@@ -337,6 +334,10 @@ export class ClassroomStore {
         return result;
     }
 
+    public get userWindowsMode(): "normal" | "maximized" {
+        return this.userWindowsGrid ? "maximized" : "normal";
+    }
+
     public async init(): Promise<void> {
         await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
 
@@ -384,7 +385,7 @@ export class ClassroomStore {
         );
         const userWindowsStorage = fastboard.syncedStore.connectStorage<UserWindowsStorageState>(
             "userWindows",
-            { mode: "normal" },
+            { grid: null },
         );
         this.deviceStateStorage = deviceStateStorage;
         this.classroomStorage = classroomStorage;
@@ -573,7 +574,7 @@ export class ClassroomStore {
 
         const initialUserWindows = new Map<string, UserWindow>();
         for (const key in userWindowsStorage.state) {
-            if (key !== "mode") {
+            if (key !== "grid") {
                 const userWindow: UserWindow | null = (userWindowsStorage.state as any)[key];
                 if (userWindow) {
                     initialUserWindows.set(key, userWindow);
@@ -581,7 +582,7 @@ export class ClassroomStore {
             }
         }
         runInAction(() => {
-            this.userWindowsMode = userWindowsStorage.state.mode;
+            this.userWindowsGrid = userWindowsStorage.state.grid;
             this.userWindows.replace(initialUserWindows);
         });
 
@@ -607,8 +608,8 @@ export class ClassroomStore {
             userWindowsStorage.on("stateChanged", diff => {
                 runInAction(() => {
                     for (const key in diff) {
-                        if (key === "mode") {
-                            this.userWindowsMode = diff[key]!.newValue;
+                        if (key === "grid") {
+                            this.userWindowsGrid = diff[key]!.newValue;
                         } else {
                             const userWindow: UserWindow | undefined = (diff as any)[key].newValue;
                             if (userWindow) {
@@ -750,88 +751,101 @@ export class ClassroomStore {
         }
     };
 
-    public maxOfUserWindows = (exclude?: string): { z: number; index: number } => {
+    public windowedUserUUIDs = (): string[] => {
         if (!this.userWindowsStorage) {
-            return { z: 0, index: 0 };
+            return [];
+        }
+        const windows = this.userWindowsStorage.state as unknown as Record<string, UserWindow>;
+        const result: string[] = [];
+        for (const key in windows) {
+            if (key !== "grid" && windows[key]) {
+                result.push(key);
+            }
+        }
+        return result;
+    };
+
+    public maxZOfUserWindows = (exclude?: string): number => {
+        if (!this.userWindowsStorage) {
+            return 0;
         }
         const windows = this.userWindowsStorage.state as unknown as Record<string, UserWindow>;
         let maxZ = 0;
-        let maxIndex = 0;
         for (const key in windows) {
-            if (key !== "mode" && key !== exclude && windows[key]) {
+            if (key !== "grid" && key !== exclude && windows[key]) {
                 maxZ = Math.max(maxZ, windows[key].z);
-                maxIndex = Math.max(maxZ, windows[key].index);
             }
         }
-        return { z: maxZ, index: maxIndex };
+        return maxZ;
     };
-
-    private isUserWindowsEmpty(): boolean {
-        if (!this.userWindowsStorage) {
-            return true;
-        }
-        const windows = this.userWindowsStorage.state as unknown as Record<string, UserWindow>;
-        for (const key in windows) {
-            if (key !== "mode" && windows[key]) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     public userHasLeft = (userUUID: string): boolean => {
         return this.users.cachedUsers.get(userUUID)?.hasLeft ?? true;
     };
 
-    public toggleUserWindowsMode = (mode?: UserWindowsStorageState["mode"]): void => {
+    public toggleUserWindowsMode = (mode?: "normal" | "maximized"): void => {
         if (this.isCreator && this.userWindowsStorage) {
-            this.userWindowsStorage.setState({
-                mode: mode || (this.userWindowsMode === "normal" ? "maximized" : "normal"),
-            });
+            const targetMode = mode || (this.userWindowsMode === "normal" ? "maximized" : "normal");
+            if (targetMode === "normal") {
+                this.userWindowsStorage.setState({ grid: null });
+            } else {
+                this.userWindowsStorage.setState({ grid: this.windowedUserUUIDs() });
+            }
         }
     };
 
-    public createAvatarWindow = (
-        userUUID: string,
-        window: Omit<UserWindow, "z" | "index">,
-    ): void => {
+    public createAvatarWindow = (userUUID: string, window: Omit<UserWindow, "z">): void => {
         if (this.isCreator && this.userWindowsStorage) {
-            const { z, index } = this.maxOfUserWindows();
-            this.userWindowsStorage.setState({
-                [userUUID]: { ...window, z: z + 1, index: index + 1 },
-            });
+            if (this.userWindowsStorage.state.grid) {
+                this.createMaximizedAvatarWindow(userUUID);
+            } else {
+                const maxZ = this.maxZOfUserWindows();
+                this.userWindowsStorage.setState({ [userUUID]: { ...window, z: maxZ + 1 } });
+            }
         }
     };
 
     public createMaximizedAvatarWindow = (userUUID: string): void => {
         if (this.isCreator && this.userWindowsStorage) {
-            const { z, index } = this.maxOfUserWindows();
-            this.userWindowsStorage.setState({
-                mode: "maximized",
-                [userUUID]: {
-                    x: 0.1,
-                    y: 0.1,
-                    width: 2 / 5,
-                    height: 8 / 15,
-                    z: z + 1,
-                    index: index + 1,
-                },
-            });
+            let grid = this.userWindowsStorage.state.grid || this.windowedUserUUIDs();
+            if (!grid.includes(userUUID)) {
+                grid = [...grid, userUUID];
+            }
+            this.userWindowsStorage.setState({ grid });
         }
     };
 
+    private isWindowEqual(a: UserWindow, b: UserWindow): boolean {
+        return (
+            a.z === b.z &&
+            Math.abs(a.x - b.x) < 1e-3 &&
+            Math.abs(a.y - b.y) < 1e-3 &&
+            Math.abs(a.width - b.width) < 1e-3 &&
+            Math.abs(a.height - b.height) < 1e-3
+        );
+    }
+
     public updateAvatarWindow = (userUUID: string, window: UserWindow): void => {
-        if (this.isCreator && this.userWindowsStorage) {
-            const { z } = this.maxOfUserWindows(userUUID);
-            this.userWindowsStorage.setState({ [userUUID]: { ...window, z: z + 1 } });
+        if (this.isCreator && this.userWindowsStorage && !this.userWindowsStorage.state.grid) {
+            const maxZ = this.maxZOfUserWindows(userUUID);
+            const newValue = { ...window, z: maxZ + 1 };
+            const oldValue = (this.userWindowsStorage.state as any)[userUUID];
+            if (!this.isWindowEqual(oldValue, newValue)) {
+                this.userWindowsStorage.setState({ [userUUID]: newValue });
+            }
         }
     };
 
     public deleteAvatarWindow = (userUUID: string): void => {
         if (this.isCreator && this.userWindowsStorage) {
             this.userWindowsStorage.setState({ [userUUID]: undefined });
-            if (this.userWindowsMode === "maximized" && this.isUserWindowsEmpty()) {
-                this.toggleUserWindowsMode("normal");
+            let grid = this.userWindowsStorage.state.grid;
+            if (grid && grid.includes(userUUID)) {
+                grid = grid.filter(uuid => uuid !== userUUID);
+                if (grid.length === 0) {
+                    grid = null;
+                }
+                this.userWindowsStorage.setState({ grid });
             }
         }
     };

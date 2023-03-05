@@ -62,18 +62,16 @@ export function useDraggable(): Draggable {
 export interface Scrollable {
     readonly isScrollable: boolean;
     readonly makeScrollable: (div: HTMLDivElement | null) => void;
-    readonly trackPosition: (div: HTMLDivElement | null) => void;
     readonly scrollLeft: (ev: React.MouseEvent) => void;
     readonly scrollRight: (ev: React.MouseEvent) => void;
 }
 
 export function useScrollable(): Scrollable {
     const [div, makeScrollable] = useState<HTMLDivElement | null>(null);
-    const [tracker, trackPosition] = useState<HTMLDivElement | null>(null);
     const [isScrollable, setScrollable] = useState(false);
 
     useEffect(() => {
-        if (div && tracker) {
+        if (div) {
             let isHorizontal = false;
             let timer = 0;
             // translate mouse wheel to scroll left/right
@@ -95,17 +93,9 @@ export function useScrollable(): Scrollable {
                 },
                 { passive: false },
             );
-            // move tracker to follow the scrollable div
             const observer = new ResizeObserver(() => {
                 const { scrollWidth, clientWidth } = div;
                 setScrollable(scrollWidth > clientWidth);
-                const { top, left, width, height } = div.getBoundingClientRect();
-                Object.assign(tracker.style, {
-                    top: `${top}px`,
-                    left: `${left}px`,
-                    width: `${width}px`,
-                    height: `${height}px`,
-                });
             });
             observer.observe(div);
             return () => {
@@ -114,9 +104,9 @@ export function useScrollable(): Scrollable {
             };
         }
         return;
-    }, [div, tracker]);
+    }, [div]);
 
-    const DISTANCE = 148;
+    const DISTANCE = 152;
 
     const scrollLeft = useCallback(
         (ev: React.MouseEvent) =>
@@ -136,5 +126,5 @@ export function useScrollable(): Scrollable {
         [div],
     );
 
-    return { isScrollable, makeScrollable, trackPosition, scrollLeft, scrollRight };
+    return { isScrollable, makeScrollable, scrollLeft, scrollRight };
 }

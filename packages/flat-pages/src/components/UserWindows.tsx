@@ -48,12 +48,9 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
         }
     }, [boundingRect]);
 
-    const users = [...classroom.userWindows.keys()]
-        .map(userUUID => {
-            const window = classroom.userWindows.get(userUUID)!;
-            return { userUUID, window };
-        })
-        .sort((a, b) => a.window.z - b.window.z);
+    const users = (classroom.userWindowsGrid || [...classroom.userWindows.keys()]).map(userUUID => {
+        return { userUUID, window: classroom.userWindows.get(userUUID) };
+    });
 
     const onDrop = useCallback(
         (ev: React.DragEvent<HTMLDivElement>) => {
@@ -89,7 +86,7 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
         [baseRect, boundingRect, classroom],
     );
 
-    const isGrid = classroom.userWindowsMode === "maximized";
+    const isGrid = classroom.userWindowsGrid;
 
     return (
         <div
@@ -99,6 +96,17 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
                 "is-hovering": hovering,
             })}
         >
+            {users.map(({ userUUID, window }) => (
+                <UserAvatarWindow
+                    key={userUUID}
+                    baseRect={baseRect}
+                    classroom={classroom}
+                    mode={classroom.userWindowsMode}
+                    readonly={!classroom.isCreator}
+                    userUUID={userUUID}
+                    window={window}
+                />
+            ))}
             {classroom.isDraggingAvatar && (
                 <div
                     className="user-windows-mask"
@@ -107,17 +115,6 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
                     onDrop={onDrop}
                 />
             )}
-            {users.map(({ userUUID, window }) => (
-                <UserAvatarWindow
-                    key={userUUID}
-                    baseRect={baseRect}
-                    classroom={classroom}
-                    mode={isGrid ? "maximized" : "normal"}
-                    readonly={!classroom.isCreator}
-                    userUUID={userUUID}
-                    window={window}
-                />
-            ))}
         </div>
     );
 });
@@ -126,10 +123,13 @@ interface UserAvatarWindowProps {
     mode: "maximized" | "normal";
     readonly: boolean;
     userUUID: string;
-    window: UserWindow;
+    /** may not exist on maximized mode */
+    window?: UserWindow;
     baseRect: { width: number; height: number; extraX?: number; extraY?: number };
     classroom: ClassroomStore;
 }
+
+const DEFAULT_WINDOW: UserWindow = { x: 0, y: 0, width: 0.4, height: 8 / 15, z: 0 };
 
 const UserAvatarWindow = observer<UserAvatarWindowProps>(function UserAvatarWindow({
     mode,
@@ -155,7 +155,7 @@ const UserAvatarWindow = observer<UserAvatarWindowProps>(function UserAvatarWind
         return;
     }, [classroom, isUnMounted, tempWindow, userUUID]);
 
-    const window = tempWindow || realWindow;
+    const window = tempWindow || realWindow || DEFAULT_WINDOW;
     const rect: Rectangle = useMemo(
         () => ({
             x: window.x * baseRect.width + (baseRect.extraX || 0),
@@ -167,7 +167,7 @@ const UserAvatarWindow = observer<UserAvatarWindowProps>(function UserAvatarWind
     );
 
     const onClick = useCallback(() => {
-        classroom.updateAvatarWindow(userUUID, realWindow);
+        realWindow && classroom.updateAvatarWindow(userUUID, realWindow);
     }, [classroom, realWindow, userUUID]);
 
     const onDoubleClick = useCallback(() => {
@@ -218,17 +218,15 @@ const UserAvatarWindow = observer<UserAvatarWindowProps>(function UserAvatarWind
                 // but set a correct z when we really update the storage.
                 // see classroom.updateAvatarWindow()
                 z: 2147483647,
-                index: window.index,
             });
         },
-        [baseRect, window.index],
+        [baseRect],
     );
 
     return (
         <AvatarWindow
             key={userUUID}
             hidden={classroom.userHasLeft(userUUID)}
-            index={window.index}
             mode={mode}
             readonly={readonly}
             rect={rect}
