@@ -18,11 +18,15 @@
     pointer-events: none;
 
     &.is-grid {
+        pointer-events: all;
+        background-color: rgba(0, 0, 0, .95);
         display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
 
         .window {
-            flex: 1;
             display: flex;
+            flex: 0 1 25%;
         }
     }
 }
@@ -34,4 +38,22 @@
 
 .user-windows.is-hovering>.user-windows-mask {
     box-shadow: inset 0 0 0 2px var(--primary);
+}
+
+.user-windows.is-grid[data-size="1"]>.window {
+    flex: 0 1 100%;
+}
+
+.user-windows.is-grid[data-size="2"]>.window,
+.user-windows.is-grid[data-size="3"]>.window,
+.user-windows.is-grid[data-size="4"]>.window {
+    flex: 0 1 50%;
+}
+
+.user-windows.is-grid[data-size="5"]>.window,
+.user-windows.is-grid[data-size="6"]>.window,
+.user-windows.is-grid[data-size="7"]>.window,
+.user-windows.is-grid[data-size="8"]>.window,
+.user-windows.is-grid[data-size="9"]>.window {
+    flex: 0 1 33.333333%;
 }
