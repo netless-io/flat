@@ -202,8 +202,9 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                         ref={bindWhiteboard}
                         className={classNames("whiteboard", {
                             "can-operate":
-                                classRoomStore.isCreator ||
-                                classRoomStore.users.currentUser?.wbOperate,
+                                !classRoomStore.userWindowsGrid &&
+                                (classRoomStore.isCreator ||
+                                    classRoomStore.users.currentUser?.wbOperate),
                         })}
                     />
                     <UserWindows classroom={classRoomStore} />
