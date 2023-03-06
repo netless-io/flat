@@ -10,7 +10,6 @@ import {
 } from "@netless/flat-services";
 import { WindowManager } from "@netless/window-manager";
 import { ReadonlyVal, Val, combine } from "value-enhancer";
-import { AsyncSideEffectManager } from "side-effect-manager";
 
 import { registerColorShortcut } from "./color-shortcut";
 import { injectCursor } from "./inject-cursor";
@@ -39,7 +38,6 @@ export interface FastboardConfig {
 }
 
 export class Fastboard extends IServiceWhiteboard {
-    private asyncSideEffect = new AsyncSideEffectManager();
     private toaster: Toaster;
     private flatI18n: FlatI18n;
     private flatInfo: FlatInfo;
@@ -130,30 +128,13 @@ export class Fastboard extends IServiceWhiteboard {
                 }
                 // room.isWritable follows allowDrawing for now
                 if (isWritable !== room.isWritable) {
-                    this.asyncSideEffect.add(async () => {
-                        let isDisposed = false;
-                        try {
-                            if (isWritable) {
-                                await app.room.setWritable(true);
-                            } else {
-                                // wait until room isWritable
-                                // remove after the issue is fixed
-                                await app.syncedStore.nextFrame();
-                                if (!isDisposed) {
-                                    await app.room.setWritable(false);
-                                }
-                            }
-                        } catch (e) {
-                            if (process.env.NODE_ENV !== "production") {
-                                console.error(e);
-                            }
+                    app.room.setWritable(isWritable).catch(e => {
+                        if (process.env.NODE_ENV !== "production") {
+                            console.error(e);
                         }
-                        return () => {
-                            isDisposed = true;
-                        };
-                    }, "setWritable");
+                    });
                 }
-            }, true),
+            }),
             this._el$.subscribe(el => {
                 if (el) {
                     this.ui.mount(el, {
@@ -338,7 +319,6 @@ export class Fastboard extends IServiceWhiteboard {
 
     public override async destroy(): Promise<void> {
         super.destroy();
-        this.asyncSideEffect.flushAll();
         await this.leaveRoom();
     }
 
