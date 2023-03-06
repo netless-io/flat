@@ -157,7 +157,7 @@ importers:
       '@netless/app-monaco': 0.2.0-canary.1
       '@netless/app-quill': ^0.1.1
       '@netless/app-selector': ^0.0.3
-      '@netless/app-slide': 0.3.0-canary.18
+      '@netless/app-slide': 0.3.0-canary.19
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
@@ -222,7 +222,7 @@ importers:
       '@netless/app-monaco': 0.2.0-canary.1
       '@netless/app-quill': 0.1.1
       '@netless/app-selector': 0.0.3
-      '@netless/app-slide': 0.3.0-canary.18
+      '@netless/app-slide': 0.3.0-canary.19
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
@@ -770,7 +770,7 @@ importers:
       '@netless/app-monaco': 0.2.0-canary.1
       '@netless/app-quill': ^0.1.1
       '@netless/app-selector': ^0.0.3
-      '@netless/app-slide': 0.3.0-canary.18
+      '@netless/app-slide': 0.3.0-canary.19
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-pages': workspace:*
@@ -833,7 +833,7 @@ importers:
       '@netless/app-monaco': 0.2.0-canary.1
       '@netless/app-quill': 0.1.1
       '@netless/app-selector': 0.0.3
-      '@netless/app-slide': 0.3.0-canary.18
+      '@netless/app-slide': 0.3.0-canary.19
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-pages': link:../../packages/flat-pages
@@ -3369,6 +3369,13 @@ packages:
     dependencies:
       '@netless/slide': 0.10.3
       jspdf: 2.5.1
+    dev: false
+
+  /@netless/app-slide/0.3.0-canary.19:
+    resolution: {integrity: sha512-xyyp4GLoh9iwz6UBQM/qFbemThmUaCfovg3sp+KDmPgyNq/huwMYeBPvoMJivAbOjsLHWMwPqaIgFrdiTOBucw==}
+    dependencies:
+      '@netless/slide': 1.0.1
+      jspdf: 2.5.1
 
   /@netless/canvas-polyfill/0.0.4:
     resolution: {integrity: sha512-7NzsJrba0R/mq/l10SkIZQwbrNVJyPxZYrjK6xL3Ts732iWAVuS2UB0u3s6iGeUVcqV39A679yva8APWRl4M0A==}
@@ -3424,7 +3431,7 @@ packages:
       white-web-sdk:
         optional: true
     dependencies:
-      '@netless/app-slide': 0.3.0-canary.18
+      '@netless/app-slide': 0.3.0-canary.19
       '@netless/fastboard-core': 1.0.0-canary.8_xs4yiy33z2fosferk2dzlinvqu
       '@netless/fastboard-ui': 1.0.0-canary.8_httwwgffgctxwa6rjutf67vesy
       '@netless/window-manager': 1.0.0-canary.75_white-web-sdk-esm@2.16.41
@@ -3437,6 +3444,17 @@ packages:
 
   /@netless/slide/0.10.3:
     resolution: {integrity: sha512-ScTKBemRhuzFCifk/Crp958tlkAs98T4qR2R+RkWlQHFJyCZkpYdMvEo1nvpTTu7XNSWBg5cTG7J+0QFUfYMVg==}
+    dependencies:
+      '@juggle/resize-observer': 3.4.0
+      '@types/lodash': 4.14.185
+      dat.gui: 0.7.9
+      eventemitter3: 4.0.7
+      localforage: 1.10.0
+      lodash: 4.17.21
+    dev: false
+
+  /@netless/slide/1.0.1:
+    resolution: {integrity: sha512-e5lGE02DgM16vVBUZNC++uqtTGZwPCpriCb3jejKpxIiVbd1oqS/drtXI6PwicSg10db1y4lcumolz7jT68ADw==}
     dependencies:
       '@juggle/resize-observer': 3.4.0
       '@types/lodash': 4.14.185
