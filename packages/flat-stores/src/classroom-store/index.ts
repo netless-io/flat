@@ -1012,6 +1012,7 @@ export class ClassroomStore {
         }
         if (!onStage && (!this.isCreator || userUUID !== this.userUUID)) {
             this.updateDeviceState(userUUID, false, false);
+            this.deleteAvatarWindow(userUUID);
         }
         if (this.classroomStorage?.state.raiseHandUsers.includes(userUUID)) {
             const raiseHandUsers = this.classroomStorage.state.raiseHandUsers;
