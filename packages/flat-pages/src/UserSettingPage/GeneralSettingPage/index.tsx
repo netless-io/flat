@@ -144,6 +144,25 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                         defaultValue={preferencesStore.prefersColorScheme}
                     />
                 </div>
+                <div className="general-setting-join-options-box">
+                    <div className="general-setting-join-options">{t("join-options")}</div>
+                    <Checkbox
+                        value={preferencesStore.autoMicOn}
+                        onClick={() =>
+                            preferencesStore.updateAutoMicOn(!preferencesStore.autoMicOn)
+                        }
+                    >
+                        {t("turn-on-the-microphone")}
+                    </Checkbox>
+                    <Checkbox
+                        value={preferencesStore.autoCameraOn}
+                        onClick={() =>
+                            preferencesStore.updateAutoCameraOn(!preferencesStore.autoCameraOn)
+                        }
+                    >
+                        {t("turn-on-the-camera")}
+                    </Checkbox>
+                </div>
                 <div className="general-setting-device-test-box">
                     <div className="general-setting-checkbox-title">{t("device-test-option")}</div>
                     <Checkbox

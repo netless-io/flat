@@ -79,3 +79,7 @@ export class PreferencesStore {
 }
 
 export const preferencesStore = new PreferencesStore();
+
+if (process.env.NODE_ENV !== "production") {
+    (window as any).preferencesStore = preferencesStore;
+}

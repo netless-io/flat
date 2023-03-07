@@ -196,6 +196,8 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
         <div className="device-test-page-container">
             <div className="device-test-panel-box">
                 <DeviceTestPanel
+                    autoCameraOn={preferencesStore.autoCameraOn}
+                    autoMicOn={preferencesStore.autoMicOn}
                     cameraDevices={cameraDevices}
                     cameraVideoStreamRef={cameraVideoStreamRef}
                     currentCameraDeviceID={cameraDeviceId}
@@ -204,6 +206,7 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
                     isCameraAccessible={isCameraAccessible}
                     isMicrophoneAccessible={isMicrophoneAccessible}
                     isSpeakerAccessible={isSpeakerAccessible}
+                    isTurnOffDeviceTest={globalStore.isTurnOffDeviceTest}
                     joinRoom={joinRoom}
                     microphoneDevices={microphoneDevices}
                     microphoneVolume={volume}
@@ -214,7 +217,13 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
                     speakerTestFileName={"Music"}
                     startSpeakerTest={rtc ? rtc.startSpeakerTest : noop}
                     stopSpeakerTest={rtc ? rtc.stopSpeakerTest : noop}
-                    toggleDeviceTest={() => globalStore.toggleDeviceTest()}
+                    toggleAutoCameraOn={() =>
+                        preferencesStore.updateAutoCameraOn(!preferencesStore.autoCameraOn)
+                    }
+                    toggleAutoMicOn={() =>
+                        preferencesStore.updateAutoMicOn(!preferencesStore.autoMicOn)
+                    }
+                    toggleDeviceTest={globalStore.toggleDeviceTest}
                 />
             </div>
         </div>

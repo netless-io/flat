@@ -12,6 +12,7 @@ import { useTranslate } from "@netless/flat-i18n";
 interface CreateRoomFormValues {
     roomTitle: string;
     roomType: RoomType;
+    autoMicOn: boolean;
     autoCameraOn: boolean;
 }
 
@@ -38,6 +39,7 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
             ? t("create-room-default-title", { name: globalStore.userInfo.name })
             : "",
         roomType: RoomType.BigClass,
+        autoMicOn: preferencesStore.autoMicOn,
         autoCameraOn: preferencesStore.autoCameraOn,
     };
 
@@ -146,6 +148,9 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                         <ClassPicker value={classType} onChange={e => setClassType(RoomType[e])} />
                     </Form.Item>
                     <Form.Item label={t("join-options")}>
+                        <Form.Item noStyle name="autoMicOn" valuePropName="checked">
+                            <Checkbox>{t("turn-on-the-microphone")}</Checkbox>
+                        </Form.Item>
                         <Form.Item noStyle name="autoCameraOn" valuePropName="checked">
                             <Checkbox>{t("turn-on-the-camera")}</Checkbox>
                         </Form.Item>
@@ -190,6 +195,9 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
 
     function formValidateStatus(): void {
         setIsFormValidated(form.getFieldsError().every(field => field.errors.length <= 0));
+        const values = form.getFieldsValue();
+        preferencesStore.updateAutoMicOn(values.autoMicOn);
+        preferencesStore.updateAutoCameraOn(values.autoCameraOn);
     }
 });
 
