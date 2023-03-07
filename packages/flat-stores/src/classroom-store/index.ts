@@ -536,7 +536,7 @@ export class ClassroomStore {
             if (!this.isCreator) {
                 const isJoinerOnStage = Boolean(onStageUsersStorage.state[this.userUUID]);
                 this.whiteboardStore.updateWritable(
-                    isJoinerOnStage || whiteboardStorage.state[this.userUUID],
+                    Boolean(isJoinerOnStage || whiteboardStorage.state[this.userUUID]),
                 );
                 this.whiteboardStore.updateAllowDrawing(whiteboardStorage.state[this.userUUID]);
 
@@ -595,9 +595,11 @@ export class ClassroomStore {
                         !!whiteboardStorage.state[user.userUUID];
                 });
                 this.whiteboardStore.updateWritable(
-                    this.isCreator ||
-                        onStageUsersStorage.state[this.userUUID] ||
-                        whiteboardStorage.state[this.userUUID],
+                    Boolean(
+                        this.isCreator ||
+                            onStageUsersStorage.state[this.userUUID] ||
+                            whiteboardStorage.state[this.userUUID],
+                    ),
                 );
                 this.whiteboardStore.updateAllowDrawing(
                     this.isCreator || whiteboardStorage.state[this.userUUID],
