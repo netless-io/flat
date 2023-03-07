@@ -49,7 +49,7 @@ export const JoinPage = observer(function JoinPage() {
 
     async function joinRoom(): Promise<void> {
         if (isLogin && roomUUID) {
-            if (globalStore.isTurnOffDeviceTest || window.isElectron) {
+            if (window.isElectron) {
                 await joinRoomHandler(roomUUID, pushHistory);
             } else {
                 pushHistory(RouteNameType.DevicesTestPage, { roomUUID });

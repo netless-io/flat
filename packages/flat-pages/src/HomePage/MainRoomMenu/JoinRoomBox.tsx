@@ -66,7 +66,7 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
                     </Button>,
                     <Button
                         key="submit"
-                        disabled={!isFormValidated}
+                        disabled={!isFormValidated || form.getFieldValue("roomUUID").trim() === ""}
                         loading={isLoading}
                         type="primary"
                         onClick={handleOk}
@@ -169,5 +169,8 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
 
     function formValidateStatus(): void {
         setIsFormValidated(form.getFieldsError().every(field => field.errors.length <= 0));
+        const values = form.getFieldsValue();
+        preferencesStore.updateAutoMicOn(values.autoMicOn);
+        preferencesStore.updateAutoCameraOn(values.autoCameraOn);
     }
 });

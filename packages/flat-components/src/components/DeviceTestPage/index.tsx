@@ -24,6 +24,7 @@ export interface DeviceTestPanelProps {
     isSpeakerAccessible: boolean;
     isMicrophoneAccessible: boolean;
     cameraVideoStreamRef: React.RefObject<HTMLDivElement>;
+    isTurnOffDeviceTest: boolean;
     setSpeakerDevice: (deviceID: string) => void;
     setCameraDevice: (deviceID: string) => void;
     setMicrophoneDevice: (deviceID: string) => void;
@@ -31,6 +32,10 @@ export interface DeviceTestPanelProps {
     stopSpeakerTest: () => void;
     toggleDeviceTest: () => void;
     joinRoom: () => void;
+    autoMicOn: boolean;
+    autoCameraOn: boolean;
+    toggleAutoMicOn: () => void;
+    toggleAutoCameraOn: () => void;
 }
 
 export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
@@ -47,6 +52,7 @@ export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
     isSpeakerAccessible,
     isMicrophoneAccessible,
     cameraVideoStreamRef,
+    isTurnOffDeviceTest,
     setCameraDevice,
     setMicrophoneDevice,
     setSpeakerDevice,
@@ -54,6 +60,10 @@ export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
     stopSpeakerTest,
     toggleDeviceTest,
     joinRoom,
+    autoMicOn,
+    autoCameraOn,
+    toggleAutoMicOn,
+    toggleAutoCameraOn,
 }) => {
     const t = useTranslate();
     return (
@@ -87,11 +97,24 @@ export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
                         microphoneVolume={microphoneVolume}
                         setMicrophoneDevice={setMicrophoneDevice}
                     />
+                    <div className="device-test-panel-join-options">
+                        <div className="device-test-panel-join-options-text">
+                            {t("join-options")}
+                        </div>
+                        <Checkbox checked={autoMicOn} onClick={toggleAutoMicOn}>
+                            {t("turn-on-the-microphone")}
+                        </Checkbox>
+                        <Checkbox checked={autoCameraOn} onClick={toggleAutoCameraOn}>
+                            {t("turn-on-the-camera")}
+                        </Checkbox>
+                    </div>
                 </div>
             </div>
             <div className="device-test-panel-tips-box">
                 <div className="device-test-panel-tips-radio">
-                    <Checkbox onClick={toggleDeviceTest}>{t("close-tip")}</Checkbox>
+                    <Checkbox checked={isTurnOffDeviceTest} onClick={toggleDeviceTest}>
+                        {t("close-tip")}
+                    </Checkbox>
                 </div>
                 <div className="device-test-panel-join-btn">
                     <Button type="primary" onClick={joinRoom}>

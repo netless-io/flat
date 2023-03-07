@@ -1,6 +1,7 @@
 .general-setting-container {
     min-width: 360px;
-    > span {
+
+    >span {
         color: #7a7b7c;
     }
 }
@@ -10,14 +11,17 @@
         display: block;
         padding-bottom: 4px;
     }
-    > label {
+
+    >label {
         padding-right: 16px;
         color: var(--text);
     }
+
     .ant-input {
         width: 320px;
         margin-bottom: 12px;
     }
+
     .ant-input,
     .ant-btn {
         margin-right: 8px;
@@ -75,18 +79,21 @@
         justify-content: center;
     }
 }
+
 .flat-color-scheme-dark .general-setting-user-avatar {
     border-color: var(--grey-6);
 }
+
 .general-setting-user-avatar:hover {
     border-color: var(--primary);
 }
 
 .general-setting-select-language {
-    > span {
+    >span {
         display: block;
         padding-bottom: 3px;
     }
+
     .ant-radio-group {
         margin-left: 0;
 
@@ -97,15 +104,22 @@
 }
 
 .general-setting-appearance-picker-container {
-    > span {
+    >span {
         display: block;
         padding-top: 8px;
         padding-bottom: 3px;
     }
 }
 
+.general-setting-join-options-box,
 .general-setting-device-test-box {
     padding-top: 12px;
+}
+
+.general-setting-join-options-box {
+    .ant-checkbox-wrapper {
+        margin-right: 36px;
+    }
 }
 
 .general-setting-checkbox-title {
