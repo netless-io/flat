@@ -52,6 +52,10 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
         return { userUUID, window: classroom.userWindows.get(userUUID) };
     });
 
+    const userWindowsLength = classroom.userWindowsGrid
+        ? classroom.userWindowsGrid.filter(userUUID => !classroom.userHasLeft(userUUID)).length
+        : 0;
+
     const onDrop = useCallback(
         (ev: React.DragEvent<HTMLDivElement>) => {
             setHovering(false);
@@ -95,6 +99,7 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
                 "is-grid": isGrid,
                 "is-hovering": hovering,
             })}
+            data-size={userWindowsLength}
         >
             {users.map(({ userUUID, window }) => (
                 <UserAvatarWindow
@@ -251,8 +256,6 @@ interface UserWindowPortalProps {
 const UserWindowPortal: React.FC<UserWindowPortalProps> = ({ mode, userUUID, classroom }) => (
     <div
         ref={useCallback(element => classroom.setPortal(userUUID, element), [classroom, userUUID])}
-        className={classNames("user-window-portal", {
-            "is-grid": mode === "maximized",
-        })}
+        className={classNames("user-window-portal", { "is-grid": mode === "maximized" })}
     />
 );
