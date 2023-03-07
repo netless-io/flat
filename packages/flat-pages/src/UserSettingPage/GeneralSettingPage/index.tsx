@@ -147,7 +147,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                 <div className="general-setting-join-options-box">
                     <div className="general-setting-join-options">{t("join-options")}</div>
                     <Checkbox
-                        value={preferencesStore.autoMicOn}
+                        checked={preferencesStore.autoMicOn}
                         onClick={() =>
                             preferencesStore.updateAutoMicOn(!preferencesStore.autoMicOn)
                         }
@@ -155,7 +155,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                         {t("turn-on-the-microphone")}
                     </Checkbox>
                     <Checkbox
-                        value={preferencesStore.autoCameraOn}
+                        checked={preferencesStore.autoCameraOn}
                         onClick={() =>
                             preferencesStore.updateAutoCameraOn(!preferencesStore.autoCameraOn)
                         }

@@ -536,7 +536,7 @@ export class ClassroomStore {
             if (!this.isCreator) {
                 const isJoinerOnStage = Boolean(onStageUsersStorage.state[this.userUUID]);
                 this.whiteboardStore.updateWritable(
-                    isJoinerOnStage || whiteboardStorage.state[this.userUUID],
+                    Boolean(isJoinerOnStage || whiteboardStorage.state[this.userUUID]),
                 );
                 this.whiteboardStore.updateAllowDrawing(whiteboardStorage.state[this.userUUID]);
 
@@ -595,9 +595,11 @@ export class ClassroomStore {
                         !!whiteboardStorage.state[user.userUUID];
                 });
                 this.whiteboardStore.updateWritable(
-                    this.isCreator ||
-                        onStageUsersStorage.state[this.userUUID] ||
-                        whiteboardStorage.state[this.userUUID],
+                    Boolean(
+                        this.isCreator ||
+                            onStageUsersStorage.state[this.userUUID] ||
+                            whiteboardStorage.state[this.userUUID],
+                    ),
                 );
                 this.whiteboardStore.updateAllowDrawing(
                     this.isCreator || whiteboardStorage.state[this.userUUID],
@@ -837,7 +839,8 @@ export class ClassroomStore {
     };
 
     public deleteAvatarWindow = (userUUID: string): void => {
-        if (this.isCreator && this.userWindowsStorage) {
+        // joiners can delete themselves
+        if (this.userWindowsStorage?.isWritable) {
             this.userWindowsStorage.setState({ [userUUID]: undefined });
             let grid = this.userWindowsStorage.state.grid;
             if (grid && grid.includes(userUUID)) {
@@ -997,6 +1000,10 @@ export class ClassroomStore {
         ) {
             return;
         }
+        if (!onStage && (!this.isCreator || userUUID !== this.userUUID)) {
+            this.updateDeviceState(userUUID, false, false);
+            this.deleteAvatarWindow(userUUID);
+        }
         if (this.isCreator) {
             if (!onStage || this.assertStageNotFull()) {
                 this.onStageUsersStorage.setState({ [userUUID]: onStage });
@@ -1009,10 +1016,6 @@ export class ClassroomStore {
             if (!onStage && userUUID === this.userUUID) {
                 this.onStageUsersStorage.setState({ [userUUID]: false });
             }
-        }
-        if (!onStage && (!this.isCreator || userUUID !== this.userUUID)) {
-            this.updateDeviceState(userUUID, false, false);
-            this.deleteAvatarWindow(userUUID);
         }
         if (this.classroomStorage?.state.raiseHandUsers.includes(userUUID)) {
             const raiseHandUsers = this.classroomStorage.state.raiseHandUsers;
