@@ -415,7 +415,7 @@ importers:
       '@netless/app-geogebra': ^0.0.6
       '@netless/app-iframe-bridge': ^0.0.2
       '@netless/app-monaco': 0.2.0-canary.1
-      '@netless/app-slide': 0.3.0-canary.18
+      '@netless/app-slide': 0.3.0-canary.19
       '@netless/combine-player': ^1.1.6
       '@netless/flat-i18n': workspace:*
       '@netless/flat-server-api': workspace:*
@@ -459,7 +459,7 @@ importers:
       '@netless/app-geogebra': 0.0.6
       '@netless/app-iframe-bridge': 0.0.2
       '@netless/app-monaco': 0.2.0-canary.1
-      '@netless/app-slide': 0.3.0-canary.18
+      '@netless/app-slide': 0.3.0-canary.19
       '@netless/combine-player': 1.1.6
       '@netless/flat-i18n': link:../flat-i18n
       '@netless/flat-server-api': link:../flat-server-api
@@ -744,13 +744,13 @@ importers:
 
   service-providers/file-preview-netless-slide:
     specifiers:
-      '@netless/app-slide': 0.3.0-canary.18
+      '@netless/app-slide': 0.3.0-canary.19
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       prettier: ^2.7.1
       typescript: ^4.8.3
     dependencies:
-      '@netless/app-slide': 0.3.0-canary.18
+      '@netless/app-slide': 0.3.0-canary.19
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
     devDependencies:
@@ -3364,13 +3364,6 @@ packages:
       - ts-node
     dev: false
 
-  /@netless/app-slide/0.3.0-canary.18:
-    resolution: {integrity: sha512-nlBFO/GtP6wflUUYs/gh9N3IvObXuwX5B6uYo3A2Jvn5bbqweFlO8NZt083XB7v9+SXXly0Er9yk4tx5YZHsZQ==}
-    dependencies:
-      '@netless/slide': 0.10.3
-      jspdf: 2.5.1
-    dev: false
-
   /@netless/app-slide/0.3.0-canary.19:
     resolution: {integrity: sha512-xyyp4GLoh9iwz6UBQM/qFbemThmUaCfovg3sp+KDmPgyNq/huwMYeBPvoMJivAbOjsLHWMwPqaIgFrdiTOBucw==}
     dependencies:
@@ -3441,17 +3434,6 @@ packages:
     resolution: {integrity: sha512-HsQ04Yzuh8PV4+N31erOeS2pEC6IHGCO/Y7RNwi3AWaQ5ASRpzUka5TxWE4QEXZoseccthcjVL5XN687b/cwRg==}
     hasBin: true
     dev: true
-
-  /@netless/slide/0.10.3:
-    resolution: {integrity: sha512-ScTKBemRhuzFCifk/Crp958tlkAs98T4qR2R+RkWlQHFJyCZkpYdMvEo1nvpTTu7XNSWBg5cTG7J+0QFUfYMVg==}
-    dependencies:
-      '@juggle/resize-observer': 3.4.0
-      '@types/lodash': 4.14.185
-      dat.gui: 0.7.9
-      eventemitter3: 4.0.7
-      localforage: 1.10.0
-      lodash: 4.17.21
-    dev: false
 
   /@netless/slide/1.0.1:
     resolution: {integrity: sha512-e5lGE02DgM16vVBUZNC++uqtTGZwPCpriCb3jejKpxIiVbd1oqS/drtXI6PwicSg10db1y4lcumolz7jT68ADw==}
