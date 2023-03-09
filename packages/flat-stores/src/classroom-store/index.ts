@@ -112,6 +112,7 @@ export class ClassroomStore {
         downlink: 0,
     };
 
+    /** will never be empty array [] */
     public userWindowsGrid: string[] | null = null;
     public readonly userWindows = observable.map<string, UserWindow>();
     public readonly userWindowsPortal = observable.map<string, HTMLDivElement>();
@@ -336,6 +337,10 @@ export class ClassroomStore {
 
     public get userWindowsMode(): "normal" | "maximized" {
         return this.userWindowsGrid ? "maximized" : "normal";
+    }
+
+    private emptyArrayAsNull<T>(a: T[] | null): T[] | null {
+        return a && a.length > 0 ? a : null;
     }
 
     public async init(): Promise<void> {
@@ -582,7 +587,7 @@ export class ClassroomStore {
             }
         }
         runInAction(() => {
-            this.userWindowsGrid = userWindowsStorage.state.grid;
+            this.userWindowsGrid = this.emptyArrayAsNull(userWindowsStorage.state.grid);
             this.userWindows.replace(initialUserWindows);
         });
 
@@ -611,7 +616,7 @@ export class ClassroomStore {
                 runInAction(() => {
                     for (const key in diff) {
                         if (key === "grid") {
-                            this.userWindowsGrid = diff[key]!.newValue;
+                            this.userWindowsGrid = this.emptyArrayAsNull(diff[key]!.newValue);
                         } else {
                             const userWindow: UserWindow | undefined = (diff as any)[key].newValue;
                             if (userWindow) {
@@ -798,7 +803,7 @@ export class ClassroomStore {
 
     public createAvatarWindow = (userUUID: string, window: Omit<UserWindow, "z">): void => {
         if (this.isCreator && this.userWindowsStorage) {
-            if (this.userWindowsStorage.state.grid) {
+            if (this.emptyArrayAsNull(this.userWindowsStorage.state.grid)) {
                 this.createMaximizedAvatarWindow(userUUID);
             } else {
                 const maxZ = this.maxZOfUserWindows();
@@ -809,7 +814,10 @@ export class ClassroomStore {
 
     public createMaximizedAvatarWindow = (userUUID: string): void => {
         if (this.isCreator && this.userWindowsStorage) {
-            let grid = this.userWindowsStorage.state.grid || this.windowedUserUUIDs();
+            let grid = this.userWindowsStorage.state.grid;
+            if (!grid || grid.length === 0) {
+                grid = this.windowedUserUUIDs();
+            }
             if (!grid.includes(userUUID)) {
                 grid = [...grid, userUUID];
             }
@@ -828,7 +836,7 @@ export class ClassroomStore {
     }
 
     public updateAvatarWindow = (userUUID: string, window: UserWindow): void => {
-        if (this.isCreator && this.userWindowsStorage && !this.userWindowsStorage.state.grid) {
+        if (this.isCreator && this.userWindowsStorage && !this.userWindowsGrid) {
             const maxZ = this.maxZOfUserWindows(userUUID);
             const newValue = { ...window, z: maxZ + 1 };
             const oldValue = (this.userWindowsStorage.state as any)[userUUID];
