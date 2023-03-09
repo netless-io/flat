@@ -149,7 +149,7 @@ importers:
   desktop/renderer-app:
     specifiers:
       '@ant-design/icons': ^4.7.0
-      '@netless/app-countdown': ^0.0.4
+      '@netless/app-countdown': ^0.0.7
       '@netless/app-dice': ^0.1.1
       '@netless/app-geogebra': ^0.0.6
       '@netless/app-iframe-bridge': ^0.0.2
@@ -214,7 +214,7 @@ importers:
       video.js: 7.20.3
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
-      '@netless/app-countdown': 0.0.4
+      '@netless/app-countdown': 0.0.7
       '@netless/app-dice': 0.1.1
       '@netless/app-geogebra': 0.0.6
       '@netless/app-iframe-bridge': 0.0.2
@@ -411,7 +411,7 @@ importers:
     specifiers:
       '@ant-design/icons': ^4.7.0
       '@babel/standalone': 7.19.2
-      '@netless/app-countdown': ^0.0.4
+      '@netless/app-countdown': ^0.0.7
       '@netless/app-geogebra': ^0.0.6
       '@netless/app-iframe-bridge': ^0.0.2
       '@netless/app-monaco': 0.2.0-canary.1
@@ -455,7 +455,7 @@ importers:
       video.js: 7.20.3
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
-      '@netless/app-countdown': 0.0.4
+      '@netless/app-countdown': 0.0.7
       '@netless/app-geogebra': 0.0.6
       '@netless/app-iframe-bridge': 0.0.2
       '@netless/app-monaco': 0.2.0-canary.1
@@ -534,7 +534,7 @@ importers:
       '@netless/flat-server-api': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/sync-player': ^1.0.7
-      '@netless/window-manager': 1.0.0-canary.75
+      '@netless/window-manager': 1.0.0-canary.76
       flat-components: workspace:*
       hls.js: ^1.2.1
       mobx: ^6.6.1
@@ -556,8 +556,8 @@ importers:
       side-effect-manager: 1.2.1
       uuid: 9.0.0
     devDependencies:
-      '@netless/fastboard': 1.0.0-canary.8_xs4yiy33z2fosferk2dzlinvqu
-      '@netless/window-manager': 1.0.0-canary.75_white-web-sdk-esm@2.16.41
+      '@netless/fastboard': 1.0.0-canary.8_hfcctgxhdi5hj3hsxb2oosb3pa
+      '@netless/window-manager': 1.0.0-canary.76_white-web-sdk-esm@2.16.41
       mobx: 6.6.2
       prettier: 2.7.1
       react: 17.0.2
@@ -675,7 +675,7 @@ importers:
       '@netless/flat-service-provider-file-convert-netless': workspace:*
       '@netless/flat-services': workspace:*
       '@netless/white-snapshot': ^0.4.2
-      '@netless/window-manager': 1.0.0-canary.75
+      '@netless/window-manager': 1.0.0-canary.76
       prettier: ^2.7.1
       side-effect-manager: ^1.2.1
       typescript: ^4.8.3
@@ -683,13 +683,13 @@ importers:
       white-web-sdk: npm:white-web-sdk-esm@2.16.41
     dependencies:
       '@lukeed/uuid': 2.0.0
-      '@netless/fastboard': 1.0.0-canary.8_xs4yiy33z2fosferk2dzlinvqu
+      '@netless/fastboard': 1.0.0-canary.8_hfcctgxhdi5hj3hsxb2oosb3pa
       '@netless/flat-i18n': link:../../packages/flat-i18n
       '@netless/flat-server-api': link:../../packages/flat-server-api
       '@netless/flat-service-provider-file-convert-netless': link:../file-convert-netless
       '@netless/flat-services': link:../../packages/flat-services
       '@netless/white-snapshot': 0.4.2
-      '@netless/window-manager': 1.0.0-canary.75_white-web-sdk-esm@2.16.41
+      '@netless/window-manager': 1.0.0-canary.76_white-web-sdk-esm@2.16.41
       side-effect-manager: 1.2.1
       value-enhancer: 1.3.2
       white-web-sdk: /white-web-sdk-esm/2.16.41
@@ -762,7 +762,7 @@ importers:
       '@ant-design/icons': ^4.7.0
       '@babel/standalone': 7.19.2
       '@loadable/component': ^5.15.2
-      '@netless/app-countdown': ^0.0.4
+      '@netless/app-countdown': ^0.0.7
       '@netless/app-dice': ^0.1.1
       '@netless/app-geogebra': ^0.0.6
       '@netless/app-iframe-bridge': ^0.0.2
@@ -825,7 +825,7 @@ importers:
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@loadable/component': 5.15.2_react@17.0.2
-      '@netless/app-countdown': 0.0.4
+      '@netless/app-countdown': 0.0.7
       '@netless/app-dice': 0.1.1
       '@netless/app-geogebra': 0.0.6
       '@netless/app-iframe-bridge': 0.0.2
@@ -3298,8 +3298,8 @@ packages:
       glob-to-regexp: 0.3.0
     dev: true
 
-  /@netless/app-countdown/0.0.4:
-    resolution: {integrity: sha512-fu/Mn2BjfRkTscd4GYDny9fty2HihFYQMrEPu3Du1tX3fwO92l7U4Marw2lNBUoKdRBlXy9sP0hroL+QDqg58g==}
+  /@netless/app-countdown/0.0.7:
+    resolution: {integrity: sha512-0b7gkxyZ+ze8Ga5D7Jo0m5Eu+MqCvEx0kKne9AGB7d0lX1ri2M2qDNwcHU4iOhDNKm7n3K7Xr7MhBTfeESDgbQ==}
     dev: false
 
   /@netless/app-dice/0.1.1:
@@ -3389,7 +3389,7 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core/1.0.0-canary.8_xs4yiy33z2fosferk2dzlinvqu:
+  /@netless/fastboard-core/1.0.0-canary.8_hfcctgxhdi5hj3hsxb2oosb3pa:
     resolution: {integrity: sha512-y5Tp0I5Du8NvFQpg78+T60gazhfXXXUZXg2F7Yw5eSPb3hnG/Y16NIAFEzA+oAvfL93o6MbAIq8LLy8HlBGO3g==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
@@ -3402,7 +3402,7 @@ packages:
     dependencies:
       '@lukeed/uuid': 2.0.0
       '@netless/synced-store': 2.0.7_white-web-sdk-esm@2.16.41
-      '@netless/window-manager': 1.0.0-canary.75_white-web-sdk-esm@2.16.41
+      '@netless/window-manager': 1.0.0-canary.76_white-web-sdk-esm@2.16.41
       white-web-sdk: /white-web-sdk-esm/2.16.41
 
   /@netless/fastboard-ui/1.0.0-canary.8_httwwgffgctxwa6rjutf67vesy:
@@ -3410,10 +3410,10 @@ packages:
     peerDependencies:
       '@netless/fastboard-core': 1.0.0-canary.8
     dependencies:
-      '@netless/fastboard-core': 1.0.0-canary.8_xs4yiy33z2fosferk2dzlinvqu
+      '@netless/fastboard-core': 1.0.0-canary.8_hfcctgxhdi5hj3hsxb2oosb3pa
       tippy.js: 6.3.7
 
-  /@netless/fastboard/1.0.0-canary.8_xs4yiy33z2fosferk2dzlinvqu:
+  /@netless/fastboard/1.0.0-canary.8_hfcctgxhdi5hj3hsxb2oosb3pa:
     resolution: {integrity: sha512-9DQpm87m+RowXj+wzpGWuhSkdSsSRYnjY3j1PmpLbJe0+Od01EQTalKuBxesSXpUOSnWz6d0JLHrgshMJJr15g==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
@@ -3425,9 +3425,9 @@ packages:
         optional: true
     dependencies:
       '@netless/app-slide': 0.3.0-canary.19
-      '@netless/fastboard-core': 1.0.0-canary.8_xs4yiy33z2fosferk2dzlinvqu
+      '@netless/fastboard-core': 1.0.0-canary.8_hfcctgxhdi5hj3hsxb2oosb3pa
       '@netless/fastboard-ui': 1.0.0-canary.8_httwwgffgctxwa6rjutf67vesy
-      '@netless/window-manager': 1.0.0-canary.75_white-web-sdk-esm@2.16.41
+      '@netless/window-manager': 1.0.0-canary.76_white-web-sdk-esm@2.16.41
       white-web-sdk: /white-web-sdk-esm/2.16.41
 
   /@netless/mini-svg-data-uri/0.0.1:
@@ -3504,8 +3504,8 @@ packages:
       html2canvas: 1.4.1
     dev: false
 
-  /@netless/window-manager/1.0.0-canary.75_white-web-sdk-esm@2.16.41:
-    resolution: {integrity: sha512-34MVCHUCbqDHwgATfKIlu0+MI4jQ1POfq+DKIMDohExHI9KsKEpSTi/pBuvQ3MQNzyectMsqf3RtyQYSJhhjKw==}
+  /@netless/window-manager/1.0.0-canary.76_white-web-sdk-esm@2.16.41:
+    resolution: {integrity: sha512-pKIhbRumaC7MAZ7sS7nf/W/csmOZjvLk0g84+Kt3qGxEu8xPH5QDlb7zw0cytqtxsfmCz8psxQX2ox3HjHAkrw==}
     peerDependencies:
       white-web-sdk: ^2.16.0
     peerDependenciesMeta:

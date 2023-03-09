@@ -96,7 +96,7 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
         <div
             ref={ref}
             className={classNames("user-windows", {
-                "is-grid": isGrid,
+                "is-grid": isGrid && userWindowsLength > 0,
                 "is-hovering": hovering,
             })}
             data-size={userWindowsLength}
