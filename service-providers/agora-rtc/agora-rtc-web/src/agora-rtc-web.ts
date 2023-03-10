@@ -481,7 +481,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
     public createLocalCameraTrack = singleRun(async (): Promise<ICameraVideoTrack> => {
         if (!this.localCameraTrack) {
             this.localCameraTrack = await AgoraRTC.createCameraVideoTrack({
-                encoderConfig: { width: 288, height: 216 },
+                encoderConfig: { width: 384, height: 216 },
                 cameraId: this._cameraID,
             });
 

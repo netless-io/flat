@@ -422,7 +422,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
             mirrorMode: 0,
             orientationMode: 0,
             height: 216,
-            width: 288,
+            width: 384,
         });
 
         if (mode === IServiceVideoChatMode.Broadcast) {

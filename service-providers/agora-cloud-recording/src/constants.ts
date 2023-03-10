@@ -23,7 +23,7 @@ export type RecordingConfig = AgoraCloudRecordStartRequestBody["clientRequest"][
 export const BIG_CLASS_RECORDING_CONFIG: RecordingConfig = {
     channelType: AgoraCloudRecordingChannelType.Broadcast,
     transcodingConfig: {
-        width: 288,
+        width: 384,
         height: 216,
         fps: 15,
         bitrate: 280,
@@ -81,7 +81,7 @@ export const SMALL_CLASS_RECORDING_CONFIG: RecordingConfig = {
 export const ONE_TO_ONE_RECORDING_CONFIG: RecordingConfig = {
     channelType: AgoraCloudRecordingChannelType.Communication,
     transcodingConfig: {
-        width: 288,
+        width: 384,
         height: 216,
         fps: 15,
         bitrate: 140,
