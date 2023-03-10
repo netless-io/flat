@@ -7,7 +7,7 @@ import { ClassroomStore, UserWindow } from "@netless/flat-stores";
 import { AvatarWindow, fixRect, Rectangle, ResizeHandle, useIsUnMounted } from "flat-components";
 import { WHITEBOARD_RATIO } from "@netless/flat-stores/src/constants";
 
-const WINDOW_RATIO = 3 / 4;
+const WINDOW_RATIO = 9 / 16;
 const DEFAULT_WIDTH_P = 0.4;
 const MIN_WIDTH_P = 0.25;
 
@@ -100,6 +100,12 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
                 "is-hovering": hovering,
             })}
             data-size={userWindowsLength}
+            style={{
+                paddingLeft: baseRect.extraX,
+                paddingRight: baseRect.extraX,
+                paddingTop: baseRect.extraY,
+                paddingBottom: baseRect.extraY,
+            }}
         >
             {users.map(({ userUUID, window }) => (
                 <UserAvatarWindow
@@ -134,7 +140,7 @@ interface UserAvatarWindowProps {
     classroom: ClassroomStore;
 }
 
-const DEFAULT_WINDOW: UserWindow = { x: 0, y: 0, width: 0.4, height: 8 / 15, z: 0 };
+const DEFAULT_WINDOW: UserWindow = { x: 0, y: 0, width: 0.4, height: 0.4 * WINDOW_RATIO, z: 0 };
 
 const UserAvatarWindow = observer<UserAvatarWindowProps>(function UserAvatarWindow({
     mode,
