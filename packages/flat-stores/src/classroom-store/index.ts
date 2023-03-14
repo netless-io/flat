@@ -1,4 +1,4 @@
-import type { Diff, Storage } from "@netless/fastboard";
+import type { Storage } from "@netless/fastboard";
 
 import { SideEffectManager } from "side-effect-manager";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
@@ -505,9 +505,7 @@ export class ClassroomStore {
             }),
         );
 
-        const updateUserStagingState = async (
-            diff?: Diff<OnStageUsersStorageState>,
-        ): Promise<void> => {
+        const updateUserStagingState = async (): Promise<void> => {
             const wasJoinerOnStage = this.onStageUserUUIDs.includes(this.userUUID);
             const onStageUsers = Object.keys(onStageUsersStorage.state).filter(
                 userUUID => onStageUsersStorage.state[userUUID],
@@ -559,10 +557,7 @@ export class ClassroomStore {
                     });
                 }
 
-                if (
-                    isJoinerOnStage &&
-                    (diff?.[this.userUUID] || !deviceStateStorage.state[this.userUUID])
-                ) {
+                if (!wasJoinerOnStage && isJoinerOnStage) {
                     this.updateDeviceState(
                         this.userUUID,
                         preferencesStore.autoCameraOn,
@@ -693,6 +688,29 @@ export class ClassroomStore {
                     }),
                 );
             }
+        }
+
+        if (
+            this.roomType === RoomType.SmallClass &&
+            !this.isCreator &&
+            !onStageUsersStorage.state[this.userUUID] &&
+            this.assertStageNotFull(false)
+        ) {
+            if (!fastboard.syncedStore.isRoomWritable) {
+                this.whiteboardStore.updateWritable(true);
+                // @FIXME add reliable way to ensure writable is set
+                await new Promise<void>(resolve => {
+                    const disposer = fastboard.syncedStore.addRoomWritableChangeListener(
+                        isWritable => {
+                            if (isWritable) {
+                                disposer();
+                                resolve();
+                            }
+                        },
+                    );
+                });
+            }
+            this.onStageUsersStorage.setState({ [this.userUUID]: true });
         }
 
         if (this.isCreator) {
@@ -1033,18 +1051,15 @@ export class ClassroomStore {
         }
     };
 
-    private assertStageNotFull(): boolean {
+    private assertStageNotFull(showWarning = true): boolean {
         const limit = this.roomType === RoomType.SmallClass ? 16 : 1;
         if (this.onStageUserUUIDs.length < limit) {
             return true;
         }
-        message.warn({
-            content: FlatI18n.t(
-                "warn-staging-limit." +
-                    (this.roomType === RoomType.SmallClass ? "small-class" : "other"),
-            ),
-            style: { whiteSpace: "pre" },
-        });
+        const i18nKey =
+            "warn-staging-limit." +
+            (this.roomType === RoomType.SmallClass ? "small-class" : "other");
+        showWarning && message.warn({ content: FlatI18n.t(i18nKey), style: { whiteSpace: "pre" } });
         return false;
     }
 
