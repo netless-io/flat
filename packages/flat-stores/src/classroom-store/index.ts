@@ -1,4 +1,4 @@
-import type { Diff, Storage } from "@netless/fastboard";
+import type { Storage } from "@netless/fastboard";
 
 import { SideEffectManager } from "side-effect-manager";
 import { action, autorun, makeAutoObservable, observable, reaction, runInAction } from "mobx";
@@ -505,9 +505,7 @@ export class ClassroomStore {
             }),
         );
 
-        const updateUserStagingState = async (
-            diff?: Diff<OnStageUsersStorageState>,
-        ): Promise<void> => {
+        const updateUserStagingState = async (): Promise<void> => {
             const wasJoinerOnStage = this.onStageUserUUIDs.includes(this.userUUID);
             const onStageUsers = Object.keys(onStageUsersStorage.state).filter(
                 userUUID => onStageUsersStorage.state[userUUID],
@@ -559,10 +557,7 @@ export class ClassroomStore {
                     });
                 }
 
-                if (
-                    isJoinerOnStage &&
-                    (diff?.[this.userUUID] || !deviceStateStorage.state[this.userUUID])
-                ) {
+                if (!wasJoinerOnStage && isJoinerOnStage) {
                     this.updateDeviceState(
                         this.userUUID,
                         preferencesStore.autoCameraOn,
