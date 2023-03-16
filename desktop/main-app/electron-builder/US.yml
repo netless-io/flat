@@ -1,6 +1,6 @@
 appId: io.agora.flint
 productName: Flint
-artifactName: Flint-${version}.${ext}
+artifactName: Flint-${arch}-${version}.${ext}
 asar: true
 
 extraMetadata:
@@ -25,9 +25,14 @@ mac:
           - x-agora-flat-client
     NSPrincipalClass: AtomApplication
   target:
-    - target: default
+    - target: zip
       arch:
         - x64
+        - arm64
+    - target: dmg
+      arch:
+        - x64
+        - arm64
 
 dmg:
   contents:
@@ -37,6 +42,8 @@ dmg:
 win:
   target:
     - target: zip
+      arch:
+        - x64
     - target: nsis
       arch:
         - x64
@@ -55,7 +62,6 @@ nsis:
   installerIcon: resources/install.ico
   installerHeaderIcon: resources/header.ico
   shortcutName: Flint
-  artifactName: Flint-${version}.${ext}
 
 directories:
   buildResources:

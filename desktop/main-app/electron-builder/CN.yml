@@ -1,6 +1,6 @@
 appId: io.agora.flat
 productName: Flat
-artifactName: Flat-${version}.${ext}
+artifactName: Flat-${arch}-${version}.${ext}
 asar: true
 
 extraMetadata:
@@ -26,9 +26,15 @@ mac:
           - x-agora-flat-client
     NSPrincipalClass: AtomApplication
   target:
-    - target: default
+    - target: zip
       arch:
         - x64
+        - arm64
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+
 mas:
   hardenedRuntime: true
   type: distribution
@@ -45,6 +51,8 @@ dmg:
 win:
   target:
     - target: zip
+      arch:
+        - x64
     - target: nsis
       arch:
         - x64
@@ -63,7 +71,6 @@ nsis:
   installerIcon: resources/install.ico
   installerHeaderIcon: resources/header.ico
   shortcutName: Flat
-  artifactName: Flat-${version}.${ext}
 
 directories:
   buildResources:
