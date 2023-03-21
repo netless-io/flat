@@ -21,5 +21,5 @@ download({
     platform: platform === "win" ? "win32" : "darwin",
     arch: "x64",
     packageVersion: agoraVersion,
-    no_symbol: false,
+    no_symbol: true,
 });

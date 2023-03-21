@@ -16,6 +16,7 @@ mac:
   hardenedRuntime: true
   entitlements: entitlements.mac.plist
   entitlementsInherit: entitlements.mac.plist
+  provisioningProfile: flatmacrelease.provisionprofile
   gatekeeperAssess: false
   extendInfo:
     LSHasLocalizedDisplayName: true
@@ -28,6 +29,13 @@ mac:
     - target: default
       arch:
         - x64
+mas:
+  hardenedRuntime: true
+  type: distribution
+  category: public.app-category.productivity
+  entitlements: entitlements.mac.mas.plist
+  entitlementsInherit: entitlements.mac.mas.plist
+  gatekeeperAssess: true
 
 dmg:
   contents:
