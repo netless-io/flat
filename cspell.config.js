@@ -20,6 +20,10 @@ module.exports = {
         "signup",
         "dataurl",
 
+        // appstore
+        "flatmacrelease",
+        "provisionprofile",
+
         // wechat
         "wechat",
         "jssdk",

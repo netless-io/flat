@@ -7,6 +7,11 @@ overrides:
   '@types/eslint': ^8
   '@types/react': ^17
 
+patchedDependencies:
+  app-builder-lib@22.14.13:
+    hash: 5opvedgra6genczsbbbxnt3wua
+    path: patches/app-builder-lib@22.14.13.patch
+
 importers:
 
   .:
@@ -6623,7 +6628,7 @@ packages:
     resolution: {integrity: sha512-ql93vEUq6WsstGXD+SBLSIQw6SNnhbDEM0swzgugytMxLp3rT24Ag/jcC80ZHxiPRTdew1niuR7P3/FCrDqIjw==}
     dev: true
 
-  /app-builder-lib/22.14.13:
+  /app-builder-lib/22.14.13_5opvedgra6genczsbbbxnt3wua:
     resolution: {integrity: sha512-SufmrtxU+D0Tn948fjEwAOlCN9757UXLkzzTWXMwZKR/5hisvgqeeBepWfphMIE6OkDGz0fbzEhL1P2Pty4XMg==}
     engines: {node: '>=14.0.0'}
     dependencies:
@@ -6655,6 +6660,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+    patched: true
 
   /app-root-dir/1.0.2:
     resolution: {integrity: sha512-jlpIfsOoNoafl92Sz//64uQHGSyMrD2vYG5d8o2a4qGvyNCvXur7bzIsWtAC/6flI2RYAp3kv8rsfBtaLm7w0g==}
@@ -9258,7 +9264,7 @@ packages:
   /dmg-builder/22.14.13:
     resolution: {integrity: sha512-xNOugB6AbIRETeU2uID15sUfjdZZcKdxK8xkFnwIggsM00PJ12JxpLNPTjcRoUnfwj3WrPjilrO64vRMwNItQg==}
     dependencies:
-      app-builder-lib: 22.14.13
+      app-builder-lib: 22.14.13_5opvedgra6genczsbbbxnt3wua
       builder-util: 22.14.13
       builder-util-runtime: 8.9.2
       fs-extra: 10.1.0
@@ -9579,7 +9585,7 @@ packages:
     hasBin: true
     dependencies:
       '@types/yargs': 17.0.10
-      app-builder-lib: 22.14.13
+      app-builder-lib: 22.14.13_5opvedgra6genczsbbbxnt3wua
       builder-util: 22.14.13
       builder-util-runtime: 8.9.2
       chalk: 4.1.2
