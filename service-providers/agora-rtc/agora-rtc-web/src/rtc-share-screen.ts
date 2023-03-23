@@ -1,4 +1,11 @@
-import type { IAgoraRTCClient, ILocalVideoTrack, IRemoteVideoTrack } from "agora-rtc-sdk-ng";
+import type {
+    IAgoraRTCClient,
+    ILocalAudioTrack,
+    ILocalTrack,
+    ILocalVideoTrack,
+    IRemoteAudioTrack,
+    IRemoteVideoTrack,
+} from "agora-rtc-sdk-ng";
 import { SideEffectManager } from "side-effect-manager";
 import { Val } from "value-enhancer";
 import { IServiceShareScreen, IServiceShareScreenParams } from "@netless/flat-services";
@@ -17,12 +24,15 @@ export class AgoraRTCWebShareScreen extends IServiceShareScreen {
     private readonly _params$ = new Val<IServiceShareScreenParams | null>(null);
     private readonly _enabled$ = new Val(false);
 
-    private readonly _remoteVideoTrack$ = new Val<IRemoteVideoTrack | null>(null);
+    private readonly _remoteVideoTrack$ = new Val<IRemoteVideoTrack | null | undefined>(null);
+    private readonly _remoteAudioTrack$ = new Val<IRemoteAudioTrack | null | undefined>(null);
     private readonly _el$: Val<HTMLElement | null>;
 
     public readonly client: IAgoraRTCClient;
     public localVideoTrack: ILocalVideoTrack | null = null;
+    public localAudioTrack: ILocalAudioTrack | null = null;
     public remoteVideoTrack: IRemoteVideoTrack | null = null;
+    public remoteAudioTrack: IRemoteAudioTrack | null = null;
 
     public constructor(config: AgoraRTCWebShareScreenAvatarConfig) {
         super();
@@ -53,9 +63,31 @@ export class AgoraRTCWebShareScreen extends IServiceShareScreen {
         );
 
         this._sideEffect.addDisposer(
+            this._remoteAudioTrack$.subscribe(remoteAudioTrack => {
+                if (remoteAudioTrack) {
+                    if (this.remoteAudioTrack) {
+                        this.remoteAudioTrack.stop();
+                    }
+                    this.remoteAudioTrack = remoteAudioTrack;
+                    // '!localVideoTrack' means that we are not sharing screen.
+                    if (this._el$.value && !this.localVideoTrack) {
+                        this.remoteAudioTrack.play();
+                    }
+                } else if (this.remoteAudioTrack) {
+                    this.remoteAudioTrack.stop();
+                    this.remoteAudioTrack = null;
+                }
+            }),
+        );
+
+        this._sideEffect.addDisposer(
             this._el$.reaction(el => {
                 if (el && this.remoteVideoTrack && !this.localVideoTrack) {
                     this.remoteVideoTrack.play(el);
+                }
+                // '!localVideoTrack' means that we are not sharing screen.
+                if (el && this.remoteAudioTrack && !this.localVideoTrack) {
+                    this.remoteAudioTrack.play();
                 }
             }),
         );
@@ -92,7 +124,11 @@ export class AgoraRTCWebShareScreen extends IServiceShareScreen {
         return !this._enabled$.value;
     }
 
-    public setRemoteVideoTrack(remoteVideoTrack: IRemoteVideoTrack | null): void {
+    public setRemoteAudioTrack(remoteAudioTrack?: IRemoteAudioTrack | null): void {
+        this._remoteAudioTrack$.setValue(remoteAudioTrack);
+    }
+
+    public setRemoteVideoTrack(remoteVideoTrack?: IRemoteVideoTrack | null): void {
         this._remoteVideoTrack$.setValue(remoteVideoTrack);
     }
 
@@ -112,6 +148,7 @@ export class AgoraRTCWebShareScreen extends IServiceShareScreen {
     }
 
     public override async destroy(): Promise<void> {
+        super.destroy();
         this._sideEffect.flushAll();
         await this.disableShareScreen();
     }
@@ -133,7 +170,14 @@ export class AgoraRTCWebShareScreen extends IServiceShareScreen {
                 this._resolve_EnablingShareScreen = resolve;
             });
 
-            this.localVideoTrack = await AgoraRTC.createScreenVideoTrack({}, "disable");
+            const localTracks = await AgoraRTC.createScreenVideoTrack({}, "auto");
+            if (Array.isArray(localTracks)) {
+                this.localVideoTrack = localTracks[0];
+                this.localAudioTrack = localTracks[1];
+            } else {
+                this.localVideoTrack = localTracks;
+                this.localAudioTrack = null;
+            }
             this.localVideoTrack.once("track-ended", () => {
                 this.enable(false);
             });
@@ -141,7 +185,7 @@ export class AgoraRTCWebShareScreen extends IServiceShareScreen {
             if (this._params$.value) {
                 const { roomUUID, token, uid } = this._params$.value;
                 await this.client.join(this.APP_ID, roomUUID, token, Number(uid));
-                await this.client.publish(this.localVideoTrack);
+                await this.client.publish(localTracks);
             }
 
             this._resolve_EnablingShareScreen();
@@ -161,15 +205,24 @@ export class AgoraRTCWebShareScreen extends IServiceShareScreen {
                 resolve_DisablingShareScreen = resolve;
             });
 
-            this.localVideoTrack.close();
+            const localTracks: ILocalTrack[] = [];
+            if (this.localVideoTrack) {
+                this.localVideoTrack.close();
+                localTracks.push(this.localVideoTrack);
+            }
+            if (this.localAudioTrack) {
+                this.localAudioTrack.close();
+                localTracks.push(this.localAudioTrack);
+            }
 
             if (this.client) {
-                await this.client.unpublish(this.localVideoTrack);
+                await this.client.unpublish(localTracks);
                 await this.client.leave();
             }
 
             resolve_DisablingShareScreen();
             this.localVideoTrack = null;
+            this.localAudioTrack = null;
             this._pTogglingShareScreen = undefined;
         }
     }
