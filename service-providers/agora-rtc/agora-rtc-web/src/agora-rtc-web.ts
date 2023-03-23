@@ -376,10 +376,14 @@ export class AgoraRTCWeb extends IServiceVideoChat {
             ): Promise<void> => {
                 const uid = String(user.uid);
                 if (this.shareScreenUID === uid) {
-                    if (mediaType === "video" && this.shareScreen.shouldSubscribeRemoteTrack()) {
+                    if (this.shareScreen.shouldSubscribeRemoteTrack()) {
                         try {
                             await client.subscribe(user, mediaType);
-                            this.shareScreen.setRemoteVideoTrack(user.videoTrack || null);
+                            if (mediaType === "video") {
+                                this.shareScreen.setRemoteVideoTrack(user.videoTrack);
+                            } else {
+                                this.shareScreen.setRemoteAudioTrack(user.audioTrack);
+                            }
                         } catch (e) {
                             console.error(e);
                         }
@@ -416,12 +420,14 @@ export class AgoraRTCWeb extends IServiceVideoChat {
             ): Promise<void> => {
                 const uid = String(user.uid);
                 if (uid === this.shareScreenUID) {
-                    if (mediaType === "video") {
-                        try {
+                    try {
+                        if (mediaType === "video") {
                             this.shareScreen.setRemoteVideoTrack(null);
-                        } catch (e) {
-                            console.error(e);
+                        } else {
+                            this.shareScreen.setRemoteAudioTrack(null);
                         }
+                    } catch (e) {
+                        console.error(e);
                     }
                     return;
                 }

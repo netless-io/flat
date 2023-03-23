@@ -61,6 +61,7 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
                             // the `desktop` will have a black screen.
                             // this is because the SDK has `mute` the remote screen sharing stream
                             this.client.muteRemoteVideoStream(uid, false);
+                            this.client.muteRemoteAudioStream(uid, false);
                             this.client.setupRemoteVideo(uid, el);
                             this.client.setupViewContentMode(uid, 1, undefined);
                         } else {
