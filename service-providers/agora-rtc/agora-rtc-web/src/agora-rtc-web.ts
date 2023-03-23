@@ -15,6 +15,7 @@ import {
     IServiceVideoChatUID,
 } from "@netless/flat-services";
 import { SideEffectManager } from "side-effect-manager";
+import { RTCTestAvatar } from "./rtc-test-avatar";
 import { RTCRemoteAvatar } from "./rtc-remote-avatar";
 import { RTCLocalAvatar } from "./rtc-local-avatar";
 import { AgoraRTCWebShareScreen } from "./rtc-share-screen";
@@ -205,8 +206,9 @@ export class AgoraRTCWeb extends IServiceVideoChat {
         return remoteAvatar;
     }
 
+    private _testAvatar?: RTCTestAvatar;
     public getTestAvatar(): IServiceVideoChatAvatar {
-        return this.localAvatar;
+        return (this._testAvatar ??= new RTCTestAvatar({ rtc: this }));
     }
 
     public getVolumeLevel(uid?: IServiceVideoChatUID): number {
