@@ -694,8 +694,10 @@ export class ClassroomStore {
             this.roomType === RoomType.SmallClass &&
             !this.isCreator &&
             !onStageUsersStorage.state[this.userUUID] &&
-            this.assertStageNotFull(false)
+            this.assertStageNotFull(false) &&
+            !globalStore.wasOnStage(this.roomUUID)
         ) {
+            globalStore.pushOnStageRoomUUID(this.roomUUID);
             if (!fastboard.syncedStore.isRoomWritable) {
                 this.whiteboardStore.updateWritable(true);
                 // @FIXME add reliable way to ensure writable is set
