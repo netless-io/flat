@@ -188,7 +188,7 @@ export const AvatarWindow: React.FC<AvatarWindowProps> = ({
                 "window-readonly": readonly,
                 "window-maximized": mode === "maximized",
             })}
-            draggable={mode === "maximized"}
+            draggable={!readonly && mode === "maximized"}
             hidden={hidden}
             style={
                 mode === "normal"

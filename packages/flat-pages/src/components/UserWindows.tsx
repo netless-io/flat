@@ -56,6 +56,45 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
         ? classroom.userWindowsGrid.filter(userUUID => !classroom.userHasLeft(userUUID)).length
         : 0;
 
+    const paddings = useMemo(() => {
+        if (!boundingRect) {
+            return { x: 0, y: 0 };
+        }
+        let rows: number;
+        if (1 <= userWindowsLength && userWindowsLength <= 2) {
+            rows = 1;
+        } else if (3 <= userWindowsLength && userWindowsLength <= 6) {
+            rows = 2;
+        } else if (7 <= userWindowsLength && userWindowsLength <= 12) {
+            rows = 3;
+        } else {
+            rows = 4;
+        }
+        let cols: number;
+        if (userWindowsLength === 1) {
+            cols = 1;
+        } else if (2 <= userWindowsLength && userWindowsLength <= 4) {
+            cols = 2;
+        } else if (5 <= userWindowsLength && userWindowsLength <= 9) {
+            cols = 3;
+        } else {
+            cols = 4;
+        }
+        // Solve: width = cols * windowWidth, height = rows * windowHeight
+        //        windowWidth * WINDOW_RATIO = windowHeight
+        //        width <= boundingWidth, height <= boundingHeight
+        const windowWidth = Math.min(
+            boundingRect.width / cols,
+            boundingRect.height / rows / WINDOW_RATIO,
+        );
+        const width = windowWidth * cols;
+        const height = windowWidth * rows * WINDOW_RATIO;
+        return {
+            x: (boundingRect.width - width) / 2,
+            y: (boundingRect.height - height) / 2,
+        };
+    }, [boundingRect, userWindowsLength]);
+
     const onDrop = useCallback(
         (ev: React.DragEvent<HTMLDivElement>) => {
             setHovering(false);
@@ -101,10 +140,10 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
             })}
             data-size={userWindowsLength}
             style={{
-                paddingLeft: baseRect.extraX,
-                paddingRight: baseRect.extraX,
-                paddingTop: baseRect.extraY,
-                paddingBottom: baseRect.extraY,
+                paddingLeft: paddings.x,
+                paddingRight: paddings.x,
+                paddingTop: paddings.y,
+                paddingBottom: paddings.y,
             }}
         >
             {users.map(({ userUUID, window }) => (
