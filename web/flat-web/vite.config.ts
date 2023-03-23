@@ -8,6 +8,7 @@ import { inlineAssets } from "./scripts/vite-plugin-inline-assets";
 import { mainPackageJSONPath } from "../../scripts/constants";
 import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 import viteCompression from "vite-plugin-compression";
+import { injectGtag } from "./scripts/vite-plugin-html-gtag";
 
 // HACK: disable dedupe in the react plugin
 // We need to do this because Flat is not a typical react project,
@@ -28,6 +29,7 @@ export default defineConfig({
     plugins: [
         reactPlugin,
         dotenv(autoChooseConfig()),
+        injectGtag(),
         injectHtmlHash(),
         version(mainPackageJSONPath),
         inlineAssets(),
