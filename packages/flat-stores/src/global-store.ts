@@ -36,6 +36,11 @@ export class GlobalStore {
      * that for sure roomStore's begin time value of roomInfo is correct so that the classroom page's Timer component display correctly.
      */
     public periodicUUID: string | undefined = undefined;
+    /**
+     * As a joiner, he/she/they can go on stage in small class mode for *the first time*.
+     * This array holds the rooms that this behavior has been done.
+     */
+    public onStageRoomUUIDs: string[] | undefined = undefined;
 
     public get userUUID(): string | undefined {
         return this.userInfo?.userUUID;
@@ -74,6 +79,20 @@ export class GlobalStore {
         this.lastLoginCheck = val;
     };
 
+    public pushOnStageRoomUUID = (roomUUID: string): void => {
+        this.onStageRoomUUIDs ||= [];
+        if (!this.onStageRoomUUIDs.includes(roomUUID)) {
+            this.onStageRoomUUIDs.push(roomUUID);
+        }
+        while (this.onStageRoomUUIDs.length > 10) {
+            this.onStageRoomUUIDs.shift();
+        }
+    };
+
+    public wasOnStage = (roomUUID: string): boolean => {
+        return this.onStageRoomUUIDs?.includes(roomUUID) ?? false;
+    };
+
     public updateToken = (
         config: Partial<
             Pick<
@@ -108,6 +127,7 @@ export class GlobalStore {
     public logout = (): void => {
         this.userInfo = null;
         this.lastLoginCheck = null;
+        this.onStageRoomUUIDs = [];
         document.cookie = "flatJWTToken=; SameSite=Lax; domain=whiteboard.agora.io; max-age=0";
     };
 
