@@ -166,7 +166,7 @@ const Row = /* @__PURE__ */ observer(function Row({
                                 <span className="users-panel-list-name-content">{user.name}</span>
                                 {isSelf && <span className="users-panel-is-self">{t("me")}</span>}
                             </span>
-                            <span className="users-panel-list-has-left">{t("offline")}</span>
+                            <span className="users-panel-list-has-left">{t("has-left")}</span>
                         </div>
                     ) : (
                         <span className="users-panel-list-name">

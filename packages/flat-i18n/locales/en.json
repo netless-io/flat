@@ -26,7 +26,7 @@
   "raise-your-hand": "Raise hand",
   "raise-hand": "Raise hand",
   "raised-hand": "Hand raised",
-  "has-left": "(Has left)",
+  "has-left": "Has left",
   "offline": "offline",
   "no-students": "No students",
   "no-one-raising-hand": "No one is raising hand",
@@ -64,7 +64,7 @@
   "student-sure-to-exit-the-room": "Sure to exit the room",
   "teacher-left-temporarily": "Teacher has left",
   "student-left-temporarily": "Student has left",
-  "user-left-temporarily": "{{name}} has left",
+  "user-left-temporarily": "has left",
   "the-room-has-ended-and-is-about-to-exit": "The room has ended and is about to exit...",
   "you-have-entered-the-room-at-another-device": "You have entered the room at another device",
   "class-picker-text": {
