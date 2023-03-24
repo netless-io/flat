@@ -50,7 +50,13 @@ export const RTCAvatar: FC<RTCAvatarProps> = /* @__PURE__ */ observer<RTCAvatarP
             <VideoAvatarAbsent
                 avatarUser={avatarUser}
                 isAvatarUserCreator={isAvatarUserCreator}
+                isCreator={isCreator}
+                isDropTarget={isDropTarget}
+                portal={avatarUser && getPortal(avatarUser.userUUID)}
                 small={small}
+                onDoubleClick={onDoubleClick}
+                onDragEnd={onDragEnd}
+                onDragStart={onDragStart}
             />
         );
     },

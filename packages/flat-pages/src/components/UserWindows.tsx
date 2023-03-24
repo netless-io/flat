@@ -52,9 +52,7 @@ export const UserWindows = observer<UserWindowsProps>(function UserWindows({ cla
         return { userUUID, window: classroom.userWindows.get(userUUID) };
     });
 
-    const userWindowsLength = classroom.userWindowsGrid
-        ? classroom.userWindowsGrid.filter(userUUID => !classroom.userHasLeft(userUUID)).length
-        : 0;
+    const userWindowsLength = classroom.userWindowsGrid ? classroom.userWindowsGrid.length : 0;
 
     const paddings = useMemo(() => {
         if (!boundingRect) {
@@ -276,7 +274,6 @@ const UserAvatarWindow = observer<UserAvatarWindowProps>(function UserAvatarWind
     return (
         <AvatarWindow
             key={userUUID}
-            hidden={classroom.userHasLeft(userUUID)}
             mode={mode}
             readonly={readonly}
             rect={rect}

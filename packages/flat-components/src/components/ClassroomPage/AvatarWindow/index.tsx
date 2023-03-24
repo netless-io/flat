@@ -15,7 +15,6 @@ export interface AvatarWindowProps {
     mode: "normal" | "maximized";
     rect: Rectangle;
     zIndex?: number;
-    hidden?: boolean;
     readonly?: boolean;
     onClick?: () => void;
     onResize?: (newRectangle: Rectangle, handle?: ResizeHandle) => void;
@@ -37,7 +36,6 @@ export const AvatarWindow: React.FC<AvatarWindowProps> = ({
     mode,
     rect,
     zIndex,
-    hidden,
     readonly,
     children,
     onClick,
@@ -189,7 +187,6 @@ export const AvatarWindow: React.FC<AvatarWindowProps> = ({
                 "window-maximized": mode === "maximized",
             })}
             draggable={!readonly && mode === "maximized"}
-            hidden={hidden}
             style={
                 mode === "normal"
                     ? {
