@@ -126,7 +126,7 @@ class PortalWindowManager {
      *   production env: file:///Applications/Flat.app/Contents/Resources/static/render/
      */
     private static originPath(): string {
-        if (process.env.NODE_ENV === "development") {
+        if (window.location.protocol !== "file:") {
             return `${window.location.origin}/`;
         }
 
