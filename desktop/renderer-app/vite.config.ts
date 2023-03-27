@@ -7,6 +7,7 @@ import path from "path";
 import { dotenv } from "@netless/flat-vite-plugins/dotenv";
 import { reactVirtualized } from "@netless/flat-vite-plugins/react-virtualized";
 import { electron } from "./scripts/vite-plugin-electron";
+import { injectGtag } from "./scripts/vite-plugin-html-gtag";
 import { rootNodeModules, rendererPath } from "../../scripts/constants";
 import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 
@@ -27,7 +28,7 @@ export default defineConfig((): UserConfig => {
         reactPlugin,
         dotenv(autoChooseConfig()),
         reactVirtualized(),
-        // electron(),
+        injectGtag(),
         copy({
             targets: [
                 /**

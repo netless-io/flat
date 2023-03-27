@@ -22,30 +22,32 @@ export function injectGtag(): Plugin {
     };
 }
 
-const FLAT_WEB_DEV = `
+// cspell:disable
+const FLAT_ELECTRON_DEV = `
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYZ1K39HMD"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8G3P2T2DBF"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'G-PYZ1K39HMD');
+    gtag('config', 'G-8G3P2T2DBF');
     </script>
 `;
 
-const FLAT_WEB_PROD = `
+const FLAT_ELECTRON_PROD = `
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DJ53HC6J40"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1VSFBNGGCC"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'G-DJ53HC6J40');
+    gtag('config', 'G-1VSFBNGGCC');
     </script>
 `;
+// cspell:enable
 
 const gtag = (isProduction: boolean): string => {
-    return isProduction ? FLAT_WEB_PROD : FLAT_WEB_DEV;
+    return isProduction ? FLAT_ELECTRON_PROD : FLAT_ELECTRON_DEV;
 };
