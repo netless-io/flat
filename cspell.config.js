@@ -44,6 +44,7 @@ module.exports = {
         "onleave",
         "leavechannel",
         "videosource",
+        "soundflower",
 
         // css / less
         "minlength",

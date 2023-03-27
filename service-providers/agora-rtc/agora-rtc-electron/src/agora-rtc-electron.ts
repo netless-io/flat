@@ -23,11 +23,13 @@ export interface FlatRTCAgoraElectronDevice {
 export interface AgoraRTCElectronConfig {
     APP_ID: string;
     rtcEngine: AgoraSdk;
+    isMac: boolean;
 }
 
 export class AgoraRTCElectron extends IServiceVideoChat {
     private static LOW_VOLUME_LEVEL_THRESHOLD = 0.00001;
 
+    public readonly isMac: boolean;
     public readonly shareScreen = new AgoraRTCElectronShareScreen({ rtc: this });
 
     public readonly APP_ID: string;
@@ -71,6 +73,7 @@ export class AgoraRTCElectron extends IServiceVideoChat {
         super();
         this.APP_ID = config.APP_ID;
         this.rtcEngine = config.rtcEngine;
+        this.isMac = config.isMac;
         this._init(this.rtcEngine);
     }
 

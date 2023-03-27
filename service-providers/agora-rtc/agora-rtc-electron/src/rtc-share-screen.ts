@@ -198,6 +198,11 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         this._pTogglingShareScreen = new Promise<void>(resolve => {
             this.client.once("videoSourceJoinedSuccess", () => {
                 this.client.videoSourceSetVideoProfile(43, false);
+                // Install the virtual sound card "soundflower" on macOS.
+                // https://api-ref.agora.io/en/voice-sdk/electron/3.x/classes/agorartcengine.html#videosourceenableloopbackrecording
+                // https://docs.agora.io/cn/video-legacy/API%20Reference/electron/classes/agorartcengine.html#videosourceenableloopbackrecording
+                const deviceName = this._rtc.isMac ? "soundflower" : undefined;
+                this.client.videoSourceEnableLoopbackRecording(true, deviceName);
                 if (screenInfo.type === "display") {
                     this.client.videoSourceStartScreenCaptureByScreen(
                         screenInfo.screenId as ScreenSymbol,
