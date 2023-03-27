@@ -20,6 +20,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { combine } from "value-enhancer";
 
+import { runtime } from "../utils/runtime";
 import { portalWindowManager } from "../utils/portal-window-manager";
 import { ipcAsyncByPreviewFileWindow } from "../utils/ipc";
 
@@ -97,6 +98,7 @@ export function initFlatServices(): void {
                         instance = new AgoraRTCElectron({
                             APP_ID: process.env.AGORA_APP_ID,
                             rtcEngine,
+                            isMac: runtime.isMac,
                         });
                         resolve(instance);
                     }
