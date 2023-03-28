@@ -210,12 +210,13 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
                 // https://docs.agora.io/cn/video-legacy/API%20Reference/electron/classes/agorartcengine.html#videosourceenableloopbackrecording
                 let deviceName: string | null = null;
                 if (this._rtc.isMac) {
-                    const devices = this.client.getAudioPlaybackDevices() as Array<{
-                        devicename: string;
-                    }>;
-                    deviceName =
-                        devices.find(e => e.devicename.toLowerCase().includes("soundflower"))
-                            ?.devicename ?? null;
+                    for (const device of this.client.getAudioPlaybackDevices()) {
+                        const name = (device as { devicename: string }).devicename;
+                        if (name.toLowerCase().includes("soundflower")) {
+                            deviceName = name;
+                            break;
+                        }
+                    }
                 }
                 this.client.videoSourceEnableLoopbackRecording(true, deviceName);
                 // Because there's no way to disable microphone stream, adjust the volume to 0 to simulate.
