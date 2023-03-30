@@ -7,12 +7,10 @@ const { agoraElectronSdkPath } = require("./constants");
  * @return {"win" | "mac" | "none"}
  */
  module.exports.getAgoraReleaseType = () => {
-    const agoraElectronReleasePath = path.join(agoraElectronSdkPath, "build", "Release");
+    const agoraElectronReleasePath = path.join(agoraElectronSdkPath, "build", "platform.txt");
 
-    if (fs.existsSync(path.join(agoraElectronReleasePath, "VideoSource.dSYM"))) {
-        return "mac";
-    } else if (fs.existsSync(path.join(agoraElectronReleasePath, "VideoSource.exe"))) {
-        return "win";
+    if (fs.existsSync(agoraElectronReleasePath)) {
+        return fs.readFileSync(agoraElectronReleasePath, "utf-8").trim();
     } else {
         return "none";
     }
