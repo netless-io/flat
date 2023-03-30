@@ -1,3 +1,25 @@
+## [2.2.0](https://github.com/netless-io/flat/compare/v2.1.0...v2.2.0) (2023-03-30)
+
+
+### Features
+
+* **flat-components**: add avatar window ([#1847](https://github.com/netless-io/flat/issues/1847)) ([54fbc8f5](https://github.com/netless-io/flat/commit/54fbc8f5d30197b5dd1f1359bbe12d9c3192b4d1))
+
+### Bug Fixes
+
+* **service-providers**: fix electron share screen with audio ([#1884](https://github.com/netless-io/flat/issues/1884)) ([c2aa3468](https://github.com/netless-io/flat/commit/c2aa3468aefe76196e5f7ba855576dc2c7acef68))
+* **desktop**: incorrect origin in development build ([#1883](https://github.com/netless-io/flat/issues/1883)) ([60bd4772](https://github.com/netless-io/flat/commit/60bd4772fbd0b61efcb91bea09c8838acaf5b3cd))
+* **service-providers**: use standalone avatar for testing devices ([#1876](https://github.com/netless-io/flat/issues/1876)) ([c2893e7e](https://github.com/netless-io/flat/commit/c2893e7e7f63ebe05a6700e72cf4fc31455df4a8))
+* **library**: upgrade app countdown ([#1863](https://github.com/netless-io/flat/issues/1863)) ([97f7ec49](https://github.com/netless-io/flat/commit/97f7ec4974da145019ba75af3da4e955112c0f38))
+* **library**: duplicate app-slide ([#1862](https://github.com/netless-io/flat/issues/1862)) ([3f1ff208](https://github.com/netless-io/flat/commit/3f1ff2080ef3ef1b4187c0e0c878275cc1eb64cc))
+* **flat-stores**: joiner off stage leaves window ([#1856](https://github.com/netless-io/flat/issues/1856)) ([607b162c](https://github.com/netless-io/flat/commit/607b162ce156a3a346c5de54f3071d2996552b48))
+* **service-providers**: remove room writable hack ([#1850](https://github.com/netless-io/flat/issues/1850)) ([7c2b5462](https://github.com/netless-io/flat/commit/7c2b5462ce2f2495ef65abb8070b7c389c87f27d))
+* **i18n**: fix banned text ([#1841](https://github.com/netless-io/flat/issues/1841)) ([cd84cb84](https://github.com/netless-io/flat/commit/cd84cb849bc3d71f4985b427eade4f8a71cced31))
+* **desktop**: dedupe flat-server-api and flat-stores ([#1840](https://github.com/netless-io/flat/issues/1840)) ([d019ae0d](https://github.com/netless-io/flat/commit/d019ae0d3f24fe7ef9db6e430448b7376b4c8f16))
+* **desktop**: nav avatar should only fail when src exists ([#1839](https://github.com/netless-io/flat/issues/1839)) ([e1ba1922](https://github.com/netless-io/flat/commit/e1ba1922a97105288586515d5912640bf1145531))
+
+
+
 ## [2.1.0](https://github.com/netless-io/flat/compare/v2.1.0...v2.1.0) (2023-02-09)
 
 
