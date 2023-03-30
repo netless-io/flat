@@ -20,5 +20,7 @@ module.exports.downloadAddon = platform => {
     const downloaded = path.join(projectRoot, "build");
     if (fs.existsSync(downloaded)) {
         fs.moveSync(downloaded, path.join(agoraElectronSdkPath, "build"), {});
+        // This file indicates a successful download.
+        fs.writeFileSync(path.join(agoraElectronSdkPath, "build", "platform.txt"), platform);
     }
 };
