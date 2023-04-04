@@ -409,7 +409,8 @@
     "tip-window-title": "Ending screen sharing",
     "tip-window-body": "You are sharing the current screen",
     "tip-window-button": "End Sharing",
-    "self": "Share Screen"
+    "self": "Share Screen",
+    "with-audio": "Share Screen with Audio"
   },
   "app-store": "AppStore(Beta)",
   "recently-used": "Recently Used",

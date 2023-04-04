@@ -103,6 +103,7 @@ export class ClassroomStore {
     public shareScreenInfo: IServiceShareScreenInfo[] = [];
 
     public selectedScreenInfo: IServiceShareScreenInfo | null = null;
+    public shareScreenWithAudio = false;
 
     public shareScreenPickerVisible = false;
 
@@ -972,8 +973,12 @@ export class ClassroomStore {
         this.rtc.shareScreen.setScreenInfo(info);
     };
 
+    public toggleShareScreenWithAudio = (force = !this.shareScreenWithAudio): void => {
+        this.shareScreenWithAudio = force;
+    };
+
     public toggleShareScreen = (force = !this.isScreenSharing): void => {
-        this.rtc.shareScreen.enable(force);
+        this.rtc.shareScreen.enable(force, this.shareScreenWithAudio);
         this.toggleShareScreenPicker(false);
     };
 

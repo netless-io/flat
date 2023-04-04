@@ -4,7 +4,7 @@ import React, { useCallback, useLayoutEffect, useState } from "react";
 import classNames from "classnames";
 import { useTranslate } from "@netless/flat-i18n";
 import { ClassroomStore } from "@netless/flat-stores";
-import { Button, Modal, Spin } from "antd";
+import { Button, Modal, Spin, Checkbox, Row, Col } from "antd";
 import { observer } from "mobx-react-lite";
 
 import { ScreenList } from "./ScreenList";
@@ -39,12 +39,30 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
                     padding: "16px 0 0 16px",
                 }}
                 className="share-screen-picker-model"
-                footer={[
-                    <Button key="cancel" className="footer-button" onClick={closeModal}>
-                        {t("cancel")}
-                    </Button>,
-                    <ConfirmButton key={"confirm"} handleOk={handleOk} isSelected={isSelected} />,
-                ]}
+                footer={
+                    <Row>
+                        <Col flex={1} style={{ textAlign: "left" }}>
+                            <Checkbox
+                                checked={classroomStore.shareScreenWithAudio}
+                                onChange={ev =>
+                                    classroomStore.toggleShareScreenWithAudio(ev.target.checked)
+                                }
+                            >
+                                {t("share-screen.with-audio")}
+                            </Checkbox>
+                        </Col>
+                        <Col>
+                            <Button key="cancel" className="footer-button" onClick={closeModal}>
+                                {t("cancel")}
+                            </Button>
+                            <ConfirmButton
+                                key="confirm"
+                                handleOk={handleOk}
+                                isSelected={isSelected}
+                            />
+                        </Col>
+                    </Row>
+                }
                 title={t("share-screen.choose-share-content")}
                 width="784px"
                 onCancel={closeModal}
