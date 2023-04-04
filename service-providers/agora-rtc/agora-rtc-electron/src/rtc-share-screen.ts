@@ -44,6 +44,8 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
 
     private readonly _screenInfo$ = new Val<IServiceShareScreenInfo | null>(null);
 
+    private _withAudio = false;
+
     public constructor(config: AgoraRTCElectronShareScreenAvatarConfig) {
         super();
 
@@ -160,9 +162,12 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         this._screenInfo$.setValue(info);
     }
 
-    public enable(enabled: boolean): void {
+    public enable(enabled: boolean, withAudio?: boolean): void {
         if (this._el$.value && this._active$.value) {
             throw new Error("There already exists remote screen track.");
+        }
+        if (typeof withAudio === "boolean") {
+            this._withAudio = withAudio;
         }
         this._enabled$.setValue(enabled);
     }
@@ -195,32 +200,36 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
 
         const { roomUUID, token, uid } = this._params$.value;
 
+        const withAudio = this._withAudio;
+
         this._pTogglingShareScreen = new Promise<void>(resolve => {
             this.client.once("videoSourceJoinedSuccess", () => {
-                // Internally it enables "local audio" (microphone) in the video source instance
-                // "video source" means the *second* instance of AgoraRtcEngine.
-                // There could only be 2 instances in electron sdk.
-                //
-                // After that, the loopback recording can be *mixed* into the microphone stream.
-                // After that, we adjust the microphone stream volume to 0 to make it only includes the loopback sound.
-                this.client.videoSourceEnableAudio();
+                if (withAudio) {
+                    // Internally it enables "local audio" (microphone) in the video source instance
+                    // "video source" means the *second* instance of AgoraRtcEngine.
+                    // There could only be 2 instances in electron sdk.
+                    //
+                    // After that, the loopback recording can be *mixed* into the microphone stream.
+                    // After that, we adjust the microphone stream volume to 0 to make it only includes the loopback sound.
+                    this.client.videoSourceEnableAudio();
 
-                // Install the virtual sound card "soundflower" on macOS.
-                // https://api-ref.agora.io/en/voice-sdk/electron/3.x/classes/agorartcengine.html#videosourceenableloopbackrecording
-                // https://docs.agora.io/cn/video-legacy/API%20Reference/electron/classes/agorartcengine.html#videosourceenableloopbackrecording
-                let deviceName: string | null = null;
-                if (this._rtc.isMac) {
-                    for (const device of this.client.getAudioPlaybackDevices()) {
-                        const name = (device as { devicename: string }).devicename;
-                        if (name.toLowerCase().includes("soundflower")) {
-                            deviceName = name;
-                            break;
+                    // Install the virtual sound card "soundflower" on macOS.
+                    // https://api-ref.agora.io/en/voice-sdk/electron/3.x/classes/agorartcengine.html#videosourceenableloopbackrecording
+                    // https://docs.agora.io/cn/video-legacy/API%20Reference/electron/classes/agorartcengine.html#videosourceenableloopbackrecording
+                    let deviceName: string | null = null;
+                    if (this._rtc.isMac) {
+                        for (const device of this.client.getAudioPlaybackDevices()) {
+                            const name = (device as { devicename: string }).devicename;
+                            if (name.toLowerCase().includes("soundflower")) {
+                                deviceName = name;
+                                break;
+                            }
                         }
                     }
+                    this.client.videoSourceEnableLoopbackRecording(true, deviceName);
+                    // Because there's no way to disable microphone stream, adjust the volume to 0 to simulate.
+                    this.client.videoSourceAdjustRecordingSignalVolume(0);
                 }
-                this.client.videoSourceEnableLoopbackRecording(true, deviceName);
-                // Because there's no way to disable microphone stream, adjust the volume to 0 to simulate.
-                this.client.videoSourceAdjustRecordingSignalVolume(0);
 
                 this.client.videoSourceSetVideoProfile(43, false);
                 if (screenInfo.type === "display") {
