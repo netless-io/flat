@@ -126,7 +126,6 @@ export class Fastboard extends IServiceWhiteboard {
                 if (!room) {
                     return;
                 }
-                // room.isWritable follows allowDrawing for now
                 if (isWritable !== room.isWritable) {
                     app.room.setWritable(isWritable).catch(e => {
                         if (process.env.NODE_ENV !== "production") {
@@ -296,6 +295,18 @@ export class Fastboard extends IServiceWhiteboard {
                 "userScroll",
                 this.events.emit.bind(this.events, "userScroll"),
             ),
+        );
+
+        // enable "text select text" on writable, once
+        const disposeToggleTextId = "toggle-text-select-text";
+        this.sideEffect.push(
+            fastboardAPP.writable.subscribe(writable => {
+                if (writable) {
+                    fastboardAPP.toggleTextCanSelectText(true);
+                    this.sideEffect.flush(disposeToggleTextId);
+                }
+            }),
+            disposeToggleTextId,
         );
     }
 
