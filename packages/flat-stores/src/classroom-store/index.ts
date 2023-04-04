@@ -1028,7 +1028,7 @@ export class ClassroomStore {
         ) {
             return;
         }
-        if (!onStage && (!this.isCreator || userUUID !== this.userUUID)) {
+        if (!onStage) {
             this.updateDeviceState(userUUID, false, false);
             this.deleteAvatarWindow(userUUID);
         }
@@ -1116,9 +1116,6 @@ export class ClassroomStore {
                 camera: false,
                 mic: false,
             };
-            if (camera === deviceState.camera && mic === deviceState.mic) {
-                return;
-            }
             let shouldNotify = false;
             // creator can request joiner to turn on camera and mic
             if (this.isCreator && userUUID !== this.userUUID) {
