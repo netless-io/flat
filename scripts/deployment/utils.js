@@ -52,15 +52,11 @@ const getFilesAndSizeInDir = p => {
  * @return {FileInfoList} artifacts files
  */
 const getArtifactsFiles = (regex, fileList) => {
-    return regex.map(regx => {
-        for (const file of fileList) {
-            if (regx.test(file.name)) {
-                return file;
-            }
-        }
-
+    for (const regx of regex) {
+        if (fileList.some(file => regx.test(file))) continue;
         throw new Error(`Can't find a file that matches the ${regx} RegExp`);
-    });
+    }
+    return fileList.filter(file => regex.some(regx => regx.test(file.name)));
 };
 
 module.exports.winArtifactsFiles = getArtifactsFiles(
