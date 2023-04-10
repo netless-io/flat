@@ -104,6 +104,7 @@ export class ClassroomStore {
 
     public selectedScreenInfo: IServiceShareScreenInfo | null = null;
     public shareScreenWithAudio = false;
+    public shareScreenAudioDeviceName = "";
 
     public shareScreenPickerVisible = false;
 
@@ -977,8 +978,13 @@ export class ClassroomStore {
         this.shareScreenWithAudio = force;
     };
 
+    public setShareScreenAudioDevice = (deviceName: string): void => {
+        this.shareScreenAudioDeviceName = deviceName;
+    };
+
     public toggleShareScreen = (force = !this.isScreenSharing): void => {
-        this.rtc.shareScreen.enable(force, this.shareScreenWithAudio);
+        const deviceName = this.shareScreenWithAudio ? this.shareScreenAudioDeviceName : undefined;
+        this.rtc.shareScreen.enable(force, deviceName);
         this.toggleShareScreenPicker(false);
     };
 

@@ -45,7 +45,7 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
 
     private readonly _screenInfo$ = new Val<IServiceShareScreenInfo | null>(null);
 
-    private _withAudio = false;
+    private _speakerName?: string;
 
     public constructor(config: AgoraRTCElectronShareScreenAvatarConfig) {
         super();
@@ -163,13 +163,11 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         this._screenInfo$.setValue(info);
     }
 
-    public enable(enabled: boolean, withAudio?: boolean): void {
+    public enable(enabled: boolean, speakerName?: string): void {
         if (this._el$.value && this._active$.value) {
             throw new Error("There already exists remote screen track.");
         }
-        if (typeof withAudio === "boolean") {
-            this._withAudio = withAudio;
-        }
+        this._speakerName = speakerName;
         this._enabled$.setValue(enabled);
     }
 
@@ -201,27 +199,13 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
 
         const { roomUUID, token, uid } = this._params$.value;
 
-        const withAudio = this._withAudio;
+        const speakerName = this._speakerName;
 
         this._pTogglingShareScreen = new Promise<void>(resolve => {
             this.client.once("videoSourceJoinedSuccess", () => {
-                if (withAudio) {
-                    // Install the virtual sound card "soundflower" on macOS.
-                    // https://api-ref.agora.io/en/voice-sdk/electron/3.x/classes/agorartcengine.html#videosourceenableloopbackrecording
-                    // https://docs.agora.io/cn/video-legacy/API%20Reference/electron/classes/agorartcengine.html#videosourceenableloopbackrecording
-                    let deviceName: string | null = null;
-                    if (this._rtc.isMac) {
-                        for (const device of this.client.getAudioPlaybackDevices()) {
-                            const name = (device as { devicename: string }).devicename;
-                            if (name.toLowerCase().includes("soundflower")) {
-                                deviceName = name;
-                                break;
-                            }
-                        }
-                    }
-
+                if (speakerName) {
                     this._delegateLocalAudio(true);
-                    this.client.enableLoopbackRecording(true, deviceName);
+                    this.client.enableLoopbackRecording(true, speakerName);
                 }
 
                 this.client.videoSourceSetVideoProfile(43, false);
