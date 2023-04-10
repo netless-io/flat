@@ -248,8 +248,6 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
                 publishLocalVideo: true,
                 autoSubscribeAudio: false,
                 autoSubscribeVideo: false,
-                // @ts-ignore
-                publishCustomAudioTrackEnableAec: true,
             });
             this.client.videoSourceMuteAllRemoteAudioStreams(true);
             this.client.videoSourceMuteAllRemoteVideoStreams(true);
