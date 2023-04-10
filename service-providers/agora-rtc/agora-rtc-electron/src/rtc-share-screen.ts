@@ -9,10 +9,11 @@ import type {
     ScreenSymbol,
     WindowInfo,
 } from "agora-electron-sdk/types/Api/native_type";
+import type { AgoraRTCElectron } from "./agora-rtc-electron";
 
 import { SideEffectManager } from "side-effect-manager";
 import { combine, Val } from "value-enhancer";
-import type { AgoraRTCElectron } from "./agora-rtc-electron";
+import { RTCLocalAvatar } from "./rtc-local-avatar";
 
 const rect = { x: 0, y: 0, width: 0, height: 0 };
 
@@ -213,6 +214,10 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
                     // After that, we adjust the microphone stream volume to 0 to make it only includes the loopback sound.
                     this.client.videoSourceEnableAudio();
 
+                    // Stop publishing the main client's microphone stream, which will be handled in the video source.
+                    this.client.muteLocalAudioStream(true);
+                    this._delegateLocalAudio(true);
+
                     // Install the virtual sound card "soundflower" on macOS.
                     // https://api-ref.agora.io/en/voice-sdk/electron/3.x/classes/agorartcengine.html#videosourceenableloopbackrecording
                     // https://docs.agora.io/cn/video-legacy/API%20Reference/electron/classes/agorartcengine.html#videosourceenableloopbackrecording
@@ -227,8 +232,6 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
                         }
                     }
                     this.client.videoSourceEnableLoopbackRecording(true, deviceName);
-                    // Because there's no way to disable microphone stream, adjust the volume to 0 to simulate.
-                    this.client.videoSourceAdjustRecordingSignalVolume(0);
                 }
 
                 this.client.videoSourceSetVideoProfile(43, false);
@@ -256,6 +259,8 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
                 autoSubscribeAudio: false,
                 autoSubscribeVideo: false,
             });
+            this.client.videoSourceMuteAllRemoteAudioStreams(true);
+            this.client.videoSourceMuteAllRemoteVideoStreams(true);
         });
         await this._pTogglingShareScreen;
         this._pTogglingShareScreen = undefined;
@@ -272,6 +277,8 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         this._lastEnabled = false;
 
         this._pTogglingShareScreen = new Promise<void>(resolve => {
+            this._delegateLocalAudio(false);
+            this.client.muteLocalAudioStream(false);
             this.client.videoSourceEnableLoopbackRecording(false);
             this.client.stopScreenCapture2();
             this.client.once("videoSourceLeaveChannel", () => {
@@ -283,6 +290,21 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         });
         await this._pTogglingShareScreen;
         this._pTogglingShareScreen = undefined;
+    }
+
+    private _stopDelegateLocalAudio: (() => void) | null = null;
+    private _delegateLocalAudio(enabled: boolean): void {
+        this._stopDelegateLocalAudio && this._stopDelegateLocalAudio();
+        const localAvatar = this._rtc.localAvatar as RTCLocalAvatar;
+        if (enabled) {
+            this._stopDelegateLocalAudio = localAvatar._delegateLocalAudio({
+                enableLocalAudio: enabled => {
+                    this.client.videoSourceAdjustRecordingSignalVolume(enabled ? 100 : 0);
+                },
+            });
+        } else {
+            this._stopDelegateLocalAudio = null;
+        }
     }
 }
 
