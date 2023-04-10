@@ -38,7 +38,7 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
     }
 
     private _localAudioDelegator: LocalAudioDelegator | null = null;
-    public _delegateLocalAudio(delegator: LocalAudioDelegator): () => void {
+    public delegateLocalAudio(delegator: LocalAudioDelegator): () => void {
         this._localAudioDelegator = delegator;
         return () => {
             this._localAudioDelegator = null;

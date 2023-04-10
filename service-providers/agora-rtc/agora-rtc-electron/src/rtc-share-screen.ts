@@ -297,7 +297,7 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         this._stopDelegateLocalAudio && this._stopDelegateLocalAudio();
         const localAvatar = this._rtc.localAvatar as RTCLocalAvatar;
         if (enabled) {
-            this._stopDelegateLocalAudio = localAvatar._delegateLocalAudio({
+            this._stopDelegateLocalAudio = localAvatar.delegateLocalAudio({
                 enableLocalAudio: enabled => {
                     this.client.videoSourceAdjustRecordingSignalVolume(enabled ? 100 : 0);
                 },
