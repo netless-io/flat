@@ -983,6 +983,16 @@ export class ClassroomStore {
     };
 
     public toggleShareScreen = (force = !this.isScreenSharing): void => {
+        // Guide the current user to turn on microphone on screen sharing with audio.
+        if (
+            force &&
+            this.shareScreenWithAudio &&
+            this.shareScreenPickerVisible &&
+            this.users.currentUser &&
+            this.users.currentUser.mic === false
+        ) {
+            message.info(FlatI18n.t("share-screen.please-turn-on-mic"));
+        }
         const deviceName = this.shareScreenWithAudio ? this.shareScreenAudioDeviceName : undefined;
         this.rtc.shareScreen.enable(force, deviceName);
         this.toggleShareScreenPicker(false);
