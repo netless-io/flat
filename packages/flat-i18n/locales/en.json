@@ -452,13 +452,13 @@
   "time": "Time",
   "save": "Save",
   "tool": {
-    "monaco": "Code Editor",
+    "monaco": "Code",
     "geogebra": "GeoGebra",
     "countdown": "Countdown",
     "selector": "Selector",
     "dice": "Dice",
     "mindmap": "MindMap",
-    "quill": "Rich Text Editor",
+    "quill": "Rich Text",
     "save": "Save Annotation",
     "presets": "Presets"
   },
