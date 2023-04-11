@@ -410,7 +410,8 @@
     "tip-window-body": "You are sharing the current screen",
     "tip-window-button": "End Sharing",
     "self": "Share Screen",
-    "with-audio": "Share Screen with Audio"
+    "with-audio": "Share Screen with Audio",
+    "please-turn-on-mic": "Turn on the microphone so that others can hear your voice"
   },
   "app-store": "AppStore(Beta)",
   "recently-used": "Recently Used",

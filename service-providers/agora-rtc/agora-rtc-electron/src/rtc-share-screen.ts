@@ -9,10 +9,11 @@ import type {
     ScreenSymbol,
     WindowInfo,
 } from "agora-electron-sdk/types/Api/native_type";
+import type { AgoraRTCElectron } from "./agora-rtc-electron";
 
 import { SideEffectManager } from "side-effect-manager";
 import { combine, Val } from "value-enhancer";
-import type { AgoraRTCElectron } from "./agora-rtc-electron";
+import { RTCLocalAvatar } from "./rtc-local-avatar";
 
 const rect = { x: 0, y: 0, width: 0, height: 0 };
 
@@ -44,7 +45,7 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
 
     private readonly _screenInfo$ = new Val<IServiceShareScreenInfo | null>(null);
 
-    private _withAudio = false;
+    private _speakerName?: string;
 
     public constructor(config: AgoraRTCElectronShareScreenAvatarConfig) {
         super();
@@ -162,13 +163,11 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         this._screenInfo$.setValue(info);
     }
 
-    public enable(enabled: boolean, withAudio?: boolean): void {
+    public enable(enabled: boolean, speakerName?: string): void {
         if (this._el$.value && this._active$.value) {
             throw new Error("There already exists remote screen track.");
         }
-        if (typeof withAudio === "boolean") {
-            this._withAudio = withAudio;
-        }
+        this._speakerName = speakerName;
         this._enabled$.setValue(enabled);
     }
 
@@ -200,35 +199,13 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
 
         const { roomUUID, token, uid } = this._params$.value;
 
-        const withAudio = this._withAudio;
+        const speakerName = this._speakerName;
 
         this._pTogglingShareScreen = new Promise<void>(resolve => {
             this.client.once("videoSourceJoinedSuccess", () => {
-                if (withAudio) {
-                    // Internally it enables "local audio" (microphone) in the video source instance
-                    // "video source" means the *second* instance of AgoraRtcEngine.
-                    // There could only be 2 instances in electron sdk.
-                    //
-                    // After that, the loopback recording can be *mixed* into the microphone stream.
-                    // After that, we adjust the microphone stream volume to 0 to make it only includes the loopback sound.
-                    this.client.videoSourceEnableAudio();
-
-                    // Install the virtual sound card "soundflower" on macOS.
-                    // https://api-ref.agora.io/en/voice-sdk/electron/3.x/classes/agorartcengine.html#videosourceenableloopbackrecording
-                    // https://docs.agora.io/cn/video-legacy/API%20Reference/electron/classes/agorartcengine.html#videosourceenableloopbackrecording
-                    let deviceName: string | null = null;
-                    if (this._rtc.isMac) {
-                        for (const device of this.client.getAudioPlaybackDevices()) {
-                            const name = (device as { devicename: string }).devicename;
-                            if (name.toLowerCase().includes("soundflower")) {
-                                deviceName = name;
-                                break;
-                            }
-                        }
-                    }
-                    this.client.videoSourceEnableLoopbackRecording(true, deviceName);
-                    // Because there's no way to disable microphone stream, adjust the volume to 0 to simulate.
-                    this.client.videoSourceAdjustRecordingSignalVolume(0);
+                if (speakerName) {
+                    this._delegateLocalAudio(true);
+                    this.client.enableLoopbackRecording(true, speakerName);
                 }
 
                 this.client.videoSourceSetVideoProfile(43, false);
@@ -251,11 +228,13 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
             this.client.videoSourceInitialize(this._rtc.APP_ID);
             this.client.videoSourceSetChannelProfile(1);
             this.client.videoSourceJoin(token, roomUUID, "", Number(uid), {
-                publishLocalAudio: true,
+                publishLocalAudio: false,
                 publishLocalVideo: true,
                 autoSubscribeAudio: false,
                 autoSubscribeVideo: false,
             });
+            this.client.videoSourceMuteAllRemoteAudioStreams(true);
+            this.client.videoSourceMuteAllRemoteVideoStreams(true);
         });
         await this._pTogglingShareScreen;
         this._pTogglingShareScreen = undefined;
@@ -272,10 +251,10 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         this._lastEnabled = false;
 
         this._pTogglingShareScreen = new Promise<void>(resolve => {
-            this.client.videoSourceEnableLoopbackRecording(false);
+            this.client.enableLoopbackRecording(false);
+            this._delegateLocalAudio(false);
             this.client.stopScreenCapture2();
             this.client.once("videoSourceLeaveChannel", () => {
-                this.client.videoSourceDisableAudio();
                 this.client.videoSourceRelease();
                 resolve();
             });
@@ -283,6 +262,23 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         });
         await this._pTogglingShareScreen;
         this._pTogglingShareScreen = undefined;
+    }
+
+    private _stopDelegateLocalAudio: (() => void) | null = null;
+    private _delegateLocalAudio(enabled: boolean): void {
+        this._stopDelegateLocalAudio && this._stopDelegateLocalAudio();
+        const localAvatar = this._rtc.localAvatar as RTCLocalAvatar;
+        if (enabled) {
+            this._rtc.rtcEngine.enableLocalAudio(true);
+            this._stopDelegateLocalAudio = localAvatar.delegateLocalAudio({
+                enableLocalAudio: enabled => {
+                    this.client.adjustRecordingSignalVolume(enabled ? 100 : 0);
+                    this.client.adjustLoopbackRecordingSignalVolume(100);
+                },
+            });
+        } else {
+            this._stopDelegateLocalAudio = null;
+        }
     }
 }
 

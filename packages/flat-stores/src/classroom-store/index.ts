@@ -104,6 +104,7 @@ export class ClassroomStore {
 
     public selectedScreenInfo: IServiceShareScreenInfo | null = null;
     public shareScreenWithAudio = false;
+    public shareScreenAudioDeviceName = "";
 
     public shareScreenPickerVisible = false;
 
@@ -977,8 +978,23 @@ export class ClassroomStore {
         this.shareScreenWithAudio = force;
     };
 
+    public setShareScreenAudioDevice = (deviceName: string): void => {
+        this.shareScreenAudioDeviceName = deviceName;
+    };
+
     public toggleShareScreen = (force = !this.isScreenSharing): void => {
-        this.rtc.shareScreen.enable(force, this.shareScreenWithAudio);
+        // Guide the current user to turn on microphone on screen sharing with audio.
+        if (
+            force &&
+            this.shareScreenWithAudio &&
+            this.shareScreenPickerVisible &&
+            this.users.currentUser &&
+            this.users.currentUser.mic === false
+        ) {
+            message.info(FlatI18n.t("share-screen.please-turn-on-mic"));
+        }
+        const deviceName = this.shareScreenWithAudio ? this.shareScreenAudioDeviceName : undefined;
+        this.rtc.shareScreen.enable(force, deviceName);
         this.toggleShareScreenPicker(false);
     };
 

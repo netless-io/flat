@@ -21,7 +21,7 @@ export abstract class IServiceShareScreen {
     public readonly events = new Remitter<IServiceShareScreenData>();
 
     public abstract setParams(params: IServiceShareScreenParams | null): void;
-    public abstract enable(enabled: boolean, withAudio?: boolean): void;
+    public abstract enable(enabled: boolean, speakerName?: string): void;
     public abstract setElement(element: HTMLElement | null): void;
 
     public getScreenInfo(): Promise<IServiceShareScreenInfo[]> {

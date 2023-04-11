@@ -8,6 +8,10 @@ export interface RTCAvatarConfig {
     element?: HTMLElement | null;
 }
 
+export interface LocalAudioDelegator {
+    enableLocalAudio: (enabled: boolean) => void;
+}
+
 export class RTCLocalAvatar implements IServiceVideoChatAvatar {
     private readonly _rtc: AgoraRTCElectron;
     private readonly _sideEffect = new SideEffectManager();
@@ -33,6 +37,24 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
         return this._rtc.getVolumeLevel() || 0;
     }
 
+    private _localAudioDelegator: LocalAudioDelegator | null = null;
+    public delegateLocalAudio(delegator: LocalAudioDelegator): () => void {
+        this._localAudioDelegator = delegator;
+        this.enableLocalAudio(Boolean(this._el$.value && this._shouldMic$.value));
+        return () => {
+            this._localAudioDelegator = null;
+            this.enableLocalAudio(Boolean(this._el$.value && this._shouldMic$.value));
+        };
+    }
+
+    private enableLocalAudio(enabled: boolean): void {
+        if (this._localAudioDelegator) {
+            this._localAudioDelegator.enableLocalAudio(enabled);
+        } else {
+            this._rtc.rtcEngine.enableLocalAudio(enabled);
+        }
+    }
+
     public constructor(config: RTCAvatarConfig) {
         this._rtc = config.rtc;
         this._el$ = new Val(config.element);
@@ -45,10 +67,10 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
                             this._rtc.setRole(IServiceVideoChatRole.Host);
                         }
                         this._rtc.rtcEngine.setupLocalVideo(el);
-                        this._rtc.rtcEngine.enableLocalAudio(this._shouldMic$.value);
+                        this.enableLocalAudio(this._shouldMic$.value);
                         this._rtc.rtcEngine.enableLocalVideo(this._shouldCamera$.value);
                     } else {
-                        this._rtc.rtcEngine.enableLocalAudio(false);
+                        this.enableLocalAudio(false);
                         this._rtc.rtcEngine.enableLocalVideo(false);
                         this._rtc.setRole(IServiceVideoChatRole.Audience);
                     }
@@ -64,9 +86,9 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
                     try {
                         if (shouldMic) {
                             this._rtc.setRole(IServiceVideoChatRole.Host);
-                            this._rtc.rtcEngine.enableLocalAudio(true);
+                            this.enableLocalAudio(true);
                         } else {
-                            this._rtc.rtcEngine.enableLocalAudio(false);
+                            this.enableLocalAudio(false);
                             if (!this._shouldCamera$.value) {
                                 this._rtc.setRole(IServiceVideoChatRole.Audience);
                             }
@@ -100,7 +122,7 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
 
         this._sideEffect.addDisposer(() => {
             this._rtc.rtcEngine.enableLocalVideo(false);
-            this._rtc.rtcEngine.enableLocalAudio(false);
+            this.enableLocalAudio(false);
             this._el$.setValue(null);
         });
     }
