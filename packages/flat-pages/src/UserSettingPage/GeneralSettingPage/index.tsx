@@ -141,7 +141,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                     <span>{t("app-appearance-setting")}</span>
                     <AppearancePicker
                         changeAppearance={changeAppearance}
-                        defaultValue={preferencesStore.prefersColorScheme}
+                        value={preferencesStore.prefersColorScheme}
                     />
                 </div>
                 <div className="general-setting-join-options-box">
