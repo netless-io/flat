@@ -143,9 +143,7 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
             }
 
             if (mainPageLayoutItem.key === "theme") {
-                preferenceStore.updatePrefersColorScheme(
-                    preferenceStore.prefersColorScheme === "dark" ? "light" : "dark",
-                );
+                preferenceStore.updatePrefersColorScheme(theme === "dark" ? "light" : "dark");
                 return;
             }
 
