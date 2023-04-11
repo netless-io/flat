@@ -9,18 +9,15 @@ import { Radio, RadioChangeEvent } from "antd";
 import { FlatPrefersColorScheme } from "../../FlatThemeProvider";
 
 export interface AppearancePickerProps {
-    defaultValue: FlatPrefersColorScheme;
+    value: FlatPrefersColorScheme;
     changeAppearance: (event: RadioChangeEvent) => void;
 }
 
-export const AppearancePicker: React.FC<AppearancePickerProps> = ({
-    defaultValue,
-    changeAppearance,
-}) => {
+export const AppearancePicker: React.FC<AppearancePickerProps> = ({ value, changeAppearance }) => {
     const t = useTranslate();
     return (
         <div className="appearance-picker-container">
-            <Radio.Group defaultValue={defaultValue} onChange={changeAppearance}>
+            <Radio.Group value={value} onChange={changeAppearance}>
                 <Radio value={"light"}>
                     <div className="appearance-picker-option">
                         <img src={lightSVG} />

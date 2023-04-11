@@ -19,7 +19,7 @@ export const SVGHomeOutlined: React.FC<FlatIconProps> = ({
         >
             <path
                 className="flat-icon-stroke-color"
-                d="m4 9 8-5 8 5M6 11v9h4v-6h4v6h4v-9"
+                d="M3 10L12 5L21 10M19 11V19H14V18C14 16.8954 13.1046 16 12 16V16C10.8954 16 10 16.8954 10 18V19H5V11"
                 stroke="#5D6066"
                 strokeLinejoin="round"
                 strokeWidth="1.25"

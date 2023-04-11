@@ -16,11 +16,12 @@ export const SVGSetting: React.FC<FlatIconProps> = ({ active, className = "", ..
             <path
                 className="flat-icon-stroke-color"
                 clipRule="evenodd"
-                d="M11.5 4.289a1 1 0 0 1 1 0l5.928 3.422a1 1 0 0 1 .5.866v6.846a1 1 0 0 1-.5.866L12.5 19.71a1 1 0 0 1-1 0l-5.928-3.42a1 1 0 0 1-.5-.866V8.577a1 1 0 0 1 .5-.866L11.5 4.29Z"
+                d="M11.5 4.28868C11.8094 4.11004 12.1906 4.11004 12.5 4.28868L18.4282 7.71132C18.7376 7.88996 18.9282 8.22008 18.9282 8.57735V15.4226C18.9282 15.7799 18.7376 16.11 18.4282 16.2887L12.5 19.7113C12.1906 19.89 11.8094 19.89 11.5 19.7113L5.5718 16.2887C5.2624 16.11 5.0718 15.7799 5.0718 15.4226V8.57735C5.0718 8.22008 5.2624 7.88996 5.5718 7.71132L11.5 4.28868Z"
+                fillRule="evenodd"
                 stroke="#5D6066"
                 strokeLinejoin="round"
                 strokeWidth="1.25"
-            ></path>
+            />
             <circle
                 className="flat-icon-stroke-color"
                 cx="12"
@@ -29,7 +30,7 @@ export const SVGSetting: React.FC<FlatIconProps> = ({ active, className = "", ..
                 stroke="#5D6066"
                 strokeLinejoin="round"
                 strokeWidth="1.25"
-            ></circle>
+            />
         </svg>
     );
 };

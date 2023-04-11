@@ -18,14 +18,18 @@ import {
     SVGSetting,
     SVGFeedback,
     SVGLogout,
+    SVGSun,
+    SVGMoon,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
+import { useMedia } from "react-use";
 import { routeConfig, RouteNameType } from "../../route-config";
 
 import { generateAvatar } from "../../utils/generate-avatar";
 import {
     GlobalStoreContext,
+    PreferencesStoreContext,
     WindowsSystemBtnContext,
 } from "@netless/flat-pages/src/components/StoreProvider";
 
@@ -49,7 +53,15 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
         onBackPreviousPage,
     }) {
         const t = useTranslate();
+        const preferenceStore = useContext(PreferencesStoreContext);
         const windowsBtnContext = useContext(WindowsSystemBtnContext);
+        const prefersDark = useMedia("(prefers-color-scheme: dark)");
+        const theme =
+            preferenceStore.prefersColorScheme === "auto"
+                ? prefersDark
+                    ? "dark"
+                    : "light"
+                : preferenceStore.prefersColorScheme;
 
         const sideMenu = [
             {
@@ -71,6 +83,18 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
         ];
 
         const sideMenuFooter = [
+            {
+                key: "theme",
+                title: t("app-appearance-setting"),
+                route: routeConfig[RouteNameType.GeneralSettingPage].path,
+                icon: theme === "dark" ? () => <SVGSun /> : () => <SVGMoon />,
+            },
+            {
+                key: routeConfig[RouteNameType.GeneralSettingPage].path,
+                icon: (): React.ReactNode => <SVGSetting />,
+                title: t("settings"),
+                route: routeConfig[RouteNameType.GeneralSettingPage].path,
+            },
             {
                 key: "deviceCheck",
                 title: "deviceCheck",
@@ -116,6 +140,13 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
         const onMenuItemClick = (mainPageLayoutItem: MainPageLayoutItem): void => {
             if (mainPageLayoutItem.key === "logout") {
                 globalStore.logout();
+            }
+
+            if (mainPageLayoutItem.key === "theme") {
+                preferenceStore.updatePrefersColorScheme(
+                    preferenceStore.prefersColorScheme === "dark" ? "light" : "dark",
+                );
+                return;
             }
 
             if (mainPageLayoutItem.route.startsWith("/")) {
