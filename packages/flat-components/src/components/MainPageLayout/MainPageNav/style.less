@@ -4,48 +4,79 @@
     width: 64px;
     height: 100%;
     flex-shrink: 0;
-    background-color: var(--blue-10);
-
-    & .is-active {
-        background-color: var(--blue-9);
-    }
+    background-color: #fff;
+    box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.1);
+    z-index: 999;
 
     &,
-    & > * {
+    &>* {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    & > * a {
+    &>* a {
         -webkit-app-region: no-drag;
     }
 
     .flat-icon-stroke-color {
-        stroke: #fff;
+        stroke: var(--grey-6);
     }
 
     .flat-icon-fill-color {
-        fill: #fff;
+        fill: var(--grey-6);
+    }
+
+    .is-active {
+        .flat-icon-stroke-color {
+            stroke: var(--primary);
+        }
+
+        .flat-icon-fill-color {
+            fill: var(--primary);
+        }
     }
 }
 
 .main-page-nav-content {
-    padding-top: 140px;
+    padding-top: 180px;
 
-    & > a {
+    >.flat-icon {
+        .flat-icon-stroke-color {
+            stroke: var(--grey-3);
+        }
+
+        .flat-icon-fill-color {
+            fill: var(--grey-3);
+        }
+    }
+
+    &>a {
         display: flex;
         padding: 4px;
         border-radius: 6px;
         margin-bottom: 16px;
-        color: #fff;
+        color: var(--grey-6);
+    }
+}
+
+.main-page-nav-logo {
+    position: absolute;
+    top: 10px;
+    width: 64px;
+    height: 64px;
+    font-size: 0;
+    pointer-events: none;
+
+    &.isMac {
+        top: 32px;
     }
 }
 
 .main-page-nav-footer {
     margin-top: auto;
 
-    & > a {
+    &>a {
         display: flex;
         padding: 4px;
         border-radius: 6px;
@@ -56,6 +87,36 @@
 
 .flat-color-scheme-dark {
     .main-page-nav-container {
-        background-color: var(--grey-9);
+        background: linear-gradient(180deg, #383B42 0%, #2B2F38 100%);
+
+        .flat-icon-stroke-color {
+            stroke: var(--grey-3);
+        }
+
+        .flat-icon-fill-color {
+            fill: var(--grey-3);
+        }
+
+        .is-active {
+            .flat-icon-stroke-color {
+                stroke: var(--primary-strong);
+            }
+
+            .flat-icon-fill-color {
+                fill: var(--primary-strong);
+            }
+        }
+    }
+
+    .main-page-nav-content {
+        >.flat-icon {
+            .flat-icon-stroke-color {
+                stroke: var(--grey-6);
+            }
+
+            .flat-icon-fill-color {
+                fill: var(--grey-6);
+            }
+        }
     }
 }

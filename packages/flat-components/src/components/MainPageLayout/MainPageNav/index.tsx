@@ -1,7 +1,9 @@
 import "./style.less";
+
 import React from "react";
 import classNames from "classnames";
 import { MainPageLayoutItem } from "../types";
+import { SVGLogo } from "../../FlatIcons";
 
 export interface MainPageNavProps {
     /** when an item is clicked */
@@ -12,6 +14,8 @@ export interface MainPageNavProps {
     sideMenu: MainPageLayoutItem[];
     /** outside footer menu in MainPageLayout */
     sideMenuFooter: MainPageLayoutItem[];
+    /** add extra padding top to the logo */
+    isMac?: boolean;
 }
 
 export const MainPageNav: React.FC<MainPageNavProps> = ({
@@ -19,10 +23,12 @@ export const MainPageNav: React.FC<MainPageNavProps> = ({
     activeKeys,
     sideMenu,
     sideMenuFooter,
+    isMac,
 }) => {
     return (
         <div className="main-page-nav-container">
             <div className="main-page-nav-content">
+                <SVGLogo className={classNames("main-page-nav-logo", { isMac })} />
                 {sideMenu.map(menuItem => {
                     return (
                         <a
