@@ -18,5 +18,5 @@ export const Overview: Story<AppearancePickerProps> = args => (
     </Router>
 );
 Overview.args = {
-    defaultValue: "light",
+    value: "light",
 };
