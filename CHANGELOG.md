@@ -1,3 +1,12 @@
+## [2.2.1](https://github.com/netless-io/flat/compare/v2.2.0...v2.2.1) (2023-04-17)
+
+
+### Bug Fixes
+
+* **flat-pages**: register apps in replay page ([#1893](https://github.com/netless-io/flat/issues/1893)) ([e15fe901](https://github.com/netless-io/flat/commit/e15fe9016b9fc7534f321b0c1fb761c069481185))
+
+
+
 ## [2.2.0](https://github.com/netless-io/flat/compare/v2.1.0...v2.2.0) (2023-03-30)
 
 
