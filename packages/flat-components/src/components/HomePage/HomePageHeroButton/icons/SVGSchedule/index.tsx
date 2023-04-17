@@ -2,23 +2,65 @@ import "./style.less";
 import React from "react";
 
 export const SVGSchedule: React.FC = () => (
-    <svg className="svg-schedule" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-        <g fill="none" fillRule="evenodd">
-            <circle className="svg-schedule-background" cx="20" cy="20" fill="#3381FF" r="20" />
-            <path d="M8 8h24v24H8z" fill="#FFF" opacity=".01" />
-            <path
-                d="M12 14h16v14H12zm4-2v2m8-2v4"
-                stroke="#FFF"
-                strokeLinejoin="round"
-                strokeWidth="1.25"
-            />
-            <path
-                d="M12 18h16v-3a1 1 0 0 0-1-1H13a1 1 0 0 0-1 1v3Z"
-                fill="#FFF"
-                stroke="#FFF"
-                strokeLinejoin="round"
-                strokeWidth="1.25"
-            />
+    <svg
+        className="svg-schedule"
+        fill="none"
+        viewBox="0 0 40 40"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <g filter="url(#a)">
+            <rect fill="url(#b)" height="40" rx="12" width="40" />
         </g>
+        <rect
+            height="16"
+            rx="3"
+            stroke="#fff"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            width="18"
+            x="11"
+            y="12"
+        />
+        <path
+            d="M11 15a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v3H11v-3Z"
+            stroke="#fff"
+            strokeLinejoin="round"
+            strokeWidth="2"
+        />
+        <path
+            d="M16 10v3m8-3v3"
+            stroke="#fff"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+        />
+        <defs>
+            <linearGradient gradientUnits="userSpaceOnUse" id="b" x1="20" x2="20" y1="0" y2="40">
+                <stop stopColor="#3381FF" />
+                <stop offset="1" stopColor="#3733FF" />
+            </linearGradient>
+            <filter
+                colorInterpolationFilters="sRGB"
+                filterUnits="userSpaceOnUse"
+                height="40"
+                id="a"
+                width="40"
+                x="0"
+                y="0"
+            >
+                <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                <feColorMatrix
+                    in="SourceAlpha"
+                    result="hardAlpha"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                />
+                <feOffset />
+                <feGaussianBlur stdDeviation="4" />
+                <feComposite in2="hardAlpha" k2="-1" k3="1" operator="arithmetic" />
+                <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+                <feBlend in2="shape" result="effect1_innerShadow_4562_770" />
+            </filter>
+        </defs>
     </svg>
 );

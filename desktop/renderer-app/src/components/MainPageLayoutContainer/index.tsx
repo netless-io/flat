@@ -20,6 +20,7 @@ import {
     SVGLogout,
     SVGSun,
     SVGMoon,
+    SVGSettingFilled,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
@@ -30,6 +31,7 @@ import { generateAvatar } from "../../utils/generate-avatar";
 import {
     GlobalStoreContext,
     PreferencesStoreContext,
+    RuntimeContext,
     WindowsSystemBtnContext,
 } from "@netless/flat-pages/src/components/StoreProvider";
 
@@ -53,6 +55,7 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
         onBackPreviousPage,
     }) {
         const t = useTranslate();
+        const runtime = useContext(RuntimeContext);
         const preferenceStore = useContext(PreferencesStoreContext);
         const windowsBtnContext = useContext(WindowsSystemBtnContext);
         const prefersDark = useMedia("(prefers-color-scheme: dark)");
@@ -91,7 +94,9 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
             },
             {
                 key: routeConfig[RouteNameType.GeneralSettingPage].path,
-                icon: (): React.ReactNode => <SVGSetting />,
+                icon: (active: boolean): React.ReactNode => {
+                    return active ? <SVGSettingFilled /> : <SVGSetting />;
+                },
                 title: t("settings"),
                 route: routeConfig[RouteNameType.GeneralSettingPage].path,
             },
@@ -173,6 +178,7 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
                 activeKeys={activeKeys}
                 avatarSrc={globalStore.userInfo?.avatar ?? ""}
                 generateAvatar={generateAvatar}
+                isMac={runtime?.isMac}
                 popMenu={popMenu}
                 showMainPageHeader={showMainPageHeader}
                 showWindowsSystemBtn={windowsBtnContext?.showWindowsBtn}

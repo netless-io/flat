@@ -82,10 +82,21 @@
     transition: opacity 0.1s;
 }
 
+.replay-playlist-dropdown-wrapper {
+    font-size: 0;
+}
+
 .replay-playlist {
     display: flex;
     align-items: center;
     gap: 8px;
+
+    .ant-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 15px;
+        font-size: 0;
+    }
 }
 
 .replay-progress {
@@ -104,6 +115,7 @@
     .ant-spin-dot {
         font-size: 14px;
     }
+
     .anticon {
         color: var(--warning);
     }
@@ -113,43 +125,55 @@
     .replay-container {
         background-color: var(--grey-12);
     }
+
     .replay-right,
     .replay-bottom {
         border-color: var(--grey-8);
     }
+
     .replay-mask {
         background-color: var(--grey-10);
     }
+
     .replay-playlist {
         .ant-tag {
             filter: invert(0.8325) hue-rotate(180deg);
         }
     }
+
     .replay-videos.is-horizontal {
         border-bottom: 1px solid var(--grey-8);
     }
+
     .replay-bottom {
         background-color: var(--grey-12);
     }
+
     .ant-slider {
         color: rgba(255, 255, 255, 0.85);
     }
+
     .ant-slider-rail {
         background-color: #262626;
     }
+
     .ant-slider-track {
         background-color: #153450;
     }
+
     .ant-slider-handle {
         background-color: #141414;
         border-color: #153450;
     }
+
     .ant-slider:hover .ant-slider-rail {
         background-color: #434343;
     }
+
     .ant-slider:hover .ant-slider-track {
         background-color: #16436e;
     }
+
     .ant-slider-handle.ant-tooltip-open {
         border-color: #177ddc;
     }

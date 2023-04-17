@@ -1,4 +1,4 @@
-import { Button, Dropdown, DropdownProps, Menu, Slider, Spin, Tag } from "antd";
+import { Button, Dropdown, DropdownProps, Menu, Slider, Spin, Tag, message } from "antd";
 import type { SliderTooltipProps } from "antd/lib/slider";
 import format from "date-fns/format";
 import { observer } from "mobx-react-lite";
@@ -7,7 +7,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
 import { ClassroomReplayStore, RoomRecording } from "@netless/flat-stores";
-import { SVGPause, SVGPlay, SVGRecordList, useSafePromise } from "flat-components";
+import { SVGPause, SVGPlay, SVGRecordList, SVGShare, useSafePromise } from "flat-components";
+import { FLAT_WEB_BASE_URL } from "../constants/process";
 
 export interface ReplayListProps {
     classroomReplayStore: ClassroomReplayStore;
@@ -43,6 +44,13 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
         time => time && currentRecording && renderPlayerTime(time - currentRecording.beginTime),
         [currentRecording],
     );
+
+    const copyShareLink = useCallback(async () => {
+        const { roomType, roomUUID, ownerUUID } = classroomReplayStore;
+        const url = `${FLAT_WEB_BASE_URL}/replay/${roomType}/${roomUUID}/${ownerUUID}`;
+        await navigator.clipboard.writeText(url);
+        void message.success(t("copy-success"));
+    }, [classroomReplayStore, t]);
 
     return (
         <div className="replay-playlist">
@@ -99,6 +107,9 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
                     </Button>
                 </Dropdown>
             </span>
+            <Button className="replay-share" onClick={copyShareLink}>
+                <SVGShare />
+            </Button>
         </div>
     );
 });
