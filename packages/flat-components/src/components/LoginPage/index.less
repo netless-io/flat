@@ -4,6 +4,10 @@
     display: flex;
 }
 
+.login-panel-cover {
+    -webkit-app-region: drag;
+}
+
 .login-panel-cover,
 .login-panel-inner {
     flex: 1;
@@ -40,10 +44,12 @@
 }
 
 .flat-color-scheme-dark {
+
     .login-splitter::before,
     .login-splitter::after {
         border-color: var(--grey-8);
     }
+
     .ant-input-affix-wrapper {
         .ant-btn::before {
             background: var(--grey-10);
