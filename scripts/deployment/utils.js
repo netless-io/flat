@@ -53,7 +53,7 @@ const getFilesAndSizeInDir = p => {
  */
 const getArtifactsFiles = (regex, fileList) => {
     for (const regx of regex) {
-        if (fileList.some(file => regx.test(file))) continue;
+        if (fileList.some(file => regx.test(file.name))) continue;
         throw new Error(`Can't find a file that matches the ${regx} RegExp`);
     }
     return fileList.filter(file => regex.some(regx => regx.test(file.name)));
