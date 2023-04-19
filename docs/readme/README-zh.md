@@ -1,6 +1,6 @@
-<div align="center">
-    <img width="200" height="200" style="display: block;" src="/assets/flat-logo.svg">
-</div>
+<p align="center">
+    <img width="94" height="94" style="display: block;" src="/assets/flat-logo.svg">
+</p>
 
 <div align="center">
     <img alt="GitHub" src="https://img.shields.io/github/license/netless-io/flat?color=9cf&style=flat-square">
