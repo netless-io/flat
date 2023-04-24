@@ -27,6 +27,9 @@ export class IPCStore {
                 }
                 this.ipcAsyncByMainWindow("set-win-size", {
                     ...constants.PageSize.Main,
+                    maximizable: true,
+                    resizable: true,
+                    setMinimumSize: true,
                     autoCenter: IPCStore.shouldWindowCenter(lastLocation),
                 });
                 break;
@@ -42,6 +45,9 @@ export class IPCStore {
             case routeConfig[RouteNameType.AboutPage].path: {
                 this.ipcAsyncByMainWindow("set-win-size", {
                     ...constants.PageSize.Main,
+                    maximizable: true,
+                    resizable: true,
+                    setMinimumSize: true,
                 });
                 break;
             }
