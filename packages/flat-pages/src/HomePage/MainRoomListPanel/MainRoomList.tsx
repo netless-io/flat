@@ -195,6 +195,14 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                                         setRemoveHistoryVisible(true);
                                         break;
                                     }
+                                    case "share": {
+                                        shareRecording({
+                                            ownerUUID: room.ownerUUID,
+                                            roomUUID: room.roomUUID,
+                                            roomType: room.roomType || RoomType.OneToOne,
+                                        });
+                                        break;
+                                    }
                                     case "replay": {
                                         replayRoom({
                                             ownerUUID: room.ownerUUID,
@@ -289,6 +297,21 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
         }
     }
 
+    async function shareRecording(config: {
+        roomUUID: string;
+        ownerUUID: string;
+        roomType: RoomType;
+    }): Promise<void> {
+        const { roomType, roomUUID, ownerUUID } = config;
+        const url = `${FLAT_WEB_BASE_URL}/replay/${roomType}/${roomUUID}/${ownerUUID}`;
+        try {
+            await navigator.clipboard.writeText(url);
+            void message.success(t("copy-success"));
+        } catch {
+            void message.error(t("copy-fail"));
+        }
+    }
+
     async function removeRoomHandler(isCancelAll: boolean): Promise<void> {
         const { ownerUUID, roomUUID, periodicUUID } = currentRoom!;
         const isCreator = ownerUUID === globalStore.userUUID;
@@ -337,13 +360,14 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
     }
 
     type SubActions =
-        | Array<{ key: "details" | "delete-history"; text: string }>
+        | Array<{ key: "details" | "share" | "delete-history"; text: string }>
         | Array<{ key: "details" | "modify" | "cancel" | "invite"; text: string }>;
 
     function getSubActions(room: RoomItem): SubActions {
         const result = [{ key: "details", text: t("room-detail") }];
         if (isHistoryList) {
             if (room.roomUUID) {
+                result.push({ key: "share", text: t("share-record") });
                 result.push({ key: "delete-history", text: t("delete-records") });
             }
         } else {

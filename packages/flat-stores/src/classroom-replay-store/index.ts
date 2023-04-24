@@ -22,7 +22,6 @@ export class ClassroomReplayStore {
 
     public readonly roomUUID: string;
     public readonly ownerUUID: string;
-    public readonly userUUID: string;
     public readonly roomType: RoomType;
 
     public readonly recordings = observable.array<RoomRecording>();
@@ -56,15 +55,10 @@ export class ClassroomReplayStore {
     };
 
     public constructor(config: ClassroomReplayStoreConfig) {
-        if (!globalStore.userUUID) {
-            throw new Error("Missing userUUID");
-        }
-
         (window as any).classroomReplayStore = this;
 
         this.roomUUID = config.roomUUID;
         this.ownerUUID = config.ownerUUID;
-        this.userUUID = globalStore.userUUID;
         this.roomType = config.roomType;
 
         makeAutoObservable<this, "_isLoadingRecording">(this, {
@@ -78,10 +72,6 @@ export class ClassroomReplayStore {
 
     public get roomInfo(): RoomItem | undefined {
         return roomStore.rooms.get(this.roomUUID);
-    }
-
-    public get isCreator(): boolean {
-        return this.ownerUUID === this.userUUID;
     }
 
     public async init(): Promise<void> {
