@@ -14,6 +14,7 @@ import {
 import { useTranslate } from "@netless/flat-i18n";
 import { SVGListLoading } from "../../FlatIcons";
 import { CloudFile } from "@netless/flat-server-api";
+import { createFileNameComparer } from "./utils";
 
 export interface CloudStorageFileListProps
     extends Pick<
@@ -72,6 +73,8 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
                 ),
                 dataIndex: "fileName",
                 ellipsis: true,
+                sorter: createFileNameComparer(),
+                showSorterTooltip: false,
                 render: function renderCloudStorageFileName(_fileName, file, index) {
                     return (
                         <CloudStorageFileListFileName
