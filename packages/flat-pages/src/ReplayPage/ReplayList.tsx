@@ -107,7 +107,7 @@ export const ReplayList = observer<ReplayListProps>(function ReplayList({ classr
                     </Button>
                 </Dropdown>
             </span>
-            <Button className="replay-share" onClick={copyShareLink}>
+            <Button className="replay-share" title="copy share link" onClick={copyShareLink}>
                 <SVGShare />
             </Button>
         </div>
