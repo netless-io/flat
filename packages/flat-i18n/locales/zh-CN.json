@@ -218,6 +218,7 @@
   "title-DevicesTestPage": "设备检测",
   "title-ApplicationsPage": "应用管理",
   "title-OAuthPage": "OAuth 应用",
+  "title-SensitivePage": "用户使用信息",
   "in-the-process-of-transcoding-tips": "正在转码中，请稍后再试",
   "inserting-courseware-tips": "正在插入课件……",
   "unable-to-insert-courseware": "无法插入课件",
@@ -609,5 +610,46 @@
   "censorship-failed": "审核失败",
   "oauth-uuid-not-found": "未找到该 OAuth App",
   "oauth-client-id-not-found": "未找到该 OAuth App client",
-  "oauth-secret-uuid-not-found": "未找到该 OAuth 密钥"
+  "oauth-secret-uuid-not-found": "未找到该 OAuth 密钥",
+  "sensitive": {
+    "no-data": "未收集",
+    "name": {
+      "column": "信息名称",
+      "avatar": "头像",
+      "phone": "手机号码",
+      "name": "昵称",
+      "wechat_name": "微信昵称",
+      "cloud_storage": "云盘",
+      "recording": "房间录制"
+    },
+    "purpose": {
+      "column": "使用目的",
+      "avatar": "用于头像展示",
+      "phone": "账号注册与登录；发送短信通知",
+      "name": "用于昵称展示",
+      "wechat_name": "用于完成微信注册、绑定",
+      "cloud_storage": "用于存储和展示用户上传的文件",
+      "recording": "用于存储和回放房间内用户输入的内容"
+    },
+    "description": {
+      "column": "使用场景",
+      "avatar": "用户更换头像时",
+      "phone": "首次注册、登录时；发送短信通知时",
+      "name": "用户修改昵称时",
+      "wechat_name": "使用微信注册时；绑定微信时",
+      "cloud_storage": "用户上传文件时；房间内展示文件时",
+      "recording": "用户开启录制功能时；回放房间内容时"
+    },
+    "count": {
+      "column": "收集情况"
+    },
+    "content": {
+      "column": "信息内容"
+    }
+  },
+  "sensitive-range": {
+    "week": "最近七天",
+    "month": "最近一月",
+    "year": "最近一年"
+  }
 }

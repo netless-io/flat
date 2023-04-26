@@ -21,6 +21,7 @@ export enum RouteNameType {
     DevicesTestPage = "DevicesTestPage",
     ApplicationsPage = "ApplicationsPage",
     OAuthPage = "OAuthPage",
+    SensitivePage = "SensitivePage",
 }
 
 export const routeConfig = {
@@ -89,6 +90,9 @@ export const routeConfig = {
     },
     [RouteNameType.OAuthPage]: {
         path: "/apps/",
+    },
+    [RouteNameType.SensitivePage]: {
+        path: "/sensitive/",
     },
 } as const;
 

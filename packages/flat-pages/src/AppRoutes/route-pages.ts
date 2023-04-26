@@ -117,4 +117,8 @@ export const routePages: RoutePages = {
         hasHeader: true,
         component: () => import("../UserSettingPage/OAuthPage"),
     },
+    [RouteNameType.SensitivePage]: {
+        title: "SensitivePage",
+        component: () => import("../SensitivePage"),
+    },
 };
