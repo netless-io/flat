@@ -218,6 +218,7 @@
   "title-DevicesTestPage": "Device Test",
   "title-ApplicationsPage": "Applications",
   "title-OAuthPage": "OAuth Applications",
+  "title-SensitivePage": "User Sensitive Information",
   "inserting-courseware-tips": "Inserting courseware...",
   "cancel-upload": "Cancel upload",
   "cancel-upload-tips": "The upload has not been completed. Are you sure to cancel all ongoing uploads?",
@@ -609,5 +610,46 @@
   "censorship-failed": "Your request had been denied because of legal reasons",
   "oauth-uuid-not-found": "OAuth UUID not found",
   "oauth-client-id-not-found": "OAuth client id not found",
-  "oauth-secret-uuid-not-found": "OAuth secret not found"
+  "oauth-secret-uuid-not-found": "OAuth secret not found",
+  "sensitive": {
+    "no-data": "No data",
+    "name": {
+      "column": "Type",
+      "avatar": "avatar",
+      "phone": "phone number",
+      "name": "nickname",
+      "wechat_name": "wechat nickname",
+      "cloud_storage": "cloud storage",
+      "recording": "recording"
+    },
+    "purpose": {
+      "column": "Purpose",
+      "avatar": "used to display avatar",
+      "phone": "used to register and send SMS",
+      "name": "used to change nickname",
+      "wechat_name": "used to register and bind wechat",
+      "cloud_storage": "used to store files",
+      "recording": "used to record and replay the session"
+    },
+    "description": {
+      "column": "Description",
+      "avatar": "When you upload an avatar.",
+      "phone": "When you register.",
+      "name": "When you change your nickname.",
+      "wechat_name": "When you register and bind wechat.",
+      "cloud_storage": "When you upload files.",
+      "recording": "When you record and replay the session."
+    },
+    "count": {
+      "column": "Count"
+    },
+    "content": {
+      "column": "Content"
+    }
+  },
+  "sensitive-range": {
+    "week": "Last Week",
+    "month": "Last Month",
+    "year": "Last Year"
+  }
 }

@@ -1,5 +1,5 @@
 import { Status } from "./constants";
-import { post, postNotAuth, requestFlatServer } from "./utils";
+import { post, postNotAuth, postV2, requestFlatServer } from "./utils";
 
 export interface LoginCheckPayload {}
 
@@ -214,4 +214,51 @@ export async function deleteAccountValidate(): Promise<DeleteAccountValidateResu
 
 export async function deleteAccount(): Promise<void> {
     await post<{}, {}>("user/deleteAccount", {});
+}
+
+export interface ListSensitivePayload {
+    from: number;
+    to: number;
+}
+
+export enum SensitiveType {
+    Phone = "phone",
+    Avatar = "avatar",
+    Name = "name",
+    WeChatName = "wechat_name",
+
+    // Not record, but display
+    CloudStorage = "cloud_storage",
+    Recording = "recording",
+}
+
+export type ListSensitiveResult =
+    | {
+          type: SensitiveType.Phone;
+          /** "123****456" */
+          content: string;
+      }
+    | {
+          type: SensitiveType.Avatar;
+          /** URL to avatar, may be invalid if deleted */
+          content: string;
+      };
+
+export async function listSensitive(
+    payload: {
+        from: Date;
+        to: Date;
+    },
+    init?: Partial<RequestInit>,
+    token?: string,
+): Promise<ListSensitiveResult[]> {
+    return await postV2<ListSensitivePayload, ListSensitiveResult[]>(
+        "user/sensitive",
+        {
+            from: payload.from.valueOf(),
+            to: payload.to.valueOf(),
+        },
+        init,
+        token,
+    );
 }
