@@ -2,7 +2,7 @@
     position: absolute;
     padding: 8px;
     opacity: 0;
-    z-index: 4;
+    z-index: 100;
     transform: translate(-50%, -80%);
     transition: opacity 0.1s;
 }
@@ -54,4 +54,43 @@
     top: 0;
     transform: translate(-50%, -80% - 16px);
     z-index: 5;
+}
+
+.avatar-shortcuts-wrapper.top-right {
+    padding: 0;
+    transform: none;
+}
+
+.avatar-shortcuts.top-right {
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+    background-color: transparent;
+    border: none;
+    gap: 4px;
+
+    .avatar-shortcuts-btn {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+        border-radius: 50%;
+        background-color: var(--grey-9);
+        color: rgba(255, 255, 255, 0.35);
+        transition: background-color 0.1s;
+
+        &:hover {
+            background-color: var(--grey-8);
+        }
+    }
+}
+
+.flat-color-scheme-dark {
+    .avatar-shortcuts {
+        border-color: var(--grey-8);
+        background-color: var(--grey-9);
+    }
+
+    .avatar-shortcuts.top-right {
+        background-color: transparent;
+    }
 }

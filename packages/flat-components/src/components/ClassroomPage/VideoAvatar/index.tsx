@@ -98,6 +98,7 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
                     <button
                         className={classnames("video-avatar-media-ctrl-btn", {
                             "is-muted": !avatarUser.camera,
+                            "is-small": small && !portal,
                         })}
                         disabled={isCameraCtrlDisable}
                         onClick={() => {
@@ -115,6 +116,7 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
                     <button
                         className={classnames("video-avatar-media-ctrl-btn", {
                             "is-muted": !avatarUser.mic,
+                            "is-small": small && !portal,
                         })}
                         disabled={isMicCtrlDisable}
                         onClick={() => {

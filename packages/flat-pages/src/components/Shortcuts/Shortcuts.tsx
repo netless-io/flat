@@ -12,9 +12,10 @@ import { useBoundingRect } from "./hooks";
 
 export interface ShortcutsProps {
     classroom: ClassroomStore;
+    location?: "bottom" | "top-right";
 }
 
-export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom }) {
+export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom, location }) {
     const [target, setTarget] = useState<HTMLElement | null>(null);
     const activeUser = useMemo(
         () => classroom.users.cachedUsers.get(classroom.hoveringUserUUID || "") || null,
@@ -24,9 +25,11 @@ export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom
     const style = useMemo<React.CSSProperties | undefined>(
         () =>
             rect && activeUser
-                ? { left: rect.left + rect.width / 2, top: rect.bottom }
+                ? location === "top-right"
+                    ? { top: rect.top + 4, right: 4 }
+                    : { left: rect.left + rect.width / 2, top: rect.bottom }
                 : { left: -9999, top: -9999 },
-        [activeUser, rect],
+        [activeUser, location, rect],
     );
 
     useEffect(() => {
@@ -99,12 +102,12 @@ export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom
 
     return (
         <div
-            className={classNames("avatar-shortcuts-wrapper", { active: !!activeUser })}
+            className={classNames("avatar-shortcuts-wrapper", location, { active: !!activeUser })}
             data-user={activeUser?.userUUID}
             style={style}
             onPointerLeave={() => classroom.setHoveringUserUUID(null)}
         >
-            <div className="avatar-shortcuts">
+            <div className={classNames("avatar-shortcuts", location)}>
                 <button
                     className="avatar-shortcuts-btn"
                     title="toggle whiteboard"
