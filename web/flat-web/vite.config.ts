@@ -42,6 +42,7 @@ export default defineConfig({
             { find: /^~/, replacement: "" },
         ],
     },
+    assetsInclude: ["svga"],
     build: {
         sourcemap: true,
     },

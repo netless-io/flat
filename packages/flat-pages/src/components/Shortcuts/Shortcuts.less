@@ -1,0 +1,57 @@
+.avatar-shortcuts-wrapper {
+    position: absolute;
+    padding: 8px;
+    opacity: 0;
+    z-index: 4;
+    transform: translate(-50%, -80%);
+    transition: opacity 0.1s;
+}
+
+.avatar-shortcuts-wrapper.active,
+.avatar-shortcuts-wrapper:hover {
+    opacity: 100;
+}
+
+.avatar-shortcuts {
+    border: 1px solid var(--grey-3);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    padding: 8px 16px;
+    background-color: #fff;
+    display: flex;
+    gap: 16px;
+}
+
+.avatar-shortcuts-btn {
+    width: 24px;
+    height: 24px;
+    border: 0;
+    padding: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+
+    &:hover {
+        .flat-icon-stroke-color {
+            stroke: var(--primary);
+        }
+
+        .flat-icon-fill-color {
+            fill: var(--primary);
+        }
+    }
+
+    svg {
+        pointer-events: none;
+    }
+}
+
+.avatar-shortcuts-reward-canvas {
+    width: 144px;
+    height: 108px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -80% - 16px);
+    z-index: 5;
+}

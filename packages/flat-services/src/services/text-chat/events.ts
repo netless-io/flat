@@ -24,6 +24,11 @@ export interface IServiceTextChatEventData {
         text: string;
         senderID: string;
     };
+    "reward": {
+        roomUUID: string;
+        userUUID: string;
+        senderID: string;
+    };
     "raise-hand": { roomUUID: string; userUUID: string; raiseHand: boolean };
     "member-joined": { roomUUID: string; userUUID: string };
     "member-left": { roomUUID: string; userUUID: string };

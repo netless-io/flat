@@ -90,6 +90,8 @@ export class ClassroomStore {
     public isDraggingAvatar = false;
     public droppingUserUUID: string | null = null;
 
+    public hoveringUserUUID: string | null = null;
+
     public roomStatusLoading = RoomStatusLoadingType.Null;
 
     /** is RTC joined room */
@@ -898,6 +900,10 @@ export class ClassroomStore {
         cloudStorage.uploadTaskManager.addTasks([file], cloudStorage.parentDirectoryPath);
     };
 
+    public setHoveringUserUUID = (userUUID: string | null): void => {
+        this.hoveringUserUUID = userUUID;
+    };
+
     public onMessageSend = async (text: string): Promise<void> => {
         if (this.isBan && !this.isCreator) {
             return;
@@ -1201,6 +1207,12 @@ export class ClassroomStore {
                 { roomUUID: this.roomUUID, [device]: enabled },
                 this.ownerUUID,
             );
+        }
+    }
+
+    public reward(userUUID: string): void {
+        if (this.isCreator) {
+            void this.rtm.sendRoomCommand("reward", { roomUUID: this.roomUUID, userUUID });
         }
     }
 

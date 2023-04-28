@@ -692,6 +692,9 @@ importers:
       side-effect-manager:
         specifier: ^1.2.1
         version: 1.2.1
+      svga:
+        specifier: ^2.1.0
+        version: 2.1.0
       uuid:
         specifier: ^9.0.0
         version: 9.0.0
@@ -11817,7 +11820,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
@@ -19203,6 +19206,10 @@ packages:
     resolution: {integrity: sha512-qsjeeq5YjBZ5eMdFuUa4ZosMLxgr5RZ+F+Y1OrDhuOCEInRMA3x74XdBtggJcj9kOeInz0WE+LgCPDkZFlBYJw==}
     engines: {node: '>=12.0.0'}
     optional: true
+
+  /svga@2.1.0:
+    resolution: {integrity: sha512-qmg59XemXBIEr1NeJYkXaKQeIG0LOvbZBEmUtP3bzGFM+hsmKBMeOilUQqySr4ZLK30IX1bdGt93pDSoTyhQZw==}
+    dev: false
 
   /svglint@2.1.1:
     resolution: {integrity: sha512-3ZMTnBndZ7baVX1s9c7UMF54kDMnKiNZrMwikLHxdjIi0GpxkVNr5I9TpZSW33D+28SnMq7TdUf/x6fyEGWDkg==}

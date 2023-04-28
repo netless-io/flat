@@ -366,6 +366,15 @@ export class AgoraRTM extends IServiceTextChat {
                     status: command.v.status,
                     senderID: ownerUUID,
                 });
+                break;
+            }
+            case "reward": {
+                this.events.emit("reward", {
+                    roomUUID,
+                    userUUID: command.v.userUUID,
+                    senderID: ownerUUID,
+                });
+                break;
             }
         }
     }

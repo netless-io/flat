@@ -136,3 +136,6 @@ export * from "./icons/SVGSun";
 export * from "./icons/SVGMoon";
 export * from "./icons/SVGLogo";
 export * from "./icons/SVGShare";
+export * from "./icons/SVGBoard";
+export * from "./icons/SVGBoardOff";
+export * from "./icons/SVGCup";
