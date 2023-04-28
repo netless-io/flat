@@ -77,7 +77,7 @@ export const SensitivePage = observer(function SensitivePage() {
         }
 
         setLoading(true);
-        sp(listSensitive({ from, to: new Date() }))
+        sp(listSensitive({ from, to: new Date() }, undefined, token))
             .then(data => {
                 const newData = data.reduce((acc, cur) => {
                     const index = acc.findIndex(e => e.type === cur.type);
@@ -102,7 +102,7 @@ export const SensitivePage = observer(function SensitivePage() {
             .finally(() => {
                 setLoading(false);
             });
-    }, [defaultSensitiveData, range, sp, t]);
+    }, [defaultSensitiveData, range, sp, t, token]);
 
     const columns = useMemo<ColumnsType<SensitiveData>>(
         () => [
