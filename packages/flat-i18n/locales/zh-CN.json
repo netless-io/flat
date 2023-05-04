@@ -651,5 +651,7 @@
     "week": "最近七天",
     "month": "最近一月",
     "year": "最近一年"
-  }
+  },
+  "reward": "奖杯",
+  "restore-windows": "复位"
 }

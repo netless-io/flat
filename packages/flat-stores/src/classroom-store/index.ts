@@ -825,6 +825,12 @@ export class ClassroomStore {
         }
     };
 
+    public minimizeAllUserWindows = (): void => {
+        if (this.isCreator && this.userWindowsStorage) {
+            this.userWindowsStorage.resetState();
+        }
+    };
+
     public createAvatarWindow = (userUUID: string, window: Omit<UserWindow, "z">): void => {
         if (this.isCreator && this.userWindowsStorage) {
             if (this.emptyArrayAsNull(this.userWindowsStorage.state.grid)) {

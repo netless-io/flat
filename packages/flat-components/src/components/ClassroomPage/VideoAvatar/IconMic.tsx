@@ -55,6 +55,7 @@ export const IconMic = /* @__PURE__ */ React.memo<IconMicProps>(function IconMic
 
     return (
         <svg
+            className="flat-icon"
             fill="none"
             height="24"
             viewBox="0 0 24 24"

@@ -651,5 +651,7 @@
     "week": "Last Week",
     "month": "Last Month",
     "year": "Last Year"
-  }
+  },
+  "reward": "reward",
+  "restore-windows": "restore windows"
 }
