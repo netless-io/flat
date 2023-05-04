@@ -26,17 +26,18 @@ export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom
     );
     const { height: windowHeight } = useWindowSize();
     const rect = useBoundingRect(target);
+    const isAvatarWindow = useMemo(() => target?.classList.contains("window-main"), [target]);
     const style = useMemo<React.CSSProperties | undefined>(
         () =>
             rect && activeUser
-                ? location === "top-right"
+                ? location === "top-right" && !isAvatarWindow
                     ? { top: rect.top + 4, right: 4 }
                     : {
                           left: rect.left + rect.width / 2,
                           top: rect.bottom + 42 < windowHeight ? rect.bottom : rect.top,
                       }
                 : { left: -9999, top: -9999 },
-        [activeUser, windowHeight, location, rect],
+        [rect, activeUser, location, isAvatarWindow, windowHeight],
     );
 
     useEffect(() => {
@@ -107,16 +108,20 @@ export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom
         return null;
     }
 
+    const className = isAvatarWindow ? undefined : location;
+
     return (
         <div
-            className={classNames("avatar-shortcuts-wrapper", location, { active: !!activeUser })}
+            className={classNames("avatar-shortcuts-wrapper", className, classroom.roomType, {
+                active: !!activeUser,
+            })}
             data-user={activeUser?.userUUID}
             style={style}
             onPointerLeave={() => classroom.setHoveringUserUUID(null)}
         >
             {activeUser?.userUUID === classroom.ownerUUID ? (
                 // owner actions: restore windows, mute all
-                <div className={classNames("avatar-shortcuts", location)}>
+                <div className={classNames("avatar-shortcuts", className)}>
                     <button
                         className="avatar-shortcuts-btn"
                         title={t("restore-windows")}
@@ -134,7 +139,7 @@ export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom
                 </div>
             ) : (
                 // joiner actions: toggle whiteboard, reward
-                <div className={classNames("avatar-shortcuts", location)}>
+                <div className={classNames("avatar-shortcuts", className)}>
                     <button
                         className="avatar-shortcuts-btn"
                         title={t("whiteboard-access")}
