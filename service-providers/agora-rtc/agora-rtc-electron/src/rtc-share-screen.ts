@@ -251,8 +251,10 @@ export class AgoraRTCElectronShareScreen extends IServiceShareScreen {
         this._lastEnabled = false;
 
         this._pTogglingShareScreen = new Promise<void>(resolve => {
-            this.client.enableLoopbackRecording(false);
             this._delegateLocalAudio(false);
+            this.client.adjustRecordingSignalVolume(100);
+            this.client.adjustLoopbackRecordingSignalVolume(0);
+            this.client.enableLoopbackRecording(false);
             this.client.stopScreenCapture2();
             this.client.once("videoSourceLeaveChannel", () => {
                 this.client.videoSourceRelease();
