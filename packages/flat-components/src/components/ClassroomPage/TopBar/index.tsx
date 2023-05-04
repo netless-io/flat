@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useCallback, useRef } from "react";
 import classNames from "classnames";
 import {
     WindowsSystemBtn,
@@ -33,23 +33,37 @@ export const TopBar: FC<TopBarProps> = ({
     hiddenMaximizeBtn,
     onClickWindowsSystemBtn,
     onDoubleClick,
-}) => (
-    <div
-        className={classNames("topbar-box", { showWindowsSystemBtn })}
-        onDoubleClick={onDoubleClick}
-    >
-        <div className="topbar-content-left">{left}</div>
-        <div className="topbar-content-center">{center}</div>
-        <div className="topbar-content-right">
-            {right}
-            {showWindowsSystemBtn && onClickWindowsSystemBtn && (
-                <>
-                    <WindowsSystemBtn
-                        hiddenMaximizeBtn={hiddenMaximizeBtn}
-                        onClickWindowsSystemBtn={onClickWindowsSystemBtn}
-                    />
-                </>
-            )}
+}) => {
+    const ref = useRef<HTMLDivElement>(null);
+
+    const onDoubleClickSelf = useCallback(
+        (ev: React.MouseEvent): void => {
+            if (onDoubleClick && ref.current && ref.current.contains(ev.target as Node)) {
+                onDoubleClick && onDoubleClick();
+            }
+        },
+        [onDoubleClick],
+    );
+
+    return (
+        <div
+            ref={ref}
+            className={classNames("topbar-box", { showWindowsSystemBtn })}
+            onDoubleClick={onDoubleClickSelf}
+        >
+            <div className="topbar-content-left">{left}</div>
+            <div className="topbar-content-center">{center}</div>
+            <div className="topbar-content-right">
+                {right}
+                {showWindowsSystemBtn && onClickWindowsSystemBtn && (
+                    <>
+                        <WindowsSystemBtn
+                            hiddenMaximizeBtn={hiddenMaximizeBtn}
+                            onClickWindowsSystemBtn={onClickWindowsSystemBtn}
+                        />
+                    </>
+                )}
+            </div>
         </div>
-    </div>
-);
+    );
+};
