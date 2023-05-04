@@ -43,6 +43,7 @@ import { ShareScreenPicker } from "../components/ShareScreen/ShareScreenPicker";
 import { ExtraPadding } from "../components/ExtraPadding";
 import { UsersButton } from "../components/UsersButton";
 import { Shortcuts, Rewards } from "../components/Shortcuts";
+import { PreferencesButton } from "../components/PreferencesButton";
 import { useScrollable } from "./utils";
 
 export type SmallClassPageProps = {};
@@ -273,6 +274,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                     <InviteButton roomInfo={classroomStore.roomInfo} />
                     {/* TODO: open users sub window */}
                     <UsersButton classroom={classroomStore} />
+                    <PreferencesButton classroom={classroomStore} />
                     {!windowsBtn?.showWindowsBtn && (
                         <TopBarRightBtn
                             icon={<SVGExit />}
