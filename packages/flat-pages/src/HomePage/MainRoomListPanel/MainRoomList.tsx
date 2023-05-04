@@ -367,7 +367,9 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
         const result = [{ key: "details", text: t("room-detail") }];
         if (isHistoryList) {
             if (room.roomUUID) {
-                result.push({ key: "share", text: t("share-record") });
+                if (room.hasRecord) {
+                    result.push({ key: "share", text: t("share-record") });
+                }
                 result.push({ key: "delete-history", text: t("delete-records") });
             }
         } else {
