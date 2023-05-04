@@ -139,3 +139,5 @@ export * from "./icons/SVGShare";
 export * from "./icons/SVGBoard";
 export * from "./icons/SVGBoardOff";
 export * from "./icons/SVGCup";
+export * from "./icons/SVGRestore";
+export * from "./icons/SVGMuteAll";

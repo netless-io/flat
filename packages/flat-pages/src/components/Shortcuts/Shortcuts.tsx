@@ -4,10 +4,12 @@ import classNames from "classnames";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { listen } from "@wopjs/dom";
+import { useWindowSize } from "react-use";
 import { validate } from "uuid";
 
+import { useTranslate } from "@netless/flat-i18n";
 import { ClassroomStore } from "@netless/flat-stores";
-import { SVGBoard, SVGBoardOff, SVGCup } from "flat-components";
+import { SVGBoard, SVGBoardOff, SVGCup, SVGMuteAll, SVGRestore } from "flat-components";
 import { useBoundingRect } from "./hooks";
 
 export interface ShortcutsProps {
@@ -16,20 +18,25 @@ export interface ShortcutsProps {
 }
 
 export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom, location }) {
+    const t = useTranslate();
     const [target, setTarget] = useState<HTMLElement | null>(null);
     const activeUser = useMemo(
         () => classroom.users.cachedUsers.get(classroom.hoveringUserUUID || "") || null,
         [classroom.hoveringUserUUID, classroom.users.cachedUsers],
     );
+    const { height: windowHeight } = useWindowSize();
     const rect = useBoundingRect(target);
     const style = useMemo<React.CSSProperties | undefined>(
         () =>
             rect && activeUser
                 ? location === "top-right"
                     ? { top: rect.top + 4, right: 4 }
-                    : { left: rect.left + rect.width / 2, top: rect.bottom }
+                    : {
+                          left: rect.left + rect.width / 2,
+                          top: rect.bottom + 42 < windowHeight ? rect.bottom : rect.top,
+                      }
                 : { left: -9999, top: -9999 },
-        [activeUser, location, rect],
+        [activeUser, windowHeight, location, rect],
     );
 
     useEffect(() => {
@@ -95,8 +102,8 @@ export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom
         return null;
     }
 
-    // no owner actions
-    if (activeUser?.userUUID === classroom.ownerUUID) {
+    // no actions for left users
+    if (activeUser?.hasLeft) {
         return null;
     }
 
@@ -107,18 +114,39 @@ export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom
             style={style}
             onPointerLeave={() => classroom.setHoveringUserUUID(null)}
         >
-            <div className={classNames("avatar-shortcuts", location)}>
-                <button
-                    className="avatar-shortcuts-btn"
-                    title="toggle whiteboard"
-                    onClick={toggleWhiteboard}
-                >
-                    {activeUser?.wbOperate ? <SVGBoard /> : <SVGBoardOff />}
-                </button>
-                <button className="avatar-shortcuts-btn" title="reward" onClick={reward}>
-                    <SVGCup />
-                </button>
-            </div>
+            {activeUser?.userUUID === classroom.ownerUUID ? (
+                // owner actions: restore windows, mute all
+                <div className={classNames("avatar-shortcuts", location)}>
+                    <button
+                        className="avatar-shortcuts-btn"
+                        title={t("restore-windows")}
+                        onClick={classroom.minimizeAllUserWindows}
+                    >
+                        <SVGRestore />
+                    </button>
+                    <button
+                        className="avatar-shortcuts-btn"
+                        title={t("all-mute-mic")}
+                        onClick={classroom.muteAll}
+                    >
+                        <SVGMuteAll />
+                    </button>
+                </div>
+            ) : (
+                // joiner actions: toggle whiteboard, reward
+                <div className={classNames("avatar-shortcuts", location)}>
+                    <button
+                        className="avatar-shortcuts-btn"
+                        title={t("whiteboard-access")}
+                        onClick={toggleWhiteboard}
+                    >
+                        {activeUser?.wbOperate ? <SVGBoard /> : <SVGBoardOff />}
+                    </button>
+                    <button className="avatar-shortcuts-btn" title={t("reward")} onClick={reward}>
+                        <SVGCup />
+                    </button>
+                </div>
+            )}
         </div>
     );
 });
