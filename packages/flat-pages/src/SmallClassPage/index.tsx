@@ -1,5 +1,6 @@
 import "./SmallClassPage.less";
 
+import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import { message } from "antd";
 import { observer } from "mobx-react-lite";
@@ -41,8 +42,8 @@ import { WindowsSystemBtnContext } from "../components/StoreProvider";
 import { ShareScreenPicker } from "../components/ShareScreen/ShareScreenPicker";
 import { ExtraPadding } from "../components/ExtraPadding";
 import { UsersButton } from "../components/UsersButton";
+import { Shortcuts, Rewards } from "../components/Shortcuts";
 import { useScrollable } from "./utils";
-import classNames from "classnames";
 
 export type SmallClassPageProps = {};
 
@@ -175,6 +176,8 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                             </span>
                         </button>
                     </div>
+                    <Shortcuts classroom={classroomStore} />
+                    <Rewards classroom={classroomStore} />
                 </div>
             );
         }

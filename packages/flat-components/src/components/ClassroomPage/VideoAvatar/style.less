@@ -101,9 +101,9 @@
 .video-avatar-media-ctrl-btn {
     display: inline-flex;
     overflow: hidden;
-    width: 24px;
-    height: 24px;
-    margin: 0 0 0 8px;
+    width: 32px;
+    height: 32px;
+    margin: 0 0 0 4px;
     padding: 0;
     border: none;
     outline: none;
@@ -111,6 +111,12 @@
     color: #fff;
     background: rgba(0, 0, 0, 0.5);
     cursor: pointer;
+
+    &.is-small {
+        width: 24px;
+        height: 24px;
+        margin-left: 8px;
+    }
 
     &.is-muted {
         color: rgba(255, 255, 255, 0.35);

@@ -35,6 +35,7 @@
     "react-router-last-location": "^2.0.1",
     "react-use": "^17.4.0",
     "side-effect-manager": "^1.2.1",
+    "svga": "^2.1.0",
     "uuid": "^9.0.0",
     "value-enhancer": "^1.3.2",
     "video.js": "7.20.3"

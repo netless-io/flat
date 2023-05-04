@@ -70,6 +70,7 @@ export default defineConfig((): UserConfig => {
                 { find: /^~/, replacement: "" },
             ],
         },
+        assetsInclude: ["svga"],
         build: {
             sourcemap: true,
             emptyOutDir: true,

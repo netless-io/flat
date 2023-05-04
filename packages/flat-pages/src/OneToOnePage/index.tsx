@@ -37,6 +37,7 @@ import { WindowsSystemBtnContext } from "../components/StoreProvider";
 import { ShareScreenPicker } from "../components/ShareScreen/ShareScreenPicker";
 import { ExtraPadding } from "../components/ExtraPadding";
 import { UsersButton } from "../components/UsersButton";
+import { Shortcuts, Rewards } from "../components/Shortcuts";
 
 export type OneToOnePageProps = {};
 
@@ -82,6 +83,8 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                             </div>
                             {renderRealtimePanel()}
                         </div>
+                        <Shortcuts classroom={classroomStore} location="top-right" />
+                        <Rewards classroom={classroomStore} />
                         <ExitRoomConfirm
                             isCreator={classroomStore.isCreator}
                             {...exitConfirmModalProps}

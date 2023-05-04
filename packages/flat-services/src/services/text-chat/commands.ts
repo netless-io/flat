@@ -5,6 +5,7 @@ export interface IServiceTextChatRoomCommandData {
     "update-room-status": { roomUUID: string; status: RoomStatus };
     "ban": { roomUUID: string; status: boolean };
     "notice": { roomUUID: string; text: string };
+    "reward": { roomUUID: string; userUUID: string };
 }
 
 export type IServiceTextChatRoomCommandNames = keyof IServiceTextChatRoomCommandData;
