@@ -26,7 +26,7 @@ export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom
     );
     const { height: windowHeight } = useWindowSize();
     const rect = useBoundingRect(target);
-    const isAvatarWindow = useMemo(() => target?.classList.contains("window-main"), [target]);
+    const isAvatarWindow = useMemo(() => hasAncestorWithClassName(target, "window-main"), [target]);
     const style = useMemo<React.CSSProperties | undefined>(
         () =>
             rect && activeUser
@@ -155,3 +155,13 @@ export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom
         </div>
     );
 });
+
+function hasAncestorWithClassName(el: HTMLElement | null, className: string): boolean {
+    if (!el) {
+        return false;
+    }
+    if (el.classList.contains(className)) {
+        return true;
+    }
+    return hasAncestorWithClassName(el.parentElement, className);
+}
