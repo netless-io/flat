@@ -1,0 +1,232 @@
+.preferences-modal {
+    .ant-modal-header {
+        border-bottom: 1px solid var(--grey-1);
+    }
+
+    .ant-modal-title {
+        text-align: center;
+    }
+
+    .ant-modal-body {
+        padding: 0;
+    }
+}
+
+.preferences-modal-content {
+    display: flex;
+}
+
+.preferences-modal-nav {
+    width: 200px;
+    flex: 0 0 auto;
+    border-right: 1px solid var(--grey-1);
+
+    >ul {
+        margin: 0;
+        padding: 16px 0;
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        position: sticky;
+        top: 0;
+    }
+
+    >ul>li {
+        padding: 0 8px;
+    }
+
+    >ul>li>a {
+        user-select: none;
+
+        svg,
+        span {
+            pointer-events: none;
+        }
+    }
+}
+
+.preferences-modal-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 0 8px 16px;
+    border-radius: 6px;
+    color: var(--text);
+
+    &:hover,
+    &:active {
+        color: var(--primary);
+        background-color: #f3f6f9;
+    }
+
+    &.is-active {
+        color: var(--primary);
+        background-color: #3381ff0f;
+    }
+
+    &:hover {
+        .flat-icon-fill-color {
+            fill: currentColor;
+        }
+
+        .flat-icon-stroke-color {
+            stroke: currentColor;
+        }
+    }
+}
+
+.preferences-modal-body {
+    flex: 1;
+}
+
+.preferences-modal-body>hr {
+    margin: 0 16px;
+    border: none;
+    border-bottom: 1px solid var(--grey-1);
+}
+
+.preferences-modal-section {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    color: var(--text);
+}
+
+.preferences-modal-section-title {
+    margin: 0 0 16px;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 600;
+    color: var(--text-stronger);
+}
+
+.preferences-modal-section-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 16px;
+    align-items: center;
+}
+
+.preferences-modal-section-control {
+    max-width: 320px;
+}
+
+.preferences-modal-section-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 320px;
+    margin-top: 16px;
+    padding: 4px 12px;
+}
+
+.preferences-modal-section-button-icon-end {
+    position: absolute;
+    right: 4px;
+}
+
+.preferences-modal-hotkey-setting-content {
+    .ant-table-header tr>th {
+        border: none;
+        padding: 16px;
+        background: #fff;
+
+        &::before {
+            background: none !important;
+        }
+    }
+
+    .ant-table-thead>tr>th {
+        font-weight: normal;
+    }
+
+    .ant-table-body {
+        overflow-y: hidden !important;
+        max-height: initial !important;
+        margin-bottom: 36px;
+        border: 1px solid var(--grey-1);
+        border-radius: 15px;
+
+        .ant-table-thead {
+            display: none;
+        }
+
+        .ant-table-row[data-row-key="edit1"]>td,
+        .ant-table-tbody .ant-table-tbody .ant-table-row>td {
+            border-top: 1px solid var(--grey-1);
+        }
+
+        .ant-table-tbody>tr>td {
+            color: var(--text-strong);
+            border: none;
+        }
+    }
+
+    tr.ant-table-expanded-row>td {
+        background-color: #fff !important;
+    }
+
+    td.ant-table-cell:nth-child(odd) {
+        width: 260px;
+    }
+}
+
+.flat-color-scheme-dark {
+    .preferences-modal {
+        .ant-modal-header {
+            border-bottom-color: var(--grey-9);
+        }
+    }
+
+    .preferences-modal-nav {
+        border-right-color: var(--grey-9);
+    }
+
+    .preferences-modal-nav-item {
+        color: var(--text);
+
+        &:hover {
+            background-color: var(--grey-9);
+        }
+
+        &:active {
+            background-color: var(--grey-11);
+        }
+
+        &.is-active {
+            color: var(--blue-7);
+            background-color: var(--grey-11);
+        }
+    }
+
+    .preferences-modal-body>hr {
+        border-bottom-color: var(--grey-9);
+    }
+
+    .preferences-modal-hotkey-setting-content {
+        .ant-table-header tr>th {
+            border: none;
+            padding: 10px;
+            background: var(--grey-10);
+            color: var(--text-strong);
+        }
+
+        .ant-table-body {
+            border: 1px solid var(--grey-8);
+
+            tr.ant-table-expanded-row>td {
+                background-color: var(--grey-10) !important;
+            }
+
+            .ant-table-row[data-row-key="edit1"]>td,
+            .ant-table-tbody .ant-table-tbody .ant-table-row>td {
+                border-top-color: var(--grey-8);
+            }
+        }
+
+        .ant-table-row-expand-icon {
+            background-color: var(--grey-10);
+            border-color: var(--grey-8);
+        }
+    }
+}
