@@ -2,13 +2,14 @@ import type { PreferencesButtonProps } from "./index";
 
 import speakerTestMP3 from "flat-components/components/DeviceTestPage/SpeakerTest/assets/media/Goldberg Variations, BWV 988 - 05 - Variatio 4 a 1 Clav.mp3";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Select } from "antd";
 
 import { useTranslate } from "@netless/flat-i18n";
 import { IServiceVideoChatDevice } from "@netless/flat-services";
 import { SVGPause, SVGPlay, useSafePromise } from "flat-components";
+import { RuntimeContext } from "../StoreProvider";
 
 export interface SpeakerSettingsProps extends PreferencesButtonProps {}
 
@@ -17,6 +18,7 @@ export const SpeakerSettings = observer<SpeakerSettingsProps>(function SpeakerSe
 }) {
     const t = useTranslate();
     const sp = useSafePromise();
+    const runtime = useContext(RuntimeContext);
     const { rtc } = classroom;
     const [current, setCurrent] = React.useState<string | null>(null);
     const [devices, setDevices] = React.useState<IServiceVideoChatDevice[]>([]);
@@ -55,11 +57,25 @@ export const SpeakerSettings = observer<SpeakerSettingsProps>(function SpeakerSe
 
     useEffect(() => {
         if (isPlaying) {
-            classroom.rtc.startSpeakerTest(speakerTestMP3);
+            let url = speakerTestMP3;
+            if (window.isElectron) {
+                if (url.startsWith("/@fs")) {
+                    // vite dev mode returns a url like /@fs/path/to/file
+                    url = url.slice(4);
+                } else if (url.startsWith("file://")) {
+                    // vite returns a file:// url in production
+                    url = fileURLToPath(url);
+                } else if (window.node && runtime && runtime.assetsPath) {
+                    // other relative paths can be resolved with path.join()
+                    window.node.path.join(runtime.assetsPath, url);
+                }
+            }
+            console.log(url);
+            classroom.rtc.startSpeakerTest(url);
             return () => classroom.rtc.stopSpeakerTest();
         }
         return;
-    }, [classroom.rtc, isPlaying]);
+    }, [classroom.rtc, isPlaying, runtime]);
 
     return (
         <div className="preferences-modal-section" id="preferences-2">
@@ -91,3 +107,15 @@ export const SpeakerSettings = observer<SpeakerSettingsProps>(function SpeakerSe
         </div>
     );
 });
+
+// Note: electron does not have url.fileURLToPath internally for 'safety'
+// See https://www.electronjs.org/de/docs/latest/tutorial/sandbox#preload-scripts
+// So we have to implement our own.
+function fileURLToPath(url: string): string {
+    let pathname = new URL(url).pathname;
+    // if starts with a windows driver letter like "/C:/", strip the first slash
+    if (/^\/\w:\//.test(pathname)) {
+        pathname = pathname.slice(1);
+    }
+    return decodeURIComponent(pathname);
+}
