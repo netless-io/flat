@@ -62,6 +62,7 @@ export const PreferencesButton = observer<PreferencesButtonProps>(function Prefe
         <>
             <TopBarRightBtn icon={<SVGSetting />} title={t("settings")} onClick={onToggle} />
             <Modal
+                centered
                 closable
                 destroyOnClose
                 className="preferences-modal"
