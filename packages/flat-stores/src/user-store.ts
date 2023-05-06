@@ -226,23 +226,29 @@ export class UserStore {
             return [];
         }
 
+        // The users info may not include all users in userUUIDs.
         const users = await usersInfo({ roomUUID: this.roomUUID, usersUUID: userUUIDs });
+        const result: User[] = [];
+        for (const userUUID of userUUIDs) {
+            if (users[userUUID]) {
+                // must convert to observable first so that it may be reused by other logic
+                const user = observable.object<User>({
+                    userUUID,
+                    rtcUID: String(users[userUUID].rtcUID),
+                    avatar: users[userUUID].avatarURL,
+                    name: users[userUUID].name,
+                    camera: userUUID === this.userUUID ? preferencesStore.autoCameraOn : false,
+                    mic: userUUID === this.userUUID ? preferencesStore.autoMicOn : false,
+                    isSpeak: userUUID === this.userUUID && this.isCreator,
+                    wbOperate: userUUID === this.userUUID && this.isCreator,
+                    isRaiseHand: false,
+                    hasLeft: !this.isInRoom(userUUID),
+                });
+                result.push(user);
+            }
+        }
 
-        return userUUIDs.map(userUUID =>
-            // must convert to observable first so that it may be reused by other logic
-            observable.object<User>({
-                userUUID,
-                rtcUID: String(users[userUUID].rtcUID),
-                avatar: users[userUUID].avatarURL,
-                name: users[userUUID].name,
-                camera: userUUID === this.userUUID ? preferencesStore.autoCameraOn : false,
-                mic: userUUID === this.userUUID ? preferencesStore.autoMicOn : false,
-                isSpeak: userUUID === this.userUUID && this.isCreator,
-                wbOperate: userUUID === this.userUUID && this.isCreator,
-                isRaiseHand: false,
-                hasLeft: !this.isInRoom(userUUID),
-            }),
-        );
+        return result;
     }
 
     private readonly joinerGroups = [
