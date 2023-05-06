@@ -1,18 +1,52 @@
+@import "flat-components/theme/fancy-scrollbar.less";
+
 .preferences-modal {
+    height: 80vh;
+
+    .ant-modal-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .ant-modal-close {
+        top: 0;
+        right: 0;
+
+        .ant-modal-close-x {
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            font-size: 12px;
+        }
+    }
+
     .ant-modal-header {
-        border-bottom: 1px solid var(--grey-1);
+        padding: 0;
+        text-align: center;
+        border: none;
     }
 
     .ant-modal-title {
         text-align: center;
+        font-size: 12px;
+        line-height: 2;
+        font-weight: 400;
+        color: #444e60;
+        background: #ececec;
     }
 
     .ant-modal-body {
+        flex: 1;
         padding: 0;
+        overflow: hidden;
     }
 }
 
 .preferences-modal-content {
+    height: 100%;
     display: flex;
 }
 
@@ -76,7 +110,10 @@
 }
 
 .preferences-modal-body {
+    .fancy-scrollbar-mixin();
+
     flex: 1;
+    height: 100%;
 }
 
 .preferences-modal-body>hr {
@@ -175,6 +212,14 @@
     .preferences-modal {
         .ant-modal-header {
             border-bottom-color: var(--grey-9);
+        }
+
+        .ant-modal-title {
+            font-size: 12px;
+            line-height: 2;
+            font-weight: 400;
+            color: var(--text);
+            background: var(--grey-9);
         }
     }
 
