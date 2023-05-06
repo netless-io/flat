@@ -496,6 +496,12 @@ export class AgoraRTCWeb extends IServiceVideoChat {
             if (this._pJoiningRoom) {
                 await this._pJoiningRoom;
             }
+
+            // If there is setCameraID() called during the promises above,
+            // the actually used camera ID may be different, so correct it here.
+            if (this._cameraID) {
+                this.localCameraTrack.setDevice(this._cameraID);
+            }
         }
         return this.localCameraTrack;
     });
@@ -513,6 +519,12 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
             if (this._pJoiningRoom) {
                 await this._pJoiningRoom;
+            }
+
+            // If there is setMicID() called during the promises above,
+            // the actually used microphone ID may be different, so correct it here.
+            if (this._micID) {
+                this.localMicTrack.setDevice(this._micID);
             }
         }
         return this.localMicTrack;
