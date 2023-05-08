@@ -47,6 +47,7 @@ export const MainPageTopBar: React.FC<MainPageTopBarProps> = ({
                         <a
                             key={menuItem.key}
                             className="main-page-top-bar-menu"
+                            title={menuItem.htmlTitle}
                             onClick={() => onClickTopBarMenu(menuItem)}
                         >
                             {menuItem.icon}

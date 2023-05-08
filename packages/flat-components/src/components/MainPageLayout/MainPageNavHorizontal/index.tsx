@@ -79,6 +79,7 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
                                     "is-active": activeKeys.includes(menuItem.key),
                                 })}
                                 href={menuItem.route}
+                                title={menuItem.htmlTitle}
                                 onClick={e => {
                                     e.preventDefault();
                                     onClick(menuItem);

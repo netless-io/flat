@@ -66,10 +66,11 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
                     : "light"
                 : preferenceStore.prefersColorScheme;
 
-        const sideMenu = [
+        const sideMenu: MainPageLayoutItem[] = [
             {
                 key: routeConfig[RouteNameType.HomePage].path,
                 title: "home",
+                htmlTitle: t("home"),
                 route: routeConfig[RouteNameType.HomePage].path,
                 icon: (active: boolean): React.ReactNode => {
                     return active ? <SVGHomeFilled /> : <SVGHomeOutlined />;
@@ -78,6 +79,7 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
             {
                 key: routeConfig[RouteNameType.CloudStoragePage].path,
                 title: "cloudStorage",
+                htmlTitle: t("cloud-storage"),
                 route: routeConfig[RouteNameType.CloudStoragePage].path,
                 icon: (active: boolean): React.ReactNode => {
                     return active ? <SVGCloudFilled /> : <SVGCloudOutlined />;
@@ -85,10 +87,11 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
             },
         ];
 
-        const sideMenuFooter = [
+        const sideMenuFooter: MainPageLayoutItem[] = [
             {
                 key: "theme",
                 title: t("app-appearance-setting"),
+                htmlTitle: t("app-appearance-" + (theme === "dark" ? "light" : "dark")),
                 route: routeConfig[RouteNameType.GeneralSettingPage].path,
                 icon: theme === "dark" ? () => <SVGSun /> : () => <SVGMoon />,
             },
@@ -98,11 +101,13 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
                     return active ? <SVGSettingFilled /> : <SVGSetting />;
                 },
                 title: t("settings"),
+                htmlTitle: t("settings"),
                 route: routeConfig[RouteNameType.GeneralSettingPage].path,
             },
             {
                 key: "deviceCheck",
                 title: "deviceCheck",
+                htmlTitle: t("device-test"),
                 route: routeConfig[RouteNameType.SystemCheckPage].path,
                 icon: (active: boolean): React.ReactNode => {
                     return active ? <SVGTestFilled /> : <SVGTest />;
@@ -161,11 +166,12 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
             }
         };
 
-        const topBarMenu = [
+        const topBarMenu: MainPageTopBarMenuItem[] = [
             {
                 key: "github",
                 icon: <SVGGithub />,
-                route: "https://github.com/netless-io/flat/",
+                route: "https://github.com/netless-io/flat",
+                htmlTitle: "netless-io/flat",
             },
         ];
 

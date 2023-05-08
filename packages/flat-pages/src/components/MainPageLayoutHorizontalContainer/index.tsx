@@ -66,18 +66,21 @@ export const MainPageLayoutHorizontalContainer = observer<MainPageLayoutHorizont
                 icon: (): React.ReactNode => <SVGDownload />,
                 title: <></>,
                 route: FLAT_DOWNLOAD_URL,
+                htmlTitle: t("download"),
             },
             {
                 key: "getGitHubCode",
                 icon: (): React.ReactNode => <SVGGithub />,
                 title: <></>,
-                route: "https://github.com/netless-io/flat/",
+                route: "https://github.com/netless-io/flat",
+                htmlTitle: "netless-io/flat",
             },
             {
                 key: routeConfig[RouteNameType.GeneralSettingPage].path,
                 icon: (): React.ReactNode => <SVGSetting />,
                 title: <></>,
                 route: routeConfig[RouteNameType.GeneralSettingPage].path,
+                htmlTitle: t("settings"),
             },
         ];
 
