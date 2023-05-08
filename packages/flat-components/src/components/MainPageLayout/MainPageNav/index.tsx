@@ -33,10 +33,11 @@ export const MainPageNav: React.FC<MainPageNavProps> = ({
                     return (
                         <a
                             key={menuItem.key}
-                            className={classNames({
+                            className={classNames("main-page-nav-btn", {
                                 "is-active": activeKeys.includes(menuItem.key),
                             })}
                             href={menuItem.route}
+                            title={menuItem.htmlTitle}
                             onClick={e => {
                                 e.preventDefault();
                                 onClick(menuItem);
@@ -52,10 +53,11 @@ export const MainPageNav: React.FC<MainPageNavProps> = ({
                     return (
                         <a
                             key={menuItem.key}
-                            className={classNames({
+                            className={classNames("main-page-nav-btn", {
                                 "is-active": activeKeys.includes(menuItem.key),
                             })}
                             href={menuItem.route}
+                            title={menuItem.htmlTitle}
                             onClick={e => {
                                 e.preventDefault();
                                 onClick(menuItem);

@@ -3,6 +3,7 @@ import "./style.less";
 import React from "react";
 import classnames from "classnames";
 import { createPortal } from "react-dom";
+import { useTranslate } from "@netless/flat-i18n";
 import { IconMic } from "./IconMic";
 import { SVGCamera, SVGCameraMute, SVGMicrophoneMute } from "../../FlatIcons";
 
@@ -46,6 +47,8 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
     onDragEnd,
     children,
 }) => {
+    const t = useTranslate();
+
     const isCameraCtrlDisable = !isCreator && avatarUser.userUUID !== userUUID;
 
     const isMicCtrlDisable = !isCreator && avatarUser.userUUID !== userUUID;
@@ -101,6 +104,7 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
                             "is-small": small && !portal,
                         })}
                         disabled={isCameraCtrlDisable}
+                        title={t("camera")}
                         onClick={() => {
                             if (isCreator || userUUID === avatarUser.userUUID) {
                                 updateDeviceState(
@@ -119,6 +123,7 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
                             "is-small": small && !portal,
                         })}
                         disabled={isMicCtrlDisable}
+                        title={t("microphone")}
                         onClick={() => {
                             if (isCreator || userUUID === avatarUser.userUUID) {
                                 updateDeviceState(
