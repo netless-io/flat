@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import { isInteger } from "lodash-es";
 import { useTranslate } from "@netless/flat-i18n";
@@ -18,10 +18,30 @@ export const RaiseHand: React.FC<RaiseHandProps> = ({
     onRaiseHandChange,
 }) => {
     const t = useTranslate();
+    const [active, setActive] = useState(false);
+
+    const onClick = useCallback(() => {
+        onRaiseHandChange();
+        setActive(true);
+    }, [onRaiseHandChange]);
+
+    useEffect(() => {
+        if (active) {
+            const timer = setTimeout(() => setActive(false), 3000);
+            return () => clearTimeout(timer);
+        }
+        return;
+    }, [active]);
 
     return disableHandRaising ? null : (
-        <button className="raise-hand-btn" title={t("raise-your-hand")} onClick={onRaiseHandChange}>
-            <SVGHandUp active={isRaiseHand} />
+        <button
+            className={classNames("raise-hand-btn", {
+                "is-active": isRaiseHand || active,
+            })}
+            title={t("raise-your-hand")}
+            onClick={onClick}
+        >
+            <SVGHandUp active={isRaiseHand || active} />
         </button>
     );
 };

@@ -1036,6 +1036,8 @@ export class ClassroomStore {
                 { roomUUID: this.roomUUID, raiseHand: !this.users.currentUser.isRaiseHand },
                 this.ownerUUID,
             );
+
+            message.info(FlatI18n.t("have-raised-hand"));
         }
     };
 
