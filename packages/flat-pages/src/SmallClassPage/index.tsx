@@ -76,7 +76,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                     <div className="small-class-realtime-box">
                         {windowsBtn ? (
                             <TopBar
-                                // center={renderTopBarCenter()}
+                                center={renderTopBarCenter()}
                                 left={renderTopBarLeft()}
                                 right={renderTopBarRight()}
                                 showWindowsSystemBtn={windowsBtn.showWindowsBtn}
@@ -84,7 +84,11 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                                 onDoubleClick={windowsBtn.clickWindowMaximize}
                             />
                         ) : (
-                            <TopBar left={renderTopBarLeft()} right={renderTopBarRight()} />
+                            <TopBar
+                                center={renderTopBarCenter()}
+                                left={renderTopBarLeft()}
+                                right={renderTopBarRight()}
+                            />
                         )}
                         {renderAvatars()}
                         <div className="small-class-realtime-content">
@@ -228,12 +232,13 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
         //     );
         // }
 
-        // function renderTopBarCenter(): React.ReactNode {
-        //     if (!classroomStore.isCreator) {
-        //         return null;
-        //     }
-        //     return renderClassMode();
-        // }
+        function renderTopBarCenter(): React.ReactNode {
+            if (classroomStore.isAvatarsVisible()) {
+                return null;
+            } else {
+                return <div className="topbar-content-dimmed">{t("avatars-hidden")}</div>;
+            }
+        }
 
         function renderTopBarRight(): React.ReactNode {
             return (
