@@ -7,27 +7,27 @@ export const SVGHandUp: React.FC<FlatIconProps> = ({ active, className = "", ...
         <svg
             className={`${className} flat-icon ${active ? "is-active" : ""}`}
             fill="none"
-            height="24"
-            viewBox="0 0 24 24"
-            width="24"
+            height="38"
+            viewBox="0 0 38 38"
+            width="38"
             xmlns="http://www.w3.org/2000/svg"
             {...restProps}
         >
             <path
                 className="flat-icon-stroke-color"
-                d="M15.869 12.624a3 3 0 0 0-2.121 3.674"
+                d="M24.8 19.936a4.5 4.5 0 0 0-3.181 5.512"
                 stroke="#5D6066"
                 strokeLinejoin="round"
-                strokeWidth="1.25"
-            ></path>
+                strokeWidth="1.5"
+            />
             <path
                 className="flat-icon-stroke-color"
                 clipRule="evenodd"
-                d="m17.4 17.617 2.554-7.549a.862.862 0 0 0-.385-1.023.815.815 0 0 0-1.05.202l-2.65 3.377-2.07-7.727a1 1 0 0 0-1.932.517l1.294 4.83-.966.259-1.812-6.762a1 1 0 1 0-1.932.518l1.812 6.761-.966.26-1.553-5.796A1 1 0 0 0 5.812 6l1.553 5.796-.966.259-1.035-3.864a1 1 0 1 0-1.932.518l2.588 9.659a4 4 0 0 0 4.9 2.828l3.727-.998a4 4 0 0 0 2.754-2.582Z"
+                d="m27.101 27.425 3.83-11.323a1.294 1.294 0 0 0-.578-1.535 1.223 1.223 0 0 0-1.574.304l-3.976 5.065-3.105-11.59a1.5 1.5 0 1 0-2.898.776l1.217 7.438-3.442-9.948a1.5 1.5 0 0 0-2.898.777l1.993 10.336-3.054-8.5a1.5 1.5 0 1 0-2.898.777l1.605 8.888-2.277-5.602a1.5 1.5 0 0 0-2.898.777l3.882 14.489a6 6 0 0 0 7.349 4.242l5.591-1.498a6 6 0 0 0 4.131-3.873Z"
                 stroke="#5D6066"
                 strokeLinejoin="round"
-                strokeWidth="1.25"
-            ></path>
+                strokeWidth="1.5"
+            />
         </svg>
     );
 };
