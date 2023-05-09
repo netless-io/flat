@@ -278,6 +278,7 @@
   "boot-up-and-run-automatically": "Automatically run on startup",
   "chinese": "Chinese",
   "general-settings": "General settings",
+  "general-settings-avatars": "Avatars",
   "language": "Language",
   "language-settings": "Language settings",
   "shortcut-settings": "Shortcut settings",
@@ -657,5 +658,7 @@
     "year": "Last Year"
   },
   "reward": "reward",
-  "restore-windows": "restore windows"
+  "restore-windows": "restore windows",
+  "show": "Show",
+  "hide": "Hide"
 }

@@ -123,6 +123,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                             <div
                                 className="small-class-realtime-avatars"
                                 data-user-uuid="[object Object]"
+                                hidden={!classroomStore.isAvatarsVisible()}
                             >
                                 <RTCAvatar
                                     avatarUser={classroomStore.users.creator}

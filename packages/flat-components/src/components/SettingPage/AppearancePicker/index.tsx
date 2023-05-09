@@ -17,7 +17,7 @@ export const AppearancePicker: React.FC<AppearancePickerProps> = ({ value, chang
     const t = useTranslate();
     return (
         <div className="appearance-picker-container">
-            <Radio.Group value={value} onChange={changeAppearance}>
+            <Radio.Group name="theme" value={value} onChange={changeAppearance}>
                 <Radio value={"light"}>
                     <div className="appearance-picker-option">
                         <img src={lightSVG} />

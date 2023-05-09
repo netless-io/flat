@@ -275,6 +275,7 @@
   "switch-to-lecture-mode": "切换为讲课模式",
   "recording-completed-tips": "录制完成，可到历史记录查看",
   "general-settings": "常规设置",
+  "general-settings-avatars": "视频\n区域",
   "shortcut-settings": "热键设置",
   "about-us": "关于我们",
   "boot-up-and-run-automatically": "开机自动运行",
@@ -657,5 +658,7 @@
     "year": "最近一年"
   },
   "reward": "奖杯",
-  "restore-windows": "复位"
+  "restore-windows": "复位",
+  "show": "显示",
+  "hide": "隐藏"
 }

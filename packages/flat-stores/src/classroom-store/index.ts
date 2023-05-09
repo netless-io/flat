@@ -1222,6 +1222,14 @@ export class ClassroomStore {
         }
     }
 
+    public isAvatarsVisible(): boolean {
+        return globalStore.isAvatarsVisible(this.roomUUID);
+    }
+
+    public toggleAvatars = (): void => {
+        globalStore.toggleAvatars(this.roomUUID, !this.isAvatarsVisible());
+    };
+
     private async switchRoomStatus(roomStatus: RoomStatus): Promise<void> {
         if (!this.isCreator || this.roomStatusLoading !== RoomStatusLoadingType.Null) {
             return;
