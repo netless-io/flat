@@ -592,7 +592,7 @@ export class ClassroomStore {
 
         this.sideEffect.addDisposer(onStageUsersStorage.on("stateChanged", updateUserStagingState));
         this.sideEffect.addDisposer(
-            whiteboardStorage.on("stateChanged", () => {
+            whiteboardStorage.on("stateChanged", diff => {
                 this.users.updateUsers(user => {
                     user.wbOperate =
                         user.userUUID === this.ownerUUID ||
@@ -608,6 +608,29 @@ export class ClassroomStore {
                 this.whiteboardStore.updateAllowDrawing(
                     this.isCreator || whiteboardStorage.state[this.userUUID],
                 );
+                for (const userUUID in diff) {
+                    const user = this.users.cachedUsers.get(this.userUUID);
+                    const enabled = diff[userUUID]?.newValue;
+                    if (user) {
+                        if (this.isCreator) {
+                            if (enabled) {
+                                message.info(
+                                    FlatI18n.t("grant-whiteboard-access", { name: user.name }),
+                                );
+                            } else {
+                                message.info(
+                                    FlatI18n.t("revoke-whiteboard-access", { name: user.name }),
+                                );
+                            }
+                        } else {
+                            if (enabled) {
+                                message.info(FlatI18n.t("granted-whiteboard-access"));
+                            } else {
+                                message.info(FlatI18n.t("revoked-whiteboard-access"));
+                            }
+                        }
+                    }
+                }
             }),
         );
         this.sideEffect.addDisposer(

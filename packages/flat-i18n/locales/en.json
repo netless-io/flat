@@ -583,6 +583,10 @@
     "other": "The number of users on stage has reached the limit\n(Small class supports up to 16 users on stage)"
   },
   "whiteboard-access": "Whiteboard",
+  "grant-whiteboard-access": "{{name}} is able to operate the whiteboard",
+  "revoke-whiteboard-access": "{{name}} is not able to operate the whiteboard now",
+  "granted-whiteboard-access": "You are able to operate the whiteboard now",
+  "revoked-whiteboard-access": "You are not able to operate the whiteboard now",
   "teacher-request-camera": "Teacher requests to turn on camera",
   "teacher-request-mic": "Teacher requests to turn on microphone",
   "sent-invitation": "Invitation sent",
