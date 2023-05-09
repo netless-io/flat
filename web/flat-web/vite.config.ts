@@ -3,10 +3,8 @@ import { defineConfig } from "vite";
 import { dotenv } from "@netless/flat-vite-plugins/dotenv";
 import { reactVirtualized } from "@netless/flat-vite-plugins/react-virtualized";
 import { injectHtmlHash } from "./scripts/vite-plugin-html-hash";
-import { version } from "./scripts/vite-plugin-version";
 import { inlineAssets } from "./scripts/vite-plugin-inline-assets";
 import { injectGtag } from "./scripts/vite-plugin-html-gtag";
-import { mainPackageJSONPath } from "../../scripts/constants";
 import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
 import viteCompression from "vite-plugin-compression";
 
@@ -31,7 +29,6 @@ export default defineConfig({
         dotenv(autoChooseConfig()),
         injectGtag(),
         injectHtmlHash(),
-        version(mainPackageJSONPath),
         inlineAssets(),
         reactVirtualized(),
         viteCompression({ filter: /\.(js)$/i }),
