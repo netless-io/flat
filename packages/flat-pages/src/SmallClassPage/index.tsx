@@ -70,7 +70,11 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
         return (
             <div className="small-class-page-container">
                 <div className="small-class-realtime-container">
-                    <div className="small-class-realtime-box">
+                    <div
+                        className={classNames("small-class-realtime-box", {
+                            "is-fold": !classroomStore.isAvatarsVisible(),
+                        })}
+                    >
                         {windowsBtn ? (
                             <TopBar
                                 center={renderTopBarCenter()}
@@ -119,12 +123,15 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
         function renderAvatars(): React.ReactNode {
             return (
                 <div className="small-class-realtime-avatars-wrap-wrap">
-                    <div ref={makeScrollable} className="small-class-realtime-avatars-wrap">
+                    <div
+                        ref={makeScrollable}
+                        className="small-class-realtime-avatars-wrap"
+                        hidden={!classroomStore.isAvatarsVisible()}
+                    >
                         {classroomStore.isJoinedRTC && (
                             <div
                                 className="small-class-realtime-avatars"
                                 data-user-uuid="[object Object]"
-                                hidden={!classroomStore.isAvatarsVisible()}
                             >
                                 <RTCAvatar
                                     avatarUser={classroomStore.users.creator}
