@@ -41,6 +41,11 @@ export class GlobalStore {
      * This array holds the rooms that this behavior has been done.
      */
     public onStageRoomUUIDs: string[] | undefined = undefined;
+    /**
+     * Users can hide avatars (top row) in small class mode.
+     * This array holds the rooms that its avatars have been hidden.
+     */
+    public hideAvatarsRoomUUIDs: string[] | undefined = undefined;
 
     public get userUUID(): string | undefined {
         return this.userInfo?.userUUID;
@@ -91,6 +96,24 @@ export class GlobalStore {
 
     public wasOnStage = (roomUUID: string): boolean => {
         return this.onStageRoomUUIDs?.includes(roomUUID) ?? false;
+    };
+
+    public isAvatarsVisible = (roomUUID: string): boolean => {
+        return !this.hideAvatarsRoomUUIDs?.includes(roomUUID);
+    };
+
+    public toggleAvatars = (roomUUID: string, show: boolean): void => {
+        this.hideAvatarsRoomUUIDs ||= [];
+        if (show) {
+            this.hideAvatarsRoomUUIDs = this.hideAvatarsRoomUUIDs.filter(uuid => uuid !== roomUUID);
+        } else {
+            if (!this.hideAvatarsRoomUUIDs.includes(roomUUID)) {
+                this.hideAvatarsRoomUUIDs.push(roomUUID);
+            }
+            while (this.hideAvatarsRoomUUIDs.length > 10) {
+                this.hideAvatarsRoomUUIDs.shift();
+            }
+        }
     };
 
     public updateToken = (
