@@ -10,12 +10,10 @@ import {
     TopBarDivider,
     TopBarRightBtn,
     SVGExit,
-    SVGMenuUnfold,
-    SVGMenuFold,
     SVGScreenSharing,
 } from "flat-components";
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useTranslate } from "@netless/flat-i18n";
 import { RoomStatus } from "@netless/flat-server-api";
 import { ChatPanel } from "../components/ChatPanel";
@@ -53,7 +51,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
 
         const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
-        const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
+        const isRealtimeSideOpen = !whiteboardStore.isRightSideClose;
 
         useEffect(() => {
             if (classroomStore.isCreator && classroomStore.roomStatus === RoomStatus.Idle) {
@@ -175,12 +173,12 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                             onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                         />
                     )}
-                    {windowsBtn?.showWindowsBtn ? null : <TopBarDivider />}
+                    {/* {windowsBtn?.showWindowsBtn ? null : <TopBarDivider />}
                     <TopBarRightBtn
                         icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                         title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
                         onClick={handleSideOpenerSwitch}
-                    />
+                    /> */}
                     {windowsBtn?.showWindowsBtn && <TopBarDivider />}
                 </>
             );
@@ -192,6 +190,7 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
             return (
                 <RealtimePanel
                     chatSlot={<ChatPanel classRoomStore={classroomStore} />}
+                    classroom={classroomStore}
                     isShow={isRealtimeSideOpen}
                     isVideoOn={classroomStore.isJoinedRTC}
                     videoSlot={
@@ -249,10 +248,9 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
             );
         }
 
-        function handleSideOpenerSwitch(): void {
-            openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
-            whiteboardStore.setRightSideClose(isRealtimeSideOpen);
-        }
+        // function handleSideOpenerSwitch(): void {
+        //     whiteboardStore.setRightSideClose(isRealtimeSideOpen);
+        // }
     }),
 );
 

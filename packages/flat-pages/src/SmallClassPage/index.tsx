@@ -1,7 +1,7 @@
 import "./SmallClassPage.less";
 
 import classNames from "classnames";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { message } from "antd";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
@@ -15,8 +15,6 @@ import {
     TopBarRightBtn,
     SVGScreenSharing,
     SVGExit,
-    SVGMenuFold,
-    SVGMenuUnfold,
     SVGLeft,
     SVGRight,
 } from "flat-components";
@@ -60,7 +58,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
 
         const { confirm, ...exitConfirmModalProps } = useExitRoomConfirmModal(classroomStore);
 
-        const [isRealtimeSideOpen, openRealtimeSide] = useState(true);
+        const isRealtimeSideOpen = !whiteboardStore.isRightSideClose;
 
         useEffect(() => {
             if (classroomStore.isCreator && classroomStore.roomStatus === RoomStatus.Idle) {
@@ -288,7 +286,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                             onClick={() => confirm(ExitRoomConfirmType.ExitButton)}
                         />
                     )}
-                    {windowsBtn?.showWindowsBtn ? null : <TopBarDivider />}
+                    {/* {windowsBtn?.showWindowsBtn ? null : <TopBarDivider />}
                     <TopBarRightBtn
                         icon={isRealtimeSideOpen ? <SVGMenuUnfold /> : <SVGMenuFold />}
                         title={isRealtimeSideOpen ? t("side-panel.hide") : t("side-panel.show")}
@@ -296,7 +294,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                             openRealtimeSide(isRealtimeSideOpen => !isRealtimeSideOpen);
                             whiteboardStore.setRightSideClose(isRealtimeSideOpen);
                         }}
-                    />
+                    /> */}
                     {windowsBtn?.showWindowsBtn && <TopBarDivider />}
                 </>
             );
@@ -306,6 +304,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
             return (
                 <RealtimePanel
                     chatSlot={<ChatPanel classRoomStore={classroomStore} />}
+                    classroom={classroomStore}
                     isShow={isRealtimeSideOpen}
                     isVideoOn={false}
                     videoSlot={null}

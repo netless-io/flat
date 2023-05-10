@@ -2,6 +2,8 @@ import React, { ReactElement } from "react";
 import classNames from "classnames";
 
 import "./RealtimePanel.less";
+import { ClassroomStore } from "@netless/flat-stores";
+import { SidebarHandler } from "./SidebarHandle";
 
 export type RealtimePanelProps = {
     // is playing user video
@@ -10,11 +12,12 @@ export type RealtimePanelProps = {
     isShow: boolean;
     videoSlot?: React.ReactNode;
     chatSlot: React.ReactNode;
+    classroom: ClassroomStore;
 };
 
 export class RealtimePanel extends React.PureComponent<RealtimePanelProps> {
     public override render(): ReactElement {
-        const { isVideoOn, isShow, videoSlot, chatSlot } = this.props;
+        const { isVideoOn, isShow, videoSlot, chatSlot, classroom } = this.props;
 
         return (
             <div
@@ -32,6 +35,7 @@ export class RealtimePanel extends React.PureComponent<RealtimePanelProps> {
                     </div>
                     <div className="realtime-panel-chat-slot">{chatSlot}</div>
                 </div>
+                <SidebarHandler classroom={classroom} />
             </div>
         );
     }
