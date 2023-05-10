@@ -27,13 +27,13 @@ import { useTranslate } from "@netless/flat-i18n";
 import { useMedia } from "react-use";
 import { routeConfig, RouteNameType } from "../../route-config";
 
-import { generateAvatar } from "../../utils/generate-avatar";
 import {
     GlobalStoreContext,
     PreferencesStoreContext,
     RuntimeContext,
     WindowsSystemBtnContext,
 } from "@netless/flat-pages/src/components/StoreProvider";
+import { generateAvatar } from "@netless/flat-pages/src/utils/generate-avatar";
 
 export interface MainPageLayoutContainerProps {
     subMenu?: MainPageLayoutItem[];
