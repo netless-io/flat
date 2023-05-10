@@ -1,6 +1,7 @@
 import "./style.less";
 
 import React from "react";
+import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 
 import { ClassroomStore } from "@netless/flat-stores";
@@ -15,7 +16,7 @@ export const SidebarHandler = observer<SidebarHandleProps>(function SidebarHandl
     const collapsed = whiteboard.isRightSideClose;
 
     return (
-        <label className="sidebar-handler">
+        <label className={classNames("sidebar-handler", { collapsed })}>
             <input
                 checked={collapsed}
                 type="checkbox"
