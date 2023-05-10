@@ -56,6 +56,7 @@ export const CameraSettings = observer<CameraSettingsProps>(function CameraSetti
             <h3 className="preferences-modal-section-title">{t("camera-settings")}</h3>
             <Select
                 className="preferences-modal-section-control"
+                placeholder={t("default")}
                 value={current}
                 onChange={changeCamera}
             >

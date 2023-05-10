@@ -86,6 +86,7 @@ export const SpeakerSettings = observer<SpeakerSettingsProps>(function SpeakerSe
             <h3 className="preferences-modal-section-title">{t("speaker-settings")}</h3>
             <Select
                 className="preferences-modal-section-control"
+                placeholder={t("default")}
                 value={current}
                 onChange={changeSpeaker}
             >

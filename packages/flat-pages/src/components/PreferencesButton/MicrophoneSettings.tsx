@@ -58,6 +58,7 @@ export const MicrophoneSettings = observer<MicrophoneSettingsProps>(function Mic
             <h3 className="preferences-modal-section-title">{t("microphone-settings")}</h3>
             <Select
                 className="preferences-modal-section-control"
+                placeholder={t("default")}
                 value={current}
                 onChange={changeMicrophone}
             >
