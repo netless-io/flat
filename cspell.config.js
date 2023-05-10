@@ -152,6 +152,7 @@ module.exports = {
         "APPVERSION",
         "eslintignore",
         "corepack",
+        "cooldown",
 
         // CNCF
         "nindent",

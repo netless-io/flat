@@ -64,6 +64,7 @@ export type UserWindow = {
 
 export class ClassroomStore {
     private readonly sideEffect = new SideEffectManager();
+    private readonly rewardCooldown = new Map<string, number>();
 
     public readonly roomUUID: string;
     public readonly ownerUUID: string;
@@ -175,10 +176,11 @@ export class ClassroomStore {
             onDrop: this.onDrop,
         });
 
-        makeAutoObservable<this, "sideEffect">(this, {
+        makeAutoObservable<this, "sideEffect" | "rewardCooldown">(this, {
             rtc: observable.ref,
             rtm: observable.ref,
             sideEffect: false,
+            rewardCooldown: false,
             deviceStateStorage: false,
             classroomStorage: false,
             onStageUsersStorage: false,
@@ -1218,10 +1220,18 @@ export class ClassroomStore {
         }
     }
 
-    public reward(userUUID: string): void {
+    public reward(userUUID: string): boolean {
         if (this.isCreator) {
+            const lastReward = this.rewardCooldown.get(userUUID) || 0;
+            // 3s cooldown before rewarding the same user
+            if (Date.now() - lastReward < 3000) {
+                return false;
+            }
+            this.rewardCooldown.set(userUUID, Date.now());
             void this.rtm.sendRoomCommand("reward", { roomUUID: this.roomUUID, userUUID });
+            return true;
         }
+        return false;
     }
 
     public isAvatarsVisible(): boolean {
