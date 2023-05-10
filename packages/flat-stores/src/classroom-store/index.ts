@@ -609,7 +609,7 @@ export class ClassroomStore {
                     this.isCreator || whiteboardStorage.state[this.userUUID],
                 );
                 for (const userUUID in diff) {
-                    const user = this.users.cachedUsers.get(this.userUUID);
+                    const user = this.users.cachedUsers.get(userUUID);
                     const enabled = diff[userUUID]?.newValue;
                     if (user) {
                         if (this.isCreator) {
