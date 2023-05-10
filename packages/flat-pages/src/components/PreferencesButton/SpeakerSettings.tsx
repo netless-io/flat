@@ -9,7 +9,7 @@ import { Button, Select } from "antd";
 import { useTranslate } from "@netless/flat-i18n";
 import { IServiceVideoChatDevice } from "@netless/flat-services";
 import { SVGPause, SVGPlay, useSafePromise } from "flat-components";
-import { RuntimeContext } from "../StoreProvider";
+import { PreferencesStoreContext, RuntimeContext } from "../StoreProvider";
 
 export interface SpeakerSettingsProps extends PreferencesButtonProps {}
 
@@ -19,6 +19,7 @@ export const SpeakerSettings = observer<SpeakerSettingsProps>(function SpeakerSe
     const t = useTranslate();
     const sp = useSafePromise();
     const runtime = useContext(RuntimeContext);
+    const preferences = useContext(PreferencesStoreContext);
     const { rtc } = classroom;
     const [current, setCurrent] = React.useState<string | null>(null);
     const [devices, setDevices] = React.useState<IServiceVideoChatDevice[]>([]);
@@ -35,21 +36,24 @@ export const SpeakerSettings = observer<SpeakerSettingsProps>(function SpeakerSe
 
     useEffect(() => {
         if (devices.length) {
-            const current = classroom.rtc.getSpeakerID();
+            const current = rtc.getSpeakerID();
             if (current && devices.find(device => device.deviceId === current)) {
                 setCurrent(current);
             } else {
-                classroom.rtc.setSpeakerID(devices[0].deviceId);
+                const first = devices[0].deviceId;
+                preferences.updateSpeakerId(first);
+                rtc.setSpeakerID(first);
             }
         }
-    }, [classroom.rtc, devices]);
+    }, [rtc, devices, preferences]);
 
     const changeSpeaker = useCallback(
         (value: string): void => {
-            classroom.rtc.setSpeakerID(value);
+            preferences.updateSpeakerId(value);
+            rtc.setSpeakerID(value);
             setCurrent(value);
         },
-        [classroom.rtc],
+        [preferences, rtc],
     );
 
     const [isPlaying, setPlaying] = useState(false);

@@ -1371,6 +1371,18 @@ export class ClassroomStore {
                 shareScreenToken: globalStore.rtcShareScreen?.token || "",
             });
 
+            if (preferencesStore.cameraId) {
+                await this.rtc.setCameraID(preferencesStore.cameraId);
+            }
+
+            if (preferencesStore.microphoneId) {
+                await this.rtc.setMicID(preferencesStore.microphoneId);
+            }
+
+            if (preferencesStore.speakerId) {
+                await this.rtc.setSpeakerID(preferencesStore.speakerId);
+            }
+
             runInAction(() => {
                 this.isJoinedRTC = true;
             });
