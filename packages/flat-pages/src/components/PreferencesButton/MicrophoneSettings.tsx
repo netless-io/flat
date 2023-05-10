@@ -1,12 +1,13 @@
 import type { PreferencesButtonProps } from "./index";
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { Select } from "antd";
 
 import { useTranslate } from "@netless/flat-i18n";
 import { IServiceVideoChatDevice } from "@netless/flat-services";
 import { useSafePromise } from "flat-components";
+import { PreferencesStoreContext } from "../StoreProvider";
 
 export interface MicrophoneSettingsProps extends PreferencesButtonProps {}
 
@@ -15,6 +16,7 @@ export const MicrophoneSettings = observer<MicrophoneSettingsProps>(function Mic
 }) {
     const t = useTranslate();
     const sp = useSafePromise();
+    const preferences = useContext(PreferencesStoreContext);
     const { rtc } = classroom;
     const [current, setCurrent] = React.useState<string | null>(null);
     const [devices, setDevices] = React.useState<IServiceVideoChatDevice[]>([]);
@@ -31,21 +33,24 @@ export const MicrophoneSettings = observer<MicrophoneSettingsProps>(function Mic
 
     useEffect(() => {
         if (devices.length) {
-            const current = classroom.rtc.getMicID();
+            const current = rtc.getMicID();
             if (current && devices.find(device => device.deviceId === current)) {
                 setCurrent(current);
             } else {
-                classroom.rtc.setMicID(devices[0].deviceId);
+                const first = devices[0].deviceId;
+                preferences.updateMicrophoneId(first);
+                rtc.setMicID(first);
             }
         }
-    }, [classroom.rtc, devices]);
+    }, [rtc, devices, preferences]);
 
     const changeMicrophone = useCallback(
         (deviceId: string) => {
-            classroom.rtc.setMicID(deviceId);
+            preferences.updateMicrophoneId(deviceId);
+            rtc.setMicID(deviceId);
             setCurrent(deviceId);
         },
-        [classroom.rtc],
+        [preferences, rtc],
     );
 
     return (
@@ -53,6 +58,7 @@ export const MicrophoneSettings = observer<MicrophoneSettingsProps>(function Mic
             <h3 className="preferences-modal-section-title">{t("microphone-settings")}</h3>
             <Select
                 className="preferences-modal-section-control"
+                placeholder={t("default")}
                 value={current}
                 onChange={changeMicrophone}
             >

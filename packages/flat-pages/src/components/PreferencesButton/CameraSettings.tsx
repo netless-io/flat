@@ -1,18 +1,20 @@
 import type { PreferencesButtonProps } from "./index";
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { Select } from "antd";
 
 import { useTranslate } from "@netless/flat-i18n";
 import { IServiceVideoChatDevice } from "@netless/flat-services";
 import { useSafePromise } from "flat-components";
+import { PreferencesStoreContext } from "../StoreProvider";
 
 export interface CameraSettingsProps extends PreferencesButtonProps {}
 
 export const CameraSettings = observer<CameraSettingsProps>(function CameraSettings({ classroom }) {
     const t = useTranslate();
     const sp = useSafePromise();
+    const preferences = useContext(PreferencesStoreContext);
     const { rtc } = classroom;
     const [current, setCurrent] = React.useState<string | null>(null);
     const [devices, setDevices] = React.useState<IServiceVideoChatDevice[]>([]);
@@ -29,21 +31,24 @@ export const CameraSettings = observer<CameraSettingsProps>(function CameraSetti
 
     useEffect(() => {
         if (devices.length) {
-            const current = classroom.rtc.getCameraID();
+            const current = rtc.getCameraID();
             if (current && devices.find(device => device.deviceId === current)) {
                 setCurrent(current);
             } else {
-                classroom.rtc.setCameraID(devices[0].deviceId);
+                const first = devices[0].deviceId;
+                preferences.updateCameraId(first);
+                rtc.setCameraID(first);
             }
         }
-    }, [classroom.rtc, devices]);
+    }, [rtc, devices, preferences]);
 
     const changeCamera = useCallback(
         (deviceId: string) => {
-            classroom.rtc.setCameraID(deviceId);
+            preferences.updateCameraId(deviceId);
+            rtc.setCameraID(deviceId);
             setCurrent(deviceId);
         },
-        [classroom.rtc],
+        [preferences, rtc],
     );
 
     return (
@@ -51,6 +56,7 @@ export const CameraSettings = observer<CameraSettingsProps>(function CameraSetti
             <h3 className="preferences-modal-section-title">{t("camera-settings")}</h3>
             <Select
                 className="preferences-modal-section-control"
+                placeholder={t("default")}
                 value={current}
                 onChange={changeCamera}
             >
