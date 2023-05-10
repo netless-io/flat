@@ -47,7 +47,7 @@ export class UserStore {
 
     public get totalUserCount(): number {
         return (
-            (this.creator ? 1 : 0) +
+            (this.creator && !this.creator.hasLeft ? 1 : 0) +
             (this.speakingJoiners.length +
                 this.handRaisingJoiners.length +
                 this.otherJoiners.length)
@@ -98,7 +98,8 @@ export class UserStore {
     public removeUser = (userUUID: string): void => {
         if (this.creator && this.creator.userUUID === userUUID) {
             this.creator.hasLeft = true;
-            this.creator = null;
+            // always show creator
+            // this.creator = null;
         } else {
             for (const { group } of this.joinerGroups) {
                 for (let i = 0; i < this[group].length; i++) {

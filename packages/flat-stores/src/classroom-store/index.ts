@@ -372,7 +372,7 @@ export class ClassroomStore {
 
         const fastboard = await this.whiteboardStore.joinWhiteboardRoom();
 
-        await this.users.initUsers([...this.rtm.members]);
+        await this.users.initUsers([this.ownerUUID, ...this.rtm.members]);
 
         const deviceStateStorage = fastboard.syncedStore.connectStorage<DeviceStateStorageState>(
             "deviceState",
