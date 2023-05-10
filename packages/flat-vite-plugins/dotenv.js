@@ -1,3 +1,4 @@
+const { version } = require("../../scripts/constants.js");
 const { configRegion } = require("../../scripts/utils/auto-choose-config.js");
 const dotenvReal = require("dotenv");
 const { expand } = require("dotenv-expand");
@@ -37,6 +38,8 @@ exports.dotenv = function dotenv(envDir) {
                 define["process.env.NODE_DEV"] = JSON.stringify(mode);
                 define["process.env.FLAT_REGION"] = JSON.stringify(configRegion());
             }
+
+            define["process.env.VERSION"] = JSON.stringify(version);
 
             config.define = { ...config.define, ...define };
         },
