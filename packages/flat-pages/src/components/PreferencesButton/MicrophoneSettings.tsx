@@ -38,7 +38,7 @@ export const MicrophoneSettings = observer<MicrophoneSettingsProps>(function Mic
                 setCurrent(current);
             } else {
                 const first = devices[0].deviceId;
-                preferences.updateCameraId(first);
+                preferences.updateMicrophoneId(first);
                 rtc.setMicID(first);
             }
         }
@@ -46,7 +46,7 @@ export const MicrophoneSettings = observer<MicrophoneSettingsProps>(function Mic
 
     const changeMicrophone = useCallback(
         (deviceId: string) => {
-            preferences.updateCameraId(deviceId);
+            preferences.updateMicrophoneId(deviceId);
             rtc.setMicID(deviceId);
             setCurrent(deviceId);
         },
