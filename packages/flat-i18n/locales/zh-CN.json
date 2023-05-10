@@ -277,6 +277,7 @@
   "recording-completed-tips": "录制完成，可到历史记录查看",
   "general-settings": "常规设置",
   "general-settings-avatars": "视频\n区域",
+  "general-settings-background": "白板\n背景",
   "shortcut-settings": "热键设置",
   "about-us": "关于我们",
   "boot-up-and-run-automatically": "开机自动运行",
@@ -667,5 +668,11 @@
   "show": "显示",
   "hide": "隐藏",
   "avatars-hidden": "视频区域已隐藏",
-  "default": "默认"
+  "default": "默认",
+  "background": {
+    "default": "默认",
+    "teal": "藏青",
+    "grey": "浅灰",
+    "green": "墨绿"
+  }
 }

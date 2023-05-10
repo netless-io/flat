@@ -280,6 +280,7 @@
   "chinese": "Chinese",
   "general-settings": "General settings",
   "general-settings-avatars": "Avatars",
+  "general-settings-background": "Background",
   "language": "Language",
   "language-settings": "Language settings",
   "shortcut-settings": "Shortcut settings",
@@ -667,5 +668,11 @@
   "show": "Show",
   "hide": "Hide",
   "avatars-hidden": "Avatars are hidden",
-  "default": "default"
+  "default": "default",
+  "background": {
+    "default": "Default",
+    "teal": "Teal",
+    "grey": "Grey",
+    "green": "Green"
+  }
 }

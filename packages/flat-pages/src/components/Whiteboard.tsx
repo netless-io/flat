@@ -24,6 +24,7 @@ import { isSupportedImageType, onDropImage } from "../utils/drag-and-drop/image"
 import { PRESETS } from "../constants/presets";
 import { createCloudFile } from "../utils/create-cloud-file";
 import { UserWindows } from "./UserWindows";
+import { PreferencesStoreContext } from "./StoreProvider";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -41,6 +42,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     disableHandRaising,
 }) {
     const t = useTranslate();
+    const preferences = useContext(PreferencesStoreContext);
     const { room, windowManager, phase, whiteboard } = whiteboardStore;
     const isDark = useContext(DarkModeContext);
 
@@ -200,12 +202,16 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                 >
                     <div
                         ref={bindWhiteboard}
-                        className={classNames("whiteboard", {
-                            "can-operate":
-                                !classRoomStore.userWindowsGrid &&
-                                (classRoomStore.isCreator ||
-                                    classRoomStore.users.currentUser?.wbOperate),
-                        })}
+                        className={classNames(
+                            "whiteboard",
+                            "background-" + preferences.background,
+                            {
+                                "can-operate":
+                                    !classRoomStore.userWindowsGrid &&
+                                    (classRoomStore.isCreator ||
+                                        classRoomStore.users.currentUser?.wbOperate),
+                            },
+                        )}
                     />
                     <UserWindows classroom={classRoomStore} />
                     {!whiteboardStore.isCreator &&
