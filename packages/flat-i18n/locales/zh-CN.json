@@ -585,6 +585,10 @@
     "other": "台上座位已满，请先关闭已有学生发言再同意其他学生的上台请求\n（或切换房间类型为小班课，支持多位学生同时发言）"
   },
   "whiteboard-access": "白板权限",
+  "grant-whiteboard-access": "已授权 {{name}} 操作白板",
+  "revoke-whiteboard-access": "已收回 {{name}} 操作白板权限",
+  "granted-whiteboard-access": "老师已允许你操作白板",
+  "revoked-whiteboard-access": "老师已禁止你操作白板",
   "teacher-request-camera": "老师请求开启摄像头",
   "teacher-request-mic": "老师请求开启麦克风",
   "sent-invitation": "已发送邀请",
