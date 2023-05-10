@@ -180,6 +180,7 @@ const Row = /* @__PURE__ */ observer(function Row({
                 <Switch
                     checked={user.hasLeft || user.isSpeak}
                     disabled={!(isCreator || (isSelf && user.isSpeak))}
+                    size="small"
                     onChange={checked => onStaging?.(user.userUUID, checked)}
                 />
             </td>
@@ -187,6 +188,7 @@ const Row = /* @__PURE__ */ observer(function Row({
                 <Switch
                     checked={user.wbOperate}
                     disabled={!(isCreator || (isSelf && user.wbOperate))}
+                    size="small"
                     onChange={checked => onWhiteboard?.(user.userUUID, checked)}
                 />
             </td>

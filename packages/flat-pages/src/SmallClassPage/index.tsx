@@ -160,6 +160,7 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                         className={classNames("small-class-scroll-handles", {
                             active: isScrollable,
                         })}
+                        hidden={!classroomStore.isAvatarsVisible()}
                     >
                         <button
                             className="small-class-scroll-handle is-left"
