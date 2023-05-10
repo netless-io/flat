@@ -5,7 +5,6 @@ import {
     CloudRecordBtn,
     Timer,
     NetworkStatus,
-    RoomInfo,
     TopBar,
     TopBarDivider,
     TopBarRightBtn,
@@ -109,17 +108,10 @@ export const BigClassPage = withClassroomStore<BigClassPageProps>(
                 <>
                     <ExtraPadding />
                     <NetworkStatus networkQuality={classroomStore.networkQuality} />
-                    {classroomStore.isCreator ? (
-                        classroomStore.roomInfo?.beginTime && (
-                            <Timer
-                                beginTime={classroomStore.roomInfo.beginTime}
-                                roomStatus={classroomStore.roomStatus}
-                            />
-                        )
-                    ) : (
-                        <RoomInfo
+                    {classroomStore.roomInfo?.beginTime && (
+                        <Timer
+                            beginTime={classroomStore.roomInfo.beginTime}
                             roomStatus={classroomStore.roomStatus}
-                            roomType={classroomStore.roomInfo?.roomType}
                         />
                     )}
                 </>

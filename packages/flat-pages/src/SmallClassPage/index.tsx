@@ -7,7 +7,6 @@ import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
 import {
     NetworkStatus,
-    RoomInfo,
     TopBar,
     TopBarDivider,
     Timer,
@@ -191,17 +190,10 @@ export const SmallClassPage = withClassroomStore<SmallClassPageProps>(
                 <>
                     <ExtraPadding />
                     <NetworkStatus networkQuality={classroomStore.networkQuality} />
-                    {classroomStore.isCreator ? (
-                        classroomStore.roomInfo?.beginTime && (
-                            <Timer
-                                beginTime={classroomStore.roomInfo.beginTime}
-                                roomStatus={classroomStore.roomStatus}
-                            />
-                        )
-                    ) : (
-                        <RoomInfo
+                    {classroomStore.roomInfo?.beginTime && (
+                        <Timer
+                            beginTime={classroomStore.roomInfo.beginTime}
                             roomStatus={classroomStore.roomStatus}
-                            roomType={classroomStore.roomInfo?.roomType}
                         />
                     )}
                 </>

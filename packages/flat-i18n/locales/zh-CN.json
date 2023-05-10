@@ -68,6 +68,10 @@
   "network-quality6": "网络连接已断开",
   "network-quality7": "暂时无法检测网络质量",
   "network-quality8": "正在检测...",
+  "network-signal0": "未知",
+  "network-signal1": "较差",
+  "network-signal2": "一般",
+  "network-signal3": "良好",
   "room-status": {
     "upcoming": "待开始",
     "running": "进行中",
