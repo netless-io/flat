@@ -1056,13 +1056,17 @@ export class ClassroomStore {
         }
 
         if (this.users.currentUser) {
+            const nextState = !this.users.currentUser.isRaiseHand;
+
             void this.rtm.sendPeerCommand(
                 "raise-hand",
-                { roomUUID: this.roomUUID, raiseHand: !this.users.currentUser.isRaiseHand },
+                { roomUUID: this.roomUUID, raiseHand: nextState },
                 this.ownerUUID,
             );
 
-            message.info(FlatI18n.t("have-raised-hand"));
+            if (nextState) {
+                message.info(FlatI18n.t("have-raised-hand"));
+            }
         }
     };
 
