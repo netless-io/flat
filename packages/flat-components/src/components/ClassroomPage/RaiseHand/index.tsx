@@ -1,10 +1,11 @@
 import "./style.less";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import classNames from "classnames";
 import { isInteger } from "lodash-es";
 import { useTranslate } from "@netless/flat-i18n";
 import { SVGHandUp } from "../../FlatIcons";
+import { useIsUnMounted } from "../../../utils/hooks";
 
 export interface RaiseHandProps {
     isRaiseHand?: boolean;
@@ -18,30 +19,31 @@ export const RaiseHand: React.FC<RaiseHandProps> = ({
     onRaiseHandChange,
 }) => {
     const t = useTranslate();
-    const [active, setActive] = useState(false);
+    const isUnmounted = useIsUnMounted();
+    // if temp is not null, use temp, otherwise use isRaiseHand
+    const [temp, setTemp] = useState<boolean | null>(null);
+
+    const active = temp === null ? isRaiseHand : temp;
 
     const onClick = useCallback(() => {
         onRaiseHandChange();
-        setActive(true);
-    }, [onRaiseHandChange]);
-
-    useEffect(() => {
-        if (active) {
-            const timer = setTimeout(() => setActive(false), 3000);
-            return () => clearTimeout(timer);
-        }
-        return;
-    }, [active]);
+        setTemp(!active);
+        setTimeout(() => {
+            if (!isUnmounted.current) {
+                setTemp(null);
+            }
+        }, 3000);
+    }, [active, isUnmounted, onRaiseHandChange]);
 
     return disableHandRaising ? null : (
         <button
             className={classNames("raise-hand-btn", {
-                "is-active": isRaiseHand || active,
+                "is-active": active,
             })}
             title={t("raise-your-hand")}
             onClick={onClick}
         >
-            <SVGHandUp active={isRaiseHand || active} />
+            <SVGHandUp active={active} />
         </button>
     );
 };
