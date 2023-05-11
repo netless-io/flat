@@ -69,7 +69,7 @@ export const PreferencesButton = observer<PreferencesButtonProps>(function Prefe
                 footer={null}
                 open={open}
                 title={t("nav-settings")}
-                width={800}
+                width={860}
                 onCancel={onCancel}
             >
                 <div className="preferences-modal-content" onClick={updateIndex}>

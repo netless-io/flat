@@ -5,6 +5,8 @@ import { autoPersistStore } from "./utils/auto-persist-store";
 // clear storage if not match
 const LS_VERSION = 1;
 
+export type Background = "default" | "teal" | "grey" | "green" | "custom";
+
 /**
  * User preferences
  *
@@ -25,6 +27,9 @@ export class PreferencesStore {
     public speakerId?: string | null = null;
 
     public prefersColorScheme: FlatPrefersColorScheme = "light";
+
+    public background: Background = "default";
+
     /** Turn on recording on joining room */
     public autoRecording = false;
     /** Show or hide stroke tails */
@@ -75,6 +80,10 @@ export class PreferencesStore {
 
     public toggleStrokeTail = (): void => {
         this.strokeTail = !this.strokeTail;
+    };
+
+    public updateBackground = (background: Background): void => {
+        this.background = background;
     };
 }
 
