@@ -30,6 +30,9 @@ export class PreferencesStore {
 
     public background: Background = "default";
 
+    /** Show cursor name in room */
+    public cursorNameOn = true;
+
     /** Turn on recording on joining room */
     public autoRecording = false;
     /** Show or hide stroke tails */
@@ -45,6 +48,10 @@ export class PreferencesStore {
 
     public updateAutoMicOn = (isOn: boolean): void => {
         this.autoMicOn = isOn;
+    };
+
+    public updateCursorNameOn = (isOn: boolean): void => {
+        this.cursorNameOn = isOn;
     };
 
     public updateCameraId = (cameraId: string): void => {

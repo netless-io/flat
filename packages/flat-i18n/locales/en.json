@@ -257,6 +257,7 @@
   "join-options": "Join Options",
   "create-room-default-title": "The room created by {{name}}",
   "turn-on-the-camera": "Camera",
+  "turn-on-cursor-name": "Show cursor name of others",
   "enter-room-uuid": "Please enter the room ID",
   "turn-on-the-microphone": "Microphone",
   "schedule-room-default-title": "The room scheduled by {{name}}",

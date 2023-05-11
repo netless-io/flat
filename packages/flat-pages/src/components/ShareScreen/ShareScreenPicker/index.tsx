@@ -1,6 +1,13 @@
 import "./style.less";
 
-import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useState,
+} from "react";
 import classNames from "classnames";
 import { useTranslate } from "@netless/flat-i18n";
 import { ClassroomStore } from "@netless/flat-stores";
@@ -9,6 +16,7 @@ import { observer } from "mobx-react-lite";
 import { IServiceVideoChatDevice } from "@netless/flat-services";
 import { useSafePromise } from "flat-components";
 import { ScreenList } from "./ScreenList";
+import { RuntimeContext } from "../../StoreProvider";
 
 interface ShareScreenPickerProps {
     classroomStore: ClassroomStore;
@@ -20,6 +28,7 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
     handleOk,
 }) {
     const t = useTranslate();
+    const runtime = useContext(RuntimeContext);
 
     useLayoutEffect(() => {
         classroomStore.refreshShareScreenInfo();
@@ -30,6 +39,28 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
     }, [classroomStore]);
 
     const isSelected = classroomStore.selectedScreenInfo !== null;
+
+    const chooseSpeaker = useMemo<React.ReactNode>(() => {
+        if (runtime?.isMac) {
+            return null;
+        } else {
+            return (
+                <>
+                    <Checkbox
+                        checked={classroomStore.shareScreenWithAudio}
+                        onChange={ev =>
+                            classroomStore.toggleShareScreenWithAudio(ev.target.checked)
+                        }
+                    >
+                        {t("share-screen.with-audio")}
+                    </Checkbox>
+                    {classroomStore.shareScreenWithAudio && (
+                        <ShareScreenSelectSpeaker classroom={classroomStore} />
+                    )}
+                </>
+            );
+        }
+    }, [classroomStore, runtime, t]);
 
     return (
         <div>
@@ -43,17 +74,7 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
                 footer={
                     <Row>
                         <Col flex={1} style={{ textAlign: "left" }}>
-                            <Checkbox
-                                checked={classroomStore.shareScreenWithAudio}
-                                onChange={ev =>
-                                    classroomStore.toggleShareScreenWithAudio(ev.target.checked)
-                                }
-                            >
-                                {t("share-screen.with-audio")}
-                            </Checkbox>
-                            {classroomStore.shareScreenWithAudio && (
-                                <ShareScreenSelectSpeaker classroom={classroomStore} />
-                            )}
+                            {chooseSpeaker}
                         </Col>
                         <Col>
                             <Button key="cancel" className="footer-button" onClick={closeModal}>

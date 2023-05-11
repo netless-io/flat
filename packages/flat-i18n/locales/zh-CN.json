@@ -257,6 +257,7 @@
   "begin": "开始",
   "join-options": "加入选项",
   "turn-on-the-camera": "开启摄像头",
+  "turn-on-cursor-name": "显示对方光标昵称",
   "enter-room-uuid": "请输入房间号",
   "turn-on-the-microphone": "开启麦克风",
   "schedule-room-default-title": "{{name}} 预定的房间",
