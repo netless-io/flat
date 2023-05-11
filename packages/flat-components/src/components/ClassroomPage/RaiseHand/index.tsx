@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 import { isInteger } from "lodash-es";
 import { useTranslate } from "@netless/flat-i18n";
@@ -10,7 +10,7 @@ import { useIsUnMounted } from "../../../utils/hooks";
 export interface RaiseHandProps {
     isRaiseHand?: boolean;
     disableHandRaising?: boolean;
-    onRaiseHandChange: () => void;
+    onRaiseHandChange: (raise: boolean) => void;
 }
 
 export const RaiseHand: React.FC<RaiseHandProps> = ({
@@ -21,14 +21,16 @@ export const RaiseHand: React.FC<RaiseHandProps> = ({
     const t = useTranslate();
     const isUnmounted = useIsUnMounted();
     // if temp is not null, use temp, otherwise use isRaiseHand
+    const timerRef = useRef(0);
     const [temp, setTemp] = useState<boolean | null>(null);
 
     const active = temp === null ? isRaiseHand : temp;
 
     const onClick = useCallback(() => {
-        onRaiseHandChange();
+        onRaiseHandChange(!active);
         setTemp(!active);
-        setTimeout(() => {
+        clearTimeout(timerRef.current);
+        timerRef.current = window.setTimeout(() => {
             if (!isUnmounted.current) {
                 setTemp(null);
             }

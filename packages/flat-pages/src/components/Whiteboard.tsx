@@ -28,7 +28,6 @@ import { UserWindows } from "./UserWindows";
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
     classRoomStore: ClassroomStore;
-    disableHandRaising?: boolean;
 }
 
 const noop = (): void => {
@@ -38,7 +37,6 @@ const noop = (): void => {
 export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     whiteboardStore,
     classRoomStore,
-    disableHandRaising,
 }) {
     const t = useTranslate();
     const { room, windowManager, phase, whiteboard } = whiteboardStore;
@@ -55,6 +53,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
 
     const isReconnecting = phase === RoomPhase.Reconnecting;
     const handRaisingCount = classRoomStore.users.handRaisingJoiners.length;
+    const creatorHasLeft = !classRoomStore.users.creator || classRoomStore.users.creator.hasLeft;
 
     useEffect(() => {
         return whiteboard.events.on("exportAnnotations", () => showSaveAnnotation(true));
@@ -213,7 +212,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                         !classRoomStore.users.currentUser.isSpeak && (
                             <div className="raise-hand-container">
                                 <RaiseHand
-                                    disableHandRaising={disableHandRaising}
+                                    disableHandRaising={creatorHasLeft}
                                     isRaiseHand={classRoomStore.users.currentUser?.isRaiseHand}
                                     onRaiseHandChange={classRoomStore.onToggleHandRaising}
                                 />

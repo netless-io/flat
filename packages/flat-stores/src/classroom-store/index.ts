@@ -1050,21 +1050,21 @@ export class ClassroomStore {
     };
 
     /** When current user (who is a joiner) raises hand */
-    public onToggleHandRaising = (): void => {
+    public onToggleHandRaising = (raise?: boolean): void => {
         if (this.isCreator || this.users.currentUser?.isSpeak) {
             return;
         }
 
         if (this.users.currentUser) {
-            const nextState = !this.users.currentUser.isRaiseHand;
+            raise ??= !this.users.currentUser.isRaiseHand;
 
             void this.rtm.sendPeerCommand(
                 "raise-hand",
-                { roomUUID: this.roomUUID, raiseHand: nextState },
+                { roomUUID: this.roomUUID, raiseHand: raise },
                 this.ownerUUID,
             );
 
-            if (nextState) {
+            if (raise) {
                 message.info(FlatI18n.t("have-raised-hand"));
             }
         }
