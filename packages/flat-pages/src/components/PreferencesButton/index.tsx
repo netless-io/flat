@@ -32,9 +32,13 @@ export const PreferencesButton = observer<PreferencesButtonProps>(function Prefe
     const t = useTranslate();
     const [open, setOpen] = useState(false);
     const onToggle = useCallback(() => setOpen(open => !open), []);
-    const onCancel = useCallback(() => setOpen(false), []);
 
     const [index, setIndex] = useState(0);
+    const onCancel = useCallback(() => {
+        setOpen(false);
+        setIndex(0);
+    }, []);
+
     const updateIndex = useCallback((ev: React.MouseEvent) => {
         const el = ev.target as HTMLElement | null;
         const index = el?.dataset?.index;
