@@ -6,7 +6,6 @@ import { observer } from "mobx-react-lite";
 import { message } from "antd";
 import {
     NetworkStatus,
-    RoomInfo,
     TopBar,
     TopBarRightBtn,
     TopBarDivider,
@@ -103,17 +102,10 @@ export const OneToOnePage = withClassroomStore<OneToOnePageProps>(
                 <>
                     <ExtraPadding />
                     <NetworkStatus networkQuality={classroomStore.networkQuality} />
-                    {classroomStore.isCreator ? (
-                        classroomStore.roomInfo?.beginTime && (
-                            <Timer
-                                beginTime={classroomStore.roomInfo.beginTime}
-                                roomStatus={classroomStore.roomStatus}
-                            />
-                        )
-                    ) : (
-                        <RoomInfo
+                    {classroomStore.roomInfo?.beginTime && (
+                        <Timer
+                            beginTime={classroomStore.roomInfo.beginTime}
                             roomStatus={classroomStore.roomStatus}
-                            roomType={classroomStore.roomInfo?.roomType}
                         />
                     )}
                 </>

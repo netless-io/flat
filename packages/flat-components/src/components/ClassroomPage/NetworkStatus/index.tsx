@@ -8,27 +8,33 @@ import React, { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
 
+const SignalSVG = [signal0SVG, signal1SVG, signal2SVG, signal3SVG];
+
 interface NetworkQuality {
     delay: number;
     uplink: number;
     downlink: number;
 }
 
-function getSignalIcon(uplink: number, downlink: number): string {
+function getSignalKind(uplink: number, downlink: number): 0 | 1 | 2 | 3 {
     if (uplink === 5 || downlink === 5 || uplink === 4 || downlink === 4) {
-        return signal1SVG;
+        return 1;
     }
     if (uplink === 3 || downlink === 3) {
-        return signal2SVG;
+        return 2;
     }
     if (uplink === 2 || downlink === 2 || uplink === 1 || downlink === 1) {
-        return signal3SVG;
+        return 3;
     }
     if (uplink === 8 || downlink === 8) {
         // checking
-        return signal3SVG;
+        return 3;
     }
-    return signal0SVG;
+    return 0;
+}
+
+function getSignalIcon(uplink: number, downlink: number): string {
+    return SignalSVG[getSignalKind(uplink, downlink)];
 }
 
 export interface NetworkStatusProps {
@@ -52,19 +58,39 @@ export const NetworkStatus = /* @__PURE__ */ observer<NetworkStatusProps>(functi
         [t, uplink, downlink],
     );
 
+    const networkText = useMemo(
+        () => t(`network-signal${getSignalKind(uplink, downlink)}`),
+        [t, uplink, downlink],
+    );
+
     return (
-        <div className="network-status">
-            <span
-                className="network-status-delay"
-                title={t("client-to-edge-server-network-latency")}
-            >
-                {t("delay")}
-                <span className="network-status-delay-ms">{networkQuality.delay}ms</span>
-            </span>
-            <span className="network-status-signal" title={signalText}>
-                {t("network")}
-                <img alt={signalText} src={signalIcon} />
-            </span>
+        <div className="network-status" title={signalText}>
+            <img
+                alt={signalText}
+                className="network-status-signal-img"
+                draggable={false}
+                src={signalIcon}
+            />
+            <div className="network-status-popover">
+                <span
+                    className="network-status-delay"
+                    title={t("client-to-edge-server-network-latency")}
+                >
+                    {t("delay")}
+                    <span className="network-status-delay-ms">{networkQuality.delay}ms</span>
+                </span>
+                <span className="network-status-signal" title={signalText}>
+                    {t("network")}
+                    <span
+                        className={
+                            "network-status-signal-text network-status-signal-" +
+                            getSignalKind(uplink, downlink)
+                        }
+                    >
+                        {networkText}
+                    </span>
+                </span>
+            </div>
         </div>
     );
 });

@@ -1,19 +1,81 @@
 .network-status {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     font-size: 12px;
     color: var(--text);
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+        background-color: var(--blue-1);
+    }
 }
-.network-status-delay {
-    margin: 0 8px;
+
+.network-status-popover {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 7px);
+    border-radius: 4px;
+    z-index: 9999;
+    font-size: 12px;
+    line-height: 18px;
+    padding: 4px 12px;
+    background-color: var(--grey-12);
+    color: var(--grey-0);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: -6px;
+        left: 16px;
+        transform: translateX(-50%);
+        border: 3px solid transparent;
+        border-bottom-color: var(--grey-12);
+    }
 }
-.network-status-delay-ms {
-    display: inline-block;
-    min-width: 3.5em;
+
+.network-status:hover .network-status-popover {
+    opacity: 1;
 }
-.network-status-signal {
-    margin: 0 8px;
+
+.network-status-delay,
+.network-status-delay-ms,
+.network-status-signal,
+.network-status-signal-text {
+    white-space: nowrap;
 }
-.network-status-signal img {
-    margin-left: 3px;
-    width: 10px;
-    height: 18px;
+
+.network-status-signal-0 {
+    color: var(--grey-0);
+}
+
+.network-status-signal-1 {
+    color: var(--danger);
+}
+
+.network-status-signal-2 {
+    color: var(--warning);
+}
+
+.network-status-signal-3 {
+    color: var(--success);
+}
+
+.network-status-signal-img {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+.flat-color-scheme-dark {
+    .network-status:hover {
+        background-color: var(--grey-7);
+    }
 }
