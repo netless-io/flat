@@ -126,7 +126,11 @@ export function initFlatServices(): void {
                         kind: "GeoGebra",
                         icon: geogebraSVG,
                         label: flatI18n.t("tool.geogebra"),
-                        onClick: app => app.manager.addApp({ kind: "GeoGebra" }),
+                        onClick: app =>
+                            app.manager.addApp({
+                                kind: "GeoGebra",
+                                attributes: { uid: app.room.uid },
+                            }),
                     },
                     {
                         kind: "Countdown",
