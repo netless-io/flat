@@ -1,15 +1,14 @@
 import type { PreferencesButtonProps } from "../index";
 
-import React, { useCallback, useContext } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 
 import { useTranslate } from "@netless/flat-i18n";
 import { RoomType } from "@netless/flat-server-api";
-import { AppearancePicker } from "flat-components";
-import { PreferencesStoreContext } from "../../StoreProvider";
 import { AvatarsSettings } from "./AvatarsSettings";
 import { BackgroundSettings } from "./BackgroundSettings";
 import { LanguageSettings } from "./LanguageSettings";
+import { AppearanceSettings } from "./AppearanceSettings";
 
 export interface GeneralSettingsProps extends PreferencesButtonProps {}
 
@@ -17,12 +16,6 @@ export const GeneralSettings = observer<GeneralSettingsProps>(function GeneralSe
     classroom,
 }) {
     const t = useTranslate();
-
-    const preferences = useContext(PreferencesStoreContext);
-    const changeAppearance = useCallback(
-        (ev: any) => preferences.updatePrefersColorScheme(ev.target.value),
-        [preferences],
-    );
 
     const isSmallClass = classroom.roomType === RoomType.SmallClass;
 
@@ -33,13 +26,7 @@ export const GeneralSettings = observer<GeneralSettingsProps>(function GeneralSe
                 <LanguageSettings classroom={classroom} />
                 {isSmallClass && <AvatarsSettings classroom={classroom} />}
                 <BackgroundSettings classroom={classroom} />
-                <label className="preferences-modal-section-grid-label" htmlFor="theme">
-                    {t("theme")}
-                </label>
-                <AppearancePicker
-                    changeAppearance={changeAppearance}
-                    value={preferences.prefersColorScheme}
-                />
+                <AppearanceSettings classroom={classroom} />
             </div>
         </div>
     );

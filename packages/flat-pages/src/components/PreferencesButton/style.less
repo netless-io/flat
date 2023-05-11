@@ -152,6 +152,11 @@
 
 .preferences-modal-section-grid-label {
     white-space: pre-wrap;
+
+    &.first-row {
+        align-self: flex-start;
+        transform: translateY(calc(60px - 50%));
+    }
 }
 
 .preferences-modal-section-control {
@@ -242,6 +247,65 @@
 
 .preferences-modal-section-background.default>.preferences-modal-section-front {
     mix-blend-mode: difference;
+}
+
+.preferences-modal-section-theme {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
+    &.light {
+        background: #fff;
+
+        .preferences-modal-section-theme-front {
+            background-color: var(--blue-2);
+        }
+    }
+
+    &.dark {
+        background: var(--grey-9);
+
+        .preferences-modal-section-theme-front {
+            background-color: var(--grey-7);
+        }
+    }
+}
+
+.preferences-modal-section-theme-front {
+    display: inline-block;
+    width: 80px;
+    height: 8px;
+
+    &:first-child {
+        width: 120px;
+    }
+}
+
+.preferences-modal-section-theme.auto {
+    padding: 0;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 0;
+
+    >.preferences-modal-section-theme {
+        position: static;
+        flex: 1;
+
+        >.preferences-modal-section-theme-front {
+            width: 20px;
+
+            &:first-child {
+                width: 40px;
+            }
+        }
+    }
 }
 
 .preferences-modal-section-button {
@@ -353,10 +417,6 @@
 
         &.ant-radio-wrapper-checked::after {
             background-color: var(--grey-9);
-        }
-
-        .ant-radio+span>img {
-            filter: brightness(0.8);
         }
     }
 
