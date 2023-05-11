@@ -64,7 +64,7 @@ export const NetworkStatus = /* @__PURE__ */ observer<NetworkStatusProps>(functi
     );
 
     return (
-        <div className="network-status" title={signalText}>
+        <div className="network-status">
             <img
                 alt={signalText}
                 className="network-status-signal-img"
@@ -79,7 +79,7 @@ export const NetworkStatus = /* @__PURE__ */ observer<NetworkStatusProps>(functi
                     {t("delay")}
                     <span className="network-status-delay-ms">{networkQuality.delay}ms</span>
                 </span>
-                <span className="network-status-signal" title={signalText}>
+                <span className="network-status-signal">
                     {t("network")}
                     <span
                         className={
