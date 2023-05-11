@@ -27,7 +27,7 @@ export const BackgroundSettings = observer<BackgroundSettingsProps>(function Bac
 
     return (
         <>
-            <label className="preferences-modal-section-grid-label" htmlFor="background">
+            <label className="preferences-modal-section-grid-label first-row" htmlFor="background">
                 {t("general-settings-background")}
             </label>
             <Radio.Group
@@ -38,7 +38,11 @@ export const BackgroundSettings = observer<BackgroundSettingsProps>(function Bac
                 onChange={changeBackground}
             >
                 {backgrounds.map(background => (
-                    <Radio className="preferences-modal-section-radio" value={background}>
+                    <Radio
+                        key={background}
+                        className="preferences-modal-section-radio"
+                        value={background}
+                    >
                         <span className={"preferences-modal-section-background " + background}>
                             <img
                                 alt={t("online-interaction-to-synchronize-ideas")}

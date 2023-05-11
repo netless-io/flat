@@ -17,7 +17,7 @@ export const AvatarsSettings = observer<AvatarsSettingsProps>(function AvatarsSe
 
     return (
         <>
-            <label className="preferences-modal-section-grid-label" htmlFor="avatars">
+            <label className="preferences-modal-section-grid-label first-row" htmlFor="avatars">
                 {t("general-settings-avatars")}
             </label>
             <Radio.Group
