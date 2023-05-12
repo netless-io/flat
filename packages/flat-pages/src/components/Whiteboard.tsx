@@ -209,6 +209,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                                     !classRoomStore.userWindowsGrid &&
                                     (classRoomStore.isCreator ||
                                         classRoomStore.users.currentUser?.wbOperate),
+                                "hide-cursor-name": !preferences.cursorNameOn,
                             },
                         )}
                     />

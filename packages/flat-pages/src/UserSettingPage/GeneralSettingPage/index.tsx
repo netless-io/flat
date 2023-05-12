@@ -162,6 +162,14 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                     >
                         {t("turn-on-the-camera")}
                     </Checkbox>
+                    <Checkbox
+                        checked={preferencesStore.cursorNameOn}
+                        onClick={() =>
+                            preferencesStore.updateCursorNameOn(!preferencesStore.cursorNameOn)
+                        }
+                    >
+                        {t("turn-on-cursor-name")}
+                    </Checkbox>
                 </div>
                 <div className="general-setting-device-test-box">
                     <div className="general-setting-checkbox-title">{t("device-test-option")}</div>
