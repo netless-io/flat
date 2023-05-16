@@ -2,17 +2,17 @@ import "./style.less";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { useSearchParam } from "react-use";
+import { useIsomorphicLayoutEffect, useSearchParam } from "react-use";
 import { Redirect } from "react-router-dom";
 
 import type { ColumnsType } from "antd/lib/table";
 import { subWeeks, subMonths, subYears } from "date-fns";
 import { Select, Table } from "antd";
 
-import { useSafePromise } from "flat-components";
+import { FlatPrefersColorScheme, useSafePromise } from "flat-components";
 import { FlatI18n, useTranslate } from "@netless/flat-i18n";
 import { SensitiveType, listSensitive } from "@netless/flat-server-api";
-import { GlobalStoreContext } from "../components/StoreProvider";
+import { GlobalStoreContext, PreferencesStoreContext } from "../components/StoreProvider";
 import { NEED_BINDING_PHONE } from "../constants/config";
 
 export type SensitiveRange = "1 week" | "1 month" | "1 year";
@@ -41,7 +41,9 @@ export const SensitivePage = observer(function SensitivePage() {
     const t = useTranslate();
     const sp = useSafePromise();
     const globalStore = useContext(GlobalStoreContext);
+    const preferences = useContext(PreferencesStoreContext);
     const token = useSearchParam("token") || globalStore.userInfo?.token;
+    const userTheme = useSearchParam("theme") || preferences.prefersColorScheme;
 
     const defaultSensitiveData = useCallback(
         () =>
@@ -59,6 +61,12 @@ export const SensitivePage = observer(function SensitivePage() {
     const [range, setRange] = useState<SensitiveRange>("1 week");
     const [data, setData] = useState<SensitiveData[]>([]);
     const [loading, setLoading] = useState(false);
+
+    useIsomorphicLayoutEffect(() => {
+        const theme: FlatPrefersColorScheme =
+            userTheme === "dark" ? "dark" : userTheme === "light" ? "light" : "auto";
+        preferences.updatePrefersColorScheme(theme);
+    }, []);
 
     useEffect(() => {
         if (NEED_BINDING_PHONE) {
