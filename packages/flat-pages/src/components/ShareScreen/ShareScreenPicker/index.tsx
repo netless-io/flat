@@ -50,12 +50,11 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
                                 <>
                                     <Checkbox
                                         checked={classroomStore.shareScreenWithAudio}
-                                        onChange={ev => {
-                                            console.log(ev);
+                                        onChange={ev =>
                                             classroomStore.toggleShareScreenWithAudio(
                                                 ev.target.checked,
-                                            );
-                                        }}
+                                            )
+                                        }
                                     >
                                         {t("share-screen.with-audio")}
                                     </Checkbox>
