@@ -19,6 +19,7 @@
     padding: 0 8px;
     font-size: 16px;
     user-select: none;
+    position: relative;
 
     &.isMac {
         border-top: none;
@@ -36,8 +37,10 @@
 }
 
 .topbar-content-center:extend(.topbar-content-left) {
-    flex: 1;
-    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 14px;
     color: var(--text);
 }

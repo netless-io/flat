@@ -1,18 +1,12 @@
 import "./style.less";
 
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useLayoutEffect,
-    useMemo,
-    useState,
-} from "react";
 import classNames from "classnames";
+import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { Button, Modal, Spin, Checkbox, Row, Col, Select } from "antd";
+
 import { useTranslate } from "@netless/flat-i18n";
 import { ClassroomStore } from "@netless/flat-stores";
-import { Button, Modal, Spin, Checkbox, Row, Col, Select } from "antd";
-import { observer } from "mobx-react-lite";
 import { IServiceVideoChatDevice } from "@netless/flat-services";
 import { useSafePromise } from "flat-components";
 import { ScreenList } from "./ScreenList";
@@ -40,28 +34,6 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
 
     const isSelected = classroomStore.selectedScreenInfo !== null;
 
-    const chooseSpeaker = useMemo<React.ReactNode>(() => {
-        if (runtime?.isMac) {
-            return null;
-        } else {
-            return (
-                <>
-                    <Checkbox
-                        checked={classroomStore.shareScreenWithAudio}
-                        onChange={ev =>
-                            classroomStore.toggleShareScreenWithAudio(ev.target.checked)
-                        }
-                    >
-                        {t("share-screen.with-audio")}
-                    </Checkbox>
-                    {classroomStore.shareScreenWithAudio && (
-                        <ShareScreenSelectSpeaker classroom={classroomStore} />
-                    )}
-                </>
-            );
-        }
-    }, [classroomStore, runtime, t]);
-
     return (
         <div>
             <Modal
@@ -74,7 +46,23 @@ const ShareScreenPickerModel = observer<ShareScreenPickerProps>(function ShareSc
                 footer={
                     <Row>
                         <Col flex={1} style={{ textAlign: "left" }}>
-                            {chooseSpeaker}
+                            {runtime?.isMac ? null : (
+                                <>
+                                    <Checkbox
+                                        checked={classroomStore.shareScreenWithAudio}
+                                        onChange={ev =>
+                                            classroomStore.toggleShareScreenWithAudio(
+                                                ev.target.checked,
+                                            )
+                                        }
+                                    >
+                                        {t("share-screen.with-audio")}
+                                    </Checkbox>
+                                    {classroomStore.shareScreenWithAudio && (
+                                        <ShareScreenSelectSpeaker classroom={classroomStore} />
+                                    )}
+                                </>
+                            )}
                         </Col>
                         <Col>
                             <Button key="cancel" className="footer-button" onClick={closeModal}>
