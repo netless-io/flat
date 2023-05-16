@@ -152,7 +152,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                             preferencesStore.updateAutoMicOn(!preferencesStore.autoMicOn)
                         }
                     >
-                        {t("turn-on-the-microphone")}
+                        <span className="checkbox-item-inner">{t("turn-on-the-microphone")}</span>
                     </Checkbox>
                     <Checkbox
                         checked={preferencesStore.autoCameraOn}
@@ -160,7 +160,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                             preferencesStore.updateAutoCameraOn(!preferencesStore.autoCameraOn)
                         }
                     >
-                        {t("turn-on-the-camera")}
+                        <span className="checkbox-item-inner">{t("turn-on-the-camera")}</span>
                     </Checkbox>
                     <Checkbox
                         checked={preferencesStore.cursorNameOn}
@@ -168,7 +168,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                             preferencesStore.updateCursorNameOn(!preferencesStore.cursorNameOn)
                         }
                     >
-                        {t("turn-on-cursor-name")}
+                        <span className="checkbox-item-inner">{t("turn-on-cursor-name")}</span>
                     </Checkbox>
                 </div>
                 <div className="general-setting-device-test-box">
