@@ -330,16 +330,14 @@ function createToaster(): Toaster {
 
 const getVSPath = (): string => {
     let vsPath;
-    if (process.env.NODE_ENV === "production") {
-        vsPath = window.node.path.join(__dirname, "monaco-editor", "min", "vs");
+    // /path/to/flat/node_modules/.pnpm/electron... -> /path/to/flat/node_modules/monaco-editor/min/vs
+    // /path/to/flat/static -> /path/to/flat/static/monaco-editor/min/vs
+    if (__dirname.includes("node_modules")) {
+        const i = __dirname.indexOf("node_modules") + "node_modules".length;
+        const base = __dirname.slice(0, i);
+        vsPath = window.node.path.join(base, "monaco-editor", "min", "vs");
     } else {
-        const nodeModulesName = "node_modules";
-        const nodeModulesEndIndexByPath =
-            __dirname.indexOf(nodeModulesName) + nodeModulesName.length;
-
-        const rootNodeModulesPath = __dirname.slice(0, nodeModulesEndIndexByPath);
-
-        vsPath = window.node.path.join(rootNodeModulesPath, "monaco-editor", "min", "vs");
+        vsPath = window.node.path.join(__dirname, "monaco-editor", "min", "vs");
     }
 
     return `file:///${vsPath.replace(/\\/g, "/")}`;
