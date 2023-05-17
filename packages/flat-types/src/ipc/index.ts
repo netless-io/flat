@@ -15,6 +15,7 @@ export type WindowActionAsync = {
                   minHeight: number;
               };
         maximizable?: boolean;
+        trafficLightPosition?: { x: number; y: number };
     }) => void;
     "set-aspect-ratio": (args: { aspectRatio: number }) => void;
     "intercept-native-window-close": (args: { intercept: boolean }) => void;
@@ -22,6 +23,7 @@ export type WindowActionAsync = {
     "force-close-window": (args: {}) => void;
     "set-visual-zoom-level": (args: { minimumLevel: number; maximumLevel: number }) => void;
     "set-win-status": (args: { windowStatus: WindowStatus }) => void;
+    "set-theme": (args: { theme: "light" | "dark" | "auto" }) => void;
 };
 
 export type AppActionAsync = {

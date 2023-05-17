@@ -1,6 +1,6 @@
 import { windowManager } from "../window-manager";
 import { ipc } from "flat-types";
-import { app, ipcMain, powerSaveBlocker } from "electron";
+import { app, ipcMain, powerSaveBlocker, nativeTheme } from "electron";
 import runtime from "./runtime";
 import { updateService } from "./update-service";
 import { update } from "flat-types";
@@ -47,6 +47,7 @@ const windowActionAsync = (customWindow: CustomWindow): ipc.WindowActionAsync =>
             }
 
             window.setSize(args.width, args.height);
+            window.setTrafficLightPosition(args.trafficLightPosition || { x: 5, y: 12 });
 
             if (args.autoCenter) {
                 window.center();
@@ -105,6 +106,9 @@ const windowActionAsync = (customWindow: CustomWindow): ipc.WindowActionAsync =>
                     break;
                 }
             }
+        },
+        "set-theme": args => {
+            nativeTheme.themeSource = args.theme === "auto" ? "system" : args.theme;
         },
     };
 };

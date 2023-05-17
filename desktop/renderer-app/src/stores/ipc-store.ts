@@ -60,6 +60,7 @@ export class IPCStore {
                     resizable: true,
                     setMinimumSize: true,
                     maximizable: true,
+                    trafficLightPosition: { x: 10, y: 25 },
                 });
 
                 this.ipcAsyncByMainWindow("intercept-native-window-close", {

@@ -1,6 +1,7 @@
 import { FlatPrefersColorScheme, Region } from "flat-components";
 import { FlatI18n } from "@netless/flat-i18n";
 import { autoPersistStore } from "./utils/auto-persist-store";
+import { autoNativeTheme } from "./utils/auto-native-theme";
 
 // clear storage if not match
 const LS_VERSION = 1;
@@ -40,6 +41,7 @@ export class PreferencesStore {
 
     public constructor() {
         autoPersistStore({ storeLSName: "PreferencesStore", store: this, version: LS_VERSION });
+        autoNativeTheme(this);
     }
 
     public updateAutoCameraOn = (isOn: boolean): void => {

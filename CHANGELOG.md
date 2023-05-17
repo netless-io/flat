@@ -1,3 +1,29 @@
+## [2.2.2](https://github.com/netless-io/flat/compare/v2.2.1...v2.2.2) (2023-05-16)
+
+
+### Features
+
+* **flat-pages**: add option to hide others' cursor names ([#1934](https://github.com/netless-io/flat/issues/1934)) ([cdffb42f](https://github.com/netless-io/flat/commit/cdffb42f6b0cf4a5cbc8dd8d86470e51ea014ee6))
+* **flat-pages**: add option to change background of whiteboard ([#1931](https://github.com/netless-io/flat/issues/1931)) ([82f9b78a](https://github.com/netless-io/flat/commit/82f9b78ab39a315d93638cc82a12f62dda9c6ca1))
+* **flat-pages**: add option to hide small class top row ([#1918](https://github.com/netless-io/flat/issues/1918)) ([14c4976f](https://github.com/netless-io/flat/commit/14c4976f5cf1d2ddab19042ae214c82baaec7cea))
+* **flat-pages**: add preferences modal in room ([#1910](https://github.com/netless-io/flat/issues/1910)) ([bd2edc26](https://github.com/netless-io/flat/commit/bd2edc26ab4c17c8ee7fb510e174c64435459a17))
+* **flat-pages**: add shortcuts to grant whiteboard and rewards ([#1905](https://github.com/netless-io/flat/issues/1905)) ([472ba60f](https://github.com/netless-io/flat/commit/472ba60f8e2c75f5cfe7fec6a362160c74d462b6))
+* **flat-pages**: add sensitive page ([#1902](https://github.com/netless-io/flat/issues/1902)) ([96ca7ae3](https://github.com/netless-io/flat/commit/96ca7ae396aa413e3e223d83956f2100f8a4885b))
+
+### Bug Fixes
+
+* **flat-stores**: set devices on entering room ([#1926](https://github.com/netless-io/flat/issues/1926)) ([318b9380](https://github.com/netless-io/flat/commit/318b938038d1b2a3aea58d7faf1390516a111866))
+* **desktop**: define flat version env variable ([#1919](https://github.com/netless-io/flat/issues/1919)) ([f113effc](https://github.com/netless-io/flat/commit/f113effcc2caeb7e4d85557e4e7ea643cea9ab65))
+* **flat-stores**: usersInfo may not include all users ([#1913](https://github.com/netless-io/flat/issues/1913)) ([9a2dc719](https://github.com/netless-io/flat/commit/9a2dc71981402135c1a58eb314811db1a48e974c))
+* **service-providers**: fix device id after creating tracks ([#1914](https://github.com/netless-io/flat/issues/1914)) ([50ddfebf](https://github.com/netless-io/flat/commit/50ddfebfd4db00fb386c61061477aec8c26f765e))
+* **flat-pages**: fix shortcuts style on big class room ([#1911](https://github.com/netless-io/flat/issues/1911)) ([a8921772](https://github.com/netless-io/flat/commit/a8921772b17ac167386b0d042562e7c7231dec64))
+* **service-providers**: correctly dispose loopback recording ([#1909](https://github.com/netless-io/flat/issues/1909)) ([63d54705](https://github.com/netless-io/flat/commit/63d54705957f6c079cea3442130f2139499f417b))
+* **flat-pages**: show share record menu only when has record ([#1907](https://github.com/netless-io/flat/issues/1907)) ([58c277c0](https://github.com/netless-io/flat/commit/58c277c09d4a3d6e4e3e16bb161db817d485b539))
+* **flat-pages**: pass token into sensitive api ([#1904](https://github.com/netless-io/flat/issues/1904)) ([98feef0b](https://github.com/netless-io/flat/commit/98feef0b42a3ea3913f39519f532710053124c28))
+* **flat-pages**: wrong style on login page ([#1897](https://github.com/netless-io/flat/issues/1897)) ([28334c6f](https://github.com/netless-io/flat/commit/28334c6fdfa8b1453c458e4b6f00f2035b3f476f))
+
+
+
 ## [2.2.1](https://github.com/netless-io/flat/compare/v2.2.0...v2.2.1) (2023-04-17)
 
 
