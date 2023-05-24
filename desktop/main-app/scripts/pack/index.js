@@ -64,7 +64,13 @@ const buildElectron = async () => {
     }
 
     if (buildType === "win") {
-        if (
+        if (process.env.WINDOWS_CODE_SIGNING_SERVER) {
+            config.win = {
+                ...config.win,
+                sign: "./scripts/pack/sign.js",
+                signDlls: true,
+            };
+        } else if (
             process.env.WINDOWS_CODE_SIGNING_CA_PATH &&
             process.env.WINDOWS_CODE_SIGNING_CA_PASSWORD
         ) {
