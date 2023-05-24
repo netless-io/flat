@@ -47,7 +47,11 @@ const windowActionAsync = (customWindow: CustomWindow): ipc.WindowActionAsync =>
             }
 
             window.setSize(args.width, args.height);
-            window.setTrafficLightPosition(args.trafficLightPosition || { x: 5, y: 12 });
+
+            // There's no such method on Windows.
+            if (window.setTrafficLightPosition) {
+                window.setTrafficLightPosition(args.trafficLightPosition || { x: 5, y: 12 });
+            }
 
             if (args.autoCenter) {
                 window.center();
