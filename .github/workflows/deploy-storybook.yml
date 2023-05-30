@@ -6,6 +6,9 @@ on:
     paths:
       - "packages/flat-components/src/**"
 
+permissions:
+  contents: write
+
 jobs:
   deploy-storybook:
     runs-on: ubuntu-latest
