@@ -19,7 +19,12 @@ export const UsersButton = observer<UsersButtonProps>(function UsersButton({ cla
     const users = useComputed(() => {
         const { offlineJoiners } = classroom;
         const { speakingJoiners, handRaisingJoiners, otherJoiners } = classroom.users;
-        return [...speakingJoiners, ...handRaisingJoiners, ...offlineJoiners, ...otherJoiners].sort(
+
+        // speaking users may include offline users, so filter them out
+        const offlineUserUUIDs = new Set(offlineJoiners.map(user => user.userUUID));
+        const speakingOnline = speakingJoiners.filter(user => !offlineUserUUIDs.has(user.userUUID));
+
+        return [...speakingOnline, ...handRaisingJoiners, ...offlineJoiners, ...otherJoiners].sort(
             (a, b) => a.name.localeCompare(b.name),
         );
     }).get();

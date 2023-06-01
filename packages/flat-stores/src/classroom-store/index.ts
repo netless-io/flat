@@ -352,15 +352,6 @@ export class ClassroomStore {
     public async init(): Promise<void> {
         await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
 
-        if (process.env.NODE_ENV === "development") {
-            if (this.roomInfo && this.roomInfo.ownerUUID !== this.ownerUUID) {
-                (this.ownerUUID as string) = this.roomInfo.ownerUUID;
-                if (process.env.DEV) {
-                    console.error(new Error("ClassRoom Error: ownerUUID mismatch!"));
-                }
-            }
-        }
-
         await this.initRTC();
 
         await this.rtm.joinRoom({
@@ -371,8 +362,6 @@ export class ClassroomStore {
         });
 
         const fastboard = await this.whiteboardStore.joinWhiteboardRoom();
-
-        await this.users.initUsers([this.ownerUUID, ...this.rtm.members]);
 
         const deviceStateStorage = fastboard.syncedStore.connectStorage<DeviceStateStorageState>(
             "deviceState",
@@ -403,6 +392,17 @@ export class ClassroomStore {
         this.onStageUsersStorage = onStageUsersStorage;
         this.whiteboardStorage = whiteboardStorage;
         this.userWindowsStorage = userWindowsStorage;
+
+        const onStageUsers = Object.keys(onStageUsersStorage.state).filter(
+            userUUID => onStageUsersStorage.state[userUUID],
+        );
+        await this.users.initUsers([...this.rtm.members], [this.ownerUUID, ...onStageUsers]);
+        const owner = this.users.cachedUsers.get(this.ownerUUID);
+        // update owner info in room store, it will use that to render the users panel
+        roomStore.updateRoom(this.roomUUID, this.ownerUUID, {
+            ownerName: owner?.name,
+            ownerAvatarURL: owner?.avatar,
+        });
 
         if (this.isCreator) {
             this.updateDeviceState(
@@ -457,7 +457,7 @@ export class ClassroomStore {
 
         this.sideEffect.addDisposer(
             this.rtm.events.on("member-joined", async ({ userUUID }) => {
-                await this.users.addUser(userUUID);
+                await this.users.addUser(userUUID, this.isUsersPanelVisible);
                 this.users.updateUsers(user => {
                     if (user.userUUID === userUUID) {
                         if (userUUID === this.ownerUUID || onStageUsersStorage.state[userUUID]) {
@@ -785,6 +785,10 @@ export class ClassroomStore {
 
     public toggleUsersPanel = (visible = !this.isUsersPanelVisible): void => {
         this.isUsersPanelVisible = visible;
+        // fetch lazy loaded users when the users panel is opened
+        if (visible) {
+            this.users.flushLazyUsers().catch(console.error);
+        }
     };
 
     public onDragStart = (): void => {
