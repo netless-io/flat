@@ -231,15 +231,15 @@ export class AgoraRTM extends IServiceTextChat {
                         break;
                     }
                     case RtmEngine.MessageType.RAW: {
-                        if (senderID === ownerUUID) {
-                            try {
-                                const command = JSON.parse(
-                                    new TextDecoder().decode(msg.rawMessage),
-                                ) as IServiceTextChatRoomCommand;
+                        try {
+                            const command = JSON.parse(
+                                new TextDecoder().decode(msg.rawMessage),
+                            ) as IServiceTextChatRoomCommand;
+                            if (senderID === ownerUUID || command.t === "enter") {
                                 this._emitRoomCommand(roomUUID, senderID, command);
-                            } catch (e) {
-                                console.error(e);
                             }
+                        } catch (e) {
+                            console.error(e);
                         }
                         break;
                     }
@@ -289,6 +289,14 @@ export class AgoraRTM extends IServiceTextChat {
                                     roomUUID,
                                     senderID,
                                     deviceState: command.v,
+                                });
+                                break;
+                            }
+                            case "users-info": {
+                                this.events.emit("users-info", {
+                                    roomUUID,
+                                    userUUID: senderID,
+                                    users: command.v.users,
                                 });
                                 break;
                             }
@@ -373,6 +381,15 @@ export class AgoraRTM extends IServiceTextChat {
                     roomUUID,
                     userUUID: command.v.userUUID,
                     senderID: ownerUUID,
+                });
+                break;
+            }
+            case "enter": {
+                this.events.emit("enter", {
+                    roomUUID,
+                    userUUID: command.v.userUUID,
+                    userInfo: command.v.userInfo,
+                    peers: command.v.peers,
                 });
                 break;
             }

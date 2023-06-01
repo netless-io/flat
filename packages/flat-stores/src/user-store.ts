@@ -1,5 +1,5 @@
 import { action, makeAutoObservable, observable } from "mobx";
-import { usersInfo, CloudRecordStartPayload } from "@netless/flat-server-api";
+import { usersInfo, CloudRecordStartPayload, UserInfo } from "@netless/flat-server-api";
 import { preferencesStore } from "./preferences-store";
 import { isEmpty } from "lodash-es";
 
@@ -107,6 +107,18 @@ export class UserStore {
             user = this.createLazyUsers([userUUID], true)[0];
         }
         return user;
+    };
+
+    public cacheUserIfNeeded = (userUUID: string, userInfo: UserInfo): void => {
+        let user = this.cachedUsers.get(userUUID);
+        if (!user) {
+            user = this.createLazyUsers([userUUID])[0];
+        }
+        if (!user.rtcUID) {
+            user.name = userInfo.name;
+            user.avatar = userInfo.avatarURL;
+            user.rtcUID = String(userInfo.rtcUID);
+        }
     };
 
     public removeUser = (userUUID: string): void => {

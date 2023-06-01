@@ -10,6 +10,7 @@ import {
     RoomStatus,
     RoomType,
     checkRTMCensor,
+    UserInfo,
 } from "@netless/flat-server-api";
 import { FlatI18n } from "@netless/flat-i18n";
 import { errorTips, message } from "flat-components";
@@ -29,6 +30,7 @@ import {
     IServiceWhiteboard,
 } from "@netless/flat-services";
 import { preferencesStore } from "../preferences-store";
+import { sampleSize } from "lodash-es";
 
 export * from "./constants";
 export * from "./chat-store";
@@ -396,13 +398,45 @@ export class ClassroomStore {
         const onStageUsers = Object.keys(onStageUsersStorage.state).filter(
             userUUID => onStageUsersStorage.state[userUUID],
         );
-        await this.users.initUsers([...this.rtm.members], [this.ownerUUID, ...onStageUsers]);
+        const members = [...this.rtm.members];
+        await this.users.initUsers(members, [this.ownerUUID, this.userUUID, ...onStageUsers]);
         const owner = this.users.cachedUsers.get(this.ownerUUID);
         // update owner info in room store, it will use that to render the users panel
         roomStore.updateRoom(this.roomUUID, this.ownerUUID, {
             ownerName: owner?.name,
             ownerAvatarURL: owner?.avatar,
         });
+
+        const user = this.users.cachedUsers.get(this.userUUID);
+        if (user) {
+            void this.rtm.sendRoomCommand("enter", {
+                roomUUID: this.roomUUID,
+                userUUID: user.userUUID,
+                userInfo: {
+                    name: user.name,
+                    avatarURL: user.avatar,
+                    rtcUID: +user.rtcUID || 0,
+                },
+                peers: sampleSize(members, 3),
+            });
+        }
+
+        this.sideEffect.addDisposer(
+            this.rtm.events.on("enter", ({ userUUID, userInfo, peers }) => {
+                this.users.cacheUserIfNeeded(userUUID, userInfo);
+                if (peers && peers.includes(this.userUUID)) {
+                    this.sendUsersInfoToPeer(userUUID);
+                }
+            }),
+        );
+
+        this.sideEffect.addDisposer(
+            this.rtm.events.on("users-info", ({ users }) => {
+                for (const userUUID in users) {
+                    this.users.cacheUserIfNeeded(userUUID, users[userUUID]);
+                }
+            }),
+        );
 
         if (this.isCreator) {
             this.updateDeviceState(
@@ -754,6 +788,29 @@ export class ClassroomStore {
                 await this.toggleRecording();
             }
         }
+    }
+
+    private sendUsersInfoToPeer(userUUID: string): void {
+        const users: Record<string, UserInfo> = {};
+
+        for (const user of this.users.cachedUsers.values()) {
+            if (user.rtcUID) {
+                users[user.userUUID] = {
+                    rtcUID: +user.rtcUID || 0,
+                    name: user.name,
+                    avatarURL: user.avatar,
+                };
+            }
+        }
+
+        void this.rtm.sendPeerCommand(
+            "users-info",
+            {
+                roomUUID: this.roomUUID,
+                users,
+            },
+            userUUID,
+        );
     }
 
     public async destroy(): Promise<void> {
