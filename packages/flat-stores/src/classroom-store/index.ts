@@ -565,7 +565,7 @@ export class ClassroomStore {
             const onStageUsers = Object.keys(onStageUsersStorage.state).filter(
                 userUUID => onStageUsersStorage.state[userUUID],
             );
-            await this.users.syncExtraUsersInfo(onStageUsers);
+            await this.users.flushLazyUsers(onStageUsers);
             runInAction(() => {
                 this.onStageUserUUIDs.replace(onStageUsers);
             });

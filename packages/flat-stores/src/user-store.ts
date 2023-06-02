@@ -203,11 +203,18 @@ export class UserStore {
     };
 
     /**
-     * Fetch info of lazily initialized users.
+     * Fetch info of lazily initialized users, or create new one if not exist.
      */
-    public flushLazyUsers = async (userUUIDs?: string[]): Promise<void> => {
-        if (!userUUIDs) {
-            userUUIDs = [];
+    public flushLazyUsers = async (wanted?: string[]): Promise<void> => {
+        const userUUIDs: string[] = [];
+        if (wanted) {
+            for (const userUUID of wanted) {
+                const user = this.cachedUsers.get(userUUID);
+                if (!user || !user.rtcUID) {
+                    userUUIDs.push(userUUID);
+                }
+            }
+        } else {
             for (const user of this.cachedUsers.values()) {
                 if (!user.rtcUID) {
                     userUUIDs.push(user.userUUID);
