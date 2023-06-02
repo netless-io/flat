@@ -78,22 +78,29 @@ export class UserStore {
         makeAutoObservable(this);
     }
 
-    // If provided `onStageUserUUIDs`, other users will be lazily initialized.
-    public initUsers = async (userUUIDs: string[], onStageUserUUIDs?: string[]): Promise<void> => {
+    // If provided `forceUserUUIDs`, other users will be lazily initialized.
+    public initUsers = async (userUUIDs: string[], forceUserUUIDs?: string[]): Promise<void> => {
         this.otherJoiners.clear();
         this.speakingJoiners.clear();
         this.handRaisingJoiners.clear();
-        const users = await this.createUsers(onStageUserUUIDs || userUUIDs);
+        const users = await this.createUsers(forceUserUUIDs || userUUIDs);
         users.forEach(user => {
             this.sortUser(user);
             this.cacheUser(user);
         });
-        if (onStageUserUUIDs) {
-            const lazyUsers = userUUIDs.filter(userUUID => !onStageUserUUIDs.includes(userUUID));
-            this.createLazyUsers(lazyUsers);
+        if (forceUserUUIDs) {
+            const lazyUsers = userUUIDs.filter(userUUID => !forceUserUUIDs.includes(userUUID));
+            this.createLazyUsers(lazyUsers).forEach(user => {
+                this.sortUser(user);
+                this.cacheUser(user);
+            });
         }
     };
 
+    /**
+     * Add a user, by default it will be lazily initialized.
+     * If `force` is true, it will be initialized immediately.
+     */
     public addUser = async (userUUID: string, force = false): Promise<User> => {
         if (this.cachedUsers.has(userUUID)) {
             this.removeUser(userUUID);
@@ -101,11 +108,11 @@ export class UserStore {
         let user: User;
         if (force) {
             user = (await this.createUsers([userUUID]))[0];
-            this.cacheUser(user);
-            this.sortUser(user);
         } else {
             user = this.createLazyUsers([userUUID], true)[0];
         }
+        this.cacheUser(user);
+        this.sortUser(user);
         return user;
     };
 
@@ -113,6 +120,8 @@ export class UserStore {
         let user = this.cachedUsers.get(userUUID);
         if (!user) {
             user = this.createLazyUsers([userUUID])[0];
+            this.cacheUser(user);
+            this.sortUser(user);
         }
         if (!user.rtcUID) {
             user.name = userInfo.name;
@@ -319,14 +328,22 @@ export class UserStore {
         return result;
     }
 
-    // Users with empty 'rtcUID' are initialized lazily.
-    // If 'force' is true, it will reset these users' states.
+    /**
+     * Map users uuid to an observable user list.
+     * If `force`, it will reset the user state (camera, mic, etc.)
+     */
     private createLazyUsers(userUUIDs: string[], force = false): User[] {
-        const users: User[] = [];
+        userUUIDs = [...new Set(userUUIDs)];
+
+        if (userUUIDs.length <= 0) {
+            return [];
+        }
+
+        const result: User[] = [];
         for (const userUUID of userUUIDs) {
             const cachedUser = this.cachedUsers.get(userUUID);
             if (!force && cachedUser) {
-                users.push(cachedUser);
+                result.push(cachedUser);
                 continue;
             }
             const user = observable.object<User>({
@@ -341,11 +358,10 @@ export class UserStore {
                 isRaiseHand: false,
                 hasLeft: !this.isInRoom(userUUID),
             });
-            users.push(user);
-            this.sortUser(user);
-            this.cacheUser(user);
+            result.push(user);
         }
-        return users;
+
+        return result;
     }
 
     private readonly joinerGroups = [

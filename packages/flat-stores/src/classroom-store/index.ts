@@ -422,10 +422,14 @@ export class ClassroomStore {
         }
 
         this.sideEffect.addDisposer(
-            this.rtm.events.on("enter", ({ userUUID, userInfo, peers }) => {
-                this.users.cacheUserIfNeeded(userUUID, userInfo);
+            this.rtm.events.on("enter", ({ userUUID: senderID, userInfo, peers }) => {
+                if (senderID === this.userUUID) {
+                    // ignore self enter message
+                    return;
+                }
+                this.users.cacheUserIfNeeded(senderID, userInfo);
                 if (peers && peers.includes(this.userUUID)) {
-                    this.sendUsersInfoToPeer(userUUID);
+                    this.sendUsersInfoToPeer(senderID);
                 }
             }),
         );
@@ -1133,6 +1137,13 @@ export class ClassroomStore {
 
     public onToggleHandRaisingPanel = (force = !this.isHandRaisingPanelVisible): void => {
         this.isHandRaisingPanelVisible = force;
+        // fetch lazy loaded users when the hand raising panel is opened
+        if (force) {
+            const raiseHandUsers = this.classroomStorage?.state.raiseHandUsers;
+            if (raiseHandUsers) {
+                this.users.flushLazyUsers(raiseHandUsers).catch(console.error);
+            }
+        }
     };
 
     public onToggleBan = (): void => {

@@ -229,6 +229,28 @@ export const LoginWithPhone: React.FC<LoginWithPhoneProps> = ({
             <div className="login-with-phone">
                 <div className="login-width-limiter">
                     <LoginTitle />
+                    {process.env.DEV ? (
+                        <select
+                            style={{
+                                position: "absolute",
+                                height: 32,
+                                transform: "translateX(-120%)",
+                                opacity: 0,
+                                cursor: "pointer",
+                            }}
+                            onChange={ev => {
+                                setPhone(ev.currentTarget.value);
+                                setCode("666666");
+                                setAgreed(true);
+                            }}
+                        >
+                            {Array.from({ length: 9 }, (_, i) => (
+                                <option key={i} value={"13" + String(i + 1).repeat(9)}>
+                                    13{i + 1}
+                                </option>
+                            ))}
+                        </select>
+                    ) : null}
                     <Input
                         placeholder={t("enter-phone")}
                         prefix={
