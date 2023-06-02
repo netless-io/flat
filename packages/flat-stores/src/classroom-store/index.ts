@@ -806,28 +806,30 @@ export class ClassroomStore {
         }
     }
 
-    private sendUsersInfoToPeer(userUUID: string): void {
-        const users: Record<string, UserInfo> = {};
-
+    // @TODO: use RTM 2.0 and get users info from peer properties
+    private sendUsersInfoToPeer(_userUUID: string): void {
+        // @TODO: disabled for now, be cause RTM 1.0 has a limit of 1KB per message
+        //
+        // const users: Record<string, UserInfo> = {};
+        //
         // Filter out initialized users (whose rtcUID is not null)
-        for (const user of this.users.cachedUsers.values()) {
-            if (user.rtcUID) {
-                users[user.userUUID] = {
-                    rtcUID: +user.rtcUID || 0,
-                    name: user.name,
-                    avatarURL: user.avatar,
-                };
-            }
-        }
-
-        void this.rtm.sendPeerCommand(
-            "users-info",
-            {
-                roomUUID: this.roomUUID,
-                users,
-            },
-            userUUID,
-        );
+        // for (const user of this.users.cachedUsers.values()) {
+        //     if (user.rtcUID) {
+        //         users[user.userUUID] = {
+        //             rtcUID: +user.rtcUID || 0,
+        //             name: user.name,
+        //             avatarURL: user.avatar,
+        //         };
+        //     }
+        // }
+        // void this.rtm.sendPeerCommand(
+        //     "users-info",
+        //     {
+        //         roomUUID: this.roomUUID,
+        //         users,
+        //     },
+        //     userUUID,
+        // );
     }
 
     public async destroy(): Promise<void> {
