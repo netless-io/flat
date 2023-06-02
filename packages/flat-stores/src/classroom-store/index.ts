@@ -427,17 +427,29 @@ export class ClassroomStore {
                     // ignore self enter message
                     return;
                 }
+                if (process.env.DEV) {
+                    console.log(`[rtm] ${senderID} is entering room with his info:`, userInfo);
+                }
                 this.users.cacheUserIfNeeded(senderID, userInfo);
                 if (peers && peers.includes(this.userUUID)) {
                     this.sendUsersInfoToPeer(senderID);
+                    if (process.env.DEV) {
+                        console.log(`[rtm] send local users info to peer ${senderID}`);
+                    }
                 }
             }),
         );
 
         this.sideEffect.addDisposer(
-            this.rtm.events.on("users-info", ({ users }) => {
+            this.rtm.events.on("users-info", ({ userUUID: senderID, users }) => {
+                let count = 0;
                 for (const userUUID in users) {
-                    this.users.cacheUserIfNeeded(userUUID, users[userUUID]);
+                    if (this.users.cacheUserIfNeeded(userUUID, users[userUUID])) {
+                        count++;
+                    }
+                }
+                if (process.env.DEV) {
+                    console.log(`[rtm] received users info from ${senderID}: %d rows`, count);
                 }
             }),
         );
@@ -797,6 +809,7 @@ export class ClassroomStore {
     private sendUsersInfoToPeer(userUUID: string): void {
         const users: Record<string, UserInfo> = {};
 
+        // Filter out initialized users (whose rtcUID is not null)
         for (const user of this.users.cachedUsers.values()) {
             if (user.rtcUID) {
                 users[user.userUUID] = {

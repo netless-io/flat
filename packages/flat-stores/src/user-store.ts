@@ -116,18 +116,22 @@ export class UserStore {
         return user;
     };
 
-    public cacheUserIfNeeded = (userUUID: string, userInfo: UserInfo): void => {
+    // Returns `true` if user info is updated.
+    public cacheUserIfNeeded = (userUUID: string, userInfo: UserInfo): boolean => {
         let user = this.cachedUsers.get(userUUID);
         if (!user) {
             user = this.createLazyUsers([userUUID])[0];
             this.cacheUser(user);
             this.sortUser(user);
         }
+        let updated = false;
         if (!user.rtcUID) {
             user.name = userInfo.name;
             user.avatar = userInfo.avatarURL;
             user.rtcUID = String(userInfo.rtcUID);
+            updated = true;
         }
+        return updated;
     };
 
     public removeUser = (userUUID: string): void => {
