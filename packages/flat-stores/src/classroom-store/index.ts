@@ -10,7 +10,6 @@ import {
     RoomStatus,
     RoomType,
     checkRTMCensor,
-    UserInfo,
 } from "@netless/flat-server-api";
 import { FlatI18n } from "@netless/flat-i18n";
 import { errorTips, message } from "flat-components";
