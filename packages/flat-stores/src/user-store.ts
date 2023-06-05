@@ -1,12 +1,16 @@
 import { action, makeAutoObservable, observable } from "mobx";
-import { usersInfo, CloudRecordStartPayload } from "@netless/flat-server-api";
+import { usersInfo, CloudRecordStartPayload, UserInfo } from "@netless/flat-server-api";
 import { preferencesStore } from "./preferences-store";
+import { isEmpty } from "lodash-es";
 
 export interface User {
+    // key
     userUUID: string;
+    // static info, can be cached
     rtcUID: string;
     avatar: string;
     name: string;
+    // state, should keep
     camera: boolean;
     mic: boolean;
     isSpeak: boolean;
@@ -74,25 +78,60 @@ export class UserStore {
         makeAutoObservable(this);
     }
 
-    public initUsers = async (userUUIDs: string[]): Promise<void> => {
+    // If provided `forceUserUUIDs`, other users will be lazily initialized.
+    public initUsers = async (userUUIDs: string[], forceUserUUIDs?: string[]): Promise<void> => {
         this.otherJoiners.clear();
         this.speakingJoiners.clear();
         this.handRaisingJoiners.clear();
-        const users = await this.createUsers(userUUIDs);
+        const users = await this.createUsers(forceUserUUIDs || userUUIDs);
         users.forEach(user => {
             this.sortUser(user);
             this.cacheUser(user);
         });
+        if (forceUserUUIDs) {
+            const lazyUsers = userUUIDs.filter(userUUID => !forceUserUUIDs.includes(userUUID));
+            this.createLazyUsers(lazyUsers).forEach(user => {
+                this.sortUser(user);
+                this.cacheUser(user);
+            });
+        }
     };
 
-    public addUser = async (userUUID: string): Promise<User> => {
+    /**
+     * Add a user, by default it will be lazily initialized.
+     * If `force` is true, it will be initialized immediately.
+     */
+    public addUser = async (userUUID: string, force = false): Promise<User> => {
         if (this.cachedUsers.has(userUUID)) {
             this.removeUser(userUUID);
         }
-        const [user] = await this.createUsers([userUUID]);
+        let user: User;
+        if (force) {
+            user = (await this.createUsers([userUUID]))[0];
+        } else {
+            user = this.createLazyUsers([userUUID], true)[0];
+        }
         this.cacheUser(user);
         this.sortUser(user);
         return user;
+    };
+
+    // Returns `true` if user info is updated.
+    public cacheUserIfNeeded = (userUUID: string, userInfo: UserInfo): boolean => {
+        let user = this.cachedUsers.get(userUUID);
+        if (!user) {
+            user = this.createLazyUsers([userUUID])[0];
+            this.cacheUser(user);
+            this.sortUser(user);
+        }
+        let updated = false;
+        if (!user.rtcUID) {
+            user.name = userInfo.name;
+            user.avatar = userInfo.avatarURL;
+            user.rtcUID = String(userInfo.rtcUID);
+            updated = true;
+        }
+        return updated;
     };
 
     public removeUser = (userUUID: string): void => {
@@ -160,8 +199,36 @@ export class UserStore {
         const users = await this.createUsers(
             userUUIDs.filter(userUUID => !this.cachedUsers.has(userUUID)),
         );
+        this.cacheUsers(users);
+    };
+
+    /**
+     * Fetch info of lazily initialized users, or create new one if not exist.
+     */
+    public flushLazyUsers = async (wanted?: string[]): Promise<void> => {
+        const userUUIDs: string[] = [];
+        if (wanted) {
+            for (const userUUID of wanted) {
+                const user = this.cachedUsers.get(userUUID);
+                if (!user || !user.rtcUID) {
+                    userUUIDs.push(userUUID);
+                }
+            }
+        } else {
+            for (const user of this.cachedUsers.values()) {
+                if (!user.rtcUID) {
+                    userUUIDs.push(user.userUUID);
+                }
+            }
+        }
+        if (userUUIDs.length === 0) {
+            return;
+        }
+        const users = await this.createUsers(userUUIDs);
+        this.cacheUsers(users);
         for (const user of users) {
-            this.cacheUser(user);
+            this.removeUser(user.userUUID);
+            this.sortUser(user);
         }
     };
 
@@ -217,6 +284,22 @@ export class UserStore {
         this.cachedUsers.set(user.userUUID, user);
     }
 
+    private cacheUsers(users: User[]): void {
+        for (const user of users) {
+            // keep user state from cache
+            const cachedUser = this.cachedUsers.get(user.userUUID);
+            if (cachedUser) {
+                user.camera = cachedUser.camera;
+                user.mic = cachedUser.mic;
+                user.isSpeak = cachedUser.isSpeak;
+                user.wbOperate = cachedUser.wbOperate;
+                user.isRaiseHand = cachedUser.isRaiseHand;
+                user.hasLeft = !this.isInRoom(user.userUUID);
+            }
+            this.cacheUser(user);
+        }
+    }
+
     /**
      * Fetch users info and return an observable user list
      */
@@ -229,6 +312,10 @@ export class UserStore {
 
         // The users info may not include all users in userUUIDs.
         const users = await usersInfo({ roomUUID: this.roomUUID, usersUUID: userUUIDs });
+        if (isEmpty(users)) {
+            return [];
+        }
+
         const result: User[] = [];
         for (const userUUID of userUUIDs) {
             if (users[userUUID]) {
@@ -247,6 +334,42 @@ export class UserStore {
                 });
                 result.push(user);
             }
+        }
+
+        return result;
+    }
+
+    /**
+     * Map users uuid to an observable user list.
+     * If `force`, it will reset the user state (camera, mic, etc.)
+     */
+    private createLazyUsers(userUUIDs: string[], force = false): User[] {
+        userUUIDs = [...new Set(userUUIDs)];
+
+        if (userUUIDs.length <= 0) {
+            return [];
+        }
+
+        const result: User[] = [];
+        for (const userUUID of userUUIDs) {
+            const cachedUser = this.cachedUsers.get(userUUID);
+            if (!force && cachedUser) {
+                result.push(cachedUser);
+                continue;
+            }
+            const user = observable.object<User>({
+                userUUID,
+                rtcUID: cachedUser?.rtcUID || "",
+                avatar: cachedUser?.avatar || "",
+                name: cachedUser?.name || "",
+                camera: false,
+                mic: false,
+                isSpeak: false,
+                wbOperate: false,
+                isRaiseHand: false,
+                hasLeft: !this.isInRoom(userUUID),
+            });
+            result.push(user);
         }
 
         return result;

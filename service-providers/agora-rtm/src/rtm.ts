@@ -16,6 +16,8 @@ import { v4 as uuidv4 } from "uuid";
 export class AgoraRTM extends IServiceTextChat {
     public readonly members = new Set<string>();
 
+    private readonly _encoder = new TextEncoder();
+    private readonly _decoder = new TextDecoder();
     private readonly _sideEffect = new SideEffectManager();
     private readonly _roomSideEffect = new SideEffectManager();
 
@@ -131,7 +133,7 @@ export class AgoraRTM extends IServiceTextChat {
             const command = { t, v } as IServiceTextChatRoomCommand;
             await this.channel.sendMessage({
                 messageType: RtmEngine.MessageType.RAW,
-                rawMessage: new TextEncoder().encode(JSON.stringify(command)),
+                rawMessage: this._encoder.encode(JSON.stringify(command)),
             });
             // emit to local
             if (this.roomUUID && this.userUUID) {
@@ -165,7 +167,7 @@ export class AgoraRTM extends IServiceTextChat {
             const result = await this.client.sendMessageToPeer(
                 {
                     messageType: RtmEngine.MessageType.RAW,
-                    rawMessage: new TextEncoder().encode(JSON.stringify({ t, v })),
+                    rawMessage: this._encoder.encode(JSON.stringify({ t, v })),
                 },
                 peerID,
             );
@@ -231,15 +233,15 @@ export class AgoraRTM extends IServiceTextChat {
                         break;
                     }
                     case RtmEngine.MessageType.RAW: {
-                        if (senderID === ownerUUID) {
-                            try {
-                                const command = JSON.parse(
-                                    new TextDecoder().decode(msg.rawMessage),
-                                ) as IServiceTextChatRoomCommand;
+                        try {
+                            const command = JSON.parse(
+                                this._decoder.decode(msg.rawMessage),
+                            ) as IServiceTextChatRoomCommand;
+                            if (senderID === ownerUUID || command.t === "enter") {
                                 this._emitRoomCommand(roomUUID, senderID, command);
-                            } catch (e) {
-                                console.error(e);
                             }
+                        } catch (e) {
+                            console.error(e);
                         }
                         break;
                     }
@@ -254,7 +256,7 @@ export class AgoraRTM extends IServiceTextChat {
                 if (msg.messageType === RtmEngine.MessageType.RAW) {
                     try {
                         const command = JSON.parse(
-                            new TextDecoder().decode(msg.rawMessage),
+                            this._decoder.decode(msg.rawMessage),
                         ) as IServiceTextChatPeerCommand;
                         if (command.v.roomUUID !== roomUUID) {
                             return;
@@ -289,6 +291,14 @@ export class AgoraRTM extends IServiceTextChat {
                                     roomUUID,
                                     senderID,
                                     deviceState: command.v,
+                                });
+                                break;
+                            }
+                            case "users-info": {
+                                this.events.emit("users-info", {
+                                    roomUUID,
+                                    userUUID: senderID,
+                                    users: command.v.users,
                                 });
                                 break;
                             }
@@ -373,6 +383,15 @@ export class AgoraRTM extends IServiceTextChat {
                     roomUUID,
                     userUUID: command.v.userUUID,
                     senderID: ownerUUID,
+                });
+                break;
+            }
+            case "enter": {
+                this.events.emit("enter", {
+                    roomUUID,
+                    userUUID: command.v.userUUID,
+                    userInfo: command.v.userInfo,
+                    peers: command.v.peers,
                 });
                 break;
             }

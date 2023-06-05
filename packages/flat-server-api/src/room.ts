@@ -376,12 +376,10 @@ export interface UsersInfoPayload {
     usersUUID?: string[];
 }
 
+export type UserInfo = { name: string; rtcUID: number; avatarURL: string };
+
 export type UsersInfoResult = {
-    [key in string]: {
-        name: string;
-        rtcUID: number;
-        avatarURL: string;
-    };
+    [key in string]: UserInfo;
 };
 
 export function usersInfo(payload: UsersInfoPayload): Promise<UsersInfoResult> {

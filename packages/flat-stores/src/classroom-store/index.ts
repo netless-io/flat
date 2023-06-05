@@ -29,6 +29,7 @@ import {
     IServiceWhiteboard,
 } from "@netless/flat-services";
 import { preferencesStore } from "../preferences-store";
+import { sampleSize } from "lodash-es";
 
 export * from "./constants";
 export * from "./chat-store";
@@ -352,15 +353,6 @@ export class ClassroomStore {
     public async init(): Promise<void> {
         await roomStore.syncOrdinaryRoomInfo(this.roomUUID);
 
-        if (process.env.NODE_ENV === "development") {
-            if (this.roomInfo && this.roomInfo.ownerUUID !== this.ownerUUID) {
-                (this.ownerUUID as string) = this.roomInfo.ownerUUID;
-                if (process.env.DEV) {
-                    console.error(new Error("ClassRoom Error: ownerUUID mismatch!"));
-                }
-            }
-        }
-
         await this.initRTC();
 
         await this.rtm.joinRoom({
@@ -371,8 +363,6 @@ export class ClassroomStore {
         });
 
         const fastboard = await this.whiteboardStore.joinWhiteboardRoom();
-
-        await this.users.initUsers([this.ownerUUID, ...this.rtm.members]);
 
         const deviceStateStorage = fastboard.syncedStore.connectStorage<DeviceStateStorageState>(
             "deviceState",
@@ -403,6 +393,65 @@ export class ClassroomStore {
         this.onStageUsersStorage = onStageUsersStorage;
         this.whiteboardStorage = whiteboardStorage;
         this.userWindowsStorage = userWindowsStorage;
+
+        const onStageUsers = Object.keys(onStageUsersStorage.state).filter(
+            userUUID => onStageUsersStorage.state[userUUID],
+        );
+        const members = [...this.rtm.members];
+        await this.users.initUsers(members, [this.ownerUUID, this.userUUID, ...onStageUsers]);
+        const owner = this.users.cachedUsers.get(this.ownerUUID);
+        // update owner info in room store, it will use that to render the users panel
+        roomStore.updateRoom(this.roomUUID, this.ownerUUID, {
+            ownerName: owner?.name,
+            ownerAvatarURL: owner?.avatar,
+        });
+
+        const user = this.users.cachedUsers.get(this.userUUID);
+        if (user) {
+            void this.rtm.sendRoomCommand("enter", {
+                roomUUID: this.roomUUID,
+                userUUID: user.userUUID,
+                userInfo: {
+                    name: user.name,
+                    avatarURL: user.avatar,
+                    rtcUID: +user.rtcUID || 0,
+                },
+                peers: sampleSize(members, 3),
+            });
+        }
+
+        this.sideEffect.addDisposer(
+            this.rtm.events.on("enter", ({ userUUID: senderID, userInfo, peers }) => {
+                if (senderID === this.userUUID) {
+                    // ignore self enter message
+                    return;
+                }
+                if (process.env.DEV) {
+                    console.log(`[rtm] ${senderID} is entering room with his info:`, userInfo);
+                }
+                this.users.cacheUserIfNeeded(senderID, userInfo);
+                if (peers && peers.includes(this.userUUID)) {
+                    this.sendUsersInfoToPeer(senderID);
+                    if (process.env.DEV) {
+                        console.log(`[rtm] send local users info to peer ${senderID}`);
+                    }
+                }
+            }),
+        );
+
+        this.sideEffect.addDisposer(
+            this.rtm.events.on("users-info", ({ userUUID: senderID, users }) => {
+                let count = 0;
+                for (const userUUID in users) {
+                    if (this.users.cacheUserIfNeeded(userUUID, users[userUUID])) {
+                        count++;
+                    }
+                }
+                if (process.env.DEV) {
+                    console.log(`[rtm] received users info from ${senderID}: %d rows`, count);
+                }
+            }),
+        );
 
         if (this.isCreator) {
             this.updateDeviceState(
@@ -457,7 +506,7 @@ export class ClassroomStore {
 
         this.sideEffect.addDisposer(
             this.rtm.events.on("member-joined", async ({ userUUID }) => {
-                await this.users.addUser(userUUID);
+                await this.users.addUser(userUUID, this.isUsersPanelVisible);
                 this.users.updateUsers(user => {
                     if (user.userUUID === userUUID) {
                         if (userUUID === this.ownerUUID || onStageUsersStorage.state[userUUID]) {
@@ -516,7 +565,7 @@ export class ClassroomStore {
             const onStageUsers = Object.keys(onStageUsersStorage.state).filter(
                 userUUID => onStageUsersStorage.state[userUUID],
             );
-            await this.users.syncExtraUsersInfo(onStageUsers);
+            await this.users.flushLazyUsers(onStageUsers);
             runInAction(() => {
                 this.onStageUserUUIDs.replace(onStageUsers);
             });
@@ -756,6 +805,32 @@ export class ClassroomStore {
         }
     }
 
+    // @TODO: use RTM 2.0 and get users info from peer properties
+    private sendUsersInfoToPeer(_userUUID: string): void {
+        // @TODO: disabled for now, be cause RTM 1.0 has a limit of 1KB per message
+        //
+        // const users: Record<string, UserInfo> = {};
+        //
+        // Filter out initialized users (whose rtcUID is not null)
+        // for (const user of this.users.cachedUsers.values()) {
+        //     if (user.rtcUID) {
+        //         users[user.userUUID] = {
+        //             rtcUID: +user.rtcUID || 0,
+        //             name: user.name,
+        //             avatarURL: user.avatar,
+        //         };
+        //     }
+        // }
+        // void this.rtm.sendPeerCommand(
+        //     "users-info",
+        //     {
+        //         roomUUID: this.roomUUID,
+        //         users,
+        //     },
+        //     userUUID,
+        // );
+    }
+
     public async destroy(): Promise<void> {
         this.sideEffect.flushAll();
 
@@ -785,6 +860,10 @@ export class ClassroomStore {
 
     public toggleUsersPanel = (visible = !this.isUsersPanelVisible): void => {
         this.isUsersPanelVisible = visible;
+        // fetch lazy loaded users when the users panel is opened
+        if (visible) {
+            this.users.flushLazyUsers().catch(console.error);
+        }
     };
 
     public onDragStart = (): void => {
@@ -1072,6 +1151,13 @@ export class ClassroomStore {
 
     public onToggleHandRaisingPanel = (force = !this.isHandRaisingPanelVisible): void => {
         this.isHandRaisingPanelVisible = force;
+        // fetch lazy loaded users when the hand raising panel is opened
+        if (force) {
+            const raiseHandUsers = this.classroomStorage?.state.raiseHandUsers;
+            if (raiseHandUsers) {
+                this.users.flushLazyUsers(raiseHandUsers).catch(console.error);
+            }
+        }
     };
 
     public onToggleBan = (): void => {

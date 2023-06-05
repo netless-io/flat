@@ -1,4 +1,4 @@
-import type { RoomStatus } from "@netless/flat-server-api";
+import type { RoomStatus, UserInfo } from "@netless/flat-server-api";
 import type { Remitter } from "remitter";
 
 export interface IServiceTextChatEventData {
@@ -48,6 +48,13 @@ export interface IServiceTextChatEventData {
         senderID: string;
         deviceState: { camera?: boolean; mic?: boolean };
     };
+    "enter": {
+        roomUUID: string;
+        userUUID: string;
+        userInfo: UserInfo;
+        peers?: string[];
+    };
+    "users-info": { roomUUID: string; userUUID: string; users: Record<string, UserInfo> };
 }
 
 export type IServiceTextChatEventNames = Extract<keyof IServiceTextChatEventData, string>;
