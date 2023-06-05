@@ -681,5 +681,7 @@
     "teal": "Teal",
     "grey": "Grey",
     "green": "Green"
-  }
+  },
+  "drop-to-storage": "Drop file to cloud storage",
+  "drop-to-board": "Drop file to whiteboard"
 }

@@ -681,5 +681,7 @@
     "teal": "藏青",
     "grey": "浅灰",
     "green": "墨绿"
-  }
+  },
+  "drop-to-storage": "拖拽文件到云盘",
+  "drop-to-board": "拖拽文件到白板"
 }

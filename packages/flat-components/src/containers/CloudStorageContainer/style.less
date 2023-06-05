@@ -36,23 +36,23 @@
     align-items: center;
     margin-left: auto;
 
-    & > * {
+    &>* {
         margin-left: 1em !important;
     }
 
-    .ant-btn-group > .ant-btn:first-child:not(:last-child),
-    .ant-btn-group > span:first-child:not(:last-child) > .ant-btn {
+    .ant-btn-group>.ant-btn:first-child:not(:last-child),
+    .ant-btn-group>span:first-child:not(:last-child)>.ant-btn {
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px;
     }
 
-    .ant-btn-group > .ant-btn:last-child:not(:first-child),
+    .ant-btn-group>.ant-btn:last-child:not(:first-child),
     .ant-btn-group .ant-btn-primary:not(:first-child):not(:last-child) {
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
     }
 
-    & > button {
+    &>button {
         border-radius: 5px;
     }
 
@@ -77,7 +77,7 @@
     display: inline-block;
     margin-left: 14px;
 
-    > span {
+    >span {
         position: absolute;
         top: 10px;
         width: 9px;
@@ -85,10 +85,12 @@
         background-color: var(--grey-6);
         display: inline-block;
         transition: all .2s ease;
+
         &:first-of-type {
             left: 0;
             transform: rotate(45deg);
         }
+
         &:last-of-type {
             right: 0;
             transform: rotate(-45deg);
@@ -104,11 +106,12 @@
 .cloud-storage-container-btns .ant-dropdown:hover,
 .cloud-storage-container-dropdown-btn:hover {
     .cloud-storage-container-btn-arrow {
-        > span {
+        >span {
             &:first-of-type {
                 background-color: var(--primary);
                 transform: rotate(-45deg);
             }
+
             &:last-of-type {
                 background-color: var(--primary);
                 transform: rotate(45deg);
@@ -117,11 +120,12 @@
     }
 
     .cloud-storage-container-btn-arrow-primary {
-         > span {
+        >span {
             &:first-of-type {
                 background-color: #fff;
                 transform: rotate(-45deg);
             }
+
             &:last-of-type {
                 background-color: #fff;
                 transform: rotate(45deg);
@@ -130,8 +134,8 @@
     }
 }
 
-.cloud-storage-container-btn-arrow-primary:extend(.cloud-storage-container-btn-arrow){
-    > span {
+.cloud-storage-container-btn-arrow-primary:extend(.cloud-storage-container-btn-arrow) {
+    >span {
         background-color: #fff;
     }
 }
@@ -184,16 +188,57 @@
 .cloud-storage-container-mask-enter {
     opacity: 0;
 }
+
 .cloud-storage-container-mask-enter-active {
     opacity: 1;
     transition: opacity 0.4s;
 }
+
 .cloud-storage-container-mask-exit {
     opacity: 1;
 }
+
 .cloud-storage-container-mask-exit-active {
     opacity: 0;
     transition: opacity 0.4s;
+}
+
+.cloud-storage-container-tips {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, .75);
+    pointer-events: none;
+}
+
+.cloud-storage-container-tips-content {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 16px;
+    border-radius: 4px;
+    background: var(--primary);
+    color: #fff;
+    opacity: .95;
+    animation: bouncing 1s infinite cubic-bezier(0.5, 1, 0.89, 1);
+}
+
+@keyframes bouncing {
+    0% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
 }
 
 .flat-color-scheme-dark {
@@ -215,8 +260,12 @@
     }
 
     .cloud-storage-container-btn-arrow {
-        > span {
+        >span {
             background-color: var(--grey-3);
         }
-    }   
+    }
+
+    .cloud-storage-container-tips {
+        background: rgba(0, 0, 0, .75);
+    }
 }

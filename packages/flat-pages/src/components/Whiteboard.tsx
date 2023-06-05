@@ -52,6 +52,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     const [page, setPage] = useState(0);
     const [maxPage, setMaxPage] = useState(Infinity);
     const [showPage, setShowPage] = useState(false);
+    const [tipsVisible, setTipsVisible] = useState(false);
 
     const isReconnecting = phase === RoomPhase.Reconnecting;
     const handRaisingCount = classRoomStore.users.handRaisingJoiners.length;
@@ -123,6 +124,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     const onDragOver = useCallback(
         (event: React.DragEvent<HTMLDivElement>) => {
             event.preventDefault();
+            setTipsVisible(true);
             const file = event.dataTransfer.files[0];
             if (room && file && isSupportedFileExt(file)) {
                 event.dataTransfer.dropEffect = "copy";
@@ -131,9 +133,14 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         [room],
     );
 
+    const onDragLeave = useCallback(() => {
+        setTipsVisible(false);
+    }, []);
+
     const onDrop = useCallback(
         async (event: React.DragEvent<HTMLDivElement>) => {
             event.preventDefault();
+            setTipsVisible(false);
             const file = event.dataTransfer.files[0];
             if (room && file) {
                 if (isSupportedImageType(file)) {
@@ -196,6 +203,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                     className={classNames("whiteboard-container", {
                         "is-readonly": !whiteboardStore.allowDrawing,
                     })}
+                    onDragLeave={onDragLeave}
                     onDragOver={onDragOver}
                     onDrop={onDrop}
                 >
@@ -271,6 +279,13 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                             <div className="hand-raising-empty">{t("no-one-raising-hand")}</div>
                         )}
                     </div>
+                    {tipsVisible && (
+                        <div className="whiteboard-container-tips">
+                            <div className="whiteboard-container-tips-content">
+                                {t("drop-to-board")}
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
             <SaveAnnotationModal
