@@ -192,3 +192,39 @@ export function getWhiteboardTaskData(
 
     return null;
 }
+
+export interface UploadTempPhotoStartPayload {
+    fileName: string;
+    fileSize: number;
+}
+
+export interface UploadTempPhotoResult {
+    fileUUID: string;
+    ossDomain: string;
+    ossFilePath: string;
+    policy: string;
+    signature: string;
+}
+
+export async function uploadTempPhotoStart(
+    fileName: string,
+    fileSize: number,
+): Promise<UploadTempPhotoResult> {
+    return await postV2<UploadTempPhotoStartPayload, UploadTempPhotoResult>(
+        "temp-photo/upload/start",
+        {
+            fileName,
+            fileSize,
+        },
+    );
+}
+
+export interface UploadTempPhotoFinishPayload {
+    fileUUID: string;
+}
+
+export async function uploadTempPhotoFinish(fileUUID: string): Promise<void> {
+    return await postV2<UploadTempPhotoFinishPayload, void>("temp-photo/upload/finish", {
+        fileUUID,
+    });
+}

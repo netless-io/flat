@@ -530,6 +530,7 @@
     "pencil-tail": "Pencil tail"
   },
   "upload-avatar-size-limit": "Avatar size should be less than 5MB",
+  "upload-image-size-limit": "Image size should be less than 5MB",
   "applications": "Applications",
   "developer": "Developer",
   "oauth-apps": "OAuth Apps",
@@ -605,6 +606,7 @@
   "teacher-has-turn-off-camera": "Teacher has turned your camera off",
   "teacher-has-turn-off-mic": "Teacher has turned your microphone off",
   "upload-concurrent-limit": "You have reached the upload concurrent limit",
+  "upload-image-concurrent-limit": "You have reached the upload limit of screenshot images",
   "file-is-too-big": "File is too big",
   "file-not-found": "File not found",
   "file-already-exists": "File already exists",
