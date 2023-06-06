@@ -1,9 +1,17 @@
+import Axios from "axios";
 import { message } from "antd";
 import { v4 as v4uuid } from "uuid";
 import { ApplianceNames, Room, Size } from "white-web-sdk";
-import { listFiles } from "@netless/flat-server-api";
-import { CloudStorageStore, UploadTask } from "@netless/flat-stores";
+import { CloudStorageStore } from "@netless/flat-stores";
 import { FlatI18n } from "@netless/flat-i18n";
+import {
+    RequestErrorCode,
+    UploadTempPhotoResult,
+    isServerRequestError,
+    uploadTempPhotoFinish,
+    uploadTempPhotoStart,
+} from "@netless/flat-server-api";
+import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/process";
 
 const ImageFileTypes = [
     "image/png",
@@ -22,41 +30,70 @@ export function isSupportedImageType(file: File): boolean {
     return ImageFileTypes.includes(file.type);
 }
 
+const TEMP_IMAGE_SIZE_LIMIT = 5242880; // 5MB
+
 export async function onDropImage(
     file: File,
     x: number,
     y: number,
     room: Room,
-    cloudStorageStore: CloudStorageStore,
+    _cloudStorageStore: CloudStorageStore,
 ): Promise<void> {
     if (!isSupportedImageType(file)) {
         console.log("[dnd:image] unsupported file type:", file.type, file.name);
         return;
     }
 
+    if (file.size > TEMP_IMAGE_SIZE_LIMIT) {
+        message.info(FlatI18n.t("upload-image-size-limit"));
+        throw new Error("upload image size limit");
+    }
+
     const hideLoading = message.loading(FlatI18n.t("inserting-courseware-tips"));
 
     const getSize = getImageSize(file);
-    const task = new UploadTask(file, cloudStorageStore.parentDirectoryPath);
-    await task.upload();
-    const { files } = await listFiles({
-        page: 1,
-        order: "DESC",
-        directoryPath: cloudStorageStore.parentDirectoryPath,
+
+    let ticket: UploadTempPhotoResult;
+    try {
+        ticket = await uploadTempPhotoStart(file.name, file.size);
+    } catch (err) {
+        if (isServerRequestError(err) && err.errorCode === RequestErrorCode.UploadConcurrentLimit) {
+            message.error(FlatI18n.t("upload-image-concurrent-limit"));
+        }
+        throw err;
+    }
+
+    const fileURL = `${ticket.ossDomain}/${ticket.ossFilePath}`;
+
+    const formData = new FormData();
+    const encodedFileName = encodeURIComponent(file.name);
+    formData.append("key", ticket.ossFilePath);
+    formData.append("name", file.name);
+    formData.append("policy", ticket.policy);
+    formData.append("OSSAccessKeyId", CLOUD_STORAGE_OSS_ALIBABA_CONFIG.accessKey);
+    formData.append("success_action_status", "200");
+    formData.append("callback", "");
+    formData.append("signature", ticket.signature);
+    formData.append(
+        "Content-Disposition",
+        `attachment; filename="${encodedFileName}"; filename*=UTF-8''${encodedFileName}`,
+    );
+    formData.append("file", file);
+
+    await Axios.post(ticket.ossDomain, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
     });
-    const cloudFile = files.find(f => f.fileUUID === task.fileUUID);
+
+    await uploadTempPhotoFinish(ticket.fileUUID);
 
     hideLoading();
-
-    if (!cloudFile?.fileURL) {
-        console.log("[dnd:image] upload failed:", file.name);
-        return;
-    }
 
     const uuid = v4uuid();
     const { width, height } = await getSize;
     room.insertImage({ uuid, centerX: x, centerY: y, width, height, locked: false });
-    room.completeImageUpload(uuid, cloudFile.fileURL);
+    room.completeImageUpload(uuid, fileURL);
     room.setMemberState({ currentApplianceName: ApplianceNames.selector });
 }
 

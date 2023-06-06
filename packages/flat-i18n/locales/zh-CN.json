@@ -530,6 +530,7 @@
     "pencil-tail": "开启铅笔笔锋"
   },
   "upload-avatar-size-limit": "头像大小不能超过 5MB",
+  "upload-image-size-limit": "图片大小不能超过 5MB",
   "applications": "应用管理",
   "developer": "开发者设置",
   "oauth-apps": "OAuth 应用",
@@ -605,6 +606,7 @@
   "teacher-has-turn-off-camera": "老师已关闭你的摄像头",
   "teacher-has-turn-off-mic": "老师已关闭你的麦克风",
   "upload-concurrent-limit": "上传并发数达到上限",
+  "upload-image-concurrent-limit": "今日上传截图数达到上限",
   "file-is-too-big": "文件过大",
   "file-not-found": "文件不存在",
   "file-already-exists": "文件已存在",
@@ -679,5 +681,7 @@
     "teal": "藏青",
     "grey": "浅灰",
     "green": "墨绿"
-  }
+  },
+  "drop-to-storage": "拖拽文件到云盘",
+  "drop-to-board": "拖拽文件到白板"
 }

@@ -215,6 +215,43 @@
     opacity: 0.9;
 }
 
+.whiteboard-container-tips {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.whiteboard-container-tips-content {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 16px;
+    border-radius: 4px;
+    background: var(--primary);
+    color: #fff;
+    opacity: .95;
+    animation: bouncing 1s infinite cubic-bezier(0.5, 1, 0.89, 1);
+}
+
+@keyframes bouncing {
+    0% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
 .is-readonly .whiteboard-scroll-page {
     opacity: 0;
 }

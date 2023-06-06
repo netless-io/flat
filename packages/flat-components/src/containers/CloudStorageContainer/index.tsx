@@ -45,19 +45,13 @@ const areAllSupportedFiles = (files: FileList): boolean => {
     return Array.from(files).every(file => isSupportedFile(file));
 };
 
-const onDragOver = (event: React.DragEvent<HTMLDivElement>): void => {
-    event.preventDefault();
-    if (areAllSupportedFiles(event.dataTransfer.files)) {
-        event.dataTransfer.dropEffect = "copy";
-    }
-};
-
 /** CloudStorage page with MobX Store */
 export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContainerProps>(
     function CloudStorageContainer({ store, path, pushHistory }) {
         const t = useTranslate();
         const cloudStorageContainerRef = useRef<HTMLDivElement>(null);
         const [skeletonsVisible, setSkeletonsVisible] = useState(false);
+        const [tipsVisible, setTipsVisible] = useState(false);
         const [isAtTheBottom, setIsAtTheBottom] = useState(false);
 
         // Wait 200ms before showing skeletons to reduce flashing.
@@ -75,12 +69,25 @@ export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContai
             }
         }, [isAtTheBottom, store]);
 
+        const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>): void => {
+            event.preventDefault();
+            if (areAllSupportedFiles(event.dataTransfer.files)) {
+                event.dataTransfer.dropEffect = "copy";
+                setTipsVisible(true);
+            }
+        }, []);
+
+        const onDragLeave = useCallback((): void => {
+            setTipsVisible(false);
+        }, []);
+
         const onDrop = useCallback(
             (event: React.DragEvent<HTMLDivElement>): void => {
                 event.preventDefault();
                 if (areAllSupportedFiles(event.dataTransfer.files)) {
                     store.onDropFile(event.dataTransfer.files);
                 }
+                setTipsVisible(false);
             },
             [store],
         );
@@ -159,7 +166,12 @@ export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContai
         };
 
         return (
-            <div className="cloud-storage-container" onDragOver={onDragOver} onDrop={onDrop}>
+            <div
+                className="cloud-storage-container"
+                onDragLeave={onDragLeave}
+                onDragOver={onDragOver}
+                onDrop={onDrop}
+            >
                 {!store.compact && (
                     <div className="cloud-storage-container-head">
                         <div>
@@ -232,6 +244,13 @@ export const CloudStorageContainer = /* @__PURE__ */ observer<CloudStorageContai
                 )}
                 {store.compact && (
                     <div className="cloud-storage-container-footer">{containerBtns}</div>
+                )}
+                {tipsVisible && (
+                    <div className="cloud-storage-container-tips">
+                        <div className="cloud-storage-container-tips-content">
+                            {t("drop-to-storage")}
+                        </div>
+                    </div>
                 )}
             </div>
         );
