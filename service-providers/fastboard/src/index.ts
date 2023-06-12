@@ -298,15 +298,33 @@ export class Fastboard extends IServiceWhiteboard {
         );
 
         // enable "text select text" on writable, once
-        const disposeToggleTextId = "toggle-text-select-text";
+        // set "text size = 36", once
+        const disposeInitToolsId = "init-tools";
         this.sideEffect.push(
             fastboardAPP.writable.subscribe(writable => {
                 if (writable) {
                     fastboardAPP.toggleTextCanSelectText(true);
-                    this.sideEffect.flush(disposeToggleTextId);
+                    if (fastboardAPP.memberState.value.textSize === 16) {
+                        fastboardAPP.setTextSize(36);
+                    }
+                    this.sideEffect.flush(disposeInitToolsId);
                 }
             }),
-            disposeToggleTextId,
+            disposeInitToolsId,
+        );
+
+        // reset scroll position when page changed
+        this.sideEffect.push(
+            fastboardAPP.pageIndex.reaction(() => {
+                if (fastboardAPP.writable.value) {
+                    const scrollMode = fastboardAPP.manager.appManager?.scrollMode;
+                    if (scrollMode) {
+                        // 450 = 1600 (default page width) * 9/16 (default ratio) / 2 (center)
+                        scrollMode.scrollStorage.setState({ scrollTop: 450 });
+                        this.events.emit("userScroll");
+                    }
+                }
+            }),
         );
     }
 
@@ -367,7 +385,6 @@ export class Fastboard extends IServiceWhiteboard {
                 actions[i] = async () => {
                     try {
                         const scenePath = contextPath + scene.name;
-                        // @ts-ignore TODO: should fix the typings in white-web-sdk
                         const rect = room.getBoundingRect(scenePath);
                         const canvas = document.createElement("canvas");
                         canvas.width = rect.width * devicePixelRatio;
