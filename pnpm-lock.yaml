@@ -802,8 +802,8 @@ importers:
         version: 9.0.0
     devDependencies:
       '@netless/fastboard':
-        specifier: 1.0.0-canary.8
-        version: 1.0.0-canary.8(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42)
+        specifier: 1.0.0-canary.9
+        version: 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42)
       '@netless/window-manager':
         specifier: 1.0.0-canary.77
         version: 1.0.0-canary.77(white-web-sdk-esm@2.16.42)
@@ -953,11 +953,11 @@ importers:
   service-providers/fastboard:
     dependencies:
       '@lukeed/uuid':
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^2.0.1
+        version: 2.0.1
       '@netless/fastboard':
-        specifier: 1.0.0-canary.8
-        version: 1.0.0-canary.8(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42)
+        specifier: 1.0.0-canary.9
+        version: 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42)
       '@netless/flat-i18n':
         specifier: workspace:*
         version: link:../../packages/flat-i18n
@@ -3582,15 +3582,15 @@ packages:
       react-is: 16.13.1
     dev: false
 
-  /@lukeed/csprng@1.0.1:
-    resolution: {integrity: sha512-uSvJdwQU5nK+Vdf6zxcWAY2A8r7uqe+gePwLWzJ+fsQehq18pc0I2hJKwypZ2aLM90+Er9u1xn4iLJPZ+xlL4g==}
+  /@lukeed/csprng@1.1.0:
+    resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
     engines: {node: '>=8'}
 
-  /@lukeed/uuid@2.0.0:
-    resolution: {integrity: sha512-dUz8OmYvlY5A9wXaroHIMSPASpSYRLCqbPvxGSyHguhtTQIy24lC+EGxQlwv71AhRCO55WOtgwhzQLpw27JaJQ==}
+  /@lukeed/uuid@2.0.1:
+    resolution: {integrity: sha512-qC72D4+CDdjGqJvkFMMEAtancHUQ7/d/tAiHf64z8MopFDmcrtbcJuerDtFceuAfQJ2pDSfCKCtbqoGBNnwg0w==}
     engines: {node: '>=8'}
     dependencies:
-      '@lukeed/csprng': 1.0.1
+      '@lukeed/csprng': 1.1.0
 
   /@malept/cross-spawn-promise@1.1.1:
     resolution: {integrity: sha512-RTBGWL5FWQcg9orDOCcp4LvItNzUPcyEU9bwaeJX0rJ1IQxzucC48Y0/sQLp/g6t99IQgAlGIaesJS+gTn7tVQ==}
@@ -3759,8 +3759,8 @@ packages:
       - supports-color
     dev: true
 
-  /@netless/fastboard-core@1.0.0-canary.8(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42):
-    resolution: {integrity: sha512-y5Tp0I5Du8NvFQpg78+T60gazhfXXXUZXg2F7Yw5eSPb3hnG/Y16NIAFEzA+oAvfL93o6MbAIq8LLy8HlBGO3g==}
+  /@netless/fastboard-core@1.0.0-canary.9(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42):
+    resolution: {integrity: sha512-rzUts95B3ouUKAg0spV4vM6eHmJde1+a4LdWA7niaLYUjri3F0jRbC0xexFw7+B5VAmkVBR0Xj2MAl1dxfXekw==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
       white-web-sdk: '>=2.16.0'
@@ -3770,21 +3770,21 @@ packages:
       white-web-sdk:
         optional: true
     dependencies:
-      '@lukeed/uuid': 2.0.0
+      '@lukeed/uuid': 2.0.1
       '@netless/synced-store': 2.0.7(white-web-sdk-esm@2.16.42)
       '@netless/window-manager': 1.0.0-canary.77(white-web-sdk-esm@2.16.42)
       white-web-sdk: /white-web-sdk-esm@2.16.42
 
-  /@netless/fastboard-ui@1.0.0-canary.8(@netless/fastboard-core@1.0.0-canary.8):
-    resolution: {integrity: sha512-r4C1tuG+LdEiA89hLlWaNthWQcJ4K82SBTiJ587IxwSc0fpimAkMlVkLgxQzsa2ndkqIbMgj15vOO4MYSRX4hw==}
+  /@netless/fastboard-ui@1.0.0-canary.9(@netless/fastboard-core@1.0.0-canary.9):
+    resolution: {integrity: sha512-dCB4LjTK54kQ0hVbtcucXqlmT+SMyQjCpodgXnZ+WR5AIDKjRzNpeSwkA56TtC5CH8S3xb9Z2Nc+Jja9FzA6vg==}
     peerDependencies:
-      '@netless/fastboard-core': 1.0.0-canary.8
+      '@netless/fastboard-core': 1.0.0-canary.9
     dependencies:
-      '@netless/fastboard-core': 1.0.0-canary.8(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42)
+      '@netless/fastboard-core': 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42)
       tippy.js: 6.3.7
 
-  /@netless/fastboard@1.0.0-canary.8(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42):
-    resolution: {integrity: sha512-9DQpm87m+RowXj+wzpGWuhSkdSsSRYnjY3j1PmpLbJe0+Od01EQTalKuBxesSXpUOSnWz6d0JLHrgshMJJr15g==}
+  /@netless/fastboard@1.0.0-canary.9(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42):
+    resolution: {integrity: sha512-fsSAJ6tL5LVjx1pPtT8B4aAX2fH7N5LiBRwTJCW/EU8YGbF5kD9LbNvD7hh7tqlwN2w6X/EjW3E0Zxq6itaWlg==}
     peerDependencies:
       '@netless/window-manager': '>=1.0.0-canary.0'
       white-web-sdk: '>=2.16.0'
@@ -3795,8 +3795,8 @@ packages:
         optional: true
     dependencies:
       '@netless/app-slide': 0.3.0-canary.19
-      '@netless/fastboard-core': 1.0.0-canary.8(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42)
-      '@netless/fastboard-ui': 1.0.0-canary.8(@netless/fastboard-core@1.0.0-canary.8)
+      '@netless/fastboard-core': 1.0.0-canary.9(@netless/window-manager@1.0.0-canary.77)(white-web-sdk-esm@2.16.42)
+      '@netless/fastboard-ui': 1.0.0-canary.9(@netless/fastboard-core@1.0.0-canary.9)
       '@netless/window-manager': 1.0.0-canary.77(white-web-sdk-esm@2.16.42)
       white-web-sdk: /white-web-sdk-esm@2.16.42
 
@@ -13953,7 +13953,7 @@ packages:
     dev: false
 
   /lie@3.1.1:
-    resolution: {integrity: sha1-mkNrLMd0bKWd56QfpGmz77dr2H4=}
+    resolution: {integrity: sha512-RiNhHysUjhrDQntfYSfY4MU24coXXdEOgw9WGcKHNeEwffDYbF//u87M1EWaMGzuFoSbqW0C9C6lEEhDOAswfw==}
     dependencies:
       immediate: 3.0.6
 
