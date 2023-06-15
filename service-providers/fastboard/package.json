@@ -9,8 +9,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@lukeed/uuid": "^2.0.0",
-    "@netless/fastboard": "1.0.0-canary.8",
+    "@lukeed/uuid": "^2.0.1",
+    "@netless/fastboard": "1.0.0-canary.9",
     "@netless/flat-i18n": "workspace:*",
     "@netless/flat-server-api": "workspace:*",
     "@netless/flat-service-provider-file-convert-netless": "workspace:*",
