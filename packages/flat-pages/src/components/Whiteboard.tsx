@@ -123,14 +123,16 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
 
     const onDragOver = useCallback(
         (event: React.DragEvent<HTMLDivElement>) => {
-            event.preventDefault();
-            setTipsVisible(true);
-            const file = event.dataTransfer.files[0];
-            if (room && file && isSupportedFileExt(file)) {
-                event.dataTransfer.dropEffect = "copy";
+            if (whiteboardStore.allowDrawing) {
+                event.preventDefault();
+                setTipsVisible(true);
+                const file = event.dataTransfer.files[0];
+                if (room && file && isSupportedFileExt(file)) {
+                    event.dataTransfer.dropEffect = "copy";
+                }
             }
         },
-        [room],
+        [room, whiteboardStore.allowDrawing],
     );
 
     const onDragLeave = useCallback(() => {
@@ -139,6 +141,9 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
 
     const onDrop = useCallback(
         async (event: React.DragEvent<HTMLDivElement>) => {
+            if (!whiteboardStore.allowDrawing) {
+                return;
+            }
             event.preventDefault();
             setTipsVisible(false);
             const file = event.dataTransfer.files[0];
@@ -160,7 +165,7 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
     useEffect(() => {
         const pasteHandler = (event: ClipboardEvent): void => {
             const file = event.clipboardData?.files[0];
-            if (room && windowManager && file) {
+            if (room && windowManager && file && whiteboardStore.allowDrawing) {
                 const { centerX, centerY } = windowManager.camera;
                 if (isSupportedImageType(file)) {
                     const id = format(Date.now(), "yyyy-MM-dd_HH-mm-ss");
