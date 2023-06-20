@@ -6,7 +6,7 @@ import { WindowManager } from "@netless/window-manager";
 import { message } from "antd";
 import { debounce } from "lodash-es";
 import { makeAutoObservable, observable, runInAction } from "mobx";
-import { AnimationMode, Room, RoomPhase, ViewMode } from "white-web-sdk";
+import { Room, RoomPhase, ViewMode } from "white-web-sdk";
 import {
     RoomType,
     Region,
@@ -177,28 +177,12 @@ export class WhiteboardStore {
 
         this.updateWindowManager(manager);
 
-        this.scrollToTopOnce();
-
         if (process.env.DEV) {
             (window as any).room = room;
             (window as any).manager = manager;
         }
 
         return fastboardAPP;
-    }
-
-    private scrollToTopOnce(): void {
-        const { room, windowManager } = this;
-        if (!room || !windowManager) {
-            return;
-        }
-        if (!room.isWritable) {
-            return;
-        }
-        if (!room.state.globalState || !(room.state.globalState as any).scrollToTop) {
-            room.setGlobalState({ scrollToTop: true });
-            windowManager.moveCamera({ centerY: -950, animationMode: AnimationMode.Immediately });
-        }
     }
 
     public async destroy(): Promise<void> {
