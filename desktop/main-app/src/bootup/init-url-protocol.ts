@@ -17,6 +17,15 @@ export default async (): Promise<void> => {
                 });
             }
         },
+        replayRoom: (args, innerWindow) => {
+            if (args.has("roomUUID") && args.has("ownerUUID") && args.has("roomType")) {
+                innerWindow.window.webContents.send("request-replay-room", {
+                    roomUUID: args.get("roomUUID"),
+                    ownerUUID: args.get("ownerUUID"),
+                    roomType: args.get("roomType"),
+                });
+            }
+        },
     });
 
     if (runtime.isMac) {
@@ -106,7 +115,7 @@ class URLProtocolHandler {
     }
 }
 
-type ActionNames = "active" | "joinRoom";
+type ActionNames = "active" | "joinRoom" | "replayRoom";
 type ActionHandler = {
     [key in ActionNames]: (arg: URLSearchParams, innerWindow: CustomWindow) => void;
 };

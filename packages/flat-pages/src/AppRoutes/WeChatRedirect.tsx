@@ -3,7 +3,7 @@ import "../JoinPage/style.less";
 import logoSVG from "../JoinPage/icons/logo-sm.svg";
 import openInBrowserSVG from "../JoinPage/icons/open-in-browser.svg";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useLanguage, useTranslate } from "@netless/flat-i18n";
 import {
     FLAT_DOWNLOAD_URL,
@@ -12,9 +12,15 @@ import {
     SERVICE_URL,
     SERVICE_URL_CN,
 } from "../constants/process";
+import { isWeChatBrowser } from "../utils/user-agent";
+
+export interface WeChatRedirectProps {
+    url?: string;
+    open?: boolean;
+}
 
 // This is a simplified version of JoinPageMobile.tsx, it can not join room.
-export const WeChatRedirect = (): React.ReactElement => {
+export const WeChatRedirect = ({ url, open }: WeChatRedirectProps): React.ReactElement => {
     const t = useTranslate();
     const language = useLanguage();
     const [openCount, setOpenCount] = useState(0);
@@ -22,14 +28,20 @@ export const WeChatRedirect = (): React.ReactElement => {
     const privacyURL = language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
     const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
 
-    const openApp = (): void => {
-        window.location.href = "x-agora-flat-client://active";
-        setOpenCount(openCount + 1);
-    };
+    const openApp = useCallback((): void => {
+        window.location.href = url || "x-agora-flat-client://active";
+        setOpenCount(count => count + 1);
+    }, [url]);
 
     const download = (): void => {
         window.location.href = FLAT_DOWNLOAD_URL;
     };
+
+    useEffect(() => {
+        if (open) {
+            openApp();
+        }
+    }, [open, openApp]);
 
     return (
         <div className="join-page-mobile-container">
@@ -56,7 +68,7 @@ export const WeChatRedirect = (): React.ReactElement => {
                     {t("service-policy")}
                 </a>
             </div>
-            {openCount > 0 && (
+            {openCount > 0 && isWeChatBrowser && (
                 <div className="join-page-mobile-wechat-overlay">
                     <img alt="[open-in-browser]" src={openInBrowserSVG} />
                     <strong>{t("open-in-browser")}</strong>

@@ -38,7 +38,7 @@ export function useURLAppLauncher(): void {
     };
 
     useAutoRun(() => {
-        if (!urlProtocolStore.toJoinRoomUUID) {
+        if (!urlProtocolStore.toJoinRoomUUID && !urlProtocolStore.toReplayRoom) {
             return;
         }
 
@@ -47,10 +47,18 @@ export function useURLAppLauncher(): void {
             return;
         }
 
-        if (inClassRoom()?.roomUUID !== urlProtocolStore.toJoinRoomUUID) {
-            void joinRoomHandler(urlProtocolStore.toJoinRoomUUID, pushHistory);
+        if (urlProtocolStore.toJoinRoomUUID) {
+            if (inClassRoom()?.roomUUID !== urlProtocolStore.toJoinRoomUUID) {
+                void joinRoomHandler(urlProtocolStore.toJoinRoomUUID, pushHistory);
+            }
+            urlProtocolStore.clearToJoinRoomUUID();
+            return;
         }
 
-        urlProtocolStore.clearToJoinRoomUUID();
+        if (urlProtocolStore.toReplayRoom) {
+            pushHistory(RouteNameType.ReplayPage, urlProtocolStore.toReplayRoom);
+            urlProtocolStore.clearToReplayRoom();
+            return;
+        }
     });
 }

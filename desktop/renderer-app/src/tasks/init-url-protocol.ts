@@ -12,6 +12,13 @@ const requestJoinRoom = (): void => {
     });
 };
 
+const requestReplayRoom = (): void => {
+    ipcReceive("request-replay-room", ({ roomUUID, ownerUUID, roomType }) => {
+        urlProtocolStore.updateToReplayRoom(roomUUID, ownerUUID, roomType);
+    });
+};
+
 export const initURLProtocol = (): void => {
     requestJoinRoom();
+    requestReplayRoom();
 };

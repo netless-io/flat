@@ -64,7 +64,8 @@ export const AppRouteContainer = observer<AppRouteContainerProps>(function AppRo
     const hasHeader =
         pageStore.name !== null && pageStore.name && routePages[pageStore.name].hasHeader;
 
-    if (isWeChatBrowser && !routeProps.location.pathname.startsWith("/join/")) {
+    const pathname = routeProps.location.pathname;
+    if (isWeChatBrowser && !pathname.startsWith("/join/") && !pathname.startsWith("/replay/")) {
         return <WeChatRedirect />;
     }
 
