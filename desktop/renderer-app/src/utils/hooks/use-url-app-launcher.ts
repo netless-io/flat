@@ -38,11 +38,13 @@ export function useURLAppLauncher(): void {
     };
 
     useAutoRun(() => {
-        if (urlProtocolStore.toJoinRoomUUID || urlProtocolStore.toReplayRoom) {
-            if (!globalStore.userUUID) {
-                pushHistory(RouteNameType.LoginPage, {});
-                return;
-            }
+        if (!urlProtocolStore.toJoinRoomUUID && !urlProtocolStore.toReplayRoom) {
+            return;
+        }
+
+        if (!globalStore.userUUID) {
+            pushHistory(RouteNameType.LoginPage, {});
+            return;
         }
 
         if (urlProtocolStore.toJoinRoomUUID) {
