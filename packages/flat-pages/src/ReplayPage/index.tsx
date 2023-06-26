@@ -2,13 +2,15 @@ import "./ReplayPage.less";
 
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
+import { useWindowSize } from "react-use";
 
 import { RoomType } from "@netless/flat-server-api";
 import { LoadingPage, TopBar } from "flat-components";
 
-import ExitReplayConfirm from "../components/ExitReplayConfirm";
+import { WeChatRedirect } from "../AppRoutes/WeChatRedirect";
+import { ExitReplayConfirm } from "../components/ExitReplayConfirm";
 import { WindowsSystemBtnContext } from "../components/StoreProvider";
 import { useClassroomReplayStore } from "../utils/use-classroom-replay-store";
 import { useLoginCheck } from "../utils/use-login-check";
@@ -16,6 +18,7 @@ import { ReplayList } from "./ReplayList";
 import { ReplayVideo } from "./ReplayVideo";
 import { ReplayWhiteboard } from "./ReplayWhiteboard";
 import { withFlatServices } from "../components/FlatServicesContext";
+import { isWeChatBrowser } from "../utils/user-agent";
 
 export type ReplayPageProps = RouteComponentProps<{
     roomUUID: string;
@@ -23,8 +26,23 @@ export type ReplayPageProps = RouteComponentProps<{
     roomType: RoomType;
 }>;
 
-export const ReplayPage = withFlatServices("whiteboard")(
-    observer<ReplayPageProps>(function ReplayPage({ match }) {
+export const ReplayPage = observer<ReplayPageProps>(function ReplayPage({ ...props }) {
+    const { width } = useWindowSize(1080);
+
+    const url = useMemo(() => {
+        const { roomUUID, ownerUUID, roomType } = props.match.params;
+        return `x-agora-flat-client://replayRoom?roomUUID=${roomUUID}&ownerUUID=${ownerUUID}&roomType=${roomType}`;
+    }, [props.match]);
+
+    if (isWeChatBrowser || width < 480) {
+        return <WeChatRedirect open url={url} />;
+    }
+
+    return <ReplayPageImpl {...props} />;
+});
+
+export const ReplayPageImpl = withFlatServices("whiteboard")(
+    observer<ReplayPageProps>(function ReplayPageImpl({ match }) {
         useLoginCheck();
 
         const history = useHistory();

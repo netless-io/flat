@@ -56,4 +56,9 @@ export interface EmitEvents {
     "request-join-room": {
         roomUUID: string;
     };
+    "request-replay-room": {
+        roomUUID: string;
+        ownerUUID: string;
+        roomType: string;
+    };
 }
