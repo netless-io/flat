@@ -171,24 +171,6 @@ export function CoverDark(): React.ReactElement {
                     fill="#0A1933"
                     fillRule="evenodd"
                 />
-                <circle cx="14" cy="16" fill="#FF6158" r="6" />
-                <circle
-                    cx="14"
-                    cy="16"
-                    r="5.75"
-                    stroke="#000"
-                    strokeOpacity=".15"
-                    strokeWidth=".5"
-                />
-                <circle cx="34" cy="16" fill="#FFBD2D" r="6" />
-                <circle
-                    cx="34"
-                    cy="16"
-                    r="5.75"
-                    stroke="#000"
-                    strokeOpacity=".15"
-                    strokeWidth=".5"
-                />
             </g>
             <defs>
                 <linearGradient
