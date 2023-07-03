@@ -11,9 +11,9 @@ export enum AgoraCloudRecordingChannelType {
     Broadcast = 1,
 }
 
-export const AVATAR_WIDTH = 144;
-export const AVATAR_HEIGHT = 108;
-export const MAX_AVATAR_COUNT = 17;
+export const AVATAR_WIDTH = 128;
+export const AVATAR_HEIGHT = 96;
+export const MAX_AVATAR_COUNT = 15; // 128 * 15 = 1920
 export const AVATAR_BAR_WIDTH = AVATAR_WIDTH * MAX_AVATAR_COUNT;
 
 // https://docs.agora.io/cn/cloud-recording/recording_video_profile
