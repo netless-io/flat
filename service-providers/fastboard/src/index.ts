@@ -1,6 +1,6 @@
 import { createFastboard, createUI, FastboardApp, addManagerListener } from "@netless/fastboard";
 import { DeviceType, RoomPhase, DefaultHotKeys } from "white-web-sdk";
-import type { Camera } from "white-web-sdk";
+import type { Camera, MemberState } from "white-web-sdk";
 import type { FlatI18n } from "@netless/flat-i18n";
 import {
     IServiceWhiteboard,
@@ -203,10 +203,7 @@ export class Fastboard extends IServiceWhiteboard {
                 userPayload: {
                     uid,
                     nickName,
-                    // @deprecated
-                    userId: uid,
-                    // @deprecated
-                    cursorName: nickName,
+                    // avatar: "url/to/avatar.png",
                 },
                 isWritable: this.isWritable,
                 uid,
@@ -225,7 +222,7 @@ export class Fastboard extends IServiceWhiteboard {
                     changeToStraight: "l",
                     changeToArrow: "a",
                     changeToHand: "h",
-                    // disable builtin copy-paste hotkeys
+                    // disable builtin copy-paste hotkeys, they are used to paste images from user clipboard
                     copy: undefined,
                     paste: undefined,
                 },
@@ -298,19 +295,37 @@ export class Fastboard extends IServiceWhiteboard {
         );
 
         // enable "text select text" on writable, once
-        // set "text size = 36", once
         const disposeInitToolsId = "init-tools";
         this.sideEffect.push(
             fastboardAPP.writable.subscribe(writable => {
                 if (writable) {
                     fastboardAPP.toggleTextCanSelectText(true);
-                    if (fastboardAPP.memberState.value.textSize === 16) {
-                        fastboardAPP.setTextSize(36);
-                    }
                     this.sideEffect.flush(disposeInitToolsId);
                 }
             }),
             disposeInitToolsId,
+        );
+
+        // restore and listen to appliance settings (i.e. memberState) on writable
+        const disposeMemberStateId = "member-state";
+        this.sideEffect.push(
+            fastboardAPP.writable.subscribe(writable => {
+                if (writable) {
+                    initMemberState(fastboardAPP);
+                    // 'subscribe' executes immediately, at which time the effect
+                    // is not yet pushed into the side effect manager, so we need to
+                    // wait for the next tick to dispose or replace it.
+                    Promise.resolve().then(() => {
+                        // using the same disposeId here, which means the old effect ('subscribe' above)
+                        // will be disposed (removed) first, then the new effect ('subscribe' below) will take place.
+                        this.sideEffect.push(
+                            fastboardAPP.memberState.subscribe(saveMemberState),
+                            disposeMemberStateId,
+                        );
+                    });
+                }
+            }),
+            disposeMemberStateId,
         );
 
         // reset scroll position when page changed
@@ -455,4 +470,37 @@ function convertRoomPhase(roomPhase: RoomPhase): IServiceWhiteboardPhase {
             return IServiceWhiteboardPhase.Disconnected;
         }
     }
+}
+
+const RememberStates: Array<keyof MemberState> = [
+    "strokeColor",
+    "strokeWidth",
+    "textColor",
+    "textSize",
+    "pencilEraserSize",
+];
+
+function initMemberState(app: FastboardApp): void {
+    const raw = localStorage.getItem("FastboardMemberState") || "{}";
+    let memberState: Partial<MemberState> = {};
+    try {
+        memberState = JSON.parse(raw) || {};
+    } catch {
+        // ignore
+    }
+    // The text size is 16 by default, which is too small at the first sight, change it to 36.
+    // Some users may still want to use 16, in that case we have no way to know the purpose.
+    if (!memberState.textSize || memberState.textSize === 16) {
+        memberState.textSize = 36;
+    }
+    // It is safe to call set state here since fastboard is writable now.
+    app.room.setMemberState(memberState);
+}
+
+function saveMemberState(memberState: MemberState): void {
+    const filtered: Record<string, any> = Object.create(null);
+    for (const key of RememberStates) {
+        filtered[key] = memberState[key];
+    }
+    localStorage.setItem("FastboardMemberState", JSON.stringify(filtered));
 }
