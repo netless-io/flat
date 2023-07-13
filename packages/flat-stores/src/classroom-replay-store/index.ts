@@ -39,7 +39,7 @@ export class ClassroomReplayStore {
     public tempTimestamp = 0; // used for displaying instant timestamp before debounced seeking
 
     public currentTime = 0; // mirror syncPlayer.currentTime
-    public duration = 0; // mirror syncPlayer.duration
+    public duration = 0; // mirror r.endTime - r.beginTime
 
     public get currentTimestamp(): number {
         return this.tempTimestamp || this.realTimestamp;
@@ -112,6 +112,7 @@ export class ClassroomReplayStore {
         this.currentRecording = recording;
         this.isPlaying = false;
         this.currentTime = 0;
+        this.duration = recording.endTime - recording.beginTime;
         this.video = null;
 
         if (this.fastboard) {
@@ -192,16 +193,11 @@ export class ClassroomReplayStore {
 
         const syncPlayer = new SyncPlayer({ players });
         this.sideEffect.add(() => {
-            const updateDuration = action(() => {
-                this.duration = syncPlayer.duration;
-            });
-            syncPlayer.on("durationchange", updateDuration);
             const updateCurrentTime = action(() => {
-                this.currentTime = syncPlayer.currentTime;
+                this.currentTime = Math.min(syncPlayer.currentTime, this.duration);
             });
             syncPlayer.on("timeupdate", updateCurrentTime);
             return () => {
-                syncPlayer.off("durationchange", updateDuration);
                 syncPlayer.off("timeupdate", updateCurrentTime);
             };
         }, "syncCurrentTime");
