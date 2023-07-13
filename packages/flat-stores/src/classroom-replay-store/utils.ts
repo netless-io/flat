@@ -68,7 +68,9 @@ export async function getRecordings(roomUUID: string): Promise<Recording[]> {
 export async function getRoomRecordings(roomUUID: string): Promise<RoomRecording[]> {
     await roomStore.syncRecordInfo(roomUUID);
     const room = roomStore.rooms.get(roomUUID)!;
-    return toJS(room?.recordings) || [];
+    const recordings = toJS(room?.recordings) || [];
+    // Remove buggy recordings
+    return recordings.filter(e => e.beginTime < e.endTime);
 }
 
 const M3U8_EXT = /\.m3u8$/i;
