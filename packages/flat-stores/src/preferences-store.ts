@@ -22,6 +22,8 @@ export class PreferencesStore {
     public region: Region | null = null;
     /** selected camera device id on devices test page */
     public cameraId?: string | null = null;
+    /** local camera mirror mode */
+    public mirrorMode = true;
     /** selected microphone device id on devices test page */
     public microphoneId?: string | null = null;
     /** selected speaker device id on devices test page */
@@ -58,6 +60,10 @@ export class PreferencesStore {
 
     public updateCameraId = (cameraId: string): void => {
         this.cameraId = cameraId;
+    };
+
+    public updateMirrorMode = (mirrorMode: boolean): void => {
+        this.mirrorMode = mirrorMode;
     };
 
     public updateMicrophoneId = (microphoneId: string): void => {

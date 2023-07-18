@@ -36,6 +36,8 @@ export interface DeviceTestPanelProps {
     autoCameraOn: boolean;
     toggleAutoMicOn: () => void;
     toggleAutoCameraOn: () => void;
+    mirrorMode: boolean;
+    toggleMirrorMode: () => void;
 }
 
 export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
@@ -64,6 +66,8 @@ export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
     autoCameraOn,
     toggleAutoMicOn,
     toggleAutoCameraOn,
+    mirrorMode,
+    toggleMirrorMode,
 }) => {
     const t = useTranslate();
     return (
@@ -106,6 +110,9 @@ export const DeviceTestPanel: React.FC<DeviceTestPanelProps> = ({
                         </Checkbox>
                         <Checkbox checked={autoCameraOn} onClick={toggleAutoCameraOn}>
                             {t("turn-on-the-camera")}
+                        </Checkbox>
+                        <Checkbox checked={mirrorMode} onClick={toggleMirrorMode}>
+                            {t("mirror")}
                         </Checkbox>
                     </div>
                 </div>

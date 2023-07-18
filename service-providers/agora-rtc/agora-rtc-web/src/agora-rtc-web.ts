@@ -59,6 +59,8 @@ export class AgoraRTCWeb extends IServiceVideoChat {
     private _micID?: string;
     private _speakerID?: string;
 
+    private _mirrorMode = true;
+
     private uid?: IServiceVideoChatUID;
     private roomUUID?: string;
     private shareScreenUID?: IServiceVideoChatUID;
@@ -322,6 +324,20 @@ export class AgoraRTCWeb extends IServiceVideoChat {
 
     public getSpeakerVolume(): number {
         return this.getVolumeLevel();
+    }
+
+    public override getMirrorMode(): boolean {
+        return this._mirrorMode;
+    }
+
+    public override setMirrorMode(mirrorMode: boolean): void {
+        this._mirrorMode = mirrorMode;
+        if (this._localAvatar) {
+            this._localAvatar.enableMirrorMode(mirrorMode);
+        }
+        if (this._testAvatar) {
+            this._testAvatar.enableMirrorMode(mirrorMode);
+        }
     }
 
     private async _createRTCClient({

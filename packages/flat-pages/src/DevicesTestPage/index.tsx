@@ -186,6 +186,12 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
         }
     }, [preferencesStore, speakerDeviceId, speakerDevices]);
 
+    useEffect(() => {
+        if (rtc) {
+            rtc.setMirrorMode(preferencesStore.mirrorMode);
+        }
+    }, [preferencesStore.mirrorMode, rtc]);
+
     const joinRoom = async (): Promise<void> => {
         preferencesStore.updateCameraId(cameraDeviceId);
         preferencesStore.updateMicrophoneId(microphoneDeviceId);
@@ -210,6 +216,7 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
                     joinRoom={joinRoom}
                     microphoneDevices={microphoneDevices}
                     microphoneVolume={volume}
+                    mirrorMode={preferencesStore.mirrorMode}
                     setCameraDevice={setCameraDeviceId}
                     setMicrophoneDevice={setMicrophoneDeviceId}
                     setSpeakerDevice={setSpeakerDeviceId}
@@ -224,6 +231,9 @@ export const DevicesTestPage = observer(function DeviceTestPage() {
                         preferencesStore.updateAutoMicOn(!preferencesStore.autoMicOn)
                     }
                     toggleDeviceTest={globalStore.toggleDeviceTest}
+                    toggleMirrorMode={() =>
+                        preferencesStore.updateMirrorMode(!preferencesStore.mirrorMode)
+                    }
                 />
             </div>
         </div>

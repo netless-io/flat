@@ -21,6 +21,8 @@ export class RTCTestAvatar implements IServiceVideoChatAvatar {
 
     private readonly _el$: Val<HTMLElement | undefined | null>;
 
+    private readonly _mirrorMode$: Val<boolean> = new Val(true);
+
     public enableCamera(enabled: boolean): void {
         this._shouldCamera$.setValue(enabled);
     }
@@ -35,6 +37,10 @@ export class RTCTestAvatar implements IServiceVideoChatAvatar {
 
     public getVolumeLevel(): number {
         return this._volumeLevel;
+    }
+
+    public enableMirrorMode(enabled: boolean): void {
+        this._mirrorMode$.setValue(enabled);
     }
 
     public constructor(config: RTCAvatarConfig) {
@@ -104,7 +110,9 @@ export class RTCTestAvatar implements IServiceVideoChatAvatar {
                     if (shouldCamera && !localCameraTrack) {
                         localCameraTrack = await this._rtc.createLocalCameraTrack();
                         if (this._el$.value) {
-                            localCameraTrack.play(this._el$.value);
+                            localCameraTrack.play(this._el$.value, {
+                                mirror: this._mirrorMode$.value,
+                            });
                         }
                     }
                     if (localCameraTrack) {
@@ -120,8 +128,23 @@ export class RTCTestAvatar implements IServiceVideoChatAvatar {
             this._el$.reaction(async el => {
                 if (el && this._rtc.localCameraTrack) {
                     try {
-                        this._rtc.localCameraTrack.play(el);
+                        this._rtc.localCameraTrack.play(el, {
+                            mirror: this._mirrorMode$.value,
+                        });
                         await this._rtc.localCameraTrack.setEnabled(this._shouldCamera$.value);
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
+            }),
+        );
+
+        this._sideEffect.addDisposer(
+            this._mirrorMode$.reaction(async mirrorMode => {
+                if (this._el$.value && this._rtc.localCameraTrack?.isPlaying) {
+                    try {
+                        this._rtc.localCameraTrack.stop();
+                        this._rtc.localCameraTrack.play(this._el$.value, { mirror: mirrorMode });
                     } catch (e) {
                         console.error(e);
                     }
