@@ -349,6 +349,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
         roomUUID,
         shareScreenUID,
         shareScreenToken,
+        mirror,
     }: IServiceVideoChatJoinRoomConfig): Promise<void> {
         this._roomSideEffect.flushAll();
 
@@ -358,6 +359,7 @@ export class AgoraRTCWeb extends IServiceVideoChat {
         });
         this.client = client;
         this.mode = mode;
+        this._mirrorMode = mirror ?? true;
         if (process.env.DEV) {
             (window as any).rtc_client = client;
         }

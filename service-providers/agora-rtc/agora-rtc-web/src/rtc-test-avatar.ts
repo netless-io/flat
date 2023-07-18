@@ -160,6 +160,8 @@ export class RTCTestAvatar implements IServiceVideoChatAvatar {
                 // do nothing
             }
         });
+
+        this.enableMirrorMode(this._rtc.getMirrorMode());
     }
 
     public destroy(): void {
