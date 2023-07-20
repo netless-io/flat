@@ -58,6 +58,7 @@ export async function requestFlatServer<TPayload, TResult>(
         headers.set("authorization", "Bearer " + token);
     }
 
+    // TODO: if payload.roomUUID has '{REGION}-' prefix, select another server
     const response = await fetch(
         `${
             enableFlatServerV2 === true ? FLAT_SERVER_BASE_URL_V2 : FLAT_SERVER_BASE_URL_V1
