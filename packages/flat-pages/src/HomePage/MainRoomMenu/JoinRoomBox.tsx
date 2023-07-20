@@ -3,7 +3,6 @@ import "./JoinRoomBox.less";
 import React, { KeyboardEvent, useContext, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Modal, Checkbox, Form, InputRef } from "antd";
-import { validate, version } from "uuid";
 import { PreferencesStoreContext } from "../../components/StoreProvider";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { useTranslate } from "@netless/flat-i18n";
@@ -19,8 +18,8 @@ export interface JoinRoomBoxProps {
     onJoinRoom: (roomUUID: string) => Promise<void>;
 }
 
-const uuidRE =
-    /(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)/i;
+const ROOM_UUID_RE =
+    /(?:[A-Z]{2}-)?(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)/i;
 
 export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJoinRoom }) {
     const t = useTranslate();
@@ -116,14 +115,14 @@ export const JoinRoomBox = observer<JoinRoomBoxProps>(function JoinRoomBox({ onJ
 
     async function extractUUIDFromClipboard(): Promise<string | undefined> {
         const text = await navigator.clipboard.readText();
-        const m = uuidRE.exec(text);
+        const m = ROOM_UUID_RE.exec(text);
         return m?.[0];
     }
 
     async function handleShowModal(): Promise<void> {
         try {
             const roomUUID = await extractUUIDFromClipboard();
-            if (roomUUID && validate(roomUUID) && version(roomUUID) === 4) {
+            if (roomUUID) {
                 form.setFieldsValue({ roomUUID });
                 setIsFormValidated(true);
             }
