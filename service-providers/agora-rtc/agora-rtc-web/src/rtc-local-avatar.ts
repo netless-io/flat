@@ -21,6 +21,9 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
 
     private readonly _el$: Val<HTMLElement | undefined | null>;
 
+    private readonly _mirrorMode$ = new Val(true);
+    private _mirrorModeDirty = false;
+
     public enableCamera(enabled: boolean): void {
         this._shouldCamera$.setValue(enabled);
     }
@@ -35,6 +38,10 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
 
     public getVolumeLevel(): number {
         return this._volumeLevel;
+    }
+
+    public enableMirrorMode(enabled: boolean): void {
+        this._mirrorMode$.setValue(enabled);
     }
 
     public constructor(config: RTCAvatarConfig) {
@@ -111,14 +118,24 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
             this._shouldCamera$.subscribe(async shouldCamera => {
                 try {
                     let localCameraTrack = this._rtc.localCameraTrack;
+                    let played = false;
                     if (shouldCamera && !localCameraTrack) {
                         localCameraTrack = await this._rtc.createLocalCameraTrack();
                         if (this._el$.value) {
-                            localCameraTrack.play(this._el$.value);
+                            played = true;
+                            localCameraTrack.play(this._el$.value, {
+                                mirror: this._mirrorMode$.value,
+                            });
                         }
                     }
                     if (localCameraTrack) {
                         await localCameraTrack.setEnabled(shouldCamera);
+                        if (!played && this._mirrorModeDirty && shouldCamera && this._el$.value) {
+                            localCameraTrack.play(this._el$.value, {
+                                mirror: this._mirrorMode$.value,
+                            });
+                            this._mirrorModeDirty = false;
+                        }
                     }
                     if (shouldCamera && localCameraTrack) {
                         await this._rtc.setRole(IServiceVideoChatRole.Host);
@@ -139,7 +156,7 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
             this._el$.reaction(async el => {
                 if (el && this._rtc.localCameraTrack) {
                     try {
-                        this._rtc.localCameraTrack.play(el);
+                        this._rtc.localCameraTrack.play(el, { mirror: this._mirrorMode$.value });
                         await this._rtc.localCameraTrack.setEnabled(this._shouldCamera$.value);
                         if (this._shouldCamera$.value) {
                             await this._rtc.setRole(IServiceVideoChatRole.Host);
@@ -157,6 +174,23 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
             }),
         );
 
+        this._sideEffect.addDisposer(
+            this._mirrorMode$.reaction(async mirrorMode => {
+                if (this._el$.value && this._rtc.localCameraTrack?.isPlaying) {
+                    try {
+                        this._rtc.localCameraTrack.stop();
+                        this._rtc.localCameraTrack.play(this._el$.value, { mirror: mirrorMode });
+                        this._mirrorModeDirty = false;
+                    } catch (e) {
+                        this._mirrorModeDirty = true;
+                        console.error(e);
+                    }
+                } else {
+                    this._mirrorModeDirty = true;
+                }
+            }),
+        );
+
         this._sideEffect.addDisposer(async () => {
             try {
                 await this._rtc.localCameraTrack?.setEnabled(false);
@@ -165,6 +199,8 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
                 // do nothing
             }
         });
+
+        this.enableMirrorMode(this._rtc.getMirrorMode());
     }
 
     public destroy(): void {

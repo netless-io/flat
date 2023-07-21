@@ -55,6 +55,11 @@ export class RTCLocalAvatar implements IServiceVideoChatAvatar {
         }
     }
 
+    public refreshLocalVideo(): void {
+        this._rtc.rtcEngine.enableLocalVideo(false);
+        this._rtc.rtcEngine.enableLocalVideo(this._shouldCamera$.value && this._el$.value !== null);
+    }
+
     public constructor(config: RTCAvatarConfig) {
         this._rtc = config.rtc;
         this._el$ = new Val(config.element);

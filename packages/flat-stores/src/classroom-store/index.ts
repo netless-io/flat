@@ -1459,6 +1459,7 @@ export class ClassroomStore {
                 refreshToken: generateRTCToken,
                 shareScreenUID: String(globalStore.rtcShareScreen?.uid || -1),
                 shareScreenToken: globalStore.rtcShareScreen?.token || "",
+                mirror: preferencesStore.mirrorMode,
             });
 
             if (preferencesStore.cameraId) {

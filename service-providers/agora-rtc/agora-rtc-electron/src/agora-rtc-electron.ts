@@ -41,6 +41,8 @@ export class AgoraRTCElectron extends IServiceVideoChat {
     private _micID?: string;
     private _speakerID?: string;
 
+    private _mirrorMode = true;
+
     private uid?: IServiceVideoChatUID;
     private roomUUID?: string;
     private mode?: IServiceVideoChatMode;
@@ -314,6 +316,16 @@ export class AgoraRTCElectron extends IServiceVideoChat {
 
     public getSpeakerVolume(): number {
         return this.rtcEngine.getAudioPlaybackVolume() / 255 || 0;
+    }
+
+    public override getMirrorMode(): boolean {
+        return this._mirrorMode;
+    }
+
+    public override setMirrorMode(mirrorMode: boolean): void {
+        this._mirrorMode = mirrorMode;
+        this.rtcEngine.setLocalVideoMirrorMode(mirrorMode ? 1 : 2);
+        this._localAvatar?.refreshLocalVideo();
     }
 
     public override async setSpeakerVolume(volume: number): Promise<void> {

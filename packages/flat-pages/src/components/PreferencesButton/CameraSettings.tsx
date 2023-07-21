@@ -2,7 +2,7 @@ import type { PreferencesButtonProps } from "./index";
 
 import React, { useCallback, useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { Select } from "antd";
+import { Checkbox, Select } from "antd";
 
 import { useTranslate } from "@netless/flat-i18n";
 import { IServiceVideoChatDevice } from "@netless/flat-services";
@@ -51,6 +51,12 @@ export const CameraSettings = observer<CameraSettingsProps>(function CameraSetti
         [preferences, rtc],
     );
 
+    const toggleMirrorMode = useCallback(() => {
+        const mirrorMode = !preferences.mirrorMode;
+        preferences.updateMirrorMode(mirrorMode);
+        rtc.setMirrorMode(mirrorMode);
+    }, [preferences, rtc]);
+
     return (
         <div className="preferences-modal-section" id="preferences-1">
             <h3 className="preferences-modal-section-title">{t("camera-settings")}</h3>
@@ -66,6 +72,13 @@ export const CameraSettings = observer<CameraSettingsProps>(function CameraSetti
                     </Select.Option>
                 ))}
             </Select>
+            <Checkbox
+                checked={preferences.mirrorMode}
+                className="preferences-modal-section-checkbox"
+                onClick={toggleMirrorMode}
+            >
+                {"Mirror Mode"}
+            </Checkbox>
         </div>
     );
 });

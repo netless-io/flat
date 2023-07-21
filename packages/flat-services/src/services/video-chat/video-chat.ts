@@ -29,6 +29,7 @@ export interface IServiceVideoChatJoinRoomConfig {
     refreshToken?: (roomUUID: string) => Promise<string>;
     shareScreenUID: IServiceVideoChatUID;
     shareScreenToken: string;
+    mirror?: boolean;
 }
 
 export abstract class IServiceVideoChat implements IService {
@@ -73,6 +74,10 @@ export abstract class IServiceVideoChat implements IService {
 
     /** @returns volume 0~1 */
     public abstract getSpeakerVolume(): number;
+
+    /** only affects local avatar */
+    public abstract getMirrorMode(): boolean;
+    public abstract setMirrorMode(mirrorMode: boolean): void;
 
     public async setSpeakerVolume(_volume: number): Promise<void> {
         throw doesNotSupportError("setting speaker volume");

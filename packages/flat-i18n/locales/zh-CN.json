@@ -683,5 +683,6 @@
     "green": "墨绿"
   },
   "drop-to-storage": "拖拽文件到云盘",
-  "drop-to-board": "拖拽文件到白板"
+  "drop-to-board": "拖拽文件到白板",
+  "mirror": "镜像"
 }
