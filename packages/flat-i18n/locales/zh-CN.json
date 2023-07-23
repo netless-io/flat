@@ -684,5 +684,6 @@
   },
   "drop-to-storage": "拖拽文件到云盘",
   "drop-to-board": "拖拽文件到白板",
-  "mirror": "镜像"
+  "mirror": "镜像",
+  "mirror-mode": "镜像模式"
 }

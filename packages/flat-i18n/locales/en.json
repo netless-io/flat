@@ -684,5 +684,6 @@
   },
   "drop-to-storage": "Drop file to cloud storage",
   "drop-to-board": "Drop file to whiteboard",
-  "mirror": "Mirror"
+  "mirror": "Mirror",
+  "mirror-mode": "Mirror Mode"
 }
