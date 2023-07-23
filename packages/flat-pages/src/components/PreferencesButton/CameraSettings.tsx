@@ -77,7 +77,7 @@ export const CameraSettings = observer<CameraSettingsProps>(function CameraSetti
                 className="preferences-modal-section-checkbox"
                 onClick={toggleMirrorMode}
             >
-                {"Mirror Mode"}
+                {t("mirror-mode")}
             </Checkbox>
         </div>
     );
