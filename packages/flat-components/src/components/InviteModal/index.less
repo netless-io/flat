@@ -40,19 +40,18 @@
 
 .invite-modal-content-item {
     display: flex;
-    word-break: break-all;
 
     span {
         display: inline-block;
 
         &:first-of-type {
-            flex: 1;
-            min-width: 25%;
+            padding-right: 16px;
+            white-space: nowrap;
             color: var(--text);
         }
 
         &:last-of-type {
-            flex: auto;
+            flex: 1;
             text-align: right;
         }
     }
@@ -71,7 +70,7 @@
 
 .flat-color-scheme-dark {
     .invite-modal-header {
-        > span {
+        >span {
             &:first-of-type {
                 margin-bottom: 8px;
                 color: var(--grey-0);
