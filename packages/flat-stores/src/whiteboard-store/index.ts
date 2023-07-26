@@ -210,9 +210,11 @@ export class WhiteboardStore {
             return;
         }
 
-        if (file.resourceType !== FileResourceType.Directory) {
-            void message.info(FlatI18n.t("inserting-courseware-tips"));
+        if (file.resourceType === FileResourceType.Directory) {
+            return;
         }
+
+        void message.info(FlatI18n.t("inserting-courseware-tips"));
 
         const fileService = await FlatServices.getInstance().requestService("file");
         if (!fileService) {
