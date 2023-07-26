@@ -3,6 +3,7 @@ import { action, computed, makeObservable, observable } from "mobx";
 import prettyBytes from "pretty-bytes";
 import { CloudStorageFileName, CloudStorageUploadTask } from "../../components/CloudStorage/types";
 import type { CloudFile, NewDirectoryPayload } from "@netless/flat-server-api";
+import { searchPath } from "../../utils/searchPath";
 
 export type UploadID = string;
 export type FileUUID = string;
@@ -24,7 +25,7 @@ export abstract class CloudStorageStore {
     /** In order to avoid multiple calls the fetchMoreCloudStorageData when fetching data */
     public isFetchingFiles = false;
     //  current parent directory
-    public parentDirectoryPath = new URLSearchParams(window.location.search).get("path") || "/";
+    public parentDirectoryPath = searchPath() || "/";
 
     /** Display upload panel */
     public get isUploadPanelVisible(): boolean {
