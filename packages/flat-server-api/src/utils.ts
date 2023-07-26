@@ -44,7 +44,14 @@ export function chooseServer(payload: any, enableFlatServerV2?: boolean): string
             if ((uuid.length === 11 && uuid[0] === "2") || uuid.startsWith("SG-")) {
                 region = Region.SG;
             }
+            // Legacy room
+            if (uuid.length === 10) {
+                region = Region.CN_HZ;
+            }
         }
+    }
+    if (region === defaultRegion) {
+        return server;
     }
 
     // replace the left most part of domain, currently we have "{api}" for cn-hz, "{api}-sg" for sg
