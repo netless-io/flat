@@ -154,7 +154,7 @@ export class ServerRequestError extends Error {
     public errorMessage: string;
 
     public constructor(errorCode: RequestErrorCode) {
-        super(`request failed: ${errorCode}`);
+        super(`request failed: ${errorCode} (${RequestErrorCode[errorCode]})`);
         this.name = this.constructor.name;
         this.errorCode = errorCode;
         this.errorMessage = RequestErrorMessage[errorCode];
