@@ -1,11 +1,11 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 import { LoginPanel } from ".";
-import { Overview as StoryLoginWithPhone } from "./LoginWithPhone/LoginWithPhone.stories";
-import { Overview as StoryLoginWithEmail } from "./LoginWithEmail/LoginWithEmail.stories";
+import { Overview as StoryLoginWithCode } from "./LoginWithCode/LoginWithCode.stories";
+import { Overview as StoryLoginWithEmail } from "./LoginWithPassword/LoginWithPassword.stories";
 
-import { LoginWithPhone } from "./LoginWithPhone";
-import { LoginWithEmail } from "./LoginWithEmail";
+import { LoginWithCode } from "./LoginWithCode";
+import { LoginWithPassword } from "./LoginWithPassword";
 
 const storyMeta: Meta = {
     title: "LoginPage/LoginPanel",
@@ -36,8 +36,8 @@ export default storyMeta;
 export const PlayableExample: Story<{ region: "CN" | "US" }> = ({ region }) => {
     return (
         <LoginPanel>
-            {region === "CN" && <LoginWithPhone {...(StoryLoginWithPhone.args as any)} />}
-            {region === "US" && <LoginWithEmail {...(StoryLoginWithEmail.args as any)} />}
+            {region === "CN" && <LoginWithCode {...(StoryLoginWithCode.args as any)} />}
+            {region === "US" && <LoginWithPassword {...(StoryLoginWithEmail.args as any)} />}
         </LoginPanel>
     );
 };

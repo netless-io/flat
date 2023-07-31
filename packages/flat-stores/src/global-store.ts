@@ -8,6 +8,11 @@ const LS_VERSION = 1;
 
 export type UserInfo = LoginProcessResult;
 
+export type Account = {
+    key: string;
+    password: string;
+};
+
 /**
  * Properties in Global Store are persisted and shared globally.
  */
@@ -20,6 +25,7 @@ export class GlobalStore {
     public isShowGuide = false;
     public isTurnOffDeviceTest = false;
     public userInfo: UserInfo | null = null;
+    public accountHistory: Account[] | [] = [];
     public whiteboardRoomUUID: string | null = null;
     public whiteboardRoomToken: string | null = null;
     public region: Region | null = null;
@@ -53,6 +59,10 @@ export class GlobalStore {
 
     public get userName(): string | undefined {
         return this.userInfo?.name;
+    }
+
+    public get hasPassword(): boolean {
+        return this.userInfo?.hasPassword ?? false;
     }
 
     public constructor() {
@@ -172,6 +182,23 @@ export class GlobalStore {
 
     public updatePeriodicUUID = (periodicUUID?: string): void => {
         this.periodicUUID = periodicUUID;
+    };
+
+    public updateAccountHistory = ({ key, password }: Account): void => {
+        // @TODO need to remove when clear account
+
+        const hash: Record<string, boolean> = {};
+        this.accountHistory = [{ key, password }, ...this.accountHistory].reduce(
+            (history: Account[], next: Account) => {
+                if (!hash[next.key]) {
+                    hash[next.key] = true;
+                    history.push(next);
+                }
+
+                return history;
+            },
+            [],
+        );
     };
 }
 

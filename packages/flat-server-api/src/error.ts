@@ -31,6 +31,8 @@ export enum RequestErrorCode {
     UserNotFound = 400000,
     UserRoomListNotEmpty, // occurs when delete account, user must have quitted all running rooms
     UserAlreadyBinding, // already bound, should unbind first
+    UserPasswordIncorrect, // user password (for update) incorrect
+    UserOrPasswordIncorrect, // user or password (for login) incorrect
 
     RecordNotFound = 500000,
 
@@ -56,6 +58,12 @@ export enum RequestErrorCode {
     SMSVerificationCodeInvalid = 110000, // verification code invalid
     SMSAlreadyExist, // phone already exist
     SMSAlreadyBinding, // phone are binding by other users
+    SMSFailedToSendCode, // failed to send verification code
+
+    EmailVerificationCodeInvalid = 115000, // verification code invalid
+    EmailAlreadyExist, // email already exist by current user
+    EmailAlreadyBinding, // email are binding by other users
+    EmailFailedToSendCode, // failed to send verification code
 
     CensorshipFailed = 120000, // censorship failed
 
@@ -100,12 +108,20 @@ export const RequestErrorMessage = {
     [RequestErrorCode.UserNotFound]: "user-does-not-exist",
     [RequestErrorCode.UserRoomListNotEmpty]: "user-room-list-is-not-empty",
     [RequestErrorCode.UserAlreadyBinding]: "user-already-binding",
+    [RequestErrorCode.UserPasswordIncorrect]: "user-password-incorrect",
+    [RequestErrorCode.UserOrPasswordIncorrect]: "user-account-or-password-incorrect",
 
     [RequestErrorCode.RecordNotFound]: "replay-does-not-exist",
 
     [RequestErrorCode.SMSVerificationCodeInvalid]: "login-phone-verification-code-invalid",
     [RequestErrorCode.SMSAlreadyExist]: "login-phone-already-exist",
     [RequestErrorCode.SMSAlreadyBinding]: "phone-already-binding",
+    [RequestErrorCode.SMSFailedToSendCode]: "send-verify-code-failed",
+
+    [RequestErrorCode.EmailVerificationCodeInvalid]: "email-verification-code-invalid",
+    [RequestErrorCode.EmailAlreadyExist]: "email-already-exist",
+    [RequestErrorCode.EmailAlreadyBinding]: "email-already-binding",
+    [RequestErrorCode.EmailFailedToSendCode]: "email-failed-to-send-code",
 
     [RequestErrorCode.UploadConcurrentLimit]: "upload-concurrent-limit",
     [RequestErrorCode.NotEnoughTotalUsage]: "total-usage-is-full",

@@ -19,6 +19,7 @@ export * from "./components/HomePage";
 export * from "./components/InviteModal";
 export * from "./components/LoadingPage";
 export * from "./components/LoginPage";
+export * from "./components/RegisterModal";
 export * from "./components/MainPageLayout";
 export * from "./components/MainPageLayoutHorizontal";
 export * from "./components/PeriodicRoomPage";

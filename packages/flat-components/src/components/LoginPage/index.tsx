@@ -5,8 +5,10 @@ import React, { useContext } from "react";
 import { DarkModeContext } from "../FlatThemeProvider";
 import { Cover } from "./icons/Cover";
 import { CoverDark } from "./icons/CoverDark";
-export * from "./LoginWithEmail";
-export * from "./LoginWithPhone";
+export * from "./LoginWithPassword";
+export * from "./LoginWithCode";
+export * from "./BindingPhonePanel";
+export * from "./QRCodePanel";
 
 export interface LoginPanelProps {}
 
