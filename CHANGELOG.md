@@ -1,3 +1,30 @@
+## [2.2.4](https://github.com/netless-io/flat/compare/v2.2.3...v2.2.4) (2023-08-01)
+
+
+### Bug Fixes
+
+* **config**: update AK ([c974bd55](https://github.com/netless-io/flat/commit/c974bd555d2df45aced1d444e4346f82050d6f7e))
+
+
+
+## [2.2.3](https://github.com/netless-io/flat/compare/v2.2.2...v2.2.3) (2023-07-03)
+
+
+### Features
+
+* **project**: add replay room url protocol ([#1955](https://github.com/netless-io/flat/issues/1955)) ([4d628a46](https://github.com/netless-io/flat/commit/4d628a4679e35f9b8531b09110762cfdf73c865e))
+
+### Bug Fixes
+
+* **flat-components**: fix login cover image ([#1957](https://github.com/netless-io/flat/issues/1957)) ([96153039](https://github.com/netless-io/flat/commit/9615303921bfa0c5fd72d2dfd15fa6bb7c270832))
+* **flat-stores**: remove legacy code of scroll to top ([#1953](https://github.com/netless-io/flat/issues/1953)) ([40759210](https://github.com/netless-io/flat/commit/40759210f598ffd0c62d700456898c26b1c840d6))
+
+### Performance Improvements
+
+* **flat-stores**: fetch users info only when necessary ([#1946](https://github.com/netless-io/flat/issues/1946)) ([d93ecc1b](https://github.com/netless-io/flat/commit/d93ecc1b3c517eb247dce276c9a4600a28a442a9))
+
+
+
 ## [2.2.2](https://github.com/netless-io/flat/compare/v2.2.1...v2.2.2) (2023-05-16)
 
 
