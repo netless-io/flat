@@ -177,7 +177,7 @@ export function renderBeginTimePicker(
         const { endTime, periodic }: Pick<EditRoomFormValues, "endTime" | "periodic"> =
             form.getFieldsValue(["endTime", "periodic"]);
 
-        const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
+        const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION * 2);
 
         if (compareMinute(endTime, compareTime) < 0) {
             form.setFieldsValue({ endTime: compareTime });
