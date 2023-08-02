@@ -51,13 +51,10 @@ export function renderEndTimePicker(
             form.getFieldsValue(["beginTime", "endTime"]);
 
         const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
-
         const diff = compareDay(compareTime, endTime);
 
         if (nextPeriodicRoomEndTime) {
             const nextPeriodicEndTime = new Date(nextPeriodicRoomEndTime);
-            const compareTime = addMinutes(beginTime, MIN_CLASS_DURATION);
-            const diff = compareDay(compareTime, endTime);
             const endDiff = compareDay(nextPeriodicEndTime, endTime);
 
             if (diff < 0) {
@@ -99,24 +96,20 @@ export function renderEndTimePicker(
 
         if (nextPeriodicRoomEndTime) {
             const nextPeriodicEndTime = new Date(nextPeriodicRoomEndTime);
-            const comparedTime = addMinutes(beginTime, MIN_CLASS_DURATION);
-            const selectedEndTime = setHours(endTime, selectedHour);
-
-            const diff = compareDay(comparedTime, selectedEndTime);
-            const sameHour = selectedHour === nextPeriodicEndTime.getHours();
+            const endDiff = compareHour(nextPeriodicEndTime, endTime);
 
             if (diff < 0) {
-                if (sameHour) {
-                    return excludeRange(nextPeriodicEndTime.getMinutes(), 59);
+                if (endDiff === 0) {
+                    return excludeRange(nextPeriodicEndTime.getMinutes() + 1, 59);
                 }
                 return [];
             }
 
             if (diff === 0) {
-                if (sameHour) {
-                    return excludeRange(nextPeriodicEndTime.getMinutes(), 59);
+                if (endDiff === 0) {
+                    return excludeRange(nextPeriodicEndTime.getMinutes() + 1, 59);
                 }
-                return [];
+                return excludeRange(comparedTime.getMinutes());
             }
 
             return excludeRange(59);
