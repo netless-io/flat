@@ -121,6 +121,7 @@ module.exports = {
         "EXTINF",
         "mpegurl", // hls.js
         "wopjs", // @wopjs/dom
+        "xstate",
 
         // less
         "isstring",

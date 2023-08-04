@@ -1,5 +1,5 @@
 import { Status } from "./constants";
-import { post, postNotAuth, postV2, requestFlatServer } from "./utils";
+import { post, postNotAuth, postV2, postV2NotAuth, requestFlatServer } from "./utils";
 
 export interface LoginCheckPayload {}
 
@@ -9,6 +9,7 @@ export interface LoginCheckResult {
     token: string;
     userUUID: string;
     hasPhone: boolean;
+    hasPassword: boolean;
 }
 
 export async function loginCheck(token?: string): Promise<LoginCheckResult> {
@@ -39,6 +40,7 @@ export interface LoginProcessResult {
     userUUID: string;
     token: string;
     hasPhone: boolean;
+    hasPassword: boolean;
     agoraSSOLoginID?: string;
 }
 
@@ -66,19 +68,16 @@ export async function agoraSSOLoginCheck(loginID: string): Promise<AgoraSSOLogin
     );
 }
 
-export interface LoginPhoneSendCodePayload {
+export interface PhoneSendCodePayload {
     phone: string; // +8612345678901
 }
 
-export type LoginPhoneSendCodeResult = {};
+export type PhoneSendCodeResult = {};
 
-export async function loginPhoneSendCode(phone: string): Promise<LoginPhoneSendCodeResult> {
-    return await postNotAuth<LoginPhoneSendCodePayload, LoginPhoneSendCodeResult>(
-        "login/phone/sendMessage",
-        {
-            phone,
-        },
-    );
+export async function loginPhoneSendCode(phone: string): Promise<PhoneSendCodeResult> {
+    return await postNotAuth<PhoneSendCodePayload, PhoneSendCodeResult>("login/phone/sendMessage", {
+        phone,
+    });
 }
 
 export interface LoginPhonePayload {
@@ -93,14 +92,182 @@ export async function loginPhone(phone: string, code: number): Promise<LoginProc
     });
 }
 
-export interface BindingPhoneSendCodePayload {
+export interface LoginPhoneWithPwdPayload {
     phone: string; // +8612345678901
+    password: string; // abc12345
+}
+
+export async function loginPhoneWithPwd(
+    phone: string,
+    password: string,
+): Promise<LoginProcessResult> {
+    return await postV2NotAuth<LoginPhoneWithPwdPayload, LoginProcessResult>("login/phone", {
+        phone,
+        password,
+    });
+}
+
+export interface LoginEmailPayload {
+    email: string; // name@example.com
+    password: string;
+}
+
+export async function loginEmailWithPwd(
+    email: string,
+    password: string,
+): Promise<LoginProcessResult> {
+    return await postV2NotAuth<LoginEmailPayload, LoginProcessResult>("login/email", {
+        email,
+        password,
+    });
+}
+
+// register account
+export type RegisterResult = {};
+
+export interface RegisterPhonePayload {
+    phone: string;
+    code: number;
+    password: string;
+}
+
+export async function registerPhone(
+    phone: string,
+    code: number,
+    password: string,
+): Promise<RegisterResult> {
+    return await postV2NotAuth<RegisterPhonePayload, RegisterResult>("register/phone", {
+        phone,
+        code,
+        password,
+    });
+}
+
+export async function registerPhoneSendCode(phone: string): Promise<PhoneSendCodeResult> {
+    return await postV2NotAuth<PhoneSendCodePayload, PhoneSendCodeResult>(
+        "register/phone/send-message",
+        {
+            phone,
+        },
+    );
+}
+
+export interface RegisterEmailPayload {
+    email: string;
+    code: number;
+    password: string;
+}
+
+export async function registerEmail(
+    email: string,
+    code: number,
+    password: string,
+): Promise<RegisterResult> {
+    return await postV2NotAuth<RegisterEmailPayload, RegisterResult>("register/email", {
+        email,
+        code,
+        password,
+    });
+}
+
+export interface EmailSendCodePayload {
+    email: string;
+}
+
+export type EmailSendCodeResult = {};
+
+export async function registerEmailSendCode(email: string): Promise<EmailSendCodeResult> {
+    return await postV2NotAuth<EmailSendCodePayload, EmailSendCodeResult>(
+        "register/email/send-message",
+        {
+            email,
+        },
+    );
+}
+
+// update password
+export interface UpdatePwdPayload {
+    password?: string;
+    newPassword: string;
+}
+
+export type UpdatePwdResult = {};
+
+export async function updatePassword({
+    newPassword,
+    password,
+}: UpdatePwdPayload): Promise<UpdatePwdResult> {
+    let payload: UpdatePwdPayload = { newPassword };
+    if (password) {
+        payload = { ...payload, password };
+    }
+
+    return await postV2<UpdatePwdPayload, UpdatePwdResult>("user/password", payload);
+}
+
+// reset password
+export interface ResetPwdWithPhonePayload {
+    phone: string;
+    code: number;
+    password: string;
+}
+
+export type ResetPwdWithPhoneResult = {};
+
+export async function resetPwdWithPhone(
+    phone: string,
+    code: number,
+    password: string,
+): Promise<ResetPwdWithPhoneResult> {
+    return await postV2NotAuth<ResetPwdWithPhonePayload, ResetPwdWithPhoneResult>("reset/phone", {
+        phone,
+        code,
+        password,
+    });
+}
+
+export async function resetPhoneSendCode(phone: string): Promise<PhoneSendCodeResult> {
+    return await postV2NotAuth<PhoneSendCodePayload, PhoneSendCodeResult>(
+        "reset/phone/send-message",
+        {
+            phone,
+        },
+    );
+}
+
+export interface ResetPwdWithEmailPayload {
+    email: string;
+    code: number;
+    password: string;
+}
+
+export type ResetPwdWithEmailResult = {};
+
+export async function resetPwdWithEmail(
+    email: string,
+    code: number,
+    password: string,
+): Promise<ResetPwdWithEmailResult> {
+    return await postV2NotAuth<ResetPwdWithEmailPayload, ResetPwdWithEmailResult>("reset/email", {
+        email,
+        code,
+        password,
+    });
+}
+
+export async function resetEmailSendCode(email: string): Promise<EmailSendCodeResult> {
+    return await postV2NotAuth<EmailSendCodePayload, EmailSendCodeResult>(
+        "reset/email/send-message",
+        {
+            email,
+        },
+    );
 }
 
 export type BindingPhoneSendCodeResult = {};
 
 export async function bindingPhoneSendCode(phone: string): Promise<BindingPhoneSendCodeResult> {
-    return await post<BindingPhoneSendCodePayload, BindingPhoneSendCodeResult>(
+    return await post<PhoneSendCodePayload, BindingPhoneSendCodeResult>(
         "user/bindingPhone/sendMessage",
         {
             phone,

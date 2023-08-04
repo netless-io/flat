@@ -16,10 +16,10 @@ import { WECHAT } from "../constants/process";
 import { useSafePromise } from "../utils/hooks/lifecycle";
 
 export interface WeChatLoginProps {
-    setLoginResult: (result: LoginProcessResult) => void;
+    onLoginResult: (result: LoginProcessResult) => void;
 }
 
-export const WeChatLogin = observer(function WeChatLogin({ setLoginResult }: WeChatLoginProps) {
+export const WeChatLogin = observer(function WeChatLogin({ onLoginResult }: WeChatLoginProps) {
     const [qrCodeURL, setQRCodeURL] = useState("");
     const sp = useSafePromise();
 
@@ -37,7 +37,7 @@ export const WeChatLogin = observer(function WeChatLogin({ setLoginResult }: WeC
                 if (data.userUUID === "") {
                     loginProcessRequest(ticket, authUUID);
                 } else {
-                    setLoginResult(data);
+                    onLoginResult(data);
                 }
             }, 2000);
         };

@@ -14,6 +14,7 @@ import { useSafePromise } from "../../utils/hooks/lifecycle";
 import { deleteAccount, deleteAccountValidate, loginCheck, rename } from "@netless/flat-server-api";
 import { ConfirmButtons } from "./ConfirmButtons";
 import { uploadAvatar, UploadAvatar } from "./UploadAvatar";
+import { UpdatePasswordModel } from "./UpdatePasswordModel";
 import { BindWeChat } from "./binding/WeChat";
 import { useBindingList } from "./binding";
 import { BindGitHub } from "./binding/GitHub";
@@ -34,8 +35,11 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
     const language = useLanguage();
 
     const [name, setName] = useState(globalStore.userName || "");
+    const [hasPassword] = useState(globalStore.hasPassword);
     const [isRenaming, setRenaming] = useState(false);
     const { bindings, refresh: refreshBindings } = useBindingList();
+
+    const [showModel, setShowModel] = useState(false);
 
     async function changeUserName(): Promise<void> {
         if (name !== globalStore.userName) {
@@ -80,6 +84,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                 try {
                     await sp(deleteAccount());
                     globalStore.updateUserInfo(null);
+                    // @TODO need to clear current account history in global store.
                     pushHistory(RouteNameType.LoginPage);
                 } catch (err) {
                     errorTips(err);
@@ -120,6 +125,26 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                             onRefresh={refreshBindings}
                         />
                     </div>
+                </div>
+                <div className="general-setting-user-account">
+                    <span className="general-setting-title">{t("user-account")}</span>
+                    <span>{hasPassword ? t("password-already-set") : t("not-set-password")}</span>
+                    <div>
+                        <Button onClick={() => setShowModel(true)}>
+                            {hasPassword ? t("update-password") : t("set-password")}
+                        </Button>
+                    </div>
+
+                    <UpdatePasswordModel
+                        showOldPassword={hasPassword}
+                        title={hasPassword ? t("update-password") : t("set-password")}
+                        visible={showModel}
+                        onCancel={() => setShowModel(false)}
+                        onConfirm={() => {
+                            setShowModel(false);
+                            pushHistory(RouteNameType.LoginPage);
+                        }}
+                    />
                 </div>
                 <div className="general-setting-select-language">
                     <span>{t("language-settings")}</span>

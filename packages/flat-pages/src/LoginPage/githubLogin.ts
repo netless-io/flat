@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { LoginExecutor } from "./utils";
+import { LoginExecutor } from "./utils/disposer";
 import { errorTips } from "flat-components";
 import { FLAT_SERVER_LOGIN, setAuthUUID, loginProcess } from "@netless/flat-server-api";
 import { GITHUB } from "../constants/process";
