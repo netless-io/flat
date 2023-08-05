@@ -5,6 +5,7 @@ import React, { useCallback, useState } from "react";
 import lockSVG from "../icons/lock.svg";
 import { useTranslate } from "@netless/flat-i18n";
 import { UpdatePwdPayload, updatePassword } from "@netless/flat-server-api";
+import { globalStore } from "@netless/flat-stores";
 
 export interface UpdatePasswordModelProps {
     visible: boolean;
@@ -52,9 +53,16 @@ export const UpdatePasswordModel: React.FC<UpdatePasswordModelProps> = ({
         }
 
         try {
-            // @TODO update global account history
             setLoading(true);
             await sp(updatePassword(payload));
+
+            if (globalStore.currentAccount) {
+                globalStore.updateAccountHistory({
+                    key: globalStore.currentAccount.key,
+                    password: newPassword1,
+                });
+            }
+
             message.success(
                 showOldPassword ? t("password-update-success") : t("password-set-success"),
             );

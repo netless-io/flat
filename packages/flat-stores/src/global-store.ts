@@ -25,7 +25,11 @@ export class GlobalStore {
     public isShowGuide = false;
     public isTurnOffDeviceTest = false;
     public userInfo: UserInfo | null = null;
+
+    // login with password
+    public currentAccount: Account | null = null;
     public accountHistory: Account[] | [] = [];
+
     public whiteboardRoomUUID: string | null = null;
     public whiteboardRoomToken: string | null = null;
     public region: Region | null = null;
@@ -159,6 +163,7 @@ export class GlobalStore {
 
     public logout = (): void => {
         this.userInfo = null;
+        this.currentAccount = null;
         this.lastLoginCheck = null;
         this.onStageRoomUUIDs = [];
         document.cookie = "flatJWTToken=; SameSite=Lax; domain=whiteboard.agora.io; max-age=0";
@@ -184,8 +189,17 @@ export class GlobalStore {
         this.periodicUUID = periodicUUID;
     };
 
+    public deleteCurrentAccountFromHistory = (): void => {
+        this.accountHistory = this.accountHistory.filter(
+            account => account.key !== this.currentAccount?.key,
+        );
+
+        this.currentAccount = null;
+    };
+
     public updateAccountHistory = ({ key, password }: Account): void => {
-        // @TODO need to remove when clear account
+        // update current account
+        this.currentAccount = { key, password };
 
         const hash: Record<string, boolean> = {};
         this.accountHistory = [{ key, password }, ...this.accountHistory].reduce(

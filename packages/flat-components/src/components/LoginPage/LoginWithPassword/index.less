@@ -6,9 +6,47 @@
         margin: 0 auto 32px;
     }
 
+    .login-width-limiter>div {
+        margin-bottom: 16px;
+    }
+
+    .ant-input-wrapper {
+        display: flex;
+
+        .ant-input-affix-wrapper {
+            flex: 1
+        }
+    }
+
     .ant-input-affix-wrapper {
         padding-left: 4px;
-        margin-bottom: 16px;
+    }
+
+    .ant-input-group-addon {
+        width: 32px;
+        background: #fff;
+
+        .ant-select .ant-select-selector {
+            margin-top: -12px;
+        }
+
+        .ant-select-selection-item,
+        .ant-select-selection-placeholder {
+            display: none;
+        }
+
+        .ant-select-item-option-content {
+            text-align: start;
+        }
+
+        .ant-select-arrow {
+            right: 6px;
+        }
+
+        .ant-select-dropdown {
+            width: 200px !important;
+        }
+
     }
 
     .ant-input-password-icon.anticon {

@@ -15,7 +15,7 @@ export const Overview: Story<LoginWithPasswordProps> = props => {
 };
 
 Overview.args = {
-    login: (type: PasswordLoginType, key: string, password: string) => {
+    login: (type: PasswordLoginType, { key }, password: string) => {
         message.info("login with " + type + " to " + key + ". And the password is: " + password);
         return new Promise(resolve => setTimeout(() => resolve(false), 1000));
     },
@@ -32,7 +32,7 @@ Overview.args = {
         message.info("send code with " + type + " to " + key);
         return new Promise(resolve => setTimeout(() => resolve(false), 1000));
     },
-    resetPassword: (type: PasswordLoginType, key: string, code: string, password: string) => {
+    resetPassword: (type: PasswordLoginType, { key }, code: string, password: string) => {
         message.info(
             "reset password with " +
                 type +

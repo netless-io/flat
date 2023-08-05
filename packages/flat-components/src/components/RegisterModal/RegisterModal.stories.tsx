@@ -19,7 +19,7 @@ Overview.args = {
     onClickButton: (provider: string) => {
         message.info("login with " + provider);
     },
-    register: (type: PasswordLoginType, key: string, code, password: string) => {
+    register: (type: PasswordLoginType, { key }, code, password: string) => {
         message.info(
             "register. current type: " +
                 type +

@@ -19,6 +19,7 @@ import {
     QRCodePanel,
     LoginButtonProviderType,
     RegisterModal,
+    LoginKeyType,
 } from "flat-components";
 import {
     bindingPhone,
@@ -36,6 +37,7 @@ import {
     registerEmailSendCode,
     registerPhoneSendCode,
 } from "@netless/flat-server-api";
+import { globalStore } from "@netless/flat-stores";
 
 export const LoginPage = observer(function LoginPage() {
     const language = useLanguage();
@@ -78,17 +80,22 @@ export const LoginPage = observer(function LoginPage() {
                     <RegisterModal
                         backToLogin={() => setCurrentState("SWITCH_TO_PASSWORD")}
                         {...loginProps}
-                        register={(type: PasswordLoginType, key: string, code, password: string) =>
+                        register={(
+                            type: PasswordLoginType,
+                            { key, originKey }: LoginKeyType,
+                            code,
+                            password: string,
+                        ) =>
                             wrap(
                                 type === PasswordLoginType.Email
                                     ? registerEmail(key, Number(code), password).then(() => {
                                           sp(loginEmailWithPwd(key, password)).then(authInfo =>
-                                              onLoginResult(authInfo, { key, password }),
+                                              onLoginResult(authInfo, { key: originKey, password }),
                                           );
                                       })
                                     : registerPhone(key, Number(code), password).then(() => {
                                           sp(loginPhoneWithPwd(key, password)).then(authInfo =>
-                                              onLoginResult(authInfo, { key, password }),
+                                              onLoginResult(authInfo, { key: originKey, password }),
                                           );
                                       }),
                             )
@@ -131,14 +138,15 @@ export const LoginPage = observer(function LoginPage() {
                 return (
                     <LoginWithPassword
                         {...loginProps}
-                        login={async (type, key, password) =>
+                        accountHistory={globalStore.accountHistory}
+                        login={async (type, { key, originKey }: LoginKeyType, password) =>
                             wrap(
                                 type === PasswordLoginType.Email
                                     ? loginEmailWithPwd(key, password).then(authInfo =>
-                                          onLoginResult(authInfo, { key, password }),
+                                          onLoginResult(authInfo, { key: originKey, password }),
                                       )
                                     : loginPhoneWithPwd(key, password).then(authInfo =>
-                                          onLoginResult(authInfo, { key, password }),
+                                          onLoginResult(authInfo, { key: originKey, password }),
                                       ),
                             )
                         }
@@ -146,7 +154,7 @@ export const LoginPage = observer(function LoginPage() {
                         register={() => setCurrentState("SWITCH_TO_REGISTER")}
                         resetPassword={(
                             type: PasswordLoginType,
-                            key: string,
+                            { key, originKey }: LoginKeyType,
                             code: string,
                             password: string,
                         ) =>
@@ -154,12 +162,12 @@ export const LoginPage = observer(function LoginPage() {
                                 type === PasswordLoginType.Email
                                     ? resetPwdWithEmail(key, Number(code), password).then(() => {
                                           sp(loginEmailWithPwd(key, password)).then(authInfo =>
-                                              onLoginResult(authInfo, { key, password }),
+                                              onLoginResult(authInfo, { key: originKey, password }),
                                           );
                                       })
                                     : resetPwdWithPhone(key, Number(code), password).then(() => {
                                           sp(loginPhoneWithPwd(key, password)).then(authInfo =>
-                                              onLoginResult(authInfo, { key, password }),
+                                              onLoginResult(authInfo, { key: originKey, password }),
                                           );
                                       }),
                             )
