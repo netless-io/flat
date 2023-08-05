@@ -49,18 +49,24 @@ export enum PasswordLoginPageType {
     Reset = "reset-password",
 }
 
+export type LoginKeyType = {
+    key: string;
+    originKey: string;
+};
+
 export interface LoginWithPasswordProps {
     buttons?: LoginButtonProviderType[];
     privacyURL?: LoginAgreementProps["privacyURL"];
     serviceURL?: LoginAgreementProps["serviceURL"];
-    login: (type: PasswordLoginType, key: string, password: string) => Promise<boolean>;
+    accountHistory: Array<{ key: string; password: string }> | [];
+    login: (type: PasswordLoginType, key: LoginKeyType, password: string) => Promise<boolean>;
     register: () => void;
     onClickButton: LoginButtonsProps["onClick"];
     loginWithVerificationCode: () => void;
     sendVerificationCode: (type: PasswordLoginType, key: string) => Promise<boolean>;
     resetPassword: (
         type: PasswordLoginType,
-        key: string,
+        key: LoginKeyType,
         code: string,
         password: string,
     ) => Promise<boolean>;
@@ -70,6 +76,7 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
     buttons: userButtons,
     privacyURL,
     serviceURL,
+    accountHistory,
     onClickButton,
     login,
     resetPassword,
@@ -97,8 +104,8 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
     const isUnMountRef = useIsUnMounted();
 
     // account and password
-    const [keyValue, setKeyValue] = useState("");
-    const [password, setPassword] = useState("");
+    const [keyValue, setKeyValue] = useState(accountHistory[0]?.key || "");
+    const [password, setPassword] = useState(accountHistory[0]?.password || "");
 
     const [agreed, setAgreed] = useState(false);
     const [clickedLogin, setClickedLogin] = useState(false);
@@ -132,15 +139,14 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
     }, [keyValue, isPhone]);
 
     useEffect(() => {
-        if (keyValue) {
+        if (!keyValue) {
             setPassword("");
         }
     }, [keyValue]);
 
     useEffect(() => {
-        setPassword("");
-
         if (isResettingPage) {
+            setPassword("");
             setCode("");
         }
     }, [page, isResettingPage]);
@@ -190,7 +196,18 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
             setAgreed(true);
         }
         setClickedLogin(true);
-        if (await sp(login(key, isPhone ? countryCode + keyValue : keyValue, password))) {
+        if (
+            await sp(
+                login(
+                    key,
+                    {
+                        key: isPhone ? countryCode + keyValue : keyValue,
+                        originKey: keyValue,
+                    },
+                    password,
+                ),
+            )
+        ) {
             await new Promise(resolve => setTimeout(resolve, 60000));
         } else {
             message.info(t("login-failed"));
@@ -214,7 +231,15 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
         setClickedReset(true);
         if (
             await sp(
-                resetPassword(key, isPhone ? countryCode + keyValue : keyValue, code, password),
+                resetPassword(
+                    key,
+                    {
+                        key: isPhone ? countryCode + keyValue : keyValue,
+                        originKey: keyValue,
+                    },
+                    code,
+                    password,
+                ),
             )
         ) {
             await new Promise(resolve => setTimeout(resolve, 60000));
@@ -243,40 +268,70 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
             <div className="login-with-email">
                 <div className="login-width-limiter">
                     <LoginTitle subtitle=" " />
-                    <Input
-                        placeholder={t("enter-email-or-phone")}
-                        prefix={
-                            isPhone ? (
-                                <Select
-                                    bordered={false}
-                                    defaultValue="+86"
-                                    onChange={setCountryCode}
-                                >
-                                    {COUNTRY_CODES.map(code => (
-                                        <Select.Option
-                                            key={code}
-                                            value={`+${code}`}
-                                        >{`+${code}`}</Select.Option>
-                                    ))}
-                                </Select>
-                            ) : (
-                                <img alt="email" src={emailSVG} />
-                            )
-                        }
-                        size={inputSize}
-                        status={isKeyInputValidate || !keyValue ? void 0 : "error"}
-                        type={inputType}
-                        value={keyValue}
-                        onChange={ev => setKeyValue(ev.currentTarget.value)}
-                    />
+                    <div>
+                        <Input
+                            allowClear
+                            addonAfter={
+                                accountHistory?.length ? (
+                                    <Select
+                                        labelInValue
+                                        bordered={false}
+                                        placement="bottomRight"
+                                        value={{ key: password, value: keyValue }}
+                                        onChange={options => {
+                                            setKeyValue(options.value);
+                                            setPassword(options.key);
+                                        }}
+                                    >
+                                        {accountHistory.map(account => {
+                                            return (
+                                                <Select.Option
+                                                    key={account.password}
+                                                    value={account.key}
+                                                >
+                                                    {account.key}
+                                                </Select.Option>
+                                            );
+                                        })}
+                                    </Select>
+                                ) : null
+                            }
+                            placeholder={t("enter-email-or-phone")}
+                            prefix={
+                                isPhone ? (
+                                    <Select
+                                        bordered={false}
+                                        defaultValue="+86"
+                                        onChange={setCountryCode}
+                                    >
+                                        {COUNTRY_CODES.map(code => (
+                                            <Select.Option
+                                                key={code}
+                                                value={`+${code}`}
+                                            >{`+${code}`}</Select.Option>
+                                        ))}
+                                    </Select>
+                                ) : (
+                                    <img alt="email" src={emailSVG} />
+                                )
+                            }
+                            size={inputSize}
+                            status={isKeyInputValidate || !keyValue ? void 0 : "error"}
+                            type={inputType}
+                            value={keyValue}
+                            onChange={ev => setKeyValue(ev.currentTarget.value)}
+                        />
+                    </div>
 
-                    <Input.Password
-                        placeholder={t("enter-password")}
-                        prefix={<img alt="password" src={lockSVG} />}
-                        status={!password || validatePassword(password) ? void 0 : "error"}
-                        value={password}
-                        onChange={ev => setPassword(ev.currentTarget.value)}
-                    />
+                    <div>
+                        <Input.Password
+                            placeholder={t("enter-password")}
+                            prefix={<img alt="password" src={lockSVG} />}
+                            status={!password || validatePassword(password) ? void 0 : "error"}
+                            value={password}
+                            onChange={ev => setPassword(ev.currentTarget.value)}
+                        />
+                    </div>
 
                     <div className="login-with-email-btn-wrapper">
                         <Button type="link" onClick={loginWithVerificationCode}>

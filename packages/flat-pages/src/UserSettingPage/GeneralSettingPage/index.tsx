@@ -2,7 +2,7 @@ import type { CheckboxChangeEvent } from "antd/lib/checkbox";
 
 import "./index.less";
 
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Checkbox, Input, message, Modal, Radio } from "antd";
 import { FlatPrefersColorScheme, AppearancePicker, errorTips } from "flat-components";
@@ -35,11 +35,12 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
     const language = useLanguage();
 
     const [name, setName] = useState(globalStore.userName || "");
-    const [hasPassword] = useState(globalStore.hasPassword);
     const [isRenaming, setRenaming] = useState(false);
     const { bindings, refresh: refreshBindings } = useBindingList();
 
     const [showModel, setShowModel] = useState(false);
+
+    const hasPassword = useMemo(() => globalStore.hasPassword, [globalStore.hasPassword]);
 
     async function changeUserName(): Promise<void> {
         if (name !== globalStore.userName) {
@@ -84,7 +85,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                 try {
                     await sp(deleteAccount());
                     globalStore.updateUserInfo(null);
-                    // @TODO need to clear current account history in global store.
+                    globalStore.deleteCurrentAccountFromHistory();
                     pushHistory(RouteNameType.LoginPage);
                 } catch (err) {
                     errorTips(err);
@@ -92,6 +93,15 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
             },
         });
     }
+
+    const updatePassword = useCallback(async () => {
+        setShowModel(false);
+
+        // Refresh user info in global store.
+        const result = await sp(loginCheck());
+        globalStore.updateUserInfo(result);
+        globalStore.updateLastLoginCheck(Date.now());
+    }, [globalStore, sp]);
 
     return (
         <UserSettingLayoutContainer>
@@ -140,10 +150,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                         title={hasPassword ? t("update-password") : t("set-password")}
                         visible={showModel}
                         onCancel={() => setShowModel(false)}
-                        onConfirm={() => {
-                            setShowModel(false);
-                            pushHistory(RouteNameType.LoginPage);
-                        }}
+                        onConfirm={updatePassword}
                     />
                 </div>
                 <div className="general-setting-select-language">

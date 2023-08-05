@@ -19,6 +19,7 @@ import {
     LoginButtonsDescription,
     LoginButtons,
     LoginButtonsProps,
+    LoginKeyType,
 } from "../LoginPage";
 import { COUNTRY_CODES } from "../LoginPage/LoginWithCode/data";
 import { useIsUnMounted, useSafePromise } from "../../utils/hooks";
@@ -33,7 +34,7 @@ export interface RegisterProps {
     sendVerificationCode: (type: PasswordLoginType, key: string) => Promise<boolean>;
     register: (
         type: PasswordLoginType,
-        key: string,
+        key: LoginKeyType,
         code: string,
         password: string,
     ) => Promise<boolean>;
@@ -92,7 +93,19 @@ export const RegisterModal: React.FC<RegisterProps> = ({
             setAgreed(true);
         }
         setClickedRegister(true);
-        if (await sp(register(key, isPhone ? countryCode + keyValue : keyValue, code, password))) {
+        if (
+            await sp(
+                register(
+                    key,
+                    {
+                        key: isPhone ? countryCode + keyValue : keyValue,
+                        originKey: keyValue,
+                    },
+                    code,
+                    password,
+                ),
+            )
+        ) {
             await new Promise(resolve => setTimeout(resolve, 60000));
         } else {
             message.info(t("reset-failed"));
