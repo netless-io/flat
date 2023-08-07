@@ -15,6 +15,7 @@ export interface MainPageTopBarProps extends MainPageNavAvatarProps {
 }
 
 export const MainPageTopBar: React.FC<MainPageTopBarProps> = ({
+    userUUID,
     activeKeys,
     avatarSrc,
     popMenu,
@@ -36,6 +37,7 @@ export const MainPageTopBar: React.FC<MainPageTopBarProps> = ({
                         generateAvatar={generateAvatar}
                         popMenu={popMenu}
                         userName={userName}
+                        userUUID={userUUID}
                         onClick={onClick}
                     />
                 </div>

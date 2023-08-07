@@ -22,6 +22,7 @@ export interface MainPageNavHorizontalProps extends MainPageNavAvatarProps, Main
 }
 
 export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
+    userUUID,
     avatarSrc,
     userName,
     onClick,
@@ -101,6 +102,7 @@ export const MainPageNavHorizontal: React.FC<MainPageNavHorizontalProps> = ({
                             generateAvatar={generateAvatar}
                             popMenu={popMenu}
                             userName={userName}
+                            userUUID={userUUID}
                             onClick={onClick}
                         />
                     </div>

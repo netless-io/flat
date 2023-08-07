@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { MainPageLayoutItem } from "../types";
 
 export interface MainPageNavAvatarProps {
+    userUUID: string;
     /** user avatar src*/
     avatarSrc: string;
     /** user name */
@@ -20,6 +21,7 @@ export interface MainPageNavAvatarProps {
 }
 
 export const MainPageNavAvatar: React.FC<MainPageNavAvatarProps> = ({
+    userUUID,
     avatarSrc,
     userName,
     onClick,
@@ -30,7 +32,7 @@ export const MainPageNavAvatar: React.FC<MainPageNavAvatarProps> = ({
     const [popMenuVisible, setPopMenuVisible] = useState(false);
     const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
 
-    const avatar = isAvatarLoadFailed ? generateAvatar(avatarSrc) : avatarSrc;
+    const avatar = isAvatarLoadFailed || !avatarSrc ? generateAvatar(userUUID) : avatarSrc;
 
     const togglePopMenuVisible = (): void => {
         setPopMenuVisible(!popMenuVisible);
