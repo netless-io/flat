@@ -25,7 +25,10 @@ declare namespace NodeJS {
         FLAT_WEB_DOMAIN: string;
 
         FLAT_DOWNLOAD_URL: string;
+        FEEDBACK_URL: string;
 
         CLOUD_RECORDING_DEFAULT_AVATAR?: string;
+
+        LOGIN_METHODS: string;
     }
 }

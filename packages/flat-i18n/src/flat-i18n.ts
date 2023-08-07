@@ -7,8 +7,8 @@ import zhCN from "../locales/zh-CN.json";
 
 import varsCNen from "../vars/cn/en.json";
 import varsCNzhCN from "../vars/cn/zh-CN.json";
-import varsUSen from "../vars/us/en.json";
-import varsUSzhCN from "../vars/us/zh-CN.json";
+// import varsUSen from "../vars/us/en.json";
+// import varsUSzhCN from "../vars/us/zh-CN.json";
 
 /**
  * @param key - key of the translation
@@ -85,9 +85,10 @@ export class FlatI18n {
             "zh-CN": { translation: zhCN },
         };
 
-        const defaultVars: Record<string, Record<string, string>> = process.env.FLAT_REGION === "US"
-            ? { "en": varsUSen, "zh-CN": varsUSzhCN }
-            : { "en": varsCNen, "zh-CN": varsCNzhCN };
+        const defaultVars: Record<string, Record<string, string>> = {
+            "en": varsCNen,
+            "zh-CN": varsCNzhCN,
+        };
 
         i18next
             .use(I18nextBrowserLanguageDetector)

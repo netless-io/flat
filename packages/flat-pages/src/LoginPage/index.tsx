@@ -52,10 +52,7 @@ export const LoginPage = observer(function LoginPage() {
         const emailLanguage = language.startsWith("zh") ? "zh" : "en";
 
         const loginProps = {
-            buttons: [
-                process.env.FLAT_REGION === "US" ? "google" : "wechat",
-                "github",
-            ] as LoginButtonProviderType[],
+            buttons: process.env.LOGIN_METHODS.split(",") as LoginButtonProviderType[],
             privacyURL,
             serviceURL,
             onClickButton: handleLogin,
