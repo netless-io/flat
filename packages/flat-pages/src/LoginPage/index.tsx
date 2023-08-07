@@ -51,7 +51,6 @@ export const LoginPage = observer(function LoginPage() {
         const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
 
         const loginProps = {
-            // TODO: move this config to server?
             buttons: process.env.LOGIN_METHODS.split(",") as LoginButtonProviderType[],
             privacyURL,
             serviceURL,
