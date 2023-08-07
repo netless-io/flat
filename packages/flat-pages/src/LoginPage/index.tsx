@@ -49,6 +49,7 @@ export const LoginPage = observer(function LoginPage() {
     const getPanel = useCallback(() => {
         const privacyURL = language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
         const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
+        const emailLanguage = language.startsWith("zh") ? "zh" : "en";
 
         const loginProps = {
             buttons: [
@@ -103,7 +104,7 @@ export const LoginPage = observer(function LoginPage() {
                         sendVerificationCode={async (type, key) =>
                             wrap(
                                 type === PasswordLoginType.Email
-                                    ? registerEmailSendCode(key)
+                                    ? registerEmailSendCode(key, emailLanguage)
                                     : registerPhoneSendCode(key),
                             )
                         }
@@ -175,7 +176,7 @@ export const LoginPage = observer(function LoginPage() {
                         sendVerificationCode={async (type, key) =>
                             wrap(
                                 type === PasswordLoginType.Email
-                                    ? resetEmailSendCode(key)
+                                    ? resetEmailSendCode(key, emailLanguage)
                                     : resetPhoneSendCode(key),
                             )
                         }
