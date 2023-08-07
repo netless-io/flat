@@ -108,7 +108,7 @@ export const RegisterModal: React.FC<RegisterProps> = ({
         ) {
             await new Promise(resolve => setTimeout(resolve, 60000));
         } else {
-            message.info(t("reset-failed"));
+            message.info(t("register-failed"));
         }
 
         setClickedRegister(false);
