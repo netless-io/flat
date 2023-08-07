@@ -135,6 +135,7 @@ export const MainPageLayoutHorizontalContainer = observer<MainPageLayoutHorizont
                 subMenu={subMenu}
                 title={title}
                 userName={globalStore.userName ?? ""}
+                userUUID={globalStore.userUUID ?? ""}
                 onBackPreviousPage={onBackPreviousPage}
                 onClick={onMenuItemClick}
             >
