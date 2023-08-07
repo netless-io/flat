@@ -172,24 +172,21 @@ export async function registerEmail(
 
 export interface EmailSendCodePayload {
     email: string;
-    language?: string;
+    language: string;
 }
 
 export type EmailSendCodeResult = {};
 
 export async function registerEmailSendCode(
     email: string,
-    language?: string,
+    language: string,
 ): Promise<EmailSendCodeResult> {
-    const payload: EmailSendCodePayload = { email };
-
-    if (language) {
-        payload["language"] = language;
-    }
-
     return await postV2NotAuth<EmailSendCodePayload, EmailSendCodeResult>(
         "register/email/send-message",
-        payload,
+        {
+            email,
+            language,
+        },
     );
 }
 
@@ -265,16 +262,14 @@ export async function resetPwdWithEmail(
 
 export async function resetEmailSendCode(
     email: string,
-    language?: string,
+    language: string,
 ): Promise<EmailSendCodeResult> {
-    const payload: EmailSendCodePayload = { email };
-
-    if (language) {
-        payload["language"] = language;
-    }
     return await postV2NotAuth<EmailSendCodePayload, EmailSendCodeResult>(
         "reset/email/send-message",
-        payload,
+        {
+            email,
+            language,
+        },
     );
 }
 
