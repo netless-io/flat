@@ -31,6 +31,8 @@ declare namespace NodeJS {
         FLAT_SERVER_DOMAIN: string;
         FLAT_WEB_DOMAIN: string;
 
+        FEEDBACK_URL: string;
+
         CLOUD_RECORDING_DEFAULT_AVATAR?: string;
 
         FLAT_REGION: "CN" | "US";

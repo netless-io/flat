@@ -1018,7 +1018,8 @@ export class ClassroomStore {
         if (this.isBan && !this.isCreator) {
             return;
         }
-        if (process.env.FLAT_REGION === "CN" && !(await checkRTMCensor({ text })).valid) {
+        // TODO: move this config to server?
+        if (process.env.CENSORSHIP && !(await checkRTMCensor({ text })).valid) {
             return;
         }
         await this.rtm.sendRoomMessage(text);

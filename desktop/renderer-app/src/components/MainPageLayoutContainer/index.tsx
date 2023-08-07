@@ -126,10 +126,7 @@ export const MainPageLayoutContainer = observer<MainPageLayoutContainerProps>(
                 key: "feedback",
                 icon: (): React.ReactNode => <SVGFeedback />,
                 title: t("feedback"),
-                route:
-                    process.env.FLAT_REGION === "CN"
-                        ? "https://www.yuque.com/leooel/ec1kmm/vmsolg"
-                        : "https://join.slack.com/t/agoraflat/shared_invite/zt-vdb09pf6-mD4hB7sDA4LXN2O5dhmEPQ",
+                route: process.env.FEEDBACK_URL,
             },
             {
                 key: "logout",

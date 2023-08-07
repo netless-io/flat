@@ -51,10 +51,8 @@ export const LoginPage = observer(function LoginPage() {
         const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
 
         const loginProps = {
-            buttons: [
-                process.env.FLAT_REGION === "US" ? "google" : "wechat",
-                "github",
-            ] as LoginButtonProviderType[],
+            // TODO: move this config to server?
+            buttons: process.env.LOGIN_METHODS.split(",") as LoginButtonProviderType[],
             privacyURL,
             serviceURL,
             onClickButton: handleLogin,

@@ -1,7 +1,4 @@
-export const CURRENT_SERVER_DOMAIN =
-    process.env.FLAT_REGION === "CN"
-        ? process.env.FLAT_SERVER_DOMAIN
-        : process.env.FLAT_SERVER_DOMAIN_US;
+export const CURRENT_SERVER_DOMAIN = process.env.FLAT_SERVER_DOMAIN;
 
 export const FLAT_SERVER_BASE_URL = `https://${CURRENT_SERVER_DOMAIN}`;
 

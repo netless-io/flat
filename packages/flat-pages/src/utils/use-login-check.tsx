@@ -28,6 +28,7 @@ export function useLoginCheck(): boolean {
                 globalStore.updateUserInfo(result);
                 globalStore.updateLastLoginCheck(Date.now());
                 saveJWTToken(result.token);
+                // TODO: if server region config has `login.smsForce`, return `result.hasPhone`
                 return process.env.FLAT_REGION === "CN" ? result.hasPhone : true;
             } catch (e) {
                 globalStore.updateLastLoginCheck(null);
