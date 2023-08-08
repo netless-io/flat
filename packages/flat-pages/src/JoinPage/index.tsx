@@ -13,7 +13,7 @@ import { joinRoomHandler } from "../utils/join-room-handler";
 import { PRIVACY_URL, PRIVACY_URL_CN, SERVICE_URL, SERVICE_URL_CN } from "../constants/process";
 import JoinPageDesktop from "./JoinPageDesktop";
 import JoinPageMobile from "./JoinPageMobile";
-import { NEED_BINDING_PHONE } from "../constants/config";
+import { useRegionConfigCheck } from "../utils/use-config-check";
 
 export const JoinPage = observer(function JoinPage() {
     const language = useLanguage();
@@ -26,6 +26,8 @@ export const JoinPage = observer(function JoinPage() {
     const params = useParams<RouteParams<RouteNameType.ReplayPage>>();
     const { roomUUID } = params;
 
+    useRegionConfigCheck();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => pageStore.configure(), []);
 
@@ -35,7 +37,7 @@ export const JoinPage = observer(function JoinPage() {
             if (token) {
                 try {
                     const result = await loginCheck();
-                    setIsLogin(NEED_BINDING_PHONE ? result.hasPhone : true);
+                    setIsLogin(globalStore.needPhoneBinding ? result.hasPhone : true);
                 } catch (e) {
                     console.error(e);
                 }

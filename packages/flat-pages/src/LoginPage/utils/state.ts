@@ -1,6 +1,5 @@
 import { useRef, useEffect, useCallback, useState, useContext } from "react";
 import { Account, globalStore } from "@netless/flat-stores";
-import { NEED_BINDING_PHONE } from "../../constants/config";
 import { RouteNameType } from "../../route-config";
 import { joinRoomHandler } from "../../utils/join-room-handler";
 import { saveJWTToken } from "../../utils/use-login-check";
@@ -65,7 +64,7 @@ export function useLoginState(): LoginState {
         // update state to binding phone
         // we can not update state to binding phone here if state have already been binding phone state
         if (
-            NEED_BINDING_PHONE &&
+            globalStore.needPhoneBinding &&
             (loginResult ? !loginResult.hasPhone : false) &&
             currentState.value !== "bindingPhone"
         ) {
@@ -100,7 +99,7 @@ export function useLoginState(): LoginState {
             saveJWTToken(authData.token);
 
             // need binding phone
-            if (NEED_BINDING_PHONE && !authData.hasPhone) {
+            if (globalStore.needPhoneBinding && !authData.hasPhone) {
                 setLoginResult(authData);
                 setCurrentState("SWITCH_TO_BINDING_PHONE");
                 return;

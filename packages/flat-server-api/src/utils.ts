@@ -173,6 +173,29 @@ export async function getNotAuth<TResult>(
     return res.data;
 }
 
+export async function getV2NotAuth<TResult>(
+    action: string,
+    init?: Partial<RequestInit>,
+): Promise<TResult> {
+    const res = await requestFlatServer<undefined, TResult>(
+        action,
+        undefined,
+        { ...init, method: "GET" },
+        "",
+        true,
+    );
+
+    if (process.env.NODE_ENV !== "production") {
+        if (res.status !== Status.Success) {
+            throw new TypeError(
+                `[Flat API v2.0] ${action} returns unexpected processing status: ${res.status}`,
+            );
+        }
+    }
+
+    return res.data;
+}
+
 export async function postV2NotAuth<TPayload, TResult>(
     action: string,
     payload?: TPayload,

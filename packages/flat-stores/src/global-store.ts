@@ -1,5 +1,9 @@
 import { Region } from "flat-components";
-import { LoginProcessResult, setFlatAuthToken } from "@netless/flat-server-api";
+import {
+    LoginProcessResult,
+    setFlatAuthToken,
+    ServerRegionConfigResult,
+} from "@netless/flat-server-api";
 import { autorun } from "mobx";
 import { autoPersistStore } from "./utils/auto-persist-store";
 
@@ -7,6 +11,7 @@ import { autoPersistStore } from "./utils/auto-persist-store";
 const LS_VERSION = 1;
 
 export type UserInfo = LoginProcessResult;
+export type ServerRegionConfig = ServerRegionConfigResult;
 
 export type Account = {
     key: string;
@@ -17,6 +22,7 @@ export type Account = {
  * Properties in Global Store are persisted and shared globally.
  */
 export class GlobalStore {
+    public serverRegionConfig: ServerRegionConfig | null = null;
     /**
      * Show tooltips for classroom record hints.
      * Hide it permanently if user close the tooltip.
@@ -67,6 +73,18 @@ export class GlobalStore {
 
     public get hasPassword(): boolean {
         return this.userInfo?.hasPassword ?? false;
+    }
+
+    public get configHash(): string {
+        return this.serverRegionConfig?.hash ?? "";
+    }
+
+    public get needPhoneBinding(): boolean {
+        return this.serverRegionConfig?.login.smsForce ?? false;
+    }
+
+    public get censorshipText(): boolean {
+        return this.serverRegionConfig?.censorship.text ?? false;
     }
 
     public constructor() {
@@ -213,6 +231,10 @@ export class GlobalStore {
             },
             [],
         );
+    };
+
+    public updateServerRegionConfig = (config: ServerRegionConfig | null): void => {
+        this.serverRegionConfig = config;
     };
 }
 

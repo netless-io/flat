@@ -1018,8 +1018,7 @@ export class ClassroomStore {
         if (this.isBan && !this.isCreator) {
             return;
         }
-        // TODO: move this config to server?
-        if (process.env.CENSORSHIP && !(await checkRTMCensor({ text })).valid) {
+        if (globalStore.censorshipText && !(await checkRTMCensor({ text })).valid) {
             return;
         }
         await this.rtm.sendRoomMessage(text);

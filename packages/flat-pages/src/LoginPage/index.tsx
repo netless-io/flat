@@ -38,10 +38,13 @@ import {
     registerPhoneSendCode,
 } from "@netless/flat-server-api";
 import { globalStore } from "@netless/flat-stores";
+import { useRegionConfigCheck } from "../utils/use-config-check";
 
 export const LoginPage = observer(function LoginPage() {
     const language = useLanguage();
     const sp = useSafePromise();
+
+    useRegionConfigCheck();
 
     const { currentState, setCurrentState, handleLogin, onLoginResult, onBoundPhone } =
         useLoginState();
