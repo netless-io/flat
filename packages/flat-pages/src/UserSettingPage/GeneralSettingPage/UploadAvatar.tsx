@@ -7,7 +7,6 @@ import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
 
 import { GlobalStoreContext } from "../../components/StoreProvider";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
-import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/process";
 import { uploadAvatarFinish, uploadAvatarStart } from "@netless/flat-server-api";
 import { globalStore } from "@netless/flat-stores";
 
@@ -92,7 +91,7 @@ export async function uploadAvatar(file: File, t: FlatI18nTFunction): Promise<vo
     formData.append("key", ticket.filePath);
     formData.append("name", file.name);
     formData.append("policy", ticket.policy);
-    formData.append("OSSAccessKeyId", CLOUD_STORAGE_OSS_ALIBABA_CONFIG.accessKey);
+    formData.append("OSSAccessKeyId", globalStore.cloudStorageAK);
     formData.append("success_action_status", "200");
     formData.append("callback", "");
     formData.append("signature", ticket.signature);

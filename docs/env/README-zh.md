@@ -4,9 +4,6 @@
 | ------------------------------------ | -------------------------------------------------- | ---------------------------------------------------------------- |
 | NETLESS_APP_IDENTIFIER               | 互动白板 Access Key                                | 见: [在 app 服务端生成 Token][netless-auth]                      |
 | AGORA_APP_ID                         | Agora 声网 App ID                                  | 用于 RTC 与 RTM。见: [校验用户权限][agora-app-id-auth]           |
-| CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY | Agora 云端录制 OSS 配置                            | 用于云端录制存储用户音视频。见: [云存储设置][cloud-recording]    |
-| CLOUD_STORAGE_OSS_ALIBABA_BUCKET     | Agora 云端录制 OSS 配置                            | 同上                                                             |
-| CLOUD_STORAGE_OSS_ALIBABA_REGION     | Agora 云端录制 OSS 配置                            | 同上                                                             |
 | CLOUD_RECORDING_DEFAULT_AVATAR       | Agora 云端录制用户默认背景图 URL                   | 见：[设置背景色或背景图][cloud-recording-background]             |
 | WECHAT_APP_ID                        | [微信开放平台][open-wechat] App ID                 | 见 `网站应用` 里 `AppID`                                         |
 | FLAT_SERVER_DOMAIN                   | Flat Server 部署的域名地址                         | 如: `flat-api.whiteboard.agora.io`                               |

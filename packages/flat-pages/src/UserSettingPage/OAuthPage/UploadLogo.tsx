@@ -4,8 +4,8 @@ import classNames from "classnames";
 import { FlatI18nTFunction } from "@netless/flat-i18n";
 import { finishUploadOAuthLogo, startUploadOAuthLogo } from "@netless/flat-server-api";
 import { message, SVGEdit } from "flat-components";
-import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/process";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { globalStore } from "@netless/flat-stores";
 
 export interface UploadLogoProps {
     logoURL: string;
@@ -70,7 +70,7 @@ export async function uploadLogo(
     formData.append("key", ticket.ossFilePath);
     formData.append("name", file.name);
     formData.append("policy", ticket.policy);
-    formData.append("OSSAccessKeyId", CLOUD_STORAGE_OSS_ALIBABA_CONFIG.accessKey);
+    formData.append("OSSAccessKeyId", globalStore.cloudStorageAK);
     formData.append("success_action_status", "200");
     formData.append("callback", "");
     formData.append("signature", ticket.signature);

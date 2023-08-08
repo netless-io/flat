@@ -2,7 +2,7 @@ import Axios from "axios";
 import { message } from "antd";
 import { v4 as v4uuid } from "uuid";
 import { ApplianceNames, Room, Size } from "white-web-sdk";
-import { CloudStorageStore } from "@netless/flat-stores";
+import { CloudStorageStore, globalStore } from "@netless/flat-stores";
 import { FlatI18n } from "@netless/flat-i18n";
 import {
     RequestErrorCode,
@@ -11,7 +11,6 @@ import {
     uploadTempPhotoFinish,
     uploadTempPhotoStart,
 } from "@netless/flat-server-api";
-import { CLOUD_STORAGE_OSS_ALIBABA_CONFIG } from "../../constants/process";
 
 const ImageFileTypes = [
     "image/png",
@@ -70,7 +69,7 @@ export async function onDropImage(
     formData.append("key", ticket.ossFilePath);
     formData.append("name", file.name);
     formData.append("policy", ticket.policy);
-    formData.append("OSSAccessKeyId", CLOUD_STORAGE_OSS_ALIBABA_CONFIG.accessKey);
+    formData.append("OSSAccessKeyId", globalStore.cloudStorageAK);
     formData.append("success_action_status", "200");
     formData.append("callback", "");
     formData.append("signature", ticket.signature);

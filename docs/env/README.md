@@ -4,9 +4,6 @@
 | ------------------------------------ | -------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | NETLESS_APP_IDENTIFIER               | Whiteboard Access Key                                    | See [Projects and permissions][netless-auth]                                        |
 | AGORA_APP_ID                         | Agora App ID                                             | For RTC and RTM. See [Use an App ID for authentication][agora-app-id-auth]          |
-| CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY | Agora Cloud Recording OSS                                | For storing RTC Cloud Recording media files. See [Cloud Recording][cloud-recording] |
-| CLOUD_STORAGE_OSS_ALIBABA_BUCKET     | Agora Cloud Recording OSS                                | As above                                                                            |
-| CLOUD_STORAGE_OSS_ALIBABA_REGION     | Agora Cloud Recording OSS                                | As above                                                                            |
 | CLOUD_RECORDING_DEFAULT_AVATAR       | Agora Cloud Recording default user avatar URL            | See: [Set the background color or background image][cloud-recording-background]     |
 | WECHAT_APP_ID                        | [Wechat Open Platform][open-wechat] App ID               |                                                                                     |
 | FLAT_SERVER_DOMAIN                   | Flat Server deployed address                             | e.g. `flat-api.whiteboard.agora.io`                                                 |
