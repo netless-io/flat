@@ -8,11 +8,13 @@ export function useRegionConfigCheck(): void {
 
     useEffect(() => {
         async function checkConfig(): Promise<void> {
-            // TODO: or version is not match
             if (!globalStore.serverRegionConfig) {
                 try {
                     const serverRegionConfig = await getServerRegionConfig();
-                    globalStore.updateServerRegionConfig(serverRegionConfig);
+
+                    if (serverRegionConfig.hash !== globalStore.configHash) {
+                        globalStore.updateServerRegionConfig(serverRegionConfig);
+                    }
                 } catch (e) {
                     globalStore.updateServerRegionConfig(null);
                     console.error(e);

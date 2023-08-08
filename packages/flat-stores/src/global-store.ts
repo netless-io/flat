@@ -75,6 +75,10 @@ export class GlobalStore {
         return this.userInfo?.hasPassword ?? false;
     }
 
+    public get configHash(): string {
+        return this.serverRegionConfig?.hash ?? "";
+    }
+
     public get needPhoneBinding(): boolean {
         return this.serverRegionConfig?.login.smsForce ?? false;
     }

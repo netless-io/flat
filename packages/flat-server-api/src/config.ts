@@ -1,6 +1,7 @@
 import { getV2NotAuth } from "./utils";
 
 export type ServerRegionConfigResult = {
+    hash: string;
     login: {
         wechatWeb: boolean;
         wechatMobile: boolean;
