@@ -8,3 +8,4 @@ export * from "./recording";
 export * from "./room";
 export * from "./storage";
 export * from "./utils";
+export * from "./config";

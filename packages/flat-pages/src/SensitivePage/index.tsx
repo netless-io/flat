@@ -13,7 +13,6 @@ import { FlatPrefersColorScheme, useSafePromise } from "flat-components";
 import { FlatI18n, useTranslate } from "@netless/flat-i18n";
 import { SensitiveType, listSensitive } from "@netless/flat-server-api";
 import { GlobalStoreContext, PreferencesStoreContext } from "../components/StoreProvider";
-import { NEED_BINDING_PHONE } from "../constants/config";
 
 export type SensitiveRange = "1 week" | "1 month" | "1 year";
 
@@ -69,10 +68,10 @@ export const SensitivePage = observer(function SensitivePage() {
     }, []);
 
     useEffect(() => {
-        if (NEED_BINDING_PHONE) {
+        if (globalStore.needPhoneBinding) {
             FlatI18n.changeLanguage("zh-CN");
         }
-    }, []);
+    }, [globalStore.needPhoneBinding]);
 
     useEffect(() => {
         let from = new Date();
@@ -99,7 +98,7 @@ export const SensitivePage = observer(function SensitivePage() {
                     }
                     return acc;
                 }, defaultSensitiveData());
-                if (NEED_BINDING_PHONE) {
+                if (globalStore.needPhoneBinding) {
                     const phoneIndex = newData.findIndex(e => e.type === SensitiveType.Phone);
                     if (phoneIndex !== -1) {
                         newData[phoneIndex].count = Math.max(newData[phoneIndex].count, 1);
@@ -110,7 +109,7 @@ export const SensitivePage = observer(function SensitivePage() {
             .finally(() => {
                 setLoading(false);
             });
-    }, [defaultSensitiveData, range, sp, t, token]);
+    }, [defaultSensitiveData, range, sp, t, token, globalStore.needPhoneBinding]);
 
     const columns = useMemo<ColumnsType<SensitiveData>>(
         () => [
