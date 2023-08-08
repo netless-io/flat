@@ -6,7 +6,7 @@ export function generateFavicon(): Plugin {
         transformIndexHtml(html) {
             const region = process.env.FLAT_REGION || "CN";
             return html.replace(
-                "%DYNAMIC_FAVICON%",
+                "DYNAMIC_FAVICON_PATH",
                 region === "CN" ? "/favicon.ico" : "/favicon_en.ico",
             );
         },
