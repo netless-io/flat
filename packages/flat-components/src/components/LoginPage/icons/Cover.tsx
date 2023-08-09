@@ -1,7 +1,7 @@
 import React from "react";
-import CoverCNPNG from "./cover.png";
-import CoverENPNG from "./cover-en.png";
+import coverCNSVG from "./cover.svg";
+import coverENSVG from "./cover-en.svg";
 
 export function Cover({ isZh }: { isZh: boolean }): React.ReactElement {
-    return <img alt="cover" src={isZh ? CoverCNPNG : CoverENPNG} style={{ width: "100%" }} />;
+    return <img alt="cover" src={isZh ? coverCNSVG : coverENSVG} />;
 }

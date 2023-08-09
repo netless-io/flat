@@ -19,8 +19,8 @@ module.exports = {
         "quickstart",
         "signup",
         "dataurl",
-        "CNPNG",
-        "ENPNG",
+        "CNSVG",
+        "ENSVG",
 
         // appstore
         "flatmacrelease",
