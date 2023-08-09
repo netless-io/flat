@@ -50,6 +50,6 @@ export type ServerRegionConfigResult = {
     };
 };
 
-export async function getServerRegionConfig(): Promise<ServerRegionConfigResult> {
+export async function getServerRegionConfigs(): Promise<ServerRegionConfigResult> {
     return await getV2NotAuth<ServerRegionConfigResult>("region/configs");
 }

@@ -8,12 +8,9 @@ import { MainRoomHistoryPanel } from "./MainRoomHistoryPanel";
 import { useLoginCheck } from "../utils/use-login-check";
 import { PageStoreContext } from "../components/StoreProvider";
 import { AppUpgradeModal } from "../components/AppUpgradeModal";
-import { useRegionConfigCheck } from "../utils/use-config-check";
 
 export const HomePage = observer(function HomePage() {
     const pageStore = useContext(PageStoreContext);
-
-    useRegionConfigCheck();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => pageStore.configure(), []);
