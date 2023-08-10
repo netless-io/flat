@@ -68,6 +68,7 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
 }) => {
     const t = useTranslate();
     const sp = useSafePromise();
+    const accountType = process.env.DEFAULT_LOGIN_WAY as PasswordLoginType;
 
     const buttons = useMemo<LoginButtonsDescription>(
         () =>
@@ -220,6 +221,7 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
                         <Form.Item name="key" rules={[phone ? phoneValidator : emailValidator]}>
                             <LoginAccount
                                 accountHistory={accountHistory}
+                                accountType={accountType}
                                 countryCode={countryCode}
                                 handleCountryCode={code => setCountryCode(code)}
                                 handleType={type => setType(type)}

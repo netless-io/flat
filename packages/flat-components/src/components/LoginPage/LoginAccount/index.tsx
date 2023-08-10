@@ -20,7 +20,7 @@ export enum PasswordLoginType {
 
 export const isPhone = (type: PasswordLoginType): boolean => type === PasswordLoginType.Phone;
 
-export const defaultCountryCode = "+86";
+export const defaultCountryCode = process.env.DEFAULT_COUNTRY_CODE || "";
 export const defaultAccountType = PasswordLoginType.Phone;
 
 export interface LoginAccountProps {
@@ -49,18 +49,22 @@ export const LoginAccount: React.FC<LoginAccountProps> = ({
     onHistoryChange,
     ...restProps
 }) => {
+    const onlyPhone = !handleType;
+    const defaultEmail = accountType === PasswordLoginType.Email;
     const [type, setType] = useState<PasswordLoginType>(accountType);
+
+    console.log(type);
 
     const inputType = isPhone(type) ? "text" : "email";
     const inputSize = isPhone(type) ? "small" : "middle";
 
     useEffect(() => {
-        if (!value || validateIsPhone(value)) {
+        if (value && validateIsPhone(value)) {
             setType(PasswordLoginType.Phone);
         } else {
             setType(PasswordLoginType.Email);
         }
-    }, [value, type, password]);
+    }, [value, type, defaultEmail, password]);
 
     useEffect(() => {
         if (type && handleType) {
@@ -89,9 +93,11 @@ export const LoginAccount: React.FC<LoginAccountProps> = ({
                     </Select>
                 ) : null
             }
+            autoComplete="off"
+            className="login-account"
             placeholder={placeholder}
             prefix={
-                isPhone(type) ? (
+                onlyPhone || isPhone(type) ? (
                     <Select
                         bordered={false}
                         defaultValue={countryCode}

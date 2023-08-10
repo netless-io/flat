@@ -56,6 +56,7 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
 
     return (
         <Input
+            autoComplete="off"
             placeholder={t("enter-code")}
             prefix={<img alt="checked" draggable={false} src={checkedSVG} />}
             suffix={
