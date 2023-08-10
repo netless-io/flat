@@ -1,18 +1,25 @@
+import "./index.less";
+
 import { useTranslate } from "@netless/flat-i18n";
-import { Input, Select, Button, message } from "antd";
-
-import { validatePhone, validateCode } from "../LoginWithCode";
-import { COUNTRY_CODES } from "../LoginWithCode/data";
-import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
+import { Button, message, Form } from "antd";
 import React, { useCallback, useState } from "react";
-import { LoginTitle } from "../LoginTitle";
 
-import checkedSVG from "../icons/checked.svg";
+import { useSafePromise } from "../../../utils/hooks";
+import { LoginTitle } from "../LoginTitle";
+import { LoginAccount, PasswordLoginType, defaultCountryCode } from "../LoginAccount";
+import { LoginSendCode } from "../LoginSendCode";
+import { codeValidator } from "../LoginWithCode/validators";
+import { phoneValidator } from "../LoginWithPassword/validators";
 
 export interface BindingPhonePanelProps {
     cancelBindingPhone: () => void;
-    bindingPhone?: (countryCode: string, phone: string, code: string) => Promise<boolean>;
-    sendBindingPhoneCode?: (countryCode: string, phone: string) => Promise<boolean>;
+    bindingPhone: (countryCode: string, phone: string, code: string) => Promise<boolean>;
+    sendBindingPhoneCode: (countryCode: string, phone: string) => Promise<boolean>;
+}
+
+interface BindingFormValues {
+    phone: string;
+    code: string;
 }
 
 export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
@@ -23,43 +30,24 @@ export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
     const sp = useSafePromise();
     const t = useTranslate();
 
-    const isUnMountRef = useIsUnMounted();
-    const [phone, setPhone] = useState("");
-    const [code, setCode] = useState(false);
-    const [countdown, setCountdown] = useState(0);
-    const [countryCode, setCountryCode] = useState("+86");
+    const [form] = Form.useForm<BindingFormValues>();
+    const [isFormValidated, setIsFormValidated] = useState(false);
+    const [isAccountValidated, setIsAccountValidated] = useState(false);
+    const type = PasswordLoginType.Phone;
+
+    const defaultValues = {
+        phone: "",
+        code: "",
+    };
+
+    const [countryCode, setCountryCode] = useState(defaultCountryCode);
     const [clickedBinding, setClickedBinding] = useState(false);
-    const [bindingPhoneCode, setBindingPhoneCode] = useState("");
-
-    const canBinding = !clickedBinding && validatePhone(phone) && validateCode(bindingPhoneCode);
-
-    const sendBindingCode = useCallback(async () => {
-        if (validatePhone(phone) && sendBindingPhoneCode) {
-            setCode(true);
-            const sent = await sp(sendBindingPhoneCode(countryCode, phone));
-            setCode(false);
-            if (sent) {
-                void message.info(t("sent-verify-code-to-phone"));
-                let count = 60;
-                setCountdown(count);
-                const timer = setInterval(() => {
-                    if (isUnMountRef.current) {
-                        clearInterval(timer);
-                        return;
-                    }
-                    setCountdown(--count);
-                    if (count === 0) {
-                        clearInterval(timer);
-                    }
-                }, 1000);
-            }
-        }
-    }, [countryCode, isUnMountRef, phone, sendBindingPhoneCode, sp, t]);
 
     const bindPhone = useCallback(async () => {
-        if (canBinding && bindingPhone) {
+        if (isFormValidated && bindingPhone) {
             setClickedBinding(true);
-            const success = await sp(bindingPhone(countryCode, phone, bindingPhoneCode));
+            const { phone, code } = form.getFieldsValue();
+            const success = await sp(bindingPhone(countryCode, phone, code));
             if (success) {
                 await sp(new Promise(resolve => setTimeout(resolve, 60000)));
             } else {
@@ -67,58 +55,56 @@ export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
             }
             setClickedBinding(false);
         }
-    }, [bindingPhone, bindingPhoneCode, canBinding, countryCode, phone, sp, t]);
+    }, [bindingPhone, form, countryCode, isFormValidated, sp, t]);
+
+    const handleSendVerificationCode = async (): Promise<boolean> => {
+        const { phone } = form.getFieldsValue();
+        return sendBindingPhoneCode(countryCode, phone);
+    };
+
+    const formValidateStatus = useCallback(() => {
+        setIsFormValidated(
+            form.getFieldsError().every(field => field.errors.length <= 0) &&
+                Object.values(form.getFieldsValue()).every(v => !!v),
+        );
+
+        if (form.getFieldValue("phone") && !form.getFieldError("phone").length) {
+            setIsAccountValidated(true);
+        } else {
+            setIsAccountValidated(false);
+        }
+    }, [form]);
 
     return (
         <div className="login-with-phone binding">
             <div className="login-width-limiter">
                 <LoginTitle subtitle={t("need-bind-phone")} title={t("bind-phone")} />
-                <Input
-                    placeholder={t("enter-phone")}
-                    prefix={
-                        <Select bordered={false} defaultValue="+86" onChange={setCountryCode}>
-                            {COUNTRY_CODES.map(code => (
-                                <Select.Option
-                                    key={code}
-                                    value={`+${code}`}
-                                >{`+${code}`}</Select.Option>
-                            ))}
-                        </Select>
-                    }
-                    size="small"
-                    status={!phone || validatePhone(phone) ? undefined : "error"}
-                    value={phone}
-                    onChange={ev => setPhone(ev.currentTarget.value)}
-                />
-                <Input
-                    placeholder={t("enter-code")}
-                    prefix={<img alt="checked" draggable={false} src={checkedSVG} />}
-                    status={
-                        !bindingPhoneCode || validateCode(bindingPhoneCode) ? undefined : "error"
-                    }
-                    suffix={
-                        countdown > 0 ? (
-                            <span className="login-countdown">
-                                {t("seconds-to-resend", { seconds: countdown })}
-                            </span>
-                        ) : (
-                            <Button
-                                disabled={code || !validatePhone(phone)}
-                                loading={code}
-                                size="small"
-                                type="link"
-                                onClick={sendBindingCode}
-                            >
-                                {t("send-verify-code")}
-                            </Button>
-                        )
-                    }
-                    value={bindingPhoneCode}
-                    onChange={ev => setBindingPhoneCode(ev.currentTarget.value)}
-                />
+
+                <Form
+                    form={form}
+                    initialValues={defaultValues}
+                    name="loginWithPassword"
+                    onFieldsChange={formValidateStatus}
+                >
+                    <Form.Item name="phone" rules={[phoneValidator]}>
+                        <LoginAccount
+                            countryCode={countryCode}
+                            handleCountryCode={code => setCountryCode(code)}
+                            placeholder={t("enter-phone")}
+                        />
+                    </Form.Item>
+
+                    <Form.Item name="code" rules={[codeValidator]}>
+                        <LoginSendCode
+                            isAccountValidated={isAccountValidated}
+                            sendVerificationCode={handleSendVerificationCode}
+                            type={type}
+                        />
+                    </Form.Item>
+                </Form>
                 <Button
                     className="login-big-button"
-                    disabled={!canBinding}
+                    disabled={!isFormValidated}
                     loading={clickedBinding}
                     type="primary"
                     onClick={bindPhone}

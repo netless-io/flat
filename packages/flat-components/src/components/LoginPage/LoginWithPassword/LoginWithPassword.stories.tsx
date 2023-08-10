@@ -1,7 +1,8 @@
 import { Meta, Story } from "@storybook/react";
 import { message } from "antd";
 import React from "react";
-import { LoginWithPassword, LoginWithPasswordProps, PasswordLoginType } from ".";
+import { LoginWithPassword, LoginWithPasswordProps } from ".";
+import { PasswordLoginType } from "../LoginAccount";
 
 const storyMeta: Meta = {
     title: "LoginPage/LoginWithPassword",

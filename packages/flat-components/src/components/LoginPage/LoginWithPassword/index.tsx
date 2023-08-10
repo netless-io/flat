@@ -1,48 +1,24 @@
-import emailSVG from "../icons/email.svg";
-import lockSVG from "../icons/lock.svg";
-import checkedSVG from "../icons/checked.svg";
 import "./index.less";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
-import { Button, Input, Select, message } from "antd";
+import { Button, Form, message } from "antd";
+import { FormInstance } from "antd/es/form";
 
-import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
+import { useSafePromise } from "../../../utils/hooks";
 import { LoginTitle } from "../LoginTitle";
 import { LoginAgreement, LoginAgreementProps } from "../LoginAgreement";
-import {
-    LoginButtonProviderType,
-    LoginButtons,
-    LoginButtonsDescription,
-    LoginButtonsProps,
-} from "../LoginButtons";
 import { LoginPanelContent } from "../LoginPanelContent";
-import { requestAgreement, validateCode, validatePhone } from "../LoginWithCode";
-import { COUNTRY_CODES } from "../LoginWithCode/data";
-
+import { requestAgreement } from "../LoginWithCode";
+import { LoginAccount, PasswordLoginType, defaultCountryCode } from "../LoginAccount";
+import { LoginPassword } from "../LoginPassword";
+import { LoginSendCode } from "../LoginSendCode";
+import { LoginButtonProviderType } from "../LoginButton";
+import { LoginButtonsProps, LoginButtonsDescription, LoginButtons } from "../LoginButtons";
+import { phoneValidator, emailValidator, passwordValidator } from "./validators";
+import { codeValidator } from "../LoginWithCode/validators";
 export * from "../LoginButtons";
-
-// to distinguish phone and email
-const phoneRegex = /^\d+$/;
-const emailRegex = /^[^.\s@:](?:[^\s@:]*[^\s@:.])?@[^.\s@]+(?:\.[^.\s@]+)*$/;
-const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/;
-
-export function validateEmail(email: string): boolean {
-    return emailRegex.test(email);
-}
-
-export function validateIsPhone(phone: string): boolean {
-    return phoneRegex.test(phone);
-}
-
-export function validatePassword(password: string): boolean {
-    return passwordRegex.test(password);
-}
-
-export enum PasswordLoginType {
-    Phone = "phone",
-    Email = "email",
-}
+export * from "./validators";
 
 export enum PasswordLoginPageType {
     Login = "login",
@@ -53,6 +29,12 @@ export type LoginKeyType = {
     key: string;
     originKey: string;
 };
+
+interface LoginFormValues {
+    key: string;
+    password: string;
+    code?: string;
+}
 
 export interface LoginWithPasswordProps {
     buttons?: LoginButtonProviderType[];
@@ -99,94 +81,26 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
     );
 
     const [page, setPage] = useState<PasswordLoginPageType>(PasswordLoginPageType.Login);
-    const [key, setKey] = useState<PasswordLoginType>(PasswordLoginType.Phone);
-
-    const isUnMountRef = useIsUnMounted();
-
-    // account and password
-    const [keyValue, setKeyValue] = useState(accountHistory[0]?.key || "");
-    const [password, setPassword] = useState(accountHistory[0]?.password || "");
 
     const [agreed, setAgreed] = useState(false);
     const [clickedLogin, setClickedLogin] = useState(false);
     const [clickedReset, setClickedReset] = useState(false);
-    const [countryCode, setCountryCode] = useState("+86");
+    const [countryCode, setCountryCode] = useState(defaultCountryCode);
+    const [type, setType] = useState(PasswordLoginType.Phone);
 
-    const [code, setCode] = useState("");
-    const [countdown, setCountdown] = useState(0);
-    const [sendingCode, setSendingCode] = useState(false);
-
+    const phone = type === PasswordLoginType.Phone;
     const isResettingPage = page === PasswordLoginPageType.Reset;
-    const isPhone = key === PasswordLoginType.Phone;
-    const inputType = isPhone ? "text" : "email";
-    const inputSize = isPhone ? "small" : "middle";
 
-    const [isKeyInputValidate, setIsKeyInputValidate] = useState(false);
-    const canLogin = !clickedLogin && isKeyInputValidate && validatePassword(password);
+    const [form] = Form.useForm<LoginFormValues>();
+    const [isFormValidated, setIsFormValidated] = useState(false);
+    const [isAccountValidated, setIsAccountValidated] = useState(false);
 
-    useEffect(() => {
-        if (!keyValue || validateIsPhone(keyValue)) {
-            setKey(PasswordLoginType.Phone);
-        } else {
-            setKey(PasswordLoginType.Email);
-        }
-
-        if (isPhone) {
-            setIsKeyInputValidate(validatePhone(keyValue));
-        } else {
-            setIsKeyInputValidate(validateEmail(keyValue));
-        }
-    }, [keyValue, isPhone]);
-
-    useEffect(() => {
-        if (!keyValue) {
-            setPassword("");
-        }
-    }, [keyValue]);
-
-    useEffect(() => {
-        if (isResettingPage) {
-            setPassword("");
-            setCode("");
-        }
-    }, [page, isResettingPage]);
-
-    const sendCode = useCallback(async () => {
-        if (isKeyInputValidate) {
-            setSendingCode(true);
-            const sent = await sp(
-                sendVerificationCode(key, isPhone ? countryCode + keyValue : keyValue),
-            );
-            setSendingCode(false);
-            if (sent) {
-                void message.info(
-                    t(isPhone ? "sent-verify-code-to-phone" : "sent-verify-code-to-email"),
-                );
-                let count = 60;
-                setCountdown(count);
-                const timer = setInterval(() => {
-                    if (isUnMountRef.current) {
-                        clearInterval(timer);
-                        return;
-                    }
-                    setCountdown(--count);
-                    if (count === 0) {
-                        clearInterval(timer);
-                    }
-                }, 1000);
-            }
-        }
-    }, [
-        countryCode,
-        isUnMountRef,
-        sendVerificationCode,
-        sp,
-        t,
-        isPhone,
-        key,
-        keyValue,
-        isKeyInputValidate,
-    ]);
+    const defaultValues = {
+        key: accountHistory[0]?.key || "",
+        password: accountHistory[0]?.password || "",
+        code: undefined,
+    };
+    const [password, setPassword] = useState(defaultValues.password);
 
     const doLogin = useCallback(async () => {
         if (!agreed) {
@@ -196,12 +110,15 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
             setAgreed(true);
         }
         setClickedLogin(true);
+
+        const { key: keyValue, password } = form.getFieldsValue();
+
         if (
             await sp(
                 login(
-                    key,
+                    type,
                     {
-                        key: isPhone ? countryCode + keyValue : keyValue,
+                        key: phone ? countryCode + keyValue : keyValue,
                         originKey: keyValue,
                     },
                     password,
@@ -212,35 +129,28 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
         } else {
             message.info(t("login-failed"));
         }
+
         setClickedLogin(false);
-    }, [
-        agreed,
-        keyValue,
-        login,
-        key,
-        password,
-        privacyURL,
-        serviceURL,
-        sp,
-        t,
-        isPhone,
-        countryCode,
-    ]);
+    }, [agreed, form, sp, login, type, phone, countryCode, t, privacyURL, serviceURL]);
 
     const doReset = useCallback(async () => {
         setClickedReset(true);
+
+        const { key: keyValue, password, code } = form.getFieldsValue();
+
         if (
-            await sp(
+            code &&
+            (await sp(
                 resetPassword(
-                    key,
+                    type,
                     {
-                        key: isPhone ? countryCode + keyValue : keyValue,
+                        key: phone ? countryCode + keyValue : keyValue,
                         originKey: keyValue,
                     },
                     code,
                     password,
                 ),
-            )
+            ))
         ) {
             await new Promise(resolve => setTimeout(resolve, 60000));
         } else {
@@ -248,7 +158,13 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
         }
 
         setClickedReset(false);
-    }, [key, isPhone, countryCode, keyValue, code, password, resetPassword, sp, t]);
+    }, [countryCode, form, phone, resetPassword, sp, t, type]);
+
+    const handleSendVerificationCode = async (): Promise<boolean> => {
+        const { key: keyValue } = form.getFieldsValue();
+
+        return sendVerificationCode(type, phone ? countryCode + keyValue : keyValue);
+    };
 
     const onClick = useCallback(
         async (provider: LoginButtonProviderType) => {
@@ -263,75 +179,67 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
         [agreed, onClickButton, privacyURL, serviceURL, t],
     );
 
+    const formValidateStatus = useCallback(() => {
+        let condition =
+            form.getFieldsError().every(field => field.errors.length <= 0) &&
+            !!form.getFieldValue("key") &&
+            !!form.getFieldValue("password");
+
+        if (isResettingPage) {
+            condition &&= !!form.getFieldValue("code");
+        }
+
+        setIsFormValidated(condition);
+
+        if (form.getFieldValue("key") && !form.getFieldError("key").length) {
+            setIsAccountValidated(true);
+        } else {
+            setIsAccountValidated(false);
+        }
+    }, [form, isResettingPage]);
+
+    useEffect(() => {
+        formValidateStatus();
+        if (isResettingPage) {
+            form.setFieldsValue({ password: "" });
+        }
+    }, [page, isResettingPage, form, formValidateStatus]);
+
     function renderLoginPage(): React.ReactNode {
         return (
             <div className="login-with-email">
                 <div className="login-width-limiter">
                     <LoginTitle subtitle=" " />
-                    <div>
-                        <Input
-                            allowClear
-                            addonAfter={
-                                accountHistory?.length ? (
-                                    <Select
-                                        labelInValue
-                                        bordered={false}
-                                        placement="bottomRight"
-                                        value={{ key: password, value: keyValue }}
-                                        onChange={options => {
-                                            setKeyValue(options.value);
-                                            setPassword(options.key);
-                                        }}
-                                    >
-                                        {accountHistory.map(account => {
-                                            return (
-                                                <Select.Option
-                                                    key={account.password}
-                                                    value={account.key}
-                                                >
-                                                    {account.key}
-                                                </Select.Option>
-                                            );
-                                        })}
-                                    </Select>
-                                ) : null
-                            }
-                            placeholder={t("enter-email-or-phone")}
-                            prefix={
-                                isPhone ? (
-                                    <Select
-                                        bordered={false}
-                                        defaultValue="+86"
-                                        onChange={setCountryCode}
-                                    >
-                                        {COUNTRY_CODES.map(code => (
-                                            <Select.Option
-                                                key={code}
-                                                value={`+${code}`}
-                                            >{`+${code}`}</Select.Option>
-                                        ))}
-                                    </Select>
-                                ) : (
-                                    <img alt="email" src={emailSVG} />
-                                )
-                            }
-                            size={inputSize}
-                            status={isKeyInputValidate || !keyValue ? void 0 : "error"}
-                            type={inputType}
-                            value={keyValue}
-                            onChange={ev => setKeyValue(ev.currentTarget.value)}
-                        />
-                    </div>
 
-                    <div>
-                        <Input.Password
-                            placeholder={t("enter-password")}
-                            prefix={<img alt="password" src={lockSVG} />}
-                            status={!password || validatePassword(password) ? void 0 : "error"}
-                            value={password}
-                            onChange={ev => setPassword(ev.currentTarget.value)}
-                        />
-                    </div>
+                    <Form
+                        form={form}
+                        initialValues={defaultValues}
+                        name="loginWithPassword"
+                        onFieldsChange={formValidateStatus}
+                    >
+                        <Form.Item name="key" rules={[phone ? phoneValidator : emailValidator]}>
+                            <LoginAccount
+                                accountHistory={accountHistory}
+                                countryCode={countryCode}
+                                handleCountryCode={code => setCountryCode(code)}
+                                handleType={type => setType(type)}
+                                password={password}
+                                placeholder={t("enter-email-or-phone")}
+                                onHistoryChange={options => {
+                                    form.setFieldsValue({
+                                        key: options.value,
+                                        password: options.key,
+                                    });
+                                    setPassword(options.key);
+                                    formValidateStatus();
+                                }}
+                            />
+                        </Form.Item>
+
+                        <Form.Item name="password" rules={[passwordValidator]}>
+                            <LoginPassword placeholder={t("enter-password")} />
+                        </Form.Item>
+                    </Form>
 
                     <div className="login-with-email-btn-wrapper">
                         <Button type="link" onClick={loginWithVerificationCode}>
@@ -348,9 +256,10 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
                         serviceURL={serviceURL}
                         onChange={setAgreed}
                     />
+
                     <Button
                         className="login-big-button login-with-email-login-btn"
-                        disabled={!canLogin}
+                        disabled={!isFormValidated}
                         loading={clickedLogin}
                         type="primary"
                         onClick={doLogin}
@@ -368,28 +277,25 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
             </div>
         );
     }
-
     return (
         <LoginPanelContent transitionKey={page}>
             {isResettingPage
                 ? resetPasswordPage({
-                      t,
-                      isPhone,
-                      code,
-                      setCode,
-                      setPassword,
-                      sendCode,
-                      setCountryCode,
-                      inputSize,
-                      isKeyInputValidate,
-                      inputType,
-                      keyValue,
-                      setKeyValue,
-                      password,
-                      sendingCode,
-                      countdown,
-                      setPage,
+                      form,
+                      phone,
+                      type,
+                      countryCode,
+                      isFormValidated,
                       clickedReset,
+                      defaultValues,
+                      isAccountValidated,
+                      formValidateStatus,
+                      setIsAccountValidated,
+                      setCountryCode,
+                      setType,
+                      t,
+                      handleSendVerificationCode,
+                      setPage,
                       doReset,
                   })
                 : renderLoginPage()}
@@ -398,114 +304,79 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
 };
 
 export interface ResetPasswordPageProps {
-    t: FlatI18nTFunction;
-    keyValue: string;
-    code: string;
-    isPhone: boolean;
-    inputSize: "small" | "middle";
-    inputType: "text" | "email";
-    sendingCode: boolean;
-    countdown: number;
-    isKeyInputValidate: boolean;
-    password: string;
-    setKeyValue: (keyValue: string) => void;
-    setCountryCode: (code: string) => void;
-    setCode: (code: string) => void;
-    setPassword: (password: string) => void;
-    sendCode: () => void;
-    setPage: (page: PasswordLoginPageType) => void;
+    form: FormInstance;
+    phone: boolean;
+    type: PasswordLoginType;
+    countryCode: string;
+    isFormValidated: boolean;
     clickedReset: boolean;
+    defaultValues: LoginFormValues;
+    isAccountValidated: boolean;
+    formValidateStatus: () => void;
+    setIsAccountValidated: (validator: boolean) => void;
+    t: FlatI18nTFunction;
+    setType: (type: PasswordLoginType) => void;
+    setCountryCode: (code: string) => void;
+    handleSendVerificationCode: () => Promise<boolean>;
+    setPage: (page: PasswordLoginPageType) => void;
     doReset: () => void;
 }
 
 export function resetPasswordPage({
-    t,
-    isPhone,
-    code,
-    inputSize,
-    isKeyInputValidate,
-    inputType,
-    keyValue,
-    password,
-    sendingCode,
-    countdown,
-    setPage,
-    setCode,
-    setPassword,
-    sendCode,
-    setCountryCode,
-    setKeyValue,
+    form,
+    type,
+    countryCode,
+    isFormValidated,
+    phone,
     clickedReset,
+    defaultValues,
+    isAccountValidated,
+    t,
+    setType,
+    setCountryCode,
+    formValidateStatus,
+    handleSendVerificationCode,
+    setPage,
     doReset,
 }: ResetPasswordPageProps): React.ReactNode {
-    const canReset =
-        isKeyInputValidate && keyValue && validateCode(code) && validatePassword(password);
-
     return (
         <div className="reset-page-with-email-or-phone login-width-limiter">
             <LoginTitle
-                subtitle={t(isPhone ? "reset-password-phone-tips" : "reset-password-email-tips")}
+                subtitle={t(phone ? "reset-password-phone-tips" : "reset-password-email-tips")}
                 title={t("reset-password")}
             />
-            <Input
-                placeholder={t("enter-email-or-phone")}
-                prefix={
-                    isPhone ? (
-                        <Select bordered={false} defaultValue="+86" onChange={setCountryCode}>
-                            {COUNTRY_CODES.map(code => (
-                                <Select.Option
-                                    key={code}
-                                    value={`+${code}`}
-                                >{`+${code}`}</Select.Option>
-                            ))}
-                        </Select>
-                    ) : (
-                        <img alt="email" src={emailSVG} />
-                    )
-                }
-                size={inputSize}
-                status={isKeyInputValidate || !keyValue ? void 0 : "error"}
-                type={inputType}
-                value={keyValue}
-                onChange={ev => setKeyValue(ev.currentTarget.value)}
-            />
 
-            <Input
-                placeholder={t("enter-code")}
-                prefix={<img alt="checked" draggable={false} src={checkedSVG} />}
-                status={!code || validateCode(code) ? undefined : "error"}
-                suffix={
-                    countdown > 0 ? (
-                        <span className="login-countdown">
-                            {t("seconds-to-resend", { seconds: countdown })}
-                        </span>
-                    ) : (
-                        <Button
-                            disabled={sendingCode || !isKeyInputValidate || !keyValue}
-                            loading={sendingCode}
-                            size="small"
-                            type="link"
-                            onClick={sendCode}
-                        >
-                            {t("send-verify-code")}
-                        </Button>
-                    )
-                }
-                value={code}
-                onChange={ev => setCode(ev.currentTarget.value)}
-            />
+            <Form
+                form={form}
+                initialValues={defaultValues}
+                name="resetPassword"
+                onFieldsChange={formValidateStatus}
+            >
+                <Form.Item name="key" rules={[phone ? phoneValidator : emailValidator]}>
+                    <LoginAccount
+                        countryCode={countryCode}
+                        handleCountryCode={code => setCountryCode(code)}
+                        handleType={type => setType(type)}
+                        placeholder={t("enter-email-or-phone")}
+                    />
+                </Form.Item>
 
-            <Input.Password
-                placeholder={t("enter-password")}
-                prefix={<img alt="password" src={lockSVG} />}
-                status={!password || validatePassword(password) ? void 0 : "error"}
-                value={password}
-                onChange={ev => setPassword(ev.currentTarget.value)}
-            />
+                <Form.Item name="code" rules={[codeValidator]}>
+                    <LoginSendCode
+                        isAccountValidated={isAccountValidated}
+                        sendVerificationCode={handleSendVerificationCode}
+                        type={type}
+                    />
+                </Form.Item>
+
+                <Form.Item name="password" rules={[passwordValidator]}>
+                    <LoginPassword placeholder={t("enter-password")} />
+                </Form.Item>
+            </Form>
 
             <Button
                 className="login-big-button login-with-resetting-btn"
-                disabled={!canReset}
+                disabled={!isFormValidated}
                 loading={clickedReset}
                 type="primary"
                 onClick={doReset}

@@ -1,30 +1,33 @@
 import "./index.less";
 
 import { useTranslate } from "@netless/flat-i18n";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import { Button, message, Form } from "antd";
+
 import { LoginTitle } from "../LoginPage/LoginTitle";
-import emailSVG from "../LoginPage/icons/email.svg";
-import lockSVG from "../LoginPage/icons/lock.svg";
-import checkedSVG from "../LoginPage/icons/checked.svg";
-import { Input, Select, Button, message } from "antd";
-import {
-    validateCode,
-    PasswordLoginType,
-    validatePassword,
-    validatePhone,
-    validateEmail,
-    validateIsPhone,
-    requestAgreement,
-    LoginButtonProviderType,
-    LoginButtonsDescription,
-    LoginButtons,
-    LoginButtonsProps,
-    LoginKeyType,
-} from "../LoginPage";
-import { COUNTRY_CODES } from "../LoginPage/LoginWithCode/data";
-import { useIsUnMounted, useSafePromise } from "../../utils/hooks";
+import { useSafePromise } from "../../utils/hooks";
 import { LoginPanelContent } from "../LoginPage/LoginPanelContent";
 import { LoginAgreement, LoginAgreementProps } from "../LoginPage/LoginAgreement";
+import { LoginAccount, PasswordLoginType, defaultCountryCode } from "../LoginPage/LoginAccount";
+import { LoginKeyType, LoginPassword, LoginSendCode, requestAgreement } from "../LoginPage";
+import { LoginButtonProviderType } from "../LoginPage/LoginButton";
+import {
+    LoginButtonsProps,
+    LoginButtonsDescription,
+    LoginButtons,
+} from "../LoginPage/LoginButtons";
+import { codeValidator } from "../LoginPage/LoginWithCode/validators";
+import {
+    emailValidator,
+    passwordValidator,
+    phoneValidator,
+} from "../LoginPage/LoginWithPassword/validators";
+
+interface LoginFormValues {
+    key: string;
+    password: string;
+    code: string;
+}
 
 export interface RegisterProps {
     buttons?: LoginButtonProviderType[];
@@ -64,26 +67,28 @@ export const RegisterModal: React.FC<RegisterProps> = ({
         [t, userButtons],
     );
 
-    const isUnMountRef = useIsUnMounted();
+    const [countryCode, setCountryCode] = useState(defaultCountryCode);
+    const [type, setType] = useState(PasswordLoginType.Phone);
+    const [form] = Form.useForm<LoginFormValues>();
+    const [isFormValidated, setIsFormValidated] = useState(false);
+    const [isAccountValidated, setIsAccountValidated] = useState(false);
 
-    const [key, setKey] = useState<PasswordLoginType>(PasswordLoginType.Phone);
+    const defaultValues = {
+        key: "",
+        password: "",
+        code: "",
+    };
 
-    const [keyValue, setKeyValue] = useState("");
-    const [password, setPassword] = useState("");
-    const [countryCode, setCountryCode] = useState("+86");
-    const [code, setCode] = useState("");
-    const [countdown, setCountdown] = useState(0);
-    const [sendingCode, setSendingCode] = useState(false);
     const [clickedRegister, setClickedRegister] = useState(false);
     const [agreed, setAgreed] = useState(false);
 
-    const isPhone = key === PasswordLoginType.Phone;
-    const inputType = isPhone ? "text" : "email";
-    const inputSize = isPhone ? "small" : "middle";
-    const [isKeyInputValidate, setIsKeyInputValidate] = useState(false);
+    const phone = type === PasswordLoginType.Phone;
 
-    const canRegister =
-        keyValue && isKeyInputValidate && validatePassword(password) && validateCode(code);
+    const handleSendVerificationCode = async (): Promise<boolean> => {
+        const { key: keyValue } = form.getFieldsValue();
+
+        return sendVerificationCode(type, phone ? countryCode + keyValue : keyValue);
+    };
 
     const doRegister = useCallback(async () => {
         if (!agreed) {
@@ -93,12 +98,14 @@ export const RegisterModal: React.FC<RegisterProps> = ({
             setAgreed(true);
         }
         setClickedRegister(true);
+        const { key: keyValue, code, password } = form.getFieldsValue();
+
         if (
             await sp(
                 register(
-                    key,
+                    type,
                     {
-                        key: isPhone ? countryCode + keyValue : keyValue,
+                        key: phone ? countryCode + keyValue : keyValue,
                         originKey: keyValue,
                     },
                     code,
@@ -112,20 +119,7 @@ export const RegisterModal: React.FC<RegisterProps> = ({
         }
 
         setClickedRegister(false);
-    }, [
-        key,
-        isPhone,
-        agreed,
-        serviceURL,
-        privacyURL,
-        countryCode,
-        keyValue,
-        code,
-        password,
-        register,
-        sp,
-        t,
-    ]);
+    }, [agreed, countryCode, form, type, phone, privacyURL, register, serviceURL, sp, t]);
 
     const onClick = useCallback(
         async (provider: LoginButtonProviderType) => {
@@ -140,58 +134,22 @@ export const RegisterModal: React.FC<RegisterProps> = ({
         [agreed, onClickButton, privacyURL, serviceURL, t],
     );
 
-    useEffect(() => {
-        if (!keyValue || validateIsPhone(keyValue)) {
-            setKey(PasswordLoginType.Phone);
-        } else {
-            setKey(PasswordLoginType.Email);
-        }
-
-        if (isPhone) {
-            setIsKeyInputValidate(validatePhone(keyValue));
-        } else {
-            setIsKeyInputValidate(validateEmail(keyValue));
-        }
-    }, [keyValue, isPhone]);
-
-    const sendCode = useCallback(async () => {
-        if (isKeyInputValidate) {
-            setSendingCode(true);
-            const sent = await sp(
-                sendVerificationCode(key, isPhone ? countryCode + keyValue : keyValue),
-            );
-            setSendingCode(false);
-            if (sent) {
-                void message.info(
-                    t(isPhone ? "sent-verify-code-to-phone" : "sent-verify-code-to-email"),
-                );
-                let count = 60;
-                setCountdown(count);
-                const timer = setInterval(() => {
-                    if (isUnMountRef.current) {
-                        clearInterval(timer);
-                        return;
-                    }
-                    setCountdown(--count);
-                    if (count === 0) {
-                        clearInterval(timer);
-                    }
-                }, 1000);
-            }
-        }
-    }, [
-        countryCode,
-        isUnMountRef,
-        sendVerificationCode,
-        sp,
-        t,
-        isPhone,
-        key,
-        keyValue,
-        isKeyInputValidate,
-    ]);
-
     const [page] = useState("register");
+
+    const formValidateStatus = useCallback(() => {
+        // set global status
+        setIsFormValidated(
+            form.getFieldsError().every(field => field.errors.length <= 0) &&
+                Object.values(form.getFieldsValue()).every(v => !!v),
+        );
+
+        // set account status used by verification code
+        if (form.getFieldValue("key") && !form.getFieldError("key").length) {
+            setIsAccountValidated(true);
+        } else {
+            setIsAccountValidated(false);
+        }
+    }, [form]);
 
     return (
         <LoginPanelContent transitionKey={page}>
@@ -199,65 +157,33 @@ export const RegisterModal: React.FC<RegisterProps> = ({
                 <div className="register-width-limiter">
                     <LoginTitle subtitle=" " title={t("register-title")} />
 
-                    <Input
-                        placeholder={t("enter-email-or-phone")}
-                        prefix={
-                            isPhone ? (
-                                <Select
-                                    bordered={false}
-                                    defaultValue="+86"
-                                    onChange={setCountryCode}
-                                >
-                                    {COUNTRY_CODES.map(code => (
-                                        <Select.Option
-                                            key={code}
-                                            value={`+${code}`}
-                                        >{`+${code}`}</Select.Option>
-                                    ))}
-                                </Select>
-                            ) : (
-                                <img alt="email" src={emailSVG} />
-                            )
-                        }
-                        size={inputSize}
-                        status={isKeyInputValidate || !keyValue ? void 0 : "error"}
-                        type={inputType}
-                        value={keyValue}
-                        onChange={ev => setKeyValue(ev.currentTarget.value)}
-                    />
+                    <Form
+                        form={form}
+                        initialValues={defaultValues}
+                        name="resetPassword"
+                        onFieldsChange={formValidateStatus}
+                    >
+                        <Form.Item name="key" rules={[phone ? phoneValidator : emailValidator]}>
+                            <LoginAccount
+                                countryCode={countryCode}
+                                handleCountryCode={code => setCountryCode(code)}
+                                handleType={type => setType(type)}
+                                placeholder={t("enter-email-or-phone")}
+                            />
+                        </Form.Item>
 
-                    <Input
-                        placeholder={t("enter-code")}
-                        prefix={<img alt="checked" draggable={false} src={checkedSVG} />}
-                        status={!code || validateCode(code) ? undefined : "error"}
-                        suffix={
-                            countdown > 0 ? (
-                                <span className="login-countdown">
-                                    {t("seconds-to-resend", { seconds: countdown })}
-                                </span>
-                            ) : (
-                                <Button
-                                    disabled={sendingCode || !isKeyInputValidate || !keyValue}
-                                    loading={sendingCode}
-                                    size="small"
-                                    type="link"
-                                    onClick={sendCode}
-                                >
-                                    {t("send-verify-code")}
-                                </Button>
-                            )
-                        }
-                        value={code}
-                        onChange={ev => setCode(ev.currentTarget.value)}
-                    />
+                        <Form.Item name="code" rules={[codeValidator]}>
+                            <LoginSendCode
+                                isAccountValidated={isAccountValidated}
+                                sendVerificationCode={handleSendVerificationCode}
+                                type={type}
+                            />
+                        </Form.Item>
 
-                    <Input.Password
-                        placeholder={t("enter-password")}
-                        prefix={<img alt="password" src={lockSVG} />}
-                        status={!password || validatePassword(password) ? void 0 : "error"}
-                        value={password}
-                        onChange={ev => setPassword(ev.currentTarget.value)}
-                    />
+                        <Form.Item name="password" rules={[passwordValidator]}>
+                            <LoginPassword placeholder={t("enter-password")} />
+                        </Form.Item>
+                    </Form>
 
                     <LoginAgreement
                         checked={agreed}
@@ -267,8 +193,8 @@ export const RegisterModal: React.FC<RegisterProps> = ({
                     />
 
                     <Button
-                        className="login-big-button login-with-resetting-btn"
-                        disabled={!canRegister}
+                        className="login-big-button register-with-btn"
+                        disabled={!isFormValidated}
                         loading={clickedRegister}
                         type="primary"
                         onClick={doRegister}
