@@ -16,12 +16,6 @@ declare namespace NodeJS {
         NODE_ENV: "development" | "production";
         NETLESS_APP_IDENTIFIER: string;
 
-        CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY: string;
-        CLOUD_STORAGE_OSS_ALIBABA_BUCKET: string;
-        CLOUD_STORAGE_OSS_ALIBABA_REGION: string;
-
-        CLOUD_STORAGE_DOMAIN: string;
-
         AGORA_APP_ID: string;
 
         GITHUB_CLIENT_ID: string;

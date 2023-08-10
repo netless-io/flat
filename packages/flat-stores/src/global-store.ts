@@ -87,6 +87,10 @@ export class GlobalStore {
         return this.serverRegionConfig?.censorship.text ?? false;
     }
 
+    public get cloudStorageAK(): string {
+        return this.serverRegionConfig?.cloudStorage.accessKey ?? "";
+    }
+
     public constructor() {
         autoPersistStore({ storeLSName: "GlobalStore", store: this, version: LS_VERSION });
         autorun(() => {

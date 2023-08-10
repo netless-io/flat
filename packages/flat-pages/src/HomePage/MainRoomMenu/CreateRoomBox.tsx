@@ -1,12 +1,12 @@
 import "./CreateRoomBox.less";
 
-import React, { Fragment, useContext, useEffect, useRef, useState, KeyboardEvent } from "react";
+import React, { useContext, useEffect, useRef, useState, KeyboardEvent } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Modal, Checkbox, Form, Dropdown, Menu, InputRef } from "antd";
+import { Button, Input, Modal, Checkbox, Form, InputRef } from "antd";
 import { RoomType } from "@netless/flat-server-api";
 import { PreferencesStoreContext, GlobalStoreContext } from "../../components/StoreProvider";
 import { useSafePromise } from "../../utils/hooks/lifecycle";
-import { ClassPicker, HomePageHeroButton, Region, regions, RegionSVG } from "flat-components";
+import { ClassPicker, HomePageHeroButton, Region } from "flat-components";
 import { useTranslate } from "@netless/flat-i18n";
 
 interface CreateRoomFormValues {
@@ -30,7 +30,10 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
     const [isLoading, setLoading] = useState(false);
     const [isShowModal, showModal] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
-    const [roomRegion, setRoomRegion] = useState<Region>(preferencesStore.getRegion());
+
+    // @TODO: need to remove region from preferences store
+    const [roomRegion] = useState<Region>(preferencesStore.getRegion());
+
     const [classType, setClassType] = useState<RoomType>(RoomType.BigClass);
     const roomTitleInputRef = useRef<InputRef>(null);
 
@@ -58,23 +61,6 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
             window.clearTimeout(ticket);
         };
     }, [isShowModal]);
-
-    const regionMenu = (
-        <Menu
-            className="create-room-modal-menu-item"
-            items={regions.map(region => ({
-                key: region,
-                label: (
-                    <Fragment>
-                        <img alt={region} src={RegionSVG[region]} style={{ width: 22 }} />
-                        <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
-                    </Fragment>
-                ),
-            }))}
-            style={{ width: "auto" }}
-            onClick={e => setRoomRegion(e.key as Region)}
-        ></Menu>
-    );
 
     return (
         <>
@@ -128,19 +114,6 @@ export const CreateRoomBox = observer<CreateRoomBoxProps>(function CreateRoomBox
                         <Input
                             ref={roomTitleInputRef}
                             placeholder={t("enter-room-theme")}
-                            suffix={
-                                <Dropdown
-                                    overlay={regionMenu}
-                                    placement="bottomRight"
-                                    trigger={["click"]}
-                                >
-                                    <img
-                                        alt={roomRegion}
-                                        src={RegionSVG[roomRegion]}
-                                        style={{ cursor: "pointer", width: 22, marginRight: 0 }}
-                                    />
-                                </Dropdown>
-                            }
                             onKeyUp={submitOnEnter}
                         />
                     </Form.Item>

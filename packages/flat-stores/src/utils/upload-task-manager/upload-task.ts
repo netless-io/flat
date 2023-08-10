@@ -10,6 +10,7 @@ import {
 } from "@netless/flat-server-api";
 import { errorTips } from "flat-components";
 import { isPPTX } from "../file";
+import { globalStore } from "../../global-store";
 
 export enum UploadStatusType {
     Pending = 1,
@@ -51,8 +52,7 @@ export class UploadTask {
             return;
         }
 
-        const CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY =
-            process.env.CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY;
+        const CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY = globalStore.cloudStorageAK;
         if (!CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY) {
             throw new Error("Missing env CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY");
         }
@@ -99,7 +99,7 @@ export class UploadTask {
             formData.append("key", ossFilePath);
             formData.append("name", fileName);
             formData.append("policy", policy);
-            formData.append("OSSAccessKeyId", CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY);
+            formData.append("OSSAccessKeyId", globalStore.cloudStorageAK);
             formData.append("success_action_status", "200");
             formData.append("callback", "");
             formData.append("signature", signature);

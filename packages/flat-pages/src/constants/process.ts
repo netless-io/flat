@@ -4,14 +4,6 @@ export const NETLESS = Object.freeze({
     APP_IDENTIFIER: process.env.NETLESS_APP_IDENTIFIER,
 });
 
-export const CLOUD_STORAGE_OSS_ALIBABA_CONFIG = Object.freeze({
-    accessKey: process.env.CLOUD_STORAGE_OSS_ALIBABA_ACCESS_KEY,
-    bucket: process.env.CLOUD_STORAGE_OSS_ALIBABA_BUCKET,
-    region: process.env.CLOUD_STORAGE_OSS_ALIBABA_REGION,
-});
-
-export const CLOUD_STORAGE_DOMAIN = process.env.CLOUD_STORAGE_DOMAIN;
-
 export const AGORA = Object.freeze({
     APP_ID: process.env.AGORA_APP_ID,
 });

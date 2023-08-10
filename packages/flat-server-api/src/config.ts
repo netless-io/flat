@@ -18,16 +18,30 @@ export type ServerRegionConfigResult = {
         env: string;
     };
     whiteboard: {
+        appId: string;
         convertRegion: string;
     };
     agora: {
+        clientId: string;
+        appId: string;
         screenshot: boolean;
         messageNotification: boolean;
+    };
+    github: {
+        clientId: string;
+    };
+    wechat: {
+        webAppId: string;
+        mobileAppId: string;
+    };
+    google: {
+        clientId: string;
     };
     cloudStorage: {
         singleFileSize: number;
         totalSize: number;
         allowFileSuffix: String[];
+        accessKey: string;
     };
     censorship: {
         video: boolean;
@@ -36,6 +50,6 @@ export type ServerRegionConfigResult = {
     };
 };
 
-export async function getServerRegionConfig(): Promise<ServerRegionConfigResult> {
+export async function getServerRegionConfigs(): Promise<ServerRegionConfigResult> {
     return await getV2NotAuth<ServerRegionConfigResult>("region/configs");
 }

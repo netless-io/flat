@@ -5,7 +5,7 @@ import gbSVG from "./icons/gb.svg";
 import usSVG from "./icons/us.svg";
 import sgSVG from "./icons/sg.svg";
 
-import { Button, Checkbox, Dropdown, Form, Input, Menu, Modal } from "antd";
+import { Button, Checkbox, Form, Input, Modal } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { addWeeks, endOfDay, getDay } from "date-fns";
 import React, { useMemo, useRef, useState } from "react";
@@ -16,7 +16,6 @@ import { renderBeginTimePicker } from "./renderBeginTimePicker";
 import { renderEndTimePicker } from "./renderEndTimePicker";
 import { renderPeriodicForm } from "./renderPeriodicForm";
 import { ClassPicker } from "../../HomePage/ClassPicker";
-import { Fragment } from "react";
 
 export enum Region {
     CN_HZ = "cn-hz",
@@ -84,7 +83,10 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
 
     const [isFormVetted, setIsFormVetted] = useState(true);
     const [isShowEditSubmitConfirm, showEditSubmitConfirm] = useState(false);
-    const [region, setRegion] = useState<Region>(initialValues.region);
+
+    // @TODO: need to remove
+    const [region] = useState<Region>(initialValues.region);
+
     const t = useTranslate();
     const language = useLanguage();
 
@@ -103,25 +105,6 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
             ...initialValues,
         };
     }, [initialValues]);
-
-    const regionMenu = (
-        <Menu
-            className="edit-room-body-menu-item"
-            items={regions.map(region => ({
-                key: region,
-                label: (
-                    <Fragment>
-                        <img alt={region} src={RegionSVG[region]} style={{ width: 22 }} />
-                        <span style={{ paddingLeft: 8 }}>{t(`region-${region}`)}</span>
-                    </Fragment>
-                ),
-            }))}
-            prefix="hello"
-            style={{ width: "auto" }}
-            onClick={e => setRegion(e.key as Region)}
-        />
-    );
-
     return (
         <>
             <div className="edit-room-body fancy-scrollbar">
@@ -163,19 +146,6 @@ export const EditRoomBody: React.FC<EditRoomBodyProps> = ({
                                 }}
                                 disabled={type === "periodicSub"}
                                 placeholder={t("enter-room-theme")}
-                                suffix={
-                                    <Dropdown
-                                        overlay={regionMenu}
-                                        placement="bottomRight"
-                                        trigger={["click"]}
-                                    >
-                                        <img
-                                            alt={region}
-                                            src={RegionSVG[region]}
-                                            style={{ cursor: "pointer", width: 22, marginRight: 0 }}
-                                        />
-                                    </Dropdown>
-                                }
                             />
                         </Form.Item>
                         <Form.Item label={t("type")} name="type">
