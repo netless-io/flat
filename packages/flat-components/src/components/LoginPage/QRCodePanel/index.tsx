@@ -1,3 +1,5 @@
+import "./index.less";
+
 import { Button } from "antd";
 import React from "react";
 import { useTranslate } from "@netless/flat-i18n";

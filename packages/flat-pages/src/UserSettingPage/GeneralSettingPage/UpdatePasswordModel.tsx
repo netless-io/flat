@@ -1,11 +1,18 @@
-import { Button, Input, Modal, message } from "antd";
-import { errorTips, validatePassword } from "flat-components";
-import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { Button, Form, Modal, message } from "antd";
 import React, { useCallback, useState } from "react";
-import lockSVG from "../icons/lock.svg";
-import { useTranslate } from "@netless/flat-i18n";
+import { LoginPassword, errorTips, passwordValidator } from "flat-components";
 import { UpdatePwdPayload, updatePassword } from "@netless/flat-server-api";
+import { useTranslate } from "@netless/flat-i18n";
 import { globalStore } from "@netless/flat-stores";
+
+import { useSafePromise } from "../../utils/hooks/lifecycle";
+import { newPassword2Validator } from "./validator";
+
+export interface UpdatePasswordFormValues {
+    password?: string;
+    newPassword1: string;
+    newPassword2: string;
+}
 
 export interface UpdatePasswordModelProps {
     visible: boolean;
@@ -25,26 +32,23 @@ export const UpdatePasswordModel: React.FC<UpdatePasswordModelProps> = ({
     const t = useTranslate();
     const sp = useSafePromise();
 
+    const [form] = Form.useForm<UpdatePasswordFormValues>();
+    const [isFormValidated, setIsFormValidated] = useState(false);
+
+    const defaultValues = {
+        newPassword1: "",
+        newPassword2: "",
+        password: "",
+    };
+
     const [loading, setLoading] = useState(false);
-    const [password, setPassword] = useState("");
-    const [newPassword1, setNewPassword1] = useState("");
-    const [newPassword2, setNewPassword2] = useState("");
+
+    const clearAll = useCallback((): void => {
+        form.resetFields();
+    }, [form]);
 
     const onOk = useCallback(async () => {
-        if (showOldPassword && !password) {
-            message.error(t("old-password-required"));
-            return;
-        }
-
-        if (!validatePassword(newPassword1) || !validatePassword(newPassword2)) {
-            message.error(t("new-password-invalid"));
-            return;
-        }
-
-        if (newPassword1 !== newPassword2) {
-            message.error(t("password-not-match"));
-            return;
-        }
+        const { password, newPassword1 } = form.getFieldsValue();
 
         const payload: UpdatePwdPayload = { newPassword: newPassword1 };
 
@@ -68,6 +72,7 @@ export const UpdatePasswordModel: React.FC<UpdatePasswordModelProps> = ({
             );
             setLoading(false);
 
+            setIsFormValidated(false);
             clearAll();
             onConfirm();
         } catch (e) {
@@ -75,14 +80,14 @@ export const UpdatePasswordModel: React.FC<UpdatePasswordModelProps> = ({
             console.error(e);
             errorTips(e);
         }
-    }, [newPassword1, newPassword2, password, showOldPassword, sp, t, onConfirm]);
+    }, [clearAll, form, onConfirm, showOldPassword, sp, t]);
 
-    const clearAll = (): void => {
-        setPassword("");
-        setNewPassword1("");
-        setNewPassword2("");
-    };
-
+    const formValidateStatus = useCallback(() => {
+        setIsFormValidated(
+            form.getFieldsError().every(field => field.errors.length <= 0) &&
+                Object.values(form.getFieldsValue()).every(v => !!v),
+        );
+    }, [form]);
     return (
         <Modal
             centered
@@ -91,7 +96,12 @@ export const UpdatePasswordModel: React.FC<UpdatePasswordModelProps> = ({
                 <Button key="exit-cancel" onClick={onCancel}>
                     {t("cancel")}
                 </Button>,
-                <Button key="exit-confirm" loading={loading} onClick={onOk}>
+                <Button
+                    key="exit-confirm"
+                    disabled={!isFormValidated}
+                    loading={loading}
+                    onClick={onOk}
+                >
                     {t("confirm")}
                 </Button>,
             ]}
@@ -100,34 +110,35 @@ export const UpdatePasswordModel: React.FC<UpdatePasswordModelProps> = ({
             width={352}
             onCancel={onCancel}
         >
-            {showOldPassword && (
-                <Input.Password
-                    className="update-password-input"
-                    placeholder={t("enter-old-password")}
-                    prefix={<img alt="old-password" src={lockSVG} />}
-                    status={!password || validatePassword(password) ? void 0 : "error"}
-                    value={password}
-                    onChange={ev => setPassword(ev.currentTarget.value)}
-                />
-            )}
+            <Form
+                form={form}
+                initialValues={defaultValues}
+                name="resetPassword"
+                onFieldsChange={formValidateStatus}
+            >
+                {showOldPassword && (
+                    <Form.Item
+                        name="password"
+                        rules={[
+                            { message: t("old-password-required"), required: true },
+                            passwordValidator,
+                        ]}
+                    >
+                        <LoginPassword placeholder={t("enter-old-password")} />
+                    </Form.Item>
+                )}
 
-            <Input.Password
-                className="update-password-input"
-                placeholder={t("enter-new-password")}
-                prefix={<img alt="new-password" src={lockSVG} />}
-                status={!newPassword1 || validatePassword(newPassword1) ? void 0 : "error"}
-                value={newPassword1}
-                onChange={ev => setNewPassword1(ev.currentTarget.value)}
-            />
+                <Form.Item name="newPassword1" rules={[passwordValidator]}>
+                    <LoginPassword placeholder={t("enter-new-password")} />
+                </Form.Item>
 
-            <Input.Password
-                className="update-password-input"
-                placeholder={t("enter-new-password-again")}
-                prefix={<img alt="new-password-again" src={lockSVG} />}
-                status={!newPassword2 || validatePassword(newPassword2) ? void 0 : "error"}
-                value={newPassword2}
-                onChange={ev => setNewPassword2(ev.currentTarget.value)}
-            />
+                <Form.Item
+                    name="newPassword2"
+                    rules={[{ validator: newPassword2Validator(form.getFieldsValue()) }]}
+                >
+                    <LoginPassword placeholder={t("enter-new-password-again")} />
+                </Form.Item>
+            </Form>
         </Modal>
     );
 };

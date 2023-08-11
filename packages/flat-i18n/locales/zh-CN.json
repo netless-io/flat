@@ -397,6 +397,8 @@
   "enter-new-password-again": "请再次输入新密码",
   "enter-old-password": "请输入旧密码",
   "enter-phone": "请输入手机号",
+  "enter-phone-invalid": "请输入正确的手机号",
+  "enter-email-invalid": "请输入正确的邮箱",
   "forgot": "忘记密码？",
   "pwd-login": "密码登录",
   "verify-code-login": "手机验证码登录",
@@ -503,6 +505,7 @@
     "english_1": "四线三格",
     "chinese_1": "田字格"
   },
+  "password-invalid": "密码至少8位，至少包含字母和数字",
   "old-password-required": "请输入旧密码",
   "new-password-invalid": "新密码不符合规则，请检查",
   "password-set-success": "密码设置成功",

@@ -15,11 +15,11 @@ import {
     LoginWithCode,
     LoginWithPassword,
     BindingPhonePanel,
-    PasswordLoginType,
     QRCodePanel,
-    LoginButtonProviderType,
     RegisterModal,
     LoginKeyType,
+    PasswordLoginType,
+    LoginButtonProviderType,
 } from "flat-components";
 import {
     bindingPhone,

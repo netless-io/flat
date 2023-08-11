@@ -10,6 +10,9 @@ export * from "./LoginWithPassword";
 export * from "./LoginWithCode";
 export * from "./BindingPhonePanel";
 export * from "./QRCodePanel";
+export * from "./LoginAccount";
+export * from "./LoginPassword";
+export * from "./LoginSendCode";
 
 export interface LoginPanelProps {}
 

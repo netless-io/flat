@@ -402,6 +402,8 @@
   "enter-new-password-again": "Please enter new password again",
   "enter-old-password": "Please enter old password",
   "enter-phone": "Please enter phone number",
+  "enter-phone-invalid": "Please enter valid phone number",
+  "enter-email-invalid": "Please enter valid email address",
   "forgot": "Forgot?",
   "also-login-with": "You can also login directly by",
   "seconds-to-resend": "{{seconds}} seconds to resend",
@@ -503,6 +505,7 @@
     "english_1": "Four Lines and Three Grids",
     "chinese_1": "Tin Word Format"
   },
+  "password-invalid": "Password should be more than 8 characters, including at least letters and numbers",
   "old-password-required": "Please enter old password",
   "new-password-invalid": "New password is invalid. Please Check",
   "password-set-success": "Password set successfully",

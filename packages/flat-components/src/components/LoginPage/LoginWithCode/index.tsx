@@ -1,28 +1,21 @@
-import checkedSVG from "../icons/checked.svg";
 import "./index.less";
 
 import React, { useCallback, useMemo, useState } from "react";
-import { Button, Input, message, Modal, Select } from "antd";
+import { Button, Form, message, Modal } from "antd";
 import { useTranslate, FlatI18nTFunction } from "@netless/flat-i18n";
 
-import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
+import { useSafePromise } from "../../../utils/hooks";
 import { LoginTitle } from "../LoginTitle";
 import { LoginAgreement, LoginAgreementProps } from "../LoginAgreement";
 import { LoginButtons, LoginButtonsDescription, LoginButtonsProps } from "../LoginButtons";
-import { COUNTRY_CODES } from "./data";
 import { LoginPanelContent } from "../LoginPanelContent";
 import { LoginButtonProviderType } from "../LoginButton";
-
+import { LoginAccount, PasswordLoginType, defaultCountryCode } from "../LoginAccount";
+import { LoginSendCode } from "../LoginSendCode";
+import { phoneValidator } from "../LoginWithPassword/validators";
+import { codeValidator } from "./validators";
 export * from "../LoginButtons";
-
-// there must only be numbers
-export function validatePhone(phone: string): boolean {
-    return phone.length >= 5 && !/\D/.test(phone);
-}
-
-export function validateCode(code: string): boolean {
-    return code.length === 6;
-}
+export * from "./validators";
 
 export interface LoginWithCodeProps {
     buttons?: LoginButtonProviderType[];
@@ -32,6 +25,11 @@ export interface LoginWithCodeProps {
     sendVerificationCode: (countryCode: string, phone: string) => Promise<boolean>;
     loginOrRegister: (countryCode: string, phone: string, code: string) => Promise<boolean>;
     loginWithPassword: () => void;
+}
+
+interface LoginFormValues {
+    phone: string;
+    code: string;
 }
 
 export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
@@ -57,40 +55,20 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
         [t, userButtons],
     );
 
+    const [form] = Form.useForm<LoginFormValues>();
+    const [isFormValidated, setIsFormValidated] = useState(false);
+    const [isAccountValidated, setIsAccountValidated] = useState(false);
+    const type = PasswordLoginType.Phone;
+
+    const defaultValues = {
+        phone: "",
+        code: "",
+    };
+
     const key = "login";
-    const isUnMountRef = useIsUnMounted();
-    const [countryCode, setCountryCode] = useState("+86");
-    const [phone, setPhone] = useState("");
-    const [code, setCode] = useState("");
+    const [countryCode, setCountryCode] = useState(defaultCountryCode);
     const [agreed, setAgreed] = useState(false);
-    const [sendingCode, setSendingCode] = useState(false);
-    const [countdown, setCountdown] = useState(0);
     const [clickedLogin, setClickedLogin] = useState(false);
-
-    const canLogin = !clickedLogin && validatePhone(phone) && validateCode(code);
-
-    const sendCode = useCallback(async () => {
-        if (validatePhone(phone)) {
-            setSendingCode(true);
-            const sent = await sp(sendVerificationCode(countryCode, phone));
-            setSendingCode(false);
-            if (sent) {
-                void message.info(t("sent-verify-code-to-phone"));
-                let count = 60;
-                setCountdown(count);
-                const timer = setInterval(() => {
-                    if (isUnMountRef.current) {
-                        clearInterval(timer);
-                        return;
-                    }
-                    setCountdown(--count);
-                    if (count === 0) {
-                        clearInterval(timer);
-                    }
-                }, 1000);
-            }
-        }
-    }, [countryCode, isUnMountRef, phone, sendVerificationCode, sp, t]);
 
     const login = useCallback(async () => {
         if (!agreed) {
@@ -99,8 +77,10 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
             }
             setAgreed(true);
         }
-        if (canLogin) {
+        if (isFormValidated) {
             setClickedLogin(true);
+            const { phone, code } = form.getFieldsValue();
+
             const success = await sp(loginOrRegister(countryCode, phone, code));
             if (success) {
                 await sp(new Promise(resolve => setTimeout(resolve, 60000)));
@@ -111,15 +91,14 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
         }
     }, [
         agreed,
-        canLogin,
-        t,
+        countryCode,
+        form,
+        isFormValidated,
+        loginOrRegister,
         privacyURL,
         serviceURL,
         sp,
-        loginOrRegister,
-        countryCode,
-        phone,
-        code,
+        t,
     ]);
 
     const onClick = useCallback(
@@ -134,6 +113,24 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
         },
         [agreed, onClickButton, privacyURL, serviceURL, t],
     );
+
+    const handleSendVerificationCode = async (): Promise<boolean> => {
+        const { phone } = form.getFieldsValue();
+        return sendVerificationCode(countryCode, phone);
+    };
+
+    const formValidateStatus = useCallback(() => {
+        setIsFormValidated(
+            form.getFieldsError().every(field => field.errors.length <= 0) &&
+                Object.values(form.getFieldsValue()).every(v => !!v),
+        );
+
+        if (form.getFieldValue("phone") && !form.getFieldError("phone").length) {
+            setIsAccountValidated(true);
+        } else {
+            setIsAccountValidated(false);
+        }
+    }, [form]);
 
     return (
         <LoginPanelContent transitionKey={key}>
@@ -150,9 +147,12 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
                                 cursor: "pointer",
                             }}
                             onChange={ev => {
-                                setPhone(ev.currentTarget.value);
-                                setCode("666666");
+                                form.setFieldsValue({
+                                    phone: ev.currentTarget.value,
+                                    code: "666666",
+                                });
                                 setAgreed(true);
+                                formValidateStatus();
                             }}
                         >
                             {Array.from({ length: 9 }, (_, i) => (
@@ -162,47 +162,29 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
                             ))}
                         </select>
                     ) : null}
-                    <Input
-                        placeholder={t("enter-phone")}
-                        prefix={
-                            <Select bordered={false} defaultValue="+86" onChange={setCountryCode}>
-                                {COUNTRY_CODES.map(code => (
-                                    <Select.Option
-                                        key={code}
-                                        value={`+${code}`}
-                                    >{`+${code}`}</Select.Option>
-                                ))}
-                            </Select>
-                        }
-                        size="small"
-                        status={!phone || validatePhone(phone) ? undefined : "error"}
-                        value={phone}
-                        onChange={ev => setPhone(ev.currentTarget.value)}
-                    />
-                    <Input
-                        placeholder={t("enter-code")}
-                        prefix={<img alt="checked" draggable={false} src={checkedSVG} />}
-                        status={!code || validateCode(code) ? undefined : "error"}
-                        suffix={
-                            countdown > 0 ? (
-                                <span className="login-countdown">
-                                    {t("seconds-to-resend", { seconds: countdown })}
-                                </span>
-                            ) : (
-                                <Button
-                                    disabled={sendingCode || !validatePhone(phone)}
-                                    loading={sendingCode}
-                                    size="small"
-                                    type="link"
-                                    onClick={sendCode}
-                                >
-                                    {t("send-verify-code")}
-                                </Button>
-                            )
-                        }
-                        value={code}
-                        onChange={ev => setCode(ev.currentTarget.value)}
-                    />
+
+                    <Form
+                        form={form}
+                        initialValues={defaultValues}
+                        name="loginWithCode"
+                        onFieldsChange={formValidateStatus}
+                    >
+                        <Form.Item name="phone" rules={[phoneValidator]}>
+                            <LoginAccount
+                                countryCode={countryCode}
+                                handleCountryCode={code => setCountryCode(code)}
+                                placeholder={t("enter-phone")}
+                            />
+                        </Form.Item>
+
+                        <Form.Item name="code" rules={[codeValidator]}>
+                            <LoginSendCode
+                                isAccountValidated={isAccountValidated}
+                                sendVerificationCode={handleSendVerificationCode}
+                                type={type}
+                            />
+                        </Form.Item>
+                    </Form>
 
                     <div className="login-with-phone-btn-wrapper">
                         <Button type="link" onClick={loginWithPassword}>
@@ -218,7 +200,7 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
                     />
                     <Button
                         className="login-big-button"
-                        disabled={!canLogin}
+                        disabled={!isFormValidated}
                         loading={clickedLogin}
                         type="primary"
                         onClick={login}
