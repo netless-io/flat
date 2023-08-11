@@ -60,8 +60,8 @@ jobs:
           PRIVATE_DOCKERHUB_PASSWORD: ${{ secrets.PRIVATE_DOCKERHUB_PASSWORD }}
         run: |
           docker build . -f web/flat-web/deploy/Dockerfile -t agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG -t agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG -t $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG -t $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG
-          # docker push agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG
-          # docker push agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG
+          docker push agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG
+          docker push agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG
 
           docker login -u $PRIVATE_DOCKERHUB_USERNAME -p $PRIVATE_DOCKERHUB_PASSWORD $PRIVATE_DOCKERHUB_REGISTRY
           docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG
