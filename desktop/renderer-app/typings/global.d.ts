@@ -29,7 +29,7 @@ declare namespace NodeJS {
 
         CLOUD_RECORDING_DEFAULT_AVATAR?: string;
 
-        FLAT_REGION: "CN" | "US";
+        FLAT_REGION: "CN" | "SG";
     }
 }
 

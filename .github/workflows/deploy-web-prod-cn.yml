@@ -78,9 +78,3 @@ jobs:
         with:
           exec: helm upgrade flat-web ./web/flat-web/helm --install --wait --atomic --namespace=default
           kubeconfig: "${{ secrets.KUBECONFIG }}"
-
-      - name: Deploy SG
-        uses: WyriHaximus/github-action-helm3@v2
-        with:
-          exec: helm upgrade flat-web ./web/flat-web/helm --install --wait --atomic --namespace=default
-          kubeconfig: "${{ secrets.KUBECONFIG_SG }}"

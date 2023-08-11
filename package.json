@@ -9,14 +9,14 @@
     "storybook": "pnpm -F flat-components start",
     "start": "node scripts/launch/index.js",
     "start:cn": "cross-env FLAT_REGION=CN node scripts/launch/index.js",
-    "start:us": "cross-env FLAT_REGION=US node scripts/launch/index.js",
+    "start:us": "cross-env FLAT_REGION=SG node scripts/launch/index.js",
     "start:web": "pnpm -F flat-web start",
     "ship": "pnpm -F renderer-app build && pnpm -F flat ship",
     "ship:mac": "pnpm -F renderer-app build && pnpm -F flat ship:mac",
     "ship:win": "pnpm -F renderer-app build && pnpm -F flat ship:win",
     "ship:all": "pnpm -F renderer-app build && pnpm -F flat build && pnpm -F flat pack:win && pnpm -F flat pack:mac",
     "ship:cn:all": "cross-env FLAT_REGION=CN pnpm ship:all",
-    "ship:us:all": "cross-env FLAT_REGION=US pnpm ship:all"
+    "ship:us:all": "cross-env FLAT_REGION=SG pnpm ship:all"
   },
   "license": "MIT",
   "devDependencies": {
