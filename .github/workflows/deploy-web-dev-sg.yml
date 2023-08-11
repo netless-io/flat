@@ -6,7 +6,7 @@ on:
       - "only-deploy-prod-web"
 
 jobs:
-  deploy-flat-web-dev:
+  deploy-flat-web-dev-sg:
     environment: development
     env:
       FLAT_UA: ${{ secrets.FLAT_UA }}
