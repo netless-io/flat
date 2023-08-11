@@ -52,24 +52,25 @@ jobs:
 
       - name: Build and push images
         env:
-          COMMIT_SHA_TAG: development-sg-${{ github.sha }}
-          LATEST_DEV_TAG: dev-sg-latest
+          COMMIT_SHA_TAG: development-${{ github.sha }}
+          LATEST_DEV_TAG: dev-latest
+          IMAGE_NAME: flat-web-sg
           PRIVATE_DOCKERHUB_REGISTRY: ${{ secrets.PRIVATE_DOCKERHUB_REGISTRY }}
           PRIVATE_DOCKERHUB_USERNAME: ${{ secrets.PRIVATE_DOCKERHUB_USERNAME }}
           PRIVATE_DOCKERHUB_PASSWORD: ${{ secrets.PRIVATE_DOCKERHUB_PASSWORD }}
         run: |
-          docker build . -f web/flat-web/deploy/Dockerfile -t agoraflat/flat-web:$COMMIT_SHA_TAG -t agoraflat/flat-web:$LATEST_DEV_TAG -t $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web:$COMMIT_SHA_TAG -t $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web:$LATEST_DEV_TAG
-          docker push agoraflat/flat-web:$COMMIT_SHA_TAG
-          docker push agoraflat/flat-web:$LATEST_DEV_TAG
+          docker build . -f web/flat-web/deploy/Dockerfile -t agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG -t agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG -t $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG -t $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG
+          docker push agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG
+          docker push agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG
 
           docker login -u $PRIVATE_DOCKERHUB_USERNAME -p $PRIVATE_DOCKERHUB_PASSWORD $PRIVATE_DOCKERHUB_REGISTRY
-          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web:$COMMIT_SHA_TAG
-          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web:$LATEST_DEV_TAG
+          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG
+          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG
 
       - name: Prep helm chart
         env:
-          DOCKER_IMAGE_NAME: ${{ secrets.PRIVATE_DOCKERHUB_REGISTRY }}/agoraflat/flat-web
-          DOCKER_IMAGE_TAG: development-sg-${{ github.sha }}
+          DOCKER_IMAGE_NAME: ${{ secrets.PRIVATE_DOCKERHUB_REGISTRY }}/agoraflat/flat-web-sg
+          DOCKER_IMAGE_TAG: development-${{ github.sha }}
         run: |
           export APPVERSION=development-${{ github.sha }}
           export CHART=./web/flat-web/helm/Chart.yaml
