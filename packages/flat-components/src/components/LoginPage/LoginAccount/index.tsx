@@ -20,7 +20,7 @@ export enum PasswordLoginType {
 
 export const isPhone = (type: PasswordLoginType): boolean => type === PasswordLoginType.Phone;
 
-export const defaultCountryCode = process.env.DEFAULT_COUNTRY_CODE || "";
+export const defaultCountryCode = process.env.DEFAULT_COUNTRY_CODE || "+86";
 export const defaultAccountType = PasswordLoginType.Phone;
 
 export interface LoginAccountProps {
@@ -29,6 +29,9 @@ export interface LoginAccountProps {
     accountType?: PasswordLoginType;
     value?: string;
     handleCountryCode?: (code: string) => void;
+
+    // If you pass `handleType` from parent component, it says you want to get 'both' account input.
+    // The 'both' account input means that it has the functions of phone input and email input at the same time.
     handleType?: (type: PasswordLoginType) => void;
 
     // history props
@@ -51,26 +54,37 @@ export const LoginAccount: React.FC<LoginAccountProps> = ({
 }) => {
     const onlyPhone = !handleType;
     const defaultEmail = accountType === PasswordLoginType.Email;
+    const defaultPhone = accountType === PasswordLoginType.Phone;
+
     const [type, setType] = useState<PasswordLoginType>(accountType);
 
-    console.log(type);
-
-    const inputType = isPhone(type) ? "text" : "email";
-    const inputSize = isPhone(type) ? "small" : "middle";
-
     useEffect(() => {
-        if (value && validateIsPhone(value)) {
+        if (onlyPhone) {
             setType(PasswordLoginType.Phone);
-        } else {
-            setType(PasswordLoginType.Email);
+            return;
         }
-    }, [value, type, defaultEmail, password]);
 
-    useEffect(() => {
+        if (defaultEmail) {
+            if (!value || !validateIsPhone(value)) {
+                setType(PasswordLoginType.Email);
+            } else {
+                setType(PasswordLoginType.Phone);
+            }
+        }
+
+        if (defaultPhone) {
+            if (!value || validateIsPhone(value)) {
+                setType(PasswordLoginType.Phone);
+            } else {
+                setType(PasswordLoginType.Email);
+            }
+        }
+
+        // report to parent component if there is changing
         if (type && handleType) {
             handleType(type);
         }
-    }, [type, handleType]);
+    }, [value, type, defaultEmail, defaultPhone, onlyPhone, handleType]);
 
     return (
         <Input
@@ -114,8 +128,6 @@ export const LoginAccount: React.FC<LoginAccountProps> = ({
                     <img alt="email" src={emailSVG} />
                 )
             }
-            size={inputSize}
-            type={inputType}
             value={value}
             {...restProps}
         />

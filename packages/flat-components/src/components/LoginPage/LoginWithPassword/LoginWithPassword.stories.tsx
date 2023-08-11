@@ -16,6 +16,20 @@ export const Overview: Story<LoginWithPasswordProps> = props => {
 };
 
 Overview.args = {
+    accountHistory: [
+        {
+            key: "12345678901",
+            password: "password123",
+        },
+        {
+            key: "12345678911",
+            password: "password124",
+        },
+        {
+            key: "example@mail.com",
+            password: "password125",
+        },
+    ],
     login: (type: PasswordLoginType, { key }, password: string) => {
         message.info("login with " + type + " to " + key + ". And the password is: " + password);
         return new Promise(resolve => setTimeout(() => resolve(false), 1000));

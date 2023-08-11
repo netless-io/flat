@@ -56,6 +56,9 @@ export const RegisterModal: React.FC<RegisterProps> = ({
     const t = useTranslate();
     const sp = useSafePromise();
 
+    // specify the current default input method through global variables
+    const accountType = process.env.DEFAULT_LOGIN_WAY as PasswordLoginType;
+
     const buttons = useMemo<LoginButtonsDescription>(
         () =>
             userButtons
@@ -165,6 +168,7 @@ export const RegisterModal: React.FC<RegisterProps> = ({
                     >
                         <Form.Item name="key" rules={[phone ? phoneValidator : emailValidator]}>
                             <LoginAccount
+                                accountType={accountType}
                                 countryCode={countryCode}
                                 handleCountryCode={code => setCountryCode(code)}
                                 handleType={type => setType(type)}

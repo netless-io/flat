@@ -76,7 +76,7 @@ export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
     }, [form]);
 
     return (
-        <div className="login-with-phone binding">
+        <div className="login-with-phone-binding">
             <div className="login-width-limiter">
                 <LoginTitle subtitle={t("need-bind-phone")} title={t("bind-phone")} />
 

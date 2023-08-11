@@ -68,6 +68,8 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
 }) => {
     const t = useTranslate();
     const sp = useSafePromise();
+
+    // specify the current default input method through global variables
     const accountType = process.env.DEFAULT_LOGIN_WAY as PasswordLoginType;
 
     const buttons = useMemo<LoginButtonsDescription>(
@@ -97,8 +99,8 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
     const [isAccountValidated, setIsAccountValidated] = useState(false);
 
     const defaultValues = {
-        key: accountHistory[0]?.key || "",
-        password: accountHistory[0]?.password || "",
+        key: accountHistory.length > 0 ? accountHistory[0]?.key : "",
+        password: accountHistory.length > 0 ? accountHistory[0]?.password : "",
         code: undefined,
     };
     const [password, setPassword] = useState(defaultValues.password);
@@ -287,6 +289,7 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
                       phone,
                       type,
                       countryCode,
+                      accountType,
                       isFormValidated,
                       clickedReset,
                       defaultValues,
@@ -310,6 +313,7 @@ export interface ResetPasswordPageProps {
     phone: boolean;
     type: PasswordLoginType;
     countryCode: string;
+    accountType: PasswordLoginType;
     isFormValidated: boolean;
     clickedReset: boolean;
     defaultValues: LoginFormValues;
@@ -328,6 +332,7 @@ export function resetPasswordPage({
     form,
     type,
     countryCode,
+    accountType,
     isFormValidated,
     phone,
     clickedReset,
@@ -356,6 +361,7 @@ export function resetPasswordPage({
             >
                 <Form.Item name="key" rules={[phone ? phoneValidator : emailValidator]}>
                     <LoginAccount
+                        accountType={accountType}
                         countryCode={countryCode}
                         handleCountryCode={code => setCountryCode(code)}
                         handleType={type => setType(type)}
