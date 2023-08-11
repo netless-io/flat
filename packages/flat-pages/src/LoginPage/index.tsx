@@ -80,7 +80,7 @@ export const LoginPage = observer(function LoginPage() {
                         {...loginProps}
                         register={(
                             type: PasswordLoginType,
-                            { key, originKey }: LoginKeyType,
+                            { key, originKey, countryCode }: LoginKeyType,
                             code,
                             password: string,
                         ) =>
@@ -93,7 +93,11 @@ export const LoginPage = observer(function LoginPage() {
                                       })
                                     : registerPhone(key, Number(code), password).then(() => {
                                           sp(loginPhoneWithPwd(key, password)).then(authInfo =>
-                                              onLoginResult(authInfo, { key: originKey, password }),
+                                              onLoginResult(authInfo, {
+                                                  key: originKey,
+                                                  password,
+                                                  countryCode,
+                                              }),
                                           );
                                       }),
                             )
@@ -137,14 +141,22 @@ export const LoginPage = observer(function LoginPage() {
                     <LoginWithPassword
                         {...loginProps}
                         accountHistory={globalStore.accountHistory}
-                        login={async (type, { key, originKey }: LoginKeyType, password) =>
+                        login={async (
+                            type,
+                            { key, originKey, countryCode }: LoginKeyType,
+                            password,
+                        ) =>
                             wrap(
                                 type === PasswordLoginType.Email
                                     ? loginEmailWithPwd(key, password).then(authInfo =>
                                           onLoginResult(authInfo, { key: originKey, password }),
                                       )
                                     : loginPhoneWithPwd(key, password).then(authInfo =>
-                                          onLoginResult(authInfo, { key: originKey, password }),
+                                          onLoginResult(authInfo, {
+                                              key: originKey,
+                                              password,
+                                              countryCode,
+                                          }),
                                       ),
                             )
                         }
@@ -152,7 +164,7 @@ export const LoginPage = observer(function LoginPage() {
                         register={() => setCurrentState("SWITCH_TO_REGISTER")}
                         resetPassword={(
                             type: PasswordLoginType,
-                            { key, originKey }: LoginKeyType,
+                            { key, originKey, countryCode }: LoginKeyType,
                             code: string,
                             password: string,
                         ) =>
@@ -165,7 +177,11 @@ export const LoginPage = observer(function LoginPage() {
                                       })
                                     : resetPwdWithPhone(key, Number(code), password).then(() => {
                                           sp(loginPhoneWithPwd(key, password)).then(authInfo =>
-                                              onLoginResult(authInfo, { key: originKey, password }),
+                                              onLoginResult(authInfo, {
+                                                  key: originKey,
+                                                  password,
+                                                  countryCode,
+                                              }),
                                           );
                                       }),
                             )

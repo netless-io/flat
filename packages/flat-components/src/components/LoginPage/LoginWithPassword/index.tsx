@@ -28,6 +28,7 @@ export enum PasswordLoginPageType {
 export type LoginKeyType = {
     key: string;
     originKey: string;
+    countryCode: string | null;
 };
 
 interface LoginFormValues {
@@ -40,7 +41,7 @@ export interface LoginWithPasswordProps {
     buttons?: LoginButtonProviderType[];
     privacyURL?: LoginAgreementProps["privacyURL"];
     serviceURL?: LoginAgreementProps["serviceURL"];
-    accountHistory: Array<{ key: string; password: string }> | [];
+    accountHistory: Array<{ key: string; password: string; countryCode: string | null }> | [];
     login: (type: PasswordLoginType, key: LoginKeyType, password: string) => Promise<boolean>;
     register: () => void;
     onClickButton: LoginButtonsProps["onClick"];
@@ -88,7 +89,9 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
     const [agreed, setAgreed] = useState(false);
     const [clickedLogin, setClickedLogin] = useState(false);
     const [clickedReset, setClickedReset] = useState(false);
-    const [countryCode, setCountryCode] = useState(defaultCountryCode);
+    const [countryCode, setCountryCode] = useState(
+        accountHistory?.[0]?.countryCode || defaultCountryCode,
+    );
     const [type, setType] = useState(PasswordLoginType.Phone);
 
     const phone = type === PasswordLoginType.Phone;
@@ -99,8 +102,8 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
     const [isAccountValidated, setIsAccountValidated] = useState(false);
 
     const defaultValues = {
-        key: accountHistory.length > 0 ? accountHistory[0]?.key : "",
-        password: accountHistory.length > 0 ? accountHistory[0]?.password : "",
+        key: accountHistory?.[0]?.key || "",
+        password: accountHistory?.[0]?.password || "",
         code: undefined,
     };
     const [password, setPassword] = useState(defaultValues.password);
@@ -123,6 +126,7 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
                     {
                         key: phone ? countryCode + keyValue : keyValue,
                         originKey: keyValue,
+                        countryCode: phone ? countryCode : null,
                     },
                     password,
                 ),
@@ -149,6 +153,7 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
                     {
                         key: phone ? countryCode + keyValue : keyValue,
                         originKey: keyValue,
+                        countryCode: phone ? countryCode : null,
                     },
                     code,
                     password,
@@ -230,6 +235,10 @@ export const LoginWithPassword: React.FC<LoginWithPasswordProps> = ({
                                 password={password}
                                 placeholder={t("enter-email-or-phone")}
                                 onHistoryChange={options => {
+                                    if (options.title) {
+                                        setCountryCode(options.title);
+                                    }
+
                                     form.setFieldsValue({
                                         key: options.value,
                                         password: options.key,

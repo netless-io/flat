@@ -36,7 +36,7 @@ export interface LoginAccountProps {
 
     // history props
     password?: string;
-    accountHistory?: Array<{ key: string; password: string }> | [];
+    accountHistory?: Array<{ key: string; password: string; countryCode: string | null }> | [];
     onHistoryChange?: (options: any) => void;
 }
 
@@ -99,7 +99,11 @@ export const LoginAccount: React.FC<LoginAccountProps> = ({
                     >
                         {accountHistory.map(account => {
                             return (
-                                <Select.Option key={account.password} value={account.key}>
+                                <Select.Option
+                                    key={account.password}
+                                    title={account.countryCode}
+                                    value={account.key}
+                                >
                                     {account.key}
                                 </Select.Option>
                             );
@@ -115,6 +119,7 @@ export const LoginAccount: React.FC<LoginAccountProps> = ({
                     <Select
                         bordered={false}
                         defaultValue={countryCode}
+                        value={countryCode}
                         onChange={handleCountryCode}
                     >
                         {COUNTRY_CODES.map(code => (
