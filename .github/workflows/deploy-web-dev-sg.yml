@@ -1,4 +1,4 @@
-name: Deploy US Flat Web Dev
+name: Deploy Flat Web Dev
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
       - "only-deploy-prod-web"
 
 jobs:
-  deploy-flat-web-dev:
+  deploy-flat-web-dev-sg:
     environment: development
     env:
       FLAT_UA: ${{ secrets.FLAT_UA }}
@@ -36,7 +36,7 @@ jobs:
           pnpm i || pnpm i || pnpm i
 
       - name: Build flat web development
-        run: pnpm -F flat-web build:us -m development
+        run: pnpm -F flat-web build:sg -m development
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
@@ -54,21 +54,22 @@ jobs:
         env:
           COMMIT_SHA_TAG: development-${{ github.sha }}
           LATEST_DEV_TAG: dev-latest
+          IMAGE_NAME: flat-web-sg
           PRIVATE_DOCKERHUB_REGISTRY: ${{ secrets.PRIVATE_DOCKERHUB_REGISTRY }}
           PRIVATE_DOCKERHUB_USERNAME: ${{ secrets.PRIVATE_DOCKERHUB_USERNAME }}
           PRIVATE_DOCKERHUB_PASSWORD: ${{ secrets.PRIVATE_DOCKERHUB_PASSWORD }}
         run: |
-          docker build . -f web/flat-web/deploy/Dockerfile -t agoraflat/flat-web-us:$COMMIT_SHA_TAG -t agoraflat/flat-web-us:$LATEST_DEV_TAG -t $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web-us:$COMMIT_SHA_TAG -t $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web-us:$LATEST_DEV_TAG
-          docker push agoraflat/flat-web-us:$COMMIT_SHA_TAG
-          docker push agoraflat/flat-web-us:$LATEST_DEV_TAG
+          docker build . -f web/flat-web/deploy/Dockerfile -t agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG -t agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG -t $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG -t $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG
+          docker push agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG
+          docker push agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG
 
           docker login -u $PRIVATE_DOCKERHUB_USERNAME -p $PRIVATE_DOCKERHUB_PASSWORD $PRIVATE_DOCKERHUB_REGISTRY
-          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web-us:$COMMIT_SHA_TAG
-          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/flat-web-us:$LATEST_DEV_TAG
+          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/$IMAGE_NAME:$COMMIT_SHA_TAG
+          docker push $PRIVATE_DOCKERHUB_REGISTRY/agoraflat/$IMAGE_NAME:$LATEST_DEV_TAG
 
       - name: Prep helm chart
         env:
-          DOCKER_IMAGE_NAME: ${{ secrets.PRIVATE_DOCKERHUB_REGISTRY }}/agoraflat/flat-web-us
+          DOCKER_IMAGE_NAME: ${{ secrets.PRIVATE_DOCKERHUB_REGISTRY }}/agoraflat/flat-web-sg
           DOCKER_IMAGE_TAG: development-${{ github.sha }}
         run: |
           export APPVERSION=development-${{ github.sha }}
@@ -82,5 +83,5 @@ jobs:
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm upgrade flat-web ./web/flat-web/helm --install --wait --atomic --namespace=default
-          kubeconfig: "${{ secrets.KUBECONFIG_US }}"
+          exec: helm upgrade flat-web ./web/flat-web/helm --install --wait --atomic
+          kubeconfig: "${{ secrets.KUBECONFIG_SG }}"
