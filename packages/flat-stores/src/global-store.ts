@@ -38,7 +38,7 @@ export class GlobalStore {
 
     // login with password
     public currentAccount: Account | null = null;
-    public accountHistory: Account[] | [] = [];
+    public accountHistory: Account[] = [];
 
     public whiteboardRoomUUID: string | null = null;
     public whiteboardRoomToken: string | null = null;

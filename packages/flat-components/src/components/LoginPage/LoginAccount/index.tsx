@@ -36,7 +36,7 @@ export interface LoginAccountProps {
 
     // history props
     password?: string;
-    accountHistory?: Array<{ key: string; password: string; countryCode: string | null }> | [];
+    accountHistory?: Array<{ key: string; password: string; countryCode?: string | null }> | [];
     onHistoryChange?: (options: any) => void;
 }
 
