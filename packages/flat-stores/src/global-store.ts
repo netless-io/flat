@@ -16,6 +16,10 @@ export type ServerRegionConfig = ServerRegionConfigResult;
 export type Account = {
     key: string;
     password: string;
+
+    // if `key` type is phone, countryCode is string
+    // else countryCode is null
+    countryCode?: string | null;
 };
 
 /**
@@ -34,7 +38,7 @@ export class GlobalStore {
 
     // login with password
     public currentAccount: Account | null = null;
-    public accountHistory: Account[] | [] = [];
+    public accountHistory: Account[] = [];
 
     public whiteboardRoomUUID: string | null = null;
     public whiteboardRoomToken: string | null = null;
@@ -219,22 +223,28 @@ export class GlobalStore {
         this.currentAccount = null;
     };
 
-    public updateAccountHistory = ({ key, password }: Account): void => {
+    public updateAccountHistory = ({ key, password, countryCode }: Account): void => {
+        const originAccount = this.accountHistory.find(o => o.key === key);
+        let originCode: string | null = countryCode || null;
+
+        // update account password will pass this condition
+        if (!originCode && originAccount && originAccount.countryCode) {
+            originCode = originAccount.countryCode;
+        }
+
         // update current account
-        this.currentAccount = { key, password };
+        this.currentAccount = { key, password, countryCode: originCode };
 
-        const hash: Record<string, boolean> = {};
-        this.accountHistory = [{ key, password }, ...this.accountHistory].reduce(
-            (history: Account[], next: Account) => {
-                if (!hash[next.key]) {
-                    hash[next.key] = true;
-                    history.push(next);
+        const hash = new Set();
+        this.accountHistory = [{ key, password, countryCode: originCode }, ...this.accountHistory]
+            .filter((next: Account) => {
+                if (!hash.has(next.key)) {
+                    hash.add(next.key);
+                    return true;
                 }
-
-                return history;
-            },
-            [],
-        );
+                return false;
+            })
+            .slice(0, 10); // keep the first ten accounts
     };
 
     public updateServerRegionConfig = (config: ServerRegionConfig | null): void => {

@@ -110,6 +110,7 @@ export const RegisterModal: React.FC<RegisterProps> = ({
                     {
                         key: phone ? countryCode + keyValue : keyValue,
                         originKey: keyValue,
+                        countryCode: phone ? countryCode : null,
                     },
                     code,
                     password,

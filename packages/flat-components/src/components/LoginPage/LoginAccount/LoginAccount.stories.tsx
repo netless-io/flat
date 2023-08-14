@@ -40,14 +40,17 @@ Overview.args = {
         {
             key: "12345678901",
             password: "password123",
+            countryCode: "+86",
         },
         {
             key: "12345678911",
             password: "password124",
+            countryCode: "+65",
         },
         {
             key: "example@mail.com",
             password: "password125",
+            countryCode: null,
         },
     ],
     // This means we choose the 'both' account input
