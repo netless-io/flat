@@ -7,17 +7,23 @@ import { useTranslate } from "@netless/flat-i18n";
 import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
 import { PasswordLoginType, isPhone } from "../LoginAccount";
 import checkedSVG from "../icons/checked.svg";
+import { BindingPhoneSendCodeResult, RequestErrorCode } from "@netless/flat-server-api";
 
 export interface LoginSendCodeProps {
     isAccountValidated: boolean;
     type: PasswordLoginType;
-    sendVerificationCode: () => Promise<boolean>;
+    // BindingPhoneSendCodeResult for binding phone page
+    sendVerificationCode: () => Promise<boolean | BindingPhoneSendCodeResult>;
+
+    // for rebinding phone
+    handleSendVerificationCode?: () => void;
 }
 
 export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
     type,
     isAccountValidated,
     sendVerificationCode,
+    handleSendVerificationCode,
     ...restProps
 }) => {
     const isUnMountRef = useIsUnMounted();
@@ -29,10 +35,11 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
 
     const sendCode = useCallback(async () => {
         if (isAccountValidated) {
-            setSendingCode(true);
-            const sent = await sp(sendVerificationCode());
-            setSendingCode(false);
-            if (sent) {
+            try {
+                setSendingCode(true);
+                await sp(sendVerificationCode());
+
+                setSendingCode(false);
                 void message.info(
                     t(isPhone(type) ? "sent-verify-code-to-phone" : "sent-verify-code-to-email"),
                 );
@@ -48,11 +55,33 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
                         clearInterval(timer);
                     }
                 }, 1000);
-            } else {
+            } catch (error) {
+                if (!isUnMountRef.current) {
+                    setSendingCode(false);
+                }
+
+                // we say the phone is already binding when error message contains `RequestErrorCode.SMSAlreadyBinding`
+                // and then we can enter rebinding page to rebind.
+                if (
+                    error.message.indexOf(RequestErrorCode.SMSAlreadyBinding) > -1 &&
+                    handleSendVerificationCode
+                ) {
+                    handleSendVerificationCode();
+                    return;
+                }
+
                 message.error(t("send-verify-code-failed"));
             }
         }
-    }, [isUnMountRef, isAccountValidated, type, sendVerificationCode, sp, t]);
+    }, [
+        isAccountValidated,
+        sp,
+        sendVerificationCode,
+        t,
+        type,
+        isUnMountRef,
+        handleSendVerificationCode,
+    ]);
 
     return (
         <Input

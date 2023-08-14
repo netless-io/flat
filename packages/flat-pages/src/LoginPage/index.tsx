@@ -20,6 +20,7 @@ import {
     LoginKeyType,
     PasswordLoginType,
     LoginButtonProviderType,
+    RebindingPhonePanel,
 } from "flat-components";
 import {
     bindingPhone,
@@ -36,6 +37,8 @@ import {
     registerPhone,
     registerEmailSendCode,
     registerPhoneSendCode,
+    rebindingPhoneSendCode,
+    rebindingPhone,
 } from "@netless/flat-server-api";
 import { globalStore } from "@netless/flat-stores";
 
@@ -126,8 +129,28 @@ export const LoginPage = observer(function LoginPage() {
                             onLoginResult(null);
                             setCurrentState("SWITCH_TO_PASSWORD");
                         }}
+                        needRebindingPhone={() => setCurrentState("SWITCH_TO_REBINDING_PHONE")}
                         sendBindingPhoneCode={async (countryCode, phone) =>
-                            wrap(bindingPhoneSendCode(countryCode + phone))
+                            bindingPhoneSendCode(countryCode + phone)
+                        }
+                    />
+                );
+            }
+            case "rebindingPhone": {
+                return (
+                    <RebindingPhonePanel
+                        cancelRebindingPhone={() => {
+                            setCurrentState("SWITCH_TO_BINDING_PHONE");
+                        }}
+                        rebindingPhone={async (countryCode, phone, code) =>
+                            wrap(
+                                rebindingPhone(countryCode + phone, Number(code)).then(
+                                    onLoginResult,
+                                ),
+                            )
+                        }
+                        sendRebindingPhoneCode={async (countryCode, phone) =>
+                            rebindingPhoneSendCode(countryCode + phone)
                         }
                     />
                 );

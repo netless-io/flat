@@ -9,6 +9,7 @@ import { useLanguage } from "@netless/flat-i18n";
 export * from "./LoginWithPassword";
 export * from "./LoginWithCode";
 export * from "./BindingPhonePanel";
+export * from "./RebindingPhonePanel";
 export * from "./QRCodePanel";
 export * from "./LoginAccount";
 export * from "./LoginPassword";
