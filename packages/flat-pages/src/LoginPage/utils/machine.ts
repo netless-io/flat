@@ -7,7 +7,8 @@ export type ToggleEventsType =
     | "SWITCH_TO_REGISTER"
     | "SWITCH_TO_QRCODE"
     | "SWITCH_TO_PASSWORD"
-    | "SWITCH_TO_BINDING_PHONE";
+    | "SWITCH_TO_BINDING_PHONE"
+    | "SWITCH_TO_REBINDING_PHONE";
 
 export const loginMachine = createMachine<ToggleContext, { type: ToggleEventsType }>({
     id: "login-page",
@@ -44,6 +45,12 @@ export const loginMachine = createMachine<ToggleContext, { type: ToggleEventsTyp
         bindingPhone: {
             on: {
                 SWITCH_TO_PASSWORD: "loginWithPassword",
+                SWITCH_TO_REBINDING_PHONE: "rebindingPhone",
+            },
+        },
+        rebindingPhone: {
+            on: {
+                SWITCH_TO_BINDING_PHONE: "bindingPhone",
             },
         },
     },

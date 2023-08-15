@@ -273,6 +273,27 @@ export async function resetEmailSendCode(
     );
 }
 
+export interface RebindingPhonePayload {
+    phone: string; // +8612345678901
+    code: number; // 123456
+}
+
+export async function rebindingPhone(phone: string, code: number): Promise<LoginProcessResult> {
+    return await postV2<RebindingPhonePayload, LoginProcessResult>("user/rebind-phone", {
+        phone,
+        code,
+    });
+}
+
+export async function rebindingPhoneSendCode(phone: string): Promise<PhoneSendCodeResult> {
+    return await postV2<PhoneSendCodePayload, PhoneSendCodeResult>(
+        "user/rebind-phone/send-message",
+        {
+            phone,
+        },
+    );
+}
+
 export type BindingPhoneSendCodeResult = {};
 
 export async function bindingPhoneSendCode(phone: string): Promise<BindingPhoneSendCodeResult> {

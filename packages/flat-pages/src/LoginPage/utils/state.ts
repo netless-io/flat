@@ -62,11 +62,12 @@ export function useLoginState(): LoginState {
 
     useEffect(() => {
         // update state to binding phone
-        // we can not update state to binding phone here if state have already been binding phone state
+        // we can not update state to binding phone here if state have already been binding phone state or rebinding phone state
         if (
             globalStore.needPhoneBinding &&
             (loginResult ? !loginResult.hasPhone : false) &&
-            currentState.value !== "bindingPhone"
+            currentState.value !== "bindingPhone" &&
+            currentState.value !== "rebindingPhone"
         ) {
             setCurrentState("SWITCH_TO_BINDING_PHONE");
         }

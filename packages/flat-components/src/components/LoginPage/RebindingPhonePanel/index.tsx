@@ -1,7 +1,7 @@
 import "./index.less";
 
-import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
-import { Button, message, Form, Modal } from "antd";
+import { useTranslate } from "@netless/flat-i18n";
+import { Button, message, Form } from "antd";
 import React, { useCallback, useState } from "react";
 
 import { useSafePromise } from "../../../utils/hooks";
@@ -10,33 +10,27 @@ import { LoginAccount, PasswordLoginType, defaultCountryCode } from "../LoginAcc
 import { LoginSendCode } from "../LoginSendCode";
 import { codeValidator } from "../LoginWithCode/validators";
 import { phoneValidator } from "../LoginWithPassword/validators";
-import { BindingPhoneSendCodeResult } from "@netless/flat-server-api";
 
-export interface BindingPhonePanelProps {
-    cancelBindingPhone: () => void;
-    bindingPhone: (countryCode: string, phone: string, code: string) => Promise<boolean>;
-    sendBindingPhoneCode: (
-        countryCode: string,
-        phone: string,
-    ) => Promise<BindingPhoneSendCodeResult>;
-    needRebindingPhone: () => void;
+export interface RebindingPhonePanelProps {
+    cancelRebindingPhone: () => void;
+    rebindingPhone: (countryCode: string, phone: string, code: string) => Promise<boolean>;
+    sendRebindingPhoneCode: (countryCode: string, phone: string) => Promise<any>;
 }
 
-interface BindingFormValues {
+interface RebindingFormValues {
     phone: string;
     code: string;
 }
 
-export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
-    sendBindingPhoneCode,
-    cancelBindingPhone,
-    bindingPhone,
-    needRebindingPhone,
+export const RebindingPhonePanel: React.FC<RebindingPhonePanelProps> = ({
+    sendRebindingPhoneCode,
+    rebindingPhone,
+    cancelRebindingPhone,
 }) => {
     const sp = useSafePromise();
     const t = useTranslate();
 
-    const [form] = Form.useForm<BindingFormValues>();
+    const [form] = Form.useForm<RebindingFormValues>();
     const [isFormValidated, setIsFormValidated] = useState(false);
     const [isAccountValidated, setIsAccountValidated] = useState(false);
     const type = PasswordLoginType.Phone;
@@ -47,25 +41,25 @@ export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
     };
 
     const [countryCode, setCountryCode] = useState(defaultCountryCode);
-    const [clickedBinding, setClickedBinding] = useState(false);
+    const [clickedRebinding, setClickedRebinding] = useState(false);
 
-    const bindPhone = useCallback(async () => {
-        if (isFormValidated && bindingPhone) {
-            setClickedBinding(true);
+    const handleRebindingPhone = useCallback(async () => {
+        if (isFormValidated && rebindingPhone) {
+            setClickedRebinding(true);
             const { phone, code } = form.getFieldsValue();
-            const success = await sp(bindingPhone(countryCode, phone, code));
+            const success = await sp(rebindingPhone(countryCode, phone, code));
             if (success) {
                 await sp(new Promise(resolve => setTimeout(resolve, 60000)));
             } else {
-                message.error(t("bind-phone-failed"));
+                message.error(t("rebinding-phone-failed"));
             }
-            setClickedBinding(false);
+            setClickedRebinding(false);
         }
-    }, [bindingPhone, form, countryCode, isFormValidated, sp, t]);
+    }, [isFormValidated, form, sp, countryCode, rebindingPhone, t]);
 
-    const sendVerificationCode = async (): Promise<BindingPhoneSendCodeResult> => {
+    const sendVerificationCode = async (): Promise<any> => {
         const { phone } = form.getFieldsValue();
-        return sendBindingPhoneCode(countryCode, phone);
+        return sendRebindingPhoneCode(countryCode, phone);
     };
 
     const formValidateStatus = useCallback(() => {
@@ -81,21 +75,15 @@ export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
         }
     }, [form]);
 
-    const handleSendVerificationCode = async (): Promise<void> => {
-        if (await requestRebinding({ t })) {
-            needRebindingPhone();
-        }
-    };
-
     return (
-        <div className="login-with-phone-binding">
+        <div className="login-with-phone-rebinding">
             <div className="login-width-limiter">
-                <LoginTitle subtitle={t("need-bind-phone")} title={t("bind-phone")} />
+                <LoginTitle subtitle=" " title={t("rebinding-phone")} />
 
                 <Form
                     form={form}
                     initialValues={defaultValues}
-                    name="loginWithPassword"
+                    name="rebindingPhoneForm"
                     onFieldsChange={formValidateStatus}
                 >
                     <Form.Item name="phone" rules={[phoneValidator]}>
@@ -108,7 +96,6 @@ export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
 
                     <Form.Item name="code" rules={[codeValidator]}>
                         <LoginSendCode
-                            handleSendVerificationCode={handleSendVerificationCode}
                             isAccountValidated={isAccountValidated}
                             sendVerificationCode={sendVerificationCode}
                             type={type}
@@ -118,30 +105,16 @@ export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
                 <Button
                     className="login-big-button"
                     disabled={!isFormValidated}
-                    loading={clickedBinding}
+                    loading={clickedRebinding}
                     type="primary"
-                    onClick={bindPhone}
+                    onClick={handleRebindingPhone}
                 >
                     {t("confirm")}
                 </Button>
-                <Button className="login-btn-back" type="link" onClick={cancelBindingPhone}>
+                <Button className="login-btn-back" type="link" onClick={cancelRebindingPhone}>
                     {t("back")}
                 </Button>
             </div>
         </div>
     );
 };
-
-export interface RequestRebindingParams {
-    t: FlatI18nTFunction;
-}
-
-export function requestRebinding({ t }: RequestRebindingParams): Promise<boolean> {
-    return new Promise<boolean>(resolve =>
-        Modal.confirm({
-            content: <div>{t("rebinding-phone-tips")}</div>,
-            onOk: () => resolve(true),
-            onCancel: () => resolve(false),
-        }),
-    );
-}
