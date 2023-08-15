@@ -125,14 +125,14 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
         (event: React.DragEvent<HTMLDivElement>) => {
             if (whiteboardStore.allowDrawing) {
                 event.preventDefault();
-                setTipsVisible(true);
+                classRoomStore.isDraggingAvatar || setTipsVisible(true);
                 const file = event.dataTransfer.files[0];
                 if (room && file && isSupportedFileExt(file)) {
                     event.dataTransfer.dropEffect = "copy";
                 }
             }
         },
-        [room, whiteboardStore.allowDrawing],
+        [classRoomStore.isDraggingAvatar, room, whiteboardStore.allowDrawing],
     );
 
     const onDragLeave = useCallback(() => {

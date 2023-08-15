@@ -1,7 +1,7 @@
 import "./Shortcuts.less";
 
 import classNames from "classnames";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { listen } from "@wopjs/dom";
 import { useWindowSize } from "react-use";
@@ -85,6 +85,16 @@ export const Shortcuts = observer<ShortcutsProps>(function Shortcuts({ classroom
             stopListenEnter();
         };
     }, [classroom]);
+
+    // Hide shortcuts once dropped avatar to whiteboard
+    const lastDragging = useRef(false);
+    useEffect(() => {
+        if (!classroom.isDraggingAvatar && lastDragging.current) {
+            classroom.setHoveringUserUUID(null);
+            setTarget(null);
+        }
+        lastDragging.current = classroom.isDraggingAvatar;
+    }, [classroom, classroom.isDraggingAvatar]);
 
     const toggleWhiteboard = useCallback(() => {
         if (activeUser?.userUUID) {
