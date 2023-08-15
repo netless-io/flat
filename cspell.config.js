@@ -21,6 +21,7 @@ module.exports = {
         "dataurl",
         "CNSVG",
         "ENSVG",
+        "SGSVG",
 
         // appstore
         "flatmacrelease",
