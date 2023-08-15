@@ -1,6 +1,6 @@
 import "./index.less";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Input, Button, message } from "antd";
 import { useTranslate } from "@netless/flat-i18n";
 
@@ -83,11 +83,22 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
         handleSendVerificationCode,
     ]);
 
+    // Workaround to prevent browser auto complete this field
+    // however, it still cannot prevent auto complete panel from showing up
+    const [readOnly, setReadOnly] = useState(true);
+    useEffect(() => {
+        const ticket = setTimeout(() => {
+            setReadOnly(false);
+        }, 1000);
+        return () => clearTimeout(ticket);
+    }, []);
+
     return (
         <Input
             autoComplete="off"
             placeholder={t("enter-code")}
             prefix={<img alt="checked" draggable={false} src={checkedSVG} />}
+            readOnly={readOnly}
             suffix={
                 countdown > 0 ? (
                     <span className="login-countdown">

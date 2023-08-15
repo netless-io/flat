@@ -88,9 +88,11 @@ export const UpdatePasswordModel: React.FC<UpdatePasswordModelProps> = ({
                 Object.values(form.getFieldsValue()).every(v => !!v),
         );
     }, [form]);
+
     return (
         <Modal
             centered
+            forceRender
             className="update-password-container"
             footer={[
                 <Button key="exit-cancel" onClick={onCancel}>
