@@ -29,7 +29,7 @@ export class WindowManager<
     }
 
     private interceptPortalNewWindow(customWindow: CustomWindow): void {
-        customWindow.window.webContents.on(
+        customWindow.window.webContents.addListener(
             "new-window",
             (event, _url, frameName, _disposition, options) => {
                 if (!frameName.startsWith(constants.Portal)) {

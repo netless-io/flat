@@ -12,8 +12,8 @@ import {
     FLAT_SERVER_LOGIN,
 } from "@netless/flat-server-api";
 import { errorTips } from "flat-components";
-import { WECHAT } from "../constants/process";
 import { useSafePromise } from "../utils/hooks/lifecycle";
+import { globalStore } from "@netless/flat-stores";
 
 export interface WeChatLoginProps {
     onLoginResult: (result: LoginProcessResult) => void;
@@ -75,6 +75,10 @@ export function getQRCodeURL(
     authUUID: string,
     redirect_uri: string = FLAT_SERVER_LOGIN.WECHAT_CALLBACK,
 ): string {
+    const appId = globalStore.serverRegionConfig?.wechat.webAppId;
+    if (!appId) {
+        console.warn("missing server region config");
+    }
     const redirectURL = encodeURIComponent(`${redirect_uri}`);
     const qrCodeStyle = `
         .impowerBox .qrcode {
@@ -95,9 +99,7 @@ export function getQRCodeURL(
         }
     `;
 
-    return `https://open.weixin.qq.com/connect/qrconnect?appid=${
-        WECHAT.APP_ID
-    }&scope=snsapi_login&redirect_uri=${redirectURL}&state=${authUUID}&login_type=jssdk&self_redirect=true&style=black&href=data:text/css;base64,${window.btoa(
+    return `https://open.weixin.qq.com/connect/qrconnect?appid=${appId}&scope=snsapi_login&redirect_uri=${redirectURL}&state=${authUUID}&login_type=jssdk&self_redirect=true&style=black&href=data:text/css;base64,${window.btoa(
         qrCodeStyle,
     )}`;
 }

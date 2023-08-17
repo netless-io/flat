@@ -14,14 +14,7 @@ declare module "*.mp3";
 declare namespace NodeJS {
     interface ProcessEnv {
         NODE_ENV: "development" | "production";
-        NETLESS_APP_IDENTIFIER: string;
 
-        AGORA_APP_ID: string;
-
-        GITHUB_CLIENT_ID: string;
-        GOOGLE_OAUTH_CLIENT_ID: string;
-
-        WECHAT_APP_ID: string;
         FLAT_SERVER_DOMAIN: string;
         FLAT_WEB_DOMAIN: string;
 
