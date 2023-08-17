@@ -8,6 +8,7 @@ import { useIsUnMounted, useSafePromise } from "../../../utils/hooks";
 import { PasswordLoginType, isPhone } from "../LoginAccount";
 import checkedSVG from "../icons/checked.svg";
 import { BindingPhoneSendCodeResult, RequestErrorCode } from "@netless/flat-server-api";
+import { errorTips } from "../../../utils/errorTip";
 
 export interface LoginSendCodeProps {
     isAccountValidated: boolean;
@@ -37,24 +38,32 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
         if (isAccountValidated) {
             try {
                 setSendingCode(true);
-                await sp(sendVerificationCode());
-
+                const sent = await sp(sendVerificationCode());
                 setSendingCode(false);
-                void message.info(
-                    t(isPhone(type) ? "sent-verify-code-to-phone" : "sent-verify-code-to-email"),
-                );
-                let count = 60;
-                setCountdown(count);
-                const timer = setInterval(() => {
-                    if (isUnMountRef.current) {
-                        clearInterval(timer);
-                        return;
-                    }
-                    setCountdown(--count);
-                    if (count === 0) {
-                        clearInterval(timer);
-                    }
-                }, 1000);
+
+                if (sent) {
+                    void message.info(
+                        t(
+                            isPhone(type)
+                                ? "sent-verify-code-to-phone"
+                                : "sent-verify-code-to-email",
+                        ),
+                    );
+                    let count = 60;
+                    setCountdown(count);
+                    const timer = setInterval(() => {
+                        if (isUnMountRef.current) {
+                            clearInterval(timer);
+                            return;
+                        }
+                        setCountdown(--count);
+                        if (count === 0) {
+                            clearInterval(timer);
+                        }
+                    }, 1000);
+                } else {
+                    message.error(t("send-verify-code-failed"));
+                }
             } catch (error) {
                 if (!isUnMountRef.current) {
                     setSendingCode(false);
@@ -70,7 +79,7 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
                     return;
                 }
 
-                message.error(t("send-verify-code-failed"));
+                errorTips(error);
             }
         }
     }, [
