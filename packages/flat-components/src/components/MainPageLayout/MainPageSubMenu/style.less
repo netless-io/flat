@@ -1,6 +1,9 @@
 .main-layout-sub-menu {
     width: 240px;
     border-right: solid 1px #dbe1ea;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    overflow: hidden;
     background-color: #fff;
 
     ul {
@@ -9,11 +12,11 @@
         padding-inline-start: 0px;
     }
 
-    > ul {
+    >ul {
         display: block;
     }
 
-    .expanded > ul {
+    .expanded>ul {
         display: block;
     }
 }
@@ -64,7 +67,7 @@
 .flat-color-scheme-dark {
     .main-layout-sub-menu {
         background-color: var(--grey-10);
-        border-right: solid 1px var(--grey-8);
+        border-right: solid 1px var(--grey-9);
     }
 
     .main-layout-sub-menu-item {
