@@ -3,27 +3,27 @@ import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { message, Modal } from "antd";
 import { useTranslate } from "@netless/flat-i18n";
-import { GithubFilled } from "@ant-design/icons";
+import { GoogleSVG } from "./icons/GoogleSVG";
 
 import { GlobalStore } from "@netless/flat-stores";
 import { useSafePromise } from "../../../utils/hooks/lifecycle";
 import {
     bindingProcess,
+    FLAT_SERVER_USER_BINDING,
     LoginPlatform,
     removeBinding,
     setBindingAuthUUID,
-    FLAT_SERVER_USER_BINDING,
 } from "@netless/flat-server-api";
-import { getGithubURL } from "../../../LoginPage/githubLogin";
+import { getGoogleURL } from "../../../LoginPage/googleLogin";
 import { errorTips } from "flat-components";
 
-export interface BindGitHubProps {
+export interface BindGoogleProps {
     isBind: boolean;
     onRefresh: () => void;
     globalStore: GlobalStore;
 }
 
-export const BindGitHub: React.FC<BindGitHubProps> = ({ isBind, onRefresh, globalStore }) => {
+export const BindGoogle: React.FC<BindGoogleProps> = ({ isBind, onRefresh, globalStore }) => {
     const sp = useSafePromise();
     const t = useTranslate();
     const [authUUID, setAuthUUID] = useState("");
@@ -41,7 +41,7 @@ export const BindGitHub: React.FC<BindGitHubProps> = ({ isBind, onRefresh, globa
                 timer = window.setTimeout(waitUntilBindFinish, 2000);
             } else {
                 if (!result.status) {
-                    message.info(t("bind-github-failed"));
+                    message.info(t("bind-google-failed"));
                 }
                 cancel();
             }
@@ -55,11 +55,11 @@ export const BindGitHub: React.FC<BindGitHubProps> = ({ isBind, onRefresh, globa
         return;
     }, [authUUID, cancel, onRefresh, sp, t]);
 
-    const bindGitHub = async (): Promise<void> => {
+    const bindGoogle = async (): Promise<void> => {
         const authUUID = v4();
         setAuthUUID(authUUID);
         await sp(setBindingAuthUUID(authUUID));
-        void window.open(getGithubURL(authUUID, FLAT_SERVER_USER_BINDING.GITHUB_CALLBACK));
+        void window.open(getGoogleURL(authUUID, FLAT_SERVER_USER_BINDING.GOOGLE_CALLBACK));
     };
 
     const unbind = (): void => {
@@ -67,7 +67,7 @@ export const BindGitHub: React.FC<BindGitHubProps> = ({ isBind, onRefresh, globa
             content: t("unbind-confirm"),
             onOk: async () => {
                 try {
-                    const { token } = await sp(removeBinding(LoginPlatform.Github));
+                    const { token } = await sp(removeBinding(LoginPlatform.Google));
                     globalStore.updateUserToken(token);
                     onRefresh();
                     message.info(t("unbind-success"));
@@ -80,13 +80,11 @@ export const BindGitHub: React.FC<BindGitHubProps> = ({ isBind, onRefresh, globa
 
     return (
         <span
-            className={classNames("binding-github", {
-                "is-bind": isBind,
-            })}
+            className={classNames("binding-google")}
             title={isBind ? t("is-bind") : t("not-bind")}
-            onClick={isBind ? unbind : bindGitHub}
+            onClick={isBind ? unbind : bindGoogle}
         >
-            <GithubFilled style={{ color: "#fff" }} />
+            {GoogleSVG({ color: isBind ? undefined : "#5d6066" })}
         </span>
     );
 };

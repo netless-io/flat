@@ -1,49 +1,54 @@
 .general-setting-container {
     min-width: 360px;
 
-    >span {
-        color: #7a7b7c;
+    >hr {
+        margin: 16px 0;
+        border: none;
+        border-bottom: 1px solid var(--grey-1);
     }
 }
 
-.general-setting-user-profile {
-    .general-setting-title {
-        display: block;
-        padding-bottom: 4px;
-    }
-
-    >label {
-        padding-right: 16px;
-        color: var(--text);
-    }
-
-    .ant-input {
-        width: 320px;
-        margin-bottom: 12px;
-    }
-
-    .ant-input,
-    .ant-btn {
-        margin-right: 8px;
-    }
-}
-
-.general-setting-subtitle {
-    color: var(--text-strong);
-    padding-right: 16px;
-}
-
-.general-setting-user-avatar-wrapper {
+.general-setting-profile {
     display: flex;
-    align-items: center;
-    padding: 8px 0;
+    justify-content: space-between;
+}
+
+.general-setting-item {
+    &-title {
+        display: block;
+        padding-bottom: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        color: var(--grey-12);
+    }
+
+    &-desc {
+        display: block;
+        padding-bottom: 16px;
+        font-size: 14px;
+    }
+
+    &-text {
+        display: grid;
+        grid-template-columns: 24px 190px 1fr;
+        align-items: center;
+        grid-gap: 8px;
+        flex: 1;
+
+        .ant-btn-link {
+            width: 65px;
+            height: 46px;
+            padding: 0;
+            padding-left: 8px;
+            text-align: start;
+        }
+    }
 }
 
 .general-setting-user-avatar {
     display: inline-block;
-    width: 96px;
-    height: 96px;
-    margin-right: 16px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     border: 1px solid #dbe1ea;
     overflow: hidden;
@@ -80,75 +85,53 @@
     }
 }
 
-.flat-color-scheme-dark .general-setting-user-avatar {
-    border-color: var(--grey-6);
-}
-
 .general-setting-user-avatar:hover {
     border-color: var(--primary);
 }
 
-.general-setting-select-language {
-    padding-top: 12px;
+.join-room-settings {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 8px;
+    justify-items: start;
 
-    >span {
-        display: block;
-        padding-bottom: 3px;
-    }
-
-    .ant-radio-group {
-        margin-left: 0;
-
-        label {
-            margin-right: 72px;
-        }
-    }
-}
-
-.general-setting-appearance-picker-container {
-    >span {
-        display: block;
-        padding-top: 8px;
-        padding-bottom: 3px;
-    }
-}
-
-.general-setting-join-options-box,
-.general-setting-device-test-box {
-    padding-top: 12px;
-}
-
-.general-setting-join-options-box {
     .ant-checkbox-wrapper {
-        margin-right: 36px;
+        margin-left: 0;
     }
-}
-
-.general-setting-checkbox-title {
-    padding-bottom: 3px;
-}
-
-.general-setting-binding-profile,
-.general-setting-user-account {
-    padding-top: 12px;
 }
 
 .general-setting-binding-methods {
-    line-height: 40px;
+    display: flex;
+    margin-top: 16px;
 }
 
-.general-setting-recording-box {
-    padding-top: 8px;
-}
 
-.general-setting-user-account {
-    .general-setting-title {
-        display: block;
-        margin-bottom: 4px;
+.input-container-bg {
+    display: flex;
+    padding: 4px 8px;
+    width: 240px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: var(--blue-1);
+        transition: all 0.3s ease;
+    }
+
+    .ant-input {
+        width: 150px;
+    }
+
+    >span {
+        line-height: 45px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
-.binding-wechat {
+.binding-wechat,
+.binding-google {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -181,16 +164,29 @@
 }
 
 .flat-color-scheme-dark {
-    .general-setting-container {
+    .general-setting-container,
+    .general-setting-item-title {
         color: var(--text-stronger);
+
+        >hr {
+            border-bottom-color: var(--grey-9);
+        }
+    }
+
+    .general-setting-item-desc {
+        color: var(--grey-3);
+    }
+
+    .input-container-bg:hover {
+        background-color: var(--grey-9);
     }
 
     .radio-item-inner,
     .checkbox-item-inner {
         color: var(--text);
     }
-}
 
-.update-password-container .update-password-input {
-    margin-bottom: 16px;
+    .general-setting-user-avatar {
+        border-color: var(--grey-6);
+    }
 }

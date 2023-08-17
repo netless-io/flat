@@ -15,6 +15,7 @@ export const FLAT_SERVER_LOGIN = {
 export const FLAT_SERVER_USER_BINDING = {
     GITHUB_CALLBACK: `https://${CURRENT_SERVER_DOMAIN}/v1/login/github/callback/binding`,
     WECHAT_CALLBACK: `https://${CURRENT_SERVER_DOMAIN}/v1/user/binding/platform/wechat/web`,
+    GOOGLE_CALLBACK: `https://${CURRENT_SERVER_DOMAIN}/v1/user/binding/platform/google`,
 } as const;
 
 export enum Region {
