@@ -1,7 +1,8 @@
 import "./style.less";
 import emptyFileSVG from "./icons/empty-file.svg";
+import emptyFileDarkSVG from "./icons/empty-file-dark.svg";
 
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useContext, useMemo, useRef } from "react";
 import { Table } from "antd";
 import prettyBytes from "pretty-bytes";
 import { format } from "date-fns";
@@ -15,6 +16,7 @@ import { useTranslate } from "@netless/flat-i18n";
 import { SVGListLoading } from "../../FlatIcons";
 import { CloudFile } from "@netless/flat-server-api";
 import { createFileNameComparer } from "./utils";
+import { DarkModeContext } from "../../FlatThemeProvider";
 
 export interface CloudStorageFileListProps
     extends Pick<
@@ -55,6 +57,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
     parentDirectoryPath,
 }) => {
     const t = useTranslate();
+    const darkMode = useContext(DarkModeContext);
     const popupContainerRef = useRef<HTMLDivElement>(null);
     const getPopupContainer = useCallback(() => popupContainerRef.current || document.body, []);
 
@@ -159,7 +162,11 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
             {files.length <= 0 && (
                 <div className="cloud-storage-file-list-empty">
                     <div className="cloud-storage-file-list-empty-content">
-                        <img height={124} src={emptyFileSVG} width={124} />
+                        <img
+                            height={160}
+                            src={darkMode ? emptyFileDarkSVG : emptyFileSVG}
+                            width={160}
+                        />
                         <div className="cloud-storage-file-list-empty-text">{t("no-data")}</div>
                     </div>
                 </div>
