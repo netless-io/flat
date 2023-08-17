@@ -90,6 +90,7 @@ export const RebindingPhonePanel: React.FC<RebindingPhonePanelProps> = ({
                         <LoginAccount
                             countryCode={countryCode}
                             handleCountryCode={code => setCountryCode(code)}
+                            onlyPhone={true}
                             placeholder={t("enter-phone")}
                         />
                     </Form.Item>

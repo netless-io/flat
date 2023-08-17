@@ -173,6 +173,7 @@ export const LoginWithCode: React.FC<LoginWithCodeProps> = ({
                             <LoginAccount
                                 countryCode={countryCode}
                                 handleCountryCode={code => setCountryCode(code)}
+                                onlyPhone={true}
                                 placeholder={t("enter-phone")}
                             />
                         </Form.Item>
