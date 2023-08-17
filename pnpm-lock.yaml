@@ -1058,6 +1058,9 @@ importers:
       '@netless/app-slide':
         specifier: 0.3.0-canary.19
         version: 0.3.0-canary.19
+      '@netless/flat-server-api':
+        specifier: workspace:*
+        version: link:../../packages/flat-server-api
       '@netless/flat-service-provider-file-convert-netless':
         specifier: workspace:*
         version: link:../file-convert-netless

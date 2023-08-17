@@ -5,12 +5,13 @@ import {
     FileConvertStep,
     FileResourceType,
     getWhiteboardTaskData,
+    Region,
 } from "@netless/flat-server-api";
 import { extractLegacySlideUrlPrefix, queryConvertingTaskStatus } from "./courseware-converting";
 import { getFileExt, isPPTX } from "./utils";
 
 export class FlatCoursewareNetless extends FlatCourseware {
-    public constructor() {
+    public constructor(public readonly region: Region) {
         super();
     }
 
@@ -71,6 +72,7 @@ export class FlatCoursewareNetless extends FlatCourseware {
                 dynamic: isPPTX(file.fileName),
                 meta,
                 resourceType,
+                region: this.region,
             });
             const taskResult = getWhiteboardTaskData(file.resourceType, file.meta);
             if (taskResult === null) {

@@ -101,6 +101,7 @@ export interface JoinRoomResult {
     };
     rtmToken: string;
     showGuide: boolean;
+    region: Region;
 }
 
 export function joinRoom(uuid: string): Promise<JoinRoomResult> {

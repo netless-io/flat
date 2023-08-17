@@ -17,11 +17,12 @@ import { generatePath } from "react-router-dom";
 import { Remitter } from "remitter";
 import { combine } from "value-enhancer";
 import { globalStore } from "@netless/flat-stores";
+import { Region } from "@netless/flat-server-api";
 
 export function initFlatServices(): void {
     const config = globalStore.serverRegionConfig;
-    if (config === null) {
-        throw new Error("server region config must be loaded");
+    if (!config) {
+        throw new Error("Missing server region config");
     }
 
     const toaster = createToaster();
@@ -215,7 +216,7 @@ export function initFlatServices(): void {
             const { FileConvertNetless } = await import(
                 "@netless/flat-service-provider-file-convert-netless"
             );
-            return new FileConvertNetless();
+            return new FileConvertNetless(config.whiteboard.convertRegion as Region);
         },
     );
 
@@ -240,7 +241,12 @@ export function initFlatServices(): void {
                 );
                 const service = await flatServices.requestService("whiteboard");
                 if (service instanceof Fastboard) {
-                    return new FastboardFileInsert(service, flatI18n, toaster);
+                    return new FastboardFileInsert(
+                        service,
+                        flatI18n,
+                        toaster,
+                        config.whiteboard.convertRegion as Region,
+                    );
                 }
             }
             return null;
@@ -261,7 +267,7 @@ export function initFlatServices(): void {
         const { FilePreviewNetlessSlide } = await import(
             "@netless/flat-service-provider-file-preview-netless-slide"
         );
-        return new FilePreviewNetlessSlide();
+        return new FilePreviewNetlessSlide(config.whiteboard.convertRegion as Region);
     });
 }
 

@@ -83,7 +83,7 @@ export async function uploadAvatar(file: File, t: FlatI18nTFunction): Promise<vo
     const ticket = await uploadAvatarStart(
         file.name,
         file.size,
-        globalStore.region ?? Region.CN_HZ,
+        globalStore.region ?? (globalStore.serverRegionConfig?.whiteboard.convertRegion as Region),
     );
 
     const formData = new FormData();

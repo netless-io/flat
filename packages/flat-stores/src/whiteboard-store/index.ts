@@ -156,7 +156,9 @@ export class WhiteboardStore {
         await this.whiteboard.joinRoom({
             roomID: globalStore.whiteboardRoomUUID,
             roomToken: globalStore.whiteboardRoomToken,
-            region: globalStore.region ?? Region.CN_HZ,
+            region:
+                globalStore.region ??
+                (globalStore.serverRegionConfig?.whiteboard.convertRegion as Region),
             uid: globalStore.userUUID,
             nickName: globalStore.userInfo?.name ?? globalStore.userUUID,
             classroomType: this.getRoomType(),

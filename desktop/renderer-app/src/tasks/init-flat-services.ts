@@ -24,6 +24,7 @@ import { runtime } from "../utils/runtime";
 import { portalWindowManager } from "../utils/portal-window-manager";
 import { ipcAsyncByApp, ipcAsyncByPreviewFileWindow } from "../utils/ipc";
 import { globalStore } from "@netless/flat-stores";
+import { Region } from "@netless/flat-server-api";
 
 export function initFlatServices(): void {
     const config = globalStore.serverRegionConfig;
@@ -280,7 +281,7 @@ export function initFlatServices(): void {
             const { FileConvertNetless } = await import(
                 "@netless/flat-service-provider-file-convert-netless"
             );
-            return new FileConvertNetless();
+            return new FileConvertNetless(config.whiteboard.convertRegion as Region);
         },
     );
 
@@ -305,7 +306,12 @@ export function initFlatServices(): void {
                 );
                 const service = await flatServices.requestService("whiteboard");
                 if (service instanceof Fastboard) {
-                    return new FastboardFileInsert(service, flatI18n, toaster);
+                    return new FastboardFileInsert(
+                        service,
+                        flatI18n,
+                        toaster,
+                        config.whiteboard.convertRegion as Region,
+                    );
                 }
             }
             return null;
@@ -326,7 +332,7 @@ export function initFlatServices(): void {
         const { FilePreviewNetlessSlide } = await import(
             "@netless/flat-service-provider-file-preview-netless-slide"
         );
-        return new FilePreviewNetlessSlide();
+        return new FilePreviewNetlessSlide(config.whiteboard.convertRegion as Region);
     });
 }
 
