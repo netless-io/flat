@@ -294,6 +294,35 @@ export async function rebindingPhoneSendCode(phone: string): Promise<PhoneSendCo
     );
 }
 
+export type BindingEmailSendCodeResult = {};
+
+export async function bindingEmailSendCode(
+    email: string,
+    language: string,
+): Promise<BindingEmailSendCodeResult> {
+    return await post<EmailSendCodePayload, BindingEmailSendCodeResult>(
+        "user/bindingEmail/sendMessage",
+        {
+            email,
+            language,
+        },
+    );
+}
+
+export interface BindingEmailPayload {
+    email: string;
+    code: number;
+}
+
+export type BindingEmailResult = {};
+
+export async function bindingEmail(email: string, code: number): Promise<BindingEmailResult> {
+    return await post<BindingEmailPayload, BindingEmailResult>("user/bindingEmail", {
+        email,
+        code,
+    });
+}
+
 export type BindingPhoneSendCodeResult = {};
 
 export async function bindingPhoneSendCode(phone: string): Promise<BindingPhoneSendCodeResult> {
@@ -328,6 +357,17 @@ export interface ListBindingsResult {
     apple: boolean;
     github: boolean;
     google: boolean;
+    email: boolean;
+
+    meta: {
+        wechat: string;
+        phone: string;
+        agora: string;
+        apple: string;
+        github: string;
+        google: string;
+        email: string;
+    };
 }
 
 export async function listBindings(): Promise<ListBindingsResult> {
@@ -385,6 +425,7 @@ export enum LoginPlatform {
     Agora = "Agora",
     Google = "Google",
     Phone = "Phone",
+    Email = "Email",
 }
 
 export interface RemoveBindingPayload {

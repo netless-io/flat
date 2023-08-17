@@ -9,13 +9,6 @@ import { GOOGLE } from "../constants/process";
 export const googleLogin: LoginExecutor = (onSuccess, windowsBtn) => {
     let timer = NaN;
     const authUUID = uuidv4();
-    const scopes = ["openid", "https://www.googleapis.com/auth/userinfo.profile"];
-
-    function getGoogleURL(authUUID: string): string {
-        const redirectURL = encodeURIComponent(FLAT_SERVER_LOGIN.GOOGLE_CALLBACK);
-        const scope = encodeURIComponent(scopes.join(" "));
-        return `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&access_type=online&scope=${scope}&client_id=${GOOGLE.CLIENT_ID}&redirect_uri=${redirectURL}&state=${authUUID}`;
-    }
 
     void (async () => {
         try {
@@ -26,8 +19,10 @@ export const googleLogin: LoginExecutor = (onSuccess, windowsBtn) => {
         }
 
         windowsBtn
-            ? windowsBtn.openExternalBrowser(getGoogleURL(authUUID))
-            : void window.open(getGoogleURL(authUUID));
+            ? windowsBtn.openExternalBrowser(
+                  getGoogleURL(authUUID, FLAT_SERVER_LOGIN.GOOGLE_CALLBACK),
+              )
+            : void window.open(getGoogleURL(authUUID, FLAT_SERVER_LOGIN.GOOGLE_CALLBACK));
 
         const googleLoginProcessRequest = async (): Promise<void> => {
             try {
@@ -51,3 +46,9 @@ export const googleLogin: LoginExecutor = (onSuccess, windowsBtn) => {
         window.clearTimeout(timer);
     };
 };
+
+export function getGoogleURL(authUUID: string, redirect_uri: string): string {
+    const scopes = ["openid", "https://www.googleapis.com/auth/userinfo.profile"];
+    const scope = encodeURIComponent(scopes.join(" "));
+    return `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&access_type=online&scope=${scope}&client_id=${GOOGLE.CLIENT_ID}&redirect_uri=${redirect_uri}&state=${authUUID}`;
+}

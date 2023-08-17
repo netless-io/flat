@@ -93,7 +93,6 @@ export const UpdatePasswordModel: React.FC<UpdatePasswordModelProps> = ({
         <Modal
             centered
             forceRender
-            className="update-password-container"
             footer={[
                 <Button key="exit-cancel" onClick={onCancel}>
                     {t("cancel")}
