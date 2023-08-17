@@ -19,7 +19,6 @@ export const RoomListEmpty: React.FC<RoomListEmptyProps> = ({ isHistory }) => {
         <div className="room-list-empty">
             <img
                 alt="empty"
-                height="160px"
                 src={
                     isHistory
                         ? darkMode
@@ -29,7 +28,7 @@ export const RoomListEmpty: React.FC<RoomListEmptyProps> = ({ isHistory }) => {
                         ? emptyRoomDarkSVG
                         : emptyRoomSVG
                 }
-                width="160px"
+                width={160}
             />
             <span className="room-list-empty-content">
                 {isHistory ? t("no-record") : t("no-room")}
