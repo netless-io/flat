@@ -102,6 +102,7 @@ export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
                         <LoginAccount
                             countryCode={countryCode}
                             handleCountryCode={code => setCountryCode(code)}
+                            onlyPhone={true}
                             placeholder={t("enter-phone")}
                         />
                     </Form.Item>

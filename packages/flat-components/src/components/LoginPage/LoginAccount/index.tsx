@@ -30,6 +30,10 @@ export interface LoginAccountProps {
     value?: string;
     handleCountryCode?: (code: string) => void;
 
+    // to specify the input method
+    onlyPhone?: boolean;
+    onlyEmail?: boolean;
+
     // If you pass `handleType` from parent component, it says you want to get 'both' account input.
     // The 'both' account input means that it has the functions of phone input and email input at the same time.
     handleType?: (type: PasswordLoginType) => void;
@@ -46,13 +50,14 @@ export const LoginAccount: React.FC<LoginAccountProps> = ({
     placeholder,
     password,
     value,
+    onlyPhone,
+    onlyEmail,
     accountHistory,
     handleType,
     handleCountryCode,
     onHistoryChange,
     ...restProps
 }) => {
-    const onlyPhone = !handleType;
     const defaultEmail = accountType === PasswordLoginType.Email;
     const defaultPhone = accountType === PasswordLoginType.Phone;
 
@@ -61,6 +66,11 @@ export const LoginAccount: React.FC<LoginAccountProps> = ({
     useEffect(() => {
         if (onlyPhone) {
             setType(PasswordLoginType.Phone);
+            return;
+        }
+
+        if (onlyEmail) {
+            setType(PasswordLoginType.Email);
             return;
         }
 
@@ -84,7 +94,7 @@ export const LoginAccount: React.FC<LoginAccountProps> = ({
         if (type && handleType) {
             handleType(type);
         }
-    }, [value, type, defaultEmail, defaultPhone, onlyPhone, handleType]);
+    }, [value, type, defaultEmail, defaultPhone, onlyPhone, handleType, onlyEmail]);
 
     return (
         <Input
