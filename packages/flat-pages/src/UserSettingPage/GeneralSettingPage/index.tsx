@@ -60,8 +60,8 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
     const [name, setName] = useState(globalStore.userName || "");
     const { bindings, refresh: refreshBindings } = useBindingList();
 
-    const [phone] = useState(bindings?.meta?.phone || "");
-    const [email] = useState(bindings?.meta?.email || "");
+    const phone = bindings?.meta?.phone || "";
+    const email = bindings?.meta?.email || "";
 
     const [showPasswordModel, setShowPasswordModel] = useState(false);
     const [showEmailModel, setShowEmailModel] = useState(false);
