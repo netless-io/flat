@@ -68,23 +68,19 @@ export class WindowMain extends AbstractWindow<false> {
     }
 
     private setupDOMReady(): void {
-        const domReady$ = new Val<Electron.Event | null>(null);
+        const domReady$ = new Val<{ AGORA_APP_ID: string } | null>(null);
         const preloaded$ = new Val<IpcMainEvent | null>(null);
 
         combine([domReady$, preloaded$]).subscribe(([domReady, event]) => {
             if (domReady && event) {
                 if (!event.sender.isDestroyed()) {
-                    event.sender.send("preload-dom-ready");
+                    event.sender.send("preload-dom-ready", domReady);
                 }
             }
         });
 
-        this._mainWindow$.subscribe(win => {
-            if (win) {
-                win.window.webContents.on("dom-ready", event => {
-                    domReady$.setValue(event);
-                });
-            }
+        ipcMain.on("init-agora-electron-sdk", (_event, args: { AGORA_APP_ID: string }) => {
+            domReady$.setValue(args);
         });
 
         ipcMain.on("preload-loaded", (event: IpcMainEvent): void => {

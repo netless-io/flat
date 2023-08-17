@@ -16,8 +16,14 @@ import { message } from "antd";
 import { generatePath } from "react-router-dom";
 import { Remitter } from "remitter";
 import { combine } from "value-enhancer";
+import { globalStore } from "@netless/flat-stores";
 
 export function initFlatServices(): void {
+    const config = globalStore.serverRegionConfig;
+    if (config === null) {
+        throw new Error("server region config must be loaded");
+    }
+
     const toaster = createToaster();
     const flatI18n = FlatI18n.getInstance();
 
@@ -43,12 +49,12 @@ export function initFlatServices(): void {
 
     flatServices.register("videoChat", async () => {
         const { AgoraRTCWeb } = await import("@netless/flat-service-provider-agora-rtc-web");
-        return new AgoraRTCWeb({ APP_ID: process.env.AGORA_APP_ID });
+        return new AgoraRTCWeb({ APP_ID: config.agora.appId });
     });
 
     flatServices.register("textChat", async () => {
         const { AgoraRTM } = await import("@netless/flat-service-provider-agora-rtm");
-        return new AgoraRTM(process.env.AGORA_APP_ID);
+        return new AgoraRTM(config.agora.appId);
     });
 
     flatServices.register("whiteboard", async () => {
@@ -101,7 +107,7 @@ export function initFlatServices(): void {
         });
 
         const service = new Fastboard({
-            APP_ID: process.env.NETLESS_APP_IDENTIFIER,
+            APP_ID: config.whiteboard.appId,
             toaster,
             flatI18n,
             flatInfo: {

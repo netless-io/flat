@@ -1,6 +1,7 @@
 import polly from "polly-js";
 import { generateRTMToken } from "@netless/flat-server-api";
 import { IServiceTextChatEventData } from "@netless/flat-services";
+import { globalStore } from "../global-store";
 import { v4 } from "uuid";
 
 export interface AgoraRTMQueryPayload {
@@ -96,8 +97,13 @@ export class TextChatHistory {
             this.token = await generateRTMToken();
         }
 
+        const appId = globalStore.serverRegionConfig?.agora.appId;
+        if (!appId) {
+            throw new Error("missing server region config");
+        }
+
         const response = await fetch(
-            `https://api.agora.io/dev/v2/project/${process.env.AGORA_APP_ID}/rtm/message/history/${action}`,
+            `https://api.agora.io/dev/v2/project/${appId}/rtm/message/history/${action}`,
             {
                 method: "POST",
                 // eslint-disable-next-line eqeqeq

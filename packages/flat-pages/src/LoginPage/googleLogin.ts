@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { LoginExecutor } from "./utils/disposer";
 import { errorTips } from "flat-components";
 import { FLAT_SERVER_LOGIN, setAuthUUID, loginProcess } from "@netless/flat-server-api";
-import { GOOGLE } from "../constants/process";
+import { globalStore } from "@netless/flat-stores";
 
 // @TODO: migrate to new google login api before 2023
 //        https://developers.google.com/identity/gsi/web
@@ -48,7 +48,11 @@ export const googleLogin: LoginExecutor = (onSuccess, windowsBtn) => {
 };
 
 export function getGoogleURL(authUUID: string, redirect_uri: string): string {
+    const clientId = globalStore.serverRegionConfig?.google.clientId;
+    if (!clientId) {
+        console.warn("missing server region config");
+    }
     const scopes = ["openid", "https://www.googleapis.com/auth/userinfo.profile"];
     const scope = encodeURIComponent(scopes.join(" "));
-    return `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&access_type=online&scope=${scope}&client_id=${GOOGLE.CLIENT_ID}&redirect_uri=${redirect_uri}&state=${authUUID}`;
+    return `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&access_type=online&scope=${scope}&client_id=${clientId}&redirect_uri=${redirect_uri}&state=${authUUID}`;
 }

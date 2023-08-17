@@ -22,9 +22,19 @@ import { combine } from "value-enhancer";
 
 import { runtime } from "../utils/runtime";
 import { portalWindowManager } from "../utils/portal-window-manager";
-import { ipcAsyncByPreviewFileWindow } from "../utils/ipc";
+import { ipcAsyncByApp, ipcAsyncByPreviewFileWindow } from "../utils/ipc";
+import { globalStore } from "@netless/flat-stores";
 
 export function initFlatServices(): void {
+    const config = globalStore.serverRegionConfig;
+    if (!config) {
+        throw new Error("Missing server region config");
+    }
+
+    // @ts-expect-error "init-agora-electron-sdk" is not a user defined event,
+    // it only aids to preload agora electron sdk
+    ipcAsyncByApp("init-agora-electron-sdk", { AGORA_APP_ID: config.agora.appId });
+
     const toaster = createToaster();
     const flatI18n = FlatI18n.getInstance();
     const flatServices = FlatServices.getInstance();
@@ -96,7 +106,7 @@ export function initFlatServices(): void {
                         instance.setRTCEngine(rtcEngine);
                     } else {
                         instance = new AgoraRTCElectron({
-                            APP_ID: process.env.AGORA_APP_ID,
+                            APP_ID: config.agora.appId,
                             rtcEngine,
                             isMac: runtime.isMac,
                         });
@@ -109,7 +119,7 @@ export function initFlatServices(): void {
 
     flatServices.register("textChat", async () => {
         const { AgoraRTM } = await import("@netless/flat-service-provider-agora-rtm");
-        return new AgoraRTM(process.env.AGORA_APP_ID);
+        return new AgoraRTM(config.agora.appId);
     });
 
     flatServices.register("whiteboard", async () => {
@@ -162,7 +172,7 @@ export function initFlatServices(): void {
         });
 
         const service = new Fastboard({
-            APP_ID: process.env.NETLESS_APP_IDENTIFIER,
+            APP_ID: config.whiteboard.appId,
             toaster,
             flatI18n,
             flatInfo: {

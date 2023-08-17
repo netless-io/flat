@@ -91,8 +91,9 @@ export class ClassroomReplayStore {
     }
 
     public async loadRecording(recording: RoomRecording): Promise<void> {
-        if (!process.env.NETLESS_APP_IDENTIFIER) {
-            throw new Error("Missing NETLESS_APP_IDENTIFIER");
+        const config = globalStore.serverRegionConfig;
+        if (!config || !config.whiteboard.appId) {
+            throw new Error("missing server region config");
         }
 
         if (!globalStore.whiteboardRoomUUID || !globalStore.whiteboardRoomToken) {
@@ -121,7 +122,7 @@ export class ClassroomReplayStore {
 
         const fastboard = await replayFastboard<ClassroomReplayEventData>({
             sdkConfig: {
-                appIdentifier: process.env.NETLESS_APP_IDENTIFIER,
+                appIdentifier: config.whiteboard.appId,
                 region: globalStore.region ?? "cn-hz",
                 pptParams: {
                     useServerWrap: true,

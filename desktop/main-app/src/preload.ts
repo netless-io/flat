@@ -16,8 +16,8 @@ const {
  * this method will only be triggered on the main page
  * see: window-manager.ts
  */
-ipcRenderer.once("preload-dom-ready", () => {
-    agoraRTCElectronPreload(process.env.AGORA_APP_ID);
+ipcRenderer.once("preload-dom-ready", (_event, args: { AGORA_APP_ID: string }) => {
+    agoraRTCElectronPreload(args.AGORA_APP_ID);
 });
 
 // because DOMContentLoaded and DOMNodeInserted cannot be used, a new method is adopted to solve the problem of jQuery import failure

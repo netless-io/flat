@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { LoginExecutor } from "./utils/disposer";
 import { errorTips } from "flat-components";
 import { FLAT_SERVER_LOGIN, setAuthUUID, loginProcess } from "@netless/flat-server-api";
-import { GITHUB } from "../constants/process";
+import { globalStore } from "@netless/flat-stores";
 
 export const githubLogin: LoginExecutor = (onSuccess, windowsBtn) => {
     let timer = NaN;
@@ -46,6 +46,10 @@ export const githubLogin: LoginExecutor = (onSuccess, windowsBtn) => {
 };
 
 export function getGithubURL(authUUID: string, redirect_uri: string): string {
+    const clientId = globalStore.serverRegionConfig?.github.clientId;
+    if (!clientId) {
+        console.warn("missing server region config");
+    }
     const redirectURL = encodeURIComponent(redirect_uri);
-    return `https://github.com/login/oauth/authorize?client_id=${GITHUB.CLIENT_ID}&redirect_uri=${redirectURL}&state=${authUUID}`;
+    return `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectURL}&state=${authUUID}`;
 }
