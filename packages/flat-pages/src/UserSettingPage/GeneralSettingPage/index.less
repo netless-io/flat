@@ -11,6 +11,7 @@
 .general-setting-profile {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .general-setting-item {
@@ -28,20 +29,16 @@
         font-size: 14px;
     }
 
-    &-text {
-        display: grid;
-        grid-template-columns: 24px 190px 1fr;
-        align-items: center;
-        grid-gap: 8px;
-        flex: 1;
+    &-icon {
+        margin-right: 8px;
+    }
 
-        .ant-btn-link {
-            width: 65px;
-            height: 46px;
-            padding: 0;
-            padding-left: 8px;
-            text-align: start;
-        }
+    &-icon-desc {
+        margin-right: 124px;
+    }
+
+    &-text .ant-btn-link {
+        padding: 0;
     }
 }
 
@@ -107,16 +104,10 @@
 
 
 .input-container-bg {
-    display: flex;
-    padding: 4px 8px;
-    width: 240px;
+    display: inline-block;
     border-radius: 6px;
     transition: all 0.3s ease;
-
-    &:hover {
-        background-color: var(--blue-1);
-        transition: all 0.3s ease;
-    }
+    padding-right: 4px;
 
     .ant-input {
         width: 150px;
@@ -128,6 +119,15 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+    .ant-btn-link {
+        padding: 0;
+    }
+}
+
+.input-container-bg-hover {
+    background-color: var(--blue-1);
+    transition: all 0.3s ease;
 }
 
 .binding-wechat,
@@ -164,6 +164,7 @@
 }
 
 .flat-color-scheme-dark {
+
     .general-setting-container,
     .general-setting-item-title {
         color: var(--text-stronger);
@@ -177,7 +178,7 @@
         color: var(--grey-3);
     }
 
-    .input-container-bg:hover {
+    .input-container-bg-hover {
         background-color: var(--grey-9);
     }
 
