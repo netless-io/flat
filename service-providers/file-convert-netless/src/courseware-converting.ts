@@ -2,6 +2,7 @@ import {
     FileResourceType,
     getWhiteboardTaskData,
     metaType,
+    Region,
     ResourceType,
 } from "@netless/flat-server-api";
 
@@ -40,12 +41,13 @@ export interface QueryConvertingParams {
     dynamic: boolean;
     meta: metaType;
     resourceType: ResourceType;
+    region: Region;
 }
 
 export async function queryConvertingTaskStatus(
     params: QueryConvertingParams,
 ): Promise<ConvertingTaskStatus> {
-    const { meta, resourceType, dynamic } = params;
+    const { meta, resourceType, dynamic, region } = params;
 
     const whiteboardTaskData = getWhiteboardTaskData(resourceType, meta);
     if (whiteboardTaskData === null) {
@@ -57,7 +59,7 @@ export async function queryConvertingTaskStatus(
 
     if (resourceType === FileResourceType.WhiteboardProjector) {
         const response = await fetch(`https://api.netless.link/v5/projector/tasks/${taskUUID}`, {
-            headers: { token: taskToken! },
+            headers: { token: taskToken!, region },
         });
         return response.json();
     } else {
@@ -65,7 +67,7 @@ export async function queryConvertingTaskStatus(
             `https://api.netless.link/v5/services/conversion/tasks/${taskUUID}?type=${
                 dynamic ? "dynamic" : "static"
             }`,
-            { headers: { token: taskToken! } },
+            { headers: { token: taskToken!, region } },
         );
         const data = await response.json();
         const prefix = data.progress?.convertedFileList?.[0]?.conversionFileUrl || "";

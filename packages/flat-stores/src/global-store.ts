@@ -42,6 +42,9 @@ export class GlobalStore {
 
     public whiteboardRoomUUID: string | null = null;
     public whiteboardRoomToken: string | null = null;
+    /**
+     * Room's region, services (currently only whiteboard) must use this value to join the room.
+     */
     public region: Region | null = null;
     public rtcToken: string | null = null;
     public rtcUID: number | null = null;

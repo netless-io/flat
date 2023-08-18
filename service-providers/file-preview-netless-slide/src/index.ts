@@ -1,9 +1,12 @@
 import { previewSlide, SlideViewer } from "@netless/app-slide";
+import { Region } from "@netless/flat-server-api";
 import { queryConvertingTaskStatus } from "@netless/flat-service-provider-file-convert-netless";
 import { CloudFile, IServiceFilePreview, FileResourceType } from "@netless/flat-services";
 
 export class FilePreviewNetlessSlide implements IServiceFilePreview {
     public slideViewer?: SlideViewer;
+
+    public constructor(public readonly region: Region) {}
 
     public async preview(file: CloudFile, container: HTMLElement): Promise<any> {
         if (this.slideViewer) {
@@ -18,6 +21,7 @@ export class FilePreviewNetlessSlide implements IServiceFilePreview {
                 dynamic: true,
                 resourceType: file.resourceType,
                 meta: file.meta,
+                region: this.region,
             });
 
             this.slideViewer = previewSlide({

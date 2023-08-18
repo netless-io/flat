@@ -16,6 +16,7 @@
   "dependencies": {
     "@netless/app-slide": "0.3.0-canary.19",
     "@netless/flat-service-provider-file-convert-netless": "workspace:*",
-    "@netless/flat-services": "workspace:*"
+    "@netless/flat-services": "workspace:*",
+    "@netless/flat-server-api": "workspace:*"
   }
 }

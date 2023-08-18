@@ -4,7 +4,12 @@ import { BuiltinApps } from "@netless/window-manager";
 import { ApplianceNames, SceneDefinition } from "white-web-sdk";
 
 import type { FlatI18n } from "@netless/flat-i18n";
-import { CloudFile, FileResourceType, getWhiteboardTaskData } from "@netless/flat-server-api";
+import {
+    CloudFile,
+    FileResourceType,
+    Region,
+    getWhiteboardTaskData,
+} from "@netless/flat-server-api";
 import {
     getFileExt,
     isPPTX,
@@ -19,6 +24,7 @@ export class FastboardFileInsert implements IServiceFileInsert {
         public fastboard: Fastboard,
         public flatI18n: FlatI18n,
         public toaster: Toaster,
+        public region: Region,
     ) {}
 
     public async insert(file: CloudFile, options: IServiceFileInsertOptions): Promise<void> {
@@ -47,7 +53,7 @@ export class FastboardFileInsert implements IServiceFileInsert {
                 case "ppt":
                 case "pptx":
                 case "pdf": {
-                    await insertDocs(file, fastboardApp, this.flatI18n, this.toaster);
+                    await insertDocs(file, fastboardApp, this.flatI18n, this.toaster, this.region);
                     break;
                 }
                 default: {
@@ -147,6 +153,7 @@ export async function insertDocs(
     fastboardApp: FastboardApp,
     flatI18n: FlatI18n,
     toaster: Toaster,
+    region: Region,
 ): Promise<void> {
     if (
         file.resourceType === FileResourceType.WhiteboardConvert ||
@@ -162,6 +169,7 @@ export async function insertDocs(
             dynamic: isPPTX(file.fileName),
             meta: file.meta,
             resourceType: file.resourceType,
+            region,
         });
 
         if (convertingStatus.status === "Fail") {

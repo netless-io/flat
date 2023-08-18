@@ -1,8 +1,9 @@
 import "./style.css";
 
 import { StaticDocsViewer } from "../src/static-docs-viewer";
+import { Region } from "@netless/flat-server-api";
 
-const viewer = new StaticDocsViewer();
+const viewer = new StaticDocsViewer(Region.CN_HZ);
 viewer.pages$.setValue([
     {
         height: 1010,

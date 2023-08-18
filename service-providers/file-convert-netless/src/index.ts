@@ -2,6 +2,7 @@ import {
     convertStart,
     FileConvertStep,
     FileResourceType,
+    Region,
     ServerRequestError,
 } from "@netless/flat-server-api";
 import { IServiceFileConvert, IServiceFileConvertStatus, CloudFile } from "@netless/flat-services";
@@ -12,6 +13,8 @@ export * from "./courseware-converting";
 export * from "./utils";
 
 export class FileConvertNetless implements IServiceFileConvert {
+    public constructor(public readonly region: Region) {}
+
     public async startConvert(
         file: CloudFile,
     ): Promise<
@@ -52,6 +55,7 @@ export class FileConvertNetless implements IServiceFileConvert {
                 dynamic: isPPTX(file.fileName),
                 resourceType: file.resourceType,
                 meta: file.meta,
+                region: this.region,
             });
 
             if (convertingStatus.status === "Fail") {
