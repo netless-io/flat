@@ -1,5 +1,5 @@
 import { FastboardPlayer, replayFastboard, Storage } from "@netless/fastboard";
-import { RoomType } from "@netless/flat-server-api";
+import { Region, RoomType } from "@netless/flat-server-api";
 import { AtomPlayer, NativeVideoPlayer, SyncPlayer, WhiteboardPlayer } from "@netless/sync-player";
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import { SideEffectManager } from "side-effect-manager";
@@ -123,7 +123,9 @@ export class ClassroomReplayStore {
         const fastboard = await replayFastboard<ClassroomReplayEventData>({
             sdkConfig: {
                 appIdentifier: config.whiteboard.appId,
-                region: globalStore.region ?? "cn-hz",
+                region:
+                    globalStore.region ??
+                    (globalStore.serverRegionConfig?.whiteboard.convertRegion as Region),
                 pptParams: {
                     useServerWrap: true,
                 },
