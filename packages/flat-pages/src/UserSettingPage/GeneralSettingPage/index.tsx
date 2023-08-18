@@ -5,13 +5,11 @@ import "./index.less";
 import phoneSVG from "./icons/phone.svg";
 import emailSVG from "./icons/email.svg";
 import userSVG from "./icons/user.svg";
-import editSVG from "./icons/edit.svg";
 import lockSVG from "./icons/lock.svg";
-import closeSVG from "./icons/close.svg";
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Checkbox, Input, message, Modal, Radio } from "antd";
+import { Button, Checkbox, message, Modal, Radio } from "antd";
 import {
     FlatPrefersColorScheme,
     AppearancePicker,
@@ -39,9 +37,10 @@ import { useBindingList } from "./binding";
 import { BindGitHub } from "./binding/GitHub";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { BindGoogle } from "./binding/Google";
-import { CheckOutlined } from "@ant-design/icons";
 import { UpdateEmailModel } from "./UpdateEmailModel";
 import { UpdatePhoneModel } from "./UpdatePhoneModel";
+import { EditableInput } from "./EditableInput";
+import { BindingField } from "./BindingField";
 
 enum SelectLanguage {
     Chinese,
@@ -155,32 +154,31 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
     return (
         <UserSettingLayoutContainer>
             <div className="general-setting-container">
-                <div className="general-setting-item">
-                    <span className="general-setting-item-title">{t("user-profile")}</span>
+                <div className="general-setting-item general-setting-profile">
+                    <div>
+                        <span className="general-setting-item-title">{t("user-profile")}</span>
 
-                    <div className="general-setting-profile">
-                        <div className="general-setting-item-text">
-                            <img alt="user" src={userSVG} />
-                            <span>{t("username")}</span>
-                            {EditableInput({
-                                value: name,
-                                setValue: ev => setName(ev.currentTarget.value),
-                                updateValue: changeUserName,
-                            })}
-                        </div>
-
-                        <UploadAvatar onUpload={onUpload} />
+                        {EditableInput({
+                            value: name,
+                            icon: userSVG,
+                            desc: t("username"),
+                            setValue: ev => setName(ev.currentTarget.value),
+                            updateValue: changeUserName,
+                            cancelUpdate: () => setName(globalStore.userName || ""),
+                        })}
                     </div>
+                    <UploadAvatar onUpload={onUpload} />
                 </div>
                 <hr />
                 <div className="general-setting-item">
                     <span className="general-setting-item-title">{t("user-account")}</span>
 
-                    <div className="general-setting-item-text">
-                        <img alt="phone" src={phoneSVG} />
-                        <span>{t("phone")}</span>
-                        {bindingField({
-                            value: phone,
+                    <div>
+                        {BindingField({
+                            key: phone,
+                            msg: t("set-binding-phone"),
+                            icon: phoneSVG,
+                            desc: t("phone"),
                             payload: {
                                 content: t("delete-binding-phone-tips", {
                                     phone,
@@ -191,55 +189,29 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                             unbind,
                         })}
                     </div>
-
-                    <UpdatePhoneModel
-                        title={t("set-binding-phone")}
-                        visible={showPhoneModel}
-                        onCancel={() => setShowPhoneModel(false)}
-                        onConfirm={() => setShowPhoneModel(false)}
-                        onRefresh={refreshBindings}
-                    />
-
-                    <div className="general-setting-item-text">
-                        <img alt="email" src={emailSVG} />
-                        <span>{t("email")}</span>
-                        {bindingField({
-                            value: email,
-                            handleShowModel: () => setShowEmailModel(true),
+                    <div>
+                        {BindingField({
+                            key: email,
+                            icon: emailSVG,
+                            desc: t("email"),
+                            msg: t("set-binding-email"),
                             payload: {
                                 content: t("delete-binding-email-tips", {
                                     email,
                                 }),
                                 type: LoginPlatform.Email,
                             },
+                            handleShowModel: () => setShowEmailModel(true),
                             unbind,
                         })}
                     </div>
-
-                    <UpdateEmailModel
-                        title={t("set-binding-email")}
-                        visible={showEmailModel}
-                        onCancel={() => setShowEmailModel(false)}
-                        onConfirm={() => setShowEmailModel(false)}
-                        onRefresh={refreshBindings}
-                    />
-
                     <div className="general-setting-item-text">
-                        <img alt="password" src={lockSVG} />
-                        <span>{t("password")}</span>
+                        <img alt="password" className="general-setting-item-icon" src={lockSVG} />
+                        <span className="general-setting-item-icon-desc">{t("password")}</span>
                         <Button type="link" onClick={() => setShowPasswordModel(true)}>
                             {hasPassword ? t("update-password") : t("set-password")}
                         </Button>
                     </div>
-
-                    <UpdatePasswordModel
-                        showOldPassword={hasPassword}
-                        title={hasPassword ? t("update-password") : t("set-password")}
-                        visible={showPasswordModel}
-                        onCancel={() => setShowPasswordModel(false)}
-                        onConfirm={updatePassword}
-                    />
-
                     <div className="general-setting-binding-methods">
                         {loginButtons.map(button => {
                             switch (button) {
@@ -376,79 +348,32 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                     </div>
                 </div>
             </div>
+
+            <UpdatePhoneModel
+                title={t("set-binding-phone")}
+                visible={showPhoneModel}
+                onCancel={() => setShowPhoneModel(false)}
+                onConfirm={() => setShowPhoneModel(false)}
+                onRefresh={refreshBindings}
+            />
+
+            <UpdateEmailModel
+                title={t("set-binding-email")}
+                visible={showEmailModel}
+                onCancel={() => setShowEmailModel(false)}
+                onConfirm={() => setShowEmailModel(false)}
+                onRefresh={refreshBindings}
+            />
+
+            <UpdatePasswordModel
+                showOldPassword={hasPassword}
+                title={hasPassword ? t("update-password") : t("set-password")}
+                visible={showPasswordModel}
+                onCancel={() => setShowPasswordModel(false)}
+                onConfirm={updatePassword}
+            />
         </UserSettingLayoutContainer>
     );
 });
-
-interface BindingFieldProps {
-    value: string;
-    payload: { content: string; type: LoginPlatform };
-    handleShowModel: () => void;
-    unbind: (content: string, type: LoginPlatform) => Promise<void>;
-}
-
-function bindingField({
-    value,
-    payload,
-    handleShowModel,
-    unbind,
-}: BindingFieldProps): React.ReactElement {
-    const { content, type } = payload;
-    return (
-        <div>
-            {value ? (
-                <div className="input-container-bg">
-                    <span>{value}</span>
-                    <Button type="link" onClick={() => unbind(content, type)}>
-                        <img alt="close" src={closeSVG} />
-                    </Button>
-                </div>
-            ) : (
-                <Button type="link" onClick={handleShowModel}>
-                    <img alt="edit" src={editSVG} />
-                </Button>
-            )}
-        </div>
-    );
-}
-
-interface EditableInputProps {
-    value: string;
-    setValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    updateValue?: () => Promise<void>;
-}
-
-function EditableInput({ value, setValue, updateValue }: EditableInputProps): React.ReactElement {
-    const [isRenaming, setIsRenaming] = useState(false);
-
-    const handleUpdateValue = useCallback(async () => {
-        if (updateValue) {
-            await updateValue();
-            setIsRenaming(false);
-        }
-    }, [updateValue]);
-
-    return (
-        <div className="input-container-bg">
-            {isRenaming ? (
-                <>
-                    <Input id="username" spellCheck={false} value={value} onChange={setValue} />
-
-                    <Button type="link" onClick={handleUpdateValue}>
-                        <CheckOutlined style={{ color: "#3381FF" }} />
-                    </Button>
-                </>
-            ) : (
-                <>
-                    <span>{value}</span>
-
-                    <Button type="link" onClick={() => setIsRenaming(!isRenaming)}>
-                        <img alt="edit" src={editSVG} />
-                    </Button>
-                </>
-            )}
-        </div>
-    );
-}
 
 export default GeneralSettingPage;
