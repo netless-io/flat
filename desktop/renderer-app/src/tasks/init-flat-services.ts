@@ -324,7 +324,7 @@ export function initFlatServices(): void {
             const { FilePreviewNetless } = await import(
                 "@netless/flat-service-provider-file-preview-netless"
             );
-            return new FilePreviewNetless();
+            return new FilePreviewNetless(config.whiteboard.convertRegion as Region);
         },
     );
 

@@ -5,6 +5,7 @@ import { Disposable } from "side-effect-manager";
 import { DocsViewer, DocsViewerPage, PageRenderer, Stepper } from "@netless/app-docs-viewer";
 import { IServiceFilePreview, CloudFile, FileResourceType } from "@netless/flat-services";
 import { queryConvertingTaskStatus } from "@netless/flat-service-provider-file-convert-netless";
+import { Region } from "@netless/flat-server-api";
 import { clamp, isSameRect, isSameSize, Rect, Size } from "../utils";
 
 export class StaticDocsViewer implements IServiceFilePreview {
@@ -20,7 +21,7 @@ export class StaticDocsViewer implements IServiceFilePreview {
 
     public $docsViewer: HTMLElement;
 
-    public constructor() {
+    public constructor(public readonly region: Region) {
         this.readonly$ = new Val(false);
         this.pages$ = new Val<DocsViewerPage[]>([]);
         this.pagesScrollTop$ = new Val(0);
@@ -266,6 +267,7 @@ export class StaticDocsViewer implements IServiceFilePreview {
                 dynamic: false,
                 resourceType: file.resourceType,
                 meta: file.meta,
+                region: this.region,
             });
 
             if (result.progress?.convertedFileList) {
