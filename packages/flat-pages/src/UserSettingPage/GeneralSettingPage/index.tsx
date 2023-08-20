@@ -221,6 +221,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                                             key={button}
                                             globalStore={globalStore}
                                             isBind={bindings.github}
+                                            name={bindings.meta?.github?.slice(0, 10) || ""}
                                             onRefresh={refreshBindings}
                                         />
                                     );
@@ -231,6 +232,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                                             key={button}
                                             globalStore={globalStore}
                                             isBind={bindings.google}
+                                            name={bindings.meta?.google?.slice(0, 10) || ""}
                                             onRefresh={refreshBindings}
                                         />
                                     );
@@ -241,6 +243,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                                             key={button}
                                             globalStore={globalStore}
                                             isBind={bindings.wechat}
+                                            name={bindings.meta?.wechat?.slice(0, 10) || ""}
                                             onRefresh={refreshBindings}
                                         />
                                     );

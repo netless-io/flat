@@ -18,12 +18,13 @@ import { getGoogleURL } from "../../../LoginPage/googleLogin";
 import { errorTips } from "flat-components";
 
 export interface BindGoogleProps {
+    name: string;
     isBind: boolean;
     onRefresh: () => void;
     globalStore: GlobalStore;
 }
 
-export const BindGoogle: React.FC<BindGoogleProps> = ({ isBind, onRefresh, globalStore }) => {
+export const BindGoogle: React.FC<BindGoogleProps> = ({ name, isBind, onRefresh, globalStore }) => {
     const sp = useSafePromise();
     const t = useTranslate();
     const [authUUID, setAuthUUID] = useState("");
@@ -81,7 +82,7 @@ export const BindGoogle: React.FC<BindGoogleProps> = ({ isBind, onRefresh, globa
     return (
         <span
             className={classNames("binding-google")}
-            title={isBind ? t("is-bind") : t("not-bind")}
+            title={isBind ? t("is-bind", { name }) : t("not-bind")}
             onClick={isBind ? unbind : bindGoogle}
         >
             {GoogleSVG({ color: isBind ? undefined : "#5d6066" })}

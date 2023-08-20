@@ -536,7 +536,7 @@
   "bind-github-failed": "Failed to bind Github",
   "bind-google-failed": "Failed to bind Google",
   "bind-wechat-not-support-unbind": "Not support unbind WeChat",
-  "is-bind": "is bind",
+  "is-bind": "{{name}} is bind",
   "not-bind": "not bind",
   "unbind-confirm": "Are you sure to unbind?",
   "unbind-success": "Unbind success",

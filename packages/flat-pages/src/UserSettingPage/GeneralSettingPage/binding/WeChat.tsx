@@ -18,12 +18,18 @@ import { errorTips } from "flat-components";
 import { GlobalStore } from "@netless/flat-stores";
 
 export interface BindingWeChatProps {
+    name: string;
     isBind: boolean;
     onRefresh: () => void;
     globalStore: GlobalStore;
 }
 
-export const BindWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh, globalStore }) => {
+export const BindWeChat: React.FC<BindingWeChatProps> = ({
+    name = "",
+    isBind,
+    onRefresh,
+    globalStore,
+}) => {
     const sp = useSafePromise();
     const t = useTranslate();
     const [authUUID, setAuthUUID] = useState("");
@@ -86,7 +92,7 @@ export const BindWeChat: React.FC<BindingWeChatProps> = ({ isBind, onRefresh, gl
                 className={classNames("binding-wechat", {
                     "is-bind": isBind,
                 })}
-                title={isBind ? t("is-bind") : t("not-bind")}
+                title={isBind ? t("is-bind", { name }) : t("not-bind")}
                 onClick={isBind ? unbind : bindWeChat}
             >
                 <WechatFilled style={{ color: "#fff" }} />

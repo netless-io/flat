@@ -18,12 +18,13 @@ import { getGithubURL } from "../../../LoginPage/githubLogin";
 import { errorTips } from "flat-components";
 
 export interface BindGitHubProps {
+    name: string;
     isBind: boolean;
     onRefresh: () => void;
     globalStore: GlobalStore;
 }
 
-export const BindGitHub: React.FC<BindGitHubProps> = ({ isBind, onRefresh, globalStore }) => {
+export const BindGitHub: React.FC<BindGitHubProps> = ({ name, isBind, onRefresh, globalStore }) => {
     const sp = useSafePromise();
     const t = useTranslate();
     const [authUUID, setAuthUUID] = useState("");
@@ -83,7 +84,7 @@ export const BindGitHub: React.FC<BindGitHubProps> = ({ isBind, onRefresh, globa
             className={classNames("binding-github", {
                 "is-bind": isBind,
             })}
-            title={isBind ? t("is-bind") : t("not-bind")}
+            title={isBind ? t("is-bind", { name }) : t("not-bind")}
             onClick={isBind ? unbind : bindGitHub}
         >
             <GithubFilled style={{ color: "#fff" }} />
