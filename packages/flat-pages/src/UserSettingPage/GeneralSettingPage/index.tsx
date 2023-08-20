@@ -205,7 +205,7 @@ export const GeneralSettingPage = observer(function GeneralSettingPage() {
                             unbind,
                         })}
                     </div>
-                    <div className="general-setting-item-text">
+                    <div className="general-setting-item-text input-container-bg">
                         <img alt="password" className="general-setting-item-icon" src={lockSVG} />
                         <span className="general-setting-item-icon-desc">{t("password")}</span>
                         <Button type="link" onClick={() => setShowPasswordModel(true)}>

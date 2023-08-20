@@ -32,29 +32,29 @@ export function BindingField({
     const hasKey = useMemo(() => !!key, [key]);
 
     return (
-        <div className="editable-container">
-            <div
-                className={`input-container-bg ${
-                    hovering && hasKey ? "input-container-bg-hover" : ""
-                }`}
-                onMouseEnter={() => setHovering(true)}
-                onMouseLeave={() => setHovering(false)}
-            >
-                <img alt={icon} className="general-setting-item-icon" src={icon} />
-                <span className="general-setting-item-icon-desc">{desc}</span>
-                {hasKey ? (
-                    <span>{key}</span>
-                ) : (
-                    <Button type="link" onClick={handleShowModel}>
-                        {msg}
-                    </Button>
-                )}
-                {hovering && hasKey && (
-                    <Button type="link" onClick={() => unbind(content, type)}>
-                        <img alt="close" src={closeSVG} />
-                    </Button>
-                )}
-            </div>
+        <div
+            className={`input-container-bg ${hovering && hasKey ? "input-container-bg-hover" : ""}`}
+            onMouseEnter={() => setHovering(true)}
+            onMouseLeave={() => setHovering(false)}
+        >
+            <img alt={icon} className="general-setting-item-icon" src={icon} />
+            <span className="general-setting-item-icon-desc">{desc}</span>
+            {hasKey ? (
+                <span className="general-setting-item-key">{key}</span>
+            ) : (
+                <Button type="link" onClick={handleShowModel}>
+                    {msg}
+                </Button>
+            )}
+            {hovering && hasKey && (
+                <Button
+                    className="general-setting-item-btn"
+                    type="link"
+                    onClick={() => unbind(content, type)}
+                >
+                    <img alt="close" src={closeSVG} />
+                </Button>
+            )}
         </div>
     );
 }

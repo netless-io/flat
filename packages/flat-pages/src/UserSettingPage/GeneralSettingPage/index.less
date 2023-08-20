@@ -34,11 +34,15 @@
     }
 
     &-icon-desc {
-        margin-right: 124px;
+        width: 150px;
     }
 
-    &-text .ant-btn-link {
-        padding: 0;
+    &-key {
+        max-width: 160px;
+    }
+
+    &-btn {
+        margin-left: 4px;
     }
 }
 
@@ -107,17 +111,26 @@
     display: inline-block;
     border-radius: 6px;
     transition: all 0.3s ease;
-    padding-right: 4px;
+    padding: 4px;
+    line-height: 38px;
+
+    img,
+    span,
+    .ant-btn-link {
+        vertical-align: middle;
+    }
 
     .ant-input {
         width: 150px;
     }
 
     >span {
-        line-height: 45px;
+        display: inline-block;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        word-break: keep-all;
+        white-space: nowrap;
     }
 
     .ant-btn-link {
