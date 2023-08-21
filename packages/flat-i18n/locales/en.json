@@ -666,7 +666,7 @@
   "exhaustive-attack": "Your request is too often, please try again later",
   "request-signature-incorrect": "Request signature is incorrect",
   "non-compliant": "Please check your words",
-  "unsupported-operation": "Unsupported operation",
+  "unsupported-operation": "This is the only way to login your account, cannot unbind",
   "censorship-failed": "Your request had been denied because of legal reasons",
   "oauth-uuid-not-found": "OAuth UUID not found",
   "oauth-client-id-not-found": "OAuth client id not found",
