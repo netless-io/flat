@@ -1,4 +1,4 @@
-import { FLAT_SERVER_BASE_URL_V1, FLAT_SERVER_BASE_URL_V2, Status } from "./constants";
+import { FLAT_SERVER_BASE_URL_V1, FLAT_SERVER_BASE_URL_V2, Region, Status } from "./constants";
 import { ServerRequestError, RequestErrorCode } from "./error";
 import { v4 as uuidv4 } from "uuid";
 
@@ -24,6 +24,50 @@ export type FlatServerRawResponseData<T> =
 export function setFlatAuthToken(token: string): void {
     authToken = token;
     localStorage.setItem("FlatAuthToken", token);
+}
+
+const defaultRegion = FLAT_SERVER_BASE_URL_V1.includes("-sg") ? Region.SG : Region.CN_HZ;
+
+export function chooseServer(payload: any, enableFlatServerV2?: boolean): string {
+    let server = enableFlatServerV2 ? FLAT_SERVER_BASE_URL_V2 : FLAT_SERVER_BASE_URL_V1;
+
+    let region = defaultRegion;
+    if (payload !== null && typeof payload === "object") {
+        // Please check all server api's payload to make sure roomUUID is from the fields: roomUUID, uuid
+        // the "uuid" is maybe an invite code
+        const uuid = payload.roomUUID || payload.uuid;
+
+        if (typeof uuid === "string") {
+            if ((uuid.length === 11 && uuid[0] === "1") || uuid.startsWith("CN-")) {
+                region = Region.CN_HZ;
+            }
+            if ((uuid.length === 11 && uuid[0] === "2") || uuid.startsWith("SG-")) {
+                region = Region.SG;
+            }
+            // Legacy room
+            if (uuid.length === 10) {
+                region = Region.CN_HZ;
+            }
+        }
+    }
+    if (region === defaultRegion) {
+        return server;
+    }
+
+    // replace the left most part of domain, currently we have "{api}" for cn-hz, "{api}-sg" for sg
+    server = server.replace(/^https:\/\/([-\w]+)/, (_, name: string) => {
+        // normalize
+        if (name.endsWith("-sg")) {
+            name = name.slice(0, -3);
+        }
+        // add suffix if needed
+        if (region === Region.SG) {
+            name += "-sg";
+        }
+        return `https://${name}`;
+    });
+
+    return server;
 }
 
 export async function requestFlatServer<TPayload, TResult>(
@@ -58,13 +102,7 @@ export async function requestFlatServer<TPayload, TResult>(
         headers.set("authorization", "Bearer " + token);
     }
 
-    // TODO: if payload.roomUUID has '{REGION}-' prefix, select another server
-    const response = await fetch(
-        `${
-            enableFlatServerV2 === true ? FLAT_SERVER_BASE_URL_V2 : FLAT_SERVER_BASE_URL_V1
-        }/${action}`,
-        config,
-    );
+    const response = await fetch(`${chooseServer(payload, enableFlatServerV2)}/${action}`, config);
 
     if (!response.ok) {
         // @TODO create a timeout error code
