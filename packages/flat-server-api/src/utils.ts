@@ -33,7 +33,7 @@ export function chooseServer(payload: any, enableFlatServerV2?: boolean): string
 
     let region = defaultRegion;
     if (payload !== null && typeof payload === "object") {
-        // Please check all server api's payload to make sure roomUUID is from these fields
+        // Please check all server api's payload to make sure roomUUID is from the fields: roomUUID, uuid
         // the "uuid" is maybe an invite code
         const uuid = payload.roomUUID || payload.uuid;
 
@@ -102,7 +102,6 @@ export async function requestFlatServer<TPayload, TResult>(
         headers.set("authorization", "Bearer " + token);
     }
 
-    // TODO: if payload.roomUUID has '{REGION}-' prefix, select another server
     const response = await fetch(`${chooseServer(payload, enableFlatServerV2)}/${action}`, config);
 
     if (!response.ok) {
