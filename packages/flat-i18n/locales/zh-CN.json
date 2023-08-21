@@ -666,7 +666,7 @@
   "exhaustive-attack": "你的操作过于频繁，请稍后再试",
   "request-signature-incorrect": "请求签名不正确",
   "non-compliant": "有不规范用词请修改",
-  "unsupported-operation": "不支持的操作",
+  "unsupported-operation": "当前登录方式为唯一方式，无法解绑",
   "censorship-failed": "审核失败",
   "oauth-uuid-not-found": "未找到该 OAuth App",
   "oauth-client-id-not-found": "未找到该 OAuth App client",
