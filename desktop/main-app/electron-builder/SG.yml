@@ -1,6 +1,6 @@
-appId: io.agora.flint
-productName: Flint
-artifactName: Flint-${arch}-${version}.${ext}
+appId: io.agora.flat
+productName: Flat
+artifactName: Flat-${arch}-${version}.${ext}
 asar: true
 
 extraMetadata:
@@ -61,7 +61,7 @@ nsis:
   allowToChangeInstallationDirectory: true
   installerIcon: resources/install.ico
   installerHeaderIcon: resources/header.ico
-  shortcutName: Flint
+  shortcutName: Flat
 
 directories:
   buildResources:
