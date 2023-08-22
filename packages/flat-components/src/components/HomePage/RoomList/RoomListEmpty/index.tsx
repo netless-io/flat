@@ -1,8 +1,6 @@
 import "./style.less";
-import emptyHistorySVG from "../icons/empty-history.svg";
-import emptyRoomSVG from "../icons/empty-room.svg";
-import emptyHistoryDarkSVG from "../icons/empty-history-dark.svg";
-import emptyRoomDarkSVG from "../icons/empty-room-dark.svg";
+import EmptyRoomSVG from "../icons/EmptyRoomSVG";
+import EmptyHistorySVG from "../icons/EmptyHistorySVG";
 
 import React, { useContext } from "react";
 import { useTranslate } from "@netless/flat-i18n";
@@ -17,19 +15,7 @@ export const RoomListEmpty: React.FC<RoomListEmptyProps> = ({ isHistory }) => {
     const darkMode = useContext(DarkModeContext);
     return (
         <div className="room-list-empty">
-            <img
-                alt="empty"
-                src={
-                    isHistory
-                        ? darkMode
-                            ? emptyHistoryDarkSVG
-                            : emptyHistorySVG
-                        : darkMode
-                        ? emptyRoomDarkSVG
-                        : emptyRoomSVG
-                }
-                width={160}
-            />
+            {isHistory ? <EmptyHistorySVG isDark={darkMode} /> : <EmptyRoomSVG isDark={darkMode} />}
             <span className="room-list-empty-content">
                 {isHistory ? t("no-record") : t("no-room")}
             </span>
