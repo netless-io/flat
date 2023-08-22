@@ -62,12 +62,12 @@ const getArtifactsFiles = (regex, fileList) => {
 module.exports.winArtifactsFiles = getArtifactsFiles(
     winArtifactsRegExp,
     getFilesAndSizeInDir(winBuildPath("CN")),
-).concat(getArtifactsFiles(winArtifactsRegExp, getFilesAndSizeInDir(winBuildPath("US"))));
+).concat(getArtifactsFiles(winArtifactsRegExp, getFilesAndSizeInDir(winBuildPath("SG"))));
 
 module.exports.macArtifactsFiles = getArtifactsFiles(
     macArtifactsRegExp,
     getFilesAndSizeInDir(macBuildPath("CN")),
-).concat(getArtifactsFiles(macArtifactsRegExp, getFilesAndSizeInDir(macBuildPath("US"))));
+).concat(getArtifactsFiles(macArtifactsRegExp, getFilesAndSizeInDir(macBuildPath("SG"))));
 
 /**
  * set up different directories according to different files and platforms
