@@ -1,6 +1,5 @@
 import "./style.less";
-import emptyFileSVG from "./icons/empty-file.svg";
-import emptyFileDarkSVG from "./icons/empty-file-dark.svg";
+import EmptyFileSVG from "./icons/EmptyFileSVG";
 
 import React, { useCallback, useContext, useMemo, useRef } from "react";
 import { Table } from "antd";
@@ -162,7 +161,7 @@ export const CloudStorageFileList: React.FC<CloudStorageFileListProps> = ({
             {files.length <= 0 && (
                 <div className="cloud-storage-file-list-empty">
                     <div className="cloud-storage-file-list-empty-content">
-                        <img src={darkMode ? emptyFileDarkSVG : emptyFileSVG} width={210} />
+                        <EmptyFileSVG isDark={darkMode} />
                         <div className="cloud-storage-file-list-empty-text">{t("no-data")}</div>
                     </div>
                 </div>
