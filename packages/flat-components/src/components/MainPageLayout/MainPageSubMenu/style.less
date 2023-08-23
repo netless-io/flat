@@ -10,6 +10,7 @@
     }
 
     >ul {
+        margin-top: 1em;
         display: block;
     }
 
@@ -34,19 +35,21 @@
     position: relative;
     display: flex;
     padding: 9px 0px 9px 16px;
+    margin: 0 16px;
     transition: background-color 0.4s;
     align-items: center;
     color: var(--text);
+    border-radius: 6px;
 
     &:hover,
     &:active {
         color: var(--text);
-        background-color: rgba(243, 246, 249, 1);
+        background-color: var(--blue-1);
     }
 
     &.is-active {
-        color: var(--text);
-        background-color: rgba(51, 129, 255, 0.06);
+        color: var(--blue-6);
+        background-color: var(--blue-1);
     }
 }
 
