@@ -4,6 +4,7 @@ import {
     windowHookClose,
     windowHookClosed,
     windowOpenDevTools,
+    windowOpenExternalLink,
     windowReadyToShow,
 } from "../utils/window-event";
 import {
@@ -85,6 +86,7 @@ export abstract class AbstractWindow<MULTI_INSTANCE extends boolean> {
         });
 
         windowReadyToShow(win);
+        windowOpenExternalLink(win);
 
         return win;
     }
