@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { useCallback } from "react";
+import React, { useMemo, useState } from "react";
 import { useLanguage } from "@netless/flat-i18n";
 import { observer } from "mobx-react-lite";
 import { wrap } from "./utils/disposer";
@@ -45,11 +45,12 @@ import { globalStore } from "@netless/flat-stores";
 export const LoginPage = observer(function LoginPage() {
     const language = useLanguage();
     const sp = useSafePromise();
+    const [phone, setBindingPhone] = useState("");
 
     const { currentState, setCurrentState, handleLogin, onLoginResult, onBoundPhone } =
         useLoginState();
 
-    const getPanel = useCallback(() => {
+    const panel = useMemo(() => {
         const privacyURL = language.startsWith("zh") ? PRIVACY_URL_CN : PRIVACY_URL;
         const serviceURL = language.startsWith("zh") ? SERVICE_URL_CN : SERVICE_URL;
         const emailLanguage = language.startsWith("zh") ? "zh" : "en";
@@ -133,7 +134,10 @@ export const LoginPage = observer(function LoginPage() {
                             onLoginResult(null);
                             setCurrentState("SWITCH_TO_PASSWORD");
                         }}
-                        needRebindingPhone={() => setCurrentState("SWITCH_TO_REBINDING_PHONE")}
+                        needRebindingPhone={phone => {
+                            setBindingPhone(phone);
+                            setCurrentState("SWITCH_TO_REBINDING_PHONE");
+                        }}
                         sendBindingPhoneCode={async (countryCode, phone) =>
                             bindingPhoneSendCode(countryCode + phone)
                         }
@@ -146,6 +150,7 @@ export const LoginPage = observer(function LoginPage() {
                         cancelRebindingPhone={() => {
                             setCurrentState("SWITCH_TO_BINDING_PHONE");
                         }}
+                        defaultPhone={phone}
                         rebindingPhone={async (countryCode, phone, code) =>
                             wrap(
                                 rebindingPhone(countryCode + phone, Number(code)).then(
@@ -220,11 +225,20 @@ export const LoginPage = observer(function LoginPage() {
                 );
             }
         }
-    }, [currentState, handleLogin, language, onBoundPhone, onLoginResult, sp, setCurrentState]);
+    }, [
+        language,
+        handleLogin,
+        currentState.value,
+        onLoginResult,
+        setCurrentState,
+        sp,
+        onBoundPhone,
+        phone,
+    ]);
 
     return (
         <div className="login-page-container">
-            <LoginPanel>{getPanel()}</LoginPanel>
+            <LoginPanel>{panel}</LoginPanel>
             <AppUpgradeModal />
         </div>
     );

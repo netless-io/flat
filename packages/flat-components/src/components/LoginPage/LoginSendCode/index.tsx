@@ -15,16 +15,15 @@ export interface LoginSendCodeProps {
     type: PasswordLoginType;
     // BindingPhoneSendCodeResult for binding phone page
     sendVerificationCode: () => Promise<boolean | BindingPhoneSendCodeResult>;
-
     // for rebinding phone
-    handleSendVerificationCode?: () => void;
+    onRebinding?: () => void;
 }
 
 export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
     type,
     isAccountValidated,
     sendVerificationCode,
-    handleSendVerificationCode,
+    onRebinding,
     ...restProps
 }) => {
     const isUnMountRef = useIsUnMounted();
@@ -71,26 +70,15 @@ export const LoginSendCode: React.FC<LoginSendCodeProps> = ({
 
                 // we say the phone is already binding when error message contains `RequestErrorCode.SMSAlreadyBinding`
                 // and then we can enter rebinding page to rebind.
-                if (
-                    error.message.indexOf(RequestErrorCode.SMSAlreadyBinding) > -1 &&
-                    handleSendVerificationCode
-                ) {
-                    handleSendVerificationCode();
+                if (error.message.indexOf(RequestErrorCode.SMSAlreadyBinding) > -1 && onRebinding) {
+                    onRebinding();
                     return;
                 }
 
                 errorTips(error);
             }
         }
-    }, [
-        isAccountValidated,
-        sp,
-        sendVerificationCode,
-        t,
-        type,
-        isUnMountRef,
-        handleSendVerificationCode,
-    ]);
+    }, [isAccountValidated, sp, sendVerificationCode, t, type, isUnMountRef, onRebinding]);
 
     // Workaround to prevent browser auto complete this field
     // however, it still cannot prevent auto complete panel from showing up
