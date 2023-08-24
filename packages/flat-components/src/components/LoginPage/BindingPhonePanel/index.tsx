@@ -19,7 +19,7 @@ export interface BindingPhonePanelProps {
         countryCode: string,
         phone: string,
     ) => Promise<BindingPhoneSendCodeResult>;
-    needRebindingPhone: () => void;
+    needRebindingPhone: (phone: string) => void;
 }
 
 interface BindingFormValues {
@@ -81,9 +81,10 @@ export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
         }
     }, [form]);
 
-    const handleSendVerificationCode = async (): Promise<void> => {
+    const onRebinding = async (): Promise<void> => {
+        const { phone } = form.getFieldsValue();
         if (await requestRebinding({ t })) {
-            needRebindingPhone();
+            needRebindingPhone(phone);
         }
     };
 
@@ -109,10 +110,10 @@ export const BindingPhonePanel: React.FC<BindingPhonePanelProps> = ({
 
                     <Form.Item name="code" rules={[codeValidator]}>
                         <LoginSendCode
-                            handleSendVerificationCode={handleSendVerificationCode}
                             isAccountValidated={isAccountValidated}
                             sendVerificationCode={sendVerificationCode}
                             type={type}
+                            onRebinding={onRebinding}
                         />
                     </Form.Item>
                 </Form>

@@ -12,6 +12,7 @@ import { codeValidator } from "../LoginWithCode/validators";
 import { phoneValidator } from "../LoginWithPassword/validators";
 
 export interface RebindingPhonePanelProps {
+    defaultPhone: string;
     cancelRebindingPhone: () => void;
     rebindingPhone: (countryCode: string, phone: string, code: string) => Promise<boolean>;
     sendRebindingPhoneCode: (countryCode: string, phone: string) => Promise<any>;
@@ -23,6 +24,7 @@ interface RebindingFormValues {
 }
 
 export const RebindingPhonePanel: React.FC<RebindingPhonePanelProps> = ({
+    defaultPhone,
     sendRebindingPhoneCode,
     rebindingPhone,
     cancelRebindingPhone,
@@ -32,11 +34,11 @@ export const RebindingPhonePanel: React.FC<RebindingPhonePanelProps> = ({
 
     const [form] = Form.useForm<RebindingFormValues>();
     const [isFormValidated, setIsFormValidated] = useState(false);
-    const [isAccountValidated, setIsAccountValidated] = useState(false);
+    const [isAccountValidated, setIsAccountValidated] = useState(defaultPhone.length > 0);
     const type = PasswordLoginType.Phone;
 
     const defaultValues = {
-        phone: "",
+        phone: defaultPhone,
         code: "",
     };
 
