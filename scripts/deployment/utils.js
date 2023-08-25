@@ -9,6 +9,11 @@ const {
     macArtifactsRegExp,
 } = require("./constants");
 
+if (!process.env.FLAT_REGION) {
+    console.error("Please set env `FLAT_REGION` before running deployment");
+    process.exit(1);
+}
+
 /**
  * file info list
  * @typedef {Array<{
@@ -61,13 +66,13 @@ const getArtifactsFiles = (regex, fileList) => {
 
 module.exports.winArtifactsFiles = getArtifactsFiles(
     winArtifactsRegExp,
-    getFilesAndSizeInDir(winBuildPath("CN")),
-).concat(getArtifactsFiles(winArtifactsRegExp, getFilesAndSizeInDir(winBuildPath("SG"))));
+    getFilesAndSizeInDir(winBuildPath(process.env.FLAT_REGION)),
+);
 
 module.exports.macArtifactsFiles = getArtifactsFiles(
     macArtifactsRegExp,
-    getFilesAndSizeInDir(macBuildPath("CN")),
-).concat(getArtifactsFiles(macArtifactsRegExp, getFilesAndSizeInDir(macBuildPath("SG"))));
+    getFilesAndSizeInDir(macBuildPath(process.env.FLAT_REGION)),
+);
 
 /**
  * set up different directories according to different files and platforms
