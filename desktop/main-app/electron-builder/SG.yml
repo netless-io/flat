@@ -16,6 +16,7 @@ mac:
   hardenedRuntime: true
   entitlements: entitlements.mac.plist
   entitlementsInherit: entitlements.mac.plist
+  provisioningProfile: flatmacrelease.provisionprofile
   gatekeeperAssess: false
   extendInfo:
     LSHasLocalizedDisplayName: true
