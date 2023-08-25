@@ -1,3 +1,7 @@
+interface Window {
+    isElectron?: boolean;
+}
+
 declare module "*.svg" {
     const src: string;
     export default src;

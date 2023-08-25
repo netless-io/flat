@@ -21,7 +21,7 @@ const svgDict: Record<LoginButtonProviderType, string> = {
     google: googleSVG,
 };
 
-export const LoginButton: React.FC<LoginButtonProps> = ({ provider, text, onClick }) => {
+export const LoginButton: React.FC<LoginButtonProps> = ({ provider, onClick }) => {
     return (
         <div className="login-button-wrapper">
             <button
@@ -30,7 +30,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ provider, text, onClic
             >
                 <img alt={provider} src={svgDict[provider]} />
             </button>
-            <span className="login-button-text">{text || provider}</span>
+            {/* <span className="login-button-text">{text || provider}</span> */}
         </div>
     );
 };
