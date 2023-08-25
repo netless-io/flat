@@ -400,7 +400,7 @@
   "login-failed": "Login failed",
   "register-failed": "Register failed",
   "send-verify-code-failed": "Send verification code failed",
-  "sent-verify-code-to-email": "A reset password email has been sent to your email",
+  "sent-verify-code-to-email": "Verification code has been sent to your email",
   "sent-verify-code-to-phone": "Verification code has been sent to your phone",
   "send-verify-code": "Send code",
   "incorrect-code": "Incorrect verification code",
