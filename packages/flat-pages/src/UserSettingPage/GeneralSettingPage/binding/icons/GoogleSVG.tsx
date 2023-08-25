@@ -40,7 +40,7 @@ export function GoogleSVG({ color }: { color: string | undefined }): React.React
                 cy="12"
                 fill="#fff"
                 r="11.75"
-                stroke="#5d6066"
+                stroke="#b7bbc1"
                 strokeWidth="0.5"
             />
             {path.map((item, index) => (
