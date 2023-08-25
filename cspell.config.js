@@ -125,6 +125,7 @@ module.exports = {
         "mpegurl", // hls.js
         "wopjs", // @wopjs/dom
         "xstate",
+        "mrmime",
 
         // less
         "isstring",

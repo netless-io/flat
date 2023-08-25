@@ -1,4 +1,11 @@
-import { FLAT_SERVER_BASE_URL_V1, FLAT_SERVER_BASE_URL_V2, Region, Status } from "./constants";
+import {
+    FLAT_REGION,
+    FLAT_SERVER_BASE_URL_V1,
+    FLAT_SERVER_BASE_URL_V2,
+    Region,
+    SERVER_DOMAINS,
+    Status,
+} from "./constants";
 import { ServerRequestError, RequestErrorCode } from "./error";
 import { v4 as uuidv4 } from "uuid";
 
@@ -26,7 +33,17 @@ export function setFlatAuthToken(token: string): void {
     localStorage.setItem("FlatAuthToken", token);
 }
 
-const defaultRegion = FLAT_SERVER_BASE_URL_V1.includes("-sg") ? Region.SG : Region.CN_HZ;
+function getDefaultRegion(): Region {
+    if (FLAT_REGION === "CN") {
+        return Region.CN_HZ;
+    }
+    if (FLAT_REGION === "SG") {
+        return Region.SG;
+    }
+    throw new Error("Unknown FLAT_REGION: " + FLAT_REGION);
+}
+
+const defaultRegion = getDefaultRegion();
 
 export function chooseServer(payload: any, enableFlatServerV2?: boolean): string {
     let server = enableFlatServerV2 ? FLAT_SERVER_BASE_URL_V2 : FLAT_SERVER_BASE_URL_V1;
@@ -44,28 +61,21 @@ export function chooseServer(payload: any, enableFlatServerV2?: boolean): string
             if ((uuid.length === 11 && uuid[0] === "2") || uuid.startsWith("SG-")) {
                 region = Region.SG;
             }
-            // Legacy room
-            if (uuid.length === 10) {
-                region = Region.CN_HZ;
-            }
         }
     }
     if (region === defaultRegion) {
         return server;
     }
 
-    // replace the left most part of domain, currently we have "{api}" for cn-hz, "{api}-sg" for sg
-    server = server.replace(/^https:\/\/([-\w]+)/, (_, name: string) => {
-        // normalize
-        if (name.endsWith("-sg")) {
-            name = name.slice(0, -3);
-        }
-        // add suffix if needed
-        if (region === Region.SG) {
-            name += "-sg";
-        }
-        return `https://${name}`;
-    });
+    // replace server domain with another region's
+    server = `https://${SERVER_DOMAINS[region.slice(0, 2).toUpperCase()]}/${
+        enableFlatServerV2 ? "v2" : "v1"
+    }`;
+
+    if (server.includes("undefined")) {
+        console.log("server domains:", SERVER_DOMAINS);
+        throw new Error(`Failed to choose server for region: ${region}`);
+    }
 
     return server;
 }
