@@ -1216,6 +1216,9 @@ importers:
       eslint-loader:
         specifier: ^4.0.2
         version: 4.0.2(eslint@8.23.1)(webpack@5.74.0)
+      mrmime:
+        specifier: ^1.0.1
+        version: 1.0.1
       vite-plugin-compression:
         specifier: ^0.5.1
         version: 0.5.1(vite@3.2.7)
@@ -14912,6 +14915,11 @@ packages:
       '@xmldom/xmldom': 0.7.5
       global: 4.4.0
     dev: false
+
+  /mrmime@1.0.1:
+    resolution: {integrity: sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==}
+    engines: {node: '>=10'}
+    dev: true
 
   /ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}

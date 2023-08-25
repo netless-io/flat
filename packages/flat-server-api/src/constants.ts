@@ -1,3 +1,8 @@
+export const FLAT_REGION = process.env.FLAT_REGION;
+
+// { CN: '...', SG: '...' }
+export const SERVER_DOMAINS = process.env.FLAT_SERVER_DOMAINS as unknown as Record<string, string>;
+
 export const CURRENT_SERVER_DOMAIN = process.env.FLAT_SERVER_DOMAIN;
 
 export const FLAT_SERVER_BASE_URL = `https://${CURRENT_SERVER_DOMAIN}`;

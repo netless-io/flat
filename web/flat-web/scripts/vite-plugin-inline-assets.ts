@@ -1,6 +1,6 @@
 import type { Plugin } from "vite";
 import { promises as fsp } from "fs";
-import mime from "mime/lite";
+import { lookup } from "mrmime";
 import svgToTinyDataUri from "@netless/mini-svg-data-uri";
 
 // e.g:
@@ -17,7 +17,7 @@ export function inlineAssets(): Plugin {
                 const content = await fsp.readFile(id);
                 const url = id.endsWith(".svg")
                     ? svgToTinyDataUri(content.toString("utf-8"), "utf8")
-                    : `data:${mime.getType(id)};base64,${content.toString("base64")}`;
+                    : `data:${lookup(id)};base64,${content.toString("base64")}`;
                 return `export default ${JSON.stringify(url)};`;
             }
             return null;

@@ -70,6 +70,7 @@
     "dotenv": "^16.0.2",
     "dotenv-expand": "^9.0.0",
     "eslint-loader": "^4.0.2",
+    "mrmime": "^1.0.1",
     "vite-plugin-compression": "^0.5.1"
   }
 }

@@ -1,5 +1,6 @@
 const os = require("os");
 const OSS = require("ali-oss");
+const readline = require("readline");
 const { winArtifactsFiles, macArtifactsFiles, uploadRule, arrayChunks } = require("./utils");
 const { autoChooseConfig } = require("../utils/auto-choose-config");
 
@@ -12,6 +13,12 @@ require("dotenv-flow").config({
 console.log(`
 will upload file list:
 ${JSON.stringify([...winArtifactsFiles, ...macArtifactsFiles], null, 2)}
+
+FLAT_REGION = ${process.env.FLAT_REGION}
+
+will upload to OSS:
+BUCKET = ${process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_BUCKET}
+REGION = ${process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_REGION}
 `);
 
 const client = new OSS({
@@ -24,6 +31,22 @@ const client = new OSS({
 });
 
 (async () => {
+    const repl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        prompt: "",
+    });
+    repl.on("SIGINT", () => {
+        repl && repl.close();
+    });
+    const answer = await new Promise(resolve => {
+        repl.question(`is that ok? (y/N) `, a => resolve(a || "N"));
+    });
+    if (answer[0].toLowerCase() !== "y") {
+        console.log("ok i give up.");
+        process.exit(0);
+    }
+
     const winUploadRule = uploadRule(process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_FOLDER, "win");
     const macUploadRule = uploadRule(process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_FOLDER, "mac");
 

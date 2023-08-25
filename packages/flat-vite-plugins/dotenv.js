@@ -39,6 +39,9 @@ exports.dotenv = function dotenv(envDir) {
                 define["process.env.FLAT_REGION"] = JSON.stringify(configRegion());
             }
 
+            define["process.env.FLAT_SERVER_DOMAINS"] = JSON.stringify(
+                getServerDomains(envDir, mode),
+            );
             define["process.env.VERSION"] = JSON.stringify(version);
 
             config.define = { ...config.define, ...define };
@@ -59,4 +62,22 @@ const getEnvConfigContent = (envDir, mode) => {
     }
 
     return null;
+};
+
+/**
+ * @param {string} envDir e.g. "path/to/flat/config/CN"
+ * @param {'development' | 'production'} mode
+ * @returns {{CN: string, US: string}}
+ */
+const getServerDomains = (envDir, mode) => {
+    const configDir = path.dirname(envDir);
+    const regions = fs.readdirSync(configDir); // should be ['CN', 'SG']
+    const result = {};
+    for (const region of regions) {
+        const content = getEnvConfigContent(path.join(configDir, region), mode);
+        if (content) {
+            result[region] = dotenvReal.parse(content).FLAT_SERVER_DOMAIN;
+        }
+    }
+    return result;
 };
