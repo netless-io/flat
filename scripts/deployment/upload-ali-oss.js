@@ -44,7 +44,7 @@ const client = new OSS({
     });
     if (answer[0].toLowerCase() !== "y") {
         console.log("ok i give up.");
-        return;
+        process.exit(0);
     }
 
     const winUploadRule = uploadRule(process.env.ARTIFACTS_ALIBABA_CLOUD_OSS_FOLDER, "win");
