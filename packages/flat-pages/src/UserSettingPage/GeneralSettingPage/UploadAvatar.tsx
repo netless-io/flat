@@ -1,7 +1,7 @@
 import Axios from "axios";
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import classNames from "classnames";
-import { message, Region } from "flat-components";
+import { message } from "flat-components";
 import { observer } from "mobx-react-lite";
 import { FlatI18nTFunction, useTranslate } from "@netless/flat-i18n";
 
@@ -80,15 +80,11 @@ export async function uploadAvatar(file: File, t: FlatI18nTFunction): Promise<vo
         throw new Error("upload avatar size limit");
     }
 
-    const ticket = await uploadAvatarStart(
-        file.name,
-        file.size,
-        globalStore.region ?? (globalStore.serverRegionConfig?.whiteboard.convertRegion as Region),
-    );
+    const ticket = await uploadAvatarStart(file.name, file.size);
 
     const formData = new FormData();
     const encodedFileName = encodeURIComponent(file.name);
-    formData.append("key", ticket.filePath);
+    formData.append("key", ticket.ossFilePath);
     formData.append("name", file.name);
     formData.append("policy", ticket.policy);
     formData.append("OSSAccessKeyId", globalStore.cloudStorageAK);
@@ -101,7 +97,7 @@ export async function uploadAvatar(file: File, t: FlatI18nTFunction): Promise<vo
     );
     formData.append("file", file);
 
-    await Axios.post(ticket.policyURL, formData, {
+    await Axios.post(ticket.ossDomain, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },

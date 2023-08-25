@@ -1,5 +1,5 @@
 import { RoomStatus, RoomType, Week, Region } from "./constants";
-import { post } from "./utils";
+import { post, postV2 } from "./utils";
 
 export interface CreateOrdinaryRoomPayload {
     title: string;
@@ -402,26 +402,23 @@ export async function rename(name: string): Promise<RenameResult> {
 export interface UploadAvatarStartPayload {
     fileName: string;
     fileSize: number;
-    region: Region;
 }
 
 export interface UploadAvatarResult {
     fileUUID: string;
-    filePath: string;
+    ossDomain: string;
+    ossFilePath: string;
     policy: string;
-    policyURL: string;
     signature: string;
 }
 
 export async function uploadAvatarStart(
     fileName: string,
     fileSize: number,
-    region: Region,
 ): Promise<UploadAvatarResult> {
-    return await post<UploadAvatarStartPayload, UploadAvatarResult>("user/upload-avatar/start", {
+    return await postV2<UploadAvatarStartPayload, UploadAvatarResult>("user/upload-avatar/start", {
         fileName,
         fileSize,
-        region,
     });
 }
 
@@ -434,7 +431,7 @@ export interface UploadAvatarFinishResult {
 }
 
 export async function uploadAvatarFinish(fileUUID: string): Promise<UploadAvatarFinishResult> {
-    return await post<UploadAvatarFinishPayload, UploadAvatarFinishResult>(
+    return await postV2<UploadAvatarFinishPayload, UploadAvatarFinishResult>(
         "user/upload-avatar/finish",
         {
             fileUUID,
