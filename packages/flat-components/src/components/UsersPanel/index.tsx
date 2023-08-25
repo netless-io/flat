@@ -163,14 +163,20 @@ const Row = /* @__PURE__ */ observer(function Row({
                     {user.hasLeft ? (
                         <div className="users-panel-list-name-wrapper">
                             <span className="users-panel-list-name">
-                                <span className="users-panel-list-name-content">{user.name}</span>
+                                <span
+                                    className={`users-panel-list-name-content ${isSelf && "is-me"}`}
+                                >
+                                    {user.name}
+                                </span>
                                 {isSelf && <span className="users-panel-is-self">{t("me")}</span>}
                             </span>
                             <span className="users-panel-list-has-left">{t("has-left")}</span>
                         </div>
                     ) : (
                         <span className="users-panel-list-name">
-                            <span className="users-panel-list-name-content">{user.name}</span>
+                            <span className={`users-panel-list-name-content ${isSelf && "is-me"}`}>
+                                {user.name}
+                            </span>
                             {isSelf && <span className="users-panel-is-self">{t("me")}</span>}
                         </span>
                     )}
