@@ -662,23 +662,21 @@ export class ClassroomStore {
                 for (const userUUID in diff) {
                     const user = this.users.cachedUsers.get(userUUID);
                     const enabled = diff[userUUID]?.newValue;
-                    if (user) {
-                        if (this.isCreator) {
-                            if (enabled) {
-                                message.info(
-                                    FlatI18n.t("grant-whiteboard-access", { name: user.name }),
-                                );
-                            } else {
-                                message.info(
-                                    FlatI18n.t("revoke-whiteboard-access", { name: user.name }),
-                                );
-                            }
+                    if (this.userUUID === userUUID) {
+                        if (enabled) {
+                            message.info(FlatI18n.t("granted-whiteboard-access"));
                         } else {
-                            if (enabled) {
-                                message.info(FlatI18n.t("granted-whiteboard-access"));
-                            } else {
-                                message.info(FlatI18n.t("revoked-whiteboard-access"));
-                            }
+                            message.info(FlatI18n.t("revoked-whiteboard-access"));
+                        }
+                    } else if (user && this.isCreator) {
+                        if (enabled) {
+                            message.info(
+                                FlatI18n.t("grant-whiteboard-access", { name: user.name }),
+                            );
+                        } else {
+                            message.info(
+                                FlatI18n.t("revoke-whiteboard-access", { name: user.name }),
+                            );
                         }
                     }
                 }
