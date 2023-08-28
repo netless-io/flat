@@ -184,7 +184,7 @@ const Row = /* @__PURE__ */ observer(function Row({
             </td>
             <td>
                 <Switch
-                    checked={user.hasLeft || user.isSpeak}
+                    checked={user.isSpeak}
                     disabled={!(isCreator || (isSelf && user.isSpeak))}
                     size="small"
                     onChange={checked => onStaging?.(user.userUUID, checked)}

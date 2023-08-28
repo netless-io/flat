@@ -400,15 +400,11 @@ export class AgoraRTCElectron extends IServiceVideoChat {
     }
 
     public override startSpeakerTest(filePath: string): void {
-        this.rtcEngine.enableAudio();
-        this.rtcEngine.enableLocalAudio(true);
         this.rtcEngine.startAudioPlaybackDeviceTest(filePath);
     }
 
     public override stopSpeakerTest(): void {
         this.rtcEngine.stopAudioPlaybackDeviceTest();
-        this.rtcEngine.enableLocalAudio(false);
-        this.rtcEngine.disableAudio();
     }
 
     private async _join({
