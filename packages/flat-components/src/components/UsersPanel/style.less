@@ -22,6 +22,7 @@
 
 .users-panel-headline-avatar,
 .users-panel-list-avatar {
+    flex-shrink: 0;
     display: inline-block;
     width: 24px;
     height: 24px;
@@ -130,6 +131,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.users-panel-list-name-content.is-me {
+    max-width: 50px;
 }
 
 .users-panel-list-name {
