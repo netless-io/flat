@@ -153,14 +153,16 @@ export class WhiteboardStore {
             throw new Error("Missing Whiteboard UUID and Token");
         }
 
+        const defaultRegion = globalStore.serverRegionConfig?.whiteboard.convertRegion as Region;
+        const isDifferentRegion = globalStore.region !== defaultRegion;
+        const userName = isDifferentRegion ? void 0 : globalStore.userName;
+
         await this.whiteboard.joinRoom({
             roomID: globalStore.whiteboardRoomUUID,
             roomToken: globalStore.whiteboardRoomToken,
-            region:
-                globalStore.region ??
-                (globalStore.serverRegionConfig?.whiteboard.convertRegion as Region),
+            region: globalStore.region ?? defaultRegion,
             uid: globalStore.userUUID,
-            nickName: globalStore.userInfo?.name ?? globalStore.userUUID,
+            nickName: userName ?? globalStore.userUUID.slice(-8),
             classroomType: this.getRoomType(),
             options: {
                 strokeTail: preferencesStore.strokeTail,
