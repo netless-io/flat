@@ -372,23 +372,6 @@ export class Fastboard extends IServiceWhiteboard {
             return [];
         }
 
-        // Sometimes aliyun oss will return images without CORS headers,
-        // this forbids us to use canvas.toDataURL() to download them.
-        // So we hack the drawing process to replace images with placeholders.
-        const placeholder = document.createElement("canvas");
-        placeholder.width = placeholder.height = 1;
-
-        const realDrawImage = CanvasRenderingContext2D.prototype.drawImage;
-        // @ts-ignore
-        CanvasRenderingContext2D.prototype.drawImage = function drawImage(image, ...args) {
-            if ("src" in image && image.src.startsWith("https://flat-storage.oss-accelerate.")) {
-                // @ts-ignore
-                return realDrawImage.call(this, placeholder, ...args);
-            }
-            // @ts-ignore
-            return realDrawImage.call(this, image, ...args);
-        };
-
         const room = app.manager.mainView;
         const { contextPath, scenes } = app.manager.sceneState;
         const scale = app.manager.cameraState.scale;
@@ -432,7 +415,6 @@ export class Fastboard extends IServiceWhiteboard {
             for (const act of actions) {
                 await act();
             }
-            CanvasRenderingContext2D.prototype.drawImage = realDrawImage;
         });
 
         return canvases;
