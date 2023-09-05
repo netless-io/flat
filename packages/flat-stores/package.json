@@ -28,7 +28,7 @@
     "@netless/flat-services": "workspace:*",
     "@netless/sync-player": "^1.0.7",
     "flat-components": "workspace:*",
-    "hls.js": "^1.2.1",
+    "hls.js": "^1.4.12",
     "polly-js": "^1.8.3",
     "side-effect-manager": "^1.2.1",
     "uuid": "^9.0.0"

@@ -39,7 +39,6 @@ export default defineConfig({
         alias: [
             // replace webpack alias
             { find: /^~/, replacement: "" },
-            { find: "hls.js", replacement: "hls.js/dist/hls.min.js" },
         ],
     },
     assetsInclude: ["svga"],
