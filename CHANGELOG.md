@@ -1,4 +1,4 @@
-## [2.3.0](https://github.com/netless-io/flat/compare/v2.2.3...v2.3.0) (2023-09-04)
+## [2.3.0](https://github.com/netless-io/flat/compare/v2.2.3...v2.3.0) (2023-09-05)
 
 
 ### Features
