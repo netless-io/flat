@@ -1,3 +1,34 @@
+## [2.3.0](https://github.com/netless-io/flat/compare/v2.2.3...v2.3.0) (2023-09-05)
+
+
+### Features
+
+* **project**: add sg support ([#1991](https://github.com/netless-io/flat/issues/1991)) ([7aea5e72](https://github.com/netless-io/flat/commit/7aea5e72661a1554cecda2c5b906258b92bdfe42))
+* **login**: add account history ([#1985](https://github.com/netless-io/flat/issues/1985)) ([102cf4ca](https://github.com/netless-io/flat/commit/102cf4ca5ac34148da7dd4dd7b9c3d42b27ebabe))
+* **flat-pages**: add password login & register ([#1984](https://github.com/netless-io/flat/issues/1984)) ([39083763](https://github.com/netless-io/flat/commit/39083763f6102c83d88c033cfa28833c0c14f1a9))
+* **service-providers**: rtc add mirror mode (local only) ([#1967](https://github.com/netless-io/flat/issues/1967)) ([5e11fd45](https://github.com/netless-io/flat/commit/5e11fd458a5077050f4d5eb048b5ac0ede3972a8))
+* **flat-pages**: add region code ([#1968](https://github.com/netless-io/flat/issues/1968)) ([5e066ecc](https://github.com/netless-io/flat/commit/5e066ecc796c773114df0242ca1dcbfda49e37da))
+
+### Bug Fixes
+
+* **service-providers**: keep audio state when testing speaker ([#2030](https://github.com/netless-io/flat/issues/2030)) ([3151acff](https://github.com/netless-io/flat/commit/3151acff1686b60d35279f8e3684a9bded96991a))
+* **flat-stores**: whiteboard access tip incorrect ([#2028](https://github.com/netless-io/flat/issues/2028)) ([ed431679](https://github.com/netless-io/flat/commit/ed431679784f489a08c8ffe7b0b0d11108a32b87))
+* **desktop**: open external links in browser ([#2021](https://github.com/netless-io/flat/issues/2021)) ([cd684051](https://github.com/netless-io/flat/commit/cd6840518e85bd1ed34cb9938af8ad101e04e636))
+* **style**: fix empty img error ([#2008](https://github.com/netless-io/flat/issues/2008)) ([4063f2e3](https://github.com/netless-io/flat/commit/4063f2e39c5055576bc2cc6e3f10f76aa839c6ba))
+* **flat-pages**: fix phone/email binding error ([#2005](https://github.com/netless-io/flat/issues/2005)) ([21074f69](https://github.com/netless-io/flat/commit/21074f696c88d1c181e53c890c49298432310152))
+* **flat-components**: fix send code tip error ([#2002](https://github.com/netless-io/flat/issues/2002)) ([719cb000](https://github.com/netless-io/flat/commit/719cb000d778c70cdc47ee68a5afd28875acd4d3))
+* **flat-pages**: fix an ant design warning in development mode ([#1998](https://github.com/netless-io/flat/issues/1998)) ([58566cfe](https://github.com/netless-io/flat/commit/58566cfe3325952993f40c0c91299bb4afd139e2))
+* **flat-server-api**: fix email language error ([#1986](https://github.com/netless-io/flat/issues/1986)) ([0a258ae2](https://github.com/netless-io/flat/commit/0a258ae26fdc68e1c5742589ec3337ca5f413719))
+* **flat-components**: fix avatar show error ([#1989](https://github.com/netless-io/flat/issues/1989)) ([3e332449](https://github.com/netless-io/flat/commit/3e33244951ef6bbff4bf29b2f71161fdbbd430a0))
+* **i18n**: fix register failed tip ([#1988](https://github.com/netless-io/flat/issues/1988)) ([c65eb3fb](https://github.com/netless-io/flat/commit/c65eb3fb90a02b026f6ec9e5b476cb4a1028bf90))
+* **flat-components**: incorrect end time picker at same hour ([#1981](https://github.com/netless-io/flat/issues/1981)) ([cc77d5e0](https://github.com/netless-io/flat/commit/cc77d5e0adbcd6e48641736e9e36d527e5fd0df4))
+* **flat-components**: handle search params from hash router ([#1976](https://github.com/netless-io/flat/issues/1976)) ([795dcd49](https://github.com/netless-io/flat/commit/795dcd495ae44d00098a4588f95a959c2a364523))
+* **flat-pages**: replace loadable component in favor of suspense ([#1973](https://github.com/netless-io/flat/issues/1973)) ([f997c075](https://github.com/netless-io/flat/commit/f997c07554c758769fe7a04176cf4fc48b8d3279))
+* **i18n**: update mirror mode text ([#1970](https://github.com/netless-io/flat/issues/1970)) ([4b880b58](https://github.com/netless-io/flat/commit/4b880b589fb11fcddb40cea49172e8c689feb2ca))
+* **flat-stores**: make duration equal to the server ([#1965](https://github.com/netless-io/flat/issues/1965)) ([4bae3149](https://github.com/netless-io/flat/commit/4bae314979d3f6e088734bfac8220570f435624d))
+
+
+
 ## [2.2.3](https://github.com/netless-io/flat/compare/v2.2.2...v2.2.3) (2023-07-03)
 
 
