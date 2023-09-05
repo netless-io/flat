@@ -1,3 +1,12 @@
+## [2.3.1](https://github.com/netless-io/flat/compare/v2.3.0...v2.3.1) (2023-09-05)
+
+
+### Bug Fixes
+
+* **library**: hls.js load failed ([01065a36](https://github.com/netless-io/flat/commit/01065a3615e193edc8635f180c71a8671f28d4c1))
+
+
+
 ## [2.3.0](https://github.com/netless-io/flat/compare/v2.2.3...v2.3.0) (2023-09-05)
 
 
