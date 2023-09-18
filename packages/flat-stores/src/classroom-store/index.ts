@@ -475,6 +475,7 @@ export class ClassroomStore {
             if (this.isRecording) {
                 fastboard.syncedStore.dispatchEvent("new-message", message);
             }
+            this.users.flushLazyUsers([message.senderID]).catch(console.error);
         };
 
         const raiseHandUsers = new Set<string>();
