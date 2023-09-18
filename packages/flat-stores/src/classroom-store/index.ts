@@ -750,25 +750,10 @@ export class ClassroomStore {
             if (this.isCreator && this.roomStatus === RoomStatus.Idle) {
                 void this.startClass();
             }
-
-            if (this.isCreator && fastboard.syncedStore.isRoomWritable) {
-                await fastboard.syncedStore.nextFrame();
-                this.sideEffect.addDisposer(
-                    autorun(reaction => {
-                        if (this.onStageUserUUIDs.length > 0) {
-                            reaction.dispose();
-                            return;
-                        }
-                        if (this.users.joiners.length === 1) {
-                            this.onStaging(this.users.joiners[0].userUUID, true);
-                        }
-                    }),
-                );
-            }
         }
 
         if (
-            this.roomType === RoomType.SmallClass &&
+            (this.roomType === RoomType.OneToOne || this.roomType === RoomType.SmallClass) &&
             !this.isCreator &&
             !onStageUsersStorage.state[this.userUUID] &&
             this.assertStageNotFull(false) &&
