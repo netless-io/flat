@@ -241,8 +241,8 @@ importers:
         specifier: 0.2.0-canary.1
         version: 0.2.0-canary.1
       '@netless/app-quill':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^0.1.2
+        version: 0.1.2
       '@netless/app-selector':
         specifier: ^0.0.3
         version: 0.0.3(ts-node@10.9.1)
@@ -1072,8 +1072,8 @@ importers:
         specifier: 0.2.0-canary.1
         version: 0.2.0-canary.1
       '@netless/app-quill':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^0.1.2
+        version: 0.1.2
       '@netless/app-selector':
         specifier: ^0.0.3
         version: 0.0.3(ts-node@10.9.1)
@@ -3680,8 +3680,8 @@ packages:
     resolution: {integrity: sha512-8vkDod4RtFJflCafz5fFSD+zQRLIzD+7I2TRNSBiGseEwMkmC7yOJvOj4Df5AV4pXFq+3RAgQaaBidnpoJTC0w==}
     dev: false
 
-  /@netless/app-quill@0.1.1:
-    resolution: {integrity: sha512-WLwhMGOJcENQd7+c557HcZc8UGqSf6hsvg9c5pDyILkOvulrF0GLztz4tswZK5KS8jAFKLihxTPk4ylzPVxygg==}
+  /@netless/app-quill@0.1.2:
+    resolution: {integrity: sha512-LxvEQn3INvMk7zx5euVjpotEniFOQwNH3YByw8bls7TOp+IGCPxN6yH5PmptFVPM6q3U5LH+nZJ4nnJtfYbl8w==}
     dependencies:
       '@netless/y': 0.2.0-canary.0(yjs@13.5.13)
       katex: 0.16.2
