@@ -20,7 +20,7 @@
     "@netless/app-iframe-bridge": "^0.0.2",
     "@netless/app-mindmap": "^0.1.1",
     "@netless/app-monaco": "0.2.0-canary.1",
-    "@netless/app-quill": "^0.1.1",
+    "@netless/app-quill": "^0.1.2",
     "@netless/app-selector": "^0.0.3",
     "@netless/app-slide": "0.3.0-canary.19",
     "@netless/flat-i18n": "workspace:*",
