@@ -24,7 +24,7 @@ export interface VideoAvatarProps {
     /** Current user UUID */
     userUUID: string;
     updateDeviceState(id: string, camera: boolean, mic: boolean): void;
-    generateAvatar: (uid: string) => string;
+    generateAvatar?: (uid: string) => string;
     getVolumeLevel?: () => number;
 
     portal?: HTMLElement;
@@ -53,7 +53,9 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
     const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
 
     const avatar =
-        isAvatarLoadFailed || !avatarUser.avatar ? generateAvatar(userUUID) : avatarUser.avatar;
+        generateAvatar && (isAvatarLoadFailed || !avatarUser.avatar)
+            ? generateAvatar(userUUID)
+            : avatarUser.avatar;
 
     const isCameraCtrlDisable = !isCreator && avatarUser.userUUID !== userUUID;
 
