@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React from "react";
+import React, { useState } from "react";
 import classnames from "classnames";
 import { createPortal } from "react-dom";
 import { useTranslate } from "@netless/flat-i18n";
@@ -24,6 +24,7 @@ export interface VideoAvatarProps {
     /** Current user UUID */
     userUUID: string;
     updateDeviceState(id: string, camera: boolean, mic: boolean): void;
+    generateAvatar: (uid: string) => string;
     getVolumeLevel?: () => number;
 
     portal?: HTMLElement;
@@ -40,6 +41,7 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
     isCreator,
     isDropTarget,
     userUUID,
+    generateAvatar,
     updateDeviceState,
     getVolumeLevel,
     onDoubleClick,
@@ -48,6 +50,10 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
     children,
 }) => {
     const t = useTranslate();
+    const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
+
+    const avatar =
+        isAvatarLoadFailed || !avatarUser.avatar ? generateAvatar(userUUID) : avatarUser.avatar;
 
     const isCameraCtrlDisable = !isCreator && avatarUser.userUUID !== userUUID;
 
@@ -79,13 +85,14 @@ export const VideoAvatar: React.FC<VideoAvatarProps> = ({
                 <div className="video-avatar-image-container">
                     <div
                         className="video-avatar-image-blur-bg"
-                        style={{ backgroundImage: `url(${avatarUser.avatar})` }}
+                        style={{ backgroundImage: `url(${avatar})` }}
                     />
                     <img
                         alt={avatarUser.name}
                         className="video-avatar-image"
                         draggable={false}
-                        src={avatarUser.avatar}
+                        src={avatar}
+                        onError={() => avatar && setAvatarLoadFailed(true)}
                     />
                 </div>
             )}

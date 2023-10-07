@@ -21,6 +21,7 @@ import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { joinRoomHandler } from "../../utils/join-room-handler";
 import { useTranslate } from "@netless/flat-i18n";
 import { FLAT_WEB_BASE_URL } from "../../constants/process";
+import { generateAvatar } from "../../utils/generate-avatar";
 
 export interface MainRoomListProps {
     listRoomsType: ListRoomsType;
@@ -157,10 +158,12 @@ export const MainRoomList = observer<MainRoomListProps>(function MainRoomList({
                         <RoomListItem
                             beginTime={beginTime}
                             endTime={endTime}
+                            generateAvatar={generateAvatar}
                             isPeriodic={!!room.periodicUUID}
                             menuActions={getSubActions(room)}
                             ownerAvatar={room.ownerAvatarURL}
                             ownerName={room.ownerName}
+                            ownerUUID={room.ownerUUID}
                             primaryAction={primaryAction(room.roomStatus)}
                             status={getRoomStatus(room.roomStatus)}
                             title={room.title!}

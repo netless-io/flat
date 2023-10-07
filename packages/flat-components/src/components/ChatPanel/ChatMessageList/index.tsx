@@ -21,6 +21,7 @@ export interface ChatMessageListProps {
     userUUID: string;
     messages: ChatMsg[];
     getUserByUUID: (uuid: string) => User | undefined;
+    generateAvatar: (uid: string) => string;
     loadMoreRows: InfiniteLoaderProps["loadMoreRows"];
     openCloudStorage: () => void;
 }
@@ -31,6 +32,7 @@ export const ChatMessageList = /* @__PURE__ */ observer<ChatMessageListProps>(
         userUUID,
         messages,
         getUserByUUID,
+        generateAvatar,
         loadMoreRows,
         openCloudStorage,
     }) {
@@ -126,6 +128,7 @@ export const ChatMessageList = /* @__PURE__ */ observer<ChatMessageListProps>(
                             <Observer>
                                 {() => (
                                     <ChatMessage
+                                        generateAvatar={generateAvatar}
                                         message={messages[index]}
                                         messageUser={getUserByUUID(messages[index].senderID)}
                                         openCloudStorage={openCloudStorage}

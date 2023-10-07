@@ -26,6 +26,7 @@ export interface UsersPanelProps {
     onStaging?: (userUUID: string, isOnStage: boolean) => void;
     onWhiteboard?: (userUUID: string, enabled: boolean) => void;
     onDeviceState?: (userUUID: string, camera: boolean, mic: boolean) => void;
+    generateAvatar?: (userUUID: string) => string;
 }
 
 export const UsersPanel = /* @__PURE__ */ observer<UsersPanelProps>(function UsersPanel({
@@ -40,6 +41,7 @@ export const UsersPanel = /* @__PURE__ */ observer<UsersPanelProps>(function Use
     onStaging,
     onWhiteboard,
     onDeviceState,
+    generateAvatar,
 }) {
     const t = useTranslate();
 
@@ -89,6 +91,7 @@ export const UsersPanel = /* @__PURE__ */ observer<UsersPanelProps>(function Use
                         {users.map(user => (
                             <Row
                                 key={user.userUUID}
+                                generateAvatar={generateAvatar}
                                 getDeviceState={getDeviceState}
                                 getVolumeLevel={getVolumeLevel}
                                 isCreator={isCreator}
@@ -120,6 +123,7 @@ interface RowProps {
     onStaging: UsersPanelProps["onStaging"];
     onWhiteboard: UsersPanelProps["onWhiteboard"];
     onDeviceState: UsersPanelProps["onDeviceState"];
+    generateAvatar: UsersPanelProps["generateAvatar"];
 }
 
 const Row = /* @__PURE__ */ observer(function Row({
@@ -132,7 +136,15 @@ const Row = /* @__PURE__ */ observer(function Row({
     onStaging,
     onWhiteboard,
     onDeviceState,
+    generateAvatar,
 }: RowProps): React.ReactElement {
+    const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
+
+    const avatar =
+        generateAvatar && (isAvatarLoadFailed || !user.avatar)
+            ? generateAvatar(userUUID)
+            : user.avatar;
+
     const [camera, setCamera] = useState(false);
     const [mic, setMic] = useState(false);
     const getVolumeLevel = useCallback(() => {
@@ -158,7 +170,7 @@ const Row = /* @__PURE__ */ observer(function Row({
             <td>
                 <span className="users-panel-list-avatar-name">
                     <span className="users-panel-list-avatar">
-                        <img src={user.avatar} />
+                        <img src={avatar} onError={() => avatar && setAvatarLoadFailed(true)} />
                     </span>
                     {user.hasLeft ? (
                         <div className="users-panel-list-name-wrapper">

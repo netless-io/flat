@@ -80,6 +80,7 @@ export const JoinPage = observer(function JoinPage() {
                     privacyURL={privacyURL}
                     roomUUID={roomUUID}
                     serviceURL={serviceURL}
+                    userUUID={globalStore.userUUID ?? ""}
                 />
             )}
         </div>

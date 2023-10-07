@@ -3,7 +3,7 @@ import "./style.less";
 import Placeholder from "./icons/Placeholder";
 
 import classnames from "classnames";
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslate } from "@netless/flat-i18n";
 import { User } from "../../../types/user";
@@ -22,6 +22,8 @@ export interface VideoAvatarAbsentProps {
     onDragStart?: () => void;
     onDragEnd?: () => void;
     isDropTarget?: boolean;
+
+    generateAvatar?: (uid: string) => string;
 }
 
 export const VideoAvatarAbsent: FC<VideoAvatarAbsentProps> = ({
@@ -34,9 +36,17 @@ export const VideoAvatarAbsent: FC<VideoAvatarAbsentProps> = ({
     onDragStart,
     onDragEnd,
     isDropTarget,
+    generateAvatar,
 }) => {
     const t = useTranslate();
     const isDark = useContext(DarkModeContext);
+
+    const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
+
+    const avatar =
+        generateAvatar && (isAvatarLoadFailed || !avatarUser)
+            ? generateAvatar(avatarUser?.userUUID ?? "")
+            : avatarUser?.avatar;
 
     const onDragStartImpl = (ev: React.DragEvent<HTMLDivElement>): void => {
         if (!avatarUser) {
@@ -64,13 +74,14 @@ export const VideoAvatarAbsent: FC<VideoAvatarAbsentProps> = ({
         >
             <div
                 className="video-avatar-image-blur-bg"
-                style={{ backgroundImage: `url(${avatarUser.avatar})` }}
+                style={{ backgroundImage: `url(${avatar})` }}
             />
             <img
                 alt={avatarUser.name}
                 className="video-avatar-image"
                 draggable={false}
-                src={avatarUser.avatar}
+                src={avatar}
+                onError={() => avatar && setAvatarLoadFailed(true)}
             />
             <div className="video-avatar-bottom">
                 <h1 className="video-avatar-user-name" title={avatarUser.name}>

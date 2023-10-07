@@ -3,16 +3,18 @@ import logoSVG from "./icons/logo.svg";
 import downloadSVG from "./icons/download.svg";
 import joinSVG from "./icons/join.svg";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Avatar, Button } from "antd";
 import { useTranslate } from "@netless/flat-i18n";
 
 import { RouteNameType, usePushHistory } from "../utils/routes";
 import { FLAT_DOWNLOAD_URL } from "../constants/process";
+import { generateAvatar } from "../utils/generate-avatar";
 
 export interface JoinPageDesktopProps {
     isLogin: boolean;
     avatar: string;
+    userUUID: string;
     roomUUID: string;
     privacyURL: string;
     serviceURL: string;
@@ -21,7 +23,8 @@ export interface JoinPageDesktopProps {
 
 export default function JoinPageDesktop({
     isLogin,
-    avatar,
+    avatar: avatarSrc,
+    userUUID,
     roomUUID,
     privacyURL,
     serviceURL,
@@ -29,6 +32,9 @@ export default function JoinPageDesktop({
 }: JoinPageDesktopProps): React.ReactElement {
     const t = useTranslate();
     const pushHistory = usePushHistory();
+    const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
+
+    const avatar = isAvatarLoadFailed || !avatarSrc ? generateAvatar(userUUID) : avatarSrc;
 
     const url = useMemo(() => `x-agora-flat-client://joinRoom?roomUUID=${roomUUID}`, [roomUUID]);
 
@@ -40,7 +46,9 @@ export default function JoinPageDesktop({
                 {isLogin ? (
                     <Avatar
                         className="join-page-header-avatar"
-                        icon={<img src={avatar} />}
+                        icon={
+                            <img src={avatar} onError={() => avatar && setAvatarLoadFailed(true)} />
+                        }
                         size={32}
                     />
                 ) : (
