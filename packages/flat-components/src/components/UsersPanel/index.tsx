@@ -142,7 +142,7 @@ const Row = /* @__PURE__ */ observer(function Row({
 
     const avatar =
         generateAvatar && (isAvatarLoadFailed || !user.avatar)
-            ? generateAvatar(userUUID)
+            ? generateAvatar(user.userUUID)
             : user.avatar;
 
     const [camera, setCamera] = useState(false);
