@@ -8,7 +8,13 @@ const EmptyRoomSVG: React.FC<EmptyRoomSVGProps> = ({ isDark }) => {
     const bgColor = isDark ? "#93BAFF" : "#fff";
 
     return (
-        <svg fill="none" height="240" width="240" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            fill="none"
+            height="160"
+            viewBox="0 0 240 240"
+            width="160"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <path
                 d="M31.053 130.551c6.866-4.374 19.22-13.216 15.238-23.983-11.794-31.877.287-53.895 21.487-56.299 44.165-5 36.059 61.558 100.803 41.98 45.266-13.691 76.839 24.972 45.436 51.184-22.6 18.863-45.754 46.567-45.754 46.567l-87.46-.316c-17.813-25.385-48.663-22.212-61.811-29.708-16.431-9.365 5.43-25.205 12.058-29.425"
                 fill="url(#empty-room-svg)"
