@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
 import { ClassroomStore } from "@netless/flat-stores";
 import { SVGUserGroup, TopBarRightBtn, useComputed, UsersPanel } from "flat-components";
+import { generateAvatar } from "../utils/generate-avatar";
 
 interface UsersButtonProps {
     classroom: ClassroomStore;
@@ -103,6 +104,7 @@ export const UsersButton = observer<UsersButtonProps>(function UsersButton({ cla
                 onCancel={() => classroom.toggleUsersPanel(false)}
             >
                 <UsersPanel
+                    generateAvatar={generateAvatar}
                     getDeviceState={getDeviceState}
                     getVolumeLevel={getVolumeLevel}
                     ownerUUID={classroom.ownerUUID}
