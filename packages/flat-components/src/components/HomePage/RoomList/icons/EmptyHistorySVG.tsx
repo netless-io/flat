@@ -9,7 +9,13 @@ const EmptyHistorySVG: React.FC<EmptyHistorySVGProps> = ({ isDark }) => {
     const style = isDark ? ({ mixBlendMode: "soft-light" } as CSSProperties) : undefined;
 
     return (
-        <svg fill="none" height="240" width="240" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            fill="none"
+            height="160"
+            viewBox="0 0 240 240"
+            width="160"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <path
                 d="M46 195s57.422-30.374 32.73-55.013c-15.42-15.388-28.292-38.205-29.588-59.412C47.922 60.748 65.812 44.924 86.806 45c16.09.054 28.65 7.878 38.899 18.806 8.549 9.12 23.442 38.754 40.348 34.407 3.638-.938 6.238-3.813 9.121-6.078 13.23-10.401 19.179 7.169 19.331 16.533.175 10.73-2.204 21.558-4.781 31.968-1.533 6.176-13.445 54.364-17.746 54.364H46Z"
                 fill="url(#empty-history-svg)"
