@@ -25,6 +25,7 @@ import { PRESETS } from "../constants/presets";
 import { createCloudFile } from "../utils/create-cloud-file";
 import { UserWindows } from "./UserWindows";
 import { PreferencesStoreContext } from "./StoreProvider";
+import { generateAvatar } from "../utils/generate-avatar";
 
 export interface WhiteboardProps {
     whiteboardStore: WhiteboardStore;
@@ -266,10 +267,9 @@ export const Whiteboard = observer<WhiteboardProps>(function Whiteboard({
                                 className="hand-raising-user"
                                 title={user.name}
                             >
-                                <img
-                                    alt="avatar"
-                                    className="hand-raising-user-avatar"
-                                    src={user.avatar}
+                                <HandRaisingJoinerAvatar
+                                    avatarSrc={user.avatar}
+                                    userUUID={user.userUUID}
                                 />
                                 <span className="hand-raising-user-name">{user.name}</span>
                                 <button
@@ -317,3 +317,25 @@ function renderScrollPage(t: FlatI18nTFunction, page: number, maxPage: number): 
         return t("scroll.page", { page: ((((page + 1) * 10) | 0) / 10).toFixed(1) });
     }
 }
+
+interface HandRaisingJoinerAvatarProps {
+    userUUID: string;
+    avatarSrc?: string;
+}
+
+const HandRaisingJoinerAvatar: React.FC<HandRaisingJoinerAvatarProps> = ({
+    userUUID,
+    avatarSrc,
+}) => {
+    const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
+    const avatar = isAvatarLoadFailed || !avatarSrc ? generateAvatar(userUUID) : avatarSrc;
+
+    return (
+        <img
+            alt="avatar"
+            className="hand-raising-user-avatar"
+            src={avatar}
+            onError={() => avatar && setAvatarLoadFailed(true)}
+        />
+    );
+};

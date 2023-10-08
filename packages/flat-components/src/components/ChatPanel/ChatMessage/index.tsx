@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useTranslate } from "@netless/flat-i18n";
 import { format } from "date-fns";
@@ -12,6 +12,7 @@ export interface ChatMessageProps {
     messageUser?: { name: string; avatar: string };
     message: ChatMsg;
     onMount: () => void;
+    generateAvatar: (uid: string) => string;
     openCloudStorage?: () => void;
 }
 
@@ -20,9 +21,15 @@ export const ChatMessage = /* @__PURE__ */ observer<ChatMessageProps>(function C
     messageUser,
     message,
     onMount,
+    generateAvatar,
     openCloudStorage,
 }) {
     const t = useTranslate();
+    const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
+
+    const avatar =
+        isAvatarLoadFailed || !messageUser?.avatar ? generateAvatar(userUUID) : messageUser.avatar;
+
     useEffect(() => {
         onMount();
         // run only once
@@ -79,7 +86,11 @@ export const ChatMessage = /* @__PURE__ */ observer<ChatMessageProps>(function C
             <div className="chat-message-line is-reverse">
                 <div className="chat-message-avatar">
                     <span className="chat-message-user-avatar">
-                        <img alt="[avatar]" src={messageUser?.avatar} />
+                        <img
+                            alt="[avatar]"
+                            src={avatar}
+                            onError={() => avatar && setAvatarLoadFailed(true)}
+                        />
                     </span>
                 </div>
                 <div className="chat-message-user-bubble">
@@ -107,7 +118,11 @@ export const ChatMessage = /* @__PURE__ */ observer<ChatMessageProps>(function C
         <div className="chat-message-line">
             <div className="chat-message-avatar">
                 <span className="chat-message-user-avatar">
-                    <img alt="[avatar]" src={messageUser?.avatar} />
+                    <img
+                        alt="[avatar]"
+                        src={avatar}
+                        onError={() => avatar && setAvatarLoadFailed(true)}
+                    />
                 </span>
             </div>
             <div className="chat-message-user-bubble">

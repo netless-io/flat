@@ -7,7 +7,11 @@ import {
     VideoAvatarProps,
 } from "flat-components";
 import { AvatarCanvas, AvatarCanvasProps } from "./AvatarCanvas";
-export type RTCAvatarProps = Omit<VideoAvatarProps, "getVolumeLevel" | "avatarUser" | "portal"> &
+import { generateAvatar } from "../../utils/generate-avatar";
+export type RTCAvatarProps = Omit<
+    VideoAvatarProps,
+    "getVolumeLevel" | "avatarUser" | "portal" | "generateAvatar"
+> &
     VideoAvatarAbsentProps &
     AvatarCanvasProps & { getPortal: (userUUID: string) => HTMLElement | undefined };
 
@@ -31,6 +35,7 @@ export const RTCAvatar: FC<RTCAvatarProps> = /* @__PURE__ */ observer<RTCAvatarP
                 {(getVolumeLevel, canvas) => (
                     <VideoAvatar
                         avatarUser={avatarUser}
+                        generateAvatar={generateAvatar}
                         getVolumeLevel={getVolumeLevel}
                         isCreator={isCreator}
                         isDropTarget={isDropTarget}
@@ -49,6 +54,7 @@ export const RTCAvatar: FC<RTCAvatarProps> = /* @__PURE__ */ observer<RTCAvatarP
         ) : (
             <VideoAvatarAbsent
                 avatarUser={avatarUser}
+                generateAvatar={generateAvatar}
                 isAvatarUserCreator={isAvatarUserCreator}
                 isCreator={isCreator}
                 isDropTarget={isDropTarget}

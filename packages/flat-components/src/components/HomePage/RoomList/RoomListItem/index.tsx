@@ -1,6 +1,6 @@
 import "./style.less";
 
-import React, { PropsWithChildren, ReactElement } from "react";
+import React, { PropsWithChildren, ReactElement, useState } from "react";
 import { format } from "date-fns";
 import classNames from "classnames";
 import { useTranslate } from "@netless/flat-i18n";
@@ -14,8 +14,10 @@ export interface RoomListItemProps<T extends string> {
     title: string;
     beginTime?: Date;
     endTime?: Date;
+    ownerUUID?: string;
     ownerName?: string;
     ownerAvatar?: string;
+    generateAvatar?: (uid: string) => string;
     status: RoomStatusType;
     isPeriodic?: boolean;
     menuActions?: Array<RoomListItemAction<T>> | null;
@@ -28,8 +30,10 @@ export function RoomListItem<T extends string = string>({
     title,
     beginTime,
     endTime,
+    ownerUUID,
     ownerName,
     ownerAvatar,
+    generateAvatar,
     status,
     isPeriodic,
     menuActions,
@@ -38,13 +42,24 @@ export function RoomListItem<T extends string = string>({
     onAction,
 }: PropsWithChildren<RoomListItemProps<T>>): ReactElement {
     const t = useTranslate();
+    const [isAvatarLoadFailed, setAvatarLoadFailed] = useState(false);
+
+    const avatar =
+        generateAvatar && ownerUUID && (isAvatarLoadFailed || !ownerAvatar)
+            ? generateAvatar(ownerUUID)
+            : ownerAvatar;
+
     return (
         <div className={classNames("room-list-item", { pointer: !!onClick })}>
             <div className="room-list-item-content">
-                {ownerAvatar && (
+                {avatar && (
                     <div className="room-list-item-left">
                         <figure className="room-list-item-owner-avatar" title={ownerName}>
-                            <img alt={ownerName} src={ownerAvatar} />
+                            <img
+                                alt={ownerName}
+                                src={avatar}
+                                onError={() => avatar && setAvatarLoadFailed(true)}
+                            />
                         </figure>
                     </div>
                 )}
