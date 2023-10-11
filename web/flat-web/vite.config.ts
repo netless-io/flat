@@ -7,6 +7,7 @@ import { inlineAssets } from "./scripts/vite-plugin-inline-assets";
 import { injectGtag } from "./scripts/vite-plugin-html-gtag";
 import { generateFavicon } from "./scripts/vite-plugin-favicon";
 import { autoChooseConfig } from "../../scripts/utils/auto-choose-config";
+import { appleAppSiteAssociation } from "./scripts/vite-plugin-apple-app-site-association";
 import viteCompression from "vite-plugin-compression";
 
 // HACK: disable dedupe in the react plugin
@@ -34,6 +35,7 @@ export default defineConfig({
         generateFavicon(),
         reactVirtualized(),
         viteCompression({ filter: /\.(js)$/i }),
+        appleAppSiteAssociation(),
     ],
     resolve: {
         alias: [
