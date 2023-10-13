@@ -19,7 +19,11 @@ export interface HomePageHeroButtonProps {
     onClick?: () => void;
 }
 
-export const HomePageHeroButton: React.FC<HomePageHeroButtonProps> = ({ type, onClick }) => {
+export const HomePageHeroButton: React.FC<HomePageHeroButtonProps> = ({
+    type,
+    onClick,
+    children,
+}) => {
     const t = useTranslate();
     return (
         <Button className="home-page-hero-button" onClick={onClick}>
@@ -29,6 +33,8 @@ export const HomePageHeroButton: React.FC<HomePageHeroButtonProps> = ({ type, on
             <span className="home-page-hero-button-text">
                 {t(`home-page-hero-button-type.${type}`)}
             </span>
+
+            {children}
         </Button>
     );
 };

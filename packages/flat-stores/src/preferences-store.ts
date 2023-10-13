@@ -29,6 +29,8 @@ export class PreferencesStore {
     /** selected speaker device id on devices test page */
     public speakerId?: string | null = null;
 
+    public autoPmiOn = true;
+
     public prefersColorScheme: FlatPrefersColorScheme = "light";
 
     public background: Background = "default";
@@ -52,6 +54,10 @@ export class PreferencesStore {
 
     public updateAutoMicOn = (isOn: boolean): void => {
         this.autoMicOn = isOn;
+    };
+
+    public updateAutoPmiOn = (isOn: boolean): void => {
+        this.autoPmiOn = isOn;
     };
 
     public updateCursorNameOn = (isOn: boolean): void => {

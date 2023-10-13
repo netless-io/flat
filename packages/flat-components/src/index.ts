@@ -31,6 +31,7 @@ export * from "./components/RoomStatusElement";
 export * from "./components/SaveAnnotationModal";
 export * from "./components/SettingPage/AppearancePicker";
 export * from "./components/UsersPanel";
+export * from "./components/Pmi";
 export * from "./containers/CloudStorageContainer";
 export * from "./theme/antd.mod";
 

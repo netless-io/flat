@@ -14,7 +14,7 @@ export function nicknameValidator(name: string): boolean {
 // input editable
 interface EditableInputProps {
     value: string;
-    icon: string;
+    icon?: string;
     desc: string;
 
     setValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -49,7 +49,7 @@ export function EditableInput({
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => !editing && setHovering(false)}
         >
-            <img alt={icon} className="general-setting-item-icon" src={icon} />
+            {icon && <img alt={icon} className="general-setting-item-icon" src={icon} />}
             <span className="general-setting-item-icon-desc">{desc}</span>
             {editing ? (
                 <>

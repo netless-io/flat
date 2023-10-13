@@ -9,7 +9,7 @@ import { githubLogin } from "../githubLogin";
 import { googleLogin } from "../googleLogin";
 import { WindowsSystemBtnContext } from "../../components/StoreProvider";
 import { loginMachine, ToggleEventsType } from "./machine";
-import { LoginProcessResult } from "@netless/flat-server-api";
+import { LoginProcessResult, createOrGetPmi, listPmi } from "@netless/flat-server-api";
 import { LoginButtonProviderType } from "flat-components";
 import { LoginDisposer } from "./disposer";
 import { NODE_ENV } from "../../constants/process";
@@ -87,6 +87,8 @@ export function useLoginState(): LoginState {
     const onLoginResult = useCallback(
         async (authData: LoginProcessResult | null, account?: Account) => {
             globalStore.updateUserInfo(authData);
+            globalStore.updatePmi((await createOrGetPmi({ create: true }))?.pmi || null);
+            globalStore.updatePmiRoomList((await listPmi()) || []);
 
             if (!authData) {
                 setLoginResult(null);

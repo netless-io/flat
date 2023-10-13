@@ -54,14 +54,20 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
                 rate: 7,
                 endTime: addWeeks(scheduleBeginTime, 6),
             },
+            // if there exists pmi room, it will can not be selected
+            pmi: preferencesStore.autoPmiOn && !globalStore.pmiRoomExist,
         };
     });
 
     return (
         <EditRoomPage
+            autoPmiOn={preferencesStore.autoPmiOn}
             initialValues={defaultValues}
             loading={isLoading}
+            pmi={globalStore.pmi}
+            pmiRoomExist={globalStore.pmiRoomExist}
             type="schedule"
+            updateAutoPmiOn={preferencesStore.updateAutoPmiOn}
             onSubmit={createRoom}
         />
     );
@@ -95,7 +101,7 @@ export const UserScheduledPage = observer(function UserScheduledPage() {
                     }),
                 );
             } else {
-                await sp(roomStore.createOrdinaryRoom(basePayload));
+                await sp(roomStore.createOrdinaryRoom({ ...basePayload, pmi: !!values.pmi }));
             }
 
             history.goBack();

@@ -10,6 +10,7 @@ import {
     RoomStatus,
     RoomType,
     checkRTMCensor,
+    listPmi,
 } from "@netless/flat-server-api";
 import { FlatI18n } from "@netless/flat-i18n";
 import { errorTips, message } from "flat-components";
@@ -1369,6 +1370,11 @@ export class ClassroomStore {
                 case RoomStatus.Stopped: {
                     this.updateRoomStatusLoading(RoomStatusLoadingType.Stopping);
                     await stopClass(this.roomUUID);
+
+                    if (globalStore.pmiRoomUUID === this.roomUUID) {
+                        // remove pmi room id list
+                        globalStore.updatePmiRoomList((await listPmi()) || []);
+                    }
                     break;
                 }
                 default: {

@@ -3,7 +3,7 @@ import "./MainRoomMenu.less";
 import React, { FC, useContext } from "react";
 import { Col, Row } from "antd";
 import { Region } from "flat-components";
-import { RoomType } from "@netless/flat-server-api";
+import { RoomType, listPmi } from "@netless/flat-server-api";
 import { GlobalStoreContext, RoomStoreContext } from "../../components/StoreProvider";
 import { RouteNameType, usePushHistory } from "../../utils/routes";
 import { CreateRoomBox } from "./CreateRoomBox";
@@ -45,6 +45,7 @@ export const MainRoomMenu: FC = () => {
         title: string,
         type: RoomType,
         region: Region,
+        pmi?: boolean,
     ): Promise<void> {
         try {
             const roomUUID = await roomStore.createOrdinaryRoom({
@@ -52,7 +53,14 @@ export const MainRoomMenu: FC = () => {
                 type,
                 beginTime: Date.now(),
                 region,
+                pmi: !!pmi,
             });
+
+            if (pmi) {
+                // update pmi room list
+                globalStore.updatePmiRoomList((await listPmi()) || []);
+            }
+
             await onJoinRoom(roomUUID);
         } catch (e) {
             errorTips(e);

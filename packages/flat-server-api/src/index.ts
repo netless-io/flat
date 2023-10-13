@@ -9,3 +9,4 @@ export * from "./room";
 export * from "./storage";
 export * from "./utils";
 export * from "./config";
+export * from "./pmi";
